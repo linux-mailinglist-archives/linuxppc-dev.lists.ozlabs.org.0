@@ -1,89 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-7725-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7726-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12711A91388
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 08:07:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E877BA9138E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 08:09:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdS9P0ffbz2xRs;
-	Thu, 17 Apr 2025 16:07:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdSCq60Mzz2yHj;
+	Thu, 17 Apr 2025 16:09:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744870057;
-	cv=none; b=LuvVi7AE1yQ/K7Di20GM6CuKe4w0DH2k/XRS2gYBY2NX60WpjpITw4+schGskaQGyJdcH/Tj8rJdbTeQHoeRRERCzbQDOCZBT9XNcVcIFB7FAuazlPLS9/c4PJegpJ4J83/9uIlLaGev7fS693Rd8itK+HNtNNUA53vzalVYZFT17f3+WtF2ia3+sUDEa5ghJaoWscC7fhPypldoLIRHJ36yqOpUyVS9+fzKVXbxJV49Oa2GZUfHn+BAgHCLmt6jIOq7LbOZrtfCWeB+e31FbX3g+drKCvrEzkA6NPPBRTn5vorjs9d2w4Mke5oUJQUiPhfJeaDrQLVrudrZNHFa/A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744870183;
+	cv=none; b=igHwTwuKsAy2J9PcpqmSY1PrCRG86JiTQHMEBsB1eT6oSbIAsjK7Yxx+yn2yVKhG4pYl5mqun2A7ZSdh2bTCeXZ7VgQ8TiIlU46W57DWFoyNN12L3WsLKTnEGrn2TW2KcWzFh9J29LT9DsU/cLnaD+KRUBoZLgluR08q+RdrKUSbqinudtsa5B73sZAqW9F8vB9nf+6oMpenwA8O6f87K3qnCbTuTz+WxX3glf7OePcjFchxm5GCEI3uh1d/sQGZczgmGWWsEr1ASSNNBj56kCbLPZ4lSg3FLN1lpBowOOGAnIu10q+EKeoSVlh1u8jJxnd+KH+VFF8hPGqgIidTFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744870057; c=relaxed/relaxed;
-	bh=THz3o+doHvTr0SFETxxoJFMa+RP9DmJr6IJ9N8sxneE=;
+	t=1744870183; c=relaxed/relaxed;
+	bh=OibXNJCHuU82A+EwGowd4e3lnAlwTBETZ7mbg5uTl+o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ykeg8aeb8vD/oc5u3mKQONziEwm3WeGVZ0m6YHbespmdHFnEFxYTdbWDdKXRAGaAkqxq6Khp0UriY7acBEOc4BE3YSQ4HINg0cnmOIevq/VnzKOpjAb1UIQI+pK9TidWLAvwk6aplWwnCgOyKbfb2gd4cQqBiIlSuCM9oVrAM0OSEgf/AnvKtVAPoKtQ7lzOWoLumMOZm1xRDO+Ix3HqGe7LVmXilVrvlvtc2EicAc9l6Aty7KeYGzdy96JPwkoNthw5NSww2m/B15Fz3g2y5dhUd/Eajedj7Et8CH3u5znfDFimJPfqzL+q45DJW4GxgfgK0cYAh286jPwYB+jlHg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NI+km9gb; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=VPcyJnFRZ4YB26GJYkkY8opX8jO5l44JVpc1tiLD/b3R0wvlEBBJogzKgikep3FS6zGnpdN2vaf67bDEy4jmzdDq5Uik+80+SeCStOC4fug+DR1htq3LLR10KCm0FtZvOm+KC8klISR06v+4GAhBAAAt5MxaYcDCyJEES0WZNWBb9fYOEm9nGT5bEtvkUVTfpwLDRJboyt5qcuuuI6Hv+C9nFDqAandQi/Gnxcixc1cgm3kmMPZMUv7vCB9sgWmU38mc0ep5zXh+HOyXlUNNFgeDcvmFpXMdC0WQl6D5A+X1YwYY2KryP4BTkiLPsCe8EGjIMP8ZGdQgJ669zODUnQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FhOkpxSp; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NI+km9gb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FhOkpxSp;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdS9M67kvz2xJ8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 16:07:35 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLgScL016371;
-	Thu, 17 Apr 2025 06:07:17 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdSCq01ptz2xJ8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 16:09:42 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GNlAqZ019278;
+	Thu, 17 Apr 2025 06:09:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=THz3o+doHvTr0SFETxxoJFMa+RP9Dm
-	Jr6IJ9N8sxneE=; b=NI+km9gbD3ZxRCirjZr1BQp+mJtzh2MeLtp36RS0LyrEOX
-	DTYDA8XSpexkFySdwMljdKUMv1aJEqFSO2+KYMmh5+dU5BamNWpzyViJ1prtAjQR
-	2+O76fUzxqscv7A0FVqYFKM7RZK8fPTSDpCGGTLSF4At0fix3QSXrzcDUGdsfx8d
-	726smf4ZCMV23qGCp7n8t8XTIV2+12eMLVGIz6LZ9hT++Luf4tOjyrLfBPqSokot
-	0IwnpiLXxJqps/bFNALlZxj2rxouROcCoGWVBvVssS2fBZnWptOIA3HdkzOEfLyq
-	Kooes+RLTTzJb/kOdGjDyIxKnTKLkBuVIYlnmm3g==
+	:references:subject:to; s=pp1; bh=OibXNJCHuU82A+EwGowd4e3lnAlwTB
+	ETZ7mbg5uTl+o=; b=FhOkpxSpmgICINQ0SP8mU9hZrbuIeTDnx8lpswj1QNafVH
+	DlxjyeGnHMkvG7Ior+JiVeOD5v69rRYMGIERnw6h3Q1wJYl5I2Xikg/H7BMbefer
+	JIfsx9gzdmGZ9QvIrwuUlQACJcSNCMjtKXuK37HsePn70VDxqUIn7kyJNCW9BYfe
+	QMGUuvQ14zve2fa8sgDOUrEBL/Mpgv7kEw7tKAqWE3sJoNut0FyUoB5e4sBi6mmS
+	CF7Qvb2DzkwidK7UfLsA6uTD1Rn0aFhpvDcI73YHIMls4onsSpF58lri+v1bt7rh
+	mv3tnKeC4G1ulH7mZPx0gTMvDvX5PJdF65mIkwOA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mpv1pnf-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462ph09amt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Apr 2025 06:07:16 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53H5uDw1016383;
-	Thu, 17 Apr 2025 06:07:16 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mpv1pnc-1
+	Thu, 17 Apr 2025 06:09:31 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53H69UCn013794;
+	Thu, 17 Apr 2025 06:09:30 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462ph09amq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Apr 2025 06:07:16 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53H5IlOi001272;
-	Thu, 17 Apr 2025 06:07:15 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4602w04gr9-1
+	Thu, 17 Apr 2025 06:09:30 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53H23KSh017207;
+	Thu, 17 Apr 2025 06:09:29 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46040m46b9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Apr 2025 06:07:15 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53H67D3T55640400
+	Thu, 17 Apr 2025 06:09:29 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53H69Qfo51052878
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 17 Apr 2025 06:07:13 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 91D912004D;
-	Thu, 17 Apr 2025 06:07:13 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9BF6E20040;
-	Thu, 17 Apr 2025 06:07:11 +0000 (GMT)
+	Thu, 17 Apr 2025 06:09:26 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F18AD20040;
+	Thu, 17 Apr 2025 06:09:25 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7E73420043;
+	Thu, 17 Apr 2025 06:09:24 +0000 (GMT)
 Received: from li-e1dea04c-3555-11b2-a85c-f57333552245.ibm.com (unknown [9.109.207.139])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 17 Apr 2025 06:07:11 +0000 (GMT)
-Date: Thu, 17 Apr 2025 11:37:09 +0530
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 17 Apr 2025 06:09:24 +0000 (GMT)
+Date: Thu, 17 Apr 2025 11:39:20 +0530
 From: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
-To: Michal Suchanek <msuchanek@suse.de>
-Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] powerpc/boot: Fix build with gcc 15
-Message-ID: <fo7xb3bqk5h57mqgfrnyfpweitkr2l5vk3tomu6zgxgqlivwpt@afm2n3c2sxke>
-References: <20250307092055.21986-1-msuchanek@suse.de>
+To: Misbah Anjum N <misanjum@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] arch/powerpc: Remove redundant typedef for bool
+Message-ID: <jwhxcpjsikjfwmeibpssbc3mvr7dhkd225bfgp4pukr3caugxd@mdruiivxfhod>
+References: <20250323163607.537270-1-misanjum@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,53 +93,65 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250307092055.21986-1-msuchanek@suse.de>
+In-Reply-To: <20250323163607.537270-1-misanjum@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=KJVaDEFo c=1 sm=1 tr=0 ts=68009a94 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=kj9zAlcOel0A:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=DDHIVGj7xSj8lN_WlfEA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: VqLNXORCr3A5w_bjbgamuzHcpalJDKya
-X-Proofpoint-ORIG-GUID: fk2siq4AUq7OrQLhwfeGpLml0abhbd-H
+X-Authority-Analysis: v=2.4 cv=QJdoRhLL c=1 sm=1 tr=0 ts=68009b1b cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=kj9zAlcOel0A:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=WN4RLpz-Xj6QzkEfG4QA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: nwZmyqO5dRddaamJ3gdckl7Dq4Uca1t_
+X-Proofpoint-ORIG-GUID: 9vC7EEff8svzUx1zPm7V4x-nUUs2J2NH
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-17_01,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1011
- priorityscore=1501 adultscore=0 lowpriorityscore=0 bulkscore=0
- impostorscore=0 suspectscore=0 spamscore=0 malwarescore=0 mlxlogscore=765
- phishscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504170045
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ adultscore=0 mlxlogscore=833 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ impostorscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2504170045
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Mar 07, 2025 at 10:20:52AM +0100, Michal Suchanek wrote:
-> Similar to x86 the ppc boot code does not build with GCC 15.
+On Sun, Mar 23, 2025 at 11:36:06AM -0500, Misbah Anjum N wrote:
+> Hi,
 > 
-> Copy the fix from
-> commit ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
+> I noticed that a patch addressing the same issue has been proposed by
+> Michal Suchanek:
+> https://lore.kernel.org/linuxppc-dev/Z86liwlwP5WvrEkw@kitsune.suse.cz/T/#t
 > 
-> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> ---
->  arch/powerpc/boot/Makefile | 1 +
->  1 file changed, 1 insertion(+)
+> The existing patch addresses the compilation error by modifying the Makefile
+> to use `gnu11` with `BOOTTARGETFLAGS`. This is a practical approach to avoid
+> the error in the short term.
 > 
-> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-> index 1ff6ad4f6cd2..e6b35699c049 100644
-> --- a/arch/powerpc/boot/Makefile
-> +++ b/arch/powerpc/boot/Makefile
-> @@ -33,6 +33,7 @@ else
->  endif
->  
->  ifdef CONFIG_PPC64_BOOT_WRAPPER
-> +BOOTTARGETFLAGS	+= -std=gnu11
->  BOOTTARGETFLAGS	+= -m64
->  BOOTTARGETFLAGS	+= -mabi=elfv2
->  ifdef CONFIG_PPC64_ELF_ABI_V2
+> This patch builds on that work by providing a long-term solution that ensures
+> compatibility with C23 while maintaining backward compatibility. Specifically:
+>     - It uses `__STDC_VERSION__` to conditionally define the `bool` typedef only
+>     for pre-C23 standards.
+>     - It ensures that the code is future-proof and ready for upcoming C23 standards,
+>     where `bool`, `true`, and `false` are reserved keywords.
+>     - It avoids reliance on compiler-specific flags, making the code more portable
+>     and standards-compliant.
+> 
+> Changlog:
+>     - Adding version check via __STDC_VERSION__
+>     - If  __STDC_VERSION__ < C23, 'typedef int bool' is defined as usual
+>     - If __STDC_VERSION__ >= C23, the typedef redundancy is removed
+> 
+> The patch has been tested with:
+>     - gcc (GCC) 15.0.1 20250228 (Red Hat 15.0.1-0)
+>     - gcc (GCC) 14.2.1 20250110 (Red Hat 14.2.1-7)
+> 
+> Thanks,
+> Misbah Anjum N
+> 
+> 
+> Misbah Anjum N (1):
+>   arch/powerpc: Remove redundant typedef for bool
+> 
+>  arch/powerpc/boot/types.h | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+Reviewed-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
 > -- 
-> 2.47.1
+> 2.49.0
 > 
-There's another patch which fixes this problem by version comparison.
-https://lore.kernel.org/all/20250323163607.537270-2-misanjum@linux.ibm.com/
-
-In my opinion this is a better solution as it will use the features of latest
-compiler.
 
