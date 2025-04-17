@@ -1,88 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-7727-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7728-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BB7A9157F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 09:42:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442A8A91591
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 09:46:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdVGh0Ltvz2yhY;
-	Thu, 17 Apr 2025 17:42:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdVLw2k3cz2ym3;
+	Thu, 17 Apr 2025 17:46:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744875740;
-	cv=none; b=Yu2nQHwNi1D3edzAO5JBx41gGDeNHOn4itck+u/e7yZ5pE2ztkkQawS3JoQ6o1V9h47/oj+W5DakSnEEyNfp+hmnv70ShR/NdQIiEEu1K+ACLYWcf014MceArWHCJjaOlMlQOllWxOlSHtbw5zp9+lF4cFT+dyWYwh7RGGzGLjopV2IImW9+912xlkD0PSTguUGYESQXuESkGxA8aSJLX3hyEK1DfzPxLRS3dOFfoz5nMPWmV0Q2ndE1JZBDwqZraByYvsccuirkQkn8bgQloQbnbqwjGOyGPRbDFv9P0GbAcTDOqrRcr0amspn1k0L3otI2AeqCXNGpxc9vwwFWpA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744875960;
+	cv=none; b=ZIqVrmhm0x4PJLz9sYdK++bYFaGx7JPStmkdTM2C4Qjrjh5hXQStPLYp2ulg/cktEubRImuKTQfw+JcwEqoIpOaNQyaYdIHu8Cspw4XyVM+vkJ1pTLldcl+3ofNaOH/gj8T3ipdZwmy9Ign+tSz/n4fJFbFVZMXgJ7LjvK8lAQFYcJHULyv8wIjZSGBZDuuPknMYjcmLIH9P8mdWXq9nIN3z7jrxcF2gGbBfCNj1vPBwrRI+rNhzE4ZnplDK0cDmvSVwBvXv64x0P0wBlWYyg2Hhtz/DDCpXrYgWl3ChzHsafiLH3ctk1qyON36IC3Px1NxXGNRa5GWqcNxiua5oIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744875740; c=relaxed/relaxed;
-	bh=eDgB7wJ22ie3HmeLXVm86GHefERwHEPMmaPgZUtFTeM=;
+	t=1744875960; c=relaxed/relaxed;
+	bh=1JqcdGwTdxzrmkBSqnRwsWIPqbNQuyemDrSqYOkqzO8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c5YFMXSnWtEyEcNdG+RwTRcd9/b3fKqCEaNxzZv/rHzc3/uJ5kVWbXfUtV+Mi1Eu7H/td0J0YDC19pMEt9As7VB6ohEw4tsG73vLWCKxYzaeTpl9yld4KV5e+a8lcNZpGlZkpBmQtt7x812tAxIIQBJsgCJXX0lxoNhew3nEvjx059lukBmvVRp/M3G0mo+ACvKC2Y8YSRaf0VLrtHZC6TJz6SZyTbikB9MrsdqP3LDlPVnzNGC3oE8L130IxyJM0OVB2bGbClqLp03FNeUSphlv/6Dn+xNl8Qd8oBygRiQJMZtF6TBoZoDMg3JbmCeZrtRq/q2LtigsODdY65SeLQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WaBEWtel; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=AkGk0sx86wwlEWmb+WQTAyO394q1LqmuwZC/j1HuYgxUcdS6musSxZinrsJt7su6yKIUv4IxhrcUWW/HSYqoimo+7I7sBuznrxO4BZ1FUh25YRjZzlfSMYl5EZOSBOEvXgeJWiJNULg5LNfRJme2zBrdC74kWi1Rmuqp7VnoeiVl0MzXGwKMV4FhxR6DE4knZrAaAMKyseAz5F6t13RBrHi8dB/ACE60KLmtHuBLTv3qXrCKZgDLNNTcrPDY8ODq3u1yBsGLSXYakVr0NwB9N13QeVnzY2zHOf0uYkFE+3xlm6rV8xjCSrZDNit+66a9mkq/kl3413x/EI4fz9Oudw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K2txqIoi; dkim-atps=neutral; spf=none (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=michal.swiatkowski@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=WaBEWtel;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K2txqIoi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=michal.swiatkowski@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 62 seconds by postgrey-1.37 at boromir; Thu, 17 Apr 2025 17:45:57 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdVGg0C6Qz2xlP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 17:42:17 +1000 (AEST)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-226185948ffso4996495ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 00:42:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744875735; x=1745480535; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eDgB7wJ22ie3HmeLXVm86GHefERwHEPMmaPgZUtFTeM=;
-        b=WaBEWtelTvd3aAwd1QOXYfphl8O9ancgmdpPCf/7vSHdMeq+wXqz9Nr54EuNw2FCyt
-         GY/bAsPfg0lGmkRnSGCi6Kv7Ppss52qytbNHC6PrIPNB5NwxlMLzzyxtlz6fjxXHEHrY
-         rVYkZcFJ89Aoy9OEjnJbgjM9iMimUJwvxb/mMYfutdT1S/dwlXYlaFKApDZi+JzS6pst
-         JAsRaF5u6y03JurMKpvzPloZCoTja0nXirBv4q1F3dZgM1XBvLZpGP9Txl18nmsGytnm
-         SOkyoLmtKbvgS77pvDx+a9zQATA3kLk66nppT0685kQLsiU6iwgIBY52i1rnwFmuwsVr
-         4CkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744875735; x=1745480535;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eDgB7wJ22ie3HmeLXVm86GHefERwHEPMmaPgZUtFTeM=;
-        b=QRlAF2Ur6wTSaBSwGyQ8vwn+a6bDdltUIukenwacaKQuZT5G53uJgqZrFkGgW9vDU+
-         Va8Rc5BYtml1My/CYSRLrwwkXR9nTmdaxsYF7sN3FgHkONM/JSnu+LhDP0mQ65FlaKmq
-         XxTZ3QnLQr7qW/LBii3DDedpx6xD0SS2fqzXOju8HqV8n1rSZA/h4DHAiUcfgqnLWTKi
-         YKjN942j4q6kRtSha30aWZ1bFezbHYUxw1n2uQYvyuhVkE51rp0cf2QoF8RAuyHXFRoB
-         7GXWS8pWhEI4/qhiPC3XYsogbrbnIKT8oNAs9iDaQH2pVe1XUIdr498qnc6b/vSIFDM+
-         oIvg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4fxQfVuf9ByhwT682lHmWIhXLSiLWIcHj1UgD67jVMGM5K0JpQSre6Jurok52eGY2HrXToxfWNK4VSIM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxmQ4j9mzVFOFUimoPkcGkUOqhX64fgbqYyLr5wyb3M9YFDZgtB
-	tWZhIHvMaUz56QWGKLg2fD6GvGFf2R0mFw31xdjhd2U3ucdsBjw1JSRw+wtacA==
-X-Gm-Gg: ASbGncvY8GTj8MWFLP5MLGps+nubfREFtlTGQfYKIKD+w5a6ceFVTbqpOFY5+UCPbMe
-	37Wkt/y0BTvHMIe3Fv3P411lNPNMrl3PrjJLd3jT5D2FsqYZ4QHUSFaR8wjnl4uj4ziXh1ObYMc
-	W5MUguXkTIkqvpirP8jCulOxLZq2Bl5bAl987ZPKN0dWvXMpNjXMBKjBkuG8wCfP7S6jnYBjky3
-	c6JA6EEnjXIesVhyqqNG6KuS6ufdQ+ZWlkh0+cP9zbBSbu864dV/1m8DNrMTuOSZppCCUbuBqr4
-	bsaVpabvA34LvS417xQWD1hHnzsYjgWIdV456wEYj11By/2nahm6BQETDSs=
-X-Google-Smtp-Source: AGHT+IG/Yi/qk4YGrJvgZRoRnXd14pk5pi5diwpsqtszPlC13bqbgZFlocoYN6rPXNF0yZn07MCGQQ==
-X-Received: by 2002:a17:902:dacc:b0:223:35cb:e421 with SMTP id d9443c01a7336-22c35985d1dmr68962035ad.49.1744875735660;
-        Thu, 17 Apr 2025 00:42:15 -0700 (PDT)
-Received: from thinkpad ([120.60.54.0])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c3e0e19d2sm15264935ad.91.2025.04.17.00.42.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Apr 2025 00:42:15 -0700 (PDT)
-Date: Thu, 17 Apr 2025 13:12:08 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof Wilczy??ski <kw@linux.com>, 
-	Rob Herring <robh@kernel.org>, dingwei@marvell.com, cassel@kernel.org, 
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] PCI: Add link down handling for host bridges
-Message-ID: <doyt4kcaffgjm5u5notcjnqur7ydim3dpo4se5em2an36wa3rp@xzntx4sa47dl>
-References: <20250416-pcie-reset-slot-v2-0-efe76b278c10@linaro.org>
- <20250416-pcie-reset-slot-v2-3-efe76b278c10@linaro.org>
- <Z__hZ2M8wDHn2XSn@wunner.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdVLs6ghzz2ydv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 17:45:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744875958; x=1776411958;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tslz6DlI/Mm4YFhda6oTOI/VUg3AL5GOdcZku7+10qg=;
+  b=K2txqIoiHzXkmJTobsyy2jBAJCuSof1xGqN/IZZ2kFW8wYVoSeDmFbK1
+   vvNxnYqUqZN7iWMbuYayDTXfF6fRUgsuLzDVM3GSf9Pw3ykNj4f2J5Jda
+   LxtQ3VwRVYkLh2fO/8mWuCGCpSHDSG4ndfsewdr7hEZJ0NO4BPsh3QUEk
+   +WMnqTXzW771eSzU9FXnb/coFaYjFRRbTxHUobzdxOs0KsMuSN51Z+BWE
+   GfC1IVwJKApydkRmnDMaVnVb8si0inQWfXUvIsRI7TrchYHTtxgO74LeN
+   kV0KaOEDlwND7zat8n9tbEAV6GY8NVf4UuHPcSwNDIvL0QM/vGJEKqhIK
+   g==;
+X-CSE-ConnectionGUID: J3YYOMfSTc6P9HtUlJWr2A==
+X-CSE-MsgGUID: OxMJ0809Tf6nNNpqkHccnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="50099765"
+X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; 
+   d="scan'208";a="50099765"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 00:44:52 -0700
+X-CSE-ConnectionGUID: SECiPiZnTDWrnD/BIEfxOA==
+X-CSE-MsgGUID: oLWOzVShQrCnUO/bkHGTAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; 
+   d="scan'208";a="130586301"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 00:44:50 -0700
+Date: Thu, 17 Apr 2025 09:44:32 +0200
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Dave Marquardt <davemarq@linux.ibm.com>
+Cc: netdev@vger.kernel.org, michal.swiatkowski@linux.intel.com,
+	horms@kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next v3 1/3] net: ibmveth: Indented struct
+ ibmveth_adapter correctly
+Message-ID: <aACxYGS9F8bh5PkG@mev-dev.igk.intel.com>
+References: <20250416205751.66365-1-davemarq@linux.ibm.com>
+ <20250416205751.66365-2-davemarq@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,109 +77,100 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z__hZ2M8wDHn2XSn@wunner.de>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250416205751.66365-2-davemarq@linux.ibm.com>
+X-Spam-Status: No, score=-3.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Apr 16, 2025 at 06:57:11PM +0200, Lukas Wunner wrote:
-> On Wed, Apr 16, 2025 at 09:59:05PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> > --- a/drivers/pci/pcie/err.c
-> > +++ b/drivers/pci/pcie/err.c
-> > @@ -270,3 +270,30 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
-> >  
-> >  	return status;
-> >  }
-> > +
-> > +static pci_ers_result_t pcie_do_slot_reset(struct pci_dev *dev)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret = pci_bus_error_reset(dev);
-> > +	if (ret) {
-> > +		pci_err(dev, "Failed to reset slot: %d\n", ret);
-> > +		return PCI_ERS_RESULT_DISCONNECT;
-> > +	}
-> > +
-> > +	pci_info(dev, "Slot has been reset\n");
-> > +
-> > +	return PCI_ERS_RESULT_RECOVERED;
-> > +}
-> > +
-> > +void pcie_do_recover_slots(struct pci_host_bridge *host)
-> > +{
-> > +	struct pci_bus *bus = host->bus;
-> > +	struct pci_dev *dev;
-> > +
-> > +	for_each_pci_bridge(dev, bus) {
-> > +		if (pci_is_root_bus(bus))
-> > +			pcie_do_recovery(dev, pci_channel_io_frozen,
-> > +					 pcie_do_slot_reset);
-> > +	}
-> > +}
+On Wed, Apr 16, 2025 at 03:57:49PM -0500, Dave Marquardt wrote:
+> Made struct ibmveth_adapter follow indentation rules
 > 
-> Since pcie_do_slot_reset(), pcie_do_recover_slots() and
-> pcie_do_recover_slots() are only needed on platforms with a
-> specific host controller (and not, say, on x86), it would be good
-> if they could be kept e.g. in a library in drivers/pci/controller/
-> to avoid unnecessarily enlarging the .text section for everyone else.
+> Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
+> ---
+>  drivers/net/ethernet/ibm/ibmveth.h | 64 +++++++++++++++---------------
+>  1 file changed, 32 insertions(+), 32 deletions(-)
 > 
-> One option would be the existing pci-host-common.c, another a
-> completely new file.
-> 
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+> index 8468e2c59d7a..0f72ce54e7cf 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.h
+> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+> @@ -134,38 +134,38 @@ struct ibmveth_rx_q {
+>  };
+>  
+>  struct ibmveth_adapter {
+> -    struct vio_dev *vdev;
+> -    struct net_device *netdev;
+> -    struct napi_struct napi;
+> -    unsigned int mcastFilterSize;
+> -    void * buffer_list_addr;
+> -    void * filter_list_addr;
+> -    void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
+> -    unsigned int tx_ltb_size;
+> -    dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
+> -    dma_addr_t buffer_list_dma;
+> -    dma_addr_t filter_list_dma;
+> -    struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
+> -    struct ibmveth_rx_q rx_queue;
+> -    int rx_csum;
+> -    int large_send;
+> -    bool is_active_trunk;
+> -
+> -    u64 fw_ipv6_csum_support;
+> -    u64 fw_ipv4_csum_support;
+> -    u64 fw_large_send_support;
+> -    /* adapter specific stats */
+> -    u64 replenish_task_cycles;
+> -    u64 replenish_no_mem;
+> -    u64 replenish_add_buff_failure;
+> -    u64 replenish_add_buff_success;
+> -    u64 rx_invalid_buffer;
+> -    u64 rx_no_buffer;
+> -    u64 tx_map_failed;
+> -    u64 tx_send_failed;
+> -    u64 tx_large_packets;
+> -    u64 rx_large_packets;
+> -    /* Ethtool settings */
+> +	struct vio_dev *vdev;
+> +	struct net_device *netdev;
+> +	struct napi_struct napi;
+> +	unsigned int mcastFilterSize;
+> +	void *buffer_list_addr;
+> +	void *filter_list_addr;
+> +	void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
+> +	unsigned int tx_ltb_size;
+> +	dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
+> +	dma_addr_t buffer_list_dma;
+> +	dma_addr_t filter_list_dma;
+> +	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
+> +	struct ibmveth_rx_q rx_queue;
+> +	int rx_csum;
+> +	int large_send;
+> +	bool is_active_trunk;
+> +
+> +	u64 fw_ipv6_csum_support;
+> +	u64 fw_ipv4_csum_support;
+> +	u64 fw_large_send_support;
+> +	/* adapter specific stats */
+> +	u64 replenish_task_cycles;
+> +	u64 replenish_no_mem;
+> +	u64 replenish_add_buff_failure;
+> +	u64 replenish_add_buff_success;
+> +	u64 rx_invalid_buffer;
+> +	u64 rx_no_buffer;
+> +	u64 tx_map_failed;
+> +	u64 tx_send_failed;
+> +	u64 tx_large_packets;
+> +	u64 rx_large_packets;
+> +	/* Ethtool settings */
+>  	u8 duplex;
+>  	u32 speed;
+>  };
+> -- 
+> 2.49.0
 
-I don't like introducing a new file, so I'll make pci-host-common as a common
-library for host controller drivers and move this code there.
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-> > --- a/drivers/pci/pci.h
-> > +++ b/drivers/pci/pci.h
-> > @@ -966,6 +966,7 @@ int pci_aer_clear_status(struct pci_dev *dev);
-> >  int pci_aer_raw_clear_status(struct pci_dev *dev);
-> >  void pci_save_aer_state(struct pci_dev *dev);
-> >  void pci_restore_aer_state(struct pci_dev *dev);
-> > +void pcie_do_recover_slots(struct pci_host_bridge *host);
-> >  #else
-> >  static inline void pci_no_aer(void) { }
-> >  static inline void pci_aer_init(struct pci_dev *d) { }
-> > @@ -975,6 +976,26 @@ static inline int pci_aer_clear_status(struct pci_dev *dev) { return -EINVAL; }
-> >  static inline int pci_aer_raw_clear_status(struct pci_dev *dev) { return -EINVAL; }
-> >  static inline void pci_save_aer_state(struct pci_dev *dev) { }
-> >  static inline void pci_restore_aer_state(struct pci_dev *dev) { }
-> > +static inline void pcie_do_recover_slots(struct pci_host_bridge *host)
-> > +{
-> > +	struct pci_bus *bus = host->bus;
-> > +	struct pci_dev *dev;
-> > +	int ret;
-> > +
-> > +	if (!host->reset_slot)
-> > +		dev_warn(&host->dev, "Missing reset_slot() callback\n");
-> > +
-> > +	for_each_pci_bridge(dev, bus) {
-> > +		if (!pci_is_root_bus(bus))
-> > +			continue;
-> > +
-> > +		ret = pci_bus_error_reset(dev);
-> > +		if (ret)
-> > +			pci_err(dev, "Failed to reset slot: %d\n", ret);
-> > +		else
-> > +			pci_info(dev, "Slot has been reset\n");
-> > +	}
-> > +}
-> >  #endif
-> 
-> Unusual to have such a large inline function in a header.
-> Can this likewise be moved to some library file and separated
-> from the other version via #ifdef please?
-> 
-
-Sure.
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
 
