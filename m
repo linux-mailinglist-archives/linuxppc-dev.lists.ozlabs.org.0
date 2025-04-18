@@ -1,63 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-7781-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7782-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAA2A930EF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Apr 2025 05:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B1EA9310E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Apr 2025 06:00:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zf0tD70Npz2yhG;
-	Fri, 18 Apr 2025 13:41:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zf1Jk6RQRz3c0H;
+	Fri, 18 Apr 2025 14:00:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744947684;
-	cv=none; b=fozY+h0IsYDrqzX83ABtnv2Y+u4ppqrlYNhTMAMlsyqpCgTjsY767ZjIHSI4eSo7I+XO0epQpAUclMSrL7gMZlWEKBI5owFRXKzObnT3J1rfopG/3EnqGMNOGrLjBBRueqdM2t+qJz8PFnUMKFdXk6/o/7CnbnP7gpRWkEIIo7a4H9VQ4hStiZARYVlteWlN2yWHJOtcXSh+GqTYzmMNI9n9MHF+bRP3MAX8vH7liHbMjs2epn3c1lnIon8iApId0H7EOKeBZmN97lht0a1qQWjTrObqG72qY1yv9h2zPix8Ib/fnA9cPNwz9ItITJR6XMte/w03L/86BmEFBV72pg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:1000::53df:5f64:0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744948854;
+	cv=none; b=OlHzPYCatt7i1rAMiWk3egAkMWeyX3sbSlxuW6SLFKIlxkkYzLgmpBXunx2UKpgR5RKuXGLlYA3FcpBwwBT3sgbPo0RqudRlFN/gWygejFkK3yTwqBgRzXvdL1r2LmI9rPa5CHKajd0kGZY7QOPmn+bkWzoYlGUQ0tas1XGFmuoTA4sg5gJVyUE7GVkkBYglqMvisDzjbKDuBuS496YydQxP5QxoxNZ3pYdlJD+52qxuOXJqss3+SaCMZyfSb5ueEgScQZMJRJs4SPyEfUGrjA3rmIE6YlCt4ZUT56hKj+VmDxzJnEFUhl5vypCci66Q83eJmF1oB8Nlbk0UscSmsw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744947684; c=relaxed/relaxed;
-	bh=DeLdxRY2vHoEKdWJ6sFRDUQGcMLf7d+q/0pRxlVp8JU=;
+	t=1744948854; c=relaxed/relaxed;
+	bh=7kNXwz5nZrYdOZIVirdqWANzY4uT+PyRZviYbUFPIEc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i0BLM2QMNRam3gOAaVhnUkg9LUg+pIh0fl2yjFJ21GBCYM+p02WFVSofVIz3Vd9QsSEYCnsx+8Yh69gr5d5O3mErf5/7oVJrRJHSLiPMesatdrrF+bYCbeUzbsRH7xCEinrpOPA97K/zU15e1VCwpm5nL2+BTGO6OEez8beRX51AUzxk0e4WNafi+5greNaAiYKB+Els0/aD6Kbyi0sbjaN+j7uuGuvAKe8xIt9MpNRilypi90DuVnwL9UwfOyTNumzgipoz0ae3RU3VgEj7Hhxqd26MfXAtk6+pa4a7Nv6l8pYgfkP1g6qMSHNQe9/hMplaBdnr3DjmDB/xmgj3lg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=VXq5/xSO; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=VXq5/xSO;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	 Content-Type:Content-Disposition:In-Reply-To; b=f/abbZDf/Kx7SMNFJiVSA1TZpmQYeOkNqcSFg4IjOfplwRAzOLuQcagMcWAaS8q0Cxoz4n0mbtAZvHoq5ndnunCjfJ/XmItxazvbaPkR5l0hd+WMEZqdbskjwrbSjFZWYhvc2Ci+VQ40h9Ycns3tVMM0Vt189zawOqudHzZdNykh8KpjdL1z8qq7bgNJLv2XBTKfUeAxqExM2VSAG0iYZMolU9qDnlB07Ud350nWYmxLPsQMhhL0R2o5iQNUTXhRXIFW4FShlZ+6UDKNoVfFLmHkH8zSeUBZVN+LnHfUknt6Lsakny5nA1DSjeDkqhbQkMbOTiKXdch+6aoJ7JTC1A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout1.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout1.hostsharing.net (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 338 seconds by postgrey-1.37 at boromir; Fri, 18 Apr 2025 14:00:53 AEST
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zf0tD2Xwbz2ydx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 13:41:24 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=DeLdxRY2vHoEKdWJ6sFRDUQGcMLf7d+q/0pRxlVp8JU=; b=VXq5/xSOluY3RsxfcvuVGjWtZR
-	7jvkDa6bj3M1EaAcxKxQY1WDgoWtxg/rm+6XAbBrtL/22i8+WyfgIn92PWApVLEpoDfegP0QpPOHV
-	j49Y4XDyIw1sIIkoEwstoQy941i447cYR8qbCXF/sECr1WK62m3qCFnYJ70WAowk7ZhpqPurKZXYy
-	QmRJZLHzlF1wf0IN5hkkxnn1hHHtG0hLnxes0shefNdMuya+B9FXC2X7iO7mGssssJqcNQsVxqf5u
-	e6j7zakwSXnJ9DlD7H7sHRU6fBUhGHklvmSKWQIcNMVdPm4+5+iJiZ2Hqul+k2BQgzx4AOyJ+YYD8
-	8L9xBumA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1u5cbR-00Gek0-2H;
-	Fri, 18 Apr 2025 11:41:22 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 18 Apr 2025 11:41:21 +0800
-Date: Fri, 18 Apr 2025 11:41:21 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, x86@kernel.org, ardb@kernel.org,
-	Jason@zx2c4.com, torvalds@linux-foundation.org
-Subject: Re: [PATCH 8/9] crypto: x86/chacha - remove the skcipher algorithms
-Message-ID: <aAHJ4X95vIujLPpu@gondor.apana.org.au>
-References: <20250405182609.404216-9-ebiggers@kernel.org>
- <aAHF0X2I5ydEJK1p@gondor.apana.org.au>
- <20250418033829.GC38960@quark.localdomain>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zf1Jj2m7nz3bs0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 14:00:53 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 265BE2C4C3C8;
+	Fri, 18 Apr 2025 05:54:57 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 36457224E6; Fri, 18 Apr 2025 05:55:05 +0200 (CEST)
+Date: Fri, 18 Apr 2025 05:55:05 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Keith Busch <kbusch@kernel.org>, Linux PCI <linux-pci@vger.kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Sinan Kaya <okaya@kernel.org>,
+	Thomas Tai <thomas.tai@oracle.com>, poza@codeaurora.org,
+	Christoph Hellwig <hch@lst.de>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCHv3 09/10] PCI: Unify device inaccessible
+Message-ID: <aAHNGT60lleXqnW6@wunner.de>
+References: <20180918235702.26573-1-keith.busch@intel.com>
+ <20180918235702.26573-10-keith.busch@intel.com>
+ <e0606dfcf8780bf994432dc373581fdf0af18f8e.camel@kernel.crashing.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,27 +67,46 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250418033829.GC38960@quark.localdomain>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <e0606dfcf8780bf994432dc373581fdf0af18f8e.camel@kernel.crashing.org>
+X-Spam-Status: No, score=0.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Apr 17, 2025 at 08:38:29PM -0700, Eric Biggers wrote:
->
-> Well, I forgot that an empty module_exit needs to be kept around for the module
-> to be removable.  I'll send a patch that adds these back in, though I'm doubtful
-> that anyone ever removes these modules in practice.
+[cc += PowerPC / EEH maintainers]
 
-I just tried to remove chacha_x86_64 in order to make sure that I
-was actually using the arch-optimised version of chacha and that's
-how I noticed.
+Hi Ben,
 
-I remove the algorithm modules all the time because it's much easier
-to rebuild one module rather than the whole kernel.
+On Tue, Sep 25, 2018 at 11:10:01AM +1000, Benjamin Herrenschmidt wrote:
+> On Tue, 2018-09-18 at 17:57 -0600, Keith Busch wrote:
+> > + * pci_dev_set_io_state - Set the new error state if possible.
+> > + *
+> > + * @dev - pci device to set new error_state
+> > + * @new - the state we want dev to be in
+> > + *
+> > + * Must be called with device_lock held.
+> 
+> Any reason why you don't do cmpxchg as I originally suggested (sorry
+> I've been away and may have missed some previous emails)
+> 
+> This won't work for PowerPC EEH. We will change the state from a
+> readl() so at interrupt time or any other context.
+> 
+> We really need the cmpxchg variant.
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Independently from your request, pci_dev_set_io_state() was
+converted to cmpxchg() in 2023 with commit 74ff8864cc84
+("PCI: hotplug: Allow marking devices as disconnected during
+bind/unbind").
+
+So you may now amend EEH to use pcie_do_recovery() or whatever
+you needed this for.
+
+I had kept your e-mail in my inbox as a reminder that there's a
+remaining issue here and just came across it while clearing out
+other messages.
+
+Thanks,
+
+Lukas
 
