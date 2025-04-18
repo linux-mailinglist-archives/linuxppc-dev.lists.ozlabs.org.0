@@ -1,99 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-7791-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7792-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B858A9381E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Apr 2025 15:52:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2ADA93889
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Apr 2025 16:19:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZfGRr0JXdz3br7;
-	Fri, 18 Apr 2025 23:52:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZfH2d49G5z3brL;
+	Sat, 19 Apr 2025 00:19:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::531"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744984376;
-	cv=none; b=KN2cjWYCSz11NPCemimM1S0z3HRV3DG8i5vkzl0TLsleuN6aV78KknS4G21CKUt0h0Kbyr8/6l6yIjxk0qrZRPyxAmXMDftApJPs0umaf5j7z315dRHXwMkJoizcMG6FDGjWJ3r2C8TEHAeL4xbHu0prjzWxkdOcQoAajkwDdee66MXf0DOS7WMpyiiS0fjQtmOvYM7+lWYwNg6zMQhBJPMPno1ZfOyh2kiMJIp0MQJfG7uxBVWoukJukcQSzNAgVRo80gqn/QkoXvvoUgetbvVT+PUHMbDsLoCKDmdk4gnHBspiAb6OsWCyprCzVJIXB1ETuAHVJeBDRSEqZB5Kjw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744985977;
+	cv=none; b=eIEMmCLClgU3zLmzxbVQJ+NLqFcdxzX44DgdcEI4KXAanM+cPV79JbCNePqblpSkjJoGrPWlplb2C4wQk8oMImEdoUrIrxPevY2kMPSYHPnlek8mgoQ0dqAGk+2cg/zLR8q2QrptSjdQCPjS2nB21ffbrBZ3enelcZl8IBVnJBYVFQLEJ3YpN8Rta+qx5nQeJkMnp4/TMeSjTuPyy2PZrLl5LDsHYOEPm9ADRH18oMoh1KjC5yQ5bwBKs1xYRoCQFvpwRiPvaWNpTZtIIqC48NJHlAb5Z/Yr8DTkNPYKzNFSNe8zJU0Rf4s2dXDwAch/8wjTfYymdiNtiAZibC9wWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744984376; c=relaxed/relaxed;
-	bh=CuBgNv5cd1S2PD2hevcSRahDNpP8CA3ZoLvuCSdO+No=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UcfIpOGzXbUk2NkOsx7jtW0XknZ7HmGAkYWwtvWlSKY1O8DGNQXbqEXq3LgzMeAs7Rg3s8zuXFGEsYe40kk7cWldaXxIaxCMme+xYrCq4IqUN4lwCsiAtsVMneVp+Q0lI7wr0YFmmDsN2FezMN2/DEOwt6apFsMjxIT+8Cr5Z848IPPcDLOnDoma1OHuQRYrfGVeOjHJIuPG00SlL1CGDS6fO4ow43NdrKiOP07+1jusOXLawaSugtDvTJBQxNKONAz7+Asyy6hYXw4OPaiCUg9O3JzRHq2w7bEs8dLAAC1TWKut6a01XCP36u+Joxi4L07vpETxz7bhk9+Uo2jGxA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GaGNINY6; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::531; helo=mail-ed1-x531.google.com; envelope-from=olteanv@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1744985977; c=relaxed/relaxed;
+	bh=g1ASXE1XoNvo3/TalZt9jqQKX2TOoBOweyI40SQbKec=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n3fR2nE2CMIwxDuCW+dhVaGlee+P1iC/COn9Hn4FgsAfrMeTv5advZHCOfCDQKOt3pyehWbu+lTMcKpVau6GhKSxdHJXI7hhvZ559DHYOtixV1M/m2Ld2I62buzTiijIbPE68v3vMrXh0l3DhY0TV4sb4uwUKckOmpBx69bvfc/Rr5GnQuAYmCNPlmuiIjmj9tD8oykt47b2t+++EvGAfcJkoa8eM5H3m7QgnuL7ebv+e6a8lN2X/6UYnMm1xgXx9eY6V3IFK/WldT0ITXwfFGvHDHmxoXUh3O3SFPqZ94DZFOq8/rfduZzi1Qk/lSG6iPh+GyWaCrBC9ixWg6rPeg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RRV/mjio; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GaGNINY6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RRV/mjio;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::531; helo=mail-ed1-x531.google.com; envelope-from=olteanv@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZfGRp6G1hz3bZs
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 23:52:54 +1000 (AEST)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-5f37f45e819so312513a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 06:52:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744984371; x=1745589171; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CuBgNv5cd1S2PD2hevcSRahDNpP8CA3ZoLvuCSdO+No=;
-        b=GaGNINY6153CFVFMz0Vo47T+KVOWSkl3MpjcSGtcval6NFU6SqpIkiLaq8J6qOgxON
-         Y51slMLmKQj5pqhZ8AlQBoW52sQIe4yPfMoQ+x0K1NuS288SHZCjU3uZniRYzXXijU55
-         BNVRG+aneR5FLZHNGfYVL/nRzLGj6g4XuFIaCSWs4IKlc0CoUMj8k9rU884xyqmugZ27
-         PNP0IziZE13rQnoVOfQGaUvB65ddiNN/PaOUoOl0l4FW7jO6LypBe/m04a3hVyGJydRW
-         s1N0Lg34oh88boXNLR398tWIXjU8LP45Oon++wm5iwVdjaHbpIb4+AZ32skpE69rl1bp
-         mUDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744984371; x=1745589171;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CuBgNv5cd1S2PD2hevcSRahDNpP8CA3ZoLvuCSdO+No=;
-        b=rFDdnUBI7/IPUlAKsBrcUc3VKtQS0/RohzZuOYkeXC8bIm664usivsKLLF1JqgaJsb
-         hYzZxZBd6IpyMJ2zwXvSUecYVTJq1dIYRGMIcUM34UdsxEjc/JxqPbod59vRQR6hSWDe
-         EQMv2KZYCz5mz/65dA4Su/yq1h5bAaR2ieKUyxI7G/Je9Fhk9wql+DyczvFaB7ICFS9M
-         Wh5ys0G3OWCt7W3dx4Ce+w5fl8hNRGOujH4ljudUO80uqsO7u9D6W0MKeDRkJ7RTib5g
-         DjwBfBlZCknAiuEHz0B5OZvZQkssgO/KTRWeK3/11Je5u8plCf5wt4uGm8xK9Cl3AyDa
-         XINQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVwCVRWmRUu1qcCf8MzLxShqDbxjkcTZbgVUEUR254eNpWhb2HmuPF4cxmXLBG9zd/XHRlPLBbqmxrTTsY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy4FWv5jpVMB4b57oHUVAfEo5rc/cRb8DGogXRKKSXToRVD40+q
-	9G3Ju8Fv/9at8iREkdY6RLhnGPPwLb3Slt3STuwItZLRvfH81Yh5Gf0CZJ1B
-X-Gm-Gg: ASbGncsU/rrJIJNbkggjYDI5Dm4JnB9KNYb1R3udVUqI1qNBzInyk8fDesEtgl0nhXH
-	SZZM3WJ5av3ZaL9daq9Y/SlMyO5NQpgJi/JQfVazdezAMcqB6WRpKitnhtw9mtnHllSk5AB8fuD
-	+7nS5rXZBWmcNgkamqMoE7w+8jI7bSEKUrOmj1YenMZw4dAOV3IOi3FpWoLMDtZts8MpxaMcXah
-	lNdEo56g4KJyoN9EzaHb6Sl/BhVZAi4+kxJ9ceB9ZX+7rW7QNbkh+s1NnasttCt+UhiIGaiK/B6
-	40Cgn9Tn5DiDcP5rghbQHqSqZ5W2
-X-Google-Smtp-Source: AGHT+IFVtlQMaZys0yRiOygdgzqKHFtvYUnzaYsTx8NK1/CznrSsNWU+sPquLkREls3wzbKnT9aYMw==
-X-Received: by 2002:a17:907:7f0d:b0:acb:583:c63a with SMTP id a640c23a62f3a-acb74dd060cmr67927566b.15.1744984371062;
-        Fri, 18 Apr 2025 06:52:51 -0700 (PDT)
-Received: from skbuf ([188.25.50.178])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ec0bedbsm124885266b.16.2025.04.18.06.52.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 06:52:50 -0700 (PDT)
-Date: Fri, 18 Apr 2025 16:52:47 +0300
-From: Vladimir Oltean <olteanv@gmail.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v5 net-next 02/14] net: enetc: add command BD ring
- support for i.MX95 ENETC
-Message-ID: <20250418135247.kf3syqrv3lznmcbf@skbuf>
-References: <20250411095752.3072696-1-wei.fang@nxp.com>
- <20250411095752.3072696-1-wei.fang@nxp.com>
- <20250411095752.3072696-3-wei.fang@nxp.com>
- <20250411095752.3072696-3-wei.fang@nxp.com>
- <20250418132511.azibvntwzh6odqvx@skbuf>
- <PAXPR04MB85105C88656FA179985C8F0D88BF2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZfH2b65WBz2yqd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Apr 2025 00:19:35 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 51438A4B4C0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 14:14:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D35BC4CEE2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 14:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744985972;
+	bh=om+Vna/2GFvSm09tdyvQMrH5gELgac15SstCZnvcK14=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=RRV/mjioS01PV47nXvZ0TWue3NIWYz4g3TvMtcGSc9SzDjv5ENiZxjjzbX9r29B3r
+	 9/rQJy4n6bGeoy4ykbB+W4/4F7W0D3C9D3cINHvpgD0y02oiSDkrEm5G7Vf1UOSJNB
+	 RQpnb5utZNxuqYFRuG86JaRbyR2LQdUMJyr2qEc11qUB69jHurGTthMhKqWn9Y9PcS
+	 Nzl/cYyfucM8in2jji8Q98Ls2NeNC3pWDwx+RpeSSgWLOWSWmRB1nmRVItasiBs5Oy
+	 j4ge2AaFjDu59Ljk0ccoDDlfXsh5ZyrSwgoTZOaXCcDebHhf0VadkqEJMQ5k7pZQjU
+	 NX/2hSLrgVIsw==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30bfed67e08so19896891fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 07:19:32 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXCwUS9zAwPVaKB5lQt+kXbpkbqdZLQiv05hbEwgHXJA9alvVGM0zkt8aSQy/jPjzsbUvZBZSOf4yc+yhw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyjFTuNxfFyWI83Ia9Fv8a7SfJVFfYbAeTlaT4lq+jJSgsn4iDy
+	GSHBEuAqgP8qnEytgZN+yC8hzl9hgG24needf4VYi3xiO8la5Xu0zvnpIzcACKFjJAB1WbCY8H0
+	uSc4S1IqfxEMFGeuWDmUIargdoT8=
+X-Google-Smtp-Source: AGHT+IFnh+q+URrFYgeso0knkjqFFZnTfGmXzWjvKWHdUWW3YHckdLRG/cd76/RqwZUrPe+JG12yfp7YED1LQQgVI5I=
+X-Received: by 2002:a05:651c:241:b0:310:779b:9ef1 with SMTP id
+ 38308e7fff4ca-310904d4972mr9346751fa.13.1744985970634; Fri, 18 Apr 2025
+ 07:19:30 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,17 +65,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PAXPR04MB85105C88656FA179985C8F0D88BF2@PAXPR04MB8510.eurprd04.prod.outlook.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250417182623.67808-1-ebiggers@kernel.org>
+In-Reply-To: <20250417182623.67808-1-ebiggers@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 18 Apr 2025 16:19:19 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXE4T4p7iCkfo=4RoMeU4sHh47EZyBUSdWv7HTqdAY2oCA@mail.gmail.com>
+X-Gm-Features: ATxdqUG3NGrAHvWSlyQ9Wx2CgTU0VxdHzlcc8yhyIdwCb_viAAYGMbAHFukqzA8
+Message-ID: <CAMj1kXE4T4p7iCkfo=4RoMeU4sHh47EZyBUSdWv7HTqdAY2oCA@mail.gmail.com>
+Subject: Re: [PATCH 00/15] Finish disentangling ChaCha, Poly1305, and BLAKE2s
+ from CRYPTO
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org, 
+	"Jason A . Donenfeld" <Jason@zx2c4.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Apr 18, 2025 at 01:49:25PM +0000, Wei Fang wrote:
-> Do we need to retain cbdr_size in struct ntmp_user? Or just remove it in
-> next version?
+On Thu, 17 Apr 2025 at 20:27, Eric Biggers <ebiggers@kernel.org> wrote:
+>
+> This series removes the unnecessary dependency of the ChaCha, Poly1305,
+> and BLAKE2s library functions on the generic crypto infrastructure, i.e.
+> CONFIG_CRYPTO.  To do this, it moves arch/*/crypto/Kconfig from a
+> submenu of crypto/Kconfig to a submenu of arch/*/Kconfig, then re-adds
+> the CRYPTO dependency to the symbols that actually need it.
+>
+> Patches 14-15 then simplify the ChaCha and Poly1305 symbols by removing
+> the unneeded "internal" symbols.
+>
+> Note that Curve25519 is still entangled.  Later patches will fix that.
+>
+> Eric Biggers (15):
+>   crypto: arm - remove CRYPTO dependency of library functions
+>   crypto: arm64 - drop redundant dependencies on ARM64
+>   crypto: arm64 - remove CRYPTO dependency of library functions
+>   crypto: loongarch - source arch/loongarch/crypto/Kconfig without
+>     CRYPTO
+>   crypto: mips - remove CRYPTO dependency of library functions
+>   crypto: powerpc - drop redundant dependencies on PPC
+>   crypto: powerpc - remove CRYPTO dependency of library functions
+>   crypto: riscv - remove CRYPTO dependency of library functions
+>   crypto: s390 - drop redundant dependencies on S390
+>   crypto: s390 - remove CRYPTO dependency of library functions
+>   crypto: sparc - source arch/sparc/crypto/Kconfig without CRYPTO
+>   crypto: x86 - drop redundant dependencies on X86
+>   crypto: x86 - remove CRYPTO dependency of library functions
+>   crypto: lib/chacha - remove INTERNAL symbol and selection of CRYPTO
+>   crypto: lib/poly1305 - remove INTERNAL symbol and selection of CRYPTO
+>
 
-It seems redundant with cbdr->bd_num, so yes, please remove it.
+This seems like a good idea.
+
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
