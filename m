@@ -1,88 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-7799-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7800-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F0BA93C41
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Apr 2025 19:50:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75FE5A93C7F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Apr 2025 20:03:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZfMk04gkJz3c56;
-	Sat, 19 Apr 2025 03:50:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZfN0r0Zlgz3c4y;
+	Sat, 19 Apr 2025 04:03:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::631"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744998632;
-	cv=none; b=W+wt9T5r55nTw7ASCDRGt3Hsq1buVddY9HRIuy4RPvdr7f9B/TE1WI9r1iSezlAnoqDBQtO3LFwcfmJtX12JiGYYGu6xCR5xhmxOql+jd5FLgpt2qfC233wcycvMmg1DyMUGerOdLL2Y31XSdQ97xEuqKGYni0wXbwpGYSVhOpd8MHHNnlgGfHBsb9w/Ygd1h3j4XydWB36fuszZmZMEp4/CrQKXYaWYNiZ4E1GyGljR8nouXfWWvQDesfZETvZqXp6LUY0Tl+FMZBpCSwXxTwY60v3r/416x2T5IOsYeL0Sl3BH4I9xp11C73STWAvAVssyPwmmAzk2FvIilvw+uA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744999404;
+	cv=none; b=f0kgf4NdVtUUKcKf2Zs4DR9FIundLIBM6jJ6FBdJPuunJkg3Cx0db30zGmxWYW/cPcF+QH6SUkWa53Jax6wOOPXANDZrtdsAbzJbKL2MOojnRBxUwhqsuikNwo29wU+9KuYnR0l5JKKvrHIl7qKeCV4TeyxS119UlHrEvkB/Igw/rKZnXwH+HLqhh5Pzbd5CFAUGZ27xS6NMdfErYdhlB34p3mEYSrQ8RIpIALaY0Eow3vxEGXf9MorAmZGPgBJXgN3D3eiPdtjntvH/cnQekHRsbk3DTBPnjXGvHuwgcbv+Brdrw7xUm5gKOgb0/40ICXt70KJckDTiNsN2VGi12w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744998632; c=relaxed/relaxed;
-	bh=xitBrw85Cpa/PH99l1OqltSYYTa4EEM01UtrGh+UZZU=;
-	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID; b=jaYXYKC1GF+rfm031tkFeClXaQpteSp5LlV7DHAr1lrLocehaErrGeUAOZwxpiCDx8Ft4VAFB72P9wk2rWTUQsP4nmjEu/M73DPsoPJ69VpTKNtg0t70USROnBw+1T+6XLhDwOEUMYHLx10qf+7m3c4TWiYqWN3bOFxdE8nG0TFyLCLpdngNrmUtI7V7Rkpz5/CZ9wnICVhElW7flk39PkdhiUR9E5/roKQARILS1U0MIOtZw3HpaAcIUkH8OzBASlTrrejz+PciuEUQe65+HEPclYJVldo+7HeaA3+QCN9Cutoy7p4bhE+g9CiYYijpb5FuPKRKDO8ehq8tzVUQLQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=eRDoCCCs; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=palmer@dabbelt.com; receiver=lists.ozlabs.org) smtp.mailfrom=dabbelt.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
+	t=1744999404; c=relaxed/relaxed;
+	bh=rqJHg5UYMXwn+mNlrL5oxyZCVbhJU0UNvh0766Pzt3w=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nFnaoI6+hsO0ka/4mFO2yn/0lqmYd+l5Xg7FrhHx6EJtEdmfWK6gXnrymU/at3GF/cDI8ptboqGnY5n8Z9e3d3qIBZ/qsuKqxk10k2UtTKaOtAqPoG88v3jU+g0/D/qRnUkvf6YycVzJXpHqmL52Odo//rJnzHJr8o8YP1ZqPojKvq+GYniHM51SziVBCH5ZVbhLSvRr6ALjlCjL0QAsnI/drpD0gFePk7WSN1xr0O+O4a54eoAec2ReztgrZkLbSY180yWiIwFdeMeGtTVSu0FGK269WmaxClhokM8Hk/LG62dtsA3ggwaNwSnz8urWV2D6ju0lmLJKLwQWBSJ+7w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=xPmtDd+p; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=355mcaaykdgaqc8lhaemmejc.amkjglsvnna-bctjgqrq.mxj89q.mpe@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=eRDoCCCs;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=xPmtDd+p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=palmer@dabbelt.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=355mcaaykdgaqc8lhaemmejc.amkjglsvnna-bctjgqrq.mxj89q.mpe@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZfMjz2CJjz3c54
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Apr 2025 03:50:30 +1000 (AEST)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-22423adf751so24673695ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 10:50:29 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZfN0p30gpz3byZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Apr 2025 04:03:21 +1000 (AEST)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-30870e7e4fcso1464366a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 11:03:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1744998628; x=1745603428; darn=lists.ozlabs.org;
-        h=message-id:to:from:cc:in-reply-to:subject:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xitBrw85Cpa/PH99l1OqltSYYTa4EEM01UtrGh+UZZU=;
-        b=eRDoCCCsw5dGD+Wq9PoyAofu9okUJINmr4TyOZ/s71AlbosnRSieVC0oFGrDm7YcwO
-         XVoUvrQoQKkBv9MruYS/45NrgbUqu0M5UJdo44whK+MbSKenVYT9OWzNwTGUdHbRc1EJ
-         JGo1WftSq/uzGLOvmlKGQoiwGyIJh4dc2vz32DdON/SYJeg8MSA+oQ0Wc0nUoR9Q0EvP
-         1qm9arZw5yChdjb0NQERpLr9Jf+obnUJVNt32njemlqLgSCM6orF9MWHxEtZL8eAySXo
-         1/V1FC6AzfVYelPTR2PsM8eF4vGrpxcBSY0KJt+Y8qBzCbC6u4W7zvB34U+DzLW/sSTD
-         QnzQ==
+        d=google.com; s=20230601; t=1744999400; x=1745604200; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=rqJHg5UYMXwn+mNlrL5oxyZCVbhJU0UNvh0766Pzt3w=;
+        b=xPmtDd+p9cuXqigMC3hCSdeq5CSM5owVcC47m74/AcHp2IMKVM4ChrIIoWYjRdRHFk
+         Bvxgd473amUP0ZPIV5pjhPU9Akb02oh5e9vYVBTM6niosMSQiWTAqgWHMPqNs5MClTWv
+         BbNkNYZBFxKItUvZDpXZhdX7xqnAu51+snlk4qHxOvlkyKndMVglvZYxqNYMdr/nSlBs
+         BjAcxsPZGxRxcK3RE6qTkXUZfhVw5cOamMINmBnfgFBWEiMkm3nb2NH1Ys6Cx4YvHu1U
+         Cc6juJFbIHyHIbJwnw1QSQNFUsB2AGTdrSsAKmx9mkbi4N1YkMXMK2X2ylNLwBW/kKKH
+         9egg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744998628; x=1745603428;
-        h=message-id:to:from:cc:in-reply-to:subject:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xitBrw85Cpa/PH99l1OqltSYYTa4EEM01UtrGh+UZZU=;
-        b=raKe+49is5D+RhZ+j/JmwOfN3eNPXpgBfzdVNF55BtR6ygKW9r6hSi2AhEmIS32NTE
-         fua1LOeO5z5U9Zh8t9ELkMQQrjsMItSOU/RyKYmiuUn8FWLuILU/VjyQv0KW7cb2hXiX
-         IvTvimj2VU2cXPXDwmgYsGiLJ2VUEZaJnUVi9PIe95Quj884K+L1+2Jk1dzRojIJUlCh
-         mpZZwkwEkF1Ew3B/U7K+WXNp8BDXOoFFte5jzAvjOm4/fHEZ6kVgJM9WZVen3lzpuJJh
-         fWk+T2L2sDHhMF00NYBaco9xpAJPP7JAoCfhzTTJLetwT8IQ0y572ieJ9UKI5sOdLtnk
-         Ufwg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0usm5ArPz48hK0m0370W4ac2YRmYlsRsPfUHrATsqDo4NGg0T2MU/Sf7m9zMDjiUX6FBI+A6DYiFap38=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyhVGR2iJl2g6TAMBgr8OG/wmeJ3//J/TcwJ5xl+ZInDNP00GO5
-	w2Z4gZuUw6gd/6V5iDPOserEXDFx/w/GakskoZiSIqBjeChNb46ZjXERv0KvzGBvlOW3AququfN
-	0
-X-Gm-Gg: ASbGncs//T8hORsT1b+/Q/pRcmmECoeMfeGwVtt0zONG1SAncUlPTjHzHSHkw2N7blL
-	V9jF4fzDKNqZvtAQu+2HETxA4wsydKEox6ZogL9H/KcmWr9BCF2J6uxPkZC7T6lFhYl8jiBbL80
-	lBsI25HUtQ6u2mQdRwos6J970wbDNAZapfxxC5mkjPVbgbhPmJLXMFokYhKkoBBPuJZu5RmAkYV
-	qRrq4XtmlA8+8O8SeFvAvJ+5NPx1zKzlB10tvvaWTtD1hFanz7KU4uLS/yId6jS+bUan8rCTmJ+
-	9yyv+Pw4PRHpmFSodr7xxgmkicB/xPQ5Ew==
-X-Google-Smtp-Source: AGHT+IHTtFpIUh9V1D/hgIg7h0JnpsXp9Bovo24GVumcqsEBZfrWrJPuzOPDear/0hml7HCNfS1GQA==
-X-Received: by 2002:a17:903:98f:b0:221:7eae:163b with SMTP id d9443c01a7336-22c53627298mr52330365ad.46.1744998628042;
-        Fri, 18 Apr 2025 10:50:28 -0700 (PDT)
-Received: from localhost ([50.145.13.30])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50fde845sm19513745ad.236.2025.04.18.10.50.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 10:50:27 -0700 (PDT)
-Date: Fri, 18 Apr 2025 10:50:27 -0700 (PDT)
-X-Google-Original-Date: Fri, 18 Apr 2025 10:50:25 PDT (-0700)
-Subject:     Re: [PATCH 08/15] crypto: riscv - remove CRYPTO dependency of library functions
-In-Reply-To: <20250417182623.67808-9-ebiggers@kernel.org>
-CC: linux-crypto@vger.kernel.org, linux-arch@vger.kernel.org,
-  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-  linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-  linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org, Jason@zx2c4.com,
-  Ard Biesheuvel <ardb@kernel.org>
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: ebiggers@kernel.org
-Message-ID: <mhng-78030c23-f066-4b83-8d7b-c1720725199d@palmer-ri-x1c9a>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+        d=1e100.net; s=20230601; t=1744999400; x=1745604200;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rqJHg5UYMXwn+mNlrL5oxyZCVbhJU0UNvh0766Pzt3w=;
+        b=ih9QibqRGu99vkoQjxudebFXB4RJHXjfpmiuZUbq9EOLadUE6KXkZMcssQdNR38Hxn
+         bgS3uB7jrW/20QXnniHGo2NufAamoL5C+K+Pxj6VVnMRdU2VNzTGhDblV2ul6Z10foXG
+         +sw4cImUnp42ucGlz3FOzX6/GW7PHxq71GuRyTLhShQBqqSm518Chmz+P9X3Zfal8fdh
+         S3iH08VNp0V0dbDkcK3N2xeSTzi9UNYfQrlYWp6zzR085g/UKzpvFXG+j0z1CIw/B2/H
+         +LxA7MKFuijiALSSghYZLwqKIfmZpQVz4uEHVMmiVgYUepjDUOgTD0DhrPFIbsEC23C5
+         utfw==
+X-Forwarded-Encrypted: i=1; AJvYcCWgbHN23mOgm+xEbZC1WSs7fE418btsoHw0efeITQJQWb1OS6MycdLpSF4rQqHZmcNujUli6OkqWXW3oio=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxFcjSCcBFFLkYN+VQPw7C7hc08bMFCMn6l+ZnljbUBBlVyld1J
+	LPs0B1Ya+qCY1ChG1uvVSNZZp3XyolqvRiR7/JKhWhyxRRGzdHU/KeyXlamWixdaRYDL7sdX8l+
+	f2g==
+X-Google-Smtp-Source: AGHT+IFCmvZ0T+9eNap/pJTWsl4JOWWblp3uZelMKEtnIjAjt7ekoYrCZmpLXyNDhFs3e4WXHrwgxFD2ZsI=
+X-Received: from pjbsn15.prod.google.com ([2002:a17:90b:2e8f:b0:2fa:b84:b308])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e18f:b0:2ee:c30f:33c9
+ with SMTP id 98e67ed59e1d1-3087c36106amr5592365a91.14.1744999399596; Fri, 18
+ Apr 2025 11:03:19 -0700 (PDT)
+Date: Fri, 18 Apr 2025 11:03:18 -0700
+In-Reply-To: <20250418171609.231588-1-pbonzini@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,136 +74,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+Mime-Version: 1.0
+References: <20250418171609.231588-1-pbonzini@redhat.com>
+Message-ID: <aAKT5mLHVV7rz830@google.com>
+Subject: Re: [PATCH] KVM: arm64, x86: make kvm_arch_has_irq_bypass() inline
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 17 Apr 2025 11:26:16 PDT (-0700), ebiggers@kernel.org wrote:
-> From: Eric Biggers <ebiggers@google.com>
->
-> Continue disentangling the crypto library functions from the generic
-> crypto infrastructure by removing the unnecessary CRYPTO dependency of
-> CRYPTO_CHACHA_RISCV64.  To do this, make arch/riscv/crypto/Kconfig be
-> sourced regardless of CRYPTO, and explicitly list the CRYPTO dependency
-> in the symbols that do need it.
->
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+On Fri, Apr 18, 2025, Paolo Bonzini wrote:
+> kvm_arch_has_irq_bypass() is a small function and even though it does
+> not appear in any *really* hot paths, it's also not entirely rare.
+> Make it inline---it also works out nicely in preparation for using it in
+> kvm-intel.ko and kvm-amd.ko, since the function is not currently exported.
+> 
+> Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  arch/riscv/Kconfig        |  2 ++
->  arch/riscv/crypto/Kconfig | 12 ++++++------
->  crypto/Kconfig            |  3 ---
->  3 files changed, 8 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index bbec87b79309..baa7b8d98ed8 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -1349,8 +1349,10 @@ source "drivers/cpuidle/Kconfig"
->
->  source "drivers/cpufreq/Kconfig"
->
->  endmenu # "CPU Power Management"
->
-> +source "arch/riscv/crypto/Kconfig"
-> +
->  source "arch/riscv/kvm/Kconfig"
->
->  source "drivers/acpi/Kconfig"
-> diff --git a/arch/riscv/crypto/Kconfig b/arch/riscv/crypto/Kconfig
-> index 27a1f26d41bd..08547694937c 100644
-> --- a/arch/riscv/crypto/Kconfig
-> +++ b/arch/riscv/crypto/Kconfig
-> @@ -2,11 +2,11 @@
->
->  menu "Accelerated Cryptographic Algorithms for CPU (riscv)"
->
->  config CRYPTO_AES_RISCV64
->  	tristate "Ciphers: AES, modes: ECB, CBC, CTS, CTR, XTS"
-> -	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
-> +	depends on CRYPTO && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
->  	select CRYPTO_ALGAPI
->  	select CRYPTO_LIB_AES
->  	select CRYPTO_SKCIPHER
->  	help
->  	  Block cipher: AES cipher algorithms
-> @@ -25,43 +25,43 @@ config CRYPTO_CHACHA_RISCV64
->  	select CRYPTO_LIB_CHACHA_GENERIC
->  	default CRYPTO_LIB_CHACHA_INTERNAL
->
->  config CRYPTO_GHASH_RISCV64
->  	tristate "Hash functions: GHASH"
-> -	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
-> +	depends on CRYPTO && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
->  	select CRYPTO_GCM
->  	help
->  	  GCM GHASH function (NIST SP 800-38D)
->
->  	  Architecture: riscv64 using:
->  	  - Zvkg vector crypto extension
->
->  config CRYPTO_SHA256_RISCV64
->  	tristate "Hash functions: SHA-224 and SHA-256"
-> -	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
-> +	depends on CRYPTO && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
->  	select CRYPTO_SHA256
->  	help
->  	  SHA-224 and SHA-256 secure hash algorithm (FIPS 180)
->
->  	  Architecture: riscv64 using:
->  	  - Zvknha or Zvknhb vector crypto extensions
->  	  - Zvkb vector crypto extension
->
->  config CRYPTO_SHA512_RISCV64
->  	tristate "Hash functions: SHA-384 and SHA-512"
-> -	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
-> +	depends on CRYPTO && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
->  	select CRYPTO_SHA512
->  	help
->  	  SHA-384 and SHA-512 secure hash algorithm (FIPS 180)
->
->  	  Architecture: riscv64 using:
->  	  - Zvknhb vector crypto extension
->  	  - Zvkb vector crypto extension
->
->  config CRYPTO_SM3_RISCV64
->  	tristate "Hash functions: SM3 (ShangMi 3)"
-> -	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
-> +	depends on CRYPTO && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
->  	select CRYPTO_HASH
->  	select CRYPTO_LIB_SM3
->  	help
->  	  SM3 (ShangMi 3) secure hash function (OSCCA GM/T 0004-2012)
->
-> @@ -69,11 +69,11 @@ config CRYPTO_SM3_RISCV64
->  	  - Zvksh vector crypto extension
->  	  - Zvkb vector crypto extension
->
->  config CRYPTO_SM4_RISCV64
->  	tristate "Ciphers: SM4 (ShangMi 4)"
-> -	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
-> +	depends on CRYPTO && 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
->  	select CRYPTO_ALGAPI
->  	select CRYPTO_SM4
->  	help
->  	  SM4 block cipher algorithm (OSCCA GB/T 32907-2016,
->  	  ISO/IEC 18033-3:2010/Amd 1:2021)
-> diff --git a/crypto/Kconfig b/crypto/Kconfig
-> index 2467dba73372..8c334c9f2081 100644
-> --- a/crypto/Kconfig
-> +++ b/crypto/Kconfig
-> @@ -1424,13 +1424,10 @@ endmenu
->
->  config CRYPTO_HASH_INFO
->  	bool
->
->  if !KMSAN # avoid false positives from assembly
-> -if RISCV
-> -source "arch/riscv/crypto/Kconfig"
-> -endif
->  if S390
->  source "arch/s390/crypto/Kconfig"
->  endif
->  if SPARC
->  source "arch/sparc/crypto/Kconfig"
+>  arch/arm64/include/asm/kvm_host.h   | 5 +++++
+>  arch/arm64/kvm/arm.c                | 5 -----
+>  arch/powerpc/include/asm/kvm_host.h | 2 ++
+>  arch/x86/include/asm/kvm_host.h     | 6 ++++++
+>  arch/x86/kvm/x86.c                  | 5 -----
+>  include/linux/kvm_host.h            | 1 -
+>  6 files changed, 13 insertions(+), 11 deletions(-)
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+...
 
-I'm assuming you want to take this with the rest, thanks!
+> diff --git a/arch/powerpc/include/asm/kvm_host.h b/arch/powerpc/include/asm/kvm_host.h
+> index 2d139c807577..6f761b77b813 100644
+> --- a/arch/powerpc/include/asm/kvm_host.h
+> +++ b/arch/powerpc/include/asm/kvm_host.h
+> @@ -907,4 +907,6 @@ static inline void kvm_arch_flush_shadow_all(struct kvm *kvm) {}
+>  static inline void kvm_arch_vcpu_blocking(struct kvm_vcpu *vcpu) {}
+>  static inline void kvm_arch_vcpu_unblocking(struct kvm_vcpu *vcpu) {}
+>  
+> +bool kvm_arch_has_irq_bypass(void);
+
+...
+
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 291d49b9bf05..82f044e4b3f5 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2383,7 +2383,6 @@ struct kvm_vcpu *kvm_get_running_vcpu(void);
+>  struct kvm_vcpu * __percpu *kvm_get_running_vcpus(void);
+>  
+>  #if IS_ENABLED(CONFIG_HAVE_KVM_IRQ_BYPASS)
+> -bool kvm_arch_has_irq_bypass(void);
+
+Moving the declaration to PPC is unnecessary, and IMO undesirable.  It's perfectly
+legal to have a non-static declaration follow a "static inline", and asm/kvm_host.h
+is included by linux/kvm_host.h, i.e. the per-arch "static inline" is guaranteed
+to be processed first.
+
+And KVM already have multiple instances of this, e.g. kvm_arch_vcpu_blocking().
+If only for consistency, I vote to keep the common declaration.
+
+>  int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *,
+>  			   struct irq_bypass_producer *);
+>  void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *,
+> -- 
+> 2.43.5
+> 
 
