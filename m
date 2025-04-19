@@ -1,69 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-7807-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7808-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82ABA9410A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Apr 2025 04:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2A7A942F6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Apr 2025 12:47:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZfbV91Cqkz3cDg;
-	Sat, 19 Apr 2025 12:41:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZfpGy4vFSz2yk3;
+	Sat, 19 Apr 2025 20:47:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745030465;
-	cv=none; b=Q5E0FhM5dL2F5KEPkTN/P4mpxcjth+IEItnNrYNYu6HrG0kjOhfUqWGpi6OlMa9zsREDMo8Dr8hZTowlA0MboJM1ty1EQz9jRXaYFbYH34Vl88kKT1FVYRvi9M/OxVaFB38dsuLeujgP+pYPYBakjIy3VnM6IPWsJ6dA+utrvWZpUWeQeDJR9GzvpFvLhCBJora0IfodEZQo1IaGBy8jPGlsr1fvD4yImr7rYrswCswdpgw+OxOtvwrBUtON+T8PrAtL15M+RCEUvuwN8kSvTTOkCwynd/SWWGOyPOeyyWBkBWq9u7wz4JRdvVkh5j0IUSQyBeVHSAbDPCT+5s72DA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745059626;
+	cv=none; b=A5h3zSxMYcwN87IddRpk9CWzS2APjPkkivSPWvCWtLYadum1weR+fcqNPHZuLVcLeh0Abkv0G6jLezi24gOGCJAyD+aM7xw5G2/z+109lEDLWBpq/tdY6upPMJENjG+euc3ZQWOQYQTmEBqFh3mrkSEy2Q3uPkyGIeXzhR5IjXRTVqXZ3ce/iF/QfhvPuAXgvCHqGpGP9DhGoRC5jto1IPISz7BfiBB3fcB+o+41du7uY4veH0u0eDeDWHuGBoc2HUEDz+R9vM4+ofCg/gffZSDkTjT5nAxaMwUnBDMBqz9FngBm+Bc1bagh8LBwBMQi/fkCti8xvuIK/hoHdRFz0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745030465; c=relaxed/relaxed;
-	bh=N71ulJFC7EzRy4IJC7JSkf+9aBSGBV5BXmKIuPUJx7U=;
+	t=1745059626; c=relaxed/relaxed;
+	bh=xX2CR6MiLoAPI5M8DdtQtRSJdWYQ9grNQRcfsiQAOis=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AIYbR5Pnnf5M7j5xe46UnFRSo1eIhFzip292Z0mYK0039RxSkFXdXE6KYpf1jWx1hUQRlXxAdq4U4vKdwoyJSGw3DM/xXFS1Nf8OEXj4J0c4ENO9nkJofz29BS03rU9kL48eUlv/7OdGUy6ItlVOo/hKQRll1vtz8BVNiGDu8CYxPVmZQTiDDM1oqLG/vjfo1GmP/I/kkrsleak5Sk9qPfbY65YKfDG9efeNZQuTdYNhKBhWnFNTtI2W1jPk51fU0mBfnfpw3WmBQHkYoGvaAi+Ny4B/CUn2hE4LUOXAHu8l4UXal4CQjdljmkI7yN45IZBLUm2WtijcaI36mHvzIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=rmQd0n5F; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+	 Content-Type:Content-Disposition:In-Reply-To; b=AanZ3LHfM0eIAyAAr4fuV65sPGgQysYXn34i5EZ3+/9N38wzwf5okRtmQ5PGqPo7VToi/Nw9LHbs4uU6S99XUtBWQvd0VB3f4JQCJzDJX+RLaFsLNub46r8b1wu4A1J7daM83eWGRn0+zjNCexWpx2FR59xTyvU0k4+7aHttmVIXJacvsl3NhzK2QG/0hFG4FcijqX4Q2U3wADWp1pUrbbqPA0FHBb5U663hbOoJ74q/Q7X/eHA12fNJzSf1Pvmf1OCrYqiRBHiHKmcJUgNa7eugPi8Y9NvrgfcGwSTrhglIKaaJIiRxPtP75ngLKU3PLuykPp30TbmynheFqKHS9g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U1PYQXlV; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=rmQd0n5F;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U1PYQXlV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZfbV53rTnz3bpS
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Apr 2025 12:41:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=N71ulJFC7EzRy4IJC7JSkf+9aBSGBV5BXmKIuPUJx7U=; b=rmQd0n5Ffd7wgXc5CRfMsYvfej
-	vy0M0uiUROHxK3PxU1ELCUZ55bqRS7IKOzdkIx2x/h3kf6i7ueq2uF2iXk+esRyER676Vn8nn6HPl
-	/EUIRrt1qKRpgU7dPHA+0/rAdhZq8SqQqgwdPs18fXqmj5Vc6DfqBTMqCH2VeKeOqjtpsk1uVQdTB
-	7C97E7AWZ+VRMuouNeTm66I/v/5mhb++Kjp8acKAz23ZX1T1sTBZddTZjuWyEHiOyEpxbSEZiqzYd
-	8FLG2KSwbrYBgiH88lXTv2vFiWUXkF2HqN7hW+YAXzbLMgU3rYK+eiYH+SBvpg8M1ru6r24TM8ix6
-	GC1QefCQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1u5y8W-00Gtuw-1E;
-	Sat, 19 Apr 2025 10:40:57 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 19 Apr 2025 10:40:56 +0800
-Date: Sat, 19 Apr 2025 10:40:56 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-	x86@kernel.org, Jason@zx2c4.com, ardb@kernel.org
-Subject: Re: [PATCH 01/15] crypto: arm - remove CRYPTO dependency of library
- functions
-Message-ID: <aAMNOJa-xcxLrmgX@gondor.apana.org.au>
-References: <20250417182623.67808-2-ebiggers@kernel.org>
- <aAHDIRlSNLsYYZmW@gondor.apana.org.au>
- <20250418033236.GB38960@quark.localdomain>
- <aAHJRszwcQ4UyQ2e@gondor.apana.org.au>
- <20250418040931.GD38960@quark.localdomain>
- <aAIMhLD3UMM41JkT@gondor.apana.org.au>
- <20250418150149.GB1890@quark.localdomain>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZfpGx3xJZz2yDH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Apr 2025 20:47:05 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 716C144FB8;
+	Sat, 19 Apr 2025 10:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48FDC4CEE7;
+	Sat, 19 Apr 2025 10:47:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745059622;
+	bh=ZK97eIHavdRm0uW60AowomN0H4pL21DdC6QD66D5J3Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=U1PYQXlVRGstbxNxCwsF1iMeg2YV/lgOZwzfswcy0qsiYt1Q10mC9ZDc00/HC8s16
+	 17QCMV6jGqZv9VM2SGDPJW7nMmPGwz7PDyTke3ZHWQkCBJVK5d6PId9HzKtuYonA82
+	 gPbJFsnwsSSlN3W6K4BQA7euDJOVKV6vRkv29U3yXr7CZNNr2PqEp+joxp6ll2jjSn
+	 LCMDVflg+ABlJ5B4z3WXln8N6i4fgCpTU4DP28G56bHSaFj3CNfZ5nVxYmh5wVnGqC
+	 n6LwWDPr062OzKDZCvDpNqF81oLvfdv/g3iE7U0vWXhiRMHentH7NvHq+yGUznbKf0
+	 qFRzBTn4yUGHg==
+Date: Sat, 19 Apr 2025 16:12:52 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	linux-trace-kernel@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Viktor Malik <vmalik@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] powerpc64/ftrace: fix clobbered r15 during livepatching
+Message-ID: <dgqps5smhncufxkayqrdwvni6md2tfawkomkcx4uctatkttoif@biii6zo3c3iv>
+References: <20250416191227.201146-1-hbathini@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,20 +69,74 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250418150149.GB1890@quark.localdomain>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250416191227.201146-1-hbathini@linux.ibm.com>
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Apr 18, 2025 at 08:01:49AM -0700, Eric Biggers wrote:
->
-> Doing it as a follow-up when this series hasn't been merged yet would be kind of
-> silly, since it would undo a lot of this series.  I'll just send out a v2 of
-> this series.
+On Thu, Apr 17, 2025 at 12:42:27AM +0530, Hari Bathini wrote:
+> While r15 is clobbered always with PPC_FTRACE_OUT_OF_LINE, it is
+> not restored in livepatch sequence leading to not so obvious fails
+> like below:
+> 
+>   BUG: Unable to handle kernel data access on write at 0xc0000000000f9078
+>   Faulting instruction address: 0xc0000000018ff958
+>   Oops: Kernel access of bad area, sig: 11 [#1]
+>   ...
+>   NIP:  c0000000018ff958 LR: c0000000018ff930 CTR: c0000000009c0790
+>   REGS: c00000005f2e7790 TRAP: 0300   Tainted: G              K      (6.14.0+)
+>   MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2822880b  XER: 20040000
+>   CFAR: c0000000008addc0 DAR: c0000000000f9078 DSISR: 0a000000 IRQMASK: 1
+>   GPR00: c0000000018f2584 c00000005f2e7a30 c00000000280a900 c000000017ffa488
+>   GPR04: 0000000000000008 0000000000000000 c0000000018f24fc 000000000000000d
+>   GPR08: fffffffffffe0000 000000000000000d 0000000000000000 0000000000008000
+>   GPR12: c0000000009c0790 c000000017ffa480 c00000005f2e7c78 c0000000000f9070
+>   GPR16: c00000005f2e7c90 0000000000000000 0000000000000000 0000000000000000
+>   GPR20: 0000000000000000 c00000005f3efa80 c00000005f2e7c60 c00000005f2e7c88
+>   GPR24: c00000005f2e7c60 0000000000000001 c0000000000f9078 0000000000000000
+>   GPR28: 00007fff97960000 c000000017ffa480 0000000000000000 c0000000000f9078
+>   ...
+>   Call Trace:
+>     check_heap_object+0x34/0x390 (unreliable)
+>   __mutex_unlock_slowpath.isra.0+0xe4/0x230
+>   seq_read_iter+0x430/0xa90
+>   proc_reg_read_iter+0xa4/0x200
+>   vfs_read+0x41c/0x510
+>   ksys_read+0xa4/0x190
+>   system_call_exception+0x1d0/0x440
+>   system_call_vectored_common+0x15c/0x2ec
+> 
+> Fix it by restoring r15 always.
+> 
+> Fixes: eec37961a56a ("powerpc64/ftrace: Move ftrace sequence out of line")
+> Reported-by: Viktor Malik <vmalik@redhat.com>
+> Closes: https://lore.kernel.org/lkml/1aec4a9a-a30b-43fd-b303-7a351caeccb7@redhat.com
+> Cc: stable@vger.kernel.org # v6.13+
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/trace/ftrace_entry.S | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
+> index 2c1b24100eca..3565c67fc638 100644
+> --- a/arch/powerpc/kernel/trace/ftrace_entry.S
+> +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
+> @@ -212,10 +212,10 @@
+>  	bne-	1f
+>  
+>  	mr	r3, r15
+> +1:	mtlr	r3
+>  	.if \allregs == 0
+>  	REST_GPR(15, r1)
+>  	.endif
+> -1:	mtlr	r3
+>  #endif
 
-OK that's fine too of course.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+LGTM.
+Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
+
+
+- Naveen
+
 
