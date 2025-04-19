@@ -1,60 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-7808-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7809-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2A7A942F6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Apr 2025 12:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFFAA94309
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 19 Apr 2025 13:07:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZfpGy4vFSz2yk3;
-	Sat, 19 Apr 2025 20:47:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zfpk73sKCz2yqw;
+	Sat, 19 Apr 2025 21:07:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745059626;
-	cv=none; b=A5h3zSxMYcwN87IddRpk9CWzS2APjPkkivSPWvCWtLYadum1weR+fcqNPHZuLVcLeh0Abkv0G6jLezi24gOGCJAyD+aM7xw5G2/z+109lEDLWBpq/tdY6upPMJENjG+euc3ZQWOQYQTmEBqFh3mrkSEy2Q3uPkyGIeXzhR5IjXRTVqXZ3ce/iF/QfhvPuAXgvCHqGpGP9DhGoRC5jto1IPISz7BfiBB3fcB+o+41du7uY4veH0u0eDeDWHuGBoc2HUEDz+R9vM4+ofCg/gffZSDkTjT5nAxaMwUnBDMBqz9FngBm+Bc1bagh8LBwBMQi/fkCti8xvuIK/hoHdRFz0w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745060831;
+	cv=none; b=ENu/VVka9P2QPhc2tpMjT+6EMr7yGwfha92MkrXh53EV0qC+LjG1koAr4uLpG0+E+YMLtG8aXWztruZbZdwSA9DOLuy/lklseMZkh92vFstUWSlz4YuanCv8Gy1NGnmPVS9WRWZDbbfmU8AtuXOPh28R5v8Zvu1/GQvPRc40mk9a5yt83RwTyGLNq7664zLDCFDS5gSjAU2ZjZ7iFjUqGZm4VRfyxVxGAE2brX5QjSNJ9zfC6XQT3ZeJ45ZnI2tNkUZbg6Y+zav5PDHuQ2+i55TQ9wwfhjvhwwt0OZ1+avojgfFhUqFOt1E4IVr3x1HTX2EcK+VC4kJHl+SnHpAtOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745059626; c=relaxed/relaxed;
-	bh=xX2CR6MiLoAPI5M8DdtQtRSJdWYQ9grNQRcfsiQAOis=;
+	t=1745060831; c=relaxed/relaxed;
+	bh=10yi65zQ0DoEv0KNYT/vhKh57OBoiLmLCOWI/9W3v8c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AanZ3LHfM0eIAyAAr4fuV65sPGgQysYXn34i5EZ3+/9N38wzwf5okRtmQ5PGqPo7VToi/Nw9LHbs4uU6S99XUtBWQvd0VB3f4JQCJzDJX+RLaFsLNub46r8b1wu4A1J7daM83eWGRn0+zjNCexWpx2FR59xTyvU0k4+7aHttmVIXJacvsl3NhzK2QG/0hFG4FcijqX4Q2U3wADWp1pUrbbqPA0FHBb5U663hbOoJ74q/Q7X/eHA12fNJzSf1Pvmf1OCrYqiRBHiHKmcJUgNa7eugPi8Y9NvrgfcGwSTrhglIKaaJIiRxPtP75ngLKU3PLuykPp30TbmynheFqKHS9g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U1PYQXlV; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=RCa6fa652iAI2EaQDqwBQyelNXiiq2DyKtZkTF6rHM6aGdQ7bzrMo8JMkplSxRCpZYc0mEOzp/kPA3EAl9sPtI85XpXKvocLX43Cpv9EQpQs/vyDUvgYHTw/tfPmHdDNVCR4U+nQF2Gn9yCfyFw/lPoVajICqE3OFPTbaLEyM3eRMPdNgIOh5jrt6QAF0qVjwH7uJQsHHEWRs3Qy9hSEcSRMTkYZHMdy2YyTuwArRTB5OeA4p6e/nDsbU/uAfarjNEaY6iaPB4JATnoYhn1kMzmPpsGwhw/LWVXWTa/f/9VGH7AHDLTf0sgfw/L8+Gzcrj89cQJiaxAilnjS48B4xw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YabAh6e1; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=U1PYQXlV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YabAh6e1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZfpGx3xJZz2yDH
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Apr 2025 20:47:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zfpk63WvPz2yqW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Apr 2025 21:07:10 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 716C144FB8;
-	Sat, 19 Apr 2025 10:47:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48FDC4CEE7;
-	Sat, 19 Apr 2025 10:47:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1C35B61137;
+	Sat, 19 Apr 2025 11:06:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884DFC4CEE7;
+	Sat, 19 Apr 2025 11:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745059622;
-	bh=ZK97eIHavdRm0uW60AowomN0H4pL21DdC6QD66D5J3Q=;
+	s=k20201202; t=1745060824;
+	bh=DSPAM263iwNs6J7exfjk+BXtsBHZVOZpvJhNDpyAmyI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U1PYQXlVRGstbxNxCwsF1iMeg2YV/lgOZwzfswcy0qsiYt1Q10mC9ZDc00/HC8s16
-	 17QCMV6jGqZv9VM2SGDPJW7nMmPGwz7PDyTke3ZHWQkCBJVK5d6PId9HzKtuYonA82
-	 gPbJFsnwsSSlN3W6K4BQA7euDJOVKV6vRkv29U3yXr7CZNNr2PqEp+joxp6ll2jjSn
-	 LCMDVflg+ABlJ5B4z3WXln8N6i4fgCpTU4DP28G56bHSaFj3CNfZ5nVxYmh5wVnGqC
-	 n6LwWDPr062OzKDZCvDpNqF81oLvfdv/g3iE7U0vWXhiRMHentH7NvHq+yGUznbKf0
-	 qFRzBTn4yUGHg==
-Date: Sat, 19 Apr 2025 16:12:52 +0530
+	b=YabAh6e1h9zcx77wIQ1BxgBVBvygWOrUgtb3HYbDgkq0LSnrLYfl0KVxbPQa+rtLn
+	 D6Vnotxm2gFI49YQJsZxcFzykAUgegr7YG2H2A5CM/Ax68zbbINK7Mt0aPmVx0mmI2
+	 9mfiHaIYFdPO2QTk3zrKicClMO1/dMpHseMebVFXY2FVSuiW0BqVUxHD1kaViO3qt7
+	 ci6mmx4YkNWAUiWvFkXz/Ytabi5TU6xzLkAXDZW3pbU34gJn6CRhf4db2r7EcSk9UJ
+	 HRT80iXfrVRbVLg6HaDssWpgxgzCX/2ZEuwhnd9HYVfUmy+1RRudDEyA6NQbUE5OPN
+	 0quiBMnH9KTYA==
+Date: Sat, 19 Apr 2025 16:31:15 +0530
 From: Naveen N Rao <naveen@kernel.org>
 To: Hari Bathini <hbathini@linux.ibm.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
-	linux-trace-kernel@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Viktor Malik <vmalik@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] powerpc64/ftrace: fix clobbered r15 during livepatching
-Message-ID: <dgqps5smhncufxkayqrdwvni6md2tfawkomkcx4uctatkttoif@biii6zo3c3iv>
-References: <20250416191227.201146-1-hbathini@linux.ibm.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, 
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] powerpc64/bpf: fix JIT code size calculation of bpf
+ trampoline
+Message-ID: <imwcjnoebhice2omsuaakozniph57chxuj2idzbe3dcaqb677l@inx53g65yusp>
+References: <20250416194037.204424-1-hbathini@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,71 +69,198 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250416191227.201146-1-hbathini@linux.ibm.com>
+In-Reply-To: <20250416194037.204424-1-hbathini@linux.ibm.com>
 X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Apr 17, 2025 at 12:42:27AM +0530, Hari Bathini wrote:
-> While r15 is clobbered always with PPC_FTRACE_OUT_OF_LINE, it is
-> not restored in livepatch sequence leading to not so obvious fails
-> like below:
+On Thu, Apr 17, 2025 at 01:10:37AM +0530, Hari Bathini wrote:
+> arch_bpf_trampoline_size() provides JIT size of the BPF trampoline
+> before the buffer for JIT'ing it is allocated. The total number of
+> instructions emitted for BPF trampoline JIT code depends on where
+> the final image is located. So, the size arrived at with the dummy
+> pass in arch_bpf_trampoline_size() can vary from the actual size
+> needed in  arch_prepare_bpf_trampoline().  When the instructions
+> accounted in  arch_bpf_trampoline_size() is less than the number of
+> instructions emitted during the actual JIT compile of the trampoline,
+> the below warning is produced:
 > 
->   BUG: Unable to handle kernel data access on write at 0xc0000000000f9078
->   Faulting instruction address: 0xc0000000018ff958
->   Oops: Kernel access of bad area, sig: 11 [#1]
->   ...
->   NIP:  c0000000018ff958 LR: c0000000018ff930 CTR: c0000000009c0790
->   REGS: c00000005f2e7790 TRAP: 0300   Tainted: G              K      (6.14.0+)
->   MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2822880b  XER: 20040000
->   CFAR: c0000000008addc0 DAR: c0000000000f9078 DSISR: 0a000000 IRQMASK: 1
->   GPR00: c0000000018f2584 c00000005f2e7a30 c00000000280a900 c000000017ffa488
->   GPR04: 0000000000000008 0000000000000000 c0000000018f24fc 000000000000000d
->   GPR08: fffffffffffe0000 000000000000000d 0000000000000000 0000000000008000
->   GPR12: c0000000009c0790 c000000017ffa480 c00000005f2e7c78 c0000000000f9070
->   GPR16: c00000005f2e7c90 0000000000000000 0000000000000000 0000000000000000
->   GPR20: 0000000000000000 c00000005f3efa80 c00000005f2e7c60 c00000005f2e7c88
->   GPR24: c00000005f2e7c60 0000000000000001 c0000000000f9078 0000000000000000
->   GPR28: 00007fff97960000 c000000017ffa480 0000000000000000 c0000000000f9078
->   ...
->   Call Trace:
->     check_heap_object+0x34/0x390 (unreliable)
->   __mutex_unlock_slowpath.isra.0+0xe4/0x230
->   seq_read_iter+0x430/0xa90
->   proc_reg_read_iter+0xa4/0x200
->   vfs_read+0x41c/0x510
->   ksys_read+0xa4/0x190
->   system_call_exception+0x1d0/0x440
->   system_call_vectored_common+0x15c/0x2ec
+>   WARNING: CPU: 8 PID: 204190 at arch/powerpc/net/bpf_jit_comp.c:981 __arch_prepare_bpf_trampoline.isra.0+0xd2c/0xdcc
 > 
-> Fix it by restoring r15 always.
+> which is:
 > 
-> Fixes: eec37961a56a ("powerpc64/ftrace: Move ftrace sequence out of line")
-> Reported-by: Viktor Malik <vmalik@redhat.com>
-> Closes: https://lore.kernel.org/lkml/1aec4a9a-a30b-43fd-b303-7a351caeccb7@redhat.com
+>   /* Make sure the trampoline generation logic doesn't overflow */
+>   if (image && WARN_ON_ONCE(&image[ctx->idx] >
+>   			(u32 *)rw_image_end - BPF_INSN_SAFETY)) {
+> 
+> So, during the dummy pass, instead of providing some arbitrary image
+> location, account for maximum possible instructions if and when there
+> is a dependency with image location for JIT'ing.
+> 
+> Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Closes: https://lore.kernel.org/all/6168bfc8-659f-4b5a-a6fb-90a916dde3b3@linux.ibm.com/
 > Cc: stable@vger.kernel.org # v6.13+
 > Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 > ---
->  arch/powerpc/kernel/trace/ftrace_entry.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-> index 2c1b24100eca..3565c67fc638 100644
-> --- a/arch/powerpc/kernel/trace/ftrace_entry.S
-> +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-> @@ -212,10 +212,10 @@
->  	bne-	1f
+> Changes since v1:
+> - Pass NULL for image during intial pass and account for max. possible
+>   instruction during this pass as Naveen suggested.
+> 
+> 
+>  arch/powerpc/net/bpf_jit.h        | 20 ++++++++++++++++---
+>  arch/powerpc/net/bpf_jit_comp.c   | 33 ++++++++++---------------------
+>  arch/powerpc/net/bpf_jit_comp64.c |  9 +++++++++
+>  3 files changed, 36 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+> index 6beacaec63d3..4c26912c2e3c 100644
+> --- a/arch/powerpc/net/bpf_jit.h
+> +++ b/arch/powerpc/net/bpf_jit.h
+> @@ -51,8 +51,16 @@
+>  		EMIT(PPC_INST_BRANCH_COND | (((cond) & 0x3ff) << 16) | (offset & 0xfffc));					\
+>  	} while (0)
 >  
->  	mr	r3, r15
-> +1:	mtlr	r3
->  	.if \allregs == 0
->  	REST_GPR(15, r1)
->  	.endif
-> -1:	mtlr	r3
->  #endif
+> -/* Sign-extended 32-bit immediate load */
+> +/*
+> + * Sign-extended 32-bit immediate load
+> + *
+> + * If this is a dummy pass (!image), account for
+> + * maximum possible instructions.
+> + */
+>  #define PPC_LI32(d, i)		do {					      \
+> +	if (!image)							      \
+> +		ctx->idx += 2;						      \
+> +	else {								      \
+>  		if ((int)(uintptr_t)(i) >= -32768 &&			      \
+>  				(int)(uintptr_t)(i) < 32768)		      \
+>  			EMIT(PPC_RAW_LI(d, i));				      \
+> @@ -60,10 +68,15 @@
+>  			EMIT(PPC_RAW_LIS(d, IMM_H(i)));			      \
+>  			if (IMM_L(i))					      \
+>  				EMIT(PPC_RAW_ORI(d, d, IMM_L(i)));	      \
+> -		} } while(0)
+> +		}							      \
+> +	} } while (0)
+>  
+>  #ifdef CONFIG_PPC64
+> +/* If dummy pass (!image), account for maximum possible instructions */
+>  #define PPC_LI64(d, i)		do {					      \
+> +	if (!image)							      \
+> +		ctx->idx += 5;						      \
+> +	else {								      \
+>  		if ((long)(i) >= -2147483648 &&				      \
+>  				(long)(i) < 2147483648)			      \
+>  			PPC_LI32(d, i);					      \
+> @@ -84,7 +97,8 @@
+>  			if ((uintptr_t)(i) & 0x000000000000ffffULL)	      \
+>  				EMIT(PPC_RAW_ORI(d, d, (uintptr_t)(i) &       \
+>  							0xffff));             \
+> -		} } while (0)
+> +		}							      \
+> +	} } while (0)
 
-LGTM.
+You should now also be able to remove the padding we add in 
+bpf_jit_comp64.c for 'case BPF_LD | BPF_IMM | BPF_DW:'
+
+>  #define PPC_LI_ADDR	PPC_LI64
+>  
+>  #ifndef CONFIG_PPC_KERNEL_PCREL
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index 2991bb171a9b..c0684733e9d6 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -504,10 +504,11 @@ static int invoke_bpf_prog(u32 *image, u32 *ro_image, struct codegen_context *ct
+>  	EMIT(PPC_RAW_ADDI(_R3, _R1, regs_off));
+>  	if (!p->jited)
+>  		PPC_LI_ADDR(_R4, (unsigned long)p->insnsi);
+> -	if (!create_branch(&branch_insn, (u32 *)&ro_image[ctx->idx], (unsigned long)p->bpf_func,
+> -			   BRANCH_SET_LINK)) {
+> -		if (image)
+> -			image[ctx->idx] = ppc_inst_val(branch_insn);
+> +	/* Account for max possible instructions during dummy pass for size calculation */
+> +	if (image && !create_branch(&branch_insn, (u32 *)&ro_image[ctx->idx],
+> +				    (unsigned long)p->bpf_func,
+> +				    BRANCH_SET_LINK)) {
+> +		image[ctx->idx] = ppc_inst_val(branch_insn);
+>  		ctx->idx++;
+>  	} else {
+>  		EMIT(PPC_RAW_LL(_R12, _R25, offsetof(struct bpf_prog, bpf_func)));
+> @@ -889,7 +890,8 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+>  			bpf_trampoline_restore_tail_call_cnt(image, ctx, func_frame_offset, r4_off);
+>  
+>  		/* Reserve space to patch branch instruction to skip fexit progs */
+> -		im->ip_after_call = &((u32 *)ro_image)[ctx->idx];
+> +		if (ro_image) /* image is NULL for dummy pass */
+> +			im->ip_after_call = &((u32 *)ro_image)[ctx->idx];
+>  		EMIT(PPC_RAW_NOP());
+>  	}
+>  
+> @@ -912,7 +914,8 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+>  		}
+>  
+>  	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+> -		im->ip_epilogue = &((u32 *)ro_image)[ctx->idx];
+> +		if (ro_image) /* image is NULL for dummy pass */
+> +			im->ip_epilogue = &((u32 *)ro_image)[ctx->idx];
+>  		PPC_LI_ADDR(_R3, im);
+>  		ret = bpf_jit_emit_func_call_rel(image, ro_image, ctx,
+>  						 (unsigned long)__bpf_tramp_exit);
+> @@ -973,25 +976,9 @@ int arch_bpf_trampoline_size(const struct btf_func_model *m, u32 flags,
+>  			     struct bpf_tramp_links *tlinks, void *func_addr)
+>  {
+>  	struct bpf_tramp_image im;
+> -	void *image;
+>  	int ret;
+>  
+> -	/*
+> -	 * Allocate a temporary buffer for __arch_prepare_bpf_trampoline().
+> -	 * This will NOT cause fragmentation in direct map, as we do not
+> -	 * call set_memory_*() on this buffer.
+> -	 *
+> -	 * We cannot use kvmalloc here, because we need image to be in
+> -	 * module memory range.
+> -	 */
+> -	image = bpf_jit_alloc_exec(PAGE_SIZE);
+> -	if (!image)
+> -		return -ENOMEM;
+> -
+> -	ret = __arch_prepare_bpf_trampoline(&im, image, image + PAGE_SIZE, image,
+> -					    m, flags, tlinks, func_addr);
+> -	bpf_jit_free_exec(image);
+> -
+> +	ret = __arch_prepare_bpf_trampoline(&im, NULL, NULL, NULL, m, flags, tlinks, func_addr);
+>  	return ret;
+>  }
+>  
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 233703b06d7c..91f9efe8b8d7 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -225,6 +225,15 @@ int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *
+>  	}
+>  
+>  #ifdef CONFIG_PPC_KERNEL_PCREL
+> +	/*
+> +	 * If fimage is NULL (the initial pass to find image size),
+> +	 * account for the maximum no. of instructions possible.
+> +	 */
+> +	if (!fimage) {
+> +		ctx->idx += 7;
+> +		return 0;
+> +	}
+> +
+
+I would merge this with the below if conditional so that this gets 
+noticed if the instruction sequence below ever changes.
+
+>  	reladdr = func_addr - local_paca->kernelbase;
+>  
+>  	if (reladdr < (long)SZ_8G && reladdr >= -(long)SZ_8G) {
+
+Other than that:
 Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
 
 
