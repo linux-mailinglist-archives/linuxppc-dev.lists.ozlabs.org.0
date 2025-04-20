@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-7824-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7823-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED9DA9491A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Apr 2025 21:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD055A94916
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Apr 2025 21:28:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZgdnD1y5Pz2ySp;
-	Mon, 21 Apr 2025 05:27:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZgdnB6FHXz3c3H;
+	Mon, 21 Apr 2025 05:27:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745177264;
-	cv=none; b=EfbPuBfAUTSoMHOSOXu76kXA3a4L2LhqJX1uFpZ1/nv5wIhxx/Ryt2cCs+KhcQPsJprH2dIORiIF5Jmn1y+I0vajImwv0FJVRtpxTPHA8mlvUPZML+yoZqQTx9vtPUsfNu+EGi8wx3JWEH8SA8eKS4pjapOaPFyS+BwljePBTIZfJ4COSMDrTI5BLvZhwcXBOnphwII1dkAWu/5wHHJpbHtjcooMfgs/l0mYAvMEphNw+RB0c8hZy74dfs1zKCVBcnJ7RMgp5LlnMQoUmEOgRGm2wtbAxEq2oAboI+iyXaJWFrA76rFRDmr2XrgD7os2HNSH8+WTpIWBFHtLPrK+zA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745177262;
+	cv=none; b=O/3UeTVItNQj/A3PD6fDvu/NNAnUKnFEQedm54y/YGZr7voSMnEOIS7blLNG028fqrXIq1ePi1nUGR9P7AmVjE8pRAjvIs1qR3gi1O93q7btrz1oXKCB6UqRmk23R/RtpdAfmsMBZnORV1VpCFZMLbPlgrOnAj5ek8EXoKyRbAzS/rvjmxKDR4D0875sn6SsUdzJ3NTBEy6BFj+vHqier1fm87MBVMX5kdI6W9QZ89U00SazVWQhIvPcY6UfgUG6Rb8ejKlt9JsN15/9IDrdtrlyjngZ5UP/qTsKW8ZGR8VDoQSyTDCpmBEhB4rBS0IQvssku3mobWtsO4G7GG+EGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745177264; c=relaxed/relaxed;
-	bh=83KXcYEIsD7ECHA1NKyy7H7dP/VBiX8gnJNujLDgaCQ=;
+	t=1745177262; c=relaxed/relaxed;
+	bh=4DMhBpbB5hVtdCMSWSFlZWSE/3ga1+hDYBx7vs5k7hE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oj7FlAM7myFHdPAY7t7rf1PSqeFWxA7uRgu9LAUUlDemv3Zdf6PdGLRNNZlVzQf27qLnFxA/ZnyBGjflK1f53qH/FWqfqiy1h+DZnNn+lhIYRcRYbOtOsifNXGPzSlxo/JNomMm67ET+hGiW/s86KuzUJFdZAXpTi1cnTQNFlPw8gQo171MaE/HxnGJnG8vTuux2M2/vYymtVvsEk2/VjzGlqYVLPdtOyB4icFIizUG+YWRWgDnFSLUQFv1fFWMVNLewrvUykpDY3vmN9qFXLJ2D7js8D/B3nme1roJLb4pAV2tncVQrown91FSFrDwgLGNER2T+HWOD8d+w9SAQ3w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E2xZ4KW5; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=E1nVTsx/TTd2xgRaSQkgTspnaDd+QQ+kDajvVth6bPV6WCMs6ie5TuQgYg10sKRyOnGYUOMqiJr2FfB5A2MKmKR3t7iL2XjowfRuLCv3DwM5INI1bFjbxdtTQeclCcJC1A+nWCYtwZFyQqhVQs8VE8v/SuR/aoURbjo/jhyPMzyDOiBYQUoPovGTmTFIxuxGBcXSVigNmwuR67B4zUJgbL5c+vay61xbxWCHWA/d0cuTN2ninak2I07mDDIXHyJZGAuZpHR3yUJSM6QeNVauCrmPIcN0dM7HwC7zvmE/DOCQENiSPMVaqy+9ukJLEuZ//+seL+jMXsLTAp/soB883Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ON5X492w; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=E2xZ4KW5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ON5X492w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zgdn92xv5z3bcy
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zgdn83Sjhz2ySp
 	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Apr 2025 05:27:40 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A957A61155;
-	Sun, 20 Apr 2025 19:27:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88EFC4CEF2;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3AB664A6EF;
 	Sun, 20 Apr 2025 19:27:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33055C4CEEE;
+	Sun, 20 Apr 2025 19:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1745177258;
-	bh=Wsz8KfnWpKz3RjYagwsQwuMx7mcDuZ3DmLJCHCvCnLk=;
+	bh=0fs52xVhkpJgVpZDJvGbv9MYJ3m4Z5mmmYA6A5muSpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E2xZ4KW5Pp6GY/TWizi6GAOOXMZzDb5wjHT++8poogg5/85P9lO38XFXkIkTyJidR
-	 94z2Ah7sF4UvG3kioylNC8LbE17K+iuEdbZ5tCXkenLerrhreO4+VGH2wXRdIPVynv
-	 OLo1yy3vEIgsLZZ44hNSqAv7xog5qZ6wshOeEjGEGI55ke8xourKat6MoUhaZ0vZI0
-	 AzDHJ5R7NXKhaunnB9eeyAiOHktkhimLjnL55dtZrAB0LWczGZu/OkRfXmJAbkmR/w
-	 XFxLJvu5AyYntgJSpWFP9Jdq6V2iJfF/7anZPtGfK9IvUGKNFzQ+UonFs0oZblHKBS
-	 U0U/IkR8RwExA==
+	b=ON5X492w+kvxjKlQGY1gmSPr8/Hxy60CHAUGMEaz8iqN0VdupswwTrEU3HYeUCg5Z
+	 5GJLBCXqOiiQrxCIHvIYezKn4U42k58ZGeCszwfVdI8S2q7JO0cniv//wN59z8bv2p
+	 98yiJ6Yle3+6SKiSyDh44QrfGrJ/q5eR5t6lgdPmYKSNRJ+qjaTeVyrhrxtxcTIlcX
+	 XZ8t2zcLjAS+ULJyANYBgtEq97FVrcWSBRv1A93pslXJRjex560Sdhlx/3Mudr32bM
+	 83lkDLrLPMvyXK5hBL7LahqNgYSuQMpuGTX7npIGAFTlZKMdRjBQc9UJoM/MvMuLVX
+	 GwzmCso2fYWEg==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-arch@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-arch@vger.kernel.org,
 	x86@kernel.org,
 	"Jason A . Donenfeld" <Jason@zx2c4.com>,
 	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v2 02/13] crypto: powerpc - drop redundant dependencies on PPC
-Date: Sun, 20 Apr 2025 12:25:58 -0700
-Message-ID: <20250420192609.295075-3-ebiggers@kernel.org>
+Subject: [PATCH v2 03/13] crypto: s390 - drop redundant dependencies on S390
+Date: Sun, 20 Apr 2025 12:25:59 -0700
+Message-ID: <20250420192609.295075-4-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250420192609.295075-1-ebiggers@kernel.org>
 References: <20250420192609.295075-1-ebiggers@kernel.org>
@@ -81,70 +81,127 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-arch/powerpc/crypto/Kconfig is sourced only when CONFIG_PPC=y, so there
-is no need for the symbols defined inside it to depend on PPC.
+arch/s390/crypto/Kconfig is sourced only when CONFIG_S390=y, so there is
+no need for the symbols defined inside it to depend on S390.
 
 Acked-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/powerpc/crypto/Kconfig | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/s390/crypto/Kconfig | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index cbcf76953d835..8bcc690134644 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -15,48 +15,46 @@ config CRYPTO_CURVE25519_PPC64
- 	  Architecture: PowerPC64
- 	  - Little-endian
+diff --git a/arch/s390/crypto/Kconfig b/arch/s390/crypto/Kconfig
+index 055b08f259ab2..e88d9cd256ef5 100644
+--- a/arch/s390/crypto/Kconfig
++++ b/arch/s390/crypto/Kconfig
+@@ -2,77 +2,70 @@
  
- config CRYPTO_MD5_PPC
- 	tristate "Digests: MD5"
--	depends on PPC
+ menu "Accelerated Cryptographic Algorithms for CPU (s390)"
+ 
+ config CRYPTO_SHA512_S390
+ 	tristate "Hash functions: SHA-384 and SHA-512"
+-	depends on S390
  	select CRYPTO_HASH
  	help
- 	  MD5 message digest algorithm (RFC1321)
+ 	  SHA-384 and SHA-512 secure hash algorithms (FIPS 180)
  
- 	  Architecture: powerpc
+ 	  Architecture: s390
  
- config CRYPTO_SHA1_PPC
+ 	  It is available as of z10.
+ 
+ config CRYPTO_SHA1_S390
  	tristate "Hash functions: SHA-1"
--	depends on PPC
+-	depends on S390
+ 	select CRYPTO_HASH
  	help
  	  SHA-1 secure hash algorithm (FIPS 180)
  
- 	  Architecture: powerpc
+ 	  Architecture: s390
  
- config CRYPTO_SHA1_PPC_SPE
- 	tristate "Hash functions: SHA-1 (SPE)"
--	depends on PPC && SPE
-+	depends on SPE
- 	help
- 	  SHA-1 secure hash algorithm (FIPS 180)
+ 	  It is available as of z990.
  
- 	  Architecture: powerpc using
- 	  - SPE (Signal Processing Engine) extensions
- 
- config CRYPTO_SHA256_PPC_SPE
- 	tristate "Hash functions: SHA-224 and SHA-256 (SPE)"
--	depends on PPC && SPE
-+	depends on SPE
- 	select CRYPTO_SHA256
+ config CRYPTO_SHA256_S390
+ 	tristate "Hash functions: SHA-224 and SHA-256"
+-	depends on S390
  	select CRYPTO_HASH
  	help
  	  SHA-224 and SHA-256 secure hash algorithms (FIPS 180)
  
- 	  Architecture: powerpc using
- 	  - SPE (Signal Processing Engine) extensions
+ 	  Architecture: s390
  
- config CRYPTO_AES_PPC_SPE
- 	tristate "Ciphers: AES, modes: ECB/CBC/CTR/XTS (SPE)"
--	depends on PPC && SPE
-+	depends on SPE
+ 	  It is available as of z9.
+ 
+ config CRYPTO_SHA3_256_S390
+ 	tristate "Hash functions: SHA3-224 and SHA3-256"
+-	depends on S390
+ 	select CRYPTO_HASH
+ 	help
+ 	  SHA3-224 and SHA3-256 secure hash algorithms (FIPS 202)
+ 
+ 	  Architecture: s390
+ 
+ 	  It is available as of z14.
+ 
+ config CRYPTO_SHA3_512_S390
+ 	tristate "Hash functions: SHA3-384 and SHA3-512"
+-	depends on S390
+ 	select CRYPTO_HASH
+ 	help
+ 	  SHA3-384 and SHA3-512 secure hash algorithms (FIPS 202)
+ 
+ 	  Architecture: s390
+ 
+ 	  It is available as of z14.
+ 
+ config CRYPTO_GHASH_S390
+ 	tristate "Hash functions: GHASH"
+-	depends on S390
+ 	select CRYPTO_HASH
+ 	help
+ 	  GCM GHASH hash function (NIST SP800-38D)
+ 
+ 	  Architecture: s390
+ 
+ 	  It is available as of z196.
+ 
+ config CRYPTO_AES_S390
+ 	tristate "Ciphers: AES, modes: ECB, CBC, CTR, XTS, GCM"
+-	depends on S390
+ 	select CRYPTO_ALGAPI
  	select CRYPTO_SKCIPHER
  	help
- 	  Block ciphers: AES cipher algorithms (FIPS-197)
- 	  Length-preserving ciphers: AES with ECB, CBC, CTR, and XTS modes
+ 	  Block cipher: AES cipher algorithms (FIPS 197)
+ 	  AEAD cipher: AES with GCM
+@@ -90,11 +83,10 @@ config CRYPTO_AES_S390
+ 	  key sizes and XTS mode is hardware accelerated for 256 and
+ 	  512 bit keys.
+ 
+ config CRYPTO_DES_S390
+ 	tristate "Ciphers: DES and Triple DES EDE, modes: ECB, CBC, CTR"
+-	depends on S390
+ 	select CRYPTO_ALGAPI
+ 	select CRYPTO_SKCIPHER
+ 	select CRYPTO_LIB_DES
+ 	help
+ 	  Block ciphers: DES (FIPS 46-2) cipher algorithm
+@@ -107,18 +99,16 @@ config CRYPTO_DES_S390
+ 	  As of z990 the ECB and CBC mode are hardware accelerated.
+ 	  As of z196 the CTR mode is hardware accelerated.
+ 
+ config CRYPTO_CHACHA_S390
+ 	tristate
+-	depends on S390
+ 	select CRYPTO_LIB_CHACHA_GENERIC
+ 	select CRYPTO_ARCH_HAVE_LIB_CHACHA
+ 	default CRYPTO_LIB_CHACHA_INTERNAL
+ 
+ config CRYPTO_HMAC_S390
+ 	tristate "Keyed-hash message authentication code: HMAC"
+-	depends on S390
+ 	select CRYPTO_HASH
+ 	help
+ 	  s390 specific HMAC hardware support for SHA224, SHA256, SHA384 and
+ 	  SHA512.
  
 -- 
 2.49.0
