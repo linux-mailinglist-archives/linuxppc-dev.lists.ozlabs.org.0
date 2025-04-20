@@ -1,80 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-7820-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7822-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4C7A948C0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Apr 2025 20:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA43A94911
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Apr 2025 21:27:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zgc3d6WGkz3c97;
-	Mon, 21 Apr 2025 04:10:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zgdn95CQHz3bl7;
+	Mon, 21 Apr 2025 05:27:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745172605;
-	cv=none; b=VTpdUDVjNeYl7n3DTFCeyrJw3GO/Ql1eg2ISpkXA1aM6sn9sRd9Se6FSK9MYktHbySEYCMtuOOQDLt4rxlpGaD6zBjgNJ7GI+7VazFa9SSo8oOh36AIWedOpFI+5pwb7+7EpdUJWJj+aHhYYhy/pcQueRumurnZAgVdZD0vjk/F9iBDY05vqYMACHjZ7VRUZEodyK+iKWEni+SCunXTtViRkhrqZE6PFtSbSLqpj1Y9i+yyXa/7HyCulCsNT846iWwDttQACRUVAR+FBnJpWB3JdM5m8a5iweNbx8UVBvOlVZv31LW26rV6TYFYeNxtNK8/d/vxjxRU0GChGLa4EIA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745177261;
+	cv=none; b=oOrgHNjDTrHuQRnQxgFQQvyRd7MY7+fWx9VquBA953QqJCq+P6CcCX7s8IcqSDZRImEaRwewEWh601M/g0skJZGFWOGzMz9oVoVqh+bSbo8XuVSrCKkM3BkdyYyrOFoF6ZheiRB1Ng6isQ3OxgliorJ5t9F5lXAmMp5N8Ftx/aiL084yruPsPiEPEBvndhXdqIlhlFDEA25VHPzGzVOSeaan8/WqHPSb/ATetlFZaVpXy3/mB6ofucpk24yxofRpm65WlTOkVnzwVd04lnzZy1p/cvMmXOj6v1gxpRUkzWitOcYlQJIx8GdJqzZ7vCzG9uFpdH309wsUQV6T7qrMFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745172605; c=relaxed/relaxed;
-	bh=CZejHi1NMTRJB6igu3M9L1XPBoU7oq0DzoyKQLULc4I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nY7w4MEttPukx3hfvMOT7Qv2VRcuL5UMn3JbeI7kTO5aGDo493wAG4o1LAzipciZchbP5MpMnbOKclgb3rWSGhN4Vpb3ybt6tS/WQ5TljupgTV2bsffAFzO5JtP5fITw1EUtBo5K9NR7w9nBhksn+FIYu8jV0hTcFGujK/2hHjWRDYQpWtmT8jDNAvnqQTjqRb9CwrGQdqehUahe2/HVBSVljd5MVbJtG3i4RBZJi7BG3aIGEuc2i6rDQnjjl+wuN80PPhGK5oc2RkL4uVBmABx/16fFuJNDTIGS/7y94WbCYQdbvZiwoGi4v86obYPwbsTKHAsmOUTrWXQI0WDalA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hg+XFK45; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1745177261; c=relaxed/relaxed;
+	bh=eTRAyNtLWQPxHZfZr/ZoppeUM6KohpcyS7h4wlzdVD4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kdCTFeBH1cJtrV16hZ7kNRdvHL9kMYzu5WDg+EU26967OgCZ8XzosVkpfdkZROP/8Loyn0BUTpwl9MAShksAcWDkFjQUwZYGuYgZt2XRUbrhFn0TV/kD9vh4+HSxoSlkpsPSGNsfdu2gSr9uAHWbZaTK/rKiS8gz6iNzyKJZcLRy+fRJ610GysAOnpEqoYwREFcvibeZOv/K1ryT2q+iMfKBxw/TFJRmU/3H5Hfq3ulg4CkJ42tUz72TZhgKOxAjpKBGZIgYtsmOKrH4MiZ+Gd4Y/B6aSK0uhb0jIxoTc7b8B5EoU2a5aJIQWnIfon/Eek/fHteNmD2QSXcevMoSJQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FbZpkEBW; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hg+XFK45;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FbZpkEBW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zgc3d0bfjz2ySp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Apr 2025 04:10:04 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53KBhnYJ024754
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Apr 2025 18:10:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=CZejHi1NMTRJB6igu
-	3M9L1XPBoU7oq0DzoyKQLULc4I=; b=hg+XFK45YCG7MtIAlHlnNfYkl93dYJuKj
-	M9OiEsh9vLmyLM2ASJkWoMAVx7dN+Hqi77J1LI0LlW9CzzTqFkE07dAj6CwCcakL
-	RHh8lozfrvMeDNH7aAW0lxq21pyyuGYpiKPeXv6DxeMJRCX1QO0008ZQGV56M2te
-	5EGQOqbvu5jGeIfh78L9tWgGLpmOaHzm4NEHPNQQPFhANVxws45twvjvrzjiQ5UK
-	qaLqo56NJSh1q+C4wI0gatGIyyDYyiPCKw1QA1wN9LVJNLSx6vf6Kf729BaxJWLx
-	dDycGo2sggKCaC5e4Mc327hb+ttX92v6gHX2lfpHQ7jWWT6CR9VuQ==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 464kyv2ncd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Apr 2025 18:10:01 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53KG7MjB032691
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Apr 2025 18:10:00 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 464phyb193-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Apr 2025 18:10:00 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53KI9tB656885518
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 20 Apr 2025 18:09:55 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0AD1E20043;
-	Sun, 20 Apr 2025 18:09:55 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 601C220040;
-	Sun, 20 Apr 2025 18:09:49 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.246.217])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 20 Apr 2025 18:09:48 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.ibm.com>
-To: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
-Cc: atrajeev@linux.ibm.com, disgoel@linux.vnet.ibm.com,
-        hbathini@linux.vnet.ibm.com, Aditya.Bodkhe1@ibm.com,
-        adubey@linux.ibm.com, skb99@linux.ibm.com, sshegde@linux.ibm.com,
-        riteshh@linux.ibm.com, Tejas.Manhas1@ibm.com, venkat88@linux.ibm.com
-Subject: [PATCH V3 9/9] powerpc/pseries/htmdump: Add documentation for H_HTM debugfs interface
-Date: Sun, 20 Apr 2025 23:38:44 +0530
-Message-Id: <20250420180844.53128-10-atrajeev@linux.ibm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250420180844.53128-1-atrajeev@linux.ibm.com>
-References: <20250420180844.53128-1-atrajeev@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zgdn74sHVz2ySP
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Apr 2025 05:27:39 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E11B8443D9;
+	Sun, 20 Apr 2025 19:27:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8694C4CEE9;
+	Sun, 20 Apr 2025 19:27:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745177257;
+	bh=G2+3guS80Z7+Fi1lTQSy/MYrzhZPPyiZuKBsiQq1cFw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FbZpkEBWNhZUAR4S/NO1XoeH4u34SC1lefokMqnGudEWBxqui2vKtymu/fD1cyNRi
+	 hLiDpP0PlpvZvzNJR+916yiazGnDSV1m2YybRBCnIUcfMQ2EqTmxZYJXLbwsmNwtk/
+	 /N4Zo8jNTcREjehEzjCCccCojpVmkcwHT/8o3zBx0CNWyj7MdXsI/SXXef8PuGC1x/
+	 7LMxQ7czZNsOysEpEhKcaaXSJ79WfpajzfVEgmUhRQpWIi2Y1y3NOB0wRIEOSQ8cdD
+	 7SLiRWaXXW9kb3MA5oc+kVrQ/QpIwXGHeprC9+xIWfFBX32PAj1CGSGv0QVoeGE7F/
+	 BboR7QHPWHDow==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	x86@kernel.org,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH v2 00/13] Finish disentangling ChaCha, Poly1305, and BLAKE2s from CRYPTO
+Date: Sun, 20 Apr 2025 12:25:56 -0700
+Message-ID: <20250420192609.295075-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,145 +71,172 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: babYgJmxUIKt5YseH1bUkZmn-SSX4rWB
-X-Proofpoint-ORIG-GUID: babYgJmxUIKt5YseH1bUkZmn-SSX4rWB
-X-Authority-Analysis: v=2.4 cv=c8KrQQ9l c=1 sm=1 tr=0 ts=68053879 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=KEhSUpNQf2jbIF_WxKkA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-20_08,2025-04-17_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- malwarescore=0 phishscore=0 mlxlogscore=999 lowpriorityscore=0
- impostorscore=0 clxscore=1015 mlxscore=0 bulkscore=0 spamscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504200148
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Documentation for HTM (Hardware Trace Macro) debugfs interface
-and how it can be used to configure/control the HTM operations.
+This series removes the unnecessary dependency of the ChaCha, Poly1305,
+and BLAKE2s library functions on the generic crypto infrastructure, i.e.
+CONFIG_CRYPTO.  To do this, it moves the architecture-optimized
+implementations of these functions into new directories
+arch/*/lib/crypto/ which do not depend on CRYPTO.  This mirrors the
+existing distinction between crypto/ and lib/crypto/.
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
----
- Documentation/arch/powerpc/htm.rst | 104 +++++++++++++++++++++++++++++
- 1 file changed, 104 insertions(+)
- create mode 100644 Documentation/arch/powerpc/htm.rst
+The last two patches remove the selection of CRYPTO by CRYPTO_LIB_CHACHA
+and CRYPTO_LIB_POLY1305, and they remove the corresponding *_INTERNAL
+symbols which were needed only because of the entanglement with CRYPTO.
 
-diff --git a/Documentation/arch/powerpc/htm.rst b/Documentation/arch/powerpc/htm.rst
-new file mode 100644
-index 000000000000..fcb4eb6306b1
---- /dev/null
-+++ b/Documentation/arch/powerpc/htm.rst
-@@ -0,0 +1,104 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+.. _htm:
-+
-+===================================
-+HTM (Hardware Trace Macro)
-+===================================
-+
-+Athira Rajeev, 2 Mar 2025
-+
-+.. contents::
-+    :depth: 3
-+
-+
-+Basic overview
-+==============
-+
-+H_HTM is used as an interface for executing Hardware Trace Macro (HTM)
-+functions, including setup, configuration, control and dumping of the HTM data.
-+For using HTM, it is required to setup HTM buffers and HTM operations can
-+be controlled using the H_HTM hcall. The hcall can be invoked for any core/chip
-+of the system from within a partition itself. To use this feature, a debugfs
-+folder called "htmdump" is present under /sys/kernel/debug/powerpc.
-+
-+
-+HTM debugfs example usage
-+=========================
-+
-+.. code-block:: sh
-+
-+  #  ls /sys/kernel/debug/powerpc/htmdump/
-+  coreindexonchip  htmcaps  htmconfigure  htmflags  htminfo  htmsetup
-+  htmstart  htmstatus  htmtype  nodalchipindex  nodeindex  trace
-+
-+Details on each file:
-+
-+* nodeindex, nodalchipindex, coreindexonchip specifies which partition to configure the HTM for.
-+* htmtype: specifies the type of HTM. Supported target is hardwareTarget.
-+* trace: is to read the HTM data.
-+* htmconfigure: Configure/Deconfigure the HTM. Writing 1 to the file will configure the trace, writing 0 to the file will do deconfigure.
-+* htmstart: start/Stop the HTM. Writing 1 to the file will start the tracing, writing 0 to the file will stop the tracing.
-+* htmstatus: get the status of HTM. This is needed to understand the HTM state after each operation.
-+* htmsetup: set the HTM buffer size. Size of HTM buffer is in power of 2
-+* htminfo: provides the system processor configuration details. This is needed to understand the appropriate values for nodeindex, nodalchipindex, coreindexonchip.
-+* htmcaps : provides the HTM capabilities like minimum/maximum buffer size, what kind of tracing the HTM supports etc.
-+* htmflags : allows to pass flags to hcall. Currently supports controlling the wrapping of HTM buffer.
-+
-+To see the system processor configuration details:
-+
-+.. code-block:: sh
-+
-+  # cat /sys/kernel/debug/powerpc/htmdump/htminfo > htminfo_file
-+
-+The result can be interpreted using hexdump.
-+
-+To collect HTM traces for a partition represented by nodeindex as
-+zero, nodalchipindex as 1 and coreindexonchip as 12
-+
-+.. code-block:: sh
-+
-+  # cd /sys/kernel/debug/powerpc/htmdump/
-+  # echo 2 > htmtype
-+  # echo 33 > htmsetup ( sets 8GB memory for HTM buffer, number is size in power of 2 )
-+
-+This requires a CEC reboot to get the HTM buffers allocated.
-+
-+.. code-block:: sh
-+
-+  # cd /sys/kernel/debug/powerpc/htmdump/
-+  # echo 2 > htmtype
-+  # echo 0 > nodeindex
-+  # echo 1 > nodalchipindex
-+  # echo 12 > coreindexonchip
-+  # echo 1 > htmflags     # to set noWrap for HTM buffers
-+  # echo 1 > htmconfigure # Configure the HTM
-+  # echo 1 > htmstart     # Start the HTM
-+  # echo 0 > htmstart     # Stop the HTM
-+  # echo 0 > htmconfigure # Deconfigure the HTM
-+  # cat htmstatus         # Dump the status of HTM entries as data
-+
-+Above will set the htmtype and core details, followed by executing respective HTM operation.
-+
-+Read the HTM trace data
-+========================
-+
-+After starting the trace collection, run the workload
-+of interest. Stop the trace collection after required period
-+of time, and read the trace file.
-+
-+.. code-block:: sh
-+
-+  # cat /sys/kernel/debug/powerpc/htmdump/trace > trace_file
-+
-+This trace file will contain the relevant instruction traces
-+collected during the workload execution. And can be used as
-+input file for trace decoders to understand data.
-+
-+Benefits of using HTM debugfs interface
-+=======================================
-+
-+It is now possible to collect traces for a particular core/chip
-+from within any partition of the system and decode it. Through
-+this enablement, a small partition can be dedicated to collect the
-+trace data and analyze to provide important information for Performance
-+analysis, Software tuning, or Hardware debug.
+Note that Curve25519 is still entangled.  Later patches will fix that.
+
+Changed in v2:
+   - Introduced new directories arch/*/lib/crypto/ instead of keeping
+     the library functions in arch/*/crypto/.
+
+Eric Biggers (13):
+  crypto: arm64 - drop redundant dependencies on ARM64
+  crypto: powerpc - drop redundant dependencies on PPC
+  crypto: s390 - drop redundant dependencies on S390
+  crypto: x86 - drop redundant dependencies on X86
+  crypto: arm - move library functions to arch/arm/lib/crypto/
+  crypto: arm64 - move library functions to arch/arm64/lib/crypto/
+  crypto: mips - move library functions to arch/mips/lib/crypto/
+  crypto: powerpc - move library functions to arch/powerpc/lib/crypto/
+  crypto: riscv - move library functions to arch/riscv/lib/crypto/
+  crypto: s390 - move library functions to arch/s390/lib/crypto/
+  crypto: x86 - move library functions to arch/x86/lib/crypto/
+  crypto: lib/chacha - remove INTERNAL symbol and selection of CRYPTO
+  crypto: lib/poly1305 - remove INTERNAL symbol and selection of CRYPTO
+
+ MAINTAINERS                                   |  1 +
+ arch/arm/crypto/Kconfig                       | 23 -----
+ arch/arm/crypto/Makefile                      | 14 +--
+ arch/arm/lib/Makefile                         |  2 +
+ arch/arm/lib/crypto/.gitignore                |  2 +
+ arch/arm/lib/crypto/Kconfig                   | 24 ++++++
+ arch/arm/lib/crypto/Makefile                  | 24 ++++++
+ arch/arm/{ => lib}/crypto/blake2s-core.S      |  0
+ arch/arm/{ => lib}/crypto/blake2s-glue.c      |  0
+ arch/arm/{ => lib}/crypto/chacha-glue.c       |  0
+ arch/arm/{ => lib}/crypto/chacha-neon-core.S  |  0
+ .../arm/{ => lib}/crypto/chacha-scalar-core.S |  0
+ arch/arm/{ => lib}/crypto/poly1305-armv4.pl   |  0
+ arch/arm/{ => lib}/crypto/poly1305-glue.c     |  0
+ arch/arm64/crypto/Kconfig                     | 17 +---
+ arch/arm64/crypto/Makefile                    |  9 +-
+ arch/arm64/lib/Makefile                       |  3 +
+ arch/arm64/lib/crypto/.gitignore              |  2 +
+ arch/arm64/lib/crypto/Kconfig                 | 14 +++
+ arch/arm64/lib/crypto/Makefile                | 16 ++++
+ .../arm64/{ => lib}/crypto/chacha-neon-core.S |  0
+ .../arm64/{ => lib}/crypto/chacha-neon-glue.c |  0
+ arch/arm64/{ => lib}/crypto/poly1305-armv8.pl |  0
+ arch/arm64/{ => lib}/crypto/poly1305-glue.c   |  0
+ arch/mips/crypto/Kconfig                      | 11 ---
+ arch/mips/crypto/Makefile                     | 17 ----
+ arch/mips/lib/Makefile                        |  2 +
+ arch/mips/lib/crypto/.gitignore               |  2 +
+ arch/mips/lib/crypto/Kconfig                  | 12 +++
+ arch/mips/lib/crypto/Makefile                 | 19 ++++
+ arch/mips/{ => lib}/crypto/chacha-core.S      |  0
+ arch/mips/{ => lib}/crypto/chacha-glue.c      |  0
+ arch/mips/{ => lib}/crypto/poly1305-glue.c    |  0
+ arch/mips/{ => lib}/crypto/poly1305-mips.pl   |  0
+ arch/powerpc/crypto/Kconfig                   | 22 +----
+ arch/powerpc/crypto/Makefile                  |  4 -
+ arch/powerpc/lib/Makefile                     |  2 +
+ arch/powerpc/lib/crypto/Kconfig               | 15 ++++
+ arch/powerpc/lib/crypto/Makefile              |  7 ++
+ .../{ => lib}/crypto/chacha-p10-glue.c        |  0
+ .../{ => lib}/crypto/chacha-p10le-8x.S        |  0
+ .../{ => lib}/crypto/poly1305-p10-glue.c      |  0
+ .../{ => lib}/crypto/poly1305-p10le_64.S      |  0
+ arch/riscv/crypto/Kconfig                     |  7 --
+ arch/riscv/crypto/Makefile                    |  3 -
+ arch/riscv/lib/Makefile                       |  1 +
+ arch/riscv/lib/crypto/Kconfig                 |  8 ++
+ arch/riscv/lib/crypto/Makefile                |  4 +
+ .../{ => lib}/crypto/chacha-riscv64-glue.c    |  0
+ .../{ => lib}/crypto/chacha-riscv64-zvkb.S    |  0
+ arch/s390/crypto/Kconfig                      | 16 ----
+ arch/s390/crypto/Makefile                     |  3 -
+ arch/s390/lib/Makefile                        |  1 +
+ arch/s390/lib/crypto/Kconfig                  |  7 ++
+ arch/s390/lib/crypto/Makefile                 |  4 +
+ arch/s390/{ => lib}/crypto/chacha-glue.c      |  0
+ arch/s390/{ => lib}/crypto/chacha-s390.S      |  0
+ arch/s390/{ => lib}/crypto/chacha-s390.h      |  0
+ arch/x86/crypto/Kconfig                       | 86 +++++++------------
+ arch/x86/crypto/Makefile                      | 15 ----
+ arch/x86/lib/Makefile                         |  2 +
+ arch/x86/lib/crypto/.gitignore                |  2 +
+ arch/x86/lib/crypto/Kconfig                   | 26 ++++++
+ arch/x86/lib/crypto/Makefile                  | 17 ++++
+ arch/x86/{ => lib}/crypto/blake2s-core.S      |  0
+ arch/x86/{ => lib}/crypto/blake2s-glue.c      |  0
+ .../x86/{ => lib}/crypto/chacha-avx2-x86_64.S |  0
+ .../{ => lib}/crypto/chacha-avx512vl-x86_64.S |  0
+ .../{ => lib}/crypto/chacha-ssse3-x86_64.S    |  0
+ arch/x86/{ => lib}/crypto/chacha_glue.c       |  0
+ .../crypto/poly1305-x86_64-cryptogams.pl      |  0
+ arch/x86/{ => lib}/crypto/poly1305_glue.c     |  0
+ crypto/Kconfig                                |  4 +-
+ lib/crypto/Kconfig                            | 56 +++++++-----
+ 74 files changed, 292 insertions(+), 234 deletions(-)
+ create mode 100644 arch/arm/lib/crypto/.gitignore
+ create mode 100644 arch/arm/lib/crypto/Kconfig
+ create mode 100644 arch/arm/lib/crypto/Makefile
+ rename arch/arm/{ => lib}/crypto/blake2s-core.S (100%)
+ rename arch/arm/{ => lib}/crypto/blake2s-glue.c (100%)
+ rename arch/arm/{ => lib}/crypto/chacha-glue.c (100%)
+ rename arch/arm/{ => lib}/crypto/chacha-neon-core.S (100%)
+ rename arch/arm/{ => lib}/crypto/chacha-scalar-core.S (100%)
+ rename arch/arm/{ => lib}/crypto/poly1305-armv4.pl (100%)
+ rename arch/arm/{ => lib}/crypto/poly1305-glue.c (100%)
+ create mode 100644 arch/arm64/lib/crypto/.gitignore
+ create mode 100644 arch/arm64/lib/crypto/Kconfig
+ create mode 100644 arch/arm64/lib/crypto/Makefile
+ rename arch/arm64/{ => lib}/crypto/chacha-neon-core.S (100%)
+ rename arch/arm64/{ => lib}/crypto/chacha-neon-glue.c (100%)
+ rename arch/arm64/{ => lib}/crypto/poly1305-armv8.pl (100%)
+ rename arch/arm64/{ => lib}/crypto/poly1305-glue.c (100%)
+ create mode 100644 arch/mips/lib/crypto/.gitignore
+ create mode 100644 arch/mips/lib/crypto/Kconfig
+ create mode 100644 arch/mips/lib/crypto/Makefile
+ rename arch/mips/{ => lib}/crypto/chacha-core.S (100%)
+ rename arch/mips/{ => lib}/crypto/chacha-glue.c (100%)
+ rename arch/mips/{ => lib}/crypto/poly1305-glue.c (100%)
+ rename arch/mips/{ => lib}/crypto/poly1305-mips.pl (100%)
+ create mode 100644 arch/powerpc/lib/crypto/Kconfig
+ create mode 100644 arch/powerpc/lib/crypto/Makefile
+ rename arch/powerpc/{ => lib}/crypto/chacha-p10-glue.c (100%)
+ rename arch/powerpc/{ => lib}/crypto/chacha-p10le-8x.S (100%)
+ rename arch/powerpc/{ => lib}/crypto/poly1305-p10-glue.c (100%)
+ rename arch/powerpc/{ => lib}/crypto/poly1305-p10le_64.S (100%)
+ create mode 100644 arch/riscv/lib/crypto/Kconfig
+ create mode 100644 arch/riscv/lib/crypto/Makefile
+ rename arch/riscv/{ => lib}/crypto/chacha-riscv64-glue.c (100%)
+ rename arch/riscv/{ => lib}/crypto/chacha-riscv64-zvkb.S (100%)
+ create mode 100644 arch/s390/lib/crypto/Kconfig
+ create mode 100644 arch/s390/lib/crypto/Makefile
+ rename arch/s390/{ => lib}/crypto/chacha-glue.c (100%)
+ rename arch/s390/{ => lib}/crypto/chacha-s390.S (100%)
+ rename arch/s390/{ => lib}/crypto/chacha-s390.h (100%)
+ create mode 100644 arch/x86/lib/crypto/.gitignore
+ create mode 100644 arch/x86/lib/crypto/Kconfig
+ create mode 100644 arch/x86/lib/crypto/Makefile
+ rename arch/x86/{ => lib}/crypto/blake2s-core.S (100%)
+ rename arch/x86/{ => lib}/crypto/blake2s-glue.c (100%)
+ rename arch/x86/{ => lib}/crypto/chacha-avx2-x86_64.S (100%)
+ rename arch/x86/{ => lib}/crypto/chacha-avx512vl-x86_64.S (100%)
+ rename arch/x86/{ => lib}/crypto/chacha-ssse3-x86_64.S (100%)
+ rename arch/x86/{ => lib}/crypto/chacha_glue.c (100%)
+ rename arch/x86/{ => lib}/crypto/poly1305-x86_64-cryptogams.pl (100%)
+ rename arch/x86/{ => lib}/crypto/poly1305_glue.c (100%)
+
+
+base-commit: bb9c648b334be581a791c7669abaa594e4b5ebb7
 -- 
-2.43.0
+2.49.0
 
 
