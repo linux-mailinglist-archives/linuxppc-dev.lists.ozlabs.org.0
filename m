@@ -1,85 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-7863-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7864-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F98A94FA9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Apr 2025 12:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59C9BA9506A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Apr 2025 13:50:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zh2Qh53GKz3c4Y;
-	Mon, 21 Apr 2025 20:58:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zh3bG35RYz3c8Y;
+	Mon, 21 Apr 2025 21:50:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::3" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745233084;
-	cv=pass; b=K0ZjOFmCn/lb96YCZ2Z934EahUf3JCw/BDAfpGVENI2GBC2rqYwSExztkimrayBsxeNXul9uX18ygTg1PKTyXlCuvZmjHJGFevyB3oiMeetA8qqIfqAdLPexqR/wnSJC15uPqs+xURR8ra5zSHcRICKJrF5SnFGttYflBF3u3Co1IMyeXwv1u5jbbyGAfkHiRuo5jiZ/X8TeyZ/cW43GfcFkeQQ53NpBCrDt8S/bbZzVdTTP5YTgT/R/ld2nLDfZGewr49Ve+4EKZ2UIji7IS5FzPptTNU3qyOAJEE4lVNa7voP+mI/1slygUtBnRtMfNMj3B4PnOzcyVNNRs2zweA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745233084; c=relaxed/relaxed;
-	bh=dBqQFB/QYd8jkS3LllgRKucFmHf4odJYK7ckk+Z2TqE=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PIHinIGuwQ8W4hiKfVyqbZN8Ldh4rAA7klIVswECPn1f85eH9gZa/bY+lDGH5hdCWTv4nLHhQjtqJs6DDTuc9aGkO0JMVDcfi1l7jwgqlOwFEhXAERoskpkANz5VhzrRg+JUu3D0cNY+3F3kkuzcAcDD3xbLbVpu9biYagT+YuPARzEu8m7YEWQo4b18L33NcnZ2uV7+0P4ZGQ1UiQRTG11J18KNFc4P8qIX5TkhOhp+iiW+nuwgTN0U1troZXGi72cZFzSXgzJsKJd/I5qOReBpHmBz+4Oa1mZamVgqTY9o7WwUUStUUJjp4aCR/15vLYLGNeEi50e26VV6Cd225g==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=iIJvV+Tf; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::3; helo=du2pr03cu002.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745236234;
+	cv=none; b=j+X3L3FXdjglexoS2Ts/62BDbw8Oq9YS/04kId5d8/HXOwRiBFyBix+SzYAh8UbDTXOxLaNwqDNGfTOeJF0im+qBg0LqdR+wpLbzFUwacC7p0nreBDrTn6zDyRjlhodRrrqpVAGLE90KP1/brYyrkXNz4n4Xnu+j/nx97vR+0RM7KVCFHzQ0nAJfYucBGGwyOS+ZffE791wGlG7tuPhBRIlKxsZcUSX1hwUVh1R7rgvghWL0X2dnrAY9HUwCUesjwgdBLWaY+nTbeVG3WsPUCLENF1e0CXPlWn3qVADMZ2NNB+iFe0ZB+l8U+xDO2DOEdEv/AQRVxdA62O77f9/D3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1745236234; c=relaxed/relaxed;
+	bh=hN4zG5R3enJX2OMcr2mXN7QUjbNu2ACnQiD/BEJAzII=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dTZWoeN+0VgG1ch5JiJnYqDN78oI+O25s32wY2Jz2ygQuHuyFu2MGltn87hVAHskey9LE7OGo+7+yfTFoAsG5SlzwmBS2PxqUb8KCs5RI2Rer/qMzgfO8OLh3qtQC8uO/09wqc7TTrS/7BREvkxkyC/9Agd57v+FPMXI3iV3bJrUm+NxS1tprUb+7HTy4DUFHBJCuiG/yLisKlv7d3/CmpVJqnZpaQDyIBx8u6883FCzTiT6BBbE4vja8v4krPCvdUq7ylmbeBVK2IExU3aRtzJi25bgqq9LlNBeu1MJxSSwkhaRMajlC3dYMX1TKnIkJfzLOR3hALBpmRnIxp8feQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VX6xYAH+; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=iIJvV+Tf;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VX6xYAH+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::3; helo=du2pr03cu002.outbound.protection.outlook.com; envelope-from=chancel.liu@nxp.com; receiver=lists.ozlabs.org)
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazlp170120003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zh2Qg54NDz3c8x
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Apr 2025 20:58:03 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y6V8U8fGs5KLsuZ0r5iLjtyYr/GDiAfqYxNlx7n9W0U6+QPDizCaRdEvsK9QwDUKELnLSGgokJEKjnhc0DPl6et1nfdW/yKd576gND7r98eqaQrr0UpdbsEOMFlj26N9wBgY36BbBRbXoO2ptIh49yFu7zXPolPaTxlxBu3Zfw19vWGSWqFV8Ar/9PKy38sSeGBQTWMlG+zK+o3N21MuFgJrEH79f5J7tEe2tOubS9yeGtzQEDufHcyqejgS5q1uPxFHD4njMc2EX5IssYBegbLZtd10DzoqxY5ukmJ4IlDlExXm+IX8voV/e2XfcmOZffmMLGlnc4hU4JNNvzb2qQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dBqQFB/QYd8jkS3LllgRKucFmHf4odJYK7ckk+Z2TqE=;
- b=LhS6v6exTVytyTCBOtFncBR8z/kzCzHnkH4WzraZki2MXXgFA2Mvc705ZWfXKQW7fJzGEqg9Gv7eq7PO0vK2veWD2qV+ylHniw9jlOPzaSBjtxroOERp6rrbREPyriCjTg/tjDIuwNsXxDOEYpjAYLNCGtM5vMQUH0EPL48BrZS/NB/QwwRgzqQSW1zD7VNifrPiCLJQ3vHpGSvvkxMsS9Y4fZrG22f7D8OoENa7rWGmsVHD69xWgDSz9fwqe/4Khx61VJGb6mLKJUsnX4ohdZ3PIiUKoaGt20PMZM06oWEkRiJlLPyfQtE+y0VwBZDcs8osz0RGjlU+eZhHdATe0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dBqQFB/QYd8jkS3LllgRKucFmHf4odJYK7ckk+Z2TqE=;
- b=iIJvV+TfdKgJX3e1+QscLJ4PtF0tuig5gnyBXzNTc4MUQW/9ch77kNaV+RSYrOdCxpys/7HD5BR+CqY1eb0Wocsn+EFcd/9IoW2+gAguJurlXpbQ+D4Bi/FR5cu1QiT2GJnVXjPtxgHQtZySMaVGeb82YGUt7h6w6qC58f7H8wkHepxSjZMqdTAjSMKmH/Z0FOVZ2zMEvEZKakak885McmAtHsnJfXIRGcZtyFeMSBtlHmg55oit4WXrd6fMXlSLe71DpXP0qQgn8tgTdCSNcolwXOXJ7F8IehGBzW9H/LpKW+PeCZJbMo7gRpSmWulPcuSVVh3lOLBuEBJRaw21rg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from DB9PR04MB9498.eurprd04.prod.outlook.com (2603:10a6:10:360::21)
- by DU2PR04MB8710.eurprd04.prod.outlook.com (2603:10a6:10:2dd::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.35; Mon, 21 Apr
- 2025 10:57:33 +0000
-Received: from DB9PR04MB9498.eurprd04.prod.outlook.com
- ([fe80::24fa:6f9:8247:c5dc]) by DB9PR04MB9498.eurprd04.prod.outlook.com
- ([fe80::24fa:6f9:8247:c5dc%6]) with mapi id 15.20.8655.033; Mon, 21 Apr 2025
- 10:57:33 +0000
-From: Chancel Liu <chancel.liu@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 2/2] ASoC: fsl_rpmsg: Allocate a smaller buffer size for capture stream
-Date: Mon, 21 Apr 2025 19:57:01 +0900
-Message-ID: <20250421105701.2273588-2-chancel.liu@nxp.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250421105701.2273588-1-chancel.liu@nxp.com>
-References: <20250421105701.2273588-1-chancel.liu@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR04CA0199.apcprd04.prod.outlook.com
- (2603:1096:4:187::13) To DB9PR04MB9498.eurprd04.prod.outlook.com
- (2603:10a6:10:360::21)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zh3bF1wxpz3c86
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Apr 2025 21:50:32 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53LAexPj011252;
+	Mon, 21 Apr 2025 11:50:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=hN4zG5R3enJX2OMcr2mXN7QUjbNu2A
+	CnQiD/BEJAzII=; b=VX6xYAH+Jzu9wLK4IrfN49dE3O65++WWAPQ8E3fvjKXOcj
+	zlwzwBfEb03BKLkQmnHr3yfjR86J1Zcqo4sfG0lgpApwnvcCH41i09YU0WrAA9QV
+	cWFUSqBw1aAZOLGQ8HIkiNPY5wX+mIdaxVOUfSJg9B9X2rrMyubr3OowzDBa1BDt
+	4xcXslu7U78XOtQa/QqclV88ADHV9qOpdiDqZD2gUrvjACVO5VQljtb0jaKTc+RZ
+	1RUWrzXXeNW0+FzxqpvTI0rZfvuIXRijdvWejXw1zINbzF1Brm0fceqxg9MuaDQI
+	HdquxnP+GIaY4nQGenJhEkOzuq3O+v6srD3E+tVQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 465mfs880w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Apr 2025 11:50:18 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53LBoILU028139;
+	Mon, 21 Apr 2025 11:50:18 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 465mfs880u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Apr 2025 11:50:18 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53LALK3n012355;
+	Mon, 21 Apr 2025 11:50:17 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 464p5sxc8x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Apr 2025 11:50:17 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53LBoDmu50266594
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 21 Apr 2025 11:50:13 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A2F8720043;
+	Mon, 21 Apr 2025 11:50:13 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 08B3220040;
+	Mon, 21 Apr 2025 11:50:12 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.204.206.66])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 21 Apr 2025 11:50:11 +0000 (GMT)
+Date: Mon, 21 Apr 2025 17:20:08 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        naveen@kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc/pseries/msi: Avoid reading PCI device registers
+ in reduced power states
+Message-ID: <pjuk4ckhtlpu2m6qykrpv6jw4eafymnarrpun4psn6yptogj2b@5ird52o5ml4p>
+References: <20250305090237.294633-1-gautam@linux.ibm.com>
+ <87tt81tr8t.fsf@vajain21.in.ibm.com>
+ <0baf5da4-3cf9-47d0-a4da-68e50a0fce80@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,187 +95,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB9PR04MB9498:EE_|DU2PR04MB8710:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68e0285a-8b8e-41d3-1152-08dd80c3519f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|7416014|376014|1800799024|366016|921020|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?mLW6EQSCWBDadZ/w/4hNfnte4HBnehoUeHPKvYrbf7+VU+f7wsIl4NPSao3+?=
- =?us-ascii?Q?/0wZEQtGfbvzsvjFvjvNcwvpCLqW46Kpyqh0T5OA8XSu1syv6MTQ33FJ96MU?=
- =?us-ascii?Q?6TyKq5zzgf25zu+tx/CzoeioQi2tjj5wScCrTCUkH1oWJcFJDzwvauLbCq+B?=
- =?us-ascii?Q?wSWPO7rTOwRnYlRYykP35KIvNqW9gUaQyxw+Ttbj+LErC3gLC2ZpmZwBaxtL?=
- =?us-ascii?Q?7Ux2KlVRt7jDUuhAhHeC0SDsKUxYC+EYYU+d21PnOO6CPOtmdfX4FUucARw5?=
- =?us-ascii?Q?xS//i1018SDZSf3d5GcsAh/b9ROtyHhdgS52+hIfWZY/d7kASQRfKKbRBlR3?=
- =?us-ascii?Q?++qtEW34FA3uvfdKJs/vrD25VpM4QmlFuOaC1Qo/uNwNATQAnYw3ciHxPJ8j?=
- =?us-ascii?Q?2mknSMRKLTyvUQ5dou/YhU5oeMJFoIVQEu3lf9PXd1X6ADPbmxiAHKoSh44P?=
- =?us-ascii?Q?FPuPMHF4U4ehawGGsMqFUAqOzEnBAzmTAM5588c43KzlcLQAVQIboa2QTYI7?=
- =?us-ascii?Q?P9RxzBBR4nQZaNB0Ck9IIPQI1+GfVv/+HfVi0II5JA/yVgWOJuZ498fCLLab?=
- =?us-ascii?Q?iH7qCyR4qRaXqPt72gT22Q/QXSZa7IRVnEuvYUeTyU1VzkiCNLGYYZyVaSST?=
- =?us-ascii?Q?dUnYLK+3SMm/cVvNgH5YH+0mISamWsDUSJAN3DxAiTQoFWu2qCDdYXTVGk1Z?=
- =?us-ascii?Q?MeTc5fZa2l4UP0ticY8FIoPijC2Nu4A8TuPIy5YV7VvBCErukWO5NAlNE1K4?=
- =?us-ascii?Q?eRoytw3aoDZjTPeDGIohG/RVm4wiGMTo7JZQk8+6yox5PaB4LER2NDtzyAop?=
- =?us-ascii?Q?+wQ/UzK4kIX2dI9+/VopJEXDCtdxSWsZQJdPoNMSwJWA6Fiqt7a2r0NdWzIb?=
- =?us-ascii?Q?bA3lGYsWuLcUV9uc1HZyA4lUEr66iTuyuv1e5YnRpRotpjWySj2NPcEmTO84?=
- =?us-ascii?Q?14kx6XDjdbkDigcPO78nk2bpjYrmTZR6Ai6qYfFreUpfv64UfqdqNT6GO6Wn?=
- =?us-ascii?Q?pYJ+OKz4CQt47NpKyNn+R39wrtJbS0tQvwRoHcxsgQoozZvKf9BwVHhKd9in?=
- =?us-ascii?Q?jbOKjgX1uPka8nGlKo+F9XTk79Q7HfFzVRWJW8fdWDLQ5QQqLwztgVmtZXjZ?=
- =?us-ascii?Q?VgchbAzA7pqmBXGtm+ZbtGVLF0sQTd9GMu2MVq97T+kLLjI3oGO0baKde+QG?=
- =?us-ascii?Q?Pk3waYUPOIiM3LdZ2jSfnUW37NSU0xl5gnzR/951UXCMj2l7VE7fHP5d1H7F?=
- =?us-ascii?Q?F4d3W5fF34WoXs1uiOOplmFQwvgAz6ksqqQupF9SDzGxE0vv0mgbNSSYJqSU?=
- =?us-ascii?Q?MC0QTWjyogXwpucQ/9RPMMdk8mXY5dxLPC1hv6pHDQi0kQBK0uIHwwEvMBby?=
- =?us-ascii?Q?6oUHdU2KEzYe9QO7iK+gehMxXpdOvPHd8uYkIcp40wKwQCFUvhfooEGa6n7m?=
- =?us-ascii?Q?/vR9frKIZTT/V9G3PLV0dmx18Dtbokc+3NoLHE8zCt7f/LiYIr4UCSBBW7ML?=
- =?us-ascii?Q?4qCWdf+jxeCAB8w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB9PR04MB9498.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(7416014)(376014)(1800799024)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iEa0Nvd16iLhP4ptltAxa127lbUCtbUfKlVTQeRx6SB6sz66/sxm7Q8R24u8?=
- =?us-ascii?Q?ksl1fQ8CVMKZJzb4jFbKURsj3QXgjwWC9JhPEKZRMhU/pHkd1xkb2Fn72ey6?=
- =?us-ascii?Q?rC+ofk7RNG/qzkMl6zLq8Z+V7JnHNu846OWZi6nx4tsOQcRF7G1dcDCc758X?=
- =?us-ascii?Q?bSa9XxiTrCuJcEd0OjXyyFIne1J1x3+bMZyxia57BEkhPEE8WaeKipu2nzpI?=
- =?us-ascii?Q?0Dc+t0dD0KrBYw7AzfZPhrozcbpbxgrFdzB8ABUhYa1TcDYA1BiYwsH2YE74?=
- =?us-ascii?Q?pXyr5JQHa+gR4yINAI/g098TFs8B5EQycfYxQ9QW6xZO/97Awx38cU9yFubE?=
- =?us-ascii?Q?E0L5+Joxr6kOFyBuvVqpVAcs1oLGVWLeh8NhBSXT5x4H8QwLsvXVBXWJ7TcV?=
- =?us-ascii?Q?3NCw9h+MVYdYwx5HFGAdOrKvkOFVFbCDzJhv21wNnC1yVHFhUZuJttLFApZi?=
- =?us-ascii?Q?8ggzZXc1Th8XoGlQ9ZDAPhtyeXShzx5WXnxtKSeUAoyoqfQ6KutIZ40eVUcc?=
- =?us-ascii?Q?9+bD6IvHA63ZTLCZ/S7cHljFl09KbhJOXllTibcJVcofn5DyyfGVvTx3YhTf?=
- =?us-ascii?Q?P8CgX7fxC1kJ/TQYTKUf696G/fUiE0gb2texGtuhzDDNgYb5Zq+w3tCLGciR?=
- =?us-ascii?Q?Ccj9eGMv/ZuUBLoFxnV5CKZ2rCZIq91IzmfNAnm7FSTzk1/zAokw7IF9r/kA?=
- =?us-ascii?Q?H6jIwCy3fJDRUzqOa2DF/UXVIdmjd56cw4g9crtcPEANEJJpz3itL7Za7gWv?=
- =?us-ascii?Q?St6Z+inN7nDPc4MaWPjB0IIwBFTCqCQzN4xncPWf1/DUL9P1p+9OIogZA3wr?=
- =?us-ascii?Q?xv0HyFDISKoZWkn7DOoYSDFgJD9se/eABzACwbih00mPwhwvYdNXolySgVep?=
- =?us-ascii?Q?I9eb8FHEMG0aXv2XOPpdYK2jXAGy1yXbOP35WgRZ5lPB01sYGX0SRn/WzuDC?=
- =?us-ascii?Q?Whl+ku36kvfF5QLFC4nU2RtE5X4VXory0TmiRiQ0TMbKxk1cWY3ZLHt3XZr8?=
- =?us-ascii?Q?rRt8fRHCt90cJh2jGDYyIS9Hqciiyp3nuOGapf8KH9hpq5/LINRjl9k2pXgL?=
- =?us-ascii?Q?jOncAfeFztk3IF5psuJ4N+yxG6NZC2nS4B8bOOw8huuK64r/4QryFNmIfTe2?=
- =?us-ascii?Q?/kBZsevg2WNwdfoMLJigymxpVlPkZdhjwskjSJhHJHc/qWWx44pvM8G1AP2z?=
- =?us-ascii?Q?lhWhr7318YFrMa7/lsHmShn4GPZ5eaGKY6uFLjSUpZDE6DEqHf++8Lo/irQV?=
- =?us-ascii?Q?yIwN5ErZ2tH6AhI6g8GhLjsidKLj99RQTMERUm1lE+dhv5btUV27Jp9eiJH+?=
- =?us-ascii?Q?GcGNYoT+ne24XMXWbZ0LLZH/9ft+Z7hGVl1MGamPO8sF+NkAHrA0q/3VwvQN?=
- =?us-ascii?Q?NfH80MfrQPpGvO8FJYVzBW85booMPIVAlqPWMf9fKjVwn+wWH4GCtHAymXgJ?=
- =?us-ascii?Q?JWiY6yMWDWY3Ss/0P33pq2Z6DmMCoVm6nkUYnTfhejl2kZplCWLydDuK9YxQ?=
- =?us-ascii?Q?hga6fktGMg715uSY+t/s9jnUZ1hoJ5WEcojTieyrlzafkji5vyB9r0AGAvIO?=
- =?us-ascii?Q?SMDaANwsfNM4qzMtKUXcZXaGjadNZ3VAIs7VeVca?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68e0285a-8b8e-41d3-1152-08dd80c3519f
-X-MS-Exchange-CrossTenant-AuthSource: DB9PR04MB9498.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2025 10:57:33.4900
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eOdeHp4A/vQJUOnQOP1PGNurCaszk6Jg37RnlmCmjd9R3+rgEvFThaBVtoIeRdoWJd5OzBqKYYZP7t8o5cn1uA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8710
-X-Spam-Status: No, score=0.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0baf5da4-3cf9-47d0-a4da-68e50a0fce80@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=cM/gskeN c=1 sm=1 tr=0 ts=680630fa cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=kj9zAlcOel0A:10 a=XR8D0OoHHMoA:10 a=_u-ZW7uzS0qod4lKHOEA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: OH3feazQ_ztt-DO_Eg5vcSjhhLEhr4IB
+X-Proofpoint-ORIG-GUID: WZAgA8JbT8PHj0Cgwy8SKe-O1vl13pft
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-21_05,2025-04-21_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
+ impostorscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0 adultscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=486 priorityscore=1501
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504210089
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-If both playback and capture streams have large buffer size in low power
-audio case, the total size will exceed the maximum buffer size for this
-sound card.
+Hi Venkat,
 
-Capture stream doesn't need so large buffer size in fact. So calculate
-a reasonable smaller buffer size and allocate it for capture stream.
+Thanks for the report. I looked into this and found that the new warning
+you reported can be observed even on current distro kernels, and is not
+caused by the patch I've posted.
 
-Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
----
- sound/soc/fsl/fsl_rpmsg.c     |  8 ++++++--
- sound/soc/fsl/fsl_rpmsg.h     |  2 +-
- sound/soc/fsl/imx-pcm-rpmsg.c | 21 ++++++++++++++++++---
- 3 files changed, 25 insertions(+), 6 deletions(-)
+I was able to observe the same warning with fedora distro kernel 6.13.7-200.fc41
 
-diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
-index 4e3ca05bedd6..5708b3a9878d 100644
---- a/sound/soc/fsl/fsl_rpmsg.c
-+++ b/sound/soc/fsl/fsl_rpmsg.c
-@@ -24,6 +24,8 @@
- 
- /* 192kHz/32bit/2ch/60s size is 0x574e00 */
- #define LPA_LARGE_BUFFER_SIZE  (0x6000000)
-+/* 16kHz/32bit/8ch/1s size is 0x7D000 */
-+#define LPA_CAPTURE_BUFFER_SIZE (0x100000)
- 
- static const unsigned int fsl_rpmsg_rates[] = {
- 	8000, 11025, 16000, 22050, 44100,
-@@ -241,9 +243,11 @@ static int fsl_rpmsg_probe(struct platform_device *pdev)
- 
- 	if (of_property_read_bool(np, "fsl,enable-lpa")) {
- 		rpmsg->enable_lpa = 1;
--		rpmsg->buffer_size = LPA_LARGE_BUFFER_SIZE;
-+		rpmsg->buffer_size[SNDRV_PCM_STREAM_PLAYBACK] = LPA_LARGE_BUFFER_SIZE;
-+		rpmsg->buffer_size[SNDRV_PCM_STREAM_CAPTURE] = LPA_CAPTURE_BUFFER_SIZE;
- 	} else {
--		rpmsg->buffer_size = IMX_DEFAULT_DMABUF_SIZE;
-+		rpmsg->buffer_size[SNDRV_PCM_STREAM_PLAYBACK] = IMX_DEFAULT_DMABUF_SIZE;
-+		rpmsg->buffer_size[SNDRV_PCM_STREAM_CAPTURE] = IMX_DEFAULT_DMABUF_SIZE;
- 	}
- 
- 	/* Get the optional clocks */
-diff --git a/sound/soc/fsl/fsl_rpmsg.h b/sound/soc/fsl/fsl_rpmsg.h
-index b04086fbf828..1b1683808507 100644
---- a/sound/soc/fsl/fsl_rpmsg.h
-+++ b/sound/soc/fsl/fsl_rpmsg.h
-@@ -42,6 +42,6 @@ struct fsl_rpmsg {
- 	unsigned int mclk_streams;
- 	int force_lpa;
- 	int enable_lpa;
--	int buffer_size;
-+	int buffer_size[2];
- };
- #endif /* __FSL_RPMSG_H */
-diff --git a/sound/soc/fsl/imx-pcm-rpmsg.c b/sound/soc/fsl/imx-pcm-rpmsg.c
-index de5f87600fac..8ed62d43ffd5 100644
---- a/sound/soc/fsl/imx-pcm-rpmsg.c
-+++ b/sound/soc/fsl/imx-pcm-rpmsg.c
-@@ -261,7 +261,7 @@ static int imx_rpmsg_pcm_open(struct snd_soc_component *component,
- 	info->send_message(msg, info);
- 
- 	pcm_hardware = imx_rpmsg_pcm_hardware;
--	pcm_hardware.buffer_bytes_max = rpmsg->buffer_size;
-+	pcm_hardware.buffer_bytes_max = rpmsg->buffer_size[substream->stream];
- 	pcm_hardware.period_bytes_max = pcm_hardware.buffer_bytes_max / 2;
- 
- 	snd_soc_set_runtime_hwparams(substream, &pcm_hardware);
-@@ -597,14 +597,29 @@ static int imx_rpmsg_pcm_new(struct snd_soc_component *component,
- 	struct snd_pcm *pcm = rtd->pcm;
- 	struct snd_soc_dai *cpu_dai = snd_soc_rtd_to_cpu(rtd, 0);
- 	struct fsl_rpmsg *rpmsg = dev_get_drvdata(cpu_dai->dev);
-+	struct snd_pcm_substream *substream;
- 	int ret;
- 
- 	ret = dma_coerce_mask_and_coherent(card->dev, DMA_BIT_MASK(32));
- 	if (ret)
- 		return ret;
- 
--	return snd_pcm_set_fixed_buffer_all(pcm, SNDRV_DMA_TYPE_DEV_WC,
--					    pcm->card->dev, rpmsg->buffer_size);
-+	substream = pcm->streams[SNDRV_PCM_STREAM_PLAYBACK].substream;
-+	if (substream) {
-+		ret = snd_pcm_set_fixed_buffer(substream, SNDRV_DMA_TYPE_DEV_WC, pcm->card->dev,
-+					       rpmsg->buffer_size[SNDRV_PCM_STREAM_PLAYBACK]);
-+		if (ret < 0)
-+			return ret;
-+	}
-+	substream = pcm->streams[SNDRV_PCM_STREAM_CAPTURE].substream;
-+	if (substream) {
-+		ret = snd_pcm_set_fixed_buffer(substream, SNDRV_DMA_TYPE_DEV_WC, pcm->card->dev,
-+					       rpmsg->buffer_size[SNDRV_PCM_STREAM_CAPTURE]);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return ret;
- }
- 
- static const struct snd_soc_component_driver imx_rpmsg_soc_component = {
--- 
-2.47.1
+[   70.294478] icp_hv_set_xirr: bad return code eoi xirr=0x50a0002 returned -4
+[   70.294521] ------------[ cut here ]------------
+[   70.294546] WARNING: CPU: 7 PID: 54 at arch/powerpc/sysdev/xics/icp-hv.c:55 icp_hv_eoi+0xf8/0x120
+[   70.294599] Modules linked in: xt_conntrack xt_MASQUERADE bridge stp llc ip6table_nat ip6table_filter ip6_tables xt_set ip_set iptable_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xt_addrtype iptable_filter ip_tables kvm rpcrdma rdma_cm iw_cm ib_cm ib_core bonding overlay rfkill binfmt_misc vmx_crypto pseries_rng nfsd auth_rpcgss nfs_acl loop dm_multipath lockd grace nfs_localio nfnetlink vsock_loopback vmw_vsock_virtio_transport_common vsock xfs nvme_tcp nvme_fabrics nvme_keyring nvme_core nvme_auth ibmvscsi ibmveth scsi_transport_srp crct10dif_vpmsum crc32c_vpmsum pseries_wdt sunrpc be2iscsi bnx2i cnic uio cxgb4i cxgb4 tls cxgb3i cxgb3 mdio libcxgbi libcxgb qla4xxx iscsi_boot_sysfs iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi scsi_dh_rdac scsi_dh_emc scsi_dh_alua fuse aes_gcm_p10_crypto crypto_simd cryptd
+[   70.295015] CPU: 7 UID: 0 PID: 54 Comm: ksoftirqd/7 Kdump: loaded Not tainted 6.13.7-200.fc41.ppc64le #1
+[   70.295064] Hardware name: IBM,9080-HEX POWER8 (architected) 0x800200 0xf000004 of:IBM,FW1060.00 (NH1060_022) hv:phyp pSeries
+[   70.295120] NIP:  c000000000197c98 LR: c000000000197c94 CTR: 0000000000000000
+[   70.295157] REGS: c000000007dd3a20 TRAP: 0700   Not tainted  (6.13.7-200.fc41.ppc64le)
+[   70.295197] MSR:  8000000002029033 <SF,VEC,EE,ME,IR,DR,RI,LE>  CR: 24004202  XER: 00000001
+[   70.295247] CFAR: c00000000032731c IRQMASK: 1
+[   70.295247] GPR00: c000000000197c94 c000000007dd3cc0 c0000000024daa00 000000000000003f
+[   70.295247] GPR04: 00000000ffff7fff 00000000ffff7fff c000000007dd3ae8 00000007ec8e0000
+[   70.295247] GPR08: 0000000000000027 0000000000000000 0000000000000000 0000000000004000
+[   70.295247] GPR12: 0000000000000000 c00000000ffc6f00 c000000000287ef8 c000000004a51080
+[   70.295247] GPR16: 0000000000000000 0000000004208040 c000000003d62c80 c0000000031faf80
+[   70.295247] GPR20: 00000000ffffa63b 000000000000000a c0000000031e6990 c000000000335f10
+[   70.295247] GPR24: 0000000000000001 0000000000000000 0000000000000006 0000000000000002
+[   70.295247] GPR28: c0000007efac68b8 0000000000000000 00000000050a0002 00000000050a0002
+[   70.295603] NIP [c000000000197c98] icp_hv_eoi+0xf8/0x120
+[   70.295633] LR [c000000000197c94] icp_hv_eoi+0xf4/0x120
+[   70.295661] Call Trace:
+[   70.295675] [c000000007dd3cc0] [c000000000197c94] icp_hv_eoi+0xf4/0x120 (unreliable)
+[   70.295717] [c000000007dd3d40] [c000000000337a5c] handle_fasteoi_irq+0x16c/0x350
+[   70.295757] [c000000007dd3d70] [c000000000335fd0] resend_irqs+0xc0/0x190
+[   70.295793] [c000000007dd3db0] [c000000000254064] tasklet_action_common+0x154/0x440
+[   70.295833] [c000000007dd3e20] [c000000000253458] handle_softirqs+0x168/0x4f0
+[   70.295871] [c000000007dd3f10] [c000000000253848] run_ksoftirqd+0x68/0xb0
+[   70.295912] [c000000007dd3f30] [c000000000292f20] smpboot_thread_fn+0x1d0/0x240
+[   70.295951] [c000000007dd3f90] [c000000000288020] kthread+0x130/0x140
+[   70.295984] [c000000007dd3fe0] [c00000000000ded8] start_kernel_thread+0x14/0x18
+[   70.296022] Code: 48c84251 60000000 e9210068 4bffff98 7c661b78 3c82ff31 3c62ff7d 7fc5f378 38842b40 38639bf8 4818f649 60000000 <0fe00000> 38210080 7be34622 e8010010
+[   70.296104] ---[ end trace 0000000000000000 ]---
+[   70.297273] PM: resume devices took 0.000 seconds
+[   70.297415] OOM killer enabled.
+[   70.297433] Restarting tasks ... done.
+[   70.298959] random: crng reseeded on system resumption
+[   70.299106] PM: suspend exit
 
+
+This can be tracked as a separate bug, as it is unrelated to the patch.
+
+Thanks,
+Gautam
 
