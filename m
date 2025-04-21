@@ -1,92 +1,100 @@
-Return-Path: <linuxppc-dev+bounces-7841-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7842-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8094A94E11
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Apr 2025 10:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3993EA94E81
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Apr 2025 11:19:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zgz466glTz2yLJ;
-	Mon, 21 Apr 2025 18:26:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zh0Dg6HC9z2yr7;
+	Mon, 21 Apr 2025 19:19:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745224006;
-	cv=none; b=MiaP2zs82Tb87yfbpLY+VGrC9VT6KI6T7Xt9cCM2liXjw//NjLSI4qfmfye2dPyoEENc4Ouk3vHXLpGdp3RdncRHbrC/ffQCWcEHHb9TXgDL8WqHpja+xvgp7ZroRAaAcmkiqz/4jcUyjloD9PTA1t478JW6jjiDrggRI19Czbl5frDOCaRGxuRjPMEIdXcWDtcYFXOqW0gjEVEi1pD6ccHvSgJZlomWJTKEO5pKAEwFj0GeSAf3tRTg82/fUt5nVS4v3Mrpi+rRu9CJTRkUJlj3+2ReE3fsbt7MnC9pSlq/JZSPPSyZLK+JuSwDCBXHI4N9pJP3nM+VF74LLEjjxQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=131.188.11.21
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745227155;
+	cv=none; b=WTahf6TlABZoWPtRzPgTEBVDKYCvPQejEkjW/3r8rkEjeoGv3pnmj8x/KC2HHm9apVAjFNsukp3Pjv+eELDj9kpUHovRKsLVpnvt1YdOmOMKOL6jRWi14DsThmGDkwj/VphUuheVMofJzPQHCOIUmYToLERdCfkPmJaUMT5Okn0Z+xIZL/Ec2TLG364RjXLJnMKbCSznEiEEQouZqbXXGaaj12uagqKzWp8ghzqlFgsFDkzxcOUwE+0I4gBE8+g+V2+SMC+3av2SZ5+hl5EP3yYfojm87AP7L/Vm7OIIxCVQIa0pDgtdZgv8o4rOt48eL5cC0XGT44ac4ZDOVXD3Mg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745224006; c=relaxed/relaxed;
-	bh=rMB3uOPd33ZrkG9E7Dm6xG+7/MjPp1n+kwqCvWkl0+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vk0++Kir/sXD/FRKT6+UbZDHFI3ZpSdrKBpmkmoqb2KlMKZLdhy6NPF5sUV+j748afIatdEEznnB1LeKC4ZA8AOfCS+NtUT9oeI3d+Mc8+Pm4omtidCogmv8iy9BMVsNLhheiSpOO/N5DHskNg4Ph0cO4Y51I/+jwWs6G1PH/vXd1w/ousCNUNeBw3FJRqUrluLiwsz6gRIABhTgc1ztHmZ58aEhNP/04gMBLZPZV+KqfgAe2eOk7x0cCwUBMXNR4t11m8fji1YYt4x774GVFkrVOtRpQXtMBbYVvHpHr5LrzjkzhEJTjiXteQCaELRUpjqqdIv9xiR81rC9gUhiPg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JEEzeF9v; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1745227155; c=relaxed/relaxed;
+	bh=H5mNs6wkUPpShHBjzWqPXg/CTZR+zhRcGli4jivScJg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UkADKxbsTchyNLtmFUG0wUmjvDctUUBPJ+ywIsYjhs5sdFUnXFagPTI53Dfy8AwVHrvemjL1YB2BWfXRza1A383qIgtDj6cihRrQmhJ34XH8jUwHeQvdgMMyXlySnOX7f3OnK+LnIzrJK6+O+oIBNW+MabPt6jlb9fUGJCMYVghw9pxz7RvbNs3lJYQIXssanUgUnDF50mPLwlZxzAhf5zPYKJthQu7DFU3uTKNABh1YWqX4InmT3CCgSiDzqeLH8drQyUmzG5pfgp3fcVb2YeEoISBNtF2OMGfRsRGnOt6Qj6bQpEDx2NRXTkGykMamWZKjAP0k/HqyrPtYKfc7wQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de; dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=VS2mJam0; dkim-atps=neutral; spf=pass (client-ip=131.188.11.21; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org) smtp.mailfrom=fau.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JEEzeF9v;
+	dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=VS2mJam0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fau.de (client-ip=131.188.11.21; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org)
+Received: from mx-rz-2.rrze.uni-erlangen.de (mx-rz-2.rrze.uni-erlangen.de [131.188.11.21])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zgz453gGGz2yLB
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Apr 2025 18:26:45 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53KJnVNl013827;
-	Mon, 21 Apr 2025 08:26:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=rMB3uO
-	Pd33ZrkG9E7Dm6xG+7/MjPp1n+kwqCvWkl0+M=; b=JEEzeF9vD/cD/m7N3ZD8JN
-	VmRwHFUIfy4xd26qdbfoyJ1BQvReQ7j76NM2I2HBwJlYUOcECDBhWGvhrlJ0QSFx
-	Gp8SmuhQWpDn7Wc9qsmhCXUYO4Da2duZM3RVJhvWQ9YrkuETlJ2NByORwmGmO+Ae
-	eGxf2Mur4lnUO68OZT1KhHkK3GGzfoag+gqG5x3rqNihVZ4I6FsElhrdAemXWpk4
-	jaZUwKwvOCpSKceS09/CEby8pjwT8CwtVMrEtlnZhTIi3XVZ78laIT4+CPodDqI3
-	q1phhnVaSlMuzrCN2QULGGrBYLutBpxh5I9zoL0IYE/4geEGLvj0GFWhOYboF+qw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 464xuhugtu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Apr 2025 08:26:25 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53L8QOu5023367;
-	Mon, 21 Apr 2025 08:26:24 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 464xuhugtp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Apr 2025 08:26:24 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53L4NNNr027744;
-	Mon, 21 Apr 2025 08:26:23 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 464rv1w5ke-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Apr 2025 08:26:23 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53L8QM8Q52756908
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 21 Apr 2025 08:26:22 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 293732004D;
-	Mon, 21 Apr 2025 08:26:22 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D96CF20049;
-	Mon, 21 Apr 2025 08:26:18 +0000 (GMT)
-Received: from li-e1dea04c-3555-11b2-a85c-f57333552245.ibm.com (unknown [9.124.216.6])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 21 Apr 2025 08:26:18 +0000 (GMT)
-Date: Mon, 21 Apr 2025 13:56:16 +0530
-From: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
-To: Michal =?utf-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] powerpc/boot: Fix build with gcc 15
-Message-ID: <l3xcl2rnzgor6uxsnhzlp3pceg62n256fbzaguhvktuwq3auye@spar6ml5kecp>
-References: <20250307092055.21986-1-msuchanek@suse.de>
- <fo7xb3bqk5h57mqgfrnyfpweitkr2l5vk3tomu6zgxgqlivwpt@afm2n3c2sxke>
- <aADfrUcNqBejcdrR@kitsune.suse.cz>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zh0Db5chQz2ySJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Apr 2025 19:19:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
+	t=1745227143; bh=H5mNs6wkUPpShHBjzWqPXg/CTZR+zhRcGli4jivScJg=;
+	h=From:To:Subject:Date:From:To:CC:Subject;
+	b=VS2mJam05lKtIllOSjFVKaKP3ybdRpz+6G2EQfijWxh8uPX27Pg7Lx9ratrCwrlas
+	 steviKZ5DXLYqbPR3hOyePjB6tGiMts/1oWt1cEuVuFHR2s6uC5hB5VCXZza86NeBz
+	 D+yEP9Aosf1auu2MNbYXJnTZx3+YZ5njcCN+Bk+xi8/LJXvpbL4Mo/B4QJSWC3NHtx
+	 5itFD5LxgDpELHbMkx2y9p5PjpaVc7rL4Db/rWWckdY0vXwXwR7oD7AVwCLUKgE1LC
+	 LTrqJFt4XxomA8Yc2kho4jXBDAPD34K6rJbMvF1nzm9sFKpeNtTmexJtzPr7YoAv+S
+	 bncuuSArgCbCA==
+Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-rz-2.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4Zh0DR30XlzPkPh;
+	Mon, 21 Apr 2025 11:19:03 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at boeck4.rrze.uni-erlangen.de (RRZE)
+X-RRZE-Flag: Not-Spam
+X-RRZE-Submit-IP: 2001:9e8:3600:7e00:5b67:6b9c:caeb:75c
+Received: from luis-tp.fritz.box (unknown [IPv6:2001:9e8:3600:7e00:5b67:6b9c:caeb:75c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: U2FsdGVkX18vbVa5xbc3cNKXhg/8u1S1T3dJ1m45p/M=)
+	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4Zh0DM2r9jzPk5q;
+	Mon, 21 Apr 2025 11:18:59 +0200 (CEST)
+From: Luis Gerhorst <luis.gerhorst@fau.de>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Xu Kuohai <xukuohai@huaweicloud.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Mykola Lysenko <mykolal@fb.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Luis Gerhorst <luis.gerhorst@fau.de>,
+	Henriette Herzog <henriette.herzog@rub.de>,
+	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+	Cupertino Miranda <cupertino.miranda@oracle.com>,
+	Jiayuan Chen <mrpre@163.com>,
+	Matan Shachnai <m.shachnai@gmail.com>,
+	Dimitar Kanaliev <dimitar.kanaliev@siteground.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Daniel Xu <dxu@dxuuu.xyz>,
+	bpf@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf-next v2 00/11] bpf: Mitigate Spectre v1 using barriers
+Date: Mon, 21 Apr 2025 11:17:51 +0200
+Message-ID: <20250421091802.3234859-1-luis.gerhorst@fau.de>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,75 +107,164 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aADfrUcNqBejcdrR@kitsune.suse.cz>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: E-Y5woX01FJWD-O40TfIUk9wMglHGt1o
-X-Proofpoint-ORIG-GUID: oj0DCEysWvjKndr2tqegI6IBgnJfUgtj
-X-Authority-Analysis: v=2.4 cv=LbY86ifi c=1 sm=1 tr=0 ts=68060131 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=8nJEP1OIZ-IA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=EjazUNRJd03PLXMeH1cA:9 a=3ZKOabzyN94A:10
- a=wPNLvfGTeEIA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-21_03,2025-04-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- spamscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015
- mlxlogscore=999 phishscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
- adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504210062
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Apr 17, 2025 at 01:02:05PM +0200, Michal Such�nek wrote:
-> On Thu, Apr 17, 2025 at 11:37:09AM +0530, Mukesh Kumar Chaurasiya wrote:
-> > On Fri, Mar 07, 2025 at 10:20:52AM +0100, Michal Suchanek wrote:
-> > > Similar to x86 the ppc boot code does not build with GCC 15.
-> > > 
-> > > Copy the fix from
-> > > commit ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
-> > > 
-> > > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> > > ---
-> > >  arch/powerpc/boot/Makefile | 1 +
-> > >  1 file changed, 1 insertion(+)
-> > > 
-> > > diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-> > > index 1ff6ad4f6cd2..e6b35699c049 100644
-> > > --- a/arch/powerpc/boot/Makefile
-> > > +++ b/arch/powerpc/boot/Makefile
-> > > @@ -33,6 +33,7 @@ else
-> > >  endif
-> > >  
-> > >  ifdef CONFIG_PPC64_BOOT_WRAPPER
-> > > +BOOTTARGETFLAGS	+= -std=gnu11
-> > >  BOOTTARGETFLAGS	+= -m64
-> > >  BOOTTARGETFLAGS	+= -mabi=elfv2
-> > >  ifdef CONFIG_PPC64_ELF_ABI_V2
-> > > -- 
-> > > 2.47.1
-> > > 
-> > There's another patch which fixes this problem by version comparison.
-> > https://lore.kernel.org/all/20250323163607.537270-2-misanjum@linux.ibm.com/
-> > 
-> > In my opinion this is a better solution as it will use the features of latest
-> > compiler.
-> 
-> No it's not a better solution. It's documented that the kernel is built
-> with the GNU dialect of ISO C11. When a file is not compiled with the
-> documented C dialect that's a bug.
-> 
-> If newer C dialect features are desirable then they should be enabled
-> consistently across the tree, not individually for a few files used in
-> boot code.
-> 
-> Thanks
-> 
-> Michal
-Oh cool.
+This improves the expressiveness of unprivileged BPF by inserting
+speculation barriers instead of rejecting the programs.
 
-Thanks
+The approach was previously presented at LPC'24 [1] and RAID'24 [2].
+
+To mitigate the Spectre v1 (PHT) vulnerability, the kernel rejects
+potentially-dangerous unprivileged BPF programs as of
+commit 9183671af6db ("bpf: Fix leakage under speculation on mispredicted
+branches"). In [2], we have analyzed 364 object files from open source
+projects (Linux Samples and Selftests, BCC, Loxilb, Cilium, libbpf
+Examples, Parca, and Prevail) and found that this affects 31% to 54% of
+programs.
+
+To resolve this in the majority of cases this patchset adds a fall-back
+for mitigating Spectre v1 using speculation barriers. The kernel still
+optimistically attempts to verify all speculative paths but uses
+speculation barriers against v1 when unsafe behavior is detected. This
+allows for more programs to be accepted without disabling the BPF
+Spectre mitigations (e.g., by setting cpu_mitigations_off()).
+
+For this, it relies on the fact that speculation barriers prevent all
+later instructions if the speculation was not correct:
+
+* On x86_64, lfence acts as full speculation barrier, not only as a
+  load fence [3]:
+
+	  An LFENCE instruction or a serializing instruction will ensure that
+	  no later instructions execute, even speculatively, until all prior
+	  instructions complete locally. [...] Inserting an LFENCE instruction
+	  after a bounds check prevents later operations from executing before
+	  the bound check completes.
+
+  This was experimentally confirmed in [4].
+
+* ARM's SB speculation barrier instruction also affects "any instruction
+  that appears later in the program order than the barrier" [5].
+
+In [1] we have measured the overhead of this approach relative to having
+mitigations off and including the upstream Spectre v4 mitigations. For
+event tracing and stack-sampling profilers, we found that mitigations
+increase BPF program execution time by 0% to 62%. For the Loxilb network
+load balancer, we have measured a 14% slowdown in SCTP performance but
+no significant slowdown for TCP. This overhead only applies to programs
+that were previously rejected.
+
+I reran the expressiveness-evaluation with v6.14 and made sure the main
+results still match those from [1] and [2] (which used v6.5).
+
+Main design decisions are:
+
+* Do not use separate bytecode insns for v1 and v4 barriers. This
+  simplifies the verifier significantly and has the only downside that
+  performance on PowerPC is not as high as it could be.
+
+* Allow archs to still disable v1/v4 mitigations separately by setting
+  bpf_jit_bypass_spec_v1/v4(). This has the benefit that archs can
+  benefit from improved BPF expressiveness / performance if they are not
+  vulnerable (e.g., ARM64 for v4 in the kernel).
+
+* Do not remove the empty BPF_NOSPEC implementation for backends for
+  which it is unknown whether they are vulnerable to Spectre v1.
+
+[1] https://lpc.events/event/18/contributions/1954/ ("Mitigating
+    Spectre-PHT using Speculation Barriers in Linux eBPF")
+[2] https://arxiv.org/pdf/2405.00078 ("VeriFence: Lightweight and
+    Precise Spectre Defenses for Untrusted Linux Kernel Extensions")
+[3] https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/runtime-speculative-side-channel-mitigations.html
+    ("Managed Runtime Speculative Execution Side Channel Mitigations")
+[4] https://dl.acm.org/doi/pdf/10.1145/3359789.3359837 ("Speculator: a
+    tool to analyze speculative execution attacks and mitigations" -
+    Section 4.6 "Stopping Speculative Execution")
+[5] https://developer.arm.com/documentation/ddi0597/2020-12/Base-Instructions/SB--Speculation-Barrier-
+    ("SB - Speculation Barrier - Arm Armv8-A A32/T32 Instruction Set Architecture (2020-12)")
+
+Changes:
+
+* v1 -> v2:
+  - Drop former commits 9 ("bpf: Return PTR_ERR from push_stack()") and 11
+    ("bpf: Fall back to nospec for spec path verification") as suggested
+    by Alexei. This series therefore no longer changes push_stack() to
+    return PTR_ERR.
+  - Add detailed explanation of how lfence works internally and how it
+    affects the algorithm.
+  - Add tests checking that nospec instructions are inserted in expected
+    locations using __xlated_unpriv as suggested by Eduard (also,
+    include a fix for __xlated_unpriv)
+  - Add a test for the mitigations from the description of
+    commit 9183671af6db ("bpf: Fix leakage under speculation on
+    mispredicted branches")
+  - Remove unused variables from do_check[_insn]() as suggested by
+    Eduard.
+  - Remove INSN_IDX_MODIFIED to improve readability as suggested by
+    Eduard. This also causes the nospec_result-check to run (and fail)
+    for jumping-ops. Add a warning to assert that this check must never
+    succeed in that case.
+  - Add details on the safety of patch 10 ("bpf: Allow nospec-protected
+    var-offset stack access") based on the feedback on v1.
+  - Rebase to bpf-next-250420
+  - Link to v1: https://lore.kernel.org/all/20250313172127.1098195-1-luis.gerhorst@fau.de/
+
+* RFC -> v1:
+  - rebase to bpf-next-250313
+  - tests: mark expected successes/new errors
+  - add bpt_jit_bypass_spec_v1/v4() to avoid #ifdef in
+    bpf_bypass_spec_v1/v4()
+  - ensure that nospec with v1-support is implemented for archs for
+    which GCC supports speculation barriers, except for MIPS
+  - arm64: emit speculation barrier
+  - powerpc: change nospec to include v1 barrier
+  - discuss potential security (archs that do not impl. BPF nospec) and
+    performance (only PowerPC) regressions
+  - Linkt to RFC: https://lore.kernel.org/bpf/20250224203619.594724-1-luis.gerhorst@fau.de/
+
+Luis Gerhorst (11):
+  selftests/bpf: Fix caps for __xlated/jited_unpriv
+  bpf: Move insn if/else into do_check_insn()
+  bpf: Return -EFAULT on misconfigurations
+  bpf: Return -EFAULT on internal errors
+  bpf, arm64, powerpc: Add bpf_jit_bypass_spec_v1/v4()
+  bpf, arm64, powerpc: Change nospec to include v1 barrier
+  bpf: Rename sanitize_stack_spill to nospec_result
+  bpf: Fall back to nospec for Spectre v1
+  selftests/bpf: Add test for Spectre v1 mitigation
+  bpf: Allow nospec-protected var-offset stack access
+  bpf: Fall back to nospec for sanitization-failures
+
+ arch/arm64/net/bpf_jit.h                      |   5 +
+ arch/arm64/net/bpf_jit_comp.c                 |  28 +-
+ arch/powerpc/net/bpf_jit_comp64.c             |  79 ++-
+ include/linux/bpf.h                           |  11 +-
+ include/linux/bpf_verifier.h                  |   3 +-
+ include/linux/filter.h                        |   2 +-
+ kernel/bpf/core.c                             |  32 +-
+ kernel/bpf/verifier.c                         | 648 ++++++++++--------
+ tools/testing/selftests/bpf/progs/bpf_misc.h  |   4 +
+ .../selftests/bpf/progs/verifier_and.c        |   8 +-
+ .../selftests/bpf/progs/verifier_bounds.c     |  66 +-
+ .../bpf/progs/verifier_bounds_deduction.c     |  45 +-
+ .../selftests/bpf/progs/verifier_map_ptr.c    |  20 +-
+ .../selftests/bpf/progs/verifier_movsx.c      |  16 +-
+ .../selftests/bpf/progs/verifier_unpriv.c     |  65 +-
+ .../bpf/progs/verifier_value_ptr_arith.c      | 101 ++-
+ tools/testing/selftests/bpf/test_loader.c     |  14 +-
+ .../selftests/bpf/verifier/dead_code.c        |   3 +-
+ tools/testing/selftests/bpf/verifier/jmp32.c  |  33 +-
+ tools/testing/selftests/bpf/verifier/jset.c   |  10 +-
+ 20 files changed, 765 insertions(+), 428 deletions(-)
+
+
+base-commit: 8582d9ab3efdebb88e0cd8beed8e0b9de76443e7
+-- 
+2.49.0
+
 
