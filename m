@@ -1,58 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-7897-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7898-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9450EA968FF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 14:21:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CEF3A96AEF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 14:50:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhhD9370Sz3bxC;
-	Tue, 22 Apr 2025 22:21:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zhht86yFgz3bZs;
+	Tue, 22 Apr 2025 22:50:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745324473;
-	cv=none; b=Tt8ty6FqoNC+57o4xz4bsIryA4Z+NgeifhDVvS6TwMj5fZimGwy0G6qvCySHqOz3jhqyRfr+ATNIKV0ugUuWP71HS8mBiKhKDoYZlo+uHLRja0/+tfbyAnMoBMgqd2gpSxqIZdGB/xe7cdFfZbE1dp6gNJN8gagRI4INL7XU9lwAeZa1evD3tKLcaC4yYtxKqHKdQluwkGQH/yolhwj1vIvGj+PS4+EsjMKfWbYQ3JZMqRW9lHVBcX5E1/eEllI9hqy3gN8XXYVdttm2eGMAyobWXc5WY42gkOzqin8nYhiy/j2mGIbTFdpQFaCULU/herX6jj8pxoEbluMUNEA4GA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745326240;
+	cv=none; b=XhOIxs7TuiXVvDtvYylk3GDKvygn4NSeb5pL7Pw1iv/vWq4Rwn7kwdU/OTtxFgKgTGSqHGURLCoIbtIno5FumNLScjBJv77/GZJRcuyt3QdgYcGgtJ/UHAqMoYGbw9SSgKQFAVANGq/b8D/UgztBoHDUeNoSkiWpSzYW10bjiJQfzaxkPCTFuRgraalsz7C/4kBWWWzLasS2jX72qeN3tgu3pRAOW9nJWhg0JbgIUDclbgx7LQhJINLFCW8MCtCOtGvn/yu4IdwLNRbvkpcVCSzIB3l6RMcepkHu6qrh/wl7WkxQBOOp2Gw2p+Tzvxj5xsDcjn8TB+V6t7PcEjpWcw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745324473; c=relaxed/relaxed;
-	bh=8oBJTeTeSqAmlBkzfX0+Q7koKokBH4XsCV1CY4LEDPc=;
+	t=1745326240; c=relaxed/relaxed;
+	bh=hc7msAx4AniUD+av7LSexkbA5wCUZEzUg7jMT6Ga/Yc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BpdaJSPQB8ZgNuAk9aAnFb7hizcs3MsdMSmGjeyvAxoikw0lEUFkhH/bBAv21nIFoIKkiQsvbqxG/Lv/G5camFeWq0uh69Pi8YJFVCjTsCr6v4j3/Ap7zjoL13EDziKdgRXvkiQNoi2xngMoysyj7OB6aFf/d+bdr9w7H7TZzKBRpMDXyE20TQ34juqK80QSCjxvDy636xGHTN7ioqEas2K1HRWR0vXJFoiia4nZYWeIGi07fr693UKOAgIVJ5BLyx1MxGa5DLBI0P5Q9nLUuvURgDfWx9v8NK/IA7dzCPznLpy9/Ye98xYhdBMGJ1A7rqJ6St/Fh8NFbTpIg4pJ+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=COcXoeJJ; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=XZwWD7HELVyRdTCVh3ehgKo+ZQLR5YT/AHo5wFCw0A3Om/84Kv5T7yuONxT58aRCqxdotGgRjDuYeB71hAs7Ip5Ot0Mp4QZGmJh+0WICqh6CHOQ+ECb8SwGwb99iu5NzkMobM9YUPBlqf/2t2JPKtHIivuEnZAApcCfXEPlIF4S53TkKixCXPSqLQP57hme3tPuyFdpNx+/eDsIy8sVN8F4YPMp19InHA6+w4lWJf/hJq84xicMG+pyWCNWWRM3rNv47DZ09hFIhBXQTOYZaZkLKo9cGC6uhKJUJ3YuGlP/ymexHBOmtFVevhSZuTWESfPGSVKAa+bX6zR5ZfZgGeg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sQfXeIP0; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=COcXoeJJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sQfXeIP0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhhD864Rcz305P
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 22:21:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zhht82DqTz304l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 22:50:40 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1AFFA61362;
-	Tue, 22 Apr 2025 12:20:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B337EC4CEE9;
-	Tue, 22 Apr 2025 12:21:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 64EE343A26;
+	Tue, 22 Apr 2025 12:50:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DFDC4CEEA;
+	Tue, 22 Apr 2025 12:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745324470;
-	bh=UkGLXk7kMq5D1ZBzI1XZJ1G7b1qF8z+/maQ3l+yeu/I=;
+	s=k20201202; t=1745326237;
+	bh=ezUAAvrWZq+SfBhumiyZwTC1b8cAjSVNn0r03WnlHbY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=COcXoeJJwlaJO+onyn7iAriK90zBeTbSijaIEAcaeYnzFZbEE31UI7+VUphpLfT3J
-	 ROy2uyjUlrELQQ3FiriTFMzUb/TN7K6mjOSLXLXl9AJvEFJa99bfaDugzMrhL1grIi
-	 3sKvHFJ3SaJ066kON+MyH/UrSLMB4ajwM6ONHcBrCllovDiaCqVjRVt5L30XoeUFAL
-	 W46wyimiiFX/afMmpubm10xUYDYQpBNUWLjjdthzPUowQjXrB5C9l+l+dd79JEnXf+
-	 cOuHiEgZDNWplG57NPDNPQiR6jtuoVkdwdT3aeWk9xtFiC7EoVqJNZ3sETu++DWBb1
-	 YXmnpDdvTIb9w==
-Date: Tue, 22 Apr 2025 13:21:07 +0100
-From: Simon Horman <horms@kernel.org>
-To: Dave Marquardt <davemarq@linux.ibm.com>
-Cc: netdev@vger.kernel.org, michal.swiatkowski@linux.intel.com,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next v3 3/3] net: ibmveth: added KUnit tests for some
- buffer pool functions
-Message-ID: <20250422122107.GD2843373@horms.kernel.org>
-References: <20250416205751.66365-1-davemarq@linux.ibm.com>
- <20250416205751.66365-4-davemarq@linux.ibm.com>
+	b=sQfXeIP0FUDQkmQeNKo3qBQXsZ2p1REsH/Rj5cc5Ec1jdgX+eik8C+na4GVgWdEBl
+	 VKg6iH/Rx3hGrRXOCB3wuKBdbeuXoX0j8bk+y0t1hIiQ6IRp5Ld0/Ggt3eIZQoMLry
+	 vEibG7bdts7/IZYnXID1EwrV7+RMzcEY7if8nniC3uiYcrKpaR7bfkqQO68Mh0bz90
+	 IllVIIPlS0zjZrDa68OZodTqvlH+pew4aO7NXp/TSNOBTXowm2g28pkATIwzTKI9y2
+	 IdaKQrcUNRWQrVTm5vycOHMjz9dj4g8ZfPga6A82/CO4XXLwfJrOJfeWEdr6VJtCy2
+	 ZIX121RSoHZhg==
+Date: Tue, 22 Apr 2025 07:50:35 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.ne@posteo.net>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, Naveen N Rao <naveen@kernel.org>,
+	devicetree@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Conor Dooley <conor+dt@kernel.org>, Crystal Wood <oss@buserror.net>
+Subject: Re: [PATCH v3] dt-bindings: powerpc: Convert fsl/pmc.txt to YAML
+Message-ID: <174532623458.953813.9838833701705754537.robh@kernel.org>
+References: <20250417-fslpmc-yaml-v3-1-b3eccd389176@posteo.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,20 +69,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250416205751.66365-4-davemarq@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250417-fslpmc-yaml-v3-1-b3eccd389176@posteo.net>
 X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Apr 16, 2025 at 03:57:51PM -0500, Dave Marquardt wrote:
-> Added KUnit tests for ibmveth_remove_buffer_from_pool and
-> ibmveth_rxq_get_buffer under new IBMVETH_KUNIT_TEST config option.
-> 
-> Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+On Thu, 17 Apr 2025 16:21:14 +0200, J. Neuschäfer wrote:
+> This patch rewrites pmc.txt into YAML format. Descriptive texts are
+> expanded or shortened in a few places to better fit today's conventions.
+> 
+> The list of compatible strings (and combinations of them) is based on
+> existing device trees in arch/powerpc as well as compatible strings
+> already mentioned in the plain-text version of the binding.
+> 
+> One thing I didn't handle are soc-clk@... nodes as seen in
+> arch/powerpc/boot/dts/fsl/pq3-power.dtsi. They are also ignored
+> by Linux drivers.
+> 
+> Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> ---
+> Changes in v3:
+> - Combine two compatible strings into one "enum"
+> - Remove sleep consumer (sata@19000) from example
+> - Fix reference to example for soc-clk@... nodes, and explain why they
+>   are not modeled
+> - Link to v2: https://lore.kernel.org/r/20250412-fslpmc-yaml-v2-1-98c0948a2921@posteo.net
+> 
+> Changes in v2:
+> - Rebase on v6.15-rc1
+> - Link to v1: https://lore.kernel.org/r/20250315-fslpmc-yaml-v1-1-10ba354a85c2@posteo.net
+> ---
+>  .../devicetree/bindings/powerpc/fsl/pmc.txt        |  63 ---------
+>  .../devicetree/bindings/powerpc/fsl/pmc.yaml       | 152 +++++++++++++++++++++
+>  2 files changed, 152 insertions(+), 63 deletions(-)
+> 
+
+Applied, thanks!
 
 
