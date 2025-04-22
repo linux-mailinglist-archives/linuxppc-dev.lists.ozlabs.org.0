@@ -1,43 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-7873-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7876-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8E3A95C59
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 04:51:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7C4A95C5C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 04:51:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhRZR2XHFz2yRn;
-	Tue, 22 Apr 2025 12:51:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhRZx0sqxz3bwR;
+	Tue, 22 Apr 2025 12:51:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.185
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745289629;
-	cv=none; b=douWWibF47IJW+pewIRfQKYH01dx5z2DWg/NuXPFWLgAFL5derhUklFT/vHM4mvmrWh7dzWq/h//BgDPrN0I/sn4yyrDThIZoLRUU/OZGIcV1PBK0k6VSZI7NU/hXAOz1m1eLe6RKSloqyvhj6eYRfRUvLfTuffON9+MxIfQoXYKqyZSW4RnTSjQgAsZAxd0dDFmFRCZac2fKge89feZT2lnKz5XRP7rxRtkNAvHKbqiB33hjCfK0w42eO6EAz+x71r50AkQFA8Wj3mAC2OUfqx8fkvIBAYHgWR9HHxqUHjn5fHO4ZIZkHXuAMOFsos/jwblf7KHJMfBN4mAzP6IIw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.188
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745290002;
+	cv=none; b=Fw8j27qOEbpkoJu0jNBsnRTc20m51Yj8jwvtsthKuk3EHd501o+pEIVXainzGNNvepD6tVt9jrC5UM1tiH7m04/cfUv5ZYChhSVhEBiVS+SYW2fXxkj6s4oZ9Aieu2qqbd9gypmEY90WOm9Tk3ZIeZTDn1ZtXc3RzaU54BTiznCUmjFmifvrqMB+VY1U5APiSDQKqnK8ZbPBr9VNyBE8NOj1lzLMUNBV0VlGt7rFYA0PtfEbd4MmHYiV5x23iTWgTk6sIMstMKjn60r1IJT0x/fd5lnewzakTUDeg+CZrIxebQfQDwWwXuF9VjGh+lWDOlMi/9YzgkMyd3AdmdCHQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745289629; c=relaxed/relaxed;
-	bh=Wuhh/TBYeam+nC6yC/O/v03N69+rG6bSS92mduqrHAE=;
+	t=1745290002; c=relaxed/relaxed;
+	bh=UHqJNxoN2EkZKoX2Nvs/ll2psHRNdLh5BlrYxTMxZlA=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=J4xyX0qVXu/3W9tjXo09JU8gMEgN0JwMtT+eS3fVqQVguCuqEtbBGZRoXePecBF/2+w2nmTfZMZxHeL28WXySyCyCLLIM6gziil0KwQz9v17M8lLZQNAYuA/hZVeWusbHqq8VS43lX8vTOSrEIzHB0kUWfYB7WJ+mnUu76mU6+S+lxtMwv729H8vbVuugI3goODAq8D4Dd/gh69nLF/vKsHuBh0ke/mG6a0H2EBr5D5rq6HCOq5siw3v4MkIEDVEfqKpy8HGYm+X7eA6XStOD07YRlxx0Nc/l65vfyv9LvB0XbuPu7Zt5u5vQjWKAV/v8PrYhsMJs6XN6E38jXIJxg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass (client-ip=91.218.175.185; helo=out-185.mta0.migadu.com; envelope-from=ben.collins@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 Content-Disposition; b=SUQxv9WVo1XPmFxpkarYvCBiEjBy7ZqshzXu1taPlPsctGPiFVagkJqKnafsuH0+PS+8uAsVKJBniLm1RL5URI7f6C9LACmzpm9VEcSOLFPUxVM6QniHhxwpr2JkJk5El1HNPVp6KE0J86asApupApxEO6R1/3CHEcRu/3bHH11i44zzKlDXBNfNstHFs+j5LiwO/N8abaAirO75wxaRhkF+J6aiU4RToA1KGGwjIlAxj+c7PTZRI41nAR/M8PjIHu/gV2gAht4cewyDc69JRqO94+cB5NRWHm1oG4yhy/pjBELHg8x1pTa+Y0XrqF+5/AZA+hyiqHT/uQ1/iHvOKw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass (client-ip=91.218.175.188; helo=out-188.mta0.migadu.com; envelope-from=ben.collins@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.185; helo=out-185.mta0.migadu.com; envelope-from=ben.collins@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 531 seconds by postgrey-1.37 at boromir; Tue, 22 Apr 2025 12:40:29 AEST
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.188; helo=out-188.mta0.migadu.com; envelope-from=ben.collins@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhRL51H1Sz2yRn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 12:40:27 +1000 (AEST)
-Date: Mon, 21 Apr 2025 22:40:04 -0400
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhRTF4jy9z2yRn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 12:46:41 +1000 (AEST)
+Date: Mon, 21 Apr 2025 22:46:19 -0400
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Ben Collins <bcollins@kernel.org>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Scott Wood <oss@buserror.net>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] 85xx: Add several root nodes to probe
-Message-ID: <2025042122-shiny-vicugna-28507c@boujee-and-buff>
-Mail-Followup-To: linuxppc-dev@lists.ozlabs.org, 
-	Scott Wood <oss@buserror.net>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, linux-kernel@vger.kernel.org
+To: iommu@lists.linux.dev
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] fsl_pamu: Use 40-bits for addressing where appropriate
+Message-ID: <2025042122-prudent-dogfish-eac6bf@boujee-and-buff>
+Mail-Followup-To: iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,7 +49,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="njrs3bnfcssymytq"
+	protocol="application/pgp-signature"; boundary="pj6oaviibqdhrhkl"
 Content-Disposition: inline
 X-Migadu-Flow: FLOW_OUT
 X-Spam-Status: No, score=0.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
@@ -60,56 +58,96 @@ X-Spam-Status: No, score=0.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
---njrs3bnfcssymytq
+--pj6oaviibqdhrhkl
 Content-Type: text/plain; protected-headers=v1; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Subject: [PATCH] 85xx: Add several root nodes to probe
+Subject: [PATCH] fsl_pamu: Use 40-bits for addressing where appropriate
 MIME-Version: 1.0
 
-T4240 fails to hafve ifc, rapidio, and localbus probed.
+On 64-bit QorIQ platforms like T4240, the CPU supports 40-bit addressing
+and it's safe to move resources to the upper bounds of the 1TiB limit to
+make room for > 64GiB of memory. The PAMU driver does not account for
+this, however.
 
-This matches other QorIQ platforms and ensures devices under these nodes
-get added as platform devices.
+Setup fsl,pamu driver to make use of the full 40-bit addressing space
+when configuring liodn's that may have been configured in this range.
+Specifically the e5500 and e6500 CPUs.
 
 Signed-off-by: Ben Collins <bcollins@kernel.org>
-Cc: Scott Wood <oss@buserror.net>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: iommu@lists.linux.dev
 Cc: linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
 ---
- arch/powerpc/platforms/85xx/corenet_generic.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/iommu/fsl_pamu.c        | 5 +++--
+ drivers/iommu/fsl_pamu.h        | 7 +++++++
+ drivers/iommu/fsl_pamu_domain.c | 5 +++--
+ 3 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/85xx/corenet_generic.c b/arch/powerpc/p=
-latforms/85xx/corenet_generic.c
-index c44400e95f551..c81b8a47f3b0f 100644
---- a/arch/powerpc/platforms/85xx/corenet_generic.c
-+++ b/arch/powerpc/platforms/85xx/corenet_generic.c
-@@ -61,6 +61,9 @@ static const struct of_device_id of_device_ids[] =3D {
- 	{
- 		.compatible	=3D "simple-bus"
- 	},
-+	{
-+		.compatible	=3D "fsl,ifc"
-+	},
- 	{
- 		.compatible	=3D "mdio-mux-gpio"
- 	},
-@@ -91,6 +94,12 @@ static const struct of_device_id of_device_ids[] =3D {
- 	{
- 		.compatible	=3D "fsl,qe",
- 	},
-+	{
-+		.name           =3D "localbus",
-+	},
-+	{
-+		.name		=3D "rapidio",
-+	},
- 	/* The following two are for the Freescale hypervisor */
- 	{
- 		.name		=3D "hypervisor",
+diff --git a/drivers/iommu/fsl_pamu.c b/drivers/iommu/fsl_pamu.c
+index f37d3b0441318..ceb352f824010 100644
+--- a/drivers/iommu/fsl_pamu.c
++++ b/drivers/iommu/fsl_pamu.c
+@@ -198,7 +198,7 @@ int pamu_config_ppaace(int liodn, u32 omi, u32 stashid,=
+ int prot)
+=20
+ 	/* window size is 2^(WSE+1) bytes */
+ 	set_bf(ppaace->addr_bitfields, PPAACE_AF_WSE,
+-	       map_addrspace_size_to_wse(1ULL << 36));
++	       map_addrspace_size_to_wse(1ULL << PAMU_MAX_PHYS_BITS));
+=20
+ 	pamu_init_ppaace(ppaace);
+=20
+@@ -475,7 +475,8 @@ static void setup_liodns(void)
+ 			ppaace =3D pamu_get_ppaace(liodn);
+ 			pamu_init_ppaace(ppaace);
+ 			/* window size is 2^(WSE+1) bytes */
+-			set_bf(ppaace->addr_bitfields, PPAACE_AF_WSE, 35);
++			set_bf(ppaace->addr_bitfields, PPAACE_AF_WSE,
++			       (PAMU_MAX_PHYS_BITS - 1));
+ 			ppaace->wbah =3D 0;
+ 			set_bf(ppaace->addr_bitfields, PPAACE_AF_WBAL, 0);
+ 			set_bf(ppaace->impl_attr, PAACE_IA_ATM,
+diff --git a/drivers/iommu/fsl_pamu.h b/drivers/iommu/fsl_pamu.h
+index 36df7975ff64d..5d88871610cfd 100644
+--- a/drivers/iommu/fsl_pamu.h
++++ b/drivers/iommu/fsl_pamu.h
+@@ -42,6 +42,13 @@ struct pamu_mmap_regs {
+ 	u32 olal;
+ };
+=20
++/* Physical addressing capability */
++#if defined(CONFIG_E6500_CPU) || defined(CONFIG_E5500_CPU)
++#define PAMU_MAX_PHYS_BITS	40
++#else
++#define PAMU_MAX_PHYS_BITS	36
++#endif
++
+ /* PAMU Error Registers */
+ #define PAMU_POES1 0x0040
+ #define PAMU_POES2 0x0044
+diff --git a/drivers/iommu/fsl_pamu_domain.c b/drivers/iommu/fsl_pamu_domai=
+n.c
+index 30be786bff11e..a4bc6482a00f7 100644
+--- a/drivers/iommu/fsl_pamu_domain.c
++++ b/drivers/iommu/fsl_pamu_domain.c
+@@ -214,9 +214,10 @@ static struct iommu_domain *fsl_pamu_domain_alloc(unsi=
+gned type)
+ 	INIT_LIST_HEAD(&dma_domain->devices);
+ 	spin_lock_init(&dma_domain->domain_lock);
+=20
+-	/* default geometry 64 GB i.e. maximum system address */
++	/* Set default geometry based on physical address limit. */
+ 	dma_domain->iommu_domain. geometry.aperture_start =3D 0;
+-	dma_domain->iommu_domain.geometry.aperture_end =3D (1ULL << 36) - 1;
++	dma_domain->iommu_domain.geometry.aperture_end =3D
++		(1ULL << PAMU_MAX_PHYS_BITS) - 1;
+ 	dma_domain->iommu_domain.geometry.force_aperture =3D true;
+=20
+ 	return &dma_domain->iommu_domain;
 --=20
 2.49.0
 
@@ -121,25 +159,25 @@ index c44400e95f551..c81b8a47f3b0f 100644
  --
  3EC9 7598 1672 961A 1139  173A 5D5A 57C7 242B 22CF
 
---njrs3bnfcssymytq
+--pj6oaviibqdhrhkl
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEPsl1mBZylhoRORc6XVpXxyQrIs8FAmgHAYMACgkQXVpXxyQr
-Is/u8RAAi2lE1gs0W6x62/w3eY4OZ8pEG9T58Z5JcBQ9YgW65BmYGsqVPZwbzplu
-OV69z8HJ6ug5trtfHghiQT8Safo2kJ9KvIxHxYF6ni9/LIlnYICdhU/7ewKCdxqQ
-7JYcd5Jcg5MEC5OaiMzy3PUIzcuVfCKcCsCMjTjPDQiihfv/+ZGc5TobQstuARxB
-BmaeWwr2e8xXthPYu3C48ayHBg3VlYK5zHhA6H8W6R6RXY8jr20pQMtwidKok0gA
-3XgXyil4Vr3Zyk2rE1QfxkcE3SXBnd4nwgyVXM02eX0v9MPg60z2sn2WriwbW3rc
-D7LVfgYK19hoKdKblskE49UjyRZX47/MUpGDrNFi8KeqFwDatArFYeATgANG2tDo
-hQwXWsENBh+IUf06WkBvZkrLhwuii2/FSUikYTBOGJdKQKw0QUChLaTmh19dOgW8
-lhzx5/CJJHBByZ0z5eTuM0vd/BEw3m5ILdnw8Ge1rCes2S3ODRLB38E+eURUUQ32
-0OXNmSyaqgcVrDZvw301/YoLPAOlLpGeHzA5Op87xeGSjE9iU9giAd2Gz37v9AW1
-csIAM/EFc9nJeij6SbMNepFzNooakJ0jwdmhFZgqvi5pirU7UhahTb7x725zoUbJ
-EvpdXuV4/xicEQJfkxuLwH2U87lKEIPjFa7oyUClRczWYVSJ/pE=
-=8ZNj
+iQIzBAABCgAdFiEEPsl1mBZylhoRORc6XVpXxyQrIs8FAmgHAvsACgkQXVpXxyQr
+Is/i3BAAgl5kSqFcIQKaB3suzOElgqN0+NBpccZSK6uwDAJHAkZr7dt3X/ODq2eb
+UirHWny6+Os+NVhMoUJPi1YfwrMEcJ9zBcmm555rG5yjdjVfvG6qbspOCr9lvJqa
+D/aKOcc9xDCzaRwcfCs3E4i4uQOp/LPIl7OTEnhMGDZ8SoV48KU5ZZsbO3WcqtZY
+C0PF1V1WosMfNq4L16CX3G2eVKtmdUye55UxZTDYIRaZq3XxeskEu45ajZ7QASCd
+rf/aNwEiQ0h/9OzDvODpVQETzDC2l0FX9zXz8D5SVNeMLZ7uJYM3ypjk+D88gI/z
+qox/idKCOMhA0ig8D0TPQzJvqxozqyQxLBAdeTdgpbK/GiMT2FTubwqf1ieLlcLX
+ETZrKQQZIGT8O2Kj+g6CHrqTrUoaqjhE5/UWvV5RAIUXz+JH4mD9zzQqvOZGK8g+
+m1JQ/EZbvB1ORIkKUPkuzoH7/T7E6/fmFtTOOyHl8WLejHTM/fxOgH1qdCN3Qi79
+9vUWnqCoqrzLSQdVzJiw46xe0F6hQxie5AkdhU6XvyclrC4mT3JM5oSNf8lNwXE6
+RNLCriQafnXDOgKvwXZEhSDzNQmvD4oigZU28u5zBK5LwX8t6oLa2cvq3YMrBMXc
+yF6DBrG74detuDsryoYJUG4wX8w6k0crgqv/+1JRNSUOiWD9jvE=
+=cGYA
 -----END PGP SIGNATURE-----
 
---njrs3bnfcssymytq--
+--pj6oaviibqdhrhkl--
 
