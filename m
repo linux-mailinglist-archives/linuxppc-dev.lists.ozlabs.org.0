@@ -1,62 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-7880-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7881-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EE4A95DE1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 08:15:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2C9A95E47
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 08:35:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhX5m0bZpz3bqy;
-	Tue, 22 Apr 2025 16:15:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhXYJ1t0vz2yNG;
+	Tue, 22 Apr 2025 16:35:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745302507;
-	cv=none; b=gmPgOdWU5raZwNCtrfJW+jU3XXYrh2Y1mu41d+D78cTn+4DsN9zLkSrN7rPi7/Mr+Nvg3KjLln9Kwx6WbRMWWoopsULh+KcLOZxX6D9ADSgiCfiGfip8OGa80zPA0gKzXnreHPd8XKwKdXFb7FWwxl46tOmFKOTcE8mpppbYJZWejvJqm0dKBBro1+6Wa3jQgmBSet6wCrmHHiuAzhqBhaXSPCviPJ2xJ6tkdj2S3zJcPZg+p52/k8QXTpk1zHZpN98baZYnF5hQdN3JxTSIo3+SCP75MSU/dZsov9kTU/qTF6jGGW4SR+VjLJm60XoZafB+E3Jh1BQn/aUadSlCcg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.151
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745303732;
+	cv=none; b=FQ9uYkrUGNFMhxDqxzbhFdEjUCuFyKHySBlOq2FLx1Jx8k7XYBm1YKIbKyL3sJp8mMhwtoUB5ld7O04bIqrHhLDbOw8Vz4cjXguY6AwFmVaJvUoB7UsygZbCUBaAKzX+YlAKyAbSrOrMc+klS70RgB+i8RyaMvQ8c5Z9IFgI+F5ao/esJZXyEZ0krBm/Iwoe4nknhkDd14bHjg4KH/SU4mzvQVeoiHBPsRgxOv9m7Ojd5Mao2dzdXvwTb64hZoZLfzP66oeVvMIL5jVwKWKRXeAJtD+oi7w2ddov6RhiT2B6H8uyVaWNlf8ucQToUOmvaWRTLjMwzdtJcMqa+nq2HQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745302507; c=relaxed/relaxed;
-	bh=QVMRFF0HnMuDauG9BiETyBoIinlRhjQP+PxMeCLIYbI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=deJC1vrOOmkjYPzTK3vZEB07W+RSXmbAy4CMCZirCrmo2wZMKd8Mhs5XxYBn3evH7kxcMPf9I643UDBJ61Y0yBdwK39L8t3fgQrVJVJ/hjvfl30J6Cs/njSOj8blLySEn5bMetys/beEVYJdFNS6GeEaiXlMKd4n5lfOpT9PqTGAtkLoSo+uMEEoXof9TNiFjQNk8ajZwhhZGtXSdVkdzIyPhg2m5q1NBMRwQCfS5fEgOG1SseRyPqKYhqcJ6WainoeLeXDitIs0uxbvFaE8Qek1TH9lCShuiqDsCGt7HFfBnlap8JFqaiiqJaGWrx5J79gtNkFLegxMxNrojyZo0A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=RXZXDkJC; dkim-atps=neutral; spf=pass (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+	t=1745303732; c=relaxed/relaxed;
+	bh=CSbqA3bAQF15TSj2kU2AijUmnn5D8n+f1WrGXiMzIZc=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=W8sU+5K2uw7XcoODtPYW5K4Zau0teBAy+KlXkNIHcKO4A+T4ioP5YgxI2hh6Hdp5YWDwbacSTx+yhnoNwHhE9PLpq6U0y3DuR46mEcaGccNfsD0yIx5uKRCyT/hk60XvLNxBy+agc3Eodost2ZBqk2HTCw5iuSjKT7n3b+zFyeBxL93TbbXlcTw9smEVR35N+MTN0dbYXmLH6GxzOmrjTOpfe04/TUrrm3CKoJgwGiA3QxgM4du4lc3nGuvurO5Mvp1QTAziRK+gcLIDAP8jsUzJ4UFX1xJIsZZcHcvTd4KgOR5MzVL9p1YZQe62QQviGzkR8jbcvhlxfFbOPpjUSw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=tm96GUz/; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=S15YVYNg; dkim-atps=neutral; spf=pass (client-ip=202.12.124.151; helo=fout-b8-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=RXZXDkJC;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=tm96GUz/;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=S15YVYNg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canb.auug.org.au (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org)
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.151; helo=fout-b8-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhX5j6SlLz3bqW
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 16:15:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=202503; t=1745302502;
-	bh=QVMRFF0HnMuDauG9BiETyBoIinlRhjQP+PxMeCLIYbI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RXZXDkJCnkxwhFREEgoM2mg/PU1Pi/fAuGIKjAwNXwuPu3L4atBbJuZV7OdQtYhyz
-	 2o44gNrYrEmG5fBVXq+ccO2Dd8SpMgK/1TQzJWoYMh26K21q4M5En/fR50S3PKsDDV
-	 QMxwH5Z+3duIJSyh9OLAR7nuqEnturc22mciADKXO7npoPuT/SkN03snfvI/NXrnLL
-	 xFHPGplB83pQQv6oh6zuxFXU9puKO32S/1GHHQ0KrJkuUdBbhBaD1FpHQ3N6mlZ4Tf
-	 NTlMYGG9Parf1oW4gT6qv9Ex+BD341XrM5Pn7F06NebIqf4Pjghlk2ULQlUYPA8OEv
-	 rQKe+6TLG+5Qw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZhX5f24ycz4wcj;
-	Tue, 22 Apr 2025 16:15:02 +1000 (AEST)
-Date: Tue, 22 Apr 2025 16:15:01 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>
-Subject: Re: linux-next: build warnings after merge of the powerpc-fixes
- tree
-Message-ID: <20250422161501.306c2712@canb.auug.org.au>
-In-Reply-To: <157256be-d77d-427e-8feb-77d1373b0c00@linux.ibm.com>
-References: <20250422114720.480cea29@canb.auug.org.au>
-	<157256be-d77d-427e-8feb-77d1373b0c00@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhXYG1VHmz2yN2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 16:35:29 +1000 (AEST)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id A27AA11401A2;
+	Tue, 22 Apr 2025 02:35:26 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-05.internal (MEProxy); Tue, 22 Apr 2025 02:35:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1745303726;
+	 x=1745390126; bh=CSbqA3bAQF15TSj2kU2AijUmnn5D8n+f1WrGXiMzIZc=; b=
+	tm96GUz/5laSpVdtqvT92jAn/qGy66m52ES4GFPViDC0RE+s7/JAca2z2jBmsFDQ
+	tb+28qUcHFs3qx0R+2c8CeddgRWIV/9h24rqr23EKUIVwGa4GPeuUrG0tmlgoVt+
+	ZHzn79ST+9I0goMv6y7eOFP1Aob1j4VDt2+5sE7rtuLB/Zyu8JY3KagvyAlC+uir
+	rPD9fI8V4/OHOin2f7bJbaudSREsZk0UkCOyZ72FVn9fVz6n0ZPaVfcXkbrUymZU
+	ouwPj1ZyoYsCGSohjo6H3xKXwjVezVgklx4GrPhsrNwmX/3tHp6p59fFeFvlcY+t
+	n1n6Hewxl/eZ7t4kVuIsaQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1745303726; x=
+	1745390126; bh=CSbqA3bAQF15TSj2kU2AijUmnn5D8n+f1WrGXiMzIZc=; b=S
+	15YVYNgzRi5te+XpEAxt4na3Nt+HZmh0lSNmiT6bmHdemAiHDAbCzmFlZJnif8wp
+	yCdy4UgPdeNG1xrL/evW7VosMvkF/ejT2XX2AK5cdhSQqhHYKgmh8WkQDkaCNKQZ
+	gdXIRzwckAGICeIMDcBAtBBBxNhz7r2YJrNdpVAuRj4nCv/v2kBypQlTtjeAUY+m
+	7igWf2du+M/CD9uRKd+LIw+CprBFKq/cz8wsSwh+RM+may8pIwu3Qmhotlo8S3rf
+	G3u0RpmIuZwd5iHVjAU/+4Ewik3jRMzl70nih37gjyqwEQTCHmC3NNJ+V8M0Q1Ap
+	Xr7VnNo0wpayDOl4WUcxQ==
+X-ME-Sender: <xms:rjgHaCFqDcjmUeR6G11LG7Oqyq2Y-1euR6CcOwuJwp6vhdzD9MujAA>
+    <xme:rjgHaDXycfeQgfS-QA-mrGPXCnQqVcLRH66U2WTcFBaHi9yn-auW0sN55lCa81azh
+    mrSLfZ_axPLjcHTZG0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeeftddvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
+    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
+    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsggtohhllhhinhhssehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehvkhhouhhlsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpdhrtg
+    hpthhtohepughmrggvnhhgihhnvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
+    htthhopeiifiesiihhqdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:rjgHaMIWXPEbidvdIojmW-kdRwy8zzfCt9WApBEWzFCXD-yt1uAIBg>
+    <xmx:rjgHaMFoY_wlw3acJWj1FJeo6mWISxD64I-MTmyUqcd_1wqL4GE8aQ>
+    <xmx:rjgHaIXEoPJ7GIiIDnVr0Fz4oezSwmkq6GD9_mZYSAC5_MmJ0LLwsQ>
+    <xmx:rjgHaPPGhcATyxbCYLHL0jhu-KvDKMNruOYPP8Ywi-NNbun1FpncCA>
+    <xmx:rjgHaOx8Ctd0-LE-TORyy1WlNtGQ4_XQ-zli77A2XR6VeO-24Y54Dtg5>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 29A312220073; Tue, 22 Apr 2025 02:35:26 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,69 +96,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/+i4FXKqrriw4fU2=CB0IMrR";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+X-ThreadId: T8f64d9338f7a15a8
+Date: Tue, 22 Apr 2025 08:34:55 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Ben Collins" <bcollins@kernel.org>, dmaengine@vger.kernel.org
+Cc: "Zhang Wei" <zw@zh-kernel.org>, "Vinod Koul" <vkoul@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Message-Id: <fb0b5293-1cf3-4fcc-be9c-b5fe83f32325@app.fastmail.com>
+In-Reply-To: <2025042122-bizarre-ibex-b7ed42@boujee-and-buff>
+References: <2025042122-bizarre-ibex-b7ed42@boujee-and-buff>
+Subject: Re: [PATCH] fsldma: Support 40 bit DMA addresses where capable
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
---Sig_/+i4FXKqrriw4fU2=CB0IMrR
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi Madhavan,
-
-On Tue, 22 Apr 2025 11:20:38 +0530 Madhavan Srinivasan <maddy@linux.ibm.com=
-> wrote:
+On Tue, Apr 22, 2025, at 04:49, Ben Collins wrote:
+> On 64-bit QorIQ platforms like T4240, the CPU supports 40-bit addressing
+> and memory configurations > 64GiB. The fsldma driver is limiting itself
+> to only 64GiB in all Elo configurations.
 >
-> I cant recreate this in both my x86_64 cross build and ppc64 build with d=
-ash.
-> I tried both ppc64_defconfig and pseries_le_defconfig compilation.
->=20
-> x86_64 dash version : dash-0.5.12-3.fc40.x86_64
-> powerpc dash version : dash-0.5.12-4.fc41.ppc64le
->=20
-> Can you share the dash version=20
+> Setup fsldma driver to make use of the full 40-bit addressing space,
+> specifically on the e5500 and e6500 CPUs.
 
-I am running Debian Testing on ppc64el and the dash version is
-0.5.12-12.
+I don't think making the mask depend on a compile-time option is
+correct, e.g. when you build a combined 32-bit kernel for e500 and
+e5500, you set a different mask compared to an e500-only kernel.
 
-Try this:
+The question here is whether the mask is a limitation of the
+IP block or the bus it's connected to, of if there is any
+limitation at all:
 
-$ make -p 2>/dev/null | grep -w SHELL
-SHELL =3D /bin/sh
-$ ls -l /bin/sh
-lrwxrwxrwx 1 root root 4 Feb  5 00:14 /bin/sh -> dash
-$ dash -c '[ $(ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]'
-dash: 1: [: 0: unexpected operator
-$ dash -c 'x=3D$(ld -v --no-warn-rwx-segments &>/dev/null; echo $?); echo "=
-$x"'
-0
-GNU ld (GNU Binutils for Debian) 2.44
+- The driver just writes the DMA address as a 64-bit register,
+  so most likely the DMA device can in fact do wider addressing,
+  and any limitation is either in the bus or the available
+  memory
 
-i.e. the $( ... ) returns 2 lines of output because the "ld ..." part is
-backgrounded by the '&'.
+- SoCs that don't set a dma-ranges property in the parent bus
+  are normally still capped to 32 bit DMA. I don't see those
+  properties, so unless there is a special hack on those chips,
+  you get 32 bit DMA regardless of what DMA mask the driver
+  requests
 
---=20
-Cheers,
-Stephen Rothwell
+- If there are chips that have more than 64GB of RAM installed
+  but have a limitation in the way the DMA engine is wired
+  up to 36 bits, that should be reflected in the dma-ranges
+  property, not the device driver.
 
---Sig_/+i4FXKqrriw4fU2=CB0IMrR
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+- If the limitation is indeed specific to the version of the
+  IP block, this would normally need to be detected based on
+  the compatible string of the DMA engine itself, not a compile
+  time setting.
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmgHM+UACgkQAVBC80lX
-0Gz/IQf/SN+x+1J7VFJkonKWzmhQA5zThWUQzzAs+Cm+Xn83+RnwmmInYBhzYJK8
-vywIDDEUsGgyreJJyhb9PP8Je6g2vMi1pXCGkaXv5ZbttJUL2QIvVKCkgrVExrvN
-YUPJe/JmG7s+Oao97lFoqI5bEgI1ITfGO4MnyNmr5QQjgt4O49UQCNwzepTDtfco
-1dXANjEFpcPEz2YvrzZW/7XUWY+WvnfRXN0Gy6iRW4JuUhPGKAWIi1yhH2C9W0sa
-+IAa7W5rWVO8yyBXXvGtCoRjIEuRZRTZ/r32v+lLqAfcAw2ppBJxRAbLLFXxWr3p
-m1wcbdFi5Is799Ju2kXaDo9V2XOuPQ==
-=xhpS
------END PGP SIGNATURE-----
-
---Sig_/+i4FXKqrriw4fU2=CB0IMrR--
+     Arnd
 
