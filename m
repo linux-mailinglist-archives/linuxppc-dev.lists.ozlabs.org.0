@@ -1,76 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-7889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7890-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D23EA963B1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 11:12:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49104A96433
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 11:26:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zhc1w0wwLz2yr4;
-	Tue, 22 Apr 2025 19:12:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhcLB5l7Kz300B;
+	Tue, 22 Apr 2025 19:26:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::330"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745313124;
-	cv=none; b=SCR1Mb0g8ChLxFL53cdHT9sd4O9mt2hs2Az0Obozmcxl1KQaJ6c90eaD3jg+zjxPly7FqN5C2yLzKh5l8BmE3eBXpSdEW/mQoKSoO8KH755NoKsQ0hjU7Ajt98ZtcQl+MQPqcne840mvwNRnUgxyV5B39E9xDO/RwG0QiK8MARsmuHC2PnUFiEEtKBY/j/q3ShbtnAYOFLGzyrRW7tcPLiofksINozqv9pRhitcOGy6C0wju9OCW0DvxE+KfSLw2hUbfKx9+1bGdVq8wjnb4BSP2OIN3glaoismQvFLxrssUPThRFWYwptZ/2Xv+llEKqRaAalBMCjkF5vb2cWGSQA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.159
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745313970;
+	cv=none; b=gkDZ5vs00smKUfzWAtNX9VOYRX950P+eMRnnfeZ9v7ogATEMy6gy85icdkeik6lB25JpUfS1w8sUfz5ME0tmN/JF2AoTJdhTAaM392xmaRLDmaH94SBzWX8dL+mgRSnRB5bM8SJrqjaU1COx8M3M7tVpQ9DITnCe4+UcZJ5vr8ry08XxgnshxnOhN0Quc0XY1tMb5Hte2xksUTxx7tgmqFw2EeuMP6jznCXJiw/hJ4RxFlsg8Dyd3IWpRKRcqT/kqa+6czNL/+O0Zf4h3ap4sEWeo0f8iZP8Mexh5Qx715l7e4t47Up1s4OmD2Tn/RJFFheosTQXjqcQmapr2DdUVg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745313124; c=relaxed/relaxed;
-	bh=vNQhtMzboJsKqrUjFlhlWpbiOnbOUnEHjsqB+mLSfIY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XijdMRsNs8oCGFwX+frT+o/qviMYZUl91QJfnjZxQRwf9wqbWZeu3R9IOLR2f9dKRaK9vMbJ56pmSUvfbU95z/S17hC/bMcMwYY4PZTPJ4vcOyNbtSqkGebeUyLrbUDmKmJwTb4PiayauCACix9pfDG42kYBH8ohHkZpbdd5lDCKLvg8pbL1bnLloByGFMCH++9ZA8Bsrsvgyg60ALThUi+9nViSx6l8MC33bQUGS/Lh70f1pSEQaL4i1vR+lH8biVnpU/jLd4QmLJbkdDyeRAgd9i6is6c6xyROad3fCnLVP2JWPfJAqihJ7dDB97C/SyNq7y2ImCqb6eNfIR/zPg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VtGLUuAS; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=james.clark@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+	t=1745313970; c=relaxed/relaxed;
+	bh=1/+0YVTUvXTj7AvVeAYrj06s3CToZPPnPcHrNo0HQwA=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=T+ZvjUcaph83hdPjTQ135plpMiL4IMGtptmQZchVTJizkqrq8++Qo8MB82pEuil8zD5GwlPaqW2QTMP+btVfg4XDI0dHg+ZcGb5+YuK14uu/6+02MXqyh6GYaacrryiENGEZ43Nuy272i1jOurroMebW45iZ6Pee2z91Mw8Rx6AA9ygjP6fRUC9VCKhw29rIxbkGgIeryFHE21pKSNglZJQvFLXWKM17fxfYXny6EvUupyyJpE7Ak3vb3FskGlpjCujSWlZ/Rs8xk1CmE8kihz517AmCZqGt2GH9fq5FhfvuVLn3F6XwbUv+y/eVA6xI0u0ZzfNfSOjxCkfo/6UeIA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=3CI0aNne; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=HUuQOuaM; dkim-atps=neutral; spf=pass (client-ip=202.12.124.159; helo=fhigh-b8-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VtGLUuAS;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=3CI0aNne;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=HUuQOuaM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=james.clark@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.159; helo=fhigh-b8-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zhc1t2Wfdz2yqT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 19:12:01 +1000 (AEST)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-43cf06eabdaso47006815e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 02:12:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745313117; x=1745917917; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vNQhtMzboJsKqrUjFlhlWpbiOnbOUnEHjsqB+mLSfIY=;
-        b=VtGLUuASviCL4tKW+HB8bZhSCsds40xg12qthZpE/8TWB1jY48CCxTtp3rFgu2Sf23
-         9o5wtHfzvb92i1HTN5XsY7Paj/kQGHurQZO3jTQIbdT02D1XquDE3shCrzoK60o6XXuc
-         dUF/ykBgOPCyJm+WK7zz/aUCKQ1hLqrV3Hkadzfo4CkYUXPhbJgmDNaiHLLrOj8CwtNF
-         v1zV6JoaWquryIOEzVIyl3GZ2LQ1n3l559IFvRKBhIY95RbpCHDlCwhIYy25wIFK6pIT
-         n2Zj0Ya/6OiR+V+RJ2OM1lA720ET+jQmcWJTiLXSCMmJjo71I7px5hNbvGQkzmbtrCrW
-         je+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745313117; x=1745917917;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vNQhtMzboJsKqrUjFlhlWpbiOnbOUnEHjsqB+mLSfIY=;
-        b=bjstGAgrl6IfJ/LfLkUd1AHGNRCWyQa3i6SDYfs8oNnZLrQ8MR12VaAIiw6bM7KYrY
-         0mlNA1hS3T8ZA1cxChVAzaACjRRubnzNAiMtXfzEUUG6atxs4CCGIacbq+FcV9rdrhQR
-         QAgz0plfS6lSoegeoYxIe2XUxtj+UtyQHyIqyb0v/0m8eLSHzBiC1QyRG8G+jDJ1mZpj
-         bQ3J3I9Vousv1s0UpehRXaysjWH2mE9TVtA9mgzkpbp444CpIikI51KmuY3MQV49YtQV
-         95TuyyeWncJOwtyOKARsiHVrRWxUp+pdG2CXia+Xdjx1+sCDoqS321NBRroVcGg93oas
-         1yPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXvpjmGoCz5qpTw/QAXOzVKRvnLujhLQG3c8hdsiP4ynfoTrPHBuLNu9G0B1XwylcUMr9seSs8W7aKYA6c=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwQLyRNOVib/UxU+2LWdyJUVudfCwv9snXdWn/YI6o/Lx7nFk+x
-	ZGfxHUgzJgvt6mqPFAEE70V8vzyIeyLh0c+PZiP6WBt0WP8QDBc31Mbt+/i5EC4=
-X-Gm-Gg: ASbGncvHB5Fj53hs8RpG3wB8XvsdFYzelLYCioTQardBlCojqTvm4BCd8G+5NJpYbrS
-	c9b4DVduCKjV7b4yyC3HX6uZk98/lq8Wo6wAowlsU8y9A5qS2Rn7DCoBGOBfGgHQzWBrPEGgN31
-	7RYhQOlkBlpRqcBI0J4UpU8BgD248IItF+iLqazAKEcfqOml8Ntg2Cv3llpz9OD8L8+T71dyopD
-	kg24y9/+/Nw7tctsMupItPp8fQO+RMhNxcAEEL35ZIIZ0jPneEZO5k2lFeEI3DCN4xAqjvYjNGp
-	Fd4AhRRlyJa2I+IyZv5RWfkSaLKX0LFdPTuMZpSEegw=
-X-Google-Smtp-Source: AGHT+IGPpbum0KsQcE9z8vl2RfdveoyjLjKiZigrimsFoHNByQt297/k0WCP9oipkvXobXbABwmLAA==
-X-Received: by 2002:a5d:5f93:0:b0:39c:140b:feec with SMTP id ffacd0b85a97d-39efba384cemr9947675f8f.7.1745313117068;
-        Tue, 22 Apr 2025 02:11:57 -0700 (PDT)
-Received: from [192.168.1.3] ([77.81.75.81])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa4933e7sm14681335f8f.65.2025.04.22.02.11.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Apr 2025 02:11:56 -0700 (PDT)
-Message-ID: <0f2b7c10-a30a-4d2e-ac3f-baec1b45d945@linaro.org>
-Date: Tue, 22 Apr 2025 10:11:55 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhcL65kz9z2yqT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 19:26:06 +1000 (AEST)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 236CD254016E;
+	Tue, 22 Apr 2025 05:26:03 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-05.internal (MEProxy); Tue, 22 Apr 2025 05:26:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1745313962;
+	 x=1745400362; bh=1/+0YVTUvXTj7AvVeAYrj06s3CToZPPnPcHrNo0HQwA=; b=
+	3CI0aNneHYAVSeaMa04aK7khsdUCytYTXWMqLjXvptLWdEdiuhsngS3z+CyNSXs2
+	ShJC85FEH5QPTcCyKMD4bk6f9pLYhKZGcI0jbVMC1y7xVtH3EsP1QQaS+rsSRN6b
+	aNt742LCKcQBSJIQaj2wVfth2YVX5sPDKjflfSL6bEEfTeZc3sEzAxaXONjeDwxE
+	ESF5+NVzF1d9hCMkS0ABBnftJ1cEyez1ukbTc9FUsgwJlVGPNiHu9CiDtXdhKm3b
+	lspXRDl8NNdvmovyZaGirRYzc+y4GEcPbpHtkOkxeyR3ELUdB/U1l7NnjkYwZMnO
+	lbEmDiTjmQ5eWinETqn24g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1745313962; x=
+	1745400362; bh=1/+0YVTUvXTj7AvVeAYrj06s3CToZPPnPcHrNo0HQwA=; b=H
+	UuQOuaMKbtJzpCIfZmWV+gYDfTnBHQJaYWXoVeNIFlFv70/kSMa/2Im0PbapCPrH
+	SnhdnVdW6aNl+aeqUGUI279NWzrQMdpwFeXgSxvn/8PbRdzvgzcIIKKcB73zRE/5
+	vq7//tvMEJtrCcqKIj/weV5wkGn360rJPGlMhsxFFOgbEKDrp/oDCUFi2hpcbWTx
+	YyrbgTixma8fhgLz48cy2gZgyhje0wGJYMZzqVKmpi7+AaXIfSUFCN8A7y1kc9mA
+	QZ4av96q62HpL//+AgPKnoug5dsqpKMDQkhDp+fl76yhHTOVotcStQQQMIMZoEY2
+	Lvqvgg/w/tiRkIGAnX+kQ==
+X-ME-Sender: <xms:qmAHaFNR0X0b4egu_tnuKLWqQgqv03-YG9SqHayrII8pRJaN5yIhUg>
+    <xme:qmAHaH9Oqtsi__sG5JpeZ12gpTVo6QIJ7HzQxf8jp36dFeK-Gl_O6SsP5lPUfr0My
+    dG97OOg1PjvcjTfyzk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeeffeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
+    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
+    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepsggtohhllhhinhhssehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehvkhhouhhlsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpdhrtg
+    hpthhtohepughmrggvnhhgihhnvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
+    htthhopeiifiesiihhqdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:qmAHaETefQDELZAy3qwtvFTJy62gjJmNz063VTFsm8XqipYnX6fGAg>
+    <xmx:qmAHaBsn3G4ckJzKk-H_T0K65dQ-7sNKobWy0xyT6GQzrOPIypkgEg>
+    <xmx:qmAHaNesBrKIYh1wNpw1f1NaaFosHIIciyoHATzlgdDcqn0Loe5v6w>
+    <xmx:qmAHaN1dOxWES_oyUS2pwvAckyzrL4QX9KIdfZInhG7IuDJWNiL35w>
+    <xmx:qmAHaFaf_Cy045B3uzzvlC2Bc64HbuymKtz1TKHvS1k02Th8kYjPJ-yA>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 92CE32220073; Tue, 22 Apr 2025 05:26:02 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,70 +96,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools headers: Update the include/vdso/unaligned.h to
- sync headers
-To: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- maddy@linux.ibm.com, atrajeev@linux.vnet.ibm.com,
- disgoel@linux.vnet.ibm.com, hbathini@linux.vnet.ibm.com,
- Aditya.Bodkhe1@ibm.com, jiang.peng9@zte.com.cn, venkat88@linux.ibm.com,
- Tejas.Manhas1@ibm.com, acme@kernel.org, jolsa@kernel.org,
- adrian.hunter@intel.com, irogers@google.com, namhyung@kernel.org
-References: <20250421034143.67607-1-atrajeev@linux.ibm.com>
-Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <20250421034143.67607-1-atrajeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-ThreadId: T8f64d9338f7a15a8
+Date: Tue, 22 Apr 2025 11:25:40 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Ben Collins" <bcollins@kernel.org>
+Cc: dmaengine@vger.kernel.org, "Zhang Wei" <zw@zh-kernel.org>,
+ "Vinod Koul" <vkoul@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <29bdb7e0-6db9-445e-986f-b29af8369c69@app.fastmail.com>
+In-Reply-To: <2025042204-apricot-tarsier-b7f5a1@boujee-and-buff>
+References: <2025042122-bizarre-ibex-b7ed42@boujee-and-buff>
+ <fb0b5293-1cf3-4fcc-be9c-b5fe83f32325@app.fastmail.com>
+ <2025042202-uncovered-mongrel-aee116@boujee-and-buff>
+ <ace8c85d-6dec-499f-8a8a-35d4672c181d@app.fastmail.com>
+ <2025042204-apricot-tarsier-b7f5a1@boujee-and-buff>
+Subject: Re: [PATCH] fsldma: Support 40 bit DMA addresses where capable
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Tue, Apr 22, 2025, at 10:56, Ben Collins wrote:
+> On Tue, Apr 22, 2025 at 09:59:42AM -0500, Arnd Bergmann wrote:
+>> 
+>> Right, but this could just mean that they end up using SWIOTLB
+>> to bounce the high DMA pages or use an IOMMU rather than actually
+>> translating the physical address to a dma address.
+>
+> There's a few things going on. The Local Address Window can shift
+> anywhere in the 64-bit address space and be as wide as the physical
+> address (40-bit on T4240, 36-bit on P4080). I think this is mainly for
+> IO to PCIe and RapidIO, though.
 
+There are usually two sets of registers, not sure which one the Local
+Address Window refers to:
 
-On 21/04/2025 4:41 am, Athira Rajeev wrote:
-> To pick up the changes in:
-> 	commit acea9943271b ("vdso: Address variable shadowing in macros")
-> 
-> Addressing this perf tools build warning:
-> 
-> 	diff -u tools/include/vdso/unaligned.h include/vdso/unaligned.h
-> 
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
-> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> ---
->   tools/include/vdso/unaligned.h | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tools/include/vdso/unaligned.h b/tools/include/vdso/unaligned.h
-> index eee3d2a4dbe4..ff0c06b6513e 100644
-> --- a/tools/include/vdso/unaligned.h
-> +++ b/tools/include/vdso/unaligned.h
-> @@ -2,14 +2,14 @@
->   #ifndef __VDSO_UNALIGNED_H
->   #define __VDSO_UNALIGNED_H
->   
-> -#define __get_unaligned_t(type, ptr) ({						\
-> -	const struct { type x; } __packed *__pptr = (typeof(__pptr))(ptr);	\
-> -	__pptr->x;								\
-> +#define __get_unaligned_t(type, ptr) ({							\
-> +	const struct { type x; } __packed * __get_pptr = (typeof(__get_pptr))(ptr);	\
-> +	__get_pptr->x;									\
->   })
->   
-> -#define __put_unaligned_t(type, val, ptr) do {					\
-> -	struct { type x; } __packed *__pptr = (typeof(__pptr))(ptr);		\
-> -	__pptr->x = (val);							\
-> +#define __put_unaligned_t(type, val, ptr) do {						\
-> +	struct { type x; } __packed * __put_pptr = (typeof(__put_pptr))(ptr);		\
-> +	__put_pptr->x = (val);								\
->   } while (0)
->   
->   #endif /* __VDSO_UNALIGNED_H */
+- Translation of MMIO addresses (PCI BAR and device registers) when
+  accessed from CPU and possibly from P2P DMA, these are represented
+  by the 'ranges' property in DT.
 
-Reviewed-by: James Clark <james.clark@linaro.org>
+- Translation of physical memory when accessed from a DMA bus master,
+  represented by the 'dma-ranges' property.
 
+The latter is what the dma-mapping API needs. This code has changed
+a lot over the years, but in the current version the idea is that
+the limit enforced by the driver through dma_set_mask() is independent
+of the limit enforced by the platform bus based on the dma-ranges
+property. 
+
+The bit that matters in the end is the intersection of both,
+so dma_map_single() etc only maps a page that is addressable
+by both the device and the bus.
+
+>> > I'll check on this, but I think it's a seperate issue. The main thing is
+>> > just to configure the dma hw correctly.
+>> 
+>> I think it's still important to check this before changing the
+>> driver: if the larger mask doesn't actually have any effect now
+>> because the DT caps the DMA at 4GB, then it might break later
+>> when someone adds the correct dma-ranges properties.
+>
+> I'm adding dma-ranges to my dt for testing.
+
+Ok. The other thing you can try is to printk() the dev->bus_dma_limit
+to see if it even tries to use >32bit addressing.
+
+>> > So a little research shows that these 3 compatible strings in
+>> > the fsldma are:
+>> >
+>> > fsl,elo3-dma:		40-bit
+>> > fsl,eloplus-dma:	36-bit
+>> > fsl,elo-dma:		32-bit
+>> >
+>> > I'll rework it so addressing is based on the compatible string.
+>> 
+>> Sounds good, yes. Just to clarify: where did you find those
+>> limits? Are you sure those are not just the maximum addressable
+>> amounts of physical RAM on the chips that use the respective
+>> controllers?
+>
+> This is where things might be more interesting. The P4080RM and T4240RM
+> is where I got this information. Register "cdar" in the fsldma code. This
+> makes up 0x08 and 0x0c registers.
+
+> In the RM 0x08 is the extended address register. On P4080 it says this
+> holds the top 4 bits of the 36-bit address, and on T4240 it says the top
+> 8 bits of the 40-bit address. So the asynx_tx physical address needs to
+> be masked to the 36-bit or 40-bit.
+
+Ok, makes sense.
+
+       Arnd
 
