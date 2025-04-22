@@ -1,58 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-7899-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7900-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE58EA96C0A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 15:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8CAA96C24
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 15:11:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhjGk41F3z3bjg;
-	Tue, 22 Apr 2025 23:08:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhjL50cDGz3bmk;
+	Tue, 22 Apr 2025 23:11:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745327310;
-	cv=none; b=G4axTWdNYO02eN38Iy4F4VbMOGlTTHsHOwsNpNG9VzK6HYLxZsUonyYIP349R+GsAeZAv00iXA84LbX2otEXs+6rtAvWmFsTFxDKIwLz9rZNhvimxD5lvQmoUbvQv+LO3zcx0I2t4ePKS6bm6JfdADiaFb7KaB3V3yJDuKscNUf9XUGyxqUHlB6NTFYATyVYcAdnwiybC7NM6whXgiwdkMgYByt2JgRVEVxRT6GxosuitHxwzmn6jupVLmCLp/DdvG61wzS+Ryqx6pOJxaxtW8N7k8tLT1ZCZgcJuPZpuZUpAlRcUg9kF02/AHok7+H35mnxz4uNs4yz3LfePMKqrQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745327485;
+	cv=none; b=bETfdz6moYYFpwiMjGbSioFcxtfKoZXG4f9rIyNZxSf6w/enXbYwSUmsy/HkTz8j7TDfomm7QbXeOl6hCaVQja9BRuGA0w1dqRg0I2pEFzl5YmXl+6wX4E51pVs1DauLOFZChQ2SqsV08bbBtIRpYruTFL3lDKemEaSZr7GDxprE2lAee00d77jtLi3/9kOvkyDOjfWUsAbZtDGtAfLA0tXvj4Ya88aCpAeOfqkF1C7/R/FrmeqZTTN4SuBi8+FbEcLr3Xy7Jk5LoPMc7hg0CAMKq8PHobyZ5cNVLyI4ieWweaiJobYhGBylpuy2T7wHXtHAW5S0BmjyCbaBsk9m1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745327310; c=relaxed/relaxed;
-	bh=a3orzNI64ybl8y3Gmbs9LFLjLlYqzJuNuqutXp9j00Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jD7Mavhci9O8yCGdEo2jB9MnQZZE+zzX/qAITrDtP3Ua4/SB3qLkzTmUkzFuxKVq5BQtbPoFWTNbxPN6QTNsKhDjrxucS5RIliKt8Yk0HRUqgW2//FQ2lFQ+p2QQB5Bod27i4P06yq77byQ/iVvaMrwDmDctsyZXlxcGYCi7JK+3mdXhIL3mY3H/C/vcE21dK4TnLBs5t+j6Ymz0QhqjxsWx8/vYkLYoepwFy8y5LXUdrOQVIYKDFSavF2h9Kc0j5WWTRQ8BSePo3SWYM++MoiTnaxux6zFGJS2yXw3R7g5EB4wk43OeJfVw3Ds2YZJt9aRgkLzaz0nX+gOaYjO/6w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=Ptslmllo; dkim-atps=neutral; spf=pass (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+	t=1745327485; c=relaxed/relaxed;
+	bh=NFhGgD+bh+/u7NKJrybDxaC9hZpZ6BS2o8RNPUgX6Uc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eLWszADrHJTtW6NXU4wFuFje92SGgG899H0AcHXzg0+IvI3B+dbksyqXLtVIk8icViN9RnCmXA68D8H0ZjNlwRLNOVGJV+2YyO8uPICKkSb5JmmVuv2jaSZsRAKM+fpS1biiuvI0I0l1Hjlghx+u6ncP5HRwe7VWXcbkZyh1dtDhKKz39xCybeAAqCJXoBmMXOm73HSFa4as/0cBrw7KMl9xWLCKBZtO8IE57l8t8txGy+ZZqJT+WKJWM701zBmO04wf9m46WY+0lELSnG8CFzUO6FWzhS42Y0wVE1k3Hr6+L15X0Knzhmvq/nX0CqbmTWyVbcioAdLCm/X6TcNjfw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cA+fOvcC; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=Ptslmllo;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cA+fOvcC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canb.auug.org.au (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org)
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhjGh6D30z304l
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 23:08:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=202503; t=1745327304;
-	bh=a3orzNI64ybl8y3Gmbs9LFLjLlYqzJuNuqutXp9j00Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PtslmllosBpteRg/7cVVFRV1iTzBuHKpg0DQGZQarSOdKHv9oeW3iui8oCEIf03oU
-	 PNS82XJ1niT4NoSAryiBrml45/JS2wO3ZzWtPjMx8jvM5sJpE1hxCZPLaueLBbzpOX
-	 dCl+S7TzaMTtnjMKhEsq+T8L/0ou0109ZADN4RkZlsR1P0hY0eyl8dxT+0J2a52abx
-	 4DU6MDkaMPXkzpv8S+CXLtW7le7qhLppaHvDgqeTdA7tJzrURmxkX8mkGGeLX/ag3U
-	 h1BFER2yXQh6ZEmxh75sjPTCGD1k8+UWTr4HYdKTyMIO1w8zOktlBgg25Yz9bhOzz+
-	 Hjxo3OJRIhD3Q==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZhjGb69HVz4x04;
-	Tue, 22 Apr 2025 23:08:23 +1000 (AEST)
-Date: Tue, 22 Apr 2025 23:08:22 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
- naveen@kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/boot: Fix dash warning
-Message-ID: <20250422230822.12a81c95@canb.auug.org.au>
-In-Reply-To: <20250422113023.356883-1-maddy@linux.ibm.com>
-References: <20250422113023.356883-1-maddy@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhjL35WPyz304l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 23:11:23 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53MA3xn1026063;
+	Tue, 22 Apr 2025 13:11:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=NFhGgD+bh+/u7NKJrybDxaC9hZpZ6BS2o8RNPUgX6
+	Uc=; b=cA+fOvcCrm1YJPFcLwFq3CBYpuVXhdgdAhqwd0D/Bm5lqsYCEJkql6tTp
+	Xs8KQbbdjJnel92/YNN5ZaJJg4IXMr4miDeaTxA7DyTanpWY0HIIJkGRENo+i5/e
+	6FI8BSk2y9HZa0jc3y67BjrBtRMwhm1sszOCPLthMLiddXtyMwZjDeo1EnYkJZN6
+	vlH8rR3u5AuyFMRwyK4MkXH8E+kl3/6ssBdvqO2pLCwZUkj25hiUL1Xjz/DhqXD0
+	UepCfBFDHnYs5kH9kUpcS+lzo4NBZjBkJNbUCdd4P0y1Y2REEd3CNkdObXrcEkok
+	2Mp2C5r32OcdOg/kALnEcQA1dZTOA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46691hguvb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Apr 2025 13:11:11 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53MDA5lh007338;
+	Tue, 22 Apr 2025 13:11:10 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46691hguv8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Apr 2025 13:11:10 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53MBYtXF015393;
+	Tue, 22 Apr 2025 13:11:09 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 464qnkjufn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Apr 2025 13:11:09 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53MDB70Z53871062
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Apr 2025 13:11:07 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6E2FC20063;
+	Tue, 22 Apr 2025 13:11:07 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E5F92005A;
+	Tue, 22 Apr 2025 13:11:02 +0000 (GMT)
+Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.58.77])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 22 Apr 2025 13:11:00 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: mpe@ellerman.id.au, christophe.leroy@csgroup.eu
+Cc: npiggin@gmail.com, naveen@kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH 0/6] Fixes for shellcheck/sparse warnings 
+Date: Tue, 22 Apr 2025 18:40:34 +0530
+Message-ID: <20250422131040.374427-1-maddy@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,55 +89,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/bS1mYDzUdFfGRTDoEGpTvtx";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=V7h90fni c=1 sm=1 tr=0 ts=6807956f cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=XR8D0OoHHMoA:10 a=n_g77fz-FBAD1igXfXEA:9
+X-Proofpoint-ORIG-GUID: pu6qJqA_LxL1Vq5aLiDFGTkf9OYStI_w
+X-Proofpoint-GUID: bU_ZO-hkfIMA5XND5WFqMFpAI-xiEp6D
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-22_06,2025-04-21_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 clxscore=1015 mlxlogscore=571 bulkscore=0 phishscore=0
+ lowpriorityscore=0 impostorscore=0 mlxscore=0 malwarescore=0 adultscore=0
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504220098
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
---Sig_/bS1mYDzUdFfGRTDoEGpTvtx
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Patchset handles fixes for some of the sparse
+and shellcheck warnings.
 
-Hi Madhavan,
+Madhavan Srinivasan (6):
+  powerpc/kvm: Fix sparse warning
+  powerpc/xmon: fix sparse warning "Using plain integer as NULL pointer"
+  powerpc/perf:make isa207_pmu_format_group struct static
+  powerpc: fix sparse warnings
+  powerpc/prom_init: Fix shellcheck warnings
+  powerpc/boot/install.sh: Fix shellcheck warnings
 
-On Tue, 22 Apr 2025 17:00:23 +0530 Madhavan Srinivasan <maddy@linux.ibm.com=
-> wrote:
->
->  # suppress some warnings in recent ld versions
->  nowarn=3D"-z noexecstack"
-> -if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 =
-]; then
-> +if [ "$("${CROSS}"ld -v --no-warn-rwx-segments >/dev/null 2>&1; echo $?)=
-" -eq 0 ]; then
->  	nowarn=3D"$nowarn --no-warn-rwx-segments"
->  fi
+ arch/powerpc/boot/install.sh             | 14 +++++++-------
+ arch/powerpc/kernel/btext.c              |  2 +-
+ arch/powerpc/kernel/kvm.c                |  8 ++++----
+ arch/powerpc/kernel/prom_init_check.sh   | 16 ++++++++--------
+ arch/powerpc/kernel/setup-common.c       |  2 +-
+ arch/powerpc/perf/isa207-common.c        |  2 +-
+ arch/powerpc/platforms/powernv/opal.c    |  2 +-
+ arch/powerpc/platforms/pseries/lparcfg.c |  2 +-
+ arch/powerpc/xmon/ppc-opc.c              | 20 ++++++++++----------
+ 9 files changed, 34 insertions(+), 34 deletions(-)
 
-On the way to bed, it occurred to me that the above "if" line can be
-written as:
+-- 
+2.49.0
 
-if "${CROSS}ld" -v --no-warn-rwx-segments >/dev/null 2>&1; then
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/bS1mYDzUdFfGRTDoEGpTvtx
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmgHlMYACgkQAVBC80lX
-0GzD7wf+Nhbozebatxk6S5o637ZBjblGX7S5pMA7HwVRNJFXYq69QjlciFamXFrJ
-C29+KScmoDZesRwvx95MsAn35GdRbVJYrCx8ZWYwKpLWkAphycINmBpVmG0DRN3X
-VkyBB1Tq0BfcahLib7IQw2Ta+n62AJT0HsE0rzuo8q8p44BytUKt0GqmIuESbbbd
-DruoXvbbIRuf1iM5ydAqhfzjHBfeF2ft08NGjlGD1VPNPMWqSRfkIt5X4rUUDbP3
-Xj1apwof/w7JjTyiGH9iWS5AqRndhEbsUKn4bcafnIO6LcVitBLnjwNcWrTQ8Y82
-In6MZMClMsEABdij8iLKisQByOEMHQ==
-=0VvF
------END PGP SIGNATURE-----
-
---Sig_/bS1mYDzUdFfGRTDoEGpTvtx--
 
