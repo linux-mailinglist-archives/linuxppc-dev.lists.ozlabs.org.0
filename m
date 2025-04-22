@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-7919-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7923-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63BBBA970B3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 17:29:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 180B9A970C0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 17:29:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhmN96kB7z3cGD;
-	Wed, 23 Apr 2025 01:28:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhmND1RMcz3byl;
+	Wed, 23 Apr 2025 01:28:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745335705;
-	cv=none; b=ajdnwgABDrkILfU+VDN8Wz28BK3zSISDNMFdgnYG2pJ/3yZAxynl3CZGL63Gnxju27Ww8/2jdpKvIvB8H6M5f9a9/LfgCwhE9qnb9sPuYrPQFtCoC1NigQQmt2WWXXyd+jQDJHgfXXW5n3qzVKW3N6byQO3WNcZLPOf3qFa6wWXZ+RQb9+FVdE/71QuezNTBFG1a/6dm3KG6EE8LqaabNFQ2brkrHvjcSQDxJcbqjtmNort5hHM9ILjEp3+m8jVzxqGNfKA0tlAyOwCvhl5gTgHWpIEIFB4vcxIdy06Ja1crtghfxFKhg47HJhomVxVI7iYw2AWceDjyo6mfmTmk3g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745335708;
+	cv=none; b=Qn4saSk9EqezF246GwNmPw8Nr61gMO9gRKAM5GUPwoWsxl+k78rHWuXaU4sYyVqMXsk3MkfgGJ2Lc+jBL1HBpfBb6eh6SRfPCFXAhcd7liPFRJH1vrtYz5K01KlUTt7m9qnI4fSgaPBtKLS5QYNnjnNh6AAbHIs8/eAGDS7N2wOqTTHiRJye5wlG8hV3lWVPuw3eOWVkr8Yxomyo/kN2EAJZBu7K6GcYeesMHUXPw1Poa9Eq9wRJdawyfAaQI74IGXBDu85EvA5qyxePGVRxMmn1+h0zD3xFYvI6yMHzZeprfkIhOy0hS2gkPvUdjR1EyUz84TuSbu2IeRNE7tup5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745335705; c=relaxed/relaxed;
-	bh=24H3P72aA5pCEEqRrWmK7pg00LMX0cTI4Q9xjVYKxXA=;
+	t=1745335708; c=relaxed/relaxed;
+	bh=JTbO3bkLwy7G2nJqTkGEYXUtBveaaxyR2UC7H7HLcoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnLcrJXWhdsfE4WJePYQuvqeieVGJEK/f8p3QamgzVYQ/YiKVwGTw4gcpmW76ZsC6JgIaWoSxNhPa0EKKRzM+h4yKJvW/Bbvur6jVAOzvMEYws1zNkDad5iYJN9HDRjPycqoN9E9mHocwQKVKlGEcHgWoAfy1aW0rWnFs0F+iDuQAonnkGJRUCKD40VzIol7d0MF0Yi5VS2EYuqa69DaX43ejPV61ns19RHecNrlVKrbjiTnrzmIhAZLelbSjFV4h9n2mspk27ocrhp6ifPSf5CblE7Kz6gcTlu8B1d+aMIFnIG5ZwXhWWuVTWO8yzj6gzE5oL6Qj/WKOkzyEe9cdw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oUxmNTn8; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=gxzIYcGuXB5nE9LBpiR7fEw5PrWnIkJox+OpRkkmE/7lxFE9DpChWgojHZK7zctFL4fsvR/3tXY1V8hg9UlDM01GvuXHEnbYpHd3Fu7W3W4lmlIhEG5Aq7RPknENePk4R3wU/3UmUPcF4lYWAPluAOXZpaS2EcXZAGgVHXnCrQcAIVR9LMQ2W2uStUNp1dvLyCN24rlY/iIstEq6aKhEDU3O5AyLlYX82jgcTj7xbp2rr948Y5d/to+mK+RK7zIGNzDjAU7x9QUb5VVXUEa8WThhADy3KSGfLM222ybhmODeI5vs1yX0DAHII5ab540H24lUrVZjb9WgbT4SGirjNA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S1Iqr1h9; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oUxmNTn8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S1Iqr1h9;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhmN443Vdz3byt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 01:28:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhmN60WD4z3c89
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 01:28:21 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A2464A941;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7E0DC4A957;
 	Tue, 22 Apr 2025 15:28:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F74BC4CEF2;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87429C4CEE9;
 	Tue, 22 Apr 2025 15:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1745335698;
-	bh=J8uCpavgYu/bq2A7Hf4ZA97H/cAunDf26vqUDG1MGLQ=;
+	bh=JceMeyvHZFS3hU3osMnM8DtDXrhU/UjeqoFMt/NCYhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUxmNTn8AgQpRrLgdELItVrayTHCc34bWmQEOm6kFtC1wEoqFMj8V36G++QRB0KkK
-	 XmZ9rXKUa/yKUmJ8RusFQ4qMCCGGp6w+R+tJ7snWoVB8h+U7MXfdJOkA/lDJXHFE6R
-	 r24jn1S1Jfdtu1XFNQqfQm0mInUuuFCtbIOcO4+PMmXWwzcfyazTOJeflVZEYGTwzp
-	 rij53w8zkeUtCZR+7YkI2JDpmAKiuk0649Xo/b3J4SvF22jID1OPUfoF+u7izfX19T
-	 Gqzebht6PQ2/P3JVmHp1WYwXRCYv6a94up81N3knCmddtfFrR47TFT/AhDgOCw5C6A
-	 he/0n9IQlEBEQ==
+	b=S1Iqr1h9HcAr7bVNT5cba2ArhH18ZszXuXxOULo1zOhqYgh93BeDmZmHR/LwJsF7b
+	 dhj8C+xJh4XhDT2g2eWx7IzOWw1s2s3vyJ6hz4uAM5jSnIcp07jjdJszZrqTUv20bS
+	 A4bMr1hXWDqFBHAU3/BabcvlSFb65cZFqD5VpKVjHDz2iPn7goCrvRJGSiSGjJOq08
+	 fG1/R2TuLkBGrejtmZ4GemCxXYilTCCNeo0uNnYhgCiJ4TpYBKNFEWgtZq6U5cAqYr
+	 taRybWcMEKlFRSxFM9HBqPP0OEHH06GdOtPd+jUapb+VTerV7yzqXLVE36IbD8U6Jj
+	 a9MwsvOLwBXFQ==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-arch@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-arch@vger.kernel.org,
 	x86@kernel.org,
 	"Jason A . Donenfeld" <Jason@zx2c4.com>,
 	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v3 08/13] crypto: powerpc - move library functions to arch/powerpc/lib/crypto/
-Date: Tue, 22 Apr 2025 08:27:11 -0700
-Message-ID: <20250422152716.5923-9-ebiggers@kernel.org>
+Subject: [PATCH v3 09/13] crypto: riscv - move library functions to arch/riscv/lib/crypto/
+Date: Tue, 22 Apr 2025 08:27:12 -0700
+Message-ID: <20250422152716.5923-10-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250422152716.5923-1-ebiggers@kernel.org>
 References: <20250422152716.5923-1-ebiggers@kernel.org>
@@ -82,167 +82,122 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 From: Eric Biggers <ebiggers@google.com>
 
 Continue disentangling the crypto library functions from the generic
-crypto infrastructure by moving the powerpc ChaCha and Poly1305 library
-functions into a new directory arch/powerpc/lib/crypto/ that does not
-depend on CRYPTO.  This mirrors the distinction between crypto/ and
-lib/crypto/.
+crypto infrastructure by moving the riscv ChaCha library functions into
+a new directory arch/riscv/lib/crypto/ that does not depend on CRYPTO.
+This mirrors the distinction between crypto/ and lib/crypto/.
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/powerpc/crypto/Kconfig                       | 14 --------------
- arch/powerpc/crypto/Makefile                      |  4 ----
- arch/powerpc/lib/Makefile                         |  2 ++
- arch/powerpc/lib/crypto/Kconfig                   | 15 +++++++++++++++
- arch/powerpc/lib/crypto/Makefile                  |  7 +++++++
- arch/powerpc/{ => lib}/crypto/chacha-p10-glue.c   |  0
- arch/powerpc/{ => lib}/crypto/chacha-p10le-8x.S   |  0
- arch/powerpc/{ => lib}/crypto/poly1305-p10-glue.c |  0
- arch/powerpc/{ => lib}/crypto/poly1305-p10le_64.S |  0
- lib/crypto/Kconfig                                |  3 +++
- 10 files changed, 27 insertions(+), 18 deletions(-)
- create mode 100644 arch/powerpc/lib/crypto/Kconfig
- create mode 100644 arch/powerpc/lib/crypto/Makefile
- rename arch/powerpc/{ => lib}/crypto/chacha-p10-glue.c (100%)
- rename arch/powerpc/{ => lib}/crypto/chacha-p10le-8x.S (100%)
- rename arch/powerpc/{ => lib}/crypto/poly1305-p10-glue.c (100%)
- rename arch/powerpc/{ => lib}/crypto/poly1305-p10le_64.S (100%)
+ arch/riscv/crypto/Kconfig                         | 7 -------
+ arch/riscv/crypto/Makefile                        | 3 ---
+ arch/riscv/lib/Makefile                           | 1 +
+ arch/riscv/lib/crypto/Kconfig                     | 8 ++++++++
+ arch/riscv/lib/crypto/Makefile                    | 4 ++++
+ arch/riscv/{ => lib}/crypto/chacha-riscv64-glue.c | 0
+ arch/riscv/{ => lib}/crypto/chacha-riscv64-zvkb.S | 0
+ lib/crypto/Kconfig                                | 3 +++
+ 8 files changed, 16 insertions(+), 10 deletions(-)
+ create mode 100644 arch/riscv/lib/crypto/Kconfig
+ create mode 100644 arch/riscv/lib/crypto/Makefile
+ rename arch/riscv/{ => lib}/crypto/chacha-riscv64-glue.c (100%)
+ rename arch/riscv/{ => lib}/crypto/chacha-riscv64-zvkb.S (100%)
 
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index 8bcc690134644..4bf7b01228e72 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -88,24 +88,10 @@ config CRYPTO_AES_GCM_P10
- 	    - Power10 or later features
+diff --git a/arch/riscv/crypto/Kconfig b/arch/riscv/crypto/Kconfig
+index 27a1f26d41bde..4863be2a4ec2f 100644
+--- a/arch/riscv/crypto/Kconfig
++++ b/arch/riscv/crypto/Kconfig
+@@ -16,17 +16,10 @@ config CRYPTO_AES_RISCV64
+ 	  - Zvkned vector crypto extension
+ 	  - Zvbb vector extension (XTS)
+ 	  - Zvkb vector crypto extension (CTR)
+ 	  - Zvkg vector crypto extension (XTS)
  
- 	  Support for cryptographic acceleration instructions on Power10 or
- 	  later CPU. This module supports stitched acceleration for AES/GCM.
- 
--config CRYPTO_CHACHA20_P10
+-config CRYPTO_CHACHA_RISCV64
 -	tristate
--	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
--	select CRYPTO_LIB_CHACHA_GENERIC
+-	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
 -	select CRYPTO_ARCH_HAVE_LIB_CHACHA
+-	select CRYPTO_LIB_CHACHA_GENERIC
 -	default CRYPTO_LIB_CHACHA_INTERNAL
 -
--config CRYPTO_POLY1305_P10
--	tristate
--	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
--	select CRYPTO_ARCH_HAVE_LIB_POLY1305
--	select CRYPTO_LIB_POLY1305_GENERIC
--	default CRYPTO_LIB_POLY1305_INTERNAL
+ config CRYPTO_GHASH_RISCV64
+ 	tristate "Hash functions: GHASH"
+ 	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
+ 	select CRYPTO_GCM
+ 	help
+diff --git a/arch/riscv/crypto/Makefile b/arch/riscv/crypto/Makefile
+index 247c7bc7288ce..4ae9bf762e907 100644
+--- a/arch/riscv/crypto/Makefile
++++ b/arch/riscv/crypto/Makefile
+@@ -2,13 +2,10 @@
+ 
+ obj-$(CONFIG_CRYPTO_AES_RISCV64) += aes-riscv64.o
+ aes-riscv64-y := aes-riscv64-glue.o aes-riscv64-zvkned.o \
+ 		 aes-riscv64-zvkned-zvbb-zvkg.o aes-riscv64-zvkned-zvkb.o
+ 
+-obj-$(CONFIG_CRYPTO_CHACHA_RISCV64) += chacha-riscv64.o
+-chacha-riscv64-y := chacha-riscv64-glue.o chacha-riscv64-zvkb.o
 -
- config CRYPTO_DEV_VMX
-         bool "Support for VMX cryptographic acceleration instructions"
-         depends on PPC64 && VSX
-         help
-           Support for VMX cryptographic acceleration instructions.
-diff --git a/arch/powerpc/crypto/Makefile b/arch/powerpc/crypto/Makefile
-index 2f00b22b0823e..f13aec8a18335 100644
---- a/arch/powerpc/crypto/Makefile
-+++ b/arch/powerpc/crypto/Makefile
-@@ -9,23 +9,19 @@ obj-$(CONFIG_CRYPTO_AES_PPC_SPE) += aes-ppc-spe.o
- obj-$(CONFIG_CRYPTO_MD5_PPC) += md5-ppc.o
- obj-$(CONFIG_CRYPTO_SHA1_PPC) += sha1-powerpc.o
- obj-$(CONFIG_CRYPTO_SHA1_PPC_SPE) += sha1-ppc-spe.o
- obj-$(CONFIG_CRYPTO_SHA256_PPC_SPE) += sha256-ppc-spe.o
- obj-$(CONFIG_CRYPTO_AES_GCM_P10) += aes-gcm-p10-crypto.o
--obj-$(CONFIG_CRYPTO_CHACHA20_P10) += chacha-p10-crypto.o
--obj-$(CONFIG_CRYPTO_POLY1305_P10) += poly1305-p10-crypto.o
- obj-$(CONFIG_CRYPTO_DEV_VMX_ENCRYPT) += vmx-crypto.o
- obj-$(CONFIG_CRYPTO_CURVE25519_PPC64) += curve25519-ppc64le.o
+ obj-$(CONFIG_CRYPTO_GHASH_RISCV64) += ghash-riscv64.o
+ ghash-riscv64-y := ghash-riscv64-glue.o ghash-riscv64-zvkg.o
  
- aes-ppc-spe-y := aes-spe-core.o aes-spe-keys.o aes-tab-4k.o aes-spe-modes.o aes-spe-glue.o
- md5-ppc-y := md5-asm.o md5-glue.o
- sha1-powerpc-y := sha1-powerpc-asm.o sha1.o
- sha1-ppc-spe-y := sha1-spe-asm.o sha1-spe-glue.o
- sha256-ppc-spe-y := sha256-spe-asm.o sha256-spe-glue.o
- aes-gcm-p10-crypto-y := aes-gcm-p10-glue.o aes-gcm-p10.o ghashp10-ppc.o aesp10-ppc.o
--chacha-p10-crypto-y := chacha-p10-glue.o chacha-p10le-8x.o
--poly1305-p10-crypto-y := poly1305-p10-glue.o poly1305-p10le_64.o
- vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes_xts.o ghash.o
- curve25519-ppc64le-y := curve25519-ppc64le-core.o curve25519-ppc64le_asm.o
- 
- ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
- override flavour := linux-ppc64le
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index dd8a4b52a0ccb..1cd74673cbf74 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -1,10 +1,12 @@
- # SPDX-License-Identifier: GPL-2.0
- #
- # Makefile for ppc-specific library files..
- #
- 
-+obj-y += crypto/
-+
- CFLAGS_code-patching.o += -fno-stack-protector
- CFLAGS_feature-fixups.o += -fno-stack-protector
- 
- CFLAGS_REMOVE_code-patching.o = $(CC_FLAGS_FTRACE)
- CFLAGS_REMOVE_feature-fixups.o = $(CC_FLAGS_FTRACE)
-diff --git a/arch/powerpc/lib/crypto/Kconfig b/arch/powerpc/lib/crypto/Kconfig
+ obj-$(CONFIG_CRYPTO_SHA256_RISCV64) += sha256-riscv64.o
+ sha256-riscv64-y := sha256-riscv64-glue.o sha256-riscv64-zvknha_or_zvknhb-zvkb.o
+diff --git a/arch/riscv/lib/Makefile b/arch/riscv/lib/Makefile
+index b1c46153606a6..0baec92d2f55b 100644
+--- a/arch/riscv/lib/Makefile
++++ b/arch/riscv/lib/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
++obj-y			+= crypto/
+ lib-y			+= delay.o
+ lib-y			+= memcpy.o
+ lib-y			+= memset.o
+ lib-y			+= memmove.o
+ ifeq ($(CONFIG_KASAN_GENERIC)$(CONFIG_KASAN_SW_TAGS),)
+diff --git a/arch/riscv/lib/crypto/Kconfig b/arch/riscv/lib/crypto/Kconfig
 new file mode 100644
-index 0000000000000..3f52610e45eb4
+index 0000000000000..46ce2a7ac1f2c
 --- /dev/null
-+++ b/arch/powerpc/lib/crypto/Kconfig
-@@ -0,0 +1,15 @@
++++ b/arch/riscv/lib/crypto/Kconfig
+@@ -0,0 +1,8 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
-+config CRYPTO_CHACHA20_P10
++config CRYPTO_CHACHA_RISCV64
 +	tristate
-+	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
++	depends on 64BIT && RISCV_ISA_V && TOOLCHAIN_HAS_VECTOR_CRYPTO
 +	default CRYPTO_LIB_CHACHA_INTERNAL
-+	select CRYPTO_LIB_CHACHA_GENERIC
 +	select CRYPTO_ARCH_HAVE_LIB_CHACHA
-+
-+config CRYPTO_POLY1305_P10
-+	tristate
-+	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
-+	default CRYPTO_LIB_POLY1305_INTERNAL
-+	select CRYPTO_ARCH_HAVE_LIB_POLY1305
-+	select CRYPTO_LIB_POLY1305_GENERIC
-diff --git a/arch/powerpc/lib/crypto/Makefile b/arch/powerpc/lib/crypto/Makefile
++	select CRYPTO_LIB_CHACHA_GENERIC
+diff --git a/arch/riscv/lib/crypto/Makefile b/arch/riscv/lib/crypto/Makefile
 new file mode 100644
-index 0000000000000..5709ae14258a0
+index 0000000000000..e27b78f317fc8
 --- /dev/null
-+++ b/arch/powerpc/lib/crypto/Makefile
-@@ -0,0 +1,7 @@
++++ b/arch/riscv/lib/crypto/Makefile
+@@ -0,0 +1,4 @@
 +# SPDX-License-Identifier: GPL-2.0-only
 +
-+obj-$(CONFIG_CRYPTO_CHACHA20_P10) += chacha-p10-crypto.o
-+chacha-p10-crypto-y := chacha-p10-glue.o chacha-p10le-8x.o
-+
-+obj-$(CONFIG_CRYPTO_POLY1305_P10) += poly1305-p10-crypto.o
-+poly1305-p10-crypto-y := poly1305-p10-glue.o poly1305-p10le_64.o
-diff --git a/arch/powerpc/crypto/chacha-p10-glue.c b/arch/powerpc/lib/crypto/chacha-p10-glue.c
++obj-$(CONFIG_CRYPTO_CHACHA_RISCV64) += chacha-riscv64.o
++chacha-riscv64-y := chacha-riscv64-glue.o chacha-riscv64-zvkb.o
+diff --git a/arch/riscv/crypto/chacha-riscv64-glue.c b/arch/riscv/lib/crypto/chacha-riscv64-glue.c
 similarity index 100%
-rename from arch/powerpc/crypto/chacha-p10-glue.c
-rename to arch/powerpc/lib/crypto/chacha-p10-glue.c
-diff --git a/arch/powerpc/crypto/chacha-p10le-8x.S b/arch/powerpc/lib/crypto/chacha-p10le-8x.S
+rename from arch/riscv/crypto/chacha-riscv64-glue.c
+rename to arch/riscv/lib/crypto/chacha-riscv64-glue.c
+diff --git a/arch/riscv/crypto/chacha-riscv64-zvkb.S b/arch/riscv/lib/crypto/chacha-riscv64-zvkb.S
 similarity index 100%
-rename from arch/powerpc/crypto/chacha-p10le-8x.S
-rename to arch/powerpc/lib/crypto/chacha-p10le-8x.S
-diff --git a/arch/powerpc/crypto/poly1305-p10-glue.c b/arch/powerpc/lib/crypto/poly1305-p10-glue.c
-similarity index 100%
-rename from arch/powerpc/crypto/poly1305-p10-glue.c
-rename to arch/powerpc/lib/crypto/poly1305-p10-glue.c
-diff --git a/arch/powerpc/crypto/poly1305-p10le_64.S b/arch/powerpc/lib/crypto/poly1305-p10le_64.S
-similarity index 100%
-rename from arch/powerpc/crypto/poly1305-p10le_64.S
-rename to arch/powerpc/lib/crypto/poly1305-p10le_64.S
+rename from arch/riscv/crypto/chacha-riscv64-zvkb.S
+rename to arch/riscv/lib/crypto/chacha-riscv64-zvkb.S
 diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
-index c5c01bc3569d5..4b3e94ed84bb6 100644
+index 4b3e94ed84bb6..0b06c25eb38a5 100644
 --- a/lib/crypto/Kconfig
 +++ b/lib/crypto/Kconfig
-@@ -163,8 +163,11 @@ if ARM64
- source "arch/arm64/lib/crypto/Kconfig"
- endif
- if MIPS
+@@ -166,8 +166,11 @@ if MIPS
  source "arch/mips/lib/crypto/Kconfig"
  endif
-+if PPC
-+source "arch/powerpc/lib/crypto/Kconfig"
+ if PPC
+ source "arch/powerpc/lib/crypto/Kconfig"
+ endif
++if RISCV
++source "arch/riscv/lib/crypto/Kconfig"
 +endif
  endif
  
