@@ -1,67 +1,42 @@
-Return-Path: <linuxppc-dev+bounces-7871-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7874-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C545DA95AFE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 04:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9870A95C5A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 04:51:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhQqN3Jqyz3bpm;
-	Tue, 22 Apr 2025 12:17:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhRZb0zqHz3bsQ;
+	Tue, 22 Apr 2025 12:51:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745288240;
-	cv=none; b=CCoQd/IZY5/9solFnT0v7oYFeaIL8aK8+ADXF7i1cEN4CmYcHbZjUxLDvebD5IsyMHj+X+AVyMLJNm9JlES9UBLIJX19cV7Asu4lJFcAkorHn7sQYISLXsYCS55/dm8sRxvggGNNn1fVWHldYlQyzXw+whu9TTl8UJzgcKb2pQ5kq1gEwYtIrZbJjftC7alz6tSrzFB3Fr19otlDKAX4Kcv1HLldMGlaGx8pr4ySH7xV3Yly7BLYF5LqaiZXn+KYm5dC80rgCoHl0x2cnQykB1u0dpHNFppKu3WRO18spgCpc8R+00MvphAME9M7OTyM/gzkRb6ntji1HUhAvnOV9g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:1004:224b::b4"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745289637;
+	cv=none; b=dXITRSIrUWhNuzNw3ZZBl5BVea7whWIWIhLZ+B+jhkxLvxEUDzpEc6nMKggg9EeZv6c4gFCCUKYv08psN5t0RPgUkcvhD5FjnXCmREk26e06eUQJu7Cs1YbncvlhKWuKRHd1y89qbTqCTpm0HNmqkpOo8dTJydlf9BBWvp4lqCTLNU2uDUVF9S13GoUO8hng1Xj2aQ9YTPpuSyFrxS+oq2PBL18EFeB7gWa97mVbMefnVNF9lIYsqr6+bU3nH7qJk5lQRxdWzkiBfadYMyJf5WBInPAZXJCnZ5J9fpQvBxHVcsLxbzFM+bN15CEkMq+0IuaDLkVLWUtKgmBfE5HTSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745288240; c=relaxed/relaxed;
-	bh=Lb+J9ZokVSqqxIsPp1kmHD+Y9qcFSWI6Hw+ckhxKTBU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eNZ1+y2ewlOBRpWfWM/U2cfbD3dIBFxUtXtSj9Kzn0+C9MAK9jId67elhGgB8InWiEpzYR8AJbfBwsu+gpyjyB2fFxKajrisRVvdNDp3lC2Jme89xnfAbA1RyRcJqbYGrRNDysNc58/NkRli2FXI3iRIJqYHQNpsND0gRLvZhyP3HphnBjVk8w3sDed/8WCYTWrzNgd71cNq+07nRPyyByej0AatynQVIqf3cVg6LpgtUhAvFLXNqSyCoyscAbRC6i8J4pMDnn8fNiyTA8XhWkdY4k4NLfJMgBtuN8bfwN5El3S3qTdjw3+scFhptzi6cVteOjZSWJdHRkJ/6CEbWw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=myhualnb; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=myhualnb;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	t=1745289637; c=relaxed/relaxed;
+	bh=yEQlYFQOCFUoz3+grLTGT9fklmE5IKSbwXCDl90jhDQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=YKBCuRnEpXGxlcKX77iRuS5+jgR1pyDbxwohboKPYYyH6IROwnb9Tjxi7KhDVQYTxzQD/t8dwJlj4mw9gkuXjLVrCYu40RnGbeVpRSiQeEAz5P3bHHMYsLTkSlCdc/UdXbfY76rfn0Iq0Kg8JpXv1Ul9Nm9xJb5TMAwbJtwE+JaKmkbLK5kBxR7SDD8p17fu6qCAaaztTi7HApvS00Br5F8rUCFJnT14W5Nwo1a8yGSrvNBT7i8or1Av/4BgmueemjdFGLPKwuOi1FZbg1U8A9GK3LIuXXfjkiIysoWmbNEWyS7pxFugHyF20oJqwGTVmDTBXugXgP/v36ZzxPBDXQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass (client-ip=2001:41d0:1004:224b::b4; helo=out-180.mta0.migadu.com; envelope-from=ben.collins@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:1004:224b::b4; helo=out-180.mta0.migadu.com; envelope-from=ben.collins@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 533 seconds by postgrey-1.37 at boromir; Tue, 22 Apr 2025 12:40:37 AEST
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [IPv6:2001:41d0:1004:224b::b4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhQqM5K9Xz2yRn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 12:17:19 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 08298A4BF35;
-	Tue, 22 Apr 2025 02:11:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FD6C4CEEE;
-	Tue, 22 Apr 2025 02:17:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288235;
-	bh=NjNbpF18wPAYd3eJEswSOl8w+6PgqTaTcYBTzvy0/08=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=myhualnbDMfLHwDB1hoHPqRPJtTa+7waxg6JDU0hWW00KQSUwZfmyrBlsMpI5BtAh
-	 WX6TDBujrsi1h9CJNtD6MbWWWQ2nMmLq1zI7NcRGB88q2kA6MArJ8pOGoPexJqqrm5
-	 9RdACuCLAVsCCOjSEOUGZG9VoHa6xcXVqW7HMrW8IOEricD88vuJ+ulY1v1DfSN/W+
-	 g3uZvqnUUdQ+sj3NqQjLte5IEd7oDP2bcYFb8MO7Z2pftvDI1ouxXmskzHeAD7927W
-	 N/JUdIvT0qkxUI326jEqMd1F3dfj64NhU3k8Y8BXGE3wbb3bYXDdGrwCkPaspuW56A
-	 U9cV79TOeBTQw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.12 07/23] ASoC: fsl_asrc_dma: get codec or cpu dai from backend
-Date: Mon, 21 Apr 2025 22:16:47 -0400
-Message-Id: <20250422021703.1941244-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250422021703.1941244-1-sashal@kernel.org>
-References: <20250422021703.1941244-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhRLF1xnqz2yRn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 12:40:36 +1000 (AEST)
+Date: Mon, 21 Apr 2025 22:31:13 -0400
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ben Collins <bcollins@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/addnote: Fix overflow on 32-bit builds
+Message-ID: <2025042122-mustard-wrasse-694572@boujee-and-buff>
+Mail-Followup-To: linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,64 +49,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.24
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="7zvi5okcyrtudtse"
+Content-Disposition: inline
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit ef5c23ae9ab380fa756f257411024a9b4518d1b9 ]
+--7zvi5okcyrtudtse
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH] powerpc/addnote: Fix overflow on 32-bit builds
+MIME-Version: 1.0
 
-With audio graph card, original cpu dai is changed to codec device in
-backend, so if cpu dai is dummy device in backend, get the codec dai
-device, which is the real hardware device connected.
+The PUT_64[LB]E() macros need to cast the value to unsigned long long
+like the GET_64[LB]E() macros. Caused lots of warnings when compiled
+on 32-bit, and clobbered addresses (36-bit P4080).
 
-The specific case is ASRC->SAI->AMIX->CODEC.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250319033504.2898605-1-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ben Collins <bcollins@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
 ---
- sound/soc/fsl/fsl_asrc_dma.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/powerpc/boot/addnote.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-index f501f47242fb0..1bba48318e2dd 100644
---- a/sound/soc/fsl/fsl_asrc_dma.c
-+++ b/sound/soc/fsl/fsl_asrc_dma.c
-@@ -156,11 +156,24 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
- 	for_each_dpcm_be(rtd, stream, dpcm) {
- 		struct snd_soc_pcm_runtime *be = dpcm->be;
- 		struct snd_pcm_substream *substream_be;
--		struct snd_soc_dai *dai = snd_soc_rtd_to_cpu(be, 0);
-+		struct snd_soc_dai *dai_cpu = snd_soc_rtd_to_cpu(be, 0);
-+		struct snd_soc_dai *dai_codec = snd_soc_rtd_to_codec(be, 0);
-+		struct snd_soc_dai *dai;
- 
- 		if (dpcm->fe != rtd)
- 			continue;
- 
-+		/*
-+		 * With audio graph card, original cpu dai is changed to codec
-+		 * device in backend, so if cpu dai is dummy device in backend,
-+		 * get the codec dai device, which is the real hardware device
-+		 * connected.
-+		 */
-+		if (!snd_soc_dai_is_dummy(dai_cpu))
-+			dai = dai_cpu;
-+		else
-+			dai = dai_codec;
-+
- 		substream_be = snd_soc_dpcm_get_substream(be, stream);
- 		dma_params_be = snd_soc_dai_get_dma_data(dai, substream_be);
- 		dev_be = dai->dev;
--- 
-2.39.5
+diff --git a/arch/powerpc/boot/addnote.c b/arch/powerpc/boot/addnote.c
+index 53b3b2621457d..78704927453aa 100644
+--- a/arch/powerpc/boot/addnote.c
++++ b/arch/powerpc/boot/addnote.c
+@@ -68,8 +68,8 @@ static int e_class =3D ELFCLASS32;
+ #define PUT_16BE(off, v)(buf[off] =3D ((v) >> 8) & 0xff, \
+ 			 buf[(off) + 1] =3D (v) & 0xff)
+ #define PUT_32BE(off, v)(PUT_16BE((off), (v) >> 16L), PUT_16BE((off) + 2, =
+(v)))
+-#define PUT_64BE(off, v)((PUT_32BE((off), (v) >> 32L), \
+-			  PUT_32BE((off) + 4, (v))))
++#define PUT_64BE(off, v)((PUT_32BE((off), (unsigned long long)(v) >> 32L),=
+ \
++			  PUT_32BE((off) + 4, (unsigned long long)(v))))
+=20
+ #define GET_16LE(off)	((buf[off]) + (buf[(off)+1] << 8))
+ #define GET_32LE(off)	(GET_16LE(off) + (GET_16LE((off)+2U) << 16U))
+@@ -78,7 +78,8 @@ static int e_class =3D ELFCLASS32;
+ #define PUT_16LE(off, v) (buf[off] =3D (v) & 0xff, \
+ 			  buf[(off) + 1] =3D ((v) >> 8) & 0xff)
+ #define PUT_32LE(off, v) (PUT_16LE((off), (v)), PUT_16LE((off) + 2, (v) >>=
+ 16L))
+-#define PUT_64LE(off, v) (PUT_32LE((off), (v)), PUT_32LE((off) + 4, (v) >>=
+ 32L))
++#define PUT_64LE(off, v) (PUT_32LE((off), (unsigned long long)(v)), \
++			  PUT_32LE((off) + 4, (unsigned long long)(v) >> 32L))
+=20
+ #define GET_16(off)	(e_data =3D=3D ELFDATA2MSB ? GET_16BE(off) : GET_16LE(=
+off))
+ #define GET_32(off)	(e_data =3D=3D ELFDATA2MSB ? GET_32BE(off) : GET_32LE(=
+off))
+--=20
+2.49.0
 
+
+--=20
+ Ben Collins
+ https://libjwt.io
+ https://github.com/benmcollins
+ --
+ 3EC9 7598 1672 961A 1139  173A 5D5A 57C7 242B 22CF
+
+--7zvi5okcyrtudtse
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEPsl1mBZylhoRORc6XVpXxyQrIs8FAmgG/3EACgkQXVpXxyQr
+Is/yBQ/+OH7WmDD0UgLyzSDN8gylSgSZxSBsTU1JQOVVCXY68ULJiqoJgAtpzboC
+wREgv6f8N6AzyklLxwlGDNfUSOespy9c76Z1/Hr0uoUwnUy1VA1ODKSQJIpgIDPZ
+40mj9Fa1nhMnFJ6bS+ljYzSn6MRzEs2HOv9vxsDUWoZW5mdLAzcVHVZ167e81l8M
+/31tWQOymIrS0Ink+HpXyYvsv6Pr40iRCCD5bWnsBHqrbF/dCJ/L7VAmPSJeB6F6
+FDAggldX4gvLDjApYkXV/CLX8zbCnXTQV6D68FSeMPuK6OnNsU2FVkTIsbb5g7lZ
+282OQYwc36fYizRxW/LXvMYCknE3BfXAzjwFS4DUzOXyauPgn+IXGZCkyOeCoLaA
+lqvKNZsPNQP98clLGkI9Bh0yoQbL8tLCd6/icdIoJuCCPX+58UeCcJcaEUMKzK8q
+SAkfB14xtiKgBG5xfinUBx4fKxrEefX2Cn+WJy1/gMvf4JpqBJeaMmccxh8QuWPP
+o0HdNi7uI+/+VbGkGbevcHsetrjIaf0cmxippf8l656OHAcAg2wfbts/M3ta+AgV
+UF5JlunaoEO3n9Ju56NlsQSllnch46F+oaUADF6rvhQtXkOPboECXEVOjVLBgBW2
+br+5nhZoYlGhc08lQ3zJ1+Jlyy53DUofCOO00BqRBtjdfACrljs=
+=Q31h
+-----END PGP SIGNATURE-----
+
+--7zvi5okcyrtudtse--
 
