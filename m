@@ -1,56 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-7869-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7870-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A024A95AA6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 03:47:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D90EA95AE4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 04:16:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhQ8w3jG6z2yqp;
-	Tue, 22 Apr 2025 11:47:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhQp30q1dz3bpd;
+	Tue, 22 Apr 2025 12:16:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745286448;
-	cv=none; b=YKEq20bWPRwj5rOvDsHnISETuvStjhpw+PVd6B35phwksQNEkuFSeECojqLxMJ1JsMidnL4Wjy3UorD1tHL+ZPspWUyIGrx8xqpC6A7LCgo1gt0Ab8W/zo+BUL4g7MtXDdb/oxHPF4aBvI9IzW+2b69YDTV2ArEzfgGpYDXCQUnTkeWUkuVRXIfP4H6dYOqrWTmnNm8bL6sFDU71oeXlug+zAhHfBbth0d4iQZ2c4C31IFmk/Hl4PmE+aHatE5pa32s6/Pkolj84D2XyoMvoz/O3tKvBhw8r4JJsPU4nu5g4OQClki3ZrVv1lJX6flcVIR0dYeNGvkiG4/zOy438Rw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745288171;
+	cv=none; b=ML3xZq2bo9RAX5CB06yeNwE+VRdYKhEX7ez5Dj8VkJts3DLvd2EoQpAzcOSOtYd/bVWYi5iOJ4bvF16kIDGC9gLhiSXxtC7kQAEcTga5/4DXgWM8MlktYnoFkYmUIhDdj37G2GsGMPIo3iKriifJ0a0Z783vsj/kLSLMZlQX1YwzET5sPnREglAk2Nd1tZlf5iG6AUfjvuBgfgfc4X0L3oBrg7as9TGV0lx5LnmBX7LM2f6HAswgOl0ay0A2gHfgZMfPDFwSQUvAuS0D+9o+/b1vGqMpBy8VNBSNWJTTqbmFI1J7WJM3QKSHgUwKzbB+alJ6xqgx0d41OB2bqHFBbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745286448; c=relaxed/relaxed;
-	bh=jdZT00tIy/ppY9OQh/U5pq3X+9Kj7GiUuE/NV6FD27M=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=HJxqVgMtVkII1r3sXM2xRWrhD3LpBsus6bzwRrEzv85sNtVWlYn3Pfo8786bRspeJV2gefaSugLhRKJpb/lQhvI90LrOlS9HKswg60rwvEgGDGGzGzhICPUvNOIWqhUcaDT/0JCQWPH7RmNxV7clrb4II025UMdsoLkZ93Z+/sy5NWROcmdzqaaeHUOHKVUQ8oTvrd/6NmuIQGd2vMbR82tG0PgwdpzINPyzxI7QgmSsLH2qwnQD0MkDSvuufia6cPimky+g7vAXIa3UtGKogr1dDNiPl3uyrjTBxRbdzR62qB8zUt8QiMCIK8SmXhC0NP43mk0/StDkq+m1JqUk9w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=einY7QyZ; dkim-atps=neutral; spf=pass (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+	t=1745288171; c=relaxed/relaxed;
+	bh=Lb+J9ZokVSqqxIsPp1kmHD+Y9qcFSWI6Hw+ckhxKTBU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=REyeXTb+dH0YPpkMRp9pxt/Ez7uiNuu5MLiy4l+TJu/T7Bk0LHeu9u+mhX3Y+TCLfJygvFOpXZ8hmSRBsoLFqiCfptjiGQsGZtgDGQTBKZmVHMYdyvbdAFmC6qFUbxYWfZYoSkA33x1C6d1zZltXK/xXm6EnnOWNjM8ZDjaT4VbfO2yaOzUCdjqiuuKPYKz79VpsvDHXb++IH+nGcrM/EDseGk7zuFHVpK2ooeqkjbs4loidbyOgDuPSm/jez+ZLfV5JAwyrNbfzaRSbiG5iKLbiIWZqFygP/5N23v27/2u8ZKmhnDbJCp/6pPeJBOFGUGbcDY+ib6Yim2qDh8wsiQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T0cGpG5p; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=einY7QyZ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T0cGpG5p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canb.auug.org.au (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org)
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhQ8t0t3Fz2yGZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 11:47:24 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=202503; t=1745286441;
-	bh=jdZT00tIy/ppY9OQh/U5pq3X+9Kj7GiUuE/NV6FD27M=;
-	h=Date:From:To:Cc:Subject:From;
-	b=einY7QyZR7hxI/FQZB71dSW066HKMmcpPhCwOrhZZ8qg1Cx03OWI67wgA6rT8ey1V
-	 4ZyGcq/yB+24KBUXRiVB12oVC+sA81y/KoPwsecueJ9Weum9uWAnGQbuKPcDebBLlV
-	 IUIuXIZF0h6xqHvG6rJTmX3L+MK9vob85DaWdg3GQucZyUlwEnqEFJ766lNlTgj8g0
-	 XiSk5Qo/PdAzBxbVy6JtW5vRFPImotutkvg4ZqxsHbeT5sw0QH9NVQdl/RddIvHR8o
-	 DZ+Za6LL432tBTgl2zZpYovoOOscg7HXIGC+yf2AOeQNMIv1dcvAXXUdTENr0hE88C
-	 DiKeY9VluhJeg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZhQ8n3Svqz4wcy;
-	Tue, 22 Apr 2025 11:47:21 +1000 (AEST)
-Date: Tue, 22 Apr 2025 11:47:20 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>, PowerPC <linuxppc-dev@lists.ozlabs.org>
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, Linux Next
- Mailing List <linux-next@vger.kernel.org>
-Subject: linux-next: build warnings after merge of the powerpc-fixes tree
-Message-ID: <20250422114720.480cea29@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhQnz5QKWz2yRn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 12:16:07 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AEE6D61362;
+	Tue, 22 Apr 2025 02:15:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2B6C4CEE4;
+	Tue, 22 Apr 2025 02:16:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745288162;
+	bh=NjNbpF18wPAYd3eJEswSOl8w+6PgqTaTcYBTzvy0/08=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T0cGpG5pt5czQsrotSYEqBUiq8Z1Ytt4b1AyrqD4F7+mEz1csQmgIQiTUi6CejhZy
+	 4/WrPT3rb0+gy1qiwQQS6imAhdv81PdZOLh6RJPVHY2U/wROVrjbTNhtX4w5UvcY4E
+	 qlxMYwZylZwXh80VZLEVexWvkajFEfcId9Ho8L2eHY9hFfhRIwAgD0jQLUe587+9IN
+	 g2AAenO0LsFVLAiyHIe7T8StZHTy7pYcz9Dl4yO6srn1iBPTDmpvnC+3p8HlpjYqq3
+	 KbTH0a1MA7jxCNjDoLOQdNyPv92HezL/qXNP4XoH0Ek9gkGctCAEfRG38LWZxh/7Jw
+	 TEE0iJn/jUfzw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.14 07/30] ASoC: fsl_asrc_dma: get codec or cpu dai from backend
+Date: Mon, 21 Apr 2025 22:15:27 -0400
+Message-Id: <20250422021550.1940809-7-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
+References: <20250422021550.1940809-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,61 +74,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/eyciFYFZlkLIGhOs35UBWT7";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14.3
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
---Sig_/eyciFYFZlkLIGhOs35UBWT7
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Hi all,
+[ Upstream commit ef5c23ae9ab380fa756f257411024a9b4518d1b9 ]
 
-After merging the powerpc-fixes tree, today's linux-next build
-(powerpc_ppc64_defconfig) produced these warnings:
+With audio graph card, original cpu dai is changed to codec device in
+backend, so if cpu dai is dummy device in backend, get the codec dai
+device, which is the real hardware device connected.
 
-arch/powerpc/boot/wrapper: 237: [: 0: unexpected operator
-ld: warning: arch/powerpc/boot/zImage.epapr has a LOAD segment with RWX per=
-missions
-arch/powerpc/boot/wrapper: 237: [: 0: unexpected operator
-ld: warning: arch/powerpc/boot/zImage.pseries has a LOAD segment with RWX p=
-ermissions
-arch/powerpc/boot/wrapper: 237: [: 0: unexpected operator
-ld: warning: arch/powerpc/boot/zImage.pmac has a LOAD segment with RWX perm=
-issions
-arch/powerpc/boot/wrapper: 237: [: 0: unexpected operator
-ld: warning: arch/powerpc/boot/dtbImage.ps3 has a LOAD segment with RWX per=
-missions
+The specific case is ASRC->SAI->AMIX->CODEC.
 
-Introduced by commit
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250319033504.2898605-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/soc/fsl/fsl_asrc_dma.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-  b2accfe7ca5b ("powerpc/boot: Check for ld-option support")
+diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
+index f501f47242fb0..1bba48318e2dd 100644
+--- a/sound/soc/fsl/fsl_asrc_dma.c
++++ b/sound/soc/fsl/fsl_asrc_dma.c
+@@ -156,11 +156,24 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
+ 	for_each_dpcm_be(rtd, stream, dpcm) {
+ 		struct snd_soc_pcm_runtime *be = dpcm->be;
+ 		struct snd_pcm_substream *substream_be;
+-		struct snd_soc_dai *dai = snd_soc_rtd_to_cpu(be, 0);
++		struct snd_soc_dai *dai_cpu = snd_soc_rtd_to_cpu(be, 0);
++		struct snd_soc_dai *dai_codec = snd_soc_rtd_to_codec(be, 0);
++		struct snd_soc_dai *dai;
+ 
+ 		if (dpcm->fe != rtd)
+ 			continue;
+ 
++		/*
++		 * With audio graph card, original cpu dai is changed to codec
++		 * device in backend, so if cpu dai is dummy device in backend,
++		 * get the codec dai device, which is the real hardware device
++		 * connected.
++		 */
++		if (!snd_soc_dai_is_dummy(dai_cpu))
++			dai = dai_cpu;
++		else
++			dai = dai_codec;
++
+ 		substream_be = snd_soc_dpcm_get_substream(be, stream);
+ 		dma_params_be = snd_soc_dai_get_dma_data(dai, substream_be);
+ 		dev_be = dai->dev;
+-- 
+2.39.5
 
-POSIX shell (in particular dash) does not recognise "&>" - you need to
-use ">/dev/null 2>&1".  (My /bin/sh is /bin/dash)
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/eyciFYFZlkLIGhOs35UBWT7
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmgG9SgACgkQAVBC80lX
-0GxbsQf+JRz/1CUUMq9xsdpOy6RYo8y3F1OTh+LJ90eo9Wza0FEC+N4YXuf8b9xB
-LzVIzz7zcjEK4Ca8x7npSY+7d6eeFdQK3uytDqxfQkClwc2/4rcGvZEqQRV2h6Ql
-yEbctEcYDjfI2k758CGIPKE8u6FhNhP86iJlQME7eg8npPhrO5W0/zVFX4Ou/3gy
-HwdEGy9DdoO/ebY08+aM/sEw3KKKuuuEgNreUNOA5/5HxLaLRKiqs9F9I6ojF1oX
-nIaOVdXGe2aM7KPjYyVt5VyGfnpRDIJuJubaUfxycNGWnZKqEr9rMFq8inG6vvHY
-zUyO/TF7f7ognDRVgxwtxB5MT4uiTw==
-=qq3W
------END PGP SIGNATURE-----
-
---Sig_/eyciFYFZlkLIGhOs35UBWT7--
 
