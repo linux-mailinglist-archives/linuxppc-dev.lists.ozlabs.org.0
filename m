@@ -1,45 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-7888-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6654DA9631E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 10:56:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D23EA963B1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 11:12:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zhbgx6pN8z2yHj;
-	Tue, 22 Apr 2025 18:56:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zhc1w0wwLz2yr4;
+	Tue, 22 Apr 2025 19:12:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::aa"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745312189;
-	cv=none; b=S7IFagTlRo+QvMMlYufycRyGBbeb30vCcboCOAvpArPwM4+yR3l1dHHIL8T1QkAB9TYQZffm82+G8ilzuQ5fi9Cn/97OczbYwPsANgHPfY76c8YgMZI19C7tVIMzzBKbtwQcmiPqEo7CGa17Lav3G8wOOEUQQ4mXhWA2HxacFdWNGKmuPruJwRrO/XeGURglaxHV+2IXxcFsHjdETxGIzCr9w1n65tWFWhWWlKUEi7V8qUINnhFDzT5x0jGTIoaTL90zB9sqtcd4DEt0PsAH0hAXA32BDRjd4UIMU/g1Ow2waUwrEfRq18QqLlpG2wCJcfj4vczGuy/kbRwvEdqYFw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::330"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745313124;
+	cv=none; b=SCR1Mb0g8ChLxFL53cdHT9sd4O9mt2hs2Az0Obozmcxl1KQaJ6c90eaD3jg+zjxPly7FqN5C2yLzKh5l8BmE3eBXpSdEW/mQoKSoO8KH755NoKsQ0hjU7Ajt98ZtcQl+MQPqcne840mvwNRnUgxyV5B39E9xDO/RwG0QiK8MARsmuHC2PnUFiEEtKBY/j/q3ShbtnAYOFLGzyrRW7tcPLiofksINozqv9pRhitcOGy6C0wju9OCW0DvxE+KfSLw2hUbfKx9+1bGdVq8wjnb4BSP2OIN3glaoismQvFLxrssUPThRFWYwptZ/2Xv+llEKqRaAalBMCjkF5vb2cWGSQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745312189; c=relaxed/relaxed;
-	bh=86MLnv8KnUgpAKY04XFlHMQ4/vjnmic1HOY9j5yyJBo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=avpM5+LtGeyRjQ05HeYNMDg7c8sVlMtVS1rhdBgy2vSkh/fqvH3ZbU/Ey3KSqmEtRO6uKkTpGGAeMYONRPUKiBFMhKqBpRsThRU9t5k3gczIvBg1vuxyQZaPiFnneSE2jYFRrCISK+kAccZyDhYQXpwumHR/ADZaUje5F4NuGDFDyVwbPZterx02u9jGkdSkFFX1YG7hlwByQ0rIfUDn94FYeLhKTPYjHLRX2xDpHFvraxNiutuQhoBsPZTAPsAQJzDvYQXDzVHJ+w+mR2wPm63DV8w/fjm/f8NXVDhaJGLq4/oVF6vb3tSPpCGw2wG0GfhBs2cPD1tQH9eG4mOVWA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass (client-ip=2001:41d0:203:375::aa; helo=out-170.mta1.migadu.com; envelope-from=ben.collins@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::aa; helo=out-170.mta1.migadu.com; envelope-from=ben.collins@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [IPv6:2001:41d0:203:375::aa])
+	t=1745313124; c=relaxed/relaxed;
+	bh=vNQhtMzboJsKqrUjFlhlWpbiOnbOUnEHjsqB+mLSfIY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XijdMRsNs8oCGFwX+frT+o/qviMYZUl91QJfnjZxQRwf9wqbWZeu3R9IOLR2f9dKRaK9vMbJ56pmSUvfbU95z/S17hC/bMcMwYY4PZTPJ4vcOyNbtSqkGebeUyLrbUDmKmJwTb4PiayauCACix9pfDG42kYBH8ohHkZpbdd5lDCKLvg8pbL1bnLloByGFMCH++9ZA8Bsrsvgyg60ALThUi+9nViSx6l8MC33bQUGS/Lh70f1pSEQaL4i1vR+lH8biVnpU/jLd4QmLJbkdDyeRAgd9i6is6c6xyROad3fCnLVP2JWPfJAqihJ7dDB97C/SyNq7y2ImCqb6eNfIR/zPg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VtGLUuAS; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=james.clark@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VtGLUuAS;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=james.clark@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zhbgw64TQz2xpn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 18:56:27 +1000 (AEST)
-Date: Tue, 22 Apr 2025 04:56:01 -0400
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ben Collins <bcollins@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: dmaengine@vger.kernel.org, Zhang Wei <zw@zh-kernel.org>, 
-	Vinod Koul <vkoul@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] fsldma: Support 40 bit DMA addresses where capable
-Message-ID: <2025042204-apricot-tarsier-b7f5a1@boujee-and-buff>
-Mail-Followup-To: Arnd Bergmann <arnd@arndb.de>, dmaengine@vger.kernel.org, 
-	Zhang Wei <zw@zh-kernel.org>, Vinod Koul <vkoul@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-References: <2025042122-bizarre-ibex-b7ed42@boujee-and-buff>
- <fb0b5293-1cf3-4fcc-be9c-b5fe83f32325@app.fastmail.com>
- <2025042202-uncovered-mongrel-aee116@boujee-and-buff>
- <ace8c85d-6dec-499f-8a8a-35d4672c181d@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zhc1t2Wfdz2yqT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 19:12:01 +1000 (AEST)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-43cf06eabdaso47006815e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 02:12:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745313117; x=1745917917; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vNQhtMzboJsKqrUjFlhlWpbiOnbOUnEHjsqB+mLSfIY=;
+        b=VtGLUuASviCL4tKW+HB8bZhSCsds40xg12qthZpE/8TWB1jY48CCxTtp3rFgu2Sf23
+         9o5wtHfzvb92i1HTN5XsY7Paj/kQGHurQZO3jTQIbdT02D1XquDE3shCrzoK60o6XXuc
+         dUF/ykBgOPCyJm+WK7zz/aUCKQ1hLqrV3Hkadzfo4CkYUXPhbJgmDNaiHLLrOj8CwtNF
+         v1zV6JoaWquryIOEzVIyl3GZ2LQ1n3l559IFvRKBhIY95RbpCHDlCwhIYy25wIFK6pIT
+         n2Zj0Ya/6OiR+V+RJ2OM1lA720ET+jQmcWJTiLXSCMmJjo71I7px5hNbvGQkzmbtrCrW
+         je+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745313117; x=1745917917;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vNQhtMzboJsKqrUjFlhlWpbiOnbOUnEHjsqB+mLSfIY=;
+        b=bjstGAgrl6IfJ/LfLkUd1AHGNRCWyQa3i6SDYfs8oNnZLrQ8MR12VaAIiw6bM7KYrY
+         0mlNA1hS3T8ZA1cxChVAzaACjRRubnzNAiMtXfzEUUG6atxs4CCGIacbq+FcV9rdrhQR
+         QAgz0plfS6lSoegeoYxIe2XUxtj+UtyQHyIqyb0v/0m8eLSHzBiC1QyRG8G+jDJ1mZpj
+         bQ3J3I9Vousv1s0UpehRXaysjWH2mE9TVtA9mgzkpbp444CpIikI51KmuY3MQV49YtQV
+         95TuyyeWncJOwtyOKARsiHVrRWxUp+pdG2CXia+Xdjx1+sCDoqS321NBRroVcGg93oas
+         1yPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvpjmGoCz5qpTw/QAXOzVKRvnLujhLQG3c8hdsiP4ynfoTrPHBuLNu9G0B1XwylcUMr9seSs8W7aKYA6c=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwQLyRNOVib/UxU+2LWdyJUVudfCwv9snXdWn/YI6o/Lx7nFk+x
+	ZGfxHUgzJgvt6mqPFAEE70V8vzyIeyLh0c+PZiP6WBt0WP8QDBc31Mbt+/i5EC4=
+X-Gm-Gg: ASbGncvHB5Fj53hs8RpG3wB8XvsdFYzelLYCioTQardBlCojqTvm4BCd8G+5NJpYbrS
+	c9b4DVduCKjV7b4yyC3HX6uZk98/lq8Wo6wAowlsU8y9A5qS2Rn7DCoBGOBfGgHQzWBrPEGgN31
+	7RYhQOlkBlpRqcBI0J4UpU8BgD248IItF+iLqazAKEcfqOml8Ntg2Cv3llpz9OD8L8+T71dyopD
+	kg24y9/+/Nw7tctsMupItPp8fQO+RMhNxcAEEL35ZIIZ0jPneEZO5k2lFeEI3DCN4xAqjvYjNGp
+	Fd4AhRRlyJa2I+IyZv5RWfkSaLKX0LFdPTuMZpSEegw=
+X-Google-Smtp-Source: AGHT+IGPpbum0KsQcE9z8vl2RfdveoyjLjKiZigrimsFoHNByQt297/k0WCP9oipkvXobXbABwmLAA==
+X-Received: by 2002:a5d:5f93:0:b0:39c:140b:feec with SMTP id ffacd0b85a97d-39efba384cemr9947675f8f.7.1745313117068;
+        Tue, 22 Apr 2025 02:11:57 -0700 (PDT)
+Received: from [192.168.1.3] ([77.81.75.81])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa4933e7sm14681335f8f.65.2025.04.22.02.11.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Apr 2025 02:11:56 -0700 (PDT)
+Message-ID: <0f2b7c10-a30a-4d2e-ac3f-baec1b45d945@linaro.org>
+Date: Tue, 22 Apr 2025 10:11:55 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -52,123 +83,70 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wop522mmefnoma4a"
-Content-Disposition: inline
-In-Reply-To: <ace8c85d-6dec-499f-8a8a-35d4672c181d@app.fastmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tools headers: Update the include/vdso/unaligned.h to
+ sync headers
+To: Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ maddy@linux.ibm.com, atrajeev@linux.vnet.ibm.com,
+ disgoel@linux.vnet.ibm.com, hbathini@linux.vnet.ibm.com,
+ Aditya.Bodkhe1@ibm.com, jiang.peng9@zte.com.cn, venkat88@linux.ibm.com,
+ Tejas.Manhas1@ibm.com, acme@kernel.org, jolsa@kernel.org,
+ adrian.hunter@intel.com, irogers@google.com, namhyung@kernel.org
+References: <20250421034143.67607-1-atrajeev@linux.ibm.com>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20250421034143.67607-1-atrajeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
---wop522mmefnoma4a
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] fsldma: Support 40 bit DMA addresses where capable
-MIME-Version: 1.0
 
-On Tue, Apr 22, 2025 at 09:59:42AM -0500, Arnd Bergmann wrote:
-> On Tue, Apr 22, 2025, at 09:12, Ben Collins wrote:
-> > On Tue, Apr 22, 2025 at 08:34:55AM -0500, Arnd Bergmann wrote:
-> >>=20
-> >> - SoCs that don't set a dma-ranges property in the parent bus
-> >>   are normally still capped to 32 bit DMA. I don't see those
-> >>   properties, so unless there is a special hack on those chips,
-> >>   you get 32 bit DMA regardless of what DMA mask the driver
-> >>   requests
-> >
-> > I've yet to see a dma-ranges property in any of the Freescale PowerPC
-> > device trees.
->=20
-> Right, but this could just mean that they end up using SWIOTLB
-> to bounce the high DMA pages or use an IOMMU rather than actually
-> translating the physical address to a dma address.
+On 21/04/2025 4:41 am, Athira Rajeev wrote:
+> To pick up the changes in:
+> 	commit acea9943271b ("vdso: Address variable shadowing in macros")
+> 
+> Addressing this perf tools build warning:
+> 
+> 	diff -u tools/include/vdso/unaligned.h include/vdso/unaligned.h
+> 
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
+> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> ---
+>   tools/include/vdso/unaligned.h | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tools/include/vdso/unaligned.h b/tools/include/vdso/unaligned.h
+> index eee3d2a4dbe4..ff0c06b6513e 100644
+> --- a/tools/include/vdso/unaligned.h
+> +++ b/tools/include/vdso/unaligned.h
+> @@ -2,14 +2,14 @@
+>   #ifndef __VDSO_UNALIGNED_H
+>   #define __VDSO_UNALIGNED_H
+>   
+> -#define __get_unaligned_t(type, ptr) ({						\
+> -	const struct { type x; } __packed *__pptr = (typeof(__pptr))(ptr);	\
+> -	__pptr->x;								\
+> +#define __get_unaligned_t(type, ptr) ({							\
+> +	const struct { type x; } __packed * __get_pptr = (typeof(__get_pptr))(ptr);	\
+> +	__get_pptr->x;									\
+>   })
+>   
+> -#define __put_unaligned_t(type, val, ptr) do {					\
+> -	struct { type x; } __packed *__pptr = (typeof(__pptr))(ptr);		\
+> -	__pptr->x = (val);							\
+> +#define __put_unaligned_t(type, val, ptr) do {						\
+> +	struct { type x; } __packed * __put_pptr = (typeof(__put_pptr))(ptr);		\
+> +	__put_pptr->x = (val);								\
+>   } while (0)
+>   
+>   #endif /* __VDSO_UNALIGNED_H */
 
-There's a few things going on. The Local Address Window can shift
-anywhere in the 64-bit address space and be as wide as the physical
-address (40-bit on T4240, 36-bit on P4080). I think this is mainly for
-IO to PCIe and RapidIO, though.
+Reviewed-by: James Clark <james.clark@linaro.org>
 
-> The only special case I see for freescale powerpc chips is the
-> PCI dma_set_mask() handler that does
->=20
-> static void fsl_pci_dma_set_mask(struct device *dev, u64 dma_mask)
-> {
->         /*
->          * Fix up PCI devices that are able to DMA to the large inbound
->          * mapping that allows addressing any RAM address from across PCI.
->          */
->         if (dev_is_pci(dev) && dma_mask >=3D pci64_dma_offset * 2 - 1) {
->                 dev->bus_dma_limit =3D 0;
->                 dev->archdata.dma_offset =3D pci64_dma_offset;
->         }
-> }
->=20
-> but that should not apply here because this is not a PCI device.
-
-Right.
-
-> > I'll check on this, but I think it's a seperate issue. The main thing is
-> > just to configure the dma hw correctly.
->=20
-> I think it's still important to check this before changing the
-> driver: if the larger mask doesn't actually have any effect now
-> because the DT caps the DMA at 4GB, then it might break later
-> when someone adds the correct dma-ranges properties.
-
-I'm adding dma-ranges to my dt for testing.
-
-> > So a little research shows that these 3 compatible strings in
-> > the fsldma are:
-> >
-> > fsl,elo3-dma:		40-bit
-> > fsl,eloplus-dma:	36-bit
-> > fsl,elo-dma:		32-bit
-> >
-> > I'll rework it so addressing is based on the compatible string.
->=20
-> Sounds good, yes. Just to clarify: where did you find those
-> limits? Are you sure those are not just the maximum addressable
-> amounts of physical RAM on the chips that use the respective
-> controllers?
-
-This is where things might be more interesting. The P4080RM and T4240RM
-is where I got this information. Register "cdar" in the fsldma code. This
-makes up 0x08 and 0x0c registers.
-
-In the RM 0x08 is the extended address register. On P4080 it says this
-holds the top 4 bits of the 36-bit address, and on T4240 it says the top
-8 bits of the 40-bit address. So the asynx_tx physical address needs to
-be masked to the 36-bit or 40-bit.
-
---=20
- Ben Collins
- https://libjwt.io
- https://github.com/benmcollins
- --
- 3EC9 7598 1672 961A 1139  173A 5D5A 57C7 242B 22CF
-
---wop522mmefnoma4a
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEPsl1mBZylhoRORc6XVpXxyQrIs8FAmgHWaEACgkQXVpXxyQr
-Is+YXA//ZCVfP2Vcf2wN9DmzGexCKVQoLJGySna4HgS0fL7x+pMQusccWOqf4rUs
-eLipGkYQXlTr5X+iW0SU7x6xWaHjXbaqXNgvypoGEdI/SGCd4rP5JbDmCgGcl197
-L3L3aSkaC7Ofo2ACXQKAubuhtoC7g9R29+0QEyxCOk5nX8BVKHk0lq/IxpVxNzGo
-2P72w9dVpryukut3bjsrvyVxJVwow49W/v2K9nzB+YIyEy+1XApkd2pnMgeeLLwV
-PqobZumgvDp/sDFFl2eUsNR+vjJxw2Z4d799D8df5s6YhvUEkRcZWNnNr4iLLGg4
-IikePsfOFFRPPIElGi4JCVlRfvxm4rElJh1dR0OyK6JvzNvBbEEQWm0afaE/oCmi
-7uuH1hbCMr/6Ynfdvw4Br7HzMN4A2uK9v/gui/7rM3JcXUOSHClEZIcKxOKoINsh
-qe7cRXa7ZYVa14c+DLhl5rbmc3/PHZUzyeYA1V1hL3eITH7iOo+ud3AXzXLnM+ZT
-BGhf1OGz+QRXV6bCx8q5onrMggRPOD+J4/nh4eYgAI34Tn5rNSbarh9kqx5U7NqY
-7BPd8k6q9DTTiApN9imyOhoyksIHl14kCmvDQLGalFX/KtGmsElgyxtujEjLR9Mu
-s7vMBCzPu6G2TIe0f9xyWhu8iHVvrry+JiYOszwFEMjFlLmFr6o=
-=IUWG
------END PGP SIGNATURE-----
-
---wop522mmefnoma4a--
 
