@@ -1,78 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-7909-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7910-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10ACA96D5C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 15:47:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 195EAA96EBB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 16:31:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zhk866Fwdz2xpn;
-	Tue, 22 Apr 2025 23:47:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zhl6t2DXmz3bxM;
+	Wed, 23 Apr 2025 00:31:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745329670;
-	cv=none; b=a1rMbtmxemPK5LNmRgtewYRCs4l6B0MMHOhp9bgLdfoMX11hLtJ4ME8BvZXbCjwFTTbeI9G9ZMvxyzuhrT5L8PhGHPbrmdEpO62YvcMMZvpUFtHZlabU+n09FTu8RoWhPSg05Tq1MI+KceRd9vnsvrLtz0X8iU5PGB2Xnye17gwQw7zBFlrb/qhD5Lvx07OQpLluommu6OgIHLneTGZ7iKsz1GipoBMaVPfrgTnJ+eD+v5Zl4K51cn1+JSSoBVx+SewzEXb8c1OyB+1MqY47YQtFdihWHreN34kg2ebjA0mtLjfn+PGGRx52OZqcSxXIi3fbqgY082gGaLS/SHklyQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745332310;
+	cv=none; b=j6WDVtgSCDskkMxUO2ahSuujqHjh55ejRmjzUS/Vu9IZ4ltLVtKWspiuvEvBt0nBdymMYRce8h21XynVIWA2Upt05rwm+Et/8GoaU33W9Np3HvHGJdqNxYnxDVjzUMvbycnBD2Hacdd+llwWgLsF3sCsaTWWLWAZxDJk2HFC0aMESzDVCkW90vLe7Www7+NLy2Ud0hHxM5YZ9cCAXdiASNR+TAJFhjDOeF/b1msXIUfVPJ2EFVwnzFUiOXx9k9waV7C2gL46qb35tN8ssucKfb/TvUH1eAT1ktY716jxQIAKaysEceXhP15SDsH2EmO5SuvJ83cs66KJpS675gzjbg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745329670; c=relaxed/relaxed;
-	bh=Rmqwdi6vdVSLJrOThgypVT+VrPv3i0avvQfSj4bFWqA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LLgABdsUu/qvZQFhQssJkcKrivfqUgbHzGlpMm7b9WFlIbAjhzl8dOyuKSdhXbsrzTwFArhRQ1aoDkJDSfipjnoKVlz5APUMfzhn5Jtt7xDIyEqPSKH6dBsueOCy9+aaSu4iBpbYQ1X7AYFwQWKFEAVX2qtou2+KLAENjQpL4xhmIsgPWR7fZO3UcLlO2ZnYb3V/ly0ywIOznozeyi/pIystojyaQ9mHmsJIgLToUXmFSskoc00GCzakgxuVpwWwHUgy48i53mmmhftbrqnecFbH2RXfxvW1G3eE3HJiDFG4YYc4Ta3JjLMGegs9Dik3mROUkwm3MhW0RMTnmgqTgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ca1+GVvp; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1745332310; c=relaxed/relaxed;
+	bh=IhyYZOZUpEWj1uLvaXLJpN+MUfn7D1C4qn22HYubHUY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oaMf9LH3vIUf/xtTHfGHTIUa6a0axm7Vu5AwmX0HK/vifRCp+KOjDFNNIdLGS5b3GWH3fYuyJy9ir8NqOQQgGBHNHWBM1FCVF495KMP43sn51brpqFcYBjaZuTvsp2ShMAHGFpbxg8DluRyIJdJNEOX9NxF+WktejCe31LUMuwVGD+pkxn0yLgr0wWaNwI9u44LqkoD9mdrE1TER4+QAHJuyZKBoXoDF28gzcHW8n6CnEendQP7bQseJWO9zd435SNPDFBxmGvFIbj3aAO7FQdjr8wVxffF+m75F1PTFxCTysCvIN5mhloADjEaxeI/3WceK1QAZdp8RZg+Ig1qefg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qnKVP2qg; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ca1+GVvp;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qnKVP2qg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zhk856CfYz2xGF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Apr 2025 23:47:49 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53MA3rD0025943;
-	Tue, 22 Apr 2025 13:47:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Rmqwdi
-	6vdVSLJrOThgypVT+VrPv3i0avvQfSj4bFWqA=; b=Ca1+GVvpCI4TBSld3bsJ2g
-	Yir3Fj/+vl/hJLwg1X0nfJJtf7vXrt+ibCeyQ9whT9drRm3Hk3sp9P64HM7bT1UJ
-	EWeiFrvd75JLJejO2CS9/vEc0vKYdtWYHu8iKV5m9GimSsWHvcyc2SzfrhPIZ36R
-	eG+EArNp4gvGvZ7kBwFrQasCDMej2MSM5ZNqC1oVqTpzMgQZZilLaAvkTlZRmgTR
-	BOn5PdVWQExR7FE5V5hSxBlABn+yQiIyYn2zyaz4YrsaVD/o6PtYK6NtWvVTfMB+
-	FJJxRX3yxF3w3MGl7iFC9aFecNXLpnKlhcFUPkIFzIXXdIgrg23uqZ4/VyBy+9eg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46691hh1wm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Apr 2025 13:47:33 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53MDXrGb004251;
-	Tue, 22 Apr 2025 13:47:32 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46691hh1wj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Apr 2025 13:47:32 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53MAsk0p002939;
-	Tue, 22 Apr 2025 13:47:31 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 464q5nk2uf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Apr 2025 13:47:31 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53MDlUNq26018342
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Apr 2025 13:47:31 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DD6245803F;
-	Tue, 22 Apr 2025 13:47:30 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F23585804E;
-	Tue, 22 Apr 2025 13:47:25 +0000 (GMT)
-Received: from [9.43.58.77] (unknown [9.43.58.77])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 22 Apr 2025 13:47:25 +0000 (GMT)
-Message-ID: <d14eb2c1-05d5-402b-b6b0-71d8bbd32200@linux.ibm.com>
-Date: Tue, 22 Apr 2025 19:17:22 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zhl6s34J6z3bvd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 00:31:49 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 581D8A4BCA8;
+	Tue, 22 Apr 2025 14:26:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90596C4CEE9;
+	Tue, 22 Apr 2025 14:31:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745332305;
+	bh=7UtTHz1OzXRKk72/53w5IsO8pN7dEsKHXzdKjN8mTNQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qnKVP2qgtO1hUN9mVrGyWaGTEWIq8jqpIHr3uY8inZjbNWCGzdRo0J9uDNoKMTac4
+	 CvbGZZEvU2voGPjIOxRzKnGAQMMUdB8rkinceS5Q35tVPiweTvYOfb6F69Hp5kz9RK
+	 Lxej1524mrJGhqPR5hjuNZxX40hVhV4VStcN7qi/M9g3RTAnXioB6T31JWdzgU+cxl
+	 ZN20HhqG8eyKJyUJyJ0AVBKGkmtN4NO4E0W6r32ChQHQMVDyzsJScxz2LDwusrLjqq
+	 KiNG5ZeX16W68bez2U3lfR+MKOHY4fO/OC1L6rAgNnvcTL+TCBgn7RKVCuDlfxb4RJ
+	 B9aAONV7LjjUQ==
+Date: Tue, 22 Apr 2025 16:31:29 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: Andrey Albershteyn <aalbersh@redhat.com>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] fs: introduce getfsxattrat and setfsxattrat
+ syscalls
+Message-ID: <20250422-suchen-filmpreis-3573a913457c@brauner>
+References: <20250321-xattrat-syscall-v4-0-3e82e6fb3264@kernel.org>
+ <20250321-xattrat-syscall-v4-3-3e82e6fb3264@kernel.org>
+ <CAOQ4uxj2Fqmc_pSD4bqqoQu7QjmgSVp2V15FbmBdTNqQ03aPGQ@mail.gmail.com>
+ <faqun3wrpvwrhwukql3niqvvauy5ngrpytx5bxbrv5xkounez3@m7j2znjuzapu>
+ <CAOQ4uxjs=Gg-ocwx_fkzc0gxQ_dHx-P9EAgz5ZwbdbrxV0T_EA@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,63 +93,145 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/boot: Fix dash warning
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        naveen@kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <20250422113023.356883-1-maddy@linux.ibm.com>
- <20250422230822.12a81c95@canb.auug.org.au>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <20250422230822.12a81c95@canb.auug.org.au>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=V7h90fni c=1 sm=1 tr=0 ts=68079df5 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=Fdm2WJPEMQzAIOUNTYwA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: k99Kd8Brhp5EOCPv6giNnG1Hw7Mu1-Qn
-X-Proofpoint-GUID: g-4gEMoWa7dPXWWvkPRZTonVZrCG9t1X
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-22_06,2025-04-21_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 clxscore=1015 mlxlogscore=919 bulkscore=0 phishscore=0
- lowpriorityscore=0 impostorscore=0 mlxscore=0 malwarescore=0 adultscore=0
- spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504220102
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAOQ4uxjs=Gg-ocwx_fkzc0gxQ_dHx-P9EAgz5ZwbdbrxV0T_EA@mail.gmail.com>
+X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-On 4/22/25 6:38 PM, Stephen Rothwell wrote:
-> Hi Madhavan,
+On Thu, Mar 27, 2025 at 12:39:28PM +0100, Amir Goldstein wrote:
+> On Thu, Mar 27, 2025 at 10:33 AM Andrey Albershteyn <aalbersh@redhat.com> wrote:
+> >
+> > On 2025-03-23 09:56:25, Amir Goldstein wrote:
+> > > On Fri, Mar 21, 2025 at 8:49 PM Andrey Albershteyn <aalbersh@redhat.com> wrote:
+> > > >
+> > > > From: Andrey Albershteyn <aalbersh@redhat.com>
+> > > >
+> > > > Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
+> > > > extended attributes/flags. The syscalls take parent directory fd and
+> > > > path to the child together with struct fsxattr.
+> > > >
+> > > > This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
+> > > > that file don't need to be open as we can reference it with a path
+> > > > instead of fd. By having this we can manipulated inode extended
+> > > > attributes not only on regular files but also on special ones. This
+> > > > is not possible with FS_IOC_FSSETXATTR ioctl as with special files
+> > > > we can not call ioctl() directly on the filesystem inode using fd.
+> > > >
+> > > > This patch adds two new syscalls which allows userspace to get/set
+> > > > extended inode attributes on special files by using parent directory
+> > > > and a path - *at() like syscall.
+> > > >
+> > > > CC: linux-api@vger.kernel.org
+> > > > CC: linux-fsdevel@vger.kernel.org
+> > > > CC: linux-xfs@vger.kernel.org
+> > > > Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
+> > > > Acked-by: Arnd Bergmann <arnd@arndb.de>
+> > > > ---
+> > > ...
+> > > > +SYSCALL_DEFINE5(setfsxattrat, int, dfd, const char __user *, filename,
+> > > > +               struct fsxattr __user *, ufsx, size_t, usize,
+> > > > +               unsigned int, at_flags)
+> > > > +{
+> > > > +       struct fileattr fa;
+> > > > +       struct path filepath;
+> > > > +       int error;
+> > > > +       unsigned int lookup_flags = 0;
+> > > > +       struct filename *name;
+> > > > +       struct mnt_idmap *idmap;.
+> > >
+> > > > +       struct dentry *dentry;
+> > > > +       struct vfsmount *mnt;
+> > > > +       struct fsxattr fsx = {};
+> > > > +
+> > > > +       BUILD_BUG_ON(sizeof(struct fsxattr) < FSXATTR_SIZE_VER0);
+> > > > +       BUILD_BUG_ON(sizeof(struct fsxattr) != FSXATTR_SIZE_LATEST);
+> > > > +
+> > > > +       if ((at_flags & ~(AT_SYMLINK_NOFOLLOW | AT_EMPTY_PATH)) != 0)
+> > > > +               return -EINVAL;
+> > > > +
+> > > > +       if (!(at_flags & AT_SYMLINK_NOFOLLOW))
+> > > > +               lookup_flags |= LOOKUP_FOLLOW;
+> > > > +
+> > > > +       if (at_flags & AT_EMPTY_PATH)
+> > > > +               lookup_flags |= LOOKUP_EMPTY;
+> > > > +
+> > > > +       if (usize > PAGE_SIZE)
+> > > > +               return -E2BIG;
+> > > > +
+> > > > +       if (usize < FSXATTR_SIZE_VER0)
+> > > > +               return -EINVAL;
+> > > > +
+> > > > +       error = copy_struct_from_user(&fsx, sizeof(struct fsxattr), ufsx, usize);
+> > > > +       if (error)
+> > > > +               return error;
+> > > > +
+> > > > +       fsxattr_to_fileattr(&fsx, &fa);
+> > > > +
+> > > > +       name = getname_maybe_null(filename, at_flags);
+> > > > +       if (!name) {
+> > > > +               CLASS(fd, f)(dfd);
+> > > > +
+> > > > +               if (fd_empty(f))
+> > > > +                       return -EBADF;
+> > > > +
+> > > > +               idmap = file_mnt_idmap(fd_file(f));
+> > > > +               dentry = file_dentry(fd_file(f));
+> > > > +               mnt = fd_file(f)->f_path.mnt;
+> > > > +       } else {
+> > > > +               error = filename_lookup(dfd, name, lookup_flags, &filepath,
+> > > > +                                       NULL);
+> > > > +               if (error)
+> > > > +                       return error;
+> > > > +
+> > > > +               idmap = mnt_idmap(filepath.mnt);
+> > > > +               dentry = filepath.dentry;
+> > > > +               mnt = filepath.mnt;
+> > > > +       }
+> > > > +
+> > > > +       error = mnt_want_write(mnt);
+> > > > +       if (!error) {
+> > > > +               error = vfs_fileattr_set(idmap, dentry, &fa);
+> > > > +               if (error == -ENOIOCTLCMD)
+> > > > +                       error = -EOPNOTSUPP;
+> > >
+> > > This is awkward.
+> > > vfs_fileattr_set() should return -EOPNOTSUPP.
+> > > ioctl_setflags() could maybe convert it to -ENOIOCTLCMD,
+> > > but looking at similar cases ioctl_fiemap(), ioctl_fsfreeze() the
+> > > ioctl returns -EOPNOTSUPP.
+> > >
+> > > I don't think it is necessarily a bad idea to start returning
+> > >  -EOPNOTSUPP instead of -ENOIOCTLCMD for the ioctl
+> > > because that really reflects the fact that the ioctl is now implemented
+> > > in vfs and not in the specific fs.
+> > >
+> > > and I think it would not be a bad idea at all to make that change
+> > > together with the merge of the syscalls as a sort of hint to userspace
+> > > that uses the ioctl, that the sycalls API exists.
+> > >
+> > > Thanks,
+> > > Amir.
+> > >
+> >
+> > Hmm, not sure what you're suggesting here. I see it as:
+> > - get/setfsxattrat should return EOPNOTSUPP as it make more sense
+> >   than ENOIOCTLCMD
+> > - ioctl_setflags returns ENOIOCTLCMD which also expected
+> >
+> > Don't really see a reason to change what vfs_fileattr_set() returns
+> > and then copying this if() to other places or start returning
+> > EOPNOTSUPP.
 > 
-> On Tue, 22 Apr 2025 17:00:23 +0530 Madhavan Srinivasan <maddy@linux.ibm.com> wrote:
->>
->>  # suppress some warnings in recent ld versions
->>  nowarn="-z noexecstack"
->> -if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]; then
->> +if [ "$("${CROSS}"ld -v --no-warn-rwx-segments >/dev/null 2>&1; echo $?)" -eq 0 ]; then
->>  	nowarn="$nowarn --no-warn-rwx-segments"
->>  fi
-> 
-> On the way to bed, it occurred to me that the above "if" line can be
-> written as:
-> 
-> if "${CROSS}ld" -v --no-warn-rwx-segments >/dev/null 2>&1; then
+> ENOIOCTLCMD conceptually means that the ioctl command is unknown
+> This is not the case since ->fileattr_[gs]et() became a vfs API
 
-if command; then
-  # Commands to execute if the command succeeds (exit status 0)
-fi
-
-Yeah nice, Will fix and send a v2
-
-Maddy
-
-> 
-
+vfs_fileattr_{g,s}et() should not return ENOIOCTLCMD. Change the return
+code to EOPNOTSUPP and then make EOPNOTSUPP be translated to ENOTTY on
+on overlayfs and to ENOIOCTLCMD in ecryptfs and in fs/ioctl.c. This way
+we get a clean VFS api while retaining current behavior. Amir can do his
+cleanup based on that.
 
