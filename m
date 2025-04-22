@@ -1,87 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-7912-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7914-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52D0A9702D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 17:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94295A970A8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Apr 2025 17:28:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zhm4525cZz3bsK;
-	Wed, 23 Apr 2025 01:14:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZhmN44pcJz3c1C;
+	Wed, 23 Apr 2025 01:28:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745334869;
-	cv=none; b=NR5LJAoy23J//pZPgGkshaJm05YLb4iI0opyuSJyUFXd4SHq6b3mlLII9pwrq++HAyjHfH0YjRrt1FtSohC1uUbcGo+chC6xvCnoHXlukwCBgWd9GiWgIkpEaw0HA3WFZ7skNgJ0jcK1GeEd9KpWlkWlgM51dSQSFh07R9w813YwIwhq4Xja3UjVuzJ7foNxNL9Fg6gXExRQ2Ej3+bpA3iyrSsjkKvY0FJ2gZPCiGcyjLlerL2f+UBs+MEtKIGmVtlkvmyuhHA4XvcY/sOaGRVliRkwzMdaNObZRrJBysn4YtZJVAtiS+pawXiC+HGUEosVUHxRUNq2duLc3LoSzZw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745335700;
+	cv=none; b=N8LnlcOWrGinBQx37AZXJnjeMQ2Cx82r5dpkcmy2QRf5ndfBL0aTYaWWI4MwJAW2WO3whGJcwa60Z86mfOet0RJF/Z/kEkYoAFTbLAwZGz5Vcjr2cvO38bhIXWb0btchglMLTtjP0TRueu0BzTUhTlETX4A6HzYb0spY/9esqAAWSZ/BSS+JZ0lTSDD+K4tWAP4LRd6wO01VbjwXk32Gk2VZjiFnmZ6nuFzCJ1FV4bts/YiW4VvaV7q6WD6ua3GpWs6Zxp4VfuXRgdrqousxwhvFqAFk/h9Xbh9XqrqttXE9UmzLX7RyqOp0nL2Q8WdrUiesmk4Trz4EFjVNY4LLgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745334869; c=relaxed/relaxed;
-	bh=f6r6INJFswIQ6ysfL39EjsadQis1krWqOeC44Si/2HE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EPsAz4v/8NoMeP6ZBmwKZIpFDl268o5KsP87geM63opNOTyiQArREvr9SAX99SstD+vts/r5xhcWJfqg3DP2SdTyfHDH0NIzvtA6GH6sB7YGEaVRQyZJb8dKBWhIWyUPdGh/9+9ZSfzlCY/Hi02UtFUhBSVoNZPM7h1Fn4/2n4po1RLPycYUCJFFbe/GElJIpl+1ihruT2Y0RPyJ+2aW+YV1Rfp4J0/u+zhTp08Y2wiuLIzw9kYhpR3jdWuHCV9dGzfXfY67lCfUsawgV7b9haqN6Ie0s1yo8XQK9/XQNKbZUw4dabS08jLaXegcXjRTTVxz9NW3iie9uxiCBcu/7Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=beZ7LsdS; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1745335700; c=relaxed/relaxed;
+	bh=JCTyTBIIf/QorubiTsDpM9QBqhdWr2M8Ga7jYGYja5I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XsUxv8+XUlcA4NDGHzoQgAtKAZPY7O8Y/JKZO0bUoHkE6WgPXBKCwmsxHtoTRtrY+pHycTMOstSkhBazME/hq4pQni7a+ZzCiSdFkgkA1w2R6N6fkFX/aeHX2Z0aUgCebW1UCpxKMwdrjvU2MD71KlzAa57o3Ro/Y6+BbKKGjH47xE+13WvnZ1VThJbtJKfuStp/5vLa1clvfqQKTGUMnYtdAjPPCVkQwnEe0qqHXCNPmvTCsRL6/+cF6ZX8+DMzefrXx8b7hUw9KR8S90zpakR7jEniAlUQEfWdxmWCNWvdRSS075JD753bWcXCDPNPyzldOZ0FH1biHcVxu8Ib/Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r2C1zzQ/; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=beZ7LsdS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r2C1zzQ/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zhm442BShz2yx7
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 01:14:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZhmN21r2hz3btn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 01:28:18 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B219161160;
-	Tue, 22 Apr 2025 15:14:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08793C4CEE9;
-	Tue, 22 Apr 2025 15:14:12 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id CBD53A4BD0B;
+	Tue, 22 Apr 2025 15:22:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A341C4CEEC;
+	Tue, 22 Apr 2025 15:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745334865;
-	bh=lSbO7DQOl7qwT5MJRJMvfW/c1+fnMb2KJJ+xVIINpPo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=beZ7LsdSi9ogRm6COvjTgxTx5DUokGe1NIskhD1Sd/cUrpINh5Hi7ZbRSC4/d84j3
-	 Ti74rBHoDCX2uKhMLA8RFoi78F7zLpulfvYbxiyuPWCTHUpt91JmFCCnNIFMiC63ZJ
-	 fyxIf7YwMCDjLqs9yBdshcKBulenxdLGzicBlGS67FqAeCgpdPVW3CnOPj8McMU0xZ
-	 /UoW6DW244fMiDspWdMKq+cgwRtWXK/9CerZk9TzlxdZvhc1TFxwQh4aqam93ykR8i
-	 kvlXyyWfPalvpguNSnuCK53W3jm5GQYs/SST8d1Bw9P7SIMsJ4KVF3iaBJBWxd9cuE
-	 HiB5wuAvJto0g==
-Date: Tue, 22 Apr 2025 17:14:10 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Andrey Albershteyn <aalbersh@redhat.com>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-xfs@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] fs: introduce getfsxattrat and setfsxattrat
- syscalls
-Message-ID: <20250422-gefressen-faucht-8ded2c9a5375@brauner>
-References: <20250321-xattrat-syscall-v4-0-3e82e6fb3264@kernel.org>
- <20250321-xattrat-syscall-v4-3-3e82e6fb3264@kernel.org>
- <CAOQ4uxj2Fqmc_pSD4bqqoQu7QjmgSVp2V15FbmBdTNqQ03aPGQ@mail.gmail.com>
- <faqun3wrpvwrhwukql3niqvvauy5ngrpytx5bxbrv5xkounez3@m7j2znjuzapu>
- <CAOQ4uxjs=Gg-ocwx_fkzc0gxQ_dHx-P9EAgz5ZwbdbrxV0T_EA@mail.gmail.com>
- <20250422-suchen-filmpreis-3573a913457c@brauner>
+	s=k20201202; t=1745335694;
+	bh=RInyZrD0gAu95MMMtI1Xy1yYNgjyW5cUQ56jzsf5ziU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=r2C1zzQ/hs7mqzbHs2PFFNBFuondu33UnDjNz3rSvYSqnbphUM9LnMW2tlraJp8zf
+	 +TXDHzgEtPHTuIBC73A097V8x0DSBt85XVRklVCixt3sc05rQDpkBFDhcoBmYzEdqv
+	 X4KKVMP3fM8lBnqlpRqKnY/9c7js5o4hartil+JldwHyPo2K/mVCV7CxpK9S3+aSib
+	 +CTBgoaVGv4RT8PlQMAA+NyBe74B3IcmTL4+sVq/atz3I81FRv/b/Bns9fPSNR/XK8
+	 ZLuBoRuoZuK/sS5fRkxYQiVwpoC82iiTFcP3499ZkIXUEbLa+qOgHf/QpzYlua5/hn
+	 /kC3++00+efjg==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	x86@kernel.org,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH v3 00/13] Finish disentangling ChaCha, Poly1305, and BLAKE2s from CRYPTO
+Date: Tue, 22 Apr 2025 08:27:03 -0700
+Message-ID: <20250422152716.5923-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,165 +70,178 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250422-suchen-filmpreis-3573a913457c@brauner>
 X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Apr 22, 2025 at 04:31:29PM +0200, Christian Brauner wrote:
-> On Thu, Mar 27, 2025 at 12:39:28PM +0100, Amir Goldstein wrote:
-> > On Thu, Mar 27, 2025 at 10:33 AM Andrey Albershteyn <aalbersh@redhat.com> wrote:
-> > >
-> > > On 2025-03-23 09:56:25, Amir Goldstein wrote:
-> > > > On Fri, Mar 21, 2025 at 8:49 PM Andrey Albershteyn <aalbersh@redhat.com> wrote:
-> > > > >
-> > > > > From: Andrey Albershteyn <aalbersh@redhat.com>
-> > > > >
-> > > > > Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
-> > > > > extended attributes/flags. The syscalls take parent directory fd and
-> > > > > path to the child together with struct fsxattr.
-> > > > >
-> > > > > This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
-> > > > > that file don't need to be open as we can reference it with a path
-> > > > > instead of fd. By having this we can manipulated inode extended
-> > > > > attributes not only on regular files but also on special ones. This
-> > > > > is not possible with FS_IOC_FSSETXATTR ioctl as with special files
-> > > > > we can not call ioctl() directly on the filesystem inode using fd.
-> > > > >
-> > > > > This patch adds two new syscalls which allows userspace to get/set
-> > > > > extended inode attributes on special files by using parent directory
-> > > > > and a path - *at() like syscall.
-> > > > >
-> > > > > CC: linux-api@vger.kernel.org
-> > > > > CC: linux-fsdevel@vger.kernel.org
-> > > > > CC: linux-xfs@vger.kernel.org
-> > > > > Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
-> > > > > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> > > > > ---
-> > > > ...
-> > > > > +SYSCALL_DEFINE5(setfsxattrat, int, dfd, const char __user *, filename,
-> > > > > +               struct fsxattr __user *, ufsx, size_t, usize,
-> > > > > +               unsigned int, at_flags)
-> > > > > +{
-> > > > > +       struct fileattr fa;
-> > > > > +       struct path filepath;
-> > > > > +       int error;
-> > > > > +       unsigned int lookup_flags = 0;
-> > > > > +       struct filename *name;
-> > > > > +       struct mnt_idmap *idmap;.
-> > > >
-> > > > > +       struct dentry *dentry;
-> > > > > +       struct vfsmount *mnt;
-> > > > > +       struct fsxattr fsx = {};
-> > > > > +
-> > > > > +       BUILD_BUG_ON(sizeof(struct fsxattr) < FSXATTR_SIZE_VER0);
-> > > > > +       BUILD_BUG_ON(sizeof(struct fsxattr) != FSXATTR_SIZE_LATEST);
-> > > > > +
-> > > > > +       if ((at_flags & ~(AT_SYMLINK_NOFOLLOW | AT_EMPTY_PATH)) != 0)
-> > > > > +               return -EINVAL;
-> > > > > +
-> > > > > +       if (!(at_flags & AT_SYMLINK_NOFOLLOW))
-> > > > > +               lookup_flags |= LOOKUP_FOLLOW;
-> > > > > +
-> > > > > +       if (at_flags & AT_EMPTY_PATH)
-> > > > > +               lookup_flags |= LOOKUP_EMPTY;
-> > > > > +
-> > > > > +       if (usize > PAGE_SIZE)
-> > > > > +               return -E2BIG;
-> > > > > +
-> > > > > +       if (usize < FSXATTR_SIZE_VER0)
-> > > > > +               return -EINVAL;
-> > > > > +
-> > > > > +       error = copy_struct_from_user(&fsx, sizeof(struct fsxattr), ufsx, usize);
-> > > > > +       if (error)
-> > > > > +               return error;
-> > > > > +
-> > > > > +       fsxattr_to_fileattr(&fsx, &fa);
-> > > > > +
-> > > > > +       name = getname_maybe_null(filename, at_flags);
-> > > > > +       if (!name) {
-> > > > > +               CLASS(fd, f)(dfd);
-> > > > > +
-> > > > > +               if (fd_empty(f))
-> > > > > +                       return -EBADF;
-> > > > > +
-> > > > > +               idmap = file_mnt_idmap(fd_file(f));
-> > > > > +               dentry = file_dentry(fd_file(f));
-> > > > > +               mnt = fd_file(f)->f_path.mnt;
-> > > > > +       } else {
-> > > > > +               error = filename_lookup(dfd, name, lookup_flags, &filepath,
-> > > > > +                                       NULL);
-> > > > > +               if (error)
-> > > > > +                       return error;
-> > > > > +
-> > > > > +               idmap = mnt_idmap(filepath.mnt);
-> > > > > +               dentry = filepath.dentry;
-> > > > > +               mnt = filepath.mnt;
-> > > > > +       }
-> > > > > +
-> > > > > +       error = mnt_want_write(mnt);
-> > > > > +       if (!error) {
-> > > > > +               error = vfs_fileattr_set(idmap, dentry, &fa);
-> > > > > +               if (error == -ENOIOCTLCMD)
-> > > > > +                       error = -EOPNOTSUPP;
-> > > >
-> > > > This is awkward.
-> > > > vfs_fileattr_set() should return -EOPNOTSUPP.
-> > > > ioctl_setflags() could maybe convert it to -ENOIOCTLCMD,
-> > > > but looking at similar cases ioctl_fiemap(), ioctl_fsfreeze() the
-> > > > ioctl returns -EOPNOTSUPP.
-> > > >
-> > > > I don't think it is necessarily a bad idea to start returning
-> > > >  -EOPNOTSUPP instead of -ENOIOCTLCMD for the ioctl
-> > > > because that really reflects the fact that the ioctl is now implemented
-> > > > in vfs and not in the specific fs.
-> > > >
-> > > > and I think it would not be a bad idea at all to make that change
-> > > > together with the merge of the syscalls as a sort of hint to userspace
-> > > > that uses the ioctl, that the sycalls API exists.
-> > > >
-> > > > Thanks,
-> > > > Amir.
-> > > >
-> > >
-> > > Hmm, not sure what you're suggesting here. I see it as:
-> > > - get/setfsxattrat should return EOPNOTSUPP as it make more sense
-> > >   than ENOIOCTLCMD
-> > > - ioctl_setflags returns ENOIOCTLCMD which also expected
-> > >
-> > > Don't really see a reason to change what vfs_fileattr_set() returns
-> > > and then copying this if() to other places or start returning
-> > > EOPNOTSUPP.
-> > 
-> > ENOIOCTLCMD conceptually means that the ioctl command is unknown
-> > This is not the case since ->fileattr_[gs]et() became a vfs API
-> 
-> vfs_fileattr_{g,s}et() should not return ENOIOCTLCMD. Change the return
-> code to EOPNOTSUPP and then make EOPNOTSUPP be translated to ENOTTY on
-> on overlayfs and to ENOIOCTLCMD in ecryptfs and in fs/ioctl.c. This way
-> we get a clean VFS api while retaining current behavior. Amir can do his
-> cleanup based on that.
+This series removes the unnecessary dependency of the ChaCha, Poly1305,
+and BLAKE2s library functions on the generic crypto infrastructure, i.e.
+CONFIG_CRYPTO.  To do this, it moves the architecture-optimized
+implementations of these functions into new directories
+arch/*/lib/crypto/ which do not depend on CRYPTO.  This mirrors the
+existing distinction between crypto/ and lib/crypto/.
 
-Also this get/set dance is not something new apis should do. It should
-be handled like setattr_prepare() or generic_fillattr() where the
-filesystem calls a VFS helper and that does all of this based on the
-current state of the inode instead of calling into the filesystem twice:
+The last two patches remove the selection of CRYPTO by CRYPTO_LIB_CHACHA
+and CRYPTO_LIB_POLY1305, and they remove the corresponding *_INTERNAL
+symbols which were needed only because of the entanglement with CRYPTO.
 
-int vfs_fileattr_set(struct mnt_idmap *idmap, struct dentry *dentry,
-		     struct fileattr *fa)
-{
-<snip>
-	inode_lock(inode);
-	err = vfs_fileattr_get(dentry, &old_ma);
-	if (!err) {
-		/* initialize missing bits from old_ma */
-		if (fa->flags_valid) {
-<snip>
-		err = fileattr_set_prepare(inode, &old_ma, fa);
-		if (!err && !security_inode_setfsxattr(inode, fa))
-			err = inode->i_op->fileattr_set(idmap, dentry, fa);
+Note that Curve25519 is still entangled.  Later patches will fix that.
+
+Changed in v3:
+   - Fixed build error on arm with CONFIG_CPU_THUMBONLY=y.
+   - Small whitespace and commit message fixes.
+   - Added Acked-by's.
+
+Changed in v2:
+   - Introduced new directories arch/*/lib/crypto/ instead of keeping
+     the library functions in arch/*/crypto/.
+
+Eric Biggers (13):
+  crypto: arm64 - drop redundant dependencies on ARM64
+  crypto: powerpc - drop redundant dependencies on PPC
+  crypto: s390 - drop redundant dependencies on S390
+  crypto: x86 - drop redundant dependencies on X86
+  crypto: arm - move library functions to arch/arm/lib/crypto/
+  crypto: arm64 - move library functions to arch/arm64/lib/crypto/
+  crypto: mips - move library functions to arch/mips/lib/crypto/
+  crypto: powerpc - move library functions to arch/powerpc/lib/crypto/
+  crypto: riscv - move library functions to arch/riscv/lib/crypto/
+  crypto: s390 - move library functions to arch/s390/lib/crypto/
+  crypto: x86 - move library functions to arch/x86/lib/crypto/
+  crypto: lib/chacha - remove INTERNAL symbol and selection of CRYPTO
+  crypto: lib/poly1305 - remove INTERNAL symbol and selection of CRYPTO
+
+ MAINTAINERS                                   |  1 +
+ arch/arm/crypto/Kconfig                       | 23 -----
+ arch/arm/crypto/Makefile                      | 14 +--
+ arch/arm/lib/Makefile                         |  2 +
+ arch/arm/lib/crypto/.gitignore                |  2 +
+ arch/arm/lib/crypto/Kconfig                   | 24 ++++++
+ arch/arm/lib/crypto/Makefile                  | 26 ++++++
+ arch/arm/{ => lib}/crypto/blake2s-core.S      |  0
+ arch/arm/{ => lib}/crypto/blake2s-glue.c      |  0
+ arch/arm/{ => lib}/crypto/chacha-glue.c       |  0
+ arch/arm/{ => lib}/crypto/chacha-neon-core.S  |  0
+ .../arm/{ => lib}/crypto/chacha-scalar-core.S |  0
+ arch/arm/{ => lib}/crypto/poly1305-armv4.pl   |  0
+ arch/arm/{ => lib}/crypto/poly1305-glue.c     |  0
+ arch/arm64/crypto/Kconfig                     | 17 +---
+ arch/arm64/crypto/Makefile                    |  9 +-
+ arch/arm64/lib/Makefile                       |  3 +
+ arch/arm64/lib/crypto/.gitignore              |  2 +
+ arch/arm64/lib/crypto/Kconfig                 | 14 +++
+ arch/arm64/lib/crypto/Makefile                | 16 ++++
+ .../arm64/{ => lib}/crypto/chacha-neon-core.S |  0
+ .../arm64/{ => lib}/crypto/chacha-neon-glue.c |  0
+ arch/arm64/{ => lib}/crypto/poly1305-armv8.pl |  0
+ arch/arm64/{ => lib}/crypto/poly1305-glue.c   |  0
+ arch/mips/crypto/Kconfig                      | 11 ---
+ arch/mips/crypto/Makefile                     | 17 ----
+ arch/mips/lib/Makefile                        |  2 +
+ arch/mips/lib/crypto/.gitignore               |  2 +
+ arch/mips/lib/crypto/Kconfig                  | 12 +++
+ arch/mips/lib/crypto/Makefile                 | 19 ++++
+ arch/mips/{ => lib}/crypto/chacha-core.S      |  0
+ arch/mips/{ => lib}/crypto/chacha-glue.c      |  0
+ arch/mips/{ => lib}/crypto/poly1305-glue.c    |  0
+ arch/mips/{ => lib}/crypto/poly1305-mips.pl   |  0
+ arch/powerpc/crypto/Kconfig                   | 22 +----
+ arch/powerpc/crypto/Makefile                  |  4 -
+ arch/powerpc/lib/Makefile                     |  2 +
+ arch/powerpc/lib/crypto/Kconfig               | 15 ++++
+ arch/powerpc/lib/crypto/Makefile              |  7 ++
+ .../{ => lib}/crypto/chacha-p10-glue.c        |  0
+ .../{ => lib}/crypto/chacha-p10le-8x.S        |  0
+ .../{ => lib}/crypto/poly1305-p10-glue.c      |  0
+ .../{ => lib}/crypto/poly1305-p10le_64.S      |  0
+ arch/riscv/crypto/Kconfig                     |  7 --
+ arch/riscv/crypto/Makefile                    |  3 -
+ arch/riscv/lib/Makefile                       |  1 +
+ arch/riscv/lib/crypto/Kconfig                 |  8 ++
+ arch/riscv/lib/crypto/Makefile                |  4 +
+ .../{ => lib}/crypto/chacha-riscv64-glue.c    |  0
+ .../{ => lib}/crypto/chacha-riscv64-zvkb.S    |  0
+ arch/s390/crypto/Kconfig                      | 16 ----
+ arch/s390/crypto/Makefile                     |  3 -
+ arch/s390/lib/Makefile                        |  1 +
+ arch/s390/lib/crypto/Kconfig                  |  7 ++
+ arch/s390/lib/crypto/Makefile                 |  4 +
+ arch/s390/{ => lib}/crypto/chacha-glue.c      |  0
+ arch/s390/{ => lib}/crypto/chacha-s390.S      |  0
+ arch/s390/{ => lib}/crypto/chacha-s390.h      |  0
+ arch/x86/crypto/Kconfig                       | 86 +++++++------------
+ arch/x86/crypto/Makefile                      | 15 ----
+ arch/x86/lib/Makefile                         |  2 +
+ arch/x86/lib/crypto/.gitignore                |  2 +
+ arch/x86/lib/crypto/Kconfig                   | 26 ++++++
+ arch/x86/lib/crypto/Makefile                  | 17 ++++
+ arch/x86/{ => lib}/crypto/blake2s-core.S      |  0
+ arch/x86/{ => lib}/crypto/blake2s-glue.c      |  0
+ .../x86/{ => lib}/crypto/chacha-avx2-x86_64.S |  0
+ .../{ => lib}/crypto/chacha-avx512vl-x86_64.S |  0
+ .../{ => lib}/crypto/chacha-ssse3-x86_64.S    |  0
+ arch/x86/{ => lib}/crypto/chacha_glue.c       |  0
+ .../crypto/poly1305-x86_64-cryptogams.pl      |  0
+ arch/x86/{ => lib}/crypto/poly1305_glue.c     |  0
+ crypto/Kconfig                                |  4 +-
+ lib/crypto/Kconfig                            | 56 +++++++-----
+ 74 files changed, 294 insertions(+), 234 deletions(-)
+ create mode 100644 arch/arm/lib/crypto/.gitignore
+ create mode 100644 arch/arm/lib/crypto/Kconfig
+ create mode 100644 arch/arm/lib/crypto/Makefile
+ rename arch/arm/{ => lib}/crypto/blake2s-core.S (100%)
+ rename arch/arm/{ => lib}/crypto/blake2s-glue.c (100%)
+ rename arch/arm/{ => lib}/crypto/chacha-glue.c (100%)
+ rename arch/arm/{ => lib}/crypto/chacha-neon-core.S (100%)
+ rename arch/arm/{ => lib}/crypto/chacha-scalar-core.S (100%)
+ rename arch/arm/{ => lib}/crypto/poly1305-armv4.pl (100%)
+ rename arch/arm/{ => lib}/crypto/poly1305-glue.c (100%)
+ create mode 100644 arch/arm64/lib/crypto/.gitignore
+ create mode 100644 arch/arm64/lib/crypto/Kconfig
+ create mode 100644 arch/arm64/lib/crypto/Makefile
+ rename arch/arm64/{ => lib}/crypto/chacha-neon-core.S (100%)
+ rename arch/arm64/{ => lib}/crypto/chacha-neon-glue.c (100%)
+ rename arch/arm64/{ => lib}/crypto/poly1305-armv8.pl (100%)
+ rename arch/arm64/{ => lib}/crypto/poly1305-glue.c (100%)
+ create mode 100644 arch/mips/lib/crypto/.gitignore
+ create mode 100644 arch/mips/lib/crypto/Kconfig
+ create mode 100644 arch/mips/lib/crypto/Makefile
+ rename arch/mips/{ => lib}/crypto/chacha-core.S (100%)
+ rename arch/mips/{ => lib}/crypto/chacha-glue.c (100%)
+ rename arch/mips/{ => lib}/crypto/poly1305-glue.c (100%)
+ rename arch/mips/{ => lib}/crypto/poly1305-mips.pl (100%)
+ create mode 100644 arch/powerpc/lib/crypto/Kconfig
+ create mode 100644 arch/powerpc/lib/crypto/Makefile
+ rename arch/powerpc/{ => lib}/crypto/chacha-p10-glue.c (100%)
+ rename arch/powerpc/{ => lib}/crypto/chacha-p10le-8x.S (100%)
+ rename arch/powerpc/{ => lib}/crypto/poly1305-p10-glue.c (100%)
+ rename arch/powerpc/{ => lib}/crypto/poly1305-p10le_64.S (100%)
+ create mode 100644 arch/riscv/lib/crypto/Kconfig
+ create mode 100644 arch/riscv/lib/crypto/Makefile
+ rename arch/riscv/{ => lib}/crypto/chacha-riscv64-glue.c (100%)
+ rename arch/riscv/{ => lib}/crypto/chacha-riscv64-zvkb.S (100%)
+ create mode 100644 arch/s390/lib/crypto/Kconfig
+ create mode 100644 arch/s390/lib/crypto/Makefile
+ rename arch/s390/{ => lib}/crypto/chacha-glue.c (100%)
+ rename arch/s390/{ => lib}/crypto/chacha-s390.S (100%)
+ rename arch/s390/{ => lib}/crypto/chacha-s390.h (100%)
+ create mode 100644 arch/x86/lib/crypto/.gitignore
+ create mode 100644 arch/x86/lib/crypto/Kconfig
+ create mode 100644 arch/x86/lib/crypto/Makefile
+ rename arch/x86/{ => lib}/crypto/blake2s-core.S (100%)
+ rename arch/x86/{ => lib}/crypto/blake2s-glue.c (100%)
+ rename arch/x86/{ => lib}/crypto/chacha-avx2-x86_64.S (100%)
+ rename arch/x86/{ => lib}/crypto/chacha-avx512vl-x86_64.S (100%)
+ rename arch/x86/{ => lib}/crypto/chacha-ssse3-x86_64.S (100%)
+ rename arch/x86/{ => lib}/crypto/chacha_glue.c (100%)
+ rename arch/x86/{ => lib}/crypto/poly1305-x86_64-cryptogams.pl (100%)
+ rename arch/x86/{ => lib}/crypto/poly1305_glue.c (100%)
+
+
+base-commit: bb9c648b334be581a791c7669abaa594e4b5ebb7
+-- 
+2.49.0
+
 
