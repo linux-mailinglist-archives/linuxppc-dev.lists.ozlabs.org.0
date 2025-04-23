@@ -1,89 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-7941-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7942-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6260FA999CC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Apr 2025 22:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 540C4A99B9A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 00:41:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjWcF5TRMz2yDH;
-	Thu, 24 Apr 2025 06:56:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjYws5wfBz2yGN;
+	Thu, 24 Apr 2025 08:41:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.154
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745441789;
-	cv=none; b=OaryQUYmFgGnSN/96mP+0t9Do1uTEolh1276tDy1WKw8go3fMIKE9vbFyg7QKikwJREJgcHKuxLPSvQ8CpwpTuZuT6Gmw+toHkWoMrSLhrn0Vq9P4bMVM8Xr+V/27C1YN68hESspnDlooDvQ1SSNf5XSR5R8j+oh49DgxApgbfHLJU38l+fSV/f4YPL4XjGKRg/UMb4vb9Y7Y4vnvtebVo78gJYYRcU/yOmTigKnZj555Y4xDRI8bGmy+aCZyA/Fgdu1+nnm0vH6CVfJwdIOCRE0vhVU+6iGftXZuBu4AK3bum269DnCyNdgbGXWO7soWD3V9vU3jJ5Xh/5R03dQIQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745448061;
+	cv=none; b=Rmjy5crN46K5L/T31+0qKKjyQvtmo8Q40oN+Rw+TZW0MhXwRpjBGeRyUribnfTXiFiSOmBUJ6r+OwB65QUYpUr2zgeyKRMjRf7X9zWarGoEijiFusJqI9smJ2tOM5n7QazNDUIQmH1345qYX8y46GH/dZzebsAqGX3VyvHYmQl1iFKzDlEyYNG7MSoUXNKWkBBCpXDaK+XA2qVRT2vOMlPsSWWr7prZfgA7TRLyvR2fB2ardQlxQUZ2uIFUkwmJq+qNaW5I7ulS3qvNUReoOWowFVXZtgfexfsv5x4aKwAtp6MZz6VztQ0Tm5rIik6/kSr7R4jti7/oqw/v8pNnHbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745441789; c=relaxed/relaxed;
-	bh=Bb0LHun5eme3JvaCWcXczY1F5v3r5KRrL1ZFam4vbcY=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=PByCrL3Um9gcjuJO80lwYAvLox37k/wQfM9eqvZ7TU39TjH/1VmIs69skG4BGFJjMibps5xT7YidpMx/MYcvvN9Nxzhy52xLyw5+Qo+st1ypaHAeyBG1WGnr/PzXCss3JQqK+p6nGEODJAN/V+CBw3fBsykRJeWBnSv90M1vEkFDFmdWI8ovqpJMP8W4pUIneqlkdxT2AEM/YGAnSUwXGxSweraqI1uRnKVwmzV8tWKt/49PmfgdXCv4Ozr2+zj1q/Rhq3x88s7srLiCknn4gOX99n1JpNiRKt3uYWTbJ7uuWyqIsilb93/eAe5FYndfNa3wYNIq28x4DBKFefOrhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=sFEG/VRM; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=I5xgqome; dkim-atps=neutral; spf=pass (client-ip=103.168.172.154; helo=fhigh-a3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1745448061; c=relaxed/relaxed;
+	bh=cZmhf8eVzF2VnPKL2igjl0a5SH3xvS6UeTjP3NNRkI0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EN95/h/UDYjU7Cw9iuOZBQEpziPvXpdD7ixLnEO4JJdOjwsmNE7wknwE4msVJUuYxTbDnKoPRBFSzNdNbvcp00LOY2UY7vSriCGz5oRcTYZ85oggOdh7kIOTcbJHCkVs1bLs7YSzOjxZ8Z3uJ9RKfhYVlo/BefWIyiaytx78cyPcIo+J8JKtbT20gWB11IaDMSw5j3mzC29xmSNZeNkKjwtbNXxnsz2PXVHTARSiTnvtbFcn6+sRzVQoEJCuzUzBqe1W7OulVDNzGqZ+NOzno+Dox17pdJ+8IXCjLV8IxMgC/IsmpgTQoII7C2yAL18n2/0XedCBTNm5fpv5FDw2oA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=X0yjGxI0; dkim-atps=neutral; spf=pass (client-ip=150.107.74.76; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=sFEG/VRM;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=I5xgqome;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=X0yjGxI0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.154; helo=fhigh-a3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canb.auug.org.au (client-ip=150.107.74.76; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org)
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjWcB3Fykz2xtt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Apr 2025 06:56:25 +1000 (AEST)
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id CD7EF11401A4;
-	Wed, 23 Apr 2025 16:56:22 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-05.internal (MEProxy); Wed, 23 Apr 2025 16:56:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1745441782;
-	 x=1745528182; bh=Bb0LHun5eme3JvaCWcXczY1F5v3r5KRrL1ZFam4vbcY=; b=
-	sFEG/VRMqOkVkVZASq1+o9nxMN+MNE6oGHnEVxRuHf7ODQUfFljNu3sXdG9NWV+K
-	6knGlnjQqi35GJzpRJjLsVypmHK5uVHpxfiFbLM85Gy5MoLo5U93Pgono0+K8cB3
-	pbsI3ypwLmBfW/JCzWtzGyDzdBBGsE1qloExacsd9eDTeT47hwqzKGAOcjUIf5/T
-	nnniRWn3FsTx8aV0k7aJitK4n+ehsV4DtjqshR8xP/ORMPaG3vEMHsF+H5YAoVKl
-	wv52MlQcpEDMt2WhuCHKBBWxdPpOAPkBf3rlauUBmmEbYvfxRXJOpDBJjDhsvRvI
-	1ComTwB3ZGwaovCcneBhPw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1745441782; x=
-	1745528182; bh=Bb0LHun5eme3JvaCWcXczY1F5v3r5KRrL1ZFam4vbcY=; b=I
-	5xgqomehtEMxc600NdY6MPcAgP3SxbaHXrvXjwrfv6O1A00BVbzYQ8W9T/Z885ex
-	f3pPssXN9ZqRjfvQDAlFD1rauZLCKtIACR4V+VJa2ygebreemR9ClKa9mOp7OwKZ
-	OqxS/ltThjzCRHMrzLy/MrMTGAAq3elEYuY73lrEoeCFY7ODkquZRm3YzqO34iws
-	QaPZq6jKmkc6R4F3R0kHq/D9+gKTyWXfvipnh9TQ4QZVZCM+cvWsi+XyesrkpTYz
-	sj+PD8Trg53EGEaKggjCEgmJVmbmTw+16+xUFc+hfdO+PKLWQu7XwaQhg4UqOJB0
-	NOISyi1fYvHqLjPazk2PA==
-X-ME-Sender: <xms:9lMJaD87CsCAjkk85XHwNZZlnlaa0-YPpWtpfTxDhBCGUrCZOdzeig>
-    <xme:9lMJaPvvn33kNKB-4LUvadejICTL7_YWJzdqs7a99SH70DlTIRIGXHXSvYIOcpWr7
-    XCVR2gKR1h4ET92jlM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeejieduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
-    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
-    iedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhosghinhdrmhhurhhphhihse
-    grrhhmrdgtohhmpdhrtghpthhtohepsggtohhllhhinhhssehkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehvkhhouhhlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
-    igphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpdhrtghpthhtohepughm
-    rggvnhhgihhnvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
-    igqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:9lMJaBAIeQtMtD3XTZ193C-81qbbbSlloEDu2bOA_vrQpw-RXvTK3Q>
-    <xmx:9lMJaPc6ajNqqpwwivumIo73CuutN-Q2KKfH5o8OQYspS9ywyF3rRQ>
-    <xmx:9lMJaIPJLB-bdI381BfdIcKavMVygvcXLGNwc27NZDSfh6z_9TJEgg>
-    <xmx:9lMJaBkbyGIBEPm8Q71gmEhMqA4qi98uwRDOI9T9i6yJX7MwxrJkNw>
-    <xmx:9lMJaIrwPM1H0E8MfFk6WLps2TACto1q3m9t3TXnLloUvDMBHq9Udm9A>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 4076A2220073; Wed, 23 Apr 2025 16:56:22 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjYwp6gCvz2y2B
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Apr 2025 08:40:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=202503; t=1745448056;
+	bh=cZmhf8eVzF2VnPKL2igjl0a5SH3xvS6UeTjP3NNRkI0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=X0yjGxI0OnmBqbnLyqdaAD+jQtmRM+UxAkr3ca+sr7dJcWhXAPRkcmKnE9ZGihfoN
+	 C9AHFTqk6n7AH6dTUO5FEFeuivinQ0x1peTSaO2reKXhcA8/Of+9kMbC3917iDB1fL
+	 NLQXvkhW2nT5sUa4Fj/ZNl2JW2/dgS8cknx+m4xnKkYMMt+IvpTTIf31UAWJBDoQnf
+	 SW/JoScQew4QC/CejTOMBMHGs4yVf5r6mOmjgjEZX2p9/LlMpC4JHAdU6Ek3qhFo+I
+	 u4u1KmYL0kaR8h+xpUoEng6evmomkJc5m5/A/eV5DN67UhwBJiTdM+l7IZJzz+vj2K
+	 r0Ske/FF1+M7Q==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZjYwl2dPGz4wcT;
+	Thu, 24 Apr 2025 08:40:55 +1000 (AEST)
+Date: Thu, 24 Apr 2025 08:40:54 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: mpe@ellerman.id.au, christophe.leroy@csgroup.eu, npiggin@gmail.com,
+ naveen@kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] powerpc/boot: Fix dash warning
+Message-ID: <20250424084054.6c44e81a@canb.auug.org.au>
+In-Reply-To: <20250423082154.30625-1-maddy@linux.ibm.com>
+References: <20250423082154.30625-1-maddy@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,49 +65,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-ThreadId: T8f64d9338f7a15a8
-Date: Wed, 23 Apr 2025 22:56:01 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Ben Collins" <bcollins@kernel.org>
-Cc: dmaengine@vger.kernel.org, "Vinod Koul" <vkoul@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- "Robin Murphy" <robin.murphy@arm.com>
-Message-Id: <7d914aa8-dc6f-426c-b7fc-dbb03c6b676c@app.fastmail.com>
-In-Reply-To: <2025042316-nippy-lemur-debd6b@boujee-and-buff>
-References: <2025042122-bizarre-ibex-b7ed42@boujee-and-buff>
- <fb0b5293-1cf3-4fcc-be9c-b5fe83f32325@app.fastmail.com>
- <2025042202-uncovered-mongrel-aee116@boujee-and-buff>
- <ace8c85d-6dec-499f-8a8a-35d4672c181d@app.fastmail.com>
- <2025042204-apricot-tarsier-b7f5a1@boujee-and-buff>
- <29bdb7e0-6db9-445e-986f-b29af8369c69@app.fastmail.com>
- <2025042216-hungry-hound-77ecae@boujee-and-buff>
- <06765168-a36a-4229-b03b-6ea91157237a@app.fastmail.com>
- <2025042316-nippy-lemur-debd6b@boujee-and-buff>
-Subject: Re: [PATCH] fsldma: Support 40 bit DMA addresses where capable
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: multipart/signed; boundary="Sig_/.ZHtxH8YidpfaiLFA0JNtv9";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Apr 23, 2025, at 22:41, Ben Collins wrote:
-> On Wed, Apr 23, 2025 at 03:49:16PM -0500, Arnd Bergmann wrote:
->> Looking at the current code I don't see that any more, so it's
->> possible that now any DMA is allowed even if there is no
->> dma-ranges property at all.
->
-> It's still there. It hardcodes zone_dma_limit to 31-bits:
->
-> arch/powerpc/mm/mem.c: paging_init()
->
-> I'm digging into this more. I'll check back when I have a better
-> understanding.
+--Sig_/.ZHtxH8YidpfaiLFA0JNtv9
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-zone_dma_limit is the other side of this: you need a ZONE_DMA
-and/or ZONE_DMA32 memory zone that lets a driver allocate buffers
-from low addresses if the DMA mask is smaller than the available
-memory.
+Hi Madhavan,
 
-      Arnd
+On Wed, 23 Apr 2025 13:51:54 +0530 Madhavan Srinivasan <maddy@linux.ibm.com=
+> wrote:
+>
+> Commit b2accfe7ca5b '("powerpc/boot: Check for ld-option support")' suppr=
+essed
+> linker warnings, but the expressed used did not go well with POSIX shell =
+(dash)
+> resulting with this warning
+>=20
+> arch/powerpc/boot/wrapper: 237: [: 0: unexpected operator
+> ld: warning: arch/powerpc/boot/zImage.epapr has a LOAD segment with RWX p=
+ermissions
+>=20
+> Fix the check to handle the reported warning. Patch also fixes
+> couple of shellcheck reported errors for the same line.
+>=20
+> In arch/powerpc/boot/wrapper line 237:
+> if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]=
+; then
+>      ^-- SC2046 (warning): Quote this to prevent word splitting.
+>        ^------^ SC2086 (info): Double quote to prevent globbing and word =
+splitting.
+>                                             ^---------^ SC3020 (warning):=
+ In POSIX sh, &> is undefined.
+>=20
+> Fixes: b2accfe7ca5b '("powerpc/boot: Check for ld-option support")'
+> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Suggested-by: Stephen Rothwell <sfr@canb.auug.org.au>
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> ---
+> Changelog v1:
+> - modified the check to use the command exit
+>   state instead explicit checking with exit code
+>  =20
+> Patch applies on top of powerpc/fixes
+>=20
+>  arch/powerpc/boot/wrapper | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+> index 267ca6d4d9b3..3d8dc822282a 100755
+> --- a/arch/powerpc/boot/wrapper
+> +++ b/arch/powerpc/boot/wrapper
+> @@ -234,7 +234,7 @@ fi
+> =20
+>  # suppress some warnings in recent ld versions
+>  nowarn=3D"-z noexecstack"
+> -if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 =
+]; then
+> +if "${CROSS}ld" -v --no-warn-rwx-segments >/dev/null 2>&1; then
+>  	nowarn=3D"$nowarn --no-warn-rwx-segments"
+>  fi
+> =20
+
+I have applied this to linux-next today and will keep doing so until it
+(or a replacement) is added to the powerpc-fixes tree.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/.ZHtxH8YidpfaiLFA0JNtv9
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmgJbHYACgkQAVBC80lX
+0GzLqggAltMrTUQdcnRr2nZEFa7X/mr9wrSOxJldILKcC/1lyRiqGYF2pSp/YUws
+TYECKheQYbyUCbIrqW6GwSe1fCxBXfQErawZj44qduL+MXfg5yvQxyECBekyj2+3
+qHtr/GCVR5Rqhj9lWJPvxdDprweFPiEWttDU4Sj/WGL8H9bxVrKXkZxB6TZbafO6
+r+YxApdT0JRe7h1AZr7e8l3vgIElsaucIX48z4eOdhnPFe78cHsoj4WLbOILMD9T
+dA3jrcZ9sSFX7eYJdBWlgiZqy9ZOabJ9oLi996h52KcpanUTB1A+y2MMEnuIxXAE
+3r0+PvcgrQqY3bfVpVJasUl0ijSFzw==
+=tunF
+-----END PGP SIGNATURE-----
+
+--Sig_/.ZHtxH8YidpfaiLFA0JNtv9--
 
