@@ -1,124 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-7937-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7938-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A52A98680
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Apr 2025 11:53:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8E1A98BD7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Apr 2025 15:50:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjDvP22FWz2yYf;
-	Wed, 23 Apr 2025 19:53:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjL844fqhz2ydx;
+	Wed, 23 Apr 2025 23:49:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745402017;
-	cv=none; b=cI3XtByErvKCbq6hvhpVzbkQR/yOPRn3Q69ltMkN518CfSWhLaXk89p24088z6cPX/CmtsSayDEP4WhV7TwN8KzLeeQiN0wLp1DAcH+FdStCjFW17FlefP43Zk3p4D6F3RMJJx4GeD9smaW2heUy1KfyOCCEJXfE30oupqdjAk2NYjm6T86b7zmV68GXKyz3sXyx8SwuhmtmXamK4zeLYNMPuFqP1ROH7peFXr0g/gIjxIu5q+7uT1gv8qRnTrmQvC1Qp3vWSmlVTo6DbQ2KYzdtaqwXH2k211FXRMi9QUiy9CItwTWbvx4H8gPhwtGUIgaxdR9r57mfiAY3Oa8S0w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.158
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745416196;
+	cv=none; b=UMg40eK1OVUKHyBlZb048ttdQsb09Ne60aOpFAgIWkU6dF1EPOZETTpiZcakCMQF52mzDX5H3hUqc8e3frBUBIlAFaqKrenIjjgsnzt+B5vyXdCm0gac03LGgQEU3O4pPz67ZR3TmsrUWtZCcZtwFAYgb/SGFvyjFaNGotSwWFv8/ad67qwFx3SbrjMWTgP/qXRYFzElYYKzm1V7m3AHYn3LgICvhPDFb43bb+tgtSqEx0x+/h+J2pYr6sESBUB47TA2Jmn6/hiG6VczCQBqKH5DKBWYrHITFU396qHy/lOEP/2WSc2dS7tvamFM5p0Rcc/HKmujVWwJYf/oQAu5tQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745402017; c=relaxed/relaxed;
-	bh=bAMJg+22aX8wNXOVQU/q0Slu5K2ETQkFa+MaYS1q1Aw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A8wK9a2t6YVtS0/0RLFDry1iIdJ729WSBDpQ9ifcoiVzLnxk6lHqCswxIHdKewNVKNiGbfq2FZtfS6IUhf5NILJtAwGWOYJ6tRXlhnw4PfwX923my0SBBrPQPcjJKHrgGV17bbpjFLsmJBvybEmdWEkrD98SvT3pI7+SYdv5sqNv9Hyk6vRKW5xTFnJh5X9vL1IfUylHN5/eZthfyov6aIJDMwnFQ7xnueNZaQM7k9LLo5YB8l7o8rWmZm1RvLn6dtVxYkPYQy1vALY6ucdSQLUyktvnfdDrNu0F94udEy1LBbZcLv65T9Bj1HbcehwzVaWnICi5u8Z5yYEBLsqVUA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MkBnnBgU; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JV9vpkpW; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MkBnnBgU; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JV9vpkpW; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jack@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
+	t=1745416196; c=relaxed/relaxed;
+	bh=VChUm3sRUsCqwnuWmJt8O1m8Q+AO86xNAt/YCvK6+So=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=FVTWQtguTWqDbxQXuU61pZmgQ75qu4gk7KV1AIUyDqDK2CVkpodOUTKXiMwWFMsxgVukVicOu5ZqztmMs/7PenfdkZZzqWpMi9Gp7BbPCgoQDdsEeckldL+hEd503ord+09GfNysg+lxZQwgyIChzKqxzICKhF3NloDgMQI36RVBQ9PhN0VwWckoVpU2lNEICqCI3Tout8y+inWifO/hbSNY9wy1t2RBqdkOUQrCYwJ9DLyAkthr5+qpn9rAD+XoA4ckRCBHQi/y9Gnj+0olcqrnR+PmVeyRMZ3fTQn980PyI+xosfCarwj8yLU9riaxekx1Zgvewv4Xux3otj6GGg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=NDs1xlyY; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=F8O7fn8c; dkim-atps=neutral; spf=pass (client-ip=103.168.172.158; helo=fhigh-a7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MkBnnBgU;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JV9vpkpW;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MkBnnBgU;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JV9vpkpW;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=NDs1xlyY;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=F8O7fn8c;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jack@suse.cz; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.158; helo=fhigh-a7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjDvL6QrQz2yGY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 19:53:34 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 53EC121192;
-	Wed, 23 Apr 2025 09:53:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1745402006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bAMJg+22aX8wNXOVQU/q0Slu5K2ETQkFa+MaYS1q1Aw=;
-	b=MkBnnBgUY4DejLxyqWELETbhQDSZbHRBCNcJ2SL2jANKjsmepr5ez71Lc+6XleLSZfpZrU
-	TZVIrwAG2mGYIiL+u5itSCcJjvabGWmDlypht/2m5b4xnKMjA73DuYr+ZRRUAYxQRyrlLB
-	7MnS/Z/KvF6Q+pV3yLCv4FTBynvtKsg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1745402006;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bAMJg+22aX8wNXOVQU/q0Slu5K2ETQkFa+MaYS1q1Aw=;
-	b=JV9vpkpWivR2j2l2iOWTdS74vSAmYn3ZCfrfQCySD6Ap21BM7ulYL6yd2KEBTFx0uVIzmS
-	IUaaLaSNx/k8B8DQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1745402006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bAMJg+22aX8wNXOVQU/q0Slu5K2ETQkFa+MaYS1q1Aw=;
-	b=MkBnnBgUY4DejLxyqWELETbhQDSZbHRBCNcJ2SL2jANKjsmepr5ez71Lc+6XleLSZfpZrU
-	TZVIrwAG2mGYIiL+u5itSCcJjvabGWmDlypht/2m5b4xnKMjA73DuYr+ZRRUAYxQRyrlLB
-	7MnS/Z/KvF6Q+pV3yLCv4FTBynvtKsg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1745402006;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bAMJg+22aX8wNXOVQU/q0Slu5K2ETQkFa+MaYS1q1Aw=;
-	b=JV9vpkpWivR2j2l2iOWTdS74vSAmYn3ZCfrfQCySD6Ap21BM7ulYL6yd2KEBTFx0uVIzmS
-	IUaaLaSNx/k8B8DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3548813A6A;
-	Wed, 23 Apr 2025 09:53:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pUq5DJa4CGhWFQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 23 Apr 2025 09:53:26 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id BEC8BA07A7; Wed, 23 Apr 2025 11:53:25 +0200 (CEST)
-Date: Wed, 23 Apr 2025 11:53:25 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Andrey Albershteyn <aalbersh@redhat.com>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-xfs@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] fs: introduce getfsxattrat and setfsxattrat
- syscalls
-Message-ID: <rbzlwvecvrp4xawwp5nywdq6wp5hgjhrtrabpszv74xmfqbj4f@x7v6eqfc5gcd>
-References: <20250321-xattrat-syscall-v4-0-3e82e6fb3264@kernel.org>
- <20250321-xattrat-syscall-v4-3-3e82e6fb3264@kernel.org>
- <20250422-abbekommen-begierde-bcf48dd74a2e@brauner>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjL806F71z2yGY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 23:49:51 +1000 (AEST)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 4F01011402D4;
+	Wed, 23 Apr 2025 09:49:48 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-05.internal (MEProxy); Wed, 23 Apr 2025 09:49:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1745416188;
+	 x=1745502588; bh=VChUm3sRUsCqwnuWmJt8O1m8Q+AO86xNAt/YCvK6+So=; b=
+	NDs1xlyYyRJehS3fOwCtUCC1D1+2LSVtTp1FFfFHuWVNjm2Alq9XumBzy6iODHtC
+	5QaF97O/bQEeiR6s67H2HoaqkuR6QpBsSetZ1dgY0bDrW/Aw5j+8qCh/ApE1ahA9
+	R+iowUtks2Gg5CdIQHcxOTfw6pa8qPCA2FMTknPrO+C7UKl572GpRoQqAwZ0Gjmw
+	fA2huRjLTjkhYEQjY6oxxoicQWqUVL7nch0XWUq99NqoVJyRHEJ8PM30bwFEAQdA
+	e6sPACgwR56O5xGNDmyTAx4tZ4fleoM/mnhge2kFr9U0zQP/8PwLg6yB4T7PQC/A
+	h4ON6dtBWjUzFUBib4TidA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1745416188; x=
+	1745502588; bh=VChUm3sRUsCqwnuWmJt8O1m8Q+AO86xNAt/YCvK6+So=; b=F
+	8O7fn8clYWCSO+0d+SSifxp2KQ5eLRMJMODl3GMxcETrhuKoUOmEWgOOZw+zh5Vh
+	QEL7G0KM1UBOOQAUJYRsUH/PZ/tU2lWEHhg5mBDi4b0eOaasTcBpWGlI5ihbFLRV
+	JuSOc0H+6DOjFdEnQSo3FqmPeEK524RO50G1LB9VUpo3gWFkG9nsEhpHeixtNVe+
+	NJWIZS5sI9hjn8sX2UxdJArl0MgM16UFgyRvAawU9rAc4Vw3ZCHboqPyLpOwrdHF
+	umPH1yYcwbQKFC0ILf4raC4cznVv/yjJlALoBwJNr46UvbdgVa17MlZ0vUmT5hDs
+	fyfrrzgl5wEs7Eu91qrfA==
+X-ME-Sender: <xms:--8IaKJ8uwi0oISUPlSCJH1YkeYhfm0zbx_nqMG3mcTsLdWaGj5S8g>
+    <xme:--8IaCK5G9PltrDsLnsGcnArlGIfGE8YyKpbwKI_H2EJINDVLhMZQA-2uq6PiHKw-
+    e0FhKpM6UDslClZIFM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeeijeeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
+    gsrdguvgeqnecuggftrfgrthhtvghrnhepgefgjedujedvieejgeelgfdthfduffeiteef
+    udeghfffkeejfeehtdejfeejteefnecuffhomhgrihhnpehgihhthhhusgdrtghomhenuc
+    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnuges
+    rghrnhgusgdruggvpdhnsggprhgtphhtthhopeeipdhmohguvgepshhmthhpohhuthdprh
+    gtphhtthhopehrohgsihhnrdhmuhhrphhhhiesrghrmhdrtghomhdprhgtphhtthhopegs
+    tgholhhlihhnsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhhkohhulheskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdho
+    iihlrggsshdrohhrghdprhgtphhtthhopegumhgrvghnghhinhgvsehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:--8IaKu32umSgzsK5FB2N-6mBhlHA0buQBz1IDRHdIUQmicKWocyrA>
+    <xmx:--8IaPZBq_MT58H9OuOzQ9XapDgXq7drt8WxZTBctKTEawhF-nEs_g>
+    <xmx:--8IaBbeOfyxuNJ9NnPOltD_db4EkqyxQZQ1GTTvVG6dAU_PNGnFkw>
+    <xmx:--8IaLDvWbNkTuGhdQhFUJmBfieS8MFKY-7tW9-axuJpfhilogo0KA>
+    <xmx:_O8IaJk8HIjtiqkGSqLBORdkagwKSQOpiccj2ax0fwtBuCni_Qf6SOuZ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id CDC932220073; Wed, 23 Apr 2025 09:49:47 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -131,112 +97,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250422-abbekommen-begierde-bcf48dd74a2e@brauner>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[redhat.com,linaro.org,gmail.com,armlinux.org.uk,arm.com,kernel.org,linux-m68k.org,monstr.eu,alpha.franken.de,hansenpartnership.com,gmx.de,linux.ibm.com,ellerman.id.au,csgroup.eu,users.sourceforge.jp,libc.org,physik.fu-berlin.de,davemloft.net,gaisler.com,linutronix.de,alien8.de,linux.intel.com,zytor.com,zankel.net,zeniv.linux.org.uk,suse.cz,digikod.net,google.com,arndb.de,paul-moore.com,namei.org,hallyn.com,vger.kernel.org,lists.infradead.org,lists.linux-m68k.org,lists.ozlabs.org];
-	R_RATELIMIT(0.00)[to_ip_from(RLyerg7kx5bdf6cnfzf33td54o)];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[60];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
-X-Spam-Score: -3.80
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+X-ThreadId: T8f64d9338f7a15a8
+Date: Wed, 23 Apr 2025 15:49:16 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Ben Collins" <bcollins@kernel.org>
+Cc: dmaengine@vger.kernel.org, "Vinod Koul" <vkoul@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ "Robin Murphy" <robin.murphy@arm.com>
+Message-Id: <06765168-a36a-4229-b03b-6ea91157237a@app.fastmail.com>
+In-Reply-To: <2025042216-hungry-hound-77ecae@boujee-and-buff>
+References: <2025042122-bizarre-ibex-b7ed42@boujee-and-buff>
+ <fb0b5293-1cf3-4fcc-be9c-b5fe83f32325@app.fastmail.com>
+ <2025042202-uncovered-mongrel-aee116@boujee-and-buff>
+ <ace8c85d-6dec-499f-8a8a-35d4672c181d@app.fastmail.com>
+ <2025042204-apricot-tarsier-b7f5a1@boujee-and-buff>
+ <29bdb7e0-6db9-445e-986f-b29af8369c69@app.fastmail.com>
+ <2025042216-hungry-hound-77ecae@boujee-and-buff>
+Subject: Re: [PATCH] fsldma: Support 40 bit DMA addresses where capable
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue 22-04-25 16:59:02, Christian Brauner wrote:
-> On Fri, Mar 21, 2025 at 08:48:42PM +0100, Andrey Albershteyn wrote:
-> > From: Andrey Albershteyn <aalbersh@redhat.com>
-> > 
-> > Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
-> > extended attributes/flags. The syscalls take parent directory fd and
-> > path to the child together with struct fsxattr.
-> > 
-> > This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
-> > that file don't need to be open as we can reference it with a path
-> > instead of fd. By having this we can manipulated inode extended
-> > attributes not only on regular files but also on special ones. This
-> > is not possible with FS_IOC_FSSETXATTR ioctl as with special files
-> > we can not call ioctl() directly on the filesystem inode using fd.
-> > 
-> > This patch adds two new syscalls which allows userspace to get/set
-> > extended inode attributes on special files by using parent directory
-> > and a path - *at() like syscall.
-> > 
-> > CC: linux-api@vger.kernel.org
-> > CC: linux-fsdevel@vger.kernel.org
-> > CC: linux-xfs@vger.kernel.org
-> > Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
-> > Acked-by: Arnd Bergmann <arnd@arndb.de>
-...
-> > +		struct fsxattr __user *, ufsx, size_t, usize,
-> > +		unsigned int, at_flags)
-> > +{
-> > +	struct fileattr fa = {};
-> > +	struct path filepath;
-> > +	int error;
-> > +	unsigned int lookup_flags = 0;
-> > +	struct filename *name;
-> > +	struct fsxattr fsx = {};
-> > +
-> > +	BUILD_BUG_ON(sizeof(struct fsxattr) < FSXATTR_SIZE_VER0);
-> > +	BUILD_BUG_ON(sizeof(struct fsxattr) != FSXATTR_SIZE_LATEST);
-> > +
-> > +	if ((at_flags & ~(AT_SYMLINK_NOFOLLOW | AT_EMPTY_PATH)) != 0)
-> > +		return -EINVAL;
-> > +
-> > +	if (!(at_flags & AT_SYMLINK_NOFOLLOW))
-> > +		lookup_flags |= LOOKUP_FOLLOW;
-> > +
-> > +	if (at_flags & AT_EMPTY_PATH)
-> > +		lookup_flags |= LOOKUP_EMPTY;
-> > +
-> > +	if (usize > PAGE_SIZE)
-> > +		return -E2BIG;
-> > +
-> > +	if (usize < FSXATTR_SIZE_VER0)
-> > +		return -EINVAL;
-> > +
-> > +	name = getname_maybe_null(filename, at_flags);
-> > +	if (!name) {
-> 
-> This is broken as it doesn't handle AT_FDCWD correctly. You need:
-> 
->         name = getname_maybe_null(filename, at_flags);
->         if (IS_ERR(name))
->                 return PTR_ERR(name);
-> 
->         if (!name && dfd >= 0) {
-> 		CLASS(fd, f)(dfd);
+On Tue, Apr 22, 2025, at 23:10, Ben Collins wrote:
+> On Tue, Apr 22, 2025 at 11:25:40AM -0500, Arnd Bergmann wrote:
+>> On Tue, Apr 22, 2025, at 10:56, Ben Collins wrote:
+>>
+>> >> > I'll check on this, but I think it's a seperate issue. The main thing is
+>> >> > just to configure the dma hw correctly.
+>> >> 
+>> >> I think it's still important to check this before changing the
+>> >> driver: if the larger mask doesn't actually have any effect now
+>> >> because the DT caps the DMA at 4GB, then it might break later
+>> >> when someone adds the correct dma-ranges properties.
+>> >
+>> > I'm adding dma-ranges to my dt for testing.
+>> 
+>> Ok. The other thing you can try is to printk() the dev->bus_dma_limit
+>> to see if it even tries to use >32bit addressing.
+>
+> Did that. Every combination of IOMMU on/off and dma-ranges in my dt always
+> showed bus_dma_limit as 0x0.
 
-Ah, you're indeed right that if dfd == AT_FDCWD and filename == NULL, the
-we should operate on cwd but we'd bail with error here. I've missed that
-during my review. But as far as I've checked the same bug is there in
-path_setxattrat() and path_getxattrat() so we should fix this there as
-well?
+Strange, either something changed since I last looked at this code,
+or there is something on Freescale SoCs that avoids the
+default logic.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+There was originally a hack for powerpc that allowed DMA to be
+done in the absence of a dma-ranges property in the bus node, but
+limit it to 32-bit addressing for backwards compatibility, while
+all other architectures should require either an empty dma-ranges
+to allow full addressing or a specific translation if there is
+a bus specific limit and/or offset.
+
+Looking at the current code I don't see that any more, so it's
+possible that now any DMA is allowed even if there is no
+dma-ranges property at all.
+
+> As an aside, if you could give this a quick check, I can send the revised
+> patch. Appreciate the feedback.
+>
+> https://github.com/benmcollins/linux/commit/2f2946b33294ebff2fdaae6d1eadc976147470d6
+
+This looks correct to me, but I would change two things:
+
+ - remove the debug message, which you probably left by accident
+ - instead of the explicit of_device_is_compatible(), change it
+   to use the .data field of the of_device_id table instead.
+
+       Arnd
 
