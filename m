@@ -1,90 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-7938-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7939-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A8E1A98BD7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Apr 2025 15:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AC4A98FF7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Apr 2025 17:15:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjL844fqhz2ydx;
-	Wed, 23 Apr 2025 23:49:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjN2s5d0sz2xKh;
+	Thu, 24 Apr 2025 01:15:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.158
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745416196;
-	cv=none; b=UMg40eK1OVUKHyBlZb048ttdQsb09Ne60aOpFAgIWkU6dF1EPOZETTpiZcakCMQF52mzDX5H3hUqc8e3frBUBIlAFaqKrenIjjgsnzt+B5vyXdCm0gac03LGgQEU3O4pPz67ZR3TmsrUWtZCcZtwFAYgb/SGFvyjFaNGotSwWFv8/ad67qwFx3SbrjMWTgP/qXRYFzElYYKzm1V7m3AHYn3LgICvhPDFb43bb+tgtSqEx0x+/h+J2pYr6sESBUB47TA2Jmn6/hiG6VczCQBqKH5DKBWYrHITFU396qHy/lOEP/2WSc2dS7tvamFM5p0Rcc/HKmujVWwJYf/oQAu5tQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::22c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745421333;
+	cv=none; b=mzWThAIhahtA0ClKLgq8WfyawZdLFAEBdWPU4kbZOLEK1s4lUeizylfEnS6NUEkLVGmL1uUXjvMJ1ntmaUwNwcPsYLqar8fRqFnk/hJHZUm2+Y1ORRz6XM2rCIRd29QH17PDWZfeGwzwp2uR8vO6eI+urpgvLuVkzJjULfCMvIhiIw1Oqg43r7QEdEfosls6teFdGnTMeaSSPhLJynZ1xJtE1eXH9/4t+xn0mi1focSbQA14GCZMC6C29j5SJQSDoQEHAevgoXKMqLo34aEdRvD7Jmd5RU80y96KhZwagdv5CY4sb0u4VgV75Y6M5KfTCwp7oirMQ4GjPoB/29igbg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745416196; c=relaxed/relaxed;
-	bh=VChUm3sRUsCqwnuWmJt8O1m8Q+AO86xNAt/YCvK6+So=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=FVTWQtguTWqDbxQXuU61pZmgQ75qu4gk7KV1AIUyDqDK2CVkpodOUTKXiMwWFMsxgVukVicOu5ZqztmMs/7PenfdkZZzqWpMi9Gp7BbPCgoQDdsEeckldL+hEd503ord+09GfNysg+lxZQwgyIChzKqxzICKhF3NloDgMQI36RVBQ9PhN0VwWckoVpU2lNEICqCI3Tout8y+inWifO/hbSNY9wy1t2RBqdkOUQrCYwJ9DLyAkthr5+qpn9rAD+XoA4ckRCBHQi/y9Gnj+0olcqrnR+PmVeyRMZ3fTQn980PyI+xosfCarwj8yLU9riaxekx1Zgvewv4Xux3otj6GGg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=NDs1xlyY; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=F8O7fn8c; dkim-atps=neutral; spf=pass (client-ip=103.168.172.158; helo=fhigh-a7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1745421333; c=relaxed/relaxed;
+	bh=IpCh/bKv5Ai6XWwUzIcH2XxVQsTuQk3BEgJo+HbzPHE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a3+I3OMS09kCsJE8nCv2GY9oSS+pwjLt5yPa4YeaVtHYuj33/tMRHuukBIQr6QPJ8bQGAKl1btiJ872Rx5Ayy7qef+04Hf+76MV/TQ03D8FdF3/1vP2WhHRH/k8jveKmjie0NSq3YEGhy+T8v8jf1/cOWvnjgGfyvXvYrmtgE/EISqnNSbrSMjEO9KqPAx3KsDlAl5aPdVZ/wp0z6Dx7xpb4oar8eKaqGfyIF+SiE7LywbMTqxj/QQcUS+3ZP/ds9P23HxUNrUFKdhIhgXIb5afNgl547ishJxD/nDEYTFNCkwiLxfUkI5CxRooog21cIL5X2O3FrcptRNUlBxKe6Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=qSXvsDh3; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::22c; helo=mail-lj1-x22c.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=NDs1xlyY;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=F8O7fn8c;
+	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=qSXvsDh3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.158; helo=fhigh-a7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::22c; helo=mail-lj1-x22c.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjL806F71z2yGY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 23:49:51 +1000 (AEST)
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 4F01011402D4;
-	Wed, 23 Apr 2025 09:49:48 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-05.internal (MEProxy); Wed, 23 Apr 2025 09:49:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1745416188;
-	 x=1745502588; bh=VChUm3sRUsCqwnuWmJt8O1m8Q+AO86xNAt/YCvK6+So=; b=
-	NDs1xlyYyRJehS3fOwCtUCC1D1+2LSVtTp1FFfFHuWVNjm2Alq9XumBzy6iODHtC
-	5QaF97O/bQEeiR6s67H2HoaqkuR6QpBsSetZ1dgY0bDrW/Aw5j+8qCh/ApE1ahA9
-	R+iowUtks2Gg5CdIQHcxOTfw6pa8qPCA2FMTknPrO+C7UKl572GpRoQqAwZ0Gjmw
-	fA2huRjLTjkhYEQjY6oxxoicQWqUVL7nch0XWUq99NqoVJyRHEJ8PM30bwFEAQdA
-	e6sPACgwR56O5xGNDmyTAx4tZ4fleoM/mnhge2kFr9U0zQP/8PwLg6yB4T7PQC/A
-	h4ON6dtBWjUzFUBib4TidA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1745416188; x=
-	1745502588; bh=VChUm3sRUsCqwnuWmJt8O1m8Q+AO86xNAt/YCvK6+So=; b=F
-	8O7fn8clYWCSO+0d+SSifxp2KQ5eLRMJMODl3GMxcETrhuKoUOmEWgOOZw+zh5Vh
-	QEL7G0KM1UBOOQAUJYRsUH/PZ/tU2lWEHhg5mBDi4b0eOaasTcBpWGlI5ihbFLRV
-	JuSOc0H+6DOjFdEnQSo3FqmPeEK524RO50G1LB9VUpo3gWFkG9nsEhpHeixtNVe+
-	NJWIZS5sI9hjn8sX2UxdJArl0MgM16UFgyRvAawU9rAc4Vw3ZCHboqPyLpOwrdHF
-	umPH1yYcwbQKFC0ILf4raC4cznVv/yjJlALoBwJNr46UvbdgVa17MlZ0vUmT5hDs
-	fyfrrzgl5wEs7Eu91qrfA==
-X-ME-Sender: <xms:--8IaKJ8uwi0oISUPlSCJH1YkeYhfm0zbx_nqMG3mcTsLdWaGj5S8g>
-    <xme:--8IaCK5G9PltrDsLnsGcnArlGIfGE8YyKpbwKI_H2EJINDVLhMZQA-2uq6PiHKw-
-    e0FhKpM6UDslClZIFM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgeeijeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhepgefgjedujedvieejgeelgfdthfduffeiteef
-    udeghfffkeejfeehtdejfeejteefnecuffhomhgrihhnpehgihhthhhusgdrtghomhenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnuges
-    rghrnhgusgdruggvpdhnsggprhgtphhtthhopeeipdhmohguvgepshhmthhpohhuthdprh
-    gtphhtthhopehrohgsihhnrdhmuhhrphhhhiesrghrmhdrtghomhdprhgtphhtthhopegs
-    tgholhhlihhnsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhhkohhulheskhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdho
-    iihlrggsshdrohhrghdprhgtphhtthhopegumhgrvghnghhinhgvsehvghgvrhdrkhgvrh
-    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgv
-    rhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:--8IaKu32umSgzsK5FB2N-6mBhlHA0buQBz1IDRHdIUQmicKWocyrA>
-    <xmx:--8IaPZBq_MT58H9OuOzQ9XapDgXq7drt8WxZTBctKTEawhF-nEs_g>
-    <xmx:--8IaBbeOfyxuNJ9NnPOltD_db4EkqyxQZQ1GTTvVG6dAU_PNGnFkw>
-    <xmx:--8IaLDvWbNkTuGhdQhFUJmBfieS8MFKY-7tW9-axuJpfhilogo0KA>
-    <xmx:_O8IaJk8HIjtiqkGSqLBORdkagwKSQOpiccj2ax0fwtBuCni_Qf6SOuZ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id CDC932220073; Wed, 23 Apr 2025 09:49:47 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjN2q3S3hz2xCW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Apr 2025 01:15:30 +1000 (AEST)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-30effbfaf4aso22841fa.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 08:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1745421325; x=1746026125; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IpCh/bKv5Ai6XWwUzIcH2XxVQsTuQk3BEgJo+HbzPHE=;
+        b=qSXvsDh3ksci5YJXLRfYoKZhSV9GjVrZ6umTyrGZRR+3QA0xuZyU/UHuBgkJqkYyyu
+         U4t4n43wltU5MKds/zWsWeiGUVhhX47ovEIucSPu5s5RqqyTX/vds1HIoKPnbbTM6ZA2
+         T4ev6l7A2iRlFQoInJC1RA69dOQ9TUG2RAr1BSsdZFT0nbpnfaEsGPyLFZROhwCSHeMr
+         DFgQy87JgfAQnI5jSMlUI3IBysj2qlvP0byb+11T8ZUZB2MAoUIXoF8JxaaK4hgBV8tP
+         +TMtmpq92gylVzCT/9L1q2kpQZ4x/U/FGbeRzdMuQRj5Wg6IdveiybhVgKEf7UWjlmCt
+         AeFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745421325; x=1746026125;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IpCh/bKv5Ai6XWwUzIcH2XxVQsTuQk3BEgJo+HbzPHE=;
+        b=SbKeJWa9naTJtFzrdEW4KFBjXzfytG3+VdaR/7JYdzpHiG8kPeb1sXYd+1MX96Ya8X
+         7yC7VUUiJCl5vlLO5KiDvPuMu2JQKG656GgCIihJN/d+OoOHZSPiaUpWNgZLSfCdDC16
+         2NRFpdGEEtUIznj34W6EpPkqH7oXgc6BFzOU82ljpnway4rBFDayYblyjEsKeSlhR/S7
+         2qXiC9aVtnW4eESNdS5jMnfsYp90XL14kn+YxUxmCO6ru/YEDKBPaptpSp2HWeVoGMqz
+         vP1B9s0rw0T8/21+EPW0Gwll333lclqpHAE/INtSPvUbk/MRMnIecxRjK+wIKrkJNdbd
+         JbPA==
+X-Gm-Message-State: AOJu0YzKdsWipCMeQ23hnnVMOTm0fEbqJp4SPxXNmwXV1CAyopmHEn4x
+	b8CvP06xf6xlyRPFtfM5NTntDbOw9Sfybby01EK9QfGfRs+YVhQDvOHW205CHILLHVuAca5HV6f
+	Wt9/eFRvlwa2Eyig4FXjOqsLUJ7ZKIyO2eX3yjg==
+X-Gm-Gg: ASbGncuHT5jLoUfQsfSAmUvWMlxDea1TGEjtvR94AJorclM3Svmn/8ikUMlipXzGdXq
+	/mYKcMMiZQHiYsArhHwzoUYXNzYq6HOqMiGeyT4BV5Kimdz0u/9U5KHGGr+HR9wvVBVm4yA488/
+	gBIZ3zLMMcEF7jyfcWZsmMCFwRlMO8egk2vo3bsMp8aINWK15BmcD3eA==
+X-Google-Smtp-Source: AGHT+IEb1jIj14pt/URZReGGb6TRkHRFc9RO4pOYfh9JBEeg/z0nCu7x4tQD9PqcIWoruPNTpnessNuZbjek65SmGKg=
+X-Received: by 2002:a05:651c:1603:b0:30b:e3d9:37e5 with SMTP id
+ 38308e7fff4ca-310904db169mr55235771fa.13.1745421324677; Wed, 23 Apr 2025
+ 08:15:24 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,75 +76,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-ThreadId: T8f64d9338f7a15a8
-Date: Wed, 23 Apr 2025 15:49:16 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Ben Collins" <bcollins@kernel.org>
-Cc: dmaengine@vger.kernel.org, "Vinod Koul" <vkoul@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- "Robin Murphy" <robin.murphy@arm.com>
-Message-Id: <06765168-a36a-4229-b03b-6ea91157237a@app.fastmail.com>
-In-Reply-To: <2025042216-hungry-hound-77ecae@boujee-and-buff>
-References: <2025042122-bizarre-ibex-b7ed42@boujee-and-buff>
- <fb0b5293-1cf3-4fcc-be9c-b5fe83f32325@app.fastmail.com>
- <2025042202-uncovered-mongrel-aee116@boujee-and-buff>
- <ace8c85d-6dec-499f-8a8a-35d4672c181d@app.fastmail.com>
- <2025042204-apricot-tarsier-b7f5a1@boujee-and-buff>
- <29bdb7e0-6db9-445e-986f-b29af8369c69@app.fastmail.com>
- <2025042216-hungry-hound-77ecae@boujee-and-buff>
-Subject: Re: [PATCH] fsldma: Support 40 bit DMA addresses where capable
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250408-gpiochip-set-rv-powerpc-v1-0-73dc1ebc6ef1@linaro.org>
+In-Reply-To: <20250408-gpiochip-set-rv-powerpc-v1-0-73dc1ebc6ef1@linaro.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 23 Apr 2025 17:15:13 +0200
+X-Gm-Features: ATxdqUFDwggDqgtKp-q1Zc5o_6PU2EcjPow6QZCYfHjlH6VvpL_4JmV6numGqXk
+Message-ID: <CAMRc=Mdp55VX543rXmLtMHF7sCxojcs-3BqyTZu7NDMzbTqVog@mail.gmail.com>
+Subject: Re: [PATCH 0/5] powerpc: convert board-file GPIO chips to using new
+ value setters
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Anatolij Gustschin <agust@denx.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Apr 22, 2025, at 23:10, Ben Collins wrote:
-> On Tue, Apr 22, 2025 at 11:25:40AM -0500, Arnd Bergmann wrote:
->> On Tue, Apr 22, 2025, at 10:56, Ben Collins wrote:
->>
->> >> > I'll check on this, but I think it's a seperate issue. The main thing is
->> >> > just to configure the dma hw correctly.
->> >> 
->> >> I think it's still important to check this before changing the
->> >> driver: if the larger mask doesn't actually have any effect now
->> >> because the DT caps the DMA at 4GB, then it might break later
->> >> when someone adds the correct dma-ranges properties.
->> >
->> > I'm adding dma-ranges to my dt for testing.
->> 
->> Ok. The other thing you can try is to printk() the dev->bus_dma_limit
->> to see if it even tries to use >32bit addressing.
+On Tue, Apr 8, 2025 at 9:21=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl> =
+wrote:
 >
-> Did that. Every combination of IOMMU on/off and dma-ranges in my dt always
-> showed bus_dma_limit as 0x0.
-
-Strange, either something changed since I last looked at this code,
-or there is something on Freescale SoCs that avoids the
-default logic.
-
-There was originally a hack for powerpc that allowed DMA to be
-done in the absence of a dma-ranges property in the bus node, but
-limit it to 32-bit addressing for backwards compatibility, while
-all other architectures should require either an empty dma-ranges
-to allow full addressing or a specific translation if there is
-a bus specific limit and/or offset.
-
-Looking at the current code I don't see that any more, so it's
-possible that now any DMA is allowed even if there is no
-dma-ranges property at all.
-
-> As an aside, if you could give this a quick check, I can send the revised
-> patch. Appreciate the feedback.
+> struct gpio_chip now has callbacks for setting line values that return
+> an integer, allowing to indicate failures. We're in the process of
+> converting all GPIO drivers to using the new API. This series converts
+> all powerpc board-file level controllers.
 >
-> https://github.com/benmcollins/linux/commit/2f2946b33294ebff2fdaae6d1eadc976147470d6
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> ---
+> Bartosz Golaszewski (5):
+>       powerpc: sysdev/gpio: use new line value setter callbacks
+>       powerpc: 83xx/gpio: use new line value setter callbacks
+>       powerpc: 44x/gpio: use new line value setter callbacks
+>       powerpc: 52xx/gpio: use new line value setter callbacks
+>       powerpc: 8xx/gpio: use new line value setter callbacks
+>
+>  arch/powerpc/platforms/44x/gpio.c              |  7 ++++---
+>  arch/powerpc/platforms/52xx/mpc52xx_gpt.c      |  6 ++++--
+>  arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c |  6 ++++--
+>  arch/powerpc/platforms/8xx/cpm1.c              | 12 ++++++++----
+>  arch/powerpc/sysdev/cpm_common.c               |  6 ++++--
+>  5 files changed, 24 insertions(+), 13 deletions(-)
+> ---
+> base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+> change-id: 20250326-gpiochip-set-rv-powerpc-1e98d28222aa
+>
+> Best regards,
+> --
+> Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>
 
-This looks correct to me, but I would change two things:
+Gentle ping.
 
- - remove the debug message, which you probably left by accident
- - instead of the explicit of_device_is_compatible(), change it
-   to use the .data field of the of_device_id table instead.
-
-       Arnd
+Bart
 
