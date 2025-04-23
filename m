@@ -1,71 +1,124 @@
-Return-Path: <linuxppc-dev+bounces-7936-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7937-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE27A985C6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Apr 2025 11:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A52A98680
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Apr 2025 11:53:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjDZ40F9lz2yKr;
-	Wed, 23 Apr 2025 19:38:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjDvP22FWz2yYf;
+	Wed, 23 Apr 2025 19:53:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745401115;
-	cv=none; b=i4jZ3J9/Lq5W+3emRQGadFp8r7YI6i81AP0+X/7MT2TT2GOGiPfLOr0s/rWl3mOwbnKnz7FMrKsXzq68pXPM+Ijy8/pdHjEw3g3ZtJB3CYNO8lnRpj8ct+tnTtI/b9qNYNKkRTHgOJxmaZxj0ILX+0nICgeOs7MWmG/Hpn3uWH33xBBWDxiyHuUF66PC/jf8IhDRMk5SCfUwr8LuMG/9ySx6q6jIlFXwFYLZGkIwFbiEoXUtt9ZPSpr3FyfuAVo5fIdinBhR+5/1UGOpytiyTuNztGVt/6E0GlQlgbSPGnHcGvxJ1EzDWZO0xNenzZcbFso1YXziTuW542IyT79T6Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745402017;
+	cv=none; b=cI3XtByErvKCbq6hvhpVzbkQR/yOPRn3Q69ltMkN518CfSWhLaXk89p24088z6cPX/CmtsSayDEP4WhV7TwN8KzLeeQiN0wLp1DAcH+FdStCjFW17FlefP43Zk3p4D6F3RMJJx4GeD9smaW2heUy1KfyOCCEJXfE30oupqdjAk2NYjm6T86b7zmV68GXKyz3sXyx8SwuhmtmXamK4zeLYNMPuFqP1ROH7peFXr0g/gIjxIu5q+7uT1gv8qRnTrmQvC1Qp3vWSmlVTo6DbQ2KYzdtaqwXH2k211FXRMi9QUiy9CItwTWbvx4H8gPhwtGUIgaxdR9r57mfiAY3Oa8S0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745401115; c=relaxed/relaxed;
-	bh=RTxwEkTpzNJ32r28cWajfkk3PS39VSQR/ZaddpH/nmU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=BInBi3OtETbFBZ0jPamNPr6Sbqx6l+WtVgo2AZgmVIvwYV1JEKeIs8AGntCt9GjCDEcYmPZUlj3SbtLi4dykEFYSO5RnreG+e6nj0pS217rPl8OeTUTKrjC6CfdysTixbIyi4pFsLnnioZLv02jFjjiZCrGcYMqAAek29vG8BOC4SiI9smixLDATZqXS8bFZNU87k3D0/h3HcLl3wUz6Imuh9xu7Oz42PPOFkGiwh1AI/31iT/lbVEJfQ4YU1mlNfpQ9Sa2NP13l1nvH8fZI9aomkHz9RUxPXP6HH40Vm9ts5Q3OouOMhRcVYMntkSqjWu4kr4dR4FyLIngiuD+38g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TgIyFv++; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1745402017; c=relaxed/relaxed;
+	bh=bAMJg+22aX8wNXOVQU/q0Slu5K2ETQkFa+MaYS1q1Aw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A8wK9a2t6YVtS0/0RLFDry1iIdJ729WSBDpQ9ifcoiVzLnxk6lHqCswxIHdKewNVKNiGbfq2FZtfS6IUhf5NILJtAwGWOYJ6tRXlhnw4PfwX923my0SBBrPQPcjJKHrgGV17bbpjFLsmJBvybEmdWEkrD98SvT3pI7+SYdv5sqNv9Hyk6vRKW5xTFnJh5X9vL1IfUylHN5/eZthfyov6aIJDMwnFQ7xnueNZaQM7k9LLo5YB8l7o8rWmZm1RvLn6dtVxYkPYQy1vALY6ucdSQLUyktvnfdDrNu0F94udEy1LBbZcLv65T9Bj1HbcehwzVaWnICi5u8Z5yYEBLsqVUA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MkBnnBgU; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JV9vpkpW; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MkBnnBgU; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JV9vpkpW; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jack@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TgIyFv++;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MkBnnBgU;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JV9vpkpW;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=MkBnnBgU;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JV9vpkpW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=jack@suse.cz; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjDZ2736pz2yGY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 19:38:34 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53N6fh6t019876
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 09:38:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=RTxwEk
-	TpzNJ32r28cWajfkk3PS39VSQR/ZaddpH/nmU=; b=TgIyFv++9sp/pr/upeEDqQ
-	CJwLCh7fNKitXkU/fpn8zqY8CT8jncE80hKgTUhwxbMYOkjH96lQxXPS2x8SQ/GD
-	Y0ptLEnqjht7qIPGLLl21JzpFCR4m5UVa8WgRlNBU46R5NQu04avEQKnvLJkU6Ld
-	HLG0AfBV/9HhUDc3BdlKvl/M4T7nDW8pNXSeRMAvnqOhQZt/Pn3d38jJRuXPUFLk
-	08GJ78cVuvt3kJ+TgxLQZ7AkKSg3F6bhbLCoXLkMcSI1b3TyP+fR8VnHMHw0XkY6
-	iE7m0AWoz7HCfyaKODDIRQsq9oboKtWBDPWchhy9YKBoOay7lehs9I1kGRxhzK2w
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 466jp3tj3u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 09:38:31 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53N6V4wA005844
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 09:38:30 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 466jfxad0d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 09:38:30 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53N9cUXs31523496
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 09:38:30 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED4FE5805D
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 09:38:29 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 651CA58043
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 09:38:29 +0000 (GMT)
-Received: from [9.204.204.179] (unknown [9.204.204.179])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 09:38:29 +0000 (GMT)
-Message-ID: <73ad47ba-4c47-4698-9f15-eab16542a8c7@linux.ibm.com>
-Date: Wed, 23 Apr 2025 15:08:28 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjDvL6QrQz2yGY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Apr 2025 19:53:34 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 53EC121192;
+	Wed, 23 Apr 2025 09:53:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1745402006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bAMJg+22aX8wNXOVQU/q0Slu5K2ETQkFa+MaYS1q1Aw=;
+	b=MkBnnBgUY4DejLxyqWELETbhQDSZbHRBCNcJ2SL2jANKjsmepr5ez71Lc+6XleLSZfpZrU
+	TZVIrwAG2mGYIiL+u5itSCcJjvabGWmDlypht/2m5b4xnKMjA73DuYr+ZRRUAYxQRyrlLB
+	7MnS/Z/KvF6Q+pV3yLCv4FTBynvtKsg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1745402006;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bAMJg+22aX8wNXOVQU/q0Slu5K2ETQkFa+MaYS1q1Aw=;
+	b=JV9vpkpWivR2j2l2iOWTdS74vSAmYn3ZCfrfQCySD6Ap21BM7ulYL6yd2KEBTFx0uVIzmS
+	IUaaLaSNx/k8B8DQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1745402006; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bAMJg+22aX8wNXOVQU/q0Slu5K2ETQkFa+MaYS1q1Aw=;
+	b=MkBnnBgUY4DejLxyqWELETbhQDSZbHRBCNcJ2SL2jANKjsmepr5ez71Lc+6XleLSZfpZrU
+	TZVIrwAG2mGYIiL+u5itSCcJjvabGWmDlypht/2m5b4xnKMjA73DuYr+ZRRUAYxQRyrlLB
+	7MnS/Z/KvF6Q+pV3yLCv4FTBynvtKsg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1745402006;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bAMJg+22aX8wNXOVQU/q0Slu5K2ETQkFa+MaYS1q1Aw=;
+	b=JV9vpkpWivR2j2l2iOWTdS74vSAmYn3ZCfrfQCySD6Ap21BM7ulYL6yd2KEBTFx0uVIzmS
+	IUaaLaSNx/k8B8DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3548813A6A;
+	Wed, 23 Apr 2025 09:53:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pUq5DJa4CGhWFQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 23 Apr 2025 09:53:26 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id BEC8BA07A7; Wed, 23 Apr 2025 11:53:25 +0200 (CEST)
+Date: Wed, 23 Apr 2025 11:53:25 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Andrey Albershteyn <aalbersh@redhat.com>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] fs: introduce getfsxattrat and setfsxattrat
+ syscalls
+Message-ID: <rbzlwvecvrp4xawwp5nywdq6wp5hgjhrtrabpszv74xmfqbj4f@x7v6eqfc5gcd>
+References: <20250321-xattrat-syscall-v4-0-3e82e6fb3264@kernel.org>
+ <20250321-xattrat-syscall-v4-3-3e82e6fb3264@kernel.org>
+ <20250422-abbekommen-begierde-bcf48dd74a2e@brauner>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,97 +131,112 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc/boot: Fix dash warning
-Content-Language: en-GB
-To: linuxppc-dev@lists.ozlabs.org
-References: <20250423082154.30625-1-maddy@linux.ibm.com>
- <20250423185315.6732741f@canb.auug.org.au>
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <20250423185315.6732741f@canb.auug.org.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LOZSOoxqgpclS9-CkGXLZHk5hSX6-lLj
-X-Proofpoint-ORIG-GUID: LOZSOoxqgpclS9-CkGXLZHk5hSX6-lLj
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDIzMDA2NSBTYWx0ZWRfXw14lF+ORvp/a sHrdcAK/ltEKrNCfysvi+7Vn/+iNkCkK70uq3iSVywcymcqUporieTvIps0hh8R0+C2s9iWg37U 1NBXY/uIATo8OPB3NcVWDsaUwcNFG2nFwEtN/qZraizvBg/E5RTxBB+GSpc/1FByas8wOkefyGC
- Q7mB0GTrOQc0H+SUNF5d4+lYm3fCSD4QZvGxBXiXsMJJa6VeVCD3lr5ooYGqgPcw6siB2Gl5tdh 8DBXFXx3R9650nUzR7xn9s2/8vd2RAe49Zklc9FAxVd32ZrTryOY1Q2ZCuXSYvMVSSMkOLGqNeX 6BtX2fIJVH4Kp6Hmnvbz3kbjrQb6q6HG+EGbcpQds5wWrU9h3jrErC5/5C+JCkkx5S8HRV2ca6F
- DLL72EkgWoVR0EbJgGrY24LtvslGjTgnbjRfMGemG5D7kaf0Bb7e4OTGqXjc7CggzNwpaphR
-X-Authority-Analysis: v=2.4 cv=N9wpF39B c=1 sm=1 tr=0 ts=6808b517 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=rOUgymgbAAAA:8 a=1vJyUseoyQAnf17jsl4A:9
- a=0bXxn9q0MV6snEgNplNhOjQmxlI=:19 a=QEXdDO2ut3YA:10 a=MP9ZtiD8KjrkvI0BhSjB:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-23_06,2025-04-22_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- mlxlogscore=999 priorityscore=1501 malwarescore=0 adultscore=0 bulkscore=0
- impostorscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 suspectscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504230065
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250422-abbekommen-begierde-bcf48dd74a2e@brauner>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[redhat.com,linaro.org,gmail.com,armlinux.org.uk,arm.com,kernel.org,linux-m68k.org,monstr.eu,alpha.franken.de,hansenpartnership.com,gmx.de,linux.ibm.com,ellerman.id.au,csgroup.eu,users.sourceforge.jp,libc.org,physik.fu-berlin.de,davemloft.net,gaisler.com,linutronix.de,alien8.de,linux.intel.com,zytor.com,zankel.net,zeniv.linux.org.uk,suse.cz,digikod.net,google.com,arndb.de,paul-moore.com,namei.org,hallyn.com,vger.kernel.org,lists.infradead.org,lists.linux-m68k.org,lists.ozlabs.org];
+	R_RATELIMIT(0.00)[to_ip_from(RLyerg7kx5bdf6cnfzf33td54o)];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[60];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email]
+X-Spam-Score: -3.80
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Tue 22-04-25 16:59:02, Christian Brauner wrote:
+> On Fri, Mar 21, 2025 at 08:48:42PM +0100, Andrey Albershteyn wrote:
+> > From: Andrey Albershteyn <aalbersh@redhat.com>
+> > 
+> > Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
+> > extended attributes/flags. The syscalls take parent directory fd and
+> > path to the child together with struct fsxattr.
+> > 
+> > This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
+> > that file don't need to be open as we can reference it with a path
+> > instead of fd. By having this we can manipulated inode extended
+> > attributes not only on regular files but also on special ones. This
+> > is not possible with FS_IOC_FSSETXATTR ioctl as with special files
+> > we can not call ioctl() directly on the filesystem inode using fd.
+> > 
+> > This patch adds two new syscalls which allows userspace to get/set
+> > extended inode attributes on special files by using parent directory
+> > and a path - *at() like syscall.
+> > 
+> > CC: linux-api@vger.kernel.org
+> > CC: linux-fsdevel@vger.kernel.org
+> > CC: linux-xfs@vger.kernel.org
+> > Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
+> > Acked-by: Arnd Bergmann <arnd@arndb.de>
+...
+> > +		struct fsxattr __user *, ufsx, size_t, usize,
+> > +		unsigned int, at_flags)
+> > +{
+> > +	struct fileattr fa = {};
+> > +	struct path filepath;
+> > +	int error;
+> > +	unsigned int lookup_flags = 0;
+> > +	struct filename *name;
+> > +	struct fsxattr fsx = {};
+> > +
+> > +	BUILD_BUG_ON(sizeof(struct fsxattr) < FSXATTR_SIZE_VER0);
+> > +	BUILD_BUG_ON(sizeof(struct fsxattr) != FSXATTR_SIZE_LATEST);
+> > +
+> > +	if ((at_flags & ~(AT_SYMLINK_NOFOLLOW | AT_EMPTY_PATH)) != 0)
+> > +		return -EINVAL;
+> > +
+> > +	if (!(at_flags & AT_SYMLINK_NOFOLLOW))
+> > +		lookup_flags |= LOOKUP_FOLLOW;
+> > +
+> > +	if (at_flags & AT_EMPTY_PATH)
+> > +		lookup_flags |= LOOKUP_EMPTY;
+> > +
+> > +	if (usize > PAGE_SIZE)
+> > +		return -E2BIG;
+> > +
+> > +	if (usize < FSXATTR_SIZE_VER0)
+> > +		return -EINVAL;
+> > +
+> > +	name = getname_maybe_null(filename, at_flags);
+> > +	if (!name) {
+> 
+> This is broken as it doesn't handle AT_FDCWD correctly. You need:
+> 
+>         name = getname_maybe_null(filename, at_flags);
+>         if (IS_ERR(name))
+>                 return PTR_ERR(name);
+> 
+>         if (!name && dfd >= 0) {
+> 		CLASS(fd, f)(dfd);
 
-On 23/04/25 2:23 pm, Stephen Rothwell wrote:
-> Hi Madhavan,
->
-> On Wed, 23 Apr 2025 13:51:54 +0530 Madhavan Srinivasan <maddy@linux.ibm.com> wrote:
->> Commit b2accfe7ca5b '("powerpc/boot: Check for ld-option support")' suppressed
->> linker warnings, but the expressed used did not go well with POSIX shell (dash)
->> resulting with this warning
->>
->> arch/powerpc/boot/wrapper: 237: [: 0: unexpected operator
->> ld: warning: arch/powerpc/boot/zImage.epapr has a LOAD segment with RWX permissions
->>
->> Fix the check to handle the reported warning. Patch also fixes
->> couple of shellcheck reported errors for the same line.
->>
->> In arch/powerpc/boot/wrapper line 237:
->> if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]; then
->>       ^-- SC2046 (warning): Quote this to prevent word splitting.
->>         ^------^ SC2086 (info): Double quote to prevent globbing and word splitting.
->>                                              ^---------^ SC3020 (warning): In POSIX sh, &> is undefined.
->>
->> Fixes: b2accfe7ca5b '("powerpc/boot: Check for ld-option support")'
->> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
->> Suggested-by: Stephen Rothwell <sfr@canb.auug.org.au>
->> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->> ---
->> Changelog v1:
->> - modified the check to use the command exit
->>    state instead explicit checking with exit code
->>    
->> Patch applies on top of powerpc/fixes
->>
->>   arch/powerpc/boot/wrapper | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
->> index 267ca6d4d9b3..3d8dc822282a 100755
->> --- a/arch/powerpc/boot/wrapper
->> +++ b/arch/powerpc/boot/wrapper
->> @@ -234,7 +234,7 @@ fi
->>   
->>   # suppress some warnings in recent ld versions
->>   nowarn="-z noexecstack"
->> -if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]; then
->> +if "${CROSS}ld" -v --no-warn-rwx-segments >/dev/null 2>&1; then
->>   	nowarn="$nowarn --no-warn-rwx-segments"
->>   fi
-> Looks good to me.
->
-> Reviewed-by: Stephen Rothwell <sfr@canb.auug.org.au>
->
-Tested this patch by applying on base: 
-b2accfe7ca5bc9f9af28e603b79bdd5ad8df5c0b and it fixes the issue. Hence,
+Ah, you're indeed right that if dfd == AT_FDCWD and filename == NULL, the
+we should operate on cwd but we'd bail with error here. I've missed that
+during my review. But as far as I've checked the same bug is there in
+path_setxattrat() and path_getxattrat() so we should fix this there as
+well?
 
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-
-
-Regards,
-
-Venkat.
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
