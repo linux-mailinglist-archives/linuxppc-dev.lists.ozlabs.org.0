@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-7948-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7949-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300B5A99CD1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 02:23:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00190A99CD9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 02:24:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjcBd4kbXz3bsY;
-	Thu, 24 Apr 2025 10:23:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjcBf1Fxpz3byh;
+	Thu, 24 Apr 2025 10:23:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745454185;
-	cv=none; b=YbV5rJNG06nV7IXa5q53DAqCh3lx7lOLuCEvyLKB8dgj0vy09M9ZTtvB0HT6gogVNCOxJo0EgaVL5mzffZ1kWz9bxvhUx0PY7Ek6Y4pGEk+D2up8eiqOFejkZaTh57nZYsK6+V8+I22W959paJVwzhxhFWR7m6efSIsztZWoKMsT7JUTZs0ltGqO3R/8ye0iEYR0fP3esN1ua7B6GcFL/XqIg29e05yUq1JMOVbR2Q6fq6dQRVKAjZEmbK3njkEovd27WMfxe+lwEY+jQ+P4s+xIhGL7MXRvjSyQDbAcCffyllnCJho4a4Y7i7w98ir41qtHD2ZfArFA6yBoqy4PtQ==
+	cv=none; b=AySy0EhUc18uvcWI1VdmEGEo9KQB7MFfjh3VACRBP+cBPNlqlMrU69DuTyBmd40ERuJBPMiQk0afelYH0dcqlnAfkjrbb/H8wxzB2UGREcsYUEh8W2hNKVI3MJyyqn4hid2jwp1pcu5MRYvupsYMIo/8i76RiUptH30jECDVKdlOz+pxYzbI3M2+S284isH+ffxgk0mBMFBGnWeGliCpVcCJr0jLHFzkAqPJ9Fsqx6Xu/rQLLGb4YKuF1m9rqazzb+k0ApLfaWTEwcrhU0z54pVRfvGdHev6ABbjKbeQsmI3KDtJmL/8mYxKrREB9qGXxQgMEgANdbUs0cOw/Pg5PQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1745454185; c=relaxed/relaxed;
-	bh=ZbWcMivrKMDK7TfrA20Mqe4AAo8+D5ZysqfxvmmnRek=;
+	bh=12OeSWqSAxkWwPFRfLXJ/k5srnZM/lbZzG65vpCKYYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DaY4QQSju4Y2f7QQQaUacpL4PIye/NvsNuyKvOvwYyBBFCC5gsfJySxPBesVxsk31yENezJ044ieVYkrrFV3lGMiYJj4fQi+Ed9wdLfx1JBNIlo/b2rcxAiL99Hn4NX+JU+hGbSaan3sRsO+vXuqu4uURtZ5p4Sw77sBf0jI9rVTmBhNqzv29CiGFrcFDuNT4UiSF6tjOVsxGxEZKKY0DxhDSusPVKJbEdiK1o6Uct5ZdcPGvJIa7wbLXT83YuS0TEylDOSq/EFC+F5mT43kGODohTo/+lE8hV1HMltkdtv3cOAjONnUiPOq2Y82Kj6hLwxIpYbEE3cl3jzzRyHuVw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o2B0dh/D; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=ZxUP064VhEjO0q+B6vEAFgg9mrELUYwBbsjymTweha4k1nckdf4eh1BN6D7By/5NM5JXwS9nJzLZLqZFS1U+m/hnh6sfDVNWIdxmKgBe1HiJf2qbV7X/Zf3471PazxR5xIHlqfhDXMbqbIca7hY1ilexC+tNLuGEu0JnpCO//koU/7pX8ZCp8HCzWcsZ5oP/e4ub83ixcP/CZDjD+s2m+RlmB5kcQObJiEBERGkMHaUqPSamAE04Zwvjbbw9VU1h3Rd5fYtM8N7Eode4uH76CC35GCkfMCljUzwZHXIk/h2nS9pRUrna/4FGjjIRfvRWTPql9j8Ow2icT+4spd2Juw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZjLHst4b; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o2B0dh/D;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZjLHst4b;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjcBZ57Sdz3bcW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Apr 2025 10:23:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjcBb4c41z3bpS
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Apr 2025 10:23:03 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7406368461;
+	by tor.source.kernel.org (Postfix) with ESMTP id CAEDD6845A;
 	Thu, 24 Apr 2025 00:22:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E19C4CEF0;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2374C4CEEF;
 	Thu, 24 Apr 2025 00:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745454178;
-	bh=rccSS05ssS2rf46bfeneK2x/JfdC1a/pj9EmN7hGOls=;
+	s=k20201202; t=1745454179;
+	bh=bmNtnPkT7vfqz7VYymkCYs+RWq0I1HO9RIQ1+wDAdb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2B0dh/DG8edBPHhL47uq8g33ExepNWr6h3LPHIZCuKmntMSr/mh8xBGoaCzeCIYz
-	 ss0X/+nCSNljZQuvdx+/pPkkezIyuP5LflGCrevm+LNGeVaMyD2Bg6p2Da+9UM9Mx4
-	 KIMbFYDHf8G5Up1Y78RwbPpfddi8F6XU3lykN13xvuYUnJupXwxOl1nMQA3Dp51vP7
-	 iH3kpAnJrUwX3mmdSdb+ZbQQkvzajKh+TbEXfG5Fs3gexCvVC8F/d9Sg29inCjkDwM
-	 EDPcg2qEEExXt3Dh3Gp/NMUGs3fC3hGtzesBe0Ebszy0b8o2TkzOhyB5MydePYwlG7
-	 0/PFol/maj0BA==
+	b=ZjLHst4bVDcbmK2s/0yw9jwnVejn2n2RNgkYtDcj19TnSrcTNR941Nezg68ow3IGG
+	 OWWvyd7GLInEMusl4tIdEBgGWvnXyC7jS/KhbQLMmxwkmC4mNAzxsnou9OH8/Rhaeo
+	 yorikXu6NekPONq5K0lpepo2u9ToPhVacC0I61FsEwFspybjF+wEG4KGGqEzjivZNE
+	 NDEnU7QcaQu3to8MPi6vph/yjuH35LTnDR8OtP+RRMx0Gas4KpaHV+j2zXwJ1Mcf5Z
+	 jkP4vvkXCfBanEugjydAu4QeBrQbhkac5HveHAp4hgDpO3wbrngz0kXqgz19nTpu3V
+	 axl/ON8oAh5Uw==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>,
@@ -52,9 +52,9 @@ Cc: Ard Biesheuvel <ardb@kernel.org>,
 	linux-s390@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH 4/7] powerpc/crc: rename crc32-vpmsum_core.S to crc-vpmsum-template.S
-Date: Wed, 23 Apr 2025 17:20:35 -0700
-Message-ID: <20250424002038.179114-5-ebiggers@kernel.org>
+Subject: [PATCH 5/7] s390/crc: drop "glue" from filenames
+Date: Wed, 23 Apr 2025 17:20:36 -0700
+Message-ID: <20250424002038.179114-6-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250424002038.179114-1-ebiggers@kernel.org>
 References: <20250424002038.179114-1-ebiggers@kernel.org>
@@ -78,47 +78,41 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-Rename crc32-vpmsum_core.S to crc-vpmsum-template.S to properly convey
-that (a) it actually generates code for both 32-bit and 16-bit CRCs, not
-just 32-bit CRCs; and (b) it has "template" semantics, like x86's
-crc-pclmul-template.S, in the sense that it's included by other files.
+The use of the term "glue" in filenames is a Crypto API-ism that does
+not show up elsewhere in lib/.  I think adopting it there was a mistake.
+The library just uses standard functions, so the amount of code that
+could be considered "glue" is quite small.  And while often the C
+functions just wrap the assembly functions, there are also cases like
+crc32c_arch() in arch/x86/lib/crc32-glue.c that blur the line by
+in-lining the actual implementation into the C function.  That's not
+"glue code", but rather the actual code.
+
+Therefore, let's drop "glue" from the filenames and instead use e.g.
+crc32.c instead of crc32-glue.c.
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/powerpc/lib/{crc32-vpmsum_core.S => crc-vpmsum-template.S} | 0
- arch/powerpc/lib/crc32c-vpmsum_asm.S                            | 2 +-
- arch/powerpc/lib/crct10dif-vpmsum_asm.S                         | 2 +-
- 3 files changed, 2 insertions(+), 2 deletions(-)
- rename arch/powerpc/lib/{crc32-vpmsum_core.S => crc-vpmsum-template.S} (100%)
+ arch/s390/lib/Makefile                  | 2 +-
+ arch/s390/lib/{crc32-glue.c => crc32.c} | 0
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename arch/s390/lib/{crc32-glue.c => crc32.c} (100%)
 
-diff --git a/arch/powerpc/lib/crc32-vpmsum_core.S b/arch/powerpc/lib/crc-vpmsum-template.S
+diff --git a/arch/s390/lib/Makefile b/arch/s390/lib/Makefile
+index 14bbfe50033c7..271a1c407121c 100644
+--- a/arch/s390/lib/Makefile
++++ b/arch/s390/lib/Makefile
+@@ -24,6 +24,6 @@ obj-$(CONFIG_S390_MODULES_SANITY_TEST_HELPERS) += test_modules_helpers.o
+ lib-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
+ 
+ obj-$(CONFIG_EXPOLINE_EXTERN) += expoline.o
+ 
+ obj-$(CONFIG_CRC32_ARCH) += crc32-s390.o
+-crc32-s390-y := crc32-glue.o crc32le-vx.o crc32be-vx.o
++crc32-s390-y := crc32.o crc32le-vx.o crc32be-vx.o
+diff --git a/arch/s390/lib/crc32-glue.c b/arch/s390/lib/crc32.c
 similarity index 100%
-rename from arch/powerpc/lib/crc32-vpmsum_core.S
-rename to arch/powerpc/lib/crc-vpmsum-template.S
-diff --git a/arch/powerpc/lib/crc32c-vpmsum_asm.S b/arch/powerpc/lib/crc32c-vpmsum_asm.S
-index bf442004ea1f2..1b35c55cce0a6 100644
---- a/arch/powerpc/lib/crc32c-vpmsum_asm.S
-+++ b/arch/powerpc/lib/crc32c-vpmsum_asm.S
-@@ -837,6 +837,6 @@
- 	/* 33 bit reflected Barrett constant n */
- 	.octa 0x00000000000000000000000105ec76f1
- 
- #define CRC_FUNCTION_NAME __crc32c_vpmsum
- #define REFLECT
--#include "crc32-vpmsum_core.S"
-+#include "crc-vpmsum-template.S"
-diff --git a/arch/powerpc/lib/crct10dif-vpmsum_asm.S b/arch/powerpc/lib/crct10dif-vpmsum_asm.S
-index f0b93a0fe168a..47a6266d89a8a 100644
---- a/arch/powerpc/lib/crct10dif-vpmsum_asm.S
-+++ b/arch/powerpc/lib/crct10dif-vpmsum_asm.S
-@@ -840,6 +840,6 @@
- 	.octa 0x000000000000000000000001f65a57f8	/* x^64 div p(x) */
- 	/* Barrett constant n */
- 	.octa 0x0000000000000000000000018bb70000
- 
- #define CRC_FUNCTION_NAME __crct10dif_vpmsum
--#include "crc32-vpmsum_core.S"
-+#include "crc-vpmsum-template.S"
+rename from arch/s390/lib/crc32-glue.c
+rename to arch/s390/lib/crc32.c
 -- 
 2.49.0
 
