@@ -1,79 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-7961-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7962-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD11A9B2E9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 17:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF597A9B32A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 17:58:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zk0lm3Gdgz3bsL;
-	Fri, 25 Apr 2025 01:49:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zk0xr2vF6z3bsT;
+	Fri, 25 Apr 2025 01:58:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745509780;
-	cv=none; b=DwuZF6gWN6dvuTjJntQ6YOnfKLEphLcgdk4lQNuyDW5LRzydydxkyV4SgFf/OpdJ1Mgh0RVXypslte/Sl3IGjpmQ/gcfYQRQgzL4vLUWKG6+gaQdwyBlMd1zyd/lbj6D5lzU/kFuOmQ8kMYeNhq+z0RJ75UobKMjiN6mSr946llx7N93FkOMQ5LIPpbvr/lJWaZAabh2TVBXNo/pJyJOw61ioqrphmNGzZY2EUs7HqyuMWvy7BYhO7sDrhv609rEHcqVyk8mnx6gQ1r8LjfFrF+D7fAlHTEzYyKzgVbHZhN31N1HiPxzmAAYa5opXDzSlKOLEYWNKMQgW6VlG4Ir+w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745510304;
+	cv=none; b=g7kDFuqlHne+PCs0WnwInUNK4zv66IvlJg//6Whf53n/+vLaNaBfu9zB2dsoqSHKE22ENKJKJxi/UJclWlhANRWy9NHiikHNlNzBjruQFTSECCvV0aiiWZ9PHXT9EJMALBeZXgq/IOlPXRO05Cts8YvS8RZK9LdNb0GlCzpHejzyf6IgvA6/t45y6Se061kHWIA6GQlnnT8jAWaI+Aalb7L/6TmCzGWyVbbI2T5kD0hu8gAL/2o76gylBJ4k54djxbjbMOs2OtKxc7seyzpf3u9r15regejh/iOUcnWbeA1zORyd/MEgNVXfnDzEba68ximOtcLKqgdAFGEjfeZHww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745509780; c=relaxed/relaxed;
-	bh=nDo39tt+n8ATYguGedpesmJZxZJLtDSDAKicoCO2cI8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b12YPhuC/MqSpbfWs/oHrILsMukvR6f91BAW3g4QuqGlMMFyUkPcXvbsV8ZOW+1s1OxlWde3D+jgF6MI53UQLK4iicO8g+++gmLP5uc27uJaTJ/AOfT+seqyceV+XAKL7FQwHZkLWcujmtCAQgtCunFFfOFt+u2M/cZfllsPGk1RWH21AgsWv/3ZMEkMw1mUevlQfDKMvcxdlQIb5PXDLcbPGFmMgmPvkrVkzyY8AhxwJBqFsJe8vPsXjnv7ZZ2rxB8y9M3PoWzBoz2by4cP2+B7PTFvgPXYlKP4VAWkKxMfCbFrKzhA3qktPDRST2hzael9KJ6lmFAcLHFM/yVmuw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=lK/QryIi; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=2M6vSdvp; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1745510304; c=relaxed/relaxed;
+	bh=R30PE/pVh5sh9qCfJc7TEhJ9R4WvOk+j2vyXVmxXjVc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KHkqfvI+CmT2tMXlY6x8ZCGTTRnEMHST21KJQp7a/VLlm6PxOP8nwKHAv7/Wk54XgU2BQiSMYuA9pB06szo3UENp/roMEl05z+jdX3QgTBMOXVS7VQbeUafHyVQrPuyf4j9Cv/yyw6WWVVkt3VwhDbsy6Jq3oZIcL0AFkmWuzAGOOn0xUZmsYGRuA775+tgBE2msADEPnN9prxqsGphulYFPQGe8BPsPcie1vt3Dto32H0n4rIeX1UZyngrBD3PfLI6emGoTSI0JBtl0NZwl/o9e25Q13nBraLO7u0t+YVk62apujroJPFOliEK+fE8iURLRZe741GbJWhbfl7a5AQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IyOZRVbE; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=lK/QryIi;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=2M6vSdvp;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IyOZRVbE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 367 seconds by postgrey-1.37 at boromir; Fri, 25 Apr 2025 01:49:38 AEST
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4Zk0lk2s3Mz2yfx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Apr 2025 01:49:38 +1000 (AEST)
-Date: Thu, 24 Apr 2025 17:43:19 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1745509401;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nDo39tt+n8ATYguGedpesmJZxZJLtDSDAKicoCO2cI8=;
-	b=lK/QryIiV998Da/Rm919TzKOYxMOJx62tzbf+B+2e6sDZ6HfuEIr7nmMyICIJlvXLJGrSx
-	EJFEso6phLHBprXv1tluC3gRUAmPLUBwoEiSt1hYoXjVg38TTfXv9TANLhUfnZv/ISg6a1
-	Bn44d2bh/6y3Yn7pqBmkB+Ru9qpmiTtzE5h1UE8cjtRNtg63LPCOYNypxU2jIdTUxbAEG9
-	WUan0+TuDsYhyZ69GSqI3Wj4ekINOeGLpIcIiUeYKRuEO5VFVHS+iP4aediB64wTBHliqD
-	KG55Vr+C+5idEzISLVT8PzdA9d3RNjZnN3ZfcI5PWVLp9t/iVkc9RHRvMxuEtQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1745509401;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nDo39tt+n8ATYguGedpesmJZxZJLtDSDAKicoCO2cI8=;
-	b=2M6vSdvpglYLR21147amU66kDvqCzLdGxNK0wSXT0/szoFczg5Yrh111Vgpo7OOJT/82rR
-	K7u6DAGFSh65nTBw==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Jan Stancek <jstancek@redhat.com>
-Cc: Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>
-Subject: Re: [PATCH 08/19] vdso/gettimeofday: Prepare do_hres_timens() for
- introduction of struct vdso_clock
-Message-ID: <20250424173908-ffca1ea2-e292-4df3-9391-24bfdaab33e7@linutronix.de>
-References: <20250303-vdso-clock-v1-0-c1b5c69a166f@linutronix.de>
- <20250303-vdso-clock-v1-8-c1b5c69a166f@linutronix.de>
- <aApGPAoctq_eoE2g@t14ultra>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zk0xq29LQz3bsS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Apr 2025 01:58:22 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53O9EZeA014502;
+	Thu, 24 Apr 2025 15:58:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=R30PE/
+	pVh5sh9qCfJc7TEhJ9R4WvOk+j2vyXVmxXjVc=; b=IyOZRVbEGP3EeKVESk9joo
+	jm3E+m4rseCttspJbkYvKgXyDjchLcjKNAnvbw7998GS2xNZnuEMO3uZOATnxMqb
+	IcBNtc+b+j6MF5dD+kSWOgMbgLzjWAsZdkn9mljinnUIpACuZSPz4Zt9SR9VxKCj
+	hmzliHqJZkbu/rs/2C1MW1pIu4J0ffu3S7EUIldWymdqo7IaAbIVnDelxP77ZZb1
+	EfJQ6AfZ7hZh8NRVA0LdU0/Oo59LiMQCWE9SVaDOJJx9WmnjTUAO96Mhn+6s1fLZ
+	B3sCKjWbFesANK99MIUw+M/NXfc2l0yffk8vIDkxald7dPIHXdT/KUMrGlsUMP3A
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4678bwcedk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Apr 2025 15:58:08 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53OFq6t8010040;
+	Thu, 24 Apr 2025 15:58:07 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4678bwcedg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Apr 2025 15:58:07 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53OFTqJ9022281;
+	Thu, 24 Apr 2025 15:58:06 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 466jfxgwbm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Apr 2025 15:58:06 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53OFw3N643909608
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 24 Apr 2025 15:58:03 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1889B20043;
+	Thu, 24 Apr 2025 15:58:03 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4E57D20040;
+	Thu, 24 Apr 2025 15:58:01 +0000 (GMT)
+Received: from [9.39.28.91] (unknown [9.39.28.91])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 24 Apr 2025 15:58:01 +0000 (GMT)
+Message-ID: <365ba747-9311-45ab-b798-80ba4e578796@linux.ibm.com>
+Date: Thu, 24 Apr 2025 21:27:59 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,128 +85,172 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aApGPAoctq_eoE2g@t14ultra>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] powerpc: kvm: use generic transfer to guest mode work
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, gautam@linux.ibm.com,
+        vaibhav@linux.ibm.com, linux-kernel@vger.kernel.org
+References: <20250421102837.78515-1-sshegde@linux.ibm.com>
+ <20250421102837.78515-2-sshegde@linux.ibm.com>
+ <20250424144215._ooDjDz9@linutronix.de>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20250424144215._ooDjDz9@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDEwNiBTYWx0ZWRfX4dggBOUBP4Fo htQ/BokLdhbpY+X0AdK+/tH2C+X3swTgmk1M2mzFNu6K1i2ouwdPHnvfl2jOOAp7FuNLTFG9Xuy uKqfhQcXt+IXxJIo78NHdMiieZKhJ4y2clYf9/d/KhI0LIo13SxV7+BAmh3wAZ6Adp+Rh7HhdcH
+ Lo6h6cZx92qh/bIHKrvUwA9VWscYAxJM9bqS4jL7z0r7XopDzMpRffY/ih5eUn6nM5YM40i3OiN C8xsjkscwJ0GAYA1YHakaS8Way1OSgDd+kfeegLRHz/3z6A+UaBQ4sT2sqoeYLnT55NjgqnVnwm n1CoN9xl9xGp7rC98TsgPwwAKeDQvO+1/gIjVVNTbvGjbash6QL6HpKQG3euJQtb3RPe9FzVMYE
+ N3su4q2fcRD8z3amEkKa1+dk/61v15Yxif1Ge0kJLMGbiFBb8zvJbwHnY1zyLbOah143M4Rj
+X-Proofpoint-ORIG-GUID: yLCGgi62YEacsIUiGMg_GRfHcyoIlg2J
+X-Authority-Analysis: v=2.4 cv=KZzSsRYD c=1 sm=1 tr=0 ts=680a5f90 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=aRSudAjuEQCHUFqpYEwA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 4jsIiudgz4lPelbXPqhO5DiJGVp0_3Wh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-24_06,2025-04-24_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 adultscore=0
+ clxscore=1015 mlxscore=0 impostorscore=0 spamscore=0 malwarescore=0
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504240106
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Apr 24, 2025 at 04:10:04PM +0200, Jan Stancek wrote:
-> On Mon, Mar 03, 2025 at 12:11:10PM +0100, Thomas Weiﬂschuh wrote:
-> > From: Anna-Maria Behnsen <anna-maria@linutronix.de>
-> > 
-> > To support multiple PTP clocks, the VDSO data structure needs to be
-> > reworked. All clock specific data will end up in struct vdso_clock and in
-> > struct vdso_time_data there will be array of it. By now, vdso_clock is
-> > simply a define which maps vdso_clock to vdso_time_data.
-> > 
-> > Prepare for the rework of these structures by adding struct vdso_clock
-> > pointer argument to do_hres_timens(), and replace the struct vdso_time_data
-> > pointer with the new pointer arugment whenever applicable.
-> > 
-> > No functional change.
-> > 
-> > Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-> > Signed-off-by: Nam Cao <namcao@linutronix.de>
-> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> > ---
-> > lib/vdso/gettimeofday.c | 35 ++++++++++++++++++-----------------
-> > 1 file changed, 18 insertions(+), 17 deletions(-)
-> > 
-> 
-> starting with this patch, I'm seeing user-space crashes when using clock_gettime():
->   BAD  -> 83a2a6b8cfc5 vdso/gettimeofday: Prepare do_hres_timens() for introduction of struct vdso_clock
->   GOOD -> 64c3613ce31a vdso/gettimeofday: Prepare do_hres() for introduction of struct vdso_clock
-> 
-> It appears to be unique to aarch64 with 64k pages, and can be reproduced with
-> LTP clock_gettime03 [1]:
->   command: clock_gettime03   tst_kconfig.c:88: TINFO: Parsing kernel config '/lib/modules/6.15.0-0.rc3.20250423gitbc3372351d0c.30.eln147.aarch64+64k/build/.config'
->   tst_test.c:1903: TINFO: LTP version: 20250130-231-gd02c2aea3
->   tst_test.c:1907: TINFO: Tested kernel: 6.15.0-0.rc3.20250423gitbc3372351d0c.30.eln147.aarch64+64k #1 SMP PREEMPT_DYNAMIC Wed Apr 23 23:23:54 UTC 2025 aarch64
->   tst_kconfig.c:88: TINFO: Parsing kernel config '/lib/modules/6.15.0-0.rc3.20250423gitbc3372351d0c.30.eln147.aarch64+64k/build/.config'
->   tst_test.c:1720: TINFO: Overall timeout per run is 0h 05m 24s
->   clock_gettime03.c:121: TINFO: Testing variant: vDSO or syscall with libc spec
->   clock_gettime03.c:76: TPASS: Offset (CLOCK_MONOTONIC) is correct 10000ms
->   clock_gettime03.c:86: TPASS: Offset (CLOCK_MONOTONIC) is correct 0ms
->   clock_gettime03.c:76: TPASS: Offset (CLOCK_BOOTTIME) is correct 10000ms
->   clock_gettime03.c:86: TPASS: Offset (CLOCK_BOOTTIME) is correct 0ms
->   clock_gettime03.c:76: TPASS: Offset (CLOCK_MONOTONIC) is correct -10000ms
->   clock_gettime03.c:86: TPASS: Offset (CLOCK_MONOTONIC) is correct 0ms
->   clock_gettime03.c:76: TPASS: Offset (CLOCK_BOOTTIME) is correct -10000ms
->   clock_gettime03.c:86: TPASS: Offset (CLOCK_BOOTTIME) is correct 0ms
->   tst_test.c:438: TBROK: Child (233649) killed by signal SIGSEGV
-> 
-> or with:
-> --------------------- 8< ----------------------
-> #define _GNU_SOURCE
-> #include <sched.h>
-> #include <time.h>
-> #include <unistd.h>                                                                                                                                                                                                                          #include <sys/wait.h>
-> 
-> int main(void)
-> {
->         struct timespec tp;
->         pid_t child;
->         int status;
-> 
->         unshare(CLONE_NEWTIME);
-> 
->         child = fork();
->         if (child == 0) {
->                 clock_gettime(CLOCK_MONOTONIC_RAW, &tp);
->         }
-> 
->         wait(&status);
->         return status;
-> }
-> 
-> # ./a.out ; echo $?
-> 139
-> --------------------- >8 ----------------------
-> 
-> RPMs and configs can be found at Fedora koji, latest build is at [2] (look for kernel-64k).
-
-Hi Jan,
-
-Thanks for the great error report.
-
-Can you try the following change (on top of v6.15-rc1, should also work with current master)?
-
-diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-index 93ef801a97ef..867ce53cca94 100644
---- a/lib/vdso/gettimeofday.c
-+++ b/lib/vdso/gettimeofday.c
-@@ -85,14 +85,18 @@ static __always_inline
- int do_hres_timens(const struct vdso_time_data *vdns, const struct vdso_clock *vcns,
- 		   clockid_t clk, struct __kernel_timespec *ts)
- {
--	const struct vdso_time_data *vd = __arch_get_vdso_u_timens_data(vdns);
- 	const struct timens_offset *offs = &vcns->offset[clk];
--	const struct vdso_clock *vc = vd->clock_data;
-+	const struct vdso_time_data *vd;
-+	const struct vdso_clock *vc;
- 	const struct vdso_timestamp *vdso_ts;
- 	u64 cycles, ns;
- 	u32 seq;
- 	s64 sec;
- 
-+	vd = vdns - (clk == CLOCK_MONOTONIC_RAW ? CS_RAW : CS_HRES_COARSE);
-+	vd = __arch_get_vdso_u_timens_data(vd);
-+	vc = vd->clock_data;
-+
- 	if (clk != CLOCK_MONOTONIC_RAW)
- 		vc = &vc[CS_HRES_COARSE];
- 	else
 
 
-I'll do some proper testing tomorrow.
+On 4/24/25 20:12, Sebastian Andrzej Siewior wrote:
+
+Thanks Sebastian for taking a look.
+
+> On 2025-04-21 15:58:36 [+0530], Shrikanth Hegde wrote:
+>> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+>> index 19f4d298d..123539642 100644
+>> --- a/arch/powerpc/kvm/book3s_hv.c
+>> +++ b/arch/powerpc/kvm/book3s_hv.c
+>> @@ -80,8 +80,8 @@
+>>   #include <asm/ultravisor.h>
+>>   #include <asm/dtl.h>
+>>   #include <asm/plpar_wrappers.h>
+>> -
+>>   #include <trace/events/ipi.h>
+>> +#include <linux/entry-kvm.h>
+>>   
+>>   #include "book3s.h"
+>>   #include "book3s_hv.h"
+>> @@ -4901,7 +4901,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu, u64 time_limit,
+>>   	}
+>>   
+>>   	if (need_resched())
+>> -		cond_resched();
+>> +		schedule();
+> 
 
 
-Thomas
+> This looks unrelated and odd. I don't why but this should be a
+> cond_resched() so it can be optimized away on PREEMPT kernels.
 
-> [1] https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/syscalls/clock_gettime/clock_gettime03.c
-> [2] https://koji.fedoraproject.org/koji/buildinfo?buildID=2704401
+This is needed, otherwise KVM on powerVM setup gets stuck on preempt=full/lazy.
+
+> 
+>>   	kvmppc_update_vpas(vcpu);
+>>   
+>> @@ -5097,10 +5097,11 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
+>>   		return -EINVAL;
+>>   	}
+>>   
+>> -	/* No need to go into the guest when all we'll do is come back out */
+>> -	if (signal_pending(current)) {
+>> -		run->exit_reason = KVM_EXIT_INTR;
+>> -		return -EINTR;
+>> +	/* use generic frameworks to handle signals, need_resched  */
+>> +	if (__xfer_to_guest_mode_work_pending()) {
+>> +		r = xfer_to_guest_mode_handle_work(vcpu);
+> This could be unconditional.
+> 
+>> +		if (r)
+>> +			return r;
+>>   	}
+>>   
+>>   #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+>> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+>> index 153587741..4ff334532 100644
+>> --- a/arch/powerpc/kvm/powerpc.c
+>> +++ b/arch/powerpc/kvm/powerpc.c
+>> @@ -34,6 +34,7 @@
+>>   #endif
+>>   #include <asm/ultravisor.h>
+>>   #include <asm/setup.h>
+>> +#include <linux/entry-kvm.h>
+>>   
+>>   #include "timing.h"
+>>   #include "../mm/mmu_decl.h"
+>> @@ -80,24 +81,17 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
+>>   {
+>>   	int r;
+>>   
+>> +	/* use generic framework to handle need resched and signals */
+>> +	if (__xfer_to_guest_mode_work_pending()) {
+>> +		r = xfer_to_guest_mode_handle_work(vcpu);
+> 
+> there is nothing special you do checking and handling the work. Couldn't
+> you invoke xfer_to_guest_mode_handle_work() unconditionally?
+> 
+
+I followed what was in arch/x86/kvm/x86.c. Since xfer_to_guest_mode_handle_work does the same check
+it makes sense to call it without checks too.
+
+Will update in v2.
+
+>> +		if (r)
+>> +			return r;
+>> +	}
+>> +
+>>   	WARN_ON(irqs_disabled());
+>>   	hard_irq_disable();
+>>   
+>>   	while (true) {
+>> -		if (need_resched()) {
+>> -			local_irq_enable();
+>> -			cond_resched();
+>> -			hard_irq_disable();
+>> -			continue;
+>> -		}
+>> -
+>> -		if (signal_pending(current)) {
+>> -			kvmppc_account_exit(vcpu, SIGNAL_EXITS);
+>> -			vcpu->run->exit_reason = KVM_EXIT_INTR;
+>> -			r = -EINTR;
+>> -			break;
+> 
+> I don't how this works but couldn't SIGNAL_EXITS vanish now that it
+> isn't updated anymore? The stat itself moves in kvm_handle_signal_exit()
+> to a different counter so it is not lost. The reader just needs to look
+> somewhere else for it.
+
+ok. thanks for pointing out.
+
+AFAIU it is updating the stats mostly. But below could keep the stats happy.
+I will update that in v2.
+
+         if (__xfer_to_guest_mode_work_pending()) {
+                 r = xfer_to_guest_mode_handle_work(vcpu);
++               /* generic framework doesn't update ppc specific stats*/
++               if (r == -EINTR)
++                       kvmppc_account_exit(vcpu, SIGNAL_EXITS);
+                 if (r)
+                         return r;
+
+> 
+>> -		}
+>> -
+>>   		vcpu->mode = IN_GUEST_MODE;
+>>   
+>>   		/*
+> 
+> Sebastian
+
 
