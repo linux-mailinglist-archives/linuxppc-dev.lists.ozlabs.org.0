@@ -1,68 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-7968-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7969-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCDAA9B67B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 20:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79307A9B96F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 22:54:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zk4VL0t3Jz3byT;
-	Fri, 25 Apr 2025 04:38:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zk7Wv5B3Jz3bqQ;
+	Fri, 25 Apr 2025 06:54:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745519898;
-	cv=none; b=grIiYDEk8Cr+KB7rremIzGOoO9vOYd6YAvWLq/eS9s0eN/pWHYl86bOv/Zu9sDmgGDtwozOyCIOZimqO5X1/7UGEO5LtemPA28h71u6zrvWkPoGHJAukTxfmEkY8pV4kKZtNyNA8+LwxFgtakzr4JTfJ9JGxRDFIbs5pwJn6oTJe/S6rNmHwvLVw/mZx3+C6G8vMzZm9oYJTwwwOyDXoBd9+DEJmEGw4DPZS1sj4FAzAZwKJD29xDfhl6Jp7SsAc3Y6Qm6MKVtGt0crJ1owBX0O4FKfNOvNLd9fYTfgfK4JRmVu0Gn7r8TREDPq0sBz8WuMShfg0RofmjrRlg9JEQg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745528091;
+	cv=none; b=LPImB1oVySj7DRS4BPTJ9U4gDCj30bNDvVR7IGobayKWMJ8TlTEJjLkyuM/1U+GOwnSi8l8r8joqELasbaa6L1ugulfowm5P1Jkc0YogfBAjR9gbJhhdKlisN45nKviKQSOWQ0A0O4wBdceNzcLwaVBR+B9I+ht0k4t9dPU2YJXnkq1yD4QJeZZ/LhZQidaiMyeeUi5X+XI9Wv3J5H3F8GR7UNPt4BRw6H4tv/s8rwdM4k9F6lHaMxJb7w86mTmKSjHxL+xfRK2edBHvd+0acnePmjOGmt3vgvFULVhJzi986eIDTqth9lL+szkig8MPGyn5VN3niFB1Ltqe+H/mAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745519898; c=relaxed/relaxed;
-	bh=4M5zx9ouUAG+r9bw1dUE0AO5CXj+NR6UunbImKwlF5s=;
+	t=1745528091; c=relaxed/relaxed;
+	bh=/9//E4/U5CNkj07nyOw/qDc3mEGClqEbfgOsbFlKOIk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YkbC9GLlnmLdizGaJ4n8/xmU4LflkGsoH0R2oPyVt6RVK6JvEgnGZZU1sK4s3VpJPHk36Es0TZ9C45Di5fqKrYOODoV5TLvWc1jgQgsUcsdAjkGqTphG7+2CEFkFZFF58MkzUcLXt5Y2U9xa+LFZMNO/c5AeOm5WLXmbh+nozAYNRO71YJ9Uthsx6GMIzmFtWVh9aBgnRV3IAeNky6TMNSnDTqDIBqPnnpAfZA9cmBpQczsrik38F2FmX3T2XgolQn7V+oO9wJJOfHh0mGVhSGBFxVs4Fmp4t/1diIDHD74/O2IOICHSObXaD3CN4uFRHoUWqtgrn1DOM6vMFxssxA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zYJFuCxb; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=fhLL9E/v; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=RkWSRgQ2O1KZayAoyDoFDM2cEqgRg8DmcIhP8az5mVwlGZXoYLRIzSV6c6W/bBWxHf8Dym1nYoqytdrW93CIup0zUV3zDf0Xhh+VdZ4cu4wpzDeiKjRcBHLWtNuGVtDYYzz00X6hMOyp6bPKpt6hPPaOgr6oqBkpw+f0ccYcaydyk4d6J6GMYruF8nxcXMGZovZWXjk3deCt9CnIRrOVyRPtv/9enR2zt3FgY7DSIiwyr8RvYISAPxSdfIgYTgTWnjOanVJbBqKvkyzgJQA8Uuu5uPEMvWii5BOechqK6Avy0USBEH66GsO+jPb/Q65LlSQpV+ENRRLFNhfH16kGiA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KAXBLzck; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zYJFuCxb;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=fhLL9E/v;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KAXBLzck;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 14149 seconds by postgrey-1.37 at boromir; Fri, 25 Apr 2025 04:38:17 AEST
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zk4VK1yH0z3byP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Apr 2025 04:38:17 +1000 (AEST)
-Date: Thu, 24 Apr 2025 20:38:11 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1745519892;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4M5zx9ouUAG+r9bw1dUE0AO5CXj+NR6UunbImKwlF5s=;
-	b=zYJFuCxbxeTcaDuqb4dIQrjuI9azMAaKnwSPPF4c9D+lFOCiKEN3ASs9ZSes8Aw7+KntYD
-	EC41x1j5TPJIZxIxyIIiS7HHqT6p2pnzFWBRL0rvfAwWHb/PwSlU3TWGTO9FQE40m4tVJI
-	n8bEZlx3Wzmb/f9fFEUX5tOmlVrePlDM/mLIsjDeaztoY7YwCvt836cPwM4jDgYV1p7waS
-	RmpvIXTk0/QlE2F1fRhHkAmdm7lvaYULa+APDjHkq1fNNdnZm1xSJ/ZT138Er9HTKeDx7z
-	VbyFzAPPj0dWdbD+G9tLzK6NJ5I6Lv98a2Oihr5sJKQiDWlhi9zEmhIVOEEXxA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1745519892;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4M5zx9ouUAG+r9bw1dUE0AO5CXj+NR6UunbImKwlF5s=;
-	b=fhLL9E/v4wtVCytpxlE9X1iPCCtM7ki7HsY72WaRZBO90WZQT6wttVoN0s4mwxz5CVHYiA
-	kEVR83i9ft3NhTAw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, gautam@linux.ibm.com,
-	vaibhav@linux.ibm.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] powerpc: kvm: use generic transfer to guest mode work
-Message-ID: <20250424183811.7_MLThpt@linutronix.de>
-References: <20250421102837.78515-1-sshegde@linux.ibm.com>
- <20250421102837.78515-2-sshegde@linux.ibm.com>
- <20250424144215._ooDjDz9@linutronix.de>
- <365ba747-9311-45ab-b798-80ba4e578796@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zk7Wt5PYxz2yk3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Apr 2025 06:54:50 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id B0A1EA476A1;
+	Thu, 24 Apr 2025 20:49:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8422C4CEE3;
+	Thu, 24 Apr 2025 20:54:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745528086;
+	bh=mVOfzXORKBDjoat8v4wa6t+Bp56lm/uF2PtECtlz2aI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KAXBLzck3/aY5i5WpDgpNe0S9MVRUvjwzdE5yg8eNsLLNEK9tVLDif8ovhlckrhRu
+	 I6hmjTI983hXSAjzp56+fJPfV7sKApqcjVianVGbQflRikuhyPzh6hfEGQUQ/QL1/m
+	 1jqNgRIlqnE25Vz4LRIyLPw6K7W2vjuRrKhJ6hYdOsVGf2i4rc89kCxSW4vXndPHcI
+	 CEy8vJG1mq2aqaww20AkWpaUBG7LKORGO03u5i4atVHr5DqEydxxT7iFF2/BGOHnCg
+	 E4NuOs0FXHsZS68l+Mmp2qEt2iejnyPVg+tXiFhLkXiTrggF9G4lZaLgV7C6GN7fdA
+	 xc9E8UJP1Op7A==
+Date: Thu, 24 Apr 2025 13:54:44 -0700
+From: Namhyung Kim <namhyung@kernel.org>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Athira Rajeev <atrajeev@linux.ibm.com>, jolsa@kernel.org,
+	adrian.hunter@intel.com, irogers@google.com,
+	linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com,
+	hbathini@linux.vnet.ibm.com, Aditya.Bodkhe1@ibm.com,
+	jiang.peng9@zte.com.cn, Tejas.Manhas1@ibm.com,
+	sshegde@linux.ibm.com, sfr@canb.auug.org.au,
+	linux-kernel@vger.kernel.org, mingo@redhat.com,
+	ravi.bangoria@amd.com, bp@alien8.de
+Subject: Re: [PATCH] perf build: Add tools/arch/x86/include/asm/amd/ibs.h to
+ sync the headers
+Message-ID: <aAqlFA4qIVh9SQke@google.com>
+References: <20250424163033.6601-1-atrajeev@linux.ibm.com>
+ <16bee348-2b41-4337-85c8-8a6d2719e99b@linux.ibm.com>
+ <aAqB6kI5mDp4bxY9@x1>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,106 +76,42 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <365ba747-9311-45ab-b798-80ba4e578796@linux.ibm.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aAqB6kI5mDp4bxY9@x1>
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 2025-04-24 21:27:59 [+0530], Shrikanth Hegde wrote:
-> > > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_h=
-v.c
-> > > index 19f4d298d..123539642 100644
-> > > --- a/arch/powerpc/kvm/book3s_hv.c
-> > > +++ b/arch/powerpc/kvm/book3s_hv.c
-> > > @@ -4901,7 +4901,7 @@ int kvmhv_run_single_vcpu(struct kvm_vcpu *vcpu=
-, u64 time_limit,
-> > >   	}
-> > >   	if (need_resched())
-> > > -		cond_resched();
-> > > +		schedule();
-> >=20
->=20
->=20
-> > This looks unrelated and odd. I don't why but this should be a
-> > cond_resched() so it can be optimized away on PREEMPT kernels.
->=20
-> This is needed, otherwise KVM on powerVM setup gets stuck on preempt=3Dfu=
-ll/lazy.
+Hello,
 
-But this makes no sense. On preempt=3Dfull the cond_resched() gets patched
-out while schedule() doesn't. Okay, this explains the stuck.
+On Thu, Apr 24, 2025 at 03:24:42PM -0300, Arnaldo Carvalho de Melo wrote:
+> On Thu, Apr 24, 2025 at 10:39:56PM +0530, Venkat Rao Bagalkote wrote:
+> > On 24/04/25 10:00 pm, Athira Rajeev wrote:
+> > Tested this patch by applying on tip HEAD:
+> > 7ab869c799fc0fb22f9b4c2f36aaa603d9c7cc9d and it fixes the reported issue.
+> 
+> This is just a long list of characters, can you please next time provide
+> something like, humm, tip/head, not really:
+> 
+> ⬢ [acme@toolbx perf-tools-next]$ git remote -v | grep tip
+> tip	https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git (fetch)
+> tip	https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git (push)
+> ⬢ [acme@toolbx perf-tools-next]$ git remote update tip 
+> Fetching tip
+> ⬢ [acme@toolbx perf-tools-next]$ git show 7ab869c799fc0fb22f9b4c2f36aaa603d9c7cc9d
+> fatal: bad object 7ab869c799fc0fb22f9b4c2f36aaa603d9c7cc9d
+> ⬢ [acme@toolbx perf-tools-next]$
+> 
+> So please add the summary, that way we can try to figure out if this is
+> a rebase and they look for the description instead of this sha1 that I'm
+> not finding even after doing a 'git remore update tip'.
 
-On preempt=3Dfull need_resched() should not return true because the
-preemption happens right away. Unless you are in a preempt-disabled
-or interrupt disabled section. But any of the conditions can't be true
-because in both cases you can't invoke schedule(). So you must have had
-a wake up on the local CPU which sets need-resched but the schedule()
-was delayed for some reason. Once that need-resched bit is observed by
-a remote CPU then it won't send an interrupt for a scheduling request
-because it should happen any time soon=E2=80=A6 This should be fixed.
+Does this mean the kernel change broke the tool build but we don't have
+it in the perf-tools-next yet?  Then probably we need to wait for the
+next merge window to fix it in the tool side, no?
 
-If you replace the above with preempt_disable(); preempt_enable() then it
-should also work=E2=80=A6
+Thanks,
+Namhyung
 
-=E2=80=A6
-> > > --- a/arch/powerpc/kvm/powerpc.c
-> > > +++ b/arch/powerpc/kvm/powerpc.c
-> > > @@ -34,6 +34,7 @@
-> > >   #endif
-> > >   #include <asm/ultravisor.h>
-> > >   #include <asm/setup.h>
-> > > +#include <linux/entry-kvm.h>
-> > >   #include "timing.h"
-> > >   #include "../mm/mmu_decl.h"
-> > > @@ -80,24 +81,17 @@ int kvmppc_prepare_to_enter(struct kvm_vcpu *vcpu)
-> > >   {
-> > >   	int r;
-> > > +	/* use generic framework to handle need resched and signals */
-> > > +	if (__xfer_to_guest_mode_work_pending()) {
-> > > +		r =3D xfer_to_guest_mode_handle_work(vcpu);
-> >=20
-> > there is nothing special you do checking and handling the work. Couldn't
-> > you invoke xfer_to_guest_mode_handle_work() unconditionally?
-> >=20
->=20
-> I followed what was in arch/x86/kvm/x86.c. Since xfer_to_guest_mode_handl=
-e_work does the same check
-> it makes sense to call it without checks too.
-
-Yeah but I guess x86 did some other updates, too.
-
-> Will update in v2.
->=20
-=E2=80=A6
-> > > -
-> > > -		if (signal_pending(current)) {
-> > > -			kvmppc_account_exit(vcpu, SIGNAL_EXITS);
-> > > -			vcpu->run->exit_reason =3D KVM_EXIT_INTR;
-> > > -			r =3D -EINTR;
-> > > -			break;
-> >=20
-> > I don't how this works but couldn't SIGNAL_EXITS vanish now that it
-> > isn't updated anymore? The stat itself moves in kvm_handle_signal_exit()
-> > to a different counter so it is not lost. The reader just needs to look
-> > somewhere else for it.
->=20
-> ok. thanks for pointing out.
->=20
-> AFAIU it is updating the stats mostly. But below could keep the stats hap=
-py.
-> I will update that in v2.
->=20
->         if (__xfer_to_guest_mode_work_pending()) {
->                 r =3D xfer_to_guest_mode_handle_work(vcpu);
-> +               /* generic framework doesn't update ppc specific stats*/
-> +               if (r =3D=3D -EINTR)
-> +                       kvmppc_account_exit(vcpu, SIGNAL_EXITS);
->                 if (r)
->                         return r;
-
-Either that or you rip it out entirely but that is not my call.
-
-Sebastian
 
