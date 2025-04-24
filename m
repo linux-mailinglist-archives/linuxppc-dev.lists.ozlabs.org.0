@@ -1,58 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-7942-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7943-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540C4A99B9A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 00:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D883A99CBC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 02:23:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjYws5wfBz2yGN;
-	Thu, 24 Apr 2025 08:41:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjcBZ297Zz305n;
+	Thu, 24 Apr 2025 10:23:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745448061;
-	cv=none; b=Rmjy5crN46K5L/T31+0qKKjyQvtmo8Q40oN+Rw+TZW0MhXwRpjBGeRyUribnfTXiFiSOmBUJ6r+OwB65QUYpUr2zgeyKRMjRf7X9zWarGoEijiFusJqI9smJ2tOM5n7QazNDUIQmH1345qYX8y46GH/dZzebsAqGX3VyvHYmQl1iFKzDlEyYNG7MSoUXNKWkBBCpXDaK+XA2qVRT2vOMlPsSWWr7prZfgA7TRLyvR2fB2ardQlxQUZ2uIFUkwmJq+qNaW5I7ulS3qvNUReoOWowFVXZtgfexfsv5x4aKwAtp6MZz6VztQ0Tm5rIik6/kSr7R4jti7/oqw/v8pNnHbQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745454182;
+	cv=none; b=E9gcY5KRP7nwQ8mK+WLkj3YNTbj4vala9646gpmemhjxLBvCrsMcZ9N+tSZGXHq3MY+l/azOXg4a4hj0EE3ZSkMPTPOLOM+PNBnLdVSx3LyEnHG/WJVJfOziH756njsFN9lPFdZwRdtN/tuxK8IK/USnr40ygYB6qBWrW0ViN7vcylci5J+NOP761R8xVWn6pRyu+F/AzckUxrmHNtGinMUC87doe4KYbI+eg9cB4cR1UnO+8m/NWwys0FPWiE2+C+6QaCKyeCp5dVETcUeKgWhs7Q3paz66rP7rlULSEBlnZIOtL0vST183X5BfVOhyyclrAiuPNbmBZs/x+liByQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745448061; c=relaxed/relaxed;
-	bh=cZmhf8eVzF2VnPKL2igjl0a5SH3xvS6UeTjP3NNRkI0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EN95/h/UDYjU7Cw9iuOZBQEpziPvXpdD7ixLnEO4JJdOjwsmNE7wknwE4msVJUuYxTbDnKoPRBFSzNdNbvcp00LOY2UY7vSriCGz5oRcTYZ85oggOdh7kIOTcbJHCkVs1bLs7YSzOjxZ8Z3uJ9RKfhYVlo/BefWIyiaytx78cyPcIo+J8JKtbT20gWB11IaDMSw5j3mzC29xmSNZeNkKjwtbNXxnsz2PXVHTARSiTnvtbFcn6+sRzVQoEJCuzUzBqe1W7OulVDNzGqZ+NOzno+Dox17pdJ+8IXCjLV8IxMgC/IsmpgTQoII7C2yAL18n2/0XedCBTNm5fpv5FDw2oA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=X0yjGxI0; dkim-atps=neutral; spf=pass (client-ip=150.107.74.76; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+	t=1745454182; c=relaxed/relaxed;
+	bh=9Rdm+DMFLjMvv+NguyHjkOhkHmAT248a3xbKGiCO4bU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YD5iT7whTtHv90XdqkXhpKd/LgMHdQ+w0RbP1cB1DaNyFQT/LS8NqtqlwBdqIh6dirFghP37lkPOxK1jIAFTmElhYhk6D7wD/o044UC17fNoTXwErrCqK+NzN+8qYkYcfgxD0BJ3sQg8T3OsuLuuFGESNVu0yOa9uO3fyDPmJyngTPs1TVurnh4TWtm0fg6dqc+SgI5CSorlFD2nGFHB6KjbInO07Lswi9H+m2NgK9ULh9meyAZ8MUzYSd/9WbyKvvv4j5qldrA+1hYExzj6Xoq7YINcSLF7WZvtSvDvrBHj1DdaO/coDbDmtIklduCixDkNAFQQIFlqYIx7OWOdZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UO/B6EN6; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=X0yjGxI0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UO/B6EN6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canb.auug.org.au (client-ip=150.107.74.76; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org)
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjYwp6gCvz2y2B
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Apr 2025 08:40:57 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=202503; t=1745448056;
-	bh=cZmhf8eVzF2VnPKL2igjl0a5SH3xvS6UeTjP3NNRkI0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=X0yjGxI0OnmBqbnLyqdaAD+jQtmRM+UxAkr3ca+sr7dJcWhXAPRkcmKnE9ZGihfoN
-	 C9AHFTqk6n7AH6dTUO5FEFeuivinQ0x1peTSaO2reKXhcA8/Of+9kMbC3917iDB1fL
-	 NLQXvkhW2nT5sUa4Fj/ZNl2JW2/dgS8cknx+m4xnKkYMMt+IvpTTIf31UAWJBDoQnf
-	 SW/JoScQew4QC/CejTOMBMHGs4yVf5r6mOmjgjEZX2p9/LlMpC4JHAdU6Ek3qhFo+I
-	 u4u1KmYL0kaR8h+xpUoEng6evmomkJc5m5/A/eV5DN67UhwBJiTdM+l7IZJzz+vj2K
-	 r0Ske/FF1+M7Q==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZjYwl2dPGz4wcT;
-	Thu, 24 Apr 2025 08:40:55 +1000 (AEST)
-Date: Thu, 24 Apr 2025 08:40:54 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: mpe@ellerman.id.au, christophe.leroy@csgroup.eu, npiggin@gmail.com,
- naveen@kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] powerpc/boot: Fix dash warning
-Message-ID: <20250424084054.6c44e81a@canb.auug.org.au>
-In-Reply-To: <20250423082154.30625-1-maddy@linux.ibm.com>
-References: <20250423082154.30625-1-maddy@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjcBX4kXxz2yFQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Apr 2025 10:23:00 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9979C5C062F;
+	Thu, 24 Apr 2025 00:20:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23DCC4CEE2;
+	Thu, 24 Apr 2025 00:22:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745454177;
+	bh=zkgW3SiDgnggtuRkQQ2RvOw/6rX9QtoTG8UCIHjtB6s=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UO/B6EN63Q0MfszXeohxRiovANguNpxtJg/NNqgy8lk+bdQaa6mbu/8S4libCyQRR
+	 HSIRMYpy+ZiYfoztydxN34bUyWR6KCKmB0xU7hRk8iYxvJIOIkrRWT8Zmc1uU02NsJ
+	 xsBYWT37QGnF9rebc74+R/9OllnOrqij45u+GI7YlOwbQwtqkd0s2GL4hFXQmCr5GG
+	 /n8N6mnXAy2GCs2mMHcQJVwFcppJhYXpQ5n4lleosLvV9DlnLFRP9uYCdskDE+QiTN
+	 0YTC5KsqgM5kAzcadtPwXpGKAj+oluDbScYL38nyedfMU0m402zA/WhqIEhv3zsxYS
+	 1+YvvpI7odh7g==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org
+Subject: [PATCH 0/7] lib/crc: drop "glue" from filenames
+Date: Wed, 23 Apr 2025 17:20:31 -0700
+Message-ID: <20250424002038.179114-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,95 +67,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/.ZHtxH8YidpfaiLFA0JNtv9";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
---Sig_/.ZHtxH8YidpfaiLFA0JNtv9
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+This series fixes an odd naming convention that was unnecessarily
+carried over from the original Crypto API code.
 
-Hi Madhavan,
+I'm planning to take this via the crc tree.
 
-On Wed, 23 Apr 2025 13:51:54 +0530 Madhavan Srinivasan <maddy@linux.ibm.com=
-> wrote:
->
-> Commit b2accfe7ca5b '("powerpc/boot: Check for ld-option support")' suppr=
-essed
-> linker warnings, but the expressed used did not go well with POSIX shell =
-(dash)
-> resulting with this warning
->=20
-> arch/powerpc/boot/wrapper: 237: [: 0: unexpected operator
-> ld: warning: arch/powerpc/boot/zImage.epapr has a LOAD segment with RWX p=
-ermissions
->=20
-> Fix the check to handle the reported warning. Patch also fixes
-> couple of shellcheck reported errors for the same line.
->=20
-> In arch/powerpc/boot/wrapper line 237:
-> if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]=
-; then
->      ^-- SC2046 (warning): Quote this to prevent word splitting.
->        ^------^ SC2086 (info): Double quote to prevent globbing and word =
-splitting.
->                                             ^---------^ SC3020 (warning):=
- In POSIX sh, &> is undefined.
->=20
-> Fixes: b2accfe7ca5b '("powerpc/boot: Check for ld-option support")'
-> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Suggested-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> ---
-> Changelog v1:
-> - modified the check to use the command exit
->   state instead explicit checking with exit code
->  =20
-> Patch applies on top of powerpc/fixes
->=20
->  arch/powerpc/boot/wrapper | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-> index 267ca6d4d9b3..3d8dc822282a 100755
-> --- a/arch/powerpc/boot/wrapper
-> +++ b/arch/powerpc/boot/wrapper
-> @@ -234,7 +234,7 @@ fi
-> =20
->  # suppress some warnings in recent ld versions
->  nowarn=3D"-z noexecstack"
-> -if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 =
-]; then
-> +if "${CROSS}ld" -v --no-warn-rwx-segments >/dev/null 2>&1; then
->  	nowarn=3D"$nowarn --no-warn-rwx-segments"
->  fi
-> =20
+Eric Biggers (7):
+  arm/crc: drop "glue" from filenames
+  arm64/crc: drop "glue" from filenames
+  powerpc/crc: drop "glue" from filenames
+  powerpc/crc: rename crc32-vpmsum_core.S to crc-vpmsum-template.S
+  s390/crc: drop "glue" from filenames
+  sparc/crc: drop "glue" from filenames
+  x86/crc: drop "glue" from filenames
 
-I have applied this to linux-next today and will keep doing so until it
-(or a replacement) is added to the powerpc-fixes tree.
+ arch/arm/lib/Makefile                                       | 4 ++--
+ arch/arm/lib/{crc-t10dif-glue.c => crc-t10dif.c}            | 0
+ arch/arm/lib/{crc32-glue.c => crc32.c}                      | 0
+ arch/arm64/lib/Makefile                                     | 4 ++--
+ arch/arm64/lib/{crc-t10dif-glue.c => crc-t10dif.c}          | 0
+ arch/arm64/lib/{crc32.S => crc32-core.S}                    | 0
+ arch/arm64/lib/{crc32-glue.c => crc32.c}                    | 0
+ arch/powerpc/lib/Makefile                                   | 4 ++--
+ arch/powerpc/lib/{crc-t10dif-glue.c => crc-t10dif.c}        | 0
+ .../lib/{crc32-vpmsum_core.S => crc-vpmsum-template.S}      | 0
+ arch/powerpc/lib/{crc32-glue.c => crc32.c}                  | 0
+ arch/powerpc/lib/crc32c-vpmsum_asm.S                        | 2 +-
+ arch/powerpc/lib/crct10dif-vpmsum_asm.S                     | 2 +-
+ arch/s390/lib/Makefile                                      | 2 +-
+ arch/s390/lib/{crc32-glue.c => crc32.c}                     | 0
+ arch/sparc/lib/Makefile                                     | 2 +-
+ arch/sparc/lib/{crc32_glue.c => crc32.c}                    | 2 +-
+ arch/x86/lib/Makefile                                       | 6 +++---
+ arch/x86/lib/{crc-t10dif-glue.c => crc-t10dif.c}            | 0
+ arch/x86/lib/{crc32-glue.c => crc32.c}                      | 0
+ arch/x86/lib/{crc64-glue.c => crc64.c}                      | 0
+ 21 files changed, 14 insertions(+), 14 deletions(-)
+ rename arch/arm/lib/{crc-t10dif-glue.c => crc-t10dif.c} (100%)
+ rename arch/arm/lib/{crc32-glue.c => crc32.c} (100%)
+ rename arch/arm64/lib/{crc-t10dif-glue.c => crc-t10dif.c} (100%)
+ rename arch/arm64/lib/{crc32.S => crc32-core.S} (100%)
+ rename arch/arm64/lib/{crc32-glue.c => crc32.c} (100%)
+ rename arch/powerpc/lib/{crc-t10dif-glue.c => crc-t10dif.c} (100%)
+ rename arch/powerpc/lib/{crc32-vpmsum_core.S => crc-vpmsum-template.S} (100%)
+ rename arch/powerpc/lib/{crc32-glue.c => crc32.c} (100%)
+ rename arch/s390/lib/{crc32-glue.c => crc32.c} (100%)
+ rename arch/sparc/lib/{crc32_glue.c => crc32.c} (97%)
+ rename arch/x86/lib/{crc-t10dif-glue.c => crc-t10dif.c} (100%)
+ rename arch/x86/lib/{crc32-glue.c => crc32.c} (100%)
+ rename arch/x86/lib/{crc64-glue.c => crc64.c} (100%)
 
---=20
-Cheers,
-Stephen Rothwell
+base-commit: 1ec3d4ff5c77422927896c1f7d0ed01267ec1213
+-- 
+2.49.0
 
---Sig_/.ZHtxH8YidpfaiLFA0JNtv9
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmgJbHYACgkQAVBC80lX
-0GzLqggAltMrTUQdcnRr2nZEFa7X/mr9wrSOxJldILKcC/1lyRiqGYF2pSp/YUws
-TYECKheQYbyUCbIrqW6GwSe1fCxBXfQErawZj44qduL+MXfg5yvQxyECBekyj2+3
-qHtr/GCVR5Rqhj9lWJPvxdDprweFPiEWttDU4Sj/WGL8H9bxVrKXkZxB6TZbafO6
-r+YxApdT0JRe7h1AZr7e8l3vgIElsaucIX48z4eOdhnPFe78cHsoj4WLbOILMD9T
-dA3jrcZ9sSFX7eYJdBWlgiZqy9ZOabJ9oLi996h52KcpanUTB1A+y2MMEnuIxXAE
-3r0+PvcgrQqY3bfVpVJasUl0ijSFzw==
-=tunF
------END PGP SIGNATURE-----
-
---Sig_/.ZHtxH8YidpfaiLFA0JNtv9--
 
