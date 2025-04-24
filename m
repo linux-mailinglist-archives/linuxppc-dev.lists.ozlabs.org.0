@@ -1,85 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-7956-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7957-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552FDA9A75C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 11:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A135EA9AC5E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 24 Apr 2025 13:49:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjqpT6l6Yz3bpG;
-	Thu, 24 Apr 2025 19:06:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZjvQF23Pcz30W9;
+	Thu, 24 Apr 2025 21:49:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745485585;
-	cv=none; b=l6XCbs79pPACUO8d0rZs13eNIzXik6pYzks3CmuzwZ5UguZP03kD8Ce3dDyIBETT1R1bjHQpZps3z0g2uzZsWZAHwGWlM3twloG1nIg6onD7ojJq+ZA4akQDBeIgD4ppESQuxKML83clcQkKQ99cCoNbNPkMxEVzLxnT1THXshP1MaEvUxvtCPnvJZlxVqWuadgJzr/tPgYZdjsL9c2LUj/jYSQD8tsfUpYE616j4rFyxFLaIhziJ8tpOE+Jlu6/Xd/NpuNrCs5lMQTt3LVpvxmIN483v8TmQLL0OBJ/p4SYshJJb6EIaNeUfhjVaQQmhxnRxPDq/L+njwRgx6qCjw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.101
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745495349;
+	cv=none; b=JUbv9nJvmyvIYL1rSUZJPihrKwm0LX4lbEyBbeHOczhIx5sa4I+LCIjsaH68EyO4EdA/oNKPW6l59X8fBnyMrEmKhZ2x9ABmnFPEJ4n6E4dkvqd8hXukE+eyVcZJSSvoX+qg/ERkCJXBDbMw0lthf3XecEZ75D7EjXymaB5KqMj0G6kznEO/mA38Gee2HZ612OXExumnseAPWlBJhqN5tXrOZy3Wuo9cAl84GKmr8ZBUbncPfy4qt/5vjslOFH82AMB3V2xg0VYBuLzN3T3ScN6zM90loV0xiG98bcqbSGbcH7i6YKOaAYJ12TpsTBdsLOSdZp/NyPWARxa4hG7t0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745485585; c=relaxed/relaxed;
-	bh=JsSm+8P4/x1ip2NmntClsT7PEM9SxljjVJd+glaI45o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OknKWf1qkOq+CdRXpkWlM5zjEMykEdotKjZKPaHP1nmf6gwcaT4dP8h7quauOvbdw3sfv4lRtv2wb5Lbpe9cKsOKKD4ntrIlbQXSQkYNVuBVe4Kx7qTjWv/arV6DYZQzHQQtOyxloOPtY3gkC723xK3zeKHOkFpj7aBbH1PDBy0RtOn1+FHYzjNBCAhtgun3XdSfW6U8hPQGFkhFk5eCJmqkr/4E3lhPzw4jlrdNyKjqwEjKZIrkkGbqtQ1mw8yGgxfpKSlHQSDqQiaVBmDVSyvxg5LSgjbMIDiEnhTSiUkAlBwxNvzxcRQI3/lp6bwmfnW6Wz78HCT6w/RLhFr2gw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qPzQ2EtO; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1745495349; c=relaxed/relaxed;
+	bh=qs4/QnFg9rNhrfOh3L9B6LkK0j0hm6vYUMcuTxooLVc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=PEZMVwcFKszYOyJluF1QdpZiMKxWb62jS56oJwuAKF+qosJwnFmGC9Tev5szNR+WKrLbwCR+o0K3oVKoHTMcpucega2mC+2R69WhJ37/dUQkINdrLfWKJIja2cROqFQatjKlWoBPS5+KRetK5/K5X8RhbWxIWmjyZzT8jWY6aNWlda8Jt3QGj7ztmlJfYGU5s/1GWEsYsuTOfGb8kiop6rF2331tt1It/nPFS37spZyL5wfDe8PSkIeBunPcrhVHWsFnILgH1oBAXX+GJ3U5nasu669oEfB4dNdjasXzkFLYboI+PwjdzZOaxMLCRCmC0RYoISqveYSzibu5Q89oKw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=SFoNtqqe; dkim-atps=neutral; spf=pass (client-ip=115.124.30.101; helo=out30-101.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qPzQ2EtO;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=SFoNtqqe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.101; helo=out30-101.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjqpT0NVjz30W9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Apr 2025 19:06:24 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 3068C5C634D;
-	Thu, 24 Apr 2025 09:04:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF029C4CEEB;
-	Thu, 24 Apr 2025 09:06:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745485581;
-	bh=g6bxeBGFz+ZfAiISf78nYF5d6OuqVi+zKYMYmkzuYww=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qPzQ2EtOhRHjvqeIqmfEs41n41+fPOpo5wVb0WXRA0Y64JK63Z0piOH/6q1TuKDwD
-	 WTI9c9BorspnKyVAu3DQkYsACDPHLJTqVVPTN6kTMVKEScUaCBv3GdtHESuUO5NqC6
-	 pqjqzGFZkOK5FpMLm1+UNv77/mYGep1Zag5d47x0b6vZpoHTEkoNH1VrlBp4U0AaKU
-	 qsF/Vn2vnRvvp1Kn7/YXcOkrtYa0w4Ynlqq5gkE0B8hjxnGwh/iyaywzNfxrIZA9z+
-	 2pzSBGKxX+TFKn8wOJih4WXcFzFXNu3Sjb1AkS/krSZea9kudjKkOe+16Pk7titbWK
-	 ch3/3zyDdzWnA==
-Date: Thu, 24 Apr 2025 11:06:07 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Andrey Albershteyn <aalbersh@redhat.com>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, 
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-xfs@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] fs: introduce getfsxattrat and setfsxattrat
- syscalls
-Message-ID: <20250424-zuspielen-luxus-3d49b600c3bf@brauner>
-References: <20250321-xattrat-syscall-v4-0-3e82e6fb3264@kernel.org>
- <20250321-xattrat-syscall-v4-3-3e82e6fb3264@kernel.org>
- <20250422-abbekommen-begierde-bcf48dd74a2e@brauner>
- <rbzlwvecvrp4xawwp5nywdq6wp5hgjhrtrabpszv74xmfqbj4f@x7v6eqfc5gcd>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZjvQB42Ncz2yk3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Apr 2025 21:49:05 +1000 (AEST)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1745495341; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
+	bh=qs4/QnFg9rNhrfOh3L9B6LkK0j0hm6vYUMcuTxooLVc=;
+	b=SFoNtqqeta0elpMwlWQKbHlgh6QDFtp3KeMn8Hm/yGnUSHAf+zGfqDb8KG2X4j7ZbviZ9fFPxmY1qwrO5S0PDcsptJc9YtQ6yFER03eHBH2jfwcJI0hfhbpYlQ0TIzQ0t6DyuHWTm1t0kwbvoVs/uUmOXFUvfZFYYFwseAMptfE=
+Received: from 30.246.162.65(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WXzJaco_1745495338 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 24 Apr 2025 19:48:59 +0800
+Message-ID: <7f6c49d5-e11e-488b-bb67-4051abcb02f4@linux.alibaba.com>
+Date: Thu, 24 Apr 2025 19:48:57 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,85 +50,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <rbzlwvecvrp4xawwp5nywdq6wp5hgjhrtrabpszv74xmfqbj4f@x7v6eqfc5gcd>
-X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] PCI/AER: Report fatal errors of RCiEP and EP if
+ link recoverd
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org
+Cc: mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
+ terry.bowman@amd.com, tianruidong@linux.alibaba.com
+References: <20250217024218.1681-1-xueshuai@linux.alibaba.com>
+ <20250217024218.1681-4-xueshuai@linux.alibaba.com>
+ <8a833aaf-53aa-4e56-a560-2b84a6e9c28c@linux.intel.com>
+ <1dea64ef-3c9f-4bff-820f-34d8f3a6a1d4@linux.alibaba.com>
+ <362fcb01-8d9c-49e6-be83-5a784c1e5f3e@linux.alibaba.com>
+In-Reply-To: <362fcb01-8d9c-49e6-be83-5a784c1e5f3e@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Apr 23, 2025 at 11:53:25AM +0200, Jan Kara wrote:
-> On Tue 22-04-25 16:59:02, Christian Brauner wrote:
-> > On Fri, Mar 21, 2025 at 08:48:42PM +0100, Andrey Albershteyn wrote:
-> > > From: Andrey Albershteyn <aalbersh@redhat.com>
-> > > 
-> > > Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
-> > > extended attributes/flags. The syscalls take parent directory fd and
-> > > path to the child together with struct fsxattr.
-> > > 
-> > > This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
-> > > that file don't need to be open as we can reference it with a path
-> > > instead of fd. By having this we can manipulated inode extended
-> > > attributes not only on regular files but also on special ones. This
-> > > is not possible with FS_IOC_FSSETXATTR ioctl as with special files
-> > > we can not call ioctl() directly on the filesystem inode using fd.
-> > > 
-> > > This patch adds two new syscalls which allows userspace to get/set
-> > > extended inode attributes on special files by using parent directory
-> > > and a path - *at() like syscall.
-> > > 
-> > > CC: linux-api@vger.kernel.org
-> > > CC: linux-fsdevel@vger.kernel.org
-> > > CC: linux-xfs@vger.kernel.org
-> > > Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
-> > > Acked-by: Arnd Bergmann <arnd@arndb.de>
-> ...
-> > > +		struct fsxattr __user *, ufsx, size_t, usize,
-> > > +		unsigned int, at_flags)
-> > > +{
-> > > +	struct fileattr fa = {};
-> > > +	struct path filepath;
-> > > +	int error;
-> > > +	unsigned int lookup_flags = 0;
-> > > +	struct filename *name;
-> > > +	struct fsxattr fsx = {};
-> > > +
-> > > +	BUILD_BUG_ON(sizeof(struct fsxattr) < FSXATTR_SIZE_VER0);
-> > > +	BUILD_BUG_ON(sizeof(struct fsxattr) != FSXATTR_SIZE_LATEST);
-> > > +
-> > > +	if ((at_flags & ~(AT_SYMLINK_NOFOLLOW | AT_EMPTY_PATH)) != 0)
-> > > +		return -EINVAL;
-> > > +
-> > > +	if (!(at_flags & AT_SYMLINK_NOFOLLOW))
-> > > +		lookup_flags |= LOOKUP_FOLLOW;
-> > > +
-> > > +	if (at_flags & AT_EMPTY_PATH)
-> > > +		lookup_flags |= LOOKUP_EMPTY;
-> > > +
-> > > +	if (usize > PAGE_SIZE)
-> > > +		return -E2BIG;
-> > > +
-> > > +	if (usize < FSXATTR_SIZE_VER0)
-> > > +		return -EINVAL;
-> > > +
-> > > +	name = getname_maybe_null(filename, at_flags);
-> > > +	if (!name) {
-> > 
-> > This is broken as it doesn't handle AT_FDCWD correctly. You need:
-> > 
-> >         name = getname_maybe_null(filename, at_flags);
-> >         if (IS_ERR(name))
-> >                 return PTR_ERR(name);
-> > 
-> >         if (!name && dfd >= 0) {
-> > 		CLASS(fd, f)(dfd);
-> 
-> Ah, you're indeed right that if dfd == AT_FDCWD and filename == NULL, the
-> we should operate on cwd but we'd bail with error here. I've missed that
-> during my review. But as far as I've checked the same bug is there in
-> path_setxattrat() and path_getxattrat() so we should fix this there as
-> well?
 
-Yes, please!
+
+在 2025/3/17 14:02, Shuai Xue 写道:
+> 
+> 
+> 在 2025/3/3 12:33, Shuai Xue 写道:
+>>
+>>
+>> 在 2025/3/3 11:43, Sathyanarayanan Kuppuswamy 写道:
+>>>
+>>> On 2/16/25 6:42 PM, Shuai Xue wrote:
+>>>> The AER driver has historically avoided reading the configuration space of
+>>>> an endpoint or RCiEP that reported a fatal error, considering the link to
+>>>> that device unreliable. Consequently, when a fatal error occurs, the AER
+>>>> and DPC drivers do not report specific error types, resulting in logs like:
+>>>>
+>>>>    pcieport 0000:30:03.0: EDR: EDR event received
+>>>>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+>>>>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+>>>>    pcieport 0000:30:03.0: AER: broadcast error_detected message
+>>>>    nvme nvme0: frozen state error detected, reset controller
+>>>>    nvme 0000:34:00.0: ready 0ms after DPC
+>>>>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+>>>>
+>>>> AER status registers are sticky and Write-1-to-clear. If the link recovered
+>>>> after hot reset, we can still safely access AER status of the error device.
+>>>> In such case, report fatal errors which helps to figure out the error root
+>>>> case.
+>>>>
+>>>> After this patch, the logs like:
+>>>>
+>>>>    pcieport 0000:30:03.0: EDR: EDR event received
+>>>>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+>>>>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+>>>>    pcieport 0000:30:03.0: AER: broadcast error_detected message
+>>>>    nvme nvme0: frozen state error detected, reset controller
+>>>>    pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
+>>>>    nvme 0000:34:00.0: ready 0ms after DPC
+>>>>    nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
+>>>>    nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
+>>>>    nvme 0000:34:00.0:    [ 4] DLP                    (First)
+>>>>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+>>>
+>>> IMO, above info about device error details is more of a debug info. Since the
+>>> main use of this info use to understand more details about the recovered
+>>> DPC error. So I think is better to print with debug tag. Lets see what others
+>>> think.
+>>>
+>>> Code wise, looks fine to me.
+>>
+>> thanks, looking forward to more feedback.
+>>>
+>>>
+> 
+> Hi, all,
+> 
+> Gentle ping.
+> 
+> Thanks.
+> Shuai
+> 
+
+
+Hi, all,
+  
+Gentle ping.
+  
+Thanks.
+Shuai
 
