@@ -1,99 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-7972-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7974-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D14A9BBF4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Apr 2025 02:52:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7365A9BD21
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Apr 2025 05:07:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZkDpB3qHfz2xtt;
-	Fri, 25 Apr 2025 10:52:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZkHnS2YLsz2y34;
+	Fri, 25 Apr 2025 13:07:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.177.32 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745542354;
-	cv=pass; b=aJgNgq00MbLaGHEP6UmUfPXtLndPdLgzCYgUOSzcIpJNMehANl8rADXwj905cllM4qUdZm5QtGJNjr9CfX9HcD4Z+I/T9/NCAGi6BTk4vdPXI/2kT05CYcFp6q1r9jjbW8x5FgJ4G9wpalFgbI04SFxnniR+d1fiSl/cEFXAgE2LBuKX+Q2dJbHpIadt1kDZB3eWcoMqh1t4y36kXMazyXd2Ry0DAGDxowEuqqICdbm6m3NVgvcThTK/uw9LWz0V/szPcG9ulIvXVBd/t2kl3mNuPrqpJukpxei+c8IiB062hXsxpWDIIhJo7pr6pQpbC/RkvBEnU7Yqbzw+4+2/KQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745542354; c=relaxed/relaxed;
-	bh=UbPCJZ7EqbgbzOETHHXtELMyvOc4fgLtqQceM3cU6Uo=;
-	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
-	 Content-Type:MIME-Version; b=ErkehK8ujaubyKSi3kMSPxedPvB2vpfkwtc3qe/7LdyTIuD1ICD5hz0swTN3gbmdVM3NyLiEJ55031NoPgvv6sJf8bKWKqlpUQ0nO5nx5UFutFjGQEnL8Lp2rLXWId9c8XdWT7dqyH5gTil0BjeAsUDQub+csXhU9AipItayAt/a5qDt97MX3e5g3Z1h+3PdcZai5HYDd7TqyE2+KuEpOcCp4V5/1JpDHKSQ6Q9Txt316g180oPJ4/LydXBHVmtJEzaHin2HRvu6BZKNeMmrp2qACH9Svam/V8AUR2bWRQczpqx7mbFMOMkkyyKwYjHWMm0x16HfCf4oFI2HDyTVoA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=gpj0nAjX; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=j4N7AIas; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745550428;
+	cv=none; b=JDosCpAY4gZRSaD//O0qJeIRTGFL2VbTcpTh+UICCs0TyJY6ATyQa7jf+dDnv3QMX0PFIfAclxfLC7Wxcipdbcv9MKl2x35mRjCRG97Lb4gl/qY0ue1PbBJQ0+RjB1I+gkH6qaobV3gJOMpz27q6bm2pRvt+RJnXD9OVk3xbDNgazrdWoOlbLzaNuJ43qP1kSlwL8E3hoqcqOQZsVYnMaN4GUFtJGMvG0AjocSkngfzIyC64zDVH7IsZJpi7ogVISPcVbPhmEnRZDkduKO+sWWQF/q9iMprKRVQqXRPLcb/gw3kWeoKgsryMBQQPid5yzaRLYUHEHFy/65ilemd//g==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1745550428; c=relaxed/relaxed;
+	bh=SRNGBMoSb3s7Vy5483ZeuA/ZLGq91rfgnhuqY7903Sk=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=GCctAyFWUJi+jRXyFnobLpEazJwc9GAW0PnR43AHdf5mWKGSNcfAdot2q17u1sk0+y+US9unCZbJ93gKOyhW9Xx6f5Ti6ZRi+nuVBBuelQZaI3LioVi5t/UQ0r7u6AplcMVmtxS02Jx0ZQgwKwxTHKf8bihLurRuX2MqDl/ofqYK1ZJNWun2dJi5CeE5HiR4oiM8n7pfE7p7gqpNQ0NNQyvFO9S4eq0VLsoVzCDEO4P/ZFxdNSxFhlxZQ5f71c54Uvl169HDjIlMqJp+lc2Ltckvumh0fkeSQFEzO+PtTOJbBPHr8L9MEeOpqIzWuuMZJ/n/cVpPU/hUshgbx/3Nmg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FFBKMikx; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2023-11-20 header.b=gpj0nAjX;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=j4N7AIas;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FFBKMikx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 70 seconds by postgrey-1.37 at boromir; Fri, 25 Apr 2025 10:52:32 AEST
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZkDp85LMqz2xsM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Apr 2025 10:52:30 +1000 (AEST)
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53ONwnBB019355;
-	Fri, 25 Apr 2025 00:52:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2023-11-20; bh=UbPCJZ7EqbgbzOETHH
-	XtELMyvOc4fgLtqQceM3cU6Uo=; b=gpj0nAjXGmAaaly2QhOxc8AX8ebtCfdosF
-	Bcwv4r2ocRkG4Zt4lJM74t8XvTnaek4fMHVyx/s+K7P162XVZp70DRD17wdTnJvF
-	4SKoqWSDVQwwgm6w+ogPtsk4ezsFBBKXrwNODjEDoqP2d0moLdI0kr3BoK5wgEdG
-	0Sgy2CuOy1oaB63w/3wO8jYcXTnTboD0E2Vu8HElUeuO+LjnUNXbOxCioBtc+lr2
-	ITMFIttsmyuZhxA608rB+vpnGN4/dacHlntTUZLUaTbU0ES/H/tqGAJxb+XRqiUE
-	oCh/pClwXcYT8ngasQY1i8lnyVUhTa0B+vJYTF0vNfXeBAGf1KuQ==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 467y2583wt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Apr 2025 00:52:23 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 53ONAlgp024806;
-	Fri, 25 Apr 2025 00:52:12 GMT
-Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazlp17010002.outbound.protection.outlook.com [40.93.13.2])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 467puc60rw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Apr 2025 00:52:12 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RjGi39T1CwUGpWz59u4cfTIAn7V3EUQjm7gsDkoxyxS6bb4i+hGfnyqb0OyeKgy8kl7/RttVs4TmUda9Z6G3ZVwsHeHn8/cPgJKYMEelG+AeNaxLN2NFYfR4mdtoNcgpTFw80DRWTHI3xK6MxGBvnb5Ez97cMLo1AdAgyZn7CMN0ZdXmidc0/815hJ73OfgKQOusOu7CIBL98sckZV/daXKdsTK6psJxWZOmgBltiDce1B/n05wWgU0Obpr3Ivn58LH65+SglVpbjaCILZJ441Nj9bV/k1ZxkVukhmXDtUdjNusL+kZgXnlXY6+/nsmTBHnHOVn/NqU46PonIYlfcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UbPCJZ7EqbgbzOETHHXtELMyvOc4fgLtqQceM3cU6Uo=;
- b=ENu+yGD2847xCe02JN8aURWgNkh/BpMtsBQ/xM1ZmOzSRcr+9f86xpfuY62UGeoJbffsT5EJPcGsA2OsoAyvdIE+VaD3MlnVHdZwUY6BQ17GD+r3SZeTxM+0ZNiI866o57RNEU8BIa4JHygs8HEyAcdcMNLcYbU5S751P86oYDoHFF7kCvK10nIyKv/fDW4Vua4phgGBXUVVmGi43gM/mPfaxDPqSdEYTozg69vFgpSjbd7zbRs24t0AHoPbUcAx63eFxaiwiWniKxks/OXEwAOplRibSNbm8Aye1NSkW3xbv97UDVR3e+52vdsB8zrAJ0L69z/6sM7TlQv2hXnqIA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UbPCJZ7EqbgbzOETHHXtELMyvOc4fgLtqQceM3cU6Uo=;
- b=j4N7AIasRhv0wND/XC3swYtSlWv8Zri9y/+ihdp8LfDZIKnHzo+P4jl4RiY0XoHFX7TTQOs5xOY9xPxASysfoJ+TzJ1NaJlHS2Fl9GyJOpCmdPmrRyKyK9pk0n3/DBkVPzUG3LxraP7DZvMPjguE2pud0193CLcmQTeXx0fus0E=
-Received: from DS7PR10MB5344.namprd10.prod.outlook.com (2603:10b6:5:3ab::6) by
- IA1PR10MB7167.namprd10.prod.outlook.com (2603:10b6:208:3f1::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.36; Fri, 25 Apr
- 2025 00:52:10 +0000
-Received: from DS7PR10MB5344.namprd10.prod.outlook.com
- ([fe80::b527:ca1f:1129:a680]) by DS7PR10MB5344.namprd10.prod.outlook.com
- ([fe80::b527:ca1f:1129:a680%5]) with mapi id 15.20.8678.025; Fri, 25 Apr 2025
- 00:52:10 +0000
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        <linux-crypto@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-s390@vger.kernel.org>,
-        <sparclinux@vger.kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH 0/7] lib/crc: drop "glue" from filenames
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-In-Reply-To: <yq134dx6p3o.fsf@ca-mkp.ca.oracle.com> (Martin K. Petersen's
-	message of "Thu, 24 Apr 2025 20:51:03 -0400")
-Organization: Oracle Corporation
-Message-ID: <yq1wmb95ahy.fsf@ca-mkp.ca.oracle.com>
-References: <20250424002038.179114-1-ebiggers@kernel.org>
-	<yq134dx6p3o.fsf@ca-mkp.ca.oracle.com>
-Date: Thu, 24 Apr 2025 20:52:08 -0400
-Content-Type: text/plain
-X-ClientProxiedBy: BLAPR03CA0112.namprd03.prod.outlook.com
- (2603:10b6:208:32a::27) To DS7PR10MB5344.namprd10.prod.outlook.com
- (2603:10b6:5:3ab::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZkHnR3tgHz2y06
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Apr 2025 13:07:07 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53OL3r6r001753;
+	Fri, 25 Apr 2025 03:06:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=SRNGBM
+	oSb3s7Vy5483ZeuA/ZLGq91rfgnhuqY7903Sk=; b=FFBKMikxmYled8FIY/MLxx
+	+4dkJ24oqb7UEACHDNzthrxTS1wyfBhtrGlO/NoMU00sreo3MTt/WnGXe4x0MHJV
+	RCBpJ2n6LTlstt2FpP+Qnh/OZZX1qkpHLwQtOwsiSQdWUWLeviLxzVI9MKkn1QQW
+	3lk0oucQL/70HPYwgPwZk4vyDS0Qh9pyKBozu6W+Q4ep/1Uyt2RG3bMJqtxCSFBY
+	H8HcEEOvGb3hWG25IRhnweuhNdfzeB1aD326oZOYnsVqZufzJpBW/x6xcpBqSTLn
+	2BF2MhuH3iAsuj5JN+HGb1vkZ/lZR4kQtyyBZ71bGVYgY+hJnkpmn78HcajYH1kA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 467vvks4g3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Apr 2025 03:06:40 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53P34cMO028902;
+	Fri, 25 Apr 2025 03:06:40 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 467vvks4fx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Apr 2025 03:06:40 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53ONMGVC005872;
+	Fri, 25 Apr 2025 03:06:38 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 466jfxk9rr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 25 Apr 2025 03:06:38 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53P36YiL49611046
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Apr 2025 03:06:34 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BC7AE2004E;
+	Fri, 25 Apr 2025 03:06:34 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A32A220043;
+	Fri, 25 Apr 2025 03:06:26 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.248.200])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 25 Apr 2025 03:06:26 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,110 +84,439 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR10MB5344:EE_|IA1PR10MB7167:EE_
-X-MS-Office365-Filtering-Correlation-Id: a56f406b-80e2-4272-c645-08dd8393690e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+KOT/s9hTQ64PKt71w8qMJTK6csvUoSogEXtIsPN9vtbE6eRZoRfSHpeB4HW?=
- =?us-ascii?Q?5yN1pU9n2vIrfI3XEJezzHYilxhezL6G1AkyFr47aBk4ajzF1TnvClvJkBDa?=
- =?us-ascii?Q?t/yqaCRv6dYSBo2OaAFllhTjFMNFueaYADvEW7OHrx7KyyxAw/JzyT31SaBF?=
- =?us-ascii?Q?S4Rt/zonWCN7A6gVbvkGfC545MRtuX0e3gp+yU/BhmsI6IdOe56WU25qNbGK?=
- =?us-ascii?Q?JDt2NvlMjmoVo1oHlYkyUU0yZocZweRN3/JKxUxEVjqIrblxgiivsTGOI8Qt?=
- =?us-ascii?Q?CgbnEOwyxufeN7LH0dQ+p1RMUqG8GZSqdVZqRfLTvCDb8Mq7+tty3E6FXRtR?=
- =?us-ascii?Q?SseF9FHQnVf/iJ+AdPJCTsnfPNcVK5hFpONx8bc9HBf0FmE7EA5OaCo20CSx?=
- =?us-ascii?Q?FdcDDFxBoOM7BMXESCYgVR+yiXptrUY2iA3rwOnbxDtmG3YbRAW0X5fDis2H?=
- =?us-ascii?Q?3o4lm02lTgNzKhTy6+RNkfciNm4vyre3WNp2OGcENS61vkeg8k6tqGC9HOne?=
- =?us-ascii?Q?3Hq9W//LeF3b0ECPKEg/1ZthcWMt0e9zkeCNg1cFe1RxrlL0hgRJjHnL/Ya+?=
- =?us-ascii?Q?oEA32atks1wMPjX83gMslf7Itcn3nmyTnr+hYjw9hgSt9Q/qAhR8Cc+LXfSq?=
- =?us-ascii?Q?h8XEj7kDZUYHdaxM3yAbxqRaeBAZxDv/truHEn8flcNjBgsQ72rHjpwqgaa+?=
- =?us-ascii?Q?IZ6J3N7qhdv3wKyR3e60RZAvdR0a34E/LvPWEirJYOXVwGjXSiUeZyYX8yd2?=
- =?us-ascii?Q?pUZePjMAE8KV1GdngTgRUGhLaKPRLC8Z4j6av8rk9Occ91Q++NOS+5iI3ShT?=
- =?us-ascii?Q?+aW4kD2yumjSCYWwcBrnp61woOOolfsEVfVyVrSVUNRpcyeI03879jDFsrwN?=
- =?us-ascii?Q?mx8oAdUFxQxIxdyD7jnrTNRh+lMvIe8MLqHjDMEdgMgEohcwynB61LcQ9TTs?=
- =?us-ascii?Q?gir3vsn5Hw+co5Q+RvdXyWAf33ks8/CgbZNHiZKoeBKpMIKqxhfTntsmSqv6?=
- =?us-ascii?Q?LE4d9fduCwMxB00BNV5ttksghd5JmoLfWJ1F82FYxIL+Nd+pxwdkm5q0yoGq?=
- =?us-ascii?Q?4WGXtzPSQYkfIq5Zd7OTMxMvvKqR5Nb/pSDLy/IALGskCQXUBW+h4kiftyBc?=
- =?us-ascii?Q?LAFKhtCJVImP4XjULKeW2Cpaufr42/bjhDqEz9VlaidpiqgYr7xOpSwKfYu8?=
- =?us-ascii?Q?QDqgAhZlREmhBJ5cpDTuHr/UOUPABIKEEfUdh86ChmuFCXbeY+KdJ12w0HFp?=
- =?us-ascii?Q?+JzRCvFYSLQ6rN7r02BbWNYGY6exCTZ8TzNjMATYzIPnlRiEE3HqvVhUkswG?=
- =?us-ascii?Q?kBlkz2NaA28LqPPNsEO28lS2U/I6z1brmj6yObVUEW2DyqM5BYKowvhsccms?=
- =?us-ascii?Q?yQvUUFc3yc972CdTfvL541D0C5t5n5Wa0y/YMWjO+0+hgKdW3rcJyxWxoTvZ?=
- =?us-ascii?Q?Qx1Dec00oEY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR10MB5344.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?GmIA8xRvO4MHIwNnnfFGuUE1XDp0gVGN99YYcszAm0ZaLWpTx6JK7TAo4mQd?=
- =?us-ascii?Q?LKc4O+/5BxIFh2axjwvbRWXKkWTpuMsw6fDbNXT4V+wBdPnZu8zCRA6bKiSW?=
- =?us-ascii?Q?vnnOlTYn8z0cyiauxd0OylB3EbQxf29irPtR9UA3EKAx1bWQZSFaM2+XO7Oa?=
- =?us-ascii?Q?9h3EaJAKbcdF8KFusIj4PB/Uz0nkKwpGDAnYwFk6QGUpnwkVnyGYt1nndkNf?=
- =?us-ascii?Q?5eP1fiYQAmxeXNY7NKaSeJPIuEZztYu1Zad2Hkmsg6YQTiwkHBMoW2S8JV3r?=
- =?us-ascii?Q?FS6jeZSkKqy29jjvm2TR6MM43AGKVJDijbEru1H/yTvn0uaAqSfmdxcIDAZ+?=
- =?us-ascii?Q?ZbBa8bqkHbv+1wW8NJp+ymNRL5kPQTB4A2QS9gC1UI17InDhd/h7+sOOvoPV?=
- =?us-ascii?Q?eJcF6gl91/oZ4dfPMrYCOrDrZ5fjDXUC12uUJtzroIRXdm+0ndeiuObl6aJa?=
- =?us-ascii?Q?MleGJmHEDIpIqJIQKQ4xBnqDMBhETd7fnQdh7+lk7hbgaGAkzE9K3TRZ6P5E?=
- =?us-ascii?Q?B2BxCOA6ZOD6OjQPSkZggmXculEYTnHFl8XOl4ynMZo8TEIJMsLZJaGcPRVq?=
- =?us-ascii?Q?cR487eMa/6Qg/mK0Sj99+T+JAp4D03DzQEO8/FPoZ26cm7TysD9/ZQqbzQdo?=
- =?us-ascii?Q?TBk8yGWdVZUuQdqUL2lAnUZG0SDDsYqM2MBR4pbwMCkc9mXrDuBDg7PUOC21?=
- =?us-ascii?Q?BzOtG9/LQlY89hKqdlqGO68iR0Cg8/5axxwKZMzKo7VO7vsFeVvs4seobaYX?=
- =?us-ascii?Q?vDKnkmHVXbfqlk/Vq927sLwOQ3YS7ph/+6cz8Xg9pthX6juoZXX9b7IIuuiE?=
- =?us-ascii?Q?n9/ml6fY44XX2jqPrrMMmatA90OMsfXrCphjGfb3hAPrYM6G3Agth+Pa60r1?=
- =?us-ascii?Q?oqPSj9XnBg2kreUI0Ac5udJNcSUgpf1rVd0ejNfMdqY4RU2wn2i7pt+i/i9Q?=
- =?us-ascii?Q?k4nWJu6PHG20FL7yYD1AecS+Bd9GxHOn6p0gP2VKvTRzFJilk/EFE8qSadvH?=
- =?us-ascii?Q?X9A0ujrsgQ63MlkiowtumwaM9Co38SKZzR06GT8w7iAWM4Rg8JlT5rpFk/Nz?=
- =?us-ascii?Q?Hcbqxgfur+HEAdN34Lm6HcJRY+d5ae1Lz7gf+4826+CwZukE2tcyJinAZrUX?=
- =?us-ascii?Q?qaaD1uIcnQAajPmrymOTM94m3776wD2AjjNYZA4Q9LH9f8u2rbWRTBExGQgh?=
- =?us-ascii?Q?OhEOEpnk5/VKB9gAbQool9ua24jqrtxTD42HugJgYVNGlFNLE+tJei1+xBTx?=
- =?us-ascii?Q?fSZvUYEt1BCJMp9z1PaARTWqKaHLyBevFVyWK9IKwkTL9Jbh8Zmms60yx9Ni?=
- =?us-ascii?Q?h82iAoxmA9zKu9CnAyzc+Y43fHB/ZbYTtI9srKzqsT2S0tpd8GH6/iEx5VcW?=
- =?us-ascii?Q?N5A/XDb0y2/dED6G+cDIfuNz7wonOqijVcRKzYS/TlmR7SgAQo5L/3GOySCF?=
- =?us-ascii?Q?tpichU9SKEyhmsVik6DxvPpTO7rOBQRgjMf6cDFb4D8ev5Cp5c+CEp0nosM0?=
- =?us-ascii?Q?y3Ej34qszarP3m9jcEe4dcNjQwFCzo9nAKSt+gaYrUwehW7OyyaX0fr+Os+M?=
- =?us-ascii?Q?kHN4+CmOG/hC36m3lSg3qia1rxONTu88OdSOlz7w2OdshD8RmPA/ou/ehxGN?=
- =?us-ascii?Q?Xg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	D/N3V37NURQ3X+nKbLYr73La0iR4EUzNZJCW5fZa1h9sVKZTGWEYNBayeOvooAMQNSrOlzNolSWzA1XPM8NtNi8lal90RjFtqL9frpLztgShgouGuv1TMjYE/P9EeIDY6SiwrUl30adk6RJ4BcUS3OuEseFiUITQ2p3GpiOoWvC57o+qoB50M89DmD66ejgnjiwdmLy2CBGg0D/iY4oRELFZMwN9CiiDQHYq1HAae+ei9PppNTfC2+DypevRd0F7zPstTo8ACWYMm+puq1r0ell5jJReIRgaMFjoz1gfjtjtQCCJdXuij7u++KDzQq3M2SjcZhDsvAlsP6i6ei7uER/9z6QipdBsw5vvhw7ZNkHXLcGXcohxAy3bUetxKEQH6oxloNXJsxaveKaD51saoLeMsRcfy2gMQBkved5z7Dxd2E8AfdroMsDu9vwqxDPbvlIvHejq/VahdtXUfh9ElwsCXc6ROz7nGSLCfdTfUTluiEdmcedNcmrMJ3Wjq9mjLv2Zr7QiRcozTx50sjsFgRWP3+ox5c+BhGL4Vqg1z8X3v+UMXUXi/wzjCYBOeAEHHlcprf6YxUfAsKDE2lPvO8SNFpPfhU+VWvDlBqXDQUU=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a56f406b-80e2-4272-c645-08dd8393690e
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR10MB5344.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2025 00:52:10.3472
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WqR/xlcG5szjI1KtnOVo4o62hGlWjK5lHpqKqMdYvzo0a5on4xYdYQgcb8FE1qhV09NsiRHYemBgOAs2DOemAC1iW/tJZU8o7ymXwuNaH+M=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7167
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH] perf build: Add tools/arch/x86/include/asm/amd/ibs.h to
+ sync the headers
+From: Athira Rajeev <atrajeev@linux.ibm.com>
+In-Reply-To: <aAp_MGf8HcKJ1QjY@x1>
+Date: Fri, 25 Apr 2025 08:36:12 +0530
+Cc: Jiri Olsa <jolsa@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
+        "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Disha Goel <disgoel@linux.vnet.ibm.com>, hbathini@linux.vnet.ibm.com,
+        Aditya.Bodkhe1@ibm.com, jiang.peng9@zte.com.cn,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Tejas Manhas <Tejas.Manhas1@ibm.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Ravi Bangoria <ravi.bangoria@amd.com>,
+        Borislav Petkov <bp@alien8.de>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <AF79F0E4-270E-4474-9B24-CB928D5D7D10@linux.ibm.com>
+References: <20250424163033.6601-1-atrajeev@linux.ibm.com>
+ <aAp_MGf8HcKJ1QjY@x1>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>
+X-Mailer: Apple Mail (2.3776.700.51)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDAyMSBTYWx0ZWRfX1paviqBCVrI+ wjenhs+KXPuYjVBvkf/xSLDPnSgSg+4m3C9YeZe+U0hAWb6zD/ZJAwnBKIgbb1U/Igo/SJlTXoz 3/eeBaiBYSxdM9rOIsaMAp+laEoJRInxDLbPMV+UCSeXdi1k2lqe/u3+E/v25O1SKVjfX9LCQ7w
+ u+waFUsFb0fDmjzwl9Hp11qDaWgJQ7SL6ewscE+kLzgh7IwVOmW3C6uJQhZFj+lOPMa5A35DceL uJHUNvjEN01B7OaNZXEW92yXO9Oed6a1neoV4EFGf04TZwGKUb40w6O8wO+jARCpVDu6/vGM/iW pR6scTr5ZSbYAHHede0pqaW27mcPCvFVIYaBReahrapi6NDoNPYrSeqWacr63JlfFtVhN+6bsHe
+ ZbhpIWdtfWjmfWw5oSiaSro3JeRL4t//p4ALjM+UVVxlTdusiTR6naokgwCHoeunuigpnoET
+X-Proofpoint-ORIG-GUID: YYVv6p9g4S5gsO3jqMruqJBUOj5H7RdS
+X-Proofpoint-GUID: tFGyZKvO9rbPyeB6lnQF_cRVLbE3fNDZ
+X-Authority-Analysis: v=2.4 cv=HoF2G1TS c=1 sm=1 tr=0 ts=680afc40 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=rOUgymgbAAAA:8 a=zd2uoN0lAAAA:8 a=VnNF1IyMAAAA:8
+ a=6YI-R7fC5oJlHMn984YA:9 a=QEXdDO2ut3YA:10 a=MP9ZtiD8KjrkvI0BhSjB:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-24_09,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=970
- mlxscore=0 spamscore=0 phishscore=0 bulkscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2504070000 definitions=main-2504250004
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI1MDAwNCBTYWx0ZWRfX/s4UfopzV2tF j/TDL1mPPMX86otSxQ6LeW0GAkKCJSygO1iIyckL/HwugizkSJnU3C0BbyK5qNtcYOPMTGjezcc hPMQqqK1xBgCC0CB9a68LzOXcB1t2KLyYLBZknDNSdQB1kj220xFo/wV6Xqldrud6axKwqBuOQ1
- RNUrZHTQHAc6Yn1TjJmrShMEojKTkPfThs1YaQ/+WdQtgRuS/2udy7Bko+EFINUWIWXIX+0spFh Lq/+5A1b0uEMQ+6BG99lRE05wWM5BDVCa9yZcPidmG7Ilk4yCtnrV3KIQe/INeljJQC3U0hizmI ijkQjYY2XszJKezBvKUKo1MxBzeaiCaKD0bhNzwq+uv4DMkzsOUdwiv2SpQ9xjTZrB8RUNTcdbR gwKmCRlz
-X-Proofpoint-ORIG-GUID: Xi52DCq_NOynydHUWHElTeJBZSY1FYNz
-X-Proofpoint-GUID: Xi52DCq_NOynydHUWHElTeJBZSY1FYNz
-X-Spam-Status: No, score=-2.0 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+ definitions=2025-04-25_01,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ lowpriorityscore=0 phishscore=0 clxscore=1015 impostorscore=0 adultscore=0
+ bulkscore=0 suspectscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504250021
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
->> This series fixes an odd naming convention that was unnecessarily
->> carried over from the original Crypto API code.
->
-> LGTM.
 
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+> On 24 Apr 2025, at 11:43=E2=80=AFPM, Arnaldo Carvalho de Melo =
+<acme@kernel.org> wrote:
+>=20
+> On Thu, Apr 24, 2025 at 10:00:33PM +0530, Athira Rajeev wrote:
+>> Headers sync up update for the patch that adds the original
+>> copy of the IBS header file in arch/x86/include/asm/amd/ibs.h
+>=20
+>> Without this, perf shows build warning:
+>=20
+> Warning !=3D error, so shouldn't result in something stopping to work.
+>=20
+>> # make
+>=20
+> What is the cwd?
+>=20
+> Probably tools/perf/
+Yes, it is from tools/perf
+>=20
+>>  BUILD:   Doing 'make -j24' parallel build
+>> diff: tools/arch/x86/include/asm/amd/ibs.h: No such file or directory
+>> Warning: Kernel ABI header differences:
+>>  diff -u tools/include/uapi/linux/bits.h include/uapi/linux/bits.h
+>>  diff -u tools/include/linux/bits.h include/linux/bits.h
+>>  diff -u tools/include/vdso/unaligned.h include/vdso/unaligned.h
+>>  diff -u tools/arch/x86/include/asm/cpufeatures.h =
+arch/x86/include/asm/cpufeatures.h
+>>  diff -u tools/arch/x86/include/asm/msr-index.h =
+arch/x86/include/asm/msr-index.h
+>>  diff -u tools/arch/x86/include/asm/amd/ibs.h =
+arch/x86/include/asm/amd/ibs.h
+>>  diff -u tools/arch/arm64/include/asm/cputype.h =
+arch/arm64/include/asm/cputype.h
+>=20
+>> Add tools/arch/x86/include/asm/amd directory and also file
+>> tools/arch/x86/include/asm/amd/ibs.h to sync up the kernel headers
+>> with perf tools and fix the warning:
+>=20
+>> diff: tools/arch/x86/include/asm/amd/ibs.h: No such file or directory
+>=20
+>> Apart from the warning, the perf build also fails as below on =
+powerpc:
+>=20
+>>  In file included from util/amd-sample-raw.c:12:0:
+>>  =
+/root/bug/tip/tools/include/../../arch/x86/include/asm/amd/ibs.h:10:10: =
+fatal error: asm/msr-index.h: No such file or directory
+>>   #include <asm/msr-index.h>
+>>            ^~~~~~~~~~~~~~~~~
+>>  compilation terminated.
+>=20
+>> To fix this, added this change:
+>=20
+>>  -#include <asm/msr-index.h>
+>>  +#include "../msr-index.h"
+>=20
+>> And change the check-headers.sh entry to ignore this line when
+>> comparing with the original kernel header.
+>=20
+> So, was this caused by some file being updated under tools/ that =
+didn't
+> go thru the maintainers for that area?
+>=20
+> It is important to read this file:
+>=20
+> tools/include/uapi/README
+>=20
+> Specially this part:
+>=20
+> The tools/perf/check-headers.sh script, part of the tools/ build
+> process, points out changes in the original files.
+>=20
+> So its important not to touch the copies in tools/ when doing changes =
+in
+> the original kernel headers, that will be done later, when
+> check-headers.sh inform about the change to the perf tools hackers.
+>=20
+> --
+>=20
+> So, files under tools/ should only be updated once it is determined =
+that
+> it doesn't break building tools/.
 
--- 
-Martin K. Petersen
+Hi Arnaldo, Namhyung
+
+Thanks for responding and checking the patch.
+
+This is breaking the tools/perf build in kernel tip. Sorry, I should =
+have mentioned which tree this is observed and background.
+It is reported for =
+https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git=20
+and discussed here: =
+https://lore.kernel.org/all/20250415133518.2c8d4325@canb.auug.org.au/
+Reported build failure on powerpc for linux-next , after merge of the =
+tip tree.
+
+I could also recreate the build failure on powerpc when trying to =
+compile perf with latest tip/master=20
+
+  In file included from util/amd-sample-raw.c:12:0:
+  =
+/root/bug/tip/tools/include/../../arch/x86/include/asm/amd/ibs.h:10:10: =
+fatal error: asm/msr-index.h: No such file or directory
+   #include <asm/msr-index.h>
+            ^~~~~~~~~~~~~~~~~
+  compilation terminated.
+
+To note: Build break is observed even without picking the amd/ibs.h file =
+to tools path. Since we can=E2=80=99t change the kernel header file, I =
+took the approach to sync the kernel header file to tools , change the =
+include for =E2=80=9C../msr-index.h=E2=80=9D, and update =
+check-headers.sh
+
+This is observed after the commit change which moved amd-ibs.h to =
+amd/ibs.h=20
+Reference commit: =
+https://lore.kernel.org/all/20250413084144.3746608-2-mingo@kernel.org/#t
+
+This header file change is not landed in perf-tools-next : =
+https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.g=
+it/tree/tools/arch/x86/include/asm?h=3Dtmp.perf-tools-next
+So it is not observed in perf-tools-next yet..=20
+
+Arnaldo, Namhyung
+I am not sure when we can merge this fix, but as reported by Stephen, we =
+are seeing build failure on powerpc when using =
+https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git  without =
+this fix patch
+
+Please share your thoughts..
+
+So we have two issues:
+1. Header file change from arch/x86/include/asm/amd-ibs.h to =
+arch/x86/include/asm/amd/ibs.h , this is used by code =
+"tools/perf/util/amd-sample-raw.c=E2=80=9D
+ Reference commit : =
+https://lore.kernel.org/all/20250413084144.3746608-2-mingo@kernel.org/#t
+
+2. Build break on powerpc because it fails to find asm/msr-index.h which =
+needs this change:
+      -#include <asm/msr-index.h>
+      +#include "../msr-index.h=E2=80=9D
+    And also check-headers.sh change to ignore this line when comparing =
+with the original kernel header.=20
+   =20
+
+Note: Similar change was done for tools/arch/x86/include/asm/amd-ibs.h =
+as well. Reference commit below:
+   =20
+    commit dde994dd54fbf84f8fd14230de3477d552e42470
+    Author: Kim Phillips <kim.phillips@amd.com>
+    Date:   Tue Aug 17 17:15:08 2021 -0500
+
+    perf report: Add tools/arch/x86/include/asm/amd-ibs.h
+         This is a tools/-side patch for the patch that adds the =
+original copy
+    of the IBS header file, in arch/x86/include/asm/.
+         We also add an entry to check-headers.sh, so future changes =
+continue
+    to be copied.
+         Committer notes:
+         Had to add this
+           -#include <asm/msr-index.h>
+      +#include "msr-index.h"
+         And change the check-headers.sh entry to ignore this line when =
+diffing
+    with the original kernel header.
+
+Thanks
+Athira
+
+>=20
+> And for that to happen, just submit it as a separate patch that should
+> be processed by tools people, if it makes sense.
+>=20
+> - Arnaldo
+>=20
+>> Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+>> Reported-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+>> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
+>> ---
+>> tools/arch/x86/include/asm/amd/ibs.h | 158 =
++++++++++++++++++++++++++++
+>> tools/perf/check-headers.sh          |   2 +-
+>> 2 files changed, 159 insertions(+), 1 deletion(-)
+>> create mode 100644 tools/arch/x86/include/asm/amd/ibs.h
+>>=20
+>> diff --git a/tools/arch/x86/include/asm/amd/ibs.h =
+b/tools/arch/x86/include/asm/amd/ibs.h
+>> new file mode 100644
+>> index 000000000000..cbce54fec7b9
+>> --- /dev/null
+>> +++ b/tools/arch/x86/include/asm/amd/ibs.h
+>> @@ -0,0 +1,158 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +#ifndef _ASM_X86_AMD_IBS_H
+>> +#define _ASM_X86_AMD_IBS_H
+>> +
+>> +/*
+>> + * =46rom PPR Vol 1 for AMD Family 19h Model 01h B1
+>> + * 55898 Rev 0.35 - Feb 5, 2021
+>> + */
+>> +
+>> +#include "../msr-index.h"
+>> +
+>> +/* IBS_OP_DATA2 DataSrc */
+>> +#define IBS_DATA_SRC_LOC_CACHE  2
+>> +#define IBS_DATA_SRC_DRAM  3
+>> +#define IBS_DATA_SRC_REM_CACHE  4
+>> +#define IBS_DATA_SRC_IO  7
+>> +
+>> +/* IBS_OP_DATA2 DataSrc Extension */
+>> +#define IBS_DATA_SRC_EXT_LOC_CACHE  1
+>> +#define IBS_DATA_SRC_EXT_NEAR_CCX_CACHE  2
+>> +#define IBS_DATA_SRC_EXT_DRAM  3
+>> +#define IBS_DATA_SRC_EXT_FAR_CCX_CACHE  5
+>> +#define IBS_DATA_SRC_EXT_PMEM  6
+>> +#define IBS_DATA_SRC_EXT_IO  7
+>> +#define IBS_DATA_SRC_EXT_EXT_MEM  8
+>> +#define IBS_DATA_SRC_EXT_PEER_AGENT_MEM 12
+>> +
+>> +/*
+>> + * IBS Hardware MSRs
+>> + */
+>> +
+>> +/* MSR 0xc0011030: IBS Fetch Control */
+>> +union ibs_fetch_ctl {
+>> + __u64 val;
+>> + struct {
+>> + __u64 fetch_maxcnt:16,/* 0-15: instruction fetch max. count */
+>> + fetch_cnt:16, /* 16-31: instruction fetch count */
+>> + fetch_lat:16, /* 32-47: instruction fetch latency */
+>> + fetch_en:1, /* 48: instruction fetch enable */
+>> + fetch_val:1, /* 49: instruction fetch valid */
+>> + fetch_comp:1, /* 50: instruction fetch complete */
+>> + ic_miss:1, /* 51: i-cache miss */
+>> + phy_addr_valid:1,/* 52: physical address valid */
+>> + l1tlb_pgsz:2, /* 53-54: i-cache L1TLB page size
+>> +  *   (needs IbsPhyAddrValid) */
+>> + l1tlb_miss:1, /* 55: i-cache fetch missed in L1TLB */
+>> + l2tlb_miss:1, /* 56: i-cache fetch missed in L2TLB */
+>> + rand_en:1, /* 57: random tagging enable */
+>> + fetch_l2_miss:1,/* 58: L2 miss for sampled fetch
+>> +  *      (needs IbsFetchComp) */
+>> + l3_miss_only:1, /* 59: Collect L3 miss samples only */
+>> + fetch_oc_miss:1,/* 60: Op cache miss for the sampled fetch */
+>> + fetch_l3_miss:1,/* 61: L3 cache miss for the sampled fetch */
+>> + reserved:2; /* 62-63: reserved */
+>> + };
+>> +};
+>> +
+>> +/* MSR 0xc0011033: IBS Execution Control */
+>> +union ibs_op_ctl {
+>> + __u64 val;
+>> + struct {
+>> + __u64 opmaxcnt:16, /* 0-15: periodic op max. count */
+>> + l3_miss_only:1, /* 16: Collect L3 miss samples only */
+>> + op_en:1, /* 17: op sampling enable */
+>> + op_val:1, /* 18: op sample valid */
+>> + cnt_ctl:1, /* 19: periodic op counter control */
+>> + opmaxcnt_ext:7, /* 20-26: upper 7 bits of periodic op maximum count =
+*/
+>> + reserved0:5, /* 27-31: reserved */
+>> + opcurcnt:27, /* 32-58: periodic op counter current count */
+>> + ldlat_thrsh:4, /* 59-62: Load Latency threshold */
+>> + ldlat_en:1; /* 63: Load Latency enabled */
+>> + };
+>> +};
+>> +
+>> +/* MSR 0xc0011035: IBS Op Data 1 */
+>> +union ibs_op_data {
+>> + __u64 val;
+>> + struct {
+>> + __u64 comp_to_ret_ctr:16, /* 0-15: op completion to retire count */
+>> + tag_to_ret_ctr:16, /* 15-31: op tag to retire count */
+>> + reserved1:2, /* 32-33: reserved */
+>> + op_return:1, /* 34: return op */
+>> + op_brn_taken:1, /* 35: taken branch op */
+>> + op_brn_misp:1, /* 36: mispredicted branch op */
+>> + op_brn_ret:1, /* 37: branch op retired */
+>> + op_rip_invalid:1, /* 38: RIP is invalid */
+>> + op_brn_fuse:1, /* 39: fused branch op */
+>> + op_microcode:1, /* 40: microcode op */
+>> + reserved2:23; /* 41-63: reserved */
+>> + };
+>> +};
+>> +
+>> +/* MSR 0xc0011036: IBS Op Data 2 */
+>> +union ibs_op_data2 {
+>> + __u64 val;
+>> + struct {
+>> + __u64 data_src_lo:3, /* 0-2: data source low */
+>> + reserved0:1, /* 3: reserved */
+>> + rmt_node:1, /* 4: destination node */
+>> + cache_hit_st:1, /* 5: cache hit state */
+>> + data_src_hi:2, /* 6-7: data source high */
+>> + reserved1:56; /* 8-63: reserved */
+>> + };
+>> +};
+>> +
+>> +/* MSR 0xc0011037: IBS Op Data 3 */
+>> +union ibs_op_data3 {
+>> + __u64 val;
+>> + struct {
+>> + __u64 ld_op:1, /* 0: load op */
+>> + st_op:1, /* 1: store op */
+>> + dc_l1tlb_miss:1, /* 2: data cache L1TLB miss */
+>> + dc_l2tlb_miss:1, /* 3: data cache L2TLB hit in 2M page */
+>> + dc_l1tlb_hit_2m:1, /* 4: data cache L1TLB hit in 2M page */
+>> + dc_l1tlb_hit_1g:1, /* 5: data cache L1TLB hit in 1G page */
+>> + dc_l2tlb_hit_2m:1, /* 6: data cache L2TLB hit in 2M page */
+>> + dc_miss:1, /* 7: data cache miss */
+>> + dc_mis_acc:1, /* 8: misaligned access */
+>> + reserved:4, /* 9-12: reserved */
+>> + dc_wc_mem_acc:1, /* 13: write combining memory access */
+>> + dc_uc_mem_acc:1, /* 14: uncacheable memory access */
+>> + dc_locked_op:1, /* 15: locked operation */
+>> + dc_miss_no_mab_alloc:1, /* 16: DC miss with no MAB allocated */
+>> + dc_lin_addr_valid:1, /* 17: data cache linear address valid */
+>> + dc_phy_addr_valid:1, /* 18: data cache physical address valid */
+>> + dc_l2_tlb_hit_1g:1, /* 19: data cache L2 hit in 1GB page */
+>> + l2_miss:1, /* 20: L2 cache miss */
+>> + sw_pf:1, /* 21: software prefetch */
+>> + op_mem_width:4, /* 22-25: load/store size in bytes */
+>> + op_dc_miss_open_mem_reqs:6, /* 26-31: outstanding mem reqs on DC =
+fill */
+>> + dc_miss_lat:16, /* 32-47: data cache miss latency */
+>> + tlb_refill_lat:16; /* 48-63: L1 TLB refill latency */
+>> + };
+>> +};
+>> +
+>> +/* MSR 0xc001103c: IBS Fetch Control Extended */
+>> +union ic_ibs_extd_ctl {
+>> + __u64 val;
+>> + struct {
+>> + __u64 itlb_refill_lat:16, /* 0-15: ITLB Refill latency for sampled =
+fetch */
+>> + reserved:48; /* 16-63: reserved */
+>> + };
+>> +};
+>> +
+>> +/*
+>> + * IBS driver related
+>> + */
+>> +
+>> +struct perf_ibs_data {
+>> + u32 size;
+>> + union {
+>> + u32 data[0]; /* data buffer starts here */
+>> + u32 caps;
+>> + };
+>> + u64 regs[MSR_AMD64_IBS_REG_COUNT_MAX];
+>> +};
+>> +
+>> +#endif /* _ASM_X86_AMD_IBS_H */
+>> diff --git a/tools/perf/check-headers.sh =
+b/tools/perf/check-headers.sh
+>> index e9fab20e9330..e1a1fdfa7115 100755
+>> --- a/tools/perf/check-headers.sh
+>> +++ b/tools/perf/check-headers.sh
+>> @@ -186,7 +186,7 @@ done
+>> # diff with extra ignore lines
+>> check arch/x86/lib/memcpy_64.S        '-I "^EXPORT_SYMBOL" -I =
+"^#include <asm/export.h>" =
+-I"^SYM_FUNC_START\(_LOCAL\)*(memcpy_\(erms\|orig\))" -I"^#include =
+<linux/cfi_types.h>"'
+>> check arch/x86/lib/memset_64.S        '-I "^EXPORT_SYMBOL" -I =
+"^#include <asm/export.h>" =
+-I"^SYM_FUNC_START\(_LOCAL\)*(memset_\(erms\|orig\))"'
+>> -check arch/x86/include/asm/amd/ibs.h  '-I "^#include =
+[<\"]\(asm/\)*msr-index.h"'
+>> +check arch/x86/include/asm/amd/ibs.h  '-I "^#include =
+<asm/msr-index.h>" -I "^#include \"\.\./msr-index.h\""'
+>> check arch/arm64/include/asm/cputype.h '-I "^#include =
+[<\"]\(asm/\)*sysreg.h"'
+>> check include/linux/unaligned.h '-I "^#include =
+<linux/unaligned/packed_struct.h>" -I "^#include <asm/byteorder.h>" -I =
+"^#pragma GCC diagnostic"'
+>> check include/uapi/asm-generic/mman.h '-I "^#include =
+<\(uapi/\)*asm-generic/mman-common\(-tools\)*.h>"'
+>> --=20
+>> 2.43.0
+
+
 
