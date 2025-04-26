@@ -1,83 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-7999-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8000-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F265A9D770
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Apr 2025 05:56:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58DF5A9D771
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Apr 2025 05:56:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZkwqR5d7Nz2yF0;
-	Sat, 26 Apr 2025 13:56:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZkwqS27Yyz2xqG;
+	Sat, 26 Apr 2025 13:56:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745639763;
-	cv=none; b=H7IEyRzvyQH3JOcSuj33hjiDR4vXuFcb8Wna85q9TXbTI3hqA7hTzWmA2m79D4yBXTumP/PSlSSGpudTcLwAwU+XFVmwKrekNyqRBXtPqqEfhk19e/0O+dxZOBe9t2el8WHWr0Pp+sJbsWtLt9QJf44O8rDpgxCpVBIQ3h7GLmzaI+P0kPgD5fcJQOCjaBVGr+8K+BdBVkBOXd2CejCCjuqsI/X1IKfTFuGRWGYkofrX+aW8sqwtMia7EYJjOt9yc4S5d+iLNqWGqMln8BWVAdBIqzKFDDAohGwU7bYIAWMSqiJQLW8cJaKc3m8TE8Pk9o0JZEB1KZELOqkOaYf2oQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745639764;
+	cv=none; b=hs5nRp3BocOh8uvDRXbCPsFDf2/pOm1MJCnTdlTDZ4P3kERhGpZfloeeFmOLNgbMuiWErdoHahkqvxYJ3kVi1BZlB9mMH3VdeM5AIvbGpRoQ9Q87vfO+EOUVJgVus4+HZ0SUNWnnehJ60h85Y3zaC565uRg4L8l08+Qanuou2wmVjQFHkhRvuGJd93gHwHj22KLNibg4tkPQawQSW+RmYrwn7WVcRRI2bTO+unwL/HE8EsMGHBkxNLvIvWbs5d7jy3jC5OHgqfGhcuAZNvsvzE2GODNfTjz4MXKySc2dUiCf9JBNkcc21epwujhQdTE7OE4GKkTMsE1tR4Y9/iQOsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745639763; c=relaxed/relaxed;
-	bh=vlkRp7hAYqS572bGw4BVPpRyLWqjDGUNoo+YOyZs4xo=;
+	t=1745639764; c=relaxed/relaxed;
+	bh=r5Sy3C9t82E0IttcwrplvNTxbY6X9qZoO3FAchQu9j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6hXYOBQgoEeBxLpmy+fUIf0z9/1FxthqV/zJbU2PPADRbE4krMr3+J4wlgRlfqkwzSJEZXf4uoVOhn5mI2y+YHCg9EjpX1GKXayZSkT8kPI5Ss/GjgdwP8Pdys0V3Rb4OOBcGzli64H0yA+P5XL3NHhSVwKvPbmncNzAZWPz78xMUcLuwAufduCcdIagAtVaIEHBH51GLdliqHnWJiD1JNPMf2qy88EO3d9u0JVb1Hizz2spHEjIjMjNMz/wMVMrZxyQ4ExQccTKjpLWHPWS9CyDH4N8b6xW+gbafQJvStV+oOV9fYatFJ5T8YyEzWGYIBKLPGPp+2LCFkgOIrTng==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j2MOnIqT; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=LI8yGm9iu+bJrYPoTDAdATZc+wyAusYec6033j1Y5WFKbvV3sukLvC5usio2/3kpbvfJnq6oc3XAd83LPOtgd9/OAzAgPqkF0t2th9Tw8QCSv1IFHjtMBt5fa7s0M4ijGLuhPTwgOlwfXF1Q5wafb5ccoaQTXZBhbUN+ipwWBEabNAXZ/uT0YfBmFYczXQkJkykBTZ3UbiyATSrCGOscqlaRZ/IkVSA8B8o7S+YjiH0QUOFY4XsDHZpq5pDid2X8nYuNmhNygxOYck+DwTPJiJDcOjyVuGeGSmgrupK7E9QGMEMXMXuS36RUmG23yxrYl/gV9JuP/zNl5Svn/ubiBA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q6ZWkyS2; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j2MOnIqT;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q6ZWkyS2;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZkwqP0hqfz2xqG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Apr 2025 13:56:00 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53Q2xEnP003381;
-	Sat, 26 Apr 2025 03:55:48 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZkwqR0w2vz2yDM
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Apr 2025 13:56:02 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53Q0PwUm014377;
+	Sat, 26 Apr 2025 03:55:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=vlkRp7hAYqS572bGw
-	4BVPpRyLWqjDGUNoo+YOyZs4xo=; b=j2MOnIqTiQbU2BoOSrdOOmxNRHUbA9Ru2
-	E1uh2lGCT0joioUIaEFAuias6gDPPgmyFDbjNq9odZKfKb9DrN36tp+YkA0MWDI2
-	JUZnJSgQbrajSSRnSLh8ZF4B5pR2RZ/vYVwtpFoobyBzJ+omyNUyBTAV4hr1iOYM
-	ZfM0iMq2kFxLm+zcRC+dEGkf77NvUvPJb2WWjlEu7k+p5W/rY4NFPPi5LTelW8O6
-	N5wE8sCobrNXLZBXzeQ1JpQOk3FxVq8UzeWBYRSsCQjOTsNf3GPODuwZ4lAi2ZNF
-	UGdnfXXAck5OyCaajrtpXPGGsHMrxbGZgnJnXPn+KLwm/5VsvM6Zw==
+	:mime-version:references:subject:to; s=pp1; bh=r5Sy3C9t82E0Ittcw
+	rplvNTxbY6X9qZoO3FAchQu9j4=; b=Q6ZWkyS2gFRBI0y5jht95X379JjbI/8oI
+	bB8EJIDusxonHzJXgdcf5SU8t8mSP5ubLzLPRniUJKrBAI0s6e+uj6RteLj/49+L
+	Uaq/3yMYoIA6Fgp+cCLET3RhJ8FivN2emV8EoNiJJV3MMgIOO5PtbL4Xn6aKMG5v
+	rMbeJicW02afSon+zeyxqMOoJ8NNPs4G51JJnMEKKIscmHBpK5mhrk6DOpUnFR6R
+	gZJpTYe304d9cm+ykSzAmDwKGUdVKz7iB+yNh6x+lrepMT+V8G1P4UD0nsD7NO1F
+	33vOGZCrXN2ArtvGCAvaxyW6xpWqgJLkKzSllJkplnERqHPtqlKVg==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 468q5002r9-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 468mwrrdrc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 26 Apr 2025 03:55:48 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53Q3tmLY003075;
-	Sat, 26 Apr 2025 03:55:48 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 468q5002r7-1
+	Sat, 26 Apr 2025 03:55:51 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53Q3to7L015724;
+	Sat, 26 Apr 2025 03:55:51 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 468mwrrdra-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 26 Apr 2025 03:55:48 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53Q0E5RB008552;
-	Sat, 26 Apr 2025 03:55:47 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 466jfy0dx4-1
+	Sat, 26 Apr 2025 03:55:50 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53Q0aUkq005884;
+	Sat, 26 Apr 2025 03:55:50 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 466jfxrd1v-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 26 Apr 2025 03:55:47 +0000
+	Sat, 26 Apr 2025 03:55:50 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53Q3thMj56099126
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53Q3tk4r30737102
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 26 Apr 2025 03:55:43 GMT
+	Sat, 26 Apr 2025 03:55:46 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9E7BE20043;
-	Sat, 26 Apr 2025 03:55:43 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 55B7520043;
+	Sat, 26 Apr 2025 03:55:46 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 10CBB20040;
-	Sat, 26 Apr 2025 03:55:42 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id BCB7F20040;
+	Sat, 26 Apr 2025 03:55:44 +0000 (GMT)
 Received: from li-e616facc-2daa-11b2-a85c-9c7f23c3cd5e.in.ibm.com (unknown [9.199.192.254])
 	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 26 Apr 2025 03:55:41 +0000 (GMT)
+	Sat, 26 Apr 2025 03:55:44 +0000 (GMT)
 From: Likhitha Korrapati <likhitha@linux.ibm.com>
 To: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Cc: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
         naveen@kernel.org, Likhitha Korrapati <likhitha@linux.ibm.com>,
         Anjali K <anjalik@linux.ibm.com>
-Subject: [PATCH 1/7] arch/powerpc/perf : Removing unused macros from power5+-pmu.c
-Date: Sat, 26 Apr 2025 09:25:29 +0530
-Message-ID: <20250426035535.450778-2-likhitha@linux.ibm.com>
+Subject: [PATCH 2/7] arch/powerpc/perf : Removing unused macros from power5-pmu.c
+Date: Sat, 26 Apr 2025 09:25:30 +0530
+Message-ID: <20250426035535.450778-3-likhitha@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250426035535.450778-1-likhitha@linux.ibm.com>
 References: <20250426035535.450778-1-likhitha@linux.ibm.com>
@@ -95,32 +95,32 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Vz6BmRc5hhhSZ4faY5BRw4JrSniSFtIa
-X-Proofpoint-GUID: Ck3p2bceHcbsZPWb_v1zGKg70jLDRUSI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI2MDAyNCBTYWx0ZWRfX5Y9O2nYschBm nm84rA0XJrIPNzc44x+r081CZKL7jpaok48IvMvwok/NwmOIFHoNoiHNHz7z4K+JBMdTrnNjdmT dmE+wy28OIrrhCth5VzVudf6EBWNnOIKHe+NozjIb1yEVAwM32WF8ZGKNEn7kf20/l4KPTYlqmr
- SoxSx6XHW90YC9l8pcUhL9YVs2VVYIOIjGgTUs2+oifKvf3mZANrQtJmYFWzgTaZioR5ylJXEgL 4y65GL/m0wdDRv8nTjwsbH8YIT2J+EeRJjDvevKjp+8W94xwiiV4ze2nfGsCnxXJWzHKWiJet85 ehGg5pV85rJNWdeVqArMVq8HdaIdUE6A+n+8u86JN4PuMEuOuG9d4853ZH4FM2twFlIuigDV69p
- EgfpXvrNEWHMWF9AswCtfZaGt4LZ1M2kH1qSB2rH3vqRBHxCS5ZqwI+rmy8ojw18NkXsKeG4
-X-Authority-Analysis: v=2.4 cv=BLWzrEQG c=1 sm=1 tr=0 ts=680c5944 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=AOPLFFXR8mby1ZT_o3gA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI2MDAyNCBTYWx0ZWRfX5MIB/uSDs4N4 Pg0Rgd6DoVT8AjX4kQDKaPqriBWJvMJ2kYiKnanpBHx5Wrf5GZxVV8L08mDQWWgz+q7932yNi+C OCvf8MXgCnF03s8OA643n5ComsArNncQLBWU4STCCaVuOyjRO1wJGTlfmOYvD5INtBo11TKDmSc
+ uVqzvcOjOc1hls5UAkuFT/etP1Ox8Qa6OCcg0055YYpdddLvmYwdN/MBrIUe6NkEOHEKY6aOam3 fh0QIzuuaJpqpaFNYrHOasJ1rSaJ/lH9/EMlTuIim7r7lgJpmR2SWxc9qIq5mC5ggR4Nuetg8ZL WedhtgDuUifJKsrYJ8HO6Va5Kcc/grfLFrD8Sm52a7M0lPTmewckJacH3vjnRm11FRtbtEjDSjJ
+ lmHPxCSAnMuZy9Gqye7CiBVF7eQ/D5bokEQ/4NV3j8mqUnnOEvgOhTTF4VoZuq+PyfZIn2IM
+X-Authority-Analysis: v=2.4 cv=IMsCChvG c=1 sm=1 tr=0 ts=680c5947 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=AOPLFFXR8mby1ZT_o3gA:9
+X-Proofpoint-ORIG-GUID: WfFTryPTSfYMjjgqxJi1RDRLw7AaMCHT
+X-Proofpoint-GUID: HqywMmIKT83anzwesKFELfISCLq2aMU7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-04-26_01,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- adultscore=0 spamscore=0 priorityscore=1501 mlxscore=0 malwarescore=0
- suspectscore=0 clxscore=1011 mlxlogscore=640 lowpriorityscore=0
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 mlxlogscore=641 mlxscore=0 clxscore=1011 suspectscore=0
+ malwarescore=0 spamscore=0 phishscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
  definitions=main-2504260024
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The following macros were introduced in power5+-pmu via
-commit aabbaa6036fd ("perfcounters/powerpc: add support
-for POWER5+ processors")
+The following macros were introduced in power5-pmu via
+commit 742bd95ba96e ("perfcounters/powerpc: Add
+support for POWER5 processors")
 
-MMCR1_TTM2SEL_SH, MMCR1_TTMSEL_MSK, MMCR1_TD_CP_DBG1SEL_SH,
-MMCR1_TD_CP_DBG2SEL_SH, MMCR1_TD_CP_DBG3SEL_SH, MMCR1_GRS_L2SEL_MSK,
+MMCR1_TTM2SEL_SH, MMCR1_TTMSEL_MSK, MMCR1_TD_CP_DBG1SEL_SH
+MMCR1_TD_CP_DBG2SEL_SH, MMCR1_TD_CP_DBG3SEL_SH, MMCR1_GRS_L2SEL_MSK
 MMCR1_GRS_L3SEL_MSK, MMCR1_GRS_MCSEL_MSK, MMCR1_GRS_FABSEL_MSK
 MMCR1_PMC2_ADDER_SEL_SH, MMCR1_PMC3_ADDER_SEL_SH, MMCR1_PMC4_ADDER_SEL_SH
 MMCR1_PMC2SEL_SH, MMCR1_PMC3SEL_SH, MMCR1_PMC4SEL_SH, MMCR1_PMCSEL_MSK
@@ -131,13 +131,13 @@ Co-developed-by: Anjali K <anjalik@linux.ibm.com>
 Signed-off-by: Anjali K <anjalik@linux.ibm.com>
 Signed-off-by: Likhitha Korrapati <likhitha@linux.ibm.com>
 ---
- arch/powerpc/perf/power5+-pmu.c | 16 ----------------
+ arch/powerpc/perf/power5-pmu.c | 16 ----------------
  1 file changed, 16 deletions(-)
 
-diff --git a/arch/powerpc/perf/power5+-pmu.c b/arch/powerpc/perf/power5+-pmu.c
-index b4708ab73145..8ece241f8e48 100644
---- a/arch/powerpc/perf/power5+-pmu.c
-+++ b/arch/powerpc/perf/power5+-pmu.c
+diff --git a/arch/powerpc/perf/power5-pmu.c b/arch/powerpc/perf/power5-pmu.c
+index c6aefd0a1cc8..4fe4f16ae65f 100644
+--- a/arch/powerpc/perf/power5-pmu.c
++++ b/arch/powerpc/perf/power5-pmu.c
 @@ -44,31 +44,15 @@
   */
  #define MMCR1_TTM0SEL_SH	62
