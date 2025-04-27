@@ -1,64 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-8030-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8031-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1615A9DE2E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Apr 2025 03:02:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D99CAA9DE35
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 27 Apr 2025 03:06:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZlSx535Wsz2yhv;
-	Sun, 27 Apr 2025 11:02:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZlT1p3dnDz2yj1;
+	Sun, 27 Apr 2025 11:06:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745715769;
-	cv=none; b=eMgVhPpcI8dWv9F8rCxVew0kZuDuZgFzdR4gqwlu2UBIwXqFARz1DD62wswkGrqlWVTZecvjSrRZbF7zl9atE/VUUd6vAbQfe3cSGkIPtnmPtwxIhzN6pKhxOQiNCtbnXFsPQ202OLsoUK/hKzK5eFwSn7fIwrmAtYCITrVFYuPg6lAA8wXdOoTA+k07Xs/c1FIxTWkcDhBT7W9vBT7DkYVenVDBVmFSiqNtX47dmkU8ZyyU7VujDWbUC2K0yEmYEu+HhCG2zobpHZf3VMEwP9YzzBuOeA+SPNXrAnZCKrgeSgBRzsP3KPYk82nUlt3NQyaF625aNXYzDzOazkFR5g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745716014;
+	cv=none; b=CyZEFsebWZY1ZZEpiby6c9+eGvmohuxtnXQ/YA2Kl36UafuKIauohgoC0scgDr5lERVBfTZusiHCid6/j07OShj+CieIPYHjVuYnDekGl3sxCscn6h57a/8dIn8yOHKvR0Cp6g8QPSee+sfxswO2MA7EYqtrWw/QLfpFQjU6wUzWnZ4VFw+TAtY9IGcrJQyyEO9iE2SOSq2hQoSCU5SCKINyAHk/Pz52hB9x+zZxSN+iB1G71fsFJ3DNpHpTrQDzjVaBhC+zp3+CNerHIP8gsjWSfwIweslr7f1U0IRcqlKbm5zSYWDgJ1pwr99naYzUbIq7dMhz0t1AggleTD+cHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745715769; c=relaxed/relaxed;
-	bh=lhZqNPK+3qur5KT4zF1H9SCOT7iiZxQ3shEb0zor8do=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wc+iZ9m3agnjN8vuWN8FYU00/XJ8RRDxozK8uebnkx4FKMJRUzZkDC05oG+fLjD0zyhx25gpOqXnCBKxuwQpOUNT4zLZdSxId5ngLdv5CDWmgpDY6UVmsxpYU28P3kQFcitxfrxAdZCLSPIFp8i8wPm5GnN9W6+V8Jl4JSYxxnLFqcqbs3P5NmaWkA1yl4mf6MpJNGDhBAsr4mB1faIiAO+kdmY97m9vafWyY5IK45WhRVtQ5+1ESawDRKuAULX9eudpN/bp2iPxZgEvYOyqbpAokud3F2fT46bvhmavGuO0Hm6KC+4LiCWwyAR3XdD9t24ryWlpxgzZ/qLURBmK4g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bPyZLOlv; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1745716014; c=relaxed/relaxed;
+	bh=jYBIW8eL1CHTTgYqVhOJdPq6bgjz5FSbg7i5wPZVhNg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=XfiquRXUFS57v2uARwD8zfcIcZN4xsX9Xtyi6JqzgPA4e+RQeNDF4LL5nUttWCIE+9W8bgPECmAwq5iZE0bEkq9W1TwOqHHLy5joYw9dZeqJjEiDeOinpdF6sjwUQvdFcc4r7k7wNYmiZZAcSQ4eVBjbdZnL+UMd7J2APB6tBlYLJ1ezsTsKywgdh+MqDfWOmc4LJuzW899dPwgrxXzBgBQ5mMc+/orValgl9Tqvi9P28vA0aJMb0beX25Z7ovAKd+Py5I3AGpWlafIhsyLwznaKnZrZrITR4RPz1GB6uxxqmvveKqyoEhlrxHrGQYbsVXeBoStpg1LatSXNoDQglw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=ZBrOvF8Q; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bPyZLOlv;
+	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=ZBrOvF8Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZlSx401vvz2xjK
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Apr 2025 11:02:47 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4A6B45C5B40;
-	Sun, 27 Apr 2025 01:00:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A008C4CEE2;
-	Sun, 27 Apr 2025 01:02:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745715765;
-	bh=MwWC0ebZT3d3MlgdSCMljk/IiWQqDJK/sfFSFFVgLjw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bPyZLOlvkggv+3wlQaPSM6gxDYFrytafe2vABHHUGe/DW28h51dobXwpP5JnZZv8e
-	 siueA/NSLIi8nuwG9dfsk1681ilJovb4Z29iknbvMhR8GPTRbN0ZVeKBFFKZOwwljj
-	 3U9QNUIWg3TN3LjeAfIWIWZYU3/vTYkS431OGKS6sxinbT9y/6X+clr/wOAXFX7E2r
-	 VeFF9mnbIdUIuH/fv/IyMBN/ULQFSIccwdyDW2UT7HFOKtoe4pSnJMpfS90ZAD5CqB
-	 IjZesituwcBevS0RAxopmnZA/CE/trjgjd8Bsfakzob1TBrOKKYrpOqivjGk4OuyjL
-	 pu9aEs4XUVNSA==
-Date: Sat, 26 Apr 2025 18:02:48 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZlT1n4t6Hz2xjK
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Apr 2025 11:06:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:
+	From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jYBIW8eL1CHTTgYqVhOJdPq6bgjz5FSbg7i5wPZVhNg=; b=ZBrOvF8Qo8J4cuQs3xdMmfCOmr
+	a75wN5BWC+Ggi02u2OkOXrfsQ9WcEbBmShuNkPBIwY5k8gKcO64kwqMOWu5SPYtCvTaxpGgh1merV
+	okY/E4Dc3UjeuouK5DAuujPEUKJfgmyff4qyX0PDfV+qHY82qO5T9bV8EaMigXon62TNK2EShmvTo
+	ycU37GIkPwCW2lxYAvbAPFbfWsCtQGn/1V5XhZLm7Uc2ZJ/D0WP+sndPm7ZWFW45zCDDyvSMrD663
+	EmNxoqe0ba9PaADtu/SUu+jI7XAmTYVSPafPQOTMCQhhe/7wTYd2mJVuiomGfs3Ucf7Lp5k0I/HvN
+	DyF1yCTQ==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1u8qTr-001JP9-0H;
+	Sun, 27 Apr 2025 09:06:52 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sun, 27 Apr 2025 09:06:51 +0800
+Date: Sun, 27 Apr 2025 09:06:51 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
 Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
 	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
 	linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org,
 	linux-s390@vger.kernel.org, x86@kernel.org, ardb@kernel.org,
 	Jason@zx2c4.com, torvalds@linux-foundation.org
-Subject: Re: [PATCH 11/13] crypto: x86/sha256 - implement library instead of
- shash
-Message-ID: <20250427010248.GA68006@quark>
-References: <20250426065041.1551914-12-ebiggers@kernel.org>
- <aAy6g3nblKtRj1l3@gondor.apana.org.au>
- <20250426180326.GA1184@sol.localdomain>
- <aA138IKjqyZeQLgB@gondor.apana.org.au>
+Subject: Re: [PATCH 01/13] crypto: sha256 - support arch-optimized lib and
+ expose through shash
+Message-ID: <aA2DKzOh8xhCYY8C@gondor.apana.org.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,38 +71,26 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aA138IKjqyZeQLgB@gondor.apana.org.au>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250426065041.1551914-2-ebiggers@kernel.org>
+X-Newsgroups: apana.lists.os.linux.cryptoapi,apana.lists.os.linux.kernel
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, Apr 27, 2025 at 08:18:56AM +0800, Herbert Xu wrote:
-> On Sat, Apr 26, 2025 at 11:03:26AM -0700, Eric Biggers wrote:
-> >
-> > The SHA-256 library functions currently work in any context, and this patch
-> > series preserves that behavior.  Changing that would be a separate change.
-> 
-> I've already removed the SIMD fallback path and your patch is
-> adding it back.
+Eric Biggers <ebiggers@kernel.org> wrote:
+>
+> +static int crypto_sha256_update_arch(struct shash_desc *desc, const u8 *data,
+> +                                    unsigned int len)
+> +{
+> +       sha256_update(shash_desc_ctx(desc), data, len);
+> +       return 0;
+> +}
 
-While you've been pushing out a lot of random broken changes to shash recently,
-the SHA-256 library functions weren't SIMD-optimized until this patchset.
+Please use the block functions directly in the shash implementation.
 
-> > But also as I've explained before, for the library API the performance benefit
-> > of removing the crypto_simd_usable() doesn't seem to be worth the footgun that
-> > would be introduced.  Your position is, effectively, that if someone calls one
-> > of the sha256*() functions from a hardirq, we should sometimes corrupt a random
-> > task's FPU registers.  That's a really bad bug that is very difficult to
-> > root-cause.  My position is that we should make it just work as expected.
-> 
-> kernel_fpu_begin already does a WARN_ON when called in hardirq
-> context and it can't safely use the FPU, there is no silent
-> corruption.
-
-Only when CONFIG_X86_DEBUG_FPU is enabled, which people don't enable in
-production.  And even if that is enabled, it's just a WARN, so the registers
-still get used and corrupted anyway.
-
-- Eric
+Thanks,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
