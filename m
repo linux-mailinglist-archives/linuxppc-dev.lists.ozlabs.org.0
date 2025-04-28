@@ -1,69 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-8114-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8115-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7F2A9F5E3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Apr 2025 18:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB52A9F624
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Apr 2025 18:48:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZmTXl1jZNz30D3;
-	Tue, 29 Apr 2025 02:33:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZmTsP1w9dz30Ff;
+	Tue, 29 Apr 2025 02:48:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745858023;
-	cv=none; b=NPTr4kpjtdlO8f93NXSaiMFveeI8T2f9YU8dtuhDe8GXPqVIAhfJAQJapdfkO3SU5WE5locitwmQJ4mqF2/z1kwRPUXFB/gTYmPPYXdI37AStg/RIa1ShXiXShSbR858q2mpHQjZPj06efCT+njpP6nqAEmGPy+mxDKuuOpm/6nCGT32VxiXSJMLgVRi0skfipVfa0NB2rHNCPqcZfageIIVd9A/zlRhjZ+AkLS8p0FmDipzQAMdKPJPWQ3C6+TaKNwCSyJiwnbu7ifygo+oF9q43Nk3x6IOHAPiL6ldJuVQ/clPMfkY8d1Rrty2cYr2IL9LhcPu3wTGmfAWOi4ETQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745858889;
+	cv=none; b=V6/sYaF8qbm+87GzEYvGadeoV6gWVojFW/nRqI3kozs2EIbXgs2i3JYzECfzoIZgoF0TZJ+imXKqA4EGxq+ol/8LD1LZWJr1jfdkVGeBTBRxg+pW/dJ/WiarTiq8PQedZDIATV0tEwsZWYIax75EXyMzIH5V/x8YKxczucrVQs5NFDZdkMUHWv9u8TX61d5tHUPKd6whh5O8fj6tIEs3l8dQXZ1XNghG/8GHqiHbwCatk2B9vKJNGcnAMzwSxp2vO6A1OkrHk5eK/mniu+FGl4qeTpcea5STso9y1oegAUbbg4qBtiTdWZ3Ko2lg0AxCgK/EdfLvPzZozffj8FU4Rw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745858023; c=relaxed/relaxed;
-	bh=dCwC7sfq7+j/ssCKdn+vY5S0lEol4/TKCxELNg7QkCc=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=mwQYrkXiWp2ZAOtb1E/gp8TAw7s0zkLiXoJ2TfCgty3/dLe1y8ucDEayG/sJ6IIVMKUhDKpgBkUEfBV1UKQ9f0R2apUU58/8OY8A6po5yGClj8CtArOhfYng+qBFZGLFdgxguZ+wKxqyuqgM3pxYYSosa2u7CivZstXQtLaJkFDK3YL8fGnN4OSpZubGvpPFpl1OLuJ2tuL3PGDsbiYr4Un3igb43nwb8WXabN+iwvIw9Wh0c6ZF0IvS4StYbAqE9aEiwlRRbgWlxkn7dShEJBHdTLJIT8dggHgXcoYDu/drsQb9BSWZjSTR4QPVlMYKuyP9QsJaSEJxaOP+tbPATw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kqfLBTi8; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1745858889; c=relaxed/relaxed;
+	bh=IE11iFGkxt6+d8e7SYO/zW7y+SDZ0cXPl/ZiULcYduk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Yb1YbO5GG6Ug6okGmg5I7AcvsROoQ/rWrJyeDzrD9ET1bHfTltsM22hO5adwOrjg4fidqdZfXugrdp1jZvQRswB/gx4SUqkTbq6q+JDgB5iwxC9Q+kIKnvSkHdP9slBt/O8cogxYK6Zgu+fMvVKeA0G72wEVU5jGsHgJIMUCI4f5vAwwXJHc5UM/+lz4pumeL/CmkBQo1KA2aiaTHaakARkcGSFeob3sr9L3SVGdaVutc4PSZRgYFe7tHiOzOdaYFnzQaVugqEmChbya98PxvdAcTxO8EL7jkYveVsHWnixujteDP358vpIc9i1Wp+cHbgw2Uj2Xm2+IvnTuE4/4Dg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PtHukaKq; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kqfLBTi8;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PtHukaKq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZmTXk2yN9z30CB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Apr 2025 02:33:42 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id DA08C4A7F5;
-	Mon, 28 Apr 2025 16:33:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2F4C4CEE4;
-	Mon, 28 Apr 2025 16:33:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745858019;
-	bh=06W3RhuaA1KCx8LHfdM+UJUaup6l9lKuGtmqokMizFU=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=kqfLBTi8CDSPQFwMZsj6zXiXb8eoh7O7CtMgYdImfa4kq/ErFjPYrZKkhIWL8yPbh
-	 Slv5cpgPwlA/OgIfSKXF1WaehbpLwJ08iMkv6FphvQlMd5+qCUwe0slQK8+u7hjgWi
-	 JdEiuNfaSBxfAFLY31gWXlBTWNMDl76MnhMr+j4xalpnWmPQin/YIOScykm52vt7TX
-	 81MgYv8b3I8Z8pppES+NyyoVqwPtiWs39pFyOT0pS7fUVtyxYGKu8CJnp19r1Ku09W
-	 FQh9PfDy8GTGAC7lDFyg04lsXacNWzQmY67ofLhEdA50B6GXaw5xAMY9HevQblZeCQ
-	 TIQ8k4YkSOlHg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE3F3822D43;
-	Mon, 28 Apr 2025 16:34:19 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.15-3 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <fb634e22-a820-4c14-a8a9-5cccb37bedce@linux.ibm.com>
-References: <fb634e22-a820-4c14-a8a9-5cccb37bedce@linux.ibm.com>
-X-PR-Tracked-List-Id: <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <fb634e22-a820-4c14-a8a9-5cccb37bedce@linux.ibm.com>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.15-3
-X-PR-Tracked-Commit-Id: e3f506b78d921e48a00d005bea5c45ec36a99240
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f15d97df5afae16f40ecef942031235d1c6ba14f
-Message-Id: <174585805854.971006.13862543469827952448.pr-tracker-bot@kernel.org>
-Date: Mon, 28 Apr 2025 16:34:18 +0000
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, ailiop@suse.com, donettom@linux.ibm.com, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, naveen@kernel.org, ritesh.list@gmail.com, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZmTsN0xpBz30CB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Apr 2025 02:48:07 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53SAFSlS006000;
+	Mon, 28 Apr 2025 16:47:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=IE11iF
+	Gkxt6+d8e7SYO/zW7y+SDZ0cXPl/ZiULcYduk=; b=PtHukaKqw4z3BRk+B46UNG
+	Ke+9X8l5eYf0aoPsBt+Uk9ACnVbnvn6m0lL1lGo44heDEScW3B9dRdT+pfECO3O0
+	d/HGKBgh0r3uktO4g9IqVW2SLy75rSNXPdZGj40V9O7RfKmXEfwT/N122AcNTKW/
+	NndMU5y0LfW5Z8JpTDrg33TKZjSGcCfY5zIsXlYXhwcsqWb8hxxKDU6kZp1SyZgL
+	ELU/f+cRBstkTBf+2aZdcxSAOhHo60tr1df0PfuKfF1JUwDhbyjS1WH2QOTK9m0H
+	6xaZqn2c6a8wZY3yhDHP3EmQ7AEZ+MeXEYglgymDDr446RbUEA61DrIdzdXv9SiA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 469vqvmbgr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Apr 2025 16:47:47 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53SF55iB016122;
+	Mon, 28 Apr 2025 16:47:46 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 469a707fjn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Apr 2025 16:47:46 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53SGlj7u54722914
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 28 Apr 2025 16:47:45 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E7FE58063;
+	Mon, 28 Apr 2025 16:47:45 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0593A58043;
+	Mon, 28 Apr 2025 16:47:42 +0000 (GMT)
+Received: from [9.61.244.200] (unknown [9.61.244.200])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 28 Apr 2025 16:47:41 +0000 (GMT)
+Message-ID: <18c375a5-9d0c-49ca-995c-efaec95aa3a7@linux.ibm.com>
+Date: Mon, 28 Apr 2025 22:17:40 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,17 +78,197 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] selftests/mm: Fix build break when compiling
+ pkey_util.c
+To: "Nysal Jan K.A." <nysal@linux.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Shuah Khan <shuah@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Segher Boessenkool <segher@kernel.crashing.org>,
+        linuxppc-dev@lists.ozlabs.org, Kevin Brodsky <kevin.brodsky@arm.com>,
+        linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20250428131937.641989-1-nysal@linux.ibm.com>
+Content-Language: en-GB
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20250428131937.641989-1-nysal@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI4MDEzNiBTYWx0ZWRfX6tEt5s6HzDTO RfUexhfTtbx+K1wfhc6nWOrEuEJ1oXns+O/kf43gZ/qNe2Gli8r7OUu2q8TSFDCbqdRyxYjpuzM BPHRjqXSpM24km4euNMRfKgVFwVjJT5CPrrfOyDpRE3lKIXnLcNhVoSg3B8FUvdJgjz2mYelT/T
+ M6UFXT2OpYbCAoUiMVQIzX/fcD0FFOADvouaftclRCLfmR4VoONP0X+MTZV0l4Hs3SWU0yKB+oG /SnZVR77Dqr30oH7hQofIByrZ1V+cxFy8j97Ngp6nsTAIZUgJx1LO//DJOLt/CqHRYCnFySSaRS qOmpqEkCNMB4Ka5gmJKQq/Pmm3CRcQ4t/2vaGGhXCwUNKZEFUsXcsBSuZuwV3CeL2gI4yRtQpXu
+ AsSdYxQxQr3IeFMSgcmlv+iXPjmDNbXtCn/rv3/AHSZuW+s1cMzFHcIycXvuHL/S+y7PbQvj
+X-Authority-Analysis: v=2.4 cv=AP4PelLR c=1 sm=1 tr=0 ts=680fb133 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=yfRTT-X1xsbtue6_pAMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: pIOnp1wWl2vCrNGN-I0LjbyS1booz0fH
+X-Proofpoint-GUID: pIOnp1wWl2vCrNGN-I0LjbyS1booz0fH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-28_06,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1011 malwarescore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ spamscore=0 impostorscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504280136
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The pull request you sent on Mon, 28 Apr 2025 09:24:19 +0530:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.15-3
+On 28/04/25 6:49 pm, Nysal Jan K.A. wrote:
+> From: Madhavan Srinivasan <maddy@linux.ibm.com>
+>
+> Commit 50910acd6f615 ("selftests/mm: use sys_pkey helpers consistently")
+> added a pkey_util.c to refactor some of the protection_keys functions accessible
+> by other tests. But this broken the build in powerpc in two ways,
+>
+> pkey-powerpc.h: In function ‘arch_is_powervm’:
+> pkey-powerpc.h:73:21: error: storage size of ‘buf’ isn’t known
+>     73 |         struct stat buf;
+>        |                     ^~~
+> pkey-powerpc.h:75:14: error: implicit declaration of function ‘stat’; did you mean ‘strcat’? [-Wimplicit-function-declaration]
+>     75 |         if ((stat("/sys/firmware/devicetree/base/ibm,partition-name", &buf) == 0) &&
+>        |              ^~~~
+>        |              strcat
+>
+> Since pkey_util.c includes pkeys-helper.h, which in turn includes pkeys-powerpc.h,
+> stat.h including is missing for "struct stat". This is fixed by adding "sys/stat.h"
+> in pkeys-powerpc.h
+>
+> Secondly,
+>
+> pkey-powerpc.h:55:18: warning: format ‘%llx’ expects argument of type ‘long long unsigned int’, but argument 3 has type ‘u64’ {aka ‘long unsigned int’} [-Wformat=]
+>     55 |         dprintf4("%s() changing %016llx to %016llx\n",
+>        |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>     56 |                          __func__, __read_pkey_reg(), pkey_reg);
+>        |                                    ~~~~~~~~~~~~~~~~~
+>        |                                    |
+>        |                                    u64 {aka long unsigned int}
+> pkey-helpers.h:63:32: note: in definition of macro ‘dprintf_level’
+>     63 |                 sigsafe_printf(args);           \
+>        |                                ^~~~
+>
+> These format specifier related warning are removed by adding
+> "__SANE_USERSPACE_TYPES__" to pkeys_utils.c.
+>
+> Fixes: 50910acd6f615 ("selftests/mm: use sys_pkey helpers consistently")
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+> ---
+>   tools/testing/selftests/mm/pkey-powerpc.h | 2 ++
+>   tools/testing/selftests/mm/pkey_util.c    | 1 +
+>   2 files changed, 3 insertions(+)
+>
+> diff --git a/tools/testing/selftests/mm/pkey-powerpc.h b/tools/testing/selftests/mm/pkey-powerpc.h
+> index 1bad310d282a..d8ec906b8120 100644
+> --- a/tools/testing/selftests/mm/pkey-powerpc.h
+> +++ b/tools/testing/selftests/mm/pkey-powerpc.h
+> @@ -3,6 +3,8 @@
+>   #ifndef _PKEYS_POWERPC_H
+>   #define _PKEYS_POWERPC_H
+>   
+> +#include <sys/stat.h>
+> +
+>   #ifndef SYS_pkey_alloc
+>   # define SYS_pkey_alloc		384
+>   # define SYS_pkey_free		385
+> diff --git a/tools/testing/selftests/mm/pkey_util.c b/tools/testing/selftests/mm/pkey_util.c
+> index ca4ad0d44ab2..255b332f7a08 100644
+> --- a/tools/testing/selftests/mm/pkey_util.c
+> +++ b/tools/testing/selftests/mm/pkey_util.c
+> @@ -1,4 +1,5 @@
+>   // SPDX-License-Identifier: GPL-2.0-only
+> +#define __SANE_USERSPACE_TYPES__
+>   #include <sys/syscall.h>
+>   #include <unistd.h>
+>   
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f15d97df5afae16f40ecef942031235d1c6ba14f
+Tested this patch by applying on top of mainline kernel v6.15-rc4, and 
+it fixes the build issue. Hence,
 
-Thank you!
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+
+Without this Patch:
+
+
+pkey-powerpc.h: In function ‘arch_is_powervm’:
+pkey-powerpc.h:73:21: error: storage size of ‘buf’ isn’t known
+    73 |         struct stat buf;
+       |                     ^~~
+pkey-powerpc.h:75:14: warning: implicit declaration of function ‘stat’; 
+did you mean ‘strcat’? [-Wimplicit-function-declaration]
+    75 |         if 
+((stat("/sys/firmware/devicetree/base/ibm,partition-name", &buf) == 0) &&
+       |              ^~~~
+       |              strcat
+
+
+With this patch:
+
+
+make -j 33
+/bin/sh ./check_config.sh gcc
+   CC       cow
+   CC       compaction_test
+   CC       gup_longterm
+   CC       gup_test
+   CC       hmm-tests
+   CC       hugetlb-madvise
+   CC       hugetlb-read-hwpoison
+   CC       hugetlb-soft-offline
+   CC       hugepage-mmap
+   CC       hugepage-mremap
+   CC       hugepage-shm
+   CC       hugepage-vmemmap
+   CC       khugepaged
+   CC       madv_populate
+   CC       map_fixed_noreplace
+   CC       map_hugetlb
+   CC       map_populate
+   CC       migration
+   CC       mkdirty
+   CC       mlock-random-test
+   CC       mlock2-tests
+   CC       mrelease_test
+   CC       mremap_dontunmap
+   CC       mremap_test
+   CC       mseal_test
+   CC       on-fault-limit
+   CC       pagemap_ioctl
+   CC       thuge-gen
+   CC       transhuge-stress
+   CC       uffd-stress
+   CC       uffd-unit-tests
+   CC       uffd-wp-mremap
+   CC       split_huge_page_test
+   CC       ksm_tests
+   CC       ksm_functional_tests
+   CC       hugetlb_fault_after_madv
+   CC       hugetlb_madv_vs_map
+   CC       mdwe_test
+   CC       hugetlb_dio
+   CC       droppable
+   CC       guard-regions
+   CC       soft-dirty
+   CC       protection_keys
+   CC       va_high_addr_switch
+   CC       virtual_address_range
+   CC       write_to_hugetlbfs
+   CC [M]  page_frag_test.o
+   MODPOST Module.symvers
+   CC [M]  page_frag_test.mod.o
+   CC [M]  .module-common.o
+   LD [M]  page_frag_test.ko
+
+
+Regards,
+
+Venkat.
+
 
