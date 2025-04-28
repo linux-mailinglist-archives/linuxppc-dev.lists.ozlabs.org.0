@@ -1,72 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-8110-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8111-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA134A9F53F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Apr 2025 18:12:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03417A9F55A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Apr 2025 18:14:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZmT4T1Tyqz3089;
-	Tue, 29 Apr 2025 02:12:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZmT6z4hP1z3091;
+	Tue, 29 Apr 2025 02:14:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745856761;
-	cv=none; b=P05lBS3kCbYsCK6bisINYYrnJNHnMBIbPSnPFQTob2e4g0n4tCQ+/OtDY0auYZuDK4Jku4unHuTk5S7yQ0wwxtQlLF9xo6gtEcDGwN30ioLU0SCHQ2RXIFF1Q7GTX+W3DLyyYCfoquiMLh1O/aN61m3LkMtvyBWV3tugZs0zkyeZnYE+JilASJWvyt1wMljFkiGarv1a3q773uk13lj8TSTmEEHPnnsKn8AzX/WpUCpdS8eU8BjZZa/MEQiGU5ncFoIIODcV/3bGvaJjN6b0G8zgr1k5HllIbX6IKXyggay9n5OSXBCIbkOVOA6fCa8dlMOs3/0YYP7RWNvyGcSN8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745856761; c=relaxed/relaxed;
-	bh=uiqn4pwQQzOUgQxa8+8l99pAwAjGyR/hPpFVJ0gj944=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:References:
-	 From:In-Reply-To; b=Kdh/tV11jeY6gC7GYlRR0wtnmBA+G+fd2P1vwjQGmhLW9g7A3BdCEhTkvyArJ1L6JSFv++QJWDgQVOhUMf4v0nOQKnspvLckwD5ZT2vjwWlmEcz10X/psAkYCBAeqZ3cvy5tuiOcFa+D/t+aEKy+beH8e7yaEZ29tO/gEuHD1OviW9oV0VJKUGhCl03UTYRKAeChtrsCjV0A/YiALy6itPZbdHCUgNmG3B93xm33+7gO+/CdqDxFinNrpAOYVcXkZL/iwhsnH5B/RV45MtlP1hN6ifFNgqu7J+EbNuGivq4TOe9EfuYj9LpFXxrhNudfW8js+4W2WnKxib22tdJuSg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jzI6JO4Y; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::4" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745856891;
+	cv=pass; b=fe+zMuoOBJaOJoU1IE5OADbty2m0D71niUrQYO2HJfeVt09qNHuwqZrEI1KzWR8n8LVO5ttDpH8AClRuqQsKO3bNgUHOKZSldfDZpPR5SVQJ5ysM56k+F8dTlZXam914DJgC5qsoByogX4yLeNjKk0RRwr1rgeJAX7M9t/oyDNs42YNkLq+lNivqZJavE391q36V6de8qebC8h++8HW+rh3KfFWNYYfD7YiF1iSeUsSy/vorgSjun41jvwpWEKSnhyPKVZnG+fooDHuQ4kB94q7SrjkT9YxrGo1WaAzmKuwsFiJ71U27o47Ac8kSkespRy3ZAo5fNUXw8aBzbr96NQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1745856891; c=relaxed/relaxed;
+	bh=1PQdGB1FYqvz5N0gqZKMZqdoQqXWfL3zsIxPqFbwLXE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=onfEAZnVJfbSBbRRckO4yfF2mMjnfJ1gCInjGUpx6FIlI5ZuhxtV6CfTHNp8BMtkDrqZXezOGqcP2jTDFAfCcFDK+pUU5IgcLwvpFZG1qFp0fQpdvhHmge8HytWUF5XSCHWKgQkh8vwB7D7d0pQVHc3Bl75xAsN8MLrRRqIEDBm8g19c6+RAJJOyl8cANdmIDS2dgDMB5b9ztYOnol5VGTKn4reH1MBxZX8WLhygatw1R88jOa7Jnb4YApBtNutnyMr8yZGgEPWDVhNvpU5RyKUp3K1USKqqwnyqKVojpf9k/FeYk1NpWbAzqMVgbHRAOH1LBJlFuzRzk2J1GDLfwQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=Q40QU6HQ; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::4; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jzI6JO4Y;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=Q40QU6HQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::4; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org)
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazlp170130004.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZmT4R5MCGz3064
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Apr 2025 02:12:39 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53SBqEYC019877
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Apr 2025 16:12:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=uiqn4pwQQzOUgQxa8+8l99pAwAjGyR
-	/hPpFVJ0gj944=; b=jzI6JO4Y2E+H1TUA0pxUj7SfSQ8I9wDH+XamfyRpdYXf4U
-	bbOUe6Sa0VTxyiEpOYl1DOdmW5IqiKp6Tc2/LKk+gKOYOrPPPRE5Z+EMXt+PcNf9
-	iYjEy5JEeA6bZUYcWxtwYh0qfulHJWdGEEJ80zyCh6NBhcZMLct4dsok1Hdx/vtv
-	I2PeyXRUp4fn4oCSzHo3f2J76nY+Wn8prjKJQ1WK9Ma89nvKgu+BS5hnQH3IjB+q
-	qMpUp6MR5xpkm6JWBqcMz8YlF0uEkvi7SqVeR8+iKZJXeatzzt2zZb/s0X05f5Si
-	huZvapxI/5iLMWv+cYkgsmdvMewQ2HtCZkTJLoig==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 469v5kma00-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Apr 2025 16:12:36 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53SCdLEV008494
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Apr 2025 16:12:36 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 469ch2xw4q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Apr 2025 16:12:35 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53SGCYl720447498
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Apr 2025 16:12:34 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2BBD120043
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Apr 2025 16:12:34 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8EEE02004B
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Apr 2025 16:12:33 +0000 (GMT)
-Received: from [9.124.218.94] (unknown [9.124.218.94])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Apr 2025 16:12:33 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------7C0CuWtond0lsnsdp4PmJRdS"
-Message-ID: <1ea22f67-f711-4f44-a048-a0f9cc5e5fa7@linux.ibm.com>
-Date: Mon, 28 Apr 2025 21:42:32 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZmT6y3WVVz3064
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Apr 2025 02:14:50 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dmZVWe+EOdg/VHFUZirZvCDlEI8jmbSyYZC5DqA/OKeYSbKXULgV0qIGCq0DRULnjnBX5WNhAPzMFrjP3nO318aZCnmFmXaDjJT4P7c8rtLyS/+V7r1zG1feuvSEX0UvxnEFLKaeaSRKTJ03IDQbtZIjj4Pn9VkBTLRj1S+DezEzVicFf+Oj+ipvwonXj5Eh2XuP2Cpl2J2oVRCosHl5F62SA/2juKnBLc7vrxWPQpsqKH4SH83KhTVRxyqotgRXDYe3aWbAW5rdPuj98mw/yHnzVhN0bzmkdW9yG0V5UXpleB0qK3mXQ0enfp7Y98CKJav87z2q5thLXDvCWJPRQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1PQdGB1FYqvz5N0gqZKMZqdoQqXWfL3zsIxPqFbwLXE=;
+ b=TBYckw9PPNXhjQ/ib+VQNinc9AVi7pCrEUIPRbZgG5mj8YGXs8WojX9nedjmNcU2PxNwhsifSdrb6inH513WYZCZiqMi/BYqwKgehVfpCmy2D6Ngc4WOioXEb781Z2s87486ERAPvRkx6wJyRo1SBFjQ35GbjV83lVa/JRI0mmGItdR3D5aa3mb8kt8YQyxaj1SKgKW7TsFhfFcqmXbQE1gQ7pF1vOQcX0VZaAGqyyTkNFvJvvrYN5WFmFfHmLLd4nvjPbzc7rlooFhCWa7T643ynkqUva6uOdvbaoKRCinSNTQHszUqCe42CC43XoQCHWVNXu/8EREnAVt8E0GFFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1PQdGB1FYqvz5N0gqZKMZqdoQqXWfL3zsIxPqFbwLXE=;
+ b=Q40QU6HQcX2+yYw5m8VTOQauEd7MHpOIv5Uz+lyqNS/5oqK5ZQESR1yXkCApvzUJqUyaYApZIhDBntCU2He6Yh18kFjBd8ZHLpFGL+pDtR8YVeAxbJZo1XiZM0PkGKHJG0PsaY4cAizL+1/5IjBjuScM5PYaNWt3kLIxIPLCE2PUcKrt4w8u71QskkbzI1JLHNNRD2kWsIIujdwS23E/o3/gBKM/kiH+1dRgJm0aEohfrIqO+tzgWpDqpred2ROgkKxgSzvu0I3BpUxxEk6V4m20W182mWK9nm2LNJKxe3qJGYd6EkiMpztQ+JDL0yaKnTCa/waCUc7zOhfBzvySYg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by DUZPR04MB9726.eurprd04.prod.outlook.com (2603:10a6:10:4e3::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.31; Mon, 28 Apr
+ 2025 16:14:26 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%4]) with mapi id 15.20.8678.028; Mon, 28 Apr 2025
+ 16:14:25 +0000
+Date: Mon, 28 Apr 2025 19:14:20 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, christophe.leroy@csgroup.eu,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v6 net-next 09/14] net: enetc: change enetc_set_rss() to
+ void type
+Message-ID: <20250428161420.alfrz6gew2aygh7m@skbuf>
+References: <20250428105657.3283130-1-wei.fang@nxp.com>
+ <20250428105657.3283130-10-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250428105657.3283130-10-wei.fang@nxp.com>
+X-ClientProxiedBy: VI1PR09CA0173.eurprd09.prod.outlook.com
+ (2603:10a6:800:120::27) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,497 +86,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools/lib/perf: Fix -Werror=alloc-size-larger-than in
- cpumap.c
-To: linuxppc-dev@lists.ozlabs.org
-References: <20250406163412.897313-1-likhitha@linux.ibm.com>
- <E58C5DCA-5F52-4B61-A816-DE932BA40FDA@linux.ibm.com>
- <baad9d65-07b1-4a19-aea6-5ba5d60da98e@linux.ibm.com>
- <1b1450a8-f091-4091-981d-76b27f61be24@linux.ibm.com>
- <D1C1E5D6-085A-41D1-85AB-52809C956BFB@linux.ibm.com> <aAvKg8K2fyrZ6zy4@x1>
-Content-Language: en-US
-From: Likhitha Korrapati <likhitha@linux.ibm.com>
-In-Reply-To: <aAvKg8K2fyrZ6zy4@x1>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: n9HOjRbWXVOI6VbRTs-vi978Xs0wpO-q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI4MDEzMiBTYWx0ZWRfX9G+jvTCYPb+E S/La7CsI34VrnmQTVSrwEqQShghTaejLToSW6bJYbAJgqRo2eEcmB0qxpBdA3Hj2CQZyZeO3zfm GDVnPb/HN7JOj72keZYEYtHxVIQ0xdn4OFH/9kn2eQw6tDj3MutFX+I0sLVBNUvC0t0ki3TKOQC
- 5/bWs77Lavki+5wC6XtzW0Co+RkfQFPtppoqfKl+KyHOfMS/ucyuafm66cE1lSP7nkAGbY9ZxkH heGtBK4afMAD7tITIqx7cQH66SEjLgLs2K8PVxbTJXl/4nFcRjXbb66EgAMsezCWT0qFxQ2RWpT r8sJ/qqqHIuk7WJRpPMcu/hnuQFTx/qnkOFVUEt9nIfyuiIarEX1JQCqHdWrqCUKRAy4qCclky9
- cIwJJILRy3jDOPw7rsy4qEwKmBSGHymx07l0iaO061THzRkwfSucM/jQcDqTeUrLxP+lkBWf
-X-Proofpoint-GUID: n9HOjRbWXVOI6VbRTs-vi978Xs0wpO-q
-X-Authority-Analysis: v=2.4 cv=DvxW+H/+ c=1 sm=1 tr=0 ts=680fa8f5 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=XR8D0OoHHMoA:10 a=r77TgQKjGQsHNAKrUKIA:9 a=VnNF1IyMAAAA:8 a=35VNYtWOVUhRdQnF18oA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=VvooFKkyQ5mZQGuT1OcA:9 a=dQ_p3IHn69GFv_N0:21 a=_W_S_7VecoQA:10 a=lqcHg5cX4UMA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-28_06,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- lowpriorityscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 phishscore=0
- impostorscore=0 suspectscore=0 adultscore=0 clxscore=1015
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504280132
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HTML_FONT_LOW_CONTRAST,HTML_MESSAGE,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|DUZPR04MB9726:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0be99d6-f91d-4fa3-98e7-08dd866fbe03
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3si1tWwVzjhm4fxsqnsf1nRfL776ZPYXglzvhVJtD1O1MIL5NagCnfGNlRBr?=
+ =?us-ascii?Q?KeuZeOp6iuNDSThmIvDORx3IRm+3Qo+ESLGpsy3muDh9o/rtjpSeCKOTegF7?=
+ =?us-ascii?Q?bAlBMChpCnh+s21nbrGt6pgLl2QmD7AQC3Sn7ODEapeT5ykHu/9ga/jVlaMr?=
+ =?us-ascii?Q?FWnCOVeeXRCKUJXY7huvNs2vewIr36b6eX3FPm/3kQFsrI6veBvKJsoQ/ATQ?=
+ =?us-ascii?Q?DjduOsG/MkrQeFf13rgOY5Qr5pu5q9zAI6GDnRjgTILalI4rTuDJd2glu8Zq?=
+ =?us-ascii?Q?VPOEMH+kJzCKEi2x5Q2IiFDfeaMU7tkOWqQ43Wyqyc7iD0ASwM0Ve8kj6Foz?=
+ =?us-ascii?Q?DEakF77I3JsF01zBYUOQv/hWQ8uLR6vhFwsef1NUkF3ZS7gSIKN3v5BAyc7j?=
+ =?us-ascii?Q?ec64aN2OLFOlRz8QcSQHOQini+V0NEJB/XHDoWsweRMuO9WNqFB33hMCSwV0?=
+ =?us-ascii?Q?ot4Woiyf3p6VlAlSpkwl7Lgp13STRYgLS2LUI40cMFzPfH6Z+bxh58wf2FFt?=
+ =?us-ascii?Q?G0FnZ41aU+QX21WbzcIFL4HmMj0d0bNdSN4Xx+1jNjfO4WiBCY2yS5PP1tED?=
+ =?us-ascii?Q?9RTgCirTbYZpnX9X4W7YnFPQDdP7jbJ26qZgZjFjpxSHoMXPURmK9IbWjHsv?=
+ =?us-ascii?Q?sXB9F/+cTBkAUNfRK43yxCzJtk6JGp85hDyYBrbB/t9ewjVsEdO1WE6RV3lm?=
+ =?us-ascii?Q?nrS4uImlqxc+kquavm1sgwFQNflq6DApeV4QF9gojzc+VtrGBHB285qOF93U?=
+ =?us-ascii?Q?xVVojY6aeWgx9lILreC/lntYOAOUdvJ/gheE/sI9f1NxmG30s3MOCoBGzz07?=
+ =?us-ascii?Q?RIVgwNA3OR5Y2gl6oZm+nC9GzRnMlzr3qpfU8pDva7BAh7EsZNQQ3MIp16Jg?=
+ =?us-ascii?Q?8KAUXkkv4Q21SnhCM5QUuZf9ayw7YXc1FT83RGJq0mnyZjaCpnK/KxDVafuI?=
+ =?us-ascii?Q?OP6bqkDDDBBk7AA/7LHwZZv2+EUPedge1yHsHcI1KfglcMCdr/QpY6X3cBLF?=
+ =?us-ascii?Q?RjelsirRIASU01Zs/Yi80Bw+KKz2Msm2revag5IWaWNzJp+NTdis9DM/E7Ji?=
+ =?us-ascii?Q?gYbee5NAjFaerZC5Inlm0X2xnUjImE8ILSEW4/dppKlZzQPu8AAEXBfX7yNM?=
+ =?us-ascii?Q?4JL+hmhIuukanKbv1rUUmOlDM+GMj9KTMGkzVKPAGNwiIbAToBgU8PJXYVfz?=
+ =?us-ascii?Q?oluA4vmVOvf/m7cJIrc6LWYmLpSYh6k9iZ0947LDidWe/L/ISPr4THT2JOxt?=
+ =?us-ascii?Q?Bp1J9alMVwUJ86p/s1eCf0vlosuKikjNTwxKTgLe3I6VHYdQbTwn/ir4yVfs?=
+ =?us-ascii?Q?6pJNW7nzY9bjuH79Sy7FMULkEJLB8oPfX+BLfKga3ICeD85m1QDYNQJgcKcF?=
+ =?us-ascii?Q?Fm2Isg3fFyAZXH/4ffsRbuvm4W+lknkcCZRsoJcGOMStKVkmKJLK7UUzmJen?=
+ =?us-ascii?Q?evo9yYN0hTc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+yxRNRE1QMt4v09EV4U46AxanFmybwkaS6QVwKLrtG+jVe2CP5vov740G7OE?=
+ =?us-ascii?Q?jViWnY7IFxjpLEIbBuxXWGbCYzPXj0/GzLwi4C3B+YgbhaPs9Bb9aAUMtVtX?=
+ =?us-ascii?Q?y9+k/ozap7r5CH7j/9U9T9ho0lD0cHc+sUjJjrhG+cFgFQF9hHMd8dDAZfFG?=
+ =?us-ascii?Q?Y+a47uUET2elF4mmz7bbGVkslCC9QR6dhamdf0gfrNoLDd+Qzwd1A77sV5gw?=
+ =?us-ascii?Q?ct24pW5yqM+bbe5CPKrySF4TwMNB92hWdY6N3BY03F5sbkpmqIF41cpQ4THb?=
+ =?us-ascii?Q?j+biwd4Ye4UU2yeWMI6KGuDD2b2UAhaoevEO1DzZ/Pv6+BLNj88WmO1E+c/j?=
+ =?us-ascii?Q?BKuyosvsX+gjGmpBPxIQ7JDCD2KFMgkrj5p2xKm8M6+qBAhNZWSlnh/mbBfl?=
+ =?us-ascii?Q?qSzfDo9sdiOCUofQ/M0fdyt6bJpmXEWK7nbdwQq7gtYTMuuelAoZsnPVhwF2?=
+ =?us-ascii?Q?rk6ijTmygEzU6CwhYiobiVJYwiQFHUFwffP20Vv3Tef5vLSMEjYM/F0W1sy0?=
+ =?us-ascii?Q?X1jeKqZRuoYCTgBBa1KItrYwCHXRDcNM8wUfKcqc+fiFI2SU7s1YHNNWDpVm?=
+ =?us-ascii?Q?+CE4LWrdB/HMMjHhs8XytwByboUkDtQ/FHqyB8yrnC/0rmZks6Ml9nfJsePg?=
+ =?us-ascii?Q?ymhbO0Z4NWRkqKHOk10Fn0cBBCMsdnvf22T53Qq+KCFonTDZaqLhZM3MODQF?=
+ =?us-ascii?Q?YA3wgxErmFznDIbS884x7iBno3/2UDI2DbMjcfV1o0jNxaWIBODXZxp+B3GW?=
+ =?us-ascii?Q?5cARRtFNhvJ6Eu/Ks63slOjjvg7nYYDwKM9tsTTcaHCKLKhU1y4w3G7AGl+d?=
+ =?us-ascii?Q?sb8c5dG9z5fgvxua+9a9O+omroydtrDmNOmnuj2ukEv40kvfuH6rEGFpDmOe?=
+ =?us-ascii?Q?Fm97FOvvfQd5I8Hc4967tv6bm2E9qs+Op8DNDCUPj8z/cq9MA6zOK4IJgEIT?=
+ =?us-ascii?Q?Cb9wtBjWB3ZaVnWqg8OdY3NYO7weqAU5/HRms8WQGgqy7E+8jWbYChe5TPag?=
+ =?us-ascii?Q?/sCSdgV6V+WlpRbFOcqDyOzYA6NL6oELYdls3gsRzd48YJBdwgxH9wl56Fe0?=
+ =?us-ascii?Q?tB7nzJzOsJHPr+d0VYbTdsgJTmGy0aBzcVbv1+rq+EL2dkARUebUtXqPE5ka?=
+ =?us-ascii?Q?CG3XCrv8IKKCgJ4/gkNj5awfPHTe0z29zp7q0GsgZvumNr2j1D4g7nYZzRNX?=
+ =?us-ascii?Q?89wctVE2bJOkSJRQcxOWS9TQagV8wfOC6z6Vw0vzc+sI58t+q5QtZZRc7Lu7?=
+ =?us-ascii?Q?ez/N7tpFNZmY7eSVy5u+QNSNIt7psaypGfh7P9pWbUehKOtYbdQ5oqq2FSb2?=
+ =?us-ascii?Q?5tTObT5NN56bpWeA5L2DXNm3tVpI68vPPWcQrW4KQSjxZdy8fjUXahRaYX1o?=
+ =?us-ascii?Q?IQ73fJ2zpV1UEb5mN0gcdMxBU2/bEX52iZYPxy7gchlAGJ2cnaUQHQXW6Dlm?=
+ =?us-ascii?Q?RLOjCxmu9t5HB30t8yOrjbGTFq0dBzt0rJlf7+ipGTfWoZ2D5ofSGK3QseBx?=
+ =?us-ascii?Q?7bIql2KZW25NREMu9dxz4AVL0tbJWAFujviVdfS1s39LQO65e7zL/BHZ/AIg?=
+ =?us-ascii?Q?IO9hRLFirDyZF+e1+JHb+m9EltOrS8Opc0AAO0omHNsu8BHlB54rkWQd9VuC?=
+ =?us-ascii?Q?Fg=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0be99d6-f91d-4fa3-98e7-08dd866fbe03
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 16:14:25.7052
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6u5iO8tJBPlw1xBXpsgiKy1w7KoZDGRR8qR/3Wb+7mbof/XCKudfkqiQDlACXhP3nbCx3SXY6S0cadZ2yyVTpA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB9726
+X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This is a multi-part message in MIME format.
---------------7C0CuWtond0lsnsdp4PmJRdS
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On Mon, Apr 28, 2025 at 06:56:52PM +0800, Wei Fang wrote:
+> Actually enetc_set_rss() does not need a return value, so change its
+> type to void.
+> 
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Acked-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-Hi Arnaldo,
-
-On 4/25/25 23:16, Arnaldo Carvalho de Melo wrote:
-> On Fri, Apr 25, 2025 at 08:19:02PM +0530, Athira Rajeev wrote:
->>> On 14 Apr 2025, at 7:08 AM, Madhavan Srinivasan<maddy@linux.ibm.com> wrote:
->>> On 4/7/25 5:38 PM, Venkat Rao Bagalkote wrote:
->>>> On 07/04/25 12:10 am, Athira Rajeev wrote:
->>>>>> On 6 Apr 2025, at 10:04 PM, Likhitha Korrapati<likhitha@linux.ibm.com> wrote:
->>>>>> perf build break observed when using gcc 13-3 (FC39 ppc64le)
->>>>>> with the following error.
->>>>>> cpumap.c: In function 'perf_cpu_map__merge':
->>>>>> cpumap.c:414:20: error: argument 1 range [18446744069414584320, 18446744073709551614] exceeds maximum object size 9223372036854775807 [-Werror=alloc-size-larger-than=]
->>>>>>    414 |         tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
->>>>>>        |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>>>>> In file included from cpumap.c:4:
->>>>>> /usr/include/stdlib.h:672:14: note: in a call to allocation function 'malloc' declared here
->>>>>>    672 | extern void *malloc (size_t __size) __THROW __attribute_malloc__
->>>>>>        |              ^~~~~~
->>>>>> cc1: all warnings being treated as errors
->>>>>> Error happens to be only in gcc13-3 and not in latest gcc 14.
->>>>>> Even though git-bisect pointed bad commit as:
->>>>>> 'commit f5b07010c13c ("libperf: Don't remove -g when EXTRA_CFLAGS are used")',
->>>>>> issue is with tmp_len being "int". It holds number of cpus and making
->>>>>> it "unsigned int" fixes the issues.
->>>>>> After the fix:
->>>>>>    CC      util/pmu-flex.o
->>>>>>    CC      util/expr-flex.o
->>>>>>    LD      util/perf-util-in.o
->>>>>>    LD      perf-util-in.o
->>>>>>    AR      libperf-util.a
->>>>>>    LINK    perf
->>>>>>    GEN     python/perf.cpython-312-powerpc64le-linux-gnu.so
->>>>>> Signed-off-by: Likhitha Korrapati<likhitha@linux.ibm.com>
->>>>> Looks good to me
->>>>> Reviewed-by: Athira Rajeev<atrajeev@linux.ibm.com>
->>>> Tested this patch on perf-tools-next repo, and this patch fixes the issue.
->>>> Tested-by: Venkat Rao Bagalkote<venkat88@linux.ibm.com>
->>> Arnaldo, Namhyung,
->>> can you consider pulling this fix? since it is breaking the build in gcc13-3 or
->>> if you have any comments do let us know.
-> This isn't the only place in that file where this pattern exists:
->
-> ⬢ [acme@toolbx perf-tools-next]$ grep malloc tools/lib/perf/cpumap.c
-> 	cpus = malloc(sizeof(*cpus) + sizeof(struct perf_cpu) * nr_cpus);
-> 	tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
-> 	tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
-> ⬢ [acme@toolbx perf-tools-next]$
->
->
-> struct perf_cpu_map *perf_cpu_map__alloc(int nr_cpus)
-> {
->          RC_STRUCT(perf_cpu_map) *cpus;
->          struct perf_cpu_map *result;
->
->          if (nr_cpus == 0)
->                  return NULL;
->
->          cpus = malloc(sizeof(*cpus) + sizeof(struct perf_cpu) * nr_cpus);
->
->
-> int perf_cpu_map__merge(struct perf_cpu_map **orig, struct perf_cpu_map *other)
-> {
->          struct perf_cpu *tmp_cpus;
->          int tmp_len;
->          int i, j, k;
->          struct perf_cpu_map *merged;
->
->          if (perf_cpu_map__is_subset(*orig, other))
->                  return 0;
->          if (perf_cpu_map__is_subset(other, *orig)) {
->                  perf_cpu_map__put(*orig);
->                  *orig = perf_cpu_map__get(other);
->                  return 0;
->          }
->
->          tmp_len = __perf_cpu_map__nr(*orig) + __perf_cpu_map__nr(other);
->          tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
->
->
-> struct perf_cpu_map *perf_cpu_map__intersect(struct perf_cpu_map *orig,
->                                               struct perf_cpu_map *other)
-> {
->          struct perf_cpu *tmp_cpus;
->          int tmp_len;
->          int i, j, k;
->          struct perf_cpu_map *merged = NULL;
->
->          if (perf_cpu_map__is_subset(other, orig))
->                  return perf_cpu_map__get(orig);
->          if (perf_cpu_map__is_subset(orig, other))
->                  return perf_cpu_map__get(other);
->
->          tmp_len = max(__perf_cpu_map__nr(orig), __perf_cpu_map__nr(other));
->          tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
->
-> I'm trying to figure out why its only in perf_cpu_map__merge() that this
-> triggers :-\
->
-> Maybe that max() call in perf_cpu_map__intersect() somehow makes the
-> compiler happy.
->
-> And in perf_cpu_map__alloc() all calls seems to validate it.
->
-> But wouldn't turning this into a calloc() be better?
-I have tried using calloc() instead of malloc() and the issue still 
-exists even using calloc(). cpumap.c: In function ‘perf_cpu_map__merge’:
-
-cpumap.c:414:20: error: argument 1 range [18446744071562067968, 
-18446744073709551615] exceeds maximum object size 9223372036854775807 
-[-Werror=alloc-size-larger-than=]
-
-414 | tmp_cpus = calloc(tmp_len , sizeof(struct perf_cpu));
->
-> Like:
->
-> diff --git a/tools/lib/perf/cpumap.c b/tools/lib/perf/cpumap.c
-> index 4454a5987570cfbc..99d21618a252ac0e 100644
-> --- a/tools/lib/perf/cpumap.c
-> +++ b/tools/lib/perf/cpumap.c
-> @@ -411,7 +411,7 @@ int perf_cpu_map__merge(struct perf_cpu_map **orig, struct perf_cpu_map *other)
->          }
->   
->          tmp_len = __perf_cpu_map__nr(*orig) + __perf_cpu_map__nr(other);
-> -       tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
-> +       tmp_cpus = calloc(tmp_len, sizeof(struct perf_cpu));
->          if (!tmp_cpus)
->                  return -ENOMEM;
->   
-> ⬢ [acme@toolbx perf-tools-next]$
->
->
-> And better, do the max size that the compiler is trying to help us
-> catch?
->
-> - Arnaldo
-
-I have tried using max and it compiles with that. I am doing testing 
-with this change and will be posting a V2.
-
-Thanks
-
-Likhitha.
-
->
---------------7C0CuWtond0lsnsdp4PmJRdS
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><font face="monospace">Hi Arnaldo,</font><br>
-    </p>
-    <div class="moz-cite-prefix">On 4/25/25 23:16, Arnaldo Carvalho de
-      Melo wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:aAvKg8K2fyrZ6zy4@x1">
-      <pre wrap="" class="moz-quote-pre">On Fri, Apr 25, 2025 at 08:19:02PM +0530, Athira Rajeev wrote:
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">On 14 Apr 2025, at 7:08 AM, Madhavan Srinivasan <a class="moz-txt-link-rfc2396E" href="mailto:maddy@linux.ibm.com">&lt;maddy@linux.ibm.com&gt;</a> wrote:
-On 4/7/25 5:38 PM, Venkat Rao Bagalkote wrote:
-</pre>
-          <blockquote type="cite">
-            <pre wrap="" class="moz-quote-pre">On 07/04/25 12:10 am, Athira Rajeev wrote:
-</pre>
-            <blockquote type="cite">
-              <blockquote type="cite">
-                <pre wrap="" class="moz-quote-pre">On 6 Apr 2025, at 10:04 PM, Likhitha Korrapati <a class="moz-txt-link-rfc2396E" href="mailto:likhitha@linux.ibm.com">&lt;likhitha@linux.ibm.com&gt;</a> wrote:
-</pre>
-              </blockquote>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <blockquote type="cite">
-              <blockquote type="cite">
-                <pre wrap="" class="moz-quote-pre">perf build break observed when using gcc 13-3 (FC39 ppc64le)
-with the following error.
-</pre>
-              </blockquote>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <blockquote type="cite">
-              <blockquote type="cite">
-                <pre wrap="" class="moz-quote-pre">cpumap.c: In function 'perf_cpu_map__merge':
-cpumap.c:414:20: error: argument 1 range [18446744069414584320, 18446744073709551614] exceeds maximum object size 9223372036854775807 [-Werror=alloc-size-larger-than=]
-  414 |         tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
-      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from cpumap.c:4:
-/usr/include/stdlib.h:672:14: note: in a call to allocation function 'malloc' declared here
-  672 | extern void *malloc (size_t __size) __THROW __attribute_malloc__
-      |              ^~~~~~
-cc1: all warnings being treated as errors
-</pre>
-              </blockquote>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <blockquote type="cite">
-              <blockquote type="cite">
-                <pre wrap="" class="moz-quote-pre">Error happens to be only in gcc13-3 and not in latest gcc 14.
-Even though git-bisect pointed bad commit as:
-'commit f5b07010c13c ("libperf: Don't remove -g when EXTRA_CFLAGS are used")',
-issue is with tmp_len being "int". It holds number of cpus and making
-it "unsigned int" fixes the issues.
-</pre>
-              </blockquote>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <blockquote type="cite">
-              <blockquote type="cite">
-                <pre wrap="" class="moz-quote-pre">After the fix:
-</pre>
-              </blockquote>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <blockquote type="cite">
-              <blockquote type="cite">
-                <pre wrap="" class="moz-quote-pre">  CC      util/pmu-flex.o
-  CC      util/expr-flex.o
-  LD      util/perf-util-in.o
-  LD      perf-util-in.o
-  AR      libperf-util.a
-  LINK    perf
-  GEN     python/perf.cpython-312-powerpc64le-linux-gnu.so
-</pre>
-              </blockquote>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <blockquote type="cite">
-              <blockquote type="cite">
-                <pre wrap="" class="moz-quote-pre">Signed-off-by: Likhitha Korrapati <a class="moz-txt-link-rfc2396E" href="mailto:likhitha@linux.ibm.com">&lt;likhitha@linux.ibm.com&gt;</a>
-</pre>
-              </blockquote>
-              <pre wrap="" class="moz-quote-pre">Looks good to me
-</pre>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <blockquote type="cite">
-              <pre wrap="" class="moz-quote-pre">Reviewed-by: Athira Rajeev <a class="moz-txt-link-rfc2396E" href="mailto:atrajeev@linux.ibm.com">&lt;atrajeev@linux.ibm.com&gt;</a>
-</pre>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre wrap="" class="moz-quote-pre">Tested this patch on perf-tools-next repo, and this patch fixes the issue.
-</pre>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre wrap="" class="moz-quote-pre">Tested-by: Venkat Rao Bagalkote <a class="moz-txt-link-rfc2396E" href="mailto:venkat88@linux.ibm.com">&lt;venkat88@linux.ibm.com&gt;</a>
-</pre>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">Arnaldo, Namhyung,
-</pre>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">can you consider pulling this fix? since it is breaking the build in gcc13-3 or
-if you have any comments do let us know.
-</pre>
-        </blockquote>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-This isn't the only place in that file where this pattern exists:
-
-⬢ [acme@toolbx perf-tools-next]$ grep malloc tools/lib/perf/cpumap.c 
-	cpus = malloc(sizeof(*cpus) + sizeof(struct perf_cpu) * nr_cpus);
-	tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
-	tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
-⬢ [acme@toolbx perf-tools-next]$
-
-
-struct perf_cpu_map *perf_cpu_map__alloc(int nr_cpus)
-{
-        RC_STRUCT(perf_cpu_map) *cpus;
-        struct perf_cpu_map *result;
-
-        if (nr_cpus == 0)
-                return NULL;
-
-        cpus = malloc(sizeof(*cpus) + sizeof(struct perf_cpu) * nr_cpus);
-
-
-int perf_cpu_map__merge(struct perf_cpu_map **orig, struct perf_cpu_map *other)
-{
-        struct perf_cpu *tmp_cpus;
-        int tmp_len;
-        int i, j, k;
-        struct perf_cpu_map *merged;
-
-        if (perf_cpu_map__is_subset(*orig, other))
-                return 0;
-        if (perf_cpu_map__is_subset(other, *orig)) {
-                perf_cpu_map__put(*orig);
-                *orig = perf_cpu_map__get(other);
-                return 0;
-        }
-
-        tmp_len = __perf_cpu_map__nr(*orig) + __perf_cpu_map__nr(other);
-        tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
-
-
-struct perf_cpu_map *perf_cpu_map__intersect(struct perf_cpu_map *orig,
-                                             struct perf_cpu_map *other)
-{
-        struct perf_cpu *tmp_cpus;
-        int tmp_len;
-        int i, j, k;
-        struct perf_cpu_map *merged = NULL;
-
-        if (perf_cpu_map__is_subset(other, orig))
-                return perf_cpu_map__get(orig);
-        if (perf_cpu_map__is_subset(orig, other))
-                return perf_cpu_map__get(other);
-
-        tmp_len = max(__perf_cpu_map__nr(orig), __perf_cpu_map__nr(other));
-        tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
-
-I'm trying to figure out why its only in perf_cpu_map__merge() that this
-triggers :-\
-
-Maybe that max() call in perf_cpu_map__intersect() somehow makes the
-compiler happy.
-
-And in perf_cpu_map__alloc() all calls seems to validate it.
-
-But wouldn't turning this into a calloc() be better?</pre>
-    </blockquote>
-    <span
-style="color: rgb(29, 28, 29); font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: none; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre-wrap; background-color: rgba(29, 28, 29, 0.04); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">I have tried using calloc() instead of malloc() and the issue still exists even using calloc().
-cpumap.c: In function ‘perf_cpu_map__merge’:
-</span>
-    <p><span
-style="color: rgb(29, 28, 29); font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: none; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre-wrap; background-color: rgba(29, 28, 29, 0.04); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">cpumap.c:414:20: error: argument 1 range [18446744071562067968, 18446744073709551615] exceeds maximum object size 9223372036854775807 [-Werror=alloc-size-larger-than=]</span></p>
-    <p><span
-style="color: rgb(29, 28, 29); font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: none; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre-wrap; background-color: rgba(29, 28, 29, 0.04); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;"></span></p>
-    <span
-style="color: rgb(29, 28, 29); font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: none; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre-wrap; background-color: rgba(29, 28, 29, 0.04); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">  414 |         tmp_cpus = calloc(tmp_len , sizeof(struct perf_cpu));
-
-</span>
-    <blockquote type="cite" cite="mid:aAvKg8K2fyrZ6zy4@x1">
-      <pre wrap="" class="moz-quote-pre">
-
-Like:
-
-diff --git a/tools/lib/perf/cpumap.c b/tools/lib/perf/cpumap.c
-index 4454a5987570cfbc..99d21618a252ac0e 100644
---- a/tools/lib/perf/cpumap.c
-+++ b/tools/lib/perf/cpumap.c
-@@ -411,7 +411,7 @@ int perf_cpu_map__merge(struct perf_cpu_map **orig, struct perf_cpu_map *other)
-        }
- 
-        tmp_len = __perf_cpu_map__nr(*orig) + __perf_cpu_map__nr(other);
--       tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
-+       tmp_cpus = calloc(tmp_len, sizeof(struct perf_cpu));
-        if (!tmp_cpus)
-                return -ENOMEM;
- 
-⬢ [acme@toolbx perf-tools-next]$
-
-
-And better, do the max size that the compiler is trying to help us
-catch?
-
-- Arnaldo</pre>
-    </blockquote>
-    <p><span
-style="color: rgb(29, 28, 29); font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: none; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre-wrap; background-color: rgba(29, 28, 29, 0.04); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">I have tried using max and it compiles with that. I am doing testing with this change and will be posting a V2.</span></p>
-    <p><span
-style="color: rgb(29, 28, 29); font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: none; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre-wrap; background-color: rgba(29, 28, 29, 0.04); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Thanks</span></p>
-    <p><span
-style="color: rgb(29, 28, 29); font-family: Monaco, Menlo, Consolas, &quot;Courier New&quot;, monospace; font-size: 12px; font-style: normal; font-variant-ligatures: none; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: pre-wrap; background-color: rgba(29, 28, 29, 0.04); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">Likhitha.
-</span></p>
-    <blockquote type="cite" cite="mid:aAvKg8K2fyrZ6zy4@x1">
-      <pre wrap="" class="moz-quote-pre">
-
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------7C0CuWtond0lsnsdp4PmJRdS--
-
+The Acked-by: was supposed to be on patch "net: enetc: enable RSS
+feature by default".
+https://patchwork.kernel.org/project/imx/patch/20250311053830.1516523-10-wei.fang@nxp.com/
 
