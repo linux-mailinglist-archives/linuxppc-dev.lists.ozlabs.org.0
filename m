@@ -1,76 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-8065-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8066-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE26FA9E74D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Apr 2025 07:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 327B6A9E755
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Apr 2025 07:17:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZmBMS65qtz2yql;
-	Mon, 28 Apr 2025 15:09:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZmBX44FYkz2yqn;
+	Mon, 28 Apr 2025 15:17:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745816980;
-	cv=none; b=lBQcoGkZPl8F3wHOPAwkF2mQa4v0dAJa2HIktA3q0IV8Ae7AcBEw51DHmdxmHF9PkQsK3GiIboutrndwhCFRC4X/29HT94odlxLikcyipf9LruHagFmn2g5AT5k4ZsiecCvc84Uw7vZmSbYa243jInDto1/+/UhYVwLBTh7DkMrjFP8F/gpxvrcr4DtJZk1m5RW8dpxh9P2reA069Lz/Mz9xxmtejBnSSLLLk1RoygY7WhkopRRJYO4C31WkfOpSVsAi4p4wbjAELacJAphMkVbiSOaOTjXKTce7lWOc9mmRZGNot1YGgjRrBCzQMC4++HMH4rJ/o1n37lKkUbQxqg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745817428;
+	cv=none; b=HrQy27w38+aaVnuGaH+2FKUMqyFji2cFs/ivKqIGn8F0BWdObSX+QftpzqdVkqYWbRUJP+tkel3g9lhwYcEVXCClnZmjFd9JGJboa9d4uhktjIv++SFAMlj1w6iEAGWZ1KW6co/r3c9odI3VojjUEpwinxL+D5F6DZu2bILcGvhRMMP0HbuB2vzDbfcMPsuXJDDulTJfbgQT62+R3JEqbexDP5+4uqC/UD9jjMjB1bNl0dIUrWgU1rqQ/9xp8JHS9cgr0MpV7L7iWsHpGoUZKHt4s5VVna69PI0zzd07ZxNUzb6OpoiDZsmZ28ZElmGmx1nLpR+DnELEGjm6oB8NhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745816980; c=relaxed/relaxed;
-	bh=Mr1poobggn6JY8NgFJGQfnnwZCaRBg6+TJ+LyBuoOiI=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=DmyWs8F6Hizw3cMBLyxZUPRJRuBkIPcUZqSPQrh+kENcDk5XpVTrLx3ynKNLSB7aCt6UHO9b2O3mpjUHrSaCIoYvrM9M3nEmZy41M/eMw7HJmI4hWGgcw/CkD5p6OXuoZ1D0BiqentXoZGm9XorRoRKAVz7I0TnElfurzJDKNrngaRMDQFsX/Vz3QvZxeO0Uoy5ymHNWcLRIYFmMBMwszhZkWKlcmkHvv5WfFP4gIq/+zewoJeDNjKUhTXyxNrypG7CRROlsgj/CNwwLdBCoaFVZCh5vXzegcyQ9+6hMtkjcSvlH+lGLsUL7NBbt73KEzcO2kPhHxl9GNJoV2Ip1Cg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ndiZNUkv; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=misanjum@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1745817428; c=relaxed/relaxed;
+	bh=3QfXck7figLBsN819bPQ+gjhRFmt4SOZZdO62kUezjI=;
+	h=Date:Message-Id:From:Subject:To:Cc; b=A+GBjwiE89RUXQ+I4ef0BDUNetgGyBUqTj5+BNLmFE7GlVoJQbzsReK+0wPkLIX8uqT40bCHQZn4PuX456eUePlSxUNYZe+cZjyMoDCLQS09diVyY5rDMtC5MbgUMkagA/KA7+SJ9L41Tqd9lJ/nCbgwC4+CyGOl9ET925e5n13eQen+2qx0cDgObGuoWn34/wMn5bKFe25ecag2WQHWmaEb3T1NM84SodDjT1/2L5JzJfoeHSY0csCavzpy6Sy4s83Uq6KRH44x9FyUdOyebVAC6CiLQ4QmfnSchRiJTgMrn+YA0DG98YBet9nOvVqv4SDVlX/hgm7Ga6Y6gFRAoA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=aCGp0YGq; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ndiZNUkv;
+	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=aCGp0YGq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=misanjum@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZmBMR3VNHz2yTK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Apr 2025 15:09:39 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53S4SFqt002962;
-	Mon, 28 Apr 2025 05:09:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Mr1poo
-	bggn6JY8NgFJGQfnnwZCaRBg6+TJ+LyBuoOiI=; b=ndiZNUkv31ukPWvnc8SRFF
-	jzva+dfLrhX6v/9d651ai3T/jBaJFa1qI76XUuUPRmy9K1VsXEUwSMLTIykLAOU6
-	ZgHaZRRyBAlrylB5dVNJq1XClQtEQze3iGSTeUPskemWz7v+izjdvdctDrdTch7R
-	74jLQ0Koq3Hz8DKdek2WdONGzSM78g3x5QfOnQ2qa3Hgtr54dR01H3mIXnnkU4Bl
-	O6gBYUlSYSqNDi7kQ2RATUi7/87qfP7mhl0evtSHh8AszF1zE2MCc6WfqGL1F70w
-	/mJ6lUg/XvfJXzh1J9/H/LyoHgx+EvJUpIQeLv1ydOhk5Q+rBFUMYm7p5dU2/P3Q
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 469jgjav2u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Apr 2025 05:09:20 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53S59Iuh002999;
-	Mon, 28 Apr 2025 05:09:20 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 469jgjav2r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Apr 2025 05:09:20 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53S49v1P024595;
-	Mon, 28 Apr 2025 05:09:19 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 469c1kvm4r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 28 Apr 2025 05:09:19 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53S59H1L2228850
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 28 Apr 2025 05:09:18 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9268B58064;
-	Mon, 28 Apr 2025 05:09:17 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 224875805E;
-	Mon, 28 Apr 2025 05:09:17 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 28 Apr 2025 05:09:17 +0000 (GMT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZmBX320wzz2yqm
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Apr 2025 15:17:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=Cc:To:Subject:From:Message-Id:Date:Sender:Reply-To:MIME-Version
+	:Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=3QfXck7figLBsN819bPQ+gjhRFmt4SOZZdO62kUezjI=; b=aCGp0YGq2kSGyen47T9KZP5wO0
+	HzdEc/8MpuZk97GSJb2QCFZM9Xa/Pcr/kaSfZ4qth7f7fJJD6EoUZomeuKDFUwKlBA0u5jJUfJAvI
+	2/d5tl/k0LOfMjnBtrBvnxeA/t+lG6PB+3lxV2Ta8jFePQo9/egOuWFsP2pIgzZ38arFTHHHwYkPt
+	eMz36Fyj6T6N+Gb9dUsLtk1jgyMy6ujHeywHOFxrhGMIXId8TOfH+ImEL687DIRzxmEF9DcYEmW7d
+	Iy2fcgrsUHvqbQBjlIykTdXvtd+8UmTWORF7XiS9xVOyeKqA/epXOjUjZx1PHbuULG38pUMRApSUD
+	ZgeTS8Ow==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1u9GrW-001WR0-0K;
+	Mon, 28 Apr 2025 13:17:03 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 28 Apr 2025 13:17:02 +0800
+Date: Mon, 28 Apr 2025 13:17:02 +0800
+Message-Id: <cover.1745816372.git.herbert@gondor.apana.org.au>
+From: Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [v3 PATCH 00/13] Architecture-optimized SHA-256 library API
+To: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org, Ard Biesheuvel <ardb@kernel.org>, "Jason A . Donenfeld " <Jason@zx2c4.com>, Linus Torvalds <torvalds@linux-foundation.org>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,74 +64,194 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Date: Mon, 28 Apr 2025 10:39:16 +0530
-From: Misbah Anjum N <misanjum@linux.ibm.com>
-To: Ritesh Harjani <riteshh@linux.ibm.com>
-Cc: christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, naveen@kernel.org, npiggin@gmail.com
-Subject: Re: [BUG][powerpc] OOPs: Kernel access of bad area during zram swap
- write - kswapd0 crash
-In-Reply-To: <87ldrujhr5.fsf@gmail.com>
-References: <89bfdedb74416156423d36d28c5b92e9@linux.ibm.com>
- <87ldrujhr5.fsf@gmail.com>
-Message-ID: <bcec125a551e086911f82cef7bd632fd@linux.ibm.com>
-X-Sender: misanjum@linux.ibm.com
-Organization: IBM
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: wsIDt46e0tVfdjVz3Zr7Uo-7ay9M-Yen
-X-Authority-Analysis: v=2.4 cv=C4/pyRP+ c=1 sm=1 tr=0 ts=680f0d81 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=kj9zAlcOel0A:10 a=XR8D0OoHHMoA:10 a=NEAV23lmAAAA:8 a=09Uxs5wTwXsWUI50y4oA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: o_Ee4r_eH4VpeaGAGKu0gvRZHrPdlGhU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI4MDA0MSBTYWx0ZWRfXyPTdSNEfU8ST hup4A1NYpNG0OsEtWzTLFajrs+swh095bfGS6z/uvvzEkq9jKClNEgDQqoAkBCFf7Erfe4nNIiA ca/BXl4A3ww7M4yUPkoBT45re6CnD7IjRPnW6IMXX3ysvZCiG5ukZqSyi4+c9cnjcfXuYfycEt4
- sNLV7qp77Jkwilzq4VCSjypW4EDJXFww6LBPf6tlg2yisWUwUfOWnfhMGrdeEaLYlZPCQ2copr+ M1hg/0uD8/8ypDlxfXiopz2xjWZ+3+COnOpHinAMD9JmKUJpe7PAFHwqh494VBkh0GtcJOiS6Ja QvTxMFtKhe056C3hjLwU5VsaRw4hTJ9ZJuVJiFIUrahTA6pSzpYmuswByhQWzejAExG4aBgQGC+
- ucJIYpj9BoAH4FmluPq8VzDAJdzNP5yJH8HNWZkkuCw0un1vfrh/nuXlnwP/6MIw6Q7lgICm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-28_01,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 impostorscore=0 malwarescore=0 adultscore=0 phishscore=0
- clxscore=1011 priorityscore=1501 mlxscore=0 suspectscore=0 bulkscore=0
- spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504280041
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 2025-04-21 09:19, Ritesh Harjani wrote:
+Changes in v3:
+- Add shash sha256-lib/sha224-lib to provide test coverage for libsha256.
 
-> Looks like the issue is happening on 6.15-rc2. Did git bisect revealed 
-> a
-> faulty commit?
-> 
-> Looks like zsmalloc new object mapping API being called, which was
-> merged in rc1?  But let's first confirm from git bisect, unless someone
-> from linux-mm who knows zsmalloc subsystem better and can point on what
-> could be going wrong here.
-> 
-> -ritesh
+This is based on
 
-Hi,
+	https://patchwork.kernel.org/project/linux-crypto/list/?series=957558
 
-Regarding the issue, I am currently running tests by removing the 
-suspected faulty commit. Unfortunately, git bisect is not feasible in 
-this case because recreating the bug requires running the avocado bucket 
-for approximately two days. Hence, I am resetting the kernel to the 
-commit prior to: 44f76413496ec343da0d8292ceecdcabe3e6ec16 and manually 
-running the bucket to come to conclusions.
+Original description:
 
-The commit in question: 44f76413496ec343da0d8292ceecdcabe3e6ec16 
-introduces zsmalloc - new object mapping API
-More information: 
-https://github.com/torvalds/linux/commit/44f76413496ec343da0d8292ceecdcabe3e6ec16
+Following the example of several other algorithms (e.g. CRC32, ChaCha,
+Poly1305, BLAKE2s), this series refactors the kernel's existing
+architecture-optimized SHA-256 code to be available via the library API,
+instead of just via the crypto_shash API as it was before.  It also
+reimplements the SHA-256 crypto_shash API on top of the library API.
 
-I will update the upstream bug report with this information after 
-performing the tests.
-Thank you,
-Misbah Anjum N
+This makes it possible to use the SHA-256 library in
+performance-critical cases.  The new design is also much simpler, with a
+negative diffstat of over 1200 lines.  Finally, this also fixes the
+longstanding issue where the arch-optimized SHA-256 was disabled by
+default, so people often forgot to enable it.
+
+For now the SHA-256 library is well-covered by the crypto_shash
+self-tests, but I plan to add a test for the library directly later.
+I've fully tested this series on arm, arm64, riscv, and x86.  On mips,
+powerpc, s390, and sparc I've only been able to partially test it, since
+QEMU does not support the SHA-256 instructions on those platforms.  If
+anyone with access to a mips, powerpc, s390, or sparc system that has
+SHA-256 instructions can verify that the crypto self-tests still pass,
+that would be appreciated.  But I don't expect any issues, especially
+since the new code is more straightforward than the old code.
+
+Eric Biggers (13):
+  crypto: sha256 - support arch-optimized lib and expose through shash
+  crypto: arm/sha256 - implement library instead of shash
+  crypto: arm64/sha256 - remove obsolete chunking logic
+  crypto: arm64/sha256 - implement library instead of shash
+  crypto: mips/sha256 - implement library instead of shash
+  crypto: powerpc/sha256 - implement library instead of shash
+  crypto: riscv/sha256 - implement library instead of shash
+  crypto: s390/sha256 - implement library instead of shash
+  crypto: sparc - move opcodes.h into asm directory
+  crypto: sparc/sha256 - implement library instead of shash
+  crypto: x86/sha256 - implement library instead of shash
+  crypto: sha256 - remove sha256_base.h
+  crypto: lib/sha256 - improve function prototypes
+
+ arch/arm/configs/exynos_defconfig             |   1 -
+ arch/arm/configs/milbeaut_m10v_defconfig      |   1 -
+ arch/arm/configs/multi_v7_defconfig           |   1 -
+ arch/arm/configs/omap2plus_defconfig          |   1 -
+ arch/arm/configs/pxa_defconfig                |   1 -
+ arch/arm/crypto/Kconfig                       |  21 -
+ arch/arm/crypto/Makefile                      |   8 +-
+ arch/arm/crypto/sha2-ce-glue.c                |  87 ----
+ arch/arm/crypto/sha256_glue.c                 | 107 -----
+ arch/arm/crypto/sha256_glue.h                 |   9 -
+ arch/arm/crypto/sha256_neon_glue.c            |  75 ---
+ arch/arm/lib/crypto/.gitignore                |   1 +
+ arch/arm/lib/crypto/Kconfig                   |   7 +
+ arch/arm/lib/crypto/Makefile                  |   8 +-
+ arch/arm/{ => lib}/crypto/sha256-armv4.pl     |  20 +-
+ .../sha2-ce-core.S => lib/crypto/sha256-ce.S} |  10 +-
+ arch/arm/lib/crypto/sha256.c                  |  64 +++
+ arch/arm64/configs/defconfig                  |   1 -
+ arch/arm64/crypto/Kconfig                     |  19 -
+ arch/arm64/crypto/Makefile                    |  13 +-
+ arch/arm64/crypto/sha2-ce-glue.c              | 138 ------
+ arch/arm64/crypto/sha256-glue.c               | 171 -------
+ arch/arm64/crypto/sha512-glue.c               |   6 +-
+ arch/arm64/lib/crypto/.gitignore              |   1 +
+ arch/arm64/lib/crypto/Kconfig                 |   6 +
+ arch/arm64/lib/crypto/Makefile                |   9 +-
+ .../crypto/sha2-armv8.pl}                     |   2 +-
+ .../sha2-ce-core.S => lib/crypto/sha256-ce.S} |  36 +-
+ arch/arm64/lib/crypto/sha256.c                |  75 +++
+ arch/mips/cavium-octeon/Kconfig               |   6 +
+ .../mips/cavium-octeon/crypto/octeon-sha256.c | 139 ++----
+ arch/mips/configs/cavium_octeon_defconfig     |   1 -
+ arch/mips/crypto/Kconfig                      |  10 -
+ arch/powerpc/crypto/Kconfig                   |  11 -
+ arch/powerpc/crypto/Makefile                  |   2 -
+ arch/powerpc/crypto/sha256-spe-glue.c         | 128 ------
+ arch/powerpc/lib/crypto/Kconfig               |   6 +
+ arch/powerpc/lib/crypto/Makefile              |   3 +
+ .../powerpc/{ => lib}/crypto/sha256-spe-asm.S |   0
+ arch/powerpc/lib/crypto/sha256.c              |  70 +++
+ arch/riscv/crypto/Kconfig                     |  11 -
+ arch/riscv/crypto/Makefile                    |   3 -
+ arch/riscv/crypto/sha256-riscv64-glue.c       | 125 -----
+ arch/riscv/lib/crypto/Kconfig                 |   8 +
+ arch/riscv/lib/crypto/Makefile                |   3 +
+ .../sha256-riscv64-zvknha_or_zvknhb-zvkb.S    |   4 +-
+ arch/riscv/lib/crypto/sha256.c                |  67 +++
+ arch/s390/configs/debug_defconfig             |   1 -
+ arch/s390/configs/defconfig                   |   1 -
+ arch/s390/crypto/Kconfig                      |  10 -
+ arch/s390/crypto/Makefile                     |   1 -
+ arch/s390/crypto/sha256_s390.c                | 144 ------
+ arch/s390/lib/crypto/Kconfig                  |   6 +
+ arch/s390/lib/crypto/Makefile                 |   2 +
+ arch/s390/lib/crypto/sha256.c                 |  47 ++
+ arch/sparc/crypto/Kconfig                     |  10 -
+ arch/sparc/crypto/Makefile                    |   2 -
+ arch/sparc/crypto/aes_asm.S                   |   3 +-
+ arch/sparc/crypto/aes_glue.c                  |   3 +-
+ arch/sparc/crypto/camellia_asm.S              |   3 +-
+ arch/sparc/crypto/camellia_glue.c             |   3 +-
+ arch/sparc/crypto/des_asm.S                   |   3 +-
+ arch/sparc/crypto/des_glue.c                  |   3 +-
+ arch/sparc/crypto/md5_asm.S                   |   3 +-
+ arch/sparc/crypto/md5_glue.c                  |   3 +-
+ arch/sparc/crypto/sha1_asm.S                  |   3 +-
+ arch/sparc/crypto/sha1_glue.c                 |   3 +-
+ arch/sparc/crypto/sha256_glue.c               | 129 ------
+ arch/sparc/crypto/sha512_asm.S                |   3 +-
+ arch/sparc/crypto/sha512_glue.c               |   3 +-
+ arch/sparc/{crypto => include/asm}/opcodes.h  |   6 +-
+ arch/sparc/lib/Makefile                       |   1 +
+ arch/sparc/lib/crc32c_asm.S                   |   3 +-
+ arch/sparc/lib/crypto/Kconfig                 |   8 +
+ arch/sparc/lib/crypto/Makefile                |   4 +
+ arch/sparc/lib/crypto/sha256.c                |  64 +++
+ arch/sparc/{ => lib}/crypto/sha256_asm.S      |   5 +-
+ arch/x86/crypto/Kconfig                       |  14 -
+ arch/x86/crypto/Makefile                      |   3 -
+ arch/x86/crypto/sha256_ssse3_glue.c           | 432 ------------------
+ arch/x86/lib/crypto/Kconfig                   |   8 +
+ arch/x86/lib/crypto/Makefile                  |   3 +
+ arch/x86/{ => lib}/crypto/sha256-avx-asm.S    |  12 +-
+ arch/x86/{ => lib}/crypto/sha256-avx2-asm.S   |  12 +-
+ .../crypto/sha256-ni-asm.S}                   |  36 +-
+ arch/x86/{ => lib}/crypto/sha256-ssse3-asm.S  |  14 +-
+ arch/x86/lib/crypto/sha256.c                  |  80 ++++
+ arch/x86/purgatory/Makefile                   |   3 -
+ arch/x86/purgatory/sha256.c                   |  15 +
+ crypto/Kconfig                                |   1 +
+ crypto/Makefile                               |   3 +-
+ crypto/sha256.c                               | 289 ++++++++++++
+ crypto/sha256_generic.c                       | 102 -----
+ include/crypto/internal/sha2.h                |  75 +++
+ include/crypto/sha2.h                         |  37 +-
+ include/crypto/sha256_base.h                  | 148 ------
+ lib/crypto/Kconfig                            |  30 ++
+ lib/crypto/Makefile                           |   1 +
+ lib/crypto/sha256-generic.c                   | 139 ++++++
+ lib/crypto/sha256.c                           | 150 ++----
+ 100 files changed, 1268 insertions(+), 2315 deletions(-)
+ delete mode 100644 arch/arm/crypto/sha2-ce-glue.c
+ delete mode 100644 arch/arm/crypto/sha256_glue.c
+ delete mode 100644 arch/arm/crypto/sha256_glue.h
+ delete mode 100644 arch/arm/crypto/sha256_neon_glue.c
+ rename arch/arm/{ => lib}/crypto/sha256-armv4.pl (97%)
+ rename arch/arm/{crypto/sha2-ce-core.S => lib/crypto/sha256-ce.S} (91%)
+ create mode 100644 arch/arm/lib/crypto/sha256.c
+ delete mode 100644 arch/arm64/crypto/sha2-ce-glue.c
+ delete mode 100644 arch/arm64/crypto/sha256-glue.c
+ rename arch/arm64/{crypto/sha512-armv8.pl => lib/crypto/sha2-armv8.pl} (99%)
+ rename arch/arm64/{crypto/sha2-ce-core.S => lib/crypto/sha256-ce.S} (80%)
+ create mode 100644 arch/arm64/lib/crypto/sha256.c
+ delete mode 100644 arch/powerpc/crypto/sha256-spe-glue.c
+ rename arch/powerpc/{ => lib}/crypto/sha256-spe-asm.S (100%)
+ create mode 100644 arch/powerpc/lib/crypto/sha256.c
+ delete mode 100644 arch/riscv/crypto/sha256-riscv64-glue.c
+ rename arch/riscv/{ => lib}/crypto/sha256-riscv64-zvknha_or_zvknhb-zvkb.S (98%)
+ create mode 100644 arch/riscv/lib/crypto/sha256.c
+ delete mode 100644 arch/s390/crypto/sha256_s390.c
+ create mode 100644 arch/s390/lib/crypto/sha256.c
+ delete mode 100644 arch/sparc/crypto/sha256_glue.c
+ rename arch/sparc/{crypto => include/asm}/opcodes.h (96%)
+ create mode 100644 arch/sparc/lib/crypto/Kconfig
+ create mode 100644 arch/sparc/lib/crypto/Makefile
+ create mode 100644 arch/sparc/lib/crypto/sha256.c
+ rename arch/sparc/{ => lib}/crypto/sha256_asm.S (95%)
+ delete mode 100644 arch/x86/crypto/sha256_ssse3_glue.c
+ rename arch/x86/{ => lib}/crypto/sha256-avx-asm.S (98%)
+ rename arch/x86/{ => lib}/crypto/sha256-avx2-asm.S (98%)
+ rename arch/x86/{crypto/sha256_ni_asm.S => lib/crypto/sha256-ni-asm.S} (85%)
+ rename arch/x86/{ => lib}/crypto/sha256-ssse3-asm.S (98%)
+ create mode 100644 arch/x86/lib/crypto/sha256.c
+ create mode 100644 arch/x86/purgatory/sha256.c
+ create mode 100644 crypto/sha256.c
+ delete mode 100644 crypto/sha256_generic.c
+ create mode 100644 include/crypto/internal/sha2.h
+ delete mode 100644 include/crypto/sha256_base.h
+ create mode 100644 lib/crypto/sha256-generic.c
+
+-- 
+2.39.5
+
 
