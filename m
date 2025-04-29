@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-8164-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8165-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C3CAA18AF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Apr 2025 20:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 607B6AA1A58
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Apr 2025 20:21:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zn7TY6cPSz3bkL;
-	Wed, 30 Apr 2025 04:03:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zn7tZ0LjVz3bkb;
+	Wed, 30 Apr 2025 04:21:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2416::623" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745949793;
-	cv=pass; b=bK6+9abKsEMNcFFmBsoyV4OgC6EVfQ5Qj188bKbKrpUBPlSA49gjvl6ZBwTHlI2Ruve0LntuTemnkUI9ezyKYj/PLz28bsn/H5I00QRBw1F2nhpBxmzOhwJ1UrA/ctvonbM8cNK4vHzDA7BNiUjUMtZ9+4w5IVv+CqiGMLGBlZalM0T5z3TU39pg0Gbkegw/7nECyP1nAnvMydwEaP3NNksKxWCgxV6Ee2DpFKJLz8wThh8n53U8Cziu9WgBLrrPNCGtrgTPoWIE4Lfcc4rTZnLqQHvfDaZPSoi09RNgeAUhB+u+2ZyW5aGzah4gFEpzAyWvR9jgSv3PK28KtOf8UA==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2407::61c" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745950885;
+	cv=pass; b=IuVXCQgfutGZ848WC6UeLIl6LV6EnutnHZY9f5xt7+fnFtfk9+Ht0dh1z0iw4rxPZqqDb0AqyP1ggKzbpBnbOZHsrYVgHmDfPC6TWHJT5JVp5RC9sG5bRemQhxEUYGj+4yLicSZYTpT4Vg9Q2ch0P/DYHIOtVVSLDAGLRVay8sgcZ9TO+K43A/MuMExJN/A+cFwU2UbbC7ApbzFAYkNVpallR7k6VB/oNn7sDU8RQm+hpzfXQZ6WSlMT7hdIpHkbiLawM2r8vxXHuXfbXSnECdq1hqjLmp40yHUfyA7x2Sx3KB+ThLSCjT+omidQa74FLG+quzs/8n+nq8ms9PfdsA==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745949793; c=relaxed/relaxed;
-	bh=NDjOHl+lLPTkou1738NRqNS1NzILUzL9V05ODi4qG7E=;
+	t=1745950885; c=relaxed/relaxed;
+	bh=Ek6W4PErRfhVGTa/r7p36hxCDJV5whLv8VxpM2zV3eQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Rgh4gzfZjYeYYx1XHN0fi+Y+q85cq+FgCnDWL0N0Eg+s+BFM2XA60JI8H3H6gBCswt+ANfpOXFhWhUPj4pT9kD4TS3ctXxiTDUr3k0hzya4yM8OZew50HWFcV2/wPB6pyfReXODm2H+UOst0qVoL/pocyWR+Rug9lwr8DFxLZtihZc9++rDXjXTh2Ron/TQet0yU9Jl/Ix5GPyLYMddwIMZN2OSHJ8eOebPn+ng+m+liL17c/4EU3A2yYwqEYy6RqqBMqNIUUGJxnb0tLKKKWKzqA3962ArVf7yKsrCaiSiD/GpTkPNOVbxhYOy1IJ5HWRz89/WS/iz56VCRtN98eQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=OfV/IS2g; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2416::623; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=yazen.ghannam@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=EW8mmG3TIj6KV1fJ0l7DzHYqDwAxKbfCPgwsXFNlWNTunyHTf0b3TyPxLPvtWnbsIWXejfXN6geyFaZoMEMgP3e76On+D7lRWfDqw/K1AWyY7WgZzWo7mXF8vKMOwiBiCVL8imtLiR0qxaPvlbqE/qwNBLZtVroltWGj5w4Bb1L6vLk+zXWKP8yRhPSnyzf8oSnfBEW5nTdga/sC/If4tPMKoBMd6bITaGLW97MrBrqknClGRGts2SkcA7/GZeuCeBr6/4NLh4EwyOp5YZLgJCZXuZbo4jJ3ws86zIHvqxtxaZNL2ri995qKgO2cw+3N5BBHq+FI6qJQ4/ma1Zv2OQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=4UFjTb2q; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2407::61c; helo=nam02-bn1-obe.outbound.protection.outlook.com; envelope-from=yazen.ghannam@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=OfV/IS2g;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=4UFjTb2q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2416::623; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=yazen.ghannam@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on20623.outbound.protection.outlook.com [IPv6:2a01:111:f403:2416::623])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2407::61c; helo=nam02-bn1-obe.outbound.protection.outlook.com; envelope-from=yazen.ghannam@amd.com; receiver=lists.ozlabs.org)
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2061c.outbound.protection.outlook.com [IPv6:2a01:111:f403:2407::61c])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zn7TW5s3zz3bV6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Apr 2025 04:03:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zn7tX3c3Sz30Tm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Apr 2025 04:21:23 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BMSyZMIL3FSYie4lvor5/P6GX2xOUi1DxqnHvAwlJXt9tEQorMAem7Ni2z/4iEQVhVad8i6O1ZX7lrWXLfRzwCyj90RSm19aYcGuOXBTryK85NjW+yOrFsb80T34johE1gOah9zRrfDQnoSkEZewCIUfpCOk9kUiCSAJKeusuvCqV5aMhyFinvY4BZy8zkEkoDzJ2V5YGHvZmLZC8mvC0JYWDqDmr1gzxLQBvyofzzsV6VUZhnfSFw8TIpGYYhCGlVjLJRRbHdXLZt6ceuYTa0xx6lIBlEIlJrhHIDf8N2xJB7OKftHid7LxuK7iNyP+s5L3qarOMjiroEnSZotGjQ==
+ b=Ejcd/9F23dPVwCayaWWhV14k9/ub6nDTqNPZ/ZqRoTZ36FJI7nNCjE6/WkA+X2y1AUrapzO25yBD3IBKAFEM7VWUrz1BcXYDE21v4cD51oz+DiGm8n+mmUCxPNGARc3apUXE32po0r51EGCe6rRbBnUzkeHanN8vkoX8IFrKgdwWvQa9xf01Vcg/ke97quC7FOJtGyrGrDaWBURDlJzBqoUMzSg38/nBXsA4jlxt05GWzTVVpR/TsJOAXMx/gNiQMUqkqMA6VAkxTxIioqVZ3o4mfqY4lUe6eztqmU+jkjlh3f3tcpxySu/r1M5YQnUbDgTyHgkfmlwUTUanMvv7oA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NDjOHl+lLPTkou1738NRqNS1NzILUzL9V05ODi4qG7E=;
- b=ngpsKKGEe30wDbIOSWne7onVGQUIPXKDsXTY30eO1/SDIhOT0AwVJfUO5eghywnmvle8u+9z0z7yHtJn3DNDq57MZw0q3QhGlU1USi03B1ZaTJdhagG1Ea4k5CjkIpratP+/m1bc23MJQADGaBcd6gMwziSKeEHVZIQfqS/X3kPdTFB2iaIlHSNgvfgvxj1V7Mst5KoQL2D/HpaIi0FU9HkASbrzIBo7akPbIkC9gizlGaAbHwAedx+D+uqQocZw4VpN0C3IwmjfA5KjGQRMWQrUgJ7/2BtNlm3MuMO+HdMIoAB0pipDtCkGWelDvDVKdkWFKlOAmIVm83OSYiHm7Q==
+ bh=Ek6W4PErRfhVGTa/r7p36hxCDJV5whLv8VxpM2zV3eQ=;
+ b=cNJSOYZMqyr7yzLYFwSMeOYf2Wa4ZvJG6yXjqF9YVzwapWB0jeJ5SxoKgoIpK65A1UlGLXoarKdOl+l9sugWh9Yfl1KBrW/6/vKMIbC/Hj8w79sq2NTVPpfXaM/MzxHN6z7iGyZ410e2mNZYfWqqnz2LNuEQ1Lkcb4bsAnMM3r8Q2CW5wMQwvTe5g8xJhlB5ExVTm+YYMLZ+C7WNeyglkti+9kGQwNAX9HE3Z3cQEC3wy1mMWaodzZ4+w3F8j4ZmbjNTaJAW5Va8InGFdME1yVpxNBiB8iBTgqmKHxl/6a1OzkrApgsj3fZ74UEwwA8hvmH88ad/j4uNX47v/+GKTA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NDjOHl+lLPTkou1738NRqNS1NzILUzL9V05ODi4qG7E=;
- b=OfV/IS2gHJwf2JeVsSl0MdAEEwuLKhjtQGMVeOYVuPFjFYgHNhJGB5kxPGxftRrjclbDhy38TrP5yGGIhL/8IZIOKyYsvRmJHNYRIfbYH1oklr9exPxwpUEzigZhEVuKhPoVgzSUk6gagjPI975CZgXH05cqQCkDmT84mESYZZU=
+ bh=Ek6W4PErRfhVGTa/r7p36hxCDJV5whLv8VxpM2zV3eQ=;
+ b=4UFjTb2qh5hhfZQEf3YndtQ5rDYlfHqL8Xn9WQx0wWuxdAZVA+q1CfHHixRObxz+vYKMV/bmW9aAoip2Lq4BkatBhVCS6jChc3fyksUonR3mpLExUMOo0090AzftUeoCaVsY8HJvTY1ThpZJ2to1p58jQEdv5l7+nNvHQ1OAfe4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
- CH2PR12MB4215.namprd12.prod.outlook.com (2603:10b6:610:ab::24) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8678.33; Tue, 29 Apr 2025 18:02:52 +0000
+ SA1PR12MB6972.namprd12.prod.outlook.com (2603:10b6:806:24f::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Tue, 29 Apr
+ 2025 18:21:04 +0000
 Received: from DM4PR12MB6373.namprd12.prod.outlook.com
  ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
  ([fe80::12f7:eff:380b:589f%7]) with mapi id 15.20.8678.028; Tue, 29 Apr 2025
- 18:02:51 +0000
-Date: Tue, 29 Apr 2025 14:02:42 -0400
+ 18:21:04 +0000
+Date: Tue, 29 Apr 2025 14:20:55 -0400
 From: Yazen Ghannam <yazen.ghannam@amd.com>
 To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
 Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
@@ -70,15 +70,15 @@ Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
 	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
 	linux-cxl@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
 	linux-pci@vger.kernel.org, linux-edac@vger.kernel.org
-Subject: Re: [PATCH 3/4 v2] ACPI: extlog: Trace CPER PCI Express Error Section
-Message-ID: <20250429180242.GA76257@yaz-khff2.amd.com>
+Subject: Re: [PATCH 4/4 v2] ACPI: extlog: Trace CPER CXL Protocol Errors
+Message-ID: <20250429182055.GB76257@yaz-khff2.amd.com>
 References: <20250429172109.3199192-1-fabio.m.de.francesco@linux.intel.com>
- <20250429172109.3199192-4-fabio.m.de.francesco@linux.intel.com>
+ <20250429172109.3199192-5-fabio.m.de.francesco@linux.intel.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250429172109.3199192-4-fabio.m.de.francesco@linux.intel.com>
-X-ClientProxiedBy: BN0PR04CA0175.namprd04.prod.outlook.com
- (2603:10b6:408:eb::30) To DM4PR12MB6373.namprd12.prod.outlook.com
+In-Reply-To: <20250429172109.3199192-5-fabio.m.de.francesco@linux.intel.com>
+X-ClientProxiedBy: BN9P221CA0010.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:408:10a::13) To DM4PR12MB6373.namprd12.prod.outlook.com
  (2603:10b6:8:a4::7)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -94,228 +94,188 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|CH2PR12MB4215:EE_
-X-MS-Office365-Filtering-Correlation-Id: 849fda7e-3d4e-4f26-e9d2-08dd87480ef5
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|SA1PR12MB6972:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3d9f047-d61d-4999-6250-08dd874a9a2d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FdpFgpS9ljHIJnDWbschJbFKfRhuz5x8knPpSh/2BAZE2bzOJsyJh2M4vG/m?=
- =?us-ascii?Q?TZ2nx38jHz/wLjEnFb5K3svdbTvj8sLnVnLnSpu26zVFe6il6npmpxXAmXx9?=
- =?us-ascii?Q?BomsI6DWiqMEGpWR5KZVuwjfzxcV0zvMYTCm6b4yTs5KD+uInwp63D+cV2pS?=
- =?us-ascii?Q?KX/PS+A95dH291W6+PbGjD5f7UFIymRKq+EXTNcVVMkYrQgrO+Wl1e7rAXrn?=
- =?us-ascii?Q?fZOtLNtp5cdrbb7o+gk5w7RxzDWpNj4f57rOOdVuwOoQzJC2blB5eesRhEBN?=
- =?us-ascii?Q?P5y9774BtkUb6uwlT2Vwk7HL4tDW8UOixzs2a2gOmd/dh1EdnQOtl1mWgLy1?=
- =?us-ascii?Q?83UZY2LMYq2shuZGo0sJXUKyNfttgvvWsMZiNKE8uDkNwbcU86L5ujyCvX/D?=
- =?us-ascii?Q?gxid7rYTm0nJ8IzCp7x0bpDfGHJCnPuxVB8jXXCzyphX/8eETo3TQYPeOcWs?=
- =?us-ascii?Q?r08WFu8tDs+imvKZjZKZMysX54ncNXf3GE/3qJcl+LW0+GvqFcUK62R7xBOI?=
- =?us-ascii?Q?SBaoI3FvB7BAjKqYIfRVvP1+KhCKjKEAE+UXZYsjF87Ej4IY+8wmIeFoxD2f?=
- =?us-ascii?Q?QUHwFdKPHJHxbcUDD7Z9kZyFSfJPlkxzwCYnAukmEU11gzJHkC/h/OohXOIS?=
- =?us-ascii?Q?QTp9dzV4R5wXJfpLji42e49DQsqSN4F+0rk8AiLndF5JjkGqDmSuCXVUJaob?=
- =?us-ascii?Q?QBVvqqtOaaVVdRqNVGDLQ3tFnB3yvYrJkW3nVGmLSaDBI+kCGEfnRXfL2GWi?=
- =?us-ascii?Q?8gVA/FAp9p+euJ5CmquCKG5O8U6+L6+F3TvRdWqV+1Omwhj8xv/8H5+ri9b+?=
- =?us-ascii?Q?XO9x0KzuRM6GTKCxWKa5UM8QXqF+bgSOoTBxCqLNDggT2UMUFtziLRPwiWfP?=
- =?us-ascii?Q?JqBLhlogNr4ctSHiwZ6r/NZQI5448kDGooJqwpwANho/Zjgar5gM3ovdepGT?=
- =?us-ascii?Q?IpcvLUZM7qhB4pMuYezd+o4K2e6wDk4etTD4Th/2jCfysoBmKxU3reYga8sj?=
- =?us-ascii?Q?W/V9yTRzxQEJClakBmDpY3Rjxy2E2DIE91VSyxcH7q7wGtJzn5S1kQUuoF2R?=
- =?us-ascii?Q?ZalwO1payieg6qvOcZymcJosuXkGVTLFpYzQVuWvg8neXnn0WV0BHgLJuoQs?=
- =?us-ascii?Q?OTO2MXqdJWsjgVh93X0qgnIyZqM0idw1IPgMprYqSpXeUASKkxqBJvvmZqwj?=
- =?us-ascii?Q?KZRwbt9Y5D3s/qvxR4gkicG/1emD/N8L15006nLYcsJI4Z/fiGNcCNszBpkl?=
- =?us-ascii?Q?UZ1qhrBEB153ZDYgDtTKsrOTZswOlRom136yNhbrKU+9TlnBhn7cRjl1JqBo?=
- =?us-ascii?Q?JI8fHW14sOBxxYLYT8s2P8pEDcOMVVKtCVA832XineByF09OY6yO90UC56pF?=
- =?us-ascii?Q?Ohg9/kggYzpJGFT/OoYjY1QSno3pmmmkA1dgzxSHu1PyeKNly4xCmZ+5mUF9?=
- =?us-ascii?Q?IGT6GeX83io=3D?=
+	=?us-ascii?Q?wue69Ng4sHVypIHb6V63ms8JQNDUKcG39w5qehmULk7UPFgjC7cD4DPaFdCj?=
+ =?us-ascii?Q?FbNR22bGLA2967iVghU53y2p+Esk+dNpxUbA5Cfi2iY1rM1lCJJd2sGKXo1i?=
+ =?us-ascii?Q?gDfjloAnixVHtvKsH2yvqKCCkm/44nHkvuphCR8IcLyxs/PVnFLeYcfM0mr/?=
+ =?us-ascii?Q?hqJB98mPTtrS9vdh2EYTw8jCvqedfBfLX19eUM/4Z461TS628HCM+3kWIWCn?=
+ =?us-ascii?Q?gps1fQXZmP2YEu4FJhhzz6Cd3ovirIX05/7n/Qszrwg+CYzzadDw5q+PJFvm?=
+ =?us-ascii?Q?BfwuEUBYHuTWqssC97X5secLiijHqyEWp+tY2vtb7uJOGPMA6gDCvaLI9JvQ?=
+ =?us-ascii?Q?y4o1sT/a0yFBtl0qsuXqZwMF4U05G5i8N99DejO8TLc2I7P6z+fcCQ/186U9?=
+ =?us-ascii?Q?q6Pxq9CyBhI9sgJYhj2TVoghrNEQxlAxRz5xjshvVaQ+aYLZw9XllgOPxIEg?=
+ =?us-ascii?Q?Zp1YWINgOu2b+lM9y5lX/AHu2q4zvk+HhFOzzcc0fh2OjyFSADdKD3MFTXj4?=
+ =?us-ascii?Q?30VwPhEmKgy7cDnspVisDN5R3ie8vRak5ex9Jx04DAqFg2eRWbDHG8B0J3zs?=
+ =?us-ascii?Q?aTGe48s+eL+ggseMoInqWbLpClxQV9WFINeDQ+vA8EMT1nypMzgiSIy5uMMe?=
+ =?us-ascii?Q?gispA+sJ/Uk9mWOalLgNYAAhrvdaA4ZTUScw5hmttYmWjdWuGEkA7v+j2OYn?=
+ =?us-ascii?Q?M6jRq4YVfZ1UOOZjT+uBvAB4MNTIPA89M2HIzyuA85E6ZSduZfNC9gTtCej8?=
+ =?us-ascii?Q?baG+XQoWFgw1yAv3u7RPx5ank/iMz+3Gy8YpJ4NPZRtfnqTVxQBwioN98pBw?=
+ =?us-ascii?Q?4GFFli1Rz5wbTgO3Qgl3FWyKbg85PXkmmFnsG/ITwxl0RwVF3gPON0WCCzod?=
+ =?us-ascii?Q?4qW4AThlTn/ddvmU7UnjeqZ/5vEOtOKP9Cm4SWp97off7x/kuGv6JsdHqKyj?=
+ =?us-ascii?Q?FTuqQvYnmt5Eg86Zakc2Jhe6YALhmLSXtW8ga027fqhVDV3bJmXu4DCY+DIS?=
+ =?us-ascii?Q?UWPenNiBmn87+nyUkjo8XgeObwfoH/i35QfC9HkZftIVtpZCx2dUev39BwhZ?=
+ =?us-ascii?Q?T0VQNw7PE5i4xSqdqe8miqipiNmA/mMR8FfTQlwhVPnPo4+6igFstDecTRcu?=
+ =?us-ascii?Q?B47jdlrEYIh7B+rKLwPGGSsyX1yGqwOUKKujk2KxWdO2UcEuUyVh2e1j0/4b?=
+ =?us-ascii?Q?OeSJTkRzDoGlnvrkmUFSd2PA1fs9bmyGF6j6/3K9VblJ28F6Ry63oa6X0ayG?=
+ =?us-ascii?Q?0qNxj7W05wg5DI9LGFIAfNG0/eI6cnZ7Q4wCfL6ocvNRcXCpsRN34UDVxqYM?=
+ =?us-ascii?Q?gmMlvgWZvc1s6fvAKU5+ZNxciXrfwypmXi4c+4HjXazvh7KzvsJ/7kkzd/SM?=
+ =?us-ascii?Q?pBk4w8ojiyBJteM6hLLs6vHQGOpw5uyOVLmwnKcWwk2HWYrqSF+Bqilmxdsn?=
+ =?us-ascii?Q?Se4Fwhn2vxM=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mDcFa4XVRLDSloU+xkj8j45930wiCQerIXLeVB5/qCSAmuiOnWSlPc90zNNH?=
- =?us-ascii?Q?Iwd81yeH34lIbRp4HsMzwiuiFddMO1jMVcXXRD9TJx+/er5CoDCXP2gX0rst?=
- =?us-ascii?Q?T3hzTSeJjYRDqie2WCYDUi3mmK9JYpior2RUGyRUEIFI2m7P8NVt8ADZdIjO?=
- =?us-ascii?Q?/O8ZtE5FesUnh9EZvyGOhgiEUZSQhK6BiEWWVmWc0KCgpJgIgLR9FX73uYc9?=
- =?us-ascii?Q?xNJpuuWlC0zt19gZLqnJFmxBKFX/7hBh4E3oW7NBe7KfPcBv1o362hb/yGvz?=
- =?us-ascii?Q?0xdy/83Ibq2sEpcZitW3ev6LKah9sTF/Qe2mdXi4hTjMSrwF2w4nDNvLgZck?=
- =?us-ascii?Q?6xY7/FrWk7djm2Zjzv6w6CKJneaXUjb9OQv5kOlZdjun6aiYFZfwvxweepHq?=
- =?us-ascii?Q?PRDtMFc6PTwBIhwnTGjuANCgNZekZUjihYSwQkKUFuEWc7kA3xgeVmG3TTlD?=
- =?us-ascii?Q?gDTw6nKbXUupu2Dm0jCmVm2KP5b4GI8gZzIhHsrDc3G1SA2mVbJAIP7XxLj5?=
- =?us-ascii?Q?dKisLW+d6IxgcJcmd77YJDkA79eja7KZvDPsL2q26JXiI/za11QPdnc3Bn+Z?=
- =?us-ascii?Q?qmNCpAk78zUEAHwquy2q65Zj8JOaYnNfw3O2AIRcdIQqoG+lpQIssyGuxWoz?=
- =?us-ascii?Q?kZBw56wnzS8epzzIl7NQgYpNdL6tsLWeGrvnlP3iMNGO4Qospi6vwcZdqOi9?=
- =?us-ascii?Q?FJjyHpqL8foUb/NBt+oSHkU3oQOrc8poneTcXiWTXVZpwd5W/0OoMjkppKab?=
- =?us-ascii?Q?qid24qNYUNnO/p7sSw4yYdNYQhva1kRYMay0znH9+ogoNapIrtzpsesKLrxk?=
- =?us-ascii?Q?IyDTh06vD93KK1O7YduEgDSTndq0K1csWBfCBmjPdceiiOl9lzaZiZFe3Ypt?=
- =?us-ascii?Q?CZYcRQGcI58yDnsSbhsmgrQdfXJygkOzefFyi3gR6v2cR4jglZD+xEXMXctf?=
- =?us-ascii?Q?gwAduIEQegIEleflPmduqyUmOhUuSgYiiomeIPC5DJO5j69NnJNlM2FNgv1l?=
- =?us-ascii?Q?AtBKo2lXG+ukNREJ5GO9i3cjVZlgoA9EvA9Le5msges17FMVl2Xxz7T6NYts?=
- =?us-ascii?Q?GD3Zegk+owhdbhILol3J8c//3nRRNN6iC4BJV0IjLuZQSG/dXWLvTDNkTh9b?=
- =?us-ascii?Q?nu8akzW77kzSnHim0BLCK9HT0a382IBj+CA5/5Hx58g0IgbJooO0XdCVXQ97?=
- =?us-ascii?Q?jwfPkMuNngYtumFGOd20cFc8ZRdfKq44boWk2y8u24vZ8NUgqB4I8N8PDUtM?=
- =?us-ascii?Q?6ngbVKMIsMobrTQqtCgtVU9XGn+X7ZB8Ja4E0v1X/Xa+7Ey1m4WVz7+NoS3L?=
- =?us-ascii?Q?Eim+Wf4mgyC/FSMDQpxm4qCLTghujuv2ppczpHSw1YRB6ws50jmUepU6pdu9?=
- =?us-ascii?Q?q+vOMwGl+sUf0iIHUaqoP1gdcMtTOhiuSLCEjacRvL5UioPiy5FNHCNZHeKm?=
- =?us-ascii?Q?CWHbjsQtGRJSmQ59lMN7nZP/VXP1kcBoheHmzE7pA4FyB9GVhnv4SkV8I39+?=
- =?us-ascii?Q?XjSs3KydZKBmDS6dWTaetsaj8/uaFVovyNV/+o1ZP+yk7Q8ne1tzHV3bNdFF?=
- =?us-ascii?Q?jHXbZxzbNJ/3gEz3NeEkvyp9XTq9T4atB6twWUF7?=
+	=?us-ascii?Q?GkfKwJHu6ha0zJlZFgSlx3vEFhaI7bG/nJRDNnL7aS5usDWxR7YJaWV5ZDi3?=
+ =?us-ascii?Q?GWICRwTxwZddBTzTSiu83ktNSisOUlRaZPHadwzmGNHdJn3TA+jWwHRHHaRc?=
+ =?us-ascii?Q?LIVseRYjogb98gAkVqIypZ1debsPJUMIa+6qPi44mpKhECi62Ii85OPVy0Mf?=
+ =?us-ascii?Q?CJHvpDwB93dOKNc0CtYGLO0SMOX2jJ17frxK5D5OoWOVs79D/HXIZNfaozJw?=
+ =?us-ascii?Q?VQCZN9el22EkT8PaKvJhS8bzQDvFbfODuzk0QMfzjvoK+WbjkmijGtTF8+Pb?=
+ =?us-ascii?Q?kLT99BNIZUY0Vf0MoIdKyUec9A7+8iv8JD8XYE14z5x5O10jOW6lwkCs8Y1B?=
+ =?us-ascii?Q?m4SP5RFcR4JFvTyids8t09h+VcVrskuHJHPk4LhRSvhwhn4HVm4GwxrtLDcr?=
+ =?us-ascii?Q?wnGFkThYN4MOadSY4ASjqhxarP/p92Ex0OqtUq2TL2QSiuRl9nC43cTiMPip?=
+ =?us-ascii?Q?/2JW0H7FgstWSAPK0uVgxYsNpjqidbCRaEoZAPY6YtElsEYxi+g4ZeBIMv8y?=
+ =?us-ascii?Q?fsuFTHGntWJyIkmtUZFAaMLwPD2Jwvm9cqrPgIR08dsskLVAQJBecQk2/ZKG?=
+ =?us-ascii?Q?3x3RI26F3stgjkL3gDofGyqRKYDTrazrJHUZtgiafpCC+oDZm6iGjQiA/+51?=
+ =?us-ascii?Q?GlJXczmmSjykWWDrCmKI5ODeGxFke2wkEBC41netsU8r1d9gmEV2QBGGThyj?=
+ =?us-ascii?Q?jUXWdPBPIpCK0XeB+R903/L8N8cvn06BX6+xbDUU+nq+KxFaf5Qgy5iGZNpy?=
+ =?us-ascii?Q?03PoqGoHav923bqCKL9iW/cXLXAaqYDkhLk88+I0FboUVJgnDj9utjuVSgyt?=
+ =?us-ascii?Q?8tAar10bM3j5nSW7aF9lChxZyirpIbYyD/IwP78K2xz0xasTg8G2AfimeVmy?=
+ =?us-ascii?Q?zRaz8+ow5Fi2qevLxsL2cHsy1pDd68EjwdcK6PqbMphZI28Gq0WcNnTmotI3?=
+ =?us-ascii?Q?bCRr7tYC8DXq4jxTYXJ8I2q+Li4Q7v7Yf3mUCmmEFlIVtlFUQPDCYjJEN/Mq?=
+ =?us-ascii?Q?i/FuFLANlpsAFgn3yxuHot26E8K7rmu4fMYq5F7ixChjhCCSWFf8tFi5pg8o?=
+ =?us-ascii?Q?EXhPzv1D8r0GqIR6/+9vkVgHv3OE5CVl3dgUYajsFy0hI1Q5VWDzmG6rItUi?=
+ =?us-ascii?Q?uQ802K+QAFQ3AkA/UfqcALu5d6tKv+ZHZrvH+Hu9JGhvCiTTOxshSDqMYI1E?=
+ =?us-ascii?Q?rpPOTqPc3uxW9tcxHg2O9HoI48DEp4rKl3yhux12f+glo7x8rDvtP2AtGzsM?=
+ =?us-ascii?Q?0IbuGmnhyQ4Lr5FRwIIZmznvC7Wceeb1QK1bxumI00kWqSiOh5YHDQG3MaDk?=
+ =?us-ascii?Q?xO+lr7DSCCx698JOIH1CYBaZXafawG8B5RjYh4DlLlcsQWqqFZSMzV7Z3kSy?=
+ =?us-ascii?Q?6oFjdn1u6ANVFHJF6lMpia+J2mi3qLI/ftQ8fnQIckR4Tu2lMg1jtCTaUG7S?=
+ =?us-ascii?Q?Xacdaho9FnDxTVNOXg1PvEclFC2reCaEb8kWw8Y6WYl8F0BTTajY2u9+/VU+?=
+ =?us-ascii?Q?EoLRZXskicULVv093fjGre9y64/H6+WBFuFowvk6pKtXyLLMyh/BioNjqpjG?=
+ =?us-ascii?Q?lssZEmSgbsPOuN8Tt4ybPZePo9WKhe4AU7Q5/uOZ?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 849fda7e-3d4e-4f26-e9d2-08dd87480ef5
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3d9f047-d61d-4999-6250-08dd874a9a2d
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2025 18:02:51.8538
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2025 18:21:04.2429
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: R7gRDckWOOwKAtB148y2IFojc8xaTlg1M7F7VqHpo8MV8/80ZblOGOdy+OPzVUdH6y7MpYJ0/U5l0uEgAimOnA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4215
+X-MS-Exchange-CrossTenant-UserPrincipalName: laaN3aYzvucdoM38teJrU3r3XVnjiqYTca95P9QHhKXue4oL8to20oCw5KyJPpo85gyrSA1C1oG9z3Dqq5hx0A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6972
 X-Spam-Status: No, score=-0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
 	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Apr 29, 2025 at 07:21:08PM +0200, Fabio M. De Francesco wrote:
-> I/O Machine Check Arcitecture events may signal failing PCIe components
-> or links. The AER event contains details on what was happening on the wire
-> when the error was signaled.
+On Tue, Apr 29, 2025 at 07:21:09PM +0200, Fabio M. De Francesco wrote:
+> When Firmware First is enabled, BIOS handles errors first and then it
+> makes them available to the kernel via the Common Platform Error Record
+> (CPER) sections (UEFI 2.10 Appendix N). Linux parses the CPER sections
+> via one of two similar paths, either ELOG or GHES.
 > 
-> Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported
-> by the I/O MCA.
+> Currently, ELOG and GHES show some inconsistencies in how they report to
+> userspace via trace events.
+> 
+> Therfore make the two mentioned paths act similarly by tracing the CPER
+> CXL Protocol Error Section (UEFI v2.10, Appendix N.2.13) signaled by the
+> I/O Machine Check Architecture and reported by BIOS in FW-First.
 > 
 > Cc: Dan Williams <dan.j.williams@intel.com>
 > Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
 > ---
->  drivers/acpi/acpi_extlog.c | 30 ++++++++++++++++++++++++++++++
->  drivers/pci/pcie/aer.c     |  2 +-
->  include/linux/aer.h        | 13 +++++++++++--
->  3 files changed, 42 insertions(+), 3 deletions(-)
+>  drivers/acpi/acpi_extlog.c | 60 ++++++++++++++++++++++++++++++++++++++
+>  drivers/cxl/core/ras.c     |  6 ++++
+>  include/cxl/event.h        |  2 ++
+>  3 files changed, 68 insertions(+)
 > 
 > diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> index caca6ccd6e99..7d7a813169f1 100644
+> index 7d7a813169f1..8f2ff3505d47 100644
 > --- a/drivers/acpi/acpi_extlog.c
 > +++ b/drivers/acpi/acpi_extlog.c
-> @@ -131,6 +131,32 @@ static int print_extlog_rcd(const char *pfx,
->  	return 1;
+> @@ -12,6 +12,7 @@
+>  #include <linux/ratelimit.h>
+>  #include <linux/edac.h>
+>  #include <linux/ras.h>
+> +#include <cxl/event.h>
+>  #include <acpi/ghes.h>
+>  #include <asm/cpu.h>
+>  #include <asm/mce.h>
+> @@ -157,6 +158,60 @@ static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
+>  	}
 >  }
 >  
-> +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
-> +			      int severity)
+> +static void
+> +extlog_cxl_cper_handle_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+> +				int severity)
 > +{
-> +	struct aer_capability_regs *aer;
-> +	struct pci_dev *pdev;
-> +	unsigned int devfn;
-> +	unsigned int bus;
-> +	int aer_severity;
-> +	int domain;
+> +#ifdef CONFIG_ACPI_APEI_PCIEAER
+
+Why not apply this check on the function prototype?
+
+Reference: Documentation/process/coding-style.rst
+	   Section 21) Conditional Compilation
+
+> +	struct cxl_cper_prot_err_work_data wd;
+> +	u8 *dvsec_start, *cap_start;
 > +
-> +	if (pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID &&
-> +	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
-
-You can save an indentation level by inverting this check and returning
-early.
-
-> +		aer_severity = cper_severity_to_aer(severity);
-
-I think it would help with clarity if all these lines were aligned on
-the "=".
-
-> +		aer = (struct aer_capability_regs *)pcie_err->aer_info;
-> +		domain = pcie_err->device_id.segment;
-> +		bus = pcie_err->device_id.bus;
-
-Many of these variables are passed unchanged to a single function below.
-
-Why not pass them directly to the function?
-
-Even if you split the function parameters across multiple lines, you
-will still have fewer lines. Plus you will not need to allocate the
-variables.
-
-> +		devfn = PCI_DEVFN(pcie_err->device_id.device,
-> +				  pcie_err->device_id.function);
-> +		pdev = pci_get_domain_bus_and_slot(domain, bus, devfn);
-> +		if (!pdev)
-> +			return;
-
-Newline here, please.
-
-> +		pci_print_aer(KERN_DEBUG, pdev, aer_severity, aer);
-
-Why use a debug log level?
-
-> +		pci_dev_put(pdev);
+> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
+> +		pr_err_ratelimited("CXL CPER invalid agent type\n");
+> +		return;
 > +	}
-> +}
 > +
->  static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			void *data)
->  {
-> @@ -182,6 +208,10 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
->  			if (gdata->error_data_length >= sizeof(*mem))
->  				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
->  						       (u8)gdata->error_severity);
-> +		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
-> +			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
+> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
+> +		pr_err_ratelimited("CXL CPER invalid protocol error log\n");
+> +		return;
+> +	}
 > +
-> +			extlog_print_pcie(pcie_err, gdata->error_severity);
->  		} else {
->  			void *err = acpi_hest_get_payload(gdata);
->  
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index d0ebf7c15afa..627fcf434698 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -801,7 +801,7 @@ void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
->  	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
->  			aer_severity, tlp_header_valid, &aer->header_log);
->  }
-> -EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
-> +EXPORT_SYMBOL_GPL(pci_print_aer);
->  
->  /**
->   * add_error_device - list device to be handled
-> diff --git a/include/linux/aer.h b/include/linux/aer.h
-> index 45d0fb2e2e75..737db92e6570 100644
-> --- a/include/linux/aer.h
-> +++ b/include/linux/aer.h
-> @@ -56,17 +56,26 @@ struct aer_capability_regs {
->  #if defined(CONFIG_PCIEAER)
->  int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
->  int pcie_aer_is_native(struct pci_dev *dev);
-> +void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
-> +		   struct aer_capability_regs *aer);
->  #else
->  static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
->  {
->  	return -EINVAL;
->  }
->  static inline int pcie_aer_is_native(struct pci_dev *dev) { return 0; }
-> +static inline void pci_print_aer(char *level, struct pci_dev *dev,
-> +				 int aer_severity,
-> +				 struct aer_capability_regs *aer)
-> +{ }
+> +	if (prot_err->err_len != sizeof(struct cxl_ras_capability_regs)) {
+> +		pr_err_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
+> +				   prot_err->err_len);
+> +		return;
+> +	}
+> +
+> +	if (!(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
+> +		pr_warn(FW_WARN "CXL CPER no device serial number\n");
 
-I think the "{ }" can just go at the end of the parameters.
+Is this a requirement (in the spec) that we should warn users about?
 
->  #endif
->  
-> -void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
-> -		   struct aer_capability_regs *aer);
-> +#if defined(CONFIG_ACPI_APEI_PCIEAER)
->  int cper_severity_to_aer(int cper_severity);
-> +#else
-> +static inline int cper_severity_to_aer(int cper_severity) { return 0; }
+The UEFI spec says that serial number is only used if "CXL agent" is a
+"CXL device".
 
-This may have an unintentional side effect.
+"CXL ports" won't have serial numbers. So this will be a false warning
+for port errors.
 
-'0' means AER_NONFATAL.
+> +
+> +	switch (prot_err->agent_type) {
+> +	case RCD:
+> +	case DEVICE:
+> +	case LD:
+> +	case FMLD:
+> +	case RP:
+> +	case DSP:
+> +	case USP:
+> +		memcpy(&wd.prot_err, prot_err, sizeof(wd.prot_err));
+> +
+> +		dvsec_start = (u8 *)(prot_err + 1);
+> +		cap_start = dvsec_start + prot_err->dvsec_len;
+> +
+> +		memcpy(&wd.ras_cap, cap_start, sizeof(wd.ras_cap));
+> +		wd.severity = cper_severity_to_aer(severity);
+> +		break;
+> +	default:
+> +		pr_err_ratelimited("CXL CPER invalid agent type: %d\n",
 
-So the function will return that the error is an uncorrectable AER error
-that is potentially recoverable. At a minimum, this will incorrectly
-classify the error for data collection, and it could cause incorrect
-handling.
+"invalid" is too harsh given that the specs may be updated. Maybe say
+"reserved" or "unknown" or "unrecognized" instead.
 
-I guess the risk is minimal, since CONFIG_ACPI_APEI_PCIEAER will likely
-be enabled on systems that would use this.
+Hopefully things will settle down to where a user will be able to have a
+system with newer CXL "agents" without *requiring* a kernel update. :)
 
 Thanks,
 Yazen
