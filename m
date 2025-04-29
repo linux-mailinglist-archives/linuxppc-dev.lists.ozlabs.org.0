@@ -1,44 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-8149-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8146-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54502AA0D1E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Apr 2025 15:12:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C92AA0D17
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Apr 2025 15:11:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zn11H0CtSz3bgw;
-	Tue, 29 Apr 2025 23:11:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zn11D3YKrz30VM;
+	Tue, 29 Apr 2025 23:11:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745932306;
-	cv=none; b=FhFiZ3YVOf+JcHqHM1uavmgUBOZ0SjVtv2PjM/BsVbjsAQHgJIbc8jyB3Wk+epRSVKpW8waBUTHl828cRxtBjubXmkmsUNWivs62kgfD4YqsZR/xheKBtDc6hzfX3knS71/oPHScmgFrgD2GC4SVZoYnvLl1jSNa9qZbcQxRmZ57YikgwAmgPMPT03DPDmY+ai7uLCwl+2+BJZSihEHRPLm/8EjQ8QrRGU78d3KbdFS54iD+2iHriYxH4NswBVlAVcYKKSOlWTdJvxzqXAjAClgwpygiOXjmGRqQuTE1Lx2TITjvfPE2V/HIGmF386vOUlC+ulBiZMulMAUIFp3TGA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f8:c010:41de::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745932304;
+	cv=none; b=FhpT81HTz9l2tIf4NZlQ1Ku5YiKJ9CP4syWsHqnbJ54RiM9+76vqeDYZvlnSdFNYwOBGELuKfXvrAY1mLOPKs8l/qUjWwrWWTKUUx552/ilZqnMt4ktmgcDNuVgWvrQrMhhfr+V11Whe8gGXsxW89VA7Tp2BhcNS7wz2eQpm3PH9/1H6/O9jaUTVY0R7PXfazHfGNzvkKftprmCR9wuK0pYTPk8/lwXB7Vx8+SN/YHjjx/C7RtCn35HvIlmNghK+i5/p/LWlPgphuhQick/ye51jxHZqlMnmKpiBZzQP0dJWn7gn89Rm8wJWFyEkzDvGimWzia8Azsy/mTJ+ru5UzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745932306; c=relaxed/relaxed;
-	bh=JIT3OVdj+I/feDJ7MIZzHLsKy8BpbSltNl8ZAReeByk=;
+	t=1745932304; c=relaxed/relaxed;
+	bh=oUFhmXFCBunPnLrlSz62rC8pQNGqtXlW5XV6j5WYmww=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RNt5QdYC2KYWb/MCtfDjbmOKRMhRNxYQC56S1oEs4YwPbqJPzMcbunKeniMmQFBjACx3zSjjci4Cz8uzaR6vxBa4sGAk1s3str26TQPwF1ITJzBoaOGjEmqNXK/8+Jo6q2rGnOHMHXncZYwE1y4v/ztA4kF5hZF27Mi0IMint5UkjWahLJPQEZ0VFHM4T/Ozqy4ilxWYtGRPw+CLXTVDpgruC0b9tdvvCsgj0uc+6qUGXvoV1F40sY8xFrqWmuB4XBpAB0QG/z67LfCeYAKywyTtUWtDL4h4uN50Bip2qACgZi1iPEE7rx/1nCdCMpc1q+KpL32RYdB72YUJMGLBhA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=VYryOxdF; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+	 In-Reply-To:To:Cc; b=KdUMW7zJWVUAka0FIEYVtrrv/h7g7sE/ZmJ19QwkZ9hsHQUpeT39nHqTe5UL/sfYvvZlj74kIkqmJ4vXz+AvMV4a7gId3SPsh2Rq+cF5IQloV4OhCvtrHDN3FHYxRD+SRtJc5nr/2X7F12IY3nUQuZGdYFXMlHUVd5c1YXDUgiOh18JqzPYhigwlhuopwkIXwqQOr15G3J5/1sUVYx/jc4v5z4ydbH8T/wtzRVTIKvkoqia2r8vLPM21vIbXmWzVQTfw02FkTa/6fiJH8WlZzS5NGmK08Ymym6O1h89LcVlyrVg2f/SW05SmySF0rIKC1y7RprXglRvYVEUxuGPFtw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=InUYUEBx; dkim-atps=neutral; spf=pass (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=VYryOxdF;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=InUYUEBx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 418 seconds by postgrey-1.37 at boromir; Tue, 29 Apr 2025 23:11:41 AEST
+Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zn11G1JS9z2yZ6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Apr 2025 23:11:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zn1191f8Bz30VF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Apr 2025 23:11:41 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1745931874;
-	bh=T0fD62G5Xd9JAdE1vJEHi+5qJb4+xZfzKULQbTpVsYY=;
+	bh=UCCJkeYdVSKNrm9L/l2LgArwTnkqToFIXrGQtz775hQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=VYryOxdFWiuicUrPjgyis2zuZL8HUMkxBtaWkvPWWMgwx6fNX77ASJjeDFDpfyYHw
-	 KlP9XfRkBQRLrRP6PSNRiZKXU1e4Esjb2A29aFuLPFeS3riZO9QVkA9NNt7hZLeydC
-	 NcnvAzHlpyrHYLn4kkg+67KDunNeKerUN6ll+XQs=
+	b=InUYUEBxzcaSdnkfyWEYs5gnGMDG+ZrErjBcXwVYAokpi9GEx8U1OAq8QYl2tMjVP
+	 1ekrjrvh9Kq4zyyJzkto/U4Kn8QLoXereQhuqEhHhjjsu1IS7NMnfsLI/u0MH1f9jK
+	 qMLc+34JpYBUgNoLb0o6WFDZy5UfMXBeZPj/wmy4=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 29 Apr 2025 15:04:31 +0200
-Subject: [PATCH v3 4/9] kbuild: generate module BTF based on
- vmlinux.unstripped
+Date: Tue, 29 Apr 2025 15:04:32 +0200
+Subject: [PATCH v3 5/9] module: Make module loading policy usable without
+ MODULE_SIG
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,7 +55,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250429-module-hashes-v3-4-00e9258def9e@weissschuh.net>
+Message-Id: <20250429-module-hashes-v3-5-00e9258def9e@weissschuh.net>
 References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
 In-Reply-To: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
 To: Masahiro Yamada <masahiroy@kernel.org>, 
@@ -82,11 +83,11 @@ Cc: =?utf-8?q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
  linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1745931873; l=1584;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1745931873; l=4529;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=T0fD62G5Xd9JAdE1vJEHi+5qJb4+xZfzKULQbTpVsYY=;
- b=6lIaRg6590Hj4acqj1sln00p80ejNkYdhE8fd1gi5gYjFoau00uJEyqPoFekX25gQwNDezEKu
- qEQc0ld+MXaAAf2/mWACbl7TSFfJDcOGbkpMK55cb7w/QH1GfpEOqS8
+ bh=UCCJkeYdVSKNrm9L/l2LgArwTnkqToFIXrGQtz775hQ=;
+ b=FFTZUNwOflf9z+ryGT7IH9ClBV+Qgyns9jpZd219As5W1VpY2anGRlh//7RjRR1nc7E7upt8z
+ nqLMla0XzUOAp/oDbt2x4NABjz1decy6MVywaUlDbU1LQpYgWKpemko
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -94,37 +95,149 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The upcoming module hashes functionality will build the modules in
-between the generation of the BTF data and the final link of vmlinux.
-At this point vmlinux is not yet built and therefore can't be used for
-module BTF generation. vmlinux.unstripped however is usable and
-sufficient for BTF generation.
+The loading policy functionality will also be used by the hash-based
+module validation. Split it out from CONFIG_MODULE_SIG so it is usable
+by both.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- scripts/Makefile.modfinal | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/module.h  |  8 ++++----
+ kernel/module/Kconfig   |  6 +++++-
+ kernel/module/main.c    | 26 +++++++++++++++++++++++++-
+ kernel/module/signing.c | 21 ---------------------
+ 4 files changed, 34 insertions(+), 27 deletions(-)
 
-diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
-index 5d01b553ec9a4565c8e5a6edd05665c409003bc1..527f6b27baff9db94d31c15447de445a05bc0634 100644
---- a/scripts/Makefile.modfinal
-+++ b/scripts/Makefile.modfinal
-@@ -36,11 +36,11 @@ quiet_cmd_ld_ko_o = LD [M]  $@
+diff --git a/include/linux/module.h b/include/linux/module.h
+index d94b196d5a34e104d81308df4b150452eb96cdc9..68aa8bbd33acc84e013dc575ee88bd4e3101f9f4 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -453,7 +453,7 @@ struct module {
+ 	const u32 *gpl_crcs;
+ 	bool using_gplonly_symbols;
  
- quiet_cmd_btf_ko = BTF [M] $@
-       cmd_btf_ko = 							\
--	if [ ! -f $(objtree)/vmlinux ]; then				\
--		printf "Skipping BTF generation for %s due to unavailability of vmlinux\n" $@ 1>&2; \
-+	if [ ! -f $(objtree)/vmlinux.unstripped ]; then			\
-+		printf "Skipping BTF generation for %s due to unavailability of vmlinux.unstripped\n" $@ 1>&2; \
- 	else								\
--		LLVM_OBJCOPY="$(OBJCOPY)" $(PAHOLE) -J $(PAHOLE_FLAGS) $(MODULE_PAHOLE_FLAGS) --btf_base $(objtree)/vmlinux $@; \
--		$(RESOLVE_BTFIDS) -b $(objtree)/vmlinux $@;		\
-+		LLVM_OBJCOPY="$(OBJCOPY)" $(PAHOLE) -J $(PAHOLE_FLAGS) $(MODULE_PAHOLE_FLAGS) --btf_base $(objtree)/vmlinux.unstripped $@; \
-+		$(RESOLVE_BTFIDS) -b $(objtree)/vmlinux.unstripped $@;		\
- 	fi;
+-#ifdef CONFIG_MODULE_SIG
++#ifdef CONFIG_MODULE_SIG_POLICY
+ 	/* Signature was verified. */
+ 	bool sig_ok;
+ #endif
+@@ -921,14 +921,14 @@ static inline bool retpoline_module_ok(bool has_retpoline)
+ }
+ #endif
  
- # Same as newer-prereqs, but allows to exclude specified extra dependencies
+-#ifdef CONFIG_MODULE_SIG
++#ifdef CONFIG_MODULE_SIG_POLICY
+ bool is_module_sig_enforced(void);
+ 
+ static inline bool module_sig_ok(struct module *module)
+ {
+ 	return module->sig_ok;
+ }
+-#else	/* !CONFIG_MODULE_SIG */
++#else	/* !CONFIG_MODULE_SIG_POLICY */
+ static inline bool is_module_sig_enforced(void)
+ {
+ 	return false;
+@@ -938,7 +938,7 @@ static inline bool module_sig_ok(struct module *module)
+ {
+ 	return true;
+ }
+-#endif	/* CONFIG_MODULE_SIG */
++#endif	/* CONFIG_MODULE_SIG_POLICY */
+ 
+ #if defined(CONFIG_MODULES) && defined(CONFIG_KALLSYMS)
+ int module_kallsyms_on_each_symbol(const char *modname,
+diff --git a/kernel/module/Kconfig b/kernel/module/Kconfig
+index c51f25538d0ea66e6486ad0be6684173cd0140b5..a3146e9378fcd3292a756a2a7ea5241524cbc408 100644
+--- a/kernel/module/Kconfig
++++ b/kernel/module/Kconfig
+@@ -265,9 +265,13 @@ config MODULE_SIG
+ 	  debuginfo strip done by some packagers (such as rpmbuild) and
+ 	  inclusion into an initramfs that wants the module size reduced.
+ 
++config MODULE_SIG_POLICY
++	def_bool y
++	depends on MODULE_SIG
++
+ config MODULE_SIG_FORCE
+ 	bool "Require modules to be validly signed"
+-	depends on MODULE_SIG
++	depends on MODULE_SIG_POLICY
+ 	help
+ 	  Reject unsigned modules or signed modules for which we don't have a
+ 	  key.  Without this, such modules will simply taint the kernel.
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index a2859dc3eea66ec19991e7e4afb5bbcae2c2d167..83c66205556fdde92152c131f1f58229c4f7f734 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -2432,7 +2432,7 @@ static void module_augment_kernel_taints(struct module *mod, struct load_info *i
+ 				mod->name);
+ 		add_taint_module(mod, TAINT_TEST, LOCKDEP_STILL_OK);
+ 	}
+-#ifdef CONFIG_MODULE_SIG
++#ifdef CONFIG_MODULE_SIG_POLICY
+ 	mod->sig_ok = info->sig_ok;
+ 	if (!mod->sig_ok) {
+ 		pr_notice_once("%s: module verification failed: signature "
+@@ -3808,3 +3808,27 @@ static int module_debugfs_init(void)
+ }
+ module_init(module_debugfs_init);
+ #endif
++
++#ifdef CONFIG_MODULE_SIG_POLICY
++
++#undef MODULE_PARAM_PREFIX
++#define MODULE_PARAM_PREFIX "module."
++
++static bool sig_enforce = IS_ENABLED(CONFIG_MODULE_SIG_FORCE);
++module_param(sig_enforce, bool_enable_only, 0644);
++
++/*
++ * Export sig_enforce kernel cmdline parameter to allow other subsystems rely
++ * on that instead of directly to CONFIG_MODULE_SIG_FORCE config.
++ */
++bool is_module_sig_enforced(void)
++{
++	return sig_enforce;
++}
++EXPORT_SYMBOL(is_module_sig_enforced);
++
++void set_module_sig_enforced(void)
++{
++	sig_enforce = true;
++}
++#endif
+diff --git a/kernel/module/signing.c b/kernel/module/signing.c
+index a2ff4242e623d5d4e87d2f3d139d8620fb937579..e51920605da14771601327ea596dad2e12400518 100644
+--- a/kernel/module/signing.c
++++ b/kernel/module/signing.c
+@@ -16,27 +16,6 @@
+ #include <uapi/linux/module.h>
+ #include "internal.h"
+ 
+-#undef MODULE_PARAM_PREFIX
+-#define MODULE_PARAM_PREFIX "module."
+-
+-static bool sig_enforce = IS_ENABLED(CONFIG_MODULE_SIG_FORCE);
+-module_param(sig_enforce, bool_enable_only, 0644);
+-
+-/*
+- * Export sig_enforce kernel cmdline parameter to allow other subsystems rely
+- * on that instead of directly to CONFIG_MODULE_SIG_FORCE config.
+- */
+-bool is_module_sig_enforced(void)
+-{
+-	return sig_enforce;
+-}
+-EXPORT_SYMBOL(is_module_sig_enforced);
+-
+-void set_module_sig_enforced(void)
+-{
+-	sig_enforce = true;
+-}
+-
+ /*
+  * Verify the signature on a module.
+  */
 
 -- 
 2.49.0
