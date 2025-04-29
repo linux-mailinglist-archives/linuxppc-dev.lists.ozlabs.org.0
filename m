@@ -1,44 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-8153-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8151-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1228CAA0D3D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Apr 2025 15:16:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0398AA0D28
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 29 Apr 2025 15:12:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zn16x6R5Wz30Vf;
-	Tue, 29 Apr 2025 23:16:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zn11H75Lwz3bm3;
+	Tue, 29 Apr 2025 23:11:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745932601;
-	cv=none; b=OiivyhgkP5lPYzjSJdRKKSdbmvxe1AX16r2Yuu0ISOh4KH0I8DcUg7nc6WEJDo8swpB5evpOGP5VUNPhBSpusg04NvpaXpO2e7idegM1XvIKESMtIG+F6owhZPS3hAZDgbc9w4hetz9c9K/edy+pnGrUYvmMgpkwhiw+yvvNC0EPVBx2SAY3iXvMwORWkc+xct01Zz/iVUZGDOoCiuhB/0440CWuRoNBHoF2lNFAGGwQoDCKF+kmp2SplUx+6UySbjtq7Ci4kbSYDeLFOdWcyawaHtzdJdnNa8EZORp6EGD4GcbXiQ7Wu3xxkPrJZ7tGevmEPYwZt+DkffAG3RUrFg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1745932307;
+	cv=none; b=nSUrnZyvk4sWqHOxwQGjqtY3RCGnQFYpLYwRTu8Xt9KleDfz0+xpwzyKoiRyprR6u4UzMTm50Iyx0wPTxBQ4mUVtYrmUbR7pEJiybviy5Mr4SB3nv8IeZ55wxwvUejTVjSjA921v3C3uQk8Rdq/OIy8jYlTnkCog5YjvD+HJThTicp8Rf9ytUwIaKRXnrenh3+jCp0CK+vA8Fx7k6PbU0PHbvVDLaVXRzhW4rCBsTx98P/Ajb8W1E58r2i9//HEtJgIZDVGvGb9byNQ0XnVDPU2LgcYHyh7lhcGNif+v3VIaDUsNjP/EXiM7cZtiE3T3E9uIZHjasUjL87GIM++w+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1745932601; c=relaxed/relaxed;
-	bh=GwIgXgXMxDD89UdFxdVKvfSxS1D5hFyBysRT3C0LZs8=;
+	t=1745932307; c=relaxed/relaxed;
+	bh=V7L6eoEPJnbjJMSAXB2yQrkQ0S4TFYLiHhe/yWD7cqU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gPbK/9+4KI3qJnNP69mcEge6OMkIXdOkH9xq7dcOordqUB5aeActQnR/DIDgZc12OneUGUP4dhI6LmMxOMnluaXEbCDyFHz6ZzwfsXmgnZ4A3Z24PNnySCcxuIzrwiDKH3hRwDkQHCdN7dqBOT/GNWofKTLGRE4eTwIg88Oj1G1JXdxkIREJRWw1Yrsya7c8d3b6Q2msfHdQrOcrPuvBtD2HOX4jtkDWShRytC0eJkX1CMGdZR6OwpQCoRtuEle3P1tyqj5hLzq/L1SDCDmVj6U9xzG7PhD8oJqByL1qbw0HOImDjFwJw0Dy6AGQhxEpa2RKQbbAySDPAgaTRPXT6g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=eiah1WdL; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+	 In-Reply-To:To:Cc; b=MqU/BlfHjMAwEZdCZs1dY181DRTL4m3CwiiWObct/DA0lYYUVY5RoIHLg1wzVgG11tAS4JB4l9PGvhQWVUpSEXyR2Cah5HBC0UyLN9+ugsy5ERzKAJWHfgAQlSfMze1kCtwWS8UXfLYfRpcRnIdIAvi7v204x0ASLZtfDvPcoz2e4Yn3gD018VlUtOm6zPstIsL6DbBvxshv/LnQFUVnpEGu8UoFbfxYKgwwAxIbLaxq32gLPoxJCjBvBzbbI4Ylap16Uj64L3VnId3l6r/I0n6/Rmidkr1b7sTt2beyJuJwF5lPxkND480TLYeTH1FGTPyLYnRLDKCjZa0wJ6TBOA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=qndLv3n/; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=eiah1WdL;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=qndLv3n/;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zn16w74G2z30T3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Apr 2025 23:16:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zn11G3HJMz3bgV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 29 Apr 2025 23:11:46 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1745931874;
-	bh=1xKcF/fZBhfU3Lws3Lfk6rUfxpZo4l0csYGo9PaBtCc=;
+	bh=BPjoQrBeSoxkcd82ei29z+rDIHsoHB5a3gcd8mm9ZwM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=eiah1WdL2eKnsF7tQ414dNOZY13u6Gw2P3IfbaT/10ayiN3HQ8kS3E/T1C3+5ggRb
-	 QEGUilTpabghS1t6UmwPDRzXag/l+pAotCjlPOcc2hoD4PWZyCCR/8Elaucqny/daz
-	 fuTcdZeyUfEffjQMxcQzOZWNYyc7eoBO/Ny43d14=
+	b=qndLv3n/tGVvAOxnBFK/Of0mrIhDnL/+nnxiba6Ec5ZF6RxwCXcaPl7hS8GvOaXtl
+	 xouUfImN6EqV8HeXm/jn/NmYdPtWJ2aKGEPfo7ULaNPWetf3sa63MkxTvbcFrZfDCA
+	 FMutZ/ujBS+URG9esXI3QLMagSUwfztRF5yqsMRI=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 29 Apr 2025 15:04:29 +0200
-Subject: [PATCH v3 2/9] ima: efi: Drop unnecessary check for
- CONFIG_MODULE_SIG/CONFIG_KEXEC_SIG
+Date: Tue, 29 Apr 2025 15:04:30 +0200
+Subject: [PATCH v3 3/9] kbuild: add stamp file for vmlinux BTF data
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,7 +53,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250429-module-hashes-v3-2-00e9258def9e@weissschuh.net>
+Message-Id: <20250429-module-hashes-v3-3-00e9258def9e@weissschuh.net>
 References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
 In-Reply-To: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
 To: Masahiro Yamada <masahiroy@kernel.org>, 
@@ -82,11 +81,11 @@ Cc: =?utf-8?q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
  linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1745931873; l=1247;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1745931873; l=2248;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=1xKcF/fZBhfU3Lws3Lfk6rUfxpZo4l0csYGo9PaBtCc=;
- b=a13h5wSKAMY2UUgKVrcvnkrp4Fl9Me3K/4ZYxUABDz23YhoCDCM9pCfUmG0fTL+//hJo5AEVV
- PMuGwyrVySpBCThOG9GBIP02IHEMR+SD7/hVSngRiTx+1Er+YuGCw/9
+ bh=BPjoQrBeSoxkcd82ei29z+rDIHsoHB5a3gcd8mm9ZwM=;
+ b=Sf43zO4gBrfx31A5hdbo/qArDl6dxz2venScmPhuBFyao5lOhmq3ejeZRkUW/+hQCvuE4MIpY
+ QFZ7FUiGQmdDTtrQZZkd9s500lVKq3kBdQkA+vCyWrmomRtKxvFnbFt
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -94,37 +93,57 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-When configuration settings are disabled the guarded functions are
-defined as empty stubs, so the check is unnecessary.
-The specific configuration option for set_module_sig_enforced() is
-about to change and removing the checks avoids some later churn.
+The upcoming module hashes functionality will build the modules in
+between the generation of the BTF data and the final link of vmlinux.
+Having a dependency from the modules on vmlinux would make this
+impossible as it would mean having a cyclic dependency.
+Break this cyclic dependency by introducing a new target.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
-
 ---
-This patch is not strictly necessary right now, but makes looking for
-usages of CONFIG_MODULE_SIG easier.
----
- security/integrity/ima/ima_efi.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ scripts/Makefile.modfinal | 4 ++--
+ scripts/link-vmlinux.sh   | 6 ++++++
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/security/integrity/ima/ima_efi.c b/security/integrity/ima/ima_efi.c
-index 138029bfcce1e40ef37700c15e30909f6e9b4f2d..a35dd166ad47beb4a7d46cc3e8fc604f57e03ecb 100644
---- a/security/integrity/ima/ima_efi.c
-+++ b/security/integrity/ima/ima_efi.c
-@@ -68,10 +68,8 @@ static const char * const sb_arch_rules[] = {
- const char * const *arch_get_ima_policy(void)
+diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+index 542ba462ed3ec9607e0df10e26613a4c7ac318e8..5d01b553ec9a4565c8e5a6edd05665c409003bc1 100644
+--- a/scripts/Makefile.modfinal
++++ b/scripts/Makefile.modfinal
+@@ -52,8 +52,8 @@ if_changed_except = $(if $(call newer_prereqs_except,$(2))$(cmd-check),      \
+ 	printf '%s\n' 'savedcmd_$@ := $(make-cmd)' > $(dot-target).cmd, @:)
+ 
+ # Re-generate module BTFs if either module's .ko or vmlinux changed
+-%.ko: %.o %.mod.o .module-common.o $(objtree)/scripts/module.lds $(and $(CONFIG_DEBUG_INFO_BTF_MODULES),$(KBUILD_BUILTIN),$(objtree)/vmlinux) FORCE
+-	+$(call if_changed_except,ld_ko_o,$(objtree)/vmlinux)
++%.ko: %.o %.mod.o .module-common.o $(objtree)/scripts/module.lds $(and $(CONFIG_DEBUG_INFO_BTF_MODULES),$(KBUILD_BUILTIN),$(objtree)/.tmp_vmlinux_btf.stamp) FORCE
++	+$(call if_changed_except,ld_ko_o,$(objtree)/.tmp_vmlinux_btf.stamp)
+ ifdef CONFIG_DEBUG_INFO_BTF_MODULES
+ 	+$(if $(newer-prereqs),$(call cmd,btf_ko))
+ endif
+diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+index 51367c2bfc21ef9a8ebbc30670b1edd220b571a3..5f060787ce3fbcbcfdca0c95789d619e2a1c7b72 100755
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -113,6 +113,7 @@ vmlinux_link()
+ gen_btf()
  {
- 	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()) {
--		if (IS_ENABLED(CONFIG_MODULE_SIG))
--			set_module_sig_enforced();
--		if (IS_ENABLED(CONFIG_KEXEC_SIG))
--			set_kexec_sig_enforced();
-+		set_module_sig_enforced();
-+		set_kexec_sig_enforced();
- 		return sb_arch_rules;
- 	}
- 	return NULL;
+ 	local btf_data=${1}.btf.o
++	local btf_stamp=.tmp_vmlinux_btf.stamp
+ 
+ 	info BTF "${btf_data}"
+ 	LLVM_OBJCOPY="${OBJCOPY}" ${PAHOLE} -J ${PAHOLE_FLAGS} ${1}
+@@ -133,6 +134,11 @@ gen_btf()
+ 	fi
+ 	printf "${et_rel}" | dd of="${btf_data}" conv=notrunc bs=1 seek=16 status=none
+ 
++	info STAMP $btf_stamp
++	if ! cmp --silent $btf_data $btf_stamp; then
++		cp $btf_data $btf_stamp
++	fi
++
+ 	btf_vmlinux_bin_o=${btf_data}
+ }
+ 
 
 -- 
 2.49.0
