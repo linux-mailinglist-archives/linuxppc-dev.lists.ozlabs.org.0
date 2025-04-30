@@ -1,70 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-8196-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8197-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200B3AA50C3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Apr 2025 17:49:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4609AA52B5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Apr 2025 19:37:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZnhT76ygvz3bn0;
-	Thu,  1 May 2025 01:49:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZnksW06zPz304f;
+	Thu,  1 May 2025 03:37:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746028187;
-	cv=none; b=mgGD6rOVGjkRFa1jcrXqFRLN/5JiMwOxV/fMRa3RYiF8du8162o7P/EBcUada/Hl1vgwWG56AKK0pfMZFVCpAJCpHrBt5rI6QuI+s1o9gOO9RAvHPBji0Aa66ouFYv53OIUjpHXYlqGJBmuw7oCV4BoA9ekLPH8hAUo4jq8FK68q5L/MWLfaVNHI7ZczFdi9LIPzYz5erb+HQ3opQqg9206yJsBQgahLnXKP2xmItrngCXFNVj8IswNdLhqgm3Gkvbb2q44PgTs2Rp7WGCpA5CI+3q3bz4Zz7+nADmOIxmIdUxfnKgVrd7782CwiBa1poCLp5EWIUcIc80bphAEOLw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::235"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746034654;
+	cv=none; b=dClNxUZPWO8MKLgz7MOeeS9/HCFBC58l7tEH7k6pi3FqJoRCpgKOCXDsYF0fTlPBmAfYOe7vTZf7jjmwf1e9/pwIg+Hl0XtzMRYB3i/4RSh2uKHjzrOxm5AGf1YobcjSAF5DFxlgvTmddGv026a0JNSy4oH1ezJ6W4VL1GzkvzvseVnfD5t2KoIYNxZen4K1/uu33X7HqLohJWfvWi/XhM7bjj2YUkLZbupQpUWUEBvkV+bAalzrJ7C5/PsqjR78hJ0FN/PkF7nMSoeeWg5TJn/f1WZpJzRFFp5OAjH+/4aLnMr8PVe/aR+lY8+5Y1V2jZVK22bvjwbLGjUjcupkSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746028187; c=relaxed/relaxed;
-	bh=FgocyTvxZfhULZGwGvCgXkcqLIHnxY9W7xUsWeiydkY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aVOYBZEgYJaI0xqY1JmgOxSKuRqLCAdIvg/rPI1r0RRcvdzLXaRz+yWMb5vOZ7eHdNg4HpfSCMDXtHOA15Yg2sxS74IU9Qt1juDpIpWWAQZGItpklK5ZtnqxEnqb4uohMBy3+j+6ehM4/rn35cONtVQnz5usmI2Pn/uETnv98pShMWpdiqpQBoIN2j/O0Vo6AJOnFrNGMpYH99KCCukFNexZyn6qv1QS6jQnHSmiMijuSKpeM+5N8RJ2U4GzsaZnugzQwwUY3aU0fwqmKpo8TwwnJO2ecD2NCgG4m5/plvCYTonawC3wjyAyb8pyywSyXOX7PibOotJw87T+SYiHSA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ILkRzJmx; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1746034654; c=relaxed/relaxed;
+	bh=B80QHmr+sB5OMT7DkCFdd8/2a+nIvyDwd83EjF1b7wg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=O8COF0S7jEZOJXo49YvbosNF0NQ++9Uhl3e81PO363yoypNQr3OiPovchNt6HAKYUHOvcs6LAAQYsSAyjYTwynCAkZslquO/mJvQEKIO1INwj7dAbiwd9M0i78QXIfphWOlVReg2XYueSD0t0O5c3r2GWwcsFhHfIEweHbCfVW0VVgfCw2X38qvCq3qEls4sE1VFWEj1+1pgIX9f4cHIqRRiqACksb/hzOwHjKg8k4f3zocQB0nyO6JuOw8rzq8zPfZDFpzEciZ2Oxjw9Ce6JBOk0agcmeytwZiLm+6oJ8KHbAj3I4hGFENDKYA8Hn7I9Mfq1t6BwJ2Ijg/zS4NUng==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=C1HShPkj; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ILkRzJmx;
+	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=C1HShPkj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZnhT66knhz301G
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 May 2025 01:49:46 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A83126842A;
-	Wed, 30 Apr 2025 15:49:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB48DC4CEE7;
-	Wed, 30 Apr 2025 15:49:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746028182;
-	bh=jbN75Y77ia3DaPmLil5WAcGzaZgfrTs67v8JYHeLyFY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ILkRzJmxPdFObsI9MPCYwxX97C4pY7WZMUG69FkF2voL4XquCgdJqXarl/qXSmdsT
-	 lIE+AMd4Db+DvmeQIlqNoL1xbfIFeUiYZIWEMhbbxTe6T82fBtJQVkcfuwBWzs9vnZ
-	 2v1VvzarKWKk6kHsUF7YLUq8XDSco1Hy7lT0Owon3EWnk74hfL0VsyDxC1CugjAZrz
-	 0KhAuvpzMf2pXyQG4H3hQtLNkWpqyEAMtY8aiDijMy3p5zSKqi5zD7Nsuw/CecffIl
-	 Y+CFLFQ5Ck/om6P0AA0xzbTrnH45tDY2ptwuSj3T2Ag4pWXq1iPlboUxdMmHpjZus1
-	 pT5EdHo2bLaXg==
-Date: Wed, 30 Apr 2025 18:49:37 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-integrity@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Sumit Garg <sumit.garg@kernel.org>, linux-kernel@vger.kernel.org,
-	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH v3 4/4] tpm/tpm_svsm: support TPM_CHIP_FLAG_SYNC
-Message-ID: <aBJGkSil1YAzSXsg@kernel.org>
-References: <20250414145653.239081-1-sgarzare@redhat.com>
- <20250414145653.239081-5-sgarzare@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZnksS6w5Dz301G
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  1 May 2025 03:37:32 +1000 (AEST)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-3105ef2a08dso486151fa.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Apr 2025 10:37:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1746034647; x=1746639447; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=B80QHmr+sB5OMT7DkCFdd8/2a+nIvyDwd83EjF1b7wg=;
+        b=C1HShPkjYaECuJczghQfLNFfigUzKyVNiyGTIudN0qjecFKynD8/XqJytpZFV29+qw
+         KAlaK6nw+H1hAzFwJDw3soTe676Gk3w89GlCYcrsSsJeKxQ+9hQfEhgaisPaa2VR1Gpo
+         sI6kYrFVq2jGVpa9Fp+rwv9uk5iqagzMEVjPi0b4+1AMECOF2kYvQNMH/cL0hufjJEoC
+         ZVywMGkdFsqls7XMa8DsraGq9fMAYDka1Hjkw6ww3RwCFcFVMdZMTxSFEuwBupaoKyp5
+         IKq0lY0GteWSTo9fMYoeLtb4sJOFdsBN+U9vzb/94/lkU7tIclDUiD0P5ymvqE2LYRfE
+         pnTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746034647; x=1746639447;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B80QHmr+sB5OMT7DkCFdd8/2a+nIvyDwd83EjF1b7wg=;
+        b=D7tnpJid2mQZjmU7xsBXDfGGkqLbntEPoLeGyJW6GBgaHQKWkTOUP1Ls0T29RnLi+u
+         +xodDEjATDCmi9KnoXDsMr0bfqu0bJG/8zesQDPbZL4Oy3br3hcuGfuq5eTN8PtjnmBU
+         q9qIHMBJsjQ4rdVprAnAO4Jqek1TaDysZVRAJ57by9rsiKdrVYeXIXTZjXKmA1+jhJhi
+         gpZ/9jBd5FESxZ9egMbkMOzTk1KCby8Uou6218Q9oHfEiJZ5MGBOhUmMEf4IXpzfoKol
+         GAQI+WP45BzlMeIK1e6zHTu2kCPsSJzysToERYAhq21n/3YQrvGR++39qfhqEkdR+yZ1
+         p1GA==
+X-Forwarded-Encrypted: i=1; AJvYcCVHZ9o4nVljs/MvgSwjyeAAOfvF2ssliMEykxKcPekYFAvCHdl42Uv/HdLqtyClRdKSk3QWQvMi+W2hsrM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxN2n4BbjbWy22iY7nkClcuALrk7h2160mYM6zHOaiDoI4ESZPN
+	10CarLiCDtzJzkAemRx0+d2sKHDXGirXSnLTgP0mr/+aByGy1bI8KrT8OSpZSGFGcGJHU4iaZSc
+	mRNRTZizIa2RqS7AKGcTn0zTOQh1YCjve/qKbDQ==
+X-Gm-Gg: ASbGncuWU0kli8Fo8zPMC7Ev1jEn1lXKxwRgdeZre2QwW5jNGaeJtG0lN8Ltrr2juJf
+	HQMPz/7RKKcK4iusLz7SW9GOoOPmzCFhNb/u9oWhCoGdZgKSKLxnLMQTd5kO1NOlF1/Yhm/t+hf
+	Hhj6MERj3S2KmwxfmKU0WiwhAs2QytjS+YShrerslyT5XnfQUZouTgiQ==
+X-Google-Smtp-Source: AGHT+IHEUyDS2y73x5UTLVTCAeSkmZ9cGIaS0WUiShuP4klNjjtKcVRhzpqZk/qxLOTTSObt/mVmSixEfyP9TzJHf3w=
+X-Received: by 2002:a05:651c:2112:b0:30b:a185:47d8 with SMTP id
+ 38308e7fff4ca-31e69d17438mr13186651fa.4.1746034647109; Wed, 30 Apr 2025
+ 10:37:27 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,101 +78,93 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250414145653.239081-5-sgarzare@redhat.com>
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250408-gpiochip-set-rv-powerpc-v1-0-73dc1ebc6ef1@linaro.org>
+ <20250408-gpiochip-set-rv-powerpc-v1-2-73dc1ebc6ef1@linaro.org> <4a6e8ac1-b4e8-49e1-bc8a-d1854985bb31@csgroup.eu>
+In-Reply-To: <4a6e8ac1-b4e8-49e1-bc8a-d1854985bb31@csgroup.eu>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Wed, 30 Apr 2025 19:37:14 +0200
+X-Gm-Features: ATxdqUEh34Gz1POqWO9v2IKaGBTgS6zz7pi2s7vMr2oV8EN8tMuslc97xocJ6hQ
+Message-ID: <CAMRc=MesdgXAivzDnm1RW-jcxs_5goZiyKvK0-JLwqDv=9F6LQ@mail.gmail.com>
+Subject: Re: [PATCH 2/5] powerpc: 83xx/gpio: use new line value setter callbacks
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, Anatolij Gustschin <agust@denx.de>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Apr 14, 2025 at 04:56:53PM +0200, Stefano Garzarella wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> This driver does not support interrupts, and receiving the response is
-> synchronous with sending the command.
-> 
-> So we can set TPM_CHIP_FLAG_SYNC to support synchronous send() and
-> return responses in the same buffer used for commands. This way we
-> don't need to implement recv() op.
-> 
-> Keep using the same pre-allocated buffer to avoid having to allocate
-> it for each command. We need the buffer to have the header required by
-> the SVSM protocol and the command contiguous in memory.
-> 
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+On Wed, Apr 30, 2025 at 7:33=E2=80=AFPM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 08/04/2025 =C3=A0 09:21, Bartosz Golaszewski a =C3=A9crit :
+> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >
+> > struct gpio_chip now has callbacks for setting line values that return
+> > an integer, allowing to indicate failures. Convert the driver to using
+> > them.
+> >
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > ---
+> >   arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c | 6 ++++--
+> >   1 file changed, 4 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c b/arch/powe=
+rpc/platforms/83xx/mcu_mpc8349emitx.c
+> > index 4d8fa9ed1a67..d4ba6dbb86b2 100644
+> > --- a/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
+> > +++ b/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
+> > @@ -92,7 +92,7 @@ static void mcu_power_off(void)
+> >       mutex_unlock(&mcu->lock);
+> >   }
+> >
+> > -static void mcu_gpio_set(struct gpio_chip *gc, unsigned int gpio, int =
+val)
+> > +static int mcu_gpio_set(struct gpio_chip *gc, unsigned int gpio, int v=
+al)
+> >   {
+> >       struct mcu *mcu =3D gpiochip_get_data(gc);
+> >       u8 bit =3D 1 << (4 + gpio);
+> > @@ -105,6 +105,8 @@ static void mcu_gpio_set(struct gpio_chip *gc, unsi=
+gned int gpio, int val)
+> >
+> >       i2c_smbus_write_byte_data(mcu->client, MCU_REG_CTRL, mcu->reg_ctr=
+l);
+> >       mutex_unlock(&mcu->lock);
+> > +
+> > +     return 0;
+>
+> i2c_smbus_write_byte_data() can fail, why not return the value returned
+> by i2c_smbus_write_byte_data() ?
+>
 
-Similar comments, and a bit redundancy does not matter i.e., they can
-have pretty much the same explanation.
+The calls to i2c_smbus_write_byte_data() in this driver are
+universally not checked. I cannot test it and wasn't sure if that's on
+purpose so I decided to stay safe. Someone who has access to this
+platform could potentially fix it across the file.
 
-> ---
->  drivers/char/tpm/tpm_svsm.c | 27 +++++++++++----------------
->  1 file changed, 11 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
-> index d3ca5615b6f7..db1983072345 100644
-> --- a/drivers/char/tpm/tpm_svsm.c
-> +++ b/drivers/char/tpm/tpm_svsm.c
-> @@ -25,38 +25,32 @@ struct tpm_svsm_priv {
->  	void *buffer;
->  };
->  
-> -static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t len,
-> +static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t cmd_len,
->  			 size_t buf_size)
->  {
->  	struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
->  	int ret;
->  
-> -	ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, len);
-> +	ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, cmd_len);
->  	if (ret)
->  		return ret;
->  
->  	/*
->  	 * The SVSM call uses the same buffer for the command and for the
-> -	 * response, so after this call, the buffer will contain the response
-> -	 * that can be used by .recv() op.
-> +	 * response, so after this call, the buffer will contain the response.
-> +	 *
-> +	 * Note: we have to use an internal buffer because the device in SVSM
-> +	 * expects the svsm_vtpm header + data to be physically contiguous.
->  	 */
-> -	return snp_svsm_vtpm_send_command(priv->buffer);
-> -}
-> -
-> -static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
-> -{
-> -	struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
-> +	ret = snp_svsm_vtpm_send_command(priv->buffer);
-> +	if (ret)
-> +		return ret;
->  
-> -	/*
-> -	 * The internal buffer contains the response after we send the command
-> -	 * to SVSM.
-> -	 */
-> -	return svsm_vtpm_cmd_response_parse(priv->buffer, buf, len);
-> +	return svsm_vtpm_cmd_response_parse(priv->buffer, buf, buf_size);
->  }
->  
->  static struct tpm_class_ops tpm_chip_ops = {
->  	.flags = TPM_OPS_AUTO_STARTUP,
-> -	.recv = tpm_svsm_recv,
->  	.send = tpm_svsm_send,
->  };
->  
-> @@ -85,6 +79,7 @@ static int __init tpm_svsm_probe(struct platform_device *pdev)
->  
->  	dev_set_drvdata(&chip->dev, priv);
->  
-> +	chip->flags |= TPM_CHIP_FLAG_SYNC;
->  	err = tpm2_probe(chip);
->  	if (err)
->  		return err;
-> -- 
-> 2.49.0
-> 
+Bartosz
 
-BR, Jarkko
+> >   }
+> >
+> >   static int mcu_gpio_dir_out(struct gpio_chip *gc, unsigned int gpio, =
+int val)
+> > @@ -123,7 +125,7 @@ static int mcu_gpiochip_add(struct mcu *mcu)
+> >       gc->can_sleep =3D 1;
+> >       gc->ngpio =3D MCU_NUM_GPIO;
+> >       gc->base =3D -1;
+> > -     gc->set =3D mcu_gpio_set;
+> > +     gc->set_rv =3D mcu_gpio_set;
+> >       gc->direction_output =3D mcu_gpio_dir_out;
+> >       gc->parent =3D dev;
+> >
+> >
+>
 
