@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-8231-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8232-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3DFEAA6657
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 00:42:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E8FAA6658
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 00:42:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZpTZP1yynz2ySc;
-	Fri,  2 May 2025 08:42:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZpTZb0VLBz2ydN;
+	Fri,  2 May 2025 08:42:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::544"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746137218;
-	cv=none; b=UUlnvxwZdC3ky7PhIofiFkhGIMaBFfsCDoEJiy/wzvpUOUbBg0Ukg3YA9b3glbUW3yG00W5l9kokodLZ7oz0A3N41/RBkYJdZn2NIT9uVV69si7uzR6BdwKnZY7B6+ClMvZtondnV6oSmEgl6QYBCQNhXC7QuLMe16hf8Q8evqFchSgWCLrI1umTOABPxSK1MjAwEv9paOcr/taJtckm9NUOIgsOSwhPpBSlkz8AbXVDNxxbzrJyrYRCfXkPeM5a9zKJXLJLozxZk5uEbN1/e8SRuT+hORAIY6AygGXG57n9I/gBN4bZfSDsU1PtLAl00MoM2jXA6v3TqUVut0BiEw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::542"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746137250;
+	cv=none; b=GvCgbGm/csVIfr3SkEseS3ywLFINb/ba63Ok9huLFnDnEiPkmteP4hktYf2RnTf3iUb4Ukv4UMMoQMJPbxFJpCwVArNFyJRzW2vCwEsiXE9e/sn73UdINs72O4wnJAy0lF3ZXCbI0+PETmx2ffj1da809yIiJlz1uBMWKuMoUWGnxo0gXiFZojpamICR0T2GEDE9pQk3BFBFojn+wKOuXjpB71xR+hLrQVyEhrXbnrq8vl9d2vze5kQYJ41hw4wpUa4hAbFevYicTBp/4ZL1FLtE1FE6ZfKKQjjEhfzfffR7g4fNksLic0uL4Z4HgcpmhWL2nRMOzm2t/km1VwNa6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746137218; c=relaxed/relaxed;
-	bh=tOjpypFIC1MFYfuSlXMzhrCrJGqjuZGfc32KsKpKFhQ=;
+	t=1746137250; c=relaxed/relaxed;
+	bh=HvC11TDh5RWBWPLxa7ORV/+ShfE7ZB4C79Xpi2o9TqM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mqDFpx+cDeK+ApHfEBQYfjulrWwrEHTAS+GdjNr2yBrotv445dk3GLD0LwE/MnaYA4qooAfw8BAYdg3WRLAlv2tMvyzR08tSiUrMvWPbHa77WtRys9YW//aindKZPnKvauHAPz1z9dzcvm8xPSTSS3J36dAdsHiAQJXplw3r3AD/wmPhQxTBbHhwXk0jvOzuzjTm0ZzgWP1z0VGlcycBOSQibPTXYUFWyYI6L2zzcUiLphl7lVJj645E+INS2tduOHQpTXHWZVA9RBLZzd+8PhRUFJ5Z2rjkc+qfym7oGvaxHDDd6riv6mf+yJjeH+ibA5w1AvOZdEFtYMOFyaAGeA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eHGnWlYY; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=bkdduG/U8NKvj1PuDyZxdWTW4Ypbhc9vE6u4ihIrRC4EHa/Ck7XqN1/2M2J/8V6e4G2Hzq2qBBtJVG22M2PMzs6eUsB2A2vDgANDV2hnfLP9msV2HmilltRhh23ga56rthg4thHQfbnj5rm1FDnQ/VSk6+Bu203kIjBldhJm5NJJU2NMBE5NKLA3a1OOsVy6h6dV/cNyxuVlHt3NB04rL1ToSR3tk2/7CcQhd+cS0ETaqoJhC2j6r1PFCKAgJr7D6u8os1pjhb1D3kV4B9w+Y/CKgVkU9JzjN87aQxPYPVcIABgUwiWixZLhNImAnkMeLx9rII3jAS99m/E2XrLgag==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UzJ2rPhB; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eHGnWlYY;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UzJ2rPhB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZpSnm4jVgz2yMF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 08:06:52 +1000 (AEST)
-Received: by mail-ed1-x544.google.com with SMTP id 4fb4d7f45d1cf-5efe8d9eb12so2157727a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 May 2025 15:06:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZpSpT4rX0z2yMF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 08:07:29 +1000 (AEST)
+Received: by mail-ed1-x542.google.com with SMTP id 4fb4d7f45d1cf-5f4d6d6aaabso2141377a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 May 2025 15:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746137207; x=1746742007; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1746137247; x=1746742047; darn=lists.ozlabs.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=tOjpypFIC1MFYfuSlXMzhrCrJGqjuZGfc32KsKpKFhQ=;
-        b=eHGnWlYYDeltqgKOXn6gnzHWwu8E6EaIYscEI+P2JoQoeEWpjV2nH5TCZO3S+BArVu
-         1cdQMvN1yz0zkt/yNyq8QMBhbd0SmGqThxC03n2XVIg7qKcnw6/RmrpJyztJxx7rCM7B
-         EnaDZ3Ql2k1nh6KJ/n5Ee9q3uNRrAfM/3luyEvuR62Wz4JdtP8/aHpD2xeM4EyveOsnl
-         q9QvdgmwMZeRq504shyGNNhEiX8H+7lPnMAhOc5xkz/uDr1x8zywAOSg+kecIMG1Yfv0
-         75fztby5Rh9x6cAY1Op6W1BRDMOirI+mRcu0jSPVp/g87qteg6/osSRTr2mLBoMrPrz7
-         yIuA==
+        bh=HvC11TDh5RWBWPLxa7ORV/+ShfE7ZB4C79Xpi2o9TqM=;
+        b=UzJ2rPhBsMM9nH2/ZNwpM8AYvzjwi72Q8/gig4LO5eisO9/80NELWtFuwXABd2zvaQ
+         mk7TlOd8Y3avSMoWtvEyWBm2O6Agai3/SWFlvKVI2mwp8dc8io1oeuPdX0AUFsPSLk1e
+         GPxrWEzojBsNG5Q4xIBzJ8BAl8EbmWKXmiB04C2uJjdxmXpkTn5iOQcSNetq3FqHgwb5
+         t/FbPoco9F1d78U2ARMQtrtMeBUn/4fjhRt5ExXnm0p4kWlpeuYa2t4Utnjps7OeTtCr
+         im5De4Uur/157+uYtcdznTu8RZpAHSMgjWHac79BZSJSdU71ZbaZEuu6XPWOGvCV1/xM
+         ddRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746137207; x=1746742007;
+        d=1e100.net; s=20230601; t=1746137247; x=1746742047;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tOjpypFIC1MFYfuSlXMzhrCrJGqjuZGfc32KsKpKFhQ=;
-        b=CpSDmfbUfyzu6OWkpPoUrkB3KFIIbEvxTWuBf+uOppUV0sXZYZzTDMg94MFX/f/n6L
-         cZRq+L7AfyPQhoH2x/HU3H6n0ROrH9hLAuvONtP50HjZMnZGrOpIJAgHaRsuVxwx0u76
-         8tK+RUEsuzoT/JIexR4/4lLmXgd19AyIRjX815vD4JFQnaYvcc4YO+mNpHkoC1ntjxYf
-         6Za32tKr5UdUkmuE08R7fdF6xqYhlsBvIPlMXT+1eXoNBiYUwu1i+flm0ddDahUWy5fu
-         ad0JquSubvMXfSdv3tKFgZTpNm3JX7ZpmRF0xPu+dH5SGMqqyBLBZ0PwAr3ddKHzNaN6
-         VgQw==
-X-Forwarded-Encrypted: i=1; AJvYcCXtzKPPKwDHovpeh/Gb7zE5YG030W9gWKY0V/r92Z3pFK322JpS4jL17k6wDTFvpNifD5qO7ARV+3wdaj0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz5e0erGbZeOF8aJ8Fzdb1RfEdGHJWRprde1BwxfFCAYwgAYrB9
-	zcnk0AR3iCjOprHM5pGSAjof4c9/2wnb+IfFkquXK3Zzbng92e/1i2gQU/k+WuYlVkIAlRHvaPw
-	gJ+TSF7QvC+DkmOrYVk5GYAIxuXs=
-X-Gm-Gg: ASbGncvqW7s3nLYd3BSZLtc3O5J11+oAN0fUywZcPAbwA15NOrCBvAFpUcJbW6e/2tE
-	zLAW1pU+5PCpugAMUm6xGXIMkKGwr1LH0pS4tJWJSfb8gaRyH5JwQut/HC8KzbWNhoOFKviE371
-	ORb5AqeW1bdDuZUmz7yTG948kDS6Q2d62XWHgnJKatET8g4vWivyZU/g==
-X-Google-Smtp-Source: AGHT+IFdlZgpJIIOZwmEjMJEBEmVCQHnSyA+ervJFsjlZ4P4vNdH66g4BiTBr5V5jAKGV/k1Wwx3ddRiGr22IKP7V9w=
-X-Received: by 2002:a05:6402:90a:b0:5f4:d572:68a with SMTP id
- 4fb4d7f45d1cf-5fa7801465dmr256726a12.12.1746137207142; Thu, 01 May 2025
- 15:06:47 -0700 (PDT)
+        bh=HvC11TDh5RWBWPLxa7ORV/+ShfE7ZB4C79Xpi2o9TqM=;
+        b=GXnQO4CVnct+HNu5XvdxGzmh1h4zweVwZhAgtUO9wAERBzp8XjoYRNhrx7LL/95iex
+         4FwNzrkhFaj9vCWLs7easQ67MBNpizMPmOa1kvOqN951B9/prNWnAWi9e+Pa3JQ1zk40
+         9WEygNVPnc54Sfjh+hmidZcCMRwKrui2Sw7zdZY9pt7wMnpOUIhBgYw0kiE19EN7tn88
+         TZdQs57/sxaIfjq1J+bhL9hLJMEJcuotgbNoMovKKbTKQbblkt88FuB3oqw/g7aXLJty
+         RPB73K14sh71NBkveM796Ef46JpKq+Ctr/7b6uVz0b+AgEnlwiRr92A91QpgacwkjaLY
+         G1lg==
+X-Forwarded-Encrypted: i=1; AJvYcCUErbn9AvIrdXWy/z0BS1f/Hi5mWeiRjnRwl1A2YOQC+onAsC1rU2e8U71ducEyDXxPX4g2+3+WnOT8rrM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw1WuWuhG+URHwkFUoVFLKg/t1aa/fqSZZ01TT+QZ+kjv53l4UJ
+	xDNy/M0R5bEA5TO3JroL/k01XKGXUFWsqu3POPf/zIXeUzGBBoNaqGE58jXgIWQ4hFlbFcCycd0
+	5+uCHU/Xn05SIDKmHNzx7LegTIAY=
+X-Gm-Gg: ASbGnctBy6Ck+xmfWr5yMwPMRLXUtJU2Od5c+V0ft/s6sbWbSqi2cqXwFCQ9tIHWSFX
+	q62u4YHfFYkXSqdIa1+dzwpbUxq/2LNfGQMNfYrTae7dRziwVGJjf9rO/0LoNCO0LE1YqSnnRPr
+	UbTS9QQv6h0c2wP2ah5P0LUAD2IQ/LaP7JTox06letByE=
+X-Google-Smtp-Source: AGHT+IG1lU56iqWpifKIgMMmYrNdr1ioTH6+OP6AGYVsnjqNRlojuMU0G4Vpeu63oJvn/WKU5CN6RH1ZoN5Nh1W7fAQ=
+X-Received: by 2002:a05:6402:3589:b0:5f8:30c2:862d with SMTP id
+ 4fb4d7f45d1cf-5fa78040187mr334068a12.13.1746137246565; Thu, 01 May 2025
+ 15:07:26 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,13 +77,13 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250501073603.1402960-1-luis.gerhorst@fau.de> <20250501073603.1402960-3-luis.gerhorst@fau.de>
-In-Reply-To: <20250501073603.1402960-3-luis.gerhorst@fau.de>
+References: <20250501073603.1402960-1-luis.gerhorst@fau.de> <20250501073603.1402960-4-luis.gerhorst@fau.de>
+In-Reply-To: <20250501073603.1402960-4-luis.gerhorst@fau.de>
 From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Date: Fri, 2 May 2025 00:06:10 +0200
-X-Gm-Features: ATxdqUE3JDqCne76-GBuIfwNJ48-dE9we8FlVLpDVL25L4gVtlMzRXX74KP1XKg
-Message-ID: <CAP01T75pdQCFuMpHq0tB6DLs0xdmS9nqMMp5hfq4z2o3-e1-5Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 02/11] bpf: Move insn if/else into do_check_insn()
+Date: Fri, 2 May 2025 00:06:50 +0200
+X-Gm-Features: ATxdqUGg7YCCKDNPYyxZKyCdlBGugnXkLd2V8xrmgc9OhDJov6fHaQiLQWWlX40
+Message-ID: <CAP01T76-_PadE-BViz4bQQYQHFCNJS0Txs065w99dEcxrP3kMA@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v3 03/11] bpf: Return -EFAULT on misconfigurations
 To: Luis Gerhorst <luis.gerhorst@fau.de>
 Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
 	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
@@ -109,26 +109,21 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 1 May 2025 at 09:43, Luis Gerhorst <luis.gerhorst@fau.de> wrote:
+On Thu, 1 May 2025 at 09:48, Luis Gerhorst <luis.gerhorst@fau.de> wrote:
 >
-> This is required to catch the errors later and fall back to a nospec if
-> on a speculative path.
+> Mark these cases as non-recoverable to later prevent them from being
+> caught when they occur during speculative path verification.
 >
-> Eliminate the regs variable as it is only used once and insn_idx is not
-> modified in-between the definition and usage.
+> Eduard writes [1]:
 >
-> Still pass insn simply to match the other check_*() functions. As Eduard
-> points out [1], insn is assumed to correspond to env->insn_idx in many
-> places (e.g, __check_reg_arg()).
+>   The only pace I'm aware of that might act upon specific error code
+>   from verifier syscall is libbpf. Looking through libbpf code, it seems
+>   that this change does not interfere with libbpf.
 >
-> Move code into do_check_insn(), replace
-> * "continue" with "return 0" after modifying insn_idx
-> * "goto process_bpf_exit" with "return PROCESS_BPF_EXIT"
-> * "do_print_state = " with "*do_print_state = "
->
-> [1] https://lore.kernel.org/all/293dbe3950a782b8eb3b87b71d7a967e120191fd.camel@gmail.com/
+> [1] https://lore.kernel.org/all/785b4531ce3b44a84059a4feb4ba458c68fce719.camel@gmail.com/
 >
 > Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
+> Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
 > Acked-by: Henriette Herzog <henriette.herzog@rub.de>
 > Cc: Maximilian Ott <ott@cs.fau.de>
 > Cc: Milan Stephan <milan.stephan@fau.de>
