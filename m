@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-8230-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8231-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5676FAA65D8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  1 May 2025 23:54:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3DFEAA6657
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 00:42:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZpSWh1K0wz2yYf;
-	Fri,  2 May 2025 07:54:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZpTZP1yynz2ySc;
+	Fri,  2 May 2025 08:42:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::541"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746118619;
-	cv=none; b=eWYaBABQcxTLJPI0S6zlrESNoi2OZkWK5cuU/qkk/o+ZgWD0TcyvKcrSg9QNrO7zywmmfY8VXzg8v5hXof2hsVem2iZjXXti/NQVo0pF0FZqebR1qsRUOPaPcuzuzSLOixnTqm7ggQQQUXu9W82hEhBlQO2u5GoJLZhLvAuBtj8TV39+1ACDeKTZWMWji0hSVezjLWGFEaPqcaHsuajs0+PJ8MA5PmYDBYAVY3XxntZg5l8385TBK6a79zugUEVbhTKIQOtvWnXSoeHqg0gEiSzU3nJ3YONOK21agsYCjzOrH2zAX4GfLljivuw4qc6L4/f3m79/A25nKoTz1AEKaA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::544"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746137218;
+	cv=none; b=UUlnvxwZdC3ky7PhIofiFkhGIMaBFfsCDoEJiy/wzvpUOUbBg0Ukg3YA9b3glbUW3yG00W5l9kokodLZ7oz0A3N41/RBkYJdZn2NIT9uVV69si7uzR6BdwKnZY7B6+ClMvZtondnV6oSmEgl6QYBCQNhXC7QuLMe16hf8Q8evqFchSgWCLrI1umTOABPxSK1MjAwEv9paOcr/taJtckm9NUOIgsOSwhPpBSlkz8AbXVDNxxbzrJyrYRCfXkPeM5a9zKJXLJLozxZk5uEbN1/e8SRuT+hORAIY6AygGXG57n9I/gBN4bZfSDsU1PtLAl00MoM2jXA6v3TqUVut0BiEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746118619; c=relaxed/relaxed;
-	bh=pjITccKn52YoXHvMNHp0xjqzTUP9bb6Gv+c2QtvOV0Q=;
+	t=1746137218; c=relaxed/relaxed;
+	bh=tOjpypFIC1MFYfuSlXMzhrCrJGqjuZGfc32KsKpKFhQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NRJzmG3ySvKcsot8oiGdSTPIAQjD7up25XyG2V2Yx+hg385uwJtZAY8OgeJm5LpVPS7OI0RgxYAW6ZZrmKzolBTg62G6nQuPnCu3rI7GiP4D/Ry0daAOAF9O+odmO6LwSU3eNEjZnl5CSgtFAUozF2Z0/IzqFYVeJ+6CKJCwdKHqfT+T+t8OQJME9V49J/eTnWcmIgi4aWKChcXwP0FNuoMP1xwufHUKyyY/6PNLztQ0iZpJjukuXahTvwCHOM7dmq7Q3rL2Vpizwlg7o4GWq/hKTnKtYc448jIiqKWuJiQbfDtWIh59jI21M3/4sQ4uEGej4+uiC+A00hZzZakFuA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KxeFCj8u; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=mqDFpx+cDeK+ApHfEBQYfjulrWwrEHTAS+GdjNr2yBrotv445dk3GLD0LwE/MnaYA4qooAfw8BAYdg3WRLAlv2tMvyzR08tSiUrMvWPbHa77WtRys9YW//aindKZPnKvauHAPz1z9dzcvm8xPSTSS3J36dAdsHiAQJXplw3r3AD/wmPhQxTBbHhwXk0jvOzuzjTm0ZzgWP1z0VGlcycBOSQibPTXYUFWyYI6L2zzcUiLphl7lVJj645E+INS2tduOHQpTXHWZVA9RBLZzd+8PhRUFJ5Z2rjkc+qfym7oGvaxHDDd6riv6mf+yJjeH+ibA5w1AvOZdEFtYMOFyaAGeA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eHGnWlYY; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KxeFCj8u;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eHGnWlYY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::544; helo=mail-ed1-x544.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZpKw96tHpz2yQj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 02:56:56 +1000 (AEST)
-Received: by mail-ed1-x541.google.com with SMTP id 4fb4d7f45d1cf-5f62d3ed994so2083990a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 May 2025 09:56:56 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZpSnm4jVgz2yMF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 08:06:52 +1000 (AEST)
+Received: by mail-ed1-x544.google.com with SMTP id 4fb4d7f45d1cf-5efe8d9eb12so2157727a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 01 May 2025 15:06:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746118611; x=1746723411; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1746137207; x=1746742007; darn=lists.ozlabs.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=pjITccKn52YoXHvMNHp0xjqzTUP9bb6Gv+c2QtvOV0Q=;
-        b=KxeFCj8uiNPwyHb89oc32hs/oehI2WjwfjlWJckDpAZlrJOEpwF6TA13UDqNpsNId8
-         9L53ZqidjhetXlW2QcqWswjH6pkuvA3KcE6DqMby9uKZ4VYHG8E5/s5OvudaVjZ9VHJY
-         jdm0NTh++fwkqdLmqFo1w6QUR88Bsj/QqHcNSCrn3V0aelFSwEgVscetx8XNaLzlH1hk
-         BDQKdGGRdZdpnBTeq9ICOhu6V0fk+7c7FcWEKa8xr3X0d/TBPErd76YufYsTREGq+/19
-         36zESQ6hxz8lQqvtliuaKam4Ua4RpBwz33uawdqjw9iw6+kmmqRycTO3px1vnSMe6ouj
-         P5Mw==
+        bh=tOjpypFIC1MFYfuSlXMzhrCrJGqjuZGfc32KsKpKFhQ=;
+        b=eHGnWlYYDeltqgKOXn6gnzHWwu8E6EaIYscEI+P2JoQoeEWpjV2nH5TCZO3S+BArVu
+         1cdQMvN1yz0zkt/yNyq8QMBhbd0SmGqThxC03n2XVIg7qKcnw6/RmrpJyztJxx7rCM7B
+         EnaDZ3Ql2k1nh6KJ/n5Ee9q3uNRrAfM/3luyEvuR62Wz4JdtP8/aHpD2xeM4EyveOsnl
+         q9QvdgmwMZeRq504shyGNNhEiX8H+7lPnMAhOc5xkz/uDr1x8zywAOSg+kecIMG1Yfv0
+         75fztby5Rh9x6cAY1Op6W1BRDMOirI+mRcu0jSPVp/g87qteg6/osSRTr2mLBoMrPrz7
+         yIuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746118611; x=1746723411;
+        d=1e100.net; s=20230601; t=1746137207; x=1746742007;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pjITccKn52YoXHvMNHp0xjqzTUP9bb6Gv+c2QtvOV0Q=;
-        b=swJHXRlpy1SsPH1e2uoMwtNjaRKlPfM/LW4DBQwuf+Nve27wndpFqhhukJ7YX93O9D
-         /vQj9tmk2eIgB8BLa/xxopF2L7wd8/FQGVe9L06wSCwPXmlji6/9rV2FiSjnGXA6bOdd
-         wuuwHqHr/Hbprqlc9DbZYJcswlcypUlvwJ8sXtCIjqF99o/dS1lpNLS6vBwDuAy6NVL8
-         NVm+Cfys0dkQW7keg/UxE1AUpFAdIM7ZPmR7Ik2qaAi5S4PYGycWPvhGDYk9ZL6kSHMO
-         M4SYSS8OkNdfxgJN2co1J2EXVCT7iC2ut59oXblfdE5wB/CRmu8iWMlMkpMqVZs3+aw1
-         mNUg==
-X-Forwarded-Encrypted: i=1; AJvYcCVgCIsYOMn+2G8UiEC805RlWRcHinunPXEKrS+ll65y6CzEQdR21ux6M1EL2Bv2R7fmTOcp2puOwOQIlto=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyJhxLA8tVde5YHLAKbr6QWgIIeWpcRx/ICh4aGNrAAyhartXYA
-	D6X4qfcYnirJJ8zmXmikZQIb+UUcHwkVxXDTN9SIAhULYY9noItu+6bx/jsAdEAvOFou8PWziOO
-	FXiln5S5eTK4veIlVMmm7T8lWTw8=
-X-Gm-Gg: ASbGncurQPYI4t5xEExSeR+Mw70jsOFqgnoix81+hS1M6kpewN9dautu9iObpIVsbWc
-	cfqrlQNHBKWblZI4Bw8rxsA9lxRmGUEg3PnnnOJ6FnRKSxhWfnEnhiQJMsAAbDiSB5G13rTWxYA
-	Iiz3+VmKRG3itTv9Ynv5lwYAbY8bT4Ok4JpHxuNONplxqChR16nmy9Ow==
-X-Google-Smtp-Source: AGHT+IECEidvEo999oYKJS7UCLAVVBM0myFbAJ15E7tPIRmjavdQpBC/5/8mZ8iIClrt0F8kscmSCXQGalHJ9fnIAF0=
-X-Received: by 2002:a05:6402:524c:b0:5e6:de5:312f with SMTP id
- 4fb4d7f45d1cf-5f913507c6dmr3187305a12.23.1746118610475; Thu, 01 May 2025
- 09:56:50 -0700 (PDT)
+        bh=tOjpypFIC1MFYfuSlXMzhrCrJGqjuZGfc32KsKpKFhQ=;
+        b=CpSDmfbUfyzu6OWkpPoUrkB3KFIIbEvxTWuBf+uOppUV0sXZYZzTDMg94MFX/f/n6L
+         cZRq+L7AfyPQhoH2x/HU3H6n0ROrH9hLAuvONtP50HjZMnZGrOpIJAgHaRsuVxwx0u76
+         8tK+RUEsuzoT/JIexR4/4lLmXgd19AyIRjX815vD4JFQnaYvcc4YO+mNpHkoC1ntjxYf
+         6Za32tKr5UdUkmuE08R7fdF6xqYhlsBvIPlMXT+1eXoNBiYUwu1i+flm0ddDahUWy5fu
+         ad0JquSubvMXfSdv3tKFgZTpNm3JX7ZpmRF0xPu+dH5SGMqqyBLBZ0PwAr3ddKHzNaN6
+         VgQw==
+X-Forwarded-Encrypted: i=1; AJvYcCXtzKPPKwDHovpeh/Gb7zE5YG030W9gWKY0V/r92Z3pFK322JpS4jL17k6wDTFvpNifD5qO7ARV+3wdaj0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz5e0erGbZeOF8aJ8Fzdb1RfEdGHJWRprde1BwxfFCAYwgAYrB9
+	zcnk0AR3iCjOprHM5pGSAjof4c9/2wnb+IfFkquXK3Zzbng92e/1i2gQU/k+WuYlVkIAlRHvaPw
+	gJ+TSF7QvC+DkmOrYVk5GYAIxuXs=
+X-Gm-Gg: ASbGncvqW7s3nLYd3BSZLtc3O5J11+oAN0fUywZcPAbwA15NOrCBvAFpUcJbW6e/2tE
+	zLAW1pU+5PCpugAMUm6xGXIMkKGwr1LH0pS4tJWJSfb8gaRyH5JwQut/HC8KzbWNhoOFKviE371
+	ORb5AqeW1bdDuZUmz7yTG948kDS6Q2d62XWHgnJKatET8g4vWivyZU/g==
+X-Google-Smtp-Source: AGHT+IFdlZgpJIIOZwmEjMJEBEmVCQHnSyA+ervJFsjlZ4P4vNdH66g4BiTBr5V5jAKGV/k1Wwx3ddRiGr22IKP7V9w=
+X-Received: by 2002:a05:6402:90a:b0:5f4:d572:68a with SMTP id
+ 4fb4d7f45d1cf-5fa7801465dmr256726a12.12.1746137207142; Thu, 01 May 2025
+ 15:06:47 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,13 +77,13 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250501073603.1402960-1-luis.gerhorst@fau.de> <20250501073603.1402960-2-luis.gerhorst@fau.de>
-In-Reply-To: <20250501073603.1402960-2-luis.gerhorst@fau.de>
+References: <20250501073603.1402960-1-luis.gerhorst@fau.de> <20250501073603.1402960-3-luis.gerhorst@fau.de>
+In-Reply-To: <20250501073603.1402960-3-luis.gerhorst@fau.de>
 From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Date: Thu, 1 May 2025 18:56:13 +0200
-X-Gm-Features: ATxdqUF2nyzuV4YsC3PXg7l3hGhLYkWnuNMDOdnMHwkg3TmNkQsrDO9p2L0Wm2o
-Message-ID: <CAP01T742Td_U8=fs4DDrxWSdQcXEpGE=T6+WfJqBw_bqpXhb+g@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 01/11] selftests/bpf: Fix caps for __xlated/jited_unpriv
+Date: Fri, 2 May 2025 00:06:10 +0200
+X-Gm-Features: ATxdqUE3JDqCne76-GBuIfwNJ48-dE9we8FlVLpDVL25L4gVtlMzRXX74KP1XKg
+Message-ID: <CAP01T75pdQCFuMpHq0tB6DLs0xdmS9nqMMp5hfq4z2o3-e1-5Q@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v3 02/11] bpf: Move insn if/else into do_check_insn()
 To: Luis Gerhorst <luis.gerhorst@fau.de>
 Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
 	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
@@ -101,32 +101,37 @@ Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
 	Matan Shachnai <m.shachnai@gmail.com>, Dimitar Kanaliev <dimitar.kanaliev@siteground.com>, 
 	Shung-Hsi Yu <shung-hsi.yu@suse.com>, Daniel Xu <dxu@dxuuu.xyz>, bpf@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, 
+	Maximilian Ott <ott@cs.fau.de>, Milan Stephan <milan.stephan@fau.de>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 1 May 2025 at 09:39, Luis Gerhorst <luis.gerhorst@fau.de> wrote:
+On Thu, 1 May 2025 at 09:43, Luis Gerhorst <luis.gerhorst@fau.de> wrote:
 >
-> Currently, __xlated_unpriv and __jited_unpriv do not work because the
-> BPF syscall will overwrite info.jited_prog_len and info.xlated_prog_len
-> with 0 if the process is not bpf_capable(). This bug was not noticed
-> before, because there is no test that actually uses
-> __xlated_unpriv/__jited_unpriv.
+> This is required to catch the errors later and fall back to a nospec if
+> on a speculative path.
 >
-> To resolve this, simply restore the capabilities earlier (but still
-> after loading the program). Adding this here unconditionally is fine
-> because the function first checks that the capabilities were initialized
-> before attempting to restore them.
+> Eliminate the regs variable as it is only used once and insn_idx is not
+> modified in-between the definition and usage.
 >
-> This will be important later when we add tests that check whether a
-> speculation barrier was inserted in the correct location.
+> Still pass insn simply to match the other check_*() functions. As Eduard
+> points out [1], insn is assumed to correspond to env->insn_idx in many
+> places (e.g, __check_reg_arg()).
+>
+> Move code into do_check_insn(), replace
+> * "continue" with "return 0" after modifying insn_idx
+> * "goto process_bpf_exit" with "return PROCESS_BPF_EXIT"
+> * "do_print_state = " with "*do_print_state = "
+>
+> [1] https://lore.kernel.org/all/293dbe3950a782b8eb3b87b71d7a967e120191fd.camel@gmail.com/
 >
 > Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
-> Fixes: 9c9f73391310 ("selftests/bpf: allow checking xlated programs in verifier_* tests")
-> Fixes: 7d743e4c759c ("selftests/bpf: __jited test tag to check disassembly after jit")
+> Acked-by: Henriette Herzog <henriette.herzog@rub.de>
+> Cc: Maximilian Ott <ott@cs.fau.de>
+> Cc: Milan Stephan <milan.stephan@fau.de>
 > ---
 
 Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
