@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-8253-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8257-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993C4AA6E72
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 11:50:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F30AA70E1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 13:50:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZpmPp2Wtnz30Sv;
-	Fri,  2 May 2025 19:50:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zpq4Q1QlGz30Tf;
+	Fri,  2 May 2025 21:50:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746179438;
-	cv=none; b=PZ75WVXUjG70LEWYgwGJPDzKWKcATjJTw/tIDiwXNpkUy3TkY4S0p2dYNhUHDZW8/CcwxeyX3l7/dGBBxsvzh4AdHDGZRRc40LewsQQ2qub0LzA0old+cLjF6nkhwMc1H2ydtUPJ8eb3T5fVE36ewhZ+QQ95C4cCHgq1+kLuCAecibPOXhlguGeaNOFGdjNKZSgqnJnOkFJeUFsZWowRjVOaLRDKMKu/gx8mW9tH6QriQ8KuYrGfA7zBNz1beMEizMwSNM0cTrMPtChIIImQau88o1Fto0G4bePZlaVXZw5F6wzLxL5q8CK5AzjJ2yfTFUqXqCmH6f1O+63r9S6fFw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746186646;
+	cv=none; b=lBbg2X+IiNSzjV77SMcI8r1SRm+Y3dekQUvLYjXvHL6Nl4eFq07kEevjuZHrJcexBCdOPmCCi9kQNg+aOARPN3GvgwZOjB6lcStm0B5dr4kHkFkmTtr3L9YvhnfZK/hQc3NeRbhL+y8BfLX1o96H1c8tcCht9UyfzxuuF2Tz2sNISLgKRwWqBtY0MTJHZ0J7yrgBXCfcxew6TdbcdgPiaEnb5tu+ldMEbt8D9QgJIgpSEhmbg6ml10wqoNFFIImWkrQOeSilfkbaXWSfjaziQ6F6KbnXqTGqkwLYYy05e76APpx+C5Qsftj6X+1go7TvGCWkIS0bAAXVGpsYkWM0qw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746179438; c=relaxed/relaxed;
-	bh=lzSno6rRSayf/UEJk2+uVMe9ZaMTzfso9CG0VamVVdw=;
+	t=1746186646; c=relaxed/relaxed;
+	bh=RnvHg4Gbp7SSMGBbXzlh1n5Vkm0MIF4s6ehhoaluIfo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZR1JuEM9dLI1P9MsD1kS2MphlmuEPuO98vk5QWY4YntuQOxTGdtst+F4SML5Ejf9lXmZXc8LSUJtgA6NlpuYW6znfnHaBACRyTCLeWEnlitIvHOFz3/dGevrILTT2ZePwV0GP2P55rcM+HtZknHttMoA5f7IiGcmSXbwbtgBdPB4hVB+YcG3YYm8A0qtv30mrbUqcTe4BPvMkuVd/1I7zKhKEC/uELKsVLDm4MOTMSwLchLnhVdTJ5z48KbCR1+QZKvZiV/f9O5XIuoqj44Q+SSQyRw9xMsgq/nZXSfGMCSFVLjjseK2AptdDmwgEBRuRUYqeqkLA1pkxe13nPfkEw==
+	 In-Reply-To:Content-Type; b=WoOfAWzVBvFsZxS0J9swgqY7pmhpSrbNPP9EZMVYgUjIzm8dM5fUAAOR+w+6wYqTj7dB16mmO4i77ijpNaNibZDVYpTXDgsHzHp3m37JeUT103IUqvM8Y847kSfiHIRbnWqt5cthcAGzoLYG6K+kHhVY07lIMGpim7NToaMDXfnvM8vUO6UjckD7dFr9GlICeUjaR4MyUc/+3ZYTPn03MCmefSQ+9xYmUGOpI4jwL2XbyIfe43ehuskbJpexpxtujnI+0s+KiUj3yyR8zxwiYt+G2nvv0A/B/20p3nn2nNJFW4Q+jc5Qb3jY13VtKttik8di2YffECTXcj58/HmLtA==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZpmPn2f3Jz30LS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 19:50:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zpq4P3xTQz2xTh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 21:50:45 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4Zpm0p2R7Zz9sVS;
-	Fri,  2 May 2025 11:32:26 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4Zpmpc6ghbz9sYQ;
+	Fri,  2 May 2025 12:08:40 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id zcdAzJ89m-7Z; Fri,  2 May 2025 11:32:26 +0200 (CEST)
+	with ESMTP id a1XLOGcz6JIo; Fri,  2 May 2025 12:08:40 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4Zpm0T386Wz9sYQ;
-	Fri,  2 May 2025 11:32:09 +0200 (CEST)
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4Zpmpb63Bmz9sXD;
+	Fri,  2 May 2025 12:08:39 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 670DC8B765;
-	Fri,  2 May 2025 11:32:09 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C9B038B765;
+	Fri,  2 May 2025 12:08:39 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id wmcughdSQ2WZ; Fri,  2 May 2025 11:32:09 +0200 (CEST)
+	with ESMTP id nj_9Cp3iwI3i; Fri,  2 May 2025 12:08:39 +0200 (CEST)
 Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DA1DF8B763;
-	Fri,  2 May 2025 11:32:08 +0200 (CEST)
-Message-ID: <4d6de524-82b7-41b3-af67-29dcf6f8c0cf@csgroup.eu>
-Date: Fri, 2 May 2025 11:32:08 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C2ED8B763;
+	Fri,  2 May 2025 12:08:39 +0200 (CEST)
+Message-ID: <ff07d507-faaf-4565-9343-bb4a18a8410a@csgroup.eu>
+Date: Fri, 2 May 2025 12:08:39 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,93 +58,121 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] powerpc: 83xx/gpio: use new line value setter
- callbacks
-To: Bartosz Golaszewski <brgl@bgdev.pl>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
- Anatolij Gustschin <agust@denx.de>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-References: <20250502-gpiochip-set-rv-powerpc-v2-0-488e43e325bf@linaro.org>
- <20250502-gpiochip-set-rv-powerpc-v2-2-488e43e325bf@linaro.org>
+Subject: Re: [PATCH 2/6] powerpc/xmon: fix sparse warning "Using plain integer
+ as NULL pointer"
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au
+Cc: npiggin@gmail.com, naveen@kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20250422131040.374427-1-maddy@linux.ibm.com>
+ <20250422131040.374427-3-maddy@linux.ibm.com>
 Content-Language: fr-FR
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250502-gpiochip-set-rv-powerpc-v2-2-488e43e325bf@linaro.org>
+In-Reply-To: <20250422131040.374427-3-maddy@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0
-	tests=RCVD_IN_VALIDITY_CERTIFIED_BLOCKED,RCVD_IN_VALIDITY_RPBL_BLOCKED,
-	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 
-Le 02/05/2025 à 10:59, Bartosz Golaszewski a écrit :
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> 
-> struct gpio_chip now has callbacks for setting line values that return
-> an integer, allowing to indicate failures. Convert the driver to using
-> them.
-> 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Le 22/04/2025 à 15:10, Madhavan Srinivasan a écrit :
+> Fix passing of argument 0 to NULL to avoid sparse warning
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+I thought we wanted to keep this file in sync with opcodes/ppc-opc.c in 
+the binutils repository.
 
+Are you sure you want to do such manual change ? Shouldn't the change 
+first be done in binutils then backported in linux kernel ?
+
+Christophe
+
+> 
+> Cleans up sparse warning:
+> arch/powerpc/xmon/ppc-opc.c:797:15: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:797:18: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:801:15: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:801:18: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:805:14: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:805:17: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:809:16: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:809:19: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:863:15: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:863:18: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:868:15: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:868:18: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:872:15: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:872:18: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:875:15: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:875:18: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:878:15: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:878:18: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:881:14: warning: Using plain integer as NULL pointer
+> arch/powerpc/xmon/ppc-opc.c:881:17: warning: Using plain integer as NULL pointer
+> 
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 > ---
->   arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c | 13 ++++++++-----
->   1 file changed, 8 insertions(+), 5 deletions(-)
+>   arch/powerpc/xmon/ppc-opc.c | 20 ++++++++++----------
+>   1 file changed, 10 insertions(+), 10 deletions(-)
 > 
-> diff --git a/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c b/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
-> index 4d8fa9ed1a678..6e37dfc6c5c9e 100644
-> --- a/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
-> +++ b/arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c
-> @@ -92,10 +92,11 @@ static void mcu_power_off(void)
->   	mutex_unlock(&mcu->lock);
->   }
+> diff --git a/arch/powerpc/xmon/ppc-opc.c b/arch/powerpc/xmon/ppc-opc.c
+> index 0774d711453e..b4ca7eb8d765 100644
+> --- a/arch/powerpc/xmon/ppc-opc.c
+> +++ b/arch/powerpc/xmon/ppc-opc.c
+> @@ -794,19 +794,19 @@ const struct powerpc_operand powerpc_operands[] =
+>   #define PSWM WS + 1
+>     /* The BO16 field in a BD8 form instruction.  */
+>   #define BO16 PSWM
+> -  {  0x1, 10, 0, 0, 0 },
+> +  {  0x1, 10, NULL, NULL, 0 },
 >   
-> -static void mcu_gpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
-> +static int mcu_gpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
->   {
->   	struct mcu *mcu = gpiochip_get_data(gc);
->   	u8 bit = 1 << (4 + gpio);
-> +	int ret;
+>     /* IDX bits for quantization in the pair singles instructions.  */
+>   #define PSQ PSWM + 1
+> -  {  0x7, 12, 0, 0, 0 },
+> +  {  0x7, 12, NULL, NULL, 0 },
 >   
->   	mutex_lock(&mcu->lock);
->   	if (val)
-> @@ -103,14 +104,16 @@ static void mcu_gpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
->   	else
->   		mcu->reg_ctrl |= bit;
+>     /* IDX bits for quantization in the pair singles x-type instructions.  */
+>   #define PSQM PSQ + 1
+> -  {  0x7, 7, 0, 0, 0 },
+> +  {  0x7, 7, NULL, NULL, 0 },
 >   
-> -	i2c_smbus_write_byte_data(mcu->client, MCU_REG_CTRL, mcu->reg_ctrl);
-> +	ret = i2c_smbus_write_byte_data(mcu->client, MCU_REG_CTRL,
-> +					mcu->reg_ctrl);
->   	mutex_unlock(&mcu->lock);
-> +
-> +	return ret;
->   }
+>     /* Smaller D field for quantization in the pair singles instructions.  */
+>   #define PSD PSQM + 1
+> -  {  0xfff, 0, 0, 0,  PPC_OPERAND_PARENS | PPC_OPERAND_SIGNED },
+> +  {  0xfff, 0, NULL, NULL,  PPC_OPERAND_PARENS | PPC_OPERAND_SIGNED },
 >   
->   static int mcu_gpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
->   {
-> -	mcu_gpio_set(gc, gpio, val);
-> -	return 0;
-> +	return mcu_gpio_set(gc, gpio, val);
->   }
+>     /* The L field in an mtmsrd or A form instruction or R or W in an X form.  */
+>   #define A_L PSD + 1
+> @@ -860,25 +860,25 @@ const struct powerpc_operand powerpc_operands[] =
+>     /* Xilinx APU related masks and macros */
+>   #define FCRT XFL_L + 1
+>   #define FCRT_MASK (0x1f << 21)
+> -  { 0x1f, 21, 0, 0, PPC_OPERAND_FCR },
+> +  { 0x1f, 21, NULL, NULL, PPC_OPERAND_FCR },
 >   
->   static int mcu_gpiochip_add(struct mcu *mcu)
-> @@ -123,7 +126,7 @@ static int mcu_gpiochip_add(struct mcu *mcu)
->   	gc->can_sleep = 1;
->   	gc->ngpio = MCU_NUM_GPIO;
->   	gc->base = -1;
-> -	gc->set = mcu_gpio_set;
-> +	gc->set_rv = mcu_gpio_set;
->   	gc->direction_output = mcu_gpio_dir_out;
->   	gc->parent = dev;
+>     /* Xilinx FSL related masks and macros */
+>   #define FSL FCRT + 1
+>   #define FSL_MASK (0x1f << 11)
+> -  { 0x1f, 11, 0, 0, PPC_OPERAND_FSL },
+> +  { 0x1f, 11, NULL, NULL, PPC_OPERAND_FSL },
 >   
-> 
+>     /* Xilinx UDI related masks and macros */
+>   #define URT FSL + 1
+> -  { 0x1f, 21, 0, 0, PPC_OPERAND_UDI },
+> +  { 0x1f, 21, NULL, NULL, PPC_OPERAND_UDI },
+>   
+>   #define URA URT + 1
+> -  { 0x1f, 16, 0, 0, PPC_OPERAND_UDI },
+> +  { 0x1f, 16, NULL, NULL, PPC_OPERAND_UDI },
+>   
+>   #define URB URA + 1
+> -  { 0x1f, 11, 0, 0, PPC_OPERAND_UDI },
+> +  { 0x1f, 11, NULL, NULL, PPC_OPERAND_UDI },
+>   
+>   #define URC URB + 1
+> -  { 0x1f, 6, 0, 0, PPC_OPERAND_UDI },
+> +  { 0x1f, 6, NULL, NULL, PPC_OPERAND_UDI },
+>   
+>     /* The VLESIMM field in a D form instruction.  */
+>   #define VLESIMM URC + 1
 
 
