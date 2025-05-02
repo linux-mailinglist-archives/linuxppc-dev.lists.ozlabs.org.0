@@ -1,92 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-8261-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8262-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80CD0AA799A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 20:57:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC89AA7AB4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 22:15:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zq0Xq0H28z2ym3;
-	Sat,  3 May 2025 04:57:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zq2H70T2fz2yNG;
+	Sat,  3 May 2025 06:15:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=131.188.11.21
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746212250;
-	cv=none; b=NNvvr9jepCW45gF87xYOvfrZpyhjNMQ6ZTE4L8DZQG+9k+ifEVZikP5RTqYrZheIcgkL3hioqgHumMWYR96yJH+y/rPm4nVGuE10g/BYAYagJuP9ayE/F3PEag1atTyFt75QpCbqTivbP3JyXT5EsBN48Izt4QmizLYvZ76CAErZife2BnF03E8Tm1YKV7W5NtVZ4vaS2At9kH3hMWzhJyU3IBDiomM8IcEgmUvze1uc4xWzUQiI60cNU6K2Es7GyzeeelM7n/aJzLfoykJxqJi3L25zDn55Ji5blKguOhPpv0UHwxysdMtl+rZ9QOPytzT8SFuK43zf4QLwfwMrwQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::632"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746216946;
+	cv=none; b=e9B7R5QO+BJxw4Pyo6mGD9a9FPfx6zOdKqcff36a6YUXPM9vPCdIgps+cK8CGVh+Dx9OITfwvsOBWsSUF5En0zbWa0v8EwwWkv8uE7Cu7lDaiYgOJlZAipjqrvy0D6DsSzYDHimOzjsHNTusboTSzQqxYdIXxhhljG9/PS/DJMmDIuLGE9GC4Tf/oLYzNEMsr7NroT5bpowTWRgnjsz2sf67vof4IBkw1QclBNyl+Dy7NKT09cVpldQO1zeVQqSmZry0wG7BDJr24LGOiR0vY1dZvNmw176F47H1+jTE8CR9DbNL+60k0tnY55pVzraUgaidX6YzI56KkhPp1c0X9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746212250; c=relaxed/relaxed;
-	bh=0WplOH6reEOyo56HZrQ4jKNXZI+yjUubamsmQNCRUCY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=hrpn4tFUzpWMtg9AeL5mONOpdtrN1WpZt01MkXHrzBJW5qEOhvgoLA+ZaD19+0MSIQAtLJOLQ41WLilPmk90kC60FVseK2vfcPIbD/BG2U5ri5s25V+5kjvw0kNsul7YeaVBW91eUQKjHhPJ2pnHpF/PK66XDBA/jhtfn+n9fW5Uo1IiJbddz6daLHscb6bVxCW6w5QJs3Y9N8rSuUTL61iXYZFr82Jqt0wMlGZVCxDLRQWNpS7XuFZoJfQ7pq12PGP8Tz+7HSLiHY6ImzM+XiZUB2ZgRyH7IwgPNUGPlt5zQW+55Xtf+X2xkPGWVqsAzF4PWeXz5ArgdQqf+5fbVQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de; dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=n9iwAjy0; dkim-atps=neutral; spf=pass (client-ip=131.188.11.21; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org) smtp.mailfrom=fau.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de
+	t=1746216946; c=relaxed/relaxed;
+	bh=r9HeAFxjFkW0HNGves/hgPsnmbUEtDcb6IHr8qBuaVU=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=SIDqC3bmrk3pZ03j7NTDu8B18djkCVf1vEXIeMyY4LaiqTTp3q2RwdDokI88r8XkXCaE/Y+V+GkfCMzi+tAvD1paitHfb16SccLt7BMDprADLOKCyU0p8euiTV7C0LfaZccFIVbiI3HNXqir0wlRJKBp18fmOtKaRFCTB3sP4i7vKlzLzQrAZ/lMpytriEpNka7BJKsQvfPlsdB+c8NlyA6fSl+i+N9Afiwiv6dmymEQ7eKMfdq+ZEHPt8N/w9+T2+FhGuiRB1isaXH8uQLFxlTafDCImlg8mBJlIrR57Z2tMdwa66Ckw+WN02cu4VXF7saXtwY2Z6bV6dZGddJDsQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AbVkqGzN; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=n9iwAjy0;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AbVkqGzN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fau.de (client-ip=131.188.11.21; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org)
-Received: from mx-rz-2.rrze.uni-erlangen.de (mx-rz-2.rrze.uni-erlangen.de [131.188.11.21])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zq0Xj29STz2yKr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 May 2025 04:57:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
-	t=1746212237; bh=0WplOH6reEOyo56HZrQ4jKNXZI+yjUubamsmQNCRUCY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From:To:CC:
-	 Subject;
-	b=n9iwAjy0SCwI/oTEelalFezKHV0RYG0VDpXqybVxfyGwi0IM8vAl35OpIi4W9R5KH
-	 vcn9pyiozd6b2WhOhl5ary39qNouueeR7Na7VJHTW7l9wfSyNspiOIwqFAwyqRk/IH
-	 raKvFnLjkZ1HjaHlohVzkXJi+Q0inLIuRcCfUiwHL5pK9Mec2rTTHqvR6LXXcB5wG3
-	 01IAhKNJP2PAMsz9CcgBjdbmBrZjvYBn7r/1r+0IJo3pDIasBfOYc4edY0F3GXtbmN
-	 hzyYyWe+iugeNy/+eCBSyEizxi3ufvcdwqq2q51dZXiHUL2rVbWf0rsA2yqHdNv7mR
-	 IPDFxF8RvoSPQ==
-Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-rz-2.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4Zq0XX6cB1zPlkm;
-	Fri,  2 May 2025 20:57:16 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at boeck2.rrze.uni-erlangen.de (RRZE)
-X-RRZE-Flag: Not-Spam
-X-RRZE-Submit-IP: 2001:9e8:363c:9000:3afa:e4e0:adc6:326
-Received: from localhost (unknown [IPv6:2001:9e8:363c:9000:3afa:e4e0:adc6:326])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: U2FsdGVkX1/NAHScjHSrb5WnifYoZ30p9gOLHTIMgjg=)
-	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4Zq0XS4PQKzPkbD;
-	Fri,  2 May 2025 20:57:12 +0200 (CEST)
-From: Luis Gerhorst <luis.gerhorst@fau.de>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
- <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Martin
- KaFai Lau <martin.lau@linux.dev>,  Eduard Zingerman <eddyz87@gmail.com>,
-  Song Liu <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,
-  John Fastabend <john.fastabend@gmail.com>,  KP Singh
- <kpsingh@kernel.org>,  Stanislav Fomichev <sdf@fomichev.me>,  Hao Luo
- <haoluo@google.com>,  Jiri Olsa <jolsa@kernel.org>,  Puranjay Mohan
- <puranjay@kernel.org>,  Xu Kuohai <xukuohai@huaweicloud.com>,  Catalin
- Marinas <catalin.marinas@arm.com>,  Will Deacon <will@kernel.org>,  Hari
- Bathini <hbathini@linux.ibm.com>,  Christophe Leroy
- <christophe.leroy@csgroup.eu>,  Naveen N Rao <naveen@kernel.org>,
-  Madhavan Srinivasan <maddy@linux.ibm.com>,  Michael Ellerman
- <mpe@ellerman.id.au>,  Nicholas Piggin <npiggin@gmail.com>,  Mykola
- Lysenko <mykolal@fb.com>,  Shuah Khan <shuah@kernel.org>,  Henriette
- Herzog <henriette.herzog@rub.de>,  Saket Kumar Bhaskar
- <skb99@linux.ibm.com>,  Cupertino Miranda <cupertino.miranda@oracle.com>,
-  Jiayuan Chen <mrpre@163.com>,  Matan Shachnai <m.shachnai@gmail.com>,
-  Dimitar Kanaliev <dimitar.kanaliev@siteground.com>,  Shung-Hsi Yu
- <shung-hsi.yu@suse.com>,  Daniel Xu <dxu@dxuuu.xyz>,  bpf@vger.kernel.org,
-  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  linuxppc-dev@lists.ozlabs.org,  linux-kselftest@vger.kernel.org,
-  Maximilian Ott <ott@cs.fau.de>,  Milan Stephan <milan.stephan@fau.de>
-Subject: Re: [PATCH bpf-next v3 08/11] bpf: Fall back to nospec for Spectre v1
-In-Reply-To: <CAP01T76kOixPct5cOPHGKubFWSbSS7ztEnZc02v2wWGPOUYRCQ@mail.gmail.com>
-	(Kumar Kartikeya Dwivedi's message of "Fri, 2 May 2025 01:55:54 +0200")
-References: <20250501073603.1402960-1-luis.gerhorst@fau.de>
-	<20250501073603.1402960-9-luis.gerhorst@fau.de>
-	<CAP01T76kOixPct5cOPHGKubFWSbSS7ztEnZc02v2wWGPOUYRCQ@mail.gmail.com>
-User-Agent: mu4e 1.12.8; emacs 30.1
-Date: Fri, 02 May 2025 20:57:11 +0200
-Message-ID: <875xiij0xk.fsf@fau.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zq2H53gLcz2xd5
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 May 2025 06:15:45 +1000 (AEST)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-2279915e06eso28784795ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 May 2025 13:15:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746216942; x=1746821742; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=r9HeAFxjFkW0HNGves/hgPsnmbUEtDcb6IHr8qBuaVU=;
+        b=AbVkqGzNCawc0euNHNKVXdmxMMGRslR1E1+ufM1NY/wjior3Li7a53wCV5WgS1COON
+         zYm+eiypDnh92YwZdrLqN8ROy31w6uQzHYH3BpzxbfcU6K9SJI/SQfyaMDtJFSYY+sU0
+         lVe8mYx2tde5OYVP/LRgtwzqmTRHfOM1ZRsSu4btuU72oXJ6+2nqd02DHvmBAsNtrOlv
+         LCDNB25CgOKJl7IiSOYotFuwp2i+HBNW/ZvY0lbSoi+JzG2UUWrzTsmooPkz4GwaTwpn
+         kjheY7az/Ad1Z4cgHjh/cJ0hRWL69WUVrf2IMlGmPYVLUM6nQol1kPOw6xIq2tXQy4FR
+         s4PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746216942; x=1746821742;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r9HeAFxjFkW0HNGves/hgPsnmbUEtDcb6IHr8qBuaVU=;
+        b=G04kW8vTYcPiW3vy3GwmuCTD6yP4eCBDqaOlLjHYL7YonrwOecebcn0mHO8c1SJjZ1
+         ilcxF2MiGVvNhJTO/BjrN1E+3ApYxChtSTcg4YKMDiHevezHQcmcJoTxByWuMi3jenQf
+         JbPTh3BlhgtHWpCxhbJzm47lDaIqbb/j20ylCvJsJTpHvr895I/7suuepDqM/WYtk/KM
+         S7CAYjQRCoT35CsIy+lY1zRhPAJdMnlfy1FNY6ynig6nJKgZ/cIKYNo0tz/w6YcmGRdd
+         Rsjx9TBl5nVEsqDF49EqZCMv9M2evuZPKqVUIoBm6UszfHkTvOnvJu0v9tzdqRDvIlts
+         4nUA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1wW8Wr8iNMMiDQX+Ct386X8qP+qizKYCAKMPKXS9/LG8NDmdftHM+E3OFFypSMUdiN8YvDynCeaH8f2k=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz+hna6bv2Hbj3poGHBP4+Vk1A+Dd0tbr7we8dKF9tlMt9Af/6O
+	7oV/ZIpRvZzK8Pzi7RB2qqpL8HG4GWMue9HI7eJYNR7Xi5cMy9a4
+X-Gm-Gg: ASbGnctpVhIv+W3unJ1QQoXlGrwZmK0drr2brps5nR+e0A8cxzJ08F5PcNPyoF/9pAt
+	zTLQKzdEwPKzMCVXUsFWOIrLW8jT/1psHo5G8i3bipfkvkL5BDE2hym2x7N+1x3E7vJzjLXdHjn
+	yWRQxYGVqol+gpaKLomsdFPzKKagBDs5E4di3OkNTjUPwnVdddrGk8M1aKFnKlLs6HGDt6k+MUH
+	GKslKh8b1pn4N+eCa2x3uS7U5iIM3rCjTDxgk9s+0NdKzIoHnxXMMGGtnTnlegPHrjwRJpfvgzY
+	pyrUAc/jFAF6sLgdS7dWlHcQ3lVATC9ILw==
+X-Google-Smtp-Source: AGHT+IEzcbb+bNqoMPH5ve1w12SSGCYJgqHyRGUk+esr6umKljqxWp9/HXURpNzLg8PPH01q0FwhXA==
+X-Received: by 2002:a17:90b:3c4e:b0:2ff:796b:4d05 with SMTP id 98e67ed59e1d1-30a4e5ae12amr6928797a91.11.1746216942127;
+        Fri, 02 May 2025 13:15:42 -0700 (PDT)
+Received: from dw-tp ([171.76.84.163])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30a3474894fsm6227065a91.18.2025.05.02.13.15.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 May 2025 13:15:41 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Gaurav Batra <gbatra@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com
+Cc: Gaurav Batra <gbatra@linux.ibm.com>
+Subject: Re: [PATCH] powerpc/iommu: Memory leak in TCE table userspace view
+In-Reply-To: <20250425170806.28987-1-gbatra@linux.ibm.com>
+Date: Sat, 03 May 2025 01:23:38 +0530
+Message-ID: <874iy2rdq5.fsf@gmail.com>
+References: <20250425170806.28987-1-gbatra@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,130 +90,91 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Kumar Kartikeya Dwivedi <memxor@gmail.com> writes:
+Gaurav Batra <gbatra@linux.ibm.com> writes:
 
-> Back when all of this surfaced, compiler folks came up with another
-> solution, to rely on Intel's guarantee that conditional moves are not
-> predicted.
+> When a device is opened by a userspace driver, via VFIO interface, DMA
+> window is created. This DMA window has TCE Table and a corresponding
+> data for userview of
+> TCE table.
 >
-> if (condition) {
->    mask = !condition ? 0UL : ~0UL; // CMOVcc
->    ptr &= mask;
->    x = *ptr;
-> }
+> When the userspace driver closes the device, all the above infrastructure
+> is free'ed and the device control given back to kernel. Both DMA window
+> and TCE table is getting free'ed. But due to a code bug, userview of the
+> TCE table is not getting free'ed. This is resulting in a memory leak.
 >
-> In case the condition being true in the speculative domain leads to
-> problems, the speculative domain will just read from NULL and not leak
-> sensitive data.
-
-Yes, that is an alternative approach.
-
-> The assumption is that cost of instrumentation in speculative domain <
-> completely stalling it until prior instructions are done using lfence.
-> So speculation is still helpful when the branch is not mispredicted.
-> Now I imagine it's not fun to do such analysis in the verifier (I've
-> tried), but theoretically we could break it down into emitting
-> bytecode from the compiler side, and lifting the compiler to do it for
-> us, and ensuring the end result produced is sane (by still following
-> speculative paths) from the verifier.
-
-> You talk about this in the paper and in the presentation as future work.
-> My question is mainly whether you considered implementing this, if
-> yes, what made you choose a nospec barrier over something like above?
-
-The primary motivation was cerainly that it's the easiest to implement
-with the current verifier design.
-
-I mostly decided not to pursue the "verification-only" approach (and
-insert the insn in LLVM) because it would require changes to the eBPF
-instruction set.
-
-Other consideration include:
-
-* The approach could potentially improve performance (the compiler could
-  for example compute the minimal-cut to reduce the number of fences)
-  and simplify the verifier to some extent (no more inserting of insns).
-
-* It could have the downside that non/partially-vulnerable architectures
-  can not benefit from improved performance as easily as it is the case
-  with the current design.
-
-* The best choice for the instruction-set extension is not clear to me.
-  For Spectre v1 USLH [1] would suffice and then one only needs a cmov, so
-  that's easy. But this does not cover Spectre v4 (which is currently
-  the main source of overhead). It could be 'nospec_vX rY' to tell the
-  verifier that a certain register must not be used under speculation
-  from a specific variant, or something generic/catch-all like the
-  current 'nospec'.
-
-* From a security perspective, LLVM SLH is not as strong as the
-  verifier's Spectre v1 mitigation. This is because it does not harden
-  secret-dependent control flow as shown in [1] while the Linux verifier
-  does (where "secrets" are unreadable/uninitialized registers and
-  kernel pointers). It may be the case the this is not a problem for
-  eBPF by conincidence because the verifier also restricts
-  secret-dependent control flow. Without looking into it in detail I am
-  not sure. If one finds that it is a problem, it may also not be
-  important to fix if we adopt the verification-only approach you
-  mention, or one could change LLVM to extend the mitigation.
-
-> Was it the complexity of realizing this during verification?
-> Are there any implications of reading from NULL that would cause problems?
-
-In theory yes, in practice I would assume no and that it works out. I am
-not aware of any documents from Intel / ARM that state that accessing
-NULL speculatively acts as a speculation barrier (I remember reading
-some paper that suggested it practically does, but I can not find it
-now). If it does not (portably), a downside would be that the verifier
-will have to analyze a lot more speculative instructions.
-
-> Also, did you characterize how much difference it could make?
-
-[1] has SPEC2017 benchmarks for LLVM-/U-SLH and a naive lfence-based
-approach (lfence after every branch), for these USLH is about twice as
-fast (150%) as the naive fence-based approach (300%). But this is only
-for Spectre v1 and the Spectre v4 overhead would have to be added.
-
-Both number are also very high compared to the programs from the
-VeriFence paper. There the *combined* overhead for Spectre v1 and v4 was
-0% for very small programs and 16%-60% for larger programs. I have since
-also measured the overhead for Katran and there it is 100%-150%.
-
-I am currently working on a prototype to reduce the Spectre v4 (and
-Spectre v1) overhead and for Katran I was able to lower it to 15%-30% by
-using more precise analysis of the speculative execution using a
-fence-based approach. Most remaining fence are now still from Spectre v4
-(not v1 which would be adressed by SLH) and I hope to eliminate some
-more using a SLH-style approach for v4. I will of course also have to
-check how this carries over to other programs, but it certainly seems
-possible to eliminate almost all fences because there are rarely any
-'real' gadgets in non-malicious programs (only false positive one can
-not eliminate without reasoning about the cache).
-
-> The drop in SCTP throughput seems to suggest so, since CPU-bound
-> computation was moved into the program.
-> Otherwise most programs mostly defer to helpers for heavy lifting.
-> Not that it was as fast as a helper would be, even without nospec, but still.
+> Befow is the information from KMEMLEAK
 >
-> Also a bit sad we don't split the program into BBs already, which
-> could help reduce your mitigation's cost + plus also reduce cost of
-> instruction patching (unrelated).
+> unreferenced object 0xc008000022af0000 (size 16777216):
+>   comm "senlib_unit_tes", pid 9346, jiffies 4294983174
+>   hex dump (first 32 bytes):
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>   backtrace (crc 0):
+>     kmemleak_vmalloc+0xc8/0x1a0
+>     __vmalloc_node_range+0x284/0x340
+>     vzalloc+0x58/0x70
+>     spapr_tce_create_table+0x4b0/0x8d0
+>     tce_iommu_create_table+0xcc/0x170 [vfio_iommu_spapr_tce]
+>     tce_iommu_create_window+0x144/0x2f0 [vfio_iommu_spapr_tce]
+>     tce_iommu_ioctl.part.0+0x59c/0xc90 [vfio_iommu_spapr_tce]
+>     vfio_fops_unl_ioctl+0x88/0x280 [vfio]
+>     sys_ioctl+0xf4/0x160
+>     system_call_exception+0x164/0x310
+>     system_call_vectored_common+0xe8/0x278
+> unreferenced object 0xc008000023b00000 (size 4194304):
+>   comm "senlib_unit_tes", pid 9351, jiffies 4294984116
+>   hex dump (first 32 bytes):
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+>   backtrace (crc 0):
+>     kmemleak_vmalloc+0xc8/0x1a0
+>     __vmalloc_node_range+0x284/0x340
+>     vzalloc+0x58/0x70
+>     spapr_tce_create_table+0x4b0/0x8d0
+>     tce_iommu_create_table+0xcc/0x170 [vfio_iommu_spapr_tce]
+>     tce_iommu_create_window+0x144/0x2f0 [vfio_iommu_spapr_tce]
+>     tce_iommu_create_default_window+0x88/0x120 [vfio_iommu_spapr_tce]
+>     tce_iommu_ioctl.part.0+0x57c/0xc90 [vfio_iommu_spapr_tce]
+>     vfio_fops_unl_ioctl+0x88/0x280 [vfio]
+>     sys_ioctl+0xf4/0x160
+>     system_call_exception+0x164/0x310
+>     system_call_vectored_common+0xe8/0x278
+>
+> Fixes: f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
+> Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/iommu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index d6ebc19fb99c..eec333dd2e59 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -197,7 +197,7 @@ static void tce_iommu_userspace_view_free(struct iommu_table *tbl)
+>
+>  static void tce_free_pSeries(struct iommu_table *tbl)
+>  {
+> -	if (!tbl->it_userspace)
+> +	if (tbl->it_userspace)
+>  		tce_iommu_userspace_view_free(tbl);
+>  }
 
-In the prototype I mention I also tried tackling that. However, at least
-for Katran it was uncommon to have more than one v1-induced fence per
-basic block. Therefore it might not be worth it.
+Gr8 catch. That clearly looks like a miss in the original code.
 
-> Anyway, all that said, this is valuable stuff, so I was just curious.
+vfree() can be called even directly and it says no operation is
+performed if addr passed to vfree is NULL. However I don't really see
+any value add in doing that except maybe we can kill tce_free_pSeries()
+function. But vfree() still does few checks in there. So we may as well
+check for a non-null address before calling vfree().
 
-[1] https://www.usenix.org/system/files/usenixsecurity23-zhang-zhiyuan-slh.pdf
-    ("Ultimate SLH: Taking Speculative Load Hardening to the Next Level
-    - Section 5.1: Exploiting Secret-Dependent Control Flow")
+nitpick: I might have re-pharsed the commit msg as:
+     powerpc/pseries/iommu: Fix kmemleak in TCE table userspace view
+
+The patch looks good to me purely from the kmemleak bug perspective.
+So feel free to take: 
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
+
+-ritesh
 
