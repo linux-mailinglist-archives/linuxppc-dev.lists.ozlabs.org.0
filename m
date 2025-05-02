@@ -1,90 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-8265-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8266-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90CBAA7ED2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 May 2025 09:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E98D1AA8093
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 May 2025 14:08:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZqJdM0K91z2yTK;
-	Sat,  3 May 2025 17:02:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZqRQ83kSrz2xgQ;
+	Sat,  3 May 2025 22:08:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746255751;
-	cv=none; b=DDvSEX3y6L45a61su11obVUPXjYNlTLDrJx+PCuoqRzyIVIMwfMJDF2/lmymy7oAn8ScsRiLp3LS83mR7qXxejFyTRH9lYpdoGXBauisXMpeQy+K6LMMUg1uwgrpOiVYztrJPpOrDawJkyRuAffcmW+L4rsALMmd1EasbTuwXMLt2TFTx9W3IssvW10fdteIS0NOF3P3G0h1MNbd2OCb9ax0S+IKMRaj4pvUe2IRspqJxF0Ey3cc6sq7if7V11yjE00Ksk7QI7KZWSDgMHA3tGYMEeU+og/CKqwS10GmWJ7R7CvIulXm1Zgzd/jPCTQovhfj3xUA8vgii4CWoxPlTA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f9:c010:3052::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746229903;
+	cv=none; b=mi6QAE1VmpBC+DtHKIZMCvAoQ3isnV5oiYXGZ5zSKshfLnJ4gWnORq/SX2D11iSmdHeIBgoP+BYOxkyzMy32ri774zgv0PG6rHHpDXs0XBGiNZmgO9XHQHbisiX45Qdp3RIpFB+PdDzHfmex3NQXrwQM3FeaWGOBUOFvskK+PqpNbuUl2bOL91dGWuSHrVa1xtBEMDbUO5MOaG6t1inZIWg8uE+R9A1HOmVplCOjjdMSOppa+Ia09jJRJZWbXL89csIHNdGkxXMkA3Bqi6onuBX96qay3JGjZy556Fiak7PgSkXXfjIWyWpxsK8N5/FW8WlAqLtX/vuBp27huhuCTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746255751; c=relaxed/relaxed;
-	bh=QuKtjBt3hT/GfrHBkJJJ41nGji5reGHD8O/7cHUZKlA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UnD4jjYqGDXRgCMpzWnOVTSTY2MlyypTp8mQtjOFOOrxGR1OBLdQb/WdtY1UZN5zL3Cd/s8DDOchYnTR/eHJMitLzA5N2qezYpdV6wZlJd3guz/V4luUBC9M3rwYFKdS5oPlE2ORAFfZzaoG0Pcns8DqDSnHdbJsx0JI3vEwSs/Woa7ia4FXvSVzBSF9frxOWgCXyBDXCNdyRIFG2ZZyO/shrkNElujC3/ZHgBQzoYqp8A0vmoLRPIMCHdyyGHeNStxsRks5CMK1xBXN6o5wzv7dciVw7Ixz9tTHDOw53j3cGWHUou0PWmd+3IqMdexAXnL+K6U8G2VwsclSzPQJSA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fmfEXPG+; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1746229903; c=relaxed/relaxed;
+	bh=VputJNPvBl9XACh4x8s207ghVEizyjJrRTUadxhl7W0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dMT2L7wQY4YMIqOOWEo+syzAT8hP9H4cu+jdYuFGziXRKPSKxWyWC6bcsAL5i6s1TjaOInYDUYhveBx/rE3UmL10CjHRyMb/3SezWxNBr2Yfk3CLiTJMR2lPOpJOfixnQeUcdLpwHPTjJ1rksuGoZshSdIvyOtpuz3CiO2jBwrLE31RpiNRn9Te2OZnqJqUgIPE6f1QAyYqy3rCuqtNcidQZ4Z3yVmAkvtr6Bsq9clwgW267wU/OsAduBiKzlnUy2uqkXkf+e7i9buKpSIq/d2caeVztpTU4jXTV4lKbWDSw3eu7cKIJhnP9G/81Ik85GEp4CHfl5w0rsMMMsVBfag==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=archlinux.org; dkim=pass (4096-bit key; unprotected) header.d=archlinux.org header.i=@archlinux.org header.a=rsa-sha256 header.s=dkim-rsa header.b=Qhic4OLm; dkim=pass header.d=archlinux.org header.i=@archlinux.org header.a=ed25519-sha256 header.s=dkim-ed25519 header.b=pWUXN2ba; dkim-atps=neutral; spf=pass (client-ip=2a01:4f9:c010:3052::1; helo=mail.archlinux.org; envelope-from=kpcyrd@archlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=archlinux.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=archlinux.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fmfEXPG+;
+	dkim=pass (4096-bit key; unprotected) header.d=archlinux.org header.i=@archlinux.org header.a=rsa-sha256 header.s=dkim-rsa header.b=Qhic4OLm;
+	dkim=pass header.d=archlinux.org header.i=@archlinux.org header.a=ed25519-sha256 header.s=dkim-ed25519 header.b=pWUXN2ba;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=archlinux.org (client-ip=2a01:4f9:c010:3052::1; helo=mail.archlinux.org; envelope-from=kpcyrd@archlinux.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 500 seconds by postgrey-1.37 at boromir; Sat, 03 May 2025 09:51:40 AEST
+Received: from mail.archlinux.org (mail.archlinux.org [IPv6:2a01:4f9:c010:3052::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZqJdL2N06z2yFJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 May 2025 17:02:29 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5436xTqb026587;
-	Sat, 3 May 2025 07:02:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=QuKtjBt3hT/GfrHBk
-	JJJ41nGji5reGHD8O/7cHUZKlA=; b=fmfEXPG+/qtqIvm3HRPDT/5sxdNNnYUaq
-	SkpkE7GYedJghsQHOEu60ThLZISzoqMLuNNAaABEaOFaa/psvFAt/vvq23keTojc
-	LAdFPKzqH+4wutMeus+YUWC2jzRNYYCZquw6oOuTtnm+WPRTrLLzD3TrGz2/LbgU
-	+xjDhJtGS5c2wm4XrEBHiAIQlMAhUQGn59qYUoYdpH+InUzuzqdy/VaNyLqiAg52
-	ILjN+Mu8NmQb/1JgI/49lrIppsX+/dCXSqckBQYY+JSkrPoIccLs+RLp6poLZ+UR
-	anJYmqOTRSp00GKDT+S3EY7bWozwvZZqjBELIL3nP7O1dFhB43MRA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46daty0fbr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 03 May 2025 07:02:19 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54372IXT031691;
-	Sat, 3 May 2025 07:02:19 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46daty0fbn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 03 May 2025 07:02:18 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5434hXQl016174;
-	Sat, 3 May 2025 07:02:17 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 469a70wc76-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 03 May 2025 07:02:17 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54372DFG41025980
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 3 May 2025 07:02:13 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6882320040;
-	Sat,  3 May 2025 07:02:13 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 26F2320043;
-	Sat,  3 May 2025 07:02:11 +0000 (GMT)
-Received: from li-06431bcc-2712-11b2-a85c-a6fe68df28f9.ibm.com.com (unknown [9.124.222.98])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  3 May 2025 07:02:10 +0000 (GMT)
-From: Donet Tom <donettom@linux.ibm.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>,
-        Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org (open list),
-        Donet Tom <donettom@linux.ibm.com>
-Subject: [PATCH for-next 2/2] book3s64/radix : Optimize vmemmap start alignment
-Date: Sat,  3 May 2025 12:31:59 +0530
-Message-ID: <14f9b6ef72fa689f3a4d44dfa67d2279bdfd28a6.1746255312.git.donettom@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <e876a700a4caa5610e994b946b84f71d0fe6f919.1746255312.git.donettom@linux.ibm.com>
-References: <e876a700a4caa5610e994b946b84f71d0fe6f919.1746255312.git.donettom@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zq74D1j12z2yr6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 May 2025 09:51:40 +1000 (AEST)
+Message-ID: <bf3f2f1c-1852-449f-993f-71848d190db6@archlinux.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=archlinux.org;
+	s=dkim-rsa; t=1746229390;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VputJNPvBl9XACh4x8s207ghVEizyjJrRTUadxhl7W0=;
+	b=Qhic4OLmfnzDZAcpigNu7UrqLK5mWgcMPgKRWpfhdAXeZIqHXIBZVqEkrh8YlxeTSpOAbU
+	tEuR8Hl86L0vi7auXrHzDR7/KmPsUpinbZ6VHAEwk64QsAe3+IL9ANV64KxMfw8/rHMGgA
+	k1oSNM/QKKyilECNEb2JnruO5orD5/JCByNXVkBX1nuiBoTkhgZwex6wBzMz5CRSETtJvX
+	/umQNjYFjOrleljhVtUZ9guk5XJ1MM7kE4yK9nqbZV6g1W4jd+u7mfzQmEYib+v/q0/liU
+	WrAmO2uRMsrM+RRe9W4EYzVK5ED0kYo+jbIvZ4+vcjsRe38jBnBekYZNWY00XPOeplaiIK
+	BvfFWmFZ9L9f7xIdxoz2sbnQEkhHVAFJ2xtZtsi6uLCneWRxBGBxT/ADPT0BOgRfPYAjwB
+	atSK/tKeP4kcfOVS+t9AnSyV7obHcia28DSrHnsRMH7Lv/QJJshLghDJskgLHh3whAbBDd
+	DQCPx6yylwF6AkLygj4FnEbHcMJj5bxz+NgHNKJP+wecgVU15BfLDeH/obVkNIOP3tW5zZ
+	0FVGN0Ypnkope2InCXnrS0Ur0MWb8/RXNPdJHlLzgmkElM21+hmtrbSvl8ve0yGWoyf2sH
+	ah7STOBC/NiCplBj5M1Z4RrvTRTHDEkZh7gcxt9ZubblsWPjOvH+w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=archlinux.org;
+	s=dkim-ed25519; t=1746229390;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VputJNPvBl9XACh4x8s207ghVEizyjJrRTUadxhl7W0=;
+	b=pWUXN2baJ+rjBIqdcBKhyMfxHT1Z/KrJMyTIFAemXV1CBDzl8/qFRMzDBOovLcR/C95F5U
+	Iyd1qkopp9pOBkCg==
+Authentication-Results: mail.archlinux.org;
+	auth=pass smtp.auth=kpcyrd smtp.mailfrom=kpcyrd@archlinux.org
+Date: Sat, 3 May 2025 01:43:06 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,104 +73,110 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=fKc53Yae c=1 sm=1 tr=0 ts=6815bf7b cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=KK6s22nVDRcosj11uTcA:9
-X-Proofpoint-GUID: xNaP3NYbQrqxDkPDIRiItaBNb2GLijEE
-X-Proofpoint-ORIG-GUID: rhBcWMEZYFc00FXg1j6mhep_MfLSgS-J
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAzMDA1NSBTYWx0ZWRfX3AZuql/O7AaW iFIp7veZyiSYnrRssZnL2I3Qpq5LxAl4TPgIDpZzIGhrbjkVrCblN26XTMitMbwH/lZ5IbAxpW1 3IQXAO/c2rN8KjgYBJH8JfMd305CXMobvtTELbsQzQVKpTlQtEFoclI7YoZPsDXgK7md3VYbr9p
- m8c3EgFbIQwFvBuuMa+FcnBk70AvqbQOzpv8hTZTaiN/yA6H5WIkI3bcROmE/YFkGwEbKHBjuwR z2rSMbJ1mUcqsq3vcIou6t6Kb2q+SKkK+GE2oFClVJQjWk6vU3tB2PpEAYCNNgcbV/0NsCIRnSN j0K6Upok/Q9wgm9vNYaFkecG00dl7+qiDZdbV9HDHaoVSqQH/pS5M6PwG7LWgsF2OAnzf9coYlR
- n8i+oZQIu6lJ2/LV3oZ2rg78m+vPWCripsjpkWf9KMIBtclXn+DneeIzDmpNxWMxPzEACdDZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-03_03,2025-04-30_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 suspectscore=0 spamscore=0 mlxscore=0 clxscore=1011
- priorityscore=1501 impostorscore=0 mlxlogscore=999 bulkscore=0
- adultscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505030055
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+Subject: Re: [PATCH v3 0/9] module: Introduce hash-based integrity checking
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez
+ <da.gomez@samsung.com>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+ Roberto Sassu <roberto.sassu@huawei.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>,
+ Nicolas Schier <nicolas.schier@linux.dev>,
+ =?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
+ Arnout Engelen <arnout@bzzt.net>, Mattia Rizzolo <mattia@mapreri.org>,
+ Christian Heusel <christian@heusel.eu>, =?UTF-8?Q?C=C3=A2ju_Mihai-Drosi?=
+ <mcaju95@gmail.com>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-integrity@vger.kernel.org
+References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
+ <f1dca9daa01d0d2432c12ecabede3fa1389b1d29.camel@HansenPartnership.com>
+ <840b0334-71e4-45b1-80b0-e883586ba05c@t-8ch.de>
+ <b586e946c8514cecde65f98de8e19eb276c09703.camel@HansenPartnership.com>
+Content-Language: de-DE, en-US
+From: kpcyrd <kpcyrd@archlinux.org>
+In-Reply-To: <b586e946c8514cecde65f98de8e19eb276c09703.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-If we always align the vmemmap start to PAGE_SIZE, there is a
-chance that we may end up allocating page-sized vmemmap backing
-pages in RAM in the altmap not present case, because a PAGE_SIZE
-aligned address is not PMD_SIZE-aligned.
+On 5/2/25 3:30 PM, James Bottomley wrote:
+> Under a your interpretation of the above, any signed binary isn't
+> "reproducible" even if the underlying build was, which means any secure
+> boot kernel would never be reproducible because it also has to be a
+> signed binary.  The solution is simple: can you strip the signature and
+> reproduce the build?  If yes, then the build is reproducible and even
+> fits with the "any party can recreate ..." above.   This is the
+> interpretation pretty much everyone else has been using.  It's why
+> people like Intel with source only availability and Intel build only
+> signing tout reproduceability: they only issue signed confidential VM
+> firmware, but you can technically reproduce the build of the firmware
+> minus the signature but you can never sign it.
 
-In this patch, we are aligning the vmemmap start address to
-PMD_SIZE if altmap is not present. This ensures that a PMD_SIZE
-page is always allocated for the vmemmap mapping if altmap is
-not present.
+The secure-boot signature is easier to deal with, I also think there'd 
+be one package that contains just the unsigned kernel+modules (with the 
+modules being pinned by a cryptographic hashset), and a second one that 
+takes the kernel secure-boot signature as a source-code input, that is 
+calculated after the first package was successfully built.
 
-If altmap is present, Make sure we align the start vmemmap addr to
-PAGE_SIZE so that we calculate the correct start_pfn in altmap
-boundary check to decide whether we should use altmap or RAM based
-backing memory allocation. Also the address need to be aligned for
-set_pte operation. If the start addr is already PMD_SIZE aligned
-and with in the altmap boundary then we will try to use a pmd size
-altmap mapping else we go for page size  mapping.
+Arch Linux has also considered patching the module-signing-script into 
+some kind of oracle that doesn't use any private key and instead selects 
+the right pre-computed signature for the given content, but:
 
-So if altmap is present, we try to use the maximum number of
-altmap pages; otherwise, we allocate a PMD_SIZE RAM page.
+- that would be terribly annoying to maintain/operate
+- any reproducible builds regression would make the build fail, because 
+the kernel wouldn't be bootable
 
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
----
- arch/powerpc/mm/book3s64/radix_pgtable.c | 29 +++++++++++++++---------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+> You just strip the signatures before verifying reproducibility.
+> 
+[...]
+> 
+> If you take off the appended signature off the module, you can verify
+> reproduceability.
+> 
+[...]
+> 
+> So you think stripping signatures is failure prone?  If that were the
+> case then so would be verifying signatures upon which our whole secure
+> boot and signed module loading is based.
+> 
+[...]
+> 
+> Or you simply ship tools to remove the signature;
+> 
+> sbattach --remove <signed efi variable>
+> 
+> already does this for you ...
 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 3d67aee8c8ca..c630cece8ed4 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1122,18 +1122,25 @@ int __meminit radix__vmemmap_populate(unsigned long start, unsigned long end, in
- 	pte_t *pte;
- 
- 	/*
--	 * Make sure we align the start vmemmap addr so that we calculate
--	 * the correct start_pfn in altmap boundary check to decided whether
--	 * we should use altmap or RAM based backing memory allocation. Also
--	 * the address need to be aligned for set_pte operation.
--
--	 * If the start addr is already PMD_SIZE aligned we will try to use
--	 * a pmd mapping. We don't want to be too aggressive here beacause
--	 * that will cause more allocations in RAM. So only if the namespace
--	 * vmemmap start addr is PMD_SIZE aligned we will use PMD mapping.
-+	 * If altmap is present, Make sure we align the start vmemmap addr
-+	 * to PAGE_SIZE so that we calculate the correct start_pfn in
-+	 * altmap boundary check to decide whether we should use altmap or
-+	 * RAM based backing memory allocation. Also the address need to be
-+	 * aligned for set_pte operation. If the start addr is already
-+	 * PMD_SIZE aligned and with in the altmap boundary then we will
-+	 * try to use a pmd size altmap mapping else we go for page size
-+	 * mapping.
-+	 *
-+	 * If altmap is not present, align the vmemmap addr to PMD_SIZE and
-+	 * always allocate a PMD size page for vmemmap backing.
-+	 *
- 	 */
- 
--	start = ALIGN_DOWN(start, PAGE_SIZE);
-+	if (altmap)
-+		start = ALIGN_DOWN(start, PAGE_SIZE);
-+	else
-+		start = ALIGN_DOWN(start, PMD_SIZE);
-+
- 	for (addr = start; addr < end; addr = next) {
- 		next = pmd_addr_end(addr, end);
- 
-@@ -1159,7 +1166,7 @@ int __meminit radix__vmemmap_populate(unsigned long start, unsigned long end, in
- 			 * in altmap block allocation failures, in which case
- 			 * we fallback to RAM for vmemmap allocation.
- 			 */
--			if (!IS_ALIGNED(addr, PMD_SIZE) || (altmap &&
-+			if (altmap && (!IS_ALIGNED(addr, PMD_SIZE) ||
- 			    altmap_cross_boundary(altmap, addr, PMD_SIZE))) {
- 				/*
- 				 * make sure we don't create altmap mappings
--- 
-2.48.1
+It reads like you assume somebody sits down and explicitly looks at the 
+linux package manually, but the reproducible builds tooling considers 
+the package content to be fully opaque and doesn't have any 
+special-casing of any package:
 
+https://github.com/archlinux/archlinux-repro
+https://salsa.debian.org/debian/devscripts/-/blob/main/scripts/debrebuild.pl?ref_type=heads
+
+I'd rather not deal with the consequences of weakening the comparison 
+and possibly introducing exploitable loop-holes in any of the layers we 
+wouldn't be able to bit-for-bit compare anymore (like e.g. tar).
+
+It would also break the concept of `f(source) -> binary`, "you can 
+deterministically derive the binary packages from the documented build 
+inputs", and instead you'd always need to fuzzy-match against what 
+somebody else built.
+
+cheers,
+kpcyrd
 
