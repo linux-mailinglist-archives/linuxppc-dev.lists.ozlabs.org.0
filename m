@@ -1,88 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-8260-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8261-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31678AA73A1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 15:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80CD0AA799A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 20:57:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZpsJG6yJBz2yr1;
-	Fri,  2 May 2025 23:31:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zq0Xq0H28z2ym3;
+	Sat,  3 May 2025 04:57:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:f440:8:8::2"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746192670;
-	cv=none; b=mDedujL3lh98KwoBE66joI3Y15owpEBQiO09JnXJJHnggMUAjoyTUSimVXvN76zP0hzz4kwkl6u4MNpzqkOyVY9oO3v/B+QVqcyWBC3N9TH6rVeyxEwtQFqtpZri0kLjc6oVLmjAoIpHYBUWicJE5Sk7EVJM6IA7eCirVz7uW2MTYMS7SJjOSDcvrIhCWHKrvT5rbdw8H4yUcZ2LHx3MbtIaX4KF5eAs/RUNfjNkz5w/BXmWn9mrOQtral2pPy37HFwoU1crzXN+qSOtB+qUWnWoAMmNRLbtknmLEicM99Id+yu+qjhfT4h3KCO01VMZytw56IDm1ZdsqSL65BdVYA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=131.188.11.21
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746212250;
+	cv=none; b=NNvvr9jepCW45gF87xYOvfrZpyhjNMQ6ZTE4L8DZQG+9k+ifEVZikP5RTqYrZheIcgkL3hioqgHumMWYR96yJH+y/rPm4nVGuE10g/BYAYagJuP9ayE/F3PEag1atTyFt75QpCbqTivbP3JyXT5EsBN48Izt4QmizLYvZ76CAErZife2BnF03E8Tm1YKV7W5NtVZ4vaS2At9kH3hMWzhJyU3IBDiomM8IcEgmUvze1uc4xWzUQiI60cNU6K2Es7GyzeeelM7n/aJzLfoykJxqJi3L25zDn55Ji5blKguOhPpv0UHwxysdMtl+rZ9QOPytzT8SFuK43zf4QLwfwMrwQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746192670; c=relaxed/relaxed;
-	bh=vjDrnbHGaac8/cNDGJj4YWM+keTOMJJiZjkCP4cDzUk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DJmAud20ewL4xY8XtxOhFY1X/RJts7GKyN5VtFHk83d3A+vdJt7PxD5ocB5gsUHsX8F9lb7m/ZrkzPCjXecpIW2Dw190R8uPd8fs0LujtYR27/ZO9dQw68QLlgancDtxD8B4kd8XhUfgg0806luvscV8Vo04fdCKvY3PMrh3DsuISKlbvZauGJZJr+uqeST7QyaUniMQKAdEupFUhGOuTx57qn3WbuppTN4EptyV/tyuSR3SAK/jK5bvjpW8ej4sEQPYNGwdPlVxBQHF3+D6zopQtImXIwWiu/P1Jft1us0CZH7DXhqq5q7pcMr/USdqcn08eMVrDmwMGoCsFhe2sw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=uu9S4dg+; dkim-atps=neutral; spf=pass (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org) smtp.mailfrom=hansenpartnership.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+	t=1746212250; c=relaxed/relaxed;
+	bh=0WplOH6reEOyo56HZrQ4jKNXZI+yjUubamsmQNCRUCY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hrpn4tFUzpWMtg9AeL5mONOpdtrN1WpZt01MkXHrzBJW5qEOhvgoLA+ZaD19+0MSIQAtLJOLQ41WLilPmk90kC60FVseK2vfcPIbD/BG2U5ri5s25V+5kjvw0kNsul7YeaVBW91eUQKjHhPJ2pnHpF/PK66XDBA/jhtfn+n9fW5Uo1IiJbddz6daLHscb6bVxCW6w5QJs3Y9N8rSuUTL61iXYZFr82Jqt0wMlGZVCxDLRQWNpS7XuFZoJfQ7pq12PGP8Tz+7HSLiHY6ImzM+XiZUB2ZgRyH7IwgPNUGPlt5zQW+55Xtf+X2xkPGWVqsAzF4PWeXz5ArgdQqf+5fbVQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de; dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=n9iwAjy0; dkim-atps=neutral; spf=pass (client-ip=131.188.11.21; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org) smtp.mailfrom=fau.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=uu9S4dg+;
+	dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=n9iwAjy0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hansenpartnership.com (client-ip=2604:f440:8:8::2; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org)
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [IPv6:2604:f440:8:8::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fau.de (client-ip=131.188.11.21; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org)
+Received: from mx-rz-2.rrze.uni-erlangen.de (mx-rz-2.rrze.uni-erlangen.de [131.188.11.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZpsJ86QFZz2yjN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 23:31:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1746192655;
-	bh=9a0p5YHUXcwRMUPxCIhbqAngFZ8jbsMVYstuRA0x9WM=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=uu9S4dg+hgPPzORCQ81lEFjgaoyua+M/5EbvupdcEcTMrgSVRFN8m/wZoYJDqyzAP
-	 FRQZ6CzLJNbdthagPfLxsnFI94XKRkSsOpvINQgs0DtVIIdD1eRlyHdVFBiL77Hie6
-	 KAYQR3cKBMgBrCuSDQ9hnjEWI7FooG6ZKNJsVi5E=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zq0Xj29STz2yKr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 May 2025 04:57:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
+	t=1746212237; bh=0WplOH6reEOyo56HZrQ4jKNXZI+yjUubamsmQNCRUCY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From:To:CC:
+	 Subject;
+	b=n9iwAjy0SCwI/oTEelalFezKHV0RYG0VDpXqybVxfyGwi0IM8vAl35OpIi4W9R5KH
+	 vcn9pyiozd6b2WhOhl5ary39qNouueeR7Na7VJHTW7l9wfSyNspiOIwqFAwyqRk/IH
+	 raKvFnLjkZ1HjaHlohVzkXJi+Q0inLIuRcCfUiwHL5pK9Mec2rTTHqvR6LXXcB5wG3
+	 01IAhKNJP2PAMsz9CcgBjdbmBrZjvYBn7r/1r+0IJo3pDIasBfOYc4edY0F3GXtbmN
+	 hzyYyWe+iugeNy/+eCBSyEizxi3ufvcdwqq2q51dZXiHUL2rVbWf0rsA2yqHdNv7mR
+	 IPDFxF8RvoSPQ==
+Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 859341C0343;
-	Fri, 02 May 2025 09:30:54 -0400 (EDT)
-Message-ID: <b586e946c8514cecde65f98de8e19eb276c09703.camel@HansenPartnership.com>
-Subject: Re: [PATCH v3 0/9] module: Introduce hash-based integrity checking
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Luis Chamberlain
- <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen
- <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
- <serge@hallyn.com>, Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
- Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, Roberto
- Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin
- <dmitry.kasatkin@gmail.com>,  Eric Snowberg <eric.snowberg@oracle.com>,
- Nicolas Schier <nicolas.schier@linux.dev>, Fabian
- =?ISO-8859-1?Q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>, Arnout Engelen
- <arnout@bzzt.net>, Mattia Rizzolo <mattia@mapreri.org>, kpcyrd
- <kpcyrd@archlinux.org>, Christian Heusel <christian@heusel.eu>,
- =?ISO-8859-1?Q?C=E2ju?= Mihai-Drosi <mcaju95@gmail.com>, 
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arch@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
-Date: Fri, 02 May 2025 09:30:53 -0400
-In-Reply-To: <840b0334-71e4-45b1-80b0-e883586ba05c@t-8ch.de>
-References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
-	 <f1dca9daa01d0d2432c12ecabede3fa1389b1d29.camel@HansenPartnership.com>
-	 <840b0334-71e4-45b1-80b0-e883586ba05c@t-8ch.de>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	by mx-rz-2.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4Zq0XX6cB1zPlkm;
+	Fri,  2 May 2025 20:57:16 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at boeck2.rrze.uni-erlangen.de (RRZE)
+X-RRZE-Flag: Not-Spam
+X-RRZE-Submit-IP: 2001:9e8:363c:9000:3afa:e4e0:adc6:326
+Received: from localhost (unknown [IPv6:2001:9e8:363c:9000:3afa:e4e0:adc6:326])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: U2FsdGVkX1/NAHScjHSrb5WnifYoZ30p9gOLHTIMgjg=)
+	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4Zq0XS4PQKzPkbD;
+	Fri,  2 May 2025 20:57:12 +0200 (CEST)
+From: Luis Gerhorst <luis.gerhorst@fau.de>
+To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
+ <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Martin
+ KaFai Lau <martin.lau@linux.dev>,  Eduard Zingerman <eddyz87@gmail.com>,
+  Song Liu <song@kernel.org>,  Yonghong Song <yonghong.song@linux.dev>,
+  John Fastabend <john.fastabend@gmail.com>,  KP Singh
+ <kpsingh@kernel.org>,  Stanislav Fomichev <sdf@fomichev.me>,  Hao Luo
+ <haoluo@google.com>,  Jiri Olsa <jolsa@kernel.org>,  Puranjay Mohan
+ <puranjay@kernel.org>,  Xu Kuohai <xukuohai@huaweicloud.com>,  Catalin
+ Marinas <catalin.marinas@arm.com>,  Will Deacon <will@kernel.org>,  Hari
+ Bathini <hbathini@linux.ibm.com>,  Christophe Leroy
+ <christophe.leroy@csgroup.eu>,  Naveen N Rao <naveen@kernel.org>,
+  Madhavan Srinivasan <maddy@linux.ibm.com>,  Michael Ellerman
+ <mpe@ellerman.id.au>,  Nicholas Piggin <npiggin@gmail.com>,  Mykola
+ Lysenko <mykolal@fb.com>,  Shuah Khan <shuah@kernel.org>,  Henriette
+ Herzog <henriette.herzog@rub.de>,  Saket Kumar Bhaskar
+ <skb99@linux.ibm.com>,  Cupertino Miranda <cupertino.miranda@oracle.com>,
+  Jiayuan Chen <mrpre@163.com>,  Matan Shachnai <m.shachnai@gmail.com>,
+  Dimitar Kanaliev <dimitar.kanaliev@siteground.com>,  Shung-Hsi Yu
+ <shung-hsi.yu@suse.com>,  Daniel Xu <dxu@dxuuu.xyz>,  bpf@vger.kernel.org,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  linuxppc-dev@lists.ozlabs.org,  linux-kselftest@vger.kernel.org,
+  Maximilian Ott <ott@cs.fau.de>,  Milan Stephan <milan.stephan@fau.de>
+Subject: Re: [PATCH bpf-next v3 08/11] bpf: Fall back to nospec for Spectre v1
+In-Reply-To: <CAP01T76kOixPct5cOPHGKubFWSbSS7ztEnZc02v2wWGPOUYRCQ@mail.gmail.com>
+	(Kumar Kartikeya Dwivedi's message of "Fri, 2 May 2025 01:55:54 +0200")
+References: <20250501073603.1402960-1-luis.gerhorst@fau.de>
+	<20250501073603.1402960-9-luis.gerhorst@fau.de>
+	<CAP01T76kOixPct5cOPHGKubFWSbSS7ztEnZc02v2wWGPOUYRCQ@mail.gmail.com>
+User-Agent: mu4e 1.12.8; emacs 30.1
+Date: Fri, 02 May 2025 20:57:11 +0200
+Message-ID: <875xiij0xk.fsf@fau.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,143 +100,129 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, 2025-05-02 at 08:53 +0200, Thomas Wei=C3=9Fschuh wrote:
-> Hi James,
->=20
-> On 2025-04-29 10:05:04-0400, James Bottomley wrote:
-> > On Tue, 2025-04-29 at 15:04 +0200, Thomas Wei=C3=9Fschuh wrote:
-> > > The current signature-based module integrity checking has some
-> > > drawbacks in combination with reproducible builds:
-> > > Either the module signing key is generated at build time, which
-> > > makes the build unreproducible,
-> >=20
-> > I don't believe it does: as long as you know what the key was,
-> > which you can get from the kernel keyring, you can exactly
-> > reproduce the core build (it's a public key after all and really
-> > equivalent to built in configuration).=C2=A0 Is the fact that you have
-> > to boot the kernel to get the key the problem?=C2=A0 In which case we
-> > could insist it be shipped in the kernel packaging.
->=20
-> See below.
->=20
-> > > =C2=A0or a static key is used, which precludes rebuilds by third
-> > > parties and makes the whole build and packaging process much more
-> > > complicated.=20
-> >=20
-> > No, it's the same as above ... as long as you have the public key
-> > you can reproduce the core build with the same end to end hash.
->=20
-> While the scheme you propose does allow verification of
-> rebuildability, it does not satisfy the requirements for a
-> reproducible build as understood by the general reproducible builds
-> community:
->=20
-> 	When is a build reproducible?
->=20
-> 	A build is reproducible if given the same source code, build
-> environment
-> 	and build instructions, any party can recreate bit-by-bit
-> identical
-> 	copies of all specified artifacts.
->=20
-> 	The relevant attributes of the build environment, the build
-> instructions
-> 	and the source code as well as the expected reproducible
-> artifacts are
-> 	defined by the authors or distributors. The artifacts of a
-> build are the
-> 	parts of the build results that are the desired primary
-> output.
->=20
-> https://reproducible-builds.org/docs/definition/
+Kumar Kartikeya Dwivedi <memxor@gmail.com> writes:
 
-That's a doctor doctor problem, and also if we adopted your
-interpretation would mean that most kernel packages can never be
-reproducible.  The clue is even in the "any party can recreate bit-by-
-bit identical copies of all specified artifacts".
+> Back when all of this surfaced, compiler folks came up with another
+> solution, to rely on Intel's guarantee that conditional moves are not
+> predicted.
+>
+> if (condition) {
+>    mask = !condition ? 0UL : ~0UL; // CMOVcc
+>    ptr &= mask;
+>    x = *ptr;
+> }
+>
+> In case the condition being true in the speculative domain leads to
+> problems, the speculative domain will just read from NULL and not leak
+> sensitive data.
 
-Under a your interpretation of the above, any signed binary isn't
-"reproducible" even if the underlying build was, which means any secure
-boot kernel would never be reproducible because it also has to be a
-signed binary.  The solution is simple: can you strip the signature and
-reproduce the build?  If yes, then the build is reproducible and even
-fits with the "any party can recreate ..." above.   This is the
-interpretation pretty much everyone else has been using.  It's why
-people like Intel with source only availability and Intel build only
-signing tout reproduceability: they only issue signed confidential VM
-firmware, but you can technically reproduce the build of the firmware
-minus the signature but you can never sign it.
+Yes, that is an alternative approach.
 
-> Specifically the output of any party can recreate bit-by-bit
-> identical copies of all specified artifacta previous build (the
-> public key, module signatures) is not available during the rebuild or
-> verification.
+> The assumption is that cost of instrumentation in speculative domain <
+> completely stalling it until prior instructions are done using lfence.
+> So speculation is still helpful when the branch is not mispredicted.
+> Now I imagine it's not fun to do such analysis in the verifier (I've
+> tried), but theoretically we could break it down into emitting
+> bytecode from the compiler side, and lifting the compiler to do it for
+> us, and ensuring the end result produced is sane (by still following
+> speculative paths) from the verifier.
 
-You just strip the signatures before verifying reproducibility.
+> You talk about this in the paper and in the presentation as future work.
+> My question is mainly whether you considered implementing this, if
+> yes, what made you choose a nospec barrier over something like above?
 
-> > However, is there also a corresponding question of how we verify
-> > reproduceability of kernel builds (and the associated modules ... I
-> > assume for the modules you do strip the appended signature)?
->=20
-> Currently distros either don't enforce the reproducibility of the
-> kernel package at all or disable MODULE_SIG.
-> With the proposed scheme there would be no signatures on builtin
-> modules.
+The primary motivation was cerainly that it's the easiest to implement
+with the current verifier design.
 
-If you take off the appended signature off the module, you can verify
-reproduceability.
+I mostly decided not to pursue the "verification-only" approach (and
+insert the insn in LLVM) because it would require changes to the eBPF
+instruction set.
 
-> > I assume you're going by the secure boot hash (authenticode hash of
-> > the efi stub and the compressed payload which includes the key).=C2=A0
-> > However, if we had the vmlinux.o we could do a much more nuanced
-> > hash to verify the build, say by placing the keyring data in a
-> > section that isn't hashed.
->=20
-> The currently existing tooling does not have any nuance in its
-> verifications. It just compares bit-by-bit.
+Other consideration include:
 
-So I think fixing that might be what you want.  All current secure
-build processes (hermetic builds, SLSA and the like) are requiring
-output provenance (i.e. signed artifacts).  If you try to stand like
-Canute against this tide saying "no signed builds", you're simply
-opposing progress for the sake of it, particularly when stripping the
-signatures for comparison is easy.
+* The approach could potentially improve performance (the compiler could
+  for example compute the minimal-cut to reduce the number of fences)
+  and simplify the verifier to some extent (no more inserting of insns).
 
-> I think this is intentional as any bespoke per-package logic would
-> introduce possible failure modes and stand in the way of implementing
-> multiple completely independent verification toolsets.
-> While bespoke tools like diffoscope exist, these are only for
-> development and debugging. Not not for the reproducibiliy check
-> itself.
+* It could have the downside that non/partially-vulnerable architectures
+  can not benefit from improved performance as easily as it is the case
+  with the current design.
 
-So you think stripping signatures is failure prone?  If that were the
-case then so would be verifying signatures upon which our whole secure
-boot and signed module loading is based.
+* The best choice for the instruction-set extension is not clear to me.
+  For Spectre v1 USLH [1] would suffice and then one only needs a cmov, so
+  that's easy. But this does not cover Spectre v4 (which is currently
+  the main source of overhead). It could be 'nospec_vX rY' to tell the
+  verifier that a certain register must not be used under speculation
+  from a specific variant, or something generic/catch-all like the
+  current 'nospec'.
 
+* From a security perspective, LLVM SLH is not as strong as the
+  verifier's Spectre v1 mitigation. This is because it does not harden
+  secret-dependent control flow as shown in [1] while the Linux verifier
+  does (where "secrets" are unreadable/uninitialized registers and
+  kernel pointers). It may be the case the this is not a problem for
+  eBPF by conincidence because the verifier also restricts
+  secret-dependent control flow. Without looking into it in detail I am
+  not sure. If one finds that it is a problem, it may also not be
+  important to fix if we adopt the verification-only approach you
+  mention, or one could change LLVM to extend the mitigation.
 
-> How to handle secure-boot with distro keys is not yet clearly
-> defined. I see two possibilities, which should be possible with the
-> proposed scheme, both starting with the build of an unsigned kernel
-> package. Then a signature would be computed on private infrastructure
-> and either
-> * shipped in a standalone package, to be combined with the kernel
-> when that is installed to the ESP/flash etc.
-> * used as input of a signed kernel package where it is combined with
-> the unsigned kernel image.
+> Was it the complexity of realizing this during verification?
+> Are there any implications of reading from NULL that would cause problems?
 
-Or you simply ship tools to remove the signature;
+In theory yes, in practice I would assume no and that it works out. I am
+not aware of any documents from Intel / ARM that state that accessing
+NULL speculatively acts as a speculation barrier (I remember reading
+some paper that suggested it practically does, but I can not find it
+now). If it does not (portably), a downside would be that the verifier
+will have to analyze a lot more speculative instructions.
 
-sbattach --remove <signed efi variable>
+> Also, did you characterize how much difference it could make?
 
-already does this for you ...
+[1] has SPEC2017 benchmarks for LLVM-/U-SLH and a naive lfence-based
+approach (lfence after every branch), for these USLH is about twice as
+fast (150%) as the naive fence-based approach (300%). But this is only
+for Spectre v1 and the Spectre v4 overhead would have to be added.
 
-Regards,
+Both number are also very high compared to the programs from the
+VeriFence paper. There the *combined* overhead for Spectre v1 and v4 was
+0% for very small programs and 16%-60% for larger programs. I have since
+also measured the overhead for Katran and there it is 100%-150%.
 
-James
+I am currently working on a prototype to reduce the Spectre v4 (and
+Spectre v1) overhead and for Katran I was able to lower it to 15%-30% by
+using more precise analysis of the speculative execution using a
+fence-based approach. Most remaining fence are now still from Spectre v4
+(not v1 which would be adressed by SLH) and I hope to eliminate some
+more using a SLH-style approach for v4. I will of course also have to
+check how this carries over to other programs, but it certainly seems
+possible to eliminate almost all fences because there are rarely any
+'real' gadgets in non-malicious programs (only false positive one can
+not eliminate without reasoning about the cache).
 
+> The drop in SCTP throughput seems to suggest so, since CPU-bound
+> computation was moved into the program.
+> Otherwise most programs mostly defer to helpers for heavy lifting.
+> Not that it was as fast as a helper would be, even without nospec, but still.
+>
+> Also a bit sad we don't split the program into BBs already, which
+> could help reduce your mitigation's cost + plus also reduce cost of
+> instruction patching (unrelated).
+
+In the prototype I mention I also tried tackling that. However, at least
+for Katran it was uncommon to have more than one v1-induced fence per
+basic block. Therefore it might not be worth it.
+
+> Anyway, all that said, this is valuable stuff, so I was just curious.
+
+[1] https://www.usenix.org/system/files/usenixsecurity23-zhang-zhiyuan-slh.pdf
+    ("Ultimate SLH: Taking Speculative Load Hardening to the Next Level
+    - Section 5.1: Exploiting Secret-Dependent Control Flow")
 
