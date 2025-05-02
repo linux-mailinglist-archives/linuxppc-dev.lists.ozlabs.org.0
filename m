@@ -1,77 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-8251-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8252-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E33AA6D52
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 11:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 083E5AA6D8E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 11:06:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZplHP0RCcz30Lt;
-	Fri,  2 May 2025 19:00:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZplQh2c8wz3057;
+	Fri,  2 May 2025 19:06:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::432"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746176401;
-	cv=none; b=CHM2J2tw/ZrJVeiKK0wX7patc8H6fqA+T7ymm2V9Fxvk7SeMNK1Ac3EIfKZLBU/wzZoa4n/s1rZYwVl/NanvbPyP/nMJmORy3NIaoJb7VJsr64/cMqdBvaEdUb9Y98B+//1ovoyZD1JHOy4dFoCWlauqVZehmzyTS2W/raZR7W6H671mIqKrPV86JySu7v/vz9GtEZwDTNL+P882EgPWNvZoGtxrhF3yvIEb6eEm4wizSzjtXphpjk0c7yysmtZwkEKTgbijJ389doUhEg6IgQ9l6wAYDUYAbXoT7/M4OlFO89KCMv46YhHJRImgFIhZn3R9ovoccu/tanbRI8zS/w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746176780;
+	cv=none; b=NSq/qco069SC8dMrAo1DPNkdEBScBz3cBeajXguDNkoxch/qBEA1rjoEZ+NNVcqxF92tGDo11y3SqgsXoMu1ztRjg0k6wzB4QT5JMT3bL/kvyEjChRD5LKu7bi/xH2Xib7epGIMzcGJXfxDNRWAm1Pqip/CTEESF59msKhqu7uW6UXTtb8oQq2j+hUrrjk/8H02rJLsx97w3xW4x8u29/VkQawyTCaV7Qc68DoQe9iG4N9TBUQR1bdTHcw421whqtWoB5WdZW+fiuwaa7X6o1fKBRm65kkUaxXoEv/pHPY/jZmPD5t/QZWQRKrX1Da8yO7bMTQ2pE9XKX7g8mf35Tw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746176401; c=relaxed/relaxed;
-	bh=uSI3W4dK/WwCbr7Lai4Hip7w1X1W5KMNJkBGonHTT7k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fl1TM0mC262Q4jMuN0Zvb4Uw5TArfu9ICT0W/OEvF13a7l9z6LF3Q6HxL2oz3FWHLgrPbe/iOCB0u5kE8ZnqIdLnIQPgaf60mleTBUUuXQfGSlG8sQFBv2EoSn4chz53znO4mCBuZZwmnAQoD5U0B/r25UrmhOy2C5SABYQKgtuG9RSVUjyFtQGfl80ko4/j+PJaBLAipT7QC81UyEn0aU28aI2ffe+poZKt6KYBPzInXkT0NsJ9gdnWDTiHkVkZgWhlZBzbMbiKxojhi+3qN9fWIhYm+LyIHoL87RG4CNcJsvcVAl56ZcPySXmcUfE9ICgeRFt2PpBIY/pmVbDh5w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=l8aDzPdL; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::432; helo=mail-wr1-x432.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+	t=1746176780; c=relaxed/relaxed;
+	bh=IAAOoe3Cy/FuVRNXtgYsa7nitP231NLJy4EXeBm89rk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d7y2DOvgFp11TV0MBD+Uv789ubj3tZH04QsLrZfxs2mCYm6rSUSuSZ4GV+fnEsfn5oolD+/xI210wXxD6qAvjGExw94LpQEyqlvuno4gMwAxCKjocS20vnphtmGmHvJOoRKWHrk+fhuMGbte6w+lk+30ur9Of/UET7kzyKhfejau09ZHO/Thke7XhTvBkAYZKKDcyJoFbWMHHxgQxBCpdPKR0uTORdc1IrC66aNbuH5z4f7X0OnLZPlLGWg2nnQJN6OG4yAgzQMucir+ws7OtzDKyAfLHZpnW9FSDiwr7vC2f8h4/ZFKXxH7yY8eiXTFNGxOwa+XxErodVMMFL9yfQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=px+bBO79; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=l8aDzPdL;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=px+bBO79;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::432; helo=mail-wr1-x432.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZplHM5b4Yz3bby
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 18:59:59 +1000 (AEST)
-Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-39c0e0bc733so1638843f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 02 May 2025 01:59:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1746176396; x=1746781196; darn=lists.ozlabs.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uSI3W4dK/WwCbr7Lai4Hip7w1X1W5KMNJkBGonHTT7k=;
-        b=l8aDzPdLq+10o0+uBWp0Tx7Ocox535WIevxiixeDZ3YYoR/LBShehvfW/4AjJHSZxM
-         5/qsoyf2l3HBVtvX9O55ZwqBgBOONTLcwo4xx3fIKNOa2VI5WaNlQdpBi5ckU/b3U3QY
-         Jik0dUDBneZTS4nbgVKuO8CXlCuEa9YWVxdUlpFtZAX4nbP3TSl4KCWpHVscpEAzcgXF
-         GdxyleroysopFz0PQM/SdGnNq5Jrmo09QVErGLIhGHqxvJI+5osiDONO8bbfBVXD2mZG
-         9cEgT4myDdqpEi7njGELZWaoUJtazkXSNfJD/4FJf68nYTcpLHbZ2skypIeKK/vdDBrs
-         nyIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746176396; x=1746781196;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uSI3W4dK/WwCbr7Lai4Hip7w1X1W5KMNJkBGonHTT7k=;
-        b=eyqmp5LWc6LNYuKzUXG8nuXX7YWcI+HhA1Tep1Vl2bjS5a5bBsH60GxjwhP7RAWfne
-         pAG3debjGJCko2R7WAH8jDwJmjFzvSrUpaP3eAn9F3HFPN7VRB19o+04xcyTxS15HJXU
-         wW9RgYmJwqtyqtBUZIPtmGnWXGOlzPstr1imiwfSk3aknJfo90VtjKRTZdN5T7/Oisl0
-         yhmiYjBomu+oXfa5Jpz2YFwwRWHEGUU+aVSkR4QqEbIuuYApwQSQlHsa9oJMyh4jn/bz
-         kUxENDI4urV2zzZLoxPJlB9Nxc19K5dBokZixOS+6tRYwx7cAOxL4HuFH1f2Unx9498X
-         9UKA==
-X-Gm-Message-State: AOJu0YwFMOIebj6STfvQm2D1u5FXaermFTZFPGRtNjx6EFI+Up+3e6Z4
-	nG0BNC0vZQ/JB3gAW/XcQpJ2nnnI3mTd+jpD1v3sFv7VjiAOYnWKjIH0lvn2t9A=
-X-Gm-Gg: ASbGncvjVL7ZF+7XdeOL8JpcaexIFerhgVjGB3qn32BDQtMJNTrtMmtbXrKD2nhCs6p
-	QsYIocZPR9zdm0bnU83HZ0/incQ87ENwgvEr+/SAo0ERNyLDWyUEdU50zh3PlGl5fUeEEWWdtTq
-	H6zF14dQIPq4/HBPLIumqdvmEQOa4APSgegpLptXKKqU1wuslpQbCkj7N3Dva7s6dOh7zAdjb6m
-	7qvmhRy959wYg/bXxuaDctgkqgIJonMbfCmh6NjO8VRUwEMyffoZCebp/mxy68xlFlai094/rxo
-	KfC1JSvrH1qKiNZp80sCAAQEon6Ot0gJYS4=
-X-Google-Smtp-Source: AGHT+IGiehs+dD7NKpB0E1UYkHMJciB0IWOavCbaCxYmeUmt6Jp8ux4E08zw+1Zf98nIRF7Zf+GcJw==
-X-Received: by 2002:a05:6000:40db:b0:39c:16a0:fef4 with SMTP id ffacd0b85a97d-3a099ad938amr1319909f8f.24.1746176396315;
-        Fri, 02 May 2025 01:59:56 -0700 (PDT)
-Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:f280:a08c:3f15:ae3e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b17017sm1552055f8f.92.2025.05.02.01.59.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 May 2025 01:59:55 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 02 May 2025 10:59:51 +0200
-Subject: [PATCH v2 5/5] powerpc: 8xx/gpio: use new line value setter
- callbacks
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZplQf6nJVz2yyd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 19:06:18 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 541M0geq011560;
+	Fri, 2 May 2025 09:06:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=IAAOoe
+	3Cy/FuVRNXtgYsa7nitP231NLJy4EXeBm89rk=; b=px+bBO79zejt4i7w0/62VH
+	j9uBtl+eo2o6rfZr2vk0hWvR6gq6XCeROloRkTLuoDZaoALDFbjaAoxeT84mH17V
+	2gpNhHF4sTQ6EFaYKamqNCbhtPY/cy4DWWB7LfdmHy0KFu2lrByN76VWykvK6nrT
+	q9vaVushxVIUmDqRdmZSr+HdMeRJaNDlw2YmDD0Min4zeN89hlqaNkZp6YxHE+YE
+	3058iEqQ7gOZjmQ7KiAy6SHqJkEqbXscQci1mBQqU4TEFtC5bypKNlE7KRj8Z/mh
+	Q4DWQh8tskftBolarvQ1GZI9lPuoYVxwlBgO+WFQlKEn36Z9dNjbgaLwUKXfXjCw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46c7dsd0x7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 May 2025 09:06:10 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5428swL5029758;
+	Fri, 2 May 2025 09:06:10 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46c7dsd0wt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 May 2025 09:06:10 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5425kcoA031617;
+	Fri, 2 May 2025 09:06:01 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4699tuhaut-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 02 May 2025 09:06:01 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54295vAr59638186
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 2 May 2025 09:05:57 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BE2A92004B;
+	Fri,  2 May 2025 09:05:57 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AAC0720049;
+	Fri,  2 May 2025 09:05:55 +0000 (GMT)
+Received: from [9.39.16.240] (unknown [9.39.16.240])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  2 May 2025 09:05:55 +0000 (GMT)
+Message-ID: <876f14c7-2a9c-403a-809b-2c0f9bb41ba2@linux.ibm.com>
+Date: Fri, 2 May 2025 14:35:54 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,116 +86,238 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250502-gpiochip-set-rv-powerpc-v2-5-488e43e325bf@linaro.org>
-References: <20250502-gpiochip-set-rv-powerpc-v2-0-488e43e325bf@linaro.org>
-In-Reply-To: <20250502-gpiochip-set-rv-powerpc-v2-0-488e43e325bf@linaro.org>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, Anatolij Gustschin <agust@denx.de>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
- linux-gpio@vger.kernel.org, 
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2792;
- i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
- bh=9v+4cP+N9Ekqaku8fyOt8CZXpH5ZitQiy924EVCXv2U=;
- b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBoFImFV/zBpGNUkKObJQaO/c0oYX+Tv8vDmyzil
- Ug9qJCMkCaJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCaBSJhQAKCRARpy6gFHHX
- cksyD/0X+tJgjUPnAxn6EKf2Z9j6fWFPc1+1uIKAzbRceI+1oKELBb+otB64CIoIihXVwVt+92J
- WeO19V0+Q29RtvslOqkQNdyaazX264hPpEVN8oz1ebZeYkL/64AqoDjaNARKDenLURsrj4U1/pU
- 0kWP1TXJbkSzEF7AqAb61kqeUAUwZYly/MdL5dmZ22GLohEG0hswU5X+AdQNTKkE8ttWrDLa6UB
- kXHTvmo2g5VKATg+9ctmhcZVjPTh6V50TbHJjz6gIfiMm8MZ7fgq1nwUnPn3AZ9DmgVWUBSTr+G
- +4w1oBrnlQmLS6+E39xkCSdXzDf4mIsZvk+/hPGjJLuDDRUsq8/J72Ccaf4QdcBEFpu/cRvKqs+
- Yi7STBrE5AgPkb0Qi189KebD0770ZU3saX9T0465ZSptxEPKu6NQSEpNnQLkN0QtIXsdNwo+h0g
- dXwPYZFx8kfep4AaIUcQK7dyk1KxsYlXOX8LazI62jiefMNyZkSll17/le6ayiMq3T+XvP54Jjm
- CB18WGR6nLuckcRgDOrY5pEMBYi1OXrefhwoqGEP2fP0VRRNYKAwMeR08IBkQLSWiGoK+ac+KEY
- Zv9O1H0+iu013fq2RDlItUKlG11ZDRJEcxARbfWkfW86nInRiCQLl8ywo6Ao8toT9XekBZLcwKp
- IzoHr5MPIAiB0ig==
-X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
- fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tools/lib/perf: Fix -Werror=alloc-size-larger-than in
+ cpumap.c
+To: Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+References: <20250406163412.897313-1-likhitha@linux.ibm.com>
+ <E58C5DCA-5F52-4B61-A816-DE932BA40FDA@linux.ibm.com>
+ <baad9d65-07b1-4a19-aea6-5ba5d60da98e@linux.ibm.com>
+ <1b1450a8-f091-4091-981d-76b27f61be24@linux.ibm.com>
+ <D1C1E5D6-085A-41D1-85AB-52809C956BFB@linux.ibm.com> <aAvKg8K2fyrZ6zy4@x1>
+Content-Language: en-US
+From: Likhitha Korrapati <likhitha@linux.ibm.com>
+In-Reply-To: <aAvKg8K2fyrZ6zy4@x1>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=afZhnQot c=1 sm=1 tr=0 ts=68148b02 cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=zDGJ4L4n3l-mZm_ena4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 2JaCjYvcfWzKcZKt7IB5WJ4HBFpC3Db1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDA3MSBTYWx0ZWRfXyrZKywzvAogg 8o70CJbFwsEIC/bpxjxw+D9FZiljhbZcqyBTjFWLCd48F3NSx5tjj3AbiMD5OoGRtg2QCzWZQKR PX6QD2149fwTi48qxVIr/Zz7uDGpeXI/FGGQZvkNIpB3R0NreQsTjpTtLE3SND1J80NyNzJCMTD
+ xELJCnI7o946wozsqhgnRc0rXEXYJtMQFkWPSvGRQx5Y8cpuNkGSUnTu7rFcezgEd+MtBYB7/TD ircpUPss6gTdmp3QsxzowVdvgwshqPoVDgWRktRT9qIGwIZpsgalJpra4HSpkOXOKi5aQYIo3jR E3K52GropfV77Pf2Ei6bX5m5IOw/MKiZLXbi0wHTWRZdK3mQyPVxLU8cAhmqxuGrWA8BNHRRQaX
+ dTcBrfxWCz+JqUzeQW3pfbibmYtS5qmlbEmC2xAUJBdBiNcOhMXdDg1fjwdQQkvr1W3CQGS0
+X-Proofpoint-GUID: 8x02msb4LjZGj6xc9YwE3Z6h0S0mjYQI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-01_06,2025-04-30_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ priorityscore=1501 malwarescore=0 bulkscore=0 lowpriorityscore=0
+ impostorscore=0 clxscore=1015 phishscore=0 adultscore=0 mlxscore=0
+ mlxlogscore=999 suspectscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2504070000 definitions=main-2505020071
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+	RCVD_IN_VALIDITY_CERTIFIED_BLOCKED,RCVD_IN_VALIDITY_RPBL_BLOCKED,
+	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hi Arnaldo,
 
-struct gpio_chip now has callbacks for setting line values that return
-an integer, allowing to indicate failures. Convert the driver to using
-them.
+On 4/25/25 23:16, Arnaldo Carvalho de Melo wrote:
+> On Fri, Apr 25, 2025 at 08:19:02PM +0530, Athira Rajeev wrote:
+>>> On 14 Apr 2025, at 7:08 AM, Madhavan Srinivasan <maddy@linux.ibm.com> wrote:
+>>> On 4/7/25 5:38 PM, Venkat Rao Bagalkote wrote:
+>>>> On 07/04/25 12:10 am, Athira Rajeev wrote:
+>>>>>> On 6 Apr 2025, at 10:04 PM, Likhitha Korrapati <likhitha@linux.ibm.com> wrote:
+> 
+>>>>>> perf build break observed when using gcc 13-3 (FC39 ppc64le)
+>>>>>> with the following error.
+> 
+>>>>>> cpumap.c: In function 'perf_cpu_map__merge':
+>>>>>> cpumap.c:414:20: error: argument 1 range [18446744069414584320, 18446744073709551614] exceeds maximum object size 9223372036854775807 [-Werror=alloc-size-larger-than=]
+>>>>>>    414 |         tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
+>>>>>>        |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>>>>> In file included from cpumap.c:4:
+>>>>>> /usr/include/stdlib.h:672:14: note: in a call to allocation function 'malloc' declared here
+>>>>>>    672 | extern void *malloc (size_t __size) __THROW __attribute_malloc__
+>>>>>>        |              ^~~~~~
+>>>>>> cc1: all warnings being treated as errors
+> 
+>>>>>> Error happens to be only in gcc13-3 and not in latest gcc 14.
+>>>>>> Even though git-bisect pointed bad commit as:
+>>>>>> 'commit f5b07010c13c ("libperf: Don't remove -g when EXTRA_CFLAGS are used")',
+>>>>>> issue is with tmp_len being "int". It holds number of cpus and making
+>>>>>> it "unsigned int" fixes the issues.
+> 
+>>>>>> After the fix:
+> 
+>>>>>>    CC      util/pmu-flex.o
+>>>>>>    CC      util/expr-flex.o
+>>>>>>    LD      util/perf-util-in.o
+>>>>>>    LD      perf-util-in.o
+>>>>>>    AR      libperf-util.a
+>>>>>>    LINK    perf
+>>>>>>    GEN     python/perf.cpython-312-powerpc64le-linux-gnu.so
+> 
+>>>>>> Signed-off-by: Likhitha Korrapati <likhitha@linux.ibm.com>
+>>>>> Looks good to me
+> 
+>>>>> Reviewed-by: Athira Rajeev <atrajeev@linux.ibm.com>
+> 
+>>>> Tested this patch on perf-tools-next repo, and this patch fixes the issue.
+> 
+>>>> Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> 
+>>> Arnaldo, Namhyung,
+> 
+>>> can you consider pulling this fix? since it is breaking the build in gcc13-3 or
+>>> if you have any comments do let us know.
+> 
+> This isn't the only place in that file where this pattern exists:
+> 
+> ⬢ [acme@toolbx perf-tools-next]$ grep malloc tools/lib/perf/cpumap.c
+> 	cpus = malloc(sizeof(*cpus) + sizeof(struct perf_cpu) * nr_cpus);
+> 	tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
+> 	tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
+> ⬢ [acme@toolbx perf-tools-next]$
+> 
+> 
+> struct perf_cpu_map *perf_cpu_map__alloc(int nr_cpus)
+> {
+>          RC_STRUCT(perf_cpu_map) *cpus;
+>          struct perf_cpu_map *result;
+> 
+>          if (nr_cpus == 0)
+>                  return NULL;
+> 
+>          cpus = malloc(sizeof(*cpus) + sizeof(struct perf_cpu) * nr_cpus);
+> 
+> 
+> int perf_cpu_map__merge(struct perf_cpu_map **orig, struct perf_cpu_map *other)
+> {
+>          struct perf_cpu *tmp_cpus;
+>          int tmp_len;
+>          int i, j, k;
+>          struct perf_cpu_map *merged;
+> 
+>          if (perf_cpu_map__is_subset(*orig, other))
+>                  return 0;
+>          if (perf_cpu_map__is_subset(other, *orig)) {
+>                  perf_cpu_map__put(*orig);
+>                  *orig = perf_cpu_map__get(other);
+>                  return 0;
+>          }
+> 
+>          tmp_len = __perf_cpu_map__nr(*orig) + __perf_cpu_map__nr(other);
+>          tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
+> 
+> 
+> struct perf_cpu_map *perf_cpu_map__intersect(struct perf_cpu_map *orig,
+>                                               struct perf_cpu_map *other)
+> {
+>          struct perf_cpu *tmp_cpus;
+>          int tmp_len;
+>          int i, j, k;
+>          struct perf_cpu_map *merged = NULL;
+> 
+>          if (perf_cpu_map__is_subset(other, orig))
+>                  return perf_cpu_map__get(orig);
+>          if (perf_cpu_map__is_subset(orig, other))
+>                  return perf_cpu_map__get(other);
+> 
+>          tmp_len = max(__perf_cpu_map__nr(orig), __perf_cpu_map__nr(other));
+>          tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
+> 
+> I'm trying to figure out why its only in perf_cpu_map__merge() that this
+> triggers :-\
+> 
+> Maybe that max() call in perf_cpu_map__intersect() somehow makes the
+> compiler happy.
+> 
+> And in perf_cpu_map__alloc() all calls seems to validate it.
+> 
+> But wouldn't turning this into a calloc() be better?
+> 
+> Like:
+> 
+> diff --git a/tools/lib/perf/cpumap.c b/tools/lib/perf/cpumap.c
+> index 4454a5987570cfbc..99d21618a252ac0e 100644
+> --- a/tools/lib/perf/cpumap.c
+> +++ b/tools/lib/perf/cpumap.c
+> @@ -411,7 +411,7 @@ int perf_cpu_map__merge(struct perf_cpu_map **orig, struct perf_cpu_map *other)
+>          }
+>   
+>          tmp_len = __perf_cpu_map__nr(*orig) + __perf_cpu_map__nr(other);
+> -       tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
+> +       tmp_cpus = calloc(tmp_len, sizeof(struct perf_cpu));
+>          if (!tmp_cpus)
+>                  return -ENOMEM;
+>   
+> ⬢ [acme@toolbx perf-tools-next]$
+> 
+> 
+> And better, do the max size that the compiler is trying to help us
+> catch?
+> 
+> - Arnaldo
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu> # powerpc 8xx
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
----
- arch/powerpc/platforms/8xx/cpm1.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+I am not sure if using max() is right incase of perf_cpu_map_merge as 
+this is a merge functionality. As this is summation we get a value 
+greater than the max of orig and other cpus. And this might be correct 
+in perf_cpu_map__intersect() but will cause issues in perf_cpu_map__marge().
+Can you please eloborate if you meant this or there is something else I 
+missed.
 
-diff --git a/arch/powerpc/platforms/8xx/cpm1.c b/arch/powerpc/platforms/8xx/cpm1.c
-index 1dc095ad48fcf..7462c221115cb 100644
---- a/arch/powerpc/platforms/8xx/cpm1.c
-+++ b/arch/powerpc/platforms/8xx/cpm1.c
-@@ -417,7 +417,7 @@ static void __cpm1_gpio16_set(struct cpm1_gpio16_chip *cpm1_gc, u16 pin_mask, in
- 	out_be16(&iop->dat, cpm1_gc->cpdata);
- }
- 
--static void cpm1_gpio16_set(struct gpio_chip *gc, unsigned int gpio, int value)
-+static int cpm1_gpio16_set(struct gpio_chip *gc, unsigned int gpio, int value)
- {
- 	struct cpm1_gpio16_chip *cpm1_gc = gpiochip_get_data(gc);
- 	unsigned long flags;
-@@ -428,6 +428,8 @@ static void cpm1_gpio16_set(struct gpio_chip *gc, unsigned int gpio, int value)
- 	__cpm1_gpio16_set(cpm1_gc, pin_mask, value);
- 
- 	spin_unlock_irqrestore(&cpm1_gc->lock, flags);
-+
-+	return 0;
- }
- 
- static int cpm1_gpio16_to_irq(struct gpio_chip *gc, unsigned int gpio)
-@@ -497,7 +499,7 @@ int cpm1_gpiochip_add16(struct device *dev)
- 	gc->direction_input = cpm1_gpio16_dir_in;
- 	gc->direction_output = cpm1_gpio16_dir_out;
- 	gc->get = cpm1_gpio16_get;
--	gc->set = cpm1_gpio16_set;
-+	gc->set_rv = cpm1_gpio16_set;
- 	gc->to_irq = cpm1_gpio16_to_irq;
- 	gc->parent = dev;
- 	gc->owner = THIS_MODULE;
-@@ -554,7 +556,7 @@ static void __cpm1_gpio32_set(struct cpm1_gpio32_chip *cpm1_gc, u32 pin_mask, in
- 	out_be32(&iop->dat, cpm1_gc->cpdata);
- }
- 
--static void cpm1_gpio32_set(struct gpio_chip *gc, unsigned int gpio, int value)
-+static int cpm1_gpio32_set(struct gpio_chip *gc, unsigned int gpio, int value)
- {
- 	struct cpm1_gpio32_chip *cpm1_gc = gpiochip_get_data(gc);
- 	unsigned long flags;
-@@ -565,6 +567,8 @@ static void cpm1_gpio32_set(struct gpio_chip *gc, unsigned int gpio, int value)
- 	__cpm1_gpio32_set(cpm1_gc, pin_mask, value);
- 
- 	spin_unlock_irqrestore(&cpm1_gc->lock, flags);
-+
-+	return 0;
- }
- 
- static int cpm1_gpio32_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
-@@ -618,7 +622,7 @@ int cpm1_gpiochip_add32(struct device *dev)
- 	gc->direction_input = cpm1_gpio32_dir_in;
- 	gc->direction_output = cpm1_gpio32_dir_out;
- 	gc->get = cpm1_gpio32_get;
--	gc->set = cpm1_gpio32_set;
-+	gc->set_rv = cpm1_gpio32_set;
- 	gc->parent = dev;
- 	gc->owner = THIS_MODULE;
- 
+I tried the following:
 
--- 
-2.45.2
+int perf_cpu_map__nr(const struct perf_cpu_map *cpus)
+{
+         return cpus ? __perf_cpu_map__nr(cpus) : 1;
+}
 
+static int __perf_cpu_map__nr(const struct perf_cpu_map *cpus)
+{
+         return RC_CHK_ACCESS(cpus)->nr;
+}
+
+This got introduced via commit 7d1b529f164d33ad4514b272bcec65036873d717 
+where it assumes cpu map as non-null.
+
+And we are checking this non-null in perf_cpu_map__merge()
+
+         if (perf_cpu_map__is_subset(*orig, other))
+                 return 0;
+         if (perf_cpu_map__is_subset(other, *orig)) {
+                 perf_cpu_map__put(*orig);
+                 *orig = perf_cpu_map__get(other);
+                 return 0;
+         }
+
+Using perf_cpu_map__nr instead of __perf_cpu_map__nr  and this works as 
+it has a check.
+
+--- a/tools/lib/perf/cpumap.c
++++ b/tools/lib/perf/cpumap.c
+@@ -410,7 +410,7 @@ int perf_cpu_map__merge(struct perf_cpu_map **orig, 
+struct perf_cpu_map *other)
+                 return 0;
+         }
+
+-       tmp_len = max(__perf_cpu_map__nr(*orig), __perf_cpu_map__nr(other));
++       tmp_len = perf_cpu_map__nr(*orig) +  perf_cpu_map__nr(other);
+         tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
+         if (!tmp_cpus)
+                 return -ENOMEM;
+Regards,
+Likhitha.
 
