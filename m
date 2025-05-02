@@ -1,71 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-8258-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8259-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4883AA710A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 14:01:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01AC1AA734D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  2 May 2025 15:20:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZpqJc4CpCz2y34;
-	Fri,  2 May 2025 22:01:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zps4843Rnz2yqv;
+	Fri,  2 May 2025 23:20:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746187280;
-	cv=none; b=femk0dUgSDecKeNinbYoB55u4+16BxtyDtquzB9GknA0PYqS1a5BFeW49vaPnuzfWgN4R1dmewTWokkKg4oP/rKe2DNsUR1fZDnIlr02sq/p41qdzsZsb03jHm1PO7PnAKZlMz0uf9DSRP1gt0wOYitSRlZMx/61dbr25uXvdbpfiD+83OFSgVX5IwG687dncuw9gBId0gUCQ12QnFg1WqtpkekHlO1aN3tGWGr2Tn08SobjTTWPQI/rWquiuWiML6TQqb7QDCOnVID7EdpmOp3hDVAwbn//Xjwy49dKOa9Q01Az4JGlVeAe8410xXfB8RCRf64MkqYlqQOV25Ttyw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746192040;
+	cv=none; b=DUpdOkqqzWON6XxDJ94otI42NG/yCVabBAo4bO0bR8vgFkUr4Savt7rgCQIPXjzTGl3AYwRt0jULupvlTn2QEPVbDu/nH2876TUnZUXrXj3a1k381rsApO9rR0uFHiPmowWwrPS1Zr/w6lnoJAwlXMSVFIWGjgoIZUOCe2B+gM/bhdjTa1bFX8OZ5DMMXeOV6sfHxY/qcPuJ/i9OCJKjBrLqjD0qJO/NUi5epxjttcYx0MDj9i9p6ztN7/B+4KgphpUQHgQb7QVUC5MdWcyeP0Yro9W5KkSFrowp97zEnwtHoXmFV3j1097jJNsLkPQ80D9xpAZzZpQgtaizI0f0Rw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746187280; c=relaxed/relaxed;
-	bh=l4BVd6xWzagMIbyTPyk7pywmsK+BN7JPzeovOab1+vc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H+06Rc5q4FH0lZZY3bE3Z/a2UQrEnysksNS1DUPFbM+xTeqaenqQBn+APtpRR/SmgCWSc6cCLP6aGEdOMWMNN6LHlkPBE+HjD5OWZIWT4BvB8i3XZTH5SkaNYPHjAHHHNrh5TUpusc+HStTTUmMvJHm8RKPzGMJwDkecVf9Mu5QawdJiyYDmRYvkWSqkyS/4ZS+dXHf83AsGQRMGXAekJDIrsnDJb6N8U1tBMB9Z3fp/pSGD+rDIjVu2tNvJs3krDxff3okDdxThO8b1Ye9szemCNZhHzBtyISkAaK4wy7q92hXWpxhSufyj2eNsGM7F6c+NkjlHh8n4zseoblhdYQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ge4+Zjp2; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ge4+Zjp2;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZpqJb2vkqz2y0B
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 22:01:18 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 542A4HVc030671;
-	Fri, 2 May 2025 12:00:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=l4BVd6
-	xWzagMIbyTPyk7pywmsK+BN7JPzeovOab1+vc=; b=ge4+Zjp23TatX3wRNkGPkb
-	MDzHaLcJmry525VNzVZKhGEPXlKb7YZHyFYHHv2Zc+9CRqnvmVU4Zf66XGgW21Go
-	o8TlpG9rOFsH+RsE4ruhsqT0kc9Gmc08uYlFP8X2ekEdzlTaek9EB/RfjVFhJWP0
-	/YUqvgidjH+UUX2/QwysqN88a7rIDu3L5U8hzq4INroJjbtFPCBZU4SlBmPokvuG
-	kqP+o+RRWwyleKEvVdxBtaDd3qLdYTETtfkK24IQ8exl3HjKx0uT30Cb4FHaEmSy
-	ITBOCG3QDBqtk7/KCd8lezTpCWDCG1lWgVSVi0yge+nXUImCZiTS6Nz+WN8QoiHA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46cuyk8dac-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 May 2025 12:00:38 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 542B1bdJ031662;
-	Fri, 2 May 2025 12:00:32 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4699tuhugc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 May 2025 12:00:32 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 542C0UMv22675856
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 May 2025 12:00:30 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9DCF15805F;
-	Fri,  2 May 2025 12:00:30 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA79C5805D;
-	Fri,  2 May 2025 12:00:26 +0000 (GMT)
-Received: from [9.61.251.128] (unknown [9.61.251.128])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  2 May 2025 12:00:26 +0000 (GMT)
-Message-ID: <90953737-7c8c-4868-984d-30430b5aefaa@linux.ibm.com>
-Date: Fri, 2 May 2025 17:30:25 +0530
+	t=1746192040; c=relaxed/relaxed;
+	bh=H+33nZgtga8LAD21ZP+4ubm8ESpffSildHohhadgSo0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KGyZCky4kfHff1VkwAAAFsWwFomxLqts4mmSk6PNf0vDkvZqPycLs2d9TZbsXjTxpe4yz8t9h2FO5st3qFHX/+vyQJLArMKHxQV5DokF/EMN5X9M8ZWPw3sMCBoTlLyzgUJce7jM2mkN+H52A6AJgkB7DQZJrLZ/FkOtvyt3loTxzOz2MaL4I7eCUj5i16nV7pjayjAVxzO5lCw5LTB17SJSi8zi0/BfP2bpDGKAsqwKGfwMmrYcFQB4CPmBDm2DK/tNMZ/MbeYrQoRUvd5OP/T4ujdeLHCoZLm3MleONNpj+McAQXxh7FaqQBH2QiiaS76Z2z3oS89AmUUf7VnFHg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zps456Gqdz2ynh
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  2 May 2025 23:20:36 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4ZprnS0mDzz9sB5;
+	Fri,  2 May 2025 15:07:56 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id yTdoClDjHfzF; Fri,  2 May 2025 15:07:56 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4ZprnS03d6z9sB2;
+	Fri,  2 May 2025 15:07:56 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id F00368B765;
+	Fri,  2 May 2025 15:07:55 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id C9qmk7rqDkQY; Fri,  2 May 2025 15:07:55 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 806938B763;
+	Fri,  2 May 2025 15:07:55 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/8xx: Reduce alignment constraint for kernel memory
+Date: Fri,  2 May 2025 15:07:53 +0200
+Message-ID: <fa9927b70df13627cdf10b992ea71d6562c7760e.1746191262.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,89 +66,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] watchdog: Fix the SOFTLOCKUP_DETECTOR=n case
-Content-Language: en-GB
-To: "Nysal Jan K.A." <nysal@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: luogengkun@huaweicloud.com, dianders@chromium.org,
-        joel.granados@kernel.org, song@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        linuxppc-dev@lists.ozlabs.org
-References: <20250430205503.4a316f48@canb.auug.org.au>
- <20250502111120.282690-1-nysal@linux.ibm.com>
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <20250502111120.282690-1-nysal@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8ox7mOuU3l5-sahkWNn9UsousUuKWDTb
-X-Proofpoint-ORIG-GUID: 8ox7mOuU3l5-sahkWNn9UsousUuKWDTb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTAyMDA5MSBTYWx0ZWRfX37nvVsHaLAet Na6/O9mXd2MP60p/4O1BffAQrP+1E5wyrO7ceDQ70/8glHEUWPAB7WgMl5P1qc584XndXNE+3Jb zAfv4eroRfMMBk/TNM42FK5ZjGp6nrJ1wF8B1TC4drPEAVSTHQ3KrT1kXq6ldcfosdQrSWwNBzZ
- HT/6X52bZDBrAvDif6I4sP5xmx4yKbtdcsk/FCeQ548LvZH6yskncD3gYthJdYvV21hQ95+iOR1 xLHHlN65k9/2RByUxnynXnH+VhW2ftn0lrCoz19H1Uyl8LBfftx/rKE6OoCFLTGYkte58Z1bLn3 ybdjGGDqAyHLlml16hoOXJJHLgx+fipJXgEjYD3eNPxKpBmOQh/zOOSy5jAqMrWfYB8PJ3AzO0k
- Ptqjk0vZxoY1CY4bls3GVIjudfO2t1+ZwWxCXwvNTNx9gEJjXhur39PVD8uHaVc9S1SeCyzG
-X-Authority-Analysis: v=2.4 cv=KYTSsRYD c=1 sm=1 tr=0 ts=6814b3e6 cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=Oh3Zmkm9Fq4tdngPZlYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-02_01,2025-04-30_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- phishscore=0 malwarescore=0 mlxlogscore=999 spamscore=0 mlxscore=0
- lowpriorityscore=0 clxscore=1015 priorityscore=1501 impostorscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505020091
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1746191273; l=5113; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=5DyP5CH5llsrXoTjy9opbfOMo5C5G5RLl6+nE2p0vMs=; b=uF1BTXzLim4U+Lw/FpCSAf59eNVyyt3u/EdmT2gO8CghLvC0q8dKtHVVqm4DePkGQmFxc/tKd TBEx1AWyGFBA0jW8VwEwUU9A9K097fGv/aFSwuX8TL4psaUYfcd1Qcy
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+8xx has three large page sizes: 8M, 512k and 16k.
 
-On 02/05/25 4:41 pm, Nysal Jan K.A. wrote:
-> Update watchdog_thresh when SOFTLOCKUP_DETECTOR=n.
-> Additionally fix a build failure in this case as well.
->
-> Fixes: 0bff3dababb07 ("watchdog: fix watchdog may detect false positive of softlockup")
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> Closes: https://lore.kernel.org/all/339e2b3e-c7ee-418f-a84c-9c6360dc570b@linux.ibm.com
-> Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-> ---
-> The "Fixes:" SHA1 points to the commit in mm-nonmm-unstable and will need updating
->
->   kernel/watchdog.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-> index 80d1a1dae27..2d283e92be5 100644
-> --- a/kernel/watchdog.c
-> +++ b/kernel/watchdog.c
-> @@ -923,10 +923,12 @@ static __init void lockup_detector_setup(void)
->   }
->   
->   #else /* CONFIG_SOFTLOCKUP_DETECTOR */
-> -static void __lockup_detector_reconfigure(void)
-> +static void __lockup_detector_reconfigure(bool thresh_changed)
->   {
->   	cpus_read_lock();
->   	watchdog_hardlockup_stop();
-> +	if (thresh_changed)
-> +		watchdog_thresh = READ_ONCE(watchdog_thresh_next);
->   	lockup_detector_update_enable();
->   	watchdog_hardlockup_start();
->   	cpus_read_unlock();
+A too big alignment can lead to wasting memory. On a board which has
+only 32 MBytes of RAM, every single byte is worth it and a 512k
+alignment is sometimes too much.
 
+Allow mapping kernel memory with 16k pages and reduce the constraint
+on kernel memory alignment. 512k and 16k pages are handled the same
+way so reverse tests in order to make 8M pages the special case and
+other ones (512k and 16k) the alternative.
 
-Tested this patch, and with this, build is successful. Hence,
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/Kconfig         | 10 +++++-----
+ arch/powerpc/mm/nohash/8xx.c | 32 +++++++++++++++++---------------
+ 2 files changed, 22 insertions(+), 20 deletions(-)
 
-
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-
-
-Regards,
-
-Venkat.
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 2519fc3538c6..c3e0cc83f120 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -895,7 +895,7 @@ config DATA_SHIFT
+ 	int "Data shift" if DATA_SHIFT_BOOL
+ 	default 24 if STRICT_KERNEL_RWX && PPC64
+ 	range 17 28 if (STRICT_KERNEL_RWX || DEBUG_PAGEALLOC || KFENCE) && PPC_BOOK3S_32
+-	range 19 23 if (STRICT_KERNEL_RWX || DEBUG_PAGEALLOC || KFENCE) && PPC_8xx
++	range 14 23 if (STRICT_KERNEL_RWX || DEBUG_PAGEALLOC || KFENCE) && PPC_8xx
+ 	range 20 24 if (STRICT_KERNEL_RWX || DEBUG_PAGEALLOC || KFENCE) && PPC_85xx
+ 	default 22 if STRICT_KERNEL_RWX && PPC_BOOK3S_32
+ 	default 18 if (DEBUG_PAGEALLOC || KFENCE) && PPC_BOOK3S_32
+@@ -908,10 +908,10 @@ config DATA_SHIFT
+ 	  On Book3S 32 (603+), DBATs are used to map kernel text and rodata RO.
+ 	  Smaller is the alignment, greater is the number of necessary DBATs.
+ 
+-	  On 8xx, large pages (512kb or 8M) are used to map kernel linear
+-	  memory. Aligning to 8M reduces TLB misses as only 8M pages are used
+-	  in that case. If PIN_TLB is selected, it must be aligned to 8M as
+-	  8M pages will be pinned.
++	  On 8xx, large pages (16kb or 512kb or 8M) are used to map kernel
++	  linear memory. Aligning to 8M reduces TLB misses as only 8M pages
++	  are used in that case. If PIN_TLB is selected, it must be aligned
++	  to 8M as 8M pages will be pinned.
+ 
+ config ARCH_FORCE_MAX_ORDER
+ 	int "Order of maximal physically contiguous allocations"
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index 8b54f12d1889..ab1505cf42bf 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -54,20 +54,13 @@ static int __ref __early_map_kernel_hugepage(unsigned long va, phys_addr_t pa,
+ {
+ 	pmd_t *pmdp = pmd_off_k(va);
+ 	pte_t *ptep;
+-
+-	if (WARN_ON(psize != MMU_PAGE_512K && psize != MMU_PAGE_8M))
+-		return -EINVAL;
++	unsigned int shift = mmu_psize_to_shift(psize);
+ 
+ 	if (new) {
+ 		if (WARN_ON(slab_is_available()))
+ 			return -EINVAL;
+ 
+-		if (psize == MMU_PAGE_512K) {
+-			ptep = early_pte_alloc_kernel(pmdp, va);
+-			/* The PTE should never be already present */
+-			if (WARN_ON(pte_present(*ptep) && pgprot_val(prot)))
+-				return -EINVAL;
+-		} else {
++		if (psize == MMU_PAGE_8M) {
+ 			if (WARN_ON(!pmd_none(*pmdp) || !pmd_none(*(pmdp + 1))))
+ 				return -EINVAL;
+ 
+@@ -78,20 +71,25 @@ static int __ref __early_map_kernel_hugepage(unsigned long va, phys_addr_t pa,
+ 			pmd_populate_kernel(&init_mm, pmdp + 1, ptep);
+ 
+ 			ptep = (pte_t *)pmdp;
++		} else {
++			ptep = early_pte_alloc_kernel(pmdp, va);
++			/* The PTE should never be already present */
++			if (WARN_ON(pte_present(*ptep) && pgprot_val(prot)))
++				return -EINVAL;
+ 		}
+ 	} else {
+-		if (psize == MMU_PAGE_512K)
+-			ptep = pte_offset_kernel(pmdp, va);
+-		else
++		if (psize == MMU_PAGE_8M)
+ 			ptep = (pte_t *)pmdp;
++		else
++			ptep = pte_offset_kernel(pmdp, va);
+ 	}
+ 
+ 	if (WARN_ON(!ptep))
+ 		return -ENOMEM;
+ 
+ 	set_huge_pte_at(&init_mm, va, ptep,
+-			pte_mkhuge(pfn_pte(pa >> PAGE_SHIFT, prot)),
+-			1UL << mmu_psize_to_shift(psize));
++			arch_make_huge_pte(pfn_pte(pa >> PAGE_SHIFT, prot), shift, 0),
++			1UL << shift);
+ 
+ 	return 0;
+ }
+@@ -123,14 +121,18 @@ static int mmu_mapin_ram_chunk(unsigned long offset, unsigned long top,
+ 	unsigned long p = offset;
+ 	int err = 0;
+ 
+-	WARN_ON(!IS_ALIGNED(offset, SZ_512K) || !IS_ALIGNED(top, SZ_512K));
++	WARN_ON(!IS_ALIGNED(offset, SZ_16K) || !IS_ALIGNED(top, SZ_16K));
+ 
++	for (; p < ALIGN(p, SZ_512K) && p < top && !err; p += SZ_16K, v += SZ_16K)
++		err = __early_map_kernel_hugepage(v, p, prot, MMU_PAGE_16K, new);
+ 	for (; p < ALIGN(p, SZ_8M) && p < top && !err; p += SZ_512K, v += SZ_512K)
+ 		err = __early_map_kernel_hugepage(v, p, prot, MMU_PAGE_512K, new);
+ 	for (; p < ALIGN_DOWN(top, SZ_8M) && p < top && !err; p += SZ_8M, v += SZ_8M)
+ 		err = __early_map_kernel_hugepage(v, p, prot, MMU_PAGE_8M, new);
+ 	for (; p < ALIGN_DOWN(top, SZ_512K) && p < top && !err; p += SZ_512K, v += SZ_512K)
+ 		err = __early_map_kernel_hugepage(v, p, prot, MMU_PAGE_512K, new);
++	for (; p < ALIGN_DOWN(top, SZ_16K) && p < top && !err; p += SZ_16K, v += SZ_16K)
++		err = __early_map_kernel_hugepage(v, p, prot, MMU_PAGE_16K, new);
+ 
+ 	if (!new)
+ 		flush_tlb_kernel_range(PAGE_OFFSET + v, PAGE_OFFSET + top);
+-- 
+2.47.0
 
 
