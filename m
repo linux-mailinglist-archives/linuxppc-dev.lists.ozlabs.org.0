@@ -1,65 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-8266-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8267-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E98D1AA8093
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 May 2025 14:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61639AA80A2
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  3 May 2025 14:13:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZqRQ83kSrz2xgQ;
-	Sat,  3 May 2025 22:08:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZqRWm6pdmz2xpn;
+	Sat,  3 May 2025 22:13:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f9:c010:3052::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746229903;
-	cv=none; b=mi6QAE1VmpBC+DtHKIZMCvAoQ3isnV5oiYXGZ5zSKshfLnJ4gWnORq/SX2D11iSmdHeIBgoP+BYOxkyzMy32ri774zgv0PG6rHHpDXs0XBGiNZmgO9XHQHbisiX45Qdp3RIpFB+PdDzHfmex3NQXrwQM3FeaWGOBUOFvskK+PqpNbuUl2bOL91dGWuSHrVa1xtBEMDbUO5MOaG6t1inZIWg8uE+R9A1HOmVplCOjjdMSOppa+Ia09jJRJZWbXL89csIHNdGkxXMkA3Bqi6onuBX96qay3JGjZy556Fiak7PgSkXXfjIWyWpxsK8N5/FW8WlAqLtX/vuBp27huhuCTw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.145
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746261072;
+	cv=none; b=eY2kAQDIxxgBITPX3DrUS19JvX6+8hsruO3sov1OV/U1bslk1KWzjePaMTCLxMZ8KGuK5kd+RX5yb1q59Vx8d4SyqwgeG7HaaUW9Qy3HwGJOvtnH5r8/CI8/YU1kR5Mxr1X9WfrHWr1uSIUrI2MJiSOeHovT9NjQjY3sWmiSuBr5YL+HKpfH0Di5W3TbwaOBNkQdH8owJ5Qbayncfchn+itMq3DkwAqERPmftMo1Eh05IS8zj1uZm9GN+XfwpYiU/c5+eAllzX3Nqj4Xr6tJLK8fDPS7BX+Rjg+osZDjV5UHxiDGKfxGut+4d8239JKsgPBAndNWtHb1z47SSQVd7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746229903; c=relaxed/relaxed;
-	bh=VputJNPvBl9XACh4x8s207ghVEizyjJrRTUadxhl7W0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dMT2L7wQY4YMIqOOWEo+syzAT8hP9H4cu+jdYuFGziXRKPSKxWyWC6bcsAL5i6s1TjaOInYDUYhveBx/rE3UmL10CjHRyMb/3SezWxNBr2Yfk3CLiTJMR2lPOpJOfixnQeUcdLpwHPTjJ1rksuGoZshSdIvyOtpuz3CiO2jBwrLE31RpiNRn9Te2OZnqJqUgIPE6f1QAyYqy3rCuqtNcidQZ4Z3yVmAkvtr6Bsq9clwgW267wU/OsAduBiKzlnUy2uqkXkf+e7i9buKpSIq/d2caeVztpTU4jXTV4lKbWDSw3eu7cKIJhnP9G/81Ik85GEp4CHfl5w0rsMMMsVBfag==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=archlinux.org; dkim=pass (4096-bit key; unprotected) header.d=archlinux.org header.i=@archlinux.org header.a=rsa-sha256 header.s=dkim-rsa header.b=Qhic4OLm; dkim=pass header.d=archlinux.org header.i=@archlinux.org header.a=ed25519-sha256 header.s=dkim-ed25519 header.b=pWUXN2ba; dkim-atps=neutral; spf=pass (client-ip=2a01:4f9:c010:3052::1; helo=mail.archlinux.org; envelope-from=kpcyrd@archlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=archlinux.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=archlinux.org
+	t=1746261072; c=relaxed/relaxed;
+	bh=YbA3t4O0ws4/G+0KLAK9b+z79wK2zrxCaAB1nZbeZZ0=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=KizBh+Hoj/ZdbED481EW69g/Wn048Fl61xQ2gnYNvyUAvhi8TzgYsy0qcOh/b/XjydCbD50aMg+Rw7yaSrbXEcIKfTOkRRXPbEf5z/6vmsjhwTfFgoW4kXdYEJFiYtJObAzv3zOlRmQF0H2CAviW0VfSrJrxqjBhfQRM/uZNOY02ifEDlSHPhHuGBOobS02tAFI6kH4+2FkfL9RvXwuxuBBthWrWyIeDS4vNjxoM5Am148aK3UmN7vU9VfjxlRq0Q8SnpuSL5dq2Eo/NK5mIzhpat/Sy9s0oANBzlO1rFZRokE9gaM+lrx+JWOtFmMiimh5VlwTjt+5MlDiQWUD2xA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bzzt.net; dkim=pass (2048-bit key; unprotected) header.d=bzzt.net header.i=@bzzt.net header.a=rsa-sha256 header.s=fm1 header.b=aJJGaPF7; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=PvTjBSuG; dkim-atps=neutral; spf=pass (client-ip=202.12.124.145; helo=fout-b2-smtp.messagingengine.com; envelope-from=arnout@bzzt.net; receiver=lists.ozlabs.org) smtp.mailfrom=bzzt.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bzzt.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (4096-bit key; unprotected) header.d=archlinux.org header.i=@archlinux.org header.a=rsa-sha256 header.s=dkim-rsa header.b=Qhic4OLm;
-	dkim=pass header.d=archlinux.org header.i=@archlinux.org header.a=ed25519-sha256 header.s=dkim-ed25519 header.b=pWUXN2ba;
+	dkim=pass (2048-bit key; unprotected) header.d=bzzt.net header.i=@bzzt.net header.a=rsa-sha256 header.s=fm1 header.b=aJJGaPF7;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=PvTjBSuG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=archlinux.org (client-ip=2a01:4f9:c010:3052::1; helo=mail.archlinux.org; envelope-from=kpcyrd@archlinux.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 500 seconds by postgrey-1.37 at boromir; Sat, 03 May 2025 09:51:40 AEST
-Received: from mail.archlinux.org (mail.archlinux.org [IPv6:2a01:4f9:c010:3052::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bzzt.net (client-ip=202.12.124.145; helo=fout-b2-smtp.messagingengine.com; envelope-from=arnout@bzzt.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 654 seconds by postgrey-1.37 at boromir; Sat, 03 May 2025 18:31:09 AEST
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zq74D1j12z2yr6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 May 2025 09:51:40 +1000 (AEST)
-Message-ID: <bf3f2f1c-1852-449f-993f-71848d190db6@archlinux.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=archlinux.org;
-	s=dkim-rsa; t=1746229390;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VputJNPvBl9XACh4x8s207ghVEizyjJrRTUadxhl7W0=;
-	b=Qhic4OLmfnzDZAcpigNu7UrqLK5mWgcMPgKRWpfhdAXeZIqHXIBZVqEkrh8YlxeTSpOAbU
-	tEuR8Hl86L0vi7auXrHzDR7/KmPsUpinbZ6VHAEwk64QsAe3+IL9ANV64KxMfw8/rHMGgA
-	k1oSNM/QKKyilECNEb2JnruO5orD5/JCByNXVkBX1nuiBoTkhgZwex6wBzMz5CRSETtJvX
-	/umQNjYFjOrleljhVtUZ9guk5XJ1MM7kE4yK9nqbZV6g1W4jd+u7mfzQmEYib+v/q0/liU
-	WrAmO2uRMsrM+RRe9W4EYzVK5ED0kYo+jbIvZ4+vcjsRe38jBnBekYZNWY00XPOeplaiIK
-	BvfFWmFZ9L9f7xIdxoz2sbnQEkhHVAFJ2xtZtsi6uLCneWRxBGBxT/ADPT0BOgRfPYAjwB
-	atSK/tKeP4kcfOVS+t9AnSyV7obHcia28DSrHnsRMH7Lv/QJJshLghDJskgLHh3whAbBDd
-	DQCPx6yylwF6AkLygj4FnEbHcMJj5bxz+NgHNKJP+wecgVU15BfLDeH/obVkNIOP3tW5zZ
-	0FVGN0Ypnkope2InCXnrS0Ur0MWb8/RXNPdJHlLzgmkElM21+hmtrbSvl8ve0yGWoyf2sH
-	ah7STOBC/NiCplBj5M1Z4RrvTRTHDEkZh7gcxt9ZubblsWPjOvH+w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=archlinux.org;
-	s=dkim-ed25519; t=1746229390;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VputJNPvBl9XACh4x8s207ghVEizyjJrRTUadxhl7W0=;
-	b=pWUXN2baJ+rjBIqdcBKhyMfxHT1Z/KrJMyTIFAemXV1CBDzl8/qFRMzDBOovLcR/C95F5U
-	Iyd1qkopp9pOBkCg==
-Authentication-Results: mail.archlinux.org;
-	auth=pass smtp.auth=kpcyrd smtp.mailfrom=kpcyrd@archlinux.org
-Date: Sat, 3 May 2025 01:43:06 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZqLbd5DGdz2yGM
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  3 May 2025 18:31:09 +1000 (AEST)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.stl.internal (Postfix) with ESMTP id 1101E114021A;
+	Sat,  3 May 2025 04:20:09 -0400 (EDT)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-12.internal (MEProxy); Sat, 03 May 2025 04:20:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bzzt.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1746260408;
+	 x=1746346808; bh=YbA3t4O0ws4/G+0KLAK9b+z79wK2zrxCaAB1nZbeZZ0=; b=
+	aJJGaPF7fdUue464isXL5YmMzDuzeFfRcAA0wKMSkLP3aWuphivhrsMgBEmQ16I2
+	skXiyG8jkumDkHl+mZZzMdJndgcwm+Cb3kJK98qzJXanfLWONNqF4dVlWxqPFdQQ
+	W0D6JkvUXbZn03VRDfp/I8FVtPWo3OA/8bA49qoEzGBglpJ4rsE/h7mBPJKLCxXM
+	sR/9kFCYPSZETFkF2nVQPwE18X9Wy+r4lIegqls9GrzZMMDqYaJNfjXjqt5MchZX
+	ykwUvI27vV/f+G311ataVt1xXxVZ+zQrJa1RbndlWkC3rKpEfVW54gRrbQMn7g69
+	VVSWGItUEr+2kfBSSe7v8A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1746260408; x=
+	1746346808; bh=YbA3t4O0ws4/G+0KLAK9b+z79wK2zrxCaAB1nZbeZZ0=; b=P
+	vTjBSuGdzuqTgkEwHI7dqZD+5GNb2UZMjiQXrZxUj+KPQWFKz2uzV77mBvOsvlkn
+	GNp2LQytg4kaoczzpI0s0PlIlKwdyduqKEuzeIN0LINtPkRutw+fPqJEUi4IEKcb
+	5pivJlpAj1m4j1aiwsq2KlwqdcT91xGe2vfrmRHJ34p2dMWqsldTrtCuaiijiIf4
+	7pEiPH26wm4bKV+E5GwKThV16eXfotsLRPbG1k05dXshvxe13DYGwYqlAh242npy
+	nm8p3SUpDJf17MZ8VWn6hHP8YHVhBdIpRuKwJRj9fQKWcu0UXQqWdUty1jldaH+r
+	zRKi/IzQFC6cV3CQJfidA==
+X-ME-Sender: <xms:ttEVaEN4-c5CykjET8U5O4qfKyTV82EMPzDgpH2MlURIPXOAshWuHQ>
+    <xme:ttEVaK-C_oGDdo2dol2NikafdeZphPbK8hFlqLLBGxjN_pxkv6E4eZ8VtdyM9X-5G
+    ZM9fDAGjRQU4U9zEl8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvjeegkeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertder
+    tdejnecuhfhrohhmpedftehrnhhouhhtucfgnhhgvghlvghnfdcuoegrrhhnohhuthessg
+    iiiihtrdhnvghtqeenucggtffrrghtthgvrhhnpefhveeiffelkeffueelteevieekudev
+    hffggfduledvveehjeefudehueeftdeuleenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpegrrhhnohhuthessgiiiihtrdhnvghtpdhnsggprhgt
+    phhtthhopeefiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepkhhptgihrhguse
+    grrhgthhhlihhnuhigrdhorhhgpdhrtghpthhtoheprghrnhgusegrrhhnuggsrdguvgdp
+    rhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupd
+    hrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdrrghupdhrtghpthhtohepughm
+    ihhtrhihrdhkrghsrghtkhhinhesghhmrghilhdrtghomhdprhgtphhtthhopehmtggrjh
+    huleehsehgmhgrihhlrdgtohhmpdhrtghpthhtohepnhhpihhgghhinhesghhmrghilhdr
+    tghomhdprhgtphhtthhopehsrghmihhtohhlvhgrnhgvnhesghhoohhglhgvrdgtohhmpd
+    hrtghpthhtohepshgvrhhgvgeshhgrlhhlhihnrdgtohhm
+X-ME-Proxy: <xmx:ttEVaLQ2ezVd3AW0DYeyq3k6apNlWDSIcWbME8z6FnOLP3G_KDW0Yw>
+    <xmx:ttEVaMtub0N_YcTjSA4MOhIRPEB4-BfDE-ToKHFozzMoZKmSOiCF_Q>
+    <xmx:ttEVaMdSZD0ig7FBV4fV5-yZ-4GcriyyGU9CrVB2S7iW8BBUcqRbhA>
+    <xmx:ttEVaA2lcKj49OvnrUhp08UM0Y0_8cPbeijTalhUCJzz_-9ZtIpxnA>
+    <xmx:uNEVaLWpRs2Cg5vusRl9jLRByoYl2wtuESQCRNFl3-PEemUef6AhZDxG>
+Feedback-ID: i8a1146c4:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 57EA118A006B; Sat,  3 May 2025 04:20:06 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,110 +100,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 0/9] module: Introduce hash-based integrity checking
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+X-ThreadId: T5f9a5891fefab612
+Date: Sat, 03 May 2025 10:19:17 +0200
+From: "Arnout Engelen" <arnout@bzzt.net>
+To: "James Bottomley" <James.Bottomley@hansenpartnership.com>,
  =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez
- <da.gomez@samsung.com>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
- Roberto Sassu <roberto.sassu@huawei.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Eric Snowberg <eric.snowberg@oracle.com>,
- Nicolas Schier <nicolas.schier@linux.dev>,
+Cc: "Masahiro Yamada" <masahiroy@kernel.org>,
+ "Nathan Chancellor" <nathan@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>,
+ "Luis Chamberlain" <mcgrof@kernel.org>,
+ "Petr Pavlu" <petr.pavlu@suse.com>,
+ "Sami Tolvanen" <samitolvanen@google.com>,
+ "Daniel Gomez" <da.gomez@samsung.com>,
+ "Paul Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, "Jonathan Corbet" <corbet@lwn.net>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Naveen N Rao" <naveen@kernel.org>, "Mimi Zohar" <zohar@linux.ibm.com>,
+ "Roberto Sassu" <roberto.sassu@huawei.com>,
+ "Dmitry Kasatkin" <dmitry.kasatkin@gmail.com>,
+ "Eric Snowberg" <eric.snowberg@oracle.com>,
+ "Nicolas Schier" <nicolas.schier@linux.dev>,
  =?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
- Arnout Engelen <arnout@bzzt.net>, Mattia Rizzolo <mattia@mapreri.org>,
- Christian Heusel <christian@heusel.eu>, =?UTF-8?Q?C=C3=A2ju_Mihai-Drosi?=
- <mcaju95@gmail.com>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-modules@vger.kernel.org, linux-security-module@vger.kernel.org,
- linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-integrity@vger.kernel.org
+ "Mattia Rizzolo" <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>,
+ "Christian Heusel" <christian@heusel.eu>,
+ =?UTF-8?Q?C=C3=A2ju_Mihai-Drosi?= <mcaju95@gmail.com>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+Message-Id: <072b392f-8122-4e4f-9a94-700dadcc0529@app.fastmail.com>
+In-Reply-To: 
+ <b586e946c8514cecde65f98de8e19eb276c09703.camel@HansenPartnership.com>
 References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
  <f1dca9daa01d0d2432c12ecabede3fa1389b1d29.camel@HansenPartnership.com>
  <840b0334-71e4-45b1-80b0-e883586ba05c@t-8ch.de>
  <b586e946c8514cecde65f98de8e19eb276c09703.camel@HansenPartnership.com>
-Content-Language: de-DE, en-US
-From: kpcyrd <kpcyrd@archlinux.org>
-In-Reply-To: <b586e946c8514cecde65f98de8e19eb276c09703.camel@HansenPartnership.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Subject: Re: [PATCH v3 0/9] module: Introduce hash-based integrity checking
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 5/2/25 3:30 PM, James Bottomley wrote:
-> Under a your interpretation of the above, any signed binary isn't
-> "reproducible" even if the underlying build was, which means any secure
-> boot kernel would never be reproducible because it also has to be a
-> signed binary.  The solution is simple: can you strip the signature and
-> reproduce the build?  If yes, then the build is reproducible and even
-> fits with the "any party can recreate ..." above.   This is the
-> interpretation pretty much everyone else has been using.  It's why
-> people like Intel with source only availability and Intel build only
-> signing tout reproduceability: they only issue signed confidential VM
-> firmware, but you can technically reproduce the build of the firmware
-> minus the signature but you can never sign it.
-
-The secure-boot signature is easier to deal with, I also think there'd 
-be one package that contains just the unsigned kernel+modules (with the 
-modules being pinned by a cryptographic hashset), and a second one that 
-takes the kernel secure-boot signature as a source-code input, that is 
-calculated after the first package was successfully built.
-
-Arch Linux has also considered patching the module-signing-script into 
-some kind of oracle that doesn't use any private key and instead selects 
-the right pre-computed signature for the given content, but:
-
-- that would be terribly annoying to maintain/operate
-- any reproducible builds regression would make the build fail, because 
-the kernel wouldn't be bootable
-
+On Fri, May 2, 2025, at 15:30, James Bottomley wrote:
+> On Fri, 2025-05-02 at 08:53 +0200, Thomas Wei=C3=9Fschuh wrote:
+> > Specifically the output of any party can recreate bit-by-bit
+> > identical copies of all specified artifacta previous build (the
+> > public key, module signatures) is not available during the rebuild or
+> > verification.
+>=20
 > You just strip the signatures before verifying reproducibility.
-> 
-[...]
-> 
-> If you take off the appended signature off the module, you can verify
-> reproduceability.
-> 
-[...]
-> 
-> So you think stripping signatures is failure prone?  If that were the
-> case then so would be verifying signatures upon which our whole secure
-> boot and signed module loading is based.
-> 
-[...]
-> 
-> Or you simply ship tools to remove the signature;
-> 
-> sbattach --remove <signed efi variable>
-> 
-> already does this for you ...
 
-It reads like you assume somebody sits down and explicitly looks at the 
-linux package manually, but the reproducible builds tooling considers 
-the package content to be fully opaque and doesn't have any 
-special-casing of any package:
+If the goal is: "verify the Linux Kernel is reproducible", that could wo=
+rk.
+It gets increasingly cumbersome when you're trying to check the reproduc=
+ibility
+of some larger artifact that embeds the Linux kernel (and lots of other =
+stuff),
+like an ISO or disk image, though: you'd have to unpack/mount it, check =
+all its
+contents individually (perhaps recursively), and strip signatures in 'ju=
+st the
+right places'.
 
-https://github.com/archlinux/archlinux-repro
-https://salsa.debian.org/debian/devscripts/-/blob/main/scripts/debrebuild.pl?ref_type=heads
+Writing such tooling is a chore, but of course feasible: diffoscope alre=
+ady
+comes a long way (though checking large images may take some resources).=
+ The
+problem is trusting such tooling: instead of 'simply' checking the image=
+s are
+identical, suddenly I now have to convince myself there's no shenanigans
+possible in the disk image interpretation and other check tooling, which=
+ gets
+nontrivial fast.
 
-I'd rather not deal with the consequences of weakening the comparison 
-and possibly introducing exploitable loop-holes in any of the layers we 
-wouldn't be able to bit-for-bit compare anymore (like e.g. tar).
+> All current secure
+> build processes (hermetic builds, SLSA and the like) are requiring
+> output provenance (i.e. signed artifacts).  If you try to stand like
+> Canute against this tide saying "no signed builds", you're simply
+> opposing progress for the sake of it
 
-It would also break the concept of `f(source) -> binary`, "you can 
-deterministically derive the binary packages from the documented build 
-inputs", and instead you'd always need to fuzzy-match against what 
-somebody else built.
+I don't think anyone is saying 'no signed builds', but we'd enjoy being =
+able to
+keep the signatures as detached metadata instead of having to embed them=
+ into
+the 'actual' artifacts.
 
-cheers,
-kpcyrd
+
+Kind regards,
+
+Arnout
 
