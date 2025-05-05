@@ -1,84 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-8283-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8284-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABBF6AA8D88
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 May 2025 09:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 681AAAA8D89
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  5 May 2025 09:54:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZrYhH4YZcz2ykc;
-	Mon,  5 May 2025 17:54:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZrYhM1L7tz2yrK;
+	Mon,  5 May 2025 17:54:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746431663;
-	cv=none; b=GRaZXBMnalG19t4r7cLg9npfiCNoRmkUxJ8rSbLjbVwoKUAW9j0z5HOYWESXNZMbfFhUhAemurLkUpaOmN1fR/7c6XGIf+rGcy4dDMcOJJcLu88Bu/u8bVrx9glXLRr3N0twSfrtN5vYv6NNy8i/xZUrma4+f+3cBKT+CiFnNaI2EUFbL56KpBp4WL4P5fFBI5fL3T49rSvl3TVkRzTPzT+x88LvM+gVx+usRHRE5wNFWSBEWIAVcD1R6oUI0XAF9fQVsMYNqBqmJRub6YXomlMJ+6zn+qmCHQq8/AsED/fi6+hT7g5ui0XqULDJDc0PvRHXA8zHHLCd9+fI3046FA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746431667;
+	cv=none; b=VcYjPgWEMdz6jyISuGO+3IqQXvN5he8bvMjG3OO2so/+c1N0k1yb1AWAKuosHE71cTTC2gLp81TqD4q0zrjirJ/xnc1w0PBSQ7W4x7yQACh/8W5o0GZ6e4/QVApTS7vsRhtkfI72dDv3drjjzzsTTYX8wFFBWY6DiwzQUmpphO8LtONtBx7Qk5d/hYukJqCHDzEwlozPHVHq4tmqwEPd1/pxdzVnqnvjsP8TOnbkRutY/P2YVa2sz/tGBgkJX+o3OVfTJLptIJaWYH6TJoJmiaZEn2pRlFbwu5k1aFAJND2pNZTLnmllds1ZS47wl/vT/eZ3J0VPS617fd8LeEqxIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746431663; c=relaxed/relaxed;
-	bh=OK7cVIxBR3pTlvjS5NsZDFZUqX7DAWXhiplm2G+4ffg=;
+	t=1746431667; c=relaxed/relaxed;
+	bh=g18/V1GPRXjmw65jYDlbKsnidaE5pfNS8dR6suKV/iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvhkbPudZq6qZ688+na2pjtBf3zeVsHmf18GxZd0pwnJbYf0u9z4ebZKHJKR09No8q4DswhBRz2Ys1Cm4K7rzfp/LIU1rMUO0gJqq7wtI+8qJMV5HOKW7/OT13EBUzjCqH0erw0YpHWS1l64YuuUKftLUGzdVtgiZ7c8UvzOwf8nYLH3EQiTeCqH6HhLRKE1PnU9i0N1rBk1ZN8ABtJt4SMNNeFpXABvMeImHXZpE/6Pw8Uy76WOf/3kXZIoH/0EkjGqDOhl/fIFgsC6TjirIGdw5fV2lqudro7csKbGmR8ZK1Ezi6m2bdtVM8sQybTIe3PPFNkuR3Ny1snqGHKXdw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iW7XEqR4; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=jubiUAE3pcf7JUKSbmORCxYgxiBWBvteHv3JrZ23V1/Pda8ThXyhIxsZJgqZmOmtqqqBoOn+6P5WkiRJ8IOTKmFgM8bQ64eIqKWUU9nvfnMw5F4I3zn1ZGZJE50z23Ky1EX+JrhrdwRy8yLSOM6CVGZP5m4pXQlJXi4XDPVjNpDnhihq8sobMkZxefuu3/2a4HHgjSl6Y270mpGtfEOaIoNRVGo4u3/tZjJ3l9x7h9h+YZDzphoZirlg8yRdFTpgV9k5IvtLyYaNWiz8iyE6qRkutPsB2kitPjhrdLyDsvqkxuWYyQ0zgilJG0XNtQUW7+NBSWfCMcUDCV9YskvD7g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hLYZwtdw; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iW7XEqR4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hLYZwtdw;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZrYhG6BWZz2yk3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 May 2025 17:54:22 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 544NnXgK009887;
-	Mon, 5 May 2025 07:54:10 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZrYhL3gnyz2yk3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  5 May 2025 17:54:26 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 544Lh9VZ008512;
+	Mon, 5 May 2025 07:54:13 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=OK7cVIxBR3pTlvjS5
-	NsZDFZUqX7DAWXhiplm2G+4ffg=; b=iW7XEqR4ajEDb6lihrQ3KKbWS6xkryL+M
-	tYHoHiXrUrsrsom/hqzVdfRntS4ul3Y06obOgLiyEloL0sOiRzoF6uYJvlRSrbVa
-	N8euPsF6UyRNILZqnIctG3vvUjS1WQSzGHXtKpNQWu3BlyDNXXMvYTZWOXdHunyh
-	stAvfStxCZ8COOlWp/EZXmMPfmnI1ccvLUibXxIbaT1WAUxmbZ7KDe9Lq5PB008t
-	mMXjzZj2WBFQtnoUiTNYbOwlZ5cNULPFdnd1agVUTMvmLP3OrrEE0HqRe8LoCl/O
-	w0kk+zyi8RKWrmcWYb9oaDVuStLbRChBYD9EaTSS3dVGCs5n+ME4A==
+	:mime-version:references:subject:to; s=pp1; bh=g18/V1GPRXjmw65jY
+	DlbKsnidaE5pfNS8dR6suKV/iU=; b=hLYZwtdwA1aIJKSvYFEBjM4s1HPaAbbMC
+	JwQVqXoeCMy3Nvo1AVatEAKextvF8vX1CVb1LF+ku5pWVCDPKzlSf1XvqCdnP4ZO
+	eimhqZaTbi1SrxGJ533ZK9OcnU5c1vI7YZcZ7JBs7FbXxcXDbkmgWoOelZ9M/Dpz
+	sEuv0wDDwxP20xCUe9AWJsTrS2tJKO5aF8MtwNGtgya+og1z03Jwzm/rxNRoFkqp
+	yz1xY8PkNohnuzXUzFq7RMoFAXzmoe/fYrwNXPNR5+7fcNgFM/ZNzQSd2Mvnm3XY
+	4xQNbAdDke5bzxOJEq46FcZ2uUr9/Vw2Mop/HyjU8mtfQqtv1Oq0A==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ej6ysedf-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46egcv1pp8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 May 2025 07:54:10 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5457p51d010075;
-	Mon, 5 May 2025 07:54:09 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46ej6yseda-1
+	Mon, 05 May 2025 07:54:13 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5457sCwm009686;
+	Mon, 5 May 2025 07:54:12 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46egcv1pp4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 May 2025 07:54:09 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5454106u032227;
-	Mon, 5 May 2025 07:54:09 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46dxymd4f4-1
+	Mon, 05 May 2025 07:54:12 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5455LKUg013765;
+	Mon, 5 May 2025 07:54:11 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 46e0624v9d-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 05 May 2025 07:54:08 +0000
+	Mon, 05 May 2025 07:54:11 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5457s5Ag53084532
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5457s8rY53412264
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 5 May 2025 07:54:05 GMT
+	Mon, 5 May 2025 07:54:08 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1A0532004D;
-	Mon,  5 May 2025 07:54:05 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 45A1120043;
+	Mon,  5 May 2025 07:54:08 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E14FF20040;
-	Mon,  5 May 2025 07:54:02 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 1985A20040;
+	Mon,  5 May 2025 07:54:06 +0000 (GMT)
 Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.in.ibm.com (unknown [9.109.215.252])
 	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  5 May 2025 07:54:02 +0000 (GMT)
+	Mon,  5 May 2025 07:54:05 +0000 (GMT)
 From: Shrikanth Hegde <sshegde@linux.ibm.com>
 To: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Cc: sshegde@linux.ibm.com, npiggin@gmail.com, christophe.leroy@csgroup.eu,
         mpe@ellerman.id.au, peterz@infradead.org, ajd@linux.ibm.com,
         mahesh@linux.ibm.com, hbathini@linux.ibm.com,
         linux-kernel@vger.kernel.org, Srikar Dronamraju <srikar@linux.ibm.com>
-Subject: [PATCH v3 4/6] powerpc: book3s: vas: use lock guard for mutex
-Date: Mon,  5 May 2025 13:23:31 +0530
-Message-ID: <20250505075333.184463-5-sshegde@linux.ibm.com>
+Subject: [PATCH v3 5/6] powerpc: powernv: ocxl: use lock guard for mutex
+Date: Mon,  5 May 2025 13:23:32 +0530
+Message-ID: <20250505075333.184463-6-sshegde@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250505075333.184463-1-sshegde@linux.ibm.com>
 References: <20250505075333.184463-1-sshegde@linux.ibm.com>
@@ -97,19 +97,19 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: AHgX7C-qdgG1DTp7Wq3eVJl_X5xsqD_K
-X-Authority-Analysis: v=2.4 cv=GKAIEvNK c=1 sm=1 tr=0 ts=68186ea2 cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8 a=VnNF1IyMAAAA:8 a=2UBO4GguT1_OiFKDpwgA:9 a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-GUID: QqDmYpTXHRza-1ABTq5DZ8LtwC-N1KxA
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDA3MCBTYWx0ZWRfX23qefl6SUD/f wWWS+cyrIWHMMuxqfKWR5sb+91iumax9aG0xXmPbpS/Nu+0O906ReaUQnvniVLAm3ormCtCHfti tpgQgAZJC1uxZghsTmpx1FGvlQU5W/1hndufsFcCgT+Fo8OMVC8/65wkXZXCXFwGRbvcr6UGYEl
- O+aTSgXIPksT8lHA4fQB8+GGmrotpwLpf/MS1ywZ0y6lQNLWTk/YkM0Ka34WLF0sP040CdRXkw5 eA0O8HY2VwEQ5PYzK0Xy7T3ipVnkS2J+FAXVH0kLCS9f4cdjG4+WAO6FOrwHK5QzC4ZYnwg6Gek yXBe84jcaWNP9/af9PNFqraaPWtgM1SwVcbbQ+JEfAaZZ1kiQ9QBrm/7QS/15Q2jVK2KPxfqPp/
- 9XZEojFwF7YgUtlXm09g6ULotjTtkM2sbXPBLssv0UR8g8qdXQL8+TqDXSGOyU5bFk1DdsI9
+X-Proofpoint-ORIG-GUID: nzPlUvyNWAh3fWyh8rGkE3urckNKzglF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA1MDA3MCBTYWx0ZWRfX+XCRoWtFRCXP tMggtIN2qkZfJwJOuG+MMjobjoN+6lCVaLNrKluDYhylrb920YyydpYFKKNYfpuiyrzFPjMFxA5 +IvXaOWVe87WaBHp1aqvO9oVSjnA+oL+GN/QBce7AKBhGzufXZp1mYTWWQ9mFzrLby0sPKz22w+
+ UCdgiJHHAZ5cdUqB2QDS9BStST5x5D64xt0tpKgttWszsVa+sYlRohou//zNtXT6qJAtET6x8cY AcLUvIteSGBejxGdLWCqdh5YsxtkXikO4bzdsd+NjS8H6Tnw2dPf41TLHFflp1D8GOLGiMBp6f6 Vzo2/RAKr0p7e832J/KQC8CxjwpdqoUnOS/O3JJUYSz7J9w+Z/+MDDje2/lOgUqk37FoW6WeXNM
+ nl035uv8wgKS1C4CfNYIrj5ks992O2+K96sw5PLX52Gryqqv8octXjVHj8or94hNSzMhert7
+X-Authority-Analysis: v=2.4 cv=O7k5vA9W c=1 sm=1 tr=0 ts=68186ea5 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8 a=VnNF1IyMAAAA:8 a=Gcc4__3hugxbekPXFGEA:9 a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-GUID: 81p-2ThKUZcSUOoQVy-dUOe7zEz6sZjK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-05_03,2025-04-30_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 mlxscore=0 suspectscore=0 priorityscore=1501
- malwarescore=0 mlxlogscore=835 adultscore=0 clxscore=1015 phishscore=0
- spamscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=893
+ malwarescore=0 spamscore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 priorityscore=1501 clxscore=1015 mlxscore=0
+ adultscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
  definitions=main-2505050070
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -117,99 +117,89 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-use lock guards for scope based resource management of mutex.
+use guard(mutex) for scope based resource management of mutex.
 This would make the code simpler and easier to maintain.
 
 More details on lock guards can be found at
 https://lore.kernel.org/all/20230612093537.614161713@infradead.org/T/#u
 
-This shows the use of both guard and scoped_guard
-
 Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
 Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 ---
- arch/powerpc/platforms/book3s/vas-api.c | 32 ++++++++++---------------
- 1 file changed, 13 insertions(+), 19 deletions(-)
+ arch/powerpc/platforms/powernv/ocxl.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-index 0b6365d85d11..d7462c16d828 100644
---- a/arch/powerpc/platforms/book3s/vas-api.c
-+++ b/arch/powerpc/platforms/book3s/vas-api.c
-@@ -425,23 +425,22 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
- 		return VM_FAULT_SIGBUS;
- 	}
+diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
+index 64a9c7125c29..f8139948348e 100644
+--- a/arch/powerpc/platforms/powernv/ocxl.c
++++ b/arch/powerpc/platforms/powernv/ocxl.c
+@@ -172,12 +172,11 @@ static void pnv_ocxl_fixup_actag(struct pci_dev *dev)
+ 	if (phb->type != PNV_PHB_NPU_OCAPI)
+ 		return;
  
--	mutex_lock(&txwin->task_ref.mmap_mutex);
- 	/*
- 	 * The window may be inactive due to lost credit (Ex: core
- 	 * removal with DLPAR). If the window is active again when
- 	 * the credit is available, map the new paste address at the
- 	 * window virtual address.
- 	 */
--	if (txwin->status == VAS_WIN_ACTIVE) {
--		paste_addr = cp_inst->coproc->vops->paste_addr(txwin);
--		if (paste_addr) {
--			fault = vmf_insert_pfn(vma, vma->vm_start,
--					(paste_addr >> PAGE_SHIFT));
--			mutex_unlock(&txwin->task_ref.mmap_mutex);
--			return fault;
-+	scoped_guard(mutex, &txwin->task_ref.mmap_mutex) {
-+		if (txwin->status == VAS_WIN_ACTIVE) {
-+			paste_addr = cp_inst->coproc->vops->paste_addr(txwin);
-+			if (paste_addr) {
-+				fault = vmf_insert_pfn(vma, vma->vm_start,
-+						(paste_addr >> PAGE_SHIFT));
-+				return fault;
-+			}
- 		}
- 	}
--	mutex_unlock(&txwin->task_ref.mmap_mutex);
+-	mutex_lock(&links_list_lock);
++	guard(mutex)(&links_list_lock);
  
- 	/*
- 	 * Received this fault due to closing the actual window.
-@@ -494,9 +493,8 @@ static void vas_mmap_close(struct vm_area_struct *vma)
+ 	link = find_link(dev);
+ 	if (!link) {
+ 		dev_warn(&dev->dev, "couldn't update actag information\n");
+-		mutex_unlock(&links_list_lock);
  		return;
  	}
  
--	mutex_lock(&txwin->task_ref.mmap_mutex);
--	txwin->task_ref.vma = NULL;
--	mutex_unlock(&txwin->task_ref.mmap_mutex);
-+	scoped_guard(mutex, &txwin->task_ref.mmap_mutex)
-+		txwin->task_ref.vma = NULL;
- }
+@@ -206,7 +205,6 @@ static void pnv_ocxl_fixup_actag(struct pci_dev *dev)
+ 	dev_dbg(&dev->dev, "total actags for function: %d\n",
+ 		link->fn_desired_actags[PCI_FUNC(dev->devfn)]);
  
- static const struct vm_operations_struct vas_vm_ops = {
-@@ -543,18 +541,16 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
- 	 * close/open event and allows mmap() only when the window is
- 	 * active.
+-	mutex_unlock(&links_list_lock);
+ }
+ DECLARE_PCI_FIXUP_HEADER(PCI_ANY_ID, PCI_ANY_ID, pnv_ocxl_fixup_actag);
+ 
+@@ -253,12 +251,11 @@ int pnv_ocxl_get_actag(struct pci_dev *dev, u16 *base, u16 *enabled,
+ {
+ 	struct npu_link *link;
+ 
+-	mutex_lock(&links_list_lock);
++	guard(mutex)(&links_list_lock);
+ 
+ 	link = find_link(dev);
+ 	if (!link) {
+ 		dev_err(&dev->dev, "actag information not found\n");
+-		mutex_unlock(&links_list_lock);
+ 		return -ENODEV;
+ 	}
+ 	/*
+@@ -274,7 +271,6 @@ int pnv_ocxl_get_actag(struct pci_dev *dev, u16 *base, u16 *enabled,
+ 	*enabled   = link->fn_actags[PCI_FUNC(dev->devfn)].count;
+ 	*supported = link->fn_desired_actags[PCI_FUNC(dev->devfn)];
+ 
+-	mutex_unlock(&links_list_lock);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(pnv_ocxl_get_actag);
+@@ -293,12 +289,11 @@ int pnv_ocxl_get_pasid_count(struct pci_dev *dev, int *count)
+ 	 *
+ 	 * We only support one AFU-carrying function for now.
  	 */
--	mutex_lock(&txwin->task_ref.mmap_mutex);
-+	guard(mutex)(&txwin->task_ref.mmap_mutex);
- 	if (txwin->status != VAS_WIN_ACTIVE) {
- 		pr_err("Window is not active\n");
--		rc = -EACCES;
--		goto out;
-+		return -EACCES;
+-	mutex_lock(&links_list_lock);
++	guard(mutex)(&links_list_lock);
+ 
+ 	link = find_link(dev);
+ 	if (!link) {
+ 		dev_err(&dev->dev, "actag information not found\n");
+-		mutex_unlock(&links_list_lock);
+ 		return -ENODEV;
  	}
  
- 	paste_addr = cp_inst->coproc->vops->paste_addr(txwin);
- 	if (!paste_addr) {
- 		pr_err("Window paste address failed\n");
--		rc = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
+@@ -309,7 +304,6 @@ int pnv_ocxl_get_pasid_count(struct pci_dev *dev, int *count)
+ 			break;
+ 		}
  
- 	pfn = paste_addr >> PAGE_SHIFT;
-@@ -574,8 +570,6 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
- 	txwin->task_ref.vma = vma;
- 	vma->vm_ops = &vas_vm_ops;
- 
--out:
--	mutex_unlock(&txwin->task_ref.mmap_mutex);
+-	mutex_unlock(&links_list_lock);
+ 	dev_dbg(&dev->dev, "%d PASIDs available for function\n",
+ 		rc ? 0 : *count);
  	return rc;
- }
- 
 -- 
 2.39.3
 
