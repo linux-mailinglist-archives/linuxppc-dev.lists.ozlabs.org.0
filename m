@@ -1,68 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-8316-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8317-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E4CAAA208
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 May 2025 00:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 837DEAAA275
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 May 2025 01:00:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZrxfC4WP5z2ygH;
-	Tue,  6 May 2025 08:53:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZrxnP2MHkz2yf5;
+	Tue,  6 May 2025 09:00:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746485635;
-	cv=none; b=fXFhgSUFPW5S9Eft9XYHyESNqwYwjZRwKdSiS+wpeiSWL4iZyd410tJ1Vt7WAVIBxiVKGDmjEQvNei1sNccoP8AWSDX6b76GW3X5FrmtaU7cgHhAfrYIClKykJhEfTpwzTT8Cri9Wa+ci6QX8RZQqxy5fgGMTLNu/Dl2HcdpkJskVoQXynsUUA3Zf/Emfvuf8HRuaWJuRn4jrHc/940xpGEtVt8qMg3Ak2xBAowuKwTY4e8SaOj1cdZdqM4j4gHHQh8KpbWPe48khNxNCnMctfaFdPUG9ndipJYIpOi51tZo9qMuf8WkZk+ioyNg8jUsWL7iEt64mTNOSka3pamV5w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746486009;
+	cv=none; b=IN5e/yoX4THrxlvU4CkQwTenE5PrVF/F8qepMpV4yJbXzA2OQeAmfRxxKR3pTMxMwy8bTChlAQ7uNFnm0cQAA3ykmcbWJP4waPpv41WPwpztgMdtV+NyUsaQ7Cz21dPC1juRf69pptEB5DLs+HRbJlfPwA/1I3P0ULhy39WZLNHEh6S9QKDMWJZ6BP8Gyt6iiY8KqcOxmxVrVYMKRLQ72ZGF9Qhio09RRx+JZEBN7bdFEnpkdDbuWXmFP4wPgb9lDDBNtbOr/FdcMx83dSOVOs9TZKjFcPmwz36JuAzOekMWK7GC8CBFKJ1HYT0b+wWXQ5hlWybd4i5F+INXQNHq7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746485635; c=relaxed/relaxed;
-	bh=NKrq9WJ2Y4IraMjOKoUV1xIEFpmRJW9zTthFW8LGmzU=;
+	t=1746486009; c=relaxed/relaxed;
+	bh=jv6pwSr9nYlebyV67uSmUgd7OULwzm7mgw+/K8cyKjE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XHHMIthAHAVfcgzLVpS6LtM+FV5J/NZDthPg5ALcOOj/88KrCWByJQG6Rg9WZV4+yNiy/2cGXYxxbMaUq7Cz0RofqsMJO1zb/xWeWHs/QE6DhkwCPKwFCFix8kKjaa3nuRYVp+7KeqiyFDV3DGZ0gB4xQCOotM8AxPouKLXZ1jwqw5N8hgxUtpcqJmJvaatU/8dAuRF6VVO+hSZrAsvCVauoZZmDzKM5+AeSUordpFoGwxXQx1h5rkVBGRFW+KQNSKKT3rAejSZ1Cf7u73A7VeBLdWfvsTlhQGXKV+ujEc8jH/1mUiw+xCcnCJT2+mkIfVWqXd1kKzkVxt7BsJDQ1A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OooEX8uU; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=SKNaTOLwG2pFOgsI57Y62ORIGfs2SD9NrSCGnSpwmoCaVZ0MM7LSy1RN8PWnkPli230LfeLhDRLoy6FSffUrL50FeTkVX+9RMgQv1EJ3h0gR78EsO7HLnxmPsrntMiC5HnsogO3D/aLlGJRnICPdDqkfd1oyX0dJARKSLbU8iae0wl3dG/2uRLBUAZS/o3k+4CV/qMBWhle7w6aBVZDzFRMakt6xklqq3TaKua+mvbwbskF+0u1DbZ7aKpcKmZMK7pxDAlaHAV+o6LGQmDP+3MAiIonHYKG+PB4clYlaMysX0oQvzXAzxM1kJIjOPWZkdDIrhJkDijtBpGvwyN4ivQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VJh8rE+k; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OooEX8uU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VJh8rE+k;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZrxfB5xsCz2xrJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 May 2025 08:53:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZrxnN4gHGz2yQJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 May 2025 09:00:08 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4011840C1F;
-	Mon,  5 May 2025 22:53:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8EAC4CEE4;
-	Mon,  5 May 2025 22:53:51 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id A7B805C5B55;
+	Mon,  5 May 2025 22:57:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72458C4CEE4;
+	Mon,  5 May 2025 23:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485632;
-	bh=ZNm605BbCsX0wY0BVPpldjVAwPqymba/rreNsJDMUN0=;
+	s=k20201202; t=1746486006;
+	bh=ZwZ3YGeWzp0VrR/6gg4OpFWFODZyzKKrozm/7+HYum8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OooEX8uUSEWwsVvCWTIEIPc5nvdt1VPdsC4+IVW759sQD1xxtVvDEeLc5SplmH878
-	 jADdqnV5eU+jNLZoHZC0TPDgQ6N8VXlre/SW5E8qilriUNjH0WjcjJy6QypyvI/8hM
-	 knDOFtkXRNwrF5erhrt05jvIQzv98i4AEzkMzeMPTPhDQ9q0PW7QjleVj59U8dP5xl
-	 /XmQUOjx40X8aotvt6tjWB+hZPKsyX9xIwm23fF9h/X76bon8rrQ2wg1H2yLI7actx
-	 kb7swmKrQxlATJlrNmfoJgBbx1VFBKLgLnTvEC7qP2JJR90FOg3OqatNqb9rBAUFQd
-	 EzHoj6xKu0z3Q==
+	b=VJh8rE+k0zo4MMu0KnlOmaA/Ix/zrL+vVcAAp6wSWoHckp0EwqiYY7YedGMNCYVpc
+	 gHuSIX9o2sP8YKuJyLLHxEWdwtS5EldZsNCDMlCgTaGuZVtWtwDOqBHJT3QjOPTdyD
+	 W12oSgT/ugyzIl8eZ7oWB0vOpDp8/SLbQz/yWZ/zhy1pUgiZx0E8EnTT1+GIRbsUFu
+	 E5gZ//cYpNflsPMZwjLi8Z+8/aM81OXVeZqeKYWWAKmNyOZMcUbZ2UdsiPwWOeTT1e
+	 QBDLsGnzs3ch+R162tQaFmt5icM87Gal7xpPykc3VfaRBZjG3kRufkjhjBbAMd23QO
+	 hpMwsf/hV595g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Disha Goel <disgoel@linux.vnet.ibm.com>,
+Cc: Andreas Schwab <schwab@linux-m68k.org>,
+	Rob Herring <robh@kernel.org>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
 	mpe@ellerman.id.au,
-	kan.liang@linux.intel.com,
-	coltonlewis@google.com,
-	peterz@infradead.org,
-	rppt@kernel.org,
-	anjalik@linux.ibm.com,
+	mahesh@linux.ibm.com,
+	sourabhjain@linux.ibm.com,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.12 396/486] arch/powerpc/perf: Check the instruction type before creating sample with perf_mem_data_src
-Date: Mon,  5 May 2025 18:37:52 -0400
-Message-Id: <20250505223922.2682012-396-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 106/294] powerpc/prom_init: Fixup missing #size-cells on PowerBook6,7
+Date: Mon,  5 May 2025 18:53:26 -0400
+Message-Id: <20250505225634.2688578-106-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
-References: <20250505223922.2682012-1-sashal@kernel.org>
+In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
+References: <20250505225634.2688578-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,141 +75,49 @@ Precedence: list
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.26
+X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-5.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From: Andreas Schwab <schwab@linux-m68k.org>
 
-[ Upstream commit 2ffb26afa64261139e608bf087a0c1fe24d76d4d ]
+[ Upstream commit 7e67ef889c9ab7246547db73d524459f47403a77 ]
 
-perf mem report aborts as below sometimes (during some corner
-case) in powerpc:
+Similar to the PowerMac3,1, the PowerBook6,7 is missing the #size-cells
+property on the i2s node.
 
-   # ./perf mem report 1>out
-   *** stack smashing detected ***: terminated
-   Aborted (core dumped)
-
-The backtrace is as below:
-   __pthread_kill_implementation ()
-   raise ()
-   abort ()
-   __libc_message
-   __fortify_fail
-   __stack_chk_fail
-   hist_entry.lvl_snprintf
-   __sort__hpp_entry
-   __hist_entry__snprintf
-   hists.fprintf
-   cmd_report
-   cmd_mem
-
-Snippet of code which triggers the issue
-from tools/perf/util/sort.c
-
-   static int hist_entry__lvl_snprintf(struct hist_entry *he, char *bf,
-                                    size_t size, unsigned int width)
-   {
-        char out[64];
-
-        perf_mem__lvl_scnprintf(out, sizeof(out), he->mem_info);
-        return repsep_snprintf(bf, size, "%-*s", width, out);
-   }
-
-The value of "out" is filled from perf_mem_data_src value.
-Debugging this further showed that for some corner cases, the
-value of "data_src" was pointing to wrong value. This resulted
-in bigger size of string and causing stack check fail.
-
-The perf mem data source values are captured in the sample via
-isa207_get_mem_data_src function. The initial check is to fetch
-the type of sampled instruction. If the type of instruction is
-not valid (not a load/store instruction), the function returns.
-
-Since 'commit e16fd7f2cb1a ("perf: Use sample_flags for data_src")',
-data_src field is not initialized by the perf_sample_data_init()
-function. If the PMU driver doesn't set the data_src value to zero if
-type is not valid, this will result in uninitailised value for data_src.
-The uninitailised value of data_src resulted in stack check fail
-followed by abort for "perf mem report".
-
-When requesting for data source information in the sample, the
-instruction type is expected to be load or store instruction.
-In ISA v3.0, due to hardware limitation, there are corner cases
-where the instruction type other than load or store is observed.
-In ISA v3.0 and before values "0" and "7" are considered reserved.
-In ISA v3.1, value "7" has been used to indicate "larx/stcx".
-Drop the sample if instruction type has reserved values for this
-field with a ISA version check. Initialize data_src to zero in
-isa207_get_mem_data_src if the instruction type is not load/store.
-
-Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Depends-on: commit 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
+Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+[maddy: added "commit" work in depends-on to avoid checkpatch error]
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250121131621.39054-1-atrajeev@linux.vnet.ibm.com
+Link: https://patch.msgid.link/875xmizl6a.fsf@igel.home
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/core-book3s.c   | 20 ++++++++++++++++++++
- arch/powerpc/perf/isa207-common.c |  4 +++-
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/prom_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 42867469752d7..33d726bb99e3d 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -2222,6 +2222,10 @@ static struct pmu power_pmu = {
- #define PERF_SAMPLE_ADDR_TYPE  (PERF_SAMPLE_ADDR |		\
- 				PERF_SAMPLE_PHYS_ADDR |		\
- 				PERF_SAMPLE_DATA_PAGE_SIZE)
-+
-+#define SIER_TYPE_SHIFT	15
-+#define SIER_TYPE_MASK	(0x7ull << SIER_TYPE_SHIFT)
-+
- /*
-  * A counter has overflowed; update its count and record
-  * things if requested.  Note that interrupts are hard-disabled
-@@ -2290,6 +2294,22 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
- 	    is_kernel_addr(mfspr(SPRN_SIAR)))
- 		record = 0;
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index a6090896f7497..ac669e58e2023 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -2974,11 +2974,11 @@ static void __init fixup_device_tree_pmac(void)
+ 	char type[8];
+ 	phandle node;
  
-+	/*
-+	 * SIER[46-48] presents instruction type of the sampled instruction.
-+	 * In ISA v3.0 and before values "0" and "7" are considered reserved.
-+	 * In ISA v3.1, value "7" has been used to indicate "larx/stcx".
-+	 * Drop the sample if "type" has reserved values for this field with a
-+	 * ISA version check.
-+	 */
-+	if (event->attr.sample_type & PERF_SAMPLE_DATA_SRC &&
-+			ppmu->get_mem_data_src) {
-+		val = (regs->dar & SIER_TYPE_MASK) >> SIER_TYPE_SHIFT;
-+		if (val == 0 || (val == 7 && !cpu_has_feature(CPU_FTR_ARCH_31))) {
-+			record = 0;
-+			atomic64_inc(&event->lost_samples);
-+		}
-+	}
-+
- 	/*
- 	 * Finally record data if requested.
- 	 */
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 56301b2bc8ae8..031a2b63c171d 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -321,8 +321,10 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
+-	// Some pmacs are missing #size-cells on escc nodes
++	// Some pmacs are missing #size-cells on escc or i2s nodes
+ 	for (node = 0; prom_next_node(&node); ) {
+ 		type[0] = '\0';
+ 		prom_getprop(node, "device_type", type, sizeof(type));
+-		if (prom_strcmp(type, "escc"))
++		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
+ 			continue;
  
- 	sier = mfspr(SPRN_SIER);
- 	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
--	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31)))
-+	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
-+		dsrc->val = 0;
- 		return;
-+	}
- 
- 	idx = (sier & ISA207_SIER_LDST_MASK) >> ISA207_SIER_LDST_SHIFT;
- 	sub_idx = (sier & ISA207_SIER_DATA_SRC_MASK) >> ISA207_SIER_DATA_SRC_SHIFT;
+ 		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
 -- 
 2.39.5
 
