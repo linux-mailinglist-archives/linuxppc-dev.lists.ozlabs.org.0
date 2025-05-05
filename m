@@ -1,67 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-8318-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8319-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D95AAA2D4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 May 2025 01:04:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6167AAA2D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 May 2025 01:04:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zrxtq53Ctz2yrR;
-	Tue,  6 May 2025 09:04:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zrxtt4DPdz2yrl;
+	Tue,  6 May 2025 09:04:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746486291;
-	cv=none; b=iIaz+ofqcG434bv+TJWPmLxlY54+eXEPBzxJo1f1SH6ZXV8EdM5jCayHv6IseH9qBXA+T0imyiBEoFyB+eCEQSRONklFmBrBDcR/p6bZaKxorNXpQ8EWlGfH+D9X4O3/7W8YbYk5u7WYHNVh4W7ls7VeK5gFC+p8ujWaDaNFbUaF8uU8UlVCNBy0pciGVBN2G9SAc4b4palZknaPFc1dp1WlzxWqS4+X/gIbvF5W0MjRZwJb5RA49/5251IBptZlPn/oiVdPBZfqs0pzumfEf52x3Ihruj8bQtkbZ/SUFBzRNTcy+DKlvOtkdY5C7N8ZxrIMWzhOjDNBqlrFtuCQWA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746486294;
+	cv=none; b=X7J07l9Odzza6OgbZuNSNV6trL/PQ8HrItaxzHVmNu3TqTXomqaEz15iDnQBiuxb26ubJfUxDGje/dT8gJ0pUdQpMrldLFOHoGx6I6RVwG/yBdNri8xCMG3ooLhtQ/gGJ3CKzj+fQ1IofXMJ/GrTh72kdoNey0PH7fmvRcGH02NrC/bViBI+YJpGSk/zi9xU4t7Ph8IQ2DVhsJ2pcLgjGI2MvviaI9RLgaAZrX4pq7YMS0Zcs1dqlM7n+YpAj6y0tUzSd1BZyZJ6PXRL+NUu2UZj4t/OUrfUN3ls3dTzhcdkrLaBK78UatzeXf2BQ7hCPsN+/bOFnlY2vF658EmJEg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746486291; c=relaxed/relaxed;
-	bh=KzEfvCSwONdZyZfashFkSweUbGGeYKqm2kH54Ma0F0U=;
+	t=1746486294; c=relaxed/relaxed;
+	bh=45Y2nFCpS8hfpqngj+oP0Gqk0SRG2ylp0QuCPqvDxwo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K5fii+56HRoqwUoGrEeuSjCO0srbjCs4AYWMuAjJVlhQV0J0VH8M+tMvkr1KXcMgrSm5+2O983dN3RLZhOfEF9cEEcPcXJ/OrapF5alRiqUtixFE1QcpfAnZMWFNmKak4XpZadZroyBgnijelhCZhDGtmPhzfNwP8OyxFrbOTD2/gdEteQP0L8GfmffFy5tM4qS6k+tWxoZhcHpDD0LmLvXKD3X4OLA5L9Hc7XA81OYasrlZOxNioqO7+rt/2gR8pVlvf5zut6Gd6QaccCBfJ6lib8ZchVnXgpR07hpJXoz5e71dzGHzPf/+34XkkBPxYCMvjP8N4O/krZUuAfkV7A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=da5Gc1rK; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=PyrR9C67FVXsvLHBmr7s6FWrbV6rzkZQRV1mHDR+7CP/AKWjTiO4gC1aA0meM5qyCw9d/YfKy6FZEp3WoZl5at4+4yWSpFDrjL6bgO4Ak5Om5V5S7QqukDhBh5vpnO0lATgGlRLZaqPodm2bpAGONf7HkM0lE5YEr16Sq4xcjNfCVIs5zfXs5t6MX16EmTZqXbwKGLwhZOSXS+lFu3vsVW55MTGZkc9sKlfYj4IhVoCit4reTb8vwlu38yWVaX88PLwEmRflimC3FiYVCpRm+nZ+hSm3BQ7HeQHnVsBTmigxTfcHJk0YG0dQ7bUSk4Hg+UYztQM15nsLMDix7zF+HQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pfhAuRdg; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=da5Gc1rK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pfhAuRdg;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zrxtp34bMz2yQJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 May 2025 09:04:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zrxts4dKzz2yQJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  6 May 2025 09:04:53 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 9AF7EA4D323;
-	Mon,  5 May 2025 22:59:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62486C4CEE4;
-	Mon,  5 May 2025 23:04:46 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 11BA0A4D304;
+	Mon,  5 May 2025 22:59:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CE9C4CEE4;
+	Mon,  5 May 2025 23:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486287;
-	bh=ShalBwS1Y2wOs6bcGbDnxbkDL3MZRFx9ic01FXzv8Ic=;
+	s=k20201202; t=1746486291;
+	bh=nGuTksRyk8SNbNMoyJtl3SqnGwxC7KZdWOb2kpuzg3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=da5Gc1rKIYv514BOhH4of3HzBYbP3WHkr0XqCb+pm5LWqh/DdA92cb8y8bM4O5u+1
-	 LXwUYFQPyohluUoU9PlaTW4WdhR9yKTGGz6OIQluiQ4QwjTwnOzjwNuJLkuE2Spk86
-	 fEd0n7YW61F/UsZaX2ktlHNQBwNbrKMuJj4nZHSIx6/pVw+wsDWTl2dNo4ypXqBfOD
-	 obE8DXjCbpRbRBX9IcpGtnoPkkfDY6kysugAv92a+5UMKx5qBhbmb6PY9VmsZ1LFPB
-	 OC4vaHK67UBtCoQGw9b1BmgBTAWEoqmMuisY5paeiYi9iThYV3ofC8p5NLtH3G57GG
-	 BAqeLx8SW3BRg==
+	b=pfhAuRdglhQP8RZqR0zM6N/duDTsacGGGaOd29n00wdpN+wnYekYFvm4uAnz3Tdb+
+	 Hxr2s6SjEAONwqglW7bHuI9sfrFE85HTaDt2sirckox0eRGihVT1//FdWjbptwuKAK
+	 3zOQFAaQp852iBGozXqhGW8l2NzM9FMsFH2IJLrU38fWTo5VdAuX7AQ/lvonAQcSUU
+	 QOQhu9/lQ8cT4HmFizqoZZjNKkWfS06LSOkchCCZR64mkQtAWEbpCbYv574MSi5X2B
+	 Z0VCwzZc7dBUMcN8zs6DKZQj/hMcY/hyThqnoZL3m7+z5oEkby7vQ19Ru8EzMNg17X
+	 d2Iw2dBB5v/vw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gaurav Batra <gbatra@linux.ibm.com>,
-	Donet Tom <donettom@linux.ibm.com>,
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Disha Goel <disgoel@linux.vnet.ibm.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
 	mpe@ellerman.id.au,
-	david@redhat.com,
+	kan.liang@linux.intel.com,
+	peterz@infradead.org,
+	arnd@arndb.de,
 	rppt@kernel.org,
-	Jonathan.Cameron@huawei.com,
-	akpm@linux-foundation.org,
-	dan.j.williams@intel.com,
-	nilay@linux.ibm.com,
-	sbhat@linux.ibm.com,
+	anjalik@linux.ibm.com,
+	coltonlewis@google.com,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.6 240/294] powerpc/pseries/iommu: memory notifier incorrectly adds TCEs for pmemory
-Date: Mon,  5 May 2025 18:55:40 -0400
-Message-Id: <20250505225634.2688578-240-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 241/294] arch/powerpc/perf: Check the instruction type before creating sample with perf_mem_data_src
+Date: Mon,  5 May 2025 18:55:41 -0400
+Message-Id: <20250505225634.2688578-241-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -87,135 +86,134 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Gaurav Batra <gbatra@linux.ibm.com>
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-[ Upstream commit 6aa989ab2bd0d37540c812b4270006ff794662e7 ]
+[ Upstream commit 2ffb26afa64261139e608bf087a0c1fe24d76d4d ]
 
-iommu_mem_notifier() is invoked when RAM is dynamically added/removed. This
-notifier call is responsible to add/remove TCEs from the Dynamic DMA Window
-(DDW) when TCEs are pre-mapped. TCEs are pre-mapped only for RAM and not
-for persistent memory (pmemory). For DMA buffers in pmemory, TCEs are
-dynamically mapped when the device driver instructs to do so.
+perf mem report aborts as below sometimes (during some corner
+case) in powerpc:
 
-The issue is 'daxctl' command is capable of adding pmemory as "System RAM"
-after LPAR boot. The command to do so is -
+   # ./perf mem report 1>out
+   *** stack smashing detected ***: terminated
+   Aborted (core dumped)
 
-daxctl reconfigure-device --mode=system-ram dax0.0 --force
+The backtrace is as below:
+   __pthread_kill_implementation ()
+   raise ()
+   abort ()
+   __libc_message
+   __fortify_fail
+   __stack_chk_fail
+   hist_entry.lvl_snprintf
+   __sort__hpp_entry
+   __hist_entry__snprintf
+   hists.fprintf
+   cmd_report
+   cmd_mem
 
-This will dynamically add pmemory range to LPAR RAM eventually invoking
-iommu_mem_notifier(). The address range of pmemory is way beyond the Max
-RAM that the LPAR can have. Which means, this range is beyond the DDW
-created for the device, at device initialization time.
+Snippet of code which triggers the issue
+from tools/perf/util/sort.c
 
-As a result when TCEs are pre-mapped for the pmemory range, by
-iommu_mem_notifier(), PHYP HCALL returns H_PARAMETER. This failed the
-command, daxctl, to add pmemory as RAM.
+   static int hist_entry__lvl_snprintf(struct hist_entry *he, char *bf,
+                                    size_t size, unsigned int width)
+   {
+        char out[64];
 
-The solution is to not pre-map TCEs for pmemory.
+        perf_mem__lvl_scnprintf(out, sizeof(out), he->mem_info);
+        return repsep_snprintf(bf, size, "%-*s", width, out);
+   }
 
-Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
-Tested-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+The value of "out" is filled from perf_mem_data_src value.
+Debugging this further showed that for some corner cases, the
+value of "data_src" was pointing to wrong value. This resulted
+in bigger size of string and causing stack check fail.
+
+The perf mem data source values are captured in the sample via
+isa207_get_mem_data_src function. The initial check is to fetch
+the type of sampled instruction. If the type of instruction is
+not valid (not a load/store instruction), the function returns.
+
+Since 'commit e16fd7f2cb1a ("perf: Use sample_flags for data_src")',
+data_src field is not initialized by the perf_sample_data_init()
+function. If the PMU driver doesn't set the data_src value to zero if
+type is not valid, this will result in uninitailised value for data_src.
+The uninitailised value of data_src resulted in stack check fail
+followed by abort for "perf mem report".
+
+When requesting for data source information in the sample, the
+instruction type is expected to be load or store instruction.
+In ISA v3.0, due to hardware limitation, there are corner cases
+where the instruction type other than load or store is observed.
+In ISA v3.0 and before values "0" and "7" are considered reserved.
+In ISA v3.1, value "7" has been used to indicate "larx/stcx".
+Drop the sample if instruction type has reserved values for this
+field with a ISA version check. Initialize data_src to zero in
+isa207_get_mem_data_src if the instruction type is not load/store.
+
+Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250130183854.92258-1-gbatra@linux.ibm.com
+Link: https://patch.msgid.link/20250121131621.39054-1-atrajeev@linux.vnet.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/mmzone.h      |  1 +
- arch/powerpc/mm/numa.c                 |  2 +-
- arch/powerpc/platforms/pseries/iommu.c | 29 ++++++++++++++------------
- 3 files changed, 18 insertions(+), 14 deletions(-)
+ arch/powerpc/perf/core-book3s.c   | 20 ++++++++++++++++++++
+ arch/powerpc/perf/isa207-common.c |  4 +++-
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-index da827d2d08666..f2c4457c94c39 100644
---- a/arch/powerpc/include/asm/mmzone.h
-+++ b/arch/powerpc/include/asm/mmzone.h
-@@ -35,6 +35,7 @@ extern cpumask_var_t node_to_cpumask_map[];
- #ifdef CONFIG_MEMORY_HOTPLUG
- extern unsigned long max_pfn;
- u64 memory_hotplug_max(void);
-+u64 hot_add_drconf_memory_max(void);
- #else
- #define memory_hotplug_max() memblock_end_of_DRAM()
- #endif
-diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-index f6c4ace3b2219..65a9df0b9e5a0 100644
---- a/arch/powerpc/mm/numa.c
-+++ b/arch/powerpc/mm/numa.c
-@@ -1342,7 +1342,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
- 	return nid;
- }
- 
--static u64 hot_add_drconf_memory_max(void)
-+u64 hot_add_drconf_memory_max(void)
- {
- 	struct device_node *memory = NULL;
- 	struct device_node *dn = NULL;
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index b1e6d275cda9e..bf02f94a973db 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -1183,17 +1183,13 @@ static LIST_HEAD(failed_ddw_pdn_list);
- 
- static phys_addr_t ddw_memory_hotplug_max(void)
- {
--	resource_size_t max_addr = memory_hotplug_max();
--	struct device_node *memory;
-+	resource_size_t max_addr;
- 
--	for_each_node_by_type(memory, "memory") {
--		struct resource res;
--
--		if (of_address_to_resource(memory, 0, &res))
--			continue;
--
--		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
--	}
-+#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
-+	max_addr = hot_add_drconf_memory_max();
-+#else
-+	max_addr = memblock_end_of_DRAM();
-+#endif
- 
- 	return max_addr;
- }
-@@ -1471,7 +1467,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 		window->direct = true;
- 
- 		/* DDW maps the whole partition, so enable direct DMA mapping */
--		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
-+		ret = walk_system_ram_range(0, ddw_memory_hotplug_max() >> PAGE_SHIFT,
- 					    win64->value, tce_setrange_multi_pSeriesLP_walk);
- 		if (ret) {
- 			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
-@@ -1658,11 +1654,17 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
- 	struct memory_notify *arg = data;
- 	int ret = 0;
- 
-+	/* This notifier can get called when onlining persistent memory as well.
-+	 * TCEs are not pre-mapped for persistent memory. Persistent memory will
-+	 * always be above ddw_memory_hotplug_max()
-+	 */
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 10b946e9c6e75..4bb84dc4393fc 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2229,6 +2229,10 @@ static struct pmu power_pmu = {
+ #define PERF_SAMPLE_ADDR_TYPE  (PERF_SAMPLE_ADDR |		\
+ 				PERF_SAMPLE_PHYS_ADDR |		\
+ 				PERF_SAMPLE_DATA_PAGE_SIZE)
 +
- 	switch (action) {
- 	case MEM_GOING_ONLINE:
- 		spin_lock(&dma_win_list_lock);
- 		list_for_each_entry(window, &dma_win_list, list) {
--			if (window->direct) {
-+			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
-+				ddw_memory_hotplug_max()) {
- 				ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
- 						arg->nr_pages, window->prop);
- 			}
-@@ -1674,7 +1676,8 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
- 	case MEM_OFFLINE:
- 		spin_lock(&dma_win_list_lock);
- 		list_for_each_entry(window, &dma_win_list, list) {
--			if (window->direct) {
-+			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
-+				ddw_memory_hotplug_max()) {
- 				ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
- 						arg->nr_pages, window->prop);
- 			}
++#define SIER_TYPE_SHIFT	15
++#define SIER_TYPE_MASK	(0x7ull << SIER_TYPE_SHIFT)
++
+ /*
+  * A counter has overflowed; update its count and record
+  * things if requested.  Note that interrupts are hard-disabled
+@@ -2297,6 +2301,22 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 	    is_kernel_addr(mfspr(SPRN_SIAR)))
+ 		record = 0;
+ 
++	/*
++	 * SIER[46-48] presents instruction type of the sampled instruction.
++	 * In ISA v3.0 and before values "0" and "7" are considered reserved.
++	 * In ISA v3.1, value "7" has been used to indicate "larx/stcx".
++	 * Drop the sample if "type" has reserved values for this field with a
++	 * ISA version check.
++	 */
++	if (event->attr.sample_type & PERF_SAMPLE_DATA_SRC &&
++			ppmu->get_mem_data_src) {
++		val = (regs->dar & SIER_TYPE_MASK) >> SIER_TYPE_SHIFT;
++		if (val == 0 || (val == 7 && !cpu_has_feature(CPU_FTR_ARCH_31))) {
++			record = 0;
++			atomic64_inc(&event->lost_samples);
++		}
++	}
++
+ 	/*
+ 	 * Finally record data if requested.
+ 	 */
+diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
+index 56301b2bc8ae8..031a2b63c171d 100644
+--- a/arch/powerpc/perf/isa207-common.c
++++ b/arch/powerpc/perf/isa207-common.c
+@@ -321,8 +321,10 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
+ 
+ 	sier = mfspr(SPRN_SIER);
+ 	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
+-	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31)))
++	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
++		dsrc->val = 0;
+ 		return;
++	}
+ 
+ 	idx = (sier & ISA207_SIER_LDST_MASK) >> ISA207_SIER_LDST_SHIFT;
+ 	sub_idx = (sier & ISA207_SIER_DATA_SRC_MASK) >> ISA207_SIER_DATA_SRC_SHIFT;
 -- 
 2.39.5
 
