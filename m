@@ -1,65 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-8364-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8365-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803C0AACF98
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 May 2025 23:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCC8AACF9C
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  6 May 2025 23:37:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZsWty4DWzz3064;
-	Wed,  7 May 2025 07:36:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZsWvQ6BLGz304f;
+	Wed,  7 May 2025 07:37:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746567418;
-	cv=none; b=oG+2j/Xn4wCS5Xp90NmGCxSzejVR/9z9Tn1Q53QezsjJsYmgNvfl5j0Q1PmViViFYr//srypfCIZbyA1TJ1hQ8te+1qaei1qplglsa01dshIRb5cmD8ReXEmi5pBWo9BNWyMPU7baE3Je19YWZpCyhHr75lpp8FtVQxvIPGr/G2jW1WAixUqvxaJSWHTt/caxDGsdE3BtqORS92sRHkMg79soRh0n7nentuFF84/vybS4tMmzx1XNqbEamwsxYMBotYdMABunl7gz1rAHLcHyHc0O8d5SWWDOIbtwxXr+ZgLitew/zIJGhPpuurOjJ4fxksqAwRc7sb3Jv8AUyjHIw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746567442;
+	cv=none; b=TnC12qpB1kD5XK0pTsyByOdLKzRgLKSXR0Rmjt8M3VPgQPLEVkJX24hqyTHsCJIPDeMiI800yP7N9DGPU9Ng0R7ZrfcYeUuGnmol69NJHDDv6+uuzvCqPDfJaevhTF268fwu+fN86c9crrUyg/0Jinu1Ze2xderLuqK+BezSdMi1o8TgVBHt6MlvLvF/z+VNPvlDhGms95Z7qkiu2gFr9nFi3nLri3/hvr083qrEcyEWYoorFvrxWN16CiWQ7o/MRKWEchfbfhy4iDV6OBGnbyOkZA/E54qw+T8Z9N9+zph1RBn03UCBVJkSNBctb2uS+Od9BsMVBVd6jgHffJJkUA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746567418; c=relaxed/relaxed;
-	bh=Cr7N2dezP78cVJMktfdwBMBPLaglWq41DjwjkCTKySA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Qu9jJxhM8pF6szyvdvpG2JBV3kQoZF5AUKhnAKCX7BV0lerG9Qx7ldRWHp/KxkLskQExo/xJVwVMphDgu/NkZneiyyyejvqADrtJ+1P4tDMy4wGmjVzSEhvyqwlITrzzY4gvOxPwZiDjrtTEPdk5R3jw7st4Wn6AJu4G0ZJ4spRc4pQyRymV5jhXoLxte8VRtGRKO9sfnhxfNPrw5rt5j/MyXw/cJDlEreynW+3HAWiszRU1KPtJ/sPkZJjekhXeDHAmN9KB6rpPfGThOhEGKcj3THpz2mMFFtkZoAAPOWB4n3deelxNcX9KS0K2gAtqQlbzGE626XLa32eOIWmDYA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uxOo2WeV; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1746567442; c=relaxed/relaxed;
+	bh=9641NHNk5qFDO6SRPapBY7yEVofGXQ0J/U7vAQhEbr4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XebfyJuKNwteaZIXgbz1jLc0FIvcS3LcZbHIK77GCgZF9NzE3gRkIEmzeJedkHc97f5uXRkilNoR9qXoQ20peu9R+Tg4zZjGUmQ1iqVI5VHefsanr6+MJ3TWWoQdSoqSRlgxlVveA22fVxIr52eT0N4RN7iALrZc4h316YULpptAvl7Z2bm1GyKJqUr0lzbCi/ed+6gqxmh9JSeBEk19rcKzGG7ZufjgwTrWH2vSUUQkXfqVf3IYHiqgqz315gtrN0/EoDaJBfPdT5NnCiPxk6Dlc12ynfDoVje5D/gHuL03BcbFeg5hRv35s2yyPjEvnMoC7If2bHBD1ceTuK86gw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GFll7MAC; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uxOo2WeV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GFll7MAC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZsWty04QGz2yvs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 May 2025 07:36:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZsWvQ1g4wz2yvs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 May 2025 07:37:22 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 216A861136;
-	Tue,  6 May 2025 21:36:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A8DC4CEEF;
-	Tue,  6 May 2025 21:36:54 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 31AC7A4C3B1;
+	Tue,  6 May 2025 21:37:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B88C4CEEE;
+	Tue,  6 May 2025 21:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746567415;
-	bh=3kJx4RrF/TV+86iMY/0XpKRaCCjS+kWAD0tKlrf/ejc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxOo2WeVO5cbuQv7FwSXiMQiSnuYVoT8R1gohIxtSRzzph1JoP+oERYtdvr6M7BHW
-	 5mu1VfbEgY/zLniy5B7+AklyWBo0x/Kxn2zOALJwSFt/iqUQS8dsFLb41VqPOs5c7M
-	 wfVkoWB3CZYtWIA2h77yQNt3RJxq85cpjs80hq3sWHu3VecQUVTkdZjUTyvos/VGrd
-	 w5sKmUWoW+AvkzZfMjIhuf00jK1+i7FPlgSrTVuz9jPVUgsg4tkzVCRItO7T37pzFA
-	 wF4OGJQYtAK/iceMMJPTKDO1MzAlbq/T1O+VrO1YAZ54CTBU2aRhKYrtSEfEYhcX2p
-	 QHxrB+zkyetmw==
+	s=k20201202; t=1746567439;
+	bh=sDdNilLczBKLaYqH/j1+dAzPrmbkU/4O96N81w9WPAU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GFll7MACCfR30CYypbhc3YU4zQrW+sGnDisfzoH00p5OQqfXhoLJNyDslyTWzTgLm
+	 zPgsGJ8anCr08Gku7f6TkhgldVWZFs/OqbJMJ9NzCayW+cecVJqcZkVAp10KdCt3tY
+	 to1mgfK7BcuY4u8XX5Vyx4TEw2c5tL60UJhUQxYBC+zR4pDJQ5sdWmGu2202dlqvfB
+	 tytHH0PNHiHzbrV6g2Czm9q7Dr8N5QpLpzkYlOPhidBAHaJVezxvCLoRorE3w4rFlI
+	 WZUJHDEGrPV64ZTAamKTn12mtChhEmcejDop5wIoap5tTv6AoduUTcDWifmSZ20WIN
+	 4wtYG8frBy+/g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+Cc: Chenyuan Yang <chenyuan0y@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mpe@ellerman.id.au,
-	hbathini@linux.ibm.com,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	shawnguo@kernel.org,
+	linux-sound@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 02/12] book3s64/radix: Fix compile errors when CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP=n
-Date: Tue,  6 May 2025 17:36:37 -0400
-Message-Id: <20250506213647.2983356-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 1/6] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
+Date: Tue,  6 May 2025 17:37:09 -0400
+Message-Id: <20250506213714.2983569-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250506213647.2983356-1-sashal@kernel.org>
-References: <20250506213647.2983356-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,49 +78,44 @@ Precedence: list
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.89
+X-stable-base: Linux 6.1.137
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 29bdc1f1c1df80868fb35bc69d1f073183adc6de ]
+[ Upstream commit a9a69c3b38c89d7992fb53db4abb19104b531d32 ]
 
-Fix compile errors when CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP=n
+Incorrect types are used as sizeof() arguments in devm_kcalloc().
+It should be sizeof(dai_link_data) for link_data instead of
+sizeof(snd_soc_dai_link).
 
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/8231763344223c193e3452eab0ae8ea966aff466.1741609795.git.donettom@linux.ibm.com
+This is found by our static analysis tool.
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://patch.msgid.link/20250406210854.149316-1-chenyuan0y@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/book3s64/radix_pgtable.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/fsl/imx-card.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index c6a4ac766b2bf..425b1a9eed8f0 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -912,7 +912,7 @@ int __meminit radix__vmemmap_create_mapping(unsigned long start,
- 	return 0;
- }
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index c6d55b21f9496..11430f9f49968 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -517,7 +517,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
+ 	if (!card->dai_link)
+ 		return -ENOMEM;
  
--
-+#ifdef CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
- bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
- {
- 	if (radix_enabled())
-@@ -920,6 +920,7 @@ bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+-	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link), GFP_KERNEL);
++	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link_data), GFP_KERNEL);
+ 	if (!data->link_data)
+ 		return -ENOMEM;
  
- 	return false;
- }
-+#endif
- 
- int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
- 				unsigned long addr, unsigned long next)
 -- 
 2.39.5
 
