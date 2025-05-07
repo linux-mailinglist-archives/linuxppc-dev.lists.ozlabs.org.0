@@ -1,43 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-8413-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8414-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A67AAE71A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 18:47:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C64AAE721
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 18:49:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zt1QV61JMz30LS;
-	Thu,  8 May 2025 02:47:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zt1SX3k9Yz30MY;
+	Thu,  8 May 2025 02:49:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.185
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746636450;
-	cv=none; b=AdJceudRBLocg88Oz0aK1mwjTwDTnFGrtxKydQaYFMCnuZXtI0wGfwKdYOz5vTTueJBvE+hoV7U3FuiXj+e7uxfgD8dhC4/LzzbyOHeWqgdBgyZZUEFpKWOIQL2SiELnOiL8YiI3XdMHPmY9A+aLJTEjYPJes8KctBu+Tu4wlP/vViiDbZJ1b7mbwd6RV9DLEZOu8sqf/FcyW2uE0DUgM7ezCC40kRkCwb5L819HqqxY6BEeYTBEDvS5b/vQD7Pg54l5+stqtqfHfZ4pe44k3Kh/c+z+NgLcsPHrB7PZJqJ7xffP4cmCSGdadqa5g82TjpZRcxFMeZDhNmnPK2hdFQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::bc"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746636556;
+	cv=none; b=aRH1bfxAA51CjrMDs+hQ/5RZ2oJX52400xS0M8V+ou3Gcm6SZ6NjPmpZD7TKLSEAVbxAOijlGtLjuvDOcopBu7QXyecvw4/UwMRhWUXOhB+CmrBZgybgIuCg5Iy0EPA9LEH3I3CWRgvqpB0wrdQ13sHBynjYCqtCTEZE9cEuuf0ZetbqUkFDFVELDmnbKc7PNczvnDQq/op/dX2sOndO3YSd2Yc/B7WcrKIQE87B3nqN0CD9D3RLA4j5V9W07/KFww6lAIq/mdGGiIoAgqxiy6Jv2QusGQf1qDaw/6MHNX8DE3slp8DnCN277uVEV175fkQMoG0A3fVcGVE1jQLYiw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746636450; c=relaxed/relaxed;
-	bh=nq0jvPXcCaXcZzDjqmWJrmU0XBhQs2iQrx8JeAPfxmg=;
+	t=1746636556; c=relaxed/relaxed;
+	bh=2RpamE2srlpqeXHrljbpcOM2Ay/589KHDerW4ekHgUI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QpBTl9Ih1q7scYGEmQwOG51I+VJtbA8uHSpB9Y2mw3YB6yFbtJKac64S/Z7iXItk8W0G1Y7gQ5yu8DVx6f/Ssmmr3F0AXDXyjXcCfPdtsfu9Uf2UcsgxzI0Ni55/reVRJ7ag2frW1//tFCv2zo2pcr7sjsJMRkmL05icG1G48+hvhD45m4Zj4jMHLTqDyxw+7w1XY5bd8wbPqw+ClbKYKhFbM09IfZ+WAZ10EPebOwA7PgNNSCbaHu/tEGrtNYCjv0CozwOUPuiuHgibl65zvbWDjx+8FIf8DkHzuFeWOWOxkzn8T7iClF3MBZ3w+4TpleX/uwLkoS/xh6GPaZEU1A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xjTaAO9U; dkim-atps=neutral; spf=pass (client-ip=91.218.175.185; helo=out-185.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=ARGZ2zkRRJKs/6mVSFPF1w4x+ZIAjDUMDZj8Fp6fp4xR5gQVXdRx8a++QLSa3hEdmQhg/Q+Z1u0tijXq3YCu2h2PxSSydYQ8cuxOo9NHUeC+XmXJ3twvy2Pd2zHqg82fzW3dyPs+TX/T5272tXqgvo7w2o9y7VTTNCDDwe1+ZiSmOOpszg9cib4hjq5z07jpVOYvvHFaqjJpBiAhHvZB3FLXzLzthNE4I5/IRr8YgGgKLZKM88wHrTvgJcE4lqLJS7eqqI/9AB+KSTtWB9i3YJMOSYsQLfk5P4L74L2YfQXg0XfHcH3Hk3LlBvJPtTPADB9vpR08m54EErq4KcdE0A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pZjO/Dq1; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::bc; helo=out-188.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xjTaAO9U;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pZjO/Dq1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.185; helo=out-185.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::bc; helo=out-188.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [IPv6:2001:41d0:203:375::bc])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zt1QV13Fcz30DP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 02:47:30 +1000 (AEST)
-Date: Wed, 7 May 2025 18:47:08 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zt1SW4zmMz30DP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 02:49:15 +1000 (AEST)
+Date: Wed, 7 May 2025 18:48:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746636431;
+	t=1746636535;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nq0jvPXcCaXcZzDjqmWJrmU0XBhQs2iQrx8JeAPfxmg=;
-	b=xjTaAO9U8LQ4Kd2hRhF3e7XyPcfoUKEneZZEGF63X62j83ZwidnhiT0cNab9+CxKKAinqs
-	tQrsKIMffkrdIVznOheKfefvPn0Cvws33o9gx/1+kb6bnqYhrsToL/MFO8XcsBXols2z6S
-	vS0CRp0fg8fKA82L2HYyV6KJxOp4Rvo=
+	bh=2RpamE2srlpqeXHrljbpcOM2Ay/589KHDerW4ekHgUI=;
+	b=pZjO/Dq1wiCjg2M3GtCbh5dD3dLgzdP6L3Kwa+o1eEo5wqwXY9g4EhJqMQY/Bi/EpxnfA0
+	558VvSquXY1JzId+uqGR9L0c8F8U/bW2i0cbPFE5/5UzbATwdBpa9GCxfLKSp/MNrFT22H
+	+23vVs422Ir3vA6F77jcwbdE2AsR2Cc=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Andrew Jones <andrew.jones@linux.dev>
 To: Alexandru Elisei <alexandru.elisei@arm.com>
@@ -48,11 +48,11 @@ Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
 	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org, 
 	oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
 	andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v3 12/16] scripts: Detect kvmtool failure
- in premature_failure()
-Message-ID: <20250507-44b6574c7e69e3c56d762552@orel>
+Subject: Re: [kvm-unit-tests PATCH v3 13/16] scripts: Do not probe for
+ maximum number of VCPUs when using kvmtool
+Message-ID: <20250507-71bfb831e524b5c437c6a828@orel>
 References: <20250507151256.167769-1-alexandru.elisei@arm.com>
- <20250507151256.167769-13-alexandru.elisei@arm.com>
+ <20250507151256.167769-14-alexandru.elisei@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,95 +68,128 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250507151256.167769-13-alexandru.elisei@arm.com>
+In-Reply-To: <20250507151256.167769-14-alexandru.elisei@arm.com>
 X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, May 07, 2025 at 04:12:52PM +0100, Alexandru Elisei wrote:
-> kvm-unit-tests assumes that if the VMM is able to get to where it tries to
-> load the kernel, then the VMM and the configuration parameters will also
-> work for running the test. All of this is done in premature_failure().
+On Wed, May 07, 2025 at 04:12:53PM +0100, Alexandru Elisei wrote:
+> The --probe-maxsmp parameter updates MAX_SMP with the maximum number of
+> VCPUs that the host supports. Qemu will exit with an error when creating a
+> virtual machine if the number of VCPUs is exceeded.
 > 
-> Teach premature_failure() about the kvmtool's error message when it fails
-> to load the dummy kernel.
+> kvmtool behaves differently: it will automatically limit the number of
+> VCPUs to the what KVM supports, which is exactly what --probe-maxsmp wants
+> to achieve. When doing --probe-maxsmp with kvmtool, print a message
+> explaining why it's redundant and don't do anything else.
 > 
 > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
 > ---
->  scripts/runtime.bash |  8 +++-----
->  scripts/vmm.bash     | 23 +++++++++++++++++++++++
->  2 files changed, 26 insertions(+), 5 deletions(-)
+>  run_tests.sh         |  3 ++-
+>  scripts/runtime.bash | 16 ----------------
+>  scripts/vmm.bash     | 24 ++++++++++++++++++++++++
+>  3 files changed, 26 insertions(+), 17 deletions(-)
 > 
+> diff --git a/run_tests.sh b/run_tests.sh
+> index 150a06a91064..a69c3665b7a4 100755
+> --- a/run_tests.sh
+> +++ b/run_tests.sh
+> @@ -10,6 +10,7 @@ if [ ! -f config.mak ]; then
+>  fi
+>  source config.mak
+>  source scripts/common.bash
+> +source scripts/vmm.bash
+>  
+>  function usage()
+>  {
+> @@ -90,7 +91,7 @@ while [ $# -gt 0 ]; do
+>              list_tests="yes"
+>              ;;
+>          --probe-maxsmp)
+> -            probe_maxsmp
+> +            ${vmm_opts[$TARGET:probe_maxsmp]}
+>              ;;
+>          --)
+>              ;;
 > diff --git a/scripts/runtime.bash b/scripts/runtime.bash
-> index 86d8a2cd8528..01ec8eae2bba 100644
+> index 01ec8eae2bba..a802686c511d 100644
 > --- a/scripts/runtime.bash
 > +++ b/scripts/runtime.bash
-> @@ -1,3 +1,5 @@
-> +source scripts/vmm.bash
-> +
->  : "${RUNTIME_arch_run?}"
->  : "${MAX_SMP:=$(getconf _NPROCESSORS_ONLN)}"
->  : "${TIMEOUT:=90s}"
-> @@ -19,11 +21,7 @@ premature_failure()
+> @@ -209,19 +209,3 @@ function run()
 >  
->      log="$(eval "$(get_cmdline _NO_FILE_4Uhere_)" 2>&1)"
->  
-> -    echo "$log" | grep "_NO_FILE_4Uhere_" |
-> -        grep -q -e "[Cc]ould not \(load\|open\) kernel" \
-> -                -e "error loading" \
-> -                -e "failed to load" &&
-> -        return 1
-> +    ${vmm_opts[$TARGET:parse_premature_failure]} "$log" || return 1
->  
->      RUNTIME_log_stderr <<< "$log"
->  
+>      return $ret
+>  }
+> -
+> -#
+> -# Probe for MAX_SMP, in case it's less than the number of host cpus.
+> -#
+> -function probe_maxsmp()
+> -{
+> -	local smp
+> -
+> -	if smp=$($RUNTIME_arch_run _NO_FILE_4Uhere_ -smp $MAX_SMP |& grep 'SMP CPUs'); then
+> -		smp=${smp##* }
+> -		smp=${smp/\(}
+> -		smp=${smp/\)}
+> -		echo "Restricting MAX_SMP from ($MAX_SMP) to the max supported ($smp)" >&2
+> -		MAX_SMP=$smp
+> -	fi
+> -}
 > diff --git a/scripts/vmm.bash b/scripts/vmm.bash
-> index d24a4c4b8713..a1d50ed51981 100644
+> index a1d50ed51981..ef9819f4132c 100644
 > --- a/scripts/vmm.bash
 > +++ b/scripts/vmm.bash
-> @@ -93,6 +93,27 @@ kvmtool_fixup_return_code()
->  	echo $ret
+> @@ -105,6 +105,22 @@ function qemu_parse_premature_failure()
+>  	return 0
 >  }
 >  
-> +function qemu_parse_premature_failure()
+> +#
+> +# Probe for MAX_SMP, in case it's less than the number of host cpus.
+> +#
+> +function qemu_probe_maxsmp()
 > +{
-> +	local log="$@"
+> +	local smp
 > +
-> +	echo "$log" | grep "_NO_FILE_4Uhere_" |
-> +		grep -q -e "[Cc]ould not \(load\|open\) kernel" \
-> +			-e "error loading" \
-> +			-e "failed to load" &&
-> +		return 1
-> +	return 0
+> +	if smp=$($RUNTIME_arch_run _NO_FILE_4Uhere_ -smp $MAX_SMP |& grep 'SMP CPUs'); then
+> +		smp=${smp##* }
+> +		smp=${smp/\(}
+> +		smp=${smp/\)}
+> +		echo "Restricting MAX_SMP from ($MAX_SMP) to the max supported ($smp)" >&2
+> +		MAX_SMP=$smp
+> +	fi
 > +}
 > +
-> +function kvmtool_parse_premature_failure()
+>  function kvmtool_parse_premature_failure()
+>  {
+>  	local log="$@"
+> @@ -114,6 +130,12 @@ function kvmtool_parse_premature_failure()
+>  	return 0
+>  }
+>  
+> +function kvmtool_probe_maxsmp()
 > +{
-> +	local log="$@"
-> +
-> +	echo "$log" | grep "Fatal: Unable to open kernel _NO_FILE_4Uhere_" &&
-> +		return 1
-> +	return 0
+> +	echo "kvmtool automatically limits the number of VCPUs to maximum supported"
+> +	echo "The 'smp' test parameter won't be modified"
 > +}
 > +
 >  declare -A vmm_opts=(
 >  	[qemu:nr_cpus]='-smp'
 >  	[qemu:kernel]='-kernel'
-> @@ -100,6 +121,7 @@ declare -A vmm_opts=(
->  	[qemu:initrd]='-initrd'
+> @@ -122,6 +144,7 @@ declare -A vmm_opts=(
 >  	[qemu:default_opts]=''
 >  	[qemu:fixup_return_code]=qemu_fixup_return_code
-> +	[qemu:parse_premature_failure]=qemu_parse_premature_failure
+>  	[qemu:parse_premature_failure]=qemu_parse_premature_failure
+> +	[qemu:probe_maxsmp]=qemu_probe_maxsmp
 >  
 >  	[kvmtool:nr_cpus]='--cpus'
 >  	[kvmtool:kernel]='--kernel'
-> @@ -107,6 +129,7 @@ declare -A vmm_opts=(
->  	[kvmtool:initrd]='--initrd'
+> @@ -130,6 +153,7 @@ declare -A vmm_opts=(
 >  	[kvmtool:default_opts]="$KVMTOOL_DEFAULT_OPTS"
 >  	[kvmtool:fixup_return_code]=kvmtool_fixup_return_code
-> +	[kvmtool:parse_premature_failure]=kvmtool_parse_premature_failure
+>  	[kvmtool:parse_premature_failure]=kvmtool_parse_premature_failure
+> +	[kvmtool:probe_maxsmp]=kvmtool_probe_maxsmp
 >  )
 >  
 >  function check_vmm_supported()
