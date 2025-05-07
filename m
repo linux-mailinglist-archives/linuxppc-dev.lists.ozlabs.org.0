@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-8385-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8386-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181FAAAE41B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 17:14:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87498AAE41D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 17:14:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZszLW6LH7z308b;
-	Thu,  8 May 2025 01:13:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZszLb0Zh0z30CB;
+	Thu,  8 May 2025 01:13:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746630835;
-	cv=none; b=VsWiTdqAIWN4rrIc5UOmog67VoarVo1VotVCRR/4Vao3LUYHYUHv6yHASVYu8ssyQrmrlQ5G8yuvWa4I0ZdfC+a+f2RG+JJ4F4ToOfiMyGefdELtdG1YEVzxkKjgCRYGf8eEdFdbOsWjvtHGaoUdt7TjrJ2dff6dJA2M4S1yx8TGikxyz6GSgbvJruHz0jGs7gT9EyPSTz62hO10w0pFZbxv+/aFy+3GkwBJ/pgnwTHB+WYUJrS6xNIqu4krFSlGDq/6z3hB5xA93gqr2d/qILbstSmfw+THc44hH6pPIWD4gt9L24GrBOFo4zW9hC3GxRAYKF9kF4sKfXAltG9NpQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746630839;
+	cv=none; b=CY5bo22er7i12AkAlzTV7eWiKuWLe+TdMDAjvNf9G/8IdX8lyA8SE/k996m1bVWMfxs78LADTY2uPYJ2rywqDLoG5RKDH1/axzPvf/TiTE7MjooUKt115LQwqyxgUlLXuNqMAXirBAhuelulcPcAoozLm4tkVXLXaWrxOKlayMO46yC6GQdC0ME+AEhC/moVZG3l4jzRBbD1YxR51cDxN5Y+TD3r/wYOXkGaOtTjOgH3iqAOkAaZFu2uvixhb7lureb8uSsvkdMvBtzjevL4n8K5eeE7T9OZcQ2wvUyfZI9vB+Q5I7opDzuFd4LN/am8cL+P53o4mSvg2Zsbc6/pcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746630835; c=relaxed/relaxed;
-	bh=LKZ/F/exOhXeu/hfAs53KLhngOOI7XL3GGGKV9vJWEs=;
+	t=1746630839; c=relaxed/relaxed;
+	bh=RbQyUGB+b90l5pfmqkhZqJW5JMDHee/PI1mQTN+ekNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S01aKRMHCfmzkXO0PTilAvghPbb0KL3ULRvA5EEknFSnF3KOm9RQ9mRf/wFxEvKy2xa4+HgT/37Fhr3Nw9Rn1qq2id9DQz0d6VKZ1EEKnrWxD6IT00tKirP3LBcSX3YV9lbQKPZRgRXXemWbbjb0T2YETqkUBsWLzbGceOhE3R+e/ks/fWEBGiarqrvpCzq9okqAClT25ZKeGsrJVPUQMXf8Gn3x8DhCWkAC0vxnyf02EfIMRTPPoGt4yiio2E+AhUUPQayfi/LK0KEL62D2IthVXwADOi+4eWOeedt4N8G+bUQn9FEAN1DTgtEZYIc1J/epIGLInn34sfZroEyD9w==
+	 MIME-Version; b=TyTeQBQQQzbpMQo/oWYl9US39bMh3GUqf2pA+XCraa509Nhs86pdqLFTvyprVxFOGWGNqUogUdOqvNAYAR1tgH+f+jbDHmcYbJ9OjDou8XN7oLovqcRH42sqQceq03zBZGVAQcot2ZCSoLSKRmxfCtbCHLdc1QStpzzAxhSTL8hluMCBFdsKQORQkZA71Zl1TjQawgkrFfsgyQvQiFwuJrAKpjAvZCtbOtWToaTXfVSEXLZKhAz3MMzF4r5hW+kq9pte7CbeAyxBjAxeb7zaVk3RNVIRDvG1yrSWvLM/lTTa48TiUqmBYciJqEPXDoHAlwsM/IqmiGhqe4HBgEufUg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZszLW1C0Mz2xtt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 01:13:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZszLZ4TQjz2xtt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 01:13:58 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 035DE204C;
-	Wed,  7 May 2025 08:13:14 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8E6692050;
+	Wed,  7 May 2025 08:13:17 -0700 (PDT)
 Received: from localhost.localdomain (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B9D4C3F58B;
-	Wed,  7 May 2025 08:13:20 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6B3303F58B;
+	Wed,  7 May 2025 08:13:24 -0700 (PDT)
 From: Alexandru Elisei <alexandru.elisei@arm.com>
 To: andrew.jones@linux.dev,
 	eric.auger@redhat.com,
@@ -51,9 +51,9 @@ Cc: kvm@vger.kernel.org,
 	yuzenghui@huawei.com,
 	joey.gouly@arm.com,
 	andre.przywara@arm.com
-Subject: [kvm-unit-tests PATCH v3 03/16] configure: Export TARGET unconditionally
-Date: Wed,  7 May 2025 16:12:43 +0100
-Message-ID: <20250507151256.167769-4-alexandru.elisei@arm.com>
+Subject: [kvm-unit-tests PATCH v3 04/16] run_tests.sh: Document --probe-maxsmp argument
+Date: Wed,  7 May 2025 16:12:44 +0100
+Message-ID: <20250507151256.167769-5-alexandru.elisei@arm.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507151256.167769-1-alexandru.elisei@arm.com>
 References: <20250507151256.167769-1-alexandru.elisei@arm.com>
@@ -75,96 +75,44 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Only arm and arm64 are allowed to set --target to kvmtool; the rest of the
-architectures can only set --target to 'qemu', which is also the default.
+Commit 5dd20ec76ea63 ("runtime: Update MAX_SMP probe") added the
+--probe-maxmp argument, but the help message for run_tests.sh wasn't
+updated. Document --probe-maxsmp.
 
-Needed to make the changes necessary to add support for kvmtool to the test
-runner.
-
-kvmtool also supports running the riscv tests, so it's not outside of the
-realm of the possibily for the riscv tests to get support for kvmtool.
-
+Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
 Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
 ---
- configure | 36 ++++++++++++++++++++++++------------
- 1 file changed, 24 insertions(+), 12 deletions(-)
+ run_tests.sh | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/configure b/configure
-index 20bf5042cb9e..8c4400db42bc 100755
---- a/configure
-+++ b/configure
-@@ -38,6 +38,21 @@ function get_default_qemu_cpu()
-     esac
- }
+diff --git a/run_tests.sh b/run_tests.sh
+index 152323ffc8a2..f30b6dbd131c 100755
+--- a/run_tests.sh
++++ b/run_tests.sh
+@@ -17,14 +17,15 @@ cat <<EOF
  
-+# Return the targets that the architecture supports
-+function get_supported_targets()
-+{
-+    local arch=$1
-+
-+    case "$arch" in
-+    "arm" | "arm64" | "aarch64")
-+        echo "qemu kvmtool"
-+	;;
-+    *)
-+        echo "qemu"
-+	;;
-+    esac
-+}
-+
- srcdir=$(cd "$(dirname "$0")"; pwd)
- prefix=/usr/local
- cc=gcc
-@@ -79,6 +94,7 @@ fi
- usage() {
-     [ "$arch" = "aarch64" ] && arch="arm64"
-     [ -z "$processor" ] && processor=$(get_default_processor $arch)
-+    [ -z $target ] && target=qemu
-     cat <<-EOF
- 	Usage: $0 [options]
+ Usage: $0 [-h] [-v] [-a] [-g group] [-j NUM-TASKS] [-t] [-l]
  
-@@ -89,8 +105,8 @@ usage() {
- 	    --target-cpu=CPU       the CPU model to run on. If left unset, the run script
- 	                           selects the best value based on the host system and the
- 	                           test configuration.
--	    --target=TARGET        target platform that the tests will be running on (qemu or
--	                           kvmtool, default is qemu) (arm/arm64 only)
-+	    --target=TARGET        target platform that the tests will be running on ($target).
-+	                           Supported targets: $(get_supported_targets $arch)
- 	    --cross-prefix=PREFIX  cross compiler prefix
- 	    --cc=CC                c compiler to use ($cc)
- 	    --cflags=FLAGS         extra options to be passed to the c compiler
-@@ -281,13 +297,11 @@ if [ "$arch" = "riscv" ]; then
-     exit 1
- fi
+-    -h, --help      Output this help text
+-    -v, --verbose   Enables verbose mode
+-    -a, --all       Run all tests, including those flagged as 'nodefault'
+-                    and those guarded by errata.
+-    -g, --group     Only execute tests in the given group
+-    -j, --parallel  Execute tests in parallel
+-    -t, --tap13     Output test results in TAP format
+-    -l, --list      Only output all tests list
++    -h, --help          Output this help text
++    -v, --verbose       Enables verbose mode
++    -a, --all           Run all tests, including those flagged as 'nodefault'
++                        and those guarded by errata.
++    -g, --group         Only execute tests in the given group
++    -j, --parallel      Execute tests in parallel
++    -t, --tap13         Output test results in TAP format
++    -l, --list          Only output all tests list
++        --probe-maxsmp  Update the maximum number of VCPUs supported by host
  
--if [ -z "$target" ]; then
--    target="qemu"
--else
--    if [ "$arch" != "arm64" ] && [ "$arch" != "arm" ]; then
--        echo "--target is not supported for $arch"
--        usage
--    fi
-+if [ -z $target ]; then
-+    target=qemu
-+elif ! grep -Fq " $target " <<< " $(get_supported_targets $arch) "; then
-+    echo "Target $target is not supported for $arch"
-+    usage
- fi
- 
- if [ "$efi" ] && [ "$arch" != "x86_64" ] &&
-@@ -519,10 +533,8 @@ CONFIG_EFI=$efi
- EFI_DIRECT=$efi_direct
- CONFIG_WERROR=$werror
- GEN_SE_HEADER=$gen_se_header
-+TARGET=$target
- EOF
--if [ "$arch" = "arm" ] || [ "$arch" = "arm64" ]; then
--    echo "TARGET=$target" >> config.mak
--fi
- 
- cat <<EOF > lib/config.h
- #ifndef _CONFIG_H_
+ Set the environment variable QEMU=/path/to/qemu-system-ARCH to
+ specify the appropriate qemu binary for ARCH-run.
 -- 
 2.49.0
 
