@@ -1,59 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-8417-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8418-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D284AAE754
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 19:02:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8197AAEC29
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 21:27:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zt1lq1fDxz30Pg;
-	Thu,  8 May 2025 03:02:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zt4yy240Qz30QJ;
+	Thu,  8 May 2025 05:27:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746637351;
-	cv=none; b=hglXRpCwq/hSF3gVIgESongSEfXlr2ak8LJ1jX3F3uaaG9sL5NDkgq/up7g/pI5tQpdiO63U5HMm5Hbfznmroj4sIEVJBTDzK19prsPRcTHsFFdWLf3gxsajctHvtYrvzJp8DSlPY35U4VXW9ZBA9p8WdK4S/d6UNkTzYDuG1+xB6tOc9qVx6zCe6Jv5SVxAxaf9DArA6fpg6ymoIZqXuST93RbqwgTnEZ9JXd2dbf3boyyFOXtdktxDQeheUR2c4zLq3fipf9XrdyozgwOJAcjVBnJ+1y9A2mhMKKA1RILuHKtCZj45VSS4HK76u6qakmnb47By/iup+CXZ7DQu2w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746623129;
+	cv=none; b=cCGxOaeDgoXhxVp4+Zw/qsohyzkIF7qHfpbYV1Au7xWA4rYklwlOOhc3tKRyLGFBRWd+VNaM0rOqJj1OXGe/zx9yK4PzMV6Ny4Ov2goDlq/JxPk0CTPtHZfdpbFoyKopW61dd3gzMC27dOmB+ViypOiehUS2l2F4PEY6f+A1+NWTYiT13AyGlAlSBB2aUnpdHgDKuxNkz8AQlukDT12CbMoJZyAv4q2AODKRww3Ea0slZU4H6SUSDInV5PaPJsWHbihU5Pv/J2V1XxnwoKfYdgSkaIhu8WrEq/GKmV90dyIpS4RhvM0VeSE6JVGBN+K4cW4vxe2RHaLdXKH18NR2Bg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746637351; c=relaxed/relaxed;
-	bh=T+tEHxOg4LrHhAiwUntt+Jm92lVXU+WcP7W0pnjwGBA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kYld2PgERajdv2wqm/SJsT4Z7r/VkYEPcUZnluKvtdEJmQJKKttHygpDWyQwWdO8pdhEdc+9yYOpoKuKd8pTp85izAq8jjFqAn9bo0k35UUGoX1q+OkLklTWUWKPjL7pe9iHoUIrIaH9uJC7cgNbNKdlCKxDpWYVJ+TqIL5KyMd8lQI8tEdpTNWYoX7DO2rHZ0SffCmMauXR/mEXZ5XwmDcWNXB9q3if8dOYJIl5rSQ4/X0xsWXaP8ixvtYYMSk8Z4ZP0E1fXdwhrDvoftgwAzcpcB6xD3jNXzPn1w43Hq6ReLk41H/V5pLNI5D9rJ8pjf4aUxy8bX/MhEOH2Gfnpg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=dsterba@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=dsterba@suse.cz; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	t=1746623129; c=relaxed/relaxed;
+	bh=IjdASnf0P/3DHSY41RODYZYYITbHGHJgGhvIKy0pPT8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xah0+EMaI4dZ/cM0sKfUVtfWVonEQLxDizbVybppx5gUS5QrMBDJCT7PHN6zr3cFbqkSkXY+l63rkhL3uKVc8i9diNfeePvP+AMp8Vuf6KLectljSLqi8u/+yktgv7nGWgGL+GTZsv9w9SQ9bptTXOzgvX/D8NwBt/oTx9FQlxgTU+BePmAMX9S9yFM+bgWwdDvBRl5qwZ12J4FaVWvhD4BA/TEDSeS01+Okug2jLEhy32mJ5gDNYNR2wtoVZA4vZ6okbq25+tBov2mbkaJrTrdOR3yLE0Dqv6CNEIiSpxgGt6XbS6lhp6JRYgBJRhaoRjL88mynxHSf2RadxzP7rA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QWyegGz8; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=fdmanana@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QWyegGz8;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=fdmanana@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zt1lp09lMz30Nl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 03:02:30 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DB7211F441;
-	Wed,  7 May 2025 17:02:23 +0000 (UTC)
-Authentication-Results: smtp-out2.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B48FA13882;
-	Wed,  7 May 2025 17:02:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3ZzPKx+SG2h4AwAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Wed, 07 May 2025 17:02:23 +0000
-Date: Wed, 7 May 2025 19:02:22 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	linux-btrfs@vger.kernel.org, riteshh@linux.ibm.com,
-	Qu Wenruo <quwenruo.btrfs@gmx.com>, disgoel@linux.vnet.ibm.com
-Subject: Re: [next-20250506][btrfs] Kernel OOPS while btrfs/001 TC
-Message-ID: <20250507170222.GJ9140@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <75b94ef2-752b-4018-9b2a-148ecda5e8f4@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZswVJ2YVcz2xjQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 May 2025 23:05:28 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A5031629D5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 May 2025 13:05:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE44C4CEE7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 May 2025 13:05:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746623125;
+	bh=IjdASnf0P/3DHSY41RODYZYYITbHGHJgGhvIKy0pPT8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=QWyegGz89X5jZ51rYT3wl2t/EpNI8TV6qPgqu7Ag4/hw0vZbgsCiOIWyNe5mS3taJ
+	 Pk2UnR5APEzYRzN8jGZh9sHFKGAxD6W3xAZURMUWogNJOituz6E3DmInwVExbCyVGK
+	 JGSrcuQbsou0jOMfVGMhkdrpU4QuGAnUnjfwkNfFi65ep/UVGNpie29T5E+sbto/H5
+	 UXf5qG+IhHbOey9OQ39u4HcJ7YrRnQRYq5+PWUNNOJcKvngX0BByM7dey/ZUxDQ8nu
+	 sEsv6tlsMTVe5h5Bn9Yy8OYJOz3YABNTyWNblvQ9PCCNH5k2qekivk7hv1OKgCvsY5
+	 LwYCysIWz8/fg==
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5e5e8274a74so10557491a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 07 May 2025 06:05:25 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVvJlkQiQf7kiHB7FZdL3BX2jcjEP0BzVWMN07rz/Sb45N6odHYJGpXcL2aZeHmIU2YxVpUbEeAyZxf7h4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx9MXPRQBJfvaMi50CkJzlv4UQz3tOl2sbXiU8/8md7rmHCo9K+
+	0tYFYyrj6SY+yOm/FhLV0V51npmh2FoNOgP57lsAXjpyMmPXf3cSecN/pp5FMiFnm2sZ+RwLfOp
+	PruZphLq5/2BPNUyjFAOiKGq8RpQ=
+X-Google-Smtp-Source: AGHT+IEJ/CaibXN6mzdK18KZL+vw3DGBUuRON4oUk/6Aj/iyvTAHbQ9DWHAfTSecBW+anB4utFQiqDadOX46QXFdPQU=
+X-Received: by 2002:a17:907:868f:b0:ad1:d063:f326 with SMTP id
+ a640c23a62f3a-ad1e8c91302mr333121466b.29.1746623123820; Wed, 07 May 2025
+ 06:05:23 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,46 +66,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <75b94ef2-752b-4018-9b2a-148ecda5e8f4@linux.ibm.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: DB7211F441
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <0B1A34F5-2EEB-491E-9DD0-FC128B0D9E07@linux.ibm.com>
+In-Reply-To: <0B1A34F5-2EEB-491E-9DD0-FC128B0D9E07@linux.ibm.com>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Wed, 7 May 2025 14:04:47 +0100
+X-Gmail-Original-Message-ID: <CAL3q7H7PqVRnDuooSr6OhvUQ3G5V2gq6VEDpqTqNX9jHmq97aw@mail.gmail.com>
+X-Gm-Features: ATxdqUHY_FiOpTMf6FgP45M2NeW-CWyjYlECDizMemJa-649cnX3uHFZ9HE6m_A
+Message-ID: <CAL3q7H7PqVRnDuooSr6OhvUQ3G5V2gq6VEDpqTqNX9jHmq97aw@mail.gmail.com>
+Subject: Re: [linux-next-20250320][btrfs] Kernel OOPs while running btrfs/108
+To: Venkat <venkat88@linux.ibm.com>
+Cc: quwenruo.btrfs@gmx.com, linux-btrfs@vger.kernel.org, 
+	LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	maddy@linux.ibm.com, ritesh.list@gmail.com, disgoel@linux.ibm.com, 
+	David Sterba <dsterba@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, May 07, 2025 at 02:14:34PM +0530, Venkat Rao Bagalkote wrote:
-> Hello,
-> 
-> 
-> I am observing kernel OOPS, while running btrfs/001 TC, from xfstests suite.
-> 
-> 
-> This issue is introduced in next-20250506. This issue is not seen on 
-> next-20250505 kernel.
+On Wed, May 7, 2025 at 10:02=E2=80=AFAM Venkat <venkat88@linux.ibm.com> wro=
+te:
+>
+> +Disha,
+>
+> Hello Qu,
+>
+> I still see this failure on next-20250505.
+>
+> May I know, when will this be fixed.
 
-Thanks for the report, the patch has been removed from linux-next.
+The two patches pointed out before by Qu are still being added to linux-nex=
+t.
+Qu reported this on the thread for the patches:
 
-> [  968.074163] NIP [c00800000f7fb5e0] btrfs_get_tree_subvol+0x32c/0x544 > [btrfs]
-> [  968.074205] LR [c00800000f7fb3b4] btrfs_get_tree_subvol+0x100/0x544 > [btrfs]
-> [  968.074241] Call Trace:
-> [  968.074244] [c000000154747bc0] [c00800000f7fb3b4] > btrfs_get_tree_subvol+0x100/0x544 [btrfs] (unreliable)
+https://lore.kernel.org/linux-btrfs/0146825e-a1b1-4789-b4f5-a0894347babe@gm=
+x.com/
 
-This was the open coded fc_mount(), v3 is in the mailinglist,
-https://lore.kernel.org/linux-btrfs/20250506195826.GU2023217@ZenIV/T/#u
+There was no reply from the author and David added them again to
+for-next/linux-next.
+
+David, can you drop them out from for-next? Why are they being added
+again when there were no changes since last time?
+
+
+
+>
+> Same traces are seen, while running other Tests also.
+>
+> Disha,
+>
+> Can you please share the details of Test and the traces.
+>
+> Regards,
+> Venkat.
+>
 
