@@ -1,83 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-8376-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8378-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC656AADAB2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 11:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7DBAADD17
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 13:16:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZsqCP2j8Xz2yYJ;
-	Wed,  7 May 2025 19:07:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zst520JRsz2yLB;
+	Wed,  7 May 2025 21:16:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746608833;
-	cv=none; b=EaDYM+HmcsuYmVV9aHApSbQSon5aym7S0W9Xuyc5L8qYgus5S5J291gSd+yGn8xtNlauyCkfAo3EJv9OpoAfRBZGegICedNOwqVm5eOqXPkUgxY0ekkHPGlg1wQXkamw+nx+OavguR2b6pXl96WYsR2iHvMaEU5JbFmPAZa1wJwk5K76U5ETnhfRZ4spUgAk07YYKp8bBEW791KCWbv/2zMI6WdoqbM1MRUag2qOLHPcgkJT2MKSyz3Tw512pRJ4SpZod8TI72o9amee0TgG/RPL/o76MpoJQB03qzINOpASy11X5QJA23xMzzPoUNvXqzguNACsDFhEH9O0/niBJQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.159
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746604576;
+	cv=none; b=OV5W6iEg8oVTXg2ry/ZX+i1+qckVyAfnHCHcjwY89hSUTPbtPv4OXkMuee4KKO+z4LEYCJNSsOTuGdDKow0ijwsda7ZS1Bu81msVPeNc+bS3BFLqzda1f+Dgaf56SFbTa4fw/uBV52WPvYsmhWStQHj3tCRhOXo6DIIegveGSm1qCiNzX2CTzY0uiR9r5dY+NKpMnStq9Sy7iKhBaL/B1ENYyekX0vn3vStOUYt9EpojjA5Q54mkiYI/ErxgL1gz7FdqBMoTfKR2vQWQargTX5g2a412ISkQwsBK40RRXoMyXGjedaJzjyvKdqG2BAu2xZWe2YbD/7qaHESWAcE8JQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746608833; c=relaxed/relaxed;
-	bh=442hf5vvMJSMXBZM9IiZGR8cFsE3ASO8U40Qz5XH6ew=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lz5nvMqIW22oi7jwGHs6gFoJw3wFpzuQATXZYsj0iPkIza4V/Jv6Tbt6C5Ero7Pu31rzWVsJQkbVGw4iNnhBIglj9c1vMJtKe5dcGLLKygYavYE0AA/DMfaEaGGJzW4og6wblmuvzHbYtOCAomX6jhjayWCqXTnffuRFOa5M1/5NA1mARWNoKsjSLxjlDKYjSXWrc73Hloc5r2aFagaU8FI8eL5838yCywzy5vyqdxHgNmei91VTSEOdW6HLpXXEoXXrd7KQ/Nb4MdBwo9gbxv01XITDNt48d6J7KgvVhCQ1kF02KOXFc6qoBo91RXmZOE5Z3PXJa8tdibxTjW6uSg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NQzmGYo0; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1746604576; c=relaxed/relaxed;
+	bh=JcQmMXNVSlii7PXek34Y/lx8uJAyMcBAejqngOH419Y=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=YaJPdwmrTL5OLIT6bzFfVpe02izgnh7wgDmMmvJ/CJifIrPC48E284hh+aONj3gY6ae3x/PMlNocwkCrVgxaX6dwdNiagvyHfx8NmQaFSBRdn9Xdk+5SfSCcCGFLP8rzSE96++B8fz4HVV6tNOpzBY1LeBh1IDBUpaoWIe3tbRz57MfZ3HjrPSOjuVxf0s7/3ETQ5j8azpAIk9I4qESNVHyGtVxfHx602Vj1vRvgCIeQNe0MFEx+rJiJFGXGqKJSp7Q+TnN+CigF4EubKF4BtX5LrgkQDdouFhv+t/ZBgSEypjeg0G7zxQWg/daHRr1LHd/al/uZ/RCl112QZD3QlQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bzzt.net; dkim=pass (2048-bit key; unprotected) header.d=bzzt.net header.i=@bzzt.net header.a=rsa-sha256 header.s=fm1 header.b=m6ixM4t0; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=kZA4fxjI; dkim-atps=neutral; spf=pass (client-ip=103.168.172.159; helo=fhigh-a8-smtp.messagingengine.com; envelope-from=arnout@bzzt.net; receiver=lists.ozlabs.org) smtp.mailfrom=bzzt.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bzzt.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NQzmGYo0;
+	dkim=pass (2048-bit key; unprotected) header.d=bzzt.net header.i=@bzzt.net header.a=rsa-sha256 header.s=fm1 header.b=m6ixM4t0;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=kZA4fxjI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bzzt.net (client-ip=103.168.172.159; helo=fhigh-a8-smtp.messagingengine.com; envelope-from=arnout@bzzt.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 412 seconds by postgrey-1.37 at boromir; Wed, 07 May 2025 17:56:14 AEST
+Received: from fhigh-a8-smtp.messagingengine.com (fhigh-a8-smtp.messagingengine.com [103.168.172.159])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZsqCK2YjFz2yLB
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 May 2025 19:07:08 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 546Ld1hT008085;
-	Wed, 7 May 2025 09:07:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=442hf5
-	vvMJSMXBZM9IiZGR8cFsE3ASO8U40Qz5XH6ew=; b=NQzmGYo0tjaJduw1qRuYhJ
-	v8lOnkUxHuHyCgW4PftVQNGN/kp2D7nRNCv/EWgMrP/aFG9diBPF8I8A0uoZguRe
-	56PyUCFzamPcD12Lac6fhl7ecMe3R/vNFdn728ZnIRU0cofyEhnR2Y7g4gDmbFyz
-	88+YuYu8DrCwoqY61Ckpksw/hUrbLsc0zfNEIxknisUhOhXzVmDgKcpIkmrpWeeL
-	SjjduTYh5Gx8Jc2qM492UBLQBJ7vw4mZZuj3aOS7715hqp8krWKTJ3UPqAqIjtBv
-	HUrv6/KCldzKz6Ri5ylOlBtTefI43uQ+f4BIVDE2AVWMlX9FckgyQXS6midqZcLA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46fth8agsk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 May 2025 09:07:06 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54794cVT002729;
-	Wed, 7 May 2025 09:07:05 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46dxfnywr7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 May 2025 09:07:05 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 547971tG59441608
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 May 2025 09:07:01 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3BA2120070;
-	Wed,  7 May 2025 09:07:01 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 39BC62006C;
-	Wed,  7 May 2025 09:07:00 +0000 (GMT)
-Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown [9.109.198.27])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  7 May 2025 09:06:59 +0000 (GMT)
-Date: Wed, 7 May 2025 14:36:57 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Michal =?utf-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>
-Cc: Gaurav Batra <gbatra@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        donettom@linux.ibm.com
-Subject: Re: [PATCH] powerpc/pseries/iommu: memory notifier incorrectly adds
- TCEs for pmemory
-Message-ID: <20250507142219.b3c31d78-21-amachhiw@linux.ibm.com>
-Mail-Followup-To: Michal =?utf-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>, 
-	Gaurav Batra <gbatra@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, donettom@linux.ibm.com
-References: <20250130183854.92258-1-gbatra@linux.ibm.com>
- <Z9r--U_INHB4RjXI@kitsune.suse.cz>
- <aaab4789-390c-4b8d-9b83-bdb5fd6b0767@linux.ibm.com>
- <Z-QU2vtWYrZgo0iT@kitsune.suse.cz>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZsndV081rz2xVq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 May 2025 17:56:13 +1000 (AEST)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id B39121140120;
+	Wed,  7 May 2025 03:49:18 -0400 (EDT)
+Received: from phl-imap-01 ([10.202.2.91])
+  by phl-compute-12.internal (MEProxy); Wed, 07 May 2025 03:49:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bzzt.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1746604158;
+	 x=1746690558; bh=JcQmMXNVSlii7PXek34Y/lx8uJAyMcBAejqngOH419Y=; b=
+	m6ixM4t0Bd5/+Uss2nIYQ1/8T+lGP87Kg95DJvDFeb7DqFU29pVjw++3Li/Ley4k
+	ZrzM0BTeOpxvwh0sxNtp1QLtmfEYacvZlaBLB36B/w5i+GcjjskXQ0NzqZ/J8mTP
+	0YaZMKdN2faVUFAATg5ZwGTmea9qyr9RUA6YVKZsk0Ynsui8h881co/aN0ZXJuwi
+	5Sj7qnbnfM/R3UdL8fSmn+rvlyKNZHlus1rZIwTZiL7RBtLT9PzGjn64VYzcfQcL
+	K31sNpaJp+rsMDYUDKWzrVzvYvr+Orkj6MVMJBYkLw1cNBnaMgMmUWIW90Mo1Pz8
+	Th8btXk/wU2H3HrP1aEw3A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1746604158; x=
+	1746690558; bh=JcQmMXNVSlii7PXek34Y/lx8uJAyMcBAejqngOH419Y=; b=k
+	ZA4fxjIvrDac2vbflfR/MW94tnMJZme863HxGuBbuLxnJnRgxnFSpP9pmL1bJ6Hn
+	GwrmAA0bCs013xnar98UKcdvEKlDyOMViA6Ll+6K0qq4GehsaoV25FXc095wkrfm
+	ARJbKlcWT+oSnf3JFc/90YW82bEOsZ6Q05NtJirhJsI2n6diyAXIfLOztBgceqlv
+	zMCw/UOhobb+tlAbOVIkP5KjU91f+R/jwFvELLUZ2kIUna7Kr57xbbWw1Lc+YFNc
+	9GdUEF5rtofNpvc0UeGxakfKT3O5BroTxokSKGbhNBCPSe8rxTVj1ZDoNivbyC0a
+	E10rzrUGPhBZWCiPGqFFA==
+X-ME-Sender: <xms:ehAbaFqS2VNSdrrCBKfKPArS0Gqyyqv5CLshf_qm6RWOqC7P6yzTdQ>
+    <xme:ehAbaHpIDmwdOxMLOentJK9Nd5ZQ-GbYT2KYBTe9j5pBuLP1Z84rJCkZnNpuwkFU1
+    MvZkTrEA8H9ukbh2wc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeeifedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedftehrnhhouhhtucfgnhhgvghlvghnfdcuoegrrhhnohhuthessg
+    iiiihtrdhnvghtqeenucggtffrrghtthgvrhhnpeefgefgfeektdefkeeludetteefkeef
+    ffdvkeeujeegveethfdthfffjedvgedtueenucffohhmrghinhepkhgvrhhnvghlrdhorh
+    hgpdguvggsihgrnhdrohhrghdpvghnghgvlhgvnhdrvghunecuvehluhhsthgvrhfuihii
+    vgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhhouhhtsegsiiiithdrnhgvth
+    dpnhgspghrtghpthhtohepfeeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehk
+    phgthihrugesrghrtghhlhhinhhugidrohhrghdprhgtphhtthhopegrrhhnugesrghrnh
+    gusgdruggvpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhho
+    uhhprdgvuhdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtph
+    htthhopegumhhithhrhidrkhgrshgrthhkihhnsehgmhgrihhlrdgtohhmpdhrtghpthht
+    ohepmhgtrghjuhelheesghhmrghilhdrtghomhdprhgtphhtthhopehnphhighhgihhnse
+    hgmhgrihhlrdgtohhmpdhrtghpthhtohepshgrmhhithholhhvrghnvghnsehgohhoghhl
+    vgdrtghomhdprhgtphhtthhopehsvghrghgvsehhrghllhihnhdrtghomh
+X-ME-Proxy: <xmx:ehAbaCPQCmtU0_XRz8-vmJUTunODN6LJ5XAJdUQXl8MZC_JaCjxFOg>
+    <xmx:ehAbaA59wckYPtLYhTZVffPcvxO_BZijemUeXnd5cHTnWqBB3GWO6g>
+    <xmx:ehAbaE6X6GZm-X-h7CHtIj_tqXHUMbSzEVEZwOfDgLuZu2J5RbipmQ>
+    <xmx:ehAbaIgcx2n28RoC1hGQYgUotGxNuE0nTYRb07t4aUhf_rREVRpkqQ>
+    <xmx:fhAbaPRdhTA1xuKM3DUYaFI8sfLgbhVSaXODaU-UBjVBXGPdpqtaF29z>
+Feedback-ID: i8a1146c4:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 74285336007C; Wed,  7 May 2025 03:49:14 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,216 +101,134 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z-QU2vtWYrZgo0iT@kitsune.suse.cz>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: mK-0FTRUlyUl1FdsWn9xVCG30KEJXOMK
-X-Proofpoint-ORIG-GUID: mK-0FTRUlyUl1FdsWn9xVCG30KEJXOMK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDA4NCBTYWx0ZWRfXxROxl0TnKYeZ 8OEG3f9WYx5tfwFU90oSK13lISLROJ6CJ5AQzl1PeNtixy/jWpGpBazdblF77sKbU3uP70CXxZz zcXs/nstoGRs1Zac5Rm1FobSiOai1srVRbsvwivuOGqvVX1Ii54TNhUF5VOXCOx5MaQ/veav/Cl
- ka5ITc0EwElTSZ4MxN+4H+hjI8oOFOq7e4cXvSmTnPbMv8zHZ95zBh9dsGqnkSBG7iO0O+QYKIZ aCn5XIAgwwa+XciAshnEgsBf09jRU32PjWlxI0T1zCCE9UAb0xNeDFIkm/3wRjQfIS2EiTIS8HY nuVaH8144/X+o0/X9Y8Ma9j0ttNkTWslM18xmCF7jzJnrJj61lFUJXjmthBL4stajU8sH/N62fc
- IqJz1mnBQR1G4QrTJqy8bLreg+u2SgEt0zPIqqFvsfcVmk9AU2CD8hsXwJjXFm48fCB8Zpr9
-X-Authority-Analysis: v=2.4 cv=KOlaDEFo c=1 sm=1 tr=0 ts=681b22ba cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=8nJEP1OIZ-IA:10 a=dt9VzEwgFbYA:10 a=KSb9T-wMAAAA:8 a=69wJf7TsAAAA:8 a=VnNF1IyMAAAA:8 a=I-X_i0tmNJeRevB0B9AA:9
- a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10 a=8xHQM_3tBfQA:10 a=KF4VuIdXkMyp4E_ug72i:22 a=Fg1AiH1G6rFz08G2ETeA:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-07_03,2025-05-06_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound score=100 mlxscore=100
- impostorscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
- suspectscore=0 mlxlogscore=-999 clxscore=1015 spamscore=100
- lowpriorityscore=0 phishscore=0 adultscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2504070000 definitions=main-2505070084
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-ThreadId: T5f9a5891fefab612
+Date: Wed, 07 May 2025 09:47:23 +0200
+From: "Arnout Engelen" <arnout@bzzt.net>
+To: "James Bottomley" <James.Bottomley@hansenpartnership.com>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: "Masahiro Yamada" <masahiroy@kernel.org>,
+ "Nathan Chancellor" <nathan@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>,
+ "Luis Chamberlain" <mcgrof@kernel.org>,
+ "Petr Pavlu" <petr.pavlu@suse.com>,
+ "Sami Tolvanen" <samitolvanen@google.com>,
+ "Daniel Gomez" <da.gomez@samsung.com>,
+ "Paul Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, "Jonathan Corbet" <corbet@lwn.net>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Naveen N Rao" <naveen@kernel.org>, "Mimi Zohar" <zohar@linux.ibm.com>,
+ "Roberto Sassu" <roberto.sassu@huawei.com>,
+ "Dmitry Kasatkin" <dmitry.kasatkin@gmail.com>,
+ "Eric Snowberg" <eric.snowberg@oracle.com>,
+ "Nicolas Schier" <nicolas.schier@linux.dev>,
+ =?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <f.gruenbichler@proxmox.com>,
+ "Mattia Rizzolo" <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>,
+ "Christian Heusel" <christian@heusel.eu>,
+ =?UTF-8?Q?C=C3=A2ju_Mihai-Drosi?= <mcaju95@gmail.com>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+Message-Id: <6615efdc-3a84-4f1c-8a93-d7333bee0711@app.fastmail.com>
+In-Reply-To: 
+ <2413d57aee6d808177024e3a88aaf61e14f9ddf4.camel@HansenPartnership.com>
+References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
+ <f1dca9daa01d0d2432c12ecabede3fa1389b1d29.camel@HansenPartnership.com>
+ <840b0334-71e4-45b1-80b0-e883586ba05c@t-8ch.de>
+ <b586e946c8514cecde65f98de8e19eb276c09703.camel@HansenPartnership.com>
+ <072b392f-8122-4e4f-9a94-700dadcc0529@app.fastmail.com>
+ <2413d57aee6d808177024e3a88aaf61e14f9ddf4.camel@HansenPartnership.com>
+Subject: Re: [PATCH v3 0/9] module: Introduce hash-based integrity checking
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Michal,
+On Tue, May 6, 2025, at 15:24, James Bottomley wrote:
+> I'll repeat the key point again: all modern hermetic build systems come
+> with provenance which is usually a signature.
 
-I can recreate this issue on sles16 distro kernel but I don't observe this issue
-with upstream Linux 6.15-rc5 on the **same** sles16 guest.
+I'm not sure the 'hermetic build' parallel is so applicable here: typically a
+hermetic build will produce an artifact and a signature, and when you embed
+that result in a larger aggregate, you only embed the artifact (not the
+signature) and sign the aggregate. With module signatures, the module *and*
+their signatures are embedded in the aggregate (e.g. ISO, disk image), which is
+where (at least in my case) the friction comes from.
 
-Note: the commit 6aa989ab2bd0 ("powerpc/pseries/iommu: memory notifier
-incorrectly adds TCEs for pmemory") was included since Linux 6.15-rc1.
+> Plus, you've got to remember that a signature is a cryptographic
+> function of the hash over the build minus the signature.  You can't
+> verify a signature unless you know how to get the build minus the
+> signature.  So the process is required to be deterministic.
 
-I think there's something more to this crash.
+Right: there is no friction validating the module signatures, that is fine.
+There is friction validating the aggregate artifact (e.g. ISO, disk image),
+though, because of those signatures embedded into it.
 
-Thanks,
-Amit
+As you mentioned earlier, of course this is *possible* to do (for example by
+adding the signatures as inputs to the second 'independent' build or by
+creating a hard-to-validate 'check recipe' running the build in reverse).
+Still, checking modules at run time by hash instead of by signature would be a
+much simpler option for such scenario's.
 
-On 2025/03/26 03:53 PM, Michal Suchánek wrote:
-> Hello,
-> 
-> On Wed, Mar 26, 2025 at 09:46:11AM -0500, Gaurav Batra wrote:
-> > Hello Michal,
+> > > All current secure build processes (hermetic builds, SLSA and the
+> > > like) are requiring output provenance (i.e. signed artifacts).  If
+> > > you try to stand like Canute against this tide saying "no signed
+> > > builds", you're simply opposing progress for the sake of it
 > > 
-> > In the patch to fix the pmemory bug, I made some changes to the code that
-> > determines Max memory an LPAR can have (excluding pmemory). This information
-> > is needed while creating Dynamic DMA Window (DDW). These changes are in the
-> > main line code path of DDW creation. This might have irritated QEMU somehow,
-> > no idea yet on how.
+> > I don't think anyone is saying 'no signed builds', but we'd enjoy
+> > being able to keep the signatures as detached metadata instead of
+> > having to embed them into the 'actual' artifacts.
 > 
-> Yes, it's defeinitely something with the DDW code. Using the
-> disable_ddw=1 kernel parameter avoids the qemu crash.
+> We had this debate about 15 years ago when Debian first started
+> reproducible builds for the kernel.  Their initial approach was
+> detached module signatures.  This was the original patch set:
 > 
-> The kernels in
-> https://download.opensuse.org/repositories/Kernel:/SLE15-SP7/pool/ppc64le/
+> https://lore.kernel.org/linux-modules/20160405001611.GJ21187@decadent.org.uk/
 > 
-> have the patch applied.
+> And this is the reason why Debian abandoned it:
 > 
-> Booting the kernel inside qemu VM with a PCI device (such as the USB
-> hub) and then rebooting the VM crashes qemu.
+> https://lists.debian.org/debian-kernel/2016/05/msg00384.html
+
+That is interesting history, thanks for digging that up. Of the 2 problems Ben
+mentions running into there, '1' does not seem universal (I think this feature
+is indeed mainly interesting for systems where you don't _want_ anyone to be
+able to load locally-built modules), and '2' is a problem that detached
+signatures have but module hashes don't have.
+
+> The specific problem is why detached signatures are almost always a
+> problem: after a period of time, particularly if the process for
+> creating updated artifacts gets repeated often matching the output to
+> the right signature becomes increasingly error prone.
+
+I haven't experienced that issue with the module hashes yet.
+
+> Debian was, however, kind enough to attach what they currently do to
+> get reproducible builds to the kernel documentation:
 > 
-> Thanks
-> 
-> Michal
-> 
-> > 
-> > Thanks,
-> > 
-> > Gaurav
-> > 
-> > On 3/19/25 12:29 PM, Michal Suchánek wrote:
-> > > Hello,
-> > > 
-> > > looks like this upsets some assumption qemu has about these windows.
-> > > 
-> > > https://lists.nongnu.org/archive/html/qemu-devel/2025-03/msg05137.html
-> > > 
-> > > When Linux kernel that has this patch applied is running inside a qemu
-> > > VM with a PCI device and the VM is rebooted qemu crashes shortly after
-> > > the next Linux kernel starts.
-> > > 
-> > > This is quite curious since qemu does AFAIK not support pmemory at all.
-> > > 
-> > > Any idea what went wrong there?
-> > > 
-> > > Thanks
-> > > 
-> > > Michal
-> > > 
-> > > On Thu, Jan 30, 2025 at 12:38:54PM -0600, Gaurav Batra wrote:
-> > > > iommu_mem_notifier() is invoked when RAM is dynamically added/removed. This
-> > > > notifier call is responsible to add/remove TCEs from the Dynamic DMA Window
-> > > > (DDW) when TCEs are pre-mapped. TCEs are pre-mapped only for RAM and not
-> > > > for persistent memory (pmemory). For DMA buffers in pmemory, TCEs are
-> > > > dynamically mapped when the device driver instructs to do so.
-> > > > 
-> > > > The issue is 'daxctl' command is capable of adding pmemory as "System RAM"
-> > > > after LPAR boot. The command to do so is -
-> > > > 
-> > > > daxctl reconfigure-device --mode=system-ram dax0.0 --force
-> > > > 
-> > > > This will dynamically add pmemory range to LPAR RAM eventually invoking
-> > > > iommu_mem_notifier(). The address range of pmemory is way beyond the Max
-> > > > RAM that the LPAR can have. Which means, this range is beyond the DDW
-> > > > created for the device, at device initialization time.
-> > > > 
-> > > > As a result when TCEs are pre-mapped for the pmemory range, by
-> > > > iommu_mem_notifier(), PHYP HCALL returns H_PARAMETER. This failed the
-> > > > command, daxctl, to add pmemory as RAM.
-> > > > 
-> > > > The solution is to not pre-map TCEs for pmemory.
-> > > > 
-> > > > Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
-> > > > ---
-> > > >   arch/powerpc/include/asm/mmzone.h      |  1 +
-> > > >   arch/powerpc/mm/numa.c                 |  2 +-
-> > > >   arch/powerpc/platforms/pseries/iommu.c | 29 ++++++++++++++------------
-> > > >   3 files changed, 18 insertions(+), 14 deletions(-)
-> > > > 
-> > > > diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-> > > > index d99863cd6cde..049152f8d597 100644
-> > > > --- a/arch/powerpc/include/asm/mmzone.h
-> > > > +++ b/arch/powerpc/include/asm/mmzone.h
-> > > > @@ -29,6 +29,7 @@ extern cpumask_var_t node_to_cpumask_map[];
-> > > >   #ifdef CONFIG_MEMORY_HOTPLUG
-> > > >   extern unsigned long max_pfn;
-> > > >   u64 memory_hotplug_max(void);
-> > > > +u64 hot_add_drconf_memory_max(void);
-> > > >   #else
-> > > >   #define memory_hotplug_max() memblock_end_of_DRAM()
-> > > >   #endif
-> > > > diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> > > > index 3c1da08304d0..603a0f652ba6 100644
-> > > > --- a/arch/powerpc/mm/numa.c
-> > > > +++ b/arch/powerpc/mm/numa.c
-> > > > @@ -1336,7 +1336,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
-> > > >   	return nid;
-> > > >   }
-> > > > -static u64 hot_add_drconf_memory_max(void)
-> > > > +u64 hot_add_drconf_memory_max(void)
-> > > >   {
-> > > >   	struct device_node *memory = NULL;
-> > > >   	struct device_node *dn = NULL;
-> > > > diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> > > > index 29f1a0cc59cd..abd9529a8f41 100644
-> > > > --- a/arch/powerpc/platforms/pseries/iommu.c
-> > > > +++ b/arch/powerpc/platforms/pseries/iommu.c
-> > > > @@ -1284,17 +1284,13 @@ static LIST_HEAD(failed_ddw_pdn_list);
-> > > >   static phys_addr_t ddw_memory_hotplug_max(void)
-> > > >   {
-> > > > -	resource_size_t max_addr = memory_hotplug_max();
-> > > > -	struct device_node *memory;
-> > > > +	resource_size_t max_addr;
-> > > > -	for_each_node_by_type(memory, "memory") {
-> > > > -		struct resource res;
-> > > > -
-> > > > -		if (of_address_to_resource(memory, 0, &res))
-> > > > -			continue;
-> > > > -
-> > > > -		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
-> > > > -	}
-> > > > +#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
-> > > > +	max_addr = hot_add_drconf_memory_max();
-> > > > +#else
-> > > > +	max_addr = memblock_end_of_DRAM();
-> > > > +#endif
-> > > >   	return max_addr;
-> > > >   }
-> > > > @@ -1600,7 +1596,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
-> > > >   	if (direct_mapping) {
-> > > >   		/* DDW maps the whole partition, so enable direct DMA mapping */
-> > > > -		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
-> > > > +		ret = walk_system_ram_range(0, ddw_memory_hotplug_max() >> PAGE_SHIFT,
-> > > >   					    win64->value, tce_setrange_multi_pSeriesLP_walk);
-> > > >   		if (ret) {
-> > > >   			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
-> > > > @@ -2346,11 +2342,17 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
-> > > >   	struct memory_notify *arg = data;
-> > > >   	int ret = 0;
-> > > > +	/* This notifier can get called when onlining persistent memory as well.
-> > > > +	 * TCEs are not pre-mapped for persistent memory. Persistent memory will
-> > > > +	 * always be above ddw_memory_hotplug_max()
-> > > > +	 */
-> > > > +
-> > > >   	switch (action) {
-> > > >   	case MEM_GOING_ONLINE:
-> > > >   		spin_lock(&dma_win_list_lock);
-> > > >   		list_for_each_entry(window, &dma_win_list, list) {
-> > > > -			if (window->direct) {
-> > > > +			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
-> > > > +				ddw_memory_hotplug_max()) {
-> > > >   				ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
-> > > >   						arg->nr_pages, window->prop);
-> > > >   			}
-> > > > @@ -2362,7 +2364,8 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
-> > > >   	case MEM_OFFLINE:
-> > > >   		spin_lock(&dma_win_list_lock);
-> > > >   		list_for_each_entry(window, &dma_win_list, list) {
-> > > > -			if (window->direct) {
-> > > > +			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
-> > > > +				ddw_memory_hotplug_max()) {
-> > > >   				ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
-> > > >   						arg->nr_pages, window->prop);
-> > > >   			}
-> > > > 
-> > > > base-commit: 95ec54a420b8f445e04a7ca0ea8deb72c51fe1d3
-> > > > -- 
-> > > > 2.39.3 (Apple Git-146)
-> > > > 
-> > > > 
-> 
+> https://docs.kernel.org/kbuild/reproducible-builds.html
+
+Cool, I was aware of that page but didn't know it was initially contributed by
+Debian.
+
+> However, if you want to detach the module signatures for packaging, so
+> the modules can go in a reproducible section and the signatures
+> elsewhere, then I think we could accommodate that (the output of the
+> build is actually unsigned modules, they just get signed on install).
+
+At least I don't really come to this from the packaging perspective, but from
+the "building an independently verifiable ISO/disk image" perspective.
+Separating the modules and the signatures into separate packages doesn't help
+me there, since they'd still both need to be present on the image.
+
+
+Kind regards,
+
+-- 
+Arnout Engelen
+Engelen Open Source
+https://engelen.eu
 
