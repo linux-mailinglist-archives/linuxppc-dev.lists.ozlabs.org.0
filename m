@@ -1,74 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-8379-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8380-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C7EAADDC8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 13:53:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225C3AADEF6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 14:23:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZstvQ3R5Wz2y8W;
-	Wed,  7 May 2025 21:53:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZsvYZ4T71z2yRn;
+	Wed,  7 May 2025 22:23:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746618818;
-	cv=none; b=IEZxsu/+FInS5ftrzzGgD+CIIVDLnzLmh3TvKcAJ8Aooso0Uu1b3FDyLRJu30Ipmy8HswSP5C/3OSb9azYTqfb1Z7yla4L8y2PWrh0iODL0uofyhAHyosdZBcHdwSxPJestxS0YeRVdzG4HRPoNZTDfIU8KEstIGPwKxb0t/UQnyaegE2EKgXrZqpkuwXJeZkJDW25hvzu7PprNXyfuQ07gSyGHex5QdxYcrIel8DcfQcg3Gi002YFtpzzmeMn7hYN3aQvULRtSNi1Pws5zsOmJfmKsBx344kjtn/2Vc70RA1bs4lxOAG2Yj7sTuUTKDu3aKBHyN3rpmpuOHuMWzcA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746620594;
+	cv=none; b=c4b0Oa69WeQqrTzcsr2D/WCncyhcZpbm6C+Aic9wBxNi4/0Jg77Uc2Sd/38iZw+jCgSceaYhEq2vl2/3Wy3pSIplu9GuZJcS/AqX/KTNBN3qwx1/F4cqSUm/fYjncUN2xUfj2ZtbylVyKToLrG87vS6wKiKAqkAX4wL6gIx5Go7R9PRysa49fD86bEVkLpNpvqHsqiOFQfmbiiMHDJVpxO2fyX6cdiZjCCarid0DxWL2FRQ9mAKFzq8w0/WISf5xQct0VmWfYuVZ2MhmNOEfNLd4c4ZNIdlavQkBuh35wTn1FogpAtYWTRDPWFncq8TlBKbBgg0yGIQSu7Lh0MLeng==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746618818; c=relaxed/relaxed;
-	bh=e2to3al3zB/dCSwNER/F7O+X5fTG8/d0mwyMmqNC3Z8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ROcri+vHlrEEl3Ld7ZkMVYwfAo7PtSEiJuLX13RyYnr+edNQYdhoPWCdwaIozRvCDiRHtcICo7/+aaxs/gIHaX99boe0TFrk72B8DG+gz1pnAYGz/4LHI/4HD1y3+mEjLfQhcQKPbZHxhpR53DUFHL9s4N/hGUekkwSsQ7fA79iFWGhTvXiFfB+iP5TTP9cOh7Zv7wXyueody0Zhm9izcvMZFV2mZO/uUYRSyG/wmnEaa8wg+WNXRG7ePkZkVbIQKpObX/eC2pNRBQSmMixhtZAJfYobxJdGJAWZe87qMhJYlLGRP/kaYlIrCRc+1gX0ZBJL2d40/EROho40pSo17A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TBDv5P01; dkim-atps=neutral; spf=pass (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1746620594; c=relaxed/relaxed;
+	bh=CkJaxZEvxFE1GuNQvjO+SBEhT7k2VLGSDP6xe4XgRPw=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jX6nJ6WWaQebEaUbF/e5LsABiAVKd4ov0iiDwcEUf4yGkTESFMroyVVbkjz/4NhI/yxkEbzpxvkY5+HoMXJPZo9/IzTKgFMWABfjlIVAsYAY2i4oHYsg0LjYyoO616ewI2v0dRk31ujxGAuFDXNQ69QgEbUIdyr9L6b9RSM7tQ/0hSV6L/BTbS5YKEtN3gr4fhJtieHdEjiYzgwqERGqfsIbf2iyhEn1EkXbRZHSBYuKsM2lN6vx21OIkMyFN5Jwi79kdoP7DiuYefo1USs2o3YRPohmzU2sk0oSMvB+0R49i+DszsslC2XExPVzffCs1qUrG0eNgZMZbQTNlF+W9g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=YW7NyuKv; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=EV8iP1x9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=cC1PZi8k; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=E2IG9P1n; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TBDv5P01;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=YW7NyuKv;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=EV8iP1x9;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=cC1PZi8k;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=E2IG9P1n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZstvN1TJPz2xrL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 May 2025 21:53:34 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746618817; x=1778154817;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=72Scb1V0hycsXKAsGR/ifXYu2GLLvEtvC8pJoVQX4Zo=;
-  b=TBDv5P01BxzNg9HC3QympmgsJdEN4uNwwwLYQMIcazEydYF6u5Dr1BUS
-   8PS2leV37XOuKSM5UgMwJ2+LzhvcbtHuTNb7tu25jlo5/i24XfcaRgIjD
-   KCzEux3dUKXi1VEWFLEaAfVgEcAdUb9WG4gxMEew/b1E0CtqIZOXbPuvK
-   rQzZBYBKdSl0gK9k4fWyL4PiwlHSvwbhEM9+vOtef06kE7XlXG7MuZESR
-   9sHzlzMszlLlSvSwbVheIs0BEMNoIK5bRi1v614pZp+VZ/uTuvalis0aI
-   ckHE/cLMZVrBr6OBZ91OBAq8vDeAoY7WD7loJhYRrcU0nMTqlg3X09W66
-   A==;
-X-CSE-ConnectionGUID: sjINpQ5CQ1Gxf/GG29AXiQ==
-X-CSE-MsgGUID: XQL/E9frR4C6z35+UjeJEg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="59332539"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
-   d="scan'208";a="59332539"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 04:53:31 -0700
-X-CSE-ConnectionGUID: LhlCLecGS0Kjox3SYmsO2w==
-X-CSE-MsgGUID: pWiazrmQTcC6g3fF7eWhUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
-   d="scan'208";a="135898621"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 07 May 2025 04:53:28 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uCdL4-0007il-1W;
-	Wed, 07 May 2025 11:53:26 +0000
-Date: Wed, 7 May 2025 19:52:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au,
-	christophe.leroy@csgroup.eu
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, npiggin@gmail.com,
-	naveen@kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: Re: [PATCH 3/6] powerpc/perf:make isa207_pmu_format_group struct
- static
-Message-ID: <202505071909.iZZsdCTI-lkp@intel.com>
-References: <20250422131040.374427-4-maddy@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZsvYX54tJz2yMw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  7 May 2025 22:23:12 +1000 (AEST)
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4B71A1F393;
+	Wed,  7 May 2025 12:23:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1746620584; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CkJaxZEvxFE1GuNQvjO+SBEhT7k2VLGSDP6xe4XgRPw=;
+	b=YW7NyuKvWQTMVZmVQYkuGiJE6cL8IPzYxT8X9vlQefmiTQnwG4cvB0JbfJMVDQyeSCF1ns
+	qHdrV326MoIgyT3uafFiAcGMQ+WiPQ4r2YAIktscTJQVqY+OM8eFXRp4vIzryw8ItvZAKb
+	CGWfdl7Tu8iPsSi4qF0NB2N9AwF4FSo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1746620584;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CkJaxZEvxFE1GuNQvjO+SBEhT7k2VLGSDP6xe4XgRPw=;
+	b=EV8iP1x9jAM+6lXx+mPura6k8X2LxLTCNFm03OO0iewinp+Hu8gorx0Sd/LOaC/eACpDZp
+	tiQwBoNoBOQqyGDQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1746620583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CkJaxZEvxFE1GuNQvjO+SBEhT7k2VLGSDP6xe4XgRPw=;
+	b=cC1PZi8kC6GOPb0suAQPFfEKlckuhBRYeAlmNEbQmKT0uLoogVpOzrHkB/uVBQuwSKOJjp
+	kXgww+J4N8TRc6PdyjhycAZTPZ8BBNt3VlcX2G/sUgYilp5ljojmKJX9IO6IluQHAIp3+0
+	yrIgYg8JLBrVyIcqip8lCHH0jceffwE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1746620583;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CkJaxZEvxFE1GuNQvjO+SBEhT7k2VLGSDP6xe4XgRPw=;
+	b=E2IG9P1naDZohTznfaIu1TkY8dH3Kws6u476I+HivG3FntRAmyMADNK5FaKzIsGxhwlwl6
+	PzHN74izDtvqQoAA==
+Date: Wed, 7 May 2025 14:23:02 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Gaurav Batra <gbatra@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+	donettom@linux.ibm.com
+Subject: Re: [PATCH] powerpc/pseries/iommu: memory notifier incorrectly adds
+ TCEs for pmemory
+Message-ID: <aBtQpm8H6DhSnYIl@kitsune.suse.cz>
+References: <20250130183854.92258-1-gbatra@linux.ibm.com>
+ <Z9r--U_INHB4RjXI@kitsune.suse.cz>
+ <aaab4789-390c-4b8d-9b83-bdb5fd6b0767@linux.ibm.com>
+ <Z-QU2vtWYrZgo0iT@kitsune.suse.cz>
+ <20250507142219.b3c31d78-21-amachhiw@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,53 +98,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250422131040.374427-4-maddy@linux.ibm.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250507142219.b3c31d78-21-amachhiw@linux.ibm.com>
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_SHORT(-0.20)[-0.996];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_THREE(0.00)[3]
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Madhavan,
+Hello,
 
-kernel test robot noticed the following build warnings:
+On Wed, May 07, 2025 at 02:36:57PM +0530, Amit Machhiwal wrote:
+> Hi Michal,
+> 
+> I can recreate this issue on sles16 distro kernel but I don't observe this issue
+> with upstream Linux 6.15-rc5 on the **same** sles16 guest.
+> 
+> Note: the commit 6aa989ab2bd0 ("powerpc/pseries/iommu: memory notifier
+> incorrectly adds TCEs for pmemory") was included since Linux 6.15-rc1.
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on powerpc/fixes powerpc/topic/ppc-kvm linus/master v6.15-rc5 next-20250507]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Indeed, it's not reproducible with 6.15-rc5.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Madhavan-Srinivasan/powerpc-kvm-Fix-sparse-warning/20250422-211309
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20250422131040.374427-4-maddy%40linux.ibm.com
-patch subject: [PATCH 3/6] powerpc/perf:make isa207_pmu_format_group struct static
-config: powerpc64-randconfig-002-20250424 (https://download.01.org/0day-ci/archive/20250507/202505071909.iZZsdCTI-lkp@intel.com/config)
-compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project f819f46284f2a79790038e1f6649172789734ae8)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250507/202505071909.iZZsdCTI-lkp@intel.com/reproduce)
+It's not clear what changed in TCE handling between 6.12 and 6.15 that
+avoids this problem.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505071909.iZZsdCTI-lkp@intel.com/
+Thanks
 
-All warnings (new ones prefixed by >>):
-
->> arch/powerpc/perf/isa207-common.c:40:37: warning: unused variable 'isa207_pmu_format_group' [-Wunused-const-variable]
-      40 | static const struct attribute_group isa207_pmu_format_group = {
-         |                                     ^~~~~~~~~~~~~~~~~~~~~~~
-   1 warning generated.
-
-
-vim +/isa207_pmu_format_group +40 arch/powerpc/perf/isa207-common.c
-
-    39	
-  > 40	static const struct attribute_group isa207_pmu_format_group = {
-    41		.name = "format",
-    42		.attrs = isa207_pmu_format_attr,
-    43	};
-    44	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Michal
 
