@@ -1,57 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-8416-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8417-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81598AAE745
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 19:00:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D284AAE754
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 19:02:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zt1jJ6d8Jz30PF;
-	Thu,  8 May 2025 03:00:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zt1lq1fDxz30Pg;
+	Thu,  8 May 2025 03:02:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746637220;
-	cv=none; b=aQwdLApUJbZZeulGXPoqAL58g38AHVvFDVJHhd8MaxZthF5TJpJpRsqt+xRDMxEBWLjWIAf7IgGP4PrERPZEnN/aXVZFHJV+yvQepD1wNptNBMJOyG8hfmmFnujcV538yuSyODhfCL0rMHSFBD3KZmteuKiazssCgwify3gIt+g7dkoPDgewIBAzLVlk8c69fmXvOisLZIHMMjxEvkUBJ6ktgo2+qoNB6VvxUgt0V0IHaTIeSbRpYsrQv3pUaAsF/Tm+boDR7+dibEw3g5CDyd8zMKIXRGXdDuZVBXgr8gXS7xBYiPvU/va9E7fs5Qp1ifpMoMQs4peO8C1x6MQrEw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746637351;
+	cv=none; b=hglXRpCwq/hSF3gVIgESongSEfXlr2ak8LJ1jX3F3uaaG9sL5NDkgq/up7g/pI5tQpdiO63U5HMm5Hbfznmroj4sIEVJBTDzK19prsPRcTHsFFdWLf3gxsajctHvtYrvzJp8DSlPY35U4VXW9ZBA9p8WdK4S/d6UNkTzYDuG1+xB6tOc9qVx6zCe6Jv5SVxAxaf9DArA6fpg6ymoIZqXuST93RbqwgTnEZ9JXd2dbf3boyyFOXtdktxDQeheUR2c4zLq3fipf9XrdyozgwOJAcjVBnJ+1y9A2mhMKKA1RILuHKtCZj45VSS4HK76u6qakmnb47By/iup+CXZ7DQu2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746637220; c=relaxed/relaxed;
-	bh=W7RbClqZDTLPIsrG1S6Ef3Cx9TH5IxacJLeHcWQor0Q=;
+	t=1746637351; c=relaxed/relaxed;
+	bh=T+tEHxOg4LrHhAiwUntt+Jm92lVXU+WcP7W0pnjwGBA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nWUL5MnUvR2YJ+naRjcmliWfwXcz4F83fmz0+QLsJ99PpjimOa3oozLq7AHTUySr6kfebtpNb2Ybf2aPmW5mrg1UVB41TqFGA6iHXUAlckwE970cOb6AktvVd0q94tyM7II9Qm0B1S49Pf3kFlF4IbYzWHhG96L41/Tu8VYJCT0rbj1fpZ8SIGnkRs+3eY9JtYrcC9fLIobotPCVTmvPEMNp1GeXt/07p00rKZWoqa/1IcIkRPs/TSOkex4/9Z+FmXJxr3Wqwo991/+3QfxsrwxCoIollnz/kpbcjSmpou2ecUW3/UXEvAwAi4WieZNDjcIMfSJaopegJT1hpnOFsA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=iPQgkEJ+; dkim-atps=neutral; spf=pass (client-ip=95.215.58.182; helo=out-182.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=iPQgkEJ+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.182; helo=out-182.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	 Content-Type:Content-Disposition:In-Reply-To; b=kYld2PgERajdv2wqm/SJsT4Z7r/VkYEPcUZnluKvtdEJmQJKKttHygpDWyQwWdO8pdhEdc+9yYOpoKuKd8pTp85izAq8jjFqAn9bo0k35UUGoX1q+OkLklTWUWKPjL7pe9iHoUIrIaH9uJC7cgNbNKdlCKxDpWYVJ+TqIL5KyMd8lQI8tEdpTNWYoX7DO2rHZ0SffCmMauXR/mEXZ5XwmDcWNXB9q3if8dOYJIl5rSQ4/X0xsWXaP8ixvtYYMSk8Z4ZP0E1fXdwhrDvoftgwAzcpcB6xD3jNXzPn1w43Hq6ReLk41H/V5pLNI5D9rJ8pjf4aUxy8bX/MhEOH2Gfnpg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=dsterba@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=dsterba@suse.cz; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zt1jH1LM0z30Nl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 03:00:18 +1000 (AEST)
-Date: Wed, 7 May 2025 18:59:46 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746637199;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W7RbClqZDTLPIsrG1S6Ef3Cx9TH5IxacJLeHcWQor0Q=;
-	b=iPQgkEJ+LZyyl/HYCCjGx+TlqTyj6+oXTCTr2iCCajrejVHdrHtoSUQVkfrZVnDUIOQHug
-	4GyuA2SK4xRhYb5L+TI1iB+OvEMac6eC/bhzcaI40imZ2TaCvfZ6j1ie7uTbqZXV4Rlg+R
-	AWMOBZDFdZBSB15+VhsrVqDGy7MjiKQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com, 
-	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com, david@redhat.com, 
-	pbonzini@redhat.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org, 
-	oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
-	andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v3 16/16] scripts: Enable kvmtool
-Message-ID: <20250507-41058efcb1f4f05fd98d8deb@orel>
-References: <20250507151256.167769-1-alexandru.elisei@arm.com>
- <20250507151256.167769-17-alexandru.elisei@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zt1lp09lMz30Nl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 03:02:30 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id DB7211F441;
+	Wed,  7 May 2025 17:02:23 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B48FA13882;
+	Wed,  7 May 2025 17:02:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 3ZzPKx+SG2h4AwAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Wed, 07 May 2025 17:02:23 +0000
+Date: Wed, 7 May 2025 19:02:22 +0200
+From: David Sterba <dsterba@suse.cz>
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	linux-btrfs@vger.kernel.org, riteshh@linux.ibm.com,
+	Qu Wenruo <quwenruo.btrfs@gmx.com>, disgoel@linux.vnet.ibm.com
+Subject: Re: [next-20250506][btrfs] Kernel OOPS while btrfs/001 TC
+Message-ID: <20250507170222.GJ9140@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <75b94ef2-752b-4018-9b2a-148ecda5e8f4@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,38 +67,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250507151256.167769-17-alexandru.elisei@arm.com>
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <75b94ef2-752b-4018-9b2a-148ecda5e8f4@linux.ibm.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Score: -4.00
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: DB7211F441
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, May 07, 2025 at 04:12:56PM +0100, Alexandru Elisei wrote:
-> Everything is in place to run the tests using kvmtool:
+On Wed, May 07, 2025 at 02:14:34PM +0530, Venkat Rao Bagalkote wrote:
+> Hello,
 > 
-> $ ./configure --target=kvmtool
-> $ make clean && make
-> $ KVMTOOL=<path/to/kvmtool> ./run_tests.sh
 > 
-> so enable it, and remove ERRATA_FORCE=y when configuring for kvmtool,
-> because the runner will generate and pass the correct environment to
-> kvmtool.
+> I am observing kernel OOPS, while running btrfs/001 TC, from xfstests suite.
 > 
-> Missing is support for EFI tests. That's because distros don't ship a
-> EDK2 binary compiled for kvmtool, and on top of that kvm-unit-tests as
-> an EFI app hasn't been tested to work with kvmtool.
 > 
-> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> ---
->  README.md        | 18 +++++++++++++++++-
->  arm/efi/run      |  5 +++++
->  configure        |  1 -
->  scripts/vmm.bash |  2 +-
->  4 files changed, 23 insertions(+), 3 deletions(-)
->
+> This issue is introduced in next-20250506. This issue is not seen on 
+> next-20250505 kernel.
 
-Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
+Thanks for the report, the patch has been removed from linux-next.
+
+> [  968.074163] NIP [c00800000f7fb5e0] btrfs_get_tree_subvol+0x32c/0x544 > [btrfs]
+> [  968.074205] LR [c00800000f7fb3b4] btrfs_get_tree_subvol+0x100/0x544 > [btrfs]
+> [  968.074241] Call Trace:
+> [  968.074244] [c000000154747bc0] [c00800000f7fb3b4] > btrfs_get_tree_subvol+0x100/0x544 [btrfs] (unreliable)
+
+This was the open coded fc_mount(), v3 is in the mailinglist,
+https://lore.kernel.org/linux-btrfs/20250506195826.GU2023217@ZenIV/T/#u
 
