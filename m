@@ -1,58 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-8419-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8420-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24A8AAEDCE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 23:19:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2ABAAEE3C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 23:59:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zt7Rm74WPz30Qk;
-	Thu,  8 May 2025 07:19:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zt8LB2NxFz30Sx;
+	Thu,  8 May 2025 07:59:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746652740;
-	cv=none; b=E/+Fs4E6WTp0zElgDJ6soen/8k9386X0m9EnExG9L6tHM4EMWCohMGwDWvBZ8wodH5sOsMfxXA4ToINIrkQX3TEbuzNQYjno/Mq487c1wOoqARxeVol9IvcD2PGmz+220u7OTSs7fkUyOGiMA/kTWXOiZfm/nN0v7ovtitSZt4oe/bd6bXUKxw1sqhvbK/ewAHM+GgtBtWMY4gYvrc2o3V4BH1xPzw2mUwSdOQyiKmIo5WbVDFETx+4nm1o9fU9EiMs39mOuTKYXiKyZPUJFnUuUCN3WDZGcI4pEhsJXaM54asXhskoR1QMdO+ZZdkW2lYIWK3lCFz8Bl5oPBIHz8g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746655154;
+	cv=none; b=YAcd7pagzjlvvcW6O1b/2ZSTizTn1uzGnsuWBxNt5H4VJdYNCm+QdZEJ03PBACOVqGs2ZsVHuvPYTWx7MDrqZht7RBkV1C7uAFR2NG4C7GRUNh7CSXRfS4dua1BnqPiFuj7O4JltkDrU0fYudO+uHufgrf4m2zsEbs6mPPdZ+xzkI2SEBhh8Hs0MDPU3htFnk+FB7tV9Wh3YmA4Uy9IrxEO+aGhFLrRn/B2qrQ3Ez4OnS+TXhPfzZRSno+kgjaIofV02WyDGiyLzkb5FKCfZDzvDo04O4aJjrtUaEAeSt2EUKWgdH3bzMKKBMw036gSHRKc6eJkLChnC8imi5WbU3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746652740; c=relaxed/relaxed;
-	bh=QTihWgIiBkpZ0So2wXnOWa/xllZkmD8mBa818vmY+ag=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K89yPfHTgmIVzT9IUGBcXv+6/9APqJ0sxgs7SXZ3gSAO4YFK7Dvhp0BOQwWqDo9Zw8/ZuQBC68xBWupP/GzuLBYqN+z6GAHug/SScJUyJkpi5D4wXMb4fXprqOtnxlN3lcG0woQvjS6tctYX+3Yn1Uoe1L77k1CrRXWrmsBA0psa7W/zraVzyQG/63V+zndCZo+4Y02z9mlEZnPZQG/eFvsupO9iyLcYGF2hNlbeicUp1KyJ/8pu8T2dOUR4t7MLQSb3LeDBz0ciw2wJoHoGP5g83J6upNPrqsWoNxmKGZ4OvEFZguNFHcR1XcvXn7zbp1sBfTZy1cEQjE+CbPuLyQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=RinESwQd; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+	t=1746655154; c=relaxed/relaxed;
+	bh=q/yKUykqMXCZwQzi+gFRB5wtVJeuGF5yZJuP2Mj4Bzs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bI7V7BmnIA+FbuZV3i6zQQ74SqArCRw9IotdcH+3ry9tMeaF0NQ0R0/F6FIX7RGY9jrVLIApVKetMpU+362v4BHyBu0wHujM476KuWnbo+0pesnPDaGUe1Ji+FLh3KHlhPgIwEVgYt7BswnQNd0EP184TLi9oxpAB4zlbOOPcOBBq4YhaLNfjPaR1hyWKuAdGCnXV5Qi+yxrL7Z/Omw378wfUOj+e1RhIxiBfgZ54ulJYkKEBvWqFcd+d8rPcJVKKw9WY8p3rQXYFKJjBp6yUQzZo9qLgmDhWM0QQRChfDahJIEw+88AvFNmuX6iEULu+Kg+giKSA03HWUJ4EPGOeA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ReoGpdNa; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=RinESwQd;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ReoGpdNa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zt7Rj6BKlz3089
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 07:18:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QTihWgIiBkpZ0So2wXnOWa/xllZkmD8mBa818vmY+ag=; b=RinESwQd87yy5BJVrPytdkF/yT
-	IHjOC3NetkE10Z9yLZXv4sdSE7fogbOjzKNyH8BCZqA7WfHOO3E/T/T/Vmpy1fYDR0qeP6f1yhXmd
-	uPJYfsTR/0YgzqKr+HFRLHRXMVq5x7Rt/5fsGrzA5amxGKaULOZKgsSSNaFVMlKKCU92IEdfpfr58
-	Q0GpF8M+Scl8JAKbsaIbWTRnpMyA94Z5UeCzkR4wTuzLSu88lNSVm6YPf8tHx5/vnFRFgWoFV07cM
-	lNvLhHEURJgrnNF89r59Np+yyzHnuFATVhTeicAUXlyixzBqGtK3ZsBJWzC9SO9bVd3XyBXQJK8z8
-	gvYIhSmQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCmAF-00000001d1n-0KRR;
-	Wed, 07 May 2025 21:18:51 +0000
-Date: Wed, 7 May 2025 22:18:51 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	linux-btrfs@vger.kernel.org, riteshh@linux.ibm.com,
-	Qu Wenruo <quwenruo.btrfs@gmx.com>, disgoel@linux.vnet.ibm.com,
-	dsterba@suse.com
-Subject: Re: [next-20250506][btrfs] Kernel OOPS while btrfs/001 TC
-Message-ID: <20250507211851.GX2023217@ZenIV>
-References: <75b94ef2-752b-4018-9b2a-148ecda5e8f4@linux.ibm.com>
- <2a17b9b1-c490-4571-8f6a-fa567ed0b57e@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zt8L91SsZz30Sv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 07:59:12 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id EE63D629E5;
+	Wed,  7 May 2025 21:59:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63634C4CEE2;
+	Wed,  7 May 2025 21:59:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746655149;
+	bh=9858hxWVasl9qYR0rBtvA66gC6j5dx4PpfDs0u1OvTo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ReoGpdNaV5J7M/aCOifp9gSt3dnm3MrMaoL4K91pjhOLRSU/MSTjKzXEJEOZPUrMB
+	 bEO7tYLv6aGRy1OLdB4B8dNIpZ3uizXyjpt/73Tk18bZZqH6WnWlRKdsKI38H477uL
+	 Xx3ufl0khAamWDDgwChmGJRugic2nWxDh3F8Wkmm9FqPufQN3cRAlenH+pW+KU1Ni8
+	 8MSyuqbtgLY3wp8u9SFXFfQsdljbkJz7oh1DjJZGNn4TiimV8Qc1Ta9UxKJfQYsfL7
+	 2vEb9nE4rNOUWQ9t1MBp8GklCqynV4pp0p5rtXaOSgEYF0+5twoNP/dgHTgJKDpUTg
+	 OjPdicqxlYkvw==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] dt-bindings: soc: fsl,ls1028a-reset: Drop extra "/" in $id
+Date: Wed,  7 May 2025 16:59:02 -0500
+Message-ID: <20250507215903.2748698-1-robh@kernel.org>
+X-Mailer: git-send-email 2.47.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,26 +67,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2a17b9b1-c490-4571-8f6a-fa567ed0b57e@linux.ibm.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, May 07, 2025 at 09:05:42PM +0530, Venkat Rao Bagalkote wrote:
+The $id value has a double "//". Drop it.
 
-> > I am observing kernel OOPS, while running btrfs/001 TC, from xfstests
-> > suite.
-> > 
-> > 
-> > This issue is introduced in next-20250506. This issue is not seen on
-> > next-20250505 kernel.
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+ .../devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Braino in fs/btrfs/super.c patch - in a couple of places 'fc' should be
-replaced with 'dup_fc'.
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
+index 31295be91013..558a8c7aab9c 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas//soc/fsl/fsl,ls1028a-reset.yaml#
++$id: http://devicetree.org/schemas/soc/fsl/fsl,ls1028a-reset.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Freescale Layerscape Reset Registers Module
+-- 
+2.47.2
 
-See https://lore.kernel.org/all/?q=20250506195826.GU2023217@ZenIV
-for replacement patch...
 
