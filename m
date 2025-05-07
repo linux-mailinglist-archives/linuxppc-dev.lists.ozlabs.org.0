@@ -1,57 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-8409-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8410-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8248AAAE6EB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 18:39:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F52AAE6F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  7 May 2025 18:41:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zt1FF02sgz30FR;
-	Thu,  8 May 2025 02:39:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zt1Hn5P8yz30GV;
+	Thu,  8 May 2025 02:41:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.186
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746635968;
-	cv=none; b=O/AWQTOUJi/u8mOm5rMuTjzSpiDHCPwGgAzdq/vMpNifEB/8AEZOai2MLynz7GqgIzMl8JpmLlvNSeJ5RQ8bej4xyQbokncY/IyMiVAGtqHKBVygxcHIAB0ZJryoQNcZb1+fd22Q/ADwk2GbYlYl7VE7GOaMZ9wK9EHQgCcWRHprAjmXB0LLu5o/JxNEbpnbfHjcqOGylZPgGjx5vQGWd86puegsD1KbRf4P136cd4gZuLEuUNmqWIb15yolEF9PYhILXrZ5UitIEhxNMv7ZcBtjphm/AB0LWm7G2BNS9w1r1hL1nbhfhH5XBGO7wgPr0oLWiEuUO5+l1Fze30eeIQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.37.111.173
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746636099;
+	cv=none; b=Ui2npCUhpoSvFVjS0RwkK8mgHtA5FPYCwOP/mylWlPU9VmxxEbmdpZOKc3mxjM9FcJwJ256gE/OsXpPW3WqAcew+ldORlSWlDUlIrd7Cs3qJTgm0EDmindGdWoEkkXu+8EsJ9b9zHbDnpo2HYBnpBO98/WXYDedoSg2uvhJoQUlzJ+5TJcCYTuTkHv2OQv9V3VSTRHlOpwc7CVAencD2eV3tUW5zB4FbK3lpK7UsBtgp0Pe+FvtCB5foOTKR+oKzHcWRpOFFk6dPTau3lk3BdOw1x8ahD20PLZqdBUYSWExa4/T9VFfBCtT0YNDV/6wuyRWnWnd3e18X5064FsmOgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746635968; c=relaxed/relaxed;
-	bh=Zb+SGIpxZ2i/VssN+N0+bs8AQInuxHpANS0MYc/FZCk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TaqSb5yIggpg85tyd7Gxo9lKnbRiqhkw4XwhXa35kozWSOSRzolfSv5eU7ff6qRLBKP2sphuRfZy4OH9RMvIhb3yxpqT5kX991JvZqHkMtvJcuS9j4R+R8uwyrp2IeBRgZ7J49miNYzoJXl7wLSbVPCbZ1MKAptifrpMi5VZAqd66J3OuYUKqhMVmAM3V6Zvx07x286nTsBfMbwYRn6XdHVS9tP8GdYzKUYSOWsU1BPLVMsNdKoMcgN/iyEcDVe8CvlxNSwcvKvsxPTzm4+CDB0wlloY6uWzphv/kNeL9MHT5JMfBJulfFW3Hod2X2XaxAM8DfzmL+w5yxvQONxUiA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cdBlN5Np; dkim-atps=neutral; spf=pass (client-ip=95.215.58.186; helo=out-186.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+	t=1746636099; c=relaxed/relaxed;
+	bh=4FgfBuwtevGtytf4yGrw8N4aKTLOLMEkXbGz+i/lXfM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZpUmGhstg7BuRNq3sSY9E+yhLIUVDh6Wai8481bSrSa8oqQLzWXbYfnKUxhRGPFIHZ5MZe4V+WifObEg2NPM1qNawRlHbkZyVfwTGV9pcZyYBjgSjfpiEG6dzGMbhMgb4UlkHqGUQzEGzmZ3GOEOSBACyZgRG7KM+SitgvJ0YrHVmiubmvU0sCy8D9pNW4s8+vboC72Kqg6P68cnHwr0sewHGOwh8tJx8RM8ZWw+e8Zt/DsDwXrO8Vu2PG+fFndkWYVcXHApxyCRfb2rZOZ7vsezFn79ljQatKq1jpUvqvJX/wjKC7Ir3LFdNKx2k+UNkNt14tOaI1bqrq43xzrtJg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=tJQONTwP; dkim-atps=neutral; spf=pass (client-ip=198.37.111.173; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org) smtp.mailfrom=hansenpartnership.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cdBlN5Np;
+	dkim=pass (1024-bit key; secure) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.a=rsa-sha256 header.s=20151216 header.b=tJQONTwP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.186; helo=out-186.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hansenpartnership.com (client-ip=198.37.111.173; helo=lamorak.hansenpartnership.com; envelope-from=james.bottomley@hansenpartnership.com; receiver=lists.ozlabs.org)
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zt1FB5Y5jz30DP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 02:39:25 +1000 (AEST)
-Date: Wed, 7 May 2025 18:38:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746635944;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Zb+SGIpxZ2i/VssN+N0+bs8AQInuxHpANS0MYc/FZCk=;
-	b=cdBlN5NpDyu9tl5cWVL01+s2VGA+1OQ7iBEbZ7+NGpnZ851sLcUJEIJEr/JygOrY/DGMOg
-	XVO1IYz/BjosJ/kMeaxP/bNUnJ0M3hTMmaSmiKFly7cBhdI605DJRSgKSfkFASXTyaiOfC
-	cwYcs8jC2rtNYuJBumRvrP30TLLBATc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com, 
-	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com, david@redhat.com, 
-	pbonzini@redhat.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org, 
-	oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
-	andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v3 09/16] scripts: Add support for kvmtool
-Message-ID: <20250507-17ee3d8f1b384ab89848e63c@orel>
-References: <20250507151256.167769-1-alexandru.elisei@arm.com>
- <20250507151256.167769-10-alexandru.elisei@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zt1Hf3g3Jz30DP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 02:41:33 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1746636089;
+	bh=YtF/u2BZQs71NWHiTkPO/s1XFe6eOsX/UoiEOmxAKJI=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=tJQONTwPyMFnfcGqWbeiFsRZIo9xe+GLoIDeXw8pP/Nl+RI7+UJHYkTRonCSPaZZt
+	 95ndSCHTpk3QmXo5RArj1jRcuAsmehqqgjVMuqd8PRns0ewd9fPgdt0Qw1U1DtPEnO
+	 yWeMQD9kuCmHlhaTVGHejA3M22EvY2Sp0FJqd8AI=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id BC94D1C000E;
+	Wed, 07 May 2025 12:41:28 -0400 (EDT)
+Message-ID: <7e2d25f9abb13468e5b8bb8207149999de318725.camel@HansenPartnership.com>
+Subject: Re: [PATCH v3 0/9] module: Introduce hash-based integrity checking
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Arnout Engelen <arnout@bzzt.net>, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
+	 <linux@weissschuh.net>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Luis Chamberlain
+ <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen
+ <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, Paul Moore
+ <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
+ <serge@hallyn.com>, Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+ Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, Roberto
+ Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin
+ <dmitry.kasatkin@gmail.com>,  Eric Snowberg <eric.snowberg@oracle.com>,
+ Nicolas Schier <nicolas.schier@linux.dev>, Fabian
+ =?ISO-8859-1?Q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>, Mattia Rizzolo
+ <mattia@mapreri.org>, kpcyrd <kpcyrd@archlinux.org>, Christian Heusel
+ <christian@heusel.eu>,  =?ISO-8859-1?Q?C=E2ju?= Mihai-Drosi
+ <mcaju95@gmail.com>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-arch@vger.kernel.org,
+ linux-modules@vger.kernel.org,  linux-security-module@vger.kernel.org,
+ linux-doc@vger.kernel.org,  linuxppc-dev@lists.ozlabs.org,
+ linux-integrity@vger.kernel.org
+Date: Wed, 07 May 2025 12:41:27 -0400
+In-Reply-To: <6615efdc-3a84-4f1c-8a93-d7333bee0711@app.fastmail.com>
+References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
+	 <f1dca9daa01d0d2432c12ecabede3fa1389b1d29.camel@HansenPartnership.com>
+	 <840b0334-71e4-45b1-80b0-e883586ba05c@t-8ch.de>
+	 <b586e946c8514cecde65f98de8e19eb276c09703.camel@HansenPartnership.com>
+	 <072b392f-8122-4e4f-9a94-700dadcc0529@app.fastmail.com>
+	 <2413d57aee6d808177024e3a88aaf61e14f9ddf4.camel@HansenPartnership.com>
+	 <6615efdc-3a84-4f1c-8a93-d7333bee0711@app.fastmail.com>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
+	AIJCgsEFgIDAQIeAQIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mXBQkbNYS9AAoJEIFK5HwhSFTWEYEH/1YZpV+1uCI2MVz0wTRlnO/3OW/xnyigrw+K4cuO7MToo0tHJb/qL9CBJ2ddG6q+GTnF5kqUe87t7M7rSrIcAkIZMbJmtIbKk0j5EstyYqlE1HzvpmssGpg/8uJBBuWbU35af1ubKCjUs1+974mYXkfLmS0a6h+cG7atVLmyClIc2frd3o0zHF9+E7BaB+HQzT4lheQAXv9KI+63ksnbBpcZnS44t6mi1lzUE65+Am1z+1KJurF2Qbj4AkICzJjJa0bXa9DmFunjPhLbCU160LppaG3OksxuNOTkGCo/tEotDOotZNBYejWaXN2nr9WrH5hDfQ5zLayfKMtLSd33T9u0IUphbWVzIEJvdHRvbWxleSA8amVqYkBrZXJuZWwub3JnPokBVQQTAQgAPwIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmAUJGzWEvQAKCRCBSuR8IUhU1gacCAC+QZN+RQd+FOoh5g884HQm8S07ON0/2EMiaXBiL6KQb5yP3w2PKEhug3+uPzugftUfgPEw6emRucrFFpwguhriGhB3pgWJIrTD4JUevrBgjEGOztJpbD73bLLyitSiPQZ6OFVOqIGhdqlc3n0qoNQ45n/w3LMVj6yP43SfBQeQGEdq4yHQxXPs0XQCbmr6Nf2p8mNsIKRYf90fCDmABH1lfZxoGJH/frQOBCJ9bMRNCNy+aFtjd5m8ka5M7gcDvM7TAsKhD5O5qFs4aJHGajF4gCGoWmXZGrISQvrNl9kWUhgsvoPqb2OTTeAQVRuV8C4FQamxzE3MRNH25j6s/qujtCRKYW1lcyBCb3R0b21sZXkgPGplamJAbGludXguaWJtLmNvbT6JAVQEEwEIAD
+	4CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmQUJGzWEvQAKCRCBSuR8IUhU1kyHB/9VIOkf8RapONUdZ+7FgEpDgESE/y3coDeeb8jrtJyeefWCA0sWU8GSc9KMcMoSUetUreB+fukeVTe/f2NcJ87Bkq5jUEWff4qsbqf5PPM+wlD873StFc6mP8koy8bb7QcH3asH9fDFXUz7Oz5ubI0sE8+qD+Pdlk5qmLY5IiZ4D98V239nrKIhDymcuL7VztyWfdFSnbVXmumIpi79Ox536P2aMe3/v+1jAsFQOIjThMo/2xmLkQiyacB2veMcBzBkcair5WC7SBgrz2YsMCbC37X7crDWmCI3xEuwRAeDNpmxhVCb7jEvigNfRWQ4TYQADdC4KsilPfuW8Edk/8tPtCVKYW1lcyBCb3R0b21sZXkgPEpCb3R0b21sZXlAT2Rpbi5jb20+iQEfBDABAgAJBQJXI+B0Ah0gAAoJEIFK5HwhSFTWzkwH+gOg1UG/oB2lc0DF3lAJPloSIDBW38D3rezXTUiJtAhenWrH2Cl/ejznjdTukxOcuR1bV8zxR9Zs9jhUin2tgCCxIbrdvFIoYilMMRKcue1q0IYQHaqjd7ko8BHn9UysuX8qltJFar0BOClIlH95gdKWJbK46mw7bsXeD66N9IhAsOMJt6mSJmUdIOMuKy4dD4X3adegKMmoTRvHOndZQClTZHiYt5ECRPO534Lb/gyKAKQkFiwirsgx11ZSx3zGlw28brco6ohSLMBylna/Pbbn5hII86cjrCXWtQ4mE0Y6ofeFjpmMdfSRUxy6LHYd3fxVq9PoAJTv7vQ6bLTDFNa0KkphbWVzIEJvdHRvbWxleSA8SkJvdHRvbWxleUBQYXJhbGxlbHMuY29tPokBHwQwAQIACQUCVyPgjAIdIAAKCRCBSuR8IUhU1tXiB/9D9OOU8qB
+	CZPxkxB6ofp0j0pbZppRe6iCJ+btWBhSURz25DQzQNu5GVBRQt1Us6v3PPGU1cEWi5WL935nw+1hXPIVB3x8hElvdCO2aU61bMcpFd138AFHMHJ+emboKHblnhuY5+L1OlA1QmPw6wQooCor1h113lZiBZGrPFxjRYbWYVQmVaM6zhkiGgIkzQw/g9v57nAzYuBhFjnVHgmmu6/B0N8z6xD5sSPCZSjYSS38UG9w189S8HVr4eg54jReIEvLPRaxqVEnsoKmLisryyaw3EpqZcYAWoX0Am+58CXq3j5OvrCvbyqQIWFElba3Ka/oT7CnTdo/SUL/jPNobtCxKYW1lcyBCb3R0b21sZXkgPGplamJAaGFuc2VucGFydG5lcnNoaXAuY29tPokBVwQTAQgAQRYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJjg2eQAhsDBQkbNYS9BQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEIFK5HwhSFTWbtAH/087y9vzXYAHMPbjd8etB/I3OEFKteFacXBRBRDKXI9ZqK5F/xvd1fuehwQWl2Y/sivD4cSAP0iM/rFOwv9GLyrr82pD/GV/+1iXt9kjlLY36/1U2qoyAczY+jsS72aZjWwcO7Og8IYTaRzlqif9Zpfj7Q0Q1e9SAefMlakI6dcZTSlZWaaXCefdPBCc7BZ0SFY4kIg0iqKaagdgQomwW61nJZ+woljMjgv3HKOkiJ+rcB/n+/moryd8RnDhNmvYASheazYvUwaF/aMj5rIb/0w5p6IbFax+wGF5RmH2U5NeUlhIkTodUF/P7g/cJf4HCL+RA1KU/xS9o8zrAOeut2+4UgRaZ7bmEwgqhkjOPQMBBwIDBH4GsIgL0yQij5S5ISDZmlR7qDQPcWUxMVx6zVPsAoITdjKFjaDmUATkS+l5zmiCrUBcJ6MBavPiYQ4kqn4/xwaJAbMEGAEIACYCGwIWIQTVYG5zyLRi
+	cb6tmt+BSuR8IUhU1gUCZag0LwUJDwLkSQCBdiAEGRMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCWme25gAKCRDnQslM7pishdi9AQDyOvLYOBkylBqiTlJrMnGCCsWgGZwPpKq3e3s7JQ/xBAEAlx29pPY5z0RLyIDUsjf9mtkSNTaeaQ6TIjDrFa+8XH8JEIFK5HwhSFTWkasH/j7LL9WH9dRfwfTwuMMj1/KGzjU/4KFIu4uKxDaevKpGS7sDx4F56mafCdGD8u4+ri6bJr/3mmuzIdyger0vJdRlTrnpX3ONXvR57p1JHgCljehE1ZB0RCzIk0vKhdt8+CDBQWfKbbKBTmzA7wR68raMQb2D7nQ9d0KXXbtr7Hag29yj92aUAZ/sFoe9RhDOcRUptdYyPKU1JHgJyc0Z7HwNjRSJ4lKJSKP+Px0/XxT3gV3LaDLtHuHa2IujLEAKcPzTr5DOV+xsgA3iSwTYI6H5aEe+ZRv/rA4sdjqRiVpo2d044aCUFUNQ3PiIHPAZR3KK5O64m6+BJMDXBvgSsMy4VgRaZ7clEggqhkjOPQMBBwIDBMfuMuE+PECbOoYjkD0Teno7TDbcgxJNgPV7Y2lQbNBnexMLOEY6/xJzRi1Xm/o9mOyZ+VIj8h4G5V/eWSntNkwDAQgHiQE8BBgBCAAmAhsMFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoNBwFCQ8C4/cACgkQgUrkfCFIVNZs4AgAnIjU1QEPLdpotiy3X01sKUO+hvcT3/Cd6g55sJyKJ5/U0o3f8fdSn6MWPhi1m62zbAxcLJFiTZ3OWNCZAMEvwHrXFb684Ey6yImQ9gm2dG2nVuCzr1+9gIaMSBeZ+4kUJqhdWSJjrNLQG38GbnBuYOJUD+x6oJ2AT10/mQfBVZ3qWDQXr/je2TSf0OIXaWyG6meG5yTqOEv0eaTH22yBb1nbodoZkmlMMb56jzRGZuorhFE06
+	N0Eb0kiGz5cCIrHZoH10dHWoa7/Z+AzfL0caOKjcmsnUPcmcrqmWzJTEibLA81z15GBCrldfQVt+dF7Us2kc0hKUgaWeI8Gv4CzwLkCDQRUdhaZARAApeF9gbNSBBudW8xeMQIiB/CZwK4VOEP7nGHZn3UsWemsvE9lvjbFzbqcIkbUp2V6ExM5tyEgzio2BavLe1ZJGHVaKkL3cKLABoYi/yBLEnogPFzzYfK2fdipm2G+GhLaqfDxtAQ7cqXeo1TCsZLSvjD+kLVV1TvKlaHS8tUCh2oUyR7fTbv6WHi5H8DLyR0Pnbt9E9/Gcs1j11JX+MWJ7jset2FVDsB5U1LM70AjhXiDiQCtNJzKaqKdMei8zazWS50iMKKeo4m/adWBjG/8ld3fQ7/Hcj6Opkh8xPaCnmgDZovYGavw4Am2tjRqE6G6rPQpS0we5I6lSsKNBP/2FhLmI9fnsBnZC1l1NrASRSX1BK0xf4LYB2Ww3fYQmbbApAUBbWZ/1aQoc2ECKbSK9iW0gfZ8rDggfMw8nzpmEEExl0hU6wtJLymyDV+QGoPx5KwYK/6qAUNJQInUYz8z2ERM/HOI09Zu3jiauFBDtouSIraX/2DDvTf7Lfe1+ihARFSlp64kEMAsjKutNBK2u5oj4H7hQ7zD+BvWLHxMgysOtYYtwggweOrM/k3RndsZ/z3nsGqF0ggct1VLuH2eznDksI+KkZ3Bg0WihQyJ7Z9omgaQAyRDFct+jnJsv2Iza+xIvPei+fpbGNAyFvj0e+TsZoQGcC34/ipGwze651UAEQEAAYkBHwQoAQIACQUCVT6BaAIdAwAKCRCBSuR8IUhU1p5QCAC7pgjOM17Hxwqz9mlGELilYqjzNPUoZt5xslcTFGxj/QWNzu0K8gEQPePnc5dTfumzWL077nxhdKYtoqwm2C6fOmXiJBZx6khBfRqctUvN2DlOB6dFf5I+1QT9TRBvceGzw01E4Gi0xjWKAB6OII
+	MAdnPcDVFzaXJdlAAJdjfg/lyJtAyxifflG8NnXJ3elwGqoBso84XBNWWzbc5VKmatzhYLOvXtfzDhu4mNPv/z7S1HTtRguI0NlH5RVBzSvfzybin9hysE3/+r3C0HJ2xiOHzucNAmG03aztzZYDMTbKQW4bQqeD5MJxT68vBYu8MtzfIe41lSLpb/qlwq1qg0iQElBBgBAgAPBQJUdhaZAhsMBQkA7U4AAAoJEIFK5HwhSFTW3YgH/AyJL2rlCvGrkLcas94ND9Pmn0cUlVrPl7wVGcIV+6I4nrw6u49TyqNMmsYam2YpjervJGgbvIbMzoHFCREi6R9XyUsw5w7GCRoWegw2blZYi5A52xe500+/RruG//MKfOtVUotu3N+u7FcXaYAg9gbYeGNZCV70vI+cnFgq0AEJRdjidzfCWVKPjafTo7jHeFxX7Q22kUfWOkMzzhoDbFg0jPhVYNiEXpNyXCwirzvKA7bvFwZPlRkbfihaiXDE7QKIUtQ10i5kw4C9rqDKwx8F0PaWDRF9gGaKd7/IJGHJaac/OcSJ36zxgkNgLsVX5GUroJ2GaZcR7W9Vppj5H+C4UgRkuRyTEwgqhkjOPQMBBwIDBOySomnsW2SkApXv1zUBaD38dFEj0LQeDEMdSE7bm1fnrdjAYt0f/CtbUUiDaPodQk2qeHzOP6wA/2K6rrjwNIWJAT0EGAEIACcDGyAEFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoM/gFCQSxfmUACgkQgUrkfCFIVNZhTgf/VQxtQ5rgu2aoXh2KOH6naGzPKDkYDJ/K7XCJAq3nJYEpYN8G+F8mL/ql0hrihAsHfjmoDOlt+INa3AcG3v0jDZIMEzmcjAlu7g5NcXS3kntcMHgw3dCgE9eYDaKGipUCubdXvBaZWU6AUlTldaB8FE6u7It7+UO+IW4/L+KpLYKs8V5POInu2rqahlm7vgxY5iv4Txz4EvCW2e4dAlG
+	8mT2Eh9SkH+YVOmaKsajgZgrBxA7fWmGoxXswEVxJIFj3vW7yNc0C5HaUdYa5iGOMs4kg2ht4s7yy7NRQuh7BifWjo6BQ6k4S1H+6axZucxhSV1L6zN9d+lr3Xo/vy1unzA==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,35 +101,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250507151256.167769-10-alexandru.elisei@arm.com>
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, May 07, 2025 at 04:12:49PM +0100, Alexandru Elisei wrote:
-> Teach the arm runner to use kvmtool when kvm-unit-tests has been configured
-> appropriately.
-> 
-> The test is ran using run_test_status(), and a 0 return code (which means
-> success) is converted to 1, because kvmtool does not have a testdev device
-> to return the test exit code, so kvm-unit-tests must always parse the
-> "EXIT: STATUS" line for the exit code.
-> 
-> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> ---
->  arm/run               | 161 ++++++++++++++++++++++++++----------------
->  powerpc/run           |   4 +-
->  riscv/run             |   4 +-
->  s390x/run             |   2 +-
->  scripts/arch-run.bash | 112 +++++++++++------------------
->  scripts/vmm.bash      |  89 +++++++++++++++++++++++
->  x86/run               |   4 +-
->  7 files changed, 236 insertions(+), 140 deletions(-)
->
+On Wed, 2025-05-07 at 09:47 +0200, Arnout Engelen wrote:
+> On Tue, May 6, 2025, at 15:24, James Bottomley wrote:
+> > I'll repeat the key point again: all modern hermetic build systems
+> > come with provenance which is usually a signature.
+>=20
+> I'm not sure the 'hermetic build' parallel is so applicable here:
+> typically a hermetic build will produce an artifact and a signature,
+> and when you embed that result in a larger aggregate, you only embed
+> the artifact (not the signature) and sign the aggregate.
 
-Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
+That depends whether you want to demonstrate the provenance of the
+result to someone consuming your aggregate or not; Some people are OK
+with the trust my signature approach, others want tracing to point of
+origin.
+
+>  With module signatures, the module *and* their signatures are
+> embedded in the aggregate (e.g. ISO, disk image), which is
+> where (at least in my case) the friction comes from.
+
+For Linux in particular, most people won't be booting any image unless
+the binary is secure boot signed, so this problem doesn't go away if
+you strip module signatures.
+
+> > Plus, you've got to remember that a signature is a cryptographic
+> > function of the hash over the build minus the signature.=C2=A0 You can'=
+t
+> > verify a signature unless you know how to get the build minus the
+> > signature.=C2=A0 So the process is required to be deterministic.
+>=20
+> Right: there is no friction validating the module signatures, that is
+> fine. There is friction validating the aggregate artifact (e.g. ISO,
+> disk image), though, because of those signatures embedded into it.
+
+I think we understand the problem with signatures (particularly the
+ones which add entropy and can thus change every time the same object
+is signed).  However, I don't think we can accept that no signatures
+can be on the ISO ... we'll have to have at least secure boot
+signatures and if there's a way of doing that then there should be a
+way of doing other signatures.
+
+> As you mentioned earlier, of course this is *possible* to do (for
+> example by adding the signatures as inputs to the second
+> 'independent' build or by creating a hard-to-validate 'check recipe'
+> running the build in reverse). Still, checking modules at run time by
+> hash instead of by signature would be a much simpler option for such
+> scenario's.
+
+Well, my objection was merely to the description saying verifying
+reproducibility with signatures was not possible (it is).
+
+However, the problem with distros adopting an immutable hash list for
+module loading would be DKMS, but I think the distributions that go
+that route have all solved the reproducibility issues with signatures
+anyway, so perhaps that's not an issue.
+
+> > > > All current secure build processes (hermetic builds, SLSA and
+> > > > the like) are requiring output provenance (i.e. signed
+> > > > artifacts).=C2=A0 If you try to stand like Canute against this tide
+> > > > saying "no signed builds", you're simply opposing progress for
+> > > > the sake of it
+> > >=20
+> > > I don't think anyone is saying 'no signed builds', but we'd enjoy
+> > > being able to keep the signatures as detached metadata instead of
+> > > having to embed them into the 'actual' artifacts.
+> >=20
+> > We had this debate about 15 years ago when Debian first started
+> > reproducible builds for the kernel.=C2=A0 Their initial approach was
+> > detached module signatures.=C2=A0 This was the original patch set:
+> >=20
+> > https://lore.kernel.org/linux-modules/20160405001611.GJ21187@decadent.o=
+rg.uk/
+> >=20
+> > And this is the reason why Debian abandoned it:
+> >=20
+> > https://lists.debian.org/debian-kernel/2016/05/msg00384.html
+>=20
+> That is interesting history, thanks for digging that up. Of the 2
+> problems Ben mentions running into there, '1' does not seem universal
+> (I think this feature is indeed mainly interesting for systems where
+> you don't _want_ anyone to be able to load locally-built modules),
+> and '2' is a problem that detached signatures have but module hashes
+> don't have.
+
+I think Debian ended up going with 2, but since they also provide DKMS
+infrastructure, hash module lists won't work for them anyway.
+
+> > The specific problem is why detached signatures are almost always a
+> > problem: after a period of time, particularly if the process for
+> > creating updated artifacts gets repeated often matching the output
+> > to the right signature becomes increasingly error prone.
+>=20
+> I haven't experienced that issue with the module hashes yet.
+
+Heh, I'll repeat this question after you've done umpteen builds of the
+same kernel for debugging purposes. The problem that will bite me is
+that I often just rebuild a single module and reinsert to try to chase
+a bug down.  With this scheme I can't simply reinsert, I'd have to
+rebuild the hash list and reboot the entire vmlinux.
+
+> > Debian was, however, kind enough to attach what they currently do
+> > to get reproducible builds to the kernel documentation:
+> >=20
+> > https://docs.kernel.org/kbuild/reproducible-builds.html
+>=20
+> Cool, I was aware of that page but didn't know it was initially
+> contributed by Debian.
+>=20
+> > However, if you want to detach the module signatures for packaging,
+> > so the modules can go in a reproducible section and the signatures
+> > elsewhere, then I think we could accommodate that (the output of
+> > the build is actually unsigned modules, they just get signed on
+> > install).
+>=20
+> At least I don't really come to this from the packaging perspective,
+> but from the "building an independently verifiable ISO/disk image"
+> perspective. Separating the modules and the signatures into separate
+> packages doesn't help me there, since they'd still both need to be
+> present on the image.
+
+So how do you cope with secure boot?  I mean if the object is to
+produce an ISO that is demonstrably reproducible but otherwise
+unusable, we can certainly script a way to excise all the signatures
+including the secure boot one.
+
+Regards,
+
+James
+
 
