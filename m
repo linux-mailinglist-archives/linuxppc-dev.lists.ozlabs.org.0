@@ -1,68 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-8436-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8437-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59885AAF51F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 May 2025 10:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E55AAF610
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 May 2025 10:53:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZtPpY0bDrz305n;
-	Thu,  8 May 2025 18:06:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZtQrv5D5jz30W1;
+	Thu,  8 May 2025 18:53:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=94.136.29.106
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746691572;
-	cv=none; b=UTHVJP+8QSXfWmGAzG/bN1wUPuZXeTRoFKFJ/8cqm9E34AwWNePts9pAB2KPDQ0am5O1GkzYWHhD4XWQ43B0xo9GbrPcF4zRofq66ZOA0Y3i+Ul1sfh2E9ybRPCnVVDSQpUOIRQ8+ujhkxArcYqgcPJxqmgZLSrv/8nWFTGBx3UUzMLGnG63hP+VpPZIfzc+JwAGeu/H6vz6cgIhcRDzdnaLoZsk3Hj/3J0tJsuICk6RVKgzrl3bdXMkz3iPTSQY5FWeo2wiOmiSpEmqzo8yktZhfx5WJ61Fe+c2jbgPIGWFVfvHSc1zMvg0FX8C4ZmHIkL92jn3+hNYGPixSwEezg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746694399;
+	cv=none; b=nG4+KZDdFBBDNLUc1s3NOseAmcmsUGXcxJZLugSoyjPvWpho4oXBODCAMD/NkjxXz6wUjdsdfrG8eLq1G2/CBelcCGRwuRSwFHK14zYFfkQknQNshjPdr1uFny7kDLjlqMKXbPmu0CVUi6EzbCMl7rtB8H3XCVKD9JBT+SmlMZ2axO7R65eQhEKEFDpoW3d6yWCcKBOEOlmjZvnyeDb7PxenjBJy2w0dgkIAJNk55XbkelwDAXgJMWHIukmSJXXk06aEkhEoiPJJqxhzbnKtbtRluT+OK19Bozi9Gp6Bpj3IJiqtSBIrmCk38wwgn/LsadIhycsTFoNOmYs7PT01Pw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746691572; c=relaxed/relaxed;
-	bh=mNCWUnOWr4GHwE8o4BlJFdVuTG78zRrsqHiDzNWQ2q0=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To:MIME-Version:
-	 Message-Id:Content-Type; b=TUOU6deovsHxTJWdzj1AUQsJHMJ3AMjYp7VterfS8yvF1F/iqf479dEfOLgD/bdulKP+aRVhx4QORGhd+yXPnvTdiEQA6xs5JYwH6qbqGU7CFCm4VwLPRiExwbExUgLx/LkGy17BiMMlmksAdb3F7rMP+m1GmfzFdxH1F+Qg8wuEM1DfeB0HLiXF+KQiQnWoZY0K076EPNMpWvcQ76pHsIjo2AM9pihEXFtsVCgtCmE38cgt40HLO/TFWo7OT+MwnAem2oCA7kFycq8ZH6pgrCJQA3BnZTyw90FryRG+d1ZHqV+K0h+9fhCN3OniSv5Nu891/tFw6WXRWYeVLySJKw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass (client-ip=94.136.29.106; helo=proxmox-new.maurer-it.com; envelope-from=f.gruenbichler@proxmox.com; receiver=lists.ozlabs.org) smtp.mailfrom=proxmox.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=proxmox.com (client-ip=94.136.29.106; helo=proxmox-new.maurer-it.com; envelope-from=f.gruenbichler@proxmox.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 508 seconds by postgrey-1.37 at boromir; Thu, 08 May 2025 18:06:10 AEST
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZtPpV4F6Lz2yh4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 18:06:10 +1000 (AEST)
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 3421842BEA;
-	Thu,  8 May 2025 09:57:36 +0200 (CEST)
-Date: Thu, 08 May 2025 09:57:31 +0200
-From: Fabian =?iso-8859-1?q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>
-Subject: Re: [PATCH v3 0/9] module: Introduce hash-based integrity checking
-To: Arnout Engelen <arnout@bzzt.net>, James Bottomley
-	<James.Bottomley@HansenPartnership.com>, Thomas =?iso-8859-1?q?Wei=DFschuh?=
-	<linux@weissschuh.net>
-Cc: Arnd Bergmann <arnd@arndb.de>, Christian Heusel <christian@heusel.eu>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Jonathan Corbet
-	<corbet@lwn.net>, Daniel Gomez <da.gomez@samsung.com>, Dmitry Kasatkin
-	<dmitry.kasatkin@gmail.com>, Eric Snowberg <eric.snowberg@oracle.com>,
-	James Morris <jmorris@namei.org>, kpcyrd <kpcyrd@archlinux.org>,
-	linux-arch@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-integrity@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-security-module@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Masahiro Yamada
-	<masahiroy@kernel.org>, Mattia Rizzolo <mattia@mapreri.org>,
-	=?iso-8859-1?b?Q+JqdQ==?= Mihai-Drosi <mcaju95@gmail.com>, Luis Chamberlain
-	<mcgrof@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Nathan Chancellor
-	<nathan@kernel.org>, Naveen N Rao <naveen@kernel.org>, Nicolas Schier
-	<nicolas.schier@linux.dev>, =?iso-8859-1?q?Nicholas=0A?= Piggin
-	<npiggin@gmail.com>, Paul Moore <paul@paul-moore.com>, Petr Pavlu
-	<petr.pavlu@suse.com>, =?iso-8859-1?q?Roberto=0A?= Sassu
-	<roberto.sassu@huawei.com>, Sami Tolvanen <samitolvanen@google.com>,
-	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>
-References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
-	<f1dca9daa01d0d2432c12ecabede3fa1389b1d29.camel@HansenPartnership.com>
-	<840b0334-71e4-45b1-80b0-e883586ba05c@t-8ch.de>
-	<b586e946c8514cecde65f98de8e19eb276c09703.camel@HansenPartnership.com>
-	<072b392f-8122-4e4f-9a94-700dadcc0529@app.fastmail.com>
-	<2413d57aee6d808177024e3a88aaf61e14f9ddf4.camel@HansenPartnership.com>
-	<6615efdc-3a84-4f1c-8a93-d7333bee0711@app.fastmail.com>
-	<7e2d25f9abb13468e5b8bb8207149999de318725.camel@HansenPartnership.com>
-In-Reply-To: <7e2d25f9abb13468e5b8bb8207149999de318725.camel@HansenPartnership.com>
+	t=1746694399; c=relaxed/relaxed;
+	bh=8LWjhudCBwUdQUDMQ39azmED/JqpvU0VNf7bLtASm3g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TaEZ2Vi6qzEcoTx0I3Glyh+9ILsy78hDrNP0NBR4v8H6mxypqNLtX+zgAEpXD4Bc8GhyQt5cHYwgq57nfnJDXZonOJ8rm4IUrcK5Qrqp85qamz0QilzabbRSycxw2AQTGE7kY1aDagfIf1wvdiN+fRo1NvGc63u6pNNCfL3+dtHPw/hBxzRI908sFCIRAQh5E16BQTgb0kHd77N7rNQc1ygKsgejSC/WkVJVGnnDehooi3hRywmzKzqLLVl9/Y+RZez3cjZLcVktgTorjA4XMwB3hyEMH5xyOeGgA+xzN0Y6K7OHFfDPYCTXW8Yyif/rsSm7ZFjpIVPi9XG/5NQpeg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZtQrt3TGCz307K
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 18:53:16 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D4BB81688;
+	Thu,  8 May 2025 01:52:33 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 15DB03F673;
+	Thu,  8 May 2025 01:52:40 -0700 (PDT)
+Date: Thu, 8 May 2025 09:52:38 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Andrew Jones <andrew.jones@linux.dev>
+Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
+	david@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org,
+	oliver.upton@linux.dev, suzuki.poulose@arm.com,
+	yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
+Subject: Re: [kvm-unit-tests PATCH v3 03/16] configure: Export TARGET
+ unconditionally
+Message-ID: <aBxw1uaO1FZQ15VR@raptor>
+References: <20250507151256.167769-1-alexandru.elisei@arm.com>
+ <20250507151256.167769-4-alexandru.elisei@arm.com>
+ <20250507-78bbc45f50ea8867b4fa7e74@orel>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,242 +58,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: astroid/0.16.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1746688246.p9f7lm4alu.astroid@yuna.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250507-78bbc45f50ea8867b4fa7e74@orel>
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On May 7, 2025 6:41 pm, James Bottomley wrote:
-> On Wed, 2025-05-07 at 09:47 +0200, Arnout Engelen wrote:
->> On Tue, May 6, 2025, at 15:24, James Bottomley wrote:
->> > I'll repeat the key point again: all modern hermetic build systems
->> > come with provenance which is usually a signature.
->>=20
->> I'm not sure the 'hermetic build' parallel is so applicable here:
->> typically a hermetic build will produce an artifact and a signature,
->> and when you embed that result in a larger aggregate, you only embed
->> the artifact (not the signature) and sign the aggregate.
->=20
-> That depends whether you want to demonstrate the provenance of the
-> result to someone consuming your aggregate or not; Some people are OK
-> with the trust my signature approach, others want tracing to point of
-> origin.
+Hi Drew,
 
-Debian (and derivaties) handle it that way - build results are signed
-but the aggregate (repository) has its own signature, and only that is
-used as trust anchor by apt. source packages have indiviual signatures
-by whoever uploaded them, so you can verify that if you (want to)
-rebuild.
+On Wed, May 07, 2025 at 06:02:31PM +0200, Andrew Jones wrote:
+> On Wed, May 07, 2025 at 04:12:43PM +0100, Alexandru Elisei wrote:
+> > Only arm and arm64 are allowed to set --target to kvmtool; the rest of the
+> > architectures can only set --target to 'qemu', which is also the default.
+> > 
+> > Needed to make the changes necessary to add support for kvmtool to the test
+> > runner.
+> > 
+> > kvmtool also supports running the riscv tests, so it's not outside of the
+> > realm of the possibily for the riscv tests to get support for kvmtool.
+> > 
+> > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> > ---
+> >  configure | 36 ++++++++++++++++++++++++------------
+> >  1 file changed, 24 insertions(+), 12 deletions(-)
+> >
+> 
+> Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
 
->>  With module signatures, the module *and* their signatures are
->> embedded in the aggregate (e.g. ISO, disk image), which is
->> where (at least in my case) the friction comes from.
->=20
-> For Linux in particular, most people won't be booting any image unless
-> the binary is secure boot signed, so this problem doesn't go away if
-> you strip module signatures.
+Thank you for the review!
 
-it is reduced in complexity though, see below.
+Just to be clear, you are ok with this happening because of the patch:
 
->> > Plus, you've got to remember that a signature is a cryptographic
->> > function of the hash over the build minus the signature.=C2=A0 You can=
-'t
->> > verify a signature unless you know how to get the build minus the
->> > signature.=C2=A0 So the process is required to be deterministic.
->>=20
->> Right: there is no friction validating the module signatures, that is
->> fine. There is friction validating the aggregate artifact (e.g. ISO,
->> disk image), though, because of those signatures embedded into it.
->=20
-> I think we understand the problem with signatures (particularly the
-> ones which add entropy and can thus change every time the same object
-> is signed).  However, I don't think we can accept that no signatures
-> can be on the ISO ... we'll have to have at least secure boot
-> signatures and if there's a way of doing that then there should be a
-> way of doing other signatures.
+$ git pull
+$ make clean && make
+$ ./run_tests.sh
+scripts/runtime.bash: line 24: scripts/arch-run.bash: line 444: [: =: unary operator expected
+timeout -k 1s --foreground 90s /usr/bin/qemu-system-x86_64 --no-reboot -nodefaults -device pc-testdev -device isa-debug-exit,iobase=0xf4,iosize=0x4 -vnc none -serial stdio -device pci-testdev -machine accel=kvm -kernel _NO_FILE_4Uhere_ 2 #  /tmp/tmp.bME9I2BZRG
+qemu-system-x86_64: 2: Could not open '2': No such file or directory
+scripts/arch-run.bash: line 19: 1: command not found: No such file or directory
+FAIL apic-split
+scripts/runtime.bash: line 24: scripts/arch-run.bash: line 444: [: =: unary operator expected
+timeout -k 1s --foreground 90s /usr/bin/qemu-system-x86_64 --no-reboot -nodefaults -device pc-testdev -device isa-debug-exit,iobase=0xf4,iosize=0x4 -vnc none -serial stdio -device pci-testdev -machine accel=kvm -kernel _NO_FILE_4Uhere_ 1 #  /tmp/tmp.11und6qZbL
+qemu-system-x86_64: 1: Could not open '1': No such file or directory
+scripts/arch-run.bash: line 19: 1: command not found: No such file or directory
+FAIL ioapic-split
+[..]
 
-secure boot signatures (other than for kernel modules) are added as a
-separate step at least in Debian(-based distros). this means that for
-every -signed package you have an unsigned counter part that is
-(hopefully) reproducible, and the difference is only the signature(s)
-(which might be detached or attached, depending on the package).
+That's because TARGET is missing from config.mak. If you're ok with the
+error, I'll make it clear in the commit message why this is happening.
 
-building such a package boils down to:
-- build the unsigned package(s) + a helper package instructing the signing
-  machinery which files to sign with which key
-- pass the helper package to the signing infrastructure
-- signing infrastructure calculates digest and generates signature
-  value, and puts that into another source package for the -signed
-  variant
-- "build" that source package (e.g., [0]), which might mean attaching
-  the signature to the corresponding binary artifact, or just storing
-  the signature somewhere to be handled later
-
-this way, the part of infrastructure that handles signing (and thus
-access to the corresponding secret key material) is decoupled from the
-regular build infrastructure and can have a vastly reduced attack
-surface. it has the additional side-effect that the actual "build" steps
-are each reproducible (modulo bugs affecting that, of course). the
-signing step obviously isn't, but that isn't really a problem..
-
->> As you mentioned earlier, of course this is *possible* to do (for
->> example by adding the signatures as inputs to the second
->> 'independent' build or by creating a hard-to-validate 'check recipe'
->> running the build in reverse). Still, checking modules at run time by
->> hash instead of by signature would be a much simpler option for such
->> scenario's.
->=20
-> Well, my objection was merely to the description saying verifying
-> reproducibility with signatures was not possible (it is).
-
-verifying reproducibility of the *unsigned* kernel package doesn't
-require any special hacks or mangling if the modules themselves are not
-signed using an ephemeral key. (there are currently still other issues
-affecting reproducibility, but that would be the goal!)
-
-> However, the problem with distros adopting an immutable hash list for
-> module loading would be DKMS, but I think the distributions that go
-> that route have all solved the reproducibility issues with signatures
-> anyway, so perhaps that's not an issue.
-
-DKMS usually uses MOK as trust anchor, and that key is not
-provided/managed by the distro, all the signing happens on the user
-side, DKMS packages just ship the module source code + build scripts.
-
-so this is orthogonal - yes, if you want to support DKMS (or other
-out-of-tree modules), those modules cannot be included in an in-tree
-hash list and would still need to be signed somehow by a trusted key.
-
-basically, both current solutions have downsides:
-
-- signing modules after the build, similar to the kernel image itself,
-  is rather impractical with the number of modules shipped by the usual
-  distro packages, and relies on other safeguards/invariants not being
-  broken to prevent downgrade attacks
-- signing modules during the build using an ephemeral key requires
-  stripping the signatures when verifying reproducibility (this
-  discussion ;)), but also requires enough entropy and not even
-  read-only access to the build environment by a potential attacker,
-  since if they can read/leak the ephemeral key, they can later attack
-  all systems running this particular kernel build
-
-in practice many distros combine both approaches - ephemeral keys for
-modules shipped as part of the kernel build, other trusted keys for
-out-of-tree modules like DKMS, proprietary drivers, livepatching, ..
-
-the module hash approach (provided it has an opt-in escape hatch for
-trusted out-of-tree modules like DKMS) solves all those downsides, as
-far as I can tell. you still need all the safeguards/invariants if you
-use signed out-of-tree modules of course, if that is part of your use
-case. but e.g. AFAIK for Debian (and us as downstream), the only modules
-not built as part of the kernel build are built by DKMS on user systems,
-and those are signed by the MOK managed by the user/admin.
-
->> > > > All current secure build processes (hermetic builds, SLSA and
->> > > > the like) are requiring output provenance (i.e. signed
->> > > > artifacts).=C2=A0 If you try to stand like Canute against this tid=
-e
->> > > > saying "no signed builds", you're simply opposing progress for
->> > > > the sake of it
->> > >=20
->> > > I don't think anyone is saying 'no signed builds', but we'd enjoy
->> > > being able to keep the signatures as detached metadata instead of
->> > > having to embed them into the 'actual' artifacts.
->> >=20
->> > We had this debate about 15 years ago when Debian first started
->> > reproducible builds for the kernel.=C2=A0 Their initial approach was
->> > detached module signatures.=C2=A0 This was the original patch set:
->> >=20
->> > https://lore.kernel.org/linux-modules/20160405001611.GJ21187@decadent.=
-org.uk/
->> >=20
->> > And this is the reason why Debian abandoned it:
->> >=20
->> > https://lists.debian.org/debian-kernel/2016/05/msg00384.html
->>=20
->> That is interesting history, thanks for digging that up. Of the 2
->> problems Ben mentions running into there, '1' does not seem universal
->> (I think this feature is indeed mainly interesting for systems where
->> you don't _want_ anyone to be able to load locally-built modules),
->> and '2' is a problem that detached signatures have but module hashes
->> don't have.
->=20
-> I think Debian ended up going with 2, but since they also provide DKMS
-> infrastructure, hash module lists won't work for them anyway.
-
-Debian switched to using an ephemeral key 1.5 years ago for the modules
-shipped with the kernel package itself (the dkms package ships MOK
-integration to streamline that usecase)[1].
-
-build artifacts in Debian are signed in a way that makes reproducing
-them straightforward - the (provenance) signatures are not embedded into
-the packages. it's basically just secure boot where Debian generates the
-signature and *has* to store it inside a package, and there the actual
-build and the signature handling are decoupled to minimize the fallout.
-
->> > The specific problem is why detached signatures are almost always a
->> > problem: after a period of time, particularly if the process for
->> > creating updated artifacts gets repeated often matching the output
->> > to the right signature becomes increasingly error prone.
->>=20
->> I haven't experienced that issue with the module hashes yet.
->=20
-> Heh, I'll repeat this question after you've done umpteen builds of the
-> same kernel for debugging purposes. The problem that will bite me is
-> that I often just rebuild a single module and reinsert to try to chase
-> a bug down.  With this scheme I can't simply reinsert, I'd have to
-> rebuild the hash list and reboot the entire vmlinux.
-
-or you could sign the module with a MOK - supporting that in combination
-with the hash list is a requirement for pretty much every distro out
-there anyway to support DKMS?
-
->> > Debian was, however, kind enough to attach what they currently do
->> > to get reproducible builds to the kernel documentation:
->> >=20
->> > https://docs.kernel.org/kbuild/reproducible-builds.html
->>=20
->> Cool, I was aware of that page but didn't know it was initially
->> contributed by Debian.
->>=20
->> > However, if you want to detach the module signatures for packaging,
->> > so the modules can go in a reproducible section and the signatures
->> > elsewhere, then I think we could accommodate that (the output of
->> > the build is actually unsigned modules, they just get signed on
->> > install).
->>=20
->> At least I don't really come to this from the packaging perspective,
->> but from the "building an independently verifiable ISO/disk image"
->> perspective. Separating the modules and the signatures into separate
->> packages doesn't help me there, since they'd still both need to be
->> present on the image.
->=20
-> So how do you cope with secure boot?  I mean if the object is to
-> produce an ISO that is demonstrably reproducible but otherwise
-> unusable, we can certainly script a way to excise all the signatures
-> including the secure boot one.
-
-although I am not the one you directed this question at, I'd still like
-to give an answer from my PoV:
-
-by simply treating both the -unsigned and -signed source packages as
-separate input for determining reproducibility, you can work around this
-issue. the signature is part of the "source" of the latter, and as long
-as the unsigned package is reproducible, the signed counterpart is as
-well, even if you haven't "reproduced" the signature creation.
-
-this is exactly the reason why ephemeral keys used for signing are
-breaking reproducible builds, it's no longer possible to reproduce the
-"partially-signed"[2] kernel package in the usual fashion (without
-mangling).
-
-0: https://buildd.debian.org/status/fetch.php?pkg=3Dfwupd-amd64-signed&arch=
-=3Damd64&ver=3D1%3A1.7%2B1&stamp=3D1726899394&raw=3D0
-1: https://tracker.debian.org/news/1482751/accepted-linux-663-1exp1-source-=
-into-experimental/
-2: i.e., with just the modules signed, but the image itself not
-
+Thanks,
+Alex
 
