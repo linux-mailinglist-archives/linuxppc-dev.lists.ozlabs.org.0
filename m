@@ -1,79 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-8430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8431-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1577AAF456
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 May 2025 09:10:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F33EAAF45C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  8 May 2025 09:10:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZtNZT3g26z2xKd;
-	Thu,  8 May 2025 17:10:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZtNZV3MXPz2xBb;
+	Thu,  8 May 2025 17:10:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746688241;
-	cv=none; b=NZ3jAijOYWpHjfJTAbTe/Y4fP1GLH8/VpGHpjWfuO5eOHckrRCYWttDUh1U43rgFYdvUiFUyJHjfYq10hpR3eStTI7IumkH4vdKcAVTZkbU0yDA6eNkYXf2g0GpWLw5tiHdXv6cYQFQqBCHRrl3g1PIBkjoFW05pf6iFwBF1ORzpZ8la5U6Bek+k12ZvznIpmoNG3kEAvWPLgR4huu33BI9NgbcDRxwYPVKyNR7MUjH0tOdc9vw3T2OLrQuupkVWgbAHHp/oa5F47gQ+Eqfr2SbdgLoa+x5PPwb92Jnp5kpBBeR3KposWG94lScGXv8X1mkWs61fNTx/jfA/J1hHfQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::329"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746688242;
+	cv=none; b=FDf33E7XZOarNen7TYrOeMkjSx3xscoELDBOpN7SF5zVTPul1oyubV5l2SRL5DbrsH4LbpUsDs9ea2rn5FtKWuY6PitY/FQqQq/QA9PKLgFewsB600s6cE+WTYc/sroprZNgTP7v6STW3S10ZAsq/ap1FRfHEB0qBn5/6FISNzQwLwSXljgggTE929vTblOVXtBE8e+o/1Ii3hKneIFq4Ul7r9z2GlMOIpb0vWz/46jH19E4soJ7iPUyFsX77E7jEJX930peRBNXZXNL36zBOHL3hnacjpdeqpAHn0aC4ry2Ss6fdwqSpRv5S3M7Q1O+4APjuZr+t8qg7njWpjnzzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746688241; c=relaxed/relaxed;
-	bh=SNdUV80pt9dTQBN0xsYhQhCQV2pGwrGMIFKsn4D5UWo=;
+	t=1746688242; c=relaxed/relaxed;
+	bh=z2xdDt4RdWfJikzYadK7Wm2Dj/LeNHY+o4TedGbXhPE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fQdiF46k8a2p459/NXt+QZEi2n3rGo0/ToWeQ0InsGEHmQKCcSmbpETUNH3lwCLiJzfZ6l6f60A6vWRwgnYDbYVHodCDvMMU0FvBH/uuXR/u7tFj38PIbD7c7FF7CT9gjEjqehTl9TfQUvvG5EWFwknqKr+B+tcBO7CYSxNUn3YR5CkdscycgWRAUq9ffY/2MmRLQnGlCpit+sISr1S5/3e+uQZrYpGMfA3VFMuO/8Op/pEYyEF0f/YGgaGNOJ1S335//nYvNhLseAof3/Ng1m6ZFzPFBp4rza1K0LGuhb5xSAfG23wQd+zDQBUzPBhZkhBsPIxK6VAnWEV9fuDtAA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=PVrT/5Di; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+	 In-Reply-To:To:Cc; b=TTi/6k8htiuSUwMCQjr/Vqqun39IC/cIjMoGpjXcIx0ud3oH0319WL//0LRiIk23foEFbqn1sNXF5zMVEBAIiqggREYzVrLPvJE2Ad57pFc0LpfIwGvPE9dnC29FfJEAMFw8bOcPLm+xby9YmrgVDoXj0ZuQLDdPkurmg15Or81731rfSJdNfmDC1n2sBUTpZWVCK+rsvD4yQupQwFD+yllwJweFrqfprVXtBF47mSKJd2KRga0F9u6u4UlNwr21UaVoHDeF7iJRcAe5Wqys2vkIpcKj5cFZvpCR3bOzq62nKT5Zn/nxIIfUE4AqU2EI1PF5TQBNUza9JQbOCiPBMQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=sIFaeDX+; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=PVrT/5Di;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=sIFaeDX+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZtNZR6lcsz2xHY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 17:10:39 +1000 (AEST)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-442ccf0e1b3so6667035e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 May 2025 00:10:39 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZtNZS2hXlz2xJ1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  8 May 2025 17:10:40 +1000 (AEST)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-43edecbfb94so7315605e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 May 2025 00:10:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746688236; x=1747293036; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1746688237; x=1747293037; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SNdUV80pt9dTQBN0xsYhQhCQV2pGwrGMIFKsn4D5UWo=;
-        b=PVrT/5DiBPk1igOJEknIG6tuRHjZh1enU/a0SDzkZ76+opBL//c1VCTDNfVoNOoA3x
-         RDlr/jhFvnu5j9hKSny0xAulxbonI7O18phSeZ79G1xW1eaDgQe5bwVSXPFP0wjVWYts
-         BihPFtlN6TX65s8L8BpOT82f7Q8OWY2DSuKAAfuNgmAAVOIrftRsWHrjvPlhnLTnY0hR
-         IiMXcrgZXMnjnLUy7DSjRVQWGNSZi6ResXC2zcj+Cwh0grBf/zU3Fz2rmHx8FSNmhx/g
-         0H1wyp8dFHcmrqEJ7PbNItIw1fiClU96XzB1Uj42KZrE1JIk1YkBywQBBwZuYfggB4kY
-         OdfQ==
+        bh=z2xdDt4RdWfJikzYadK7Wm2Dj/LeNHY+o4TedGbXhPE=;
+        b=sIFaeDX+BYbOxveGq3LVfxZX/br/tFHeVs/N4gq0QNgz+YpoR+XvuZctnGJTXfoToN
+         F+XEpKbRBzb/bI3ibEcq96S1IIUawGp3w9aj9v/0cRRIV0IDyrzK5yE5ULpfWGUO+PpN
+         xqDV18eVBTG1/fIXoUNO/3voKhc9qNeujgOl1MGy+qE8bM12Qk4QnlZn+RcZox2X6rux
+         nL2PY1Uwbex1QGDqnh1sFKXv5Qnfacz4pyrE5u/3i+n84sjFZIdn8Fze6/hVB2Nlu9cP
+         f74rzoHkfSKaU0t6tyjwjSOoZWHlbR7muMJTK9d9IFsEG4UlOSDQPJ51eb4YFBELKqym
+         YHkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746688236; x=1747293036;
+        d=1e100.net; s=20230601; t=1746688237; x=1747293037;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SNdUV80pt9dTQBN0xsYhQhCQV2pGwrGMIFKsn4D5UWo=;
-        b=m45madX6Hyd7vl8qn6Yi+59uSJDXibnQXMJWRswL1Dfik4k+BbkbeOX/Nm35eH15XG
-         vrNWY8kQHbtsOmGKC9hl89Xg+KUcXIW43DtC8AQVfU3GCnG3/71Xonkfnge1I2Fps6r5
-         pE8nlma2MWnIlJKKlkSZKcPQDFbB2OFa+4kuw7JTOWb8gXmDl96Kbq6idZSusdb+edNf
-         1Sz5q2f2hJh3boFRmZ2WJ5Mdhh7YAsjFrwFqQtSJaP8u2q4fIP0K8fA8FHWpVoLHr9yP
-         re3fyQ9eMWuXOkHOj8tfB9TFWVFkc+yqcHWDTeT+rx3l82rPN3uP4CYO+oPSosg64LJs
-         /D0A==
-X-Forwarded-Encrypted: i=1; AJvYcCUzzzKDwwPHNFi6X6al98UWQT13Ktaw3hU7Ys8TvZhbceI0sCNCMGUELptSnQCmapYRwFl65Q/wiDHJ4o8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxObHMcspAeyhbeycPcKN8kvBpp/oUTa5tPkJy2Cr1P1rL3FXZu
-	KLlHB/5Dzm7eD4Shwm5Xm7lwelForhFs+i0LQ314+sJksN10qMzh3RIeczzY3Q==
-X-Gm-Gg: ASbGnctxFWxwPZcVViPiH8x8PaAGBkwck0BwnsQCsrbU5aTM577T248Oyf+e0pX5FZA
-	O36TyGzsP9r/6zFvA5YBx271eO5do8pCg+06gerBf+2VbzDzNOqcanVNPAVO5OEqTnyosLzomr7
-	xuLpQIYs+gxSlrbw31HOxmth5ygrlkA8JpMIIoU2ZCRxxw1nf2pzJ+abpOglxyjxZn/0khN29zH
-	oRoNeaZe8x+f5QsNTV4RWFw/CnmM7bXKgu6lg3WwrrvfOq+nLsDHmdQlcZEvSouGVFLWyj7ftbh
-	kmZVHGLHkoep1r27xPSZvCYfnd5MxD4lIuj79b8/07i0FrU3KpCl4m+SsSOabh8r3Rbijjil8Ce
-	YKypFMeL2Yhf0qWMurKxdNp8oROY=
-X-Google-Smtp-Source: AGHT+IGM/ocJYvn2QOjf3fD6bkcOlBGcdKqEyGGwPgr1OkqArjdUzcdfSklA7LLxbWYmBJNriXe76Q==
-X-Received: by 2002:a05:600c:37cd:b0:43c:f6b0:e807 with SMTP id 5b1f17b1804b1-442d034bcbamr21959325e9.31.1746688236376;
-        Thu, 08 May 2025 00:10:36 -0700 (PDT)
+        bh=z2xdDt4RdWfJikzYadK7Wm2Dj/LeNHY+o4TedGbXhPE=;
+        b=q8sOJXoEqszTZeUjDm03C5ZisOwyQTlkSt1c0LN7TYnJWx6gwyl3Hbg0tCuQKqbZvH
+         OC4ZeRRxU+VMNc93nsMEXY//tjZiAmzHzCe0qj7FjUePjTLdWrfETimIeJ5ZsYgMcfW0
+         TOkwwbjzGLXGDtDoqoLUJlnTbkKFAa1e6v3cwDEd3n73oJpWOeLoOyzUHRwp74268aT2
+         s9Tgb6U5QzxfoBRSprReCkz4SBsAFDku4ZYKpQfesaU6cPzELgjU/W8ypjeqeuj5yhba
+         K8WlS8L8cXBQiEFyQz7Jrt7Pi1W66N+bcT7GBejYKhICNaqGXw9Guo1FxfjC4OnvPo54
+         Lovg==
+X-Forwarded-Encrypted: i=1; AJvYcCVcDRpbglOGUunGY2OMcBPwWA3/zfmlTasgCT2d37Xmxrrtrl2NNcSDLxvnWfIYGxqBEEVvdhhiDsMTgzI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxT0vVvyxPAFACjB1y4zZU0aGE3o4TVED00KJUotXRJT9rPc1/r
+	Gh7t1mG6uLVT+K6zIq1167vMIAUnl52JvjftTa3TTdsJp8Hr++o8jDabQpSaEw==
+X-Gm-Gg: ASbGncvX7sF7fhgJaXGG8JGj3qFHiqjGWePKMsjmTJhhHu8iR3fMVh1j2uPp8mZ8ike
+	3Zm8S119Gkex8m3Abe8r0LzXxLaC79nAGsCJRchyfuCNBLqzpfhS3DoPLbOkAotErgR8FD7JO/r
+	PkahpcjeOP0UdQ18+4/JVK0L6q3sGJEiJifxff3OI9umRJ8Isb/tqDRbRu8Q5Z5aTguQaxPkW7W
+	bzNiTdYpc8TavJHXT5jjADoGCmU2ep91aNCr2Nq81sjTD26PS45gCOm7F/mY77RM6fELVrIBKSq
+	AVPayMU5yaDXycghKZR2jNUvWGpy3ZYanTa6tUPLIRLUfFUXfIYe06+AQne/ZoEdji+JSLb2QUP
+	QoPNnbyP6b5UpG4oUsX12muGZgdWoPVHQSEJinQ==
+X-Google-Smtp-Source: AGHT+IFU6Tfiix8kiA6qL1KyPENFK6H5A0dQpfBujyLXJD3m07n9Que2XUBEh0Jtu1ubwVrnoTFrSw==
+X-Received: by 2002:a05:600c:3d9b:b0:43c:f629:66f3 with SMTP id 5b1f17b1804b1-442d02f421emr16664105e9.18.1746688237328;
+        Thu, 08 May 2025 00:10:37 -0700 (PDT)
 Received: from [127.0.1.1] (cust-east-par-46-193-69-61.cust.wifirst.net. [46.193.69.61])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b178absm19500236f8f.97.2025.05.08.00.10.35
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b178absm19500236f8f.97.2025.05.08.00.10.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 May 2025 00:10:35 -0700 (PDT)
+        Thu, 08 May 2025 00:10:36 -0700 (PDT)
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Date: Thu, 08 May 2025 12:40:30 +0530
-Subject: [PATCH v4 1/5] PCI/ERR: Remove misleading TODO regarding kernel
- panic
+Date: Thu, 08 May 2025 12:40:31 +0530
+Subject: [PATCH v4 2/5] PCI/ERR: Add support for resetting the slots in a
+ platform specific way
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,7 +89,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250508-pcie-reset-slot-v4-1-7050093e2b50@linaro.org>
+Message-Id: <20250508-pcie-reset-slot-v4-2-7050093e2b50@linaro.org>
 References: <20250508-pcie-reset-slot-v4-0-7050093e2b50@linaro.org>
 In-Reply-To: <20250508-pcie-reset-slot-v4-0-7050093e2b50@linaro.org>
 To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
@@ -108,16 +108,16 @@ Cc: dingwei@marvell.com, cassel@kernel.org, Lukas Wunner <lukas@wunner.de>,
  linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
  Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=789;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2766;
  i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=Aq+BoDTRwjfmiHKRLtODTEbwNFS8yDdFMEIJ4A/Pkz4=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBoHFjp3+Y0C7nYToqJfWiLXSkKAM5YKgVxrQcgv
- dew07ahS2+JATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaBxY6QAKCRBVnxHm/pHO
- 9bheB/9ACtGdPZ3LmfihI48+MK1ALP0+Bx6+UetxxXKaahBYzIQ5gDCkxVfgOgnxWWQewlNuhzp
- LkZw3nCIYvdYAZ7/RT6FkDdBk4lRXh8t4QhrVlil8KmoN8umYdxyDDZutpu8RDRf9b5H84xabGV
- tt9QfWQz9sKtIRWtac2DBCJCM4vwuvtSDxEUlUvJkdec5PwCN8ffMmJBN3NQ+vSvJtmkY8CKX8o
- ZT1VVrEU3tuPcd3IaetbkOs7WBG2+W8B9TJkzU8p+4MnsQUmp41iy5Y6yO6mf3fDQ643DyRvmm+
- 9X9+lTcKXgUsmH6hLBn6yhdJdN2ABj8XC+7vLejHvCUqYl4/
+ bh=DxjgbttCz+WbWbTBQh3uh5PZxc6tk82mAeHt4QTMKaE=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBoHFjpfv/vQkWgyV/Hq0GucliJi+U/7FE1Skrvp
+ pJ+nrHeneGJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaBxY6QAKCRBVnxHm/pHO
+ 9UI+CACk0xFNBFRLakdLLAf9Ya1C7nW/+a/VQ4SxfviZzgiZSwQ3wAKQ1nn3pFJTctodOrYHrYt
+ L3jspau7qSV/E69KaX8cHFBStVMmk8Ey9z4rzTqwgNJTiZu1osrkc0SiKydSeqMot1pRreGsKhv
+ w6jmJPaJL6AL5/Wc44rKPtCqMktlSapMC4oZdAwUzr+ZolkNNdqp3Ptf12CclgABbIy0YDvrotC
+ GnquyUFgI1V0jIOUvvcsv/n1eLtFUktxnxLDS83usEfAJ1WpRavyboLRCrmQ1K00Gvk58fZaWkN
+ /w9ORtH6GykTqjVpzegZfHZz6+OjWKawa8B4PrmHhI29wJoR
 X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -125,27 +125,75 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-A PCI device is just another peripheral in a system. So failure to
-recover it, must not result in a kernel panic. So remove the TODO which
-is quite misleading.
+Some host bridge devices require resetting the slots in a platform specific
+way to recover them from error conditions such as Fatal AER errors, Link
+Down etc... So introduce pci_host_bridge::reset_slot callback and call it
+from pcibios_reset_secondary_bus() if available.
+
+The 'reset_slot' callback is responsible for resetting the given slot
+referenced by the 'pci_dev' pointer in a platform specific way and bring it
+back to the working state if possible. If any error occurs during the slot
+reset operation, relevant errno should be returned.
 
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 ---
- drivers/pci/pcie/err.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pci/pci.c      | 12 ++++++++++++
+ drivers/pci/pcie/err.c |  5 -----
+ include/linux/pci.h    |  1 +
+ 3 files changed, 13 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 4d7c9f64ea24ec754a135a2585c99489cfa641a9..13709bb898a967968540826a2b7ee8ade6b7e082 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -4982,7 +4982,19 @@ void pci_reset_secondary_bus(struct pci_dev *dev)
+ 
+ void __weak pcibios_reset_secondary_bus(struct pci_dev *dev)
+ {
++	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
++	int ret;
++
++	if (host->reset_slot) {
++		ret = host->reset_slot(host, dev);
++		if (ret)
++			pci_err(dev, "failed to reset slot: %d\n", ret);
++
++		return;
++	}
++
+ 	pci_reset_secondary_bus(dev);
++
+ }
+ 
+ /**
 diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index 31090770fffcc94e15ba6e89f649c6f84bfdf0d5..de6381c690f5c21f00021cdc7bde8d93a5c7db52 100644
+index de6381c690f5c21f00021cdc7bde8d93a5c7db52..b834fc0d705938540d3d7d3d8739770c09fe7cf1 100644
 --- a/drivers/pci/pcie/err.c
 +++ b/drivers/pci/pcie/err.c
-@@ -271,7 +271,6 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+@@ -234,11 +234,6 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+ 	}
  
- 	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
- 
--	/* TODO: Should kernel panic here? */
- 	pci_info(bridge, "device recovery failed\n");
- 
- 	return status;
+ 	if (status == PCI_ERS_RESULT_NEED_RESET) {
+-		/*
+-		 * TODO: Should call platform-specific
+-		 * functions to reset slot before calling
+-		 * drivers' slot_reset callbacks?
+-		 */
+ 		status = PCI_ERS_RESULT_RECOVERED;
+ 		pci_dbg(bridge, "broadcast slot_reset message\n");
+ 		pci_walk_bridge(bridge, report_slot_reset, &status);
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 0e8e3fd77e96713054388bdc82f439e51023c1bf..8d7d2a49b76cf64b4218b179cec495e0d69ddf6f 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -599,6 +599,7 @@ struct pci_host_bridge {
+ 	void (*release_fn)(struct pci_host_bridge *);
+ 	int (*enable_device)(struct pci_host_bridge *bridge, struct pci_dev *dev);
+ 	void (*disable_device)(struct pci_host_bridge *bridge, struct pci_dev *dev);
++	int (*reset_slot)(struct pci_host_bridge *bridge, struct pci_dev *dev);
+ 	void		*release_data;
+ 	unsigned int	ignore_reset_delay:1;	/* For entire hierarchy */
+ 	unsigned int	no_ext_tags:1;		/* No Extended Tags */
 
 -- 
 2.43.0
