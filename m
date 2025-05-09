@@ -1,90 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-8474-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8475-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B1CAB15BB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 15:50:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59182AB175F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 16:28:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zv9Np54G2z3blg;
-	Fri,  9 May 2025 23:50:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZvBFZ6LvMz3blv;
+	Sat, 10 May 2025 00:28:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746798602;
-	cv=none; b=QNH1sdLYad/hAVidVlB0VcnkYEwvmU28Rcxl/r06GwN7dvvh+XvOGve2gcgLlzJAHS4sMi6gzRfxFPdOAHvC6QVRvM8x1mdVyeDCaL8VAFilyE3D3TOKhaNMHFcslFJI4NT+KfHX1gKZsV/bPI5S5T15QFfB6ORQNI31tNkjyX0cLGaVvWiufk2P5Ax653dhUZRmE3KQRvcw9DiJ5w0C6XSc1+TyEtVhEM6Ix+BJHknvfF9hs46HLcqdod7mNWQopuo3254VHhM6mIzA0xyUfwCNO4BCa+tIcxrWjisPvBvWM4YDFZXOPuIbMP/66L5ITv5pK7GOlMU8oLX+NBIzwQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::333"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746800930;
+	cv=none; b=mHo8Gt4KluI7NEXydsgHdXwgcRLAeCTdAhlA25dWAVE0uxNgWM4iJytzYWAqp3w9oXT9B0LFln77uyf3MSrAH4Qk+6nxll10Lw6N0YRjE/da5jC1I30nUv4rvlMWKChn3XgCSXsPJWYE+UeDg0sdjcxP+iuJnno5PlnWmhs5u4qTr48Q877by52pjorsGhtvQ7wDjP5G9CXIwdm7BNSAWZfVzB0hLcRYEbwhEzhAlVx4VR/yQSd9qixZlE8hJKnp9s80PsLN3QsFmo4OdEl+0E+v9P+dhvJTBz+xqiMxPYveXRkjM/w+e5IIg56eyuZk85K8ZoohT9CVkZ0Gh6DgrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746798602; c=relaxed/relaxed;
-	bh=qL35tfjqtvRbZWZeDNm4gyYoQKOGEeBiDKDQQJ0f6xM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T4rgIXObTL1Do8mWZ8a9vmdX/qrcA4IT1UidHHFBGmYJrdmgJrtFfc0fPW692Bt+AcV4mufmrDde9zrhpPfpHkxHfMVZX8kwJUB/LVWspVLRtaE2cgUcyGuLMrUGlGvfwSyOWWgvDEiwcQZBQAmyUdrh8Xb3/uMH7MD+jJwuHKW6o0nuDGoQuz3MwXFpKBgrzvQ0k7CEwDVR8XkZ9KNeSub6qBzGLYKBPC7EhZ1Y/GIhghAZywzf07QlJEyR77X8xLQEnPbZAyprp8xhpYLr2A6inGUvjOs0BXemRfbN7HJwX7qQP7dmnRKnoaLTXRqeqQVuhK0xmOgWW35lo1ZmCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Hc8nLPs+; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1746800930; c=relaxed/relaxed;
+	bh=vGJa78Wq53wOh7pi/p5kq4kFJLRExrNSMcJZ7tCQjOo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=By5e/8b6p28hXcJhhDDpamVXpwivmeuUHDVUNOCb1IijJ75ZyMOzSpOJHV7FV11lvKoVEvJ9TIY+ub4ytWcHvC8qPcuJSkDIEasiwl4WRdQi3PAsplNgvYamtNjqqi1MxMFePakjTKEuMgFWPgqbWyIb/DtDZV73U0WkazAz1HZ8ot5r5lMvctqgBUd+dmQi962GXHp5oB4H2bafvGQlTLYl8f8zAi9iKvo3bVg/u5dtrfZ1oBbmS2FlEnohV+6JD1ULWlnpRms8KcxiUra8vtEFM7hlmjPBZbmnU0yM3Pbg2F4LDDMAXwsYmlO+5zbX7rPbdLF7GMSwIkMvUKQ6zQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=BxxyFapS; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::333; helo=mail-wm1-x333.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Hc8nLPs+;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=BxxyFapS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::333; helo=mail-wm1-x333.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zv9Nn3DtMz3bkL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 23:50:00 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 549DYmZw031546;
-	Fri, 9 May 2025 13:49:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=qL35tfjqtvRbZWZeDNm4gyYoQKOGEe
-	BiDKDQQJ0f6xM=; b=Hc8nLPs+GogWCY8kTHyiFY0gIrg0TzimptS2a6fDT6zcwR
-	Ohdi4qF3WkLRiVni2zrKvQAsZvGtjESE421Gl3ef74BUhq8ufOHx5ENWgcdztvBK
-	6dsRagf/J4hItu87AgWYZlXna5zVHNXTe6q/jEzOtB5p44DcCrt5E4VGeZ1yZknv
-	+zDt/pFeUArs+TtfIDFQh2m7cctqd7k5UYUmgHXvmWJNy/Lfiw2c1SuXszLJyU3L
-	PgwCfvPxjdKozvlHPcI/7+JMTGMxpch7gD6GzDqmnLcInh3c3wJxfIgl2A8bpPsa
-	ytKUM0VB8cPum0ce6Q9krW7tjRTkySv5wZrxc5DQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46h4rwc0gp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 May 2025 13:49:47 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 549DhFHQ030863;
-	Fri, 9 May 2025 13:49:46 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46h4rwc0gk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 May 2025 13:49:46 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 549DIKC8014097;
-	Fri, 9 May 2025 13:49:45 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46dypm3b49-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 May 2025 13:49:45 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 549DnfBA55378284
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 9 May 2025 13:49:41 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BBEAC200F6;
-	Fri,  9 May 2025 13:49:41 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DE822200F8;
-	Fri,  9 May 2025 13:49:38 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.39.24.79])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  9 May 2025 13:49:38 +0000 (GMT)
-Date: Fri, 9 May 2025 19:19:36 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Fix IRQ map warnings with XICS on
- pSeries KVM Guest
-Message-ID: <m2a54sgts6stdrdiduzhkiqsp3wlfmlueelxivjsy5qpd3f3oz@3lgtuy5bl4x2>
-References: <20250425185641.1611857-1-amachhiw@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZvBFY2Fjrz3blH
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 May 2025 00:28:47 +1000 (AEST)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-43d72b749dcso2167035e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 May 2025 07:28:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746800924; x=1747405724; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vGJa78Wq53wOh7pi/p5kq4kFJLRExrNSMcJZ7tCQjOo=;
+        b=BxxyFapS3GentPSXRezPvqMck37b1QABwoiw+GV5cmziiD+1S9cnpwszXUQyjvOq19
+         p+uDO1Udo4eYwsm+E2DeQ9a1iU5BPB+4j1GpGHvTDfKKOGg27IwwaiwYFTrCv5SjrUXu
+         Y1mwUY5gp9YyorJmr9azgmzbO5RBuahUY2tqOJPGRn21zh6vE0eYAc2WMTCEaAMzRFSx
+         mNloUrdqfZkCqGr8WpGbsIVL+lfr6oE33ZZDBbqBp1coGmim1pqY34ydR0CFTbIXiKGM
+         Kjs7WtMInYc0bckkyqPNInrTreJfE2obnoh+Fwy1wuAtO5Jd8z8O/D1paOcXpR6YWW4l
+         ByEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746800924; x=1747405724;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vGJa78Wq53wOh7pi/p5kq4kFJLRExrNSMcJZ7tCQjOo=;
+        b=uvlfj0RhvfJuGwiBxswuEfOseW1M860iLguFnlTDZkcroKL4NstsFQSvZf1et0C7qy
+         ZIrBQggcSyMyN4xesCutyWa31xzScAhZyY7SXAvr1FTxJR/5DMf7RxwlH3lntoaAMTfg
+         h6HVDkBDxm9SIkbbCaMtREpwNWmgsB4EZo1y9GZBa4pqJ+S3XGoTDb1V43g1ZVHR0aaA
+         xXv5DYBe+9m6cjVAlrfDWMVCggkNOe2/wmXOH1MIXe19Woqlw76F43f92VNnbEUMpUCM
+         Q8a+tYcyks4WALfp9W6jD3BrSWh8XRViC/1BJKLb7bUO1FecXas+JPa2l/mwBsb1U+zS
+         LHNw==
+X-Forwarded-Encrypted: i=1; AJvYcCU9t8zex3w1+CDIhTWIjSRJ2dvapINSTnut+FlOvntsMnJU+crwsFHOM7Qd2jOB+Dh8Q1t4slZmGEeyTHU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyUq2/FA+xjZTlpgkmlzSXZ/WGifnceRBANd8zI+4cai2ccM8uq
+	MrAHTxNTyXmcdx1PuVb195K6Z3Urjd3atkNnmo7ei0AQJGgP8yzVPlKnZc+YO7M=
+X-Gm-Gg: ASbGncvnSkOtefD7tM9wes2YPxu6Oyuh6v1RKAymWX75np19ZLUQZ9ohTCyK2l+oa5v
+	1HlVgY7KqVZ7lyuWrgeDfkyuOQQIO74tjBa7ty85DMzUDWDNFlNHYShEfbQ+Ycf8w4UUHlOLZIS
+	Vl9BBE4d4E/Y5HpH90ZhG0QUBERq95Qkq5Ycs639OeFOZTIp6Z5OjOjMSjYde7+wuJgqds2gwaS
+	oR20CFoB/ZOZyW4jHnQnPHbAr1jHa+bk0E/0V5cgGjKoov6rj8luFLQdvh1ec4B1AFHqI876fyc
+	qL84J7udpTS5AudT1+K0oSkjUh5aHCfoZOcev9LkOCrnGeETQQ==
+X-Google-Smtp-Source: AGHT+IEKYVR9f4KNy2kwsH3spQ+bStFwlfaO9+nceNqCzdyx5f265pzrXCR2cXu644nD++9/3pxs5A==
+X-Received: by 2002:a05:600c:1c8f:b0:439:a1c7:7b3a with SMTP id 5b1f17b1804b1-442d6d18d31mr10683505e9.1.1746800923692;
+        Fri, 09 May 2025 07:28:43 -0700 (PDT)
+Received: from kuoka.. ([178.197.207.88])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442d687ae10sm31255865e9.37.2025.05.09.07.28.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 May 2025 07:28:42 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: qiang.zhao@nxp.com,
+	leoyang.li@nxp.com,
+	nathan@kernel.org,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Tom Rix <trix@redhat.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH v2] soc: fsl: qe: remove unused qe_ic_from_irq function
+Date: Fri,  9 May 2025 16:28:35 +0200
+Message-ID: <174680087395.258053.1870729490363422870.b4-ty@linaro.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20230320125202.1721775-1-trix@redhat.com>
+References: <20230320125202.1721775-1-trix@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,31 +99,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250425185641.1611857-1-amachhiw@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=QIxoRhLL c=1 sm=1 tr=0 ts=681e07fb cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=kj9zAlcOel0A:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=v01Bmm9WW5sV4C35fbgA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: HaN2FDaQ0WR_SGqBR-G2bMzjMEx0FPeF
-X-Proofpoint-ORIG-GUID: 0neBe9qo4vhcaef3bA8JcpV8S5vxVVwP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA5MDEyOCBTYWx0ZWRfX+ZwY+iQm1GHY paAeBzeUc7BYyHlO61eGEeVHBhPzZnvdEYKQCFlIO2ee0Ir+SJ2Y6p1BSFxukZhlC117CrAasR/ 088CaR/oeWz0vzgPkjM2rDlxkiHtFRvekaaDNeDg8AJsTQhIBxhj+AE3EIvcuQZOrtZZGZ1ahsu
- enZ4Ad0sFzTQJDRoGH5xAPdw3LjZrMjF6U8f4cl5YjZToZADVvHbm3oc4LgIPJrIt2Q8cWWozdN ZEPdEaUJDyfqqhgpuhOf2on3ai+EzMfeEtaOPkpWOThz4dnJsczs0N96pfz365ziBe5Z9a6gPkP KaxZKY3bi9qyzGtAjRYQXjTr1rOJq4iWZ8nLcvIUYvwQY9bVoSYO3bDA/gLRxn92Px5SuhhZk4X
- a+ILzqMnlb/5ibD9RkZvGujtcIG/h9YDcDyfdh1oJ2oSrElr3ay+Xpoauc+UJ9kDvSKFdbBV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-09_05,2025-05-08_04,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- suspectscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015
- malwarescore=0 bulkscore=0 adultscore=0 mlxlogscore=568 spamscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505090128
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=883; i=krzysztof.kozlowski@linaro.org;
+ h=from:subject:message-id; bh=fiZTHDyBdOc6qfmbBDJJ1y69SYbch4R9Dh77RsKvT8o=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoHhETObKRcExebKUkbIaGQ4dCmp1cl7Z+eKzDU
+ 2FxOq4jCDyJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaB4REwAKCRDBN2bmhouD
+ 12MFD/wKZlS5qkHWc9CUedyRVM+E7ub1Lod6PaAbk/31coox5iWvBj94XuurnOuKMUXmcfwl7rF
+ +zIRQNJFPjPjkwOpJRjTwPg9vWktDjbBwQN5R64ChJnZt8N3aG2g6LGgFE/0YCOfJFzUVg8ZBFt
+ 62ZO1fWQod3iFD1Zu3PcjmwYvTaf+VjfI3VGUZvNHJaaHLA9OQjxzJ3ntJdV26Nf1yHtEYPWV7/
+ FMHZjDxKHK0YbtTSDXeNg490LGK+pTCreHLrmjbYMkw6dz+RlV69hHcqkKzY9cZm/9wZeOs2okZ
+ eG7gn/v7oAxxTESLh3rXiggeQ2P33lfAL9XVQz4dnqd+7QERPpUx64aDciyg2L42a2UQea0qA46
+ W3XbvX2k9qDz1FM2bo6UNGsIi3SO/6eVgQT/4pP3+EPQcpLXjeIXWFABGWub4gabk4sNNyhzkiX
+ XZ2hdozSp+Qf4G1PgSPe8YGgegbvavAT06TMWaZvmBCcIKj8W8u+ozmC6+8KVJAdNs2L8Hq1fOe
+ akJTeH9uzGd7Ycd0pjjUh87ndgOeTHaIuDpoVNjEa7Mv7i6pyj8SkcOMi7I8ZyzOzxhPWKh1EIg
+ qKU5+wwCNXNv2I9wmnTh6z29IndiEPrwcJQe+IGqjf917f6nKyC1AAWkPXU/nAhTXKZGgHiMUNe D03zhhwT7Or58DQ==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-I tested this on both KOP and PowerNV, LGTM
 
-Tested-by: Gautam Menghani <gautam@linux.ibm.com>
+On Mon, 20 Mar 2023 08:52:02 -0400, Tom Rix wrote:
+> clang with W=1 reports
+> drivers/soc/fsl/qe/qe_ic.c:235:29: error: unused function
+>   'qe_ic_from_irq' [-Werror,-Wunused-function]
+> static inline struct qe_ic *qe_ic_from_irq(unsigned int virq)
+>                             ^
+> The use of this function was removed with
+> commit d7c2878cfcfa ("soc: fsl: qe: remove unused qe_ic_set_* functions")
+> 
+> [...]
+
+
+Commit from 2021:
+https://lore.kernel.org/all/1619002613-18216-1-git-send-email-jiapeng.chong@linux.alibaba.com/
+
+did not apply, but this applies.
+
+I am annoying hitting this warning on every W=1 build, so:
+
+Applied, thanks!
+
+[1/1] soc: fsl: qe: remove unused qe_ic_from_irq function
+      https://git.kernel.org/krzk/linux-dt/c/d47f1233374597c348696c3da2142cc92a36fc90
+
+Best regards,
+-- 
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
