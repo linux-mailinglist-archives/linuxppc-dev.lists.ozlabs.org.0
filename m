@@ -1,70 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-8472-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8473-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44872AB13A4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 14:40:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A54DBAB1442
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 15:02:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zv7rs4vC9z3bgX;
-	Fri,  9 May 2025 22:40:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zv8LK1p6kz3blc;
+	Fri,  9 May 2025 23:02:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::135"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746794445;
-	cv=none; b=K5DXPqGC9cTPeP1mHP7XH8F3K1UzayJp4CZK84ziqxcXh5m2EF8hMsL4b67FKt3tP/fW5hmQzj/RjVNsHqlZodoavopM7Alj36QWcrOk1pmDZwq7V2680d6tHysW1gQ7r78Vsrzd9jFOp1vCNPM0jkdrVAulnJDvIhMtNhhg6oJnyKn6+QykCMBWkVNxYrxOVh643vSWFMex5l1zc7XjXL8KRuvClWqUnDDYXZSJ0U2vc7Z57CiZF/3T4EYgb++z4sh0BeeQfo0Buquysmycc13ruCsf9AtCg9tAn6B1APCZ1Ima3CeGITKDspvwNWA0wrEuRrzs9S8DhGYm02thSQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746795769;
+	cv=none; b=hoWmjPTcQaNz2xNt+mxrT8eZKa7vdQR5gqkJNJ5LDBv3Bklep0ZInXoUrV6k9bLHR28o6u2Ef0uTFKqZbXQgOqxk1g4ClsqHrrvmVlNxigB2FbdkU/1cmIyOjgAqyTIu+mjD5browTfXFLtwubUnf1fVK9MbZFmYdLd5J2rKXKOpRmMGt65vqegGSxW7XXpiimKiY3zRViyLUatp8BlBoaay/NrcPLJb8DFTiguiGM3oAHAiNTwMt5gI+/FcR4cw6rSyY53lPPQzfKYmi9S3YrX+h3UrSie6R/sLd7qoI/hLaMor3GHJ2/Gx2CZIE/Mg2ccFBMVHfZHRxTq6SC+0TQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746794445; c=relaxed/relaxed;
-	bh=+UtFR7vubZW89xp2cp1g2Mh8plnjtSualam5Fk+kOWg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TVtUMtdfvtjAeO3vLzotmrXSe5X3NnAeuBWiz5i1GyIrL3xjbE/Usr9mqFL1MLNYzF73EX82RyCX3+AdVsIdpRH1oCzA4a7vWFZaE6i2TF/znx49UXVNeybz7S5E6SHE5eRA9CyK3f5I3o7Td6pJQJY04uq8eZnySKB3iEDv59w5QKQxR6GI8tVcm6swSMUDvKuXLMzt7g9847RuzJvIqWbU//lMeVZyyaTIO3RbVu7FOiiG++CjEC6K31Mtds0fpzYCYCpoOqflpFgOQkX8V7+Lz3q5+3YeF4dOAHDVdSqaj4D3NzQXQHKBJjgs91FJ9XlySd5kDSXdUfvV+OUzSQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=cLMK7ie2; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::135; helo=mail-lf1-x135.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+	t=1746795769; c=relaxed/relaxed;
+	bh=TDjkF//Nhp950cpZ/fbjETYdNCwuZBtjg6uNqRtDxKI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=apquDKwWzkwMukegjtpA9EgIBHYDpqWmoIof+4Wms6X5KNZ1BLjfaWfNgD2pEOkpCzUjLY+mGcLXZFWMuiMv8p8WOz2UM3EsVI4eUkZlW4g/6N8ooXR1G1YlOYm8hBQLanTDaf1cLzHN24fwMeO1T2y0hkm4BSxJoOHps6kOiMtUIL2W9Sl1wCxxx/QlA8Zr5+o+zMIw/YcxtbRNAzDTGOEqpk6VFH1H/UJcFrd/D3IZbkR0+Jf39JkQtLYt6bHVUvO8tvsFFm6AMORbTPdJJYZ5PPA7Qi9GctOGDrwA4seRJ/9l8t57iUm9hkDZ7z1H354ff3K5qLbBK0fM3Ys9lg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nQBpMxgh; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=cLMK7ie2;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nQBpMxgh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::135; helo=mail-lf1-x135.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zv7rq4ccGz3bgV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 22:40:42 +1000 (AEST)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-54fc64e8419so1070282e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 May 2025 05:40:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1746794438; x=1747399238; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+UtFR7vubZW89xp2cp1g2Mh8plnjtSualam5Fk+kOWg=;
-        b=cLMK7ie25x7Qb7+Eee2ARwgnqqzm84TRqXlH0ZfPFGQ09q9dmpgDamMFyTIDJaMTV6
-         wZm+3vb5q0aIw/D9R2dxaNDGPFucJEjRpQz6O77Q+h0ZTKk2RGn56LDvIpFR9my2ZK7t
-         zIISHUmNg2Ax0tZM9t6zOs0YpoHP+pbqkRP9K4VqFO+0t7uILosLtujZiDUGCcJfrahL
-         bKW69aOELpSTiMLPaiLGy7nTBnEcjeDy9DSTy4ZxfJUgNVk0elzaV7H+D+3VOEJMgpEj
-         9M7oRAI4VCHVl9B18uGCJXDtn9Wp1/NO8mdgey3Fq/cdciKWAY+XVhiYqsRjjRycskKE
-         pE3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746794438; x=1747399238;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+UtFR7vubZW89xp2cp1g2Mh8plnjtSualam5Fk+kOWg=;
-        b=AAnnTtjQ5FFt54FpO00Sb2cTZkbROlj8+Fk3trZktZwwnupdVVm4Wv7c189UkLsXES
-         Meyyoa9ji+mg4z2BSyT5D37V6ES740CLmWtgaTBO/Oiq5UzkiRlbFj1LXZQHoRFKrcFm
-         Zx89eWAsx+OhMleV6K79n5e0Jqh/nWSOW6X9HKLejCFjfUljOgz9QPQX/dK3GO60Qbb1
-         M1jc4q4GU6hxdUUhwotFQdx33i0V0Q0Audz4SC/vLJU4xvLwi4qkt0Yxu1d4BRYZ8G/w
-         QV+gC+XsozX5MG1jZaPM9R2IXc01aW+PWB8rfa5NXVKYS4C7g6OCtvcFJyUWGQ8BpR7N
-         URhw==
-X-Forwarded-Encrypted: i=1; AJvYcCX3VHYDgFtMOE9d9HKt34itJMZ5c0UwUMdJvH0g3W1vWfwFdsXo6l5FFcYE1vXita+20ZV4z0m3uvQMnXE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzYlCps5s+O9VckaO281cJVstoV//R7GnyOp3HRF6BAy8KVKkD4
-	PayR6DjGZuoqDeVedNK2p/0dSSfPWyMUCm3ZCsn0p0MgQQviqTWylxPLPfHHSv/oS1uBOGUxhOL
-	mAy9IoqSfYdY5BGij0O2mC5AO0LhGiPY97t0gFw==
-X-Gm-Gg: ASbGnctOlHhXx0Re6PrEOYuGjZF3nxhSOHDGDdW+MmHY1R+I9DU/fs9UY7WM6G4RU2B
-	oz5+hhhmUuaI3GZZyTryu7rwr2KnqrvwIUdqXi/qGhZPWd7R4kNkaytoXPpWlEaBcmYkxKxkorm
-	w8JHTIjvLkU2FBvcyXwnC6h3Q5odKj4YuO1/uH88wxBBy+Cn0rrq64Og==
-X-Google-Smtp-Source: AGHT+IFdaNoxSwXadZPcFSu3s1a5OECzl0nPHiRim09tz00SJAtaxjhMC0Ms7Db/M0w/VxGQVS1tNGzED+Wljh/WZKI=
-X-Received: by 2002:a05:6512:695:b0:549:8b4d:bd47 with SMTP id
- 2adb3069b0e04-54fbe407821mr2923115e87.9.1746794438053; Fri, 09 May 2025
- 05:40:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zv8LH63fFz3bkL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 23:02:47 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 549Af3U3004468;
+	Fri, 9 May 2025 13:02:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=TDjkF/
+	/Nhp950cpZ/fbjETYdNCwuZBtjg6uNqRtDxKI=; b=nQBpMxghUqnKdttB18XGkJ
+	J7ntEXTkAIfzDYuTvicvStctHxZ4Hp8upCdjGkomigGrc322rsg2GXs3kZuA6q5+
+	nQSr7OxAoZ4Li97yxjoVQqWS/nGO1lR4diSPfb7OfzjJ8ZLUr+hvOlfw9W0Mj0gW
+	6PenqfPVRcKTxca4bu9oEal7+XMc+xXo2duizI+Ctf4ZqExSLAT41LkcynnUdFcN
+	TT94KHUOZ2CmqAm8sQ5D+iy3iSMCm919FwISZ7GywbrEmxWH6jWXdJrsK6NVUC4v
+	1N3TB/Q9yYvkYlwahQiRutv1IV56e1oIIZTqy84ZCcRSUAtv3l6Zg+mnu2jWuUsA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46hg5sgj9p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 May 2025 13:02:30 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 549D0Uv1005482;
+	Fri, 9 May 2025 13:02:30 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46hg5sgj9h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 May 2025 13:02:30 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5499nMcx014583;
+	Fri, 9 May 2025 13:02:29 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46dypm352f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 May 2025 13:02:29 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 549D2PFV58130830
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 9 May 2025 13:02:25 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7752020040;
+	Fri,  9 May 2025 13:02:25 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AF38020043;
+	Fri,  9 May 2025 13:02:22 +0000 (GMT)
+Received: from [9.124.210.99] (unknown [9.124.210.99])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  9 May 2025 13:02:22 +0000 (GMT)
+Message-ID: <d2bc5f3c-b360-41fe-998f-2ef444aba6ed@linux.ibm.com>
+Date: Fri, 9 May 2025 18:32:21 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,47 +86,143 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250508130612.82270-1-markus.burri@mt.com> <20250508130612.82270-5-markus.burri@mt.com>
-In-Reply-To: <20250508130612.82270-5-markus.burri@mt.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 9 May 2025 14:40:26 +0200
-X-Gm-Features: ATxdqUE7pXlfCMv5H1Kgd5pteF0BctNTVcpk-CgS0AiKblrCPf4IDIEcE-yR17c
-Message-ID: <CAMRc=MeYYUc=FKJdArpqv0D2fUt1vyCJiZzjYyN95aMv0-b1WA@mail.gmail.com>
-Subject: Re: [PATCH v4 4/6] gpio: fix potential out-of-bound write
-To: Markus Burri <markus.burri@mt.com>
-Cc: linux-kernel@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	"Oliver O'Halloran" <oohall@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>, 
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>, Oded Gabbay <ogabbay@kernel.org>, 
-	Linus Walleij <linus.walleij@linaro.org>, Nuno Sa <nuno.sa@analog.com>, 
-	Olivier Moysan <olivier.moysan@foss.st.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, linuxppc-dev@lists.ozlabs.org, 
-	dri-devel@lists.freedesktop.org, linux-gpio@vger.kernel.org, 
-	linux-iio@vger.kernel.org, Markus Burri <markus.burri@bbv.ch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/6] powerpc: fadump: use lock guard for mutex
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
+        peterz@infradead.org, ajd@linux.ibm.com, mahesh@linux.ibm.com,
+        hbathini@linux.ibm.com, linux-kernel@vger.kernel.org,
+        Srikar Dronamraju <srikar@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com
+References: <20250505075333.184463-1-sshegde@linux.ibm.com>
+ <20250505075333.184463-4-sshegde@linux.ibm.com>
+ <9f18e699-4819-4d2f-a932-fc5e399e8abd@linux.ibm.com>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <9f18e699-4819-4d2f-a932-fc5e399e8abd@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: wNFCSBdOTPN5emLT6e1yeS-PxPbvP4DB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA5MDEyMyBTYWx0ZWRfX45+IfNik/6x4 YBiJFHFJkLQ6pkEmGVmidyfBmeNWV3lgu0t+L03vN0UGpD06i72bW8VhCIWc61tq93dFMn0tVkp zxWg+AEGKrB/YYsJB+5hTqgfm3+WRsylGtI0n9+QPmHfCyIxKyqCY+tPCM0qeezSFyLYG2dOVPj
+ d3l+6pLwlSNSmfHpN1Ep4eKPGO7ggNZbTpMPNwZRJ1R3BJbHW0PaiKhD8n4TIDF3pPTNEVSh6UW vYs/q/u+xgbIcr7AEY5IrxQyqYVahH4PhP+XWSlpFCQtfyN7+KmL8wNuvv8bS95l9yES6zCqQik huOuv/02hgdqrKey5R9tjGNjLcz6XIECxRLKbsc3QPmxuQUpZSdhSbG6hghzyiF39W146Co4/oR
+ OwdXmCVwmtiKftR4LKZAg1j+I2eYrRUeP0IbLsuwDlNCJ7Eet2fO3h/nKNt/lGXefKRMp3ar
+X-Proofpoint-ORIG-GUID: ex8w7jr7aokN3IiwYasi3P57Rg77Rqjk
+X-Authority-Analysis: v=2.4 cv=NrjRc9dJ c=1 sm=1 tr=0 ts=681dfce6 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8 a=VnNF1IyMAAAA:8 a=Twlkf-z8AAAA:8
+ a=w4zUdiFJCf33N9Ciak0A:9 a=lqcHg5cX4UMA:10 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=ImwWUX5h3JJ3gRE9moBe:22 a=z2U-W3hJrleVIN9YIjzO:22 a=1CNFftbPRP8L7MoqJWF3:22 a=-74SuR6ZdpOK_LpdRCUo:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-09_05,2025-05-08_04,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 adultscore=0 suspectscore=0 impostorscore=0 bulkscore=0
+ mlxscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015 lowpriorityscore=0
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505090123
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, May 8, 2025 at 3:07=E2=80=AFPM Markus Burri <markus.burri@mt.com> w=
-rote:
->
-> Check that the input size does not exceed the buffer size.
-> If a caller write more characters, count is truncated to the max availabl=
-e
-> space in "simple_write_to_buffer".
-> Write a zero termination afterwards.
->
-> Signed-off-by: Markus Burri <markus.burri@mt.com>
-> ---
 
-Looks good and does fix an issue that can be easily reproduced with
-KASAN enabled. Please fix the issues reported by the build bot and
-resend (as a patch separate from the rest of this series). Thanks.
 
-Bartosz
+On 5/8/25 11:23, Sourabh Jain wrote:
+> 
+
+Hi Sourabh.
+
+> On 05/05/25 13:23, Shrikanth Hegde wrote:
+>> use scoped_guard for scope based resource management of mutex.
+>> This would make the code simpler and easier to maintain.
+>>
+>> More details on lock guards can be found at
+>> https://lore.kernel.org/all/20230612093537.614161713@infradead.org/T/#u
+>>
+>> Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
+>> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+>> ---
+>>   arch/powerpc/kernel/fadump.c | 11 ++++-------
+>>   1 file changed, 4 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+>> index df16c7f547ab..b8c7993c5bb1 100644
+>> --- a/arch/powerpc/kernel/fadump.c
+>> +++ b/arch/powerpc/kernel/fadump.c
+>> @@ -1375,15 +1375,12 @@ static void fadump_free_elfcorehdr_buf(void)
+>>   static void fadump_invalidate_release_mem(void)
+>>   {
+>> -    mutex_lock(&fadump_mutex);
+>> -    if (!fw_dump.dump_active) {
+>> -        mutex_unlock(&fadump_mutex);
+>> -        return;
+>> +    scoped_guard(mutex, &fadump_mutex) {
+>> +        if (!fw_dump.dump_active)
+>> +            return;
+>> +        fadump_cleanup();
+>>       }
+>> -    fadump_cleanup();
+>> -    mutex_unlock(&fadump_mutex);
+>> -
+>>       fadump_free_elfcorehdr_buf();
+>>       fadump_release_memory(fw_dump.boot_mem_top, 
+>> memblock_end_of_DRAM());
+>>       fadump_free_cpu_notes_buf();
+> 
+> I tried to understand how scoped_guard gets unwrapped and what changes
+> it brings to the assembly of the update function. However, with GCC version
+> 11.5.0 20240719 (Red Hat 11.5.0-5), identical assembly was generated for 
+> the
+> fadump_invalidate_release_mem function with or without this patch.
+> 
+> Which was a surprise to me because there are lot macros and compiler
+> magic involved here to call destructor ( for example https:// 
+> clang.llvm.org/docs/AttributeReference.html#cleanup)
+> when a variable goes out of scope.
+
+that is nice to see.
+
+> 
+> c000000000053978 <fadump_invalidate_release_mem.part.0>:
+> c000000000053978:       ae 01 4c 3c     addis   r2,r12,430
+> c00000000005397c:       88 47 42 38     addi    r2,r2,18312
+> c000000000053980:       a6 02 08 7c     mflr    r0
+> c000000000053984:       11 57 02 48     bl      c000000000079094 <_mcount>
+> c000000000053988:       a6 02 08 7c     mflr    r0
+> c00000000005398c:       f8 ff e1 fb     std     r31,-8(r1)
+> c000000000053990:       f0 ff c1 fb     std     r30,-16(r1)
+> c000000000053994:       1f 01 e2 3f     addis   r31,r2,287
+> c000000000053998:       30 ea ff 3b     addi    r31,r31,-5584
+> c00000000005399c:       10 00 01 f8     std     r0,16(r1)
+> c0000000000539a0:       81 ff 21 f8     stdu    r1,-128(r1)
+> c0000000000539a4:       18 00 41 f8     std     r2,24(r1)
+> c0000000000539a8:       ad fe ff 4b     bl      c000000000053854 
+> <fadump_cleanup+0x8>
+> c0000000000539ac:       c2 00 62 3c     addis   r3,r2,194
+> c0000000000539b0:       98 c3 63 38     addi    r3,r3,-15464
+> c0000000000539b4:       c9 1d 06 49     bl      c0000000010b577c 
+> <mutex_unlock+0x8>
+> c0000000000539b8:       00 00 00 60     nop
+> c0000000000539bc:       1f 01 22 3d     addis   r9,r2,287
+> snip...
+> 
+> 
+> Also, fadump_invalidate_release_mem() is only called in the fadump 
+> kernel in two scenarios
+> to release the reserved memory:
+> 
+> 1. After dump collection
+> 2. When fadump fails to process the dump
+> 
+> So even if the compiler messes up something here, there is no impact on 
+> dump collection as such.
+
+If there is a compiler mess up we will have a much bigger issue, since 
+these are quite widely used in core areas such as scheduler, timers etc.
+
+> 
+> So changes looks good to me:
+> Reviewed-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+
+Thanks for taking a look and reviewing it.
+
 
