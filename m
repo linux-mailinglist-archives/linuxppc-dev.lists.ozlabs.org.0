@@ -1,92 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-8464-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8465-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754A0AB0DEC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 10:57:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E99AB0DED
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 10:58:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zv2vd2ZDbz30V7;
-	Fri,  9 May 2025 18:57:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zv2vn1Tf8z3bh0;
+	Fri,  9 May 2025 18:57:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746781069;
-	cv=none; b=L3pHJMTItJSE9DWFtZCZ/TNB1OGQEkPdJZ50bBBU2okb0qT2TtBa+9LtONHv1/7pcxBDENE/l0PD2/8KjZE2ONP8kZ9TOze2jJU2UeviQ88ctSqMluvn3JC5guz8+edx8YBIkOsQreFbPHjcPU13wl0/SoU+MzT2IfIzZY0zUJZHgFIjDp3FJzHE6EjhWCig+zDjKR9xFRLy8LqcUYSqmH9qHz1EN7i+FZhIG6/SocUnxxSHQI9exyAd22udetmEUqXLrqLaHy30u196+/9A+tReA91rwp/t+IhOIso10YXvwpyLJwYb7e6z8CfHQJtuIJgtSJ5KNT8ypswhRHGAeg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746781077;
+	cv=none; b=gFigo61iNdGNW7prfVVSqZsM4kolzLVmep2z2D3sSLxw+gzpmx6ccxTJ2NckS2FOZGveX8xLiWQH0mAEEfzdy/yDd8dBV9j21mhwKEW0qvRpn3C7AapYV3c1kBgxuVCRkEUUWx8NzvGGGGRhSQJpEjhgb0IQY3rho4qx27yom0u19eAS5af0H8fz7VRUFMo34i9Yt8RY11vBc4G0Y2P5qDdAIGB/nP/PM4zK6PzPCsEvTjBGu65+aeDFGWHuViL+aAw6Kzhc/QTgsHP8JyDSjxcQURYwmXs0nuXPx90DZiusdZLFwLtm2F18eLVjsrF6fRvJyjryCLKYVcORS6rvmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746781069; c=relaxed/relaxed;
-	bh=W3ofDnttG+IcV97+q22PXfMYawWC2pHrgGwgSXYdvb8=;
+	t=1746781077; c=relaxed/relaxed;
+	bh=6gkeb/9Kdfy78P2DpuPGWOQmqeRSDCl/s8JKK0Bwndg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=g09ufMouL3JrslrJQ6aQCjz/dGsd1aVMSqaHEruCKFj5VUOhRstEUwnRtHfKc0Pla+Tait23G8w+PLJRYlNrj9t9+XVzaknTbbKeyoQlh/e9W2ABlAcfN3Z1eBzgTkGbKSOMqn83Jnnvxx13+4mHWBWS0yeCqiHsMiWBd0RtxtDHoxw3MI9mRHLZNyv/JR/KsMG/Fd8CglThE1rnszqA5BTo6BPx2M1upC6icLz/bdQVkNyNXMx02GER2KtrqQ6ek6TC7fwD5Mh2km+XqfBE2jXiClHuu+kMyZ+eD30TLQLpBqei4xAmRYJ0WGQCryXvMd+PsrQry75BMhX/0Dk2oQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AtXHhuVo; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AtXHhuVo; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:content-type; b=HRgJgBG1bdcUA1PEB0X6cmOt1th4ZcjpJcFge7HeQf4AAY163vjdMNPFPppYjkqjjD/6vNeYKmyX/l8+Ikz2Bm+/hFAb2p4N70KrrnquYxip5KVzIFbo8i6Q/DCyvaTRQz35JlbfqOYYbfqYIDpL/qtOTsgrdFlic14jr854pUF4IcCNR6M953K1KgxjFK7rGJy2WpXlpkIe/nPrWj5qzoLzDoQjz47itnQqjrznr3T5DblTMCuL4W0IFSIFprgUX6qhVxv0MAGwNCXb1E4/rZAOX2327TMdvJ2JnDfcWMHrNicztGw/Wft1wy5r+1D1uEUPha58gVvYY/ky/EpNOw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BlxOQgP7; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BlxOQgP7; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AtXHhuVo;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AtXHhuVo;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BlxOQgP7;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BlxOQgP7;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zv2vc3SHPz2ySf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 18:57:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zv2vm2XKnz2ySf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 18:57:56 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746781065;
+	s=mimecast20190719; t=1746781073;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W3ofDnttG+IcV97+q22PXfMYawWC2pHrgGwgSXYdvb8=;
-	b=AtXHhuVo8EC0a7DPxH03ngmW8Ivl2usvegWNbBzDlu3tUJ7g42e737qE9uank5eZ5xaFdr
-	TuakrLkIz44DD4qTrE2OwTZkyArzfsjlrCz+2K5F7ZtTfkuHxi4cnFfB1AjAokOq+0i7Lx
-	rbn01KYIZs9MV7KVQbTRc4d98b/Nthk=
+	bh=6gkeb/9Kdfy78P2DpuPGWOQmqeRSDCl/s8JKK0Bwndg=;
+	b=BlxOQgP7BecC9Vo6jjtAcaUAdlG0aUR3MkjV6MrOTSrb3XLH2fsbu8SlPlZ67x73w2+7l9
+	FHHD7oh+RNUwtuo1Wo7307Nz1xpuBjEshFcSTuLYgUTdQkOpL59K3U93+W648fgnv1v3X5
+	FGJPMebTVg50TjMWqAJPEDDrVGy3gy0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746781065;
+	s=mimecast20190719; t=1746781073;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W3ofDnttG+IcV97+q22PXfMYawWC2pHrgGwgSXYdvb8=;
-	b=AtXHhuVo8EC0a7DPxH03ngmW8Ivl2usvegWNbBzDlu3tUJ7g42e737qE9uank5eZ5xaFdr
-	TuakrLkIz44DD4qTrE2OwTZkyArzfsjlrCz+2K5F7ZtTfkuHxi4cnFfB1AjAokOq+0i7Lx
-	rbn01KYIZs9MV7KVQbTRc4d98b/Nthk=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=6gkeb/9Kdfy78P2DpuPGWOQmqeRSDCl/s8JKK0Bwndg=;
+	b=BlxOQgP7BecC9Vo6jjtAcaUAdlG0aUR3MkjV6MrOTSrb3XLH2fsbu8SlPlZ67x73w2+7l9
+	FHHD7oh+RNUwtuo1Wo7307Nz1xpuBjEshFcSTuLYgUTdQkOpL59K3U93+W648fgnv1v3X5
+	FGJPMebTVg50TjMWqAJPEDDrVGy3gy0=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-346-1BNolX9FNfGo_bakGXpugA-1; Fri, 09 May 2025 04:57:44 -0400
-X-MC-Unique: 1BNolX9FNfGo_bakGXpugA-1
-X-Mimecast-MFC-AGG-ID: 1BNolX9FNfGo_bakGXpugA_1746781063
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-ac6a0443bafso130644766b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 May 2025 01:57:44 -0700 (PDT)
+ us-mta-36-gwCuudxZNUikY4OVunAvqw-1; Fri, 09 May 2025 04:57:51 -0400
+X-MC-Unique: gwCuudxZNUikY4OVunAvqw-1
+X-Mimecast-MFC-AGG-ID: gwCuudxZNUikY4OVunAvqw_1746781070
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-ad2200eb1d0so35133366b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 May 2025 01:57:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746781063; x=1747385863;
+        d=1e100.net; s=20230601; t=1746781070; x=1747385870;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=W3ofDnttG+IcV97+q22PXfMYawWC2pHrgGwgSXYdvb8=;
-        b=ko7vb6O6AqHPnVsOj8LRBcmlpzCdqaKcDhV9gMH2UM5pyC0YRFfEiom93UCIUCj2nn
-         0KIJMzazCvEDo8Y5d9/87T4qGLjuqi0KRXATmJjUzVdzEpiqE7nNo0c9P3zz+5W/k9CC
-         Hz/7DV9hetFaiX6npiprOJVFCHR8BxqFc9u2pNyQ9xbVhVuJCAN9qcwWOv87GEO+8CMa
-         HoslFr6w3cS4geyjg4ev3Q/oOUdHfgWqh7WCn/rt5TQVwu1dqwKISEMrLg4IyKbH3J3T
-         +7JHs99M38D07LOFHQpqFlmu+Z/Xx8zs8Du0Z7C3wyPNJWH0fKlO/btSZNZ51XP4w2GM
-         DRJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUThZDNJL9IgbQ/EfP71lfSmqZ5zOdnJ2LSmqUsn0GtBHk1LKv2E7w+rGS1komUeyxgws5tCqRSRm8nsb0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywqrp7iZUcqp1JSrZYaGfUmZvFZyRjHHNSdXmSBSWMl4/ruRzAm
-	Uw4zBktgY3pPLYvtXK6Q10z8IgOQ1NmPHH0DwVXvzrkgm/TpR8Pxjlf8OwuHaGjmwJxvn5j+80+
-	Yx3PfLUDhiW6uS4DZ1RjAhxs24ZX95rof5b4K04yWfl0h29C8C4fnCz5iDVsdRR0=
-X-Gm-Gg: ASbGncudwlA8Ha/UZ4Ryrq8PSD9XzTP20JKp6A3upIgLIcIsLh2l08/XHFe+R74gil/
-	htXOyo7HbrZaCr2jFraAphk8ZzXHCotHGnn168LKC/otG52zPWi1Rm0YT7n59Uf1+AzhDkqdteM
-	X44rr6HdkjBh7Zjl0TSVjB55rjqM0feSfkrkUbrUZlwRzHhlwWv/HIt7fsGxlDwkjRoDq9BtWpk
-	3mw1nggnz+ziuakDN5rX/LNUsMyS+FRNnYC0z+am9dzpDpM3efOpTy+KzB5YUUei6gUZZb9u7Sw
-	xlVDMOLpbntx6UhRoQW6OSXfHA==
-X-Received: by 2002:a17:907:2d11:b0:acf:6bab:5c4f with SMTP id a640c23a62f3a-ad218f8e98fmr216765366b.23.1746781063063;
-        Fri, 09 May 2025 01:57:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMGDwphiNHE/m9JZeYBlYKoN+B4ckHTHfGrZRId6SN32nOHj4ub3aTES86oLCxIEj3HJmHFA==
-X-Received: by 2002:a17:907:2d11:b0:acf:6bab:5c4f with SMTP id a640c23a62f3a-ad218f8e98fmr216761866b.23.1746781062467;
-        Fri, 09 May 2025 01:57:42 -0700 (PDT)
+        bh=6gkeb/9Kdfy78P2DpuPGWOQmqeRSDCl/s8JKK0Bwndg=;
+        b=R/vb55dSeRU2TvLA3a44okCbUVTGx68T3lO2IGvyxW7GaG9Ucv1/2L1yxmJM8ozeMK
+         rjdbYqL9sBLn/K0yChv5wQtaiDtiC3vGdyNxSohTi0WKqvOCdRTr83rsRekqSF60Z3s5
+         SBRfU3BPAbrP4qqbuiqBy1708yrOCjO32bTaC1Sb5dxpncGQiUsaGQ3XA08BBeO8zpPr
+         kOiluDzElE4RttHU+B9XkYmhY86ZvBtyGY+DsyaBrbATxWC8KLVkZ8ZlfiQmAhsD8xIm
+         Cfe8W9/IOaanrwn0nvhG361vAGupVilP/+RdOgtSTM2nTVUOQWzbftbn7y8iwYY7WtXm
+         J0QA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ/6OzWdqy2slDq9h5kiLOxjXn1blpVfdgU4DgO42UOT9Y1ZYQIfs+F6hfntMDHN0jImHV6xzWyWdqaL8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzbLp6F9Ge4BGxuE81qUCLF5IAa7pMyA4AHyy53SdsqA7pqIN1c
+	F+hW5bE+mm3bw2MyZKvL0IAZDbAzbpVRwbDBjOetlg0ZT8/f6EVeGb3M8OEbcoVziBVocvVGzlp
+	K4mo3iCq6wa+5IicExjv0AWG0icV2ANQYFAU5mlrGXURjzspn8XDcvTdwpqhrxxQ=
+X-Gm-Gg: ASbGnctXgl9uBfLg+fK+0z/J0xs/8ryBebwinRWR08mccuhfA0FPngyWw4KJ0+Li0GH
+	pc44HArXiJWSrfK8KdHuQW+pQcnOyrMewNIyfmZl5b0rmXaBW6p938qNq6M4QzrBGEsQOAUnlIf
+	991l6PQWKmdVLZI/pamZHBQcwuFlipuo9y+6FsYintzjAebt8CvXSs2vmLrtz6Ngrq4u5XSHvq/
+	v/18aY9RqLcqGtLAqRzc24QvkS34k2WmPvszhSDXQix3OTBmGq07Zcvau3P3zJm5yH2zdxPvX3j
+	k618wfMJldowmSEZKtppuARi7w==
+X-Received: by 2002:a17:906:ba90:b0:aca:cda4:9aae with SMTP id a640c23a62f3a-ad21927d0d6mr208672066b.37.1746781070376;
+        Fri, 09 May 2025 01:57:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFm/6oRhoG7o/lfsJVdPERf6/D/JJirfP83vdMoj15DtJopabMpuCr2u+MViV0A2cvILTEMug==
+X-Received: by 2002:a17:906:ba90:b0:aca:cda4:9aae with SMTP id a640c23a62f3a-ad21927d0d6mr208668366b.37.1746781069774;
+        Fri, 09 May 2025 01:57:49 -0700 (PDT)
 Received: from localhost.localdomain ([193.207.182.136])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad2192c81bfsm120144666b.33.2025.05.09.01.57.39
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad219348781sm119504566b.61.2025.05.09.01.57.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 May 2025 01:57:41 -0700 (PDT)
+        Fri, 09 May 2025 01:57:49 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Jarkko Sakkinen <jarkko@kernel.org>
 Cc: linux-arm-kernel@lists.infradead.org,
@@ -106,11 +106,10 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Sumit Garg <sumit.garg@kernel.org>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: [PATCH v4 3/4] tpm/tpm_ftpm_tee: support TPM_CHIP_FLAG_SYNC
-Date: Fri,  9 May 2025 10:57:12 +0200
-Message-ID: <20250509085713.76851-4-sgarzare@redhat.com>
+	Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH v4 4/4] tpm/tpm_svsm: support TPM_CHIP_FLAG_SYNC
+Date: Fri,  9 May 2025 10:57:13 +0200
+Message-ID: <20250509085713.76851-5-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250509085713.76851-1-sgarzare@redhat.com>
 References: <20250509085713.76851-1-sgarzare@redhat.com>
@@ -128,7 +127,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: s5q5uPCIu_A7kQQBFp2TJW8RqagHG_Ctxhb9opPCH-E_1746781063
+X-Mimecast-MFC-PROC-ID: 4HK7sIYnuHU0s2qq8T6hgsp8SlH-wFmVDCBIABFHOaA_1746781070
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
@@ -147,172 +146,79 @@ Enable synchronous send() with TPM_CHIP_FLAG_SYNC, which implies that
 ->send() already fills the provided buffer with a response, and ->recv()
 is not implemented.
 
-Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Keep using the same pre-allocated buffer to avoid having to allocate
+it for each command. We need the buffer to have the header required by
+the SVSM protocol and the command contiguous in memory.
+
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
 v4:
-- added Sumit's R-b
 - reworked commit description [Jarkko]
-v2:
-- set TPM_CHIP_FLAG_SYNC and support it in the new send()
-- removed Jens' T-b
-v1:
-- added Jens' T-b
 ---
- drivers/char/tpm/tpm_ftpm_tee.h |  4 ---
- drivers/char/tpm/tpm_ftpm_tee.c | 64 ++++++++++-----------------------
- 2 files changed, 19 insertions(+), 49 deletions(-)
+ drivers/char/tpm/tpm_svsm.c | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/char/tpm/tpm_ftpm_tee.h b/drivers/char/tpm/tpm_ftpm_tee.h
-index e39903b7ea07..8d5c3f0d2879 100644
---- a/drivers/char/tpm/tpm_ftpm_tee.h
-+++ b/drivers/char/tpm/tpm_ftpm_tee.h
-@@ -22,16 +22,12 @@
-  * struct ftpm_tee_private - fTPM's private data
-  * @chip:     struct tpm_chip instance registered with tpm framework.
-  * @session:  fTPM TA session identifier.
-- * @resp_len: cached response buffer length.
-- * @resp_buf: cached response buffer.
-  * @ctx:      TEE context handler.
-  * @shm:      Memory pool shared with fTPM TA in TEE.
-  */
- struct ftpm_tee_private {
- 	struct tpm_chip *chip;
- 	u32 session;
--	size_t resp_len;
--	u8 resp_buf[MAX_RESPONSE_SIZE];
- 	struct tee_context *ctx;
- 	struct tee_shm *shm;
+diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
+index d3ca5615b6f7..db1983072345 100644
+--- a/drivers/char/tpm/tpm_svsm.c
++++ b/drivers/char/tpm/tpm_svsm.c
+@@ -25,38 +25,32 @@ struct tpm_svsm_priv {
+ 	void *buffer;
  };
-diff --git a/drivers/char/tpm/tpm_ftpm_tee.c b/drivers/char/tpm/tpm_ftpm_tee.c
-index 637cc8b6599e..b9adc040ca6d 100644
---- a/drivers/char/tpm/tpm_ftpm_tee.c
-+++ b/drivers/char/tpm/tpm_ftpm_tee.c
-@@ -31,46 +31,18 @@ static const uuid_t ftpm_ta_uuid =
- 		  0x82, 0xCB, 0x34, 0x3F, 0xB7, 0xF3, 0x78, 0x96);
  
- /**
-- * ftpm_tee_tpm_op_recv() - retrieve fTPM response.
-- * @chip:	the tpm_chip description as specified in driver/char/tpm/tpm.h.
-- * @buf:	the buffer to store data.
-- * @count:	the number of bytes to read.
-- *
-- * Return:
-- *	In case of success the number of bytes received.
-- *	On failure, -errno.
-- */
--static int ftpm_tee_tpm_op_recv(struct tpm_chip *chip, u8 *buf, size_t count)
--{
--	struct ftpm_tee_private *pvt_data = dev_get_drvdata(chip->dev.parent);
--	size_t len;
--
--	len = pvt_data->resp_len;
--	if (count < len) {
--		dev_err(&chip->dev,
--			"%s: Invalid size in recv: count=%zd, resp_len=%zd\n",
--			__func__, count, len);
--		return -EIO;
--	}
--
--	memcpy(buf, pvt_data->resp_buf, len);
--	pvt_data->resp_len = 0;
--
--	return len;
+-static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t len,
++static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t cmd_len,
+ 			 size_t buf_size)
+ {
+ 	struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
+ 	int ret;
+ 
+-	ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, len);
++	ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, cmd_len);
+ 	if (ret)
+ 		return ret;
+ 
+ 	/*
+ 	 * The SVSM call uses the same buffer for the command and for the
+-	 * response, so after this call, the buffer will contain the response
+-	 * that can be used by .recv() op.
++	 * response, so after this call, the buffer will contain the response.
++	 *
++	 * Note: we have to use an internal buffer because the device in SVSM
++	 * expects the svsm_vtpm header + data to be physically contiguous.
+ 	 */
+-	return snp_svsm_vtpm_send_command(priv->buffer);
 -}
 -
--/**
-- * ftpm_tee_tpm_op_send() - send TPM commands through the TEE shared memory.
-+ * ftpm_tee_tpm_op_send() - send TPM commands through the TEE shared memory
-+ * and retrieve the response.
-  * @chip:	the tpm_chip description as specified in driver/char/tpm/tpm.h
-- * @buf:	the buffer to send.
-- * @len:	the number of bytes to send.
-+ * @buf:	the buffer to send and to store the response.
-+ * @cmd_len:	the number of bytes to send.
-  * @buf_size:	the size of the buffer.
-  *
-  * Return:
-- *	In case of success, returns 0.
-+ *	In case of success, returns the number of bytes received.
-  *	On failure, -errno
-  */
--static int ftpm_tee_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t len,
-+static int ftpm_tee_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t cmd_len,
- 				size_t buf_size)
- {
- 	struct ftpm_tee_private *pvt_data = dev_get_drvdata(chip->dev.parent);
-@@ -82,16 +54,15 @@ static int ftpm_tee_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t len,
- 	struct tee_param command_params[4];
- 	struct tee_shm *shm = pvt_data->shm;
+-static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
+-{
+-	struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
++	ret = snp_svsm_vtpm_send_command(priv->buffer);
++	if (ret)
++		return ret;
  
--	if (len > MAX_COMMAND_SIZE) {
-+	if (cmd_len > MAX_COMMAND_SIZE) {
- 		dev_err(&chip->dev,
- 			"%s: len=%zd exceeds MAX_COMMAND_SIZE supported by fTPM TA\n",
--			__func__, len);
-+			__func__, cmd_len);
- 		return -EIO;
- 	}
- 
- 	memset(&transceive_args, 0, sizeof(transceive_args));
- 	memset(command_params, 0, sizeof(command_params));
--	pvt_data->resp_len = 0;
- 
- 	/* Invoke FTPM_OPTEE_TA_SUBMIT_COMMAND function of fTPM TA */
- 	transceive_args = (struct tee_ioctl_invoke_arg) {
-@@ -105,7 +76,7 @@ static int ftpm_tee_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t len,
- 		.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT,
- 		.u.memref = {
- 			.shm = shm,
--			.size = len,
-+			.size = cmd_len,
- 			.shm_offs = 0,
- 		},
- 	};
-@@ -117,7 +88,7 @@ static int ftpm_tee_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t len,
- 		return PTR_ERR(temp_buf);
- 	}
- 	memset(temp_buf, 0, (MAX_COMMAND_SIZE + MAX_RESPONSE_SIZE));
--	memcpy(temp_buf, buf, len);
-+	memcpy(temp_buf, buf, cmd_len);
- 
- 	command_params[1] = (struct tee_param) {
- 		.attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INOUT,
-@@ -158,17 +129,20 @@ static int ftpm_tee_tpm_op_send(struct tpm_chip *chip, u8 *buf, size_t len,
- 			__func__, resp_len);
- 		return -EIO;
- 	}
-+	if (resp_len > buf_size) {
-+		dev_err(&chip->dev,
-+			"%s: resp_len=%zd exceeds buf_size=%zd\n",
-+			__func__, resp_len, buf_size);
-+		return -EIO;
-+	}
- 
--	/* sanity checks look good, cache the response */
--	memcpy(pvt_data->resp_buf, temp_buf, resp_len);
--	pvt_data->resp_len = resp_len;
-+	memcpy(buf, temp_buf, resp_len);
- 
--	return 0;
-+	return resp_len;
+-	/*
+-	 * The internal buffer contains the response after we send the command
+-	 * to SVSM.
+-	 */
+-	return svsm_vtpm_cmd_response_parse(priv->buffer, buf, len);
++	return svsm_vtpm_cmd_response_parse(priv->buffer, buf, buf_size);
  }
  
- static const struct tpm_class_ops ftpm_tee_tpm_ops = {
+ static struct tpm_class_ops tpm_chip_ops = {
  	.flags = TPM_OPS_AUTO_STARTUP,
--	.recv = ftpm_tee_tpm_op_recv,
- 	.send = ftpm_tee_tpm_op_send,
+-	.recv = tpm_svsm_recv,
+ 	.send = tpm_svsm_send,
  };
  
-@@ -253,7 +227,7 @@ static int ftpm_tee_probe(struct device *dev)
- 	}
+@@ -85,6 +79,7 @@ static int __init tpm_svsm_probe(struct platform_device *pdev)
  
- 	pvt_data->chip = chip;
--	pvt_data->chip->flags |= TPM_CHIP_FLAG_TPM2;
-+	pvt_data->chip->flags |= TPM_CHIP_FLAG_TPM2 | TPM_CHIP_FLAG_SYNC;
+ 	dev_set_drvdata(&chip->dev, priv);
  
- 	/* Create a character device for the fTPM */
- 	rc = tpm_chip_register(pvt_data->chip);
++	chip->flags |= TPM_CHIP_FLAG_SYNC;
+ 	err = tpm2_probe(chip);
+ 	if (err)
+ 		return err;
 -- 
 2.49.0
 
