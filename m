@@ -1,52 +1,99 @@
-Return-Path: <linuxppc-dev+bounces-8454-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8455-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 678A6AB08C9
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 05:20:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95595AB090F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 06:10:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZtvQ012CXz2yfS;
-	Fri,  9 May 2025 13:20:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZtwXP73pkz2yLJ;
+	Fri,  9 May 2025 14:10:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746760808;
-	cv=none; b=YRARWFql1skON53vLsVBf4ucusCW4MVbPRnXrjqNmIgfKQu4w/32K9i3iUtH2ZD0X7RxrUo1sqJ1yDHYJG5jfwZQNsSWH5/Lbefn7qln+phGWwaNKOcI5veeDfSZDXvWhYc76f1kiPJc+RyyOkJXwCZeXuEWPCfLCJaVwuY0Pvjjfokwzl44G4xXMF9E9uaPLznl6VbQQKYOxCBpIYj2e+amiOHM3VJBQhEArN3HGMsS50PcT3n5iRh4TyCpQlBxzoabVNQ1REKsMKJXrL3nsYBJgAxma2MFob3EsGYR2uSpdoHxZqZs0T7FE4WewmUKBMxx8r7xpBqnvLsm3Bmm8A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746759595;
+	cv=none; b=ZDwwbclQTdKaOHP739lpvFtBUgSW+TJ7qeCwJ1SBcwDN/Fk4nEpgAYwum/Pu1dwi6OnvH9ktUjPbYr+V4Yn7jh/zSrIRBtNF1kc1uWqf0v/GS85ihpfLiXKbntPFHW0NBpUj9/0lKDFrhM56G1pw4se5ZwO7Wzpj3Mds/Xmp3M21Xp/Xxsw3iBqMr7ElF4drDrZWKw9Kyqm8AN3mVbOSezj6IvjOYiye4R8+sch59eZzZtaTUB3WFBeDcdN6+NxhZAYYqoBky5pk8OimO9i5Z7IpDgQaFc6NVao1syv1QqKJaA9iOTa5K7seQ/sRbfGL/tqxyx1Zwsd15ed4p5hZpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746760808; c=relaxed/relaxed;
-	bh=rsjVb3bVFbqZxCpwgqOn0OzmwPrb1CwyQw6zTxUSgRk=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SNnAHDjBrSEX6JoUgs5sNylHovKAj6QmQOQfRofHXhwbhJ7SWKMJcpSIg3wkNYCNKAemIKtMobJwCi0wYCr1ssEWQXlaLSeKJbj7HI7IX3HHrh5wGmJn7MK/TigGeabq497+BEWNe1AEjh1SbyFfnIBlhQYs6nQkEFCTH/BJsFOWZtpSjWUdXCnFYBlADJpgkMf+mz28OMrYFoCwRr4gmPgJANZto0aaRq90ZYYunHZDjbHotABYZX5retOdLynT340gMQkAb4hDx/7B0qTI79E69YNI7MeuX6AvRdB0LYcdkci+OSvoxzHPdl0l4pU/ybtEcR7BP2InLvhHsoXQ5A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lyi099k6; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1746759595; c=relaxed/relaxed;
+	bh=ZxQEcAvzVs5hRAXlrlOyX5QOnKVlWvMiWvM9EPXP2kg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Hf3UNA+o8lQvrh58f660urejaWyh1XOetrrgMejecnNf5yh/XgJBw9Ovq6Fe//S6N186Yx4u1+Rd3HdrcgxgJQvnvkcUnqtBLWB7x3QTPiibiRTA3OG2gd1Y7T7LUF8t2ykJPNOpOeHn8YxklDfutRbuQRuhb1ig+7Kcn2d6R/a69LFix17+HppD1fJsNAjCQV+M2Y5P9ysTcVRpoXdnTxeHBB7z9ijG84vDmwTB74jq0g6yOSH29gYCY6n3dJ0ANOZTSKP83C8KTXe10XLj+RngOFFVNfaCEPglJcKwb8CRckuuKoGLEuAJvkUSjAC4WNZN/YIN3pPuU6/+NAIy+g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aw8wvXs+; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=wilfred.opensource@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lyi099k6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aw8wvXs+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=wilfred.opensource@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZtvPy6rxGz2yTK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 13:20:06 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 953CB49EC8;
-	Fri,  9 May 2025 03:20:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C55C4CEE7;
-	Fri,  9 May 2025 03:20:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746760804;
-	bh=NY9f4q2kixUeTEknFQvFoV+AD+81IXXwblbM2CctxyA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=lyi099k6fyh1ahKM/tIi2w1iD/oHFITWbewaXU85RAhs+2ImiRhUMBLcf1bBVf0Cg
-	 IUDKwZdC220PhgWaq7heBSTYpoTXLtChkVBQDVdT3N0UMiRsFfifWyASo5x1ET2GWH
-	 5TJUM319B4kyqdQ7xFGWDdlATCmBwMy2FnH7kZ02beNN9qepzcvadR1eI0h5jqExlj
-	 gvS8iSfn1Fo06yiztqXMR531F175M5zkI5XoaE7PyjFTJvdoElQZr4P4t6Me+0ZXQY
-	 OqVZk/Y2E8RLNk+gDJ99htcy2OYiD4iNe7FQ2Xg2fpwyiGAKmsEl6yQH/2GLY4K+Ov
-	 Z0BlxGOkIyVwg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33BFF380AA7D;
-	Fri,  9 May 2025 03:20:44 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zttyd6zytz2yTK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 12:59:52 +1000 (AEST)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-22e331215dbso21931155ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 May 2025 19:59:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746759590; x=1747364390; darn=lists.ozlabs.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZxQEcAvzVs5hRAXlrlOyX5QOnKVlWvMiWvM9EPXP2kg=;
+        b=aw8wvXs+0kXNq4A8eEUmyDJSEr9SQDusHkp+ZLpzv6jCZahnx4M1rMUAyx6UJXbkYT
+         lcE4htcOuLkRvpfbRfh5PvtNr6kRPvnxzXxhzavEJ6vyhe3obyKIzcnpDLfso/Sp9aid
+         DPZVc7bFys5uqsX9Ou9VsTso2km6ALdkRgAQ9S5iEVlEjKBZ2dwjfJ25j2xLr21JOlm5
+         LtFb+aR40I+2dfhNEWNj8v+RnBQM8kmk+DTLe/Nr+VItDwrRqlaDvkBIIs//EtxSxflX
+         AR0zcnVzByr2VHMSQ/woNOlPkbwQQgPwKDV++15vhoIb/Q8NIjmuKrSMg/Sb4hBPZDjn
+         5K+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746759590; x=1747364390;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZxQEcAvzVs5hRAXlrlOyX5QOnKVlWvMiWvM9EPXP2kg=;
+        b=CLg9wj4KMd8MNRbSqK4aqSR+jHcRdiInRwbgQ/TZHs5OaQ1bQSt3b9svq+pclVStWd
+         wZ+4egS64VOI/uIWYyAxR5BRbDvzHvUusj9dskZ0EK92Mm0+VFA6wt2qa6IpIFb/pvNl
+         yhVj86zeFPW4xC2Eb03367hcTrM0zJaE221LtxDbJYytgfG2N71ohAVo2KWHWUfB2yCo
+         IWRMjb+VqSLwWbEknCHjXayea6DR2UeFY/q9+2jabxnc4IGWQjzsKj8H6L5lDQ85bHUR
+         6p/cBL31vj9wmEMtV2LId5zcI+fDUt7rZC72vSm3n/g+9bok/vfLQwiTxVS6fVu5Z4ix
+         z8vg==
+X-Forwarded-Encrypted: i=1; AJvYcCWkmA6fm3CtMLwaf9CFwzNZD1Akt1CGg4jsVKmx4YDsgtF/HuuZd6KjCiccILl+sVqbhFlz/yrqTla23XU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yyvo0/Rqr5xztIE4XrCai/HC1mvnDsoUk92DaNbUQ/ak2eJPEBJ
+	gWoxLgGeuLzYbEeolz+Q6yc8X4jr+ZPri9olGT7x7ryz7guJ7fre
+X-Gm-Gg: ASbGncteE+aqsfOMYQlEGnMOV3SCANGZFtVCibMvZYAarpjjlb2vgLEryTQUdeI3Cnw
+	6Glo3vkPtcmsHgtkwLVXRcIaMl4BJlj5PZZLs9SLmLiWZ17l1UWHL7kH/D6wfJwwyEIqMhO4LEZ
+	7c5wEwBr1uGND2xym7oF5bZ6a5IVXIwDkHg27k/HX4VkMc8MHOvlAfRK6tX57NnQ+kfcLrWbWp1
+	Sxcav357dz6NsHfXVc8MqF/iy7LUuDjyOvcrdoObZQCMKooPz9ws4N8utjTAFeI3QHPAhB8u0xi
+	p5Ze1tY5Qzds4UaxIF4r0wq7bP4y4SbLuYl8nHPksQ/lJPLN9zUPflo=
+X-Google-Smtp-Source: AGHT+IFKUhpmwc9Rxvi6M/bPhs3f04cu9R3C2Hy466xXe6CJzKmuEEz15S5GyyqX36uHXpmQGFCOwA==
+X-Received: by 2002:a17:903:3d06:b0:216:4676:dfb5 with SMTP id d9443c01a7336-22fc93dc352mr25153235ad.21.1746759590482;
+        Thu, 08 May 2025 19:59:50 -0700 (PDT)
+Received: from [192.168.0.69] ([159.196.5.243])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22fc828b216sm6976305ad.168.2025.05.08.19.59.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 May 2025 19:59:49 -0700 (PDT)
+Message-ID: <ad737e02dd4b7958ecac1d67ac2f3da7a238d012.camel@gmail.com>
+Subject: Re: [PATCH v4 2/5] PCI/ERR: Add support for resetting the slots in
+ a platform specific way
+From: Wilfred Mallawa <wilfred.opensource@gmail.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Mahesh J
+ Salgaonkar <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Bjorn Helgaas	 <bhelgaas@google.com>, Lorenzo Pieralisi
+ <lpieralisi@kernel.org>, Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=	
+ <kw@linux.com>, Rob Herring <robh@kernel.org>, Zhou Wang
+ <wangzhou1@hisilicon.com>,  Will Deacon <will@kernel.org>, Robert Richter
+ <rric@kernel.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,  Marc Zyngier
+ <maz@kernel.org>, Conor Dooley <conor.dooley@microchip.com>, Daire McNamara
+	 <daire.mcnamara@microchip.com>
+Cc: dingwei@marvell.com, cassel@kernel.org, Lukas Wunner <lukas@wunner.de>, 
+ Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
+Date: Fri, 09 May 2025 12:59:40 +1000
+In-Reply-To: <20250508-pcie-reset-slot-v4-2-7050093e2b50@linaro.org>
+References: <20250508-pcie-reset-slot-v4-0-7050093e2b50@linaro.org>
+	 <20250508-pcie-reset-slot-v4-2-7050093e2b50@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,78 +107,39 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v7 net-next 00/14] Add more features for ENETC v4 - round 2
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174676084300.3115683.12773669022927548558.git-patchwork-notify@kernel.org>
-Date: Fri, 09 May 2025 03:20:43 +0000
-References: <20250506080735.3444381-1-wei.fang@nxp.com>
-In-Reply-To: <20250506080735.3444381-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, christophe.leroy@csgroup.eu,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- timur@kernel.org
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello:
+On Thu, 2025-05-08 at 12:40 +0530, Manivannan Sadhasivam wrote:
+> Some host bridge devices require resetting the slots in a platform
+> specific
+> way to recover them from error conditions such as Fatal AER errors,
+> Link
+> Down etc... So introduce pci_host_bridge::reset_slot callback and
+> call it
+> from pcibios_reset_secondary_bus() if available.
+>=20
+> The 'reset_slot' callback is responsible for resetting the given slot
+> referenced by the 'pci_dev' pointer in a platform specific way and
+> bring it
+> back to the working state if possible. If any error occurs during the
+> slot
+> reset operation, relevant errno should be returned.
+>=20
+> Signed-off-by: Manivannan Sadhasivam
+> <manivannan.sadhasivam@linaro.org>
+>=20
+Hey Manivannan,
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+I've been testing this by adding support for the reset_slot() callback
+in the dw-rockchip driver. Which has now fixed issues with sysfs issued
+bus resets to endpoints. So feel free to use:
 
-On Tue,  6 May 2025 16:07:21 +0800 you wrote:
-> This patch set adds the following features.
-> 1. Compared with ENETC v1, the formats of tables and command BD of ENETC
-> v4 have changed significantly, and the two are not compatible. Therefore,
-> in order to support the NETC Table Management Protocol (NTMP) v2.0, we
-> introduced the netc-lib driver and added support for MAC address filter
-> table and RSS table.
-> 2. Add MAC filter and VLAN filter support for i.MX95 ENETC PF.
-> 3. Add RSS support for i.MX95 ENETC PF.
-> 4. Add loopback support for i.MX95 ENETC PF.
-> 
-> [...]
+Tested-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 
-Here is the summary with links:
-  - [v7,net-next,01/14] net: enetc: add initial netc-lib driver to support NTMP
-    https://git.kernel.org/netdev/net-next/c/4701073c3deb
-  - [v7,net-next,02/14] net: enetc: add command BD ring support for i.MX95 ENETC
-    https://git.kernel.org/netdev/net-next/c/e3f4a0a8ddb4
-  - [v7,net-next,03/14] net: enetc: move generic MAC filtering interfaces to enetc-core
-    https://git.kernel.org/netdev/net-next/c/401dbdd1c23c
-  - [v7,net-next,04/14] net: enetc: add MAC filtering for i.MX95 ENETC PF
-    https://git.kernel.org/netdev/net-next/c/6c5bafba347b
-  - [v7,net-next,05/14] net: enetc: add debugfs interface to dump MAC filter
-    https://git.kernel.org/netdev/net-next/c/df6cb0958089
-  - [v7,net-next,06/14] net: enetc: add set/get_rss_table() hooks to enetc_si_ops
-    https://git.kernel.org/netdev/net-next/c/66b3fb001156
-  - [v7,net-next,07/14] net: enetc: make enetc_set_rss_key() reusable
-    https://git.kernel.org/netdev/net-next/c/7e1af4d6e4b4
-  - [v7,net-next,08/14] net: enetc: add RSS support for i.MX95 ENETC PF
-    https://git.kernel.org/netdev/net-next/c/2627e9873d69
-  - [v7,net-next,09/14] net: enetc: change enetc_set_rss() to void type
-    https://git.kernel.org/netdev/net-next/c/42fb12220ade
-  - [v7,net-next,10/14] net: enetc: enable RSS feature by default
-    https://git.kernel.org/netdev/net-next/c/2219281242fc
-  - [v7,net-next,11/14] net: enetc: extract enetc_refresh_vlan_ht_filter()
-    https://git.kernel.org/netdev/net-next/c/014e33e2d8e9
-  - [v7,net-next,12/14] net: enetc: move generic VLAN hash filter functions to enetc_pf_common.c
-    https://git.kernel.org/netdev/net-next/c/5d7f6f6836a1
-  - [v7,net-next,13/14] net: enetc: add VLAN filtering support for i.MX95 ENETC PF
-    https://git.kernel.org/netdev/net-next/c/f7d30ef6c1f7
-  - [v7,net-next,14/14] net: enetc: add loopback support for i.MX95 ENETC PF
-    https://git.kernel.org/netdev/net-next/c/932ce98041ff
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Regards,
+Wilfred
 
 
