@@ -1,77 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-8455-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8456-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95595AB090F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 06:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB43DAB0910
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 06:11:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZtwXP73pkz2yLJ;
-	Fri,  9 May 2025 14:10:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZtwXk4cVBz2ySg;
+	Fri,  9 May 2025 14:11:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746759595;
-	cv=none; b=ZDwwbclQTdKaOHP739lpvFtBUgSW+TJ7qeCwJ1SBcwDN/Fk4nEpgAYwum/Pu1dwi6OnvH9ktUjPbYr+V4Yn7jh/zSrIRBtNF1kc1uWqf0v/GS85ihpfLiXKbntPFHW0NBpUj9/0lKDFrhM56G1pw4se5ZwO7Wzpj3Mds/Xmp3M21Xp/Xxsw3iBqMr7ElF4drDrZWKw9Kyqm8AN3mVbOSezj6IvjOYiye4R8+sch59eZzZtaTUB3WFBeDcdN6+NxhZAYYqoBky5pk8OimO9i5Z7IpDgQaFc6NVao1syv1QqKJaA9iOTa5K7seQ/sRbfGL/tqxyx1Zwsd15ed4p5hZpw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::433"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746759906;
+	cv=none; b=VbOThRmtzTCZuO5iz/XoPbYKJIZBTeU6ZfFVhAdOPjQJXnKV3Xoy3PFClHidtnnAWe7y/HPbLHII8NLDtoFtEsNmV03oLp9HSWpua4FSN3Q/7JJKnNFDtQ68LYwvTaZQo1D3bIi79u8y073hW66xyzLIFJfV2VrKyNW0dake5HrT6imE4hndGuW3b8qwY4Qv/Pd1+ypSFh425/Ua/oBt/tW2N4wtd+gyV5nJiUREreOyaQFmjdrp0zjfKDIVXdzzLoNpdwc/0EsW9DgdROmrxHrDMCrgaZg2hTl0xMrP8gfT5yXcbHo30bEKIE0ECYcp47t5Le4IfJsCSwtVlUkI6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746759595; c=relaxed/relaxed;
-	bh=ZxQEcAvzVs5hRAXlrlOyX5QOnKVlWvMiWvM9EPXP2kg=;
+	t=1746759906; c=relaxed/relaxed;
+	bh=4t2Ei0gDk5QvwRDY4Z4sHn1iXc6O7O7DItvDoocJa0w=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Hf3UNA+o8lQvrh58f660urejaWyh1XOetrrgMejecnNf5yh/XgJBw9Ovq6Fe//S6N186Yx4u1+Rd3HdrcgxgJQvnvkcUnqtBLWB7x3QTPiibiRTA3OG2gd1Y7T7LUF8t2ykJPNOpOeHn8YxklDfutRbuQRuhb1ig+7Kcn2d6R/a69LFix17+HppD1fJsNAjCQV+M2Y5P9ysTcVRpoXdnTxeHBB7z9ijG84vDmwTB74jq0g6yOSH29gYCY6n3dJ0ANOZTSKP83C8KTXe10XLj+RngOFFVNfaCEPglJcKwb8CRckuuKoGLEuAJvkUSjAC4WNZN/YIN3pPuU6/+NAIy+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aw8wvXs+; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=wilfred.opensource@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 Content-Type:MIME-Version; b=W75OnyRqxilUIGlqlUlkGr8PCYrpMHoNoA97xEusl0ZVjXei0MP1by3vP9yVO2OFJb+jp4Ny2uBoblzNVSrI6QnFMxYJNZlmR9kO0KjA8z/9/f1RAgqYIw1OG7K7pt/omT0Bt74kbtZV31ENh6mAB+aVIT9N0tm+Q/Sa6dbTSclvbCO3RNk//Ip+w+2VF+hYrl6mNMFmGTABd5nS9ru1QQnn9fFqsP6c8I7frhHY/jE+7yqGmaZjFB4GzgKNKqHYikNhn4GYwz6Q3LvXX3sEY3EO9vQa+qfI36ZOVvPT8SE551dcOtEoGrwRuAqPvRTIh39XixVGZQsF/UEoY/fNvA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DSo944cn; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=wilfred.opensource@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=aw8wvXs+;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DSo944cn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62f; helo=mail-pl1-x62f.google.com; envelope-from=wilfred.opensource@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=wilfred.opensource@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zttyd6zytz2yTK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 12:59:52 +1000 (AEST)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-22e331215dbso21931155ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 May 2025 19:59:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ztv4d3qdwz2yTK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 13:05:04 +1000 (AEST)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-74237a74f15so832869b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 08 May 2025 20:05:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746759590; x=1747364390; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1746759901; x=1747364701; darn=lists.ozlabs.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ZxQEcAvzVs5hRAXlrlOyX5QOnKVlWvMiWvM9EPXP2kg=;
-        b=aw8wvXs+0kXNq4A8eEUmyDJSEr9SQDusHkp+ZLpzv6jCZahnx4M1rMUAyx6UJXbkYT
-         lcE4htcOuLkRvpfbRfh5PvtNr6kRPvnxzXxhzavEJ6vyhe3obyKIzcnpDLfso/Sp9aid
-         DPZVc7bFys5uqsX9Ou9VsTso2km6ALdkRgAQ9S5iEVlEjKBZ2dwjfJ25j2xLr21JOlm5
-         LtFb+aR40I+2dfhNEWNj8v+RnBQM8kmk+DTLe/Nr+VItDwrRqlaDvkBIIs//EtxSxflX
-         AR0zcnVzByr2VHMSQ/woNOlPkbwQQgPwKDV++15vhoIb/Q8NIjmuKrSMg/Sb4hBPZDjn
-         5K+A==
+        bh=4t2Ei0gDk5QvwRDY4Z4sHn1iXc6O7O7DItvDoocJa0w=;
+        b=DSo944cnZNFAFgkR9aT6vq4AhI1gJBkNBzV1mHvXVhM2uihA0X8QZRAdaFGgW18EDn
+         WQvUtpGXoqCouFwlqIKLLHVwN1IFylCVUvqg2LCR/5oBU2VBtd58FN+RX2u4p94a2Enb
+         ZuwJGZ8lz2sALyo+xQsl6p40p3FGva45aKzKnRjryRetRlRe0m6Sret8Ifx8odkHaDPu
+         LTIu880rq0gant+l1/w6Cs1b0hgPuMFhkA8eHsEkWjwtUKU5lER9ZAjReDG6hhnSohYf
+         OY6vaBHYLm3UAsl2bwh0heYharxss/8NSiQ4VPJo8EBMOhSaqCXN7Scrl7o/8ySksesT
+         62UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746759590; x=1747364390;
+        d=1e100.net; s=20230601; t=1746759901; x=1747364701;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZxQEcAvzVs5hRAXlrlOyX5QOnKVlWvMiWvM9EPXP2kg=;
-        b=CLg9wj4KMd8MNRbSqK4aqSR+jHcRdiInRwbgQ/TZHs5OaQ1bQSt3b9svq+pclVStWd
-         wZ+4egS64VOI/uIWYyAxR5BRbDvzHvUusj9dskZ0EK92Mm0+VFA6wt2qa6IpIFb/pvNl
-         yhVj86zeFPW4xC2Eb03367hcTrM0zJaE221LtxDbJYytgfG2N71ohAVo2KWHWUfB2yCo
-         IWRMjb+VqSLwWbEknCHjXayea6DR2UeFY/q9+2jabxnc4IGWQjzsKj8H6L5lDQ85bHUR
-         6p/cBL31vj9wmEMtV2LId5zcI+fDUt7rZC72vSm3n/g+9bok/vfLQwiTxVS6fVu5Z4ix
-         z8vg==
-X-Forwarded-Encrypted: i=1; AJvYcCWkmA6fm3CtMLwaf9CFwzNZD1Akt1CGg4jsVKmx4YDsgtF/HuuZd6KjCiccILl+sVqbhFlz/yrqTla23XU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyvo0/Rqr5xztIE4XrCai/HC1mvnDsoUk92DaNbUQ/ak2eJPEBJ
-	gWoxLgGeuLzYbEeolz+Q6yc8X4jr+ZPri9olGT7x7ryz7guJ7fre
-X-Gm-Gg: ASbGncteE+aqsfOMYQlEGnMOV3SCANGZFtVCibMvZYAarpjjlb2vgLEryTQUdeI3Cnw
-	6Glo3vkPtcmsHgtkwLVXRcIaMl4BJlj5PZZLs9SLmLiWZ17l1UWHL7kH/D6wfJwwyEIqMhO4LEZ
-	7c5wEwBr1uGND2xym7oF5bZ6a5IVXIwDkHg27k/HX4VkMc8MHOvlAfRK6tX57NnQ+kfcLrWbWp1
-	Sxcav357dz6NsHfXVc8MqF/iy7LUuDjyOvcrdoObZQCMKooPz9ws4N8utjTAFeI3QHPAhB8u0xi
-	p5Ze1tY5Qzds4UaxIF4r0wq7bP4y4SbLuYl8nHPksQ/lJPLN9zUPflo=
-X-Google-Smtp-Source: AGHT+IFKUhpmwc9Rxvi6M/bPhs3f04cu9R3C2Hy466xXe6CJzKmuEEz15S5GyyqX36uHXpmQGFCOwA==
-X-Received: by 2002:a17:903:3d06:b0:216:4676:dfb5 with SMTP id d9443c01a7336-22fc93dc352mr25153235ad.21.1746759590482;
-        Thu, 08 May 2025 19:59:50 -0700 (PDT)
+        bh=4t2Ei0gDk5QvwRDY4Z4sHn1iXc6O7O7DItvDoocJa0w=;
+        b=Fx+p84q4dGGXVd5EL+t5P+BbtEh8+IkPgpS5bPgc1UfMh473t/YXAKfbwcEeIN3kI9
+         Udh0mmFCWCl2sXXihrCeJCyDZJJ98qjo8O++X72QzFxc6EM1i79NnAIDCHN9itJi8hAu
+         h94XhzIm7hg35sTjmYs2KPambFEh1MbKZUM0+Ca78p7H15jDKWWk70EaXLvpp0sp4lFL
+         sDoNXJBfAptjxCPRGtbcrAJ/K+a0wiTpcbyg3wiFnM7gQNYa+66ylcXlA6vjKDWbiM0j
+         gWHKzIsaJfJPQF5E30QcAFHJgHcC7AjqhEkEM4Ek9p4UmHlqhBrQti79Vr0WdNFZjQfY
+         j5pA==
+X-Forwarded-Encrypted: i=1; AJvYcCUKOJ2jbvxWPw/tzdown2rusIO+kaFxv3V9jWXGDa2hQULytbt2Ky2PmFeNhgdJctQaQT2wzZhWWUyJbGQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyQku7t/U+6hx9SLxn6g2h8a9FflizTJui3ygJ5gS2kQNWyvn3T
+	bKWEzOXxIP2CFu9/UIKlXIE/cAwBZE/qrtDEJ41LA6+7taVCMa6L
+X-Gm-Gg: ASbGnctcvFAOmOgwt1g5FOnZ/FTtMMavzcTleZIzBScmYTuE0n0AWtEl/SZ2XBat5j4
+	xAmiUT9S7K/sw+Ewusk8HA/5qdKgBpghTypEw2QlvNgqNV921CJSBthfiJxPpKK8ILihEwDeS4H
+	clKSkErHuNa3bz3kQ5Obzya166kbbeusx92ONyOBIMwcOV/IMnqLiF4UliTsKuhzVnOwqLRmkiW
+	z/fkecVB1jSxDZRkO0z3Q4sy+zq24eXxuhVb6PxEYpjValYE20dRHZw0cgzF9GX5evK7le/I3Cz
+	F18m+g6MLmVz2QMX33BRtV9edflNmqo/TqNFpLwN8aRwOYrxBkDLqTQ=
+X-Google-Smtp-Source: AGHT+IEwAifDsncJZmqJw68TT82q/qBue7rdP4C6uwfIpHf3Dur7C2E/ejrTbFWgc33C/qpZMOKFqQ==
+X-Received: by 2002:a05:6a21:670d:b0:1f5:889c:3cbd with SMTP id adf61e73a8af0-215abc75623mr2418406637.35.1746759901018;
+        Thu, 08 May 2025 20:05:01 -0700 (PDT)
 Received: from [192.168.0.69] ([159.196.5.243])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22fc828b216sm6976305ad.168.2025.05.08.19.59.42
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74237a0f141sm775938b3a.117.2025.05.08.20.04.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 May 2025 19:59:49 -0700 (PDT)
-Message-ID: <ad737e02dd4b7958ecac1d67ac2f3da7a238d012.camel@gmail.com>
-Subject: Re: [PATCH v4 2/5] PCI/ERR: Add support for resetting the slots in
- a platform specific way
+        Thu, 08 May 2025 20:05:00 -0700 (PDT)
+Message-ID: <09c558f2128c5f8ca1d4e51b0ba04646170d2de1.camel@gmail.com>
+Subject: Re: [PATCH v4 1/5] PCI/ERR: Remove misleading TODO regarding kernel
+ panic
 From: Wilfred Mallawa <wilfred.opensource@gmail.com>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Mahesh J
  Salgaonkar <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>,
@@ -87,10 +87,10 @@ Cc: dingwei@marvell.com, cassel@kernel.org, Lukas Wunner <lukas@wunner.de>,
  linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
-Date: Fri, 09 May 2025 12:59:40 +1000
-In-Reply-To: <20250508-pcie-reset-slot-v4-2-7050093e2b50@linaro.org>
+Date: Fri, 09 May 2025 13:04:50 +1000
+In-Reply-To: <20250508-pcie-reset-slot-v4-1-7050093e2b50@linaro.org>
 References: <20250508-pcie-reset-slot-v4-0-7050093e2b50@linaro.org>
-	 <20250508-pcie-reset-slot-v4-2-7050093e2b50@linaro.org>
+	 <20250508-pcie-reset-slot-v4-1-7050093e2b50@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
@@ -113,33 +113,12 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On Thu, 2025-05-08 at 12:40 +0530, Manivannan Sadhasivam wrote:
-> Some host bridge devices require resetting the slots in a platform
-> specific
-> way to recover them from error conditions such as Fatal AER errors,
-> Link
-> Down etc... So introduce pci_host_bridge::reset_slot callback and
-> call it
-> from pcibios_reset_secondary_bus() if available.
->=20
-> The 'reset_slot' callback is responsible for resetting the given slot
-> referenced by the 'pci_dev' pointer in a platform specific way and
-> bring it
-> back to the working state if possible. If any error occurs during the
-> slot
-> reset operation, relevant errno should be returned.
+> A PCI device is just another peripheral in a system. So failure to
+> recover it, must not result in a kernel panic. So remove the TODO
+> which
+> is quite misleading.
 >=20
 > Signed-off-by: Manivannan Sadhasivam
 > <manivannan.sadhasivam@linaro.org>
->=20
-Hey Manivannan,
-
-I've been testing this by adding support for the reset_slot() callback
-in the dw-rockchip driver. Which has now fixed issues with sysfs issued
-bus resets to endpoints. So feel free to use:
-
-Tested-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-
-Regards,
-Wilfred
-
+Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
 
