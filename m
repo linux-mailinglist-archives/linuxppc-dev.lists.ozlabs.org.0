@@ -1,68 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-8470-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8471-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F40AB100D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 12:12:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F043AAB106E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 12:22:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zv4ZG0MMxz3bkP;
-	Fri,  9 May 2025 20:12:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zv4n33Lfxz3bkT;
+	Fri,  9 May 2025 20:22:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.183.193
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746785573;
-	cv=none; b=IYIlKcsDm/BjyZ68TJu/PUN++J4sLxdWTmUwYflsIU3lNCw3SJgWHFAxiIGZFJ2/VgeZD49W5Yks+Toi2ivBlO4L+th8PS1XZRjKiCcEwRYrREjPv6D6x6TI7DeUvNgGBn3ia6crDpGmTfeqMsRSTQ+AbBhKsIbo/i6Q9kKj5y4VMwmY7sdDcnGlzJC5jIcXLz/uX38A2YAVHopKobDP7eL3dZUrdApsjTuPPuYhm0c0bISMquTy4cxolfhlDHNhG1Sphr0UIUW6s8nZnLamz8CJvr9TaQvnrjz2gP/YKM9h8Gdp0ee4xQnFRPomhPSXv9t5X95fzEwTGP7SVO9PvQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::232"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746786135;
+	cv=none; b=X0qxYWYWiop0Ank4MFmllUjpSvJFXbz2IWdpLhzyZQNzoPxMCcj2gbN2GSgFf6x11b/r+a3WnUQ0wIxi28YLsg7KvXQWVF0p0WTLYghRVNWN71bd1Eoa5za0az/27+PFkSXOV8Zv3ZFCOSRn9fakwEbILiiUm5ApYdG7Pys909jE/qoKDg0h/Y/ZE7A/6usPio+iz3Sf66Eq7VZR77Rmek02vjpGemALs6RPfj5XDPLkpBvMVHV9icu6sunfjdLXO3QX75KxQYVYaaV1z9TAV+zY3rHc3PzkmdBLlsA8bPx7t55U7DzaeeyDoetURR+36W2dtbxGWpC2no5xHhvrQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746785573; c=relaxed/relaxed;
-	bh=AUqVDApz6yx09CXMIyoA67EfmMyBcs3zzqshkQzl/vY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ONXjSjRc3AV8aAnM1vqHdMMZ1pXBi9LQ2mLDCQHeRyiw4abgpsBkbXh035EOcnEorWGk8oPKytchj+v1kkgf5TGlEW7huYyxsn+KDVYMLQZTr3eDxsSUFfQpnI8JFftEQI9jveygSN41oiacZWg/Y0gQgw3butgrIdRJPZyi04iASj84M3CXPUjSt4nWUw3BgdcMT1wHZjXtaz+zUzu6O39dAbaVD7Mz/D8pOmXdARvTjI9sJziFD7JB1WeM348j4f/3TPUE8pXDrDPsdKbBIj+r09RmVZFRV+ycWJkrCmUSGlrI5u3Ny7Dvtr5njiTZcaQWPpE3xzTjKJvfoLI/+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=kOEGaUyy; dkim-atps=neutral; spf=pass (client-ip=217.70.183.193; helo=relay1-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+	t=1746786135; c=relaxed/relaxed;
+	bh=lEKN1jbgilqN3iHLAzkRRI/T6QIJDoiiG8dqLEcN47U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ANeM5BSqUgqyOVf9ZN/BF/8jMWtpXyRvZzZ81IqqQzuo8HYsHjLoYDRncpGhZQhM5C2hXjnkBXYxV9+iTexLMb9Rf/9Lj1Mxw+xieM4dRefvt2Y03QPfoQQAZpiLdyi19zuqyf9dtkI6mq8OdCNPh5MYKKFpEEhnOw3/cZbqGa9nblkUlOAKA/vsBa70Brvvb5NVXUR+6bp2miv83mjpBiC4WiO613P9QYWU0YZXtw+2mhcnBD+vwr3z6pFUwrAN1Rikr/075vna5L06x8hw4iVsVos1LQvh4Sk3FUvkpderDh+mIAUXAUUa54eVhn8oH6pr+bRoQ8B+N2GBa1Bd+g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=bIYlYKgN; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::232; helo=mail-lj1-x232.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=kOEGaUyy;
+	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=bIYlYKgN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.193; helo=relay1-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 5213 seconds by postgrey-1.37 at boromir; Fri, 09 May 2025 20:12:52 AEST
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::232; helo=mail-lj1-x232.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x232.google.com (mail-lj1-x232.google.com [IPv6:2a00:1450:4864:20::232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zv4ZD5tQjz3bkL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 20:12:49 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0355341C3E;
-	Fri,  9 May 2025 10:12:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746785565;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AUqVDApz6yx09CXMIyoA67EfmMyBcs3zzqshkQzl/vY=;
-	b=kOEGaUyyQUr9oXnGICGvjTZcSLJJ4Pryd018rL3UeEED5FV6IvFzEubMKpLDeY8O4lJCaV
-	JNfvVBfmvwzBygNNw0NUusecj4CN6qiospjlchu7GAtc3CYcTIck3bsTV/XA8ORd6/1jV2
-	jpnD4F9/txhXsahqTwfAelSIlTsYoKIsfL6k/CD7FBupw4n2TOaAoAE7qyZsHYupb3JunU
-	NHDdVpA5YL2gQgMw4Mp+GsOzbiQtM40HrtFgAK8VjvJjYqnAPJyxEMf9nNwJVW59jrcsF0
-	B8XdPv6CBEJf6BQmfbtDiAtjfPFsKrjCqjm2SC8t+DJ9k/tY6YK5LiCvPKFwWw==
-Date: Fri, 9 May 2025 12:12:42 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang
- <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam
- <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Jaroslav Kysela
- <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 2/2] ASoC: fsl: fsl_qmc_audio: Only request completion
- on last channel
-Message-ID: <20250509121242.1f660e7f@bootlin.com>
-In-Reply-To: <bc561703-bf34-4c99-aaad-1b1aad5ced12@csgroup.eu>
-References: <19aa9d8a84c8475c62c42ac886dad0980428c6c0.1746776731.git.christophe.leroy@csgroup.eu>
-	<5cffeb220617584a5e4bc03067cc10e6cdcfc25e.1746776731.git.christophe.leroy@csgroup.eu>
-	<20250509104544.5c375f05@bootlin.com>
-	<bc561703-bf34-4c99-aaad-1b1aad5ced12@csgroup.eu>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zv4n100G1z3bkL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 20:22:11 +1000 (AEST)
+Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-3106217268dso17483501fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 09 May 2025 03:22:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1746786125; x=1747390925; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lEKN1jbgilqN3iHLAzkRRI/T6QIJDoiiG8dqLEcN47U=;
+        b=bIYlYKgNLl9GbAGhDsa37aimV/JNscSPjagKp89oHOIDpYqgmNT6RpTFU59wqExmH/
+         JHLKm6g9RvnURgqkXZjTYgZY5MdWuFp2fJ3L8J8ioQupTy3xnpO5jsxophYTG2IRPwwQ
+         Jd1hdfM3DbDvucyFtU6MJRggEl870ZODXyX2HS+YC+5c1BdhFwsWyiA2Tfql39RgScyc
+         lRm39hFnkjlizRMPIfdnzbnXdnxU0yoKnA+5ZerUc/etCXlmf/R7M1ndJJzKVW5tu/2k
+         SZVkI0ceAa8mxYNHpK3c4t1QmCZazstkTshzSTf0DQbUWmXZqMyrLhz98vsfFeJgK1MH
+         MmLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746786125; x=1747390925;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lEKN1jbgilqN3iHLAzkRRI/T6QIJDoiiG8dqLEcN47U=;
+        b=XJQvlBoDxG2pAENh0DAAHWDhIq4f6pEpaQClcOcRSbCYvq1pGjvy2hc55XYBqZNajs
+         QK+AHsDQ/f3ZEVzWn4u6jhqa/D5uxZx4cDBZbVb8cn45L0zxd0eFnNUFStmT6F0BjS9h
+         bfOgywA2XyssskNB0PEHkMcHNqnj84Yi9TfwYisFifeQGFHgYW5chKssHZJZ/Ys6DPce
+         y1iVnf0nC72weNfXJzNGqfGua2FGTQUXENcRs1CBr8nOLOMSm7uMONoa0Mk0f0n83mcN
+         GttZ0OH/x+VqJRCKTSSJESAlfYaLR+Z78HZeLX36l1ZtNWCaKhNJoG8q++scHnsxih1K
+         3N9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWPd/MtoCOUFTTqWzidSFQcjw8grn5OlEoHhFZ+9HpxqpRVTA//X1+TsbeEfQHKKMGQqzZyslKvkbe12Rc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz6Pxt8EfhklKZb9TRkp2K9VpQdE4YDSKVr0USa5N/gO77HImcg
+	RS6geTLKg1TO0GzNbup0MsSaxvGq/9OY4D450TK6WiRpoBssrozRB1Ai+J3XixtFatZfagmDkqd
+	Ncr/3E4dlODB7RS+he6s0swe3hZRoo7ZdByuPsg==
+X-Gm-Gg: ASbGnctH5ZsNU9abE3LAu8wDXP5s7m/K79vG5beRPStZusIe/PH21pVQjtUBvBnDp83
+	5ShM+9IwVzsiKUN8Fjgy+Lh6DwpMyqEl/D1z0vu9fARdYq6j9KVrZWJdTdhbSLDOrhXUTWiHw56
+	dbXDqkOtmqJjG2Bxao2lmvuV2BnZIETl2/3QtRLLl+5ygYZUyvJLwVFQ==
+X-Google-Smtp-Source: AGHT+IFFnckVfV38yiKm/0tyz56i3avYrl46Y9age8QQDJkz0vCUqheVLftkCKucDo9t25Jxqs4Ykbmgz1ik3/urSi8=
+X-Received: by 2002:a05:651c:2211:b0:30c:15b:1268 with SMTP id
+ 38308e7fff4ca-326c457e7cbmr11457661fa.15.1746786125175; Fri, 09 May 2025
+ 03:22:05 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,118 +78,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvledvfeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepjefflefhieduteegffeifeeggfffvdeuvdeutddvfeduudeukeffleehheffkeetnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedugedprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhrtghpthhtohepqhhirghnghdriihhrghosehngihprdgtohhmpdhrtghpthhtohepshhhvghnghhjihhurdifrghnghesghhmrghilhdrtghomhdprhgtphhtthhopegiihhusghordfnvggvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfhgvshhtv
- ghvrghmsehgmhgrihhlrdgtohhmpdhrtghpthhtohepnhhitgholhgvohhtshhukhgrsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhgihhrugifohhougesghhmrghilhdrtghomhdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrgh
-X-GND-Sasl: herve.codina@bootlin.com
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+References: <20250508130612.82270-1-markus.burri@mt.com>
+In-Reply-To: <20250508130612.82270-1-markus.burri@mt.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Fri, 9 May 2025 12:21:53 +0200
+X-Gm-Features: AX0GCFvERxh0VC7uLRRore07epYkHtQUe6fy6V21pIoKxIz0HhJctMM3W0tAElY
+Message-ID: <CAMRc=MczDhGpxwbGCUoUxGm19dqNH2FzXVrbXewy7yMP=SEieA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/6] Fix potential out-of-bounds error in some drivers
+To: Markus Burri <markus.burri@mt.com>
+Cc: linux-kernel@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+	"Oliver O'Halloran" <oohall@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>, 
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>, Oded Gabbay <ogabbay@kernel.org>, 
+	Linus Walleij <linus.walleij@linaro.org>, Nuno Sa <nuno.sa@analog.com>, 
+	Olivier Moysan <olivier.moysan@foss.st.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, linuxppc-dev@lists.ozlabs.org, 
+	dri-devel@lists.freedesktop.org, linux-gpio@vger.kernel.org, 
+	linux-iio@vger.kernel.org, Markus Burri <markus.burri@bbv.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Christophe,
+On Thu, May 8, 2025 at 3:06=E2=80=AFPM Markus Burri <markus.burri@mt.com> w=
+rote:
+>
+> Several drivers are using debugfs and follow the same pattern.
+>
+> A buffer is created on the stack with a limited size to copy the given da=
+ta
+> from user space. The copy is performed using simple_write_to_buffer.
+> This function limits the input according to the specified buffer size, bu=
+t
+> it does not write a string terminator if the buffer is truncated.
+> Therefore, the driver adds this zero terminator afterward.
+> Unfortunately, the original buffer size is used as an index, which can le=
+ad
+> to an out-of-bounds error.
+>
+> This patch set fixes this issue in all the drivers I have detected so far=
+.
+> The fix is to return an error in case of an unexpectedly long buffer bein=
+g
+> received and to use the effective written size for the zero terminator fo=
+r
+> consistency.
+>
+> Changes in V4:
+> * Revert the decrement of accepted size by one character
+> * Added patches for drivers with the same pattern
+>
+> Changes in V3:
+> * Decrement accepted size by one character according to feedback
+>
+> Changes in V2:
+> * Use effective written size as index instead of original size
+>
+> ---
+> [V3] https://lore.kernel.org/lkml/20250505203830.5117-1-markus.burri@mt.c=
+om/
+> [V2] https://lore.kernel.org/lkml/20250505045346.29647-1-markus.burri@mt.=
+com/
+> [V1] https://lore.kernel.org/lkml/20250501063240.25295-1-markus.burri@mt.=
+com/
+>
+> Markus Burri (6):
+>   iio: backend: fix out-of-bound write
+>   accel/ivpu: Use effective buffer size for zero terminator
+>   iio: fix potential out-of-bound write
+>   gpio: fix potential out-of-bound write
+>   powerpc/eeh: fix potential OoB
+>   powerpc/eeh-powernv: fix potential OoB
+>
 
-On Fri, 9 May 2025 11:13:12 +0200
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+Please, don't send this as a series, it makes absolutely no sense.
+These patches - other than fixing similar issues - are completely
+unrelated.
 
-> Hi Hervé,
-> 
-> Le 09/05/2025 à 10:45, Herve Codina a écrit :
-> > On Fri,  9 May 2025 09:48:45 +0200
-> > Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
-> >   
-> >> In non-interleaved mode, several QMC channels are used in sync.
-> >> More details can be found in commit 188d9cae5438 ("ASoC: fsl:
-> >> fsl_qmc_audio: Add support for non-interleaved mode.")
-> >> At the time being, an interrupt is requested on each channel to
-> >> perform capture/playback completion, allthough the completion is
-> >> really performed only once all channels have completed their work.
-> >>
-> >> This leads to a lot more interrupts than really needed. Looking at
-> >> /proc/interrupts shows ~3800 interrupts per second when using
-> >> 4 capture and 4 playback devices with 5ms periods while
-> >> only 1600 (200 x 4 + 200 x 4) periods are processed during one second.
-> >>
-> >> The QMC channels work in sync, the one started first is the one
-> >> finishing first and the one started last is the one finishing last,  
-> > 
-> > How can we be sure about that?
-> > 
-> > The mapping on the TDM bus has to be taken into account.
-> > 
-> > chan 0 -> TDM bits 0..8
-> > chan 1 -> TDM bits 16..23
-> > chan 2 -> TDM bits 9..15  
-> 
-> In interleaved mode, the QMC will not allow that. You can have 
-> TS0-TS1-TS2 or TS1-TS2-TS0 but you can't have TS0-TS2-TS1.
-> 
-> In non-interleaved mode we mimic the interleaved mode so I don't expect 
-> it either.
-
-I am not so sure that the case shouldn't be handled by QMC.
-Even if it is not possible at QMC level, you can have it at qmc_audio
-level.
-
-The qmc_audio driver depends on the DT binding:
-	dai@18 {
-            reg = <18>;
-            /* Non-interleaved mode */
-            fsl,qmc-chan = <&qmc 18>, <&qmc 19>;
-        };
-
-but you can have
-	dai@18 {
-            reg = <18>;
-            /* Non-interleaved mode */
-            fsl,qmc-chan = <&qmc 19>, <&qmc 18>;
-        };
-
-> 
-> > 
-> > In that case chan 1 can finish after chan 2.
-> > 
-> > qmc_chan_get_ts_info() could be used to get struct qmc_chan_ts_info
-> > and [rx,tx]_ts_mask field in the struct give the mapping information.
-> > 
-> > The channel that ends last is the one with the highest bit set in the
-> > mask (rx_tx_mask for capture and tx_ts_mask for playback).  
-> 
-> That would be right if the channels were starting all at exactely the 
-> same time. But qmc_audio_pcm_write_submit() and 
-> qmc_audio_pcm_read_submit() are calling resp. qmc_chan_write_submit() 
-> and qmc_chan_read_submit() one by one.
-> 
-> Even if that happens it shouldn't be a problem on its own as there are 
-> only a few microseconds between each Timeslot (a full cycle is 125 µs). 
-> And also because calling snd_pcm_period_elapsed() doesn't have any 
-> destructive effect on ongoing processing.
-> 
-> So I wouldn't make it too complicated. Here the benefit is real and 
-> worth it.
-
-I fully understand the benefit and I am not against the feature.
-Also, I fully agree that it has to be kept as simple as possible.
-
-My point is to avoid some possible regressions.
-
-Maybe during probe, when the channels are parsed [0], the code should take
-of the channel location on TDM to have them in the better order in its
-table.
-
-We can imagine that after filling the array, the driver sorts the array
-using sort() or sort_r() [1] to ensure that the last item in the array
-is the last on the TDM bus.
-
-[0] https://elixir.bootlin.com/linux/v6.15-rc5/source/sound/soc/fsl/fsl_qmc_audio.c#L833
-[1] https://elixir.bootlin.com/linux/v6.15-rc5/source/include/linux/sort.h
-
--- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Bartosz
 
