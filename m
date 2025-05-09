@@ -1,65 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-8466-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8469-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3B1AB0E8F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 11:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE3EAB0F1E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  9 May 2025 11:38:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zv3Jd3VX4z2xHZ;
-	Fri,  9 May 2025 19:16:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zv3pF6JGqz3bgr;
+	Fri,  9 May 2025 19:38:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8::223"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746782161;
-	cv=none; b=TP+l+zS7cnsbM7BfQMyw8mOD7J0NKRejgwCnp0aidR0xauk31o5YdVrggEwMlDbGg8JwdZu8gOa2qd4V9Dj1m36mmD19/SYNw+LjPZWIvmozRyyiQ2oMJYoKsUmF7Y//W1i6gtD8LaA2rQBx+tvOjPCZTy6jHNhNsVyB7FuazoBnpPuWYrUMUiX+jmaStzLGcbRboWzjy9MP3sgAaHcxz6eIUDN7mRSnHQsEocYJHZhx8I0HAU0T2B2I2xLhsLQPa/1fdDD13+ihc8t630+a1gAuwcE/xFSugkVCs5bELnkbPWGSWqwvYR7rzcnu2Uehy6x8p/4V6naIfdpM2bU4dQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.9
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746783493;
+	cv=none; b=hd2Q/uQJImZ1DpghLtZl+m43sicugBt7gCfl2oLlldyKGyVzZcASOVpavufCR7MZy9UkhLZXaR2TeC9ENyGl+b/knvRWHZVJsl8W/6aA/bhfycBcdoPCy7ZkcX7RrQiffbyKtKFibUcicQfYXKVR1f1qQ0SD/WL8SDN1YFP8yHU425m1q4pAvOZGZAFawOAJjvuHI0P9zqvEMnsYUO51aj14UfRc8/ErThiRiIHFkRnNyqNp6GkjHuQkUOeoKqV49cC2S3MAquWXXH3cZ/G4E3sUggarfrk5kTqNnqM1FQuOQAxnR87ISvIZCiXpLmySLS/PxMiimwN3ttP9bHyLZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746782161; c=relaxed/relaxed;
-	bh=uOMW9BGxskbhad6mlU+Himy6oHmyXjwahxXAzW3WdCk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HNOGTAMFs7KelcvoEu+XC1v9PTr9VWWUcg0BLNT7uCYwOGB0hBivYE8qd1l6t8vztac+5xbMFn8mAsk+VtleF5pFNz9sjtz98+5+0hWMJY8TzCGiuftDxO26UcOP92sajpzGEEzNCzylRXSESryCfM/5stnne/bgzkNvhYhN0KO6dkllZrZtWP/Gfpr/cU2Sp7kGFe/Iy4j3GEEK8HtD/ghAF0KiGJUTAVMH7RCHT75FWO08IFDHlCgkBTTWC0+FJ8eLUx3xQW48u3vDK1d1yc9P9MAMGvPxcSpbDIa2EdxkMJK5VmXN2yi3nOiClEreH53CQ1eLiLX+ZHIQ+Egw2A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=A49+jEYE; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::223; helo=relay3-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+	t=1746783493; c=relaxed/relaxed;
+	bh=2Rz8D9bsjt9Lj8DX3PLX/z6JELaOfjGno+1+5mvyYRM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LBCiaLt6vckZjT1hwt1C8qLOnqrAZKDGF8j7gK9q9y/CYbXt/+t/Df4eud5WTrT0UVbvL6Oxp3dR/MoB/AByyCXJbv/nvJHozLhcwYoxD9J+Wc7gm4de2/3XeO5qBRoOLBU2o+Y5aNatQTGvc+4N7d11kTKUhZpFV1G+lyF6A5SOXtone7emnjyIIYeqTMs7k8FGw3QZhQZD0q+ErcttP/Omc9oTqOW9l8D3KOc9sq7vpXrMjyEXyNwdqZ/77ypdSJRaYbwSGJgEfnfKTskaNnyOvRpb0zVSt7pgKyMzYrS2Frms8H9H7dhg3oAybnBpG61coVqa/lYVFB6Es040Dw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IMFhgvn5; dkim-atps=neutral; spf=pass (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=A49+jEYE;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IMFhgvn5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::223; helo=relay3-d.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1803 seconds by postgrey-1.37 at boromir; Fri, 09 May 2025 19:15:59 AEST
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zv3Jb3Qc4z2xHX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 19:15:58 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 07CAE1FD43;
-	Fri,  9 May 2025 09:15:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1746782155;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uOMW9BGxskbhad6mlU+Himy6oHmyXjwahxXAzW3WdCk=;
-	b=A49+jEYE7WBREA5b6YXFMHfgJgHIHEfZyMK/RNX+suNhPAOLzF5+ZiOY9VjEJNSMYeaD2Y
-	MrnyIbfXfo5AU1P/osyUWAzpu3oBNbTlJjbZ/T4DNgoboLXfJnwYLb94aKzyQcE92u7PwO
-	MxY7uBU7wLo9mKHJ7ykciVIv9HjzTHlMpHoPSOS+J61W/2Bng8ecZy4/tEJavqMtWveEFm
-	pVhdjm1YJzBBVR7R2MpYwhF4mh+Vp7E7Yn9maafTTpzVxqA7CFWvg6+45chPVUEGbF0rfK
-	ATf0366ofRqxq3v87RGphfqb8PJX9dkrxtXdpD7U2pbjx/3P5Kp0+w4cAJqQUA==
-Date: Fri, 9 May 2025 11:15:54 +0200
-From: Herve Codina <herve.codina@bootlin.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang
- <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam
- <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Jaroslav Kysela
- <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 1/2] soc: fsl: qmc: Only set completion interrupt when
- needed
-Message-ID: <20250509111554.770263b7@bootlin.com>
-In-Reply-To: <19aa9d8a84c8475c62c42ac886dad0980428c6c0.1746776731.git.christophe.leroy@csgroup.eu>
-References: <19aa9d8a84c8475c62c42ac886dad0980428c6c0.1746776731.git.christophe.leroy@csgroup.eu>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zv3pC3DRGz3bgn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  9 May 2025 19:38:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746783491; x=1778319491;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GKyHnY3Ghu2yiVf36Y/TrJp84COCpEcwGhvyMsI/YG8=;
+  b=IMFhgvn5GudefjsAu8btV4xrszMe6A+WjH3rPQkwugOtbNWHkVE/j0Bs
+   SArczmu9TpobNTWnwUZwVNfFoOGldiL6tlc5fqbj2TPatwAxlofbfnTWK
+   gSSXXn4qZZW41zxyGq+2ZEecrOBgDA/RiztkD7BkWhATlNv23NPYCVFkG
+   yTI6v8ppZWeAClB5zGWvQ+FX9fKaEfuwBNVCPi+SVL4qj4ZVudkg4/IfS
+   CJfVbi2QeZV8HONADBal1Gtocb0C3Mku5naf3us1S2ACxaAZ6y2y0kqej
+   NlsJwHEmCWqJ50PGwS3Ri1HyH4HOXWlg2UoDwbRSBlWUNJcmSeWog0KV3
+   w==;
+X-CSE-ConnectionGUID: E3cF6qYkSZCIt63WZNkv3Q==
+X-CSE-MsgGUID: YXyD8uHHQaiH+bL7QYkFSw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="59268833"
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="59268833"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 02:38:06 -0700
+X-CSE-ConnectionGUID: 0/Te/Uk2TmuNkEJfgpnkUA==
+X-CSE-MsgGUID: qb8DGivuQBW3TKbXJfOpfw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="136959750"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 09 May 2025 02:37:51 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uDKAv-000BsO-1B;
+	Fri, 09 May 2025 09:37:49 +0000
+Date: Fri, 9 May 2025 17:37:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Markus Burri <markus.burri@mt.com>, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Markus Burri <markus.burri@mt.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Nuno Sa <nuno.sa@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, linuxppc-dev@lists.ozlabs.org,
+	dri-devel@lists.freedesktop.org, linux-gpio@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4 4/6] gpio: fix potential out-of-bound write
+Message-ID: <202505091754.285hHbr2-lkp@intel.com>
+References: <20250508130612.82270-5-markus.burri@mt.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,95 +96,93 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvledvvdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepjefflefhieduteegffeifeeggfffvdeuvdeutddvfeduudeukeffleehheffkeetnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppeeltddrkeelrdduieefrdduvdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepledtrdekledrudeifedruddvjedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedugedprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhrtghpthhtohepqhhirghnghdriihhrghosehngihprdgtohhmpdhrtghpthhtohepshhhvghnghhjihhurdifrghnghesghhmrghilhdrtghomhdprhgtphhtthhopegiihhusghordfnvggvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfhgvshhtv
- ghvrghmsehgmhgrihhlrdgtohhmpdhrtghpthhtohepnhhitgholhgvohhtshhukhgrsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhgihhrugifohhougesghhmrghilhdrtghomhdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrgh
-X-GND-Sasl: herve.codina@bootlin.com
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250508130612.82270-5-markus.burri@mt.com>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Christophe,
+Hi Markus,
 
-On Fri,  9 May 2025 09:48:44 +0200
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+kernel test robot noticed the following build errors:
 
-> When no post-completion processing is expected, don't waste time
-> handling useless interrupts.
-> 
-> Only set QMC_BD_[R/T]X_I and QMC_BD_[R/T]X_UB when a completion
-> function is passed in.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  drivers/soc/fsl/qe/qmc.c | 18 +++++++++++-------
->  1 file changed, 11 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
-> index 36c0ccc06151..0a704fd0b1a0 100644
-> --- a/drivers/soc/fsl/qe/qmc.c
-> +++ b/drivers/soc/fsl/qe/qmc.c
-> @@ -474,7 +474,9 @@ int qmc_chan_write_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
->  	xfer_desc->context = context;
->  
->  	/* Activate the descriptor */
-> -	ctrl |= (QMC_BD_TX_R | QMC_BD_TX_UB);
-> +	ctrl |= QMC_BD_TX_R;
-> +	if (complete)
-> +		ctrl |= QMC_BD_TX_I | QMC_BD_TX_UB;
+[auto build test ERROR on b4432656b36e5cc1d50a1f2dc15357543add530e]
 
-Be careful, you don't set the UB bit for all descriptor anymore.
-Your goal, is to have interrupts only on some descriptors (those where I
-bit is set).
+url:    https://github.com/intel-lab-lkp/linux/commits/Markus-Burri/iio-backend-fix-out-of-bound-write/20250508-211644
+base:   b4432656b36e5cc1d50a1f2dc15357543add530e
+patch link:    https://lore.kernel.org/r/20250508130612.82270-5-markus.burri%40mt.com
+patch subject: [PATCH v4 4/6] gpio: fix potential out-of-bound write
+config: x86_64-buildonly-randconfig-003-20250509 (https://download.01.org/0day-ci/archive/20250509/202505091754.285hHbr2-lkp@intel.com/config)
+compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
+rustc: rustc 1.78.0 (9b00956e5 2024-04-29)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250509/202505091754.285hHbr2-lkp@intel.com/reproduce)
 
-This can lead to issue in the function handling the interrupt.
-This function, qmc_chan_write_done(), do the processing according to the
-following:
-        /*
-	 * R bit  UB bit
-	 *   0       0  : The BD is free
-	 *   1       1  : The BD is in used, waiting for transfer
-	 *   0       1  : The BD is in used, waiting for completion
-	 *   1       0  : Should not append
-	 */
-https://elixir.bootlin.com/linux/v6.15-rc5/source/drivers/soc/fsl/qe/qmc.c#L507
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202505091754.285hHbr2-lkp@intel.com/
 
-It considers R=0 / UB=0 as a free BD and R=1 / UB=0 as a case that should
-not happen.
+All errors (new ones prefixed by >>):
 
-Both cases are no more correct with your modification.
-
-Have the feeling that UB bit still has to be set even if I bit is not set
-in order to have qmc_chan_write_done() looking at all descriptors.
-
-Suppose:
- desc 0, no interrupt
- desc 1, no interrupt
- desc 2, interrupt
-
-When the interrupt for desc 2 is handled, desc 0 and desc 1 are seen with
-R=0 and UB=0. As desc 0 is considered as free by qmc_chan_write_done(), it
-will never look at desc 2.
-
->  	wmb(); /* Be sure to flush the descriptor before control update */
->  	qmc_write16(&bd->cbd_sc, ctrl);
->  
-> @@ -586,7 +588,9 @@ int qmc_chan_read_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
->  		  QMC_BD_RX_AB | QMC_BD_RX_CR);
->  
->  	/* Activate the descriptor */
-> -	ctrl |= (QMC_BD_RX_E | QMC_BD_RX_UB);
-> +	ctrl |= QMC_BD_RX_E;
-> +	if (complete)
-> +		ctrl |= QMC_BD_RX_I | QMC_BD_RX_UB;
-
-Exact same comment.
+>> drivers/gpio/gpio-virtuser.c:404:6: error: use of undeclared identifier 'size'; did you mean 'ksize'?
+     404 |         if (size >= sizeof(buf))
+         |             ^~~~
+         |             ksize
+   include/linux/slab.h:491:8: note: 'ksize' declared here
+     491 | size_t ksize(const void *objp);
+         |        ^
+   1 error generated.
 
 
-Best regards,
-Hervé
+vim +404 drivers/gpio/gpio-virtuser.c
+
+   393	
+   394	static ssize_t gpio_virtuser_direction_do_write(struct file *file,
+   395							const char __user *user_buf,
+   396							size_t count, loff_t *ppos,
+   397							bool atomic)
+   398	{
+   399		struct gpio_virtuser_line_data *data = file->private_data;
+   400		struct gpio_desc *desc = data->ad.desc;
+   401		char buf[32], *trimmed;
+   402		int ret, dir, val = 0;
+   403	
+ > 404		if (size >= sizeof(buf))
+   405			return -EINVAL;
+   406	
+   407		ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
+   408		if (ret < 0)
+   409			return ret;
+   410	
+   411		buf[ret] = '\0';
+   412	
+   413		trimmed = strim(buf);
+   414	
+   415		if (strcmp(trimmed, "input") == 0) {
+   416			dir = 1;
+   417		} else if (strcmp(trimmed, "output-high") == 0) {
+   418			dir = 0;
+   419			val = 1;
+   420		} else if (strcmp(trimmed, "output-low") == 0) {
+   421			dir = val = 0;
+   422		} else {
+   423			return -EINVAL;
+   424		}
+   425	
+   426		if (!atomic)
+   427			ret = gpio_virtuser_set_direction(desc, dir, val);
+   428		else
+   429			ret = gpio_virtuser_set_direction_atomic(desc, dir, val);
+   430		if (ret)
+   431			return ret;
+   432	
+   433		return count;
+   434	}
+   435	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
