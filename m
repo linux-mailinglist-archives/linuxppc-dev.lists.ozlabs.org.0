@@ -1,51 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-8482-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8483-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B33AB20CE
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 May 2025 03:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFC0AB214F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 10 May 2025 07:33:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZvT3M34Wqz3bb2;
-	Sat, 10 May 2025 11:35:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZvZKD57W9z30Vs;
+	Sat, 10 May 2025 15:33:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746840959;
-	cv=none; b=oyqM8PvW+t0fjzs4AxfK1CLZDdRUyjnemdUeM3Q5lN0tIbN9iuGen6nHwB7Qjvkxz5Z8BhhYk00XJhbDA6vIF+HmpZI48YkcaIoozhAgnV8L9cwpUrkAMPJRmdF8ZygoGgfLeoTUSbuD/KoxlDNzaflX68vjwR6F/2EuikLKmSCLyeV2ea+qojpXMG+u0qdKm8jBp8UvgUAjXPQvosMP06xgaVm3xbZ/q+9tujEbqcpQqG7wU7rKZVO2mz+1sEqo6N1p5kKloCW+GepagiHym/O0d0g9aD0buOGz18je6Ewm1D7oKZq25TZHNSPqPXKVDnPBFc7XoNAmxltkQUcdug==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1746855200;
+	cv=none; b=fbK0cbZlw1IFk5Ba6vrbQupsCqlWMyYw5xt2D+ubFJc05du48xG2q7CX8lsgtw8TGYhAh2ia58grzQCtObaF3Nq3YZpJ4gWC7veuThSuaPeF9LGKCZqbYea/UWL0HrAg+fCpkrK68iJZV7Li3UvOadVFJY5yM1KwgotNbIzYM4T3I6JFX0g5SK3STGYidSFzjyZxBc3x1oYAEjS5ooCoEaih0So/q+QfL7jlNWp1JwOx834MmT3LxrnsgPx8txhxzDK0cuGP66AHzUNLCkN4//p2TxvUBCaQK2LBxV1nH7SqbHmY5c7FSTZJ82b5Ywx68eC/Scbnnd7bFH3CgH4SBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1746840959; c=relaxed/relaxed;
-	bh=clr+oir1N8op24mbDyJwk/ssTZqxg40bgPf0hiAHq8g=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=cXOdwtNph6tCqmEJqBfEvJpu3aydEh+v26gDChoSNxqdukDTdIHELjv4xD38H9u81Y+64dDhMB7xxdp43TPNayVT2wfwwSH4A376/uxGzdu7puPBbRrYzC2VlKcQuCLKM8ui20BWO2NGBcycoP/ZTT6JGfkUboXGW6xKHftGZIh+4kJkpHdjTDBqd0NgGz5VaVk62G8X5stdL1ow2LUaoNStwvFMUCgq8Lf/tP8Rm4RTALyHOX9A/OwKXUpd38YrrzKwnwpwP8okFPjDqq6ZGOrDfy/Z8OUdtjbayi9uuC9NiC1BPMTvkA+f+qqJ808pqZ7qtfASJsYJC+RJMOjcaw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=Pw/kaTNx; dkim-atps=neutral; spf=pass (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=paulus@gandalf.ozlabs.org; receiver=lists.ozlabs.org) smtp.mailfrom=gandalf.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+	t=1746855200; c=relaxed/relaxed;
+	bh=592lGltBXqQPQysW4vBUW9UTU0hc8Fb4LKlTCPPCZlI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HI2iMwOG27S3UTM6GSGtAdxJ6KtdnMBGVjgcKpUlxX5EQIZDShT/oCA299cOBLUCG5M32GRAd3ZbZAABH+cwkIcZeL5If9eKL9zfkxwK2LaxE+hPpLqL0upbSfD+RCsg6A8rKeaR9wbnRXQe4ofqQuvRtlO8X5pCitEwQKcWcjlDW9k1Ej4AR7nEr/nEp+0q4Shbupn7/6kS2IArPf7UNwWovRcYxn8nvA/azvVc/ieRtTbUg1NJ2NcCoegNthA44ktqwI3K9MfouTmBh1a4K4X9KX1ZmU0NeLTsIPJPQkd+BfZAvf5qjR38U61aGyuRv2TmLbJ/tXHNsZjrO/uG3w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UghYKtZq; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=Pw/kaTNx;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UghYKtZq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gandalf.ozlabs.org (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=paulus@gandalf.ozlabs.org; receiver=lists.ozlabs.org)
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZvT3K413Fz2yK9
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 May 2025 11:35:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1746840956;
-	bh=clr+oir1N8op24mbDyJwk/ssTZqxg40bgPf0hiAHq8g=;
-	h=Date:From:To:Cc:Subject:From;
-	b=Pw/kaTNxOT2chPQlvsfWcaEfjMK9EQ0UiWUozFfWmcXeG1UoP4AVWcRz3B882jeWo
-	 Vl8sM0DNKDSbl2joncWPCHsvoaIghYu0uqkbVKjZOTHvAATYyqUw0R0kxJbWO2YcUD
-	 uqsQLbkAuncR68he4SwWmU1MiAjD/atbEwVwSFO8BICkfhzeSFoMqF58a0LoS6PWkd
-	 YTnRMegX8oEDdw4AI3b6rP7dGbHO8BxqO0Q7Hca0IFdXjpwOnfHASiOTplvblfQjz6
-	 G2/c6ZHpV1W+LCMfHZV3VDsshLA+V0SK6Jux0mo/4DPlNtPKhyPUYp1jrdBaWPeLDK
-	 3KGDWgcln7rsA==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1003)
-	id 4ZvT3J5ZwHz4wvb; Sat, 10 May 2025 11:35:56 +1000 (AEST)
-Date: Sat, 10 May 2025 11:35:52 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Subject: Crash in __do_IRQ with gcc 15
-Message-ID: <aB6teOoVLWkdvyBu@bruin>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZvZKB2r7Sz2ygn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 10 May 2025 15:33:18 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 4F1F4A4C05A;
+	Sat, 10 May 2025 05:33:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31F6C4CEE2;
+	Sat, 10 May 2025 05:33:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746855195;
+	bh=VwjCQphGqjKITLICjAVqlj79IxthuExL0Y5AvgVDJU4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UghYKtZqXQYjNWAk8+/MO9TguERN1zSS1OX2UKvq+++BWeW155VDvZB5lAX6SwuRS
+	 6YHwRdC4LVNNcRpvnTMCqHDwxMSALkXC7isHi9uTIKAHWcQxyhLbw/zEskzOHSrbM4
+	 F+KXQsoZgPCMh1m7IWKBg+n9qm068VxwwgcoQ+YZYubEt5A6shRs5LeREoXtXeJ/CS
+	 l+a/I+iDF9aWnPMoCyqlq74APfPYiXNt0VeRaW1dxBNdxMG0Z5JP0iEMzNAJ9N6t8U
+	 XG3Pj6KEwAttW+e+IqPfmKAg2wEaaO8nJWRl8UrecFU42UlrlrEhIDjRz/8soBYqgH
+	 sBX6/LQ64pPug==
+Date: Fri, 9 May 2025 22:33:08 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Thorsten Leemhuis <linux@leemhuis.info>,
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Danny Tsen <dtsen@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [v2 PATCH] crypto: powerpc/poly1305 - Add poly1305_emit_arch
+ wrapper
+Message-ID: <20250510053308.GB505731@sol>
+References: <242ebbf1-4ef0-41c3-83cb-a055c262ba4a@leemhuis.info>
+ <aBtF2jVZQwxGiHVk@gondor.apana.org.au>
+ <37cf099e-d5c2-40d8-bc31-77e1f9623b1c@linux.ibm.com>
+ <aByX_Y64C6lVRR8M@gondor.apana.org.au>
+ <f66620e2-77e3-4713-a946-ddb2c8a0bccb@linux.ibm.com>
+ <aByiNZNxqyTerdYG@gondor.apana.org.au>
+ <1d2c2fdc-5c36-4d4e-8b25-8289b865726d@linux.ibm.com>
+ <aB31DI4QBBZuQObQ@gondor.apana.org.au>
+ <20250510044450.GA505731@sol>
+ <aB7fvi_FBdnmLUON@gondor.apana.org.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,52 +82,36 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=-2.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+In-Reply-To: <aB7fvi_FBdnmLUON@gondor.apana.org.au>
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Running Linux on Microwatt with a kernel compiled on an x86-64 system
-running Fedora 42 (using the packaged cross-compiler, i.e. the
-gcc-powerpcle64-linux-gnu package), I'm seeing a crash like this:
+On Sat, May 10, 2025 at 01:10:22PM +0800, Herbert Xu wrote:
+> On Fri, May 09, 2025 at 09:44:50PM -0700, Eric Biggers wrote:
+> >
+> > This fixes "-cpu Power10", but older CPUs (e.g. "-cpu POWER9") are still
+> > failing.
+> 
+> You're right.  I'll revert this and apply the following patch
+> instead.
+> 
+> BTW this thing is still hopelessly broken if it's called from
+> softirq context because there is no SIMD fallback.  Yes I removed
+> the SIMD check but it was already broken before that as it simply
+> switched from the 4-block version to the 1-block version if SIMD
+> is not available rather than actually doing something that is
+> safe in softirq context.
+> 
+> Perhaps we should just remove this altogether until it's fixed.
 
-[    0.141591] smp: Bringing up secondary CPUs ...
-[    0.167628] BUG: Unable to handle kernel data access on write at 0xc00a0000be8d6004
-[    0.175409] Faulting instruction address: 0xc00000000000fcb4
-cpu 0x0: Vector: 300 (Data Access) at [c0000000012f78d0]
-    pc: c00000000000fcb4: __do_IRQ+0x64/0x84
-    lr: c00000000000fccc: __do_IRQ+0x7c/0x84
-    sp: c0000000012f7b70
-   msr: 9000000000001033
-   dar: c00a0000be8d6004
- dsisr: 42000000
-  current = 0xc0000000012de000
-  paca    = 0xc00000000135d000   irqmask: 0x03   irq_happened: 0x01
-    pid   = 0, comm = swapper/0
-Linux version 6.15.0-rc1-00001-g72b73737d483-dirty (paulus@thinks) (powerpc64le-linux-gnu-gcc (GCC) 15.0.1 20250329 (Red Hat Cross 15.0.1-0), GNU ld version 2.44-1.fc42) #5 SMP Thu May  8 22:20:34 AEST 2025
-enter ? for help
-[c0000000012f7b70] c00000000000fd50 do_IRQ+0x7c/0x90 (unreliable)
-[c0000000012f7ba0] c000000000007db4 hardware_interrupt_common_virt+0x1c4/0x1d0
---- Exception: 500 (Hardware Interrupt) at c00000000001c2ec arch_local_irq_restore+0x60/0xc4
-[c0000000012f7ea0] c000000000083c68 do_idle+0xd4/0xf4
-[c0000000012f7ee0] c000000000083e08 cpu_startup_entry+0x34/0x38
-[c0000000012f7f10] c00000000000cc7c kernel_init+0x0/0x144
-[c0000000012f7f40] c000000001000ecc do_one_initcall+0x0/0x160
-[c0000000012f7fe0] c00000000000ba6c start_here_common+0x1c/0x20
-0:mon>
+Yes, the PowerPC Poly1305 code incorrectly uses VSX without first checking
+crypto_simd_usable().  And PowerPC also doesn't support VSX in softirqs, or at
+least it doesn't claim to (it doesn't override may_use_simd(), so it gets the
+default from include/asm-generic/simd.h which returns false in softirq context).
+Maybe add 'depends on BROKEN' to CRYPTO_POLY1305_P10 for now, and give the
+PowerPC folks (Cc'ed) a chance to fix this before removing the code.
 
-What's happening is that gcc 15 seems to be using r2 as an ordinary
-register, and r2 has a live value in it at the point where __do_IRQ()
-calls call_do_irq().  Since r2 is not in the clobber list for the
-inline asm in call_do_irq(), it doesn't get saved and restored around
-the call to __do_irq(), and when we come back to __do_IRQ(), it has
-been modified.  Then when __do_IRQ() subsequently does a store using
-r2, it blows up like the above.
-
-Adding r2 to the clobber list in call_do_irq() fixes it.  Does this
-seem like the right fix?  Does it need to be conditional on the gcc
-version?  Or is there a better way to fix the problem?
-
-Thanks,
-Paul.
+- Eric
 
