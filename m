@@ -1,49 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-8544-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8545-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B6EAB5C2E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 May 2025 20:20:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313DAAB5E49
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 May 2025 23:13:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZxlCC295zz2yg0;
-	Wed, 14 May 2025 04:20:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zxq2R5F8Hz2yF1;
+	Wed, 14 May 2025 07:13:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747160439;
-	cv=none; b=d/60DPeSWRL686ehR4Gip+TVhizJZV7Hj63hd1aj7abBFZs6HSec4sdtS3XpbN3R/Jzk3xWQOrGxh6vqT4v6jItcTJjLnpG0ZOpK9Yu3XrsydU0SHKgd4aWaba/nbCFcyuiNpc81GLgwfbKfsTL4AYuqQWpD1W47OZjOkgamxbyObS9xhepS9WDRQzMoVdX3rLQdBCge/u9sKXdprCnOh1WzQIXc+2PTBJf3mxn/2gL1v8apIHPC5jqeei4ajFSV0b9zWK5VgpduWhSqixqWsPsKUsOv+Anf7F7ej8qJt3dRl/XO0ZYe5bDqUVo4Xs+jtyOn8RX2BfgqT5aP0hy0OQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747170799;
+	cv=none; b=BWDmu6ivFWn2W2kNTCuweWMAusqwRSAAWn1JyEstIwTR3DaO25e3JVgUopMzh3OOY2jpOXHyLTQoUl4nv8k46h3IepyJLDJIuZlR0wYvdRHQW3LG1LSaG4SCjvV+X8FMMMvnJFAjLFoUHejFkySERcSgtHeE4KiEnL7Zwu4g8+I+BKjCGZc3ZmehmK5aXZQYNpWuSGx/C/Pyts/xECtVBciI/eHsaGISEnWupyrhH1BLLq7jCbgmRH523xycC8GLCo+W8sQdZ6fRgyhhD7MQ2bRsUoATuZI2qo0R5Q1ARTzbUZWc0V2GdUNO3X2vKYH+ygD3msKhHfbYZOLFiuvsVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747160439; c=relaxed/relaxed;
-	bh=LeSsgpJbTjsACVNwwA/DT93hXwDzYlf4n6Wt+mPsSHU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AZ+TFpf1c7vLrF6v7JcSaRQ6weu7979nhaBj/xUqjaO1ac/e2kS+hZoDdYaLqeyCS3WPidTEliW5p1JuaeRTB8BCZT2TRDX1NPwR2L/q0LxgTsq4Ec6JPDfnaz8HJw0yOL/wcDHGKFMdczAzi4oFkzrR2rfCnQSdseqP1T1w7f/9YF79Hvh/07trlLQZScuAOL0gZeVR1l96UgCKLk4A4565FIpkDlr2psKVt/SHFKveZDla3zq+1y0AYDTmMjOY3SmnaHH1UQSKy6xOcuyZaNSeLW1oomn9ZDKkMhiw+iPQyZqrZ9nYr0C/xCb/fEADmi1prnOqe/69CWoYKina/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZxlCB2vS8z2xTh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 04:20:37 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4ZxkVJ4CxBz9sB6;
-	Tue, 13 May 2025 19:48:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id G_pXDJnk3gqN; Tue, 13 May 2025 19:48:40 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4ZxkVJ39wtz9s9J;
-	Tue, 13 May 2025 19:48:40 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 61B228B765;
-	Tue, 13 May 2025 19:48:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id mu0GiejjUCCv; Tue, 13 May 2025 19:48:40 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9A6598B763;
-	Tue, 13 May 2025 19:48:39 +0200 (CEST)
-Message-ID: <922be2ed-aed2-4c55-b7b0-37abfc745500@csgroup.eu>
-Date: Tue, 13 May 2025 19:48:38 +0200
+	t=1747170799; c=relaxed/relaxed;
+	bh=fmR+vqrG33JgjIfayDRCw6pxb1N0duN+lxNJzXsw7m0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=izu9Ie71mddLp72V1OiCez95S36Yqw4QQbbt97dq27Hveizx7TmCfjqDNX6NyMnOutbkPggNLfseGXgL6NEA/wPj2nlhtpR8DW5rO+HmEILA/mjIzGd3sPEjAYT3d9uBzpGvoyAMamkBUrpGAq0mtMDGaBfopUqVP1C1gIsBEegKdhRJnaE02J6fbn8JkO4hlPfvaaCQ9/KFVjY5CC0JYT3nGojS6q2c9Qi0mdMLR+lGHGF30ovBB9OwzKoeE6XknLLORhQPqEGp11fI1zzj/0y6P3JXmp6wqY3Dt99DH3wvqJ+vMXup9CaIeipJZG3XUfZn59x9OZcdlK7DeZg3uQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m0A/21tC; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m0A/21tC;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zxq2Q3ZZqz2xs7
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 07:13:18 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 85DBDA4DACC;
+	Tue, 13 May 2025 21:13:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBFEC4CEE4;
+	Tue, 13 May 2025 21:13:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747170794;
+	bh=lSO4G0MjFvkGxsdN+DqSJNonGJ8MvH7A4Iu1Mc6BmP4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m0A/21tCQi6vmsNbJWgrgIkhRnXXsZZZFp29g0KlyDxWe8VKPnCzSGMky3IYKe0Rl
+	 fmYCvX3Xq0jG6/vyPYhEi4ETHBbyTs0ULaTOYOEP/6BnBTkx7TOJMx1GBRdpHfTS/9
+	 +tcApLMg1oKpQLNZsNeZUHb+mmj7h1ngiy2vHRuTILBExPY/mxIieRt2x8mNJuSag1
+	 CaPF1umLUhOuazh2viAt8m14uuL2wg5BVLV65zOhR/fkrWBZC8wUuNbkIckjjoU1k3
+	 fvbpzRexfWzyBgqHdgXAgMJGQQ8DlnIwVCsmdjDY4VpPBRPF8vVEL50anM0rKcFdpn
+	 dkCtoehopzuiQ==
+Date: Tue, 13 May 2025 18:13:11 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+Cc: Athira Rajeev <atrajeev@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	"open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
+	Likhitha Korrapati <likhitha@linux.ibm.com>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [PATCH] tools/lib/perf: Fix -Werror=alloc-size-larger-than in
+ cpumap.c
+Message-ID: <aCO156Qh5mbeR4Sk@x1>
+References: <20250406163412.897313-1-likhitha@linux.ibm.com>
+ <E58C5DCA-5F52-4B61-A816-DE932BA40FDA@linux.ibm.com>
+ <baad9d65-07b1-4a19-aea6-5ba5d60da98e@linux.ibm.com>
+ <1b1450a8-f091-4091-981d-76b27f61be24@linux.ibm.com>
+ <D1C1E5D6-085A-41D1-85AB-52809C956BFB@linux.ibm.com>
+ <aAvKg8K2fyrZ6zy4@x1>
+ <wqewmdha3bx7pmxqwbna26qnl55fcejqsjs4b2zhuciddpb3b5@7ztolpf6erwo>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,50 +78,80 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Transliterate author name and remove FIXME
-To: Thorsten Blum <thorsten.blum@linux.dev>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20241110162139.5179-2-thorsten.blum@linux.dev>
- <87v7wuy3p5.fsf@mpe.ellerman.id.au>
- <55B1EE24-BEC9-4A8D-84B0-ED32FCC070A5@linux.dev>
- <87v7weodqn.fsf@mpe.ellerman.id.au>
- <d9e232bb-5069-4526-b781-f4e316bda95d@csgroup.eu>
- <774CD605-AE6F-4D37-AB50-B9676858CDFA@linux.dev>
- <504A9138-865E-4CB3-8E1C-E19C4B86F1D3@linux.dev>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <504A9138-865E-4CB3-8E1C-E19C4B86F1D3@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <wqewmdha3bx7pmxqwbna26qnl55fcejqsjs4b2zhuciddpb3b5@7ztolpf6erwo>
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Fri, May 02, 2025 at 01:14:32PM +0530, Mukesh Kumar Chaurasiya wrote:
+> On Fri, Apr 25, 2025 at 02:46:43PM -0300, Arnaldo Carvalho de Melo wrote:
+> > Maybe that max() call in perf_cpu_map__intersect() somehow makes the
+> > compiler happy.
 
+> > And in perf_cpu_map__alloc() all calls seems to validate it.
+ 
+> > Like:
 
-Le 13/05/2025 à 16:10, Thorsten Blum a écrit :
-> On 7. Jan 2025, at 13:16, Thorsten Blum wrote:
->> On 23. Nov 2024, at 11:19, Christophe Leroy wrote:
->>> Isn't our file just a copy of the one from binutils ? Shouldn't we adjust it based on commit https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Fbminor%2Fbinutils-gdb%2Fcommit%2F2ce18a16268a&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cab93fab4ad1e43fbaaee08dd9227edf0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638827422381661999%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=pYe0b3WZhhmX3IHNh58Ogf%2BFMLYsdA7zn93%2B74D%2F%2FsA%3D&reserved=0 ?
->>
->> It looks like it's a copy and the name is spelled the same as in my patch:
->>
->>   "Mimi Phuong-Thao Vo"
->>
->> What's missing to get this merged?
-> 
-> Does it make sense to resubmit this or do we leave the name and the
-> FIXME as is?
+> > +++ b/tools/lib/perf/cpumap.c
+> > @@ -411,7 +411,7 @@ int perf_cpu_map__merge(struct perf_cpu_map **orig, struct perf_cpu_map *other)
+> >         }
+> >  
+> >         tmp_len = __perf_cpu_map__nr(*orig) + __perf_cpu_map__nr(other);
+> > -       tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
+> > +       tmp_cpus = calloc(tmp_len, sizeof(struct perf_cpu));
+> >         if (!tmp_cpus)
+> >                 return -ENOMEM;
 
-Thanks for the ping, your patch is not lost, it is still here: 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20241110162139.5179-2-thorsten.blum@linux.dev/
+> > ⬢ [acme@toolbx perf-tools-next]$
 
-Maddy, what do you think about the way forward ?
+> > And better, do the max size that the compiler is trying to help us
+> > catch?
 
-Thanks
-Christophe
+> Isn't it better to use perf_cpu_map__nr. That should fix this problem.
+
+Maybe, have you tried it?
+ 
+> One question I have, in perf_cpu_map__nr, the function is returning
+> 1 in case *cpus is NULL. Is it ok to do that? wouldn't it cause problems?
+
+Indeed this better be documented, as by just looking at:
+
+int perf_cpu_map__nr(const struct perf_cpu_map *cpus)
+{
+        return cpus ? __perf_cpu_map__nr(cpus) : 1;
+}
+
+It really doesn't make much sense to say that a NULL map has one entry.
+
+But the next functions are:
+
+bool perf_cpu_map__has_any_cpu_or_is_empty(const struct perf_cpu_map *map)
+{
+        return map ? __perf_cpu_map__cpu(map, 0).cpu == -1 : true;
+}
+
+bool perf_cpu_map__is_any_cpu_or_is_empty(const struct perf_cpu_map *map)
+{
+        if (!map)
+                return true;
+
+        return __perf_cpu_map__nr(map) == 1 && __perf_cpu_map__cpu(map, 0).cpu == -1;
+}
+
+bool perf_cpu_map__is_empty(const struct perf_cpu_map *map)
+{
+        return map == NULL;
+}
+
+So it seems that a NULL cpu map means "any/all CPU) and a map with just
+one entry would have as its content "-1" that would mean "any/all CPU".
+
+Ian did work on trying to simplify/clarify this, so maybe he can chime
+in :-)
+
+- Arnaldo
 
