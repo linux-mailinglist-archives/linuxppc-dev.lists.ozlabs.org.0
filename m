@@ -1,45 +1,42 @@
-Return-Path: <linuxppc-dev+bounces-8541-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8542-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A85AB56C3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 May 2025 16:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 058D1AB59FA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 May 2025 18:35:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zxdg93XVqz2yb9;
-	Wed, 14 May 2025 00:11:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZxhsP0q1Qz2ygH;
+	Wed, 14 May 2025 02:35:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.177
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747145461;
-	cv=none; b=Aq9z+4cgfA8RlYfXZp0tQoTGAqFj4tslV02Q3p1bS4k6BpyvPxim+YgYkNl19oaNB9e34DGx4P4Yb89eQ9auAAjBiEe9MmBh9ETfRmn+0hi4K9s4uj0kcgqLIeqqTY8+Y95WAd/nciEjiyZb8oIZ7Y0y1OBsDPpflvD+lhWfySXsMoJdhvE2L0aQhvWws8ihgL7KYyfviN+CWj7ZoDvU2mo70lC8kvgLpCyTWASPkBy4Dgahyz9qMF9nn7IvNSJr+IvULc4LX3XulnkS/qY1m6l/opXtk0xgiDalEBBiNHrAJSW5tVmRcnJ1T2fA4W79BUb9azQqxhVY6ih5xn22mw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747154105;
+	cv=none; b=BAJEJF0Z6r0JITx/PCpQbIgSucWGfKVCWEJ96iXPd60TamByVhaJMCAM/RE04Luwz9qpAUc8YUJorO6KWQpt8sYPM5GknV4EWN6t2d8MGgX8lag+Ut1r5dr0vv2OIalY5hmkndU4GMs7ZqzgzlknnEykITwfJMiDokb3xI2tTHnnE/5yS5LU+hF40FqgbWz7Qe03tyDIxlHAr8WbJS2OzAdw8SKVH8hntyeAZbvfWOzC45AR2fu6uJeo5b5+S94sxSOK5teXXouJXFiCNJjwR+3Aa9rCgWB0ghVHoJjC7amvPohN+NnONGfYhNXoOTfVR0sa3pbNOeq0y7Uwghp9aA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747145461; c=relaxed/relaxed;
-	bh=WJxlQK2BLgRievfiJv78ygfw01x+UGw/l/TDAlxIbio=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=VpQKLGY4xh1CNf3BfaxxKpvdLZs0OQTkCoxhaCkIWWQ6yeRxKE2/WlmrY81zBSU2W2tiiCQjZwy//+YdnYfoR5CwIyK2a/NVjjWRnaVLpQUIqd8XPvXlFWx0+aPBpP8GXp/06vCJrFeqkKscRhtI609lpkmNfFP8Az07SOIYY5BmvrmmfMQFNt+gYwTufr0t5Nsls+kar0eMS6Zi2i8S9hjmYWj6xRZ9+zZrMKNXxmnmf8tuyim45YtsGhmoIUNEzNlkM5kShtNdjcX7J4b1XDdtGp/8CoPfyUxTVsRbJ9TufRMwCaPft0YmLBLwu/II4kxI3RXYJAW4faNIlJUjPA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bRByksJT; dkim-atps=neutral; spf=pass (client-ip=91.218.175.177; helo=out-177.mta0.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bRByksJT;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.177; helo=out-177.mta0.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zxdg65dr1z2xdL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 00:10:58 +1000 (AEST)
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1747145434;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WJxlQK2BLgRievfiJv78ygfw01x+UGw/l/TDAlxIbio=;
-	b=bRByksJTllYyII1FKBTMUY/MK+KgwgVbDRWKIpowlDva0i7U+YGZ21lCB2I1cVjASFQjjI
-	3BoASqJrxPBPHCXDYEdFA6GlaVCQjlKbTrKg5eLMhs0KCeqBNRJaHGltS/1Ojx3kv08Fo8
-	to7EiawZtqOGCmYCgU07/RhdBHuWFRw=
+	t=1747154105; c=relaxed/relaxed;
+	bh=eA9Sqm5EoUL3YlBrqumQNpHU+p67ZyrnjeEzlKy4Nlc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m0ZtXOiSYGUd/Abs+/1PdN67pr0nuwxJzJjKR6n/6SPd8xcmIxOQDEVwo6r7Vd6R3s+Iy+VuqzpG1CeCTujmj6j+zSVBPuigMTLuH2+xeg8dzOS/k2WpkLglsemG09tL7V2hiR+yUVWGMU9Wfv9vm6isU4dLz7kyhEAeyzPkBrscCZAFu/a2T6ieXzrwJe2lLOUcaTnqCNkhLJKsI3002zyX1pyAeL7QGKYc4JaE0jmIpnXNZl7TqzBA37kpER8ecIGYCMZZNictTx+YS9QYGJr1ELTZ8sVOIKWY/WzzIOZ8puTPTn2uy5vLNTmB4Disr097zPzGics+vesj1qt1YQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZxhsL4zxbz2yg0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 02:35:01 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 54DGVovs008981;
+	Tue, 13 May 2025 11:31:50 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 54DGVmcK008980;
+	Tue, 13 May 2025 11:31:48 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Tue, 13 May 2025 11:31:48 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@ozlabs.org>, linuxppc-dev@lists.ozlabs.org,
+        Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: Crash in __do_IRQ with gcc 15
+Message-ID: <20250513163148.GM30295@gate.crashing.org>
+References: <aB6teOoVLWkdvyBu@bruin> <87y0v2sdwp.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -52,50 +49,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.2\))
-Subject: Re: [PATCH] powerpc: Transliterate author name and remove FIXME
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Thorsten Blum <thorsten.blum@linux.dev>
-In-Reply-To: <774CD605-AE6F-4D37-AB50-B9676858CDFA@linux.dev>
-Date: Tue, 13 May 2025 16:10:21 +0200
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <504A9138-865E-4CB3-8E1C-E19C4B86F1D3@linux.dev>
-References: <20241110162139.5179-2-thorsten.blum@linux.dev>
- <87v7wuy3p5.fsf@mpe.ellerman.id.au>
- <55B1EE24-BEC9-4A8D-84B0-ED32FCC070A5@linux.dev>
- <87v7weodqn.fsf@mpe.ellerman.id.au>
- <d9e232bb-5069-4526-b781-f4e316bda95d@csgroup.eu>
- <774CD605-AE6F-4D37-AB50-B9676858CDFA@linux.dev>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87y0v2sdwp.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.4.2.3i
+X-Spam-Status: No, score=-0.0 required=3.0 tests=SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 7. Jan 2025, at 13:16, Thorsten Blum wrote:
-> On 23. Nov 2024, at 11:19, Christophe Leroy wrote:
->> Isn't our file just a copy of the one from binutils ? Shouldn't we =
-adjust it based on commit =
-https://github.com/bminor/binutils-gdb/commit/2ce18a16268a ?
->=20
-> It looks like it's a copy and the name is spelled the same as in my =
-patch:
->=20
->  "Mimi Phuong-Thao Vo"
->=20
-> What's missing to get this merged?
+Hi!
 
-Does it make sense to resubmit this or do we leave the name and the
-FIXME as is?
+On Mon, May 12, 2025 at 01:31:34PM +1000, Michael Ellerman wrote:
+> Paul Mackerras <paulus@ozlabs.org> writes:
+> Are you building with pcrel? Otherwise r2 shouldn't be getting used as
+> an ordinary register.
 
-Thanks,
-Thorsten
+With any ELFv2 in fact, which is implied by the target triple.  PCrel
+has nothing to do with it (well, indirectly, functions that use PCrel
+less often need a TOC register after all).
 
+GPR2 usually *is* a normal volatile register in ELFv2.  (You detect
+ELFv2 by checking if _CALL_ELF is 2).  If you want to treat it
+differently (just like on other ABIs) you'll need to arrange for that,
+maybe using some inline asm or such?  Ideally this will work everywhere
+of course, and you do no longer depend on it accidentally working
+elsewhere :-)
+
+
+Segher
 
