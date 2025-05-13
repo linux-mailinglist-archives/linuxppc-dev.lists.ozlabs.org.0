@@ -1,53 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-8538-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8539-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98BA0AB54C1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 May 2025 14:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E251AB553C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 May 2025 14:53:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZxbN51WHgz2y0B;
-	Tue, 13 May 2025 22:27:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zxbxq5wxlz2ySl;
+	Tue, 13 May 2025 22:53:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747139269;
-	cv=none; b=ZkR3UugvqHbRUdZs265IPKU5iL0MUZQSiRrl6XBscf173rRcWpoGzVF6ETTfataOUu6PRUwccDcn7wSlYZIDp1x5QCOP4frwN5l1Km7B7Lnf6yaIIBqkGQ7HGo2R4xJR3DHu/D8R2QalrC0MQ5ARLGVdIdKid7/f6AORTIokRsUOFQweOX3NZKMZnKwtUSgSUvKgYvSzQD5aHNH6/5dQt+5/H5Y4Wq2fF+HacXP7vRSa35dGxVem6REMif2A6ZBdDxZFAkDehyWEid3omOMW8rg2jRG+ymcMSuZ+v2t1NLZtN1zyM3X3NOg2Qfb0+lB1a1DLdtSK/CTyiBNz9MdElw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::534"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747140815;
+	cv=none; b=d6deO6HxcEmYj+IdhJ3XG4WcajgZHAVxdoBSkXVKsI9nBiYzxxjVJDjVUG+WrNDm9VPFhM0Qbp5nTa/3DDxaDn+A2PlLFmxXMnUP4E/ssD5P80grc7IrBtoyP8iEhZrEvqf01mrh1jywCVlADY+xuRVyfyXF47P5Rir76fM1JTy7BLFfuIlhVlE/9IUAc1ZxU9ZcZ5dGPz3skdhlIsZermi7TeQ1Q6K6kYBcziPqCQWUCy+ViP7bkmJvI1aLz0VJB6IWW5jzBwY47Xzf/Gf+C9PmazYVaqbErLyfOuAVb4RFPz86TT0raueq/hfVH9mh9PgE7BeCEn1ZzUAW/rPBaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747139269; c=relaxed/relaxed;
-	bh=roEKt1Srlmkdzg64X708Duq0Iz59s1exkIC/EuuZb6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lneVFCDoORAHHWaokxeB9zH81KTQwuZ1+KSgWKXs4WP9S9YjcP1SbzKzuLXRG4+CukED/TdOpVVdmiZya/uW7q6HSblMmONWMdcu0qHu5Bp5ttaHernNRgVcb7Dv+qlNRjZhDPpfxQhGmiUmhqRlNFv0KGgU5p9R5joyY4NWxJ17kk4yrSUtPrs6uc2qtIkbqC2Qh5ekxnC0LmvofMwDKtXJO9PoMbngWNaGIbTIAoLHROpyo3gYBzFGLMpg7LMm962GyjtKYX6Kt3Q41IRG9tMMgaLa5JMru0dXmMr8q1Qc5ocxFII4ox8bEsLa2tWK7glHnkZJGL0W96wg7y1e4Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=lcAd1Gox; dkim-atps=neutral; spf=pass (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=paulus@gandalf.ozlabs.org; receiver=lists.ozlabs.org) smtp.mailfrom=gandalf.ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+	t=1747140815; c=relaxed/relaxed;
+	bh=lhUsGW6Aej7UtwPk8Fo3WswAje2EzwjwJ+3T+imRPIA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KTXvuzYbo5t0FIVw/c7lEnbGZL/MqrxY1qDnERwDh1Tv/9ZjqmDrhL67qqfvN+DIArPEkt08CfqDnWn1R01b4TQSAoR3LwRdYJRwbMpQmW9SKOxWJweLKfknMVs5xk8QxFydegyYV+gKpzPpdDQSGoWIgwccAC+2xbrw1cinpDh6T2IYWqSxSRgn7RtC6T3A0gveoORlMoxdEiMYAFDKLlHs/XNTjgfUq/ooqEg1zOHR4DnBWbQyeI0wv+gjp9flz98RDEHSFiU3YVGbd+B88Ue0xb2g4pa1hcJwkAbmXgV0+JwZWRm7wC0pb/1ZH9csiXM+HhGDAFvZAa54lU2Bsg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=f7fOiKcd; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=amir73il@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=lcAd1Gox;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=f7fOiKcd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gandalf.ozlabs.org (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=paulus@gandalf.ozlabs.org; receiver=lists.ozlabs.org)
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=amir73il@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZxbN40HYvz2xtt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 22:27:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1747139266;
-	bh=roEKt1Srlmkdzg64X708Duq0Iz59s1exkIC/EuuZb6U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lcAd1Gox4eJ3QmD5LdrUotW6oXC+uqO0h+uIWFUrw8nGVRvRyXCg9dg9q0BY5tTQU
-	 PCKoApRVZSKHmQyO26S9qSCFgT/MQ2JfZh9MnloNvBMxhuHR6o2ZD2+lSLhCoRERtS
-	 mR0Cc3aks4SG1LzwV4Yk202SNJJoZon44JHt/vFwlQDlRgkylVZtRFmqdQLTBwf4+1
-	 ivJ5FMbSpE76HYb0hsZL+UsZf3bLSGSlRQTC+ulld7J0iPcYMBwGMWWmdJD4cWdn/v
-	 kx7zhb1I0BeNZBwItDOicQA8brDitcfFjfWbZfwH+d37mZSf13wXZoa4+RhMEQVUtq
-	 6mbIcIAMA8k1w==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1003)
-	id 4ZxbN254hrz4x3J; Tue, 13 May 2025 22:27:46 +1000 (AEST)
-Date: Tue, 13 May 2025 22:27:40 +1000
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: Crash in __do_IRQ with gcc 15
-Message-ID: <aCM6vKAdNrox9wjp@bruin>
-References: <aB6teOoVLWkdvyBu@bruin>
- <87y0v2sdwp.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zxbxp1sBvz2xtt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 22:53:33 +1000 (AEST)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-5fbed53b421so8789220a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 05:53:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747140809; x=1747745609; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lhUsGW6Aej7UtwPk8Fo3WswAje2EzwjwJ+3T+imRPIA=;
+        b=f7fOiKcdQ88FkXC+u6d2qvV2J3vwO5OB71MjP7y/MFulJvb6DbGIHRst9MvH6Wlz6s
+         Gic7ESW5nFAzoD+FRDJPjyB0TAQ2ix8iwrTcAfAMJyw8mI4uNBNngMxvepMWZnsZP6O3
+         RRFlhh7LPdOkX+nf/Sp9Yk991goLbL4nbLiB5vdUD9Y+j+kp26LMc0t6WtIF2Z9IDB6r
+         pWYUmk4h4GKCe3Tw9DHTdTaBzpADftz4WooQJ9eTd0HOfvYK30r+eqQEiLRghfaBQkuw
+         /HjT+UnIYJdxfs9Q2AowI4n5VBbFfmOtEdmbZ/KPUOeNkAwzXqV5NefLjkJNxRBTKiUR
+         f6VQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747140809; x=1747745609;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lhUsGW6Aej7UtwPk8Fo3WswAje2EzwjwJ+3T+imRPIA=;
+        b=I2PrfGiDbOxXL3XM54CZasjqvuixKQcVdHvl5LGixLdynkWBm2MCPkx0KLTl4dusN7
+         Uihw39jvYNyD67e12LYMsf7seGQLPW6m1Eo4W3P4CmE15ynMXdRLsFJIVs9cN8RHgNPj
+         8B03C+mbM8mNrlUzjcQ6lrkCvucirJxKM0LxkMEb32X2MA4wcnrkv4IgVlnAL24qEcXq
+         QaFQHOIPoMPOTRAJgEAVzrnp4ye1pakgoOtp/qoExi8oe8nR4EY+F4fRid6WtalOWhqc
+         aL9oPcuEJHZuZSWawsGCTtfWgjgh8fozEE/QZzFI7ys2I8cEFlGMogn54cecOEJrKJoD
+         9jcg==
+X-Forwarded-Encrypted: i=1; AJvYcCWu9vF9pP7MOJlj3XyKnxCT32dT3Bs/XI5H8RJP7ETwWBNXDV2piNLhCCVJfpDOBLIWvG66iKJSa+mQRKE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywmwl8c66Oh/5sZUCno7r4X8/jPhw4XoJYqZySe1eue/kdTGpB6
+	hz8CaB+mfmMtfGP1BuDxoBUVSqKXcq81H9amFLA7WzGZ2DaENGtgfJaO1iSLC7ZfPKJ75CLOxap
+	vrIaD0z8FCcULoipxK7CRocNH9dg=
+X-Gm-Gg: ASbGnctA3vR9WFh7vL212QNltq9sEph4m8HkedmY/6WwgIkCYEK2c8o+YSrzCP89iux
+	863DVyHB1cZDU+OoYxykcMA42Tgipea3QVaHlPf1AFyIb5itVl9F8as4qO2NPXwJ+3AlR5Ud3HH
+	UigY92vePpwPPTbgcvBhIQiIuvFiNTPIkO
+X-Google-Smtp-Source: AGHT+IE/b0BCD4zsWzgMefEsXbY+DbhCAD/XOG3dRDcg9jP4PpucFQp1j7NsiRF8Za5+3lLoqjezqR5fGVfm35+9pG4=
+X-Received: by 2002:a17:907:7617:b0:ad2:23fb:5a03 with SMTP id
+ a640c23a62f3a-ad223fb7c87mr1075619066b.7.1747140808774; Tue, 13 May 2025
+ 05:53:28 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,71 +78,112 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87y0v2sdwp.fsf@mpe.ellerman.id.au>
-X-Spam-Status: No, score=-2.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250513-xattrat-syscall-v5-0-22bb9c6c767f@kernel.org> <399fdabb-74d3-4dd6-9eee-7884a986dab1@app.fastmail.com>
+In-Reply-To: <399fdabb-74d3-4dd6-9eee-7884a986dab1@app.fastmail.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Tue, 13 May 2025 14:53:17 +0200
+X-Gm-Features: AX0GCFu24ZFGPch6zxlVZkmp4exgi2YQWGGbqSjGo76MZv2IKCv94Wv0HRsT2OA
+Message-ID: <CAOQ4uxgOAxg7N1OUJfb1KMp7oWOfN=KV9Lzz6ZrX0=XRGOQrEQ@mail.gmail.com>
+Subject: Re: [PATCH v5 0/7] fs: introduce file_getattr and file_setattr syscalls
+To: Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>
+Cc: Andrey Albershteyn <aalbersh@redhat.com>, Richard Henderson <richard.henderson@linaro.org>, 
+	Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	"David S . Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	=?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Ondrej Mosnacek <omosnace@redhat.com>, Tyler Hicks <code@tyhicks.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-alpha@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
+	Linux-Arch <linux-arch@vger.kernel.org>, selinux@vger.kernel.org, 
+	ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, Andrey Albershteyn <aalbersh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, May 12, 2025 at 01:31:34PM +1000, Michael Ellerman wrote:
+On Tue, May 13, 2025 at 11:53=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrot=
+e:
+>
+> On Tue, May 13, 2025, at 11:17, Andrey Albershteyn wrote:
+>
+> >
+> >       long syscall(SYS_file_getattr, int dirfd, const char *pathname,
+> >               struct fsxattr *fsx, size_t size, unsigned int at_flags);
+> >       long syscall(SYS_file_setattr, int dirfd, const char *pathname,
+> >               struct fsxattr *fsx, size_t size, unsigned int at_flags);
+>
+> I don't think we can have both the "struct fsxattr" from the uapi
+> headers, and a variable size as an additional argument. I would
+> still prefer not having the extensible structure at all and just
+> use fsxattr, but if you want to make it extensible in this way,
+> it should use a different structure (name). Otherwise adding
+> fields after fsx_pad[] would break the ioctl interface.
+>
 
-> Are you building with pcrel? Otherwise r2 shouldn't be getting used as
-> an ordinary register.
+Are you are suggesting that we need to define this variant?:
 
-Yes, CONFIG_PPC_KERNEL_PCREL=y.  I'll try with n and see what happens.
+--- a/include/uapi/linux/fs.h
++++ b/include/uapi/linux/fs.h
+@@ -148,6 +148,17 @@ struct fsxattr {
+        unsigned char   fsx_pad[8];
+ };
 
-> Can you show the disassembly of where it's getting used?
++/*
++ * Variable size structure for file_[sg]et_attr().
++ */
++struct fsx_fileattr {
++       __u32           fsx_xflags;     /* xflags field value (get/set) */
++       __u32           fsx_extsize;    /* extsize field value (get/set)*/
++       __u32           fsx_nextents;   /* nextents field value (get)   */
++       __u32           fsx_projid;     /* project identifier (get/set) */
++       __u32           fsx_cowextsize; /* CoW extsize field value (get/set=
+)*/
++};
++
 
-c00000000000fc50 <__do_IRQ>:
-c00000000000fc50:	a6 02 08 7c 	mflr    r0
-c00000000000fc54:	f0 ff c1 fb 	std     r30,-16(r1)
-c00000000000fc58:	f8 ff e1 fb 	std     r31,-8(r1)
-c00000000000fc5c:	26 01 10 06 	pla     r2,19317860	# c00000000127c0c0 <__irq_regs>
-c00000000000fc60:	64 c4 40 38 
-c00000000000fc64:	2e 01 10 06 	pla     r10,19857060	# c0000000012ffb08 <hardirq_ctx>
-c00000000000fc68:	a4 fe 40 39 
-c00000000000fc6c:	10 00 01 f8 	std     r0,16(r1)
-c00000000000fc70:	d1 ff 21 f8 	stdu    r1,-48(r1)
-c00000000000fc74:	20 00 0d e9 	ld      r8,32(r13)
-c00000000000fc78:	78 13 49 7c 	mr      r9,r2
-c00000000000fc7c:	2a 40 c9 7f 	ldx     r30,r9,r8
-c00000000000fc80:	2a 49 68 7c 	stdx    r3,r8,r9
-c00000000000fc84:	00 00 2d a1 	lhz     r9,0(r13)
-c00000000000fc88:	24 1f 29 79 	sldi    r9,r9,3
-c00000000000fc8c:	2a 48 ea 7f 	ldx     r31,r10,r9
-c00000000000fc90:	64 04 29 78 	clrrdi  r9,r1,14
-c00000000000fc94:	40 48 3f 7c 	cmpld   r31,r9
-c00000000000fc98:	24 00 82 40 	bne     c00000000000fcbc <__do_IRQ+0x6c>
-c00000000000fc9c:	78 0b 24 7c 	mr      r4,r1
-c00000000000fca0:	e5 f9 ff 4b 	bl      c00000000000f684 <__do_irq>
-c00000000000fca4:	26 01 10 06 	pla     r2,19317788	# c00000000127c0c0 <__irq_regs>
-c00000000000fca8:	1c c4 40 38 
-c00000000000fcac:	20 00 2d e9 	ld      r9,32(r13)
-c00000000000fcb0:	30 00 21 38 	addi    r1,r1,48
-c00000000000fcb4:	2a 11 c9 7f 	stdx    r30,r9,r2
-c00000000000fcb8:	4c c0 50 48 	b       c00000000051bd04 <_restgpr0_30>
-c00000000000fcbc:	e1 3f 3f f8 	stdu    r1,16352(r31)
-c00000000000fcc0:	78 0b 24 7c 	mr      r4,r1
-c00000000000fcc4:	78 fb e1 7f 	mr      r1,r31
-c00000000000fcc8:	bd f9 ff 4b 	bl      c00000000000f684 <__do_irq>
-c00000000000fccc:	00 00 21 e8 	ld      r1,0(r1)
-c00000000000fcd0:	dc ff ff 4b 	b       c00000000000fcac <__do_IRQ+0x5c>
+> I also find the bit confusing where the argument contains both
+> "ignored but assumed zero" flags, and "required to be zero"
+> flags depending on whether it's in the fsx_pad[] field or
+> after it. This would be fine if it was better documented.
+>
 
-That's the whole of __do_IRQ().  It explodes at c00000000000fcb4 after
-the return from the call to __do_irq() at c00000000000fcc8, which is
-the one in the inline asm.  The compiler does reload r2 after the
-ordinary call to __do_irq() at c00000000000fca0.
+I think that is an oversight.
+The syscall should have required that fsx_pad is zero,
+same as patch 6/7 requires that unknown xflags are zero.
 
-> There was a change to r2 handling in GCC 15, but AFAICS it was meant to
-> only affect pcrel code.
-> 
-> Still it's likely our bug because we are being weird and calling a
-> function inside an inline asm block.
+If we change to:
+       error =3D copy_struct_from_user(&fsx, sizeof(struct
+fsx_fileattr), ufsx, usize);
 
-Yep.
+It will take care of requiring zero fsx_pad even if user calls the syscall =
+with
+sizeof(struct fsxattr).
 
 Thanks,
-Paul.
+Amir.
 
