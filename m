@@ -1,88 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-8535-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8536-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73083AB5110
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 May 2025 12:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4912FAB5272
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 May 2025 12:29:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZxXHt0d6cz2yFK;
-	Tue, 13 May 2025 20:08:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZxXl66MmJz2yMh;
+	Tue, 13 May 2025 20:29:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.152
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747130938;
-	cv=none; b=kZPEWxVIFZhRgruM4NbBLF9d2vmSxO6pRxInZbgzNBCim9mgW1ty/Ds+4Dp5yTdO9TU2PRgmR+5JdBrXhU37IdyLXpeElL3T+/JntCCLSqcXhLLwuEbyrjiOWwUnh958P4uxfvEfFrFq5vnGGmwTaIYLlc63EV5rf6wFy5JE7t66c6kHAGbpJjn2F2wyt7P8qAekG59W+60R4V5bRVhT2vQen3Ds24oWe/6oMiDYa95mQLlRFNC6z1lJw1NG0miq/kVMDTESGmty32YL4sWriXKhTyhhZr9JOl0nWDjA6PwKAw01xlwAkemLAy2Qcfw7Cqb+M1B2IeCwF9iqjNU9PA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747132146;
+	cv=none; b=Tf5KHEbudM3NHByviXth6EduTMmF3Q6LTHLxtwRPJx6xL9d9e0USuJv5Ewx4z/CCMhJZ7ntheYyx5CDd3LUZ/GNxXpRF4A2lrVCooKX1tQmRlZMBNc9LJsY9hgX50KDG6XLtZoc+kuXzxBe2ZyyJ/WL01HYvcuKrXuVGkGiZ7NwqtEvEjWupFHmyABzhuQWtOVnQnV+pU8Jvijje6vOJKhDONbWIMsw36AQMfowjrDiPLZyWl4OxxH8uocJ8QDzscj+k73iJ18WgYJHlYyv3UV7JA/Ef+JlsudNwAyuaBWAcFDj7qyefpfIBZ0vPqWEJ6lF1yVRnICbXVvptOWVMbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747130938; c=relaxed/relaxed;
-	bh=MIaNL5Kd2YKPa5wg9ssGZo0JPZ3wlBdDhMAR0JucTqs=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=GNaMXWB+plb43eUCYQ/64IJrvFcBnC0KLlN1tSOGzqgQBSd9cPIRrVCoTIzSb+OsKITCtm8A1DcuNH5yu8TcxtlFC/Xf/BWLuz6YN7fq0gga+GlZh+8M2u7r09yar95SnT5OGn7/It2w6aw5n1z90qOKOJhmfHx9SiYzmY7f7ctNM0ShXjiDRgW+/tbvRNYKf8W/0Z0tLXx32MZhapyPYPuKH5JYXfd1DUVpFaH2mU8233rdHChL5GOJwptufyhKReTNBL1I9OKQh+G80/qIQSUVFqbOQ0cf/X82ndHmrr9xtevR3rzOpoTvx6/umUgbdlCnTCUvKRVOVn/eYTQgCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=0bYUhGma; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=smooNYk5; dkim-atps=neutral; spf=pass (client-ip=103.168.172.152; helo=fhigh-a1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1747132146; c=relaxed/relaxed;
+	bh=EbhkY8PhCgGNIawYBN1G+sNXIoc1IZNTK+xP9oFp1Xk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=m8jVv6/cOyf9bzSYlECasM/3k/Zyaxlw2rTIEAHVCD5oPqCFGaFRoBsTlH9F0HiW4Sd0YTk2LMNAYcEWVGXbWRiwfaI2MoNtNB/RIdXeENsUatstLpIDN65MKP1h3Noyzq5lgxeG5h/dbT4YeLwfUngeEjKRI0PoMbIwrQFUowPUNx6uH6EMabAaK5yt/t/fCATF8impBY2y/1P4OCV/MKgYzWm7rQQucugcvlvH6BDWJZC/H9DPuLan7/5AO1z31I0pn+Wu2EL0Q7Wc73iS2DCD+r+Yvu9FOpt3hwo7j0cFpidX7tZuQjHMpbO8jJGntwTqP6mxzSUcq4TjYFKz4g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=kMkCYK9p; dkim-atps=neutral; spf=pass (client-ip=150.107.74.76; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=0bYUhGma;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=smooNYk5;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=kMkCYK9p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.152; helo=fhigh-a1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canb.auug.org.au (client-ip=150.107.74.76; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org)
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZxXHs192nz2xtt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 20:08:56 +1000 (AEST)
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 9F37311400D3;
-	Tue, 13 May 2025 06:08:54 -0400 (EDT)
-Received: from phl-imap-12 ([10.202.2.86])
-  by phl-compute-05.internal (MEProxy); Tue, 13 May 2025 06:08:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1747130934;
-	 x=1747217334; bh=MIaNL5Kd2YKPa5wg9ssGZo0JPZ3wlBdDhMAR0JucTqs=; b=
-	0bYUhGmasjYo3UtQDhUO1kcYpbAVuA86FmLqieuOuz6oKmKvM6DDcp4pHVbRgi5f
-	erM2hmpavLCutp7voFZS2SYOqPmwO77AuR37FphthoWOK45PPNwZe/eDUJrw466o
-	WcYUQGg/Ssz677FPjD+UE1DAo84ccSEXYU7khhLxuLpyTIvVgT9o6n2KueZlstOw
-	LU5zAc6S2xHD6o66IDAIQGzj3BZA6/PM27Vz/l9jbqxK9wc2CWEbOs+r8ypZnKUV
-	MUlMvupxr55NW8xMYSWITAK9ET5LDLkBzHJjyobJVta5C7ELq9XwbzezUUXtp1Gx
-	QfHFIGNx+pgvFXcx1LhBOA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1747130934; x=
-	1747217334; bh=MIaNL5Kd2YKPa5wg9ssGZo0JPZ3wlBdDhMAR0JucTqs=; b=s
-	mooNYk5j6wU3/tn+/8GgTdqI8kmYPMpwucoBceXp1Gnbx+x98I8bEdEHSwsLMUHC
-	7H2NG7skfdwUHBpa9dtkEEVF1w2tALSweN0KVGZi9O42udy6MkENHWxkqOp+Vz41
-	sCApuaAs39JMJiEcoNcAwkJ6008i9RGMdsEvew16ub6ybIcY+UFX/mDg4fsIwoDw
-	6vU9Uilt15psmfqrbD6FcPkeE0x9zvfs/irudFaCPz1nLN7XSPS9U3hvnDg+FhLZ
-	8jF/UN/DRudWgc74c4fyrZukCM2lJ4ZrTSgeU9vKTIueStkmd91XNlSDrwCWLW2u
-	2lUG8UQ70H2rqZrAUjbMw==
-X-ME-Sender: <xms:NhojaCdEziZTxFf8ETJzu4THDSHi2bGc1C61YBDNN00_WGP12iQB_A>
-    <xme:NhojaMMq-MTXuCAiilT1zslMAZGxTvn24_SAuxNfMSCFx79F2OiKDSTTfgDmd6pO7
-    yupWMmLK4n6pJkTWy0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftdefkeehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhepfefhheetffduvdfgieeghfejtedvkeetkeej
-    feekkeelffejteevvdeghffhiefhnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnuges
-    rghrnhgusgdruggvpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprh
-    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohidvsegtshdqshhophhrrghsthgv
-    rhhirgdrtghomhdprhgtphhtthhopehnphhighhgihhnsehgmhgrihhlrdgtohhmpdhrtg
-    hpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdp
-    rhgtphhtthhopehprghulhhushesohiilhgrsghsrdhorhhg
-X-ME-Proxy: <xmx:NhojaDi_OVF6GSGlDA3CIGBnBRNv5040JoK1mVJqR4lYdhcuSwlIPA>
-    <xmx:NhojaP8m5pO65mkVD2emyVgzwaWQYAb1Fb4SDKXDEg8uw4TSf_tNkw>
-    <xmx:NhojaOt4XxEa-EBYgAFDDFnwy6-0rM9jDuWIHHGaU3DKytMxNr6ffg>
-    <xmx:NhojaGE61O-MuBSKge7-msIMcvX8HUrxHKtlu8ZwnyIQGsVq8578vQ>
-    <xmx:NhojaKCv3MtzKHeL-ynlZJipqaiy4tO42lTVYJ00TK-PsDp_bg4oZlvx>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 47B6A1C20068; Tue, 13 May 2025 06:08:54 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZxXl45S8Cz2xBb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 20:29:03 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=202503; t=1747132139;
+	bh=EbhkY8PhCgGNIawYBN1G+sNXIoc1IZNTK+xP9oFp1Xk=;
+	h=Date:From:To:Cc:Subject:From;
+	b=kMkCYK9ppAgMcYQXkBtnP0Kl1apPIgd/0PIsInlwakklmCMTZmPTGyk4x9Gpuwgyb
+	 qTPrWkyq9p8nFHNJOPdGFscbJLR+s6vpY9+h35AOMks1ULUvVAdYyYyK5a4uu6ZHQX
+	 i7qDjotE/rbo1ZzqZnrxhrrst7qP645xzuHegN4u6Tq7K7CL2xzk23Q2U3IXAUIXfW
+	 +ppDwjLKfW2NZUelzSxE91DAz09GQ8tWehT8XzeVPOvBeoBXjBcPdgTYpY7XczKzfd
+	 Vr/HMQP/Q/eyWVy4zU3EN0s8YCgZio+cd5L2gPpjC0IB0Mmq0IadO0BO44HWiS6otd
+	 j7QPXR45HJVBw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZxXkz2cQqz4xQ0;
+	Tue, 13 May 2025 20:28:59 +1000 (AEST)
+Date: Tue, 13 May 2025 20:28:09 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+ <mpe@ellerman.id.au>
+Cc: Athira Rajeev <atrajeev@linux.ibm.com>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: linux-next: build warning after merge of the powerpc tree
+Message-ID: <20250513202809.7e23ed2d@canb.auug.org.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,37 +66,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-ThreadId: T75d59e8ff29910ec
-Date: Tue, 13 May 2025 12:08:34 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "LEROY Christophe" <christophe.leroy2@cs-soprasteria.com>
-Cc: "Nicholas Piggin" <npiggin@gmail.com>,
- "Paul Mackerras" <paulus@ozlabs.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Message-Id: <85ae2cb8-f594-46ac-87fd-2a53cdd7ef9e@app.fastmail.com>
-In-Reply-To: <8bbd9fc6-8edf-46e4-952a-0a4da0a0660c@cs-soprasteria.com>
-References: <aB6teOoVLWkdvyBu@bruin>
- <8bbd9fc6-8edf-46e4-952a-0a4da0a0660c@cs-soprasteria.com>
-Subject: Re: Crash in __do_IRQ with gcc 15
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: multipart/signed; boundary="Sig_/UyvRZZ+3eWJAk/nH2_YL=_N";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, May 12, 2025, at 20:13, LEROY Christophe wrote:
-> Hi Arnd,
->
-> Do you know when you will be able to add GCC 15 to 
-> https://mirrors.edge.kernel.org/pub/tools/crosstool/ ?
+--Sig_/UyvRZZ+3eWJAk/nH2_YL=_N
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I have to create a new build environment for gcc-15 after I lost
-access to the machine I used for the earlier builds. I should
-be able to do that within a few weeks, but unfortunately it's
-a little more work than just rerunning my scripts (which I still
-have).
+Hi all,
 
-    Arnd
+After merging the powerpc tree, today's linux-next build (htmldocs)
+produced this warning:
+
+Documentation/arch/powerpc/htm.rst: WARNING: document isn't included in any=
+ toctree
+
+Introduced by commit
+
+  ab1456c5aa7a ("powerpc/pseries/htmdump: Add documentation for H_HTM debug=
+fs interface")
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/UyvRZZ+3eWJAk/nH2_YL=_N
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmgjHrkACgkQAVBC80lX
+0GxDjAf/YJ7nYC/NWAAMY07hMWZRfNhuioB/w/XVb/HqNISKb2ZRshUR2RMhQoEk
+6Dil1SV4kjwB5kQ8m15ax+FvGd4h21CkBTiyGPq2x66RDfIV8nOgJxxHWXvx1M0l
+CEVFdkfgHvo+XPfBHVaX6d2BWPjaUGZ0jnFUyU/hLUzRIkAETgj/f7ZnRjrwDi/Q
+Wn08ScttL6VQme+hdJKCbvW881/z36ylEQuObgccd8odVZXXTEqGIn4r1nbuZU1n
+tYklFLgFK+4/699BM6PLl7HpuCfIEmKImMIp3j8ASBp47OPW8LNOKfl40TOfnjHU
+F51Jc8pm7pHJG1g6XVv8FFikhqHYWg==
+=n+Gw
+-----END PGP SIGNATURE-----
+
+--Sig_/UyvRZZ+3eWJAk/nH2_YL=_N--
 
