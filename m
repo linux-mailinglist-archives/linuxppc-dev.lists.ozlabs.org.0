@@ -1,70 +1,106 @@
-Return-Path: <linuxppc-dev+bounces-8539-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8540-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E251AB553C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 May 2025 14:53:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66431AB56B1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 13 May 2025 16:03:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zxbxq5wxlz2ySl;
-	Tue, 13 May 2025 22:53:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZxdVJ6wVCz2yf1;
+	Wed, 14 May 2025 00:03:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::534"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747140815;
-	cv=none; b=d6deO6HxcEmYj+IdhJ3XG4WcajgZHAVxdoBSkXVKsI9nBiYzxxjVJDjVUG+WrNDm9VPFhM0Qbp5nTa/3DDxaDn+A2PlLFmxXMnUP4E/ssD5P80grc7IrBtoyP8iEhZrEvqf01mrh1jywCVlADY+xuRVyfyXF47P5Rir76fM1JTy7BLFfuIlhVlE/9IUAc1ZxU9ZcZ5dGPz3skdhlIsZermi7TeQ1Q6K6kYBcziPqCQWUCy+ViP7bkmJvI1aLz0VJB6IWW5jzBwY47Xzf/Gf+C9PmazYVaqbErLyfOuAVb4RFPz86TT0raueq/hfVH9mh9PgE7BeCEn1ZzUAW/rPBaA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747145000;
+	cv=none; b=ogbD0ohHKs7mf3vBA9VyA32hzi3gtFSNtnTrLeBtDaGb2oEHUPskqwVFXGpkm12gg/MCvdiwAw/1H+Pha8H4uIBQ/h7dOzJ9qpBrssbyUfWLnykanahLDKGZ1R/otNwtO7T9z3O4YFZYvzZ+OoP2sY58FxQEEfdWeMerilX9wZ5eUIDTDCLLz74+OUewZvSbCW2u+yra+6GirEG+r5LqogUUAc1vdF8Ps980htX3HhwBLQOGOSV3uLLJTSZWk8ukjLAAfrymtEya5zx7lFrTIGr/d6nSY24dpk5IOGgDIFH/JrzeARG3/+U6cKYAwt6+0d26sp+yAJ0uOOC5OZIUrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747140815; c=relaxed/relaxed;
-	bh=lhUsGW6Aej7UtwPk8Fo3WswAje2EzwjwJ+3T+imRPIA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KTXvuzYbo5t0FIVw/c7lEnbGZL/MqrxY1qDnERwDh1Tv/9ZjqmDrhL67qqfvN+DIArPEkt08CfqDnWn1R01b4TQSAoR3LwRdYJRwbMpQmW9SKOxWJweLKfknMVs5xk8QxFydegyYV+gKpzPpdDQSGoWIgwccAC+2xbrw1cinpDh6T2IYWqSxSRgn7RtC6T3A0gveoORlMoxdEiMYAFDKLlHs/XNTjgfUq/ooqEg1zOHR4DnBWbQyeI0wv+gjp9flz98RDEHSFiU3YVGbd+B88Ue0xb2g4pa1hcJwkAbmXgV0+JwZWRm7wC0pb/1ZH9csiXM+HhGDAFvZAa54lU2Bsg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=f7fOiKcd; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=amir73il@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1747145000; c=relaxed/relaxed;
+	bh=/CZBKCEKg6MIgb42M1L3z+fSuwPIFwgQItnKgPnpedw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=Px5H8DIs6xQunzLNZqdJxHFGWCzYSRfKTkpxa/GwtjcLKKqVkrVNP+I7IXmq4CKXEbIceborD/0YkPO18CQl7Z8Q27NYw1B1Eh2btPBk88zNSvHA2VvYZMmd2zYA9JVAvEDXT0SnThFawPhIciRL3kRiy/ggBmSS+vWnQyvW6CGMNHFbh+g5xq+t9D5Imgzu7ii8Nb9A6s5oIVnp5AewPDBn8RV2QCV/HuKyxgl8F4cdm1yFN4F+6gXEwerwumJIh5hJv3co3MwZ8lKpBkx9lnZG4ITXIS0u+FKFwLh3gIfrukKgyyiBsBkUT4cwXXSFZ/eZIKcDP/i6jgYf2Rnp1Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d1Pz5fr1; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d1Pz5fr1; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=f7fOiKcd;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d1Pz5fr1;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d1Pz5fr1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::534; helo=mail-ed1-x534.google.com; envelope-from=amir73il@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zxbxp1sBvz2xtt
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 22:53:33 +1000 (AEST)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-5fbed53b421so8789220a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 05:53:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747140809; x=1747745609; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lhUsGW6Aej7UtwPk8Fo3WswAje2EzwjwJ+3T+imRPIA=;
-        b=f7fOiKcdQ88FkXC+u6d2qvV2J3vwO5OB71MjP7y/MFulJvb6DbGIHRst9MvH6Wlz6s
-         Gic7ESW5nFAzoD+FRDJPjyB0TAQ2ix8iwrTcAfAMJyw8mI4uNBNngMxvepMWZnsZP6O3
-         RRFlhh7LPdOkX+nf/Sp9Yk991goLbL4nbLiB5vdUD9Y+j+kp26LMc0t6WtIF2Z9IDB6r
-         pWYUmk4h4GKCe3Tw9DHTdTaBzpADftz4WooQJ9eTd0HOfvYK30r+eqQEiLRghfaBQkuw
-         /HjT+UnIYJdxfs9Q2AowI4n5VBbFfmOtEdmbZ/KPUOeNkAwzXqV5NefLjkJNxRBTKiUR
-         f6VQ==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZxdVH6zHSz2xdL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 00:03:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747144994;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/CZBKCEKg6MIgb42M1L3z+fSuwPIFwgQItnKgPnpedw=;
+	b=d1Pz5fr1cZoSmiQik4ITXHL6F4DIeBpKHbZDNUwD6V/xsPqLZeRw8EmuUDlmCSLBWTHqxl
+	eYjoRA2xAVg+3Fvqgd9SryfM4iY83s/nCqJMlOpz6h852xGdA2d7F/JkTWZPwVfWkTZ/R7
+	J+zrxaQdkJ/UjUCeCyedI6gGB1Gb3N8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747144994;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/CZBKCEKg6MIgb42M1L3z+fSuwPIFwgQItnKgPnpedw=;
+	b=d1Pz5fr1cZoSmiQik4ITXHL6F4DIeBpKHbZDNUwD6V/xsPqLZeRw8EmuUDlmCSLBWTHqxl
+	eYjoRA2xAVg+3Fvqgd9SryfM4iY83s/nCqJMlOpz6h852xGdA2d7F/JkTWZPwVfWkTZ/R7
+	J+zrxaQdkJ/UjUCeCyedI6gGB1Gb3N8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-446-Dmacx9vGMGajvJNLpCCVNA-1; Tue, 13 May 2025 10:03:12 -0400
+X-MC-Unique: Dmacx9vGMGajvJNLpCCVNA-1
+X-Mimecast-MFC-AGG-ID: Dmacx9vGMGajvJNLpCCVNA_1747144991
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43e9a3d2977so40233775e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 07:03:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747140809; x=1747745609;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lhUsGW6Aej7UtwPk8Fo3WswAje2EzwjwJ+3T+imRPIA=;
-        b=I2PrfGiDbOxXL3XM54CZasjqvuixKQcVdHvl5LGixLdynkWBm2MCPkx0KLTl4dusN7
-         Uihw39jvYNyD67e12LYMsf7seGQLPW6m1Eo4W3P4CmE15ynMXdRLsFJIVs9cN8RHgNPj
-         8B03C+mbM8mNrlUzjcQ6lrkCvucirJxKM0LxkMEb32X2MA4wcnrkv4IgVlnAL24qEcXq
-         QaFQHOIPoMPOTRAJgEAVzrnp4ye1pakgoOtp/qoExi8oe8nR4EY+F4fRid6WtalOWhqc
-         aL9oPcuEJHZuZSWawsGCTtfWgjgh8fozEE/QZzFI7ys2I8cEFlGMogn54cecOEJrKJoD
-         9jcg==
-X-Forwarded-Encrypted: i=1; AJvYcCWu9vF9pP7MOJlj3XyKnxCT32dT3Bs/XI5H8RJP7ETwWBNXDV2piNLhCCVJfpDOBLIWvG66iKJSa+mQRKE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywmwl8c66Oh/5sZUCno7r4X8/jPhw4XoJYqZySe1eue/kdTGpB6
-	hz8CaB+mfmMtfGP1BuDxoBUVSqKXcq81H9amFLA7WzGZ2DaENGtgfJaO1iSLC7ZfPKJ75CLOxap
-	vrIaD0z8FCcULoipxK7CRocNH9dg=
-X-Gm-Gg: ASbGnctA3vR9WFh7vL212QNltq9sEph4m8HkedmY/6WwgIkCYEK2c8o+YSrzCP89iux
-	863DVyHB1cZDU+OoYxykcMA42Tgipea3QVaHlPf1AFyIb5itVl9F8as4qO2NPXwJ+3AlR5Ud3HH
-	UigY92vePpwPPTbgcvBhIQiIuvFiNTPIkO
-X-Google-Smtp-Source: AGHT+IE/b0BCD4zsWzgMefEsXbY+DbhCAD/XOG3dRDcg9jP4PpucFQp1j7NsiRF8Za5+3lLoqjezqR5fGVfm35+9pG4=
-X-Received: by 2002:a17:907:7617:b0:ad2:23fb:5a03 with SMTP id
- a640c23a62f3a-ad223fb7c87mr1075619066b.7.1747140808774; Tue, 13 May 2025
- 05:53:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1747144991; x=1747749791;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/CZBKCEKg6MIgb42M1L3z+fSuwPIFwgQItnKgPnpedw=;
+        b=gg3nD3zHFq72hq4fJuW4dKKd/bcSJ2uXQS1YGXiK9m1ck/druuwQh/RYo47GFhvQzN
+         w2nLOVSyxz/nlN0rL93uSE5SESVWu0bt53ai3R7JIMjgcvEok6BuMbQRN9W/EbijVRC3
+         mTvI9HP937LWdQSdi4WLvfj6dQgy1oC23bS4NF7SsKTevBboJnqNvOMEZBSmLozxQMP/
+         E6RZ8dclUWH2QSN3AlIveiYBsWiM032MltKmWRygP3t3KDPVeVqQ2RgcmmKrpJPcXzUC
+         8ASduLakidICNBN67uOuIAlpealfVkdffs4vMfIVl0htIJ1IeoYGgNhsaQc1169mUZhd
+         XTeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJruy0tQ2Q5wgO0v/jtl72LDi3oTi1uxB5mar13BFoM+5jUtamHbh6NipzqYAD6+IUmIaf+KgQtMk0h4g=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyqoHEv88UdKFo0ouajWnWRlo4fk7MtiylsRzioKMUnPx+VK+vk
+	U+R3UgDT7uFeXWBfeR6hwieturMI4ud3L3dXmVUfX+JI3n2R9CaIwzdrwfD78vbE6J+CGTO75jh
+	l4Bsuj39zr1MlvlyFdOh98tvTYEcJMqeDQuZ0JG6qaT69HTe+OcNT+oOp4kqjjKQ=
+X-Gm-Gg: ASbGncvDXtsltLV9ALKNqd7HNc4//uLorM0PoXV8iuhHYxcsaLR3nrlduAVLUZDKfBY
+	EO/fWvkKp6VKgihQJntxb2DNu4wf6vZTyn01vmMcEajFcJJFIQbjaVDJXNW/6jnnuS7jSUb9aWj
+	QRkPFcI130Mzj8uuXT3tkGpJYnsJdW18cGrV1jeltE3Heupq/pXnMeWFA4D2rhcwuxg4Z7bhlPz
+	kql5ghqFj1MtfZmaGfzqZ5m1A5SQaFCztym07/zL5Gxl/fHc+LZ4Mb4Jd+2nh9aU2z1bJ915FY6
+	QBjF6aprn+/zd4E=
+X-Received: by 2002:a05:600c:3b0e:b0:43c:f6b0:e807 with SMTP id 5b1f17b1804b1-442d6ddea12mr180192395e9.31.1747144987563;
+        Tue, 13 May 2025 07:03:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE8ZEKfjvThnHZ+qakwjJU5Vxx01h+as7nBLYm3yQHV3qHfmOsUVNBWy0KLHWObtc49rSNQEg==
+X-Received: by 2002:a05:600c:3b0e:b0:43c:f6b0:e807 with SMTP id 5b1f17b1804b1-442d6ddea12mr180190615e9.31.1747144986468;
+        Tue, 13 May 2025 07:03:06 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.148.4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58f33b5sm16661205f8f.54.2025.05.13.07.03.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 May 2025 07:03:05 -0700 (PDT)
+Date: Tue, 13 May 2025 16:02:49 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, Peter Huewe <peterhuewe@gmx.de>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Naveen N Rao <naveen@kernel.org>, Jens Wiklander <jens.wiklander@linaro.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, linux-integrity@vger.kernel.org, 
+	Michael Ellerman <mpe@ellerman.id.au>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Nicholas Piggin <npiggin@gmail.com>, Sumit Garg <sumit.garg@kernel.org>
+Subject: Re: [PATCH v4 1/4] tpm: add buf_size parameter in the .send callback
+Message-ID: <vasgjrd5s3km4vdhyimcqq6etf7rvi2r54zrajrwioebrxl7o5@xyi5h2yxk36z>
+References: <20250509085713.76851-1-sgarzare@redhat.com>
+ <20250509085713.76851-2-sgarzare@redhat.com>
+ <aB8D5syofPSqjzns@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,112 +114,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250513-xattrat-syscall-v5-0-22bb9c6c767f@kernel.org> <399fdabb-74d3-4dd6-9eee-7884a986dab1@app.fastmail.com>
-In-Reply-To: <399fdabb-74d3-4dd6-9eee-7884a986dab1@app.fastmail.com>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Tue, 13 May 2025 14:53:17 +0200
-X-Gm-Features: AX0GCFu24ZFGPch6zxlVZkmp4exgi2YQWGGbqSjGo76MZv2IKCv94Wv0HRsT2OA
-Message-ID: <CAOQ4uxgOAxg7N1OUJfb1KMp7oWOfN=KV9Lzz6ZrX0=XRGOQrEQ@mail.gmail.com>
-Subject: Re: [PATCH v5 0/7] fs: introduce file_getattr and file_setattr syscalls
-To: Arnd Bergmann <arnd@arndb.de>, Christian Brauner <brauner@kernel.org>
-Cc: Andrey Albershteyn <aalbersh@redhat.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	"David S . Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	=?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Ondrej Mosnacek <omosnace@redhat.com>, Tyler Hicks <code@tyhicks.com>, 
-	Miklos Szeredi <miklos@szeredi.hu>, linux-alpha@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
-	Linux-Arch <linux-arch@vger.kernel.org>, selinux@vger.kernel.org, 
-	ecryptfs@vger.kernel.org, linux-unionfs@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, Andrey Albershteyn <aalbersh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <aB8D5syofPSqjzns@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: nCHwklqX4uWGVUXhHyZYwDvi6VjJ58nJFCoOmPLMdiQ_1747144991
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, May 13, 2025 at 11:53=E2=80=AFAM Arnd Bergmann <arnd@arndb.de> wrot=
-e:
+On Sat, May 10, 2025 at 10:44:38AM +0300, Jarkko Sakkinen wrote:
+>On Fri, May 09, 2025 at 10:57:10AM +0200, Stefano Garzarella wrote:
+>> From: Stefano Garzarella <sgarzare@redhat.com>
+>>
+>> Add a new `buf_size` parameter to the `.send` callback in `tpm_class_ops`.
+>> This parameter will allow drivers to differentiate between the actual
+>> command length to send and the total buffer size. Currently `buf_now` is
+>> not used, but it will be used to implement devices with synchronous send()
+>> to send the command and receive the response on the same buffer.
+>>
+>> Also rename the previous parameter `len` to `cmd_len` in the declaration
+>> to make it clear that it contains the length in bytes of the command
+>> stored in the buffer. The semantics don't change and it can be used as
+>> before by drivers. This is an optimization since the drivers could get it
+>> from the header, but let's avoid duplicating code.
+>>
+>> While we are here, resolve a checkpatch warning:
+>>   WARNING: Unnecessary space before function pointer arguments
+>>   #66: FILE: include/linux/tpm.h:90:
+>>   +	int (*send) (struct tpm_chip *chip, u8 *buf, size_t cmd_len,
+>>
+>> Suggested-by: Jarkko Sakkinen <jarkko@kernel.org>
+>> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>> ---
+>> v4:
+>> - rework the commit description [Jarkko]
+>> ---
+>>  include/linux/tpm.h                  | 3 ++-
+>>  drivers/char/tpm/st33zp24/st33zp24.c | 2 +-
+>>  drivers/char/tpm/tpm-interface.c     | 2 +-
+>>  drivers/char/tpm/tpm_atmel.c         | 3 ++-
+>>  drivers/char/tpm/tpm_crb.c           | 2 +-
+>>  drivers/char/tpm/tpm_ftpm_tee.c      | 4 +++-
+>>  drivers/char/tpm/tpm_i2c_atmel.c     | 3 ++-
+>>  drivers/char/tpm/tpm_i2c_infineon.c  | 3 ++-
+>>  drivers/char/tpm/tpm_i2c_nuvoton.c   | 3 ++-
+>>  drivers/char/tpm/tpm_ibmvtpm.c       | 6 ++++--
+>>  drivers/char/tpm/tpm_infineon.c      | 3 ++-
+>>  drivers/char/tpm/tpm_nsc.c           | 3 ++-
+>>  drivers/char/tpm/tpm_svsm.c          | 3 ++-
+>>  drivers/char/tpm/tpm_tis_core.c      | 3 ++-
+>>  drivers/char/tpm/tpm_tis_i2c_cr50.c  | 6 ++++--
+>>  drivers/char/tpm/tpm_vtpm_proxy.c    | 4 +++-
+>>  drivers/char/tpm/xen-tpmfront.c      | 3 ++-
+>>  17 files changed, 37 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+>> index 9ac9768cc8f7..7ac390ec89ce 100644
+>> --- a/include/linux/tpm.h
+>> +++ b/include/linux/tpm.h
+>> @@ -87,7 +87,8 @@ struct tpm_class_ops {
+>>  	const u8 req_complete_val;
+>>  	bool (*req_canceled)(struct tpm_chip *chip, u8 status);
+>>  	int (*recv) (struct tpm_chip *chip, u8 *buf, size_t len);
+>> -	int (*send) (struct tpm_chip *chip, u8 *buf, size_t len);
+>> +	int (*send)(struct tpm_chip *chip, u8 *buf, size_t cmd_len,
+>> +		    size_t buf_size);
 >
-> On Tue, May 13, 2025, at 11:17, Andrey Albershteyn wrote:
+>I'm sorry but now that I look at this, just for the sake of consistency:
 >
-> >
-> >       long syscall(SYS_file_getattr, int dirfd, const char *pathname,
-> >               struct fsxattr *fsx, size_t size, unsigned int at_flags);
-> >       long syscall(SYS_file_setattr, int dirfd, const char *pathname,
-> >               struct fsxattr *fsx, size_t size, unsigned int at_flags);
+>	int (*send)(struct tpm_chip *chip, u8 *buf, size_t bufsiz,
+>		    size_t cmd_len);
 >
-> I don't think we can have both the "struct fsxattr" from the uapi
-> headers, and a variable size as an additional argument. I would
-> still prefer not having the extensible structure at all and just
-> use fsxattr, but if you want to make it extensible in this way,
-> it should use a different structure (name). Otherwise adding
-> fields after fsx_pad[] would break the ioctl interface.
->
+>I.e. match the order and parameter names from tpm_try_transmit().
 
-Are you are suggesting that we need to define this variant?:
-
---- a/include/uapi/linux/fs.h
-+++ b/include/uapi/linux/fs.h
-@@ -148,6 +148,17 @@ struct fsxattr {
-        unsigned char   fsx_pad[8];
- };
-
-+/*
-+ * Variable size structure for file_[sg]et_attr().
-+ */
-+struct fsx_fileattr {
-+       __u32           fsx_xflags;     /* xflags field value (get/set) */
-+       __u32           fsx_extsize;    /* extsize field value (get/set)*/
-+       __u32           fsx_nextents;   /* nextents field value (get)   */
-+       __u32           fsx_projid;     /* project identifier (get/set) */
-+       __u32           fsx_cowextsize; /* CoW extsize field value (get/set=
-)*/
-+};
-+
-
-> I also find the bit confusing where the argument contains both
-> "ignored but assumed zero" flags, and "required to be zero"
-> flags depending on whether it's in the fsx_pad[] field or
-> after it. This would be fine if it was better documented.
->
-
-I think that is an oversight.
-The syscall should have required that fsx_pad is zero,
-same as patch 6/7 requires that unknown xflags are zero.
-
-If we change to:
-       error =3D copy_struct_from_user(&fsx, sizeof(struct
-fsx_fileattr), ufsx, usize);
-
-It will take care of requiring zero fsx_pad even if user calls the syscall =
-with
-sizeof(struct fsxattr).
+Ah, I see, makes sense, I'll update and send v5.
 
 Thanks,
-Amir.
+Stefano
+
 
