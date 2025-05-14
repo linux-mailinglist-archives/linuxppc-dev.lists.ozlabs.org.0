@@ -1,94 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-8551-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8552-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF29AB6136
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 05:30:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BA3AB6142
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 05:35:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZxzPG6fFVz2yql;
-	Wed, 14 May 2025 13:30:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZxzWh3HTwz2xS0;
+	Wed, 14 May 2025 13:35:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747193410;
-	cv=none; b=kUobxmjnlb/a24PzK2TkUJw0CTcYZQ4pktfcccjK29UeGQD/yB8jxIkAkPtx+MyB2fP62DndNqcfV0etHMxmfluVphnMic7Wz/+Xf6S/6lFKtIHFXXFCgdtCKin7WA3lHd/UoDKfHyGdLA6mgZ1qoiG8RSsHFRJD1YxadtIuDS82sOT3029g1K+XA3m/8k2D6cyK1nRW2ebH69bXGsin0ir2GSEAkikGPLJKUYXgBD6/oApfmmkKXPLBmVcBgaKhXz+Kh21ovqR2xwjCdLADJEZDFYpQoXXFYRmWtUmSEGCs4eyBs1CYAo8gNaP05ry7iH4xB2D1gQn+fq9YVms7cQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747193744;
+	cv=none; b=Ca+1rIMg4RqhnAZ6JkxzMybLCRLRPli7YIf8wOgNvJyoggO8EIkVKAYuSn4wpyB9CGtILcuVJgqeoJSuk7EwlZ9PIFasBrGvqEnXoinysxp/oUE6kTblYlc8542O5au+Nex2d+5hRIhvGb6fqaUvP0tR2igvpJp63QN5f17gLbYisNimk4s73oI/JH8mD+NWsUHM25+Emdv/ITJC2wr94OTJI25DsPJvSMVJbxxIaR1eeBfXvHCb2gLVn2GHCbcHmqeCF9sNbcmYAzdDUrIRC7RJI7sWGNBrmWI0nzvNOGfjSLdtvqMoTnkYCU7r22jyp0i9FmgSLCerSCcekOT25w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747193410; c=relaxed/relaxed;
-	bh=zPNj1R9ALDGy4ZhAvSAe9nUoPzbthadZcf4T/oJDS44=;
+	t=1747193744; c=relaxed/relaxed;
+	bh=SPkwKxRZ0jZWUYWozH5i6AyzMDzsb6UiTpEj0ygaXeo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HHxmKufEVOiPOpIEWvjJuP/vTw4zzSraDRSPYs3FdZSwIGt9+EH0Dnqj79Plrtad8zfoxSnHP1A5udrydp2TIzsaXkAowrvDZRYz1HZH7oPtSbngNFwHru8ecWDu/HNEkAWhzO29nSsEN1ExSM8vRqI9z5aKnyy0OHEJzHHSxeQwQqYsEG9BhzQT/uRdoAo11k2hK98m93mpneg320LMmu047QUiuz3YfNedWf6iMLvH5NoI0cfdYFA4XZeXKQy7DWUEMuj5NC6CzdnPe42jgaP0Y1EwXKD+f4aOWR6rhXrg0tOcLYQsW4/ZGktIZXBSBb5lJhmTiWI34Rm1Ry/orQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PIE+dCDB; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PIE+dCDB; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=shahuang@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	 In-Reply-To:Content-Type; b=XNHv6bijKMCMU1J/kqZQRHtDfCqno/gk6Hlk4dxOJRQsXLXIFquigB3+YOE1KVxKMjx5KTgGW3IaOLh64hjE8jjp2u4bAZ62t0j5mpDdQ4fJ5ctqzWIzrcZWnbPHLego7XdyuSwjIhR0AOBe/0oFGHVPmyr2VOArUbHODbsX7Y1wRyhJS/4OWlkdeOMaS8xtugt1FwpFWu02/lEgDY+B0t83FlMlbMfuiHWpwWkmcSgdRRDHvWQk3l/OKfyEe1fK+p4GIw/dcsJKBsXZgCuUooDvAK+jLCOLefBsQRj6p80b39H849SHJljv998mOzKX2iAtgNgZ7+Hscf+rVR1IVA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DvuikcOq; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PIE+dCDB;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PIE+dCDB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DvuikcOq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=shahuang@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZxzPF72Ckz2yqk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 13:30:09 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747193406;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zPNj1R9ALDGy4ZhAvSAe9nUoPzbthadZcf4T/oJDS44=;
-	b=PIE+dCDBdMLnqT3XLzEySVyDUJDNWhD9QY+s6w+6F7nijDtH2EYLOkeyTxaq572IHzjrcB
-	678S5PR0b3Ype6pBsaf02anTw581h6fVU8da4u+JjbWjiksOVzwSuFakzKm98H/RGzwOB1
-	daAmD/28ogSmnYGvht6X4y4H5DWnH+I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747193406;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zPNj1R9ALDGy4ZhAvSAe9nUoPzbthadZcf4T/oJDS44=;
-	b=PIE+dCDBdMLnqT3XLzEySVyDUJDNWhD9QY+s6w+6F7nijDtH2EYLOkeyTxaq572IHzjrcB
-	678S5PR0b3Ype6pBsaf02anTw581h6fVU8da4u+JjbWjiksOVzwSuFakzKm98H/RGzwOB1
-	daAmD/28ogSmnYGvht6X4y4H5DWnH+I=
-Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
- [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-Fx4SZa1IOdKoUCZAMIvVjw-1; Tue, 13 May 2025 23:30:02 -0400
-X-MC-Unique: Fx4SZa1IOdKoUCZAMIvVjw-1
-X-Mimecast-MFC-AGG-ID: Fx4SZa1IOdKoUCZAMIvVjw_1747193401
-Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-7424d8944b6so317344b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 20:30:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747193401; x=1747798201;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zPNj1R9ALDGy4ZhAvSAe9nUoPzbthadZcf4T/oJDS44=;
-        b=UpUp/KbHj5M60ZXl1u4xjUGk+gHzUsakUZpnWnflA0QhpzdCQjEHMSd1Up/eOwert8
-         t90i+j2yiCnMUuVcsigwD4Esjbackji8kdfwXFUSOCfxFzJwfEm4wAvEn6c5PftvsK+5
-         xGkbLa40d16HGaywod5Ag7YHxvNGE9nekaXFhevRBsl+oBtxFJfmAOetqkE1+oivQrab
-         ZKQ6ofLsHWAQ+WR55aCqKquJsdDKdBGK06JERf06Ma/760I0LxQ0pn9W+6fwBDrw882O
-         TolgVkWXrG5Rw9WFgyDBjmBF5y/bAxeLWqfd8bFdrWJREAoh0iqc4/+qSY0sByjA5CjI
-         x3Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSftWHW1utt6gxb3dF5ysHXwGuOg42wqPruYhMemLyFX1/nFGbpVmkMMyvd3WIhA9vti+SLIHurmpT5mw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyBxLVqyUvnwtjWTlryzMPSyIgI+6SLuC4tSRX/VIUwMTFAW+Jy
-	eTH8Imct1vcfCVFi0AgVHs2JeVozoF4bFcOCOPGmDC2GbagGqkrOgbshJsoMPCSSoICOb7EQgEO
-	UDbKhgmJIuMGgttx9SjW2MKAzEdIKyt00nvBXout7/GrowbTYTSbQyMmwcpxuNSM=
-X-Gm-Gg: ASbGncv5Gl7Sm9kGuQkY86WdN4oEttZgV/LskHtU5NCIvpFjnkqirMP74w700vGQdl3
-	OyVR+KaDzPv9pWsICPXAyAW6+lRbYnRhvbwVkfP+pt+0yUf0wGYOLeuVXnqbMnmjgks/r31i6LF
-	j7OtfgrAtehoM/n1XXpuUTsJjhnKyIFS9e+6rkdtoIfhAe/HzVYXuccQ7onqoOCkUEX2/BE2Cu2
-	+caK5U4epjJlg6utjJlBMBL462jEr94pLmgnZS53x61vpxB1r/j7JyTSvx0K/UJnwAHPhmWARru
-	qYGl21yBkejCv4Uw
-X-Received: by 2002:a05:6a00:849:b0:73e:2367:c914 with SMTP id d2e1a72fcca58-7428907dbbemr2608216b3a.7.1747193401138;
-        Tue, 13 May 2025 20:30:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE4NfRMilmo0WhS6bonXckoq6ayKF8QYGypn6TRZn6O1csy9tmwHCGt4njEOo+8VL50NM6NRQ==
-X-Received: by 2002:a05:6a00:849:b0:73e:2367:c914 with SMTP id d2e1a72fcca58-7428907dbbemr2608173b3a.7.1747193400666;
-        Tue, 13 May 2025 20:30:00 -0700 (PDT)
-Received: from [10.72.116.125] ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74237a8a3adsm8406109b3a.158.2025.05.13.20.29.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 May 2025 20:30:00 -0700 (PDT)
-Message-ID: <54b5bb37-5304-4e73-afc8-bf2a23e6490b@redhat.com>
-Date: Wed, 14 May 2025 11:29:51 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZxzWg10t7z2xKh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 13:35:42 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54DIsg8S025407;
+	Wed, 14 May 2025 03:35:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=SPkwKx
+	RZ0jZWUYWozH5i6AyzMDzsb6UiTpEj0ygaXeo=; b=DvuikcOqqeRT+RbKoj6GHC
+	wm1rcotG8nxLoJEvZM2GbxUsORFE3saF5cADFMsZWLa04qoeCBSCc9VaH9FINvTv
+	7XUzZHsLLH7IhF48fGmefEdWQjUcZytb5qcUC0ydHwoYaI/meg5MGjtfQOklY9h2
+	yGuPOFTrBJiqlcPz91OojDd6iPUXTbWD1LMlk3+KEAOID90YrddIy/87Z8RoLsYi
+	7dDBdnywbCD/lgvhk3j/DsXawy4uyrWbOURZv6PUTYMGtwYllKSGRmyFTBJtoBll
+	Sk1ZywSqoTSmVZz5uHlO6EaF5hJ7QXcj6/QOPvkZTy11Xm3j4JRn6ewfyd7VcJJg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mbs6hu27-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 May 2025 03:35:14 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54E3ZDRh009700;
+	Wed, 14 May 2025 03:35:13 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mbs6hu25-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 May 2025 03:35:13 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54E24oM7026656;
+	Wed, 14 May 2025 03:35:13 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 46mbfpa2fy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 May 2025 03:35:12 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54E3ZCPX23920982
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 14 May 2025 03:35:12 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3281158059;
+	Wed, 14 May 2025 03:35:12 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 84D0A58055;
+	Wed, 14 May 2025 03:35:09 +0000 (GMT)
+Received: from [9.204.206.207] (unknown [9.204.206.207])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 14 May 2025 03:35:09 +0000 (GMT)
+Message-ID: <876dd739-d708-40f1-82ad-45090a26664e@linux.ibm.com>
+Date: Wed, 14 May 2025 09:05:08 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,79 +87,79 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v3 04/16] run_tests.sh: Document
- --probe-maxsmp argument
-To: Alexandru Elisei <alexandru.elisei@arm.com>, andrew.jones@linux.dev,
- eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
- frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
- david@redhat.com, pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, will@kernel.org, julien.thierry.kdev@gmail.com,
- maz@kernel.org, oliver.upton@linux.dev, suzuki.poulose@arm.com,
- yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
-References: <20250507151256.167769-1-alexandru.elisei@arm.com>
- <20250507151256.167769-5-alexandru.elisei@arm.com>
-From: Shaoqin Huang <shahuang@redhat.com>
-In-Reply-To: <20250507151256.167769-5-alexandru.elisei@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PGnaGYkdf-32PVLF7O3IR89GH-iRM18Xmm8Ca6cSdt4_1747193401
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH] powerpc: Transliterate author name and remove FIXME
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+ <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20241110162139.5179-2-thorsten.blum@linux.dev>
+ <87v7wuy3p5.fsf@mpe.ellerman.id.au>
+ <55B1EE24-BEC9-4A8D-84B0-ED32FCC070A5@linux.dev>
+ <87v7weodqn.fsf@mpe.ellerman.id.au>
+ <d9e232bb-5069-4526-b781-f4e316bda95d@csgroup.eu>
+ <774CD605-AE6F-4D37-AB50-B9676858CDFA@linux.dev>
+ <504A9138-865E-4CB3-8E1C-E19C4B86F1D3@linux.dev>
+ <922be2ed-aed2-4c55-b7b0-37abfc745500@csgroup.eu>
 Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <922be2ed-aed2-4c55-b7b0-37abfc745500@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDAyNSBTYWx0ZWRfX2Gd79AK1XC2v 0ROZDxXV0Kh6npqxTTzr/70KAEfsohpa7XqQ/Y9Q7MVDLaNxPxO3u5GnPOOctxOvncZ+oKvfco/ BhaVkTN0wVCOl7FHai/C6jmcYRqRpzE409BQRbEvB4p+mPpy/JLbskjx3Sn/ffx9SlhMG/p9REA
+ QRMiIsS0zEDgLSSAgi42ZHe9KGaNQTt6+X3lWZWD6EMLDLk0PIhU/AH6Ttsox7szE+FayRcY6Na 6+u9DpeJgFP7ahHfetlyvxgFpKSvPnBOSeTMIav/I+EK4N/ls6i2k9q5bScaL9v0EiqL6RV3Xdm nAnOc5Nl3I131xKwN90wUwqTIW+f9d3gri3mFo/rqjAMtVtJpnsV8194m/5N66En4UN7ijZAAfk
+ MzwLMbD6vtlZ8xs5B7sdrq+W0mBwIEwJhPvxy3gBwaP1nZCVfbYuYni/R9FVs6gxIVBn57T6
+X-Proofpoint-ORIG-GUID: RygOFpSGw5FOOlyWFCprbu40DsIUmHJz
+X-Authority-Analysis: v=2.4 cv=d5f1yQjE c=1 sm=1 tr=0 ts=68240f72 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=UqCG9HQmAAAA:8 a=NEAV23lmAAAA:8 a=voM4FWlXAAAA:8 a=1UX6Do5GAAAA:8
+ a=gmKdWFfqcPwGhx-9FWsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=IC2XNlieTeVoXbcui8wp:22 a=Et2XPkok5AAZYJIKzHr1:22
+X-Proofpoint-GUID: HvOB_mhN5i6zhAb8yKPuvkeo6NcrL5n_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-14_01,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ spamscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 mlxlogscore=872 impostorscore=0 adultscore=0 phishscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505140025
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 
-On 5/7/25 11:12 PM, Alexandru Elisei wrote:
-> Commit 5dd20ec76ea63 ("runtime: Update MAX_SMP probe") added the
-> --probe-maxmp argument, but the help message for run_tests.sh wasn't
-> updated. Document --probe-maxsmp.
+On 5/13/25 11:18 PM, Christophe Leroy wrote:
 > 
-> Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
-> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-
-> ---
->   run_tests.sh | 17 +++++++++--------
->   1 file changed, 9 insertions(+), 8 deletions(-)
 > 
-> diff --git a/run_tests.sh b/run_tests.sh
-> index 152323ffc8a2..f30b6dbd131c 100755
-> --- a/run_tests.sh
-> +++ b/run_tests.sh
-> @@ -17,14 +17,15 @@ cat <<EOF
->   
->   Usage: $0 [-h] [-v] [-a] [-g group] [-j NUM-TASKS] [-t] [-l]
->   
-> -    -h, --help      Output this help text
-> -    -v, --verbose   Enables verbose mode
-> -    -a, --all       Run all tests, including those flagged as 'nodefault'
-> -                    and those guarded by errata.
-> -    -g, --group     Only execute tests in the given group
-> -    -j, --parallel  Execute tests in parallel
-> -    -t, --tap13     Output test results in TAP format
-> -    -l, --list      Only output all tests list
-> +    -h, --help          Output this help text
-> +    -v, --verbose       Enables verbose mode
-> +    -a, --all           Run all tests, including those flagged as 'nodefault'
-> +                        and those guarded by errata.
-> +    -g, --group         Only execute tests in the given group
-> +    -j, --parallel      Execute tests in parallel
-> +    -t, --tap13         Output test results in TAP format
-> +    -l, --list          Only output all tests list
-> +        --probe-maxsmp  Update the maximum number of VCPUs supported by host
->   
->   Set the environment variable QEMU=/path/to/qemu-system-ARCH to
->   specify the appropriate qemu binary for ARCH-run.
+> Le 13/05/2025 à 16:10, Thorsten Blum a écrit :
+>> On 7. Jan 2025, at 13:16, Thorsten Blum wrote:
+>>> On 23. Nov 2024, at 11:19, Christophe Leroy wrote:
+>>>> Isn't our file just a copy of the one from binutils ? Shouldn't we adjust it based on commit https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2Fbminor%2Fbinutils-gdb%2Fcommit%2F2ce18a16268a&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cab93fab4ad1e43fbaaee08dd9227edf0%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638827422381661999%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=pYe0b3WZhhmX3IHNh58Ogf%2BFMLYsdA7zn93%2B74D%2F%2FsA%3D&reserved=0 ?
+>>>
+>>> It looks like it's a copy and the name is spelled the same as in my patch:
+>>>
+>>>   "Mimi Phuong-Thao Vo"
+>>>
+>>> What's missing to get this merged?
+>>
+>> Does it make sense to resubmit this or do we leave the name and the
+>> FIXME as is?
+> 
+> Thanks for the ping, your patch is not lost, it is still here: https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20241110162139.5179-2-thorsten.blum@linux.dev/
+> 
+> Maddy, what do you think about the way forward ?
 
--- 
-Shaoqin
+Was waiting for someone to chime to confirm. But I guess will pull it in .
+
+Thanks.
+
+
+> 
+> Thanks
+> Christophe
+> 
 
 
