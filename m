@@ -1,88 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-8558-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8559-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CAEAB61F6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 07:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C7DAB6236
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 07:19:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zy1Yc0Tlbz2yfS;
-	Wed, 14 May 2025 15:07:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zy1qL0bxQz2yqk;
+	Wed, 14 May 2025 15:19:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747199251;
-	cv=none; b=oR6fPTwysfyQ2qIHwFS5clNFnhqlqZb6zlOPDrfdXA2GnGy2BTsjIoiw7f1yLenjrg+hqZHqudLtEo6oeu1zFbAdA1ecBKvh+CwNQryA0lYybN0DzMrNE11glFfAAGIRYJlcwgROtA2ybxnNtG1drILzLqm/TTgeC5e+fHVc6S9+yEM1V1Yfunpm6Qrq9TMsFV16HtscZkSdvK8JG3pdrKgK4t1Ic4QsW9OvUdGnJ9yQ/GAasun1HlLQVCdLbxVYmNIDsPWL2+hd8JYucbPy41UfO/yWARSDLnNXb+MZ+UEjYKSJtF60RrsVQ3oI0mq6ZdiHfe+0+gQwIRd4qyi2kQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747199966;
+	cv=none; b=FH8b5qHdxrttpt+Wf2E4sToSuun6mBz4mGmf4JFc3ZIZIqs7rLTjNWa2DABwcltaLHz/Q1tZHAYvWmB7O0AgG6ysQuNSo2utEUU+7qETsafGxJjBrKDOpCdk3+RTV1ecx/KSkm9wVVIEL7fDVjmYm92vjTK9tjrzaRF16TxGFzOgbHuj5NvX+I2zDLrOF/MibR3c/YWUeRGjO5yyDcz6Ha0rveUja/JFGVdDuZXjnvKJND4dqXwB2QByylNOeY5ed5dhswORwT2oTDf24KtVktPHZeGdIYXZ4UeLyGa8/kDvV/J4KBb7CTXWPfSI/OAXDe4KixtuUaYTXo4pPmm3lg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747199251; c=relaxed/relaxed;
-	bh=l0rsmeLZcW0BgyjLX0rETps/KiAqAXxNtF7yFCkcCHI=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YWON6kZNSBc3WW1BHJc8NV8LHvOdLy66APUTabzDqXDPIkHDHUTGplFkX6zkUzMexKjVoHMEYMf6R9MZaOLH69v1REv33ARqRT6sFKcKPhl6BPx+9QCx5952wTflZb+Inr3anx+y06jWNjZLgpexIaEtqbqVGSNL8cu7CHlA1rCWS7bE946AzdB0BdIR87sBFgYwZiPdA7C5uIU6W996FcoqdqD5qY5JvdkFgxMvhWTxGIiaEGiVPlp9h+1geTFORUPGQ18Uajr1vr/+02QGfqhKk5s7G6eWIn//BQjwXwrSQHv5hNmamOMhYKVCJJBAIfld2k30Cvw6gr+AGioyew==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CiuFrx6r; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1747199966; c=relaxed/relaxed;
+	bh=0hoTD8e8xNTcWE3Y1FtjMw+yrHY7MuTeNsfC1G/0KA8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zo1Dgr8rgkrZBFY3DKv1hoSVps5b3It86TWdrCNtVwy+5AzZsxOo3QplTE5Pl09PQzfz/z+WOh5JgsBGaN7jkH9c6/KAHzukeWPisi0e+/yZ++yL1TQ1nWeM15XE9Ub/zX1ubG5+HcELb7JBsM582mR/fdyz0NiC6bSCOExlJQrw3RMv9uUnnesCQpB4dBUsDbZNAZwEYJsiWuBHK76o4Tvxd+Ym6sptZIRn06DVs6Z4wZJhBgHHHcKBJW4bfKFrWiPrwjAuOR4vHMHQy2vLDQ/cbAast6kp7Ajixd66Nxm+cI4Ajzqro8qqJGAU0x5wOhZv97XchKgfeGP+lodIjA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dEn/m2PK; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CiuFrx6r;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dEn/m2PK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zy1Yb0kd1z2ySg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 15:07:30 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54DIbM6g019820;
-	Wed, 14 May 2025 05:07:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-type:date:from:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:to; s=pp1; bh=l0rsmeLZcW0BgyjLX0rET
-	ps/KiAqAXxNtF7yFCkcCHI=; b=CiuFrx6ruoVfj0LTgoDhCPGEyklamqooLVW6B
-	uQC3naN+Lvp9ONUNg3JpSKlcmk4EClZGIM+3HeUGsddDhmPIIVhp+vzO1oXv2vNK
-	Nb3Yt1KLldGSkSsc4mQvXHJji1FRq0hZPSqPZ0isokKYNJrqmNV0+w4ooBvf4rzq
-	QBxbr4AtfUFCGz/SAboNwsqXlABvLBJgY+ZtPBszHp1Mcom9PQH4mqjkt9xtIg5G
-	IvBQc8On0MDQjaKRrBzvix5Ls20EmnmDsUuIUASKNBgF6ma1Y22EmFSswUAkTfQC
-	znsMtgCv/Vi+1XkHcpSGf6coueeWpenlRakV4mZHhAOKFUpBA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mbh7a824-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 May 2025 05:07:15 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54E57E5f014948;
-	Wed, 14 May 2025 05:07:14 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mbh7a820-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 May 2025 05:07:14 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54E2AF62021396;
-	Wed, 14 May 2025 05:07:13 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46mbfrje3u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 May 2025 05:07:13 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54E57Btx19005886
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 May 2025 05:07:11 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C387E201DC;
-	Wed, 14 May 2025 05:07:11 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4A970201D5;
-	Wed, 14 May 2025 05:07:09 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.39.25.27])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 14 May 2025 05:07:09 +0000 (GMT)
-Date: Wed, 14 May 2025 10:37:06 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, maddy@linux.ibm.com,
-        tglx@linutronix.de, maz@kernel.org, linux-kernel@vger.kernel.org,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] irqdomain: ppc: Switch to of_fwnode_handle()
-Message-ID: <yco6uagqpygo7s4icnoxi2lgbkkyzt6np55xuwxxzu2ofdewly@3s7f42kca7nq>
-Reply-To: mahesh@linux.ibm.com
-References: <20250415104758.106890-1-jirislaby@kernel.org>
- <zofmgipjaniwwwb43quo6eoct66cnq65g36dgnk2qbrs4p5kxr@ge5gilezyu6g>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zy1qK1s69z2ySg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 15:19:25 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 59BB2A4CADB;
+	Wed, 14 May 2025 05:19:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A890FC4CEEB;
+	Wed, 14 May 2025 05:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747199962;
+	bh=xmNb52zrG4E27ByLWoVRVDykaFQ8CdtLS6iK9Dk3nV8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dEn/m2PKu0tjxDilPRowrR7HMf0oYqZe39uyPMbSUvqjkiVI3mIfiOAba5z35V6R7
+	 q9rfm89UvZjqHoXTT2VKbF6LZzpabQJeObboHdsKFfxu3UGqhVxUmUzpi96w334kS+
+	 dY2zcD10zKalVpMAfB4LWdqPksIuy+HJroF8eCKKcamuOtb4xkcY088r1/RjXu7vcf
+	 gA6xSBxpMiPWLKUkVoYmgHBR4KwzSUyAPcH1qmpOTneyKjGzW8epFTbRaLi4R7NTp0
+	 9iHiVJlmeaVwtvJBhTUmPoKhm5J4uVb2lLX3D5f6RcCz2VH4A+5LDXuSFrEmf21ucF
+	 Nb6+Rgu+oWTkw==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Danny Tsen <dtsen@linux.ibm.com>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] crypto: powerpc/poly1305 - add depends on BROKEN for now
+Date: Tue, 13 May 2025 22:18:47 -0700
+Message-ID: <20250514051847.193996-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,59 +70,45 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <zofmgipjaniwwwb43quo6eoct66cnq65g36dgnk2qbrs4p5kxr@ge5gilezyu6g>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=YbW95xRf c=1 sm=1 tr=0 ts=68242503 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=kj9zAlcOel0A:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=1UX6Do5GAAAA:8 a=voM4FWlXAAAA:8
- a=zV99UXuDujEc2avMx1sA:9 a=CjuIK1q_8ugA:10 a=Et2XPkok5AAZYJIKzHr1:22 a=IC2XNlieTeVoXbcui8wp:22
-X-Proofpoint-GUID: Vt5L8Oo1zVNyWrCe8At7iBMpmTRVRb7E
-X-Proofpoint-ORIG-GUID: dJrdu2pCHddCAQkBEw2u--NnLgKDyGSS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDA0MyBTYWx0ZWRfX4G0X5eUHw9BK lC2AN4XV78uPs6GkHPhHdNlAxUvgZoO674LAs5DmJIhnnIw5LWwzjer7yexlRWfjKB2c1qb5WdR voFDZGnQCDcCROI2QHDkOmXiHJ/y/sDi88RWQ1LQ5jBOx8OdynaUDVE0j3UoQfdmMl8QKZ9OTdG
- XJei02OP0OfIlZUwRVTNWCKjAEwmzAkjik4hOktiw/UYCjLt1ozVGuJNDs1RpNKi5SyGzKCZtWU UQYSbQo9YQ+bsQlNqbWndP3sxf0GAu7VpJcqLmYrwYxj2Vu6AsaD1GZq6Khae4i5LWOSfSjTX6i KSCRId8pTw2pNTQ7Ug+KBPIZBKzgGcy4V4vBkEe7TY/mm0eVwWooBWMgvYWnQtHkArS1SzSOAwb
- AYl5L8VrhyQxf5QggrZAxbJ4DZwpFYc4bL23IE8i2ht07F9VbGLpTuQ9n5MCRbYvwHgFaSPo
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-14_01,2025-05-09_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- impostorscore=0 malwarescore=0 lowpriorityscore=0 spamscore=0
- priorityscore=1501 adultscore=0 mlxlogscore=299 clxscore=1015 phishscore=0
- suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505140043
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 2025-05-14 09:54:46 Wed, Mahesh J Salgaonkar wrote:
-> On 2025-04-15 12:47:58 Tue, Jiri Slaby (SUSE) wrote:
-> > of_node_to_fwnode() is irqdomain's reimplementation of the "officially"
-> > defined of_fwnode_handle(). The former is in the process of being
-> > removed, so use the latter instead.
-> > 
-> > Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-> > Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Nicholas Piggin <npiggin@gmail.com>
-> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > Cc: Naveen N Rao <naveen@kernel.org>
-> > Cc: linuxppc-dev@lists.ozlabs.org
-> > ---
-> > This is an indepent patch, please apply directly.
-> > 
-> > The patch was previously a part of a large series [1], but I would like
-> > maintainers to feed the independent parts through their trees.
-> 
-> Looks good to me.
-> 
-> Reviewed-by: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
+From: Eric Biggers <ebiggers@google.com>
 
-Sorry for old email id. Please read it as
+As discussed in the thread containing
+https://lore.kernel.org/linux-crypto/20250510053308.GB505731@sol/, the
+Power10-optimized Poly1305 code is currently not safe to call in softirq
+context.  Disable it for now.  It can be re-enabled once it is fixed.
 
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Fixes: ba8f8624fde2 ("crypto: poly1305-p10 - Glue code for optmized Poly1305 implementation for ppc64le")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+---
+ arch/powerpc/lib/crypto/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
-> Thanks,
-> -Mahesh.
+diff --git a/arch/powerpc/lib/crypto/Kconfig b/arch/powerpc/lib/crypto/Kconfig
+index ffa541ad6d5da..3f9e1bbd9905b 100644
+--- a/arch/powerpc/lib/crypto/Kconfig
++++ b/arch/powerpc/lib/crypto/Kconfig
+@@ -8,10 +8,11 @@ config CRYPTO_CHACHA20_P10
+ 	select CRYPTO_ARCH_HAVE_LIB_CHACHA
+ 
+ config CRYPTO_POLY1305_P10
+ 	tristate
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
++	depends on BROKEN # Needs to be fixed to work in softirq context
+ 	default CRYPTO_LIB_POLY1305
+ 	select CRYPTO_ARCH_HAVE_LIB_POLY1305
+ 	select CRYPTO_LIB_POLY1305_GENERIC
+ 
+ config CRYPTO_SHA256_PPC_SPE
+
+base-commit: 57999ed153ed7e651afecbabe0e998e75cf2d798
+-- 
+2.49.0
+
 
