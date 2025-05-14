@@ -1,69 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-8566-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8567-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02FFEAB6373
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 08:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF8FAB64D0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 09:49:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zy3p432mSz2yrn;
-	Wed, 14 May 2025 16:48:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zy58M5q4yz2yqR;
+	Wed, 14 May 2025 17:49:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::643"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747205308;
-	cv=none; b=VBVoIrklLcIIsAHfrP8DkZW25F1bmlmKxHSY3zs71BbqqzITN2wqvzRYqKnwu95j9xi2TKwWU3ES4Hs2CxrX5mq5QUNVOAtWNwBk/5v5dpVFeAH0pZ5hpNwda/v0HVSxSijoX7fEg8V3Nj6PysoR3bytU/jk3Y89GG4Iu+EOPN3OZzmidtXhNDIWHn4sg8BQxNUowX2ru7RpWKH4aU20VGDPZExP7uXbTFmEb1IzoZyqY4wW1nBN+hVty/bCgD6bQDs8sK0mPFfJiB3sdmLkbUl/S+HvQ4CscEGU5/gPPei2vVc0RimgnuvYACjC8f1YBVMgqQ5fjlp9evfAbsRI0Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747208963;
+	cv=none; b=BywEpVxp8eHkXlXmAldPBKhg8U66z392Tc6rqiYJFze0FxA/u/YoaXggOCaTdHlkixxc8yb66DgriyPlkWpvi8iiLUR1LB6L1vt/Ud2dltDeHv5NrFHtgeYIaNIl432PtXN+jH8MgVMhZ4tFHRY45EVfuyaC6a/8qkI2c8us3LD9yx9jfbXKQEffDhD8nYu/MYyBkWxWKWHGH6WerkVJwiAzPusYxeAz2oqWWov1qqD7GGDtHbMOCwipgAWdlwR2P2IDxM7I2taQ895E9SgEGtr9Sx3x81Qr+5v85i2adBQ55l0IM5R03O9ID1gmAS0Ooumrh2ZYFF50RX/hHPMJbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747205308; c=relaxed/relaxed;
-	bh=HGZdJZIHRL1GtxweWrW4A40ao0eooBXQDxu8kYszvsY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XVE+IYOme0XSUezB0ETkiM6sRoqoGGQNNDUSo5fFoAGYX6QfV4TxahKFysROyLfFvBpTpKHc3rUyvazzXysK2V4UQsf7SW6JVDuN1dxSyKCcKphTODJ7jL8Hps9TWcYuM4q7puAKpnSGTEInvzIGeRaJYEQyjo9FSzs/POnWKWIKoQMPPFu57xT9uOZ0//ej4uRQoS2VfL+8dURFEVGarr7zcpIoBUdTIa/sIr5XMFBHuNO9n/xKO2g1AR4s1j7iBR8ACgrkVvueFgd43N+vN9zHPYwI2QaRupdOtcVe7q/uVsfNiRJeUlmmz4VSDRQKRNoiZWp0/kxPcC0TLpjbYg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KyxUEWlY; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::643; helo=mail-ej1-x643.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1747208963; c=relaxed/relaxed;
+	bh=GY5pVLDJBE/QxHoyRscYKOYBVWh0U1cYp7B4seYFbNI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S567RKWhC9RLDN9//ymbg5O+vZyM5+UVUnoldnfF6NZ2GphdlWNMoVKa+icqgP70ftdcepIayoKIMwlM9SZ9c4Bo1Jz1ofG69+3g3nulQYa/rFVC5sCodNEif1B98N14PeSwKj/voA4VWgl0MpofKQ6pGY72zqaaJC6bM3Fp0KBwdJNEVeFDctzVIkt056gxAnE7L963Ue5V1cXco1RePSU7+zvD8lHeLq1pr1tYpSwsmZgXsDU5TohXd8Bup07IQcwqSrT0cj5VmUh+OQLTveqqgXf/tsPcrS2e71xMuO7H678y+cwD7pOTDEsAHNgVAtu6GzmyL2ndb1WGGbUNaw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=elL9VmWt; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CJNCYXMq; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=shahuang@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KyxUEWlY;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=elL9VmWt;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CJNCYXMq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::643; helo=mail-ej1-x643.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=shahuang@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zy3p342dlz2yrl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 16:48:27 +1000 (AEST)
-Received: by mail-ej1-x643.google.com with SMTP id a640c23a62f3a-ad21cc2594eso202988966b.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 23:48:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747205301; x=1747810101; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HGZdJZIHRL1GtxweWrW4A40ao0eooBXQDxu8kYszvsY=;
-        b=KyxUEWlYyMWl6dwEN02YagDKGHqDcODClVavL59JbEWLQj3vx/ZN5TOOJTWRB8H+ys
-         CaZGBtT4Qrf+GaPUmuumQercRPoHaSSWFnAiCA3ntrXwcHfXNoTjRBfsQQWGIcmB/yxE
-         FgjWYQTRHF8SJu/xbg25NDiQQLzd9dt+Hwj5WNZQKy6Xdpe8fS3ybOyvALvbgxC5//0b
-         IzRs59MGFP9HipVUJmolo0N49NLgMIGv/IlJfgV5KOuQi8VbwCVie6BGrTC8GgW3HGRv
-         2J1J/Iy5CrXjn6thm2nUx2US/YwxvyhCZDS2am9TvhMweL7wlnqsw/jHYOVRmD7numXT
-         CaTg==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zy58L3q02z2ydj
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 17:49:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747208956;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GY5pVLDJBE/QxHoyRscYKOYBVWh0U1cYp7B4seYFbNI=;
+	b=elL9VmWthI5UzbQx8W488snkOcAvVEf4aGR/rMNtwggOqdHwsaMNZp0HabrgX2z6EB/mqg
+	M77bgqP96/S+njXB4cJzvFoESQIUFaLXOAvXpNFCuYSlRCJ4kIoU7hfgLG7elm82K4E6Nr
+	VNZ+73hcIW3f2ObXHahMFSkmUXNd3Qg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747208957;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GY5pVLDJBE/QxHoyRscYKOYBVWh0U1cYp7B4seYFbNI=;
+	b=CJNCYXMqPJ9jxH2JLydLDkHuZeCEdz9CA/vjoThMZ/ZN5bJoYQMuZ9Cd77eNSZM59hwiak
+	ztxqLALMo01FkW7WK5bEgdzNJd78XSH7wenA5/lSAEK0AEAi0E+1aKac8rJ9b9QWXLn+4g
+	lzLcimT8kTOplluN2tyQHMM/E7vycgM=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-360-GIKD8moIOE2xX5XTcGk6bw-1; Wed, 14 May 2025 03:49:15 -0400
+X-MC-Unique: GIKD8moIOE2xX5XTcGk6bw-1
+X-Mimecast-MFC-AGG-ID: GIKD8moIOE2xX5XTcGk6bw_1747208954
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-74089884644so5848544b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 00:49:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747205301; x=1747810101;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HGZdJZIHRL1GtxweWrW4A40ao0eooBXQDxu8kYszvsY=;
-        b=FZl0+sn0Q4Ctz8/T5N04F/iH5E9DLbJPLKFi7jli4PEiIauRUkDCTNGLxUXBK2F8SS
-         VdqOpfaX236R6OPD2fIOtUvriMgLVeqemMPMui4fB/M9+5LZTelNlEvAXsykCsVwhGWb
-         2A/M2Fqs+fisyIZzMl69oehQZeBlKpj+LSCf9Di/OTdsMMsrT+pJtnrJY31EVt07Oyec
-         hadEe10ZdzRE+/jmzs+1PudrqLgxj9YKjsDKcvBPEPXU/zlJ78B6zHOo59VoIjyD1gPv
-         R2O8AQwvWji/lcb3ClMLms/sMK3qEvOYu94runqgGoF8m8xbg8T5dsMd40hcL7Ci3T4K
-         Gk1w==
-X-Forwarded-Encrypted: i=1; AJvYcCWFiF3WjsLgy11iJNHrlDedCUMhbZgTiY4bCgTtGvA1ULz3VCkcqowCJAxA6sWVmEQAcsRzVgRHFOOzkWs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyKq82XOYGEDml4VrTF8EU44Zkj4as5QWzz7J4o6EHoIHg6UHOf
-	xSPGPggyCu9gJicWeXdm1k+8iAGbE3x+i31GKPeTCHWQSAfwmkxCVWPN4+G9fJI6giS9DQ5/AGD
-	vtI5jPs1rrpvSCgVVNo7GBl+ekUo=
-X-Gm-Gg: ASbGncvnhWXmk8e5ICkXOONN+spz0f2fbp0Ipd91nWl9Y+YgYaRY0M3CULuJueKyXsf
-	/dEsuQ43Qa0Dqs5HJ0UB90RU5mbSYxIR/j8hyXqxfNrmOrQNKoMPjuUDNpVUhjSFCrKOBL/pO5X
-	wY5hL9zpGZS16nkanZ2d4ffVnt+S4a2FA1I+VUvUYwtg==
-X-Google-Smtp-Source: AGHT+IHR4iBb/I4Enb7BPpeT9sltrJqA0gSsnQXL1n3QG7K11/B1K1G20PjKfwnEwjCdCRskmsSlv58eOyHiQdilNDc=
-X-Received: by 2002:a17:906:3bc8:b0:ad2:404d:cade with SMTP id
- a640c23a62f3a-ad4f72411e0mr183082466b.27.1747205301209; Tue, 13 May 2025
- 23:48:21 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1747208954; x=1747813754;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GY5pVLDJBE/QxHoyRscYKOYBVWh0U1cYp7B4seYFbNI=;
+        b=TD60lx0P6S1OPD8zgWwSBghOHe/vU4cQMIKVuhZi9J20oBwA1j3KIRNMH+mBf/lxVX
+         OUg4904zhJW2ReBInKyypoM8mfLyzmtdC4xxDrDatgm4DA+VyGvx+K4V6YICjLTNWTmG
+         UDsmyKAD5BubDLIEvnW9Q40HcYtWEF2hxwM1kOLzNfJ5dYM+GRMbDaoqd7ut0f8qcAiR
+         ze/m875vZQwrFkvIVEO3TfhqEm0KJGyRwNDI7TUWkdMX4Jue7/9rjjPd/NzAaIi788FT
+         rARlZ/5fRBvOHaxMI9TvImbDE3x3BlwQcJ90ovFc8rN9gbhwhOIpYhKr84hY+iSBpz1Z
+         yopg==
+X-Forwarded-Encrypted: i=1; AJvYcCXEJ9nTg/VgQm9SFcIodeF1+WzTUCULEW7k80l6CY98bihy9sKhckEe9TyEyefvcY9wsvbfs9d0JFfntUo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzJV3PYqE0OQmqb+WJJLC7UdwLRz7izl7o05cT0J+Bp48coxUjz
+	QQCnxFyyWPjpBKt/x3Ky2t2cz9BUIrmwF1TBPfgSODYxn7mUSRvQ8qD95i5QPKmM1F+VAzqHDaP
+	pWR+cwkbi2fDzDHI9srvLtfcv4qStYGsiECHQe2Yn96jDubVlZ28nVgpwtWY4+8I=
+X-Gm-Gg: ASbGncuFJRNPWK8uEFMaJZixMztZzHR7BKXeB3riy/ziyE9s5oK12Fl7Zz0NG5jBSIO
+	MRND1aVpUQJWhqdDyAzE6XXDeyUUbEIvBEcI+6XMEUoisxN69gp+M7MfJCPl/l3K8m1yQgtVGAt
+	4wOa+M56LD2egU73O98j2qWPf3lhtswj8DGSVsk5D1O1PwccqPmiMmvC3i31GX32cUdL4wQfCll
+	XP91KRrflWenUFzXgm9VaCK3UC07moFUvTlY0W/7A2Shk8EsomxMqW+kyZCFZIWWQbzFOhbjr36
+	ta1pyx1cY9DzsOQI
+X-Received: by 2002:a05:6a00:a83:b0:740:596e:1489 with SMTP id d2e1a72fcca58-74289373d91mr3716648b3a.23.1747208953961;
+        Wed, 14 May 2025 00:49:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGxNAnjJT+LSzbpKrbMZgFeI/1Abe8EQQBbch700DZ2BLpon2TmE4Xe4l7GJrieZh9Qyjgk0Q==
+X-Received: by 2002:a05:6a00:a83:b0:740:596e:1489 with SMTP id d2e1a72fcca58-74289373d91mr3716602b3a.23.1747208953574;
+        Wed, 14 May 2025 00:49:13 -0700 (PDT)
+Received: from [10.72.116.125] ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74237a10881sm9212477b3a.106.2025.05.14.00.49.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 May 2025 00:49:12 -0700 (PDT)
+Message-ID: <67fb8130-94fd-46d0-8f59-1c047ff0a881@redhat.com>
+Date: Wed, 14 May 2025 15:49:03 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,81 +102,148 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250501073603.1402960-1-luis.gerhorst@fau.de> <20250501073603.1402960-12-luis.gerhorst@fau.de>
-In-Reply-To: <20250501073603.1402960-12-luis.gerhorst@fau.de>
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Date: Wed, 14 May 2025 02:47:44 -0400
-X-Gm-Features: AX0GCFun9-2MfM8_J1zhSkgZ3q4nYAOUK-g_v7fEm1Fc1hj9Yjf5b4J_glq1BvA
-Message-ID: <CAP01T76jeSg3W-OyfBfSbAjpEhBr_h8rbS-Hubk6gDdrkeEj_Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 11/11] bpf: Fall back to nospec for sanitization-failures
-To: Luis Gerhorst <luis.gerhorst@fau.de>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Puranjay Mohan <puranjay@kernel.org>, 
-	Xu Kuohai <xukuohai@huaweicloud.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Hari Bathini <hbathini@linux.ibm.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>, 
-	Henriette Herzog <henriette.herzog@rub.de>, Saket Kumar Bhaskar <skb99@linux.ibm.com>, 
-	Cupertino Miranda <cupertino.miranda@oracle.com>, Jiayuan Chen <mrpre@163.com>, 
-	Matan Shachnai <m.shachnai@gmail.com>, Dimitar Kanaliev <dimitar.kanaliev@siteground.com>, 
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>, Daniel Xu <dxu@dxuuu.xyz>, bpf@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, 
-	Maximilian Ott <ott@cs.fau.de>, Milan Stephan <milan.stephan@fau.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH v3 06/16] scripts: Refuse to run the tests
+ if not configured for qemu
+To: Alexandru Elisei <alexandru.elisei@arm.com>, andrew.jones@linux.dev,
+ eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
+ frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
+ david@redhat.com, pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, will@kernel.org, julien.thierry.kdev@gmail.com,
+ maz@kernel.org, oliver.upton@linux.dev, suzuki.poulose@arm.com,
+ yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
+References: <20250507151256.167769-1-alexandru.elisei@arm.com>
+ <20250507151256.167769-7-alexandru.elisei@arm.com>
+From: Shaoqin Huang <shahuang@redhat.com>
+In-Reply-To: <20250507151256.167769-7-alexandru.elisei@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: sKODicnkgw6LD6IaIkdTpZ75UF3edwm0GZcvAPmrXGU_1747208954
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 1 May 2025 at 04:10, Luis Gerhorst <luis.gerhorst@fau.de> wrote:
->
-> ALU sanitization was introduced to ensure that a subsequent ptr access
-> can never go OOB, even under speculation. This is required because we
-> currently allow speculative scalar confusion. Spec. scalar confusion is
-> possible because Spectre v4 sanitization only adds a nospec after
-> critical stores (e.g., scalar overwritten with a pointer).
->
-> If we add a nospec before the ALU op, none of the operands can be
-> subject to scalar confusion. As an ADD/SUB can not introduce scalar
-> confusion itself, the result will also not be subject to scalar
-> confusion. Therefore, the subsequent ptr access is always safe.
->
-> We directly fall back to nospec for the sanitization errors
-> REASON_BOUNDS, _TYPE, _PATHS, and _LIMIT, even if we are not on a
-> speculative path.
->
-> For REASON_STACK, we return the error -ENOMEM directly now. Previously,
-> sanitize_err() returned -EACCES for this case but we change it to
-> -ENOMEM because doing so prevents do_check() from falling back to a
-> nospec if we are on a speculative path. This would not be a serious
-> issue (the verifier would probably run into the -ENOMEM again shortly on
-> the next non-speculative path and still abort verification), but -ENOMEM
-> is more fitting here anyway. An alternative would be -EFAULT, which is
-> also returned for some of the other cases where push_stack() fails, but
-> this is more frequently used for verifier-internal bugs.
 
-Hm, now looking at this and thinking more about this, I think
-recoverable error logic is probably ok as is.
-Scratch my earlier suggestion about unconditional handling. I guess
-what would be better would be
-handling everything except fatal ones. In case of fatal ones we should
-really quit verification and return.
-We may make partial changes to verifier state / env and try to bail
-out using -ENOMEM and -EFAULT.
-So unconditional continuation would be problematic as we'd act in a
-partial state never meant to be seen.
 
-The logic otherwise looks ok, so:
+On 5/7/25 11:12 PM, Alexandru Elisei wrote:
+> Arm and arm64 support running the tests under kvmtool. kvmtool has a
+> different command line syntax for configuring and running a virtual
+> machine, and the automated scripts know only how to use qemu.
+> 
+> One issue with that is even though the tests have been configured for
+> kvmtool (with ./configure --target=kvmtool), the scripts will use qemu to
+> run the tests, and without looking at the logs there is no indication that
+> the tests haven't been run with kvmtool, as configured.
+> 
+> Another issue is that kvmtool uses a different address for the UART and
+> when running the tests with qemu via the scripts, this warning is
+> displayed:
+> 
+> WARNING: early print support may not work. Found uart at 0x9000000, but early base is 0x1000000.
+> 
+> which might trip up an unsuspected user.
+> 
+> There are four different ways to run a test using the test infrastructure:
+> with run_tests.sh, by invoking arm/run or arm/efi/run with the correct
+> parameters (only the arm directory is mentioned here because the tests can
+> be configured for kvmtool only on arm and arm64), and by creating
+> standalone tests.
+> 
+> run_tests.sh ends up execuing either arm/run or arm/efi/run, so add a check
+> to these two scripts for the test target, and refuse to run the test if
+> kvm-unit-tests has been configured for kvmtool.
+> 
+> mkstandalone.sh also executes arm/run or arm/efi run, but the usual use
+> case for standalone tests is to compile them on one machine, and then to
+> run them on a different machine. This two step process can be time
+> consuming, so save the user time (and frustration!) and add a check
+> directly to mkstandalone.sh.
+> 
+> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
 
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
 
->
-> [...]
->
+> ---
+>   arm/efi/run             |  3 +++
+>   arm/run                 |  4 ++++
+>   scripts/mkstandalone.sh |  3 +++
+>   scripts/vmm.bash        | 14 ++++++++++++++
+>   4 files changed, 24 insertions(+)
+>   create mode 100644 scripts/vmm.bash
+> 
+> diff --git a/arm/efi/run b/arm/efi/run
+> index 8f41fc02df31..53d71297cc52 100755
+> --- a/arm/efi/run
+> +++ b/arm/efi/run
+> @@ -11,6 +11,9 @@ if [ ! -f config.mak ]; then
+>   fi
+>   source config.mak
+>   source scripts/arch-run.bash
+> +source scripts/vmm.bash
+> +
+> +check_vmm_supported
+>   
+>   if [ -f /usr/share/qemu-efi-aarch64/QEMU_EFI.fd ]; then
+>   	DEFAULT_UEFI=/usr/share/qemu-efi-aarch64/QEMU_EFI.fd
+> diff --git a/arm/run b/arm/run
+> index ef58558231b7..56562ed1628f 100755
+> --- a/arm/run
+> +++ b/arm/run
+> @@ -7,7 +7,11 @@ if [ -z "$KUT_STANDALONE" ]; then
+>   	fi
+>   	source config.mak
+>   	source scripts/arch-run.bash
+> +	source scripts/vmm.bash
+>   fi
+> +
+> +check_vmm_supported
+> +
+>   qemu_cpu="$TARGET_CPU"
+>   
+>   if [ "$QEMU" ] && [ -z "$ACCEL" ] &&
+> diff --git a/scripts/mkstandalone.sh b/scripts/mkstandalone.sh
+> index c4ba81f18935..4f666cefe076 100755
+> --- a/scripts/mkstandalone.sh
+> +++ b/scripts/mkstandalone.sh
+> @@ -6,6 +6,9 @@ if [ ! -f config.mak ]; then
+>   fi
+>   source config.mak
+>   source scripts/common.bash
+> +source scripts/vmm.bash
+> +
+> +check_vmm_supported
+>   
+>   temp_file ()
+>   {
+> diff --git a/scripts/vmm.bash b/scripts/vmm.bash
+> new file mode 100644
+> index 000000000000..39325858c6b3
+> --- /dev/null
+> +++ b/scripts/vmm.bash
+> @@ -0,0 +1,14 @@
+> +source config.mak
+> +
+> +function check_vmm_supported()
+> +{
+> +	case "$TARGET" in
+> +	qemu)
+> +		return 0
+> +		;;
+> +	*)
+> +		echo "$0 does not support target '$TARGET'"
+> +		exit 2
+> +		;;
+> +	esac
+> +}
+
+-- 
+Shaoqin
+
 
