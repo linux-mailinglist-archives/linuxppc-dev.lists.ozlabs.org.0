@@ -1,69 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-8560-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8561-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916D3AB6276
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 07:39:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830F6AB62F5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 08:22:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zy2G50jyBz2yqv;
-	Wed, 14 May 2025 15:39:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zy3D54SJ6z2yrR;
+	Wed, 14 May 2025 16:22:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::642"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747201149;
-	cv=none; b=bk+h9lfqbg5v0ZKC2otvbYIEB0rM/uD2UXyZVRBu79w7/XlUaYIVXwvwsSRUc+tEyvCDzIjPI4IWogW/k+I33cUUUtD38yXaRx+Cvr0/7jNNcQAAJPTkhDvZrgwgxhVMjTFFCLHFScBhuOeL1uYcPXgP7B2s4TfHiG2IlxSZHa4lfrhAVYYKiHd1RMqNBvUXebsy2CVSNttUCCcMow/6dT7gL79Vh+snRL+hPaG1quzhIPv5WcoMNzSQbB8UYDYlKvM7IgdsXOauRHRCniMAQgG4leWL+g+/+2ujSoesquZfa9t8rtOj2plp/VGAvtlmwEWetbt4z0i/hvW+RMKdCg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=205.220.180.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747203749;
+	cv=none; b=TedOg0H3FzDlus7eYGlG/ykiLccA62nkogjMDDNKXikoF4OKLWeP+8GCh4uVUQ04rQMSt8LyeVtnY/zr6mQ8gxfRFhDH82j8GrpTSzaP3GyyvERucxHA/7lZT4T7tuvHjXH73NrtCxKdpl12xCAR1MSJdGEAzHYDZcipqAOTKLnrBJvC7YZDShvKExSE+ZhCRlrKzmpjaq5K8N1iMR5RUo8xp6vtxZvN5CwldQy/uTxOu0jmR5A9h2Avda6P02NHGamBdrW5PFsZzXCgL1+9gOqpQYasUKGZDSIHgvrN3sg5CK1HcU/03kIOpn2ZeTT1Xa4jhYFoFqiAEsOxwsWcHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747201149; c=relaxed/relaxed;
-	bh=rRHcD4o64kpkrmiebc0+P3XyihTjZVS84d+OLMuKgu0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=coWRJpnGsH00oS0e+0TafUEp17yyX7aAIPmqu51IQOAknurr4b0vuRSbglfE1MOsoUU3EInJx68TIAp1qcGiNZx0OYTlt0HbOhqBeEgH3cuRhaS6ivY42bEtgcKdCIMOKVeTQNPb8AzD8WYsExDjuERdBiRiwjaxqb4gb0Np7Ke+sFW9Agd7na/rVMQwgc/FjBbzkSSbkVDlIAU7LeXUvO/8AhrDStLAgQah/UzZmsmOonmPsvRdUO5X5wZD5DZGEEkCsPOcxJGfGTIgbcRAcWCUReXKIbThU0HqSUlCV5N/gTyri1hp9dRSo7DCwnRIOuAq8V8EtwzBl4dWoQAQMQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=D+alJvrJ; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::642; helo=mail-ej1-x642.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1747203749; c=relaxed/relaxed;
+	bh=TpcnhsLrhDkPiVpw8TutfV9wpiw5v+hVj2kZ6M53/V0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FPsNTygUl9cC+P+xKIc9eWNqwo2mgakyo7HE7gHIw3h2x4pQxM8ZPeY0pdnp25RVv8746gXS+LOO+MKVOSnouS8SvUsBSQHgrCwCLh2fsaaNDW9DT5qTHXaJhBAkf/7vqbsR/D8btKTQIhjHlO8atHqAG7I2VVLsTPtJG3HfXYvDSwF5hkWvN0vYFgd8qQyh1T51G8JmwlV456/2Xw26rycWMGuE5CpaebJs+W7xq2apq84KzYNGe8liqXDBkLphU1TXiltaHRmSDgpf/Hti/C3aiu518qLOHBPcqLaHKhLOfh8/859TAkZO0gPq4BepvIUZPY7xstumw3C1hiCeEg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=mbuBEoha; dkim-atps=neutral; spf=pass (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=krishna.chundru@oss.qualcomm.com; receiver=lists.ozlabs.org) smtp.mailfrom=oss.qualcomm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=D+alJvrJ;
+	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=mbuBEoha;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::642; helo=mail-ej1-x642.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oss.qualcomm.com (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=krishna.chundru@oss.qualcomm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zy2G236Gqz2yqm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 15:39:05 +1000 (AEST)
-Received: by mail-ej1-x642.google.com with SMTP id a640c23a62f3a-ad241baf856so103744166b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 22:39:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747201141; x=1747805941; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rRHcD4o64kpkrmiebc0+P3XyihTjZVS84d+OLMuKgu0=;
-        b=D+alJvrJxRBf1TFgOQuwoZ46A4hHfYcj+abjhY5Y7eofNuADazzbjJErNBTsVzBc6J
-         WAl8UkBMul2GIVNkS0hduZNAb5OykiC5zzJMlWc7Ath1UTyjSQjDPw5wyu6BO0Gum4K9
-         R/w4Sowb0ppZcOd0IWhd3Vm1FysvRxAp9sk2my8UgfYhQ6gQIrhEJyJDDirqq1A98UUB
-         KAydKXS4dqQEixOWFGLR0y+OuNwxKuqQV3PAGUKfu90ifX+lN0aDd0qz5HILBQY1DPxr
-         +icpEQaY3uueE9hq1nV8aRJy7BqbM6BkgsheLySFHDxbFDwYiB+UIt3erWuW7xL5qUPc
-         r25w==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zy3D42Z7xz2yrC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 16:22:27 +1000 (AEST)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54E2cRWp029333
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 06:22:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	TpcnhsLrhDkPiVpw8TutfV9wpiw5v+hVj2kZ6M53/V0=; b=mbuBEohaaTRVXRQ3
+	nRlsMvJA/63kSHK4tk97ct9Y9UcZVeOjTXlGol82OLGngt3/y2Jf/jsomkiQJiDX
+	N13brAnQzZBfkCcFzzwK2EwzAX4RHWXojyw2UrpWMurejXPOYVCxY+8kLb8jDWdn
+	hILGUZqSsoN8pnz/hGZC/es+m6V6l6hgE2v9WC/hlZRFzKmphlZnmvi6dkOqKhIP
+	TydY+OznPP6bgSc0zGRC4rZU8BhL0wbCyNq3ushbTVt09lynOcce6kHF8IKB7vCu
+	8fvAEZe8Rs+1xgrfYav82BIoGC/e1lYruoyrS6kd9iLv7wM7diNpIfhQhvgDuR3Q
+	EnixEg==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46mbcnhm3n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 06:22:23 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-22e76805fecso92421925ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 13 May 2025 23:22:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747201141; x=1747805941;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rRHcD4o64kpkrmiebc0+P3XyihTjZVS84d+OLMuKgu0=;
-        b=lAQxI/wdVawWwPg4BHHu00ZGGUw8prn1uU/Nfj0VT3ZzmjuWWS40iJPyCIt3xokAkf
-         I9KvK3dSs5t6JfGY8QcbrdTSR5svxDAhg6fccUZMTmMS9zxjqfI7BPWCuUL+/SBjKV2B
-         bJrUJcm5BUxQVa/1XK6Elh8iZGK4lJ3wacSvFQ+IPhNwsf+CIS9MJ173PaSRFtOHjZEi
-         GhzS9gixvxb+DC6bdUw/3O8sgB/RBhEp5WNNG/qu+0YSFFmLUl5QKPyYkAe+yjAYsHnr
-         S6it1lKro/XZsApBoR3yhfCh79LMK5dq+Y64n3A+kyHgPYZlBLf7en/Pe/sqlLfUVNwq
-         PM9w==
-X-Forwarded-Encrypted: i=1; AJvYcCVUFjKpB7I+X5PlI/T7B1fFxKEfarnJ1nSCv93dUTWYNIWri9ZRC6TELKOEWdv5lcFzmz1Ei4adgIQtuRA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzo8DHVAQIp70jDXOvoy5H9es5qOdGIkS6+CXq6H6TdXMcqnrr0
-	9I4k47oyZVzqjZzSqjlP1gIdc67zQs33ZtRuwSE3JNCmZ43RyzDc2r8cTSJTJsUAjT41NUNnxT+
-	r9xdaUVelQ2ohkMGGpE7lf0gfZWw=
-X-Gm-Gg: ASbGncsDyqG+nPwu/01Kvkndf2ckzG3EvBIljZRX0/9czH5bvrpWmZt+x391QCRqhrB
-	+pv4+S9ZOVIhhIY73QFMcj0jdAeVkPU1aKPugHYN/IEaTQjufXfOeqguTrcyNfkWqypY6c52Ned
-	Jh/gj0J8mlOyloSav49XfZJ+jiUkAy2pM=
-X-Google-Smtp-Source: AGHT+IE1CqX0NBMok/Qu/kKHdiB+296j6U4L2iZuYAqefZDP7cDedLQUlSzfA5SJyR8b9OMIRCnTZEuWb3yEfQO1HXk=
-X-Received: by 2002:a17:907:1c9c:b0:ad1:ff5f:1460 with SMTP id
- a640c23a62f3a-ad4d4cd6334mr650602666b.6.1747201140708; Tue, 13 May 2025
- 22:39:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1747203742; x=1747808542;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TpcnhsLrhDkPiVpw8TutfV9wpiw5v+hVj2kZ6M53/V0=;
+        b=HMCRPjZaa7pIxlwXeBBf3b3hY6Irs5RThqKv+AVDc6auIj7l6OUEeWqCHMp7iwHt7y
+         JvhQO7F7+q9nLpnYFuV/CS3LtGn+tyiaJTPm+LwuCxqhoWJHFm3vxN8vv7adJgHSVZCs
+         GRLWq6sTVjlIedRxAsMhM0bGrMwvT/0+sTaIofADYS8hnseTbEoS/45Mj7NyFBDaFWtj
+         zfV4Jylh6F1btyN77RDDLVJ4KtcHI7PgM42jrIUobpeZ05cEJP/02lo2T5S/Yb7RyCVM
+         02c2b1eFBgRQDa6Dqz8onXt6Pz/sH6+I/4nIHuG4H9NSGYqwoRa+7GDPsVnq5u8mxr3h
+         VywQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVYvdm1SQNlQOGpBKB8hKsU7bwyzKZvxLsiTM3LHvmZK74t5tFB/aj7NL+Be+djGojMyg9Lpxtn7N4VI3w=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxFm3M1xh6LOLHURUB7OItHqxnQgtvzq741HwKdAlSsf/JGGYar
+	EofGJhiKftsSvmd6QEm5+QrpdrLlULjtsC1dadbBao3biJByZ3e55rOD2H2msFF51MTFiJTzDia
+	kU5xsIjCfliP/1U1xsJlC1zJPnl7aLJ52RJ+rCKMbFDA958Luu2ENtWeriosJOnZB
+X-Gm-Gg: ASbGncvAFZhOmZyRKs9swOlpXCY37OH1ME7S6VDndrX4fC2k5Yk3sgXDzc+h63v7Uim
+	flvlO+qBHRrMFllNwx886vLQ5eng03pEOHrPbCH2AqrqNNmQH73ZIgvd/F7X7UDS2b8oRCCdGSs
+	WfwklRHb+lvWrpEzLKdbPwyXFQDoz1R0kd/tVqWD+MDPpmVZWKzh686EsoAveFswgX/ptfK270G
+	oh9RiDD7IBQJqNGlBlYuGhKR+OUgAxd/0u6acFIGoI4dPaX6OTdj2H+XqStJ0mAGcuR2GYJ1yeH
+	K63qyqkwgjxg+8vUuwWAm5uNWIaDhwdOg1VJRiKRbw==
+X-Received: by 2002:a17:903:230d:b0:22e:4586:e33f with SMTP id d9443c01a7336-231981b9260mr30796385ad.45.1747203741904;
+        Tue, 13 May 2025 23:22:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFaXIvN8kd6OCTrUzx47gTLqMaj0yTncjdEtMWu1eqbRLeCm9H7LLRmX+0fMvEBUQxpsSm/dw==
+X-Received: by 2002:a17:903:230d:b0:22e:4586:e33f with SMTP id d9443c01a7336-231981b9260mr30795875ad.45.1747203741359;
+        Tue, 13 May 2025 23:22:21 -0700 (PDT)
+Received: from [10.92.214.105] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22fc753fe13sm91478365ad.14.2025.05.13.23.22.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 May 2025 23:22:20 -0700 (PDT)
+Message-ID: <1b4b7ee5-1d7e-573c-0647-44aad654354a@oss.qualcomm.com>
+Date: Wed, 14 May 2025 11:52:13 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,379 +91,313 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250501073603.1402960-1-luis.gerhorst@fau.de> <20250501073603.1402960-9-luis.gerhorst@fau.de>
-In-Reply-To: <20250501073603.1402960-9-luis.gerhorst@fau.de>
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Date: Wed, 14 May 2025 01:38:24 -0400
-X-Gm-Features: AX0GCFsZdtgAVwNSl7_yfp7bxkIRg361n-aA3yvBc34WlsCAzIMW4XH9M0yyf_U
-Message-ID: <CAP01T75y4GuYp-X9x1eGA2s1+eGnVNFoCrf_o5f22Qs-MNAo6A@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 08/11] bpf: Fall back to nospec for Spectre v1
-To: Luis Gerhorst <luis.gerhorst@fau.de>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Puranjay Mohan <puranjay@kernel.org>, 
-	Xu Kuohai <xukuohai@huaweicloud.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Hari Bathini <hbathini@linux.ibm.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>, 
-	Henriette Herzog <henriette.herzog@rub.de>, Saket Kumar Bhaskar <skb99@linux.ibm.com>, 
-	Cupertino Miranda <cupertino.miranda@oracle.com>, Jiayuan Chen <mrpre@163.com>, 
-	Matan Shachnai <m.shachnai@gmail.com>, Dimitar Kanaliev <dimitar.kanaliev@siteground.com>, 
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>, Daniel Xu <dxu@dxuuu.xyz>, bpf@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, 
-	Maximilian Ott <ott@cs.fau.de>, Milan Stephan <milan.stephan@fau.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v4 5/5] PCI: qcom: Add support for resetting the slot due
+ to link down event
+Content-Language: en-US
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Rob Herring <robh@kernel.org>, Zhou Wang <wangzhou1@hisilicon.com>,
+        Will Deacon <will@kernel.org>, Robert Richter <rric@kernel.org>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Marc Zyngier <maz@kernel.org>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Daire McNamara <daire.mcnamara@microchip.com>
+Cc: dingwei@marvell.com, cassel@kernel.org, Lukas Wunner <lukas@wunner.de>,
+        linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
+References: <20250508-pcie-reset-slot-v4-0-7050093e2b50@linaro.org>
+ <20250508-pcie-reset-slot-v4-5-7050093e2b50@linaro.org>
+From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+In-Reply-To: <20250508-pcie-reset-slot-v4-5-7050093e2b50@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: wm3jyN6ZvchExJy69TshSvr8D3tpx-Uh
+X-Authority-Analysis: v=2.4 cv=aIbwqa9m c=1 sm=1 tr=0 ts=6824369f cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17
+ a=HZEN96OWHqwnsOiu:21 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=KKAkSRfTAAAA:8
+ a=EUspDBNiAAAA:8 a=67gqzJqB-RPUT0o4obAA:9 a=QEXdDO2ut3YA:10
+ a=324X-CrmTo6CU4MGRt3R:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: wm3jyN6ZvchExJy69TshSvr8D3tpx-Uh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDA1MyBTYWx0ZWRfX68QjFYIBECtO
+ U6+a+M/sVUr3PR5WwTlFA2cJQDGmlB7EPQC3JBHmh8KxVQA3tpUV9fL5cxSRFh4dAqJolIVWjWg
+ +TsEx0Ifv4zbgpm1/wJn6YjlM5goe8SZmxSAE7mCNJxdAeVDFEg8Tw5xzY4tSJTipnoFrcgWWG/
+ TCyp8EtixFU2ANgMRCEw97rdYKyq3F8djD1P7HWwf0mfCYiDnLv1JdPw0wzTg6W9VbPxXFpo/VJ
+ 9SRB3x1yY6phw/SFOhPQ+tYKEr3qoMvWQ18YOqa7RQtgLUHQ0BIxZ0FlOiJz0kZG2rwAgX7RPnK
+ FCEeBh69UnBzW8H7hbIkY7AfZTmcfLl3pwnz28jQG4cL5a5EjVXYfSR9LUxaXo3a+nWY0bv1Hjm
+ xUW/vpalxWok6D+YIONDa0kcDcZSZ24QncblwiLkN0Okpy9Ou/5iOsNBQt2FGUJpQ22cZ8i3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-14_01,2025-05-14_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxlogscore=999 malwarescore=0 bulkscore=0 impostorscore=0
+ clxscore=1015 phishscore=0 suspectscore=0 mlxscore=0 spamscore=0
+ lowpriorityscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505070000 definitions=main-2505140053
+X-Spam-Status: No, score=-1.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 1 May 2025 at 04:00, Luis Gerhorst <luis.gerhorst@fau.de> wrote:
->
-> This implements the core of the series and causes the verifier to fall
-> back to mitigating Spectre v1 using speculation barriers. The approach
-> was presented at LPC'24 [1] and RAID'24 [2].
->
-> If we find any forbidden behavior on a speculative path, we insert a
-> nospec (e.g., lfence speculation barrier on x86) before the instruction
-> and stop verifying the path. While verifying a speculative path, we can
-> furthermore stop verification of that path whenever we encounter a
-> nospec instruction.
->
-> A minimal example program would look as follows:
->
->         A = true
->         B = true
->         if A goto e
->         f()
->         if B goto e
->         unsafe()
-> e:      exit
->
-> There are the following speculative and non-speculative paths
-> (`cur->speculative` and `speculative` referring to the value of the
-> push_stack() parameters):
->
-> - A = true
-> - B = true
-> - if A goto e
->   - A && !cur->speculative && !speculative
->     - exit
->   - !A && !cur->speculative && speculative
->     - f()
->     - if B goto e
->       - B && cur->speculative && !speculative
->         - exit
->       - !B && cur->speculative && speculative
->         - unsafe()
->
-> If f() contains any unsafe behavior under Spectre v1 and the unsafe
-> behavior matches `state->speculative &&
-> error_recoverable_with_nospec(err)`, do_check() will now add a nospec
-> before f() instead of rejecting the program:
->
->         A = true
->         B = true
->         if A goto e
->         nospec
->         f()
->         if B goto e
->         unsafe()
-> e:      exit
->
-> Alternatively, the algorithm also takes advantage of nospec instructions
-> inserted for other reasons (e.g., Spectre v4). Taking the program above
-> as an example, speculative path exploration can stop before f() if a
-> nospec was inserted there because of Spectre v4 sanitization.
->
-> In this example, all instructions after the nospec are dead code (and
-> with the nospec they are also dead code speculatively).
->
-> On x86_64, this depends on the following property of lfence [3]:
->
->         An LFENCE instruction or a serializing instruction will ensure that no
->         later instructions execute, even speculatively, until all prior
->         instructions complete locally. [...] Inserting an LFENCE instruction
->         after a bounds check prevents later operations from executing before
->         the bound check completes.
->
-> Regarding the example, this implies that `if B goto e` will not execute
-> before `if A goto e` completes. Once `if A goto e` completes, the CPU
-> should find that the speculation was wrong and continue with `exit`.
->
-> If there is any other path that leads to `if B goto e` (and therefore
-> `unsafe()`) without going through `if A goto e`, then a nospec will
-> still be needed there. However, this patch assumes this other path will
-> be explored separately and therefore be discovered by the verifier even
-> if the exploration discussed here stops at the nospec.
->
-> This patch furthermore has the unfortunate consequence that Spectre v1
-> mitigations now only support architectures which implement BPF_NOSPEC.
-> Before this commit, Spectre v1 mitigations prevented exploits by
-> rejecting the programs on all architectures. Because some JITs do not
-> implement BPF_NOSPEC, this patch therefore may regress unpriv BPF's
-> security to a limited extent:
->
-> * The regression is limited to systems vulnerable to Spectre v1, have
->   unprivileged BPF enabled, and do NOT emit insns for BPF_NOSPEC. The
->   latter is not the case for x86 64- and 32-bit, arm64, and powerpc
->   64-bit and they are therefore not affected by the regression.
->   According to commit a6f6a95f2580 ("LoongArch, bpf: Fix jit to skip
->   speculation barrier opcode"), LoongArch is not vulnerable to Spectre
->   v1 and therefore also not affected by the regression.
->
-> * To the best of my knowledge this regression may therefore only affect
->   MIPS. This is deemed acceptable because unpriv BPF is still disabled
->   there by default. As stated in a previous commit, BPF_NOSPEC could be
->   implemented for MIPS based on GCC's speculation_barrier
->   implementation.
->
-> * It is unclear which other architectures (besides x86 64- and 32-bit,
->   ARM64, PowerPC 64-bit, LoongArch, and MIPS) supported by the kernel
->   are vulnerable to Spectre v1. Also, it is not clear if barriers are
->   available on these architectures. Implementing BPF_NOSPEC on these
->   architectures therefore is non-trivial. Searching GCC and the kernel
->   for speculation barrier implementations for these architectures
->   yielded no result.
->
-> * If any of those regressed systems is also vulnerable to Spectre v4,
->   the system was already vulnerable to Spectre v4 attacks based on
->   unpriv BPF before this patch and the impact is therefore further
->   limited.
->
-> As an alternative to regressing security, one could still reject
-> programs if the architecture does not emit BPF_NOSPEC (e.g., by removing
-> the empty BPF_NOSPEC-case from all JITs except for LoongArch where it
-> appears justified). However, this will cause rejections on these archs
-> that are likely unfounded in the vast majority of cases.
->
-> In the tests, some are now successful where we previously had a
-> false-positive (i.e., rejection). Change them to reflect where the
-> nospec should be inserted (using __xlated_unpriv) and modify the error
-> message if the nospec is able to mitigate a problem that previously
-> shadowed another problem (in that case __xlated_unpriv does not work,
-> therefore just add a comment).
->
-> Define SPEC_V1 to avoid duplicating this ifdef whenever we check for
-> nospec insns using __xlated_unpriv, define it here once. This also
-> improves readability. PowerPC can probably also be added here. However,
-> omit it for now because the BPF CI currently does not include a test.
->
-> Briefly went through all the occurrences of EPERM, EINVAL, and EACCESS
-> in the verifier in order to validate that catching them like this makes
-> sense.
->
-> [1] https://lpc.events/event/18/contributions/1954/ ("Mitigating
->     Spectre-PHT using Speculation Barriers in Linux eBPF")
-> [2] https://arxiv.org/pdf/2405.00078 ("VeriFence: Lightweight and
->     Precise Spectre Defenses for Untrusted Linux Kernel Extensions")
-> [3] https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/runtime-speculative-side-channel-mitigations.html
->     ("Managed Runtime Speculative Execution Side Channel Mitigations")
->
-> Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
-> Acked-by: Henriette Herzog <henriette.herzog@rub.de>
-> Cc: Maximilian Ott <ott@cs.fau.de>
-> Cc: Milan Stephan <milan.stephan@fau.de>
+
+
+On 5/8/2025 12:40 PM, Manivannan Sadhasivam wrote:
+> The PCIe link can go down under circumstances such as the device firmware
+> crash, link instability, etc... When that happens, the PCIe slot needs to
+> be reset to make it operational again. Currently, the driver is not
+> handling the link down event, due to which the users have to restart the
+> machine to make PCIe link operational again. So fix it by detecting the
+> link down event and resetting the slot.
+> 
+> Since the Qcom PCIe controllers report the link down event through the
+> 'global' IRQ, enable the link down event by setting PARF_INT_ALL_LINK_DOWN
+> bit in PARF_INT_ALL_MASK register.
+> 
+> Then in the case of the event, call pci_host_handle_link_down() API
+> in the handler to let the PCI core handle the link down condition. Note
+> that both link up and link down events could be set at a time when the
+> handler runs. So always handle link down first.
+> 
+> The API will internally call, 'pci_host_bridge::reset_slot()' callback to
+> reset the slot in a platform specific way. So implement the callback to
+> reset the slot by first resetting the PCIe core, followed by reinitializing
+> the resources and then finally starting the link again.
+> 
+Only one comment see below.
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 > ---
-
-Some comments below, but:
-
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-
->  include/linux/bpf_verifier.h                  |  1 +
->  kernel/bpf/verifier.c                         | 78 ++++++++++++++++++-
->  tools/testing/selftests/bpf/progs/bpf_misc.h  |  4 +
->  .../selftests/bpf/progs/verifier_and.c        |  8 +-
->  .../selftests/bpf/progs/verifier_bounds.c     | 61 ++++++++++++---
->  .../selftests/bpf/progs/verifier_movsx.c      | 16 +++-
->  .../selftests/bpf/progs/verifier_unpriv.c     |  8 +-
->  .../bpf/progs/verifier_value_ptr_arith.c      | 16 +++-
->  .../selftests/bpf/verifier/dead_code.c        |  3 +-
->  tools/testing/selftests/bpf/verifier/jmp32.c  | 33 +++-----
->  tools/testing/selftests/bpf/verifier/jset.c   | 10 +--
->  11 files changed, 184 insertions(+), 54 deletions(-)
->
-> diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-> index cebb67becdad..f1573e093120 100644
-> --- a/include/linux/bpf_verifier.h
-> +++ b/include/linux/bpf_verifier.h
-> @@ -576,6 +576,7 @@ struct bpf_insn_aux_data {
->         u64 map_key_state; /* constant (32 bit) key tracking for maps */
->         int ctx_field_size; /* the ctx field size for load insn, maybe 0 */
->         u32 seen; /* this insn was processed by the verifier at env->pass_cnt */
-> +       bool nospec; /* do not execute this instruction speculatively */
->         bool nospec_result; /* result is unsafe under speculation, nospec must follow */
->         bool zext_dst; /* this insn zero extends dst reg */
->         bool needs_zext; /* alu op needs to clear upper bits */
-> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> index 1e1eca85b7a6..db26b477dd45 100644
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-> @@ -2014,6 +2014,18 @@ static int pop_stack(struct bpf_verifier_env *env, int *prev_insn_idx,
->         return 0;
->  }
->
-> +static bool error_recoverable_with_nospec(int err)
+>   drivers/pci/controller/dwc/Kconfig     |   1 +
+>   drivers/pci/controller/dwc/pcie-qcom.c | 112 ++++++++++++++++++++++++++++++---
+>   2 files changed, 105 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/Kconfig b/drivers/pci/controller/dwc/Kconfig
+> index d9f0386396edf66ad0e514a0f545ed24d89fcb6c..ce04ee6fbd99cbcce5d2f3a75ebd72a17070b7b7 100644
+> --- a/drivers/pci/controller/dwc/Kconfig
+> +++ b/drivers/pci/controller/dwc/Kconfig
+> @@ -296,6 +296,7 @@ config PCIE_QCOM
+>   	select PCIE_DW_HOST
+>   	select CRC8
+>   	select PCIE_QCOM_COMMON
+> +	select PCI_HOST_COMMON
+>   	help
+>   	  Say Y here to enable PCIe controller support on Qualcomm SoCs. The
+>   	  PCIe controller uses the DesignWare core plus Qualcomm-specific
+> diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+> index dc98ae63362db0422384b1879a2b9a7dc564d091..e577619d0f8ceddf0955139ae6b939842f8cb7be 100644
+> --- a/drivers/pci/controller/dwc/pcie-qcom.c
+> +++ b/drivers/pci/controller/dwc/pcie-qcom.c
+> @@ -34,6 +34,7 @@
+>   #include <linux/units.h>
+>   
+>   #include "../../pci.h"
+> +#include "../pci-host-common.h"
+>   #include "pcie-designware.h"
+>   #include "pcie-qcom-common.h"
+>   
+> @@ -55,6 +56,7 @@
+>   #define PARF_INT_ALL_STATUS			0x224
+>   #define PARF_INT_ALL_CLEAR			0x228
+>   #define PARF_INT_ALL_MASK			0x22c
+> +#define PARF_STATUS				0x230
+>   #define PARF_SID_OFFSET				0x234
+>   #define PARF_BDF_TRANSLATE_CFG			0x24c
+>   #define PARF_DBI_BASE_ADDR_V2			0x350
+> @@ -130,9 +132,14 @@
+>   
+>   /* PARF_LTSSM register fields */
+>   #define LTSSM_EN				BIT(8)
+> +#define SW_CLEAR_FLUSH_MODE			BIT(10)
+> +#define FLUSH_MODE				BIT(11)
+>   
+>   /* PARF_INT_ALL_{STATUS/CLEAR/MASK} register fields */
+> -#define PARF_INT_ALL_LINK_UP			BIT(13)
+> +#define INT_ALL_LINK_DOWN			1
+> +#define INT_ALL_LINK_UP				13
+> +#define PARF_INT_ALL_LINK_DOWN			BIT(INT_ALL_LINK_DOWN)
+> +#define PARF_INT_ALL_LINK_UP			BIT(INT_ALL_LINK_UP)
+>   #define PARF_INT_MSI_DEV_0_7			GENMASK(30, 23)
+>   
+>   /* PARF_NO_SNOOP_OVERRIDE register fields */
+> @@ -145,6 +152,9 @@
+>   /* PARF_BDF_TO_SID_CFG fields */
+>   #define BDF_TO_SID_BYPASS			BIT(0)
+>   
+> +/* PARF_STATUS fields */
+> +#define FLUSH_COMPLETED				BIT(8)
+> +
+>   /* ELBI_SYS_CTRL register fields */
+>   #define ELBI_SYS_CTRL_LT_ENABLE			BIT(0)
+>   
+> @@ -169,6 +179,7 @@
+>   						PCIE_CAP_SLOT_POWER_LIMIT_SCALE)
+>   
+>   #define PERST_DELAY_US				1000
+> +#define FLUSH_TIMEOUT_US			100
+>   
+>   #define QCOM_PCIE_CRC8_POLYNOMIAL		(BIT(2) | BIT(1) | BIT(0))
+>   
+> @@ -274,11 +285,14 @@ struct qcom_pcie {
+>   	struct icc_path *icc_cpu;
+>   	const struct qcom_pcie_cfg *cfg;
+>   	struct dentry *debugfs;
+> +	int global_irq;
+>   	bool suspended;
+>   	bool use_pm_opp;
+>   };
+>   
+>   #define to_qcom_pcie(x)		dev_get_drvdata((x)->dev)
+> +static int qcom_pcie_reset_slot(struct pci_host_bridge *bridge,
+> +				  struct pci_dev *pdev);
+>   
+>   static void qcom_ep_reset_assert(struct qcom_pcie *pcie)
+>   {
+> @@ -1263,6 +1277,8 @@ static int qcom_pcie_host_init(struct dw_pcie_rp *pp)
+>   			goto err_assert_reset;
+>   	}
+>   
+> +	pp->bridge->reset_slot = qcom_pcie_reset_slot;
+> +
+>   	return 0;
+>   
+>   err_assert_reset:
+> @@ -1517,6 +1533,74 @@ static void qcom_pcie_icc_opp_update(struct qcom_pcie *pcie)
+>   	}
+>   }
+>   
+> +static int qcom_pcie_reset_slot(struct pci_host_bridge *bridge,
+> +				  struct pci_dev *pdev)
 > +{
-> +       /* Should only return true for non-fatal errors that are allowed to
-> +        * occur during speculative verification. For these we can insert a
-> +        * nospec and the program might still be accepted. Do not include
-> +        * something like ENOMEM because it is likely to re-occur for the next
-> +        * architectural path once it has been recovered-from in all speculative
-> +        * paths.
-> +        */
-> +       return err == -EPERM || err == -EACCES || err == -EINVAL;
+> +	struct pci_bus *bus = bridge->bus;
+> +	struct dw_pcie_rp *pp = bus->sysdata;
+> +	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
+> +	struct qcom_pcie *pcie = to_qcom_pcie(pci);
+> +	struct device *dev = pcie->pci->dev;
+> +	u32 val;
+> +	int ret;
+> +
+> +	/* Wait for the pending transactions to be completed */
+> +	ret = readl_relaxed_poll_timeout(pcie->parf + PARF_STATUS, val,
+> +					 val & FLUSH_COMPLETED, 10,
+> +					 FLUSH_TIMEOUT_US);
+> +	if (ret) {
+> +		dev_err(dev, "Flush completion failed: %d\n", ret);
+> +		goto err_host_deinit;
+> +	}
+> +
+> +	/* Clear the FLUSH_MODE to allow the core to be reset */
+> +	val = readl(pcie->parf + PARF_LTSSM);
+> +	val |= SW_CLEAR_FLUSH_MODE;
+> +	writel(val, pcie->parf + PARF_LTSSM);
+> +
+> +	/* Wait for the FLUSH_MODE to clear */
+> +	ret = readl_relaxed_poll_timeout(pcie->parf + PARF_LTSSM, val,
+> +					 !(val & FLUSH_MODE), 10,
+> +					 FLUSH_TIMEOUT_US);
+> +	if (ret) {
+> +		dev_err(dev, "Flush mode clear failed: %d\n", ret);
+> +		goto err_host_deinit;
+> +	}
+> +
+> +	qcom_pcie_host_deinit(pp);
+> +
+> +	ret = qcom_pcie_host_init(pp);
+> +	if (ret) {
+> +		dev_err(dev, "Host init failed\n");
+> +		return ret;
+> +	}
+> +
+> +	ret = dw_pcie_setup_rc(pp);
+> +	if (ret)
+> +		goto err_host_deinit;
+> +
+> +	/*
+> +	 * Re-enable global IRQ events as the PARF_INT_ALL_MASK register is
+> +	 * non-sticky.
+> +	 */
+> +	if (pcie->global_irq)
+> +		writel_relaxed(PARF_INT_ALL_LINK_UP | PARF_INT_ALL_LINK_DOWN |
+> +			       PARF_INT_MSI_DEV_0_7, pcie->parf + PARF_INT_ALL_MASK);
+> +
+> +	qcom_pcie_start_link(pci);
+> +	if (!dw_pcie_wait_for_link(pci))
+> +		qcom_pcie_icc_opp_update(pcie);
+This icc opp update can we removed as this can updated from the global
+IRQ.
+
+- Krishna Chaitanya.
+> +
+> +	dev_dbg(dev, "Slot reset completed\n");
+> +
+> +	return 0;
+> +
+> +err_host_deinit:
+> +	qcom_pcie_host_deinit(pp);
+> +
+> +	return ret;
 > +}
-
-Why can't we unconditionally do this? So the path with speculation
-that encounters an error (even if EFAULT) is not explored for the
-remaining pushed speculative states. If the error remains regardless
-of speculation normal symbolic execution will encounter it. The
-instructions only explored as part of speculative execution are not
-marked as seen (see: sanitize_mark_insn_seen), so they'll be dead code
-eliminated and the code doesn't reach the JIT, so no "unsafe gadget"
-remains in the program where execution can be steered.
-
-So the simplest thing (without having to reason about these three
-error codes, I'm sure things will get out of sync or we'll miss
-potential candidates) is probably to just unconditionally mark
-cur_aux(env)->nospec.
-
 > +
->  static struct bpf_verifier_state *push_stack(struct bpf_verifier_env *env,
->                                              int insn_idx, int prev_insn_idx,
->                                              bool speculative)
-> @@ -11160,7 +11172,7 @@ static int check_get_func_ip(struct bpf_verifier_env *env)
->         return -ENOTSUPP;
->  }
->
-> -static struct bpf_insn_aux_data *cur_aux(struct bpf_verifier_env *env)
-> +static struct bpf_insn_aux_data *cur_aux(const struct bpf_verifier_env *env)
->  {
->         return &env->insn_aux_data[env->insn_idx];
->  }
-> @@ -13997,7 +14009,9 @@ static int retrieve_ptr_limit(const struct bpf_reg_state *ptr_reg,
->  static bool can_skip_alu_sanitation(const struct bpf_verifier_env *env,
->                                     const struct bpf_insn *insn)
->  {
-> -       return env->bypass_spec_v1 || BPF_SRC(insn->code) == BPF_K;
-> +       return env->bypass_spec_v1 ||
-> +               BPF_SRC(insn->code) == BPF_K ||
-> +               cur_aux(env)->nospec;
->  }
->
->  static int update_alu_sanitation_state(struct bpf_insn_aux_data *aux,
-> @@ -19687,10 +19701,41 @@ static int do_check(struct bpf_verifier_env *env)
->                 sanitize_mark_insn_seen(env);
->                 prev_insn_idx = env->insn_idx;
->
-> +               /* Reduce verification complexity by stopping speculative path
-> +                * verification when a nospec is encountered.
-> +                */
-> +               if (state->speculative && cur_aux(env)->nospec)
-> +                       goto process_bpf_exit;
+>   static int qcom_pcie_link_transition_count(struct seq_file *s, void *data)
+>   {
+>   	struct qcom_pcie *pcie = (struct qcom_pcie *)dev_get_drvdata(s->private);
+> @@ -1559,11 +1643,20 @@ static irqreturn_t qcom_pcie_global_irq_thread(int irq, void *data)
+>   	struct qcom_pcie *pcie = data;
+>   	struct dw_pcie_rp *pp = &pcie->pci->pp;
+>   	struct device *dev = pcie->pci->dev;
+> -	u32 status = readl_relaxed(pcie->parf + PARF_INT_ALL_STATUS);
+> +	unsigned long status = readl_relaxed(pcie->parf + PARF_INT_ALL_STATUS);
+>   
+>   	writel_relaxed(status, pcie->parf + PARF_INT_ALL_CLEAR);
+>   
+> -	if (FIELD_GET(PARF_INT_ALL_LINK_UP, status)) {
+> +	/*
+> +	 * It is possible that both Link Up and Link Down events might have
+> +	 * happended. So always handle Link Down first.
+> +	 */
+> +	if (test_and_clear_bit(INT_ALL_LINK_DOWN, &status)) {
+> +		dev_dbg(dev, "Received Link down event\n");
+> +		pci_host_handle_link_down(pp->bridge);
+> +	}
 > +
->                 err = do_check_insn(env, insn, &do_print_state);
-> -               if (err < 0) {
-> +               if (state->speculative && error_recoverable_with_nospec(err)) {
-> +                       /* Prevent this speculative path from ever reaching the
-> +                        * insn that would have been unsafe to execute.
-> +                        */
-> +                       cur_aux(env)->nospec = true;
-> +                       /* If it was an ADD/SUB insn, potentially remove any
-> +                        * markings for alu sanitization.
-> +                        */
-> +                       cur_aux(env)->alu_state = 0;
-> +                       goto process_bpf_exit;
-> +               } else if (err < 0) {
->                         return err;
->                 } else if (err == PROCESS_BPF_EXIT) {
-> +                       goto process_bpf_exit;
-> +               }
-> +               WARN_ON_ONCE(err);
+> +	if (test_and_clear_bit(INT_ALL_LINK_UP, &status)) {
+>   		dev_dbg(dev, "Received Link up event. Starting enumeration!\n");
+>   		/* Rescan the bus to enumerate endpoint devices */
+>   		pci_lock_rescan_remove();
+> @@ -1571,11 +1664,12 @@ static irqreturn_t qcom_pcie_global_irq_thread(int irq, void *data)
+>   		pci_unlock_rescan_remove();
+>   
+>   		qcom_pcie_icc_opp_update(pcie);
+> -	} else {
+> -		dev_WARN_ONCE(dev, 1, "Received unknown event. INT_STATUS: 0x%08x\n",
+> -			      status);
+>   	}
+>   
+> +	if (status)
+> +		dev_WARN_ONCE(dev, 1, "Received unknown event. INT_STATUS: 0x%08x\n",
+> +			      (u32) status);
 > +
-> +               if (state->speculative && cur_aux(env)->nospec_result) {
-> +                       /* If we are on a path that performed a jump-op, this
-> +                        * may skip a nospec patched-in after the jump. This can
-> +                        * currently never happen because nospec_result is only
-> +                        * used for the write-ops
-> +                        * `*(size*)(dst_reg+off)=src_reg|imm32` which must
-> +                        * never skip the following insn. Still, add a warning
-> +                        * to document this in case nospec_result is used
-> +                        * elsewhere in the future.
-> +                        */
-> +                       WARN_ON_ONCE(env->insn_idx != prev_insn_idx + 1);
-
-Nice!
-
->  process_bpf_exit:
->                         mark_verifier_state_scratched(env);
->                         update_branch_counts(env, env->cur_state);
-> @@ -19709,7 +19754,6 @@ static int do_check(struct bpf_verifier_env *env)
->                                 continue;
->                         }
->                 }
-> -               WARN_ON_ONCE(err);
->         }
->
->         return 0;
-> @@ -20838,6 +20882,29 @@ static int convert_ctx_accesses(struct bpf_verifier_env *env)
->                 bpf_convert_ctx_access_t convert_ctx_access;
->                 u8 mode;
->
-> +               if (env->insn_aux_data[i + delta].nospec) {
-> +                       WARN_ON_ONCE(env->insn_aux_data[i + delta].alu_state);
-> +                       struct bpf_insn patch[] = {
-> +                               BPF_ST_NOSPEC(),
-> +                               *insn,
-> +                       };
+>   	return IRQ_HANDLED;
+>   }
+>   
+> @@ -1732,8 +1826,10 @@ static int qcom_pcie_probe(struct platform_device *pdev)
+>   			goto err_host_deinit;
+>   		}
+>   
+> -		writel_relaxed(PARF_INT_ALL_LINK_UP | PARF_INT_MSI_DEV_0_7,
+> -			       pcie->parf + PARF_INT_ALL_MASK);
+> +		writel_relaxed(PARF_INT_ALL_LINK_UP | PARF_INT_ALL_LINK_DOWN |
+> +			       PARF_INT_MSI_DEV_0_7, pcie->parf + PARF_INT_ALL_MASK);
 > +
-> +                       cnt = ARRAY_SIZE(patch);
-> +                       new_prog = bpf_patch_insn_data(env, i + delta, patch, cnt);
-> +                       if (!new_prog)
-> +                               return -ENOMEM;
-> +
-> +                       delta    += cnt - 1;
-> +                       env->prog = new_prog;
-> +                       insn      = new_prog->insnsi + i + delta;
-> +                       /* This can not be easily merged with the
-> +                        * nospec_result-case, because an insn may require a
-> +                        * nospec before and after itself. Therefore also do not
-> +                        * 'continue' here but potentially apply further
-> +                        * patching to insn. *insn should equal patch[1] now.
-> +                        */
-> +               }
-> +
->                 if (insn->code == (BPF_LDX | BPF_MEM | BPF_B) ||
->                     insn->code == (BPF_LDX | BPF_MEM | BPF_H) ||
->                     insn->code == (BPF_LDX | BPF_MEM | BPF_W) ||
-> @@ -20888,6 +20955,9 @@ static int convert_ctx_accesses(struct bpf_verifier_env *env)
->
->                 if (type == BPF_WRITE &&
->                     env->insn_aux_data[i + delta].nospec_result) {
-> +                       /* nospec_result is only used to mitigate Spectre v4 and
-> +                        * to limit verification-time for Spectre v1.
-> +                        */
->                         struct bpf_insn patch[] = {
->                                 *insn,
->                                 BPF_ST_NOSPEC(),
-> diff --git a/tools/testing/selftests/bpf/progs/bpf_misc.h b/tools/testing/selftests/bpf/progs/bpf_misc.h
-> index 863df7c0fdd0..97c727ab81be 100644
-> --- a/tools/testing/selftests/bpf/progs/bpf_misc.h
-> +++ b/tools/testing/selftests/bpf/progs/bpf_misc.h
-> @@ -230,4 +230,8 @@
->  #define CAN_USE_LOAD_ACQ_STORE_REL
->  #endif
->
-> +#if defined(__TARGET_ARCH_arm64) || defined(__TARGET_ARCH_x86)
-> +#define SPEC_V1
-> +#endif
-> +
->  #endif
-> [...]
+> +		pcie->global_irq = irq;
+>   	}
+>   
+>   	qcom_pcie_icc_opp_update(pcie);
+> 
 
