@@ -1,107 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-8580-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8579-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DECAB6F93
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 17:22:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A65AB6F62
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 17:15:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZyHBv5MkXz2yrl;
-	Thu, 15 May 2025 01:22:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZyH3c2CDzz2xtt;
+	Thu, 15 May 2025 01:15:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::136"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747236135;
-	cv=none; b=RTB9NjT6AEOfp+IWUbGwJjy/8CyOWS3FO+tH2vE9G/1fC6/5y2ebWSmBpgc78Fu14GPH7/uPGBxoYm6W71UsMfDhL4+eC4Kf+M56PR9xfwWTmPCFUh8t4C2dhWanRzpiYEN/tLvkH8h+OEpHrny+31cDDkN4C/0RSx89rMHSJyg08e5b7EYYVCUnaLcaI6I5x1QceCLW9xNeKTDNqCcwbzHMDlBXrBiUZ2dyoGQaLGwWHgS1WRoob04HhbjtrwPCDy1WEwtKrzOHAuqpnA/0VXdQLeMvf10ztuRizUSoktYJR60UV7DjBxX5XtR7Ex6vnrPZFCIm7Y+Pd3SVIc9jZw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.17
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747235756;
+	cv=none; b=WS6hsZAM0EJUUkb8xoI7FSeNVbMHB5qzHLubYV1pgQ8usF0vf7dxQ3Qv0IMFROPUKmF/9XKkRY6kCFIjWwOStfMzZ3uq6mP4HQXJvlMqYTZmhT2bKXUg69XFsKQSPJ/2NOxV1Eqadr0MvOuTLrzskeuRG7C1l+pIad6phueMBMKlfH7ovYDQC+uM+3OEd3ireuvh3DmBBwdmIcPVE+HoJoqFKh8RBvVmlW+l3s9iCA/HSAnU77SF0aBYL9w9jTgu4DxhWezUFGmkzcjZcjCa2MJE+5zGohVeHDtj1dqwId0t8NhQWoAQYrC3dPnbOEQ/IfyliXAR/4OJYdjJ0QpBKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747236135; c=relaxed/relaxed;
-	bh=yapZ2s67BLNwus6ibHABzXGBCoZzVlVupFJe/q2qy/U=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=XJg6KPOjGirNcLUxqYYpe1qHZ4YedDdBf6OgwczkI4CWpRj72MB0MfB/swJ4WZBUVrYkhoylqsxNd9fg37t8OdcT/f0+Zp+wQhOAhQ1z1p08IHTq5fA0gedkezD606/iKxCwvqMQS/PzFhBZ4gD5nyi/nQ6uiutR070ZMdmWXj8Zr1eKb93xSEj9geGp/BcBOfvN5W+CUQRWV0geYSzzbb2xbIz+znxGsc95MXqA5hB7R1i55d8XzidL9V92hrzn0vzbHWmGhtf6WmkIH8eYibtcqBAP4DvkHmQwT6jvRLkV8dbpFurs01GBFxRnd1oqU0TJt2BiLOjWheLi88pS2A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zytor.com; dkim=pass (2048-bit key; unprotected) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2025042001 header.b=djZFgxiA; dkim-atps=neutral; spf=pass (client-ip=2607:7c80:54:3::136; helo=mail.zytor.com; envelope-from=hpa@zytor.com; receiver=lists.ozlabs.org) smtp.mailfrom=zytor.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+	t=1747235756; c=relaxed/relaxed;
+	bh=l9Sy2nZG/65Ih5GxVFRbkt9VFk6N59raehsFZJZALN4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=NSref6HmkwX6OUK9DkZeAAxSkGngUsaXp2gWm8eAS5gSzOLlonwHESZ+frypHHq8UvxVSLPh8eWi67PYLuLGHf/I0Og7gqZA3XF3Bl9v5uTde8+yEYSvZeWU5IByJGdRAn9Z2NRHt6+rXpnYCFOOOMeiTXD7Juz0/mGVFHrXH+ViSGtp2N4fAtroey3/BzFn9pukC53hFZNpq6ofnpVDee5/peTN6O1JUEEMHBdDDnr2SGWuliO9B9Vmgv26MWbf7sJX5hJW/XyX4fYx7I/Uv+MlCat59WqumoVAfDXJxIpuvC5UhAtLga5MNjBgjJk92FWXllsmQoOvZeuQ/eJLQQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Jh9Wq4Tb; dkim-atps=neutral; spf=none (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=kan.liang@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2025042001 header.b=djZFgxiA;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Jh9Wq4Tb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zytor.com (client-ip=2607:7c80:54:3::136; helo=mail.zytor.com; envelope-from=hpa@zytor.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 603 seconds by postgrey-1.37 at boromir; Thu, 15 May 2025 01:22:13 AEST
-Received: from mail.zytor.com (terminus.zytor.com [IPv6:2607:7c80:54:3::136])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=kan.liang@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Thu, 15 May 2025 01:15:53 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZyHBs2kW6z2yr6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 May 2025 01:22:13 +1000 (AEST)
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 54EFAEbT3012887
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 14 May 2025 08:10:15 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 54EFAEbT3012887
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025042001; t=1747235422;
-	bh=yapZ2s67BLNwus6ibHABzXGBCoZzVlVupFJe/q2qy/U=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=djZFgxiAUJE7iFHA0Wd/yFppU4TGqi4fxmoBT1mvTgxRmRiu+8QH1zl3CND+QbbP4
-	 97UVxN+J8QD8iz78UlxzP16emoOIxJpWaoO9qxu1Ec5we80T+FOOb4RfHy40YAODf4
-	 27XX25rvc06YcNMTsxppaOiXgVXhowu2DQa6R8gC1Tcuq8Oq9GVQp3swa9CciK5Vg/
-	 jv/tWyK4JR8CJyAVAYMpVNTUaE0Ax5AVAQfxExqancQ8ZpUjlh9FBEWFvjm5PCVbut
-	 6qwwqWO9GyDweGO8bFsU0TsmuX3ejxdQaqkTWk3Ymh6Yue7onjRsMrCGmrkfplN9Ef
-	 P/Ifsp+Ororjw==
-Date: Wed, 14 May 2025 08:10:12 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Arnd Bergmann <arnd@arndb.de>, Andrey Albershteyn <aalbersh@redhat.com>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.osdn.me>, Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Andreas Larsson <andreas@gaisler.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        =?ISO-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-        =?ISO-8859-1?Q?G=FCnther_Noack?= <gnoack@google.com>,
-        =?ISO-8859-1?Q?Pali_Roh=E1r?= <pali@kernel.org>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Ondrej Mosnacek <omosnace@redhat.com>, Tyler Hicks <code@tyhicks.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Amir Goldstein <amir73il@gmail.com>
-CC: linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-m68k@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-api@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>,
-        selinux@vger.kernel.org, ecryptfs@vger.kernel.org,
-        linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
-        Andrey Albershteyn <aalbersh@kernel.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v5_0/7=5D_fs=3A_introduce_fi?=
- =?US-ASCII?Q?le=5Fgetattr_and_file=5Fsetattr_syscalls?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <399fdabb-74d3-4dd6-9eee-7884a986dab1@app.fastmail.com>
-References: <20250513-xattrat-syscall-v5-0-22bb9c6c767f@kernel.org> <399fdabb-74d3-4dd6-9eee-7884a986dab1@app.fastmail.com>
-Message-ID: <B17E8366-DB80-45E6-90D6-294824C40FD9@zytor.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZyH3Y2xbnz2xCC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 May 2025 01:15:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747235753; x=1778771753;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=s+EyXjLUXo0M2dfj157AL5fvrY36sWvSBJ2tuImTWtk=;
+  b=Jh9Wq4Tbk7P9e4IL01NFirnzkOVtGjyu39qv3hlTf9sOpYOzoFLhHcgY
+   4u92XhNiVuUyn8xSIpwr4G4ajAFhIbhEOlDHgzpC03GqtH/kAkLPyjjnE
+   CHbbDRkJNdHwvC4Fjyn4ZKE+zJYnHcEWsbBAGLcP3RjkKKpiApQLr6v8h
+   HqJC4KrCubhZ18V+tob7B//IJmpYNFaO/84kZHCX3PFL3gDlH9EskDVw4
+   usXGt8GNmSLy7PTGBiG4A5zMlo8CaiszyZ+gOiLARFD4+OL+eBMzGQw5W
+   hFYDarOrLMCbbWZ6PEYOvH6Vub/v6FZVnZoTeyI/xMharZ5uESySUD1eV
+   Q==;
+X-CSE-ConnectionGUID: T7kOFq1DQzqpRTkUimYmCw==
+X-CSE-MsgGUID: FMv3+bAuQ9aYVhLf6v7Zjg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="49072743"
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; 
+   d="scan'208";a="49072743"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 08:14:44 -0700
+X-CSE-ConnectionGUID: CIB9tTiBQxeDfYbnRRxmEw==
+X-CSE-MsgGUID: X62WA9/KTryQTVKPFxrNVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; 
+   d="scan'208";a="142939165"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by fmviesa005.fm.intel.com with ESMTP; 14 May 2025 08:14:44 -0700
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	namhyung@kernel.org,
+	irogers@google.com,
+	mark.rutland@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Cc: eranian@google.com,
+	ctshao@google.com,
+	tmricht@linux.ibm.com,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH V2 05/15] powerpc/perf: Remove driver-specific throttle support
+Date: Wed, 14 May 2025 08:13:51 -0700
+Message-Id: <20250514151401.2547932-6-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20250514151401.2547932-1-kan.liang@linux.intel.com>
+References: <20250514151401.2547932-1-kan.liang@linux.intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -115,44 +89,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On May 13, 2025 2:53:23 AM PDT, Arnd Bergmann <arnd@arndb=2Ede> wrote:
->On Tue, May 13, 2025, at 11:17, Andrey Albershteyn wrote:
->
->>
->> 	long syscall(SYS_file_getattr, int dirfd, const char *pathname,
->> 		struct fsxattr *fsx, size_t size, unsigned int at_flags);
->> 	long syscall(SYS_file_setattr, int dirfd, const char *pathname,
->> 		struct fsxattr *fsx, size_t size, unsigned int at_flags);
->
->I don't think we can have both the "struct fsxattr" from the uapi
->headers, and a variable size as an additional argument=2E I would
->still prefer not having the extensible structure at all and just
->use fsxattr, but if you want to make it extensible in this way,
->it should use a different structure (name)=2E Otherwise adding
->fields after fsx_pad[] would break the ioctl interface=2E
->
->I also find the bit confusing where the argument contains both
->"ignored but assumed zero" flags, and "required to be zero"
->flags depending on whether it's in the fsx_pad[] field or
->after it=2E This would be fine if it was better documented=2E
->
->
->> 		fsx=2Efsx_xflags |=3D FS_XFLAG_NODUMP;
->> 		error =3D syscall(468, dfd, "=2E/foo", &fsx, 0);
->
->The example still uses the calling conventions from a previous
->version=2E
->
->       Arnd
+From: Kan Liang <kan.liang@linux.intel.com>
 
-Well, ioctls carry the structure size in the ioctl number, so changing the=
- structure size would change the ioctl number with it=2E
+The throttle support has been added in the generic code. Remove
+the driver-specific throttle support.
+
+Besides the throttle, perf_event_overflow may return true because of
+event_limit. It already does an inatomic event disable. The pmu->stop
+is not required either.
+
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ arch/powerpc/perf/core-book3s.c  | 6 ++----
+ arch/powerpc/perf/core-fsl-emb.c | 3 +--
+ 2 files changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 42ff4d167acc..8b0081441f85 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2344,12 +2344,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 			ppmu->get_mem_weight(&data.weight.full, event->attr.sample_type);
+ 			data.sample_flags |= PERF_SAMPLE_WEIGHT_TYPE;
+ 		}
+-		if (perf_event_overflow(event, &data, regs))
+-			power_pmu_stop(event, 0);
++		perf_event_overflow(event, &data, regs);
+ 	} else if (period) {
+ 		/* Account for interrupt in case of invalid SIAR */
+-		if (perf_event_account_interrupt(event))
+-			power_pmu_stop(event, 0);
++		perf_event_account_interrupt(event);
+ 	}
+ }
+ 
+diff --git a/arch/powerpc/perf/core-fsl-emb.c b/arch/powerpc/perf/core-fsl-emb.c
+index d2ffcc7021c5..7120ab20cbfe 100644
+--- a/arch/powerpc/perf/core-fsl-emb.c
++++ b/arch/powerpc/perf/core-fsl-emb.c
+@@ -635,8 +635,7 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 
+ 		perf_sample_data_init(&data, 0, last_period);
+ 
+-		if (perf_event_overflow(event, &data, regs))
+-			fsl_emb_pmu_stop(event, 0);
++		perf_event_overflow(event, &data, regs);
+ 	}
+ }
+ 
+-- 
+2.38.1
+
 
