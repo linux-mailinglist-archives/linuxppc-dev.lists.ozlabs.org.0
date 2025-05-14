@@ -1,69 +1,125 @@
-Return-Path: <linuxppc-dev+bounces-8588-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8590-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF642AB72E0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 19:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 050A0AB72F0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 14 May 2025 19:38:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZyL8Q0DRFz2yyx;
-	Thu, 15 May 2025 03:35:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZyLDD4M4Fz3020;
+	Thu, 15 May 2025 03:38:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::541"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747244117;
-	cv=none; b=XpfE0GuhyA19JKT1+vhEPA5ptk3LY/N47YF6eZcFKvzBmWSLASaXA9Il7i/jnatviT61xFvt36MZufUVTFG5PV/jFEY3+0Gh0MnT69hmZIPQi+8RAJjyGCFG3bR/oBC89wthGEk3kXKvhYdq8G0m3YF4DUYZTegFrmyyVJz8g0CDZHBbhOiKAaosrtyVdAmqhHoq4tiWQeeuwWlV8CZvHRcoqqSq2aURB02V6T+u8LnsZE72HBrPnPus/P1rWOU+7ZLJaiLxceeXzde5Q3ToU56ZC6FNeaT4hecccXovKChc7DfcZ8Oq+xnReTQt6M1PGH+R4J3Qonieqd2pZF8azQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747244316;
+	cv=none; b=kR9DaKf4KZ64k2B7US/OlFPb2TPu5flhRg+mTtOCuyeeSFBZxViSWK5bp5I3gJaMGBpEAzfFRqhoPgY4777wF+5tty+CkQz7vv8Kyw+FU/HTGtnXyAPAxLuOMnwE+0mbrWZLncMk/A24TI0v79bwcUBhZDRbYhVcT9IVkDtyMX33evcbDK52vIgd31QbJ7x0WpocO5piG9JBzZKVrGzckeqXIIOdTFLfe06f8OHhX45qrgI+9TT1evYoVcvbUhathtOxFGBXuvmDbpnJCjMy7rivR1JKScetQ+r+An+n9GSQboFZSQ3ODMnwACNV2hUpR/5m5beMHI1tEKnsn8jvpQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747244117; c=relaxed/relaxed;
-	bh=EFdlJ6N6MHe++MwGWkILbc9+cPIo/XiWxbVEpXS+OnQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g1txdJXExWpPgpk/WeTzgcbAPvzNdUfJyLrY7Xvv5eznSTeEdbtul64Aju0ewxOQ0rW+piycY/e455k2vg59IzQUZWc066AEhyYnSxZsCD1xNe+MAHg0Oi3zmrCkFEUR1hru7s48EV+M0DOt/YbTq/rC7/L2qPnUdJrp3eUBGcvmUYAUAor1NGNzVPmsm5eV8WB2Mm3hOYIwhYIeYY3xe/K+WGDfiUQvlowoza+Xf6hy6T9np8fMQjKfRnGLrThZ3TqBbxM+5g6iSwEcJsjAw7212QfkGypghFL5T3sLbL6WRnN6e/49yM2mcftXsHKe0ml86gZtDZLUt7twwVqfQg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YxaDlsHG; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1747244316; c=relaxed/relaxed;
+	bh=OhYFTK3Y8z/4xazu3XKdTqh8g1BwjMNXvG+8F5JF5lY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bBDvXz9p4HzD0GbC+F2Ld6APJwGQvxq1c1gYuaBNgQIv//pfvFcEO3JLRoFOOrha+EP/YbPjSeZMxIQ11S4V1gAOUcknuxKCsW6RdTFz8HKh2XzilcYPVPGu21GZ9mLh91Ks1Ilk5hAlDgiQFNedjO/ZnnErOY+MhWLgE1K64rZCGWfX5xeuiOQoznKmQ9oIAlV6pu/i/OlnxymrDp3ZLR4JgrK1TMFmHsduE0IXo0K+dmfNnqSOGhwK31RdLuQYblJ4OhHAnijvfou3iJlbekooj25d4i10Z3l50qgzojMrzxSde4mV7kYYK8jns+9jcEhrnwmXAPUyvJVK2PAJhA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a3sLf5q9; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=YxaDlsHG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a3sLf5q9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::541; helo=mail-ed1-x541.google.com; envelope-from=memxor@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZyL8N2TD2z2yrp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 May 2025 03:35:15 +1000 (AEST)
-Received: by mail-ed1-x541.google.com with SMTP id 4fb4d7f45d1cf-5fd1f7f8b25so186292a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 14 May 2025 10:35:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747244109; x=1747848909; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=EFdlJ6N6MHe++MwGWkILbc9+cPIo/XiWxbVEpXS+OnQ=;
-        b=YxaDlsHGeAVPCYXA/E/axNq4Q4crZJG1wJOe6bM9xcteijPDrkXg4wRiLxqtnkT/TS
-         7E+wKU/+k+XP+4NO8FzslFZbTZTA21EqEHCMuQ/spSrEPCaj8b7o9NUT5WBCu4QJ1v+J
-         3xUG5uUBIfchmejPyTpDKV6C8LTlq1DcWoCCbfcZMD6YH1Eh1Va9Hfx8iXnSuvThoCFv
-         HbO9xd7h1MEKoR1eR/y6ngcBAW+aeC3drWoGojCzVA97EeAyuDo2Eka3Pvba8SnyTvFj
-         b4LYQJlQCHRhZ9P2g05Dcv0yekkYAUbrcoQsCWnLNZjX9BkUy7pRMM1ewXoPPS88EbwL
-         E7HQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747244109; x=1747848909;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EFdlJ6N6MHe++MwGWkILbc9+cPIo/XiWxbVEpXS+OnQ=;
-        b=Jex+ghkDEX0GGGEbuPbDz4oC2y/DQZZSwZ0yrtqblQEhIV95+rJTwl1FVbFAF8gkwD
-         YImMI/z00L0rhYEIbyQ1ufBy2aI+3zfcYwD1GNDROWaIpfr01bhw1jfa4XwPMdluRf3X
-         a8dCnw3DS/6D6JDm6NhYz9MSLjdK9eq77eHQ9X1zl+mwhNQszIJV+vJFx8yASlX20EFM
-         bFMqpUV3uT9blrndvCsQDvCDS4U3jdJ0BgpJYTzxjdkxPOkznG/bDPODwq3itS6hpzbq
-         0YmsyujqlzcYaknXiXMFO1hzE32DqinJMNnjlUbalMYLwDnTv/sBR4qPdFVST7jffCFo
-         9rCw==
-X-Forwarded-Encrypted: i=1; AJvYcCX2g5q6bY11zb2KEUVE5Il9tva0vBHExlzd4xx2uiMGMvbUOC/eH2ozM9ORJEe2wycRZNapYfFMmddtlzU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy3TbG0OjCClUfo1Y7Odg3Hd9yTTvY61oo6p73S75YyQM9jS/Mk
-	0Pfncn3fwnFYlknrcIODhlCW8Ygg9ADpsB0g8Hm/1BMENdWbziHbvy1gEESPf8qU5ri6EvYDEuC
-	7ofIRvBp57GWvFcG4kNt0fxPskHM=
-X-Gm-Gg: ASbGncsmBI0TKkSwHiwb3QLl06U9hA+wERsTT97/25ymXfhkm4bid5AOlSovA/zTM5Z
-	BQM8bsj9H/IZFgzqki10ei3u+iJjD3vE3NMGOPS2JOanqdQqnEQ/rz42Z00L1d490G9rM0rLAY7
-	ktS5lbZ6EF5R0H6hFol0R/z4LanJn/QhjxS6xZFV7HKFMJNF7w
-X-Google-Smtp-Source: AGHT+IE+VwudLGlVqV7MTPJNv/2IatRwQ5fmgPNY2cQCAUPG/OX3YqdyDUfjFCe1H9Ew0BhHDSRLrN8kqa+WikFcqEc=
-X-Received: by 2002:a17:907:8747:b0:ad2:4787:f1f4 with SMTP id
- a640c23a62f3a-ad4f7114433mr410241466b.15.1747244109100; Wed, 14 May 2025
- 10:35:09 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZyLDC5mvvz2yvv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 May 2025 03:38:35 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54EGNoGp017016;
+	Wed, 14 May 2025 17:37:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=OhYFTK
+	3Y8z/4xazu3XKdTqh8g1BwjMNXvG+8F5JF5lY=; b=a3sLf5q95rLq+ogvCQJGZX
+	V2yY+OSkcxJPwWlGLm5m+YbRqDyBCHDuKaJVszSbyc6wBgriio9qhcS8jZL2kmpm
+	Wt4GZx+6jyOB5ckxK023vjDNAOCrH9Qi1jhunvuv1GZoIrmF8NkPqaIvsKPNtKt6
+	4hgT1Iv7BiUX4NQbm2Gd9ZUtJ6/alASi/l3hSrJm8hGMWRzCT58Ss5nfVjHM8Kb8
+	Aq+p5zH55xzrkCg7OLiv6NLv6BxdnZLp6mjSsBqNtkqxVdTmfyAGiN3UmAdMbp6K
+	DM/3Caw67cLgGwwlDPxkdaL+pvtp/ntrzw506jlQg3dF0R5Xe+sq5+5xXnYcX5Lg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mbq8nxys-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 May 2025 17:37:55 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54EHbtLg031046;
+	Wed, 14 May 2025 17:37:55 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46mbq8nxyp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 May 2025 17:37:55 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54EGaGqc019883;
+	Wed, 14 May 2025 17:37:53 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 46mbfrnhv8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 14 May 2025 17:37:53 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54EHbrIw26608194
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 14 May 2025 17:37:53 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 716EB58055;
+	Wed, 14 May 2025 17:37:53 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C906C58043;
+	Wed, 14 May 2025 17:37:51 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.31.96.173])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 14 May 2025 17:37:51 +0000 (GMT)
+Message-ID: <edeb23e7884e94006d560898b7f9d2dd257a275e.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 2/9] ima: efi: Drop unnecessary check for
+ CONFIG_MODULE_SIG/CONFIG_KEXEC_SIG
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+        Masahiro
+ Yamada <masahiroy@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>, Arnd
+ Bergmann <arnd@arndb.de>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Petr Pavlu
+ <petr.pavlu@suse.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Daniel
+ Gomez <da.gomez@samsung.com>, Paul Moore <paul@paul-moore.com>,
+        James
+ Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Jonathan
+ Corbet <corbet@lwn.net>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael
+ Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao
+ <naveen@kernel.org>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Dmitry
+ Kasatkin <dmitry.kasatkin@gmail.com>,
+        Eric Snowberg
+ <eric.snowberg@oracle.com>,
+        Nicolas Schier <nicolas.schier@linux.dev>
+Cc: Fabian =?ISO-8859-1?Q?Gr=FCnbichler?= <f.gruenbichler@proxmox.com>,
+        Arnout Engelen <arnout@bzzt.net>, Mattia Rizzolo <mattia@mapreri.org>,
+        kpcyrd <kpcyrd@archlinux.org>, Christian Heusel <christian@heusel.eu>,
+        =?ISO-8859-1?Q?C=E2ju?= Mihai-Drosi <mcaju95@gmail.com>,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-integrity@vger.kernel.org
+Date: Wed, 14 May 2025 13:37:51 -0400
+In-Reply-To: <10ca077d6d51fac10e56c94db4205a482946d15f.camel@linux.ibm.com>
+References: <20250429-module-hashes-v3-0-00e9258def9e@weissschuh.net>
+	 <20250429-module-hashes-v3-2-00e9258def9e@weissschuh.net>
+	 <10ca077d6d51fac10e56c94db4205a482946d15f.camel@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,120 +133,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250501073603.1402960-1-luis.gerhorst@fau.de>
- <20250501073603.1402960-12-luis.gerhorst@fau.de> <CAP01T76jeSg3W-OyfBfSbAjpEhBr_h8rbS-Hubk6gDdrkeEj_Q@mail.gmail.com>
- <87ecwr14mt.fsf@fau.de>
-In-Reply-To: <87ecwr14mt.fsf@fau.de>
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Date: Wed, 14 May 2025 13:34:32 -0400
-X-Gm-Features: AX0GCFtOVfH8muGhMGHBFxUVlaXx-8L6TgNxC77DPS2kBNNOVj7O1t8HiDkeHPo
-Message-ID: <CAP01T75xiWn56dtpS06Vm9sMRfCBv+uHNe47Fh5hqu+4xCxOiw@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 11/11] bpf: Fall back to nospec for sanitization-failures
-To: Luis Gerhorst <luis.gerhorst@fau.de>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Puranjay Mohan <puranjay@kernel.org>, 
-	Xu Kuohai <xukuohai@huaweicloud.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Hari Bathini <hbathini@linux.ibm.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>, 
-	Henriette Herzog <henriette.herzog@rub.de>, Saket Kumar Bhaskar <skb99@linux.ibm.com>, 
-	Cupertino Miranda <cupertino.miranda@oracle.com>, Jiayuan Chen <mrpre@163.com>, 
-	Matan Shachnai <m.shachnai@gmail.com>, Dimitar Kanaliev <dimitar.kanaliev@siteground.com>, 
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>, Daniel Xu <dxu@dxuuu.xyz>, bpf@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, 
-	Maximilian Ott <ott@cs.fau.de>, Milan Stephan <milan.stephan@fau.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: RPOjhr87gRyfajPTapmF9ThaYjREaKWR
+X-Authority-Analysis: v=2.4 cv=GrRC+l1C c=1 sm=1 tr=0 ts=6824d4f4 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VTue-mJiAAAA:8 a=VnNF1IyMAAAA:8 a=cvE8ob5KMqMXAi4NVQcA:9 a=QEXdDO2ut3YA:10
+ a=S9YjYK_EKPFYWS37g-LV:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDE1OSBTYWx0ZWRfXw38stgEBAl0t 92v/U+3cUWiDo2+zByc4gM0wk3jePfyswMAaKF8sD4OxddTZs4UE+NB2VcDeYErV+mi7iXDLJvh jytWmpJowyB3HAFvoC/P87zqtuhU4ohvwApvR4JcscvN5E9rFDkFyfB3MP21mi3Zb3l+g+pWZQ5
+ /zisZSh5IrT0P2FTctMhkdbGJ+vk/ngQWR21ZkgpICCF4flVjz33Zf7h1seH2KutvMUEHN3jFoN qHhzfy21Le9jr+tImfrJxzgiHGbORUqwHkT3WM+yq8fA3vvdM8IpHWRhsKpfgfdpjELXgFLQIs6 IT8J9qyUx1t9E14ZCdCK7Cxb9XNiDRPETyybcLAf7J3irr/+jfvhA770zoy0OcXw3arFlBdT6iP
+ uQgkQZKJLprO24T3AJbCT8A8FRFqOLmv6LIX4yNw5rmj3w8Rk4AvjRlvWa145C4lQPlIu3+5
+X-Proofpoint-GUID: DzVVxD_mhRAfjC9jgp_93CXh0t-Hz9hv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 phishscore=0 mlxscore=0 clxscore=1015
+ mlxlogscore=999 spamscore=0 priorityscore=1501 adultscore=0 bulkscore=0
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
+ definitions=main-2505140159
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 14 May 2025 at 13:30, Luis Gerhorst <luis.gerhorst@fau.de> wrote:
->
-> Kumar Kartikeya Dwivedi <memxor@gmail.com> writes:
->
-> (including relevant part from other message)
->
-> > On Thu, 1 May 2025 at 04:00, Luis Gerhorst <luis.gerhorst@fau.de> wrote:
-> >
-> >> +static bool error_recoverable_with_nospec(int err)
-> >> +{
-> >> +       /* Should only return true for non-fatal errors that are allowed to
-> >> +        * occur during speculative verification. For these we can insert a
-> >> +        * nospec and the program might still be accepted. Do not include
-> >> +        * something like ENOMEM because it is likely to re-occur for the next
-> >> +        * architectural path once it has been recovered-from in all speculative
-> >> +        * paths.
-> >> +        */
-> >> +       return err == -EPERM || err == -EACCES || err == -EINVAL;
-> >> +}
-> >
-> > Why can't we unconditionally do this? So the path with speculation
-> > that encounters an error (even if EFAULT) is not explored for the
-> > remaining pushed speculative states. If the error remains regardless
-> > of speculation normal symbolic execution will encounter it. The
-> > instructions only explored as part of speculative execution are not
-> > marked as seen (see: sanitize_mark_insn_seen), so they'll be dead code
-> > eliminated and the code doesn't reach the JIT, so no "unsafe gadget"
-> > remains in the program where execution can be steered.
-> >
-> > So the simplest thing (without having to reason about these three
-> > error codes, I'm sure things will get out of sync or we'll miss
-> > potential candidates) is probably to just unconditionally mark
-> > cur_aux(env)->nospec.
->
-> [...]
->
-> > Hm, now looking at this and thinking more about this, I think
-> > recoverable error logic is probably ok as is.
-> > Scratch my earlier suggestion about unconditional handling. I guess
-> > what would be better would be
-> > handling everything except fatal ones. In case of fatal ones we should
-> > really quit verification and return.
-> > We may make partial changes to verifier state / env and try to bail
-> > out using -ENOMEM and -EFAULT.
-> > So unconditional continuation would be problematic as we'd act in a
-> > partial state never meant to be seen.
-> >
-> > The logic otherwise looks ok, so:
-> >
-> > Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
->
-> Thank you very much for having a look, so then I will leave it as is if
-> I understand you correctly.
->
-> Please let me know if "what would be better would be handling everything
-> except fatal ones" was meant literally. Such a deny-list approach would
-> likely be:
->
->   return err != -ENOMEM && err != -EFAULT;
->
-> I initially decided to limit it to -EPERM, -EACCES, and -EINVAL as I was
-> relatively confident all their cases were safe to "catch" and because it
-> already had the desired effect for most real-world programs. However, if
-> you find the deny-list approach easier to reason about, I can also do
-> that. In that case, I will review the remaining errors (besides -EPERM,
-> -EACCES, and -EINVAL) and make sure they can be caught.
->
-> Also, thanks for the pointer regarding sanitize_check_bounds() (sorry
-> for the delay; the message is still on my to-do list). I will address it
-> in v4 if it is safe or send a separate fix if it is indeed a bug.
+On Wed, 2025-05-14 at 11:09 -0400, Mimi Zohar wrote:
+> On Tue, 2025-04-29 at 15:04 +0200, Thomas Wei=C3=9Fschuh wrote:
+> > When configuration settings are disabled the guarded functions are
+> > defined as empty stubs, so the check is unnecessary.
+> > The specific configuration option for set_module_sig_enforced() is
+> > about to change and removing the checks avoids some later churn.
+> >=20
+> > Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+> >=20
+> > ---
+> > This patch is not strictly necessary right now, but makes looking for
+> > usages of CONFIG_MODULE_SIG easier.
+> > ---
+> > =C2=A0security/integrity/ima/ima_efi.c | 6 ++----
+> > =C2=A01 file changed, 2 insertions(+), 4 deletions(-)
+> >=20
+> > diff --git a/security/integrity/ima/ima_efi.c b/security/integrity/ima/=
+ima_efi.c
+> > index
+> > 138029bfcce1e40ef37700c15e30909f6e9b4f2d..a35dd166ad47beb4a7d46cc3e8fc6=
+04f57e03ecb
+> > 100644
+> > --- a/security/integrity/ima/ima_efi.c
+> > +++ b/security/integrity/ima/ima_efi.c
+> > @@ -68,10 +68,8 @@ static const char * const sb_arch_rules[] =3D {
+> > =C2=A0const char * const *arch_get_ima_policy(void)
+> > =C2=A0{
+> > =C2=A0	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboo=
+t()) {
+> > -		if (IS_ENABLED(CONFIG_MODULE_SIG))
+> > -			set_module_sig_enforced();
+> > -		if (IS_ENABLED(CONFIG_KEXEC_SIG))
+> > -			set_kexec_sig_enforced();
+> > +		set_module_sig_enforced();
+> > +		set_kexec_sig_enforced();
+> > =C2=A0		return sb_arch_rules;
+>=20
+> Hi Thomas,
+>=20
+> I'm just getting to looking at this patch set.=C2=A0 Sorry for the delay.
+>=20
+> Testing whether CONFIG_MODULE_SIG and CONFIG_KEXEC_SIG are configured giv=
+es priority
+> to them, rather than to the IMA support.=C2=A0 Without any other changes,=
+ both signature
+> verifications would be enforced.=C2=A0 Is that the intention?
 
-Yeahl, that's correct.
+Never mind, got it.
 
-My only concern was if things shift around we return -EBUSY or whatever
-(even though it's unlikely, but you get the idea) it will be missed
-and we may break use cases we were permitting? Definitely need to be
-careful either way, but I guess the surface of interaction for unpriv programs
-is relatively set in stone so it won't matter too much.
-
-It's probably better since you've audited paths returning that error
-which do not leave things in a partial state. So I guess we should be
-conservative and stick to the three you have right now.
+Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 
