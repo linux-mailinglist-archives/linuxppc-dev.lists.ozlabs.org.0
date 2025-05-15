@@ -1,70 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-8594-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8595-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC93AB7B1C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 May 2025 03:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3FAAB7B6F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 May 2025 04:10:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZyY2L6kdjz2yDM;
-	Thu, 15 May 2025 11:45:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZyYb50Rlrz301Y;
+	Thu, 15 May 2025 12:10:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747273546;
-	cv=none; b=N5VNqBFqBbdHK0FNn1+0N4bgc64OVK30WC91eBJ3CcuCvuj8VB0SNbajPRkSYP7LveFWyxn+fPYGx2GWMQb5VpKb432IElwgBP9ltMfpvbiBz6RM9wNfowzk0yTDtdml80iFH1AFRbr3a+24z+Pty64mQf9AyjakzJd4RJ2Z1KZU+dLRPU35iU9bdBgz3xOhJJ66K9lOaQWfXFLbI9CHek5sILHeKHWtOjx6JF5/G3ndXdWjfy05yBNaMWw5ZK1lGOOWon6CapD3JXwL5D1dNKX0Ufib7EeI7gYXAWdXXnbpkzrM2bk7ZBFmadP7EIf87M8D1Q/j7EeWhHoA06F0rQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747275041;
+	cv=none; b=fgB8ONudgSpRQm5IyiVxAXUcMU/oJV4HbSGwgy2WR+BhvkHt6QDG/JODsxeNA1nLXfab46+CK8a2twUrxEvxgR1jWONlzd5+qYrot1JvTXGkb/0qB7sVzcXA+OGK9WMEAB+jWnR10VTAgG1NTFQ/fXmIaWnW0scNponM6Tn1ssBAP6+OuEOsbpjw2LtaHhtWM0Wre5QMOIKEUmUgp87iUp1Wu2lX5DjwTMX7ZPZKUalBGcqMr/kvmhYN+qk3Ot0uNRHk8xuMuSlNM5EwAxx3LqcMLYzeYMTiiO1msxGfFQNl0eOyKf9BKiHTt8LI0+HzLs6A9pJD33M8wljm6FwNXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747273546; c=relaxed/relaxed;
-	bh=DsGnrEn9gDYqprrXQ+yC+gSzutDgzHnWlYhqJih3kAI=;
+	t=1747275041; c=relaxed/relaxed;
+	bh=9OEU6IES7eFPDsF41jBYUq3IDtt0/P5xjuptgC1MYUg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MzZcI1Hnlms8fWmV2sn63tVhTqMepHkahYeESNRKz098vn4pl6cCelW/tTySwo9P5uoCg0/ZK5rGL+9NdqUbkBfESLkwgZ6pLY3VmyJ2SeLMkesD2ff6+NrcYTn70TuL8RQf9fedv2RlfP9Wc8CAzUK0fTXbMMCkGhgJlE+wGvvGwLekxHY50JQkUuH5bWx+fjm4yXa5cq300eH+yFb87+OJnYexkcn9WL3xBBRhRbuIerfA8pm0qZ1tUnBpQUpY0bwFAO+6aDU1rZY2iGnsr/ordBBp52MW4YYklve3WVAyO1Gl3qClZsFYdJHnbV2e4NA/HyEDeC07eAVfKsQtfw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aNc4tPUl; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fv7KYkGDIQ1rcmVNL4ugBTDekoAOFJBqyx4+f9VcRtsZxZ9ATy72lYlW+Wj3ozmKlHk4OmCjO1LU2NTxfA9lz1AGj4L++vy0u0uMqytIqM1YiTep6el4Q/ZH7XE+v7yGCgIHGbkITM4J26/1Pb+n6Ad+MWLBDpxf2MQ81uau/BtQ7TL7GdAhKV+RRO3zPlNKBbB/avL71FLAC0ay55DKHX8MAy6hzTNSdi7jsvk9QGOWzWEg1DHTNoOVegMEmPWtjRNRpnr4jrRsHasIPOxc2sBi8OR2uYeYjzTCpnpIpdHVTlvE9WUhsj5mGHYpRX38SUkL3AEyD8Oaqlf/ib2j+g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=p7OwC/2e; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aNc4tPUl;
+	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=p7OwC/2e;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZyY2K58vCz2y8p
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 May 2025 11:45:45 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2DB00629E4;
-	Thu, 15 May 2025 01:45:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72AEEC4CEE3;
-	Thu, 15 May 2025 01:45:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747273542;
-	bh=pnNBST+c9YzDalNQ25GoKXrq/N4ZaCLn+kBAH2QlzYY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aNc4tPUliPhaLP8MScTBz9lzD/DbFYbrmeQrGDWpJqBK+OQTnINZVdKbioHL6ZlaG
-	 7B0bXpM5nFKBFsjTFtIARi8xIxPPdsGvR8QSEjkD0LDsPK7paj3VIDwNhiy8qLmeS2
-	 Q4vSfcc1Q/MFQqHCSTZoL1YNd65JA6kq/y1Q4LlKsawjEVMBJatGqzWHgfCc0MW7Zm
-	 8aNhLfenXAcGTnLGqlfUzpCqVjZ+e8uT3pusUg7EVriHSdUSomg0SBSri09+p3jmmA
-	 eO5c/aiw0dn9R0/3bGlvru/Yo86J8ScWuzWm/R7NXvtQsxml1nU8VoDc2tJu0iKAur
-	 xuSFgNziuESLA==
-Date: Thu, 15 May 2025 04:45:39 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Peter Huewe <peterhuewe@gmx.de>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	linux-integrity@vger.kernel.org,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Sumit Garg <sumit.garg@kernel.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v5 4/4] tpm/tpm_svsm: support TPM_CHIP_FLAG_SYNC
-Message-ID: <aCVHQ-LRqHeEVEAW@kernel.org>
-References: <20250514134630.137621-1-sgarzare@redhat.com>
- <20250514134630.137621-5-sgarzare@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZyYb414S3z2ymg
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 15 May 2025 12:10:39 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=9OEU6IES7eFPDsF41jBYUq3IDtt0/P5xjuptgC1MYUg=; b=p7OwC/2e36XHYXR8OunAzbwvCI
+	kBCjfhT7HyoJnPZdsg4CJBJc4JTIQLpd/G8jAGDG0sFfPWTXo+ebSX89xzR6GhdOrOe1ypgcOPuXR
+	3aYV/XV6hh2OYeKBI+e2q2oDGFgJTGOIXH16y274YLhyC8pb+zQV/LUvMErOrA3RJZEKSUtJtqy/2
+	igPiebsyH7dg/UEU5FO6dt83UETCQhDevJfFuTwd/MT8VrGlhDJ5MeTruGvmOHN96PIiUKetcbS9f
+	o9ZMSMaDBF+8tnn9DIMhToGmGZIVzWQg5Y9RaOWUx7Wlc48NHKBuUWivDzXIprullon3Y44DKjQWd
+	5gtdQu/Q==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1uFO3P-006CgW-04;
+	Thu, 15 May 2025 10:10:36 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 15 May 2025 10:10:35 +0800
+Date: Thu, 15 May 2025 10:10:35 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, naveen@kernel.org, dtsen@linux.ibm.com,
+	segher@kernel.crashing.org, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: powerpc/poly1305 - add depends on BROKEN for now
+Message-ID: <aCVNG2lm9x9dzu6x@gondor.apana.org.au>
+References: <20250514051847.193996-1-ebiggers@kernel.org>
+ <aCRlU0J7QoSJs5sy@gondor.apana.org.au>
+ <20250514162933.GB1236@sol>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,104 +72,26 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250514134630.137621-5-sgarzare@redhat.com>
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250514162933.GB1236@sol>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, May 14, 2025 at 03:46:30PM +0200, Stefano Garzarella wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> This driver does not support interrupts, and receiving the response is
-> synchronous with sending the command.
-> 
-> Enable synchronous send() with TPM_CHIP_FLAG_SYNC, which implies that
-> ->send() already fills the provided buffer with a response, and ->recv()
-> is not implemented.
-> 
-> Keep using the same pre-allocated buffer to avoid having to allocate
-> it for each command. We need the buffer to have the header required by
-> the SVSM protocol and the command contiguous in memory.
-> 
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
-> v5:
-> - changed order and parameter names to match tpm_try_transmit() [Jarkko]
-> v4:
-> - reworked commit description [Jarkko]
-> ---
->  drivers/char/tpm/tpm_svsm.c | 27 +++++++++++----------------
->  1 file changed, 11 insertions(+), 16 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
-> index 0847cbf450b4..f5ba0f64850b 100644
-> --- a/drivers/char/tpm/tpm_svsm.c
-> +++ b/drivers/char/tpm/tpm_svsm.c
-> @@ -26,37 +26,31 @@ struct tpm_svsm_priv {
->  };
->  
->  static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t bufsiz,
-> -			 size_t len)
-> +			 size_t cmd_len)
->  {
->  	struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
->  	int ret;
->  
-> -	ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, len);
-> +	ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, cmd_len);
->  	if (ret)
->  		return ret;
->  
->  	/*
->  	 * The SVSM call uses the same buffer for the command and for the
-> -	 * response, so after this call, the buffer will contain the response
-> -	 * that can be used by .recv() op.
-> +	 * response, so after this call, the buffer will contain the response.
-> +	 *
-> +	 * Note: we have to use an internal buffer because the device in SVSM
-> +	 * expects the svsm_vtpm header + data to be physically contiguous.
->  	 */
-> -	return snp_svsm_vtpm_send_command(priv->buffer);
-> -}
-> -
-> -static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
-> -{
-> -	struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
-> +	ret = snp_svsm_vtpm_send_command(priv->buffer);
-> +	if (ret)
-> +		return ret;
->  
-> -	/*
-> -	 * The internal buffer contains the response after we send the command
-> -	 * to SVSM.
-> -	 */
-> -	return svsm_vtpm_cmd_response_parse(priv->buffer, buf, len);
-> +	return svsm_vtpm_cmd_response_parse(priv->buffer, buf, bufsiz);
->  }
->  
->  static struct tpm_class_ops tpm_chip_ops = {
->  	.flags = TPM_OPS_AUTO_STARTUP,
-> -	.recv = tpm_svsm_recv,
->  	.send = tpm_svsm_send,
->  };
->  
-> @@ -85,6 +79,7 @@ static int __init tpm_svsm_probe(struct platform_device *pdev)
->  
->  	dev_set_drvdata(&chip->dev, priv);
->  
-> +	chip->flags |= TPM_CHIP_FLAG_SYNC;
->  	err = tpm2_probe(chip);
->  	if (err)
->  		return err;
-> -- 
-> 2.49.0
-> 
-> 
+On Wed, May 14, 2025 at 09:29:33AM -0700, Eric Biggers wrote:
+>
+> I didn't notice that.  Probably, though I don't have time to review this subtle
+> Poly1305 code.  Especially with all the weird unions in the code.  Would be
+> great if the PowerPC folks would take a look.
 
-I can pick this for 6.16.
+Of course more reviews would be great and I think they're all on
+the cc list.
 
-BR, Jarkko
+I did test this by manually forcing the conversion, which is how
+I discovered that powerpc wasn't even using donna64.
 
-BR, Jarkko
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
