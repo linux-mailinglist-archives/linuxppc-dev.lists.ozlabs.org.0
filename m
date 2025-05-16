@@ -1,39 +1,39 @@
-Return-Path: <linuxppc-dev+bounces-8611-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8612-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89783ABA143
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 May 2025 18:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2581ABA14B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 May 2025 18:56:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZzYBH6qPQz2xGY;
-	Sat, 17 May 2025 02:56:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZzYBK5q0Jz2xHX;
+	Sat, 17 May 2025 02:56:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=220.197.31.4
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747414567;
-	cv=none; b=HhSR/OD4iijudOyFhPoc3Mx4hKupVbM1IBoNLU950U6CGs1swZElGfnkuSgpcMD8/kXrY811e1/d0z1vO6cd5FnZpSh0ldNnpNuqyTUJG2bTkzeYjahBBODQ/kXwkomwtD2HqRsrZxvyPm0zikCw4svt/olsGam7aZxM6FZGj3COiabFjhRyCdHhLYn7bsELK1LI6R1OpC037YvVvyTcJei7TAm0rJ4l3gLxmtFEUG2kjbeZ5Yn2c0wvXv0mTTuQx3PLdy61ZEpjdJbShQzXFcFP1aGe4Scloi9RH5165jIlbyjSdSXMThQIdH5gXwvnOPhf3PacE1pSVMdGkktFtg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=117.135.210.2
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747414569;
+	cv=none; b=VAxx2dzf7alRNx+MI/0p1foIsQqThSZn9mqbM5VMEN6rybhGv3geL7a0DghDVtqxk4H/L6SBfienqsokqUhFwAGQGHRwJWlHnd/tkfgdyWFJKH+CveJeTSw42w68LKVokevHKuryuLZcg6SbH7UeP0VncDN+k0DHo+qGHIZbDthe55wr7GD9NbshMQ8xeEEG07svXmhJEybdN0HmITBty0LyHlHeVP5TKhVKKzUrkR3f0vbY/9K7ZiDcADVRMvm7l9HVEcXKvmUcsd7JDg9cZB5FblTkOPC4/nEUPu07Y7SAAR/CU7Ja0xt1Hp3sKwaWu2WWqTj/L7T+AmVePgSoAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747414567; c=relaxed/relaxed;
-	bh=8QnkpC7DXTTaoBj8cG/gGZoH/93W5gjIXcCK742TD6s=;
+	t=1747414569; c=relaxed/relaxed;
+	bh=grA5e9IizUHs6xNUrHdJHCEjg25RlCLjAgPs5bVE1s8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PnPTID2ySUBCzz5+kZiNGMNoUCGHYVWXA0gC0YIma4qAVzBd6NrLK76mLL6T5e69KZ6ZXdz4j5drTbtSgAhMdqyCZdI+UQ/5hl/ci6ib0J2m+JUUBTJcpmlYSr9kuYmk74+ZGuHeqn2tmxV6tMo6RbxovAM1a8Sas5OsyDQ+7MxjIVu7pZC/s5mjdeUhS286j/fJQkEtvVvp8+TsyzxEQCxtFa/DhGuFqoTPkasjQfOgKHFYonIXPUmRHur/oe323tBiQH5X0jRxks/qyRqILSLjaO98WG2btqSDHiXt+7WB4SZQdk7ch4Kllwi7AIkqVusS2oJKTCSwmYpHkAWSIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=HwewPV4V; dkim-atps=neutral; spf=pass (client-ip=220.197.31.4; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
+	 MIME-Version; b=W92ihVQq8Rjrv88v5Ywr+oZrxGCe8FntShlVqdiQzx/c5eHp28LRNmYTXMx2DrjgrsTJb0eLWPPDSsQMglRxR+O3/NtRv7HRHiS1LGf0WMFqzl/MSwVOmB2tTBTwp/zmReAPURkxLTC+JiVLonkKaBy/NMPB6q8Ce+3GgSol2NC/i/SiR1xaXWfLK4+XCYhLCGPA0FVRS3JmXNMVMVbydEYEb1xL4ac0rWEcT9X4v339swxmHghmMS9RwFRp4yTcLhNY1oQt7TbqN21Li9FPmne0dE9I7Hs86qKNZjATUOBxCAr3ozkRgg74sMDouh9HmvfEkyrD3oIPnUirV3eWbQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=W4GHeuHb; dkim-atps=neutral; spf=pass (client-ip=117.135.210.2; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=HwewPV4V;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=W4GHeuHb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=220.197.31.4; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org)
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZzYBG1dS1z2xHX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 May 2025 02:56:04 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=117.135.210.2; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org)
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZzYBJ2gfZz306d
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 May 2025 02:56:07 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=8Q
-	nkpC7DXTTaoBj8cG/gGZoH/93W5gjIXcCK742TD6s=; b=HwewPV4VfITRmslAMM
-	3rjbozB+mhgs+Jcyz+QrF3aXobswi55iDa2sQX9YFmqBPfXa5gXrBgImjwC28McD
-	Q62RCrs9Le2YFwa3Ta8AzBkum8/jVL7Z74ZAzJcSoV95SBMp+pbinzh5xzbaEhNv
-	Xl5ork5AIz7XUMaNMSQ2v/vhQ=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=gr
+	A5e9IizUHs6xNUrHdJHCEjg25RlCLjAgPs5bVE1s8=; b=W4GHeuHb8bTBki/Nz8
+	Za443f8O0mNQTaO3Firhsddwn9orQGcVp5KhIHrcXZWCw758smz80EjA3ZTx6Kws
+	lFyU3z+r4x+jRgjH+kC7ZPzNx+Ncg+ynjO+WQFDtdckb73ad/1JJDHrneudoFgtq
+	2itaqh69516l8ALGVDw9oWDKk=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wB3lOX6bSdoVElgBw--.64634S3;
-	Sat, 17 May 2025 00:55:23 +0800 (CST)
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wB3lOX6bSdoVElgBw--.64634S4;
+	Sat, 17 May 2025 00:55:24 +0800 (CST)
 From: Hans Zhang <18255117159@163.com>
 To: bhelgaas@google.com,
 	tglx@linutronix.de,
@@ -44,10 +44,10 @@ Cc: oohall@gmail.com,
 	linux-pci@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
-	Hans Zhang <18255117159@163.com>
-Subject: [PATCH 1/4] pci: implement "pci=aer_panic"
-Date: Sat, 17 May 2025 00:55:15 +0800
-Message-Id: <20250516165518.125495-2-18255117159@163.com>
+	Hans Zhang <hans.zhang@cixtech.com>
+Subject: [PATCH 2/4] PCI/AER: Introduce aer_panic kernel command-line option
+Date: Sat, 17 May 2025 00:55:16 +0800
+Message-Id: <20250516165518.125495-3-18255117159@163.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250516165518.125495-1-18255117159@163.com>
 References: <20250516165518.125495-1-18255117159@163.com>
@@ -65,52 +65,90 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wB3lOX6bSdoVElgBw--.64634S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tw18uw48XFW7Aw18XF1kXwb_yoW8Wr48pr
-	4DK39Iga93Jw1Yk3WDAFWIga4jva93C34rG3ykJw1Fq3s0kFyjqw4aqr43uFWkW3409F45
-	AFZIqa4jkw1xAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pixuc_UUUUU=
+X-CM-TRANSID:_____wB3lOX6bSdoVElgBw--.64634S4
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tr18XFyrtr4fZF1DAFWDurg_yoW5Jr17pF
+	W5Aa48Ar4rGF1rXa1kZ3W8ua4rXwnIq34fCayfG393uF13Aa4fJwn3tFy7ZF1xJrWkur1a
+	yF4Yyr17ur45JaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jn3ktUUUUU=
 X-Originating-IP: [124.79.128.52]
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbBDwpPo2gnaDaNOAAAsN
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/1tbiWwFPo2gnaWRvgQAAsa
 X-Spam-Status: No, score=0.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY
-	autolearn=disabled version=4.0.1 OzLabs 8
+	FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Add a new "aer_panic" parameter to force kernel panic on unrecoverable
-PCIe Advanced Error Reporting (AER) errors. This is designed for systems
-where unresolved PCIe bus hangs require immediate reboot to maintain
-service availability.
+From: Hans Zhang <hans.zhang@cixtech.com>
 
-The option can be enabled via "pci=aer_panic" on the kernel command line.
-It prepares for safer error handling in mission-critical environments
-by bypassing indefinite hangs and triggering controlled panic.
+Add a new "aer_panic" kernel parameter to force panic on unrecoverable
+PCIe errors. This prepares for handling fatal AER errors in systems where
+bus hangs require immediate reboot.
 
-Signed-off-by: Hans Zhang <18255117159@163.com>
+Signed-off-by: Hans Zhang <hans.zhang@cixtech.com>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/pci/pci.c      | 2 ++
+ drivers/pci/pci.h      | 2 ++
+ drivers/pci/pcie/aer.c | 6 ++++++
+ 3 files changed, 10 insertions(+)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 8f75ec177399..a4a221bb1636 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -4679,6 +4679,13 @@
- 		noaer		[PCIE] If the PCIEAER kernel config parameter is
- 				enabled, this kernel boot option can be used to
- 				disable the use of PCIE advanced error reporting.
-+		aer_panic	[PCIE] Force kernel panic on unrecoverable
-+				PCIe Advanced Error Reporting (AER) errors when
-+				device recovery fails. This is recommended for
-+				systems where bus hangs from unresolved errors
-+				require immediate reboot. Use with caution as
-+				this bypasses normal error recovery procedures.
-+				Requires CONFIG_PCIEAER.
- 		nodomains	[PCI] Disable support for multiple PCI
- 				root domains (aka PCI segments, in ACPI-speak).
- 		nommconf	[X86] Disable use of MMCONFIG for PCI
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index e77d5b53c0ce..663454135224 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -6821,6 +6821,8 @@ static int __init pci_setup(char *str)
+ 				pcie_ats_disabled = true;
+ 			} else if (!strcmp(str, "noaer")) {
+ 				pci_no_aer();
++			} else if (!strcmp(str, "aer_panic")) {
++				pci_aer_panic();
+ 			} else if (!strcmp(str, "earlydump")) {
+ 				pci_early_dump = true;
+ 			} else if (!strncmp(str, "realloc=", 8)) {
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index b81e99cd4b62..8ddfc1677eeb 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -958,6 +958,7 @@ static inline void of_pci_remove_host_bridge_node(struct pci_host_bridge *bridge
+ 
+ #ifdef CONFIG_PCIEAER
+ void pci_no_aer(void);
++void pci_aer_panic(void);
+ void pci_aer_init(struct pci_dev *dev);
+ void pci_aer_exit(struct pci_dev *dev);
+ extern const struct attribute_group aer_stats_attr_group;
+@@ -968,6 +969,7 @@ void pci_save_aer_state(struct pci_dev *dev);
+ void pci_restore_aer_state(struct pci_dev *dev);
+ #else
+ static inline void pci_no_aer(void) { }
++static inline void pci_aer_panic(void) { }
+ static inline void pci_aer_init(struct pci_dev *d) { }
+ static inline void pci_aer_exit(struct pci_dev *d) { }
+ static inline void pci_aer_clear_fatal_status(struct pci_dev *dev) { }
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index ade98c5a19b9..fa51fb8a5fe7 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -112,6 +112,7 @@ struct aer_stats {
+ 					PCI_ERR_ROOT_MULTI_UNCOR_RCV)
+ 
+ static bool pcie_aer_disable;
++static bool pcie_aer_panic;
+ static pci_ers_result_t aer_root_reset(struct pci_dev *dev);
+ 
+ void pci_no_aer(void)
+@@ -119,6 +120,11 @@ void pci_no_aer(void)
+ 	pcie_aer_disable = true;
+ }
+ 
++void pci_aer_panic(void)
++{
++	pcie_aer_panic = true;
++}
++
+ bool pci_aer_available(void)
+ {
+ 	return !pcie_aer_disable && pci_msi_enabled();
 -- 
 2.25.1
 
