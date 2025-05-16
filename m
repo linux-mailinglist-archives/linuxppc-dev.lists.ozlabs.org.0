@@ -1,101 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-8602-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8603-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83079AB908E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 15 May 2025 22:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB36AB972A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 16 May 2025 10:07:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zz1YF01sdz304Z;
-	Fri, 16 May 2025 06:10:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZzKRq3vRgz2yGZ;
+	Fri, 16 May 2025 18:07:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=23.83.212.6 arc.chain=mailchannels.net
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747339840;
-	cv=pass; b=oSmPHV1lEKSfme/z1PtU62QsHkJZqfoV5acdzH4YBSsXmBdjgWucnDbuy2R+rOxANi2nrhIeJBU/0iZ4MJ9uNpWXNNWkXFCSnGAtImLBMvNXjH1P1aPl9tTbdKcx+X8wkwiUKf5uWWlS1a4rgu94hTWguL+gywCNPRR+EJ7Js/5eWTa5Ojdhd7eh+VOWn9zkNUZgGiBGgQ9PvjAeYnt8QtSWM1B774s7EwNxVuXMt6LMOJNjtPm7UA/9aPS/l8mCtlajsItffn+ESmgYkK2Btye+tSbEWcyaUnl1KKf1RnImNX7UYum7PMGKi24ShRrzWXIPt0j/zUy/JPn6Ut4GsA==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2612::609" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747382823;
+	cv=pass; b=nXrSV+lvAKMKObWEHLjDmb1+aH8vFUnliu1jZuZMjJaXAGeflkFv4QwiTSiqFxKIvjpop0aFqyAhFByWYZnBrcFrlCXvK/MS1pUdb1l5+OVct9S+JICvKXdTpagCADyKIN6XEZdD77ra7Q2hL/v1Z2jM42yv6d+C+YIfJVERHzvfqZCP1RTnrjJZC8P1DhyoKU674WeGW3rZcCgOErh2BT1ZaU3psgxuh/2fVn4FwrZyGLbkS33Ck+4k7tQ962VLqGSkJH81BcZ7fHFOcp0K+VASMLl8bL6V5synlgzQWhgQXe3NhuFcfyqO9g2nHwABUEuQYq51K1wfFM807rULFQ==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747339840; c=relaxed/relaxed;
-	bh=T16Vq3COiNADWOyKep3xzMkAc7Ot1wv/VcPJ3MHB8W8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jMl76/uFF5dyZPx16HoQGTNMDXD8PSjr504cKXiwYKB6deJrCunYSAqYQiIu4FFf3Vz+qNdjUtctHGbAEZocRvOVp2wbCqtQisG96MuFfSpGfAblqQymgapUCcCIAm+gAK0NkUT0FhViLwc9MM/MjZajnn1GNH1D0dOgFNWTLEsZpGL4J+WUI+2raF+Wnz8uwyEZ8CcEg730JjTsiTkS3kF9NTQrYytKcWqQWzmuFY/T1z6yFdOC4+Sdk/U46hVJPxg5BTQw5QQnyb5QE/fZm/apF4ZWyZmBU1ezsaQnzRV2OCeHlqp/E+c/wy9qARdZBS1GbrM7DEgvAOb61VQD6w==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ascii.art.br; dkim=pass (2048-bit key; unprotected) header.d=ascii.art.br header.i=@ascii.art.br header.a=rsa-sha256 header.s=dreamhost header.b=iPBnIW8o; dkim-atps=neutral; spf=pass (client-ip=23.83.212.6; helo=aye.elm.relay.mailchannels.net; envelope-from=tuliom@ascii.art.br; receiver=lists.ozlabs.org) smtp.mailfrom=ascii.art.br
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ascii.art.br
+	t=1747382823; c=relaxed/relaxed;
+	bh=DmHtDEyRMYieDfivjDNfPaJX6DVrir+/DNoyoIQmWz0=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Kir2ABqQF/5+NhtCSLjHH7v84c/F6CU2bGbXty4WlbBhown2roQ8HkUKL5vDyVv1cdk6hiB5nfZFEQe0Th7qti0O6ZMNwK2A64vyOhpd1rJyGu3W2LNfFekGy8RTKvaqaaYTgKH2LO2qerWFpZXv8C6ZG5z+Y7hT7USXaAUceUMAmJhLOiplxGc9uZTGvs6ZI4BoDMC2UWRvP5oIwJm93WC6U04uris2kaCM8MkqaFNXclMMI/XatJE2p9HCRTBGee/CI6DHskvQfdjPIQmf3eMI3Ky6kUbUGHgPWOIATm1R3PHpv5T1ohjFxuGXgSNqFMB+bWUYP529zd0FutleGg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=jpRzEyE1; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2612::609; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ascii.art.br header.i=@ascii.art.br header.a=rsa-sha256 header.s=dreamhost header.b=iPBnIW8o;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=jpRzEyE1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ascii.art.br (client-ip=23.83.212.6; helo=aye.elm.relay.mailchannels.net; envelope-from=tuliom@ascii.art.br; receiver=lists.ozlabs.org)
-Received: from aye.elm.relay.mailchannels.net (aye.elm.relay.mailchannels.net [23.83.212.6])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2612::609; helo=eur05-am6-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on20609.outbound.protection.outlook.com [IPv6:2a01:111:f403:2612::609])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zz1Y95qcCz2yjN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 May 2025 06:10:36 +1000 (AEST)
-X-Sender-Id: dreamhost|x-authsender|tuliom@ascii.art.br
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id D7F901C28FC;
-	Thu, 15 May 2025 20:10:33 +0000 (UTC)
-Received: from pdx1-sub0-mail-a313.dreamhost.com (100-115-193-229.trex-nlb.outbound.svc.cluster.local [100.115.193.229])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id B73EA1C318A;
-	Thu, 15 May 2025 20:10:32 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1747339832; a=rsa-sha256;
-	cv=none;
-	b=Uyrfi9ccIaPNozmUSVynifagsp0g0FrDL2C6K+vx0UMk3RdVDF+Bf1Fomz5m4sbT5Sowlh
-	ufo5kdzstLoO9t5dRwQrURmNmgV57Dfgyxid7bfKZYRLxKWGLWHVkocwuYgdaVRA/rGIO/
-	WCUccsm9yMn7N5xorzxCicT54Eu9xLTE85IuYORM8tEyonHkxRHuK8RI9qbE5pxowtRSjL
-	mVSJiNGazZ7Pdig/CLONzcbS8oL4LSY38vcHfIaUwKG+AGkfWV3D9aszn5xO1iNxsCjX9m
-	00hJ8kbPo8ngJrNi5pB36zejwoDN6RFrUqSbTdT5pGSMelRD8rM7WkMHongFKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1747339832;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T16Vq3COiNADWOyKep3xzMkAc7Ot1wv/VcPJ3MHB8W8=;
-	b=DcRrVds5caV7Z6g3Q8Hd4tjszCWoE8dR4PgGt8+hISpbD9uLdQs6klaRC7++9tOgHyFEKv
-	uuO7GoisGLCtMfBeIQBY4ulImQ2+eEC4XknDB9NBmab60Gn2knYiBsPzthUebCBLMitp9K
-	6K3j+QLBhNlNlVOT5LzjyA4VQaV71YnqWkDUmL10zEBMGQ9hRY108SsiiRYGMD8Q5mW6TL
-	F7wK4FMsz3dmuZsgD4vB2pRsxIfX0W5MYTn6n9HA9JLGloGTGxab+J79YfHHCNOw00m7AR
-	ndJlQ+COGSqZayel9qerKG9IsKva5viDs6CLsPA4n6w+jusrPLPtPpPlGTDuvQ==
-ARC-Authentication-Results: i=1;
-	rspamd-5b49d78d5-tf6lw;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=tuliom@ascii.art.br
-X-Sender-Id: dreamhost|x-authsender|tuliom@ascii.art.br
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|tuliom@ascii.art.br
-X-MailChannels-Auth-Id: dreamhost
-X-Vacuous-Snatch: 16e26d8c644a3a69_1747339833690_2771381105
-X-MC-Loop-Signature: 1747339833689:1918709797
-X-MC-Ingress-Time: 1747339833689
-Received: from pdx1-sub0-mail-a313.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.115.193.229 (trex/7.0.3);
-	Thu, 15 May 2025 20:10:33 +0000
-Received: from ascii.art.br (ip-187-73-1-26.isp.valenet.com.br [187.73.1.26])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: tuliom@ascii.art.br)
-	by pdx1-sub0-mail-a313.dreamhost.com (Postfix) with ESMTPSA id 4Zz1Y374nZzHn;
-	Thu, 15 May 2025 13:10:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ascii.art.br;
-	s=dreamhost; t=1747339832;
-	bh=T16Vq3COiNADWOyKep3xzMkAc7Ot1wv/VcPJ3MHB8W8=;
-	h=From:To:Cc:Subject:Date:Content-Type;
-	b=iPBnIW8o/n2XcpXcuQyubTaxqPxavpO+OSu+vR4iwoc0bjfkZ6vzz8kwILap4lNLH
-	 hMwgpJWrr3dYOk1KKa3Y2Dv7136oMockiAbQyzsJ2JjlcEI7u1bj0t3Dm9QhkMgODO
-	 Wbd6oD/7MXH3DknRL1FqIWvzAmg0QGKPsTTiJztwZr8ygFXToMYEZwSg++9RayFSwS
-	 aROiaj2fCacYCLYClSHzCsUlROjUrKQNXAsm0vkfjwTQsQnH14noLLFyCsvoaFer2B
-	 L0Gm3t+6D3qMXyQs0LZ8xMIQVRzHq3vFuxMJsrNfmEATLXbCZiTrQPHfVHvEO4AEs1
-	 gI+CNH9Zvf6xQ==
-From: Tulio Magno Quites Machado Filho <tuliom@ascii.art.br>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu
-Cc: naveen@kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc: Fix struct termio related ioctl macros
-In-Reply-To: <20250511080404.861898-1-maddy@linux.ibm.com>
-References: <20250511080404.861898-1-maddy@linux.ibm.com>
-Date: Thu, 15 May 2025 17:10:28 -0300
-Message-ID: <87zffdhbyj.fsf@ascii.art.br>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZzKRp0qfnz2y8p
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 16 May 2025 18:07:01 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q4cUSPBD29U3SnAOs0sLs8lZ9hT0l6qfZp+A6KCmZMbsx2ci6ZzXr7wbDwiBoklZ4MCFFTsULq5KDMX2rpQmA/u2Wr/j2ZIVCZG7cqP+oRiN6Gr2gHAc/soCmV03PPPOjbRnoGoJqT+zk2ZFBMAwaQp8N1QLUPWcIw6EmwX/zeYdtM0dtBr5SE9VXAAt+UBKkMqP+txbPYnWiYbybCpWBdr5bSVGl5+4tTnSAMRanzlTpyoXgagsQcQN9WKY/bTyHDv0NFcVyYqbfGE6lhVZEwYPEhCqH9ob0vYzN4hwKf3wPfL4MLhnrQ0i54RfH0B4D47UWMgl1wurOCiQYhmsNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DmHtDEyRMYieDfivjDNfPaJX6DVrir+/DNoyoIQmWz0=;
+ b=iUhp2RY4kB1oOJ30PmnVm7h8VMZ34V87KERfdt8Eu2Wi4FyXmrvNKAJbMnH3AnBB6Rrq/DtwAxWF0jokkjJk48R/tFsUPfFRPDG626ecpIACwMihTHbZULOvYOcZRhzqJjH3I/IJqvVCQPSloVdS+cdKwzCPJyTXRUElULZY0/Eo2wvhyhxci3Ej+62VkbaSG11he6mRT8V8AqAh2lTpJTFDbPcbvQZQhQUITXZTpGc2oJBhY36j1ma461IVzO6YBz7tPG2/SpGhwGM/bRJ4ro+NLCnb/mq2fSg27EyAW96jYfGvd89gZhOVmVJJsHfazvxdA87ZDTv5ONeakmWIvg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DmHtDEyRMYieDfivjDNfPaJX6DVrir+/DNoyoIQmWz0=;
+ b=jpRzEyE1lFhM95fvI4+7KuzxngZL1M3pcxEM0oiD26PFnwoCNbGEPpUNZDJjJLKZxvVBNuJlpuaZg0Zl53f/E4lOUKJYXZoUG1guDCXd1GL2fqWZZ/UCaMbQJBpL1Bx8y5etFPiAOx4DO8fOkI5nq/ep+OotkCJLKbpLg0YIbynnKAmEnzs1tgYof+8xYzefF6GbGymZpqVu3k7PJQoKtkfIPlovBnqxldYglN4d27etIWFfBYdsl5wg+coW9Iq+XfugyJzdIWhYaNxOEtiZi8zGNN4aR9oLtZLozJcIaHSsa7FfXVJlzi6ZPZ0SlXR7htxY/U7oH6im+hfETn84Rg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+ by AS4PR04MB9313.eurprd04.prod.outlook.com (2603:10a6:20b:4e4::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.31; Fri, 16 May
+ 2025 08:06:40 +0000
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891%4]) with mapi id 15.20.8722.031; Fri, 16 May 2025
+ 08:06:39 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: fsl_xcvr: update platform driver name
+Date: Fri, 16 May 2025 16:03:34 +0800
+Message-Id: <20250516080334.3272878-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0010.apcprd04.prod.outlook.com
+ (2603:1096:4:197::11) To AM0PR04MB7044.eurprd04.prod.outlook.com
+ (2603:10a6:208:191::20)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,41 +86,110 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|AS4PR04MB9313:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6216f7ef-8eb0-4751-4491-08dd945095d8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|7416014|52116014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?2RB64vemiQNv1I75nKiT7OLWonMO76plPJ77ytDxmhq3B8Fcmoe4mMutAHRl?=
+ =?us-ascii?Q?l6L0RRM8lVg6AaS+MZzXVfAjZgp/qgx8ZLC/qQ3Dp0vX94AIUBeQ1z+P2Z4P?=
+ =?us-ascii?Q?1jbI+dgVxEELlSdGRBE82lEEcO1yD4+sjgHDb/AsR5kH6WitemYYo1YCIrOf?=
+ =?us-ascii?Q?8/43RPkKpIUsKu03G5scoc8QuzUVjgee0A0LEo+s2whiiFLKEcxFzy9AiZzr?=
+ =?us-ascii?Q?10j9Lm/BOWYRxILdvHyiDhmFEm15O/DsDYPcFprlfKwwWXwK+FqoojhwZj/J?=
+ =?us-ascii?Q?Tl9yqLO7eg43j8U2etKJ+G0dDdO1OKlJoqVT5pkRUe2jNi4haKkgIyLs5IlO?=
+ =?us-ascii?Q?VhSIz44KyKsqkjhlN5Dq12p/Z7dGOvkDKW3prSowqsRGv6NkjVSts6nrqnnJ?=
+ =?us-ascii?Q?RXyB9nP9mw2wu1UaulR3wt5TtzwvK64PQUFY7Vja2y2NrR1dZsILLf7Tqzew?=
+ =?us-ascii?Q?4hloITxKPxzF1/MHxvJWwFEeTz5MXbK89ZboCkG7LpjLSnohReKwro31CR5S?=
+ =?us-ascii?Q?du8JCqLpKDmktcKbMVrmCRzZvTYuPMIz50ERJ4i9VOGWE8giD5WCo/YKZ5Ed?=
+ =?us-ascii?Q?hdoJJxwzBCg4ono2B0wyH0om3hNYtck++yJmV6twDmWN73mmBWLfuqbj+8ax?=
+ =?us-ascii?Q?nQ+kFLwOyCbieIbCbduL9Ipy8i2C81qxhmvseS9CDkg4+wdT8Amqov0Rolia?=
+ =?us-ascii?Q?vibjRVQLfAtepHzxoMBLRA4qeqX2S2avpxLICSTb56tivQLe4dDPuEZOrOSX?=
+ =?us-ascii?Q?7qCqEeT2e5YN4Qs5QbgGTc+u/f8l10y+10FYS+kGqdcePskVTVmCWFZqBRbE?=
+ =?us-ascii?Q?BeoRJ0KKtEw5guDvUYahrCRU2sjEyLFqWHIxKCImdVVAbjdaDu+WXtgnK2SD?=
+ =?us-ascii?Q?zR3Ias7hZLtFvi9ExV9CFG8Ct4BWdzDqrpmXD2nDBhYSb8Y4uhRDQSa0bu/6?=
+ =?us-ascii?Q?m5dbihIEaRg3+MxA0s8jNqh08awfG9TFTetV0g9s8iEqZUWSm9sqj8biR6EI?=
+ =?us-ascii?Q?8oBHi/V5REJShDHZiZOh6zMblVdhAsLULUBABQLH8ouyZw7t1ido6fRh+vT8?=
+ =?us-ascii?Q?K2MkevvAOzaalNfDirdZ+sNUrgVmcex5ShO7pb+oVHypQNrZZRnmo+D//c1c?=
+ =?us-ascii?Q?n8b0bMPbh1nSIBX13A5PVuOFsNnH9VW0nRU4blgrhOicKGDqF0YwEa/6hFSP?=
+ =?us-ascii?Q?Cqvz5OdMEDNdKcQ57r6OEVqVR1wiSzksaA6BmLnMw1FcvcAmuWNY8lwSXxIO?=
+ =?us-ascii?Q?EaB+fKkwJHJJCFHXQCSj+XMr/EVXFwJybXB9amPhsuYxDvOASe6wh15dy3ae?=
+ =?us-ascii?Q?uDKsatoNPQPmJWjJHCEyMMdftrVtQeU7WcMjAmPsizo3hVJd0h0S3xm1Aefz?=
+ =?us-ascii?Q?MKZq4wYJScUz882jidhh8PPAuI/l7Zp+LGfgV+q/VLR+ABAkPGGk11LWyDBg?=
+ =?us-ascii?Q?KR7j1vNurJDueXuubhK+XjLkP82LqUby2+AH8ObtU6lSvYVc7qClnNP+RNXO?=
+ =?us-ascii?Q?aiZtj/00UL5AqIc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?QjlC+bat9NKtcHVZMRfbipPWebwwhs4XgUly6aMAe5k4IcPClZXFpktV/D+h?=
+ =?us-ascii?Q?NdAJ9i+NReqWBzCX77nHANeZOEGcJBuxRXohB1vCVBnxi1XQj295YKTDWI/3?=
+ =?us-ascii?Q?tCa/a2z4lGXC0w4ftk8Goyl32isrNHBpSeQSBXpAdpVGZ0w3keVKNI/Ikoii?=
+ =?us-ascii?Q?cVHZVtjjstoI4vFPZcESMwhN8+JT/s8eqizTuz0UVaFZL++9WC8a+mByF73H?=
+ =?us-ascii?Q?w5TkDnMewZwljdRUM0k0zg0LkNz8SwN8hWQ1lXi/bWoveDl8r4f0a76dZncF?=
+ =?us-ascii?Q?pg6piVkAwZ02znzm95R2TNKBRFfn+7um6S0s0hENf/BBqP25mDplvvglZpEc?=
+ =?us-ascii?Q?ef0A441iTMIVhjA+9rjjFpYsjETALR0XgvdlVujsE0hYri32ifqDE4Ua8IZ9?=
+ =?us-ascii?Q?aZC3wmGzEDGLfk+izvr2CJU7E+DqgGibOUeFgTyNTAcrcn4xzGZlaiqX8+mB?=
+ =?us-ascii?Q?f/384fX5VfWtBJCOnIQFuuWRbxxqBGj+4ppCkpqZNWao1aM02IXSvTR6CqzZ?=
+ =?us-ascii?Q?fBAvaHCPedFHCgiS4aCd3sEr0VkQxVUb0jd7JEHkT1LIWZh5LCmlvF2gjlil?=
+ =?us-ascii?Q?QQ/aZ4j0qRybLeoNlzxcdBJbpd+DF0GuSW8EhMQrBytNbDEgx4L+HjQbJHX/?=
+ =?us-ascii?Q?P8wItS2V20HRvQtYvOg/0U38kHtCJ9XQ2JPNwo5EQa+k91hRHnL2rS6bcK5v?=
+ =?us-ascii?Q?bLgCGJcsQu+E1veud4v8FhJ7w+7twukKxozCpAM1ELZoQ//0Vhtfr8oVJ5hp?=
+ =?us-ascii?Q?fdoqzyPWBZ8fadijipP3f+q2Fu+pZh927LWtRbODyByPqh6Rl1z1nhsOnaxp?=
+ =?us-ascii?Q?BYnSYHlFJmnGa2uvR13aFrrwHJKbAfpyBWNSvaqbV0nC800W1cegCXv5+mfi?=
+ =?us-ascii?Q?Wj/jj28629iwYH+VB80aUQSc3pB3BHneOMwsfrSXJSeR4RRor6mY+Urken9y?=
+ =?us-ascii?Q?EN6PJEerlvWjJdNqwwwodujFZHq/RVN1oXEznbyrjBq6cVVN7U8II4oVJMgV?=
+ =?us-ascii?Q?zcM9NmEvvkOgdvbOKxo0IHd3bcDLXiqduWwTiOoMO9KPFuYXT1+f0T/EIgK2?=
+ =?us-ascii?Q?+VNJt7qswklzk8OR9jfQQmNkm73XU+Q02rvSfTYlb3ubA/rNHnanUvTHq6ZL?=
+ =?us-ascii?Q?BLivOgpgnyOwdcvHf/gMpOsP3W/c+iwCJhWx2UyIdIEV1rZg4fvh1rFdOGkF?=
+ =?us-ascii?Q?C2Mu72tRhAGqO8Vd3o+QZvmEYG3tUOIB7D32rq+hB8nfE8vOKafOmyEPO5uL?=
+ =?us-ascii?Q?keQysfR6/f5MW/jAFubEEwuzhNZWd3/FT+AOzHjZqmn5gSyGwZlXxSY8/Tzu?=
+ =?us-ascii?Q?k2Nyj6PCdazHW2dx7WWPYEjbC3/qYd49H0Fhob7LaTs7ozL24oDdGwl9lUoE?=
+ =?us-ascii?Q?J0rWsXfFMNEqLOGZwxY6/AUQD0pUq6i+uOcL6AAPNke5LPpGZ/DSdsthLzax?=
+ =?us-ascii?Q?o36g7JoyKn3aiUFy9E+YlPiRB/MgOLkrzDEVBVd0pcVyxS0LmysDFtgJ7tfn?=
+ =?us-ascii?Q?vuW/cJto0CHxGIz1S73k1FbdQo3EfOPU3hDnJT1AU1FQv2F5DStorpE4J0+E?=
+ =?us-ascii?Q?ChIfJPOR4IxpHGkj7yAONHTzCUJxfakJFL+YNk4z?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6216f7ef-8eb0-4751-4491-08dd945095d8
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 May 2025 08:06:39.6945
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cfm/P6/wQamsCieUGhmtO9Ff2gJsk3HBHC4TS0LdncUpxsDKr+aAaXvw7T+wnW4rIKtVEuKzkHADuBB+JvXLTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9313
+X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Madhavan Srinivasan <maddy@linux.ibm.com> writes:
+XCVR driver is not only used for i.MX8MP platform, so update driver name
+to make it more generic.
 
-> Since termio interface is now obsolete, include/uapi/asm/ioctls.h
-> has some constant macros referring to "struct termio", this caused
-> build failure at userspace.
->
-> In file included from /usr/include/asm/ioctl.h:12,
->                  from /usr/include/asm/ioctls.h:5,
->                  from tst-ioctls.c:3:
-> tst-ioctls.c: In function 'get_TCGETA':
-> tst-ioctls.c:12:10: error: invalid application of 'sizeof' to incomplete type 'struct termio'
->    12 |   return TCGETA;
->       |          ^~~~~~
->
-> Even though termios.h provides "struct termio", trying to juggle definitions around to
-> make it compile could introduce regressions. So better to open code it.
->
-> Reported-by: Tulio Magno <tuliom@ascii.art.br>
-> Closes: https://lore.kernel.org/linuxppc-dev/8734dji5wl.fsf@ascii.art.br/
-> Suggested-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_xcvr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I've tested and confirmed this patch does fix the issue.
-
-Tested-by: Tulio Magno Quites Machado Filho <tuliom@redhat.com>
-
-Thank you!
-
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index 83aea341c1b6..e3111dd80be4 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -1827,7 +1827,7 @@ static const struct dev_pm_ops fsl_xcvr_pm_ops = {
+ static struct platform_driver fsl_xcvr_driver = {
+ 	.probe = fsl_xcvr_probe,
+ 	.driver = {
+-		.name = "fsl,imx8mp-audio-xcvr",
++		.name = "fsl-xcvr",
+ 		.pm = pm_ptr(&fsl_xcvr_pm_ops),
+ 		.of_match_table = fsl_xcvr_dt_ids,
+ 	},
 -- 
-Tulio Magno
+2.34.1
+
 
