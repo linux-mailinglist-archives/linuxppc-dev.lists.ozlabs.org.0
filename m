@@ -1,65 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-8633-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8634-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CE7AABACC5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 May 2025 00:20:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD2DABACD4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 May 2025 00:52:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b0JLG4vr6z2xpl;
-	Sun, 18 May 2025 08:20:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b0K3C3Ry5z2xqD;
+	Sun, 18 May 2025 08:52:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747520438;
-	cv=none; b=QPiJSd37N56ef/eJISnUEBUYnDK5nbZETUVralTCcx3Dl/kzGdFgfhPf84qQEWeLCYviYoKhl9P1Pd/rzxGaEAPOpKhKEKSmANcyUbg2Mk+6BeM7dWJBnzCozch0GZC5DXEtKHcLGaFHGKGkhckdENOeKccMjOG640jZ3TI/2nNuz4/ELw407birF5bmB/4+L17z3Js4eBb0fiTPRNJktWoZzOhjc54+yt1aQ/pEDsJU904j9f4ZshoECiskIK6nr9cciAdsx6wgZFZz6vMwHHHcWwaS0+7pwL8rIEbCAb8GldTRxhOYiYlIwIaG3lw0c1X11SqS0yySfiMNovMBdA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::12f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747516254;
+	cv=none; b=B8GSfYKMTbXJil+Cz/zwJLs0nLdA9XVAAu+WiV0lt5a2KfoW+Dkykna7xEsHKFY+uvyLaly2+8/1yBFVflrmGFnyUT4Qy6WY44nPoYR9mtRabUlua/ckTglL0SMh7RiGcehkLrHgaTolKBCv6pW2NnPMTsgR/DIiPRUSGHjBlpWDZ3pywUW2u37o1csrZtLFJBrSLdfsFxTP2S3uyPs4elTiObndULv+xqCEQ/oNRearqkHoT6dPzOo9/T/wFji0BIYeLjpnXyjuX1i/uhZKKPETqaBP9Ymg1uOE/F0R/AzFmtVJPVHqvh2wRlJpMBmzdOFkL5QGgdGz3qrya7mc0Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747520438; c=relaxed/relaxed;
-	bh=8kpdlOkhKLJi+9AUsKtHrnMo/d6kPO/afkht0Jg6Xz0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jnUr8y60J0gj5SNg1IxsSthYy5EEzqbw6QhxzoJ18bR1z88J3EDyD+fKa++yOihPsot1iiMwiIWasKfTlEH/284R9Gd8V04XQgBDidpFg4Ge6T94Zv1Rox8btYVxUKFtNbZSJzZZ+zGONNNft34Zp6Wen4x6fGHs2eVtM4fPesrpxDMYGiU4Nz+0i6Du77HmAMT2w038E32hJYTFKSgj1K8Hv1kRWpabgXiVWag8ftwEQU1c+s0+H4RNf5z4PUheKbV7efQb7jIduiqyvIPyzqGmphAvZA3+43giSifWqGzHFVjF8p1ldt0mJbZ/sPD/Ga1AIZbiDI/7ewDkMfpUhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b0JLF6n3tz2xlL
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 May 2025 08:20:36 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4b00Lx0r2Tz9sXD;
-	Sat, 17 May 2025 12:20:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id gVS1VMTT4htB; Sat, 17 May 2025 12:20:09 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4b00Lw3mgPz9sWb;
-	Sat, 17 May 2025 12:20:08 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7B3A08B76C;
-	Sat, 17 May 2025 12:20:08 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id sX0Ibc-wRh9m; Sat, 17 May 2025 12:20:08 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 43AE28B767;
-	Sat, 17 May 2025 12:20:08 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.18.1/8.17.1) with ESMTPS id 54HAK0O0013281
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Sat, 17 May 2025 12:20:00 +0200
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.18.1/8.18.1/Submit) id 54HAJwrv013273;
-	Sat, 17 May 2025 12:19:58 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: linuxppc-dev@lists.ozlabs.org, Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 0/6] bus: fsl-mc: cleanup and fixes
-Date: Sat, 17 May 2025 12:19:34 +0200
-Message-ID: <174747706456.12970.12343198845578561445.b4-ty@csgroup.eu>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250408105814.2837951-1-ioana.ciornei@nxp.com>
-References: <20250408105814.2837951-1-ioana.ciornei@nxp.com>
+	t=1747516254; c=relaxed/relaxed;
+	bh=qsAWXt+W0ngarXnftcnhixQhh8eXvZ1EEvRj0zEMsI4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i+pZftq9Q4JfReonqH3Tdz2eQ8EQrZvr5EE550ZnDo5NZEkEkcUv4lSQ2JbJHZ5VbhQ7wNdsH8eSbqpw8lRV5Wm+bzvEibPyBIYvFL//sozQiHw4Jbpu6B+7A3I2g40+sA+uYfhyWiIic/d7uo7PZBpuM6CTa0RhrQySTvd4dKi9z6UWJ7p4LK/+cQEg4K1H71h9ZKTTkiKNMq+OVA8ATOzuLQEHun9yoDTgufh5/TI9umSpGbe/XILSkRlmo12bulMhmPDX71iP1PICDHSc52AsP6kYo7O6B9JZ4Aby3ZbkIBX/7a3oUTvP+nJ/MFk4WiqxDRa/QCinVDsv3dwjJA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=brighamcampbell.com; dkim=fail header.d=brighamcampbell.com header.i=@brighamcampbell.com header.a=rsa-sha256 header.s=google header.b=FYfDCBqr reason="key not found in DNS"; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::12f; helo=mail-il1-x12f.google.com; envelope-from=me@brighamcampbell.com; receiver=lists.ozlabs.org) smtp.mailfrom=brighamcampbell.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=brighamcampbell.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=fail reason="key not found in DNS" header.d=brighamcampbell.com header.i=@brighamcampbell.com header.a=rsa-sha256 header.s=google header.b=FYfDCBqr;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=brighamcampbell.com (client-ip=2607:f8b0:4864:20::12f; helo=mail-il1-x12f.google.com; envelope-from=me@brighamcampbell.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b0Gnm5NBGz2xlQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 May 2025 07:10:51 +1000 (AEST)
+Received: by mail-il1-x12f.google.com with SMTP id e9e14a558f8ab-3da7d0d7d58so24202685ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 17 May 2025 14:10:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brighamcampbell.com; s=google; t=1747516249; x=1748121049; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qsAWXt+W0ngarXnftcnhixQhh8eXvZ1EEvRj0zEMsI4=;
+        b=FYfDCBqrBqgDsYM7QNM7qYzfxLml/bNUvFQ4Vxk/ozdiKTWdRLu+OiepostYumSaFk
+         7u6lWrQVbJuL5FSOpUc0KUvatnIb6OPGspd6qPuwW4psN5BWm9ItHEPzSDvModNfPO7X
+         76EuAoZX7C4G30aw90BEjKZsKqJ170VPHBTRqv4MZQPwlZ/HnRVCj8v52c0rHeSwQl3l
+         h39zRpUDRJ/rlgZGCSuJNiHYFWksSEsUy9r/cwnDm4A+JMysOMb9ivq7FfCXM1xEmsfY
+         dOc9R6+vgREZRcLmSMoPkfO3X/wDS4/bm+KddaqBr0E4WNMzAwWv6Qqob5YpdU4nyQV1
+         iPTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747516249; x=1748121049;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qsAWXt+W0ngarXnftcnhixQhh8eXvZ1EEvRj0zEMsI4=;
+        b=udDCGbwJk1gNXUQOmBIAyXsRMTtJ3p9vkNg3lUQ3bC68vXlI9VBXqBLxAz9HYi+E/R
+         s8oD/aGnTuYgQsrtP8bk1FybGQSf2oQTDxD2lf3Uc2gW6rW539cY0iJtzpIq/bscY9Fm
+         xhDv6Pny1IoXGgeIRN/njIEuW5BmXKhALBzHAs5Fa+FREiRdU+xc/LYrJ6A+2MVUC+Ab
+         UZEgbNg8Y4boMe0Kvu5CIkIzC7CZC9aNF3nEM9P4IutUcuioBtmrQf87o9naHpibfMkM
+         E+USsMqyPFfXL3SD8dFcuuYkHl027OJ4DOLIrtkU765MQBEdYVRuH2wjraXH8jl96hlo
+         qSYA==
+X-Forwarded-Encrypted: i=1; AJvYcCWK4M6nB8vschGQYtYFb2sOo91eijNdNCjBEtFONX7+ySSH+fdYg+WJ87Mqo55FAUcJwAFB/OHAPImgszc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxlKaWkYn0CA470ZtEp/m142gI4lUXHHmASAttQX3ehPSl/ANJ2
+	bTn+DkfGu2q5fwUn/YxoZEkbowK1YsDPIH1XmwhvkieErxHNEQejmMvPFLUqG/UFquM=
+X-Gm-Gg: ASbGncu8+9HkTUTR8hxinGcn2lsFvFmFgzBtgUf/TCV3XnYENgVP+KbEonBR1tRmA+J
+	xxxQ4T5KUSewvtrOOP3wFEFVnOX8zt3YvdvGv3jMBw/Z96mMhda34eYOrp7E3pkv2JNMXrAg9sn
+	96iaAt4eoN11ZTNwgOP+JSjdB0zc/U72/gt5NqtmWaL7JTwLXOn0TVuSbxVGitDrVOHMucAdf1m
+	8Yq9qRFh+QJG4DhwlljBj7zHdGNrVz6ywuv36saTVArGtzGKL7Zv5YmRt1dYcioV6KKhxZ5gC/L
+	ZQ1243hMHehNHUj89EP1tLV1wxEmc4CCj5H8KjENgoQNqsAj1Ai7kwMi90QFEocd/kJr8Tzsvbl
+	4HMIQJTQ=
+X-Google-Smtp-Source: AGHT+IHO8vmPZ9wtEiIB3JiDHbb2n/QkwioIBKsC0rUUGe/Wln0nL1EQukSNTPuRfRNcvEViMy2SvA==
+X-Received: by 2002:a05:6e02:1c02:b0:3d9:66ba:1ad2 with SMTP id e9e14a558f8ab-3db8569e88bmr68385155ab.0.1747516248818;
+        Sat, 17 May 2025 14:10:48 -0700 (PDT)
+Received: from mystery-machine.brighamcampbell.com ([64.71.154.6])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3db843e07b8sm11777445ab.20.2025.05.17.14.10.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 May 2025 14:10:47 -0700 (PDT)
+From: Brigham Campbell <me@brighamcampbell.com>
+To: shuah@kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)),
+	linux-doc@vger.kernel.org (open list:DOCUMENTATION),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Brigham Campbell <me@brighamcampbell.com>
+Subject: [PATCH] docs: powerpc: Add htm.rst to table of contents
+Date: Sat, 17 May 2025 15:07:59 -0600
+Message-ID: <20250517210757.1076554-3-me@brighamcampbell.com>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,43 +98,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1747477178; l=1260; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=lsoOGwliJXxgH2wrZilH+358d6nah7lpYkRKmBU9ILU=; b=rsItyETdUBXri2W9kvI4O5P8MQjnJFTnGPtGvyYgaxJagDZAJ7ycDlVs1tGeZSK3mpHeXEYHQ 9RGdeaf19x/DtPlSB7NnXS+63OjnqS+B835eigSXy4DMCpbMz0VvXpa
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=0.2 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+These changes fix the following error, which was introduced by commit
+ab1456c5 when Documentation/arch/powerpc/htm.rst was added to the
+repository without any reference to the document.
 
-On Tue, 08 Apr 2025 13:58:08 +0300, Ioana Ciornei wrote:
-> This patch set is a combination of small fixes and some cleanup.  Some
-> of the patches were already submitted in the past years but were lost in
-> the process due to an uncertain maintenance path.
-> 
-> Ioana Ciornei (3):
->   bus: fsl-mc: fix double-free on mc_dev
->   bus: fsl-mc: do not add a device-link for the UAPI used DPMCP device
->   bus: fsl-mc: add the dprc_get_mem() command to the whitelist
-> 
-> [...]
+Documentation/arch/powerpc/htm.rst: WARNING: document isn't included in any toctree [toc.not_included]
 
-Applied, thanks!
+Signed-off-by: Brigham Campbell <me@brighamcampbell.com>
+---
+ Documentation/arch/powerpc/index.rst | 1 +
+ 1 file changed, 1 insertion(+)
 
-[1/6] bus: fsl-mc: fix double-free on mc_dev
-      commit: d694bf8a9acdbd061596f3e7549bc8cb70750a60
-[2/6] bus: fsl-mc: do not add a device-link for the UAPI used DPMCP device
-      commit: dd7d8e012b23de158ca0188239c7a1f2a83b4484
-[3/6] bus: fsl-mc: fix GET/SET_TAILDROP command ids
-      commit: c78230ad34f82c6c0e0e986865073aeeef1f5d30
-[4/6] bus: fsl-mc: add the dprc_get_mem() command to the whitelist
-      commit: a8c17b9cbf87cb9d98d501a16a47e5fe5839e855
-[5/6] bus: fsl-mc: drop useless cleanup
-      commit: a941bed23c9473665c773453f8a835668af070bf
-[6/6] bus: fsl-mc: increase MC_CMD_COMPLETION_TIMEOUT_MS value
-      commit: 23d060136841c58c2f9ee8c08ad945d1879ead4b
-
-Best regards,
+diff --git a/Documentation/arch/powerpc/index.rst b/Documentation/arch/powerpc/index.rst
+index 0560cbae5fa1..53fc9f89f3e4 100644
+--- a/Documentation/arch/powerpc/index.rst
++++ b/Documentation/arch/powerpc/index.rst
+@@ -19,6 +19,7 @@ powerpc
+     elf_hwcaps
+     elfnote
+     firmware-assisted-dump
++    htm
+     hvcs
+     imc
+     isa-versions
 -- 
-Christophe Leroy <christophe.leroy@csgroup.eu>
+2.49.0
+
 
