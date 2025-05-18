@@ -1,78 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-8653-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8654-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD5FABAF5B
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 May 2025 12:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ACD8ABB11B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 18 May 2025 19:38:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b0cpP3Sn6z2xl6;
-	Sun, 18 May 2025 20:42:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b0p1j36grz2xlQ;
+	Mon, 19 May 2025 03:38:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747564957;
-	cv=none; b=gh1UhzRWZF0yAma3KsFfR/KLtYS5Qi1ywf8DO/PX09IjzW/MMvAvjdmCyBmKJWpHYAMrwL2sb0vChK5JVnaGvxEseEOVF5+0FETSBv/hlDjlP1y5E6vdRbj2T5AKWFjobExQAsuG7Nq7MaOBbS36m/JLvqlg7qHVrrutDIVi4G7xmuIkJgabIAn0MlYcftpWPBuDNi5QnuCAlNWZpcixPqFuOsJbvLaYI5ghnrSaaRc1TrTEN04tojKW/9J3MYHav7AjmfvvS27GuSY1e1IoCex4aLWd2G/tVeHrXya1onC4RUzJ1qSaqqlklvsTPNvqBwfVGZ2ouIiqt1JPJNXDwA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747589881;
+	cv=none; b=CF5LKNRlVHMCStT8RumEd//LI0+IN0qP/yfiBputMRyJZaYpYo0opxb25iMgH0ut6VPG4y0kArQM2sdAUoauZegaO90jEs5+LtuD7IUvjUfyuR/r+GZ41wvaLaA+UKD1wNQAVP6S4R7E6qe+TkXG64rL27WpJ2XSMnSXIgyIWePuX+W9MCTevVEFxtPWazpvA3CYkEWEahW9Eo5kxE2idwrSFVt9FyG2EIpd6GOncV+a2RweEA/Ujpl1Lw309PhkyJTxcjYnL1E0uoSNea+NIsqb4qeFH50XWEDjYmUUp2d3tBnJn80i+Phw+fzL1iD8eIzayHrqd8Um57McWohBNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747564957; c=relaxed/relaxed;
-	bh=heuLHYaaHMFynaFvPRzJR2yEb63hbYZtGMxVNVbbAFA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ikF/dWtBnq/6ev9we6IuvBxv/eqaOdnwDMF3PrJ7P8ZK5GEK8IfIKVzQd9GSHMrmKBwUaohzOYSeDvr8g2xksYD3/sVhwNp+LvjgD2woa4ai3CNvHMK14zxBMRgKshcdoZBeDUA59yfUtKYBWZqf63LZeMPbWSrLBDfH3OD3JwYWbW830g4D36hQI6ZJALcyK3vFPkz8FG3RPyjjUaOdX+EYth4NmbaXPY7QmQk3/KpoThuh1Mb+IftntjVFOVW1eZ6bIMKFuEer/0VnAI2t10Ut3md/9vmFCbHExwvMX3/DdVT6vUxXPcUsJC6T2X3pWHTGU9tQR8TOKXdWkVbE9A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h1ypzLgn; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1747589881; c=relaxed/relaxed;
+	bh=hn/V+G4ICnE5mR4JDEv0Eu88Z02PrK2ak1nTmDOy6+s=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=iV4xBHaxK4WhiXsys2GVsgASIbp8AH8U+BOly5mNaencddXEPPO+SYpcd0zfw3i52MAQxu0RSAx20tHBR5bFxMOc/iW8/doX4e+DC28U+tD1QK5/NW/H7erIcpFtlDqy8Ar9yoKEA6O290AqADpWcDEbGNuEeRWzpxxEOs6f0LdEs4/vN5mtZw9XXjk85sPxvjsjO1tfdy9K6SsAZF/WJldTC035zIDJhf5StAjszAref1SRtgZYJRTC0VC/7g7UBTNlMZ4n1mcNqD1zJaocxnD3eC/G4XM977QOa2Ug5jzIzve9wNIKvJXH3U5dVr4tWkjQYkGA/9qlwMm3ANGBFw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PoqPj7ee; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h1ypzLgn;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PoqPj7ee;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b0cpN1Ybgz2xjQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 18 May 2025 20:42:35 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54I6Iima003730;
-	Sun, 18 May 2025 10:41:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=heuLHY
-	aaHMFynaFvPRzJR2yEb63hbYZtGMxVNVbbAFA=; b=h1ypzLgn2jPHE7ZNdyt/cI
-	NJiE4AYh8yNaa68QTh+P1dhYyIMQpuHVwOwoKNMQbRXHSvtaGABo7rj2KlfY5TtL
-	miJItmHIpFho2SLoTJ3WNpIlbAtUjm6XpAKdpXyjCb1vmmSCQKgO8q9Lu1zfwvtp
-	1uBWeUBs/w4N2ARo/riPv6G9a8BXZaSEbhb6/KCRTRL3TlBgoyuTxmVgXuCP9ikf
-	JT60obY1I8JaNf8a7Lh9UuWmiatrrjxR9XDS5tPc08Tntr8svSvfgcKr5sliPsPq
-	F1tPTAve8WjU5pPd7oQbyaQ3FP00PdtFVpaihZOrDodEvbOkXGn3wWIUT/oPBwoA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46qa5srkmq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 May 2025 10:41:27 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54IAfRjr001684;
-	Sun, 18 May 2025 10:41:27 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46qa5srkmm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 May 2025 10:41:27 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54I5qFxw028878;
-	Sun, 18 May 2025 10:41:25 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46q55yhrb2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 May 2025 10:41:25 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54IAfMdj44630526
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 18 May 2025 10:41:22 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 352EB20076;
-	Sun, 18 May 2025 10:41:22 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7F2DC2004F;
-	Sun, 18 May 2025 10:41:04 +0000 (GMT)
-Received: from [9.43.41.62] (unknown [9.43.41.62])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 18 May 2025 10:41:04 +0000 (GMT)
-Message-ID: <d351c0ba-04fa-4764-a3a2-c4a8727aa582@linux.ibm.com>
-Date: Sun, 18 May 2025 16:11:03 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b0p1f6DPyz2xjK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 May 2025 03:37:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747589879; x=1779125879;
+  h=date:from:to:cc:subject:message-id;
+  bh=aTSKka/XUy6l4dTlUZ1NXpFunaFmUY+/SkdsqUtgG3U=;
+  b=PoqPj7ee9Xi+rapRSQ/lS3ng2Iua/0aIXpYlSHajApHte8Q4wvnwn9uK
+   CWneG+MqUP0C7OBZZd6SdKg/A9LfZn01UVvZDP7BmigUqSs8J+RCyjPgj
+   U6c0y/40t4i8l5DN4qam/KaOM6nmpXz1dXNdJ/8Ex4EXhcwLP+l4ybcsi
+   DJkkRXCYtNGZ4reemjoQ+/brJaIiHjaPuHRb1FBr7p3uW/v5EAxw1Qgij
+   Jztwq3nltKcntNdcS6ZVawFgdHnyQbKXqvDlqxwiD840qM86t0jv/qCwV
+   6qnl82IxUIPvEyT9oxHRtMaGMCa4eVRCQskHBCInjpnps0md+nHcMzUiP
+   Q==;
+X-CSE-ConnectionGUID: jFNY5EliT8WHPqMwk3G5QA==
+X-CSE-MsgGUID: S83zjI7+TIeP8rzYiJoUfg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11437"; a="48742741"
+X-IronPort-AV: E=Sophos;i="6.15,299,1739865600"; 
+   d="scan'208";a="48742741"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2025 10:37:53 -0700
+X-CSE-ConnectionGUID: Ly9w7LVtRR6x/ZR+h2aCVg==
+X-CSE-MsgGUID: U/t9iqDNSmGAdTcqC/kqcg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,299,1739865600"; 
+   d="scan'208";a="139681113"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 18 May 2025 10:37:51 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uGhxN-000KwO-1V;
+	Sun, 18 May 2025 17:37:49 +0000
+Date: Mon, 19 May 2025 01:37:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:merge] BUILD SUCCESS
+ a9d887695c86d44fd23f612549cb8dc78a3a0f22
+Message-ID: <202505190104.7Y7im4no-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,328 +80,166 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v2 06/11] bpf, arm64, powerpc: Change nospec to
- include v1 barrier
-To: Luis Gerhorst <luis.gerhorst@fau.de>, Alexei Starovoitov
- <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau
- <martin.lau@linux.dev>,
-        Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-        Yonghong Song <yonghong.song@linux.dev>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Puranjay Mohan <puranjay@kernel.org>,
-        Xu Kuohai <xukuohai@huaweicloud.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, Mykola Lysenko <mykolal@fb.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Henriette Herzog <henriette.herzog@rub.de>,
-        Saket Kumar Bhaskar <skb99@linux.ibm.com>,
-        Cupertino Miranda <cupertino.miranda@oracle.com>,
-        Jiayuan Chen <mrpre@163.com>, Matan Shachnai <m.shachnai@gmail.com>,
-        Dimitar Kanaliev <dimitar.kanaliev@siteground.com>,
-        Shung-Hsi Yu <shung-hsi.yu@suse.com>, Daniel Xu <dxu@dxuuu.xyz>,
-        bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kselftest@vger.kernel.org
-Cc: Maximilian Ott <ott@cs.fau.de>, Milan Stephan <milan.stephan@fau.de>
-References: <20250421091802.3234859-1-luis.gerhorst@fau.de>
- <20250421091802.3234859-7-luis.gerhorst@fau.de>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20250421091802.3234859-7-luis.gerhorst@fau.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=f8FIBPyM c=1 sm=1 tr=0 ts=6829b958 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=mDV3o1hIAAAA:8 a=NEAV23lmAAAA:8 a=VnNF1IyMAAAA:8 a=FMlO6nWJ9hO8ORJyGsUA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: zB_5p2bcrH0UuQ76ZswqSWM9r0wRWxoV
-X-Proofpoint-ORIG-GUID: 36MgEHlDP0aJI_G5yj_BzF4LKeTqnmf9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE4MDEwMCBTYWx0ZWRfX5SRtsWH1kxHV yrieVj7XYZpYaGdoIYIts9JxBzj4CDNSi4cDQAf4RRMtMWJ3hj1XDqhuiqS0Kns4MnvCxKmxKaN oLlPaMjzEZXT2XTQNewF6RDxX+5xidk1LFrUGaDubEaEfw2UXBS3oqPceCa0ci/lPCCglExkkVQ
- B4YUc1Dk029IQCRTkplaztQ2z3b5RWhW57MhmaM/UUONkGdqbgH0mZxKwyrocmmZ0uHmVCQNE03 QRzbl10UzBY7MMV5g9AKPLhUR8QtRWiPUNukmyN4+BcLZFrl0Mux789FCkBuwbtsUnokPqcOmPg ktuX63FK/J5Z9Po+SXPnZv2yhooigY97bZBJY9KV2Ewhb3fUaCm6o0wSje4pJPfuvj8fv5pJ3Fv
- huRPWVPPv4HphL3ICdA1ZFMnrMkRPUGbyv8rOUQ1+3agb55ynoB74RLKiwk+gxWLR3qrsbUe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-18_05,2025-05-16_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
- bulkscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 mlxlogscore=999
- clxscore=1011 malwarescore=0 adultscore=0 impostorscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505180100
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: a9d887695c86d44fd23f612549cb8dc78a3a0f22  Automatic merge of 'next' into merge (2025-05-18 09:08)
 
+elapsed time: 766m
 
-On 21/04/25 2:47 pm, Luis Gerhorst wrote:
-> This changes the semantics of BPF_NOSPEC (previously a v4-only barrier)
-> to always emit a speculation barrier that works against both Spectre v1
-> AND v4. If mitigation is not needed on an architecture, the backend
-> should set bpf_jit_bypass_spec_v4/v1().
-> 
-> As of now, this commit only has the user-visible implication that unpriv
-> BPF's performance on PowerPC is reduced. This is the case because we
-> have to emit additional v1 barrier instructions for BPF_NOSPEC now.
-> 
-> This commit is required for a future commit to allow us to rely on
-> BPF_NOSPEC for Spectre v1 mitigation. As of this commit, the feature
-> that nospec acts as a v1 barrier is unused.
-> 
-> Commit f5e81d111750 ("bpf: Introduce BPF nospec instruction for
-> mitigating Spectre v4") noted that mitigation instructions for v1 and v4
-> might be different on some archs. While this would potentially offer
-> improved performance on PowerPC, it was dismissed after the following
-> considerations:
-> 
-> * Only having one barrier simplifies the verifier and allows us to
->    easily rely on v4-induced barriers for reducing the complexity of
->    v1-induced speculative path verification.
+configs tested: 145
+configs skipped: 4
 
-Fair enough.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> 
-> * For the architectures that implemented BPF_NOSPEC, only PowerPC has
->    distinct instructions for v1 and v4. Even there, some insns may be
->    shared between the barriers for v1 and v4 (e.g., 'ori 31,31,0' and
->    'sync'). If this is still found to impact performance in an
->    unacceptable way, BPF_NOSPEC can be split into BPF_NOSPEC_V1 and
->    BPF_NOSPEC_V4 later. As an optimization, we can already skip v1/v4
->    insns from being emitted for PowerPC with this setup if
->    bypass_spec_v1/v4 is set.
-> 
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+alpha                               defconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-14.2.0
+arc                               allnoconfig    gcc-14.2.0
+arc                              allyesconfig    gcc-14.2.0
+arc                                 defconfig    gcc-14.2.0
+arc                   randconfig-001-20250518    gcc-14.2.0
+arc                   randconfig-002-20250518    gcc-11.5.0
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-14.2.0
+arm                       aspeed_g5_defconfig    gcc-14.2.0
+arm                                 defconfig    clang-21
+arm                   randconfig-001-20250518    gcc-10.5.0
+arm                   randconfig-002-20250518    clang-21
+arm                   randconfig-003-20250518    gcc-7.5.0
+arm                   randconfig-004-20250518    clang-16
+arm                           stm32_defconfig    gcc-14.2.0
+arm                           sunxi_defconfig    gcc-14.2.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-14.2.0
+arm64                               defconfig    gcc-14.2.0
+arm64                 randconfig-001-20250518    gcc-7.5.0
+arm64                 randconfig-002-20250518    clang-21
+arm64                 randconfig-003-20250518    clang-21
+arm64                 randconfig-004-20250518    clang-21
+csky                              allnoconfig    gcc-14.2.0
+csky                                defconfig    gcc-14.2.0
+csky                  randconfig-001-20250518    gcc-14.2.0
+csky                  randconfig-002-20250518    gcc-9.3.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon                             defconfig    clang-21
+hexagon               randconfig-001-20250518    clang-21
+hexagon               randconfig-002-20250518    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250518    gcc-12
+i386        buildonly-randconfig-002-20250518    clang-20
+i386        buildonly-randconfig-003-20250518    gcc-12
+i386        buildonly-randconfig-004-20250518    gcc-12
+i386        buildonly-randconfig-005-20250518    gcc-12
+i386        buildonly-randconfig-006-20250518    clang-20
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch                           defconfig    gcc-14.2.0
+loongarch             randconfig-001-20250518    gcc-13.3.0
+loongarch             randconfig-002-20250518    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+m68k                                defconfig    gcc-14.2.0
+m68k                        m5272c3_defconfig    gcc-14.2.0
+m68k                           virt_defconfig    gcc-14.2.0
+microblaze                       alldefconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+microblaze                          defconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                      maltaaprp_defconfig    clang-21
+mips                        omega2p_defconfig    clang-21
+mips                           xway_defconfig    clang-21
+nios2                             allnoconfig    gcc-14.2.0
+nios2                               defconfig    gcc-14.2.0
+nios2                 randconfig-001-20250518    gcc-5.5.0
+nios2                 randconfig-002-20250518    gcc-13.3.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                            defconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                              defconfig    gcc-14.2.0
+parisc                randconfig-001-20250518    gcc-8.5.0
+parisc                randconfig-002-20250518    gcc-8.5.0
+parisc64                            defconfig    gcc-14.1.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-21
+powerpc                    amigaone_defconfig    gcc-14.2.0
+powerpc                  mpc885_ads_defconfig    clang-21
+powerpc                      pmac32_defconfig    clang-21
+powerpc               randconfig-001-20250518    gcc-7.5.0
+powerpc               randconfig-002-20250518    gcc-5.5.0
+powerpc               randconfig-003-20250518    clang-21
+powerpc                    sam440ep_defconfig    gcc-14.2.0
+powerpc64                        alldefconfig    clang-21
+powerpc64             randconfig-001-20250518    gcc-10.5.0
+powerpc64             randconfig-002-20250518    gcc-7.5.0
+powerpc64             randconfig-003-20250518    gcc-7.5.0
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-21
+riscv                 randconfig-001-20250518    clang-21
+riscv                 randconfig-002-20250518    clang-20
+s390                             alldefconfig    gcc-14.2.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    clang-21
+s390                  randconfig-001-20250518    gcc-7.5.0
+s390                  randconfig-002-20250518    gcc-7.5.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-14.2.0
+sh                    randconfig-001-20250518    gcc-13.3.0
+sh                    randconfig-002-20250518    gcc-7.5.0
+sh                           se7721_defconfig    gcc-14.2.0
+sh                           se7722_defconfig    gcc-14.2.0
+sh                        sh7785lcr_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250518    gcc-12.4.0
+sparc                 randconfig-002-20250518    gcc-14.2.0
+sparc64                             defconfig    gcc-14.2.0
+sparc64               randconfig-001-20250518    gcc-6.5.0
+sparc64               randconfig-002-20250518    gcc-6.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-21
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250518    clang-19
+um                    randconfig-002-20250518    clang-21
+um                           x86_64_defconfig    clang-21
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250518    gcc-12
+x86_64      buildonly-randconfig-002-20250518    clang-20
+x86_64      buildonly-randconfig-003-20250518    gcc-12
+x86_64      buildonly-randconfig-004-20250518    gcc-12
+x86_64      buildonly-randconfig-005-20250518    gcc-12
+x86_64      buildonly-randconfig-006-20250518    clang-20
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-18
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250518    gcc-12.4.0
+xtensa                randconfig-002-20250518    gcc-12.4.0
 
-Agreed.
-
-Acked-by: Hari Bathini <hbathini@linux.ibm.com>
-
-> Vulnerability-status for BPF_NOSPEC-based Spectre mitigations (v4 as of
-> this commit, v1 in the future) is therefore:
-> 
-> * x86 (32-bit and 64-bit), ARM64, and PowerPC (64-bit): Mitigated - This
->    patch implements BPF_NOSPEC for these architectures. The previous
->    v4-only version was supported since commit f5e81d111750 ("bpf:
->    Introduce BPF nospec instruction for mitigating Spectre v4") and
->    commit b7540d625094 ("powerpc/bpf: Emit stf barrier instruction
->    sequences for BPF_NOSPEC").
-> 
-> * LoongArch: Not Vulnerable - Commit a6f6a95f2580 ("LoongArch, bpf: Fix
->    jit to skip speculation barrier opcode") is the only other past commit
->    related to BPF_NOSPEC and indicates that the insn is not required
->    there.
-> 
-> * MIPS: Vulnerable (if unprivileged BPF is enabled) -
->    Commit a6f6a95f2580 ("LoongArch, bpf: Fix jit to skip speculation
->    barrier opcode") indicates that it is not vulnerable but this
->    contradicts the kernel and Debian documentation. Therefore I assume
->    that there exist vulnerable MIPS CPUs (but maybe not from Loongson?).
->    In the future, BPF_NOSPEC could be implemented for MIPS based on the
->    GCC speculation_barrier [1]. For now, we rely on unprivileged BPF
->    being disabled by default.
-> 
-> * Other: Unknown - To the best of my knowledge there is no definitive
->    information available that indicates that any other arch is
->    vulnerable. They are therefore left untouched (BPF_NOSPEC is not
->    implemented, but bypass_spec_v1/v4 is also not set).
-> 
-> I did the following testing to ensure the insn encoding is correct:
-> 
-> * ARM64:
->    * 'dsb nsh; isb' was successfully tested with the BPF CI in [2]
->    * 'sb' locally using QEMU v7.2.15 -cpu max (emitted sb insn is
->      executed for example with './test_progs -t verifier_array_access')
-> 
-> * PowerPC: The following configs were tested locally with ppc64le QEMU
->    v8.2 '-machine pseries -cpu POWER9':
->    * STF_BARRIER_EIEIO + CONFIG_PPC_BOOK32_64
->    * STF_BARRIER_SYNC_ORI (forced on) + CONFIG_PPC_BOOK32_64
->    * STF_BARRIER_FALLBACK (forced on) + CONFIG_PPC_BOOK32_64
->    * CONFIG_PPC_E500 (forced on) + STF_BARRIER_EIEIO
->    * CONFIG_PPC_E500 (forced on) + STF_BARRIER_SYNC_ORI (forced on)
->    * CONFIG_PPC_E500 (forced on) + STF_BARRIER_FALLBACK (forced on)
->    * CONFIG_PPC_E500 (forced on) + STF_BARRIER_NONE (forced on)
->    Most of those cobinations should not occur in practice, but I was not
->    able to get an PPC e6500 rootfs (for testing PPC_E500 without forcing
->    it on). In any case, this should ensure that there are no unexpected
->    conflicts between the insns when combined like this. Individual v1/v4
->    barriers were already emitted elsewhere.
-> 
-> [1] https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=29b74545531f6afbee9fc38c267524326dbfbedf
->      ("MIPS: Add speculation_barrier support")
-> [2] https://github.com/kernel-patches/bpf/pull/8576
-> 
-> Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
-> Cc: Henriette Herzog <henriette.herzog@rub.de>
-> Cc: Maximilian Ott <ott@cs.fau.de>
-> Cc: Milan Stephan <milan.stephan@fau.de>
-> ---
->   arch/arm64/net/bpf_jit.h          |  5 +++
->   arch/arm64/net/bpf_jit_comp.c     |  9 +++--
->   arch/powerpc/net/bpf_jit_comp64.c | 58 ++++++++++++++++++++++---------
->   include/linux/filter.h            |  2 +-
->   kernel/bpf/core.c                 | 17 ++++-----
->   5 files changed, 64 insertions(+), 27 deletions(-)
-> 
-> diff --git a/arch/arm64/net/bpf_jit.h b/arch/arm64/net/bpf_jit.h
-> index a3b0e693a125..bbea4f36f9f2 100644
-> --- a/arch/arm64/net/bpf_jit.h
-> +++ b/arch/arm64/net/bpf_jit.h
-> @@ -325,4 +325,9 @@
->   #define A64_MRS_SP_EL0(Rt) \
->   	aarch64_insn_gen_mrs(Rt, AARCH64_INSN_SYSREG_SP_EL0)
->   
-> +/* Barriers */
-> +#define A64_SB aarch64_insn_get_sb_value()
-> +#define A64_DSB_NSH (aarch64_insn_get_dsb_base_value() | 0x7 << 8)
-> +#define A64_ISB aarch64_insn_get_isb_value()
-> +
->   #endif /* _BPF_JIT_H */
-> diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-> index 0f617b55866e..ccd6a2f31e35 100644
-> --- a/arch/arm64/net/bpf_jit_comp.c
-> +++ b/arch/arm64/net/bpf_jit_comp.c
-> @@ -1581,9 +1581,14 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
->   			return ret;
->   		break;
->   
-> -	/* speculation barrier */
-> +	/* speculation barrier against v1 and v4 */
->   	case BPF_ST | BPF_NOSPEC:
-> -		/* See bpf_jit_bypass_spec_v4() */
-> +		if (alternative_has_cap_likely(ARM64_HAS_SB)) {
-> +			emit(A64_SB, ctx);
-> +		} else {
-> +			emit(A64_DSB_NSH, ctx);
-> +			emit(A64_ISB, ctx);
-> +		}
->   		break;
->   
->   	/* ST: *(size *)(dst + off) = imm */
-> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-> index b5339c541283..c00951e2a50e 100644
-> --- a/arch/powerpc/net/bpf_jit_comp64.c
-> +++ b/arch/powerpc/net/bpf_jit_comp64.c
-> @@ -800,26 +800,52 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
->   
->   		/*
->   		 * BPF_ST NOSPEC (speculation barrier)
-> +		 *
-> +		 * The following must act as a barrier against both Spectre v1
-> +		 * and v4 if we requested both mitigations. Therefore, also emit
-> +		 * 'isync; sync' on E500 or 'ori31' on BOOK3S_64 in addition to
-> +		 * the insns needed for a Spectre v4 barrier.
-> +		 *
-> +		 * If we requested only !bypass_spec_v1 OR only !bypass_spec_v4,
-> +		 * we can skip the respective other barrier type as an
-> +		 * optimization.
->   		 */
->   		case BPF_ST | BPF_NOSPEC:
-> -			switch (stf_barrier) {
-> -			case STF_BARRIER_EIEIO:
-> -				EMIT(PPC_RAW_EIEIO() | 0x02000000);
-> -				break;
-> -			case STF_BARRIER_SYNC_ORI:
-> +			bool sync_emitted = false;
-> +			bool ori31_emitted = false;
-> +#ifdef CONFIG_PPC_E500
-> +			if (!bpf_jit_bypass_spec_v1()) {
-> +				EMIT(PPC_RAW_ISYNC());
->   				EMIT(PPC_RAW_SYNC());
-> -				EMIT(PPC_RAW_LD(tmp1_reg, _R13, 0));
-> -				EMIT(PPC_RAW_ORI(_R31, _R31, 0));
-> -				break;
-> -			case STF_BARRIER_FALLBACK:
-> -				ctx->seen |= SEEN_FUNC;
-> -				PPC_LI64(_R12, dereference_kernel_function_descriptor(bpf_stf_barrier));
-> -				EMIT(PPC_RAW_MTCTR(_R12));
-> -				EMIT(PPC_RAW_BCTRL());
-> -				break;
-> -			case STF_BARRIER_NONE:
-> -				break;
-> +				sync_emitted = true;
-> +			}
-> +#endif
-> +			if (!bpf_jit_bypass_spec_v4()) {
-> +				switch (stf_barrier) {
-> +				case STF_BARRIER_EIEIO:
-> +					EMIT(PPC_RAW_EIEIO() | 0x02000000);
-> +					break;
-> +				case STF_BARRIER_SYNC_ORI:
-> +					if (!sync_emitted)
-> +						EMIT(PPC_RAW_SYNC());
-> +					EMIT(PPC_RAW_LD(tmp1_reg, _R13, 0));
-> +					EMIT(PPC_RAW_ORI(_R31, _R31, 0));
-> +					ori31_emitted = true;
-> +					break;
-> +				case STF_BARRIER_FALLBACK:
-> +					ctx->seen |= SEEN_FUNC;
-> +					PPC_LI64(_R12, dereference_kernel_function_descriptor(bpf_stf_barrier));
-> +					EMIT(PPC_RAW_MTCTR(_R12));
-> +					EMIT(PPC_RAW_BCTRL());
-> +					break;
-> +				case STF_BARRIER_NONE:
-> +					break;
-> +				}
->   			}
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +			if (!bpf_jit_bypass_spec_v1() && !ori31_emitted)
-> +				EMIT(PPC_RAW_ORI(_R31, _R31, 0));
-> +#endif
->   			break;
->   
->   		/*
-> diff --git a/include/linux/filter.h b/include/linux/filter.h
-> index f5cf4d35d83e..eca229752cbe 100644
-> --- a/include/linux/filter.h
-> +++ b/include/linux/filter.h
-> @@ -82,7 +82,7 @@ struct ctl_table_header;
->   #define BPF_CALL_ARGS	0xe0
->   
->   /* unused opcode to mark speculation barrier for mitigating
-> - * Speculative Store Bypass
-> + * Spectre v1 and v4
->    */
->   #define BPF_NOSPEC	0xc0
->   
-> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-> index 804f1e52bfa3..fe16be379bf4 100644
-> --- a/kernel/bpf/core.c
-> +++ b/kernel/bpf/core.c
-> @@ -2102,14 +2102,15 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
->   #undef COND_JMP
->   	/* ST, STX and LDX*/
->   	ST_NOSPEC:
-> -		/* Speculation barrier for mitigating Speculative Store Bypass.
-> -		 * In case of arm64, we rely on the firmware mitigation as
-> -		 * controlled via the ssbd kernel parameter. Whenever the
-> -		 * mitigation is enabled, it works for all of the kernel code
-> -		 * with no need to provide any additional instructions here.
-> -		 * In case of x86, we use 'lfence' insn for mitigation. We
-> -		 * reuse preexisting logic from Spectre v1 mitigation that
-> -		 * happens to produce the required code on x86 for v4 as well.
-> +		/* Speculation barrier for mitigating Speculative Store Bypass,
-> +		 * Bounds-Check Bypass and Type Confusion. In case of arm64, we
-> +		 * rely on the firmware mitigation as controlled via the ssbd
-> +		 * kernel parameter. Whenever the mitigation is enabled, it
-> +		 * works for all of the kernel code with no need to provide any
-> +		 * additional instructions here. In case of x86, we use 'lfence'
-> +		 * insn for mitigation. We reuse preexisting logic from Spectre
-> +		 * v1 mitigation that happens to produce the required code on
-> +		 * x86 for v4 as well.
->   		 */
->   		barrier_nospec();
->   		CONT;
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
