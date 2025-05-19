@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-8691-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8692-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42AB1ABC9EE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 May 2025 23:38:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6DBFABC9EF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 May 2025 23:38:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1WHH1wdfz2yhV;
-	Tue, 20 May 2025 07:37:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1WHJ6yBwz3bYG;
+	Tue, 20 May 2025 07:37:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747690635;
-	cv=none; b=HXuumNS9ttzbGCLOq6/kwXZmewrRraVNQ39+74wD1lSO8IXMNLL+SnD/o3bldg+4vSebvCIxmqibS2zYq6Zij2NCP5m9Kw1U5YIxvgYwIDmE/p9WL1xBlj9aLBUfwmUOwcmkypkKemf+rRU9AFBqMfBsmYJoDo0Ez1/ZO9VW/veX5GEqOafO/sUKw301ls5ZFLFPdqvB5Zns3bu/M4ZxQfqqQSLK3IypgHPaDdUvX9wgwNCRrdooQ71EuAgSkRuB22S+CM1fTfQJsaLUCyHVIgNBQNqqCEV2ABhowG/eopMu5K1MwmqzGGJkCnMRpCaxh9MzLo16e2/K4VH2IvdWDQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747690636;
+	cv=none; b=E42SiXtA7kYG53dpFPo6f1dtZvUYtLdrjcDgcVCIssYkVK5h5OkE3rRz+Q3aHBwwUKshTMjTGx1sNabSJOrBGZbvpq+iZezShtGmBTtfj6P3b7hsYOMZSjpDMtUSuGzSbjQfLL37okWNUL6kLke2n/vzUZ+B2TUKOs2Q1k0PrksnL2XvNm0aYHhSw5mUDAtrCDa14ylTeuCBJ54JSmO3cAAZM+lfJ/mk8ezGWl+mC3P7PBjLGCwmmcQxm5cVpsVQdv0hQv3egiJQP1MsEN7ddTYrzUo6ZYfNmSUWn+LrXL4BIU0uo/d3lJmhyqXsjJaEpbL6R1Ti9AMBMp0V5YWRDg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747690635; c=relaxed/relaxed;
-	bh=leAgRJhL1iiA4kcgZGUENy6OXCMsMpTwT7Oeo0fAC/w=;
+	t=1747690636; c=relaxed/relaxed;
+	bh=LUK0eWX7dr8omlEbgYUs13/ipUNhyzl6+g1k2OPj+a0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GrYj4dW9O2Ny/qeQ91MbRZSX7DP9PRiIomRVWtKTFJORH2PBpJhXnxrEDMvBaqJqSkYgLWFhQXEYZI4ibcE04FOhWCOKb/mLEkWMZgLPmEhLY6qgbTG0goVAD3/PSTHk6LPL+5Ap2UaQTjhPi8oZCq74CUGszsRXeh0D6vkqxLMxwMWkgMpM6PZvtMAa4FnFt4qtIm1cgWF5tQsO1VYvXDordbfmGR99tWMYzPt0G4CmmsSlqiEVFsSYpUnQ+YzUF1NEexQGYl3A73kfeVGuwqZVX9VRsx1HeCr+hYu87lv46PpJ2Ip82cf2aksBMDfNpw9QleEcaA0QHRPcssqzkA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lN3dFeon; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=G8MflonFORJjgrPFLzFmGRXT2PqImzEDdJYRdWf0luzRvOBlZhjxxYyH4/7jeSCvKDUTWrmkAUpVe8cm/MZZ/0qAQBZSuWacj/n6LvCNFPFoDdqgG9zFKdmlG5taLLmX7tLzCa/JWAn2UFDlIg0XC3aiHyERXsPYVV0HktqaIgvBYv1Z2tLb6EPLxlZ18i+VnqLtWN3aVqaAuiAfxnoy5bp3T6MV1d9rdbug7T/TE0DLsR2AcfwYwkApV0bs9zZ5GADz7P2fz8PWgDUJ0FiH9IZbfvpOlZfY4tCNNGpo3cTZy39iiiOjb+Z8k+ijrut/bSrNAtqruaj4Ih0daQ/BuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N0WtaEvg; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lN3dFeon;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N0WtaEvg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1WHG4799z30YZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 07:37:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1WHJ3n37z30YZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 07:37:16 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0AD194A30F;
-	Mon, 19 May 2025 21:37:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C0EC4CEE4;
-	Mon, 19 May 2025 21:37:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B353A629F0;
+	Mon, 19 May 2025 21:37:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447FAC4CEE9;
+	Mon, 19 May 2025 21:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747690632;
-	bh=pEzxMI1RPs1BcxgvGz2M9/A2tzz16x+dpGmkomDUbRE=;
+	s=k20201202; t=1747690634;
+	bh=909bKlpGXpejs6alzRrtkNNoVbidxfjnR8RhC93JgX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lN3dFeonzOxnEeK4/kIGrTtTf3uh5A8IISmo14XUj6cKz7P0lZQDC+HL1xgb3VhQe
-	 9RQ167qx5Ein2TbOrW6x0Wf3OLPswgJBu9YL6e61EbWLlv6unNAWbUKV7SxJpm4VSt
-	 TYC9mePBKuh7kPFZq1jLidI/yh7+05FRbaBkoFzRr8+o4K4WSuaEqODL27zo6Y3YlH
-	 CflnR6LSgBEAJ4w8cFRRgNPMZAJ3PEGzu4KZQuVgCgA8QYnyptyOgTR4vE7JlYgvHq
-	 1peTN5j0uw59iAnICPzDTWNStMcFcauHrKX225kFjXPmJxqVg1TXhTKA8cKtUCTbxu
-	 XziTIzsVbm25g==
+	b=N0WtaEvgXAzOSk9iDG8i/BZrjzO6AGUdr9aPPpLa2T8Ze5lwku1J0lo6iD8vdJcIy
+	 beoRBdYA6S0glwT3cdvYmet34cpc5K0od22JQ0ScSeDnVipX1eYOoy4F/gv8RKi9Ui
+	 3wAUHYsd6CGCc36udQz7WFL8Me+OvicF9x+5I7CQLfrE8ukBB7oqEN1EjH4uY5asSG
+	 vQbCO8kxhiUNJZ7OwSpryzBcebvWZTu6O7sOWwxgWillMZwAjNURM+0TpG4HUIWiMo
+	 Hueh7xZWZ0WBB47iYJWQnPKbmpdpOjoTLwDeKvg08CCfsHqhCSaeHIb/OckfveUeNQ
+	 SXDn+SHgtYp0w==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: linux-pci@vger.kernel.org
 Cc: Jon Pan-Doh <pandoh@google.com>,
@@ -69,9 +69,9 @@ Cc: Jon Pan-Doh <pandoh@google.com>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v6 14/16] PCI/AER: Introduce ratelimit for error logs
-Date: Mon, 19 May 2025 16:35:56 -0500
-Message-ID: <20250519213603.1257897-15-helgaas@kernel.org>
+Subject: [PATCH v6 15/16] PCI/AER: Add ratelimits to PCI AER Documentation
+Date: Mon, 19 May 2025 16:35:57 -0500
+Message-ID: <20250519213603.1257897-16-helgaas@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250519213603.1257897-1-helgaas@kernel.org>
 References: <20250519213603.1257897-1-helgaas@kernel.org>
@@ -96,202 +96,39 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Jon Pan-Doh <pandoh@google.com>
 
-Spammy devices can flood kernel logs with AER errors and slow/stall
-execution. Add per-device ratelimits for AER correctable and uncorrectable
-errors that use the kernel defaults (10 per 5s).
+Add ratelimits section for rationale and defaults.
 
-There are two AER logging entry points:
-
-  - aer_print_error() is used by DPC and native AER
-
-  - pci_print_aer() is used by GHES and CXL
-
-The native AER aer_print_error() case includes a loop that may log details
-from multiple devices.  This is ratelimited by the union of ratelimits for
-these devices, set by add_error_device(), which collects the devices.  If
-no such device is found, the Error Source message is ratelimited by the
-Root Port or RCEC that received the ERR_* message.
-
-The DPC aer_print_error() case is currently not ratelimited.
-
-The GHES and CXL pci_print_aer() cases are ratelimited by the Error Source
-device.
-
-Sargun at Meta reported internally that a flood of AER errors causes RCU
-CPU stall warnings and CSD-lock warnings.
-
-Tested using aer-inject[1]. Sent 11 AER errors. Observed 10 errors logged
-while AER stats (cat /sys/bus/pci/devices/<dev>/aer_dev_correctable) show
-true count of 11.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/gong.chen/aer-inject.git
-
-[bhelgaas: commit log, factor out trace_aer_event() and aer_print_rp_info()
-changes to previous patches, collect single aer_err_info.ratelimit as union
-of ratelimits of all error source devices]
-Link: https://lore.kernel.org/r/20250321015806.954866-7-pandoh@google.com
-Reported-by: Sargun Dhillon <sargun@meta.com>
+Signed-off-by: Karolina Stolarek <karolina.stolarek@oracle.com>
 Signed-off-by: Jon Pan-Doh <pandoh@google.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
 ---
- drivers/pci/pci.h      |  3 ++-
- drivers/pci/pcie/aer.c | 49 ++++++++++++++++++++++++++++++++++++------
- drivers/pci/pcie/dpc.c |  1 +
- 3 files changed, 46 insertions(+), 7 deletions(-)
+ Documentation/PCI/pcieaer-howto.rst | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 705f9ef58acc..65c466279ade 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -593,7 +593,8 @@ struct aer_err_info {
- 	unsigned int id:16;
+diff --git a/Documentation/PCI/pcieaer-howto.rst b/Documentation/PCI/pcieaer-howto.rst
+index f013f3b27c82..896d2a232a90 100644
+--- a/Documentation/PCI/pcieaer-howto.rst
++++ b/Documentation/PCI/pcieaer-howto.rst
+@@ -85,6 +85,17 @@ In the example, 'Requester ID' means the ID of the device that sent
+ the error message to the Root Port. Please refer to PCIe specs for other
+ fields.
  
- 	unsigned int severity:2;	/* 0:NONFATAL | 1:FATAL | 2:COR */
--	unsigned int __pad1:5;
-+	unsigned int ratelimit:1;	/* 0=skip, 1=print */
-+	unsigned int __pad1:4;
- 	unsigned int multi_error_valid:1;
- 
- 	unsigned int first_error:5;
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index da62032bf024..c335e0bb9f51 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -28,6 +28,7 @@
- #include <linux/interrupt.h>
- #include <linux/delay.h>
- #include <linux/kfifo.h>
-+#include <linux/ratelimit.h>
- #include <linux/slab.h>
- #include <acpi/apei.h>
- #include <acpi/ghes.h>
-@@ -88,6 +89,10 @@ struct aer_report {
- 	u64 rootport_total_cor_errs;
- 	u64 rootport_total_fatal_errs;
- 	u64 rootport_total_nonfatal_errs;
++AER Ratelimits
++--------------
 +
-+	/* Ratelimits for errors */
-+	struct ratelimit_state cor_log_ratelimit;
-+	struct ratelimit_state uncor_log_ratelimit;
- };
- 
- #define AER_LOG_TLP_MASKS		(PCI_ERR_UNC_POISON_TLP|	\
-@@ -379,6 +384,11 @@ void pci_aer_init(struct pci_dev *dev)
- 
- 	dev->aer_report = kzalloc(sizeof(*dev->aer_report), GFP_KERNEL);
- 
-+	ratelimit_state_init(&dev->aer_report->cor_log_ratelimit,
-+			     DEFAULT_RATELIMIT_INTERVAL, DEFAULT_RATELIMIT_BURST);
-+	ratelimit_state_init(&dev->aer_report->uncor_log_ratelimit,
-+			     DEFAULT_RATELIMIT_INTERVAL, DEFAULT_RATELIMIT_BURST);
++Since error messages can be generated for each transaction, we may see
++large volumes of errors reported. To prevent spammy devices from flooding
++the console/stalling execution, messages are throttled by device and error
++type (correctable vs. uncorrectable).
 +
- 	/*
- 	 * We save/restore PCI_ERR_UNCOR_MASK, PCI_ERR_UNCOR_SEVER,
- 	 * PCI_ERR_COR_MASK, and PCI_ERR_CAP.  Root and Root Complex Event
-@@ -672,6 +682,18 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
- 	}
- }
- 
-+static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
-+{
-+	struct ratelimit_state *ratelimit;
++AER uses the default ratelimit of DEFAULT_RATELIMIT_BURST (10 events) over
++DEFAULT_RATELIMIT_INTERVAL (5 seconds).
 +
-+	if (severity == AER_CORRECTABLE)
-+		ratelimit = &dev->aer_report->cor_log_ratelimit;
-+	else
-+		ratelimit = &dev->aer_report->uncor_log_ratelimit;
-+
-+	return __ratelimit(ratelimit);
-+}
-+
- static void __aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- {
- 	const char **strings;
-@@ -715,6 +737,9 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+ AER Statistics / Counters
+ -------------------------
  
- 	pci_dev_aer_stats_incr(dev, info);
- 
-+	if (!info->ratelimit)
-+		return;
-+
- 	if (!info->status) {
- 		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
- 			aer_error_severity_string[info->severity]);
-@@ -785,6 +810,9 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
- 
- 	pci_dev_aer_stats_incr(dev, &info);
- 
-+	if (!aer_ratelimit(dev, info.severity))
-+		return;
-+
- 	layer = AER_GET_LAYER_ERROR(aer_severity, status);
- 	agent = AER_GET_AGENT(aer_severity, status);
- 
-@@ -815,8 +843,14 @@ EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
-  */
- static int add_error_device(struct aer_err_info *e_info, struct pci_dev *dev)
- {
-+	/*
-+	 * Ratelimit AER log messages.  Generally we add the Error Source
-+	 * device, but there are is_error_source() cases that can result in
-+	 * multiple devices being added here, so we OR them all together.
-+	 */
- 	if (e_info->error_dev_num < AER_MAX_MULTI_ERR_DEVICES) {
- 		e_info->dev[e_info->error_dev_num] = pci_dev_get(dev);
-+		e_info->ratelimit |= aer_ratelimit(dev, e_info->severity);
- 		e_info->error_dev_num++;
- 		return 0;
- 	}
-@@ -914,7 +948,7 @@ static int find_device_iter(struct pci_dev *dev, void *data)
-  * e_info->error_dev_num and e_info->dev[], based on the given information.
-  */
- static bool find_source_device(struct pci_dev *parent,
--		struct aer_err_info *e_info)
-+			       struct aer_err_info *e_info)
- {
- 	struct pci_dev *dev = parent;
- 	int result;
-@@ -935,10 +969,12 @@ static bool find_source_device(struct pci_dev *parent,
- 	/*
- 	 * If we didn't find any devices with errors logged in the AER
- 	 * Capability, just print the Error Source ID from the Root Port or
--	 * RCEC that received an ERR_* Message.
-+	 * RCEC that received an ERR_* Message, ratelimited by the RP or
-+	 * RCEC.
- 	 */
- 	if (!e_info->error_dev_num) {
--		aer_print_source(parent, e_info, " (no details found)");
-+		if (aer_ratelimit(parent, e_info->severity))
-+			aer_print_source(parent, e_info, " (no details found)");
- 		return false;
- 	}
- 	return true;
-@@ -1147,9 +1183,10 @@ static void aer_recover_work_func(struct work_struct *work)
- 		pdev = pci_get_domain_bus_and_slot(entry.domain, entry.bus,
- 						   entry.devfn);
- 		if (!pdev) {
--			pr_err("no pci_dev for %04x:%02x:%02x.%x\n",
--			       entry.domain, entry.bus,
--			       PCI_SLOT(entry.devfn), PCI_FUNC(entry.devfn));
-+			pr_err_ratelimited("%04x:%02x:%02x.%x: no pci_dev found\n",
-+					   entry.domain, entry.bus,
-+					   PCI_SLOT(entry.devfn),
-+					   PCI_FUNC(entry.devfn));
- 			continue;
- 		}
- 		pci_print_aer(pdev, entry.severity, entry.regs);
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index 34af0ea45c0d..597df7790f36 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -301,6 +301,7 @@ void dpc_process_error(struct pci_dev *pdev)
- 	else if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR &&
- 		 dpc_get_aer_uncorrect_severity(pdev, &info) &&
- 		 aer_get_device_error_info(pdev, &info)) {
-+		info.ratelimit = 1;	/* no ratelimiting */
- 		aer_print_error(pdev, &info);
- 		pci_aer_clear_nonfatal_status(pdev);
- 		pci_aer_clear_fatal_status(pdev);
 -- 
 2.43.0
 
