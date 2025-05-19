@@ -1,59 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-8695-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8696-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D49FABCA9E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 00:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 949F0ABCB10
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 00:42:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1WtB0N9Mz2xgp;
-	Tue, 20 May 2025 08:04:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1Xjz6r8Yz2yRD;
+	Tue, 20 May 2025 08:41:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747692242;
-	cv=none; b=fMggJHdbg8gSeno38gPKBiipiBBYP2o5/U35/RqSubhxn0O4U9AgJ/JbV/EkZ/tHw8OVX6ilbNO0YKlsE6eYSR1dMpHdUlMmaLfabKNxMz8CampHViG2Z1+qu3D/NHmXW6cb34E6P+D+cCODnbfHUk/1ddIpfr/HZKkU7pEdtc2YhXymtDUaLba4mzEDs8Q5LGXVQ4YHFmWnHoCbrnOkQ9kCuETMHG5kXGV+UUH4bCIyh7suz4ZaSdKm8xPD9MLeGLngQOuBe74zz2X2T/q2lZy4244/ul7GNoBhGADt5ygD5gEkTWH1XWzaMuxO/EdaWiqh67UalVuEHtLZX92R2A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747694519;
+	cv=none; b=YRg0tEXFi72bk5e6dSqxV0s1uNSUdmnBJLU0MTzox28/OPFGJm2EDDwby0lQKSCFg16BGumSxbOOEpGVQLgo1t9tZZuQiMOWlYAEtZv12GVkQWlIwsKSkNXeJYPhAGGGOkxND7sK3VUJJr1EGKVdxcDORegjFdvhw7pWcVwqDQtrzwpQ0ySJmkMzGuOuXHz3wPloQ1ar9Q1E6FxIr/2NTIdDWF4KaKCbk6y0FgVH6ghdqMESoZQa8LRVpeFiHNr4FaxQkW99mre2MJmTppN7Xi5vjtcAVtPPCpV7nUdIg0R21bTV6pU4MVJ+RBKRzWztzUytm6Z5OagBpwULzvvP8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747692242; c=relaxed/relaxed;
-	bh=ebGS+sXSJ2Dchn8L69jgJOJytC58S8NTavlrCJe99w8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gaQyULrQRyX3Yu84vSaEp75ouTDclE4wyVCWocyKj0DNIqAoHEpCRrRDNlEVaSngBGu53c5qahMAlhR/lun4ecDOsFPekIUpnsHOLILzNdhpqpmldkqY4Gfo3PlSlCFoKpsnklY/433hpcu51597YVijUKwJmB8jThGh7qa4Hh2/IfuP5NK6i7OduhSegSA2ryt+7ni1NbRNofojSuzLvggxBTpAoX/HrniPWxmOwDA4aqN31j2ojUVewsT4KNzCm1G+N7s2tgp+xcG3OB7uOIh6gpHV4v28PJaGyD4/x6N+xbD0sNBdc1gJuS2yxZxhFyX0jRuDoAHROpRsFsxuNA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DG4M5PKs; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=andi.shyti@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1747694519; c=relaxed/relaxed;
+	bh=b37kjNdtmcSPF9wJgIqiQq6aiSlqTFlGmQkeFUkWO9c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=URzsIPXSFSWW6jcPZ/IjgAK0DBzZs9QCFy5EabAlaVRcXZRNJwLpXg+c1jqXFtme0GdtlyywyzwwLgcWeuMec6ul/q3gOFPdQFa2syHPD/RPCQJshPFGHdEBDWY/c14j52lLpr+YssML/CYzuwJr4TXfC+wCfwsWjK7xwuREywAHVfiM4JRzSzNSImYSgxZMQzMnRTeJV62AaSoD8NqIlFgkaLIW52c2t0vNiuvICSQznrsJejeoJ8pUF8AbxJKVOH9J/Q2MHP8NWUBPxpP938rRqAMCPMqijInSkcPbl+cILKo01M1vh77nmAlXPt/uYweZ4hIhoklq1d8w6vU7qQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RHYEmO5S; dkim-atps=neutral; spf=none (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DG4M5PKs;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RHYEmO5S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=andi.shyti@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1Wt93FRYz2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 08:04:01 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 22D985C0667;
-	Mon, 19 May 2025 22:01:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55536C4CEE4;
-	Mon, 19 May 2025 22:03:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747692239;
-	bh=lG7yr7akkyy/8Og1W+0QQWxoqRcWGSbfq6/Uv7nAl2A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DG4M5PKsVyRbkosrzHCYgWWc1jWWAUMIro5zOorWPsk2DBX/iRH9Prn3sQt5P13i+
-	 dbBHOt9TK8rYEhAMttkNbxm7atTBXaqWFI/FJRaAJveI6S04hdRqsvW7WYR5sVKfQo
-	 jwajjyZRJcqhPR2BUACN8voNaOn4hzoibwMC4x2s1CTytz1kgtoQZjEHNGHpwTZ8VT
-	 VGqJ8KYOAiO7R1sErQR2i0G4/xr8mD7jGV9784RyGvavcuHwXpvPlgx/OOJCXPnqCW
-	 PpvfjlDRMhL56lrI67WN8IcuhDJXhum7wHO3FdHv/Wbe4Opss7e7U8+7DL/1LUbW9u
-	 P2YfRBO5CNH0A==
-Date: Tue, 20 May 2025 00:03:54 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-i2c@vger.kernel.org, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 1/3] i2c: powermac: convert of_node usage to fwnode
-Message-ID: <enlo2gjoh5qua4phd3lnmmfr65zgx47vto35abwuwtpdy7ocp5@yd6mrc2yepws>
-References: <20250519111311.2390-5-wsa+renesas@sang-engineering.com>
- <20250519111311.2390-6-wsa+renesas@sang-engineering.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1Xjx3w9zz2yN1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 08:41:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747694518; x=1779230518;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=mMXMidsfCoqJOKi8B+7joSdBmF/Wv4ltuLs090jXvPg=;
+  b=RHYEmO5SoDmp/MS/F7p8uhDBingyt5DA5GWKBV1NaPAY6zDEpq8Ua9RS
+   rAu46TQBsie2nH4YAp0Wdj5v4ugs/1WFT0v6krfTrkUG41kUwf4mhxAEe
+   ot3Fub3mRMeEgygTO/EMEGnTofgNsMktAYI2eiS3g8deBDP32owbKWEDg
+   OtBVSRWZpVegG6kBDeYSLL0MBHEnIVlk+0ueTdNfxhJuQwV0rl1PzeYEY
+   CRdvg9R5JIq1i5I2OzoFB1RFbYxmFq8b4WaJamUblV9LLtL4tSCN9pzTM
+   Gg4Ak9hgG24+/eZ1Zvtw66DoAGnLtCiVDxEaFdzgRAoe2+ye5P9F+8kuZ
+   w==;
+X-CSE-ConnectionGUID: IQe1FoTtSyqsrMArSYJ/eg==
+X-CSE-MsgGUID: ALKKC49QTL20mIKzT2KWVw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="53408065"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="53408065"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 15:41:53 -0700
+X-CSE-ConnectionGUID: 61PQEioIQ/iJ1hNNkacuzg==
+X-CSE-MsgGUID: Zp6lnw4ETfKVUtkIljdg1Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="139230552"
+Received: from mdroper-mobl2.amr.corp.intel.com (HELO [10.124.221.39]) ([10.124.221.39])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 15:41:52 -0700
+Message-ID: <1b1b80e2-4f59-462e-96a9-546b1d7a7644@linux.intel.com>
+Date: Mon, 19 May 2025 15:41:50 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,25 +69,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250519111311.2390-6-wsa+renesas@sang-engineering.com>
-X-Spam-Status: No, score=-5.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 01/16] PCI/DPC: Initialize aer_err_info before using it
+To: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org
+Cc: Jon Pan-Doh <pandoh@google.com>,
+ Karolina Stolarek <karolina.stolarek@oracle.com>,
+ Martin Petersen <martin.petersen@oracle.com>,
+ Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>,
+ Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Lukas Wunner <lukas@wunner.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney" <paulmck@kernel.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>,
+ Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
+ Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
+References: <20250519213603.1257897-1-helgaas@kernel.org>
+ <20250519213603.1257897-2-helgaas@kernel.org>
+Content-Language: en-US
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20250519213603.1257897-2-helgaas@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Wolfram,
+Hi,
 
-On Mon, May 19, 2025 at 01:13:12PM +0200, Wolfram Sang wrote:
-> 'of_node' in i2c_boardinfo is deprecated in favor of 'fwnode'. The I2C
-> core handles them equally, so simply convert this driver to fwnode.
-> 
-> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+On 5/19/25 2:35 PM, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+>
+> Previously the struct aer_err_info "info" was allocated on the stack
 
-I took this patch in i2c/i2c-host. Please let me know if you want
-me to take also the others.
+/s/Previously/Currently ?
 
-Thanks,
-Andi
+> without being initialized, so it contained junk except for the fields we
+> explicitly set later.
+>
+> Initialize "info" at declaration so it starts as all zeroes.
+
+/s/zeroes/zeros
+
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+>
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> ---
+>   drivers/pci/pcie/dpc.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+> index df42f15c9829..fe7719238456 100644
+> --- a/drivers/pci/pcie/dpc.c
+> +++ b/drivers/pci/pcie/dpc.c
+> @@ -258,7 +258,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
+>   void dpc_process_error(struct pci_dev *pdev)
+>   {
+>   	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
+> -	struct aer_err_info info;
+> +	struct aer_err_info info = { 0 };
+>   
+>   	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
+>   	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
 
