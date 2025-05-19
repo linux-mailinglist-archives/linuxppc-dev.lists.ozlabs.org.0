@@ -1,78 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-8656-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8657-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3015DABB582
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 May 2025 09:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C8EABB6D9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 May 2025 10:14:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b17tn0KgJz2xfR;
-	Mon, 19 May 2025 17:03:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b19SP6Tqvz2xd4;
+	Mon, 19 May 2025 18:13:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747638192;
-	cv=none; b=D4tpWYVUVm7y9Vhd2mYc1axkUCcgPYlwD5PkiYglKIVwG9VbION2l0r1tBRJ01IaRP58L2dOCIVxtFjvUrnhX6/0jvRD7L/I84xvYaf8BlvZxX1yNPoiXsKFES31kFth1KMl/bn49pUNvu0s1YRU3Hh3R42Rwj/LjW/Ovb8j1+PeuGN6vGxCqcXGK6UVwN+JLeBONDjOrcyICwRY1E3wI4dq4zhdN4Q2ZG94Ooc7jT/hwaLuUVdAFT+QoSeW+7Xq6vhszhwOxawLsj+UJiSk5mh9ftBjwCkbzgQYmf3YICpieZJr+LhPjHnrLtYzNOyoVpJeFRGYVzPkgBD0RRhdGw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747642437;
+	cv=none; b=OXS5AT1DjhtotyuaIJkPK644eDr8o0m576Fca5M20Z/sMBndtOwA3Q0W3jbExT4PAbl3+dOvHY7t/BINqxNwS7GuUKCgeZ9QuUWl8JCSVDcl8MitWwlBMd2/R8NNCuLx9ZM+UiXdTRFIqtq4/Sw5MXrc2Zb2P5OAiR1mMKAObNtbMwcH0TUbQRULw1rNV4gXQnsfYmTTvDZudgxe//AaSaMRn8V1mhdM3WLBxhCibtq7/mLH3itRcsIajvTJv84Uugf4bGp927Et8MEeTqVsitjIx9m4ekEZTDhBh5qX4jwvub1ErtbYRI6ar+H1vkEUQTI7h2NioEcCyNgUVAu1zQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747638192; c=relaxed/relaxed;
-	bh=y3/oIT+7fToHoLwijovc0aOLEQZ5tehmZTiS/BaDnTg=;
+	t=1747642437; c=relaxed/relaxed;
+	bh=81MSjO1sHE2YfuqWDok69M/T/8z7rZ6g9u0DZWkIwK4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nVZstVX/RxoD41NuGHgQ4Y2PId1Bu2QBTgeFR+++LX+MQRWrIfJLgoYytaVVIWpuKmbCdztxbXBDuoOiDuQjmXbCUKR1VHDdrtJyv/HFW5wxY227BptVW8oK/MHcbaVYxpkTY3Ixw9k+rLXSuKKHh+Ovu4bXrVNIokVEGVA9hnAk7um9HK9WUQbzSWNQqgDCvzlmAiZOixuxcio89imQo//UZsB/1UdJKc1gBguRw+Wu3R5sOZd1kNevlRGMEn4P8B1Fy96gHN7uTTyDuCkTPEOHuX8HuXxQQuAIXpP0pEfxnLToOxxqpaSCf9qremQOncoiatwPzcqJyqCr4ujKQg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R3IZeoTN; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	 In-Reply-To:Content-Type; b=KBckawqP+C5//C64UgqYylVd3z7UbxwDwKhgqnF3nYaQzlKxUsxiNsNfxoHUg9QJc/wbBQ6L7JLFFdBhPWsTpSasviJeoh0FMHm1l9JPet6mm+3IsfHIj8l93EGWIyam7DLXY874uEecrkZBUOf4v8IHiunP254jhUryLXDKrHVtNnby3it2FDczTM+7oemUHLujoIaPRLztaDj6t/zB/o9MgRIsFXMKTknGQM4CeZEVOwLjpuNpjsr6I5Z4RebphMnhhbZOSY84GxuUQRMj7vWbuqJQzHaocbqtiJ2qLGgwnbZzgLyNGqSFtCAjw5kmR5XuUC5iY+b2vsmQd7m36w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b19xKsP1; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b19xKsP1; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=shahuang@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R3IZeoTN;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b19xKsP1;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b19xKsP1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=shahuang@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b17tl63m8z2xd5
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 May 2025 17:03:11 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54IIogTA023200;
-	Mon, 19 May 2025 07:02:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=y3/oIT
-	+7fToHoLwijovc0aOLEQZ5tehmZTiS/BaDnTg=; b=R3IZeoTN9ZAFb0GvYhV1V8
-	+EAriXaIysSTDXNp9G+QSSoiXD1zT0Tm5MzQcuEuuEiw75d0PWlrnrvDUxhWI//U
-	P0QEOkkLCqNWN/+46WOHb4g70DXDefYrOEQWWOuzAI9YQGUjlH9hUOv7uaPqWtbN
-	FDQFYsR1lapLFtP4WIWgIR1kqYNad1FSIs6YYrb8gIUbaQTA2oMdd88O1Kpz5ohH
-	Sn1ufPjOnqhd5cgpHr1unlAqIOpPn7BvMwI1uuSjie9XQUWHFcm7idRHPScRH7TI
-	eZ1ychHhFiiaKX70nUyR91sIJpiVOloSuKE54TSJspdF2dCy7gs2CDkkH2H2bLyA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46qn68j4r1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 May 2025 07:02:03 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54J6w6DT032240;
-	Mon, 19 May 2025 07:02:03 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46qn68j4qt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 May 2025 07:02:03 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54J5Klg1013843;
-	Mon, 19 May 2025 07:02:02 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 46q4st5mq9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 May 2025 07:02:01 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54J71wi439715182
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 May 2025 07:01:58 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1774A2018E;
-	Mon, 19 May 2025 07:01:58 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5F7BB2018D;
-	Mon, 19 May 2025 07:01:51 +0000 (GMT)
-Received: from [9.78.106.42] (unknown [9.78.106.42])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 19 May 2025 07:01:51 +0000 (GMT)
-Message-ID: <7c4086dc-210d-4f5f-b7ad-e3062c96290d@linux.ibm.com>
-Date: Mon, 19 May 2025 12:31:50 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b19SN3ww0z2xHY
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 May 2025 18:13:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747642429;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=81MSjO1sHE2YfuqWDok69M/T/8z7rZ6g9u0DZWkIwK4=;
+	b=b19xKsP1PAEX75FCU5+0/27LzLwxWysG3Y1SnoeyXEQRNv5aiXsE0Zi3ZqoLdhYT804BEO
+	Me2X4oauKUBT4rkqUpyMHwf8xGPstoAHlAO6E5UxNkje1988Bfyr9A0ecM/RSNWlS3PsnI
+	Xm2JoXXHOLFE40QZkH/xk680zYz2C+s=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747642429;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=81MSjO1sHE2YfuqWDok69M/T/8z7rZ6g9u0DZWkIwK4=;
+	b=b19xKsP1PAEX75FCU5+0/27LzLwxWysG3Y1SnoeyXEQRNv5aiXsE0Zi3ZqoLdhYT804BEO
+	Me2X4oauKUBT4rkqUpyMHwf8xGPstoAHlAO6E5UxNkje1988Bfyr9A0ecM/RSNWlS3PsnI
+	Xm2JoXXHOLFE40QZkH/xk680zYz2C+s=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-193-IxqndG61PfWg5t5Stfcq0w-1; Mon, 19 May 2025 04:13:48 -0400
+X-MC-Unique: IxqndG61PfWg5t5Stfcq0w-1
+X-Mimecast-MFC-AGG-ID: IxqndG61PfWg5t5Stfcq0w_1747642427
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-742a091d290so2672103b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 May 2025 01:13:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747642427; x=1748247227;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=81MSjO1sHE2YfuqWDok69M/T/8z7rZ6g9u0DZWkIwK4=;
+        b=LXH72P39dhICtgr6/xdeJsh2N5oQ9LkmQCC5H+TM4roCAk/nny9KNmdMaRnE2x1AeB
+         1rXfHQjvcuRZ/fmzodLAqzB07iPY6OhXGllG95fQZaZ56H7jy0EFxzJouueglZkn7yPH
+         M8roM8IBTEH/5/CPOwtA1bXwEZ1njnrsjBKQByO/SmtHVWHmlRohTVrSAvjUJrvNxTjM
+         wYJFEnolporJ9/HQ3RDOLkQ3j0EpOv5M8AmFEeDpknW1kzyJDyLTz3zcE3yHmmI+7N1O
+         G2Q66RxkuokzW/4kaDVmBCO9ytCsQYNH667/FmlXMnSLJnXCWHOKV9iJYzMtMC94nUGM
+         k/Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCX7JhqHFYyXNeMdRzCcYxh5l+m475U4AzWJmAsea/r2NlYtebeOt1G64IL1owHl9z10GphhbBMdTA7KNKI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwZXv9MKJdYcE4swATfARzZTPAvKLyzOZoucRPFSJgzEUy2cZRi
+	WLVfw8AV0xOii95c+U6zCIHl00FI0riqdUKobybuDiG+RgCx7OF6wiz1NkLJh+FyKUsMG9gzOMA
+	EYAp9qhQi99pCtjOE5eaMHc81Z9C5O0lPEWhYrSU/2qCUlub8ZUqS//Out06HXgVkxXY=
+X-Gm-Gg: ASbGncu1waRyPSS/CTLcq4UjWdxoUJOfMEb6K6Jbfi/pG/ShbUGRijXP5jJjlaoZpxs
+	EDctsL3/iFnhIPVVpu7oQUZRerPyBhVtR1xIa1Pz9VdNb2dUXBw4ZoRKwKRh6/1zNC8z+MESuBi
+	rpg2J+HWSZmy3vUx76at/Hyu0VkQOd0aShV8y0Q9X8y5GaR/5ubyYlndYJ1Jjr3DbPR8VhWuK0S
+	YUOzl5rkVa1AkxCUhvELddF2YRhgsfrwaAa+oLMrA0ZTpor20M2ulR281HN5Gs48y7Kc7Bda/bw
+	XUB6Ll8gOib9ohP7
+X-Received: by 2002:a05:6a21:7e86:b0:218:bbb:c13d with SMTP id adf61e73a8af0-2180bbbc1b0mr13503023637.13.1747642427128;
+        Mon, 19 May 2025 01:13:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKS9dBCdoBJSd2fsnxqZtqXXkuCdfx1TMqH+JdIVWuZzC6jtmWsd4CbKxNWoE3TDYRsqvBDg==
+X-Received: by 2002:a05:6a21:7e86:b0:218:bbb:c13d with SMTP id adf61e73a8af0-2180bbbc1b0mr13502979637.13.1747642426697;
+        Mon, 19 May 2025 01:13:46 -0700 (PDT)
+Received: from [10.72.116.146] ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a970b9c7sm5585368b3a.48.2025.05.19.01.13.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 May 2025 01:13:46 -0700 (PDT)
+Message-ID: <e90c3221-4a31-4c53-afb9-c2fcf09ae358@redhat.com>
+Date: Mon, 19 May 2025 16:13:35 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,335 +103,84 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v3 06/11] bpf, arm64, powerpc: Change nospec to
- include v1 barrier
-To: Luis Gerhorst <luis.gerhorst@fau.de>, Alexei Starovoitov
- <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau
- <martin.lau@linux.dev>,
-        Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-        Yonghong Song <yonghong.song@linux.dev>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Puranjay Mohan <puranjay@kernel.org>,
-        Xu Kuohai <xukuohai@huaweicloud.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, Mykola Lysenko <mykolal@fb.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Henriette Herzog <henriette.herzog@rub.de>,
-        Saket Kumar Bhaskar <skb99@linux.ibm.com>,
-        Cupertino Miranda <cupertino.miranda@oracle.com>,
-        Jiayuan Chen <mrpre@163.com>, Matan Shachnai <m.shachnai@gmail.com>,
-        Dimitar Kanaliev <dimitar.kanaliev@siteground.com>,
-        Shung-Hsi Yu <shung-hsi.yu@suse.com>, Daniel Xu <dxu@dxuuu.xyz>,
-        bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kselftest@vger.kernel.org
-Cc: Maximilian Ott <ott@cs.fau.de>, Milan Stephan <milan.stephan@fau.de>
-References: <20250501073603.1402960-1-luis.gerhorst@fau.de>
- <20250501073603.1402960-7-luis.gerhorst@fau.de>
+Subject: Re: [kvm-unit-tests PATCH v3 11/16] scripts: Add KVMTOOL environment
+ variable for kvmtool binary path
+To: Alexandru Elisei <alexandru.elisei@arm.com>, andrew.jones@linux.dev,
+ eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
+ frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
+ david@redhat.com, pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, will@kernel.org, julien.thierry.kdev@gmail.com,
+ maz@kernel.org, oliver.upton@linux.dev, suzuki.poulose@arm.com,
+ yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
+References: <20250507151256.167769-1-alexandru.elisei@arm.com>
+ <20250507151256.167769-12-alexandru.elisei@arm.com>
+From: Shaoqin Huang <shahuang@redhat.com>
+In-Reply-To: <20250507151256.167769-12-alexandru.elisei@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 9m2VhDU2WokeIGYRtH8WbFrmEhb5Vu-ZLSIh7cKsDwM_1747642427
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20250501073603.1402960-7-luis.gerhorst@fau.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: YfNBw6cUTfW--ihn52NKp9LklaLFXDyg
-X-Proofpoint-GUID: 18UaltY-KdDeNQRbMDElGC4QCxaD27zH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDA2MSBTYWx0ZWRfXywmgFHVkFuow rmbEzWcXS70QYVbU1kHQW08mSHjlmZ/bGcYvUYuSn20517eUw4dHGwj0219F+ttn58l0y0cI3nG h8NA9Qtk46CLHS9PKcwnYP7UGOCbDTGGbyUWEa4F0qPj2zasx8/FLTXyi6i1LzufGJe7EfSx1ea
- Q6reUba/B3kQY8AYc6gkosWPZtFYujV8vP7Ps6OzCOzHbLjllJe99sGByrfVEXEnoaTrmrSKEk9 nezHK0eNKWCEKCDOQwqTUlsQdUfeXYqKrIvdwRDNMM7xX8prC5LAp+fKzl5wdBYpHhOzYXLhxW1 cif5WZ+n0OHX29+ZYbzfQIRmsweVNPRXMmGVgP3OliuHhYH4uE+oOta9Mgf/0EezSjOw8WKH5tw
- clm8VHp83xZ+2UePHjJX8XWBViBrVstqflm8UfJ5/HM4Kxgbhocc16kU1PmDd6qU+a9CPaqq
-X-Authority-Analysis: v=2.4 cv=CN4qXQrD c=1 sm=1 tr=0 ts=682ad76b cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=mDV3o1hIAAAA:8 a=NEAV23lmAAAA:8 a=VnNF1IyMAAAA:8 a=cH2_UEqIt_luvVCa7oAA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-19_02,2025-05-16_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- suspectscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0 mlxscore=0
- lowpriorityscore=0 bulkscore=0 clxscore=1015 malwarescore=0 phishscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2505070000
- definitions=main-2505190061
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 
-On 01/05/25 1:05 pm, Luis Gerhorst wrote:
-> This changes the semantics of BPF_NOSPEC (previously a v4-only barrier)
-> to always emit a speculation barrier that works against both Spectre v1
-> AND v4. If mitigation is not needed on an architecture, the backend
-> should set bpf_jit_bypass_spec_v4/v1().
+On 5/7/25 11:12 PM, Alexandru Elisei wrote:
+> kvmtool is often used for prototyping new features, and a developer might
+> not want to install it system-wide. Add a KVMTOOL environment variable to
+> make it easier for tests to use a binary not in $PATH.
 > 
-> As of now, this commit only has the user-visible implication that unpriv
-> BPF's performance on PowerPC is reduced. This is the case because we
-> have to emit additional v1 barrier instructions for BPF_NOSPEC now.
-> 
-> This commit is required for a future commit to allow us to rely on
-> BPF_NOSPEC for Spectre v1 mitigation. As of this commit, the feature
-> that nospec acts as a v1 barrier is unused.
-> 
-> Commit f5e81d111750 ("bpf: Introduce BPF nospec instruction for
-> mitigating Spectre v4") noted that mitigation instructions for v1 and v4
-> might be different on some archs. While this would potentially offer
-> improved performance on PowerPC, it was dismissed after the following
-> considerations:
-> 
-> * Only having one barrier simplifies the verifier and allows us to
->    easily rely on v4-induced barriers for reducing the complexity of
->    v1-induced speculative path verification.
+> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
 
-Fair enough..
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
 
-> 
-> * For the architectures that implemented BPF_NOSPEC, only PowerPC has
->    distinct instructions for v1 and v4. Even there, some insns may be
->    shared between the barriers for v1 and v4 (e.g., 'ori 31,31,0' and
->    'sync'). If this is still found to impact performance in an
->    unacceptable way, BPF_NOSPEC can be split into BPF_NOSPEC_V1 and
->    BPF_NOSPEC_V4 later. As an optimization, we can already skip v1/v4
->    insns from being emitted for PowerPC with this setup if
->    bypass_spec_v1/v4 is set.
-
-Yeah, agreed.
-For the powerpc changes..
-
-Acked-by: Hari Bathini <hbathini@linux.ibm.com>
-
-> 
-> Vulnerability-status for BPF_NOSPEC-based Spectre mitigations (v4 as of
-> this commit, v1 in the future) is therefore:
-> 
-> * x86 (32-bit and 64-bit), ARM64, and PowerPC (64-bit): Mitigated - This
->    patch implements BPF_NOSPEC for these architectures. The previous
->    v4-only version was supported since commit f5e81d111750 ("bpf:
->    Introduce BPF nospec instruction for mitigating Spectre v4") and
->    commit b7540d625094 ("powerpc/bpf: Emit stf barrier instruction
->    sequences for BPF_NOSPEC").
-> 
-> * LoongArch: Not Vulnerable - Commit a6f6a95f2580 ("LoongArch, bpf: Fix
->    jit to skip speculation barrier opcode") is the only other past commit
->    related to BPF_NOSPEC and indicates that the insn is not required
->    there.
-> 
-> * MIPS: Vulnerable (if unprivileged BPF is enabled) -
->    Commit a6f6a95f2580 ("LoongArch, bpf: Fix jit to skip speculation
->    barrier opcode") indicates that it is not vulnerable but this
->    contradicts the kernel and Debian documentation. Therefore I assume
->    that there exist vulnerable MIPS CPUs (but maybe not from Loongson?).
->    In the future, BPF_NOSPEC could be implemented for MIPS based on the
->    GCC speculation_barrier [1]. For now, we rely on unprivileged BPF
->    being disabled by default.
-> 
-> * Other: Unknown - To the best of my knowledge there is no definitive
->    information available that indicates that any other arch is
->    vulnerable. They are therefore left untouched (BPF_NOSPEC is not
->    implemented, but bypass_spec_v1/v4 is also not set).
-> 
-> I did the following testing to ensure the insn encoding is correct:
-> 
-> * ARM64:
->    * 'dsb nsh; isb' was successfully tested with the BPF CI in [2]
->    * 'sb' locally using QEMU v7.2.15 -cpu max (emitted sb insn is
->      executed for example with './test_progs -t verifier_array_access')
-> 
-> * PowerPC: The following configs were tested locally with ppc64le QEMU
->    v8.2 '-machine pseries -cpu POWER9':
->    * STF_BARRIER_EIEIO + CONFIG_PPC_BOOK32_64
->    * STF_BARRIER_SYNC_ORI (forced on) + CONFIG_PPC_BOOK32_64
->    * STF_BARRIER_FALLBACK (forced on) + CONFIG_PPC_BOOK32_64
->    * CONFIG_PPC_E500 (forced on) + STF_BARRIER_EIEIO
->    * CONFIG_PPC_E500 (forced on) + STF_BARRIER_SYNC_ORI (forced on)
->    * CONFIG_PPC_E500 (forced on) + STF_BARRIER_FALLBACK (forced on)
->    * CONFIG_PPC_E500 (forced on) + STF_BARRIER_NONE (forced on)
->    Most of those cobinations should not occur in practice, but I was not
->    able to get an PPC e6500 rootfs (for testing PPC_E500 without forcing
->    it on). In any case, this should ensure that there are no unexpected
->    conflicts between the insns when combined like this. Individual v1/v4
->    barriers were already emitted elsewhere.
-> 
-> [1] https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=29b74545531f6afbee9fc38c267524326dbfbedf
->      ("MIPS: Add speculation_barrier support")
-> [2] https://github.com/kernel-patches/bpf/pull/8576
-> 
-> Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
-> Cc: Henriette Herzog <henriette.herzog@rub.de>
-> Cc: Maximilian Ott <ott@cs.fau.de>
-> Cc: Milan Stephan <milan.stephan@fau.de>
 > ---
->   arch/arm64/net/bpf_jit.h          |  5 +++
->   arch/arm64/net/bpf_jit_comp.c     |  9 +++--
->   arch/powerpc/net/bpf_jit_comp64.c | 59 ++++++++++++++++++++++---------
->   include/linux/filter.h            |  2 +-
->   kernel/bpf/core.c                 | 17 ++++-----
->   5 files changed, 65 insertions(+), 27 deletions(-)
+>   run_tests.sh          | 1 +
+>   scripts/arch-run.bash | 3 ++-
+>   2 files changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/arm64/net/bpf_jit.h b/arch/arm64/net/bpf_jit.h
-> index a3b0e693a125..bbea4f36f9f2 100644
-> --- a/arch/arm64/net/bpf_jit.h
-> +++ b/arch/arm64/net/bpf_jit.h
-> @@ -325,4 +325,9 @@
->   #define A64_MRS_SP_EL0(Rt) \
->   	aarch64_insn_gen_mrs(Rt, AARCH64_INSN_SYSREG_SP_EL0)
+> diff --git a/run_tests.sh b/run_tests.sh
+> index dd9d27377905..150a06a91064 100755
+> --- a/run_tests.sh
+> +++ b/run_tests.sh
+> @@ -36,6 +36,7 @@ The following environment variables are used:
+>       TIMEOUT         Timeout duration for the timeout(1) command
+>       CHECK           Overwrites the 'check' unit test parameter (see
+>                       docs/unittests.txt)
+> +    KVMTOOL         Path to kvmtool binary for ARCH-run
+>   EOF
+>   }
 >   
-> +/* Barriers */
-> +#define A64_SB aarch64_insn_get_sb_value()
-> +#define A64_DSB_NSH (aarch64_insn_get_dsb_base_value() | 0x7 << 8)
-> +#define A64_ISB aarch64_insn_get_isb_value()
-> +
->   #endif /* _BPF_JIT_H */
-> diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
-> index 0f617b55866e..ccd6a2f31e35 100644
-> --- a/arch/arm64/net/bpf_jit_comp.c
-> +++ b/arch/arm64/net/bpf_jit_comp.c
-> @@ -1581,9 +1581,14 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx,
->   			return ret;
->   		break;
->   
-> -	/* speculation barrier */
-> +	/* speculation barrier against v1 and v4 */
->   	case BPF_ST | BPF_NOSPEC:
-> -		/* See bpf_jit_bypass_spec_v4() */
-> +		if (alternative_has_cap_likely(ARM64_HAS_SB)) {
-> +			emit(A64_SB, ctx);
-> +		} else {
-> +			emit(A64_DSB_NSH, ctx);
-> +			emit(A64_ISB, ctx);
-> +		}
->   		break;
->   
->   	/* ST: *(size *)(dst + off) = imm */
-> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-> index b5339c541283..16d57bce6ddc 100644
-> --- a/arch/powerpc/net/bpf_jit_comp64.c
-> +++ b/arch/powerpc/net/bpf_jit_comp64.c
-> @@ -407,6 +407,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
->   		       u32 *addrs, int pass, bool extra_pass)
+> diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
+> index 8cf67e4f3b51..d4fc7116abbe 100644
+> --- a/scripts/arch-run.bash
+> +++ b/scripts/arch-run.bash
+> @@ -372,7 +372,7 @@ search_kvmtool_binary ()
 >   {
->   	enum stf_barrier_type stf_barrier = stf_barrier_type_get();
-> +	bool sync_emitted, ori31_emitted;
->   	const struct bpf_insn *insn = fp->insnsi;
->   	int flen = fp->len;
->   	int i, ret;
-> @@ -800,26 +801,52 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>   	local kvmtoolcmd kvmtool
 >   
->   		/*
->   		 * BPF_ST NOSPEC (speculation barrier)
-> +		 *
-> +		 * The following must act as a barrier against both Spectre v1
-> +		 * and v4 if we requested both mitigations. Therefore, also emit
-> +		 * 'isync; sync' on E500 or 'ori31' on BOOK3S_64 in addition to
-> +		 * the insns needed for a Spectre v4 barrier.
-> +		 *
-> +		 * If we requested only !bypass_spec_v1 OR only !bypass_spec_v4,
-> +		 * we can skip the respective other barrier type as an
-> +		 * optimization.
->   		 */
->   		case BPF_ST | BPF_NOSPEC:
-> -			switch (stf_barrier) {
-> -			case STF_BARRIER_EIEIO:
-> -				EMIT(PPC_RAW_EIEIO() | 0x02000000);
-> -				break;
-> -			case STF_BARRIER_SYNC_ORI:
-> +			sync_emitted = false;
-> +			ori31_emitted = false;
-> +#ifdef CONFIG_PPC_E500
-> +			if (!bpf_jit_bypass_spec_v1()) {
-> +				EMIT(PPC_RAW_ISYNC());
->   				EMIT(PPC_RAW_SYNC());
-> -				EMIT(PPC_RAW_LD(tmp1_reg, _R13, 0));
-> -				EMIT(PPC_RAW_ORI(_R31, _R31, 0));
-> -				break;
-> -			case STF_BARRIER_FALLBACK:
-> -				ctx->seen |= SEEN_FUNC;
-> -				PPC_LI64(_R12, dereference_kernel_function_descriptor(bpf_stf_barrier));
-> -				EMIT(PPC_RAW_MTCTR(_R12));
-> -				EMIT(PPC_RAW_BCTRL());
-> -				break;
-> -			case STF_BARRIER_NONE:
-> -				break;
-> +				sync_emitted = true;
-> +			}
-> +#endif
-> +			if (!bpf_jit_bypass_spec_v4()) {
-> +				switch (stf_barrier) {
-> +				case STF_BARRIER_EIEIO:
-> +					EMIT(PPC_RAW_EIEIO() | 0x02000000);
-> +					break;
-> +				case STF_BARRIER_SYNC_ORI:
-> +					if (!sync_emitted)
-> +						EMIT(PPC_RAW_SYNC());
-> +					EMIT(PPC_RAW_LD(tmp1_reg, _R13, 0));
-> +					EMIT(PPC_RAW_ORI(_R31, _R31, 0));
-> +					ori31_emitted = true;
-> +					break;
-> +				case STF_BARRIER_FALLBACK:
-> +					ctx->seen |= SEEN_FUNC;
-> +					PPC_LI64(_R12, dereference_kernel_function_descriptor(bpf_stf_barrier));
-> +					EMIT(PPC_RAW_MTCTR(_R12));
-> +					EMIT(PPC_RAW_BCTRL());
-> +					break;
-> +				case STF_BARRIER_NONE:
-> +					break;
-> +				}
->   			}
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +			if (!bpf_jit_bypass_spec_v1() && !ori31_emitted)
-> +				EMIT(PPC_RAW_ORI(_R31, _R31, 0));
-> +#endif
->   			break;
+> -	for kvmtoolcmd in lkvm vm lkvm-static; do
+> +	for kvmtoolcmd in ${KVMTOOL:-lkvm vm lkvm-static}; do
+>   		if "$kvmtoolcmd" --help 2>/dev/null| grep -q 'The most commonly used'; then
+>   			kvmtool="$kvmtoolcmd"
+>   			break
+> @@ -381,6 +381,7 @@ search_kvmtool_binary ()
 >   
->   		/*
-> diff --git a/include/linux/filter.h b/include/linux/filter.h
-> index f5cf4d35d83e..eca229752cbe 100644
-> --- a/include/linux/filter.h
-> +++ b/include/linux/filter.h
-> @@ -82,7 +82,7 @@ struct ctl_table_header;
->   #define BPF_CALL_ARGS	0xe0
+>   	if [ -z "$kvmtool" ]; then
+>   		echo "A kvmtool binary was not found." >&2
+> +		echo "You can set a custom location by using the KVMTOOL=<path> environment variable." >&2
+>   		return 2
+>   	fi
 >   
->   /* unused opcode to mark speculation barrier for mitigating
-> - * Speculative Store Bypass
-> + * Spectre v1 and v4
->    */
->   #define BPF_NOSPEC	0xc0
->   
-> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-> index 804f1e52bfa3..fe16be379bf4 100644
-> --- a/kernel/bpf/core.c
-> +++ b/kernel/bpf/core.c
-> @@ -2102,14 +2102,15 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
->   #undef COND_JMP
->   	/* ST, STX and LDX*/
->   	ST_NOSPEC:
-> -		/* Speculation barrier for mitigating Speculative Store Bypass.
-> -		 * In case of arm64, we rely on the firmware mitigation as
-> -		 * controlled via the ssbd kernel parameter. Whenever the
-> -		 * mitigation is enabled, it works for all of the kernel code
-> -		 * with no need to provide any additional instructions here.
-> -		 * In case of x86, we use 'lfence' insn for mitigation. We
-> -		 * reuse preexisting logic from Spectre v1 mitigation that
-> -		 * happens to produce the required code on x86 for v4 as well.
-> +		/* Speculation barrier for mitigating Speculative Store Bypass,
-> +		 * Bounds-Check Bypass and Type Confusion. In case of arm64, we
-> +		 * rely on the firmware mitigation as controlled via the ssbd
-> +		 * kernel parameter. Whenever the mitigation is enabled, it
-> +		 * works for all of the kernel code with no need to provide any
-> +		 * additional instructions here. In case of x86, we use 'lfence'
-> +		 * insn for mitigation. We reuse preexisting logic from Spectre
-> +		 * v1 mitigation that happens to produce the required code on
-> +		 * x86 for v4 as well.
->   		 */
->   		barrier_nospec();
->   		CONT;
+
+-- 
+Shaoqin
 
 
