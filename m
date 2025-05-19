@@ -1,41 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-8671-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8672-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F950ABC10B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 May 2025 16:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99741ABC11A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 May 2025 16:42:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1L2G0MzMz2xPc;
-	Tue, 20 May 2025 00:40:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1L4F39lpz2xRv;
+	Tue, 20 May 2025 00:42:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=117.135.210.3
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747665621;
-	cv=none; b=GvwEaNfAEdrEDvOzSQrray6nr3p/9y2Qn3LxQn2CJh+EsuridovSKIBM6aMjm7puHfqNuBLxm/ITOPZzkp0Ho1BvB8AqR2r86seO2cKjfdTzXgveF30vNwLQJGbMIlcZ8VZ+Nv/JUBoGuxl5VTy+pxXHgqgAsBofDejwPaC78L0uQ9u7vu/VhlVYn2oXZe7OO+K0XJCqc7GAp3b9yFfMwfI6LAyfRuenP4eHYlDigWrO9xrhvItFrjHmHI/bchLDgzG2XxzaWiPugfDHMUsa/UyPMukD5zph9HrzlBeb1QqrrCPLIIaIAGKFljvtdRinSU90F5/YBU/F/jQ7YT/Peg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=117.135.210.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747665725;
+	cv=none; b=MWwbMNjBVvfr6tYiXJcSHEhoLywxMg+IHFcJMS141XVfhfHjRm7A+UpB7FjF+HC8DPuvdVeBUv0sewO0ERmZmnshtyxXmKVUxQHjYaZXMBbE4JTkTNOQ4QbrwAz8RNMqf235PJicyQPDCowK4mXIv8rkXmBjzBbmkKzQx+F1IaWyYUNt51ZBH96WRIYZR8VmfjHnNj//uepKtUvKk+d6AVfiAyymeqqxe5W3QvPva7vWR6AE+L4IU27slhRhLxcQD+WvkoZYpJbv6OoDxT9KM3T/i1Io2Y2YtBzOiq8O8tHxP1Kx6ICmO6li7zT0o6II7ewKVPdg3hH0Wf4oUGVwEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747665621; c=relaxed/relaxed;
-	bh=AntKYH1ZwZOest/SN1xkVuvvLJOxFubIGIo8RltCreo=;
+	t=1747665725; c=relaxed/relaxed;
+	bh=+bDEs4YvFGFvsVERzFVHp93VMAxXcdRq+jn9IvMHqRw=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=VYsu54LMligwcsJWCmQJj5CDHBvn8zRFVGE5qbludxNPVXP7KbNEYDfQoV2nUw4UFm8kjKm9OEJ/zqa0oYkHW8vKUGLzbL+auJg+y2RkixHNG+5Q6YCdDBNbYqHCyYdvUVcBhii5kIMVaCz06jvXG3Xqb8768Fv3CHaqqt++vKzSxXD61Sa0T0xFPLiS6J83vtTlq+GA1ZnvklKpPaCTCDtTR2dt2REua3SaltfIQJkQk9aUF390k4ZwFkBwckDR9BhfCcbebo+XU1vd+TeGMkbxp+TqnV65VIelNiXyc5K+kWanfVOcTvyO8zzZP4l0dKYd+GK36ANO3ALr9OWgyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ftzeb1H+; dkim-atps=neutral; spf=pass (client-ip=117.135.210.3; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
+	 In-Reply-To:Content-Type; b=djKlfMiHojkmsxklioypXLNcgaEX/U5X1dT1Rcu/LRvHXFJUvBFsjRvRq/VgbiE2nB0n5OUFGF98+qGNAGEP+/PyuL9dVSy2UIAnqWbYFEctRRH4XXngc4SWM/xbwpnXlyPtpNC/nMb81yKg8LNl24BIgyTu4EhY7p5O71BNrQ9Yk299RA2zl1pjNgaQ0xPwx+MRR1Ubq0ABGdEzFNphOa4XiaSTXHucW3FI+VyGGtEeLE1Y7m3V+CLF9Of8EasMBwI2ZznfvkZE35he7124Hm4UCdHPaWY7hTWwj9oOF3luQMXT8kMaISO7I+Iqf0YpReLzh+HrseegtnJCbg/TiA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Fl3xvs8S; dkim-atps=neutral; spf=pass (client-ip=117.135.210.5; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=ftzeb1H+;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=Fl3xvs8S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=117.135.210.3; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org)
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1L2C21FHz2xBb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 00:40:16 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=117.135.210.5; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org)
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1L4D0szyz2xBb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 00:42:01 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
 	s=s110527; h=Message-ID:Date:MIME-Version:Subject:From:To:
-	Content-Type; bh=AntKYH1ZwZOest/SN1xkVuvvLJOxFubIGIo8RltCreo=;
-	b=ftzeb1H+0uTdhT6UuNoZVvK9VHRpz8MvCA9PXsLsdZQQcNLR5LOcw0GuXR73qN
-	Uth9YEhGeszNDlYKH3RYLPCyQoAS+0Hyq9P4UXQJ0ptT3/tOKIubywj4ZwTF4KIl
-	4z0H6dzA/mpBrD75lk/FzZbzyeLcUPyZEs9DwSj9yXnI8=
+	Content-Type; bh=+bDEs4YvFGFvsVERzFVHp93VMAxXcdRq+jn9IvMHqRw=;
+	b=Fl3xvs8SvCi4Zhs3rMFvVXx3NsYnUHeww1T5Sd97BYxRIlwVUhBWe8IKWrHOxd
+	4yvmZZVKUJD8MQ2WoeD3aiCt99fhrpUkpPRUfodCoN9xHplfOC5t9wu46gYWUarP
+	bLH6qbTSZaF+QBXqNBwwSYzPJ2hlkbCgnrk/niP8TcX48=
 Received: from [192.168.71.93] (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3526nQitoFe1UCg--.45396S2;
-	Mon, 19 May 2025 22:39:36 +0800 (CST)
-Message-ID: <ca5a4b17-d784-408d-a894-09e282751f99@163.com>
-Date: Mon, 19 May 2025 22:39:35 +0800
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wD31xYTQytocPGwCg--.349S2;
+	Mon, 19 May 2025 22:41:24 +0800 (CST)
+Message-ID: <e6ad7ef5-de9c-49bc-9882-5e97bd549168@163.com>
+Date: Mon, 19 May 2025 22:41:23 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,13 +64,13 @@ Content-Language: en-US
 In-Reply-To: <8434dc81-5d2d-4ce1-ab73-ca1cf16cb550@163.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3526nQitoFe1UCg--.45396S2
+X-CM-TRANSID:_____wD31xYTQytocPGwCg--.349S2
 X-Coremail-Antispam: 1Uf129KBjvJXoW3Ww4UJr4kAw13XFy5try7KFg_yoW7tF4kpa
 	yrGa1YkrWkGF92van2k3WIqFyYyas3t345WrykGw13XFnIvFyjqrWSvFWYkFZIgrZYgw45
 	ZrW0v347Wrn8AF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U15l8UUUUU=
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UjiihUUUUU=
 X-Originating-IP: [124.79.128.52]
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbBDw1So2grQqIAxAAAsU
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/1tbiWwZSo2grPXGRfAAAsO
 X-Spam-Status: No, score=0.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
 	FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,
@@ -125,6 +125,7 @@ On 2025/5/19 22:21, Hans Zhang wrote:
 > For the specific code of Qualcomm, please refer to the email I sent.
 > 
 
+
 Dear Sathyanarayanan,
 
 Supplementary reasons:
@@ -152,6 +153,7 @@ http://radxa.com/products/orion/o6/
 
 Best regards,
 Hans
+
 > 
 >>>
 >>> Problem Statement
