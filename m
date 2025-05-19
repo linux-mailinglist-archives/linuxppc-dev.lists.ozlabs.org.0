@@ -1,60 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-8663-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8662-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D959ABBC31
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 May 2025 13:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75750ABBC30
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 19 May 2025 13:20:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1FbF0Wzcz2xHp;
-	Mon, 19 May 2025 21:20:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1FbD74Csz2xBV;
+	Mon, 19 May 2025 21:20:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.117.254.33
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747653608;
-	cv=none; b=icKj0dzs/uauZWPHsZAI4hB7hOINIlB148Yz7wmRclGmmPns/rB19h4UDehW8Lb58XbD8y0HIn7UpL9all0skn7yIzF05cl1JlC5ZKBmaQJTnjF6uNb8pXNVjjBZlDeTPpBEGt51qz26wHRRDEuHnSNQRWZ/nDPznR6guq7QTSPcEilgUTzrUZnIByvN3MowYPJiE6rqqtkOEDdkDSebYnk2jhtssg2zfe03wZV56lwcflgVqMvx0j3bX2RINzzsAp0AFNEUmU0u3Ej1lhoGv49zR6OAld640fUr51jwfWsjyH6WkA+eo/p2BjA1wb1tpTPzF6+sAnb5h0k/RDNTWQ==
+	cv=none; b=bF603TCSKZlUe1Bfy006A4S2IJMuOCPB8Dj4fP7GajYV0aYeVeFnsdQMtyJ26VdUc9xA2n/rMizehnoD2bKBglcKriIoPAjeDyxYgBsU87eAjdTX6bCM38ZVjY9sctS50uEa84pWzkS6fyMV85vhZxc4JJl/ll6ioVTzR84ZKvUvlZBNO3i8LYLYE580DWl0aVY03nM3uob83cm+bIsimVJO8oGAlM7bfU8Bk+pOEeYIIUwp58IaM3yRsGr3fqvpVxtYOqg14aY7+7+IDWzVFgDVE7VVjXHGajjLkw9miwg85xLQxLsAvUq2nGPlpsc3Urghm3hJAcBR80lft5SYag==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1747653608; c=relaxed/relaxed;
-	bh=u4FUECbzDmIe3Lq56KAKS2ibAoxZD68pfZmiEnSX4r0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DA0eRbk+JDjh7VD/Hr65S7Te1dku5lYkMKffUUTOFf76aTqkxpC/kvsGN4dakT+lgP1IJff19U+ynmLW8Tcl0qL0J+MIXf9KYzOwhqVYA/AIJuRtMWjarH0jtVYTUtg7+Cep4Yy55bO5TOmeskOJYvvMyE3kM6g0hDYqc4+7XS5K2Da6Xmfx/m6xG0NI40id9V6xtSyOv6wEOG2WX18hJtH+EQnXUHON1Awgi7e6EF04V2XEQvC75eiT1OMCKve2t36Sbx2i+MCt6fMGU/NOMnmD9OPxzyr2EWhOGo78iKLicF2BoeCgewT1W73Uk+emp0p6rogcmnIatvXnd2V6vg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=iG4cuQcs; dkim-atps=neutral; spf=pass (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=sang-engineering.com
+	bh=Pg/h+3AUuXh+Lp//vEQMpLvp/Pda67WjMagYQLQYIHw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cA0BFYZQfENCX9pGf35GJy/7rVI8ObUub+Yx6wXpMVgMLJQEirJRpUqiSblT2WFcVsDPh0GARUG9hOZ+dpMZW2G1nPTR/q8cLgM6YexhNPDsB7u8xTY18AIwgn7VrkdE8TRDe/AlVurd01HeW33ElbIFMsWa215tX8chKdj0Cvf9Eed62kZ/wTSNrOBV/aALBDHs7s2EhMHIsuZgEjbTJ3uWHdFrtserW39Q7Mf6dmoS5IWGeCfuHg1dIBRsQPTe6rMGDSVPBADk8RO38s8/GlZP0vQXhqx6rwu+k8fVK4nKu85+DLPW1+ow/SM8lEP+iIu6POdJ6tC4KFkNJDMktw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=FlgA5dG8; dkim-atps=neutral; spf=pass (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=sang-engineering.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=iG4cuQcs;
+	dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=FlgA5dG8;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sang-engineering.com (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 396 seconds by postgrey-1.37 at boromir; Mon, 19 May 2025 21:20:04 AEST
 Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1Fb82cZSz2ygm
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1Fb843Ftz2ygn
 	for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 May 2025 21:20:04 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:mime-version:content-transfer-encoding; s=k1; bh=u4FUECbzDmIe3L
-	q56KAKS2ibAoxZD68pfZmiEnSX4r0=; b=iG4cuQcs/I++nbDfxXwAzfpGjjFXGA
-	uhCiMjXr3CYo9ts4yINOQj+6nQm/KRk1FZguZgapMNitxoEaPKIWqHWMJ6GqKyGp
-	6sS0/klxjzaRdeIx2uBjE5KGrbeofS4VY6TG192G70o45wbdQqKihQxXr4qXciNX
-	3MQEpVoxleIDUYMeSittfiV+Anb8Ge9yJ0PnXWddXB5P7mCkVDkte41gGR9mxYjS
-	ZUakxFp4gJhwY7rwdwGUHFfMi969sojBirEmxcvSYvZoEs0A9ZZgz6H3UhbJHAMx
-	0R1zF2iTWmbBmgw9b0cJRfu4SqcDWFs1Pwg3ndrAm9uN2wJ9ji3wiMRg==
-Received: (qmail 2453668 invoked from network); 19 May 2025 13:13:20 +0200
-Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 19 May 2025 13:13:20 +0200
-X-UD-Smtp-Session: l3s3148p1@qUchOHs1dstZz6+V
+	:in-reply-to:references:mime-version:content-transfer-encoding;
+	 s=k1; bh=Pg/h+3AUuXh+Lp//vEQMpLvp/Pda67WjMagYQLQYIHw=; b=FlgA5d
+	G8GgeflPZkA3xueZMltVQcJhbp0y8nMWJgZ3oNs6jLij1j5LdEDjvj+BvITOrNa6
+	rNNdINIX0aIGFIkDrYKLy29isibdUvofLEdqu1Eucx9GawQFTpqZz+BFa8UDM1Hv
+	xCrX4SKz9V46cFD3s9IdtbPOG+D95OrHU+Rq7tMLertpU4PVjCJ/eRHwAgcP8cbm
+	m2YNGJLellYWSgvYk/9CwoAUImH/xPqpNS9kelaph2PsRvwtZSMpbzTG05W53skF
+	tNnO6rVSwliO6kkv8iF21N1+Lq+BoovqRY5zTmDM662HQV3JqtTQbo+udRBGLT3Q
+	8mBVy0hFBbFc1EAA==
+Received: (qmail 2453716 invoked from network); 19 May 2025 13:13:21 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 19 May 2025 13:13:21 +0200
+X-UD-Smtp-Session: l3s3148p1@q6k3OHs1estZz6+V
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 To: linux-i2c@vger.kernel.org
 Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Andi Shyti <andi.shyti@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linuxppc-dev@lists.ozlabs.org,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH 0/3] i2c: remove 'of_node' from i2c_board_info
-Date: Mon, 19 May 2025 13:13:11 +0200
-Message-ID: <20250519111311.2390-5-wsa+renesas@sang-engineering.com>
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/3] i2c: powermac: convert of_node usage to fwnode
+Date: Mon, 19 May 2025 13:13:12 +0200
+Message-ID: <20250519111311.2390-6-wsa+renesas@sang-engineering.com>
 X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250519111311.2390-5-wsa+renesas@sang-engineering.com>
+References: <20250519111311.2390-5-wsa+renesas@sang-engineering.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,22 +78,27 @@ X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-I promised Andy to support him in his cleanup efforts, and here is the
-outcome for tidying up i2c_board_info. It seems it was easier than
-anticipated. But my scanning scripts (awk, coccinelle) didn't find any
-more occurences and the build bots are happy, too. It really seems this
-is all that is left to do. No complaint, though.
+'of_node' in i2c_boardinfo is deprecated in favor of 'fwnode'. The I2C
+core handles them equally, so simply convert this driver to fwnode.
 
-Wolfram Sang (3):
-  i2c: powermac: convert of_node usage to fwnode
-  i2c: use only 'fwnode' for client devices
-  i2c: remove 'of_node' member from i2c_boardinfo
-
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
  drivers/i2c/busses/i2c-powermac.c | 2 +-
- drivers/i2c/i2c-core-base.c       | 3 +--
- include/linux/i2c.h               | 2 --
- 3 files changed, 2 insertions(+), 5 deletions(-)
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/i2c/busses/i2c-powermac.c b/drivers/i2c/busses/i2c-powermac.c
+index 9a867c817db0..f99a2cc721a8 100644
+--- a/drivers/i2c/busses/i2c-powermac.c
++++ b/drivers/i2c/busses/i2c-powermac.c
+@@ -349,7 +349,7 @@ static void i2c_powermac_register_devices(struct i2c_adapter *adap,
+ 		/* Fill out the rest of the info structure */
+ 		info.addr = addr;
+ 		info.irq = irq_of_parse_and_map(node, 0);
+-		info.of_node = of_node_get(node);
++		info.fwnode = of_fwnode_handle(of_node_get(node));
+ 
+ 		newdev = i2c_new_client_device(adap, &info);
+ 		if (IS_ERR(newdev)) {
 -- 
 2.47.2
 
