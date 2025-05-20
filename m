@@ -1,67 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-8725-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8727-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592BBABD50C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 12:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB745ABD51E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 12:35:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1rW51mSwz30Ss;
-	Tue, 20 May 2025 20:33:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1rXt5PJ9z2xHZ;
+	Tue, 20 May 2025 20:35:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747737217;
-	cv=none; b=mhMNVEK/Jq7PvA6V4JrOVRp723quYUrhHZGQ3WUI7gUnksw7wSS+tQeWkdBhpjzo7LSorZdkDp9FlCwtdmLZhxc9FyUX9G69peNQXWywmx1+ZPi+KJzzVjX4UpxEsd2PTBMaI1TS4FBkuaqGJDNoYGYy3BKVvbSh1RqmV1n+5E3kLLYQFBSjfGqteY0W/dKNJz5/NAkRoyGqYJXuV+usx1ILalTkLcwWNcF9zZdu1KQkGffNZPO6tkdyLuEQ6fzFzJIOQhmAOEAki4iNYdomEIv6jFlskHhga/IJsm1Tg47Wubd1JLXVxyyqH/rkXrMzMHJ75KBWLyTmlPKpq2XUKQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747737310;
+	cv=none; b=mTHZZm2Uyz+7pSoJTwkwRWLn+69A2vb/PthONoIL4huZp8WImr2L/tm/w4Lrf1aFXi3UGGlKwm5/mfsxIUiLddywC48rnzWSu0bGNemY8PMaNjYdzvZ5txWHV1eFMac5sqzVnr8vSn/073JdsJ0UCyI6JAdiU/dhn1mB+kczznixilBNXkDDtIu1eMAk1qsTM+Ju1dwv9SZ3OFO8W2Z+pUioUaOfL+HXs2DlRUssprnaehXB3yXc2R4L1rcJ0RTihixgrjPqJC0CVaPMzyen4J/D1M9WbodO/nsSso10ilx7WG96WqIkw1HZzvg6V7lV9V3oj0cZM/2YG+jPUpsRAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747737217; c=relaxed/relaxed;
-	bh=aUCTBCQfOEHV40u8HHArvvx1Eq06ZVtrEqYZSGyNFMM=;
+	t=1747737310; c=relaxed/relaxed;
+	bh=2kAOG7dleUdw+YvBjz6Xb/4pVkL2zx0+4xAe2V2OVz4=;
 	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=lLueidePwNBCucNC8czRSSWFUb+AeETVg4cVb4Sc2Wz6mbPojWT8fdJPSDq90Fdi7fXWvmKQIqhANw/zGQb154xixLatL1uGi/n3S2lxt0fpO0GOJ/+tL9XcRpe1QeqKqfVu06bJsFM4qNDuhAaohjuEg8I0KmuphJLB+LpiAO+mSxQHtE5T7LMHsCFhZ35kfzgH8g3Y1u+tWfeKO2MAgaZFDhD4PmZ49QKjAqgIvX+5g68grjCbA7nAiUQE3CbUkvgKPc3kH+0VY7v4LjhmAnYx2S7JwCEBzTTv8hh3cyk2eqZOcDiJgvhpAOC5Rz4nkKxzlJoUOQH/cvmW3TlAgw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nkGW1R1e; dkim-atps=neutral; spf=none (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 MIME-Version:Content-Type; b=japmFkQ1Q8SHZeChkVgKAAdK1HVIzLn7gm7Yic7Xo8wR6grB+sKW/KS78JsJ+nLr7nY/+gKniDeT9fwAzgsb2pJD/ugKBu5JUlGfkGbQbUyXFZiiu2o5CPMibTsMWiZX36t1ufEY8Sp8uskJOWsta60X7CiiyDCOQ9X207FEhdop+rq3CqP5dih2AB4AdOo8zArrJcfxnxUhp8n/YtEusym1FAs9RGdyQxW9QpfNK7y9JHalbv3PrpkvhKQbxt+ENNP54d7nirFgyXfohxqWGDr2KAj4FF+w3jv+XeTsLtvNDZLKqsh5PThcfuiPvs5xZVwsDIex7PS2XdVCVcPauQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F0E1RIM4; dkim-atps=neutral; spf=none (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nkGW1R1e;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F0E1RIM4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1rW40mDhz30N8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 20:33:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1rXs67t2z2xCC
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 20:35:09 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747737217; x=1779273217;
+  t=1747737310; x=1779273310;
   h=from:date:to:cc:subject:in-reply-to:message-id:
    references:mime-version;
-  bh=6/pDG+AvJT15c5ska4ppz+CuaS46pEaA766nfX3ii2Y=;
-  b=nkGW1R1e/ZGX5sZbthXjzNnPLygmBkiTEoA0NBUxKGVIOLb5eiiXpVLt
-   Jn//j8d8xk5aZOQMuhoEMpVAl2j47759TMdo/+5yGHnr9hrB8C1oqszoe
-   Yus0tseIuFsp67rVxghFQOi8182BWP7EDVobJZvlBlDUF/UbL7ICZaW3v
-   h1dGWJWSkGl3iU8egK7s2PNJfjZZ5BAIB3+zb4mXZv6As2J3YohM2dkgK
-   +Qoi59+i8dDyxy9zjJFHJcIgRahPkF2QIsTDlLgZtNh3cMsVRRZQd/6Dn
-   iqEUnoT5rvs6YUck90Xw5ADyeOXYtQ2QRHua7M6brAz43CQjb57CqUcrf
-   Q==;
-X-CSE-ConnectionGUID: dXoVcpY+Rt+CJb7Jms+FgA==
-X-CSE-MsgGUID: ddC7wx5DR1+zN228E5st6A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="61058998"
+  bh=ke+1+In4r/rZjrgzMhjI2/H/glCpSsOix+X86F/MPGU=;
+  b=F0E1RIM4GCORRx25Xqrdhl3CDtkhv8VwCk8JEOxhHMgDyXFxMUcAnpZ8
+   ZbcKkDJC1+OtDl2OdqP7W8GqMCAUBngmrurJl+3+XRMGqw5+DVNDlTzy3
+   4pLnkc9fH4/DQYFH33VW5zMEZ4YPeryZJpcS8rOq+4RCn2eIiMEgLKZLt
+   Ou9Mvm6KHZa4BZ6JF7sgKNbq3WAeo3PMVFslSq0pksSAU6HP88tdKycn3
+   3HAL0ZFBYcSz4XKacbCQ1RCrJA5qJ8M0fdeTfDu66jlg4o4wkIuot5c7/
+   4pXxV7C+96ZNkKGo+5w4Q99Pr1dA6oDjCbmJXlYa6pRqp5HeG1dX44Pey
+   A==;
+X-CSE-ConnectionGUID: IlPu/zykTWmTEuk4upyuWQ==
+X-CSE-MsgGUID: 7ZmcfLjRS7qThm4erN9SxQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="48918112"
 X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="61058998"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 03:33:32 -0700
-X-CSE-ConnectionGUID: 8xb8IhFVQtmzJreTdiAd6w==
-X-CSE-MsgGUID: rCBTico+SkGyQg6oESRtFA==
+   d="scan'208";a="48918112"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 03:35:08 -0700
+X-CSE-ConnectionGUID: Z8NjBDTwQTerJuTOWjg9ag==
+X-CSE-MsgGUID: x7Ah4STFRAiD7xKkEQKxWA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="176777146"
+   d="scan'208";a="139555983"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.235])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 03:33:25 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 03:35:00 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 20 May 2025 13:33:22 +0300 (EEST)
+Date: Tue, 20 May 2025 13:34:56 +0300 (EEST)
 To: Bjorn Helgaas <helgaas@kernel.org>
 cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>, 
     Karolina Stolarek <karolina.stolarek@oracle.com>, 
     Martin Petersen <martin.petersen@oracle.com>, 
     Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>, 
     Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>, 
+    =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
     Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
     Lukas Wunner <lukas@wunner.de>, 
     Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
@@ -70,13 +71,13 @@ cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
     Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>, 
     Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>, 
     Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>, 
-    Dave Jiang <dave.jiang@intel.com>, LKML <linux-kernel@vger.kernel.org>, 
+    Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org, 
     linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v6 05/16] PCI/AER: Rename aer_print_port_info() to
- aer_print_source()
-In-Reply-To: <20250519213603.1257897-6-helgaas@kernel.org>
-Message-ID: <2ebdfb8d-18ec-d87e-469d-c33ee245d244@linux.intel.com>
-References: <20250519213603.1257897-1-helgaas@kernel.org> <20250519213603.1257897-6-helgaas@kernel.org>
+Subject: Re: [PATCH v6 06/16] PCI/AER: Move aer_print_source() earlier in
+ file
+In-Reply-To: <20250519213603.1257897-7-helgaas@kernel.org>
+Message-ID: <8b8fdf6d-d4b2-b15e-541d-f8e90b72923f@linux.intel.com>
+References: <20250519213603.1257897-1-helgaas@kernel.org> <20250519213603.1257897-7-helgaas@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,7 +91,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-247255916-1747737202=:936"
+Content-Type: multipart/mixed; boundary="8323328-265372137-1747737296=:936"
 X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
@@ -99,74 +100,69 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323328-247255916-1747737202=:936
+--8323328-265372137-1747737296=:936
 Content-Type: text/plain; charset=ISO-8859-15
 Content-Transfer-Encoding: QUOTED-PRINTABLE
 
 On Mon, 19 May 2025, Bjorn Helgaas wrote:
 
-> From: Jon Pan-Doh <pandoh@google.com>
+> From: Bjorn Helgaas <bhelgaas@google.com>
 >=20
-> Rename aer_print_port_info() to aer_print_source() to be more descriptive=
-=2E
-> This logs the Error Source ID logged by a Root Port or Root Complex Event
-> Collector when it receives an ERR_COR, ERR_NONFATAL, or ERR_FATAL Message=
-=2E
+> Move aer_print_source() earlier in the file so a future change can use it
+> from aer_print_error(), where it's easier to rate limit it.
 >=20
-> [bhelgaas: aer_print_rp_info() -> aer_print_source()]
-> Link: https://lore.kernel.org/r/20250321015806.954866-5-pandoh@google.com
-> Signed-off-by: Jon Pan-Doh <pandoh@google.com>
 > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 > ---
->  drivers/pci/pcie/aer.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>  drivers/pci/pcie/aer.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
 >=20
 > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index dc8a50e0a2b7..eb42d50b2def 100644
+> index eb42d50b2def..95a4cab1d517 100644
 > --- a/drivers/pci/pcie/aer.c
 > +++ b/drivers/pci/pcie/aer.c
-> @@ -733,8 +733,8 @@ void aer_print_error(struct pci_dev *dev, struct aer_=
-err_info *info)
->  =09=09=09info->severity, info->tlp_header_valid, &info->tlp);
+> @@ -696,6 +696,18 @@ static void __aer_print_error(struct pci_dev *dev,
+>  =09pci_dev_aer_stats_incr(dev, info);
 >  }
 > =20
-> -static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info=
- *info,
-> -=09=09=09=09const char *details)
 > +static void aer_print_source(struct pci_dev *dev, struct aer_err_info *i=
 nfo,
 > +=09=09=09     const char *details)
+> +{
+> +=09u16 source =3D info->id;
+> +
+> +=09pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d%s\n=
+",
+> +=09=09 info->multi_error_valid ? "Multiple " : "",
+> +=09=09 aer_error_severity_string[info->severity],
+> +=09=09 pci_domain_nr(dev->bus), PCI_BUS_NUM(source),
+> +=09=09 PCI_SLOT(source), PCI_FUNC(source), details);
+> +}
+> +
+>  void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
 >  {
->  =09u16 source =3D info->id;
+>  =09int layer, agent;
+> @@ -733,18 +745,6 @@ void aer_print_error(struct pci_dev *dev, struct aer=
+_err_info *info)
+>  =09=09=09info->severity, info->tlp_header_valid, &info->tlp);
+>  }
 > =20
-> @@ -932,7 +932,7 @@ static bool find_source_device(struct pci_dev *parent=
-,
->  =09 * RCEC that received an ERR_* Message.
->  =09 */
->  =09if (!e_info->error_dev_num) {
-> -=09=09aer_print_port_info(parent, e_info, " (no details found)");
-> +=09=09aer_print_source(parent, e_info, " (no details found)");
->  =09=09return false;
->  =09}
->  =09return true;
-> @@ -1299,7 +1299,7 @@ static void aer_isr_one_error(struct aer_rpc *rpc,
->  =09=09=09e_info.multi_error_valid =3D 0;
-> =20
->  =09=09if (find_source_device(pdev, &e_info)) {
-> -=09=09=09aer_print_port_info(pdev, &e_info, "");
-> +=09=09=09aer_print_source(pdev, &e_info, "");
->  =09=09=09aer_process_err_devices(&e_info);
->  =09=09}
->  =09}
-> @@ -1318,7 +1318,7 @@ static void aer_isr_one_error(struct aer_rpc *rpc,
->  =09=09=09e_info.multi_error_valid =3D 0;
-> =20
->  =09=09if (find_source_device(pdev, &e_info)) {
-> -=09=09=09aer_print_port_info(pdev, &e_info, "");
-> +=09=09=09aer_print_source(pdev, &e_info, "");
->  =09=09=09aer_process_err_devices(&e_info);
->  =09=09}
->  =09}
+> -static void aer_print_source(struct pci_dev *dev, struct aer_err_info *i=
+nfo,
+> -=09=09=09     const char *details)
+> -{
+> -=09u16 source =3D info->id;
+> -
+> -=09pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d%s\n=
+",
+> -=09=09 info->multi_error_valid ? "Multiple " : "",
+> -=09=09 aer_error_severity_string[info->severity],
+> -=09=09 pci_domain_nr(dev->bus), PCI_BUS_NUM(source),
+> -=09=09 PCI_SLOT(source), PCI_FUNC(source), details);
+> -}
+> -
+>  #ifdef CONFIG_ACPI_APEI_PCIEAER
+>  int cper_severity_to_aer(int cper_severity)
+>  {
 >=20
 
 Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
@@ -174,5 +170,5 @@ Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
 --=20
  i.
 
---8323328-247255916-1747737202=:936--
+--8323328-265372137-1747737296=:936--
 
