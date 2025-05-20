@@ -1,61 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-8705-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8706-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3A1ABCC70
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 03:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B1BABCD3F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 04:33:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1cts3blRz2yw7;
-	Tue, 20 May 2025 11:49:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1drc0Nzgz2yLJ;
+	Tue, 20 May 2025 12:33:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747705797;
-	cv=none; b=Tk/O6odjdfhBXxSHXfrSVlYosXy46rZ8jNWIoQkgSbtrGU15JUgoejvlVs/+Db+9CkpyS6inPYNqslEXbAMuF3Bta2sB1LnXuTErzueo9NRDqJEAxPgIFrlYgFWhiDpsn2bp+MRhbtEHnYAcfygkiYfJDAnqA2A0ZjwdHiSb4THmn64SWS4hUz+6dVze+jKDGpWE0OET4IciK72Lcm/NNA/FaJMGrlcSyEP1dPYBsAxrnE83zagUtN5ZAssbJ0OYu4faAg/AYsEyfT5j/k4TiPNfa8YGLdS43WROR8s9fqvI4ncIbvkJZYs8Hb5R+v5+28D0xlr/I1fyuZyR6N4tDA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747708383;
+	cv=none; b=ZnJJDGx6r6GSIMSPIQvcosgy1vq9VwgPxqJ28E64mxoaecErv4NiQR4axtR9ppAHHTsdXLLre+yH3E8Xv5s2BcIo7FFwt5GDQy5bYyru8t26H3ylTPXs0rF5vpJiMCrn+A6eybO0JxEvboB2KVH+8x+8uRkQ6KQ9PZ24rT9xkJYx48VW53C9o7YSD7pgN0yr26ZPTD3bi46G4Nc5TyxYYuFoQxEcf/5NZykkEdU9odluHoIvl5aVVXpZu96OBWdj45uXVEcHp6Earl/QuSjcwbtz1l0jOMojwv5CKXsWwBQ7aocbGaml+SQdjKNuIxAcJcZ4c6cvgmltPmEfUQUDpg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747705797; c=relaxed/relaxed;
-	bh=Hi+NzX9R6lkkQMckxVZsS7uVSvs8p9qlOoYBvVPc584=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jtz+xt/6DZR/5H2HDtji2U2NOpAkKK/1fwEeFslOs56RXwJQALpk9rXJcMFVugE1j2ru+5S2JW4y45eBrwTiE3xKNbuk6/e3RhWKQxb6/LSoRjW+BtdSGAgxnoVs+8FkDin8H8QXtyEmXD/JFENDNu+14xAxY1WsZc0wsQXkwgkGe257dKlOz/QfZx6oWhxd4Qtw5ErK00VNafRvie7hh9GNUKx6lyRDcA9+0jiTKnjq5GPbsGQUcSXUgjx8ceTVUmpPNzcmpUjnmivVxeZdt5gfJHt41h8x1KygPLADQPqVxXo6qYWcaBIid1EozuEOSgfc1HFD/0u64o4dnrU1cw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LBCe9Jy6; dkim-atps=neutral; spf=none (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1747708383; c=relaxed/relaxed;
+	bh=IEJHYJRcBOOza6rnvYFfZ2/r4z4MC7ZuTGxku3UCA20=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W8o0SkQTftD3sJ0vzXVF6XGiniHKy7iB6JLFeNh0WCLbkubsmr8e3k2MSfpbj0yvGmoxw3YAbSalD3zXxWWZMfUeKh8RRLLqQB8Y4Jt+e2KGSA99CE2K0Th957RyD1pX35lv1Q8UakiBwmtBhCb8kSK6D8EBdHhv9ZblvtiOY3IyrdbjOaiOKZt63b7USjUaYuGMhE1owsgWnUkXCEWxysdDbxaQXeT86TXWKXpB+ukwuZeJJbdN4yW+TDP9F3jZYD17gAmJ7+SvyyP9IC0HoHepqnGJu7cBMHtktXsCzMlaj140GouzekDrXSs5MUj6hSLj5zJ4zOMEokfF8KLYFA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=GSq1gQaS; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LBCe9Jy6;
+	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=GSq1gQaS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1ctp55nqz2yrn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 11:49:53 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747705795; x=1779241795;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vsLxZwJQaEjAfR/JuZ5NYNwq+/uZf2rMOMPY+vUbdi0=;
-  b=LBCe9Jy6N9+E3wZkxKOZIORLkjIhR2OZdpLaP1NNYFNGLN2Kt0BvXyFC
-   8FqtLctLFKUMo7vqyQtYEQomAa4JzeR6oOFxAORa0cnD7ZLJUlGKKVhRd
-   srVoB0zodoXZFXsBYPGqYBEXyGKSXh3jLbf9HrgJqFWLXZfgjkXHaaVS4
-   pSQK23S9bRbNXqj5SUkP97iBjQvJ7GAUi40AIxdpELiVy66xyFSJt5iJR
-   DNT+ReEUcBIzzNrTT/CD24O7puVxDJhdAslC4QXD7VNFco4aY4hMLDOX7
-   QRmBs66TOLdxrvuu8G6WC8dFtGNGDstej40LsX55oGwvmyUQHmvxq7gcC
-   w==;
-X-CSE-ConnectionGUID: 42BmM2j1QCOrpJdW9si1Fw==
-X-CSE-MsgGUID: FeLzlXTzREmrqsiP+1Pd5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="48737307"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="48737307"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 18:49:50 -0700
-X-CSE-ConnectionGUID: 0zrs3Y+BSOak+jEDiEkNbQ==
-X-CSE-MsgGUID: md5biXXwRjyq3FH5wZYmvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="140063943"
-Received: from mdroper-mobl2.amr.corp.intel.com (HELO [10.124.221.39]) ([10.124.221.39])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 18:49:49 -0700
-Message-ID: <6774c3a6-9d0e-4a73-bfb1-91507ce85411@linux.intel.com>
-Date: Mon, 19 May 2025 18:49:49 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1drZ2kchz2yDM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 12:33:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=IEJHYJRcBOOza6rnvYFfZ2/r4z4MC7ZuTGxku3UCA20=; b=GSq1gQaSwNftG4++AamXlDNuuy
+	9e4L+errUG6Td7f0476kvuoYb/r3mNg1qFayKHloRI4jbRqpoKRihYSOsxk+wEKFtEUSADpdMgsW8
+	tSsqVHOSLgwFQ2o8M5PzQ2vRS5DdgfpOxVC1m/4AZ2EzkddeIoCoiCUM4xOMGi1+txrnRMot0TEpN
+	rfEypLHd+j2TP9MzR5j51vxI8M4UQBVHHDSx7YPj8H97KXy27lAuddWfQvNSeRH4N6Cwv0ZB+cFnD
+	FviYyalTnpV3QfSHcb6tV9HuHNCZ6PqgX25+nKCSMlzdxn1rFn4k5xmKs07IwxwWiGuD5Q+je4pEI
+	/Oz7E8Nw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1uHCmk-007Ox5-2x;
+	Tue, 20 May 2025 10:32:55 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 20 May 2025 10:32:54 +0800
+Date: Tue, 20 May 2025 10:32:54 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, naveen@kernel.org,
+	dtsen@linux.ibm.com, segher@kernel.crashing.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: powerpc/poly1305 - add depends on BROKEN for now
+Message-ID: <aCvp1rzh2vV9L4g_@gondor.apana.org.au>
+References: <20250514051847.193996-1-ebiggers@kernel.org>
+ <aCRlU0J7QoSJs5sy@gondor.apana.org.au>
+ <20250514162933.GB1236@sol>
+ <aCVNG2lm9x9dzu6x@gondor.apana.org.au>
+ <02c22854-eebf-4ad1-b89e-8c2b65ab8236@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,106 +73,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 10/16] PCI/AER: Combine trace_aer_event() with
- statistics updates
-To: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org
-Cc: Jon Pan-Doh <pandoh@google.com>,
- Karolina Stolarek <karolina.stolarek@oracle.com>,
- Martin Petersen <martin.petersen@oracle.com>,
- Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>,
- Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Lukas Wunner <lukas@wunner.de>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney" <paulmck@kernel.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>,
- Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
- Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
-References: <20250519213603.1257897-1-helgaas@kernel.org>
- <20250519213603.1257897-11-helgaas@kernel.org>
-Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20250519213603.1257897-11-helgaas@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <02c22854-eebf-4ad1-b89e-8c2b65ab8236@csgroup.eu>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Mon, May 19, 2025 at 03:55:16PM +0200, Christophe Leroy wrote:
+> 
+> As far as I can see related patches found in linux-next tree were not sent
+> to linuxppc-dev@lists.ozlabs.org.
 
-On 5/19/25 2:35 PM, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
->
-> As with the AER statistics, we always want to emit trace events, even if
-> the actual dmesg logging is rate limited.
->
-> Call trace_aer_event() directly from pci_dev_aer_stats_incr(), where we
-> update the statistics.
->
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> ---
+I just checked and it was definitely sent to linuxppc-dev:
 
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Stephen Rothwell <sfr@canb.auug.org.au>, Danny Tsen <dtsen@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
 
->   drivers/pci/pcie/aer.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index eb80c382187d..4683a99c7568 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -625,6 +625,9 @@ static void pci_dev_aer_stats_incr(struct pci_dev *pdev,
->   	u64 *counter = NULL;
->   	struct aer_stats *aer_stats = pdev->aer_stats;
->   
-> +	trace_aer_event(pci_name(pdev), (info->status & ~info->mask),
-> +			info->severity, info->tlp_header_valid, &info->tlp);
-> +
->   	if (!aer_stats)
->   		return;
->   
-> @@ -741,9 +744,6 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
->   out:
->   	if (info->id && info->error_dev_num > 1 && info->id == id)
->   		pci_err(dev, "  Error of this Agent is reported first\n");
-> -
-> -	trace_aer_event(dev_name(&dev->dev), (info->status & ~info->mask),
-> -			info->severity, info->tlp_header_valid, &info->tlp);
->   }
->   
->   #ifdef CONFIG_ACPI_APEI_PCIEAER
-> @@ -782,6 +782,9 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
->   
->   	info.status = status;
->   	info.mask = mask;
-> +	info.tlp_header_valid = tlp_header_valid;
-> +	if (tlp_header_valid)
+> Could you resend them, and split out the introduction of
+> CONFIG_ARCH_SUPPORTS_INT128 from other parts of patch "crypto:
+> powerpc/poly1305 - Add SIMD fallback" and add the lib/tishift.S in the patch
+> which adds CONFIG_ARCH_SUPPORTS_INT128 ?
 
-I think you can skip this check. The trace call checks for valid flag before accessing
-the tlp buffer. If you want to keep it, try to set it to NULL for !tlp_header_valid case.
+I'll just revert them and mark powerpc/poly1305 as broken.  You
+guys can sort it out later.
 
-> +		info.tlp = aer->header_log;
->   
->   	pci_dev_aer_stats_incr(dev, &info);
->   
-> @@ -799,9 +802,6 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
->   
->   	if (tlp_header_valid)
->   		pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
-> -
-> -	trace_aer_event(pci_name(dev), (status & ~mask),
-> -			aer_severity, tlp_header_valid, &aer->header_log);
->   }
->   EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
->   
-
+Thanks,
 -- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
