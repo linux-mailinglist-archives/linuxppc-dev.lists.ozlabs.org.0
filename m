@@ -1,61 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-8792-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8793-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FBCABE6E5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 00:28:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1785CABE6F6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 00:29:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b28MM5Sv5z2yrR;
-	Wed, 21 May 2025 08:27:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b28PH6B7Qz3000;
+	Wed, 21 May 2025 08:29:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747780079;
-	cv=none; b=NlOF46iwZwc6ZC5qofMMfmBnqIdoD6T3NFVg+v1Rj9Tgv+gQZkTfB5C3Uduytu8fua2vHtaSfz9ICaeMaO3Wm5ylT4d1tw1i1e41FfH+U7JC/+WhDSmxBdOhq+rXJY+zInwHkGPnFiuuS0JsRHS+LClbDniayrp/+FC2G9wu31h0sd6CxGsmV7La6S76EbbSf7tAy2f96bT3tcdeQrmapzaE+4J29xNg+BSoqeSk5hozszFtdY956pDT1W6Yh52b8TOR3zrWsvfCPN8cGB50yhoi8a1UCUn2sK5sCJRP424ee4SU+n9A7y3RvCWskWFHoOpl4ZIEek31ObHdvg9eRw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.13
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747780179;
+	cv=none; b=nq8Y++BpPIGYAP8Fe/tTxuiflXN71rI6j9e1oLRoliqXM+B6DvOE/fVVK1zK1sbTnVzJ5L4xidOPGouFLeZr2GTjTxDWLheyNcpbSWM3X7zYVyQNZlcWlfJH0fJjwH2kMzNy7dwhPjd/fBm0PxTxL4kQO6pmxGH8QwvWyYsuEoyMlHMaLZMIe4RE8Ep4wx42hEatTKlYjT/g9WWI46+w1hQEcdn6ef4c4sb2GLGavQd0vd29CH0I8Qz06yo2BOQu6MhbLK1UQD4rcVsuw7OC/tujZuF7Ommp7tuWwWxq1VGAInTIklFlPHcoG7EsdcH8FqwMgKymIhSG4e3cf5hj6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747780079; c=relaxed/relaxed;
-	bh=Ar04t2BQd0TkD0T1j3VGFsJBmyFzgxzOfVANsNCqHWg=;
+	t=1747780179; c=relaxed/relaxed;
+	bh=jd3xCt6wfZnfHIZtsclpxhe85w+milqtMykPiSrjvuY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ed6qtsHl6R604N9YWylDo+eBHdJYELRGDC0g8inYEkBRp/ney8UesLlZb7T73RS4Edh/4sskphTPP7qqFfqGdF2TWA/CXP6svxOJCKOZ244lYF8OSBfSBUKW8schxjjmFUlQx3PKtETwk8AB0sCZiQKxRZC314AULCv4IgllPOX/Cvb33psYq0Co09pXuq5/k7+U8p+/l2elk0er+3saiBU6O/4bbQc3KgMNVzI+ogKhS/b0Aa88NVoelndM8Xgi+c0zRTFWBRvM19kbxpdVm0WreGyjLOCmO51uAirqKDi0v5y3s8EfD5WaBiMxzWujIYC2tgUADImyyF3nWcutrQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SoWkxzQ4; dkim-atps=neutral; spf=none (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=knZ3SRGMIvcdErOdy9cAt6RE8Bzmd9ZTAznRaUlS+XI+HT4nNMYLY1Rt4fOd7UUOZRJMAGfx3cihcqlkAuXH1BwHVMdjzwIOFG7MEJpYENuTOrXH9NLfdRHsHgWZ0QwJ102axUxztR+NEmGLbYi1LsR+SfxWPN3SPZIphx9H7OTENUOw7r+wWTEWWMIDOMm3YwVgfY2oY/lE0KJ+NyTddR8T6f0Vcw9Ft2RB20p2zEOrKQjtCDZI/P5mCrCUOktEmsThiDArj/nVRtPXe5/EEz18PebAKkpuXBLag0jcuW8owVj5Sds/3C6Q04zCPJDFzFqsWgf2nVKpvQ7Aw3YjsQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MsBQNUM0; dkim-atps=neutral; spf=none (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SoWkxzQ4;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MsBQNUM0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b28ML5hM1z2yrN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 08:27:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b28PG72hlz2yvv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 08:29:38 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747780079; x=1779316079;
+  t=1747780179; x=1779316179;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=l1cP/qs5vRZwTD2Bx8knT8IoVRjZHeWsMztzxK6U6fU=;
-  b=SoWkxzQ4vXUatCaE0Czsh0O0SoWCAEogki3EBmTJ71EIGirPjsDrmwMm
-   On/TiTicGD0KFJie4AigI4UzV92OPlG1Tcn8NoZxTjDwb7ALMWpgCkxJm
-   Xm1NXEWyKfoRkHQLJRAfKuYoXsxIJx0c7/zK77c46e2+ybHKVkpH0HKq3
-   qV8mn6fkUOAhf8rl3fyf2yDMr0s3cVn8t5scd6dMw8XeHwZZZtUSbJtZv
-   u8gE0HYulbhDgk8938JiSyjnQysfvG9Kwp2Oyfuyq1YKxyfcWbMEyu2qF
-   KPFxvyhdmnjdJBfZAU2/bAqiyoqFTWXZatuzYmToG8qTezCGinwmbHS5p
-   Q==;
-X-CSE-ConnectionGUID: 6tYQHyQnRAmt8vt/B4L0PA==
-X-CSE-MsgGUID: j2A/Ap7zRJa/5CcVvOz8AQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49835338"
+  bh=wgWpekly3nOQnzx0glseL92nX1qAz0Bb6kjWvhZ76XI=;
+  b=MsBQNUM0nueqysaW96MmOuCW2X40G/lyVH+J/SDEym+tcr0J1Fyw2O6i
+   pbF1euj+H0SlXi0LHDFlG/FCUoqiqYZl0VpXE+RrTLGJaSCFdv0d6khs8
+   WVRXBc+ljQyrGfIb2pXJSmbDdCSvGAYBzCpoQ1oVl/tmZzZJ6PqTyHE98
+   8o28oX+VuWVtrO3u+oN8IsgwRorVOfshKYM/0k26TQ6T5qHo+8DW7AHvz
+   0WcL/1wMkHtAOurFSyMEZfUFsWms/+6+AGZFnmP62U2FS6dzVkct/cq2w
+   fJWPqGDitOBFcGuClGUpeV5cYB/w/vCOlrhi1c3NOThMFdCcrMJ59yY/Y
+   A==;
+X-CSE-ConnectionGUID: oHbOVzJFRriUMRsrEl5NfA==
+X-CSE-MsgGUID: yTNbm8dkRH+kW9hqQcJC+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="52363394"
 X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
-   d="scan'208";a="49835338"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 15:27:57 -0700
-X-CSE-ConnectionGUID: qW9qWDnrScyHgWk0lNpy4A==
-X-CSE-MsgGUID: uLC217MUQne/69bSqCsZ3g==
+   d="scan'208";a="52363394"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 15:29:37 -0700
+X-CSE-ConnectionGUID: /+ByA43/TeSBzowsjH/SMQ==
+X-CSE-MsgGUID: TGAgNdesQjObaoTcB0oDlw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,303,1739865600"; 
-   d="scan'208";a="144786813"
+   d="scan'208";a="163108869"
 Received: from iweiny-desk3.amr.corp.intel.com (HELO [10.124.222.89]) ([10.124.222.89])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 15:27:55 -0700
-Message-ID: <8898c999-b43b-4568-afe1-6a996fc90bbc@linux.intel.com>
-Date: Tue, 20 May 2025 15:27:54 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 15:29:36 -0700
+Message-ID: <0582ea17-186a-4910-871a-77f2b51e3b1e@linux.intel.com>
+Date: Tue, 20 May 2025 15:29:35 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,8 +70,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 04/17] PCI/AER: Consolidate Error Source ID logging in
- aer_isr_one_error_type()
+Subject: Re: [PATCH v7 09/17] PCI/AER: Simplify pci_print_aer()
 To: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org
 Cc: Jon Pan-Doh <pandoh@google.com>,
  Karolina Stolarek <karolina.stolarek@oracle.com>,
@@ -87,14 +86,15 @@ Cc: Jon Pan-Doh <pandoh@google.com>,
  Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
  Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
  Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
+ linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
 References: <20250520215047.1350603-1-helgaas@kernel.org>
- <20250520215047.1350603-5-helgaas@kernel.org>
+ <20250520215047.1350603-10-helgaas@kernel.org>
 Content-Language: en-US
 From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20250520215047.1350603-5-helgaas@kernel.org>
+In-Reply-To: <20250520215047.1350603-10-helgaas@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
@@ -104,85 +104,63 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 On 5/20/25 2:50 PM, Bjorn Helgaas wrote:
 > From: Bjorn Helgaas <bhelgaas@google.com>
 >
-> Previously we decoded the AER Error Source ID in aer_isr_one_error_type(),
-> then again in find_source_device() if we didn't find any devices with
-> errors logged in their AER Capabilities.
->
-> Consolidate this so we only decode and log the Error Source ID once in
-> aer_isr_one_error_type().  Add a "details" parameter so we can add a note
-> when we didn't find any downstream devices with errors logged in their AER
-> Capability.
->
-> This changes the dmesg logging when we found no devices with errors logged:
->
->    - pci 0000:00:01.0: AER: Correctable error message received from 0000:02:00.0
->    - pci 0000:00:01.0: AER: found no error details for 0000:02:00.0
->    + pci 0000:00:01.0: AER: Correctable error message received from 0000:02:00.0 (no details found)
+> Simplify pci_print_aer() by initializing the struct aer_err_info "info"
+> with a designated initializer list (it was previously initialized with
+> memset()) and using pci_name().
 >
 > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+> Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 > ---
 
 Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
->   drivers/pci/pcie/aer.c | 22 +++++++++-------------
->   1 file changed, 9 insertions(+), 13 deletions(-)
+>   drivers/pci/pcie/aer.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
 >
 > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 568229288ca3..488a6408c7a8 100644
+> index e6693f910a23..d845079429f0 100644
 > --- a/drivers/pci/pcie/aer.c
 > +++ b/drivers/pci/pcie/aer.c
-> @@ -733,16 +733,17 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
->   			info->severity, info->tlp_header_valid, &info->tlp);
->   }
->   
-> -static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
-> +static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info,
-> +				const char *details)
+> @@ -765,7 +765,10 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
 >   {
->   	u8 bus = info->id >> 8;
->   	u8 devfn = info->id & 0xff;
+>   	int layer, agent, tlp_header_valid = 0;
+>   	u32 status, mask;
+> -	struct aer_err_info info;
+> +	struct aer_err_info info = {
+> +		.severity = aer_severity,
+> +		.first_error = PCI_ERR_CAP_FEP(aer->cap_control),
+> +	};
 >   
-> -	pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d\n",
-> +	pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d%s\n",
->   		 info->multi_error_valid ? "Multiple " : "",
->   		 aer_error_severity_string[info->severity],
->   		 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
-> -		 PCI_FUNC(devfn));
-> +		 PCI_FUNC(devfn), details);
->   }
+>   	if (aer_severity == AER_CORRECTABLE) {
+>   		status = aer->cor_status;
+> @@ -776,14 +779,11 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+>   		tlp_header_valid = status & AER_LOG_TLP_MASKS;
+>   	}
 >   
->   #ifdef CONFIG_ACPI_APEI_PCIEAER
-> @@ -926,15 +927,8 @@ static bool find_source_device(struct pci_dev *parent,
->   	else
->   		pci_walk_bus(parent->subordinate, find_device_iter, e_info);
->   
-> -	if (!e_info->error_dev_num) {
-> -		u8 bus = e_info->id >> 8;
-> -		u8 devfn = e_info->id & 0xff;
+> -	layer = AER_GET_LAYER_ERROR(aer_severity, status);
+> -	agent = AER_GET_AGENT(aer_severity, status);
 > -
-> -		pci_info(parent, "found no error details for %04x:%02x:%02x.%d\n",
-> -			 pci_domain_nr(parent->bus), bus, PCI_SLOT(devfn),
-> -			 PCI_FUNC(devfn));
-> +	if (!e_info->error_dev_num)
->   		return false;
-> -	}
->   	return true;
+> -	memset(&info, 0, sizeof(info));
+> -	info.severity = aer_severity;
+>   	info.status = status;
+>   	info.mask = mask;
+> -	info.first_error = PCI_ERR_CAP_FEP(aer->cap_control);
+> +
+> +	layer = AER_GET_LAYER_ERROR(aer_severity, status);
+> +	agent = AER_GET_AGENT(aer_severity, status);
+>   
+>   	pci_err(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
+>   	__aer_print_error(dev, &info);
+> @@ -797,7 +797,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+>   	if (tlp_header_valid)
+>   		pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
+>   
+> -	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
+> +	trace_aer_event(pci_name(dev), (status & ~mask),
+>   			aer_severity, tlp_header_valid, &aer->header_log);
 >   }
->   
-> @@ -1281,9 +1275,11 @@ static inline void aer_process_err_devices(struct aer_err_info *e_info)
->   static void aer_isr_one_error_type(struct pci_dev *root,
->   				   struct aer_err_info *info)
->   {
-> -	aer_print_port_info(root, info);
-> +	bool found;
->   
-> -	if (find_source_device(root, info))
-> +	found = find_source_device(root, info);
-> +	aer_print_port_info(root, info, found ? "" : " (no details found");
-> +	if (found)
->   		aer_process_err_devices(info);
->   }
->   
+>   EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
 
 -- 
 Sathyanarayanan Kuppuswamy
