@@ -1,81 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-8722-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8723-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7D9ABD4B9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 12:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06812ABD4BF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 12:29:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1rP00Zt9z301Y;
-	Tue, 20 May 2025 20:28:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1rPp6k3Wz30Pl;
+	Tue, 20 May 2025 20:29:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747736900;
-	cv=none; b=LMv5KtpD0s3MG0k/94OEBBDlPaTbsKmj2bQZOuwLn3v4OmEdEZKrzqKem9YdJvVJItFRcbfDIb57yWQBaOTi1cEkyJZXum/OGRBAcPzfqcosyl80Qtvrn77h9yTPKUGhuHx4DvR26oc9lXbhB0+4njI2p/+SKT7ieUvgJR5pL2UAnTgcDKfA8nByqFmkCcwhZF/3yOfV8gTcNvBPHWTaJbjLzCIe0Ks4ZpcphsNTvbKnZkPrMaZv8CubpN5Ge6AO+hU+5Tv+RBgML6yu+k68hAWz7uqGmpGoQsEffeJ2gUKQqozt/mC3gPb7esduy152fjNfK5HBFrkbpq6FOd/zcQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747736942;
+	cv=none; b=MWiCR01RCq4NsUBIYvB7bc6kxswOpsx/pWsD8YhTbVlmAnhjYWZbMEOE6irYwHrL+8lUbulp+xnyBHA1gAAgmfC6S/gLD6i8lbgt67qG7BKP/h9sePeeKM56xloVHbU/NtChKNSb2wcmLb60OPMwZaXLYMQD5XVoO3DtQ7adEE9FMKdAW2+soMRSrtQKfVPLvs0EsxqrP/LjD+tc+iU/gqXkCJm539roL5uWv3sY34yY4GQ0QWGdDkINjcyYPdOA3MXeBAgxUWlB6MqQ+UJfVwbMz7wYMUCIC+5zL5KNNEuuc9zlmNw3LBXl+1xSYs3mYGmI6h7JUZ7GNuWfu3EOvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747736900; c=relaxed/relaxed;
-	bh=hwDzzgjznX9cH7+ri0xQdBL1ZEKWHGGv3J3bOXK4N50=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=gbrFF8w0Icr4qYpLo9XnbC8K9tZ+GLksOgCO7bCeMH0Er/HfGWWvG9yC9W+hgR7R6GQrtPdeNM7bwyFgKahYOzyAXkSGVrTIYfhNUqeud6KQKXZf+r4vO+bQOdqQgrRzrbPJvaQHy4CUjrfmg8+5HG6yK0Z93eDwIfBS9L2Wir6HyWJ5V7WMNzGop5ha6EJp0UF7r901sEZhN3x4PLiE8lM7fjNhg/p54gYbIc+IWSp7xa+56gilU6ER5EnCbaq6kc3ZcdXMr1zjbtbuvBsGMYTQWA/+9W50W+ANeZh+AWHDKcBWskVDLG0049gwRGcZQYZdjgjGClV3UBheuWBlig==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=knrNWVDo; dkim-atps=neutral; spf=none (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1747736942; c=relaxed/relaxed;
+	bh=7jOe1qDYuPcz7q3O2yaxSQ02D4UR7czAnJDhSuRfs6A=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cKX6MeuEbM0UMapvVWEi8Ghs7hGljf/vpU20anOSboi1irKUnVym/hjmiaKNZ0A7mAJuiPPpufJCRQqg5+VtALnbCJEvAQ5PsApkTnslPKQ+yQRTikzghM7Vyt8cI1WgQfTdhFjgtP19PEXwkE5YUCBGGj5GMdxnCVu6SvERbjJ5yec/Fq81pBAqesJIueIudqykgL17X6N4SsWCnH/UrzMFDlqM0xiP9RTT5c0giwN8LVQsWn+YeKvRnZ4D1S/gI56J8lXVryuTVrHaUqxUquPZ5SwadVU8czrRgd5QAVrd7GykmPVkicH5t5NncVS5j3zV9uPGyW88z9gqLnyvHQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qxN+37x0; dkim-atps=neutral; spf=pass (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=mpe@ellerman.id.au; receiver=lists.ozlabs.org) smtp.mailfrom=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=knrNWVDo;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=qxN+37x0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ellerman.id.au (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=mpe@ellerman.id.au; receiver=lists.ozlabs.org)
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1rNx61KXz3000
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 20:28:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747736898; x=1779272898;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=ABdjG3Pe62S3x9ocvJ5urldXhGi9h8OX8THWZ/USw6U=;
-  b=knrNWVDoDGb1E8EApXi2KcmZcBDq9zahj4h6FKyiM6xQA1GO67j/gWMn
-   9iBCm8B8+SjN8LBZ4o9MfkWrY+aP/2UfSojdf0GtvRwBrNElYY3wZzHxD
-   dZm5ReW1zA9JxfNAjB1Lin0xi7d7rL9ufapCsJ6vAngmcxtciDF1euE9k
-   izBgSdnb+nxsvPExJxuKvFcoeX/gkRwiNT89Y92JZrAz0kstmhTOTdrvz
-   hJ8qgJHbniOXaeQhX8CkPyeBKkwiRTziboC6RGjkeoRSuzBO13lQ8lXzD
-   WBArm8bBRWsGl5Xb97bHQtGYyqvTvb6zCWc/Tul8evB07UbDqnUzg78Wb
-   Q==;
-X-CSE-ConnectionGUID: OkPSojr7Q/qNpP9+0wyM4Q==
-X-CSE-MsgGUID: /LdV7+6/T56hWqmdUwCEJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="60700843"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="60700843"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 03:28:13 -0700
-X-CSE-ConnectionGUID: 9pyCjzPqSgefZQ4zCEbisg==
-X-CSE-MsgGUID: DlBKfSmYShKo2EDVX2N9Ag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="144640371"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.235])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 03:28:05 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 20 May 2025 13:28:02 +0300 (EEST)
-To: Bjorn Helgaas <helgaas@kernel.org>
-cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>, 
-    Karolina Stolarek <karolina.stolarek@oracle.com>, 
-    Martin Petersen <martin.petersen@oracle.com>, 
-    Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>, 
-    Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>, 
-    Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-    Lukas Wunner <lukas@wunner.de>, 
-    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-    Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
-    Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-    Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>, 
-    Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>, 
-    Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>, 
-    Dave Jiang <dave.jiang@intel.com>, LKML <linux-kernel@vger.kernel.org>, 
-    linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v6 02/16] PCI/DPC: Log Error Source ID only when valid
-In-Reply-To: <20250519213603.1257897-3-helgaas@kernel.org>
-Message-ID: <b6ba76ff-7cbd-2d73-fdc4-41aa8c788bc9@linux.intel.com>
-References: <20250519213603.1257897-1-helgaas@kernel.org> <20250519213603.1257897-3-helgaas@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1rPn56X2z30N8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 20:29:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1747736939;
+	bh=7jOe1qDYuPcz7q3O2yaxSQ02D4UR7czAnJDhSuRfs6A=;
+	h=From:To:Subject:Date:From;
+	b=qxN+37x0LWPEzCiV/P+gUaZs3P8diJ3DDn/NwGFHhTs68e+obQH2/SymkM4qNiMzz
+	 8z7IZP6NhQhTUmcEyG/IxZREPKUHR1HZ2CRyzL8fmhMqP0taAwKlvXzfpDGOSI/Dwl
+	 /noxVzrMmYyyadvMQUn6OdRB9GfT1YSgIr0Ge631FmNTQ/Bf20Hq7kZY5PeLM5Tli6
+	 lGqMwsSUDAP8Y/epOo2EABgTNqyZq7P1ECs9ujTqHxV6t938eqIpsz6gRVVwc6rBKf
+	 ps/U9DUn++Nz0gRzoUm6ZPNUn99Vs8wC3UAqfNfP3TelQcRq4pSzpNTom7uIvCzsh8
+	 M0uQ4O1Hskukw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4b1rPl6GgLz4wxh;
+	Tue, 20 May 2025 20:28:59 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jonathan Corbet <corbet@lwn.net>, workflows@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] Documentation: embargoed-hardware-issues.rst: Remove myself
+Date: Tue, 20 May 2025 20:28:55 +1000
+Message-ID: <8734czh8yg.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,114 +63,32 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 19 May 2025, Bjorn Helgaas wrote:
+I'm no longer able to perform this role since I left IBM.
 
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> DPC Error Source ID is only valid when the DPC Trigger Reason indicates
-> that DPC was triggered due to reception of an ERR_NONFATAL or ERR_FATAL
-> Message (PCIe r6.0, sec 7.9.14.5).
-> 
-> When DPC was triggered by ERR_NONFATAL (PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE)
-> or ERR_FATAL (PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) from a downstream device,
-> log the Error Source ID (decoded into domain/bus/device/function).  Don't
-> print the source otherwise, since it's not valid.
-> 
-> For DPC trigger due to reception of ERR_NONFATAL or ERR_FATAL, the dmesg
-> logging changes:
-> 
->   - pci 0000:00:01.0: DPC: containment event, status:0x000d source:0x0200
->   - pci 0000:00:01.0: DPC: ERR_FATAL detected
->   + pci 0000:00:01.0: DPC: containment event, status:0x000d, ERR_FATAL received from 0000:02:00.0
-> 
-> and when DPC triggered for other reasons, where DPC Error Source ID is
-> undefined, e.g., unmasked uncorrectable error:
-> 
->   - pci 0000:00:01.0: DPC: containment event, status:0x0009 source:0x0200
->   - pci 0000:00:01.0: DPC: unmasked uncorrectable error detected
->   + pci 0000:00:01.0: DPC: containment event, status:0x0009: unmasked uncorrectable error detected
-> 
-> Previously the "containment event" message was at KERN_INFO and the
-> "%s detected" message was at KERN_WARNING.  Now the single message is at
-> KERN_WARNING.
-> 
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> ---
->  drivers/pci/pcie/dpc.c | 45 ++++++++++++++++++++++++++----------------
->  1 file changed, 28 insertions(+), 17 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> index fe7719238456..315bf2bfd570 100644
-> --- a/drivers/pci/pcie/dpc.c
-> +++ b/drivers/pci/pcie/dpc.c
-> @@ -261,25 +261,36 @@ void dpc_process_error(struct pci_dev *pdev)
->  	struct aer_err_info info = { 0 };
->  
->  	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
-> -	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
-> -
-> -	pci_info(pdev, "containment event, status:%#06x source:%#06x\n",
-> -		 status, source);
->  
->  	reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN;
-> -	ext_reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT;
-> -	pci_warn(pdev, "%s detected\n",
-> -		 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR) ?
-> -		 "unmasked uncorrectable error" :
-> -		 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE) ?
-> -		 "ERR_NONFATAL" :
-> -		 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) ?
-> -		 "ERR_FATAL" :
-> -		 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_RP_PIO) ?
-> -		 "RP PIO error" :
-> -		 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_SW_TRIGGER) ?
-> -		 "software trigger" :
-> -		 "reserved error");
-> +
-> +	switch (reason) {
-> +	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR:
-> +		pci_warn(pdev, "containment event, status:%#06x: unmasked uncorrectable error detected\n",
-> +			 status);
-> +		break;
-> +	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE:
-> +	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE:
-> +		pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID,
-> +				     &source);
-> +		pci_warn(pdev, "containment event, status:%#06x, %s received from %04x:%02x:%02x.%d\n",
-> +			 status,
-> +			 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) ?
-> +				"ERR_FATAL" : "ERR_NONFATAL",
-> +			 pci_domain_nr(pdev->bus), PCI_BUS_NUM(source),
-> +			 PCI_SLOT(source), PCI_FUNC(source));
-> +		return;
-> +	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT:
-> +		ext_reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT;
-> +		pci_warn(pdev, "containment event, status:%#06x: %s detected\n",
-> +			 status,
-> +			 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_RP_PIO) ?
-> +			 "RP PIO error" :
-> +			 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_SW_TRIGGER) ?
-> +			 "software trigger" :
-> +			 "reserved error");
-> +		break;
-> +	}
->  
->  	/* show RP PIO error detail information */
->  	if (pdev->dpc_rp_extensions &&
-> 
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ Documentation/process/embargoed-hardware-issues.rst | 1 -
+ 1 file changed, 1 deletion(-)
 
-After adding that switch (reason) there, wouldn't it make sense to move 
-also the code from the if blocks into the case blocks? That if 
-conditions check for reason anyway so those if branches would naturally 
-belong under one of the cases each.
-
+diff --git a/Documentation/process/embargoed-hardware-issues.rst b/Documentation/process/embargoed-hardware-issues.rst
+index 0e19d2f0d6bb..da6bf0f6d01e 100644
+--- a/Documentation/process/embargoed-hardware-issues.rst
++++ b/Documentation/process/embargoed-hardware-issues.rst
+@@ -290,7 +290,6 @@ an involved disclosed party. The current ambassadors list:
+   AMD		Tom Lendacky <thomas.lendacky@amd.com>
+   Ampere	Darren Hart <darren@os.amperecomputing.com>
+   ARM		Catalin Marinas <catalin.marinas@arm.com>
+-  IBM Power	Michael Ellerman <ellerman@au.ibm.com>
+   IBM Z		Christian Borntraeger <borntraeger@de.ibm.com>
+   Intel		Tony Luck <tony.luck@intel.com>
+   Qualcomm	Trilok Soni <quic_tsoni@quicinc.com>
 -- 
- i.
+2.47.1
 
 
