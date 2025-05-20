@@ -1,68 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-8748-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8749-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4F5ABD813
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 14:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5945AABDA11
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 15:53:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1tqK2l0Jz3bvX;
-	Tue, 20 May 2025 22:17:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1wxz1RdDz3bWX;
+	Tue, 20 May 2025 23:53:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::449"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747696655;
-	cv=none; b=HdzSPc/vLSudDOHfvrloUxwjsLDuWJpCZSGiS9pUZ3EktACkkoRiTBv7eD/vLDKWSP+7hoBmKqPMkgH75d8M1OjIEM4OBn43oJP9rWQR6dUyY4xR77G8+xfYMT2R/91/hOpcGxap/vJyW/gkWm8edginrIzijEy7Yih3sz2yuAH6Ou8o9X+CrqQivqi9mT+wm1TXzEGRL2S+57hGhn9yT2Yf2J8GDJjyMBP1DOMudLODnrRkco+/hULcQhJko9HiWKoBKrY256Gy4UMBqnhsjI7sCGJsCc3QedkwheATQx9QzOFi7rGlKbVROHhUConwpxYsdWfsu+NU+/xkYDWr3Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747749223;
+	cv=none; b=fMScZxyVNBSUbs/MfMTLkP6/VvIn/KE3u7sYmGbXkCGCEB1tiJl3xsyPrtDN5Kq0Qjvub+vH7/JB40sXn3SZJwBhVDEOl7717fWaKhWkhoxj59fzjMNoQzdnVG4N5rQ4Qkn0DJlnV136LDxpMB/2BXtNd7bH/GDFqAXPRwRNHifqzYtf7/Vu8s5dOv/A88PmoGMoss01xX/U9blR146X+6Uzv2n7F5NY0xsHoDXZM92fVeGNallGhlsDfYfwt+l3xsp5xbQMSxSOCxjUg5iDp4vr5hl3SRW8PRuknIS+nKEtuT/QCp0N0fxgOiq8EcQnrXH+wOfem5zeXW+88HoQKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747696655; c=relaxed/relaxed;
-	bh=DmthD9gOjRMYbFYgwf7f3Pp9m7CO5reBPjPZv+5NJUo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UgCp/g9VNm91AC/GgcscGl1RdKZpkqWhvg6D8IMzWhAKoKn4iijv4dZ6dHaSxiNYoOR4EGR51PCD8gGCgdosl3+Y9cpYCvb9gvMNT/QyEazZrtyxbgriKK5m3F7SUYhYeoNgsO56e8fNaeJ40i1DDbQxhoo2fC//RHPRUGjgCPO8gdpBlGAEkJNGnG5z72WacCy7QoXZNooLzxPJTPec7cfCzF+XQJ8nE9ILxzgoX57x5odffmj/aWac9Q+alX/QqQ85XBXLDaMWziZuS7H3+2/5VQUyZow2D05+0XHiclq4aeqlmuoAGsbnAgiBAPlXXY4cSvWywRxz0MlHaivDBQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=FrZi21DS; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=3crwraaukdhktkifrdlldib.zljifkrummz-absifpqp.lwixyp.lod@flex--wnliu.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--wnliu.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1747749223; c=relaxed/relaxed;
+	bh=gsOuR+tBbeaLrVYlpk7Rst33RajHl4IbQF6p50MNtYY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=NyOOeQCn1JFM0gAV/Hsw3quektUTFFSFABvyfltzLPwy0NqWVTiUD+q3TfM+HhGjq963Lbj9dYicxhROMEyz/NHzatNlus4bLRNQWq1m6QzL2IyZuPeO/pIBo+lf8BntFDq2w8Y+bHp/mu9q8Jcdz/zjiM1XrfBSE7DM/OG6ddFawrwYzY3cF3fPynglsz7oW5dhonNjJOI3eeWxR1lKFNAvQbqkmpjGmzOOEe70B4DnA2issTIYtYazLcIKg1SCEsqg/SY4X3xS8dzTDfcYdrIsKyLKzQ0yHLu+FZXxaG+DEZe9GyTpg852j/SbpXKwN55fsAMBfUzNE1bQ099HHw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qKhSL5zH; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=FrZi21DS;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qKhSL5zH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--wnliu.bounces.google.com (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=3crwraaukdhktkifrdlldib.zljifkrummz-absifpqp.lwixyp.lod@flex--wnliu.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1YW22Dcjz2yrF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 09:17:33 +1000 (AEST)
-Received: by mail-pf1-x449.google.com with SMTP id d2e1a72fcca58-742b01ad1a5so4833278b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 19 May 2025 16:17:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747696650; x=1748301450; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DmthD9gOjRMYbFYgwf7f3Pp9m7CO5reBPjPZv+5NJUo=;
-        b=FrZi21DSuzhdRyeM8qf1t+4hogb25DYHoigdItEi+aMy1IFztuO++He+qWXslb+1NZ
-         fNzIkGUshKKglGzK8tvU6PYhOy90P8f8/yOk2paBjqbUVmp77amIE7g1wck/ZhbUXYzy
-         VScHnmpChrjpovZi0gAfbXZT+rLJLrleD7e8Jg+ho2g6JmBUYYR9pwg/CSjkIJcyr/RZ
-         O92RudqHEFo4470IzsrZuAv9Odue1aTzSHQQYey8JQ25jJEOWTXvoiTvs0ykTeIvSmFs
-         viA31GImmP/LJT7aa1Oxmk+cv/syOfejmRRdxLWW5PGHcqEnjwUTrVWGEVBhP+7iDe//
-         XNng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747696650; x=1748301450;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DmthD9gOjRMYbFYgwf7f3Pp9m7CO5reBPjPZv+5NJUo=;
-        b=bql67dBDDQAjlcttqwsODFuK5EBlKZDfrPGD0EreDQvABVG94KoQoNGvjaiAJ6D3oC
-         zRmssKl9CmHGIq+YTSYuBemfotrKWv5qkFTrVrQEZxv3x+xtDFPUil9/7cN3SoeGe689
-         yAHmGpg23MLjKNvOOOwjdLaQjnzXZ4EY8CRFzzSVFB0CL77HLqABfyb7+bxfmt9sIvB+
-         HIJbikMUL5D29dXnX4VPaaEmbSodCXTWcqeLpQGU6rAGGred7BJDlztodwyzn03cz7Hn
-         IjLsVVHk69NZkc5OXHd17zjDk7l5CCEIDnSsbo89Aj/K2PHLEw6eNi1rU8SGneMVjKLJ
-         gRKw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHgZDCdxmrF+yJ0uDSaMVLzQTy0amRUh5KwA7pPEfBn42j+8PJ7bDsORqKtZLMdZIjxradTMpd7aunfsY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw4R5mg5sbV/mjtaqVAO7Ks3FXVe1loWHG8NBbb9znhuFf05xC9
-	s31Fvr1sJy2dITh+VM0CZMYAX67Qarq5ojyuglXLXw16ulEHN3h1EbaY2YlWldEK/xRjt4I+/Np
-	Lfw==
-X-Google-Smtp-Source: AGHT+IGHEcM9TKn9Xc+i00afYHv2TzrmaQimUBUqfrRdNBd15kPNJCmvHKHimXydU6G//VEGl/fNmC3mKA==
-X-Received: from pfnj10.prod.google.com ([2002:aa7:83ca:0:b0:730:743a:f2b0])
- (user=wnliu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:391a:b0:740:a879:4f7b
- with SMTP id d2e1a72fcca58-742acd5115amr18271072b3a.18.1747696650122; Mon, 19
- May 2025 16:17:30 -0700 (PDT)
-Date: Mon, 19 May 2025 23:17:28 +0000
-In-Reply-To: <20250519213603.1257897-12-helgaas@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1wxy2tR0z2yt0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 23:53:42 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 738585C548A;
+	Tue, 20 May 2025 13:51:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F38C4CEE9;
+	Tue, 20 May 2025 13:53:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747749219;
+	bh=CA5p6228eQF/0HRQYWgn129Rwa1VmXENjAQVYFscsY4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=qKhSL5zHq6LTXe4tDiSws76qlpFpBxS55j5/qW7Kw0DLI30xLHiPQHy+WCf8jqGbn
+	 GulWMyASh05tnd6owvEp/31ihxBteK6KrFklBxQB9ibsexDTyhdosP2LQIkhF6hUA6
+	 0Ql6lVXoDXZiagWAM6NWz6nDZpsSIZC8Qv4I1ev6ecrmXmYlmnbftL/r4CZrULN4ks
+	 Vh2NOO0WfaPRpC4IEkRIgGAf7VpAUJT3YTSNCgyn9yoiU12j3kw5Lj2AOvAtIJ8Yzy
+	 ITdDeli7zeQUnKGWsedG+wCqldMbN0jI0PPF7Gyi8ZzJGWbYfhkaGKBfDZXS85wrhs
+	 zzL31sbUUSjIQ==
+Date: Tue, 20 May 2025 08:53:37 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
+	Karolina Stolarek <karolina.stolarek@oracle.com>,
+	Martin Petersen <martin.petersen@oracle.com>,
+	Ben Fuller <ben.fuller@oracle.com>,
+	Drew Walton <drewwalton@microsoft.com>,
+	Anil Agrawal <anilagrawal@meta.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sargun Dhillon <sargun@meta.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v6 01/16] PCI/DPC: Initialize aer_err_info before using it
+Message-ID: <20250520135337.GA1290915@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,41 +80,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20250519213603.1257897-12-helgaas@kernel.org>
-X-Mailer: git-send-email 2.49.0.1101.gccaa498523-goog
-Message-ID: <20250519231728.2550572-1-wnliu@google.com>
-Subject: [PATCH v6 11/16] PCI/AER: Check log level once and remember it
-From: Weinan Liu <wnliu@google.com>
-To: helgaas@kernel.org
-Cc: Jonathan.Cameron@huawei.com, anilagrawal@meta.com, ben.fuller@oracle.com, 
-	bhelgaas@google.com, dave.jiang@intel.com, drewwalton@microsoft.com, 
-	ilpo.jarvinen@linux.intel.com, kaihengf@nvidia.com, 
-	karolina.stolarek@oracle.com, kbusch@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, lukas@wunner.de, 
-	mahesh@linux.ibm.com, martin.petersen@oracle.com, oohall@gmail.com, 
-	pandoh@google.com, paulmck@kernel.org, rrichter@amd.com, sargun@meta.com, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, shiju.jose@huawei.com, 
-	terry.bowman@amd.com, tony.luck@intel.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1b1b80e2-4f59-462e-96a9-546b1d7a7644@linux.intel.com>
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Mon, May 19, 2025 at 03:41:50PM -0700, Sathyanarayanan Kuppuswamy wrote:
+> Hi,
+> 
+> On 5/19/25 2:35 PM, Bjorn Helgaas wrote:
+> > From: Bjorn Helgaas <bhelgaas@google.com>
+> > 
+> > Previously the struct aer_err_info "info" was allocated on the stack
+> 
+> /s/Previously/Currently ?
 
-> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> index 315bf2bfd570..34af0ea45c0d 100644
-> --- a/drivers/pci/pcie/dpc.c
-> +++ b/drivers/pci/pcie/dpc.c
-> @@ -252,6 +252,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
->   else
->   info->severity = AER_NONFATAL;
->
-> + info->level = KERN_WARNING;
->  return 1;
-> }
+I prefer "previously" here because it clearly refers to the situation
+*before* this patch (allocated on stack without initialization), and
+it also gives a hint that this situation is what the patch changes.
 
-I think the print level should be KERN_ERR for uncorrectable errors.
+If I used "currently," I could be mentioning something relevant that
+isn't being changed by the patch, e.g., "currently the struct is
+allocated on the stack so it's important to keep it small."
 
+> > without being initialized, so it contained junk except for the fields we
+> > explicitly set later.
+> > 
+> > Initialize "info" at declaration so it starts as all zeroes.
+> 
+> /s/zeroes/zeros
+
+Fixed, thank you!
+
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> > 
+> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > ---
+> >   drivers/pci/pcie/dpc.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+> > index df42f15c9829..fe7719238456 100644
+> > --- a/drivers/pci/pcie/dpc.c
+> > +++ b/drivers/pci/pcie/dpc.c
+> > @@ -258,7 +258,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
+> >   void dpc_process_error(struct pci_dev *pdev)
+> >   {
+> >   	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
+> > -	struct aer_err_info info;
+> > +	struct aer_err_info info = { 0 };
+> >   	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
+> >   	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
+> 
+> -- 
+> Sathyanarayanan Kuppuswamy
+> Linux Kernel Developer
+> 
 
