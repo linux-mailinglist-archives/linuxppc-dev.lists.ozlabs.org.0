@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-8781-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8782-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9791CABE65B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 23:51:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D084ABE65D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 23:51:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b27Xp5Gm7z3bww;
-	Wed, 21 May 2025 07:51:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b27Xq6sJ9z3bxp;
+	Wed, 21 May 2025 07:51:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747777866;
-	cv=none; b=F55ut8dP4SHCQ4jncWUwSyJmj3xtJb/zzurzZair1fEiXrmPc12IUCgHGGm4xTsnXZO6wnffxVw7cAKzXR0gDbwhZjSC0y04xIMPoxeQ4g8oXh1dTn7v0NoyyJMSj+DQNtC67bE4Olw0iMbMO03jX25LWbnGnxk6OjBVdAn64Dj8JL2TVuYzv+7KfTYDLL8yF3/4dpWKOmfohO/WdfB44VJw3GeMywOs0nkg/+6bic02m38q96pyOWcDonrLiBLbbneVdQVFwg2NXiPjQEK4OnTIjzOLQ3cWqvB1bC2JfyWYxs7n3unPrC0TNrsRGmXWMy6flhy9wcBj9qqf1YW83w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747777867;
+	cv=none; b=M+nZH/HOYQHtM+0FC42EHI8yDjKLdthO1V3cXiKPr6MlGoLiXZKUR5w4xsOvzakykvNpdx0waRRzH++4ulPKK3t5yRje9s/RZ4tvwQfUS8+7KX08dbemCV88PnNUfe8gWZ1YcG20VQRk7gF6EcD3y5smWMQMBrVZpb+xPu3ErfwQc6Dx8aw6yJaZftWl0fLCLvFeJrlVQKXUnkolb9URCqWs5FOQaDz9JTp+Axz7F7ugSuFxJkP585441GltG0Pyb717G0SvOfeUkWihR9ov2EsbslnOj3/3S76J1xwXu4zXgGK5Sup5Ix7Sh/IQWyjTjCHZZUUI2Nu0tgIN/vJTCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747777866; c=relaxed/relaxed;
-	bh=x4Ea6VE4Qq0zrsFVEuD/4K7DZHwLA21ZbqZUcp/1eFM=;
+	t=1747777867; c=relaxed/relaxed;
+	bh=DzgQqLHSXVKyoOcOY5lJgvaCCVbfpmr0aJZSpsdEsLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QQVCYiOP23LKQx4hzafIY8tFwDEPO4BBAivtxNFPb3L/0xse+AZs8/PUdyZrtJxIFi213b2SvTox4930KbT45er+e0P2SSGFLXC2vy0YTNKy8FL+6aRab2SBBcnaJOdc5f/Vq09RpBfqIuwXWf2Pd8NLDKJBtDbds5K8iEUX7m0CDO/aFsehXY4A2KR6zPDy2V/sMtojwcdC3ScoSJYiUKfjQN7EJP7zAudHvrdDnhgWdldozRUaEMssdB52yu6bMXppG606cmBEtmy0KOVUdHqpDYOsQ3aQ1qtLtGb4B2sw9wC2noqydp/exNG/zfKr5C9KEcKLrthY0FkPhiUy5A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oHlhu+Vg; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version:Content-Type; b=bFG8clnp/SCnNY00eCPHkNBzXR8mGQ1CPvmV7JN03VKaTrQzPRxl/amyJJ9dMHzRIFB3NbIubpZ8RyN1X/gbN+ydGBUOZqiDjkHt/t/3usfayLPRhmcVPvrVwyI7Ucs/tL4D52kkLJksTlXvU98lefj+euFk+JewN/EUoQ24CDP8wT/AqcyALkhLoB5NT/6OQkCKrftDR12YfaoHs9j8QX8htqM+tSaZ8u/TZkAbxcCf5nTP1KOYi7WnunMIh5DbdZplw0Kw7aSircLOhA8lEW+tasHMH2KVzAex3Y1Kvz7LC3m6VQrnpYacT7OkueiDqMRqn48eaQm2XqfV37ZQ1w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZwW4ys92; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oHlhu+Vg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZwW4ys92;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b27Xp0Zw8z3btm
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 07:51:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b27Xq2Cksz3btm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 07:51:07 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 137E8A4EED7;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8117A629D4;
+	Tue, 20 May 2025 21:51:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0002EC4CEE9;
 	Tue, 20 May 2025 21:51:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BE0C4CEE9;
-	Tue, 20 May 2025 21:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747777863;
-	bh=OGnFxgoS/xlR9z606L+9Uk5m6brKQ9yyXV4/GIlhEb0=;
+	s=k20201202; t=1747777865;
+	bh=5VjMn9MemK5CuWA+VSMlLX2voDa67B9awgcs/wm3zGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHlhu+VgdkhWru+M3UdnCA/T9xfGiWkxDCjqnYjJXhlvcD7JJuJSxp4HF7A8AkSnE
-	 qZFiVluCOlh+SaGTRDTOxBRW2Ym1TENz/a7TVTcSX77hbkhLXWw748yxqS33S7FrFM
-	 SBLTvV1AkDmjUHF/OM5D4WbrzfF2Bx4tWIme/RPguCxWpcNHGM+Gs2EhYQbEDmsrjw
-	 ahRn4I1O8zUIQuT3J7/Z9aQQLFjtqP1R5H0IgPZ8b/LJ1oZtwuUiJQd+U6I62nO5hQ
-	 L40H37s48Hbn7tpsp0wE/p+FNUhTDEgx8BIsm8p8qRxgjjw5UpCaKlxhbnaJK1u3js
-	 ivKy4fe5z5FGg==
+	b=ZwW4ys92nvOL57+VhbA9Ug2/N5KtMZdnGxt51qHKcwGXmt0ALtu7Hx9Ca2ECRSBWz
+	 31dvnw48UEEoFOuPjGt2ZViCO0P7oDZADTcD5eR9U18DkHsfuPofKYu3oM0Vp5T8Up
+	 /FfrhislQUyCjrJXe0vPDRH9+N1QrtK61XFgqUYvH9Qq+LbGyBl/vYUSEPB0zJ8Cn8
+	 7WbeB4IzbVv6/JV38S8BJG1ScKgu5maJZqrTsRBuMTfTM8Wg3uspSvCDQk56kYeiYi
+	 +JTrEtiN3XodVOlyH4Mu6y5ct+MaMO68/Q2cKmekjDMScz+qit2mv5PpQJ8Wx75jMk
+	 DSSJXTxQfTj3Q==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: linux-pci@vger.kernel.org
 Cc: Jon Pan-Doh <pandoh@google.com>,
@@ -71,9 +71,9 @@ Cc: Jon Pan-Doh <pandoh@google.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH v7 08/17] PCI/AER: Initialize aer_err_info before using it
-Date: Tue, 20 May 2025 16:50:25 -0500
-Message-ID: <20250520215047.1350603-9-helgaas@kernel.org>
+Subject: [PATCH v7 09/17] PCI/AER: Simplify pci_print_aer()
+Date: Tue, 20 May 2025 16:50:26 -0500
+Message-ID: <20250520215047.1350603-10-helgaas@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250520215047.1350603-1-helgaas@kernel.org>
 References: <20250520215047.1350603-1-helgaas@kernel.org>
@@ -99,83 +99,60 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Bjorn Helgaas <bhelgaas@google.com>
 
-Previously the struct aer_err_info "e_info" was allocated on the stack
-without being initialized, so it contained junk except for the fields we
-explicitly set later.
-
-Initialize "e_info" at declaration with a designated initializer list,
-which initializes the other members to zero.
+Simplify pci_print_aer() by initializing the struct aer_err_info "info"
+with a designated initializer list (it was previously initialized with
+memset()) and using pci_name().
 
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/pci/pcie/aer.c | 39 +++++++++++++++++----------------------
- 1 file changed, 17 insertions(+), 22 deletions(-)
+ drivers/pci/pcie/aer.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 520c21ed4ba9..e6693f910a23 100644
+index e6693f910a23..d845079429f0 100644
 --- a/drivers/pci/pcie/aer.c
 +++ b/drivers/pci/pcie/aer.c
-@@ -1289,9 +1289,9 @@ static void aer_isr_one_error_type(struct pci_dev *root,
-  * @e_src: pointer to an error source
-  */
- static void aer_isr_one_error(struct pci_dev *root,
--		struct aer_err_source *e_src)
-+			      struct aer_err_source *e_src)
+@@ -765,7 +765,10 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
  {
--	struct aer_err_info e_info;
-+	u32 status = e_src->status;
+ 	int layer, agent, tlp_header_valid = 0;
+ 	u32 status, mask;
+-	struct aer_err_info info;
++	struct aer_err_info info = {
++		.severity = aer_severity,
++		.first_error = PCI_ERR_CAP_FEP(aer->cap_control),
++	};
  
- 	pci_rootport_aer_stats_incr(root, e_src);
- 
-@@ -1299,30 +1299,25 @@ static void aer_isr_one_error(struct pci_dev *root,
- 	 * There is a possibility that both correctable error and
- 	 * uncorrectable error being logged. Report correctable error first.
- 	 */
--	if (e_src->status & PCI_ERR_ROOT_COR_RCV) {
--		e_info.id = ERR_COR_ID(e_src->id);
--		e_info.severity = AER_CORRECTABLE;
--
--		if (e_src->status & PCI_ERR_ROOT_MULTI_COR_RCV)
--			e_info.multi_error_valid = 1;
--		else
--			e_info.multi_error_valid = 0;
-+	if (status & PCI_ERR_ROOT_COR_RCV) {
-+		int multi = status & PCI_ERR_ROOT_MULTI_COR_RCV;
-+		struct aer_err_info e_info = {
-+			.id = ERR_COR_ID(e_src->id),
-+			.severity = AER_CORRECTABLE,
-+			.multi_error_valid = multi ? 1 : 0,
-+		};
- 
- 		aer_isr_one_error_type(root, &e_info);
+ 	if (aer_severity == AER_CORRECTABLE) {
+ 		status = aer->cor_status;
+@@ -776,14 +779,11 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+ 		tlp_header_valid = status & AER_LOG_TLP_MASKS;
  	}
  
--	if (e_src->status & PCI_ERR_ROOT_UNCOR_RCV) {
--		e_info.id = ERR_UNCOR_ID(e_src->id);
+-	layer = AER_GET_LAYER_ERROR(aer_severity, status);
+-	agent = AER_GET_AGENT(aer_severity, status);
 -
--		if (e_src->status & PCI_ERR_ROOT_FATAL_RCV)
--			e_info.severity = AER_FATAL;
--		else
--			e_info.severity = AER_NONFATAL;
--
--		if (e_src->status & PCI_ERR_ROOT_MULTI_UNCOR_RCV)
--			e_info.multi_error_valid = 1;
--		else
--			e_info.multi_error_valid = 0;
-+	if (status & PCI_ERR_ROOT_UNCOR_RCV) {
-+		int fatal = status & PCI_ERR_ROOT_FATAL_RCV;
-+		int multi = status & PCI_ERR_ROOT_MULTI_UNCOR_RCV;
-+		struct aer_err_info e_info = {
-+			.id = ERR_UNCOR_ID(e_src->id),
-+			.severity = fatal ? AER_FATAL : AER_NONFATAL,
-+			.multi_error_valid = multi ? 1 : 0,
-+		};
+-	memset(&info, 0, sizeof(info));
+-	info.severity = aer_severity;
+ 	info.status = status;
+ 	info.mask = mask;
+-	info.first_error = PCI_ERR_CAP_FEP(aer->cap_control);
++
++	layer = AER_GET_LAYER_ERROR(aer_severity, status);
++	agent = AER_GET_AGENT(aer_severity, status);
  
- 		aer_isr_one_error_type(root, &e_info);
- 	}
+ 	pci_err(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
+ 	__aer_print_error(dev, &info);
+@@ -797,7 +797,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+ 	if (tlp_header_valid)
+ 		pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
+ 
+-	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
++	trace_aer_event(pci_name(dev), (status & ~mask),
+ 			aer_severity, tlp_header_valid, &aer->header_log);
+ }
+ EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
 -- 
 2.43.0
 
