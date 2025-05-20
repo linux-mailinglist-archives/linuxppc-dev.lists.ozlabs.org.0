@@ -1,55 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-8732-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8733-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EBDABD5C9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 13:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324F6ABD61B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 13:08:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1sCY2k6Mz2ySf;
-	Tue, 20 May 2025 21:05:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1sHP0jCYz3bl7;
+	Tue, 20 May 2025 21:08:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747739113;
-	cv=none; b=djQQ5rICPai/XNMof/X0Aje6SjBfFwWkjqkhIC3fsqpb7O8PZ5tBhM6isJQuOxLunR93wUhun8GuxiM1kwAp6K2uSfpeno0F0rt1l9fZ+V2uu4igI5vMSygrAlNN14mofIPMcQo2gysXNEaGnJhYK4eNw6LZ9Hm9asV97On3hb+gt1rli1ubPOsqspwsE7YVumnlegodQBRSDxOUQ3L3Iu+ICIFiGC02Hy57u5VGVzU9WnfegSCDlRU/tvUhgbHAutjBAx4XpjfPTC7xu41hbi3lKmzTaRIWI3yiBUiWLRqR4CyixDMvG5GEv/cr97hmnLcU60A6bPLVx/6QAhEruQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.8
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747739313;
+	cv=none; b=kDcSwWiFAiiyO5YPAOFgfqc7aF6RMf4la3mpXPC62jtdajDXLrK8nIzBNhZMyUS5qwjKXcc/LKlr/v+O/nhQ5juK4fH8gi8Y6cuh+Vp62wGAkBkc9btDjov1mygH1JwS8RyudgZLtzF2KjYqBSBehE4m2xUY5WxbVeD+Io+SFB37iI0/Ca72jid/BbB/OuYeMF65pwp76xkQUl+WwoiWcXp9+ssJkrlTr0Xbu2zpvrHXSOH0TGrOBkhePOkz/qokvJ2MclVYWGOl2ZW/NyVQG9fjjwp7yL5w6V/8fypfgGYxtj42nbuIfpptV2+ZeTGr+cTcLXulu+eTUEvVEkWgnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747739113; c=relaxed/relaxed;
-	bh=H/Rusjr9wTndlEZPfIkE0YN92i4aaeYkw976ZduqJmo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LxFJMi7Pd71dYmrHbFSfGxuwOz33OFu5VXUIvwiZ0rB1D+v7B6gQXys5/f3a6zXg3wBZRQa8yshQY+l84BpdEcbJl3ibTvaaRxJ3+/US8HYbmSEUF3615Bon7Tdjxwmwiji9EKKJh60AZ9rbBaIk2RxlM0mHs9HXxBohdR4a0cXoMsmMGvlcBeAHyefwiH5Eer7wLfF2QJ+AlSxhpaoKhgAoToEGq8IydQ+G+rXmIsJHUjEj4Xc8bbkmi5SvcpVyDjKes9I7JrYBnCGn63xAP0GNNkkdzBbBipHaB95MOVNcaAUcI9OLvPpsfGRikGoDw3BulEdrbGtAYFYQIfaV6g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=nrgUP7hf; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+	t=1747739313; c=relaxed/relaxed;
+	bh=Ur3VDzYTkCWByEa3zSRBDqZC4SOltpFT8VVu3pgmsVM=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=VGDj6IKpS1CIkq3ia5Of+vS26UqodJBFkZzS7BbZG3FvmtMhoGvVAmFMp5Vxmx7wHBQH+gg3xTVATt+2BmuaNTatOKRYikqN1ls/VhMZhjW8V4bSJ+R8mCA+jTrKoqBpohEkQoydIk3J+d0tbb//rAXqUVILKvGlEcUDCuNuewozqpZUEXKuabsE3wwisfFR9zs8siJrwY3NOJhm959/79kfgos8nLmPvbZZXeHvpm/Me6a+sOvmdgzZYWxwONlFN3sWLmuy1wzP+XEZ6MBl5NUDksh1/BGsHypZlj91zYbR4HLJd81NhGhd7QjNgtdjMeUA1Wf0PKC12hCyYxapxw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MV13gbGe; dkim-atps=neutral; spf=none (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=nrgUP7hf;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MV13gbGe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1sCX1rchz2xDD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 21:05:12 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A9651629E1;
-	Tue, 20 May 2025 11:05:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF75FC4CEE9;
-	Tue, 20 May 2025 11:05:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747739109;
-	bh=dqzHqbI45drYiJcBhZWpXVC3zrDHhjThfa+aqxLgwrc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nrgUP7hfhz5mXv2m1/f+QzqIHK72xfHiTHCMO0Sau8GbC1B5LyHb3dOKygYBk3yjF
-	 1WAGBWIES+DRDo7d8Xq6AcTD6DeCUf1iL55Y7j5jxHkR/L1Sd7loUjy5zMwYHIit8t
-	 wV8YCDAakvMjTrDzrVTlYo3C24SCx1kf71Ce/rHc=
-Date: Tue, 20 May 2025 13:05:05 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Jonathan Corbet <corbet@lwn.net>, workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] Documentation: embargoed-hardware-issues.rst: Remove
- myself
-Message-ID: <2025052056-disarray-blitz-acb2@gregkh>
-References: <8734czh8yg.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1sHN1XNfz3bl6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 21:08:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747739312; x=1779275312;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=2prKnSO821SeuO9H2s4uOwiNlz7rB9Uw7dRLE80sspg=;
+  b=MV13gbGeROrbrzCX0SvzKD4UmqTzxPDdn6LMi9ovIjb3uE7bXZBnMoBb
+   g47COfPnkijLfh9ILquahTA72IZCXwUuWCB/k50m1ykreMxKSCooDTDYD
+   B0PXKCoHJZn+ugOotTt3GIoY9uFU9DcBO7pDF4bN+b9MS/JPat+bQN91H
+   gqUTnu/RTyK4yGlOA736tn2rlUqw/rkLDBFN9h70FT0ITznRn+xYGPf+1
+   wPeFuAb0iBMZgFPclY3cTPQu8bT8rZS3PleNcZN+lD6gDcv094nQPK2dk
+   cC/mYRgtNP0CeqjibWC0mUBpmr/M3p1EKY/0r+lXY9F3hgLoF9z/AZP5x
+   A==;
+X-CSE-ConnectionGUID: S58eOCIWTDWy6b4KC8tSww==
+X-CSE-MsgGUID: WbtYKWITStGqPsJ2C6lM1w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="67222159"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="67222159"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 04:08:30 -0700
+X-CSE-ConnectionGUID: Psky762oSGWT9Xebg7dWIw==
+X-CSE-MsgGUID: vN1G9CdjQXOh3FilZV04og==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="144914007"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.235])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 04:08:22 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 20 May 2025 14:08:19 +0300 (EEST)
+To: Bjorn Helgaas <helgaas@kernel.org>
+cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>, 
+    Karolina Stolarek <karolina.stolarek@oracle.com>, 
+    Martin Petersen <martin.petersen@oracle.com>, 
+    Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>, 
+    Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>, 
+    Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+    Lukas Wunner <lukas@wunner.de>, 
+    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+    Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
+    Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+    Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>, 
+    Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>, 
+    Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>, 
+    Dave Jiang <dave.jiang@intel.com>, LKML <linux-kernel@vger.kernel.org>, 
+    linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v6 10/16] PCI/AER: Combine trace_aer_event() with statistics
+ updates
+In-Reply-To: <20250519213603.1257897-11-helgaas@kernel.org>
+Message-ID: <a6260206-a02f-2212-9610-66186d6e26a2@linux.intel.com>
+References: <20250519213603.1257897-1-helgaas@kernel.org> <20250519213603.1257897-11-helgaas@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,40 +90,88 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8734czh8yg.fsf@mpe.ellerman.id.au>
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: multipart/mixed; boundary="8323328-1580202455-1747739299=:936"
+X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, May 20, 2025 at 08:28:55PM +1000, Michael Ellerman wrote:
-> I'm no longer able to perform this role since I left IBM.
-> 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323328-1580202455-1747739299=:936
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+
+On Mon, 19 May 2025, Bjorn Helgaas wrote:
+
+> From: Bjorn Helgaas <bhelgaas@google.com>
+>=20
+> As with the AER statistics, we always want to emit trace events, even if
+> the actual dmesg logging is rate limited.
+>=20
+> Call trace_aer_event() directly from pci_dev_aer_stats_incr(), where we
+> update the statistics.
+>=20
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 > ---
->  Documentation/process/embargoed-hardware-issues.rst | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/Documentation/process/embargoed-hardware-issues.rst b/Documentation/process/embargoed-hardware-issues.rst
-> index 0e19d2f0d6bb..da6bf0f6d01e 100644
-> --- a/Documentation/process/embargoed-hardware-issues.rst
-> +++ b/Documentation/process/embargoed-hardware-issues.rst
-> @@ -290,7 +290,6 @@ an involved disclosed party. The current ambassadors list:
->    AMD		Tom Lendacky <thomas.lendacky@amd.com>
->    Ampere	Darren Hart <darren@os.amperecomputing.com>
->    ARM		Catalin Marinas <catalin.marinas@arm.com>
-> -  IBM Power	Michael Ellerman <ellerman@au.ibm.com>
->    IBM Z		Christian Borntraeger <borntraeger@de.ibm.com>
->    Intel		Tony Luck <tony.luck@intel.com>
->    Qualcomm	Trilok Soni <quic_tsoni@quicinc.com>
-> -- 
-> 2.47.1
-> 
-> 
+>  drivers/pci/pcie/aer.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index eb80c382187d..4683a99c7568 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -625,6 +625,9 @@ static void pci_dev_aer_stats_incr(struct pci_dev *pd=
+ev,
+>  =09u64 *counter =3D NULL;
+>  =09struct aer_stats *aer_stats =3D pdev->aer_stats;
+> =20
+> +=09trace_aer_event(pci_name(pdev), (info->status & ~info->mask),
+> +=09=09=09info->severity, info->tlp_header_valid, &info->tlp);
+> +
+>  =09if (!aer_stats)
+>  =09=09return;
+> =20
+> @@ -741,9 +744,6 @@ void aer_print_error(struct pci_dev *dev, struct aer_=
+err_info *info)
+>  out:
+>  =09if (info->id && info->error_dev_num > 1 && info->id =3D=3D id)
+>  =09=09pci_err(dev, "  Error of this Agent is reported first\n");
+> -
+> -=09trace_aer_event(dev_name(&dev->dev), (info->status & ~info->mask),
+> -=09=09=09info->severity, info->tlp_header_valid, &info->tlp);
+>  }
+> =20
+>  #ifdef CONFIG_ACPI_APEI_PCIEAER
+> @@ -782,6 +782,9 @@ void pci_print_aer(struct pci_dev *dev, int aer_sever=
+ity,
+> =20
+>  =09info.status =3D status;
+>  =09info.mask =3D mask;
+> +=09info.tlp_header_valid =3D tlp_header_valid;
+> +=09if (tlp_header_valid)
+> +=09=09info.tlp =3D aer->header_log;
+> =20
+>  =09pci_dev_aer_stats_incr(dev, &info);
+> =20
+> @@ -799,9 +802,6 @@ void pci_print_aer(struct pci_dev *dev, int aer_sever=
+ity,
+> =20
+>  =09if (tlp_header_valid)
+>  =09=09pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
+> -
+> -=09trace_aer_event(pci_name(dev), (status & ~mask),
+> -=09=09=09aer_severity, tlp_header_valid, &aer->header_log);
+>  }
+>  EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
+> =20
+>=20
 
-Thanks for the patch, I'll take this through my tree.
+Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
 
-greg k-h
+--=20
+ i.
+
+--8323328-1580202455-1747739299=:936--
 
