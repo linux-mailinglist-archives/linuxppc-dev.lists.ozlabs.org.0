@@ -1,81 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-8763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CC8ABE26A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 20:17:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB16ABE2B5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 20:32:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b22p84Fy0z30g6;
-	Wed, 21 May 2025 04:17:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b23725bJ1z3bW7;
+	Wed, 21 May 2025 04:31:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747765040;
-	cv=none; b=nPAy3NB7Fmw0BxTjr3IZaDkN+L7VjiPCvh7a3/aDWb0//rjcVHJBU+uvOozUVZtcpSHdKFVNTKLG0v76ZvUOikCHCJIpNjCRr4MZuH8beeJx0w3myKh7o6FYy49BjOwOe35CTct1kXvOKBSbRLmA7rs6xkkvLN5GrTbcuiFPhUWImcPARKbDcq9Wgumw0ztIOqrgHxCLmX4ULgfOIRXepgZApOGRPnL79Rngk4qIU6wo4/W5Zf7ywxyaD4my6O666sdIlRyQArtv88dt/+3RHOEBRl066SeOdGeE2BwoR5OL/yfqtjgXYeAdYrIiqqe2VBecdgaKQFqx54e/7b30ZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747765918;
+	cv=none; b=ZNMsw7XbQVhrmrCObFB1vacDKr73Ptee6Y8k1BMjK/fqVRO9qEdAUFVQsCfoTBvnuJLqnkUFxokbOf8MBIdIuaRSmk72mA8NuGkgdjiLVJrN01jORkc/tLwxQo9OVOJIJHwZStoWbEfgaKofbeFdXBw/ovx+QL63iQdUvBJ9xbMYvvdPUmWDmJo0vN37L/Hp8wsIJH0xBH82XpGqp/kWle0rbrNMGZm+HuBF9gQT2HgqUYtAW9T4RyptbejGcp4PUr6U9Y4YwSA+Hdqfbs6L0awZSGdLUzlbF1P7adaVIEH6rb7OR5b0vja4Z0Cs36FDxjiuOGgXTQjjNFFcTyIrQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747765040; c=relaxed/relaxed;
-	bh=l9Sy2nZG/65Ih5GxVFRbkt9VFk6N59raehsFZJZALN4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f03E/Jbh+ZfTOEKMVasdEosnEyMPYCxS0Ga0faI6/SYFVTXGv24uhxim/Hb5HcQnyh7V5d1ooDoLv9cT1mUIyVRWD4pCUfCyft3jPigNW/LcP/gFjKjJFMV5f+emdPF6EsT60TUnNVizmKmUf19+Ws0arlAUzqG+P1NxVtrAGTV7BF9uwGEN6XXQ36zpqiim8ZkFJUJMlhRYjW9gwt3kGxDoW1WXPleWXzeFvS+RuFkitAEMr3RUwKEkluoQZoHoAfGFZ9DfWS8SOmWWRzetlFiSIa1f+bUuJjbeed3Ii1JcyA47RaEOZzQsixLJIPwgruj/KzNTgTwASzJvovVkZw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RxCbWxZa; dkim-atps=neutral; spf=none (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=kan.liang@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1747765918; c=relaxed/relaxed;
+	bh=B+C8gJOMI9UdPFQs/RDaOgTyEoHMCEvKIqNexg7CDYk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=MwKAT8r1mpcGz4/qZHKKlqIkQOT6WsGEehC1Uk8Hzd49afB3WGR8LX49gmb1/1wPSCHjpqLAcsHn6hC0b31tgO0hECVEjDB/2wLpdALU2gbi6+HcqMTBpgiarqE7s0uu91uBhkjLMrQI12eqQIAnhNJsaCafaySs9OfpnzVagFqiCJjzng7ZRnZjaf+jwn4o57aoIFdh4VgdWVp19ZgMHXcjLNV8UnqZFujLdgA6kPOegkeYe7/7DdqXtRuemWwfPvKu8Ol6e8xGO9vyAYe1KS+TKdEntsw7rhdRtc+0/geuyARrxzGI/k0HrEZbPCYlNitDdu/g/vAx2PnuIxsJrA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hddkKu0m; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RxCbWxZa;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hddkKu0m;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=kan.liang@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b22p56CShz2yr1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 04:17:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747765038; x=1779301038;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=s+EyXjLUXo0M2dfj157AL5fvrY36sWvSBJ2tuImTWtk=;
-  b=RxCbWxZaJDODVHd0IJ9UD4Ot6yqQcPLMJfVLeGmKzP1TPWXJQ2OPUvb5
-   oobJR5FUTTNDKa4Cn2gTINzorIkh88baf+7b9w34rM0Oxrw9rNIqkj2dI
-   hVCugPaQyrZaBQOLzYSwAQ0dG5OgsnI1Um7s4I6+EdYm0yrzQDjskxSNM
-   kfmuVyVMsnnlcIgR7ac7qYwDFc/flUm3m3uonPZHp5rmqQ3n24ImSzQJQ
-   N3t/QDgNgjApEestHXXCGCciBhxQ54Z8GaI6XPcFs6ZgGLMMZj7U30jib
-   2r9KF5lsiebabFT4/1mvC0NFZ//q8p4aWtz2B0wBoyZtC89W889MkgBhT
-   w==;
-X-CSE-ConnectionGUID: Dt7kqhM4S6GgHIAAWIcZ/g==
-X-CSE-MsgGUID: yO3RGfeiRNqDS1h7sjKylA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49847971"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="49847971"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 11:17:13 -0700
-X-CSE-ConnectionGUID: tt0fVSeZQYu+1VmXOJztCQ==
-X-CSE-MsgGUID: DwqYvJaXTXKgUclat/S2VQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="144514710"
-Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
-  by orviesa003.jf.intel.com with ESMTP; 20 May 2025 11:17:12 -0700
-From: kan.liang@linux.intel.com
-To: peterz@infradead.org,
-	mingo@redhat.com,
-	namhyung@kernel.org,
-	irogers@google.com,
-	mark.rutland@arm.com,
-	linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org
-Cc: eranian@google.com,
-	ctshao@google.com,
-	tmricht@linux.ibm.com,
-	leo.yan@arm.com,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH V4 06/16] powerpc/perf: Remove driver-specific throttle support
-Date: Tue, 20 May 2025 11:16:34 -0700
-Message-Id: <20250520181644.2673067-7-kan.liang@linux.intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20250520181644.2673067-1-kan.liang@linux.intel.com>
-References: <20250520181644.2673067-1-kan.liang@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b23720rcRz2yr1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 04:31:58 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5E9E75C5422;
+	Tue, 20 May 2025 18:29:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A596FC4CEE9;
+	Tue, 20 May 2025 18:31:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747765914;
+	bh=jwee9jRHKC9i3IB6hd0Exj0Pc2dnDouthrKRY1Giwiw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=hddkKu0mDChvBNXjmgLXbi56ACoBmD+CiBVK+DuLbZbm0ooahVgLKKbbVFt+bm3Gj
+	 ds7VCAhwsNKpDFVHR+pZDqeUeC8pAYjz+A/lZEdzJICnvU9ceiLRIJq96tkIgOp+no
+	 Dq7HcJeYijENpOEsRApyEcxf22JVb1NAYoMye7ClehwZ4godbkhHh1r9/gqiKyJ3hi
+	 w7BZXh8iCo6QLspaEWrkoPgrsJda8ViQrnv8In0hQEYhN/A+FXEnaXEA3N3yYUpeAI
+	 uz28tTNzk1ZrkL9Y1XXeDZaqwuqbPSun21G5eHxCM0i9hu8MVVNKigUMu4GUbz+Xev
+	 FK8LNbMGdjb5w==
+Date: Tue, 20 May 2025 13:31:53 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
+	Karolina Stolarek <karolina.stolarek@oracle.com>,
+	Martin Petersen <martin.petersen@oracle.com>,
+	Ben Fuller <ben.fuller@oracle.com>,
+	Drew Walton <drewwalton@microsoft.com>,
+	Anil Agrawal <anilagrawal@meta.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sargun Dhillon <sargun@meta.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v6 14/16] PCI/AER: Introduce ratelimit for error logs
+Message-ID: <20250520183153.GA1316070@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,64 +81,38 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1
-	OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e056eb23-e38a-4a0e-83d7-c17c62c0f9f7@linux.intel.com>
+X-Spam-Status: No, score=-5.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Kan Liang <kan.liang@linux.intel.com>
+On Mon, May 19, 2025 at 09:59:29PM -0700, Sathyanarayanan Kuppuswamy wrote:
+> On 5/19/25 2:35 PM, Bjorn Helgaas wrote:
+> > From: Jon Pan-Doh <pandoh@google.com>
+> > 
+> > Spammy devices can flood kernel logs with AER errors and slow/stall
+> > execution. Add per-device ratelimits for AER correctable and uncorrectable
+> > errors that use the kernel defaults (10 per 5s).
+> > 
+> > There are two AER logging entry points:
+> > 
+> >    - aer_print_error() is used by DPC and native AER
+> > 
+> >    - pci_print_aer() is used by GHES and CXL
+> > 
+> > The native AER aer_print_error() case includes a loop that may log details
+> > from multiple devices.  This is ratelimited by the union of ratelimits for
+> > these devices, set by add_error_device(), which collects the devices.  If
+> > no such device is found, the Error Source message is ratelimited by the
+> > Root Port or RCEC that received the ERR_* message.
+> > 
+> > The DPC aer_print_error() case is currently not ratelimited.
+> 
+> Can we also not rate limit fatal errors in AER driver?
 
-The throttle support has been added in the generic code. Remove
-the driver-specific throttle support.
-
-Besides the throttle, perf_event_overflow may return true because of
-event_limit. It already does an inatomic event disable. The pmu->stop
-is not required either.
-
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
----
- arch/powerpc/perf/core-book3s.c  | 6 ++----
- arch/powerpc/perf/core-fsl-emb.c | 3 +--
- 2 files changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 42ff4d167acc..8b0081441f85 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -2344,12 +2344,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
- 			ppmu->get_mem_weight(&data.weight.full, event->attr.sample_type);
- 			data.sample_flags |= PERF_SAMPLE_WEIGHT_TYPE;
- 		}
--		if (perf_event_overflow(event, &data, regs))
--			power_pmu_stop(event, 0);
-+		perf_event_overflow(event, &data, regs);
- 	} else if (period) {
- 		/* Account for interrupt in case of invalid SIAR */
--		if (perf_event_account_interrupt(event))
--			power_pmu_stop(event, 0);
-+		perf_event_account_interrupt(event);
- 	}
- }
- 
-diff --git a/arch/powerpc/perf/core-fsl-emb.c b/arch/powerpc/perf/core-fsl-emb.c
-index d2ffcc7021c5..7120ab20cbfe 100644
---- a/arch/powerpc/perf/core-fsl-emb.c
-+++ b/arch/powerpc/perf/core-fsl-emb.c
-@@ -635,8 +635,7 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
- 
- 		perf_sample_data_init(&data, 0, last_period);
- 
--		if (perf_event_overflow(event, &data, regs))
--			fsl_emb_pmu_stop(event, 0);
-+		perf_event_overflow(event, &data, regs);
- 	}
- }
- 
--- 
-2.38.1
-
+In other words, only rate limit AER_CORRECTABLE and AER_NONFATAL for
+AER?  Seems plausible to me.
 
