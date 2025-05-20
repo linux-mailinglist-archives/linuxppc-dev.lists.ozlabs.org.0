@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-8785-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8786-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0329ABE663
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 23:52:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B74ABE665
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 23:52:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b27Xw2Hhjz3btm;
-	Wed, 21 May 2025 07:51:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b27Xz1ZJlz3c2q;
+	Wed, 21 May 2025 07:51:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747777872;
-	cv=none; b=fKy3gAFmua1EXNQqjyirUQdurO8l08ZmHD5veHd+RYLiOx56OadIvgDY5sqNnAhPG0K1cUXhk8y7ys6QT0GQ+l6r7Q4hxLkjZ3i9l2aJ/xcwtjWB4q+4NI0Fbt2boQRDmECmH2XnIg0/yKdnL9L5ZcLh89TY44bhummBtpQ9IxyZvAhmKMNgnHQfWKjHOg/QzE03O/y/9woL82pP7En5u5WevjMids+XgjV7bd5h+dVmv8sW2YkC624JOQ9BSjD6EjhJ4bXM72yQ3NeaK7sJHewKyZ1kDR+n70l4sUbvXtq+T1K1hD3NqvT5GPTv8XizH+bK171vsDswC+ZbsV1dZA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747777875;
+	cv=none; b=SmHeJQWOShORvLTk4GSKBWD3tup0AeP+IMyPhKsnAJPvNaXnV7o0Pa4C6QNMbynezlX9weosGMRqAuhq5tCmk9nl7w0O1LdCiuWFTsVeL1asOkuG2uauAxTczNoTs507gjtwPuOGbcyDf6G7f/bqHj6brWuekqz3FkU5CUScomA7z88cyut3QTswU8QzvL7rZJtwDaW2DWAxHH1Oiu4z3/SizWEmwXTlLX2tKCLEUgINKANFVAnKo3u7a/hvhyMZvpJsDtiSavAaG8GLxqobC0qDXbpLuTmZyiNK5Fk3L/G84vH9Vpc4iJFgxK0xUHy9ruZdLROLLNPiQE5ch5t1qA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747777872; c=relaxed/relaxed;
-	bh=mktW0UapS3Xy8LObQTEYU5aDRipXWY+j/uMtxBkjSqo=;
+	t=1747777875; c=relaxed/relaxed;
+	bh=+OI0ybHkR9L5eODyEvrW1+4MhEsn63dz9YHBIpYQRGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J8m6VwtWdvaYJ8Sq7OwHV3FVhTPcqQKfvuQ/MeXbjV1yMSOyzGYNPHAqnNwQnMBRtC2KQh8wnvTYHZX4cjTojebWZTtR28z2BXhz5gqCA9JWgFPU7uSoBBibqBopMfHPS01GbTi8EVzI29sMdxkjHL2V4lJNkji3fjOm4Tpeob1/G6ujnHBWuMjXKF1eB0rygQ3uALK4ZWt6fa45wgsNVEQZxqZAILZuydJQRkZjbAQ62Zj/JEkiFVLKGycbaoa6/Dem1CL1d5ldTB9RUjz21eNyxEePgV2AgbeZAmFp4KwwhsHpHNKoB03R7hw2FPjn+H8KDB0w2/vBnI32gs+WdQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pDX/ceat; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version:Content-Type; b=KfbYJTLU0BctE+IFixvIXN0h6rS3ZCjkcyuGtX/3a6PtBW8Qe51TE5oM+Maotp6zPba2YNFP7Su0t32AmQqMcXCjgkXCVMDCy23fjQYia6+cLWmPI6NgzxXLItOnz3kiXOBmjyTKLW+7NitVcGG7Rw0UBrVlb/EctjvPbpY8AFdGRJZeiv0+5ICB0q95zX5EIZAhUkC+GJZDNnR1e3oqRcd2xuPQfCqYSNO/DIbnJ4hvWG9V439LWL/rWmjSmfaMp3vC3GEeZgISMWEtaWcjAh7e3PMKrHiceo4aHDAW/PUCSPY8wFRW7bY2Wfg/uEwyA6WMwcnr08PcArAsRYqeGQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a4ZW88H4; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=pDX/ceat;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a4ZW88H4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b27Xv55XZz3c2C
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 07:51:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b27Xy3MQvz3c2C
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 07:51:14 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3582749D3A;
-	Tue, 20 May 2025 21:51:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FB6C4CEE9;
-	Tue, 20 May 2025 21:51:09 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id BFBEF5C5ACF;
+	Tue, 20 May 2025 21:48:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E06C4CEED;
+	Tue, 20 May 2025 21:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747777870;
-	bh=VOB2b3yR/XL94yR1QcwLj8iKG5CHPulVDQ+iGoEI/Z8=;
+	s=k20201202; t=1747777871;
+	bh=TV22lSmYNsCCExGd1j0mHjuH4gWfFSn4U6wx2afxjL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pDX/ceatoNqgHR/APyaEExsPyXJdaazXM5ZfE80V69b+ae77sOEFukiizxBhBVpb3
-	 wtFDfHnkruZ/tSi8jtQIN1SpEjYPJaQ2JdYb7o4XbBJ1F+xlh513Yy70HnY4U8BCML
-	 dETE8LzFkaMJ0dYwlMR7PrkIDbn5SYmcyqqDYaRfINLHFESJ8K1xONgYhH4OxsF7wD
-	 /YFr9QUCnYE7X2d+/L2x6PRS0I4B/t9uqzfLlilkaKuRmIQfSRdKngngDnWwOm4r/M
-	 JPD8Wo2mw7GrynoyzT+WBi57xr5DMB6JdEAP+aA2jL21qspNEHhWKTlKq3Swp8urPt
-	 uV4m7pv5NXDTQ==
+	b=a4ZW88H4hxS326i1EeQIiK+H1Q+gArBBUrNWoPqbJZCa7HS3VJAat4rC4SB9BrI97
+	 bpfxxDrVlLkV+juTBtt4xJLy6x3pcVZ07+ZQeAJXekdYFc7n5f4AqAqY6/NKF1d6x5
+	 +Iv/LhgJcot8ng2Srn3XfmRj01V5uBS+49c+v18E2Ylf+lF1O0zCEC2APyRCgm8kah
+	 KoCTWwtGFLR/mF65v0udZlw1FAZG5TqXKWE2EHktSbL3btLVsCXxRQqdddretuEgQk
+	 Svx/0R2VTisy72B+o9bBlfKRmfeSOaRzCS2HDIS0QoW0S8WNgiSn3AIoA1c+3xXhDc
+	 Kfq2CNJtmPkng==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: linux-pci@vger.kernel.org
 Cc: Jon Pan-Doh <pandoh@google.com>,
@@ -71,9 +71,9 @@ Cc: Jon Pan-Doh <pandoh@google.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH v7 12/17] PCI/AER: Check log level once and remember it
-Date: Tue, 20 May 2025 16:50:29 -0500
-Message-ID: <20250520215047.1350603-13-helgaas@kernel.org>
+Subject: [PATCH v7 13/17] PCI/AER: Make all pci_print_aer() log levels depend on error type
+Date: Tue, 20 May 2025 16:50:30 -0500
+Message-ID: <20250520215047.1350603-14-helgaas@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250520215047.1350603-1-helgaas@kernel.org>
 References: <20250520215047.1350603-1-helgaas@kernel.org>
@@ -92,132 +92,56 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-5.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Karolina Stolarek <karolina.stolarek@oracle.com>
 
-When reporting an AER error, we check its type multiple times to determine
-the log level for each message. Do this check only in the top-level
-functions (aer_isr_one_error(), pci_print_aer()) and save the level in
-struct aer_err_info.
+Some existing logs in pci_print_aer() log with error severity by default.
+Convert them to depend on error type (consistent with rest of AER logging).
 
-[bhelgaas: save log level in struct aer_err_info instead of passing it
-as a parameter]
 Signed-off-by: Karolina Stolarek <karolina.stolarek@oracle.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/pci/pci.h      |  1 +
- drivers/pci/pcie/aer.c | 21 ++++++++++-----------
- drivers/pci/pcie/dpc.c |  1 +
- 3 files changed, 12 insertions(+), 11 deletions(-)
+ drivers/pci/pcie/aer.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index b81e99cd4b62..705f9ef58acc 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -588,6 +588,7 @@ static inline bool pci_dev_test_and_set_removed(struct pci_dev *dev)
- struct aer_err_info {
- 	struct pci_dev *dev[AER_MAX_MULTI_ERR_DEVICES];
- 	int error_dev_num;
-+	const char *level;		/* printk level */
- 
- 	unsigned int id:16;
- 
 diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index ec63825a808e..f5e9961d2c63 100644
+index f5e9961d2c63..4cdcf0ebd86d 100644
 --- a/drivers/pci/pcie/aer.c
 +++ b/drivers/pci/pcie/aer.c
-@@ -672,21 +672,18 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
- 	}
+@@ -788,15 +788,21 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+ 	layer = AER_GET_LAYER_ERROR(aer_severity, status);
+ 	agent = AER_GET_AGENT(aer_severity, status);
+ 
+-	pci_err(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
++	aer_printk(info.level, dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n",
++		   status, mask);
+ 	__aer_print_error(dev, &info);
+-	pci_err(dev, "aer_layer=%s, aer_agent=%s\n",
+-		aer_error_layer[layer], aer_agent_string[agent]);
++	aer_printk(info.level, dev, "aer_layer=%s, aer_agent=%s\n",
++		   aer_error_layer[layer], aer_agent_string[agent]);
+ 
+ 	if (aer_severity != AER_CORRECTABLE)
+-		pci_err(dev, "aer_uncor_severity: 0x%08x\n",
+-			aer->uncor_severity);
++		aer_printk(info.level, dev, "aer_uncor_severity: 0x%08x\n",
++			   aer->uncor_severity);
+ 
++	/*
++	 * pcie_print_tlp_log() uses KERN_ERR, but we only call it when
++	 * tlp_header_valid is set, and info.level is always KERN_ERR in
++	 * that case.
++	 */
+ 	if (tlp_header_valid)
+ 		pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
  }
- 
--static void __aer_print_error(struct pci_dev *dev,
--			      struct aer_err_info *info)
-+static void __aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- {
- 	const char **strings;
- 	unsigned long status = info->status & ~info->mask;
--	const char *level, *errmsg;
-+	const char *level = info->level;
-+	const char *errmsg;
- 	int i;
- 
--	if (info->severity == AER_CORRECTABLE) {
-+	if (info->severity == AER_CORRECTABLE)
- 		strings = aer_correctable_error_string;
--		level = KERN_WARNING;
--	} else {
-+	else
- 		strings = aer_uncorrectable_error_string;
--		level = KERN_ERR;
--	}
- 
- 	for_each_set_bit(i, &status, 32) {
- 		errmsg = strings[i];
-@@ -714,7 +711,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- {
- 	int layer, agent;
- 	int id = pci_dev_id(dev);
--	const char *level;
-+	const char *level = info->level;
- 
- 	pci_dev_aer_stats_incr(dev, info);
- 
-@@ -727,8 +724,6 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 	layer = AER_GET_LAYER_ERROR(info->severity, info->status);
- 	agent = AER_GET_AGENT(info->severity, info->status);
- 
--	level = (info->severity == AER_CORRECTABLE) ? KERN_WARNING : KERN_ERR;
--
- 	aer_printk(level, dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
- 		   aer_error_severity_string[info->severity],
- 		   aer_error_layer[layer], aer_agent_string[agent]);
-@@ -774,9 +769,11 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
- 	if (aer_severity == AER_CORRECTABLE) {
- 		status = aer->cor_status;
- 		mask = aer->cor_mask;
-+		info.level = KERN_WARNING;
- 	} else {
- 		status = aer->uncor_status;
- 		mask = aer->uncor_mask;
-+		info.level = KERN_ERR;
- 		tlp_header_valid = status & AER_LOG_TLP_MASKS;
- 	}
- 
-@@ -1307,6 +1304,7 @@ static void aer_isr_one_error(struct pci_dev *root,
- 		struct aer_err_info e_info = {
- 			.id = ERR_COR_ID(e_src->id),
- 			.severity = AER_CORRECTABLE,
-+			.level = KERN_WARNING,
- 			.multi_error_valid = multi ? 1 : 0,
- 		};
- 
-@@ -1319,6 +1317,7 @@ static void aer_isr_one_error(struct pci_dev *root,
- 		struct aer_err_info e_info = {
- 			.id = ERR_UNCOR_ID(e_src->id),
- 			.severity = fatal ? AER_FATAL : AER_NONFATAL,
-+			.level = KERN_ERR,
- 			.multi_error_valid = multi ? 1 : 0,
- 		};
- 
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index 9d85f1b3b761..6c98fabdba57 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -252,6 +252,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
- 	else
- 		info->severity = AER_NONFATAL;
- 
-+	info->level = KERN_ERR;
- 	return 1;
- }
- 
 -- 
 2.43.0
 
