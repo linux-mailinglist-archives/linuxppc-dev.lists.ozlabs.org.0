@@ -1,72 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-8768-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8769-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E62ABE44E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 22:02:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53053ABE4D7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 22:36:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b25801R7mz30BW;
-	Wed, 21 May 2025 06:02:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b25v86j50z2ybQ;
+	Wed, 21 May 2025 06:36:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747771376;
-	cv=none; b=Lt9zScXsNxZU0PkdwpVZGFNMwu1moPVoR3jZRTwe2sBMB4rPo4kQsboEhLf5onrOX+5qlheRv8Zm5ZDMkAsET6FKVJLUxUpNUPxyJpFizMIFlNWqfGoonAWkEq7uVlv38jyJCuX0OEHAY+bdw0NsWdfmnwx8kw9fmpHVu+59UrtrCAOdRd2XZH2qAVe/+4bw2O0+ffEzT9N+1KNt1esp6PJERoau0EIpodPsVGBm9UMAyqvV6bPGNt7VjihzpUvd22bNGnp0ke4QGZBQbCuZI+Ag2BWesZSHCD980edgVAyz0aylxEE+ZlAh6IWZA3jc10J5XAYk4jN0yHFmfCGsyg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.16
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747773412;
+	cv=none; b=d8ZYQagOcX0jY7B6QohWlXNbN3VxOIZpmKzbe0QntA0zlMum3+xXPo2hw5CWvtb/CL8f6cPrneKzbJJWcHEi1j+mOomJvk9YMrRpo67iP1YXLiE/Xq+A8uCKel85kydcSyzLy954uUXZelS0jxp2yXdD6n7srdLUUYcDPbm7+EfqF37JXX8DZreZnAR93nBc3lYmyJy1FdEmmHi1DASnX+5fgn7OiBfMc3RamVLuakKiQDpwaQoK3ReAg1sVcSVO8CeO+rvbGmMaOfynfOApoXUKLXccUMCiMazOBcX+M2v+XtwbSiUpA0g6uTWPkofiIE4TX9E0ZAoa/pyqm4MkLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747771376; c=relaxed/relaxed;
-	bh=+Kq4vyvCOzwMXjMugvDzDXWKbOHVjshLZaUXVLhkgyg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T0eT52B85brY2qXNPiYV5OVE4mrhasB5vTNe8pq5+HHPxOrax8SgoTzGZR3aisq1xb1YDr+/JwJE7/wgJ0Du9M7HZvSlcUYm41auiu3ln539LOZrbW2eFWg0IszPSQfUxCBFBZIDikzQLQy0NmHkx1riK5ntCrWFBil1xVVxAULE+ymskl6d6wCvcvRBsg4ZlwS6jkPn7YCe/1+bxJ5tQt5J1Js3F/95yUxrHF4nBIKLu7CcmGB0L05/j8JNqY5isHwJSjQJIg5gjSyvqPCflhoffkZMIv4w3Xk7jmF9hUo63l+yWo55WBZKUvXqrNMyuguL5BKVk6ShKEcG8epmDw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dLhb1sSF; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1747773412; c=relaxed/relaxed;
+	bh=oLoR7f/+1NYMeFSR+bvh8QW+pKfHNujReaNSazWSkic=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h+ZoXR/DRsM9aYzBqCBgScJFyEGsaiU0Wt2hiY4OWWrJUbGetsBjHqm4YQyxOR/bUXyXduUwpMcy4BxE7cZJ2XLSI13Sy2h4uRAEnR5qfLUxb14jzuo+rvxd1RqWezPmc7rJwqgFcUTlRn/qG97R2q0AK0fEmiM9nnOyEww7CbWASaJGrRSI8A6aGCDiqt6UMNv0MTJz8f3sI+BGKYf7XetXXG4uOcpCn3OrB46ef4JqmeidIHujfrmIpnzGdyfhIpnQ0umMN++JoTnwhsOanoRcFtmD6HUxtm2W37dQGYS7aGR5LS1PL3X8c4oV6GTPcN0UyDKWpQWFbO48Of5U+Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Kx6tBEYJ; dkim-atps=neutral; spf=none (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dLhb1sSF;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Kx6tBEYJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b257z2VXhz305P
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 06:02:55 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1AE6B44275;
-	Tue, 20 May 2025 20:02:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C612C4CEE9;
-	Tue, 20 May 2025 20:02:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747771373;
-	bh=ipb1eCljeIm2r5OkPhtSsa9n7gXb96lo1YYOTFP6ZPU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dLhb1sSFzls6z4ybonOCIe75fqv5xXE/hup5qinNdeuHoGd8MuPuOzlXXBO9wl/8f
-	 Hh/5LQiTqGwYS7l+HT2NlPKflmOHvkwjZ0E0l5Od8hav8x2u5jTo3wpcu7ms4/xc8Y
-	 rrirDQSHOhDouqRY0ThHP5RPBaQ99RqtIViakrmmw02J0NkyR08Sqgl9x/m34+E38W
-	 ZtLIDsqOJnIEBm9GODFUfpIF0vIBoM6iZNmT7UjcN56ul0EMvOWaMJMq97TVUMWCgO
-	 0AQBNZE275z5UeHLQoyyLzjlXlZvZnkzB+CbngW8H3F5wxFd4Ym1OcUtaqnMUqD9nA
-	 ZQO3bRsWqj1Uw==
-Date: Tue, 20 May 2025 23:02:49 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Peter Huewe <peterhuewe@gmx.de>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	linux-integrity@vger.kernel.org,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Sumit Garg <sumit.garg@kernel.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v5 4/4] tpm/tpm_svsm: support TPM_CHIP_FLAG_SYNC
-Message-ID: <aCzf6aoJAC-IdS_n@kernel.org>
-References: <20250514134630.137621-1-sgarzare@redhat.com>
- <20250514134630.137621-5-sgarzare@redhat.com>
- <aCVHQ-LRqHeEVEAW@kernel.org>
- <CAGxU2F5AsNY5mQPd=qajW1seFYHSYpB0Fa1iuR_f2QavtoB6sA@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b25v60myyz2yVP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 06:36:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747773410; x=1779309410;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=J/efGUmqy7oN9EoBIMU7rLAuBqz4R6qisInic/jNCRY=;
+  b=Kx6tBEYJJMKinftgizXTKN31R4fSKvlnj75UDZP7RTFENSYpPtq0U0B8
+   oS5zxkJSNEvn56Cj+PFxXVDmKQJkcoM1PAcetjBxt/YE3nypZDikQUZEq
+   u+MlKKJjWNeNnKf/J/BcUJU5CGtNuKm+BC5TtIeoGF/q+P0wRlQg49Q54
+   802DycNXctECf5D1fb7OurFG7bPI8TiNVJwKvKZIEeBxxLvJNTq20UQYz
+   B4HFKI7UAVmsFAAVw9Ak1dDhSYtyjXiAC0rGG/dBwmusPVOKsDpxhsgP1
+   sCWM9TyJfvnVKwIyBT48X2GZMJB5uTAVTlTFaxNXzhgG5vKGg+PDKAkv3
+   w==;
+X-CSE-ConnectionGUID: LZlTAlrRQ96WARFvA5nvNg==
+X-CSE-MsgGUID: QCnisi0XR5SaPJwNq5ojeg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="37343341"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="37343341"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 13:36:45 -0700
+X-CSE-ConnectionGUID: rDiCkEmuTjCvvuNZyc9FvQ==
+X-CSE-MsgGUID: QnrewdnpRn2V8+b6oxjOpw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="140215561"
+Received: from iweiny-desk3.amr.corp.intel.com (HELO [10.124.222.89]) ([10.124.222.89])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 13:36:44 -0700
+Message-ID: <63e93c1c-9330-43ae-b381-fffde3864da3@linux.intel.com>
+Date: Tue, 20 May 2025 13:36:43 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,116 +69,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGxU2F5AsNY5mQPd=qajW1seFYHSYpB0Fa1iuR_f2QavtoB6sA@mail.gmail.com>
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 15/16] PCI/AER: Add ratelimits to PCI AER Documentation
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
+ Karolina Stolarek <karolina.stolarek@oracle.com>,
+ Martin Petersen <martin.petersen@oracle.com>,
+ Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>,
+ Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Lukas Wunner <lukas@wunner.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney" <paulmck@kernel.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>,
+ Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
+ Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
+References: <20250520194841.GA1322094@bhelgaas>
+Content-Language: en-US
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20250520194841.GA1322094@bhelgaas>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, May 20, 2025 at 06:06:50PM +0200, Stefano Garzarella wrote:
-> On Thu, 15 May 2025 at 03:45, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> > On Wed, May 14, 2025 at 03:46:30PM +0200, Stefano Garzarella wrote:
-> > > From: Stefano Garzarella <sgarzare@redhat.com>
-> > >
-> > > This driver does not support interrupts, and receiving the response is
-> > > synchronous with sending the command.
-> > >
-> > > Enable synchronous send() with TPM_CHIP_FLAG_SYNC, which implies that
-> > > ->send() already fills the provided buffer with a response, and ->recv()
-> > > is not implemented.
-> > >
-> > > Keep using the same pre-allocated buffer to avoid having to allocate
-> > > it for each command. We need the buffer to have the header required by
-> > > the SVSM protocol and the command contiguous in memory.
-> > >
-> > > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> > > ---
-> > > v5:
-> > > - changed order and parameter names to match tpm_try_transmit() [Jarkko]
-> > > v4:
-> > > - reworked commit description [Jarkko]
-> > > ---
-> > >  drivers/char/tpm/tpm_svsm.c | 27 +++++++++++----------------
-> > >  1 file changed, 11 insertions(+), 16 deletions(-)
-> > >
-> > > diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
-> > > index 0847cbf450b4..f5ba0f64850b 100644
-> > > --- a/drivers/char/tpm/tpm_svsm.c
-> > > +++ b/drivers/char/tpm/tpm_svsm.c
-> > > @@ -26,37 +26,31 @@ struct tpm_svsm_priv {
-> > >  };
-> > >
-> > >  static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t bufsiz,
-> > > -                      size_t len)
-> > > +                      size_t cmd_len)
-> > >  {
-> > >       struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
-> > >       int ret;
-> > >
-> > > -     ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, len);
-> > > +     ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, cmd_len);
-> > >       if (ret)
-> > >               return ret;
-> > >
-> > >       /*
-> > >        * The SVSM call uses the same buffer for the command and for the
-> > > -      * response, so after this call, the buffer will contain the response
-> > > -      * that can be used by .recv() op.
-> > > +      * response, so after this call, the buffer will contain the response.
-> > > +      *
-> > > +      * Note: we have to use an internal buffer because the device in SVSM
-> > > +      * expects the svsm_vtpm header + data to be physically contiguous.
-> > >        */
-> > > -     return snp_svsm_vtpm_send_command(priv->buffer);
-> > > -}
-> > > -
-> > > -static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
-> > > -{
-> > > -     struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
-> > > +     ret = snp_svsm_vtpm_send_command(priv->buffer);
-> > > +     if (ret)
-> > > +             return ret;
-> > >
-> > > -     /*
-> > > -      * The internal buffer contains the response after we send the command
-> > > -      * to SVSM.
-> > > -      */
-> > > -     return svsm_vtpm_cmd_response_parse(priv->buffer, buf, len);
-> > > +     return svsm_vtpm_cmd_response_parse(priv->buffer, buf, bufsiz);
-> > >  }
-> > >
-> > >  static struct tpm_class_ops tpm_chip_ops = {
-> > >       .flags = TPM_OPS_AUTO_STARTUP,
-> > > -     .recv = tpm_svsm_recv,
-> > >       .send = tpm_svsm_send,
-> > >  };
-> > >
-> > > @@ -85,6 +79,7 @@ static int __init tpm_svsm_probe(struct platform_device *pdev)
-> > >
-> > >       dev_set_drvdata(&chip->dev, priv);
-> > >
-> > > +     chip->flags |= TPM_CHIP_FLAG_SYNC;
-> > >       err = tpm2_probe(chip);
-> > >       if (err)
-> > >               return err;
-> > > --
-> > > 2.49.0
-> > >
-> > >
-> >
-> > I can pick this for 6.16.
-> 
-> Great, thanks!
 
-Can you rebase this on top of my next branch and send one more version
-of the series (fake ancestor crap)?
+On 5/20/25 12:48 PM, Bjorn Helgaas wrote:
+> On Mon, May 19, 2025 at 10:01:09PM -0700, Sathyanarayanan Kuppuswamy wrote:
+>> On 5/19/25 2:35 PM, Bjorn Helgaas wrote:
+>>> From: Jon Pan-Doh <pandoh@google.com>
+>>>
+>>> Add ratelimits section for rationale and defaults.
+>>> +AER Ratelimits
+>>> +--------------
+>>> +
+>>> +Since error messages can be generated for each transaction, we may see
+>>> +large volumes of errors reported. To prevent spammy devices from flooding
+>>> +the console/stalling execution, messages are throttled by device and error
+>>> +type (correctable vs. uncorrectable).
+>> Can we list exceptions like DPC and FATAL errors (if added) ?
+> Like this?
+>
+>    +... messages are throttled by device and error
+>    +type (correctable vs. non-fatal uncorrectable).  Fatal errors, including
+>    +DPC errors, are not ratelimited.
+>
+> DPC is currently only triggered for fatal errors.
 
-> 
-> Stefano
-> 
+Yes.  I think it is good enough.
 
-BR, Jarkko
+
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
+
 
