@@ -1,41 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-8759-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8760-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75FC0ABDE84
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 17:12:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09420ABDFF7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 18:07:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1yhZ0JKBz3bhH;
-	Wed, 21 May 2025 01:12:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1zw34PZ4z3055;
+	Wed, 21 May 2025 02:07:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=220.197.31.3
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747753933;
-	cv=none; b=PRDHyXEFRMYDCM25+vPlOE1lI5CwUJQWoW5UYxDdd/SwYUbsQrpboVHqj8V1CMYjsAhYi66HLwxjuz/xv86WYZJVPFNz2mC11oL2mtSSA734M6WqGAeVCr+72jCHCDVrD0lRfiZcH+Ll5XIKtuUGyv8CC22cbxCvu5EH+VNW63YeVYI3zsopHNBa1f4aq0AyJBk5kklgfdvLXB2/8mkTObMHIVI4Haed6K09l8BghTY8ySwVjKDz4+docY3B6++lnjvcF63BfopvyLyOO7+sCe1YT4IsVtXPkB74BMzfpmpHSBZLhpnufMQMZ1zi/opqJCCYgrL24L4Fw2rKXgAnXw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747757235;
+	cv=none; b=bszXA1Cj38rurWYYoIVdHGhQwRxqwPD+CUSHT5WT1Y4yVujssWRMIcWZympiqGOJcE9bMdBpGB7Xp41OuW1qPfGxs9HpBYNAkPSSWluevxQICWUZP+RPIBZfou2GIDY0WlUO53NlJWhHpBZMJ2/wzmat1MzeF4T09kZhcmM4Rrat86mazY+aYcl2is6CxE3Y4SezK6wC3qZF/5+KCxZYJnVTFIlQcCWYyXMcuYRob44Ny321T0xDEQ/XzsoNwGjoi/Qzc4CsP2FsRwhQWmAoK4+8y9Db5A/PS0LUkBjXE6/EfP9H6YR3dft87fomsEFEztDLIEMB/OBjas4DOzNduA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747753933; c=relaxed/relaxed;
-	bh=GPaZJXcP6XubVhJ/WV1CIEQYs82mgwU/ATflS6SjxSY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eP6bIJAyhDm2IE9mOM3J17H+8W1N3e4vKuqQjVYZmNe5Yu7hHQ4wY/5ZlUSTiE9Lfz6LROGUn3F7xcFHll6AQz8ZeXC4BBRVzGovvY5m5ZHfT/HbjP30zwJpGnVlhi8ij3c75RAcIf0b2u8i0cpa5yDddbDD8k9Dxhrg3Y7i71dcomxEgbu75O80QE27rN36aBwl3RZHr7mllSx4B4LCTq4iu175oHLrzdNMCICEhsNuxhL+q7Vnju5RK/AvfkB2SeC3cN2jcR+ARWCobMVbx7siTjpbyMOONF3Qxti8IIik0VZ7pVDEAex63zqwSKVsi4iLID8R7nY59qtxgZoPPw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=M6gbo3Pk; dkim-atps=neutral; spf=pass (client-ip=220.197.31.3; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com
+	t=1747757235; c=relaxed/relaxed;
+	bh=ybC/xEWalGJ0RhCZjvyrvjbHro7QE2FQq7vzTeEzDcM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JLGEp4kBFhGIvi8BCW9oOvUjHb1+MvjNRx8wx8WbsNPZ5deojgWTT9xuPFiTbIKQqmZi+LXYHnZZ3Q6JBETyZdXR2O0UaXWeWr4bhaKhGDt+zn5QDPiOgDsevH+/43btnVv1+5gkWgJ34R2Tm5hQbkvdrY9YB5OBckhJyz9UzPz+mfJzv33pGZHOkvHhs13OlqgsD2PgiD0wo47CgdFMiAO/pyP1HDLRdyWDuLgJ7/HqHTQi8bnfVBlf4rjFh1Uzc1NtGeI9WNRkFpWv7uxrikzmj4hNxekmndNbIqbPBVr/Jk4r5JVOezRyrVHzmMI2PZPSYwUqON0pnZiEPhZG3A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M4xobwN8; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WeM/tAHv; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=M6gbo3Pk;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=M4xobwN8;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WeM/tAHv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=220.197.31.3; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org)
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1yhV6zxmz3bgl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 01:12:08 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=GPaZJXcP6XubVhJ/WV1CIEQYs82mgwU/ATflS6SjxSY=;
-	b=M6gbo3PkyNO6LKEIRcnZEar2L3xmcCL05XCix/scjTswOD8OfX3hq7iMJqVaW3
-	qBSEtfuIuRcy+U5BVj4+FQ6VLe6nOO3g04/cNXFC5BUFJDThIliGdMQpLtqLeviU
-	+R/SiXqIWGLa7OvxsSrbqv8VxwXFRA5h8wbO2Gk68EqPg=
-Received: from [192.168.71.93] (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wBHzheFmyxoXz1HCw--.9652S2;
-	Tue, 20 May 2025 23:11:01 +0800 (CST)
-Message-ID: <5759e70d-1098-4a6a-bc7a-bcbad394d739@163.com>
-Date: Tue, 20 May 2025 23:11:01 +0800
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1zw23GFKz2yrN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 02:07:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747757227;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ybC/xEWalGJ0RhCZjvyrvjbHro7QE2FQq7vzTeEzDcM=;
+	b=M4xobwN8EuRcfFeQ5UVKsTD6JaOXwYxS1yvgtwOiFHNPMeGIOrRU7nq8OmjqicAlcGptZc
+	ppVRjienqtJs9d20P6Sk7VZPrbkEHclmpTR+7mcFNXiZEm4gFZwImy7uiCUJu3Nf+O3lpS
+	TMo4iER2L6ByfEbzZALdvIpP0ewK7D8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747757228;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ybC/xEWalGJ0RhCZjvyrvjbHro7QE2FQq7vzTeEzDcM=;
+	b=WeM/tAHvDZssArTESU1weD60Qx/kGnqsC3CNNMzSS6pWRQdFeOjBsjYBqRFaPXLpVbJQG0
+	26VzLiGcVJsz06L4oo4OPpDZ7pmV0wWkm9i57aO18ThZlFSkiNrPOhLVEyXq8E9KM0h9A1
+	A71kjU4MdPi+w15IBAivZxuKzJ8THpg=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-634-0vAaRpc5PsWFmvsSJ41Gjg-1; Tue, 20 May 2025 12:07:03 -0400
+X-MC-Unique: 0vAaRpc5PsWFmvsSJ41Gjg-1
+X-Mimecast-MFC-AGG-ID: 0vAaRpc5PsWFmvsSJ41Gjg_1747757223
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-72c40592a9aso3908684a34.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 09:07:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747757222; x=1748362022;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ybC/xEWalGJ0RhCZjvyrvjbHro7QE2FQq7vzTeEzDcM=;
+        b=VrWTRJDF5RlGOO6RWQ5x3GZddUQxqJml3sPbqz4N2iB3Og3cm7kfETMwscHWvlmAHP
+         KxbBtAhIPNcFKQcgd8nZ5hpT/eNn9Li5kQIzKovuxfhodADjFN368T0rOYoKSMFjdaR5
+         tFXcCf/umB5h58SKbAxhFWBE+Nh6fdXlN6346sETxtu+2j5XYDUkdrePBX9Kl105THBo
+         G3i4iAtwerS2hPMQdt8y/P848+Fi69TJJ/DwUGzFMUgKVxAGgLkMdxhYzj7XZKF4txlQ
+         8vD3nvfCBZjIL7rXL3fRYMakO9P4UYDloDvxTxfxer+KQmx4yjSxNaj0LW/B/q7Dc9z9
+         pN9Q==
+X-Gm-Message-State: AOJu0YwV6dItnE6UbLUaw03Wuo2+8lpoHstbmKloAWIiVaZ+EiwUnnyq
+	dAdaHe0lIZ5CX0MHPnzz1vPyryLcBlrBLa0uCZf5TeIHCNHc1/yc458bwrV8O/+evKDC1P/uh6d
+	qe+HZU04h5h/XILYVI0z68WKGnqgriTr8QA2k6zFOzEfYm+LFdpjDYmhOx4soXDwfbt7C35NH55
+	a9THy3Q9x3BAYlbvvHuqVHurRjkNfo7WZX1UXd5zhPew==
+X-Gm-Gg: ASbGnct367Mc4xSmRWOd+THtjjNHPupZjEGNU8Wl1+E6fOTIAIDXfXblYXTYI7pFdK0
+	bptmWs6Elza/p2dFK8VJ4Phqb/fzNUQxxjRi54jx5bqLzITvkkRILBwjJvome9LEislU=
+X-Received: by 2002:a05:6830:658c:b0:727:372e:600e with SMTP id 46e09a7af769-734f6b1a0cdmr10030113a34.14.1747757222600;
+        Tue, 20 May 2025 09:07:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF1ly9i72+pYbDKe5Sks+06FCcNtf9xBC0iJ/paWfH1AFYyUe0Qn2IrAf+QY1o3hDZlmKZQmCGNGBhAxWj1dLY=
+X-Received: by 2002:a05:6830:658c:b0:727:372e:600e with SMTP id
+ 46e09a7af769-734f6b1a0cdmr10030067a34.14.1747757222132; Tue, 20 May 2025
+ 09:07:02 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -49,195 +92,130 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] pci: implement "pci=aer_panic"
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: bhelgaas@google.com, tglx@linutronix.de, kw@linux.com,
- manivannan.sadhasivam@linaro.org, mahesh@linux.ibm.com, oohall@gmail.com,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <20250519220310.GA1258923@bhelgaas>
-Content-Language: en-US
-From: Hans Zhang <18255117159@163.com>
-In-Reply-To: <20250519220310.GA1258923@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wBHzheFmyxoXz1HCw--.9652S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3GF1xJF1UuF43KF1rXry7Wrg_yoWxJFyrpF
-	WrWan0krs7GF9Ivan2k3W8WFyYyas3t34UGr1kKw17X3ZxZF95XrySvay5uFZFqrZY9w43
-	ZF4jvFZrWF1DAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRP3ktUUUUU=
-X-Originating-IP: [124.79.128.52]
-X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/1tbiWwVTo2gslzmFdgAAs3
-X-Spam-Status: No, score=0.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+References: <20250514134630.137621-1-sgarzare@redhat.com> <20250514134630.137621-5-sgarzare@redhat.com>
+ <aCVHQ-LRqHeEVEAW@kernel.org>
+In-Reply-To: <aCVHQ-LRqHeEVEAW@kernel.org>
+From: Stefano Garzarella <sgarzare@redhat.com>
+Date: Tue, 20 May 2025 18:06:50 +0200
+X-Gm-Features: AX0GCFsTmlbq93tR0wE4C3RUpx9Z1D4kjkNOv4wLeycQRtYZ5zeOxDpm0iB8eVA
+Message-ID: <CAGxU2F5AsNY5mQPd=qajW1seFYHSYpB0Fa1iuR_f2QavtoB6sA@mail.gmail.com>
+Subject: Re: [PATCH v5 4/4] tpm/tpm_svsm: support TPM_CHIP_FLAG_SYNC
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Peter Huewe <peterhuewe@gmx.de>, 
+	Jens Wiklander <jens.wiklander@linaro.org>, linux-integrity@vger.kernel.org, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-arm-kernel@lists.infradead.org, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Sumit Garg <sumit.garg@kernel.org>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Michael Ellerman <mpe@ellerman.id.au>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: kgEYkMCk0rJynV8dtX7IxOKI2Nh4nXJUBeuGjHLZUqY_1747757223
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Thu, 15 May 2025 at 03:45, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>
+> On Wed, May 14, 2025 at 03:46:30PM +0200, Stefano Garzarella wrote:
+> > From: Stefano Garzarella <sgarzare@redhat.com>
+> >
+> > This driver does not support interrupts, and receiving the response is
+> > synchronous with sending the command.
+> >
+> > Enable synchronous send() with TPM_CHIP_FLAG_SYNC, which implies that
+> > ->send() already fills the provided buffer with a response, and ->recv()
+> > is not implemented.
+> >
+> > Keep using the same pre-allocated buffer to avoid having to allocate
+> > it for each command. We need the buffer to have the header required by
+> > the SVSM protocol and the command contiguous in memory.
+> >
+> > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> > ---
+> > v5:
+> > - changed order and parameter names to match tpm_try_transmit() [Jarkko]
+> > v4:
+> > - reworked commit description [Jarkko]
+> > ---
+> >  drivers/char/tpm/tpm_svsm.c | 27 +++++++++++----------------
+> >  1 file changed, 11 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
+> > index 0847cbf450b4..f5ba0f64850b 100644
+> > --- a/drivers/char/tpm/tpm_svsm.c
+> > +++ b/drivers/char/tpm/tpm_svsm.c
+> > @@ -26,37 +26,31 @@ struct tpm_svsm_priv {
+> >  };
+> >
+> >  static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t bufsiz,
+> > -                      size_t len)
+> > +                      size_t cmd_len)
+> >  {
+> >       struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
+> >       int ret;
+> >
+> > -     ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, len);
+> > +     ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, cmd_len);
+> >       if (ret)
+> >               return ret;
+> >
+> >       /*
+> >        * The SVSM call uses the same buffer for the command and for the
+> > -      * response, so after this call, the buffer will contain the response
+> > -      * that can be used by .recv() op.
+> > +      * response, so after this call, the buffer will contain the response.
+> > +      *
+> > +      * Note: we have to use an internal buffer because the device in SVSM
+> > +      * expects the svsm_vtpm header + data to be physically contiguous.
+> >        */
+> > -     return snp_svsm_vtpm_send_command(priv->buffer);
+> > -}
+> > -
+> > -static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
+> > -{
+> > -     struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
+> > +     ret = snp_svsm_vtpm_send_command(priv->buffer);
+> > +     if (ret)
+> > +             return ret;
+> >
+> > -     /*
+> > -      * The internal buffer contains the response after we send the command
+> > -      * to SVSM.
+> > -      */
+> > -     return svsm_vtpm_cmd_response_parse(priv->buffer, buf, len);
+> > +     return svsm_vtpm_cmd_response_parse(priv->buffer, buf, bufsiz);
+> >  }
+> >
+> >  static struct tpm_class_ops tpm_chip_ops = {
+> >       .flags = TPM_OPS_AUTO_STARTUP,
+> > -     .recv = tpm_svsm_recv,
+> >       .send = tpm_svsm_send,
+> >  };
+> >
+> > @@ -85,6 +79,7 @@ static int __init tpm_svsm_probe(struct platform_device *pdev)
+> >
+> >       dev_set_drvdata(&chip->dev, priv);
+> >
+> > +     chip->flags |= TPM_CHIP_FLAG_SYNC;
+> >       err = tpm2_probe(chip);
+> >       if (err)
+> >               return err;
+> > --
+> > 2.49.0
+> >
+> >
+>
+> I can pick this for 6.16.
 
+Great, thanks!
 
-On 2025/5/20 06:03, Bjorn Helgaas wrote:
-> On Sat, May 17, 2025 at 12:55:14AM +0800, Hans Zhang wrote:
->> The following series introduces a new kernel command-line option aer_panic
->> to enhance error handling for PCIe Advanced Error Reporting (AER) in
->> mission-critical environments. This feature ensures deterministic recover
->> from fatal PCIe errors by triggering a controlled kernel panic when device
->> recovery fails, avoiding indefinite system hangs.
-> 
-> We try very hard not to add new kernel parameters.
-> 
-> It sounds like part of the problem is the use of SPI interrupts rather
-> than the PCIe-architected INTx/MSI/MSI-X.  I'm not sure this warrants
-> generic upstream code changes.  This might be something you need to
-> maintain out-of-tree.
-> 
-
-Dear Bjorn,
-
-This seems to have nothing to do with whether AER uses the 
-INTx/MSI/MSI-X specified in the PCIe spec. Just like the example I gave 
-earlier.
-
-Our next-generation SOC has already converted AER interrupts into INTx 
-and reported them to the GIC interrupt controller. But the following 
-problems still cannot be solved.
-
-```
-Supplementary reasons:
-
-drivers/pci/controller/cadence/pcie-cadence-host.c
-cdns_pci_map_bus
-      /* Clear AXI link-down status */
-      cdns_pcie_writel(pcie, CDNS_PCIE_AT_LINKDOWN, 0x0);
-
-https://elixir.bootlin.com/linux/v6.15-rc6/source/drivers/pci/controller/cadence/pcie-cadence-host.c#L52
-
-If there has been a link down in this PCIe port, the register
-CDNS_PCIE_AT_LINKDOWN must be set to 0 for the AXI transmission to
-continue.  This is different from Synopsys.
-
-If CPU Core0 runs to code L52 and CPU Core1 is executing NVMe SSD saving
-files, since the CDNS_PCIE_AT_LINKDOWN register is still 1, it causes
-CPU Core1 to be unable to send TLP transfers and hang.  This is a very
-extreme situation.
-(The current Cadence code is Legacy PCIe IP, and the HPA IP is still in
-the upstream process at present.)
-
-Radxa O6 uses Cadence's PCIe HPA IP.
-http://radxa.com/products/orion/o6/
-```
-
-
-If we are in the out-of-tree maintenance corresponding driver, but in 
-the file the arch/arm64 / configs/defconfig "CONFIG_PCIEAER=y", make we 
-can't modify the AER common code. It also cannot be compiled to aer.ko
-
-Because: CONFIG_PCIEAER can only be equal to y or n.
-config PCIEAER
-	bool "PCI Express Advanced Error Reporting support"
-	depends on PCIEPORTBUS
-	select RAS
-	help
-	  This enables PCI Express Root Port Advanced Error Reporting
-	  (AER) driver support. Error reporting messages sent to Root
-	  Port will be handled by PCI Express AER driver.
-
-Furthermore, the API of AER common code cannot be used either, and many 
-variables have not been exported either. If we write another set of AER 
-drivers by ourselves, it will lead to a lot of repetitive processing 
-logic code.
-
-
-I believe that the Qualcomm platform and many other platforms also have 
-similar problems.
-
-
-So can we add a config? For example: CONFIG_PCIEAER_PANIC instead of 
-command-line option aer_panic. Or the AER driver can be KO(tristate), so 
-that our SOC manufacturer can modify the AER driver.
-
-
-Best regards,
-Hans
-
->> Problem Statement
->> In systems where unresolved PCIe errors (e.g., bus hangs) occur,
->> traditional error recovery mechanisms may leave the system unresponsive
->> indefinitely. This is unacceptable for high-availability environment
->> requiring prompt recovery via reboot.
->>
->> Solution
->> The aer_panic option forces a kernel panic on unrecoverable AER errors.
->> This bypasses prolonged recovery attempts and ensures immediate reboot.
->>
->> Patch Summary:
->> Documentation Update: Adds aer_panic to kernel-parameters.txt, explaining
->> its purpose and usage.
->>
->> Command-Line Handling: Implements pci=aer_panic parsing and state
->> management in PCI core.
->>
->> State Exposure: Introduces pci_aer_panic_enabled() to check if the panic
->> mode is active.
->>
->> Panic Trigger: Modifies recovery logic to panic the system when recovery
->> fails and aer_panic is enabled.
->>
->> Impact
->> Controlled Recovery: Reduces downtime by replacing hangs with immediate
->> reboots.
->>
->> Optional: Enabled via pci=aer_panic; no default behavior change.
->>
->> Dependency: Requires CONFIG_PCIEAER.
->>
->> For example, in mobile phones and tablets, when there is a problem with
->> the PCIe link and it cannot be restored, it is expected to provide an
->> alternative method to make the system panic without waiting for the
->> battery power to be completely exhausted before restarting the system.
->>
->> ---
->> For example, the sm8250 and sm8350 of qcom will panic and restart the
->> system when they are linked down.
->>
->> https://github.com/DOITfit/xiaomi_kernel_sm8250/blob/d42aa408e8cef14f4ec006554fac67ef80b86d0d/drivers/pci/controller/pci-msm.c#L5440
->>
->> https://github.com/OnePlusOSS/android_kernel_oneplus_sm8350/blob/13ca08fdf0979fdd61d5e8991661874bb2d19150/drivers/net/wireless/cnss2/pci.c#L950
->>
->>
->> Since the design schemes of each SOC manufacturer are different, the AXI
->> and other buses connected by PCIe do not have a design to prevent hanging.
->> Once a FATAL error occurs in the PCIe link and cannot be restored, the
->> system needs to be restarted.
->>
->>
->> Dear Mani,
->>
->> I wonder if you know how other SoCs of qcom handle FATAL errors that occur
->> in PCIe link.
->> ---
->>
->> Hans Zhang (4):
->>    pci: implement "pci=aer_panic"
->>    PCI/AER: Introduce aer_panic kernel command-line option
->>    PCI/AER: Expose AER panic state via pci_aer_panic_enabled()
->>    PCI/AER: Trigger kernel panic on recovery failure if aer_panic is set
->>
->>   .../admin-guide/kernel-parameters.txt          |  7 +++++++
->>   drivers/pci/pci.c                              |  2 ++
->>   drivers/pci/pci.h                              |  4 ++++
->>   drivers/pci/pcie/aer.c                         | 18 ++++++++++++++++++
->>   drivers/pci/pcie/err.c                         |  8 ++++++--
->>   5 files changed, 37 insertions(+), 2 deletions(-)
->>
->>
->> base-commit: fee3e843b309444f48157e2188efa6818bae85cf
->> prerequisite-patch-id: 299f33d3618e246cd7c04de10e591ace2d0116e6
->> prerequisite-patch-id: 482ad0609459a7654a4100cdc9f9aa4b671be50b
->> -- 
->> 2.25.1
->>
+Stefano
 
 
