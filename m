@@ -1,74 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-8762-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1D7ABE0B5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 18:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CC8ABE26A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 20:17:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b20Rd6DwVz3bNw;
-	Wed, 21 May 2025 02:31:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b22p84Fy0z30g6;
+	Wed, 21 May 2025 04:17:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747758669;
-	cv=none; b=iFIlrQpax/1ULXiZ2/muZ/ijxz8zJBlMNRY82HrOZ9vGGEKjtSKdrFxwFYKb/sBEfBFaD3ysuBQ7Yf3AMsfw7udb+9/DOcXFZbfSPw6Ku+LqNr9FeBV0gvuoo4S06QUtC90Bvb+w3yPVsKKMiI4lq7NxiuSzOvOMfY+nqt6itmflItecBTX+2n3vaVrNuvyS2ygAehi0XX4A7UIrkX/gRIsQWHkhU50IclpGmKql4ZxH5x7DwSkR9IPKyNiGTxhpTwr0fHIFEHdt4zbcCsB9mbrVpCCCb8MO7cVXl6BA5sAwn5oq34QNswHu4mKsxYhfqgpy7nF3l5H4isE4+xed4Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.15
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747765040;
+	cv=none; b=nPAy3NB7Fmw0BxTjr3IZaDkN+L7VjiPCvh7a3/aDWb0//rjcVHJBU+uvOozUVZtcpSHdKFVNTKLG0v76ZvUOikCHCJIpNjCRr4MZuH8beeJx0w3myKh7o6FYy49BjOwOe35CTct1kXvOKBSbRLmA7rs6xkkvLN5GrTbcuiFPhUWImcPARKbDcq9Wgumw0ztIOqrgHxCLmX4ULgfOIRXepgZApOGRPnL79Rngk4qIU6wo4/W5Zf7ywxyaD4my6O666sdIlRyQArtv88dt/+3RHOEBRl066SeOdGeE2BwoR5OL/yfqtjgXYeAdYrIiqqe2VBecdgaKQFqx54e/7b30ZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747758669; c=relaxed/relaxed;
-	bh=H0dt/6fguYrUbq9aAHTWguT1CAMFUL28o/27BPcnfMA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=hfUtC9+gudIK5St1uS+MtfGjIgvQprk7w5Q5UQ57oy2WyRBTOaAYcmgpxEYzDZh/hLX9DQIIpyzDUlushm6FrTPhHhhWMSBlfdSgmzl7F6zos3Q+MuKYNlGbAr+VtywGmcAw1ZorLtU6ZzaqQWPf/ab2b3Z/jxEmxhIrgAnl1VQ47odxbTjoI38wfMNS/SmIbSuIRlU78WQ5fgwU4yEgFo0J+cXmOPZNkxcjSIR+DKsXLRbh5n/ciK7NJVqHa3F/GgGIh3G8bZbnegpHUOydZ9L6Md5DDloeJKSKtH6DgMl1UJZZoeN321Y1MVoinpw09NcjGqfutoRBeRty6rPZPA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qZPrfh52; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1747765040; c=relaxed/relaxed;
+	bh=l9Sy2nZG/65Ih5GxVFRbkt9VFk6N59raehsFZJZALN4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=f03E/Jbh+ZfTOEKMVasdEosnEyMPYCxS0Ga0faI6/SYFVTXGv24uhxim/Hb5HcQnyh7V5d1ooDoLv9cT1mUIyVRWD4pCUfCyft3jPigNW/LcP/gFjKjJFMV5f+emdPF6EsT60TUnNVizmKmUf19+Ws0arlAUzqG+P1NxVtrAGTV7BF9uwGEN6XXQ36zpqiim8ZkFJUJMlhRYjW9gwt3kGxDoW1WXPleWXzeFvS+RuFkitAEMr3RUwKEkluoQZoHoAfGFZ9DfWS8SOmWWRzetlFiSIa1f+bUuJjbeed3Ii1JcyA47RaEOZzQsixLJIPwgruj/KzNTgTwASzJvovVkZw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RxCbWxZa; dkim-atps=neutral; spf=none (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=kan.liang@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qZPrfh52;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RxCbWxZa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=kan.liang@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b20RY2DS9z30g6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 02:31:05 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id E0707A4EBB8;
-	Tue, 20 May 2025 16:31:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5206CC4CEE9;
-	Tue, 20 May 2025 16:31:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747758662;
-	bh=Hem8uB3zD/uymJ9qJM41N8VYIt7YRxLcq73u4y3iXZQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=qZPrfh52H9nmCtaZEzHwRsuSjNG60L8K+op7YjP/4d3Clt8YrQ61bHb4RMRebkQYp
-	 ZlfbFO/xEeyf3YewDEOrx+Gsz/ioRAER2UxfGLorG8iVIO7cNDTqMWBFQ9n2/f1+5p
-	 GaUbj1QCopmcrQvH294U3xHiBoEaRf0UPLpni9r23pLebn/8/003ycFdkfhuI2VLlt
-	 BLLWuhfkeGcf26KXqG192DtM77svvxhattM5I7y1gXS+2A5aZTh+G+/KIZFjAuGbT9
-	 CSBhrSR1NKdXdr06Ibm3CHtR7lB9c9Z5ns4XBHRJzFPUd1oFaKN9HSZLBplRI/Alg7
-	 TSa9BmbDkwVWQ==
-Date: Tue, 20 May 2025 11:31:00 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
-	Karolina Stolarek <karolina.stolarek@oracle.com>,
-	Martin Petersen <martin.petersen@oracle.com>,
-	Ben Fuller <ben.fuller@oracle.com>,
-	Drew Walton <drewwalton@microsoft.com>,
-	Anil Agrawal <anilagrawal@meta.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sargun Dhillon <sargun@meta.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v6 16/16] PCI/AER: Add sysfs attributes for log ratelimits
-Message-ID: <20250520163100.GA1307206@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b22p56CShz2yr1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 04:17:16 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747765038; x=1779301038;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=s+EyXjLUXo0M2dfj157AL5fvrY36sWvSBJ2tuImTWtk=;
+  b=RxCbWxZaJDODVHd0IJ9UD4Ot6yqQcPLMJfVLeGmKzP1TPWXJQ2OPUvb5
+   oobJR5FUTTNDKa4Cn2gTINzorIkh88baf+7b9w34rM0Oxrw9rNIqkj2dI
+   hVCugPaQyrZaBQOLzYSwAQ0dG5OgsnI1Um7s4I6+EdYm0yrzQDjskxSNM
+   kfmuVyVMsnnlcIgR7ac7qYwDFc/flUm3m3uonPZHp5rmqQ3n24ImSzQJQ
+   N3t/QDgNgjApEestHXXCGCciBhxQ54Z8GaI6XPcFs6ZgGLMMZj7U30jib
+   2r9KF5lsiebabFT4/1mvC0NFZ//q8p4aWtz2B0wBoyZtC89W889MkgBhT
+   w==;
+X-CSE-ConnectionGUID: Dt7kqhM4S6GgHIAAWIcZ/g==
+X-CSE-MsgGUID: yO3RGfeiRNqDS1h7sjKylA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="49847971"
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="49847971"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 11:17:13 -0700
+X-CSE-ConnectionGUID: tt0fVSeZQYu+1VmXOJztCQ==
+X-CSE-MsgGUID: DwqYvJaXTXKgUclat/S2VQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
+   d="scan'208";a="144514710"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by orviesa003.jf.intel.com with ESMTP; 20 May 2025 11:17:12 -0700
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	namhyung@kernel.org,
+	irogers@google.com,
+	mark.rutland@arm.com,
+	linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org
+Cc: eranian@google.com,
+	ctshao@google.com,
+	tmricht@linux.ibm.com,
+	leo.yan@arm.com,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH V4 06/16] powerpc/perf: Remove driver-specific throttle support
+Date: Tue, 20 May 2025 11:16:34 -0700
+Message-Id: <20250520181644.2673067-7-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20250520181644.2673067-1-kan.liang@linux.intel.com>
+References: <20250520181644.2673067-1-kan.liang@linux.intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,125 +89,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cfe3d2a5-fe32-ca35-98f5-812da367dc99@linux.intel.com>
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.6 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1
+	OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, May 20, 2025 at 03:02:06PM +0300, Ilpo Järvinen wrote:
-> On Mon, 19 May 2025, Bjorn Helgaas wrote:
-> 
-> > From: Jon Pan-Doh <pandoh@google.com>
-> > 
-> > Allow userspace to read/write log ratelimits per device (including
-> > enable/disable). Create aer/ sysfs directory to store them and any
-> > future aer configs.
-> > 
-> > Update AER sysfs ABI filename to reflect the broader scope of AER sysfs
-> > attributes (e.g. stats and ratelimits).
-> > 
-> >   Documentation/ABI/testing/sysfs-bus-pci-devices-aer_stats ->
-> >     sysfs-bus-pci-devices-aer
-> > 
-> > Tested using aer-inject[1]. Configured correctable log ratelimit to 5.
-> > Sent 6 AER errors. Observed 5 errors logged while AER stats
-> > (cat /sys/bus/pci/devices/<dev>/aer_dev_correctable) shows 6.
-> > 
-> > Disabled ratelimiting and sent 6 more AER errors. Observed all 6 errors
-> > logged and accounted in AER stats (12 total errors).
-> > 
-> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/gong.chen/aer-inject.git
-> > 
-> > Signed-off-by: Karolina Stolarek <karolina.stolarek@oracle.com>
-> > Signed-off-by: Jon Pan-Doh <pandoh@google.com>
-> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> > Acked-by: Paul E. McKenney <paulmck@kernel.org>
-> > ---
-> >  ...es-aer_stats => sysfs-bus-pci-devices-aer} | 34 +++++++
-> >  Documentation/PCI/pcieaer-howto.rst           |  5 +-
-> >  drivers/pci/pci-sysfs.c                       |  1 +
-> >  drivers/pci/pci.h                             |  1 +
-> >  drivers/pci/pcie/aer.c                        | 99 +++++++++++++++++++
-> >  5 files changed, 139 insertions(+), 1 deletion(-)
-> >  rename Documentation/ABI/testing/{sysfs-bus-pci-devices-aer_stats => sysfs-bus-pci-devices-aer} (77%)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-pci-devices-aer_stats b/Documentation/ABI/testing/sysfs-bus-pci-devices-aer
-> > similarity index 77%
-> > rename from Documentation/ABI/testing/sysfs-bus-pci-devices-aer_stats
-> > rename to Documentation/ABI/testing/sysfs-bus-pci-devices-aer
-> > index d1f67bb81d5d..771204197b71 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-pci-devices-aer_stats
-> > +++ b/Documentation/ABI/testing/sysfs-bus-pci-devices-aer
-> > @@ -117,3 +117,37 @@ Date:		July 2018
-> >  KernelVersion:	4.19.0
-> >  Contact:	linux-pci@vger.kernel.org, rajatja@google.com
-> >  Description:	Total number of ERR_NONFATAL messages reported to rootport.
-> > +
-> > +PCIe AER ratelimits
-> > +-------------------
-> > +
-> > +These attributes show up under all the devices that are AER capable.
-> > +They represent configurable ratelimits of logs per error type.
-> > +
-> > +See Documentation/PCI/pcieaer-howto.rst for more info on ratelimits.
-> > +
-> > +What:		/sys/bus/pci/devices/<dev>/aer/ratelimit_log_enable
-> > +Date:		March 2025
-> > +KernelVersion:	6.15.0
-> 
-> This ship has sailed.
+From: Kan Liang <kan.liang@linux.intel.com>
 
-Updated to May 2025 and 6.16.0 (I hope :)).
+The throttle support has been added in the generic code. Remove
+the driver-specific throttle support.
 
-> > +Contact:	linux-pci@vger.kernel.org, pandoh@google.com
-> > +Description:	Writing 1/0 enables/disables AER log ratelimiting. Reading
-> > +		gets whether or not AER is currently enabled.
-> 
-> AER or AER ratelimiting is enabled?
+Besides the throttle, perf_event_overflow may return true because of
+event_limit. It already does an inatomic event disable. The pmu->stop
+is not required either.
 
-I think we want "AER ratelimiting" here, thanks!
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+ arch/powerpc/perf/core-book3s.c  | 6 ++----
+ arch/powerpc/perf/core-fsl-emb.c | 3 +--
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-> > + * Ratelimit enable toggle
-> > + * 0: disabled with ratelimit.interval = 0
-> > + * 1: enabled with ratelimit.interval = nonzero
-> > + */
-> > +static ssize_t ratelimit_log_enable_show(struct device *dev,
-> > +					 struct device_attribute *attr,
-> > +					 char *buf)
-> > +{
-> > +	struct pci_dev *pdev = to_pci_dev(dev);
-> > +	bool enabled = pdev->aer_report->cor_log_ratelimit.interval != 0;
-> > +
-> > +	return sysfs_emit(buf, "%d\n", enabled);
-> > +}
-> > +
-> > +static ssize_t ratelimit_log_enable_store(struct device *dev,
-> > +					  struct device_attribute *attr,
-> > +					  const char *buf, size_t count)
-> > +{
-> > +	struct pci_dev *pdev = to_pci_dev(dev);
-> > +	bool enable;
-> > +	int interval;
-> > +
-> > +	if (!capable(CAP_SYS_ADMIN))
-> > +		return -EPERM;
-> > +
-> > +	if (kstrtobool(buf, &enable) < 0)
-> > +		return -EINVAL;
-> > +
-> > +	if (enable)
-> > +		interval = DEFAULT_RATELIMIT_INTERVAL;
-> > +	else
-> > +		interval = 0;
-> > +
-> > +	pdev->aer_report->cor_log_ratelimit.interval = interval;
-> > +	pdev->aer_report->uncor_log_ratelimit.interval = interval;
-> > +
-> > +	return count;
-> > +}
-> > +static DEVICE_ATTR_RW(ratelimit_log_enable);
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 42ff4d167acc..8b0081441f85 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -2344,12 +2344,10 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 			ppmu->get_mem_weight(&data.weight.full, event->attr.sample_type);
+ 			data.sample_flags |= PERF_SAMPLE_WEIGHT_TYPE;
+ 		}
+-		if (perf_event_overflow(event, &data, regs))
+-			power_pmu_stop(event, 0);
++		perf_event_overflow(event, &data, regs);
+ 	} else if (period) {
+ 		/* Account for interrupt in case of invalid SIAR */
+-		if (perf_event_account_interrupt(event))
+-			power_pmu_stop(event, 0);
++		perf_event_account_interrupt(event);
+ 	}
+ }
+ 
+diff --git a/arch/powerpc/perf/core-fsl-emb.c b/arch/powerpc/perf/core-fsl-emb.c
+index d2ffcc7021c5..7120ab20cbfe 100644
+--- a/arch/powerpc/perf/core-fsl-emb.c
++++ b/arch/powerpc/perf/core-fsl-emb.c
+@@ -635,8 +635,7 @@ static void record_and_restart(struct perf_event *event, unsigned long val,
+ 
+ 		perf_sample_data_init(&data, 0, last_period);
+ 
+-		if (perf_event_overflow(event, &data, regs))
+-			fsl_emb_pmu_stop(event, 0);
++		perf_event_overflow(event, &data, regs);
+ 	}
+ }
+ 
+-- 
+2.38.1
+
 
