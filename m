@@ -1,51 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-8754-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8755-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36CD6ABDC29
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 16:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE68ABDCBA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 16:27:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b1xYp07p7z3bgh;
-	Wed, 21 May 2025 00:21:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b1xhb3cV4z3bfR;
+	Wed, 21 May 2025 00:27:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747750877;
-	cv=none; b=IM6n1pJCUG01hwghjtCIv7H2ovDjz/wf+ig4CBrfc1mzOAcYewba2UiGR5cxM9lY/EYiKBDtKNUueji4873JcHW+fQ26NwbrhohVEXdr//A1DiQInPwvTDaBV/ZOuXoJLiZFBSy19HGmgKwcomHjGryBkfUU2w2WkUbmIoBxTd4b3qY/s4TwPix3sE7byd987rYv78dEXhQvqtxqV/OWjY9TolXUBLNEbnFGC5L2lR+3eLKqnSjyDhpscqmYiqWyBdK+FH8OTCLlQfwMXzJT/s6wqdvKg2BqEs51I+xIKdw1kttCCJNS4lW/mSMCbOuGetl3yMhmvD3dlU2CGAb5Mg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747751231;
+	cv=none; b=eF7+WnSYHhEMDcnDaXPvk9c+FN2+h7TFsik/iTsFGE495BvaL/pCciIGO1cfblfFZAg/hEU1/j28dU7A9/TTph2PQIAG6/HsPGWwy4uf98iaeu9Ec4Yx4z3Ccl4suG83Xq1fbDFl0o1NxXbo/mC+pMD/vagnSe8vP4HO6KkPcWeDTUXFLUsRJlkI1CwF5OWeg9LeXh8pE5fN38SstzKTdjmsUarTGey580NzAspJxc5ih50OPIJzDqus1rLEcBDnsdn149WMjTypAwKhShn1xsMsZ6xx9KpOXyhgLoKEAzNzPB0+15kQX2HluGRbLzu3EvUQo0usSpy7mBPSG7y2vQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747750877; c=relaxed/relaxed;
-	bh=zeR/RZtzPpdMJc6W6jMUVKUl5bK0g46qrWnGQBDtCQM=;
+	t=1747751231; c=relaxed/relaxed;
+	bh=0mj9Wkj0uufvJrsbQ9t+aAPCbH7zPacQwdZCk57M6dE=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=ig2/hkZVZPi29EM+qyzfwlZ8R0mvkY1HDDXZo2PQScIFMJxPAjyctrF7mqOYp7rjXedrmbEJH6qoAHAnx1s8KWJ8u1CSN3YyTNq+P9emHbjir/8JlCbIA3TUeQi1OmzyB2VT9j7YWQg21NgYKyqlt79glZvsO9MdVhUoPFvUdmxhbcujruwTTtDCZR048VRZDieJujn9x3URPyDR2lrb2jYPwS2phW2IMjmUk4Uf+5313KaO0UsJVoY8pSilpS/zqga/RaKzESOmU4MQ2s38eRB+8Pk1sxPx3jGZjGyIlBVamnqIh/mBBSXNrtAi9jcFplTC6iTOWMTXmEdix5dWNQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rU5ssl0o; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Disposition:In-Reply-To; b=LKiIEUZwb+vqwsepg64zY304FZj0TtVbR+Y3w7pdH1WsdTnF/jPZbzviX1WlExWdMRmwV103PP489HED9wS9P28gMNkT+SLDNxsDKzSw5o3B51lFe1BPAKmC8v9QdX0cYND6cJef+l8sOlJdnv0wJYeiqi+LHvRL0BK0/uoiBiM4+/QFWJSd87aqfwBSvdmrb6B9r541ULq8B2JOs5QY3nlR3RR4q5hKqKIX5DoiAoNFRqGAKvmiRPvKCfZjtfuJCPzT8UDD/t6Y+eibc22vyJu8WYPIzH07aVDSTWYCAnBydy8iz7weYQF++DCyI7bVes7y2fJzE0+/193PZJx1jA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KRrcIo3O; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rU5ssl0o;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KRrcIo3O;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1xYn1JWWz3bfR
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 00:21:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b1xhZ6Cwkz3055
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 00:27:10 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ED66262A29;
-	Tue, 20 May 2025 14:21:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80716C4CEEB;
-	Tue, 20 May 2025 14:21:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1BC484A66A;
+	Tue, 20 May 2025 14:27:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7789C4CEE9;
+	Tue, 20 May 2025 14:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747750874;
-	bh=KubO1CN0cU7o39gPvS/zjAe4RGBlujJ7735E92PJluk=;
+	s=k20201202; t=1747751229;
+	bh=oCLBYeP1sLVu5Ws29+9UfDbRGJI3ciUnpG/nTA1olYM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=rU5ssl0o/icooknJ+V0VLF0QrTzQlME5sLQCs6lH/lEu1SNKh9yHPTLxxrIYDnvqG
-	 P2ybIatUaHLJ1DIl+pLWpXdeaokUAbBUYS4TM64YZ11s6MnCjOmmTB7mAaVW4H2lDu
-	 2+5Nm5bMQkwAgZIlYvcJCrzAF8c97spGVd994c4JAKDBlc3HyGuHexQBN9RYva7R39
-	 J13iEjIcZJDkgg1yKOC0lQyr6uTUa+TSRNCkJtJWCsyO+TGoLOQ2sSVSpfPQ7iKvk2
-	 bktQXT267hlYsa5UgXfPj/e63H/tO8jwtrMbiWV9No2IK12fUZ/+jnFHEb+nCgv+i9
-	 ouNjOFWBVT2NA==
-Date: Tue, 20 May 2025 09:21:13 -0500
+	b=KRrcIo3ONGaX7Pi2FUjzUMa9ejaXw+b9Vm9fA9E3drThkSwBDBErRwftIqGCKAhYl
+	 bgvtywYaGpxfZmkvw1WGrNyTx5+9cqmvDol7+KmjgP6gYZ5Y0jtXzaDt+lj0PjVRLq
+	 EhGYy0wxjqBs2GooRe6qM+uu2Y0X+5SJGczXyS0LIOv6RpJ1MOJE0XmDdR0XDCrx6T
+	 gmlU+1+zpu6h4u32w077LBi3dm342l6zDXzZQC9Zkr0gnH5zeDii9wXcwdbBZ/cB/p
+	 JGV7/hDyqx5nG9Yg+Os07MjY52JZ6Hk85v7bL3fQXtVc5++fHv7e9lly/iSdoAgJK4
+	 YkIlmYSK7kkHg==
+Date: Tue, 20 May 2025 09:27:07 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
 Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
 	Karolina Stolarek <karolina.stolarek@oracle.com>,
 	Martin Petersen <martin.petersen@oracle.com>,
@@ -53,7 +53,7 @@ Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
 	Drew Walton <drewwalton@microsoft.com>,
 	Anil Agrawal <anilagrawal@meta.com>,
 	Tony Luck <tony.luck@intel.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Lukas Wunner <lukas@wunner.de>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sargun Dhillon <sargun@meta.com>,
@@ -64,11 +64,11 @@ Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
 	Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
 	Terry Bowman <terry.bowman@amd.com>,
 	Shiju Jose <shiju.jose@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v6 03/16] PCI/AER: Consolidate Error Source ID logging in
- aer_print_port_info()
-Message-ID: <20250520142113.GA1292100@bhelgaas>
+	Dave Jiang <dave.jiang@intel.com>,
+	LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v6 07/16] PCI/AER: Initialize aer_err_info before using it
+Message-ID: <20250520142707.GA1297901@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,100 +82,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <9ac2bb02-974f-4952-b069-1bcc94682d89@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0d429918-b42c-5714-ef40-ce2a9e129a6b@linux.intel.com>
 X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, May 19, 2025 at 04:39:19PM -0700, Sathyanarayanan Kuppuswamy wrote:
-> On 5/19/25 2:35 PM, Bjorn Helgaas wrote:
+On Tue, May 20, 2025 at 01:39:06PM +0300, Ilpo Järvinen wrote:
+> On Mon, 19 May 2025, Bjorn Helgaas wrote:
+> 
 > > From: Bjorn Helgaas <bhelgaas@google.com>
 > > 
-> > Previously we decoded the AER Error Source ID in two places.  Consolidate
-> > them so both places use aer_print_port_info().  Add a "details" parameter
-> > so we can add a note when we didn't find any downstream devices with errors
-> > logged in their AER Capability.
+> > Previously the struct aer_err_info "e_info" was allocated on the stack
+> > without being initialized, so it contained junk except for the fields we
+> > explicitly set later.
 > > 
-> > When we didn't read any error details from the source device, we logged two
-> > messages: one in aer_isr_one_error() and another in find_source_device().
-> > Since they both contain the same information, only log the first one when
-> > when find_source_device() has found error details.
-> /s/when//
-
-Fixed, thanks!
-
-> > -	pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d\n",
-> > +	pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d%s\n",
+> > Initialize "e_info" at declaration with a designated initializer list,
+> > which initializes the other members to zero.
+> > 
+> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > ---
+> >  drivers/pci/pcie/aer.c | 37 ++++++++++++++++---------------------
+> >  1 file changed, 16 insertions(+), 21 deletions(-)
+> > 
+> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> > index 95a4cab1d517..40f003eca1c5 100644
+> > --- a/drivers/pci/pcie/aer.c
+> > +++ b/drivers/pci/pcie/aer.c
+> > @@ -1281,7 +1281,7 @@ static void aer_isr_one_error(struct aer_rpc *rpc,
+> >  		struct aer_err_source *e_src)
 > 
-> Instead of relying on the callers, why not add a space before details here?
+> Unrelated to this change, these would fit on a single line.
 
-Could, but I don't like adding an extra space at the end of the line
-when the caller passes "".  The extra space could make the line wrap
-unnecessarily.
-
-> >   		 info->multi_error_valid ? "Multiple " : "",
-> >   		 aer_error_severity_string[info->severity],
-> >   		 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
-> > -		 PCI_FUNC(devfn));
-> > +		 PCI_FUNC(devfn), details);
-> >   }
-> >   #ifdef CONFIG_ACPI_APEI_PCIEAER
-> > @@ -926,13 +927,13 @@ static bool find_source_device(struct pci_dev *parent,
-> >   	else
-> >   		pci_walk_bus(parent->subordinate, find_device_iter, e_info);
-> > +	/*
-> > +	 * If we didn't find any devices with errors logged in the AER
-> > +	 * Capability, just print the Error Source ID from the Root Port or
-> > +	 * RCEC that received an ERR_* Message.
-> > +	 */
-> >   	if (!e_info->error_dev_num) {
-> > -		u8 bus = e_info->id >> 8;
-> > -		u8 devfn = e_info->id & 0xff;
-> > -
-> > -		pci_info(parent, "found no error details for %04x:%02x:%02x.%d\n",
-> > -			 pci_domain_nr(parent->bus), bus, PCI_SLOT(devfn),
-> > -			 PCI_FUNC(devfn));
-> > +		aer_print_port_info(parent, e_info, " (no details found)");
-> >   		return false;
-> >   	}
-> >   	return true;
-> > @@ -1297,10 +1298,11 @@ static void aer_isr_one_error(struct aer_rpc *rpc,
-> >   			e_info.multi_error_valid = 1;
-> >   		else
-> >   			e_info.multi_error_valid = 0;
-> > -		aer_print_port_info(pdev, &e_info);
-> 
-> Instead of printing the error information in find_source_device() (a helper function), I think it be better to print it here (the error handler). source_found = find_source_device(pdev, &e_info); aer_print_port_info(pdev, &e_info, source_found? "" : "(no details found) " );
-> 
-> if (source_found) aer_process_err_devices(&e_info)
-
-Great idea, thanks!  That looks much nicer.
-
-> > -		if (find_source_device(pdev, &e_info))
-> > +		if (find_source_device(pdev, &e_info)) {
-> > +			aer_print_port_info(pdev, &e_info, "");
-> >   			aer_process_err_devices(&e_info);
-> > +		}
-> >   	}
-> >   	if (e_src->status & PCI_ERR_ROOT_UNCOR_RCV) {
-> > @@ -1316,10 +1318,10 @@ static void aer_isr_one_error(struct aer_rpc *rpc,
-> >   		else
-> >   			e_info.multi_error_valid = 0;
-> > -		aer_print_port_info(pdev, &e_info);
-> > -
-> > -		if (find_source_device(pdev, &e_info))
-> > +		if (find_source_device(pdev, &e_info)) {
-> > +			aer_print_port_info(pdev, &e_info, "");
-> >   			aer_process_err_devices(&e_info);
-> > +		}
-> >   	}
-> >   }
-> 
-> -- 
-> Sathyanarayanan Kuppuswamy
-> Linux Kernel Developer
-> 
+Thanks, fixed!
 
