@@ -1,61 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-8769-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8770-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53053ABE4D7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 22:36:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69F4ABE531
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 20 May 2025 22:50:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b25v86j50z2ybQ;
-	Wed, 21 May 2025 06:36:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b26CG6P6lz2ygY;
+	Wed, 21 May 2025 06:50:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.16
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747773412;
-	cv=none; b=d8ZYQagOcX0jY7B6QohWlXNbN3VxOIZpmKzbe0QntA0zlMum3+xXPo2hw5CWvtb/CL8f6cPrneKzbJJWcHEi1j+mOomJvk9YMrRpo67iP1YXLiE/Xq+A8uCKel85kydcSyzLy954uUXZelS0jxp2yXdD6n7srdLUUYcDPbm7+EfqF37JXX8DZreZnAR93nBc3lYmyJy1FdEmmHi1DASnX+5fgn7OiBfMc3RamVLuakKiQDpwaQoK3ReAg1sVcSVO8CeO+rvbGmMaOfynfOApoXUKLXccUMCiMazOBcX+M2v+XtwbSiUpA0g6uTWPkofiIE4TX9E0ZAoa/pyqm4MkLg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.117.254.33
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747774250;
+	cv=none; b=oKXq1TBS1i14oX8awQoS7D34/0L9hbJm4Bpdbr04YS4uhnC9n36ryyaNgchAgh3T1uxLS0lNGH0Wzc3m4XCPuTR1oYNjKl9moazwtiSaCR+q8YddTN4z9NhwO5dcbn3KquTL5nZ6mgzWWjIEfCP5zqVLkO5MHF3+pj5503T7QQ/+7jWpOn0JlPI8MU7QHHu4/PW9eKoN+RUMvWMG7Xxxy7qHFjk32NuVmhaqGQIe2aDAnC5ZpdtuHIlqIsV00AxrD7rdru2Rzg/tWc8PlvvhqiAlgdqflCjmvYl4E2a4CV3BHO0OIBakoj8X5sb9+WSaLkAuxOkHSEgcVILu8tK/ww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747773412; c=relaxed/relaxed;
-	bh=oLoR7f/+1NYMeFSR+bvh8QW+pKfHNujReaNSazWSkic=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h+ZoXR/DRsM9aYzBqCBgScJFyEGsaiU0Wt2hiY4OWWrJUbGetsBjHqm4YQyxOR/bUXyXduUwpMcy4BxE7cZJ2XLSI13Sy2h4uRAEnR5qfLUxb14jzuo+rvxd1RqWezPmc7rJwqgFcUTlRn/qG97R2q0AK0fEmiM9nnOyEww7CbWASaJGrRSI8A6aGCDiqt6UMNv0MTJz8f3sI+BGKYf7XetXXG4uOcpCn3OrB46ef4JqmeidIHujfrmIpnzGdyfhIpnQ0umMN++JoTnwhsOanoRcFtmD6HUxtm2W37dQGYS7aGR5LS1PL3X8c4oV6GTPcN0UyDKWpQWFbO48Of5U+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Kx6tBEYJ; dkim-atps=neutral; spf=none (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1747774250; c=relaxed/relaxed;
+	bh=6j/xQ/XDZ/5vwEelfWdXLSBU/lb9tzGJP7hwiRt5/ic=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lt+HBs8GuYVZsB6haj1uKlkXKUH4DBH4E0JV9BFAQGN+rjyVhLf4FAOkI8JUUDT5v5Bo6vMOJx91pbOuuCWvrRmFD4pxJ9350gy13/DzVBcpOUIEeDW8L6k1XiyU6J+S9PbSNSpoLruOrEejS5lFiolEG4q3/T3UQSLq0ZuAmlVzOIK7XnZyyLBLKjX+eA9GR6YnlKsRZAuyhaGSRDTHaeG6uwyXP8IszmaQ0bECZ2pXfdNLrg5aP9drWffoIK2YyWNkyEOQVdgA4QWNM1wXfVwrIASZ3gK4AjZDxX8DvJW6gl/XOkllgUGsuGpzs/AN2YxVvOw8r9+8WdzRfXy1qg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=NFJa2xx+; dkim-atps=neutral; spf=pass (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=sang-engineering.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Kx6tBEYJ;
+	dkim=pass (2048-bit key; secure) header.d=sang-engineering.com header.i=@sang-engineering.com header.a=rsa-sha256 header.s=k1 header.b=NFJa2xx+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sang-engineering.com (client-ip=194.117.254.33; helo=mail.zeus03.de; envelope-from=wsa+renesas@sang-engineering.com; receiver=lists.ozlabs.org)
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b25v60myyz2yVP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 06:36:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747773410; x=1779309410;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=J/efGUmqy7oN9EoBIMU7rLAuBqz4R6qisInic/jNCRY=;
-  b=Kx6tBEYJJMKinftgizXTKN31R4fSKvlnj75UDZP7RTFENSYpPtq0U0B8
-   oS5zxkJSNEvn56Cj+PFxXVDmKQJkcoM1PAcetjBxt/YE3nypZDikQUZEq
-   u+MlKKJjWNeNnKf/J/BcUJU5CGtNuKm+BC5TtIeoGF/q+P0wRlQg49Q54
-   802DycNXctECf5D1fb7OurFG7bPI8TiNVJwKvKZIEeBxxLvJNTq20UQYz
-   B4HFKI7UAVmsFAAVw9Ak1dDhSYtyjXiAC0rGG/dBwmusPVOKsDpxhsgP1
-   sCWM9TyJfvnVKwIyBT48X2GZMJB5uTAVTlTFaxNXzhgG5vKGg+PDKAkv3
-   w==;
-X-CSE-ConnectionGUID: LZlTAlrRQ96WARFvA5nvNg==
-X-CSE-MsgGUID: QCnisi0XR5SaPJwNq5ojeg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11439"; a="37343341"
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="37343341"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 13:36:45 -0700
-X-CSE-ConnectionGUID: rDiCkEmuTjCvvuNZyc9FvQ==
-X-CSE-MsgGUID: QnrewdnpRn2V8+b6oxjOpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,302,1739865600"; 
-   d="scan'208";a="140215561"
-Received: from iweiny-desk3.amr.corp.intel.com (HELO [10.124.222.89]) ([10.124.222.89])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2025 13:36:44 -0700
-Message-ID: <63e93c1c-9330-43ae-b381-fffde3864da3@linux.intel.com>
-Date: Tue, 20 May 2025 13:36:43 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b26CB1mzpz2yVP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 06:50:44 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=6j/x
+	Q/XDZ/5vwEelfWdXLSBU/lb9tzGJP7hwiRt5/ic=; b=NFJa2xx+LcX1VpOg/hNu
+	qWyZoVtAkXbIi98iC6qH2/8R2H8b3Qfv0gutbNjmtHmsG+pz9pvBi6jQjhOqVE6F
+	0T1QG+t0PoH6lc9myEQAeKU0ZF5v60uMQcpfKGC4ihFCcmxASp1rnA3VWxS9Wwzw
+	tiUyzt9TCw9fQICxmvsEbbYcjxAA9I1ZC8B9xd1cxwEHaU5svar7mLwZ99QHYbdr
+	+79O7y30stwO9M4V31HgQti0wL3DfAgERW4E3BoFvsNyuj+vOQh+HG3eWY14dvdV
+	wJJXEBrYPcuM3CeqezAfB3yENFbYfgYQXOCJY6Q+LEqpgBhqJ+L58bNHokDUp+JB
+	TA==
+Received: (qmail 3015612 invoked from network); 20 May 2025 22:50:37 +0200
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 20 May 2025 22:50:37 +0200
+X-UD-Smtp-Session: l3s3148p1@AOeSZpc1xpZehhrK
+Date: Tue, 20 May 2025 22:50:37 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: linux-i2c@vger.kernel.org
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev@lists.ozlabs.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 0/3] i2c: remove 'of_node' from i2c_board_info
+Message-ID: <aCzrHZK_YN6dLxzO@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	linux-i2c@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev@lists.ozlabs.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>
+References: <20250519111311.2390-5-wsa+renesas@sang-engineering.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,63 +78,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 15/16] PCI/AER: Add ratelimits to PCI AER Documentation
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
- Karolina Stolarek <karolina.stolarek@oracle.com>,
- Martin Petersen <martin.petersen@oracle.com>,
- Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>,
- Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Lukas Wunner <lukas@wunner.de>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney" <paulmck@kernel.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>,
- Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
- Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
- Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
-References: <20250520194841.GA1322094@bhelgaas>
-Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20250520194841.GA1322094@bhelgaas>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="+gdyaTKa0CKxLXgW"
+Content-Disposition: inline
+In-Reply-To: <20250519111311.2390-5-wsa+renesas@sang-engineering.com>
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
-On 5/20/25 12:48 PM, Bjorn Helgaas wrote:
-> On Mon, May 19, 2025 at 10:01:09PM -0700, Sathyanarayanan Kuppuswamy wrote:
->> On 5/19/25 2:35 PM, Bjorn Helgaas wrote:
->>> From: Jon Pan-Doh <pandoh@google.com>
->>>
->>> Add ratelimits section for rationale and defaults.
->>> +AER Ratelimits
->>> +--------------
->>> +
->>> +Since error messages can be generated for each transaction, we may see
->>> +large volumes of errors reported. To prevent spammy devices from flooding
->>> +the console/stalling execution, messages are throttled by device and error
->>> +type (correctable vs. uncorrectable).
->> Can we list exceptions like DPC and FATAL errors (if added) ?
-> Like this?
->
->    +... messages are throttled by device and error
->    +type (correctable vs. non-fatal uncorrectable).  Fatal errors, including
->    +DPC errors, are not ratelimited.
->
-> DPC is currently only triggered for fatal errors.
+--+gdyaTKa0CKxLXgW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Yes.  I think it is good enough.
+On Mon, May 19, 2025 at 01:13:11PM +0200, Wolfram Sang wrote:
+> I promised Andy to support him in his cleanup efforts, and here is the
+> outcome for tidying up i2c_board_info. It seems it was easier than
+> anticipated. But my scanning scripts (awk, coccinelle) didn't find any
+> more occurences and the build bots are happy, too. It really seems this
+> is all that is left to do. No complaint, though.
+
+Applied to for-next.
 
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+--+gdyaTKa0CKxLXgW
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmgs6xkACgkQFA3kzBSg
+KbYIcA/+Mwkwe+oxJeIG0cOfe2SNYP4uJEPz9J2/exPnSVguGXIF2+V2SfOFQjh8
+zpjJnZxnKkS6Ja8lrrMvxWHpf6uExX2CtN6DA/O3Q2air0NTl4TezzzOGxMHgfZv
+2aiVTjYANHnENTHQx29eWZx27WkKKqNMdVPm2K89JeUFpikEXPHJRsoUKiqYErGF
+DgTuUorcj4wmsxZc7qE1HlzEnMpSguQeWQa+XT1TFZ2wazJRPveg330gVvBCT3q8
+lTVkb9MkzBEEBVfbsVMHWn2wuuw/E1WeeOO7dkENGCMhHHjbjBBImRc6IKP82qtW
+h60nxdw6BrcSHHhKwQvEQiQ83IZhDXzUeThLQ/gkog42S27uAAHVbt0Vc/fKmy6x
+Ug7CvLupjzqDEqNYKZYHBzi1hckNgAR3Gz2wWs2Rf65dHFhcLPKmiMLzXGrkkiSq
+gT+zp+JoLttG6RH4XtfFHZ7rmRMptO9r//JcUKFlp3in9lsyJyYqQqnJ4ziaUl6L
+v/hhIfM4BPqAc4kljqmr9fggkEaHNw8LfBQVPC7KuYDEqsc8mrmekxFnFYJMSd+P
+L3kyh3zdxnb0BMg33Vjyu+t4tXbqlqR6755ySE1tUbKRFWV0jI4GkMbB7b5eQwRw
+Yqtbm1VKkit7akyPquHHk0gVl7It2n3KBmidaNSFf9v53K2cZ70=
+=dOW6
+-----END PGP SIGNATURE-----
+
+--+gdyaTKa0CKxLXgW--
 
