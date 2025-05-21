@@ -1,73 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-8852-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8853-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CC5AC000E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 00:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1D1AC0028
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 00:54:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b2mpx2gS4z2yZ5;
-	Thu, 22 May 2025 08:50:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b2mvc5N3Mz2ydW;
+	Thu, 22 May 2025 08:54:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747867833;
-	cv=none; b=kuf87gdsXUS5ehSlHZG+AQjqq3tdbWiULH87R5aXqPDCLm/IWg4tfoUt88+s9ROd3uz1F4kSjovv4tobZp739WD0fW5zaXEwmG5hp8GpYmcUF9ren56JD4aBK8XF6rqbrhwcsk9pWUKlZTgzQEe9fo/J0YCbQhQET2BUmlV/ZGRn1oFZ7zcYXbZ/vVTjeAmoi03hqA6EyErC8pPUCJoqmEs+4opOwqIG3IpoKhoRjT8ngjuVLg5w76x5ogWtkikaH4g3LCMArUihJZmRsg5I+zdZfzazHnckK9PyEl6UA1kw4d8546Ra6c0YA5v+SDtnhcLUOHb+XqrwK2z8iXi4Ow==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747868076;
+	cv=none; b=a1SQouMj7CJoBI6qSFj0eXvBzJCZUqZw+deM9lplHV4m80gr9GuhmTDKGjDWWk9UTxHbx76AcaY2qFiIrC7jR+Yt4u0fZPm7g9xGN1cJ71WIQiO1QGXtvCYnMTSeekltdSJ94WZtm1ip5pznDYiRQEv/521s93vtv9gdbWDc+kZ5H/UeMN1Uxkzkc4eaH/vLB0L/RwT8ex2qgX1KU9QbJkmGEaYXUgdCv/ijTElMiNUFFU8LRw9ym9T4++cp7EgB9JYmO6DuiQ+mIymvnQCjxK4OUvKd9SaksCl1VGBXoB5NuQrqwlCZWEbHzk16Zj5QZSGb8gwwA4I6BOB7iPvwlQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747867833; c=relaxed/relaxed;
-	bh=usnxWRsB9/sh1qYzI4osptSgrSjuYYbmXtDutw4/ZEw=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=aUQEX48pZMUhi71JIUIzsJZMwyuSR6O/2iJxN7SDVWsLGDxRyLD5eXVxs5ZuAUHzBE8SfA2OIOwKVSv0fpWvTE4kIaMkjo3brMeGq4a60Ln1K/9OuWLX2qvYfmYKD7TdF6ww6Z/bttZIADqwsnqNsp1LScZiQcLIQ9US2/nfi3gTh/NyRZVIw7LfdbfGj/qdk7gj2JUY0SwmE8XRSb2C9CSGBzo5eFvUXud/EvXmS3LM+e1JluGDgvmaZyW3xoaE5IN7aYGCkDHI8s5YN3hcCYWzfCPYMk9H9/xMUXjVGVH2FmnB/cpLi8WoQ+rjRr+fijdK8VvXOMKaaMQaAiV+kg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V5svBTM0; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1747868076; c=relaxed/relaxed;
+	bh=n5nDr0TlAQOGTy+nOgu85Cw3vjQ3RVHpQINRwpAAMHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=j7Ygk9Wu122mmShAkQpIfpr+GUGBnlqVOgvzn07kW/q15nOoyX2hRsLfHOBxkX/1A7u2uLDRVyO90MiLbV6PxhHOz7fxzrg0o9zLKkDfb5GMlRoonZFJcpoEFCOy0neUQeR6r0klzLGxRUkKTcj8fGynVj1yV20xzXzVlCTLSQ3p0d+ZOVs8XZn5jS4LjxnFySCE1oysJNKUP58AGKOhC+CrRCAEuD+vvEAK+lWIMq2u0a25GdINZbxPSnor/+aLnurjjABnLggJIgupEzsnmTmJa6+cww34KL+Do1mLBdOG2gkobfAABJMNE+EOwdZToqN9sQYOIT9UBCC1svP93Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JFomEtSR; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V5svBTM0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JFomEtSR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2mpt3P1Rz2yYy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 08:50:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747867830; x=1779403830;
-  h=date:from:to:cc:subject:message-id;
-  bh=x76xClH2JypGOWLBfAPn4A/hq439IkfdkcM+uCsU0lw=;
-  b=V5svBTM0jXWr/OCKGzdW0oXexYjw4iFX6R4dk3n9Ral2AE8rbLNeCYJh
-   iVUiGbI8XXTbaw0x3jtEzyDtE8uAV5knUHbh5OfEiuBhjyUkLYtw4RI91
-   uPYsxQOEmK1UGQnzfGuJgddyLZRUgw289wnxWpCMhgm43bJli+9Ja75zB
-   IJzyTfoDSAiADxkOqNyvBjQ/kuIlwDGRedJjyCge0y537yjgo3AcurQ8e
-   ot38/zjtIfGTSffbs9xwcLlxTWwg+G76jEVC4qrI2h69o2s8stKQbYNYH
-   5KoqUayYwJ00uUw4D3E0GmNXqEr3byCWkGL8TAPK1QnjHEX8tGwUU/hPS
-   w==;
-X-CSE-ConnectionGUID: yKyGGx6MRMqj828YK6afCA==
-X-CSE-MsgGUID: Pr6KnMX2TiusaNOTUmn1tg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="49125859"
-X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; 
-   d="scan'208";a="49125859"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 15:50:24 -0700
-X-CSE-ConnectionGUID: +ophvqOVQOi72xKBVbp8jQ==
-X-CSE-MsgGUID: X7kseszgQK2dKZSIDz5uIg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,304,1739865600"; 
-   d="scan'208";a="145158546"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 21 May 2025 15:50:24 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uHsGT-000Ohc-2i;
-	Wed, 21 May 2025 22:50:21 +0000
-Date: Thu, 22 May 2025 06:50:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:next] BUILD SUCCESS
- 8682a5749a3d2b416b57709115c0351b50c8efcb
-Message-ID: <202505220607.UNHmsr7j-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2mvb1nfQz2yYy
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 08:54:34 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 16BF95C5D12;
+	Wed, 21 May 2025 22:52:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB0DC4CEE4;
+	Wed, 21 May 2025 22:54:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747868071;
+	bh=I6Z5U5lSAJhlhHvi273xITXuZaKvKIuYyjYt6JGuJv0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=JFomEtSRx29eJvJlGSNZulJOZmily2bMweU6UfOd3orZFeC8sQGMGclabfwMbISKc
+	 y7CNTyYRBRFs7UFrJuLCNHJfnw7Ep/9tU5h0v3iXMAe4591zPXZmKpQ3GVmy/cDiSD
+	 fXA2f2VQasXQFySdZS7/qFYTcXHse4dsrC1RJHZIB7iEsKTUByioE6VjfldkHTY3R8
+	 PrqbPQpyzz4iUC96TVUR2rACv2jUkPMCRiZEk5SeJmArlWrYptAM002ycWui/lOvm2
+	 FODi1NHio73ZlBez22BM0THaKlmeIoEj07HsOQNE7tmc1vIvidY30dQVHuukNM8+Ki
+	 JzVa0qondhbhQ==
+Date: Wed, 21 May 2025 17:54:30 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
+	Karolina Stolarek <karolina.stolarek@oracle.com>,
+	Weinan Liu <wnliu@google.com>,
+	Martin Petersen <martin.petersen@oracle.com>,
+	Ben Fuller <ben.fuller@oracle.com>,
+	Drew Walton <drewwalton@microsoft.com>,
+	Anil Agrawal <anilagrawal@meta.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Lukas Wunner <lukas@wunner.de>, Sargun Dhillon <sargun@meta.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v7 15/17] PCI/AER: Ratelimit correctable and non-fatal
+ error logging
+Message-ID: <20250521225430.GA1442014@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,261 +81,152 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250521113121.000067ce@huawei.com>
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-branch HEAD: 8682a5749a3d2b416b57709115c0351b50c8efcb  MAINTAINERS: powerpc: Remove myself as a reviewer
+On Wed, May 21, 2025 at 11:31:21AM +0100, Jonathan Cameron wrote:
+> On Tue, 20 May 2025 16:50:32 -0500
+> Bjorn Helgaas <helgaas@kernel.org> wrote:
+> 
+> > From: Jon Pan-Doh <pandoh@google.com>
+> > 
+> > Spammy devices can flood kernel logs with AER errors and slow/stall
+> > execution. Add per-device ratelimits for AER correctable and non-fatal
+> > uncorrectable errors that use the kernel defaults (10 per 5s).  Logging of
+> > fatal errors is not ratelimited.
+> 
+> See below. I'm not sure that logging of fatal error should affect the rate
+> for non fatal errors + the rate limit infrastructure kind of assumes
+> that you only call it if you are planning to respect it's decision.
+> 
+> Given overall aim is to restrict rates, maybe we don't care if we sometimes
+> throttle earlier that we might expect with a simpler separation of what
+> is being limited.
+> 
+> I don't mind strongly either way.
 
-elapsed time: 1112m
+> > @@ -593,7 +593,8 @@ struct aer_err_info {
+> >  	unsigned int id:16;
+> >  
+> >  	unsigned int severity:2;	/* 0:NONFATAL | 1:FATAL | 2:COR */
+> > -	unsigned int __pad1:5;
+> > +	unsigned int ratelimit:1;	/* 0=skip, 1=print */
+> 
+> That naming is less than intuitive.  Maybe expand it to ratelimit_print or
+> something like that.
 
-configs tested: 240
-configs skipped: 5
+True, although it does match uses like "if (aer_ratelimit(...))"
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I'll try ratelimit_print and see how you like it :)
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    clang-19
-alpha                            allyesconfig    gcc-14.2.0
-alpha                               defconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-14.2.0
-arc                               allnoconfig    gcc-14.2.0
-arc                              allyesconfig    gcc-14.2.0
-arc                      axs103_smp_defconfig    gcc-14.2.0
-arc                                 defconfig    gcc-14.2.0
-arc                   randconfig-001-20250521    gcc-10.5.0
-arc                   randconfig-001-20250522    clang-21
-arc                   randconfig-002-20250521    gcc-12.4.0
-arc                   randconfig-002-20250522    clang-21
-arc                    vdk_hs38_smp_defconfig    gcc-14.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-21
-arm                               allnoconfig    gcc-14.2.0
-arm                              allyesconfig    gcc-14.2.0
-arm                         bcm2835_defconfig    gcc-14.2.0
-arm                                 defconfig    gcc-14.2.0
-arm                          moxart_defconfig    clang-21
-arm                            mps2_defconfig    clang-21
-arm                            mps2_defconfig    gcc-14.2.0
-arm                   randconfig-001-20250521    clang-21
-arm                   randconfig-001-20250522    clang-21
-arm                   randconfig-002-20250521    clang-21
-arm                   randconfig-002-20250522    clang-21
-arm                   randconfig-003-20250521    clang-16
-arm                   randconfig-003-20250522    clang-21
-arm                   randconfig-004-20250521    clang-21
-arm                   randconfig-004-20250522    clang-21
-arm                        realview_defconfig    clang-16
-arm                         socfpga_defconfig    gcc-14.2.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-14.2.0
-arm64                               defconfig    gcc-14.2.0
-arm64                 randconfig-001-20250521    gcc-6.5.0
-arm64                 randconfig-001-20250522    clang-21
-arm64                 randconfig-002-20250521    gcc-6.5.0
-arm64                 randconfig-002-20250522    clang-21
-arm64                 randconfig-003-20250521    gcc-8.5.0
-arm64                 randconfig-003-20250522    clang-21
-arm64                 randconfig-004-20250521    gcc-8.5.0
-arm64                 randconfig-004-20250522    clang-21
-csky                              allnoconfig    gcc-14.2.0
-csky                                defconfig    gcc-14.2.0
-csky                  randconfig-001-20250521    gcc-10.5.0
-csky                  randconfig-001-20250522    gcc-9.3.0
-csky                  randconfig-002-20250521    gcc-12.4.0
-csky                  randconfig-002-20250522    gcc-9.3.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    clang-19
-hexagon                           allnoconfig    clang-21
-hexagon                           allnoconfig    gcc-14.2.0
-hexagon                          allyesconfig    clang-19
-hexagon                          allyesconfig    clang-21
-hexagon                             defconfig    gcc-14.2.0
-hexagon               randconfig-001-20250521    clang-20
-hexagon               randconfig-001-20250522    gcc-9.3.0
-hexagon               randconfig-002-20250521    clang-21
-hexagon               randconfig-002-20250522    gcc-9.3.0
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250521    clang-20
-i386        buildonly-randconfig-001-20250522    clang-20
-i386        buildonly-randconfig-001-20250522    gcc-12
-i386        buildonly-randconfig-002-20250521    clang-20
-i386        buildonly-randconfig-002-20250522    gcc-12
-i386        buildonly-randconfig-003-20250521    gcc-12
-i386        buildonly-randconfig-003-20250522    gcc-12
-i386        buildonly-randconfig-004-20250521    clang-20
-i386        buildonly-randconfig-004-20250522    gcc-12
-i386        buildonly-randconfig-005-20250521    gcc-12
-i386        buildonly-randconfig-005-20250522    gcc-12
-i386        buildonly-randconfig-006-20250521    gcc-12
-i386        buildonly-randconfig-006-20250522    clang-20
-i386        buildonly-randconfig-006-20250522    gcc-12
-i386                                defconfig    clang-20
-i386                  randconfig-001-20250522    clang-20
-i386                  randconfig-002-20250522    clang-20
-i386                  randconfig-003-20250522    clang-20
-i386                  randconfig-004-20250522    clang-20
-i386                  randconfig-005-20250522    clang-20
-i386                  randconfig-006-20250522    clang-20
-i386                  randconfig-007-20250522    clang-20
-i386                  randconfig-011-20250522    gcc-12
-i386                  randconfig-012-20250522    gcc-12
-i386                  randconfig-013-20250522    gcc-12
-i386                  randconfig-014-20250522    gcc-12
-i386                  randconfig-015-20250522    gcc-12
-i386                  randconfig-016-20250522    gcc-12
-i386                  randconfig-017-20250522    gcc-12
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch                           defconfig    gcc-14.2.0
-loongarch             randconfig-001-20250521    gcc-15.1.0
-loongarch             randconfig-001-20250522    gcc-9.3.0
-loongarch             randconfig-002-20250521    gcc-14.2.0
-loongarch             randconfig-002-20250522    gcc-9.3.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-m68k                                defconfig    gcc-14.2.0
-m68k                       m5275evb_defconfig    clang-21
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-microblaze                          defconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-mips                           jazz_defconfig    clang-17
-mips                       rbtx49xx_defconfig    gcc-14.2.0
-mips                         rt305x_defconfig    gcc-14.2.0
-mips                   sb1250_swarm_defconfig    clang-21
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20250521    gcc-14.2.0
-nios2                 randconfig-001-20250522    gcc-9.3.0
-nios2                 randconfig-002-20250521    gcc-14.2.0
-nios2                 randconfig-002-20250522    gcc-9.3.0
-openrisc                          allnoconfig    clang-21
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-12
-openrisc                    or1ksim_defconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    clang-21
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                              defconfig    gcc-12
-parisc                randconfig-001-20250521    gcc-13.3.0
-parisc                randconfig-001-20250522    gcc-9.3.0
-parisc                randconfig-002-20250521    gcc-11.5.0
-parisc                randconfig-002-20250522    gcc-9.3.0
-parisc64                            defconfig    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    clang-21
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-21
-powerpc                          allyesconfig    gcc-14.2.0
-powerpc                 canyonlands_defconfig    clang-21
-powerpc                        fsp2_defconfig    clang-21
-powerpc                    mvme5100_defconfig    gcc-14.2.0
-powerpc                      ppc64e_defconfig    clang-21
-powerpc               randconfig-001-20250521    clang-21
-powerpc               randconfig-001-20250522    gcc-9.3.0
-powerpc               randconfig-002-20250521    gcc-8.5.0
-powerpc               randconfig-002-20250522    gcc-9.3.0
-powerpc               randconfig-003-20250521    gcc-6.5.0
-powerpc               randconfig-003-20250522    gcc-9.3.0
-powerpc                    sam440ep_defconfig    gcc-14.2.0
-powerpc                  storcenter_defconfig    gcc-14.2.0
-powerpc64             randconfig-001-20250521    gcc-8.5.0
-powerpc64             randconfig-001-20250522    gcc-9.3.0
-powerpc64             randconfig-002-20250521    gcc-6.5.0
-powerpc64             randconfig-002-20250522    gcc-9.3.0
-powerpc64             randconfig-003-20250521    clang-21
-powerpc64             randconfig-003-20250522    gcc-9.3.0
-riscv                            allmodconfig    clang-21
-riscv                            allmodconfig    gcc-14.2.0
-riscv                             allnoconfig    clang-21
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-16
-riscv                            allyesconfig    gcc-14.2.0
-riscv                               defconfig    gcc-12
-riscv                 randconfig-001-20250521    gcc-8.5.0
-riscv                 randconfig-001-20250522    gcc-10.5.0
-riscv                 randconfig-002-20250521    gcc-8.5.0
-riscv                 randconfig-002-20250522    gcc-10.5.0
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    gcc-14.2.0
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-14.2.0
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20250521    clang-20
-s390                  randconfig-001-20250522    gcc-10.5.0
-s390                  randconfig-002-20250521    clang-21
-s390                  randconfig-002-20250522    gcc-10.5.0
-s390                       zfcpdump_defconfig    clang-21
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                                  defconfig    gcc-12
-sh                    randconfig-001-20250521    gcc-12.4.0
-sh                    randconfig-001-20250522    gcc-10.5.0
-sh                    randconfig-002-20250521    gcc-15.1.0
-sh                    randconfig-002-20250522    gcc-10.5.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250521    gcc-13.3.0
-sparc                 randconfig-001-20250522    gcc-10.5.0
-sparc                 randconfig-002-20250521    gcc-13.3.0
-sparc                 randconfig-002-20250522    gcc-10.5.0
-sparc64                             defconfig    gcc-12
-sparc64               randconfig-001-20250521    gcc-13.3.0
-sparc64               randconfig-001-20250522    gcc-10.5.0
-sparc64               randconfig-002-20250521    gcc-13.3.0
-sparc64               randconfig-002-20250522    gcc-10.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    clang-19
-um                               allyesconfig    gcc-12
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250521    clang-21
-um                    randconfig-001-20250522    gcc-10.5.0
-um                    randconfig-002-20250521    clang-21
-um                    randconfig-002-20250522    gcc-10.5.0
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250521    clang-20
-x86_64      buildonly-randconfig-001-20250522    clang-20
-x86_64      buildonly-randconfig-002-20250521    clang-20
-x86_64      buildonly-randconfig-002-20250522    clang-20
-x86_64      buildonly-randconfig-003-20250521    gcc-12
-x86_64      buildonly-randconfig-003-20250522    clang-20
-x86_64      buildonly-randconfig-004-20250521    gcc-12
-x86_64      buildonly-randconfig-004-20250522    clang-20
-x86_64      buildonly-randconfig-005-20250521    clang-20
-x86_64      buildonly-randconfig-005-20250522    clang-20
-x86_64      buildonly-randconfig-006-20250521    clang-20
-x86_64      buildonly-randconfig-006-20250522    clang-20
-x86_64                              defconfig    gcc-11
-x86_64                                  kexec    clang-20
-x86_64                randconfig-071-20250522    gcc-12
-x86_64                randconfig-072-20250522    gcc-12
-x86_64                randconfig-073-20250522    gcc-12
-x86_64                randconfig-074-20250522    gcc-12
-x86_64                randconfig-075-20250522    gcc-12
-x86_64                randconfig-076-20250522    gcc-12
-x86_64                randconfig-077-20250522    gcc-12
-x86_64                randconfig-078-20250522    gcc-12
-x86_64                               rhel-9.4    clang-20
-x86_64                          rhel-9.4-rust    clang-18
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250521    gcc-15.1.0
-xtensa                randconfig-001-20250522    gcc-10.5.0
-xtensa                randconfig-002-20250521    gcc-15.1.0
-xtensa                randconfig-002-20250522    gcc-10.5.0
+> > +	unsigned int __pad1:4;
+> >  	unsigned int multi_error_valid:1;
+> >  
+> >  	unsigned int first_error:5;
+> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> > index 4f1bff0f000f..f9e684ac7878 100644
+> > --- a/drivers/pci/pcie/aer.c
+> > +++ b/drivers/pci/pcie/aer.c
+> 
+> > @@ -815,8 +843,19 @@ EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
+> >   */
+> >  static int add_error_device(struct aer_err_info *e_info, struct pci_dev *dev)
+> >  {
+> > +	/*
+> > +	 * Ratelimit AER log messages.  "dev" is either the source
+> > +	 * identified by the root's Error Source ID or it has an unmasked
+> > +	 * error logged in its own AER Capability.  If any of these devices
+> > +	 * has not reached its ratelimit, log messages for all of them.
+> > +	 * Messages are emitted when "e_info->ratelimit" is non-zero.
+> > +	 *
+> > +	 * Note that "e_info->ratelimit" was already initialized to 1 for the
+> > +	 * ERR_FATAL case.
+> > +	 */
+> >  	if (e_info->error_dev_num < AER_MAX_MULTI_ERR_DEVICES) {
+> >  		e_info->dev[e_info->error_dev_num] = pci_dev_get(dev);
+> > +		e_info->ratelimit |= aer_ratelimit(dev, e_info->severity);
+> 
+> So this is a little odd.  I think it works but there is code inside
+> __ratelimit that I think we should not be calling for that
+> ERROR_FATAL case (whether we should call lots of times for each
+> device isn't obvious either but maybe that is more valid).
+> 
+> In the event of it already being 1 due to ERROR_FATAL you will
+> falsely trigger a potential print from inside __ratelimit() if we
+> were rate limited and no longer are but only skipped FATAL prints.
+> My concern is that function is kind of assuming it's only called in
+> cases where a rate limit decision is being made and the
+> implementation may change in future).
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Hmmm.  That's pretty subtle, thanks for catching this.
+
+In the light of day, ".ratelimit = fatal ? 1 : 0" looks a bit sketchy.
+If we want to avoid ratelimiting AER_FATAL, maybe aer_ratelimit()
+should just return 1 ("print") unconditionally in that case, without
+calling __ratelimit():
+
+  static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
+  {
+    struct ratelimit_state *ratelimit;
+
+    if (severity == AER_FATAL)
+      return 1;       /* AER_FATAL not ratelimited */
+
+    if (severity == AER_CORRECTABLE)
+      ratelimit = &dev->aer_info->cor_log_ratelimit;
+    else
+      ratelimit = &dev->aer_info->uncor_log_ratelimit;
+
+    return __ratelimit(ratelimit);
+  }
+
+That still leaves this question of how to deal with info->dev[] when
+there's more than one entry, which is kind of an annoying case that
+only happens for the native AER path.
+
+I think it's because for a single AER interrupt from an RP/RCEC, we
+collect the root info in one struct aer_err_info and scrape all the
+downstream devices for anything interesting.  We visit each downstream
+device and is_error_source() reads its status register, but we only
+keep the pci_dev pointer, so aer_get_device_error_info() has to read
+the status registers *again*.  This all seems kind of obtuse.
+
+The point of the OR above in add_error_device() was to try to match up
+RP/RCEC logging with downstream device logging so they're ratelimited
+the same.  If we ratelimit the Error Source ID based on the RP/RCEC
+and the details based on the downstream devices individually, they'll
+get out of sync, so sometimes we'll print an Error Source ID and elide
+the details and vice versa.
+
+I wanted to make it so that if we log downstream details, we also log
+the Error Source ID.  But maybe we should ratelimit downstream devices
+individually (instead of doing this weird union) and make the RP/RCEC
+part more explicit, e.g.,
+
+  add_error_device(...)
+  {
+    int i = e_info->error_dev_num;
+
+    e_info->dev[i] = pci_dev_get(dev);
+    e_info->error_dev_num++;
+
+    if (aer_ratelimit(dev, e_info->severity)) {
+      e_info->root_ratelimit_print = 1;
+      e_info->ratelimit_print[i] = 1;
+    }
+  }
+
+> https://elixir.bootlin.com/linux/v6.14.7/source/lib/ratelimit.c#L56
+> 
+> Maybe, 
+> 		if (!info->ratelimit)
+> 			e_info->ratelimit = aer_ratelimit(dev, e_info->severity);
+> is an alternative option.
+> That allows a multiplication factor on the rate as all device count for 1.
 
