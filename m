@@ -1,51 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-8854-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8855-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8D2AC003B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 00:59:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AAFEAC0058
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 01:06:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b2n1Z3krlz2ydv;
-	Thu, 22 May 2025 08:59:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b2n9c6j9Xz2yf9;
+	Thu, 22 May 2025 09:06:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747868386;
-	cv=none; b=MPK4PZr4uP0aefWkaKPkXts96r8ss0k+BE+AOTGbFLn3Tc7nPqJ5UkY1eFLo/kbvd71wX7zBSZ1eOFJjUfWOhNqSF5tjPhyqB+HNIcjjfYijmzSHU+JMdxcB0dmde1rIXEzHuNTdr9vTZ0O6uyQWslqZxFDoZ159ywIBQgli67WDw5VHCiOVeqhWUrrxo3UjiUGonb3f//Khm4BlBwGgVmTCMyM+v5XNGaQa+ab2xbMLawLgizbr2dObFRURGdScfDmd+iltNbx8IrzHFiT2vndLnS1DOQZTKNlM+xvsOAKwlOwb4jgC38hkezRp8oIHnlEi5NXl8lO5RKJ9GMA/cA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747868804;
+	cv=none; b=lpuPTQHIB4suju26pYUIcohyUmqdvWRKFoi34Jip12BZDycjupG8AJEWxl+vmiE1Ss81fTnjQgvSl8uKGhU7oB5QBe5XvDTK3MmV8eys1le5qI+3z/NNxzDxfDTR2SSDOzKiOUHs0G4/UbpVUGM056py3HJDCNMvA7XKzsFCruAHsX7YHKVs/+7gmc2M+tauCqrgwKoh3TUkaBPa65XYGiVWorQP8oApVl/11JRpQMSgPMN6j/LS5IB0XLtiSdIYm1IUcnhdShFiGm7gDXozU5uQXQtw4LZPwlqpzSdB5Vm+uxkLioHUFcVNqL8X59Yfk5SoX4wo/t5ZEfMhjBuG6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747868386; c=relaxed/relaxed;
-	bh=ZR/kDHwPURIh29TjVAWZdEOXSxYann+CiU+0lOdJ4Yw=;
+	t=1747868804; c=relaxed/relaxed;
+	bh=aBBnhscgYOw23uomK9YvENoEMVX+IkCNI73cf8rAgGw=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=OMLkBe59akUWCv6C270Uv0Nm2sidDKyfrbDSj7CqzqgjLp4eUbJP2wnMG2teQ4krfjKNqKTOdiI7ciwv7Tt3vrghFJ6PSa0WolU3qJjd42f+sNsjkeiLFxBo0M4lzpVzbLPHlQheCBc7ynYyP0bvGny2uiJUzPDRxIho8jIjRQUNcd1XdJhvfzgJrqT5ZlMgbRm4/vkJDlpCn6AleHxQ+SzahRGfMFOzutuvLiWK6pSd+DD/g1C3vlHQY+XDT4fmIwMth1DzvPfEMYuyqSt0H+8jsn8ajRrURxMivVYbz9EvtAOyg/Mvo4kYtftHUceXoVp97Qku1kacq9i4OlUvow==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iazKkXCX; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Disposition:In-Reply-To; b=QbZ9h3mN4k3ywF9I2XHzqJXyn51gLMMIRuJvvIwC5yaiPjGSX6Cefp0gXFdSmy5P7EX9mSEBCIMqx1bkE0PlkpYnCwn088vJpp3bj707J99HymttUUPRWWjUF33/cLU8BHRmi4wgy8y/ELIeNU6xZ6ivJ/E3JggUt1gOel2ej4AMegh5+8ycYgABZBa5mLWnSBBwxbwmwDNte/crvcer/cP+Yb19CCyeW/PoEjxvzs2lfbSDu96MdfOTdjLYxAqRzaf3OiA1om/cRY34N3G5W80vszZ+VsRszHv6ZjRplZubb+0MWeqDYh53IsfQrHwa4v0K+2bmMY5ZILlwHEs+qg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SsUde9Z2; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iazKkXCX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SsUde9Z2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2n1Y582Hz2ydt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 08:59:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2n9c0wXhz2yf4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 09:06:44 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D1D2B5C5A6B;
-	Wed, 21 May 2025 22:57:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7092BC4CEE4;
-	Wed, 21 May 2025 22:59:43 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id B7206A4F439;
+	Wed, 21 May 2025 23:06:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369B4C4CEEA;
+	Wed, 21 May 2025 23:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747868383;
-	bh=IbhrjqjCd+IL+OzZrKr4UCUXAEgx35sVZsX2gaP8Cs8=;
+	s=k20201202; t=1747868801;
+	bh=NEfRGNGqd+jQ4ZBng1dfzvjrKmSVR+/dtJx0zlR93Ws=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=iazKkXCXaj/wq12Dr4QVfxGACmZ2mHC0jptz6htAaLWZf9BN+4m5ku+D+0PA8AemS
-	 B9ycUgm/A7JPDBgVLs+RIf3beXTuqVbQrIWcQbNPP2mhgdmXQnsToMEqxmQkLFo4mc
-	 Sxiu/jdiTMhKHTjeRcrzen6HOsu1AdPAri+wB5TPB85CzPopbBUZyT+BQNjaz3LjF5
-	 JD6VLT4AfBZJFQPGJtJwQJuQbx1YlTPUWSEnoTAAhJyX4thfIbsgQGlf92hrqUDcAK
-	 GtmjihJFKjDmOlHGMBPLgKMHKcgemgh9+R0Ihwj/HxQip7+fGb3HKT8BGlWn8EiKWy
-	 igNF5NhEiqbzw==
-Date: Wed, 21 May 2025 17:59:42 -0500
+	b=SsUde9Z2FPViWIrd9w4gBW4lxhWaZCxVaNRIUwfdG98emO4Q0nTSUmtVGXUa/K62u
+	 4kDvqYBFgk5Vjli1GmKSnXNG4CCjkJGZlKPPLZ0hPDXPQCA7vKajIGUWEHeubI/6IP
+	 T3+Xzs0eQp22gYrGHaPWQVYwKpqEuMPINy2sIw5udEBO4KjiUXbfhZ8rXJoJrTrohp
+	 aZRTX4UJs/vAqJ5qq0sxK4MBdIZiOapIz0SWEPizirFpYHQrC1plIDGXVtml7qj9x6
+	 PCZVBQGvP4tg6eiVTFEXiLhWk7M90tWuK+VjhuxZRZH5dYupM94ZZhZcJjt9KUFzL2
+	 TnwGOmuLP9dRw==
+Date: Wed, 21 May 2025 18:06:39 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
 Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
 	Karolina Stolarek <karolina.stolarek@oracle.com>,
 	Weinan Liu <wnliu@google.com>,
@@ -55,8 +55,9 @@ Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
 	Anil Agrawal <anilagrawal@meta.com>,
 	Tony Luck <tony.luck@intel.com>,
 	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Sargun Dhillon <sargun@meta.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sargun Dhillon <sargun@meta.com>,
 	"Paul E . McKenney" <paulmck@kernel.org>,
 	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
 	Oliver O'Halloran <oohall@gmail.com>,
@@ -65,10 +66,10 @@ Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
 	Terry Bowman <terry.bowman@amd.com>,
 	Shiju Jose <shiju.jose@huawei.com>,
 	Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: Re: [PATCH v7 17/17] PCI/AER: Add sysfs attributes for log ratelimits
-Message-ID: <20250521225942.GA1452275@bhelgaas>
+	linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v7 15/17] PCI/AER: Ratelimit correctable and non-fatal
+ error logging
+Message-ID: <20250521230639.GA1452526@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,59 +85,39 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250521114600.00007010@huawei.com>
+In-Reply-To: <ac30a88d-7139-40ce-ae3c-34ef12c939a5@linux.intel.com>
 X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, May 21, 2025 at 11:46:00AM +0100, Jonathan Cameron wrote:
-> On Tue, 20 May 2025 16:50:34 -0500
-> Bjorn Helgaas <helgaas@kernel.org> wrote:
-> 
+On Tue, May 20, 2025 at 03:33:45PM -0700, Sathyanarayanan Kuppuswamy wrote:
+> On 5/20/25 2:50 PM, Bjorn Helgaas wrote:
 > > From: Jon Pan-Doh <pandoh@google.com>
 > > 
-> > Allow userspace to read/write log ratelimits per device (including
-> > enable/disable). Create aer/ sysfs directory to store them and any
-> > future aer configs.
-> ...
+> > Spammy devices can flood kernel logs with AER errors and slow/stall
+> > execution. Add per-device ratelimits for AER correctable and non-fatal
+> > uncorrectable errors that use the kernel defaults (10 per 5s).  Logging of
+> > fatal errors is not ratelimited.
 
-> There is some relatively new SYSFS infra that I think will help
-> make this slightly nicer by getting rid of the extra directory when
-> there is nothing to be done with it.
+> > +	/* Ratelimits for errors */
+> > +	struct ratelimit_state cor_log_ratelimit;
+> > +	struct ratelimit_state uncor_log_ratelimit;
+> 
+> Nit: Do you think we should name it as nonfatal_log_ratelimit?
 
-> > +#define aer_ratelimit_burst_attr(name, ratelimit)			\
-> > +	static ssize_t							\
-> > +	name##_show(struct device *dev, struct device_attribute *attr,	\
-> > +		    char *buf)						\
-> > +{									\
-> 
-> A little odd looking to indent this less than the line above.
+Maybe so.  We can always change this internal name, so I guess the
+important part is the sysfs filename
+("/sys/bus/pci/devices/<dev>/aer/ratelimit_burst_uncor_log").
 
-Yep, fixed.
+"ratelimit_burst_nonfatal_log" is not quite parallel with
+"ratelimit_burst_cor_log" the way "ratelimit_burst_uncor_log" is.
 
-> > +const struct attribute_group aer_attr_group = {
-> > +	.name = "aer",
-> > +	.attrs = aer_attrs,
-> > +	.is_visible = aer_attrs_are_visible,
-> > +};
-> 
-> There are a bunch of macros to simplify cases where
-> a whole group is either enabled or not and make the group
-> itself go away if there is nothing to be shown.
-> 
-> DEFINE_SIMPLE_SYSFS_GROUP_VISIBLE() combined with
-> SYSFS_GROUP_VISIBLE() around the assignment does what we
-> want here I think.
-> 
-> Whilst we can't retrofit that stuff onto existing ABI
-> as someone may be assuming directory presence, we can
-> make sysfs less cluttered for new stuff.
-> 
-> Maybe I'm missing why that doesn't work here though!
+But it's definitely true that the underlying PCIe Messages are
+ERR_COR, ERR_NONFATAL, and ERR_FATAL.
 
-Is this something we can fix later, or are we locking ourselves into
-user-visible ABI that's hard to change?  I'm kind of against the wall
-relative to the v6.16 merge window and haven't had time to dig into
-this part.
+So I think this is more than a nit, and you're right that we should
+use "cor" and "nonfatal" somehow.
+
+I'll work on that tomorrow.
 
