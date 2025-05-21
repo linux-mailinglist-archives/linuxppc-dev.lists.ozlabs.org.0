@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-8842-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8843-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9169ABFB70
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 18:42:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3B6ABFC0B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 19:12:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b2cdn1bpnz3c2C;
-	Thu, 22 May 2025 02:42:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b2dJh4yQHz2y8l;
+	Thu, 22 May 2025 03:12:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747845725;
-	cv=none; b=KJFVWTw8vKpbS3A/VQcpvTCTBfcGs82fX+Q/eWOvH7vtRAbA/K4aRHOF9kwpLifm/oQZ2eNb54FTLtfJjVpsb/oEK/pzZgaaJyKKeShitYa2KqZa3484hOAbugDmBJLAOntDkhKOlJKC64dBKauViA5M+kqpO3lN9uckTq3XDrlnsE5+nDFNh9P11vxXOCczDT4MyD8IeDUv9WLt3yg695R7ckA5tu/J/KN18a/7boq5sMIY+PUsytbtoflYl4aiQRiIjxPfm83MzsUguIUoSTAyuKlFRYgMwp8QmRrIWCENTE7EKZvlMvnVyc4zS5p2om83jYaZNJ0rouiYiTOjlw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747847540;
+	cv=none; b=NoHc8Fln5Ue6BFUt7GmAqJbtQ0CGR8s/s2ZQZi3eoCMiljlafgfFkooro2uq8AFK2FoXqy0odNxHEHxVwdMV5AFyGGbS63tWIxxTON7rLswxnbd2F3CtW620Tk6GLuSmxzwPmHJ53NlTJOUKXIgPrDSkiFcMdVrNdB4rv5HVBY0Sl98phXzA2VK0IJ4pWZS93ad1rz6HGqcQOErKXZGD9EHJT1VA2q8NzCOWjF5imSDhyCctAXvX8mchbIWXSRiH1LU7/0IAybnFFRLXMdAZ+LX8RPZyC4k19d4p98PL5abg3I/1TeVs4HNySCR8eZGd3N+Hq4+xCJ6w1ppMWw0L2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747845725; c=relaxed/relaxed;
-	bh=nqV3lRwJwEi5A0n42n94rqiFtoc8WGmVMSwJFR2qgmU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rcrc3etDD62u9dUGHTGiTM+v+kgW02bLskblv92AkEY6tmIahKUlK+3ZOLIm/yQRCeEBV4hozqLZuBqS9IKx7ZkuTqFNLCPX6Cm1i7upXsH18Q8+Xqp59BM+6VD7nAf/m2F3YznQ7YpFUfvqQEhixzRmyLEaqB/EzDf9KJ6aa/627HfBkwrfwmBEB7WQTx5s9WH8I+X/onn8zOSPhr6WwdNaySaW+U4L2EXCdssMqFmsB9IeYEneBuPapuzzucqoAHrI9jhgmQ6fd+oq/NjHsHABUTMN8174d1AjeWEmlgrDPWLoYiqm1uRA/t+2WNecbHmDczMi/bszbce0nACHgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W5UxbfYH; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1747847540; c=relaxed/relaxed;
+	bh=H4LxzY1g4slg2w/Kp6TRp8TED8XemNRCSxMHNaDBSH8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=cjOU12rFI/7QSsKow9MFHYDIq1IB84DWNyLi0WOtshfI9RDduCNd2Ahn5nsBGxm8IT3XpVS1x/Xtjg57DraeiSucyPdrJSxN+crU43bxtR73/gq5GNjod/VKQdEoi9gLTkOkJ1G3oTOuTc4//30QEXUu8DahS/kEJXrvwBRthaqkyJE7GarCepgKXVRmfAKRsWheA8n2R3KpsFNh0upVbQxWEYLNyVWuJ4W+X84MTYdWcVRdhXs7R53gj0U1ic1AizcO5tGBKbkvmZcPKtOokXjg483iyZmGXsUCoiLzGzlNw0EomQLhAH2VtcBncUEa3y8uZLpbhZsyLDa3fI23ig==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jmtHGiAl; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=W5UxbfYH;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jmtHGiAl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2cdm20Btz3c20
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 02:42:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2dJg4hPPz2y2B
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 03:12:19 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EDDBB4496E;
-	Wed, 21 May 2025 16:42:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C091C4CEE4;
-	Wed, 21 May 2025 16:42:01 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5D3F45C5C57;
+	Wed, 21 May 2025 17:10:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD4CC4CEE4;
+	Wed, 21 May 2025 17:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747845721;
-	bh=fNlJI98IRmJku5DUDB7KU0NTAR5l/AoBK5dNhkMKy3I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W5UxbfYHZeoYDuN5ngewjlWzVx7fvv+BRtndc80ovjhiG8g1I0PHO5ybTj6Lu6x7z
-	 g36JHRBWYtNWkCBo4PMkcy0oVlBeyMphixat7L/44FREl/Q339WNexmioK64JLpHrr
-	 ovP+rgZvQ9g6LwFcH/HDCu9vpS3tLCd/GJAcQWnttlw4kKAxt0ie+p9RLIYWYKjjhH
-	 93rSYCm1Z1xfN5fXmFJkD1WSt0TC4uayOcstPRMB2i+aKB06sSd7LdyWxS+W5yFd8X
-	 bdNdzs+Y/THmEK3YDLZn9UkbD1V8YTXfyH5h5kHwmICgedMJsRAjUNUWn2aXZj8rj/
-	 RKYVBmYwmsZHw==
-Date: Wed, 21 May 2025 19:41:57 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Peter Huewe <peterhuewe@gmx.de>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	linux-integrity@vger.kernel.org,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Sumit Garg <sumit.garg@kernel.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v5 4/4] tpm/tpm_svsm: support TPM_CHIP_FLAG_SYNC
-Message-ID: <aC4CVUXpThAyKQdf@kernel.org>
-References: <20250514134630.137621-1-sgarzare@redhat.com>
- <20250514134630.137621-5-sgarzare@redhat.com>
- <aCVHQ-LRqHeEVEAW@kernel.org>
- <CAGxU2F5AsNY5mQPd=qajW1seFYHSYpB0Fa1iuR_f2QavtoB6sA@mail.gmail.com>
- <aCzf6aoJAC-IdS_n@kernel.org>
- <CAGxU2F6rfqGV_gJk-JxrCk3f9dWtYn_3o9RODh7cVG0X_oQWaA@mail.gmail.com>
- <aC2nBCxkvWWz5y5E@kernel.org>
+	s=k20201202; t=1747847537;
+	bh=1dN4hypelxyk1rZ8sC/y4l5vwCFStdVU/YluIIrrUYM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=jmtHGiAlnJ73/jaSZK1r37Jx1N0d7k8PF5KCtu1Hy4V820AyYSTWjAg0yoFA0tFCA
+	 6lLq4B9BFBkUKktlmQ2INKiieLHhVCRp4rMdvSTf4p80Q8oLEeqFxjV1jT7YywOtkt
+	 ZoGok5vhnZV6AbGYI2iSvQ+2k0kP8YaySIJYl4GJBA/OLmYrg/XLQpaYJgGOzLJ7K4
+	 WbUJhqS0e9qb/uxKJGW4KI+qZCSoikzrQ5ikfl0LhBFTZ7M1+ER61IqMUtcNNQ8WaY
+	 Q1FvvrHA8y2Gw8Rx6ZNXI65pOWQZohuoG3l68HI4xP3IhLiTHxTtKp7hqzFc8MXeJc
+	 x+IRMvchmNwaw==
+Date: Wed, 21 May 2025 12:12:15 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
+	Karolina Stolarek <karolina.stolarek@oracle.com>,
+	Weinan Liu <wnliu@google.com>,
+	Martin Petersen <martin.petersen@oracle.com>,
+	Ben Fuller <ben.fuller@oracle.com>,
+	Drew Walton <drewwalton@microsoft.com>,
+	Anil Agrawal <anilagrawal@meta.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Lukas Wunner <lukas@wunner.de>, Sargun Dhillon <sargun@meta.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Kai-Heng Feng <kaihengf@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: Re: [PATCH v7 11/17] PCI/AER: Combine trace_aer_event() with
+ statistics updates
+Message-ID: <20250521171215.GA1421937@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,36 +83,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aC2nBCxkvWWz5y5E@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250521104642.00003648@huawei.com>
 X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, May 21, 2025 at 01:12:20PM +0300, Jarkko Sakkinen wrote:
-> > I tried, but the last patch (this one) is based on the series merged
-> > on the tip tree, where I introduced tpm_svsm.
-> > I can see that series in linux-next merged with commit
-> > 16a56ee59ab8ee05e67de35bbb5782ef9cfb4f07,
-> > but I can't see it in your next tree [1].
-> > 
-> > How do we proceed in such cases?
-> > 
-> > Just to be sure, did I use the right tree?
+On Wed, May 21, 2025 at 10:46:42AM +0100, Jonathan Cameron wrote:
+> On Tue, 20 May 2025 16:50:28 -0500
+> Bjorn Helgaas <helgaas@kernel.org> wrote:
 > 
-> Thanks for the remark. Lemme check tonight. Hold on doing
-> anything ;-) We'll get there...
+> > From: Bjorn Helgaas <bhelgaas@google.com>
+> > 
+> > As with the AER statistics, we always want to emit trace events, even if
+> > the actual dmesg logging is rate limited.
+> > 
+> > Call trace_aer_event() directly from pci_dev_aer_stats_incr(), where we
+> > update the statistics.
+> > 
+> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+> > Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> > Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> 
+> Hmm. This runs a bit counter to what I liked in previous patch.
+> Whilst convenient to issue trace points in the stats update function
+> it's not obvious behavior given naming.  Maybe just duplicate the call
+> and call it immediately after the pci_dev_aer_stats_incr() calls?
 
-I just rebased my branches on top of latest from Linus. That is what I
-need base PR also on, and:
+Good point, thanks.  I made this change, which also means we don't
+need to copy the header log into "info" because we can just use
+aer->header_log as before:
 
-$ git show 16a56ee59ab8ee05e67de35bbb5782ef9cfb4f07
-fatal: bad object 16a56ee59ab8ee05e67de35bbb5782ef9cfb4f07
-
-I'd use git cherry-pick on a range to take them from linux-next to a
-mainline tip...
-
-BR, Jarkko
+> > @@ -782,6 +782,9 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+> >  
+> >  	info.status = status;
+> >  	info.mask = mask;
+> > +	info.tlp_header_valid = tlp_header_valid;
+> > +	if (tlp_header_valid)
+> > +		info.tlp = aer->header_log;
+> >  
+> >  	pci_dev_aer_stats_incr(dev, &info);
+> >  
+> > @@ -799,9 +802,6 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+> >  
+> >  	if (tlp_header_valid)
+> >  		pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
+> > -
+> > -	trace_aer_event(pci_name(dev), (status & ~mask),
+> > -			aer_severity, tlp_header_valid, &aer->header_log);
+> >  }
+> >  EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
+> >  
+> 
 
