@@ -1,63 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-8806-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8807-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40784ABEEDA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 11:00:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FAAABEEF4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 11:03:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b2QPQ0fvRz3bsS;
-	Wed, 21 May 2025 19:00:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b2QSP6nHWz3bxC;
+	Wed, 21 May 2025 19:03:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747818042;
-	cv=none; b=M7vpvOfi6uCvlDY3nHM7af953YIFrzaLtX0PfCijH0/yt7FW9jU9pnst77qfbPgli6pAxoWpMEfY5znpmPa1Jl5VlQWCb6lTjYogqqcHNlf1MLRvgzMafFKs0HuLmztKF/9tIpHCy3LY0AKKDjxRaxicWtz574f46yAIps2fzU80y2WAey7M7u7pvifcf95KBl4fckNKo5+hL5E4nEh3hOioFvt1VRUrITC8qYYWTR7CAbqm1VVs+NYsqSN1FhKhNcy5LJdHMtjxtfSKbiJSvzxopvZA0tFBCB+kMkM1hF2zWqSCxhAV1daK/B2UF9Dhqd5khwNhftTdVBcJ9wMjtg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.142
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747818197;
+	cv=none; b=niwIDWQLtX5bfVFR6jOmXstNBOHWvVAcHJCbLEjXICOylPm2Rxytd/4NExC4MpvXLAhyizGApQjYgOJZ6QWmQp6XiU9qFzKxYepjcsl7narMhcA+QyB+s/bYOW24niwRAyrNG4L2cx93xkEYWNqlUfUbktvIxO8saYCuTcjiafSwiE6klL16D06xn5RfbPPkDTHBps0KWWjjAZmhsBl6zxMAOkSog9MtCk8/RAWHldS4pEMFNhOZWw3+epsOj7h4reiBSsWT1j7fr5OopAl0MLfb3KXP8i66uWbP3JHiduh9OCN+J+O2gtr7RXMbTxcLd7k/8HFweHCQ6Hx7Na5ulg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747818042; c=relaxed/relaxed;
-	bh=eloPbXbomFIUCljQCzRRsDs7elU4pw5qp/t93CaYODw=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hV0jxMahYiZ52SNlJzMFds1ubEvZ1Z0ypyQLk8K9nnOz5VbERlBQYcC4e2FvJeiRQEay7r4YmQ+OL7Vt4p6x9dRyO85O3hf+yIkDO6ifIG7MQj5Cvvy43+pyCCvrYqUeQ9WaNGhB0476/G2fXKjJFe0hpLXzZlyFdp5V44ci9I3ZOxLY5MQHhqTrObfAPciamgFq3f3ZNukVusBGFDgntnp+4AZ/jOsxfII11AyGvYG0k7VeNNGFNnGUCZNsSYEyQaaLqiI6pCjHsYx+SzcZ8REPEp118NgJMdj+LtMzeNk1e/tll9JaprD+Sa08xCT1QNwIN//NUbcIaMnR9i6FJQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1747818197; c=relaxed/relaxed;
+	bh=PcLZXiuxQaS428giR3RzU3lnofnEDkKQy05a9KBTIH4=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=JFRZ4VFo4R3SAs0IxkyPfCPd63NXhgQ76N9gmoajYun6/+cdssbgAPpAflTF1jVSTYTSD7izJD6DWyM1woc5sozTdSu0b4DU2IsEhvQRP+/X4FPHgQRdl4nHTcwTk5UITklNajCTK5AnPpYmZAayvs63EFHOdWQ30dsus1wH30fip7q5fQ8+EUOlBdNgrnWX/QHIZkf6bu2BUWlReqnYkUYHOCWNXg45BhbvwFYCSWCCPU/8OOyuVewrwHxIwWVsXD1U8YfUaBPE2VGbYXF43YX38KJMzKwo/fUxJAu9zlihAHPRp5ee1DMTiD2HURl8lzQuCBz92yNdwBhmzu9UJw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=X0yqjwNO; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=uI8WqM4U; dkim-atps=neutral; spf=pass (client-ip=202.12.124.142; helo=flow-b7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=X0yqjwNO;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=uI8WqM4U;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.142; helo=flow-b7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from flow-b7-smtp.messagingengine.com (flow-b7-smtp.messagingengine.com [202.12.124.142])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2QPP0r42z3bsQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 19:00:41 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b2QNK2mzjz6GDGS;
-	Wed, 21 May 2025 16:59:45 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 06F41140557;
-	Wed, 21 May 2025 17:00:38 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 21 May
- 2025 11:00:36 +0200
-Date: Wed, 21 May 2025 10:00:35 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-CC: <linux-pci@vger.kernel.org>, Jon Pan-Doh <pandoh@google.com>, "Karolina
- Stolarek" <karolina.stolarek@oracle.com>, Weinan Liu <wnliu@google.com>,
-	Martin Petersen <martin.petersen@oracle.com>, Ben Fuller
-	<ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>, "Anil
- Agrawal" <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>, Ilpo
- =?UTF-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Sathyanarayanan
- Kuppuswamy" <sathyanarayanan.kuppuswamy@linux.intel.com>, Lukas Wunner
-	<lukas@wunner.de>, Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney"
-	<paulmck@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, "Oliver
- O'Halloran" <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>, "Keith
- Busch" <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>, Terry Bowman
-	<terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>, Dave Jiang
-	<dave.jiang@intel.com>, <linux-kernel@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: Re: [PATCH v7 02/17] PCI/DPC: Log Error Source ID only when valid
-Message-ID: <20250521100035.0000544e@huawei.com>
-In-Reply-To: <20250520215047.1350603-3-helgaas@kernel.org>
-References: <20250520215047.1350603-1-helgaas@kernel.org>
-	<20250520215047.1350603-3-helgaas@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2QSL3r0hz3bwR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 19:03:14 +1000 (AEST)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id A4BD71D40364;
+	Wed, 21 May 2025 05:03:09 -0400 (EDT)
+Received: from phl-imap-12 ([10.202.2.86])
+  by phl-compute-05.internal (MEProxy); Wed, 21 May 2025 05:03:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1747818189;
+	 x=1747825389; bh=PcLZXiuxQaS428giR3RzU3lnofnEDkKQy05a9KBTIH4=; b=
+	X0yqjwNOIHFbbyAMp8e+lc734RzVhf2mttBdzb5/4PMjAjtGIoYyKTXWpp5LUMZY
+	UYk5264j/flGcQAxn/0aipvCYsyakWYfCx48DeXYvCyUc0pAqKDLu8sNNiyT1e/3
+	Z2Mbo/sMQjMw9+9EdqtU6tAymHAorktE8XdWGVj7oIF0XQUKXh0ka7bcfwAsiQE8
+	7PIjkmLtm0yktW32JI/2jWDHgwnt3JRuAnKH9IONnmWPsAX7kzyKxjWbGYfFWARP
+	C/bm1/lzAW3goAn6MDDykyzGJLy2xaGQLXgp8bUOmo0mnfnS8t/64LRPGu7y5cAS
+	lCkbwZXNEBwQPb5RsEBKdg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1747818189; x=
+	1747825389; bh=PcLZXiuxQaS428giR3RzU3lnofnEDkKQy05a9KBTIH4=; b=u
+	I8WqM4URNBtG1O9aNSekfVbxmmyap2TCl0Pmz6PzkiJGnD+9EpKhvN6xyLAt3JcB
+	LEamw0lRIAgkp/E3huSiNE/JYIl3XS4YlcgRiBahZaRkW9J40WM1u0VIbzIoqQou
+	65VHiVv02T4e/HhoBS1vfS0B8TLisD+8ZohVUTsffs5sTpucQSRrdCoWVTkbikas
+	nVXzMghonnpindYVmFOaZ/HQJD7B3BTLKN7tc29n+IcKE4NcUUDo/XAa75TjRgYx
+	FRdfLNpr2qsb9tlw7vgH9k/PxSyohwf6/HzMzKZHjlZIfrn7LISVFAobmL61fZUC
+	uL6OqFO8iVizmBcH5059Q==
+X-ME-Sender: <xms:yJYtaOdG95h60oA3MHIpMPuHND39LFM-LzSwDe0DEcP9XfesCudnDg>
+    <xme:yJYtaIPW5kEhj4amhl690E2cWDjdLEpBrH32igs0wa-xEso7VUfxp41ppEB7SJz6S
+    khcBGMHzFtHCUb4YOg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgddvieejucdltddurdegfedvrddttd
+    dmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgf
+    nhhsuhgsshgtrhhisggvpdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttd
+    enucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgj
+    fhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuc
+    eorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedu
+    keetgefggffhjeeggeetfefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdp
+    nhgspghrtghpthhtohephedtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsph
+    esrghlihgvnhekrdguvgdprhgtphhtthhopehtshgsohhgvghnugesrghlphhhrgdrfhhr
+    rghnkhgvnhdruggvpdhrtghpthhtoheptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmh
+    drtghomhdprhgtphhtthhopehlihhnuhigsegrrhhmlhhinhhugidrohhrghdruhhkpdhr
+    tghpthhtoheptghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprh
+    gtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohepmhhi
+    tgesughighhikhhougdrnhgvthdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrih
+    gurdgruhdprhgtphhtthhopegurghvihgusehfrhhomhhorhgsihhtrdgtohhm
+X-ME-Proxy: <xmx:yJYtaPhfJ8b6ct5ipcOM5f3QyCrCXS7czDwni2auaNSZ0ENy_javHQ>
+    <xmx:yJYtaL8YgIzNtJ5jUXMgbGYsCahl_vIECDUmEG1VMtT-Bw6d61zs3w>
+    <xmx:yJYtaKvnHZepdP7D1Ngb2izf-LWz1u5WPzQIf6Iec_CTJjGcD73Lng>
+    <xmx:yJYtaCHiaZKua2gNKTvNmZUEwVbXF10MOkbeJHgM-Fn64jfIYFGn2Q>
+    <xmx:zZYtaClfmfNEy492Pjkj4JJJLU4jdO1kA6YMVNHGknn0sw_OUTdM-JYy>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 341AD1060061; Wed, 21 May 2025 05:03:04 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,67 +99,124 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+X-ThreadId: Tdb8541d917685bac
+Date: Wed, 21 May 2025 11:02:42 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andrey Albershteyn" <aalbersh@redhat.com>,
+ "Dave Chinner" <david@fromorbit.com>
+Cc: "Amir Goldstein" <amir73il@gmail.com>,
+ "Christian Brauner" <brauner@kernel.org>,
+ "Richard Henderson" <richard.henderson@linaro.org>,
+ "Matt Turner" <mattst88@gmail.com>,
+ "Russell King" <linux@armlinux.org.uk>,
+ "Catalin Marinas" <catalin.marinas@arm.com>,
+ "Will Deacon" <will@kernel.org>,
+ "Geert Uytterhoeven" <geert@linux-m68k.org>,
+ "Michal Simek" <monstr@monstr.eu>,
+ "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Helge Deller" <deller@gmx.de>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Naveen N Rao" <naveen@kernel.org>, "Heiko Carstens" <hca@linux.ibm.com>,
+ "Vasily Gorbik" <gor@linux.ibm.com>,
+ "Alexander Gordeev" <agordeev@linux.ibm.com>,
+ "Christian Borntraeger" <borntraeger@linux.ibm.com>,
+ "Sven Schnelle" <svens@linux.ibm.com>,
+ "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+ "Rich Felker" <dalias@libc.org>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Andreas Larsson" <andreas@gaisler.com>,
+ "Andy Lutomirski" <luto@kernel.org>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Chris Zankel" <chris@zankel.net>,
+ "Max Filippov" <jcmvbkbc@gmail.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>,
+ =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+ =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
+ =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
+ "Paul Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ "Stephen Smalley" <stephen.smalley.work@gmail.com>,
+ "Ondrej Mosnacek" <omosnace@redhat.com>,
+ "Tyler Hicks" <code@tyhicks.com>, "Miklos Szeredi" <miklos@szeredi.hu>,
+ linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-api@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>,
+ selinux@vger.kernel.org, ecryptfs@vger.kernel.org,
+ linux-unionfs@vger.kernel.org, linux-xfs@vger.kernel.org,
+ "Andrey Albershteyn" <aalbersh@kernel.org>
+Message-Id: <d638db28-2603-448f-b149-b33eca821a64@app.fastmail.com>
+In-Reply-To: 
+ <sfmrojifgnrpeilqxtixyqrdjj5uvvpbvirxmlju5yce7z72vi@ondnx7qbie4y>
+References: <20250513-xattrat-syscall-v5-0-22bb9c6c767f@kernel.org>
+ <399fdabb-74d3-4dd6-9eee-7884a986dab1@app.fastmail.com>
+ <20250515-bedarf-absagen-464773be3e72@brauner>
+ <CAOQ4uxicuEkOas2UR4mqfus9Q2RAeKKYTwbE2XrkcE_zp8oScQ@mail.gmail.com>
+ <aCsX4LTpAnGfFjHg@dread.disaster.area>
+ <sfmrojifgnrpeilqxtixyqrdjj5uvvpbvirxmlju5yce7z72vi@ondnx7qbie4y>
+Subject: Re: [PATCH v5 0/7] fs: introduce file_getattr and file_setattr syscalls
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 20 May 2025 16:50:19 -0500
-Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Wed, May 21, 2025, at 10:48, Andrey Albershteyn wrote:
+> On 2025-05-19 21:37:04, Dave Chinner wrote:
 
-> From: Bjorn Helgaas <bhelgaas@google.com>
->=20
-> DPC Error Source ID is only valid when the DPC Trigger Reason indicates
-> that DPC was triggered due to reception of an ERR_NONFATAL or ERR_FATAL
-> Message (PCIe r6.0, sec 7.9.14.5).
->=20
-> When DPC was triggered by ERR_NONFATAL (PCI_EXP_DPC_STATUS_TRIGGER_RSN_NF=
-E)
-> or ERR_FATAL (PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) from a downstream device,
-> log the Error Source ID (decoded into domain/bus/device/function).  Don't
-> print the source otherwise, since it's not valid.
->=20
-> For DPC trigger due to reception of ERR_NONFATAL or ERR_FATAL, the dmesg
-> logging changes:
->=20
->   - pci 0000:00:01.0: DPC: containment event, status:0x000d source:0x0200
->   - pci 0000:00:01.0: DPC: ERR_FATAL detected
->   + pci 0000:00:01.0: DPC: containment event, status:0x000d, ERR_FATAL re=
-ceived from 0000:02:00.0
->=20
-> and when DPC triggered for other reasons, where DPC Error Source ID is
-> undefined, e.g., unmasked uncorrectable error:
->=20
->   - pci 0000:00:01.0: DPC: containment event, status:0x0009 source:0x0200
->   - pci 0000:00:01.0: DPC: unmasked uncorrectable error detected
->   + pci 0000:00:01.0: DPC: containment event, status:0x0009: unmasked unc=
-orrectable error detected
->=20
-> Previously the "containment event" message was at KERN_INFO and the
-> "%s detected" message was at KERN_WARNING.  Now the single message is at
-> KERN_WARNING.
->=20
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Tested-by: Krzysztof Wilczy=C5=84ski <kwilczynski@kernel.org>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux=
-.intel.com>
-Matches the spec conditions as far as I can tell.
+>> > +struct fsx_fileattr {
+>> > +       __u32           fsx_xflags;     /* xflags field value (get/set) */
+>> > +       __u32           fsx_extsize;    /* extsize field value (get/set)*/
+>> > +       __u32           fsx_nextents;   /* nextents field value (get)   */
+>> > +       __u32           fsx_projid;     /* project identifier (get/set) */
+>> > +       __u32           fsx_cowextsize; /* CoW extsize field value (get/set)*/
+>> > +};
+>> > +
+>> > +#define FSXATTR_SIZE_VER0 20
+>> > +#define FSXATTR_SIZE_LATEST FSXATTR_SIZE_VER0
+>> 
+>> If all the structures overlap the same, all that is needed in the
+>> code is to define the structure size that should be copied in and
+>> parsed. i.e:
+>> 
+>> 	case FSXATTR..._V1:
+>> 		return ioctl_fsxattr...(args, sizeof(fsx_fileattr_v1));
+>> 	case FSXATTR..._V2:
+>> 		return ioctl_fsxattr...(args, sizeof(fsx_fileattr_v2));
+>> 	case FSXATTR...:
+>> 		return ioctl_fsxattr...(args, sizeof(fsx_fileattr));
 
-I guess interesting debate on whether providing extra garbage info is
-a bug or not. Maybe a fixes tag for this one as well?
+I think user space these days, in particular glibc, expects that
+you can build using new kernel headers and run on older kernels
+but still get behavior that is compatible with old headers, so
+redefining FS_IOC_FSGETXATTR would be considered a bug.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I'm fairly sure that in the past it was common to expect userspace
+to never be built against newer headers and run on older kernels,
+but the expectation seems to have gradually shifted away from that.
 
-I briefly wondered if it makes sense to have a prefix string initialized
-outside the switch with "containment event, status:%#06x:"
-made sense but it's probably not worth the effort and maybe makes it
-harder to grep for the error messages.  So in the end
-I think your code here is the best option.
+> So, looks like there's at least two solutions to this concern.
+> Considering also that we have a bit of space in fsxattr,
+> 'fsx_pad[8]', I think it's fine to stick with the current fsxattr
+> for now.
 
-Jonathan
+You still have to document what you expect to happen with the
+padding fields for both the ioctl and the syscall, as the
+current behavior of ignoring the padding in the ioctl is not
+what we expect for a syscall which tends to check unknown
+fields for zero. I don't see a good solution here if you
+use the same structure.
+
+      Arnd
 
