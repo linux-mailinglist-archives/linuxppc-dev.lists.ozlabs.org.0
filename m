@@ -1,94 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-8796-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8797-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459F0ABEA62
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 05:21:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5CCABEAF4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 06:26:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b2GtR3tl1z2yj1;
-	Wed, 21 May 2025 13:21:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b2JJd23TMz2yfV;
+	Wed, 21 May 2025 14:26:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747797711;
-	cv=none; b=HIF1hTCG8iZmzTqOdsuF4/Pj40xhiyc2QOwGtSDXyuq3DKPWjmqtx6aJWZKDcDOHLVF4SS1oH8Sb/x4tOkpEjbuK9AHWwxbMpdcu6mp9xbWjyJTDFhCIXLrmHBTUlols33OFDIiIHUP5apntJT7b/4OKazGCrkNfYMH3rd2jRzC6ntHykiKSF0bTvetEoK3SAUQ6L+dcZaaV72yGGOOPXMONzqBzYYWpK8hHgGwlNRkDquy9Ioh/C9E+XOF+bWydE6jCHnpUZG/oKOPska3HLC8SBfXg2nZ8Pxv8Wfugf6b3TSetGPOfschWkkqbiXkRrjtboI1L6BtrDqzA8Gbofw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747801569;
+	cv=none; b=EZl/0/gWMhy/QOK20DcY40plHQ7mP24Bw/tbZNloausA+vRYtVW3bpv81GyjpJf0jOBDeN+ekEfGKLVKytNFVwmUBxXOGFUKHpPihrICjupdtkWua6G65AntpKAeSi6o4ZamjG25sgYFRKFv9sCQ50eN3A1/fBV1XAYX+/KLuXlc6koLc9f5gq9lrBKCDUqB/dcfA4+HsQo26Z7DsU8a9LBwnpZy6mftMLp41hiq2GOrVCvg+e8BKdnnlS1+KqWvQ5Uc+cL981za8++n8bFQlNg+018VRHRIdcNuY94P7p9sDD5nKqhkcXNp/Cg5iQ4U97EYv1C+4o3Q2T+8hm20eA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747797711; c=relaxed/relaxed;
-	bh=jUSOmA0/3Qa3aXRPXfKpDedwfKwE88WYumy/XPPRjQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c8s/w/dLAL+doc590eQygjndwemWjtlYY7AU+31ypimYgA4ythaLkzARuI45zn7wV5I2Wrr1Imu6ehC6Rci5aoj+It/vTcUSh5VT+c8cHenp6d6dnimzrbHhKL91eDPoKx1CrcgXFMZlLSDeM1MMYIkASHawpvBHsBqp7Z5GO0jpGIKagTmZL4baPNbSGpHjoTMXDwZq6kCWgQxpPRYKwrmHa9pLg/n9gAWaZqeATgY5Tt4db+cO7BRmmEEx2UTwjrl73Aji0b71ZNxPB+ED/GXgug+9PwWOTvRTvplEfSoT5yKr/9qJWyGNBX5s0enLIsjREEi9UDgfhnJZ91HcpQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yk1eRWUg; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GudJ7Zcw; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=shahuang@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1747801569; c=relaxed/relaxed;
+	bh=ApFN9Z8V669aIkeaf+7kYUvdDCjauQUf37G8ecCQGXU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jUAERoUuxUSP9rCzG8tUpThLAFat062nIA5asJvGKlRDOp2q5tKpF/bE2BO9Y3K6AiMlDRzC0OvDIjYbrNHK11DkL22heqsY3lfOyaslGguHCuswIGSCrxYcWaQNITLocwsFHgUYwvqfsHEkrLhIYNUy62yPF1J2/+hDMTNW7s2iHa9g8kuiUSCvF6ner5YnuLFVndgSy/3mVYMKvbpVYgV+juG3tAscYulVExrCiiazaudA4WrsDkZteSAkhS5u48GMLvCdxkKb1Ev9kPQSTeD3aatfU74VJyX6UUAUM8927mMWw2iuZk8HDooGrhTJwZ/N1Ggotr7NNLoeD/NOjQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E/FNGSxP; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yk1eRWUg;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GudJ7Zcw;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=E/FNGSxP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=shahuang@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2GtQ096Qz2yhY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 13:21:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747797704;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jUSOmA0/3Qa3aXRPXfKpDedwfKwE88WYumy/XPPRjQc=;
-	b=Yk1eRWUg+8aP5V7Q/RPQn5iKM+ypyPmDn+zd/rfLApBHQ6I9MuOXMxC16lgoiXuNERdx+W
-	xmUYtnRer5vGzAWqKpoB/sFXDR8rsI36Ucbh5/SHV2ZxMLFHU3GemL+uI6Evkcpe3s/GI/
-	wXA/jVuzWzeuTMUPVrXVTINAgPqaRaM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747797705;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jUSOmA0/3Qa3aXRPXfKpDedwfKwE88WYumy/XPPRjQc=;
-	b=GudJ7Zcwm9d/r6bQaO7HOr+WcHBwJNRxctD6Ll8D8SrCuLHJ54AkWY+BNPm18sUDmB6Huq
-	/K8egB49qtZTbl1GsB7uNVNgmW4s4oCXUXCDdku5MG9McRkNwz75TCqyT9wJnuXU2WhKtb
-	VN7FE7Dt3gSlu6D/XFup2E0OfKzZtJk=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-338-fZXCC-fpOMioXfjnGb1SlA-1; Tue, 20 May 2025 23:21:40 -0400
-X-MC-Unique: fZXCC-fpOMioXfjnGb1SlA-1
-X-Mimecast-MFC-AGG-ID: fZXCC-fpOMioXfjnGb1SlA_1747797699
-Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-231d7f59e03so56098205ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 20 May 2025 20:21:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747797699; x=1748402499;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jUSOmA0/3Qa3aXRPXfKpDedwfKwE88WYumy/XPPRjQc=;
-        b=BSZ49X3t7q5ApMyhiLB+6pczUa7gbF5K7uvgHoYBz7hTlQKKYHjNMeNQU/1H2UI7R+
-         peSzHI0/pStMTdh0xohraimM/6mlin7zzJlO52pGQ4nwTCWYiU/isoknYk8znxgeCzAh
-         EvBUi7AhRbKJYWA05GzoY6EU+XZ6L4XX2L9pRfjxPW5iHHlSGT1AAoKyDhHu9sjJJW7m
-         kDHlj9OBnwTVTHSdsBTl2jK7fB9OqUmtpVmjCWPXN/+h8fy6biIuQddRPpO+GvJn8oyK
-         Tkhlk3eqZP0LhSKD9kc3hSJ/obthAnUbafIF9powW8fGsClwb0qr/IesFTT5yD6cvV7W
-         Y60A==
-X-Forwarded-Encrypted: i=1; AJvYcCWOXHb8LgEyktwCf8191anaCgBRCVSwj5oecXGketFa87yHFRws/NDsTtf25y4wRTe3KYWmOhQLzOz5h70=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxzLOUPC25mqDdI77C2xj1ia5aDYbGONUzpYaZRU4AmSjePZpRY
-	AsKQUuMaP2slFUpKCVZQVTShl2Sfi9cV9g6IXZ9+kTDed4kBgCCUpUcDmA9TtB6W5OCqRsW1BN5
-	TvVkI+K24X1sbCpPS1MeSGgIgdJwYsbvjqPcVYPtA2yxUClgL+jH/esshnQDtI+JevRk=
-X-Gm-Gg: ASbGnctoS/RVoAaTH+EfAe6pc0xkGXsz6KoKL6buCUGnvcYn29c2qzwoOJXQBkopZC6
-	lIRKT5jnl4t8a4kCslD5r8KIKAWnjNc7f519L1H83Jw87xtu9ShqWAO0zoAKXTkIXrs5XNBBFn7
-	r6ITeAjRg7qIdHcq8VxNJPb+WKuVq4Plm85+1WDdLvAs4sVjS94QR5ZzV2OOHatzOXYStI3H89j
-	4s0tqivPxAxrjkQ+jZnWeQRqXgFeYGp7yj1ljfvdYpB92MStRUTfDFxApW05rBGiuHfU3dgiUVY
-	wTMTghW3tc/4VNA=
-X-Received: by 2002:a17:902:d481:b0:232:4f8c:1b01 with SMTP id d9443c01a7336-2324f8c1cb2mr137961645ad.43.1747797699284;
-        Tue, 20 May 2025 20:21:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHlhvOC0UNtRC7lIlfulUbJxFqkdOC7pIWuh5IMs24BhyaPmpuqy0MrBWfWyaOHGCOUkRmRPA==
-X-Received: by 2002:a17:902:d481:b0:232:4f8c:1b01 with SMTP id d9443c01a7336-2324f8c1cb2mr137961065ad.43.1747797698773;
-        Tue, 20 May 2025 20:21:38 -0700 (PDT)
-Received: from [10.72.116.61] ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-231d4e9784bsm83924955ad.113.2025.05.20.20.21.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 May 2025 20:21:38 -0700 (PDT)
-Message-ID: <79d7ee71-a68a-4cde-8796-fb42df59cfce@redhat.com>
-Date: Wed, 21 May 2025 11:21:28 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2JJb1qpXz2ydl
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 14:26:07 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54KH6pdt024940;
+	Wed, 21 May 2025 04:25:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ApFN9Z
+	8V669aIkeaf+7kYUvdDCjauQUf37G8ecCQGXU=; b=E/FNGSxPIY6iv9dGGkQ1F/
+	oJSfJyNapqEGS1tPSCJWcmkTta3ypynCx3Guu0sxaYXJXQ3OgH0YnSBOM6aS1+tB
+	pdJXaaWXFI20+X7RTPMy+LmodBED+JTDGYUGbysnvJLEeqvkFwjJH/vdu3J7miYh
+	fR1BVVcSNXUioRw5MhuvOi7I4noAcNtdOyRqWwdVJsELQCwFQkCVqIniup4nkQox
+	e5oIJ07F37RXwGUGg6Pw3EnhmXAN7oAYIR8oIB/vzeslAurt/g3cSWdYppqq2b6j
+	WlEVeh8lBc7xGa8kw46ozMMrPg3JjFO4KPB6WChRpi8ApHnQQ3v8El8Fnhde1GNA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46rwustfwb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 May 2025 04:25:54 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54L4Psvs021182;
+	Wed, 21 May 2025 04:25:54 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46rwustfw9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 May 2025 04:25:54 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54L0xaXL032076;
+	Wed, 21 May 2025 04:25:53 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 46rwnmaebf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 May 2025 04:25:53 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54L4PpTv34341620
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 21 May 2025 04:25:51 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 66CA72004B;
+	Wed, 21 May 2025 04:25:51 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3BEEC20040;
+	Wed, 21 May 2025 04:25:48 +0000 (GMT)
+Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.10.34])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 21 May 2025 04:25:47 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, "Naveen N Rao (AMD)" <naveen@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] MAINTAINERS: powerpc: Remove myself as a reviewer
+Date: Wed, 21 May 2025 09:55:45 +0530
+Message-ID: <174780149789.301359.6072055617151626536.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250420163248.1746379-1-naveen@kernel.org>
+References: <20250420163248.1746379-1-naveen@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,176 +94,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v3 10/16] scripts: Add default arguments
- for kvmtool
-To: Alexandru Elisei <alexandru.elisei@arm.com>, andrew.jones@linux.dev,
- eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
- frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
- david@redhat.com, pbonzini@redhat.com
-Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, will@kernel.org, julien.thierry.kdev@gmail.com,
- maz@kernel.org, oliver.upton@linux.dev, suzuki.poulose@arm.com,
- yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
-References: <20250507151256.167769-1-alexandru.elisei@arm.com>
- <20250507151256.167769-11-alexandru.elisei@arm.com>
-From: Shaoqin Huang <shahuang@redhat.com>
-In-Reply-To: <20250507151256.167769-11-alexandru.elisei@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: qCoUiO4FEPLlpHP-CQHIgIyiCRyMBJX6q98KmYnL1zo_1747797699
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 01wyvQP4kvnU1CMhC0KxO0kYWZ0nIZkq
+X-Proofpoint-GUID: uZ62AcZQ6QDv_VjbfYidT2LBilb449u9
+X-Authority-Analysis: v=2.4 cv=Lr+Symdc c=1 sm=1 tr=0 ts=682d55d2 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=ymEwmeTLNRlp4B0r1vsA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIxMDAzNyBTYWx0ZWRfX4S2c9eT0WdJn WUbf8PUIIC/MwZgGCFzFWTSi53MgLhBlA802tdK6U3XDT/0WALrB1xg1CnOE8dax7OVilrNTzNF dK8SeqDmauRn1v4JsVbc72OKvlHfWtb7EpPK+dcQlCSbBuGZHFkMQOe04ocmeDuXme5yNuR++Gl
+ LiQR34iNQ7Pht6H/Da8KEmHja6GxClLsdsKOdEYghDjFRmyfb4Tckc0uMjWYDRrUp34kQYRHli9 G1A955motnOrbpRe8FzxNd3rGDYOijVl6qf9cnM3fd1dVNghGhSJwTmLjlx2OM9kUdvAr41NYKR rYVU6oL9IwMEfO5LpsphPqCAwp9JZ4NaFLeJmiINloMFqb8oLAkE/r1gv4rD3yBG5goIFEvvHUI
+ sxEWzae3z2zIWPVkXyxo8XznXpDJrBQd/AMdgzJslcSjjvcpXXaltvQQ0D2EAVnJuwuthz2Z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-21_01,2025-05-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ phishscore=0 mlxlogscore=642 priorityscore=1501 mlxscore=0 malwarescore=0
+ spamscore=0 adultscore=0 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505210037
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Sun, 20 Apr 2025 22:02:48 +0530, Naveen N Rao (AMD) wrote:
+> I haven't been able to participate and help with this as much as I had
+> hoped, and it doesn't look like I will be able to spend time on powerpc
+> going forward.
+> 
+> 
 
+Applied to powerpc/next.
 
-On 5/7/25 11:12 PM, Alexandru Elisei wrote:
-> kvmtool, unless told otherwise, will do its best to make sure that a kernel
-> successfully boots in a virtual machine. It does things like automatically
-> creating a rootfs and adding extra parameters to the kernel command line.
-> This is actively harmful to kvm-unit-tests, because some tests parse the
-> kernel command line and they will fail if they encounter the options added
-> by kvmtool.
-> 
-> Fortunately for us, kvmtool commit 5613ae26b998 ("Add --nodefaults command
-> line argument") addded the --nodefaults kvmtool parameter which disables
-> all the implicit virtual machine configuration that cannot be disabled by
-> using other parameters, like modifying the kernel command line. So always
-> use --nodefaults to allow a test to run.
-> 
-> kvmtool can also be too verbose when running a virtual machine, and this is
-> controlled by several parameters. Add those to the default kvmtool command
-> line to reduce this verbosity to a minimum.
-> 
-> Before:
-> 
-> $ vm run arm/selftest.flat --cpus 2 --mem 256 --params "setup smp=2 mem=256"
-> Info: # lkvm run -k arm/selftest.flat -m 256 -c 2 --name guest-5035
-> Unknown subtest
-> 
-> EXIT: STATUS=127
-> Warning: KVM compatibility warning.
->      virtio-9p device was not detected.
->      While you have requested a virtio-9p device, the guest kernel did not initialize it.
->      Please make sure that the guest kernel was compiled with CONFIG_NET_9P_VIRTIO=y enabled in .config.
-> Warning: KVM compatibility warning.
->      virtio-net device was not detected.
->      While you have requested a virtio-net device, the guest kernel did not initialize it.
->      Please make sure that the guest kernel was compiled with CONFIG_VIRTIO_NET=y enabled in .config.
-> Info: KVM session ended normally.
-> 
-> After:
-> 
-> $ vm run arm/selftest.flat --nodefaults --network mode=none --loglevel=warning --cpus 2 --mem 256 --params "setup smp=2 mem=256"
-> PASS: selftest: setup: smp: number of CPUs matches expectation
-> INFO: selftest: setup: smp: found 2 CPUs
-> PASS: selftest: setup: mem: memory size matches expectation
-> INFO: selftest: setup: mem: found 256 MB
-> SUMMARY: 2 tests
-> 
-> EXIT: STATUS=1
-> 
-> Note that KVMTOOL_DEFAULT_OPTS can be overwritten by an environment
-> variable with the same name, but it's not documented in the help string for
-> run_tests.sh. This has been done on purpose, since overwritting
-> KVMTOOL_DEFAULT_OPTS should only be necessary for debugging or development
-> purposes.
-> 
-> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> ---
->   scripts/common.bash | 10 +++++-----
->   scripts/vmm.bash    | 13 +++++++++++++
->   2 files changed, 18 insertions(+), 5 deletions(-)
-> 
-> diff --git a/scripts/common.bash b/scripts/common.bash
-> index 0645235d8baa..ee0ae71948c2 100644
-> --- a/scripts/common.bash
-> +++ b/scripts/common.bash
-> @@ -56,7 +56,7 @@ function for_each_unittest()
->   			# because qemu interprets the first argument after
->   			# -append as a kernel parameter.
->   			test_args=""
-> -			opts=""
-> +			opts="${vmm_opts[$TARGET:default_opts]}"
->   			groups=""
->   			arch=""
->   			machine=""
-> @@ -70,13 +70,13 @@ function for_each_unittest()
->   		elif [[ $line =~ ^test_args\ *=\ *(.*)$ ]]; then
->   			test_args="${vmm_opts[$TARGET:args]} ${BASH_REMATCH[1]}"
->   		elif [[ $TARGET = "qemu" ]] && [[ $line =~ ^(extra_params|qemu_params)\ *=\ *'"""'(.*)$ ]]; then
-> -			opts=$(parse_opts ${BASH_REMATCH[2]}$'\n' $fd)
-> +			opts="${vmm_opts[$TARGET:default_opts]} $(parse_opts ${BASH_REMATCH[2]}$'\n' $fd)"
->   		elif [[ $TARGET  = "qemu" ]] && [[ $line =~ ^(extra_params|qemu_params)\ *=\ *(.*)$ ]]; then
-> -			opts=${BASH_REMATCH[2]}
-> +			opts="${vmm_opts[$TARGET:default_opts]} ${BASH_REMATCH[2]}"
->   		elif [[ $TARGET = "kvmtool" ]] && [[ $line =~ ^kvmtool_params\ *=\ *'"""'(.*)$ ]]; then
-> -			opts=$(parse_opts ${BASH_REMATCH[1]}$'\n' $fd)
-> +			opts="${vmm_opts[$TARGET:default_opts]} $(parse_opts ${BASH_REMATCH[1]}$'\n' $fd)"
->   		elif [[ $TARGET = "kvmtool" ]] && [[ $line =~ ^kvmtool_params\ *=\ *(.*)$ ]]; then
-> -			opts=${BASH_REMATCH[1]}
-> +			opts="${vmm_opts[$TARGET:default_opts]} ${BASH_REMATCH[1]}"
->   		elif [[ $line =~ ^groups\ *=\ *(.*)$ ]]; then
->   			groups=${BASH_REMATCH[1]}
->   		elif [[ $line =~ ^arch\ *=\ *(.*)$ ]]; then
-> diff --git a/scripts/vmm.bash b/scripts/vmm.bash
-> index 20968f2e6b10..d24a4c4b8713 100644
-> --- a/scripts/vmm.bash
-> +++ b/scripts/vmm.bash
-> @@ -1,5 +1,16 @@
->   source config.mak
->   
-> +# The following parameters are enabled by default when running a test with
-> +# kvmtool:
-> +# --nodefaults: suppress VM configuration that cannot be disabled otherwise
-> +#               (like modifying the supplied kernel command line). Tests that
-> +#               use the command line will fail without this parameter.
+[1/1] MAINTAINERS: powerpc: Remove myself as a reviewer
+      https://git.kernel.org/powerpc/c/8682a5749a3d2b416b57709115c0351b50c8efcb
 
-Maybe change it to below is better? (Put the 'Otherwise' to the next 
-paragraph)
-
-# --nodefaults: suppress VM configuration that cannot be disabled
-#               (like modifying the supplied kernel command line). 	# 
-            Otherwise tests that use the command line will fail
-#               without this parameter.
-
-Others looks good to me.
-
-Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
-
-> +# --network mode=none: do not create a network device. kvmtool tries to help the
-> +#               user by automatically create one, and then prints a warning
-> +#               when the VM terminates if the device hasn't been initialized.
-> +# --loglevel=warning: reduce verbosity
-> +: "${KVMTOOL_DEFAULT_OPTS:="--nodefaults --network mode=none --loglevel=warning"}"
-> +
->   ##############################################################################
->   # qemu_fixup_return_code translates the ambiguous exit status in Table1 to that
->   # in Table2.  Table3 simply documents the complete status table.
-> @@ -87,12 +98,14 @@ declare -A vmm_opts=(
->   	[qemu:kernel]='-kernel'
->   	[qemu:args]='-append'
->   	[qemu:initrd]='-initrd'
-> +	[qemu:default_opts]=''
->   	[qemu:fixup_return_code]=qemu_fixup_return_code
->   
->   	[kvmtool:nr_cpus]='--cpus'
->   	[kvmtool:kernel]='--kernel'
->   	[kvmtool:args]='--params'
->   	[kvmtool:initrd]='--initrd'
-> +	[kvmtool:default_opts]="$KVMTOOL_DEFAULT_OPTS"
->   	[kvmtool:fixup_return_code]=kvmtool_fixup_return_code
->   )
->   
-
--- 
-Shaoqin
-
+Thanks
 
