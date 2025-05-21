@@ -1,75 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-8847-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8848-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02FD6ABFC80
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 19:45:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B808ABFCF3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 20:40:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b2f2l3sBNz3bsQ;
-	Thu, 22 May 2025 03:45:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b2gGK2PGpz2ygK;
+	Thu, 22 May 2025 04:40:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747849519;
-	cv=none; b=TXuDhvb2Co70boj0WrJ9OsT2B0tm4gHwZdf88rDSMH/ITplkV0i4vS33aMObIeVjJd935h1uaRyuUMGqKv4Sr9kdj5Twqowjl6v/TArN4Z+tQQSoWsUIt8A5p+6s/z04JL5PGIdnUpVMIpFQ0nQ/AHMfXE4984E9x5Bk0/LvQjAoIKIyaTcFzOO1nF9e9MU/JdTNlrM7AfybOjxacc8hXkry6naOSeNeMsKsTpldI49E5EyaZNAK3b/golCTfih2VRBY6VkE78z2OfatBca1YmBj0G9zU1JWmRhAOYmnFWeTZ/Mo0EIhXLm1CPMzTwdjGFZFpAhCVHBIxW2oUn4awg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::12c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747842077;
+	cv=none; b=oHgRpT1b46Qbrx6moivjYLZsD8S3b17q1RczYWxMrM4g2A6Wm1xK+29S3Y65TGNV2aIMo3o1EpUQ5t3nOloi9GHkzdY3Nu7nMRLGeMxlZMtBSzd8Ru8GlyN3R3WYSB7DujY2t/IWixUcc0oNBz5DCORjM7KijdFDzWKWqIcNcvAQPS0WP1gpG5FBHf0B3PzUbwf4uPpOONZFW4W5MPRsbahjNgBa9HLenrJmmKEkxA2NouTGbphvoTxjtJK7HJtU/VI0A+WgyfrXuvg2llHsLfyxRcpIVYIH4+Ufu4KWklBcQ8R0+V8hxSC+qYKznFQuVZuNd+Zp4Lwz5R6IzK8sXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747849519; c=relaxed/relaxed;
-	bh=4tdZirmjFyF3yLnkU/CBaGQA8zeRfxpWtiHESR3543g=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Rj5Rjxv3SrmGcZFy5jHqm8JMKh49x3h1nivyEyDSiz2ZoM9WxIhoQjso/y0a5Rz4JJt5B6tS6xSaHMofu+nzzZ9mpdLx6F5w/AFFzyeSycNuHIjHk0xpkyG4m8KwlTj75XHuOvp/L16/ZOVVjzLXRWQeJxqBqFufmHxyZjKrB4NE5lvj1Um2/c+cbAKejD9tZ0JlhLcwNS7YWrwHPWP1+cPF+ybl2l86VSkm/HprpEY3bJ9x4eN7/kHBwMqmZcdQa8Dv5/jL+P9vK5aWzL//sUmiDDghrphGOjo3KfsPW/LEvIol1NAHIGem9Z7U/YwU+2xe2XvQZn4U8g3HOySdlg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RljfERsi; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1747842077; c=relaxed/relaxed;
+	bh=lvD+mNVQm/2jmSgV0usT3IDjfQuZhMOI7Av7SLu7jf0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
+	 References:In-Reply-To; b=d6B+FI6k7oE+C4ANExe4RG+2aI0lPbO1OEgOVKcb1Cm3nu36/XTmFe0mBJArCYzZSe5PMyNGRkFfC6rL+i70N5hF5ijgfJnpYAbXOKRD3O6AaMwh+zdLo/OEqYIJbJgIkssUitgre2f/U+vpCuOh4L/6IvKlCbthoOB9VvdVpcVSJvCg/AK/Ucn/cncz0tOBd94CfBwCQdO7q67OWsOtB3hSCgkYbfKUyTwg1+TkbtdAH8Cmo722KLsXiz8w67OGoJIatamwFl1GW3jDzm4N9/aL8/HMq54wv+FlnDoDxb5vujSg0GrjD4Tr2ugmjb7qLiMGwfSr2pyBmIi4G3cRGg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=brighamcampbell.com; dkim=fail header.d=brighamcampbell.com header.i=@brighamcampbell.com header.a=rsa-sha256 header.s=google header.b=GKaRBWzZ reason="key not found in DNS"; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::12c; helo=mail-il1-x12c.google.com; envelope-from=me@brighamcampbell.com; receiver=lists.ozlabs.org) smtp.mailfrom=brighamcampbell.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=brighamcampbell.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RljfERsi;
+	dkim=fail reason="key not found in DNS" header.d=brighamcampbell.com header.i=@brighamcampbell.com header.a=rsa-sha256 header.s=google header.b=GKaRBWzZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=brighamcampbell.com (client-ip=2607:f8b0:4864:20::12c; helo=mail-il1-x12c.google.com; envelope-from=me@brighamcampbell.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2f2k4CDFz3blk
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 03:45:18 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 7803C5C5485;
-	Wed, 21 May 2025 17:42:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E58C4CEE4;
-	Wed, 21 May 2025 17:45:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747849514;
-	bh=V2RuI4M0Yg8yY4cQ1BGXlcPOPaGhDVK1o5Gd0zRxX6s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=RljfERsiU7aFbLVKDq5ROTWlQtAUt3TSPdC13pCW+KAEi1HcbnZfIzw3wwGSzwIvd
-	 8P43hHIJ/fnuTagraQu1Md6zU6v4R6GHObnrJZFUN6dtwfTb04gdxf/91M/Hn0UAwv
-	 /du5mpef0IdqcKAfnJGQjBjx/Qfh3gyesyx9hjbLF6Hdfnnw0BWbkms44iLj/6VOYr
-	 VGeS1y4vsazQv4eVJFlNX0uQ2dbPGEWJvQwhaDS/NUbWRVk7XMMUHgnYliFWtqhh+o
-	 mkqtpf7voixiQLX/jAX3LS99ryQQoJ3LmPT0vHDX5P6pliW2+H16bQbFLIIeDuRUKh
-	 LA0173jC5vRdQ==
-Date: Wed, 21 May 2025 12:45:12 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>,
-	Karolina Stolarek <karolina.stolarek@oracle.com>,
-	Weinan Liu <wnliu@google.com>,
-	Martin Petersen <martin.petersen@oracle.com>,
-	Ben Fuller <ben.fuller@oracle.com>,
-	Drew Walton <drewwalton@microsoft.com>,
-	Anil Agrawal <anilagrawal@meta.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Lukas Wunner <lukas@wunner.de>, Sargun Dhillon <sargun@meta.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: Re: [PATCH v7 13/17] PCI/AER: Make all pci_print_aer() log levels
- depend on error type
-Message-ID: <20250521174512.GA1426306@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2bHb2YRnz3byj
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 01:41:14 +1000 (AEST)
+Received: by mail-il1-x12c.google.com with SMTP id e9e14a558f8ab-3dc73b1bd7aso18834695ab.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 08:41:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brighamcampbell.com; s=google; t=1747842072; x=1748446872; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lvD+mNVQm/2jmSgV0usT3IDjfQuZhMOI7Av7SLu7jf0=;
+        b=GKaRBWzZ13PkdRgilQHxBRw+g6ittAr+dIU+1k0fyCfnuAZGN7X7+31udxtaO6Sqoi
+         xPrBY/0bzbHrLUNE19+ByEE2RSWry1CI44ku1XAlW1PtAjIH8WGDt9FUy5QRDzY/pv4f
+         fWvPyNeBNMws87PwkYTfBYdVWWlcYaDRWvXsP1VoOCPWikhI8c1hzFdYKapNITx4aVXW
+         sR9arFZcQdL6CPB3KeuuwSAL1fJkrQ0//cEREH/VY4KTgTAMfT8MGCARB05b7nC0h3pJ
+         2a1Zkl4ZanErdy6a6iy5ebC2XbzmwvCuHc4EuUOFmjGGa7/UyiCDTDHnf+x8qKzY0/RR
+         rJxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747842072; x=1748446872;
+        h=in-reply-to:references:to:from:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lvD+mNVQm/2jmSgV0usT3IDjfQuZhMOI7Av7SLu7jf0=;
+        b=A7qfmjvWhNL0NoA4qOlWzppHxsFtavLAEpcOaGaoUe2uBlj/eHIzg5eGyTkPJVoDOy
+         usB0xgH3WczunhnI/V0WT4r2nqZC4ajSWLwgOBb+lgPGLFmmSppL3ktd9mua9BZIz4dU
+         T3I8BCrSntgz9mg9KoD9+PTsRx1LxLdNY/sP69DwS6wjBp//0I40H2FmAIvwy3yHr2er
+         LEEhXWaTRsn1+CptYv7s+SGoIxSVJEoCvInONWA5GqDBKJ17AuY4EcJ2cc4hx58Kklhk
+         EU+dPefDjRnTTyDoPlKdccJdO2vHZDnkltssY5mIweXCHalvqghpQY+kIyMnhZNgHn8W
+         EKqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMn6kSg0YmoFZ/FM+pCDH2mLUmHLY78oTFJiogBH0V3IBny+3LRz7RFNa3XuEdviktGbPH1YnyNPAmJhE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy0KrJGlpiKumpgaKfW+m0Ql1K9nSWkpcv+BjmYO9KjOSnxvjhr
+	81STHgM74tRBlVzg9dRFCUC7EJZZzYAnbM3JhtY38ZmuYtz4DVdF8ZNhysy2sjPZmv8=
+X-Gm-Gg: ASbGncv7wu49xzA+ME63uejWL0uM/N5iyJ+nNcLYye4/L1Kwe5zCr+2fpnWNgihRWDu
+	1uRfPBOQBy8eDP87WtaLkoxutvBpcBzsqpegsg0lIYf2/uNHcR+PQIyMHCBJnc0pWPzlfJLWnXG
+	JFWme2RaDDEvUqIvqRPJdtfwOq687z5pNDSAOR5dQbbKd2rkt9vYYkQSG4q5It06FD6mXeyBp28
+	dvVBblneTyRWtHpi/iLEOAiIleIaGI0M8RJdYzBhT1oD1p4jCNiCrAeAcYX6yD0a4xR5soIqR6G
+	2F7OlcRgZ+nGmZuTKcjqyyHsnuBEgFHpfmOhGOFGcl5KE336
+X-Google-Smtp-Source: AGHT+IF1a/jzMbO7F6gJPzIDd9TjYyvBG5uSioYyo5MOYniqFNvItm2zBIXk5D1DSiZdNl+D5LzuRA==
+X-Received: by 2002:a05:6e02:1a2f:b0:3dc:7660:9efe with SMTP id e9e14a558f8ab-3dc7660a1b3mr97393735ab.9.1747842072167;
+        Wed, 21 May 2025 08:41:12 -0700 (PDT)
+Received: from localhost ([64.71.154.6])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4fbcc4af638sm2638635173.105.2025.05.21.08.41.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 May 2025 08:41:11 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,79 +81,62 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250521105659.000064bd@huawei.com>
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 21 May 2025 09:41:10 -0600
+Message-Id: <DA1YAY60022M.2IRYOYRE5IEVL@brighamcampbell.com>
+Subject: Re: [PATCH] docs: powerpc: Add htm.rst to table of contents
+From: "Brigham Campbell" <me@brighamcampbell.com>
+To: "Brigham Campbell" <me@brighamcampbell.com>, <shuah@kernel.org>,
+ <linux-kernel-mentees@lists.linux.dev>, "Madhavan Srinivasan"
+ <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>, "Nicholas
+ Piggin" <npiggin@gmail.com>, "Christophe Leroy"
+ <christophe.leroy@csgroup.eu>, "Naveen N Rao" <naveen@kernel.org>,
+ "Jonathan Corbet" <corbet@lwn.net>, "open list:LINUX FOR POWERPC (32-BIT
+ AND 64-BIT)" <linuxppc-dev@lists.ozlabs.org>, "open list:DOCUMENTATION"
+ <linux-doc@vger.kernel.org>, "open list" <linux-kernel@vger.kernel.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250517210757.1076554-3-me@brighamcampbell.com>
+In-Reply-To: <20250517210757.1076554-3-me@brighamcampbell.com>
+X-Spam-Status: No, score=0.2 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, May 21, 2025 at 10:56:59AM +0100, Jonathan Cameron wrote:
-> On Tue, 20 May 2025 16:50:30 -0500
-> Bjorn Helgaas <helgaas@kernel.org> wrote:
-> 
-> > From: Karolina Stolarek <karolina.stolarek@oracle.com>
-> > 
-> > Some existing logs in pci_print_aer() log with error severity by default.
-> > Convert them to depend on error type (consistent with rest of AER logging).
-> > 
-> > Signed-off-by: Karolina Stolarek <karolina.stolarek@oracle.com>
-> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> > Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-> > Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> > Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> 
-> One comment inline. It is painful to have a non trivial comment
-> that says we didn't pass a parameter for 'reason X' when maybe
-> it would be simpler to just pass it and not care that it always
-> takes the same value?
+On Sat May 17, 2025 at 3:07 PM MDT, Brigham Campbell wrote:
+> These changes fix the following error, which was introduced by commit
+> ab1456c5 when Documentation/arch/powerpc/htm.rst was added to the
 
-I agree.  I added a patch to pass the level to pcie_print_tlp_log().
+After submitting this patch, I've become aware that it's customary to
+add a machine-parseable "Fixes" tag to help with backporting and
+bisecting:
 
-> Either way this is fine.
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> > ---
-> >  drivers/pci/pcie/aer.c | 16 +++++++++++-----
-> >  1 file changed, 11 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > index f5e9961d2c63..4cdcf0ebd86d 100644
-> > --- a/drivers/pci/pcie/aer.c
-> > +++ b/drivers/pci/pcie/aer.c
-> > @@ -788,15 +788,21 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
-> >  	layer = AER_GET_LAYER_ERROR(aer_severity, status);
-> >  	agent = AER_GET_AGENT(aer_severity, status);
-> >  
-> > -	pci_err(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
-> > +	aer_printk(info.level, dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n",
-> > +		   status, mask);
-> >  	__aer_print_error(dev, &info);
-> > -	pci_err(dev, "aer_layer=%s, aer_agent=%s\n",
-> > -		aer_error_layer[layer], aer_agent_string[agent]);
-> > +	aer_printk(info.level, dev, "aer_layer=%s, aer_agent=%s\n",
-> > +		   aer_error_layer[layer], aer_agent_string[agent]);
-> >  
-> >  	if (aer_severity != AER_CORRECTABLE)
-> > -		pci_err(dev, "aer_uncor_severity: 0x%08x\n",
-> > -			aer->uncor_severity);
-> > +		aer_printk(info.level, dev, "aer_uncor_severity: 0x%08x\n",
-> > +			   aer->uncor_severity);
-> >  
-> > +	/*
-> > +	 * pcie_print_tlp_log() uses KERN_ERR, but we only call it when
-> > +	 * tlp_header_valid is set, and info.level is always KERN_ERR in
-> > +	 * that case.
-> 
-> I wonder if it's easier to just pass the level in than have the
-> comment?
-> 
-> > +	 */
-> >  	if (tlp_header_valid)
-> >  		pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
-> >  }
-> 
+Fixes: ab1456c5aa7a63d5 ("powerpc/pseries/htmdump: Add documentation for H_=
+HTM debugfs interface")
+
+> repository without any reference to the document.
+>
+> Documentation/arch/powerpc/htm.rst: WARNING: document isn't included in a=
+ny toctree [toc.not_included]
+>
+> Signed-off-by: Brigham Campbell <me@brighamcampbell.com>
+> ---
+>  Documentation/arch/powerpc/index.rst | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/Documentation/arch/powerpc/index.rst b/Documentation/arch/po=
+werpc/index.rst
+> index 0560cbae5fa1..53fc9f89f3e4 100644
+> --- a/Documentation/arch/powerpc/index.rst
+> +++ b/Documentation/arch/powerpc/index.rst
+> @@ -19,6 +19,7 @@ powerpc
+>      elf_hwcaps
+>      elfnote
+>      firmware-assisted-dump
+> +    htm
+>      hvcs
+>      imc
+>      isa-versions
+
 
