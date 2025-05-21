@@ -1,40 +1,40 @@
-Return-Path: <linuxppc-dev+bounces-8813-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8814-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48EA0ABEF9D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 11:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E827BABEFAD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 21 May 2025 11:27:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b2QxL1TxVz3c2L;
-	Wed, 21 May 2025 19:24:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b2R034x5Yz3c2k;
+	Wed, 21 May 2025 19:27:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747819494;
-	cv=none; b=WZCf75JG1NQvLnLkxN1N4Fv5XvYCd03FieeZ4frcoeTo5WCFgyikG6dkQBSpuTRA5kacUiEv0LNL2xZaHuOzNP4ouuwG8v8uEgLEHrSTxRCN8tgG5yI+Z8Zksmhg0ppUD4eh5N/1VaIlAXWYYFl+PNZ9NRtOeQlfOF3uXxvETk3EcFNBXDt8KeC9Y3IWycrRGpv8w6PcSccOF+tQIC3LNUwLVrSSBP8RW0fouEL1XvKALUglolWfwIS9KADDteBQTxeHde0dU8z7KY4MH8e2GuoAf5JfsojnK1oPJDQpECqJBMVx9BPkLNAEo9wmzH2Wxh3Ff/2pCs4moMqKzBXj6g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747819635;
+	cv=none; b=Vgyhw9p9G+cXyj4qaRM0EFBRmUpytq7JRiOZ34GmL1edkWtx/UPrH6XrReTURDZL1KM5JbRTbcs7aiAOR9DU14pYmgMfM3GJ0QQ2XeK2agRCz5fcQTDg43CNCokqFbfyRiqZIMhWQNUzBz331mH+GZvKccFPTNJl/+XReJzjx7rgpl5Sc8ddDFWNHWehSHcWIkTmGk3WU6fWEk9gLd0n87ZORpCsxFZh/+A2/6e9AH/H0vEbJoYOD/GPiPnEmXuRrh8PirXzkSvmuDHn9wqiSm5SPaqSstpMKLncipW8Ibd5Y5bIRwnwmYiq03nawB2J7Zuq4MQ1VacqcIUDyNKBvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747819494; c=relaxed/relaxed;
-	bh=hmzHA/ou0TIbwe7DOuI/mmtNQgWVAbjXyxrvvyXVYWw=;
+	t=1747819635; c=relaxed/relaxed;
+	bh=+lR4EOoNJ4nGzX8DuzXU2f7FDxq7F4tGHeg5UFgI61c=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c4r3SVDw2tGUtyKAUWOWzojxKPi6B8X2vIfAy6/4Ni7ARo29DWAisyA0rdkihqXVe32t0hri1xtK+82FRvx+pbyx99WcA9Ti10oqa7pDaEFZ0DPTvZcosv4nt1B/tRqj8uywT9l7vMzc06pUPRe+B/d2i6IFih+Rwm8dlMDYZ8Bs0OOTdbAUt4mVL8DUumVZ7n/E4isJjlicv+nnYJHi1F76NfiDmHRtmlMzbhcIgoo85db5/eYbNmX+32ZoEtUjez/ay3I2Q88t2D4qzOhNTEY9Qb0ah0ZKofcP8A0KEPzkGVkxUiMpBAhP4jZDmzlBIz3EACY/BUN+IFtg5XcCPg==
+	 MIME-Version:Content-Type; b=JFRYLo7RB4vCw0XezTejfjPmzhZuecDFrt/qsNNZcWjRvB/IdY8BqVkClwoQ5Z7UAmvUkPP7YK0ivIE4xAr0lbKUwJ61U2P+SkrhHTc1BEE+xyeWvpoiJrw0GH5jRHGpjgjQNU6ypwq7634u6cJwdem+5NppWPQh2R/hc2dSQrynyCs/jt0/emO2qb8XfcN/8xeBC+0dAQpO/KLmzIXbtSinC8nLXDIuyXsTb4XbZA0ns82jThr273zylyVrw30DII8yVrinAOEYUY4aXqeZSCYe8F8obtSItTvyi/uPTcg93jzHOmTPjvYMzlJnyB8uMSRzBIhuEAxtUxIUtiKLfw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2QxK1y81z3c2K
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 19:24:53 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b2Qqf6C55z6D92Z;
-	Wed, 21 May 2025 17:19:58 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2R0268sSz3c2V
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 21 May 2025 19:27:13 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b2Qyv0bLgz6L52y;
+	Wed, 21 May 2025 17:26:15 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1867E1402FC;
-	Wed, 21 May 2025 17:24:50 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id A2F8F1404FC;
+	Wed, 21 May 2025 17:27:07 +0800 (CST)
 Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 21 May
- 2025 11:24:49 +0200
-Date: Wed, 21 May 2025 10:24:47 +0100
+ 2025 11:27:06 +0200
+Date: Wed, 21 May 2025 10:27:04 +0100
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 To: Bjorn Helgaas <helgaas@kernel.org>
 CC: <linux-pci@vger.kernel.org>, Jon Pan-Doh <pandoh@google.com>, "Karolina
@@ -52,12 +52,11 @@ CC: <linux-pci@vger.kernel.org>, Jon Pan-Doh <pandoh@google.com>, "Karolina
 	<dave.jiang@intel.com>, <linux-kernel@vger.kernel.org>,
 	<linuxppc-dev@lists.ozlabs.org>, Bjorn Helgaas <bhelgaas@google.com>,
 	Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: Re: [PATCH v7 08/17] PCI/AER: Initialize aer_err_info before using
- it
-Message-ID: <20250521102447.00000d94@huawei.com>
-In-Reply-To: <20250520215047.1350603-9-helgaas@kernel.org>
+Subject: Re: [PATCH v7 09/17] PCI/AER: Simplify pci_print_aer()
+Message-ID: <20250521102704.00002f74@huawei.com>
+In-Reply-To: <20250520215047.1350603-10-helgaas@kernel.org>
 References: <20250520215047.1350603-1-helgaas@kernel.org>
-	<20250520215047.1350603-9-helgaas@kernel.org>
+	<20250520215047.1350603-10-helgaas@kernel.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -82,94 +81,18 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 20 May 2025 16:50:25 -0500
+On Tue, 20 May 2025 16:50:26 -0500
 Bjorn Helgaas <helgaas@kernel.org> wrote:
 
 > From: Bjorn Helgaas <bhelgaas@google.com>
 >=20
-> Previously the struct aer_err_info "e_info" was allocated on the stack
-> without being initialized, so it contained junk except for the fields we
-> explicitly set later.
->=20
-> Initialize "e_info" at declaration with a designated initializer list,
-> which initializes the other members to zero.
+> Simplify pci_print_aer() by initializing the struct aer_err_info "info"
+> with a designated initializer list (it was previously initialized with
+> memset()) and using pci_name().
 >=20
 > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 > Tested-by: Krzysztof Wilczy=C5=84ski <kwilczynski@kernel.org>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux=
-.intel.com>
-> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com
-Ah. Here it is :)  Ignore earlier comment.
-
+> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+Another nice cleanup.
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-
->  drivers/pci/pcie/aer.c | 39 +++++++++++++++++----------------------
->  1 file changed, 17 insertions(+), 22 deletions(-)
->=20
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 520c21ed4ba9..e6693f910a23 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -1289,9 +1289,9 @@ static void aer_isr_one_error_type(struct pci_dev *=
-root,
->   * @e_src: pointer to an error source
->   */
->  static void aer_isr_one_error(struct pci_dev *root,
-> -		struct aer_err_source *e_src)
-> +			      struct aer_err_source *e_src)
->  {
-> -	struct aer_err_info e_info;
-> +	u32 status =3D e_src->status;
-> =20
->  	pci_rootport_aer_stats_incr(root, e_src);
-> =20
-> @@ -1299,30 +1299,25 @@ static void aer_isr_one_error(struct pci_dev *roo=
-t,
->  	 * There is a possibility that both correctable error and
->  	 * uncorrectable error being logged. Report correctable error first.
->  	 */
-> -	if (e_src->status & PCI_ERR_ROOT_COR_RCV) {
-> -		e_info.id =3D ERR_COR_ID(e_src->id);
-> -		e_info.severity =3D AER_CORRECTABLE;
-> -
-> -		if (e_src->status & PCI_ERR_ROOT_MULTI_COR_RCV)
-> -			e_info.multi_error_valid =3D 1;
-> -		else
-> -			e_info.multi_error_valid =3D 0;
-> +	if (status & PCI_ERR_ROOT_COR_RCV) {
-> +		int multi =3D status & PCI_ERR_ROOT_MULTI_COR_RCV;
-> +		struct aer_err_info e_info =3D {
-> +			.id =3D ERR_COR_ID(e_src->id),
-> +			.severity =3D AER_CORRECTABLE,
-> +			.multi_error_valid =3D multi ? 1 : 0,
-> +		};
-> =20
->  		aer_isr_one_error_type(root, &e_info);
->  	}
-> =20
-> -	if (e_src->status & PCI_ERR_ROOT_UNCOR_RCV) {
-> -		e_info.id =3D ERR_UNCOR_ID(e_src->id);
-> -
-> -		if (e_src->status & PCI_ERR_ROOT_FATAL_RCV)
-> -			e_info.severity =3D AER_FATAL;
-> -		else
-> -			e_info.severity =3D AER_NONFATAL;
-> -
-> -		if (e_src->status & PCI_ERR_ROOT_MULTI_UNCOR_RCV)
-> -			e_info.multi_error_valid =3D 1;
-> -		else
-> -			e_info.multi_error_valid =3D 0;
-> +	if (status & PCI_ERR_ROOT_UNCOR_RCV) {
-> +		int fatal =3D status & PCI_ERR_ROOT_FATAL_RCV;
-> +		int multi =3D status & PCI_ERR_ROOT_MULTI_UNCOR_RCV;
-> +		struct aer_err_info e_info =3D {
-> +			.id =3D ERR_UNCOR_ID(e_src->id),
-> +			.severity =3D fatal ? AER_FATAL : AER_NONFATAL,
-> +			.multi_error_valid =3D multi ? 1 : 0,
-> +		};
-> =20
->  		aer_isr_one_error_type(root, &e_info);
->  	}
-
 
