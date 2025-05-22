@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-8883-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8884-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CAFAC17AC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 01:24:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2998AC17AE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 01:24:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b3PVw0QhDz2ySb;
-	Fri, 23 May 2025 09:23:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b3PVx3gHKz3c71;
+	Fri, 23 May 2025 09:23:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747956232;
-	cv=none; b=Q1VbhaLZDUtH6T5JiDPSfkSb9IL9s8c96jjkJWBKE/FF0YrxcGaGVg39zc3cS9VjXwQaTvpDq3jweF0Kbd20OUQYBgnvOcqAcmNVOe56zSFmzSOsWeeOPoWwMavV2m6KRqi65hkbRwI+WZ0hv3+6ebZAywF6NWMMWX23ulcdidd8HcAeDhPF2CRMOazAp+yIC55yh1WU7Vfmnqt8aBzstW2mHbpwTF7XRknUp2vRjWvmzVMj/66H1N0dKSgT2uKdfy0N6Hrsb8pWYHXk9UqM2UK/R557bBQaNVDj7tVslOdU6JZPHlFqBY1fOoWAg9YAA8D4V5n7k6yR1itutXUd0Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747956233;
+	cv=none; b=YAUkpnb4El9xAj81y9BS1LoenVjXQ+GVDugPEgmG4bL39QPX7MEGJHjnPL1cczXhKg10BZkN8A0K8XpCnfjdnFEYrb8L7qmh/5HeU/V31gU/AbxS30UB/pyyO4Z7NRuq+w5QZfOwRc4BxEw6Z0VP76CsWJV0bL3LrhTm4XNKcXQS63XicUuLpLzef8f4UPnvsKlTCDSWO5ZobNerawn6oQT6to5M6DKp7SwU/yJcfO/upB9OTFFBOid3E99kGcH0PAIAH38gr2vfqfweSSmr4tY4lhtspAJwhAfrW4NgcfBxmFFeRZ8TZv8zK9H57gDpJosC7a/Ml0lfSC7S4oFsLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747956232; c=relaxed/relaxed;
-	bh=Hlu91GZSZLAnnyQLx+Ja+nTiGhPU85+7qOG3oqKgMYw=;
+	t=1747956233; c=relaxed/relaxed;
+	bh=udBRbtRxBBZIy1fayT7YWK6z58aVkSc/p0t0124/zwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oMcbpP0IXOizUbJUDNdJ99Y5qFBzuqmzqaL3NEHOrwGE/FWvXQe7EF0ZdEIrWbsqQ2ZVBOHtgpDM/6cLxcM9hdE/Q4O4NKljLBnYxW3kQfBwd6TIfHb4/ccTeuJMm5ZDGtoSuydwz7tNKoGJ0IXwum+8MFL9S12UeIketbaPpAqm5JfABRZBK8dakthGyhB8X10vbB9XjBdJRCiYzDWSfMkxdB4iDSk8Od8EWNHEgW7EPbfdlyFagIVVkQ0BuMCx2VhiViBW7QRVmeQb0mMDVV0WFz4938F0MJ4IIfBF9uFOCh1Ls7pB6em1ppBG5YWXQhKpD6Z6REog44tFUz2x+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WkcntFcJ; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version:Content-Type; b=GysvCtctIPS2376tgLqwOH/gTjK9W1aKPF0gL0q/aANa2Ly6sOpGXmC3FMgR83jS1str0wFJp2Lsssa9rzCBLIG0MX9g49C/8vUODaKzp3aOoOjkcnjiuo8JDZpae5S2kJKWkJJvDtSvduUgzLZL8asRqEggrue42zDYtCui66jxzR27rULSf3Bcd9Mqd7fgSorf8s5a5g6vJ+jMbnPOeBPeSEJfOILEgWX1Vi1AqpOlwvLewv0LmV/gc/D0OkN/cculMhNO62tf3R+YpNM0MuaWOYY3H7ixttfHgcYB0eIVrUPMGK7+qYlq43qh0aoiV4TT9SgTCVnNL2uvE+0ejw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K/HVPUDe; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WkcntFcJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=K/HVPUDe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3PVv0VNZz2yr4
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 09:23:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3PVw5Rjkz2yr4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 09:23:52 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9E63B62A54;
-	Thu, 22 May 2025 23:23:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFF0C4CEE4;
-	Thu, 22 May 2025 23:23:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 13F484A89A;
+	Thu, 22 May 2025 23:23:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35D9C4CEF3;
+	Thu, 22 May 2025 23:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747956228;
-	bh=pn/dR/CbimTLWHM7EyVtv7Q1clQ07rb3CKvRX8pteXU=;
+	s=k20201202; t=1747956229;
+	bh=LcIUWhj5nNnSPZAL+zgkVI9JEnmmZCD3KzStQFp7sr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WkcntFcJCToN90oNzgVQTYsDXxVket++VztYoB6dE3jgAX63R3KmKwswXdX5dqfWJ
-	 +ZIF7ZW4xQSpHIUFfb7l1JS37VXwZUKhy70aB8CCaNQeN+G3kDr9FQYU9sksequ5dU
-	 BBCW7SLm2+Vg2rEh6o2B2DXQsDiW39JFhMMIqrbHfaHN1biJQkXFPUFUelBpWoBFtq
-	 S6gZ4lA8tRYM7GmNm6590IFB6i8NePxkPNPIPMmgdnvnuCbzq/d4FrnL6XhF3FyTSi
-	 XdH/1JqCul0CAlAGM06P7hOazwIshJSv1o/hli7HnPbCnXN6LfvJEfRZmKmp7fQip0
-	 omdKkGnFiFX+g==
+	b=K/HVPUDe7VbeiPhmHszDIct1InFeR0HSHX3Mkvyockt4/bAnfiPMojUOiqEGyAlbz
+	 HHBkoy4f+KcU+Xk1UHRECQH443b9MYF78R0xzsuNIRES+iI8ciL8pA0qvIC6APqgIU
+	 bjZOzO3ViaHTMM4Z1vMaXVl3Xtt7+d+JPUwQ4/zTeZ5EqBpWOmtWLA6MTLwtXofn+p
+	 QsYWS9kqaV3XtvR9XGsIU5W5TnMybqVftBasWTWqu/l+BqLDqLH5+S0TI0CzK9DmNp
+	 weOFJvD0Xp1EY8OA7bZg0znqQYQqkzYZOkYE5dZSttSf1xwQN6RJeyyykor+K6YucJ
+	 wcfwJ4z32AAfQ==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: linux-pci@vger.kernel.org
 Cc: Jon Pan-Doh <pandoh@google.com>,
@@ -69,11 +69,10 @@ Cc: Jon Pan-Doh <pandoh@google.com>,
 	Dave Jiang <dave.jiang@intel.com>,
 	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH v8 02/20] PCI/DPC: Log Error Source ID only when valid
-Date: Thu, 22 May 2025 18:21:08 -0500
-Message-ID: <20250522232339.1525671-3-helgaas@kernel.org>
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH v8 03/20] PCI/AER: Factor COR/UNCOR error handling out from aer_isr_one_error()
+Date: Thu, 22 May 2025 18:21:09 -0500
+Message-ID: <20250522232339.1525671-4-helgaas@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250522232339.1525671-1-helgaas@kernel.org>
 References: <20250522232339.1525671-1-helgaas@kernel.org>
@@ -99,120 +98,95 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Bjorn Helgaas <bhelgaas@google.com>
 
-DPC Error Source ID is only valid when the DPC Trigger Reason indicates
-that DPC was triggered due to reception of an ERR_NONFATAL or ERR_FATAL
-Message (PCIe r6.0, sec 7.9.14.5).
+aer_isr_one_error() duplicates the Error Source ID logging and AER error
+processing for Correctable Errors and Uncorrectable Errors.  Factor out the
+duplicated code to aer_isr_one_error_type().
 
-When DPC was triggered by ERR_NONFATAL (PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE)
-or ERR_FATAL (PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) from a downstream device,
-log the Error Source ID (decoded into domain/bus/device/function).  Don't
-print the source otherwise, since it's not valid.
+aer_isr_one_error() doesn't need the struct aer_rpc pointer, so pass it the
+Root Port or RCEC pci_dev pointer instead.
 
-For DPC trigger due to reception of ERR_NONFATAL or ERR_FATAL, the dmesg
-logging changes:
-
-  - pci 0000:00:01.0: DPC: containment event, status:0x000d source:0x0200
-  - pci 0000:00:01.0: DPC: ERR_FATAL detected
-  + pci 0000:00:01.0: DPC: containment event, status:0x000d, ERR_FATAL received from 0000:02:00.0
-
-and when DPC triggered for other reasons, where DPC Error Source ID is
-undefined, e.g., unmasked uncorrectable error:
-
-  - pci 0000:00:01.0: DPC: containment event, status:0x0009 source:0x0200
-  - pci 0000:00:01.0: DPC: unmasked uncorrectable error detected
-  + pci 0000:00:01.0: DPC: containment event, status:0x0009: unmasked uncorrectable error detected
-
-Previously the "containment event" message was at KERN_INFO and the
-"%s detected" message was at KERN_WARNING.  Now the single message is at
-KERN_WARNING.
-
-Fixes: 26e515713342 ("PCI: Add Downstream Port Containment driver")
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20250520215047.1350603-3-helgaas@kernel.org
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Link: https://patch.msgid.link/20250520215047.1350603-4-helgaas@kernel.org
 ---
- drivers/pci/pcie/dpc.c | 64 ++++++++++++++++++++++++------------------
- 1 file changed, 36 insertions(+), 28 deletions(-)
+ drivers/pci/pcie/aer.c | 36 +++++++++++++++++++++++-------------
+ 1 file changed, 23 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index 3daaf61c79c9..9d85f1b3b761 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -261,37 +261,45 @@ void dpc_process_error(struct pci_dev *pdev)
- 	struct aer_err_info info = {};
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index a1cf8c7ef628..568229288ca3 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -1273,17 +1273,32 @@ static inline void aer_process_err_devices(struct aer_err_info *e_info)
+ }
  
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
--	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
--
--	pci_info(pdev, "containment event, status:%#06x source:%#06x\n",
--		 status, source);
+ /**
+- * aer_isr_one_error - consume an error detected by Root Port
+- * @rpc: pointer to the Root Port which holds an error
++ * aer_isr_one_error_type - consume a Correctable or Uncorrectable Error
++ *			    detected by Root Port or RCEC
++ * @root: pointer to Root Port or RCEC that signaled AER interrupt
++ * @info: pointer to AER error info
++ */
++static void aer_isr_one_error_type(struct pci_dev *root,
++				   struct aer_err_info *info)
++{
++	aer_print_port_info(root, info);
++
++	if (find_source_device(root, info))
++		aer_process_err_devices(info);
++}
++
++/**
++ * aer_isr_one_error - consume error(s) signaled by an AER interrupt from
++ *		       Root Port or RCEC
++ * @root: pointer to Root Port or RCEC that signaled AER interrupt
+  * @e_src: pointer to an error source
+  */
+-static void aer_isr_one_error(struct aer_rpc *rpc,
++static void aer_isr_one_error(struct pci_dev *root,
+ 		struct aer_err_source *e_src)
+ {
+-	struct pci_dev *pdev = rpc->rpd;
+ 	struct aer_err_info e_info;
  
- 	reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN;
--	ext_reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT;
--	pci_warn(pdev, "%s detected\n",
--		 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR) ?
--		 "unmasked uncorrectable error" :
--		 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE) ?
--		 "ERR_NONFATAL" :
--		 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) ?
--		 "ERR_FATAL" :
--		 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_RP_PIO) ?
--		 "RP PIO error" :
--		 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_SW_TRIGGER) ?
--		 "software trigger" :
--		 "reserved error");
+-	pci_rootport_aer_stats_incr(pdev, e_src);
++	pci_rootport_aer_stats_incr(root, e_src);
  
--	/* show RP PIO error detail information */
--	if (pdev->dpc_rp_extensions &&
--	    reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT &&
--	    ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_RP_PIO)
--		dpc_process_rp_pio_error(pdev);
--	else if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR &&
--		 dpc_get_aer_uncorrect_severity(pdev, &info) &&
--		 aer_get_device_error_info(pdev, &info)) {
--		aer_print_error(pdev, &info);
--		pci_aer_clear_nonfatal_status(pdev);
--		pci_aer_clear_fatal_status(pdev);
-+	switch (reason) {
-+	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR:
-+		pci_warn(pdev, "containment event, status:%#06x: unmasked uncorrectable error detected\n",
-+			 status);
-+		if (dpc_get_aer_uncorrect_severity(pdev, &info) &&
-+		    aer_get_device_error_info(pdev, &info)) {
-+			aer_print_error(pdev, &info);
-+			pci_aer_clear_nonfatal_status(pdev);
-+			pci_aer_clear_fatal_status(pdev);
-+		}
-+		break;
-+	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE:
-+	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE:
-+		pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID,
-+				     &source);
-+		pci_warn(pdev, "containment event, status:%#06x, %s received from %04x:%02x:%02x.%d\n",
-+			 status,
-+			 (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE) ?
-+				"ERR_FATAL" : "ERR_NONFATAL",
-+			 pci_domain_nr(pdev->bus), PCI_BUS_NUM(source),
-+			 PCI_SLOT(source), PCI_FUNC(source));
-+		break;
-+	case PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT:
-+		ext_reason = status & PCI_EXP_DPC_STATUS_TRIGGER_RSN_EXT;
-+		pci_warn(pdev, "containment event, status:%#06x: %s detected\n",
-+			 status,
-+			 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_RP_PIO) ?
-+			 "RP PIO error" :
-+			 (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_SW_TRIGGER) ?
-+			 "software trigger" :
-+			 "reserved error");
-+		/* show RP PIO error detail information */
-+		if (ext_reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_RP_PIO &&
-+		    pdev->dpc_rp_extensions)
-+			dpc_process_rp_pio_error(pdev);
-+		break;
+ 	/*
+ 	 * There is a possibility that both correctable error and
+@@ -1297,10 +1312,8 @@ static void aer_isr_one_error(struct aer_rpc *rpc,
+ 			e_info.multi_error_valid = 1;
+ 		else
+ 			e_info.multi_error_valid = 0;
+-		aer_print_port_info(pdev, &e_info);
+ 
+-		if (find_source_device(pdev, &e_info))
+-			aer_process_err_devices(&e_info);
++		aer_isr_one_error_type(root, &e_info);
  	}
+ 
+ 	if (e_src->status & PCI_ERR_ROOT_UNCOR_RCV) {
+@@ -1316,10 +1329,7 @@ static void aer_isr_one_error(struct aer_rpc *rpc,
+ 		else
+ 			e_info.multi_error_valid = 0;
+ 
+-		aer_print_port_info(pdev, &e_info);
+-
+-		if (find_source_device(pdev, &e_info))
+-			aer_process_err_devices(&e_info);
++		aer_isr_one_error_type(root, &e_info);
+ 	}
+ }
+ 
+@@ -1340,7 +1350,7 @@ static irqreturn_t aer_isr(int irq, void *context)
+ 		return IRQ_NONE;
+ 
+ 	while (kfifo_get(&rpc->aer_fifo, &e_src))
+-		aer_isr_one_error(rpc, &e_src);
++		aer_isr_one_error(rpc->rpd, &e_src);
+ 	return IRQ_HANDLED;
  }
  
 -- 
