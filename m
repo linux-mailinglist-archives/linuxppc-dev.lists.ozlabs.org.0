@@ -1,84 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-8868-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8869-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260FCAC0707
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 10:26:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0BAEAC08D1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 11:34:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b31bz2D6Kz2ySl;
-	Thu, 22 May 2025 18:26:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b336317sTz3c3w;
+	Thu, 22 May 2025 19:34:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747902415;
-	cv=none; b=H2fnsfStTPb6gXec8ZAldJ8QzTCCAADMgJKdQdVwklMgRdyuyF2EQJZ9TfuBNrQr9E7epe5yA9i3Irz+wKxtAV5w4NhJc4jvtN0t1ZQpmTU+Lk1MuZurZuluh6odCY/kO0lYHXckH94k3G4pn3V/Z5UbF+2jyTXbfeL+J4E8NegiCuCKiLRbgZJfTSrd0136v9oFEAjqEM6Btu57keVdk+ToeSqAz3lAqyGCoCy+h4PB+yW6zg29CI5KJ+ktTQzEwhrZwN2LZEo5FYIA8GBgS4lkMD7ptCbbeFWIX3uUZW2umaOAt1HtWFh5ngQ+/RfnbtuaeVz7nv6rbzH+gnAjnQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=117.135.210.3
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747906475;
+	cv=none; b=BvVxY/QeUuSXmJ2ksuH15wdfFVQo7GBjM2QsU/TjRYA0IM4cfCm3GtVMYCIQ2XP+K9RqyUzPjRZiI+8MT2OUjTT1OJxIIWpB0PBDzGIwL1YdXQF2J0IQiYOPZIg1Ww5IAMTrrh16H5pfuP/vhdz3AGUYHMqBq9s+nVWihVsY1c4JLrcWt4/wUwZpvuoMHXJ56cUVNjx1auOS8yg8K01TEl/G4/xHXwiD9ySTi2vjowx+OjOgUOMk6aljrfcxAzH3ZD2pTjnJA1d7Tj7RNXyh7gAAD3+arbXRxNDkIPXjLgfg8foY8ciphOeclv19BhjecWhqR9FK9Wd7wuSAVegokQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747902415; c=relaxed/relaxed;
-	bh=Dlp2azLQltfH6emKWYdlW4k16t8gyfKRpWtf3w9Dv60=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P/XXlBlrYGC/UkwdwdMI8e9BNlKgBsMlUJ21zsLzBZS/3pKYMqK7etXjwKOG9fgZqCcqPuA27hazyFC/mExpOaunb6PTYjhJVV2G/LPAWxn6o1+HFWsoJljSQUdm8E3VSHskJNRsjErqGAcWKqw74eyLLNhNST+eDXa+qSEDIJRuqu7FlxJJMEmB7GLSmou7aJ+qF0j4Ojg5UOmh+zHu2W+orqkz2jKGq1N1jSstk54xl6KJ0XO+ZZ8ot7Y1eh1S0hwk418XFLR3ScAdKacQmuydezL0b9GHD59I8sYoz6Xm9aDvmwHLaLqPypcHMEM+lVlzivSloRMToBuPnHIMPw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=I1+8QZaf; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XR1S0QnK; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1747906475; c=relaxed/relaxed;
+	bh=5joGvSMwoogVlNO6iG3yyrQRJaGl4pOo4UfrlDIsfzo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ICft7O10ekAx89woFkjBSiGetT3YM92JnyHTJEpWhpFwF8clcfYoCgiEySpxmwgjSELO/ZWDR5W9w2PlX3tX25MrFUT7dgTJBpoH5VjKa1CI31/1lk8t0BKzOby/T3HGj0cj+QZmvQnerVaUMx4F1yLZ40WCqsX+zpvPKDCwYPhHv31YKmzjMx7xpaxg0OyDnG1r2GKPQXE4d81XrLdwBwnfxZzRyryByOkw7GJBZ6XpsVM4JNlvUihyQTCnfZAfEQR5C/eSMS///sHmSpxeFkiJenpVT+WNkxwA9FA2Cm5z8pH4mCiyHt4fOncLjFb80nYugwlGivZiyHt+Xdaw2A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=fw+AoSAq; dkim-atps=neutral; spf=pass (client-ip=117.135.210.3; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=I1+8QZaf;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XR1S0QnK;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=fw+AoSAq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b31bx5S8Wz2yQJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 18:26:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747902407;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dlp2azLQltfH6emKWYdlW4k16t8gyfKRpWtf3w9Dv60=;
-	b=I1+8QZafWte4nOjPAfO/GFqVhDtRg52/fJ5vjft6mOzWtfpudhvSNmESHhIQWlkD6Bdwqf
-	l0PgYJ2SIRNVyaXmtYdaLW9ew6EP5evZN38zqDXclH4r0cdmI8aUvl0+J7ePsN8rWa9+sq
-	NwmrwENi3Ven9+sK9BL+tUSMUDBneaw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747902408;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dlp2azLQltfH6emKWYdlW4k16t8gyfKRpWtf3w9Dv60=;
-	b=XR1S0QnKzJcKBXu7IM7mGIOqXTay76uaYTDvlcmNQ7PkjSCwCqr/qYMLXYtmtiKpknCMWp
-	u/uirrerMwaekZk92AENuBU3bSA3ShAcRLGBJGwz7/7h6PJu/zUvn50mZF4E6ybkGKl1Po
-	QmRy3ZjG6SIjY9SUhht4Qwi7eCg6dW0=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-3I_kqDsiOu-r4xi9Oyn-KQ-1; Thu, 22 May 2025 04:26:46 -0400
-X-MC-Unique: 3I_kqDsiOu-r4xi9Oyn-KQ-1
-X-Mimecast-MFC-AGG-ID: 3I_kqDsiOu-r4xi9Oyn-KQ_1747902406
-Received: by mail-yw1-f197.google.com with SMTP id 00721157ae682-70dda56af0cso51937957b3.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 01:26:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747902406; x=1748507206;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Dlp2azLQltfH6emKWYdlW4k16t8gyfKRpWtf3w9Dv60=;
-        b=ef/DpajHs33FnMaRVp+6uD4g1RRmnl0wOlf1tolYI+271w+LlnQTInXQXzzyA4e/Pm
-         xh6/etF8Bu/XVvKugvDyHGt1ZX9cpkLw8/FeYtmb/xvcjArEdRUn/51NWNAhmuM3v3Jx
-         tkBUcZPwOExzoJyEbag+w/vSVLhd0ipDIPvQr5sDFBpw9RhkSLssH1aWbUFUCa73E5LX
-         B5bDmX0P/3gJkcZea0JndQF0L6qxjC+3rBDDMYJFZboLoWu09L14E+wa9HRPunRNSd4P
-         JsEVBNfWwgBzjRYtPv92POZwpVCbRcB/vio2ifg3ERbSlFeSYJRBtfn04Xf6NVrwSUgV
-         1qiw==
-X-Gm-Message-State: AOJu0Yx3FD1/ExOW34nvG+rISVy/1nHJS5VEOW/LRCnbk3etpwqzWmjg
-	Zgk12u3n8//34HMlvymXuBFD4Dlz6PX+JuFO6rxWRGhub2H+pV5uLRKPnl/ViKbxNWYs4YVxRmz
-	yGRAgxVadxlWVDsEgDy8s8eg+WmUEOkV/5hvvhwcQKWngN8NmxQXGThBGEfLIIkALY4JszQBUw9
-	ARihDxL7k5G/vLF/1UNztAa5x5O68UDKF5uJefctgDFA==
-X-Gm-Gg: ASbGncsZQ6Xh9rF2BaCSxqbOtFI8zEvCKh55DjtHzJNu5X6Jut0THjfeSGe6ZOxh2HR
-	ndPCXOyhEO1wO8z3hPZm9DEuAvVyK8WiWdGgMeCcxT6sxsDlCO5HCca6YE7IWmN7QYVw=
-X-Received: by 2002:a05:690c:3393:b0:70d:f3bb:a731 with SMTP id 00721157ae682-70df3bba868mr78205697b3.9.1747902405950;
-        Thu, 22 May 2025 01:26:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGPhVj8JhGJCK+zc7RP834KN5Eve5FMdd9QufZUZBEqDbkQHG8Gr0Mr3Ft0fdQAFQnebVlVVoTvKHtpXaHPSYY=
-X-Received: by 2002:a05:690c:3393:b0:70d:f3bb:a731 with SMTP id
- 00721157ae682-70df3bba868mr78205367b3.9.1747902405539; Thu, 22 May 2025
- 01:26:45 -0700 (PDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=117.135.210.3; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org)
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b336000NBz2yfK
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 19:34:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=5joGvSMwoogVlNO6iG3yyrQRJaGl4pOo4UfrlDIsfzo=;
+	b=fw+AoSAqF+Qy+D//w43Bpup1HrzL/gV326OincHmp3P90CZQhps46uOHrvDZL2
+	pd9vToAHpWN2PTnxV9gkl9tKSrl5+xndBHdC/PTnE+DZw7WGdqrJD7dDB946JJbH
+	Inxta77WOucOpzKUjcPi9iBWRP/vH27rZj1osuLITwJO8=
+Received: from [192.168.18.52] (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wC3T8tx7y5oT9UADQ--.40824S2;
+	Thu, 22 May 2025 17:33:38 +0800 (CST)
+Message-ID: <dd887a30-4bdc-4e7d-ba04-1f417a082a9f@163.com>
+Date: Thu, 22 May 2025 17:33:37 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,68 +49,181 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250514134630.137621-1-sgarzare@redhat.com> <20250514134630.137621-5-sgarzare@redhat.com>
- <aCVHQ-LRqHeEVEAW@kernel.org> <CAGxU2F5AsNY5mQPd=qajW1seFYHSYpB0Fa1iuR_f2QavtoB6sA@mail.gmail.com>
- <aCzf6aoJAC-IdS_n@kernel.org> <CAGxU2F6rfqGV_gJk-JxrCk3f9dWtYn_3o9RODh7cVG0X_oQWaA@mail.gmail.com>
- <aC2nBCxkvWWz5y5E@kernel.org> <aC4CVUXpThAyKQdf@kernel.org>
-In-Reply-To: <aC4CVUXpThAyKQdf@kernel.org>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Thu, 22 May 2025 10:26:34 +0200
-X-Gm-Features: AX0GCFvwBrY1Wuz2vdIMhJw7TkALKpOFZS5DJd8t4bfvvVGz5MJKErKjPBRbZJg
-Message-ID: <CAGxU2F5zQJR4GvZ9ovtQBqMFGs-wBMoCRks=JYQ1JF6qMKK-6g@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] tpm/tpm_svsm: support TPM_CHIP_FLAG_SYNC
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, Peter Huewe <peterhuewe@gmx.de>, 
-	Jens Wiklander <jens.wiklander@linaro.org>, linux-integrity@vger.kernel.org, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, linux-arm-kernel@lists.infradead.org, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Sumit Garg <sumit.garg@kernel.org>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Michael Ellerman <mpe@ellerman.id.au>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vrwJjpXUYOJAPaNXbcvP1gB28CPHhKYNotR__Ff0C20_1747902406
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] pci: implement "pci=aer_panic"
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ bhelgaas@google.com, tglx@linutronix.de, kw@linux.com,
+ manivannan.sadhasivam@linaro.org, mahesh@linux.ibm.com
+Cc: oohall@gmail.com, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20250516165518.125495-1-18255117159@163.com>
+ <a1fdd6e1-8cd9-46b0-bd27-526729a1199d@linux.intel.com>
+ <8434dc81-5d2d-4ce1-ab73-ca1cf16cb550@163.com>
+ <e6ad7ef5-de9c-49bc-9882-5e97bd549168@163.com>
+ <3dd17a45-2305-4ac4-a195-4c54ce357ddc@linux.intel.com>
+ <1c21ec0b-ca89-4f7e-85f2-bdb48edb8055@163.com>
+ <97e9850f-8a74-425f-93ab-5017599c98b5@linux.intel.com>
+Content-Language: en-US
+From: Hans Zhang <18255117159@163.com>
+In-Reply-To: <97e9850f-8a74-425f-93ab-5017599c98b5@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wC3T8tx7y5oT9UADQ--.40824S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxtrWktF1kArWfAFy7Zry7ZFb_yoW7XrWDpa
+	yrAa1jyr4DJFW2vFnFvw10qry5ta4DJw15Wrn8Jr13Kr90yr1UJr42vF4jkasrGrnrWw1j
+	vF4Ut347WFy5JaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRJ8n5UUUUU=
+X-Originating-IP: [222.71.101.198]
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/xtbBDxlVo2gu7XhKJQAAsc
+X-Spam-Status: No, score=0.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 21 May 2025 at 18:42, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
-> On Wed, May 21, 2025 at 01:12:20PM +0300, Jarkko Sakkinen wrote:
-> > > I tried, but the last patch (this one) is based on the series merged
-> > > on the tip tree, where I introduced tpm_svsm.
-> > > I can see that series in linux-next merged with commit
-> > > 16a56ee59ab8ee05e67de35bbb5782ef9cfb4f07,
-> > > but I can't see it in your next tree [1].
-> > >
-> > > How do we proceed in such cases?
-> > >
-> > > Just to be sure, did I use the right tree?
-> >
-> > Thanks for the remark. Lemme check tonight. Hold on doing
-> > anything ;-) We'll get there...
->
-> I just rebased my branches on top of latest from Linus. That is what I
-> need base PR also on, and:
->
-> $ git show 16a56ee59ab8ee05e67de35bbb5782ef9cfb4f07
-> fatal: bad object 16a56ee59ab8ee05e67de35bbb5782ef9cfb4f07
->
-> I'd use git cherry-pick on a range to take them from linux-next to a
-> mainline tip...
 
-I see, let me know if I can help in some way.
 
-We can also wait the next cycle if it simplifies your work, definitely
-no rush on my side.
+On 2025/5/22 00:17, Sathyanarayanan Kuppuswamy wrote:
+> 
+> On 5/21/25 7:54 AM, Hans Zhang wrote:
+>>
+>>
+>> On 2025/5/21 00:09, Sathyanarayanan Kuppuswamy wrote:
+>>>
+>>> On 5/19/25 7:41 AM, Hans Zhang wrote:
+>>>>
+>>>>
+>>>> On 2025/5/19 22:21, Hans Zhang wrote:
+>>>>>
+>>>>>
+>>>>> On 2025/5/17 02:10, Sathyanarayanan Kuppuswamy wrote:
+>>>>>>
+>>>>>> On 5/16/25 9:55 AM, Hans Zhang wrote:
+>>>>>>> The following series introduces a new kernel command-line option 
+>>>>>>> aer_panic
+>>>>>>> to enhance error handling for PCIe Advanced Error Reporting (AER) in
+>>>>>>> mission-critical environments. This feature ensures deterministic 
+>>>>>>> recover
+>>>>>>> from fatal PCIe errors by triggering a controlled kernel panic 
+>>>>>>> when device
+>>>>>>> recovery fails, avoiding indefinite system hangs.
+>>>>>>
+>>>>>> Why would a device recovery failure lead to a system hang? Worst case
+>>>>>> that device may not be accessible, right?  Any real use case?
+>>>>>>
+>>>>>
+>>>>>
+>>>>> Dear Sathyanarayanan,
+>>>>>
+>>>>> Due to Synopsys and Cadence PCIe IP, their AER interrupts are 
+>>>>> usually SPI interrupts, not INTx/MSI/MSIx interrupts. (Some 
+>>>>> customers will design it as an MSI/MSIx interrupt, e.g.: RK3588, 
+>>>>> but not all customers have designed it this way.)  For example, 
+>>>>> when many mobile phone SoCs of Qualcomm handle AER interrupts and 
+>>>>> there is a link down, that is, a fatal problem occurs in the 
+>>>>> current PCIe physical link, the system cannot recover.  At this 
+>>>>> point, a system restart is needed to solve the problem.
+>>>>>
+>>>>> And our company design of SOC: http://radxa.com/products/orion/o6/, 
+>>>>> it has 5 road PCIe port.
+>>>>> There is also the same problem.  If there is a problem with one of 
+>>>>> the PCIe ports, it will cause the entire system to hang.  So I hope 
+>>>>> linux OS can offer an option that enables SOC manufacturers to 
+>>>>> choose to restart the system in case of fatal hardware errors 
+>>>>> occurring in PCIe.
+>>>>>
+>>>>> There are also products such as mobile phones and tablets. We don't 
+>>>>> want to wait until the battery is completely used up before 
+>>>>> restarting them.
+>>>>>
+>>>>> For the specific code of Qualcomm, please refer to the email I sent.
+>>>>>
+>>>>
+>>>>
+>>>> Dear Sathyanarayanan,
+>>>>
+>>>> Supplementary reasons:
+>>>>
+>>>> drivers/pci/controller/cadence/pcie-cadence-host.c
+>>>> cdns_pci_map_bus
+>>>>     /* Clear AXI link-down status */
+>>>>     cdns_pcie_writel(pcie, CDNS_PCIE_AT_LINKDOWN, 0x0);
+>>>>
+>>>> https://elixir.bootlin.com/linux/v6.15-rc6/source/drivers/pci/controller/cadence/pcie-cadence-host.c#L52
+>>>>
+>>>> If there has been a link down in this PCIe port, the register 
+>>>> CDNS_PCIE_AT_LINKDOWN must be set to 0 for the AXI transmission to 
+>>>> continue.  This is different from Synopsys.
+>>>>
+>>>> If CPU Core0 runs to code L52 and CPU Core1 is executing NVMe SSD 
+>>>> saving files, since the CDNS_PCIE_AT_LINKDOWN register is still 1, 
+>>>> it causes CPU Core1 to be unable to send TLP transfers and hang. 
+>>>> This is a very extreme situation.
+>>>> (The current Cadence code is Legacy PCIe IP, and the HPA IP is still 
+>>>> in the upstream process at present.)
+>>>>
+>>>> Radxa O6 uses Cadence's PCIe HPA IP.
+>>>> http://radxa.com/products/orion/o6/
+>>>>
+>>>
+>>> It sounds like a system level issue to me. Why not they rely on 
+>>> watchdog to reboot for
+>>> this case ?
+>>
+>> Dear Sathyanarayanan,
+>>
+>> Thank you for your reply. Yes, personally, I think it's also a problem 
+>> at the system level. I conducted a local test. When I directly 
+>> unplugged the EP device on the slot, the system would hang. It has 
+>> been tested many times. Since we don't have a bus timeout response 
+>> mechanism for PCIe, it hangs easily.
+> 
+> Any comment on why watchdog is not used to reboot the unresponsive system?
 
-Thanks,
-Stefano
+Dear Sathyanarayanan,
+
+Thank you very much for your reply.
+
+After my testing, the watchdog doesn't work properly every time. There 
+might be other reasons causing the entire system to hang.
+
+
+> 
+>>
+>>>
+>>> Even if you want to add this support, I think it is more appropriate 
+>>> to add this to your
+>>> specific PCIe controller driver.  I don't see why you want to add it 
+>>> part of generic
+>>> AER driver.
+>>>
+>> Because we want to use the processing logic of the general AER driver. 
+>> If the recovery is successful, there will be no problem. If the 
+>> recovery fails, my original intention was to restart the system.
+>>
+>> If added to the specific PCIe controller driver, a lot of repetitive 
+>> AER processing logic will be written. So I was thinking whether the 
+>> AER driver could be changed to be compiled as a KO module.
+> 
+> May be you can rely on err handler callbacks to get notification on 
+> fatal errors or you can even use uevent handler to detect the 
+> disconnected device event and handle it there.
+
+I will try the method you suggested.
+
+> 
+>>
+>>
+>> If this series is not reasonable, I'll drop it.
+> 
+> Adding new kernel param to solve a specific system issue is not 
+> recommended. Try to find some custom solution for your chip/controller.
+> 
+
+Ok. Understood. Thank you again for your reply.
+
+Best regards,
+Hans
 
 
