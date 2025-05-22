@@ -1,81 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-8901-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8902-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 272C7AC17CF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 01:26:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C40AC1836
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 01:44:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b3PWQ4NByz3cJk;
-	Fri, 23 May 2025 09:24:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b3Pz71nZNz3c53;
+	Fri, 23 May 2025 09:44:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747956258;
-	cv=none; b=ZMb2XOz4Kdhh1PuiqJkiHIgh/b1uSPjz8qnM20PUBlWPbbwbdBM1WEQdI0Ho7/UaaVfsWa/bQqNUQ7DdCGL7tM453h55qrkatG/wIxzf9H0DpY+VXxtq3+HBJAcJZgNYAumIe2ImQELW7qbbpi0dqKIcCsPQ0RXFLF7Z7seTcLyXYxJPwRnaThTF2aozXghQ8ZZSk8SdrWQCa5LSveai5tRJ0+zsTHMgQzbWEIdZ0FmghfOTQEyo+EQXwc2fiIJ0hnxsi+Cc/CgpnutVhwWQlwx8YyNcfPLPuIOQ6stIM8yAy3BfWueA2pDDohwhEzebFmy0MBCjKwUZdy4uMAm1+A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747957491;
+	cv=none; b=dT9ibjfsDRMMOqbf1ZRoPRiX2AxHNNRRQ1LgNiN+lfVhLfxkedzxOmNbzoj26utLVLyi8PBc6N7Y6I+PFG+DfKKBuGcRqAe89pisZIXcNCuohUQHONVToeN8NaGZz0IZlFJpFdlzX/dbuEKU4sgwy4XxSBUJN5c/+R0qPjchcFjmzlUZkhv2Ia8QrjdbpQeoJooDaT6514nRJ4YiUPMjzFDq3R3rlv2E9xdFK2jySZLkeKAz+EhIU7ited+9mSA4R6LmIToIKPv8ne5YLc5JGy0uIGuYXCt01b0cHTOO/tMf3W65yC079//rHrdy9UJSbQ9iW3giFU/Kq95IwrKyuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747956258; c=relaxed/relaxed;
-	bh=heDCI3qTtKj8cRm/PhN1luuvCMqSHVk/Sof+OHM2aaY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QU47A/tdQ17u3eDy2Q9bTetBrIukKDH5TBy9GXLwXxAjJDeyhVG93hv7M3nKy2TBOka8rYjUqSgY10SpBBGON83QBAHJ4DhMkJKu3AGdoAb1QIc4dyBlBDhuJKl5qZRn9Zo1WiWoVkD8Z4aSfpXCbUfpb7wMcfT7Cw7s5wGcX0tAM5RSsf0JVIJdYwgRE404i6s+BapR+pygEIQoPkcYwctViUDkpxuYRDCbPkA3YOKEKB0OzN37ui5PV2RSZQ5MaLJy2+KwNs4s2RvKq8g5hLp/v/D+7Je2ZozsfvH9inX3GvxD/bB4ccBR00qJljwI1L79GMpr1zodQtu4KsRY2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dQhBOQeP; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1747957491; c=relaxed/relaxed;
+	bh=tvjLgs0WeKnsEmxHkPdFNoYQtyXRtG68F2kEcBWi9C4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JEMuVaubmNYQm7dy5Bl9KmdhBWi2zMYpOQnCN56IfAosnp4pk7+KbQ2MfSpBfeXpiw6DJPSWCUkK6VUXWm396PFyZd/hthyDxiumpC9cUZCNg+uDXBmPcE3ku8g9p4Z509tbLFepia7zemPJidj6U3L05P9KLpQqTeArsoU3o4xYvJb7A3+u3xMBMBCcD/RHLTOFkitBI024lFuxSmMr3jvfClkVzZzsUhJnPmUvmSQFngPXlsnjGVOwuzDl8TqxEnGVpnLRygvHmyagfrQjrVPnwTqd1aEc6Mtvi+WI+VV+E7U2iMEV8HFoCLFXeuQ7+97T5D320s97F6ZhYzx2FQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=agPf9mo8; dkim-atps=neutral; spf=none (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dQhBOQeP;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=agPf9mo8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3PWP6FP1z3c6f
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 09:24:17 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 03BDC5C6BEC;
-	Thu, 22 May 2025 23:21:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CDEC4CEE4;
-	Thu, 22 May 2025 23:24:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747956255;
-	bh=jutpcG0ZE3UNYnM28kKlMNptr/4x9KGHOyGkKPhvZ5U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQhBOQePKk605nJTtWTzrz50v1ZlCXnjVH/hlQSBGTN+CnIeKiDGduDb/qyFC003M
-	 VR080MyzRQ7HVN2b3jwIaS5b/XAtjlScJPQbJRN70b0ezRUkXlgLSjNK+oFGNYG2XD
-	 i8zHPgC+OBPXxmjLdfYfgg0iYs+cWyVR2XQTCxQFIqPr+QIUsP3/bx10DKW9Izk82F
-	 g7Umn1WCmAw6mX149vM2UBURwxrKULyVXie+DLcDZWrK/kyvTygsSxAz4Q1nQp7DLa
-	 rVLlaThVpDcaonnMWJ8V/q6GWlpYwlCR2AthAFNGu1K4bClOnjuFjUVO7l9JnlHMbI
-	 8nI9teosGRSoA==
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: linux-pci@vger.kernel.org
-Cc: Jon Pan-Doh <pandoh@google.com>,
-	Karolina Stolarek <karolina.stolarek@oracle.com>,
-	Weinan Liu <wnliu@google.com>,
-	Martin Petersen <martin.petersen@oracle.com>,
-	Ben Fuller <ben.fuller@oracle.com>,
-	Drew Walton <drewwalton@microsoft.com>,
-	Anil Agrawal <anilagrawal@meta.com>,
-	Tony Luck <tony.luck@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sargun Dhillon <sargun@meta.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Robert Richter <rrichter@amd.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH v8 20/20] PCI/AER: Add sysfs attributes for log ratelimits
-Date: Thu, 22 May 2025 18:21:26 -0500
-Message-ID: <20250522232339.1525671-21-helgaas@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250522232339.1525671-1-helgaas@kernel.org>
-References: <20250522232339.1525671-1-helgaas@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3Pz464Hxz3c52
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 09:44:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747957489; x=1779493489;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=HrxTnpzGlksA3R7lsGE+tdhiAU6geStxqS72uNEzULM=;
+  b=agPf9mo8ik05eMU1xl7gD+0wFSBazAaFowAnTUl1APEuXmzzc+wJPDac
+   QFPDiHDs0mNjuBhdM2hguG19erplP9yNkZAutmz0hwJAglxBWd6c2C+3+
+   U3JdRbdGiQLHsZvjzGiBDfScOYlMqIaoqITGYjE9f1ZT4maqHlxgRXB4J
+   zDp/zaWFBzRk0TYCoGES4LwQtPk0F4KUyNzDUBXshMUDUFSLFAq8Ty3hV
+   QUmMxi9YZFAVkvNbOrtunUOsAMUaFKYGG4KFwgfo8mIHyfxmI7SMp/fVz
+   FJzKQSBeBKCI2Engkl8KifGLMxiozDXPlBXnM0hxlwAoYP11PvnOfgpCg
+   A==;
+X-CSE-ConnectionGUID: xJJRrrDESd6csNF8z2mp8g==
+X-CSE-MsgGUID: SMEsOZduSxOUOAGoTcq8ew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="60257387"
+X-IronPort-AV: E=Sophos;i="6.15,307,1739865600"; 
+   d="scan'208";a="60257387"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2025 16:44:45 -0700
+X-CSE-ConnectionGUID: y/I8ALG+QGGXRBknYG+cJA==
+X-CSE-MsgGUID: MLFZckS/QtKuGpd0063UaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,307,1739865600"; 
+   d="scan'208";a="145538704"
+Received: from bjrankin-mobl3.amr.corp.intel.com (HELO [10.124.223.120]) ([10.124.223.120])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2025 16:44:44 -0700
+Message-ID: <2d99e03b-e899-41dd-91f8-d36673d23392@linux.intel.com>
+Date: Thu, 22 May 2025 16:44:43 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,277 +69,140 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 13/20] PCI/ERR: Add printk level to
+ pcie_print_tlp_log()
+To: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org
+Cc: Jon Pan-Doh <pandoh@google.com>,
+ Karolina Stolarek <karolina.stolarek@oracle.com>,
+ Weinan Liu <wnliu@google.com>, Martin Petersen <martin.petersen@oracle.com>,
+ Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>,
+ Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Lukas Wunner <lukas@wunner.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney" <paulmck@kernel.org>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>,
+ Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
+ Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>,
+ Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
+References: <20250522232339.1525671-1-helgaas@kernel.org>
+ <20250522232339.1525671-14-helgaas@kernel.org>
+Content-Language: en-US
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <20250522232339.1525671-14-helgaas@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Jon Pan-Doh <pandoh@google.com>
 
-Allow userspace to read/write log ratelimits per device (including
-enable/disable). Create aer/ sysfs directory to store them and any
-future AER configs.
+On 5/22/25 4:21 PM, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+>
+> aer_print_error() produces output at a printk level (KERN_ERR/KERN_WARNING/
+> etc) that depends on the kind of error, and it calls pcie_print_tlp_log(),
+> which previously always produced output at KERN_ERR.
+>
+> Add a "level" parameter so aer_print_error() can control the level of the
+> pcie_print_tlp_log() output to match.
+>
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> ---
 
-The new sysfs files are:
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-  /sys/bus/pci/devices/*/aer/correctable_ratelimit_burst
-  /sys/bus/pci/devices/*/aer/correctable_ratelimit_interval_ms
-  /sys/bus/pci/devices/*/aer/nonfatal_ratelimit_burst
-  /sys/bus/pci/devices/*/aer/nonfatal_ratelimit_interval_ms
+>   drivers/pci/pci.h      | 3 ++-
+>   drivers/pci/pcie/aer.c | 5 +++--
+>   drivers/pci/pcie/dpc.c | 2 +-
+>   drivers/pci/pcie/tlp.c | 6 ++++--
+>   4 files changed, 10 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index 705f9ef58acc..1a9bfc708757 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -613,7 +613,8 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
+>   		      struct pcie_tlp_log *log);
+>   unsigned int aer_tlp_log_len(struct pci_dev *dev, u32 aercc);
+>   void pcie_print_tlp_log(const struct pci_dev *dev,
+> -			const struct pcie_tlp_log *log, const char *pfx);
+> +			const struct pcie_tlp_log *log, const char *level,
+> +			const char *pfx);
+>   #endif	/* CONFIG_PCIEAER */
+>   
+>   #ifdef CONFIG_PCIEPORTBUS
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index f80c78846a14..f0936759ba8b 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -734,7 +734,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>   	__aer_print_error(dev, info);
+>   
+>   	if (info->tlp_header_valid)
+> -		pcie_print_tlp_log(dev, &info->tlp, dev_fmt("  "));
+> +		pcie_print_tlp_log(dev, &info->tlp, level, dev_fmt("  "));
+>   
+>   out:
+>   	if (info->id && info->error_dev_num > 1 && info->id == id)
+> @@ -797,7 +797,8 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+>   			aer->uncor_severity);
+>   
+>   	if (tlp_header_valid)
+> -		pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
+> +		pcie_print_tlp_log(dev, &aer->header_log, info.level,
+> +				   dev_fmt("  "));
+>   }
+>   EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
+>   
+> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+> index 6c98fabdba57..7ae1590ea1da 100644
+> --- a/drivers/pci/pcie/dpc.c
+> +++ b/drivers/pci/pcie/dpc.c
+> @@ -222,7 +222,7 @@ static void dpc_process_rp_pio_error(struct pci_dev *pdev)
+>   			  dpc_tlp_log_len(pdev),
+>   			  pdev->subordinate->flit_mode,
+>   			  &tlp_log);
+> -	pcie_print_tlp_log(pdev, &tlp_log, dev_fmt(""));
+> +	pcie_print_tlp_log(pdev, &tlp_log, KERN_ERR, dev_fmt(""));
+>   
+>   	if (pdev->dpc_rp_log_size < PCIE_STD_NUM_TLP_HEADERLOG + 1)
+>   		goto clear_status;
+> diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
+> index 890d5391d7f5..71f8fc9ea2ed 100644
+> --- a/drivers/pci/pcie/tlp.c
+> +++ b/drivers/pci/pcie/tlp.c
+> @@ -98,12 +98,14 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
+>    * pcie_print_tlp_log - Print TLP Header / Prefix Log contents
+>    * @dev: PCIe device
+>    * @log: TLP Log structure
+> + * @level: Printk log level
+>    * @pfx: String prefix
+>    *
+>    * Prints TLP Header and Prefix Log information held by @log.
+>    */
+>   void pcie_print_tlp_log(const struct pci_dev *dev,
+> -			const struct pcie_tlp_log *log, const char *pfx)
+> +			const struct pcie_tlp_log *log, const char *level,
+> +			const char *pfx)
+>   {
+>   	/* EE_PREFIX_STR fits the extended DW space needed for the Flit mode */
+>   	char buf[11 * PCIE_STD_MAX_TLP_HEADERLOG + 1];
+> @@ -130,6 +132,6 @@ void pcie_print_tlp_log(const struct pci_dev *dev,
+>   		}
+>   	}
+>   
+> -	pci_err(dev, "%sTLP Header%s: %s\n", pfx,
+> +	dev_printk(level, &dev->dev, "%sTLP Header%s: %s\n", pfx,
+>   		log->flit ? " (Flit)" : "", buf);
+>   }
 
-The default values are ratelimit_burst=10, ratelimit_interval_ms=5000, so
-if we try to emit more than 10 messages in a 5 second period, some are
-suppressed.
-
-Update AER sysfs ABI filename to reflect the broader scope of AER sysfs
-attributes (e.g. stats and ratelimits).
-
-  Documentation/ABI/testing/sysfs-bus-pci-devices-aer_stats ->
-    sysfs-bus-pci-devices-aer
-
-Tested using aer-inject[1]. Configured correctable log ratelimit to 5.
-Sent 6 AER errors. Observed 5 errors logged while AER stats
-(cat /sys/bus/pci/devices/<dev>/aer_dev_correctable) shows 6.
-
-Disabled ratelimiting and sent 6 more AER errors. Observed all 6 errors
-logged and accounted in AER stats (12 total errors).
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/gong.chen/aer-inject.git
-
-[bhelgaas: note fatal errors are not ratelimited, "aer_report" ->
-"aer_info", replace ratelimit_log_enable toggle with *_ratelimit_interval_ms]
-
-Signed-off-by: Karolina Stolarek <karolina.stolarek@oracle.com>
-Signed-off-by: Jon Pan-Doh <pandoh@google.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20250520215047.1350603-18-helgaas@kernel.org
----
- ...es-aer_stats => sysfs-bus-pci-devices-aer} |  44 ++++++++
- Documentation/PCI/pcieaer-howto.rst           |   5 +-
- drivers/pci/pci-sysfs.c                       |   1 +
- drivers/pci/pci.h                             |   1 +
- drivers/pci/pcie/aer.c                        | 105 ++++++++++++++++++
- 5 files changed, 155 insertions(+), 1 deletion(-)
- rename Documentation/ABI/testing/{sysfs-bus-pci-devices-aer_stats => sysfs-bus-pci-devices-aer} (72%)
-
-diff --git a/Documentation/ABI/testing/sysfs-bus-pci-devices-aer_stats b/Documentation/ABI/testing/sysfs-bus-pci-devices-aer
-similarity index 72%
-rename from Documentation/ABI/testing/sysfs-bus-pci-devices-aer_stats
-rename to Documentation/ABI/testing/sysfs-bus-pci-devices-aer
-index d1f67bb81d5d..5ed284523956 100644
---- a/Documentation/ABI/testing/sysfs-bus-pci-devices-aer_stats
-+++ b/Documentation/ABI/testing/sysfs-bus-pci-devices-aer
-@@ -117,3 +117,47 @@ Date:		July 2018
- KernelVersion:	4.19.0
- Contact:	linux-pci@vger.kernel.org, rajatja@google.com
- Description:	Total number of ERR_NONFATAL messages reported to rootport.
-+
-+PCIe AER ratelimits
-+-------------------
-+
-+These attributes show up under all the devices that are AER capable.
-+They represent configurable ratelimits of logs per error type.
-+
-+See Documentation/PCI/pcieaer-howto.rst for more info on ratelimits.
-+
-+What:		/sys/bus/pci/devices/<dev>/aer/correctable_ratelimit_interval_ms
-+Date:		May 2025
-+KernelVersion:	6.16.0
-+Contact:	linux-pci@vger.kernel.org
-+Description:	Writing 0 disables AER correctable error log ratelimiting.
-+		Writing a positive value sets the ratelimit interval in ms.
-+		Default is DEFAULT_RATELIMIT_INTERVAL (5000 ms).
-+
-+What:		/sys/bus/pci/devices/<dev>/aer/correctable_ratelimit_burst
-+Date:		May 2025
-+KernelVersion:	6.16.0
-+Contact:	linux-pci@vger.kernel.org
-+Description:	Ratelimit burst for correctable error logs. Writing a value
-+		changes the number of errors (burst) allowed per interval
-+		before ratelimiting. Reading gets the current ratelimit
-+		burst. Default is DEFAULT_RATELIMIT_BURST (10).
-+
-+What:		/sys/bus/pci/devices/<dev>/aer/nonfatal_ratelimit_interval_ms
-+Date:		May 2025
-+KernelVersion:	6.16.0
-+Contact:	linux-pci@vger.kernel.org
-+Description:	Writing 0 disables AER non-fatal uncorrectable error log
-+		ratelimiting. Writing a positive value sets the ratelimit
-+		interval in ms. Default is DEFAULT_RATELIMIT_INTERVAL
-+		(5000 ms).
-+
-+What:		/sys/bus/pci/devices/<dev>/aer/nonfatal_ratelimit_burst
-+Date:		May 2025
-+KernelVersion:	6.16.0
-+Contact:	linux-pci@vger.kernel.org
-+Description:	Ratelimit burst for non-fatal uncorrectable error logs.
-+		Writing a value changes the number of errors (burst)
-+		allowed per interval before ratelimiting. Reading gets the
-+		current ratelimit burst. Default is DEFAULT_RATELIMIT_BURST
-+		(10).
-diff --git a/Documentation/PCI/pcieaer-howto.rst b/Documentation/PCI/pcieaer-howto.rst
-index 6fb31516fff1..4b71e2f43ca7 100644
---- a/Documentation/PCI/pcieaer-howto.rst
-+++ b/Documentation/PCI/pcieaer-howto.rst
-@@ -97,12 +97,15 @@ DPC errors, are not ratelimited.
- AER uses the default ratelimit of DEFAULT_RATELIMIT_BURST (10 events) over
- DEFAULT_RATELIMIT_INTERVAL (5 seconds).
- 
-+Ratelimits are exposed in the form of sysfs attributes and configurable.
-+See Documentation/ABI/testing/sysfs-bus-pci-devices-aer.
-+
- AER Statistics / Counters
- -------------------------
- 
- When PCIe AER errors are captured, the counters / statistics are also exposed
- in the form of sysfs attributes which are documented at
--Documentation/ABI/testing/sysfs-bus-pci-devices-aer_stats
-+Documentation/ABI/testing/sysfs-bus-pci-devices-aer.
- 
- Developer Guide
- ===============
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index c6cda56ca52c..278de99b00ce 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -1805,6 +1805,7 @@ const struct attribute_group *pci_dev_attr_groups[] = {
- 	&pcie_dev_attr_group,
- #ifdef CONFIG_PCIEAER
- 	&aer_stats_attr_group,
-+	&aer_attr_group,
- #endif
- #ifdef CONFIG_PCIEASPM
- 	&aspm_ctrl_attr_group,
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 3023c68fe485..eca2812cfd25 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -965,6 +965,7 @@ void pci_no_aer(void);
- void pci_aer_init(struct pci_dev *dev);
- void pci_aer_exit(struct pci_dev *dev);
- extern const struct attribute_group aer_stats_attr_group;
-+extern const struct attribute_group aer_attr_group;
- void pci_aer_clear_fatal_status(struct pci_dev *dev);
- int pci_aer_clear_status(struct pci_dev *dev);
- int pci_aer_raw_clear_status(struct pci_dev *dev);
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index ebac126144fc..6c331695af58 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -627,6 +627,111 @@ const struct attribute_group aer_stats_attr_group = {
- 	.is_visible = aer_stats_attrs_are_visible,
- };
- 
-+/*
-+ * Ratelimit interval
-+ * <=0: disabled with ratelimit.interval = 0
-+ * >0: enabled with ratelimit.interval in ms
-+ */
-+#define aer_ratelimit_interval_attr(name, ratelimit)			\
-+	static ssize_t							\
-+	name##_show(struct device *dev, struct device_attribute *attr,	\
-+					 char *buf)			\
-+	{								\
-+		struct pci_dev *pdev = to_pci_dev(dev);			\
-+									\
-+		return sysfs_emit(buf, "%d\n",				\
-+				  pdev->aer_info->ratelimit.interval);	\
-+	}								\
-+									\
-+	static ssize_t							\
-+	name##_store(struct device *dev, struct device_attribute *attr, \
-+		     const char *buf, size_t count) 			\
-+	{								\
-+		struct pci_dev *pdev = to_pci_dev(dev);			\
-+		int interval;						\
-+									\
-+		if (!capable(CAP_SYS_ADMIN))				\
-+			return -EPERM;					\
-+									\
-+		if (kstrtoint(buf, 0, &interval) < 0)			\
-+			return -EINVAL;					\
-+									\
-+		if (interval <= 0)					\
-+			interval = 0;					\
-+		else							\
-+			interval = msecs_to_jiffies(interval); 		\
-+									\
-+		pdev->aer_info->ratelimit.interval = interval;		\
-+									\
-+		return count;						\
-+	}								\
-+	static DEVICE_ATTR_RW(name);
-+
-+#define aer_ratelimit_burst_attr(name, ratelimit)			\
-+	static ssize_t							\
-+	name##_show(struct device *dev, struct device_attribute *attr,	\
-+		    char *buf)						\
-+	{								\
-+		struct pci_dev *pdev = to_pci_dev(dev);			\
-+									\
-+		return sysfs_emit(buf, "%d\n",				\
-+				  pdev->aer_info->ratelimit.burst);	\
-+	}								\
-+									\
-+	static ssize_t							\
-+	name##_store(struct device *dev, struct device_attribute *attr,	\
-+		     const char *buf, size_t count)			\
-+	{								\
-+		struct pci_dev *pdev = to_pci_dev(dev);			\
-+		int burst;						\
-+									\
-+		if (!capable(CAP_SYS_ADMIN))				\
-+			return -EPERM;					\
-+									\
-+		if (kstrtoint(buf, 0, &burst) < 0)			\
-+			return -EINVAL;					\
-+									\
-+		pdev->aer_info->ratelimit.burst = burst;		\
-+									\
-+		return count;						\
-+	}								\
-+	static DEVICE_ATTR_RW(name);
-+
-+#define aer_ratelimit_attrs(name)					\
-+	aer_ratelimit_interval_attr(name##_ratelimit_interval_ms,	\
-+				    name##_ratelimit)			\
-+	aer_ratelimit_burst_attr(name##_ratelimit_burst,		\
-+				 name##_ratelimit)
-+
-+aer_ratelimit_attrs(correctable)
-+aer_ratelimit_attrs(nonfatal)
-+
-+static struct attribute *aer_attrs[] = {
-+	&dev_attr_correctable_ratelimit_interval_ms.attr,
-+	&dev_attr_correctable_ratelimit_burst.attr,
-+	&dev_attr_nonfatal_ratelimit_interval_ms.attr,
-+	&dev_attr_nonfatal_ratelimit_burst.attr,
-+	NULL
-+};
-+
-+static umode_t aer_attrs_are_visible(struct kobject *kobj,
-+				     struct attribute *a, int n)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+
-+	if (!pdev->aer_info)
-+		return 0;
-+
-+	return a->mode;
-+}
-+
-+const struct attribute_group aer_attr_group = {
-+	.name = "aer",
-+	.attrs = aer_attrs,
-+	.is_visible = aer_attrs_are_visible,
-+};
-+
- static void pci_dev_aer_stats_incr(struct pci_dev *pdev,
- 				   struct aer_err_info *info)
- {
 -- 
-2.43.0
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
 
