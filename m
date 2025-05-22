@@ -1,102 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-8876-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8877-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E059BAC15F7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 23:40:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA0FAC15F8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 23:40:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b3MCc1N82z2yrL;
-	Fri, 23 May 2025 07:40:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b3MCd457Yz2yqy;
+	Fri, 23 May 2025 07:40:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=205.220.168.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747919957;
-	cv=none; b=B267fdqyZAnfOCZeHgTAnD2F7f33iSsuRFPYisInlNdb1aymgitOQPbIW3D/+llAipdIiWXd2iyPHqxRvmhoFFR1A8lYhWPcAIZW8aTphWCRHXN0AnGkgGkXSIlDAFy63A3rBfjvLo9+v95gAv+6aVIv2lQ+wNht5Notg1FpPPXytks+m/5y7NEq442JzDTI29xw53fQloUasYEbHuJT2ElI/zW6lUy6CiLVOSXYj0T9rY3E++ruZfnav3AUu4J+B/Miu/XTXITCYCEd5hT+DxSWMMA5tR8CKbz3pdE3eaiSd4HiQbjIIfMTVf+eyX0oWPRE8pDxbRP3M56nT6+aXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747919957; c=relaxed/relaxed;
-	bh=RgX9Aci2OKy/LHgxiHnopthswLGl49EW6vrJhQF5Sd4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DChln+fDL9/6sVv47dmy0fitIxhaPW7sUSBdFvUrjYd1EUXIPwwaEz3bBSYLHy9OGUIeAFHlocDkxTAAE8O/RGKIVaJsqzSpdaafzyP7pat9xU5FsEOCvyZd0PBH4AKUkf3eNK10oQopLNyZ2jKW1w0TjZWnw9MnorOfNAzFJm1orbsjiG4F+ZjMBK+Ri1DWUYp9OUoNn2Csd5XPvu37BvGk2Gb1AUlBABqPGelYSk1PXgKWnEgfxW0D5Gl3fKyaUqayAH8H9O63LhbWjbXxme2XTHU8rFAeG6EF+dOEplbCI/2isx2vZ6mFSVke8XJXddPIVa9ffJ2wk2oOAw2Q1A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=puIi8/YX; dkim-atps=neutral; spf=pass (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=dmitry.baryshkov@oss.qualcomm.com; receiver=lists.ozlabs.org) smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:260e::627" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747950029;
+	cv=pass; b=mQ21N8LyEWcbUra8Fs1yFh9CFlBackrfJBrYhM+dB18UAo8nEnPCCCn4MawJHKy3RbKKJLGUzoSxviDMFFjHzJ0mHl8M04nG4XuteKOBcQgFoAVuRVLup2C/S5MKPY9ckk/5Vrx+Yrxz+pwvGg6N33wVWIF9rXdltXxGxoEMP0tDlamD2jaZzx6PCE9+caH7L6XqXYbtrJ316gpTkQftzVZ1vEOVjgZIZuvLLen5x8xoOM1Jg275p545uMKeTdPxc2Nd40H34uIelBEPbNIwbkKun1yed6V+dOAYht2HPMrDpVln2V7iS1LTIysJMXbPuxD6/rBd2MQfG7Etkpe5Ig==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1747950029; c=relaxed/relaxed;
+	bh=/oNutAxfbWY+KuC1i5OY9ah8WT3qfASDBeUMTwlm7kY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=dHJGq1zUkHXfel9glPXg+7mVPcG6zBS5Irfk3ozzII9r/IfGdwjIMAd3i76TzcFkbVfLasQuOAabrEKDV4pzYH858eEyOwLrQxxqsZKHh0hXc1iAzODHZAD5WKQ40jZrGzkAB6xt2Qxk1tqfa97+4rDNB56NCcj3s+nQtCTH74cKBYaasMvgi4eaL4jyAWYVhFytSCmmSu7WvRb1nibrp7uHg3AQjfabRRTN+MmA0WNPBGc+8HoHNHaOcNmo5xXRAjDVhyfcCAzcu4eySyAkTOIbDp1/HsrRhMKWttrv4m/NQJGjPAe/TIupnrp7YXqAP5aHmMK8UCHbMk+yaK9hQA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=GOL6UWxY; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:260e::627; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=puIi8/YX;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=GOL6UWxY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oss.qualcomm.com (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=dmitry.baryshkov@oss.qualcomm.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 2486 seconds by postgrey-1.37 at boromir; Thu, 22 May 2025 23:19:15 AEST
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:260e::627; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on20627.outbound.protection.outlook.com [IPv6:2a01:111:f403:260e::627])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b385H750Tz305M
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 23:19:14 +1000 (AEST)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54M7Oxlv021020
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 12:37:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=RgX9Aci2OKy/LHgxiHnopths
-	wLGl49EW6vrJhQF5Sd4=; b=puIi8/YXySjnaRhqdPF6arFGXrN64CFKlgec9+hh
-	yazluQo/TWc0lbpIj5odU7MUowdsNeEbFfK5csRrlO3C0EEFxId7eNo2CawsvJnZ
-	PTIOa8jzHsTkAenPYyRBUnBPsa7pvvNLyvf7T6hWxZCFzVqh/eKEEgepS0VGDcna
-	G8U2mZR0m3OYEZFrFk78u0L+N7rS1Jpb6elMICfZ1AdRzNVMlKr5tA9RT+E4VNtX
-	Srz+XlZbxjppxFXyMzBSpx029AEjLf5t/3+r1XP/SXtTmp2gjk84m6fTsazCuRMt
-	Y5npPMV2il3EgMdInXJaV/+Yz9ulQ52+xwmoyVDXNrZcEQ==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46s9pb4nsj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 12:37:45 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c5e2872e57so1410788885a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 05:37:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747917464; x=1748522264;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RgX9Aci2OKy/LHgxiHnopthswLGl49EW6vrJhQF5Sd4=;
-        b=bs0zW5LGoIw9jZf1rqCF4USdJsxHgKkrxUwvBogeI4sU/IaOOev4WqGsx4BHOzIry7
-         WwdaJYnDRldOFRBfpFebenDZbRs4pSYiLit8H1cV+vX4JDWrkfRgroyYvnXU7vnBPcGz
-         Gv4k2rnmkdpK+MuxASRD+q9asS9oqTuX54REVP8Yz4a74C5BRWOz/L4abl1GE2YO2i/h
-         QmNoaq9pQ3nWVSoOkNA2IuCY++2ZeudJ8wsMME1pXUdk4yxArcDxo3zchVhnDLExeEwI
-         DYKC9CKoSHsTdzbxfhIKCPD3hs9JpedERoMzyNVRViNANjuBbZrXjTA7e2XqMppDE5FQ
-         4Dog==
-X-Forwarded-Encrypted: i=1; AJvYcCWkzTyEQ+yvbge3wzHqhFqVQEI6MGz1/P3GSCrVtnfSTExlDlQ/u/7Z1SrpJwiJDJuxGnKol0YpLsEWSN4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxTAHbg9mbREVSsZzmIyPdQI56DYI18BnfbkAi7S9WbVB4rde9o
-	SJAE04UemEWiK8/Uncl3lPEeRrsmFp3Xoi7vzPaIQVrMVxp2Zf97jKe7Ftv6+3gugrlE1hC/hHL
-	6vCWwCeOrfbVa7o9azjcvKaItHDk+te+2FLmJq2cKWxXYP2bL8g+0b/vDPtx1qF13gNLC
-X-Gm-Gg: ASbGnctNejb+9DqYwixmNA38+C3osQU6unXM54+1CAh/Xe4Ji2MRgWUS2H2zVQfYagv
-	seNmbXi1+KI2vQnj3stRLJIge8gFZd/3X1bPebe5KMqX6Q/5b9uWf3zrpUM2ExMXFPgD6rFNgL3
-	lpDFPCKQHtG5B/X33YCnAOU/g5phYuQTPC2LPFTnR+mNYG7IXCZVeC5UiFqvIk2nj8JtrkhJzvD
-	WBXKk9MJCUin0W+opIDmYzkbxy2JZx+krEcT5UyICN8U0WmqqyMiqg4bcq2NrM0MjCXxSnYr0DR
-	IDl0FamWKuAv/fgVhYRKnhE3GmdqiWrup3XVPy4UfiUBeHSubzhjC9Q/1MwPQWrm9CluY/JZsEg
-	=
-X-Received: by 2002:a05:620a:4013:b0:7ca:f447:c676 with SMTP id af79cd13be357-7cd467a017dmr3460590685a.43.1747917463767;
-        Thu, 22 May 2025 05:37:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEuK9ZYaNS9i+Q5elNYnjF85wlG4E7W2PQcAkgZfLcHHNu2rPiTZal61BKORpuvgC6jlMqV/w==
-X-Received: by 2002:a05:620a:4013:b0:7ca:f447:c676 with SMTP id af79cd13be357-7cd467a017dmr3460586985a.43.1747917463368;
-        Thu, 22 May 2025 05:37:43 -0700 (PDT)
-Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--7a1.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::7a1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e702a289sm3392445e87.163.2025.05.22.05.37.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 05:37:42 -0700 (PDT)
-Date: Thu, 22 May 2025 15:37:40 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Ai Chao <aichao@kylinos.cn>
-Cc: perex@perex.cz, tiwai@suse.com, johannes@sipsolutions.net,
-        kuninori.morimoto.gx@renesas.com, lgirdwood@gmail.com,
-        broonie@kernel.org, jbrunet@baylibre.com, neil.armstrong@linaro.org,
-        khilman@baylibre.com, martin.blumenstingl@googlemail.com,
-        shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com,
-        nicoleotsuka@gmail.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
-        srinivas.kandagatla@linaro.org, linux-sound@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-renesas-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, imx@lists.linux.dev,
-        kernel@pengutronix.de, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] ASoC: qcom: Use helper function
- for_each_child_of_node_scoped()
-Message-ID: <jp6lxxm3httbz7ygu7bj3xju4l7jnnhvbpaicb36ju4hyxpb2o@4lhl7xzif6qo>
-References: <20250522050300.519244-1-aichao@kylinos.cn>
- <20250522050300.519244-7-aichao@kylinos.cn>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3MCb6BVWz2yr4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 07:40:27 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=C2TIziRbxcUWbE4s75W+Xar2kS702tMiNLPR/LSSgvpqpB5TJ4DL4lCiWCYSc6qJWJ1ZaVVLia1u+H4nmyt24NtbHTiQgh4oHzD/qLL3gp9jH0E7opzLi2RF5yGFvjAzL3N/IT5E/NYPklcbXpVA5Y+wSxgj+opUT4OGYxHi4NbXBfQ2XX2fZhI24glNGFyZqMcXJhZBDOmuYCWRaPtm4UPcubceNffFkiNDJi/7iFpfDft5APtumozSRmVwPEG37upyIY2MJbegpM+puxbjPc9lwB5dYCZjI9eOkwC/xbct86iXOI5NE2FPBEITB3vwfVzfl0BVKaiQLV+4X00M5A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/oNutAxfbWY+KuC1i5OY9ah8WT3qfASDBeUMTwlm7kY=;
+ b=MXCKa/PDh6f4SFXf+TCpMrp9xHF69J2Nf1IgnQ1mzu4cNAjZK/8vF0JKBvhGb0uegKnjjxCb8niRNtTlXEWcLPw3sh9bxPC48laj8uAPmAnkYpEWTNw6nxrgTDSXVqtGPQEU+xKXKExsY2fmR7ljPGfYsduhtpsMHh3h8Mv3f7b+ZI5/yVy5SGezZjss5w37FhBps943zbakX9pRt4ySXw46QcaLDEMsPEMvtnhadBI7UgKMqdD1+/rmzudGCLkSyWxH8L4OLQ+ylZ3/zu44Sl4JR1z2eX7rhuu6Z6PVYto+bT9umRytI9aUGFFJ3bjdihAtMS+IvltMa9HJ3/VpcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/oNutAxfbWY+KuC1i5OY9ah8WT3qfASDBeUMTwlm7kY=;
+ b=GOL6UWxYyviV3Lsopn0iIIMN/2wl093z/eEqmF51bnywrtDj0qbpgbPLxWkyZGjfi9rRt+Iu3+1SE5oIP1GlRSzg0PXqFsdf0xpb2pzzcLa8dFP7jS7B2FyuZHLa64qh0Ktt5xhfX/4z6796QVvxJiLH8gsNfRLNuQAQRA+jt1Ko2L2zpkTtqQokPFdcKJpKTlA4rFfZB2yaQM8cFZazZnsKOmyb1tZqvSiLcsNj/ebmKhEWH6DmCu5y/2KIxpihzcZn5KMP3IgHgznEN/PkyITvtfJyHwejK8fBw0dxukJ4RIs0np+lWm0sbSojnQrYCfwt4gCnjoYKibKbstJxmg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB7587.eurprd04.prod.outlook.com (2603:10a6:20b:2d4::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.31; Thu, 22 May
+ 2025 21:40:06 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8746.030; Thu, 22 May 2025
+ 21:40:06 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:FREESCALE SOC DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: soc: add vf610 reset controller
+Date: Thu, 22 May 2025 17:39:50 -0400
+Message-Id: <20250522213951.506019-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH7P220CA0146.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:510:327::32) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -110,120 +84,151 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250522050300.519244-7-aichao@kylinos.cn>
-X-Authority-Analysis: v=2.4 cv=WJl/XmsR c=1 sm=1 tr=0 ts=682f1a99 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=dt9VzEwgFbYA:10 a=rlxKSa1xbkCyiMC8iTsA:9 a=CjuIK1q_8ugA:10
- a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-ORIG-GUID: Nl3nAFtlmbENlwxh8-bvVePCndq9gf9v
-X-Proofpoint-GUID: Nl3nAFtlmbENlwxh8-bvVePCndq9gf9v
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTIyMDEyNyBTYWx0ZWRfX1f9beOf0CTaX
- lpsFFjbl3dmnECPLWCr/d6/axFSjd4nPRV4SHBEWLbUITF+bnXA7AThIrAAlfqEeRFsqggyId4x
- lsSuXaZH3wOh06QjMgtPFes2XAr4dIA7P/L7FLJv7pbMamTFAX9lWUP8ZvFN1rQ6g9b8k1ouOez
- +nl7NGSsOlCcyGeDo0nJ//tXFsqObAKqJE/kUw3bIwKtbmTh4KW1jvg7wD9EuPBWRq8WTRum6SB
- zyMs7jIglsSMiGodaUXY8N/UR9wPYcrrR3i+NBJKLLK7pvKZiXvq43l5Qoms9RS86oFbQSvd6pG
- ATNinAUUwuWA93KeL3Y2T+1hc/MFBNzfv8KfZ5kb5OAjpwECDPxScUbP6B9hvHUpmkwj6OaeYg9
- wb6Gi1ji9fY8Y9+kLZQvDJiCzND5O20lLdolgqBMmRmy8rqFigH+oOC4EN7B8Uw8wZB5Vp+V
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-22_06,2025-05-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 lowpriorityscore=0 clxscore=1011 suspectscore=0 bulkscore=0
- malwarescore=0 impostorscore=0 mlxscore=0 adultscore=0 phishscore=0
- mlxlogscore=928 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505160000 definitions=main-2505220127
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB7587:EE_
+X-MS-Office365-Filtering-Correlation-Id: f8b9ecd4-45d0-47e7-4a00-08dd997937c8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?CqseKHmJUs8mTVAUJ346SOX/KQS9DRwsgUhCzwKTp9AJ2HIAHteDgiWI1qkQ?=
+ =?us-ascii?Q?hpiuAEsJX9UGNv2YXeeH5n+tjWB4tNKNhfRyM+2fjF+mq4xgSTrs86tBlkhy?=
+ =?us-ascii?Q?3eKjHdkJ32riPhkep5Txi4HVUeeBfjFlRxO4Y39fxn9uXi+OliYfTVj/2uu2?=
+ =?us-ascii?Q?siT/Aey4r2h1GcUsdAg2G1Iu6DHQmBxff8OfSbTBroZNqv9Efi7ResuYNIMl?=
+ =?us-ascii?Q?o0G7fAr9+btN2WqU6DkvGAKgAwuQzQTHvqeK5Fs4TXLSP03WaXYpHpWS8mlI?=
+ =?us-ascii?Q?0BuZgYZtbwMz3ykTwSguYx5vsskXYi9jHRV+28p5AoTxEaVnEdAy7QCIewTX?=
+ =?us-ascii?Q?PGhn45nP8nDWozaaGv1xICcRyDlpf/Q5ZIo0WhKRBjacL1D26thOQBKMK0LW?=
+ =?us-ascii?Q?/6V/Qp63VDlmcIMFLaN0LODqrxE3rGNLp4eXJbO4U08hqdigfXsg+Z3k/Qa7?=
+ =?us-ascii?Q?J9wqmQJ+zLdQcbEnkbwpF1h65B4N2tvMPD7u1gEWrsYCOINYwSypWwBuoGfR?=
+ =?us-ascii?Q?3Tke6psFTWV/zCF1ooIHha1D/71ydLWKEv3eVa6u44vzuRjf8O16pJFVVmx+?=
+ =?us-ascii?Q?RAQkpHdcKn53AY+XY4AXtTmCeGoEAAu455avlzIwmaY8qh/Iq5wX4VcHy1vY?=
+ =?us-ascii?Q?kZEdwtRvVhngoLjENnfF/zZ/Ee/DoXpqdgT3WbiV6CuFf980+xRTylBbxX+X?=
+ =?us-ascii?Q?saajhbTKdvCSzk50Wtlwjdp4X8aNKSNZ3KTtfiCHwXdBUJ+KALHC6Tu9XlhV?=
+ =?us-ascii?Q?yl0cXCaVJuM9xqY8MUEAk8WCcaCczhWIipfQNN/t3enppl6tFcZmAEgnUppt?=
+ =?us-ascii?Q?pS822y2WAou7SG/jyu+uJGUNK+V//an84cCyqW2xqWbccNKjmx5suw5ItA2Y?=
+ =?us-ascii?Q?t0BAvwSWQQflk/4d3uEi4036eREwNyMQZryMEQS4iMQso7htq09AiBNMa6hw?=
+ =?us-ascii?Q?0Otd1IZtO3i/bjy5IkMzwKjXnpPtsMAu/k4mlyfQHGpqIZb5iikkCB7tHBcH?=
+ =?us-ascii?Q?w+Piv9NyaJCkq2JkqSe4O8Zqpr45+wrSvsAyMFY4XtlPRjvO6j0is1RSR1Z/?=
+ =?us-ascii?Q?OB9OhfJHiQ7GKpTmltcdj2PFHsPx2JAxaxP8wtZrEpD1U8lc6NLiVYUbkFVb?=
+ =?us-ascii?Q?0kRSxeY+5VBvC7HqT6wJzfkRg670fGoFJGZAvMAE0PTkWJzEfHayl9iE32bn?=
+ =?us-ascii?Q?B4bxINdNKFMF3TDTRf9avSh4K9R6oSBr7GiR8NeSeAE1rf6rJQ7ABJPSJ+9x?=
+ =?us-ascii?Q?U56xfh7Pn7uHt1CoTama93CeQ2BECb8biffYS0t75seHKXJgQtgU1HUwGk7p?=
+ =?us-ascii?Q?d+cspLLx3B8Hy9GVELSH500UHAVN3s+Zw2idfDSDqVHEt9lDQpmymai5TxJ4?=
+ =?us-ascii?Q?5mQmHT3OYZezxy2t3NEWq9pr7gwqrtKKZ+/OhFdFUTn1SSk/fAcyBTHDOCtL?=
+ =?us-ascii?Q?TDTvTLiwuoo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?HE1kA8bHlrR1WqzK6ZdDM02VY39xa/sjihzYVtwpNNVjNS2U/BZeSy41IuB+?=
+ =?us-ascii?Q?oAllUHLsQoixmuIFIlNXUjGWNF3XYU3h0YMHf/WQ78h1yGoPV7GQntSTx+wQ?=
+ =?us-ascii?Q?8POUMRuTNI8ecCyEdAqF8Af7Rp4OvjTl0LQTBQo5KW9ZHAsVEsxFvcPlanTx?=
+ =?us-ascii?Q?177epHnGV/mVSvTGJ0ATWlUfqa+jpFUWHqcckFghEOBVuFiuQeWD7OkciGT2?=
+ =?us-ascii?Q?jYsgdAiG9WigSqN+shxs/f3vAJVG8g4/G17JewY8ighP+6dnt4Zheri+go+E?=
+ =?us-ascii?Q?VIi9D4tKXtbqAlKfzZivhKSkzH815JLKiFl4YllKGryI+W7Vd9ybR7+PWOKd?=
+ =?us-ascii?Q?gv/wUcvK2gJuHKF1ZuQazgz1eHV4vNr2nMt4DDbB2v7TrQEn3IvfYhjcFmMB?=
+ =?us-ascii?Q?nJDuVp5UvXyaQ5ZgPbz84UamBu24SGKDVtOqSq+k1TR1PtIyHVY+Hjgwl/fM?=
+ =?us-ascii?Q?LISldkMPoQkhw21m98T40rHjAVtSNHPmMTyz8PSt4RKHolcmDuU04COKPx8n?=
+ =?us-ascii?Q?lxU9YGwaI0oo/zXPqmmMaM+lQiM8rxgKLBsx+4UVHzteSM0yG1PkNKTaIwcD?=
+ =?us-ascii?Q?0OXl8KqIl8n1Zin//k+BB7scViGxr+rFT3R1Ls/Ae3XdkOlzVpI/mvALPoYb?=
+ =?us-ascii?Q?v89f8bOuto1gmv7TtlJwZ4Ga8zAjy03S7HUMc+a/1BC+kEkm+/1VCwBq0DEy?=
+ =?us-ascii?Q?EJ6kdbWd7olG9mZqSAat1yMKBCiiE3dn28AROSzQEw7mHyXC+X6HQk5mqX8V?=
+ =?us-ascii?Q?eFE0/hlJmeLkI7b0LAdqHg6diVoTKy67G6bileAeVh045Eab1pxfuj/2a2qQ?=
+ =?us-ascii?Q?zbfxoVke7O5I07TfA09gi4pWGgQWf1UL+gQbxXo9Xj6uu8gFHYepHwS3RCqc?=
+ =?us-ascii?Q?mPBi8yFZlOTk8MRRrMCQPR7Q+jpiEXCMi36esDfUtt5nusK9J2U2FmZDYeKP?=
+ =?us-ascii?Q?EetL+4+XYSYscBxatyKFSCKj1UwGW/QzeD4mismhMtMxvp06GanvWxE5Wqu9?=
+ =?us-ascii?Q?DZ7jbMiNpAi/v43bOvKeD0Z1Xe5RDMMfaw0Qv4IwXC6EdqDpYiOPsTlYIoDJ?=
+ =?us-ascii?Q?NxqyPqRKQtBfpBTCWyUlZx4yJQqivtjnXL8i7lkFnqQdcJdcxC29FUN+40Io?=
+ =?us-ascii?Q?N6SJj0P+Fxri6S4zeALVVuSvcDRGkxEZ2mtahTetUsd1rSsGxiEObX0WTFC/?=
+ =?us-ascii?Q?T5/JvgQPDJuhkRlC99Z/6PtkMpNFgqHYZbxpkgycAzBTWjbaAnl3SrpS4p2R?=
+ =?us-ascii?Q?Mss7kTzxs5jFj/kpytQncWD0DZe13sF/lbMrWFu8dET5YGQXqEwZB8zUE7fl?=
+ =?us-ascii?Q?zCLPHcQ3H/9gMKT4+IRtWM76LZlP/ebkZk8C6eGcVpqKLNcp48Z78bCGc2gb?=
+ =?us-ascii?Q?CPBBI8f2A7TDGHmHsTN6zhe/jHOjk5Qdq3uyiyeR2uWmjDoqFSaKG7y6NUB5?=
+ =?us-ascii?Q?2wx0jw15KdxdyfoYfNbvrZg3rfW7wvOwfchTgASX746LgmDTt9HB1jcz9JYK?=
+ =?us-ascii?Q?4VxMbfHjUK+oD54tJ1iVxJNLlUCy++7VwWUDKL6828B9W4R5O1bvsZ9COqOs?=
+ =?us-ascii?Q?EX+BmqvYy/F23KGiFXQ=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8b9ecd4-45d0-47e7-4a00-08dd997937c8
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2025 21:40:06.6957
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: c1BQR8V5t7isRhgtrCtnC5esUebcPfutbZAsxjJhtEVZzFvESIkuMhnlcZ4Dd7zRxVx3EqOE9bdHaAamRRLK8Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7587
+X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, May 22, 2025 at 01:02:59PM +0800, Ai Chao wrote:
-> The for_each_child_of_node_scoped() helper provides a scope-based
-> clean-up functionality to put the device_node automatically, and
-> as such, there is no need to call of_node_put() directly.
+Add vf610 reset controller, which used to reboot system to fix below
+CHECK_DTB warnings:
 
-There are no calls to of_node_put() in the commit. So the commit message
-is incorrect / not-applicable.
+arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e000:
+    failed to match any schema with compatible: ['fsl,vf610-src', 'syscon']
 
-> 
-> Thus, use this helper to simplify the code.
-> 
-> Signed-off-by: Ai Chao <aichao@kylinos.cn>
-> ---
->  sound/soc/qcom/lpass-cpu.c       | 3 +--
->  sound/soc/qcom/qdsp6/q6afe-dai.c | 3 +--
->  sound/soc/qcom/qdsp6/q6asm-dai.c | 4 +---
->  3 files changed, 3 insertions(+), 7 deletions(-)
-> 
-> diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
-> index 242bc16da36d..62f49fe46273 100644
-> --- a/sound/soc/qcom/lpass-cpu.c
-> +++ b/sound/soc/qcom/lpass-cpu.c
-> @@ -1046,7 +1046,6 @@ static unsigned int of_lpass_cpu_parse_sd_lines(struct device *dev,
->  static void of_lpass_cpu_parse_dai_data(struct device *dev,
->  					struct lpass_data *data)
->  {
-> -	struct device_node *node;
->  	int ret, i, id;
->  
->  	/* Allow all channels by default for backwards compatibility */
-> @@ -1056,7 +1055,7 @@ static void of_lpass_cpu_parse_dai_data(struct device *dev,
->  		data->mi2s_capture_sd_mode[id] = LPAIF_I2SCTL_MODE_8CH;
->  	}
->  
-> -	for_each_child_of_node(dev->of_node, node) {
-> +	for_each_child_of_node_scoped(dev->of_node, node) {
->  		ret = of_property_read_u32(node, "reg", &id);
->  		if (ret || id < 0) {
->  			dev_err(dev, "valid dai id not found: %d\n", ret);
-> diff --git a/sound/soc/qcom/qdsp6/q6afe-dai.c b/sound/soc/qcom/qdsp6/q6afe-dai.c
-> index 7d9628cda875..64735f2adf8f 100644
-> --- a/sound/soc/qcom/qdsp6/q6afe-dai.c
-> +++ b/sound/soc/qcom/qdsp6/q6afe-dai.c
-> @@ -962,10 +962,9 @@ static const struct snd_soc_component_driver q6afe_dai_component = {
->  static void of_q6afe_parse_dai_data(struct device *dev,
->  				    struct q6afe_dai_data *data)
->  {
-> -	struct device_node *node;
->  	int ret;
->  
-> -	for_each_child_of_node(dev->of_node, node) {
-> +	for_each_child_of_node_scoped(dev->of_node, node) {
->  		unsigned int lines[Q6AFE_MAX_MI2S_LINES];
->  		struct q6afe_dai_priv_data *priv;
->  		int id, i, num_lines;
-> diff --git a/sound/soc/qcom/qdsp6/q6asm-dai.c b/sound/soc/qcom/qdsp6/q6asm-dai.c
-> index a400c9a31fea..d7680dd3a3bb 100644
-> --- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-> +++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-> @@ -1236,10 +1236,8 @@ static int of_q6asm_parse_dai_data(struct device *dev,
->  {
->  	struct snd_soc_dai_driver *dai_drv;
->  	struct snd_soc_pcm_stream empty_stream;
-> -	struct device_node *node;
->  	int ret, id, dir, idx = 0;
->  
-> -
->  	pdata->num_dais = of_get_child_count(dev->of_node);
->  	if (!pdata->num_dais) {
->  		dev_err(dev, "No dais found in DT\n");
-> @@ -1253,7 +1251,7 @@ static int of_q6asm_parse_dai_data(struct device *dev,
->  
->  	memset(&empty_stream, 0, sizeof(empty_stream));
->  
-> -	for_each_child_of_node(dev->of_node, node) {
-> +	for_each_child_of_node_scoped(dev->of_node, node) {
->  		ret = of_property_read_u32(node, "reg", &id);
->  		if (ret || id >= MAX_SESSIONS || id < 0) {
->  			dev_err(dev, "valid dai id not found:%d\n", ret);
-> -- 
-> 2.47.1
-> 
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../bindings/soc/fsl/fsl,vf610-src.yaml       | 46 +++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
 
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
+new file mode 100644
+index 0000000000000..4c92a5e4892bf
+--- /dev/null
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
+@@ -0,0 +1,46 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas//soc/fsl/fsl,vf610-src.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale vf610 System Reset Controller
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++description:
++  The System Reset Controller (SRC) generates the resets for the device. The
++  functional reset sources are programmable as either reset or interrupt. The
++  block also generates interrupts for various device events.
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - fsl,vf610-src
++      - const: syscon
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    reset@4006e000 {
++        compatible = "fsl,vf610-src", "syscon";
++        reg = <0x4006e000 0x1000>;
++        interrupts = <96 IRQ_TYPE_LEVEL_HIGH>;
++    };
++
 -- 
-With best wishes
-Dmitry
+2.34.1
+
 
