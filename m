@@ -1,73 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-8858-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8859-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FF1AC035D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 06:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B09AC03B9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 07:04:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b2wRL6Pwgz2yds;
-	Thu, 22 May 2025 14:34:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b2x6L4pV7z2yfT;
+	Thu, 22 May 2025 15:04:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747888446;
-	cv=none; b=TjpVTX+bK3kczl1Ia5Q6SipB80DWtr7QVjOA36GwTthOTEIp1+YrLgp52CbAnZhkqzwTlx1VxRF7iXN+7mKLE2IdIvJrm0cmLr9rhg5J4Yg5TREB0lRpHfPuClLJUw4bAM0vK6NEylmDT3FADkoyuzs0u+XaVwbYd8qDbTZJiRDAQT+Iqg/cMAbh1VPibps9cmG1hcLboXTpmW7ND/azF4ZSQCrjedDM+qm3qWxqglNGBf4Fmt0w1PtmfGIA2qiWcDYHJ4AfjsR52Ik75OebD2oWFrzWPkp/KFikXtO+9B2NMDuUFPIvBsu6kSCBSpGSp6DKW1Zg5vlngCACz9QIIQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747890266;
+	cv=none; b=QI0C6t58Vme2TUxR1+mElPlQBBrIAJAx60AaYGVsSQ1HLYUsaW65NAw+dpz91QcbsQfA0NalkV97sUZSrYlyWeRPI+Em4M3iVS6PdZ1Bc36D6/b2k2RBgn2VP0qK0fQIzN8if98SbQzO33okncxEH1whAfV7CAn4ow9alBQOJcqNWv4GNjW6WKimCQuOHN0un+THKVLMUVbK6jUYXfLLv1DGfC6EeBS5AGAQ6upSEopbH90y1XXp/w1cRViuJs5OOBBYNSLzccyYNF0K4R7W653+TccUcTIywqPmf7zkK0w7ugx1aMMaLEuQWN0pzT3ZEd5SfKwWVGSOas8zaF9Y7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747888446; c=relaxed/relaxed;
-	bh=zGSjt2B4kdRgmiN7MAo+TNRq0i1c5+NAKdyEdD/A8Cw=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=MsZs2Jg/NrbyLSilMTkVu8msjVMSZ33u1W7WRYEIyVNumAyKsF4i37o8XfYtYtoyts92wjk4bpJN3WTC5m/nRntVu6kOTGfh79q+TUBYzMPR6W9IbJvkFLgBYcZorDlR2gkN6sDW2vFNg50p5NzpMe6FPdwr9XdjBEFoaMb8NtNU2B7tFj7sGkgJ2/XChyQZXLzPBiL8m3EfAbMx5+qzjwYv4Wi4tk9MhgxRo03qQU6rIHj9rgqmEM5ktN4I/EfseWpz9zvq0QjE7LsVcuda12etCNoSXlzROfiNOyMlQsgLdRggsfpkQlegBAeouKG37OVjsrWyWk8MKPTtxgnRmQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P2zIn/SX; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P2zIn/SX;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1747890266; c=relaxed/relaxed;
+	bh=HRymduQvhKNi/uxrAqJFaSambOisWpnPBve8rPSHuJE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EkxijDGVPouyBbzF+DBUVe1P2gPIHffYK8uiUzFRQaUHkyReX1/6wh/1f9SLg5C00+3cek8H81QGHJQ7U7VJE3EcJkmZAqKBYXzpTPsaavANi9RxGHF2P4nTJtk3MVKoKUDo6geUlj0MV67VjA+LvqD3rg37qT6eVBKUjGpUBUIghJrSHbN6kCtZNRGrhFTHCumyClsV1pO2PxdiUBGZ9KIHWU3QnioSWzK2QtOqNR34H+5T6YkkQksUPH7gjcq0wFnZdyDrdNe66tnXHqaWmBWFk7cte64G9AgRy/3dlw+qrmKD5/N4IqAzYv+kRrfOAQQeSwgnajW6jsazGe9M0g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=aichao@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=aichao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2wRJ46ZFz2yZN
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 14:34:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747888444; x=1779424444;
-  h=date:from:to:cc:subject:message-id;
-  bh=nLo1hvAEQvBLqaAUxZHkJ3DBaNPJOA/BIc18NjynLu0=;
-  b=P2zIn/SX/birUhuRzhJZSevYnCRLa23bvwVHwU6uX2LxgtTw0oF0NOSl
-   QH/s37bkDkQk/cKOtIwGZLiDMB6Ii2JUniox4nVe53V0rZx3ZaPMN1f9l
-   l2UjuTCir947eG6xPy5C15//qJDgvSGaKJ2jPbV1Pz9ZLSqxjx3tebMll
-   MAhc0QQcdt9gt2G0Wy1VtWbDPOxVRq4iP/gyvD/qYyT2pgVf+ivVW1yux
-   HqmtK3TREPLZobtS45nAXUIC8Pqn/lBa+rLCpSB68OwBQpMp2T32ax9Ha
-   0hBCxisaMSoE02wAQNazfodH0d/Ow1eMntJZsgkiauKZ/ZiQeDzBbY6bT
-   Q==;
-X-CSE-ConnectionGUID: sJE62Aw4StK4jFU7gyaAFA==
-X-CSE-MsgGUID: A7NAWh3NRXO6CkLz7NNw2g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11440"; a="49998428"
-X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; 
-   d="scan'208";a="49998428"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 21:33:59 -0700
-X-CSE-ConnectionGUID: /jDeTTPNSkC1y4S8HTb+IQ==
-X-CSE-MsgGUID: eMf3fiAkT0qWr5xUPA8aAQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,305,1739865600"; 
-   d="scan'208";a="177560726"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 21 May 2025 21:33:58 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uHxcx-000Oua-2w;
-	Thu, 22 May 2025 04:33:55 +0000
-Date: Thu, 22 May 2025 12:33:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 208905bf2888c8ad378e62d6cc09f16d03f8f2c0
-Message-ID: <202505221215.5MFhNkIs-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b2x6K0sk6z2yZN
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 15:04:24 +1000 (AEST)
+X-UUID: 1102de3436ca11f0b29709d653e92f7d-20250522
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:caea8ce9-09dd-4521-979d-605f8377a2ce,IP:0,U
+	RL:0,TC:0,Content:36,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:36
+X-CID-META: VersionHash:6493067,CLOUDID:4791b0832b2718bd027ade75e2fe48ad,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:4|50,EDM:-3,IP:nil,UR
+	L:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,S
+	PR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 1102de3436ca11f0b29709d653e92f7d-20250522
+Received: from node4.com.cn [(10.44.16.170)] by mailgw.kylinos.cn
+	(envelope-from <aichao@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1157435395; Thu, 22 May 2025 13:03:14 +0800
+Received: from node4.com.cn (localhost [127.0.0.1])
+	by node4.com.cn (NSMail) with SMTP id DB01116003840;
+	Thu, 22 May 2025 13:03:13 +0800 (CST)
+X-ns-mid: postfix-682EB011-73870328
+Received: from kylin-pc.. (unknown [172.25.130.133])
+	by node4.com.cn (NSMail) with ESMTPA id A87ED16001CC7;
+	Thu, 22 May 2025 05:03:08 +0000 (UTC)
+From: Ai Chao <aichao@kylinos.cn>
+To: perex@perex.cz,
+	tiwai@suse.com,
+	johannes@sipsolutions.net,
+	kuninori.morimoto.gx@renesas.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	jbrunet@baylibre.com,
+	neil.armstrong@linaro.org,
+	khilman@baylibre.com,
+	martin.blumenstingl@googlemail.com,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	srinivas.kandagatla@linaro.org
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de,
+	linux-arm-msm@vger.kernel.org,
+	Ai Chao <aichao@kylinos.cn>
+Subject: [PATCH v2 0/6] Use helper function for_each_child_of_node_scoped()
+Date: Thu, 22 May 2025 13:02:53 +0800
+Message-ID: <20250522050300.519244-1-aichao@kylinos.cn>
+X-Mailer: git-send-email 2.47.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,163 +92,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
+	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 208905bf2888c8ad378e62d6cc09f16d03f8f2c0  Automatic merge of 'next' into merge (2025-05-21 09:25)
+This patch series introduces wrapper functions for_each_child_of_node_sco=
+ped().
 
-elapsed time: 1456m
+The for_each_child_of_node_scoped() helper provides a scope-based clean-u=
+p
+functionality to put the device_node automatically, and as such, there is
+no need to call of_node_put() directly.
 
-configs tested: 142
-configs skipped: 4
+Thus, use this helper to simplify the code.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Summary:
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-alpha                               defconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-14.2.0
-arc                               allnoconfig    gcc-14.2.0
-arc                              allyesconfig    gcc-14.2.0
-arc                                 defconfig    gcc-14.2.0
-arc                   randconfig-001-20250521    gcc-10.5.0
-arc                   randconfig-002-20250521    gcc-12.4.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-21
-arm                              allyesconfig    gcc-14.2.0
-arm                            dove_defconfig    gcc-14.2.0
-arm                            qcom_defconfig    clang-21
-arm                   randconfig-001-20250521    clang-21
-arm                   randconfig-002-20250521    clang-21
-arm                   randconfig-003-20250521    clang-16
-arm                   randconfig-004-20250521    clang-21
-arm64                             allnoconfig    gcc-14.2.0
-arm64                 randconfig-001-20250521    gcc-6.5.0
-arm64                 randconfig-002-20250521    gcc-6.5.0
-arm64                 randconfig-003-20250521    gcc-8.5.0
-arm64                 randconfig-004-20250521    gcc-8.5.0
-csky                              allnoconfig    gcc-14.2.0
-csky                  randconfig-001-20250521    gcc-10.5.0
-csky                  randconfig-002-20250521    gcc-12.4.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon               randconfig-001-20250521    clang-20
-hexagon               randconfig-002-20250521    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250521    clang-20
-i386        buildonly-randconfig-001-20250522    clang-20
-i386        buildonly-randconfig-002-20250521    clang-20
-i386        buildonly-randconfig-002-20250522    gcc-12
-i386        buildonly-randconfig-003-20250521    gcc-12
-i386        buildonly-randconfig-003-20250522    gcc-12
-i386        buildonly-randconfig-004-20250521    clang-20
-i386        buildonly-randconfig-004-20250522    gcc-12
-i386        buildonly-randconfig-005-20250521    gcc-12
-i386        buildonly-randconfig-005-20250522    gcc-12
-i386        buildonly-randconfig-006-20250521    gcc-12
-i386        buildonly-randconfig-006-20250522    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch             randconfig-001-20250521    gcc-15.1.0
-loongarch             randconfig-002-20250521    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-m68k                        m5307c3_defconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-mips                      pic32mzda_defconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250521    gcc-14.2.0
-nios2                 randconfig-002-20250521    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                              defconfig    gcc-14.2.0
-parisc                randconfig-001-20250521    gcc-13.3.0
-parisc                randconfig-002-20250521    gcc-11.5.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-21
-powerpc                     asp8347_defconfig    clang-21
-powerpc                       ebony_defconfig    clang-21
-powerpc                     ep8248e_defconfig    gcc-14.2.0
-powerpc                          g5_defconfig    gcc-14.2.0
-powerpc                      katmai_defconfig    clang-21
-powerpc                 linkstation_defconfig    clang-20
-powerpc                   motionpro_defconfig    clang-21
-powerpc                    mvme5100_defconfig    gcc-14.2.0
-powerpc               randconfig-001-20250521    clang-21
-powerpc               randconfig-002-20250521    gcc-8.5.0
-powerpc               randconfig-003-20250521    gcc-6.5.0
-powerpc                        warp_defconfig    gcc-14.2.0
-powerpc64             randconfig-001-20250521    gcc-8.5.0
-powerpc64             randconfig-002-20250521    gcc-6.5.0
-powerpc64             randconfig-003-20250521    clang-21
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-21
-riscv                 randconfig-001-20250521    gcc-8.5.0
-riscv                 randconfig-002-20250521    gcc-8.5.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-14.2.0
-s390                                defconfig    clang-21
-s390                  randconfig-001-20250521    clang-20
-s390                  randconfig-002-20250521    clang-21
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                         apsh4a3a_defconfig    gcc-14.2.0
-sh                                  defconfig    gcc-14.2.0
-sh                    randconfig-001-20250521    gcc-12.4.0
-sh                    randconfig-002-20250521    gcc-15.1.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250521    gcc-13.3.0
-sparc                 randconfig-002-20250521    gcc-13.3.0
-sparc64                             defconfig    gcc-14.2.0
-sparc64               randconfig-001-20250521    gcc-13.3.0
-sparc64               randconfig-002-20250521    gcc-13.3.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                                  defconfig    clang-21
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250521    clang-21
-um                    randconfig-002-20250521    clang-21
-um                           x86_64_defconfig    clang-21
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250521    clang-20
-x86_64      buildonly-randconfig-001-20250522    clang-20
-x86_64      buildonly-randconfig-002-20250521    clang-20
-x86_64      buildonly-randconfig-002-20250522    gcc-12
-x86_64      buildonly-randconfig-003-20250521    gcc-12
-x86_64      buildonly-randconfig-003-20250522    gcc-12
-x86_64      buildonly-randconfig-004-20250521    gcc-12
-x86_64      buildonly-randconfig-004-20250522    gcc-12
-x86_64      buildonly-randconfig-005-20250521    clang-20
-x86_64      buildonly-randconfig-005-20250522    gcc-12
-x86_64      buildonly-randconfig-006-20250521    clang-20
-x86_64      buildonly-randconfig-006-20250522    gcc-12
-x86_64                              defconfig    gcc-11
-x86_64                          rhel-9.4-rust    clang-18
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250521    gcc-15.1.0
-xtensa                randconfig-002-20250521    gcc-15.1.0
+ - Patch 1 ASoC: ppc: Use helper function for_each_child_of_node_scoped()
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+ - Patch 2 ASoC: aoa: Use helper function for_each_child_of_node_scoped()
+
+ - Patch 3 ASoC: renesas: Use helper function for_each_child_of_node_scop=
+ed()
+
+ - Patch 4 ASoC: meson: Use helper function for_each_child_of_node_scoped=
+()
+
+ - Patch 5 ASoC: imx-card: Use helper function for_each_child_of_node_sco=
+ped()
+
+ - Patch 6 ASoC: qcom: Use helper function for_each_child_of_node_scoped(=
+)
+
+---
+Changes in v2:
+ - Fix error reported by kernel test rebot
+ - Keep "node"
+---
+ sound/aoa/soundbus/i2sbus/core.c   |  5 +++--
+ sound/ppc/tumbler.c                |  5 ++---
+ sound/soc/fsl/imx-card.c           | 13 +++++------
+ sound/soc/meson/axg-card.c         |  3 +--
+ sound/soc/meson/meson-card-utils.c | 16 +++++---------
+ sound/soc/qcom/lpass-cpu.c         |  3 +--
+ sound/soc/qcom/qdsp6/q6afe-dai.c   |  3 +--
+ sound/soc/qcom/qdsp6/q6asm-dai.c   |  4 +---
+ sound/soc/renesas/rcar/core.c      | 35 ++++++++++--------------------
+ sound/soc/renesas/rcar/ctu.c       |  8 ++-----
+ sound/soc/renesas/rcar/dma.c       |  4 +---
+ sound/soc/renesas/rcar/dvc.c       |  8 ++-----
+ sound/soc/renesas/rcar/mix.c       |  8 ++-----
+ sound/soc/renesas/rcar/src.c       | 10 ++-------
+ sound/soc/renesas/rcar/ssi.c       | 18 +++++----------
+ sound/soc/renesas/rcar/ssiu.c      |  7 ++----
+ 16 files changed, 46 insertions(+), 104 deletions(-)
+
+--=20
+2.47.1
+
 
