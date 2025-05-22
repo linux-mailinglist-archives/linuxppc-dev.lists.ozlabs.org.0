@@ -1,70 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-8871-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8872-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F03CAC09FA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 12:37:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C68EAC0A76
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 22 May 2025 13:17:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b34Vs4W2sz3c4r;
-	Thu, 22 May 2025 20:37:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b35Np1mm4z3c4t;
+	Thu, 22 May 2025 21:17:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f8:242:246e::2"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747910261;
-	cv=none; b=UhvQbumz52rtDVOeY8dIzCH+ypyxcMVkmmOM4d5BnMb6X2fVlpuNyu4bcdLc06B6t895Di/o3K7vzIz7YJb9/2v/+INQbpgyVBGlFmYUeFzp34G/uD07C9HZQq6HJ1fs82ajUt+jRbet54sHCt0+pwiTiPR1CPzypEDURti60Y8KP3cak+Ma4fxUVIr1OfGHtjDyqkkbRBVv2W0tIsspmFo/B4mtRzI79wOJmNikLRwT10dxGO4CJg9ZMjmTFR4Yuo5bimIN6Pmivg77YA5rtf7EdmA1PGDF/uWB6gOrKE4rBhL6917fsk1fLCpneQBTClEbvnl3xR4ZMV0X7MmuUw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747912650;
+	cv=none; b=Eolipc7g9MMGuCTsKthtNKij7OagnPMFj5wE2vppBwgWfh6Niwqdeqq4iQnH5QEMx5qewCxF0IDYtTWvCi8MTmw1XIwmfce9Rbq6ZIxS1ARJUtLXNG0+2r6F+agG7R9Kf7bTY8wggfovurnYxPi/KyA3NbND6Ifu4tPtv2Lk/oy7bVrQShj+XS82LhzX6eyxuwCJyfouPnJyBgiqxxasOW2o6k+f53Z6YtlEro0XByNx6H1T8jMLxOlXdYpAQw3/uk/9JyyLkdQtJq9VtnDaeHyOOs/HErlqYzTTXuEXCyIAo1R+wsVCXX2s0q0lBczeala9EOP0UwdNlHQav7bzHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747910261; c=relaxed/relaxed;
-	bh=BEvqtXUoRY2MtYTRcX5uBf01lX2zWH/6+T3j+WmGUyc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=L1Q2nwx2Dxe9GtyUX0qJhoYIV1fStpry7FIHUfc6BKtq9IVZVypzf2B1jt7C7o+FJISmLk0aIymE94X42C6bp63Np17HRuJ6SxUmnDbypcCxa5l3au+yNNU7dBqx0Zk8FpQ/GUEiESwJItM+5GpLtaouyghJg50pB4KbOea+iBX+HBhJFq44uH8mukWdEfMON6XmaExnM75DxEde3ofo576ygBJRa15gx51GA1r8/3OKQP8bDIQsYFqfcW62JuP6jGYVTGcxv8hjIQ3bBnx4TDd4WwZ/Z3TmlONJASr9uc11KoGcUhq3KvPn308pCfWnmSUvAmO70Ba+XpoPwBSLgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; dkim=pass (2048-bit key; secure) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=KAbwJocx; dkim-atps=neutral; spf=pass (client-ip=2a01:4f8:242:246e::2; helo=sipsolutions.net; envelope-from=johannes@sipsolutions.net; receiver=lists.ozlabs.org) smtp.mailfrom=sipsolutions.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=KAbwJocx;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sipsolutions.net (client-ip=2a01:4f8:242:246e::2; helo=sipsolutions.net; envelope-from=johannes@sipsolutions.net; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1984 seconds by postgrey-1.37 at boromir; Thu, 22 May 2025 20:37:40 AEST
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1747912650; c=relaxed/relaxed;
+	bh=cnVDonnghmvx2b13EU8D0GGHIY1qOTfV6xANbDVpxdk=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JWcYDOECnaV8WxhIgnpFhazvXRSnP1oyiGX9fp1v7R2x5WCGKexU81TXfpIWKp9k20prbMXXIsSYItLU/4Q4GFS+ydZy22roiyGyFJ/woR0IIDlI1CkAMDq/LJOnroVjh4DdnmB5W0HL20o0Pu0xsJiwq61Sw2AcfBBGEKvA6b3Ker8XYc066OUEWY6toA46vMQmgXXkWzS5q4anvFTXaXofk1w1oo0PcU/wGyvWLNa/cX66Hmhz23Xt32k+4Nxk7vC3k2HLdz50F/mB4i9l6j+UM7csS7laFzvdzIjBCdydYvA8Mwm78u1cyFbTVTNQJgK6KPM4M/fffPDkApTETA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b34Vr1kdpz3c4Y
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 20:37:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=BEvqtXUoRY2MtYTRcX5uBf01lX2zWH/6+T3j+WmGUyc=;
-	t=1747910260; x=1749119860; b=KAbwJocxeIBQ2SXGzXgU0EAB1JaPBkBgoODlw8VWwBJwq/6
-	r3r/TFfYWUdwi832KE86P9sTYE2lWzDQbmZPqHAVzrWW+90WacqVVdjt08V6njmCCdM21SsKjAtaj
-	Ai53xbf12C12aT2gSVCTmEspkBX0EKRd1tGO4sa4uBx7rQIH79BrHO9RZDnMmROYwYJnGyobq2vP7
-	oq9GbVpejGx1QuuKZmBzU5kqBcRN3fQo7x/AjmHw/VymU3J830rwmBi9OB9xirZ7AHVSB4KJMKZkO
-	Z8Ph6VRwt6GHhmUu78wxsPFBMho9k5timcPTG7eHKqEQLm9yyu/AafJjGB54O67A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uI2mm-0000000GdCj-3E2p;
-	Thu, 22 May 2025 12:04:25 +0200
-Message-ID: <3fa189cfc0a52572008590efbf5f4ad05c81dbc6.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 2/6] ASoC: aoa: Use helper function
- for_each_child_of_node_scoped()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ai Chao <aichao@kylinos.cn>, perex@perex.cz, tiwai@suse.com, 
-	kuninori.morimoto.gx@renesas.com, lgirdwood@gmail.com, broonie@kernel.org, 
-	jbrunet@baylibre.com, neil.armstrong@linaro.org, khilman@baylibre.com, 
-	martin.blumenstingl@googlemail.com, shengjiu.wang@gmail.com,
- Xiubo.Lee@gmail.com, 	festevam@gmail.com, nicoleotsuka@gmail.com,
- shawnguo@kernel.org, 	s.hauer@pengutronix.de, srinivas.kandagatla@linaro.org
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-renesas-soc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
-	imx@lists.linux.dev, kernel@pengutronix.de, linux-arm-msm@vger.kernel.org
-Date: Thu, 22 May 2025 12:04:23 +0200
-In-Reply-To: <20250522050300.519244-3-aichao@kylinos.cn>
-References: <20250522050300.519244-1-aichao@kylinos.cn>
-	 <20250522050300.519244-3-aichao@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b35Nm4PfVz3c4Y
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 21:17:26 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b35Jv3sz3z6L5Fm;
+	Thu, 22 May 2025 19:14:07 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id DE1141402EE;
+	Thu, 22 May 2025 19:17:21 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 22 May
+ 2025 13:17:20 +0200
+Date: Thu, 22 May 2025 12:17:18 +0100
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+CC: <linux-pci@vger.kernel.org>, Jon Pan-Doh <pandoh@google.com>, "Karolina
+ Stolarek" <karolina.stolarek@oracle.com>, Weinan Liu <wnliu@google.com>,
+	Martin Petersen <martin.petersen@oracle.com>, Ben Fuller
+	<ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>, "Anil
+ Agrawal" <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>, Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Sathyanarayanan
+ Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Lukas Wunner
+	<lukas@wunner.de>, Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney"
+	<paulmck@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver
+ O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>, Keith
+ Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>, "Terry Bowman"
+	<terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>, "Dave Jiang"
+	<dave.jiang@intel.com>, <linux-kernel@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v7 15/17] PCI/AER: Ratelimit correctable and non-fatal
+ error logging
+Message-ID: <20250522121718.00005fa2@huawei.com>
+In-Reply-To: <20250521225430.GA1442014@bhelgaas>
+References: <20250521113121.000067ce@huawei.com>
+	<20250521225430.GA1442014@bhelgaas>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,28 +71,167 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 2025-05-22 at 13:02 +0800, Ai Chao wrote:
-> The for_each_child_of_node_scoped() helper provides a scope-based
-> clean-up functionality to put the device_node automatically, and
-> as such, there is no need to call of_node_put() directly.
->=20
-> Thus, use this helper to simplify the code.
+On Wed, 21 May 2025 17:54:30 -0500
+Bjorn Helgaas <helgaas@kernel.org> wrote:
 
-> -	for_each_child_of_node(dev->ofdev.dev.of_node, np) {
-> +	for_each_child_of_node_scoped(dev->ofdev.dev.of_node, np) {
->  		if (of_device_is_compatible(np, "i2sbus") ||
->  		    of_device_is_compatible(np, "i2s-modem")) {
->  			got +=3D i2sbus_add_dev(dev, control, np);
+> On Wed, May 21, 2025 at 11:31:21AM +0100, Jonathan Cameron wrote:
+> > On Tue, 20 May 2025 16:50:32 -0500
+> > Bjorn Helgaas <helgaas@kernel.org> wrote:
+> >   
+> > > From: Jon Pan-Doh <pandoh@google.com>
+> > > 
+> > > Spammy devices can flood kernel logs with AER errors and slow/stall
+> > > execution. Add per-device ratelimits for AER correctable and non-fatal
+> > > uncorrectable errors that use the kernel defaults (10 per 5s).  Logging of
+> > > fatal errors is not ratelimited.  
+> > 
+> > See below. I'm not sure that logging of fatal error should affect the rate
+> > for non fatal errors + the rate limit infrastructure kind of assumes
+> > that you only call it if you are planning to respect it's decision.
+> > 
+> > Given overall aim is to restrict rates, maybe we don't care if we sometimes
+> > throttle earlier that we might expect with a simpler separation of what
+> > is being limited.
+> > 
+> > I don't mind strongly either way.  
+> 
+> > > @@ -593,7 +593,8 @@ struct aer_err_info {
+> > >  	unsigned int id:16;
+> > >  
+> > >  	unsigned int severity:2;	/* 0:NONFATAL | 1:FATAL | 2:COR */
+> > > -	unsigned int __pad1:5;
+> > > +	unsigned int ratelimit:1;	/* 0=skip, 1=print */  
+> > 
+> > That naming is less than intuitive.  Maybe expand it to ratelimit_print or
+> > something like that.  
+> 
+> True, although it does match uses like "if (aer_ratelimit(...))"
+> 
+> I'll try ratelimit_print and see how you like it :)
+> 
+> > > +	unsigned int __pad1:4;
+> > >  	unsigned int multi_error_valid:1;
+> > >  
+> > >  	unsigned int first_error:5;
+> > > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> > > index 4f1bff0f000f..f9e684ac7878 100644
+> > > --- a/drivers/pci/pcie/aer.c
+> > > +++ b/drivers/pci/pcie/aer.c  
+> >   
+> > > @@ -815,8 +843,19 @@ EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
+> > >   */
+> > >  static int add_error_device(struct aer_err_info *e_info, struct pci_dev *dev)
+> > >  {
+> > > +	/*
+> > > +	 * Ratelimit AER log messages.  "dev" is either the source
+> > > +	 * identified by the root's Error Source ID or it has an unmasked
+> > > +	 * error logged in its own AER Capability.  If any of these devices
+> > > +	 * has not reached its ratelimit, log messages for all of them.
+> > > +	 * Messages are emitted when "e_info->ratelimit" is non-zero.
+> > > +	 *
+> > > +	 * Note that "e_info->ratelimit" was already initialized to 1 for the
+> > > +	 * ERR_FATAL case.
+> > > +	 */
+> > >  	if (e_info->error_dev_num < AER_MAX_MULTI_ERR_DEVICES) {
+> > >  		e_info->dev[e_info->error_dev_num] = pci_dev_get(dev);
+> > > +		e_info->ratelimit |= aer_ratelimit(dev, e_info->severity);  
+> > 
+> > So this is a little odd.  I think it works but there is code inside
+> > __ratelimit that I think we should not be calling for that
+> > ERROR_FATAL case (whether we should call lots of times for each
+> > device isn't obvious either but maybe that is more valid).
+> > 
+> > In the event of it already being 1 due to ERROR_FATAL you will
+> > falsely trigger a potential print from inside __ratelimit() if we
+> > were rate limited and no longer are but only skipped FATAL prints.
+> > My concern is that function is kind of assuming it's only called in
+> > cases where a rate limit decision is being made and the
+> > implementation may change in future).  
+> 
+> Hmmm.  That's pretty subtle, thanks for catching this.
+> 
+> In the light of day, ".ratelimit = fatal ? 1 : 0" looks a bit sketchy.
+> If we want to avoid ratelimiting AER_FATAL, maybe aer_ratelimit()
+> should just return 1 ("print") unconditionally in that case, without
+> calling __ratelimit():
+> 
+>   static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
+>   {
+>     struct ratelimit_state *ratelimit;
+> 
+>     if (severity == AER_FATAL)
+>       return 1;       /* AER_FATAL not ratelimited */
+> 
+>     if (severity == AER_CORRECTABLE)
+>       ratelimit = &dev->aer_info->cor_log_ratelimit;
+>     else
+>       ratelimit = &dev->aer_info->uncor_log_ratelimit;
+> 
+>     return __ratelimit(ratelimit);
+>   }
 
-Given the structure of this code, this either fixes a leak, or is wrong.
-I really don't know which of those two it is, it's been decades, but
-either way it's not a change that simply "simplif[ies] the code".
+Neat solution so go with that.
 
-johannes
+> 
+> That still leaves this question of how to deal with info->dev[] when
+> there's more than one entry, which is kind of an annoying case that
+> only happens for the native AER path.
+> 
+> I think it's because for a single AER interrupt from an RP/RCEC, we
+> collect the root info in one struct aer_err_info and scrape all the
+> downstream devices for anything interesting.  We visit each downstream
+> device and is_error_source() reads its status register, but we only
+> keep the pci_dev pointer, so aer_get_device_error_info() has to read
+> the status registers *again*.  This all seems kind of obtuse.
+> 
+> The point of the OR above in add_error_device() was to try to match up
+> RP/RCEC logging with downstream device logging so they're ratelimited
+> the same.  If we ratelimit the Error Source ID based on the RP/RCEC
+> and the details based on the downstream devices individually, they'll
+> get out of sync, so sometimes we'll print an Error Source ID and elide
+> the details and vice versa.
+> 
+> I wanted to make it so that if we log downstream details, we also log
+> the Error Source ID.  But maybe we should ratelimit downstream devices
+> individually (instead of doing this weird union) and make the RP/RCEC
+> part more explicit, e.g.,
+> 
+>   add_error_device(...)
+>   {
+>     int i = e_info->error_dev_num;
+> 
+>     e_info->dev[i] = pci_dev_get(dev);
+>     e_info->error_dev_num++;
+> 
+>     if (aer_ratelimit(dev, e_info->severity)) {
+>       e_info->root_ratelimit_print = 1;
+>       e_info->ratelimit_print[i] = 1;
+>     }
+>   }
+
+As it's a weird corner case, I don't really mind how you handle it.
+I'm not sure I grasp this last suggestion fully but can look at the full
+code if you do go with something like that.
+
+Jonathan
+
+> 
+> > https://elixir.bootlin.com/linux/v6.14.7/source/lib/ratelimit.c#L56
+> > 
+> > Maybe, 
+> > 		if (!info->ratelimit)
+> > 			e_info->ratelimit = aer_ratelimit(dev, e_info->severity);
+> > is an alternative option.
+> > That allows a multiplication factor on the rate as all device count for 1.  
+
 
