@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-8891-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8892-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2D0AC17BB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 01:25:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D470AC17BD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 01:25:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b3PW66lSQz3cCt;
-	Fri, 23 May 2025 09:24:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b3PW92B8Rz3cG8;
+	Fri, 23 May 2025 09:24:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747956242;
-	cv=none; b=lctFjUl35SCpbptgKXV7f7tpvRpi9z0c+/Kg0AbAwVQik3IGm3/2yBonKHFrKXhzebFJDQK+1ex47zRxWZl1hnaKcDK/DzZDNB5zKvGUdmoVBR6elD7xWAa+ES2rlOH7HDLAdeb1bJMyEvP4iOPJmLloGhVM6qvIZVyJzgvKrCuzHm0h4EaaDWmtdtZPGlpXkOtaFh0ji/U/5SkPXah0HJDl4Gj+PD+0VGjTTBJ6ChWp36gYEoeIGAjBexlA1injqiu7AQPWHvCHdSlBY+T3kYCjJ+IUf6YHcwLqr5MP8cEHe22QLkgDsFLrh4MoX2XjbHFZXekqrNVUPb6TodIgpw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747956245;
+	cv=none; b=Y9xQTdG/zx75gASOkI8ngZCCr9goAUwBE9NPsJggtpoHGbhwJ7qmhlM1ILQ/Qveb7xeVNWfLkj/l/zRDzOQsh06nRg/5sThfUVp7prHrLmj0IcrcLB5/gCyWWqKJZhujFK1XB0v/KCEBixs4t+w8cas6skWqEY3ih39TiKqStiW0iyOtUiuf1LB/qej+MMWZGmBMF9LC12FxIyrqdafwxUiM6S3cCVdaT0ZHNxb51TX+qCTIQJvnOW6LXH2R9mNVjGEQNYLOCqppudz7Mnjh0V8gKmpmA/vH1Kc3vdkV6kH8eZusuZnEo7RMkzfRbvhaEGKH8vZzhPMKG46xLdLGHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747956242; c=relaxed/relaxed;
-	bh=gW/xwch4N3IRS6Z0GMKV3nQezdBb0my764/4XUg7zMg=;
+	t=1747956245; c=relaxed/relaxed;
+	bh=e19Tus6HcJyij8g/0G/uljbdDqy6nEdFGLDuEmY0SA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NtMdTDQtNP2koCWXEdxyQXAwf24PMg5FWqOfcSa/M5vshTwcZi3/spiY+Rn8BlR+NCc2y5l9B3Psxln63y2vTBY8QLtwMgWSc1ybCpVdq9nBx/C+dSY6gubR8R9aXXliUURTXH9HP4mMeCAqxLUOW6o4GOfzA3sDVb+EcqNbEVrPr+9DV5b0VrBnjY9XZw5yuTlN2TRlor/ajZlb53RTdveigXYb1MYWb4xTJImHP/Qo6Kmfu4jeuVMqjmROfnh9k4cs/o9nb3pcXCbrRLjUK2egWvd17oVs+nveXb/BiIaFN63V7FhXtpqJBfulabuy0xHY42kUr980IObnPo1/vA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KFx8zZ9g; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version:Content-Type; b=oLuJe5fkVUqUeA7JNvKROA5F0HtcCTefv8JojYeNhT2LGSa3jDep7uvi/qD2QbrpzQHjfI09U8mq8KukqtvA3rSVRF5wQOvLnCGltAxl4ut3Di8KG2fu5YtAeXkZsRewysqi62U/uzb4MMQ5mT09MkLfqe+wU6h17mc/PC2GazzMycohgVF3ehxnYpyd+ueGorJrF75JZ92PxgDZ+U0nzP0Io108gEEE0Ei566DPsKY5XD9epECq87RSJKHrWtImM8Actcmjpmg7rYnqsIoFsbCkVSl9IP+qbXQc8Z/P2tpzgb89IOhbXtED/ZzaOJ526fAazxSCK/+HnElB+8E4UA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qMMQV3nY; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KFx8zZ9g;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qMMQV3nY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3PW62SpHz3cFN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 09:24:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3PW83Pmjz3cFN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 09:24:04 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C604145060;
-	Thu, 22 May 2025 23:24:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7012AC4CEE4;
-	Thu, 22 May 2025 23:24:00 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 81A8CA4F6E2;
+	Thu, 22 May 2025 23:24:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB9CBC4CEE4;
+	Thu, 22 May 2025 23:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747956240;
-	bh=vMqIejXWrlK9YxYbwyOyBG/YD596/rgWjQHdO+zCV/U=;
+	s=k20201202; t=1747956242;
+	bh=UNgXV/OmBS6XzWhwhC+kkuFi7ERITkNf7w0qVbubW7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KFx8zZ9gtzz+M+TQIukhFM31oXy1KvmvxRKSfpeVN+zdenOX4OlIJ4FGPbr0pOebp
-	 qkSbyvWrkkq9j/w6e+Qh/BR08bJnyTX1XtdLSB5HXXffRqqMvSIxUDzFy4XFKx1Xi2
-	 OCvRmNktga4eU8xbxTlChXAB9T/8J5OLOY/SR1BvkJN5Cz1FYzTg0vaRAfATp+RKnI
-	 wsh2ubsFLsue9r4++yf80kyMlXgkRKJ80CGbwoMACHcssxDh8nP5eDeFxCYExlX6Va
-	 m0v5RUX0j8fHN8bSkOq9Y5jKLCAoTGFL7Ed1gRn6jHs4qDHemLEWg2jUEmbHH7Id+R
-	 SaPaWumEZxKBw==
+	b=qMMQV3nY413SZHUGA7ZTLZm9sJPK+q0/t8R2Px72ZIoVNrFdQvWPwFFePax/+cRDX
+	 3OQ82iuVCHEa2kN4D7N+C49x+FHq7ZIu50Bvz8B34ywcczBrKa1Vw1BkHls8JaiQ5+
+	 LaMwxBn2R+nLBHsOqvxRjefRybuob14n2c/Sx1+4/GSsH/wYDc2Qm4IPFcPwVx7GZj
+	 wqUA6WwJ2sNVX2YYeYnegmid3kV36QdCqfd8FbIlnfkx5++IjzMh69c6PggeNyXbgr
+	 hLFouW59TEoBpGdufaLlgQAnT2dTAAhfDjx+ye3EImrYOUkwVYpC6++IARxc5ynyFy
+	 gqA83HpvDIWRg==
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: linux-pci@vger.kernel.org
 Cc: Jon Pan-Doh <pandoh@google.com>,
@@ -71,9 +71,9 @@ Cc: Jon Pan-Doh <pandoh@google.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH v8 10/20] PCI/AER: Update statistics before ratelimiting
-Date: Thu, 22 May 2025 18:21:16 -0500
-Message-ID: <20250522232339.1525671-11-helgaas@kernel.org>
+Subject: [PATCH v8 11/20] PCI/AER: Trace error event before ratelimiting
+Date: Thu, 22 May 2025 18:21:17 -0500
+Message-ID: <20250522232339.1525671-12-helgaas@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250522232339.1525671-1-helgaas@kernel.org>
 References: <20250522232339.1525671-1-helgaas@kernel.org>
@@ -99,61 +99,62 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Bjorn Helgaas <bhelgaas@google.com>
 
-There are two AER logging entry points:
+As with the AER statistics, we always want to emit trace events, even if
+the actual dmesg logging is rate limited.
 
-  - aer_print_error() is used by DPC (dpc_process_error()) and native AER
-    handling (aer_process_err_devices()).
-
-  - pci_print_aer() is used by GHES (aer_recover_work_func()) and CXL
-    (cxl_handle_rdport_errors())
-
-Both use __aer_print_error() to print the AER error bits.  Previously
-__aer_print_error() also incremented the AER statistics via
-pci_dev_aer_stats_incr().
-
-Call pci_dev_aer_stats_incr() early in the entry points instead of in
-__aer_print_error() so we update the statistics even if the actual printing
-of error bits is rate limited by a future change.
+Call trace_aer_event() immediately after pci_dev_aer_stats_incr() so both
+happen before ratelimiting.
 
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://patch.msgid.link/20250520215047.1350603-11-helgaas@kernel.org
+Link: https://patch.msgid.link/20250520215047.1350603-12-helgaas@kernel.org
 ---
- drivers/pci/pcie/aer.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pci/pcie/aer.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index dc5f4bebd613..53f460bb7e6c 100644
+index 53f460bb7e6c..636bcd92afa1 100644
 --- a/drivers/pci/pcie/aer.c
 +++ b/drivers/pci/pcie/aer.c
-@@ -693,7 +693,6 @@ static void __aer_print_error(struct pci_dev *dev,
- 		aer_printk(level, dev, "   [%2d] %-22s%s\n", i, errmsg,
- 				info->first_error == i ? " (First)" : "");
- 	}
--	pci_dev_aer_stats_incr(dev, info);
- }
- 
- static void aer_print_source(struct pci_dev *dev, struct aer_err_info *info,
-@@ -715,6 +714,8 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 	int id = pci_dev_id(dev);
+@@ -715,6 +715,8 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
  	const char *level;
  
-+	pci_dev_aer_stats_incr(dev, info);
-+
+ 	pci_dev_aer_stats_incr(dev, info);
++	trace_aer_event(pci_name(dev), (info->status & ~info->mask),
++			info->severity, info->tlp_header_valid, &info->tlp);
+ 
  	if (!info->status) {
  		pci_err(dev, "PCIe Bus Error: severity=%s, type=Inaccessible, (Unregistered Agent ID)\n",
- 			aer_error_severity_string[info->severity]);
-@@ -783,6 +784,8 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
- 	info.status = status;
+@@ -742,9 +744,6 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+ out:
+ 	if (info->id && info->error_dev_num > 1 && info->id == id)
+ 		pci_err(dev, "  Error of this Agent is reported first\n");
+-
+-	trace_aer_event(dev_name(&dev->dev), (info->status & ~info->mask),
+-			info->severity, info->tlp_header_valid, &info->tlp);
+ }
+ 
+ #ifdef CONFIG_ACPI_APEI_PCIEAER
+@@ -785,6 +784,8 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
  	info.mask = mask;
  
-+	pci_dev_aer_stats_incr(dev, &info);
-+
+ 	pci_dev_aer_stats_incr(dev, &info);
++	trace_aer_event(pci_name(dev), (status & ~mask),
++			aer_severity, tlp_header_valid, &aer->header_log);
+ 
  	layer = AER_GET_LAYER_ERROR(aer_severity, status);
  	agent = AER_GET_AGENT(aer_severity, status);
+@@ -800,9 +801,6 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+ 
+ 	if (tlp_header_valid)
+ 		pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
+-
+-	trace_aer_event(pci_name(dev), (status & ~mask),
+-			aer_severity, tlp_header_valid, &aer->header_log);
+ }
+ EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
  
 -- 
 2.43.0
