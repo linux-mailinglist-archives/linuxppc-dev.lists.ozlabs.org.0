@@ -1,86 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-8912-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8913-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E24AC1FAE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 11:24:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB4FDAC2047
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 11:56:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b3fqj4STmz2ysb;
-	Fri, 23 May 2025 19:24:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b3gYM262Vz2ytV;
+	Fri, 23 May 2025 19:56:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747992257;
-	cv=none; b=jQ0EB91sknHLOLjQ2JxJD+KAt+apN+LbTn5NcZpVa9un6LaRZ/gvvLMR8eMTqHlmftrM8Rd2KGjKJ+v7yT/ccVpm7CO3DDZKAMIammjxHVT+V1X2CBvAAJx5dwlEBLBJ1rXAB0bf1Kvzl4aUenudot46ef9gpeYwr3yZ596qLOihZwHxy31dDa9U8xxChB47clH+m4o7oBNNvW/FpyUXpgtf0NxNAQh5GpaGGSvnFc3HL+O9eNqd0X8cZAsr/RKVS5waNb6gG4f1Y7po/w1HXgVq/RqLUlXHjMifaaEvKWpBYQla+v/rJ7Bstu9Hknu+t9p/bPDmFqlbat6SRz/DUw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.16
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747994215;
+	cv=none; b=PXe7G5fMIqVjJAPstx2ZFKpgs8XOfrEHuVCrk6sJtthUA+vymJL6C3SyoBWZG+4KuI+/1VLFyQHdt6e3Jk8LOj9UHmKVeuBF8h5EkknmbSYjyQKesync2CeP0owY5zcNd6+3AulGBxv192RDugxhfwEeBf9yRud1uYGmlZAyXuoRdhF+FNvLDxLdvxgowtXP6CjzN3wEIoKgpRcj85EDS3dQkR4lv1CKItKRfLy1TpQYv+Ab3q3pND8Vc5kz/ZPPQxe/kU0RRreD9J5Z3/J05p86X+wWmxEJyUgdONDdcQuRDHGj7ylVUGbAe9fzJxyIDe6BNU3Fu0BIhxzpOuAiew==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747992257; c=relaxed/relaxed;
-	bh=X6Wp3A8TWITXqZohD4WlHFJyenrR7DH4/8loE7ShtGM=;
-	h=From:Subject:To:Cc:Date:Message-ID:MIME-Version:Content-Type; b=LM9xLeEy5F5q3Qq17kHzmn8LbQyYLM5OCAm7ZfMAbarLufVRhhszUeMWvlYS3VP+Q/QZQXd3984SVgZo8bUl9YPWbHoxty3Itht30WXUmN97Wnv2AaXJviw6AsMRs769Z6MRtNBcsj15HHopE1z5EjyiuR4C6zNtVDkM2SnM6wTxUQhkBHNWI30uKD+YzkIUGosSN9I34JrQ0CQV6sUSQH6/b7WOIHpzHOuXCKX5G5BR6YX+IqgnWuJ8bE2qhChM4NHwuklLAo58LPZcv4Y7IJLV9tSyaZvC/1MyhxuVDMyK8RBQ3Gx67Icfove++y/F+wPeiDsB9+jTajlMWH8SLQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=aichao@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=aichao@kylinos.cn; receiver=lists.ozlabs.org)
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1747994215; c=relaxed/relaxed;
+	bh=BX5f0kgNcIuaQh4riq5yd6yrHlHjtFOsSYvpeKUcm68=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=MhjiBe6Hi98Y2mZ3xmcDqeZmXsdpFR4Ji7hetvfQm7dXw/T1PN51O7sHW09Ip4ENxhBy7jbRlxoOwq28isp2U8+hN8jReaUJ0rb6Fy5DSWdHlHlGRavEXta0vF4gBDT3iJce0VtKwbc31SAa+THD0klraNXnRwbBCmfRUWDVEYX2/oTmQowSAotcvlH/qxH6qvIp87OVRYD1OYirrWyietMeM+OtPTv2MXL0b4echwLftMtgvX+bwbTfvdHVqMr1ZMJ+Q73/Aceihi+kDq/1J9gr+eSsZMlphBry6ar9sQkNM6H9iHW9LMY8JtCzNaBxmOP330f7xJNUgCpUvbOtAw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YUV/K2jj; dkim-atps=neutral; spf=none (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YUV/K2jj;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3fqg65szz2yrp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 19:24:14 +1000 (AEST)
-X-UUID: 8671aa7c37b711f0b29709d653e92f7d-20250523
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:2e58fa42-b8ce-4bba-9d6d-327b9302030a,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:c78fe3664896915b74f47d4b192bc52f,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:83|102,TC:0,Content:0|50,EDM:40,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 8671aa7c37b711f0b29709d653e92f7d-20250523
-Received: from mail.kylinos.cn [(10.44.16.189)] by mailgw.kylinos.cn
-	(envelope-from <aichao@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1853619818; Fri, 23 May 2025 17:23:02 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id E477D700ADB2;
-	Fri, 23 May 2025 17:23:01 +0800 (CST)
-Received: by mail.kylinos.cn (NSMail, from userid 0)
-	id D29C7700ADAB; Fri, 23 May 2025 17:23:01 +0800 (CST)
-From: =?UTF-8?B?6Im+6LaF?= <aichao@kylinos.cn>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MiAyLzZdIEFTb0M6IGFvYTogVXNlIGhlbHBlciBmdW5jdGlvbiBmb3JfZWFjaF9jaGlsZF9vZl9ub2RlX3Njb3BlZCgp?=
-To: 	=?UTF-8?B?Sm9oYW5uZXMgQmVyZw==?= <johannes@sipsolutions.net>,
-	=?UTF-8?B?cGVyZXg=?= <perex@perex.cz>,
-	=?UTF-8?B?dGl3YWk=?= <tiwai@suse.com>,
-	=?UTF-8?B?a3VuaW5vcmkubW9yaW1vdG8uZ3g=?= <kuninori.morimoto.gx@renesas.com>,
-	=?UTF-8?B?bGdpcmR3b29k?= <lgirdwood@gmail.com>,
-	=?UTF-8?B?YnJvb25pZQ==?= <broonie@kernel.org>,
-	=?UTF-8?B?amJydW5ldA==?= <jbrunet@baylibre.com>,
-	=?UTF-8?B?bmVpbC5hcm1zdHJvbmc=?= <neil.armstrong@linaro.org>,
-	=?UTF-8?B?a2hpbG1hbg==?= <khilman@baylibre.com>,
-	=?UTF-8?B?bWFydGluLmJsdW1lbnN0aW5nbA==?= <martin.blumenstingl@googlemail.com>,
-	=?UTF-8?B?c2hlbmdqaXUud2FuZw==?= <shengjiu.wang@gmail.com>,
-	=?UTF-8?B?WGl1Ym8uTGVl?= <Xiubo.Lee@gmail.com>,
-	=?UTF-8?B?ZmVzdGV2YW0=?= <festevam@gmail.com>,
-	=?UTF-8?B?bmljb2xlb3RzdWth?= <nicoleotsuka@gmail.com>,
-	=?UTF-8?B?c2hhd25ndW8=?= <shawnguo@kernel.org>,
-	=?UTF-8?B?cy5oYXVlcg==?= <s.hauer@pengutronix.de>,
-	=?UTF-8?B?c3Jpbml2YXMua2FuZGFnYXRsYQ==?= <srinivas.kandagatla@linaro.org>,
-Cc: 	=?UTF-8?B?bGludXgtc291bmQ=?= <linux-sound@vger.kernel.org>,
-	=?UTF-8?B?bGludXgta2VybmVs?= <linux-kernel@vger.kernel.org>,
-	=?UTF-8?B?bGludXhwcGMtZGV2?= <linuxppc-dev@lists.ozlabs.org>,
-	=?UTF-8?B?bGludXgtcmVuZXNhcy1zb2M=?= <linux-renesas-soc@vger.kernel.org>,
-	=?UTF-8?B?bGludXgtYXJtLWtlcm5lbA==?= <linux-arm-kernel@lists.infradead.org>,
-	=?UTF-8?B?bGludXgtYW1sb2dpYw==?= <linux-amlogic@lists.infradead.org>,
-	=?UTF-8?B?aW14?= <imx@lists.linux.dev>,
-	=?UTF-8?B?a2VybmVs?= <kernel@pengutronix.de>,
-	=?UTF-8?B?bGludXgtYXJtLW1zbQ==?= <linux-arm-msm@vger.kernel.org>,
-Date: Fri, 23 May 2025 17:23:00 +0800
-X-Mailer: NSMAIL 7.0.0
-Message-ID: <2aq0nyvyf7t-2aq4hsc7kp6@nsmail7.0.0--kylin--1>
-X-Israising: 0
-X-Seclevel-1: 0
-X-Seclevel: 0
-X-Delaysendtime: Fri, 23 May 2025 17:23:00 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3gYH6Tdzz2yrp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 19:56:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747994213; x=1779530213;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=JbxZhZlzZC1d54wodrzZn1J3iTj3tlK9lW0dMu8lctw=;
+  b=YUV/K2jjB+t4mEVmcW/1GlitYJrI9jQEEYCq8ghTC2chi8SOWoPwYhD7
+   F36rMAMUX5yWqNZip70UWs7dw9aq6Nop/3p8v6PjIOcSY6bl4/lmWPW02
+   BgYHhS+6eFu1EgzVFJby9QTdZAiJFs6yJJNqW24XwEUrB90GMM3NmiKU+
+   0BJ5WnyK1AKmkOUxtWQxAW0Mx0TzsolsWrVO7+S8nxB4GlH2obMSTFh+h
+   S67ORyxjwGwcUIqeTYsYX+1AxNq0mLrkwzAoDdGs587ZaIPPF5nSoLdjz
+   z8yA4Y7crlWIVqoi4+OuC4+SzuhTPJXZPYHTtgGz4pzCYKhprtJZfdkJE
+   A==;
+X-CSE-ConnectionGUID: Duu1o0KqR7aATvg/1C21hA==
+X-CSE-MsgGUID: Okp7lT8FTmKbBmqlUDDqow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="37670355"
+X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
+   d="scan'208";a="37670355"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:56:47 -0700
+X-CSE-ConnectionGUID: yFtpiiTURPqBOqi3zo9T/A==
+X-CSE-MsgGUID: suIahlvJSs2wQTPTiC/a1Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
+   d="scan'208";a="146063780"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.150])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:56:39 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Fri, 23 May 2025 12:56:35 +0300 (EEST)
+To: Bjorn Helgaas <helgaas@kernel.org>
+cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>, 
+    Karolina Stolarek <karolina.stolarek@oracle.com>, 
+    Weinan Liu <wnliu@google.com>, 
+    Martin Petersen <martin.petersen@oracle.com>, 
+    Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>, 
+    Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>, 
+    Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+    Lukas Wunner <lukas@wunner.de>, 
+    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+    Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
+    Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+    Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>, 
+    Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>, 
+    Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>, 
+    Dave Jiang <dave.jiang@intel.com>, LKML <linux-kernel@vger.kernel.org>, 
+    linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH v8 13/20] PCI/ERR: Add printk level to
+ pcie_print_tlp_log()
+In-Reply-To: <20250522232339.1525671-14-helgaas@kernel.org>
+Message-ID: <ce537bc4-a302-4da5-2e65-0fb07c9e3e1d@linux.intel.com>
+References: <20250522232339.1525671-1-helgaas@kernel.org> <20250522232339.1525671-14-helgaas@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,48 +91,130 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary=nsmail-2dtffe8yxzg-2dthz9vt1n1
-X-ns-mid: webmail-68303e74-2do7ub4i
-X-ope-from: <aichao@kylinos.cn>
-X-Spam-Status: No, score=0.7 required=3.0 tests=HTML_MESSAGE,
-	HTML_MIME_NO_HTML_TAG,MIME_HTML_ONLY,SPF_HELO_NONE,SPF_PASS,
-	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: multipart/mixed; boundary="8323328-2019861423-1747994195=:933"
+X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This message is in MIME format.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
---nsmail-2dtffe8yxzg-2dthz9vt1n1
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: base64
+--8323328-2019861423-1747994195=:933
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-PGRpdiBjbGFzcz0idmlld2VyX3BhcnQiIHN0eWxlPSJwb3NpdGlvbjogcmVs
-YXRpdmU7Ij4KPGRpdj5IaSBKb2hhbm5lczo8YnI+PGJyPiZndDsgR2l2ZW4g
-dGhlIHN0cnVjdHVyZSBvZiB0aGlzIGNvZGUsIHRoaXMgZWl0aGVyIGZpeGVz
-IGEgbGVhaywgb3IgaXMgd3JvbmcuPGJyPiZndDsgSSByZWFsbHkgZG9uJ3Qg
-a25vdyB3aGljaCBvZiB0aG9zZSB0d28gaXQgaXMsIGl0J3MgYmVlbiBkZWNh
-ZGVzLCBidXQ8YnI+Jmd0OyBlaXRoZXIgd2F5IGl0J3Mgbm90IGEgY2hhbmdl
-IHRoYXQgc2ltcGx5ICJzaW1wbGlmW2llc10gdGhlIGNvZGUiLjxicj48YnI+
-QWJvdXQgZm9yX2VhY2hfY2hpbGRfb2Zfbm9kZSgpIGluIGZpbGUgb2YuaCA6
-PGJyPjxicj4jZGVmaW5lIGZvcl9lYWNoX2NoaWxkX29mX25vZGUocGFyZW50
-LCBjaGlsZCkgXDxicj4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
-bmJzcDsmbmJzcDsgZm9yIChjaGlsZCA9IG9mX2dldF9uZXh0X2NoaWxkKHBh
-cmVudCwgTlVMTCk7IGNoaWxkICE9IE5VTEw7IFw8YnI+Jm5ic3A7Jm5ic3A7
-Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
-c3A7Jm5ic3A7Jm5ic3A7IGNoaWxkID0gb2ZfZ2V0X25leHRfY2hpbGQocGFy
-ZW50LCBjaGlsZCkpPGJyPjxicj5vZl9nZXRfbmV4dF9jaGlsZCgpIHdpbGwg
-dXNlZCBvZl9ub2RlX2dldCgpIGluY3JlbWVudCByZWZjb3VudCBvZiBhIG5v
-ZGUuPGJyPjxicj5Tbywgd2UgbmVlZCB1c2VkIG9mX25vZGVfcHV0KCkgdG8g
-ZGVjcmVtZW50IHJlZmNvdW50IG9mIGEgbm9kZS48YnI+PGJyPkFuZCB0aGUg
-Zm9yX2VhY2hfY2hpbGRfb2Zfbm9kZV9zY29wZWQoKSBoZWxwZXIgcHJvdmlk
-ZXMgYSBzY29wZS1iYXNlZCA8YnI+Y2xlYW4tdXAgZnVuY3Rpb25hbGl0eSB0
-byBwdXQgdGhlIGRldmljZV9ub2RlIGF1dG9tYXRpY2FsbHksIGFuZCBhcyA8
-YnI+c3VjaCwgdGhlcmUgaXMgbm8gbmVlZCB0byBjYWxsIG9mX25vZGVfcHV0
-KCkgZGlyZWN0bHkuPGJyPjxicj4ic2ltcGxpZmllcyB0aGUgY29kZSIgaXMg
-bm8gbmVlZCB0byBjYWxsb2Zfbm9kZV9wdXQoKSAuPGJyPjxicj48YnI+PGJy
-Pi0tIDxicj5XaXRoIGJlc3Qgd2lzaGVzPGJyPkFpIENoYW88YnI+PGJyPjwv
-ZGl2Pgo8L2Rpdj4KPHA+Jm5ic3A7PC9wPgo8cD4mbmJzcDs8L3A+CjxwPi0t
-LS08L3A+CjxkaXYgaWQ9ImNzMmNfbWFpbF9zaWdhdHVyZSI+PC9kaXY+Cjxw
-PiZuYnNwOzwvcD4KPHA+Jm5ic3A7PC9wPgo8cD4mbmJzcDs8L3A+
+On Thu, 22 May 2025, Bjorn Helgaas wrote:
 
---nsmail-2dtffe8yxzg-2dthz9vt1n1--
+> From: Bjorn Helgaas <bhelgaas@google.com>
+>=20
+> aer_print_error() produces output at a printk level (KERN_ERR/KERN_WARNIN=
+G/
+> etc) that depends on the kind of error, and it calls pcie_print_tlp_log()=
+,
+> which previously always produced output at KERN_ERR.
+>=20
+> Add a "level" parameter so aer_print_error() can control the level of the
+> pcie_print_tlp_log() output to match.
+>=20
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> ---
+>  drivers/pci/pci.h      | 3 ++-
+>  drivers/pci/pcie/aer.c | 5 +++--
+>  drivers/pci/pcie/dpc.c | 2 +-
+>  drivers/pci/pcie/tlp.c | 6 ++++--
+>  4 files changed, 10 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index 705f9ef58acc..1a9bfc708757 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -613,7 +613,8 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where,=
+ int where2,
+>  =09=09      struct pcie_tlp_log *log);
+>  unsigned int aer_tlp_log_len(struct pci_dev *dev, u32 aercc);
+>  void pcie_print_tlp_log(const struct pci_dev *dev,
+> -=09=09=09const struct pcie_tlp_log *log, const char *pfx);
+> +=09=09=09const struct pcie_tlp_log *log, const char *level,
+> +=09=09=09const char *pfx);
+>  #endif=09/* CONFIG_PCIEAER */
+> =20
+>  #ifdef CONFIG_PCIEPORTBUS
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index f80c78846a14..f0936759ba8b 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -734,7 +734,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_=
+err_info *info)
+>  =09__aer_print_error(dev, info);
+> =20
+>  =09if (info->tlp_header_valid)
+> -=09=09pcie_print_tlp_log(dev, &info->tlp, dev_fmt("  "));
+> +=09=09pcie_print_tlp_log(dev, &info->tlp, level, dev_fmt("  "));
+> =20
+>  out:
+>  =09if (info->id && info->error_dev_num > 1 && info->id =3D=3D id)
+> @@ -797,7 +797,8 @@ void pci_print_aer(struct pci_dev *dev, int aer_sever=
+ity,
+>  =09=09=09aer->uncor_severity);
+> =20
+>  =09if (tlp_header_valid)
+> -=09=09pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
+> +=09=09pcie_print_tlp_log(dev, &aer->header_log, info.level,
+> +=09=09=09=09   dev_fmt("  "));
+>  }
+>  EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
+> =20
+> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+> index 6c98fabdba57..7ae1590ea1da 100644
+> --- a/drivers/pci/pcie/dpc.c
+> +++ b/drivers/pci/pcie/dpc.c
+> @@ -222,7 +222,7 @@ static void dpc_process_rp_pio_error(struct pci_dev *=
+pdev)
+>  =09=09=09  dpc_tlp_log_len(pdev),
+>  =09=09=09  pdev->subordinate->flit_mode,
+>  =09=09=09  &tlp_log);
+> -=09pcie_print_tlp_log(pdev, &tlp_log, dev_fmt(""));
+> +=09pcie_print_tlp_log(pdev, &tlp_log, KERN_ERR, dev_fmt(""));
+> =20
+>  =09if (pdev->dpc_rp_log_size < PCIE_STD_NUM_TLP_HEADERLOG + 1)
+>  =09=09goto clear_status;
+> diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
+> index 890d5391d7f5..71f8fc9ea2ed 100644
+> --- a/drivers/pci/pcie/tlp.c
+> +++ b/drivers/pci/pcie/tlp.c
+> @@ -98,12 +98,14 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where,=
+ int where2,
+>   * pcie_print_tlp_log - Print TLP Header / Prefix Log contents
+>   * @dev: PCIe device
+>   * @log: TLP Log structure
+> + * @level: Printk log level
+>   * @pfx: String prefix
+>   *
+>   * Prints TLP Header and Prefix Log information held by @log.
+>   */
+>  void pcie_print_tlp_log(const struct pci_dev *dev,
+> -=09=09=09const struct pcie_tlp_log *log, const char *pfx)
+> +=09=09=09const struct pcie_tlp_log *log, const char *level,
+> +=09=09=09const char *pfx)
+>  {
+>  =09/* EE_PREFIX_STR fits the extended DW space needed for the Flit mode =
+*/
+>  =09char buf[11 * PCIE_STD_MAX_TLP_HEADERLOG + 1];
+> @@ -130,6 +132,6 @@ void pcie_print_tlp_log(const struct pci_dev *dev,
+>  =09=09}
+>  =09}
+> =20
+> -=09pci_err(dev, "%sTLP Header%s: %s\n", pfx,
+> +=09dev_printk(level, &dev->dev, "%sTLP Header%s: %s\n", pfx,
+>  =09=09log->flit ? " (Flit)" : "", buf);
+>  }
+>=20
+
+Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
+
+--=20
+ i.
+
+--8323328-2019861423-1747994195=:933--
 
