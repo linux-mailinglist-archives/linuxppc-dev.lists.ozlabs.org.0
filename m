@@ -1,91 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-8907-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8908-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F51AC18EB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 02:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72098AC1B11
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 06:39:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b3QcN6Qf0z3cCM;
-	Fri, 23 May 2025 10:13:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b3XWR03WVz2yMw;
+	Fri, 23 May 2025 14:39:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::135"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747959220;
-	cv=none; b=RQRMWmqhKn6v06tIYZG2rAbozD4KgdA2kLFfiB2ytV4IFSPRsQ/ewqNE2Lpn7usOXJO4mBI5lgPbd/BpnfXJxRMM29499iz8iVtArv9tawYQPifehQVkeGh5+kjdgIKmNYfDxbNEcJl+rx7wT7a8QGgH+b2WhyKV6DzwN6i4xKQLdNiBklXw8+NP1QX64s80/qj/udUpa3Kp11b09+KVQZc6RHyNPRdIGd98+5xq90BuoKDZlTRvLYiodnSrGGaS4D93BCorbpyJUan24vi+awFX8JSkj+38jJwg7kAujFbk5pNJRYpOPQlx62+VTcDgEw2XSJKCEcxQpfAe12pXjQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747975186;
+	cv=none; b=f2ydkVKWdKB1yV72BQ94pMrg9BisnuvG1jwP63qoqkuz1xWTcEdYb9UW5w2uLPrZ6sqr39YIgS+695mGgV+Yhdi7DF9jZuJGjz7q4h6iatftuANBnHQRtZX5Ngf5UCrrQSstlS6VoMHt0BWv7rK7RPtF4erYiei7r1wNCr/ubmqYkWhV/T4hK1S9DyMJfLsY54Gr2Cej3UKwyUm1QVE2WGzzKyWOE0urD50t1wgOuLI1dvOIoVGGNhm1e7ELzVO2pzNX6Qq+KwIfzXZnh8p4U1zrTZcrPNhyMy6+XAFHd6F87ktKB+YG5U5SkHTq7bKOOC8IPr1KEITocsXG8eqXkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747959220; c=relaxed/relaxed;
-	bh=NtaCyH1WfJUArzSfLQLt408RcB4GdI59nwfsGjUrhJE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QYmN8VTO3nHEujWmsAsZw3veeKgQzjXEpf71GEqkGbSXkDwobI4wk+JMTDUCn6lX959Rgwnx1ZIjkbcEg31I8eSjCmfA5Az6nC79JoyKNpNoddf4YiqsqxxoVmdNZaL5J6JPGpc3HmT0QaFEApbUiXi7f5qJmceTnOdbe4kTE97h7bkfn6+o0RJXglsNEH0YekgwYW46Dxd8sLy7Q8bEfyfygsNNahfarP+vsDe+LLQ0zZrUjEB8se+4nUFNTeZ80yVNg0ra4weEucZ/Obn0kjB/ut0DHdSiNrzI8qzwW8/dBazcl6qaupbfQnSi3kcW89QnLWil75KZqVkcn6Ya2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=brighamcampbell.com; dkim=fail header.d=brighamcampbell.com header.i=@brighamcampbell.com header.a=rsa-sha256 header.s=google header.b=F7VfHf9j reason="key not found in DNS"; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::135; helo=mail-il1-x135.google.com; envelope-from=me@brighamcampbell.com; receiver=lists.ozlabs.org) smtp.mailfrom=brighamcampbell.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=brighamcampbell.com
+	t=1747975186; c=relaxed/relaxed;
+	bh=5WwsZAyhqCNKq8impC0uPdRnLe811mvhdI4uAc7GwKQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=OHFK/i7uqwXnntPouZjH1TaReOqJHiJFE76nptq96GrU8gSzj3wXelAfe4fHE34rKabyt7TPcRsRa0ESRNZ0FoyMx00ZvCTKrPgb+9UEJpE75ElYO7MVivnLeA7l+zyth1ByABnziZJc2d1l9qtdL320ZttOx0mU66VA/pOlkOvRJ2wl+hLOT3P7buznIP4xZF8jLY06KpzvmniovE/bEaLvGMSUtPxtNgKbEkdsq39Vwt4OX4YtC7Je0VaJoWnCXec8zOSjxHbnDJg18Pa7ks1pAiJjNUDntC0Romu/myvMBezKwfOlsV4aZE9ihwVHD1STYp2Hw3mUISnQs2KBKA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CHB1UIrX; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="key not found in DNS" header.d=brighamcampbell.com header.i=@brighamcampbell.com header.a=rsa-sha256 header.s=google header.b=F7VfHf9j;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CHB1UIrX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=brighamcampbell.com (client-ip=2607:f8b0:4864:20::135; helo=mail-il1-x135.google.com; envelope-from=me@brighamcampbell.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3QcL2Mqkz3c8s
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 10:13:37 +1000 (AEST)
-Received: by mail-il1-x135.google.com with SMTP id e9e14a558f8ab-3d80bbf3aefso22705545ab.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 22 May 2025 17:13:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brighamcampbell.com; s=google; t=1747959215; x=1748564015; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NtaCyH1WfJUArzSfLQLt408RcB4GdI59nwfsGjUrhJE=;
-        b=F7VfHf9jvl2apn6zmUNvGpaXUTycSU0t5vbx1Z/Vhp0IoBS96ywd2YGXn5VGrj9Yjn
-         bOizWRY19T+Yy1jJKgoEAD5HpCHKSNxHGoM4vbfo+TOCoN1Chka2uh+iFF0nttqaf+33
-         pOGdHmyp0QuWVmd3toeil/nbofe29PpTGV8s5a1wEr+IA6UI4BQ+wgLXM7PoUnfgDJVA
-         n3dSh68Mmg9m5YkPkOMohznCMEMjFlqtymO7GM19y3uQ9AA2Mp4hbFP5LCx/MyOsDwUX
-         8eZA6H68E+5nkq59hS9k/dDkrSl3i4/uaxGlntLCGfjEgcU60RcJ0pA0G3jTWqj1EM1i
-         LVfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747959215; x=1748564015;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NtaCyH1WfJUArzSfLQLt408RcB4GdI59nwfsGjUrhJE=;
-        b=e4VbkC/kTCJxjrTW6atpN0y/i3ROApOxPRdSjSMcijJFAQP2ng4W0AGYlhCUGhMyU+
-         W7gd4HOke92navUFxKD4w/u7+wZTo/IcGSOgx6vHzGMMX7LjVMwzFEgo90m9BhHxjRYY
-         RRCjs0csj5lXH5YaCyQhFpbr0cy5CEtkORojTl1xhRovrI/Pm4tslSqGVTH8yuz9bjtr
-         933YI/4cJKKG9mLxbqpb11Ao1XS1WsYLMmSqci0jAkTAIrYqQ4tz9TPGRzZE0ATpbU7+
-         bOKgwB2UZBzjRPskC3xx0xiPe60tad6c4TJOYcHR/cdoJ+1fTAN5JePtKDmD+Kyv+AJM
-         +ysg==
-X-Forwarded-Encrypted: i=1; AJvYcCWe0HApSsLZYpB+Br3uiJeaSrhtZoZZm6n21/3Sxeoikj2MiY3MzLvD7csRciNgwGtOcJJf+YDPlSazzw0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwwN1o0KUK0Z1qC20DfLQ0rRumQQixdIdyoAFF7OHEOWxoXzE91
-	dwkMsdnP4uaTM/U4s74otBtb8KtNDTcJ9MVtwPDzN1pj2UMd69VN+NT8PzLEVpq8FF0=
-X-Gm-Gg: ASbGncsQ8Ce+qRUKmu5+IlLsbP4nyeMrweW9R31wH1DaE+hA9JtHfMj/70mABQN2hyy
-	6b98CuRvdRpZRd99f8D+lsQzA8jsh/TwXsvspMDRZCNbVT37fAHkMYdSYGL545zXL82d/zWKFyP
-	+rrxQv9hZoJoa69kHIqhQJW4UlnX3m4mzEWIJDZJ7E4XvqoBQHk/iYI+Q9g4HV+gGPtKdSevNnx
-	02S4bohsGrRJJm5HMjs49pE6V1QiS+hTwo9Pi0jckmfIV9qduqodrAWoJlZxMIuUCPt94mf4RPf
-	+iDAgtTOcT4gRFwk5QybfP9xJXkbGvxUfDq5UFjnE/FknqflcsF1yzc/ox3BSOtaZSvUV1Wqwfp
-	g9NttN/s=
-X-Google-Smtp-Source: AGHT+IFKmxDugOdIs6vFYcotQEFU7a9JdAs53jaauyO4yjTbDeTgs1+LUU9JZAtgqiOFD9DNicpN9Q==
-X-Received: by 2002:a05:6e02:3c04:b0:3d9:65b6:d4db with SMTP id e9e14a558f8ab-3dc93276652mr13178285ab.12.1747959214980;
-        Thu, 22 May 2025 17:13:34 -0700 (PDT)
-Received: from mystery-machine.brighamcampbell.com ([64.71.154.6])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4fbd17aa848sm3183450173.67.2025.05.22.17.13.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 May 2025 17:13:32 -0700 (PDT)
-From: Brigham Campbell <me@brighamcampbell.com>
-To: skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3XWM6mltz2yKq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 14:39:43 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 634464A959;
+	Fri, 23 May 2025 04:39:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E840C4CEED;
+	Fri, 23 May 2025 04:39:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747975181;
+	bh=yaSxmxtYpasuc+rufEWrdAWe3aDh1VboHkgvW7Uuxmk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CHB1UIrXXIJNnDqoawhvxACuyRxlpr3fsHJOcaMiX78eZBw6bj2aCmamSdxBgr0Q1
+	 cv2JxCHOnwvyafgtOlwyLeWkIJcvvmBOc3FGaH7CycNh6ciUxu783i7rIN1Q7uR/YZ
+	 egoHkAstCNIvH0Ni9mbt5Ty4Gh02RZ66vXL7zkVg5EvNVKTTIDuVY7AvMEtb0fYV8p
+	 mJKUBNr2h5nbAO7s6Ui4esyy2FZgHJ+NnCkDJYKNpnSZCOqTVyO+IRaFk0btgFjTdO
+	 S8daDPWHmwFh5MEl/KFRRxM9icxB3PHJq5dg1QlY9jE+fNHEdaX6TMoMVDjrVztIdI
+	 PtpSj3RRaZDNw==
+From: Kees Cook <kees@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Kees Cook <kees@kernel.org>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Athira Rajeev <atrajeev@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)),
-	linux-doc@vger.kernel.org (open list:DOCUMENTATION),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Brigham Campbell <me@brighamcampbell.com>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v2] docs: powerpc: Add htm.rst to table of contents
-Date: Thu, 22 May 2025 18:11:14 -0600
-Message-ID: <20250523001112.102087-3-me@brighamcampbell.com>
-X-Mailer: git-send-email 2.49.0
+	Naveen N Rao <naveen@kernel.org>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas.schier@linux.dev>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-efi@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH v2 08/14] powerpc: Handle KCOV __init vs inline mismatches
+Date: Thu, 22 May 2025 21:39:18 -0700
+Message-Id: <20250523043935.2009972-8-kees@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250523043251.it.550-kees@kernel.org>
+References: <20250523043251.it.550-kees@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,43 +101,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1981; i=kees@kernel.org; h=from:subject; bh=yaSxmxtYpasuc+rufEWrdAWe3aDh1VboHkgvW7Uuxmk=; b=owGbwMvMwCVmps19z/KJym7G02pJDBn6v3+dEGvzLNyc4frZMlegpp5xqfLf4qvOhQ6vClwWG c4+vkWro5SFQYyLQVZMkSXIzj3OxeNte7j7XEWYOaxMIEMYuDgFYCJ6nYwMa39MVvl34OWuxWLC YitLL7uZs+fqxoq1bLk+uZ0hXWGaIMP/IouHmyfNuDCZ8fKpT88FFNw8Sr8vU98je2Fj6/LNOe9 62AA=
+X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.2 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-These changes fix the following error, which was introduced by commit
-ab1456c5 when Documentation/arch/powerpc/htm.rst was added to the
-repository without any reference to the document.
+When KCOV is enabled all functions get instrumented, unless
+the __no_sanitize_coverage attribute is used. To prepare for
+__no_sanitize_coverage being applied to __init functions, we have to
+handle differences in how GCC's inline optimizations get resolved. For
+s390 this requires forcing a couple functions to be inline with
+__always_inline.
 
-Documentation/arch/powerpc/htm.rst: WARNING: document isn't included in any toctree [toc.not_included]
-
-There are no changes in v2. I'm resending this patch because I addressed
-it to the wrong email for Shuah.
-
-Fixes: ab1456c5aa7a63d5 ("powerpc/pseries/htmdump: Add documentation for H_HTM debugfs interface")
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Brigham Campbell <me@brighamcampbell.com>
-Link: https://lore.kernel.org/all/20250517210757.1076554-3-me@brighamcampbell.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 ---
- Documentation/arch/powerpc/index.rst | 1 +
- 1 file changed, 1 insertion(+)
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: <linuxppc-dev@lists.ozlabs.org>
+---
+ arch/powerpc/mm/book3s64/hash_utils.c    | 2 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/arch/powerpc/index.rst b/Documentation/arch/powerpc/index.rst
-index 0560cbae5fa1..53fc9f89f3e4 100644
---- a/Documentation/arch/powerpc/index.rst
-+++ b/Documentation/arch/powerpc/index.rst
-@@ -19,6 +19,7 @@ powerpc
-     elf_hwcaps
-     elfnote
-     firmware-assisted-dump
-+    htm
-     hvcs
-     imc
-     isa-versions
---
-2.49.0
+diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
+index 5158aefe4873..93f1e1eb5ea6 100644
+--- a/arch/powerpc/mm/book3s64/hash_utils.c
++++ b/arch/powerpc/mm/book3s64/hash_utils.c
+@@ -409,7 +409,7 @@ static DEFINE_RAW_SPINLOCK(linear_map_kf_hash_lock);
+ 
+ static phys_addr_t kfence_pool;
+ 
+-static inline void hash_kfence_alloc_pool(void)
++static __always_inline void hash_kfence_alloc_pool(void)
+ {
+ 	if (!kfence_early_init_enabled())
+ 		goto err;
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 9f764bc42b8c..3238e9ed46b5 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -363,7 +363,7 @@ static int __meminit create_physical_mapping(unsigned long start,
+ }
+ 
+ #ifdef CONFIG_KFENCE
+-static inline phys_addr_t alloc_kfence_pool(void)
++static __always_inline phys_addr_t alloc_kfence_pool(void)
+ {
+ 	phys_addr_t kfence_pool;
+ 
+-- 
+2.34.1
 
 
