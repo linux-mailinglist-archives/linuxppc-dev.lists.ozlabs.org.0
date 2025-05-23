@@ -1,83 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-8913-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8914-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4FDAC2047
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 11:56:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF1EAC213F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 12:40:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b3gYM262Vz2ytV;
-	Fri, 23 May 2025 19:56:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b3hWn0Bc7z2xQ5;
+	Fri, 23 May 2025 20:40:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.16
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747994215;
-	cv=none; b=PXe7G5fMIqVjJAPstx2ZFKpgs8XOfrEHuVCrk6sJtthUA+vymJL6C3SyoBWZG+4KuI+/1VLFyQHdt6e3Jk8LOj9UHmKVeuBF8h5EkknmbSYjyQKesync2CeP0owY5zcNd6+3AulGBxv192RDugxhfwEeBf9yRud1uYGmlZAyXuoRdhF+FNvLDxLdvxgowtXP6CjzN3wEIoKgpRcj85EDS3dQkR4lv1CKItKRfLy1TpQYv+Ab3q3pND8Vc5kz/ZPPQxe/kU0RRreD9J5Z3/J05p86X+wWmxEJyUgdONDdcQuRDHGj7ylVUGbAe9fzJxyIDe6BNU3Fu0BIhxzpOuAiew==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f8:242:246e::2"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1747996836;
+	cv=none; b=AqGWZYv0R89XpXyNmacAgkTYr57ZbDQRzEykMewx3IJtQJUYpjCmIuCZyzhL/7JfPI5LjWRoxtUjZdfdtrFf4ashpYtPfzrv1kVbn6w4cjbA9C7nhopkAt646eIpb8PVre+2lDF0xKlNmQR8qzePLom2hjbGoXR4rMk5/otCBaPMNeA+Zm821A97vlzkfEOifln+MVjUV+tqPiEfKOtdTnSo87V3NFuizew8BBpixVg0whfUKJU46QnX66h/AeTim+O7HT7elkMj84kZlAg/XM/eBH/3CvTWuV4wxq/+uc+RuhnTFJ7pxF+1v4niQF62WbJKPIFvZUa8u3wDKpVXVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1747994215; c=relaxed/relaxed;
-	bh=BX5f0kgNcIuaQh4riq5yd6yrHlHjtFOsSYvpeKUcm68=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=MhjiBe6Hi98Y2mZ3xmcDqeZmXsdpFR4Ji7hetvfQm7dXw/T1PN51O7sHW09Ip4ENxhBy7jbRlxoOwq28isp2U8+hN8jReaUJ0rb6Fy5DSWdHlHlGRavEXta0vF4gBDT3iJce0VtKwbc31SAa+THD0klraNXnRwbBCmfRUWDVEYX2/oTmQowSAotcvlH/qxH6qvIp87OVRYD1OYirrWyietMeM+OtPTv2MXL0b4echwLftMtgvX+bwbTfvdHVqMr1ZMJ+Q73/Aceihi+kDq/1J9gr+eSsZMlphBry6ar9sQkNM6H9iHW9LMY8JtCzNaBxmOP330f7xJNUgCpUvbOtAw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YUV/K2jj; dkim-atps=neutral; spf=none (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1747996836; c=relaxed/relaxed;
+	bh=K2JQO+uYU43rONsrKzctsDigqQZ79oxfKv9WnQ4M8rs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Kj8kJBnDPmq8BVIr02NFc0bjA55IOvrlCbwSuo2oOqAI9pNkBoXouKKdkpzI9SiLSPmfAoPiAExn1oKj9Gsh6McAdxXL3bVuctzqwVy011ilWRLYKFfX9geljRByQoNl4H8Ab9s5BvBj03/wpJsmRdFMiWhrLywy3DXpSW5txUSbldpv+kGGuXV/3mu9KEYWCCNuOAomZCjH97kVAXq01qRexYz/DJ8tXTRX/yeP6x8oJOVrx86wI3m4aI11zrLGym1L+pPoDFIU6KU7P4PIC2P68XMDK+duGV0vpS5sn3mmbzB/qMsRhvmY/dzLDeu9s4tkngiCndgEAutuiYFDdw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; dkim=pass (2048-bit key; secure) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=N390EY4a; dkim-atps=neutral; spf=pass (client-ip=2a01:4f8:242:246e::2; helo=sipsolutions.net; envelope-from=johannes@sipsolutions.net; receiver=lists.ozlabs.org) smtp.mailfrom=sipsolutions.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=YUV/K2jj;
+	dkim=pass (2048-bit key; secure) header.d=sipsolutions.net header.i=@sipsolutions.net header.a=rsa-sha256 header.s=mail header.b=N390EY4a;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sipsolutions.net (client-ip=2a01:4f8:242:246e::2; helo=sipsolutions.net; envelope-from=johannes@sipsolutions.net; receiver=lists.ozlabs.org)
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3gYH6Tdzz2yrp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 19:56:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747994213; x=1779530213;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=JbxZhZlzZC1d54wodrzZn1J3iTj3tlK9lW0dMu8lctw=;
-  b=YUV/K2jjB+t4mEVmcW/1GlitYJrI9jQEEYCq8ghTC2chi8SOWoPwYhD7
-   F36rMAMUX5yWqNZip70UWs7dw9aq6Nop/3p8v6PjIOcSY6bl4/lmWPW02
-   BgYHhS+6eFu1EgzVFJby9QTdZAiJFs6yJJNqW24XwEUrB90GMM3NmiKU+
-   0BJ5WnyK1AKmkOUxtWQxAW0Mx0TzsolsWrVO7+S8nxB4GlH2obMSTFh+h
-   S67ORyxjwGwcUIqeTYsYX+1AxNq0mLrkwzAoDdGs587ZaIPPF5nSoLdjz
-   z8yA4Y7crlWIVqoi4+OuC4+SzuhTPJXZPYHTtgGz4pzCYKhprtJZfdkJE
-   A==;
-X-CSE-ConnectionGUID: Duu1o0KqR7aATvg/1C21hA==
-X-CSE-MsgGUID: Okp7lT8FTmKbBmqlUDDqow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11441"; a="37670355"
-X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="37670355"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:56:47 -0700
-X-CSE-ConnectionGUID: yFtpiiTURPqBOqi3zo9T/A==
-X-CSE-MsgGUID: suIahlvJSs2wQTPTiC/a1Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,308,1739865600"; 
-   d="scan'208";a="146063780"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.150])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 02:56:39 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 23 May 2025 12:56:35 +0300 (EEST)
-To: Bjorn Helgaas <helgaas@kernel.org>
-cc: linux-pci@vger.kernel.org, Jon Pan-Doh <pandoh@google.com>, 
-    Karolina Stolarek <karolina.stolarek@oracle.com>, 
-    Weinan Liu <wnliu@google.com>, 
-    Martin Petersen <martin.petersen@oracle.com>, 
-    Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>, 
-    Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>, 
-    Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-    Lukas Wunner <lukas@wunner.de>, 
-    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-    Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
-    Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-    Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>, 
-    Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>, 
-    Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>, 
-    Dave Jiang <dave.jiang@intel.com>, LKML <linux-kernel@vger.kernel.org>, 
-    linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v8 13/20] PCI/ERR: Add printk level to
- pcie_print_tlp_log()
-In-Reply-To: <20250522232339.1525671-14-helgaas@kernel.org>
-Message-ID: <ce537bc4-a302-4da5-2e65-0fb07c9e3e1d@linux.intel.com>
-References: <20250522232339.1525671-1-helgaas@kernel.org> <20250522232339.1525671-14-helgaas@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3hWk6QGfz2xHX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 23 May 2025 20:40:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=K2JQO+uYU43rONsrKzctsDigqQZ79oxfKv9WnQ4M8rs=;
+	t=1747996835; x=1749206435; b=N390EY4auneCPcN3UBzJyajPtLQMDLRJ1OhscyDUz63FKzE
+	pqJlW67Qj1Mc3YMl6mKNj5TqVkmu7W8pDGnkacGXdhr+GIbMZT7b8txBikMJT2XK5WtPDBsFAKWlQ
+	qNs+zeKo58sW5ZAK9BJ6Iqn6IotangP9+OGNhenT6ZG1uIcgb6UZj71DZPTyh0FTLywwgmDM4iMuB
+	0+EC8OWqEms+UvX0tUWuN6JfzLjDh7r1eKM+OvBG5KAPTxp8vTaGbf4LqNM2Aav7InPjjv5fNePwK
+	OS7jSxtePOmW9zEN8JtnvRDoHfwnfGoSk8jrjR+BO8XYZLyeLp6bv/DJ9k1fxv3A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uIPp5-00000001O1N-1Ky4;
+	Fri, 23 May 2025 12:40:19 +0200
+Message-ID: <7e708dcc98c6f0f615b1b87d190464cfe78be668.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 2/6] ASoC: aoa: Use helper function
+ for_each_child_of_node_scoped()
+From: Johannes Berg <johannes@sipsolutions.net>
+To: =?UTF-8?Q?=E8=89=BE=E8=B6=85?= <aichao@kylinos.cn>, perex
+ <perex@perex.cz>,  tiwai <tiwai@suse.com>, "kuninori.morimoto.gx"
+ <kuninori.morimoto.gx@renesas.com>, lgirdwood	 <lgirdwood@gmail.com>,
+ broonie <broonie@kernel.org>, jbrunet	 <jbrunet@baylibre.com>,
+ "neil.armstrong" <neil.armstrong@linaro.org>, khilman	
+ <khilman@baylibre.com>, "martin.blumenstingl"	
+ <martin.blumenstingl@googlemail.com>, "shengjiu.wang"
+ <shengjiu.wang@gmail.com>,  "Xiubo.Lee" <Xiubo.Lee@gmail.com>, festevam
+ <festevam@gmail.com>, nicoleotsuka <nicoleotsuka@gmail.com>,  shawnguo
+ <shawnguo@kernel.org>, "s.hauer" <s.hauer@pengutronix.de>,
+ "srinivas.kandagatla"	 <srinivas.kandagatla@linaro.org>
+Cc: linux-sound <linux-sound@vger.kernel.org>, linux-kernel	
+ <linux-kernel@vger.kernel.org>, linuxppc-dev
+ <linuxppc-dev@lists.ozlabs.org>,  linux-renesas-soc
+ <linux-renesas-soc@vger.kernel.org>, linux-arm-kernel
+ <linux-arm-kernel@lists.infradead.org>,  linux-amlogic
+ <linux-amlogic@lists.infradead.org>, imx <imx@lists.linux.dev>, kernel
+ <kernel@pengutronix.de>,  linux-arm-msm <linux-arm-msm@vger.kernel.org>
+Date: Fri, 23 May 2025 12:40:18 +0200
+In-Reply-To: <2aq0nyvyf7t-2aq4hsc7kp6@nsmail7.0.0--kylin--1>
+References: <2aq0nyvyf7t-2aq4hsc7kp6@nsmail7.0.0--kylin--1>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,130 +84,20 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-2019861423-1747994195=:933"
-X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi,
 
---8323328-2019861423-1747994195=:933
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+[you should avoid HTML]
 
-On Thu, 22 May 2025, Bjorn Helgaas wrote:
+> "simplifies the code" is no need to callof_node_put() .
 
-> From: Bjorn Helgaas <bhelgaas@google.com>
->=20
-> aer_print_error() produces output at a printk level (KERN_ERR/KERN_WARNIN=
-G/
-> etc) that depends on the kind of error, and it calls pcie_print_tlp_log()=
-,
-> which previously always produced output at KERN_ERR.
->=20
-> Add a "level" parameter so aer_print_error() can control the level of the
-> pcie_print_tlp_log() output to match.
->=20
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> ---
->  drivers/pci/pci.h      | 3 ++-
->  drivers/pci/pcie/aer.c | 5 +++--
->  drivers/pci/pcie/dpc.c | 2 +-
->  drivers/pci/pcie/tlp.c | 6 ++++--
->  4 files changed, 10 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 705f9ef58acc..1a9bfc708757 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -613,7 +613,8 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where,=
- int where2,
->  =09=09      struct pcie_tlp_log *log);
->  unsigned int aer_tlp_log_len(struct pci_dev *dev, u32 aercc);
->  void pcie_print_tlp_log(const struct pci_dev *dev,
-> -=09=09=09const struct pcie_tlp_log *log, const char *pfx);
-> +=09=09=09const struct pcie_tlp_log *log, const char *level,
-> +=09=09=09const char *pfx);
->  #endif=09/* CONFIG_PCIEAER */
-> =20
->  #ifdef CONFIG_PCIEPORTBUS
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index f80c78846a14..f0936759ba8b 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -734,7 +734,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_=
-err_info *info)
->  =09__aer_print_error(dev, info);
-> =20
->  =09if (info->tlp_header_valid)
-> -=09=09pcie_print_tlp_log(dev, &info->tlp, dev_fmt("  "));
-> +=09=09pcie_print_tlp_log(dev, &info->tlp, level, dev_fmt("  "));
-> =20
->  out:
->  =09if (info->id && info->error_dev_num > 1 && info->id =3D=3D id)
-> @@ -797,7 +797,8 @@ void pci_print_aer(struct pci_dev *dev, int aer_sever=
-ity,
->  =09=09=09aer->uncor_severity);
-> =20
->  =09if (tlp_header_valid)
-> -=09=09pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
-> +=09=09pcie_print_tlp_log(dev, &aer->header_log, info.level,
-> +=09=09=09=09   dev_fmt("  "));
->  }
->  EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
-> =20
-> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> index 6c98fabdba57..7ae1590ea1da 100644
-> --- a/drivers/pci/pcie/dpc.c
-> +++ b/drivers/pci/pcie/dpc.c
-> @@ -222,7 +222,7 @@ static void dpc_process_rp_pio_error(struct pci_dev *=
-pdev)
->  =09=09=09  dpc_tlp_log_len(pdev),
->  =09=09=09  pdev->subordinate->flit_mode,
->  =09=09=09  &tlp_log);
-> -=09pcie_print_tlp_log(pdev, &tlp_log, dev_fmt(""));
-> +=09pcie_print_tlp_log(pdev, &tlp_log, KERN_ERR, dev_fmt(""));
-> =20
->  =09if (pdev->dpc_rp_log_size < PCIE_STD_NUM_TLP_HEADERLOG + 1)
->  =09=09goto clear_status;
-> diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
-> index 890d5391d7f5..71f8fc9ea2ed 100644
-> --- a/drivers/pci/pcie/tlp.c
-> +++ b/drivers/pci/pcie/tlp.c
-> @@ -98,12 +98,14 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where,=
- int where2,
->   * pcie_print_tlp_log - Print TLP Header / Prefix Log contents
->   * @dev: PCIe device
->   * @log: TLP Log structure
-> + * @level: Printk log level
->   * @pfx: String prefix
->   *
->   * Prints TLP Header and Prefix Log information held by @log.
->   */
->  void pcie_print_tlp_log(const struct pci_dev *dev,
-> -=09=09=09const struct pcie_tlp_log *log, const char *pfx)
-> +=09=09=09const struct pcie_tlp_log *log, const char *level,
-> +=09=09=09const char *pfx)
->  {
->  =09/* EE_PREFIX_STR fits the extended DW space needed for the Flit mode =
-*/
->  =09char buf[11 * PCIE_STD_MAX_TLP_HEADERLOG + 1];
-> @@ -130,6 +132,6 @@ void pcie_print_tlp_log(const struct pci_dev *dev,
->  =09=09}
->  =09}
-> =20
-> -=09pci_err(dev, "%sTLP Header%s: %s\n", pfx,
-> +=09dev_printk(level, &dev->dev, "%sTLP Header%s: %s\n", pfx,
->  =09=09log->flit ? " (Flit)" : "", buf);
->  }
->=20
+Fair. Except that's not what you _actually_ changed here. Like I said,
+either it's buggy before or after.
 
-Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-
---=20
- i.
-
---8323328-2019861423-1747994195=:933--
+johannes
 
