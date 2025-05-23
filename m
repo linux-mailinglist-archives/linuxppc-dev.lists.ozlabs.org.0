@@ -1,75 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-8922-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8923-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763F1AC2779
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 18:21:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FDBAC2B17
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 23 May 2025 22:46:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b3r4r0ZHbz305D;
-	Sat, 24 May 2025 02:21:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b3xyQ4BbRz2yrp;
+	Sat, 24 May 2025 06:46:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748017275;
-	cv=none; b=RaR9z8EuTP3gx5yn1rsKc1RN5NihjBEfkF+4u8siz4s/dYxzBdp6YAELW7E7GplA5GN8wCFHaR/IPScU0T4o07ILXveXnw0jHk88N8Lh4a9Pg86N3Y+R1q7l4knrFYjz5YuxLaV/8OojsGN/ZF3UMaPbD0LJF/Hfg9VeJJEy4T3pRO/1DyibLl44f5RjvBBAZ5qnbGq0XVgxk4Tnc/jgl5bukaaPsB7cu9GxQnrcqbyhPyk4mD9ADCaysQr4lslq1MtGjWZK5aEMyBOgQzu3ndGOfG04JWDWD/gebaSiPGf+DHy7Y5UawzYJwg/vVfKn/O2Z8J4RjrkRgyTnAyOb0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748017275; c=relaxed/relaxed;
-	bh=fyt0hHcrzWWZRxzxUe6FXfaL3Or6Bms/+5KpCSDnI+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KNPpxxdIrDFdUVpFqmyugbGDtqP25dpTGrujqqtsk9OQ4uiPJnVpy27xwjJqf/PIVcAm8sXpsibIbdt7I51kZvBe8tIsymmiv5kxF9aGE6W2Pjaeaq5trTKTMrRTdEFp4G5W9EjjK8evtO8CsTtCjOhRj0QLNMDoFIRNreFC5y+9gj5lb9/+SEi6MjpasvqNc5lsxyXw8ROkE/Y2/Hlvx60BEJtxVaxkWfM9BjDve1fKiEtbGxecr4kRcqIYT06gq+LBbGEUqwiH1jRCUsGo1Vu7QSjVs2grrhJmBGdWbMwLmp/vKlR+FlMdpGsYoS1wcFU/V5WDkYDK6uYBVfrMsQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vCTfUJ9E; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2614::628" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748033166;
+	cv=pass; b=Ifzd+4zoKD4Mhfcvkv+rW5Nouqq8VRkVUaGuknWVA37o93RfBpPf90kTdecy5aeOj2Uljt8hH9Get1/dERMwZj6bO2HR/dH6+IXMaNkejL9SSjb1NSE6U6xXD8AqqduuDeZVcYFyYWjC2L7AY1OKTBP20eRxOrYTBVXVdT95kG8/X5lWtwirkOgnAst/OFGXI+XoNAjtIrf/0MhqsdlFEREyvAeWRm/7RH3NIAD8qtQhaq2wfNGtVck6OFQLDsZq67+ggfPqkM6vedgRPIY0+UdDdOuxi/ElXsEA48wIGOpdXWMbynVqtvpW2g0kWxv/Wb8hv+vT4FBaIpn+KTBq9A==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1748033166; c=relaxed/relaxed;
+	bh=TBtfSlky47YpOZJQ0+zNDAHLKWhrFE+K+qgGWrB3EHQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=fyB9gIifKHQa6pEGDvtp5GjDadPE5whl2lKqX15jlYkLUbbs375aOGFi4upfjpdf9miqec1G+zUZlgIGWVYz8xmCmqqbgBDZ+Eg1CnpqcBBhMLkdGSS1C1a3NXu8sONmRnEPp3TDPfmPxSocsDHyc8tQpGJrcLYU5KV8p9YnLoK+LHiMXpnfoh6TljQbvLCkEbaPS4ttqvHDkFwvHmL7V1NTbHWpmrVw7BSSjDl7tq2S8RFuCcKs9suitTkRWQXhLuuSMfoDW1foIAV84aNUG04jrE4+n3LrZYmw8vXjYRIrKL4WlzUdcZddONTs7poxe2eEjpulji0WBWdPbE6MhQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=j39UCckc; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2614::628; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vCTfUJ9E;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=j39UCckc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2614::628; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on20628.outbound.protection.outlook.com [IPv6:2a01:111:f403:2614::628])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3r4p50tnz303B
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 May 2025 02:21:14 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 55DC55C5973;
-	Fri, 23 May 2025 16:18:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0D1C4CEE9;
-	Fri, 23 May 2025 16:21:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748017272;
-	bh=U1rnFeuHNXmMUPL2c4Kh+01IGZxLTvvedTjINTssiRY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=vCTfUJ9ECN/W17Uu0ZpD7GqKVXpqr20/H4HOpBIGVI84ziT0ZnQDh0eKfHf3vqWbQ
-	 7iKj3ssD7Dhds3bVCLmFmZsDgKJgJa8J3HYFu3BbbPlb3d5hwrmNw9VBEHvPEZXir0
-	 phsJY/fNDabkHR/x5f/vzQL5P3GEX99rHkxSAdtBzQh3z0+9PSwKWbmUln37QquOi5
-	 8Ruc2aQUsipkL2bPOica7NzT5Bg8GM0wwR5K5HgWViIlhNEBfj5YA4brYIkRou3NgC
-	 9JtQgUXjBwppNdRJm6+p9EJDYsTDi5XUarLx0uPVPuGfFvat0EwY7Zb56cXaMW4oFP
-	 Ve/djPTJY1lrA==
-Date: Fri, 23 May 2025 11:21:10 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: linux-pci@vger.kernel.org
-Cc: Jon Pan-Doh <pandoh@google.com>,
-	Karolina Stolarek <karolina.stolarek@oracle.com>,
-	Weinan Liu <wnliu@google.com>,
-	Martin Petersen <martin.petersen@oracle.com>,
-	Ben Fuller <ben.fuller@oracle.com>,
-	Drew Walton <drewwalton@microsoft.com>,
-	Anil Agrawal <anilagrawal@meta.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sargun Dhillon <sargun@meta.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Kai-Heng Feng <kaihengf@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Shiju Jose <shiju.jose@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v8 00/20] Rate limit AER logs
-Message-ID: <20250523162110.GA1564297@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b3xyL1j9Qz2yrW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 24 May 2025 06:46:01 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fd84LfZi6rINN8OK4mJqLc30dvLFxnXO2FiuNXg4JoHTTmIdAQX1NRAlWzW3t9yOSJ1RRWlmKUEJCUMHMWxthi+N2z6I73ZgB4ubPTuNO4+1gC5YchsDvZ72cAVlB6oZTACRoiRZJpDvJg9Bk7FEF1Hpjgr+Ykwc5aAXXh5G6Z+iwM0+bzAIr4JvicqBrB6TODvbP2t7F7QyVQAAy0Eqq0LtG6gnnYnE6KWBjLh19ZOMy/SxkoIrGBRnuNrwbz5/7Sgo3eUSsJiUyJgNxNMvNVTylyN6qm3KSD/9ITON+VdrJtmNTceF7wB8V8X+vb60KKexltBAUdnAxLRgwS9RMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TBtfSlky47YpOZJQ0+zNDAHLKWhrFE+K+qgGWrB3EHQ=;
+ b=nOydsPmHjClMpYx0WV7R4VasEx0cNmVSiC6x9T8p5OsTkAJ3Pl0ltj5bLVUEeg0GvTyAUyeSL04yhiQC1rtQcq6IKZ5tMYWRoFShOPJXcoJYB2Yxq7PHG9ZEB3KyWixkmIF5GRI6qM+dG0h9wdSCCGzMhsBqkdzFsOlTU4UT+xJlGvl+HZx9DPOltsmDT6xZgaYopm58dZQzROARACPKKP0Td0c/XZmQZ9Acf1K7JYJwS+xiaqqR9xMzcbMUSsyVkIamD+9RaKSDZMKX9LJyavOjcQWs5lOt+rh70Kyll5RFRbMM6Jy2kjvyx7frFHHb8YMReOT4J6ib1rPTmG1VQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TBtfSlky47YpOZJQ0+zNDAHLKWhrFE+K+qgGWrB3EHQ=;
+ b=j39UCckcTzIRl2NzCZtFoXPj4Vww/3qwkH5oFBYicvpP6jRgF9HOac0mUkmyh/RJiu2ykTRAsjbjvCNU4kkAjLmZesoeuDSueHKmSGijT1TKOXxJJ9pxeWrU558dpOyOYoARqq+u1IrgSgyxFDKCbiwKGNSjuXQU9riRttmV3NDqKTf9Ng82I6MzO1zneuYOW0VwkOIEW2rzGpJkqbT+hKURhdINAr57by5X9d+16AUicPm9M4llnsOOKWVhkerUnOdj/gOYdM2+wnkd49aob3s1soyIfYmBB7yqTuOT68cA2xvmW8bT8lHbaJmLYAX+LpdTNnH8+ZFEyF997mWrUw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM9PR04MB8472.eurprd04.prod.outlook.com (2603:10a6:20b:417::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.22; Fri, 23 May
+ 2025 20:45:40 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8746.030; Fri, 23 May 2025
+ 20:45:40 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:FREESCALE SOC DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	imx@lists.linux.dev (open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [PATCH 1/1] dt-bindings: soc: Add fsl,imx23-digctl.yaml for i.MX23 and i.MX28
+Date: Fri, 23 May 2025 16:45:23 -0400
+Message-Id: <20250523204524.573028-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0190.namprd05.prod.outlook.com
+ (2603:10b6:a03:330::15) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,219 +89,147 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250522232339.1525671-1-helgaas@kernel.org>
-X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB8472:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9dc8269f-3ceb-4b46-5060-08dd9a3ac7ae
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|52116014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+JvC6RL/VQg8uPyJdp/EApljtQ5w4f13Vb9MJH1BlNe3N3Lt7cIstFD+s8Uf?=
+ =?us-ascii?Q?+L1k5/iyAEQUdjMghROUv7VZcK5kdCVgA7nBAxUOQLf3cK7Ivrsn6r1cYVhg?=
+ =?us-ascii?Q?eD+IIaKSYcyf/IoEio0iF5p5Mu62AFjHdbSPYqVQ7H6RtP1+xExIGAt/6+Zq?=
+ =?us-ascii?Q?sKsYZSRN/dFWxOE+ML7R+6ZYqTb9ZfMV+fslXX7ZPv9luJLiOljVpfaVnpwg?=
+ =?us-ascii?Q?jknfWhd1jl5bUtkNifJ6cL877xqPDQOV4hRAmXIs+Jy5UJ5TaDj27zpC41OW?=
+ =?us-ascii?Q?v6yiFc8FyuZS5ZyFT6eUaGdvqGDKHZWwoNMm5F0KWvRNU9W9aq13qxPjDEW6?=
+ =?us-ascii?Q?cWpRaKTEhQ3jMrIQv8oTYuj+J2QmQyzM7aGJu9hPDib9op5qHIqyh8RHttYw?=
+ =?us-ascii?Q?qMWTvRj32VnaAcANd2/mBzVrB3wdd6KPrRSIVkOc9Ko2WjGwH0GYqpIMk/Jf?=
+ =?us-ascii?Q?XBauvBkqAHWKc0MXn+H+8GZnPo4gblwTU/7Os4Epu0pJrJ7kWNXCYIdfnygF?=
+ =?us-ascii?Q?VMISYN/Ai5Y5DYPXkwNFVjnCEjTH9Q+7NCF5g7JCJ6webfCqqTnJf57XXR/k?=
+ =?us-ascii?Q?19oA9D1NouCuaijHvVn73NTqTNNb52PJhUZfcyFiGnnf0zJmoDPE4iA0mNx3?=
+ =?us-ascii?Q?DakP0pe/zk5fogQ+CwvEujhsqhXELSDnNSDgHWPDr7EZ3NL4K10fz9M+XTNZ?=
+ =?us-ascii?Q?YpRjYuKu6SjqfpEo8K7n6cP17zqD3JuSByLy1iX82auwuk7up2uTTJ3og34Z?=
+ =?us-ascii?Q?cqHJds970HrG1A8o1rT4ITfJEMY/YOCZ7SDQ9d7sTJfyUFsUMmacVVMiJ7rv?=
+ =?us-ascii?Q?EwC2e9DYbMbUzKnQsw9/DkNIdokIlpHSiVKNyilRe72/Q3TOSwmizKAbCpQ0?=
+ =?us-ascii?Q?jBM0cQOoojSGhRJfQv6Nib+qFIMhWb8E2an5tvI6SzTNzLVQ93JN3kCcbP1G?=
+ =?us-ascii?Q?H+QhrUf1iuiVMGk3N4JR5B+W2T5dNdGEMETKza7aud26UaxIkGanvGiyaC3f?=
+ =?us-ascii?Q?+VoRKkH1ZD1tTp2AgRoGRNJOO7HL++32x3+d/pwDSu18nqHYDWNZJNqP1aZM?=
+ =?us-ascii?Q?d3fYcepj5/HaLaRMkXjCnWE6flI2ZK68ZHcSKesTF95ph9b83resoXeQgwqN?=
+ =?us-ascii?Q?lHgB7uUznj5kkDrJhVQUUqZxmKW2F4Qp4QgWzibl4CbtZt1guaVk7T6H6hKF?=
+ =?us-ascii?Q?hix+0UmrrmFoQ4MtCLWJIWSueaLykwahfVcd/bMqVcFOZOHkPRBbW+MBx1h1?=
+ =?us-ascii?Q?XXM5XxROOZ8B7XfDmRqtzcdQcvD+U+qgQCjqIypzFkYsv72BUGziOFUHSoeQ?=
+ =?us-ascii?Q?gIbb1Y9oVgICSNWrb8skWd6n/RDVJtd1sAL2Aq/SEIrv3BP42Gg7AHuYMICK?=
+ =?us-ascii?Q?8xAYNYvmsw1hlOp0xXGdcvMX3ny9y3CSBbYJdi/MMdiFg6/pRrZ5qtEfE5lf?=
+ =?us-ascii?Q?5TGg4TNrI2rYY/bcd3wWtENXAqursDkSCYKd0B+2d9siQTvcCoU/AA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(52116014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?TD7W2vnTdxVOEohvGVAXjfaeqj7xxSSpOujmEsCuBLCCVG1ikfLWVH7gjXoX?=
+ =?us-ascii?Q?DzzMWvVN5/rxYK40LBtQIMvConpzxMfeDTJZv8ocKW+n+dkE4WAbAQPHT5Yf?=
+ =?us-ascii?Q?0h29P+KLVMvTUJF1ctUKTQolz8HVXmR84MqcNBydDVpkl3ftatS7pXotD+ZJ?=
+ =?us-ascii?Q?r3oIONo7C1/IpTy08gqiIiIPsOkK/6LRG+/yH+OS/kqOvg1QYMSBsdPneEiI?=
+ =?us-ascii?Q?VTf3AaRxBHUVMSMyq5bJzipTjwxZntiBHBVggocP8kaZxunHGyeSkPcVt2Hq?=
+ =?us-ascii?Q?5lrPD8uZorfNNaD/LasLxHPbldToNJGvtCcwJDHjSwceUYbPuWYTJQ03YbHG?=
+ =?us-ascii?Q?tiwb9eWePmEAk2W0ak2a28zWh04xG4ONWm3GMTO561BNtb/CzX5DhykwskW0?=
+ =?us-ascii?Q?xPsSUWZ1f8/V+esyTL79hIDSKYFtNp3McT2UdQkvHH0VDPtua86pM1uNC+z2?=
+ =?us-ascii?Q?kOkW7byvKhWEKGtayVlh3Mj1Py8qf+h+n9PGk0ElOF6QYDfkdIANP25OPiXw?=
+ =?us-ascii?Q?MlvTKmDVUj8DASV9DAt5c9MVUBPsnvaYG2r9u8e0w+47jsp6p69Q4bH6AVEa?=
+ =?us-ascii?Q?oLJnafwIzG4wf2DJh+VA8QHJvSNhrCCUT8fH4UFgnbnzjHimO4ArwuIbqezg?=
+ =?us-ascii?Q?lsCGFcWUX3hCOu+Ru1N0IxzP+f/m8Jtw2TjPZUWYW7PW5f0lJsr8pBEimCDr?=
+ =?us-ascii?Q?5zq3v2hPGWyeBrFpAwCd5pxqm4DzwIhBZIx8vyI6ZVISu9ZVF0Wm1obPFXqj?=
+ =?us-ascii?Q?nl7Vm2e+2mKgljg+mLoPQzN/8rMjgu+x2WaNkWUvhK7BwAxboIGra0zSMQR8?=
+ =?us-ascii?Q?A4kxjtG9aVYYlaPauPTXvnHCgq87IIYp5ZIKrXRZFOIGS6tXoxC+uoJegS8V?=
+ =?us-ascii?Q?IU9iqClOpRaUKwkDgUqdZFaMMBMo4BzSQNfWCNzruRI0b07husZ5hXC/1fRT?=
+ =?us-ascii?Q?SenyjYBK49b8EHtNGK+28tViBgtZOudV+NgEnSrxyHYaBlXHOi97KLyssDoX?=
+ =?us-ascii?Q?h77qPtX+jJcIcDErPtXJ881//GkInSvRJiYTxSyg1UQ3JTawwgDT3jUzYGNF?=
+ =?us-ascii?Q?pe12D2ATY/mcNnsQEyBqbJ0xPuwV47nd87a+B/OzwUD7AthS/YuSUyZNSF+F?=
+ =?us-ascii?Q?Rawm/FjMTmpxOwP52hOmcHUvGI1Kt7piJyyo2GhSwmjeyYK6CT4juhJK77I7?=
+ =?us-ascii?Q?dBXacyPOkcOegQktdS/oneBW+a0SJ9h4S4QD3V9bsrEs66G41P6nf3ZIwKji?=
+ =?us-ascii?Q?xTYuz1s0cOj3h7rWpzAzIzs+mIkBwUyNAgMOqb+pQgMs3+u1IiRP8CxBSyoT?=
+ =?us-ascii?Q?qYpRcpw5gFnDGicjGwBN6RUHgE/SKSNlNi1vuOBC8fXTzZA2Y2z8HIaW8Njq?=
+ =?us-ascii?Q?64KiK9EiCl5x/LD7AwaxCBMvHmDi//TKbphnKQVAuxZJbk2oWKvyR30xCzut?=
+ =?us-ascii?Q?s7Jfsgjsy3WTF4kCTMpmxkvvt+jp0ooXK4ZsTd97BAovbia2BqLTZXLT+iBi?=
+ =?us-ascii?Q?OxkhaOxuYZdGh42Nc+xqxcQZQBsxkSdxnFHBUWguoPbtUYr2CBhZvVi723V1?=
+ =?us-ascii?Q?6n+64OJgJgkUa1tDTp0qXZo5u6jol7QM9t2Eyxcs?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9dc8269f-3ceb-4b46-5060-08dd9a3ac7ae
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2025 20:45:40.7840
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aNrFqPB6BSICoXc259+KdDS9DaHwySitX5Ke+EEToaFU/eTApfjgK3e4sG68Pf5qi90eLZfG16KUsRJ/TGrrXw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8472
+X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, May 22, 2025 at 06:21:06PM -0500, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> This work is mostly due to Jon Pan-Doh and Karolina Stolarek.  I rebased
-> this to v6.15-rc1, factored out some of the trace and statistics updates,
-> and added some minor cleanups.
-> 
-> I pushed this to pci/aer at
-> https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/log/?h=aer
-> (head a524e63307cf ("PCI/AER: Add sysfs attributes for log ratelimits"))
-> and appended the interdiff from v7 to v8 below.
-> 
-> Proposal
-> ========
-> 
-> When using native AER, spammy devices can flood kernel logs with AER errors
-> and slow/stall execution. Add per-device per-error-severity ratelimits for
-> more robust error logging. Allow userspace to configure ratelimits via
-> sysfs knobs.
-> 
-> Motivation
-> ==========
-> 
-> Inconsistent PCIe error handling, exacerbated at datacenter scale (myriad
-> of devices), affects repairabilitiy flows for fleet operators.
-> 
-> Exposing PCIe errors/debug info in-band for a userspace daemon (e.g.
-> rasdaemon) to collect/pass on to repairability services will allow for more
-> predictable repair flows and decrease machine downtime.
-> 
-> Background
-> ==========
-> 
-> AER error spam has been observed many times, both publicly (e.g. [1], [2],
-> [3]) and privately. While it usually occurs with correctable errors, it can
-> happen with uncorrectable errors (e.g. during new HW bringup).
-> 
-> There have been previous attempts to add ratelimits to AER logs ([4], [5]).
-> The most recent attempt[5] has many similarities with the proposed
-> approach.
-> 
-> 
-> v8:
-> - Rename sysfs ratelimit burst files:
->     ratelimit_burst_cor_log -> correctable_ratelimit_burst (Sathy)
->     ratelimit_burst_uncor_log -> nonfatal_ratelimit_burst
-> - Split sysfs ratelimit_log_enable for correctable and nonfatal and make it
->   an interval instead of a toggle:
->     ratelimit_log_enable -> correctable_ratelimit_interval_ms
->                          -> nonfatal_ratelimit_interval_ms
-> - Rework aer_get_device_error_info() and aer_print_error() to take an index
->   instead of pci_dev pointer
-> - Move trace_aer_event() out of pci_dev_aer_stats_incr() (Jonathan)
-> - Move AER_FATAL checking to aer_ratelimit() to avoid calling
->   __ratelimit(nonfatal_ratelimit) when we know we don't want to ratelimit
->   fatal errors (Jonathan)
-> - Move all Error Source ID string building into aer_print_source() instead
->   of putting part in caller (Jonathan)
-> - Rename struct aer_err_info.ratelimit -> ratelimit_print[] (Jonathan)
-> - Pass printk level into pcie_print_tlp_log() (Jonathan)
-> - Rework Error Source ratelimiting vs detail ratelimiting (Jonathan)
-> v7: https://lore.kernel.org/r/20250520215047.1350603-1-helgaas@kernel.org
-> - Update sysfs doc target kernel version & date (Ilpo)
-> - Fix sysfs doc "AER ratelimiting" typo (Ilpo)
-> - Ratelimit Correctable and Non-Fatal but not Fatal errors (Sathy)
-> - Rename "struct aer_report" to "aer_info" (Sathy)
-> - Expand comments about combining ratelimit for multiple devices (Ilpo)
-> - Rework Error Source logging ratelimiting (Sathy)
-> - Factor out aer_isr_one_error_type() to reduce code duplication
-> - Log DPC errors, which are all Fatal, at KERN_ERR (Sathy)
-> - Improve dpc_process_error() structure (Ilpo)
-> v6: https://lore.kernel.org/r/20250519213603.1257897-1-helgaas@kernel.org
-> - Rebase to v6.15-rc1
-> - Initialize struct aer_err_info completely before using it
-> - Log DPC Error Source ID only when it's valid
-> - Consolidate AER Error Source ID logging to one place
-> - Tidy Error Source ID bus/dev/fn decoding using macros
-> - Rename aer_print_port_info() to aer_print_source()
-> - Consolidate trace events and statistic updates to one non-ratelimited place
-> - Save log level in struct aer_err_info instead of passing as parameter
-> v5: https://lore.kernel.org/r/20250321015806.954866-1-pandoh@google.com
-> - Handle multi-error AER by evaluating ratelimits once and storing result
-> - Reword/rename commit messages/functions/variable
-> v4: https://lore.kernel.org/r/20250320082057.622983-1-pandoh@google.com
-> - Fix bug where trace not emitted with malformed aer_err_info
-> - Extend ratelimit to malformed aer_err_info
-> - Update commit messages with patch motivation
-> - Squash AER sysfs filename change (Patch 8)
-> v3: https://lore.kernel.org/r/20250319084050.366718-1-pandoh@google.com
-> - Ratelimit aer_print_port_info() (drop Patch 1)
-> - Add ratelimit enable toggle
-> - Move trace outside of ratelimit
-> - Split log level (Patch 2) into two
-> - More descriptive documentation/sysfs naming
-> v2: https://lore.kernel.org/r/20250214023543.992372-1-pandoh@google.com
-> - Rebased on top of pci/aer (6.14.rc-1)
-> - Split series into log and IRQ ratelimits (defer patch 5)
-> - Dropped patch 8 (Move AER sysfs)
-> - Added log level cleanup patch[7] from Karolina's series
-> - Fixed bug where dpc errors didn't increment counters
-> - "X callbacks suppressed" message on ratelimit release -> immediately
-> - Separate documentation into own patch
-> v1: https://lore.kernel.org/r/20250115074301.3514927-1-pandoh@google.com
-> 
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=215027
-> [2] https://bugzilla.kernel.org/show_bug.cgi?id=201517
-> [3] https://bugzilla.kernel.org/show_bug.cgi?id=196183
-> [4] https://lore.kernel.org/linux-pci/20230606035442.2886343-2-grundler@chromium.org/
-> [5] https://lore.kernel.org/linux-pci/cover.1736341506.git.karolina.stolarek@oracle.com/
-> [6]
-> https://lore.kernel.org/linux-pci/8bcb8c9a7b38ce3bdaca5a64fe76f08b0b337511.1742202797.git.k
-> arolina.stolarek@oracle.com/
-> [7]
-> https://lore.kernel.org/linux-pci/edd77011aafad4c0654358a26b4e538d0c5a321d.1736341506.git.k
-> arolina.stolarek@oracle.com/
-> 
-> 
-> 
-> Bjorn Helgaas (13):
->   PCI/DPC: Initialize aer_err_info before using it
->   PCI/DPC: Log Error Source ID only when valid
->   PCI/AER: Factor COR/UNCOR error handling out from aer_isr_one_error()
->   PCI/AER: Consolidate Error Source ID logging in
->     aer_isr_one_error_type()
->   PCI/AER: Extract bus/dev/fn in aer_print_port_info() with
->     PCI_BUS_NUM(), etc
->   PCI/AER: Move aer_print_source() earlier in file
->   PCI/AER: Initialize aer_err_info before using it
->   PCI/AER: Simplify pci_print_aer()
->   PCI/AER: Update statistics before ratelimiting
->   PCI/AER: Trace error event before ratelimiting
->   PCI/ERR: Add printk level to pcie_print_tlp_log()
->   PCI/AER: Convert aer_get_device_error_info(), aer_print_error() to
->     index
->   PCI/AER: Simplify add_error_device()
-> 
-> Jon Pan-Doh (4):
->   PCI/AER: Rename aer_print_port_info() to aer_print_source()
->   PCI/AER: Ratelimit correctable and non-fatal error logging
->   PCI/AER: Add ratelimits to PCI AER Documentation
->   PCI/AER: Add sysfs attributes for log ratelimits
-> 
-> Karolina Stolarek (3):
->   PCI/AER: Check log level once and remember it
->   PCI/AER: Reduce pci_print_aer() correctable error level to
->     KERN_WARNING
->   PCI/AER: Rename struct aer_stats to aer_info
-> 
->  ...es-aer_stats => sysfs-bus-pci-devices-aer} |  44 ++
->  Documentation/PCI/pcieaer-howto.rst           |  17 +-
->  drivers/pci/pci-sysfs.c                       |   1 +
->  drivers/pci/pci.h                             |  13 +-
->  drivers/pci/pcie/aer.c                        | 441 +++++++++++++-----
->  drivers/pci/pcie/dpc.c                        |  73 +--
->  drivers/pci/pcie/tlp.c                        |   6 +-
->  include/linux/pci.h                           |   2 +-
->  8 files changed, 430 insertions(+), 167 deletions(-)
->  rename Documentation/ABI/testing/{sysfs-bus-pci-devices-aer_stats => sysfs-bus-pci-devices-aer} (72%)
+Add fsl,imx23-digctl.yaml for i.MX23 and i.MX28 to fix below CHECK_DTB
+warning:
 
-I applied this series to pci/aer for v6.16 with the updates below
-suggested by Sathy and Ilpo.
+arch/arm/boot/dts/nxp/mxs/imx23-sansa.dtb: /apb@80000000/apbh-bus@80000000/digctl@8001c000:
+    failed to match any schema with compatible: ['fsl,imx23-digctl']
 
-My heartfelt thanks to the authors, Jon and Karolina, for seeing the
-need for this and putting in the effort, and to all the reviewers who
-put so much time and care into reading and polishing it on such a
-tight schedule.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+ .../bindings/soc/fsl/fsl,imx23-digctl.yaml    | 41 +++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,imx23-digctl.yaml
 
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,imx23-digctl.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,imx23-digctl.yaml
+new file mode 100644
+index 0000000000000..47f92f763bfa3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,imx23-digctl.yaml
+@@ -0,0 +1,41 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas//soc/fsl/fsl,imx23-digctl.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale mxs digctrl for i.MX23/i.MX28
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++properties:
++  compatible:
++    oneOf:
++      - items:
++          - enum:
++              - fsl,imx28-digctl
++          - const: fsl,imx23-digctl
++      - const: fsl,imx23-digctl
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    digctl@8001c000 {
++        compatible = "fsl,imx28-digctl", "fsl,imx23-digctl";
++        reg = <0x8001c000 0x2000>;
++        interrupts = <89>;
++    };
++
+-- 
+2.34.1
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 6c331695af58..70ac66188367 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -786,17 +786,14 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
- 
- static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
- {
--	struct ratelimit_state *ratelimit;
--
--	if (severity == AER_FATAL)
--		return 1;	/* AER_FATAL not ratelimited */
--
--	if (severity == AER_CORRECTABLE)
--		ratelimit = &dev->aer_info->correctable_ratelimit;
--	else
--		ratelimit = &dev->aer_info->nonfatal_ratelimit;
--
--	return __ratelimit(ratelimit);
-+	switch (severity) {
-+	case AER_NONFATAL:
-+		return __ratelimit(&dev->aer_info->nonfatal_ratelimit);
-+	case AER_CORRECTABLE:
-+		return __ratelimit(&dev->aer_info->correctable_ratelimit);
-+	default:
-+		return 1;	/* Don't ratelimit fatal errors */
-+	}
- }
- 
- static void __aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
-@@ -841,7 +838,7 @@ void aer_print_error(struct aer_err_info *info, int i)
- 	int layer, agent, id;
- 	const char *level = info->level;
- 
--	if (i >= AER_MAX_MULTI_ERR_DEVICES)
-+	if (WARN_ON_ONCE(i >= AER_MAX_MULTI_ERR_DEVICES))
- 		return;
- 
- 	dev = info->dev[i];
 
