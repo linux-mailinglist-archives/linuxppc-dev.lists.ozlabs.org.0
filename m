@@ -1,96 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-8941-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8943-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C91AAC41D0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 May 2025 16:51:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A99AAAC424E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 26 May 2025 17:33:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b5dxW4ywFz2xfR;
-	Tue, 27 May 2025 00:51:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b5ftT0hrjz2xS2;
+	Tue, 27 May 2025 01:33:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748271071;
-	cv=none; b=YSdxRnzZ7Bcq6ksqZULuaI1ZAfFQz9UjlkK/naYSJ+NuZd92U59856WcHXDeSXcPUcGYo4hx+phaUFis4JdpOhlufaGdZb/EZfhdwGAMXfqlhhxXtcVBUY2c9h7L7SymwcQkQ5yfZXuDOcs1K3nxpLQwau6NghOrf+yVLtALuOmO1MGQaiUHmsUYzFz3aTRYSPKj4Z6BQ4BU4kUkreHsVPybzqgJ+JS08jBhRewqH6ns7XC8Ry7Gk8iAKDvX5n8x5Etafm12dcdJi6mu0onGBw90+gBu6vCtjQJqMoYUygDXPC+TDW+HCBVr4VSJ405osO6Idh1M7ybmPSq5R7rkZw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748273617;
+	cv=none; b=WwlpsAmx3ZpDU/2TPUpIgRbFx5nJYCIdZ3hXI3U7GUwu9+9hX1UM6DBdDolZ1EWcRgYKeVvF4M8sZja+UoY9kVDRHDyfMCgouHEVYv6lgE250UiHvc7N1F0t7momvcLhnkpWaIK0mxTM2xum9PtD67eC9tFITVplK398H+PDKbl9h/fWFPQ3epmxwP8CF+HM3F8RkypKx0ulB7cRZuEmvLTu+ncnzN0H6UhI1mP6DPGyGCs3mgjTcK4ZQNJpXeQu9j9iRviKLGDJUOjTqzMfz/vQV0uzNc+zLnrROJ5pmx5nY1zfq7tfxQ2LOPqi/EwoxJsruFFbKbqSaYv4mDnh+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748271071; c=relaxed/relaxed;
-	bh=z1zMbJWS4TH8bmZrIMKw//pZQFS0ilbqi+ycdqO3B7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CpnSQUuv9cAJtc9tBUCh/t5lHKtZ4vKo2rPfDQWA3rIT4b4q6eYku1AZnsI9J5QT7hDcCy6buRqtUZuG3GSPAkZOwcRxE3YJMK4VoNc97lRVWMsABHQxLuQtKx6YMeSEZJ/h+9/ldg8s81ocGM/aFSzmmmi4YH+fN8aq8KTUSeR+eG4vQv+Ma8yJIgzf5T6pvojCLkbuubDUUIxXRqc7yM7gZ6tZTAb+murYxhsHGlj6WIwDZ6XBYM6jWoMF+5WNQC1q2L1EFvBvnvoBhDvBK+uz4MYdgKvpxH7SLCf5ZLQH9+BbqPB1wFhzrZXulyirVdULxn9qKHTXOa0U+D5V3g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=X20GFcMW; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1748273617; c=relaxed/relaxed;
+	bh=vetZnB8Rm8VfVwLOdkXrGlsQLcsEwAP0m2e4xXUlcBk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wrye8mGdTpWZ7fHOyJ8TbYNktaTVoFi3Ony0GJIz7UmpNYUT4O8SG1ZHML5Z3K8juMRmFtbQyAJwXlb9Ci1zm2mclMdbwn5rP4GnMwCD0ZjlS0BXkbA8d3lUccv6lRvduJnDpMZ88f2gizMpHTZzo/oSSABUM9ZtvK0pBR+PnlRl0YB+wi9oL+ckDGwgTKWx10kk8wUVbbhxIwxJYQDNb2FeDOCsjOILMM/LQW9JYb/1/hTZ4FbQjVDdx0pmeYZ+WYnL0gvm1eV8FBEb1VgMTgV+p3LiSmOOPFYltO0u2GCAX+j+u4ZSV352UQo64i2RgkQoxMVvUxSyeS9I1UxJVQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XpgzDHq8; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=X20GFcMW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XpgzDHq8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b5dxV6LyXz2xRs
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 May 2025 00:51:10 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54QCYdqF000346;
-	Mon, 26 May 2025 14:50:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=z1zMbJWS4TH8bmZrI
-	MKw//pZQFS0ilbqi+ycdqO3B7M=; b=X20GFcMWUfO5WVDMLqxtQ8/nKt0/f6HZV
-	5bGWpDEsuLeZV8keKeE/FgjGGJOJ3P/HZLqB/gQmg9bHBUQEuSfqBo1UMJ4hLgPL
-	d9ULqO35QZ5f0qUU7a6wBbAiCqyY58YLbNvSOSDlxXSc1Vao8McVuzt0LcvQFYxT
-	r0CBkpK7mRxotNU+xJky7rVoEVk1yhAHTAjTAftcBtzZ5vC1FcPQXCztAp/FZAeO
-	DYLgBGJsK7lrb5lI+0K9ORP7qQYcrJWclQW9MkT3j+fea22okW+xJlj0EvP93PLe
-	uJGQ6udcPcmPNMtOSYKeCnamxfGMQksQmPqPG9GKA15gyNUCbQSUQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46u4hn9tkj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 May 2025 14:50:53 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54QEcxhw026243;
-	Mon, 26 May 2025 14:50:53 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46u4hn9tkh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 May 2025 14:50:53 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54QCLp05010712;
-	Mon, 26 May 2025 14:50:52 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46uru0epfb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 May 2025 14:50:52 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54QEom8u52167014
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 May 2025 14:50:48 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6455D20040;
-	Mon, 26 May 2025 14:50:48 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC5852004B;
-	Mon, 26 May 2025 14:50:45 +0000 (GMT)
-Received: from ltczz402-lp1.aus.stglabs.ibm.com (unknown [9.40.194.31])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 26 May 2025 14:50:45 +0000 (GMT)
-From: Donet Tom <donettom@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Zi Yan <ziy@nvidia.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Yury Norov <yury.norov@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nilay Shroff <nilay@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Donet Tom <donettom@linux.ibm.com>
-Subject: [PATCH v6 5/5] drivers/base/node: Rename __register_one_node() to register_one_node()
-Date: Mon, 26 May 2025 09:50:13 -0500
-Message-ID: <6a2bd4deee8a9274e0d3dafe965c0119b2191b7d.1748270306.git.donettom@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <bc754a238aa91fa36be463985ccde66aac7055e7.1748270306.git.donettom@linux.ibm.com>
-References: <bc754a238aa91fa36be463985ccde66aac7055e7.1748270306.git.donettom@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b5ftR403Gz2xRw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 May 2025 01:33:35 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 3EA105C40C2;
+	Mon, 26 May 2025 15:31:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F724C4CEE7;
+	Mon, 26 May 2025 15:33:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748273613;
+	bh=bTIiweD03lr1R1e1Y1cpiVQxuDlSy72r7CfXuZpCyb0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XpgzDHq8IAUfoS6wq7qPPTet5n4dB+fg6N5zLp0bkDtKEbqKiCKvQmdUge6ThtwS4
+	 g+C5MVkQ+pGzfoPXP0o/Tkn6rBSAOWOoA2UWKgq6Dki7MlIoOxqno7gU81qtidKQsV
+	 Lu0eNkLAYn1V+4WYuZn/XdbMRUONGgzhXJetBx6RAXmjfjMik14xR/A4VdqqXxLiZv
+	 IULYHBNxYnMoXQv+BLfk96/Sc0DmNGpIaQOtYQksJDLUiV7j1aViQS3np3cpBZ70za
+	 Nsb1bW5Fn4uvMFahzAwGKyJO/go310X6uYZ/fxNxj8Fe18s8P/ibtg6AYuCjvW55Zp
+	 Va4NqQE45lWzA==
+Date: Mon, 26 May 2025 16:33:28 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"open list:FREESCALE SOC DRIVERS" <linuxppc-dev@lists.ozlabs.org>,
+	"moderated list:FREESCALE SOC DRIVERS" <linux-arm-kernel@lists.infradead.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" <imx@lists.linux.dev>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/1] dt-bindings: soc: Add fsl,imx23-digctl.yaml for
+ i.MX23 and i.MX28
+Message-ID: <20250526-corset-villain-8b72aefeba75@spud>
+References: <20250523204524.573028-1-Frank.Li@nxp.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,121 +75,105 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=HvB2G1TS c=1 sm=1 tr=0 ts=68347fcd cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=TOWdrs_80VijkQ5-_Q4A:9
-X-Proofpoint-GUID: L9YG9Z0U6pdcl2KylbHoKxa4EPuOaSgG
-X-Proofpoint-ORIG-GUID: hwYt7O5gek2eQZPs6b3DFrFhwS7BUQ0o
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI2MDEyNCBTYWx0ZWRfXxidBpmOfzPKB JOgse1ajFprNFvlOqFy8a4TtOPrIrzHJtwAhJaHzjbinRjcGhMkNzR4Lyka/OYbKY081hSuBUjR Qx08s3UAZ/KqWhMztya+/7By3e87Atb8Xlz3pTChB74Z+2XP4ixQotRmxOJnXzasbodG2XK6dRL
- XAGkXQVzNoyCLCBthNKINwQe7MfDGGspj/Jwn8QalMFE6CsdTjF9YqGgH44WhYaCZlndkTw+vra XjGgoHk9T5s7rZaMZla0FRmIFdLLFCh6tFCO9zOurmdL1d1s5uTIuwnTItDm9brp/QJ7N5e0jl6 u7m9/HEVsyY/PAxkUT+jnlKoQEKr7zbjq/rBaROGjX8FO36qM+v9HSe7LOsM+GhEr/udRdM+44k
- Hr22xoZtDBL+KZ4demehdOViu+WrBDXMLAo1OFkBf05SmO8iWJpowwyY3eQr52KE2r+ZZ1Fl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-26_07,2025-05-26_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 bulkscore=0 lowpriorityscore=0 phishscore=0
- clxscore=1015 malwarescore=0 mlxlogscore=964 impostorscore=0 spamscore=0
- mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505260124
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="0HV2Ae0Z+B5ulyZ6"
+Content-Disposition: inline
+In-Reply-To: <20250523204524.573028-1-Frank.Li@nxp.com>
+X-Spam-Status: No, score=-5.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The register_one_node() function was a simple wrapper around
-__register_one_node(). To simplify the code, register_one_node()
-has been removed, and __register_one_node() has been renamed to
-register_one_node().
 
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/pci_dlpar.c |  2 +-
- drivers/base/node.c                        |  4 ++--
- include/linux/node.h                       | 13 +------------
- mm/memory_hotplug.c                        |  2 +-
- 4 files changed, 5 insertions(+), 16 deletions(-)
+--0HV2Ae0Z+B5ulyZ6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
-index 52e2623a741d..aeb8633a3d00 100644
---- a/arch/powerpc/platforms/pseries/pci_dlpar.c
-+++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
-@@ -29,7 +29,7 @@ struct pci_controller *init_phb_dynamic(struct device_node *dn)
- 	nid = of_node_to_nid(dn);
- 	if (likely((nid) >= 0)) {
- 		if (!node_online(nid)) {
--			if (__register_one_node(nid)) {
-+			if (register_one_node(nid)) {
- 				pr_err("PCI: Failed to register node %d\n", nid);
- 			} else {
- 				update_numa_distance(dn);
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 9d0977fa50e3..94b8ac116aa4 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -852,7 +852,7 @@ void register_memory_blocks_under_node_hotplug(int nid, unsigned long start_pfn,
- }
- #endif /* CONFIG_MEMORY_HOTPLUG */
- 
--int __register_one_node(int nid)
-+int register_one_node(int nid)
- {
- 	int error;
- 	int cpu;
-@@ -959,7 +959,7 @@ void __init node_dev_init(void)
- 	 * to already created cpu devices.
- 	 */
- 	for_each_online_node(i) {
--		ret =  __register_one_node(i);
-+		ret =  register_one_node(i);
- 		if (ret)
- 			panic("%s() failed to add node: %d\n", __func__, ret);
- 	}
-diff --git a/include/linux/node.h b/include/linux/node.h
-index 75b036a100d2..88bceebcbfa5 100644
---- a/include/linux/node.h
-+++ b/include/linux/node.h
-@@ -128,14 +128,7 @@ extern void unregister_node(struct node *node);
- #ifdef CONFIG_NUMA
- extern void node_dev_init(void);
- /* Core of the node registration - only memory hotplug should use this */
--extern int __register_one_node(int nid);
--
--/* Registers an online node */
--static inline int register_one_node(int nid)
--{
--	return __register_one_node(nid);
--}
--
-+extern int register_one_node(int nid);
- extern void unregister_one_node(int nid);
- extern int register_cpu_under_node(unsigned int cpu, unsigned int nid);
- extern int unregister_cpu_under_node(unsigned int cpu, unsigned int nid);
-@@ -148,10 +141,6 @@ extern int register_memory_node_under_compute_node(unsigned int mem_nid,
- static inline void node_dev_init(void)
- {
- }
--static inline int __register_one_node(int nid)
--{
--	return 0;
--}
- static inline int register_one_node(int nid)
- {
- 	return 0;
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index f734cc924b51..4dadd156f836 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1571,7 +1571,7 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
- 		 * We online node here. We can't roll back from here.
- 		 */
- 		node_set_online(nid);
--		ret = __register_one_node(nid);
-+		ret = register_one_node(nid);
- 		BUG_ON(ret);
- 	}
- 
--- 
-2.43.5
+On Fri, May 23, 2025 at 04:45:23PM -0400, Frank Li wrote:
+> Add fsl,imx23-digctl.yaml for i.MX23 and i.MX28 to fix below CHECK_DTB
+> warning:
+>=20
+> arch/arm/boot/dts/nxp/mxs/imx23-sansa.dtb: /apb@80000000/apbh-bus@8000000=
+0/digctl@8001c000:
+>     failed to match any schema with compatible: ['fsl,imx23-digctl']
+>=20
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>  .../bindings/soc/fsl/fsl,imx23-digctl.yaml    | 41 +++++++++++++++++++
+>  1 file changed, 41 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,imx23-d=
+igctl.yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,imx23-digctl.y=
+aml b/Documentation/devicetree/bindings/soc/fsl/fsl,imx23-digctl.yaml
+> new file mode 100644
+> index 0000000000000..47f92f763bfa3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,imx23-digctl.yaml
+> @@ -0,0 +1,41 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas//soc/fsl/fsl,imx23-digctl.yaml#
+                                     ^^ I assume it makes no difference,
+but you got a double / here.
 
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Freescale mxs digctrl for i.MX23/i.MX28
+
+I have no idea reading this what a "digctrl" is. I think you should add
+a description briefly mentioning what it does.
+
+> +
+> +maintainers:
+> +  - Frank Li <Frank.Li@nxp.com>
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - items:
+> +          - enum:
+> +              - fsl,imx28-digctl
+> +          - const: fsl,imx23-digctl
+> +      - const: fsl,imx23-digctl
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    digctl@8001c000 {
+> +        compatible =3D "fsl,imx28-digctl", "fsl,imx23-digctl";
+> +        reg =3D <0x8001c000 0x2000>;
+> +        interrupts =3D <89>;
+> +    };
+> +
+> --=20
+> 2.34.1
+>=20
+
+--0HV2Ae0Z+B5ulyZ6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDSJxwAKCRB4tDGHoIJi
+0gCyAP9LAdE1TGf4om1fs4XgX2jkfTuBjGIU5v+EiwczA9egZwD+L6HUreQw17x+
+C0TNwI+EWaCw4LyMxszPbEdFd9lA1g4=
+=cgID
+-----END PGP SIGNATURE-----
+
+--0HV2Ae0Z+B5ulyZ6--
 
