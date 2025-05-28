@@ -1,79 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-8969-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8970-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66578AC6D1C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 May 2025 17:44:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 928F2AC6EFF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 May 2025 19:18:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b6v2C063fz2xQ5;
-	Thu, 29 May 2025 01:44:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b6x6b6mmjz2xGY;
+	Thu, 29 May 2025 03:18:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::3" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748447074;
-	cv=pass; b=f9XgFUsyL7cA1UwL3dopHO/CA9vmmbbnP2nxu6EwoSNj9PYkaVVjU4DIdkL1ZwkmTbkInMKNfJ2jkGJPkfzJ55jaBo7uY7wA9Sg5CIdvt9jrn5X0ftGwKcgvPLSvddCW/TXr17X7xevExsEqyoon4fkz2WwN1wc0x7F81JFquXBgSuWygXxE3V7cuZ+d2g9D1aXBHmVwIjlLysskAXsXQdokVv4W3pahC5fDvRgLM6X+I5t7R4OTogYeNgC08dI0sf6RBSQv21At3gP4L+IvhdEf4YQuRQjHp2Ob/kIoRMtCcPbC6hzlth3rf7PbQCQKNVRs3QpMQsnFCmuvHXVBhg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748447074; c=relaxed/relaxed;
-	bh=H73NLVsQK6iY5FfKXzkbpkwXttcXf+XkGO7Xf9KyoY4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=QCkmdDJO0fzvU5zvugYMgsu+BrJFz2sM0WY1uKtssyrGVe3pEbuS7tZD4xGT4w0i3VQOikKjYtnrecHXOv8ldVFvRl548cvep7T4fF2L/1h31qqM4eKKYWn22oCZG2vbnoR6wXAbXZl+oLaKYaqPFuE/o0FaDDtjgQJZYMdmpNhSVnwPBUYT7Lv2lbqQy2A7zbOVu/s4SNYOB7lSHJcjTMuvuAeQSFE8Tt7HDshBA2xfXejzPGBHDNprEXRTyS7V2M/TodfIAnDOPLuov5UgihnBMQnr9sAPDhsQ2hfiWzJy24KhWcjNP3MaNjd0eLc906nOOoi5iWJ1TyMhTiU4JQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=oKozQ/u0; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::3; helo=du2pr03cu002.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748452711;
+	cv=none; b=bpuc+1IVE+TKMBNM+M96R4S1YSwFoR1vbf/UMYZ5DNF/jUPxGr+tfIdUEQIMSo21617v45cLbBbI6by8lpHqPeh33gCvvqsMFhl3UmdDKCF2Ane0PWuiz3G7hum2Y7OkjoONsql83DZOJEztpuA1iUTaPqAztDS0BRXMvFYV7vZzYeDwIwT0LINLgWQEgaj/8swP8ef5m/4xJMOj0a5TTE4pE+IzclkTGUjgAReAZWsLgQr4mbDnS05m0d9QZKK8lBpKFlSkDawg4ySKapOCssHiZn+CnWUHxlAH8jCmEl0TT8l7pDURMePKMks/7NQzwvBho5jpCO3A9NHfehdRZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1748452711; c=relaxed/relaxed;
+	bh=rNxRMpzTpRqHtbiY/bcnyUNUB7IoSnep9XeZFcyAA3Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Na7ochKfV/g84vAKZ4dGzidJkHYKAbGetwKoDlXVaGd16XowU9llcHHykvN+vL6UYyD4KaPx4VXaf8iEiyKTl7g8aQ/7WvhP51w5SaWEcfY6BjtE6NOgj/kzkKczjVv53ubWXu8WVvp3zox9mzfjCXlJqGmL4Wg7hEwn5L4nLlxzHv1diSHFofPeWJJUqXPNKLpbHf5u9XF8TbGLXDDjljZsvolBneNQ6lK/czzUr5sjq5CTySOfMBsgBpCRmxr3WIBi+Qt4hd6efFt1z3SOlGTzPmeq68El4/TXmFVnfOrM1gb3f5zoF+mVxOit17dKGZc11AX3lV8sGBWuePY43Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=huO3LMEz; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=oKozQ/u0;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=huO3LMEz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::3; helo=du2pr03cu002.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazlp170110003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b6v2931hpz2xHv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 May 2025 01:44:32 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ILNg9QZV7Q5U2sYfDT6pKep4HnOolhdNc4tKapvXerRrY9NgU3W+OJwc+2C7z93Ur4GkfFeW4NoR0p8fDsI5eHarIrr3//M9UcPg2mt3n2ZK0mN+z4Ueyt6tGSsfRHfUi3p3Z4lNvo8x3AGwsb52gVi+1Dq81ySZDiRwELZ85enaWcUZO6YZMuaVgWEXNVb4hOD30j2lR9RmIiO6c6+EqFYHRKqFn3uocj1t7fGiPcxf+lHLOTsmCw3WGyVwZAoGnE2VPR4D412ytRJ4Q59pB4O9zpRQ2UNIzuy0UkNna6+ju9cfBtYxD6cgf+vCumqLVTfw+LfOh3u7Q5y+F/N3Dw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H73NLVsQK6iY5FfKXzkbpkwXttcXf+XkGO7Xf9KyoY4=;
- b=WEoyET55Ej/l01W6vSDLugY17OBB+xYjohtuCUm17fVp5B3x0bqZAGISQOEyscJFTFRv3DhIAhEdavVnX4ffSYCv5fs+sOmcktv2X9gMvo6iqFjy8SxXzDJWx/avvfezTCDrytpVwLBNOrfU0IJ/ZfrgvE4Y5Tgk+miseeBYPTJLsZGY/pia3TG+G3QiViwTiqxqIZpPSncJqheMrVnxYovdGhZxS4qBRQCcRTQcrIbTkhtY57qkAVR8jUSrOVeqCiCQ6Bsuv00sKvRFQALtUihBl8HIm4yHTFhYjrZqpFJ2lFj62M+/h460GcfHd98ziU5VyIJmhN0gJ9s4S3+v4g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H73NLVsQK6iY5FfKXzkbpkwXttcXf+XkGO7Xf9KyoY4=;
- b=oKozQ/u0h6JBLvh/R1TEuh704E0TiauZPbXkAJTmWpGpLjDrdh31ojR7O59dUxCda697RKBWsFXguzC1kYHeeMWNfFExRabeVffb8o2dvOWDLIlsN/Ekp+YEtkhRb93u4x2w5ogeYXHkrArf23Y1ok+zELvDiKz7wgrQS4+QQryftWeNTSCl2ysE1u59n0pI/f2hLynUHC+9WbTAZL6/PsZ8NecTUZzYFIziym+USFfMwRotZLYFloCsQaa30IxqzdlJwcYU3fEx/XNXY48KZWNVGvsunRfPEict+5IoTlwatuu+e+cosVZYyXaQQN1K7dNkOLYxSmht6Dkrh75Xtg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by AM9PR04MB7604.eurprd04.prod.outlook.com (2603:10a6:20b:287::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.24; Wed, 28 May
- 2025 15:44:07 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8746.030; Wed, 28 May 2025
- 15:44:07 +0000
-Date: Wed, 28 May 2025 11:43:59 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:FREESCALE SOC DRIVERS" <linuxppc-dev@lists.ozlabs.org>,
-	"moderated list:FREESCALE SOC DRIVERS" <linux-arm-kernel@lists.infradead.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: soc: add vf610 reset controller
-Message-ID: <aDcvP975apg/dhQz@lizhi-Precision-Tower-5810>
-References: <20250522213951.506019-1-Frank.Li@nxp.com>
- <20250526-unpaid-mushy-d47196d04ad1@spud>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250526-unpaid-mushy-d47196d04ad1@spud>
-X-ClientProxiedBy: SJ0PR05CA0193.namprd05.prod.outlook.com
- (2603:10b6:a03:330::18) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b6x6Z3YT4z2xFl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 May 2025 03:18:30 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54SE9l0t022766;
+	Wed, 28 May 2025 17:18:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=rNxRMpzTpRqHtbiY/bcnyUNUB7Io
+	Snep9XeZFcyAA3Q=; b=huO3LMEzguUMP65ukJy9AKeSLNrL1WiMfzMki2ENYB0V
+	NV02vvtk28dqu9FJxtd6/hr/fq0Eb7EVI9cEfxoamOricCVx7P0svH8Jis7lKR+K
+	rFmUVwstv27R/5ASk5NDdC1sLwaLzXuSgdqoF+U8oDI245+x7/tRKYSStMCLdrWY
+	7VstbyiK17lZx+RMT+1MV72PGtmTu7iOZAH2p3vfHgklagu63lAJJZS/8HBXl0fe
+	oeVPB8LkBPfV1UlxKLVJKB9arIvG/QqN7qqr+SUeYkHpSgF3MMdjPFL+3JcP3rGt
+	sSWFFZoSeCJ9SIOlVridAylqcgDPZQ9BIrrmqciQ0Q==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46x40h10cc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 May 2025 17:18:15 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54SHDEkg009137;
+	Wed, 28 May 2025 17:18:14 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46x40h10cb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 May 2025 17:18:14 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54SFFKel026439;
+	Wed, 28 May 2025 17:18:14 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46usxn0f9j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 May 2025 17:18:13 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54SHI9cr34275758
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 28 May 2025 17:18:09 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9EBBB2004D;
+	Wed, 28 May 2025 17:18:09 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E88F420040;
+	Wed, 28 May 2025 17:18:06 +0000 (GMT)
+Received: from ltczz402-lp1.aus.stglabs.ibm.com (unknown [9.40.194.31])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 28 May 2025 17:18:06 +0000 (GMT)
+From: Donet Tom <donettom@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Zi Yan <ziy@nvidia.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Yury Norov <yury.norov@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Nilay Shroff <nilay@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Donet Tom <donettom@linux.ibm.com>
+Subject: [PATCH v7 1/5] drivers/base/node: Optimize memory block registration to reduce boot time
+Date: Wed, 28 May 2025 12:18:00 -0500
+Message-ID: <2a0a05c2dffc62a742bf1dd030098be4ce99be28.1748452241.git.donettom@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,168 +101,308 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM9PR04MB7604:EE_
-X-MS-Office365-Filtering-Correlation-Id: 358d4737-8319-49a1-4e3d-08dd9dfe7b49
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Aor2oZ1HvZ4L6vMmQw1MDBP8/k5A4WA9zsHAhP/RdxDyMM14uktr3Dk4mdit?=
- =?us-ascii?Q?evY5OFDtk68kVpL7jce+kAqLkWUdRdBdB2T5nGlZikR0L4Z8RlhffA4gzZsH?=
- =?us-ascii?Q?U+NJOidgks0XZmVUWfU26e7E8KJoZ4r2gA8aXCxsjFvnDvdoFJzZ1CaUN+0/?=
- =?us-ascii?Q?ldSvJPQslx0vQLql0Haii6nW7nd6PCpqABgJF2XZhvYEolrwYZoqHPeFL8b2?=
- =?us-ascii?Q?kTydM90W4Jr8sgTK+AvOtihmHfFq8aLHtQgxd9ooOaHHEQY++79dVI4SRPii?=
- =?us-ascii?Q?RpKOTmIhp6lcEzHWGCUwq4Qcia9SOebYxJeWPViw2RjP5K+lo4310lK3wTJN?=
- =?us-ascii?Q?N6oEzGOkKIme6xC9h2r9Of4y6T6N97rYePy8P1TlnH7MFXU9+eE3YYsb6EAu?=
- =?us-ascii?Q?za30RRDqLkvhgZVbelrux/NPaKDDnhxGc6M1YH6rhsprLZoOTMHAUt6UhGxj?=
- =?us-ascii?Q?u5eF8v1mOBTVhwnLfO8/HCmxp6BsY1bPr98MHSpioCHYqrfHT72SVjRev+Fk?=
- =?us-ascii?Q?+i0F6nnxR1X8TCEjXkNr3s/PckqawOdLbhykk0pEog8RTlWfECm++CdmWb0U?=
- =?us-ascii?Q?/baWcjBaCaqOTRRzyw+qOFb0YYBjR4Rs+28TeINykvBaeeCWTkVGynqCmFf6?=
- =?us-ascii?Q?7bTdA+s0cTK/B17lc/Ee5IwdOFULmy6S1PZt9VcocBIb7o+pXjf8zv+mfOCk?=
- =?us-ascii?Q?7KRHQXdiIIlx2AnlyuuCb0BTw6E9VA/SCzkfaITvvbtmnLOZV8KCrA0WVpmq?=
- =?us-ascii?Q?dN2gEeyIR9FhWS+iI8o2Vy0dpopfZqYEYALqiQxnAzwesD2ZjJr0eic6HJXT?=
- =?us-ascii?Q?KHJ9MGht8G4S2bDY3XQkWc/chNBC/z6kly4UzvNSAWzez6g6F9AEiaRkLYs5?=
- =?us-ascii?Q?J/8WHDBtaQuBYGMGlDEK+r55O7b7nXNn828DEnoCjQpWcYflRdwtMHM716w8?=
- =?us-ascii?Q?ZxEDIgV39IbG1ek11d1mOjxZkZEZHH63XJbwiftY/3a0DY0E+kKUgAkIOshH?=
- =?us-ascii?Q?VClVdtPNI5Cxz4qd8CgC5iInhmIT/X9ZIASTCCK/Fg/FLbL9GETltH3lIlpD?=
- =?us-ascii?Q?QGwkUNTt2QRxjUEbqkpz6oCwNFwVoyR6YQ6/gXgUnF5ATyeyM+PERGh914Wu?=
- =?us-ascii?Q?k5Wt0GBxh4YLdbZh2bMOFumpRfNqK4zTN5vRMfrdASRXcVKsKDUFio2xV+sO?=
- =?us-ascii?Q?S85X+phCyYGlifKRN8IIUZ+Z0b3hzAbihplg4rhue2sBh3Yibl5wUY6jPDJ4?=
- =?us-ascii?Q?J+nOh5l05XwlR68NoZx9QUDqAS4n9y8Wzc92tQy0ZcuCAiH8ecHBL71jVfZm?=
- =?us-ascii?Q?nHeUZyqxyMf5Nb+vdto1XRUCQykOQkEAUQ1nhjuz8CvnV0QghjJ2qfCWRoyc?=
- =?us-ascii?Q?eR33cRdLVTnZR9RjRBgj9WHWKWrpHnnc3216Qc3nUpLSDzDXR78g6kuDMB8q?=
- =?us-ascii?Q?52s7nMBUO7E=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?z9608CtB2WT8UiawNjXMgzTOMdHmCU/B0DV3gWhk2VFdh+PcDw49jOjUscls?=
- =?us-ascii?Q?6GlhTCVoyWJzsrFQuZM7/3+UC4XLjyTmuD2FYe0sGgemYnw0ulzgc5/7DS0n?=
- =?us-ascii?Q?9gPRv8EEb3H0cWp4AmCwbBdYUhGEiCUtf8Uvd8oo8gMchmJyQc0zKNXhJqdw?=
- =?us-ascii?Q?+sx4x5I2ufsR3EXCjQYMVqL6dGSDDdfQyR3kWvi8fkstB4GTSMx3S0Aicgsg?=
- =?us-ascii?Q?fVzb2cz1vnJoZ7RiC7kfhCLFYwzb0v0eFd2ao6B+yUDMmkxmX6GRar5dRfkr?=
- =?us-ascii?Q?gYeVTdR+fR/F/HmUznQeqHnpLxFDtjGqxmEebm6NI1oqMZ/3MgKTWwiIGTGg?=
- =?us-ascii?Q?YQOdQRvhsrS+Wr2o6XGroixU0RFOdUM3lfWhJLk39gHd41GVqTjNcjJd89Gu?=
- =?us-ascii?Q?inwG0ZAtWjFf4uSTaVZcVfkkQwW2DHp7Y73FS5qbLj0tV6e0ZzqYe2o7q4x+?=
- =?us-ascii?Q?Hy3dUx1n3dgM8ZF1Ioqom2589GsJf9ATDrweG0bwvzDphQO4D+lsXZtEo8dS?=
- =?us-ascii?Q?9WJqtIcujIDzYr/wVySRTNs7gVvj+AFhctdmX4ob/sCCcZAubFrpqCj8BOII?=
- =?us-ascii?Q?XUYwFIc7s6xJzGO3E8aK29Dinj/d3nmEBM3m7iUHYjwmFkL/CS3I8b7ICKua?=
- =?us-ascii?Q?BjWR+jHrAyX6qerK/7NebtsqJuFa2anyT05hegdjgUsZNUrRvmj4SLQZqEeX?=
- =?us-ascii?Q?WR9I1BPquru+4P/jiBVX/Fd1HZYutT5cs9/rrfWRjTS+QARQHwGCZ6WBjQ1I?=
- =?us-ascii?Q?QD62eJE6HPJ6anlLUodYSpRbKDbX4klW07hL699qyPBSqlDfesdsq0Og1KTu?=
- =?us-ascii?Q?aUg2ZsY4Y10KnUOlwfQwuQHzzDK90qi3p3CIUha/GT41mOEGDF7GBqx1SIY2?=
- =?us-ascii?Q?JibJWqwcTtFEuz6x/6afIjudGZHFNyG2mT/bWs+XiwuVuR2yqPqlCUmQuSiM?=
- =?us-ascii?Q?zPfUB3nx3nMHyXjoOMc4rVSD+hUbq24v4uzWnI0ACIFQSdYDxZvzXmR/ZBlp?=
- =?us-ascii?Q?W0Vy/H+MsgTqOhHueYfriDXy11NNhryZvsiEEPfOey+pO85qrDU3I8+9I5CW?=
- =?us-ascii?Q?NsmmbeoSX3dQ5GUWkWaXeDC/nFXPztNiVTc2cKncgqmc4Y9db8CPAHFGMe94?=
- =?us-ascii?Q?VPEDd0Y2H4fESbQijFZj5lXhxpf++6SWgJzxRWqTnu6v2Y/wepdYhRAdehk7?=
- =?us-ascii?Q?Cd1zDsCvGnf8CVbF0HvhZ0gT9m1Ncornu9q4ys0hnrw5tpLQJo9KD6ehRDaL?=
- =?us-ascii?Q?u4dxsB28cjbm2auGNRCn75ltXhJhFCje7cdPl9qRQ2Hh6uXePmf1DxUsY2M2?=
- =?us-ascii?Q?OZbLxuriwBj9vC5aQ4C5qi04ZowZauzgRLKcO86ZK+8sfCGJnLvPNxNE06/7?=
- =?us-ascii?Q?GYzHUfgNLfPeINvzi4PfofKHPHIbKLv7Pocj1RX1TmBxw8FSryf47q2pi4Lz?=
- =?us-ascii?Q?K834J2qZieyZ/6OhTHVT8W0AUtt0qydMWfMFhrMY1ZOcHuxym0kPXQppDzq6?=
- =?us-ascii?Q?YWZNTEr/fsio2tHbBYsCS7og1YnfTKVweNEUqa7kno5jUvMx3OU0iLMyOWeB?=
- =?us-ascii?Q?4RdizFMXH8mUZnIdtHg=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 358d4737-8319-49a1-4e3d-08dd9dfe7b49
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 May 2025 15:44:07.3938
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /EYOJXlFmfsw//w4qP8F9CgNUogdUcYoxnNAAyze6woDK19hp9mzJxQCEpeLUSx0XluNvI0oZymvqiXEYCJZlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7604
-X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cnWZHcMqQQ42pRsCFB6mUvkfzaW15eh1
+X-Proofpoint-ORIG-GUID: VB-UuhShpyTVBAeKxCo3gvpYJlXY6-Sy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI4MDE0OCBTYWx0ZWRfX/bKOXGZb5Gf3 UQSg044X/FmMij/Vmp5xVk4nkN6mTDwAvIkdwKXVwtz3d2zebTlv9grk+5pYhXMWNwXFTo3Aq/Z KiXFA5q7zXSzo1kw2scBpk2aaKCxJ2jQ8mlHT7NEo9LIYPgxqnvVtK9wwycLHzsDs1PNB7n9wHo
+ oFg4rt9wjUpd7L3orevrh16OsHqANognCBUP1FjpREfQuN+jFOObApz1rIIqo9X0jpI8wk2eiDt 3N+4v5xaCNxYI1CHcryKB8wQIerG+lDLifBf6WCEz6zAqOae2i7pjFA8VpySIUy6P6rX5/PZ1Rr j5hcqDZSXpw40nCE48P6GRANKMWZM+a18CEmykGL4tz9Si4PaXWi+OUdAw5DLDW8dCe6wXVxgm0
+ Ia6BEI/fXdOzHw3f+vYuhyY8U3Y0Cyrk+YogiSMwXMpDHjIHrVAeQ5zVT1tYCkRwAKl/8cME
+X-Authority-Analysis: v=2.4 cv=L8MdQ/T8 c=1 sm=1 tr=0 ts=68374557 cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=Ikd4Dj_1AAAA:8
+ a=y_Vbiix7gtgA8xZMur0A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-28_08,2025-05-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ adultscore=0 spamscore=0 phishscore=0 bulkscore=0 clxscore=1015
+ priorityscore=1501 lowpriorityscore=0 mlxlogscore=999 suspectscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505280148
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, May 26, 2025 at 04:54:30PM +0100, Conor Dooley wrote:
-> On Thu, May 22, 2025 at 05:39:50PM -0400, Frank Li wrote:
-> > Add vf610 reset controller, which used to reboot system to fix below
-> > CHECK_DTB warnings:
-> >
-> > arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e000:
-> >     failed to match any schema with compatible: ['fsl,vf610-src', 'syscon']
-> >
-> > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > ---
-> >  .../bindings/soc/fsl/fsl,vf610-src.yaml       | 46 +++++++++++++++++++
-> >  1 file changed, 46 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> > new file mode 100644
-> > index 0000000000000..4c92a5e4892bf
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> > @@ -0,0 +1,46 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas//soc/fsl/fsl,vf610-src.yaml#
->
-> It's a reset controller then, shouldn't it be in /reset, not //soc?
+During node device initialization, `memory blocks` are registered under
+each NUMA node. The `memory blocks` to be registered are identified using
+the node’s start and end PFNs, which are obtained from the node's pg_data
 
-It is not reset controller since there are not #reset-cells property to
-reset other models. It just provides syscon to reboot the whole system.
+However, not all PFNs within this range necessarily belong to the same
+node—some may belong to other nodes. Additionally, due to the
+discontiguous nature of physical memory, certain sections within a
+`memory block` may be absent.
 
-Frank
+As a result, `memory blocks` that fall between a node’s start and end
+PFNs may span across multiple nodes, and some sections within those blocks
+may be missing. `Memory blocks` have a fixed size, which is architecture
+dependent.
 
->
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Freescale vf610 System Reset Controller
-> > +
-> > +maintainers:
-> > +  - Frank Li <Frank.Li@nxp.com>
-> > +
-> > +description:
-> > +  The System Reset Controller (SRC) generates the resets for the device. The
-> > +  functional reset sources are programmable as either reset or interrupt. The
-> > +  block also generates interrupts for various device events.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    items:
-> > +      - enum:
-> > +          - fsl,vf610-src
-> > +      - const: syscon
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +
-> > +    reset@4006e000 {
->
-> The generic node name here is reset-controller
->
-> > +        compatible = "fsl,vf610-src", "syscon";
-> > +        reg = <0x4006e000 0x1000>;
-> > +        interrupts = <96 IRQ_TYPE_LEVEL_HIGH>;
-> > +    };
-> > +
-> > --
-> > 2.34.1
-> >
+Due to these considerations, the memory block registration is currently
+performed as follows:
 
+for_each_online_node(nid):
+    start_pfn = pgdat->node_start_pfn;
+    end_pfn = pgdat->node_start_pfn + node_spanned_pages;
+    for_each_memory_block_between(PFN_PHYS(start_pfn), PFN_PHYS(end_pfn))
+        mem_blk = memory_block_id(pfn_to_section_nr(pfn));
+        pfn_mb_start=section_nr_to_pfn(mem_blk->start_section_nr)
+        pfn_mb_end = pfn_start + memory_block_pfns - 1
+        for (pfn = pfn_mb_start; pfn < pfn_mb_end; pfn++):
+            if (get_nid_for_pfn(pfn) != nid):
+                continue;
+            else
+                do_register_memory_block_under_node(nid, mem_blk,
+                                                        MEMINIT_EARLY);
+
+Here, we derive the start and end PFNs from the node's pg_data, then
+determine the memory blocks that may belong to the node. For each
+`memory block` in this range, we inspect all PFNs it contains and check
+their associated NUMA node ID. If a PFN within the block matches the
+current node, the memory block is registered under that node.
+
+If CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, get_nid_for_pfn() performs
+a binary search in the `memblock regions` to determine the NUMA node ID
+for a given PFN. If it is not enabled, the node ID is retrieved directly
+from the struct page.
+
+On large systems, this process can become time-consuming, especially since
+we iterate over each `memory block` and all PFNs within it until a match is
+found. When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, the additional
+overhead of the binary search increases the execution time significantly,
+potentially leading to soft lockups during boot.
+
+In this patch, we iterate over `memblock region` to identify the
+`memory blocks` that belong to the current NUMA node. `memblock regions`
+are contiguous memory ranges, each associated with a single NUMA node, and
+they do not span across multiple nodes.
+
+for_each_memory_region(r): // r => region
+  if (!node_online(r->nid)):
+    continue;
+  else
+    for_each_memory_block_between(r->base, r->base + r->size - 1):
+      do_register_memory_block_under_node(r->nid, mem_blk, MEMINIT_EARLY);
+
+We iterate over all memblock regions, and if the node associated with the
+region is online, we calculate the start and end memory blocks based on the
+region's start and end PFNs. We then register all the memory blocks within
+that range under the region node.
+
+Test Results on My system with 32TB RAM
+=======================================
+1. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled.
+
+Without this patch
+------------------
+Startup finished in 1min 16.528s (kernel)
+
+With this patch
+---------------
+Startup finished in 17.236s (kernel) - 78% Improvement
+
+2. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT disabled.
+
+Without this patch
+------------------
+Startup finished in 28.320s (kernel)
+
+With this patch
+---------------
+Startup finished in 15.621s (kernel) - 46% Improvement
+
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+
+---
+
+v6 -> v7
+
+Removed unwanted comments
+
+v6 - https://lore.kernel.org/all/bc754a238aa91fa36be463985ccde66aac7055e7.1748270306.git.donettom@linux.ibm.com/
+v5 - https://lore.kernel.org/all/d2490e807b2c13950bc1d4199f22ec078cc4c56a.1747904868.git.donettom@linux.ibm.com/
+v4 - https://lore.kernel.org/all/f94685be9cdc931a026999d236d7e92de29725c7.1747376551.git.donettom@linux.ibm.com/
+v3 - https://lore.kernel.org/all/b49ed289096643ff5b5fbedcf1d1c1be42845a74.1746250339.git.donettom@linux.ibm.com/
+v2 - https://lore.kernel.org/all/fbe1e0c7d91bf3fa9a64ff5d84b53ded1d0d5ac7.1745852397.git.donettom@linux.ibm.com/
+v1 - https://lore.kernel.org/all/50142a29010463f436dc5c4feb540e5de3bb09df.1744175097.git.donettom@linux.ibm.com/
+---
+---
+ drivers/base/memory.c  | 21 ++++-----------------
+ drivers/base/node.c    | 35 +++++++++++++++++++++++++++++++++--
+ include/linux/memory.h | 19 ++++++++++++++++++-
+ include/linux/node.h   |  3 +++
+ 4 files changed, 58 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+index 19469e7f88c2..39fcc075a36f 100644
+--- a/drivers/base/memory.c
++++ b/drivers/base/memory.c
+@@ -22,6 +22,7 @@
+ #include <linux/stat.h>
+ #include <linux/slab.h>
+ #include <linux/xarray.h>
++#include <linux/export.h>
+ 
+ #include <linux/atomic.h>
+ #include <linux/uaccess.h>
+@@ -48,22 +49,8 @@ int mhp_online_type_from_str(const char *str)
+ 
+ #define to_memory_block(dev) container_of(dev, struct memory_block, dev)
+ 
+-static int sections_per_block;
+-
+-static inline unsigned long memory_block_id(unsigned long section_nr)
+-{
+-	return section_nr / sections_per_block;
+-}
+-
+-static inline unsigned long pfn_to_block_id(unsigned long pfn)
+-{
+-	return memory_block_id(pfn_to_section_nr(pfn));
+-}
+-
+-static inline unsigned long phys_to_block_id(unsigned long phys)
+-{
+-	return pfn_to_block_id(PFN_DOWN(phys));
+-}
++int sections_per_block;
++EXPORT_SYMBOL(sections_per_block);
+ 
+ static int memory_subsys_online(struct device *dev);
+ static int memory_subsys_offline(struct device *dev);
+@@ -632,7 +619,7 @@ int __weak arch_get_memory_phys_device(unsigned long start_pfn)
+  *
+  * Called under device_hotplug_lock.
+  */
+-static struct memory_block *find_memory_block_by_id(unsigned long block_id)
++struct memory_block *find_memory_block_by_id(unsigned long block_id)
+ {
+ 	struct memory_block *mem;
+ 
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 618712071a1e..b229dee13632 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -20,6 +20,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/swap.h>
+ #include <linux/slab.h>
++#include <linux/memblock.h>
+ 
+ static const struct bus_type node_subsys = {
+ 	.name = "node",
+@@ -850,6 +851,34 @@ void unregister_memory_block_under_nodes(struct memory_block *mem_blk)
+ 			  kobject_name(&node_devices[mem_blk->nid]->dev.kobj));
+ }
+ 
++/* register all memory blocks under the corresponding nodes */
++static void register_memory_blocks_under_nodes(void)
++{
++	struct memblock_region *r;
++
++	for_each_mem_region(r) {
++		const unsigned long start_block_id = phys_to_block_id(r->base);
++		const unsigned long end_block_id = phys_to_block_id(r->base + r->size - 1);
++		const int nid = memblock_get_region_node(r);
++		unsigned long block_id;
++
++		if (!node_online(nid))
++			continue;
++
++		for (block_id = start_block_id; block_id <= end_block_id; block_id++) {
++			struct memory_block *mem;
++
++			mem = find_memory_block_by_id(block_id);
++			if (!mem)
++				continue;
++
++			do_register_memory_block_under_node(nid, mem, MEMINIT_EARLY);
++			put_device(&mem->dev);
++		}
++
++	}
++}
++
+ void register_memory_blocks_under_node(int nid, unsigned long start_pfn,
+ 				       unsigned long end_pfn,
+ 				       enum meminit_context context)
+@@ -971,11 +1000,13 @@ void __init node_dev_init(void)
+ 
+ 	/*
+ 	 * Create all node devices, which will properly link the node
+-	 * to applicable memory block devices and already created cpu devices.
++	 * to already created cpu devices.
+ 	 */
+ 	for_each_online_node(i) {
+-		ret = register_one_node(i);
++		ret =  __register_one_node(i);
+ 		if (ret)
+ 			panic("%s() failed to add node: %d\n", __func__, ret);
+ 	}
++
++	register_memory_blocks_under_nodes();
+ }
+diff --git a/include/linux/memory.h b/include/linux/memory.h
+index 12daa6ec7d09..2a61088e17ad 100644
+--- a/include/linux/memory.h
++++ b/include/linux/memory.h
+@@ -171,12 +171,30 @@ struct memory_group *memory_group_find_by_id(int mgid);
+ typedef int (*walk_memory_groups_func_t)(struct memory_group *, void *);
+ int walk_dynamic_memory_groups(int nid, walk_memory_groups_func_t func,
+ 			       struct memory_group *excluded, void *arg);
++struct memory_block *find_memory_block_by_id(unsigned long block_id);
+ #define hotplug_memory_notifier(fn, pri) ({		\
+ 	static __meminitdata struct notifier_block fn##_mem_nb =\
+ 		{ .notifier_call = fn, .priority = pri };\
+ 	register_memory_notifier(&fn##_mem_nb);			\
+ })
+ 
++extern int sections_per_block;
++
++static inline unsigned long memory_block_id(unsigned long section_nr)
++{
++	return section_nr / sections_per_block;
++}
++
++static inline unsigned long pfn_to_block_id(unsigned long pfn)
++{
++	return memory_block_id(pfn_to_section_nr(pfn));
++}
++
++static inline unsigned long phys_to_block_id(unsigned long phys)
++{
++	return pfn_to_block_id(PFN_DOWN(phys));
++}
++
+ #ifdef CONFIG_NUMA
+ void memory_block_add_nid(struct memory_block *mem, int nid,
+ 			  enum meminit_context context);
+@@ -188,5 +206,4 @@ void memory_block_add_nid(struct memory_block *mem, int nid,
+  * can sleep.
+  */
+ extern struct mutex text_mutex;
+-
+ #endif /* _LINUX_MEMORY_H_ */
+diff --git a/include/linux/node.h b/include/linux/node.h
+index 2b7517892230..485370f3bc17 100644
+--- a/include/linux/node.h
++++ b/include/linux/node.h
+@@ -120,6 +120,9 @@ static inline void register_memory_blocks_under_node(int nid, unsigned long star
+ 						     enum meminit_context context)
+ {
+ }
++static inline void register_memory_blocks_under_nodes(void)
++{
++}
+ #endif
+ 
+ extern void unregister_node(struct node *node);
+-- 
+2.43.5
 
 
