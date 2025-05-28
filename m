@@ -1,83 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-8967-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8968-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 879D9AC6689
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 May 2025 12:00:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8742DAC6BF4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 May 2025 16:39:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b6lPd2JGQz2xRq;
-	Wed, 28 May 2025 20:00:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b6sbD4rvpz2yGY;
+	Thu, 29 May 2025 00:39:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748426453;
-	cv=none; b=icDB2GNIZt0LsoAa14Ci/CepDd7bf7/mAj8PtDk8nue/8vjP8vUEDnA+qH47+TcIhGStj24V/4utkuQER8HUXb/zySWxYkLI1PkjelrvF6uEeYYqc4dN6bg64IW0qTflGVIL66LfUh85WWznRh3M+Ygf+lrwC6kE0ajP0UtUVKwU46LXRnFQVg5nsplyafDMRvGRPh+tRvWxmN3BZZpL7oj++9TST7dJsVnQcyy7eJLaSEsfdWzhVWvlZee481LsM5ipC5GjUDSQ7EM7tEJvmL6u1JWNrGm+S3RpZSQn2carkWQ0faOjXAfLIgJ4dj2Em+/hTsavCJYxKRRjaCX0iw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748443176;
+	cv=none; b=MrA7sekXQ+tejQL6Gd3jXKRZnTJ6oQAsg6hN2yApyV/1bxpGzFZ56VkN1JtWUPeBTB5eBkEewG0Pd1mdw2PGIQC2k02a+IQr2xs0E2DaKmS3FhHeYdnKmF4YJKfchqnj++e7SIQQvtlI+GStdPiM+tkS8Zet1CmXhQzdEVhRHbXMVWw6h/xPBrcmMH3f2Zli/31GT3+2F2uJfy6FthoHJ10JEdqezrPPZXpQJ0mKZKsLQVsr0diYVCueTgfTK8FP0038Rc8R0Sl4YJymZxg+w+6Vj16KhISacC7EhkjxarmMT5Z8gVfHYzUUHRfr8gv/vJXeupnkFwpW4yCDmilmWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748426453; c=relaxed/relaxed;
-	bh=LKnDUR0SktGjPGpiZWFhotHXy2fFqahSTBOtRDpaqrU=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=dmbMa7H0Iv6DuL94HyL08oYa+G7yAo/lC8mF2RQ2RPOYJ+TkUoYdA4IXN0KLODJc/Au+wnOjRpof/Wo4xf3k1bxMgH58EqKxMrLbEO/5/URIlse08I+QwL7wLMZ7EXO6xtbk5moS5gbOw9M6eRO6KgVmuU2IyILRhsG4xPqzAlFJ5PTBiquGepXkJSKvza6GlRzPqbNqPZi3cBFBc4XZa/SaXGzyyCNsr+qzll3Cq6eJKtzOqJRYZl3X+a3WWG5wuAdPszTpFLJNCJ8JS1wNdnUONwwngSKzFeFuDApAR67XCL5f6My6EOeB5ONO8tRe6105E2igTY25P9zhfXXlPA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l64Gcsqt; dkim-atps=neutral; spf=none (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1748443176; c=relaxed/relaxed;
+	bh=oAjHp1ItUS1j3EslUs9fCVFgilA9MP6Ipijq08HmnZg=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=NCQeshsAW4hRXwMdAtcvgWYG1qZ57243hfc8hDNs8VckTFo5879kjTVe12lWjnoC1Uo772hmlbgGVegAYmgUBpUDU64c/4fEDzUE7ejN9wU3fdG77gv2ALcsZbc1rBDDZBT7eo2vI365jhZg1ehVzAiJS11Yw/6731kiWVmAaWGQfjSWqN8mM0suSH4cvjK4MoAn2/z6ycgROquuhKHLWU0HWrEggLz2LE7BRwnoDN50ME3Sp709jGQzYGa6lrcpQLDXpcTBwvNE/irbM5cjK9V2yLqTi/KhstygpTFDHXGcyuVqzvf82DXTwtgEcXhdAiqE7qahMWfIwFae0poQNg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eR/C+2CG; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l64Gcsqt;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eR/C+2CG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b6lPZ6xXSz2xGv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 May 2025 20:00:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1748426451; x=1779962451;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=Zhox0hjZ9k9Tt2WB921pjM7KHIySapcRetCIkbZvAm0=;
-  b=l64GcsqtF+eTdmJCRe6p4SkZ8WOFKLeypMKMylypYirGuMQCTMo3w//H
-   8q3/lVQ1fIRysV94oqYrOj+IDkcuUZsTYWSh3+bomuTd3DjAgKxO87EIZ
-   R7s3Sdcv6IrO2SnQK5BaBCqeIW15Q+VfwdJl3LfsLLcVCo9IIWhGrRFsv
-   qbPAWfoFprlkC0XGoE2lyAERfoQggvaIvnZy0O21sjZkHGmgi5GvPokB/
-   CCp8LPNjGS3Ud8YXaexTaTTDap83609ggejeqNPyHGZ8IeYwuQ6zt8rKc
-   a9/3mdqSynvY7wcjnl5QzJghwZpDDV8KwLMaPMEKJqp5fwN+oJ9RjOry7
-   w==;
-X-CSE-ConnectionGUID: cMVmgxnVTnODd9is9wCLEg==
-X-CSE-MsgGUID: b1p07ouYRDa3p65pcklJZg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11446"; a="50550875"
-X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; 
-   d="scan'208";a="50550875"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 03:00:47 -0700
-X-CSE-ConnectionGUID: H40m0oA3Tme67hHo37j6Hw==
-X-CSE-MsgGUID: kCQj+gMSSgORFrdMdims+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,320,1739865600"; 
-   d="scan'208";a="166372921"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.151])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 May 2025 03:00:38 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 28 May 2025 13:00:34 +0300 (EEST)
-To: Lukas Wunner <lukas@wunner.de>
-cc: Bjorn Helgaas <helgaas@kernel.org>, linux-pci@vger.kernel.org, 
-    Jon Pan-Doh <pandoh@google.com>, 
-    Karolina Stolarek <karolina.stolarek@oracle.com>, 
-    Weinan Liu <wnliu@google.com>, 
-    Martin Petersen <martin.petersen@oracle.com>, 
-    Ben Fuller <ben.fuller@oracle.com>, Drew Walton <drewwalton@microsoft.com>, 
-    Anil Agrawal <anilagrawal@meta.com>, Tony Luck <tony.luck@intel.com>, 
-    Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-    Sargun Dhillon <sargun@meta.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
-    Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-    Oliver O'Halloran <oohall@gmail.com>, Kai-Heng Feng <kaihengf@nvidia.com>, 
-    Keith Busch <kbusch@kernel.org>, Robert Richter <rrichter@amd.com>, 
-    Terry Bowman <terry.bowman@amd.com>, Shiju Jose <shiju.jose@huawei.com>, 
-    Dave Jiang <dave.jiang@intel.com>, LKML <linux-kernel@vger.kernel.org>, 
-    linuxppc-dev@lists.ozlabs.org, Bjorn Helgaas <bhelgaas@google.com>
-Subject: Re: [PATCH v8 13/20] PCI/ERR: Add printk level to
- pcie_print_tlp_log()
-In-Reply-To: <aDave5XyXZoKWole@wunner.de>
-Message-ID: <1565a7a9-bcf0-e8e4-0f75-de8859b47a8f@linux.intel.com>
-References: <20250522232339.1525671-1-helgaas@kernel.org> <20250522232339.1525671-14-helgaas@kernel.org> <aDave5XyXZoKWole@wunner.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b6sbC5Vp7z2xGv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 May 2025 00:39:34 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54SE9qCt032761;
+	Wed, 28 May 2025 14:39:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=oAjHp1
+	ItUS1j3EslUs9fCVFgilA9MP6Ipijq08HmnZg=; b=eR/C+2CGMvXBi+Apg76Vw8
+	lTh8VVSbt+DgMQj8vGIiZxy8KW7GrAX26bIQ0wpofCOBlJHNRnvf8pg/5PArVecL
+	JUSHaTi3WNMKD2LNfXje0mu0RGUdLzQ83f3A9CbvXroXvfsX/r8oZ8GjL4pbKDs2
+	C9WlZInJnl2FNbgYXDMm2A3CN6k1Hlm9q1AUZQyMZMIX60liaNn5VBpPnX7eosMz
+	X9hgT2HkS23TsMZrYXmQ5KjEYRQLM1FFoYghzmI2E+jvgrxXeUvQC0MI8JfXRWjE
+	wl9y4myjYCejvx9IWw81DarQPJrvOT06vPjE0nD9LSAKCDF3+qGaYUgBdFhp3CDQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46x40jr5x4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 May 2025 14:39:14 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54SEQ71X009419;
+	Wed, 28 May 2025 14:39:13 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46x40jr5wy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 May 2025 14:39:13 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54SAvDbg016187;
+	Wed, 28 May 2025 14:39:12 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46uru0r13y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 May 2025 14:39:12 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54SEd8Yo37421542
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 28 May 2025 14:39:08 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3165120043;
+	Wed, 28 May 2025 14:39:08 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C63B920040;
+	Wed, 28 May 2025 14:39:02 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.244.234])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 28 May 2025 14:39:02 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,34 +85,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-2.9 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH v3] docs: powerpc: Add htm.rst to table of contents
+From: Athira Rajeev <atrajeev@linux.ibm.com>
+In-Reply-To: <20250528054146.2658537-2-me@brighamcampbell.com>
+Date: Wed, 28 May 2025 20:08:48 +0530
+Cc: Hari Bathini <hbathini@linux.ibm.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kernel-mentees@lists.linux.dev,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" <linuxppc-dev@lists.ozlabs.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7FF625BF-03E1-4EB4-BEE2-BEAEB1C5DD96@linux.ibm.com>
+References: <20250528054146.2658537-2-me@brighamcampbell.com>
+To: Brigham Campbell <me@brighamcampbell.com>
+X-Mailer: Apple Mail (2.3776.700.51)
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=SdL3duRu c=1 sm=1 tr=0 ts=68372012 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=wukD7SXyAAAA:8 a=JfrnYn6hAAAA:8 a=VnNF1IyMAAAA:8 a=bs08ehmE3BuyNYDtbNMA:9
+ a=QEXdDO2ut3YA:10 a=n7THaJik3DRP1sDdJiGm:22 a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-GUID: LUmEJCQEVgou63X75IUsqr_P7UpE6I4P
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI4MDEyNyBTYWx0ZWRfX/5sC9EyYfYQf 4kBPoiHoytPVz02DUtS9VKeo7L+jJYfqh9khKL62ieg7w++gwphVlKl3d7NmIarLpGjYjMS7SVx OQ0AZeXmArv5kE3jFEldcDsFm3p0wPJ28L4Ua4XtcilZDiUPO+xeDaf1nJmnFK1alYCockum3cr
+ 5M2y/huHRw2U9qbukcN2OXQkwOeEUw0wg13qKkHrPmsuy8jVg7SW2tdEclyEUblZLaF88xWwm1X Q1lEx3sgIm2CeA2L4HePa2RRvPBDMFCkURkOgI0njKrZATte9wC7JoBzlDEHeH8rpbBmpZ3jJ0k l/UI7MSfaDZ/uP8UqPlDYwf2lCjY7XX+Kql2e927YyG6Q6KiBDa+YFtXJmoH8FkX3DS73Y7IkFz
+ HVI4OE69Rqcz6o+F5/nDBm0Fs9JrkliF4lkKTJx2KejYs7bmvIHTYJdtD+zE5oom/5H6ug+r
+X-Proofpoint-ORIG-GUID: OqOX88odwfV-1paicwDnn1JM_cS2iwlR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-28_07,2025-05-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 mlxscore=0 adultscore=0 priorityscore=1501
+ impostorscore=0 malwarescore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
+ spamscore=0 clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
+ definitions=main-2505280127
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 28 May 2025, Lukas Wunner wrote:
 
-> On Thu, May 22, 2025 at 06:21:19PM -0500, Bjorn Helgaas wrote:
-> > @@ -130,6 +132,6 @@ void pcie_print_tlp_log(const struct pci_dev *dev,
-> >  		}
-> >  	}
-> >  
-> > -	pci_err(dev, "%sTLP Header%s: %s\n", pfx,
-> > +	dev_printk(level, &dev->dev, "%sTLP Header%s: %s\n", pfx,
-> >  		log->flit ? " (Flit)" : "", buf);
-> >  }
-> 
-> Nit: pci_printk() ?
-> 
-> The definition in include/linux/pci.h was retained by fab874e12593.
 
-If pci_printk() is taken into use once again, there's 56d305b24d64 ("PCI: 
-Remove pci_printk()") queued already in pci/misc which should be dropped 
-in that case.
+> On 28 May 2025, at 11:11=E2=80=AFAM, Brigham Campbell =
+<me@brighamcampbell.com> wrote:
+>=20
+> Fix the following documentation build error, which was introduced when
+> Documentation/arch/powerpc/htm.rst was added to the repository without
+> any reference to the document.
+>=20
+> Documentation/arch/powerpc/htm.rst: WARNING: document isn't included =
+in any toctree [toc.not_included]
+>=20
+> Fixes: ab1456c5aa7a ("powerpc/pseries/htmdump: Add documentation for =
+H_HTM debugfs interface")
+> Acked-by: Randy Dunlap <rdunlap@infradead.org>
+> Tested-by: Randy Dunlap <rdunlap@infradead.org>
+> Signed-off-by: Brigham Campbell <me@brighamcampbell.com>
+Thanks for the fix
 
--- 
- i.
+Tested-by: Athira Rajeev <atrajeev@linux.ibm.com>
+
+Thanks
+Athira
+> ---
+> Changes in v3:
+> - Edit commit message to conform better to de facto kernel development =
+style.
+> - No changes to the diff.
+>=20
+> Documentation/arch/powerpc/index.rst | 1 +
+> 1 file changed, 1 insertion(+)
+>=20
+> diff --git a/Documentation/arch/powerpc/index.rst =
+b/Documentation/arch/powerpc/index.rst
+> index 0560cbae5fa1..53fc9f89f3e4 100644
+> --- a/Documentation/arch/powerpc/index.rst
+> +++ b/Documentation/arch/powerpc/index.rst
+> @@ -19,6 +19,7 @@ powerpc
+>     elf_hwcaps
+>     elfnote
+>     firmware-assisted-dump
+> +    htm
+>     hvcs
+>     imc
+>     isa-versions
+> --=20
+> 2.49.0
+>=20
+>=20
+>=20
 
 
