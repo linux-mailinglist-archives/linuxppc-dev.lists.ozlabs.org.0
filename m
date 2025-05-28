@@ -1,78 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-8960-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-8961-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B048AC5C5B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 27 May 2025 23:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E27AC6153
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 28 May 2025 07:43:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b6R325VwBz2xjK;
-	Wed, 28 May 2025 07:43:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b6dhg2dg9z2xHT;
+	Wed, 28 May 2025 15:43:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748382222;
-	cv=none; b=HUHAI0z4bCD/P/3addgJx8JT9eaFevkzzIUCZYFLU/6IuF61meHUfUZWmNSTJqX6XnStf4sGcGDjgLm1HJwoK5FLNQR52RQgGPnulskY4ksNlOgDdLiJ92Wxle2ivRsuN4UZou9P6ln6PbtqxR6Q82jzHORFtR5fU0UqQCXkNgtooTa3qftRLYWaQGKZlCbW00zgcxLkwbuq20Y4Wds060Z/3Tq1frFekJXou1ko1fmi0E74gq7uQMjXCJ7q/B40dQA2u4chGD8rWnCrfCzjrTJpt02kmwhzAqgEgRQjmQM3rLa4bRCCfDXwC6/6dsU1xHDYjvYNvUQLkMWZorqxJQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::d35"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748411011;
+	cv=none; b=PLW5KghO3EXkFqOa+GyVdobhHL3o/otvlLNxvCClmXzQzGpD7TCpfaSNKVwZJkyzfgczMd4WxNkNdgxg3T9NXzlURb4P5f8x8d4rAgwnAHU+ymz0ls3RwO2VMZUGGLuBgRxTrhgzpbArg4lANgxht8ohiNHIzxMVQtY+h8+Z/f+Wc7GCJQYIylfeCfT7OpwjwqJevYNxXL7bSdyZ6+E1IuiDQF26BZWKfsOO/xCtgFV0HnosYActZkkb9KDvqJhDDTpn6LZUmV1CCqb5qCItLQnmuLys+Qt1SVb/JUW3GS5sdg6wbDtqpuR7kHaL0mAzNPLZ0g/MNClnXwUrKCh4HA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748382222; c=relaxed/relaxed;
-	bh=Qo9uL9kCGaGIZ4mSnSwsLjpuAjhwikZmWYnd1DAgJ54=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bwD8FRMoHdiadXyOBdfH5IRK1JbVsfKFZewS56puK8xTVwhLMkIhJ+T72RJnqz57MWhcSDvvGruHhmdYJiDlcj/C4Htt77ykXpgC4R/9mo8mkeEdgBJmtD21BjSCWNClzI5iRmLnKhl15TTTtvTHSNY3NjzF9KVOnGyS/DdnVR1b8E3LiRA37fsTuvTD7rusjmmh/cN6BPuXpXPJBQF/czNjjgs2dMjiGsM9/VpV16TT6EUn9nCvRKeRneCJ4Dqjove83AxJB6OUDioYt9bmo2L1iap86HzGd00+1egAu0PBARIQK7iwoVD/Zd4qMOArsOvl+7pY3PvTgECiuOo9tA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n8q97jop; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1748411011; c=relaxed/relaxed;
+	bh=MSMi/AKPsTMgRd8z+xkRR6U4DbzIU/rPyguhFHTtxoA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lTR1fDdob9ofFLd9oS7lmOGs6ov9TcyhI+5oRelw7x/gMZPZRSRhIUF9LJFhPqz5o8QdSzMPhlukW3ZypdC81tkx0SGlov5K7Z2fDFY+NureHQlFSP5XreSpD34K3PZT0IYSrEVbX2woHCF/nIAa2YfzAoPwf2yulrbKcrbd9Zvgo5oEki/S9CnY6TV75ftqJwekMRd396MZJwdJFP6ByMParbB+FuLF4/fWExqTNY82Usgyja+3XYR+87wZuuvW/gDPgtx0hMBjysIHQjKQdv85sZqBVaGm7LDQH1GPqGgxkAKnDkWpiiL+wTYG4FwcUplMdasOo1j6b03mFNHspg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=brighamcampbell.com; dkim=pass (2048-bit key; unprotected) header.d=brighamcampbell.com header.i=@brighamcampbell.com header.a=rsa-sha256 header.s=google header.b=CUtLACZG; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::d35; helo=mail-io1-xd35.google.com; envelope-from=me@brighamcampbell.com; receiver=lists.ozlabs.org) smtp.mailfrom=brighamcampbell.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=brighamcampbell.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n8q97jop;
+	dkim=pass (2048-bit key; unprotected) header.d=brighamcampbell.com header.i=@brighamcampbell.com header.a=rsa-sha256 header.s=google header.b=CUtLACZG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=brighamcampbell.com (client-ip=2607:f8b0:4864:20::d35; helo=mail-io1-xd35.google.com; envelope-from=me@brighamcampbell.com; receiver=lists.ozlabs.org)
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b6R315zP5z2xPL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 May 2025 07:43:41 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54RGHUpY012620;
-	Tue, 27 May 2025 21:43:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Qo9uL9
-	kCGaGIZ4mSnSwsLjpuAjhwikZmWYnd1DAgJ54=; b=n8q97jophEQaspKBKsQalM
-	17SBADDoA8GT8KQB+8clyi4QOoD3Od61CoINlvowgX2YUyvddFTVaBqmxemyw3Qv
-	A+S6q7EHe9EMF31U3wwGQeflfWFnt/3tBn5dYzfTiEn1gauOtYN7NXqQ5eiyM6/+
-	MiEFYauX58w9CnM2fY6glpdIfBj6gkIqGzFihwEJ3gRAvVGwxN5UJ4HHKY/xD/fP
-	aCcNhuhepn4VjT8KtYfOaJGyOpdlvLtpgBZ6pgW4sspnPT3SD00i/T11UuSaFpPC
-	aK12FN3O92GReL3gj77t848UaWyhWfH+B3v6D8dtMkpDgg1YiF3AP4dksL8umRsg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46wgsg9du8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 May 2025 21:43:32 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54RLgXJ0018815;
-	Tue, 27 May 2025 21:43:31 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46wgsg9du6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 May 2025 21:43:31 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54RLVgHh015830;
-	Tue, 27 May 2025 21:43:31 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 46uu5347bj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 May 2025 21:43:31 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54RLhSgF14746130
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 27 May 2025 21:43:28 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9A6D45805A;
-	Tue, 27 May 2025 21:43:28 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CB0CF58056;
-	Tue, 27 May 2025 21:43:27 +0000 (GMT)
-Received: from [9.61.89.125] (unknown [9.61.89.125])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 27 May 2025 21:43:27 +0000 (GMT)
-Message-ID: <d1952af6-4286-42fd-a0c1-007085972c97@linux.ibm.com>
-Date: Tue, 27 May 2025 14:43:27 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b6dhf11fFz2xGw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 28 May 2025 15:43:29 +1000 (AEST)
+Received: by mail-io1-xd35.google.com with SMTP id ca18e2360f4ac-86a55400913so88093439f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 27 May 2025 22:43:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brighamcampbell.com; s=google; t=1748411007; x=1749015807; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MSMi/AKPsTMgRd8z+xkRR6U4DbzIU/rPyguhFHTtxoA=;
+        b=CUtLACZGIUOXUeSVcnU48Vd2PjPsl+f4gjq+vJp+fDRiGtH/aGDf/8RUhhOZ7ntKbd
+         AUYwyoPzu4VGZjPXO56kraIfa4TodGQDd2wFz58Rv5fMrAplj2nCOh0btoRX+zO1KuQT
+         5hyneqR9XpKNXqiUpbwa2xnHSi4qpCqP+w5wJgwKXHmleKDBocfIecqeK876yNA86+94
+         WiVbFWj8nvpoRkxFxoB6w/Dsyu193dfD1kdJzr2rVYDVwP1ER7VX8A0kqV+XOlUVMSXa
+         XU9CiS2xiHosAZaET+ppA0vL4ckXvXQ1m9As4UxmEVi4qMD95Ryk8xXoVsyeFzY1ZVKy
+         yHXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748411007; x=1749015807;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MSMi/AKPsTMgRd8z+xkRR6U4DbzIU/rPyguhFHTtxoA=;
+        b=Pw50x2CY4+DIk+uyALZMfopYw0mVJ0WCf5ZWp8M014tCq5mJlB6pj0gWJsSLil6fwy
+         R7MSoEdum7MAjq+Ac+/TisAoq4lzY2XejKXP5pdtzqhF3qVcHRMLUaZ7NRKrwadtz2XX
+         J0TsqsJ0GTiyO756XLYXJGHOaemR3ogoZZeqAiqFQ+u6iTrc6kNtI46/dMlhmWg7wlAA
+         sQRVg+BINYAkj9D+5cX/MCVUFE3xlkuLr3qgu+5Zu32Ox44hx2IHHadD7WP6XkzmrauL
+         y1RmBZjAFlYPjsTyJPZrXb3Ay+b8CUvxo1Gj9QjCgKn/v5yRbVO9kkxo7C/GA9gvpngq
+         GQTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVD7XxHZ3SiVi8nVoXbgX8UGMg9UDLL7Th7gkQwPBwelE94Mjj3y1/H3Hg8ZRy775rqAyLTTggGYZcjxpE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz0JbUrdYzaHZzbjvY4QQuahGhL7IBhDtHHF0GvK1hxLXcSVjPY
+	JJIcFqURRLoNlEZzgvkklPlJih73J3WrWTr+1caL5fRr0SCSbELERqxev5U5aHVGyck=
+X-Gm-Gg: ASbGncvqxu+wa5va8l+Owfml6abilrI12jtyTUyzSmetGhYc1eXdq8Vq7+8vXtjAMBg
+	dsg5epnt9w17BdMi3TQYpwlOpZD8FDwpSy2AuPUYfu11GXmJmmz+WsH8PFrJvdMs2YUbjStLnNt
+	FyDAc6FLllUBV5cSTZZRPe0dDKnpfN4lPMzTogndXaXywc81+7xwMygPbeE/gf6yDRa5ZnQaG4m
+	HyBY3TIoy8aQ9sAQPbRw3lflYTT873P1aDZpZMLgFmTladFnurfy5gXowQdOW/DEs5esmuLEX3a
+	61fMLyiaS6Jad4k73UtjhFCtkosZJN6LKEZqQhGcsg7E+gBeA25Y4A+ZE+NL36QSoBGTpGuomCA
+	A5di9jRY=
+X-Google-Smtp-Source: AGHT+IF+v7eeJiqgx2CgLK57L91nnP+NaoqNBY3MrpJ58a87hZdHLPE/Eq+lD7S1GC6+xWdZO4pGrQ==
+X-Received: by 2002:a05:6e02:1686:b0:3dd:869e:d1f0 with SMTP id e9e14a558f8ab-3dd869ed599mr37235695ab.9.1748411006513;
+        Tue, 27 May 2025 22:43:26 -0700 (PDT)
+Received: from mystery-machine.brighamcampbell.com ([64.71.154.6])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3dd8bfb2ec5sm1220685ab.1.2025.05.27.22.43.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 May 2025 22:43:25 -0700 (PDT)
+From: Brigham Campbell <me@brighamcampbell.com>
+To: skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Athira Rajeev <atrajeev@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)),
+	linux-doc@vger.kernel.org (open list:DOCUMENTATION),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Brigham Campbell <me@brighamcampbell.com>,
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v3] docs: powerpc: Add htm.rst to table of contents
+Date: Tue, 27 May 2025 23:41:47 -0600
+Message-ID: <20250528054146.2658537-2-me@brighamcampbell.com>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,63 +99,43 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/pseries/dlpar: Search DRC index from
- ibm,drc-indexes for IO add
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        hbabu@us.ibm.com
-References: <20250501041056.1281055-1-haren@linux.ibm.com>
-Content-Language: en-US
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-In-Reply-To: <20250501041056.1281055-1-haren@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=OIIn3TaB c=1 sm=1 tr=0 ts=68363204 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=88KzDNdXGdMWfYVolboA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: zX8M0Rm0zVM89eNSBy7ydtoxa6hYIfcc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTI3MDE4MiBTYWx0ZWRfX649Ks8yKkyNl yIQveUm/yKjgsN4gztgThgu9m6VPyIXLQfxzyNkat990nrK01INS4A8riL7GAoe83Q8WRdI4z0Z R8WtciQw64QA8OfTfefEHxhTvb9zGX4w/SZNxerP9x3TLywlwRCgO02RSUsREQqzMLnTty6/F2k
- fHfHamJrUJH1LnU2R9ciyu+jePhfOMS0uk+raK5Fr0f2kyk1BsAUbNB8Fz/TZkLNQ+LfRFFZZka AanqNdq2v/H/RTFe+wXUwp0kUxvu/fnJsl3B80HZBJP41KxY40VhN9x8wNQ8y+XWrTJZd+l8knZ lefcaHXiZMKUz0UksIirSp5Rs/Hn5GyFqNcU4DYMrRMbejZ3cyQAnJ3/5a4P62tRZLwxOcOXaX6
- NbHx0J85pQjnfSfQ2tHWrV2yh5JSfcZ6WBIF9byelgZ7sdDSYGdqwgCpWj5RY61I5vXr7gpf
-X-Proofpoint-ORIG-GUID: 0OxfndOQqDxPHybRoPys0eo4pi_nJKZY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-27_10,2025-05-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- bulkscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
- suspectscore=0 phishscore=0 malwarescore=0 clxscore=1011 mlxscore=0
- mlxlogscore=628 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505160000
- definitions=main-2505270182
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 4/30/25 9:10 PM, Haren Myneni wrote:
-> IO hotplug add event is handled in the user space with drmgr tool.
-> After the device is enabled, the user space uses /sys/kerne/dlpar
-> interface with “dt add index <drc_index>” to update the device tree.
-> The kernel interface (dlpar_hp_dt_add()) finds the parent node for
-> the specified ‘drc_index’ from ibm,drc-info property. But old FW
-> provides ibm,drc-indexes property instead of ibm,drc-info.
-> 
-> If the ibm,drc-info is not available, this patch adds changes to
-> search ‘drc_index’ from the indexes array in ibm,drc-indexes
-> property to support old FW.
-> 
-> Fixes: 02b98ff44a57 ("powerpc/pseries/dlpar: Add device tree nodes for DLPAR IO add")
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> ---
+Fix the following documentation build error, which was introduced when
+Documentation/arch/powerpc/htm.rst was added to the repository without
+any reference to the document.
 
-My only comment would be maybe mentioning that this issue was discovered with a
-KVM guest which would be using some version of SLOF firmware as opposed to
-PowerVM's proprietary Open Firmware. Older Open Firmware using ibm,drc-indexes
-would present the same issue, but is probably less likely to be encountered in
-the wild as we got drc-info support showing up in the kernel as far back as 2017
-which aligns with Power 7 that has since hit EOL.
+Documentation/arch/powerpc/htm.rst: WARNING: document isn't included in any toctree [toc.not_included]
 
-Otherwise...
+Fixes: ab1456c5aa7a ("powerpc/pseries/htmdump: Add documentation for H_HTM debugfs interface")
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Brigham Campbell <me@brighamcampbell.com>
+---
+Changes in v3:
+ - Edit commit message to conform better to de facto kernel development style.
+ - No changes to the diff.
 
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+ Documentation/arch/powerpc/index.rst | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/arch/powerpc/index.rst b/Documentation/arch/powerpc/index.rst
+index 0560cbae5fa1..53fc9f89f3e4 100644
+--- a/Documentation/arch/powerpc/index.rst
++++ b/Documentation/arch/powerpc/index.rst
+@@ -19,6 +19,7 @@ powerpc
+     elf_hwcaps
+     elfnote
+     firmware-assisted-dump
++    htm
+     hvcs
+     imc
+     isa-versions
+-- 
+2.49.0
+
 
