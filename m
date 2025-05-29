@@ -1,59 +1,109 @@
-Return-Path: <linuxppc-dev+bounces-9015-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9016-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23043AC7D71
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 May 2025 13:54:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC015AC8170
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 29 May 2025 19:05:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b7PtV52mzz2y8t;
-	Thu, 29 May 2025 21:54:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b7XnL6Ny3z2xDD;
+	Fri, 30 May 2025 03:05:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748519682;
-	cv=none; b=okh78V6cSPHZU9GMo3R5bZsrvOIaYuAoNGHeCkTmEoDnEE14Vl5MGk594qD669RwMan/TqIbex9Y5s26RdFiNJdFpSgJEx9DM6PreLY9T9XACUO78nPYsrKom6ws4PUHrcAXlI8QVB/2nvxWFFozv4lRzYfN6blk4tRXlsVUMqVV+3oRj6KwjtwintI7AH1Hwr5QIW1vNddNNd+lIDtEt0GUNJ0xoxYUD3Jxn6uT11y4caxaHiTLGKYQEoMr8jw+1gAYLoKnPGRemv/2LlrEyM8pHCyIB4zT8A4rc/UC9eQWVzfjtZWED1y0DNHc2BYhwGLRa/5h/gx+9sevJFvjNQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748538342;
+	cv=none; b=iS+bKEW2QidraZC/jj1dXLB40I+j32UyQK2AChNGC5O8AtsmlmcfTP5LI212v7Jyz3N9DFQxCuIJJ8W9v19cR0i4DIBQHAPdr4subx4diz9K4IMX58MvRbLOem+Rz3mcHQ+aq0GgE3OV7m3POyaj6+0tAwn0KbNdawH1cKBR7qLXWKuzwA2HLPCyAQulYjlltgWQ2bg2FsmK72GNclHZbHBXavXwAZ9sFm/au03yhRPx2XpEp5WTWmzE9usufbQ4/pMYY+pP7GOEqghYeTek/YzkFFxHcjGRhXZ5ClV+NdA75PjFkVEPub2mUB8EPsb6waGpWFfdc+i2+rqnXOCwmw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748519682; c=relaxed/relaxed;
-	bh=sGJqQfkYCDfpnMYyulUs/vbd895i5EGhHIPwf7Mhkcs=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=blTQVMaSQcupw4TAv2PJJdy7tDwM+tS7MUnVewAUVbShU4NPOplHORMZ6PBfpSSF6VnJtjjgdcw1LRhpGLH9AfimPHak1vj2pPkaHW5auUpXilsZ4dsy/c+NIlhPIVEnU1EiJozqcfy9VAXcF1hQ5eTVfq1ewYehGD5mBZJwvo6Cj72OnHGCA5aPwzPC4PYHDuuZBOif7PEdOqy3r29QJT1lFFi6OWYcVk7wYCUPvsso7rhlK8Ra/Rtg+Jap2nYCi/7NJ7rnKDkZ3OPc+Zczyx1PEMzEZpIVSXoZFZb9bngRp/8LuFNBC3hKeFc1rYAcxoD4FMPNodc6C2aKb8Bzig==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1748538342; c=relaxed/relaxed;
+	bh=YVXYcQRv3WLSWQAfJBtkuGRCwO3gzeCu1+3GwyAE/8U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LxHLUm+TrJUcVT0mm804+gJLkfTGsQuBPWK7CcLhsauHnMFzfxu7P2A7vjiKBqCSqygtkUNcDLNQ9fzqGQfsIlQK+W9N5DI0y0GZhKdZuDzs+siqeIB8AbxWjDVTfFkl996rJbZQjzIHxDPz1rLsoSkd18TPljPyIYDMBEL36/ZFaIzTbIaXuGWyUGhzyMa7J8t93/+WxtJUGkcijrQ1m5D/915LIl/ll3h2SjeKFiqM2itfVzPLjFXFRTHAp+lM1zhu9voSqzabDarBS4MW833xcSp4jdtKlcBistC6vVNAyAQbcpoSc5sS8GXG9xe3c63kXsbJBD11lE8LBOAL7A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HA0dzhYg; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HA0dzhYg; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HA0dzhYg;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HA0dzhYg;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b7PtT6YKdz2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 May 2025 21:54:41 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4b7PpG0pPHz6L5j3;
-	Thu, 29 May 2025 19:51:02 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id A1AA5140519;
-	Thu, 29 May 2025 19:54:38 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 29 May
- 2025 13:54:37 +0200
-Date: Thu, 29 May 2025 12:54:35 +0100
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Alistair Popple <apopple@nvidia.com>
-CC: <linux-mm@kvack.org>, <gerald.schaefer@linux.ibm.com>,
-	<dan.j.williams@intel.com>, <jgg@ziepe.ca>, <willy@infradead.org>,
-	<david@redhat.com>, <linux-kernel@vger.kernel.org>, <nvdimm@lists.linux.dev>,
-	<linux-fsdevel@vger.kernel.org>, <linux-ext4@vger.kernel.org>,
-	<linux-xfs@vger.kernel.org>, <jhubbard@nvidia.com>, <hch@lst.de>,
-	<zhang.lyra@gmail.com>, <debug@rivosinc.com>, <bjorn@kernel.org>,
-	<balbirs@nvidia.com>, <lorenzo.stoakes@oracle.com>,
-	<linux-arm-kernel@lists.infradead.org>, <loongarch@lists.linux.dev>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
-	<linux-cxl@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<John@Groves.net>
-Subject: Re: [PATCH 07/12] mm: Remove redundant pXd_devmap calls
-Message-ID: <20250529125435.00001378@huawei.com>
-In-Reply-To: <2ee5a64581d2c78445e5c4180d7eceed085825ca.1748500293.git-series.apopple@nvidia.com>
-References: <cover.541c2702181b7461b84f1a6967a3f0e823023fcc.1748500293.git-series.apopple@nvidia.com>
-	<2ee5a64581d2c78445e5c4180d7eceed085825ca.1748500293.git-series.apopple@nvidia.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b7XnH4Xygz2xC3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 May 2025 03:05:36 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748538332;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YVXYcQRv3WLSWQAfJBtkuGRCwO3gzeCu1+3GwyAE/8U=;
+	b=HA0dzhYg2/d2e9xCOQ6+qrQfdSIoIjKIE54Hfm2mZGs9AEUR7zBotVe4IYg8usT0jPM5Rv
+	vNgz+nUnERNME4jNE7M6Q0KewvGDiq/+8HnWr/vRa9F/jswDSiBHMYPvH6yxP4MB2h/8on
+	oBX5gNXG+HXcEacttTNL6TZSFOW/pGk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748538332;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YVXYcQRv3WLSWQAfJBtkuGRCwO3gzeCu1+3GwyAE/8U=;
+	b=HA0dzhYg2/d2e9xCOQ6+qrQfdSIoIjKIE54Hfm2mZGs9AEUR7zBotVe4IYg8usT0jPM5Rv
+	vNgz+nUnERNME4jNE7M6Q0KewvGDiq/+8HnWr/vRa9F/jswDSiBHMYPvH6yxP4MB2h/8on
+	oBX5gNXG+HXcEacttTNL6TZSFOW/pGk=
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com
+ [209.85.166.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-588-QLGWcFA9PoCA_CN6csaV5g-1; Thu, 29 May 2025 13:05:30 -0400
+X-MC-Unique: QLGWcFA9PoCA_CN6csaV5g-1
+X-Mimecast-MFC-AGG-ID: QLGWcFA9PoCA_CN6csaV5g_1748538330
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3dd77fda439so1101985ab.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 May 2025 10:05:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748538330; x=1749143130;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YVXYcQRv3WLSWQAfJBtkuGRCwO3gzeCu1+3GwyAE/8U=;
+        b=jnUuz71jHCkB1SMdA7CLC4NmYhhQp+BdqV6SCEA0f7wdbTQFGWoJClRCTH3G8SJwij
+         g/rkPgcMqv9aGszjaSc/VjicQSMGNeGopdHgFkaxy8Mt1QnygnRcrYylM1A2PRnFdZsk
+         ci25VtkaawFqusHJdAupMaoq514Guo31HO/MBdqEdju2YlGpGHBtP9acT+XS2r3tpfPW
+         83Lrhk15QPMbhN64w/JdzCMdvFopOo3yVS2bzx2c08ryLg49Qw4Cwmj+vEeC66pjINvn
+         H6upugZQuAvn+DMBU0+DS9IVOSJyO3MAZr552dVTUyAwhBMxHImKZEu9VcG2tiCfhaHT
+         PEDA==
+X-Forwarded-Encrypted: i=1; AJvYcCXJvXAl/CMqviyqrLNeUkSzbV7p6PV8ISaydh5yVs1pA2QcaLbQRVAQo9W050blGQX6iJOxkAbkrNjEun8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx6nurFfgnnYoqa27PxZZjrLnitIgvn8T6ijo++W7+TCEe8eWEk
+	N5UNjylsBuQDKj7QBQ5Ddn+o2v1cJLU6gzCZT+CateoMQN28a7kJrbaPo7+1gAk2Pc6G7RkrHfn
+	e9Q7pGvglkTgdBuduvaABsd2MJO9l5b14cXno3mT2uSgaWm+hXydM6oa9iFF+TBZB7hU=
+X-Gm-Gg: ASbGncvPwl2Fg793NjefYmqGRdug+2eKzdcHFraA9jwPmmcEfFKOng1FxWtTBMdKdoN
+	5uOSQsEcrDtdLCGRgxLo2m38oUhmaZ6RjaEbhIsEATqbGc1EqYge/eO4NH6CIuH3x+yjKnzfsaw
+	Y2LeDWmqh4phIAG6hWj4CxGpSq9FU7swbhppiglWFGnyT9PD7qig4Bd+2jpJntuVKUfWE9r02Vt
+	At81xmZeoYlt+3AV7B76xQHIVekkvq8cMoLehv2vCEZ1Hl2BdCV6eXBsvatApcgcWcKeudw0dil
+	aMLU6PzF3211lo4=
+X-Received: by 2002:a05:6e02:2789:b0:3dc:7cd7:688 with SMTP id e9e14a558f8ab-3dd99bd0681mr1264975ab.1.1748538329937;
+        Thu, 29 May 2025 10:05:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFfF2IypLjTHDTvX90AOSKarc6ttkVaDkLoPGB0d3lYBRme4WFH0Ya+stqq3YBkEYUuHUQECg==
+X-Received: by 2002:a05:6e02:2789:b0:3dc:7cd7:688 with SMTP id e9e14a558f8ab-3dd99bd0681mr1264795ab.1.1748538329510;
+        Thu, 29 May 2025 10:05:29 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3dd935462c8sm3928805ab.36.2025.05.29.10.05.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 May 2025 10:05:28 -0700 (PDT)
+Date: Thu, 29 May 2025 11:05:26 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org,
+ linux-s390@vger.kernel.org, x86@kernel.org, Ard Biesheuvel
+ <ardb@kernel.org>, "Jason A . Donenfeld" <Jason@zx2c4.com>, Linus Torvalds
+ <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v4 08/13] crypto: s390/sha256 - implement library
+ instead of shash
+Message-ID: <20250529110526.6d2959a9.alex.williamson@redhat.com>
+In-Reply-To: <20250428170040.423825-9-ebiggers@kernel.org>
+References: <20250428170040.423825-1-ebiggers@kernel.org>
+	<20250428170040.423825-9-ebiggers@kernel.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,44 +117,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Tdonp2lQghpAwlPnL5IkQCzii132-YS7pE114ilHx9U_1748538330
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.66]
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-0.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
 	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 29 May 2025 16:32:08 +1000
-Alistair Popple <apopple@nvidia.com> wrote:
+On Mon, 28 Apr 2025 10:00:33 -0700
+Eric Biggers <ebiggers@kernel.org> wrote:
 
-> DAX was the only thing that created pmd_devmap and pud_devmap entries
-> however it no longer does as DAX pages are now refcounted normally and
-> pXd_trans_huge() returns true for those. Therefore checking both pXd_devmap
-> and pXd_trans_huge() is redundant and the former can be removed without
-> changing behaviour as it will always be false.
+> From: Eric Biggers <ebiggers@google.com>
 > 
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Instead of providing crypto_shash algorithms for the arch-optimized
+> SHA-256 code, instead implement the SHA-256 library.  This is much
+> simpler, it makes the SHA-256 library functions be arch-optimized, and
+> it fixes the longstanding issue where the arch-optimized SHA-256 was
+> disabled by default.  SHA-256 still remains available through
+> crypto_shash, but individual architectures no longer need to handle it.
 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 8d9d706..31b4110 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1398,10 +1398,7 @@ static int insert_pfn_pmd(struct vm_area_struct *vma, unsigned long addr,
->  	}
->  
->  	entry = pmd_mkhuge(pfn_t_pmd(pfn, prot));
-> -	if (pfn_t_devmap(pfn))
+I can get to the following error after this patch, now merged as commit
+b9eac03edcf8 ("crypto: s390/sha256 - implement library instead of shash"):
 
-Didn't this go away in patch 5?  I didn't check but this looks like a bisectability issue.
+error: the following would cause module name conflict:
+  crypto/sha256.ko
+  arch/s390/lib/crypto/sha256.ko
 
-> -		entry = pmd_mkdevmap(entry);
-> -	else
-> -		entry = pmd_mkspecial(entry);
-> +	entry = pmd_mkspecial(entry);
->  	if (write) {
->  		entry = pmd_mkyoung(pmd_mkdirty(entry));
->  		entry = maybe_pmd_mkwrite(entry, vma);
+Base config file is generated from:
+
+$ CONFIG=$(mktemp)
+$ cat << EOF > $CONFIG
+CONFIG_MODULES=y
+CONFIG_CRYPTO=y
+CONFIG_CRYPTO_SHA256=m
+EOF
+
+Base config applied to allnoconfig:
+
+$ KCONFIG_ALLCONFIG=$CONFIG make ARCH=s390 CROSS_COMPILE=s390x-linux-gnu- allnoconfig
+
+Resulting in:
+
+$ grep SHA256 .config
+CONFIG_CRYPTO_SHA256=m
+CONFIG_CRYPTO_LIB_SHA256=m
+CONFIG_CRYPTO_ARCH_HAVE_LIB_SHA256=y
+CONFIG_CRYPTO_LIB_SHA256_GENERIC=m
+CONFIG_CRYPTO_SHA256_S390=m
+
+Thanks,
+Alex
+
 
