@@ -1,94 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-9026-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9027-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B499BAC8710
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 May 2025 05:55:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C674AC8AD6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 May 2025 11:32:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b7qBw1Rjgz2y82;
-	Fri, 30 May 2025 13:55:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b7ygl5nPrz2xCW;
+	Fri, 30 May 2025 19:32:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::c2e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748577320;
-	cv=none; b=gaxg344b1VKAUSt+tBGbGksv30DnttHcHIHtT9NX9pwDcC0w5ZCLOu94IdUE448vTQ2zSCvq4mwGqFDySESa4fxgU8eWUr6sGRCGQIXys6Ew7rD4WGuyyGbO/e4FWuqJmym2N2qftW1pVxqPw5T7GrDaMKZaeClIHNyjWQ+pl8P1PvdKY8SH60W2y2m4FiDEfFHh2FSXMOoFIxm+MT1wz495POyXNbxF5gRw7WqHe4wpEGTVPcoUDIcPjQtGZNmF6+tlq/vm3Wa0BwBJu8PqHwd177sin/brcCguC/c6h6lmhWN8LPb5G8OzsevopMstbnl3mtHnNNyw6PU3pWXDZw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748597539;
+	cv=none; b=c13dMU+pUlPH938PZ4PudCmaPspMM+MX/3rOop8qJuTKC7WKloCYx4A5FobotAonHer0Ad0GzZFyKdKajygby/qIytEZTXAiM5n1kDKDtL2BTc+BldtxZzdmNjaESOeQOKHEFf0OC4Gpj1VZCn2fQg/bq6XDjSruPluYuWs+NCQJPHXrMxZlppaBIdOw7yS+K4ODfPSRIa09V7fP5muQfpx5tMevL27XgKkWuKu24L7CRaIMNdiwvUOGoEbTTId4ilSLtMEx7WPAQYAQTbVG85A74MeLExJ/lOIpxQpkYSeKrqhFMejBTrcZA+tZqm550Zj3ngKo4N3qvOR7MG/jJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748577320; c=relaxed/relaxed;
-	bh=zYT+yS9DtEtNjftxWM62aj+gh1F4QDHmOM8kYqFz3TY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oUHCInqzUqJWYUcv4pt2KZw4XCuZZ+bGirfCzmB1Qt4JxvbCtSnez0bfGW9acBoGJVszYGGER/+jz6n6FXP6AHJ1aTlB7Fnhs+DIwkfEfLB1bHCJdGMf+Jc7TTBcWuuvYS228f3lV9zTelhZ5xYq+MZDJlHy9B3P93Un4/jdRk0ixXevMEMLS6Osc8RBXG0xKR2zr8BiSd26dO1UOIVlyB2BuRwJw7NP32zwWhGQBBHg8Er0OMCN/MBoNUnjjiooSpq76OtO+dVbHZDV1EGmKPiTLnAyQ2H6o5IGY65uRJOK61n2Oh3T3fqW/sDVelOSdiLSCUb1px3Xp900sU3Deg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cSt6q/jm; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::c2e; helo=mail-oo1-xc2e.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=cSt6q/jm;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::c2e; helo=mail-oo1-xc2e.google.com; envelope-from=manivannan.sadhasivam@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
+	t=1748597539; c=relaxed/relaxed;
+	bh=J1Qs/FTcCzylpwjhzzGc/fHOhW09pn34abLqCSXYO6E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eMVLtPkdXXguVkRiaHzM0gF5Wj5irBjTZYy+1QV5XQSt4tfgYho9roXHvLSTGg9ka7dzD1LHea8KhTrr8APlttjJFanlq6MjpZeGSwDAUR7KGAADaWqypm0cnk72CTNQNPUGEHJmnYlZg79Ic0VXFjkP2SiSFqEMDYeo4XUY3anuKVlYtJyUveWAwbVqBabx17x/wLYrXIbGPraEwmldkRtfUlUKjSJKnuul7S7D2lT8XvH4hQeysu2Q7ix1pYTQA7BhlJZq+4cKI5U9N9T5Kqt3nb20OwgrWd9BcFgAD7st3zN1byr7x0dn+t79UigasE9Pjq8tvPVIHM7VmJ9HyQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=aichao@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=aichao@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b7qBs5Zvwz2xfB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 May 2025 13:55:16 +1000 (AEST)
-Received: by mail-oo1-xc2e.google.com with SMTP id 006d021491bc7-60be2256b4dso472010eaf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 29 May 2025 20:55:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1748577313; x=1749182113; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zYT+yS9DtEtNjftxWM62aj+gh1F4QDHmOM8kYqFz3TY=;
-        b=cSt6q/jmcL8QhfWDMDspW0iXs1c7RZzX7yog1QMcqP9VmIgTVIt/l5RJ+VBcOuUZD/
-         GHT1EofdEuijUsNIH7bNe97Qit5rLyYSanGfrvRX3RlQLzGXprFNrge3NePO/xAgjgsC
-         JsSvNpiCUHMJIeW1Zycq+zqLnS/gcrJ9hjc7a4ZvTmfpFBIKvaBInwKMhXFLiiyGJ//M
-         T89iB5rzNt8P2OshwjE149L67Ic7fLXWKSCpQ0qYWlvvLWtfbUdQDLLo6K1PYEfcjOu0
-         y7TZZUUykdKUvDkPVkHQaKyk7SzkkUPuuCOVDhFgC8zxj571FG67ANYisAyMwRX8/t/i
-         WCmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748577313; x=1749182113;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zYT+yS9DtEtNjftxWM62aj+gh1F4QDHmOM8kYqFz3TY=;
-        b=sZDG1AcGrsViXDMeQKVgEJzw2EPrJOi0+ookG1J77XHDS8IM8SOOw6n/e3xGdNcfyh
-         3bQRumd/kYJph03IyWRdT5SRi4uh4RGrPfNmthG2c8lqtdaHy1Zqnr/QDRbjyW4wMbdR
-         8xKqYZxfPzVUk6z4GgCxEwYk6bbed2WLEIgT44GcH6aRINkYHWLNUVrffb+1nRuvz03U
-         v5sDqGy5lJ1Gf4VZclFjy8/PKrfZYvO4MUB/UzU1YQ6u90hqMHnPzobGdobYU7uIZEQy
-         oL4o/i0tx8Ull/8dhlbn/Uev9KlNPgfLe0wxlaHVILuYRriBIUfkzqC4HO2BlnKAM+Nd
-         8/Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCXh9Mp3JFjOtoCtJpWYsmTr4B/OQD2ZqeXn54Mwsk8UIqRHvJKNhxnhOFxaOfTEY2qYF55Tfy54Oo9zDhk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YynBp4/f9re09IkIBD3LIy5CB8oPiLjvo2z1NBUBRM0ALzexhGb
-	N2HF/KbCD93n9zY5gaFMPuDWvQeGXzwp4Re3aQMFCdSQyuEF5Mb0XBxnp8Ig4PuwNnbuEg3QPLE
-	kUAI=
-X-Gm-Gg: ASbGncuhvBcPDkzJiEIcCpXX1sjHURMBp/4GNPkGnISYW3Jq7UH4mXcUJCdF+AbzMfK
-	SS2Pq0YfqkAVcgwlQdjHxJ8XVujCpJWMM+Hvg9/HLMBfkoaeONxRFH/TxguUvUbnsrd27k28Lpj
-	JEPy6I/0dsLyCa0MSc5JK/xt/r691A2hglxrcAN6OYdGdGlss34Gg5qH2tctzpVAIzpKnCLC14y
-	5z+MqHA7Wn32FnjW89KqVXE34K0ag+ZhCq8M/x9LwETf805UhKDe7Mm6oOkQA6gNaR06B+OjEFU
-	UzvOGixmVEksOtdnUcEnYn6lMeHICBPjMlSGI9RuOum/IJBLbVOCgrkSIzR6Bg==
-X-Google-Smtp-Source: AGHT+IHUystiPvDn8wtXmAxatZwAwM/wyWA7RAF5uIDmvCTdpWPCHf/AgW9Un8RMnzAXGJkMNGGi/A==
-X-Received: by 2002:a17:902:f711:b0:235:1962:1c13 with SMTP id d9443c01a7336-23539563146mr10695205ad.14.1748576828510;
-        Thu, 29 May 2025 20:47:08 -0700 (PDT)
-Received: from thinkpad ([120.60.139.33])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3124e3c236asm327042a91.42.2025.05.29.20.47.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 May 2025 20:47:08 -0700 (PDT)
-Date: Fri, 30 May 2025 09:16:59 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, 
-	Rob Herring <robh@kernel.org>, Zhou Wang <wangzhou1@hisilicon.com>, 
-	Will Deacon <will@kernel.org>, Robert Richter <rric@kernel.org>, 
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>, Marc Zyngier <maz@kernel.org>, 
-	Conor Dooley <conor.dooley@microchip.com>, Daire McNamara <daire.mcnamara@microchip.com>, 
-	dingwei@marvell.com, cassel@kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v4 4/5] PCI: host-common: Add link down handling for host
- bridges
-Message-ID: <fr6orvqq62hozn5g3svpyyazdshv4kh4xszchxbmpdcpgp5pg6@mlehmlasbvrm>
-References: <20250508-pcie-reset-slot-v4-4-7050093e2b50@linaro.org>
- <20250528223500.GA58129@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b7ygk1TtFz2xCC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 30 May 2025 19:32:16 +1000 (AEST)
+X-UUID: ce23f0383d3811f0b29709d653e92f7d-20250530
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:9901f846-04db-40fa-9f89-284431738858,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-9,FILE:0,BULK:30,RULE:Release_Ham,ACTI
+	ON:release,TS:31
+X-CID-INFO: VERSION:1.1.45,REQID:9901f846-04db-40fa-9f89-284431738858,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-9,FILE:0,BULK:30,RULE:Release_Ham,ACTION
+	:release,TS:31
+X-CID-META: VersionHash:6493067,CLOUDID:9a3853ec8758490979c83e53ed79c393,BulkI
+	D:250522180435BN613KC0,BulkQuantity:9,Recheck:0,SF:17|19|24|38|45|64|66|78
+	|80|81|82|83|102|841,TC:nil,Content:0|50,EDM:-3,IP:-2,URL:0,File:nil,RT:ni
+	l,Bulk:40|23,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:
+	0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_SNR
+X-UUID: ce23f0383d3811f0b29709d653e92f7d-20250530
+X-User: aichao@kylinos.cn
+Received: from [172.25.120.86] [(112.64.161.44)] by mailgw.kylinos.cn
+	(envelope-from <aichao@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 1724392610; Fri, 30 May 2025 17:31:03 +0800
+Message-ID: <22dfeb0b-c3ff-4a7a-8471-1bb89dccdc17@kylinos.cn>
+Date: Fri, 30 May 2025 17:30:58 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,43 +62,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/6] ASoC: aoa: Use helper function
+ for_each_child_of_node_scoped()
+To: Johannes Berg <johannes@sipsolutions.net>, perex <perex@perex.cz>,
+ tiwai <tiwai@suse.com>,
+ "kuninori.morimoto.gx" <kuninori.morimoto.gx@renesas.com>,
+ lgirdwood <lgirdwood@gmail.com>, broonie <broonie@kernel.org>,
+ jbrunet <jbrunet@baylibre.com>, "neil.armstrong"
+ <neil.armstrong@linaro.org>, khilman <khilman@baylibre.com>,
+ "martin.blumenstingl" <martin.blumenstingl@googlemail.com>,
+ "shengjiu.wang" <shengjiu.wang@gmail.com>, "Xiubo.Lee"
+ <Xiubo.Lee@gmail.com>, festevam <festevam@gmail.com>,
+ nicoleotsuka <nicoleotsuka@gmail.com>, shawnguo <shawnguo@kernel.org>,
+ "s.hauer" <s.hauer@pengutronix.de>,
+ "srinivas.kandagatla" <srinivas.kandagatla@linaro.org>
+Cc: linux-sound <linux-sound@vger.kernel.org>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-renesas-soc <linux-renesas-soc@vger.kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ linux-amlogic <linux-amlogic@lists.infradead.org>, imx
+ <imx@lists.linux.dev>, kernel <kernel@pengutronix.de>,
+ linux-arm-msm <linux-arm-msm@vger.kernel.org>
+References: <2aq0nyvyf7t-2aq4hsc7kp6@nsmail7.0.0--kylin--1>
+ <7e708dcc98c6f0f615b1b87d190464cfe78be668.camel@sipsolutions.net>
+ <eb1ddeb3-06b6-4ac5-b20a-06b92c7f1363@kylinos.cn>
+ <23aadbd78d3585c900c579c26f360011cf1ca830.camel@sipsolutions.net>
+ <9ec008a8-b569-4ad1-9206-fe241fb1712d@kylinos.cn>
+ <b36908bf35a20f7196bec4fe22e392a015d9b7d1.camel@sipsolutions.net>
+Content-Language: en-US
+From: Ai Chao <aichao@kylinos.cn>
+In-Reply-To: <b36908bf35a20f7196bec4fe22e392a015d9b7d1.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250528223500.GA58129@bhelgaas>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, May 28, 2025 at 05:35:00PM -0500, Bjorn Helgaas wrote:
-> On Thu, May 08, 2025 at 12:40:33PM +0530, Manivannan Sadhasivam wrote:
-> > The PCI link, when down, needs to be recovered to bring it back. But that
-> > cannot be done in a generic way as link recovery procedure is specific to
-> > host bridges. So add a new API pci_host_handle_link_down() that could be
-> > called by the host bridge drivers when the link goes down.
-> > 
-> > The API will iterate through all the slots and calls the pcie_do_recovery()
-> > function with 'pci_channel_io_frozen' as the state. This will result in the
-> > execution of the AER Fatal error handling code. Since the link down
-> > recovery is pretty much the same as AER Fatal error handling,
-> > pcie_do_recovery() helper is reused here. First the AER error_detected
-> > callback will be triggered for the bridge and the downstream devices. Then,
-> > pci_host_reset_slot() will be called for the slot, which will reset the
-> > slot using 'reset_slot' callback to recover the link. Once that's done,
-> > resume message will be broadcasted to the bridge and the downstream devices
-> > indicating successful link recovery.
-> 
-> Link down is an event for a single Root Port.  Why would we iterate
-> through all the Root Ports if the link went down for one of them?
+Hi Johannes:
+     Thanks for your feedback.  I will drop it.
 
-Because on the reference platform (Qcom), link down notification is not
-per-port, but per controller. So that's why we are iterating through all ports.
-The callback is supposed to identify the ports that triggered the link down
-event and recover them.
-
-- Mani
+> On Mon, 2025-05-26 at 16:20 +0800, Ai Chao wrote:
+>> Hi Johannes:
+>>>> for_each_child_of_node.
+>>> You still haven't explained why it's even correct.
+>>>
+>>> johannes
+>> The for_each_child_of_node() function is used to iterate over all child
+>> nodes of a device tree node.
+>> During each iteration, it retrieves a pointer to the child node via
+>> of_get_next_child() and automatically increments the node's reference
+>> count (of_node_get()).
+>> Each call to of_get_next_child() increases the reference count
+>> (refcount) of the returned child node, ensuring that the node is not
+>> freed while in use.
+>> for_each_child_of_node() increments the child node's reference count in
+>> each iteration but does not decrement it automatically.
+>> If of_node_put() is not called manually, the reference count will never
+>> reach zero, resulting in a memory leak of the node.
+> Yes, good! Now show that you can apply what you've learned to the
+> specific code (and changes) at hand.
+>
+> johannes
 
 -- 
-மணிவண்ணன் சதாசிவம்
+Best regards,
+Ai Chao
+
 
