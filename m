@@ -1,64 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-9041-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9042-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55801AC927D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 May 2025 17:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6753EAC92C9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 30 May 2025 17:56:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b86T769PSz2xpl;
-	Sat, 31 May 2025 01:23:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b87Bq677fz2xrL;
+	Sat, 31 May 2025 01:56:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748618619;
-	cv=none; b=BY4H5OEYxmiB1pFwsr5VucJJzpHS+0Vhs6KPDNLjZtdLkOZrzhV8ZNMeAXOst3lKCFN4iHLR3kWT5NJXI8bJaCFrOSdcBLgP+ficZVs22inmacRevSh5hmZItShhKarHDfHEytM9Pt8C2FkvN1Yhr8mruWs71o41ZFxy9NkkXHBO9JZtBVd/p+OoOlhLn2hMTowktfMEWXNOTQkk9dfby9d/yRD91TMRTj0LUzq5CGNUzKDM+odPsomq57bGaoC04ZkTCNNwHdjeQILKII4YMJsln79NjL6dgQkNnG3he+jHpU3GFRSpu2rjiTZsgiVrh+P3ABy0xa5swKRUgw2uKg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748620579;
+	cv=none; b=JS3xNWs5kWxnc/rHASUZU5eQUJJrNdTZ3BdHcovC54LFYucOFz5vNsWjlPLKmdm1hdeMd7mUCBWgjq7/3SmkD1f3lDs4Clm33t5JCjHMYJ1yCA9RsBNYGu/kD5nTl0clXn9yhgnyjkaQZZmyPUOJozcKs1xy16zAfD0QKlqlGbDA/tYo80b0dp9aPt6f6jC35bRzfil/p1KnODHZ4DdfjZnG6hIb/Vk7h4a78T5jISlu5EUK9CVAfce3AddAywNf+9YAlvruuzOGeS1f8ow1gpdzYLFRL47yl3cezB3S3iGu2tPomNhmVmhIcqFGf/4gqdwpkenpkfF/5w0/fwOr9A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748618619; c=relaxed/relaxed;
-	bh=agKHQjxfZDqRcl11omTUAcYR28VqjSi2A39hS2TD8qk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Je+4FQXqbNBrU8v9d2tYMX0X4xzIKadL/xralVHZyVnFHyuATMq3TIT4phxkVxGHInTv/poet9nbPfj7uPgrk4AjcN/u6P8696dJwif90uD5YelLhv3iVX01b9bN+qsiAPtdZhUUCZlWGegs3JOFrVRpt49jq28W4Ijg9H1CDUyLg3W7RILOYqwp+H6IvDn+gALka2qlLS+Vi6vpcPRtFoDQ3wDPfcx1f7n9veCqFiO86mlfU3zrLoQWJOsxNcsVBR0syLgpEodw7/mE3OefjDD+VAZZZA/p3TjUMIWld4MiCvteZKF89epaLHvJtNY2kavEVWTY7FiI6tGfT7ZRwQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KrfVTlxC; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KrfVTlxC;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b86T66lNCz2xjv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 May 2025 01:23:38 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id DBDFEA4F893;
-	Fri, 30 May 2025 15:23:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 905DAC4CEE9;
-	Fri, 30 May 2025 15:23:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748618615;
-	bh=LWFWoggGe46xQ5RQp18Vq6QjeHfIxauE+ObN41PB7bQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KrfVTlxCx05DUwfOjqI/Y+5oFEqvXplJaFVRb0USAmPukce0NtMccV3wPk95cxeDU
-	 bC6SNp+9u2uDpjLj40UgXQ3mlgMKcthZWGBctAe5wBn/owpHTXBs6jQs+QVrB3PjE8
-	 oIofx9Icjcm5lJTPLPCfxMctJGh2waqT554jPb/WyXPHZpwGuvKFtIlWS+75kbw1Kf
-	 3Um/EaSao1rpeCl/teCkz7VPqIx1b/bzTwPNjpWbnKWnAZPObr8aQCyHZWHgXIbNl0
-	 oBxoiaUMqvBevfH6vUUmFLasn5VTzso3O/hrfPWpBO/X5qix1fy24IS/GFFMArfVuo
-	 It81f7ltRlxVQ==
-Date: Fri, 30 May 2025 16:23:31 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:FREESCALE SOC DRIVERS" <linuxppc-dev@lists.ozlabs.org>,
-	"moderated list:FREESCALE SOC DRIVERS" <linux-arm-kernel@lists.infradead.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH 1/1] dt-bindings: soc: add vf610 reset controller
-Message-ID: <20250530-construct-library-64ec665a6fea@spud>
-References: <20250522213951.506019-1-Frank.Li@nxp.com>
- <20250526-unpaid-mushy-d47196d04ad1@spud>
- <aDcvP975apg/dhQz@lizhi-Precision-Tower-5810>
+	t=1748620579; c=relaxed/relaxed;
+	bh=0eEDstHrNFu0qoS8kVeUD7NVAjoXrB5Nm7IQpXJUUqY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MAEzaXieYKq0kqaCc3nnthPllKsB03hPpNN2tK5CW8Z+8A+cDiRkTbUVSCkkxt9RpX4dm1JjPgOG11pMBnBMN5UBYbzO3qPof4KrCZWMQMuprDyaz+haGEHThkJWb7Hu0gMpWSSUX/iD+HnuzLaacq82gSEW+bwhBXmtPjGsZXN7HHi40DoTHw3ILWBypGqJKxKGUuRsRQ1dlURwuyY1RDe+7+n1FcDTtPIsxz587tL4tCDTerOCX9/U7qKQ4FnSfWEu8W4G1F6sKk/CNMO+KLx3V0hJo1bQt8naDpu9ezybUlGVFE7ISp7izVE1hVSkNcqqBtdDazmiReOGUe+6cw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b87Bn3Jmbz2xpl
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 May 2025 01:56:15 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 09446169C;
+	Fri, 30 May 2025 08:55:27 -0700 (PDT)
+Received: from [10.57.95.14] (unknown [10.57.95.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BF2053F673;
+	Fri, 30 May 2025 08:55:37 -0700 (PDT)
+Message-ID: <af9a96e1-064b-4627-bd34-e7e7e8a05452@arm.com>
+Date: Fri, 30 May 2025 16:55:36 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,75 +43,179 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ldWk4wJW7G7nxwGc"
-Content-Disposition: inline
-In-Reply-To: <aDcvP975apg/dhQz@lizhi-Precision-Tower-5810>
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 0/6] Lazy mmu mode fixes and improvements
+Content-Language: en-GB
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Juergen Gross <jgross@suse.com>,
+ Ajay Kaher <ajay.kaher@broadcom.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Peter Zijlstra <peterz@infradead.org>, Arnd Bergmann <arnd@arndb.de>,
+ David Hildenbrand <david@redhat.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Alexei Starovoitov <ast@kernel.org>, Andrey Ryabinin
+ <ryabinin.a.a@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, virtualization@lists.linux.dev,
+ xen-devel@lists.xenproject.org, linux-mm@kvack.org,
+ Jann Horn <jannh@google.com>
+References: <20250530140446.2387131-1-ryan.roberts@arm.com>
+ <5b5d6352-9018-4658-b8fe-6eadaad46881@lucifer.local>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <5b5d6352-9018-4658-b8fe-6eadaad46881@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On 30/05/2025 15:47, Lorenzo Stoakes wrote:
+> +cc Jann who is a specialist in all things page table-y and especially scary
+> edge cases :)
+> 
+> On Fri, May 30, 2025 at 03:04:38PM +0100, Ryan Roberts wrote:
+>> Hi All,
+>>
+>> I recently added support for lazy mmu mode on arm64. The series is now in
+>> Linus's tree so should be in v6.16-rc1. But during testing in linux-next we
+>> found some ugly corners (unexpected nesting). I was able to fix those issues by
+>> making the arm64 implementation more permissive (like the other arches). But
+>> this is quite fragile IMHO. So I'd rather fix the root cause and ensure that
+>> lazy mmu mode never nests, and more importantly, that code never makes pgtable
+>> modifications expecting them to be immediate, not knowing that it's actually in
+>> lazy mmu mode so the changes get deferred.
+> 
+> When you say fragile, are you confident it _works_ but perhaps not quite as well
+> as you want? Or are you concerned this might be broken upstream in any way?
 
---ldWk4wJW7G7nxwGc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I'm confident that it _works_ for arm64 as it is, upstream. But if Dev's series
+were to go in _without_ the lazy_mmu bracketting in some manner, then it would
+be broken if the config includes CONFIG_DEBUG_PAGEALLOC.
 
-On Wed, May 28, 2025 at 11:43:59AM -0400, Frank Li wrote:
-> On Mon, May 26, 2025 at 04:54:30PM +0100, Conor Dooley wrote:
-> > On Thu, May 22, 2025 at 05:39:50PM -0400, Frank Li wrote:
-> > > Add vf610 reset controller, which used to reboot system to fix below
-> > > CHECK_DTB warnings:
-> > >
-> > > arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e00=
-0:
-> > >     failed to match any schema with compatible: ['fsl,vf610-src', 'sy=
-scon']
-> > >
-> > > Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> > > ---
-> > >  .../bindings/soc/fsl/fsl,vf610-src.yaml       | 46 +++++++++++++++++=
-++
-> > >  1 file changed, 46 insertions(+)
-> > >  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf6=
-10-src.yaml
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.=
-yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> > > new file mode 100644
-> > > index 0000000000000..4c92a5e4892bf
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> > > @@ -0,0 +1,46 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas//soc/fsl/fsl,vf610-src.yaml#
-> >
-> > It's a reset controller then, shouldn't it be in /reset, not //soc?
->=20
-> It is not reset controller since there are not #reset-cells property to
-> reset other models. It just provides syscon to reboot the whole system.
+There's a lot more explanation in the later patches as to how it can be broken,
+but for arm64, the situation is currently like this, because our implementation
+of __change_memory_common() uses apply_to_page_range() which implicitly starts
+an inner lazy_mmu_mode. We enter multiple times, but we exit one the first call
+to exit. Everything works correctly but it's not optimal because C is no longer
+deferred:
 
-| Add vf610 reset controller
-| The System Reset Controller (SRC) generates the resets for the device.
+arch_enter_lazy_mmu_mode()                        << outer lazy mmu region
+  <do some pte changes (A)>
+  alloc_pages()
+    debug_pagealloc_map_pages()
+      __kernel_map_pages()
+        __change_memory_common()
+          arch_enter_lazy_mmu_mode()              << inner lazy mmu region
+            <change kernel pte to make valid (B)>
+          arch_leave_lazy_mmu_mode()              << exit; complete A + B
+    clear_page()
+  <do some more pte changes (C)>                  << no longer in lazy mode
+arch_leave_lazy_mmu_mode()                        << nop
 
-Giving me mixed signal here chief. If you call something a reset
-controller multiple times without any additional clarification that it
-does not provide resets to peripherals, how is anyone reading the patch
-not supposed to come to the same conclusion as me?
+An alternative implementation would not add the nested lazy mmu mode, so we end
+up with this:
 
---ldWk4wJW7G7nxwGc
-Content-Type: application/pgp-signature; name="signature.asc"
+arch_enter_lazy_mmu_mode()                        << outer lazy mmu region
+  <do some pte changes (A)>
+  alloc_pages()
+    debug_pagealloc_map_pages()
+      __kernel_map_pages()
+        __change_memory_common()
+            <change kernel pte to make valid (B)> << deferred due to lazy mmu
+    clear_page()                                  << BANG! B has not be actioned
+  <do some more pte changes (C)>
+arch_leave_lazy_mmu_mode()
 
------BEGIN PGP SIGNATURE-----
+This is clearly a much worse outcome. It's not happening today but it could in
+future. That's why I'm claiming it's fragile. It's much better (IMHO) to
+disallow calling the page allocator when in lazy mmu mode.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaDnNcwAKCRB4tDGHoIJi
-0k0fAP9xEMP3RDsq99tpKwUODFMvlZc/u4nYb9rlcX/IGT0BUgEA1fwhbAWRvv7y
-JcFusmsVetdwlGO4zY35QGEzwv9h8Qc=
-=ttAW
------END PGP SIGNATURE-----
+I won't speak for other arches; there may be more or less potential impact for them.
 
---ldWk4wJW7G7nxwGc--
+> 
+> I am thinking specifically about the proposed use in Dev's new series [0] and
+> obviously hoping (and assuming in fact) that it's the former :)
+
+Dev's changes aren't directly related to this, but if a version was accepted
+that didn't include the lazy mmu mode, that would cause non-obvious issues.
+
+Hope that helps?
+
+Thanks,
+Ryan
+
+> 
+> [0]: https://lore.kernel.org/linux-mm/20250530090407.19237-1-dev.jain@arm.com/
+> 
+>>
+>> The first 2 patches are unrelated, very obvious bug fixes. They don't affect
+>> arm64 because arm64 only uses lazy mmu for kernel mappings. But I noticed them
+>> during code review and think they should be fixed.
+>>
+>> The next 3 patches are aimed at solving the nesting issue.
+>>
+>> And the final patch is reverting the "permissive" fix I did for arm64, which is
+>> no longer needed after the previous 3 patches.
+>>
+>> I've labelled this RFC for now because it depends on the arm64 lazy mmu patches
+>> in Linus's master, so it won't apply to mm-unstable. But I'm keen to get review
+>> and siince I'm touching various arches and modifying some core mm stuff, I
+>> thought that might take a while so thought I'd beat the rush and get a first
+>> version out early.
+>>
+>> I've build-tested all the affected arches. And I've run mm selftests for the
+>> arm64 build, with no issues (with DEBUG_PAGEALLOC and KFENCE enabled).
+>>
+>> Applies against Linus's master branch (f66bc387efbe).
+>>
+>> Thanks,
+>> Ryan
+>>
+>>
+>> Ryan Roberts (6):
+>>   fs/proc/task_mmu: Fix pte update and tlb maintenance ordering in
+>>     pagemap_scan_pmd_entry()
+>>   mm: Fix pte update and tlb maintenance ordering in
+>>     migrate_vma_collect_pmd()
+>>   mm: Avoid calling page allocator from apply_to_page_range()
+>>   mm: Introduce arch_in_lazy_mmu_mode()
+>>   mm: Avoid calling page allocator while in lazy mmu mode
+>>   Revert "arm64/mm: Permit lazy_mmu_mode to be nested"
+>>
+>>  arch/arm64/include/asm/pgtable.h              | 22 ++++----
+>>  .../include/asm/book3s/64/tlbflush-hash.h     | 15 ++++++
+>>  arch/sparc/include/asm/tlbflush_64.h          |  1 +
+>>  arch/sparc/mm/tlb.c                           | 12 +++++
+>>  arch/x86/include/asm/paravirt.h               |  5 ++
+>>  arch/x86/include/asm/paravirt_types.h         |  1 +
+>>  arch/x86/kernel/paravirt.c                    |  6 +++
+>>  arch/x86/xen/mmu_pv.c                         |  6 +++
+>>  fs/proc/task_mmu.c                            |  3 +-
+>>  include/asm-generic/tlb.h                     |  2 +
+>>  include/linux/mm.h                            |  6 +++
+>>  include/linux/pgtable.h                       |  1 +
+>>  kernel/bpf/arena.c                            |  6 +--
+>>  mm/kasan/shadow.c                             |  2 +-
+>>  mm/memory.c                                   | 54 ++++++++++++++-----
+>>  mm/migrate_device.c                           |  3 +-
+>>  mm/mmu_gather.c                               | 15 ++++++
+>>  17 files changed, 128 insertions(+), 32 deletions(-)
+>>
+>> --
+>> 2.43.0
+>>
+
 
