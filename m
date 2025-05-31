@@ -1,86 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-9051-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9052-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D18AC99E4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 31 May 2025 09:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B46DAC9D61
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  1 Jun 2025 01:51:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b8XHz2gCNz2yF1;
-	Sat, 31 May 2025 17:47:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b8xhZ320Qz2yF0;
+	Sun,  1 Jun 2025 09:51:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748677631;
-	cv=none; b=DsQUxIKCJ9dKABdwVlbfb+iyVR+Ey4hO1Jp3iCWiHOACHVOJbFLgQIDIrxR8e5h56AsOGyMigYjC/l+ThNkvVPVYSRPmAhjGQOks47aBb+P+qnt6cF7iVsQaLfG6LANwGEXiP4PlcTQkw9+0mh5sO/rvGoldK11zqR3O3isi/GZxXbMUR4vTUhOfueZ8XmH6kvfkQ3SaRQ/WCSW5zYuKsjdAvgll99mKNTtufMwMfgXQN7r2446vbC5OyjFiZJj7TydTNkYbF7Nm4Lx7CiS7TZ1VH87tleIQDQw4+P6+kPB3mGgSht882i8E+i/t3mj/TUOiPgWvUm5nOfldrnJcYw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748735486;
+	cv=none; b=WTNABHLqe2fXAIW5kN//kiV+AQlQ1UC6ZMczwIGmewFinq4+QM+JDqepgoiC7tK/VjQJwkSl0Gdd3BO5DcdHVdfL0J94i0sFOPmYdmEYFdXu8dJXEWVWc7nPxg/H6mIv+rrVP2Xb8Dp/EYZUt6r8tI53nGrE2LO/INozvznCyIbusFOMEUPhPMsgu0m7/oucLqw8rB4VFEF6kskLmn88YfCf3hwC7y6h9P0QakGDIO87OfwdXXR/XdPWakkHZR88VosdgD6z/jlYQUIJXq/f70GDqLxKlz1CmCE1aQvLfhk8tVByH4+Yupvwg1ly/cnlxrzYPuDA86nSd4wNtf+Rew==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748677631; c=relaxed/relaxed;
-	bh=E6LIA9xy4MVWHQMeHkXNEKMdqJT84UpgNFBIQAES/qE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bRm5gFdIBHFR8eMQSZ5zDrpxjSWKdhqvccFVB8YDFsOrVFY8I9EA3yJ5UtByEpxUbhdyzYtEpgmtu5K2pqDpEFgRoZnwIR4qwJZe9kZFLPIGgzQIWYovXN273KZQ79CEsF728lZ+d8fL2e2lmcSlvb/0Q/6Sn2vC44lRiNZkwgmFmg7b5YG1fgHTao+4ZqsDn6lkkP/tPVq1qQnyu1cbQ7NZhVoJcSpufbzWlvufQ7n5QhjVwnrfisdTGUpI048+tbPRXjMnwlXik5kALo7onNyUNHcu0o6pEKlhARI2WPmyezVv+4dCUKBragxd1Z64FBqp7ANZ98cUz9eczcXixQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m4l+/YKI; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1748735486; c=relaxed/relaxed;
+	bh=F+9eSULt61Rlm0zc+pnCL3BeDkXiAEtWZFzkO8oSI5k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z9RT5HyVSSrE8s6D8W6BNp9p7Ino3sEw9yGAXhET7it1t03Huy8bGHi/6uftItQ84xA6m6FPgtVaAUa1/w7g8RjqROaqmiDQtT3elRRUhjxFmCCLSf99XQfgGgPGJt1FMSKUx3hXdOobVH5N/ky1P8e7mEDMgrkCtHhu3kYwW7UdX2gD7z5zuuLc1jGcht+qA+Ztfjk0MgDDZCEtbBotUxAdBxMDnkyDlQE+Q8ggbj0Gj8iBC7Nzdmg9O0X7S7twvw1NwN2Y2MrIpQNMGB4TJhxaxhHw6Xrb9fvt5zDmCE3yh6MOBxCj6hU0aXcs5PFYrcji+RnFBjlf9AbQi0Q82g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=limgS3gb; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m4l+/YKI;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=limgS3gb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b8XHy3nd7z2xKh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 31 May 2025 17:47:10 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5C5F25C3D84;
-	Sat, 31 May 2025 07:44:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAB7C4CEE3;
-	Sat, 31 May 2025 07:46:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748677627;
-	bh=sT8ax5dbTHlITwDR7EB59IJncQ2gJREmL936Z5hIaHo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m4l+/YKIs/KGay8y5vMJQ2bX/6i3fxjZ0gJ0+6SfB85gTMv9isMoswQqVsv4Dm+Yl
-	 5gBNStHJ++v6+O0EtdOWObMpAyqqJtKiiiHCvqbrRYRGbqgk54Gsoto2+2xSaTGEX/
-	 UjUmkcVswzLe8hErYSg4k60I8QKcdT/ikfO8I1+QYom9bCQCk6Jq/eiD5Mj9Y39hlp
-	 sAiyJS/N7snMk3XQ2/Bvj/0wr0qADR+cJOCyKzCUqM5WQ0/2ASiXFMHCRpT2zrg06m
-	 ciDBHHpS087W/LZIa9rTY4pgSp3axMokcqCHGPjdvNd0LKzornyQw2tVBbwFtOMgVG
-	 zRx/WnEiPnYpA==
-Date: Sat, 31 May 2025 10:46:52 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Juergen Gross <jgross@suse.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnd Bergmann <arnd@arndb.de>, David Hildenbrand <david@redhat.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Alexei Starovoitov <ast@kernel.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
-	virtualization@lists.linux.dev, xen-devel@lists.xenproject.org,
-	linux-mm@kvack.org, Jann Horn <jannh@google.com>
-Subject: Re: [RFC PATCH v1 0/6] Lazy mmu mode fixes and improvements
-Message-ID: <aDqz7H-oBo35FRXe@kernel.org>
-References: <20250530140446.2387131-1-ryan.roberts@arm.com>
- <5b5d6352-9018-4658-b8fe-6eadaad46881@lucifer.local>
- <af9a96e1-064b-4627-bd34-e7e7e8a05452@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b8xhY1ZWGz2x9N
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  1 Jun 2025 09:51:24 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54VJvd4Z025195;
+	Sat, 31 May 2025 23:51:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=F+9eSULt61Rlm0zc+pnCL3BeDkXi
+	AEtWZFzkO8oSI5k=; b=limgS3gbiCytxxcKSoROHkkuHTJj3iY41U3oc8x4PV9U
+	Jfq0wG4OYjX68PPnMRiswr0JMWd6tf+MsB4NVB2rHRZVYl5N//OPpLlUA2fkcoTk
+	PrThtrbaePe543+228WsdXEmnuw0s81ykhU7yLBJSV75RuZ6UowMnKbs1cwdsHDm
+	y8lWxKu161joVaHcTGfyrEjhRVLZFJA5tu9YAeRZNy2D5IywAy2l9DYe0jFWXHIz
+	BgZ0ddy5p9ccgsXnTuEGjnY9bU7I7wOmvs/usZFRvdYZB5CtZlK0vXN5V3o1ahdi
+	qviCH0Xg9AV2QRwc/Qj0yKiKi16NuD8x4Zc4+zbCcA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46yxqq27rw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 31 May 2025 23:51:14 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54VNpEQx000929;
+	Sat, 31 May 2025 23:51:14 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46yxqq27rv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 31 May 2025 23:51:14 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54VJiB8X030862;
+	Sat, 31 May 2025 23:51:13 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46uru17x5w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 31 May 2025 23:51:13 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54VNpAlW51970378
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 31 May 2025 23:51:10 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B674B58056;
+	Sat, 31 May 2025 23:51:10 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0CF0E5803F;
+	Sat, 31 May 2025 23:51:10 +0000 (GMT)
+Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.9.22])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Sat, 31 May 2025 23:51:09 +0000 (GMT)
+From: Haren Myneni <haren@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        hbabu@us.ibm.com, haren@linux.ibm.com,
+        Kowshik Jois <kowsjois@linux.ibm.com>,
+        Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: [PATCH v2] powerpc/pseries/dlpar: Search DRC index from ibm,drc-indexes for IO add
+Date: Sat, 31 May 2025 16:50:02 -0700
+Message-ID: <20250531235002.239213-1-haren@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,116 +93,128 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <af9a96e1-064b-4627-bd34-e7e7e8a05452@arm.com>
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=AZ2xH2XG c=1 sm=1 tr=0 ts=683b95f2 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VnNF1IyMAAAA:8 a=er3VbNMTn1isvFyg5NMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTMxMDIxNCBTYWx0ZWRfXyBQnxr46V5Iw YbJEm4I8rb/2PiEgZOu/w1boCIBUTJvRdMsGlyufGz9P3Ltiatqw9uQxe5fkW5S4y7C9QIfSOrD j1XVEy+8fZfGrGSNThxQJ7FKcuwKz1uoX21D1/Ihw3R2PEA/vjlsmUHqtS2uM1jMUGqKKOwkkmy
+ bKlemb3gafxk8bMJeBExicSC6J2RT5VQCGC2V3i7X4y2naZgNh7jzMkZyYErsc3x7bFvIPZzsx+ N4YmkJ0/+guxOSK35euxweHzFS/l7XW/l/YRDMFIRliSUKmbVXi1RLfCyc4NMij/q+SH7+T2e1Z VBFd+BlTuMLYaIiaouQ9vPHi4etsBAR/A9u65rNNNaH/QgdN21lz/oUXbpdWTUocZPbAuKywzPq
+ SY8xknGjFbGs8VR8uqbns6jlsg8kb0zb/edpOLidLTqeQ0nUzWXuNcAVDWACg887GETf+Xlu
+X-Proofpoint-ORIG-GUID: bXyh3fFE8ZbH1oMrErgrv7WwFWe0_DIs
+X-Proofpoint-GUID: VhJSAwbzuiQ8R3jz6Xr2P7vxws1X9Al1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-31_11,2025-05-30_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 spamscore=0 mlxscore=0 bulkscore=0 mlxlogscore=831
+ clxscore=1011 adultscore=0 malwarescore=0 impostorscore=0
+ priorityscore=1501 phishscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505160000 definitions=main-2505310214
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Ryan,
+IO hotplug add event is handled in the user space with drmgr tool.
+After the device is enabled, the user space uses /sys/kernel/dlpar
+interface with “dt add index <drc_index>” to update the device tree.
+The kernel interface (dlpar_hp_dt_add()) finds the parent node for
+the specified ‘drc_index’ from ibm,drc-info property. The recent FW
+provides this property from 2017 onwards. But KVM guest code in
+some releases is still using the older SLOF firmware which has
+ibm,drc-indexes property instead of ibm,drc-info.
 
-On Fri, May 30, 2025 at 04:55:36PM +0100, Ryan Roberts wrote:
-> On 30/05/2025 15:47, Lorenzo Stoakes wrote:
-> > +cc Jann who is a specialist in all things page table-y and especially scary
-> > edge cases :)
-> > 
-> > On Fri, May 30, 2025 at 03:04:38PM +0100, Ryan Roberts wrote:
-> >> Hi All,
-> >>
-> >> I recently added support for lazy mmu mode on arm64. The series is now in
-> >> Linus's tree so should be in v6.16-rc1. But during testing in linux-next we
-> >> found some ugly corners (unexpected nesting). I was able to fix those issues by
-> >> making the arm64 implementation more permissive (like the other arches). But
-> >> this is quite fragile IMHO. So I'd rather fix the root cause and ensure that
-> >> lazy mmu mode never nests, and more importantly, that code never makes pgtable
-> >> modifications expecting them to be immediate, not knowing that it's actually in
-> >> lazy mmu mode so the changes get deferred.
-> > 
-> > When you say fragile, are you confident it _works_ but perhaps not quite as well
-> > as you want? Or are you concerned this might be broken upstream in any way?
-> 
-> I'm confident that it _works_ for arm64 as it is, upstream. But if Dev's series
-> were to go in _without_ the lazy_mmu bracketting in some manner, then it would
-> be broken if the config includes CONFIG_DEBUG_PAGEALLOC.
-> 
-> There's a lot more explanation in the later patches as to how it can be broken,
-> but for arm64, the situation is currently like this, because our implementation
-> of __change_memory_common() uses apply_to_page_range() which implicitly starts
-> an inner lazy_mmu_mode. We enter multiple times, but we exit one the first call
-> to exit. Everything works correctly but it's not optimal because C is no longer
-> deferred:
-> 
-> arch_enter_lazy_mmu_mode()                        << outer lazy mmu region
->   <do some pte changes (A)>
->   alloc_pages()
->     debug_pagealloc_map_pages()
->       __kernel_map_pages()
->         __change_memory_common()
->           arch_enter_lazy_mmu_mode()              << inner lazy mmu region
->             <change kernel pte to make valid (B)>
->           arch_leave_lazy_mmu_mode()              << exit; complete A + B
->     clear_page()
->   <do some more pte changes (C)>                  << no longer in lazy mode
-> arch_leave_lazy_mmu_mode()                        << nop
-> 
-> An alternative implementation would not add the nested lazy mmu mode, so we end
-> up with this:
-> 
-> arch_enter_lazy_mmu_mode()                        << outer lazy mmu region
->   <do some pte changes (A)>
->   alloc_pages()
->     debug_pagealloc_map_pages()
->       __kernel_map_pages()
->         __change_memory_common()
->             <change kernel pte to make valid (B)> << deferred due to lazy mmu
->     clear_page()                                  << BANG! B has not be actioned
->   <do some more pte changes (C)>
-> arch_leave_lazy_mmu_mode()
-> 
-> This is clearly a much worse outcome. It's not happening today but it could in
-> future. That's why I'm claiming it's fragile. It's much better (IMHO) to
-> disallow calling the page allocator when in lazy mmu mode.
+If the ibm,drc-info is not available, this patch adds changes to
+search ‘drc_index’ from the indexes array in ibm,drc-indexes
+property to support old FW.
 
-First, I think it should be handled completely inside arch/arm64. Page
-allocation worked on lazy mmu mode on other architectures, no reason it
-should be changed because of the way arm64 implements lazy mmu.
+Fixes: 02b98ff44a57 ("powerpc/pseries/dlpar: Add device tree nodes for DLPAR IO add")
+Reported-by: Kowshik Jois <kowsjois@linux.ibm.com>
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+Tested-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+---
+Changes in v2:
+- Update the commit log with the explicit description on older FW
+  support as Tyrel Datwyler suggested.
 
-Second, DEBUG_PAGEALLOC already implies that performance is bad, for it to
-be useful the kernel should be mapped with base pages and there's map/unmap
-for every page allocation so optimizing a few pte changes (C in your
-example) won't matter much.
+ arch/powerpc/platforms/pseries/dlpar.c | 52 +++++++++++++++++++++++++-
+ 1 file changed, 50 insertions(+), 2 deletions(-)
 
-If there's a potential correctness issue with Dev's patches, it should be
-dealt with as a part of those patches with the necessary updates of how
-lazy mmu is implemented on arm64 and used in pageattr.c.
-
-And it seems to me that adding something along the lines below to
-__kernel_map_pages() would solve DEBUG_PAGEALLOC issue:
-
-void __kernel_map_pages(struct page *page, int numpages, int enable)
-{
-	unsigned long flags;
-	bool lazy_mmu = false;
-
-	if (!can_set_direct_map())
-		return;
-
-	flags = read_thread_flags();
-	if (flags & BIT(TIF_LAZY_MMU))
-		lazy_mmu = true;
-
-	set_memory_valid((unsigned long)page_address(page), numpages, enable);
-
-	if (lazy_mmu)
-		set_thread_flag(TIF_LAZY_MMU);
-}
-
-> Thanks,
-> Ryan
-
+diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
+index 213aa26dc8b3..979487da6522 100644
+--- a/arch/powerpc/platforms/pseries/dlpar.c
++++ b/arch/powerpc/platforms/pseries/dlpar.c
+@@ -404,6 +404,45 @@ get_device_node_with_drc_info(u32 index)
+ 	return NULL;
+ }
+ 
++static struct device_node *
++get_device_node_with_drc_indexes(u32 drc_index)
++{
++	struct device_node *np = NULL;
++	u32 nr_indexes, index;
++	int i, rc;
++
++	for_each_node_with_property(np, "ibm,drc-indexes") {
++		/*
++		 * First element in the array is the total number of
++		 * DRC indexes returned.
++		 */
++		rc = of_property_read_u32_index(np, "ibm,drc-indexes",
++				0, &nr_indexes);
++		if (rc)
++			goto out_put_np;
++
++		/*
++		 * Retrieve DRC index from the list and return the
++		 * device node if matched with the specified index.
++		 */
++		for (i = 0; i < nr_indexes; i++) {
++			rc = of_property_read_u32_index(np, "ibm,drc-indexes",
++							i+1, &index);
++			if (rc)
++				goto out_put_np;
++
++			if (drc_index == index)
++				return np;
++		}
++	}
++
++	return NULL;
++
++out_put_np:
++	of_node_put(np);
++	return NULL;
++}
++
+ static int dlpar_hp_dt_add(u32 index)
+ {
+ 	struct device_node *np, *nodes;
+@@ -423,10 +462,19 @@ static int dlpar_hp_dt_add(u32 index)
+ 		goto out;
+ 	}
+ 
++	/*
++	 * Recent FW provides ibm,drc-info property. So search
++	 * for the user specified DRC index from ibm,drc-info
++	 * property. If this property is not available, search
++	 * in the indexes array from ibm,drc-indexes property.
++	 */
+ 	np = get_device_node_with_drc_info(index);
+ 
+-	if (!np)
+-		return -EIO;
++	if (!np) {
++		np = get_device_node_with_drc_indexes(index);
++		if (!np)
++			return -EIO;
++	}
+ 
+ 	/* Next, configure the connector. */
+ 	nodes = dlpar_configure_connector(cpu_to_be32(index), np);
 -- 
-Sincerely yours,
-Mike.
+2.43.5
+
 
