@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-9058-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9065-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FCC4ACA0CA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 00:46:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E2EACA0E5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 00:47:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b9XBg0n5Lz2xHZ;
-	Mon,  2 Jun 2025 08:46:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b9XBl6jy4z30HB;
+	Mon,  2 Jun 2025 08:46:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748817963;
-	cv=none; b=CO/hVPSx2a0RwVEEpIDnXthG2rO0l4uaJb7IPVrGEhUYTIEnhcXo5WbJuX4Akvcll/8tDhl+Ix1GNegTT5zGM0Z45D48L+EB2pYwygpHmsZHI9tMkf+dtpuGif1bTk/YXIEcOr8gnwOJpEK53aYWbt3+E4nf3zqSHW6HijVrDgaTL05+qdOmWIURCee3IT1KX8OjVzp9/4ORr3hyaDj6Jmmion60FC2+hbpjVFNX6d4jxEn1/JXiuS/3qtKUTNEIWtXIYCldqzfsia37l85l6vMee5asJDbBdileh5zdU5fy1Wa3TMiTVqmT0S4b/85NQYIASJzU5gmD7OIxT3gqGA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748817967;
+	cv=none; b=aIfl64wb02+JvvFhq+P5a3pH2INpxmdgPedCDHbVG2su0XIiNazLIXhR4IvUw8T5IJ2JJn6U6fvFqw4zIvrAd/nwd5lyLR+gFgLvu4UGVs2oSFzMWew5oXG5iphU8XkHKywOnMiy0aPFwIYH+Yub1j3L5uaG3+GgODv65Iv37+gzaNWUf9mhmNbBtdcNevXfCyQLg6KJLw6sRF4z1s5nCaSuXLiD+8JA16KFEKn7xK+6GN3RjQJROVX5s3l5aSJoo4XnjWM1rkYYoND8MbcRE8SGcl6NWdsou8TjM2RlW3TZcs9ydZwoqFHq/F0KNbEY2hKEL5Iq3X1pMcwR4yDH7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748817963; c=relaxed/relaxed;
-	bh=Uia979nh9IrO+aQglwNpbSH7l653Eq6iVC5TFptwaDc=;
+	t=1748817967; c=relaxed/relaxed;
+	bh=KL5UzL2ZQ7szfAJe6QAjM2o69rUVoTqazgaXEd38KBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KsQAQ9KeiIVS9pqawKaZQBxX8RtN3aDuF6p4QBSqMvlFYB5pec3bOEqvjlI8Ax6IqbMWCIuFSPcjyBB5WQqLXr0IwJ8e2xNdqPcPlDHscvP6YCqJ1yf1REHm/J4dPs9PLZUFwXfwC6l6SrOFb6hSOWMCyjsEC8r61t9P/+HYJuTohCVj0c0zIX37BucrprUBMOHMe9emcu30RtZcAvGl0XfWpaR7jNwNiKzUfv5vtM+vtI4gzAXM/+mGjnt7EF53pBTAU2x+K3EDUfn7F+hHZrezEUH3Z39dfRQeTc8l68tglMfJ78WsCbSVdO4pBL4x4jS4vfX2/yy/3WOAXVXSmA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zn1ngrvi; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=dWibzLN97JIGjJ8VoOMtqlykxseC1Wd7HgMgB78J3cgqHHdi4CvDLJZOGo6q4dLer0m312G41IP37CRk5prgxs+5vEuQ8H5Rimr9yf/M7/Kcodiib5lOlK3SpKZ3yPDj7TMDLBnwpbOPSjqvJKq41T48JSq5IeNEtvujWGSl909U4qmLfCNqhbM5y7UkhicG6iNaLB1X3OxROVGfnaZNarJf5M1UeaBNDlN0A1Ch686Yb9n8BrNru6DVkMapw4KuSfK5kBHNq2vKINv46LhAY0+JcpPhvXOZCPjwdfWRzlPSjyyzGLNm1Y0T9GWu5uc1f2Z7LG6ozihnfUjUaniLGA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SkcxPLic; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zn1ngrvi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SkcxPLic;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b9XBb5FfKz2xGv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Jun 2025 08:45:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b9XBd2cf1z2yZS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Jun 2025 08:46:00 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id C24BCA4EED3;
-	Sun,  1 Jun 2025 22:45:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C14AC4CEF3;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5299A60EDF;
+	Sun,  1 Jun 2025 22:45:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9758AC4CEF2;
 	Sun,  1 Jun 2025 22:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748817957;
-	bh=apKGde3VrZfQelJPg198iFKP+frhjwkkcGBF4f9uuBU=;
+	s=k20201202; t=1748817958;
+	bh=SXwip4eijDXULIBpid24Mjyf9ZlXG+23/x0n84S5DAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zn1ngrvibz2nkinD2PEEbiJAzT/lFfENVLFa/KQveCqdfEdnd0LNqEHp1YsV2Tpab
-	 l1tIAoLh4EkWGv2pnHwWdbpFO0M+dewFCrtd7LjIhfBn5dI74xg3dyGUvNq4vCJxGC
-	 FpbEjQus9K/L1HVXHA1zAjwWWafUYsmUWv+CihYUpDXp1JmqxKIjMoKUaWdNknUGQP
-	 +3QhNRmQOb3F6RBhkO4xhbkae7c5y7ACq3ir0zqlg2qipWGqyD2kfcoDvd1J9L3ul5
-	 DsZnfo+4xcVTRfOZkyD0T0W1xMq+5AjdKylLJoTZk+pjAHcGDsSJYL6FIOChhzBtDW
-	 2hb95ofQgtrgQ==
+	b=SkcxPLiceM33E7E96La+Jj3NmG09ByoGJwAyDmGTHuuoMFKvExCxns2BraB9NC4px
+	 edHT+i+zdVvE0NC6Kr+pxdYF/3AKCj71SQb0LFyU2SLf9Fmgn3MsDYx2+IfPzo9lJN
+	 q+lXZVn5BZKTFwywGqXTm1Q5iWMP+MNAViCdl+DD0DngiCHV6W85iA7D9XT4B0bIwf
+	 OatYgBTRIzW4ynuA09ap11PYHKXQ5ANged2/+MJzxs6ywXaAsmBdOivRxVBHtERHI/
+	 aif6vRW8+rXKwFkn70nVDS76Q+7gxsvTiNEPMFoFuRydXmrbL2BTE16BcwhR7QAhiq
+	 +aquta5JE/QNA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-crypto@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-crypto@vger.kernel.org,
 	Ard Biesheuvel <ardb@kernel.org>,
 	"Jason A . Donenfeld " <Jason@zx2c4.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 08/13] lib/crc/mips: migrate mips-optimized CRC code into lib/crc/
-Date: Sun,  1 Jun 2025 15:44:36 -0700
-Message-ID: <20250601224441.778374-9-ebiggers@kernel.org>
+Subject: [PATCH 09/13] lib/crc/powerpc: migrate powerpc-optimized CRC code into lib/crc/
+Date: Sun,  1 Jun 2025 15:44:37 -0700
+Message-ID: <20250601224441.778374-10-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250601224441.778374-1-ebiggers@kernel.org>
 References: <20250601224441.778374-1-ebiggers@kernel.org>
@@ -78,167 +78,280 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-Move the mips-optimized CRC code from arch/mips/lib/crc* into its new
-location in lib/crc/mips/, and wire it up in the new way.  For a
+Move the powerpc-optimized CRC code from arch/powerpc/lib/crc* into its
+new location in lib/crc/powerpc/, and wire it up in the new way.  For a
 detailed explanation of why this change is being made, see the commit
 that introduced the new way of integrating arch-specific code into
 lib/crc/.
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/mips/Kconfig                             |  1 -
- arch/mips/lib/Makefile                        |  2 --
- lib/crc/Kconfig                               |  1 +
- .../lib/crc32-mips.c => lib/crc/mips/crc32.h  | 35 ++++---------------
- 4 files changed, 8 insertions(+), 31 deletions(-)
- rename arch/mips/lib/crc32-mips.c => lib/crc/mips/crc32.h (82%)
+ arch/powerpc/Kconfig                          |  2 --
+ arch/powerpc/lib/Makefile                     |  6 ----
+ lib/crc/Kconfig                               |  2 ++
+ lib/crc/Makefile                              |  2 ++
+ .../crc/powerpc/crc-t10dif.h                  | 20 ++---------
+ .../crc/powerpc}/crc-vpmsum-template.S        |  0
+ .../lib/crc32.c => lib/crc/powerpc/crc32.h    | 36 +++----------------
+ .../crc/powerpc}/crc32c-vpmsum_asm.S          |  0
+ .../crc/powerpc}/crct10dif-vpmsum_asm.S       |  0
+ 9 files changed, 12 insertions(+), 56 deletions(-)
+ rename arch/powerpc/lib/crc-t10dif.c => lib/crc/powerpc/crc-t10dif.h (75%)
+ rename {arch/powerpc/lib => lib/crc/powerpc}/crc-vpmsum-template.S (100%)
+ rename arch/powerpc/lib/crc32.c => lib/crc/powerpc/crc32.h (64%)
+ rename {arch/powerpc/lib => lib/crc/powerpc}/crc32c-vpmsum_asm.S (100%)
+ rename {arch/powerpc/lib => lib/crc/powerpc}/crct10dif-vpmsum_asm.S (100%)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index fc0772c1bad4a..31d6975674fd6 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1995,11 +1995,10 @@ config CPU_MIPSR5
- 	select MIPS_SPRAM
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index c3e0cc83f1205..45b4fa7b9b02f 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -125,12 +125,10 @@ config PPC
+ 	select ARCH_DISABLE_KASAN_INLINE	if PPC_RADIX_MMU
+ 	select ARCH_DMA_DEFAULT_COHERENT	if !NOT_COHERENT_CACHE
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG
+ 	select ARCH_ENABLE_MEMORY_HOTREMOVE
+ 	select ARCH_HAS_COPY_MC			if PPC64
+-	select ARCH_HAS_CRC32			if PPC64 && ALTIVEC
+-	select ARCH_HAS_CRC_T10DIF		if PPC64 && ALTIVEC
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+ 	select ARCH_HAS_DEBUG_WX		if STRICT_KERNEL_RWX
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 481f968e42c7b..59de2e2232df6 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -78,12 +78,6 @@ obj-$(CONFIG_FTR_FIXUP_SELFTEST) += feature-fixups-test.o
+ obj-$(CONFIG_ALTIVEC)	+= xor_vmx.o xor_vmx_glue.o
+ CFLAGS_xor_vmx.o += -mhard-float -maltivec $(call cc-option,-mabi=altivec)
+ # Enable <altivec.h>
+ CFLAGS_xor_vmx.o += -isystem $(shell $(CC) -print-file-name=include)
  
- config CPU_MIPSR6
- 	bool
- 	default y if CPU_MIPS32_R6 || CPU_MIPS64_R6
--	select ARCH_HAS_CRC32
- 	select CPU_HAS_RIXI
- 	select CPU_HAS_DIEI if !CPU_DIEI_BROKEN
- 	select HAVE_ARCH_BITREVERSE
- 	select MIPS_ASID_BITS_VARIABLE
- 	select MIPS_SPRAM
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index 9d75845ef78e1..8c40ffb09c420 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -14,9 +14,7 @@ obj-$(CONFIG_PCI)	+= iomap-pci.o
- lib-$(CONFIG_GENERIC_CSUM)	:= $(filter-out csum_partial.o, $(lib-y))
- 
- obj-$(CONFIG_CPU_GENERIC_DUMP_TLB) += dump_tlb.o
- obj-$(CONFIG_CPU_R3000)		+= r3k_dump_tlb.o
- 
--obj-$(CONFIG_CRC32_ARCH)	+= crc32-mips.o
+-obj-$(CONFIG_CRC32_ARCH) += crc32-powerpc.o
+-crc32-powerpc-y := crc32.o crc32c-vpmsum_asm.o
 -
- # libgcc-style stuff needed in the kernel
- obj-y += bswapsi.o bswapdi.o multi3.o
+-obj-$(CONFIG_CRC_T10DIF_ARCH) += crc-t10dif-powerpc.o
+-crc-t10dif-powerpc-y := crc-t10dif.o crct10dif-vpmsum_asm.o
+-
+ obj-$(CONFIG_PPC64) += $(obj64-y)
 diff --git a/lib/crc/Kconfig b/lib/crc/Kconfig
-index ee320ae19ca85..2d99aab4f838d 100644
+index 2d99aab4f838d..06611610e478f 100644
 --- a/lib/crc/Kconfig
 +++ b/lib/crc/Kconfig
-@@ -64,10 +64,11 @@ config CRC32_ARCH
+@@ -50,10 +50,11 @@ config ARCH_HAS_CRC_T10DIF
+ config CRC_T10DIF_ARCH
  	bool
+ 	depends on CRC_T10DIF && CRC_OPTIMIZATIONS
+ 	default y if ARM && KERNEL_MODE_NEON
+ 	default y if ARM64 && KERNEL_MODE_NEON
++	default y if PPC64 && ALTIVEC
+ 
+ config CRC32
+ 	tristate
+ 	select BITREVERSE
+ 	help
+@@ -65,10 +66,11 @@ config CRC32_ARCH
  	depends on CRC32 && CRC_OPTIMIZATIONS
  	default y if ARM && KERNEL_MODE_NEON
  	default y if ARM64
  	default y if LOONGARCH
-+	default y if MIPS && CPU_MIPSR6
+ 	default y if MIPS && CPU_MIPSR6
++	default y if PPC64 && ALTIVEC
  
  config CRC64
  	tristate
  	help
  	  The CRC64 library functions.  Select this if your module uses any of
-diff --git a/arch/mips/lib/crc32-mips.c b/lib/crc/mips/crc32.h
-similarity index 82%
-rename from arch/mips/lib/crc32-mips.c
-rename to lib/crc/mips/crc32.h
-index 45e4d2c9fbf54..aa7f3228b7db3 100644
---- a/arch/mips/lib/crc32-mips.c
-+++ b/lib/crc/mips/crc32.h
-@@ -7,14 +7,10 @@
-  * Copyright (C) 2014 Linaro Ltd <yazen.ghannam@linaro.org>
-  * Copyright (C) 2018 MIPS Tech, LLC
+diff --git a/lib/crc/Makefile b/lib/crc/Makefile
+index 822d18b57b432..f9109b71c1264 100644
+--- a/lib/crc/Makefile
++++ b/lib/crc/Makefile
+@@ -14,17 +14,19 @@ obj-$(CONFIG_CRC_ITU_T) += crc-itu-t.o
+ obj-$(CONFIG_CRC_T10DIF) += crc-t10dif.o
+ crc-t10dif-y := crc-t10dif-main.o
+ ifeq ($(CONFIG_CRC_T10DIF_ARCH),y)
+ crc-t10dif-$(CONFIG_ARM) += arm/crc-t10dif-core.o
+ crc-t10dif-$(CONFIG_ARM64) += arm64/crc-t10dif-core.o
++crc-t10dif-$(CONFIG_PPC) += powerpc/crct10dif-vpmsum_asm.o
+ endif
+ 
+ obj-$(CONFIG_CRC32) += crc32.o
+ crc32-y := crc32-main.o
+ ifeq ($(CONFIG_CRC32_ARCH),y)
+ crc32-$(CONFIG_ARM) += arm/crc32-core.o
+ crc32-$(CONFIG_ARM64) += arm64/crc32-core.o
++crc32-$(CONFIG_PPC) += powerpc/crc32c-vpmsum_asm.o
+ endif
+ 
+ obj-$(CONFIG_CRC64) += crc64.o
+ crc64-y := crc64-main.o
+ ifeq ($(CONFIG_CRC64_ARCH),y)
+diff --git a/arch/powerpc/lib/crc-t10dif.c b/lib/crc/powerpc/crc-t10dif.h
+similarity index 75%
+rename from arch/powerpc/lib/crc-t10dif.c
+rename to lib/crc/powerpc/crc-t10dif.h
+index be23ded3a9df6..59e16804a6eae 100644
+--- a/arch/powerpc/lib/crc-t10dif.c
++++ b/lib/crc/powerpc/crc-t10dif.h
+@@ -7,14 +7,11 @@
   */
  
+ #include <asm/switch_to.h>
+ #include <crypto/internal/simd.h>
  #include <linux/cpufeature.h>
--#include <linux/crc32.h>
--#include <linux/init.h>
+-#include <linux/crc-t10dif.h>
+ #include <linux/jump_label.h>
 -#include <linux/kernel.h>
 -#include <linux/module.h>
- #include <asm/mipsregs.h>
- #include <linux/unaligned.h>
+ #include <linux/preempt.h>
+ #include <linux/uaccess.h>
  
- #ifndef TOOLCHAIN_SUPPORTS_CRC
- #define _ASM_SET_CRC(OP, SZ, TYPE)					  \
-@@ -62,11 +58,12 @@ do {							\
- #define CRC32C(crc, value, size) \
- 	_CRC32(crc, value, size, crc32c)
+ #define VMX_ALIGN		16
+ #define VMX_ALIGN_MASK		(VMX_ALIGN-1)
+@@ -23,11 +20,11 @@
  
- static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_crc32);
+ static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_vec_crypto);
  
--u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
-+#define crc32_le_arch crc32_le_arch
-+static inline u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
+ u32 __crct10dif_vpmsum(u32 crc, unsigned char const *p, size_t len);
+ 
+-u16 crc_t10dif_arch(u16 crci, const u8 *p, size_t len)
++static inline u16 crc_t10dif_arch(u16 crci, const u8 *p, size_t len)
  {
- 	if (!static_branch_likely(&have_crc32))
- 		return crc32_le_base(crc, p, len);
+ 	unsigned int prealign;
+ 	unsigned int tail;
+ 	u32 crc = crci;
  
- 	if (IS_ENABLED(CONFIG_64BIT)) {
-@@ -104,13 +101,13 @@ u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
- 		CRC32(crc, value, b);
+@@ -60,24 +57,13 @@ u16 crc_t10dif_arch(u16 crci, const u8 *p, size_t len)
+ 		crc = crc_t10dif_generic(crc, p, tail);
  	}
  
- 	return crc;
+ 	return crc & 0xffff;
  }
--EXPORT_SYMBOL(crc32_le_arch);
+-EXPORT_SYMBOL(crc_t10dif_arch);
  
+-static int __init crc_t10dif_powerpc_init(void)
++#define crc_t10dif_mod_init_arch crc_t10dif_mod_init_arch
++static inline void crc_t10dif_mod_init_arch(void)
+ {
+ 	if (cpu_has_feature(CPU_FTR_ARCH_207S) &&
+ 	    (cur_cpu_spec->cpu_user_features2 & PPC_FEATURE2_VEC_CRYPTO))
+ 		static_branch_enable(&have_vec_crypto);
+-	return 0;
+ }
+-subsys_initcall(crc_t10dif_powerpc_init);
+-
+-static void __exit crc_t10dif_powerpc_exit(void)
+-{
+-}
+-module_exit(crc_t10dif_powerpc_exit);
+-
+-MODULE_AUTHOR("Daniel Axtens <dja@axtens.net>");
+-MODULE_DESCRIPTION("CRCT10DIF using vector polynomial multiply-sum instructions");
+-MODULE_LICENSE("GPL");
+diff --git a/arch/powerpc/lib/crc-vpmsum-template.S b/lib/crc/powerpc/crc-vpmsum-template.S
+similarity index 100%
+rename from arch/powerpc/lib/crc-vpmsum-template.S
+rename to lib/crc/powerpc/crc-vpmsum-template.S
+diff --git a/arch/powerpc/lib/crc32.c b/lib/crc/powerpc/crc32.h
+similarity index 64%
+rename from arch/powerpc/lib/crc32.c
+rename to lib/crc/powerpc/crc32.h
+index 0d9befb6e7b83..0dceb04d0ee94 100644
+--- a/arch/powerpc/lib/crc32.c
++++ b/lib/crc/powerpc/crc32.h
+@@ -1,13 +1,10 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include <asm/switch_to.h>
+ #include <crypto/internal/simd.h>
+ #include <linux/cpufeature.h>
+-#include <linux/crc32.h>
+ #include <linux/jump_label.h>
+-#include <linux/kernel.h>
+-#include <linux/module.h>
+ #include <linux/preempt.h>
+ #include <linux/uaccess.h>
+ 
+ #define VMX_ALIGN		16
+ #define VMX_ALIGN_MASK		(VMX_ALIGN-1)
+@@ -16,17 +13,12 @@
+ 
+ static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_vec_crypto);
+ 
+ u32 __crc32c_vpmsum(u32 crc, const u8 *p, size_t len);
+ 
+-u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
+-{
+-	return crc32_le_base(crc, p, len);
+-}
+-EXPORT_SYMBOL(crc32_le_arch);
+-
 -u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
 +#define crc32c_arch crc32c_arch
 +static inline u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
  {
- 	if (!static_branch_likely(&have_crc32))
- 		return crc32c_base(crc, p, len);
+ 	unsigned int prealign;
+ 	unsigned int tail;
  
- 	if (IS_ENABLED(CONFIG_64BIT)) {
-@@ -147,37 +144,19 @@ u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
- 
- 		CRC32C(crc, value, b);
+ 	if (len < (VECTOR_BREAKPOINT + VMX_ALIGN) ||
+@@ -56,38 +48,20 @@ u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
+ 		crc = crc32c_base(crc, p, tail);
  	}
+ 
  	return crc;
  }
 -EXPORT_SYMBOL(crc32c_arch);
- 
+-
 -u32 crc32_be_arch(u32 crc, const u8 *p, size_t len)
 -{
 -	return crc32_be_base(crc, p, len);
 -}
 -EXPORT_SYMBOL(crc32_be_arch);
--
--static int __init crc32_mips_init(void)
+ 
+-static int __init crc32_powerpc_init(void)
 +#define crc32_mod_init_arch crc32_mod_init_arch
 +static inline void crc32_mod_init_arch(void)
  {
- 	if (cpu_have_feature(cpu_feature(MIPS_CRC32)))
- 		static_branch_enable(&have_crc32);
+ 	if (cpu_has_feature(CPU_FTR_ARCH_207S) &&
+ 	    (cur_cpu_spec->cpu_user_features2 & PPC_FEATURE2_VEC_CRYPTO))
+ 		static_branch_enable(&have_vec_crypto);
 -	return 0;
  }
--subsys_initcall(crc32_mips_init);
+-subsys_initcall(crc32_powerpc_init);
  
--static void __exit crc32_mips_exit(void)
+-static void __exit crc32_powerpc_exit(void)
 -{
 -}
--module_exit(crc32_mips_exit);
+-module_exit(crc32_powerpc_exit);
 -
 -u32 crc32_optimizations(void)
 +static inline u32 crc32_optimizations_arch(void)
  {
- 	if (static_key_enabled(&have_crc32))
- 		return CRC32_LE_OPTIMIZATION | CRC32C_OPTIMIZATION;
+ 	if (static_key_enabled(&have_vec_crypto))
+ 		return CRC32C_OPTIMIZATION;
  	return 0;
  }
 -EXPORT_SYMBOL(crc32_optimizations);
 -
--MODULE_AUTHOR("Marcin Nowakowski <marcin.nowakowski@mips.com");
--MODULE_DESCRIPTION("CRC32 and CRC32C using optional MIPS instructions");
--MODULE_LICENSE("GPL v2");
+-MODULE_AUTHOR("Anton Blanchard <anton@samba.org>");
+-MODULE_DESCRIPTION("CRC32C using vector polynomial multiply-sum instructions");
+-MODULE_LICENSE("GPL");
+diff --git a/arch/powerpc/lib/crc32c-vpmsum_asm.S b/lib/crc/powerpc/crc32c-vpmsum_asm.S
+similarity index 100%
+rename from arch/powerpc/lib/crc32c-vpmsum_asm.S
+rename to lib/crc/powerpc/crc32c-vpmsum_asm.S
+diff --git a/arch/powerpc/lib/crct10dif-vpmsum_asm.S b/lib/crc/powerpc/crct10dif-vpmsum_asm.S
+similarity index 100%
+rename from arch/powerpc/lib/crct10dif-vpmsum_asm.S
+rename to lib/crc/powerpc/crct10dif-vpmsum_asm.S
 -- 
 2.49.0
 
