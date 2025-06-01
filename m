@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-9063-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9064-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF6AACA0E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 00:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 165C8ACA0E3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 00:47:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b9XBk23gpz30DP;
-	Mon,  2 Jun 2025 08:46:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b9XBl6Sjxz2yZ6;
+	Mon,  2 Jun 2025 08:46:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748817966;
-	cv=none; b=Sp8wLT/MMYEL8WIfhT4tTASPoCOMvW72OSEi13R6VqEhmCQiU+ZeMhbr8d9MWMS9cu7IUgzd7aJWE2V6GY93m3ehDi8CF8aSQ3eGagNiIxkFnVBrW6p0X2Bp9Rzu+DSaDapKHB9m34bZdBqPGdZ1qcicN9VYimOkvzFuky+n9f+LUEZq6QQ+RUOPvPQS2xRObYxb0RJxryN+WuG2TxeaVGr5w9AwMSXZYBKtnF3TqR1C8gpA2KDXZohXK1EWCbVxO5HZauG+almgAOl4qgvSMLrKGt97evzcaVydkb/HAA2JiVmRdcpHSg35AAvOQxBRav/5kJDHReS38BCTWhjc2g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748817967;
+	cv=none; b=WEC4AtWGpphEoscLkqOJjrJrI3AFUqQW6cYN/5Rw++qjqflHaJwu70xm1oUU5LVIeGez8HfHnAhxgDi6zH1snczBdUJX/RhA0xkt5wYipCx9EaOX3lbTiz6QCaTt81EkB11a1HLatxrLEOPvaizu884k+mE3yeIVvI5epceFHRxBqewo/xp6PvWn2TqhMCC2nHOJpB/b2tEgxdg6noJvweE6q2TK4c1UH262Hc1ajOjBMofI/JM83GWmOLr6Cp0sK1HZqUkM3cJ9/1Mmzk4zUUH6xio0hVfwOBIjO4fiZuAc2QQn7DTSFfo00CG89QjE3GDCUSvwPz/UToTku0HBrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748817966; c=relaxed/relaxed;
-	bh=csNIndt9aENb51+xxDNtIN72MtU29IkPht/ivzKvs2U=;
+	t=1748817967; c=relaxed/relaxed;
+	bh=05zXzcUbsGPXSKJkrgZE/DVrK80fMJi525eJ9cam7IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/5BMUEP4zrOXGrZf08DiJd9f5BcGv+5gRl09IcrySGw9fuw9b+MHzkTMKj/uVvld3zWJhpMtjXn7PSx7WQdsfFZQ5XpT9qbv0BYTZ2tKqnHjJMzrE/lU17fPnKk+NswcCVj9hAT6uRbEuV3cKZAxbYNRkaCShRZjmN6INuTBp0Cp0ag7FErnj7hS/5TY7QbDZkjsHYyDBbndd19a6D4TQeIn5kDbtozeIbKjfAU0GV6IneQHEAEhMCi+4o6VFmoj0Ngeb0lySgLGwE2gfFdyy806T2c2XS3RcMCSz+VNxwF+L8c8CtfQPBWaBG8w8efhWQt9mcPiq4sMPSNa8MTCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Mdw3TZwa; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=LacxhICD8Ev98JkF4vTkXpfDuFQmOrCGREqKeVcKjauJyXf67s5hbHyT4J/cP9RyCB5T8vZafurAVv9BajQF1mv87zmkrGyxcmpxFfCScEce/n3f0cP46TJPpBx5z1cDm5FnXDnUwec3JgB9zCYxEPVpbjfmYtHYCzDX8+hTdxgDn2WOMqqyufob8VyIc7FrK8wm9qNM9I5KuahNnQERCI/YO0LBuTs/qTSmvkUi4HCx898mlFybb6wFfl7OZt0L9bG2XKfrAR1WlOxT+bLVIj8wlaPO+Ie3RoP2Q96PTryS04IEZ5I0d8xJ+egvBKVz6GKBTNB80V2k0XWyF3royA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QD27px5Y; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Mdw3TZwa;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QD27px5Y;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b9XBd22KRz2yZ6
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b9XBf4rCDz2yhb
 	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Jun 2025 08:46:01 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6CF0B4A8AB;
+	by sea.source.kernel.org (Postfix) with ESMTP id DF1734A8E9;
 	Sun,  1 Jun 2025 22:45:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9938C4CEEE;
-	Sun,  1 Jun 2025 22:45:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515FCC113CF;
+	Sun,  1 Jun 2025 22:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1748817959;
-	bh=95cP740x9TPPdMrMRbzvOoF5hVV7Q6oui6O4DOa47nw=;
+	bh=UTN9XJ3QNZMywLZq7NN5DWhOFROMdgLy2Y339vtWDb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mdw3TZwasG6f4rAglr1W91xGPN+a4inpfdi2b0qnvd7sKuMz9nr1Dz+qGvhQhh6gh
-	 xPNU9z0LYQsyYV+JMiJan+IzMAWP4ZneVRqL8AzeD7GAv5eAoAOJ83DeAyF1As75RV
-	 USJO6+9kwlBew6TXngvXkWDl+9O/NyMuvI9riqJF6IWY+Dg4zSt5U4h80tHCB8I19W
-	 4eWjLZ7k/moC2/rWv0ODHhbCnbPubEirpTbZXddZEA5g65ZOi3RgPzzKFT+PE6OXyN
-	 wrry2sFGzXhj6iprl7KYKXJ7VY+Im19So2xVHQe8nBBBXsjSaPdriP8g2OPUQWqMxx
-	 cilq53LID01vg==
+	b=QD27px5Y0+vwJcrCeIbV55N71S4ZUr2XHWbP/XxCLtPJPhpG3ODiMR1LOk5H8cgoT
+	 5YQhq3ncwecKLxMzjM7LwH+dS1eCqaDl8vivncFNmMKvTLkZL9+NwKbTKOhhDZmat8
+	 UfMmERij63jXqXkITGzIOYws4XBcJkjANeGRIkfh1Koit5MfKuYDzLs7NwpcPimj5I
+	 WSiWiysCjb1r4ccuZQOGBIO9vYxSCCfmC8TlFFSbAHWh4BZeO16c3mCc2RwT3F15ss
+	 tWhCmu6DEoGr2sO5Pkw8yp9DkP2dvVlhEoPp/tH97ZmjyC8mvMAPzmBSfkBgpAWUpQ
+	 5whbFrzYkW5pQ==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-crypto@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-crypto@vger.kernel.org,
 	Ard Biesheuvel <ardb@kernel.org>,
 	"Jason A . Donenfeld " <Jason@zx2c4.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 11/13] lib/crc/s390: migrate s390-optimized CRC code into lib/s390/
-Date: Sun,  1 Jun 2025 15:44:39 -0700
-Message-ID: <20250601224441.778374-12-ebiggers@kernel.org>
+Subject: [PATCH 12/13] lib/crc/sparc: migrate sparc-optimized CRC code into lib/crc/
+Date: Sun,  1 Jun 2025 15:44:40 -0700
+Message-ID: <20250601224441.778374-13-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250601224441.778374-1-ebiggers@kernel.org>
 References: <20250601224441.778374-1-ebiggers@kernel.org>
@@ -85,170 +85,177 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-Move the s390-optimized CRC code from arch/s390/lib/crc* into its new
-location in lib/crc/s390/, and wire it up in the new way.  For a
+Move the sparc-optimized CRC code from arch/sparc/lib/crc* into its new
+location in lib/crc/sparc/, and wire it up in the new way.  For a
 detailed explanation of why this change is being made, see the commit
 that introduced the new way of integrating arch-specific code into
 lib/crc/.
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/s390/Kconfig                             |  1 -
- arch/s390/lib/Makefile                        |  3 ---
+ arch/sparc/Kconfig                            |  1 -
+ arch/sparc/lib/Makefile                       |  2 -
  lib/crc/Kconfig                               |  1 +
  lib/crc/Makefile                              |  1 +
- {arch/s390/lib => lib/crc/s390}/crc32-vx.h    |  0
- arch/s390/lib/crc32.c => lib/crc/s390/crc32.h | 19 ++++++-------------
- {arch/s390/lib => lib/crc/s390}/crc32be-vx.c  |  0
- {arch/s390/lib => lib/crc/s390}/crc32le-vx.c  |  0
- 8 files changed, 8 insertions(+), 17 deletions(-)
- rename {arch/s390/lib => lib/crc/s390}/crc32-vx.h (100%)
- rename arch/s390/lib/crc32.c => lib/crc/s390/crc32.h (81%)
- rename {arch/s390/lib => lib/crc/s390}/crc32be-vx.c (100%)
- rename {arch/s390/lib => lib/crc/s390}/crc32le-vx.c (100%)
+ .../lib/crc32.c => lib/crc/sparc/crc32.h      | 40 ++++---------------
+ .../sparc/lib => lib/crc/sparc}/crc32c_asm.S  |  0
+ 6 files changed, 9 insertions(+), 36 deletions(-)
+ rename arch/sparc/lib/crc32.c => lib/crc/sparc/crc32.h (62%)
+ rename {arch/sparc/lib => lib/crc/sparc}/crc32c_asm.S (100%)
 
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 0c16dc443e2f6..22b90f6aa1a09 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -73,11 +73,10 @@ config S390
- 	select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
- 	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE
- 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
- 	select ARCH_HAS_CPU_FINALIZE_INIT
+diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+index 0f88123925a4f..dcfdb7f1dae97 100644
+--- a/arch/sparc/Kconfig
++++ b/arch/sparc/Kconfig
+@@ -108,11 +108,10 @@ config SPARC64
+ 	select ARCH_HAS_GIGANTIC_PAGE
+ 	select HAVE_SOFTIRQ_ON_OWN_STACK
+ 	select HAVE_SETUP_PER_CPU_AREA
+ 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+ 	select NEED_PER_CPU_PAGE_FIRST_CHUNK
 -	select ARCH_HAS_CRC32
- 	select ARCH_HAS_CURRENT_STACK_POINTER
- 	select ARCH_HAS_DEBUG_VIRTUAL
- 	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DEBUG_WX
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
-diff --git a/arch/s390/lib/Makefile b/arch/s390/lib/Makefile
-index cd35cdbfa8713..7c8583d46eca1 100644
---- a/arch/s390/lib/Makefile
-+++ b/arch/s390/lib/Makefile
-@@ -23,8 +23,5 @@ obj-$(CONFIG_S390_MODULES_SANITY_TEST) += test_modules.o
- obj-$(CONFIG_S390_MODULES_SANITY_TEST_HELPERS) += test_modules_helpers.o
  
- lib-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
+ config ARCH_PROC_KCORE_TEXT
+ 	def_bool y
  
- obj-$(CONFIG_EXPOLINE_EXTERN) += expoline.o
--
--obj-$(CONFIG_CRC32_ARCH) += crc32-s390.o
--crc32-s390-y := crc32.o crc32le-vx.o crc32be-vx.o
+ config CPU_BIG_ENDIAN
+diff --git a/arch/sparc/lib/Makefile b/arch/sparc/lib/Makefile
+index 5cf9781d68b40..2d6c3c5352734 100644
+--- a/arch/sparc/lib/Makefile
++++ b/arch/sparc/lib/Makefile
+@@ -52,7 +52,5 @@ lib-$(CONFIG_SPARC64) += copy_in_user.o memmove.o
+ lib-$(CONFIG_SPARC64) += mcount.o ipcsum.o xor.o hweight.o ffs.o
+ 
+ obj-$(CONFIG_SPARC64) += iomap.o
+ obj-$(CONFIG_SPARC32) += atomic32.o
+ obj-$(CONFIG_SPARC64) += PeeCeeI.o
+-obj-$(CONFIG_CRC32_ARCH) += crc32-sparc.o
+-crc32-sparc-y := crc32.o crc32c_asm.o
 diff --git a/lib/crc/Kconfig b/lib/crc/Kconfig
-index 4044e08cb9739..1ed6e11bef909 100644
+index 1ed6e11bef909..c0b36d03b66dc 100644
 --- a/lib/crc/Kconfig
 +++ b/lib/crc/Kconfig
-@@ -69,10 +69,11 @@ config CRC32_ARCH
- 	default y if ARM64
+@@ -70,10 +70,11 @@ config CRC32_ARCH
  	default y if LOONGARCH
  	default y if MIPS && CPU_MIPSR6
  	default y if PPC64 && ALTIVEC
  	default y if RISCV && RISCV_ISA_ZBC
-+	default y if S390
+ 	default y if S390
++	default y if SPARC64
  
  config CRC64
  	tristate
  	help
  	  The CRC64 library functions.  Select this if your module uses any of
 diff --git a/lib/crc/Makefile b/lib/crc/Makefile
-index e46b35a2ffc04..1b83262b6987f 100644
+index 1b83262b6987f..37dd4a776d1b4 100644
 --- a/lib/crc/Makefile
 +++ b/lib/crc/Makefile
-@@ -25,10 +25,11 @@ crc32-y := crc32-main.o
- ifeq ($(CONFIG_CRC32_ARCH),y)
+@@ -26,10 +26,11 @@ ifeq ($(CONFIG_CRC32_ARCH),y)
  crc32-$(CONFIG_ARM) += arm/crc32-core.o
  crc32-$(CONFIG_ARM64) += arm64/crc32-core.o
  crc32-$(CONFIG_PPC) += powerpc/crc32c-vpmsum_asm.o
  crc32-$(CONFIG_RISCV) += riscv/crc32_lsb.o riscv/crc32_msb.o
-+crc32-$(CONFIG_S390) += s390/crc32le-vx.o s390/crc32be-vx.o
+ crc32-$(CONFIG_S390) += s390/crc32le-vx.o s390/crc32be-vx.o
++crc32-$(CONFIG_SPARC) += sparc/crc32c_asm.o
  endif
  
  obj-$(CONFIG_CRC64) += crc64.o
  crc64-y := crc64-main.o
  ifeq ($(CONFIG_CRC64_ARCH),y)
-diff --git a/arch/s390/lib/crc32-vx.h b/lib/crc/s390/crc32-vx.h
-similarity index 100%
-rename from arch/s390/lib/crc32-vx.h
-rename to lib/crc/s390/crc32-vx.h
-diff --git a/arch/s390/lib/crc32.c b/lib/crc/s390/crc32.h
-similarity index 81%
-rename from arch/s390/lib/crc32.c
-rename to lib/crc/s390/crc32.h
-index 3c4b344417c11..8dbb07b9ea64c 100644
---- a/arch/s390/lib/crc32.c
-+++ b/lib/crc/s390/crc32.h
-@@ -3,16 +3,12 @@
-  * CRC-32 implemented with the z/Architecture Vector Extension Facility.
-  *
-  * Copyright IBM Corp. 2015
-  * Author(s): Hendrik Brueckner <brueckner@linux.vnet.ibm.com>
+diff --git a/arch/sparc/lib/crc32.c b/lib/crc/sparc/crc32.h
+similarity index 62%
+rename from arch/sparc/lib/crc32.c
+rename to lib/crc/sparc/crc32.h
+index 40d4720a42a1b..43d52e60b2960 100644
+--- a/arch/sparc/lib/crc32.c
++++ b/lib/crc/sparc/crc32.h
+@@ -8,28 +8,19 @@
+  *          Kent Liu <kent.liu@intel.com>
   */
--#define KMSG_COMPONENT	"crc32-vx"
--#define pr_fmt(fmt)	KMSG_COMPONENT ": " fmt
  
+ #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
+ 
+-#include <linux/init.h>
 -#include <linux/module.h>
- #include <linux/cpufeature.h>
+-#include <linux/kernel.h>
 -#include <linux/crc32.h>
- #include <asm/fpu.h>
- #include "crc32-vx.h"
+ #include <asm/pstate.h>
+ #include <asm/elf.h>
  
- #define VX_MIN_LEN		64
- #define VX_ALIGNMENT		16L
-@@ -25,11 +21,11 @@
-  * on the message buffer, the hardware-accelerated or software implementation
-  * is used.   Note that the message buffer is aligned to improve fetch
-  * operations of VECTOR LOAD MULTIPLE instructions.
-  */
- #define DEFINE_CRC32_VX(___fname, ___crc32_vx, ___crc32_sw)		    \
--	u32 ___fname(u32 crc, const u8 *data, size_t datalen)		    \
-+	static inline u32 ___fname(u32 crc, const u8 *data, size_t datalen) \
- 	{								    \
- 		unsigned long prealign, aligned, remaining;		    \
- 		DECLARE_KERNEL_FPU_ONSTACK16(vxstate);			    \
- 									    \
- 		if (datalen < VX_MIN_LEN + VX_ALIGN_MASK || !cpu_has_vx())  \
-@@ -52,26 +48,23 @@
- 									    \
- 		if (remaining)						    \
- 			crc = ___crc32_sw(crc, data + aligned, remaining);  \
- 									    \
- 		return crc;						    \
--	}								    \
--	EXPORT_SYMBOL(___fname);
-+	}
+ static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_crc32c_opcode);
  
-+#define crc32_le_arch crc32_le_arch
-+#define crc32_be_arch crc32_be_arch
+-u32 crc32_le_arch(u32 crc, const u8 *data, size_t len)
+-{
+-	return crc32_le_base(crc, data, len);
+-}
+-EXPORT_SYMBOL(crc32_le_arch);
+-
+ void crc32c_sparc64(u32 *crcp, const u64 *data, size_t len);
+ 
+-u32 crc32c_arch(u32 crc, const u8 *data, size_t len)
 +#define crc32c_arch crc32c_arch
- DEFINE_CRC32_VX(crc32_le_arch, crc32_le_vgfm_16, crc32_le_base)
- DEFINE_CRC32_VX(crc32_be_arch, crc32_be_vgfm_16, crc32_be_base)
- DEFINE_CRC32_VX(crc32c_arch, crc32c_le_vgfm_16, crc32c_base)
++static inline u32 crc32c_arch(u32 crc, const u8 *data, size_t len)
+ {
+ 	size_t n = -(uintptr_t)data & 7;
  
+ 	if (!static_branch_likely(&have_crc32c_opcode))
+ 		return crc32c_base(crc, data, len);
+@@ -49,45 +40,28 @@ u32 crc32c_arch(u32 crc, const u8 *data, size_t len)
+ 	}
+ 	if (len)
+ 		crc = crc32c_base(crc, data, len);
+ 	return crc;
+ }
+-EXPORT_SYMBOL(crc32c_arch);
+-
+-u32 crc32_be_arch(u32 crc, const u8 *data, size_t len)
+-{
+-	return crc32_be_base(crc, data, len);
+-}
+-EXPORT_SYMBOL(crc32_be_arch);
+ 
+-static int __init crc32_sparc_init(void)
++#define crc32_mod_init_arch crc32_mod_init_arch
++static inline void crc32_mod_init_arch(void)
+ {
+ 	unsigned long cfr;
+ 
+ 	if (!(sparc64_elf_hwcap & HWCAP_SPARC_CRYPTO))
+-		return 0;
++		return;
+ 
+ 	__asm__ __volatile__("rd %%asr26, %0" : "=r" (cfr));
+ 	if (!(cfr & CFR_CRC32C))
+-		return 0;
++		return;
+ 
+ 	static_branch_enable(&have_crc32c_opcode);
+ 	pr_info("Using sparc64 crc32c opcode optimized CRC32C implementation\n");
+-	return 0;
+ }
+-subsys_initcall(crc32_sparc_init);
+ 
+-static void __exit crc32_sparc_exit(void)
+-{
+-}
+-module_exit(crc32_sparc_exit);
+-
 -u32 crc32_optimizations(void)
 +static inline u32 crc32_optimizations_arch(void)
  {
- 	if (cpu_has_vx()) {
- 		return CRC32_LE_OPTIMIZATION |
- 		       CRC32_BE_OPTIMIZATION |
- 		       CRC32C_OPTIMIZATION;
- 	}
+ 	if (static_key_enabled(&have_crc32c_opcode))
+ 		return CRC32C_OPTIMIZATION;
  	return 0;
  }
 -EXPORT_SYMBOL(crc32_optimizations);
 -
--MODULE_AUTHOR("Hendrik Brueckner <brueckner@linux.vnet.ibm.com>");
--MODULE_DESCRIPTION("CRC-32 algorithms using z/Architecture Vector Extension Facility");
 -MODULE_LICENSE("GPL");
-diff --git a/arch/s390/lib/crc32be-vx.c b/lib/crc/s390/crc32be-vx.c
+-MODULE_DESCRIPTION("CRC32c (Castagnoli), sparc64 crc32c opcode accelerated");
+diff --git a/arch/sparc/lib/crc32c_asm.S b/lib/crc/sparc/crc32c_asm.S
 similarity index 100%
-rename from arch/s390/lib/crc32be-vx.c
-rename to lib/crc/s390/crc32be-vx.c
-diff --git a/arch/s390/lib/crc32le-vx.c b/lib/crc/s390/crc32le-vx.c
-similarity index 100%
-rename from arch/s390/lib/crc32le-vx.c
-rename to lib/crc/s390/crc32le-vx.c
+rename from arch/sparc/lib/crc32c_asm.S
+rename to lib/crc/sparc/crc32c_asm.S
 -- 
 2.49.0
 
