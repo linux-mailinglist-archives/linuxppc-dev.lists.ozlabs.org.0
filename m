@@ -1,62 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-9080-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9081-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64EFACB71D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 17:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C1CACB9B0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 18:33:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b9yMP2MSRz2y8l;
-	Tue,  3 Jun 2025 01:25:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b9zt25JRtz2y8l;
+	Tue,  3 Jun 2025 02:33:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:470:ea4a:1:5054:ff:fec7:86e4"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748877905;
-	cv=none; b=YTAF4V0qwMPSOOjUcvGG4m0zPcatgxMKnmnkr4ua0brz64/blegWe+0tKMleOi8EloIMTmj4e7YpnTNWOU5XSLWHGmlY0WezCZ45KNp+xueQqHQfNjUG6WlrgxkalGPZh6feNGUqTOYB1H553OqOqOLM363XBP65ILzDxNCydJzLWmOGlCt7OcJqgI7GydOG5DMR3FDIn5/j0EGgfnlkOeUFWdLyOfNEqkCTUgi85QUwQvbkOpjWY70JSl8A9Cb8nGElp/yuZyYeiOo0GWwluByhV3YkyZex2u/060QVvyRCq6vFJPdNxoRXYcVAZ4rXH0Yp++bZcbuQ71eypvAWKw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748881994;
+	cv=none; b=Mq9G+rJRdvCd1TssE7Z518HnOfpsCr0Ldb49/NslWRYK+45OI0iEbVrzUQjIiADdpH+Ute9Ba26igUv/kxaWqixuPgipELLTJKeTTyUcZoBPPW9pwSvIeIRKjShDBdOpVSFGpHwxDG5hV+dkkfjGsbfwjre1tE//zmJrMYnrxjCwmXspuUiE8q51GqM6uJ9FmvZVZbz2F11cpLeLx8l/ovr8+1KtFfkwccGXnzNzlOxNgoXn++4g6rHtwKpnyxAEZKWKKgqHHCqP5Gp/2ql1R4cQfHj9OkoBWZM9bpWgxmrwEi1Xp7wInVproAECWCvnEp33MVII96fdpbWIh3/53A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748877905; c=relaxed/relaxed;
-	bh=wg+7CJ80bXnmYz8m8LaLQp816Yk+yAblH0z8mCujKYo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=OQwV2t9TYNDl4cs7FantgsheioiLyYKyGFmx/4zCto5bL0d8uwQHqUF2Yx38wCTtSzLa9nPZ3apUtdQjiIpY2MFOkdu5gPafF28q+wTFhvEvjUFCI7jWUy/g4lUUlsK2gE8EiaearFe96mpNtN+m/78p2geIluSJ9PJQXy4YCTfcetoQ1rc5jkNZw5OphmxWI3FsGLNkeMkzNhyCY5xrnqGzUDUlsuY7Y0qhSv+HbfsbOU+VLtWYaW975Nj+x25ZUZrU1pcJdcE+KRGIle2dCpZsU/4XUwSyMn1/x1eHcmNCqCVsnbhW6Z5yukK0mRCSJ7jxSepGIYpdMHoVwxChEg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass (client-ip=2001:470:ea4a:1:5054:ff:fec7:86e4; helo=smtp.gentoo.org; envelope-from=sam@gentoo.org; receiver=lists.ozlabs.org) smtp.mailfrom=gentoo.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gentoo.org (client-ip=2001:470:ea4a:1:5054:ff:fec7:86e4; helo=smtp.gentoo.org; envelope-from=sam@gentoo.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 506 seconds by postgrey-1.37 at boromir; Tue, 03 Jun 2025 01:25:04 AEST
-Received: from smtp.gentoo.org (smtp.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
+	t=1748881994; c=relaxed/relaxed;
+	bh=rLjh6sHOnL206lmJn3H2qiQYYtgS7DPLuk3q6ye2PZ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PORcNe0cFxQb/IJ78G8zb/J55NzbF9qi5wN8mWCK1mBqgBCU4EWewmDowXT0/XJiv+2fbhaXDnrFn2VRQVNKZ0Up5bnLnqqaYPYJItPmF3Cht0EfnjOxwe0Uo63KFIlEsdGf82e3bNmWqi7by0utzRIU3WuxHilsgfEo/QWoIII+WGZIscV68C4vknZqYyfDixJ298OcDvSJnrTk7iBKrEMkuFHCshAOTtn3Nqo5dqxbY5pVISYNuxt06KSsvQ7pFv9b5+MOVMFBbC1iq9Ti+rtQi84HknvVhnCeeKm2JejKBVzN179H6ijm35u5h1+o/2o2qjThtAiUAfMGz9k4IA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m64HknKK; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m64HknKK;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b9yMN0zrvz2xfB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jun 2025 01:25:04 +1000 (AEST)
-Received: from mop.sam.mop (unknown [82.8.138.118])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sam)
-	by smtp.gentoo.org (Postfix) with ESMTPSA id A5F393412DE;
-	Mon, 02 Jun 2025 15:16:19 +0000 (UTC)
-From: Sam James <sam@gentoo.org>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,  linmag7@gmail.com,  Al
- Viro <viro@ftp.linux.org.uk>,  arnd@arndb.de,  chris@zankel.net,
-  dinguyen@kernel.org,  glaubitz@physik.fu-berlin.de,  ink@unseen.parts,
-  jcmvbkbc@gmail.com,  kees@kernel.org,  linux-alpha@vger.kernel.org,
-  linux-arm-kernel@lists.infradead.org,  linux-csky@vger.kernel.org,
-  linux-hexagon@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-m68k@lists.linux-m68k.org,  linux-mips@vger.kernel.org,
-  linux-openrisc@vger.kernel.org,  linux-parisc@vger.kernel.org,
-  linux-riscv@lists.infradead.org,  linux-s390@vger.kernel.org,
-  linux-sh@vger.kernel.org,  linux-snps-arc@lists.infradead.org,
-  linux-um@lists.infradead.org,  linuxppc-dev@lists.ozlabs.org,
-  loongarch@lists.linux.dev,  mattst88@gmail.com,  monstr@monstr.eu,
-  richard.henderson@linaro.org,  sparclinux@vger.kernel.org,
-  x86@kernel.org
-Subject: Re: [PATCH v2 1/1] mm: pgtable: fix pte_swp_exclusive
-In-Reply-To: <20250602041118.GA2675383@ZenIV>
-Organization: Gentoo
-References: <87cyfejafj.fsf@gentoo.org> <87v7rik020.fsf@gentoo.org>
-	<20250602041118.GA2675383@ZenIV>
-User-Agent: mu4e 1.12.9; emacs 31.0.50
-Date: Mon, 02 Jun 2025 16:16:14 +0100
-Message-ID: <878qma41j5.fsf@gentoo.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b9zt12pLhz2xRs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jun 2025 02:33:13 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1CF7F615F2;
+	Mon,  2 Jun 2025 16:33:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C620C4CEEE;
+	Mon,  2 Jun 2025 16:33:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748881989;
+	bh=LGwMZ23Ye1yiBNLdoBZUkgTCpcRIKyrLcW515NUCYWA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=m64HknKKkP2Q0voFIUj9QsKA8oBZjLvmvuNjmM9n1AJlkB1i+b0Y73mTIiv+JjuY5
+	 612fI1/JAY2sKLhk6/Cf28bqZ/HOqpysxgStQBZYqA1agiaDrrdtrfzHB0Zj5UJBR3
+	 /DMRtuZxfXxbuoU5Z+yLXNgnW8LtX4g1RQdlEsBH02pnholTRPNCKc+1JdOdGwt8bU
+	 KseFxedfEwAPZowGBYPC94MkNr9HJ1aEkFuWGUstREHxAkFikZLSp5Vo8J6J+4VLOr
+	 /QiW5SB6hMI5cDqYOB5+SKScQdPAYG35xDGFLMqj9pVvWZmJVFBlSncKdLvel4oU+M
+	 1iX5YJdN6wQ0g==
+From: Masahiro Yamada <masahiroy@kernel.org>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc: use always-y instead of extra-y in Makefiles
+Date: Tue,  3 Jun 2025 01:32:24 +0900
+Message-ID: <20250602163302.478765-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,40 +68,74 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Al Viro <viro@zeniv.linux.org.uk> writes:
+The extra-y syntax is planned for deprecation because it is similar
+to always-y.
 
-> On Sat, Apr 05, 2025 at 06:09:11PM +0100, Sam James wrote:
->> Sam James <sam@gentoo.org> writes:
->> 
->> > Lovely cleanup and a great suggestion from Al.
->> >
->> > Reviewed-by: Sam James <sam@gentoo.org>
->> >
->> > I'd suggest adding a:
->> > Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
->> 
->> Al, were you planning on taking this through your tree?
->
-> FWIW, I expected it to get sent to Linus as "please, run this
-> sed script before -rc1" kind of thing, script being something
-> like
->
-> sed -i -e 's/int pte_swp_exclusive/bool pte_swp_exclusive/' \
-> 	`git grep -l 'int pte_swp_exclusive'`
->
-> with suggested commit message...  It's absolutely regular and
-> that kind of tree-wide change is easier handled that way.
+When building the boot wrapper, always-y and extra-y are equivalent.
+Use always-y instead.
 
-Ah, sorry. Both Magnus and I are new and irregular kernel contributors,
-but I've seen that before and should've thought of it.
+In arch/powerpc/kernel/Makefile, I added ifdef KBUILD_BUILTIN to
+keep the current behavior: prom_init_check is skipped when building
+only modular objects.
 
-> [...]
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-cheers,
-sam
+ arch/powerpc/boot/Makefile   | 6 +++---
+ arch/powerpc/kernel/Makefile | 4 +++-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index 184d0680e661..b003f7ac8755 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -242,13 +242,13 @@ $(obj)/wrapper.a: $(obj-wlib) FORCE
+ hostprogs	:= addnote hack-coff mktree
+ 
+ targets		+= $(patsubst $(obj)/%,%,$(obj-boot) wrapper.a) zImage.lds
+-extra-y		:= $(obj)/wrapper.a $(obj-plat) $(obj)/empty.o \
++always-y	:= $(obj)/wrapper.a $(obj-plat) $(obj)/empty.o \
+ 		   $(obj)/zImage.lds $(obj)/zImage.coff.lds $(obj)/zImage.ps3.lds
+ 
+ dtstree		:= $(src)/dts
+ 
+ wrapper		:= $(src)/wrapper
+-wrapperbits	:= $(extra-y) $(addprefix $(obj)/,addnote hack-coff mktree) \
++wrapperbits	:= $(always-y) $(addprefix $(obj)/,addnote hack-coff mktree) \
+ 			$(wrapper) FORCE
+ 
+ #############
+@@ -455,7 +455,7 @@ WRAPPER_DTSDIR := /usr/lib/kernel-wrapper/dts
+ WRAPPER_BINDIR := /usr/sbin
+ INSTALL := install
+ 
+-extra-installed		:= $(patsubst $(obj)/%, $(DESTDIR)$(WRAPPER_OBJDIR)/%, $(extra-y))
++extra-installed		:= $(patsubst $(obj)/%, $(DESTDIR)$(WRAPPER_OBJDIR)/%, $(always-y))
+ hostprogs-installed	:= $(patsubst %, $(DESTDIR)$(WRAPPER_BINDIR)/%, $(hostprogs))
+ wrapper-installed	:= $(DESTDIR)$(WRAPPER_BINDIR)/wrapper
+ dts-installed		:= $(patsubst $(dtstree)/%, $(DESTDIR)$(WRAPPER_DTSDIR)/%, $(wildcard $(dtstree)/*.dts))
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index 4d2daa8e7bca..ac01cedad107 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -201,7 +201,9 @@ obj-$(CONFIG_ALTIVEC)		+= vector.o
+ 
+ obj-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE) += prom_init.o
+ obj64-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE) += prom_entry_64.o
+-extra-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE) += prom_init_check
++ifdef KBUILD_BUILTIN
++always-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE) += prom_init_check
++endif
+ 
+ obj-$(CONFIG_PPC64)		+= $(obj64-y)
+ obj-$(CONFIG_PPC32)		+= $(obj32-y)
+-- 
+2.43.0
+
 
