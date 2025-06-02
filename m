@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-9085-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9086-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71062ACBCA1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 23:13:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C20EACBCAA
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 23:19:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bB65p5tFcz2yPd;
-	Tue,  3 Jun 2025 07:13:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bB6Dj4RTRz2yFJ;
+	Tue,  3 Jun 2025 07:19:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748898830;
-	cv=none; b=HZJNhX4VC61fr8P9YwRPWJehDHM7kZyJoqn1t70Ynhr+maI8IT6pWLoWtaaLwmcbKdUVkp2PykCc1w2bkyHC2ZZDXqVBzn/99wVHpvt1ArLRkuiYKl53i7/NaYoy528D/UlPkbf0oZ1ELwt50jQe2Axnie5N5Zx5jxUPwhXorBTzIVkZyWb3miNropZodpaAu6v2CHX9jaMctlHx0C4e+PNSBEjJVwUC8bzw0GauxDVaU1MrZKix4Oxv5mnl+U4PQdTFv9XfeuU94M6Dt7k2mIVMgJaJws0suyNhf7YzpYYUiNOQ/yOqBEgrOLfQvKPpqdqFCOA3IKGi4MdfNqpp1w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748899189;
+	cv=none; b=HoDKWZY/RcpeCLzDoSkyiXAtjxagP3/WCNPJE0dVo9NEpQpdsDNZUeIrh3bRHd0MHyFy/4alcDafM7S5kXSGjxfluOaBUGsruexHA4RkTptfnLvDKhejBxVWQwQjn4RVEPwLuRc1kGGjjvh258LFAcPPkB0C+oM7F00rHsIKnUvl3qV2sk+OTQ1ZdVe7OWLTS+svjFLQq+gYB/bED1FqrH0J3/lbaibHaS+w7hWIcjPlma6d1EvKB0s/nsntHyQcns3tdDd14U1IUw8yVwHGgSdAUhh7WliS5fNc8/UgFo5MwpGywDasQppGvy6q8wD/R4PfJtViWSop852yKnHbyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748898830; c=relaxed/relaxed;
-	bh=ylW5pd2rNSERfK/w7aOq8aBRFE3+e0lGe7my8Nim8+g=;
+	t=1748899189; c=relaxed/relaxed;
+	bh=cvG5ebpKTZEmM8Z9VnrAL8jj9cDueMGGayXKA5dUonw=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KxCdwqa71ivlomgPlWyH7Gvv8o/l/xWlnLefUy5UsawFJyXDgd1HYU3qt88oBTOVk7KDflTPerNBqcXsQtwy9F8FnCCCUAQmTjybuq8/hLM7jTw6vY193tPv8uLnyASdVmzoSPyOiwgZdNXPoLj0EdcSKlUVyUIO25IsSBuV7Mx8v9Nsk44bqPtETnkvcdWNdWCe3bzw0cFKZiH1THKa8sLQQfHqTHc0+TidZKhHM/noP8yP9ZOtVNoswIGrMvQIHuV7eCvDCpapCCDodKUQe55VctLe0UD5Wwonsi6dw0sLCsuhVtUBU4spOfmeYvZ1onJ5/9zE4CadU0jigTVy+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m4m/SaHE; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Disposition:In-Reply-To; b=IzntzY2Yn2c4sQhSla3UeYXxm0c1ux/RxTug9GVBLFmLbZierh9JgPV06f7YP3N00WsvD3ddDs3OLk6FKRxNnMz7ZyS5kkWQKOYMY3WZuIAS22X96Vgm2iTAndj76ntDoj/n5nM6JAYCkt9XQp/j+6V0uXsvgZ0hiGtLR4tepjxdawCJFwL1BndVV6LdB66q9ipTUmUN3WEPwj0cT8qbeFAkLB8XfIZyu8g1BANYEMkSPlvjtApm3xtTIBKRJTuBRl9nClsUaxmxBjhrhmA/k0sQYus61regAdbDo64SBGVgG8Cbs6lL279sLt7FEB9QbnT2CpbMPa29r4rWDpErXA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IfLj37KI; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m4m/SaHE;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IfLj37KI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bB65n5HH2z2xmZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jun 2025 07:13:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bB6Dh5nGpz2xmZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jun 2025 07:19:48 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id D8E105C63A4;
-	Mon,  2 Jun 2025 21:11:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39042C4CEEB;
-	Mon,  2 Jun 2025 21:13:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 88DF243C9D;
+	Mon,  2 Jun 2025 21:19:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3319DC4CEEB;
+	Mon,  2 Jun 2025 21:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748898826;
-	bh=8USxg6SA8nGz3BAkEuYuS+4+eTJ3BHPZ/Z14aMgD5Vo=;
+	s=k20201202; t=1748899186;
+	bh=6mj/BlYXhWA2zqQmobSnww4HV6I3qNHM38OyJ0T6thY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=m4m/SaHE8iFG6uTm85JTtjtTJIE+XALUYhiJDLcsNKo6erXpfFaE2eoftIUOtZb2i
-	 2kGm4VUL7Ua/7F6a5U5aUqNink/ou4zhQ4Or1Zu7AYGVnh/ZWeSI0pyfMn30WRcQ31
-	 EE7y5jSxfu0sLgGiQqM9pTqNQCecm9dKrsuKXEXhC3Td41Cj2aNiNv4pF6GrK5lFa1
-	 EfDIsfRClEIUokRxgztxTyzmeHqtr5VVVhoTie87u7ngMqCcxERT0Ht1Aso+2l0gf8
-	 q5ypX9vO9UXttxSnq3oiYxYVfj8lsLtaHE1ephK+mkINFt6bB+xtQFBwk5k3E3s4sO
-	 ZFsT1JqbxJN6A==
-Date: Mon, 2 Jun 2025 16:13:44 -0500
+	b=IfLj37KIEU0Jy+o62Y0/R/gpmCidEqsAZWzdxwnL5HG85g62rUbIrFSLo1ASjyW0E
+	 y087JbYvyqH6P0sxoL5Qky0xSKuJSHtn/j8nE76kFXO/pv8Yvty3tt8qc7yiB5Xyfw
+	 oR7816Es3kjDy+NpaxUuATsG/9yz3l6s0Mcf5TX3TWFDvUxPJHfYJve1DpFDrl5/TD
+	 aTidwE3xAY+YwOXO+C4kxAEjuR3zzU0LFIplBOpp/6XKnqvxU1wpzdPOrFATsTLkVs
+	 9KPt/oUZvn0rRo5D+EdjpdLuaozVtiIt7kB8psup46KAwCEAani/+R9Zz46DS9un6V
+	 bN+Em+YzTa7Vg==
+Date: Mon, 2 Jun 2025 16:19:44 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
@@ -65,7 +65,7 @@ Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
 	linux-riscv@lists.infradead.org
 Subject: Re: [PATCH v4 4/5] PCI: host-common: Add link down handling for host
  bridges
-Message-ID: <20250602211344.GA444082@bhelgaas>
+Message-ID: <20250602211944.GA150795@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,69 +81,48 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bixtbu7hzs5rwrgj22ff53souxvpd7vqysktpcnxvd66jrsizf@pelid4rjhips>
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250508-pcie-reset-slot-v4-4-7050093e2b50@linaro.org>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, May 30, 2025 at 09:39:28PM +0530, Manivannan Sadhasivam wrote:
-> On Fri, May 30, 2025 at 06:34:04AM -0500, Bjorn Helgaas wrote:
-> > On Fri, May 30, 2025 at 09:16:59AM +0530, Manivannan Sadhasivam wrote:
-> > > On Wed, May 28, 2025 at 05:35:00PM -0500, Bjorn Helgaas wrote:
-> > > > On Thu, May 08, 2025 at 12:40:33PM +0530, Manivannan Sadhasivam wrote:
-> > > > > The PCI link, when down, needs to be recovered to bring it back. But that
-> > > > > cannot be done in a generic way as link recovery procedure is specific to
-> > > > > host bridges. So add a new API pci_host_handle_link_down() that could be
-> > > > > called by the host bridge drivers when the link goes down.
-> > > > > 
-> > > > > The API will iterate through all the slots and calls the pcie_do_recovery()
-> > > > > function with 'pci_channel_io_frozen' as the state. This will result in the
-> > > > > execution of the AER Fatal error handling code. Since the link down
-> > > > > recovery is pretty much the same as AER Fatal error handling,
-> > > > > pcie_do_recovery() helper is reused here. First the AER error_detected
-> > > > > callback will be triggered for the bridge and the downstream devices. Then,
-> > > > > pci_host_reset_slot() will be called for the slot, which will reset the
-> > > > > slot using 'reset_slot' callback to recover the link. Once that's done,
-> > > > > resume message will be broadcasted to the bridge and the downstream devices
-> > > > > indicating successful link recovery.
-> > > > 
-> > > > Link down is an event for a single Root Port.  Why would we iterate
-> > > > through all the Root Ports if the link went down for one of them?
-> > > 
-> > > Because on the reference platform (Qcom), link down notification is
-> > > not per-port, but per controller. So that's why we are iterating
-> > > through all ports.  The callback is supposed to identify the ports
-> > > that triggered the link down event and recover them.
-> > 
-> > Maybe I'm missing something.  Which callback identifies the port(s)
-> > that triggered the link down event?
-> 
-> I was referring to the host_bridge::reset_root_port() callback that resets the
-> root ports.
-> 
-> >  I see that
-> > pci_host_handle_link_down() is called by
-> > rockchip_pcie_rc_sys_irq_thread() and qcom_pcie_global_irq_thread(),
-> > but I don't see the logic that identifies a particular Root Port.
-> > 
-> > Per-controller notification of per-port events is a controller
-> > deficiency, not something inherent to PCIe.  I don't think we should
-> > build common infrastructure that resets all the Root Ports just
-> > because one of them had an issue.
-> 
-> Hmm, fair enough.
-> 
-> > I think pci_host_handle_link_down() should take a Root Port, not a
-> > host bridge, and the controller driver should figure out which port
-> > needs to be recovered, or the controller driver can have its own loop
-> > to recover all of them if it can't figure out which one needs it.
-> 
-> This should also work. Feel free to drop the relevant commits for
-> v6.16, I can resubmit them (including dw-rockchip after -rc1).
+On Thu, May 08, 2025 at 12:40:33PM +0530, Manivannan Sadhasivam wrote:
+> The PCI link, when down, needs to be recovered to bring it back. But that
+> cannot be done in a generic way as link recovery procedure is specific to
+> host bridges. So add a new API pci_host_handle_link_down() that could be
+> called by the host bridge drivers when the link goes down.
 
-OK, I kept "PCI: host-common: Make the driver as a common library for
-host controller drivers" (renamed to "PCI: host-common: Convert to
-library for host controller drivers") on pci/controller/dw-rockchip
-for v6.16 and deferred the rest until later.
+IIUC you plumbed this into the reset path so the standard entries
+(pci_reset_function() and the sysfs "reset" files) work can now work
+for Root Ports on DT systems just like they do for ACPI systems
+(assuming the ACPI systems supply an _RST method for the ports).  That
+all sounds good.
+
+> The API will iterate through all the slots and calls the pcie_do_recovery()
+> function with 'pci_channel_io_frozen' as the state. This will result in the
+> execution of the AER Fatal error handling code. Since the link down
+> recovery is pretty much the same as AER Fatal error handling,
+> pcie_do_recovery() helper is reused here. First the AER error_detected
+> callback will be triggered for the bridge and the downstream devices. Then,
+> pci_host_reset_slot() will be called for the slot, which will reset the
+> slot using 'reset_slot' callback to recover the link. Once that's done,
+> resume message will be broadcasted to the bridge and the downstream devices
+> indicating successful link recovery.
+
+We have standard PCIe mechanisms to learn about "link down" events,
+e.g., AER Surprise Down error reporting and the Data Link Layer State
+Changed events for hot-plug capable ports.
+
+How does this controller-specific "link down" notification relate to
+those?  Is this for controllers that don't support those AER or
+hotplug mechanisms?  Or is this a different scenario that wouldn't be
+covered by them?
+
+If AER is enabled, do we get both the AER interrupt and the controller
+"link down" interrupt?
+
+> In case if the AER support is not enabled in the kernel, only
+> pci_bus_error_reset() will be called for each slots as there is no way we
+> could inform the drivers about link recovery.
 
