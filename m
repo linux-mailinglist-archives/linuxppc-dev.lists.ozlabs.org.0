@@ -1,70 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-9068-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9069-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4CBACA10C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 01:00:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72366ACA878
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 06:11:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b9XWS3tkLz2yF1;
-	Mon,  2 Jun 2025 09:00:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b9gQF3dpnz2xdg;
+	Mon,  2 Jun 2025 14:11:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748818836;
-	cv=none; b=lW3hVjphXaTHEC4EyxZfCft67e024HgGQ/uI+0sZSlBudjT9PwXhpbnf/GwNKDmQXMY1QxLhEiNZeZRSU5y0LhX/VmOrzQ0hUtYjp/KT0sVdeX0ZsR9D8/PK7zD6mV8DlvT6i/NfBZ6dczcVqoHhODJ/VYnTdH0V6s51/w+7ZFHzJWOoEogV4wQ22Jup0Tuvrz/J+Q6O65S9qeG17N4mv5jNQVZOdMwd9Wo7cfo1ggLBs7nP1BUbvmd4IfC6YLbrGEY0cNDqqKAUTysX6mzKbLbh3lAOyh4Rfcx1loii3OKeQ+cDPVGDsAlqu+nWGyBUmLjGCQFNAH7JwuOlVKmywg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a03:a000:7:0:5054:ff:fe1c:15ff"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748837493;
+	cv=none; b=TPhe7AEjEEstA8CsBYZt2BMlMsGiihgcJ+j4amK1l4W1Hu4OBPKsvGdd7/XPkUlBZpK/UWzqMObDPDcjRpCLQQ+9bqyzO4zX8Wu+VfxN8O0hMR18klSDUOTeHp6k+ZrUDZqxtEIjivFElnB8WawhVY0X7c2cx1PfSNDOCDKS242srWFLNZHwooUyRlX9XE9XMGknJjbOyqd/uY5Ga9cwyA/DZ/hNp8AMW3Fug6AmUbuUsdT+o7Y1xgoxJYXqpkjhVARDyZO5GT82DgunUM9DeOhGJV8e1OszcvMmuiecx8uPDsYrjBwc6q3P8jpkxJa8E9TVdbcSV1zZkKwA0Y6UKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748818836; c=relaxed/relaxed;
-	bh=VLdinv37uoJCg/NqMkaiZgFpI3acFDq5XCKcz59TcpQ=;
+	t=1748837493; c=relaxed/relaxed;
+	bh=iuH08HhCzFKCMOC8/O0swKDH+rpWOadfk7Rm4fI946Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IcuyGJFIzGaxL4XXBCe2eU3c4N5f0MPVxUogLS6qfYpzkjXMJVIuwCOcYBTOoNCRkARgZRGfbeqGz1Jg6pdwx9JHtXIIjSGvDYNFtmDUYtoMIZzVnKPc91pB+xUNzV4+my1kCyDFg59DIAjvZ3/Iywy7oqWOr6GyaZBH2UZQIEJpzPF2S2NFDU13+Vp8U54xCpUeGb4p+62dH9fNe4/4oVpU77iSjvthvY6t4XQNzAkFHeydnfzvpgAJiuyXFLAIfQmO1DVnBvlniaFenjkplDVpbgVdkmTcc7ZHagMrStVweeX2F3eDCdrYBScmjiBV0gzTCBpEVwr5dkXZ8LKwjw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vHFxc2VE; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZeLX/XXLspPturbFnreJL7ymEnfQmY64dNoZGPsiZ+3xYFHvlfTed1+KjjZs3Fz1TFZFeOPK+E1sCQkpP39iA8rhjVHPaJt/Cr5ajbNg30l9xK9yM8+1Q5FSoiwKH/lBqptolpKjq/2C68jckzBMsK++QFswgpNU1QYey9uOLwaStAfeuUL9IIiswDYGmWcZMYN/3MyXsN+WpB0GrDbbM9PITmchxoAfNco90UxLswWHy69PGRUGkZ6Zw9o9OijuCuYEoBlgXE4C+eE2CS5Y3AO2Sn84/MBOedyIfWjPIx0hFKsayYmHFCiy0tiTcu+QbhxsIH0HCSCFBvZg0osSfQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=cDLc7AG1; dkim-atps=neutral; spf=none (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org) smtp.mailfrom=ftp.linux.org.uk
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vHFxc2VE;
+	dkim=pass (2048-bit key; unprotected) header.d=linux.org.uk header.i=@linux.org.uk header.a=rsa-sha256 header.s=zeniv-20220401 header.b=cDLc7AG1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=ftp.linux.org.uk (client-ip=2a03:a000:7:0:5054:ff:fe1c:15ff; helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk; receiver=lists.ozlabs.org)
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b9XWR5Hqdz2xlK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Jun 2025 09:00:35 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA61F60EDF;
-	Sun,  1 Jun 2025 23:00:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CC5C4CEE7;
-	Sun,  1 Jun 2025 23:00:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748818833;
-	bh=9iuAqFgWuAM8zbaClmJE1PWkDiz9aDszJI49BnUralg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vHFxc2VElAHlFA2+p6pUxtFWEe5J4xv+o56KAxPCmT8t7sop9JD+tvRSV5M6+149b
-	 3yslurmUrK9306e+AjqkjU66ZE4+J12qO4pfC9GKOwcLYIKirbFU/Rg2oRbbVA43ns
-	 5uDfSlrlHs9e9hvwYN9GazeDaNtZ3XeMSpkJHQHb3lkfbDihKnyqOzItzJyKZ/V5SA
-	 kll91RZkjqNe9evwrPUGhmeKBh/iuKFMYirrTrajg0Qa5HWH48c/p5D7scSRNhf3bP
-	 g9JW0K0QMuooWlvxhFXufeAQiYS/ENsn141k7rnLZBFnOMguZuObdXNfv/1/r4saJT
-	 S2ckVl3S2NSgA==
-Date: Sun, 1 Jun 2025 16:00:14 -0700
-From: Eric Biggers <ebiggers@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4b9gQB3hmPz2x9N
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Jun 2025 14:11:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=iuH08HhCzFKCMOC8/O0swKDH+rpWOadfk7Rm4fI946Q=; b=cDLc7AG1xVeGrDIh1peeN0IWEk
+	zSPl9poJhEGT0YoB/3XnvH6rSM6bY3xjL0IUqjUntiObN7RMhtlCPHuD3A62GgdK0UEACC5R8vd1k
+	nGJkZRQS6J7IpGD5Cac8ckt2eGuQw0ldn0T1SIMMph5HBpFztRTyZBhVmy8+xkbQoA7OwVtDKj3OZ
+	76BRcTLzVJZLqbCzOHiBTXoFLI5gsn+T2zZ4MU1RCovTNxA1K7wQ4w3A4hqY1qW3qspeqQLRXJ12A
+	qO/+nks1w4qOwDF7mdiodEdOvdFTMW5W0MgrK6eRVtCQ084Z11K100prR+Fy/v0Uyq+f2T84t8Tki
+	2y66Yf/A==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uLwW6-0000000BUl8-1UDJ;
+	Mon, 02 Jun 2025 04:11:18 +0000
+Date: Mon, 2 Jun 2025 05:11:18 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org,
-	linux-s390@vger.kernel.org, x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [PATCH v4 08/13] crypto: s390/sha256 - implement library instead
- of shash
-Message-ID: <20250601230014.GB1228@sol>
-References: <20250428170040.423825-1-ebiggers@kernel.org>
- <20250428170040.423825-9-ebiggers@kernel.org>
- <20250529110526.6d2959a9.alex.williamson@redhat.com>
- <20250529173702.GA3840196@google.com>
- <CAHk-=whCp-nMWyLxAot4e6yVMCGANTUCWErGfvmwqNkEfTQ=Sw@mail.gmail.com>
- <20250529211639.GD23614@sol>
- <CAHk-=wh+H-9649NHK5cayNKn0pmReH41rvG6hWee+oposb3EUg@mail.gmail.com>
- <20250530001858.GD3840196@google.com>
+Cc: linmag7@gmail.com, Al Viro <viro@ftp.linux.org.uk>, arnd@arndb.de,
+	chris@zankel.net, dinguyen@kernel.org, glaubitz@physik.fu-berlin.de,
+	ink@unseen.parts, jcmvbkbc@gmail.com, kees@kernel.org,
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	mattst88@gmail.com, monstr@monstr.eu, richard.henderson@linaro.org,
+	sparclinux@vger.kernel.org, x86@kernel.org,
+	Sam James <sam@gentoo.org>
+Subject: Re: [PATCH v2 1/1] mm: pgtable: fix pte_swp_exclusive
+Message-ID: <20250602041118.GA2675383@ZenIV>
+References: <87cyfejafj.fsf@gentoo.org>
+ <87v7rik020.fsf@gentoo.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,46 +77,69 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250530001858.GD3840196@google.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <87v7rik020.fsf@gentoo.org>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, May 30, 2025 at 12:18:58AM +0000, Eric Biggers wrote:
-> On Thu, May 29, 2025 at 04:54:34PM -0700, Linus Torvalds wrote:
-> > On Thu, 29 May 2025 at 14:16, Eric Biggers <ebiggers@kernel.org> wrote:
-> > >
-> > > So using crc32c() + ext4 + x86 as an example (but SHA-256 would be very
-> > > similar), the current behavior is that ext4.ko depends on the crc32c_arch()
-> > > symbol.
-> > 
-> > Yes, I think that's a good example.
-> > 
-> > I think it's an example of something that "works", but it certainly is
-> > a bit hacky.
-> > 
-> > Wouldn't it be nicer if just plain "crc32c()" did the right thing,
-> > instead of users having to do strange hacks just to get the optimized
-> > version that they are looking for?
+On Sat, Apr 05, 2025 at 06:09:11PM +0100, Sam James wrote:
+> Sam James <sam@gentoo.org> writes:
 > 
-> For crc32c() that's exactly how it works (since v6.14, when I implemented it).
-> The users call crc32c() which is an inline function, which then calls
-> crc32c_arch() or crc32c_base() depending on the kconfig.  So that's why I said
-> the symbol dependency is currently on crc32c_arch.  Sorry if I wasn't clear.
-> The SHA-256, ChaCha, and Poly1305 library code now has a similar design too.
+> > Lovely cleanup and a great suggestion from Al.
+> >
+> > Reviewed-by: Sam James <sam@gentoo.org>
+> >
+> > I'd suggest adding a:
+> > Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
 > 
-> If we merged the arch and generic modules together, then the symbol would become
-> crc32c.  But in either case crc32c() is the API that all the users call.
-> 
-> - Eric
-> 
+> Al, were you planning on taking this through your tree?
 
-I implemented my proposal, for lib/crc first, in
-https://lore.kernel.org/lkml/20250601224441.778374-1-ebiggers@kernel.org.
-I think it's strictly better than the status quo, and once applied to lib/crypto
-it will solve some of the problems we've been having there too.  But let me know
-if you still have misgivings.
+FWIW, I expected it to get sent to Linus as "please, run this
+sed script before -rc1" kind of thing, script being something
+like
 
-- Eric
+sed -i -e 's/int pte_swp_exclusive/bool pte_swp_exclusive/' \
+	`git grep -l 'int pte_swp_exclusive'`
+
+with suggested commit message...  It's absolutely regular and
+that kind of tree-wide change is easier handled that way.
+
+	Oh, well...  To restore the context: Magnus had spotted a fun
+bug on Alpha back in February - pte_swp_exclusive() there returned
+pte_val(pte) & _PAGE_SWP_EXCLUSIVE as int.  The problem is that
+_PAGE_SWP_EXCLUSIVE is 1UL<<39 there, with obvious results...
+
+	I looked at the originally posted patch and suggested to
+make pte_swp_exclusive() return bool instead of int.  All users
+are in explicitly boolean contexts:
+
+include/linux/swapops.h:        if (pte_swp_exclusive(pte))
+mm/debug_vm_pgtable.c:  WARN_ON(pte_swp_exclusive(pte));
+mm/debug_vm_pgtable.c:  WARN_ON(!pte_swp_exclusive(pte));
+mm/debug_vm_pgtable.c:  WARN_ON(pte_swp_exclusive(pte));
+mm/internal.h:  if (pte_swp_exclusive(pte))
+mm/memory.c:            if (pte_swp_exclusive(orig_pte)) {
+mm/memory.c:            exclusive = pte_swp_exclusive(vmf->orig_pte);
+mm/swapfile.c:          if (pte_swp_exclusive(old_pte))
+mm/userfaultfd.c:               if (!pte_swp_exclusive(orig_src_pte)) {
+
+	Magnus posted patch of that form (see
+https://lore.kernel.org/all/20250218175735.19882-2-linmag7@gmail.com/),
+got no serious objections and then it went nowhere.
+
+	Bug is real and fairly obvious, fix is entirely mechanical and
+affects one line in each asm/pgtable.h out there.  Linus, could you
+run that sed script just before -rc1?  Commit message from the patch refered
+above looks sane:
+
+mm: pgtable: fix pte_swp_exclusive
+
+Make pte_swp_exclusive return bool instead of int. This will better reflect
+how pte_swp_exclusive is actually used in the code. This fixes swap/swapoff
+problems on Alpha due pte_swp_exclusive not returning correct values when
+_PAGE_SWP_EXCLUSIVE bit resides in upper 32-bits of PTE (like on alpha).
+
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+
 
