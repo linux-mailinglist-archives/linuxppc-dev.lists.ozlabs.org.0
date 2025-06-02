@@ -1,96 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-9074-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9075-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4E1ACAC77
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 12:31:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B97AACAD7A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 13:44:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4b9qs52tl5z2yNB;
-	Mon,  2 Jun 2025 20:31:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b9sSM0qDhz2yLT;
+	Mon,  2 Jun 2025 21:44:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748860313;
-	cv=none; b=Jd+4ueActcLlbiyQSO3UxlzLMcIa1+rSgAityh3JDIxTkiftfeZd1TZaLiKT2yp3AJcPm6pfT8Cyqothlso2jrvf6jr5GeRtFR8UwIAMU/HpnWrVMR1dg+3O8DoZMc1E4eBwaRRuJaDRH35/2B++1M+CadWzsmqO15zq6sLI+JFyElTNfLdUtc3zfcyo1Vz9Lqptu6GhHRGGS8nnPABt8EMdrF2ay7caM15NRic4vhHHzHWDTXEhbZSRmset9Zfl7rYhyG5ATnmnP+Z/MPkHI9wbg4+nPNfl/YpVmDLYmNUnhS/qrJzFJZna0fpXct/5L/xZMiY93gPgpl12pk6rqw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748864643;
+	cv=none; b=SJmpNoY+tTPUhrYp9jkCKdAhHAdhV6HTpbOO9uUZVHVHcLvoW+LUR93FOc8o4vDWJ+6FKpY09enEfly6ngOhALMGZn8bQbwnaaA6xOSGMEW271qxjlx9Sj357LquN1bHZXYfpTt8u5ceat6AZ6ZNWDlVmAMFDZSdsQ0mtPYRaJmsGRIcM7JfeeQ8BzJlKWi2hnHSV1JR8JRYH7nVDSZ7Cx41FsRaXLBsSQagdNro0nG2v8KGMFu7yEgMXB1oS2h9ivmDIBUrf1ZM5NNE6+PH1MBuGfsF078Vaml4UdYi4UHjJc/5k1Eztj7CWWAh4yKR0xrbwrlFRZJrh4+Ud21u/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748860313; c=relaxed/relaxed;
-	bh=zNGcx2ArrxJr8cIK8d0qYe5Yw20pPHTlFAddIJE8YQE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L+/s1a+YE0c9/81+I6guNu/lH7OXxwC/6A1fjwkCLqvJN1AzHEt8th2sSgI2yAOZ8+o37DhPKx9N5o9maWt7zIVyhxd4mWwqqRdmO3H7bCGqrPe8pC9ID7MUeulhJ+NK8yZenlM9ZzxjPavr8m3BFJQ+UmxSdOEGt8+TUKKXbcdALyfzGEgP6XFKxwISROpMEzCrckUMFFCVhowH7abAc219uLh5jdYeNFhNzbbcLevYWisRFGkYh73GLKGDdlHKBRAGjwAkMstzPvdSQrQGYuU5udVP1+FFw+lfvpzmDjFLiG48bAcWz+t/fK7QNboTBwKh36klMO+2krjY8X2Mnw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BIqhjEgc; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BIqhjEgc; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BIqhjEgc;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BIqhjEgc;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4b9qs41tGZz2xRs
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Jun 2025 20:31:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748860308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zNGcx2ArrxJr8cIK8d0qYe5Yw20pPHTlFAddIJE8YQE=;
-	b=BIqhjEgcyXhzr5YECzxep8f2NgNI8G81kTty+Kc/cu15MbXjk00H3FdW3F9zjm1Rip1Y1X
-	8teCHTL40WAdivR3ENG4a+fd1i+K4l/15xobcNpWvwx80tpFtbSQfKBiEExT+FxK7SN/8x
-	UzhdAGOzSx+Sa3aISKC+LRJcZSkSGe4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1748860308;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zNGcx2ArrxJr8cIK8d0qYe5Yw20pPHTlFAddIJE8YQE=;
-	b=BIqhjEgcyXhzr5YECzxep8f2NgNI8G81kTty+Kc/cu15MbXjk00H3FdW3F9zjm1Rip1Y1X
-	8teCHTL40WAdivR3ENG4a+fd1i+K4l/15xobcNpWvwx80tpFtbSQfKBiEExT+FxK7SN/8x
-	UzhdAGOzSx+Sa3aISKC+LRJcZSkSGe4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-606-giuuhzAIMHOW2RO6FkcoLQ-1; Mon, 02 Jun 2025 06:31:47 -0400
-X-MC-Unique: giuuhzAIMHOW2RO6FkcoLQ-1
-X-Mimecast-MFC-AGG-ID: giuuhzAIMHOW2RO6FkcoLQ_1748860306
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-451d30992bcso11449235e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 02 Jun 2025 03:31:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748860306; x=1749465106;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zNGcx2ArrxJr8cIK8d0qYe5Yw20pPHTlFAddIJE8YQE=;
-        b=KwgE+1GivA8tocicLzHXgQLu9B4ZQJrnoikaCyQ3mmJPgqu2uUwf3yHFx3A8aNFtTG
-         YP4NNC8089cqNBLzdsxw+SC25WDG2FJriSnQMjN68T6/KTvGKTxd1RqXtHg7xmrI66Ev
-         lspFPTw2um/n94QHeJh7b9j3c6YfM2huWjOlkONu2SuMegdvAL3cNSk5AI1ivDktBjwk
-         pDLj+/X0jx7q6iBwN0grynThCLf2uzdchhDEJ77YjHTfgm9bYFC7i7W6P4YIW1p8uoiy
-         vWaGpS+hnHsj6BnBU3sGzvnYvn0SrYjXTedXJcftFD0nKvcto2UObEQZsxl70wsvWW8n
-         TiJw==
-X-Forwarded-Encrypted: i=1; AJvYcCV3sfhYo8wsWoYCFgK5k3TWV85N20WC9dHxJStBKslCTw0pe77ttixVSvDn07xgm1iTrOCJKRSdfjrBWr4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YybB2NqE6tD8ineb7xvwGcmyPiB3qbyXpH9ZEY3IuSSf10BF/wh
-	U44c6zdMLLS8Hj6iDfG/SG4mACWy6gZEtG0YtB5MEPPkmpZyUHb1LrXWv0ommBrZfp6wFHxkNA/
-	m5ormWWnluvUiuMIaJwySbAz2P54YEpxoYVaGYcWP2PZanoRyrQlRJHmHtyAcM8+TuU0=
-X-Gm-Gg: ASbGncsJfWSM7Yb6X3slrp6vK31YA3ZPiD99xuVxCIbaXfp00cIptvJGodkKSuNnoJv
-	LT2YgzWkJwIeww26L3+zK/8tAcW4GqqsNC8lVXY4LhOseaiAX0gnZTzCRNuhEx/9T5/aDLyeMB3
-	Q00/7M1AijUIxXorkcrPM9L0BMANuSOdcEp8C2gVMsTBWSD2ndW7DDlF+/qgMJf6OwDcU/iupgF
-	AAHKFQURxyZqiLFO+FIS43J8p+pBhy1+L4zQ9HaaPooXbrB1rLA+hPGWN2Pc4F4+RC9sQTTaRpH
-	3w+MQdqgOBYMWXVjThfHZGLPIHOqLzve4B7m/S6+H5224Bq23p8KqEgR0NTR/UMGlTtIOYmd/Ea
-	gq/MHSAmE8QV5jROey35F9JnXQUwkZeiG4/EV1nc=
-X-Received: by 2002:a05:600c:4e48:b0:443:48:66d2 with SMTP id 5b1f17b1804b1-4511ee14c08mr77083285e9.16.1748860305798;
-        Mon, 02 Jun 2025 03:31:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG4lrvLwHaEWScY/8IOL/Tuots8CWM7YWfHJfcP7R1yvYuRofYdh+DhIzzTEbvoU5wPzbYr8A==
-X-Received: by 2002:a05:600c:4e48:b0:443:48:66d2 with SMTP id 5b1f17b1804b1-4511ee14c08mr77082755e9.16.1748860305291;
-        Mon, 02 Jun 2025 03:31:45 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f34:a300:1c2c:f35e:e8e5:488e? (p200300d82f34a3001c2cf35ee8e5488e.dip0.t-ipconnect.de. [2003:d8:2f34:a300:1c2c:f35e:e8e5:488e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7f8f1e7sm118287075e9.1.2025.06.02.03.31.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Jun 2025 03:31:44 -0700 (PDT)
-Message-ID: <13ea6653-d33d-4f76-88c8-a17f9989d069@redhat.com>
-Date: Mon, 2 Jun 2025 12:31:43 +0200
+	t=1748864643; c=relaxed/relaxed;
+	bh=8I3kEr86XbLXI/IE63aqofLGRBEX2BY6/jTEh3dNRnk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fIEtc+BFyd0zrF6VzCZIQ/P49s/wRxNnQRFAGnjpiV0s+w7rDgukVWQlL09VcDTkfgbmcS0Wxw4GuclzZanbEDF+8zyb+yMlOyNo+enav2uZS6B1xF/DnDquNCHsoJ8HRX29oxvFiuh7WSr/m7UwxoHNvw4QmBi/A/qMSn8Te71e5r8N7NlLJaM6/EPyotZhvQnQPlW9KN4on4FKJ65ae4fW2CaRGWx96mxrblHRTmJnpGqItvmL5rkALeyWFmRlnYFQFma+vIrW03T6UYMHffV7zjTA/9wIBrA79Zjm5/tMFlRbB8Wb3vva8VQhYC6Renwqhrb7OMkOoE3QS8Hc7Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 476 seconds by postgrey-1.37 at boromir; Mon, 02 Jun 2025 21:44:01 AEST
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4b9sSK2zkDz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  2 Jun 2025 21:44:01 +1000 (AEST)
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 615DE72C8CC;
+	Mon,  2 Jun 2025 14:36:01 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+	id 52AF57CCB3A; Mon,  2 Jun 2025 14:36:01 +0300 (IDT)
+Date: Mon, 2 Jun 2025 14:36:01 +0300
+From: "Dmitry V. Levin" <ldv@strace.io>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Alexey Gladkov <legion@kernel.org>,
+	Eugene Syromyatnikov <evgsyr@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	strace-devel@lists.strace.io, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] powerpc: properly negate error in
+ syscall_set_return_value() in sc case
+Message-ID: <20250602113601.GA329@strace.io>
+References: <20250127181322.GA1373@strace.io>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,148 +56,156 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/12] mm: Remove pXX_devmap page table bit and pfn_t type
-To: Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org
-Cc: gerald.schaefer@linux.ibm.com, dan.j.williams@intel.com, jgg@ziepe.ca,
- willy@infradead.org, linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
- zhang.lyra@gmail.com, debug@rivosinc.com, bjorn@kernel.org,
- balbirs@nvidia.com, lorenzo.stoakes@oracle.com,
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org, John@Groves.net
-References: <cover.541c2702181b7461b84f1a6967a3f0e823023fcc.1748500293.git-series.apopple@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <cover.541c2702181b7461b84f1a6967a3f0e823023fcc.1748500293.git-series.apopple@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: agn-D_zh0L4SujqN3NwQWBd9zQEhy7MLOZ20Vx8jSaI_1748860306
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250127181322.GA1373@strace.io>
+X-Spam-Status: No, score=0.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 29.05.25 08:32, Alistair Popple wrote:
-> Changes from v2 of the RFC[1]:
+On Mon, Jan 27, 2025 at 08:13:23PM +0200, Dmitry V. Levin wrote:
+> According to the Power Architecture Linux system call ABI documented in
+> [1], when the syscall is made with the sc instruction, both a value and an
+> error condition are returned, where r3 register contains the return value,
+> and cr0.SO bit specifies the error condition.  When cr0.SO is clear, the
+> syscall succeeded and r3 is the return value.  When cr0.SO is set, the
+> syscall failed and r3 is the error value.  This syscall return semantics
+> was implemented from the very beginning of Power Architecture on Linux,
+> and syscall tracers and debuggers like strace that read or modify syscall
+> return information also rely on this ABI.
 > 
->   - My ZONE_DEVICE refcount series has been merged as commit 7851bf649d42 (Patch series
->     "fs/dax: Fix ZONE_DEVICE page reference counts", v9.) which is included in
->     v6.15 so have rebased on top of that.
+> r3 and cr0.SO are exposed directly via struct pt_regs where gpr[3] and
+> (ccr & 0x10000000) correspond to r3 and cr0.SO, respectively.
+> For example, here is an excerpt from check_syscall_restart() that assigns
+> these members of struct pt_regs:
+>         regs->result = -EINTR;
+>         regs->gpr[3] = EINTR;
+>         regs->ccr |= 0x10000000;
+> In this example, the semantics of negative ERRORCODE that's being used
+> virtually everywhere in generic kernel code is translated to powerpc sc
+> syscall return ABI which uses positive ERRORCODE and cr0.SO bit.
 > 
->   - No major changes required for the rebase other than fixing up a new user of
->     the pfn_t type (intel_th).
+> Also, r3 and cr0.SO are exposed indirectly via helpers.
+> For example, here is an excerpt from syscall_get_error():
+>         /*
+>          * If the system call failed,
+>          * regs->gpr[3] contains a positive ERRORCODE.
+>          */
+>         return (regs->ccr & 0x10000000UL) ? -regs->gpr[3] : 0;
+> and here is another example, from regs_return_value():
+>         if (is_syscall_success(regs))
+>                 return regs->gpr[3];
+>         else
+>                 return -regs->gpr[3];
+> In these examples, the powerpc sc syscall return ABI which uses positive
+> ERRORCODE and cr0.SO bit is translated to the semantics of negative
+> ERRORCODE that's being used virtually everywhere in generic kernel code.
 > 
->   - As a reminder the main benefit of this series is it frees up a PTE bit
->     (pte_devmap).
+> Up to a certain point in time the kernel managed to implement the powerpc
+> sc syscall return ABI in all cases where struct pt_regs was exposed to user
+> space.
 > 
->   - This may be a bit late to consider for inclusion in v6.16 unless it can get
->     some more reviews before the merge window closes. I don't think missing v6.16
->     is a huge issue though.
+> The situation changed when SECCOMP_RET_TRACE support was introduced.
+> At this point the -ERRORCODE semantics that was used under the hood to
+> implement seccomp on powerpc became exposed to user space.  The tracer
+> handling PTRACE_EVENT_SECCOMP is not just able to observe -ENOSYS in gpr[3]
+> - this is relatively harmless as at this stage there is no syscall return
+> yet so the powerpc sc syscall return ABI does not apply.  What's important
+> is that the tracer can change the syscall number to -1 thus making the
+> syscall fail, and at this point the tracer is also able to specify the
+> error value.  This has to be done in accordance with the syscall return
+> ABI, however, the current implementation of do_seccomp() supports both the
+> generic kernel -ERRORCODE return value ABI and the powerpc sc syscall
+> return ABI, thanks to syscall_exit_prepare() that converts the former to
+> the latter.  Consequently, seccomp_bpf selftest passes both with and
+> without this change.
 > 
->   - This passed xfstests for a XFS filesystem with DAX enabled on my system and
->     as many of the ndctl tests that pass on my system without it.
+> Now comes the moment when PTRACE_SET_SYSCALL_INFO is going to be
+> introduced.  PTRACE_SET_SYSCALL_INFO is a generic ptrace API that
+> complements PTRACE_GET_SYSCALL_INFO by letting the ptracer modify
+> the details of the system calls the tracee is blocked in.
 > 
-> Changes for v2:
+> One of the helpers that have to be used to implement
+> PTRACE_SET_SYSCALL_INFO is syscall_set_return_value().
+> This helper complements other two helpers, syscall_get_error() and
+> syscall_get_return_value(), that are currently used to implement
+> PTRACE_GET_SYSCALL_INFO on syscall return.  When syscall_set_return_value()
+> is used to set an error code, the caller specifies it as a negative value
+> in -ERRORCODE format.
 > 
->   - This is an update to my previous RFC[2] removing just pfn_t rebased
->     on today's mm-unstable which includes my ZONE_DEVICE refcounting
->     clean-up.
+> Unfortunately, this does not work well on powerpc since commit 1b1a3702a65c
+> ("powerpc: Don't negate error in syscall_set_return_value()") because
+> syscall_set_return_value() does not follow the powerpc sc syscall return
+> ABI:
+> 	/*
+> 	 * In the general case it's not obvious that we must deal with
+> 	 * CCR here, as the syscall exit path will also do that for us.
+> 	 * However there are some places, eg. the signal code, which
+> 	 * check ccr to decide if the value in r3 is actually an error.
+> 	 */
+> 	if (error) {
+> 		regs->ccr |= 0x10000000L;
+> 		regs->gpr[3] = error;
+> 	} else {
+> 		regs->ccr &= ~0x10000000L;
+> 		regs->gpr[3] = val;
+> 	}
 > 
->   - The removal of the devmap PTE bit and associated infrastructure was
->     dropped from that series so I have rolled it into this series.
+> The reason why this syscall_set_return_value() implementation was able to
+> get away with violating the powerpc sc syscall return ABI is the following:
+> Up to now, syscall_set_return_value() on powerpc could be called only from
+> do_syscall_trace_enter() via do_seccomp(), there was no way it could be
+> called from do_syscall_trace_leave() which is the point where tracers on
+> syscall return are activated and the powerpc sc syscall return ABI has
+> to be respected.
 > 
->   - Logically this series makes sense to me, but the dropping of devmap
->     is wide ranging and touches some areas I'm less familiar with so
->     would definitely appreciate any review comments there.
+> Introduction of PTRACE_SET_SYSCALL_INFO necessitates a change of
+> syscall_set_return_value() to comply with the powerpc sc syscall return
+> ABI.  Without the change, the upcoming ptrace/set_syscall_info selftest
+> fails with the following diagnostics:
 > 
-> [1] - https://lore.kernel.org/linux-mm/cover.95ff0627bc727f2bae44bea4c00ad7a83fbbcfac.1739941374.git-series.apopple@nvidia.com/
-> [2] - https://lore.kernel.org/linux-mm/cover.a7cdeffaaa366a10c65e2e7544285059cc5d55a4.1736299058.git-series.apopple@nvidia.com/
+>   # set_syscall_info.c:119:set_syscall_info:Expected exp_exit->rval (-38) == info->exit.rval (38)
+>   # set_syscall_info.c:120:set_syscall_info:wait #4: PTRACE_GET_SYSCALL_INFO #2: exit stop mismatch
 > 
-> All users of dax now require a ZONE_DEVICE page which is properly
-> refcounted. This means there is no longer any need for the PFN_DEV, PFN_MAP
-> and PFN_SPECIAL flags. Furthermore the PFN_SG_CHAIN and PFN_SG_LAST flags
-> never appear to have been used. It is therefore possible to remove the
-> pfn_t type and replace any usage with raw pfns.
+> Note that since backwards compatibility with the current implementation has
+> to be provided, the kernel has to continue supporting simultaneously both
+> the generic kernel -ERRORCODE return value ABI and the powerpc sc syscall
+> return ABI at least for PTRACE_EVENT_SECCOMP tracers.  Consequently, since
+> the point of __secure_computing() invocation and up to the point of
+> conversion in syscall_exit_prepare(), gpr[3] may be set according to either
+> of these two ABIs.  An attempt to address code inconsistencies in syscall
+> error return handling that were introduced as a side effect of the dual
+> ABI support follows in a separate patch.
 > 
-> The remaining users of PFN_DEV have simply passed this to
-> vmf_insert_mixed() to create pte_devmap() mappings. It is unclear why this
-> was the case but presumably to ensure vm_normal_page() does not return
-> these pages. These users can be trivially converted to raw pfns and
-> creating a pXX_special() mapping to ensure vm_normal_page() still doesn't
-> return these pages.
+> Link: https://www.kernel.org/doc/html/latest/arch/powerpc/syscall64-abi.html#return-value [1]
+> Signed-off-by: Dmitry V. Levin <ldv@strace.io>
+> Reviewed-by: Alexey Gladkov <legion@kernel.org>
+> ---
+>  arch/powerpc/include/asm/syscall.h | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> Now that there are no users of PFN_DEV we can remove the devmap page table
-> bit and all associated functions and macros, freeing up a software page
-> table bit.
-> 
+> diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
+> index 3dd36c5e334a..422d7735ace6 100644
+> --- a/arch/powerpc/include/asm/syscall.h
+> +++ b/arch/powerpc/include/asm/syscall.h
+> @@ -82,7 +82,11 @@ static inline void syscall_set_return_value(struct task_struct *task,
+>  		 */
+>  		if (error) {
+>  			regs->ccr |= 0x10000000L;
+> -			regs->gpr[3] = error;
+> +			/*
+> +			 * In case of an error regs->gpr[3] contains
+> +			 * a positive ERRORCODE.
+> +			 */
+> +			regs->gpr[3] = -error;
+>  		} else {
+>  			regs->ccr &= ~0x10000000L;
+>  			regs->gpr[3] = val;
 
-$ git grep FS_DAX_LIMITED
-fs/Kconfig:     depends on ZONE_DEVICE || FS_DAX_LIMITED
-fs/Kconfig:config FS_DAX_LIMITED
-fs/dax.c:       if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
-fs/dax.c:       if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
-fs/dax.c:       if (IS_ENABLED(CONFIG_FS_DAX_LIMITED))
-include/linux/pfn_t.h: * PFN_SPECIAL - for CONFIG_FS_DAX_LIMITED builds 
-to allow XIP, but not
-mm/memremap.c:          if (IS_ENABLED(CONFIG_FS_DAX_LIMITED)) {
+Given that the PTRACE_SET_SYSCALL_INFO API has been merged and this
+powerpc issue is now exposed to userspace, can we make it fixed, please?
 
-Can we remove that? Especially the interaction with PFN_SPECIAL looks 
-concerning.
 
 -- 
-Cheers,
-
-David / dhildenb
-
+ldv
 
