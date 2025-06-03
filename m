@@ -1,107 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-9126-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9127-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20ACACCF02
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jun 2025 23:32:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6A6ACCF10
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jun 2025 23:34:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bBkTB2886z2yKq;
-	Wed,  4 Jun 2025 07:32:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bBkVY63ljz2ySg;
+	Wed,  4 Jun 2025 07:33:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:638:a000:1025::15"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748986366;
-	cv=none; b=WkMdLD9KuNr/6kgCF2Oh6kdB4bC2z6moyB7qSOrcjzsVMOvi1TzCV4h0qcOsunNDeRQKUYyn95N7cZ1DQQD5rNl3JjM0f1ozqTJLMBt4VmSuyWK6LEnHQUDZP4AYmbdnQ+85vUqLEQIOxVcdt/30D+QNLaayF/8vZGLhj5FUSk8okXMPoCNSJyz36N2bKO/CZSr9VH45+ram6LhM9G2yjsb/mHtDUZOHI2Yl5/Lhr6xIyJ78bEDylHHBF9Zr3yQ3d397Ms+jNfCPK5j0iagGzKgV8ZObhbMBWC6E6oBd9a5Tf3IhIK5eXGeHuBIw36M7803pxjkTR8wTH0yKI/rR4A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.13
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748986437;
+	cv=none; b=CW251qTF7thn8rvCV2HlQqtE8Wkho9jxOHb9Ps3z41c1DeTfodhSM/P36Z65hePRXejwRG0ieQ7Kvr7UVJaNdp7MZJ8+C1oDvN4oWJQ4/ejMCHTak/ulV+r/QgZQMs61MFNja5mgSTBECJrDOGVRwgbBroP4lfqGoBNWv2CDYDOYagxHHmVW/Yi+SaAJTgxjJm3eN0apoK14zYX/8y9e5T42IK+40zE21ohYKiijQ3h8S/RiqZ3DNafvxgvs36WA9x07gyx0bwEBMhoA1wg/PnkBZddnPk8fN8wsy/05BiPzipnWzpDNSxA7B9xcCkGCkPDZrzXu+XMIJPcW40MHHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748986366; c=relaxed/relaxed;
-	bh=r0ROO6JQw8k4B1xCpzchdZ8NB8JXx7aNds4odXlAKyg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JN34AlpC2sdkWTHHTzeVespCPSQEO10EWjityqIMeEvtywQNRwpIN0E+BaqEiO+CF0QHnNmTWl7v7B+kp6+L29oeRKLbDGq/cbLuopmSIm8T1dTQ502Ad5p1zhOkqdAhqbO7jt6fprBCJlYRII/pMlrXdGiTt3wsP7fGqqPo/bj2LFx6Cl4KRuGerj+LQ+tj8Jr7tINg1vl8meTGanX1RpLl/JtAJMg+1dpF08eCZywoKuzHS4Fy6yahyCpOPucPwxHT6vcqb5nNHuVPvwp5XLkSVF4CxJ0MYIY/yEsx1mJzxfh2Er1hnmah9iPYsaAzu834WAoFZB7PnP8HGQ+2mQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de; dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=EMFRlFeQ; dkim-atps=neutral; spf=pass (client-ip=2001:638:a000:1025::15; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org) smtp.mailfrom=fau.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de
+	t=1748986437; c=relaxed/relaxed;
+	bh=XqIAQmi+2MagpM80lD32fIK/S0sshNCVleZWh68dUmo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Kxflyk4wYI5+9tZm5NDqDZlmZHSdBEtm8W4/jBqzgJZDIKow2a9QaGgQpN9kfmEpixk/8L2Bsba6/YGU/SomtMeurSnmJrxf1KTrUYbERXhHJpVof1LmAEg2EXSM9mcsdXVxMonPx4oC/Q3HVpCfAq2/FqBZIj04VPH7gDBYP3ZierQyCkd3UgdCT+sXwPMEbMI9GjMQqzAp0F9hTRdbaeY0bNYtWaZAAJP48SqJQUuMK6UgD2gZJQ2joVBKav//puDIGSc6Aw4toNZo+fW8AIg9DVZZ3vFQ21Miyeg811yWo9jaTWd5nNvEfZNS6V95tbO0UYrb1wmkKGhgo2yu9w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVg//miQ; dkim-atps=neutral; spf=pass (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=EMFRlFeQ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mVg//miQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fau.de (client-ip=2001:638:a000:1025::15; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org)
-Received: from mx-rz-2.rrze.uni-erlangen.de (mx-rz-2.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bBkT86pnpz2xXP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 07:32:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
-	t=1748986361; bh=r0ROO6JQw8k4B1xCpzchdZ8NB8JXx7aNds4odXlAKyg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From:To:CC:
-	 Subject;
-	b=EMFRlFeQdI9Emx7TLFKbg3oFiaFIZU7LOXY8tE4UtHQITvp2twd4qT9iL1zrbp38a
-	 Ip7kZcOtKwQrKTkC1hrLwPbwDHh3RzMCYR/j+LSKUVU+xACq7B77NIe99XTl8dt8wT
-	 ZKTUdx4y+4gkTYqMaXBZHoQbys5TQcBA8sYkbXLqG3H/EAEG9E9h5U+Rz7zEXTZ+kS
-	 Xe1GLpspBT75FME6dTJdi2LWcvilVYX1tbVYMNxao0e2IB5+t4bysLkVFDMo1QS2Hh
-	 25eiaj3/yz9nVpiHPZUSi+NdppQV1E3vw7L7UoeJLTH64dCfPk47Bf/1Im5tzDljpx
-	 pzRs+361SH/Ew==
-Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-rz-2.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4bBkT54FsyzPk0P;
-	Tue,  3 Jun 2025 23:32:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at boeck5.rrze.uni-erlangen.de (RRZE)
-X-RRZE-Flag: Not-Spam
-X-RRZE-Submit-IP: 2001:9e8:3639:fe00:a21f:4ce4:8495:5578
-Received: from luis-tp.fritz.box (unknown [IPv6:2001:9e8:3639:fe00:a21f:4ce4:8495:5578])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: U2FsdGVkX19I3k1Uhpbt0kY6hKxDfPeI5WWla0ELut8=)
-	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4bBkT02bNTzPkZc;
-	Tue,  3 Jun 2025 23:32:36 +0200 (CEST)
-From: Luis Gerhorst <luis.gerhorst@fau.de>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Xu Kuohai <xukuohai@huaweicloud.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Mykola Lysenko <mykolal@fb.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Luis Gerhorst <luis.gerhorst@fau.de>,
-	Henriette Herzog <henriette.herzog@rub.de>,
-	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
-	Cupertino Miranda <cupertino.miranda@oracle.com>,
-	Jiayuan Chen <mrpre@163.com>,
-	Matan Shachnai <m.shachnai@gmail.com>,
-	Dimitar Kanaliev <dimitar.kanaliev@siteground.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Daniel Xu <dxu@dxuuu.xyz>,
-	bpf@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kselftest@vger.kernel.org
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Maximilian Ott <ott@cs.fau.de>,
-	Milan Stephan <milan.stephan@fau.de>
-Subject: [PATCH bpf-next v4 9/9] bpf: Fall back to nospec for sanitization-failures
-Date: Tue,  3 Jun 2025 23:32:32 +0200
-Message-ID: <20250603213232.339242-1-luis.gerhorst@fau.de>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250603205800.334980-1-luis.gerhorst@fau.de>
-References: <20250603205800.334980-1-luis.gerhorst@fau.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bBkVW0xgZz2ySQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 07:33:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748986435; x=1780522435;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/72GejJlyaFyHD9yEsDhR0fa1xsa7AXd9PwGG3Wdsz4=;
+  b=mVg//miQMDqh2jH7P/hZSeGGiGb59zJxp0gCvl53Bi/lRDppQfZEa6w7
+   ZwJaRpz3ZIT9PVBL0NE+lmhaPVXLfuVSBEW86o4HhAhd52uIIq2ZMm/Zj
+   dfz3MWqqq2Shf8efjr74Vq9OP1dGVadEDih1HdcT2eFlrzJAcbpeh6B8i
+   6pyLpXM4hdgKyOrPWr28NidPg5wtf7F0pnPhn7P64o2nbU7jRFmQoO32g
+   hyRnLoh0X/TKrsVrfdjJPLzaRWfSnHFYz9YUYIa3AJLZ64IPdeIH7wHCq
+   grD3CX9UyJ735vEzTuuo/I93FZ+qu75AW35LBWQaJmUo2xVxKX7kt8/Uq
+   g==;
+X-CSE-ConnectionGUID: iNcRMAXiSXqouViJOcd1nQ==
+X-CSE-MsgGUID: aws9zRSxTZaTDVA2/jWsdA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="53673603"
+X-IronPort-AV: E=Sophos;i="6.16,207,1744095600"; 
+   d="scan'208";a="53673603"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 14:33:48 -0700
+X-CSE-ConnectionGUID: 9kvR+v10RH2jObpB+rgN1w==
+X-CSE-MsgGUID: 2OaDTlvjT92NxmD7SquWZg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,207,1744095600"; 
+   d="scan'208";a="175921907"
+Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.110.198]) ([10.125.110.198])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 14:33:46 -0700
+Message-ID: <788af5cd-4e2d-4949-9d5a-9943f13da481@intel.com>
+Date: Tue, 3 Jun 2025 14:33:43 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -115,595 +69,157 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4 v3] ACPI: extlog: Trace CPER PCI Express Error Section
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, linux-edac@vger.kernel.org
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>
+References: <20250603155536.577493-1-fabio.m.de.francesco@linux.intel.com>
+ <20250603155536.577493-4-fabio.m.de.francesco@linux.intel.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20250603155536.577493-4-fabio.m.de.francesco@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-ALU sanitization was introduced to ensure that a subsequent ptr access
-can never go OOB, even under speculation. This is required because we
-currently allow speculative scalar confusion. Spec. scalar confusion is
-possible because Spectre v4 sanitization only adds a nospec after
-critical stores (e.g., scalar overwritten with a pointer).
 
-If we add a nospec before the ALU op, none of the operands can be
-subject to scalar confusion. As an ADD/SUB can not introduce scalar
-confusion itself, the result will also not be subject to scalar
-confusion. Therefore, the subsequent ptr access is always safe.
 
-We directly fall back to nospec for the sanitization errors
-REASON_BOUNDS, _TYPE, _PATHS, and _LIMIT, even if we are not on a
-speculative path.
+On 6/3/25 8:54 AM, Fabio M. De Francesco wrote:
+> I/O Machine Check Architecture events may signal failing PCIe components
+> or links. The AER event contains details on what was happening on the wire
+> when the error was signaled.
+> 
+> Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported
+> by the I/O MCA.
+> 
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
 
-For REASON_STACK, we return the error -ENOMEM directly now. Previously,
-sanitize_err() returned -EACCES for this case but we change it to
--ENOMEM because doing so prevents do_check() from falling back to a
-nospec if we are on a speculative path. This would not be a serious
-issue (the verifier would probably run into the -ENOMEM again shortly on
-the next non-speculative path and still abort verification), but -ENOMEM
-is more fitting here anyway. An alternative would be -EFAULT, which is
-also returned for some of the other cases where push_stack() fails, but
-this is more frequently used for verifier-internal bugs.
-
-Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Acked-by: Henriette Herzog <henriette.herzog@rub.de>
-Cc: Maximilian Ott <ott@cs.fau.de>
-Cc: Milan Stephan <milan.stephan@fau.de>
----
- kernel/bpf/verifier.c                         | 89 ++++++-----------
- .../selftests/bpf/progs/verifier_bounds.c     |  5 +-
- .../bpf/progs/verifier_bounds_deduction.c     | 45 ++++++---
- .../selftests/bpf/progs/verifier_map_ptr.c    | 20 +++-
- .../bpf/progs/verifier_value_ptr_arith.c      | 97 ++++++++++++++++---
- 5 files changed, 160 insertions(+), 96 deletions(-)
-
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 2b887989f521..62c0fe3dfdd4 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -13984,14 +13984,6 @@ static bool check_reg_sane_offset(struct bpf_verifier_env *env,
- 	return true;
- }
- 
--enum {
--	REASON_BOUNDS	= -1,
--	REASON_TYPE	= -2,
--	REASON_PATHS	= -3,
--	REASON_LIMIT	= -4,
--	REASON_STACK	= -5,
--};
--
- static int retrieve_ptr_limit(const struct bpf_reg_state *ptr_reg,
- 			      u32 *alu_limit, bool mask_to_left)
- {
-@@ -14014,11 +14006,13 @@ static int retrieve_ptr_limit(const struct bpf_reg_state *ptr_reg,
- 			     ptr_reg->umax_value) + ptr_reg->off;
- 		break;
- 	default:
--		return REASON_TYPE;
-+		/* Register has pointer with unsupported alu operation. */
-+		return -EOPNOTSUPP;
- 	}
- 
-+	/* Register tried access beyond pointer bounds. */
- 	if (ptr_limit >= max)
--		return REASON_LIMIT;
-+		return -EOPNOTSUPP;
- 	*alu_limit = ptr_limit;
- 	return 0;
- }
-@@ -14039,8 +14033,14 @@ static int update_alu_sanitation_state(struct bpf_insn_aux_data *aux,
- 	 */
- 	if (aux->alu_state &&
- 	    (aux->alu_state != alu_state ||
--	     aux->alu_limit != alu_limit))
--		return REASON_PATHS;
-+	     aux->alu_limit != alu_limit)) {
-+		/* Tried to perform alu op from different maps, paths or
-+		 * scalars.
-+		 */
-+		aux->nospec = true;
-+		aux->alu_state = 0;
-+		return 0;
-+	}
- 
- 	/* Corresponding fixup done in do_misc_fixups(). */
- 	aux->alu_state = alu_state;
-@@ -14121,16 +14121,26 @@ static int sanitize_ptr_alu(struct bpf_verifier_env *env,
- 
- 	if (!commit_window) {
- 		if (!tnum_is_const(off_reg->var_off) &&
--		    (off_reg->smin_value < 0) != (off_reg->smax_value < 0))
--			return REASON_BOUNDS;
-+		    (off_reg->smin_value < 0) != (off_reg->smax_value < 0)) {
-+			/* Register has unknown scalar with mixed signed
-+			 * bounds.
-+			 */
-+			aux->nospec = true;
-+			aux->alu_state = 0;
-+			return 0;
-+		}
- 
- 		info->mask_to_left = (opcode == BPF_ADD &&  off_is_neg) ||
- 				     (opcode == BPF_SUB && !off_is_neg);
- 	}
- 
- 	err = retrieve_ptr_limit(ptr_reg, &alu_limit, info->mask_to_left);
--	if (err < 0)
--		return err;
-+	if (err) {
-+		WARN_ON_ONCE(err != -EOPNOTSUPP);
-+		aux->nospec = true;
-+		aux->alu_state = 0;
-+		return 0;
-+	}
- 
- 	if (commit_window) {
- 		/* In commit phase we narrow the masking window based on
-@@ -14183,7 +14193,7 @@ static int sanitize_ptr_alu(struct bpf_verifier_env *env,
- 					env->insn_idx);
- 	if (!ptr_is_dst_reg && ret)
- 		*dst_reg = tmp;
--	return !ret ? REASON_STACK : 0;
-+	return !ret ? -ENOMEM : 0;
- }
- 
- static void sanitize_mark_insn_seen(struct bpf_verifier_env *env)
-@@ -14199,45 +14209,6 @@ static void sanitize_mark_insn_seen(struct bpf_verifier_env *env)
- 		env->insn_aux_data[env->insn_idx].seen = env->pass_cnt;
- }
- 
--static int sanitize_err(struct bpf_verifier_env *env,
--			const struct bpf_insn *insn, int reason,
--			const struct bpf_reg_state *off_reg,
--			const struct bpf_reg_state *dst_reg)
--{
--	static const char *err = "pointer arithmetic with it prohibited for !root";
--	const char *op = BPF_OP(insn->code) == BPF_ADD ? "add" : "sub";
--	u32 dst = insn->dst_reg, src = insn->src_reg;
--
--	switch (reason) {
--	case REASON_BOUNDS:
--		verbose(env, "R%d has unknown scalar with mixed signed bounds, %s\n",
--			off_reg == dst_reg ? dst : src, err);
--		break;
--	case REASON_TYPE:
--		verbose(env, "R%d has pointer with unsupported alu operation, %s\n",
--			off_reg == dst_reg ? src : dst, err);
--		break;
--	case REASON_PATHS:
--		verbose(env, "R%d tried to %s from different maps, paths or scalars, %s\n",
--			dst, op, err);
--		break;
--	case REASON_LIMIT:
--		verbose(env, "R%d tried to %s beyond pointer bounds, %s\n",
--			dst, op, err);
--		break;
--	case REASON_STACK:
--		verbose(env, "R%d could not be pushed for speculative verification, %s\n",
--			dst, err);
--		break;
--	default:
--		verbose(env, "verifier internal error: unknown reason (%d)\n",
--			reason);
--		break;
--	}
--
--	return -EACCES;
--}
--
- /* check that stack access falls within stack limits and that 'reg' doesn't
-  * have a variable offset.
-  *
-@@ -14403,7 +14374,7 @@ static int adjust_ptr_min_max_vals(struct bpf_verifier_env *env,
- 		ret = sanitize_ptr_alu(env, insn, ptr_reg, off_reg, dst_reg,
- 				       &info, false);
- 		if (ret < 0)
--			return sanitize_err(env, insn, ret, off_reg, dst_reg);
-+			return ret;
- 	}
- 
- 	switch (opcode) {
-@@ -14531,7 +14502,7 @@ static int adjust_ptr_min_max_vals(struct bpf_verifier_env *env,
- 		ret = sanitize_ptr_alu(env, insn, dst_reg, off_reg, dst_reg,
- 				       &info, true);
- 		if (ret < 0)
--			return sanitize_err(env, insn, ret, off_reg, dst_reg);
-+			return ret;
- 	}
- 
- 	return 0;
-@@ -15125,7 +15096,7 @@ static int adjust_scalar_min_max_vals(struct bpf_verifier_env *env,
- 	if (sanitize_needed(opcode)) {
- 		ret = sanitize_val_alu(env, insn);
- 		if (ret < 0)
--			return sanitize_err(env, insn, ret, NULL, NULL);
-+			return ret;
- 	}
- 
- 	/* Calculate sign/unsigned bounds and tnum for alu32 and alu64 bit ops.
-diff --git a/tools/testing/selftests/bpf/progs/verifier_bounds.c b/tools/testing/selftests/bpf/progs/verifier_bounds.c
-index 30e16153fdf1..f2ee6d7febda 100644
---- a/tools/testing/selftests/bpf/progs/verifier_bounds.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_bounds.c
-@@ -47,9 +47,12 @@ SEC("socket")
- __description("subtraction bounds (map value) variant 2")
- __failure
- __msg("R0 min value is negative, either use unsigned index or do a if (index >=0) check.")
--__msg_unpriv("R1 has unknown scalar with mixed signed bounds")
-+__msg_unpriv("R0 pointer arithmetic of map value goes out of range, prohibited for !root")
- __naked void bounds_map_value_variant_2(void)
- {
-+	/* unpriv: nospec inserted to prevent "R1 has unknown scalar with mixed
-+	 * signed bounds".
-+	 */
- 	asm volatile ("					\
- 	r1 = 0;						\
- 	*(u64*)(r10 - 8) = r1;				\
-diff --git a/tools/testing/selftests/bpf/progs/verifier_bounds_deduction.c b/tools/testing/selftests/bpf/progs/verifier_bounds_deduction.c
-index c506afbdd936..24ecaf89004e 100644
---- a/tools/testing/selftests/bpf/progs/verifier_bounds_deduction.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_bounds_deduction.c
-@@ -8,22 +8,26 @@
- SEC("socket")
- __description("check deducing bounds from const, 1")
- __failure __msg("R0 tried to subtract pointer from scalar")
--__msg_unpriv("R1 has pointer with unsupported alu operation")
-+__failure_unpriv
- __naked void deducing_bounds_from_const_1(void)
- {
- 	asm volatile ("					\
- 	r0 = 1;						\
- 	if r0 s>= 1 goto l0_%=;				\
--l0_%=:	r0 -= r1;					\
-+l0_%=:	/* unpriv: nospec (inserted to prevent `R1 has pointer with unsupported alu operation`) */\
-+	r0 -= r1;					\
- 	exit;						\
- "	::: __clobber_all);
- }
- 
- SEC("socket")
- __description("check deducing bounds from const, 2")
--__success __failure_unpriv
--__msg_unpriv("R1 has pointer with unsupported alu operation")
-+__success __success_unpriv
- __retval(1)
-+#ifdef SPEC_V1
-+__xlated_unpriv("nospec") /* inserted to prevent `R1 has pointer with unsupported alu operation` */
-+__xlated_unpriv("r1 -= r0")
-+#endif
- __naked void deducing_bounds_from_const_2(void)
- {
- 	asm volatile ("					\
-@@ -40,22 +44,26 @@ l1_%=:	r1 -= r0;					\
- SEC("socket")
- __description("check deducing bounds from const, 3")
- __failure __msg("R0 tried to subtract pointer from scalar")
--__msg_unpriv("R1 has pointer with unsupported alu operation")
-+__failure_unpriv
- __naked void deducing_bounds_from_const_3(void)
- {
- 	asm volatile ("					\
- 	r0 = 0;						\
- 	if r0 s<= 0 goto l0_%=;				\
--l0_%=:	r0 -= r1;					\
-+l0_%=:	/* unpriv: nospec (inserted to prevent `R1 has pointer with unsupported alu operation`) */\
-+	r0 -= r1;					\
- 	exit;						\
- "	::: __clobber_all);
- }
- 
- SEC("socket")
- __description("check deducing bounds from const, 4")
--__success __failure_unpriv
--__msg_unpriv("R6 has pointer with unsupported alu operation")
-+__success __success_unpriv
- __retval(0)
-+#ifdef SPEC_V1
-+__xlated_unpriv("nospec") /* inserted to prevent `R6 has pointer with unsupported alu operation` */
-+__xlated_unpriv("r6 -= r0")
-+#endif
- __naked void deducing_bounds_from_const_4(void)
- {
- 	asm volatile ("					\
-@@ -73,12 +81,13 @@ l1_%=:	r6 -= r0;					\
- SEC("socket")
- __description("check deducing bounds from const, 5")
- __failure __msg("R0 tried to subtract pointer from scalar")
--__msg_unpriv("R1 has pointer with unsupported alu operation")
-+__failure_unpriv
- __naked void deducing_bounds_from_const_5(void)
- {
- 	asm volatile ("					\
- 	r0 = 0;						\
- 	if r0 s>= 1 goto l0_%=;				\
-+	/* unpriv: nospec (inserted to prevent `R1 has pointer with unsupported alu operation`) */\
- 	r0 -= r1;					\
- l0_%=:	exit;						\
- "	::: __clobber_all);
-@@ -87,14 +96,15 @@ l0_%=:	exit;						\
- SEC("socket")
- __description("check deducing bounds from const, 6")
- __failure __msg("R0 tried to subtract pointer from scalar")
--__msg_unpriv("R1 has pointer with unsupported alu operation")
-+__failure_unpriv
- __naked void deducing_bounds_from_const_6(void)
- {
- 	asm volatile ("					\
- 	r0 = 0;						\
- 	if r0 s>= 0 goto l0_%=;				\
- 	exit;						\
--l0_%=:	r0 -= r1;					\
-+l0_%=:	/* unpriv: nospec (inserted to prevent `R1 has pointer with unsupported alu operation`) */\
-+	r0 -= r1;					\
- 	exit;						\
- "	::: __clobber_all);
- }
-@@ -102,14 +112,15 @@ l0_%=:	r0 -= r1;					\
- SEC("socket")
- __description("check deducing bounds from const, 7")
- __failure __msg("dereference of modified ctx ptr")
--__msg_unpriv("R1 has pointer with unsupported alu operation")
-+__failure_unpriv
- __flag(BPF_F_ANY_ALIGNMENT)
- __naked void deducing_bounds_from_const_7(void)
- {
- 	asm volatile ("					\
- 	r0 = %[__imm_0];				\
- 	if r0 s>= 0 goto l0_%=;				\
--l0_%=:	r1 -= r0;					\
-+l0_%=:	/* unpriv: nospec (inserted to prevent `R1 has pointer with unsupported alu operation`) */\
-+	r1 -= r0;					\
- 	r0 = *(u32*)(r1 + %[__sk_buff_mark]);		\
- 	exit;						\
- "	:
-@@ -121,13 +132,14 @@ l0_%=:	r1 -= r0;					\
- SEC("socket")
- __description("check deducing bounds from const, 8")
- __failure __msg("negative offset ctx ptr R1 off=-1 disallowed")
--__msg_unpriv("R1 has pointer with unsupported alu operation")
-+__failure_unpriv
- __flag(BPF_F_ANY_ALIGNMENT)
- __naked void deducing_bounds_from_const_8(void)
- {
- 	asm volatile ("					\
- 	r0 = %[__imm_0];				\
- 	if r0 s>= 0 goto l0_%=;				\
-+	/* unpriv: nospec (inserted to prevent `R1 has pointer with unsupported alu operation`) */\
- 	r1 += r0;					\
- l0_%=:	r0 = *(u32*)(r1 + %[__sk_buff_mark]);		\
- 	exit;						\
-@@ -140,13 +152,14 @@ l0_%=:	r0 = *(u32*)(r1 + %[__sk_buff_mark]);		\
- SEC("socket")
- __description("check deducing bounds from const, 9")
- __failure __msg("R0 tried to subtract pointer from scalar")
--__msg_unpriv("R1 has pointer with unsupported alu operation")
-+__failure_unpriv
- __naked void deducing_bounds_from_const_9(void)
- {
- 	asm volatile ("					\
- 	r0 = 0;						\
- 	if r0 s>= 0 goto l0_%=;				\
--l0_%=:	r0 -= r1;					\
-+l0_%=:	/* unpriv: nospec (inserted to prevent `R1 has pointer with unsupported alu operation`) */\
-+	r0 -= r1;					\
- 	exit;						\
- "	::: __clobber_all);
- }
-diff --git a/tools/testing/selftests/bpf/progs/verifier_map_ptr.c b/tools/testing/selftests/bpf/progs/verifier_map_ptr.c
-index 11a079145966..a540f29b7532 100644
---- a/tools/testing/selftests/bpf/progs/verifier_map_ptr.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_map_ptr.c
-@@ -110,9 +110,17 @@ __naked void ptr_read_ops_field_accepted(void)
- 
- SEC("socket")
- __description("bpf_map_ptr: r = 0, map_ptr = map_ptr + r")
--__success __failure_unpriv
--__msg_unpriv("R1 has pointer with unsupported alu operation")
-+__success __success_unpriv
- __retval(0)
-+#ifdef SPEC_V1
-+__xlated_unpriv("r1 = 0x") /* r0 = %[map_hash_16b] ll */
-+/* This nospec is not really needed here, because there is no bypassable
-+ * branch/store that could lead to r0 not containing 0 when `r1 += r0` executes.
-+ * We still keep it like this to not complicate the verifier.
-+ */
-+__xlated_unpriv("nospec") /* inserted to prevent `R1 has pointer with unsupported alu operation` */
-+__xlated_unpriv("r1 += r0")
-+#endif
- __naked void map_ptr_map_ptr_r(void)
- {
- 	asm volatile ("					\
-@@ -134,9 +142,13 @@ __naked void map_ptr_map_ptr_r(void)
- 
- SEC("socket")
- __description("bpf_map_ptr: r = 0, r = r + map_ptr")
--__success __failure_unpriv
--__msg_unpriv("R0 has pointer with unsupported alu operation")
-+__success __success_unpriv
- __retval(0)
-+#ifdef SPEC_V1
-+__xlated_unpriv("r0 = 0x") /* r0 = %[map_hash_16b] ll */
-+__xlated_unpriv("nospec") /* inserted to prevent `R0 has pointer with unsupported alu operation` */
-+__xlated_unpriv("r1 += r0")
-+#endif
- __naked void _0_r_r_map_ptr(void)
- {
- 	asm volatile ("					\
-diff --git a/tools/testing/selftests/bpf/progs/verifier_value_ptr_arith.c b/tools/testing/selftests/bpf/progs/verifier_value_ptr_arith.c
-index fcea9819e359..a35090e3de2b 100644
---- a/tools/testing/selftests/bpf/progs/verifier_value_ptr_arith.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_value_ptr_arith.c
-@@ -41,9 +41,17 @@ struct {
- 
- SEC("socket")
- __description("map access: known scalar += value_ptr unknown vs const")
--__success __failure_unpriv
--__msg_unpriv("R1 tried to add from different maps, paths or scalars")
-+__success __success_unpriv
- __retval(1)
-+#ifdef SPEC_V1
-+__xlated_unpriv("r1 &= 7")
-+__xlated_unpriv("goto pc+1")
-+/* l3_%=: */
-+__xlated_unpriv("r1 = 3")
-+/* l4_%=: */
-+__xlated_unpriv("nospec") /* inserted to prevent `R1 tried to add from different maps, paths or scalars` */
-+__xlated_unpriv("r1 += r0")
-+#endif
- __naked void value_ptr_unknown_vs_const(void)
- {
- 	asm volatile ("					\
-@@ -79,9 +87,14 @@ l2_%=:	r0 = 1;						\
- 
- SEC("socket")
- __description("map access: known scalar += value_ptr const vs unknown")
--__success __failure_unpriv
--__msg_unpriv("R1 tried to add from different maps, paths or scalars")
-+__success __success_unpriv
- __retval(1)
-+#ifdef SPEC_V1
-+__xlated_unpriv("r1 &= 7")
-+/* l4_%=: */
-+__xlated_unpriv("nospec") /* inserted to prevent `R1 tried to add from different maps, paths or scalars` */
-+__xlated_unpriv("r1 += r0")
-+#endif
- __naked void value_ptr_const_vs_unknown(void)
- {
- 	asm volatile ("					\
-@@ -117,9 +130,16 @@ l2_%=:	r0 = 1;						\
- 
- SEC("socket")
- __description("map access: known scalar += value_ptr const vs const (ne)")
--__success __failure_unpriv
--__msg_unpriv("R1 tried to add from different maps, paths or scalars")
-+__success __success_unpriv
- __retval(1)
-+#ifdef SPEC_V1
-+__xlated_unpriv("goto pc+1") /* to l4, must not be pc+2 as this would skip nospec */
-+/* l3_%=: */
-+__xlated_unpriv("r1 = 5")
-+/* l4_%=: */
-+__xlated_unpriv("nospec") /* inserted to prevent `R1 tried to add from different maps, paths or scalars` */
-+__xlated_unpriv("r1 += r0")
-+#endif
- __naked void ptr_const_vs_const_ne(void)
- {
- 	asm volatile ("					\
-@@ -225,9 +245,18 @@ l2_%=:	r0 = 1;						\
- 
- SEC("socket")
- __description("map access: known scalar += value_ptr unknown vs unknown (lt)")
--__success __failure_unpriv
--__msg_unpriv("R1 tried to add from different maps, paths or scalars")
-+__success __success_unpriv
- __retval(1)
-+#ifdef SPEC_V1
-+__xlated_unpriv("r1 &= 3")
-+__xlated_unpriv("goto pc+3") /* must go to l4 (nospec) */
-+__xlated_unpriv("r1 = 6")
-+__xlated_unpriv("r1 = -r1")
-+__xlated_unpriv("r1 &= 7")
-+/* l4_%=: */
-+__xlated_unpriv("nospec") /* inserted to prevent `R1 tried to add from different maps, paths or scalars` */
-+__xlated_unpriv("r1 += r0")
-+#endif
- __naked void ptr_unknown_vs_unknown_lt(void)
- {
- 	asm volatile ("					\
-@@ -265,9 +294,14 @@ l2_%=:	r0 = 1;						\
- 
- SEC("socket")
- __description("map access: known scalar += value_ptr unknown vs unknown (gt)")
--__success __failure_unpriv
--__msg_unpriv("R1 tried to add from different maps, paths or scalars")
-+__success __success_unpriv
- __retval(1)
-+#ifdef SPEC_V1
-+__xlated_unpriv("r1 &= 3")
-+/* l4_%=: */
-+__xlated_unpriv("nospec") /* inserted to prevent `R1 tried to add from different maps, paths or scalars` */
-+__xlated_unpriv("r1 += r0")
-+#endif
- __naked void ptr_unknown_vs_unknown_gt(void)
- {
- 	asm volatile ("					\
-@@ -398,9 +432,27 @@ l2_%=:	r0 = 1;						\
- 
- SEC("socket")
- __description("map access: mixing value pointer and scalar, 1")
--__success __failure_unpriv
--__msg_unpriv("R2 tried to add from different maps, paths or scalars, pointer arithmetic with it prohibited for !root")
-+__success __success_unpriv
- __retval(0)
-+#ifdef SPEC_V1
-+__xlated_unpriv("goto pc+2") /* to l2, must not be pc+3 as this would skip nospec */
-+__xlated_unpriv("r2 = 0")
-+__xlated_unpriv("r3 = 1048576")
-+/* l2_%=: */
-+__xlated_unpriv("nospec") /* inserted to prevent `R2 tried to add from different maps, paths or scalars, pointer arithmetic with it prohibited for !root` */
-+__xlated_unpriv("r2 += r3")
-+__xlated_unpriv("if r1 != 0x0 goto pc+1")
-+__xlated_unpriv("goto pc+5") /* to l4 */
-+/* l3_%=: */
-+__xlated_unpriv("r0 = 322376503")
-+__xlated_unpriv("nospec") /* inserted to prevent `R2 pointer comparison prohibited` */
-+__xlated_unpriv("if r2 != 0x100000 goto pc+2") /* to l4 */
-+__xlated_unpriv("r0 = 0")
-+__xlated_unpriv("exit")
-+/* l4_%=: */
-+__xlated_unpriv("nospec")
-+__xlated_unpriv("r0 = *(u8 *)(r0 +0)")
-+#endif
- __naked void value_pointer_and_scalar_1(void)
- {
- 	asm volatile ("					\
-@@ -434,7 +486,6 @@ l2_%=:	/* common instruction */			\
- l3_%=:	/* branch B */					\
- 	r0 = 0x13371337;				\
- 	/* verifier follows fall-through */		\
--	/* unpriv: nospec (inserted to prevent `R2 pointer comparison prohibited`) */\
- 	if r2 != 0x100000 goto l4_%=;			\
- 	r0 = 0;						\
- 	exit;						\
-@@ -452,9 +503,24 @@ l4_%=:	/* fake-dead code; targeted from branch A to	\
- 
- SEC("socket")
- __description("map access: mixing value pointer and scalar, 2")
--__success __failure_unpriv
--__msg_unpriv("R2 tried to add from different maps, paths or scalars, pointer arithmetic with it prohibited for !root")
-+__success __success_unpriv
- __retval(0)
-+#ifdef SPEC_V1
-+__xlated_unpriv("goto pc+2")
-+__xlated_unpriv("r2 = r0")
-+__xlated_unpriv("r3 = 0")
-+__xlated_unpriv("nospec")
-+__xlated_unpriv("r2 += r3")
-+__xlated_unpriv("if r1 != 0x0 goto pc+1")
-+__xlated_unpriv("goto pc+5")
-+__xlated_unpriv("r0 = 322376503")
-+__xlated_unpriv("nospec")
-+__xlated_unpriv("if r2 != 0x100000 goto pc+2")
-+__xlated_unpriv("r0 = 0")
-+__xlated_unpriv("exit")
-+__xlated_unpriv("nospec") /* inserted to prevent `R0 invalid mem access 'scalar'` */
-+__xlated_unpriv("r0 = *(u8 *)(r0 +0)")
-+#endif
- __naked void value_pointer_and_scalar_2(void)
- {
- 	asm volatile ("					\
-@@ -495,7 +561,6 @@ l4_%=:	/* fake-dead code; targeted from branch A to	\
- 	 * prevent dead code sanitization, rejected	\
- 	 * via branch B however				\
- 	 */						\
--	/* unpriv: nospec (inserted to prevent `R0 invalid mem access 'scalar'`) */\
- 	r0 = *(u8*)(r0 + 0);				\
- 	r0 = 0;						\
- 	exit;						\
--- 
-2.49.0
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+>  drivers/acpi/Kconfig       |  1 +
+>  drivers/acpi/acpi_extlog.c | 32 ++++++++++++++++++++++++++++++++
+>  drivers/pci/pcie/aer.c     |  2 +-
+>  include/linux/aer.h        |  8 ++++++--
+>  4 files changed, 40 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+> index 7bc40c2735ac0..2bbd9e4868ad7 100644
+> --- a/drivers/acpi/Kconfig
+> +++ b/drivers/acpi/Kconfig
+> @@ -493,6 +493,7 @@ config ACPI_EXTLOG
+>  	tristate "Extended Error Log support"
+>  	depends on X86_MCE && X86_LOCAL_APIC && EDAC
+>  	select UEFI_CPER
+> +	select ACPI_APEI_PCIEAER
+>  	help
+>  	  Certain usages such as Predictive Failure Analysis (PFA) require
+>  	  more information about the error than what can be described in
+> diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+> index 47d11cb5c9120..b2928ff297eda 100644
+> --- a/drivers/acpi/acpi_extlog.c
+> +++ b/drivers/acpi/acpi_extlog.c
+> @@ -132,6 +132,34 @@ static int print_extlog_rcd(const char *pfx,
+>  	return 1;
+>  }
+>  
+> +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
+> +			      int severity)
+> +{
+> +	struct aer_capability_regs *aer;
+> +	struct pci_dev *pdev;
+> +	unsigned int devfn;
+> +	unsigned int bus;
+> +	int aer_severity;
+> +	int domain;
+> +
+> +	if (!(pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID ||
+> +	      pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO))
+> +		return;
+> +
+> +	aer_severity = cper_severity_to_aer(severity);
+> +	aer = (struct aer_capability_regs *)pcie_err->aer_info;
+> +	domain = pcie_err->device_id.segment;
+> +	bus = pcie_err->device_id.bus;
+> +	devfn = PCI_DEVFN(pcie_err->device_id.device,
+> +			  pcie_err->device_id.function);
+> +	pdev = pci_get_domain_bus_and_slot(domain, bus, devfn);
+> +	if (!pdev)
+> +		return;
+> +
+> +	pci_print_aer(KERN_DEBUG, pdev, aer_severity, aer);
+> +	pci_dev_put(pdev);
+> +}
+> +
+>  static int extlog_print(struct notifier_block *nb, unsigned long val,
+>  			void *data)
+>  {
+> @@ -183,6 +211,10 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
+>  			if (gdata->error_data_length >= sizeof(*mem))
+>  				trace_extlog_mem_event(mem, err_seq, fru_id, fru_text,
+>  						       (u8)gdata->error_severity);
+> +		} else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
+> +			struct cper_sec_pcie *pcie_err = acpi_hest_get_payload(gdata);
+> +
+> +			extlog_print_pcie(pcie_err, gdata->error_severity);
+>  		} else {
+>  			void *err = acpi_hest_get_payload(gdata);
+>  
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index d0ebf7c15afa9..627fcf4346983 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -801,7 +801,7 @@ void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
+>  	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
+>  			aer_severity, tlp_header_valid, &aer->header_log);
+>  }
+> -EXPORT_SYMBOL_NS_GPL(pci_print_aer, "CXL");
+> +EXPORT_SYMBOL_GPL(pci_print_aer);
+>  
+>  /**
+>   * add_error_device - list device to be handled
+> diff --git a/include/linux/aer.h b/include/linux/aer.h
+> index 45d0fb2e2e759..6ce433cee4625 100644
+> --- a/include/linux/aer.h
+> +++ b/include/linux/aer.h
+> @@ -56,16 +56,20 @@ struct aer_capability_regs {
+>  #if defined(CONFIG_PCIEAER)
+>  int pci_aer_clear_nonfatal_status(struct pci_dev *dev);
+>  int pcie_aer_is_native(struct pci_dev *dev);
+> +void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
+> +		   struct aer_capability_regs *aer);
+>  #else
+>  static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
+>  {
+>  	return -EINVAL;
+>  }
+>  static inline int pcie_aer_is_native(struct pci_dev *dev) { return 0; }
+> +static inline void pci_print_aer(char *level, struct pci_dev *dev,
+> +				 int aer_severity,
+> +				 struct aer_capability_regs *aer)
+> +{ }
+>  #endif
+>  
+> -void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
+> -		   struct aer_capability_regs *aer);
+>  int cper_severity_to_aer(int cper_severity);
+>  void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
+>  		       int severity, struct aer_capability_regs *aer_regs);
 
 
