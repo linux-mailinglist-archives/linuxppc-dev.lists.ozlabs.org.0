@@ -1,79 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-9097-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9098-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BE8ACC7EC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jun 2025 15:35:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F222ACC7FC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jun 2025 15:37:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bBWt93zVmz2yNG;
-	Tue,  3 Jun 2025 23:35:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bBWwH6YnDz2yRD;
+	Tue,  3 Jun 2025 23:37:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::f2b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748957713;
-	cv=none; b=f5VwcMRqbPv4oKWdRTqXg+AT6CxZbbxrYZVxunMrdwr70e590RdZHviy+oDylm9GfZEVmdoASoK0lrjOZRlwtwAOxvBVsVBDF8uZlyilc2AxfJfWki/7G7fQFHR72otMQLr1+Qpug466pBBujZGJ+jv/2rq4zzf5M85MB6OPbUvWcLtWyAt+8CnJZdJiAZiu8a+/5GZyQvWrYaSRl3V9CASd7wMBL4jQOnoqM7KKmeBuMBlhgljguWOA3y++DhP9sS4iCLhxJHpVxw/GAt9lWjob5bFm/QY0hDMe1c234aBHoqWL/r5Q1ApQxHv5r6JP36Isoai3ctR09B/0UyDyFg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::72e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748957823;
+	cv=none; b=GFl9QcDjt8yPSpU8UeYGA7qQlCaSyZMnqMCZ/ThFnW/hJ1ragZBeE2rPFEhEUEvVEI+fX2BTmQQz1h8g9XeE6S1m7W/ZtDOLorRMfR6kx62reYfamCzXJ+RScJlO2S5MmUvtYWd8HOTI8OWxr0oY8nzUBsDReOR4UPXO0PxhucukMniIYettoIEMq/9MDQO6l0ccdGQ/JaX7LIVmlConW23Hz/QAk08N73sXJXJ7BCChkfmXc+u1hvsS7DH3isjWFcgFhhqg1eDnLUwgb/NJc0fcHgNPQLo5pCb7Mg6/+29dnFpkOYb33jb+0nO/WE5cCpxOqTICjdvZUpxq3nG29w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748957713; c=relaxed/relaxed;
-	bh=csMjX6EgdDvsoUroDDkC2t6M2H8xOJU7irccfVA/OHY=;
+	t=1748957823; c=relaxed/relaxed;
+	bh=M2tOvYIRYhJ3zgazeT9iy9SxHIfkqCxujQJZWAlLZ4g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N8a86E1XdqKIaZS0EmlhpaJouQ+Gy++EQvkM/j4PPpPgP1WGELop4UU2eDvnR/WPjkWYkGuvd81R2DKMhyFBKWiEJFL68rhxD6B2UPZ9i2x3nuKt3reE25/9S1O46kaEZTsTD8g+2A4LimyTM6G4Bjr3jVZGXtL05G3d9/1G51wO+VYQHHo/BkX6s6SEZzW3Yo9EZIF4dgWn0oteDS97cMNKfIHfBr25/5Stz4MHfmtIgPTaHVVrbw4T4/NzkWvbs5PCa9kdHmWLNxVnwHZL28IEuTc6/VMUTlEvMpQbaQXRiRUl1qA9CnXrI8lD8EWFfmnUKAVgrcL3/5PAMABaNw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=NLROuPsX; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::f2b; helo=mail-qv1-xf2b.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org) smtp.mailfrom=ziepe.ca
+	 Content-Type:Content-Disposition:In-Reply-To; b=epOa4XC6prGF45FJEiFYzlu05fb9QLdSldRxzv7GYy3F3JhPfhE6jUUTH7DJQtNwzcJLoBmAc6IXuCQaG3EfQjX0SJiD7JiXbOjdTZe7Rv/Wx3isCUMmCQF3MWUx2lSPuNmLRjwXPkd2pBDfMC7WWEgWIJsSVlPjuMzDt6nrICvT3wV9xc2SGaQWlqyZOwFnNsNeaTUQLIzLhKVUsJeAJFcoC2Xh78DtJ1BcTTf2NcobLkV52X11EQA/w96ncD1YILEdh4e8kBX533xbN7e0cM6xodpA7yrcz5Woh6Y++o8xeBwtYjesN5tOvsStiP89cCMhsEFcFWUteoNjM78kAw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bcv6CrDH; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::72e; helo=mail-qk1-x72e.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org) smtp.mailfrom=ziepe.ca
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=NLROuPsX;
+	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=bcv6CrDH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::f2b; helo=mail-qv1-xf2b.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::72e; helo=mail-qk1-x72e.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bBWt85k6Jz2xXP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jun 2025 23:35:12 +1000 (AEST)
-Received: by mail-qv1-xf2b.google.com with SMTP id 6a1803df08f44-6fac7b6fd32so29254336d6.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Jun 2025 06:35:12 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bBWwH1gMsz2yPS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jun 2025 23:37:03 +1000 (AEST)
+Received: by mail-qk1-x72e.google.com with SMTP id af79cd13be357-7d20f799fe9so127536685a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 03 Jun 2025 06:37:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1748957710; x=1749562510; darn=lists.ozlabs.org;
+        d=ziepe.ca; s=google; t=1748957821; x=1749562621; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=csMjX6EgdDvsoUroDDkC2t6M2H8xOJU7irccfVA/OHY=;
-        b=NLROuPsX5z6ocWPKeprIzdH45ft9q0sQ2oIbFmVWxLnjKs1I1xQZYwQl0nErS70wcr
-         af7ZuUVbBXqeyOXWMiK92Hm+4SMzhujBWg5h/YnlnamzGN+A9Hlm3ATIJ7jG5Ip+xgFR
-         QqyB5y2LYolv9adoeXCcqfzM7MeHbnaYFogNaP651QvfItA1qu/YN5DZKfb7GB+4MJth
-         zzOH/x0Gg9ekoWdretpariRjxisXoUmmoC4Q1p3I0/p2nZhHbnM6i8bXyBTjmkSGueK/
-         KZ8irnd1YEv0pYSl9Vv2F991qM+nNuJ5Y+Kz5hWZ7t79hB7LTwt1PkbIir00U6vH0pfl
-         OKPA==
+        bh=M2tOvYIRYhJ3zgazeT9iy9SxHIfkqCxujQJZWAlLZ4g=;
+        b=bcv6CrDHOmz0eFrzdhfe+U/IEcDms7fYzFWM0LsezRT2aoe7NYgqLMDrMX8CYl+po4
+         XJil9CQYzgQf1e48lDcToDEryYNxOUd03nVbs117Wx+H2FOLr7hhh4kSpJ4WwUWQH5Ur
+         mYRX4nb4XAhE2AKv+tCYnza+pm9+deOZsMmtHTjU3lkNSJu6AUZ3sudgPoXymaeDQ4WI
+         5BSfHxuVlbmpFskxGrAA3+6xqXzL0saRnjczSeGstuEl+Om99ZUefScYTgPY4dFZu+QE
+         1huf4r04iWqUChWDSz6mWWR/C4D5rEK0an7YGGmrZLbEPlDx7W3nEPmFekfpRyf8f2T2
+         OSMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748957710; x=1749562510;
+        d=1e100.net; s=20230601; t=1748957821; x=1749562621;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=csMjX6EgdDvsoUroDDkC2t6M2H8xOJU7irccfVA/OHY=;
-        b=qQulZlsdgndEBweOUub7tMIHP88yj3gUc219RvZ4rFLTpWVm02hnY88kKBFQnlBGey
-         kUPGaYMujQkn/7F/VZa6b6uQ1jfK9G3pw3sDgIEAwjIC5oA77b/fDT5BpHep2EBSa4Nw
-         Q1aG0zb0jbVCSRlFjdRdY1JeUOHxXtHvdIPxtuZx2VOvSELzc8g2v1/ntxXK92u4BU9l
-         EhdKtFu1lRMx9hCBwueDYv1ePzR2UqQMf45xXJE7vN3Hc2tDwPfInsT4r4nbnGh5S5cH
-         9WxRUDnWMzdq+wrOYZeTZbke8H+7c8OJn+8qqKniv+2fXuqsayMtQDPF7D/C9THScM4e
-         8Pcw==
-X-Forwarded-Encrypted: i=1; AJvYcCUy4JK1MXsMwCuQ7+bjYF1IBbL72hmB8dAfCeOdUq7zZ8ENlmnsUI82JgL5HcgJR4ut//C2PTRLgfJiNKw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwTwAB3I1JY+xQ/dOI00ejGdcIVAW6KA+uJ7VnPzWRym4jPnBAT
-	K7d2ccv4+an2aBE3E0CmfMZMhRmXIqf/zCe6QijdIrWANQkDUCyH2xzflnf3Zm+/l8A=
-X-Gm-Gg: ASbGnctqsJ5Va/yK80+iKR8BoM83YFlyfiwC2CwOaJAQ8mcHmJfZUCGiF4LtQabl10b
-	zacYBSX6vsGVGKT7pSK8UIabhgSim6CczMliChzvGATv2umXv04AmdupkaCj0GTF5/pkch2K45O
-	VfY3p9uBJiSdQL81rbW6lvfJRnBZgBf8GHMPdUcfDHRrPeMQPcaz+RR7b3w56KUIHFCxbKVGnog
-	SoMaBBeHpNsBdRKq0PPvwe4SNAk8Ey7Jj2TBTA/U4XLBdvOE5C6tkxHHB/WEeNr+QBCoqyeHUT1
-	zRNigKlGW9adLnjYDGQMpUMPVK2SF406GQTMC0fa793U7hfNePLp+/WcrLoT4fb0DCpBlH9YkjY
-	P3cF4UFoop8UEksqjw6qpMvHPdX3YDZdMCsobbQ==
-X-Google-Smtp-Source: AGHT+IGTO1Uq6qWKkHjHjzXPtbeutCQLStskBTpgABiXf8IiWIF7+BRGzTPM/WsKdaJBbv1DscVTNw==
-X-Received: by 2002:a05:6214:d87:b0:6eb:1e80:19fa with SMTP id 6a1803df08f44-6fad9090760mr153489766d6.1.1748957710547;
-        Tue, 03 Jun 2025 06:35:10 -0700 (PDT)
+        bh=M2tOvYIRYhJ3zgazeT9iy9SxHIfkqCxujQJZWAlLZ4g=;
+        b=NmeTcuOaZm62FCbT//FmAn3+1+UWBRI2BR0R14L3BpeM384+eDFO+xwsDtaNDn+rDa
+         XqKH4mvsaWtmAxlLnLOG/52f9NG3g/gt7ib3ivruX+lpsX9zlNnQgE8e7OEP7m8S0Pvm
+         tybWbRD2vEFs0al4wyiMOlQplC2F8WyKwMJpNB6agNEwllfnNc+OkcxS7ISP8jP87tAO
+         zZIed8hN1+gLymaRN6SKnGN091zgxvu3p1xzmGN0HgBWLUp2XMxj10U6+YHhRzmJThOl
+         CbzHDfHKzZdbVSYSBG0WDwt/VL9jrSl2kQo4lq6B13r4fHUzQnEjUaJe5B6+7F3BSTCZ
+         BXag==
+X-Forwarded-Encrypted: i=1; AJvYcCWNw8ax3lHJ+2xQLcPBgX5PrhQVY0I4AFmbb3p64Jr/e+AeG+2g+sI/mX6Y+PA0iaP6sKR3KH1kvGOHwow=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz3+zEKA/580khBJ60uytAwaAHn78vDzEumxdVF9lvSkLAJ0cJp
+	+2z4kewkNocqifzUfQuNt87DNn0MuAk6H7kaX0eatNubYz/y6ilLTwerpOFOnfEGOK0=
+X-Gm-Gg: ASbGncvpeo+JjNVWzezYAtjQDM5HuN5oCMAYI/HJK7ucK1bjgvnIoNISuizQbpNnqS/
+	QvfGgUnmAGsoy7Ephgkti5SBZR3hqVmr0BJzHQpes63NVUABwEBfRGYd/YKB21vlqfDcY0fVN8v
+	EqO15DAmrXUtHlYvEK605f+Refg1wPguu2T5I+YSaArB7QqJivrmxm4/BBBW8YAkOgiSm0Nx6BK
+	2ZlWpp6Kep2tPwfW+DXRu5y6/YIC3JNNcPO2LE+RX+hc12M08Cuc+JnVavn3hQZw6FUOTGzW2W8
+	in98+U9QXtI6XJ8kQFqy3yfIfQwzs69tX/2SJGJdDpC9SxDKJP7cvxFBpGz+MAXRz/oTwaNNWvf
+	k88gazisMbQbU2S6YXFgRhtAivsQ=
+X-Google-Smtp-Source: AGHT+IF/1nQKKWghBymIv6kapapYp3T/T+mDb2uBcjAQYD1rkFwd/p2CMx7wy82AG8RXeUKzw729SQ==
+X-Received: by 2002:a05:620a:4408:b0:7c5:3d60:7f8d with SMTP id af79cd13be357-7d0a1fb91a0mr2626422385a.19.1748957820692;
+        Tue, 03 Jun 2025 06:37:00 -0700 (PDT)
 Received: from ziepe.ca (hlfxns017vw-142-167-56-70.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.56.70])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fac6e2fc45sm80639296d6.122.2025.06.03.06.35.09
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d09a0fa38fsm842635185a.35.2025.06.03.06.37.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Jun 2025 06:35:10 -0700 (PDT)
+        Tue, 03 Jun 2025 06:37:00 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1uMRnJ-00000001h4R-2OPU;
-	Tue, 03 Jun 2025 10:35:09 -0300
-Date: Tue, 3 Jun 2025 10:35:09 -0300
+	id 1uMRp5-00000001h5Y-2rWO;
+	Tue, 03 Jun 2025 10:36:59 -0300
+Date: Tue, 3 Jun 2025 10:36:59 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: Alistair Popple <apopple@nvidia.com>
 Cc: linux-mm@kvack.org, gerald.schaefer@linux.ibm.com,
@@ -87,10 +87,10 @@ Cc: linux-mm@kvack.org, gerald.schaefer@linux.ibm.com,
 	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
 	linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org,
 	John@groves.net
-Subject: Re: [PATCH 02/12] mm: Convert pXd_devmap checks to vma_is_dax
-Message-ID: <20250603133509.GC386142@ziepe.ca>
+Subject: Re: [PATCH 03/12] mm/pagewalk: Skip dax pages in pagewalk
+Message-ID: <20250603133659.GD386142@ziepe.ca>
 References: <cover.541c2702181b7461b84f1a6967a3f0e823023fcc.1748500293.git-series.apopple@nvidia.com>
- <224f0265027a9578534586fa1f6ed80270aa24d5.1748500293.git-series.apopple@nvidia.com>
+ <1799c6772825e1401e7ccad81a10646118201953.1748500293.git-series.apopple@nvidia.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,29 +106,31 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <224f0265027a9578534586fa1f6ed80270aa24d5.1748500293.git-series.apopple@nvidia.com>
+In-Reply-To: <1799c6772825e1401e7ccad81a10646118201953.1748500293.git-series.apopple@nvidia.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, May 29, 2025 at 04:32:03PM +1000, Alistair Popple wrote:
-> Currently dax is the only user of pmd and pud mapped ZONE_DEVICE
-> pages. Therefore page walkers that want to exclude DAX pages can check
-> pmd_devmap or pud_devmap. However soon dax will no longer set PFN_DEV,
-> meaning dax pages are mapped as normal pages.
-> 
-> Ensure page walkers that currently use pXd_devmap to skip DAX pages
-> continue to do so by adding explicit checks of the VMA instead.
+On Thu, May 29, 2025 at 04:32:04PM +1000, Alistair Popple wrote:
+> Previously dax pages were skipped by the pagewalk code as pud_special() or
+> vm_normal_page{_pmd}() would be false for DAX pages. Now that dax pages are
+> refcounted normally that is no longer the case, so add explicit checks to
+> skip them.
 > 
 > Signed-off-by: Alistair Popple <apopple@nvidia.com>
 > ---
->  fs/userfaultfd.c | 2 +-
->  mm/hmm.c         | 2 +-
->  mm/userfaultfd.c | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+>  include/linux/memremap.h | 11 +++++++++++
+>  mm/pagewalk.c            | 12 ++++++++++--
+>  2 files changed, 21 insertions(+), 2 deletions(-)
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+But why do we want to skip them?
+
+Like hmm uses pagewalk and it would like to see DAX pages?
+
+I guess it makes sense from the perspective of not changing things,
+but it seems like a comment should be left behind explaining that this
+is just for legacy reasons until someone audits the callers.
 
 Jason
 
