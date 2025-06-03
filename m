@@ -1,49 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-9090-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9091-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E40BACC2D0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jun 2025 11:20:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A589CACC3C8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jun 2025 11:58:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bBQDR1W9fz2yKq;
-	Tue,  3 Jun 2025 19:20:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bBR3Y1Qc6z2yKq;
+	Tue,  3 Jun 2025 19:58:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748942439;
-	cv=none; b=TmTeBt/3et7seQwCjvxXagsz7at6hVaGFgw63P09j+X4zQiu5WSe2KTZnroAx7gGe2Nt666Qq/n/3b3KSwmKI/MGfxpi7mT8/rBmMJZQm3Vdt7qrAmb4Qbng249J5UnQQDegWz6Nsnkip14vrTJIV5ms7K6DKRbf6HR4AQ7mrkxvlIwafbpXwtPv5Roi9thvu/OoG0UwFM5mOKqo9VIUm3/NDtp83sE8RXVzx+MjMcxHwkNjO92Gtkgbsk6DkUSX55iYIa6pxj1Hgyu5iEYLFdcOXr+eugqHd94vXe3KAjm9Jt1Xlazg4p5dxhgVi/I5jQ5txek78jQHSvjKZJpnEQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748944681;
+	cv=none; b=OlUY/xxfppL7DXH+BrCZsYmBTlRDfaXVeKoRzd9xTQ2GTp+68zY++3xERF3m4qngTYyIg1nqHxYTUwgd65tr6wWZ8xhtJiSA8Bd0AyOrwqgRgU0EoOEN/DMzP7q8j7gNCwDGAbjR5nV73X5DNPhEfbhU5vjeNzHUc0IU9FvhNn2kLIfMX8fqoUs5elCprKbXn7/q4AfP839kliW2w98N1VupDZD2P0Fs2QsUREQgFPDNGKmEjryf1PiCE5R7cPoy5nCtNIu8ARbnB9HvYkPZT9hoj5yuW4M/gj0pPt9H22Ndk9+DZhWVHg9XijayyHoIn7XtspLw3Qw5GG1FlMaxVg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748942439; c=relaxed/relaxed;
-	bh=Gi4pnJe8q6ibL5BjnDRP0VZ9vvOTUReuVIXw6NC6Too=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=maBxSFlpqTXjEhs7pB6JHlX4igqq2qOnddjENq/tNdO+loCbYQrTMv0+3X2DTq5eJ8bxeG1yr+3jnvT0Lkh2Wy3zONu/qLHdZGY9Mr080KsnwxTYlSeK9hEn+QJzG9PNMapEm4IfHl0pO0mf9e/N7ju5CMxM5UZ8yeAB23+8gBt3fPJOcgyS7LvofkUEKedwhziCJ+eT113/FSafDAcSUrspyKb+Ip4Zdhs+HJ4Ar3NJcbUJUYUMXUzMz4BOvEUwswZol+33Qr8SYpYDRkZqd1D9SDlQEdhClL3U2yf5dtT0xYwGEdnpVYeUElvi3yXwuUnUAp3LrV1GqYInQjyVsQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bBQDQ2Bkzz2xXP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jun 2025 19:20:37 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bBPbv4FNNz9s92;
-	Tue,  3 Jun 2025 10:52:27 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id U7IUxrE3Y_nw; Tue,  3 Jun 2025 10:52:27 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bBPbm3Y1Nz9vY6;
-	Tue,  3 Jun 2025 10:52:20 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 742888B765;
-	Tue,  3 Jun 2025 10:52:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id IcNMaBpAWABq; Tue,  3 Jun 2025 10:52:20 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id CD8958B763;
-	Tue,  3 Jun 2025 10:52:19 +0200 (CEST)
-Message-ID: <840249c5-2602-4178-a408-f7d502111f79@csgroup.eu>
-Date: Tue, 3 Jun 2025 10:52:19 +0200
+	t=1748944681; c=relaxed/relaxed;
+	bh=YX9LFSa/7QyR6POXyugS4CZIYrOrq8GYyI1/cDzcRxk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FXOnz4qL88vmi5noR7bz3rgK8ojtEdADqumDKFOsAwKMPLPfwbofjyocnNOM8Ha67lMThvthx4I8zJZoCji+Wg/LIa7JDlxY61xGTCjFZjFN5KQ0BwLuJBcbS4f/whwlLeH+Kc2Oc92CWrVlFpraxGslfnW8PkUGMr5qmnKAmRhXFBSe+w2skhjXDQIwQmHld9IGUFtDwICFrio8E4ueENBjbv4T9QM0Dk0L+BILgPJ4xdQ4Nb0DCRc/0+PqUYp3E999vHtTwErHZuRwQ0L+PF63rktYjl7KMw9cSatBZ0wEoG+o/Ilz5j89r3b+/Nheeh+ZFFt9TgDHFbmdY7WMtQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W/eg6vh5; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=W/eg6vh5;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bBR3W6NnJz2y8l
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jun 2025 19:57:59 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55378LHh027006;
+	Tue, 3 Jun 2025 09:57:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=YX9LFSa/7QyR6POXyugS4CZIYrOrq8GYyI1/cDzcR
+	xk=; b=W/eg6vh5BA8egru0IT339pYMEcjpglxrRYMAOV1WrRv9IyeeNrd9vKe2O
+	oK5crQrqFGQ9Bpry+EBNxujr+QF3+CRF/F83MW/wHdb64UDfDmwRe1GuAcn+QmlO
+	AURxlFXGTOtM/0UhEN6Z2IfSc7nm1/xO1HuieqPV4DpFersuMNbJ829AcaB/7itl
+	ye1m9AiQxPLZ0EECNYEYkiHt1SREuGeFvDdRzJ3K9dEUbNQkZPeKjgNwaaFIqbE1
+	88m2jsh69l9rrDfskw/nGwZPVnpqgNxA4LHU1rSHQyb1bua+yYvtAA9Th6Uiw6Z4
+	PiOaUjpmo5ysOahOTjLWe5DI4tL6A==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471gw1ueuq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Jun 2025 09:57:45 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5539vj5p016447;
+	Tue, 3 Jun 2025 09:57:45 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471gw1ueun-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Jun 2025 09:57:45 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5539vSAv031633;
+	Tue, 3 Jun 2025 09:57:44 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 470cfytahe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Jun 2025 09:57:44 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5539veUJ21430608
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 3 Jun 2025 09:57:40 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 410842004D;
+	Tue,  3 Jun 2025 09:57:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D09AC20040;
+	Tue,  3 Jun 2025 09:57:37 +0000 (GMT)
+Received: from li-fc74f8cc-3279-11b2-a85c-ef5828687581.in.ibm.com (unknown [9.204.203.112])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  3 Jun 2025 09:57:37 +0000 (GMT)
+From: Srish Srinivasan <ssrish@linux.ibm.com>
+To: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, ajd@linux.ibm.com,
+        zohar@linux.ibm.com, nayna@linux.ibm.com, rnsastry@linux.ibm.com,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/3] Enhancements to the secvar interface in static key management mode
+Date: Tue,  3 Jun 2025 15:27:33 +0530
+Message-ID: <20250603095736.99007-1-ssrish@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,182 +92,87 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] powerpc/ftrace: support CONFIG_FUNCTION_GRAPH_RETVAL
-To: Aditya Bodkhe <adityab1@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
- rostedt@goodmis.org, mhiramat@kernel.org, mark.rutland@arm.com,
- Aditya Bodkhe <aditya.b1@linux.ibm.com>
-References: <20250528134820.74121-1-adityab1@linux.ibm.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250528134820.74121-1-adityab1@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjAzMDA4MyBTYWx0ZWRfXwV5LxK6MPDMW aHchcHZZmDW9L01m+j6ADTsNNakgtKlERqjjPnyXWp1TF+fFvUjtaflt2w0ABkwWzdNj7Oq/dQP 2jMsLn+MLdp59lhPB+Y4MNArujWT1CuZFX42RaMCUBIFdrlcdK1lp7CN70oFI7CL01D2xg5hu5x
+ JnbsL/wkptkf8HfFtXdnQ1KtiqTDClHdBnWpMigf20Bh6n/bpC4cvRK9B4er92ZmhcyFTn6QhBH 2bHec/PZ44uH69S7/e23mK5CrVqruHD5IqRBHPswEMvljGZZrodiqagVSUTTTf3pr5UPYf5y4M+ gjZAgUNgSJIUeEa66TfCM5NVK7d3l5E4voKi3c7B07VN0xNc68BJxLWernCkkrMLA8ExTxQpmIm
+ dbUmYsiSWsTngBJrcwO75zirW31TEaWhqJZk3wtUG7h/t6e+fzVx7vjA0w264g48gHywLBxt
+X-Proofpoint-ORIG-GUID: QFSr4ee-26jKGWkCKXUsKu2R00gsLTtQ
+X-Authority-Analysis: v=2.4 cv=HcIUTjE8 c=1 sm=1 tr=0 ts=683ec719 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=6IFa9wvqVegA:10 a=-GDc6ojF7u6cf32OQp4A:9
+X-Proofpoint-GUID: lb-3DSGmYK8w3mPDGzKgh3DsjvTBU0qu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-03_01,2025-06-02_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1015 mlxlogscore=999 suspectscore=0 malwarescore=0
+ impostorscore=0 phishscore=0 spamscore=0 bulkscore=0 mlxscore=0
+ adultscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2506030083
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+The PLPKS enabled Power LPAR sysfs exposes all of the secure boot secure
+variables irrespective of the key management mode. There is support for
+both static and dynamic key management and the key management mode can
+be updated using the management console. The user can modify the secure
+boot secvars db, dbx, grubdb, grubdbx, and sbat only in the dynamic key
+mode. But the sysfs interface exposes these secvars even in static key
+mode. This could lead to errors when reading them or writing to them in
+the static key mode.
+
+Update the secvar format property based on the key management mode and
+expose only the secure variables relevant to the key management mode.
+Enable loading of signed third-party kernel modules in the static key
+mode when the platform keystore is enabled.
+
+Changelog:
+
+v3:
+
+* Patch 1:
+
+  - Minor changes to the documentation based on feedback from Andrew.
+  - Added reviewed-by from Andrew.
+
+v2:
+
+* Patch 1:
+
+  - Updated plpks_get_sb_keymgmt_mode to handle -ENOENT and -EPERM in
+    the case of static key management mode, based on feedback from
+    Andrew.
+  - Moved the documentation changes relevant to the secvar format
+    property from Patch 2 to Patch 1.
+  - Added reviewed-by from Nayna.
+
+* Patch 2:
+
+  - Moved the documentaton changes relevant to secure variables from
+    /sys/firmware/secvar/format to
+    /sys/firmware/secvar/vars/<variable name>.
+  - Added reviewed-by from Nayna and Andrew.
+
+* Patch 3:
+
+  - Added reviewed-by from Nayna and Andrew.
 
 
-Le 28/05/2025 à 15:48, Aditya Bodkhe a écrit :
-> [Vous ne recevez pas souvent de courriers de adityab1@linux.ibm.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> From: Aditya Bodkhe <aditya.b1@linux.ibm.com>
-> 
-> commit a1be9ccc57f0 ("function_graph: Support recording and printing the
-> return value of function") introduced support for function graph return
-> value tracing.
-> 
-> Additionally, commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with
-> ftrace_regs") further refactored and optimized the implementation,
-> making `struct fgraph_ret_regs` unnecessary.
-> 
-> This patch enables the above modifications for powerpc64, ensuring that
-> function graph return value tracing is available on this architecture.
+Srish Srinivasan (3):
+  powerpc/pseries: Correct secvar format representation for static key
+    management
+  powerpc/secvar: Expose secvars relevant to the key management mode
+  integrity/platform_certs: Allow loading of keys in the static key
+    management mode
 
-Why only powerpc64 ?
+ Documentation/ABI/testing/sysfs-secvar        |  16 ++-
+ arch/powerpc/platforms/pseries/plpks-secvar.c | 104 ++++++++++++------
+ .../integrity/platform_certs/load_powerpc.c   |   5 +-
+ 3 files changed, 86 insertions(+), 39 deletions(-)
 
-I see nothing specific to powerpc64 in your patch, will it work on 
-powerpc32 too ?
-
-> 
-> After this patch, v6.14+ kernel can also be built with FPROBE on powerpc
-> but there are a few other build and runtime dependencies for FPROBE to
-> work properly. The next patch addresses them.
-> 
-> Signed-off-by: Aditya Bodkhe <aditya.b1@linux.ibm.com>
-> ---
->   arch/powerpc/Kconfig                     |  1 +
->   arch/powerpc/include/asm/ftrace.h        | 15 +++++++++
->   arch/powerpc/kernel/trace/ftrace_entry.S | 41 ++++++++++++++----------
->   3 files changed, 40 insertions(+), 17 deletions(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index c3e0cc83f120..9163521bc4b9 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -250,6 +250,7 @@ config PPC
->          select HAVE_FUNCTION_ARG_ACCESS_API
->          select HAVE_FUNCTION_DESCRIPTORS        if PPC64_ELF_ABI_V1
->          select HAVE_FUNCTION_ERROR_INJECTION
-> +       select HAVE_FUNCTION_GRAPH_FREGS
->          select HAVE_FUNCTION_GRAPH_TRACER
->          select HAVE_FUNCTION_TRACER             if !COMPILE_TEST && (PPC64 || (PPC32 && CC_IS_GCC))
->          select HAVE_GCC_PLUGINS                 if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
-> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-> index 82da7c7a1d12..6ffc9c9cf4e3 100644
-> --- a/arch/powerpc/include/asm/ftrace.h
-> +++ b/arch/powerpc/include/asm/ftrace.h
-> @@ -50,6 +50,21 @@ static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *
->                  asm volatile("mfmsr %0" : "=r" ((_regs)->msr)); \
->          } while (0)
-> 
-> +#undef ftrace_regs_get_return_value
-> +static __always_inline unsigned long
-> +ftrace_regs_get_return_value(const struct ftrace_regs *fregs)
-> +{
-> +       return arch_ftrace_regs(fregs)->regs.gpr[3];
-> +}
-> +#define ftrace_regs_get_return_value ftrace_regs_get_return_value
-> +
-> +#undef ftrace_regs_get_frame_pointer
-> +static __always_inline unsigned long
-> +ftrace_regs_get_frame_pointer(const struct ftrace_regs *fregs)
-> +{
-> +       return arch_ftrace_regs(fregs)->regs.gpr[1];
-> +}
-> +
-
-Why unset and redefine ftrace_regs_get_return_value() and 
-ftrace_regs_get_frame_pointer() ? Please explain why the default ones 
-can't be used on powerpc.
-
->   static __always_inline void
->   ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
->                                      unsigned long ip)
-> diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-> index 3565c67fc638..eafbfb7584ed 100644
-> --- a/arch/powerpc/kernel/trace/ftrace_entry.S
-> +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-> @@ -409,23 +409,30 @@ EXPORT_SYMBOL(_mcount)
->   _GLOBAL(return_to_handler)
->          /* need to save return values */
->   #ifdef CONFIG_PPC64
-> -       std     r4,  -32(r1)
-> -       std     r3,  -24(r1)
-> +       stdu    r1, -SWITCH_FRAME_SIZE(r1)
-> +       std     r4, GPR4(r1)
-> +       std     r3, GPR3(r1)
-> +  /* Save previous stack pointer (r1) */
-> +       addi    r3, r1, SWITCH_FRAME_SIZE
-> +       std     r3, GPR1(r1)
->          /* save TOC */
-> -       std     r2,  -16(r1)
-> -       std     r31, -8(r1)
-> +       std     r2,  24(r1)
-> +       std     r31, 32(r1)
->          mr      r31, r1
-> -       stdu    r1, -112(r1)
-> -
-> +  /* pass ftrace_regs/pt_regs to ftrace_return_to_handler */
-> +       addi    r3,  r1, STACK_INT_FRAME_REGS
-
-Some of the changes seems to only be renaming and should be done in a 
-cleanup/preparatory patch in order to only focus on real necessary 
-changes in this patch.
-
->          /*
->           * We might be called from a module.
->           * Switch to our TOC to run inside the core kernel.
->           */
->          LOAD_PACA_TOC()
->   #else
-> -       stwu    r1, -16(r1)
-> -       stw     r3, 8(r1)
-> -       stw     r4, 12(r1)
-> +       stwu    r1, -SWITCH_FRAME_SIZE(r1)
-
-Why do we need such a big frame size just to save two registers ?
-
-> +       stw     r4, GPR4(r1)
-> +       stw     r3, GPR3(r1)
-> +       addi    r3, r1, SWITCH_FRAME_SIZE
-> +       stw     r3, GPR1(r1)
- > +       addi    r3, r1, STACK_INT_FRAME_REGS
-
-Why is this needed ?
-
->   #endif
-> 
->          bl      ftrace_return_to_handler
-> @@ -435,15 +442,15 @@ _GLOBAL(return_to_handler)
->          mtlr    r3
-> 
->   #ifdef CONFIG_PPC64
-> -       ld      r1, 0(r1)
-> -       ld      r4,  -32(r1)
-> -       ld      r3,  -24(r1)
-> -       ld      r2,  -16(r1)
-> -       ld      r31, -8(r1)
-> +       ld      r4,  GPR4(r1)
-> +       ld      r3,  GPR3(r1)
-> +       ld      r2,  24(r1)
-> +       ld      r31, 32(r1)
-> +       ld      r1,  0(r1)
->   #else
-> -       lwz     r3, 8(r1)
-> -       lwz     r4, 12(r1)
-> -       addi    r1, r1, 16
-> +       lwz     r3, GPR3(r1)
-> +       lwz     r4, GPR4(r1)
-> +       addi    r1, r1, SWITCH_FRAME_SIZE
->   #endif
-> 
->          /* Jump back to real return address */
-> --
-> 2.43.5
-> 
+-- 
+2.47.1
 
 
