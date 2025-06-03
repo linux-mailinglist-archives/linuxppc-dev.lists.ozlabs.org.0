@@ -1,107 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-9122-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9123-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE7B5ACCEDF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jun 2025 23:20:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5DDACCEE6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jun 2025 23:23:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bBkCP1k8tz2yYJ;
-	Wed,  4 Jun 2025 07:20:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bBkGm3DCCz2ySQ;
+	Wed,  4 Jun 2025 07:23:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:638:a000:1025::14"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748985649;
-	cv=none; b=JWW5uy5eSaacF9YrsQUf16E9wE3KbF7tdEVRk0Hz/Sjmrp9dVWJMMQcd1vmMSgfwMtzcCrcaoJeCIeL+uy3NKOW827ryfJDlr4V2PizZxSS07KMzhSYzAWN1kNzxCZHAEC78iXulP1mlf2J1niCzysswO9OisBBb6cuTQKLNvFT1ovHG0P3DlvlXFFyex7ZSW1DzDMYDaXBsmc71kuLP9Tu8gyGiNATCn5kpn7DTlGhodyssHubiGn5s52LupsCo76tHsSuldkTLLijcxutYLzZSumuZ914UB5Q5LkoX4k+Ed26Kuts5VA25rLra4zrIOxU4Vyagfl7+DSafO085YQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748985824;
+	cv=none; b=VNQasW/Pok809QWGKSOFJ6qtwuoP/jw9+l4Oo/L+wXi4/uHX9gPpx0woiwkfSkwFb1Aa/7XKOIQFMcDkQ5H8cAuAXZRgGfxNfIU+zG6TtYDT9yXzvPwyRU5/vXZwHJMhcNC2KvR5sN8l5HsGdR7wlCpcjShewro5bdnuHjJH+5TzvRDshUq4JTHurVK/XIZAswqaufNAUD6F+UvHnDfUohAdQ0KUZUU7YAPVw5d3i+Yf616RQ0cWG1CRFJzqkHkrn1lJwmuFaiMmc61Dpq6m96vzCTZbTPn5ssX9e+nwWPgQEMyF0B17wbTWqAXQPhs6VND8rwdoero+K4D9AIFHJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748985649; c=relaxed/relaxed;
-	bh=aLkGL0PRMc+wzevKsgum6EPqlwzuAjn0TCVg62AcMaU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=At5B5lIW3M5iokSU9FJ/aNt/297IT0/V3mLWYwAc3P44Pv2hItVFcGqeeVA0tVSc/Zi1OFs1YEk+b/8yQAJRODM0PNgvK6PgP9tk5ujrNEmT2Dkta00lIvkoCBLTRKUMXOkBUrClfIyPDDBdGlKBJj9WrEdhjVr2J7+P1e6pICPrVwK211xfFe/viqOz8y6CEJFaJ9lxUIktOYH7aSdR0EEqi6Vw0tVKFekEdlaFzbViKlyvJwYHTwGCsCBhDzMXUKtifmu30ONJ+ZRiNYAPAvurLaeyrYD/1b0R5jVuwbI8U8XcgeOxu4nLxHx3ifHb6hlF9n8N+wiQ3cWJig3Qmw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de; dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=ZxTobW4P; dkim-atps=neutral; spf=pass (client-ip=2001:638:a000:1025::14; helo=mx-rz-1.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org) smtp.mailfrom=fau.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de
+	t=1748985824; c=relaxed/relaxed;
+	bh=sdmljyIspWu7QBONoix15aA02cq4Ww9ZxfYNS+9WHcs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GeNaVqNpdPuX9x2O1zUeEKlYfAG6hMsQkAc09jUfmG2ES68cSzf/1Kksoowjs33wyIyDdMC/HfJtg9WOwt2DOoDOfUqzohrPAZyjVWl9C9bz5wTpoBHld037IZbliB0DgQYy0dSqafpCCKKH3RMDvsZr3EWYMjPjQ/VRYEuVSwx+YjOFT5mJqkSLpLdbkDO7dOPPqfC35G8jDK+rleUBq9TGGVRN8DlbRDmEg+0z+ZsMd+iesnfZkHSQKbxfE3Fwxp1EqgW953Rz3S3OSMwt5LX0cUgAnuVzs3XlZJemSFcC94qk2VR9iv9EwDZMy0oVM00M0gyqJf9g3/NXWpbXrg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bwI6hyiM; dkim-atps=neutral; spf=pass (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=ZxTobW4P;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bwI6hyiM;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fau.de (client-ip=2001:638:a000:1025::14; helo=mx-rz-1.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org)
-Received: from mx-rz-1.rrze.uni-erlangen.de (mx-rz-1.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::14])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.12; helo=mgamail.intel.com; envelope-from=dave.jiang@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bBkCN2LXtz2yQJ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 07:20:48 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
-	t=1748985645; bh=aLkGL0PRMc+wzevKsgum6EPqlwzuAjn0TCVg62AcMaU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From:To:CC:
-	 Subject;
-	b=ZxTobW4PE3pM/tpTf8BNM3K8XxSmHxvkMXDoj4HnsgnDr/ZjCdBfbWjm5kXjFrfpb
-	 pLw0T6rthXXulNltdG3KRYrPicTsTJ0igkLqasWFt9iYyCW6awL2K77vBdO2+Y9ZoS
-	 Aw5uSovDn/6lqObO171M5TPSNe3fSQmeOvlsOvFw4zAwkXhWR4MTLTf07cpeEdUIDT
-	 m7uRwKk2rZRbOW0I6Rveb5kpvyD/VfnSyw74lWWYT09lFN+7gmTp9W+B1lFx3yZrAx
-	 BgfJR4w9xf6Lfxz2LMvcnAfycFPncdvY+yZLXtLw5kiEuQMw6QXUk3sB2bDxQc+id/
-	 Yqt1Q0K+GUW8Q==
-Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-rz-1.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4bBkCK0kxtz8sqC;
-	Tue,  3 Jun 2025 23:20:45 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at boeck2.rrze.uni-erlangen.de (RRZE)
-X-RRZE-Flag: Not-Spam
-X-RRZE-Submit-IP: 2001:9e8:3639:fe00:a21f:4ce4:8495:5578
-Received: from luis-tp.fritz.box (unknown [IPv6:2001:9e8:3639:fe00:a21f:4ce4:8495:5578])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: U2FsdGVkX1+uyXrtNenjCYPjNclS8sO6XydtJohY3+E=)
-	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4bBkCF2WYTz8ssj;
-	Tue,  3 Jun 2025 23:20:41 +0200 (CEST)
-From: Luis Gerhorst <luis.gerhorst@fau.de>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Xu Kuohai <xukuohai@huaweicloud.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Mykola Lysenko <mykolal@fb.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Luis Gerhorst <luis.gerhorst@fau.de>,
-	Henriette Herzog <henriette.herzog@rub.de>,
-	Saket Kumar Bhaskar <skb99@linux.ibm.com>,
-	Cupertino Miranda <cupertino.miranda@oracle.com>,
-	Jiayuan Chen <mrpre@163.com>,
-	Matan Shachnai <m.shachnai@gmail.com>,
-	Dimitar Kanaliev <dimitar.kanaliev@siteground.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Daniel Xu <dxu@dxuuu.xyz>,
-	bpf@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kselftest@vger.kernel.org
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Maximilian Ott <ott@cs.fau.de>,
-	Milan Stephan <milan.stephan@fau.de>
-Subject: [PATCH bpf-next v4 6/9] bpf: Rename sanitize_stack_spill to nospec_result
-Date: Tue,  3 Jun 2025 23:20:24 +0200
-Message-ID: <20250603212024.338154-1-luis.gerhorst@fau.de>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250603205800.334980-1-luis.gerhorst@fau.de>
-References: <20250603205800.334980-1-luis.gerhorst@fau.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bBkGl2YrHz2xXP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 07:23:42 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1748985823; x=1780521823;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Q0L033uSF8rn7qFAG0k3SFoNFf5x+r7D4n4XXeakONE=;
+  b=bwI6hyiMLtT2t7Uh1Dra+RWx6/WdswNZB6/tr4+SDv8eYdOxKljXhzgj
+   ca91XkgPVovXxFsloQ/YkjfrFkCMx2XdKLnBAq91/kx8XjDlwdnNwp0JW
+   zqzMZJ4jCaYVdudZ1d/LVMPy90utRwIMkaQFV9NKLi/Sau1Y1sD8i0H3C
+   TvTz/JqB/jBln0Hd5r6DgfalMGs9GMaKrF5B8k+4PmHA6V1hYIjGekdJa
+   HQ+2JpcuuNwiOPtDuCgUmv28bCY6Sp7geIPTNMQugnhw3tIGGHnqzdwke
+   bzPDxUwn8J/W9ZyjaNOWMZV2jmg6pInXxO41kOfuI3rjv6DLY1nFEXzJ7
+   Q==;
+X-CSE-ConnectionGUID: XEq49pMeSWupeoX/GKT0SQ==
+X-CSE-MsgGUID: 2HyE0u/XRSueUgxUH4xY5A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="62436994"
+X-IronPort-AV: E=Sophos;i="6.16,207,1744095600"; 
+   d="scan'208";a="62436994"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 14:23:40 -0700
+X-CSE-ConnectionGUID: evdyZjPASNqPmS8z1WRJJA==
+X-CSE-MsgGUID: AQMaIvz3QASYtFGYOI91nQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,207,1744095600"; 
+   d="scan'208";a="150277461"
+Received: from iherna2-mobl4.amr.corp.intel.com (HELO [10.125.110.198]) ([10.125.110.198])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 14:23:38 -0700
+Message-ID: <e919b8d3-5141-4e4f-9f96-9b680d4a7321@intel.com>
+Date: Tue, 3 Jun 2025 14:23:36 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -115,62 +69,121 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4 v3] PCI/AER: Modify pci_print_aer() to take log level
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>,
+ "Rafael J . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linux-cxl@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, linux-edac@vger.kernel.org
+Cc: Yazen Ghannam <yazen.ghannam@amd.com>
+References: <20250603155536.577493-1-fabio.m.de.francesco@linux.intel.com>
+ <20250603155536.577493-3-fabio.m.de.francesco@linux.intel.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20250603155536.577493-3-fabio.m.de.francesco@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This is made to clarify that this flag will cause a nospec to be added
-after this insn and can therefore be relied upon to reduce speculative
-path analysis.
 
-Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Henriette Herzog <henriette.herzog@rub.de>
-Cc: Maximilian Ott <ott@cs.fau.de>
-Cc: Milan Stephan <milan.stephan@fau.de>
----
- include/linux/bpf_verifier.h | 2 +-
- kernel/bpf/verifier.c        | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index 256274acb1d8..2b0954202226 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -580,7 +580,7 @@ struct bpf_insn_aux_data {
- 	u64 map_key_state; /* constant (32 bit) key tracking for maps */
- 	int ctx_field_size; /* the ctx field size for load insn, maybe 0 */
- 	u32 seen; /* this insn was processed by the verifier at env->pass_cnt */
--	bool sanitize_stack_spill; /* subject to Spectre v4 sanitation */
-+	bool nospec_result; /* result is unsafe under speculation, nospec must follow */
- 	bool zext_dst; /* this insn zero extends dst reg */
- 	bool needs_zext; /* alu op needs to clear upper bits */
- 	bool storage_get_func_atomic; /* bpf_*_storage_get() with atomic memory alloc */
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 46cf737acad5..af79f4d7692f 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -5026,7 +5026,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 		}
- 
- 		if (sanitize)
--			env->insn_aux_data[insn_idx].sanitize_stack_spill = true;
-+			env->insn_aux_data[insn_idx].nospec_result = true;
- 	}
- 
- 	err = destroy_if_dynptr_stack_slot(env, state, spi);
-@@ -20921,7 +20921,7 @@ static int convert_ctx_accesses(struct bpf_verifier_env *env)
- 		}
- 
- 		if (type == BPF_WRITE &&
--		    env->insn_aux_data[i + delta].sanitize_stack_spill) {
-+		    env->insn_aux_data[i + delta].nospec_result) {
- 			struct bpf_insn patch[] = {
- 				*insn,
- 				BPF_ST_NOSPEC(),
--- 
-2.49.0
+On 6/3/25 8:54 AM, Fabio M. De Francesco wrote:
+> Modify pci_print_aer() to take a printk() log level in preparation of a
+> patch that logs PCIe Components and Link errors from ELOG.
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> ---
+>  drivers/cxl/core/pci.c |  2 +-
+>  drivers/pci/pcie/aer.c | 16 ++++++++--------
+>  include/linux/aer.h    |  4 ++--
+>  3 files changed, 11 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
+> index 3b80e9a76ba86..ad8d7939c2e1c 100644
+> --- a/drivers/cxl/core/pci.c
+> +++ b/drivers/cxl/core/pci.c
+> @@ -885,7 +885,7 @@ static void cxl_handle_rdport_errors(struct cxl_dev_state *cxlds)
+>  	if (!cxl_rch_get_aer_severity(&aer_regs, &severity))
+>  		return;
+>  
+> -	pci_print_aer(pdev, severity, &aer_regs);
+> +	pci_print_aer(KERN_ERR, pdev, severity, &aer_regs);
+>  
+>  	if (severity == AER_CORRECTABLE)
+>  		cxl_handle_rdport_cor_ras(cxlds, dport);
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index a1cf8c7ef628a..d0ebf7c15afa9 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -760,7 +760,7 @@ int cper_severity_to_aer(int cper_severity)
+>  EXPORT_SYMBOL_GPL(cper_severity_to_aer);
+>  #endif
+>  
+> -void pci_print_aer(struct pci_dev *dev, int aer_severity,
+> +void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
+>  		   struct aer_capability_regs *aer)
+>  {
+>  	int layer, agent, tlp_header_valid = 0;
+> @@ -785,14 +785,15 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+>  	info.mask = mask;
+>  	info.first_error = PCI_ERR_CAP_FEP(aer->cap_control);
+>  
+> -	pci_err(dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n", status, mask);
+> +	pci_printk(level, dev, "aer_status: 0x%08x, aer_mask: 0x%08x\n",
+> +		   status, mask);
+>  	__aer_print_error(dev, &info);
+> -	pci_err(dev, "aer_layer=%s, aer_agent=%s\n",
+> -		aer_error_layer[layer], aer_agent_string[agent]);
+> +	pci_printk(level, dev, "aer_layer=%s, aer_agent=%s\n",
+> +		   aer_error_layer[layer], aer_agent_string[agent]);
+>  
+>  	if (aer_severity != AER_CORRECTABLE)
+> -		pci_err(dev, "aer_uncor_severity: 0x%08x\n",
+> -			aer->uncor_severity);
+> +		pci_printk(level, dev, "aer_uncor_severity: 0x%08x\n",
+> +			   aer->uncor_severity);
+>  
+>  	if (tlp_header_valid)
+>  		pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
+> @@ -1146,8 +1147,7 @@ static void aer_recover_work_func(struct work_struct *work)
+>  			       PCI_SLOT(entry.devfn), PCI_FUNC(entry.devfn));
+>  			continue;
+>  		}
+> -		pci_print_aer(pdev, entry.severity, entry.regs);
+> -
+> +		pci_print_aer(KERN_ERR, pdev, entry.severity, entry.regs);
+>  		/*
+>  		 * Memory for aer_capability_regs(entry.regs) is being
+>  		 * allocated from the ghes_estatus_pool to protect it from
+> diff --git a/include/linux/aer.h b/include/linux/aer.h
+> index 02940be66324e..45d0fb2e2e759 100644
+> --- a/include/linux/aer.h
+> +++ b/include/linux/aer.h
+> @@ -64,8 +64,8 @@ static inline int pci_aer_clear_nonfatal_status(struct pci_dev *dev)
+>  static inline int pcie_aer_is_native(struct pci_dev *dev) { return 0; }
+>  #endif
+>  
+> -void pci_print_aer(struct pci_dev *dev, int aer_severity,
+> -		    struct aer_capability_regs *aer);
+> +void pci_print_aer(char *level, struct pci_dev *dev, int aer_severity,
+> +		   struct aer_capability_regs *aer);
+>  int cper_severity_to_aer(int cper_severity);
+>  void aer_recover_queue(int domain, unsigned int bus, unsigned int devfn,
+>  		       int severity, struct aer_capability_regs *aer_regs);
 
 
