@@ -1,71 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-9086-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9088-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C20EACBCAA
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  2 Jun 2025 23:19:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE95ACC07A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  3 Jun 2025 08:50:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bB6Dj4RTRz2yFJ;
-	Tue,  3 Jun 2025 07:19:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bBLvM3q8Gz2yNB;
+	Tue,  3 Jun 2025 16:50:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748899189;
-	cv=none; b=HoDKWZY/RcpeCLzDoSkyiXAtjxagP3/WCNPJE0dVo9NEpQpdsDNZUeIrh3bRHd0MHyFy/4alcDafM7S5kXSGjxfluOaBUGsruexHA4RkTptfnLvDKhejBxVWQwQjn4RVEPwLuRc1kGGjjvh258LFAcPPkB0C+oM7F00rHsIKnUvl3qV2sk+OTQ1ZdVe7OWLTS+svjFLQq+gYB/bED1FqrH0J3/lbaibHaS+w7hWIcjPlma6d1EvKB0s/nsntHyQcns3tdDd14U1IUw8yVwHGgSdAUhh7WliS5fNc8/UgFo5MwpGywDasQppGvy6q8wD/R4PfJtViWSop852yKnHbyw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1748933439;
+	cv=none; b=Acq6pOcKq44DMxhnzJeTezPA94cnbjluCPEHiF/iwlD3L92qrH9l06TbwNHajInTHkFQtO4bHLXhDi83/xm3sTTD7ZqIVI5+TczrqoceKnERGXedKOH2rO2+ZtvzT7InDIKtxpcRW5sXdShIXp/dFvXvtDteZO1Vvcm9bAmm1gjJxo0JqtnKOyQXgINrGKoRjNyp6gL05LWntEDYR6pLlAmpE9K6PeWjyJV710h6dDkAIYGenva2ZOgjtEIY0IaPY2nkm+hIQr51R7jIyYF764T7+F0PUnYkr4F7JypYUk2KUIEig9kX8W4AemiEs5Nj+UkvYLdXtBhJzyeGjgeJOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1748899189; c=relaxed/relaxed;
-	bh=cvG5ebpKTZEmM8Z9VnrAL8jj9cDueMGGayXKA5dUonw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=IzntzY2Yn2c4sQhSla3UeYXxm0c1ux/RxTug9GVBLFmLbZierh9JgPV06f7YP3N00WsvD3ddDs3OLk6FKRxNnMz7ZyS5kkWQKOYMY3WZuIAS22X96Vgm2iTAndj76ntDoj/n5nM6JAYCkt9XQp/j+6V0uXsvgZ0hiGtLR4tepjxdawCJFwL1BndVV6LdB66q9ipTUmUN3WEPwj0cT8qbeFAkLB8XfIZyu8g1BANYEMkSPlvjtApm3xtTIBKRJTuBRl9nClsUaxmxBjhrhmA/k0sQYus61regAdbDo64SBGVgG8Cbs6lL279sLt7FEB9QbnT2CpbMPa29r4rWDpErXA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IfLj37KI; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IfLj37KI;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bB6Dh5nGpz2xmZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jun 2025 07:19:48 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 88DF243C9D;
-	Mon,  2 Jun 2025 21:19:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3319DC4CEEB;
-	Mon,  2 Jun 2025 21:19:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748899186;
-	bh=6mj/BlYXhWA2zqQmobSnww4HV6I3qNHM38OyJ0T6thY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=IfLj37KIEU0Jy+o62Y0/R/gpmCidEqsAZWzdxwnL5HG85g62rUbIrFSLo1ASjyW0E
-	 y087JbYvyqH6P0sxoL5Qky0xSKuJSHtn/j8nE76kFXO/pv8Yvty3tt8qc7yiB5Xyfw
-	 oR7816Es3kjDy+NpaxUuATsG/9yz3l6s0Mcf5TX3TWFDvUxPJHfYJve1DpFDrl5/TD
-	 aTidwE3xAY+YwOXO+C4kxAEjuR3zzU0LFIplBOpp/6XKnqvxU1wpzdPOrFATsTLkVs
-	 9KPt/oUZvn0rRo5D+EdjpdLuaozVtiIt7kB8psup46KAwCEAani/+R9Zz46DS9un6V
-	 bN+Em+YzTa7Vg==
-Date: Mon, 2 Jun 2025 16:19:44 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>, Zhou Wang <wangzhou1@hisilicon.com>,
-	Will Deacon <will@kernel.org>, Robert Richter <rric@kernel.org>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Marc Zyngier <maz@kernel.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Daire McNamara <daire.mcnamara@microchip.com>, dingwei@marvell.com,
-	cassel@kernel.org, Lukas Wunner <lukas@wunner.de>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v4 4/5] PCI: host-common: Add link down handling for host
- bridges
-Message-ID: <20250602211944.GA150795@bhelgaas>
+	t=1748933439; c=relaxed/relaxed;
+	bh=W9de7jHyyi7evOifFTIQ9/m9iBZ5RWO3QkmEBJCYbTE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fhDCxEhJ5gO6EV5Xw1xNUUmMfNdU4HittIAZySw4Jhaga66qQTFpG88KsgH4v7WCllgSFYUv87v3F0mACAZwVEzwfeBHX0HDx3Ad2yLSSjbnn5h7LUPYYbUlgGXfm6RvuuE+u1ZNkBMw4QtxMI91SSmS/DZih5slEYPtB5Ct/40QEBeKYZ3fkX5kYP0t030ZcqNTww1zT6v1Ob0yRc5EET3OA9Gj673ZDL+HhWjBgOePSBlUIo6F0vfKgKUgZzAHwdEwrrS6a9cPwWQc+2dsv0OgU++gMvWisdsNS2UMMaoTRAGLtrsDE9trAGtIYAjQacbt4xy88dbxlRIdTQTi8w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bBLvL3TL6z2yKq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  3 Jun 2025 16:50:35 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4bBLln4vWSz9vY5;
+	Tue,  3 Jun 2025 08:44:05 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id jjqPCRYCwsSv; Tue,  3 Jun 2025 08:44:05 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4bBLln47Zbz9vY4;
+	Tue,  3 Jun 2025 08:44:05 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 88DBB8B765;
+	Tue,  3 Jun 2025 08:44:05 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id WDcIPDlhdCxM; Tue,  3 Jun 2025 08:44:05 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2D7CC8B763;
+	Tue,  3 Jun 2025 08:44:05 +0200 (CEST)
+Message-ID: <3cebc3c4-dbaf-41f6-b98d-1d33bea2eeeb@csgroup.eu>
+Date: Tue, 3 Jun 2025 08:44:04 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,50 +57,98 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250508-pcie-reset-slot-v4-4-7050093e2b50@linaro.org>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc: use always-y instead of extra-y in Makefiles
+To: Masahiro Yamada <masahiroy@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org
+References: <20250602163302.478765-1-masahiroy@kernel.org>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20250602163302.478765-1-masahiroy@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, May 08, 2025 at 12:40:33PM +0530, Manivannan Sadhasivam wrote:
-> The PCI link, when down, needs to be recovered to bring it back. But that
-> cannot be done in a generic way as link recovery procedure is specific to
-> host bridges. So add a new API pci_host_handle_link_down() that could be
-> called by the host bridge drivers when the link goes down.
 
-IIUC you plumbed this into the reset path so the standard entries
-(pci_reset_function() and the sysfs "reset" files) work can now work
-for Root Ports on DT systems just like they do for ACPI systems
-(assuming the ACPI systems supply an _RST method for the ports).  That
-all sounds good.
 
-> The API will iterate through all the slots and calls the pcie_do_recovery()
-> function with 'pci_channel_io_frozen' as the state. This will result in the
-> execution of the AER Fatal error handling code. Since the link down
-> recovery is pretty much the same as AER Fatal error handling,
-> pcie_do_recovery() helper is reused here. First the AER error_detected
-> callback will be triggered for the bridge and the downstream devices. Then,
-> pci_host_reset_slot() will be called for the slot, which will reset the
-> slot using 'reset_slot' callback to recover the link. Once that's done,
-> resume message will be broadcasted to the bridge and the downstream devices
-> indicating successful link recovery.
+Le 02/06/2025 à 18:32, Masahiro Yamada a écrit :
+> The extra-y syntax is planned for deprecation because it is similar
+> to always-y.
+> 
+> When building the boot wrapper, always-y and extra-y are equivalent.
+> Use always-y instead.
+> 
+> In arch/powerpc/kernel/Makefile, I added ifdef KBUILD_BUILTIN to
+> keep the current behavior: prom_init_check is skipped when building
+> only modular objects.
 
-We have standard PCIe mechanisms to learn about "link down" events,
-e.g., AER Surprise Down error reporting and the Data Link Layer State
-Changed events for hot-plug capable ports.
+I don't understand what you mean.
 
-How does this controller-specific "link down" notification relate to
-those?  Is this for controllers that don't support those AER or
-hotplug mechanisms?  Or is this a different scenario that wouldn't be
-covered by them?
+CONFIG_PPC_OF_BOOT_TRAMPOLINE is a bool, it cannot be a module.
 
-If AER is enabled, do we get both the AER interrupt and the controller
-"link down" interrupt?
+prom_init_check is only to check the content of prom_init.o which is 
+never a module.
 
-> In case if the AER support is not enabled in the kernel, only
-> pci_bus_error_reset() will be called for each slots as there is no way we
-> could inform the drivers about link recovery.
+Is always-y to run _after_ prom_init.o is built ?
+
+Christophe
+
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>   arch/powerpc/boot/Makefile   | 6 +++---
+>   arch/powerpc/kernel/Makefile | 4 +++-
+>   2 files changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+> index 184d0680e661..b003f7ac8755 100644
+> --- a/arch/powerpc/boot/Makefile
+> +++ b/arch/powerpc/boot/Makefile
+> @@ -242,13 +242,13 @@ $(obj)/wrapper.a: $(obj-wlib) FORCE
+>   hostprogs	:= addnote hack-coff mktree
+>   
+>   targets		+= $(patsubst $(obj)/%,%,$(obj-boot) wrapper.a) zImage.lds
+> -extra-y		:= $(obj)/wrapper.a $(obj-plat) $(obj)/empty.o \
+> +always-y	:= $(obj)/wrapper.a $(obj-plat) $(obj)/empty.o \
+>   		   $(obj)/zImage.lds $(obj)/zImage.coff.lds $(obj)/zImage.ps3.lds
+>   
+>   dtstree		:= $(src)/dts
+>   
+>   wrapper		:= $(src)/wrapper
+> -wrapperbits	:= $(extra-y) $(addprefix $(obj)/,addnote hack-coff mktree) \
+> +wrapperbits	:= $(always-y) $(addprefix $(obj)/,addnote hack-coff mktree) \
+>   			$(wrapper) FORCE
+>   
+>   #############
+> @@ -455,7 +455,7 @@ WRAPPER_DTSDIR := /usr/lib/kernel-wrapper/dts
+>   WRAPPER_BINDIR := /usr/sbin
+>   INSTALL := install
+>   
+> -extra-installed		:= $(patsubst $(obj)/%, $(DESTDIR)$(WRAPPER_OBJDIR)/%, $(extra-y))
+> +extra-installed		:= $(patsubst $(obj)/%, $(DESTDIR)$(WRAPPER_OBJDIR)/%, $(always-y))
+>   hostprogs-installed	:= $(patsubst %, $(DESTDIR)$(WRAPPER_BINDIR)/%, $(hostprogs))
+>   wrapper-installed	:= $(DESTDIR)$(WRAPPER_BINDIR)/wrapper
+>   dts-installed		:= $(patsubst $(dtstree)/%, $(DESTDIR)$(WRAPPER_DTSDIR)/%, $(wildcard $(dtstree)/*.dts))
+> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+> index 4d2daa8e7bca..ac01cedad107 100644
+> --- a/arch/powerpc/kernel/Makefile
+> +++ b/arch/powerpc/kernel/Makefile
+> @@ -201,7 +201,9 @@ obj-$(CONFIG_ALTIVEC)		+= vector.o
+>   
+>   obj-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE) += prom_init.o
+>   obj64-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE) += prom_entry_64.o
+> -extra-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE) += prom_init_check
+> +ifdef KBUILD_BUILTIN
+> +always-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE) += prom_init_check
+> +endif
+>   
+>   obj-$(CONFIG_PPC64)		+= $(obj64-y)
+>   obj-$(CONFIG_PPC32)		+= $(obj32-y)
+
 
