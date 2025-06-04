@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-9144-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9145-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405D2ACDD03
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 13:50:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E82ACDD09
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 13:50:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bC5W36tR2z307V;
-	Wed,  4 Jun 2025 21:50:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bC5WD0QhWz2yPS;
+	Wed,  4 Jun 2025 21:50:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749037839;
-	cv=none; b=l1n2R7GDXVERlHDxiEYBULVGBRt22zEvyjB1MIoUP6aoK4OkWcsT4aLvrkDZDGHU6oWMfGSbVMcxherG5VFhCojEFAFbxKHrIePyAsyvWi5W47YlWLCS62p9kUz8iBFbdMYolD9DF22bD3L901o7KZp2VB0kNeGx3AhIb3t8KZRPTGKDiR9z68b3IDsMfzgJKfUi2MqVG25Z8IA80iiFTugKLtJ4A1oJ8TrNkcPSh3Mp5L2uV1fPnKaBnRIg3yj2v7YHa3CNDABBTsni0hFrvI8UY79iClGrbYv9BgsS0smyMje8k63blJNoizwLmWiT+ThZI/b1Gms38nr7jYsjcA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749037848;
+	cv=none; b=X52N/h/eztLdpN31z4GUNuB2Hcn+eUcuzKiFxh/pH2uLrFtL3XSVP285RWMN9bQsIYXFUnMsqneo7JEWlyMiWtkaHjhYIV4ezjYXFhVCw+8FYPHDPLBCN9g3IevnL6T7ohYK8/SFdKJymGIN0Mz5ehTsYpYC84PJXLhSICLTsSckRK2SRe/K24r8gF+2gGlSYbF+37Dg+qtPeO0v080P2nm8oUL4hwReCsMAuU5f75DhoEVMazBNub6avV6B/LJBDZhDXoQszhkGuPNgqDz6s95HZKxfgl2QIEur71ubjMw/oH9reuQ5ADnwtrjLxgFtN2saD02cc05rn2ibFcEzJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749037839; c=relaxed/relaxed;
-	bh=gCzYBoisR3S/hp7hTIpx7NpB5NU+BRTjp3Q8qF2r0mM=;
+	t=1749037848; c=relaxed/relaxed;
+	bh=y8KWR0Ft7kFeSihOz6oiAOF0gGZlSytKmi85ys1Nlfo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fOj0VSYEL/EriTTjs+73HwT6r1Xf5p3IEW1z/fRbWzWqp+UwqH5JJ3dZTjOn+n/ogDcvEHqG9rfXJuBkchR+tKCrshq8Ok0jjGnctjEYNWzB78oeKdJpACVOwYPpVCmnHYW44WdU7vEIISttJEfVc3j7o01WG8KColU0PGGbvWcXK5xc8OuwfEr8C8m6BOTIJFUK57sAM+VDrlqx/aDm6mLS3ERdlHW3cF35iFoFEH3pj/FOKwTmkD7A7M2e1jErXcqYjceC5WrMhckcpl/xZ0ziCZYDxeqHa0ZTPokJz607/rzIEVkb5pcicBfvDSSxkUq+S+2Q/3ffoMEZ1g0ihg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MXPg5C1F; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=fDNBetdh3+s+5c5ZAdRTFpfUNcFvtgEmsyXjh+jQB0r1pDxNuWUxO9A8LAB0T6FkkokL9V7/2dXni8jtjwYGOaC0pNHeW69Wy0OxDIBLwJ6vFWTTFaGsMJ/hUlpAWxooDfZ8swdtyYwLqUT9Mg4uSdTxtAIPaWMOvZpi2xOlawlfHSpWa07i4qCs5O0tICdd8p1WMJFpQyO9vjPs5n3CHMvwcyjfzNj0LWYDx2tvFVW9LxipfgV2h8yFhE/SQQbF48TDRw3V6oWT+HRonZ7N2221l9rDuRruK5+Lnrr893GNj3pKMCYlnF+iqI6ZVEL2flhkxeTf/p5xPaawO39aiA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WHP2TRZx; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=MXPg5C1F;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WHP2TRZx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bC5W31VfVz2xk5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 21:50:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bC5WC2BMKz2xk5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 21:50:47 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 552785C5421;
-	Wed,  4 Jun 2025 11:48:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B5FC4CEEF;
-	Wed,  4 Jun 2025 11:50:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A217343AF3;
+	Wed,  4 Jun 2025 11:50:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9831EC4CEF0;
+	Wed,  4 Jun 2025 11:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749037836;
-	bh=LWoCnVWu9kyApgL0kLFdiS1HexGeNKcPhWj+9WD/Kfc=;
+	s=k20201202; t=1749037845;
+	bh=b3KW4xNg96FKJCx7KjKLvxR70JWKyUz6ER2DhpnCb0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXPg5C1FfD5CFrcwX/YJxb1s0QvtnT7YAeJu+tKjUg6pdyQjVeTOJr6Nt5pRuJBbc
-	 HKEs2b8/yYTpKvAOLEy+nShdmpyioifn0NraI8aAtdwlQNmue00rEKahligmL/WeRx
-	 XWXiwQAGgh/5GzVW/WycsstiC2/GcM5ztWt07a5EzroJJJUlJFndvFYTnSRXoPTVPO
-	 Ssiv6PpM38LpKKoQo8hlYiDUA1z6r5IvQf48UVKlTiHNgI3fPSHeJvhFomiuhiL6DN
-	 c8sZmB3r0XoB7ndSX1vzgd9B4c6OlaVD15TFeEKbW1pdRQurwJDPMfydBIewIh4/+h
-	 2XNdtxjrA3xfA==
+	b=WHP2TRZxzED39eKAvUSnPUkOLIHjeOM60OOBwOkAyA9gQr+HoVcdDQPocXTaB0i9F
+	 hXRAso0qSnhx+BGLDKWWyJouUaHn9bRwE2DFIbAwiRAkR2hO6TTWNjofQJjZj6d+tU
+	 wRKuoYqd+fuHL7hxfHpLkuGoVM4iYr6siaC0xDg19gO2dnNUbvPQW2NNi2JEQPBnji
+	 d3MtOdVUDLLm5JXbbHInSE6VDnirf57QoKW9oeuKZlnNFfOjwBYjnyrz8cp0ZrgOlD
+	 vZmDyRY0oDAFhs3tC+emAw3LfcYgpqDqkQzX8e616zquSoEXoSqFW+be3S8dfV4aZs
+	 h6Rc3PEzP5k8g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -52,12 +52,12 @@ Cc: Laurentiu Tudor <laurentiu.tudor@nxp.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 2/5] bus: fsl-mc: increase MC_CMD_COMPLETION_TIMEOUT_MS value
-Date: Wed,  4 Jun 2025 07:50:30 -0400
-Message-Id: <20250604115033.209492-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 2/5] bus: fsl-mc: increase MC_CMD_COMPLETION_TIMEOUT_MS value
+Date: Wed,  4 Jun 2025 07:50:38 -0400
+Message-Id: <20250604115042.209624-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250604115033.209492-1-sashal@kernel.org>
-References: <20250604115033.209492-1-sashal@kernel.org>
+In-Reply-To: <20250604115042.209624-1-sashal@kernel.org>
+References: <20250604115042.209624-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,7 +73,7 @@ Precedence: list
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.184
+X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
@@ -142,11 +142,11 @@ during firmware debugging scenarios.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/bus/fsl-mc/mc-sys.c b/drivers/bus/fsl-mc/mc-sys.c
-index f2052cd0a0517..b22c59d57c8f0 100644
+index 85a0225db522a..14d77dc618cc1 100644
 --- a/drivers/bus/fsl-mc/mc-sys.c
 +++ b/drivers/bus/fsl-mc/mc-sys.c
 @@ -19,7 +19,7 @@
- /*
+ /**
   * Timeout in milliseconds to wait for the completion of an MC command
   */
 -#define MC_CMD_COMPLETION_TIMEOUT_MS	500
