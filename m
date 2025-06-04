@@ -1,78 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-9149-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9150-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105CDACDF09
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 15:28:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94089ACDF15
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 15:30:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bC7gN5L2qz2yN2;
-	Wed,  4 Jun 2025 23:28:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bC7k33lvZz2yPS;
+	Wed,  4 Jun 2025 23:30:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749043680;
-	cv=none; b=jTLpjkCrDuUCaBufSLoOlhsNb4odgS746Y22kJ8GZPTVUPxQQdoU60jX/BIT85+GbLSI90wmBFalu+KKHtZYputM6AZjgaD3L56IX7djCOsUVN0n15hddtq/CSeA+GCtElN9lP/w1Z5g+6fkE+Clwiu4RZLCb2OTvfAk5nQ0Ft+qkefN91DSFcTDMYEHlFxAysDCzKsOmJS+N7KNJgxMiojyaJ3Pk5BIr/LnGjWB7n79//Lu9UoCelbrzpZrz+uWfRI/pAGTa14G3alzIAvd7hhgWWqb0JuoT0xEpfJBt2mRutmH5OXUsxHcZ+uAQrXvpJoDZX6/8AK1gEy1c96wuQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749043819;
+	cv=none; b=XFfWD0PDXgp2tY9HR0rCfFvI6ZVv7WNkAabHozQdXOSQBKTcUjkpcjUSGjFaYGdBtcmLtoJr5c4b3he4dt3Yc9iTHYuW4qz7PZcXlVNXM+oW4p//S1kMc0jLx59eJqsd29rKXAfjeaoris7MkqSclsE49co/amNNQmVrfblf5qSz8o5PBcvznMDRsOR9p8UMXzuiq7UFFyCz5H7TEYwc7VbKQnfpXTBS4+oHOzdobobf+nzGhRaWWZ5Xupj+3TZiQ5B+WsG4HlKWWtdN31Q8XGL04TzdtbecJ7/Spkmf70dgON7pmu8Lhta03pKH7LLquKy2Fy35okXAP/UGrg5nTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749043680; c=relaxed/relaxed;
-	bh=SvJHtpwU5FS2FH2sEMqFtRQCjQKN+NWI1URkJw+uf/s=;
+	t=1749043819; c=relaxed/relaxed;
+	bh=wM730wYdKzGLtqTwQp0WD4PZQ3ILvslvUEZgXXpTyII=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZAr7mErnVQwwTzwjivlw5BV97T0eMTn4Q/t8pOeI41PmpKhWFkA/DxEzpavUc+TXMVpEVcJtcO/iRKr8q8n5/vgB5CWATEdvdfazA8FH48JECW0XLTRDOzZJkhV6Kz8cv3mgGBl0Vyj/6y8Atq4hpmu6W8abcyF1ENsIt2w3yF9kD7iqx9ug8gvEsjvxRawy/GOUG8qXL6e8B3y8G5hmQNedEjgYdRUp9zJhLMGpwLBTIIbLCgu7LX2+b68db5q3MfESpn3ZVM0bycplH98nEoAmEcZicPGhFtmDdhVlr8RIUyZiwfFO+PkOWELbIXyMeLy4Zfk1HV8D21XgtDj17Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R0bw2sZX; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	 In-Reply-To:Content-Type; b=nbZfdLxLp3uSSMQIyMq/TT7hXX9y1h7Zy8UIf031onWhUZ/7fLMVxbHzf73RIebY11ynDC1JveWnJEEKnJYyHuSV218Q3IixRHs9M2+Ui4TzkfmVfShnajRE9Pt4J78hQcS/t5YFFn+ziMCRe8xWVnPWMccBq+G29vzbiKvuI/GwLbOb8cZQDZ/+zsBdYYQzi3rDRpcuMb+Q/e5iwWIOIQrk312yGAub4d6WHg1L+FpovlkHcZ83zaD/g2fnpHjSqyM2Geje5S2/IXhAHNyS/Huhp7eN3rtVFvyFrzS/kHxXMyynPJgJX6uVtls84mCs/ndFxfVg4t4zVoY5hY97cA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P7OjiSZA; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P7OjiSZA; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=R0bw2sZX;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P7OjiSZA;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=P7OjiSZA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bC7gM6PdRz2xGv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 23:27:59 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5545LKpO017568;
-	Wed, 4 Jun 2025 13:27:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=SvJHtp
-	wU5FS2FH2sEMqFtRQCjQKN+NWI1URkJw+uf/s=; b=R0bw2sZXalP3XqKFeDpVzu
-	+TcPYlnNHzVQjJHMjUrxeSElXJ29OS40ej9JPJhXsbFjXiimbOIQfXyB9fvBgpgn
-	uIwVnezweKWoU+wjzJr4FkxC4NYEgJWMxmYcMSqRxErIlVfC3ha0VTJ5Xt/+E08A
-	uOZpAeLjSwKlLHVxLvPJ73ztIwzm/z41zAt+fs65EupYx6B6NDxSnBBODp4cXeXC
-	Fn+38DBD8/utOII8cM4smO+su3D6S50opeNwAldphKH/dEjMqL477ozTLJbxudTO
-	p77oRyI8gXGGKvjgcAXDm78sNyp70UfMjLTlDaHVtJqCm11UkawcIG6oUxGAR0hQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 472fwuj9bs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 13:27:43 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 554CSsEt002771;
-	Wed, 4 Jun 2025 13:27:42 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 472fwuj9bp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 13:27:42 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 554C6lla022517;
-	Wed, 4 Jun 2025 13:27:41 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 470c3tg2vu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 13:27:41 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 554DReDo66978170
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 4 Jun 2025 13:27:40 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BE36A58068;
-	Wed,  4 Jun 2025 13:27:40 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 22F4558052;
-	Wed,  4 Jun 2025 13:27:35 +0000 (GMT)
-Received: from [9.39.21.166] (unknown [9.39.21.166])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  4 Jun 2025 13:27:34 +0000 (GMT)
-Message-ID: <de209828-d237-4912-905b-8c7de7e5734d@linux.ibm.com>
-Date: Wed, 4 Jun 2025 18:57:33 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bC7k04tJfz2yNB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 23:30:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749043811;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wM730wYdKzGLtqTwQp0WD4PZQ3ILvslvUEZgXXpTyII=;
+	b=P7OjiSZArcKxSBVMjw0eKvG5inYAcNzvIJQ0Ct+VSHTEud1loUEv3BYwBT+VU/0fpeJxsW
+	5gN2y/zfh48QVlmKLSyTXPwjZnan4wIBjHquER/BDg3YCq4htYzZDzGpcfNiJX59AWMHBU
+	Si381pV6UFqGsgbek+hASAhUIiWWfEI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749043811;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wM730wYdKzGLtqTwQp0WD4PZQ3ILvslvUEZgXXpTyII=;
+	b=P7OjiSZArcKxSBVMjw0eKvG5inYAcNzvIJQ0Ct+VSHTEud1loUEv3BYwBT+VU/0fpeJxsW
+	5gN2y/zfh48QVlmKLSyTXPwjZnan4wIBjHquER/BDg3YCq4htYzZDzGpcfNiJX59AWMHBU
+	Si381pV6UFqGsgbek+hASAhUIiWWfEI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-66-elyDPG8zNNinPMBzKjdOVw-1; Wed, 04 Jun 2025 09:30:08 -0400
+X-MC-Unique: elyDPG8zNNinPMBzKjdOVw-1
+X-Mimecast-MFC-AGG-ID: elyDPG8zNNinPMBzKjdOVw_1749043807
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-450d57a0641so46685895e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Jun 2025 06:30:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749043807; x=1749648607;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wM730wYdKzGLtqTwQp0WD4PZQ3ILvslvUEZgXXpTyII=;
+        b=phjjD6qINvO6EAqjLw0tx7KiLpHvGQSzhXv2+6ta/Y/74VO09eOryx5mljcu1keV+z
+         p/DMDX5wBCy2Kez3K5yNIflwDGANbRtKRIG87xjCe+4vusQqCYb7/2sd07m3W1DzEoFh
+         Z6UY0qzvIuCvi+c95xqqi5lz9lwzMfL/r5Qjkw10UwAMbiwJu9jKZ2c/+p7TLAuDiq13
+         BSpq+yDfG3cTvKFS7P3JkSpyRCXuC6UivM2os09IFZqxKklesbLqpsN8N9z+p6VGs0M2
+         EIQ9YHIdFp/sbcl5o9y9XLSB0TTPzt5Gx9EhFVyHL5fLYPql11FAKu2h89m7HdA3rQl1
+         DThQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWCsrX50LZMcksJgAotcRb1fAn5LoxYdrrXp2no6mFEO8gZs8blyWOJv1jy4tpkocR5ChYOFbQkJJkl9HQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz5MuCGwWDG6e69LoAq+/k2mYUjcMEgJKmZpXirQCMDTDFGGMzI
+	fqyE3rJgNDOKw2cZHE3AZbyrKvomoGwNTAXccIEz+VGeX3Lfy1JLg14+b1zcA42+k1SbrkKyQhO
+	HLNYQEv4vu89GSnkrYnt3snj7p1A+zsD72t4U4Zj5QwPj1GwQvvGeSODT94cQXvGZbIM=
+X-Gm-Gg: ASbGncvyEolh7xFhvOrE5Nlzj28HIuG1KgTePjFHyEdNuN/upFo1kiuBJZaUhrcLw5G
+	A6MTImor0dEOI+zBCGfhs/gs9Sg0j8DQmPGgME4kuNnlfzmJU1Wa6k+sC6BEWrp8e5CUyyBB662
+	I/xzfzj96J4ZnkWhe8aHUL2amyYsfrfh8UD9jnJ57uU0Jd4RZVOIRBz3Rx771v+GHbudku7t5Tw
+	kspzemtsn5/OObaxkkt6uGXeF4HnZgPIiPxolIih2nqcHsTUGmy+jKIICUZOSXd5dS45CZyP6lg
+	BmL/w/n2Ea18DN352Sm4mQakONkG67Duwt4+FdZhOWb/yxQmPTbQ1vYzD656195tYSAa6nR8d6k
+	CshZ0fqxK/E4ao+XP77t9nA7DmYGswiRQlDWy9UM=
+X-Received: by 2002:a05:600c:3484:b0:450:c20d:64c3 with SMTP id 5b1f17b1804b1-451f50a2126mr15328935e9.18.1749043807389;
+        Wed, 04 Jun 2025 06:30:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGpnyxfH8Pv/rAsTwh7fWe/qdlsqtP0waH+CRL3dgCTNExEMwgjRrMrmo08vFsHutGjTeZV9A==
+X-Received: by 2002:a05:600c:3484:b0:450:c20d:64c3 with SMTP id 5b1f17b1804b1-451f50a2126mr15328525e9.18.1749043806909;
+        Wed, 04 Jun 2025 06:30:06 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f1b:b800:6fdb:1af2:4fbd:1fdf? (p200300d82f1bb8006fdb1af24fbd1fdf.dip0.t-ipconnect.de. [2003:d8:2f1b:b800:6fdb:1af2:4fbd:1fdf])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7f8eceasm200932785e9.7.2025.06.04.06.30.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Jun 2025 06:30:06 -0700 (PDT)
+Message-ID: <8abecd5b-2768-49d0-afc3-561b95d77a24@redhat.com>
+Date: Wed, 4 Jun 2025 15:30:05 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,178 +107,177 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v7 1/5] drivers/base/node: Optimize memory block
  registration to reduce boot time
-To: David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Zi Yan <ziy@nvidia.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Yury Norov <yury.norov@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nilay Shroff
+To: Donet Tom <donettom@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+ Zi Yan <ziy@nvidia.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Yury Norov <yury.norov@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Nilay Shroff
  <nilay@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 References: <2a0a05c2dffc62a742bf1dd030098be4ce99be28.1748452241.git.donettom@linux.ibm.com>
- <96f7d3a2-2d85-442c-a9f7-e558d4a2ba06@redhat.com>
+ <20250603200729.b7581e017e4ca63f502c795e@linux-foundation.org>
+ <b355e72d-0284-4a31-84e3-ae4a79ad922f@redhat.com>
+ <9f7ae0e6-4640-418d-a4db-dba594377ac2@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <9f7ae0e6-4640-418d-a4db-dba594377ac2@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 8ENyt78GM8GtMAQPZ6ak9x4OkUn4GD5wApcfv9H8AvY_1749043807
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <96f7d3a2-2d85-442c-a9f7-e558d4a2ba06@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDA5OSBTYWx0ZWRfXxiJQTUViqBo6 OtNBqFwnEI9WPhS5L1uY2nsJCC7M8xU0oaFcjoM/T0Nx35L1QAe77bXRfMyP3EcFz8qGEl935Xp T30qAwnCUj/+cWKSapXi644sUy+Ns7rXss6dgmCFQ7kbY4xTakQxBph5taxdEREEd/abcn5FY6Z
- 2NzHZkF6kgkq1pCiFe/g/a8xjxjtSGzhJ+9nEOiD13z6Dgm9nRGkGQ+fIfgPj/8cxleIzGuLntz ZL0y3XGAPJnQofHSG996UrJW4AbwkiNykVonVOouz6yT3IcI4GsiKn3a2aWlfg6JF+HVp4pqvT/ HAO6s91DERzqTQ/se6qmV+1AbA88qyj/e3/hFMtoJiZMvnzxNBuZzQCjMAmiWOkMJo4y6WF0B6B
- WjbCXuHSn/jkOSq4maxnKEhpjmX6ekNYoD0ImSu0g2G17zWhOP2OTHVRkQSLwEds8BRGVcSe
-X-Proofpoint-GUID: FBl9wL6YPj3JybCsg8I_1eEkECyG6JgZ
-X-Proofpoint-ORIG-GUID: CxxGID8KN88eUD0mhbUT-kQgr7rrf0OX
-X-Authority-Analysis: v=2.4 cv=QtVe3Uyd c=1 sm=1 tr=0 ts=684049cf cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=20KFwNOVAAAA:8 a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8 a=VnNF1IyMAAAA:8
- a=4TbcEkYQSb79-EmCaOUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-04_03,2025-06-03_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- bulkscore=0 adultscore=0 phishscore=0 impostorscore=0 malwarescore=0
- priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 spamscore=0
- clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506040099
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On 04.06.25 15:17, Donet Tom wrote:
+> 
+> On 6/4/25 3:15 PM, David Hildenbrand wrote:
+>> On 04.06.25 05:07, Andrew Morton wrote:
+>>> On Wed, 28 May 2025 12:18:00 -0500 Donet Tom <donettom@linux.ibm.com>
+>>> wrote:
+>>>
+>>>> During node device initialization, `memory blocks` are registered under
+>>>> each NUMA node. The `memory blocks` to be registered are identified
+>>>> using
+>>>> the node’s start and end PFNs, which are obtained from the node's
+>>>> pg_data
+>>>
+>>> It's quite unconventional to omit the [0/N] changelog.  This omission
+>>> somewhat messed up my processes so I added a one-liner to this.
+>>>
+>>
+>> Yeah, I was assuming that I simply did not get cc'ed on the cover
+>> letter, but there is actually none.
+>>
+>> Donet please add that in the future. git can do this using
+>> --cover-letter.
+> 
+> Sure,
+> 
+> I will add cover letter in next revision.
+> 
+> 
+>>
+>>>>
+>>>> ...
+>>>>
+>>>> Test Results on My system with 32TB RAM
+>>>> =======================================
+>>>> 1. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled.
+>>>>
+>>>> Without this patch
+>>>> ------------------
+>>>> Startup finished in 1min 16.528s (kernel)
+>>>>
+>>>> With this patch
+>>>> ---------------
+>>>> Startup finished in 17.236s (kernel) - 78% Improvement
+>>>
+>>> Well someone is in for a nice surprise.
+>>>
+>>>> 2. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT disabled.
+>>>>
+>>>> Without this patch
+>>>> ------------------
+>>>> Startup finished in 28.320s (kernel)
+>>>
+>>> what.  CONFIG_DEFERRED_STRUCT_PAGE_INIT is supposed to make bootup
+>>> faster.
+>>
+>> Right, that's weird. Especially that it is still slower after these
+>> changes.
+>>
+>> CONFIG_DEFERRED_STRUCT_PAGE_INIT should be initializing in parallel
+>> which ... should be faster.
+>>
+>> @Donet, how many CPUs and nodes does your system have? Can you
+>> identify what is taking longer than without
+>> CONFIG_DEFERRED_STRUCT_PAGE_INIT?
+> 
+> 
+> 
+> My system has,
+> 
+> CPU      - 1528
 
-On 6/4/25 3:08 PM, David Hildenbrand wrote:
-> On 28.05.25 19:18, Donet Tom wrote:
->> During node device initialization, `memory blocks` are registered under
->> each NUMA node. The `memory blocks` to be registered are identified 
->> using
->> the node’s start and end PFNs, which are obtained from the node's 
->> pg_data
->>
->> However, not all PFNs within this range necessarily belong to the same
->> node—some may belong to other nodes. Additionally, due to the
->> discontiguous nature of physical memory, certain sections within a
->> `memory block` may be absent.
->>
->> As a result, `memory blocks` that fall between a node’s start and end
->> PFNs may span across multiple nodes, and some sections within those 
->> blocks
->> may be missing. `Memory blocks` have a fixed size, which is architecture
->> dependent.
->>
->> Due to these considerations, the memory block registration is currently
->> performed as follows:
->>
->> for_each_online_node(nid):
->>      start_pfn = pgdat->node_start_pfn;
->>      end_pfn = pgdat->node_start_pfn + node_spanned_pages;
->>      for_each_memory_block_between(PFN_PHYS(start_pfn), 
->> PFN_PHYS(end_pfn))
->>          mem_blk = memory_block_id(pfn_to_section_nr(pfn));
->> pfn_mb_start=section_nr_to_pfn(mem_blk->start_section_nr)
->>          pfn_mb_end = pfn_start + memory_block_pfns - 1
->>          for (pfn = pfn_mb_start; pfn < pfn_mb_end; pfn++):
->>              if (get_nid_for_pfn(pfn) != nid):
->>                  continue;
->>              else
->>                  do_register_memory_block_under_node(nid, mem_blk,
->> MEMINIT_EARLY);
->>
->> Here, we derive the start and end PFNs from the node's pg_data, then
->> determine the memory blocks that may belong to the node. For each
->> `memory block` in this range, we inspect all PFNs it contains and check
->> their associated NUMA node ID. If a PFN within the block matches the
->> current node, the memory block is registered under that node.
->>
->> If CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, get_nid_for_pfn() 
->> performs
->> a binary search in the `memblock regions` to determine the NUMA node ID
->> for a given PFN. If it is not enabled, the node ID is retrieved directly
->> from the struct page.
->>
->> On large systems, this process can become time-consuming, especially 
->> since
->> we iterate over each `memory block` and all PFNs within it until a 
->> match is
->> found. When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, the additional
->> overhead of the binary search increases the execution time 
->> significantly,
->> potentially leading to soft lockups during boot.
->>
->> In this patch, we iterate over `memblock region` to identify the
->> `memory blocks` that belong to the current NUMA node. `memblock regions`
->> are contiguous memory ranges, each associated with a single NUMA 
->> node, and
->> they do not span across multiple nodes.
->>
->> for_each_memory_region(r): // r => region
->>    if (!node_online(r->nid)):
->>      continue;
->>    else
->>      for_each_memory_block_between(r->base, r->base + r->size - 1):
->>        do_register_memory_block_under_node(r->nid, mem_blk, 
->> MEMINIT_EARLY);
->>
->> We iterate over all memblock regions, and if the node associated with 
->> the
->> region is online, we calculate the start and end memory blocks based 
->> on the
->> region's start and end PFNs. We then register all the memory blocks 
->> within
->> that range under the region node.
->>
->> Test Results on My system with 32TB RAM
->> =======================================
->> 1. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled.
->>
->> Without this patch
->> ------------------
->> Startup finished in 1min 16.528s (kernel)
->>
->> With this patch
->> ---------------
->> Startup finished in 17.236s (kernel) - 78% Improvement
->>
->> 2. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT disabled.
->>
->> Without this patch
->> ------------------
->> Startup finished in 28.320s (kernel)
->>
->> With this patch
->> ---------------
->> Startup finished in 15.621s (kernel) - 46% Improvement
->>
->> Acked-by: David Hildenbrand <david@redhat.com>
->> Acked-by: Oscar Salvador <osalvador@suse.de>
->> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> Acked-by: Zi Yan <ziy@nvidia.com>
->> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->>
->> ---
->
-> [...]
->
->>   #ifdef CONFIG_NUMA
->>   void memory_block_add_nid(struct memory_block *mem, int nid,
->>                 enum meminit_context context);
->> @@ -188,5 +206,4 @@ void memory_block_add_nid(struct memory_block 
->> *mem, int nid,
->>    * can sleep.
->>    */
->>   extern struct mutex text_mutex;
->> -
->
-> ^ Nit: unrelated change?
+Holy cow.
+
+Pure speculation: are we parallelizing *too much* ? :)
+
+That's ~95 CPUs per node on average.
+
+Staring at deferred_init_memmap(), we do have
+
+	max_threads = deferred_page_init_max_threads(cpumask);
+
+And that calls cpumask_weight(), essentially using all CPUs on the node.
+
+... not sure what exactly happens if there are no CPUs for a node.
+
+> Node     - 16
+
+Are any of these memory-less?
+
+> Memory - 31TB
 
 
-Thank you David
 
-I’ll make the change and send the next revision.
+-- 
+Cheers,
 
+David / dhildenb
 
 
