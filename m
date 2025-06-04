@@ -1,63 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-9146-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9147-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD77ACDD0D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 13:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD68ACDEEC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 15:22:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bC5WQ5mcLz2yRD;
-	Wed,  4 Jun 2025 21:50:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bC7YC3xknz2xk5;
+	Wed,  4 Jun 2025 23:22:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749037858;
-	cv=none; b=U+1EP0AxU1QP+8ENUOG37fSC7KwKfGQ62uci4AFubBMp35C80dHVeIjr5w8Vi1EUZUT7fuwvGnLahAqP0ZovwU6Pojs50HuYlCYuYsXn51Zjfracqc2mIHew4PBRWnWLnxpKceWjjfwiebiVSNsP4SYHJYvcZKIUOZjWcgQHwDGxKAZsYEwiygE16Xkxo8fMLYGQesrEtCLuCh/3bo7YHVA0bqck65K8A0sZrTG+I41vRKng9aqh+vc+gUS5DK2E8j78rBnIbECjGg8e3fAz31aAJtd5m649a2D0QtBEPoV636508ZwZucP2r4ZnPKs/1N0mx5RImxJfblQNZZiPiQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749043359;
+	cv=none; b=KNGkV7nNA+eq9aJB793juWDhCyPfemb+kkwy8GmkFIKxDLvQjdakDCW/LygUcwJ7vubDclDUlmurOnWan+AmZh8tpucLWF3zoNMvk4/SxCWD625aLNc2HDbsePcj6m4vuP+cqA9kAJuGIc5j1FEOoB8ymDsjhhTeAzYjqZXGS2nVAyOO1io27us79yn3kMFoGhyKNMtUPXuvqRpsWOIW2pqWDvTTLRpfIU10BHVlXeraUgKFr5B77wIq7ySVAPmEc76GXDWMWQUrDKL6voTI04G8jeP48xXIJvgf/mD5Q/dHTNrfgDtQXfcrzKEWjywJpXWcTrR22Mls+70d/MXBqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749037858; c=relaxed/relaxed;
-	bh=CYuGVImImp/AKExEV32xbX3LE7JtyzKyiljRyHIdgoY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TJxP6pysGY2x/63+vj+M0NUADjOZIMHkpDGIUe+6NwCAGmY+fe2KqyUMlA6TGrf5C+0qKsa0tIecZWQdiyrR4H5OezU2w4jjboRwKk6b3U6QaxGBxA812bmMfrGGEXBQmF8LwrLdoDloX6EXOY+9BOTP+l+k5RuqaTIc8cLrI0YTLj8ryUEWswRXOwYIS5fgagSIKXiar00k03RhnM01uKIxzoj2wRWtfl/kzs/DZ508qfEz+V8AlAi2CGcPaZPW8BfNRDuZk9cw9jzb8LkKGqX1P4IyBT+o8ue7224tz1raqSPrphdl8lFpM+2uJK6ckFW6RRH0BfLGIpF4RjpfSQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=b/tRP0fO; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1749043359; c=relaxed/relaxed;
+	bh=AyofCP+ZN+6ircaf7mXhdeuKJnDTj+s9f0clMqZxlXs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WF0sfJXunWXY6ibST9vZ//x73QOqx10s3aNiYIyM2vo2YwiQxZKRntAJFgyL5w6D6m3gsZEY3LrTAEPR36uubdi8YWzwpYzKIWBZdNUrOvigcj1WtiqlxVnJYjz7SwDiGSps955tnjySGNRm7364pjFNRm9UE38ZFdxORqv+Cqe8WQiMPrk8nantLqJjhcHU1RVdAx6K5IGimzY6bgD6A1V3GvpC455T9TppUbHpnn8UUp9p5SjfUWVXBhepsrDW91GNgtHhKkwyJ1JQw8MhDsU6zH7smGRiv+e7X6QXsF3ONS+TW1A9ckuV7i7vyVyqD2S6K+mOGpjknznuTmNLmg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Wd+QjN0T; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=b/tRP0fO;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Wd+QjN0T;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bC5WQ0H8Gz2xk5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 21:50:57 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 9BB075C5661;
-	Wed,  4 Jun 2025 11:48:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3555EC4CEEF;
-	Wed,  4 Jun 2025 11:50:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749037854;
-	bh=F9N16TAMBxsonCFLJzyb2HtE5z9rIBeHoTfahj8tkO0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/tRP0fOzv6g08K5+cQx9lQ+tEqZcf+L03PJBIlDkqw9D1SG54jDnCBUecqlcipgU
-	 vWtqJ/GjfxrikInYk9FVPlfzex4uPyvM6tce53K2jXUfbqjss2fbFx+5KNDzxw4y7e
-	 CSCyJviI9WXhjyqjDmcGcuMWwW2SU4bihWmWl1HgsA0iYeBeG64lanZVTGAarOX4wV
-	 f1SNgZ34xxbk/H6FsNj3w7pYddhqpVw0KGO5NF9yQlaIXLC2DZxieOof5xHNzlLCTN
-	 R2R//uYtOz1MVGsCs3tz8ikaG5UWkXuOgbuccplNI1T+HS7jHtADLeUYkNMuxngyoO
-	 fzNLLUlgz8Nwg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Sasha Levin <sashal@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 2/5] bus: fsl-mc: increase MC_CMD_COMPLETION_TIMEOUT_MS value
-Date: Wed,  4 Jun 2025 07:50:47 -0400
-Message-Id: <20250604115050.209756-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250604115050.209756-1-sashal@kernel.org>
-References: <20250604115050.209756-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bC7YB3wQMz2xCd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 23:22:37 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 554DCawf032172;
+	Wed, 4 Jun 2025 13:17:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=AyofCP
+	+ZN+6ircaf7mXhdeuKJnDTj+s9f0clMqZxlXs=; b=Wd+QjN0T53cJ5UBS0BP1xh
+	UoNltEcgex7nx4RL2dI/9ob1j+9I0sh8lGb06Z8yDECNrMDf1LZWEPMwMv6I8s5j
+	IcNdrV/mfCpCobGpLaKXpuAyhzs3gga7PjSFbyY7C+OBpr6RSVsBGJ6PegI0tRjD
+	lm0JhgdAQFrFiZhLqssqlyD53tZa1D9qQZBVRqkatFL6+hiF0T8PwA4u+tx31VC1
+	buUgd7LyC28IYlSDhDoqBHJvUXnJf8cHwtRBUch7NcdoZ0YMNu+awjzOxrfpk6nm
+	WvELcIcPxBe6adYvR3VwJBbi5Lppb+StgHvIFoYyGY3X0WVB02NDLSrsBnl9r75A
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471geytmnc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 04 Jun 2025 13:17:11 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 554CxI1B029221;
+	Wed, 4 Jun 2025 13:17:11 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471geytmna-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 04 Jun 2025 13:17:11 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 554BoRl0031650;
+	Wed, 4 Jun 2025 13:17:10 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 470cfyyymw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 04 Jun 2025 13:17:10 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 554DH8MM25297572
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 4 Jun 2025 13:17:09 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AD4BB58067;
+	Wed,  4 Jun 2025 13:17:08 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EF0ED5805D;
+	Wed,  4 Jun 2025 13:17:02 +0000 (GMT)
+Received: from [9.39.21.166] (unknown [9.39.21.166])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  4 Jun 2025 13:17:02 +0000 (GMT)
+Message-ID: <9f7ae0e6-4640-418d-a4db-dba594377ac2@linux.ibm.com>
+Date: Wed, 4 Jun 2025 18:47:01 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,90 +86,146 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.293
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/5] drivers/base/node: Optimize memory block
+ registration to reduce boot time
+To: David Hildenbrand <david@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Zi Yan <ziy@nvidia.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+        Danilo Krummrich <dakr@kernel.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Yury Norov <yury.norov@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Nilay Shroff
+ <nilay@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <2a0a05c2dffc62a742bf1dd030098be4ce99be28.1748452241.git.donettom@linux.ibm.com>
+ <20250603200729.b7581e017e4ca63f502c795e@linux-foundation.org>
+ <b355e72d-0284-4a31-84e3-ae4a79ad922f@redhat.com>
+Content-Language: en-US
+From: Donet Tom <donettom@linux.ibm.com>
+In-Reply-To: <b355e72d-0284-4a31-84e3-ae4a79ad922f@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 4FsplurUS7c-nNdN0AmIoqUxedlpBq1v
+X-Proofpoint-ORIG-GUID: cm-Oc-tEKoBA3qeJIzbOxbnJXz9fYfvv
+X-Authority-Analysis: v=2.4 cv=X4dSKHTe c=1 sm=1 tr=0 ts=68404757 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=k8bw5oIpvhWMPjh-KD8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDA5OSBTYWx0ZWRfXwW6CTbwXdFug zCXnZycTe/FqRgU6/7hAGmicwbUedmIIArWprAYdtHHYFavfFa4G+KxKc+VYO1pl6alcHRcrnEf xtqqWsw7o4wouJXJZzoiVu80TLtzFLtJwUNLpc6hsMSpgi2KAPuhJs5p3mGD9U84OeoklTUc5sn
+ PO0Oz36/aec/Qkgp/dwSynzy9BzkcF+qgNlnrvE9Xo4/YUm9T/pCxhQS/mkX2twpZ2oBIWO+y4E fLsZmb8Hm2OFz2Owb8eVOZs0ET6iz52pippiIXA9bORtj7zfZU5Vif2yLNxoL/mevj+FhZvouV4 jeOJ8otynWo0iTOxhMKjLDCuX5C0uN78khP7zH28mqiv/t1+dsNkBy3020SYjol1DSCiNLzXe9j
+ DxyfRX481RrnuSrz9kupxaY++cA4LzgAC6gDwjUeAhnBviMJhEI4V4hGPkwPy4jkwFCF2rTS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-04_03,2025-06-03_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ malwarescore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506040099
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 
-[ Upstream commit 23d060136841c58c2f9ee8c08ad945d1879ead4b ]
+On 6/4/25 3:15 PM, David Hildenbrand wrote:
+> On 04.06.25 05:07, Andrew Morton wrote:
+>> On Wed, 28 May 2025 12:18:00 -0500 Donet Tom <donettom@linux.ibm.com> 
+>> wrote:
+>>
+>>> During node device initialization, `memory blocks` are registered under
+>>> each NUMA node. The `memory blocks` to be registered are identified 
+>>> using
+>>> the node’s start and end PFNs, which are obtained from the node's 
+>>> pg_data
+>>
+>> It's quite unconventional to omit the [0/N] changelog.  This omission
+>> somewhat messed up my processes so I added a one-liner to this.
+>>
+>
+> Yeah, I was assuming that I simply did not get cc'ed on the cover 
+> letter, but there is actually none.
+>
+> Donet please add that in the future. git can do this using 
+> --cover-letter.
 
-In case the MC firmware runs in debug mode with extensive prints pushed
-to the console, the current timeout of 500ms is not enough.
-Increase the timeout value so that we don't have any chance of wrongly
-assuming that the firmware is not responding when it's just taking more
-time.
+Sure,
 
-Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20250408105814.2837951-7-ioana.ciornei@nxp.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
+I will add cover letter in next revision.
 
-Based on my analysis of the commit and the surrounding code context,
-here is my assessment: **YES** This commit should be backported to
-stable kernel trees. **Detailed Analysis:** **1. Bug Fix Nature:** This
-commit addresses a real timeout issue where legitimate MC firmware
-operations can fail due to an inadequate timeout value. The commit
-message explicitly states that "In case the MC firmware runs in debug
-mode with extensive prints pushed to the console, the current timeout of
-500ms is not enough." **2. Code Change Analysis:** The change is minimal
-and surgical: - Changes a single timeout constant from 500ms to 15000ms
-(15 seconds) - Only affects `drivers/bus/fsl-mc/mc-sys.c:22` - No
-architectural changes or new functionality added - The timeout is used
-in both `mc_polling_wait_preemptible()` and `mc_polling_wait_atomic()`
-functions that handle MC command completion **3. Risk Assessment:** The
-change has minimal risk: - Increasing a timeout value is generally safe
-and doesn't change behavior for successful operations - Only affects
-systems with Freescale/NXP DPAA2 Management Complex hardware - The
-original 500ms timeout was clearly insufficient for legitimate use cases
-- Similar to successful backports in the reference commits (e.g.,
-Similar Commit #1 and #3 which both increased timeouts) **4. Impact and
-Importance:** - Fixes a real user-facing issue where MC commands fail
-with timeouts during firmware debug scenarios - The FSL-MC bus is
-critical infrastructure for DPAA2 networking architecture on NXP ARM
-SoCs - Timeout failures can cause device initialization problems and
-system instability - The `mc_send_command()` function is used
-extensively throughout the FSL-MC subsystem for all hardware
-communication **5. Comparison with Similar Commits:** - Very similar to
-Similar Commit #1 (UCSI timeout increase from 1s to 5s) - **Status:
-YES** - Very similar to Similar Commit #3 (MLX5 timeout decrease from 2
-hours to 60s) - **Status: YES** - Both of these were timeout adjustments
-that got backported successfully **6. Subsystem Scope:** The change is
-contained within the FSL-MC bus driver subsystem and only affects NXP
-DPAA2 hardware platforms, making it a safe candidate for stable trees.
-**7. Explicit Stable Tree Criteria:** This meets the stable tree
-criteria: - Fixes an important bug affecting real users - Small and
-contained change with minimal regression risk - No new features or
-architectural changes - Addresses a timeout issue that can cause system
-functionality problems The commit represents a classic example of a
-safe, important bug fix that should be backported to help users
-experiencing MC command timeouts in production environments, especially
-during firmware debugging scenarios.
 
- drivers/bus/fsl-mc/mc-sys.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>>>
+>>> ...
+>>>
+>>> Test Results on My system with 32TB RAM
+>>> =======================================
+>>> 1. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled.
+>>>
+>>> Without this patch
+>>> ------------------
+>>> Startup finished in 1min 16.528s (kernel)
+>>>
+>>> With this patch
+>>> ---------------
+>>> Startup finished in 17.236s (kernel) - 78% Improvement
+>>
+>> Well someone is in for a nice surprise.
+>>
+>>> 2. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT disabled.
+>>>
+>>> Without this patch
+>>> ------------------
+>>> Startup finished in 28.320s (kernel)
+>>
+>> what.  CONFIG_DEFERRED_STRUCT_PAGE_INIT is supposed to make bootup
+>> faster.
+>
+> Right, that's weird. Especially that it is still slower after these 
+> changes.
+>
+> CONFIG_DEFERRED_STRUCT_PAGE_INIT should be initializing in parallel 
+> which ... should be faster.
+>
+> @Donet, how many CPUs and nodes does your system have? Can you 
+> identify what is taking longer than without 
+> CONFIG_DEFERRED_STRUCT_PAGE_INIT?
 
-diff --git a/drivers/bus/fsl-mc/mc-sys.c b/drivers/bus/fsl-mc/mc-sys.c
-index 3221a7fbaf0ad..24307ed59d777 100644
---- a/drivers/bus/fsl-mc/mc-sys.c
-+++ b/drivers/bus/fsl-mc/mc-sys.c
-@@ -19,7 +19,7 @@
- /**
-  * Timeout in milliseconds to wait for the completion of an MC command
-  */
--#define MC_CMD_COMPLETION_TIMEOUT_MS	500
-+#define MC_CMD_COMPLETION_TIMEOUT_MS	15000
- 
- /*
-  * usleep_range() min and max values used to throttle down polling
--- 
-2.39.5
+
+
+My system has,
+
+CPU      - 1528
+Node     - 16
+Memory - 31TB
+
+I ran the same test with and without CONFIG_DEFERRED_STRUCT_PAGE_INIT, 
+and the boot time was consistently higher with 
+CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled.
+
+I'm still investigating this. I'll check further and get back to you.
+
+
+
+CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled
+----------------------------------------------------------------------
+1. Startup finished in 12.959s (kernel)
+2. Startup finished in 13.036s (kernel)
+3. Startup finished in 12.944s (kernel)
+
+
+CONFIG_DEFERRED_STRUCT_PAGE_INIT disabled
+-----------------------------------------------------------------------
+1. Startup finished in 12.234s (kernel)
+2. Startup finished in 12.287s (kernel)
+3. Startup finished in 12.230s (kernel)
+
+Thanks
+Donet
 
 
