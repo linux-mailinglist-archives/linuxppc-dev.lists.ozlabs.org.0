@@ -1,187 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-9136-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9137-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94E8ACD89B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 09:32:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8232ACDB23
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 11:38:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bBzn26cMzz2xJ8;
-	Wed,  4 Jun 2025 17:32:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bC2Zz0qlWz2xPc;
+	Wed,  4 Jun 2025 19:38:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=198.175.65.11 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749016251;
-	cv=pass; b=eJOlJvEPQoScAz8LahNfjgbDaTGJ5UkFAzQcGTSeUQjfpM9P5ZPssXVnV5FSnVbddMCYPFL/IUScU46d6hxU1kDXcY0AlMngjghLAZVO8Us0pNK9NrzUj7RvZxeUbTDQwyvjLNKSoKE7cyhAkn4eZmiaw1RGjhQDKqWqxw5R2WGfTpHZe7X54WfqFHDC5U9C6KAZucMvMioArWmo3BKY1DqHLiIzx386dy2o1DgaJWx2091WY52cQVQ1uIipYk8fe91F6kl1BhJcjpJou3v/AYXVI1iiu5Vo2QR2wnxw9JMovFb+RyjR7SUFS05kqYCeHA2HI/SRU6NcPiOdfOVXNg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749016251; c=relaxed/relaxed;
-	bh=MGfHq9Ru9AOeqJJeupV7c0z2+vwZ9nVU3g5rD9oqDWo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=EoRw4HFm9aH91n3HR9GfDrt2l9V+yAKDx3EWM/Ew7QJ548sk84v7mLq+ToZ9nHosNS+2Tbw1dabHV1zE0VB8VrgcO0RHYOSlbH9E4g9fLDiAGa7mUILSXCpVzDQS1CZdvbxUC4Y1kAH4e9WwLGb+qW0Lzubl4NFrjDzq+LBEw0iOHhu1Kz211RVTBYW4k28YAi8lJ1ffoUK7eA3VuAut4lemnYVOna3H8dP0l6TqU2qaRIZ/snhY6io3yAC6UBVroOXsWxNyxOoEnghq+m81hO0FHiQDO9glVrylq/uzxd9q6/Kq50Ymdfu7/5EOB8DJZMkXQqEa2mklylRpMrCn9A==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A3GKiRVp; dkim-atps=neutral; spf=pass (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=qiuxu.zhuo@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749029931;
+	cv=none; b=glB768BY/n/yzfE5c7yLBjLWfRMIZgBMKlhWqHnjFyyl1L7SJlO7hxYs4HVQn9As7Cs5rQapnSaBsR1c175KGbaeJZXtt5tqRoVWEiE4INcg6SX2bpgKurwhJ2MkbMuP/pt7/UG1obOJB8aLl18DYo7GfIvCMmWEUgqYxnD8L/6yKuL/bmZne5zX13U7EYd+im9793WEO6isf04ErmVr6OfrIJVWGlIM6gTze3CP7IbXSm0L3nypDxCRXGftCiQBSSn5qlbVWZaKnJ+YCHkP4mvD2/D/WQhm6GrhJaNf4sbiMm/6F+QsDcM+Y11lyxgNFMZkBkRHdw3+tZ2n4u6+4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1749029931; c=relaxed/relaxed;
+	bh=gpx6tDJBl4ZRNXlwEZ3goLD9Mt+7BJdqf7MbNFs2CXM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X1ytOcSf/seHoXoT10YdUaiQd8hZi3FsD2klA+Z4GqIq1JNLgw6gq+kwONx6q9+1U73zhxgfGd8P/Srt7q9tN5K17wS9e7VWjbiKfbLHEC0tNH4Hoih8IiYefH2Au5PVwo1geAlwy80P5hWTbHb9y/wql+a7ild0iWS5ljs+l8XFP5UXT7tiP4HNFtWu2LutpnhmV1q3Ewnx6kHJjgh1u2cUwq6i6JSwu+h9NsM5cbvc3DOVF2FLwkfJbBSD5iRXNI7kF9mQfVbzRjmy7L26h+kTjQDvJf7MS0jX4NkKu2aZ9hUdBK6upSjxr1CjHIMhYumO/LqIqjvWmhdGZ22tKQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eUasG4cH; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eUasG4cH; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=A3GKiRVp;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eUasG4cH;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eUasG4cH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=qiuxu.zhuo@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Wed, 04 Jun 2025 15:50:48 AEST
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bBxWr1QGMz2xH9
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 15:50:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749016249; x=1780552249;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=MGfHq9Ru9AOeqJJeupV7c0z2+vwZ9nVU3g5rD9oqDWo=;
-  b=A3GKiRVpGRht/Fpw7rWCYwz0+xbbKICTVxmWfJyK1QLRJlH7X+0Ctoi6
-   tSwhWO8DERFa8yWxmxf2iW6ktF+iG+6MGk1V2RVo2l8aNbgQbtwTWz7sh
-   DL5o4I4FvN10kZO+MFzy4ojDz+CXOCldp+llQvgaKBM52te+M+aZNnaWY
-   685OySwVm7p5IJQeWcZjmvLzoHrs1UN1pcSv5GgKWWsJA/DdZAlR65qla
-   47zIrKnKeQCeW8esVcwtKVSzVdzjCt0WxPqJrEmO/qiTSAeNA2Ey+29fM
-   PS41P4DJxy21QnK8xcNnKuhaLStOqUvctfs+sv6RauLzEZyheAUSgypQt
-   g==;
-X-CSE-ConnectionGUID: BJ79TPHvSV6X15UFauhK0w==
-X-CSE-MsgGUID: KJNsE2ARRpSB7CVJJxPiEA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11453"; a="61346559"
-X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; 
-   d="scan'208";a="61346559"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 22:49:40 -0700
-X-CSE-ConnectionGUID: j9S7t2HDTmeJimMnEd8TLA==
-X-CSE-MsgGUID: Dj/xnsGkQJy2ZgFMmlN4fA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,208,1744095600"; 
-   d="scan'208";a="175942046"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2025 22:49:39 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 3 Jun 2025 22:49:38 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Tue, 3 Jun 2025 22:49:38 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (40.107.93.85) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 3 Jun 2025 22:49:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XNd5AKM2bcjOqRFh+3OLDAfbyI64YNOwSepIy2YtUdl54JJ8o/5LephtQRe55Tmg2lJc+UkUkDJBr2zAF8FUvXkb86GuDucdo6+2Ssvj2GgIzoZ5/USf/ElYDs8BRq9btnaK0nMr3gs4pn/+sr/cWHLtsmxm1YiO0pEOqsFBggARFt+3YcTEBRvmJ2Iq0orfMuXix8qYNPBchjH3GvMzZYSm/3aobUcLFtOqugYw9AsSl0Ty7OlHn8T8+0RQS/q2tCwkmFWDgFaHS6OPBuVRQY5YtqvOToJe/jOl53ZToV6IWBbCHxxUPLofoGuXZR3TI72gnIQfpS4GuyRyn6fIiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MGfHq9Ru9AOeqJJeupV7c0z2+vwZ9nVU3g5rD9oqDWo=;
- b=sicoBtL8crXpKIqD+q7P/twdiQwuU93DABVgM4cdt6htr2jijzI6ZjfVCg/LSxyLP8FbT3z9pLvJpjQc4YDF9pcDjDQeUPYsPggAVyNPxdl7dmqxBCHc+8eOEvAKIbQ9feWrl8Aua0ggMYdreTNXZTwmyPO61SM5NuHDnol+0FEE9JiUbm5jPl8/4Qq8GLlGCboupejeFTGh/+1tX1F7Tj44ZavqQ/g1/+IeYb4O0DqrF6JNMEQJ4X/avstE6lUUx/cBmfRHBnck24XHaG5TGmhP1WOG3271sQJiZoBBiFa1iwBRnC3wMu2g/KUCOV3fvl5jAnNCLLTy7te90QF0qw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CY8PR11MB7134.namprd11.prod.outlook.com (2603:10b6:930:62::17)
- by CH0PR11MB5267.namprd11.prod.outlook.com (2603:10b6:610:e2::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8813.19; Wed, 4 Jun
- 2025 05:49:36 +0000
-Received: from CY8PR11MB7134.namprd11.prod.outlook.com
- ([fe80::cd87:9086:122c:be3d]) by CY8PR11MB7134.namprd11.prod.outlook.com
- ([fe80::cd87:9086:122c:be3d%5]) with mapi id 15.20.8769.025; Wed, 4 Jun 2025
- 05:49:36 +0000
-From: "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
-To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>, "Rafael J
- . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Davidlohr Bueso
-	<dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, "Jiang,
- Dave" <dave.jiang@intel.com>, "Schofield, Alison"
-	<alison.schofield@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"Weiny, Ira" <ira.weiny@intel.com>, "Williams, Dan J"
-	<dan.j.williams@intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
-	"Luck, Tony" <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>
-CC: Yazen Ghannam <yazen.ghannam@amd.com>, Jonathan Cameron
-	<Jonathan.Cameron@huawei.com>
-Subject: RE: [PATCH 1/4 v3] ACPI: extlog: Trace CPER Non-standard Section Body
-Thread-Topic: [PATCH 1/4 v3] ACPI: extlog: Trace CPER Non-standard Section
- Body
-Thread-Index: AQHb1KAq+emGYyIGfEm+FV/Y7leed7Pyf1wg
-Date: Wed, 4 Jun 2025 05:49:36 +0000
-Message-ID: <CY8PR11MB7134D38181BA7267812B7435896CA@CY8PR11MB7134.namprd11.prod.outlook.com>
-References: <20250603155536.577493-1-fabio.m.de.francesco@linux.intel.com>
- <20250603155536.577493-2-fabio.m.de.francesco@linux.intel.com>
-In-Reply-To: <20250603155536.577493-2-fabio.m.de.francesco@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY8PR11MB7134:EE_|CH0PR11MB5267:EE_
-x-ms-office365-filtering-correlation-id: 0ba50192-b781-48a1-966f-08dda32b96cc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016|921020|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?66rjAYrETV91PxPbn2/Ja8b5L/yJaETNh3jE3Xq3YdVOepvhhibY7C9DR2XC?=
- =?us-ascii?Q?6gtBdF5OH3TBT7hRVdI4Iw8vE0aYTk+WwASn8Y4XOS0ruqqIimk0OBLN4zAC?=
- =?us-ascii?Q?B3T4pyQQAF4p1pcmQo04keFIBuiQWVNy4IFPFsECoeCZYE3WiRhUnTJK2v8e?=
- =?us-ascii?Q?KGb/VRTffLP/H0swACX8OSKXmt3FJe1lIlR0KNA9RPb0K4SoQkFp/iDGkfGz?=
- =?us-ascii?Q?Is+vL0Gpu6jWu3TLgXPxMILHJbmcjNABNXqdtIttUWCKF/aXmRWdBG+cV0DW?=
- =?us-ascii?Q?dwLW81Zu1Bor/Fl9t3Q7eOGZsJhRFH37agPk4TbTKj8etAVhsJ0wKKLLs7uF?=
- =?us-ascii?Q?rWq6VPCtou6X3uYbPFx2NpEGsKo0h7jmy2yiEpfiSH+Zb5P/zI11YOTfkKW3?=
- =?us-ascii?Q?Rf+f9ZKFwneeSYYg5XWSPkaP/lKugjsRqDmSkqmXMKOthx2ZFDUE/o13rSea?=
- =?us-ascii?Q?3FBKa6Okgdiob+aJ/OSvw9EoR1LuRJZKwNHh3FVhZYMUOgbXEP9US3bhv+nN?=
- =?us-ascii?Q?Lb4vHDDmKu8HZuH12dQ2Lg+G7lCXSq3uub04v1LNl65u+xSeK9RrTzKBzn1y?=
- =?us-ascii?Q?CYqsWxS2oHCLKpKFd8UQ1V0pSVWWyfk1k4vlfX+fG0DzOyuBiq6PVuL+H7Su?=
- =?us-ascii?Q?e13xwNz5JLSTouq62fdXeq5gtUW9b8dID59DowEWmuk02KqnOgBE4hd7UY6V?=
- =?us-ascii?Q?nsCeXcR1CoPSIqEp6Hkyve8ZbOEslE8uqfM0zFBQeo7h/GsighZCfpRzfR9K?=
- =?us-ascii?Q?lnwFFAU7V0B+goCZwiaL2FTUQH0ly7rZzQvFUrey8Wr9GYjA9BmM4UG/7z3q?=
- =?us-ascii?Q?AsglqTCmra9zvbNTQVEzNPER1D+TniLoXTihHzBoCOtfAh90d0OUOBbFMXFj?=
- =?us-ascii?Q?+/MAuhIUsJzpuhMYhRc6HGWWjAM4yx3elrsdo/uJVgKWnHG1MTP4NQOV0iNT?=
- =?us-ascii?Q?qQuiqNcKO4YZ4zV4eCtvhDAhmZpiF71vKKdPQHgNOPqQBlpIo/0EbimyuvCM?=
- =?us-ascii?Q?PmZjatsFN6YKduYFTNWZGoDqlNvXWUmarAHBSOP53TRnfDhmIDkSQRsPfmNr?=
- =?us-ascii?Q?WUejsmEyCCvOQfHTl7nHgNnATKjxTbYZxqtokO8PItZ2sfFER2HIWos/WJHl?=
- =?us-ascii?Q?f6HFrFW1a9Zb7aLT88vdx0s6TiEZ3G/meOwaNtT6jteecPHL+sTxqwLpKbjv?=
- =?us-ascii?Q?qz8afKj6hWWU8lac5XQ/oZqz8ceF3lpLPniMvZtJAZ5RcR2DZgk2JlhYzI/G?=
- =?us-ascii?Q?R8is/dOp17+vzGiQQggQlrRGQDGRaobriYBjfKcocxXNbJ3edG/ZnMscWS1o?=
- =?us-ascii?Q?yzmV45VrBUZRQuYkiYlnSoUaP6FHrInbNxwgVmYuZ5IzYEUVFSEtVFPfUpFB?=
- =?us-ascii?Q?BHf6wwPN78YKLFi8/ZCb9nt0okL1VzMAZX1sykMONJ4rC5Z7BpMmHMqVSg6e?=
- =?us-ascii?Q?pCMBMG0NebfcV3m5K06xTEdqPRDZLk57+8z1E9qisrGzT8oGfQpbbhlq3vg3?=
- =?us-ascii?Q?t3bQMTJZJrS3cPk=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7134.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(921020)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?6RfB/0+9cC7pXVYZvgtWQz9l9/d3e9hxGSCn9GXxNMqjr+IpAbInZKUJIMY4?=
- =?us-ascii?Q?E7eMJIgptDd0wGuq7osNDcMKkOjndqnViMsOggQZHC+lSt7gN0RaSt48NvKv?=
- =?us-ascii?Q?DRZslrDsR6huyMcAOjEEg8OlWW6r4rUqL8In/Grewf/GlbMk+mWKp9+3OHdX?=
- =?us-ascii?Q?ivPNv0tOjNqB7FsIPsL/DO8NrW0yQplwfTlasP+CN4gyn4JVOapqEm2HQNEd?=
- =?us-ascii?Q?aQOUujYYjmUGWIQHfIkaq7zdTzQTYSgi+MQ4nSZB07n2G80dElDG1e4Qnx+U?=
- =?us-ascii?Q?uWgTphZqczh1Sbz8cRfRd4PdOiSqoWveCUafFoiDmH9qUDhsgvqKoLz3rtOk?=
- =?us-ascii?Q?+7WoQ5oatebPm7uw5c1aolFV+uPTbO9uRKgDMYU4AHN665gGbDwxUNuArei0?=
- =?us-ascii?Q?DNOPGkZtDbrKLBMaro+Rb1JhyUqNZkGrqSntyzE2HOGZUBQMP9A6Xa9haH2y?=
- =?us-ascii?Q?9qMeDz5mEUSNRmiLHF5vThihprw5bNWMMeWyIiIWKaLMfAOpNGQoTd5MJbYe?=
- =?us-ascii?Q?SmvHt9dlnyMbEiGCipfHLG0fKATxfvg6MPc36Dp0n2O5Bq156tADuuVnBQuX?=
- =?us-ascii?Q?C/QNyhDY/5QtC/lKa5FdVBY1vnjxJoVBmdAtPrwfGsN/ukJQJpOsRH1ruH8Q?=
- =?us-ascii?Q?NPRlKclUWUS3Rfoc/3c98g7M0vTfQpJhxSTxdqXst+XV4qeXd/03zOTGDSM7?=
- =?us-ascii?Q?GOPNSM7FFhMy2yTlsft78NyYhEEMAdJib2IZ7QpQVPE5IETGjExcdKhTcGi8?=
- =?us-ascii?Q?Nn52AuL8Kzs+397ifXC2pO6bJJp3gl+XuecF6NPvFlsvOYKa4x849YlNxcGX?=
- =?us-ascii?Q?I1HrxTqZjLotn1jX/zJnA3N1H4P2Dzc3i5q5cgtVxrQ7Qw0vnpDVp9pvkFH7?=
- =?us-ascii?Q?AqsXVO48V7daMq9oyWPzkU6p6mw8x9ebacqGXjqJu/3ff1ohCfqSx2OXjKnf?=
- =?us-ascii?Q?IqkqQSAufdwbVv1L987LmsWbooIST0fXIYkBE+5dnjwSd5SKp+XxkKY1qNHi?=
- =?us-ascii?Q?IJPh4M3iQ1exVS6VophrE4tJH7xUzKqEbZ/u12tJDBOIpwjfYkKoNn1Jn+oC?=
- =?us-ascii?Q?QIi5TmvNdnwD6bm0NEwzK7ZgHYG3pFRfDs40Pjhscy8OIHWXqwOqx9aFniGh?=
- =?us-ascii?Q?fqBjDPzaJGXKIuNnD4ahZi7kuEqFSNyE3AnMsdjTPabLCkBkM6oZ7l72b5xb?=
- =?us-ascii?Q?PsTHqISmbWL9o8mTcQfCKy/WLvdp1FBA/iYYQCuNESzn2guBL+ec/WGIytzC?=
- =?us-ascii?Q?13mtzdX7sPSLmWSCXKzPw/AV48+SemZCHo7LbWoK59cbNy4m11T2XmX8LUmE?=
- =?us-ascii?Q?koSJTe7y1do2aeZmv+hNH2H0uROGxVmIjuKzijC3i65+xys3x7uw8lID/hJH?=
- =?us-ascii?Q?cgw/6IbA5E7JFeteMkRD/bmj9yet3WsHfmbl3ewbmeFhsl6ABpdMf6o3vYj6?=
- =?us-ascii?Q?gAD2t9cOeCQQ6P1JXerv0/qNHHPgM+76iu0/r7+Q4Q675YeYhVvApl0UnCKv?=
- =?us-ascii?Q?W0xM8N3SKNLtpSIYZA4W4LhxKOK0LXTv1lUfUQwxlE7nDHVwkSc3AsdYQDgv?=
- =?us-ascii?Q?ITevUlE53uzI+Pk2aQpNcHnBUxR47TaXsAuq9v5P?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bC2Zs756gz2xGv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  4 Jun 2025 19:38:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749029919;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=gpx6tDJBl4ZRNXlwEZ3goLD9Mt+7BJdqf7MbNFs2CXM=;
+	b=eUasG4cHpU/hJC6BukWLzg/YzIMwF/teLRcjLvl2ia8Wv2bnzpn7/N2fdMcT+ZFUBBYTkM
+	NfGkV68r9DedKKnQrWp6vXAhxIMr8Zq8vba3s3ykUaqszpEVqQ9/C3wLjeg6izRgbw5R03
+	g5IISD2d41AeARL8pgsnmrQAezEL4hc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749029919;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=gpx6tDJBl4ZRNXlwEZ3goLD9Mt+7BJdqf7MbNFs2CXM=;
+	b=eUasG4cHpU/hJC6BukWLzg/YzIMwF/teLRcjLvl2ia8Wv2bnzpn7/N2fdMcT+ZFUBBYTkM
+	NfGkV68r9DedKKnQrWp6vXAhxIMr8Zq8vba3s3ykUaqszpEVqQ9/C3wLjeg6izRgbw5R03
+	g5IISD2d41AeARL8pgsnmrQAezEL4hc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-113-uEAJJT6fNwSLs__93k1Qkw-1; Wed, 04 Jun 2025 05:38:37 -0400
+X-MC-Unique: uEAJJT6fNwSLs__93k1Qkw-1
+X-Mimecast-MFC-AGG-ID: uEAJJT6fNwSLs__93k1Qkw_1749029917
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-451d30992bcso29728785e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 04 Jun 2025 02:38:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749029916; x=1749634716;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gpx6tDJBl4ZRNXlwEZ3goLD9Mt+7BJdqf7MbNFs2CXM=;
+        b=kTavlaFhOJqCbuZyHQ/4TvReZaCYmZFoZSsfysn0bf7BDzKUTzh1GkkjEiIkiRl+5T
+         OIAh1akSjekh8hJ8Vg1++HC8xMNcdu7e2ba75UnAPpxniMUd7Y5mU1WmgrdQdhgq1Mwl
+         h5M49F+mquPIsUhXJlSJngeP9WUeX2PIj3ZVpq5CtYCZ/kqzUF5U2iKVg+5oRUrlJQ3u
+         rIezH6g4OLTx+jrHgjHIK7zdpR/14zAAxGBhtW0oy97cWucDZ2wFdIoCeOwrvafUNCR9
+         Z0lBvrzsfHApwYrRjgkD9vkugWkc2sdZV2ioB/OTxray8+rHtnMO96b8YHtwZfjEDu33
+         rLeg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFTDP5x5K5lHmM5N+m3ux8qc9YqUQ3zHPVFi9nP0sCFe8GqUAzwdQFUjfevWyNkgLvH5hm0QVP9yQ1dBA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwNxO0FdcOHhdI5Dr/sz5yAaihtyckzjYOQHU16G3wWOjlEvKR4
+	rpbceYCTKAVYROsp7aF6SHUuLGjlPLvWku7mVCxFWBIwSKh3HGdAFFd7PFh/9pulhN18WHauekH
+	57zci/tFS3OTu0OHSZvCxnFpwg8qeHZC7EefzgEHrB7desor1e4iVqHBgyrXJwpSSxT8=
+X-Gm-Gg: ASbGncsgG6Qo4S4kggoBkLZRK+oJPprTsz5l2xQIJiw1EgA39VvlABM6Sk7djni3H9k
+	2xxmwdKMzgGEoW5DXT2rLifcS1yuTGS4IDwu6PYdFPEjhaw8gc2Sw6ddnj7BC87l0GKo7ppGOaB
+	Ufudl4z1d5ruHCrub6lY2+0w1b3L3nDyI0zjRCCvibzNlRa4vWiT5sQwKXdgAJZGlHMLdmDM/9Y
+	lSr1jxvnwKmUs6vdmfRBDdvGCM5efkixMhlUmWXJJj3TGKqA5PEL62+TYdEwNw6TX4yXUqgJ9Ic
+	PSUfHAPdJVpbgXfEPPvvwFRIUogqUD1j7FPXbVaAxa4q5n/AiAEeYkhmaYzqWivQHI+UKIkJl3E
+	X+mm/g1AmdPw3xQx1lJuATS39nJTkM6uNOTp1x2vSyo5biDk88A==
+X-Received: by 2002:a05:600c:4f50:b0:43d:fa59:a685 with SMTP id 5b1f17b1804b1-451f0b3d1fcmr15529375e9.33.1749029916567;
+        Wed, 04 Jun 2025 02:38:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFhDvqnvGf6Bfa5YlLoHbj4qrKSXz6KWAdlhxSHlVgnJQCckFPOWc4xRbzkQI0ut0NbKaKj9A==
+X-Received: by 2002:a05:600c:4f50:b0:43d:fa59:a685 with SMTP id 5b1f17b1804b1-451f0b3d1fcmr15529125e9.33.1749029916092;
+        Wed, 04 Jun 2025 02:38:36 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f1b:b800:6fdb:1af2:4fbd:1fdf? (p200300d82f1bb8006fdb1af24fbd1fdf.dip0.t-ipconnect.de. [2003:d8:2f1b:b800:6fdb:1af2:4fbd:1fdf])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-450d7fa23f4sm200336965e9.14.2025.06.04.02.38.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Jun 2025 02:38:35 -0700 (PDT)
+Message-ID: <96f7d3a2-2d85-442c-a9f7-e558d4a2ba06@redhat.com>
+Date: Wed, 4 Jun 2025 11:38:34 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -195,45 +104,193 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7134.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0ba50192-b781-48a1-966f-08dda32b96cc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jun 2025 05:49:36.4776
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 3Bsz5s4RzbIb3Vjb2QS7aiHlyQ4rBw7zU7tfWgZFP6ZV1INSnci8YCpJUXbjEfVVXrQ1KehmOm5lIIT5c8p2jw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR11MB5267
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-5.4 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 1/5] drivers/base/node: Optimize memory block
+ registration to reduce boot time
+To: Donet Tom <donettom@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>, Zi Yan <ziy@nvidia.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Yury Norov <yury.norov@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Nilay Shroff
+ <nilay@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <2a0a05c2dffc62a742bf1dd030098be4ce99be28.1748452241.git.donettom@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <2a0a05c2dffc62a742bf1dd030098be4ce99be28.1748452241.git.donettom@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: y0Dm3ene1nl8Lldm6I3s6mgusAx2U0PVs_36bUX17Y8_1749029917
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-> From: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
-> [...]
-> Subject: [PATCH 1/4 v3] ACPI: extlog: Trace CPER Non-standard Section Bod=
-y
->=20
-> ghes_do_proc() has a catch-all for unknown or unhandled CPER formats (UEF=
-I
-> v2.10 Appendix N 2.3), extlog_print() does not. This gap was noticed by a=
- RAS
-> test that injected CXL protocol errors which were notified to extlog_prin=
-t() via
-> the IOMCA (I/O Machine Check
-> Architecture) mechanism. Bring parity to the extlog_print() path by inclu=
-ding a
-> similar log_non_standard_event().
->=20
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: Fabio M. De Francesco
-> <fabio.m.de.francesco@linux.intel.com>
+On 28.05.25 19:18, Donet Tom wrote:
+> During node device initialization, `memory blocks` are registered under
+> each NUMA node. The `memory blocks` to be registered are identified using
+> the node’s start and end PFNs, which are obtained from the node's pg_data
+> 
+> However, not all PFNs within this range necessarily belong to the same
+> node—some may belong to other nodes. Additionally, due to the
+> discontiguous nature of physical memory, certain sections within a
+> `memory block` may be absent.
+> 
+> As a result, `memory blocks` that fall between a node’s start and end
+> PFNs may span across multiple nodes, and some sections within those blocks
+> may be missing. `Memory blocks` have a fixed size, which is architecture
+> dependent.
+> 
+> Due to these considerations, the memory block registration is currently
+> performed as follows:
+> 
+> for_each_online_node(nid):
+>      start_pfn = pgdat->node_start_pfn;
+>      end_pfn = pgdat->node_start_pfn + node_spanned_pages;
+>      for_each_memory_block_between(PFN_PHYS(start_pfn), PFN_PHYS(end_pfn))
+>          mem_blk = memory_block_id(pfn_to_section_nr(pfn));
+>          pfn_mb_start=section_nr_to_pfn(mem_blk->start_section_nr)
+>          pfn_mb_end = pfn_start + memory_block_pfns - 1
+>          for (pfn = pfn_mb_start; pfn < pfn_mb_end; pfn++):
+>              if (get_nid_for_pfn(pfn) != nid):
+>                  continue;
+>              else
+>                  do_register_memory_block_under_node(nid, mem_blk,
+>                                                          MEMINIT_EARLY);
+> 
+> Here, we derive the start and end PFNs from the node's pg_data, then
+> determine the memory blocks that may belong to the node. For each
+> `memory block` in this range, we inspect all PFNs it contains and check
+> their associated NUMA node ID. If a PFN within the block matches the
+> current node, the memory block is registered under that node.
+> 
+> If CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, get_nid_for_pfn() performs
+> a binary search in the `memblock regions` to determine the NUMA node ID
+> for a given PFN. If it is not enabled, the node ID is retrieved directly
+> from the struct page.
+> 
+> On large systems, this process can become time-consuming, especially since
+> we iterate over each `memory block` and all PFNs within it until a match is
+> found. When CONFIG_DEFERRED_STRUCT_PAGE_INIT is enabled, the additional
+> overhead of the binary search increases the execution time significantly,
+> potentially leading to soft lockups during boot.
+> 
+> In this patch, we iterate over `memblock region` to identify the
+> `memory blocks` that belong to the current NUMA node. `memblock regions`
+> are contiguous memory ranges, each associated with a single NUMA node, and
+> they do not span across multiple nodes.
+> 
+> for_each_memory_region(r): // r => region
+>    if (!node_online(r->nid)):
+>      continue;
+>    else
+>      for_each_memory_block_between(r->base, r->base + r->size - 1):
+>        do_register_memory_block_under_node(r->nid, mem_blk, MEMINIT_EARLY);
+> 
+> We iterate over all memblock regions, and if the node associated with the
+> region is online, we calculate the start and end memory blocks based on the
+> region's start and end PFNs. We then register all the memory blocks within
+> that range under the region node.
+> 
+> Test Results on My system with 32TB RAM
+> =======================================
+> 1. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled.
+> 
+> Without this patch
+> ------------------
+> Startup finished in 1min 16.528s (kernel)
+> 
+> With this patch
+> ---------------
+> Startup finished in 17.236s (kernel) - 78% Improvement
+> 
+> 2. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT disabled.
+> 
+> Without this patch
+> ------------------
+> Startup finished in 28.320s (kernel)
+> 
+> With this patch
+> ---------------
+> Startup finished in 15.621s (kernel) - 46% Improvement
+> 
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Acked-by: Oscar Salvador <osalvador@suse.de>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+> 
+> ---
 
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+[...]
+
+>   #ifdef CONFIG_NUMA
+>   void memory_block_add_nid(struct memory_block *mem, int nid,
+>   			  enum meminit_context context);
+> @@ -188,5 +206,4 @@ void memory_block_add_nid(struct memory_block *mem, int nid,
+>    * can sleep.
+>    */
+>   extern struct mutex text_mutex;
+> -
+
+^ Nit: unrelated change?
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
