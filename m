@@ -1,95 +1,185 @@
-Return-Path: <linuxppc-dev+bounces-9153-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9155-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CE7AACE258
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 18:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A41CDACE60B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 23:12:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bCCyd5XyGz2xk5;
-	Thu,  5 Jun 2025 02:41:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bCKzN16qdz2yRD;
+	Thu,  5 Jun 2025 07:12:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749055289;
-	cv=none; b=mYUktwW2y4DftPXeAGNZaMGa6oUNxHeN+UzMWUq9Kv+Ky/mbV9455zaqCxgmTyN9OYhoi1TLdNKgVbUJMBjeleSkU1jUZUARub4AH6J4BFlieomL6BDnXDEDfMieufdSILKIvYoMfGnCGIXR3J9x5iL5fxJ9NhJwEYCi9de+bnIN+fOcQg2nQFYM1PwzTF94DcQZxkyBtYnKzg7kkVIhvJxowWOAOTHnQtosO91pLOdHK9dJpSM1YaGMt0SeT3ohYt6+u7UdALCRclX3Slysdc6tUfCXj7RU9JysOixrmXcvSPYnBniMID9Uf4aqpcs8Q0Vusnkf8XN/2n4zdZFkWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749055289; c=relaxed/relaxed;
-	bh=0egcYhcf51j/LkwCnpKG56NS3g4NQU4yYCzICMwTCgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MTVT9Q38fQNvw60Btle//H1d6Nbvf0JXKa10l5Dq6co9JjcQvUPp1L5VWuw3/xzmm/uXSd/68iSAng2UGSXTWesJf5PSFgxtT8d2nP44VLowXa3w5NEqHzjhINKrU1we2RSJPDlnMBdAifGwD9tyqIjFpPgtmBvMMhhGp23txb3fNgb572T+aKsHnc8fL1KAZ2jT7asQZNbG+sraQ7XCmLbQzWgTvfGwG6gfS0F217+uL+cWtvUGJWPUFiKyxYDUdamHjqvlpdiRg0k0tMbG628Nj6oKxqJ9wK1pMGsKTffSG8ak9SrE+Bs8rcBWVVzFgwfpqThtKnhS43qLLP/hJg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=EIgnawx2; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UQ1Fgfvm; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=EIgnawx2; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UQ1Fgfvm; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=192.198.163.18 arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749047169;
+	cv=pass; b=GlkSE/zR1gBdNC7bHXYQWqwVkxrOM1LuVc5HLeQgzYzwBMxJDec5wdXVHeyDxI01RZlUto8A5yOBuIzymIHUdGLjpcKBCh5f0ZtOH+OX4CbAlDBUOYOR8V4BGiF0+KsEr4D+1OAm6tur5tI8DQqqXHrgxZo1BLF4tS17CCLUDO+I24NRO83aaAjHIdEtBrR3/HarPJC/i00AQvpa2hLR9UPTUtt8ekckmwDWGisVEpBJGcZr/fNr0T1bA5i9Iwgq2JJ9wYReP9lzoOGLWE7TdpVzKekR7wSFU6UsHDmFCQ3NWLURUd+ef6gV4oLb7YWNl7QcHYzxFePs1zpnUzu66w==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1749047169; c=relaxed/relaxed;
+	bh=ZbDm3LdtVZ7EFAQhYZmIdDn+nok4DMn7Qkv0Q7y5ukc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XhrlyfoSbWhWvQcJxSuw8Boan7n2jqISJRUplaY9Lgp+EVDX8Kv+uwZXZq35xOnQt8dLhDGJxp0F6YQ26Veu/tv7Z/5ZsiK26mjukPPbYkjd9/Nz0xl5WRW4QoxysUEli2AI/nao1K1xQ4O54st/nDVug+AZRO87ZuGbMO7V4dSqwGgW8L6hknU0/qXVt+/l3DcAUch6PZ34HY+W5gAJYwAUG6Ioeu01myGaKxOKGDc4xR0pA5F9H4VhUwuwzF5NOmzdz1IVQHogmNswIIecdIUqB/u4c2zbnxjBCDWFtoaQAa27Piam8wMnYH6x+Oyxdt9WsQGtDAkJjTNRS7w++Q==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DztXOTkA; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=qiuxu.zhuo@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=EIgnawx2;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UQ1Fgfvm;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=EIgnawx2;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UQ1Fgfvm;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DztXOTkA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=qiuxu.zhuo@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bCCyc3Ycgz2xGv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Jun 2025 02:41:28 +1000 (AEST)
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1D29D20209;
-	Wed,  4 Jun 2025 16:41:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749055281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0egcYhcf51j/LkwCnpKG56NS3g4NQU4yYCzICMwTCgg=;
-	b=EIgnawx2HdMThsgyIJTmhuAupLMZsQV2hpSmN8+0vIcjkFS+sEX/wVBd/yQTM9nx5q6Cjl
-	mjC3YPfSJyh6BUNTSNZgBEBhKfNRGOX07PhVuc83T9ow+oINElJQ9+mwJMajWSv4F4sXdZ
-	x4jigFchjBMHOBMaFZqjOV3AucYoJYI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749055281;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0egcYhcf51j/LkwCnpKG56NS3g4NQU4yYCzICMwTCgg=;
-	b=UQ1Fgfvmbzl2TK9I3IIA/dGIvUjazWn+4niLAhZ7JSAPh/POMnL7L4Ob0ovDX27ctzdNIX
-	iSkkLJPVBdWXf8DA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749055281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0egcYhcf51j/LkwCnpKG56NS3g4NQU4yYCzICMwTCgg=;
-	b=EIgnawx2HdMThsgyIJTmhuAupLMZsQV2hpSmN8+0vIcjkFS+sEX/wVBd/yQTM9nx5q6Cjl
-	mjC3YPfSJyh6BUNTSNZgBEBhKfNRGOX07PhVuc83T9ow+oINElJQ9+mwJMajWSv4F4sXdZ
-	x4jigFchjBMHOBMaFZqjOV3AucYoJYI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749055281;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0egcYhcf51j/LkwCnpKG56NS3g4NQU4yYCzICMwTCgg=;
-	b=UQ1Fgfvmbzl2TK9I3IIA/dGIvUjazWn+4niLAhZ7JSAPh/POMnL7L4Ob0ovDX27ctzdNIX
-	iSkkLJPVBdWXf8DA==
-Date: Wed, 4 Jun 2025 18:41:20 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Srish Srinivasan <ssrish@linux.ibm.com>
-Cc: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, naveen@kernel.org, ajd@linux.ibm.com,
-	zohar@linux.ibm.com, nayna@linux.ibm.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] powerpc/secvar: Expose secvars relevant to the
- key management mode
-Message-ID: <aEB3MPAYeAaFVpTc@kitsune.suse.cz>
-References: <20250521105759.8408-1-ssrish@linux.ibm.com>
- <20250521105759.8408-3-ssrish@linux.ibm.com>
- <aDATahmPIsOmiFAK@kitsune.suse.cz>
- <7dcd0f77-852b-4f4c-9842-f1d96e1d8b65@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bC8yN2zDyz2xGv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Jun 2025 00:26:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749047165; x=1780583165;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=CMdACvG14OV6mcJPjJQhnozDlfdk/thvlJavRPEDgCs=;
+  b=DztXOTkAao9Dlx175aFbfZ2yeDiWojmRkwTvw147ub9zZ5CPdMulp/eK
+   uMDg+KxzgWa1+tpkURO6Up5STDMHUvr+2V+fvFGyfNkceANZ3Xcgqy70w
+   TKSPYrQvMmbdMfyzsE89dhGG/2WGF1EutQo/ZhSazLzDS6s2A7N3u6mb1
+   L5P2JRRbpXkV+knWQRrcss7bqxMahwXkig4DTF4t+II/odnZU3Q+FC5Yp
+   ppy/Wlh0Biz9P3hWiXtUxrgt4e7eFLxyr45yjRWWkg1+DS7our+tWGbK7
+   8/fRSLKnHT21k+wHjnzUNrOuOwzRJnWR3Ne61Yhj4PiYBl4Lwi97Irk6A
+   w==;
+X-CSE-ConnectionGUID: nTZTC1h/QUK1kjXDr1fkLQ==
+X-CSE-MsgGUID: OGSI73jWSOCsur4gqE131w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11454"; a="50373314"
+X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; 
+   d="scan'208";a="50373314"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 07:25:57 -0700
+X-CSE-ConnectionGUID: PJVRKgL5R46JJSnWhLBJ2g==
+X-CSE-MsgGUID: 6d+5LLYCRqmxytflJ0isGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,209,1744095600"; 
+   d="scan'208";a="176168244"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2025 07:25:54 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 4 Jun 2025 07:25:53 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25 via Frontend Transport; Wed, 4 Jun 2025 07:25:53 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (40.107.236.77)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 4 Jun 2025 07:25:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YKWBIdCczEM74vLO7Vwao2qC0ETiY5AfGfQV6oFtM6KcseAX+5sQli+xBHdATs0hNogOIrNKBXb2WuOHn0C1dAIZOslt82cO3J6iImegp7xt9/8P6uZDOchxjuURI2Wg+GmHSNZRgEaOLmk6Ua0YLabNdON1jup7USPmlAUfMCNtfkie1+QvU2l4s/FvrKuHE3lbBZUuO4gjnMr0qFQf8hjTodg7PZdCST00KFGIBo3/CIqgZNJIvDG0qqsdz0Mi5zbOUCxShxvPxDdaVcVl+52m92Hr/LzHROFtse/7MRDpHh5PBXe7VdvsXSi7uJwYvdKe/tn0r3dfiiOK5BLuxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZbDm3LdtVZ7EFAQhYZmIdDn+nok4DMn7Qkv0Q7y5ukc=;
+ b=VkZJGVNLob3W2GCIU0wgTkeXIwsHI2oVfVu1zZi/Nxr8j9aU5vnHATzDLTrPEyrReN966vGYKkk/MvF4wPPj4VxzpXYuAOYmnGntlYIFvxE9riI4S1uEBfA9bzh/u8l7iw3bi5fLaoU5jr4qKqh2w1JBkq/GOxU8cvAUxc4Z3EwBu5X7HbYxR1L4S8FBniFI2KY52uylzqaJx+hVcGmcbjiNLvN0luso/60thA5clh1oCwMxIIUYR9EBAgBQpFVxPfXQrFLib4eU28FPP23M433OUmPumqSj6X9B/s0OkrKhYGJM7g6O5/J9m8AFlJLU/zXQVyKIfyy7N9zUKkF+Qw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CY8PR11MB7134.namprd11.prod.outlook.com (2603:10b6:930:62::17)
+ by LV8PR11MB8607.namprd11.prod.outlook.com (2603:10b6:408:1ec::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.31; Wed, 4 Jun
+ 2025 14:25:50 +0000
+Received: from CY8PR11MB7134.namprd11.prod.outlook.com
+ ([fe80::cd87:9086:122c:be3d]) by CY8PR11MB7134.namprd11.prod.outlook.com
+ ([fe80::cd87:9086:122c:be3d%5]) with mapi id 15.20.8769.025; Wed, 4 Jun 2025
+ 14:25:50 +0000
+From: "Zhuo, Qiuxu" <qiuxu.zhuo@intel.com>
+To: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>, "Rafael J
+ . Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, Davidlohr Bueso
+	<dave@stgolabs.net>, Jonathan Cameron <jonathan.cameron@huawei.com>, "Jiang,
+ Dave" <dave.jiang@intel.com>, "Schofield, Alison"
+	<alison.schofield@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
+	"Weiny, Ira" <ira.weiny@intel.com>, "Williams, Dan J"
+	<dan.j.williams@intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+	"Luck, Tony" <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>
+CC: Yazen Ghannam <yazen.ghannam@amd.com>
+Subject: RE: [PATCH 3/4 v3] ACPI: extlog: Trace CPER PCI Express Error Section
+Thread-Topic: [PATCH 3/4 v3] ACPI: extlog: Trace CPER PCI Express Error
+ Section
+Thread-Index: AQHb1KAatJFCpAJRJUKKaiGMRfbdfrPzC7VA
+Date: Wed, 4 Jun 2025 14:25:50 +0000
+Message-ID: <CY8PR11MB7134BFAE1A4E54EE0C539CCA896CA@CY8PR11MB7134.namprd11.prod.outlook.com>
+References: <20250603155536.577493-1-fabio.m.de.francesco@linux.intel.com>
+ <20250603155536.577493-4-fabio.m.de.francesco@linux.intel.com>
+In-Reply-To: <20250603155536.577493-4-fabio.m.de.francesco@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY8PR11MB7134:EE_|LV8PR11MB8607:EE_
+x-ms-office365-filtering-correlation-id: e7fc1c6e-d7d1-46f8-cddc-08dda373b4b5
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700018|921020;
+x-microsoft-antispam-message-info: =?us-ascii?Q?B/FOpAYLHPDHXhbIAHoA8XtFgHPvFttRl+K8La/tHc19MybpoyybbXSoUXiU?=
+ =?us-ascii?Q?Zrg0emXqqIYUsdxzUfvE1rZ+p6q4Adi8tQxG2zxfs4CLmjdtEg5jnm5nLT7r?=
+ =?us-ascii?Q?k+wGDeYhpmauWdUq543T4wfTuQITKSO7AtJxs8IG4nqCsa0JleXhFbytTr8a?=
+ =?us-ascii?Q?jwegybLu5zgGplE5te/St4xaMY8y1iGP1IGnMao+XCbw9JSQE7y5HETYB12Z?=
+ =?us-ascii?Q?XZZdvHTd3dKJiG/Z6VvW1x/EI3jbclodZENbun4qmwVgTa0DkBO6WNe3XumB?=
+ =?us-ascii?Q?CEcic4Lh008MEP1J/mDdCawwA1UVHNgeUnHcKLz59UGuhtYr53VyvGlWDQCl?=
+ =?us-ascii?Q?zdX383UYXTeggkFbZXnPgPH7UlnW2hd5NbQpogo1+rR81igEPrfEBF2ykL4l?=
+ =?us-ascii?Q?KPbnIBqzN3zsLMKAyFGdtCBoZ1HzFc0vrExSS+OeNGVDK8jgJno82TJ9bZHM?=
+ =?us-ascii?Q?W1sAIk/ZnZcByGXXD1zPZJmWu2mdOFdb+2iNyDAQUbfXhI1rx+gzwUZ3wqWR?=
+ =?us-ascii?Q?TDgEgVLlRWWxdKS3R/glCy4upMhS/jHIDNhoSNWBZZwmlnJRuroko0XN5SaA?=
+ =?us-ascii?Q?wxUBZPU5alX5K3QsCyHLhYA09QTADXUl0o+eIjEe6mJYDMbJj9o80GXf8MrP?=
+ =?us-ascii?Q?opb+ixaJTE/q7w3Z5NV39Vzw6BaaFeeuUuGKAxWq78toDXTHx10BfaWPBd3f?=
+ =?us-ascii?Q?821KHZHu86mH1JGtEAnvo9hZoyO4tOTyd0ceKo/ZzHQwuuUtenOBtLhR+eAr?=
+ =?us-ascii?Q?QqAmIi47wrIA4WLsOxBEhXtSl2UfHC7TARaH9xx/xcs7bHGUPHgrgc/8ISWu?=
+ =?us-ascii?Q?iVvnOTzfkz4etYYNqc4eIkY731Kz0Nz7gwqylGO8hjNx9Qa3bPZUXHxPA+yg?=
+ =?us-ascii?Q?KfPfRCsEDsA1ULmuXBKuXdqfUiA9l7VikEogmUQFEzzdIc6EOcjm44tOJNu9?=
+ =?us-ascii?Q?DBjA2E/uNsX21XiSAqsNTjHB3n4dLP0eSbIGPMHOZeBoc3uNVIgJbxm4N4Nm?=
+ =?us-ascii?Q?2O2hC1eElDSgHcggDmqxrmGYjSSdqagR0TmgQlW4F5iQJknJiGzna/nP6GAQ?=
+ =?us-ascii?Q?ys3tTfY9ieE8EGI1l7CrMzFjwsiLaMs5ggvUuF1+Ae7IZtDTVa66IeIqVFgg?=
+ =?us-ascii?Q?gxV6NFvdwP8O7vGBKYy7CW2WVtdrHGxyTmVnvaM62n/NMMlzBgwrg1XUwP5d?=
+ =?us-ascii?Q?VMUTlLvJdVetuRU+StKMpgGLjdWBICWQWEKnaihIOXs4Tj+XQoaVUHzj+Cac?=
+ =?us-ascii?Q?F2m92LXHUZT6KD7wTcGS3/vwBb5KQRvLex1S4L4/AHPQPCuKXYQB0/ktDviJ?=
+ =?us-ascii?Q?JuhHq5F7mxsOrLx2snVD0H41+LC48Lv5+pegEimlY3RV1wvzSB+0t+y4t1fd?=
+ =?us-ascii?Q?VYeRB5WJgrmjZb7Tr3DkPiHeV3Um+wPJhigpgpxzqy+6MOhFb3zcQQrVZ7y0?=
+ =?us-ascii?Q?/3KKGUxG7dr4JEpO2ly3Ho+NRq7pq+JYnqaA7eAS2hiULXVtdrPamOef1D7H?=
+ =?us-ascii?Q?5jn9JJBV6EFTIek=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7134.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700018)(921020);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?81UKyJNVJpAH7aFVyERzUjEQh2/N+lZGi2yDhgtKPtqwIHrrGwSnfPFRRg8X?=
+ =?us-ascii?Q?9yV9VLE7j8UpVKNLThLogddj9mhQjB+bFHtkGTJJz/WBfnx/X4W2pmqPXyPO?=
+ =?us-ascii?Q?cqArxH0hHSUbft8nRM/veadslNKpJMBk2zWMJPqn57T8W7A9CPOY9r6k+SLP?=
+ =?us-ascii?Q?R11mLZ6sdlWt7iOKBV2jLoJdPXK1Sjhcvaj4me+JaaG7LXgnhBWh21ikEisJ?=
+ =?us-ascii?Q?jojBgIpAq+AZR1SEEcCEyzKPMgNzyXNIwQJWYd35Q8GhNotI2XZQtxrt4Zol?=
+ =?us-ascii?Q?UGYEs3LoMisQZu/RhVsaaB9lwPwyQGIVyVJDzmABWOvyunsttYFBnO9D8HXZ?=
+ =?us-ascii?Q?3svpeVqSAI/Xs3PDYnUejZHz7k+O2RShiStr6YZyNvg3jM+mYNOvYB+aDSWi?=
+ =?us-ascii?Q?2hFFWjNjRkmnfTn7tKyvB5KOeB1+lBguyBvYUO7wla4FOnjwCysbO6hQy7y2?=
+ =?us-ascii?Q?iALNxTh9fL8E3SkhS1C09rA5hB/Mx8g+Aep2olpYtzT/A+qUv6NS8f/cEzdi?=
+ =?us-ascii?Q?OodsLfikXe/c8AXZXPqtO/5wxDzRhO/yUfQeHIVYgwDOAHHFbC7es3gbDtCA?=
+ =?us-ascii?Q?YVx9WnFXKvCvN8hWo+4wMBWdh6euWcKXp8ZEE9EjmC/xVoLWHs4rLDPenC/k?=
+ =?us-ascii?Q?472qEFnRPHZ70ZQrC1yzQpWD591bLty6WYgmm++r++M6qg/iUsOtrUJfjxdV?=
+ =?us-ascii?Q?zs+cYa2/877/mty9qK9jW24kSMP2Obh++6Fkf8FVwJ6a0s6z6Kf5J4eid0xn?=
+ =?us-ascii?Q?Ca+3/mNTVyA6cyFK8URrh5OJAN770rUJbDZYAyK8vCnsje47d6ZRlDJuYEK8?=
+ =?us-ascii?Q?tpaV49VrailYeQv8gOc2ERU8vzbbVN/iwmkL8FZunui/2XSd+dORcho2kXb6?=
+ =?us-ascii?Q?LJSF9jfojOr8XiuLxAJ+kuD+PYHUOd0ObO4r3aeN+tCHwoWR6CNE2kpxP4pY?=
+ =?us-ascii?Q?d/xpoQ6Vd91y3jMnfezDBaBlBRE/IEYEOSV86U6uHZXSv9q7r+vJ7OS8Yoc4?=
+ =?us-ascii?Q?ZpOpsR+bHVpeK4g1jylMO7f3esYMFY21NJjw7EZ/Cik1UFQPsOcBAhCR6K3x?=
+ =?us-ascii?Q?cc0qACwYsQgXHM7InAr6suEORWjbmIgvURDJIpC6MZRdn8ZQxhTDHnatyDz5?=
+ =?us-ascii?Q?6GFnQCqY2ITrtdiFGMQ2syXUx0mIeEZFAckWKkleQ8U5FXskssi5zStOjsZU?=
+ =?us-ascii?Q?qxrFUddAjI4nd76oiVqnGb7ZZeZYYcVXqOWi0Btkd5OoUhgshhjr94Hcx+Kt?=
+ =?us-ascii?Q?u3td//NSqiJsIhYEMsj61ghl19irwMeAgoN/c7K9fOlv0m59c2EqPaz/l26v?=
+ =?us-ascii?Q?Uamy8gclGlhwq8HR5JAT5htTP6HnmVP0oXlUAhnxIaRubfqnnAb83z8k0fgA?=
+ =?us-ascii?Q?ouvb2NCcQXxkrwpdx0F05TuPESLaXHoCe4MXHkUM5MAFaxYroTap1Swsj2il?=
+ =?us-ascii?Q?k3FQziPmYYFcQ/fA67szPz9mU72BjuNPH8BeR8j6iK0BGZpV4OTFRecFU1lz?=
+ =?us-ascii?Q?zI48PelZPHw3gIfdWIN5VqaGd5qKtzUrELr2VRGzsn4WEL5KP7BiqdFKzaNb?=
+ =?us-ascii?Q?t+7y9/P+Q8uFzJAlzsYsQh0r3TT+kTThfTamJYCw?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,197 +193,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7dcd0f77-852b-4f4c-9842-f1d96e1d8b65@linux.ibm.com>
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.993];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,kernel.org];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Spam-Level: 
-X-Spam-Score: -4.30
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7134.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7fc1c6e-d7d1-46f8-cddc-08dda373b4b5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jun 2025 14:25:50.4831
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6DhFLHu8TQKS2tEKy8UKwF3YmNnlaIgCwnBSrdcElwQPEqkQHobu1CEoXCH/v65ezTkD7MNjI2XANaTdbJGq4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR11MB8607
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-5.4 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, May 29, 2025 at 10:39:58PM +0530, Srish Srinivasan wrote:
-> 
-> On 5/23/25 11:49 AM, Michal Suchánek wrote:
-> > Hello,
-> > 
-> > On Wed, May 21, 2025 at 04:27:58PM +0530, Srish Srinivasan wrote:
-> > > The PLPKS enabled PowerVM LPAR sysfs exposes all of the secure boot
-> > > secvars irrespective of the key management mode.
-> > > 
-> > > The PowerVM LPAR supports static and dynamic key management for secure
-> > > boot. The key management option can be updated in the management
-> > > console. Only in the dynamic key mode can the user modify the secure
-> > > boot secvars db, dbx, grubdb, grubdbx, and sbat, which are exposed via
-> > > the sysfs interface. But the sysfs interface exposes these secvars even
-> > > in the static key mode. This could lead to errors when reading them or
-> > > writing to them in the static key mode.
-> > would it cause an error when reading these variables or only when
-> > writing them?
-> > 
-> > Thanks
-> > 
-> > Michal
-> 
-> Hi Michal,
-> Thanks for taking a look.
-> 
-> 
-> Yes, when PKS is enabled without enabling dynamic key secure boot, the
-> secvars
-> are NOT yet initialized with the default keys built into the binaries, and
-> therefore
-> reading them will result in an error.
+> From: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.com>
+> [...]
+> Subject: [PATCH 3/4 v3] ACPI: extlog: Trace CPER PCI Express Error Sectio=
+n
+>=20
+> I/O Machine Check Architecture events may signal failing PCIe components =
+or
+> links. The AER event contains details on what was happening on the wire
+> when the error was signaled.
+>=20
+> Trace the CPER PCIe Error section (UEFI v2.10, Appendix N.2.7) reported b=
+y
+> the I/O MCA.
+>=20
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Fabio M. De Francesco
+> <fabio.m.de.francesco@linux.intel.com>
+> [...]
+> --- a/drivers/acpi/acpi_extlog.c
+> +++ b/drivers/acpi/acpi_extlog.c
+> @@ -132,6 +132,34 @@ static int print_extlog_rcd(const char *pfx,
+>  	return 1;
+>  }
+>=20
+> +static void extlog_print_pcie(struct cper_sec_pcie *pcie_err,
+> +			      int severity)
+> +{
+> +	struct aer_capability_regs *aer;
+> +	struct pci_dev *pdev;
+> +	unsigned int devfn;
+> +	unsigned int bus;
+> +	int aer_severity;
+> +	int domain;
+> +
+> +	if (!(pcie_err->validation_bits & CPER_PCIE_VALID_DEVICE_ID ||
+> +	      pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO))
+> +		return;
+> +
+> +	aer_severity =3D cper_severity_to_aer(severity);
+> +	aer =3D (struct aer_capability_regs *)pcie_err->aer_info;
+> +	domain =3D pcie_err->device_id.segment;
+> +	bus =3D pcie_err->device_id.bus;
+> +	devfn =3D PCI_DEVFN(pcie_err->device_id.device,
+> +			  pcie_err->device_id.function);
+> +	pdev =3D pci_get_domain_bus_and_slot(domain, bus, devfn);
+> +	if (!pdev)
+> +		return;
+> +
+> +	pci_print_aer(KERN_DEBUG, pdev, aer_severity, aer);
 
-That suggests that 'cannot be written' as said in the documentation and
-commit message, which would imply readonly, is misleading. The value is
-not accessible at all.
+Is there any reason not to use "KERN_ERR" log level?
 
-> Now, while in static key management mode with PKS enabled, if one tries to
-> populate secvars that are relevant to dynamic key management, the write does
-> not fail as long as the "Platform KeyStore Signed Update Infrastructure"
-> flag on
-> the HMC is enabled and the signed updates are authorized by valid PK/KEK
-> keys.
-
-Which suggests that some variables can if fact be written
-
-> However, secvars like db and grubdb populated while in static key management
-> mode are not used by the Partition Firmware or grub as SB_VERSION is not
-> present,
-
-but are not used until the key management is switched to dynamic
-
-> i.e dynamic key secure boot has not been enabled yet. In this case, when
-> there is a
-> transition from static key management to dynamic key management, secvars
-> with
-> the signed update policy bit set will not be overwritten by the hypervisor
-> with the
-> default keys. Now, if the keys written into these secvars were not the ones
-> that were
-> used to sign the grub and kernel, it would fail to verify them.
-
-Which is the case even for the case the system is already in dynamic key
-mode, unless the variables are append-only.
-
-Thanks
-
-Michal
-
-> These are the reasons behind the decision to expose only those secvars that
-> are
-> relevant to the key management mode.
-> 
-> > 
-> > 
-> > > Expose only PK, trustedcadb, and moduledb in the static key mode to
-> > > enable loading of signed third-party kernel modules.
-> > > 
-> > > Co-developed-by: Souradeep <soura@imap.linux.ibm.com>
-> > > Signed-off-by: Souradeep <soura@imap.linux.ibm.com>
-> > > Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
-> > > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> > > Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> > > Reviewed-by: Nayna Jain <nayna@linux.ibm.com>
-> > > Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-> > > ---
-> > >   Documentation/ABI/testing/sysfs-secvar        |  6 ++++
-> > >   arch/powerpc/platforms/pseries/plpks-secvar.c | 28 ++++++++++++++++---
-> > >   2 files changed, 30 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/Documentation/ABI/testing/sysfs-secvar b/Documentation/ABI/testing/sysfs-secvar
-> > > index 45281888e520..948df3446a03 100644
-> > > --- a/Documentation/ABI/testing/sysfs-secvar
-> > > +++ b/Documentation/ABI/testing/sysfs-secvar
-> > > @@ -37,6 +37,12 @@ Description:	Each secure variable is represented as a directory named as
-> > >   		representation. The data and size can be determined by reading
-> > >   		their respective attribute files.
-> > > +		Only secvars relevant to the key management mode are exposed.
-> > > +		Only in the dynamic key mode can the user modify the secure boot
-> > > +		secvars db, dbx, grubdb, grubdbx, and sbat. PK, trustedcadb and
-> > > +		moduledb are the secvars common to both static and dynamic key
-> > > +		management modes.
-> > > +
-> > >   What:		/sys/firmware/secvar/vars/<variable_name>/size
-> > >   Date:		August 2019
-> > >   Contact:	Nayna Jain <nayna@linux.ibm.com>
-> > > diff --git a/arch/powerpc/platforms/pseries/plpks-secvar.c b/arch/powerpc/platforms/pseries/plpks-secvar.c
-> > > index 767e5e8c6990..f9e9cc40c9d0 100644
-> > > --- a/arch/powerpc/platforms/pseries/plpks-secvar.c
-> > > +++ b/arch/powerpc/platforms/pseries/plpks-secvar.c
-> > > @@ -59,7 +59,14 @@ static u32 get_policy(const char *name)
-> > >   		return PLPKS_SIGNEDUPDATE;
-> > >   }
-> > > -static const char * const plpks_var_names[] = {
-> > > +static const char * const plpks_var_names_static[] = {
-> > > +	"PK",
-> > > +	"moduledb",
-> > > +	"trustedcadb",
-> > > +	NULL,
-> > > +};
-> > > +
-> > > +static const char * const plpks_var_names_dynamic[] = {
-> > >   	"PK",
-> > >   	"KEK",
-> > >   	"db",
-> > > @@ -213,21 +220,34 @@ static int plpks_max_size(u64 *max_size)
-> > >   	return 0;
-> > >   }
-> > > +static const struct secvar_operations plpks_secvar_ops_static = {
-> > > +	.get = plpks_get_variable,
-> > > +	.set = plpks_set_variable,
-> > > +	.format = plpks_secvar_format,
-> > > +	.max_size = plpks_max_size,
-> > > +	.config_attrs = config_attrs,
-> > > +	.var_names = plpks_var_names_static,
-> > > +};
-> > > -static const struct secvar_operations plpks_secvar_ops = {
-> > > +static const struct secvar_operations plpks_secvar_ops_dynamic = {
-> > >   	.get = plpks_get_variable,
-> > >   	.set = plpks_set_variable,
-> > >   	.format = plpks_secvar_format,
-> > >   	.max_size = plpks_max_size,
-> > >   	.config_attrs = config_attrs,
-> > > -	.var_names = plpks_var_names,
-> > > +	.var_names = plpks_var_names_dynamic,
-> > >   };
-> > >   static int plpks_secvar_init(void)
-> > >   {
-> > > +	u8 mode;
-> > > +
-> > >   	if (!plpks_is_available())
-> > >   		return -ENODEV;
-> > > -	return set_secvar_ops(&plpks_secvar_ops);
-> > > +	mode = plpks_get_sb_keymgmt_mode();
-> > > +	if (mode)
-> > > +		return set_secvar_ops(&plpks_secvar_ops_dynamic);
-> > > +	return set_secvar_ops(&plpks_secvar_ops_static);
-> > >   }
-> > >   machine_device_initcall(pseries, plpks_secvar_init);
-> > > -- 
-> > > 2.47.1
-> > > 
-> > > 
-> 
+> +	pci_dev_put(pdev);
+> +}
+> +=20
 
