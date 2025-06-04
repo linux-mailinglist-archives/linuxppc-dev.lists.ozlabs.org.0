@@ -1,78 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-9152-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9153-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B5DACE1D3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 17:57:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE7AACE258
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  4 Jun 2025 18:41:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bCC0M6DKgz2xk5;
-	Thu,  5 Jun 2025 01:57:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bCCyd5XyGz2xk5;
+	Thu,  5 Jun 2025 02:41:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749052675;
-	cv=none; b=SODmRwp/A87spFOWA3wRtykVyQfSVG4Krq+ZGjLy6ZGwIEywaVpqEh/vPHOrvFxX9IEoGrnnzbUNqcUCNq/bU9xshIyqzAPT6f6/s24xciAXKFhQBZpMcwFaWVAok6j6V4ao8kgKiGYH/sV8aL9HYZrLEFQtYtkoTqmKZjwqaDqDqxKL3N+WrrznzZGYTv9/rbHD0d5td83BLq559dlyNNA9CehiNps0c6VnK++NMWEFpO2rMwtNR6IzetBsGD6ctlpzf7LqFfrKt4r3UaudFXAABO/HtLgp9JMQfXGy4reMIVZpLke4kevJ5DzHokjcwL1G8sB5EbIcSJ01Jtj2Kw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749055289;
+	cv=none; b=mYUktwW2y4DftPXeAGNZaMGa6oUNxHeN+UzMWUq9Kv+Ky/mbV9455zaqCxgmTyN9OYhoi1TLdNKgVbUJMBjeleSkU1jUZUARub4AH6J4BFlieomL6BDnXDEDfMieufdSILKIvYoMfGnCGIXR3J9x5iL5fxJ9NhJwEYCi9de+bnIN+fOcQg2nQFYM1PwzTF94DcQZxkyBtYnKzg7kkVIhvJxowWOAOTHnQtosO91pLOdHK9dJpSM1YaGMt0SeT3ohYt6+u7UdALCRclX3Slysdc6tUfCXj7RU9JysOixrmXcvSPYnBniMID9Uf4aqpcs8Q0Vusnkf8XN/2n4zdZFkWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749052675; c=relaxed/relaxed;
-	bh=pz+EnW/D+yNH/lAm96nc0b+2F4MOWXDHQcHk92rc5NI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fA0yhQ/W+LjEkjf2QAUBo7YBmkil9S0GoR7k7tIo6EUJlxwqGJANeOLg8jeV2y7vfev0x1gCL7deEvWu3k2wqEOz+TyHoU7czjLic7/Dq5sIyzLWBApfpmySAkZStzUxTVgJKKnymN3IZYUP/hPwVWCS5K9LYEkTQZhKFAnDW5i0SZerGERXCQIBY1Q/iZQqMV7i0he7UjoCN2lut6PB26B2B+beViMKzZ5GNaQWpN3kryURmTmNVdZfvEdikq0L38DflW0iHXpQ9noV/2ZG1Z6ohac/gFe/ULU2wjI70qN+HfQ0a7E5VFtn2bLlAsbWJcLW5aC6xGBzsO4xw7rwrg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dqNBvphO; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1749055289; c=relaxed/relaxed;
+	bh=0egcYhcf51j/LkwCnpKG56NS3g4NQU4yYCzICMwTCgg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MTVT9Q38fQNvw60Btle//H1d6Nbvf0JXKa10l5Dq6co9JjcQvUPp1L5VWuw3/xzmm/uXSd/68iSAng2UGSXTWesJf5PSFgxtT8d2nP44VLowXa3w5NEqHzjhINKrU1we2RSJPDlnMBdAifGwD9tyqIjFpPgtmBvMMhhGp23txb3fNgb572T+aKsHnc8fL1KAZ2jT7asQZNbG+sraQ7XCmLbQzWgTvfGwG6gfS0F217+uL+cWtvUGJWPUFiKyxYDUdamHjqvlpdiRg0k0tMbG628Nj6oKxqJ9wK1pMGsKTffSG8ak9SrE+Bs8rcBWVVzFgwfpqThtKnhS43qLLP/hJg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=EIgnawx2; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UQ1Fgfvm; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=EIgnawx2; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UQ1Fgfvm; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dqNBvphO;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=EIgnawx2;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UQ1Fgfvm;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=EIgnawx2;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=UQ1Fgfvm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bCC0K5Wprz2xXP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Jun 2025 01:57:53 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 554DGuZV024325;
-	Wed, 4 Jun 2025 15:57:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=pz+EnW
-	/D+yNH/lAm96nc0b+2F4MOWXDHQcHk92rc5NI=; b=dqNBvphOMDWXYrspYqvDIU
-	wWMPFfxEUHSzA8DXllz4DhS/jH0jNd+ERl2YDnd6sUl7QMh1TZ4FN3A0MqQr8N4U
-	rYMiArAf7OQtx2KDk+VWIHGlFwhMAeXxBKE4wsq/4vpoOglJTc1NFWrfcZPy1TfE
-	jut00VjMu/VJigv0zu8TPTA2TYj3jcQo0EY2u9tHCMCFAXTsm80oWisj238DVUp8
-	rsnN1TJjguzmWEoPrlGgaKTEVXfOaj+CdSVp0VksGdrrB9t2171NDSG7GZN7NG09
-	RkOSTTo82mNlIw2BIkbO+9p5oLSOOez+rx3WV2OPf7CSMmpw/G6TgUjONvj+QWVw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471geyurxh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 15:57:37 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 554FYtZY026153;
-	Wed, 4 Jun 2025 15:57:36 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471geyurxe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 15:57:36 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 554Ff1jE028437;
-	Wed, 4 Jun 2025 15:57:35 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 470eakg9je-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Jun 2025 15:57:35 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 554FvXX623593548
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 4 Jun 2025 15:57:33 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6828D58067;
-	Wed,  4 Jun 2025 15:57:33 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8FA2F58052;
-	Wed,  4 Jun 2025 15:57:27 +0000 (GMT)
-Received: from [9.39.21.166] (unknown [9.39.21.166])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  4 Jun 2025 15:57:27 +0000 (GMT)
-Message-ID: <3d28858f-4ec6-43ea-8a3b-b9ce9a27bac7@linux.ibm.com>
-Date: Wed, 4 Jun 2025 21:27:25 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bCCyc3Ycgz2xGv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Jun 2025 02:41:28 +1000 (AEST)
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1D29D20209;
+	Wed,  4 Jun 2025 16:41:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1749055281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0egcYhcf51j/LkwCnpKG56NS3g4NQU4yYCzICMwTCgg=;
+	b=EIgnawx2HdMThsgyIJTmhuAupLMZsQV2hpSmN8+0vIcjkFS+sEX/wVBd/yQTM9nx5q6Cjl
+	mjC3YPfSJyh6BUNTSNZgBEBhKfNRGOX07PhVuc83T9ow+oINElJQ9+mwJMajWSv4F4sXdZ
+	x4jigFchjBMHOBMaFZqjOV3AucYoJYI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1749055281;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0egcYhcf51j/LkwCnpKG56NS3g4NQU4yYCzICMwTCgg=;
+	b=UQ1Fgfvmbzl2TK9I3IIA/dGIvUjazWn+4niLAhZ7JSAPh/POMnL7L4Ob0ovDX27ctzdNIX
+	iSkkLJPVBdWXf8DA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1749055281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0egcYhcf51j/LkwCnpKG56NS3g4NQU4yYCzICMwTCgg=;
+	b=EIgnawx2HdMThsgyIJTmhuAupLMZsQV2hpSmN8+0vIcjkFS+sEX/wVBd/yQTM9nx5q6Cjl
+	mjC3YPfSJyh6BUNTSNZgBEBhKfNRGOX07PhVuc83T9ow+oINElJQ9+mwJMajWSv4F4sXdZ
+	x4jigFchjBMHOBMaFZqjOV3AucYoJYI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1749055281;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0egcYhcf51j/LkwCnpKG56NS3g4NQU4yYCzICMwTCgg=;
+	b=UQ1Fgfvmbzl2TK9I3IIA/dGIvUjazWn+4niLAhZ7JSAPh/POMnL7L4Ob0ovDX27ctzdNIX
+	iSkkLJPVBdWXf8DA==
+Date: Wed, 4 Jun 2025 18:41:20 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Srish Srinivasan <ssrish@linux.ibm.com>
+Cc: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, naveen@kernel.org, ajd@linux.ibm.com,
+	zohar@linux.ibm.com, nayna@linux.ibm.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] powerpc/secvar: Expose secvars relevant to the
+ key management mode
+Message-ID: <aEB3MPAYeAaFVpTc@kitsune.suse.cz>
+References: <20250521105759.8408-1-ssrish@linux.ibm.com>
+ <20250521105759.8408-3-ssrish@linux.ibm.com>
+ <aDATahmPIsOmiFAK@kitsune.suse.cz>
+ <7dcd0f77-852b-4f4c-9842-f1d96e1d8b65@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,163 +103,197 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/5] drivers/base/node: Optimize memory block
- registration to reduce boot time
-To: David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Zi Yan <ziy@nvidia.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        Danilo Krummrich <dakr@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Yury Norov <yury.norov@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nilay Shroff
- <nilay@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <2a0a05c2dffc62a742bf1dd030098be4ce99be28.1748452241.git.donettom@linux.ibm.com>
- <20250603200729.b7581e017e4ca63f502c795e@linux-foundation.org>
- <b355e72d-0284-4a31-84e3-ae4a79ad922f@redhat.com>
- <9f7ae0e6-4640-418d-a4db-dba594377ac2@linux.ibm.com>
- <8abecd5b-2768-49d0-afc3-561b95d77a24@redhat.com>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <8abecd5b-2768-49d0-afc3-561b95d77a24@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Pq2TbxM3 c=1 sm=1 tr=0 ts=68406cf1 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=mxs0qDoQSYin1jJoqQcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA0MDExNyBTYWx0ZWRfX8WJCyVYxYOx4 ZwXF2L0hT9TVa9DCSZd0HnDTGnBLFWEQfIxdH7zNVM7GUVTw9QNAEgXFvI/Xf2VFj702xdpkOwZ sfqoXfWav9Rh6Q7PyjfPbaOH7gSnB9W1ScAh5rm/TsIwa5ei31ohpf9YVdbG04aMpO/YATwLmKc
- Nu4l7OGkwJONLlda7cIGo5xN4tNoU5UWs7aWuldP0AxM+oI6kN/2TY/JBbQz7cKY93NcxIWW8tW WgHpy0zclU/Ytt607VyE1rKfvJD5sP9EHB1ztXnYinqH583LpBYXATXCdNBDhJPqPJ8R/vxLle1 avaH5sAL+9Pjua1nGH/CFx6EpV7DjmpkhInXsPuhnQOvipMOn0uGoH244A9l8nkKf4KiAHjDxo9
- o+X4w74JpOyhMp51jOolPmtOZntcZfPPKt8xNLN8FXCuDhvXTNLasu1gWBqP7xtuOE954ekS
-X-Proofpoint-GUID: 9l28POHsiWfHdlg-x-L2inqY-xBTAJNz
-X-Proofpoint-ORIG-GUID: d6boryrX-Nv2vvbBUaTJBWLYcMY3GX1l
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-04_03,2025-06-03_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 malwarescore=0 mlxlogscore=999
- phishscore=0 bulkscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- mlxscore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506040117
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <7dcd0f77-852b-4f4c-9842-f1d96e1d8b65@linux.ibm.com>
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.993];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.ozlabs.org,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,kernel.org];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Spam-Level: 
+X-Spam-Score: -4.30
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Thu, May 29, 2025 at 10:39:58PM +0530, Srish Srinivasan wrote:
+> 
+> On 5/23/25 11:49 AM, Michal Such�nek wrote:
+> > Hello,
+> > 
+> > On Wed, May 21, 2025 at 04:27:58PM +0530, Srish Srinivasan wrote:
+> > > The PLPKS enabled PowerVM LPAR sysfs exposes all of the secure boot
+> > > secvars irrespective of the key management mode.
+> > > 
+> > > The PowerVM LPAR supports static and dynamic key management for secure
+> > > boot. The key management option can be updated in the management
+> > > console. Only in the dynamic key mode can the user modify the secure
+> > > boot secvars db, dbx, grubdb, grubdbx, and sbat, which are exposed via
+> > > the sysfs interface. But the sysfs interface exposes these secvars even
+> > > in the static key mode. This could lead to errors when reading them or
+> > > writing to them in the static key mode.
+> > would it cause an error when reading these variables or only when
+> > writing them?
+> > 
+> > Thanks
+> > 
+> > Michal
+> 
+> Hi Michal,
+> Thanks for taking a look.
+> 
+> 
+> Yes, when PKS is enabled without enabling dynamic key secure boot, the
+> secvars
+> are NOT yet initialized with the default keys built into the binaries, and
+> therefore
+> reading them will result in an error.
 
-On 6/4/25 7:00 PM, David Hildenbrand wrote:
-> On 04.06.25 15:17, Donet Tom wrote:
->>
->> On 6/4/25 3:15 PM, David Hildenbrand wrote:
->>> On 04.06.25 05:07, Andrew Morton wrote:
->>>> On Wed, 28 May 2025 12:18:00 -0500 Donet Tom <donettom@linux.ibm.com>
->>>> wrote:
->>>>
->>>>> During node device initialization, `memory blocks` are registered 
->>>>> under
->>>>> each NUMA node. The `memory blocks` to be registered are identified
->>>>> using
->>>>> the node’s start and end PFNs, which are obtained from the node's
->>>>> pg_data
->>>>
->>>> It's quite unconventional to omit the [0/N] changelog.  This omission
->>>> somewhat messed up my processes so I added a one-liner to this.
->>>>
->>>
->>> Yeah, I was assuming that I simply did not get cc'ed on the cover
->>> letter, but there is actually none.
->>>
->>> Donet please add that in the future. git can do this using
->>> --cover-letter.
->>
->> Sure,
->>
->> I will add cover letter in next revision.
->>
->>
->>>
->>>>>
->>>>> ...
->>>>>
->>>>> Test Results on My system with 32TB RAM
->>>>> =======================================
->>>>> 1. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT enabled.
->>>>>
->>>>> Without this patch
->>>>> ------------------
->>>>> Startup finished in 1min 16.528s (kernel)
->>>>>
->>>>> With this patch
->>>>> ---------------
->>>>> Startup finished in 17.236s (kernel) - 78% Improvement
->>>>
->>>> Well someone is in for a nice surprise.
->>>>
->>>>> 2. Boot time with CONFIG_DEFERRED_STRUCT_PAGE_INIT disabled.
->>>>>
->>>>> Without this patch
->>>>> ------------------
->>>>> Startup finished in 28.320s (kernel)
->>>>
->>>> what.  CONFIG_DEFERRED_STRUCT_PAGE_INIT is supposed to make bootup
->>>> faster.
->>>
->>> Right, that's weird. Especially that it is still slower after these
->>> changes.
->>>
->>> CONFIG_DEFERRED_STRUCT_PAGE_INIT should be initializing in parallel
->>> which ... should be faster.
->>>
->>> @Donet, how many CPUs and nodes does your system have? Can you
->>> identify what is taking longer than without
->>> CONFIG_DEFERRED_STRUCT_PAGE_INIT?
->>
->>
->>
->> My system has,
->>
->> CPU      - 1528
->
-> Holy cow.
->
-> Pure speculation: are we parallelizing *too much* ? :)
->
-> That's ~95 CPUs per node on average.
+That suggests that 'cannot be written' as said in the documentation and
+commit message, which would imply readonly, is misleading. The value is
+not accessible at all.
 
-yes
+> Now, while in static key management mode with PKS enabled, if one tries to
+> populate secvars that are relevant to dynamic key management, the write does
+> not fail as long as the "Platform KeyStore Signed Update Infrastructure"
+> flag on
+> the HMC is enabled and the signed updates are authorized by valid PK/KEK
+> keys.
 
->
-> Staring at deferred_init_memmap(), we do have
->
->     max_threads = deferred_page_init_max_threads(cpumask);
->
-> And that calls cpumask_weight(), essentially using all CPUs on the node.
->
-> ... not sure what exactly happens if there are no CPUs for a node.
+Which suggests that some variables can if fact be written
 
+> However, secvars like db and grubdb populated while in static key management
+> mode are not used by the Partition Firmware or grub as SB_VERSION is not
+> present,
 
-Okay.
+but are not used until the key management is switched to dynamic
 
-I'm still debugging what's happening. I'll update you once I find something.
+> i.e dynamic key secure boot has not been enabled yet. In this case, when
+> there is a
+> transition from static key management to dynamic key management, secvars
+> with
+> the signed update policy bit set will not be overwritten by the hypervisor
+> with the
+> default keys. Now, if the keys written into these secvars were not the ones
+> that were
+> used to sign the grub and kernel, it would fail to verify them.
 
+Which is the case even for the case the system is already in dynamic key
+mode, unless the variables are append-only.
 
->
->> Node     - 16
->
-> Are any of these memory-less?
+Thanks
 
+Michal
 
-No, there are no memory-less nodes. All nodes have around 2 TB of memory.
-
-
->
->> Memory - 31TB
->
->
->
+> These are the reasons behind the decision to expose only those secvars that
+> are
+> relevant to the key management mode.
+> 
+> > 
+> > 
+> > > Expose only PK, trustedcadb, and moduledb in the static key mode to
+> > > enable loading of signed third-party kernel modules.
+> > > 
+> > > Co-developed-by: Souradeep <soura@imap.linux.ibm.com>
+> > > Signed-off-by: Souradeep <soura@imap.linux.ibm.com>
+> > > Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
+> > > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> > > Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> > > Reviewed-by: Nayna Jain <nayna@linux.ibm.com>
+> > > Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+> > > ---
+> > >   Documentation/ABI/testing/sysfs-secvar        |  6 ++++
+> > >   arch/powerpc/platforms/pseries/plpks-secvar.c | 28 ++++++++++++++++---
+> > >   2 files changed, 30 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/Documentation/ABI/testing/sysfs-secvar b/Documentation/ABI/testing/sysfs-secvar
+> > > index 45281888e520..948df3446a03 100644
+> > > --- a/Documentation/ABI/testing/sysfs-secvar
+> > > +++ b/Documentation/ABI/testing/sysfs-secvar
+> > > @@ -37,6 +37,12 @@ Description:	Each secure variable is represented as a directory named as
+> > >   		representation. The data and size can be determined by reading
+> > >   		their respective attribute files.
+> > > +		Only secvars relevant to the key management mode are exposed.
+> > > +		Only in the dynamic key mode can the user modify the secure boot
+> > > +		secvars db, dbx, grubdb, grubdbx, and sbat. PK, trustedcadb and
+> > > +		moduledb are the secvars common to both static and dynamic key
+> > > +		management modes.
+> > > +
+> > >   What:		/sys/firmware/secvar/vars/<variable_name>/size
+> > >   Date:		August 2019
+> > >   Contact:	Nayna Jain <nayna@linux.ibm.com>
+> > > diff --git a/arch/powerpc/platforms/pseries/plpks-secvar.c b/arch/powerpc/platforms/pseries/plpks-secvar.c
+> > > index 767e5e8c6990..f9e9cc40c9d0 100644
+> > > --- a/arch/powerpc/platforms/pseries/plpks-secvar.c
+> > > +++ b/arch/powerpc/platforms/pseries/plpks-secvar.c
+> > > @@ -59,7 +59,14 @@ static u32 get_policy(const char *name)
+> > >   		return PLPKS_SIGNEDUPDATE;
+> > >   }
+> > > -static const char * const plpks_var_names[] = {
+> > > +static const char * const plpks_var_names_static[] = {
+> > > +	"PK",
+> > > +	"moduledb",
+> > > +	"trustedcadb",
+> > > +	NULL,
+> > > +};
+> > > +
+> > > +static const char * const plpks_var_names_dynamic[] = {
+> > >   	"PK",
+> > >   	"KEK",
+> > >   	"db",
+> > > @@ -213,21 +220,34 @@ static int plpks_max_size(u64 *max_size)
+> > >   	return 0;
+> > >   }
+> > > +static const struct secvar_operations plpks_secvar_ops_static = {
+> > > +	.get = plpks_get_variable,
+> > > +	.set = plpks_set_variable,
+> > > +	.format = plpks_secvar_format,
+> > > +	.max_size = plpks_max_size,
+> > > +	.config_attrs = config_attrs,
+> > > +	.var_names = plpks_var_names_static,
+> > > +};
+> > > -static const struct secvar_operations plpks_secvar_ops = {
+> > > +static const struct secvar_operations plpks_secvar_ops_dynamic = {
+> > >   	.get = plpks_get_variable,
+> > >   	.set = plpks_set_variable,
+> > >   	.format = plpks_secvar_format,
+> > >   	.max_size = plpks_max_size,
+> > >   	.config_attrs = config_attrs,
+> > > -	.var_names = plpks_var_names,
+> > > +	.var_names = plpks_var_names_dynamic,
+> > >   };
+> > >   static int plpks_secvar_init(void)
+> > >   {
+> > > +	u8 mode;
+> > > +
+> > >   	if (!plpks_is_available())
+> > >   		return -ENODEV;
+> > > -	return set_secvar_ops(&plpks_secvar_ops);
+> > > +	mode = plpks_get_sb_keymgmt_mode();
+> > > +	if (mode)
+> > > +		return set_secvar_ops(&plpks_secvar_ops_dynamic);
+> > > +	return set_secvar_ops(&plpks_secvar_ops_static);
+> > >   }
+> > >   machine_device_initcall(pseries, plpks_secvar_init);
+> > > -- 
+> > > 2.47.1
+> > > 
+> > > 
+> 
 
