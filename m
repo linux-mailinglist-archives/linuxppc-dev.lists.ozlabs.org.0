@@ -1,50 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-9176-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9177-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885B6ACF87C
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Jun 2025 21:59:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB28ACF8F1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Jun 2025 22:49:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bCwJ64DzPz2xgp;
-	Fri,  6 Jun 2025 05:59:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bCxQV0bXBz2xgp;
+	Fri,  6 Jun 2025 06:49:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749153542;
-	cv=none; b=Q1CVyqhFoD1w47wY/eLyC+MzektCr4JlzPR61CcLU/7gD9OWPiB34MC24WUTh5l46+HPdB4Qzy+vDX8VLKqLLWsdaPMtnebF9z+WEdUNDRpFngSoTfJsnWXM88HPKtjiaN8kzgLMg7rnx5lKmboeyN8LyHrPbPvQehfnQygLEELF30EhkP/Ww6Htraa45F5wyQFl9l8Njsi/78KynExKeVqqIWTLGtBkn5iBRCE5HcyhNpqaAwyMQQbHcmBS6fayZ+3UIanON8D7/gNOPW5QTAIv30i5AxTQ+meXkPaiMzyTWWfQoygr7B/KO/MyrwEAqAvxc4ag4NVx/sp4RQfwHQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749156578;
+	cv=none; b=V7PIAIm0GK+AtyrDKNH/Ba8e5wWFMCDobN4VVSdD+ykjlssJN+xq5S9yXVUFWv6CPWC3ghdggzZvV07QM/fCPczvAAPuKlxTQI9a9Pu5jMjuRw/RTquXaMp9pR/WWIVtcsWzBRhmi4/JPTxAKSKGVFJKMJbxHfPZ1FVS45s+Txs0zrsu66aRsmDq7iDEZqmmUtpP3iMMjBCQpspA1N0kI8rBHrzSJB/PaHWua61qNYNaL0Ac1VKEt/TMYD40w0quk++2NwVlzO2XiVbZzae1Wf+BKPSkkt09ohmKGk6EvK3X8oE0TP5ns/3mbV5Xyo+gkawPPXHwlWBcloOF34nmKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749153542; c=relaxed/relaxed;
-	bh=oPsR2cXYhTqwpuc7QqcETaUjfbhSR6gtPfcK1O1i0ko=;
+	t=1749156578; c=relaxed/relaxed;
+	bh=iBMPUZBpDFsc6gfy03c++YYDiwHCoN78oz1YYmnfzPs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A3CMlI3iBD/2Xl2qUY9hAYI/Xm+3g5AJBf5cltqbMocVsGRrpuWrr6EvYXFCDzZDP9akvSTOaYplZih9A/j4W/EIBMfXKWpLbaMpJX6JBAAmf/yr0wrDpFovNZ2Cz/Tq4LKIznCjR50gcwEbuiEVEI4EhgCAylo4V21B8TEF2wXKryZhjs6Z/+TaoVZOcHxpIm82+4VEB7h6S0/K0PWM6PoFXqAydnp2lyS/l9XQxh14XlT6pBd36JKcyxgj/oRuF9ac5QATrS6CesTDcYtiAoHgKQNwaxgkHSEeX897F8OORYZSEUFpQ2/28wz951csLCEsUAoNwcYGnh40XGSYDA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o0KIL32C; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=sven@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 In-Reply-To:Content-Type; b=D1NIdLb5xT7kweh9nFA473XisYGQ+jBOefPHHUPiQnIJpYcTSck1hVmxuF2cAKHUfilbNUtlFHwmlcZNIw9A3kjr+kCFUG5ny/x1WCO/EzLc+ZwwNYBe/g7aQQo29/qmhqhozzqIf6uqYq3pf4b+bZkvamWGBCXe5f2B/633D/LJLfYKJ6bvYpGOQCeiig4M8VaovUbk8BElVj/7sIsXz1UViVhAmikmISlOGW5v8DSaIf4t1tzMK+KlOeIja/vg/0Obtm21Zto6CkyZWBpZtaWgQITg5hYqY4GFQf4WkYnBddKQgUuAI3YwDtTDcj72ZEJ9Je5Y6AcEFBOcSwKFdQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ScOsjFYl; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o0KIL32C;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ScOsjFYl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=sven@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ssrish@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bCwJ51FnDz2xRs
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Jun 2025 05:59:00 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3640443FDD;
-	Thu,  5 Jun 2025 19:58:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9049EC4CEE7;
-	Thu,  5 Jun 2025 19:58:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749153538;
-	bh=iPRe+RK96LZ5d6gxUJftAi/t9mj4gB0KkT4eYaf34vQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=o0KIL32CBGN8EHubHuRyqOivRdpEPs2Vty7EHNpNNCGIvPp9qE2aat9S7YF7w+z3l
-	 Rr4Psr8WOy3iaa7XpTESSNCLfXrIDDTPNLn6xK8I6JCYVn5dbQCy6lHtaJGQyRh+64
-	 e6xxP+9+TJXnGt3G957/CcvudD/EXFRQps0pWFabFb9ZqY3kUd6VPNO8CxXFwKMBLw
-	 c1jVVgNTfeuX0U1fW5qinKc02waNP2CnuFbBAXqLkN3usLFudVP0pFgQhuQ5ubLtFL
-	 4ijh0Hbs0h/PBJwWYEgMwq8rzpuYI3ebtFRiImIvn6H50Bi+cJjBlai3hZCra4qiQF
-	 HEP/T/45KDGfA==
-Message-ID: <53fec2fa-b37d-4b87-a8bc-5a056ef16c2f@kernel.org>
-Date: Thu, 5 Jun 2025 21:58:52 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bCxQS6v0Bz2xHX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Jun 2025 06:49:36 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 555GPosL030925;
+	Thu, 5 Jun 2025 20:49:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=iBMPUZ
+	BpDFsc6gfy03c++YYDiwHCoN78oz1YYmnfzPs=; b=ScOsjFYlLX4ojzq9wu7fOB
+	PziGl8xRQG7ZDzXusPec9tx6xyxhlcGc+eW23d8mBj1C0AzN0ze32GVwYVmN+WH1
+	QtyzEdtU3xmhZcAHM7WNFsQ6t9vXe5/XSUViHbXVmdxp2vKcbDLR+R+Akbzx2JQT
+	eJk//y9aJSfye/hhAPOxjVBilw6kJx8L8xTzXdaEgO6MKAr03o7ycxKhk860iL+3
+	h64YeMs/Rr8q3FN5QUYTtG1I73F73hBeb7iGv8CY/wMVlQZIuAwnJQr+ZJ6yRdxr
+	Umfi/Zl0nANxMNSmUeZvuPzdG0KE44KZeEsb1MXQAhtiJYASI2inAZGIRuiahuxg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471gf032ss-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Jun 2025 20:49:21 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 555Kl6FX006954;
+	Thu, 5 Jun 2025 20:49:21 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471gf032sn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Jun 2025 20:49:21 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 555KQtlC028434;
+	Thu, 5 Jun 2025 20:49:20 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 470eakp9aa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Jun 2025 20:49:20 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 555KnIQZ9306626
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 5 Jun 2025 20:49:18 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0E3A158056;
+	Thu,  5 Jun 2025 20:49:18 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7B0645803F;
+	Thu,  5 Jun 2025 20:49:14 +0000 (GMT)
+Received: from [9.124.215.100] (unknown [9.124.215.100])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  5 Jun 2025 20:49:14 +0000 (GMT)
+Message-ID: <f4c7d9b6-38fe-452b-af8f-d18c2b506fe6@linux.ibm.com>
+Date: Fri, 6 Jun 2025 02:19:12 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,115 +87,217 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] rmmod i2c-pasemi-platform causing kernel crash on Apple M1.
-To: chenglingfei <chenglingfei22s@ict.ac.cn>
-Cc: j@jannau.net, alyssa@rosenzweig.io, neal@gompa.dev,
- zhangzhenwei22b@ict.ac.cn, wangzhe12@ict.ac.cn, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
- naveen@kernel.org, andi.shyti@kernel.org, asahi@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <5c598fea.3165d.1973e0a9a3a.Coremail.chenglingfei22s@ict.ac.cn>
- <dafd58ae-0a08-4fe6-b94d-c8c6c8c1fa97@kernel.org>
- <4cfe2276.2c0da.1973ff1cc40.Coremail.chenglingfei22s@ict.ac.cn>
- <b3cbeae1-b0c5-43c3-80ec-3b6654582565@kernel.org>
- <6064d018.2b279.19740a7eb1c.Coremail.chenglingfei22s@ict.ac.cn>
+Subject: Re: [PATCH v2 2/3] powerpc/secvar: Expose secvars relevant to the key
+ management mode
+To: =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>
+Cc: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, ajd@linux.ibm.com,
+        zohar@linux.ibm.com, nayna@linux.ibm.com, linux-kernel@vger.kernel.org
+References: <20250521105759.8408-1-ssrish@linux.ibm.com>
+ <20250521105759.8408-3-ssrish@linux.ibm.com>
+ <aDATahmPIsOmiFAK@kitsune.suse.cz>
+ <7dcd0f77-852b-4f4c-9842-f1d96e1d8b65@linux.ibm.com>
+ <aEB3MPAYeAaFVpTc@kitsune.suse.cz>
 Content-Language: en-US
-From: Sven Peter <sven@kernel.org>
-In-Reply-To: <6064d018.2b279.19740a7eb1c.Coremail.chenglingfei22s@ict.ac.cn>
+From: Srish Srinivasan <ssrish@linux.ibm.com>
+In-Reply-To: <aEB3MPAYeAaFVpTc@kitsune.suse.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: pUIT8FN7lu5-ekz5hH9QnVn6SpUS0kxz
+X-Authority-Analysis: v=2.4 cv=DYMXqutW c=1 sm=1 tr=0 ts=684202d1 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=1AcIt4NcVLqilGCoAC8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: N22Eis7WxtDybmoRU2gulXHpm56H0ggW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDE4NSBTYWx0ZWRfXzmfK3PG1NOg0 3BqY2a6RE013zT5DGBrTHsLfC4K9AxsUvLZZHNr6JkLE1Hl1ulWPu/7csZp3lsbcdg7m/Fv1M36 2GGAc1RWCXO0KKXI4YxDYvtvPtxl7Jxt7jT/ndz1PT3JZgs387OkgNR6DxHUqCGqfqxtYxtiGwk
+ +pUZoeXDAfb3gz8T8X3EkIV8vNk8WzWaVFjN13GZAyxADmWw4L11rY6pi5X/D7RuQnhe+yo/1BZ Mttj+v4/AvTWAhzPXtMRcUjgvU4l2Ql5GNH7kapvy5Zs32G9XzWm3G/wtQ/zYxds00PdLZ75G/w zXu5nyEf9+t7G+8aDWPJFPb2xygEgy5SQHJmls5xrL7AQJPTmAS6/qwYqgnmqoASNfnfWfAMfIH
+ qAZYODz2biUHsSFYU9Z8ZQL0XfnXqb3je529/IwXJ99Xpr2l7ShkLdtD/Ggcw/IJReJgkFyD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-05_06,2025-06-05_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 spamscore=0 mlxscore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 mlxlogscore=999 adultscore=0
+ malwarescore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506050185
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
 
-On 05.06.25 17:13, chenglingfei wrote:
-> 
-> 
-> 
-> &gt; -----原始邮件-----
-> &gt; 发件人: "Sven Peter" <sven@kernel.org>
-> &gt; 发送时间: 2025-06-05 22:02:35 (星期四)
-> &gt; 收件人: chenglingfei <chenglingfei22s@ict.ac.cn>
-> &gt; 抄送: j@jannau.net, alyssa@rosenzweig.io, neal@gompa.dev, zhangzhenwei22b@ict.ac.cn, wangzhe12@ict.ac.cn, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, andi.shyti@kernel.org, asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
-> &gt; 主题: Re: [BUG] rmmod i2c-pasemi-platform causing kernel crash on Apple M1.
-> &gt;
-> &gt; Hi,
-> &gt;
-> &gt; On 05.06.25 13:55, chenglingfei wrote:
-> &gt; &gt;
-> &gt; &gt;
-> &gt; &gt;
-> &gt; &gt; &gt; -----原始邮件-----
-> &gt; &gt; &gt; 发件人: "Sven Peter" <sven@kernel.org>
-> &gt; &gt; &gt; 发送时间: 2025-06-05 18:25:09 (星期四)
-> &gt; &gt; &gt; 收件人: 程凌飞 <chenglingfei22s@ict.ac.cn>, j@jannau.net, alyssa@rosenzweig.io, neal@gompa.dev
-> &gt; &gt; &gt; 抄送: zhangzhenwei22b@ict.ac.cn, wangzhe12@ict.ac.cn, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, andi.shyti@kernel.org, asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
-> &gt; &gt; &gt; 主题: Re: [BUG] rmmod i2c-pasemi-platform causing kernel crash on Apple M1.
-> &gt; &gt; &gt;
-> &gt; &gt; &gt; Hi,
-> &gt; &gt; &gt;
-> &gt; &gt; &gt; On 05.06.25 05:02, 程凌飞 wrote:
-> &gt; &gt; &gt; &gt; Hi, all!
-> &gt; &gt; &gt; &gt;
-> &gt; &gt; &gt; &gt; We’ve encountered a kernel crash when running rmmod i2c-pasemi-platform on a Mac Mini M1 (T8103) running Asahi Arch Linux.
-> &gt; &gt; &gt; &gt;
-> &gt; &gt; &gt; &gt; The bug was first found on the Linux v6.6, which is built manually with the Asahi given config to run our services.
-> &gt; &gt; &gt; &gt; At that time, the i2c-pasemi-platform was i2c-apple.
-> &gt; &gt; &gt; &gt;
-> &gt; &gt; &gt; &gt; We noticed in the Linux v6.7, the pasemi is splitted into two separate modules, one of which is i2c-pasemi-platform.
-> &gt; &gt; &gt; &gt; Therefore, we built Linux v6.14.6 and tried to rmmod i2c-pasemi-platform again, the crash still exists. Moreover, we fetched
-> &gt; &gt; &gt; &gt; the latest i2c-pasemi-platform on linux-next(911483b25612c8bc32a706ba940738cc43299496) and asahi, built them and
-> &gt; &gt; &gt; &gt; tested again with Linux v6.14.6, but the crash remains.
-> &gt; &gt; &gt; &gt;
-> &gt; &gt; &gt; &gt; Because kexec is not supported and will never be fully supported on Apple Silicon platforms due to hardware and firmware
-> &gt; &gt; &gt; &gt; design constraints, we can not record the panic logs through kdump.
-> &gt; &gt; &gt;
-> &gt; &gt; &gt; Do you have UART connected to a device under test which you could use to
-> &gt; &gt; &gt; grab the panic log from the kernel? Alternatively you can also run the
-> &gt; &gt; &gt; kernel under m1n1's hypervisor and grab the log that way. It'll emulate
-> &gt; &gt; &gt; the serial port and redirect its output via USB.
-> &gt; &gt; &gt;
-> &gt; &gt;
-> &gt; &gt; I don't have UART, but I have tried to run the kernel under m1n1's hypervisor. However, it does not trigger the release of cs42l83.
-> &gt; &gt; Given that m1n1 provides full peripheral device emulation capability, the most plausible explanation would be an incorrect
-> &gt; &gt; firmware loading sequence. But the documentation of Asahi provides little details about how to generate an initramfs with
-> &gt; &gt; firmware (I think), can you give more guidance about it?
-> &gt;
-> &gt; I'm not sure why you are even trying to create a special initramfs. Just
-> &gt; load your usual kernel using the usual boot flow as a guest. There's
-> &gt; also no firmware involved in i2c and I'm not sure what you mean with
-> &gt; "full peripheral device emulation" either or how that's related to firmware.
-> &gt; You also mention that the crash happens when you run rmmod so I again
-> &gt; don't understand what "it does not trigger the release of cs42l83" means
-> &gt; here.
-> &gt;
-> 
-> Well, simply running rmmod i2c-pasemi-platform doesn't directly cause a crash.
-> The crash occurs when the module removal triggers device_remove for cs42l83,
-> which ultimately calls pasemi_smb_waitready in i2c-pasemi-platform. You may refer
-> to the brief analysis provided in my first email for more details.
-> 
-> When booting the kernel without m1n1, cs42l83 is automatically probed after
-> i2c-pasemi-platform loads and subsequently removed when executing rmmod
-> i2c-pasemi-platform, resulting in a kernel crash. However, when booting under m1n1,
-> cs42l83 isn't probed or removed -- the device appears to be non-existent. This
-> observation led me to mention "full peripheral device emulation."
+On 6/4/25 10:11 PM, Michal Suchánek wrote:
+> On Thu, May 29, 2025 at 10:39:58PM +0530, Srish Srinivasan wrote:
+>> On 5/23/25 11:49 AM, Michal Suchánek wrote:
+>>> Hello,
+>>>
+>>> On Wed, May 21, 2025 at 04:27:58PM +0530, Srish Srinivasan wrote:
+>>>> The PLPKS enabled PowerVM LPAR sysfs exposes all of the secure boot
+>>>> secvars irrespective of the key management mode.
+>>>>
+>>>> The PowerVM LPAR supports static and dynamic key management for secure
+>>>> boot. The key management option can be updated in the management
+>>>> console. Only in the dynamic key mode can the user modify the secure
+>>>> boot secvars db, dbx, grubdb, grubdbx, and sbat, which are exposed via
+>>>> the sysfs interface. But the sysfs interface exposes these secvars even
+>>>> in the static key mode. This could lead to errors when reading them or
+>>>> writing to them in the static key mode.
+>>> would it cause an error when reading these variables or only when
+>>> writing them?
+>>>
+>>> Thanks
+>>>
+>>> Michal
+>> Hi Michal,
+>> Thanks for taking a look.
+>>
+>>
+>> Yes, when PKS is enabled without enabling dynamic key secure boot, the
+>> secvars
+>> are NOT yet initialized with the default keys built into the binaries, and
+>> therefore
+>> reading them will result in an error.
+> That suggests that 'cannot be written' as said in the documentation and
+> commit message, which would imply readonly, is misleading. The value is
+> not accessible at all.
 
-I'm still not sure what "full peripheral device emulation" means in that 
-context. If cs42l83 isn't probed that's most likely an issue with your 
-kernel or your device tree or your boot device. Hence my suggestion to 
-just the regular kernel and boot device.
+Hi Michal.
+
+Yes, this seems to be misleading.
+
+Will address this.
+
+>
+>> Now, while in static key management mode with PKS enabled, if one tries to
+>> populate secvars that are relevant to dynamic key management, the write does
+>> not fail as long as the "Platform KeyStore Signed Update Infrastructure"
+>> flag on
+>> the HMC is enabled and the signed updates are authorized by valid PK/KEK
+>> keys.
+> Which suggests that some variables can if fact be written
+>
+>> However, secvars like db and grubdb populated while in static key management
+>> mode are not used by the Partition Firmware or grub as SB_VERSION is not
+>> present,
+> but are not used until the key management is switched to dynamic
+>
+>> i.e dynamic key secure boot has not been enabled yet. In this case, when
+>> there is a
+>> transition from static key management to dynamic key management, secvars
+>> with
+>> the signed update policy bit set will not be overwritten by the hypervisor
+>> with the
+>> default keys. Now, if the keys written into these secvars were not the ones
+>> that were
+>> used to sign the grub and kernel, it would fail to verify them.
+> Which is the case even for the case the system is already in dynamic key
+> mode, unless the variables are append-only.
+
+Yes, that is correct. The main intention of this patch is to not expose 
+secvars that are
+
+to be consumed only in the dynamic key management mode while in static key
+
+management mode.
 
 
-Unrelated, there's something wrong with your email setup, see e.g. 
-https://lore.kernel.org/asahi/6064d018.2b279.19740a7eb1c.Coremail.chenglingfei22s@ict.ac.cn/ 
-how your mail arrive.
+I will post v4 with the updated patch description and documentation.
 
-Sven
-
-
+> Thanks
+>
+> Michal
+>
+>> These are the reasons behind the decision to expose only those secvars that
+>> are
+>> relevant to the key management mode.
+>>
+>>>
+>>>> Expose only PK, trustedcadb, and moduledb in the static key mode to
+>>>> enable loading of signed third-party kernel modules.
+>>>>
+>>>> Co-developed-by: Souradeep <soura@imap.linux.ibm.com>
+>>>> Signed-off-by: Souradeep <soura@imap.linux.ibm.com>
+>>>> Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
+>>>> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+>>>> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+>>>> Reviewed-by: Nayna Jain <nayna@linux.ibm.com>
+>>>> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+>>>> ---
+>>>>    Documentation/ABI/testing/sysfs-secvar        |  6 ++++
+>>>>    arch/powerpc/platforms/pseries/plpks-secvar.c | 28 ++++++++++++++++---
+>>>>    2 files changed, 30 insertions(+), 4 deletions(-)
+>>>>
+>>>> diff --git a/Documentation/ABI/testing/sysfs-secvar b/Documentation/ABI/testing/sysfs-secvar
+>>>> index 45281888e520..948df3446a03 100644
+>>>> --- a/Documentation/ABI/testing/sysfs-secvar
+>>>> +++ b/Documentation/ABI/testing/sysfs-secvar
+>>>> @@ -37,6 +37,12 @@ Description:	Each secure variable is represented as a directory named as
+>>>>    		representation. The data and size can be determined by reading
+>>>>    		their respective attribute files.
+>>>> +		Only secvars relevant to the key management mode are exposed.
+>>>> +		Only in the dynamic key mode can the user modify the secure boot
+>>>> +		secvars db, dbx, grubdb, grubdbx, and sbat. PK, trustedcadb and
+>>>> +		moduledb are the secvars common to both static and dynamic key
+>>>> +		management modes.
+>>>> +
+>>>>    What:		/sys/firmware/secvar/vars/<variable_name>/size
+>>>>    Date:		August 2019
+>>>>    Contact:	Nayna Jain <nayna@linux.ibm.com>
+>>>> diff --git a/arch/powerpc/platforms/pseries/plpks-secvar.c b/arch/powerpc/platforms/pseries/plpks-secvar.c
+>>>> index 767e5e8c6990..f9e9cc40c9d0 100644
+>>>> --- a/arch/powerpc/platforms/pseries/plpks-secvar.c
+>>>> +++ b/arch/powerpc/platforms/pseries/plpks-secvar.c
+>>>> @@ -59,7 +59,14 @@ static u32 get_policy(const char *name)
+>>>>    		return PLPKS_SIGNEDUPDATE;
+>>>>    }
+>>>> -static const char * const plpks_var_names[] = {
+>>>> +static const char * const plpks_var_names_static[] = {
+>>>> +	"PK",
+>>>> +	"moduledb",
+>>>> +	"trustedcadb",
+>>>> +	NULL,
+>>>> +};
+>>>> +
+>>>> +static const char * const plpks_var_names_dynamic[] = {
+>>>>    	"PK",
+>>>>    	"KEK",
+>>>>    	"db",
+>>>> @@ -213,21 +220,34 @@ static int plpks_max_size(u64 *max_size)
+>>>>    	return 0;
+>>>>    }
+>>>> +static const struct secvar_operations plpks_secvar_ops_static = {
+>>>> +	.get = plpks_get_variable,
+>>>> +	.set = plpks_set_variable,
+>>>> +	.format = plpks_secvar_format,
+>>>> +	.max_size = plpks_max_size,
+>>>> +	.config_attrs = config_attrs,
+>>>> +	.var_names = plpks_var_names_static,
+>>>> +};
+>>>> -static const struct secvar_operations plpks_secvar_ops = {
+>>>> +static const struct secvar_operations plpks_secvar_ops_dynamic = {
+>>>>    	.get = plpks_get_variable,
+>>>>    	.set = plpks_set_variable,
+>>>>    	.format = plpks_secvar_format,
+>>>>    	.max_size = plpks_max_size,
+>>>>    	.config_attrs = config_attrs,
+>>>> -	.var_names = plpks_var_names,
+>>>> +	.var_names = plpks_var_names_dynamic,
+>>>>    };
+>>>>    static int plpks_secvar_init(void)
+>>>>    {
+>>>> +	u8 mode;
+>>>> +
+>>>>    	if (!plpks_is_available())
+>>>>    		return -ENODEV;
+>>>> -	return set_secvar_ops(&plpks_secvar_ops);
+>>>> +	mode = plpks_get_sb_keymgmt_mode();
+>>>> +	if (mode)
+>>>> +		return set_secvar_ops(&plpks_secvar_ops_dynamic);
+>>>> +	return set_secvar_ops(&plpks_secvar_ops_static);
+>>>>    }
+>>>>    machine_device_initcall(pseries, plpks_secvar_init);
+>>>> -- 
+>>>> 2.47.1
+>>>>
+>>>>
 
