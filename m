@@ -1,96 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-9168-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9170-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0A5ACEF12
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Jun 2025 14:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0097BACF175
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  5 Jun 2025 16:02:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bCk8p4hCjz2yRD;
-	Thu,  5 Jun 2025 22:22:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bCmP22rsdz2yLB;
+	Fri,  6 Jun 2025 00:02:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749126122;
-	cv=none; b=X3ncLo7Y4cGiWO+QTrkifH1kFac9SAy4uFM8NlnI0SABVBvsY/ZaYWKB3WVdVhAP8gwVg/qR7riWe6dTBm76iQSoYwOeDwlxLGFKrDLrsdqAWUnDyPEXfTzHBhNVlUo9gD60/hex7S49eWCjT+dbWkCH621Me062jAzegEotACXDDjGwZZfY8TrFu0Cdy5+547ET6RRGOS3PV5NoTBdhXGBm8Ck7AGfXl/fquE3p5R+tAjNfwiJAiiziVMd5OTW4hlpzWQ+T+VeYU30SYu8nhQMX2HhVqf6/QenFUSWenRmudQUIAy1d+irTllCHHV0ZJxh9BHRPZpYLcJWjnpbcUg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749132166;
+	cv=none; b=OQfniZc69FxcH63jnUa8hxjLrk8E1rSBc2PDQAo4TyRIHY6X+mmHFWiusX96bAMVRZRJVpxcTR/kKrqvNLgx71Gi0FU8PgfVGiteclrPY/zqEru+hMt5WfmuPOZ8mzKjnhI5X3A+obausVzsXT+9artzja4D0/mQRxzgTTs7mqBfvPBeq6BcBa1SWw/k6FC4eFJT/3FU+kOkyHz5UCLOf9B2KMhVSFP2oVl3BbRmCXI3skRgwS8yFAfgXPlLFb+Fmg3WA6QmJZJJ6P19Tdw8Od0p2P+cE+kcHvd4HgN8axfEFENkhw9QSa2Fj5oPP8AOSLYUfYZo8TWV8Qys4OmnvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749126122; c=relaxed/relaxed;
-	bh=wldJrlgD5xSFvxqsPYQgEMgA0AgR4qOzKzhiKtc8NNY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AYVt6+JvvRNFbSgklJakQWVj1dS7Epuo9uJe4O4MoBVtEhlC65QEHKnOTKadRbEbIgkKx7BipJ5gmSE9a1Zp0T2CQq5fa8I6XZSRxDPv9FI4rqmoBqPbTb7pkEyMAOp9KJ3/S4IXe5pCMqKbA7fl1VGeXTZnssGkkPwBlzpI3JqLtfnhc251FluIbefdNiQFq3wZIPy4fEmM/jgdyw4rEuCg84x2yCFsoXoS1+sE8jdECnKoxBfVCk7Vzzy7nJ+/vF3IXhBgC3eUdjdF8hfSp6dmBsAG1vHbaAlzdha9bpjcHYpTUWPhzeRrL+3uJrW1+CgHZ4Um5xZ8ZylRRkgYVA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d9n7yWYl; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EzlUqKpc; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1749132166; c=relaxed/relaxed;
+	bh=A5uK2i3PQtgjLrrWFtuaofjfiE8UiJnHn2HsiWlBHcI=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=NDuRfXW2zt50jZVXxaQPlIBg+rnvF4Kg9bYy73fk06cgJ0/Sy9y8s5ldzWjn8txL5lNlLC8z/lZAInjX1NHuhhC0qAhrVpnwSm2KmVsFFtmo+AMV/grlBprJj0wgOTwyV94wVnAZyI/SdUgISdTmWf72P3FCjrY4leuEi4l16vRh/lN3LryOYTtqrvPzHQuINMDfaMCBNoK9QAB50X3MZqD2eSAeBLIw5Gl2U64/P8/dD3EgWJvuQFXdEd9/RU7G12lHkTdda3pRqBExfLfLFJi3Fh70QK4aoFQEHwVFaL1JrOsTu5X6tqIzQyqLwRbKm88ZXTc85BnhCy3VJWQo9Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gu1SckNE; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sven@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=d9n7yWYl;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EzlUqKpc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gu1SckNE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=sven@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bCk8n2RV2z2yLB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  5 Jun 2025 22:21:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749126115;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wldJrlgD5xSFvxqsPYQgEMgA0AgR4qOzKzhiKtc8NNY=;
-	b=d9n7yWYl/KnvznYlpyTgBrfB+Fg3koyQBn33fosbPdjlvZJjf54i5k+gxOvSQS0Jsjqn1H
-	Mke88CwupzxBmvr7k//bERoXgS1F3jQqV9Ex9qqbOwK5lEZWGmHgZtDIfHbopt4PM44nlD
-	5E604Mi18yZ5JFG6P6nlWY87mD2gYN0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749126116;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wldJrlgD5xSFvxqsPYQgEMgA0AgR4qOzKzhiKtc8NNY=;
-	b=EzlUqKpc6nMN8gDa01+BzTDebhaBuRNhp8Z4+LBlvLelqDy0xllJcOgoSCQUX7yG7mv7zH
-	1sBvVKkEyp8zSdPVXFaI+6u4UMYEZOjeaNsCvksmM0xbZLqYDMcRQX09fVoJIAkE+9tSSq
-	w2iXgYwGvqQaZeU8xxWHhLP7/iAo9f4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-536-bCn0aX9rNqi6UsSj9w9PGw-1; Thu, 05 Jun 2025 08:21:54 -0400
-X-MC-Unique: bCn0aX9rNqi6UsSj9w9PGw-1
-X-Mimecast-MFC-AGG-ID: bCn0aX9rNqi6UsSj9w9PGw_1749126113
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-450d886b9d5so3314465e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 05 Jun 2025 05:21:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749126113; x=1749730913;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wldJrlgD5xSFvxqsPYQgEMgA0AgR4qOzKzhiKtc8NNY=;
-        b=QKNptMUteLCAl9LRQ/6KTat3r89d78JxLX4vxP++96jV9UaXEIQ1EAYGHGHC9MK+kl
-         gEmAYgldQKDlcuS4/XZKEgNRX5+0bppHFojTXBsvAh5IV9gZaI/Ny3XgIJ2NAEirIZzD
-         b3017O+37lnfbTYRpjbfVJWQewd3WD5JgkWOZGypCtMmNQpsEzTH4gtVxIG+4hO/7F5F
-         rWpeW5y5W8y3C3zAqI/HwoPndzIm5M0PfAmMVSKHYJPdhhibKzt9wejpVAy9SdX/B1M2
-         k38klW9kq2wppH23O4hlnsYbcC1ot7KygwClmr0pbdySrqLcjrHvLEHNTUrDyMMt630t
-         3e2A==
-X-Forwarded-Encrypted: i=1; AJvYcCVqr6oWmuFtj85e39Mydz2Nm2uzZpYQU05syNeZWCCxleDzfaxbQePhfoBPleDAkSx2eRSGOrSgwCXwla0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyRfEBRoty96sMypMlRcVmZdzwporqX6UuLyG3T9NQo0CWPWpt4
-	0S4Tt4mgsskBpmr/d9iyJjlCZb3qeznJdCadNIAc3WFxslt8xEA0So4IKMinD1tYVD1rVbHhXl8
-	j9grwO+Bhq1r9e4mavvRhSr7CFOCJ98TGVcvkjb3ROhkfxy9b6zYzzGprjsgFR+uoty0=
-X-Gm-Gg: ASbGncvdnXwWF/ZqoFcx2APvcXZxxULppkl+95kLowx+7SQT3O3gkDKhDOzUxnVhRpt
-	GK/83SOqmkCbhZd4wUxPirUNA3O/QpTQJcVQNW9z4g2qk/FYNuogGYQO7pvz54jfs1w+bj5to2x
-	FcmU/oWI8aSWyK+4UiYWRYER3fpQzk95hB1FHF7Xf5iuPkxSWRWesXpSsDfTIar1KlDANGhnn6s
-	t5rzT6BQRgVaba0yeXNQfYVp5kgSt5784RC9GfgVfYgdVgb8BTC8PPtp8e6eC+BzFFPuB4X8NUs
-	OmQOyKcgcatMWWbWO+5WylEi46HLfRfYM6ObU0w8eqhi0JuX1+/2nh+4tfHFi5uCQVtAVVtNp4Q
-	BqSZdlW2/rHWHZTZBOi8yHGOZlZv4Cqn+O472
-X-Received: by 2002:a05:6000:2411:b0:3a5:2ed2:118e with SMTP id ffacd0b85a97d-3a52ed213bbmr588087f8f.9.1749126113014;
-        Thu, 05 Jun 2025 05:21:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEqjyD+ON8FzosZudBIIk1cZ1N02kAPjk9ZRTcKJAP4iMjdx7JwYGTIDMl9lWAJcTgFebdUXw==
-X-Received: by 2002:a05:6000:2411:b0:3a5:2ed2:118e with SMTP id ffacd0b85a97d-3a52ed213bbmr588039f8f.9.1749126112497;
-        Thu, 05 Jun 2025 05:21:52 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f27:ec00:4f4d:d38:ba97:9aa2? (p200300d82f27ec004f4d0d38ba979aa2.dip0.t-ipconnect.de. [2003:d8:2f27:ec00:4f4d:d38:ba97:9aa2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a526057278sm2657445f8f.63.2025.06.05.05.21.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Jun 2025 05:21:52 -0700 (PDT)
-Message-ID: <897590f7-99a5-4053-8566-76623b929c7c@redhat.com>
-Date: Thu, 5 Jun 2025 14:21:50 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bCmP13tB4z2xgp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  6 Jun 2025 00:02:45 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4DC8B5C67BB;
+	Thu,  5 Jun 2025 14:00:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7D4C4CEE7;
+	Thu,  5 Jun 2025 14:02:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749132160;
+	bh=iat9T/bPiMblSlK8d+zjpseMEDTU2L2gOx5NeoRkbMg=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+	b=gu1SckNE3ydDy4+TPJ5hb90KWEtEJL7UQ4YxDNMsCyoErspywvpPZflGF86/Lds8N
+	 2CepgkWnmX/C16+jg8uf0zefUHcv5auHG6x2dW5P6PhyMoiB+q5pH51bhoHvYgkb9v
+	 tGsLt46b1Jqd/jhpUJI3Jl7q9DCtRCN9yDpqIAviHRmN0ab4xzWs1PixjB96Z5INAT
+	 ZsejwGMdmWfHwMfA8LlF1ebjHAbcdqooW1LTqAD6Jxf9E0b70Sk2n5IGeagqT2HfNB
+	 WSWBlRXkdzNSbUWRdhhQ8zCHndoIk8LmySF1ueBCBm2mr8YscM9fWJqP8/Rc8vAOAA
+	 KK15FRZIK7PYQ==
+Message-ID: <b3cbeae1-b0c5-43c3-80ec-3b6654582565@kernel.org>
+Date: Thu, 5 Jun 2025 16:02:35 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,125 +59,113 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/12] mm: Remove redundant pXd_devmap calls
-To: Jason Gunthorpe <jgg@ziepe.ca>, Dan Williams <dan.j.williams@intel.com>
-Cc: Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- gerald.schaefer@linux.ibm.com, willy@infradead.org,
- linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
- zhang.lyra@gmail.com, debug@rivosinc.com, bjorn@kernel.org,
- balbirs@nvidia.com, lorenzo.stoakes@oracle.com,
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org, John@groves.net
-References: <cover.541c2702181b7461b84f1a6967a3f0e823023fcc.1748500293.git-series.apopple@nvidia.com>
- <2ee5a64581d2c78445e5c4180d7eceed085825ca.1748500293.git-series.apopple@nvidia.com>
- <6841026c50e57_249110022@dwillia2-xfh.jf.intel.com.notmuch>
- <20250605120909.GA44681@ziepe.ca>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
- AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
- 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
- rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
- wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
- 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
- pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
- KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
- BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
- 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
- 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
- M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
- Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
- T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
- 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
- CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
- NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
- 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
- 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
- lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
- AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
- N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
- AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
- boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
- 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
- XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
- a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
- Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
- 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
- kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
- th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
- jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250605120909.GA44681@ziepe.ca>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: JCh0piSvyw1Qg0Cx4wc7XTDLO0Og5sWNwxLlMrSR1XA_1749126113
-X-Mimecast-Originator: redhat.com
+From: Sven Peter <sven@kernel.org>
+Subject: Re: [BUG] rmmod i2c-pasemi-platform causing kernel crash on Apple M1.
+To: chenglingfei <chenglingfei22s@ict.ac.cn>
+Cc: j@jannau.net, alyssa@rosenzweig.io, neal@gompa.dev,
+ zhangzhenwei22b@ict.ac.cn, wangzhe12@ict.ac.cn, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+ naveen@kernel.org, andi.shyti@kernel.org, asahi@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <5c598fea.3165d.1973e0a9a3a.Coremail.chenglingfei22s@ict.ac.cn>
+ <dafd58ae-0a08-4fe6-b94d-c8c6c8c1fa97@kernel.org>
+ <4cfe2276.2c0da.1973ff1cc40.Coremail.chenglingfei22s@ict.ac.cn>
 Content-Language: en-US
+In-Reply-To: <4cfe2276.2c0da.1973ff1cc40.Coremail.chenglingfei22s@ict.ac.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 05.06.25 14:09, Jason Gunthorpe wrote:
-> On Wed, Jun 04, 2025 at 07:35:24PM -0700, Dan Williams wrote:
+Hi,
+
+On 05.06.25 13:55, chenglingfei wrote:
 > 
->> If all dax pages are special, then vm_normal_page() should never find
->> them and gup should fail.
->>
->> ...oh, but vm_normal_page_p[mu]d() is not used in the gup path, and
->> 'special' is not set in the pte path.
 > 
-> That seems really suboptimal?? Why would pmd and pte be different?
 > 
->> I think for any p[mu]d where p[mu]d_page() is ok to use should never set
->> 'special', right?
+> &gt; -----原始邮件-----
+> &gt; 发件人: "Sven Peter" <sven@kernel.org>
+> &gt; 发送时间: 2025-06-05 18:25:09 (星期四)
+> &gt; 收件人: 程凌飞 <chenglingfei22s@ict.ac.cn>, j@jannau.net, alyssa@rosenzweig.io, neal@gompa.dev
+> &gt; 抄送: zhangzhenwei22b@ict.ac.cn, wangzhe12@ict.ac.cn, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, andi.shyti@kernel.org, asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org
+> &gt; 主题: Re: [BUG] rmmod i2c-pasemi-platform causing kernel crash on Apple M1.
+> &gt;
+> &gt; Hi,
+> &gt;
+> &gt; On 05.06.25 05:02, 程凌飞 wrote:
+> &gt; &gt; Hi, all!
+> &gt; &gt;
+> &gt; &gt; We’ve encountered a kernel crash when running rmmod i2c-pasemi-platform on a Mac Mini M1 (T8103) running Asahi Arch Linux.
+> &gt; &gt;
+> &gt; &gt; The bug was first found on the Linux v6.6, which is built manually with the Asahi given config to run our services.
+> &gt; &gt; At that time, the i2c-pasemi-platform was i2c-apple.
+> &gt; &gt;
+> &gt; &gt; We noticed in the Linux v6.7, the pasemi is splitted into two separate modules, one of which is i2c-pasemi-platform.
+> &gt; &gt; Therefore, we built Linux v6.14.6 and tried to rmmod i2c-pasemi-platform again, the crash still exists. Moreover, we fetched
+> &gt; &gt; the latest i2c-pasemi-platform on linux-next(911483b25612c8bc32a706ba940738cc43299496) and asahi, built them and
+> &gt; &gt; tested again with Linux v6.14.6, but the crash remains.
+> &gt; &gt;
+> &gt; &gt; Because kexec is not supported and will never be fully supported on Apple Silicon platforms due to hardware and firmware
+> &gt; &gt; design constraints, we can not record the panic logs through kdump.
+> &gt;
+> &gt; Do you have UART connected to a device under test which you could use to
+> &gt; grab the panic log from the kernel? Alternatively you can also run the
+> &gt; kernel under m1n1's hypervisor and grab the log that way. It'll emulate
+> &gt; the serial port and redirect its output via USB.
+> &gt;
 > 
-> There should be dedicated functions for installing pages and PFNs,
-> only the PFN one would set the special bit.
+> I don't have UART, but I have tried to run the kernel under m1n1's hypervisor. However, it does not trigger the release of cs42l83.
+> Given that m1n1 provides full peripheral device emulation capability, the most plausible explanation would be an incorrect
+> firmware loading sequence. But the documentation of Asahi provides little details about how to generate an initramfs with
+> firmware (I think), can you give more guidance about it?
+
+I'm not sure why you are even trying to create a special initramfs. Just
+load your usual kernel using the usual boot flow as a guest. There's 
+also no firmware involved in i2c and I'm not sure what you mean with 
+"full peripheral device emulation" either or how that's related to firmware.
+You also mention that the crash happens when you run rmmod so I again 
+don't understand what "it does not trigger the release of cs42l83" means 
+here.
+
 > 
-> And certainly your tests *should* be failing as special entries should
-> never ever be converted to struct page.
+> &gt; &gt;
+> &gt; &gt; Thus we tried to find the root cause of the issue manually. When we perform rmmod, the kernel performs device releasing on
+> &gt; &gt; the i2c bus, then calls the remove function in snd-soc-cs42l83-i2c, which calls the cs42l42_common_remove in cs42l42,
+> &gt; &gt; because cs42l42-&gt;init_done is true, it performs regmap_write, and finally calls into pasemi_smb_waitready in i2c-pasemi
+> &gt; &gt; -core.c. We noticed that smbus-&gt;use_irq is true, and after it calls into wait_for_completion_timeout, the system crashs!&gt;
+> &gt; &gt; We found that wait_for_completion_timeout is one of the core scheduler APIs used by tens of thousands of other drivers,
+> &gt; &gt; it is unlikely causing the crash. So we tried to remove the call to wait_for_completion_timeout, then the system seems to
+> &gt; &gt; run well.
+> &gt; &gt;
+> &gt; &gt; However, because we have little knowledge about i2c devices and specifications, we are not sure whether this change will
+> &gt; &gt; cause other potential harms for the system and device. Is this call to wait necesary here? Or can you give a more
+> &gt; &gt; sophisticated fix?
+> &gt;
+> &gt; Yes, that call is necessary. It waits for the "transfer completed"
+> &gt; interrupt from the hardware. Without it the driver will try to read data
+> &gt; before it's available and you'll see corruption. I'm surprised hardware
+> &gt; attached to i2c (usb pd controller and audio I think) works at all with
+> &gt; that change.
+> &gt;
+> &gt;
+> &gt; Sven
+> 
+> Are there any methods or tools to systematically verify its functionality? I am not sure whether the devices attached to i2c
+> should work well even after the i2c-pasemi-platform has been removed.
 
-Worth reviewing [1] where I clean that up and describe the current 
-impact. ;)
-
-What's even worse about this pte_devmap()/pmd_devmap()/... shit (sorry! 
-but it's absolute shit) is that some pte_mkdev() set the pte special, 
-while others ... don't.
-
-E.g., loongarch
-
-static inline pte_t pte_mkdevmap(pte_t pte)	{ pte_val(pte) |= 
-_PAGE_DEVMAP; return pte; }
-
-I don't even know how it can (could) survive vm_normal_page().
+I don't understand. You say you saw a crash inside pasemi_smb_waitready 
+when calling wait_for_completion_timeout and decided to remove that 
+method. When you remove the call you break the entire driver because it 
+will now try to read data long before the i2c transaction has been 
+completed.
+Obviously, no i2c device will work when the driver isn't loaded but 
+without waiting for the completion they also won't work when the driver 
+is loaded.
 
 
-Of course, a wild (and different) mixture on pmd_mkdevmap() as well.
-
-So happy to see that go away.
-
-[1] https://lkml.kernel.org/r/20250603211634.2925015-1-david@redhat.com
-
--- 
-Cheers,
-
-David / dhildenb
+Sven
 
 
