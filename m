@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-9194-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9192-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 742BBAD0F68
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jun 2025 22:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF95AD0F5F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jun 2025 22:08:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bF8P71rP0z30MZ;
-	Sun,  8 Jun 2025 06:07:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bF8P556j0z30DR;
+	Sun,  8 Jun 2025 06:07:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749326859;
-	cv=none; b=etCrl36Dfnlthj088sb6qNFif1PSHK/N5XZAm8bhbMtuORTE5RQtKxChOj/OzfGtNQMiGZdRR6UwtyZTpqn8K7N8bptlfNa3Qt6C2LFExgBwWc9QmStEWHU5eCZI0k0rO+iYMS5ZoJ3GzcDkNbR0aSGYNuccgvJ1V8nwejy/EsvLgYlJbSz+ZNg2T+N2wWL2dfVwZZBI730eN+dMln+YffxYn+p1BocVq6oqDMCvvyWlqTGvqis17mejXZjr/xIEIVlGUmtsv6T+DhGkMvuw0B4otXvMeUVrGsfozsscAjaCbFhdeIXcEudWbi47pF8oYEgEzqcfHKHW30qWlsrEGA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749326857;
+	cv=none; b=IVotmdO33NCc0n4+KOzOdhfjmzeVVMGmnlQmDiIdmBmqY1Ybb96vdvJgspeqnwTwx6icaABwu63x6rEvIEoEpttBwcMSMdV0roXyga6nTxeTHtOTHOVamOpzJ5sQDUscEnF9PFLtYKprnKAEYeOVxNfIAKv6ckuvvgS6mdVEgDC8tMUr1SDXZrNKYXVK24dPhYjVbMK/iWP9kdTAOxYG81klYfwMrntU9gkhMHnTfgysZuLUZFy44oBaliOPk+GmBcKP+GWakcmHFkrgn6yJYJ/CauzzBErdf2VPL/D92RbTG7BlczK2NuSeouuhNoE28PjBCT9M+MxqVxCIfBs6OA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749326859; c=relaxed/relaxed;
-	bh=hmoXJOnLMJ3rG7ZMuVMC33DtFfTsvO34Ibg94W2IscU=;
+	t=1749326857; c=relaxed/relaxed;
+	bh=DLqUt5ykU+NewpLqdF7LC2juceSoo6/VlXnuY6rAb5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JsowcL7ZKPZEBa2zWBh+888HZIZ42c6bk8ktcsOc+wgoqLvTiiHeLfxhigE9GNqBw2Pjvde4iV8WBVEnjOQvZGaB+L/WAM4xjfC+IRhTnP52Bw7d2m/q4F4PAPIMZdPBRSbX4g09p0DzKySYtrJh4Xya2neEg1ToXDOGeIRkBDYpR4vkHSlZMsVRSa0BTpzSF61XDjtAIVhMlEmWhwDdZX5aBSZ3J4h95snrC2dgvGPKFhp6Y+xeysinXUEdoEopJuPbF0LOwj4D8Tlwc392ZXBPgAkWV+RUPOy6IrmnHWbae+xe5UU68YAn8V1QEEz87mzT0MhC/EMAM3XYL9BExA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rYwbw18n; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=hlu+eH7V34Zu0vIuozVUKmWbA03ovc9Hw0wJCR5j+GY5fAwId3U1gGeCBEi/T47hcypeSs8y7lTTOHEAebZT3BOiXeITCEbY2tiEcEV1SLH79GJ7iGEdrNdr+pJ/+LMEKafYjidQxTDh1otmDN9mHvwj9K0NXYFIVbwRLrz++Ynqjawbt3zEKk/UhGt2y0lp4zh3EvPVdfZYQwuOy+Z3tQi9t5KltRNthX4jFCOLSx8a7LTN31/q6llOpYQOg4P39K32F3vONnwlgiIWxWucFc2JWIOwtEeI/oNkW3fnZB3RFG3e+LgixD6CIM5+fmqzl8Wy/jjDVCWAWQttBLRYCg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Chu95TKq; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rYwbw18n;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Chu95TKq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bF8P20lypz306l
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Jun 2025 06:07:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bF8P061Gfz305n
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Jun 2025 06:07:32 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id B9F815C5AF8;
-	Sat,  7 Jun 2025 20:05:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E608CC4CEF3;
-	Sat,  7 Jun 2025 20:07:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E903D4ABE6;
+	Sat,  7 Jun 2025 20:07:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718C0C4CEF0;
+	Sat,  7 Jun 2025 20:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1749326850;
-	bh=WdPZKPTFqdPtFVY3vxcYLn4JpXpcQFxK5xoZxw4oN6M=;
+	bh=zY3fvpUbE+/4lThsCnGfT2NxFkXv0wD4oYk8K5EmW5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYwbw18nEbKgn50Q7dJjhLaOiApwovsGIwvol4hlE3ERmUUlQJY+VNQ/CnX2+rGSM
-	 c0YqjT0Th4xYfjnGQHFz/Sw5Z/ikWRamSc3unwHRfBVwFIjAhxW3i0m6tSQxaDEnvp
-	 xHg6+or6mz0ts6zU8NMMPKf7RzLSPbJyLmi0l614IUJ6MicSw9Gk14Y0i5HWuP/W93
-	 x70mCt46NarWsMV8FOFk6YVKK1eOo5CxPH15DKrwBazQXQw1ckbrMhaNtdI9VZxxvX
-	 SHiVYR/cJZROszwFVf64VoMxta5X2NJsNqIhT7u7ipAeU4j0/7fkWcqESF/PWSm+3L
-	 SdKejv+mALrJg==
+	b=Chu95TKqPmDS98OhYY5Ac8BbqnX5apkd7PAsCrFcuiOOi6LR+p0TFPzxMjsPY/PBq
+	 p/1Jy8JRQ+XCj0wdcVjt+41xJP78UoKVawE5RR2SKK2RzkUBS0W0LJKy7KBBSJohLi
+	 Q6faTyM18RMmPfHyck7zmT9eKoGB1seXkb7EhfyczxWRMffU50h4KIAf034eG732E4
+	 34vYkNT6nw+3TipBEJ7+fzMGPWM2pbIgR5lSjvU4I5fW4tJV2csqi4G22VpKWVRauo
+	 yaHESgRIaOrVsNKdbICEnpBylxlg1NhiNCVLjeKF48QN4yRNzdUD/eZrqQphdsTwTY
+	 WpEFv90CsX4/g==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-crypto@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-crypto@vger.kernel.org,
 	Ard Biesheuvel <ardb@kernel.org>,
 	"Jason A . Donenfeld" <Jason@zx2c4.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH v2 04/12] lib/crc/arm64: migrate arm64-optimized CRC code into lib/crc/
-Date: Sat,  7 Jun 2025 13:04:46 -0700
-Message-ID: <20250607200454.73587-5-ebiggers@kernel.org>
+Subject: [PATCH v2 05/12] lib/crc/loongarch: migrate loongarch-optimized CRC code into lib/crc/
+Date: Sat,  7 Jun 2025 13:04:47 -0700
+Message-ID: <20250607200454.73587-6-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250607200454.73587-1-ebiggers@kernel.org>
 References: <20250607200454.73587-1-ebiggers@kernel.org>
@@ -85,275 +85,158 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-Move the arm64-optimized CRC code from arch/arm64/lib/crc* into its new
-location in lib/crc/arm64/, and wire it up in the new way.  This new way
-of organizing the CRC code eliminates the need to artificially split the
-code for each CRC variant into separate arch and generic modules,
-enabling better inlining and dead code elimination.  For more details,
-see "lib/crc: prepare for arch-optimized code in subdirs of lib/crc/".
+Move the loongarch-optimized CRC code from arch/loongarch/lib/crc* into
+its new location in lib/crc/loongarch/, and wire it up in the new way.
+This new way of organizing the CRC code eliminates the need to
+artificially split the code for each CRC variant into separate arch and
+generic modules, enabling better inlining and dead code elimination.
+For more details, see "lib/crc: prepare for arch-optimized code in
+subdirs of lib/crc/".
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/arm64/Kconfig                            |  2 --
- arch/arm64/lib/Makefile                       |  6 -----
- lib/crc/Kconfig                               |  2 ++
- lib/crc/Makefile                              |  2 ++
- .../lib => lib/crc/arm64}/crc-t10dif-core.S   |  0
- .../crc/arm64/crc-t10dif.h                    | 22 +++----------------
- .../arm64/lib => lib/crc/arm64}/crc32-core.S  |  0
- .../lib/crc32.c => lib/crc/arm64/crc32.h      | 19 ++++------------
- 8 files changed, 11 insertions(+), 42 deletions(-)
- rename {arch/arm64/lib => lib/crc/arm64}/crc-t10dif-core.S (100%)
- rename arch/arm64/lib/crc-t10dif.c => lib/crc/arm64/crc-t10dif.h (70%)
- rename {arch/arm64/lib => lib/crc/arm64}/crc32-core.S (100%)
- rename arch/arm64/lib/crc32.c => lib/crc/arm64/crc32.h (81%)
+ arch/loongarch/Kconfig                        |  1 -
+ arch/loongarch/lib/Makefile                   |  2 --
+ lib/crc/Kconfig                               |  1 +
+ .../crc/loongarch/crc32.h                     | 32 ++++---------------
+ 4 files changed, 7 insertions(+), 29 deletions(-)
+ rename arch/loongarch/lib/crc32-loongarch.c => lib/crc/loongarch/crc32.h (71%)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 55fc331af3371..cbeac225903f7 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -19,12 +19,10 @@ config ARM64
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index 1a2cf012b8f2f..1b19893a6bdf0 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -13,11 +13,10 @@ config LOONGARCH
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG
  	select ARCH_ENABLE_MEMORY_HOTREMOVE
- 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK if PGTABLE_LEVELS > 2
  	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
- 	select ARCH_HAS_CACHE_LINE_SIZE
- 	select ARCH_HAS_CC_PLATFORM
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
+ 	select ARCH_HAS_CPU_FINALIZE_INIT
 -	select ARCH_HAS_CRC32
--	select ARCH_HAS_CRC_T10DIF if KERNEL_MODE_NEON
  	select ARCH_HAS_CURRENT_STACK_POINTER
- 	select ARCH_HAS_DEBUG_VIRTUAL
  	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DMA_OPS if XEN
- 	select ARCH_HAS_DMA_PREP_COHERENT
-diff --git a/arch/arm64/lib/Makefile b/arch/arm64/lib/Makefile
-index 027bfa9689c6a..9b255d9332479 100644
---- a/arch/arm64/lib/Makefile
-+++ b/arch/arm64/lib/Makefile
-@@ -14,16 +14,10 @@ CFLAGS_xor-neon.o		+= $(CC_FLAGS_FPU)
- CFLAGS_REMOVE_xor-neon.o	+= $(CC_FLAGS_NO_FPU)
- endif
+ 	select ARCH_HAS_FAST_MULTIPLIER
+ 	select ARCH_HAS_FORTIFY_SOURCE
+ 	select ARCH_HAS_KCOV
+diff --git a/arch/loongarch/lib/Makefile b/arch/loongarch/lib/Makefile
+index fae77809048b8..ccea3bbd43531 100644
+--- a/arch/loongarch/lib/Makefile
++++ b/arch/loongarch/lib/Makefile
+@@ -9,7 +9,5 @@ lib-y	+= delay.o memset.o memcpy.o memmove.o \
+ obj-$(CONFIG_ARCH_SUPPORTS_INT128) += tishift.o
  
- lib-$(CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE) += uaccess_flushcache.o
+ obj-$(CONFIG_CPU_HAS_LSX) += xor_simd.o xor_simd_glue.o
  
--obj-$(CONFIG_CRC32_ARCH) += crc32-arm64.o
--crc32-arm64-y := crc32.o crc32-core.o
--
--obj-$(CONFIG_CRC_T10DIF_ARCH) += crc-t10dif-arm64.o
--crc-t10dif-arm64-y := crc-t10dif.o crc-t10dif-core.o
--
  obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
- 
- obj-$(CONFIG_ARM64_MTE) += mte.o
- 
- obj-$(CONFIG_KASAN_SW_TAGS) += kasan_sw_tags.o
+-
+-obj-$(CONFIG_CRC32_ARCH) += crc32-loongarch.o
 diff --git a/lib/crc/Kconfig b/lib/crc/Kconfig
-index edd1b99098003..63edb487daff8 100644
+index 63edb487daff8..c1629f07768f9 100644
 --- a/lib/crc/Kconfig
 +++ b/lib/crc/Kconfig
-@@ -49,10 +49,11 @@ config ARCH_HAS_CRC_T10DIF
- 
- config CRC_T10DIF_ARCH
- 	bool
- 	depends on CRC_T10DIF && CRC_OPTIMIZATIONS
- 	default y if ARM && KERNEL_MODE_NEON
-+	default y if ARM64 && KERNEL_MODE_NEON
- 
- config CRC32
- 	tristate
- 	select BITREVERSE
- 	help
-@@ -64,10 +65,11 @@ config ARCH_HAS_CRC32
- 
+@@ -66,10 +66,11 @@ config ARCH_HAS_CRC32
  config CRC32_ARCH
  	bool
  	depends on CRC32 && CRC_OPTIMIZATIONS
  	default y if ARM && KERNEL_MODE_NEON
-+	default y if ARM64
+ 	default y if ARM64
++	default y if LOONGARCH
  
  config CRC64
  	tristate
  	help
  	  The CRC64 library functions.  Select this if your module uses any of
-diff --git a/lib/crc/Makefile b/lib/crc/Makefile
-index c72d351be6cb8..8adff4ae1ba63 100644
---- a/lib/crc/Makefile
-+++ b/lib/crc/Makefile
-@@ -12,17 +12,19 @@ obj-$(CONFIG_CRC_ITU_T) += crc-itu-t.o
- obj-$(CONFIG_CRC_T10DIF) += crc-t10dif.o
- crc-t10dif-y := crc-t10dif-main.o
- ifeq ($(CONFIG_CRC_T10DIF_ARCH),y)
- CFLAGS_crc-t10dif-main.o += -I$(src)/$(SRCARCH)
- crc-t10dif-$(CONFIG_ARM) += arm/crc-t10dif-core.o
-+crc-t10dif-$(CONFIG_ARM64) += arm64/crc-t10dif-core.o
- endif
- 
- obj-$(CONFIG_CRC32) += crc32.o
- crc32-y := crc32-main.o
- ifeq ($(CONFIG_CRC32_ARCH),y)
- CFLAGS_crc32-main.o += -I$(src)/$(SRCARCH)
- crc32-$(CONFIG_ARM) += arm/crc32-core.o
-+crc32-$(CONFIG_ARM64) += arm64/crc32-core.o
- endif
- 
- obj-$(CONFIG_CRC64) += crc64.o
- crc64-y := crc64-main.o
- ifeq ($(CONFIG_CRC64_ARCH),y)
-diff --git a/arch/arm64/lib/crc-t10dif-core.S b/lib/crc/arm64/crc-t10dif-core.S
-similarity index 100%
-rename from arch/arm64/lib/crc-t10dif-core.S
-rename to lib/crc/arm64/crc-t10dif-core.S
-diff --git a/arch/arm64/lib/crc-t10dif.c b/lib/crc/arm64/crc-t10dif.h
-similarity index 70%
-rename from arch/arm64/lib/crc-t10dif.c
-rename to lib/crc/arm64/crc-t10dif.h
-index c2ffe4fdb59d1..c4521a7f1ee9b 100644
---- a/arch/arm64/lib/crc-t10dif.c
-+++ b/lib/crc/arm64/crc-t10dif.h
-@@ -4,15 +4,10 @@
-  *
-  * Copyright (C) 2016 - 2017 Linaro Ltd <ard.biesheuvel@linaro.org>
+diff --git a/arch/loongarch/lib/crc32-loongarch.c b/lib/crc/loongarch/crc32.h
+similarity index 71%
+rename from arch/loongarch/lib/crc32-loongarch.c
+rename to lib/crc/loongarch/crc32.h
+index b37cd8537b459..6de5c96594afc 100644
+--- a/arch/loongarch/lib/crc32-loongarch.c
++++ b/lib/crc/loongarch/crc32.h
+@@ -8,12 +8,10 @@
+  * Copyright (C) 2018 MIPS Tech, LLC
+  * Copyright (C) 2020-2023 Loongson Technology Corporation Limited
   */
  
- #include <linux/cpufeature.h>
--#include <linux/crc-t10dif.h>
--#include <linux/init.h>
--#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/string.h>
- 
- #include <crypto/internal/simd.h>
- 
- #include <asm/neon.h>
- #include <asm/simd.h>
-@@ -24,11 +19,11 @@ static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_pmull);
- 
- asmlinkage void crc_t10dif_pmull_p8(u16 init_crc, const u8 *buf, size_t len,
- 				    u8 out[16]);
- asmlinkage u16 crc_t10dif_pmull_p64(u16 init_crc, const u8 *buf, size_t len);
- 
--u16 crc_t10dif_arch(u16 crc, const u8 *data, size_t length)
-+static inline u16 crc_t10dif_arch(u16 crc, const u8 *data, size_t length)
- {
- 	if (length >= CRC_T10DIF_PMULL_CHUNK_SIZE) {
- 		if (static_branch_likely(&have_pmull)) {
- 			if (crypto_simd_usable()) {
- 				kernel_neon_begin();
-@@ -48,26 +43,15 @@ u16 crc_t10dif_arch(u16 crc, const u8 *data, size_t length)
- 			return crc_t10dif_generic(0, buf, sizeof(buf));
- 		}
- 	}
- 	return crc_t10dif_generic(crc, data, length);
- }
--EXPORT_SYMBOL(crc_t10dif_arch);
- 
--static int __init crc_t10dif_arm64_init(void)
-+#define crc_t10dif_mod_init_arch crc_t10dif_mod_init_arch
-+static inline void crc_t10dif_mod_init_arch(void)
- {
- 	if (cpu_have_named_feature(ASIMD)) {
- 		static_branch_enable(&have_asimd);
- 		if (cpu_have_named_feature(PMULL))
- 			static_branch_enable(&have_pmull);
- 	}
--	return 0;
- }
--subsys_initcall(crc_t10dif_arm64_init);
--
--static void __exit crc_t10dif_arm64_exit(void)
--{
--}
--module_exit(crc_t10dif_arm64_exit);
--
--MODULE_AUTHOR("Ard Biesheuvel <ard.biesheuvel@linaro.org>");
--MODULE_DESCRIPTION("CRC-T10DIF using arm64 NEON and Crypto Extensions");
--MODULE_LICENSE("GPL v2");
-diff --git a/arch/arm64/lib/crc32-core.S b/lib/crc/arm64/crc32-core.S
-similarity index 100%
-rename from arch/arm64/lib/crc32-core.S
-rename to lib/crc/arm64/crc32-core.S
-diff --git a/arch/arm64/lib/crc32.c b/lib/crc/arm64/crc32.h
-similarity index 81%
-rename from arch/arm64/lib/crc32.c
-rename to lib/crc/arm64/crc32.h
-index ed3acd71178f8..6e5dec45f05d2 100644
---- a/arch/arm64/lib/crc32.c
-+++ b/lib/crc/arm64/crc32.h
-@@ -1,11 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
+ #include <asm/cpu-features.h>
 -#include <linux/crc32.h>
--#include <linux/linkage.h>
 -#include <linux/module.h>
--
- #include <asm/alternative.h>
- #include <asm/cpufeature.h>
- #include <asm/neon.h>
- #include <asm/simd.h>
+ #include <linux/unaligned.h>
  
-@@ -20,11 +16,11 @@ asmlinkage u32 crc32_be_arm64(u32 crc, unsigned char const *p, size_t len);
+ #define _CRC32(crc, value, size, type)			\
+ do {							\
+ 	__asm__ __volatile__(				\
+@@ -26,11 +24,11 @@ do {							\
+ #define CRC32(crc, value, size)		_CRC32(crc, value, size, crc)
+ #define CRC32C(crc, value, size)	_CRC32(crc, value, size, crcc)
  
- asmlinkage u32 crc32_le_arm64_4way(u32 crc, unsigned char const *p, size_t len);
- asmlinkage u32 crc32c_le_arm64_4way(u32 crc, unsigned char const *p, size_t len);
- asmlinkage u32 crc32_be_arm64_4way(u32 crc, unsigned char const *p, size_t len);
+ static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_crc32);
  
 -u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
 +static inline u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
  {
- 	if (!alternative_has_cap_likely(ARM64_HAS_CRC32))
+ 	if (!static_branch_likely(&have_crc32))
  		return crc32_le_base(crc, p, len);
  
- 	if (len >= min_len && cpu_have_named_feature(PMULL) && crypto_simd_usable()) {
-@@ -39,13 +35,12 @@ u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
- 			return crc;
+ 	while (len >= sizeof(u64)) {
+@@ -61,13 +59,12 @@ u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
+ 		CRC32(crc, value, b);
  	}
  
- 	return crc32_le_arm64(crc, p, len);
+ 	return crc;
  }
 -EXPORT_SYMBOL(crc32_le_arch);
  
 -u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
 +static inline u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
  {
- 	if (!alternative_has_cap_likely(ARM64_HAS_CRC32))
+ 	if (!static_branch_likely(&have_crc32))
  		return crc32c_base(crc, p, len);
  
- 	if (len >= min_len && cpu_have_named_feature(PMULL) && crypto_simd_usable()) {
-@@ -60,13 +55,12 @@ u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
- 			return crc;
+ 	while (len >= sizeof(u64)) {
+@@ -98,38 +95,21 @@ u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
+ 		CRC32C(crc, value, b);
  	}
  
- 	return crc32c_le_arm64(crc, p, len);
+ 	return crc;
  }
 -EXPORT_SYMBOL(crc32c_arch);
  
 -u32 crc32_be_arch(u32 crc, const u8 *p, size_t len)
-+static inline u32 crc32_be_arch(u32 crc, const u8 *p, size_t len)
- {
- 	if (!alternative_has_cap_likely(ARM64_HAS_CRC32))
- 		return crc32_be_base(crc, p, len);
- 
- 	if (len >= min_len && cpu_have_named_feature(PMULL) && crypto_simd_usable()) {
-@@ -81,19 +75,14 @@ u32 crc32_be_arch(u32 crc, const u8 *p, size_t len)
- 			return crc;
- 	}
- 
- 	return crc32_be_arm64(crc, p, len);
- }
+-{
+-	return crc32_be_base(crc, p, len);
+-}
 -EXPORT_SYMBOL(crc32_be_arch);
++#define crc32_be_arch crc32_be_base /* not implemented on this arch */
  
+-static int __init crc32_loongarch_init(void)
++#define crc32_mod_init_arch crc32_mod_init_arch
++static inline void crc32_mod_init_arch(void)
+ {
+ 	if (cpu_has_crc32)
+ 		static_branch_enable(&have_crc32);
+-	return 0;
+ }
+-subsys_initcall(crc32_loongarch_init);
+ 
+-static void __exit crc32_loongarch_exit(void)
+-{
+-}
+-module_exit(crc32_loongarch_exit);
+-
 -u32 crc32_optimizations(void)
 +static inline u32 crc32_optimizations_arch(void)
  {
- 	if (alternative_has_cap_likely(ARM64_HAS_CRC32))
- 		return CRC32_LE_OPTIMIZATION |
- 		       CRC32_BE_OPTIMIZATION |
- 		       CRC32C_OPTIMIZATION;
+ 	if (static_key_enabled(&have_crc32))
+ 		return CRC32_LE_OPTIMIZATION | CRC32C_OPTIMIZATION;
  	return 0;
  }
 -EXPORT_SYMBOL(crc32_optimizations);
 -
--MODULE_LICENSE("GPL");
--MODULE_DESCRIPTION("arm64-optimized CRC32 functions");
+-MODULE_AUTHOR("Min Zhou <zhoumin@loongson.cn>");
+-MODULE_AUTHOR("Huacai Chen <chenhuacai@loongson.cn>");
+-MODULE_DESCRIPTION("CRC32 and CRC32C using LoongArch crc* instructions");
+-MODULE_LICENSE("GPL v2");
 -- 
 2.49.0
 
