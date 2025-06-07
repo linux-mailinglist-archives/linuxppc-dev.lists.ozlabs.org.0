@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-9192-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9191-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF95AD0F5F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jun 2025 22:08:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C837AD0F58
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jun 2025 22:07:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bF8P556j0z30DR;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bF8P50WDMz30Bd;
 	Sun,  8 Jun 2025 06:07:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749326857;
-	cv=none; b=IVotmdO33NCc0n4+KOzOdhfjmzeVVMGmnlQmDiIdmBmqY1Ybb96vdvJgspeqnwTwx6icaABwu63x6rEvIEoEpttBwcMSMdV0roXyga6nTxeTHtOTHOVamOpzJ5sQDUscEnF9PFLtYKprnKAEYeOVxNfIAKv6ckuvvgS6mdVEgDC8tMUr1SDXZrNKYXVK24dPhYjVbMK/iWP9kdTAOxYG81klYfwMrntU9gkhMHnTfgysZuLUZFy44oBaliOPk+GmBcKP+GWakcmHFkrgn6yJYJ/CauzzBErdf2VPL/D92RbTG7BlczK2NuSeouuhNoE28PjBCT9M+MxqVxCIfBs6OA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749326856;
+	cv=none; b=nl92LmwSxi5Qc76MZ6L9Qz5VP1O8xWjvjpdjE8uGAjqgwlbkPGzrDTXpehfMMnTvJurXV+unHwJKtLEJFDGoDuULJBhxamq/yAlFgMy3ganpErBrGAV4a4393vmCEWLADIDaH1+I/+/O6xASQB/cUJKqOc34DePNQgrtptwwNF18rRuwNxOUVkn0nbhXRFjquzZqTOVO3fQ+qJThd9u8T/uLPswaO8ImVGVetcfcXeYzdeAigMWZJ1RcA9vhYk11aJUd4JVUhmvxF8dewNe/PcKaGFIHvr7FpwyqGzd9srsfnC5m8OUpGYdT1miRWKe58fxF3QV9cyvKiNjGw+YkwQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749326857; c=relaxed/relaxed;
-	bh=DLqUt5ykU+NewpLqdF7LC2juceSoo6/VlXnuY6rAb5I=;
+	t=1749326856; c=relaxed/relaxed;
+	bh=0UePHJu2I8639M9uUOUfaOoSiXeJ4PS3fFfzzaCCUfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlu+eH7V34Zu0vIuozVUKmWbA03ovc9Hw0wJCR5j+GY5fAwId3U1gGeCBEi/T47hcypeSs8y7lTTOHEAebZT3BOiXeITCEbY2tiEcEV1SLH79GJ7iGEdrNdr+pJ/+LMEKafYjidQxTDh1otmDN9mHvwj9K0NXYFIVbwRLrz++Ynqjawbt3zEKk/UhGt2y0lp4zh3EvPVdfZYQwuOy+Z3tQi9t5KltRNthX4jFCOLSx8a7LTN31/q6llOpYQOg4P39K32F3vONnwlgiIWxWucFc2JWIOwtEeI/oNkW3fnZB3RFG3e+LgixD6CIM5+fmqzl8Wy/jjDVCWAWQttBLRYCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Chu95TKq; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=hUVyuegKGKjifX+KHrAeS0f1AJ70KuNcYAbb1moN7QQvOA0OjqCEwAuJyqiOeZXkNclpO6LOmar1qmDwoNwnm50/gl72tJdQ+YJh0Fmp3gT2t+I1Fa776K68wwtSunihiNCVyw8DmB44P66KaiUiOF0H9jyB5eB4qVdqlyGIE5tILpZzowg8yRjTL2srxtUSskOafyCiLow1MnoBYhVVxcYtRn5kdNwuKEb/kBUNO7J7CggSUpKPgYAr4ku/jEW7/VpHXuW2tJdKzUXkmkY/DMaDGUHR7UDQWjuwzi1S2LXx80WKXc0Z2iobKN6I1eV5ONjuqQ2I3v0HO98AeevbOA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ARR+iKGr; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Chu95TKq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ARR+iKGr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bF8P061Gfz305n
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Jun 2025 06:07:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bF8P21JYgz307V
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Jun 2025 06:07:33 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E903D4ABE6;
-	Sat,  7 Jun 2025 20:07:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718C0C4CEF0;
+	by tor.source.kernel.org (Postfix) with ESMTP id 83C24614B3;
+	Sat,  7 Jun 2025 20:07:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0353C4CEF7;
 	Sat,  7 Jun 2025 20:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749326850;
-	bh=zY3fvpUbE+/4lThsCnGfT2NxFkXv0wD4oYk8K5EmW5s=;
+	s=k20201202; t=1749326851;
+	bh=1/FX0gdNnrILQ8ZGkWaTdKqNzEwmy3fTfx34tGwHQsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Chu95TKqPmDS98OhYY5Ac8BbqnX5apkd7PAsCrFcuiOOi6LR+p0TFPzxMjsPY/PBq
-	 p/1Jy8JRQ+XCj0wdcVjt+41xJP78UoKVawE5RR2SKK2RzkUBS0W0LJKy7KBBSJohLi
-	 Q6faTyM18RMmPfHyck7zmT9eKoGB1seXkb7EhfyczxWRMffU50h4KIAf034eG732E4
-	 34vYkNT6nw+3TipBEJ7+fzMGPWM2pbIgR5lSjvU4I5fW4tJV2csqi4G22VpKWVRauo
-	 yaHESgRIaOrVsNKdbICEnpBylxlg1NhiNCVLjeKF48QN4yRNzdUD/eZrqQphdsTwTY
-	 WpEFv90CsX4/g==
+	b=ARR+iKGrG+gAid+aDf6WQrQsQFpDxmsrmuoXyxau9e/Yt42BjtKcN1ST4zDXz2XsB
+	 sXWsh2italtMvrkfA7Aw9KhOC7ceGu5ulDfHXBs2S9VScYnFqNDmIFZTg3tzdkb9BX
+	 r6CuvNJgZfTcsPqiJZrueYI08M04Y03dPIUEqPvpkYNgxjTnu/RYNLewzPfrMi8pZB
+	 /hzgAURQQ8GA3rbrGzQl3BWr4uDcAzrxu84F3hAOiJM6xseNbi1f6BAE9z14ArgoOp
+	 34rkuBw8bcsaG7YiEiuDnbMwSYwe0c4Qmr9xWGuPJHTXIgH9klSsIbNJCCtzOkiDsv
+	 TzdI7DNVBiIkg==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: linux-crypto@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-crypto@vger.kernel.org,
 	Ard Biesheuvel <ardb@kernel.org>,
 	"Jason A . Donenfeld" <Jason@zx2c4.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH v2 05/12] lib/crc/loongarch: migrate loongarch-optimized CRC code into lib/crc/
-Date: Sat,  7 Jun 2025 13:04:47 -0700
-Message-ID: <20250607200454.73587-6-ebiggers@kernel.org>
+Subject: [PATCH v2 06/12] lib/crc/mips: migrate mips-optimized CRC code into lib/crc/
+Date: Sat,  7 Jun 2025 13:04:48 -0700
+Message-ID: <20250607200454.73587-7-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250607200454.73587-1-ebiggers@kernel.org>
 References: <20250607200454.73587-1-ebiggers@kernel.org>
@@ -85,90 +85,93 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-Move the loongarch-optimized CRC code from arch/loongarch/lib/crc* into
-its new location in lib/crc/loongarch/, and wire it up in the new way.
-This new way of organizing the CRC code eliminates the need to
-artificially split the code for each CRC variant into separate arch and
-generic modules, enabling better inlining and dead code elimination.
-For more details, see "lib/crc: prepare for arch-optimized code in
-subdirs of lib/crc/".
+Move the mips-optimized CRC code from arch/mips/lib/crc* into its new
+location in lib/crc/mips/, and wire it up in the new way.  This new way
+of organizing the CRC code eliminates the need to artificially split the
+code for each CRC variant into separate arch and generic modules,
+enabling better inlining and dead code elimination.  For more details,
+see "lib/crc: prepare for arch-optimized code in subdirs of lib/crc/".
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/loongarch/Kconfig                        |  1 -
- arch/loongarch/lib/Makefile                   |  2 --
+ arch/mips/Kconfig                             |  1 -
+ arch/mips/lib/Makefile                        |  2 --
  lib/crc/Kconfig                               |  1 +
- .../crc/loongarch/crc32.h                     | 32 ++++---------------
- 4 files changed, 7 insertions(+), 29 deletions(-)
- rename arch/loongarch/lib/crc32-loongarch.c => lib/crc/loongarch/crc32.h (71%)
+ .../lib/crc32-mips.c => lib/crc/mips/crc32.h  | 33 ++++---------------
+ 4 files changed, 7 insertions(+), 30 deletions(-)
+ rename arch/mips/lib/crc32-mips.c => lib/crc/mips/crc32.h (82%)
 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index 1a2cf012b8f2f..1b19893a6bdf0 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -13,11 +13,10 @@ config LOONGARCH
- 	select ARCH_ENABLE_MEMORY_HOTPLUG
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE
- 	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
- 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
- 	select ARCH_HAS_CPU_FINALIZE_INIT
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 1e48184ecf1ec..934eb961bd0dd 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -2022,11 +2022,10 @@ config CPU_MIPSR5
+ 	select MIPS_SPRAM
+ 
+ config CPU_MIPSR6
+ 	bool
+ 	default y if CPU_MIPS32_R6 || CPU_MIPS64_R6
 -	select ARCH_HAS_CRC32
- 	select ARCH_HAS_CURRENT_STACK_POINTER
- 	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_FAST_MULTIPLIER
- 	select ARCH_HAS_FORTIFY_SOURCE
- 	select ARCH_HAS_KCOV
-diff --git a/arch/loongarch/lib/Makefile b/arch/loongarch/lib/Makefile
-index fae77809048b8..ccea3bbd43531 100644
---- a/arch/loongarch/lib/Makefile
-+++ b/arch/loongarch/lib/Makefile
-@@ -9,7 +9,5 @@ lib-y	+= delay.o memset.o memcpy.o memmove.o \
- obj-$(CONFIG_ARCH_SUPPORTS_INT128) += tishift.o
+ 	select CPU_HAS_RIXI
+ 	select CPU_HAS_DIEI if !CPU_DIEI_BROKEN
+ 	select HAVE_ARCH_BITREVERSE
+ 	select MIPS_ASID_BITS_VARIABLE
+ 	select MIPS_SPRAM
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index 9d75845ef78e1..8c40ffb09c420 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -14,9 +14,7 @@ obj-$(CONFIG_PCI)	+= iomap-pci.o
+ lib-$(CONFIG_GENERIC_CSUM)	:= $(filter-out csum_partial.o, $(lib-y))
  
- obj-$(CONFIG_CPU_HAS_LSX) += xor_simd.o xor_simd_glue.o
+ obj-$(CONFIG_CPU_GENERIC_DUMP_TLB) += dump_tlb.o
+ obj-$(CONFIG_CPU_R3000)		+= r3k_dump_tlb.o
  
- obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
+-obj-$(CONFIG_CRC32_ARCH)	+= crc32-mips.o
 -
--obj-$(CONFIG_CRC32_ARCH) += crc32-loongarch.o
+ # libgcc-style stuff needed in the kernel
+ obj-y += bswapsi.o bswapdi.o multi3.o
 diff --git a/lib/crc/Kconfig b/lib/crc/Kconfig
-index 63edb487daff8..c1629f07768f9 100644
+index c1629f07768f9..3f534fbfba951 100644
 --- a/lib/crc/Kconfig
 +++ b/lib/crc/Kconfig
-@@ -66,10 +66,11 @@ config ARCH_HAS_CRC32
- config CRC32_ARCH
+@@ -67,10 +67,11 @@ config CRC32_ARCH
  	bool
  	depends on CRC32 && CRC_OPTIMIZATIONS
  	default y if ARM && KERNEL_MODE_NEON
  	default y if ARM64
-+	default y if LOONGARCH
+ 	default y if LOONGARCH
++	default y if MIPS && CPU_MIPSR6
  
  config CRC64
  	tristate
  	help
  	  The CRC64 library functions.  Select this if your module uses any of
-diff --git a/arch/loongarch/lib/crc32-loongarch.c b/lib/crc/loongarch/crc32.h
-similarity index 71%
-rename from arch/loongarch/lib/crc32-loongarch.c
-rename to lib/crc/loongarch/crc32.h
-index b37cd8537b459..6de5c96594afc 100644
---- a/arch/loongarch/lib/crc32-loongarch.c
-+++ b/lib/crc/loongarch/crc32.h
-@@ -8,12 +8,10 @@
+diff --git a/arch/mips/lib/crc32-mips.c b/lib/crc/mips/crc32.h
+similarity index 82%
+rename from arch/mips/lib/crc32-mips.c
+rename to lib/crc/mips/crc32.h
+index 45e4d2c9fbf54..11cb272c63a69 100644
+--- a/arch/mips/lib/crc32-mips.c
++++ b/lib/crc/mips/crc32.h
+@@ -7,14 +7,10 @@
+  * Copyright (C) 2014 Linaro Ltd <yazen.ghannam@linaro.org>
   * Copyright (C) 2018 MIPS Tech, LLC
-  * Copyright (C) 2020-2023 Loongson Technology Corporation Limited
   */
  
- #include <asm/cpu-features.h>
+ #include <linux/cpufeature.h>
 -#include <linux/crc32.h>
+-#include <linux/init.h>
+-#include <linux/kernel.h>
 -#include <linux/module.h>
+ #include <asm/mipsregs.h>
  #include <linux/unaligned.h>
  
- #define _CRC32(crc, value, size, type)			\
- do {							\
- 	__asm__ __volatile__(				\
-@@ -26,11 +24,11 @@ do {							\
- #define CRC32(crc, value, size)		_CRC32(crc, value, size, crc)
- #define CRC32C(crc, value, size)	_CRC32(crc, value, size, crcc)
+ #ifndef TOOLCHAIN_SUPPORTS_CRC
+ #define _ASM_SET_CRC(OP, SZ, TYPE)					  \
+@@ -62,11 +58,11 @@ do {							\
+ #define CRC32C(crc, value, size) \
+ 	_CRC32(crc, value, size, crc32c)
  
  static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_crc32);
  
@@ -178,8 +181,8 @@ index b37cd8537b459..6de5c96594afc 100644
  	if (!static_branch_likely(&have_crc32))
  		return crc32_le_base(crc, p, len);
  
- 	while (len >= sizeof(u64)) {
-@@ -61,13 +59,12 @@ u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
+ 	if (IS_ENABLED(CONFIG_64BIT)) {
+@@ -104,13 +100,12 @@ u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
  		CRC32(crc, value, b);
  	}
  
@@ -193,11 +196,11 @@ index b37cd8537b459..6de5c96594afc 100644
  	if (!static_branch_likely(&have_crc32))
  		return crc32c_base(crc, p, len);
  
- 	while (len >= sizeof(u64)) {
-@@ -98,38 +95,21 @@ u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
+ 	if (IS_ENABLED(CONFIG_64BIT)) {
+@@ -147,37 +142,21 @@ u32 crc32c_arch(u32 crc, const u8 *p, size_t len)
+ 
  		CRC32C(crc, value, b);
  	}
- 
  	return crc;
  }
 -EXPORT_SYMBOL(crc32c_arch);
@@ -209,20 +212,20 @@ index b37cd8537b459..6de5c96594afc 100644
 -EXPORT_SYMBOL(crc32_be_arch);
 +#define crc32_be_arch crc32_be_base /* not implemented on this arch */
  
--static int __init crc32_loongarch_init(void)
+-static int __init crc32_mips_init(void)
 +#define crc32_mod_init_arch crc32_mod_init_arch
 +static inline void crc32_mod_init_arch(void)
  {
- 	if (cpu_has_crc32)
+ 	if (cpu_have_feature(cpu_feature(MIPS_CRC32)))
  		static_branch_enable(&have_crc32);
 -	return 0;
  }
--subsys_initcall(crc32_loongarch_init);
+-subsys_initcall(crc32_mips_init);
  
--static void __exit crc32_loongarch_exit(void)
+-static void __exit crc32_mips_exit(void)
 -{
 -}
--module_exit(crc32_loongarch_exit);
+-module_exit(crc32_mips_exit);
 -
 -u32 crc32_optimizations(void)
 +static inline u32 crc32_optimizations_arch(void)
@@ -233,9 +236,8 @@ index b37cd8537b459..6de5c96594afc 100644
  }
 -EXPORT_SYMBOL(crc32_optimizations);
 -
--MODULE_AUTHOR("Min Zhou <zhoumin@loongson.cn>");
--MODULE_AUTHOR("Huacai Chen <chenhuacai@loongson.cn>");
--MODULE_DESCRIPTION("CRC32 and CRC32C using LoongArch crc* instructions");
+-MODULE_AUTHOR("Marcin Nowakowski <marcin.nowakowski@mips.com");
+-MODULE_DESCRIPTION("CRC32 and CRC32C using optional MIPS instructions");
 -MODULE_LICENSE("GPL v2");
 -- 
 2.49.0
