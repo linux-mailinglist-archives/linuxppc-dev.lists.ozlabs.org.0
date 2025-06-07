@@ -1,60 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-9202-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9203-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F522AD1011
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  7 Jun 2025 23:29:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C116AD107A
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  8 Jun 2025 01:47:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bFBC61g7Tz2yN1;
-	Sun,  8 Jun 2025 07:29:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bFFGV362Rz2yGQ;
+	Sun,  8 Jun 2025 09:47:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749331746;
-	cv=none; b=eqP7aB9cFOZj69kxatKW5SQ4yWh6l0tQos2+988x5xrN5Jz0j7Hd5axrPmZAbTSxwdZRQX5FrLf8pqmz0Uh+z/C4rFc+lGzjSAqYktFhT1rUKEc4bnl7gINxX6hHPqQBvytwhMx7n1O/D2tdGEOq8ZWSvCTYD5DTtP0/7D7dwULk6d+2weDEo9qAM+Q7R8GjcW9GlkXjg0L6ZLL9orw2CqTAnlFKzhEcLqszERNhhnFraQx5UvRwauMmeGuwHC9c+hVlPZAIda6YKNXBYuHflCY2JzZSoO5a+LnQJGRyr/iB1ti9y3++yNT4RojxOEvj6OFFbZzqUg4eiyxzeDTfBw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749340034;
+	cv=none; b=aUhhu8Je6vlH+yIy0olyPHnqKe0MgVVAiZawZVSCCuOiur793xasnj2WYqdx/QESk1IpQGOEZt5s6OewhujXLfs2Z0Sz5+2Nc9K2LztHTcuMhSgDG/+qQhbG1sraeQ9znxsE6dXYZNDDkN2QvgDzzT7gazWWpNn+cLWF0IdR3TJfTcBAhgIc8yQqq/wh4ND/siux1WHupSRJwhC9cFRpUPje+2t9ELIWCr2FG6IfXs0iaIxwwwJ7TM4HIa5IiaFLhwcHw5vJXsERwyO9K9IQR+mSLvddDZlfB6YlG8h6KhDJIAfpoQ6XYz4SOvQHIgV4d2WoIP0q6f7NSEnD+rnSRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749331746; c=relaxed/relaxed;
-	bh=KkWeWZJ7OaUkC1X3RA6ZmwTpiZVwf7Rem3pqOW9gu1A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mgftbgqDm2WMXa/q0VUvmt0NHODVd+NyXeWulIHTI/dVgLCSFdM9sN4KJMhIH6LQhn+JaS/GGU+Dfj+cdorIGP4p5mVzGsynq6pBVy/w3Se0An9gU0LHnNKdw5SwNEQ4A7mpS5ssU6oGN+yAWkx5edaIo+bEA5ImEjOgTKAp3OeQnXRBihwzEyOvxYMaYgn3RPKoYFu0yC/E+DZzicCoiJngwrt9hm7ZSpSIJwxBgZc3aVwSQK3VMDLL0p7ZX2MRwIbo1BkbQ6w9WtJMncg88NN3QORlDVpej75/3x5JviurguJJMyHLgwL5S7Tn1DzvqfBypDxw+Q04KKgeoofqSw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mY86qNwL; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1749340034; c=relaxed/relaxed;
+	bh=9BLd3zVhm1uyr2zWfOpGUqAHdfaRE3TGpoHRN6aaMSk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IUdIZEBMDz/sIYCC4zRwfvRj0ZQ8AHTuFeEzvFsDKR/Ff/BOih6YlxI91bnZ2f3DCf7QGafD64jwvQpfWl/zDClXlEnTvjLI9KY7kiLPge6fI/G+25IeBzGBgl6Sq3Gm3aWHMVUIxxPfKQttJ/Ob6VGvSfxbOman72++0TH1oHrlDr47PrTMWfV7YZCfNZk5XnXRVs31GU2PTzjPzTTRFYZetjlp/SOOy5IQN7bry4D2Vd/T9u6cINYm/hUR7MUsuYekYXu5x6l2OwaVk0D+UP/TyjbCThelVGNuXUFvteonidoRLCA+nOlvB1Yko32ehAvmrfmn5BH3i6xALQEHzw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=jsPgU/cc; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=cnmf=yw=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mY86qNwL;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=jsPgU/cc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=srs0=cnmf=yw=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bFBC52hb4z2xsM
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Jun 2025 07:29:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bFFGS1Wvpz2xsM
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  8 Jun 2025 09:47:12 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 96087A4145E;
-	Sat,  7 Jun 2025 21:29:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540EDC4CEF0;
-	Sat,  7 Jun 2025 21:28:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749331742;
-	bh=XHrP+0GPTa7TRd2JvYw/E9otF7QNFDMpfbQMlQ7dElg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mY86qNwLX6I8JsCEklNFAVUsALMNhrv3Un7nVJZOgfLG8Vjap7lU4Dh33SKVCpxtT
-	 /s/YxErxfMieOAAzAKULW93ulhJ7UhvK08BaLkSUQ9kW4mWPPLX7a+1rpaUcFKZw5H
-	 SXUbrHbaVghMnhV0JWmCLG2mUckX++JyqQyBL1QkY+rzjR9HGFr7IknJak+oQtfkIf
-	 mfmlSEp3a/AR1em62nYh4xOQrR/CKWt4nCXzh23R8mNmGDt+YPzeJfnc4uSyBiSyDH
-	 Jz+xzEkKXFvccncEX6UV1j4DVRSc/OPiZgC2EX42LbSMsqk0JTKrwS0+vtrG24Gy6h
-	 TMhT68ouW3ueQ==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: soc: fsl,ls1028a-reset: Drop extra "/" in $id
-Date: Sat,  7 Jun 2025 16:28:13 -0500
-Message-ID: <20250607212813.747203-1-robh@kernel.org>
-X-Mailer: git-send-email 2.47.2
+	by nyc.source.kernel.org (Postfix) with ESMTP id 333DAA40311;
+	Sat,  7 Jun 2025 23:47:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE6DC4CEE4;
+	Sat,  7 Jun 2025 23:47:07 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="jsPgU/cc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1749340025;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9BLd3zVhm1uyr2zWfOpGUqAHdfaRE3TGpoHRN6aaMSk=;
+	b=jsPgU/ccygnXS60vh3VCJ8IeDnGtsomv+dciNUeunJ0SO8LqmCcTqPcJBkB2QFrLru1ll1
+	E9OF1lkNEqMRShrw2za9BAoJsJQKmF9rvzmtd3v/rLI1EduGNSPRtry+Kyl+tncxIkS+aK
+	UrU1VhYkP4pcQtnNoKmPvrZIA/DIb6Q=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 669734c3 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Sat, 7 Jun 2025 23:47:04 +0000 (UTC)
+Date: Sat, 7 Jun 2025 17:47:02 -0600
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, x86@kernel.org,
+	linux-arch@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v2 00/12] lib/crc: improve how arch-optimized code is
+ integrated
+Message-ID: <aETPdvg8qXv18MDu@zx2c4.com>
+References: <20250607200454.73587-1-ebiggers@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,33 +74,28 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250607200454.73587-1-ebiggers@kernel.org>
+X-Spam-Status: No, score=-2.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The $id value has a double "//". Drop it.
+On Sat, Jun 07, 2025 at 01:04:42PM -0700, Eric Biggers wrote:
+> Having arch-specific code outside arch/ was somewhat controversial when
+> Zinc proposed it back in 2018.  But I don't think the concerns are
+> warranted.  It's better from a technical perspective, as it enables the
+> improvements mentioned above.  This model is already successfully used
+> in other places in the kernel such as lib/raid6/.  The community of each
+> architecture still remains free to work on the code, even if it's not in
+> arch/.  At the time there was also a desire to put the library code in
+> the same files as the old-school crypto API, but that was a mistake; now
+> that the library is separate, that's no longer a constraint either.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
- .../devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml          | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I can't express how happy I am to see this revived. It's clearly the
+right way forward and makes it a lot simpler for us to dispatch to
+various arch implementations and also is organizationally simpler.
 
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
-index 234089b5954d..b43df10c5ef4 100644
---- a/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
- %YAML 1.2
- ---
--$id: http://devicetree.org/schemas//soc/fsl/fsl,ls1028a-reset.yaml#
-+$id: http://devicetree.org/schemas/soc/fsl/fsl,ls1028a-reset.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
- 
- title: Freescale Layerscape Reset Registers Module
--- 
-2.47.2
-
+Jason
 
