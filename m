@@ -1,63 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-9206-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9207-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21E3AD15FB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jun 2025 01:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C947CAD15FF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jun 2025 01:48:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bFsD03spJz2yZS;
-	Mon,  9 Jun 2025 09:47:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bFsFk4mj6z2ym2;
+	Mon,  9 Jun 2025 09:48:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749426432;
-	cv=none; b=Wr2UYh0eYracIW/zIy9fMJoyIILa/i4zbLDf27jH/Yit85NMjjwW/7O4sabAcFUz97hiEVc+0KXa0zaCwWptfiaiXkIPQg4bVBJ/37C2pLQejZic8z/pnnYMFio39BiX/mjHW8F0IMuz4NoMM2nbTVa9iRHRcTngrs+j0WmR9CnsaY7BwvjCdxgMmYSd5wLFP+R5xCq9l4o5LY/9wAWQ6l3pffN8qBGac+41fZzEEpwk2yFs5qSA7qzoD5oxli1Ucw37wSswck2R+PS4mRRcdAVjHuTdzakh1dv7KRLPVKvnMZevSdXo/xPq0LW0Qt6pjjRgYZyUzEluakOG06EEmA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749426522;
+	cv=none; b=QnPPxm0GQdpF9xT+E3HtQxUuHsrw5owcA3/J4x5AJ3ZXeDC1NqlLhMtFuIgIR8ZGqN/ebkzmcwGZEE2apnhAbuHdR9Sr+CXerU9Uwfnvv06RESBtE2v85R80usmy5ga3Fm0XvlsCt8ZWn0Ktu8Vdn8g72Pl7C7v5ydj5M0742kbaKzwYdTqCVq1y2GTy6jKYdknz9lQMzrkoPvWs2v2uxW0UtraILxdv0I8JIjhoiACLI2rR9V2hgs5zqqeCZ1xnb+dVyoajQUQ2f/pT/gQ+FQh0oRXowg0qfcuFTilumTrPGoxo4GG+5VIDC1mAl+JneottUiFwO8oinZ/aKYfrHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749426432; c=relaxed/relaxed;
-	bh=koeyGqy9geqWWGboYYe/s1BFD6/F+f/laW8jqXjMlgA=;
+	t=1749426522; c=relaxed/relaxed;
+	bh=bfw4JisrcSI7hhJmSGYdFsymCwhoyEU8r4VHLmRjND4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fvdq1IbuXmtXYejXjEfqp+hDVl3AJ5kYr29QOKjNwFHCm/8y8eZt1Zkv4LTT5jYSDlIlXfrDbWJx/mzRprcEAqclKmjT9/Y2MX+9xK/VT1V5rUcpl0HOV5a1iL2EV3yIt0VzBuYSwnuT2CHpB/EMcpf0PMJQQlRWAWFSLVdQs1zobiVGLQVnI1hzGmEqWx0oGAGbSflK8z6sj22v6xTklPL9NIJOWtN/HgVhB0p5dBd778Jm9HlUpOVJkjbhXOexuuI0ACaQZk1GWHG1DTJwDH/lgd/Zoxx0zh3slEmCwg55nzwyTGo50OVjzunFFesgQDLw/uhvhc//8Py8M49itA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EPyWCyBV; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=jsHaqxLmGhBGiuduBLjPZrJyo2/2wXW+hXurKRcGYYz3p3EbKv2BZl6yDpZRogv7d0Xkk9RO7H9i3ZIT6sPQ1IhRBWU3tnwAPX4u75eWCsytvm5fwpyEfItDlHfprxA199vSGYik+g5CTDxGKfnckfTMucaHexllcTT6wXNWoekf+jvLnplYj51x3TVgM9uzjIXNaSYzN63JLTcv86WGHnFPtrDlz+xKU6JbnDneer9oVcsGMnLeOUOG2jEv7ehPpizA73lvJZiYBHOq1493JFZc+ioZiZjwZ531nJTFyKt8fVjy0CuGQ98USrhgKCF1AFxNSlRsqGwe5hGq2em7vw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JOEtAeuZ; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EPyWCyBV;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JOEtAeuZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bFsCz2dWGz2xGv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jun 2025 09:47:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bFsFk0sjFz2yft
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jun 2025 09:48:42 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 5C5A0A4F6B4;
-	Sun,  8 Jun 2025 23:47:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8491AC4CEEE;
-	Sun,  8 Jun 2025 23:47:07 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 183605C5486;
+	Sun,  8 Jun 2025 23:46:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECB5C4CEEE;
+	Sun,  8 Jun 2025 23:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749426428;
-	bh=He/qqF7BxEbAQ+KhVIwOAYIjY3DpawZEJHr+Xte/K6Q=;
+	s=k20201202; t=1749426519;
+	bh=PNJP4F4SM5CKWVi44F6XN3CvXe0mnkBMQtyo2ioWp6k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EPyWCyBVPXpu72efvExgg8gLAw9penLyFzlo1qRsspsqyd4JZoFxW7hHQvlnEtIIa
-	 1BxGaS04c9RuFEve+dtCt1LEb2SSISR2VgjLm0WYXRDHNt8nXsOorMQAj8PjQpmAB0
-	 F5rfSxl/09kNUJny72FkrWqXDDqrWHkySwoyI3r23w9s9UZxhxYgVcxmIH21znQLYr
-	 RAY4VaCbmTRnWUl2bEewz1enz7kzJYX9fFC9W66bUVBifTQ9wgF652vwOiRoE9mHCR
-	 SyixTBnJQbaXXeJQKz8gWyl2YRqW1kNgBMYmIhv1mCruOadbFAPFkGtBFHhXGzcMB6
-	 +EWaHxDKp/9YA==
-Date: Sun, 8 Jun 2025 16:46:46 -0700
+	b=JOEtAeuZjpWvk9z46QbzwFTvSH+ljw/hQKIzEhZJx7YF2EwgrcI3+lI1VVKscms0d
+	 m3qcoPnMMDVh4lKObwmfsWuGFAfWfD9VrvL51JeF8gEdf9j5e89zlEOEgaCwxiok5N
+	 /aXy/hTwK0fEa7Z/G4j2/UPMcbFCWgXgxCUhbLoCrXwDNwOBWfrQbnnk/HZXwh/U2/
+	 WnpIAIMFGu/oqqi+ROzvz89sXkm5O6vGwJ/PQ3JdxSPps11zhBrcyuDg/46eion+ad
+	 2/v4rAxctCfEtqWu0G117hIgv+MXBMm76WuvxTusmww2Scut4P917GLHnfL8cwD0i5
+	 36P1VSkTzVNzw==
+Date: Sun, 8 Jun 2025 16:48:17 -0700
 From: Eric Biggers <ebiggers@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-	x86@kernel.org, linux-arch@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld " <Jason@zx2c4.com>,
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, x86@kernel.org,
+	linux-arch@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 00/13] lib/crc: improve how arch-optimized code is
+Subject: Re: [PATCH v2 00/12] lib/crc: improve how arch-optimized code is
  integrated
-Message-ID: <20250608234646.GE1259@sol>
-References: <20250601224441.778374-1-ebiggers@kernel.org>
+Message-ID: <20250608234817.GG1259@sol>
+References: <20250607200454.73587-1-ebiggers@kernel.org>
+ <aETPdvg8qXv18MDu@zx2c4.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,56 +73,31 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250601224441.778374-1-ebiggers@kernel.org>
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+In-Reply-To: <aETPdvg8qXv18MDu@zx2c4.com>
+X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, Jun 01, 2025 at 03:44:28PM -0700, Eric Biggers wrote:
-> This series improves how lib/crc supports arch-optimized code.  First,
-> instead of the arch-optimized CRC code being in arch/$(SRCARCH)/lib/, it
-> will now be in lib/crc/$(SRCARCH)/.  Second, the API functions (e.g.
-> crc32c()), arch-optimized functions (e.g. crc32c_arch()), and generic
-> functions (e.g. crc32c_base()) will now be part of a single module for
-> each CRC type, allowing better inlining and dead code elimination.  The
-> second change is made possible by the first.
+On Sat, Jun 07, 2025 at 05:47:02PM -0600, Jason A. Donenfeld wrote:
+> On Sat, Jun 07, 2025 at 01:04:42PM -0700, Eric Biggers wrote:
+> > Having arch-specific code outside arch/ was somewhat controversial when
+> > Zinc proposed it back in 2018.  But I don't think the concerns are
+> > warranted.  It's better from a technical perspective, as it enables the
+> > improvements mentioned above.  This model is already successfully used
+> > in other places in the kernel such as lib/raid6/.  The community of each
+> > architecture still remains free to work on the code, even if it's not in
+> > arch/.  At the time there was also a desire to put the library code in
+> > the same files as the old-school crypto API, but that was a mistake; now
+> > that the library is separate, that's no longer a constraint either.
 > 
-> As an example, consider CONFIG_CRC32=m on x86.  We'll now have just
-> crc32.ko instead of both crc32-x86.ko and crc32.ko.  The two modules
-> were already coupled together and always both got loaded together via
-> direct symbol dependency, so the separation provided no benefit.
+> I can't express how happy I am to see this revived. It's clearly the
+> right way forward and makes it a lot simpler for us to dispatch to
+> various arch implementations and also is organizationally simpler.
 > 
-> Note: later I'd like to apply the same design to lib/crypto/ too, where
-> often the API functions are out-of-line so this will work even better.
-> In those cases, for each algorithm we currently have 3 modules all
-> coupled together, e.g. libsha256.ko, libsha256-generic.ko, and
-> sha256-x86.ko.  We should have just one, inline things properly, and
-> rely on the compiler's dead code elimination to decide the inclusion of
-> the generic code instead of manually setting it via kconfig.
-> 
-> Having arch-specific code outside arch/ was somewhat controversial when
-> Zinc proposed it back in 2018.  But I don't think the concerns are
-> warranted.  It's better from a technical perspective, as it enables the
-> improvements mentioned above.  This model is already successfully used
-> in other places in the kernel such as lib/raid6/.  The community of each
-> architecture still remains free to work on the code, even if it's not in
-> arch/.  At the time there was also a desire to put the library code in
-> the same files as the old-school crypto API, but that was a mistake; now
-> that the library is separate, that's no longer a constraint either.
-> 
-> Patches 1 and 2, which I previously sent out by themselves, are
-> prerequisites because they eliminate the need for the CRC32 library API
-> to expose the generic functions.
-> 
-> Eric Biggers (13):
->   crypto/crc32: register only one shash_alg
->   crypto/crc32c: register only one shash_alg
+> Jason
 
-Applied the first 2 patches to
-https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git/log/?h=crc-next
-
-The remaining patches have new versions in the v2 series.
+Thanks!  Can I turn that into an Acked-by?
 
 - Eric
 
