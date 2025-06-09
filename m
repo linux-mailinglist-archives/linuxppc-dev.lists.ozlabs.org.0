@@ -1,103 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-9218-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16702AD199C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jun 2025 10:11:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A89AD19A9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jun 2025 10:15:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bG4PF3KXLz2xgX;
-	Mon,  9 Jun 2025 18:10:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bG4Vk4984z2y2B;
+	Mon,  9 Jun 2025 18:15:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749456657;
-	cv=none; b=D91Ef5KzUXdi+pgkFnjHlIuDzQs0PCkyCXqhKbtygjBqER2eHHUwU1Ht6BKtlUabKcP83+H17qj46jgGZ7X2qJ83dtCnQQOkKn/Q4MA8/Jl8UuSXcQQxmGP1LydHhaRgFpQ1RHNDOUY0RADDj6Tbx7kU9I2van4Zvpp1j351ri0LY4McDFx3mXHOtDq/RFM3fOd6CNO0fON4dJqKujMZ+OfcHgO/BbjLpJq4twxZCq4IPC6SrkXs/7yJKsmlcM0F9XQr+Kr9fb/IppbY/AuFjEhMy4b0vBsb9JUMLT/PhbsoFMoM6R6qTKBn+GF7hM3GTbKyL4mOSfvGDd+azjXExA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::f29"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749456942;
+	cv=none; b=dOy1rrI1qpxOBzeFSf7EPsHzldR34aV9cPr2F/026aIbr33LnWGlwLVDI3ZOQUmMA+Yko2r5nhjI2cTcd38TkCiwfcFqO3dqGd7HzU21KhsbH9nUvHawnAsqqtgEMK85t1AdMGrMx4a5DX8Z4JuXeQMqEOePfp52QZmXcEolAajHJmH/c2EPoR66SZC96Y0XwEBAvqwv+0dwicQe5ZkIx5Y7fjpXd5vKnc5F9asViF2kgpNo4qIeHYD556E5qAUoHQeN2HH4NWKQDzsQSqeVREo6wTm28pQRYQ0lmQ8f3gs8to2lHIh8EpWIZ/+dyF48tFc3Z4f0KiMlhnjoU8SuZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749456657; c=relaxed/relaxed;
-	bh=KFsePeMY4LZ8aLc03SJlB+r//v0HN7fAgNJknJYZjtI=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xt1iUcHXEbP3zobvErxnd91RD9VgNQXMKolGHWqa0dBCJMOkwkKaTooIzHHmOMqf1cdDVBnZ5yupioLt21NU53/JrM6blSyyKvHaGJhp4R8hlufK5SCmNg4sm4LIauAsuMJdx9fe+Ne7WHYSA9ElC0DIEvKsPMQc8kH37TV8LFtMFQ2LNTc8HjXbVWQnoEltdntieijkblicW1nxtXro+ugBefRj+WBbLXhjpzBg9OE+Gz1+usgl14uNA6RIi3WNf2tubwzaPBjQKNrIn4Bngx2bQJbQ/fs813uIN5EYjmmkXGpK6Qrsumzho2PIssHV50I5vNjxEhArM0ydzndRdw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=j9R54A2B; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rtdB3O4B; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=dnC47jom; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=bKunwmY1; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	t=1749456942; c=relaxed/relaxed;
+	bh=avUZtz3QyLzrtWeLJ2NgcAc7qvPmPgbfgTpeZiYZBXg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=on4ZKuNgaaFALySw1eW/fK3A1fmo+Gx++ujMHLv1eegTK5H0IAIdGjOXa68loH+SlS4icfScnNFGpAQEOrCgoT3QV8zviAy4AFB0sQmRkTz0WhqRp2B7M9NSSYrntTvrI9/193KNLAJsotfVJPidHcy82skuAW5J/kcP/7xo7+vlYRehYh0vmzMzNYH6dW2A64fXcGSFdLU/eRKuZMp6hgdWShs5oJ34WK9sW/T6fTUoseF6w5ZR4jn34oNgoV12H/AibzKRk0SkGa3xMLvx75l5HvXjskfCX+QxdXy3GfxQG4HsSH9FAAcuxHlXBLMrNYExb+mRswti9aZsWvSCzQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=F7kcuAzZ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::f29; helo=mail-qv1-xf29.google.com; envelope-from=julian.calaby@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=j9R54A2B;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=rtdB3O4B;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=dnC47jom;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=bKunwmY1;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=F7kcuAzZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1122 seconds by postgrey-1.37 at boromir; Mon, 09 Jun 2025 18:10:56 AEST
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f29; helo=mail-qv1-xf29.google.com; envelope-from=julian.calaby@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bG4PD2Zb5z2xCd
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jun 2025 18:10:55 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D75DE21190;
-	Mon,  9 Jun 2025 08:10:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749456653; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KFsePeMY4LZ8aLc03SJlB+r//v0HN7fAgNJknJYZjtI=;
-	b=j9R54A2BILyVWwwe+Pqgc26tkXOIq6UpALqSUQTlnKHQWHHjDJ5wHcGOjJDYmtvYdkPH9g
-	P+vBdZjzC48tq8pd5qsq7ydgsRkynSdXCTh/D37ds+PPuUK34Ng9eXUGX+mEYJ2/CXCvLR
-	BHCWy9+RXr1nNdCY6k+tZ4rJPOo1sLw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749456653;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KFsePeMY4LZ8aLc03SJlB+r//v0HN7fAgNJknJYZjtI=;
-	b=rtdB3O4BBiVEkscPZQtehHYEvmGsYxlrWj63GSNX5WbLe90Iw6DJID2tSeCu+BBJUxFaJG
-	f/W0XWYDM5ohw3Cw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=dnC47jom;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bKunwmY1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749456652; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KFsePeMY4LZ8aLc03SJlB+r//v0HN7fAgNJknJYZjtI=;
-	b=dnC47jom8Tw/2AEq2ZY68u2sKfQmYKQcFroIY0UZmzz1xS/ruaV10OlyyzZ41gQplAPSSw
-	y0vH2i0f/P4DkqdqlrflTWZa9tlUUSZRBTiK5kMDXLnnejrfHNDE+iXJ13frNhzNfs9FvZ
-	ESw1IPwjpV1XvuY0NgHtg30VlAQT8Y0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749456652;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KFsePeMY4LZ8aLc03SJlB+r//v0HN7fAgNJknJYZjtI=;
-	b=bKunwmY138SepDa30LNjP0NtgWGRS42JEzs9T2ZduzSMwVjVOcdyRMoQ/b97OiskY3cS3B
-	PzpDyl7QdrNcupBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9AEB113A1D;
-	Mon,  9 Jun 2025 08:10:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id or0xJAyXRmjjBAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 09 Jun 2025 08:10:52 +0000
-Date: Mon, 09 Jun 2025 10:10:52 +0200
-Message-ID: <87zfeh72sz.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	Herve Codina <herve.codina@bootlin.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v2] ALSA: pcm: Convert multiple {get/put}_user to user_access_begin/user_access_end()
-In-Reply-To: <d2609397eafc2b55ec1f44a3f30ccec00e0c7f6e.1749455639.git.christophe.leroy@csgroup.eu>
-References: <d2609397eafc2b55ec1f44a3f30ccec00e0c7f6e.1749455639.git.christophe.leroy@csgroup.eu>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bG4Vj22Nsz2xlL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Jun 2025 18:15:40 +1000 (AEST)
+Received: by mail-qv1-xf29.google.com with SMTP id 6a1803df08f44-6fafaa60889so26718816d6.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Jun 2025 01:15:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1749456937; x=1750061737; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=avUZtz3QyLzrtWeLJ2NgcAc7qvPmPgbfgTpeZiYZBXg=;
+        b=F7kcuAzZUT9H+MWtTAWkB2kzpUxVqJeKi4JvFoFfMWUkf5uhRj59pz5nAjmQfdgFYk
+         MLgTd+TKhk1oKPfem7m9ttV2MrtEW8xNhYvZ+tOrzVW2SsP2sNhCEWDTRuVtLu1bn585
+         KwfNDVbD6vWV6espFH+r3zMp3V7YttsIlDrQH9AHVXn3TLY5JRiZCVpF4tKOqrllCYFo
+         TlBmxyhypREcFYyUPaEuvpoicqMIfwh5CcNiGjEwF6r0Khu1Sm3PPQbZq/HeWeG3zpir
+         b7QxKuOav+JKS/FCy6Y591O6fHR4I0vYb9HnOjiud6E/Er/oukTHgZChG4WKezCqVFc5
+         wtIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749456937; x=1750061737;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=avUZtz3QyLzrtWeLJ2NgcAc7qvPmPgbfgTpeZiYZBXg=;
+        b=gL6r9FOr44GvgpHCUn0D0WVYScTO9+sMJMdIOsF/IL2n90a+W0RxGWNPjxCJs0AJkR
+         uU5Iht1wBECQMFk3Ur7rfqPA+ilNbsGnZEwordgGG6YYkstxNIabOLZAWU53IPrJEbnk
+         LN0BN8N1WYUvvxQNttVd/P7L/DMcPW84CMlYJfionQgKPUI+byzU8oXPp0Y/w7qSPIkR
+         ov5sfc28c3TAcFuZxq9KhM/hxdgzIMnkWZgWr/nxlhcJ0SXfo+rq4wh4az6RUmWXXw3F
+         yMA183D9s4FrEvT3wHR22i38JWk7sW1WvJ7SxrcHk9R401YG6dWPBK7wVxUHRNms0X/4
+         duSA==
+X-Forwarded-Encrypted: i=1; AJvYcCUGRXQSWtHtShKAX64C2w0tcbU7HU9pC69ADX2tTnfKRNFij5QcqxuXAQ8KCun++jUF9IWLC3ihBTnYxNY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwObKFYhyq+ZiGuD3vc+z4HCY8zVyl8nF0v7mOlnMLSZW0yKNQV
+	tyeh7gpD1W1MqpNpZ+yQXptiTCc0fJ2bDIAOufDhutiTnJTH2cHNkhprnniyx6C1sVHN/dVw4R7
+	lHs8EZZqJOvmWw0fW2IJwRV3o+RvtFoQ=
+X-Gm-Gg: ASbGnctIqQ9b7eqwh34dqapHqs/gJgzlWkxtDGZIQ3/+HlzQkkmE++/1karop0Gb1aJ
+	5gVaJpIFYJx0ulPo/0acVEZj2n7tyVchoFmS4N4IPEuqFBJYyI7oAPBkl4ulONNSmkhRcgCGkzl
+	YyLGDaHDlosZUQ54ddvnSUYMnOlHCbY39X
+X-Google-Smtp-Source: AGHT+IH9me4CEdVFtIOCuIg1XAKf5VF3TkyjvnvcV85fkEmF6RBw78F2p/ZOsZjFija3GtR5SXP0ijToaYQxk0VMGhA=
+X-Received: by 2002:ad4:5f09:0:b0:6fa:c81a:6204 with SMTP id
+ 6a1803df08f44-6fb08f50942mr228433326d6.10.1749456937558; Mon, 09 Jun 2025
+ 01:15:37 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -110,114 +77,87 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: D75DE21190
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Spam-Score: -3.51
-X-Spam-Level: 
+MIME-Version: 1.0
+References: <20250607200454.73587-1-ebiggers@kernel.org>
+In-Reply-To: <20250607200454.73587-1-ebiggers@kernel.org>
+From: Julian Calaby <julian.calaby@gmail.com>
+Date: Mon, 9 Jun 2025 18:15:24 +1000
+X-Gm-Features: AX0GCFtpUUxU8yEaZey6YSh4XuBhQlOITIBZOiB21tfxDGQbnIThjp-0HFxjxHQ
+Message-ID: <CAGRGNgV_4X3O-qo3XFGexi9_JqJXK9Mf82=p8CQ4BoD3o-Hypw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/12] lib/crc: improve how arch-optimized code is integrated
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	sparclinux@vger.kernel.org, x86@kernel.org, linux-arch@vger.kernel.org, 
+	Ard Biesheuvel <ardb@kernel.org>, "Jason A . Donenfeld" <Jason@zx2c4.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 09 Jun 2025 10:00:38 +0200,
-Christophe Leroy wrote:
-> 
-> With user access protection (Called SMAP on x86 or KUAP on powerpc)
-> each and every call to get_user() or put_user() performs heavy
-> operations to unlock and lock kernel access to userspace.
-> 
-> To avoid that, perform user accesses by blocks using
-> user_access_begin/user_access_end() and unsafe_get_user()/
-> unsafe_put_user() and alike.
-> 
-> As an exemple, before the patch the 9 calls to put_user() at the
-> end of snd_pcm_ioctl_sync_ptr_compat() imply the following set of
-> instructions about 9 times (access_ok - enable user - write - disable
-> user):
->     0.00 :   c057f858:       3d 20 7f ff     lis     r9,32767
->     0.29 :   c057f85c:       39 5e 00 14     addi    r10,r30,20
->     0.77 :   c057f860:       61 29 ff fc     ori     r9,r9,65532
->     0.32 :   c057f864:       7c 0a 48 40     cmplw   r10,r9
->     0.36 :   c057f868:       41 a1 fb 58     bgt     c057f3c0 <snd_pcm_ioctl+0xbb0>
->     0.30 :   c057f86c:       3d 20 dc 00     lis     r9,-9216
->     1.95 :   c057f870:       7d 3a c3 a6     mtspr   794,r9
->     0.33 :   c057f874:       92 8a 00 00     stw     r20,0(r10)
->     0.27 :   c057f878:       3d 20 de 00     lis     r9,-8704
->     0.28 :   c057f87c:       7d 3a c3 a6     mtspr   794,r9
-> ...
-> 
-> A perf profile shows that in total the 9 put_user() represent 36% of
-> the time spent in snd_pcm_ioctl() and about 80 instructions.
-> 
-> With this patch everything is done in 13 instructions and represent
-> only 15% of the time spent in snd_pcm_ioctl():
-> 
->     0.57 :   c057f5dc:       3d 20 dc 00     lis     r9,-9216
->     0.98 :   c057f5e0:       7d 3a c3 a6     mtspr   794,r9
->     0.16 :   c057f5e4:       92 7f 00 04     stw     r19,4(r31)
->     0.63 :   c057f5e8:       93 df 00 0c     stw     r30,12(r31)
->     0.16 :   c057f5ec:       93 9f 00 10     stw     r28,16(r31)
->     4.95 :   c057f5f0:       92 9f 00 14     stw     r20,20(r31)
->     0.19 :   c057f5f4:       92 5f 00 18     stw     r18,24(r31)
->     0.49 :   c057f5f8:       92 bf 00 1c     stw     r21,28(r31)
->     0.27 :   c057f5fc:       93 7f 00 20     stw     r27,32(r31)
->     5.88 :   c057f600:       93 36 00 00     stw     r25,0(r22)
->     0.11 :   c057f604:       93 17 00 00     stw     r24,0(r23)
->     0.00 :   c057f608:       3d 20 de 00     lis     r9,-8704
->     0.79 :   c057f60c:       7d 3a c3 a6     mtspr   794,r9
-> 
-> Note that here the access_ok() in user_write_access_begin() is skipped
-> because the exact same verification has already been performed at the
-> beginning of the fonction with the call to user_read_access_begin().
-> 
-> A couple more can be converted as well but require
-> unsafe_copy_from_user() which is not defined on x86 and arm64, so
-> those are left aside for the time being and will be handled in a
-> separate patch.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
-> v2: Split out the two hunks using copy_from_user() as unsafe_copy_from_user() is not implemented on x86 and arm64 yet.
+Hi Eric,
 
-Thanks for the patch.
+On Sun, Jun 8, 2025 at 6:07=E2=80=AFAM Eric Biggers <ebiggers@kernel.org> w=
+rote:
+>
+> This series is also available at:
+>
+>     git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/li=
+nux.git lib-crc-arch-v2
+>
+> This series improves how lib/crc supports arch-optimized code.  First,
+> instead of the arch-optimized CRC code being in arch/$(SRCARCH)/lib/, it
+> will now be in lib/crc/$(SRCARCH)/.  Second, the API functions (e.g.
+> crc32c()), arch-optimized functions (e.g. crc32c_arch()), and generic
+> functions (e.g. crc32c_base()) will now be part of a single module for
+> each CRC type, allowing better inlining and dead code elimination.  The
+> second change is made possible by the first.
+>
+> As an example, consider CONFIG_CRC32=3Dm on x86.  We'll now have just
+> crc32.ko instead of both crc32-x86.ko and crc32.ko.  The two modules
+> were already coupled together and always both got loaded together via
+> direct symbol dependency, so the separation provided no benefit.
+>
+> Note: later I'd like to apply the same design to lib/crypto/ too, where
+> often the API functions are out-of-line so this will work even better.
+> In those cases, for each algorithm we currently have 3 modules all
+> coupled together, e.g. libsha256.ko, libsha256-generic.ko, and
+> sha256-x86.ko.  We should have just one, inline things properly, and
+> rely on the compiler's dead code elimination to decide the inclusion of
+> the generic code instead of manually setting it via kconfig.
+>
+> Having arch-specific code outside arch/ was somewhat controversial when
+> Zinc proposed it back in 2018.  But I don't think the concerns are
+> warranted.  It's better from a technical perspective, as it enables the
+> improvements mentioned above.  This model is already successfully used
+> in other places in the kernel such as lib/raid6/.  The community of each
+> architecture still remains free to work on the code, even if it's not in
+> arch/.  At the time there was also a desire to put the library code in
+> the same files as the old-school crypto API, but that was a mistake; now
+> that the library is separate, that's no longer a constraint either.
 
-The idea looks interesting, but the implementations with
-unsafe_get_user() leads to very ugly goto lines, and that's too bad;
-it makes the code flow much more difficult to follow.
+Quick question, and apologies if this has been covered elsewhere.
 
-I guess that, in most cases this patch tries to cover, we just use
-another temporary variable for compat struct, copy fields locally,
-then run copy_to_user() in a shot instead.
+Why not just use choice blocks in Kconfig to choose the compiled-in
+crc32 variant instead of this somewhat indirect scheme?
 
+This would keep the dependencies grouped by arch and provide a single
+place to choose whether the generic or arch-specific method is used.
 
-Takashi
+It would also allow for alternatives if that ever becomes a thing and
+compile testing of the arch-specific variants if that even offers any
+actual value.
+
+Thanks,
+
+--=20
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/
 
