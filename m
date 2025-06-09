@@ -1,104 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-9227-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9228-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8168AD27FD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jun 2025 22:42:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EDFAD2847
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Jun 2025 23:00:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bGP4V1qGxz307K;
-	Tue, 10 Jun 2025 06:42:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bGPTY1ygsz2xHv;
+	Tue, 10 Jun 2025 07:00:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.177.32 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749501754;
-	cv=pass; b=gsjefO1UOIowYRGF46GOn7qdZvpz1wVo5mPiNm9Vi7RW+aZc2K1w35hTgxqqxaHOQsAxcz6W5vltFAoSBh7oN2AsBOXiqv6SsRIj/tuvZQLPzEhemU3j4dbanS9HtxX14z4Pt/cmCNK/y3YpzSRaGdm3MvZXitlQ+ApXRbC3+aGWTw+nKaNtDse2hxtB3+OJt6cqpDoEmPF8fFHX4LPR3q2bDH0qZ3k2zI12X1ST7GWzcqAtBPRCqtUn/tBzq+MolQ6dSW8CzhG7L7KhZBaJkEud/5bHboSj61HvK6oxJN2h64Lt4Ox41dRJBLsCqMfZHOrUwsNtlJNBfmM1p+c9Pg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749501754; c=relaxed/relaxed;
-	bh=j9li34Er//EiHqfhuW71TYAf0m6BYvNHAZLSVdQfQTE=;
-	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
-	 Content-Type:MIME-Version; b=F5Mfr9/DC9rerlho3DUWgm+Ws8J7/7i9Ih24ORZpSgUSAm5d2OBoILOr/I7IxJNfmSDO9rvalaeW2rQxIn/abs/FnKRymuMB5crmksXB9JJtD0a8afni3OnpqREO1Mckf4srjhzDhZaHhLIAIs6CgoknvuvmtHOTEXDN1QavHUM0mxoe3XWkG4UClDz0/QSlIQRihbJYMUVB7UEC2ksvNjzZjOafrIsKI6tlxbZ2Qvim0bOrv8uJmJTCzjdWQZI6RhZtQWGw34C3hnoAhBCKK4l2SiEcHQBSq/zK5pdEiXZ2BG+zgiUokqpV2dL1SKuhOgiE0GGNljTskOw3e1t3zA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=UuzojlsU; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=L7g52jlg; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749502849;
+	cv=none; b=I4oBQ+Cpkxrdenrk3Rs4UpHSFvWeMVUdBB0GK55VubepRWvYZZ9w1f2gadnP67dv+yjxFPZUMuftlF5jiDUUVyMwZMOvGfCSnd24ZIcK0rlBrblSjrg6ZtDAcmZ13hh4DLWH6w40n/47GNF9SXz+TqmcwStvBSecvQN5W978jD+IJhIoApR3halm19WF5YSoqMVm4gRXzJJIPP2VbVQnbl8mMX0QlLq/pAP4XhUsWlsLa5aJ3O60Ox9oCpoNrdnMoO06sCZAn6HN5H9iKG9NxGPVF/fe/fRDiplLuNveW4tmWS9dY1iUGz4LriVdC8ViLXthpShS/wOdcIq8vlU6fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1749502849; c=relaxed/relaxed;
+	bh=6qVy4O4vfAMfKpuB2sK6w05+V5SjzncJ1VrfL2mxyo8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=J+UHgRIqsl7rLOwSpaewmUf8uTOIcFXYj/k7mVfi9GFLQxhJ27dpAfbC/Fz42XfMfkBUYT3Gh15bgmxewNmwWmme2f71rUjj8cdafKi0+sP8vdq8iXM+4TDnlJbNU/vWehfSKeapDjPGG3saLlP4lFQ1TYLmuLVUkLkVn5irjzjfQOxsoWpsDhtEumrhIundJf/PA0ROrbMOzmyZ2P1thxn9HK/UtvbsuzPNhs0xRm5QmLCCIIA7m/9y+Y0ydEFsmSwZqPsT94MT3xboO8vmch+qo5h7c31T32eRNUenpe7gFS/vBbLN2aDHQSMWC+RLBHw6OMrL9N8Rfx/i+HXFVw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NMgkE+8M; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=UuzojlsU;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=L7g52jlg;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NMgkE+8M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=martin.petersen@oracle.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 5168 seconds by postgrey-1.37 at boromir; Tue, 10 Jun 2025 06:42:32 AEST
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bGP4S6N0sz2xlL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jun 2025 06:42:32 +1000 (AEST)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 559Fcb3I017209;
-	Mon, 9 Jun 2025 19:16:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=j9li34Er//EiHqfhuW
-	71TYAf0m6BYvNHAZLSVdQfQTE=; b=UuzojlsUAdz6VvSaYpqAHHqT+PJsNN1QiL
-	NhY7On+FsQQftRyKIADwniFKBnkOrbCpjwgBOHf+LWkACdvXyhHjOw8k2bT/tQOX
-	frQREIC504ZTWInPd57VVIX+cLLffr3d/ybEp8MY4w4VOtPUraJVyFWT9a/eB3Zm
-	xpIGBaIr1VcMfPshC4tramuDjjRT1TVaBocbY+y2luE1PfIqCPVEu/Zdw7EX1eFx
-	gJI8xsZ3Xw67KUB8XK65JsdccE1ZtEzI9tCF6jq62HCjaSBIxgodjJ3Yenj3dxWh
-	dAo+zgVaxzO8P9ycGq/b1VHvpZfrPY59F9MAMAWRA+PWeew1WYQA==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 474c74tua5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 09 Jun 2025 19:16:09 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 559H9rue020989;
-	Mon, 9 Jun 2025 19:16:09 GMT
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011030.outbound.protection.outlook.com [52.101.62.30])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 474bve2dph-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 09 Jun 2025 19:16:08 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WGhfCJ8Th0J4h9g/JQKUWPuvoomAHvc7nx/2gd9vylXLxX1cq1Cstzc+WZ1qneHXyalTNezs8UgaFCikEORPfBOvvl/Doy5wR3nxyVcnuQls5kF9zMLkd3wO40s0xtHy6JffV6S7wPV2ZfS487AXP43aoCFuicd/esLig1m16ekEZFYP9n/QKO4gvS0yUzDe0AzirpWW4XVi5hrKBkyiAEW7qm1NFPvFWX948bQb7KSH0WQ686BeEPNxjIyskRElKUkHG5ZOPcAfi/G2qLH2mMPLGPwu5X96ODCsGZt/mj6ioxmn5/0UvN3bC5QabMioog9PavVgIBe+JK+vmCyR+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j9li34Er//EiHqfhuW71TYAf0m6BYvNHAZLSVdQfQTE=;
- b=PqR4lTZnu7Ix0r57S9apyMf7Sc9e9zTYTczhPe88jwjwyPIMGSX+pJEn02TMLqMzhgVrnXjDAI9372+w+DZnvPetRo1lbcBpCLjbEXa2JfqxO5gsBxYyONdnkOBujrMMwhdkiotCRhf4hsOAJ9SN6/29LooBPTr3SsINTJA+ExfpO1Wdxwq4Q3OmJ5S7a0rDqdF4A2aSZaNqSwHmNMwAVv2VEWUZeiQumrUnfTd46OllEn45KvkAndACdY4jjNYn2zgMa9Yhnvloq/C542jrTXOysryHZQV/b9ytYyVP6C1XP8o8EImcImuaST9ufp8X++k8IhNVRA8yuKJye5f6oQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j9li34Er//EiHqfhuW71TYAf0m6BYvNHAZLSVdQfQTE=;
- b=L7g52jlgnkH+ey9fkk6Wh+qRNROrF3GlQ5CTotV6ipplmy20JU7hBHFn91PkCsGcKKYVznmFxqomph7DY3Wgj7B1HzT5Ob5YNvvqQkpXNhloMnbyoJg2UVLwjy+u3ePn4zMpWJ/vT6ulhFClCf0RYhvKSBt7oHqDva83NP2qu9s=
-Received: from CH0PR10MB5338.namprd10.prod.outlook.com (2603:10b6:610:cb::8)
- by PH3PPF0A8D5CDB5.namprd10.prod.outlook.com (2603:10b6:518:1::788) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.41; Mon, 9 Jun
- 2025 19:16:06 +0000
-Received: from CH0PR10MB5338.namprd10.prod.outlook.com
- ([fe80::5cca:2bcc:cedb:d9bf]) by CH0PR10MB5338.namprd10.prod.outlook.com
- ([fe80::5cca:2bcc:cedb:d9bf%7]) with mapi id 15.20.8813.024; Mon, 9 Jun 2025
- 19:16:06 +0000
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, x86@kernel.org, linux-arch@vger.kernel.org,
-        Ard Biesheuvel <ardb@kernel.org>,
-        "Jason A . Donenfeld"
- <Jason@zx2c4.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v2 00/12] lib/crc: improve how arch-optimized code is
- integrated
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-In-Reply-To: <20250607200454.73587-1-ebiggers@kernel.org> (Eric Biggers's
-	message of "Sat, 7 Jun 2025 13:04:42 -0700")
-Organization: Oracle Corporation
-Message-ID: <yq1zfeg7mlt.fsf@ca-mkp.ca.oracle.com>
-References: <20250607200454.73587-1-ebiggers@kernel.org>
-Date: Mon, 09 Jun 2025 15:16:03 -0400
-Content-Type: text/plain
-X-ClientProxiedBy: LO3P265CA0020.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:387::14) To CH0PR10MB5338.namprd10.prod.outlook.com
- (2603:10b6:610:cb::8)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bGPTX1sz7z2xCd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jun 2025 07:00:48 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id C3967A50BFB;
+	Mon,  9 Jun 2025 21:00:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41145C4CEF5;
+	Mon,  9 Jun 2025 21:00:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749502844;
+	bh=nKBc69Ss4RL/f6HqDzYsfnuaSZqHYo5VaYM8rb8GeWI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=NMgkE+8M/Uu+YDD9TzoQBBqlIrvaR+kKWwQBRPp00blQwh1Uq4usimq55b2ClnPlS
+	 E2KwChecqZFjgJFgx2DmbY2y4mDavg2RSIES0qu2gMpBQOomYNvpWsE/jtHJaQlu9y
+	 irGMEVo6adaaDja2ADlhrl8j9TZ8vwdd3/xO2ILpLqvX+eSDk3mF/oYYhhilo2rPFI
+	 60I544mJeqwf3/D/5brHAGtVhsYL6XbfCY6JUOR++fJpn+o87OIuIwZMAsmvZCcmsx
+	 ZjYgasdchQrSORNYDnBeu6HpDtbPAir56TQOhzcPkEB3GF4y3q5xh/q1zPmOs04ibx
+	 md1dqE7NLY0Tw==
+From: Mark Brown <broonie@kernel.org>
+To: David Rhodes <david.rhodes@cirrus.com>, 
+ Richard Fitzgerald <rf@opensource.cirrus.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, 
+ Support Opensource <support.opensource@diasemi.com>, 
+ Oder Chiou <oder_chiou@realtek.com>, Srinivas Kandagatla <srini@kernel.org>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: linux-sound@vger.kernel.org, patches@opensource.cirrus.com, 
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20250528-asoc-const-unused-v1-0-19a5d07b9d5c@linaro.org>
+References: <20250528-asoc-const-unused-v1-0-19a5d07b9d5c@linaro.org>
+Subject: Re: [PATCH 0/8] ASoC: codecs: More const and unused member
+ cleanups
+Message-Id: <174950284100.277844.5516021122199665205.b4-ty@kernel.org>
+Date: Mon, 09 Jun 2025 22:00:41 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -112,119 +75,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR10MB5338:EE_|PH3PPF0A8D5CDB5:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2eefbd7e-81c9-4356-472f-08dda78a154f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bajiKuXZjihQDyigjkjM6BaUeadtvUYJRLo9gWMGnWQEn8HN/VJ5EGhXvYiD?=
- =?us-ascii?Q?ee9q/Jnf7+kFe+vNKYE5liY5f5G04dpQVDaF7THwaADc5Ci1C2NQE/JAV5nj?=
- =?us-ascii?Q?Z59yn8BKPXeTuUvRa90SJvKuqvFjsVCeb/r9ulMfsPwEkFLTL33FwK6kBUBY?=
- =?us-ascii?Q?gs64UQ6q+AtamokU6xVMeApQqsP3McIBD0DlWte/9QqGIppBuEZPkeqSnzhh?=
- =?us-ascii?Q?82W2NlHlMb+QIhK3wbWkO5e28450Bf+Pj2T6HMyJYE3nDjjgXSCd2KYR47Ue?=
- =?us-ascii?Q?mpvAqP4OLwtjnII0YtZ30sL7I5V14eEU08KZdx8m4hP5DD+zRehRISQF1HgT?=
- =?us-ascii?Q?9FQf4bAm6J8h0B8o8yYVaou4exirJgZM2lT1h0Lg/1wTtEm7h8O7EYSZuxgl?=
- =?us-ascii?Q?6/Ji3roQg+Cli1C8qEIscrjIOVIoaY6kbdbUR0GBmgth3wVz88FT6CtPc1gj?=
- =?us-ascii?Q?o8xSEEm3j8GFEIEG3BO6YGRZmCJ/iWqGXzO39SQGaUkbUeQ5ZZqWgQvaremD?=
- =?us-ascii?Q?l6P941krX7BGqEwUG5IFhf1AK63yHz3xn/cj4pgyq/2nx2P0k/RBi1KMHifb?=
- =?us-ascii?Q?6o2WrFblflMPCyeGlWmviKkc3cKE1ZtUwWCG1EOhJQ8RXjYBQGbDpRIiBk7G?=
- =?us-ascii?Q?gSalNKaFHicj0l5n7xIMQuRzHUk7h3aR1F9ZQCwAGNM+jmhljlyF/+6OwnfK?=
- =?us-ascii?Q?PiNj10FUJCD/1ABVH0/Zu9PGlcw3+Dhuvaz0tUZjbuEm7y4LQeb57xfo0Xxs?=
- =?us-ascii?Q?wXF/oJ8d5dc24vNoVqjw4sEwY3yyeOQqYSvOjZM9vMtzki7MHZ+oiVon7Sz8?=
- =?us-ascii?Q?ZcB49U9ry0fJVGzE8Ko3hkRwab4rbOFLn0echDEltF5TQqIUNvgx6UcOsDOb?=
- =?us-ascii?Q?MnwzYp40Z4d0soIo9d8T0VLM6bobcB1Ahbz9b/sZdUgx1876nDik02BtJAXA?=
- =?us-ascii?Q?XSn7MBEwAQaTC9BSkDHbvKMv0oVwdpWl8q5aKvLG2/aSLJ7n82MBhCim9Qdj?=
- =?us-ascii?Q?WgB6nGfVOPPq5wSpmVuBq+gqX0NbdNqqXbCLmpIaTLIzYx71FN4vDjEm2BZI?=
- =?us-ascii?Q?VQokanTxdv3zqK9a9VTZPWNTxQKVerUkXThAy9K3P25ITw5ra0p72cAkCgsI?=
- =?us-ascii?Q?l/CX0Orb1F84G7Dz8MqsjftnXXIBwjFhkJcRhYJvzCMd5S+cr/dtQi6xHF8b?=
- =?us-ascii?Q?oJmhCWwFzManS9b6qugVYON/OkRkH+oNKaL9SkzNmNKS+n29aDQwc1ieL3C0?=
- =?us-ascii?Q?Yr2fLXXh5392YNowNzFBiBYJW7o0VqmsmAzhbdx0jejTLISM4mgGF2ZaGiDw?=
- =?us-ascii?Q?HHIl6WDVUbMvMM1G99eb9sQLm3KjTtniGBEmL1La++XGQhiTAkuBrtv5Uef0?=
- =?us-ascii?Q?DGTbOBGdw+vYBCsItitg7CjhLgjsBMMRd5JwHtVTm5JPniNAlkeAxXhVoYHz?=
- =?us-ascii?Q?eF00DN16zdI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR10MB5338.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?tSBCammy4WQmUDPtRj4lHHE7kl2MkDN4dxfRMkyzl4012l1dv6FFyWS+Qb87?=
- =?us-ascii?Q?RgfK9+OdWmU1/g5zIV52oxLWqGrvm2w7pDMtvTMm2j1Uez5ZTa0RvByCoXcP?=
- =?us-ascii?Q?o0OHydL4Glequ7rG8hbJtoxSEEaNrfbHCJVLWT4LqAkenPjaeCrnommLwxZZ?=
- =?us-ascii?Q?U+O5UnM5tCHYG0eH+QvdLoAGc8/QJox6qOtJM4oLyGxmSDi5HmCSOYQi4d30?=
- =?us-ascii?Q?91RIiQSHbU633KLr4FjQ1L67sZwjqpPrYGRiZodf8WRb78jH7da9JPd63ld5?=
- =?us-ascii?Q?AsS2bFt7mqTaxg7dcumKEPt21UpXfyT0rm8USfAgxUsYZuzHknYIwvtXh9aQ?=
- =?us-ascii?Q?iBm6GGvyrl9FoiBnIJx8yHS4P+ir4w3ea8UmgjG7t9T3Xttav1oHwuvih17p?=
- =?us-ascii?Q?Le0z1L+bsdpuVbsGwk7wXu+M90gtNrZlGk1/oQmaUmB4sdejvbyI4Ofsyoqs?=
- =?us-ascii?Q?xTzdmmMl34OTCht0mrbsXp3Qk66dFFXBjx1KmNP15fyi3EjMLmO7PbT/CnIy?=
- =?us-ascii?Q?C/qfvcQJ2g4MirY3qgRtDWhfK+HsBqu1FbgykvRW3X7Yb06mFyTkCOzzVup4?=
- =?us-ascii?Q?QGUYmneemqbYUZvOY7f+rciWoQZ9nphW+je/VoR9UOny79OSmJz50Eu8KqWS?=
- =?us-ascii?Q?H/Exj+6S7sBeEDfS3f4Qw/N5LVHM+Kvo0dDM0NskVEbNiurQwOWyQcM7PvpP?=
- =?us-ascii?Q?GVHEeb3hmo459/dd/eQ7i459wctIu6z1xkrCdFS8+tHA+E5Vf1Tf+FBJwe5X?=
- =?us-ascii?Q?rF7I69JY0anS9dU6r4cDMc8Cm3CB2050UN9iC/ITm/vvlvxC/8ITI1pCXUrS?=
- =?us-ascii?Q?N5QVLmiPfNsdORR0iplOfOKKJQ5Bsr9SXz2trjrgTPbsLZEdXEm+56zoPWPW?=
- =?us-ascii?Q?e9dzowul4DAR1rFgkBdJwMFMrPLqC253vpIWKi7k2kjky3RFefdhvkzMFZ+E?=
- =?us-ascii?Q?4ZevbInT4pqMWzoV0b7bw9FJ8qQDuEPV1Dfz6PLtKTKKl+ILEs09hFKSmNcz?=
- =?us-ascii?Q?F6T320uOZJd5xyc2gWKjhfyfzeERs2ifw4d75+Q/uKwU829TQKkrXfaNNycq?=
- =?us-ascii?Q?Y2o04/IDuoyY8LCCfbJW6pJBQ8LqS4q9ZfOhhr4FFJksUhTR8A4/WJzvl9t8?=
- =?us-ascii?Q?gLui0KZSO8leV4UEP0MuyX9XajZUoKSc5s2h/q/FsMR8TGGy+y9GW0tZvk/U?=
- =?us-ascii?Q?XSbfc9C/RedeeDI1NyqICyhY0q+OLFbVXSASd1aJBFohypBjXxIwLBIFrUqh?=
- =?us-ascii?Q?/evJ/fb1nunDuOMIUIQwr+MvUUO4WKZgXdh3LgIlDygm2Eb+pYabK+RpVZ09?=
- =?us-ascii?Q?GRjZQznHuepfINO8IMkU5hBkoN1h9CEUwkDCCdGCzfGLSFC4VEkFCuGXnMK/?=
- =?us-ascii?Q?/SnLJs8kfaO8dAUppu/YPZoKuk+w5Ri9RrXT9gEobeu+Vf/DkiMO58IH5KXx?=
- =?us-ascii?Q?eNQ5JJCikoXkMCHRRP1K8NFCKe073qgMot+V9Pfx24KXiXkKOscSNNy53T/L?=
- =?us-ascii?Q?nEZ0bNljqVnZ1WLwapXVnA8X0RsbvAZD+xiIiV7IY4NrVaJjBNAn+Jo493hF?=
- =?us-ascii?Q?FsTptCk/ccEF0vTsXgv0802GopxkQ8b/srF6w7/gd+PecDmTqnXCpcAspsgx?=
- =?us-ascii?Q?aw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	uRgWrm/93za3JIuIXipEd+Y0j/0HOep00ULyu7GY8pAX7Kq+fGDBbmVbQ8pz0ZowQJLjcchw5Vlx7HNfrU2xmmB/zeqm7CGV+7uruKminWDU9h8Ok81D0dzhC0IlbSUNLL1vFCnY9KnoW1dHI9Y3k2UK0KT2CSQkgezhCKmBSQdo7c8q7PObLUN4oku9s6CLysVAzX7XL4UxBg4JrTDfgGP4GOQoW/vd6pCi6J4LOzMezczeejGA1bTniAw6TRGi9Fvvmio3Bb2kZ+/CkFvS5bU9b1sCqjGkV378VuR7I1T/hXaAVi+ig+VFcbmAPUeYPE4yOH7sFdA5fC75dzCLgqpP8fo4CEWmxOI8TvsgJUG71n4SCeUpWc2bqKCNp+6tu/3zFIKfvGichECzLiyyX5zYhwjJ1HF1RV3ldOfFszb/nS2P8EQs5yZvmnjZgDxn9s/yyUL/0kfFJz9WqWnmLKiHxTCnu7Li7OYNVWTcK5ZFah2HDE0ABeCtNs/kf/nZpidkOs/f/kfgq/X9Mo0MDFgjh4sbrcDfwWzoi+wWaoKt6X8QxmhP4Ep1tW34y75LyZaLXixWmyahzKf0sWEQnA9q/LgXkSHrLjoBDBMC0FU=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2eefbd7e-81c9-4356-472f-08dda78a154f
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR10MB5338.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2025 19:16:06.2830
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ulv+egvMWZ/37vAZhMTqgxKDBwNHajIoihzAfBLST+vRf5+b2GYdM/bkT0AAxg62P0+wjEnNJLGNBb4F13ZKJSmBxzDjHADNvx5h/9kqIA4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF0A8D5CDB5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-09_08,2025-06-09_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 mlxlogscore=986
- bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
- definitions=main-2506090146
-X-Authority-Analysis: v=2.4 cv=LIpmQIW9 c=1 sm=1 tr=0 ts=684732f9 b=1 cx=c_pps a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=6IFa9wvqVegA:10 a=GoEa3M9JfhUA:10 a=yPCof4ZbAAAA:8 a=NujspGZ6sVz4W0mBbdkA:9 cc=ntf awl=host:13207
-X-Proofpoint-ORIG-GUID: 7b6DjeZj9zH3Tc4O68VYc2ztwx0k3bMI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA5MDE0NiBTYWx0ZWRfX6M5phhH13/0L M72PQsxwWsnczvU2W5LZxII8qXaiRI5NUCIKVN/81UT33ATdAY0LbUsi0b80JflOGtO8+HAy705 f6Rr4jZUf0baT8tjQsfF7n2PQd+KQPs+ImcF9XPvx+OAv8z+IATGfJ4xqQWwPKFugE9RXjKvizR
- EvbFDQGRFczItFLzW7TtZQEpXYWuzF850FxKNvjnim3RKCRvtUcnpeoSnrh0gsq2pGXjsk8H1da 2ppixqARsHca0XqCHnNMHJT2GAXzmI1CARm9fHpGKiPqltQNEO5wpUs/7H6scjsDzjgCM56WUOM AZJ1N5+aLY+/SsljCq54twoQjg+kuLgWhduLnG04vu7EioTfKuvxWciVimwiSJEv30XTq3OSC/v
- pXDcSKlyOX/QRRqFM6pqNpHEmY3i2OnQt/eaFi/Vg+iR+pca5g4jhLVMmWnkW2XeCq0n96Qf
-X-Proofpoint-GUID: 7b6DjeZj9zH3Tc4O68VYc2ztwx0k3bMI
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-c25d1
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Wed, 28 May 2025 21:59:54 +0200, Krzysztof Kozlowski wrote:
+> Make static data const for code safety and drop some unused fields in
+> structs.
+> 
+> This is based on for-v6.16 branch in ASoC tree for context in wcd938x
+> driver.
+> 
+> Best regards,
+> Krzysztof
+> 
+> [...]
 
-Eric,
+Applied to
 
-> This series improves how lib/crc supports arch-optimized code. First,
-> instead of the arch-optimized CRC code being in arch/$(SRCARCH)/lib/,
-> it will now be in lib/crc/$(SRCARCH)/. Second, the API functions (e.g.
-> crc32c()), arch-optimized functions (e.g. crc32c_arch()), and generic
-> functions (e.g. crc32c_base()) will now be part of a single module for
-> each CRC type, allowing better inlining and dead code elimination. The
-> second change is made possible by the first.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Looks good to me!
+Thanks!
 
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+[1/8] ASoC: codecs: Constify regmap configuration static variables
+      commit: 0045b902ad27f2676c2a5b6444494a8287b80072
+[2/8] ASoC: fsl: Constify reg_default array
+      commit: 239dab898b739f49b1bda8d65163fe4f5c773468
+[3/8] ASoC: codecs: wcd9335: Drop unused sido_input_src field
+      commit: 620d9687004ce877b340041b8213da166f329367
+[4/8] ASoC: codecs: wcd934x: Drop unused num_rx_port/num_tx_port fields
+      commit: 9afc53569d800f5e3caf9401d49ad2d89f340a54
+[5/8] ASoC: codecs: wcd937x: Drop unused 'struct wcd937x_priv' fields
+      commit: 87a2270fd1f560dbfc1b26391ff3b37f56d2a1a3
+[6/8] ASoC: codecs: wcd938x: Drop unused 'struct wcd938x_priv' fields
+      commit: fd32bd4467c13254cb52188034fce242f0f6340d
+[7/8] ASoC: codecs: wcd938x: Drop unused variant field
+      commit: ff228b6b9ed8f5d7ef418b6cbece772c6617d789
+[8/8] ASoC: codecs: wcd939x: Drop unused 'struct wcd939x_priv' fields
+      commit: ece5d881004f041c2e1493436409dbcbea3ad5f8
 
--- 
-Martin K. Petersen
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
