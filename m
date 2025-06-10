@@ -1,65 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-9254-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9255-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B7AAD42AA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jun 2025 21:12:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F1CAAD42FD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jun 2025 21:40:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bGz2D2HNsz307q;
-	Wed, 11 Jun 2025 05:12:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bGzfq6YsCz30BG;
+	Wed, 11 Jun 2025 05:40:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749582756;
-	cv=none; b=kX6jY4QcUvdlWQEQjJnbo6Y1/6xXuCIzrNKlkYbR6Rj/RSEDxBl38nV3BrhpXCue8tW9Q892r/iqxDrfKc9fcDDTwxsJ99EkQHVW5BziZlS7ZhOlSe0VEBG+AGLOYfXnRp+2TtXiaYow7u/pJdCN787iQAlA2pz85b8PrCJAnBaCXYtaiH9fv7JwmnkQ9bvhivKrTd9kHpig0NjpWx3aosm8XbnlM+W4XWPlry2MJ+TdsbyOWjsjeXvrs+jGAcOx3hZnsyHEDgSaMG/QdOrwVQGanWJqLq3RQA8vY75plFbk+2a0dy7mknFHWp9mT4Umfz1d2r9K0AcQuDmDEYoqEw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749584451;
+	cv=none; b=Hpwz7NxN1t7jupDulY+mQnv94bG6W1ChP8Sb1cZ34s+DJgikF5m/tlgdHCpWjMz6wHU6dagkAVJUv3Fs+8RTAdn5GqBbH5wGSMu/s81SV9n7Vg1OfD7IOkZLmCFzNq13mE8dQ8zDQs6EnJzObA9q8ZrWMPrxz+V5Q0P7aE4GhernU+UaRYNpduDVRikRzq7739wZHdfobfQWKCjpa09mFfv0Ya8mvYwd/0WCzCKN30fNo3F+bGunA6mYShtgpisnUy9OfG7feO3aE3JGi4HPJLkZV6u+OJG+YUNc5H1h1IR7ZV4anuhyVTnPBnbHTqCzhWJp1qYWMrJSXt7hTePfhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749582756; c=relaxed/relaxed;
-	bh=GotRg1Si1hTKaYuqrLlayWjjPnDKXporodQ26epGM9U=;
+	t=1749584451; c=relaxed/relaxed;
+	bh=Ftm19c+5zR92eENHcmFvF1ruiRS22wnlQz7kUTSPedQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VICMPKY+QJmaOe+tLbpQOOwaorzd6clD4huM625GybwBsMhvT7wqpKHi1fW9XXGTVdIKmdt95iGfNFne+MLh0vxntMC7qHtO8dPzWwih482bskkaRV1ayuMTxq/NeXSOjE9zPt2P6nchBhzaq67hGcdvWNc/jqgsYJXa5gxLMlAflWmN9cTR9bAjZQ1Sh7SfYiXJNXhbGFAAJQ9rKCD8rm/tI1REGNOLkQ1e9ikbtW+7ykRUWPFyeyRDf4HPwGbpPJ5Tu5BvSNeIQim5IJ/bPocM9kI0ZipiE/FZjuF80kRkAbUVCxksK7IU7Y6mCMGOSiQoISHKUajkiTLqBc/Jzw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VaI2+LQh; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Sz0JK4ODY/8FC9FScgytX/OK6PbpK/hUYdvPL4TF0J1IZzioh8rj3iSDzTNze+X7GgHDL1ruX4mHY51fnEBTeKNoRvJyy7pNkA6nAXKawzznV+WRRSo78SI63Bopr6iWcW4whJ9r3eXYBIT78I7EiqW8AT3hxB1t5jfUuL0AdLNvrz5qBwfsbbgcjIny85buzDZxr1GjgG5/GYiSlcrndNbWxtGZhk52jEmX2Y7EInFvp1LMmWgMHDMPkh8HWVL2bbS9Mf6chABXXyDkOSBkLzwzEqBjxLa2zfQdoNxlDjLc2hMmDNLp6zSEyZEMqrXarf4axy+hBRDnaLRyPtA6zg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dfxOfDEe; dkim-atps=neutral; spf=pass (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VaI2+LQh;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dfxOfDEe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 62 seconds by postgrey-1.37 at boromir; Wed, 11 Jun 2025 05:40:49 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bGz2C2VcMz306d
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jun 2025 05:12:35 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A9C5644B79;
-	Tue, 10 Jun 2025 19:12:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FAEC4CEED;
-	Tue, 10 Jun 2025 19:12:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749582752;
-	bh=eJzXTcGjqeHES133w/mCLelMBBcBENx890a5ygHX1H0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VaI2+LQhuUUCHinnXIKNJGDX1SFqmIEkgM49ZG9mFtgdSJtyidxE5kSPaTUdtIRoe
-	 x8gwG8h5JFpcv2x49bFujV90PS+vJ0dv/ZdkpuflWTUErcb97YgGQv2W6l9qVPbl16
-	 v8SyhbEe0m3HO6534SqykjGShxll+Ne/4t8f1iJYheRExnhSX55A4hNPQKnkRcYq5L
-	 hc0Tmlxcb6hRLqfqF7Unr6UlRwwPll4NW5PiZ7zHf35KF4TOdiyOcT86XrweAAiuH8
-	 NHMgbbCpwoQbMy2vS7ZoKum77mLaoScoDb3mUTDNNDNTl+qp1ZRyBmI7CkispOKzd9
-	 LnPbDInTrzhvw==
-Date: Tue, 10 Jun 2025 12:12:08 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, x86@kernel.org,
-	linux-arch@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v2 00/12] lib/crc: improve how arch-optimized code is
- integrated
-Message-ID: <20250610191208.GD1649@sol>
-References: <20250607200454.73587-1-ebiggers@kernel.org>
- <aETPdvg8qXv18MDu@zx2c4.com>
- <20250608234817.GG1259@sol>
- <aEhtyvBajGE80_2Z@zx2c4.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bGzfn2Y8jz308P
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jun 2025 05:40:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749584450; x=1781120450;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1AqxAXQNYSUTabZqEXvUlQimdfjcHSOK+y+vnNlK8HM=;
+  b=dfxOfDEeLGhs7bJAsEydCnJKn24EbupbSV27x0w7nmg/I6g2VREHPiTP
+   kfJ5BIo+NeEVBlE65u9ydLIG0zFAiI3YZvsqAdptMQYOJ6fs340H/nvB6
+   IR9MMm9dvYgytiFrhwXKkT9wM1wpfdtLp1JFG7pdHgAnlN4jm2a8pf7aJ
+   oQJgXdqRPywtXx40FpsMwRqF3d7OeanAFAZsO2GUGlUBiNY+wAZZfWWQF
+   tSuXl2++4Q/b37/Be4GK5Lz9XKdxXnQnWUigagTOGKQUv9qMqLMSRmMNK
+   yncbn9KkRcNwwTynV1hHoRzBf9itgJ4eSwWfI9owakhV8UeZoylirTvxd
+   w==;
+X-CSE-ConnectionGUID: lEktm+BZSrmNI+Apc/RtJQ==
+X-CSE-MsgGUID: fE7VL/R8TfKBQhW+XVFQqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51850309"
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
+   d="scan'208";a="51850309"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 12:39:41 -0700
+X-CSE-ConnectionGUID: HAII8C7VR2+VGHgP4EdDhQ==
+X-CSE-MsgGUID: sCiWvYJeQrudIxcAfcGRZA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,225,1744095600"; 
+   d="scan'208";a="184117312"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa001.jf.intel.com with ESMTP; 10 Jun 2025 12:39:32 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 635BA192; Tue, 10 Jun 2025 22:39:31 +0300 (EEST)
+Date: Tue, 10 Jun 2025 22:39:31 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+	"zhangzekun (A)" <zhangzekun11@huawei.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>, robh@kernel.org,
+	saravanak@google.com, justin.chen@broadcom.com,
+	florian.fainelli@broadcom.com, andrew+netdev@lunn.ch,
+	kuba@kernel.org, kory.maincent@bootlin.com,
+	jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	olteanv@gmail.com, davem@davemloft.net, taras.chornyi@plvision.eu,
+	edumazet@google.com, pabeni@redhat.com, sudeep.holla@arm.com,
+	cristian.marussi@arm.com, arm-scmi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	chenjun102@huawei.com, Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH 1/9] of: Add warpper function
+ of_find_node_by_name_balanced()
+Message-ID: <aEiJ856egeMCC6ao@black.fi.intel.com>
+References: <20250207013117.104205-1-zhangzekun11@huawei.com>
+ <20250207013117.104205-2-zhangzekun11@huawei.com>
+ <Z6XDKi_V0BZSdCeL@pengutronix.de>
+ <80b1c21c-096b-4a11-b9d7-069c972b146a@huawei.com>
+ <20250207153722.GA24886@pendragon.ideasonboard.com>
+ <be93486b-91bb-4fdd-9f6c-ec295c448476@stanley.mountain>
+ <aAuqgiSxrh24-L-D@stanley.mountain>
+ <20250425170732.GA21390@pendragon.ideasonboard.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,81 +101,41 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aEhtyvBajGE80_2Z@zx2c4.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250425170732.GA21390@pendragon.ideasonboard.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Jun 10, 2025 at 11:39:22AM -0600, Jason A. Donenfeld wrote:
-> On Sun, Jun 08, 2025 at 04:48:17PM -0700, Eric Biggers wrote:
-> > On Sat, Jun 07, 2025 at 05:47:02PM -0600, Jason A. Donenfeld wrote:
-> > > On Sat, Jun 07, 2025 at 01:04:42PM -0700, Eric Biggers wrote:
-> > > > Having arch-specific code outside arch/ was somewhat controversial when
-> > > > Zinc proposed it back in 2018.  But I don't think the concerns are
-> > > > warranted.  It's better from a technical perspective, as it enables the
-> > > > improvements mentioned above.  This model is already successfully used
-> > > > in other places in the kernel such as lib/raid6/.  The community of each
-> > > > architecture still remains free to work on the code, even if it's not in
-> > > > arch/.  At the time there was also a desire to put the library code in
-> > > > the same files as the old-school crypto API, but that was a mistake; now
-> > > > that the library is separate, that's no longer a constraint either.
-> > > 
-> > > I can't express how happy I am to see this revived. It's clearly the
-> > > right way forward and makes it a lot simpler for us to dispatch to
-> > > various arch implementations and also is organizationally simpler.
-> > > 
-> > > Jason
+On Fri, Apr 25, 2025 at 08:07:32PM +0300, Laurent Pinchart wrote:
+> On Fri, Apr 25, 2025 at 06:30:10PM +0300, Dan Carpenter wrote:
+> > Whatever happened with this thread from Feb.
+> > https://lore.kernel.org/all/20250207013117.104205-1-zhangzekun11@huawei.com/
 > > 
-> > Thanks!  Can I turn that into an Acked-by?
+> > The issue was that people weren't expecting of_find_node_by_name() to
+> > drop the reference on the of_node.  The patchset introduced a wrapper
+> > which basically worked as expected except no liked the naming.  Krzysztof
+> > suggested that maybe the callers should be using of_get_child_by_name()
+> > instead.
 > 
-> Took me a little while longer to fully review it. Sure,
-> 
->     Acked-by: Jason A. Donenfeld <Jason@zx2c4.com>
-> 
-> Side note: I wonder about eventually turning some of the static branches
-> into static calls.
+> My conclusion is that most of the users of of_find_node_by_name() with a
+> non-NULL first argument are wrong, and should be replaced by
+> of_get_child_by_name(). We need a volunteer to do that work.
 
-Yes, Linus was wondering the same thing earlier.  It does run into a couple
-issues.  First, only x86 and powerpc implement static_call properly; everywhere
-else it's just an indirect call.  Second, there's often some code shared above
-the level at which we'd like to do the dispatch.  For example, consider crc32_le
-on x86.  If we expand the CRC_PCLMUL macro and inline crc32_le_arch and
-crc32_le_base as the compiler does, crc32_le ends up as:
+Wouldn't be coccinelle a good worker for this job done?
 
-    u32 crc32_le(u32 crc, const u8 *p, size_t len)
-    {
-            if (len >= 16 && static_branch_likely(&have_pclmulqdq) &&
-                crypto_simd_usable()) {
-                    const void *consts_ptr;
+> > I created a Smatch warning for this and here are the four issues it
+> > found.  The line numbers are from linux-next.
+> > 
+> > drivers/net/ethernet/broadcom/asp2/bcmasp.c:1370 bcmasp_probe() warn: 'dev->of_node' was not incremented
+> > drivers/net/pse-pd/tps23881.c:505 tps23881_get_of_channels() warn: 'priv->np' was not incremented
+> > drivers/media/platform/qcom/venus/core.c:301 venus_add_video_core() warn: 'dev->of_node' was not incremented
+> > drivers/regulator/tps6594-regulator.c:618 tps6594_regulator_probe() warn: 'tps->dev->of_node' was not incremented
 
-                    consts_ptr = crc32_lsb_0xedb88320_consts.fold_across_128_bits_consts;
-                    kernel_fpu_begin();
-                    crc = static_call(crc32_lsb_pclmul)(crc, p, len, consts_ptr);
-                    kernel_fpu_end();
-                    return crc;
-            }
-            while (len--)
-                    crc = (crc >> 8) ^ crc32table_le[(crc & 255) ^ *p++];
-            return crc;
-    }
+-- 
+With Best Regards,
+Andy Shevchenko
 
-The existing static_call selects between 3 different assembly functions, all of
-which require a kernel-mode FPU section and only support len >= 16.
 
-We could instead unconditionally do a static_call upon entry to the function,
-with 4 possible targets.  But then we'd have to duplicate the kernel FPU
-begin/end sequence in 3 different functions.  Also, it would add an extra
-function call for the case where 'len < 16', which is a common case and is
-exactly the case where per-call overhead matters the most.
-
-However, if we could actually inline the static call into the *callers* of
-crc32_le(), that would make it more worthwhile.  I'm not sure that's possible,
-though, especially considering that this code is tristate.
-
-Anyway, this is tangential to this patchset.  Though the new way the code is
-organized does make it more feasible to have e.g. a centralized static_call in
-the future if we choose to go in that direction.
-
-- Eric
 
