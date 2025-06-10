@@ -1,107 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-9241-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9242-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EB7AD2E38
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jun 2025 09:00:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68368AD2F38
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Jun 2025 09:50:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bGfnz4gh9z2yVV;
-	Tue, 10 Jun 2025 17:00:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bGgvL739Sz308b;
+	Tue, 10 Jun 2025 17:50:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749538855;
-	cv=none; b=A0STcAJST4YXlWtaGn4Cl4s0y8s2UX32CqkkmUV+1m00EEsXHHt4B25G/g9mO3ysrzG7AOz4RTCrPqvEbuJ3B2V012oaw4ahPAjUFukrBvCE93juQXZN8bJlmzMFpsc6Ngh5kpnZYrwDNpGeb+yc5TsgHmUktDStgne3GP/ExcjsK/ls1JCFraw472HU/uX/dPRqjUpOQZf9uQummmYmhx2QP+fp+Txo8ENjLK3amuqyvxPgX+jK25Tq0TDNCRjhy+R2fQoqag06Bk53EBTf1+PcwF579JdADTXS4DakMINjXhBXGw2oU6EdtrxWrOk1NsiEZ45mqs/a6DZvot7Wxg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749541838;
+	cv=none; b=PBmAeWtyaelqg3OAZe2+DIinrAd3mc4UNosv3VOmEV+I25Ukn1jnE4rQulDRxXzm8w0z8q+Dl87QJ8hh71TtDzsjqqpVNdd0jEbwgVAwHip7C6cfSc6ONnUppK/32KpDwknipeyfxUc+MkVFpkqOHCcqpexUaAsIh3YQyYxkJxseP+PxHBj4MSTK2Nmd3WvZgQCe8cSJPeTL6HGZlJWBaJeymHKvG6wjmJ3zZOkN0+D1STp+oh4RpQfJbwiemLNvkUmi2I0tcSOIZZYPVZkIcMO2AFt8jtMBqXAKhIgmZ+3v01/NXs2WPlt+N/tOdWAT/9/BFse8G5cBqvjQ2vIB5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749538855; c=relaxed/relaxed;
-	bh=JUJitp02dLbwyW6XXbPMt7kAqtrb2lpqnpotbucX9CA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TDPzERmh3cTNVAReDO9906VCyufzSbd9QOzhA/AVaWh+7HCVL6U+sSsDEjPlGZ9uQ3kLL6MFy9quGV4/OXm0rqf5i1FzoJN18Nw2oskREzC64l86ZXhCLubqRbXFDfsDN7Li5wzQZPP7WStimtWUtg8W/k1emaLLfO8KN6Chb+YLhXFV/dBJLSy2leE2NA1wAm/NTN5bhFLGo8ibdBE2s98qPZ4g4SiV4cdqQH7FeVhwZorMQvdwNwEAwTxZ2CAiw3FEy038WIVHw+TimY7YzY9uAToh6I3vTAQ/6lsfkS5zaeOYMhL8k6z0f1/NPnYRtTi4actCQSGGUsxynP7JvQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=Oh8KjCqK; dkim-atps=neutral; spf=permerror (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org) smtp.mailfrom=purestorage.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=Oh8KjCqK;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bGfnx3fzqz2xd3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jun 2025 17:00:52 +1000 (AEST)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-742c27df0daso4569403b3a.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jun 2025 00:00:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1749538849; x=1750143649; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JUJitp02dLbwyW6XXbPMt7kAqtrb2lpqnpotbucX9CA=;
-        b=Oh8KjCqK/+KmgKeF8uENZqULtXWuNTpRvkKqU1DjzIFj9NFklH20Yp6cqhh4eVkcs1
-         ZHKrSgAoGrsOYEG8P6TsfXX6vrbkPDykSygv4b0I5yva2ze0tngO4FXDoJtDcEQNduGD
-         umfk49tKG0SouaQDyPQlQvAVGm0v5luNj29VNz/Q/l4na0A4F0rrxI+75Q15ak0+Yuv2
-         m8u9eLxj9odvx+LSiDC5s6SnViYnlXbrzZQ/oWJPH9s2VAkWjnpPBnokzUE9Q8Qx5X2/
-         jKvqedGaADCHie2eK3dP7NH0QvkMYUJxKzGdala3R6H8zpEFQwWiI+BpWzzagSFSDOUd
-         DyTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749538849; x=1750143649;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JUJitp02dLbwyW6XXbPMt7kAqtrb2lpqnpotbucX9CA=;
-        b=NhMTHmTJxAPFu5q0AFIdMS5OuIzN8fHljUhVr8f4/79KWg+7zbKu1fLb9cgtfl6wv0
-         RlSPtST736amPM2HoKG4+DbvvuA/0C0f2r2h4iw6q5FpaYg1Ai6bN9gY/bAFg/EcyW+s
-         XozzD6YLnG22pOMY627ssEnbpPz6SPH9/YPqi5jbsHJzObM503T+3dfGRVmaAu+GiXCq
-         0Phm8XM7VUN+xt3Bkuwb2slRZ53HYZrEdeo1txOhE3pKj84FUuPSoTP5l/QHHPEWRYMs
-         E6eXW7WW9eIkQygh40MMZWgZE/eyo6slhwMepPu5Rfym3A4y0BxqyK5RIUsdvdZphZnp
-         A8Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUHbDf7+hTGrmzMdpDKKOVgx6Y9COtpdXHvqRQwIffM97kCZ9Js6TkotePahBoVY0614tppK9NRdFkpBJI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxY2Iwc2ZXIVIo/GXAEJ0Wh/rULEyxEyl+HKWzqGb9vHJkL7dYP
-	cTEFYxsLdcp7xRSZ6bD7sKuveuHpGK/UtrAfDNV7P0PFD5MzbKbZYlcnvCNqD8xcgbE=
-X-Gm-Gg: ASbGncvNY7QQY9U/xiYSNXfkmgYELPw3jxd8kyWkBXdUZqD1H0BcsR7FUtVxnHtfVO+
-	YhUW+VvGtLTTk4vutG20VmFoEYD8yhxmujUJTzJMyGz1omaYVrhMJ+IuOIMhQlN0nk2j96wDg9R
-	BsqnMjLKxvlGdg1fphXMb0yQNeszIfSeJtwdrfzH7uh39SK0drPsrr9OlBPdNCLR3Axk1r/NgL8
-	GSyZjnKM0xCqHcSaFNp8gXLq+GHFynWxY2jgUavWlLm/GC0Rzwhj3AOSXD4C9EsH6bij3ODk6gS
-	AEtuRl4wf7Ont34vQZ2Or4UIbrlwKeN6MdPLLYCrFMPRhXkFAbm4fI5e91HquNdCWtiCX50hMrG
-	DIu4SAx2uC4I6XndYanRmYzs=
-X-Google-Smtp-Source: AGHT+IF8uzdNqEI314pocfYYQWBeowDkb4F+LwQ50ySlNHswx1qiGOLWHPFnpEwYjMluBjhKg3WXFg==
-X-Received: by 2002:aa7:88c1:0:b0:748:1bac:aff9 with SMTP id d2e1a72fcca58-74861888babmr2307166b3a.18.1749538849387;
-        Tue, 10 Jun 2025 00:00:49 -0700 (PDT)
-Received: from mattc--Mac15.purestorage.com ([165.225.242.245])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7482af7af0csm7038483b3a.62.2025.06.10.00.00.47
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 10 Jun 2025 00:00:48 -0700 (PDT)
-From: Matthew W Carlis <mattc@purestorage.com>
-To: macro@orcam.me.uk
-Cc: alex.williamson@redhat.com,
-	bhelgaas@google.com,
-	davem@davemloft.net,
-	david.abdurachmanov@gmail.com,
-	edumazet@google.com,
-	helgaas@kernel.org,
-	kuba@kernel.org,
-	leon@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	lukas@wunner.de,
-	mahesh@linux.ibm.com,
-	mattc@purestorage.com,
-	mika.westerberg@linux.intel.com,
-	netdev@vger.kernel.org,
-	npiggin@gmail.com,
-	oohall@gmail.com,
-	pabeni@redhat.com,
-	pali@kernel.org,
-	saeedm@nvidia.com,
-	sr@denx.de,
-	wilson@tuliptree.org
-Subject: PCI: Work around PCIe link training failures
-Date: Tue, 10 Jun 2025 00:00:44 -0700
-Message-Id: <20250610070044.92057-1-mattc@purestorage.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <alpine.DEB.2.21.2410031135250.45128@angie.orcam.me.uk>
-References: <alpine.DEB.2.21.2410031135250.45128@angie.orcam.me.uk>
+	t=1749541838; c=relaxed/relaxed;
+	bh=KxyURF4jSnclFhkT4Z75R/BtAbvdRTxXoovlPuJLDGU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KaOteAYDYqB1bt9m4ACMEfQj+zjGeqYzc+tOnYv9K56aZ4h+1AEPWzDglnKf7rz7RF6eqYnHtVGcvqJtpLMg9yihol0s25V4VbpGy5Z5C5ZaIrt/VRKf43Fum6CbMPdejZNcnO1iYAL0TmvAcBaVNGXudphZ414rT6oBh9xZTLb2OcK+0m5YJHB0fjsniNFtaoZcUrekamtFQCm9jJL21NW+uCotbXAf+CG0M7YpFE0Ema8pw0L4NvGTToe3cvwBRZ21EF9MiaTiAa7NYDPO0UPq1SHje5qZ1nEl0OnMnXsf4VP3vdkcNO3BpNb8yl3Kr/MG1Raw4G1yvgBr4SbY2Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bGgvL0n3Hz308P
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jun 2025 17:50:37 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4bGgWw6GWqz9sWd;
+	Tue, 10 Jun 2025 09:33:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id IomiIPVP0wtF; Tue, 10 Jun 2025 09:33:48 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4bGgWw5Tdpz9s9J;
+	Tue, 10 Jun 2025 09:33:48 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B6E718B778;
+	Tue, 10 Jun 2025 09:33:48 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 9xzMDpp4MJkO; Tue, 10 Jun 2025 09:33:48 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2AB3F8B76D;
+	Tue, 10 Jun 2025 09:33:48 +0200 (CEST)
+Message-ID: <cd96d70b-1eb3-494a-912a-52d479e3df87@csgroup.eu>
+Date: Tue, 10 Jun 2025 09:33:47 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -115,45 +57,160 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 00/11] Support page table check on PowerPC
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ pasha.tatashin@soleen.com, sweettea-kernel@dorminy.me
+References: <20250411054354.511145-1-ajd@linux.ibm.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20250411054354.511145-1-ajd@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-	T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello again.. It looks like there are specific system configurations that are
-extremely likely to have issues with this patch & result in undesirable
-system behavior..
 
-  Specifically hot-plug systems with side-band presence detection & without
-Power Controls (i.e PwrCtrl-) given to config space. It may also be related
-to presence on U.2 connectors being first-to-mate/last-to-break, but
-I don't have much experience with the different connectors. The main
-issue is that the quirk is invoked in at least two common cases when
-it is not expected that the link would train. 
-  For example, if I power off the slot via an out-of-band vendor specific
-mechanism we see the kernel decide that the link should be training,
-presumable because it will see PresDet+ in Slot Status. In this case it
-decides the link failed to train, writes the Gen1 speed value into TLS
-(target link speed) & returns after waiting for the link one more time.
-The next time the slot is powered on the link will train to Gen1 due to TLS.
-  Another problematic case is when we physically insert a device. In my case
-I am using nvme drives with U.2 connectors from several different vendors.
-The presence event is often generated before the device is fully powered on
-due to U.2 assigning presence as a first-to-mate & power being last-to-mate.
-I believe in this case that the kernel is expecting the link to train too
-soon & therefore we find that the quirk often applies the Gen1 TLS speed.
-Later, when the link comes up it is frequently observed at Gen1. I tried
-to unset bit 3 in Slot Control (Presence Detect Changed Enable), but we
-still hit the first case I described with powering off slots.
-  I should be clear and say that we are able to see devices forced to Gen1
-extremely often in the side-band presence configuration. We would really like
-to see this "quirk" removed or put behind an opt-in config since it causes
-significant regression in common configurations of pcie-hotplug. I have tried
-to come up with ideas to modify/improve the quirk, but I am not very
-confident that there is a good solution if the kernel cannot know for certain
-whether the link is expected to train.
 
-Thanks,
--Matt
+Le 11/04/2025 à 07:43, Andrew Donnellan a écrit :
+> Support page table check on all PowerPC platforms. This works by
+> serialising assignments, reassignments and clears of page table
+> entries at each level in order to ensure that anonymous mappings
+> have at most one writable consumer, and likewise that file-backed
+> mappings are not simultaneously also anonymous mappings.
+> 
+> In order to support this infrastructure, a number of stubs must be
+> defined for all powerpc platforms. Additionally, separate set_pte_at()
+> and set_pte_at_unchecked(), to allow for internal, uninstrumented mappings.
+> 
+> (This series was written by Rohan McLure, who has left IBM and is no longer
+> working on powerpc.)
+
+This series requires a rebase after commit 91e40668e70a 
+("mm/page_table_check: Batch-check pmds/puds just like ptes")
+
+
+Christophe
+
+> 
+> v14:
+>   * Fix a call to page_table_check_pud_set() that was missed (akpm)
+> 
+> v13:
+>   * Rebase on mainline
+>   * Don't use set_pte_at_unchecked() for early boot purposes (Pasha)
+> Link: https://lore.kernel.org/linuxppc-dev/20250211161404.850215-1-ajd@linux.ibm.com/
+> 
+> v12:
+>   * Rename commits that revert changes to instead reflect that we are
+>     reinstating old behaviour due to it providing more flexibility
+>   * Add return line to pud_pfn() stub
+>   * Instrument ptep_get_and_clear() for nohash
+> Link: https://lore.kernel.org/linuxppc-dev/20240402051154.476244-1-rmclure@linux.ibm.com/
+> 
+> v11:
+>   * The pud_pfn() stub, which previously had no legitimate users on any
+>     powerpc platform, now has users in Book3s64 with transparent pages.
+>     Include a stub of the same name for each platform that does not
+>     define their own.
+>   * Drop patch that standardised use of p*d_leaf(), as already included
+>     upstream in v6.9.
+>   * Provide fallback definitions of p{m,u}d_user_accessible_page() that
+>     do not reference p*d_leaf(), p*d_pte(), as they are defined after
+>     powerpc/mm headers by linux/mm headers.
+>   * Ensure that set_pte_at_unchecked() has the same checks as
+>     set_pte_at().
+> Link: https://lore.kernel.org/linuxppc-dev/20240328045535.194800-14-rmclure@linux.ibm.com/
+> 
+> v10:
+>   * Revert patches that removed address and mm parameters from page table
+>     check routines, including consuming code from arm64, x86_64 and
+>     riscv.
+>   * Implement *_user_accessible_page() routines in terms of pte_user()
+>     where available (64-bit, book3s) but otherwise by checking the
+>     address (on platforms where the pte does not imply whether the
+>     mapping is for user or kernel)
+>   * Internal set_pte_at() calls replaced with set_pte_at_unchecked(), which
+>     is identical, but prevents double instrumentation.
+> Link: https://lore.kernel.org/linuxppc-dev/20240313042118.230397-9-rmclure@linux.ibm.com/T/
+> 
+> v9:
+>   * Adapt to using the set_ptes() API, using __set_pte_at() where we need
+>     must avoid instrumentation.
+>   * Use the logic of *_access_permitted() for implementing
+>     *_user_accessible_page(), which are required routines for page table
+>     check.
+>   * Even though we no longer need p{m,u,4}d_leaf(), still default
+>     implement these to assist in refactoring out extant
+>     p{m,u,4}_is_leaf().
+>   * Add p{m,u}_pte() stubs where asm-generic does not provide them, as
+>     page table check wants all *user_accessible_page() variants, and we
+>     would like to default implement the variants in terms of
+>     pte_user_accessible_page().
+>   * Avoid the ugly pmdp_collapse_flush() macro nonsense! Just instrument
+>     its constituent calls instead for radix and hash.
+> Link: https://lore.kernel.org/linuxppc-dev/20231130025404.37179-2-rmclure@linux.ibm.com/
+> 
+> v8:
+>   * Fix linux/page_table_check.h include in asm/pgtable.h breaking
+>     32-bit.
+> Link: https://lore.kernel.org/linuxppc-dev/20230215231153.2147454-1-rmclure@linux.ibm.com/
+> 
+> v7:
+>   * Remove use of extern in set_pte prototypes
+>   * Clean up pmdp_collapse_flush macro
+>   * Replace set_pte_at with static inline function
+>   * Fix commit message for patch 7
+> Link: https://lore.kernel.org/linuxppc-dev/20230215020155.1969194-1-rmclure@linux.ibm.com/
+> 
+> v6:
+>   * Support huge pages and p{m,u}d accounting.
+>   * Remove instrumentation from set_pte from kernel internal pages.
+>   * 64s: Implement pmdp_collapse_flush in terms of __pmdp_collapse_flush
+>     as access to the mm_struct * is required.
+> Link: https://lore.kernel.org/linuxppc-dev/20230214015939.1853438-1-rmclure@linux.ibm.com/
+> 
+> v5:
+> Link: https://lore.kernel.org/linuxppc-dev/20221118002146.25979-1-rmclure@linux.ibm.com/
+> 
+> Rohan McLure (11):
+>    mm/page_table_check: Reinstate address parameter in
+>      [__]page_table_check_pud_set()
+>    mm/page_table_check: Reinstate address parameter in
+>      [__]page_table_check_pmd_set()
+>    mm/page_table_check: Provide addr parameter to
+>      page_table_check_pte_set()
+>    mm/page_table_check: Reinstate address parameter in
+>      [__]page_table_check_pud_clear()
+>    mm/page_table_check: Reinstate address parameter in
+>      [__]page_table_check_pmd_clear()
+>    mm/page_table_check: Reinstate address parameter in
+>      [__]page_table_check_pte_clear()
+>    mm: Provide address parameter to p{te,md,ud}_user_accessible_page()
+>    powerpc: mm: Add pud_pfn() stub
+>    powerpc: mm: Implement *_user_accessible_page() for ptes
+>    powerpc: mm: Use set_pte_at_unchecked() for internal usages
+>    powerpc: mm: Support page table check
+> 
+>   arch/arm64/include/asm/pgtable.h             | 18 +++---
+>   arch/powerpc/Kconfig                         |  1 +
+>   arch/powerpc/include/asm/book3s/32/pgtable.h | 12 +++-
+>   arch/powerpc/include/asm/book3s/64/pgtable.h | 62 +++++++++++++++---
+>   arch/powerpc/include/asm/nohash/pgtable.h    | 13 +++-
+>   arch/powerpc/include/asm/pgtable.h           | 19 ++++++
+>   arch/powerpc/mm/book3s64/hash_pgtable.c      |  4 ++
+>   arch/powerpc/mm/book3s64/pgtable.c           | 17 +++--
+>   arch/powerpc/mm/book3s64/radix_pgtable.c     |  9 ++-
+>   arch/powerpc/mm/pgtable.c                    | 12 ++++
+>   arch/riscv/include/asm/pgtable.h             | 18 +++---
+>   arch/x86/include/asm/pgtable.h               | 22 +++----
+>   include/linux/page_table_check.h             | 67 ++++++++++++--------
+>   include/linux/pgtable.h                      | 10 +--
+>   mm/page_table_check.c                        | 39 +++++++-----
+>   15 files changed, 226 insertions(+), 97 deletions(-)
+> 
+
 
