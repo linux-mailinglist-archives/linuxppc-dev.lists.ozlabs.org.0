@@ -1,73 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-9275-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9266-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BEDFAD4817
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jun 2025 03:41:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B770AD4739
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jun 2025 02:10:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bH7g76L19z2xlL;
-	Wed, 11 Jun 2025 11:41:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bH5fM6PZJz2ySY;
+	Wed, 11 Jun 2025 10:10:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749606099;
-	cv=none; b=RI0Fiuebvg9atEFwNUfSzcqKhxjDP/Hk+bvcilvJKquc9jJy26IS3vmaZ81mo/z0c0QWN5D837RBJwPO3rOvVlqpEQv29ROeDNvl0KflwtbIA/+IjTcAJu64OMGQT75GsFV2hloZcodV+aHydaSmiX7gsmNKrRbVlKlV17dgi4XGahOZXQIqkgNX2+T5taP5CPZ9Y0uwMD6d/B6+nMGFYokKyp3rbFAp5ttUpo28EU+78HmcSC4GvOzQcKwRlhk0r4GLWR7Q09vCG8qYOFAlmVVyLDvZWb8wnmpwmbSuZqr+RFTUEq9MTzbeXt1grHY7sEEOM9B2GNEJ4/aR3gR7dQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749600651;
+	cv=none; b=T32fY7hr4hWZQhPzbHZ68euvAlxWWPgkGN+spdoDloD/GNpT/clMsyyCJPUlyYUDC4+phtq/OwbssfSRu685WnmOR7+2w4P0Z+4RKuy3O2UnORmPlscjz0Ta+HATSyGW0S7QaxgPl/oorI8BUSupVbPFA/RAZ/c2kKBQFvHw1sJUpxqbiZ7GTlnfepuoD7lKipwMNeLJXepEvSfJU5FxohyyLSUaXgW1JHzQxodWWrch/YixVJtt5cKcL1nLHD9ipTGIGL32Wbx2E9JTNBJg1zfLas3jQfyHJacC4o1lXx3+k8xxcAY2Z9n/+KDwt6FIHOgZOzfe3/mia/lQdJMcrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749606099; c=relaxed/relaxed;
-	bh=BGuH2dyiu/bFkc/fUrMGAjF2Y3c7ohCm2qQGOhEL2I4=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=RowrEZXlTSIN6nhl2kJ9Jf2EyysNHyvXcVIgY/Ftjoybsv+o+bsSWAqafEtw3SSk4w5FLvQNgWoDGohWEImcntEqCUap30hIv+MUET6ow7aC18OPuDBuRNWAOK9lQU9gwvp9YHQs4LQTjyL+O2DrvWkZBwT5Gc9Pnm3QiK8y9hzNVo1hxrTWlV1g8AtnWf9Ndu9ZWZ11R68ESqCPoFS1/PzxugXpdy82QTRVGqXvQqd2blfcVTzPZOg4HCE6ruUQ74smTqTSpb3fYRi2cfZnlIjj/L5bae300ACrpTPTWj2SWvYehi4rMbpuYeD96u5+rsJfl7gZtJRrlcefz4KCWQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DACPMkxI; dkim-atps=neutral; spf=pass (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1749600651; c=relaxed/relaxed;
+	bh=KeHmPmMyMKJKT4alX9Roe+NB+CyhbaLAdm3PrWL3iJM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bArHg88B18c9CszxLoe9rVkNh7ocOgIpbHfaR/DZDeTlGtmEIzIBZDUdYXyIa5SqTPqxumV0tCrMh23sWwFs39Goco60jbdF/6rRxWdW9AYNk7Doa31/NusP3OCBqfXGtyuXQk2SS3b6iUkkJLi08vaG4Nk0cHVXmBziABEwtuaxDEcnk9bJI7v+XDXh4NeDeL+wUW6qP26Vh0fZW7dWlZC9pGcNM/whhP4uCYSG2bE+ccEBGUc7Epn3CdMOsWcpNuYL0p1QAKRYgr2VzdqXCtB/iOrK12vEdKNSVUBBO1WIVmYUSQ/CkQYK4TjldMIY+PyKE8HIdf5xhAcE+t733Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=kITa1E37; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3hcliaaykdiq0mivrkowwotm.kwutqv25xxk-lm3tq010.w7tij0.wzo@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DACPMkxI;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=kITa1E37;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3hcliaaykdiq0mivrkowwotm.kwutqv25xxk-lm3tq010.w7tij0.wzo@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bH7g53J7Cz2xd4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jun 2025 11:41:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1749606098; x=1781142098;
-  h=date:from:to:cc:subject:message-id;
-  bh=wiVK25JFxYrZ+M0fM78JCoBoammfjDe4+BJibZWrk1E=;
-  b=DACPMkxI4tdjTIBshRKlci6MdIJUOtoHPPjf2HU09pCpbUGw4HKIgQ/C
-   tIichc77fMf3y5HNSZuooHQGo3MEmykvt2NhAc7UrbZF82pt4SHaU4sii
-   66D78QGH20gsQ11PlhF4iSwLcNye7IzVeOny8tDff3qdmrFoSn0QRnbpx
-   cGK0vQQer9DwWzSEUxclYIXdKNNMSX/JjiHozDB6UfpPF/QeJWTNEWqiE
-   OlHzwys5la6OfvV8xPoYB0SMtC+Mkk90FfZuIvWyTsTEtf73K8gfTFIHL
-   STpTgG5LdZNjNT+i9jZ/VXo+12vPLHMuDONPYeDcay8dcYmLz9O0kstBK
-   w==;
-X-CSE-ConnectionGUID: ktXFixjsQA6cBxKNGLCQlw==
-X-CSE-MsgGUID: WlRXbNY2Tpujhai42Mbyvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11460"; a="51613723"
-X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="51613723"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2025 18:41:31 -0700
-X-CSE-ConnectionGUID: /5MgwMXjRFGmduAU6Xf4WQ==
-X-CSE-MsgGUID: Nw3m/G1nST+8xR0zFqpSEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,226,1744095600"; 
-   d="scan'208";a="184188358"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 10 Jun 2025 18:41:29 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uP5dm-0008jV-0b;
-	Tue, 10 Jun 2025 20:32:14 +0000
-Date: Wed, 11 Jun 2025 04:32:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 0d67f0dee6c9176bc09a5482dd7346e3a0f14d0b
-Message-ID: <202506110458.HAOBIe7N-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bH5fL0J8kz2xHY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jun 2025 10:10:49 +1000 (AEST)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-3138f5e8ff5so2369119a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jun 2025 17:10:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1749600646; x=1750205446; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KeHmPmMyMKJKT4alX9Roe+NB+CyhbaLAdm3PrWL3iJM=;
+        b=kITa1E37yBrtv9Ru7tyfwf1DzvY8RY/HDdeHdDCLpyIYK3c/enhyFlDVwilWD7wsNg
+         ZKgmMObSbN9ExrwyUejbKkV/PBa7W3W4Ies0WbmvJfYpddanxb4BlcswB6y4NAWV+I86
+         cMVM0PhUnAakO1bBNgomkUbbX2orrkRBYnnRjTOyKQzCDpk4wvi36GJFddF04KkVwF/Y
+         iFgVtHqVT920g1d2ee8Rk9S2IvvAJjsb+MMUHIJ0vZpC+3gascSLg8XmoQyn9yBddcwC
+         AvpR9Sr8VYbueTXdrURcVQyb8eaje02I5gYr+ySLc0zsqxDbbeoEDSMFgSBNZgjUsFgw
+         NE8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749600646; x=1750205446;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KeHmPmMyMKJKT4alX9Roe+NB+CyhbaLAdm3PrWL3iJM=;
+        b=aOJFRs3nf7cOWefd5Wy59DP+VtH8azE7DDnMe9/K6Y9EudwCw97jvH9tVE98IoW60U
+         +Ei9kDi+dLl7/xLpuyciJbN5VavTFQlHnqBBD63yVQbkssVM6IQLRxYSyXI2VE9j8XAe
+         x5RODRHVn1qn3YboZIASO9KWkr5MclUX79/j3XJZk8iB4CZbqfQpWPOf14G/mZg6zvLt
+         eMjUYR26jkbPfXH0gITTukcNPJT5McCeSLhXO7w7A5L6XysgMRb6rgrq3SZxeATTXftL
+         aZM/6w2MdsjhPev3uksP5PfQrmbTTSWuQb+eAv+DlJqUM2zBTadNytmXNG2EROHxPC4i
+         SrLw==
+X-Forwarded-Encrypted: i=1; AJvYcCVyZcG0FTOw89UN0Zd8pMOBvzRUkBKy30meEfmThPHJwlV3lvjLP2ARYg8iKnbJfZ/vqt9K9NYNxePcznA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyU8O4YIQ0Fon2lIWIboHiSlxf5qk5ef8ioxd+WiLOpGDij7ljz
+	eRAO+OXPSq9MRq86W83q2vGgOpkEr6M8fbdWSlRN3m7u1dgCKflx7p8fcWGKUvY3RzZaMXEESQ3
+	TMIkL7A==
+X-Google-Smtp-Source: AGHT+IF8oABFbuTKJ9GcUMp/LE7xUGa2l9YHKCqeYYF9+w27QVhniGaieMvIcJ7joDnc4dA30O9QnXDBack=
+X-Received: from pjz3.prod.google.com ([2002:a17:90b:56c3:b0:312:e914:4548])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3ec4:b0:311:9c9a:58d7
+ with SMTP id 98e67ed59e1d1-313b1fbe6admr808960a91.19.1749600645461; Tue, 10
+ Jun 2025 17:10:45 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Tue, 10 Jun 2025 17:10:34 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,206 +74,123 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.50.0.rc0.642.g800a2b2222-goog
+Message-ID: <20250611001042.170501-1-seanjc@google.com>
+Subject: [PATCH 0/8] KVM: Remove include/kvm, standardize includes
+From: Sean Christopherson <seanjc@google.com>
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Anish Ghulati <aghulati@google.com>, Colton Lewis <coltonlewis@google.com>, 
+	Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 0d67f0dee6c9176bc09a5482dd7346e3a0f14d0b  powerpc/vas: Return -EINVAL if the offset is non-zero in mmap()
+Kill off include/kvm (through file moves/renames), and standardize the set of
+KVM includes across all architectures.
 
-elapsed time: 1042m
+This conflicts with Colton's partioned PMU series[1], but this should work as
+a nice prepatory cleanup for the partitioned PMU work (and hopefully can land
+sooner).
 
-configs tested: 185
-configs skipped: 119
+Note, these patches were originally posted as part of a much larger and more
+agressive RFC[1].  We've effectively abandoned upstreaming the multi-KVM idea,
+but I'm trying to (slowly) upstream the bits and pieces that I think/hope are
+generally beneficial.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+[1] https://lore.kernel.org/all/20250602192702.2125115-1-coltonlewis@google.com
+[2] https://lore.kernel.org/all/20230916003118.2540661-1-seanjc@google.com
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    clang-19
-alpha                               defconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20250610    gcc-12.4.0
-arc                   randconfig-002-20250610    gcc-12.4.0
-arm                               allnoconfig    gcc-15.1.0
-arm                                 defconfig    gcc-15.1.0
-arm                         lpc32xx_defconfig    gcc-15.1.0
-arm                   randconfig-001-20250610    gcc-12.4.0
-arm                   randconfig-002-20250610    gcc-12.4.0
-arm                   randconfig-003-20250610    gcc-12.4.0
-arm                   randconfig-004-20250610    gcc-12.4.0
-arm                           sama5_defconfig    gcc-15.1.0
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20250610    gcc-12.4.0
-arm64                 randconfig-002-20250610    gcc-12.4.0
-arm64                 randconfig-003-20250610    gcc-12.4.0
-arm64                 randconfig-004-20250610    gcc-12.4.0
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20250610    gcc-12.4.0
-csky                  randconfig-001-20250610    gcc-15.1.0
-csky                  randconfig-002-20250610    gcc-14.3.0
-csky                  randconfig-002-20250610    gcc-15.1.0
-hexagon                          allmodconfig    clang-19
-hexagon                           allnoconfig    gcc-15.1.0
-hexagon                          allyesconfig    clang-19
-hexagon                             defconfig    gcc-15.1.0
-hexagon               randconfig-001-20250610    clang-21
-hexagon               randconfig-001-20250610    gcc-15.1.0
-hexagon               randconfig-002-20250610    clang-21
-hexagon               randconfig-002-20250610    gcc-15.1.0
-i386                             allmodconfig    clang-20
-i386                              allnoconfig    clang-20
-i386                             allyesconfig    clang-20
-i386        buildonly-randconfig-001-20250610    clang-20
-i386        buildonly-randconfig-002-20250610    clang-20
-i386        buildonly-randconfig-003-20250610    clang-20
-i386        buildonly-randconfig-004-20250610    clang-20
-i386        buildonly-randconfig-005-20250610    clang-20
-i386        buildonly-randconfig-006-20250610    clang-20
-i386                                defconfig    clang-20
-i386                  randconfig-001-20250610    clang-20
-i386                  randconfig-002-20250610    clang-20
-i386                  randconfig-003-20250610    clang-20
-i386                  randconfig-004-20250610    clang-20
-i386                  randconfig-005-20250610    clang-20
-i386                  randconfig-006-20250610    clang-20
-i386                  randconfig-007-20250610    clang-20
-i386                  randconfig-011-20250610    clang-20
-i386                  randconfig-012-20250610    clang-20
-i386                  randconfig-013-20250610    clang-20
-i386                  randconfig-014-20250610    clang-20
-i386                  randconfig-015-20250610    clang-20
-i386                  randconfig-016-20250610    clang-20
-i386                  randconfig-017-20250610    clang-20
-loongarch                        allmodconfig    gcc-15.1.0
-loongarch                         allnoconfig    gcc-15.1.0
-loongarch                           defconfig    gcc-15.1.0
-loongarch                 loongson3_defconfig    gcc-15.1.0
-loongarch             randconfig-001-20250610    gcc-15.1.0
-loongarch             randconfig-002-20250610    gcc-15.1.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-m68k                        m5307c3_defconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                        bcm63xx_defconfig    gcc-15.1.0
-mips                          eyeq5_defconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-15.1.0
-nios2                               defconfig    gcc-15.1.0
-nios2                 randconfig-001-20250610    gcc-15.1.0
-nios2                 randconfig-001-20250610    gcc-8.5.0
-nios2                 randconfig-002-20250610    gcc-13.3.0
-nios2                 randconfig-002-20250610    gcc-15.1.0
-openrisc                          allnoconfig    clang-21
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    clang-21
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-12
-parisc                randconfig-001-20250610    gcc-10.5.0
-parisc                randconfig-001-20250610    gcc-15.1.0
-parisc                randconfig-002-20250610    gcc-15.1.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    clang-21
-powerpc                          allyesconfig    clang-21
-powerpc                      arches_defconfig    gcc-15.1.0
-powerpc                  mpc866_ads_defconfig    gcc-15.1.0
-powerpc               randconfig-001-20250610    gcc-10.5.0
-powerpc               randconfig-001-20250610    gcc-15.1.0
-powerpc               randconfig-002-20250610    gcc-15.1.0
-powerpc               randconfig-002-20250610    gcc-8.5.0
-powerpc               randconfig-003-20250610    clang-21
-powerpc               randconfig-003-20250610    gcc-15.1.0
-powerpc                     tqm8560_defconfig    gcc-15.1.0
-powerpc64             randconfig-001-20250610    clang-21
-powerpc64             randconfig-001-20250610    gcc-15.1.0
-powerpc64             randconfig-002-20250610    clang-21
-powerpc64             randconfig-002-20250610    gcc-15.1.0
-powerpc64             randconfig-003-20250610    gcc-11.5.0
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    clang-21
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    gcc-12
-riscv                               defconfig    gcc-15.1.0
-riscv                 randconfig-001-20250610    gcc-9.3.0
-riscv                 randconfig-002-20250610    gcc-9.3.0
-s390                             allmodconfig    gcc-15.1.0
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20250610    gcc-9.3.0
-s390                  randconfig-002-20250610    gcc-9.3.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-12
-sh                        edosk7760_defconfig    gcc-15.1.0
-sh                    randconfig-001-20250610    gcc-9.3.0
-sh                    randconfig-002-20250610    gcc-9.3.0
-sh                          rsk7264_defconfig    gcc-15.1.0
-sh                     sh7710voipgw_defconfig    gcc-15.1.0
-sparc                            alldefconfig    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                 randconfig-001-20250610    gcc-9.3.0
-sparc                 randconfig-002-20250610    gcc-9.3.0
-sparc64                             defconfig    gcc-12
-sparc64               randconfig-001-20250610    gcc-9.3.0
-sparc64               randconfig-002-20250610    gcc-9.3.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    clang-19
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250610    gcc-9.3.0
-um                    randconfig-002-20250610    gcc-9.3.0
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250610    gcc-12
-x86_64      buildonly-randconfig-002-20250610    gcc-12
-x86_64      buildonly-randconfig-003-20250610    gcc-12
-x86_64      buildonly-randconfig-004-20250610    gcc-12
-x86_64      buildonly-randconfig-005-20250610    gcc-12
-x86_64      buildonly-randconfig-006-20250610    gcc-12
-x86_64                              defconfig    clang-20
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20250610    clang-20
-x86_64                randconfig-002-20250610    clang-20
-x86_64                randconfig-003-20250610    clang-20
-x86_64                randconfig-004-20250610    clang-20
-x86_64                randconfig-005-20250610    clang-20
-x86_64                randconfig-006-20250610    clang-20
-x86_64                randconfig-007-20250610    clang-20
-x86_64                randconfig-008-20250610    clang-20
-x86_64                randconfig-071-20250610    clang-20
-x86_64                randconfig-072-20250610    clang-20
-x86_64                randconfig-073-20250610    clang-20
-x86_64                randconfig-074-20250610    clang-20
-x86_64                randconfig-075-20250610    clang-20
-x86_64                randconfig-076-20250610    clang-20
-x86_64                randconfig-077-20250610    clang-20
-x86_64                randconfig-078-20250610    clang-20
-x86_64                               rhel-9.4    clang-20
-x86_64                           rhel-9.4-bpf    gcc-12
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                         rhel-9.4-kunit    gcc-12
-x86_64                           rhel-9.4-ltp    gcc-12
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250610    gcc-9.3.0
-xtensa                randconfig-002-20250610    gcc-9.3.0
+Anish Ghulati (1):
+  KVM: arm64: Move arm_{psci,hypercalls}.h to an internal KVM path
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Sean Christopherson (7):
+  KVM: arm64: Include KVM headers to get forward declarations
+  KVM: arm64: Move ARM specific headers in include/kvm to arch directory
+  KVM: Move include/kvm/iodev.h to include/linux as kvm_iodev.h
+  KVM: MIPS: Stop adding virt/kvm to the arch include path
+  KVM: PPC: Stop adding virt/kvm to the arch include path
+  KVM: s390: Stop adding virt/kvm to the arch include path
+  KVM: Standardize include paths across all architectures
+
+ MAINTAINERS                                                | 1 -
+ .../arm64/include/asm/kvm_arch_timer.h                     | 2 ++
+ arch/arm64/include/asm/kvm_host.h                          | 7 +++----
+ include/kvm/arm_pmu.h => arch/arm64/include/asm/kvm_pmu.h  | 2 ++
+ .../kvm/arm_vgic.h => arch/arm64/include/asm/kvm_vgic.h    | 2 +-
+ arch/arm64/kvm/Makefile                                    | 2 --
+ arch/arm64/kvm/arch_timer.c                                | 5 ++---
+ arch/arm64/kvm/arm.c                                       | 6 +++---
+ {include => arch/arm64}/kvm/arm_hypercalls.h               | 0
+ {include => arch/arm64}/kvm/arm_psci.h                     | 0
+ arch/arm64/kvm/guest.c                                     | 2 +-
+ arch/arm64/kvm/handle_exit.c                               | 2 +-
+ arch/arm64/kvm/hyp/Makefile                                | 6 +++---
+ arch/arm64/kvm/hyp/include/hyp/switch.h                    | 4 ++--
+ arch/arm64/kvm/hyp/nvhe/switch.c                           | 4 ++--
+ arch/arm64/kvm/hyp/vhe/switch.c                            | 4 ++--
+ arch/arm64/kvm/hypercalls.c                                | 4 ++--
+ arch/arm64/kvm/pmu-emul.c                                  | 4 ++--
+ arch/arm64/kvm/psci.c                                      | 4 ++--
+ arch/arm64/kvm/pvtime.c                                    | 2 +-
+ arch/arm64/kvm/reset.c                                     | 3 +--
+ arch/arm64/kvm/trace_arm.h                                 | 2 +-
+ arch/arm64/kvm/trng.c                                      | 2 +-
+ arch/arm64/kvm/vgic/vgic-debug.c                           | 2 +-
+ arch/arm64/kvm/vgic/vgic-init.c                            | 2 +-
+ arch/arm64/kvm/vgic/vgic-irqfd.c                           | 2 +-
+ arch/arm64/kvm/vgic/vgic-kvm-device.c                      | 2 +-
+ arch/arm64/kvm/vgic/vgic-mmio-v2.c                         | 4 ++--
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c                         | 4 ++--
+ arch/arm64/kvm/vgic/vgic-mmio.c                            | 6 +++---
+ arch/arm64/kvm/vgic/vgic-v2.c                              | 2 +-
+ arch/arm64/kvm/vgic/vgic-v3-nested.c                       | 3 +--
+ arch/arm64/kvm/vgic/vgic-v3.c                              | 2 +-
+ arch/loongarch/include/asm/kvm_eiointc.h                   | 2 +-
+ arch/loongarch/include/asm/kvm_ipi.h                       | 2 +-
+ arch/loongarch/include/asm/kvm_pch_pic.h                   | 2 +-
+ arch/mips/include/asm/kvm_host.h                           | 3 +--
+ arch/mips/kvm/Makefile                                     | 2 --
+ arch/powerpc/kvm/Makefile                                  | 2 --
+ arch/powerpc/kvm/mpic.c                                    | 2 +-
+ arch/riscv/kvm/Makefile                                    | 2 --
+ arch/riscv/kvm/aia_aplic.c                                 | 2 +-
+ arch/riscv/kvm/aia_imsic.c                                 | 2 +-
+ arch/s390/kvm/Makefile                                     | 2 --
+ arch/x86/kvm/Makefile                                      | 1 -
+ arch/x86/kvm/i8254.h                                       | 2 +-
+ arch/x86/kvm/ioapic.h                                      | 2 +-
+ arch/x86/kvm/irq.h                                         | 2 +-
+ arch/x86/kvm/lapic.h                                       | 2 +-
+ include/{kvm/iodev.h => linux/kvm_iodev.h}                 | 0
+ virt/kvm/Makefile.kvm                                      | 2 ++
+ virt/kvm/coalesced_mmio.c                                  | 3 +--
+ virt/kvm/eventfd.c                                         | 2 +-
+ virt/kvm/kvm_main.c                                        | 3 +--
+ 54 files changed, 64 insertions(+), 77 deletions(-)
+ rename include/kvm/arm_arch_timer.h => arch/arm64/include/asm/kvm_arch_timer.h (98%)
+ rename include/kvm/arm_pmu.h => arch/arm64/include/asm/kvm_pmu.h (99%)
+ rename include/kvm/arm_vgic.h => arch/arm64/include/asm/kvm_vgic.h (99%)
+ rename {include => arch/arm64}/kvm/arm_hypercalls.h (100%)
+ rename {include => arch/arm64}/kvm/arm_psci.h (100%)
+ rename include/{kvm/iodev.h => linux/kvm_iodev.h} (100%)
+
+
+base-commit: 61374cc145f4a56377eaf87c7409a97ec7a34041
+-- 
+2.50.0.rc0.642.g800a2b2222-goog
+
 
