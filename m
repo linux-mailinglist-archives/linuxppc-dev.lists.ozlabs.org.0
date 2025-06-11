@@ -1,84 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-9276-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9277-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1939AD4942
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jun 2025 05:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3835DAD4A8A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jun 2025 07:49:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bH9n46lL7z2yYJ;
-	Wed, 11 Jun 2025 13:16:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bHF8w4YNnz307V;
+	Wed, 11 Jun 2025 15:49:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749611816;
-	cv=none; b=glrFZJAi/NMG0Ik/KRaTCdJNf3SGm7YXeHc3TCZaqKg5cnCfyQTX9GCHwgAjQEenXMdrPZg1VmflaIUrzZh+b6gZKWr0BaSZYbnYrbJAIU0gcfztfDd4BqaPL7QBQV4j2QRz3tFMC5kYXcK7bcIPXRgbbvgiYY2A1C/Ihuy6aS61l+YO1BCcAhnuRsUc5ixGLbDZCm5jPbTEYw0DG0ui05tdeJCvyjBAF5r4Kqbbn1Hr78aRFJJI939ZL5ZBcC3RKuqTluuDRXpW4l/Wen4/2eNjRtYIlTZzmtK9Pb8lid43+EKzOCmAc6bhHBOqB/Rz0mb+y9v7tDldHr5gOsVccQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749620960;
+	cv=none; b=G+sw37gzWlR0jclOAxC8iMdbYUX13vL5lfmiPthwCzcwejim1fjskh44pEicoVZQvttByU0LLmK2/fd6ziUVghGTafn0etGnS3Ty5cJNI109mFpgCBWaxawRvtLjgY8S+LIAp0f/vZ9CakuBJzA3Z3UY9nwiT8tqbQ67bVFwEFVrRTxkdwe8Ce9UZqZi4UBgHUeucFHhABJVs76HDIwqRxjZL7ElvqH/Y9AI7vEW5jzZeD+ITIvr0FlSm91TYgo+ij2YoBc+SEs+cNLBvDIETtYlfnK5tp/ycy+m7bwVq2o0YRjbjOQumK9Hi6qjQl/kHF9fdsIybwfzcHeegDyFTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749611816; c=relaxed/relaxed;
-	bh=Lf7BvVIDm8EM4XYNV56QJUeGN0cANCnC7Jw/EtcpFEY=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BOgiLzsJtd1CafbyABkkE7ppgUJjCyWUA2mQFp4geOTtNkrtsVdiMJSi9srG56ifmvoynhjt3rF49FfqVrCjdTjwmF7TguRgKkV6e+PdUhJOz+ri5bY73LU7YMfaBeNqlRRj2XE7zGxmBiSKm67ymotl9bFo7/pHF8auFjvltuNky2yEKshuYYyToquDEQG4N3t/tF0PaayYQMIsya3IieucGjOwzHhaMbxCYBJfue0XHz8mesBlaVzCK5I14Cz2RJmj08FTcdQIiHAjYOpeuJkl2197X8b5hgSlojH4fm29N3Qv+Giu6HhAGjet0yTHtGdqEZmXWAJvHG/WPa2/XQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LPSzMqm3; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1749620960; c=relaxed/relaxed;
+	bh=2IQQi5msU8bl9rRll9LflLOSz4HCxVSHS0uQ2iKnuxU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gTut24kyguA7QD8ulGjTWXLcrjLqtT01COmHMmuGqQckcObCvV1aVif4EU37uo+kKSydLJa9nFdtfAmyEXcEXhL5jIAMJ/tcWm/ZgWvcYu0OhlrOiF085tbTWnhp8pvewBH+oRnDFIdyIPv6PIoTuG62oNU+swEBhvp47ENlpyNmPmO5uw1dA7NpOPnN8o+010paR+44maFhANeU8YhfgY96p+N9Zm4f5bFlGmEHt044hdRro/+TmN5LVXEYvaYJqXw2Qwp+cFAGI4vFDTLZ0HqqJ5sUsS7E97PzquhF2QqP1og/LHZzb4R8SjF67JAh4iWZ6vTZwGmXmE4Aew/Pwg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DJoA0yfh; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DJoA0yfh; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LPSzMqm3;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DJoA0yfh;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DJoA0yfh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bH9n35nbHz2xHY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jun 2025 13:16:55 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55B0wOUA005022;
-	Wed, 11 Jun 2025 03:16:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Lf7BvV
-	IDm8EM4XYNV56QJUeGN0cANCnC7Jw/EtcpFEY=; b=LPSzMqm316st9ZRmvQohwq
-	4MmCCN2w4wfiFJhlO4k5MovQ1dKzRcpmgm/P+yIApgO/iNYvXHfdB0Tj/HilTVME
-	FurFKplwHWSRHlkT4BXyv8jMsUdHdUIcURVpUFQZLOgJzoIJjVOUfiRi7h+1HQ1L
-	aY40ojvmwYMeOSPjZPCC6Y8www2W8nXltmxw4vKBELl8p45bLuOZw7Zn/TUuSSr5
-	d0ZPWuIA403HCN8Gmxr4t5iVEKh2P/VJZlV7jELBQOfH7R0ZrP/4nwrecoAJksrT
-	u/y4b3G/NTMt/v5uwfech002AuL3BRYcoZA8u+tAdSYL6jnCv/Dx3b2Y0RcGQd9Q
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474x4m75yc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Jun 2025 03:16:40 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55B0odqo015369;
-	Wed, 11 Jun 2025 03:16:18 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4750rp5ph4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Jun 2025 03:16:18 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55B3GH7N17760930
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Jun 2025 03:16:17 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E46458056;
-	Wed, 11 Jun 2025 03:16:17 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 15F665804E;
-	Wed, 11 Jun 2025 03:16:13 +0000 (GMT)
-Received: from jarvis.ozlabs.ibm.com (unknown [9.36.1.82])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Jun 2025 03:16:12 +0000 (GMT)
-Message-ID: <491294f7088d9946d00379fd833c0ab20069dea2.camel@linux.ibm.com>
-Subject: Re: [PATCH v14 00/11] Support page table check on PowerPC
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linuxppc-dev@lists.ozlabs.org
-Cc: x86@kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        pasha.tatashin@soleen.com, sweettea-kernel@dorminy.me
-Date: Wed, 11 Jun 2025 13:16:11 +1000
-In-Reply-To: <cd96d70b-1eb3-494a-912a-52d479e3df87@csgroup.eu>
-References: <20250411054354.511145-1-ajd@linux.ibm.com>
-	 <cd96d70b-1eb3-494a-912a-52d479e3df87@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHF8t57mvz2yMt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jun 2025 15:49:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749620952;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2IQQi5msU8bl9rRll9LflLOSz4HCxVSHS0uQ2iKnuxU=;
+	b=DJoA0yfhctqAWovgI/e51WrgePp1XFJl+SegLYWA77Zdfk3gr98Ie5lOc9DLGij7+1dDxN
+	9VFXZjtZ3CxWclOm1Qk+kzvKDEFR8hTmgTDfNhWuOZ4Sw2vc6EHxaXa91y80krTGcFQRvy
+	xIjpor77BnEEI7HIS1gOnMdKM6bD+Hc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749620952;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2IQQi5msU8bl9rRll9LflLOSz4HCxVSHS0uQ2iKnuxU=;
+	b=DJoA0yfhctqAWovgI/e51WrgePp1XFJl+SegLYWA77Zdfk3gr98Ie5lOc9DLGij7+1dDxN
+	9VFXZjtZ3CxWclOm1Qk+kzvKDEFR8hTmgTDfNhWuOZ4Sw2vc6EHxaXa91y80krTGcFQRvy
+	xIjpor77BnEEI7HIS1gOnMdKM6bD+Hc=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-376-8kloy4pQMMaHun2v1XA7OA-1; Wed, 11 Jun 2025 01:49:00 -0400
+X-MC-Unique: 8kloy4pQMMaHun2v1XA7OA-1
+X-Mimecast-MFC-AGG-ID: 8kloy4pQMMaHun2v1XA7OA_1749620939
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a4f858bc5eso4476871f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jun 2025 22:48:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749620939; x=1750225739;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2IQQi5msU8bl9rRll9LflLOSz4HCxVSHS0uQ2iKnuxU=;
+        b=QSm5uWtqx3Ejp/aiYJLp2SfC1VE3LdFpuRsOvNqLTUMZnu6pbJtmDo3d6Cck70Ymc9
+         ot+5Ku1a0Aqm8wXwO6rSuRHrHHVxyGH1pOmN3V0PLGnhHjeyY6rVGz5ky+KTy2+0XVwp
+         eu/cBRa0TfR3QWrQOv0XIq7LVmsiADWFotnZO2YmnIlcGuNMGZUkuOYbUmkwn8qLOf3u
+         VywcnmFJ1GnqBql8EOrw7Ara2kxgDbhCMNL+4z3ose8JmBWXeplYuqdl9aPTOzksoP/J
+         x+cj/lKMbBEHRNeb/uaKkommVsof2nup8uVefRedQGOj+DaFTWk2ZGms4pEUFD+34Vpz
+         5lbg==
+X-Gm-Message-State: AOJu0YxXnGYNEl3JQlxgmqCRt2bhexFrxqTfHxa59+CvIxUK+j3Ujlc1
+	nbxvuklw86aHHV0c0enqtkWuRCdZL2ssc1zvSVUTVlHrX9zKlPKQScYezhD+9x0/NpRZo7APNsV
+	Sz/BcFTPuRtHHlfLElLePwy6bFcPRYB/Xl00jK0lxWU8KMVefo2BnRyoEgCXgF1xYozg=
+X-Gm-Gg: ASbGnctJK5Dhr6YkJp3jtGSYbJnjMUkcYb90w5bqSN2dhyDV9Jd1ChD9BjmNmYRjTTe
+	0009Uq8JF1xWo8w0XgcexGhYveOOdjqJpd9j5PQ1CIoawdFvZBfzlLFsjlkpUscwfsQGvP+9idF
+	2pha1yKFAgAXCVvNUgJqY5/nijMe0GuzxfwNOZluHufHhM/7wGAH+s62Blab5JdqwMw9HjZYZNN
+	+A4NR4tcPHHh1PMMHgHGlCxrogly4YlyRPS3yyq97yJycTXPMdmzNmKVeJYilorPPjpc4NTmjdK
+	kWh1RvOkY/zByuuhCNhrSiKLWXO93j65P/2NZ164QobC9mIqTyg7y74Ig3zdZac=
+X-Received: by 2002:a05:6000:220e:b0:3a5:34ea:851e with SMTP id ffacd0b85a97d-3a5586dba2emr1229643f8f.25.1749620938890;
+        Tue, 10 Jun 2025 22:48:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0kAp44nSFq4sY+QLXk+hBJLmqlsbpKCohb1suQ88NoVUKYavdCZyebIm8cU3djDIeBwXoMQ==
+X-Received: by 2002:a05:6000:220e:b0:3a5:34ea:851e with SMTP id ffacd0b85a97d-3a5586dba2emr1229627f8f.25.1749620938504;
+        Tue, 10 Jun 2025 22:48:58 -0700 (PDT)
+Received: from [192.168.0.4] (ltea-047-064-115-122.pools.arcor-ip.net. [47.64.115.122])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5323b4e2fsm14151574f8f.36.2025.06.10.22.48.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Jun 2025 22:48:58 -0700 (PDT)
+Message-ID: <2f5021db-2d3c-4294-a8c5-830a45db6b68@redhat.com>
+Date: Wed, 11 Jun 2025 07:48:56 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,35 +102,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Y4X4sgeN c=1 sm=1 tr=0 ts=6848f518 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=LR7N31DEqsj-hj7dFvAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: -tWHcyyOJQhD7KXGwD8yxemJpeXmI38q
-X-Proofpoint-ORIG-GUID: -tWHcyyOJQhD7KXGwD8yxemJpeXmI38q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjExMDAyOCBTYWx0ZWRfXz2I+ORnuRokq a1euH+5GS2nvtXIg9KZ82iGM3bExHNmu5ahRlJPOx3jxFV0SITLic2eKrapS4OsG1RiGJQbdUFv AtgTIs5t17enLT6alHjDHLvIYWCvZ+5HRsxB6rH+zQABD7lwtqsp3su7ZnJEJKbUus1WPF52WP9
- WG9K3XaXwpG7i2Ii7XIT1M7bDCkh40mlNuu34I4vE8XW7VAX+brkzSvZyRbNDjSsVnGuWjfnc/S rH7mYWhK0GZRoBM2wFwE3TP8VfqLrdwFMWR4d9dPPgYovR2hioNprdwcMJrLAxnBXqg2QOe4CdR tE4vsV0uSU0QrueVVUE417GAiDJ9kJ6x3MXfrJvD7KVlWw8iNvICnqIXyK5gmbWYI1GUOOpGFDM
- WNY6llks3q2menjJsssWIqBdQa2nGulbcPasMef/2UjR+YWfXAYcROAxmMSKq/ajJGg/AUD5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-11_01,2025-06-10_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=703 spamscore=0
- clxscore=1011 lowpriorityscore=0 malwarescore=0 bulkscore=0 adultscore=0
- impostorscore=0 suspectscore=0 phishscore=0 mlxscore=0 priorityscore=1501
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506110028
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] powerpc: Replace __ASSEMBLY__ with __ASSEMBLER__
+ in uapi headers
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Geoff Levand <geoff@infradead.org>, Naveen N Rao <naveen@kernel.org>
+References: <20250610160128.69033-1-thuth@redhat.com>
+ <20250610160128.69033-2-thuth@redhat.com>
+ <20250610201244.GF30295@gate.crashing.org>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250610201244.GF30295@gate.crashing.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: wMMhr2WvPc7i1U4a4412ZW_-kc_OERFhYIsbsL4srpA_1749620939
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 2025-06-10 at 09:33 +0200, Christophe Leroy wrote:
-> This series requires a rebase after commit 91e40668e70a=20
-> ("mm/page_table_check: Batch-check pmds/puds just like ptes")
+On 10/06/2025 22.12, Segher Boessenkool wrote:
+> On Tue, Jun 10, 2025 at 06:01:27PM +0200, Thomas Huth wrote:
+>> From: Thomas Huth <thuth@redhat.com>
+>>
+>> __ASSEMBLY__ is only defined by the Makefile of the kernel, so
+>> this is not really useful for uapi headers (unless the userspace
+>> Makefile defines it, too). Let's switch to __ASSEMBLER__ which
+>> gets set automatically by the compiler when compiling assembly
+>> code.
+> 
+> Assembl*er* code, yeah :-)  (What is "assembly"?  The dictionary says
+> "An assembly is a group of people gathered together for a particular
+> purpose.", but that is probably not what you mean :-) )
 
-Will respin!
->=20
+I'm not a native speaker, but the web seems to be full of "assembly code", 
+even the Wikipedia article uses it (see 
+https://en.wikipedia.org/wiki/Assembly_language). Anyway, I can change it if 
+that's preferred.
 
---=20
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
+> Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
+
+Thanks for your review!
+
+  Thomas
+
 
