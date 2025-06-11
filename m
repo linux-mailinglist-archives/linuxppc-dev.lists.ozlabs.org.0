@@ -1,60 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-9294-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9295-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74E2AD5CC7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jun 2025 19:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F24CAD5EB9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jun 2025 21:01:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bHX3s2JHxz307q;
-	Thu, 12 Jun 2025 03:00:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bHZkc3TbVz2yDH;
+	Thu, 12 Jun 2025 05:01:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749661257;
-	cv=none; b=U78gAR91Jv6wSxlB6taexsj4BhbH2PCDEbKpY6srygjoP7K1/3zladk/33LAceUDWh/lJFYLpVii8OPl/davXQoteE4ySQFn0Nmstup1JpSpgydp4+jJunt7TXqZGDVA1ex0T5aGooSoYpqByill+EuxvA8eyeNtv7qMEcrr9/tMbDdIUe50ZK4YACL+JgcyxzXcfA4u+9JiOVZ6hqI8JKloc6j1wKaxhleliEp4ZWOptr32+1e2nY9QaEI25N/ISxyuhiioELnqGyxcO+KEk7gKg2G2W3wNXouc/50TtY1w6FIYJaw2fX7Lcg7zn3qYAHvgQMV4KeNN7a/BxZIwOQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749668472;
+	cv=none; b=dAn5ejXqCnIjSua62nW6g55tVj4qJ1CI1c+1KM3N6xI46Zi7OheixElN7RN0+oHtkihH7UtI8bu5zYo5pEvkg2gKgYsqBejYQjPyGq9iT9PvW5VY9MkPkmLUjOtNCvszJ0zsSFbYILV5Hb6TdNO7L1WP0ZHEDNZ6rClo8gUtMmzQoiYmVUtjFAMQvwQo3ok93UH0CHR7F2Kju7P7p7t7h3CyFvlCeO0psVEzDxRnLVMUddNp7FNoSFWm2vuQ+VE6t/Gjlbjm76PIF3EUdySl1LrFRKkCAv6OJ5darAXafahzETqPucOOkI1JYuPZrEmus/9k4DCzg1ERKoyK077RaQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749661257; c=relaxed/relaxed;
-	bh=bu+SCGp6N2J4tAhn9AzeEjHNdObfYnCFQz6z9QyAfHo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rce+8jnmGIp02jq4i0ie6h8NED0yxSiDmool4tSCFqs8Gp7ONsbbNZs2+oPsenaVbVZsSnswDetMcJl6940oQ36tF2yKvkHFqLx+rlypp4qk3FFmY0OBGDTNOIsGMQRgkf/7ekFiET14zKgaZf/SMvccAW7IxhPEDlck9pt8jcHb1hKXPmRMk7HaLC61PNou8yHLK2EpbG8pbk28B/0jgelsfkCEeVFWu8K4vw8KenCFMh6hATvvPL/285C1FvIn7I0j/0KtkxkwSmXexs24v+V12Y5griUwXd1YUlQzLRUaSXo+P/UlJFzAnCubWgDYhuJ+4U/4uZnugmCCsUXGag==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p4hyrQAc; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1749668472; c=relaxed/relaxed;
+	bh=9JqTknVBznSa5r5zkYwKn40k0FyyjT66SL/2xTuQW4A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Qg+4hkTPetVAwIhS4km+L4CZ3KA87ZUSk2vzMIXmvNQvdPxUVUxrn/lbGLNCL48PryohH6BAQ2PfoSJz7cqg7hhH9w//6ajPvNtp5AmRVdhvSd5GChgnZNUH6b4gWF8UBu01NgvCtW5JBmSEOxkQ4zCK/B/DYE05BM4ExXQ2FUg55CQFPeNLoTJWgDB575Z7EH3cwdvWm86vpch+Igu3Nqaoe1w6KGfLUA9rNxUoewAexWDWzHyhG87fyxuqwXottW0/a+9ilh6PlF0YPQldbyQGiCphnDq3dZfMfVy0bSU3puZcfn4FHAV+pBN5oEiOICHRFaFnAGikyshk96SZ4Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s7d89dHb; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p4hyrQAc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s7d89dHb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHX3q6j6kz2yNG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jun 2025 03:00:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHZkZ35Ffz2y82
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jun 2025 05:01:10 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 790445C0FDA;
-	Wed, 11 Jun 2025 16:58:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9913C4CEE3;
-	Wed, 11 Jun 2025 17:00:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F166D61F1D;
+	Wed, 11 Jun 2025 19:01:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9F5D0C4CEEA;
+	Wed, 11 Jun 2025 19:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749661247;
-	bh=U1j6kxoyOkjl28igDCJYe1I9pHNhofmpnBeLH4TWCQo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p4hyrQAc8dlu8sBj0gfIHVVSY23CT2QtlWEWzvD0M2Qj2hHkJPXAttqrZi3+K4NDA
-	 iw0OOgYL4nWtf1rVe8qMXcYbUvJyhcr9CIbR6CVPNEIg9wtwiEFh7K4oigJpqfFiUg
-	 66BA3kLROOgmVH7/msza3brqfhI0FquXuo1AP5C5U1RGGPVLCDs+W9NeHu17xHW7rX
-	 HbYYcRCh0jtU594VHerq02a3wArk7izJddstZ2Zayyh78mP6YfIiA+5ur/eYJ62kK2
-	 3wd9XBinClLcxbS46XGqnXMsYngs/660tSYA3foSTNh80FHylIivcdInuU+H8c+xX9
-	 Ol48rnLqpg3QA==
-Date: Wed, 11 Jun 2025 22:30:38 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: =?utf-8?B?5a2Z5Yip5paMX0Rpbw==?= <dio.sun@enflame-tech.com>
-Cc: "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>, 
-	"oohall@gmail.com" <oohall@gmail.com>, "bhelgaas@google.com" <bhelgaas@google.com>, 
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, =?utf-8?B?572X5a6JX0Fu?= <an.luo@enflame-tech.com>, 
-	=?utf-8?B?6IOh5reuX0Zlcm5hbmRv?= <fernando.hu@enflame-tech.com>, =?utf-8?B?5ZC055qT552/X0JpbGw=?= <bill.wu@enflame-tech.com>, 
-	=?utf-8?B?546L6ZGrX1hpbg==?= <xin.wang@enflame-tech.com>
-Subject: Re: [PATCH] AER: PCIE CTO recovery handle fix
-Message-ID: <6gs5cvpqbbkudnlr7v57odgaxjyrare6nigrf2lkq22yljult2@z5jklzlmsdcq>
-References: <BJXPR01MB0614C01A9523786117B1F1CBCEC8A@BJXPR01MB0614.CHNPR01.prod.partner.outlook.cn>
+	s=k20201202; t=1749668467;
+	bh=HEU4YutA9kG/s0/mba3Ytoq2491mLHZZ1L9DBov7nkM=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=s7d89dHbjMDYIEd1Gn4wI/fitFyYw4wUZNjZKDx64yneWUFCGbbWUgIBliO8RBCLl
+	 s+3mZuC5dTu99y8EHqyNt8pcLNhBIekbr7QiD7MkvGSPPhA3lp1R+XgewCLdpcW0en
+	 PhzRiFpANFU8jm83mTp0Hi8Bl3taTUCHLlZL9HF82U9zXwhG5h9e8njw3nCtiohzCu
+	 wlcU3EV2c9qR4I12+s/ho7t5CNIKd1rfO9SG69VFXa6rLpUolrkhM2xhmn856INgha
+	 yKmNhwggG9t1utPlyN5XcUzbJ4T4i3QBCqclNSlRF4CZXHYSt068+2LT4Yj77g3XUF
+	 HXq/tkc+MOlKw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94910C71136;
+	Wed, 11 Jun 2025 19:01:07 +0000 (UTC)
+From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
+Date: Wed, 11 Jun 2025 21:01:01 +0200
+Subject: [PATCH RESEND] powerpc: dts: mpc8315erdb: Add GPIO controller node
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,76 +61,85 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <BJXPR01MB0614C01A9523786117B1F1CBCEC8A@BJXPR01MB0614.CHNPR01.prod.partner.outlook.cn>
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Message-Id: <20250611-mpc-gpio-v1-1-02d1f75336e2@posteo.net>
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-kernel@vger.kernel.org, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749668466; l=1409;
+ i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
+ bh=yIo4OMFzwIHk/Y7Ad7fIh7vacgPJLYwfWJ8zjzP38HI=;
+ b=t2XtzKk2H7rwfNQdpvWOKJG4VX8BR/rxKH6Dz6UQMgVFtZru+BUuVAF8xZp/evmj28KZWpxgG
+ JgO+ojw6KFlC8hwxoeHM7YdVVX7H+wqjB0xhsUl8KqDVM9xAD42Bznx
+X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
+ pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
+X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
+ auth_id=156
+X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+Reply-To: j.ne@posteo.net
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Mar 04, 2025 at 07:07:05AM +0000, 孙利斌_Dio wrote:
-> [EXTERNAL EMAIL]
-> 
-> From 5fc7b1a9e0f0bcfa14068c6358019ed1e3ffc6c6 Mon Sep 17 00:00:00 2001
-> From: "dio.sun" <dio.sun@enflame-tech.com>
-> Date: Wed, 26 Feb 2025 08:54:49 +0000
-> Subject: [PATCH] AER: PCIE CTO recovery handle fix
-> 
+From: "J. Neuschäfer" <j.ne@posteo.net>
 
-Looks like you forwarded this patch instead of submitting directly. Please fix
-it.
+The MPC8315E SoC and variants have a GPIO controller at IMMR + 0xc00.
+This node was previously missing from the device tree.
 
->  - Non-fatal PCIe CTO is reportted to PCIE RC and it will be convertted to
->    AdvNonFatalErr automatically
->  - according to PCIE SPEC 6.2.3.2.4.4 Requester with Completion Timeout(
->    If the severity of the CTO is non-fatal, and the Requester elects to
->    attempt recovery by issuing a new request, the Requester must
->    first handle the currecnt error case as an Advisory Non-Fatal Error.).
->  - Current Kernel code does nothing when receiving an AdvNonFatalErr(
->    Correctable Error) and the device driver has no chance to handle this
->    error.
->  - Under this situation, sometimes system will hang when more
->    AdvNonFatalErr coming.
-> 
-> Signed-off-by: dio.sun <dio.sun@enflame-tech.com>
-> ---
-> drivers/pci/pcie/aer.c | 16 +++++++++++++++-
->  1 file changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 508474e17183..5ddc990c6f42 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -1154,7 +1154,21 @@ static void aer_recover_work_func(struct work_struct *work)
->                 ghes_estatus_pool_region_free((unsigned long)entry.regs,
->                                             sizeof(struct aer_capability_regs));
-> 
-> -               if (entry.severity == AER_NONFATAL)
-> +               if (entry.severity == AER_CORRECTABLE) {
-> +                       if (entry.regs->cor_status & PCI_ERR_COR_ADV_NFAT) {
-> +                               pci_err(pdev, "%04x:%02x:%02x:%x advisory non-fatal error\n",
-> +                                               entry.domain, entry.bus, PCI_SLOT(entry.devfn),
-> +                                               PCI_FUNC(entry.devfn));
-> +                               if (entry.regs->uncor_status & PCI_ERR_UNC_COMP_TIME) {
-> +                                       pci_err(pdev, "%04x:%02x:%02x:%x completion timeout\n",
-> +                                                       entry.domain, entry.bus,
-> +                                                       PCI_SLOT(entry.devfn),
-> +                                                       PCI_FUNC(entry.devfn));
-> +                                       pcie_do_recovery(pdev, pci_channel_io_frozen,
-> +                                                                        aer_root_reset);
-> +                               }
-> +                       }
+Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+---
+A version of this patch was previously part of the series "powerpc:
+MPC83xx cleanup and LANCOM NWAPP2 board", but I'm splitting it out to
+reduce the size of that series.
+---
+ arch/powerpc/boot/dts/mpc8315erdb.dts | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Why the error is handled in aer_recover_work_func()? This looks like only gets
-triggered from ghes_handle_aer() in drivers/acpi/apei/ghes.c.
+diff --git a/arch/powerpc/boot/dts/mpc8315erdb.dts b/arch/powerpc/boot/dts/mpc8315erdb.dts
+index e09b37d7489d01bfd16a26e9786868f630fa0262..a89cb3139ca8c3d4f22e43838a4b7d2dd5109aa5 100644
+--- a/arch/powerpc/boot/dts/mpc8315erdb.dts
++++ b/arch/powerpc/boot/dts/mpc8315erdb.dts
+@@ -6,6 +6,7 @@
+  */
+ 
+ /dts-v1/;
++#include <dt-bindings/interrupt-controller/irq.h>
+ 
+ / {
+ 	compatible = "fsl,mpc8315erdb";
+@@ -358,6 +359,15 @@ pmc: power@b00 {
+ 			interrupt-parent = <&ipic>;
+ 			fsl,mpc8313-wakeup-timer = <&gtm1>;
+ 		};
++
++		gpio: gpio-controller@c00 {
++			compatible = "fsl,mpc8314-gpio";
++			reg = <0xc00 0x100>;
++			interrupts = <74 IRQ_TYPE_LEVEL_LOW>;
++			interrupt-parent = <&ipic>;
++			gpio-controller;
++			#gpio-cells = <2>;
++		};
+ 	};
+ 
+ 	pci0: pci@e0008500 {
 
-I think it should be handled in pci_aer_handle_error(). Also, the error prints
-should be sneaked into aer_print_error().
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250418-mpc-gpio-79dca9f70546
 
-- Mani
-
+Best regards,
 -- 
-மணிவண்ணன் சதாசிவம்
+J. Neuschäfer <j.ne@posteo.net>
+
+
 
