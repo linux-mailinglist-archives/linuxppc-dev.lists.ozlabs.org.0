@@ -1,61 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-9286-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9287-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4944AD5263
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jun 2025 12:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E534AD5264
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jun 2025 12:45:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bHMjl2SfXz2yDH;
-	Wed, 11 Jun 2025 20:44:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bHMjn34yzz309v;
+	Wed, 11 Jun 2025 20:44:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749638683;
-	cv=none; b=ojhF8NDFb2l+N5tc+Lu5HBmDZ1ucCq3UPY1ojiR1yNzwoWICrOL1P6zF8+l2lOP45T1majFrNyyJ0xtiXsFFYVXEt68A8dnVxI9L/Hi8mSs+SKwlEwRH0+My/rqzcgTgM+zTYpFz2Eeict/XZuQRcPy43t6bUewfhPQvo6AYc4djg/T9acxGDxcYC7UVAKAZ2y8UsU7Rgtbbe23cQaDAv6jjmtqZ0nBab01JSJmcO+nFH8GWdtHZBQHqS+UNN7BNc5tEkZkDNWB0iJRsQkC/1gK84Q6hiYGqY2cFfZ2AbygGTwyHdC0jZ68zw5vYQV/j2e4HQY4lRyyT1R1YChrDEw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749638685;
+	cv=none; b=nfiy+JJmAXLT6C5BMAjy8GqXhuzn1duCXcR8EBN2/uun5uoM44oK4kOsZaSY0qCnv/SQgbdcV/aRU6z7xZMyJQE+1NDPPyc69ghDl9NWL1V+CgXhuJXKGRsGCtRdlAQfAavtpUav1yQVRZiJFM1KQQ6RDHfCjofwi4GRZBc6l1meM+jgahQ2N+F8UT88dkXv53bWzqEMM9swkcWiwLSG7NNjD2oA+2qmDpKWHTaXg2D809lpM7b1+7njefCZ5XHqcjz2Hy5bLvr0wOm2x/1QlRpgVeHucthued8YrKJzAmOb1snPHx2YO3w/EZfX/am1euUNzCyIDIXmB1PxphBxHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749638683; c=relaxed/relaxed;
-	bh=TNwA+KTnVGwUNklPRMqZURVApAxTkYCnDXFmRwaUv2o=;
+	t=1749638685; c=relaxed/relaxed;
+	bh=xOcA8JVEjHxy7SXGk73izLSpZeUh6cImIEszSD+A3x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UevtXpXjXbv0OlCby8GIKFPQP0DV6WcM2m/E5+8+5ZlZ5qRg8eonbo+PyCpbm9r9rJIio/OGfKJd1vxOI5PD9xMdkSXxW16sqj5y5Wv8CrSte7ooCjbYd9sCcPQS7oEPjZH5+hVfWvksolwKTFCtDGfn+MkiN8zx/BWKgl/T9vAW8FNrwbfMucx11D04vijAOe/dK1COOHhC6j1nFb+BX2ZMb0CKHnR9FDD5L79/zKqUYpOkTbCHyeXZZ1958azr4sHkw9A+plXUjTCWX3nMwzeH2qpFp1P2DRrk4JTaKLomh1e+sD0mvSmwRWLKCuuIV6jttEz+gdSyzwz5gFu4dg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LhsYik8E; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=EOTSDeXDYJJENHtrwG29Nt65JGkpUpuqVA02hl7GYhvPn7R7Z7ev3MnlfWLxJQhmqcEX/I/7Z+KP+q82oKhyvuHNIuVf0wKO5U2/Zu+0/vwhJTlE6eurXQCDUTsrIMeZ3tMVuhA/xqxa1ujtycw0aoQ9N1rUsagUbeo+tv3O6sMFVLQRI8sZkePrsCtzDgpuSwQZkxpI/AugOP7KRmC3BOe7Ueys7FluqMtyIG4qRH2ENZOthUPN/1YLXkAdIV4IM+Bk6SMjdGfuglThaMCdIkqm/UTyh8pXYVRTaXb8wSbEyngSxS2qE4bANzERKVeCA92piGSb58fFtMfiRf5gjA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bhJu2rvf; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LhsYik8E;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bhJu2rvf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHMjk20l0z2xRv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jun 2025 20:44:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHMjm5BnHz2xRv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jun 2025 20:44:44 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D401E447A1;
-	Wed, 11 Jun 2025 10:44:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5719C4CEEE;
-	Wed, 11 Jun 2025 10:44:37 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id AB990A51682;
+	Wed, 11 Jun 2025 10:44:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC8EC4CEF2;
+	Wed, 11 Jun 2025 10:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749638679;
-	bh=ZGWucHB5ib9wIAmp+jltch//8y7Q7viWPh80fKN9NEU=;
+	s=k20201202; t=1749638682;
+	bh=NLnT5+LOFbAWdUD6OEeMhq8wMEwsqTEbDWDE/LB5oWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhsYik8EhyigmtOGF6QcBgTDeKZHxEMMLt01kP8lidZNhRcxt5/67UUrWaFHYZnAA
-	 6V18JRPBo6/RIBKNPTSzOphjCGUoCz7GZtlneY/db20sVfLopbgIIfYAc9v94LRo3u
-	 LCNUSx0lL+UeP1Z7w7XfVY/kQVbma5K3WcbtFa6sShDzWJDXOzKlHd4aev+pL/hQ0P
-	 qsVPazrv73CJqua21HgSs8PFmUcu6aw8TsI0cjJbqBRPPzuNfS+6eqHvfOc34UlQ5O
-	 3b5pRSQfWSXnCXsS4h+NJy6iHOWTQCwYtKry2lIp7MxfEQh+x4touAeqJAqtn6iqFg
-	 y0fVVC4DW18Ug==
+	b=bhJu2rvffdhuDVYngs0/mJHh/Ii4qb2QtctIipm4DBUJclR7bsCSEQGuTxOzsfrfd
+	 Tn7OMefVMV6axO7RrfvnO8OMXp5QKHdplyCFpuiVX3N9XIeci0hEtQCurRRXEoNS47
+	 5oZjNV8VHM9DH7/3p/qvdnQz1P7LRnMlqmILblb6ZJAW41cFP8LhyauvBLQrtkAfWY
+	 nm5aGIbCO8SY0LuJpQe5iQZ1I9feFo0r+Vho7MCYLp7c6CU4howsxj+6Yr+olrWmg6
+	 evu2rEF7aJz8wsiiOu7o+21ahm9P3mc3P2Ioqhcq69dKyjhSWfLsmpSZ15C0ivm/ty
+	 yuu2qvRW95l+A==
 From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: tglx@linutronix.de,
 	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Qiang Zhao <qiang.zhao@nxp.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: Use dev_fwnode()
-Date: Wed, 11 Jun 2025 12:43:46 +0200
-Message-ID: <20250611104348.192092-18-jirislaby@kernel.org>
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH] soc: Use dev_fwnode()
+Date: Wed, 11 Jun 2025 12:43:47 +0200
+Message-ID: <20250611104348.192092-19-jirislaby@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250611104348.192092-1-jirislaby@kernel.org>
 References: <20250611104348.192092-1-jirislaby@kernel.org>
@@ -85,47 +86,55 @@ using of_node with of_fwnode_handle().
 So use the dev_fwnode() helper.
 
 Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Jonathan Hunter <jonathanh@nvidia.com>
+Cc: linux-arm-kernel@lists.infradead.org
 Cc: linuxppc-dev@lists.ozlabs.org
----
- arch/powerpc/platforms/8xx/cpm1-ic.c | 3 +--
- arch/powerpc/sysdev/fsl_msi.c        | 5 ++---
- 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/platforms/8xx/cpm1-ic.c b/arch/powerpc/platforms/8xx/cpm1-ic.c
-index a49d4a9ab3bc..3292071e4da3 100644
---- a/arch/powerpc/platforms/8xx/cpm1-ic.c
-+++ b/arch/powerpc/platforms/8xx/cpm1-ic.c
-@@ -110,8 +110,7 @@ static int cpm_pic_probe(struct platform_device *pdev)
+---
+Cc: linux-tegra@vger.kernel.org
+---
+ drivers/soc/fsl/qe/qe_ic.c | 3 +--
+ drivers/soc/tegra/pmc.c    | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/soc/fsl/qe/qe_ic.c b/drivers/soc/fsl/qe/qe_ic.c
+index 4068b501a3a3..943911053af6 100644
+--- a/drivers/soc/fsl/qe/qe_ic.c
++++ b/drivers/soc/fsl/qe/qe_ic.c
+@@ -407,7 +407,6 @@ static int qe_ic_init(struct platform_device *pdev)
+ 	void (*high_handler)(struct irq_desc *desc);
+ 	struct qe_ic *qe_ic;
+ 	struct resource *res;
+-	struct device_node *node = pdev->dev.of_node;
  
- 	out_be32(&data->reg->cpic_cimr, 0);
- 
--	data->host = irq_domain_create_linear(of_fwnode_handle(dev->of_node),
--					      64, &cpm_pic_host_ops, data);
-+	data->host = irq_domain_create_linear(dev_fwnode(dev), 64, &cpm_pic_host_ops, data);
- 	if (!data->host)
- 		return -ENODEV;
- 
-diff --git a/arch/powerpc/sysdev/fsl_msi.c b/arch/powerpc/sysdev/fsl_msi.c
-index 4fe8a7b1b288..2a007bfb038d 100644
---- a/arch/powerpc/sysdev/fsl_msi.c
-+++ b/arch/powerpc/sysdev/fsl_msi.c
-@@ -412,9 +412,8 @@ static int fsl_of_msi_probe(struct platform_device *dev)
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (res == NULL) {
+@@ -441,7 +440,7 @@ static int qe_ic_init(struct platform_device *pdev)
+ 		high_handler = NULL;
  	}
- 	platform_set_drvdata(dev, msi);
  
--	msi->irqhost = irq_domain_create_linear(of_fwnode_handle(dev->dev.of_node),
--				      NR_MSI_IRQS_MAX, &fsl_msi_host_ops, msi);
--
-+	msi->irqhost = irq_domain_create_linear(dev_fwnode(&dev->dev), NR_MSI_IRQS_MAX,
-+						&fsl_msi_host_ops, msi);
- 	if (msi->irqhost == NULL) {
- 		dev_err(&dev->dev, "No memory for MSI irqhost\n");
- 		err = -ENOMEM;
+-	qe_ic->irqhost = irq_domain_create_linear(of_fwnode_handle(node), NR_QE_IC_INTS,
++	qe_ic->irqhost = irq_domain_create_linear(dev_fwnode(&pdev->dev), NR_QE_IC_INTS,
+ 						  &qe_ic_host_ops, qe_ic);
+ 	if (qe_ic->irqhost == NULL) {
+ 		dev_err(dev, "failed to add irq domain\n");
+diff --git a/drivers/soc/tegra/pmc.c b/drivers/soc/tegra/pmc.c
+index e0d67bfe955c..9543bee0c321 100644
+--- a/drivers/soc/tegra/pmc.c
++++ b/drivers/soc/tegra/pmc.c
+@@ -2500,8 +2500,7 @@ static int tegra_pmc_irq_init(struct tegra_pmc *pmc)
+ 	pmc->irq.irq_set_type = pmc->soc->irq_set_type;
+ 	pmc->irq.irq_set_wake = pmc->soc->irq_set_wake;
+ 
+-	pmc->domain = irq_domain_create_hierarchy(parent, 0, 96,
+-						  of_fwnode_handle(pmc->dev->of_node),
++	pmc->domain = irq_domain_create_hierarchy(parent, 0, 96, dev_fwnode(pmc->dev),
+ 						  &tegra_pmc_irq_domain_ops, pmc);
+ 	if (!pmc->domain) {
+ 		dev_err(pmc->dev, "failed to allocate domain\n");
 -- 
 2.49.0
 
