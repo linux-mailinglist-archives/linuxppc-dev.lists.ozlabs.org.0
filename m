@@ -1,94 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-9277-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9278-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3835DAD4A8A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jun 2025 07:49:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE838AD4A95
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Jun 2025 07:55:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bHF8w4YNnz307V;
-	Wed, 11 Jun 2025 15:49:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bHFJW4p8Nz307q;
+	Wed, 11 Jun 2025 15:55:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749620960;
-	cv=none; b=G+sw37gzWlR0jclOAxC8iMdbYUX13vL5lfmiPthwCzcwejim1fjskh44pEicoVZQvttByU0LLmK2/fd6ziUVghGTafn0etGnS3Ty5cJNI109mFpgCBWaxawRvtLjgY8S+LIAp0f/vZ9CakuBJzA3Z3UY9nwiT8tqbQ67bVFwEFVrRTxkdwe8Ce9UZqZi4UBgHUeucFHhABJVs76HDIwqRxjZL7ElvqH/Y9AI7vEW5jzZeD+ITIvr0FlSm91TYgo+ij2YoBc+SEs+cNLBvDIETtYlfnK5tp/ycy+m7bwVq2o0YRjbjOQumK9Hi6qjQl/kHF9fdsIybwfzcHeegDyFTQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749621355;
+	cv=none; b=DNaOtKv4eU2EYY/zSixWbekZD1SNnr78x9tPMG3vtD0TnItFSqeblp8vWu1CfIzEqzYM7IAbFFQoCOiXDHL4vebdqEIlknKhF5MqmFrjtrEUtqiDd3CMXHGU5AdgiEfGyRF3F/wfI+1VD+zmeBn5xSg1UF1xtV/OGc4s9aeDnfG7NsuXHI7RHgPcuXCCFuOhIz1C3BodwuVQRO5H0VJexcDzYhJ1K/yXj+LNpC8OGkK4EDJXmsCLYCr5lVcH1DBcuJOEa/MjQv7AunCMlPOcZbp/IFAF8CAW64VQDoDdjnxxYltWMgfxlGo9ckOSNyv6EPktaPVdP2wnev+QEtt0TQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749620960; c=relaxed/relaxed;
-	bh=2IQQi5msU8bl9rRll9LflLOSz4HCxVSHS0uQ2iKnuxU=;
+	t=1749621355; c=relaxed/relaxed;
+	bh=K843Q3pgT+61lbrWizu6epwQCyVTjY3OINehU8t9Nmo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gTut24kyguA7QD8ulGjTWXLcrjLqtT01COmHMmuGqQckcObCvV1aVif4EU37uo+kKSydLJa9nFdtfAmyEXcEXhL5jIAMJ/tcWm/ZgWvcYu0OhlrOiF085tbTWnhp8pvewBH+oRnDFIdyIPv6PIoTuG62oNU+swEBhvp47ENlpyNmPmO5uw1dA7NpOPnN8o+010paR+44maFhANeU8YhfgY96p+N9Zm4f5bFlGmEHt044hdRro/+TmN5LVXEYvaYJqXw2Qwp+cFAGI4vFDTLZ0HqqJ5sUsS7E97PzquhF2QqP1og/LHZzb4R8SjF67JAh4iWZ6vTZwGmXmE4Aew/Pwg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DJoA0yfh; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DJoA0yfh; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=Dzh+c4kK5cemMUPxHQY0vsL+KQdchvUIaCAiWkzeH9smPTcAwVS87HpUj2kHIohc8cE+kmJZ9k7tXHRL3V278FM1H14V2cxNymZ9ddIvgRzQG4qYqsIWOZNKF4bJAs5B6NG47U7bKM56WRGVFmn10Wa7CKy/ge7nz3wOWfosbBP4gGCPobREeq27cHEnCujUgS+vXYrDybF3mZC8+RvowpzX+dXl0b8RAIxfN2R2wgDr+m/lfJDMWvwowl5vrvsJpY9ezCUGeP+GzicbXMEWZbM20Z2YltpqF7iOi2cIi/c2S12g4Mxtwn5RvFJphNecJSgJWf0GbKJAzqxQwr+V4Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AFetBiAv; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AFetBiAv; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DJoA0yfh;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=DJoA0yfh;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AFetBiAv;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AFetBiAv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHF8t57mvz2yMt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jun 2025 15:49:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHFJV5XLLz2yMt
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Jun 2025 15:55:53 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749620952;
+	s=mimecast20190719; t=1749621350;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2IQQi5msU8bl9rRll9LflLOSz4HCxVSHS0uQ2iKnuxU=;
-	b=DJoA0yfhctqAWovgI/e51WrgePp1XFJl+SegLYWA77Zdfk3gr98Ie5lOc9DLGij7+1dDxN
-	9VFXZjtZ3CxWclOm1Qk+kzvKDEFR8hTmgTDfNhWuOZ4Sw2vc6EHxaXa91y80krTGcFQRvy
-	xIjpor77BnEEI7HIS1gOnMdKM6bD+Hc=
+	bh=K843Q3pgT+61lbrWizu6epwQCyVTjY3OINehU8t9Nmo=;
+	b=AFetBiAv4RIeqdtIvOaMb3N6ZrLAZbrLrsBpRbd6yJnGVaaiSr8833BXFzDWPUi58O+sTq
+	joJs9C7+pa1lCwtXpZUr/89qKne8IBlxoJd/bhvMXJqLMXKTzWKGOfK+HVJ08OYUNP7jK4
+	XiDRFcvMAGOQ3ZSdmYIZamH1cknGMzA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749620952;
+	s=mimecast20190719; t=1749621350;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2IQQi5msU8bl9rRll9LflLOSz4HCxVSHS0uQ2iKnuxU=;
-	b=DJoA0yfhctqAWovgI/e51WrgePp1XFJl+SegLYWA77Zdfk3gr98Ie5lOc9DLGij7+1dDxN
-	9VFXZjtZ3CxWclOm1Qk+kzvKDEFR8hTmgTDfNhWuOZ4Sw2vc6EHxaXa91y80krTGcFQRvy
-	xIjpor77BnEEI7HIS1gOnMdKM6bD+Hc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=K843Q3pgT+61lbrWizu6epwQCyVTjY3OINehU8t9Nmo=;
+	b=AFetBiAv4RIeqdtIvOaMb3N6ZrLAZbrLrsBpRbd6yJnGVaaiSr8833BXFzDWPUi58O+sTq
+	joJs9C7+pa1lCwtXpZUr/89qKne8IBlxoJd/bhvMXJqLMXKTzWKGOfK+HVJ08OYUNP7jK4
+	XiDRFcvMAGOQ3ZSdmYIZamH1cknGMzA=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-8kloy4pQMMaHun2v1XA7OA-1; Wed, 11 Jun 2025 01:49:00 -0400
-X-MC-Unique: 8kloy4pQMMaHun2v1XA7OA-1
-X-Mimecast-MFC-AGG-ID: 8kloy4pQMMaHun2v1XA7OA_1749620939
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a4f858bc5eso4476871f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jun 2025 22:48:59 -0700 (PDT)
+ us-mta-619-Ux4prGkcNZipd3CezL6Tcw-1; Wed, 11 Jun 2025 01:55:48 -0400
+X-MC-Unique: Ux4prGkcNZipd3CezL6Tcw-1
+X-Mimecast-MFC-AGG-ID: Ux4prGkcNZipd3CezL6Tcw_1749621348
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ade6db50bb4so166784766b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Jun 2025 22:55:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749620939; x=1750225739;
+        d=1e100.net; s=20230601; t=1749621347; x=1750226147;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2IQQi5msU8bl9rRll9LflLOSz4HCxVSHS0uQ2iKnuxU=;
-        b=QSm5uWtqx3Ejp/aiYJLp2SfC1VE3LdFpuRsOvNqLTUMZnu6pbJtmDo3d6Cck70Ymc9
-         ot+5Ku1a0Aqm8wXwO6rSuRHrHHVxyGH1pOmN3V0PLGnhHjeyY6rVGz5ky+KTy2+0XVwp
-         eu/cBRa0TfR3QWrQOv0XIq7LVmsiADWFotnZO2YmnIlcGuNMGZUkuOYbUmkwn8qLOf3u
-         VywcnmFJ1GnqBql8EOrw7Ara2kxgDbhCMNL+4z3ose8JmBWXeplYuqdl9aPTOzksoP/J
-         x+cj/lKMbBEHRNeb/uaKkommVsof2nup8uVefRedQGOj+DaFTWk2ZGms4pEUFD+34Vpz
-         5lbg==
-X-Gm-Message-State: AOJu0YxXnGYNEl3JQlxgmqCRt2bhexFrxqTfHxa59+CvIxUK+j3Ujlc1
-	nbxvuklw86aHHV0c0enqtkWuRCdZL2ssc1zvSVUTVlHrX9zKlPKQScYezhD+9x0/NpRZo7APNsV
-	Sz/BcFTPuRtHHlfLElLePwy6bFcPRYB/Xl00jK0lxWU8KMVefo2BnRyoEgCXgF1xYozg=
-X-Gm-Gg: ASbGnctJK5Dhr6YkJp3jtGSYbJnjMUkcYb90w5bqSN2dhyDV9Jd1ChD9BjmNmYRjTTe
-	0009Uq8JF1xWo8w0XgcexGhYveOOdjqJpd9j5PQ1CIoawdFvZBfzlLFsjlkpUscwfsQGvP+9idF
-	2pha1yKFAgAXCVvNUgJqY5/nijMe0GuzxfwNOZluHufHhM/7wGAH+s62Blab5JdqwMw9HjZYZNN
-	+A4NR4tcPHHh1PMMHgHGlCxrogly4YlyRPS3yyq97yJycTXPMdmzNmKVeJYilorPPjpc4NTmjdK
-	kWh1RvOkY/zByuuhCNhrSiKLWXO93j65P/2NZ164QobC9mIqTyg7y74Ig3zdZac=
-X-Received: by 2002:a05:6000:220e:b0:3a5:34ea:851e with SMTP id ffacd0b85a97d-3a5586dba2emr1229643f8f.25.1749620938890;
-        Tue, 10 Jun 2025 22:48:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH0kAp44nSFq4sY+QLXk+hBJLmqlsbpKCohb1suQ88NoVUKYavdCZyebIm8cU3djDIeBwXoMQ==
-X-Received: by 2002:a05:6000:220e:b0:3a5:34ea:851e with SMTP id ffacd0b85a97d-3a5586dba2emr1229627f8f.25.1749620938504;
-        Tue, 10 Jun 2025 22:48:58 -0700 (PDT)
+        bh=K843Q3pgT+61lbrWizu6epwQCyVTjY3OINehU8t9Nmo=;
+        b=FAi5PTn++fX806O9X2AcVe6PrPEufmvFYrB0jO/C+XyLSRE0z2Y5Ul0yKmK5gl1Y7s
+         JU/5fLbiHketdnGsZR5+AN2yc5Y8Zs4ePmvz8JhNdTnaFeSHzKr08m7Jqzk4g0m/Cv5z
+         gv+d1WZXHS2tSRwWky/SGjLJM63XSX+rtPG4Iyu8J/y1gymqFdZwr0B61NbZeDC7NXL8
+         tlJStTeFP6GopUWEsc6NmmQT2qQ5kZ/e43wonnYb/fYgXEhyj1uaJSG0RzfQ1+k0UIfd
+         f9GJXK4YjWbCOgY6khR79Tsbe6juJBb1T6sQdCMqfifmzNvYUlmrcIbOAIYp+tYEN1HU
+         nSuQ==
+X-Gm-Message-State: AOJu0Yzn8tB/GbrA2mB/k8YFys5nCjtQOP+z69rKozBO/abd8pKN7m0j
+	kUoVa2Ovd+MMxyx9XcHkE+yArgpiF3xU5izA3vmTG6MDVTXIXTrk1JghHAp4J50Pkp66VzOu70m
+	i9/MqoqwlQXjLcaELw+vAU77o3OSfT8GZnS4hV5ctp6jqgQ2ozlvJSfJY6K6natoZKvc=
+X-Gm-Gg: ASbGncuZjEmAuduJMKPq/1SJX/JKAMHqSeBxgINkrUdWinkw2Kl3CedE/iMeszGcvye
+	qKfiFqv0fRvZf8r4sg0zvVXIsYub7UKVQD9I+wFjvpWGhbRssd25V3o/zQOFBm3UgoY5p63bAJV
+	VE5rueJeSk7TOvqC/6x+fDGIODxDSxDEXcnZaWO3QP7eC6c9N4BzbzUKFezDP84y8HoLHj9nxYz
+	BG6za03GxIQ/trb/st67SInMB0sRwJODEySDoUnIeLYvDY0B5zVNkTtgxSDEUphgp5xeY+U3Hv1
+	MXbwnrUfc7Jzswj5ZxkUdjLkeprwYKsJyKG1FqGTNby2IHHF427zHMDwjw37pzs=
+X-Received: by 2002:a17:907:2d8c:b0:add:fc52:898f with SMTP id a640c23a62f3a-ade8976341emr186578766b.42.1749621347549;
+        Tue, 10 Jun 2025 22:55:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IELUgyV3ZD4SmuVm/65YKbewvg/mMblFu8/n8vjCmzFg+kQUNgjR3D6DMf9Ajqsq95FEIJxbw==
+X-Received: by 2002:a17:907:2d8c:b0:add:fc52:898f with SMTP id a640c23a62f3a-ade8976341emr186574666b.42.1749621347107;
+        Tue, 10 Jun 2025 22:55:47 -0700 (PDT)
 Received: from [192.168.0.4] (ltea-047-064-115-122.pools.arcor-ip.net. [47.64.115.122])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a5323b4e2fsm14151574f8f.36.2025.06.10.22.48.57
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ade1dc78f56sm826197366b.154.2025.06.10.22.55.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Jun 2025 22:48:58 -0700 (PDT)
-Message-ID: <2f5021db-2d3c-4294-a8c5-830a45db6b68@redhat.com>
-Date: Wed, 11 Jun 2025 07:48:56 +0200
+        Tue, 10 Jun 2025 22:55:46 -0700 (PDT)
+Message-ID: <53b46042-4ca3-4ba8-bf72-2dee9c54dc6d@redhat.com>
+Date: Wed, 11 Jun 2025 07:55:45 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,16 +103,16 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] powerpc: Replace __ASSEMBLY__ with __ASSEMBLER__
- in uapi headers
+Subject: Re: [PATCH v2 2/2] powerpc: Replace __ASSEMBLY__ with __ASSEMBLER__
+ in non-uapi headers
 To: Segher Boessenkool <segher@kernel.crashing.org>
 Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Geoff Levand <geoff@infradead.org>, Naveen N Rao <naveen@kernel.org>
 References: <20250610160128.69033-1-thuth@redhat.com>
- <20250610160128.69033-2-thuth@redhat.com>
- <20250610201244.GF30295@gate.crashing.org>
+ <20250610160128.69033-3-thuth@redhat.com>
+ <20250610202634.GG30295@gate.crashing.org>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -156,9 +156,9 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250610201244.GF30295@gate.crashing.org>
+In-Reply-To: <20250610202634.GG30295@gate.crashing.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wMMhr2WvPc7i1U4a4412ZW_-kc_OERFhYIsbsL4srpA_1749620939
+X-Mimecast-MFC-PROC-ID: o7I8zbUJ5cNXOzJhlAyT6DlUr4kQiBsPyHgpomfKfuU_1749621348
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -169,28 +169,29 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 10/06/2025 22.12, Segher Boessenkool wrote:
-> On Tue, Jun 10, 2025 at 06:01:27PM +0200, Thomas Huth wrote:
+On 10/06/2025 22.26, Segher Boessenkool wrote:
+> On Tue, Jun 10, 2025 at 06:01:28PM +0200, Thomas Huth wrote:
 >> From: Thomas Huth <thuth@redhat.com>
 >>
->> __ASSEMBLY__ is only defined by the Makefile of the kernel, so
->> this is not really useful for uapi headers (unless the userspace
->> Makefile defines it, too). Let's switch to __ASSEMBLER__ which
->> gets set automatically by the compiler when compiling assembly
->> code.
+>> While the GCC and Clang compilers already define __ASSEMBLER__
+>> automatically when compiling assembly code, __ASSEMBLY__ is a
+>> macro that only gets defined by the Makefiles in the kernel.
 > 
-> Assembl*er* code, yeah :-)  (What is "assembly"?  The dictionary says
-> "An assembly is a group of people gathered together for a particular
-> purpose.", but that is probably not what you mean :-) )
+> And it should not, the kernel is not allowed to define any symbol
+> starting with two underscores at all!  Including __ASSEMBLER__ yes.
 
-I'm not a native speaker, but the web seems to be full of "assembly code", 
-even the Wikipedia article uses it (see 
-https://en.wikipedia.org/wiki/Assembly_language). Anyway, I can change it if 
-that's preferred.
+Right, I can add that in the next version, too.
 
-> Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
+>> This can be very confusing when switching between userspace
+>> and kernelspace coding, or when dealing with uapi headers that
+>> rather should use __ASSEMBLER__ instead. So let's standardize on
+>> the __ASSEMBLER__ macro that is provided by the compilers now.
+> 
+> "Now"?  This is true since at least 2003, and probably a lot longer
+> already.
 
-Thanks for your review!
+Sorry, I've put the "now" into the wrong location ... it should rather be in 
+the first half of the sentence instead :-)
 
   Thomas
 
