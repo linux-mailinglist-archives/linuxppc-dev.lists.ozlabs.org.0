@@ -1,85 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-9301-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9302-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA679AD6B51
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jun 2025 10:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5376AAD6DC0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jun 2025 12:31:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bHx531fdQz2xPL;
-	Thu, 12 Jun 2025 18:48:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bHzMq5Jqrz2xQ6;
+	Thu, 12 Jun 2025 20:31:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2414::602" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749718103;
-	cv=pass; b=P+RAx3CqxZRAk7CFPvSVu4RFpRf9D7bx7nNl+vOBcHxPuO9zwjry5tQ2CIp3nDSZgoallOShkN03YoDI0Z+cqkDuJi4B9Sv54KXzY2NDx0fT8nTmLdpSm0YkAk8oGgV8o8bDVnhtPfPjaP5i73Nk/2dU+Erv9h/r24mssYUrF1fXMFyx2r0hiJbCfL1ux+aI2bfXyh5mZbUYP+Dn2arwslWye/idzqYPHJIOTiaAWW/q4XOMQ/inJEH5C7FpUOmgGe/epHPYkE1MvhdeaErMx3a4ntCRFjCc+3wGs1QR6Gp+m8kCOdrlxHhkqwHvt6LZNYonJ7IP9Y+mnJv4kEw+yA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749718103; c=relaxed/relaxed;
-	bh=0gBLu/HtAKyzpB5+V3m/GmUdRvYCGUrHYIL5WI49w2c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=JUa8XdT6UY6k5oBz3cwCa/IFDcYh3CUBg6AgZC6A6iGotp2h6pp4LAk4CpTeVcaF7YPlV32iGO74wDo0B9hUm2wdNvW5yLDOKioDFa/MuRBCUpAXYjRuKXvICubGVrBdf6Fxd8Vj0CCSZapa5SWuw/BUok2/Aa5QpoY1QPDGJ4cYq5JSSbh02b4WVizkT1QYN3SHyNNKTY0LKEUStJvewzxCQWApq4rrnb06jaZMRS1B9b6iX4ZtPS9JxFbs4Tvxb+63GHqMMVj5Hxi+39BF6zFTpyRG14hMEmBg3gmqqfQawrLHr+nG8SKJgOO4KIR9hZUPb3WbpHHT7l9pE3FmCA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=BmEqgN5q; dkim-atps=neutral; spf=temperror (client-ip=2a01:111:f403:2414::602; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749724279;
+	cv=none; b=aje0pcp26UbQiCqNKvHKSiLMhXdkAXW8NNqXg1bEsoiXdRZ4qsJfSzeuP2O/hk2AJtDsCLwlxrqxyBMqdSeG+SOTsPN8trFbvS6aiXMCMGRhNYdSwyfxsmwHD2Lx+1RHSctzFkHA6bgxvHNIguMPeiAily+89709/K0TJnrFd6Qt6nTPcJ7sPflXiRPXSjLzDteC6XNCk3bzkn9N9q4+yU5qxak1RFR2VlzPSY+FEW9zXTrXucruQgBrHuqu/CXEKQwlBkTCqKYg6dfoSQaX3sZLppIzDo/2A2uEij0aJr+/kuDxR7wxesy5bJRuXwVD0L5olHKVM2pbezgNZpmZUA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1749724279; c=relaxed/relaxed;
+	bh=LjvzuUVgtEnWBQWRzMnEUbgIe+PAP10CcsoBAW8xSME=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eZwAA3V0EHQ05ZvqQ74s2oo8nr9VKBTI2oa+hcMoPXZOMIBAy4MNUJXldm6GR/DA0rA3afGHmKE+0I2fOp0AA2ldugC7EXuOM//gyk5aAJrojDH4YamippCffJU/JlMWmf1hVt9vNcJ/F9sH8sCuopVI1dDKP+pnRIaKLinoo0oTMzTky/DXuny7SL2B4OGDL45bUDSHkR4XjSAErJHz9+XAGcLbtevQM/f2rSY1m1GEHLULRZWrOFm0xPVFwKtwuLecQNihMk16TzR875w3iVERYjGci2TTeBLrH2tOmm87X4ylpbYYkpwlyfxZ+Je0yBeHH5paEGo4shW3RtDJRg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jZOQCorL; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=BmEqgN5q;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jZOQCorL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=temperror (SPF Temporary Error: DNS Timeout) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2414::602; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20602.outbound.protection.outlook.com [IPv6:2a01:111:f403:2414::602])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHx4g1jsnz2xHT
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jun 2025 18:47:42 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pSL9av6rLnjDPtQYRhNRYroKRPv+gLmUwgKutWEYHtOLsqcEI9nHXX7KPetIGTjxh8q1nCP1N7zufimj1VwflAF7axvvKCSfFeMiYrvUrd2kKhKzsPZo1vonT+4ZoBVYeXneQNkoiETo8/iboXRxxKKCbyMss6yhFFuCiL35Hwm5P6dIAFKdTu9rn1/OSGl/2YavDigjYk2IvYDEblTbJRb9J4wIKj36svopOX6WLHYfqr7QQEj+fWzcJqqdmmH8IxybtsvUYkaNj4oCneXDAir4CvTa/LEw2RknElocja4hZ4V+DZxFHInRUgQ9YkqrtB2AeFQdCBsUIV0ASPt5DQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0gBLu/HtAKyzpB5+V3m/GmUdRvYCGUrHYIL5WI49w2c=;
- b=tACQnuiEjKyvPfK1IVTXMjDoyRdZskkeqmhPavraj+UE5axNWRR96ES3sM+P149acYO5uNHwpjpmzNPf6/DziLRuYe6Cd3KUeyVamsBAERAUHpc6XUmBz8AMdQujqh1t+hGi8CW7bmL/ultZsMwn4MFH2psIwmmD/vlXEz+AF+Fu1uKbCoOT5khVooE9UEinrTOQm9MCNu+3Vm9JZXofIevPRekD1bjq0Qt4ZQf16dtJNvPx2Io8NICpr68dI+vQdOmq3yBMhwcsCKP0mTk9gcS4pQdNOox3abeMnBVvTKwHd/co5uABu2t4X2MDlCHydp48hI0gKUeovdNzcxwCVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0gBLu/HtAKyzpB5+V3m/GmUdRvYCGUrHYIL5WI49w2c=;
- b=BmEqgN5qUJtu7ik5y+0hTpYfp9N5x7SL8NOp+S9rq0AvVGYipGxgJSi0yOG6V6ZP/82hO+k65NUSTFZgbtyoxrBuwpBq1/ddUOwRfIECJoaI5oNNHI7d34BH2O8PIIQDh+VP4LVAuxU+LDWatz7lEASv4u7qMCA6oWKIlFM2/SSqsyXjIZYgNUPNJSAqqHWeAQjBUedJKbCZ+z4USq0U4g5QJUg8uvta4kzZFcA8q0u4R0IKGy3mxz2IT5kBEbvBE6bA+swJbn3Mw0+Qt/d/ttfvtNw+Wf7dcgtzFSzqLoS0Nc2YZh1LH+OBX3vG8qgOIC98Jh5GYLR+sNJtBGaIHw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7728.namprd12.prod.outlook.com (2603:10b6:8:13a::10)
- by DM6PR12MB4201.namprd12.prod.outlook.com (2603:10b6:5:216::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Thu, 12 Jun
- 2025 08:47:22 +0000
-Received: from DS0PR12MB7728.namprd12.prod.outlook.com
- ([fe80::f790:9057:1f2:6e67]) by DS0PR12MB7728.namprd12.prod.outlook.com
- ([fe80::f790:9057:1f2:6e67%5]) with mapi id 15.20.8835.018; Thu, 12 Jun 2025
- 08:47:21 +0000
-Date: Thu, 12 Jun 2025 18:47:17 +1000
-From: Alistair Popple <apopple@nvidia.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: David Hildenbrand <david@redhat.com>, Christoph Hellwig <hch@lst.de>, 
-	linux-mm@kvack.org, gerald.schaefer@linux.ibm.com, jgg@ziepe.ca, willy@infradead.org, 
-	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org, jhubbard@nvidia.com, 
-	zhang.lyra@gmail.com, debug@rivosinc.com, bjorn@kernel.org, balbirs@nvidia.com, 
-	lorenzo.stoakes@oracle.com, linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-cxl@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, John@groves.net
-Subject: Re: [PATCH 03/12] mm/pagewalk: Skip dax pages in pagewalk
-Message-ID: <wqzr4hv4vv4wd2mcy5m2gapy6n5ipvex7hst4locic4dbeu3cr@47crvlk4kubj>
-References: <cover.541c2702181b7461b84f1a6967a3f0e823023fcc.1748500293.git-series.apopple@nvidia.com>
- <1799c6772825e1401e7ccad81a10646118201953.1748500293.git-series.apopple@nvidia.com>
- <6840f9ed3785a_249110084@dwillia2-xfh.jf.intel.com.notmuch>
- <20250605074637.GA7727@lst.de>
- <b064c820-1735-47db-96e3-6f2b00300c67@redhat.com>
- <6841c408e85d3_249110075@dwillia2-xfh.jf.intel.com.notmuch>
- <axbj5vrowokxfmrm3gl6tw3mn6xbzz7uwbxkf75bbgmzf7htwc@vcr5ajluw3rn>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <axbj5vrowokxfmrm3gl6tw3mn6xbzz7uwbxkf75bbgmzf7htwc@vcr5ajluw3rn>
-X-ClientProxiedBy: SY5PR01CA0006.ausprd01.prod.outlook.com
- (2603:10c6:10:1fa::10) To DS0PR12MB7728.namprd12.prod.outlook.com
- (2603:10b6:8:13a::10)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHzMp01qYz2xFl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jun 2025 20:31:17 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 41075A516EC;
+	Thu, 12 Jun 2025 10:31:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C7DC4CEEA;
+	Thu, 12 Jun 2025 10:31:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749724274;
+	bh=wiejYMTupVjbAdH1VRxuYY6nbMKtSb6UNwF+vG/I2Rw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jZOQCorL+FGN0FPSLDpR8Nl8cwHh+7aLHkJpDhkkqjrI4azY6PmftyMBrjW11fweY
+	 /6L5e0SRkXt6e0SsClWbT+ujg52rh7F8AHbwijjUu6KqMAiuttnuGG/7Hnkcd67Pr1
+	 YI8JipTlAB9CM+wZphqk74sat00/MaaownS333t/79phWLtuK2fq6r6lYwvgdXchSW
+	 Gm38EvYTsUiceMQtIWV51cF7u7fDL274fBaomUddd/WzWI8Yuo7F12zxO+95YL5GuK
+	 8SawW3OB8iFq4MhTAmDNhMmHBN5Q64FOLUcFMZ5PjkbBVWqdKhm++ACGoj9njUx2R9
+	 O8y52dIfXP3Rg==
+Date: Thu, 12 Jun 2025 16:01:06 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org, 
+	sathyanarayanan.kuppuswamy@linux.intel.com, mahesh@linux.ibm.com, oohall@gmail.com, 
+	Jonathan.Cameron@huawei.com, terry.bowman@amd.com, tianruidong@linux.alibaba.com
+Subject: Re: [PATCH v4 2/3] PCI/DPC: Run recovery on device that detected the
+ error
+Message-ID: <qqixmrgqnba6hlt4fritlknfnbe6zm63qgxhoep4oriinbozyt@f6tzmjpyaf6d>
+References: <20250217024218.1681-1-xueshuai@linux.alibaba.com>
+ <20250217024218.1681-3-xueshuai@linux.alibaba.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,119 +68,175 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7728:EE_|DM6PR12MB4201:EE_
-X-MS-Office365-Filtering-Correlation-Id: c2da20c0-3203-4f07-f14e-08dda98dbedd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qVLUNKBV672PUP59FyxRTw06X2NrNwLWk7p5KT+0CqSPGmfXD4vWXpuFOFFL?=
- =?us-ascii?Q?fbymzibWhRTt1bXMi8mKscZDFM37p5IVAykTSG8nLCU88OoWG+9DvQrzhvVl?=
- =?us-ascii?Q?3AcyL+pII45q3CsMKArPJ/JxFGxCv1QueSGrulLUUOeN6dqglnhD4LYrHWrT?=
- =?us-ascii?Q?rY+MHqTi92iAJ7OgOXpzqIAQSKVSmihpaNGSmrnvc73dKhI8tIenzKucGSKH?=
- =?us-ascii?Q?a/OVtsLCElodqSdQtWLy80Iyimv0bUsNTms89KzpvnGTdvx3QdH/ghJmYY5M?=
- =?us-ascii?Q?ErcDiviQDQBO6Xqh8fOb1VsRN/QN6WqzHdXMokSnOBcfZM5zBJ7032cZnHV+?=
- =?us-ascii?Q?eSB6VTFCkKpyZ1vi8IL3elqrFVfN86wKeN2vECXTlTLC4L4U2DHsNIYFM9qP?=
- =?us-ascii?Q?+a38WBgEgDOYkji8KMYrhy8G86mqtYkc7U0bjtB7RZOIDgME+jJGuQWgCdqw?=
- =?us-ascii?Q?3ZLAKfbYwDBCciYCAn1OwM/DnBW/d2ZsXit9H134oUcZACXeMsexcn0bE6Sv?=
- =?us-ascii?Q?TQhRhtzrJgqTmejdoRTnK3ze0ahD4CLfxrfAZbgwBNwKfAdc9WPtMXO6WmFG?=
- =?us-ascii?Q?6OCpvpuZdBo4ETX89GbylD19SBJaGGFc3kom2Sobie/+2iYMv62wjIG8LKjP?=
- =?us-ascii?Q?flWEZVltTSNAxxRMff2FfTMhLgFEgwhoVT+88o29iJYw3TlX1YY8PD+re3ix?=
- =?us-ascii?Q?rqY+pBPGlEi+a3AY8KakAv2o8FC79rzcvw0pMc42S2/uuVxRghYyRO1DUFiI?=
- =?us-ascii?Q?PiVfM/prdGwioCE5dj0aWuTtNTEbs7yajIlqrbec8KCSi4VjdMGughNldNAc?=
- =?us-ascii?Q?zaDf+s8BSDHinS46Z8q+mQUM5u30lxIQCvpPU5MUwnG7TFcQ7KPwLuwip4i7?=
- =?us-ascii?Q?d5FpN98QsmiNa4sbCacjcgjzZV1WFRmPDTXWxJRz/tAfAcSL4aTiVTtJBO4Z?=
- =?us-ascii?Q?JAPdsJrHrKKi9l66QfWiSR96onoNsgZjll1KsxKRQ+Q7yvmFZYqc7xRYlTRv?=
- =?us-ascii?Q?TY2uEb7rhEQvMtqojqzymGdA/0D2hL9145i7712RvcHZBWBj0AuO47sZo3ir?=
- =?us-ascii?Q?a3cu5ijg8UPN4Rxv98DQ87A2/8BVNexgQx7UmDLdVY6ae8zV8uUEhs53FbpM?=
- =?us-ascii?Q?hVgR56fW02Auu+CRwxtgprjhVPdlJbrCasfuyDgx6TRyTPJgpokmGYKSTzG7?=
- =?us-ascii?Q?uPF08dTv0YJN5xz2i/SBND1C9KrG1WwKX93vr4ACCn6yi6ulL9Ur7V6xC142?=
- =?us-ascii?Q?o3XzmUhjgUyWhKcIExvrEUpwNqKR2hs2TRPyMDYdrIh2evD5KxlRaexjMsrT?=
- =?us-ascii?Q?q1JpWFOGvy9Oloe8rl1eXIk13Id50qaQskQAmWKmi3y9hwcF6ANhxLvuu7K5?=
- =?us-ascii?Q?rpA/qLq3noTIub2CQoLh0jSOLJ9zcpJJHafBIYiG1LoZQKRHGZAPIFpSSeLk?=
- =?us-ascii?Q?3ZLOtfS87Jw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5KlA2IZ1GML2S6ER+/2zlr+vx9BIeU6c0/udDAp60oU2gEuOrUmHQpHAum5H?=
- =?us-ascii?Q?wh0ukWzMuLpiewTSjO2qXpI5eoKxOVpUXpxgkjfzaYcQBiXBOCgM4GmtGikh?=
- =?us-ascii?Q?1V+cghh5Elpl8QMZ6JLeDLLWVThk9ZfOayqp2mzN80xZYZmITlYnCYuJx77h?=
- =?us-ascii?Q?hw7wEZ2FI5txeO6rN536cV9f64jFezdI3Nx+OnoxfHTHc+ZqrCqj0F7GlaN2?=
- =?us-ascii?Q?Fg1nhvoKi0obfos58BnIUhYB+2vjlX/T/l+ui39q1YMZ/ddXElpcu8UjPYSZ?=
- =?us-ascii?Q?A/KYwLokHokij8m8gD5QYG3Hy+Y9lUJ2DMeGTwWKz3UJmwK8ai5CpSsZgLl1?=
- =?us-ascii?Q?8yjOhM3jtHetE44wsZH36v9Q3t2EhZi6BcokY2VYW2kRJ+aCVuxRCes06em5?=
- =?us-ascii?Q?HjkitfIMVr7jeFHcNFGwOLnCRMCXip4DpGrXD6zoLM55XEjUTQUQF69QKDxW?=
- =?us-ascii?Q?tP95W/bh7zCa+DGbECk/IWyAmHiYkLO6u1hPwCiB66qyBvr5sssHyth2TFAa?=
- =?us-ascii?Q?Xbj/c9ba4nVAiEGcw3eSRYMNC+vQPpysMfhXOm+uqFqbUlX0kBxvqoCzlL/v?=
- =?us-ascii?Q?eMLXREq6oA+toR5VdmDsFKUBadeKp5GOWoKgnNNt71M39cTf8fEdz8JQqMeB?=
- =?us-ascii?Q?RwPsk6Mssfxp1+BZOWOLN+d3S/0hHnV6U3WZaXuoz0JtWwmiCfIf5lsnzJoa?=
- =?us-ascii?Q?Ni3bJMwCMaxkqkoJKTh9eZs0tHluawxiUW/Ru2VGmlex28GbuJlKsiyO+jvA?=
- =?us-ascii?Q?ZaikE2t73Y5MBKlPzmgHcG71w+gAs6ayLE64vEmzxwfU8Uv06Qd+ijvuxBU7?=
- =?us-ascii?Q?6W46eYDkMhD+Mwib+01iUtBfegSuxNqm6POyyFawALA1KSUuLdcvcl9/ecUY?=
- =?us-ascii?Q?odsT2Njw4F1skesWBrgeiYFg5+yHP/AiqhNSShagYHqsl5QiOcg+W8+MYFxs?=
- =?us-ascii?Q?sIljPlk1nlfEtqm0OBir+y6XOgsWLEeTueoCeGtRayeLHuLLzS+HaBarajQk?=
- =?us-ascii?Q?nb1H1E1mV34DgYUAhviO9Yu+uqVuCdizDxZirMy1RnZqWKmUi2tz3qAcidg+?=
- =?us-ascii?Q?Pqoc93kFjxhomMFVShmp7pBgRH87lEOHkn/TySfSpPIlJhbgay26E4+PePy1?=
- =?us-ascii?Q?l6j8kI7Q8jXK7DHv+0wX5VOBw4OX2AERv7xZe9VrLoNrIv4sTIOpEFNrGoQU?=
- =?us-ascii?Q?GlW+0oLwr1JY12bupwBVHdG2txZbcsqZVFf/jxfv/pWsUzmB6I0nfd0oacKe?=
- =?us-ascii?Q?slN6BNOf1m6f88epmVPmC6/Jzc1fsbu/dWIF9WArgeuLdYM5RMo1mE5p9y0W?=
- =?us-ascii?Q?Q8xTl+vIK89UJa065BX/Iw6ABNl9mtlDWIB1DyidmEdoW0euI5tMe5RexotZ?=
- =?us-ascii?Q?Q4Mm0cZD09VsrC/jUaN8B4WpAHHQeoTw6yEsuj97qSOeNQj6Q7e8lTaCn5Wa?=
- =?us-ascii?Q?UFjk26XCLV99NYnmAhJr+6pkNUAN4HT6B4YdgwP4ZUG1589aqDDpWFpoCl76?=
- =?us-ascii?Q?7GVbw4dNEE1XQLxKaxj02ze9FrSmUHjpixUyp/89c1LUGqjAfHZJAE/L8cml?=
- =?us-ascii?Q?EXkLkZkF/iFid6+fAMlP69XpRr9x351ui/400k72?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2da20c0-3203-4f07-f14e-08dda98dbedd
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7728.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2025 08:47:21.6036
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8ycjP1ftMoJS44LK8+Qq+frPsDFCii0bnuNtOP/7c0eCjCCO2D4tYcWbsvt0KU7r7rCME8AvPqOC5Kl3L/amhA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4201
-X-Spam-Status: No, score=-2.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	FORGED_SPF_HELO,SPF_HELO_PASS,T_SPF_TEMPERROR autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250217024218.1681-3-xueshuai@linux.alibaba.com>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Jun 12, 2025 at 05:02:13PM +1000, Alistair Popple wrote:
-> On Thu, Jun 05, 2025 at 09:21:28AM -0700, Dan Williams wrote:
-> > David Hildenbrand wrote:
-> > > On 05.06.25 09:46, Christoph Hellwig wrote:
-> > > > On Wed, Jun 04, 2025 at 06:59:09PM -0700, Dan Williams wrote:
-> > > >> +/* return normal pages backed by the page allocator */
-> > > >> +static inline struct page *vm_normal_gfp_pmd(struct vm_area_struct *vma,
-> > > >> +					     unsigned long addr, pmd_t pmd)
-> > > >> +{
-> > > >> +	struct page *page = vm_normal_page_pmd(vma, addr, pmd);
-> > > >> +
-> > > >> +	if (!is_devdax_page(page) && !is_fsdax_page(page))
-> > > >> +		return page;
-> > > >> +	return NULL;
-> > > > 
-> > > > If you go for this make it more straight forward by having the
-> > > > normal path in the main flow:
-> > > > 
-> > > > 	if (is_devdax_page(page) || is_fsdax_page(page))
-> > > > 		return NULL;
-> > > > 	return page;
-> > > 
-> > > +1
-> > > 
-> > > But I'd defer introducing that for now if avoidable. I find the naming 
-> > > rather ... suboptimal :)
-> > 
-> > Agree, that was a "for lack of a better term" suggestion, but the
-> > suggestion is indeed lacking.
-> 
-> I don't like the naming either ... maybe that is motivation enough for me to
-> audit the callers and have them explicitly filter the pages they don't want.
+On Mon, Feb 17, 2025 at 10:42:17AM +0800, Shuai Xue wrote:
+> The current implementation of pcie_do_recovery() assumes that the
+> recovery process is executed on the device that detected the error.
 
-Which actually most of them already do. The only ones I'm unsure about are both
-in s390 so I'll be conservative and add checks for folio_is_zone_device() there.
+s/on/for
+
+> However, the DPC driver currently passes the error port that experienced
+> the DPC event to pcie_do_recovery().
+> 
+> Use the SOURCE ID register to correctly identify the device that
+> detected the error. When passing the error device, the
+> pcie_do_recovery() will find the upstream bridge and walk bridges
+> potentially AER affected. And subsequent patches will be able to
+
+s/patches/commits
+
+> accurately access AER status of the error device.
+> 
+> Should not observe any functional changes.
+> 
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> ---
+>  drivers/pci/pci.h      |  2 +-
+>  drivers/pci/pcie/dpc.c | 28 ++++++++++++++++++++++++----
+>  drivers/pci/pcie/edr.c |  7 ++++---
+>  3 files changed, 29 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index 01e51db8d285..870d2fbd6ff2 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -572,7 +572,7 @@ struct rcec_ea {
+>  void pci_save_dpc_state(struct pci_dev *dev);
+>  void pci_restore_dpc_state(struct pci_dev *dev);
+>  void pci_dpc_init(struct pci_dev *pdev);
+> -void dpc_process_error(struct pci_dev *pdev);
+> +struct pci_dev *dpc_process_error(struct pci_dev *pdev);
+>  pci_ers_result_t dpc_reset_link(struct pci_dev *pdev);
+>  bool pci_dpc_recovered(struct pci_dev *pdev);
+>  unsigned int dpc_tlp_log_len(struct pci_dev *dev);
+> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+> index 1a54a0b657ae..ea3ea989afa7 100644
+> --- a/drivers/pci/pcie/dpc.c
+> +++ b/drivers/pci/pcie/dpc.c
+> @@ -253,10 +253,20 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
+>  	return 1;
+>  }
+>  
+> -void dpc_process_error(struct pci_dev *pdev)
+> +/**
+> + * dpc_process_error - handle the DPC error status
+> + * @pdev: the port that experienced the containment event
+> + *
+> + * Return the device that detected the error.
+
+s/Return/Return:
+
+> + *
+> + * NOTE: The device reference count is increased, the caller must decrement
+> + * the reference count by calling pci_dev_put().
+> + */
+> +struct pci_dev *dpc_process_error(struct pci_dev *pdev)
+>  {
+>  	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
+>  	struct aer_err_info info;
+> +	struct pci_dev *err_dev;
+>  
+>  	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
+>  	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
+> @@ -279,6 +289,13 @@ void dpc_process_error(struct pci_dev *pdev)
+>  		 "software trigger" :
+>  		 "reserved error");
+>  
+> +	if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE ||
+> +	    reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE)
+> +		err_dev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
+> +					    PCI_BUS_NUM(source), source & 0xff);
+> +	else
+> +		err_dev = pci_dev_get(pdev);
+> +
+>  	/* show RP PIO error detail information */
+>  	if (pdev->dpc_rp_extensions &&
+>  	    reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT &&
+> @@ -291,6 +308,8 @@ void dpc_process_error(struct pci_dev *pdev)
+>  		pci_aer_clear_nonfatal_status(pdev);
+>  		pci_aer_clear_fatal_status(pdev);
+>  	}
+> +
+> +	return err_dev;
+>  }
+>  
+>  static void pci_clear_surpdn_errors(struct pci_dev *pdev)
+> @@ -346,7 +365,7 @@ static bool dpc_is_surprise_removal(struct pci_dev *pdev)
+>  
+>  static irqreturn_t dpc_handler(int irq, void *context)
+>  {
+> -	struct pci_dev *err_port = context;
+> +	struct pci_dev *err_port = context, *err_dev;
+>  
+>  	/*
+>  	 * According to PCIe r6.0 sec 6.7.6, errors are an expected side effect
+> @@ -357,10 +376,11 @@ static irqreturn_t dpc_handler(int irq, void *context)
+>  		return IRQ_HANDLED;
+>  	}
+>  
+> -	dpc_process_error(err_port);
+> +	err_dev = dpc_process_error(err_port);
+>  
+>  	/* We configure DPC so it only triggers on ERR_FATAL */
+> -	pcie_do_recovery(err_port, pci_channel_io_frozen, dpc_reset_link);
+> +	pcie_do_recovery(err_dev, pci_channel_io_frozen, dpc_reset_link);
+> +	pci_dev_put(err_dev);
+>  
+>  	return IRQ_HANDLED;
+>  }
+> diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
+> index 521fca2f40cb..088f3e188f54 100644
+> --- a/drivers/pci/pcie/edr.c
+> +++ b/drivers/pci/pcie/edr.c
+> @@ -150,7 +150,7 @@ static int acpi_send_edr_status(struct pci_dev *pdev, struct pci_dev *edev,
+>  
+>  static void edr_handle_event(acpi_handle handle, u32 event, void *data)
+>  {
+> -	struct pci_dev *pdev = data, *err_port;
+> +	struct pci_dev *pdev = data, *err_port, *err_dev;
+>  	pci_ers_result_t estate = PCI_ERS_RESULT_DISCONNECT;
+>  	u16 status;
+>  
+> @@ -190,7 +190,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
+>  		goto send_ost;
+>  	}
+>  
+> -	dpc_process_error(err_port);
+> +	err_dev = dpc_process_error(err_port);
+>  	pci_aer_raw_clear_status(err_port);
+>  
+>  	/*
+> @@ -198,7 +198,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
+>  	 * or ERR_NONFATAL, since the link is already down, use the FATAL
+>  	 * error recovery path for both cases.
+>  	 */
+> -	estate = pcie_do_recovery(err_port, pci_channel_io_frozen, dpc_reset_link);
+> +	estate = pcie_do_recovery(err_dev, pci_channel_io_frozen, dpc_reset_link);
+>  
+>  send_ost:
+>  
+> @@ -216,6 +216,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
+>  	}
+>  
+>  	pci_dev_put(err_port);
+> +	pci_dev_put(err_dev);
+
+err_dev is not a valid pointer before calling dpc_process_error(). So either
+initialize it with NULL or only call it in error paths after
+dpc_process_error().
+
+And btw, pci_dev_put(err_dev) should come before pci_dev_put(err_port).
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
