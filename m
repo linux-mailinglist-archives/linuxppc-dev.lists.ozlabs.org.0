@@ -1,67 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-9313-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9321-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1A7AD74DD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jun 2025 16:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D765AD7910
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jun 2025 19:36:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJ5Jp2L5Yz2xHT;
-	Fri, 13 Jun 2025 00:59:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJ8pQ4B80z306l;
+	Fri, 13 Jun 2025 03:36:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.217.47
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749740346;
-	cv=none; b=nHEia6Q/AU6OkuApCrM7RwvEvjI7Y5TYCmaeR/rzCCtON1i1WfTtJnKsJx238S8j5uEo71AMeWi4NFmnRNG+6EmHoRX2hw+oBCnZgzN0LjiAaYuxBt6cy7qilh7p4/zJpcnumYXOc2Q0EdfEqDwIb9mw2ThAIPdiLo0R7wcgnXZ0v8yyWE5mv9B1lbjh/ZALeZbaO/LnVts6p7PC2WlTrPRknC/n8AJN/p0hn6S+fC8a+rKc8gb+UiuadET3R+LEJDvEUK+2oXGbTX8rXB+8wRSKuUyXkhAzdm9EIk3FpQyFqgs3kY5mHreuLbEVUhAEt8H+vPDPo74QHPrgZgv/PQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749749790;
+	cv=none; b=E2PeC8FpnOgz+r0J4+K0XSIPQ8q8kfVPpGzFIdV+Y+wfWlak4lSIq5qHyWi9wCWsqqLuMZNvjEISkNDofv7iHzUXD4NzQ+ksHlSzDxrQqKzKGVTyydU9Y8tG7+QkjoHrxdqsgjDgtwDI+xNWdvyYXNgIN8u5TpfzUMA0VdwQYVsP3DeAW/7cbrnB24OgP63iah+jyHtaAYS+0HqKZpxFiCLVH2JEwVVaFi21std3frcnHSoVJn0LIqeDNqH8i0rHwlJ/rcC2mMs2THa6SbrZBEl2tzne390WXrMxpmWPc8IyDaow4kXpMwC6usbLOEwVGJ76XPkSxtiAMJqdxrlStw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749740346; c=relaxed/relaxed;
-	bh=j7urv+43q9m5//eN/fBrHnA2GxbG1zcAPVe31MZBFY0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SbzeFc2j9yQMqyS9NJIg1DdROERMMjB6+Xuye02dahmoe45eRAsXQSxylBBaYpdeyEtxi8PTVzH98kPFRO8V/TCqQNd+mO2X44Y3K3+S/rO9TDbRGUBWghxqsEREuEAX2kIxU6fzQtrvCQWkuNpSm8xjKjtq313NNJhCgBnADTpgh+lFwUV7Nvdf5OUmxKeoFgumSybIOS847XXVzjeurK6I39LntkHLkfBaTrRJUEY0HdXlOxdKKTNXhJ6plhThLxgKTNvXLQBiIJRK3wc12t2HTQRdyjWY2x8sWMXnoGFik84xth2Trdc5Oe33KWjOpMOxqsPaOCMdWiR4uBcjPg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.217.47; helo=mail-vs1-f47.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.217.47; helo=mail-vs1-f47.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1749749790; c=relaxed/relaxed;
+	bh=ANjAB/i+3wqbtm/fqKC9pjVNNGYd+LvuX5UmSeokVjQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M1MUqsBNxdT6cJHngkgMmMOv21+ojKoDmkY+2We3MK83xctJrDhYvIRSQCd19ZkxHQ7ESWJy3kMoAGE4dQwHpmspGdC5z4BWHGCYTZ4ibkM+2t/Oo55ptchvZKKPmZmqfX5AFHbumrCdjwky3qgq8f9dZBW++AJLEjwev6E/PnN8UT/cEAI36sWyyAq0yEcIsdybttzjTT/SyMghFph1oN64bxpudJeoDHqOomNmKAABIhKNnrGXPjQOmhV9K51u6RBKG9syjigN0lOpvqM2XYg6HXNm0QLrRWB46aj9qpuyIBNXefwukTEBuVgmwvRM9n0fI9dSnsbJsU3Bu6qrzQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gPjOJz2D; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gPjOJz2D;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJ5Jm44PMz2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 00:59:03 +1000 (AEST)
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4e7b8112f4dso272352137.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jun 2025 07:59:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749740339; x=1750345139;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j7urv+43q9m5//eN/fBrHnA2GxbG1zcAPVe31MZBFY0=;
-        b=dDRNdLJOUPjj7lhOdrbsZd2eUKQUiExvT4R27yCyL1vGq82pBM0rsUeMA+TCU8DkG3
-         12BNHjqEQkG1acVTtqAezbFMS9vynZbLlDzZ7WKPfrQbzziLf2I+zHuvvxYJU8Q5aZmL
-         GgXTfjCS+7Aq5V5EOFJWKnXzVU/1IKvLvydvWE+79wWPgx59l6bC1TJ/8WpE31f4JW9l
-         FTSa5kKw0cBACKkz4X1d6HG9XZqhmp8/hlDyPBtSlGCGfpCxuRD6WSJ+DGwVlixUTNTC
-         bIMISDh3IE8zbf+cfsP8eu92UhYCEl2AB7Q9xoSBwuyy/QEAT/JzTufUG/Ul2uhn9QdW
-         DvbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGI7ONw0TILO4jpD5W5qjq5KQeT8G37nzcWgn2Ii3VdhCDjFtI9cN91hiFh9U79hMNDKCt4t0JgCAiBoM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwDCkTyxt+2FbASbVdkCNxFjoqMiDWfAyHXZ5btTl8bjOnIr/VT
-	pboXMAhbOpS8aJd4oLvwraCFR8ypusjI3w1mpI0BWURWwL6JXYZFFKNAW63ckHom
-X-Gm-Gg: ASbGncva74L1B5KRkue8BnIpbuGC06i9071WeC0X4KNSRw0sGmW8p1ARW+PTuS/pXtd
-	YR2bJntDzzM5LWw1h2lxxEpZWSjwJJEeoIRkqqrMVYQyQBmc1Cx7A2ipU2RMUF192Q+GiTKDiD+
-	2ijFUazkuWKLsRO7KG1cl7dIQHUC28b06wBjrcM/rJA57lBOeQirTVZZC8v//00pphjN87h8IIx
-	sDW8UV4oBGYYWQM7bYU2wSNXmBZ/kRJniTfHWPv9UuGDMFcrERrzRlB/sDoK38zLOUsG9E9fUPd
-	ejJuiTgSklO8dXTF+gK/bfsYQGlAp2ZmYFCE+SkNZYEaa+nej39S3V8ZTN1aA8tgeqpqQyAox5d
-	1SUWZukB2gXHM6234gXY5PAJW
-X-Google-Smtp-Source: AGHT+IFH7L4o1QoQcY133jVp7utaII/vRnpZUFTKF899LgpzNlGokdW/G8F3im1askQwy/5PrxKZeg==
-X-Received: by 2002:a05:6102:390e:b0:4e6:dbbc:16d0 with SMTP id ada2fe7eead31-4e7cccc353fmr3766760137.14.1749740339270;
-        Thu, 12 Jun 2025 07:58:59 -0700 (PDT)
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com. [209.85.222.44])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4e7d07d752dsm245837137.12.2025.06.12.07.58.58
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Jun 2025 07:58:58 -0700 (PDT)
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-87ed3b792a2so294142241.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jun 2025 07:58:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUCezUYpfD4O6L2+2I24v8SdaEvdLg/2U5v8HO7SKeLmEaXzUFARL4arEESZmKGcrpoRtHkcBnyrgENH+Q=@lists.ozlabs.org
-X-Received: by 2002:a05:6102:3046:b0:4e6:a338:a41d with SMTP id
- ada2fe7eead31-4e7ccb9decbmr4392145137.11.1749740338109; Thu, 12 Jun 2025
- 07:58:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJ8pN1kFFz2yFQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 03:36:27 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55C9xpHh005022;
+	Thu, 12 Jun 2025 17:36:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=ANjAB/i+3wqbtm/fqKC9pjVNNGYd+LvuX5UmSeokV
+	jQ=; b=gPjOJz2DlLLAahuxLsMvga8P96e5QtjjssuX3WnL7wfNwU9S7odZ1iF9n
+	AHXZaL0QgY2Yvv6+PISmVU8AGURt3TkfFKWYn1x50taMSKAa7h1Py0L08hzBockn
+	sQx28XfA83iutCkSgewhPkGk2hg9n0qPC6L8fNJUmDuqW9yEPkMry4L+GC9tTYO0
+	SD4Ldvr2NfjhdTYVv7Rn944LtNQhipOioR+F7fsnJ9kdle/XbEcv+ONZ2kYaVUYJ
+	/VTaRAakSqlZ1oK9rnq/4HmKpkaucRMwQY60+eLDS+xgc8bSOsXNrs+da1Mm5Jx9
+	DxiiZIL4w7ZQHN8ei7UjgxYir2X1w==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474x4mhdbs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Jun 2025 17:36:16 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55CHaGIg029272;
+	Thu, 12 Jun 2025 17:36:16 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474x4mhdbp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Jun 2025 17:36:16 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55CGbdNq015205;
+	Thu, 12 Jun 2025 17:36:15 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 474yrtp6b1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Jun 2025 17:36:15 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55CHaE2S46072192
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Jun 2025 17:36:14 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F201B20043;
+	Thu, 12 Jun 2025 17:36:13 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DE45420040;
+	Thu, 12 Jun 2025 17:36:13 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 12 Jun 2025 17:36:13 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 9B577E0157; Thu, 12 Jun 2025 19:36:13 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        Hugh Dickins <hughd@google.com>, Nicholas Piggin <npiggin@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>, Juergen Gross <jgross@suse.com>,
+        Jeremy Fitzhardinge <jeremy@goop.org>,
+        Ryan Roberts <ryan.roberts@arm.com>
+Subject: [PATCH 0/6] mm: Consolidate lazy MMU mode context
+Date: Thu, 12 Jun 2025 19:36:07 +0200
+Message-ID: <cover.1749747752.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,49 +97,80 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250610-gpiochip-set-rv-soc-v1-0-1a0c36c9deed@linaro.org> <20250610-gpiochip-set-rv-soc-v1-2-1a0c36c9deed@linaro.org>
-In-Reply-To: <20250610-gpiochip-set-rv-soc-v1-2-1a0c36c9deed@linaro.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 12 Jun 2025 16:58:46 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXt7W+XLoeQWqjNR8dBS3oCwFKBydVZueqtYg2uka0WxQ@mail.gmail.com>
-X-Gm-Features: AX0GCFuo1dTCSfHZ3zIJsOn9_JIHrUSOYlkHewmTg8yRd6ll7bXt9Le_Qc4mtYM
-Message-ID: <CAMuHMdXt7W+XLoeQWqjNR8dBS3oCwFKBydVZueqtYg2uka0WxQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] soc: renesas: pwc-rzv2m: use new GPIO line value
- setter callbacks
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Linus Walleij <linus.walleij@linaro.org>, Magnus Damm <magnus.damm@gmail.com>, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Y4X4sgeN c=1 sm=1 tr=0 ts=684b1011 cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=_adeEUt4WAeD9YfioJwA:9
+X-Proofpoint-GUID: qr5W2YIzc2A8ZYU2dsRpP1AphHqeKos2
+X-Proofpoint-ORIG-GUID: y6xW9IJSAE1JE6kcXuiy_mrCImk2ZWSK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEyMDEzMiBTYWx0ZWRfXwOXjIkbbpepd OoV77Zxzv1DOdGZHdC1rjgNBCs+WzETf7mIinKv8drROUhS3PC4S3Ul3Eq1Rd7PKATmFyM+TDvL kAnBooerznbgDsNZ+/ZPaU+KOsEBXC93w8q9w6KmW11m/vgE/aUeMTSFQFutpSKrQJxT61mMBuv
+ KSDxU4i8iMDqRaETa8beoNjTewS286bfktL7BQreW7c9kRIZcei0lJ9aqGyaWPDFPjwcafICCtq M+2fDqSlBJ149EKa1BJjaYXJjRiLvX/CmWd9wRa81Sdbs49mWKwGJKFbJ7AczMoR5fjZJzIohlx h7ggGzYUtbK6qCOXcSYaA1viUBK2oMNNt7ackAbJO+mupvs+X1Tc6Jccl69/IVghIosL27dXHPA
+ isXNAQ9475tlf5eWUprb3n3jaqwe+zULK27nDf9N0r4ezafy+XnKcezzdAsVHSGEj7SQHlPp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-12_10,2025-06-12_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=994 spamscore=0
+ clxscore=1011 lowpriorityscore=0 malwarescore=0 bulkscore=0 adultscore=0
+ impostorscore=0 suspectscore=0 phishscore=0 mlxscore=0 priorityscore=1501
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506120132
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 10 Jun 2025 at 14:38, Bartosz Golaszewski <brgl@bgdev.pl> wrote:
-> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
-> struct gpio_chip now has callbacks for setting line values that return
-> an integer, allowing to indicate failures. Convert the driver to using
-> them.
->
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Hi All,
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in renesas-devel for v6.17.
+Consolidate arch_enter|leave|flush_lazy_mmu_mode() context and protect
+with a lock not only user, but also kernel mappings before entering
+the lazy MMU mode.
 
-Gr{oetje,eeting}s,
+For not fully preemptible (Real-Time) kernels that simplifies semantics -
+while the mode is active the code should assume it is executing in atomic
+context. That paves the way for cleanups, such as suggested for sparc and
+powerpc and hopefully brings a bit more clarity in what labeled in commit
+691ee97e1a9d ("mm: fix lazy mmu docs and usage") as "a bit of a mess (to
+put it politely)".
 
-                        Geert
+The fully preemptible (Real-Time) kernels could probably also be brought
+into the fold, but I am not sure about implications (to say at least).
+
+This series is continuation of [1] and [2], with commit b6ea95a34cbd
+("kasan: avoid sleepable page allocation from atomic context") already
+upstream.
+
+I dared to keep Nicholas Piggin R-b on patch 3, but dropped it from
+patch 2 due to new bits.
+
+Except the optional sparc (untested) and powerpc (complile-tested)
+updates this series is a prerequisite for implementation of lazy MMU
+mode on s390.
+
+1. https://lore.kernel.org/linux-mm/cover.1744037648.git.agordeev@linux.ibm.com/#r
+2. https://lore.kernel.org/linux-mm/cover.1744128123.git.agordeev@linux.ibm.com/#r
+
+Thanks!
+
+Alexander Gordeev (6):
+  mm: Cleanup apply_to_pte_range() routine
+  mm: Lock kernel page tables before entering lazy MMU mode
+  mm/debug: Detect wrong arch_enter_lazy_mmu_mode() contexts
+  sparc/mm: Do not disable preemption in lazy MMU mode
+  powerpc/64s: Do not disable preemption in lazy MMU mode
+  powerpc/64s: Do not re-activate batched TLB flush
+
+ .../include/asm/book3s/64/tlbflush-hash.h     | 13 ++++----
+ arch/powerpc/include/asm/thread_info.h        |  2 --
+ arch/powerpc/kernel/process.c                 | 25 --------------
+ arch/sparc/include/asm/tlbflush_64.h          |  2 +-
+ arch/sparc/mm/tlb.c                           | 12 ++++---
+ include/linux/pgtable.h                       | 32 +++++++++++++-----
+ mm/kasan/shadow.c                             |  5 ---
+ mm/memory.c                                   | 33 ++++++++++++-------
+ mm/vmalloc.c                                  |  6 ++++
+ 9 files changed, 65 insertions(+), 65 deletions(-)
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.48.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
