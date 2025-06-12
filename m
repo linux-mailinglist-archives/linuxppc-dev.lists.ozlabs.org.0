@@ -1,77 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-9326-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9323-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 215B0AD7926
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jun 2025 19:37:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB9CAD791B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jun 2025 19:36:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJ8pV0yLyz30RK;
-	Fri, 13 Jun 2025 03:36:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJ8pS3WV2z2xrL;
+	Fri, 13 Jun 2025 03:36:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749749794;
-	cv=none; b=oIKZO6QcL6aA5y9fNSSYbBf7RUj6ubEVzpXEV49ywhsgYCr1a0ZeFW1R/Liw1r+8lVuOTGdq3D6s4VUzoE55e8U2CJCe7oSVkgm/F6clrF9SPxMca3NjV/5bn2nG61/p8iE6+fc3RJdB2kAgHtjT/Sd9ekUOOoHbp6mCa85MuMH4/HdzDPcdu8VKynGUv5jp85h29NC8rboafJDsGlzQvDtTEgZaHXMA17/lfic7npT/Q3SlfC0a/1wYdWRgmdZaPOSRR5GNPCd72dTMAOsE/o0C/BY+nP6moOhGmUemJb+MaVdbe66y3n48oXq/TYWs3UFGgwmd3C4YRpOceorABA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749749792;
+	cv=none; b=JOhZFath1LXR1aP51MZITNMiMGMhStbTbXhhG++7R/ukCG/1BIbBcNbqemnxFSuozbk0ih295FdJPiO7D/+d+MYC0hqx2R5Zk+3bFHRjHnALEatcfc/QWURAPxr1IsQ7MfUzeku5cuPlF3302hempiboXUwAdZ9s+excBdoL8VCa9SSkmyA9FB35oT0J+qsyDIYtgiot02Gbc8bUXLAFqsYHkg59x0B1YseZy6a40v+M2HzP8vdGELkVfZX+uRhYaYQXnej0AuGPbJC8MORAAOEQKyLWueffYH7LQRifTeipVUwYUShhrHSKx1ME0XNWZctHLPt7aQpn0BfAOrMsvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749749794; c=relaxed/relaxed;
-	bh=QpzxDfFD94KWII9K+6HadLtwTM81QAZAX1ucAb3kQ9o=;
+	t=1749749792; c=relaxed/relaxed;
+	bh=l+Et7RDVrkrD3xSj+ZT9JbsfA8TCXL5kawo+d542qxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WF6vGh+eX5/cg0S2Qito9Z/fN9qJELF6FsNxNAutHVwP/Zgh+lFIQow04+Z2occ3KkWBQYtC2VClku8ygdKtmaXvxVKzckueJMClc9KD+vER19Igy3z+J/ccE4iFAsMLrkMaAtX53UnpFx2UAC1CxoP/xf5C98T+KUlK9W5xsVRXfY6eJZmHwBGN3UTZ5K9lO578NduxO2+zgSgSzEZcxxBZOqlSApCnPUwwDX0j7E+mN9hzIhiNLA2+swx7dK5pjoBYrk3n9pr8ncm+R5KFYJbob8LkkfJPYmL2kGag1aOWJzfcdzX39VCRZtz0lyJ7bUZaxn7sx1hbTdYY3iHEew==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qzApvk7S; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=S3DMaVWaNRF2mC8gApmuZlNUKIB326Gw3KjqfMMFbAanrvFmV4b8cOp7+Rbe7SOhA9oJ/OyMV88gDUEI2/BKaoJt9D+3MfaOs5BOFzNckhCCWYC09AxK4wsPesxvA2jMCyhn5KiYIuUrbdqmeAYb8IOKkd2BEz+2BWRtqMxWjXuacbB7XV0hi6Ii/XKGsNDgAhTbAsmQB0S/bGFso85uQYQiigpxXHD6A1zSnC3SqvvN2TqI6SLqDm7gXeYlQb3WoI9g37qzySSQQDh+o22vpUXAZ9sYTdtgDZELaiDFz9T4hVoTKmYVRMfpu1xyFPLeIskHu4AogQdUAp3Wj96xwg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CGSHKJxp; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qzApvk7S;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CGSHKJxp;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJ8pS5pzmz30PF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 03:36:32 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55CBGWVP017713;
-	Thu, 12 Jun 2025 17:36:19 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJ8pN6Z0Nz2yMF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 03:36:28 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55CF7v0W022393;
+	Thu, 12 Jun 2025 17:36:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=QpzxDfFD94KWII9K+
-	6HadLtwTM81QAZAX1ucAb3kQ9o=; b=qzApvk7S2hlxQl1Bn2Btpu10ZAllpo5Ln
-	KoZtJ5Dc5ebsGHYL7NJYxYDOAJV+QiKhNPjGUzyi5/p4smraFWFFpufSpMGzAkSs
-	ijMES3tEQCL80ZymilIYQDcLGmaNEIE8zYtWSd1n3DnwRCmSMWFFrnWXVIMOvcU4
-	3FTlbLfkovMjrogcNOJQy/OWjWG8T3XeFB0lZLwFpm4+bdXr+w/UwmyypaAsne2r
-	gAzSFTJPL3eValXHYUhK4dMMnMvOe2n9ysA28sfKgF+EgtHkCd2WJoBbECxNmdyG
-	yGLdYwa2Z/ZiCy8108YXetwWubfWr/782ZiXt2qPAO1hZCRLEMGhQ==
+	:mime-version:references:subject:to; s=pp1; bh=l+Et7RDVrkrD3xSj+
+	ZT9JbsfA8TCXL5kawo+d542qxg=; b=CGSHKJxpAeqSz5W/a/AkSHYJFZv8lW+nh
+	uxHC7vWPjJm4OsnwR6v4hz9f8/GcPwgLyA3qutjEahhsvj2zIAXR15Q620+T14It
+	FHaWO/C+YYyqkGfyKNLYoZRGLnqRlAVl5LmSlHByDnbjBGpbKCvRtLprRYaEd7oh
+	5J9ogX1eJllyxwgYyjA/mR4IpcpPyUjA36BA3prpqLL3/+jvrBlrXfiW9iVZJm+I
+	zDSfTi4nXZF1qPYg3iaKGABx6nExrmBcci8O63LJ77BZRUe9YeZEYxl2gkpYGfKS
+	I6Y6vUvsUHq1Oogn+ejN/LQkS369JvfdVqa5J6qY7W5de0VsVHpPw==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474dv7v8mc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Jun 2025 17:36:18 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55CHUNNC007629;
-	Thu, 12 Jun 2025 17:36:17 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474dv7v8m4-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4769x01288-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 12 Jun 2025 17:36:17 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55CENRRG027927;
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55CHWVMp030657;
+	Thu, 12 Jun 2025 17:36:17 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4769x01286-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Jun 2025 17:36:17 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55CE2lWa014912;
 	Thu, 12 Jun 2025 17:36:16 GMT
 Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47518mnu86-1
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4750rpdxe5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Thu, 12 Jun 2025 17:36:16 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55CHaE0J13173194
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55CHaEqc33358430
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
 	Thu, 12 Jun 2025 17:36:14 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F41CA20043;
-	Thu, 12 Jun 2025 17:36:13 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E0ED420040;
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0C91920043;
+	Thu, 12 Jun 2025 17:36:14 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EC12E20040;
 	Thu, 12 Jun 2025 17:36:13 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
 	Thu, 12 Jun 2025 17:36:13 +0000 (GMT)
 Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id A255BE19B9; Thu, 12 Jun 2025 19:36:13 +0200 (CEST)
+	id A4B20E19BA; Thu, 12 Jun 2025 19:36:13 +0200 (CEST)
 From: Alexander Gordeev <agordeev@linux.ibm.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
@@ -81,9 +81,9 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         Guenter Roeck <linux@roeck-us.net>, Juergen Gross <jgross@suse.com>,
         Jeremy Fitzhardinge <jeremy@goop.org>,
         Ryan Roberts <ryan.roberts@arm.com>
-Subject: [PATCH 3/6] mm/debug: Detect wrong arch_enter_lazy_mmu_mode() contexts
-Date: Thu, 12 Jun 2025 19:36:10 +0200
-Message-ID: <2d516308df177f169e3e158687852bf91c95c427.1749747752.git.agordeev@linux.ibm.com>
+Subject: [PATCH 4/6] sparc/mm: Do not disable preemption in lazy MMU mode
+Date: Thu, 12 Jun 2025 19:36:11 +0200
+Message-ID: <db1559396c38c1dfe97a6d929412d7d6244f64b8.1749747752.git.agordeev@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1749747752.git.agordeev@linux.ibm.com>
 References: <cover.1749747752.git.agordeev@linux.ibm.com>
@@ -102,19 +102,19 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9voeh4bv5cl5bR8-1UbklMpr0vy5aE9k
-X-Proofpoint-GUID: 9Au_5T7dJBReJY8qjL4lDoqAoOEk9nHN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEyMDEzMiBTYWx0ZWRfXwvHzXkw1Ghwo VTWHN+cE0QcyT8/988a5Oy+uAOazKG7OlmsNXf6ZvKU2OyjqEb00Sa9h8VlU6IHLn1MggoDaL63 J4VspSDKrq2+1hsiPGGebKrNx1EbL+82psEcU80PFvDCmekkqaZ0vPpe50F3A5EaUR4LmuwQ/0/
- 5epCz7Ptq9XMUYKeq1zKwhT+tfKcNQIo5OBB6gHBUbG+j6+i6nLPuvYTfHveUXDpsZodJnk3zhE dYIyrVXtl4+cv0sSN2VcggnidQvKiNBmeIRb1oZr2g8ApheWzI/LFgHDf9f1hikiirl+WDTTu2o hrO0CgP9O7GbjWJ1Qv5gnL+YaCYVb0XAW2qQksVnQpXkvM1+8blus9YJd/GZULoBxkCwuh7NK+D
- rogA/0jqvGwDi1VvpGA1UI8O2sBoSl5dajC9s32rmbJOY1rQ4pEeWsPUoLCQb5SieKUycFW4
-X-Authority-Analysis: v=2.4 cv=CfMI5Krl c=1 sm=1 tr=0 ts=684b1013 cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=6IFa9wvqVegA:10 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=RJXGA7rP2o630YCXQOwA:9
+X-Proofpoint-ORIG-GUID: 5A073cfWFciuN2b1brPTe_Vnj2ABgNor
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEyMDEzMiBTYWx0ZWRfX3cw7ceB7JmZU d6VxfkA70ad39bsJhjQOMACDU7dhR+379Mps/nEMF5/Xm61VZKQveRqbfzXh/DVjMZ0MwShjckH OtM5ElN6pHeKhDxIDWUCD/pMglKXSvoq8imTovo//BpZ6RwUVH9+vjpOGhCFRVt8y8A/4Bl3ZF+
+ v6CF8HwtyU4JDL9lKBw8F0GK0vxxj4t9XvR5rgBIuku+iqnJzzsphSBS/GReDoCb+rZTnHKWlnq RPWDwzbp3QorzE155Z++H0jAHLpMAaYFuoXsnenF/bqmgRHT1lUWRW1zbgilJ+Wn6BAjRAxFWe0 pbzA/SYKln6jnYz2VhQume3b18VSQ7InP15yZ+oOnDWlKT3nsaNQ+eIJZzYp3cBxB4kIuXOZQH0
+ iVXVtP4unDNnzh/4Kk90d/VKBbvj+DoHFSQSGh/QOa32UKZrgdVGPB3bpZbuiTPpWKB+gRy+
+X-Authority-Analysis: v=2.4 cv=YKGfyQGx c=1 sm=1 tr=0 ts=684b1012 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=Nsn6zn2YLSyj-wdhBosA:9
+X-Proofpoint-GUID: El7oGGFj-H4_3nAMfB3G6kQ4auHJ7oeL
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-12_10,2025-06-12_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- phishscore=0 priorityscore=1501 clxscore=1011 impostorscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=914 adultscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ malwarescore=0 bulkscore=0 priorityscore=1501 phishscore=0 mlxscore=0
+ lowpriorityscore=0 impostorscore=0 adultscore=0 mlxlogscore=711
+ suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2506120132
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -122,57 +122,64 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Make default arch_enter|leave|flush_lazy_mmu_mode() callbacks
-complain on enabled preemption to detect wrong contexts. That
-could help to prevent the complicated lazy MMU mode semantics
-misuse, such like one that was solved with commit b9ef323ea168
-("powerpc/64s: Disable preemption in hash lazy mmu mode").
+Commit a1d416bf9faf ("sparc/mm: disable preemption in lazy mmu mode")
+is not necessary anymore, since the lazy MMU mode is entered with a
+spinlock held and sparc does not support Real-Time. Thus, upon entering
+the lazy mode the preemption is already disabled.
 
-Skip fully preemptible kernels, since in such case taking the
-page table lock does not disable preemption, so the described
-check would be wrong.
-
-Most platforms do not implement the lazy MMU mode callbacks,
-so to aovid a performance impact allow the complaint when
-CONFIG_DEBUG_VM option is enabled only.
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 ---
- include/linux/pgtable.h | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ arch/sparc/include/asm/tlbflush_64.h |  2 +-
+ arch/sparc/mm/tlb.c                  | 12 ++++++++----
+ 2 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 33bf2b13c219..0cb8abdc58a8 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -232,9 +232,23 @@ static inline int pmd_dirty(pmd_t pmd)
-  * Nesting is not permitted and the mode cannot be used in interrupt context.
-  */
- #ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
--#define arch_enter_lazy_mmu_mode()	do {} while (0)
--#define arch_leave_lazy_mmu_mode()	do {} while (0)
--#define arch_flush_lazy_mmu_mode()	do {} while (0)
-+static inline void arch_enter_lazy_mmu_mode(void)
-+{
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		VM_WARN_ON_ONCE(preemptible());
-+}
-+
-+static inline void arch_leave_lazy_mmu_mode(void)
-+{
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		VM_WARN_ON_ONCE(preemptible());
-+}
-+
-+static inline void arch_flush_lazy_mmu_mode(void)
-+{
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		VM_WARN_ON_ONCE(preemptible());
-+}
- #endif
+diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
+index 8b8cdaa69272..a6d8068fb211 100644
+--- a/arch/sparc/include/asm/tlbflush_64.h
++++ b/arch/sparc/include/asm/tlbflush_64.h
+@@ -44,7 +44,7 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+ void flush_tlb_pending(void);
+ void arch_enter_lazy_mmu_mode(void);
+ void arch_leave_lazy_mmu_mode(void);
+-#define arch_flush_lazy_mmu_mode()      do {} while (0)
++void arch_flush_lazy_mmu_mode(void);
  
- #ifndef pte_batch_hint
+ /* Local cpu only.  */
+ void __flush_tlb_all(void);
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index a35ddcca5e76..e46dfd5f2583 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -52,10 +52,9 @@ void flush_tlb_pending(void)
+ 
+ void arch_enter_lazy_mmu_mode(void)
+ {
+-	struct tlb_batch *tb;
++	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
+ 
+-	preempt_disable();
+-	tb = this_cpu_ptr(&tlb_batch);
++	VM_WARN_ON_ONCE(preemptible());
+ 	tb->active = 1;
+ }
+ 
+@@ -63,10 +62,15 @@ void arch_leave_lazy_mmu_mode(void)
+ {
+ 	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
+ 
++	VM_WARN_ON_ONCE(preemptible());
+ 	if (tb->tlb_nr)
+ 		flush_tlb_pending();
+ 	tb->active = 0;
+-	preempt_enable();
++}
++
++void arch_flush_lazy_mmu_mode(void)
++{
++	VM_WARN_ON_ONCE(preemptible());
+ }
+ 
+ static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
 -- 
 2.48.1
 
