@@ -1,59 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-9305-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9303-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8241DAD6E3D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jun 2025 12:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCACCAD6E2A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jun 2025 12:46:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bHzpF5Yx4z308P;
-	Thu, 12 Jun 2025 20:50:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bHzjk1vvxz2xQ6;
+	Thu, 12 Jun 2025 20:46:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749725445;
-	cv=none; b=bdTfMygsoVKmu1zHVBVyfr+iOTBdfutK1fPOPkWwyeLVIbEiyjXbFtIwCZsaL6U43RxJIRSsk/b6QXFQsQz9UqIdWWTYcBjbTaVX2OL3Ulv9m3dibDcGc1mOHwbsA0JNBXEUIkrw+O+pdUaJunaBLBReImud/hniZwsrxNzpuLmkemd5mTB8Eu3GlVFhKntDagRjYJX17o085JQjTvTAe53a8LdDj7BRJahUhseySWNqXRDIsXMC/99T8hc/nfFmSlDyTEPP5wLHiw+57x9T9UqRxudcFmE/myi+jWv7SywlxnxTr893kIOCklULpUpSo8XraCZdJhoU8evbiVUO2g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749725210;
+	cv=none; b=HBPyqEK3kCGU/npae2l3yy6/wjCYisf4i9oa1Y2c/sf3ZBoJG9E2yO0tWPCYbG+xRg5KZC8kKknjRxHOfE+4hgWv76pDlghQKDQG3OrODM3FrosNnAQum7M1KNUqXVoUU2i3aPlswn6uNe8q0LcrhS04uoFMxQ4H2opgTjRFXzehiyEed3lkXxj1Ga9+emRNMFucVFKtfi/BGJkIGDO9e+ANQ+HfBiwiZXOz/ErdnhU9y0RpyF96wYvBp0EOGWwZ3sjI1Idp+Z7YQHY4mTzaEzxEuf5+avD3TozozFZrEaHxGxIHCgFVyw7AGgChS4oHZn4sOK6GKesKKMe2HUnfNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749725445; c=relaxed/relaxed;
-	bh=X3ARAdGIuXicXwS7hHaOK8mvLlCnsOObt0uh2Ffw4ms=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jluRia4cetwZPaelHjf3IuAmT6D/6yxYNsSy02OGcySRUi8VsjtHv2kc65ekn+XLiUgz3gnu+oSsE++LcaXgLYDAeLljJSvyv08dOOvjGPziAg3JMX/LFgayLWoCUPnymVoOySLf4hXDoJOg5Ao5FX4v880SfWSpueiIJk628uesRh6Gh/QCRe/Bh1GdskPwkDlgLXCSRIYWFXlquBbFXSBvWHWjLbF6Ekzyuj9BnHH0X3tFjpSn/TMVGz/+cSNb0kHDyWNVT0/OB+BwuM4af0by5VVa2GMfm3D8HDKmUID6iOWx4J71Kz6j1LdHNQw1IEEKVzEQWbbLtOb3EhUzJw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bHzpF0fvZz2xbX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jun 2025 20:50:44 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bHzYb73gyz9tHF;
-	Thu, 12 Jun 2025 12:39:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id k2wwbyyyP6lu; Thu, 12 Jun 2025 12:39:47 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bHzYb6LqLz9tFS;
-	Thu, 12 Jun 2025 12:39:47 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D48D28B77B;
-	Thu, 12 Jun 2025 12:39:47 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id QnMofMfdk0mU; Thu, 12 Jun 2025 12:39:47 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 502998B769;
-	Thu, 12 Jun 2025 12:39:47 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	Herve Codina <herve.codina@bootlin.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH] ALSA: pcm: Convert snd_pcm_ioctl_sync_ptr_{compat/x32} to user_access_begin/user_access_end()
-Date: Thu, 12 Jun 2025 12:39:39 +0200
-Message-ID: <8df11af98033e4cb4d9b0f16d6e9d5b69110b036.1749724057.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.47.0
+	t=1749725210; c=relaxed/relaxed;
+	bh=dYQmpaGO9cKmmGA2rcatO+dhLIzvWWOX939GeWSX/FI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bfeXjNxnaMcciayVtTtoiNhJ9t+W3AqYOsEpRctunvb0rZ1PYUMRcMS41t6JXFJUZxcDc1sKNno8Z71xW34YD2x4i8Tp8VP9V9BE/voufoEV47N79+YLGL8VLpyOy98y9fKzPBNJT3phOT2KkOlLx1t6VEtwJSi5U/kDPJLa48t5DthLxDhdhdboJgX1b/iAWRn3cEOlCkXCuTIlTPxmSCoVTS5W+80Ts4UtyvDk1rKTcss0uu8Q8LFK6Z7rfpHRz41lx9jjylb5ETqL1kqV7YXiEwAbt1EO+PW3D1CZeOrwsJJ+DuirM0PJRF9m6aJUj6vaR608mi277HnsweiWdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sO7KR46D; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sO7KR46D;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHzjh5wKVz2xFl
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jun 2025 20:46:48 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3DF16446E8;
+	Thu, 12 Jun 2025 10:46:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA91C4CEEA;
+	Thu, 12 Jun 2025 10:46:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749725206;
+	bh=6rmmiSB1nU3IQ0qw0+ckwjysahJXSea7GRNyqVg84jY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sO7KR46DWS7JVO+IVKFBlPk2axEZHUAA1mPsVrQhyIFlbSyq1ED1OzeAFJDimvO7G
+	 G6BEIjTcIlUT/cKH20t6h/YA/87MVWs7mlZvrZzXPVTtscM2rfVY8KWOjeKlFNJRXl
+	 DY/qc3yoiKfnWA3qiC8xH7zPh/3mNSCg/lZ+rFlQjJUFaeC0SYxHg8Ch0a2oZ/O3D8
+	 pG2+WUdm7yq4u5ebZBMNa8hdL0RT+w5rdds9xDa+jKESw2xx//Z515r+P/b51IwZw0
+	 r7X2GYvawtYlzqLha9iCrpyZ+8+cA3vWRmbuePGYiVMCW4UNtAFLg5E/bu1VvUdAY2
+	 jMVYXidYHyTEQ==
+Date: Thu, 12 Jun 2025 16:16:38 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: 
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org, mahesh@linux.ibm.com, 
+	oohall@gmail.com, Jonathan.Cameron@huawei.com, terry.bowman@amd.com, 
+	tianruidong@linux.alibaba.com
+Subject: Re: [PATCH v4 3/3] PCI/AER: Report fatal errors of RCiEP and EP if
+ link recoverd
+Message-ID: <54nug57urubw5uhrwrdos3s3kta2r4qovzb6cf2mntc7kiora5@lg3p7vjmrvb3>
+References: <20250217024218.1681-1-xueshuai@linux.alibaba.com>
+ <20250217024218.1681-4-xueshuai@linux.alibaba.com>
+ <8a833aaf-53aa-4e56-a560-2b84a6e9c28c@linux.intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,196 +70,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749724779; l=8808; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=SQUtuRhE2BAVHn8Mafr9cwFS7bLSZxdCosfeA4mmwDg=; b=JuAnvGdXpCM7km35w05+tUvPA0w1w1jX1C5T0Ty88h3Q2iIkdcGF+rdmyTdi/k6rxrXDkZJBR C1Zu00NQkFTChNEZcJu80cDHnrGGebl28WMqrKj25RtnZM/hcJptrSk
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <8a833aaf-53aa-4e56-a560-2b84a6e9c28c@linux.intel.com>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-With user access protection (Called SMAP on x86 or KUAP on powerpc)
-each and every call to get_user() or put_user() performs heavy
-operations to unlock and lock kernel access to userspace.
+On Sun, Mar 02, 2025 at 07:43:41PM -0800, Sathyanarayanan Kuppuswamy wrote:
+> 
+> On 2/16/25 6:42 PM, Shuai Xue wrote:
+> > The AER driver has historically avoided reading the configuration space of
+> > an endpoint or RCiEP that reported a fatal error, considering the link to
+> > that device unreliable. Consequently, when a fatal error occurs, the AER
+> > and DPC drivers do not report specific error types, resulting in logs like:
+> > 
+> >    pcieport 0000:30:03.0: EDR: EDR event received
+> >    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+> >    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+> >    pcieport 0000:30:03.0: AER: broadcast error_detected message
+> >    nvme nvme0: frozen state error detected, reset controller
+> >    nvme 0000:34:00.0: ready 0ms after DPC
+> >    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+> > 
+> > AER status registers are sticky and Write-1-to-clear. If the link recovered
+> > after hot reset, we can still safely access AER status of the error device.
+> > In such case, report fatal errors which helps to figure out the error root
+> > case.
+> > 
+> > After this patch, the logs like:
+> > 
+> >    pcieport 0000:30:03.0: EDR: EDR event received
+> >    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+> >    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+> >    pcieport 0000:30:03.0: AER: broadcast error_detected message
+> >    nvme nvme0: frozen state error detected, reset controller
+> >    pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
+> >    nvme 0000:34:00.0: ready 0ms after DPC
+> >    nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
+> >    nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
+> >    nvme 0000:34:00.0:    [ 4] DLP                    (First)
+> >    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+> 
+> IMO, above info about device error details is more of a debug info. Since
+> the
+> main use of this info use to understand more details about the recovered
+> DPC error. So I think is better to print with debug tag. Lets see what
+> others
+> think.
+> 
 
-SNDRV_PCM_IOCTL_SYNC_PTR ioctl is a hot path that needs to be
-optimised. To do that, perform user accesses by blocks using
-user_access_begin/user_access_end() and unsafe_get_user()/
-unsafe_put_user() and alike.
+My two cents: All AER logs are mostly error messages, so I don't see why this
+one should be a debug message. But having said that, this new error log may
+confuse users as if a new AER error is received post recovery. So adding
+something that specifies that this belong to the previous AER error would be
+good IMO.
 
-Before the patch the 9 calls to put_user() at the
-end of snd_pcm_ioctl_sync_ptr_compat() imply the following set of
-instructions about 9 times (access_ok - enable user - write - disable
-user):
-    0.00 :   c057f858:       3d 20 7f ff     lis     r9,32767
-    0.29 :   c057f85c:       39 5e 00 14     addi    r10,r30,20
-    0.77 :   c057f860:       61 29 ff fc     ori     r9,r9,65532
-    0.32 :   c057f864:       7c 0a 48 40     cmplw   r10,r9
-    0.36 :   c057f868:       41 a1 fb 58     bgt     c057f3c0 <snd_pcm_ioctl+0xbb0>
-    0.30 :   c057f86c:       3d 20 dc 00     lis     r9,-9216
-    1.95 :   c057f870:       7d 3a c3 a6     mtspr   794,r9
-    0.33 :   c057f874:       92 8a 00 00     stw     r20,0(r10)
-    0.27 :   c057f878:       3d 20 de 00     lis     r9,-8704
-    0.28 :   c057f87c:       7d 3a c3 a6     mtspr   794,r9
-...
+- Mani
 
-A perf profile shows that in total the 9 put_user() represent 36% of
-the time spent in snd_pcm_ioctl() and about 80 instructions.
-
-With this patch everything is done in 13 instructions and represent
-only 15% of the time spent in snd_pcm_ioctl():
-
-    0.57 :   c057f5dc:       3d 20 dc 00     lis     r9,-9216
-    0.98 :   c057f5e0:       7d 3a c3 a6     mtspr   794,r9
-    0.16 :   c057f5e4:       92 7f 00 04     stw     r19,4(r31)
-    0.63 :   c057f5e8:       93 df 00 0c     stw     r30,12(r31)
-    0.16 :   c057f5ec:       93 9f 00 10     stw     r28,16(r31)
-    4.95 :   c057f5f0:       92 9f 00 14     stw     r20,20(r31)
-    0.19 :   c057f5f4:       92 5f 00 18     stw     r18,24(r31)
-    0.49 :   c057f5f8:       92 bf 00 1c     stw     r21,28(r31)
-    0.27 :   c057f5fc:       93 7f 00 20     stw     r27,32(r31)
-    5.88 :   c057f600:       93 36 00 00     stw     r25,0(r22)
-    0.11 :   c057f604:       93 17 00 00     stw     r24,0(r23)
-    0.00 :   c057f608:       3d 20 de 00     lis     r9,-8704
-    0.79 :   c057f60c:       7d 3a c3 a6     mtspr   794,r9
-
-Note that here the access_ok() in user_write_access_begin() is skipped
-because the exact same verification has already been performed at the
-beginning of the fonction with the call to user_read_access_begin().
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-This is a lighter version of previous patch "[PATCH v2] ALSA: pcm: Convert multiple {get/put}_user to user_access_begin/user_access_end()" focussing on identified hot path.
-Moved and nested the failure labels closer in order to increase readability
-
-Link: https://patchwork.ozlabs.org/project/linuxppc-dev/patch/d2609397eafc2b55ec1f44a3f30ccec00e0c7f6e.1749455639.git.christophe.leroy@csgroup.eu/
-
- sound/core/pcm_compat.c | 40 +++++++++++++++++++++++++++-------------
- sound/core/pcm_native.c | 40 +++++++++++++++++++++++++++-------------
- 2 files changed, 54 insertions(+), 26 deletions(-)
-
-diff --git a/sound/core/pcm_compat.c b/sound/core/pcm_compat.c
-index a42ec7f5a1da..348a72e6499e 100644
---- a/sound/core/pcm_compat.c
-+++ b/sound/core/pcm_compat.c
-@@ -418,10 +418,18 @@ static int snd_pcm_ioctl_sync_ptr_x32(struct snd_pcm_substream *substream,
- 	if (snd_BUG_ON(!runtime))
- 		return -EINVAL;
- 
--	if (get_user(sflags, &src->flags) ||
--	    get_user(scontrol.appl_ptr, &src->c.control.appl_ptr) ||
--	    get_user(scontrol.avail_min, &src->c.control.avail_min))
-+	if (!user_read_access_begin(src, sizeof(*src)))
- 		return -EFAULT;
-+	err = -EFAULT;
-+	unsafe_get_user(sflags, &src->flags, Efault_rd);
-+	unsafe_get_user(scontrol.appl_ptr, &src->c.control.appl_ptr, Efault_rd);
-+	unsafe_get_user(scontrol.avail_min, &src->c.control.avail_min, Efault_rd);
-+	err = 0;
-+Efault_rd:
-+	user_read_access_end();
-+	if (err)
-+		return err;
-+
- 	if (sflags & SNDRV_PCM_SYNC_PTR_HWSYNC) {
- 		err = snd_pcm_hwsync(substream);
- 		if (err < 0)
-@@ -450,18 +458,24 @@ static int snd_pcm_ioctl_sync_ptr_x32(struct snd_pcm_substream *substream,
- 	}
- 	if (!(sflags & SNDRV_PCM_SYNC_PTR_APPL))
- 		snd_pcm_dma_buffer_sync(substream, SNDRV_DMA_SYNC_DEVICE);
--	if (put_user(sstatus.state, &src->s.status.state) ||
--	    put_user(sstatus.hw_ptr, &src->s.status.hw_ptr) ||
--	    put_user(sstatus.tstamp.tv_sec, &src->s.status.tstamp_sec) ||
--	    put_user(sstatus.tstamp.tv_nsec, &src->s.status.tstamp_nsec) ||
--	    put_user(sstatus.suspended_state, &src->s.status.suspended_state) ||
--	    put_user(sstatus.audio_tstamp.tv_sec, &src->s.status.audio_tstamp_sec) ||
--	    put_user(sstatus.audio_tstamp.tv_nsec, &src->s.status.audio_tstamp_nsec) ||
--	    put_user(scontrol.appl_ptr, &src->c.control.appl_ptr) ||
--	    put_user(scontrol.avail_min, &src->c.control.avail_min))
-+
-+	if (!user_write_access_begin(src, sizeof(*src)))
- 		return -EFAULT;
-+	err = -EFAULT;
-+	unsafe_put_user(sstatus.state, &src->s.status.state, Efault_wr);
-+	unsafe_put_user(sstatus.hw_ptr, &src->s.status.hw_ptr, Efault_wr);
-+	unsafe_put_user(sstatus.tstamp.tv_sec, &src->s.status.tstamp_sec, Efault_wr);
-+	unsafe_put_user(sstatus.tstamp.tv_nsec, &src->s.status.tstamp_nsec, Efault_wr);
-+	unsafe_put_user(sstatus.suspended_state, &src->s.status.suspended_state, Efault_wr);
-+	unsafe_put_user(sstatus.audio_tstamp.tv_sec, &src->s.status.audio_tstamp_sec, Efault_wr);
-+	unsafe_put_user(sstatus.audio_tstamp.tv_nsec, &src->s.status.audio_tstamp_nsec, Efault_wr);
-+	unsafe_put_user(scontrol.appl_ptr, &src->c.control.appl_ptr, Efault_wr);
-+	unsafe_put_user(scontrol.avail_min, &src->c.control.avail_min), Efault_wr);
-+	err = 0;
-+Efault_wr:
-+	user_write_access_end();
- 
--	return 0;
-+	return err;
- }
- #endif /* CONFIG_X86_X32_ABI */
- 
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index ecb71bf1859d..b104faddb6e3 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -3165,10 +3165,18 @@ static int snd_pcm_ioctl_sync_ptr_compat(struct snd_pcm_substream *substream,
- 	if (snd_BUG_ON(!runtime))
- 		return -EINVAL;
- 
--	if (get_user(sflags, &src->flags) ||
--	    get_user(scontrol.appl_ptr, &src->c.control.appl_ptr) ||
--	    get_user(scontrol.avail_min, &src->c.control.avail_min))
-+	if (!user_read_access_begin(src, sizeof(*src)))
- 		return -EFAULT;
-+	err = -EFAULT;
-+	unsafe_get_user(sflags, &src->flags, Efault_rd);
-+	unsafe_get_user(scontrol.appl_ptr, &src->c.control.appl_ptr, Efault_rd);
-+	unsafe_get_user(scontrol.avail_min, &src->c.control.avail_min, Efault_rd);
-+	err = 0;
-+Efault_rd:
-+	user_read_access_end();
-+	if (err)
-+		return err;
-+
- 	if (sflags & SNDRV_PCM_SYNC_PTR_HWSYNC) {
- 		err = snd_pcm_hwsync(substream);
- 		if (err < 0)
-@@ -3200,18 +3208,24 @@ static int snd_pcm_ioctl_sync_ptr_compat(struct snd_pcm_substream *substream,
- 	}
- 	if (!(sflags & SNDRV_PCM_SYNC_PTR_APPL))
- 		snd_pcm_dma_buffer_sync(substream, SNDRV_DMA_SYNC_DEVICE);
--	if (put_user(sstatus.state, &src->s.status.state) ||
--	    put_user(sstatus.hw_ptr, &src->s.status.hw_ptr) ||
--	    put_user(sstatus.tstamp.tv_sec, &src->s.status.tstamp_sec) ||
--	    put_user(sstatus.tstamp.tv_nsec, &src->s.status.tstamp_nsec) ||
--	    put_user(sstatus.suspended_state, &src->s.status.suspended_state) ||
--	    put_user(sstatus.audio_tstamp.tv_sec, &src->s.status.audio_tstamp_sec) ||
--	    put_user(sstatus.audio_tstamp.tv_nsec, &src->s.status.audio_tstamp_nsec) ||
--	    put_user(scontrol.appl_ptr, &src->c.control.appl_ptr) ||
--	    put_user(scontrol.avail_min, &src->c.control.avail_min))
-+
-+	if (!user_write_access_begin(src, sizeof(*src)))
- 		return -EFAULT;
-+	err = -EFAULT;
-+	unsafe_put_user(sstatus.state, &src->s.status.state, Efault_wr);
-+	unsafe_put_user(sstatus.hw_ptr, &src->s.status.hw_ptr, Efault_wr);
-+	unsafe_put_user(sstatus.tstamp.tv_sec, &src->s.status.tstamp_sec, Efault_wr);
-+	unsafe_put_user(sstatus.tstamp.tv_nsec, &src->s.status.tstamp_nsec, Efault_wr);
-+	unsafe_put_user(sstatus.suspended_state, &src->s.status.suspended_state, Efault_wr);
-+	unsafe_put_user(sstatus.audio_tstamp.tv_sec, &src->s.status.audio_tstamp_sec, Efault_wr);
-+	unsafe_put_user(sstatus.audio_tstamp.tv_nsec, &src->s.status.audio_tstamp_nsec, Efault_wr);
-+	unsafe_put_user(scontrol.appl_ptr, &src->c.control.appl_ptr, Efault_wr);
-+	unsafe_put_user(scontrol.avail_min, &src->c.control.avail_min, Efault_wr);
-+	err = 0;
-+Efault_wr:
-+	user_write_access_end();
- 
--	return 0;
-+	return err;
- }
- #define __SNDRV_PCM_IOCTL_SYNC_PTR32 _IOWR('A', 0x23, struct snd_pcm_sync_ptr32)
- 
 -- 
-2.47.0
-
+மணிவண்ணன் சதாசிவம்
 
