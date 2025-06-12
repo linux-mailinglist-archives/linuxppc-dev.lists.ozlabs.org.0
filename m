@@ -1,60 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-9302-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9304-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5376AAD6DC0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jun 2025 12:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A03AD6E3B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Jun 2025 12:50:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bHzMq5Jqrz2xQ6;
-	Thu, 12 Jun 2025 20:31:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bHzp82xS3z2y82;
+	Thu, 12 Jun 2025 20:50:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749724279;
-	cv=none; b=aje0pcp26UbQiCqNKvHKSiLMhXdkAXW8NNqXg1bEsoiXdRZ4qsJfSzeuP2O/hk2AJtDsCLwlxrqxyBMqdSeG+SOTsPN8trFbvS6aiXMCMGRhNYdSwyfxsmwHD2Lx+1RHSctzFkHA6bgxvHNIguMPeiAily+89709/K0TJnrFd6Qt6nTPcJ7sPflXiRPXSjLzDteC6XNCk3bzkn9N9q4+yU5qxak1RFR2VlzPSY+FEW9zXTrXucruQgBrHuqu/CXEKQwlBkTCqKYg6dfoSQaX3sZLppIzDo/2A2uEij0aJr+/kuDxR7wxesy5bJRuXwVD0L5olHKVM2pbezgNZpmZUA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749725440;
+	cv=none; b=DZGR4kNXUDIoLQSOEZ3ibuHtIo0Ftvfz92PeJuDZUohgpRvTfKLinsuTHaWO2Md5cIB5XaCeWRixpMw8CWZe9DOSw9Xc20nG7nAA/wi4gHCF3MBvL4p2rmB/hUE1CO4Xu1RL+XmGm2pK+p3T59ATdVL8559+rR8XB/iDbQkE0gfcCgZgbN/OZNNxv9JH9Yz8F11tEaYklaTwnPDQh81bZ2lDxugVSqfaVkDXv6JSDZMZz64gEgjejjriexteXRhMkiaMe62/WSzKSuQd3iBQVZvOIrgPFbAqh0UAxj6qsQFo31hZBK/23z1MzjNswdbPikqyhFbhPggSS8xCbK9ztg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749724279; c=relaxed/relaxed;
-	bh=LjvzuUVgtEnWBQWRzMnEUbgIe+PAP10CcsoBAW8xSME=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eZwAA3V0EHQ05ZvqQ74s2oo8nr9VKBTI2oa+hcMoPXZOMIBAy4MNUJXldm6GR/DA0rA3afGHmKE+0I2fOp0AA2ldugC7EXuOM//gyk5aAJrojDH4YamippCffJU/JlMWmf1hVt9vNcJ/F9sH8sCuopVI1dDKP+pnRIaKLinoo0oTMzTky/DXuny7SL2B4OGDL45bUDSHkR4XjSAErJHz9+XAGcLbtevQM/f2rSY1m1GEHLULRZWrOFm0xPVFwKtwuLecQNihMk16TzR875w3iVERYjGci2TTeBLrH2tOmm87X4ylpbYYkpwlyfxZ+Je0yBeHH5paEGo4shW3RtDJRg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jZOQCorL; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jZOQCorL;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bHzMp01qYz2xFl
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jun 2025 20:31:17 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 41075A516EC;
-	Thu, 12 Jun 2025 10:31:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C7DC4CEEA;
-	Thu, 12 Jun 2025 10:31:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749724274;
-	bh=wiejYMTupVjbAdH1VRxuYY6nbMKtSb6UNwF+vG/I2Rw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jZOQCorL+FGN0FPSLDpR8Nl8cwHh+7aLHkJpDhkkqjrI4azY6PmftyMBrjW11fweY
-	 /6L5e0SRkXt6e0SsClWbT+ujg52rh7F8AHbwijjUu6KqMAiuttnuGG/7Hnkcd67Pr1
-	 YI8JipTlAB9CM+wZphqk74sat00/MaaownS333t/79phWLtuK2fq6r6lYwvgdXchSW
-	 Gm38EvYTsUiceMQtIWV51cF7u7fDL274fBaomUddd/WzWI8Yuo7F12zxO+95YL5GuK
-	 8SawW3OB8iFq4MhTAmDNhMmHBN5Q64FOLUcFMZ5PjkbBVWqdKhm++ACGoj9njUx2R9
-	 O8y52dIfXP3Rg==
-Date: Thu, 12 Jun 2025 16:01:06 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org, 
-	sathyanarayanan.kuppuswamy@linux.intel.com, mahesh@linux.ibm.com, oohall@gmail.com, 
-	Jonathan.Cameron@huawei.com, terry.bowman@amd.com, tianruidong@linux.alibaba.com
-Subject: Re: [PATCH v4 2/3] PCI/DPC: Run recovery on device that detected the
- error
-Message-ID: <qqixmrgqnba6hlt4fritlknfnbe6zm63qgxhoep4oriinbozyt@f6tzmjpyaf6d>
-References: <20250217024218.1681-1-xueshuai@linux.alibaba.com>
- <20250217024218.1681-3-xueshuai@linux.alibaba.com>
+	t=1749725440; c=relaxed/relaxed;
+	bh=sLdROiUafGZrt12aMq4ehHEPotQ5P/qoXMsnUdLkhgU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d0A0bpknaGbeTIxYpXiHZR/4XMoJXnwHe91BtmsLZa94V1xKW2vrCf7xDnAw3x35UdpJB3HMHOQtvhymqRoP47op7iJKh43yle35iNNgqWY0ZMoZlwq7DKW7zzDMYh/v/BafvSS9M/okiBiyRUb2pUPkhb9f7tmBD/E68dXNxFZKV2glh97oDZlPJxq94JCPu9wVnFdxVZOUt9Ru4HkQvrkddFxOOxTZSJfDT2ILpmfgLVx0liTBytz6a2pDPYst4KifDhic2yqnuNYrripJYy53PlqbQWpZLniGSSR2vNX3tM6LkrfQlrHzHKmV9d8w/Dgt+RL1HM2RDZ4ZMpS2qA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bHzp72Dg0z2xbX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Jun 2025 20:50:36 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4bHzXv173dz9v8B;
+	Thu, 12 Jun 2025 12:39:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 745naYi7a1d6; Thu, 12 Jun 2025 12:39:11 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4bHzXv0K5Wz9thj;
+	Thu, 12 Jun 2025 12:39:11 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 059D18B77B;
+	Thu, 12 Jun 2025 12:39:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id PjhTgEekJaLp; Thu, 12 Jun 2025 12:39:10 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 76DD38B769;
+	Thu, 12 Jun 2025 12:39:10 +0200 (CEST)
+Message-ID: <722831ed-b37c-41e9-ba96-d359883bcb3f@csgroup.eu>
+Date: Thu, 12 Jun 2025 12:39:10 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,175 +57,131 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ALSA: pcm: Convert multiple {get/put}_user to
+ user_access_begin/user_access_end()
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-sound@vger.kernel.org, Herve Codina <herve.codina@bootlin.com>,
+ Mark Brown <broonie@kernel.org>
+References: <d2609397eafc2b55ec1f44a3f30ccec00e0c7f6e.1749455639.git.christophe.leroy@csgroup.eu>
+ <87zfeh72sz.wl-tiwai@suse.de>
+ <6fbbb13e-aedd-47ad-a58b-cc00e9ea138c@csgroup.eu>
+ <87frg96uxg.wl-tiwai@suse.de>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <87frg96uxg.wl-tiwai@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250217024218.1681-3-xueshuai@linux.alibaba.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Feb 17, 2025 at 10:42:17AM +0800, Shuai Xue wrote:
-> The current implementation of pcie_do_recovery() assumes that the
-> recovery process is executed on the device that detected the error.
 
-s/on/for
 
-> However, the DPC driver currently passes the error port that experienced
-> the DPC event to pcie_do_recovery().
+Le 09/06/2025 à 13:00, Takashi Iwai a écrit :
+> On Mon, 09 Jun 2025 12:02:00 +0200,
+> Christophe Leroy wrote:
+>>
+>>
+>>
+>> Le 09/06/2025 à 10:10, Takashi Iwai a écrit :
+>>> On Mon, 09 Jun 2025 10:00:38 +0200,
+>>> Christophe Leroy wrote:
+>>>>
+>>>> With user access protection (Called SMAP on x86 or KUAP on powerpc)
+>>>> each and every call to get_user() or put_user() performs heavy
+>>>> operations to unlock and lock kernel access to userspace.
+>>>>
+>>>> To avoid that, perform user accesses by blocks using
+>>>> user_access_begin/user_access_end() and unsafe_get_user()/
+>>>> unsafe_put_user() and alike.
+>>>>
+>>>> As an exemple, before the patch the 9 calls to put_user() at the
+>>>> end of snd_pcm_ioctl_sync_ptr_compat() imply the following set of
+>>>> instructions about 9 times (access_ok - enable user - write - disable
+>>>> user):
+>>>>       0.00 :   c057f858:       3d 20 7f ff     lis     r9,32767
+>>>>       0.29 :   c057f85c:       39 5e 00 14     addi    r10,r30,20
+>>>>       0.77 :   c057f860:       61 29 ff fc     ori     r9,r9,65532
+>>>>       0.32 :   c057f864:       7c 0a 48 40     cmplw   r10,r9
+>>>>       0.36 :   c057f868:       41 a1 fb 58     bgt     c057f3c0 <snd_pcm_ioctl+0xbb0>
+>>>>       0.30 :   c057f86c:       3d 20 dc 00     lis     r9,-9216
+>>>>       1.95 :   c057f870:       7d 3a c3 a6     mtspr   794,r9
+>>>>       0.33 :   c057f874:       92 8a 00 00     stw     r20,0(r10)
+>>>>       0.27 :   c057f878:       3d 20 de 00     lis     r9,-8704
+>>>>       0.28 :   c057f87c:       7d 3a c3 a6     mtspr   794,r9
+>>>> ...
+>>>>
+>>>> A perf profile shows that in total the 9 put_user() represent 36% of
+>>>> the time spent in snd_pcm_ioctl() and about 80 instructions.
+>>>>
+>>>> With this patch everything is done in 13 instructions and represent
+>>>> only 15% of the time spent in snd_pcm_ioctl():
+>>>>
+>>>>       0.57 :   c057f5dc:       3d 20 dc 00     lis     r9,-9216
+>>>>       0.98 :   c057f5e0:       7d 3a c3 a6     mtspr   794,r9
+>>>>       0.16 :   c057f5e4:       92 7f 00 04     stw     r19,4(r31)
+>>>>       0.63 :   c057f5e8:       93 df 00 0c     stw     r30,12(r31)
+>>>>       0.16 :   c057f5ec:       93 9f 00 10     stw     r28,16(r31)
+>>>>       4.95 :   c057f5f0:       92 9f 00 14     stw     r20,20(r31)
+>>>>       0.19 :   c057f5f4:       92 5f 00 18     stw     r18,24(r31)
+>>>>       0.49 :   c057f5f8:       92 bf 00 1c     stw     r21,28(r31)
+>>>>       0.27 :   c057f5fc:       93 7f 00 20     stw     r27,32(r31)
+>>>>       5.88 :   c057f600:       93 36 00 00     stw     r25,0(r22)
+>>>>       0.11 :   c057f604:       93 17 00 00     stw     r24,0(r23)
+>>>>       0.00 :   c057f608:       3d 20 de 00     lis     r9,-8704
+>>>>       0.79 :   c057f60c:       7d 3a c3 a6     mtspr   794,r9
+>>>>
+>>>> Note that here the access_ok() in user_write_access_begin() is skipped
+>>>> because the exact same verification has already been performed at the
+>>>> beginning of the fonction with the call to user_read_access_begin().
+>>>>
+>>>> A couple more can be converted as well but require
+>>>> unsafe_copy_from_user() which is not defined on x86 and arm64, so
+>>>> those are left aside for the time being and will be handled in a
+>>>> separate patch.
+>>>>
+>>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>>> ---
+>>>> v2: Split out the two hunks using copy_from_user() as unsafe_copy_from_user() is not implemented on x86 and arm64 yet.
+>>>
+>>> Thanks for the patch.
+>>>
+>>> The idea looks interesting, but the implementations with
+>>> unsafe_get_user() leads to very ugly goto lines, and that's too bad;
+>>> it makes the code flow much more difficult to follow.
+>>>
+>>> I guess that, in most cases this patch tries to cover, we just use
+>>> another temporary variable for compat struct, copy fields locally,
+>>> then run copy_to_user() in a shot instead.
+>>
+>> Thanks for looking.
+>>
+>> I'll give it a try but I think going through a local intermediate will
+>> be less performant than direct copy with unsafe_get/put_user().
 > 
-> Use the SOURCE ID register to correctly identify the device that
-> detected the error. When passing the error device, the
-> pcie_do_recovery() will find the upstream bridge and walk bridges
-> potentially AER affected. And subsequent patches will be able to
 
-s/patches/commits
+I have now tried going through a temporary struct and the result is 
+awful, even worth than the current implementation, because 
+snd_pcm_ioctl_sync_ptr_compat() is not inlined anymore into 
+snd_pcm_ioctl(), and the call to copy_from_user() and copy_to_user() 
+also show up in the top 10 functions in the perf profile.
 
-> accurately access AER status of the error device.
-> 
-> Should not observe any functional changes.
-> 
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> ---
->  drivers/pci/pci.h      |  2 +-
->  drivers/pci/pcie/dpc.c | 28 ++++++++++++++++++++++++----
->  drivers/pci/pcie/edr.c |  7 ++++---
->  3 files changed, 29 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 01e51db8d285..870d2fbd6ff2 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -572,7 +572,7 @@ struct rcec_ea {
->  void pci_save_dpc_state(struct pci_dev *dev);
->  void pci_restore_dpc_state(struct pci_dev *dev);
->  void pci_dpc_init(struct pci_dev *pdev);
-> -void dpc_process_error(struct pci_dev *pdev);
-> +struct pci_dev *dpc_process_error(struct pci_dev *pdev);
->  pci_ers_result_t dpc_reset_link(struct pci_dev *pdev);
->  bool pci_dpc_recovered(struct pci_dev *pdev);
->  unsigned int dpc_tlp_log_len(struct pci_dev *dev);
-> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> index 1a54a0b657ae..ea3ea989afa7 100644
-> --- a/drivers/pci/pcie/dpc.c
-> +++ b/drivers/pci/pcie/dpc.c
-> @@ -253,10 +253,20 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
->  	return 1;
->  }
->  
-> -void dpc_process_error(struct pci_dev *pdev)
-> +/**
-> + * dpc_process_error - handle the DPC error status
-> + * @pdev: the port that experienced the containment event
-> + *
-> + * Return the device that detected the error.
+> Yes, but the code readability is often more important than minor
+> optimizations unless it's in a hot path.
 
-s/Return/Return:
+So let's focus on the identified hot path: the SNDRV_PCM_IOCTL_SYNC_PTR 
+iotcl.
 
-> + *
-> + * NOTE: The device reference count is increased, the caller must decrement
-> + * the reference count by calling pci_dev_put().
-> + */
-> +struct pci_dev *dpc_process_error(struct pci_dev *pdev)
->  {
->  	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
->  	struct aer_err_info info;
-> +	struct pci_dev *err_dev;
->  
->  	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
->  	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
-> @@ -279,6 +289,13 @@ void dpc_process_error(struct pci_dev *pdev)
->  		 "software trigger" :
->  		 "reserved error");
->  
-> +	if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE ||
-> +	    reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE)
-> +		err_dev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
-> +					    PCI_BUS_NUM(source), source & 0xff);
-> +	else
-> +		err_dev = pci_dev_get(pdev);
-> +
->  	/* show RP PIO error detail information */
->  	if (pdev->dpc_rp_extensions &&
->  	    reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT &&
-> @@ -291,6 +308,8 @@ void dpc_process_error(struct pci_dev *pdev)
->  		pci_aer_clear_nonfatal_status(pdev);
->  		pci_aer_clear_fatal_status(pdev);
->  	}
-> +
-> +	return err_dev;
->  }
->  
->  static void pci_clear_surpdn_errors(struct pci_dev *pdev)
-> @@ -346,7 +365,7 @@ static bool dpc_is_surprise_removal(struct pci_dev *pdev)
->  
->  static irqreturn_t dpc_handler(int irq, void *context)
->  {
-> -	struct pci_dev *err_port = context;
-> +	struct pci_dev *err_port = context, *err_dev;
->  
->  	/*
->  	 * According to PCIe r6.0 sec 6.7.6, errors are an expected side effect
-> @@ -357,10 +376,11 @@ static irqreturn_t dpc_handler(int irq, void *context)
->  		return IRQ_HANDLED;
->  	}
->  
-> -	dpc_process_error(err_port);
-> +	err_dev = dpc_process_error(err_port);
->  
->  	/* We configure DPC so it only triggers on ERR_FATAL */
-> -	pcie_do_recovery(err_port, pci_channel_io_frozen, dpc_reset_link);
-> +	pcie_do_recovery(err_dev, pci_channel_io_frozen, dpc_reset_link);
-> +	pci_dev_put(err_dev);
->  
->  	return IRQ_HANDLED;
->  }
-> diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
-> index 521fca2f40cb..088f3e188f54 100644
-> --- a/drivers/pci/pcie/edr.c
-> +++ b/drivers/pci/pcie/edr.c
-> @@ -150,7 +150,7 @@ static int acpi_send_edr_status(struct pci_dev *pdev, struct pci_dev *edev,
->  
->  static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->  {
-> -	struct pci_dev *pdev = data, *err_port;
-> +	struct pci_dev *pdev = data, *err_port, *err_dev;
->  	pci_ers_result_t estate = PCI_ERS_RESULT_DISCONNECT;
->  	u16 status;
->  
-> @@ -190,7 +190,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->  		goto send_ost;
->  	}
->  
-> -	dpc_process_error(err_port);
-> +	err_dev = dpc_process_error(err_port);
->  	pci_aer_raw_clear_status(err_port);
->  
->  	/*
-> @@ -198,7 +198,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->  	 * or ERR_NONFATAL, since the link is already down, use the FATAL
->  	 * error recovery path for both cases.
->  	 */
-> -	estate = pcie_do_recovery(err_port, pci_channel_io_frozen, dpc_reset_link);
-> +	estate = pcie_do_recovery(err_dev, pci_channel_io_frozen, dpc_reset_link);
->  
->  send_ost:
->  
-> @@ -216,6 +216,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->  	}
->  
->  	pci_dev_put(err_port);
-> +	pci_dev_put(err_dev);
+I will send a patch focussing only on that part. I tweaked it a bit to 
+increase readability by nesting the failure labels closer to the 
+actions. Let me know whether that patch is more acceptable for you.
 
-err_dev is not a valid pointer before calling dpc_process_error(). So either
-initialize it with NULL or only call it in error paths after
-dpc_process_error().
+In parallel I will send a RFC series that reworks a bit deaper the 
+SNDRV_PCM_IOCTL_SYNC_PTR functions with a helper macro, maybe you will 
+prefer that allthough the churn is bigger.
 
-And btw, pci_dev_put(err_dev) should come before pci_dev_put(err_port).
-
-- Mani
-
--- 
-மணிவண்ணன் சதாசிவம்
+Christophe
 
