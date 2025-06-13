@@ -1,61 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-9362-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9364-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A509DAD954C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 21:20:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F826AD96DB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 23:04:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJq4653Xjz308P;
-	Sat, 14 Jun 2025 05:20:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJsNF2pqVz2ynh;
+	Sat, 14 Jun 2025 07:04:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749842438;
-	cv=none; b=HBDezl445h1gRS5XcA8onXtDVIBHRgFbCVNufyRO6yMPX2XK8czQQkt+tvSvRDJ7//n8GwxIg2Y7Q6XNanq7MUZSrFupj0BmoJsr6Y9q8A2s9Xc/wHgEb69bFKQSHNGtfCE2Cvqz3FzZzz9sz9RFDrfUm5x+EeyzV36a3fcPrVmP/nPT3I9HsVT8Npi0GUxI74K/4qGH0pjHN4nOQgUswe/ix+HhDP5yrJVr06uvTxrii7MQNpPpYwVTFiI8i7kgGY/sL3NBiKzcsKAbCDw8l50CjMhuL3ltHMraYCohzuWMETf1PU6cPWbRT1L4CD+Uv2RA7h8HhYB+IaqTG1p8rA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.170
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749848685;
+	cv=none; b=OKIQFPgpz6Ic2DEA8kMj85hMddA+htDWj3xah0Yz5I3IenZujNwG86L8UYcTUX4CUNjJijtQIocyhaNwHanT3egr3lpdPLgDYmd5uztftLAUer+AlgYBJPQLCGR6S3bbc5x7TnJRbT14IDgSSBiSOjZcGvjqsyKrju7+cAhrFoviKn9RSGiM1X7XS1ttrX1EwXoMWAmgLfm2l7+Y1B2OCiLyWgphnas/j9SiwKesO4QmxKQD2ey9retYRu+ABoxn+XNRgW6ODPoe5rSX1UhavzjdxZZX8ryKL1r5+phFB3tax8x9rmEbL8tv5jYZRrGgSAOBGmMgfiAUaZvX6ofTOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749842438; c=relaxed/relaxed;
-	bh=5T8Z4pe/dzWJPjpFZUREDwV64RdV7vf+k2elXhY4buk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkvUJKi9k5+u2xDuIunmk6VuCueHPa9NFoIbczflGd/cgb5kEzODvD1NBAhzz4BodLAdmZAripnyNHJ5FOVfqD/f9c+GsFwvWOA3tl98l6Utr8NLdVOE+G/mBNmqXgGl9ukb472NFxPxShYPVI2ecuqRB7+sCwRCSohdBTxdjsT7ZVkfkoYE5s1YDzMfxYmSG34hmKan6ATTX4zQU1V9DMm/S4QIQagoTRZYqDVR3nAjgxEbYcPei4leSU9lMmSbsNGvOD8mVSRU8sVmbHeVQaYQKYO5umKRxDc2SM5mPZ4+k0+9VJEK4TJoQ4sb9/R1RSEBkQs6DlVVB/ZyUyKPiA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJq45642Zz2ynh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Jun 2025 05:20:36 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bJk6V0jCdz9swJ;
-	Fri, 13 Jun 2025 17:37:22 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id jWHcplSs7NHT; Fri, 13 Jun 2025 17:37:22 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bJk6Q4gjTz9st0;
-	Fri, 13 Jun 2025 17:37:18 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9BDA48B769;
-	Fri, 13 Jun 2025 17:37:18 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Rb6hNhlGZvAw; Fri, 13 Jun 2025 17:37:18 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 31AC48B77C;
-	Fri, 13 Jun 2025 17:37:18 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	Herve Codina <herve.codina@bootlin.com>
-Subject: [PATCH v2 4/4] ALSA: pcm: Convert snd_pcm_sync_ptr() to user_access_begin/user_access_end()
-Date: Fri, 13 Jun 2025 17:37:11 +0200
-Message-ID: <0aff11ade645339ed659f9b97da4e0a535041db3.1749828169.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <cover.1749828169.git.christophe.leroy@csgroup.eu>
-References: <cover.1749828169.git.christophe.leroy@csgroup.eu>
+	t=1749848685; c=relaxed/relaxed;
+	bh=UYPjxyG6Lkdruehl3Wfp/fvOgutsisDdZvGlZZakKgQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QA8Vrpm6o5xlilUzNYGCrsQyT/qE9s0knWUnkBe2itS7RoOrj3IZfqorzcqu1TUMyq6OS80pDAlRgcg5RS3LNWQgNr2thGIwj1l4k80z1UnE7X1t9ug4xVE1DDbauRD6a3jhiPuAaTDdmZSotVym1wnJ4AHFQ0mIdY3uTXp4FemCclN+Mzn0mAI3bpjp9N1j7FNiqrEMVtSFIr1jm+8dgbKRSPqaXxyNGqtnyCIMuy6JCHDZWbVfaP11Fu3DTFPYBf8BgMQHKE4M7y5KPirwIAN9b3PjuLZB1emfzDpNRjBV7qgRaxpL26GuolSLdgDLf4XKkWu0B2M/l4wvLUvR9w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Kc8nPVhl; dkim-atps=neutral; spf=pass (client-ip=95.215.58.170; helo=out-170.mta1.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Kc8nPVhl;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.170; helo=out-170.mta1.migadu.com; envelope-from=oliver.upton@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 73 seconds by postgrey-1.37 at boromir; Sat, 14 Jun 2025 07:04:41 AEST
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJsN95bCYz2yZ6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Jun 2025 07:04:41 +1000 (AEST)
+Date: Fri, 13 Jun 2025 14:02:53 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1749848582;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UYPjxyG6Lkdruehl3Wfp/fvOgutsisDdZvGlZZakKgQ=;
+	b=Kc8nPVhlXgf6TePD1ArgM60c5dmNUT/R1JjVbnGxN7TexwkvkpcVz2WLId55A9oZ/CDUE5
+	FbP2i2FSaWw7NAS2SkcnbcgK6HWEZ0xCShW/gxdnuC/LY4NPQptRcXYiWmJk0yYg54tCZA
+	FkggVzxEL64vxvaUGTfILfyirGgdhDI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>, Marc Zyngier <maz@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	kvm@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Anish Ghulati <aghulati@google.com>,
+	Colton Lewis <coltonlewis@google.com>,
+	Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH 0/8] KVM: Remove include/kvm, standardize includes
+Message-ID: <aEyR_bixN696F1sP@linux.dev>
+References: <20250611001042.170501-1-seanjc@google.com>
+ <125bfa5b-4727-4998-a0da-fb50feec6df6@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,101 +77,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1749829028; l=3615; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=VBm68IbYDQlcJwzAKKX7XTkORSsL7QzafbqZ2PWnfeo=; b=ATJzTdt+6UCojlfTymIkOnWF5cTZ9voZv/8igg5qs1ggdznb+SngDRntbXrFW+XzvYR3si2fa JHv/2MQqFYoB2hfSkibeG3oGzi18h3H/QI+dcVKMnZqxORX56ney2Eh
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <125bfa5b-4727-4998-a0da-fb50feec6df6@redhat.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Now that snd_pcm_sync_ptr_get_user() and snd_pcm_sync_ptr_put_user()
-are converted to user_access_begin/user_access_end(),
-snd_pcm_sync_ptr_get_user() is more efficient than a raw get_user()
-followed by a copy_from_user(). And because copy_{to/from}_user() are
-generic functions focussed on transfer of big data blocks to/from user,
-snd_pcm_sync_ptr_put_user() is also more efficient for small amont of
-data.
+On Thu, Jun 12, 2025 at 06:56:53AM +0200, Paolo Bonzini wrote:
+> On 6/11/25 02:10, Sean Christopherson wrote:
+> > Kill off include/kvm (through file moves/renames), and standardize the set of
+> > KVM includes across all architectures.
+> > 
+> > This conflicts with Colton's partioned PMU series[1], but this should work as
+> > a nice prepatory cleanup for the partitioned PMU work (and hopefully can land
+> > sooner).
+> > 
+> > Note, these patches were originally posted as part of a much larger and more
+> > agressive RFC[1].  We've effectively abandoned upstreaming the multi-KVM idea,
+> > but I'm trying to (slowly) upstream the bits and pieces that I think/hope are
+> > generally beneficial.
+> > 
+> > [1] https://lore.kernel.org/all/20250602192702.2125115-1-coltonlewis@google.com
+> > [2] https://lore.kernel.org/all/20230916003118.2540661-1-seanjc@google.com
+> 
+> Marc, Oliver, I'd like to commit this to kvm/next sometime soon; I'll wait
+> for your ack since most of the meat here is in arch/arm64.
 
-So use snd_pcm_sync_ptr_get_user() and snd_pcm_sync_ptr_put_user() in
-snd_pcm_sync_ptr() too.
+Let it rip, just to get ahead of potential conflicts can you push out a
+topic branch?
 
-snd_pcm_ioctl_sync_ptr_buggy() is left as it is because the conversion
-wouldn't be straigh-forward due to the workaround it provides.
+Acked-by: Oliver Upton <oliver.upton@linux.dev>
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- sound/core/pcm_native.c | 38 ++++++++++++++++++--------------------
- 1 file changed, 18 insertions(+), 20 deletions(-)
-
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 5ba2fbc0f0f7..b7880ca01cd9 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -3094,45 +3094,43 @@ static int snd_pcm_sync_ptr(struct snd_pcm_substream *substream,
- 			    struct snd_pcm_sync_ptr __user *_sync_ptr)
- {
- 	struct snd_pcm_runtime *runtime = substream->runtime;
--	struct snd_pcm_sync_ptr sync_ptr;
- 	volatile struct snd_pcm_mmap_status *status;
- 	volatile struct snd_pcm_mmap_control *control;
-+	u32 sflags;
-+	struct snd_pcm_mmap_control scontrol;
-+	struct snd_pcm_mmap_status sstatus;
- 	int err;
- 
--	memset(&sync_ptr, 0, sizeof(sync_ptr));
--	if (get_user(sync_ptr.flags, (unsigned __user *)&(_sync_ptr->flags)))
-+	if (snd_pcm_sync_ptr_get_user(sflags, scontrol, _sync_ptr))
- 		return -EFAULT;
--	if (copy_from_user(&sync_ptr.c.control, &(_sync_ptr->c.control), sizeof(struct snd_pcm_mmap_control)))
--		return -EFAULT;	
- 	status = runtime->status;
- 	control = runtime->control;
--	if (sync_ptr.flags & SNDRV_PCM_SYNC_PTR_HWSYNC) {
-+	if (sflags & SNDRV_PCM_SYNC_PTR_HWSYNC) {
- 		err = snd_pcm_hwsync(substream);
- 		if (err < 0)
- 			return err;
- 	}
- 	scoped_guard(pcm_stream_lock_irq, substream) {
--		if (!(sync_ptr.flags & SNDRV_PCM_SYNC_PTR_APPL)) {
--			err = pcm_lib_apply_appl_ptr(substream,
--						     sync_ptr.c.control.appl_ptr);
-+		if (!(sflags & SNDRV_PCM_SYNC_PTR_APPL)) {
-+			err = pcm_lib_apply_appl_ptr(substream, scontrol.appl_ptr);
- 			if (err < 0)
- 				return err;
- 		} else {
--			sync_ptr.c.control.appl_ptr = control->appl_ptr;
-+			scontrol.appl_ptr = control->appl_ptr;
- 		}
--		if (!(sync_ptr.flags & SNDRV_PCM_SYNC_PTR_AVAIL_MIN))
--			control->avail_min = sync_ptr.c.control.avail_min;
-+		if (!(sflags & SNDRV_PCM_SYNC_PTR_AVAIL_MIN))
-+			control->avail_min = scontrol.avail_min;
- 		else
--			sync_ptr.c.control.avail_min = control->avail_min;
--		sync_ptr.s.status.state = status->state;
--		sync_ptr.s.status.hw_ptr = status->hw_ptr;
--		sync_ptr.s.status.tstamp = status->tstamp;
--		sync_ptr.s.status.suspended_state = status->suspended_state;
--		sync_ptr.s.status.audio_tstamp = status->audio_tstamp;
-+			scontrol.avail_min = control->avail_min;
-+		sstatus.state = status->state;
-+		sstatus.hw_ptr = status->hw_ptr;
-+		sstatus.tstamp = status->tstamp;
-+		sstatus.suspended_state = status->suspended_state;
-+		sstatus.audio_tstamp = status->audio_tstamp;
- 	}
--	if (!(sync_ptr.flags & SNDRV_PCM_SYNC_PTR_APPL))
-+	if (!(sflags & SNDRV_PCM_SYNC_PTR_APPL))
- 		snd_pcm_dma_buffer_sync(substream, SNDRV_DMA_SYNC_DEVICE);
--	if (copy_to_user(_sync_ptr, &sync_ptr, sizeof(sync_ptr)))
-+	if (snd_pcm_sync_ptr_put_user(sstatus, scontrol, _sync_ptr))
- 		return -EFAULT;
- 	return 0;
- }
--- 
-2.47.0
-
+Thanks,
+Oliver
 
