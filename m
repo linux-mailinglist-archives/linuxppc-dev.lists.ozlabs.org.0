@@ -1,65 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-9359-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9363-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F1FAD9390
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 19:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D56CAD954E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 21:20:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJmD304vWz2yMF;
-	Sat, 14 Jun 2025 03:12:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJq4720pjz2ynh;
+	Sat, 14 Jun 2025 05:20:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749834738;
-	cv=none; b=HqmoCn/bDIyRs+Jn9sM9xPF0W6Wb/Zt4gb2t2Tm4W5dOs64Z9tmEz9vvyWS7tsnYhut6XxL1VyXNilMLBuunxkB0qKq5d7JJoJV06aMIDD0fBz9XrRJo2mihvyWKttWn/SSam0MsHMKpiQ+SYLru5MKNXdj4m6AjsnYIT8E+IfTKKIBZ7X8tlLwuOcnqK4Tt1+3s4oVSXkkXsgYAQaiOjq5raDDs6OY2A6y//bZ3Y24GGTs0r7khnS2el7C8KZVmGkpMlJvwmFMioibBWpJQm98NNTpDyaKCb0O0ZqGIai8uvNdg8Itp3hD/U8q1DqHd58tj+L34Bge03KhTZ+2hNg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749842439;
+	cv=none; b=Vx5BO9YKKTvEep2jrJEdZn84SslyKeMnWTl8ovac9+yUX6MpEKXQ4maWWPqGSq+WXM931/KWC8bye9W+mmUllrYeg56K2Ny/MaiDju9UgtcaMzRfHII21oFVzrNG/Jt+ej2igayXrFWRoMhoqE7VkQKVts6yp4xoFAlJJg0Ufl2xftQGH+iIM60/cvpXsZSsLtFAr0S4/ZiStxZVa5ySMMO0p9ReFjh5FSCgKNSxgimrbg+hJzhCtjdu7/aD9UerLneYIlW1qlYgSITf/0n6JWY3Y+q3pgXDvTE5IQ+HzVxEvs1iHpnLpY321IClsV0x6XF5SLNGA2gGCAHXGptwIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749834738; c=relaxed/relaxed;
-	bh=SvL9AL31A+o3wK3njb/Du4yvgoiu7rebh1/wJmOONVs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h17SqTJER4HC5Lh9lhZUPnB0KGKAqk9lO6tdrSHABmvRQh9UqcVUi66OtPtu0+oaKiG3UZd8SlUcaiRJx7SwtGi+VwwP0Aw3/gWtXM1I8D8w+Z0VfdWdgnljMUlJDvoE0Tk3RCHsmjzGPztNQAv9orYnPXiOG61O1/swZtL8EUXkyIw4LxxKOiZgb19RuG+7vRfhnASV7HEeAI92yTejg9QN1tKRS+skizt6PustLoctDrjLyvbH8hd3SSNkgEBtLDkZDMhewu/fWXqMj/kEnpEbtkiWEjklY47Izl4shnC97mXJpkS0sIgsLk/AJL+XPcbKtpllUoFqytpHtt+0+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BhivCur+; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BhivCur+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJmCx5sztz2xKN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Jun 2025 03:12:13 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B2ED61F1A;
-	Fri, 13 Jun 2025 17:12:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43202C4CEEB;
-	Fri, 13 Jun 2025 17:12:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749834730;
-	bh=MwLvd5PG7WoLPNV5X3+UTldK/899ju4MNdrqiosDJ9I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BhivCur+l0uxRrXdj3m3GKjsKlQNT6CXQx3iCBvVkXSvE4m7EvCcVuRfY6gZB5DtI
-	 RrJabvRIGIr3L4g87xf0gTfQDs/DflrsqDAj5QlhN5vplNG9fEENywbAPzXW3gnNlq
-	 m+coGK+eBLQeJtsoxM3fU4c5Xpiy8kfmTbUODa1wg4jIDHjdtxdql01cyMgso0UG9q
-	 znLaUKdE+SbabPCvrEijY1od4XSYKiQECxgj+txYdWIoB7IUqgUD3yiEVggSkRo5Am
-	 oG2oDjLPd9qcjldUhG53BMbb8wG7cjW4jHsngIK0FAWMIuyciYpkyJRP9+ahUBrIUW
-	 mqv3dY3gjk5ZQ==
-Date: Fri, 13 Jun 2025 10:11:43 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org, x86@kernel.org,
-	linux-arch@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH v2 09/12] lib/crc/s390: migrate s390-optimized CRC code
- into lib/crc/
-Message-ID: <20250613171143.GB1284@sol>
-References: <20250607200454.73587-1-ebiggers@kernel.org>
- <20250607200454.73587-10-ebiggers@kernel.org>
- <aExLZaoBCg55rZWJ@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+	t=1749842439; c=relaxed/relaxed;
+	bh=0/LXUSdsOc3xSRat+EpURJre4aHd2fXowf3mojbGthc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=abJmOVYN64fw0Gd81mQLT4G3NAvhBDMy6Z2hwtZt2AzqNlOUmKfmVnC26IpicRnw/YpBDzukWNlJJShsFE7OqD24KOo4a3Gt8swGaCZXRfRRkt8ehzoLe4cSkXALp5gP20fPyS7PTQs4G75GlpfSNkAE/WIdAc7ZOK72lgsJMGMUvP2c20rTUdoTNpjlM1EHtEexclRry9dVU7XXERQ0au5d6dJ+SGCafQZsDq539dNRZ6I2cgvksb8Yy3O4bh+ZXXhCqzFne23v+YiYXAxM6N6LFyNJ7UApDo2fuTyD8lYWi1ReYyM8BniyaLYjII0vS80RzhlqCjvXlMjX47Lv4g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJq4561T8z2xKN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Jun 2025 05:20:35 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4bJk6P0b8rz9sqS;
+	Fri, 13 Jun 2025 17:37:17 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id PCOWwKqZyxEi; Fri, 13 Jun 2025 17:37:16 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4bJk6N70qRz9sfW;
+	Fri, 13 Jun 2025 17:37:16 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id EA98D8B77C;
+	Fri, 13 Jun 2025 17:37:16 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id uYUCd0b22SLg; Fri, 13 Jun 2025 17:37:16 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7EAB98B769;
+	Fri, 13 Jun 2025 17:37:16 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	Herve Codina <herve.codina@bootlin.com>
+Subject: [PATCH v2 0/4] ALSA: pcm: Convert SNDRV_PCM_IOCTL_SYNC_PTR to user_access_begin/user_access_end()
+Date: Fri, 13 Jun 2025 17:37:07 +0200
+Message-ID: <cover.1749828169.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,48 +66,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aExLZaoBCg55rZWJ@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1749829028; l=4560; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=jlE0SCVg7sa2yGK773TAr9cyOmP621uHgVHW+CuTNss=; b=l3AE6pDZs6HimY4utPStAcfFbd+gbXdCu8zDpmIt5piqkMbaCvlsaxClGqOAATPsTE1XXP09k egnLVqIAslQBYOxh25axpEMO/3bqyyVB9LNIfigGUmGlGOz21+2HS/t
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Jun 13, 2025 at 06:01:41PM +0200, Alexander Gordeev wrote:
-> On Sat, Jun 07, 2025 at 01:04:51PM -0700, Eric Biggers wrote:
-> > From: Eric Biggers <ebiggers@google.com>
-> > 
-> > Move the s390-optimized CRC code from arch/s390/lib/crc* into its new
-> > location in lib/crc/s390/, and wire it up in the new way.  This new way
-> > of organizing the CRC code eliminates the need to artificially split the
-> > code for each CRC variant into separate arch and generic modules,
-> > enabling better inlining and dead code elimination.  For more details,
-> > see "lib/crc: prepare for arch-optimized code in subdirs of lib/crc/".
-> > 
-> > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ...
-> 
-> Hi Eric,
-> 
-> With this series I am getting on s390:
-> 
-> alg: hash: skipping comparison tests for crc32c-s390 because crc32c-generic is unavailable
-> 
-> Thanks!
+This series converts all variants of SNDRV_PCM_IOCTL_SYNC_PTR to 
+user_access_begin/user_access_end() in order to reduce the CPU load
+measured in function snd_pcm_ioctl.
 
-I think that's actually from "crypto/crc32c: register only one shash_alg"
-(https://lore.kernel.org/linux-crypto/20250601224441.778374-3-ebiggers@kernel.org/),
-not the patch you replied to.
+With the current implementation, "perf top" reports a high load in
+snd_pcm_iotcl(). Most calls to that function are SNDRV_PCM_IOCTL_SYNC_PTR.
 
-Those self-test warnings are expected.  But I guess they are going to confuse
-people, so we should do something to make them go away.
+    14.20%  test_perf           [.] engine_main
+==> 12.86%  [kernel]            [k] snd_pcm_ioctl
+    11.91%  [kernel]            [k] finish_task_switch.isra.0
+     4.15%  [kernel]            [k] snd_pcm_group_unlock_irq.part.0
+     4.07%  libc.so.6           [.] __ioctl_time64
+     3.58%  libasound.so.2.0.0  [.] __snd_pcm_mmap_begin_generic
+     3.37%  [kernel]            [k] sys_ioctl
+     2.96%  libasound.so.2.0.0  [.] snd_pcm_hw_avail_update
+     2.73%  libasound.so.2.0.0  [.] __snd_pcm_mmap_begin
+     2.58%  [kernel]            [k] system_call_exception
+     1.93%  libasound.so.2.0.0  [.] sync_ptr1
+     1.85%  libasound.so.2.0.0  [.] snd_pcm_unlock
+     1.84%  libasound.so.2.0.0  [.] snd_pcm_mmap_begin
+     1.83%  libasound.so.2.0.0  [.] bad_pcm_state
+     1.68%  libasound.so.2.0.0  [.] snd_pcm_mmap_avail
+     1.67%  libasound.so.2.0.0  [.] snd_pcm_avail_update
 
-I think we should do what I've proposed for SHA-512: stop worrying about setting
-the cra_driver_name to something meaningful (which has never really worked
-anyway), instead just use *-lib, and update crypto/testmgr.c accordingly.
+A tentative was done with going via intermediaire structs on stack to
+replace the multiple get_user() and put_user() with copy_from_user()
+and copy_to_user(). But copy_from_user() calls _copy_from_user() and
+copy_to_user() calls _copy_to_user(). Both then call __copy_tofrom_user().
+In total it is 16.4% so it is worse than before.
 
-I'll send out patches that do that.
+    14.47%  test_perf           [.] engine_main
+    12.00%  [kernel]            [k] finish_task_switch.isra.0
+==>  8.37%  [kernel]            [k] snd_pcm_ioctl
+     5.44%  libc.so.6           [.] __ioctl_time64
+     5.03%  [kernel]            [k] snd_pcm_group_unlock_irq.part.0
+==>  4.86%  [kernel]            [k] __copy_tofrom_user
+     4.62%  [kernel]            [k] sys_ioctl
+     3.22%  [kernel]            [k] system_call_exception
+     2.42%  libasound.so.2.0.0  [.] snd_pcm_mmap_begin
+     2.31%  [kernel]            [k] fdget
+     2.23%  libasound.so.2.0.0  [.] __snd_pcm_mmap_begin_generic
+     2.19%  [kernel]            [k] syscall_exit_prepare
+     1.92%  libasound.so.2.0.0  [.] snd_pcm_mmap_avail
+     1.86%  libasound.so.2.0.0  [.] __snd_pcm_mmap_begin
+     1.68%  libasound.so.2.0.0  [.] snd_pcm_hw_avail_update
+==>  1.67%  [kernel]            [k] _copy_from_user
+     1.66%  libasound.so.2.0.0  [.] bad_pcm_state
+==>  1.53%  [kernel]            [k] _copy_to_user
+     1.40%  libasound.so.2.0.0  [.] sync_ptr1
 
-- Eric
+With this series which uses unsafe_put_user() and unsafe_get_user(),
+the load is significantly reduced:
+
+    17.46%  test_perf           [.] engine_main
+     9.14%  [kernel]            [k] finish_task_switch.isra.0
+==>  4.92%  [kernel]            [k] snd_pcm_ioctl
+     3.99%  [kernel]            [k] snd_pcm_group_unlock_irq.part.0
+     3.71%  libc.so.6           [.] __ioctl_time64
+     3.61%  libasound.so.2.0.0  [.] __snd_pcm_mmap_begin_generic
+     2.72%  libasound.so.2.0.0  [.] sync_ptr1
+     2.65%  [kernel]            [k] system_call_exception
+     2.46%  [kernel]            [k] sys_ioctl
+     2.43%  [kernel]            [k] __rseq_handle_notify_resume
+     2.34%  [kernel]            [k] do_epoll_wait
+     2.30%  libasound.so.2.0.0  [.] __snd_pcm_mmap_commit
+     2.14%  libasound.so.2.0.0  [.] __snd_pcm_avail
+     2.04%  libasound.so.2.0.0  [.] snd_pcm_hw_avail_update
+     1.89%  libasound.so.2.0.0  [.] snd_pcm_lock
+     1.84%  libasound.so.2.0.0  [.] snd_pcm_mmap_avail
+     1.76%  libasound.so.2.0.0  [.] __snd_pcm_avail_update
+     1.61%  libasound.so.2.0.0  [.] bad_pcm_state
+     1.60%  libasound.so.2.0.0  [.] __snd_pcm_mmap_begin
+     1.49%  libasound.so.2.0.0  [.] query_status_data
+
+Since RFC:
+- Added a cover letter to summarize some of the measurements done on and around the RFC
+- Fixed relevant checkpatch feedback
+- Split last patch in two
+
+Christophe Leroy (4):
+  ALSA: pcm: refactor copy from/to user in SNDRV_PCM_IOCTL_SYNC_PTR
+  ALSA: pcm: Convert SNDRV_PCM_IOCTL_SYNC_PTR to
+    user_access_begin/user_access_end()
+  ALSA: pcm: Replace [audio_]tstamp_[n]sec by struct __snd_timespec in
+    struct snd_pcm_mmap_status32
+  ALSA: pcm: Convert snd_pcm_sync_ptr() to
+    user_access_begin/user_access_end()
+
+ sound/core/pcm_compat.c | 14 +-----
+ sound/core/pcm_native.c | 96 +++++++++++++++++++++++++----------------
+ 2 files changed, 62 insertions(+), 48 deletions(-)
+
+-- 
+2.47.0
+
 
