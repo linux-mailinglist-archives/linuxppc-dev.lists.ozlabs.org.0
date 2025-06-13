@@ -1,48 +1,110 @@
-Return-Path: <linuxppc-dev+bounces-9351-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9352-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12553AD8C2B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 14:31:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF08AD8C42
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 14:37:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJf0R6VL6z30P3;
-	Fri, 13 Jun 2025 22:31:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJf6k6sWYz30HB;
+	Fri, 13 Jun 2025 22:37:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.183.197
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749805185;
-	cv=none; b=IBCuYx//CoyOaY++dxX/vWmpC3tNoNC/61Mf5x3otmCKGneOok28e8U+Fowk1E73JJQBGQlkXNjND9Z2xmFakb7143lBBw05j0wX1r0bBeA2opAL5Ii3XateJfIyoHHyieCNdMxRJo7CrZJqj3ch1Q2YIPZXdiQqLLn2u5HDQZpRX/WzDH4Gbz4AisUpnokMeAZx5EGVXmVFGjfFDY4pKvB+xoTfFx5KzEwo9P1PsdT15o3xBtTG7XHrt4KBdta6OQ5iy5xIAjZ8c035eFDBLJMvxAITfJPgR3AN/FvOFkk79nX/qxGdTJoDYHRLU1xY2NvZxeQ9YV7ax/oQz2bYQA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749818238;
+	cv=none; b=XBoLIq1eTGoUMHkPc35CA2BTfF/H0IPAdJAs6oU8+8w477zEIusKm6uZYvKlH9LEn1Uz7ga3woG02d8KCwX0UvTI1y/fyKLHLfcmMTjcZ/RI5qQd+/UpMLLPoJvmfZPmgkY+fHUxCukaxIhLsyy3pDqmg5hI78XzwJ3e6zGZnmE2AtS/3CVtzKqYEqB83ac//76QcxgEFOnKbY0LQkYnXhlX59pmudejYhY7RzWtuLLId+Bzfh52foEj192IShnOD4+jExsTbA8MmUqf5Z+9xwWxSpVxoEZoYZ1RSnqSs8yDzs4YJ92q3UZf7A1pRr9hgnW/0trYI6x80FeC1jQI5Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749805185; c=relaxed/relaxed;
-	bh=SUCUXJtX/FQ0n2RuIYjo9mN42TY+/sRw81vNJDMJO0A=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=mm7jALOUct9UIpMjXsLpQCuMAN/sZWMzQaoUrayfoNm1slcTuOF2Q5L5ZD6kNFgVG4zsdA1/52OxVOdGCdidi7gTNsfV1QJSH+z2crYq1Mz587ScWO6kZvyntrqQ7KoL1+Xc7p9DwrfThaL9Ci9N4LTz7BIEyVr3aXb/sUOywepAW20lfGKy/t9QZnLiS28mFe25CPPaPWarughxLt3g6wGIQi7c3ekZ0Qo94wnnDy7bkywJGcyEXeY+1TN5P0ELIb0pWJVavP1QGUvQULzIXqPAyQNDBAQ1f5Hl7QiPg8Ldh9gy7Y/N6DV0Hs9ANUW8x5Igu32XjhWVq0OVkwN7bw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=odU2qoVO; dkim-atps=neutral; spf=pass (client-ip=217.70.183.197; helo=relay5-d.mail.gandi.net; envelope-from=alexis.lothore@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+	t=1749818238; c=relaxed/relaxed;
+	bh=Ons9VlAWyS5iGbbTVkDBgSxgXbxKUV7OAg/2/YmOuTQ=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QQcaX0FKdxEERGVguYiRRD80Dhi8uu0fhklT42vHWD5WMG8iSMwXiPTULjvrDM1N3YwhcLh83KecNBrllFbcyqtIUoIYXJIa1nhEpNlb8QsDqdnwdCTuY8JsOkchPp0xr839lJmlcbn23Rj6zGqgaZncAMBlTxFScVUSoacCJap2QHmiXRtzMmCD+wX77n4Pusx7f8ClzUFe7ynaU3DKti0eg3ahTbnSyuV3CxDf/gct6Z/MCXUf6ZU5Bhbn27jRyumGWMvSDRq5a/lzBZ2Em/lbOrxget4N8V3xK1W2g618nTZG6ZgS7qCy3YIl3TkbvkVezShSIMVtleAHypwANA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kCCrcdFT; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zQujh0/5; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kCCrcdFT; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zQujh0/5; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=odU2qoVO;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kCCrcdFT;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zQujh0/5;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=kCCrcdFT;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zQujh0/5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.197; helo=relay5-d.mail.gandi.net; envelope-from=alexis.lothore@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 4927 seconds by postgrey-1.37 at boromir; Fri, 13 Jun 2025 18:59:41 AEST
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 12120 seconds by postgrey-1.37 at boromir; Fri, 13 Jun 2025 22:37:17 AEST
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJYHd622Hz30MZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 18:59:40 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3DEFE42E7E;
-	Fri, 13 Jun 2025 08:59:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749805174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJf6j63G0z2xKN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 22:37:17 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B7C8E21A23;
+	Fri, 13 Jun 2025 12:37:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1749818234; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SUCUXJtX/FQ0n2RuIYjo9mN42TY+/sRw81vNJDMJO0A=;
-	b=odU2qoVOJqtmWsv4zb4lepGDdwIrGFVx1azJXmapyDqL96WcBHU3wmTN7q7dQPmyKFqCHI
-	rAqafMySpH/EFaSvZ1mPA8XPB64itYMWMRjLI+y9JhypSBAVbn7uBWi7ZcMRo/IBOnvwbQ
-	5esOyHBXJvmN2G+ljk317R7i3D4fcRlCkLEQ6ICe/sb+aRuObTcakshd3/wdZEUJ2LrUgk
-	5TMr9mGozxkHTrm+MRwSTF64qE4g2cgcgr48VeDhBLpdVtT0mS0PBL7DckMWmv65tfLxtu
-	MspFh3LUUD6IifvG5Ga5z6d3PYGcXoafBp+C4hw7u5Y8qm4JyGJ0DAuSLAMGzw==
+	bh=Ons9VlAWyS5iGbbTVkDBgSxgXbxKUV7OAg/2/YmOuTQ=;
+	b=kCCrcdFTYqrZUYuBN/pBMasKboKwHTZiQZUKz5OXDm1VT0q6deaATpqQrUBT3MOetNInd5
+	vN71hH58Klp8dYim2DqSqd0agTlZdrYbULxkGkz4/Duk25WycMr0l8PDAHhXr8zMTMAPg8
+	7EsXZDZD+noCrm5n1gGR8XP5Bggz8tA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1749818234;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ons9VlAWyS5iGbbTVkDBgSxgXbxKUV7OAg/2/YmOuTQ=;
+	b=zQujh0/5m0F7qHNo6Y8TZIlFlZMoGQHLZqqAgCngNWCM5wyBLTzvSFxe87w9JxORxkjU0p
+	nKm4FFKyJCrcwpAw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1749818234; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ons9VlAWyS5iGbbTVkDBgSxgXbxKUV7OAg/2/YmOuTQ=;
+	b=kCCrcdFTYqrZUYuBN/pBMasKboKwHTZiQZUKz5OXDm1VT0q6deaATpqQrUBT3MOetNInd5
+	vN71hH58Klp8dYim2DqSqd0agTlZdrYbULxkGkz4/Duk25WycMr0l8PDAHhXr8zMTMAPg8
+	7EsXZDZD+noCrm5n1gGR8XP5Bggz8tA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1749818234;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ons9VlAWyS5iGbbTVkDBgSxgXbxKUV7OAg/2/YmOuTQ=;
+	b=zQujh0/5m0F7qHNo6Y8TZIlFlZMoGQHLZqqAgCngNWCM5wyBLTzvSFxe87w9JxORxkjU0p
+	nKm4FFKyJCrcwpAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6DC6913782;
+	Fri, 13 Jun 2025 12:37:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id oI1fGXobTGj9cgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 13 Jun 2025 12:37:14 +0000
+Date: Fri, 13 Jun 2025 14:37:14 +0200
+Message-ID: <87wm9frf5x.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	Herve Codina <herve.codina@bootlin.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [RFC PATCH 3/3] ALSA: pcm: Convert snd_pcm_sync_ptr() to user_access_begin/user_access_end()
+In-Reply-To: <2df61bbf-76f6-4932-a347-7820350a156e@csgroup.eu>
+References: <7baa34d4046c7750799b11830d38a46f8b581765.1749724478.git.christophe.leroy@csgroup.eu>
+	<79b86a0618328ba1d0cb5cf4011fd73ac6900e8f.1749724478.git.christophe.leroy@csgroup.eu>
+	<878qlwrnv1.wl-tiwai@suse.de>
+	<2df61bbf-76f6-4932-a347-7820350a156e@csgroup.eu>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -55,99 +117,100 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Jun 2025 10:59:28 +0200
-Message-Id: <DALA5WYA04OG.1283TZDOVLBPS@bootlin.com>
-Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>,
- "Song Liu" <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>,
- "John Fastabend" <john.fastabend@gmail.com>, "KP Singh"
- <kpsingh@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>, "Hao Luo"
- <haoluo@google.com>, "Jiri Olsa" <jolsa@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, "David Ahern" <dsahern@kernel.org>, "Thomas
- Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>,
- <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, "Menglong Dong"
- <imagedong@tencent.com>, =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?=
- <bjorn@kernel.org>, "Pu Lehui" <pulehui@huawei.com>, "Puranjay Mohan"
- <puranjay@kernel.org>, "Paul Walmsley" <paul.walmsley@sifive.com>, "Palmer
- Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
- "Alexandre Ghiti" <alex@ghiti.fr>, "Ilya Leoshkevich" <iii@linux.ibm.com>,
- "Heiko Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger"
- <borntraeger@linux.ibm.com>, "Sven Schnelle" <svens@linux.ibm.com>, "Hari
- Bathini" <hbathini@linux.ibm.com>, "Christophe Leroy"
- <christophe.leroy@csgroup.eu>, "Naveen N Rao" <naveen@kernel.org>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael Ellerman"
- <mpe@ellerman.id.au>, "Nicholas Piggin" <npiggin@gmail.com>, "Mykola
- Lysenko" <mykolal@fb.com>, "Shuah Khan" <shuah@kernel.org>, "Maxime
- Coquelin" <mcoquelin.stm32@gmail.com>, "Alexandre Torgue"
- <alexandre.torgue@foss.st.com>, <ebpf@linuxfoundation.org>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>, "Bastien Curutchet"
- <bastien.curutchet@bootlin.com>, <netdev@vger.kernel.org>,
- <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- =?utf-8?q?Bj=C3=B6rn_T=C3=B6pel?= <bjorn@rivosinc.com>,
- <linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
- <linuxppc-dev@lists.ozlabs.org>, <linux-kselftest@vger.kernel.org>,
- <linux-stm32@st-md-mailman.stormreply.com>,
- <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH bpf 2/7] bpf/x86: prevent trampoline attachment when
- args location on stack is uncertain
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-To: "Peter Zijlstra" <peterz@infradead.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250613-deny_trampoline_structs_on_stack-v1-0-5be9211768c3@bootlin.com> <20250613-deny_trampoline_structs_on_stack-v1-2-5be9211768c3@bootlin.com> <20250613081150.GJ2273038@noisy.programming.kicks-ass.net> <DAL9GRMH74F4.2IV0HN0NGU65X@bootlin.com> <20250613083232.GL2273038@noisy.programming.kicks-ass.net>
-In-Reply-To: <20250613083232.GL2273038@noisy.programming.kicks-ass.net>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddujeehfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkfevuffhvffofhgjsehtqhertdertdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepleekheeihfefheevhfdtgeeuleekheffffffuedvkeekkeduvdeugeeugfeiueeknecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemkeegvdekmehfleegtgemvgdttdemmehfkeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeekgedvkeemfhelgegtmegvtddtmeemfhekhedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeehkedprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegrshhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhesihhoghgvrghrsghogidrnhgvthdprhgtphhtthhopegrnhgurhhiiheskhgvrhhnvghlrdhorhhgpdhrtghpt
- hhtohepmhgrrhhtihhnrdhlrghusehlihhnuhigrdguvghvpdhrtghpthhtohepvgguugihiiekjeesghhmrghilhdrtghomhdprhgtphhtthhopehsohhngheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephihonhhghhhonhhgrdhsohhngheslhhinhhugidruggvvh
-X-GND-Sasl: alexis.lothore@bootlin.com
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri Jun 13, 2025 at 10:32 AM CEST, Peter Zijlstra wrote:
-> On Fri, Jun 13, 2025 at 10:26:37AM +0200, Alexis Lothor=C3=A9 wrote:
->> Hi Peter,
->>=20
->> On Fri Jun 13, 2025 at 10:11 AM CEST, Peter Zijlstra wrote:
->> > On Fri, Jun 13, 2025 at 09:37:11AM +0200, Alexis Lothor=C3=A9 (eBPF Fo=
-undation) wrote:
+On Fri, 13 Jun 2025 13:03:04 +0200,
+Christophe Leroy wrote:
+> 
+> 
+> 
+> Le 13/06/2025 à 11:29, Takashi Iwai a écrit :
+> > On Thu, 12 Jun 2025 12:51:05 +0200,
+> > Christophe Leroy wrote:
+> >> 
+> >> Now that snd_pcm_sync_ptr_get_user() and snd_pcm_sync_ptr_put_user()
+> >> are converted to user_access_begin/user_access_end(),
+> >> snd_pcm_sync_ptr_get_user() is more efficient than a raw get_user()
+> >> followed by a copy_from_user(). And because copy_{to/from}_user() are
+> >> generic functions focussed on transfer of big data blocks to/from user,
+> >> snd_pcm_sync_ptr_put_user() is also more efficient for small amont of
+> >> data.
+> >> 
+> >> So use snd_pcm_sync_ptr_get_user() and snd_pcm_sync_ptr_put_user() in
+> >> snd_pcm_sync_ptr() too.
+> >> 
+> >> In order to have snd_pcm_mmap_status32 similar to snd_pcm_mmap_status,
+> >> replace to tsamp_{sec/nsec} and audio_tstamp_{sec/nsec} by equivalent
+> >> struct __snd_timespec.
+> >> 
+> >> snd_pcm_ioctl_sync_ptr_buggy() is left as it is because the conversion
+> >> wouldn't be straigh-forward do to the workaround it provides.
+> >> 
+> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > 
+> > Through a quick glance, all patches look almost fine, but one favor to
+> > ask: this patch contains the convert from s32/s32 pair to struct
+> > __snd_timespec.  It should be factored out to a prerequisite patch
+> > instead of burying in a big change.
+> 
+> Shall I understand you prefer this series over the more simple "ALSA:
+> pcm: Convert snd_pcm_ioctl_sync_ptr_{compat/x32} to
+> user_access_begin/user_access_end()" patch ?
 
-[...]
+Err, no, sorry for ambiguity.
+I wanted to move the replacement of tstamp_sec/nsec with struct
+__snd_timespec as a small preliminary patch from patch#3.
+That is,
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -3103,11 +3103,9 @@ struct snd_pcm_mmap_status32 {
+ 	snd_pcm_state_t state;
+ 	s32 pad1;
+ 	u32 hw_ptr;
+-	s32 tstamp_sec;
+-	s32 tstamp_nsec;
++	struct __snd_timespec tstamp;
+ 	snd_pcm_state_t suspended_state;
+-	s32 audio_tstamp_sec;
+-	s32 audio_tstamp_nsec;
++	struct __snd_timespec audio_tstamp;
+ } __packed;
+etc.  By factoring this out, it becomes clear that the timespec
+compatibility is fully cared.
 
->> Maybe my commit wording is not precise enough, but indeed, there's not
->> doubt about whether the struct value is passed on the stack or through a
->> register/a pair of registers. The doubt is rather about the struct locat=
-ion
->> when it is passed _by value_ and _on the stack_: the ABI indeed clearly
->> states that "Structures and unions assume the alignment of their most
->> strictly aligned component" (p.13), but this rule is "silently broken" w=
-hen
->> a struct has an __attribute__((packed)) or and __attribute__((aligned(X)=
-)),
->> and AFAICT this case can not be detected at runtime with current BTF inf=
-o.
->
-> Ah, okay. So it is a failure of BTF. That was indeed not clear.
-
-If I need to respin, I'll rewrite the commit message to include the details
-above.
-
-Alexis
+__snd_timespec may be defined in different ways on user-space, but in
+the kernel code, it's a single definition of s32/s32 pair.  This needs
+to be emphasized.
 
 
+thanks,
 
-
---=20
-Alexis Lothor=C3=A9, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Takashi
 
