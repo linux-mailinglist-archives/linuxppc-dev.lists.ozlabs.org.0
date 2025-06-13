@@ -1,53 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-9342-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9344-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6043AD8BEF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 14:23:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C34AD8BF4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 14:25:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJdpr2gvTz30RN;
-	Fri, 13 Jun 2025 22:23:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJds62nxLz30Sy;
+	Fri, 13 Jun 2025 22:25:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8:216:3eff:fe9d:e7b4"
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749802033;
-	cv=none; b=iC/2gr1TUrkbNM2mHBkkqWQ1wfj3+Xo7JsgR9WdtEngDc+RpXTEgGkI1CiMMgf7mXXgDxxO7POtGsOgY1Q6wM3zqiBIWJfNa1fWQIayH/mCkzEXJS9UZrNm6G2xzRB4qyTsvi0hQIEopNEDM+EMpnyS4j1/VBRWUJOykMwdRvDVFiLHUpTwfO81teE/lHD4FBanNPc/ER6uSiPgPlsGO+xZxzVLPrHYHEoL1PTdocDBqeDSwbmC0BsM1dN9duqbn7pw2//2o4RJ0Ih4CsJfZTybzvzjao32wqG1PAfKj7iklAsVEilqlanF3gx8R2+Wwuj5P7UpAYbSiYiNYVo51tA==
+	cv=none; b=PjKuKB1xSX5G+dvuG+OUN5+vhvWCzEGu0rEesYZYjp9YhxB9cSnJ/cWL9Ovgagnk0KXhJm2QtGqDh8I7+iRoSlXhYsPszdp6K1TsMxli0P3MNvEOvPpNGi9ZGKkz7KUf7qH1035xry/PXmX7MC3o0N3iEHHckQsuumIYRe0YGoJsRz2B5HuKsrILfPooRa9TaDVvOmJmgvKRXzERK1oLJgn5v4at3G+FIo6y6awY7/SXbXdPH6ma9SFOvDnPK+h+PpJaCoxloCopB2W9JdORoLDnQMLshmQB4tTEGSukAZEIrmz6W93tNPkJJDm9VCNUWlSrImjh3fwZL7lKbtRO+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1749802033; c=relaxed/relaxed;
-	bh=MnHGDvZzrjKVg91VYE4fUbD95rOheLuWrUC1SCUNvho=;
+	bh=WLtF15o+Ex4Ed3vWHcKorxdQYUZ/IggFlAe1+Bvb1bQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Uww6U4IPr02I0359IrC6MbkgITSnC5SbqZcUMaFXh5tXPyRgLzCcO/knWImhDBO3CkMWwi8C0Dx9VibrSDAgwpLGm84xBKkhfQV6Le7qNndO1hl9XSKMefuYmdbAnEcpCKHq+8zYN9uXzptWhiuTqNIAzHTzxqTJCVVo+s9Xm/vJZD3eOXEy1OUlpHVLIclhBB/sXMvD0B0R1VVul4fFHRf22SEj9/cOohhk5T37CUfgl+IA9MUenQ9RXMr/MTnRLfwws2gOzkkrIWYdHfjfplvGiWgN5uTrS8zBOzxA80T6nou20S23dTgVbqt3i3K/njy+U1qWaW/FNMI8zzaW6g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=hjz+up3o; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=alexis.lothore@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+	 In-Reply-To:To:Cc; b=mbh1XTkUrDSUEedEGRRhHdSB2NSvvjufy7co6FGpDPkVUVS9UnC/jLOHo2eIF8WiPSAT0NveuG+O6Osfzu3GgVGT79R6DLsWyW1UmGYhW4EpyWPxl0f1oViK+XOZ0zwAw1APaKGXTqXKPgGXc20sxFj4tuUI4JUEcpdYrQAtX3nlXBLfmiyqewxQ8oTE/84PJO2A4h1jSB/QSmCW5b++UM55A0CvaB8eCOzcB0vpwV1k8Lh74i0n/MtfLmSYbzJxzE2RXG0jOcYHO6MBNTmrg+NYFM6sh+zpG6tLa3cRWYWKlCr6jnN2a31TAft8NHF7Az31GCXhSC40M92PGk6Gcg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=fYTs9Jbt; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=alexis.lothore@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=hjz+up3o;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=fYTs9Jbt;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=alexis.lothore@bootlin.com; receiver=lists.ozlabs.org)
 Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [IPv6:2001:4b98:dc4:8:216:3eff:fe9d:e7b4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJX7358x1z309v
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJX732gfqz2xKN
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 18:07:11 +1000 (AEST)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 03A69584892
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 07:37:39 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 09B4044504;
-	Fri, 13 Jun 2025 07:37:30 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id 2B5CE5848B0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 07:37:43 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4737044515;
+	Fri, 13 Jun 2025 07:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749800254;
+	t=1749800257;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MnHGDvZzrjKVg91VYE4fUbD95rOheLuWrUC1SCUNvho=;
-	b=hjz+up3owp19jC1PLRYly2+dyctAQgkbxpKo1hqYq1HETrfATLqzq1SfruQePM9/7t5pLa
-	0zTgV4Mt+jHNfjm41uNZRq3n71py93L9O+7KZhUPST/iQHmzyaGpfn7MSZ8OgZbCmciiE7
-	GxM/QOW8RLxX86eh4eiqAagDX+1Yh47rRt5h5IfedzZXFQZhW4NYI7kCZJcYIItqps3uLX
-	BZnHjMANkEjvI0mf6/VMLdo44AkZvBkC/epgTg/TqottCOybUirzxNFNynKpbkqAqLHbRi
-	dv/ae9NbgtJ9xY7jGbo/ojuHvNaSLl6MZIZ/7dtwKDtTbHVzpUbjlkT5KrLJbQ==
+	bh=WLtF15o+Ex4Ed3vWHcKorxdQYUZ/IggFlAe1+Bvb1bQ=;
+	b=fYTs9JbtnbQa0LG78Ip8By4e8kxfeBYaAkBZGd4wF2a4/6esqJ7MVj2PbEj1VGMwdzrKHn
+	7XSJaqODDAiuBQDbcyOJ7ITyuZE+Zts95dmJNmUCOudt2D1o/fCHsHwfW7ERCyNo9O1egn
+	/LwdsL+26wj2ktOlxMEyz4YwoQPhxWG3YI5wtVxeYPnSz7g19gMYyM6asNdvVsnq2m9Nud
+	WCK4DjKtHb+62+sqH6m5ov7tSnrcJSJbY8GgNj68E54TrE24BXl7RVaYv4PAxT+EIQDmaB
+	TM9B8Eacu+Xd3qzw1RWvru499qrPa8XL5GB3APEztX4F4YDKWoL4Z2Ne93qTdQ==
 From: =?utf-8?q?Alexis_Lothor=C3=A9_=28eBPF_Foundation=29?= <alexis.lothore@bootlin.com>
-Date: Fri, 13 Jun 2025 09:37:11 +0200
-Subject: [PATCH bpf 2/7] bpf/x86: prevent trampoline attachment when args
+Date: Fri, 13 Jun 2025 09:37:12 +0200
+Subject: [PATCH bpf 3/7] bpf/riscv: prevent trampoline attachment when args
  location on stack is uncertain
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -64,7 +64,7 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250613-deny_trampoline_structs_on_stack-v1-2-5be9211768c3@bootlin.com>
+Message-Id: <20250613-deny_trampoline_structs_on_stack-v1-3-5be9211768c3@bootlin.com>
 References: <20250613-deny_trampoline_structs_on_stack-v1-0-5be9211768c3@bootlin.com>
 In-Reply-To: <20250613-deny_trampoline_structs_on_stack-v1-0-5be9211768c3@bootlin.com>
 To: Alexei Starovoitov <ast@kernel.org>, 
@@ -117,8 +117,8 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 When the target function receives more arguments than available
 registers, the additional arguments are passed on stack, and so the
-generated trampoline needs to read those to prepare the bpf context,
-but also to prepare the target function stack when it is in charge of
+generated trampoline needs to read those to prepare the bpf context, but
+also to prepare the target function stack when it is in charge of
 calling it. This works well for scalar types, but if the value is a
 struct, we can not know for sure the exact struct location, as it may
 have been packed or manually aligned to a greater value.
@@ -127,72 +127,56 @@ Prevent wrong readings by refusing trampoline attachment if the target
 function receives a struct on stack. While at it, move the max bpf args
 check in the new function.
 
-Fixes: 473e3150e30a ("bpf, x86: allow function arguments up to 12 for TRACING")
+Fixes: 6801b0aef79d ("riscv, bpf: Add 12-argument support for RV64 bpf trampoline")
 Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 ---
- arch/x86/net/bpf_jit_comp.c | 36 ++++++++++++++++++++++++++++++------
- 1 file changed, 30 insertions(+), 6 deletions(-)
+ arch/riscv/net/bpf_jit_comp64.c | 26 ++++++++++++++++++++++++--
+ 1 file changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index 9689834de1bb1a90fdc28156e0e2a56ac0ff2076..120e05a978679c046631cc94d942800c3051ad0a 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -3001,6 +3001,29 @@ static int invoke_bpf_mod_ret(const struct btf_func_model *m, u8 **pprog,
- 	return 0;
+diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
+index 10e01ff06312d9f1e6e213bb069c6ea749ea9af2..ea3a1c3af6bc129057c16a4070c33dbf00e6c611 100644
+--- a/arch/riscv/net/bpf_jit_comp64.c
++++ b/arch/riscv/net/bpf_jit_comp64.c
+@@ -1005,6 +1005,24 @@ static int invoke_bpf_prog(struct bpf_tramp_link *l, int args_off, int retval_of
+ 	return ret;
  }
  
 +static int validate_args(const struct btf_func_model *m)
 +{
-+	int i, arg_regs = 0, nr_regs = 0;
++	int i, nr_arg_slots, nr_regs = 0;
 +
-+	for (i = 0; i < min_t(int, m->nr_args, MAX_BPF_FUNC_ARGS); i++) {
-+		arg_regs = (m->arg_size[i] + 7) / 8;
-+
-+		if (nr_regs + arg_regs > MAX_REGS_FOR_ARGS &&
-+		    m->arg_flags[i] & BTF_FMODEL_STRUCT_ARG)
-+			return -ENOTSUPP;
-+		nr_regs += arg_regs;
-+	}
-+
-+	/* x86-64 supports up to MAX_BPF_FUNC_ARGS arguments. 1-6
-+	 * are passed through regs, the remains are through stack.
-+	 */
-+	if (nr_regs > MAX_BPF_FUNC_ARGS)
++	if (m->nr_args > MAX_BPF_FUNC_ARGS)
 +		return -ENOTSUPP;
 +
++	for (i = 0; i < m->nr_args; i++) {
++		nr_arg_slots = round_up(m->arg_size[i], 8) / 8;
++		if (nr_regs + nr_arg_slots > RV_MAX_REG_ARGS &&
++		    m->arg_flags[i] & BTF_FMODEL_STRUCT_ARG)
++			return -ENOTSUPP;
++		nr_regs += nr_arg_slots;
++	}
 +
 +	return 0;
 +}
 +
- /* mov rax, qword ptr [rbp - rounded_stack_depth - 8] */
- #define LOAD_TRAMP_TAIL_CALL_CNT_PTR(stack)	\
- 	__LOAD_TCC_PTR(-round_up(stack, 8) - 8)
-@@ -3089,18 +3112,19 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
- 	WARN_ON_ONCE((flags & BPF_TRAMP_F_INDIRECT) &&
- 		     (flags & ~(BPF_TRAMP_F_INDIRECT | BPF_TRAMP_F_RET_FENTRY_RET)));
+ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
+ 					 const struct btf_func_model *m,
+ 					 struct bpf_tramp_links *tlinks,
+@@ -1069,8 +1087,12 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im,
+ 	if (flags & (BPF_TRAMP_F_ORIG_STACK | BPF_TRAMP_F_SHARE_IPMODIFY))
+ 		return -ENOTSUPP;
  
+-	if (m->nr_args > MAX_BPF_FUNC_ARGS)
+-		return -ENOTSUPP;
 +	/* make sure that any argument can be located and processed by the
 +	 * trampoline
 +	 */
 +	ret = validate_args(m);
 +	if (ret)
 +		return ret;
-+
- 	/* extra registers for struct arguments */
- 	for (i = 0; i < m->nr_args; i++) {
- 		if (m->arg_flags[i] & BTF_FMODEL_STRUCT_ARG)
- 			nr_regs += (m->arg_size[i] + 7) / 8 - 1;
- 	}
  
--	/* x86-64 supports up to MAX_BPF_FUNC_ARGS arguments. 1-6
--	 * are passed through regs, the remains are through stack.
--	 */
--	if (nr_regs > MAX_BPF_FUNC_ARGS)
--		return -ENOTSUPP;
--
- 	/* Generated trampoline stack layout:
- 	 *
- 	 * RBP + 8         [ return address  ]
+ 	for (i = 0; i < m->nr_args; i++)
+ 		nr_arg_slots += round_up(m->arg_size[i], 8) / 8;
 
 -- 
 2.49.0
