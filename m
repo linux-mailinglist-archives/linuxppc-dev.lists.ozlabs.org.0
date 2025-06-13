@@ -1,111 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-9354-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9355-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66402AD9062
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 16:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA7FAD9251
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 18:02:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJjGQ3Fjnz2yZ6;
-	Sat, 14 Jun 2025 00:59:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJkfz2Lyyz2yb9;
+	Sat, 14 Jun 2025 02:02:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749826750;
-	cv=none; b=H9+Te5N8uz+ESNi9JaQMpYRuWxWWE/uYkhv3t8CIsOw1lXymLsqx44WTV6NbD3rzLIi2M5Qw1UxYHZGVFcr33xx8enJgC60m+LgDV/i3hdin6rlDLRxJvIjPf/NgWrtWVJ+AkMco7faF36386aFR2yhif3cgAPC1GVkzhkFrg7774/+tjBAb5eporkLoZjrS0VI4EMWp6xqI7IEpb1Gmow5ZJ2S6EXX/MzEYhtsmWQus1/92KwjNgWvNcetvi37aPMH0uPBgZZtD+jTbFYYq/MWt4uM1duF+SBEVUOrU88o/o6+Kll914RqOo6bQu1JHrkeMp/oUFzU3gdP2FRxTlQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749830523;
+	cv=none; b=fPuOSMleFsNyPpTkh7y4KlT/scGgFXZt8szgN5iBbLpKPQueZsWgTRuiYfpofS8yuDcTxEsLvZH1OqtaYKoZMzcJSmDSHT58yhLhw3Yj1JGOTTRs8/6HJVsyYQYDtWV5vBpluJMwVYWpAKbPcrAAomqAbFtDDVi6AsMAkU0mDw+HhCmCIhsmefOOMkSK5+OH1Xm4p+r62Xg63m6chqDxcSwNAZ/WAoSfsVKKgC9TlG8uXQWG3XM0C7HE3w/Krhtpdpf8B5vFttLnmDyb6ti6VHYbeDzZJUjv6fAobedD74Ld0a2B38Fhke6NXYBHkPirSfpKMSA6lIm8ZoIxBP7Nhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749826750; c=relaxed/relaxed;
-	bh=RvnuzgtMSI9Np/g2y/zyYte66ezEy6r674XqmB2jKLk=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OMOIcUADs1GRYWkZSd++Ed3GF5zT5JcFefq0j4TViXTQpM1sCKbsJELs5O3+50ZiR/k8+vrbGJKBkm9ss5tRP0pOggK0Rxfwa8eGrAuSDpYWLNKLosibvA5CQuK7+3BgqL44zhEWV5EUu+okFiHM5o9xx3MISpov2aPzgyy1SpIGlu2CCIw4B6sGCqLlj/SyrlMfpau6ceG2CK4nxisAfy+RtsAY2q67X0XyFXHk5Ttcf3KDxQUuJvtDuHBv7RIEto0RC5RH9spxXGm2VfTwWUtoM02PzKBO05nYCaRmUT31J2HjakuTpLqVCVrbiFv+6/hbF28YSgkAvFSPFTMoDg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=n/QA8JZM; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=oUtr1uH0; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=n/QA8JZM; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=oUtr1uH0; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	t=1749830523; c=relaxed/relaxed;
+	bh=dxMSfWlJLSP1Q2CznlmbgSk8Q0tBnIErVGASW4hTcD0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k2lqRhOeMkImc56kmzGxE8A369HBuyGMGd9ajfLAxxSl4y6dGbXNtahztDpjor6Ol157U4AmPHgBY84fQw5+6jI0/IvEI+Mw4YbHaxhLxuobKzCEGaLP+0jsFEmLJPfZ6DVI1AV/JvH8ZQjCc/rNnsWGl5oQ+Mmy80eBST4if+XQGYNPooXbmsOwxNVKVvfjS1GoAZooQaRohqCXL194ksl1Nr0pD1GkpjqIcMRxtg9zw4c8wZe35MlLycOHvj4fJ/HowFnO34JMFAPE1WH2hpkBNiZSY6P5xmcZ4X+ni1Tabr+UD4LxBG/8HTn+HryrYup6pLBzASevBztD8vPSjQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Zhfihg3Q; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=n/QA8JZM;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=oUtr1uH0;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=n/QA8JZM;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=oUtr1uH0;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Zhfihg3Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tiwai@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJjGP079Cz2xKN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Jun 2025 00:59:08 +1000 (AEST)
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 47F6E21998;
-	Fri, 13 Jun 2025 14:59:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749826746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RvnuzgtMSI9Np/g2y/zyYte66ezEy6r674XqmB2jKLk=;
-	b=n/QA8JZMV23zhNbjtY69jGC9whE4ZOSKm2+qTzm4per3XpCWNo4AAlfBW1zHMm1WNEuhy4
-	f2oC2gpKMWdlF1b8RWRaH85z03+AayLp4zpV+vGPJXaqZQFOQ1sgi9wfs+l2Dxc6dPzfdQ
-	YgG3YBZfgB3GriEcR2yieLnm/KdCWI8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749826746;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RvnuzgtMSI9Np/g2y/zyYte66ezEy6r674XqmB2jKLk=;
-	b=oUtr1uH04N97QdcVlxl8mWqPIHnKKZfLYmyeFEbjl2wBHPKWyZ/Zw6BAoQjKGI/ViBP5XV
-	6W56eswJ/xiFuuCg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1749826746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RvnuzgtMSI9Np/g2y/zyYte66ezEy6r674XqmB2jKLk=;
-	b=n/QA8JZMV23zhNbjtY69jGC9whE4ZOSKm2+qTzm4per3XpCWNo4AAlfBW1zHMm1WNEuhy4
-	f2oC2gpKMWdlF1b8RWRaH85z03+AayLp4zpV+vGPJXaqZQFOQ1sgi9wfs+l2Dxc6dPzfdQ
-	YgG3YBZfgB3GriEcR2yieLnm/KdCWI8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1749826746;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RvnuzgtMSI9Np/g2y/zyYte66ezEy6r674XqmB2jKLk=;
-	b=oUtr1uH04N97QdcVlxl8mWqPIHnKKZfLYmyeFEbjl2wBHPKWyZ/Zw6BAoQjKGI/ViBP5XV
-	6W56eswJ/xiFuuCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 048D913782;
-	Fri, 13 Jun 2025 14:59:05 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5GxrO7k8TGh8IAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Fri, 13 Jun 2025 14:59:05 +0000
-Date: Fri, 13 Jun 2025 16:59:05 +0200
-Message-ID: <87tt4jr8li.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Takashi Iwai <tiwai@suse.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-sound@vger.kernel.org,
-	Herve Codina <herve.codina@bootlin.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [RFC PATCH 3/3] ALSA: pcm: Convert snd_pcm_sync_ptr() to user_access_begin/user_access_end()
-In-Reply-To: <4f2f8e14-22d2-44f1-82cd-5f2a3b5117b1@csgroup.eu>
-References: <7baa34d4046c7750799b11830d38a46f8b581765.1749724478.git.christophe.leroy@csgroup.eu>
-	<79b86a0618328ba1d0cb5cf4011fd73ac6900e8f.1749724478.git.christophe.leroy@csgroup.eu>
-	<878qlwrnv1.wl-tiwai@suse.de>
-	<2df61bbf-76f6-4932-a347-7820350a156e@csgroup.eu>
-	<87wm9frf5x.wl-tiwai@suse.de>
-	<4f2f8e14-22d2-44f1-82cd-5f2a3b5117b1@csgroup.eu>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJkfy37gNz2xBb
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Jun 2025 02:02:01 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55DATE0P029060;
+	Fri, 13 Jun 2025 16:01:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=dxMSfWlJLSP1Q2CznlmbgSk8Q0tBnI
+	ErVGASW4hTcD0=; b=Zhfihg3QYV80iCtJFIZNXzwNsO28/CBzBPA1NW4+cP5VWr
+	k5l0f/92cmSa5uH4HyGSN7MW6sSZu3gD2JREmvkY9IWiDksFl/haBc28Yev1eh2p
+	fR3cqw2RD+tVrXIr7ijzmVyteuDmhjWOR5YkS2N2qTSLKs3rs5KGToPoP9lOHn28
+	Zc0+P608Mn4Oofwq9OObNNP0q5WFKuFHs7VgiBgMYGALGpI5XLkpWYhrNGGVAIJg
+	CsvXGDatoWJVdD4D+XIN/bR1Z2kVnng6dv251wWZwQ5XqU8LCwiGj9YrhbE5Yqqs
+	c0WIsVuRjG1it6BmiiXjCc1Dtc3+1matXW8Zfx8g==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474dv8225n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Jun 2025 16:01:47 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55DFim5F019573;
+	Fri, 13 Jun 2025 16:01:46 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4752f2tec9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Jun 2025 16:01:45 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55DG1irx33227464
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Jun 2025 16:01:44 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3311620040;
+	Fri, 13 Jun 2025 16:01:44 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4533A20043;
+	Fri, 13 Jun 2025 16:01:43 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.111.81.121])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 13 Jun 2025 16:01:43 +0000 (GMT)
+Date: Fri, 13 Jun 2025 18:01:41 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, x86@kernel.org, linux-arch@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v2 09/12] lib/crc/s390: migrate s390-optimized CRC code
+ into lib/crc/
+Message-ID: <aExLZaoBCg55rZWJ@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <20250607200454.73587-1-ebiggers@kernel.org>
+ <20250607200454.73587-10-ebiggers@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -118,141 +91,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -7.27
-X-Spamd-Result: default: False [-7.27 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_SHORT(-0.17)[-0.860];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250607200454.73587-10-ebiggers@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: oqxWeEseK0qommY-tA52lM8_yDgYBZ8b
+X-Proofpoint-GUID: oqxWeEseK0qommY-tA52lM8_yDgYBZ8b
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEzMDExNSBTYWx0ZWRfX2SFXW8bIydO8 QijS4XnzPyWGv7hUAVPhEsrOB00xE8g+gtnZ5TKc3xm/6m22RAo7pWDdkAUOPF1K6LO6qJEf193 PxiDvBNjb2KojolH7uIG4xIF5aoOVAuWCvsnLPUnzUljRW/4dT+d6yR8TGdRxod4wQd7u9oXLyt
+ 960X1pKDQBdkA9i2fSfl/dxiyGZuXG6X5RlU4ZS8JXRnJlDwSVv11Yh0NZ3so0jxjPrI/YVMcT2 6jW8eHHK29fMPvF4SWZi3ZgmFX9oL1/VYz01noMZpHwwtcEMmmSVoqdhzy0/dmzN0+Go88V0p57 Weg2+fyKZ+PNLuJB+wyFM7SDDMfP0OJ1UZqOon8sp39ETo2dKYj4MRErDeC122oOtE8J8jykSry
+ lFdOt02pLQfhwmo1MyS48Be/xFyI96QJGhA1Fc1zghsJy38d3Mb+b7BSNKN7KQSA+ld6RejI
+X-Authority-Analysis: v=2.4 cv=CfMI5Krl c=1 sm=1 tr=0 ts=684c4b6b cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=kj9zAlcOel0A:10 a=6IFa9wvqVegA:10 a=1XWaLZrsAAAA:8 a=DtkNC_JpMhehFE-g-C8A:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-13_01,2025-06-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ phishscore=0 priorityscore=1501 clxscore=1011 impostorscore=0 mlxscore=0
+ suspectscore=0 mlxlogscore=403 adultscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506130115
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, 13 Jun 2025 14:46:46 +0200,
-Christophe Leroy wrote:
+On Sat, Jun 07, 2025 at 01:04:51PM -0700, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
 > 
+> Move the s390-optimized CRC code from arch/s390/lib/crc* into its new
+> location in lib/crc/s390/, and wire it up in the new way.  This new way
+> of organizing the CRC code eliminates the need to artificially split the
+> code for each CRC variant into separate arch and generic modules,
+> enabling better inlining and dead code elimination.  For more details,
+> see "lib/crc: prepare for arch-optimized code in subdirs of lib/crc/".
 > 
-> 
-> Le 13/06/2025 à 14:37, Takashi Iwai a écrit :
-> > On Fri, 13 Jun 2025 13:03:04 +0200,
-> > Christophe Leroy wrote:
-> >> 
-> >> 
-> >> 
-> >> Le 13/06/2025 à 11:29, Takashi Iwai a écrit :
-> >>> On Thu, 12 Jun 2025 12:51:05 +0200,
-> >>> Christophe Leroy wrote:
-> >>>> 
-> >>>> Now that snd_pcm_sync_ptr_get_user() and snd_pcm_sync_ptr_put_user()
-> >>>> are converted to user_access_begin/user_access_end(),
-> >>>> snd_pcm_sync_ptr_get_user() is more efficient than a raw get_user()
-> >>>> followed by a copy_from_user(). And because copy_{to/from}_user() are
-> >>>> generic functions focussed on transfer of big data blocks to/from user,
-> >>>> snd_pcm_sync_ptr_put_user() is also more efficient for small amont of
-> >>>> data.
-> >>>> 
-> >>>> So use snd_pcm_sync_ptr_get_user() and snd_pcm_sync_ptr_put_user() in
-> >>>> snd_pcm_sync_ptr() too.
-> >>>> 
-> >>>> In order to have snd_pcm_mmap_status32 similar to snd_pcm_mmap_status,
-> >>>> replace to tsamp_{sec/nsec} and audio_tstamp_{sec/nsec} by equivalent
-> >>>> struct __snd_timespec.
-> >>>> 
-> >>>> snd_pcm_ioctl_sync_ptr_buggy() is left as it is because the conversion
-> >>>> wouldn't be straigh-forward do to the workaround it provides.
-> >>>> 
-> >>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> >>> 
-> >>> Through a quick glance, all patches look almost fine, but one favor to
-> >>> ask: this patch contains the convert from s32/s32 pair to struct
-> >>> __snd_timespec.  It should be factored out to a prerequisite patch
-> >>> instead of burying in a big change.
-> >> 
-> >> Shall I understand you prefer this series over the more simple "ALSA:
-> >> pcm: Convert snd_pcm_ioctl_sync_ptr_{compat/x32} to
-> >> user_access_begin/user_access_end()" patch ?
-> > 
-> > Err, no, sorry for ambiguity.
-> 
-> Then I'm lost.
-> 
-> I sent two alternative proposals:
-> A/ Single patch, simple, handling only two fonctions
-> snd_pcm_ioctl_sync_ptr_{compat/x32} , without refactoring. [1]
-> B/ This RFC series, more elaborate, refactoring and putting user copy
-> into helper macros. [2]
-> 
-> So the question was to be sure you prefer alternative B over
-> alternative A. I guess the answer is YES as you asking me improve it.
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+...
 
-Right, let's go with the RFC series with refactoring.
+Hi Eric,
 
+With this series I am getting on s390:
 
-thanks,
+alg: hash: skipping comparison tests for crc32c-s390 because crc32c-generic is unavailable
 
-Takashi
-
-> 
-> [1]
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/8df11af98033e4cb4d9b0f16d6e9d5b69110b036.1749724057.git.christophe.leroy@csgroup.eu/
-> [2]
-> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?state=*&series=460665
-> 
-> 
-> > I wanted to move the replacement of tstamp_sec/nsec with struct
-> > __snd_timespec as a small preliminary patch from patch#3.
-> > That is,
-> 
-> Yes that's what I understood.
-> 
-> Thanks
-> Christophe
-> 
-> 
-> > --- a/sound/core/pcm_native.c
-> > +++ b/sound/core/pcm_native.c
-> > @@ -3103,11 +3103,9 @@ struct snd_pcm_mmap_status32 {
-> >   	snd_pcm_state_t state;
-> >   	s32 pad1;
-> >   	u32 hw_ptr;
-> > -	s32 tstamp_sec;
-> > -	s32 tstamp_nsec;
-> > +	struct __snd_timespec tstamp;
-> >   	snd_pcm_state_t suspended_state;
-> > -	s32 audio_tstamp_sec;
-> > -	s32 audio_tstamp_nsec;
-> > +	struct __snd_timespec audio_tstamp;
-> >   } __packed;
-> > etc.  By factoring this out, it becomes clear that the timespec
-> > compatibility is fully cared.
-> > 
-> > __snd_timespec may be defined in different ways on user-space, but in
-> > the kernel code, it's a single definition of s32/s32 pair.  This needs
-> > to be emphasized.
-> > 
-> > 
-> > thanks,
-> > 
-> > Takashi
-> 
+Thanks!
 
