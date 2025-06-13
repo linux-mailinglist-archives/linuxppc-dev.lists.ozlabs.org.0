@@ -1,35 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-9335-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9336-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8534AAD85D3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 10:41:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5170AD85E4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 10:45:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJXtl6PFXz30DP;
-	Fri, 13 Jun 2025 18:41:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJXzj3vQFz30P3;
+	Fri, 13 Jun 2025 18:45:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749804095;
-	cv=none; b=HNiLAsGEZH8tYQHtaySYxGTOxPiWKJA70kHomOaCntPEe8xIpOM8nN5NeAC9jbo305o/9s3E52I4ZTb1Ta7qs6ZczjfJmiMxXQQEd94ezjgWzht/QGJN2Yl5zCg1tyO0JBJBkFKOzNjLdFyjcqklH0z03xOcwwz27BieRHeUER59LNoO/5D4R9WlUKUzVNqjK1/eT1MfHTUN0hU7Cu55IkRn10LF7MCkQFszSjLQrTEDRP2wr7/4C38lZmQpGMq1Oa64iMG01bel3mtOcLdNbvmnqwqxOq2+BGBxSt9YTp9R1JQ4BkNW2CiWzMmOI4nFX3e3uwMoMToFuRB4rLtnaw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749804353;
+	cv=none; b=RbB+njixsVLx3oFaLmHm1kQRTlYngxQf68B4HrAdhx2B6ll4MG+0dhxZ/cXBdr6itY74wP8Hay4cWkSODzIvhufit49U9kQz2JRQGJ11mhPWwX00Es6YyIGuio276VxiDKRroi3vBHJe7NkVZplRwmzzzCLCLKpaI0vTqnXmkkZsP/0B+bgmmIqA4AIJrbd8XbYtR2lMGDOS0WblEFiWIMZIK7AEU51+AP+X//FStYgnuWZSAK7hTIJaYkCsMui746luxJ92dXwCNkoqN3Tez+2+RCzGUJq0fKZlS/8hzdapdbtJ1cCt6sIupAod7y+AWGM0Qx2w13TGI+HzTBpL/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749804095; c=relaxed/relaxed;
-	bh=CMgnkMIG/DukeBtP6vVNc/sfMhj00uMw9w2nlSoRpiU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aUNzjIPnH6g/qQmshSEgVckPTnt34R65RgYCmglwwaLH4WGdofssGbSP076yZ8jjLctR2WjWAe+Bn3xTdCIExhrbkn2qPRn7rBRAauv0kpoOEIE0hnjBZJqj45co9Q6rDJBtgwha7vium08Zrjux1traw3dBLoA6bM0nkfv3o3GpW7hm7iuF+6UWUnMAObrRnlgVj6ShcztkwEDFxBRjniQoQxRFaL3CzUtFugz1gfPACmc4YmoEelQzsOjOststHrhjx6cad0lhAdjWM5YGnSQjGaruy+FDN6RBw3YBhdNU4rUXIgZo0PXRvWkTU1TrsBwOxLAGkb7Uo388BHd+1w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJXtk40fHz2xBb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 18:41:34 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5C1C41CDD;
-	Fri, 13 Jun 2025 01:40:42 -0700 (PDT)
-Received: from [10.57.84.117] (unknown [10.57.84.117])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6DA213F66E;
-	Fri, 13 Jun 2025 01:41:00 -0700 (PDT)
-Message-ID: <0ba9820d-f498-42b0-a663-6f4dca5374b4@arm.com>
-Date: Fri, 13 Jun 2025 09:40:58 +0100
+	t=1749804353; c=relaxed/relaxed;
+	bh=Gf+A06e4WcDr+kEBaMBUF4ufTyECUTsqvul/Jc4lJ0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fXGIh1LcSvKiHZcBLAF+csM71ZWX+xm4788R9qW9sKCTSLpL2X1ogUl4HVoWUwHbrtQp9InvzSPS33yyej6GRLgfCFOovqqNuLvT1VhNOYy+8Ow+Nab9LWACXgsb1tlRMEkTw2JwvFQS59ICrC2ZYdCiKBaXhAcZdM4R4DFPy2ooYcl7kJBC9FAAOOQFADvQNRX8IgR/wuthC7s0mouCilK5Nn5XZU9DhQbg6C2Dt/yxymVtWprSmOpqtbS/pQvEWD7lbmPb/K1VWg4nwqEYvUJFWUoG0mOxioU5C9Lkjz9PDeb+qwobsSRH15jawqshzEwQlfBslWw+Ulloj00U8A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Io6BXJVO; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Io6BXJVO;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJXzh5FN9z30NP
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 18:45:52 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 692676113B;
+	Fri, 13 Jun 2025 08:45:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4682AC4CEE3;
+	Fri, 13 Jun 2025 08:45:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749804350;
+	bh=6PQjGNdTndadBOHPNSprrGjhrgshe7eqm6LfkP0/LiU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Io6BXJVOBa3rGapk/leIugA8Y0mg9CsNPVHgzaioUd+wmmJzgXCNeBylEZf7BTz95
+	 /rq0CwhhW0lO46pyfqsFZzIAWgtMxGt1nuoMJC57bG9/3TQj5yWYORirArDMGB2mB8
+	 tUThlPLV/GKKLEweCgbFvdjiHomidjbppYF5KTQmm77oG93fGmla/PI/v9r60EtMjZ
+	 yORFY3xe0HKEYZOXIoHtrVL5M+ZqLQGXetecA4RaWPYO6TunP6sjBS0U2QdyJy2c9a
+	 1y+30HoSoC5Hg5iUcQYn2JQBt3HlzRCJUOAuM2DmLw+Ut89iABTAMGXpe1Pfg6nSZE
+	 cgGzTmqFhr5vg==
+Date: Fri, 13 Jun 2025 14:15:41 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Hans Zhang <18255117159@163.com>
+Cc: bhelgaas@google.com, tglx@linutronix.de, kw@linux.com, 
+	manivannan.sadhasivam@linaro.org, mahesh@linux.ibm.com, oohall@gmail.com, 
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	Hans Zhang <hans.zhang@cixtech.com>
+Subject: Re: [PATCH 2/2] PCI/AER: Use bool for AER disable state tracking
+Message-ID: <ufdexukxobnpyjmfbr7gb2zvlv4xshkwbuinrrr3fowtmjtcyv@xfmmg7wrvjm7>
+References: <20250516165223.125083-1-18255117159@163.com>
+ <20250516165223.125083-3-18255117159@163.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,93 +67,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] sparc/mm: Do not disable preemption in lazy MMU mode
-Content-Language: en-GB
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- Hugh Dickins <hughd@google.com>, Nicholas Piggin <npiggin@gmail.com>,
- Guenter Roeck <linux@roeck-us.net>, Juergen Gross <jgross@suse.com>,
- Jeremy Fitzhardinge <jeremy@goop.org>
-References: <cover.1749747752.git.agordeev@linux.ibm.com>
- <db1559396c38c1dfe97a6d929412d7d6244f64b8.1749747752.git.agordeev@linux.ibm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <db1559396c38c1dfe97a6d929412d7d6244f64b8.1749747752.git.agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250516165223.125083-3-18255117159@163.com>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 12/06/2025 18:36, Alexander Gordeev wrote:
-> Commit a1d416bf9faf ("sparc/mm: disable preemption in lazy mmu mode")
-> is not necessary anymore, since the lazy MMU mode is entered with a
-> spinlock held and sparc does not support Real-Time. Thus, upon entering
-> the lazy mode the preemption is already disabled.
-
-Surely given Sparc knows that it doesn't support PREEMPT_RT, it is better for
-it's implementation to explicitly disable preemption rather than rely on the
-spinlock to do it, since the spinlock penalizes other arches unnecessarily? It
-also prevents multiple CPUs from updating (different areas of) kernel pgtables
-in parallel. The property Sparc needs is for the task to stay on the same CPU
-without interruption, right? Same goes for powerpc.
-
+On Sat, May 17, 2025 at 12:52:23AM +0800, Hans Zhang wrote:
+> From: Hans Zhang <hans.zhang@cixtech.com>
 > 
-> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> Change pcie_aer_disable variable to bool and update pci_no_aer()
+> to set it to true. Improves code readability and aligns with modern
+> kernel practices.
+> 
+> Signed-off-by: Hans Zhang <hans.zhang@cixtech.com>
+
+Applied to pci/misc!
+
+- Mani
+
 > ---
->  arch/sparc/include/asm/tlbflush_64.h |  2 +-
->  arch/sparc/mm/tlb.c                  | 12 ++++++++----
->  2 files changed, 9 insertions(+), 5 deletions(-)
+>  drivers/pci/pcie/aer.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
-> index 8b8cdaa69272..a6d8068fb211 100644
-> --- a/arch/sparc/include/asm/tlbflush_64.h
-> +++ b/arch/sparc/include/asm/tlbflush_64.h
-> @@ -44,7 +44,7 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end);
->  void flush_tlb_pending(void);
->  void arch_enter_lazy_mmu_mode(void);
->  void arch_leave_lazy_mmu_mode(void);
-> -#define arch_flush_lazy_mmu_mode()      do {} while (0)
-> +void arch_flush_lazy_mmu_mode(void);
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index a1cf8c7ef628..ade98c5a19b9 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -111,12 +111,12 @@ struct aer_stats {
+>  					PCI_ERR_ROOT_MULTI_COR_RCV |	\
+>  					PCI_ERR_ROOT_MULTI_UNCOR_RCV)
 >  
->  /* Local cpu only.  */
->  void __flush_tlb_all(void);
-> diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
-> index a35ddcca5e76..e46dfd5f2583 100644
-> --- a/arch/sparc/mm/tlb.c
-> +++ b/arch/sparc/mm/tlb.c
-> @@ -52,10 +52,9 @@ void flush_tlb_pending(void)
+> -static int pcie_aer_disable;
+> +static bool pcie_aer_disable;
+>  static pci_ers_result_t aer_root_reset(struct pci_dev *dev);
 >  
->  void arch_enter_lazy_mmu_mode(void)
+>  void pci_no_aer(void)
 >  {
-> -	struct tlb_batch *tb;
-> +	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
->  
-> -	preempt_disable();
-> -	tb = this_cpu_ptr(&tlb_batch);
-> +	VM_WARN_ON_ONCE(preemptible());
->  	tb->active = 1;
+> -	pcie_aer_disable = 1;
+> +	pcie_aer_disable = true;
 >  }
 >  
-> @@ -63,10 +62,15 @@ void arch_leave_lazy_mmu_mode(void)
->  {
->  	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
->  
-> +	VM_WARN_ON_ONCE(preemptible());
->  	if (tb->tlb_nr)
->  		flush_tlb_pending();
->  	tb->active = 0;
-> -	preempt_enable();
-> +}
-> +
-> +void arch_flush_lazy_mmu_mode(void)
-> +{
-> +	VM_WARN_ON_ONCE(preemptible());
->  }
->  
->  static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
+>  bool pci_aer_available(void)
+> -- 
+> 2.25.1
+> 
 
+-- 
+மணிவண்ணன் சதாசிவம்
 
