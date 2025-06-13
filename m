@@ -1,78 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-9358-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9359-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3152AD9317
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 18:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F1FAD9390
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 19:12:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJlfd69b2z2yb9;
-	Sat, 14 Jun 2025 02:46:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJmD304vWz2yMF;
+	Sat, 14 Jun 2025 03:12:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749833209;
-	cv=none; b=eoX+sWvLRNcg4kOMWgvTk0eTtu7O+cU4fgtEjWdnHewCwqdC90uIH6VeJsjVv8xv8cQs9BTbUm2YC9fvCmDDJO7VqagJn4XLnX4Q8IUuv4beufuk8EhZ2wINRtbprzLHlSOm2tkewHFJXz7E++Qv3mSwxhvbVwePZSTM/WUVdnirSt8TlRQVjLeQ+yHRBcluUSaI/G9wJXyxf5DhtnhjOPSQrXA7fwL+m/PdlGf00oPeOj0Ubi55pUjO/zBNSRfStPoxx8Kj/8vaeGLygt9vI2OQo30IaX5x7ZTB4QlD/XafNQyu/uIm/L3p6g5kHPg4hBTJW1fv57946jqKhgJ5Zg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749834738;
+	cv=none; b=HqmoCn/bDIyRs+Jn9sM9xPF0W6Wb/Zt4gb2t2Tm4W5dOs64Z9tmEz9vvyWS7tsnYhut6XxL1VyXNilMLBuunxkB0qKq5d7JJoJV06aMIDD0fBz9XrRJo2mihvyWKttWn/SSam0MsHMKpiQ+SYLru5MKNXdj4m6AjsnYIT8E+IfTKKIBZ7X8tlLwuOcnqK4Tt1+3s4oVSXkkXsgYAQaiOjq5raDDs6OY2A6y//bZ3Y24GGTs0r7khnS2el7C8KZVmGkpMlJvwmFMioibBWpJQm98NNTpDyaKCb0O0ZqGIai8uvNdg8Itp3hD/U8q1DqHd58tj+L34Bge03KhTZ+2hNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749833209; c=relaxed/relaxed;
-	bh=9XRJ3S4WgErLGjeCRtjOZDmlS3isbzU/ag+CU74FgQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AKJ1SP4kOxksOr8flKgr8KkGPkRTzjrrHiFa3NZMSt75uYZoJwqTf28LQfRFSrHDEWPTJk7Da0RIHsnPyQzKk22HDNMCyKpw58b0U+scSjGqVZKjJpp+wyOliuNJGOul5sVDW1JIQK99BS/jYWrL4g9EfvWXhnKkNbBiFRDHocLcuDJnBOW1CceO/mDhqF96L0FizmV25XXE49XVsnwssYZpnbA1vX4Bcs5ZMGXuEJpqK4XN5LJBhxiD81EclQ8+BfcPcmWA7bmA6Pz23XdBN3rVkYNRpf1b+4+x1e6b6gh7elmtAoDa0Di6M7wpnPalAF6SZN1s6Ib1yE7LBXsoVA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cOaHrpXW; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1749834738; c=relaxed/relaxed;
+	bh=SvL9AL31A+o3wK3njb/Du4yvgoiu7rebh1/wJmOONVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h17SqTJER4HC5Lh9lhZUPnB0KGKAqk9lO6tdrSHABmvRQh9UqcVUi66OtPtu0+oaKiG3UZd8SlUcaiRJx7SwtGi+VwwP0Aw3/gWtXM1I8D8w+Z0VfdWdgnljMUlJDvoE0Tk3RCHsmjzGPztNQAv9orYnPXiOG61O1/swZtL8EUXkyIw4LxxKOiZgb19RuG+7vRfhnASV7HEeAI92yTejg9QN1tKRS+skizt6PustLoctDrjLyvbH8hd3SSNkgEBtLDkZDMhewu/fWXqMj/kEnpEbtkiWEjklY47Izl4shnC97mXJpkS0sIgsLk/AJL+XPcbKtpllUoFqytpHtt+0+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BhivCur+; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cOaHrpXW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BhivCur+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJlfc4wnZz2xKN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Jun 2025 02:46:48 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55D9BdNF026464;
-	Fri, 13 Jun 2025 16:46:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=9XRJ3S
-	4WgErLGjeCRtjOZDmlS3isbzU/ag+CU74FgQc=; b=cOaHrpXW+VeUtthSrhDHfy
-	Onf2bXuXTFuSZbv81lcEMtbt/20N8pt5H7hTkOGQXno5tKZs+PrQzXhj6cCXwaRw
-	nlyzDDPWZ4o9EdS0pB0Z77xLC8/GikJlzIfqy0Aj3KL8EJ+46PBtN57/l0OFTBCR
-	FTDtjl1J/tF1bylIjjuDTyNDzns7eD96K4KYJfA5n9AeMnnkhna80SQeyOWHNJTb
-	apO05wdtoYZylFakb8Rx4YU+GgIbpl6lDt5CyJ0NtoCg3zq7rx3Ys8TbtEWFVO6x
-	Kx4m2ehL7UtJrjaSzj2HoJaRjB/whBwsZhyohveEFe1dVOGWdL5KT49b4dFESgXw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474cxjtgc0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Jun 2025 16:46:33 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55DGeMur031453;
-	Fri, 13 Jun 2025 16:46:32 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 474cxjtgbc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Jun 2025 16:46:32 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55DE7hMx015006;
-	Fri, 13 Jun 2025 16:46:26 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4750rpk008-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Jun 2025 16:46:26 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55DGkPfL31523416
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Jun 2025 16:46:25 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F014058053;
-	Fri, 13 Jun 2025 16:46:24 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0FFB558043;
-	Fri, 13 Jun 2025 16:46:20 +0000 (GMT)
-Received: from [9.43.6.70] (unknown [9.43.6.70])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 13 Jun 2025 16:46:19 +0000 (GMT)
-Message-ID: <ebeb28ee-272a-4965-8add-42d005cbed38@linux.ibm.com>
-Date: Fri, 13 Jun 2025 22:16:16 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJmCx5sztz2xKN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Jun 2025 03:12:13 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B2ED61F1A;
+	Fri, 13 Jun 2025 17:12:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43202C4CEEB;
+	Fri, 13 Jun 2025 17:12:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749834730;
+	bh=MwLvd5PG7WoLPNV5X3+UTldK/899ju4MNdrqiosDJ9I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BhivCur+l0uxRrXdj3m3GKjsKlQNT6CXQx3iCBvVkXSvE4m7EvCcVuRfY6gZB5DtI
+	 RrJabvRIGIr3L4g87xf0gTfQDs/DflrsqDAj5QlhN5vplNG9fEENywbAPzXW3gnNlq
+	 m+coGK+eBLQeJtsoxM3fU4c5Xpiy8kfmTbUODa1wg4jIDHjdtxdql01cyMgso0UG9q
+	 znLaUKdE+SbabPCvrEijY1od4XSYKiQECxgj+txYdWIoB7IUqgUD3yiEVggSkRo5Am
+	 oG2oDjLPd9qcjldUhG53BMbb8wG7cjW4jHsngIK0FAWMIuyciYpkyJRP9+ahUBrIUW
+	 mqv3dY3gjk5ZQ==
+Date: Fri, 13 Jun 2025 10:11:43 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org, x86@kernel.org,
+	linux-arch@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH v2 09/12] lib/crc/s390: migrate s390-optimized CRC code
+ into lib/crc/
+Message-ID: <20250613171143.GB1284@sol>
+References: <20250607200454.73587-1-ebiggers@kernel.org>
+ <20250607200454.73587-10-ebiggers@kernel.org>
+ <aExLZaoBCg55rZWJ@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,110 +73,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc: Fix struct termio related ioctl macros
-To: Justin Forbes <jforbes@fedoraproject.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, Tulio Magno <tuliom@ascii.art.br>
-References: <20250517142237.156665-1-maddy@linux.ibm.com>
- <87zff7fu1p.fsf@mpe.ellerman.id.au> <aExSkR32YIgXtEHm@fedora64.linuxtx.org>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <aExSkR32YIgXtEHm@fedora64.linuxtx.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: HbzhGlYJotBojLQdJh1muhOcqBCU258t
-X-Proofpoint-GUID: ni0je-LW6Bssv6dVLe-FZjLeMgqe-vn-
-X-Authority-Analysis: v=2.4 cv=fZWty1QF c=1 sm=1 tr=0 ts=684c55e9 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=vTr9H3xdAAAA:8
- a=0oxY9S99ikzlAryYtrkA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjEzMDEyMCBTYWx0ZWRfX1tWX2b8BK5ks YbRVu9OjnjfVvG1VeZqkERerk5enz3LgP10O85RmyLxMFdCTlSDJR/ovOy8BkJhhBtjt1ewHZaw 8YD57WAglsM9+GJf/JxtSILa6D0nn6ysshtMYMCzdQpB9WZkEDnvoR9gKiX7YdGxrhYZycXRfUA
- ahhw0kXOX49ZmLbKSMDvtRR/n49Wv84VgUQ8w5nqVV5lR6UkqvuvS5IIGx2PgrdxSk9d9VRp8DN wowCEmkL6xti40zfzuZ374AeV+MtUu5o61cj5M+6efxkHJGLIhOeMercWSkw0V0XEKAsGxUa3p4 fchJtNR0p4xaBQtQY95TznDYpDSgNhf198aleHcDJoaIyVBgyz5x3Wwj4dwllz5DPfMc79dGbwV
- 55nK9XppvPy3tQbLMLPBQcPZo3BwaRSpDhsLDas/EGuMbwtnVfM+ydcDwNFBX6qBQf2KFMjV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-13_01,2025-06-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- priorityscore=1501 spamscore=0 bulkscore=0 phishscore=0 suspectscore=0
- adultscore=0 mlxscore=0 malwarescore=0 lowpriorityscore=0 mlxlogscore=946
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506130120
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aExLZaoBCg55rZWJ@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-On 6/13/25 10:02 PM, Justin Forbes wrote:
-> On Tue, May 20, 2025 at 08:36:18PM +1000, Michael Ellerman wrote:
->> Madhavan Srinivasan <maddy@linux.ibm.com> writes:
->>> Since termio interface is now obsolete, include/uapi/asm/ioctls.h
->>> has some constant macros referring to "struct termio", this caused
->>> build failure at userspace.
->>>
->>> In file included from /usr/include/asm/ioctl.h:12,
->>>                  from /usr/include/asm/ioctls.h:5,
->>>                  from tst-ioctls.c:3:
->>> tst-ioctls.c: In function 'get_TCGETA':
->>> tst-ioctls.c:12:10: error: invalid application of 'sizeof' to incomplete type 'struct termio'
->>>    12 |   return TCGETA;
->>>       |          ^~~~~~
->>>
->>> Even though termios.h provides "struct termio", trying to juggle definitions around to
->>> make it compile could introduce regressions. So better to open code it.
->>>
->>> Reported-by: Tulio Magno <tuliom@ascii.art.br>
->>> Closes: https://lore.kernel.org/linuxppc-dev/8734dji5wl.fsf@ascii.art.br/
->>> Suggested-by: Nicholas Piggin <npiggin@gmail.com>
->>> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->>> ---
->>> Changelog v1:
->>> - mpe pointing out mistake in hardcoded values.
->>>   Fixed the same.
->>>
->>>  arch/powerpc/include/uapi/asm/ioctls.h | 8 ++++----
->>>  1 file changed, 4 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/arch/powerpc/include/uapi/asm/ioctls.h b/arch/powerpc/include/uapi/asm/ioctls.h
->>> index 2c145da3b774..b5211e413829 100644
->>> --- a/arch/powerpc/include/uapi/asm/ioctls.h
->>> +++ b/arch/powerpc/include/uapi/asm/ioctls.h
->>> @@ -23,10 +23,10 @@
->>>  #define TCSETSW		_IOW('t', 21, struct termios)
->>>  #define TCSETSF		_IOW('t', 22, struct termios)
->>>  
->>> -#define TCGETA		_IOR('t', 23, struct termio)
->>> -#define TCSETA		_IOW('t', 24, struct termio)
->>> -#define TCSETAW		_IOW('t', 25, struct termio)
->>> -#define TCSETAF		_IOW('t', 28, struct termio)
->>> +#define TCGETA		0x40147417 /* _IOR('t', 23, struct termio) */
->>> +#define TCSETA		0x80147418 /* _IOW('t', 24, struct termio) */
->>> +#define TCSETAW		0x80147419 /* _IOW('t', 25, struct termio) */
->>> +#define TCSETAF		0x8014741c /* _IOW('t', 28, struct termio) */
->>
->> These values look right to me. And the values should never change, so
->> hard-coding them is a reasonable solution.
->>
->> Reviewed-by: Michael Ellerman <mpe@ellerman.id.au>
+On Fri, Jun 13, 2025 at 06:01:41PM +0200, Alexander Gordeev wrote:
+> On Sat, Jun 07, 2025 at 01:04:51PM -0700, Eric Biggers wrote:
+> > From: Eric Biggers <ebiggers@google.com>
+> > 
+> > Move the s390-optimized CRC code from arch/s390/lib/crc* into its new
+> > location in lib/crc/s390/, and wire it up in the new way.  This new way
+> > of organizing the CRC code eliminates the need to artificially split the
+> > code for each CRC variant into separate arch and generic modules,
+> > enabling better inlining and dead code elimination.  For more details,
+> > see "lib/crc: prepare for arch-optimized code in subdirs of lib/crc/".
+> > 
+> > Signed-off-by: Eric Biggers <ebiggers@google.com>
+> ...
 > 
-> Has this been forgotten? We are having to carry it for userspace to
-> continue, and this should really be pushed to Linus.
+> Hi Eric,
 > 
-> Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+> With this series I am getting on s390:
 > 
+> alg: hash: skipping comparison tests for crc32c-s390 because crc32c-generic is unavailable
+> 
+> Thanks!
 
-My bad, I will add this to my fixes-test
-and sent it as part of my next fixes PR
+I think that's actually from "crypto/crc32c: register only one shash_alg"
+(https://lore.kernel.org/linux-crypto/20250601224441.778374-3-ebiggers@kernel.org/),
+not the patch you replied to.
 
-Maddy
+Those self-test warnings are expected.  But I guess they are going to confuse
+people, so we should do something to make them go away.
 
+I think we should do what I've proposed for SHA-512: stop worrying about setting
+the cra_driver_name to something meaningful (which has never really worked
+anyway), instead just use *-lib, and update crypto/testmgr.c accordingly.
 
+I'll send out patches that do that.
 
->>
->> cheers
->>
-
+- Eric
 
