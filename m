@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-9350-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9351-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFFDAD8C27
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 14:30:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12553AD8C2B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Jun 2025 14:31:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bJdzC6Tqjz30MZ;
-	Fri, 13 Jun 2025 22:30:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bJf0R6VL6z30P3;
+	Fri, 13 Jun 2025 22:31:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8::227"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749803209;
-	cv=none; b=Yk7dixMmL0isQr253Xc4asvtZtdJ7S2cNpGSt00Vtv4OFk9d8fSitXnBeYLUv2Hjn2IQUjm/HqmZe2TkTHuOoWb/Dp1h96nQVvV4dyQ3+ttemPcMhPwA49Y7uCLzq3396vYZ/8fMhsR+hf9qtZ53sd+XFmeWwgqLBCyjCkAVIAuZgTBoDG6piWJUXeYtvW2dLf2UBmUbfW7jNh3s51C70DNrsjgDlbVMLKjYQimR7KAWD3ztLiatlTMGhFA+Gb5MzFhyr8EwVXCAsJpbX4IcBMrSa0GwFnsf+doMFZ1Ew96337cQxlodK2ynK/xUiKS0sMhSR4++g5ZOHoaFNZFNNg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.70.183.197
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749805185;
+	cv=none; b=IBCuYx//CoyOaY++dxX/vWmpC3tNoNC/61Mf5x3otmCKGneOok28e8U+Fowk1E73JJQBGQlkXNjND9Z2xmFakb7143lBBw05j0wX1r0bBeA2opAL5Ii3XateJfIyoHHyieCNdMxRJo7CrZJqj3ch1Q2YIPZXdiQqLLn2u5HDQZpRX/WzDH4Gbz4AisUpnokMeAZx5EGVXmVFGjfFDY4pKvB+xoTfFx5KzEwo9P1PsdT15o3xBtTG7XHrt4KBdta6OQ5iy5xIAjZ8c035eFDBLJMvxAITfJPgR3AN/FvOFkk79nX/qxGdTJoDYHRLU1xY2NvZxeQ9YV7ax/oQz2bYQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749803209; c=relaxed/relaxed;
-	bh=oy7cnpuIfUbxnBIHzSxSzs3wF3pN160eEFEtn1XrHHA=;
+	t=1749805185; c=relaxed/relaxed;
+	bh=SUCUXJtX/FQ0n2RuIYjo9mN42TY+/sRw81vNJDMJO0A=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=X9viYEmTQublVnIHdWHNSOfSgGRx4jy2m9YYZxIqyT6LPlWVaLzVjPt+OZCo/uFZ3pN9c5dA4+MmDd7Xaoq7xG8TwQR8WxxlvYEIl6/G14yW8is/IWaoE+nhTh9b49UyaNwA924+MIn7pewGPyDXbMUjg1YtmxscBZLCzQoqMssqmlLYvy5D5oa2XU8ui15KmzqVC4sTEf+iZvkZpon1q1CDn1HIz9mqfivcDRSf6y7KdnmBgDlADzvmlFINhik1g7/I69gNUE3Rm6LbDLhIXkLxpKsQwWm/xvYvWDqW4zx+dZvVfgVrfIIw8KorwnIHFj6OkVAJofbBdpkNefGMXQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=BnJGbMk/; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8::227; helo=relay7-d.mail.gandi.net; envelope-from=alexis.lothore@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+	 References:In-Reply-To; b=mm7jALOUct9UIpMjXsLpQCuMAN/sZWMzQaoUrayfoNm1slcTuOF2Q5L5ZD6kNFgVG4zsdA1/52OxVOdGCdidi7gTNsfV1QJSH+z2crYq1Mz587ScWO6kZvyntrqQ7KoL1+Xc7p9DwrfThaL9Ci9N4LTz7BIEyVr3aXb/sUOywepAW20lfGKy/t9QZnLiS28mFe25CPPaPWarughxLt3g6wGIQi7c3ekZ0Qo94wnnDy7bkywJGcyEXeY+1TN5P0ELIb0pWJVavP1QGUvQULzIXqPAyQNDBAQ1f5Hl7QiPg8Ldh9gy7Y/N6DV0Hs9ANUW8x5Igu32XjhWVq0OVkwN7bw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=odU2qoVO; dkim-atps=neutral; spf=pass (client-ip=217.70.183.197; helo=relay5-d.mail.gandi.net; envelope-from=alexis.lothore@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=BnJGbMk/;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=odU2qoVO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8::227; helo=relay7-d.mail.gandi.net; envelope-from=alexis.lothore@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 2955 seconds by postgrey-1.37 at boromir; Fri, 13 Jun 2025 18:26:48 AEST
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=217.70.183.197; helo=relay5-d.mail.gandi.net; envelope-from=alexis.lothore@bootlin.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 4927 seconds by postgrey-1.37 at boromir; Fri, 13 Jun 2025 18:59:41 AEST
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJXYh5VnGz2xKN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 18:26:47 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B142A41C06;
-	Fri, 13 Jun 2025 08:26:37 +0000 (UTC)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bJYHd622Hz30MZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Jun 2025 18:59:40 +1000 (AEST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3DEFE42E7E;
+	Fri, 13 Jun 2025 08:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1749803203;
+	t=1749805174;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oy7cnpuIfUbxnBIHzSxSzs3wF3pN160eEFEtn1XrHHA=;
-	b=BnJGbMk/e7fYDOccAaKbhkPl6Zkb+CJk54xIzM7oGJ/68LdgKmC814rIU32t6tdn2RLttv
-	x15WZiOubSuud24F243NbAQNPG2k3Dui7U5bdWbzo6Lo7AjeJ+KSplTU5N9Z/cTjXj0Rr9
-	AtxWE42xFJSR7fqyJtvD37GTtg2rovAwTR+VAfdN1C4ZXMlk7rhOwNdTxFQnBalxqPz9tm
-	e/OD8ENjC+yzoBhzLvEBBNcwIj7ZN9YK2gi89xBilq+iVetQOvwYaFKA3l+J6erZ08hSMo
-	zVQuK+p9cI9MOofvRUYJC5RnI8Wf/o3bDNy4BjM6rT5BKMfG/sqEM22GLR1tVQ==
+	bh=SUCUXJtX/FQ0n2RuIYjo9mN42TY+/sRw81vNJDMJO0A=;
+	b=odU2qoVOJqtmWsv4zb4lepGDdwIrGFVx1azJXmapyDqL96WcBHU3wmTN7q7dQPmyKFqCHI
+	rAqafMySpH/EFaSvZ1mPA8XPB64itYMWMRjLI+y9JhypSBAVbn7uBWi7ZcMRo/IBOnvwbQ
+	5esOyHBXJvmN2G+ljk317R7i3D4fcRlCkLEQ6ICe/sb+aRuObTcakshd3/wdZEUJ2LrUgk
+	5TMr9mGozxkHTrm+MRwSTF64qE4g2cgcgr48VeDhBLpdVtT0mS0PBL7DckMWmv65tfLxtu
+	MspFh3LUUD6IifvG5Ga5z6d3PYGcXoafBp+C4hw7u5Y8qm4JyGJ0DAuSLAMGzw==
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,8 +58,8 @@ Precedence: list
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Jun 2025 10:26:37 +0200
-Message-Id: <DAL9GRMH74F4.2IV0HN0NGU65X@bootlin.com>
+Date: Fri, 13 Jun 2025 10:59:28 +0200
+Message-Id: <DALA5WYA04OG.1283TZDOVLBPS@bootlin.com>
 Cc: "Alexei Starovoitov" <ast@kernel.org>, "Daniel Borkmann"
  <daniel@iogearbox.net>, "Andrii Nakryiko" <andrii@kernel.org>, "Martin
  KaFai Lau" <martin.lau@linux.dev>, "Eduard Zingerman" <eddyz87@gmail.com>,
@@ -99,45 +99,51 @@ Subject: Re: [PATCH bpf 2/7] bpf/x86: prevent trampoline attachment when
 From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
 To: "Peter Zijlstra" <peterz@infradead.org>
 X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250613-deny_trampoline_structs_on_stack-v1-0-5be9211768c3@bootlin.com> <20250613-deny_trampoline_structs_on_stack-v1-2-5be9211768c3@bootlin.com> <20250613081150.GJ2273038@noisy.programming.kicks-ass.net>
-In-Reply-To: <20250613081150.GJ2273038@noisy.programming.kicks-ass.net>
+References: <20250613-deny_trampoline_structs_on_stack-v1-0-5be9211768c3@bootlin.com> <20250613-deny_trampoline_structs_on_stack-v1-2-5be9211768c3@bootlin.com> <20250613081150.GJ2273038@noisy.programming.kicks-ass.net> <DAL9GRMH74F4.2IV0HN0NGU65X@bootlin.com> <20250613083232.GL2273038@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250613083232.GL2273038@noisy.programming.kicks-ass.net>
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddujeegiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkfevuffhvffofhgjsehtqhertdertdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepvdfftdejhefhieelvefhgeffvddulefhfeegleegkefgffejgeffjeeigfdtveeinecuffhomhgrihhnpehlihhnuhigsggrshgvrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemkeegvdekmehfleegtgemvgdttdemmehfkeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeekgedvkeemfhelgegtmegvtddtmeemfhekhedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeehkedprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegrshhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhesihhoghgvrghrsghogidrnhgvthdprhgtphhtthhopegrnhgurhhiihesk
- hgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrrhhtihhnrdhlrghusehlihhnuhigrdguvghvpdhrtghpthhtohepvgguugihiiekjeesghhmrghilhdrtghomhdprhgtphhtthhopehsohhngheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephihonhhghhhonhhgrdhsohhngheslhhinhhugidruggvvh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddugddujeehfecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkfevuffhvffofhgjsehtqhertdertdejnecuhfhrohhmpeetlhgvgihishcunfhothhhohhrrocuoegrlhgvgihishdrlhhothhhohhrvgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepleekheeihfefheevhfdtgeeuleekheffffffuedvkeekkeduvdeugeeugfeiueeknecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtvdemkeegvdekmehfleegtgemvgdttdemmehfkeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddvmeekgedvkeemfhelgegtmegvtddtmeemfhekhedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghlvgigihhsrdhlohhthhhorhgvsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeehkedprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopegrshhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegurghnihgvlhesihhoghgvrghrsghogidrnhgvthdprhgtphhtthhopegrnhgurhhiiheskhgvrhhnvghlrdhorhhgpdhrtghpt
+ hhtohepmhgrrhhtihhnrdhlrghusehlihhnuhigrdguvghvpdhrtghpthhtohepvgguugihiiekjeesghhmrghilhdrtghomhdprhgtphhtthhopehsohhngheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohephihonhhghhhonhhgrdhsohhngheslhhinhhugidruggvvh
 X-GND-Sasl: alexis.lothore@bootlin.com
 X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Peter,
+On Fri Jun 13, 2025 at 10:32 AM CEST, Peter Zijlstra wrote:
+> On Fri, Jun 13, 2025 at 10:26:37AM +0200, Alexis Lothor=C3=A9 wrote:
+>> Hi Peter,
+>>=20
+>> On Fri Jun 13, 2025 at 10:11 AM CEST, Peter Zijlstra wrote:
+>> > On Fri, Jun 13, 2025 at 09:37:11AM +0200, Alexis Lothor=C3=A9 (eBPF Fo=
+undation) wrote:
 
-On Fri Jun 13, 2025 at 10:11 AM CEST, Peter Zijlstra wrote:
-> On Fri, Jun 13, 2025 at 09:37:11AM +0200, Alexis Lothor=C3=A9 (eBPF Found=
-ation) wrote:
->> When the target function receives more arguments than available
->> registers, the additional arguments are passed on stack, and so the
->> generated trampoline needs to read those to prepare the bpf context,
->> but also to prepare the target function stack when it is in charge of
->> calling it. This works well for scalar types, but if the value is a
->> struct, we can not know for sure the exact struct location, as it may
->> have been packed or manually aligned to a greater value.
->
-> https://refspecs.linuxbase.org/elf/x86_64-abi-0.99.pdf
->
-> Has fairly clear rules on how arguments are encoded. Broadly speaking
-> for the kernel, if the structure exceeds 2 registers in size, it is
-> passed as a reference, otherwise it is passed as two registers.
+[...]
 
-Maybe my commit wording is not precise enough, but indeed, there's not
-doubt about whether the struct value is passed on the stack or through a
-register/a pair of registers. The doubt is rather about the struct location
-when it is passed _by value_ and _on the stack_: the ABI indeed clearly
-states that "Structures and unions assume the alignment of their most
-strictly aligned component" (p.13), but this rule is "silently broken" when
-a struct has an __attribute__((packed)) or and __attribute__((aligned(X))),
-and AFAICT this case can not be detected at runtime with current BTF info.
+>> Maybe my commit wording is not precise enough, but indeed, there's not
+>> doubt about whether the struct value is passed on the stack or through a
+>> register/a pair of registers. The doubt is rather about the struct locat=
+ion
+>> when it is passed _by value_ and _on the stack_: the ABI indeed clearly
+>> states that "Structures and unions assume the alignment of their most
+>> strictly aligned component" (p.13), but this rule is "silently broken" w=
+hen
+>> a struct has an __attribute__((packed)) or and __attribute__((aligned(X)=
+)),
+>> and AFAICT this case can not be detected at runtime with current BTF inf=
+o.
+>
+> Ah, okay. So it is a failure of BTF. That was indeed not clear.
+
+If I need to respin, I'll rewrite the commit message to include the details
+above.
+
+Alexis
+
+
+
 
 --=20
 Alexis Lothor=C3=A9, Bootlin
