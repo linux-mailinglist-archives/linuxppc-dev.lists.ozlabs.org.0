@@ -1,89 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-9383-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9384-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5D2ADA0A7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Jun 2025 04:39:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D48ADA16C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Jun 2025 10:58:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bKcmT1rwxz30Pn;
-	Sun, 15 Jun 2025 12:39:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bKn9g0fZPz30T0;
+	Sun, 15 Jun 2025 18:58:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749955193;
-	cv=none; b=ktAan0LEx+BxGdMZ5cIu0Pm9XjGycu7ghVj66egyOP4MmAWTswUsS/4iwoj5L6HGOU7wp7qMLyAmQO7Wigri8LecHKUt/7iynj8nnGHObGJZrp0TrSNNZJl80YZ/BjSBNCiOPc0TrRwBEwN9K7NVyujkLbShzYJdWsy9qP/gjuj91o4OWFezDNj9T/DUXQuVhRP+qGowP3yWWkmdsJXd51c+HhjZ7RATmSxRX+B6TRmBusV5c7f//IdyZxdH55Ko0cI/B8v3pzaqVku4/m1wPRm20XgRPyVap5pbCoW7sbWDPuq0kS0W/Yc4rM5Bz/eT+6d8O8UnUmbcGEwn0SiEew==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1749977927;
+	cv=none; b=VOOcxbIEjHtQh7ldhLmZv7MAgzUBBtjnHNP6dtesxBMwQdSfjtNmNrZioH0/v4XwLu/F/XwK8RyS7uncrRi1tbWgnZScv2nxjyI2I6nOh8RdJQ7OtXLHM/my3C+2NZWEy26EigQEEmBTH86jC06IgSOAUfj5bYbjDAJbEBi/4pawlTzilVxTzxPrR4jhIQDaX0O8eOiGOLIQQVIU/morOro4VOxE6zK+qVRuPcOLKZ9NFxyWaLgxdKZ8qtYuiIOpldtwn+hzNefw480cGyoivpACAaLNwVVqRVURWASac9FI7F9myp6jaNOyhlB8ak4cja/W2/3qXAEmAV/3DcHtkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1749955193; c=relaxed/relaxed;
-	bh=hUGjMAUYy4wu8n0OUXNcHylAwMp7JmMIoslQdQbE/Yg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S1g7DL99fYnYOQ5BLhnGzX0ypuFK1Kd2TelOAPEs3nfXgFD4uISyyzHcuq04P1k+vLXpfpSEASb+5u9aIHk+xk+czSwMROG3i9YB8hXjxeXzLu2mY5yQj/6UHgud3OjSXdMoRUleYvJATOzihvV1tSAOrhsOZcwqL/Cd4ymCEnFqUgbIQcVWlB2br0ZzvhgTX/BLerDlVSBnoUAeCPllebxKRMqL8aUHfEfYjhT57fXeu/bWLGVsyeek/JG2qKFr1/sK5u5PCr2agyjO0rvbpv/M5rXWQ5JZ/uBOTvJVFoRIeExw8LRbTGQl9i3zkKHADJuVf5cOgMKeYfmwgj4fqA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KbMrHXAR; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1749977927; c=relaxed/relaxed;
+	bh=ECDOn9BtSFAxICQesUDUcQx9m1TARkJEouGERfGWhpo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ek9gyr9FR+sWTjMuPx29FM4gBzaW1WOe6YnPFvNvE6h1NFWLgY/e2JuHirLwPVVfk8Hr/og2kurxjYEeWmKD2XLPUnWlfMnYAaO6aP7esZEEkXIF56Rd6F09n6N0KT7CkW6vzS38PCOnJQd3Y6VtQdCvyI99wDWH4j8kf6l/o/tuCMjofWwXbIfvquHh8QsK6OJ02gbd1J799ReHLNn0Nd4fAvL2NWTFCqcvOUexNi+CiM5RkKwLDptT+KnI33dYGDAAYk1bxuLcOORzVSVJ/CLiXGuyZQPfHJTi3gfseK/WOeEe50jTlfYaIxRjwlHFYkBn7ngRX+5HxVrg0wiOMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZOli6+mH; dkim-atps=neutral; spf=pass (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KbMrHXAR;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZOli6+mH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bKcmR4JmCz30Pg
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Jun 2025 12:39:51 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55ENQbku001713;
-	Sun, 15 Jun 2025 02:39:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=hUGjMA
-	UYy4wu8n0OUXNcHylAwMp7JmMIoslQdQbE/Yg=; b=KbMrHXARhOooDP9Aiy92gb
-	sodxmXeE6GilY2dML2VN8cUwW0TjeahsdA8C6E9E0AfA3T1qo/xaCJv+0TlETlIw
-	/e1nQxjsG4PtrjobuxhxnBSyO3jondyIXwPTXnDigslOS1KpQ3QtM++GMnZIaRX2
-	B/ScQ5p7YcVxwWrsik3DyUsoCbwhOTR2/hBBxLKwnGLUJpKnI46zI+U4mV/0e/Sh
-	RnDa6iRoszVsIIlcWjlmWiD92esf6GwqZlunOPD3SOssrer2Dyz92gmlqN2GyfAf
-	BXE3q48oI/JP92vjX97Hom/fPAephEQqCqwQs9p9uYnuzfDVG+rfe2WqC7KzaqUg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 478ygmurs3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Jun 2025 02:39:30 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55F2dTfY013396;
-	Sun, 15 Jun 2025 02:39:29 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 478ygmurs0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Jun 2025 02:39:29 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55F1rM7d005481;
-	Sun, 15 Jun 2025 02:39:29 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 479mwkr52q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 15 Jun 2025 02:39:28 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55F2dPxg43975104
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 15 Jun 2025 02:39:25 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 107E42004B;
-	Sun, 15 Jun 2025 02:39:25 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1AF8A20043;
-	Sun, 15 Jun 2025 02:39:18 +0000 (GMT)
-Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.64.23])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 15 Jun 2025 02:39:17 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mahesh@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
-        Narayana Murty N <nnmlinux@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, oohall@gmail.com, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, naveen@kernel.org,
-        gwshan@linux.vnet.ibm.com, benh@kernel.crashing.org, agraf@suse.de,
-        vaibhav@linux.ibm.com
-Subject: Re: [PATCH v1] powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
-Date: Sun, 15 Jun 2025 08:09:15 +0530
-Message-ID: <174995502358.107804.15093806320062799032.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250508062928.146043-1-nnmlinux@linux.ibm.com>
-References: <20250508062928.146043-1-nnmlinux@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bKn9c5TRHz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Jun 2025 18:58:42 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1749977925; x=1781513925;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vd9EWcG9WB3a/aRk95MO6cgl/oduG7IEefBMkFtrx/U=;
+  b=ZOli6+mHNHUdg4q2kVUtZYJhcUCRxBHX2aN1plvBCkmBmAhmnjuFFYGS
+   DJ4hWz/n+zqu+y3p7qgOASATAeVl6zSDs5UfyNrsDuKClpwU6i8AQmMKo
+   hzHQ51bTC8v5nHnL/5Ts3AWbNWlSONik3GMnw27iLLE6X1Vq6qDROq/gS
+   hTmZRbamWWZgQg3RGh6kTBSRUTrN9Iqx/LdgUPyDj3ucbOAgeUgVJusNA
+   gZkOT6cxxp9Bs92cXtr3WcO+TRDUJ4kzHLfUJ0N9BX9+RKlQxoXX8AeWX
+   29xiwaqjnepyp3/FgG7dxYk4833VlwwRdlbswpOdHAX0Ka0Q5NVnvLYBA
+   g==;
+X-CSE-ConnectionGUID: ZdhOExtJRRG5lWdv+OV8/w==
+X-CSE-MsgGUID: 7bHJYycASb2HWap8tllyaw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11464"; a="62748810"
+X-IronPort-AV: E=Sophos;i="6.16,238,1744095600"; 
+   d="scan'208";a="62748810"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2025 01:58:39 -0700
+X-CSE-ConnectionGUID: xFOJF83dRSGTCkUmbw1xtw==
+X-CSE-MsgGUID: m6FSb+f4TFWUuajt+B8hTQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,238,1744095600"; 
+   d="scan'208";a="148094278"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 15 Jun 2025 01:58:36 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uQjCE-000EDo-0E;
+	Sun, 15 Jun 2025 08:58:34 +0000
+Date: Sun, 15 Jun 2025 16:57:56 +0800
+From: kernel test robot <lkp@intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	Herve Codina <herve.codina@bootlin.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH] ALSA: pcm: Convert snd_pcm_ioctl_sync_ptr_{compat/x32}
+ to user_access_begin/user_access_end()
+Message-ID: <202506151632.jvLtNHPb-lkp@intel.com>
+References: <8df11af98033e4cb4d9b0f16d6e9d5b69110b036.1749724057.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,49 +85,153 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE1MDAxMiBTYWx0ZWRfX9vAKVCGVL9TX hAc/KyA1ai4sGX0cQw6WaQlVyrAuFZnaeCACtHbLgK6swZbYZ9hqGep7xnrXA/1R62MpCokKvD3 sTDSQLIz2hGWcU2g894HBsz0UaNkdBeFyR7PamuoKkd2S4lmKwJQE28pr64DCb2T6+Iv/kkDnJ+
- QeVsq+EDKx5aQsODNc5i02VbpDhjIYo48f0ilfLCJ9y9n+ObRzWKFIdnp9A0OSTt3TqfJ1aQsEy p4GsZ6YLWsSvZfQKKABzaMYeG0njUmGsp8Lg6bZvvP7rNYapUUpArecHeNhWmXVjJV2l/GRiRcI EyEDjn+rowclylK0MLUxx4EfPTXbwJi8gbf2JXTA8KzAQTK91LmjxBvaVxSNQcw2QdkljxsAB+o
- b4DOj/XP5bDUcLADQK+IeUyi1jA345f4IYvzAfRVB39zhbJPJZp9TttZLjvtS8Z+dhikgiF6
-X-Authority-Analysis: v=2.4 cv=fYSty1QF c=1 sm=1 tr=0 ts=684e3262 cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=giJ742wZMMcE2DLqPy8A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 2uUB5_iAxcxn8AqaFhb8WcrvLTioQNus
-X-Proofpoint-GUID: Q51RZxXKa5-8m08omSAXjP2Tav_LF4Tr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-15_01,2025-06-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- spamscore=0 mlxlogscore=999 lowpriorityscore=0 adultscore=0 mlxscore=0
- impostorscore=0 bulkscore=0 phishscore=0 clxscore=1011 priorityscore=1501
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506150012
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8df11af98033e4cb4d9b0f16d6e9d5b69110b036.1749724057.git.christophe.leroy@csgroup.eu>
+X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 08 May 2025 02:29:28 -0400, Narayana Murty N wrote:
-> VFIO EEH recovery for PCI passthrough devices fails on PowerNV and pseries
-> platforms due to missing host-side PE bridge reconfiguration. In the
-> current implementation, eeh_pe_configure() only performs RTAS or OPAL-based
-> bridge reconfiguration for native host devices, but skips it entirely for
-> PEs managed through VFIO in guest passthrough scenarios.
-> 
-> This leads to incomplete EEH recovery when a PCI error affects a
-> passthrough device assigned to a QEMU/KVM guest. Although VFIO triggers the
-> EEH recovery flow through VFIO_EEH_PE_ENABLE ioctl, the platform-specific
-> bridge reconfiguration step is silently bypassed. As a result, the PE's
-> config space is not fully restored, causing subsequent config space access
-> failures or EEH freeze-on-access errors inside the guest.
-> 
-> [...]
+Hi Christophe,
 
-Applied to powerpc/fixes.
+kernel test robot noticed the following build errors:
 
-[1/1] powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
-      https://git.kernel.org/powerpc/c/33bc69cf6655cf60829a803a45275f11a74899e5
+[auto build test ERROR on tiwai-sound/for-next]
+[also build test ERROR on tiwai-sound/for-linus linus/master v6.16-rc1 next-20250613]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thanks
+url:    https://github.com/intel-lab-lkp/linux/commits/Christophe-Leroy/ALSA-pcm-Convert-snd_pcm_ioctl_sync_ptr_-compat-x32-to-user_access_begin-user_access_end/20250612-185240
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound.git for-next
+patch link:    https://lore.kernel.org/r/8df11af98033e4cb4d9b0f16d6e9d5b69110b036.1749724057.git.christophe.leroy%40csgroup.eu
+patch subject: [PATCH] ALSA: pcm: Convert snd_pcm_ioctl_sync_ptr_{compat/x32} to user_access_begin/user_access_end()
+config: x86_64-randconfig-008-20250615 (https://download.01.org/0day-ci/archive/20250615/202506151632.jvLtNHPb-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250615/202506151632.jvLtNHPb-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202506151632.jvLtNHPb-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from sound/core/pcm_native.c:4033:
+   sound/core/pcm_compat.c: In function 'snd_pcm_ioctl_sync_ptr_x32':
+>> sound/core/pcm_compat.c:473:70: error: macro "unsafe_put_user" requires 3 arguments, but only 2 given
+     473 |         unsafe_put_user(scontrol.avail_min, &src->c.control.avail_min), Efault_wr);
+         |                                                                      ^
+   In file included from include/linux/uaccess.h:12,
+                    from include/linux/sched/task.h:13,
+                    from include/linux/sched/signal.h:9,
+                    from include/linux/rcuwait.h:6,
+                    from include/linux/percpu-rwsem.h:7,
+                    from include/linux/fs.h:34,
+                    from include/linux/compat.h:17,
+                    from sound/core/pcm_native.c:7:
+   arch/x86/include/asm/uaccess.h:532: note: macro "unsafe_put_user" defined here
+     532 | #define unsafe_put_user(x, ptr, label)  \
+         | 
+>> sound/core/pcm_compat.c:473:9: error: 'unsafe_put_user' undeclared (first use in this function)
+     473 |         unsafe_put_user(scontrol.avail_min, &src->c.control.avail_min), Efault_wr);
+         |         ^~~~~~~~~~~~~~~
+   sound/core/pcm_compat.c:473:9: note: each undeclared identifier is reported only once for each function it appears in
+>> sound/core/pcm_compat.c:473:73: error: 'Efault_wr' undeclared (first use in this function)
+     473 |         unsafe_put_user(scontrol.avail_min, &src->c.control.avail_min), Efault_wr);
+         |                                                                         ^~~~~~~~~
+   sound/core/pcm_compat.c:473:71: warning: left-hand operand of comma expression has no effect [-Wunused-value]
+     473 |         unsafe_put_user(scontrol.avail_min, &src->c.control.avail_min), Efault_wr);
+         |                                                                       ^
+>> sound/core/pcm_compat.c:473:82: error: expected ';' before ')' token
+     473 |         unsafe_put_user(scontrol.avail_min, &src->c.control.avail_min), Efault_wr);
+         |                                                                                  ^
+         |                                                                                  ;
+>> sound/core/pcm_compat.c:473:82: error: expected statement before ')' token
+
+
+vim +/unsafe_put_user +473 sound/core/pcm_compat.c
+
+   405	
+   406	static int snd_pcm_ioctl_sync_ptr_x32(struct snd_pcm_substream *substream,
+   407					      struct snd_pcm_sync_ptr_x32 __user *src)
+   408	{
+   409		struct snd_pcm_runtime *runtime = substream->runtime;
+   410		volatile struct snd_pcm_mmap_status *status;
+   411		volatile struct snd_pcm_mmap_control *control;
+   412		u32 sflags;
+   413		struct snd_pcm_mmap_control scontrol;
+   414		struct snd_pcm_mmap_status sstatus;
+   415		snd_pcm_uframes_t boundary;
+   416		int err;
+   417	
+   418		if (snd_BUG_ON(!runtime))
+   419			return -EINVAL;
+   420	
+   421		if (!user_read_access_begin(src, sizeof(*src)))
+   422			return -EFAULT;
+   423		err = -EFAULT;
+   424		unsafe_get_user(sflags, &src->flags, Efault_rd);
+   425		unsafe_get_user(scontrol.appl_ptr, &src->c.control.appl_ptr, Efault_rd);
+   426		unsafe_get_user(scontrol.avail_min, &src->c.control.avail_min, Efault_rd);
+   427		err = 0;
+   428	Efault_rd:
+   429		user_read_access_end();
+   430		if (err)
+   431			return err;
+   432	
+   433		if (sflags & SNDRV_PCM_SYNC_PTR_HWSYNC) {
+   434			err = snd_pcm_hwsync(substream);
+   435			if (err < 0)
+   436				return err;
+   437		}
+   438		status = runtime->status;
+   439		control = runtime->control;
+   440		boundary = recalculate_boundary(runtime);
+   441		if (!boundary)
+   442			boundary = 0x7fffffff;
+   443		scoped_guard(pcm_stream_lock_irq, substream) {
+   444			/* FIXME: we should consider the boundary for the sync from app */
+   445			if (!(sflags & SNDRV_PCM_SYNC_PTR_APPL))
+   446				control->appl_ptr = scontrol.appl_ptr;
+   447			else
+   448				scontrol.appl_ptr = control->appl_ptr % boundary;
+   449			if (!(sflags & SNDRV_PCM_SYNC_PTR_AVAIL_MIN))
+   450				control->avail_min = scontrol.avail_min;
+   451			else
+   452				scontrol.avail_min = control->avail_min;
+   453			sstatus.state = status->state;
+   454			sstatus.hw_ptr = status->hw_ptr % boundary;
+   455			sstatus.tstamp = status->tstamp;
+   456			sstatus.suspended_state = status->suspended_state;
+   457			sstatus.audio_tstamp = status->audio_tstamp;
+   458		}
+   459		if (!(sflags & SNDRV_PCM_SYNC_PTR_APPL))
+   460			snd_pcm_dma_buffer_sync(substream, SNDRV_DMA_SYNC_DEVICE);
+   461	
+   462		if (!user_write_access_begin(src, sizeof(*src)))
+   463			return -EFAULT;
+   464		err = -EFAULT;
+   465		unsafe_put_user(sstatus.state, &src->s.status.state, Efault_wr);
+   466		unsafe_put_user(sstatus.hw_ptr, &src->s.status.hw_ptr, Efault_wr);
+   467		unsafe_put_user(sstatus.tstamp.tv_sec, &src->s.status.tstamp_sec, Efault_wr);
+   468		unsafe_put_user(sstatus.tstamp.tv_nsec, &src->s.status.tstamp_nsec, Efault_wr);
+   469		unsafe_put_user(sstatus.suspended_state, &src->s.status.suspended_state, Efault_wr);
+   470		unsafe_put_user(sstatus.audio_tstamp.tv_sec, &src->s.status.audio_tstamp_sec, Efault_wr);
+   471		unsafe_put_user(sstatus.audio_tstamp.tv_nsec, &src->s.status.audio_tstamp_nsec, Efault_wr);
+   472		unsafe_put_user(scontrol.appl_ptr, &src->c.control.appl_ptr, Efault_wr);
+ > 473		unsafe_put_user(scontrol.avail_min, &src->c.control.avail_min), Efault_wr);
+   474		err = 0;
+   475	Efault_wr:
+   476		user_write_access_end();
+   477	
+   478		return err;
+   479	}
+   480	#endif /* CONFIG_X86_X32_ABI */
+   481	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
