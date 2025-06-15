@@ -1,70 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-9386-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9387-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1339CADA276
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 15 Jun 2025 17:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F35ABADA442
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jun 2025 00:03:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bKyB612kmz2ySg;
-	Mon, 16 Jun 2025 01:44:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bL6bY6Xkrz2xHv;
+	Mon, 16 Jun 2025 08:03:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::433"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750002286;
-	cv=none; b=lvoEecgQCgEqfJaWoX6/qUIBIpwxmvFlmnxaU+WBDInF+XqD3B7hRCf4mosRUuL9hI8lRTuyd+tlT+UOUcJiR21sGxwufiEyQFCkcU7w1GuXT50ANKcisOND7DAnMQjxr86R/vFLyeJTpumBlbGSznvCxdyAHEo7Qna3DyGHi3GlWSWY4oaBIRDduUNZGs8p1IN9MnO9caHHYxvfSgaOOH6mqESRxKcGT1V4ya0YL8C7TW4zARwxkhsJFlqVW3rqnXW6ith2iBdzCTt0onf84KI1bYJc7bCSCmJnAoy32A7AQUbearV5Ar1FqrQjSRbaBcjO8niUfR2/ozZv1csGMQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.19
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750025033;
+	cv=none; b=mSTwXbJIB78YTEdDi1LCdXx5q5734xxcUpVpidwmcTYKT+WSEAw82uSGnl5h9Zl3xu+dQvfkY83o6EnY8jjjdkk9ff/2JDDcFqYMQgonLZ0/PsGp60NUHPbLNlw2huGlaQpDPbxR9iFGuvX9YzZeoIVkF0SEyVp5onD2++GX9rXPYev7AcYOxt4xHd8X1ZLolYzXN62Nnsc4uZ1OQIIHMaMDliHZrud95dMCx7KwyD2LhyxvAppUng37fR0jHrsnGFYhzWobX1EgwRWy0M23Mxs7Z90sFfPBvwCzF61UeHhyp3C/jnXODqeIOrIU6aqJrUIyedisFV6PWEDzLUz5Ag==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750002286; c=relaxed/relaxed;
-	bh=Q24V+OwPQTKaIgjR+NjdUiOeSoG4NNmYTDA2NhEIjAI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B6ISjfx8koYFfc43ylhP/Ko7qdU/OKJF/BuNe1fWstDK4t/AU1UEYAl7t3vRrY1fUBTCu2v0UvGzUhWjWQtXlcVICVfDzBMtlsyWF5qaoA1kKXifFwTMMloyWez54Hws5oe481vxa0t6Krs5Ji6S7VmjtpHdFtrIcovpPs3X50UY8vB4SbqxG8+C3Rw1NnvSa5qP0AM5QkxsjEjA2iZn7Rg6yVdVcau1H2wTg71jw44ihy3BZBIY29DAQYjlfLgI9XpG+Tvy3QmQH+EF/EiuHAKHdLlB61XL5ZG9nn+pMGcUZN+DU1w2pdGJJqN77dhohbhNO+09HcXin4On+NzDNw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Z/Jq+7ig; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::433; helo=mail-wr1-x433.google.com; envelope-from=alexei.starovoitov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1750025033; c=relaxed/relaxed;
+	bh=8VtQf34tF81kJrxGrJxRX2euuAlUg2/rIUi3Q69h/I0=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=Ov2yl3ph3gPn3JZrFVvSNB/aFHzahEESS9Alw/bPqx16L5rpiFYW667Hi91dmQHX0AH21vF+cZcUEC9twRfu0I2MatDmGVsORIPHJ748wAOpD5Gq66oiiFkuf2OHPePVnqr9yo5ruLRCQ8nd4I6XyT9PoVedLhWX8NQGmcRUbqpYESbR2/naBvCTEdZcOsSp44nGnbGXZzNjf7GNaRWG/1rLHfZo0XdEpbT1LiwwFsGV9dlukMea7N/07VE71MBL+YmAkDyvHiLcrFLPB6l39caKeAvBzhUWMvhNfyG/KON5lroGGHnChAQ3Or/19HEwUK+LpQkRI5R3ppkLlne2kA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aw7xFgbq; dkim-atps=neutral; spf=pass (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Z/Jq+7ig;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aw7xFgbq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::433; helo=mail-wr1-x433.google.com; envelope-from=alexei.starovoitov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bKyB173Pyz2xHZ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jun 2025 01:44:40 +1000 (AEST)
-Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-3a53359dea5so2437511f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Jun 2025 08:44:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750002275; x=1750607075; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q24V+OwPQTKaIgjR+NjdUiOeSoG4NNmYTDA2NhEIjAI=;
-        b=Z/Jq+7igDXQ6uCI7mS1wqu1VAfWa3NqPVhBjl55xua3oKidUBdqIBf+lerUR11S7tB
-         xBj4ruU9V8Y/E0LIezT0BUQBa0/w+Ptff2ob9A/0pbgA2EpnmkUBI4Z++TdWi9+UWpn/
-         oW6pANRXlJ6tOojTaMIfcGk5J2sgKac0xeuzaGNpFgzl08c3E2ZIZ56NuNGY6JGGsvJ2
-         rx33FA5vxpwYKsP/AzbegJzC5G5EkDGRIA+FJRVemyJ4dZC6iiAEeVIb7WZ4HrEFrgfD
-         XhTVFBPF5FF83vJvv7z7ajNXSdOEvnLTmZQP4nqU4LjKnshkIPXuYV5n2zjCZExq+UCP
-         kTxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750002275; x=1750607075;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q24V+OwPQTKaIgjR+NjdUiOeSoG4NNmYTDA2NhEIjAI=;
-        b=R4JoF5bbUazmdkkTCp5zE/Hn/wWa4GCYffNUNT6ai0pm6d6YdwJmIrEgBi/ofT0TRx
-         kZOKwMY2LbK5aBjNO/ztTDVRTUP9tdMVvVVk5Fw0JknbQ+hzNmLawp8KRYOCxreUcUqD
-         v03phTxIGJp9QakqbO0wQVeWotjVTHeyYYqbQ6wsPWeu0i1IPFgAM3+X+OV1gucZcubu
-         dN2b+/A4KbydMcr9C/hf1g5QI/sQj8EZ40sI2q0gL+K6sJNOT+ow5q73eCcRv5Icu/E8
-         F//9bRVJbx+YmicxF0chnCeaxNaysQXiO5Ceto8lOAxTFwt+9i7X+IUxzqcJ0HwIZMD9
-         g4Lg==
-X-Forwarded-Encrypted: i=1; AJvYcCXWJ8lL4cTNtdVVlxBOdGyqaUHd5mJv+CmR/NLFB22rD86Xx9zLvZoN4MoPBQT5pbzV7EOwjMRNVdpDEqg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzU2JzBOlHYlGhU54zhU77OXNmWW9yX8lTcY39JpqxCIw/P4jMq
-	ruHDjShFOYLEFXKNRxxEa66RKdFldQRApIuEdrLFnNhv5TvA23XyRps20toxMfOQQ9RwMKCwJK/
-	2iIdTIemu6Z6dWBaMDi9qw+g7hbsrfJw=
-X-Gm-Gg: ASbGncvcikA1jP3NeumLqbUT63+z+gHOCmkBLyaD+dVcXbvhjH/SQoBWcn5sPBwd18k
-	ZS/Sv4sR8VMjHoxYO5DGc3r2j2j2KBz64M836wWN6UWo/Eg9HXt8xdO3A5sTFPABx2ILIuGI9Gq
-	4DtQAqAmMX401Vh6RckehCL5n8Na7MuG2PoIXCJRoTdUKLkEJZlmcGsA==
-X-Google-Smtp-Source: AGHT+IEVMqrf36wFDwIu+Qav+T1hxhMtiOfYIpsqMlJITLohO7pPVX7dQmL5OFhL7NsYv2qBiULo8wqoJRikRf0wek4=
-X-Received: by 2002:a05:6000:718:b0:3a5:3b63:58f0 with SMTP id
- ffacd0b85a97d-3a57237178dmr4884718f8f.18.1750002274959; Sun, 15 Jun 2025
- 08:44:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bL6bW2yfyz2xHp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jun 2025 08:03:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1750025031; x=1781561031;
+  h=date:from:to:cc:subject:message-id;
+  bh=D9XcOINzM0uGcd5Azz0PJaKdELWuWmaSDlW2LRQCPUE=;
+  b=aw7xFgbqkvKtvqjBjTblpvYMbSeIuzrk4QQGNUpMj5PX6me6St5VOWEu
+   IVnq/Y42IKWj54LaYuDUFlkR3VJ1/IlYtUQFJgyKb1S1915E4omWH/zsK
+   X0Dek9sCw1FjOsJIFH7RRh3bJRhzgRyOoW2+bjThP3iSAnwW9vJ7F8mfO
+   56UgEhf+A6TADlfeWZq6jdMcRdd+1WsKsP0uPQQ3AWizH8M6kI/SDnile
+   lyQcFJh3N7TSZScCp25y6b1uPIGZUH4sr3mfYxggI2gCK8Fya5ErZWXLM
+   rSrCi4kbcCZjRoOC0fQ413inq02U6hYBtA0mrgBDOEUQzdleRJ0jtBtS2
+   Q==;
+X-CSE-ConnectionGUID: 7YCbcC2TTmCJNs2dl66HOw==
+X-CSE-MsgGUID: JkfDvgPRQTGaYNV/l55AsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="51275211"
+X-IronPort-AV: E=Sophos;i="6.16,239,1744095600"; 
+   d="scan'208";a="51275211"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2025 15:03:46 -0700
+X-CSE-ConnectionGUID: beGXEE/iS+W//PXC2I32Sg==
+X-CSE-MsgGUID: vo0EPivLTy27ZtP2lFnRTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,239,1744095600"; 
+   d="scan'208";a="171509442"
+Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 15 Jun 2025 15:03:47 -0700
+Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uQvS3-000EZI-2X;
+	Sun, 15 Jun 2025 22:03:43 +0000
+Date: Mon, 16 Jun 2025 06:03:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:merge] BUILD SUCCESS
+ 33e1e70809f236800d22617095ae221e28d7b382
+Message-ID: <202506160656.cFIPQrdx-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,158 +80,168 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20250613-deny_trampoline_structs_on_stack-v1-0-5be9211768c3@bootlin.com>
- <20250613-deny_trampoline_structs_on_stack-v1-2-5be9211768c3@bootlin.com>
- <20250613081150.GJ2273038@noisy.programming.kicks-ass.net>
- <DAL9GRMH74F4.2IV0HN0NGU65X@bootlin.com> <20250613083232.GL2273038@noisy.programming.kicks-ass.net>
- <DALA5WYA04OG.1283TZDOVLBPS@bootlin.com> <CAADnVQ+sj9XhscN9PdmTzjVa7Eif21noAUH3y1K6x5bWcL-5pg@mail.gmail.com>
- <DAN5THWRO6KS.XXZ00IOTQZH9@bootlin.com>
-In-Reply-To: <DAN5THWRO6KS.XXZ00IOTQZH9@bootlin.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Sun, 15 Jun 2025 08:44:23 -0700
-X-Gm-Features: AX0GCFum0GptEjJNe1zyPyz2oALA4PaNl_E8ueRtmTM4_c9kw_4GcQiqb2A1p90
-Message-ID: <CAADnVQJPQNC5VaybR_GZry5YZhNcJmWSSouuTSsU1XKhDfXYwQ@mail.gmail.com>
-Subject: Re: [PATCH bpf 2/7] bpf/x86: prevent trampoline attachment when args
- location on stack is uncertain
-To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, X86 ML <x86@kernel.org>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Menglong Dong <imagedong@tencent.com>, 
-	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Pu Lehui <pulehui@huawei.com>, Puranjay Mohan <puranjay@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Ilya Leoshkevich <iii@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	ebpf@linuxfoundation.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	Bastien Curutchet <bastien.curutchet@bootlin.com>, 
-	Network Development <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
-	linux-riscv <linux-riscv@lists.infradead.org>, linux-s390 <linux-s390@vger.kernel.org>, 
-	ppc-dev <linuxppc-dev@lists.ozlabs.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, dwarves <dwarves@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, Jun 15, 2025 at 7:00=E2=80=AFAM Alexis Lothor=C3=A9
-<alexis.lothore@bootlin.com> wrote:
->
-> On Sat Jun 14, 2025 at 12:35 AM CEST, Alexei Starovoitov wrote:
-> > On Fri, Jun 13, 2025 at 1:59=E2=80=AFAM Alexis Lothor=C3=A9
-> > <alexis.lothore@bootlin.com> wrote:
-> >>
-> >> On Fri Jun 13, 2025 at 10:32 AM CEST, Peter Zijlstra wrote:
-> >> > On Fri, Jun 13, 2025 at 10:26:37AM +0200, Alexis Lothor=C3=A9 wrote:
->
-> [...]
->
-> >> If I need to respin, I'll rewrite the commit message to include the de=
-tails
-> >> above.
-> >
-> > No need to respin. The cover letter is quite detailed already.
-> >
-> > But looking at the patch and this thread I think we need to agree
-> > on the long term approach to BTF, since people assume that
-> > it's a more compact dwarf and any missing information
-> > should be added to it.
-> > Like in this case special alignment case and packed attributes
-> > are not expressed in BTF and I believe they should not be.
-> > BTF is not a debug format and not a substitute for dwarf.
-> > There is no goal to express everything possible in C.
-> > It's minimal, because BTF is _practical_ description of
-> > types and data present in the kernel.
-> > I don't think the special case of packing and alignment exists
-> > in the kernel today, so the current format is sufficient.
-> > It doesn't miss anything.
-> > I think we made arm64 JIT unnecessary restrictive and now considering
-> > to make all other JITs restrictive too for hypothetical case
-> > of some future kernel functions.
-> > I feel we're going in the wrong direction.
-> > Instead we should teach pahole to sanitize BTF where functions
-> > are using this fancy alignment and packed structs.
-> > pahole can see it in dwarf and can skip emitting BTF for such
-> > functions. Then the kernel JITs on all architectures won't even
-> > see such cases.
-> >
-> > The issue was initially discovered by a selftest:
-> > https://lore.kernel.org/bpf/20250411-many_args_arm64-v1-3-0a32fe72339e@=
-bootlin.com/
-> > that attempted to support these two types:
-> > +struct bpf_testmod_struct_arg_4 {
-> > + __u64 a;
-> > + __u64 b;
-> > +};
-> > +
-> > +struct bpf_testmod_struct_arg_5 {
-> > + __int128 a;
-> > +};
-> >
-> > The former is present in the kernel. It's more or less sockptr_t,
-> > and people want to access it for observability in tracing.
-> > The latter doesn't exist in the kernel and we cannot represent
-> > it properly in BTF without losing alignment.
-> >
-> > So I think we should go back to that series:
-> > https://lore.kernel.org/bpf/20250411-many_args_arm64-v1-0-0a32fe72339e@=
-bootlin.com/
-> >
-> > remove __int128 selftest, but also teach pahole
-> > to recognize types that cannot be represented in BTF and
-> > don't emit them either into vmlinux or in kernel module
-> > (like in this case it was bpf_testmod.ko)
-> > I think that would be a better path forward aligned
-> > with the long term goal of BTF.
-> >
-> > And before people ask... pahole is a trusted component of the build
-> > system. We trust it just as we trust gcc, clang, linker, objtool.
->
-> So if I understand correctly your point, it would be better to just move =
-out
-> those constraints from the JIT compilers, and just not represent those sp=
-ecial
-> cases in BTF, so that it becomes impossible to hook programs on those fun=
-ctions,
-> since they are not event present in BTF info.
-> And so:
-> - cancel this series
-> - revert the small ARM64 check about struct passed on stack
-> - update pahole to make sure that it does not encode info about this spec=
-ific
->   kind of functions.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 33e1e70809f236800d22617095ae221e28d7b382  Automatic merge of 'fixes' into merge (2025-06-15 08:01)
 
-yes
+elapsed time: 1097m
 
-> I still expect some challenges with this. AFAIU pahole uses DWARF to gene=
-rate
-> BTF, and discussions in [1] highlighted the fact that the attributes alte=
-ring
-> the structs alignment are not reliably encoded in DWARF. Maybe pahole can
-> "guess" if a struct has been altered, by doing something like
-> btf_is_struct_packed in libbpf ? As Andrii mentioned in [2], it may not b=
-e
-> able to cover all cases, but that could  be a start. If that's indeed the
-> desired direction, I can take a further look at this.
+configs tested: 147
+configs skipped: 5
 
-so be it. If syzbot was taught to fuzz dwarf I'm sure it would
-have exposed hundreds of bugs in the format itself and compilers,
-but since such convoluted constructs are not present in the kernel
-source code it's not a concern.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                              alldefconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20250615    gcc-12.4.0
+arc                   randconfig-002-20250615    gcc-10.5.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-15.1.0
+arm                         bcm2835_defconfig    clang-21
+arm                                 defconfig    clang-21
+arm                          gemini_defconfig    clang-20
+arm                      integrator_defconfig    clang-21
+arm                             mxs_defconfig    clang-21
+arm                            qcom_defconfig    clang-21
+arm                   randconfig-001-20250615    clang-16
+arm                   randconfig-002-20250615    clang-21
+arm                   randconfig-003-20250615    gcc-8.5.0
+arm                   randconfig-004-20250615    clang-21
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                               defconfig    gcc-15.1.0
+arm64                 randconfig-001-20250615    clang-16
+arm64                 randconfig-002-20250615    gcc-9.5.0
+arm64                 randconfig-003-20250615    gcc-12.3.0
+arm64                 randconfig-004-20250615    clang-21
+csky                              allnoconfig    gcc-15.1.0
+csky                                defconfig    gcc-15.1.0
+csky                  randconfig-001-20250615    gcc-14.3.0
+csky                  randconfig-002-20250615    gcc-10.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon                             defconfig    clang-21
+hexagon               randconfig-001-20250615    clang-21
+hexagon               randconfig-002-20250615    clang-16
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250615    gcc-12
+i386        buildonly-randconfig-002-20250615    gcc-12
+i386        buildonly-randconfig-003-20250615    gcc-12
+i386        buildonly-randconfig-004-20250615    clang-20
+i386        buildonly-randconfig-005-20250615    gcc-12
+i386        buildonly-randconfig-006-20250615    gcc-12
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    gcc-15.1.0
+loongarch                         allnoconfig    gcc-15.1.0
+loongarch                           defconfig    gcc-15.1.0
+loongarch             randconfig-001-20250615    gcc-15.1.0
+loongarch             randconfig-002-20250615    gcc-15.1.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+m68k                        mvme16x_defconfig    gcc-15.1.0
+m68k                           virt_defconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                       bmips_be_defconfig    gcc-15.1.0
+mips                   sb1250_swarm_defconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                               defconfig    gcc-14.2.0
+nios2                 randconfig-001-20250615    gcc-8.5.0
+nios2                 randconfig-002-20250615    gcc-12.4.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                generic-32bit_defconfig    gcc-15.1.0
+parisc                randconfig-001-20250615    gcc-14.3.0
+parisc                randconfig-002-20250615    gcc-8.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-21
+powerpc                     mpc5200_defconfig    clang-21
+powerpc                      ppc64e_defconfig    gcc-15.1.0
+powerpc                         ps3_defconfig    gcc-15.1.0
+powerpc               randconfig-001-20250615    gcc-8.5.0
+powerpc               randconfig-002-20250615    clang-21
+powerpc               randconfig-003-20250615    gcc-10.5.0
+powerpc64             randconfig-001-20250615    gcc-15.1.0
+powerpc64             randconfig-002-20250615    gcc-15.1.0
+powerpc64             randconfig-003-20250615    gcc-8.5.0
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-21
+riscv             nommu_k210_sdcard_defconfig    gcc-15.1.0
+riscv                 randconfig-001-20250615    clang-21
+riscv                 randconfig-002-20250615    gcc-14.3.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-15.1.0
+s390                                defconfig    clang-21
+s390                  randconfig-001-20250615    gcc-12.4.0
+s390                  randconfig-002-20250615    clang-21
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                               j2_defconfig    gcc-15.1.0
+sh                    randconfig-001-20250615    gcc-15.1.0
+sh                    randconfig-002-20250615    gcc-9.3.0
+sh                           se7751_defconfig    gcc-15.1.0
+sh                   secureedge5410_defconfig    gcc-15.1.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                 randconfig-001-20250615    gcc-8.5.0
+sparc                 randconfig-002-20250615    gcc-8.5.0
+sparc                       sparc64_defconfig    gcc-15.1.0
+sparc64                             defconfig    gcc-15.1.0
+sparc64               randconfig-001-20250615    gcc-15.1.0
+sparc64               randconfig-002-20250615    gcc-14.3.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-21
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250615    clang-21
+um                    randconfig-002-20250615    gcc-12
+um                           x86_64_defconfig    clang-21
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250615    clang-20
+x86_64      buildonly-randconfig-002-20250615    clang-20
+x86_64      buildonly-randconfig-003-20250615    gcc-12
+x86_64      buildonly-randconfig-004-20250615    clang-20
+x86_64      buildonly-randconfig-005-20250615    clang-20
+x86_64      buildonly-randconfig-006-20250615    clang-20
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-18
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                  audio_kc705_defconfig    gcc-15.1.0
+xtensa                randconfig-001-20250615    gcc-9.3.0
+xtensa                randconfig-002-20250615    gcc-10.5.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
