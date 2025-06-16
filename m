@@ -1,100 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-9407-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9410-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD39ADAF8C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jun 2025 14:01:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BA8ADB653
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jun 2025 18:11:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bLT852nppz3bcj;
-	Mon, 16 Jun 2025 21:59:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bLZkj3bz0z30LS;
+	Tue, 17 Jun 2025 02:11:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2414::629" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750075189;
-	cv=pass; b=gjMRVymW8S+MhNk4e7MSFO7ieObTD45F3AvDYr9k5V5d13+bjk81FlNpCLbLDCRLoqRb1gjYRKolkggoz36fF+2ihMpzyJFAXluuDROicvYNTtGqc22S19PR5GVAVfUiB5YhOSMEluqYRnnDLgNPBi6NKvQ/U0ZDg9TUkP2iKRePw3H4KwFmaPMHJCIhXhWit89WO17/HnDvv5RZia0gHY9gQQsbEz5naQWVLBi2t0sgffJSalUoBHwFEYiNJvx5kJfGQ6uSeSP34Si16YN1hoo4hDtqp/Dq1ap3A66B3vrFw4A5SKo3rD9zjn60Q2WFbYxRHo2kQDxKrC7Xtkf/Yw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750075189; c=relaxed/relaxed;
-	bh=TCXqsi9Y77b9azBq7EEv3MOFkKZx+H9ffdl+x9Eg39c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UOF3lcNE7ep3V/eetom3KKxz6uDtutfd4rzYIiZQmuFwg0dyo2yU4DLsEhM4dcVoC/+kgleQM9q1ALAjDZFZu+bUxVy0ytqytSlIeaNa622aFuDR/U45JOQ/Mt89FN7JNF4I5C4v8SW188WUjpl/Dx3LTk+OtmiVkId53k2PMmvIPfqL+U8NUppauWDXmD6s6efsi2qBo8JmnnRuHOwqiLGQC5z9eH5PaAGqZ94IKwjAx5N//+YfdTbSmY/Q7bCzHpR8PaCEgcQ0lTwyartoIDfS7gi1C21XhueHATTaWwjSkdf/JJAghEMID2uFt+BLDwFkSAd8CIInIK+snVbNGw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pzRz1DSj; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2414::629; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750090300;
+	cv=none; b=BOrfCKs/EQu5Bmj8UlC9eGeWcj6DntWUeKa13PcF7cjXzkAcdZhMWB3kP2X23iQBPsFkeG7WcSF7OlCU98vDHMhcr7aYkKNqnE4NZScNRkXa4g5I6LBdLyAPufqlP8tqQz5WpNMUq5lkrKgICoq18ESS+ThBIgh+/zQeOvD+Zd22wTOomPgzGm2kwyVLlvtxD39jJ+aPKlmZ3CSbPo1KkkwU4X8MMiJZLAIUCUIo0W21OqEUnDHYKTtyWe9+jSK7DGfNKscEc0APvlJSwkPQPwCPBr3e+rLlpnPmEPPil0bTBaM+pm9Q7STZQ/AGIXEULwBMnATx5RJDmQF+I5PLiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1750090300; c=relaxed/relaxed;
+	bh=Asyz6X+UVafO8TAvXqJM2H5EVD9/rpnOD+YC0DOzhwI=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=gqVN4Ih8W/w6+XSNKC1yWRWLXgEpZzBdA9UdnMtPCLBRPCUSP7GQn1vBtbwkS3KzcHIxPq4KqsEgWZxjpd3sTQ9HRKsNsOXbk1U85yGSgNdBDAEgHkvayCWqC/0dBAxBgzOWsuGX+M6wfL67E0X/aDT7howa4qeWKzFCQIQN0yoe73u/LKRA0cLit4Qj6x6ivNWv/Wr4c5nwHL7flxbVuKQ5K+qnodlTmVE90uL1Q8eLyH3fHN+PyzN7skqfUppCSFylvOTpF7P1IEitYP5Ykep+xwCReKcUDEkvAwo6r8BWrQVwm73FrDtlTxdbwrK5/cFzkklhdycz3eHnxxxlCQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fn1SyXZH; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=pzRz1DSj;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Fn1SyXZH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2414::629; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20629.outbound.protection.outlook.com [IPv6:2a01:111:f403:2414::629])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bLT846b0Tz3bb2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jun 2025 21:59:48 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s0wVwv/X8GpIoCBvvV/mjvZEZaV1Fdacq7XM73hHnXVa9XfalxgxV4zwHBooe0zEb4bypcOoayjgF2kZ0W5xOG4dUBSMnBq+21t6r6FfqmNHW9kyYltDOsZ5CgInmnZF3a+Z/DapgkZiEW/Nhr73IzG7TB/X5qXaPBWjzqWl+urxmxKaxZ8vEPc+AzmlUK4fvNGEoEdAQ8GOJRVRpdODiiVuaqkri2gc1gt6xGaah/M6bZsLklcgZzOgZpC9iAJ/fMPrT5QYeJcTs7BDCt6wCMlzcqewdA9Mi58sUn202uBPdIheX6VmvzAhicGqExJ+o3cQ9AIRJXaI9l9HJsjJxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TCXqsi9Y77b9azBq7EEv3MOFkKZx+H9ffdl+x9Eg39c=;
- b=Vve3H+E8Ov4RXDbHfDS8kr7MFr6KD5CKcXLHmCDuEw9g0RTlE36l4XguXL2liB2MkpSsvT5QzWS/WdyXL3H2fqOLL8XODBCZvocqKOR/g+HmyXzcKesL+1MvffnGoZah84bOS8zvLz8F+/DFSQUAqy01/QAswX2IMTvZsooj1DAGhytTVIR0PGFB7b33c1b1egyO13bogdIoaZtwDrBe92p4+i1volXskkApjpSDFOVVvqxRC9He49u/kQUYb3CQRp40vATJDCW41NCWnPQ1I4j8B+yggcm9JYjZIxjaFAkf0z7wZtF8Sz/M+ZB6coL576BR2q7fuag5tVYRhAv36g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TCXqsi9Y77b9azBq7EEv3MOFkKZx+H9ffdl+x9Eg39c=;
- b=pzRz1DSjk4Q69sBHpvBwqpI2zrWsPzHUGebDVAerkQHZ5yhlOfBLWaE4kdni4yaXR1scUW1pl6XyeAhjySuUWnxxIWqLIp46RtIdAxgafmhavUF2VxOP2Koa7mOhymOXgRqK/f+O+L1xpXIqndvVuqSFCcoqRfEJJtMbLvR4k2EmGJEIs4EWTix/V+5vSQ5VjxTb96ckDuVz9a8hmm39V/ZR+Jb70oWtZq00kxQz1vs6XSHlQmh2bwRXK3pdI3pw+86WNFU7tZYH1PoqyfUFfq9ZEmESDtd5I9SYum0YYM886SEKz0v21oFIPbddFhzDvp/xQ1eMxq/epKdQx5mAIA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB7705.namprd12.prod.outlook.com (2603:10b6:930:84::9)
- by SA3PR12MB7878.namprd12.prod.outlook.com (2603:10b6:806:31e::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.29; Mon, 16 Jun
- 2025 11:59:45 +0000
-Received: from CY8PR12MB7705.namprd12.prod.outlook.com
- ([fe80::4b06:5351:3db4:95f6]) by CY8PR12MB7705.namprd12.prod.outlook.com
- ([fe80::4b06:5351:3db4:95f6%5]) with mapi id 15.20.8835.026; Mon, 16 Jun 2025
- 11:59:45 +0000
-From: Alistair Popple <apopple@nvidia.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	Alistair Popple <apopple@nvidia.com>,
-	gerald.schaefer@linux.ibm.com,
-	dan.j.williams@intel.com,
-	jgg@ziepe.ca,
-	willy@infradead.org,
-	david@redhat.com,
-	linux-kernel@vger.kernel.org,
-	nvdimm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-xfs@vger.kernel.org,
-	jhubbard@nvidia.com,
-	hch@lst.de,
-	zhang.lyra@gmail.com,
-	debug@rivosinc.com,
-	bjorn@kernel.org,
-	balbirs@nvidia.com,
-	lorenzo.stoakes@oracle.com,
-	linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-cxl@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	John@Groves.net,
-	m.szyprowski@samsung.com,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH v2 14/14] mm/memremap: Remove unused devmap_managed_key
-Date: Mon, 16 Jun 2025 21:58:16 +1000
-Message-ID: <51ccdbbc3d7b76a7f6e2aefb543eba52d653a230.1750075065.git-series.apopple@nvidia.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <cover.8d04615eb17b9e46fc0ae7402ca54b69e04b1043.1750075065.git-series.apopple@nvidia.com>
-References: <cover.8d04615eb17b9e46fc0ae7402ca54b69e04b1043.1750075065.git-series.apopple@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SYYP282CA0010.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:b4::20) To CY8PR12MB7705.namprd12.prod.outlook.com
- (2603:10b6:930:84::9)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bLZkg73CHz30KY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jun 2025 02:11:39 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6A52E6000A;
+	Mon, 16 Jun 2025 16:11:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE97C4CEEA;
+	Mon, 16 Jun 2025 16:11:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750090296;
+	bh=/7XqCp0wWU6D/C9ZivcTOm30N0eSnHGP/ES+Waj0eNo=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=Fn1SyXZHZ0PHUiYAHonHhUkOt4mttbWXBEwp5wuqFBqsZMKAZW9/VEYfih7n1GsMN
+	 PWjy2QfBITjRdrYht3Ny09lsbn0rv5yOL7IJI1+1IxRyQeeY6bgXuF1NzRtMyFHusS
+	 Wu+MWzSpeJmTDg5MftXcdLKLfvw6yM/ysfqVOxBonLg6gOWhSw11/DZGASSnb9dacC
+	 4VQqJ4flXAuyxr7CVWvJ8fJAYluTEq08M4FSIk5eJuIa5L23PzzgJOUuIMr4uBPdQe
+	 IUWw1k4b8M9sw3B3uTDW2uw9UyiOXn3zm/6ZlJbb6V/lMAoux9DYGZ9twwf5DsI1eN
+	 JzP7w9KgEaAYw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33FEB38111D8;
+	Mon, 16 Jun 2025 16:12:06 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.16-3 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <81e04fa6-2870-4b0e-82aa-602f9435a848@linux.ibm.com>
+References: <81e04fa6-2870-4b0e-82aa-602f9435a848@linux.ibm.com>
+X-PR-Tracked-List-Id: <linuxppc-dev.lists.ozlabs.org>
+X-PR-Tracked-Message-Id: <81e04fa6-2870-4b0e-82aa-602f9435a848@linux.ibm.com>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.16-3
+X-PR-Tracked-Commit-Id: ab107276607af90b13a5994997e19b7b9731e251
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 44a5ab7a7958fbf190ae384b8ef252f23b840c1b
+Message-Id: <175009032488.2413506.5328344768668554411.pr-tracker-bot@kernel.org>
+Date: Mon, 16 Jun 2025 16:12:04 +0000
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, j.ne@posteo.net, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, nnmlinux@linux.ibm.com, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -107,146 +76,17 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB7705:EE_|SA3PR12MB7878:EE_
-X-MS-Office365-Filtering-Correlation-Id: 85ff5685-7cb5-4b73-f268-08ddaccd493a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qiRilpxgOHCvm0KB/odeqcYLqq71qd/uF2tuPVQSuLGZ0SAAgPIkENUZOxTk?=
- =?us-ascii?Q?QpgjOqkqInLtEEa3H38876PC7wY+Hw/q8cRKVqGQUnCsM+C22u7OfDAR+ZiZ?=
- =?us-ascii?Q?pIy8JN7WvapkTZJ/iUjyLLHzILykVMbC9dYehMUIzRAinQA37/qMzmhZ7XTs?=
- =?us-ascii?Q?GVyhYxpRIeKZ7vSldINPs9Vjb4DlMZFYfoT3R7ntdRssVb2PjLgYUIw+Iqnn?=
- =?us-ascii?Q?ns+c9fEQd8zVkM0e7tVIKL5VNTBIUp4lCeBDG+MI009/cTrzR3yt285YbEDT?=
- =?us-ascii?Q?vXUng48qPmNsR2r/Ppl3BXbsLiVpO84LEIwbr0/6b/5QIOYDCxaKg7JcPngi?=
- =?us-ascii?Q?TIS26/e7qXbFBAfzA4bV/ROqyiF2+BCh2ppRUGZYO0HKQ7TM/OpCmrwDIaoA?=
- =?us-ascii?Q?s0oC2eoL8/m14+NBxFsdbSXLnbCtu7Zp1Gwm+sJ8mDhawrk6buiVZKHorlkP?=
- =?us-ascii?Q?GSGrgwQzsAoYDy/0efFzcQX8VgxUhSlYbutRqEaDgcHK0PLPHKLZ5yyehRcw?=
- =?us-ascii?Q?+WCqnq8GBLVyJNmcKGsOmukXpmmL5IXHdpEqJ/sxNNlW9qybZ/pEHA12y/Da?=
- =?us-ascii?Q?AXDppPwTjhfy33Cww702bWNdrJGGGTd4FoJIoxh64NAkVA2tr/W/IWjdS3tH?=
- =?us-ascii?Q?7Hgr8VB0tpsBdBu7X1+Fjt/lDrJzFbUb7PdLf7Mxhgz7b9iidhvurQiHzlG5?=
- =?us-ascii?Q?Db2Wscc88WSkznlBxqi18wXTjMGpDXTYOsTFhu6V/9yAaoWwH5d2+ZOoNZkc?=
- =?us-ascii?Q?IHj/yrjR032tN/chSiduONuyFETLTd95R/TahR+VYCPLaJz04HwU2W+3X+nU?=
- =?us-ascii?Q?RWZO428nnM6MD+VCIOKlUphajxVZgAp1vun9sni8ne/T1Zr3FgueePy2hH7I?=
- =?us-ascii?Q?cKVsDVnn8+ZwgITZHZ0EztkJFSmr3lyH644X9QIDReSiW9CsNp+vcS1Bmcmi?=
- =?us-ascii?Q?2krkiZCHULJZzuZi49QBfd1nburfu/VRF8xXYxS+Tt2Tq5YYnAdcm2Ch5mCH?=
- =?us-ascii?Q?S6excMFeHdaCKzOahh59kpiBNAtQE58O3rRkxzz0ZT4yAPArGHrNJn3FucZX?=
- =?us-ascii?Q?Ji2Bt4ML+mmlWg5pHuRxsqhKqIjsX8x8mbsk6K43PEmADS9JnZ6qXlUATzlX?=
- =?us-ascii?Q?GpmJdhFXyWMMvioDJR4MVzorbD2FTpYXFNfYO7FssxyRv0fgdYSVb1sw3PB6?=
- =?us-ascii?Q?lXgd95oLYFAmepMdc82U6iBLrJhNXcbQtqHE1XOPeQj59XOYJIRt3RYMD1bS?=
- =?us-ascii?Q?jUkmfZi19E+1aomNnDqeA3iyKafgcq6z7aS3Y32pgQvJIpRPrEFFayPySV7+?=
- =?us-ascii?Q?tPZWkTeDRAPunGiavK756vc3lbUdq+Nty3nH9C0pYihNvrNIgDbznzXyGpN7?=
- =?us-ascii?Q?pwuAnP3BQdobrsB90sRkZ6W19Jl+VgCDFMbhGXqZa4PjwexcR+J7WFcDO0fw?=
- =?us-ascii?Q?NdKH3WGdpSs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7705.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8dA0xVAoKNbJEUldONRjvNVpH2AXUswlI1HsZ0nt6QQDlu5POE4KBeID4Fq8?=
- =?us-ascii?Q?crTf9LwthtimtZuJKtJ6GvfZGyKxJNu7ZB1yEV8LMbU8rECgkj7be3MLvzoE?=
- =?us-ascii?Q?vgnv2JzOX3CRaU3ufCibYjN3Ga4seJWxsuNTWxnFLeACdEAaSsn0r6A2tYNn?=
- =?us-ascii?Q?pyBsyAvpqCwP5gB5YO9X2UUUrWUa1UQBYfQj1/yrsXV+WFwn4I65JGoTUYtF?=
- =?us-ascii?Q?Z3RS88Q4tJazotFoO9D7LfTZnoZKfCDPRDWrswnl0geALRTHeFeqe3xDv+ii?=
- =?us-ascii?Q?E0TQb4bbc8zYyCzi1EFf5iVtx0V7rvIuqdkkuuDKSo8qEAriq3aEnd+9OHuT?=
- =?us-ascii?Q?Mdg/BOykLJWANFbWEMB+wIZVcCdddm8Z6p7shSXZp9togJUkCnLsL+1o25JT?=
- =?us-ascii?Q?Hchuz8ZGWRVZulGVGbo6zbuSv39ZOyY0o5pqJehFsP0lg5B0i+TOKTnzp746?=
- =?us-ascii?Q?g0lHBCvf2cMDYWxlgLGsY8tJ1qljU++BCCcdVTN/eHt2JuNYBe7vYl5iEP7D?=
- =?us-ascii?Q?p7o6TG/ull/dsRP4UoZZ3JpFnFcqpSqGyuzaNGV8qDSpmXyHKJbBmedmks7r?=
- =?us-ascii?Q?8hxos+apV3faBKe+EPRztV8Da4YmGwWJd55PzSVlWO6uCglWhRkSnXzwE5Jf?=
- =?us-ascii?Q?4Dp5HR+6BKZZeyUeJ2yv+60OTHTKTsMRdJVAB/eej315f9g6Gqf7yrsx+b4S?=
- =?us-ascii?Q?tumVeJmf/I8NG29OWH/PBgZVf9DrCD25MpPlyk6iu8amYIqmy0ckd6kK0WKc?=
- =?us-ascii?Q?PTBj/wDXxn6WqFTqBhbuxg3XLVp3ELA7JLBKs1nm9n+ndRERi0VZYUNfU786?=
- =?us-ascii?Q?HgNSNRIfDhxKBFTQOlPOcFU8KGMnopWwEh9CIzdzTTm9fszw6KBF2F6/05ms?=
- =?us-ascii?Q?n1tvuOf4SaUDWjfMXhs8G2oOqOb1KdBkt9racwjuOTats0eZGcqBiGdMZvD0?=
- =?us-ascii?Q?1MhvGKFI1qjumwGcw3JZLdsb7cDxsmQCsg2o7UBhRVO52aOd0q0kp21UFsja?=
- =?us-ascii?Q?7V3QcuDQF5pVVFMgIv93vxcCjQs40ofqFWAcLmWs5LKvDtTZWphyWsHDEHUh?=
- =?us-ascii?Q?xOpl5vH8Eck+yVbRNPo0joKdJxOVn47W2S2t60PUsUDaSkJWj0ZMKQPlLo0n?=
- =?us-ascii?Q?j1cPYHUJKD3vjoLtQm6U3OiyX/d75JU2Jvf4+yS3R7wl7WwG3w7dN3E1mXaQ?=
- =?us-ascii?Q?ksP9hEUoV3YxkOHDXyKRAXEmh6UjQYV0TkyEip679Iw7mZzS98GkFlAC1nK9?=
- =?us-ascii?Q?8ODzNbttlm1I9EDbvR1WbI2YA387cOwaNEQvCziiXGnpL0EeNykg08a2TAov?=
- =?us-ascii?Q?TV3zCQ1LAMrrYSIIMrgpUGC+0KW4WoCmpTvXmraEzSy/L+HmNnJjnrb+hLSK?=
- =?us-ascii?Q?I8T4eexqOJkWTDJK6/sJEfQKOPQ/3mhrtdsLFnYkJ8/8zKQ5gQkrw4UMLctt?=
- =?us-ascii?Q?V2R+6YtCHwNl2MFUpkQoc9ZC/Vua5abuFO9gLhSxmPkXvW3fgt5h0CEWewSb?=
- =?us-ascii?Q?1k3FUUpQEF5V2xOBgXg9NMraTBXw4mRHudII/lpuT2wraRcaM9h9mvJWPbuI?=
- =?us-ascii?Q?ggvgQ51VgD5TtSMj9S9LEzDiLy+j2zArXQAqRXI6?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85ff5685-7cb5-4b73-f268-08ddaccd493a
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7705.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jun 2025 11:59:45.6144
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MRrqvzR6pizpDzAEKVt3gYb2rRugus0s/wZKT/Ekbej3fVKqrLMRPyQ09cKW5AXGYaDhi7njN9M32WA8ya/3CQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7878
-X-Spam-Status: No, score=-3.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-It's no longer used so remove it.
+The pull request you sent on Mon, 16 Jun 2025 15:20:48 +0530:
 
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
----
- mm/memremap.c | 27 ---------------------------
- 1 file changed, 27 deletions(-)
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.16-3
 
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 044a455..f75078c 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -38,30 +38,6 @@ unsigned long memremap_compat_align(void)
- EXPORT_SYMBOL_GPL(memremap_compat_align);
- #endif
- 
--#ifdef CONFIG_FS_DAX
--DEFINE_STATIC_KEY_FALSE(devmap_managed_key);
--EXPORT_SYMBOL(devmap_managed_key);
--
--static void devmap_managed_enable_put(struct dev_pagemap *pgmap)
--{
--	if (pgmap->type == MEMORY_DEVICE_FS_DAX)
--		static_branch_dec(&devmap_managed_key);
--}
--
--static void devmap_managed_enable_get(struct dev_pagemap *pgmap)
--{
--	if (pgmap->type == MEMORY_DEVICE_FS_DAX)
--		static_branch_inc(&devmap_managed_key);
--}
--#else
--static void devmap_managed_enable_get(struct dev_pagemap *pgmap)
--{
--}
--static void devmap_managed_enable_put(struct dev_pagemap *pgmap)
--{
--}
--#endif /* CONFIG_FS_DAX */
--
- static void pgmap_array_delete(struct range *range)
- {
- 	xa_store_range(&pgmap_array, PHYS_PFN(range->start), PHYS_PFN(range->end),
-@@ -150,7 +126,6 @@ void memunmap_pages(struct dev_pagemap *pgmap)
- 	percpu_ref_exit(&pgmap->ref);
- 
- 	WARN_ONCE(pgmap->altmap.alloc, "failed to free all reserved pages\n");
--	devmap_managed_enable_put(pgmap);
- }
- EXPORT_SYMBOL_GPL(memunmap_pages);
- 
-@@ -349,8 +324,6 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
- 	if (error)
- 		return ERR_PTR(error);
- 
--	devmap_managed_enable_get(pgmap);
--
- 	/*
- 	 * Clear the pgmap nr_range as it will be incremented for each
- 	 * successfully processed range. This communicates how many
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/44a5ab7a7958fbf190ae384b8ef252f23b840c1b
+
+Thank you!
+
 -- 
-git-series 0.9.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
