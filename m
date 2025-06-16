@@ -1,76 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-9393-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9409-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC9BADAC5D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jun 2025 11:51:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E954ADAF95
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jun 2025 14:01:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bLQHj5X1bz2xfB;
-	Mon, 16 Jun 2025 19:51:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bLT8d1sRDz30LS;
+	Mon, 16 Jun 2025 22:00:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750067473;
-	cv=none; b=odB37Cko8jz+Vc/rb0Kir5kqAWDyONjuoppKEe5pjlLbncI7FH6IE5xRt7QmmUHWVNbjoynuSqixn+2tQ6KUgvwd8sRPrCPYLKyijbESSLJdHEf7eUQEcxrH2Z4ADciVYIVLw24PHIgAiNT3KuVMPJIlRt+5dsNwcsGX9rTE/8xDhsA9+qbkGqBIF5BX3NApQ25XoRAIa6YEBCLF+bRkWOvx11SNuWzwnuDw+ressgX2F3ZO/zeegBmNIXGq2sN4SpZ2fBpnoT0mvwW5XNEkyxdjk0a0iw8wkXkZof0ZJUISaAUlmb031Uer47xGqWPVZlStYWH2JfHIJfj+uzp2bQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750073375;
+	cv=none; b=FE0qow9/3SWVae0oj3zy8TUhjvwdNjjEUpJxds5jZ7kKTChedKEUDRxzS/0+JgyAx17UKKUSf6nQIdcsXBQIpe5+DSYUeIkIT2tsLOvaCqr8Y8FqdVguZMpMcocoORSZD/rLEzYZ5LsVJlFK/y3FX/1A+GqgXXEJwzlwXy0L7NiZrdJUyVG2+Vo7pAfoZaPGw/L1I/MmrFrGG3xh3Zzfq3KwTMZjA8Ttr8278psFKOtISlbjV0fQBbZxbt52C4Kirb6P7Bgzd/NbF3fDAN37VE59WH0yXNSIb2hs57N6kfOZJ1coKH987w8rfREhbCN/8TEQ0Wsc4U5B6PLS3rRsbw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750067473; c=relaxed/relaxed;
-	bh=98MNDMpqZTSUPDBDmSnnEsdlpYfJx/Fn3bMpLgmmmYU=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=RVRAnT2//K2hONth0HiuP9joBewhepkDCUBNMSCBDmfJ8Eyll+/Yd335wqS22hMrvZ81ieU+zYecArOXJEGGhbrS4cbmHagVwyTq867SmFJzbpDDjl0afYkdQQOrGHtvROPmOkHBAakay4db586Oj56hJ6insO22q6eRSO+1hpeHSBs+kehkhuHiyYcSQFyjH8p26LA8dy6DsGKE4kx6fWxlb7/XEiSbV2GaAXuwjq/VP2G8Ri61LNW61RYMv2HNusfBcW0P5pArI6p2aazQn4kOylxVYKdjwLYtIaNWPbu2U8bzSRhgVOtRfgx3oXZJ8rN7AcqIbWctQSIebaTBiw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tog76yPz; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tog76yPz;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	t=1750073375; c=relaxed/relaxed;
+	bh=gZItC2basXtuPKHHTklRpTxUFJMNSX2lb78hHL2M/jA=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=QaVb0bem6XRlk5Jt15vIuZ9yGVv3oM0O030iSXyMVDGOEn54r6W9s6wyMJynf/2oFLBi3FNcogdCXQ/dkiAKow86JHijD52soS/DPCFTIFjekosK5rwVG7nWdOT9fQphD2zV2z3lK6pNqsvSN1EBEaX+fuX5rMD6EMjX9ITHOtFwgy1mY5l1jsVSP1VfD+k165Eo4EOOH2aXbBEPGUnrMyNFNlbxcOqdDiYfCjk1Tnn7Z70nPC87lWRr0hrCW7CQ5YXHO1ton0P9eC+V5+69npgpompa0BVqKPIu+YZoqO+jasj+KPL9m6PicUims/3QiAbuSvCmSGj3ICM2e1ujQA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=yuzenghui@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=yuzenghui@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1161 seconds by postgrey-1.37 at boromir; Mon, 16 Jun 2025 21:29:34 AEST
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bLQHh5nKVz2xHv
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jun 2025 19:51:12 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55G32qrk016045;
-	Mon, 16 Jun 2025 09:50:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=98MNDMpqZTSUPDBDmSnnEsdlpYfJ
-	x/Fn3bMpLgmmmYU=; b=Tog76yPz3YHUDAJiCbFxWSaAbn0HDoszUroBjHdjEtdY
-	oxTwQbpUm1HCJi4XkohCfiu4zoTf/KI7wTLTEM6K6W8XsNwK3wlaOR97ijJDggGv
-	ArTHONTUozLlwIjcBT3CJTPuLGS7p0BVnl2yGxEHd2aeNrhssbhxIr84uGa5OJsI
-	+X1qInagSw05Xlu7y/+EFszZIgqXGqDmYdAkW8io4INQQbFYGSg6sPQqu+Lwv99y
-	iYIndI+GdgGc6a4m32Nw5/7eFuZWIxShsa3PSuNigDjnooL3kd/hQgEnT7rOpnPX
-	NeksWbPeLRQ2fh60VOcrYYINUpR6nnwPrUNF/oI7mw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4790tds2xu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Jun 2025 09:50:55 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55G9YD7p008557;
-	Mon, 16 Jun 2025 09:50:54 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4790tds2xp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Jun 2025 09:50:54 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55G7XTXv010817;
-	Mon, 16 Jun 2025 09:50:53 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 479kdt5qq3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Jun 2025 09:50:53 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55G9orDV10879740
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Jun 2025 09:50:53 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E3AD95805B;
-	Mon, 16 Jun 2025 09:50:52 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E98CE5805C;
-	Mon, 16 Jun 2025 09:50:49 +0000 (GMT)
-Received: from [9.204.206.207] (unknown [9.204.206.207])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 16 Jun 2025 09:50:49 +0000 (GMT)
-Message-ID: <81e04fa6-2870-4b0e-82aa-602f9435a848@linux.ibm.com>
-Date: Mon, 16 Jun 2025 15:20:48 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bLSTB3f7xz2xHZ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jun 2025 21:29:32 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bLRzy28PLz1V43x;
+	Mon, 16 Jun 2025 19:07:42 +0800 (CST)
+Received: from kwepemk200017.china.huawei.com (unknown [7.202.194.83])
+	by mail.maildlp.com (Postfix) with ESMTPS id 287C3180044;
+	Mon, 16 Jun 2025 19:10:06 +0800 (CST)
+Received: from [10.174.178.219] (10.174.178.219) by
+ kwepemk200017.china.huawei.com (7.202.194.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 16 Jun 2025 19:10:04 +0800
+Subject: Re: [PATCH 3/8] KVM: arm64: Move ARM specific headers in include/kvm
+ to arch directory
+To: Sean Christopherson <seanjc@google.com>
+CC: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan
+	<maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda
+	<imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <loongarch@lists.linux.dev>,
+	<linux-mips@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<kvm-riscv@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, Anish Ghulati <aghulati@google.com>, Colton
+ Lewis <coltonlewis@google.com>, Thomas Huth <thuth@redhat.com>
+References: <20250611001042.170501-1-seanjc@google.com>
+ <20250611001042.170501-4-seanjc@google.com>
+From: Zenghui Yu <yuzenghui@huawei.com>
+Message-ID: <a5032f01-9f54-eff9-ee72-b159ed56ca70@huawei.com>
+Date: Mon, 16 Jun 2025 19:10:04 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,103 +72,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+In-Reply-To: <20250611001042.170501-4-seanjc@google.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, j.ne@posteo.net,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        nnmlinux@linux.ibm.com, Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.16-3 tag
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zFH7w9_vervdXEVUb4kQuu2nEypuXHIZ
-X-Proofpoint-GUID: V5JGqvKaX-sx4vZbGCZ62RJ1yrPyFTRu
-X-Authority-Analysis: v=2.4 cv=c92rQQ9l c=1 sm=1 tr=0 ts=684fe8ff cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=BtL6d0wylExIv2mDCBkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE2MDA2MiBTYWx0ZWRfX5h13Ve8iySnl LIJLhbagCLJ6jViKG4qUqZ6DSlVlIa8VXUcgrEoIXFiCYbEo27pmR4BoHVNz8Fwf7WnqEor5LL5 o9rfsjMoXv0KJdis1drKkQ/A9CkR0slEfboEXJ8IL4LsEPneInogaJcPRCkGEfWMTim43HjIFZ5
- ek4hoKSczkKMMoZVJ0elYPgMF7XgwoGTnZcmES9j+Y2yNftiBnT4Pyoqfa8BLBKA99ljGXXnuVn iAOVZ0khxc1VBC/OArJEPj9Src4af0qg3ZhrgA/qZD/ArZW7lFWnsV4OawfN/WlbwA16myWiBbK 56aupHyYcbeWIEpSNAXAEykKUUpz5pBg+Wg14X2/dI//iUFTnsBuugIdwwwmVyNQ7XE8JFlBs67
- QUeBzYce7VAWeIt+4Nt3/1KXd5dpJRuBtG5kCwTva8FeKanVGzS3OMOb2eMVyyJFB+QMoQuJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-16_04,2025-06-13_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- bulkscore=0 lowpriorityscore=0 clxscore=1015 priorityscore=1501
- mlxlogscore=939 mlxscore=0 adultscore=0 phishscore=0 suspectscore=0
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506160062
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.219]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemk200017.china.huawei.com (7.202.194.83)
+X-Spam-Status: No, score=-5.1 required=3.0 tests=NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On 2025/6/11 8:10, Sean Christopherson wrote:
+> Move kvm/arm_{arch_timer,pmu,vgic}.h to arch/arm64/include/asm and drop
+> the "arm" prefix from all file names.  Now that KVM no longer supports
+> 32-bit ARM, there is no reason to expose ARM specific headers to other
+> architectures beyond arm64.
+> 
+> Cc: Colton Lewis <coltonlewis@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  .../arm64/include/asm/kvm_arch_timer.h                     | 0
+>  arch/arm64/include/asm/kvm_host.h                          | 7 +++----
+>  include/kvm/arm_pmu.h => arch/arm64/include/asm/kvm_pmu.h  | 0
+>  .../kvm/arm_vgic.h => arch/arm64/include/asm/kvm_vgic.h    | 0
+>  arch/arm64/kvm/arch_timer.c                                | 5 ++---
+>  arch/arm64/kvm/arm.c                                       | 3 +--
+>  arch/arm64/kvm/pmu-emul.c                                  | 4 ++--
+>  arch/arm64/kvm/reset.c                                     | 3 +--
+>  arch/arm64/kvm/trace_arm.h                                 | 2 +-
+>  arch/arm64/kvm/vgic/vgic-debug.c                           | 2 +-
+>  arch/arm64/kvm/vgic/vgic-init.c                            | 2 +-
+>  arch/arm64/kvm/vgic/vgic-irqfd.c                           | 2 +-
+>  arch/arm64/kvm/vgic/vgic-kvm-device.c                      | 2 +-
+>  arch/arm64/kvm/vgic/vgic-mmio-v2.c                         | 2 +-
+>  arch/arm64/kvm/vgic/vgic-mmio-v3.c                         | 2 +-
+>  arch/arm64/kvm/vgic/vgic-mmio.c                            | 4 ++--
+>  arch/arm64/kvm/vgic/vgic-v2.c                              | 2 +-
+>  arch/arm64/kvm/vgic/vgic-v3-nested.c                       | 3 +--
+>  arch/arm64/kvm/vgic/vgic-v3.c                              | 2 +-
+>  19 files changed, 21 insertions(+), 26 deletions(-)
+>  rename include/kvm/arm_arch_timer.h => arch/arm64/include/asm/kvm_arch_timer.h (100%)
+>  rename include/kvm/arm_pmu.h => arch/arm64/include/asm/kvm_pmu.h (100%)
+>  rename include/kvm/arm_vgic.h => arch/arm64/include/asm/kvm_vgic.h (100%)
 
-Hi Linus,
+Nitpick:
 
-Please pull powerpc fixes for 6.16:
+|F:	include/kvm/arm_*
 
-The following changes since commit 0d67f0dee6c9176bc09a5482dd7346e3a0f14d0b:
+can be deleted from the KVM/arm64 MAINTAINERS entry now.
 
-  powerpc/vas: Return -EINVAL if the offset is non-zero in mmap() (2025-06-10 07:56:41 +0530)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.16-3
-
-for you to fetch changes up to ab107276607af90b13a5994997e19b7b9731e251:
-
-  powerpc: Fix struct termio related ioctl macros (2025-06-13 22:18:50 +0530)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.16 #3
-
- - Fix to handle VDSO32 with pcrel
- - Couple of dts fixes in microwatt and mpc8315erdb
- - Fix to handle PE bridge reconfiguration in VFIO EEH recovery path
- - Fix ioctl macros related to struct termio
-
-Thanks to: Christophe Leroy, Ganesh Goudar, J. Neuschäfer, Justin M. Forbes, Michael Ellerman, Narayana Murty N, Tulio Magno, Vaibhav Jain
-
-- ------------------------------------------------------------------
-Christophe Leroy (1):
-      powerpc/vdso: Fix build of VDSO32 with pcrel
-
-J. Neuschäfer (2):
-      powerpc/microwatt: Fix model property in device tree
-      powerpc: dts: mpc8315erdb: Add GPIO controller node
-
-Madhavan Srinivasan (1):
-      powerpc: Fix struct termio related ioctl macros
-
-Narayana Murty N (1):
-      powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
-
-
- arch/powerpc/boot/dts/microwatt.dts    |  2 +-
- arch/powerpc/boot/dts/mpc8315erdb.dts  | 10 ++++++++++
- arch/powerpc/include/asm/ppc_asm.h     |  2 +-
- arch/powerpc/include/uapi/asm/ioctls.h |  8 ++++----
- arch/powerpc/kernel/eeh.c              |  2 ++
- arch/powerpc/kernel/vdso/Makefile      |  2 +-
- 6 files changed, 19 insertions(+), 7 deletions(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEqX2DNAOgU8sBX3pRpnEsdPSHZJQFAmhP6CgACgkQpnEsdPSH
-ZJQocg/9Edbt09ToMZMdk2R5CXxDlzeGliFX7bdKV2Q4jwEqyjHMc4J3PqCNGymO
-3GmP2yemB18a4ujl36KQet6CsbRtSPd4RX9yXUyyPTZAEuyo3sNIsrJEYmD2HV4B
-fErrE8xln+/l21HNBlPWQ0EN4m3c4bY6c6K3VaY8dMoxg11A79SGIRY/3cr93tYA
-zjYdbWnCz4rxpgffKmfdM2xu17DmMO2Molq4lfsRp1vkfDBUq+sGGMYvn/njCCMb
-W5I9/CN5xJrhF2iKBwP4U0wl2GsQ1DSgqp2RNvKv3wnuiKt5dUiYg6FswAsM2nQ/
-89YTNgBhjtZsO9rLSX2jk1tmf8o5lJ7CGvByQgXMr35AWt1XhMe5dC+XXIXsU2YQ
-fbK81Eiyf2NMFdfKN77hwwo3SfpdZqP1FC/4bjfsJ8JzsTZPrVfFfVXTV3rIAJsG
-TNIioFauZAz/wlrwHkTyLqkXp77TJXtVsl9dHbvr2tpqblyb1k3b24qgwckWvf1t
-XDc90Y478bdblBN+PThaxUm2AVFhWZSNxLzo2DiltetbtTmC5qeIyzl5PkgdJALr
-Kqxqe2dg2ZkGXhi+FFNWWxicdleEbV8+zKQeY4K/tPnsPdUqe5DoQaqjPoMytRAF
-l5RN5lqxNOY9odAH9gkgJSUlhWXI7+SSSIq2xF1ci6JnWBH+izE=
-=NMl4
------END PGP SIGNATURE-----
+Thanks,
+Zenghui
 
