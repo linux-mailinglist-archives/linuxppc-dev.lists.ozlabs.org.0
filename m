@@ -1,73 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-9387-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9389-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35ABADA442
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jun 2025 00:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BB9ADA596
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Jun 2025 03:34:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bL6bY6Xkrz2xHv;
-	Mon, 16 Jun 2025 08:03:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bLCGN5fc2z307K;
+	Mon, 16 Jun 2025 11:34:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750025033;
-	cv=none; b=mSTwXbJIB78YTEdDi1LCdXx5q5734xxcUpVpidwmcTYKT+WSEAw82uSGnl5h9Zl3xu+dQvfkY83o6EnY8jjjdkk9ff/2JDDcFqYMQgonLZ0/PsGp60NUHPbLNlw2huGlaQpDPbxR9iFGuvX9YzZeoIVkF0SEyVp5onD2++GX9rXPYev7AcYOxt4xHd8X1ZLolYzXN62Nnsc4uZ1OQIIHMaMDliHZrud95dMCx7KwyD2LhyxvAppUng37fR0jHrsnGFYhzWobX1EgwRWy0M23Mxs7Z90sFfPBvwCzF61UeHhyp3C/jnXODqeIOrIU6aqJrUIyedisFV6PWEDzLUz5Ag==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::112a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750032028;
+	cv=none; b=BfNmMvEnb2yxQtBSdAF8jYDlTJiOguri/s5bsBnqpJugd/EM/l9U5rf/c5DEanokYkWKaiR9J7gp77UH8wrpjGBdo50Y6VOJuMeCpaLQhpeijB/hsY+A3sbkXyYME8dCIAwbwrUqD6QdoNSgSrhxAqLNdox5NHRw6WgCJLjRLRb7dKs5K6TDC6icxFl70t8T5BVWWqsMdy2Soh1+dTIOBdFl78bVpL2MSV6yg8kpleF9asJKfD/1YcusY7NmWVMbnI6fPB6p+2mu4nrSlGFP6NWf5U3wYjLLxZDdH0yCIqybfq15NDvzIgEqCcTAIQriDj41Nitbbd4kYrslQSqNbA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750025033; c=relaxed/relaxed;
-	bh=8VtQf34tF81kJrxGrJxRX2euuAlUg2/rIUi3Q69h/I0=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Ov2yl3ph3gPn3JZrFVvSNB/aFHzahEESS9Alw/bPqx16L5rpiFYW667Hi91dmQHX0AH21vF+cZcUEC9twRfu0I2MatDmGVsORIPHJ748wAOpD5Gq66oiiFkuf2OHPePVnqr9yo5ruLRCQ8nd4I6XyT9PoVedLhWX8NQGmcRUbqpYESbR2/naBvCTEdZcOsSp44nGnbGXZzNjf7GNaRWG/1rLHfZo0XdEpbT1LiwwFsGV9dlukMea7N/07VE71MBL+YmAkDyvHiLcrFLPB6l39caKeAvBzhUWMvhNfyG/KON5lroGGHnChAQ3Or/19HEwUK+LpQkRI5R3ppkLlne2kA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aw7xFgbq; dkim-atps=neutral; spf=pass (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1750032028; c=relaxed/relaxed;
+	bh=UbpHHR1YWrZ21Q/PNqsadbXIdVEUSMTqTza6iEwDmdQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nmWUiEq1g1f/p+B5n0/iuISlKK/CGgYSXNTL9vz9OH48kQGCFv2TOQjDx1Qzba+nd05NiOPVELcoinBzVHpIwgivtKeqZZbfn7+71MfnkEifA0zhFCLkuuPeDmbM/GVCt5AgG69Jh9f9D6IPkFR+gWBo3UFBnRfAE2WB9S8IyH0BqDhMSeGycpx0gJPQGvDb4agkn/AdaCE9nKcRUMopNIfiM6yRRzdWyx+i+fpTIP9A1ssaHJnFUCpYY3qlh7ftrYJepFHyil/BTVwITpt4JVHBh23/Llg1NHM0UMPGlgY5mAvSCoZXS/PJTSRRyWjgVC7Lte9VNDtJbSzywO+TZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=f4Qx99jp; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::112a; helo=mail-yw1-x112a.google.com; envelope-from=alexguo1023@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aw7xFgbq;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=f4Qx99jp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::112a; helo=mail-yw1-x112a.google.com; envelope-from=alexguo1023@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bL6bW2yfyz2xHp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jun 2025 08:03:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750025031; x=1781561031;
-  h=date:from:to:cc:subject:message-id;
-  bh=D9XcOINzM0uGcd5Azz0PJaKdELWuWmaSDlW2LRQCPUE=;
-  b=aw7xFgbqkvKtvqjBjTblpvYMbSeIuzrk4QQGNUpMj5PX6me6St5VOWEu
-   IVnq/Y42IKWj54LaYuDUFlkR3VJ1/IlYtUQFJgyKb1S1915E4omWH/zsK
-   X0Dek9sCw1FjOsJIFH7RRh3bJRhzgRyOoW2+bjThP3iSAnwW9vJ7F8mfO
-   56UgEhf+A6TADlfeWZq6jdMcRdd+1WsKsP0uPQQ3AWizH8M6kI/SDnile
-   lyQcFJh3N7TSZScCp25y6b1uPIGZUH4sr3mfYxggI2gCK8Fya5ErZWXLM
-   rSrCi4kbcCZjRoOC0fQ413inq02U6hYBtA0mrgBDOEUQzdleRJ0jtBtS2
-   Q==;
-X-CSE-ConnectionGUID: 7YCbcC2TTmCJNs2dl66HOw==
-X-CSE-MsgGUID: JkfDvgPRQTGaYNV/l55AsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11465"; a="51275211"
-X-IronPort-AV: E=Sophos;i="6.16,239,1744095600"; 
-   d="scan'208";a="51275211"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2025 15:03:46 -0700
-X-CSE-ConnectionGUID: beGXEE/iS+W//PXC2I32Sg==
-X-CSE-MsgGUID: vo0EPivLTy27ZtP2lFnRTA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,239,1744095600"; 
-   d="scan'208";a="171509442"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 15 Jun 2025 15:03:47 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uQvS3-000EZI-2X;
-	Sun, 15 Jun 2025 22:03:43 +0000
-Date: Mon, 16 Jun 2025 06:03:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 33e1e70809f236800d22617095ae221e28d7b382
-Message-ID: <202506160656.cFIPQrdx-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bL9B23LmJz2xHv
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Jun 2025 10:00:24 +1000 (AEST)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-70b4e497d96so34791677b3.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Jun 2025 17:00:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750032021; x=1750636821; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UbpHHR1YWrZ21Q/PNqsadbXIdVEUSMTqTza6iEwDmdQ=;
+        b=f4Qx99jpWv2lwc7xO+wuYREuU+2Ej3iY0Ma2PkFQcIUw1hoTt1fka8G4X4Pn2+rJHs
+         2dc9iEa3WTB11taysNT4HamlOVo2JuhvWEh8fEVvHqa4rsuJLXKesoaQmYjMgUSyOCaq
+         5zM9dCh3dcW3aF33k9xh+wEzK43b/RExxHLXp3HbwGsGOtlsh9tWQzQQoOeByVHgDYeM
+         sMFzuUeRs8DLCj0iT1GTtEkJ/hGa9Wiqbfsro2ZB4GGS5nxKY7EsCwaTDR3nwVNspn+o
+         m5F1QNtLHEOck4P3YJmofkDQn09bHMmqTWeWIeR6y2Eb8D1Pk1imc8+VvlQgBjLcxyPL
+         2oxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750032021; x=1750636821;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UbpHHR1YWrZ21Q/PNqsadbXIdVEUSMTqTza6iEwDmdQ=;
+        b=r4PFbMVnECsgS+lFqgMGyj8bqPNpFSeAWJlMhQrVL7myNKZlzcj9qKGyLKXieaHZGA
+         7hRQAa656MByB516nEMlD2gxtJXLtbNIAy8GBAyME2XNORlRs9tZqg8BhBT7niesGebz
+         5eZsonZgqLoWFU1DAecfXeNvfn3j4HeIUAmJo5TZlF37MpFmp+hOmvRLyNFRUpY/Ptv6
+         pZmSI3x/KOkitJZ9Sa0gTeQu8gEm9gr710hA3QLBNmzoqQMD8zW0Nzqe1VuCEe6saU4u
+         +LrGVwFpckxqLXAnbyBC72/ds+lkfP5/3vHmTNWM5D3Xnvq0hYzeURpIqdunV1PW9qck
+         JdOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV24O5346YUbtJg7eWpt3HUZ41RYbkUWS1bd3ozSsOkmw4USi4Ghtz0r2yRCXf9KfJ6xOm7Shw/NbVp7H0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzv9EXAoCR4qhxfnhmGAQghoVeBtT4xAAT62QSqxcKIYrdFLFzb
+	Z7gpD3d7ZFynLgToBmKubTB1NLbLKKpSOEn05Wb6MFb79dA9QN/QT2tf
+X-Gm-Gg: ASbGncu0MO4vcqDWyZD5ZDuOrjENidmVNmbFgyyILost939eVFhdvFJ6UC2fAcD/n3y
+	E76NIv4+Rs2RKRNeyZeWUS2EBrNvtl7uOgVQcY6HgoixOU8jNcasD+zKBJhkhJ2SgaA3siKMt8a
+	omRzegbRfQvJwJPFsmOzi1zrc4OsT/QoliBNwruUcw1G31AijEuSmurPfSBycYzrXQKv3bEiWoN
+	vyVKRzXXgtkiQ7rRv7deUEHG4K3fH0wjR1r+eUAQXTfZsUhPimFsnvIBJ79MhkdEUQEh1/jLJCh
+	+oP/4nuie8kCv6mY7WhEbn/Ck6tif5HagV30XCrKVy3LZ6vfWKsttt6qRVzVUOCaXw304npLC7t
+	B
+X-Google-Smtp-Source: AGHT+IGDXYrPWN+Wr3Z2QDg1C5fs0fvZipdzhoh1Vk3lSCmP/M8jbzJp56ovokdH9P91PUty8NLiOw==
+X-Received: by 2002:a05:690c:906:b0:70e:29d2:fb7b with SMTP id 00721157ae682-71175498c04mr101981967b3.33.1750032021178;
+        Sun, 15 Jun 2025 17:00:21 -0700 (PDT)
+Received: from trojai4.cs.purdue.edu ([128.210.0.165])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-71186a916absm4304957b3.17.2025.06.15.17.00.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Jun 2025 17:00:20 -0700 (PDT)
+From: Alex Guo <alexguo1023@gmail.com>
+To: andi.shyti@kernel.org
+Cc: alexguo1023@gmail.com,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	linux-i2c@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] i2c: powermac: Fix out-of-bounds bug in i2c_powermac_smbus_xfer
+Date: Sun, 15 Jun 2025 20:00:18 -0400
+Message-Id: <20250616000018.545636-1-alexguo1023@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,168 +92,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 33e1e70809f236800d22617095ae221e28d7b382  Automatic merge of 'fixes' into merge (2025-06-15 08:01)
+The data->block[0] variable comes from user. Without proper check,
+the variable may be very large to cause an out-of-bounds bug.
 
-elapsed time: 1097m
+Fix this bug by checking the value of data->block[0] first.
 
-configs tested: 147
-configs skipped: 5
+Similar commit:
+1. commit 39244cc7548 ("i2c: ismt: Fix an out-of-bounds bug in
+ismt_access()")
+2. commit 92fbb6d1296 ("i2c: xgene-slimpro: Fix out-of-bounds
+bug in xgene_slimpro_i2c_xfer()")
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Signed-off-by: Alex Guo <alexguo1023@gmail.com>
+---
+ drivers/i2c/busses/i2c-powermac.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              alldefconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20250615    gcc-12.4.0
-arc                   randconfig-002-20250615    gcc-10.5.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-21
-arm                              allyesconfig    gcc-15.1.0
-arm                         bcm2835_defconfig    clang-21
-arm                                 defconfig    clang-21
-arm                          gemini_defconfig    clang-20
-arm                      integrator_defconfig    clang-21
-arm                             mxs_defconfig    clang-21
-arm                            qcom_defconfig    clang-21
-arm                   randconfig-001-20250615    clang-16
-arm                   randconfig-002-20250615    clang-21
-arm                   randconfig-003-20250615    gcc-8.5.0
-arm                   randconfig-004-20250615    clang-21
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20250615    clang-16
-arm64                 randconfig-002-20250615    gcc-9.5.0
-arm64                 randconfig-003-20250615    gcc-12.3.0
-arm64                 randconfig-004-20250615    clang-21
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20250615    gcc-14.3.0
-csky                  randconfig-002-20250615    gcc-10.5.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon                             defconfig    clang-21
-hexagon               randconfig-001-20250615    clang-21
-hexagon               randconfig-002-20250615    clang-16
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250615    gcc-12
-i386        buildonly-randconfig-002-20250615    gcc-12
-i386        buildonly-randconfig-003-20250615    gcc-12
-i386        buildonly-randconfig-004-20250615    clang-20
-i386        buildonly-randconfig-005-20250615    gcc-12
-i386        buildonly-randconfig-006-20250615    gcc-12
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    gcc-15.1.0
-loongarch                         allnoconfig    gcc-15.1.0
-loongarch                           defconfig    gcc-15.1.0
-loongarch             randconfig-001-20250615    gcc-15.1.0
-loongarch             randconfig-002-20250615    gcc-15.1.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-m68k                        mvme16x_defconfig    gcc-15.1.0
-m68k                           virt_defconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                       bmips_be_defconfig    gcc-15.1.0
-mips                   sb1250_swarm_defconfig    gcc-15.1.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20250615    gcc-8.5.0
-nios2                 randconfig-002-20250615    gcc-12.4.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                generic-32bit_defconfig    gcc-15.1.0
-parisc                randconfig-001-20250615    gcc-14.3.0
-parisc                randconfig-002-20250615    gcc-8.5.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-21
-powerpc                     mpc5200_defconfig    clang-21
-powerpc                      ppc64e_defconfig    gcc-15.1.0
-powerpc                         ps3_defconfig    gcc-15.1.0
-powerpc               randconfig-001-20250615    gcc-8.5.0
-powerpc               randconfig-002-20250615    clang-21
-powerpc               randconfig-003-20250615    gcc-10.5.0
-powerpc64             randconfig-001-20250615    gcc-15.1.0
-powerpc64             randconfig-002-20250615    gcc-15.1.0
-powerpc64             randconfig-003-20250615    gcc-8.5.0
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-21
-riscv             nommu_k210_sdcard_defconfig    gcc-15.1.0
-riscv                 randconfig-001-20250615    clang-21
-riscv                 randconfig-002-20250615    gcc-14.3.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-21
-s390                  randconfig-001-20250615    gcc-12.4.0
-s390                  randconfig-002-20250615    clang-21
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                               j2_defconfig    gcc-15.1.0
-sh                    randconfig-001-20250615    gcc-15.1.0
-sh                    randconfig-002-20250615    gcc-9.3.0
-sh                           se7751_defconfig    gcc-15.1.0
-sh                   secureedge5410_defconfig    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                 randconfig-001-20250615    gcc-8.5.0
-sparc                 randconfig-002-20250615    gcc-8.5.0
-sparc                       sparc64_defconfig    gcc-15.1.0
-sparc64                             defconfig    gcc-15.1.0
-sparc64               randconfig-001-20250615    gcc-15.1.0
-sparc64               randconfig-002-20250615    gcc-14.3.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                                  defconfig    clang-21
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250615    clang-21
-um                    randconfig-002-20250615    gcc-12
-um                           x86_64_defconfig    clang-21
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250615    clang-20
-x86_64      buildonly-randconfig-002-20250615    clang-20
-x86_64      buildonly-randconfig-003-20250615    gcc-12
-x86_64      buildonly-randconfig-004-20250615    clang-20
-x86_64      buildonly-randconfig-005-20250615    clang-20
-x86_64      buildonly-randconfig-006-20250615    clang-20
-x86_64                              defconfig    gcc-11
-x86_64                          rhel-9.4-rust    clang-18
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                  audio_kc705_defconfig    gcc-15.1.0
-xtensa                randconfig-001-20250615    gcc-9.3.0
-xtensa                randconfig-002-20250615    gcc-10.5.0
+diff --git a/drivers/i2c/busses/i2c-powermac.c b/drivers/i2c/busses/i2c-powermac.c
+index f99a2cc721a8..3a061b67716a 100644
+--- a/drivers/i2c/busses/i2c-powermac.c
++++ b/drivers/i2c/busses/i2c-powermac.c
+@@ -78,10 +78,14 @@ static s32 i2c_powermac_smbus_xfer(	struct i2c_adapter*	adap,
+ 	 * anywhere near a pmac i2c bus anyway ...
+ 	 */
+         case I2C_SMBUS_BLOCK_DATA:
++		if (data->block[0] < 1 || data->block[0] > I2C_SMBUS_BLOCK_MAX)
++			return -EINVAL;
+ 		buf = data->block;
+ 		len = data->block[0] + 1;
+ 		break;
+ 	case I2C_SMBUS_I2C_BLOCK_DATA:
++		if (data->block[0] < 1 || data->block[0] > I2C_SMBUS_BLOCK_MAX)
++			return -EINVAL;
+ 		buf = &data->block[1];
+ 		len = data->block[0];
+ 		break;
+-- 
+2.34.1
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
