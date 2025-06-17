@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-9430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9427-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F38CADDEE2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jun 2025 00:30:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D58CCADDED6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jun 2025 00:30:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bMM4w2Csyz30Vf;
-	Wed, 18 Jun 2025 08:30:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bMM4t6ZL7z2xPc;
+	Wed, 18 Jun 2025 08:30:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750199408;
-	cv=none; b=TD/IySYs4gbp+D9lhF5XjXJzsynIYKIHFY2xoitKjkWpyk2uCDc1AnCxD/J3Gu9AtT69nb8fcmVZGdWY2/5SqMcYb+TsejlBV07+JGur0MAOI7kKmh1c5DLz6I0GR0MOMo0l8lCLcdufJAANSc6jLJ+ibWlAvAijzoXogt9Jrwx2CgLQkPQdh1it78UTN9clyfQEHwQVDARUtSZflfPJC4hbgKel6vGsnnNVq/eyCdmmfIgOkUWyldZkO8Uk9A6CqQrQ02iHEiY01uHGjoLXwBEjKSD1DlvOq7tC3V85JP3zddEEr5bK2z2g0Tf04RCeCAO7JrZvdUpjzdm97SgwaA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750199406;
+	cv=none; b=Pab69USEIEJDpGdhW/o1hE2uSArZx4cRAWh3GvQi1/1iAm9E3W0DSgHZMWUKYqRwWSJimb5CghhEwJfmcc58jEJFX6hbHKhmbR+B5nixa9nfsr6Iu04ze4ZwXABmLW24N/BwnapDCuBhIbLNhBXt6dKqe4uPzDhXXZLbMpQqvafzLvC/MjBx0vDiy/WzREYjwGbyHcg5BykzPFUj5LpBg1M3JTEWRV24Ijm2r19Q3Fywn7CaGBG33/V8QHqUzrIoUNfXXEiYG1kyAXB34kb3DFjtX4EGvBZqs1N1FxjVO0joWTI5OZ/SjMgjWmSPrgTUXimVsLq3HQoGNBFpjb6Gyg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750199408; c=relaxed/relaxed;
-	bh=m6vNYcUym8RCs26HgEjsfbBhYr1Uldra33+azUd+Zes=;
+	t=1750199406; c=relaxed/relaxed;
+	bh=ibJBpJSW/307kYeexuLYz/lasfdOxv0YIqqNFr2Sz+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W98SQmWEUN7j95clgR3z3xDO4JyE2RKOXpCVt7oqPft4pqlsAvQvZ7Onu3KWr49l9OKIIelYe4EIzRl2lyvH0TjHQxcPE2QkVdcUCbxqUvYnz/QVxL7glYWmI0twNsIFVfvF9hcWc3JHmDYRZFfCwkAIK4veTphheXx/5/gz9q/lNT/HM+JBFWu9zbbwHRtsNUfAP194AH+HCZceenPASDot1xQ6Y4GRF3FIkViYMWM86E+48VrRx0ns/vglimaWv77C5i/KmsDIG7JGPCFIv6gtkVM/CgbK7clxgFtBlP31QimbvAT/sx8ANYsVOoCYijnYbT8bPmkIn2/t0Y7/BA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n1fuKE+T; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=du0eT9H1pY5U8A7XnZBM0xqr3J0FsAPL/2SdsLjJIpSclWxETvoBsTR3wW6fPmaZYTtI/+TFHBsSR8AC27JHL8rhEOYN/ySSWVaMhKGPAkdV4WT95D5GqqJNjqvaGLuzfkjJ5CM+RrsA0J9550kamwmYnyM6uRok7OtYWAafQUldkUy0Q6kHhHyy4a9/y2Pv1ijnO7xTi+CqDO/H+x7hOsBOxswNl/gwNBwWeAHa+/UeIqE2sZkgskN/ggE2mE8S3gd8TqgSXes6sHxvWFD8lnDiTAtXSPR0c0O2RaIitg/2D5mm/DSyt1sX2L0iZmlbe4x521A5ULRm6mk5GilCLA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n/EdaD8Z; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n1fuKE+T;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n/EdaD8Z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bMM4p2Gdyz2xRt
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bMM4p0x8Gz2xQ6
 	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jun 2025 08:30:01 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 6540CA51FA0;
+	by tor.source.kernel.org (Postfix) with ESMTP id D48F8629E5;
 	Tue, 17 Jun 2025 22:29:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9FA9C4CEF4;
-	Tue, 17 Jun 2025 22:29:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EE0C4CEE3;
+	Tue, 17 Jun 2025 22:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1750199399;
-	bh=oCGOvLpHCL5W2ZkDZ9iwmUr1h9xflh/WVFokVkwiIvM=;
+	bh=Rnk2PwpW8Gu3iv/lRjgrxSUfjbCe7cqo5Kg5mCp+tec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1fuKE+TjvzwwIHuJptm/lhdma0jKIIADvDgWHzfPYyYFio+dkbFs7FIv9V1NUhzw
-	 eiB4FeGixs00EnV5P6vBG1ZeOH76sq/OJstlcRiC81xjcSu+QyeTS5HtsNpTbhD1at
-	 mEyLi4ZMek6U6bMjEcoNG+lkO/t5FqtznVB9HbCzmIXMT6+FqNqbsGpLx14LdkqHT4
-	 tw2DrPFc29LKD0L1H/UcE6TL5RIwAPuUyPQ+Z0E1MDEOM2gslkZUQbmNiPu8rm3LtW
-	 ykrREDXGIrMAvbjOjlF+Zbi2cIkZ1KBG6TsLvUm8eQdW6gYkspQHMrsewp9fC8QV0r
-	 hSkxiDSJr1Flg==
+	b=n/EdaD8Zyxy5dyg5bAmDEr6kkTLTwsspZ77aZlKeN6R2pbgomC606am8X+Ea7qgoq
+	 wfCxnVevVxbeN47HYmiSa7TebnsmsjlRcgR9BvQMMkeerD8+0V9escUwehU91SldVr
+	 Lca/VLgV4DTAmEx+PRc5EtEdTRpWy4Eeiiv38uYr9TPoNt9G9ZFPOR+FGRD7JPY8qO
+	 0uFe+DtlIYq3vTf8pcTNyyZ+8KVGBRAYoIYRU6bV8HU2zFEp5bcrWVDSqknZfyjJGn
+	 pcYAGbC7srBvU4mNdXrndtYTL5zhosqb2AaphueSD989/jFzD6EUiYP82nhKMKudWC
+	 /FNOfCxOanE6w==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-s390@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH 3/9] lib/crypto/mips: move arch/mips/lib/crypto/ to lib/crypto/mips/
-Date: Tue, 17 Jun 2025 15:27:20 -0700
-Message-ID: <20250617222726.365148-4-ebiggers@kernel.org>
+Subject: [PATCH 4/9] lib/crypto/powerpc: move arch/powerpc/lib/crypto/ to lib/crypto/powerpc/
+Date: Tue, 17 Jun 2025 15:27:21 -0700
+Message-ID: <20250617222726.365148-5-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250617222726.365148-1-ebiggers@kernel.org>
 References: <20250617222726.365148-1-ebiggers@kernel.org>
@@ -75,14 +75,14 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-Move the contents of arch/mips/lib/crypto/ into lib/crypto/mips/.
+Move the contents of arch/powerpc/lib/crypto/ into lib/crypto/powerpc/.
 
 The new code organization makes a lot more sense for how this code
 actually works and is developed.  In particular, it makes it possible to
@@ -98,108 +98,106 @@ into their new location but keeps them building the same way as before.
 Later commits will make the actual improvements to the way the
 arch-optimized code is integrated for each algorithm.
 
-arch/mips/lib/crypto/.gitignore is intentionally kept for now.  See
-https://lore.kernel.org/r/CAHk-=whu2fb22rEy6+oKx1-+NCHuWucZepvD0H2MD38DrJVKtg@mail.gmail.com/
-I'll remove it later after some time has passed.
-
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/mips/lib/Makefile                                     | 2 --
- lib/crypto/Kconfig                                         | 2 +-
- lib/crypto/Makefile                                        | 1 +
- lib/crypto/mips/.gitignore                                 | 2 ++
- {arch/mips/lib/crypto => lib/crypto/mips}/Kconfig          | 0
- {arch/mips/lib/crypto => lib/crypto/mips}/Makefile         | 0
- {arch/mips/lib/crypto => lib/crypto/mips}/chacha-core.S    | 0
- {arch/mips/lib/crypto => lib/crypto/mips}/chacha-glue.c    | 0
- {arch/mips/lib/crypto => lib/crypto/mips}/poly1305-glue.c  | 0
- {arch/mips/lib/crypto => lib/crypto/mips}/poly1305-mips.pl | 0
- 10 files changed, 4 insertions(+), 3 deletions(-)
- create mode 100644 lib/crypto/mips/.gitignore
- rename {arch/mips/lib/crypto => lib/crypto/mips}/Kconfig (100%)
- rename {arch/mips/lib/crypto => lib/crypto/mips}/Makefile (100%)
- rename {arch/mips/lib/crypto => lib/crypto/mips}/chacha-core.S (100%)
- rename {arch/mips/lib/crypto => lib/crypto/mips}/chacha-glue.c (100%)
- rename {arch/mips/lib/crypto => lib/crypto/mips}/poly1305-glue.c (100%)
- rename {arch/mips/lib/crypto => lib/crypto/mips}/poly1305-mips.pl (100%)
+ arch/powerpc/lib/Makefile                                       | 2 --
+ lib/crypto/Kconfig                                              | 2 +-
+ lib/crypto/Makefile                                             | 1 +
+ {arch/powerpc/lib/crypto => lib/crypto/powerpc}/Kconfig         | 0
+ {arch/powerpc/lib/crypto => lib/crypto/powerpc}/Makefile        | 0
+ .../powerpc/lib/crypto => lib/crypto/powerpc}/chacha-p10-glue.c | 0
+ .../powerpc/lib/crypto => lib/crypto/powerpc}/chacha-p10le-8x.S | 0
+ .../lib/crypto => lib/crypto/powerpc}/poly1305-p10-glue.c       | 0
+ .../lib/crypto => lib/crypto/powerpc}/poly1305-p10le_64.S       | 0
+ .../powerpc/lib/crypto => lib/crypto/powerpc}/sha256-spe-asm.S  | 0
+ {arch/powerpc/lib/crypto => lib/crypto/powerpc}/sha256.c        | 0
+ 11 files changed, 2 insertions(+), 3 deletions(-)
+ rename {arch/powerpc/lib/crypto => lib/crypto/powerpc}/Kconfig (100%)
+ rename {arch/powerpc/lib/crypto => lib/crypto/powerpc}/Makefile (100%)
+ rename {arch/powerpc/lib/crypto => lib/crypto/powerpc}/chacha-p10-glue.c (100%)
+ rename {arch/powerpc/lib/crypto => lib/crypto/powerpc}/chacha-p10le-8x.S (100%)
+ rename {arch/powerpc/lib/crypto => lib/crypto/powerpc}/poly1305-p10-glue.c (100%)
+ rename {arch/powerpc/lib/crypto => lib/crypto/powerpc}/poly1305-p10le_64.S (100%)
+ rename {arch/powerpc/lib/crypto => lib/crypto/powerpc}/sha256-spe-asm.S (100%)
+ rename {arch/powerpc/lib/crypto => lib/crypto/powerpc}/sha256.c (100%)
 
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index 9d75845ef78e1..9c024e6d5e54c 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 481f968e42c7b..27f8a01438603 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
 @@ -1,12 +1,10 @@
  # SPDX-License-Identifier: GPL-2.0
  #
- # Makefile for MIPS-specific library files..
+ # Makefile for ppc-specific library files..
  #
  
--obj-y	+= crypto/
+-obj-y += crypto/
 -
- lib-y	+= bitops.o csum_partial.o delay.o memcpy.o memset.o \
- 	   mips-atomic.o strncpy_user.o \
- 	   strnlen_user.o uncached.o
+ CFLAGS_code-patching.o += -fno-stack-protector
+ CFLAGS_feature-fixups.o += -fno-stack-protector
  
- obj-y			+= iomap_copy.o
+ CFLAGS_REMOVE_code-patching.o = $(CC_FLAGS_FTRACE)
+ CFLAGS_REMOVE_feature-fixups.o = $(CC_FLAGS_FTRACE)
 diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
-index fdeb91bf00328..43c44316fbbdc 100644
+index 43c44316fbbdc..f4f9a70dd0891 100644
 --- a/lib/crypto/Kconfig
 +++ b/lib/crypto/Kconfig
-@@ -194,11 +194,11 @@ source "lib/crypto/arm/Kconfig"
- endif
- if ARM64
- source "lib/crypto/arm64/Kconfig"
+@@ -197,11 +197,11 @@ source "lib/crypto/arm64/Kconfig"
  endif
  if MIPS
--source "arch/mips/lib/crypto/Kconfig"
-+source "lib/crypto/mips/Kconfig"
+ source "lib/crypto/mips/Kconfig"
  endif
  if PPC
- source "arch/powerpc/lib/crypto/Kconfig"
+-source "arch/powerpc/lib/crypto/Kconfig"
++source "lib/crypto/powerpc/Kconfig"
  endif
  if RISCV
+ source "arch/riscv/lib/crypto/Kconfig"
+ endif
+ if S390
 diff --git a/lib/crypto/Makefile b/lib/crypto/Makefile
-index 63ab907e8f53b..74331243b8c44 100644
+index 74331243b8c44..47c889b881b2a 100644
 --- a/lib/crypto/Makefile
 +++ b/lib/crypto/Makefile
-@@ -103,5 +103,6 @@ obj-$(CONFIG_CRYPTO_SELFTESTS)			+= simd.o
- obj-$(CONFIG_CRYPTO_LIB_SM3)			+= libsm3.o
+@@ -104,5 +104,6 @@ obj-$(CONFIG_CRYPTO_LIB_SM3)			+= libsm3.o
  libsm3-y					:= sm3.o
  
  obj-$(CONFIG_ARM) += arm/
  obj-$(CONFIG_ARM64) += arm64/
-+obj-$(CONFIG_MIPS) += mips/
-diff --git a/lib/crypto/mips/.gitignore b/lib/crypto/mips/.gitignore
-new file mode 100644
-index 0000000000000..0d47d4f21c6de
---- /dev/null
-+++ b/lib/crypto/mips/.gitignore
-@@ -0,0 +1,2 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+poly1305-core.S
-diff --git a/arch/mips/lib/crypto/Kconfig b/lib/crypto/mips/Kconfig
+ obj-$(CONFIG_MIPS) += mips/
++obj-$(CONFIG_PPC) += powerpc/
+diff --git a/arch/powerpc/lib/crypto/Kconfig b/lib/crypto/powerpc/Kconfig
 similarity index 100%
-rename from arch/mips/lib/crypto/Kconfig
-rename to lib/crypto/mips/Kconfig
-diff --git a/arch/mips/lib/crypto/Makefile b/lib/crypto/mips/Makefile
+rename from arch/powerpc/lib/crypto/Kconfig
+rename to lib/crypto/powerpc/Kconfig
+diff --git a/arch/powerpc/lib/crypto/Makefile b/lib/crypto/powerpc/Makefile
 similarity index 100%
-rename from arch/mips/lib/crypto/Makefile
-rename to lib/crypto/mips/Makefile
-diff --git a/arch/mips/lib/crypto/chacha-core.S b/lib/crypto/mips/chacha-core.S
+rename from arch/powerpc/lib/crypto/Makefile
+rename to lib/crypto/powerpc/Makefile
+diff --git a/arch/powerpc/lib/crypto/chacha-p10-glue.c b/lib/crypto/powerpc/chacha-p10-glue.c
 similarity index 100%
-rename from arch/mips/lib/crypto/chacha-core.S
-rename to lib/crypto/mips/chacha-core.S
-diff --git a/arch/mips/lib/crypto/chacha-glue.c b/lib/crypto/mips/chacha-glue.c
+rename from arch/powerpc/lib/crypto/chacha-p10-glue.c
+rename to lib/crypto/powerpc/chacha-p10-glue.c
+diff --git a/arch/powerpc/lib/crypto/chacha-p10le-8x.S b/lib/crypto/powerpc/chacha-p10le-8x.S
 similarity index 100%
-rename from arch/mips/lib/crypto/chacha-glue.c
-rename to lib/crypto/mips/chacha-glue.c
-diff --git a/arch/mips/lib/crypto/poly1305-glue.c b/lib/crypto/mips/poly1305-glue.c
+rename from arch/powerpc/lib/crypto/chacha-p10le-8x.S
+rename to lib/crypto/powerpc/chacha-p10le-8x.S
+diff --git a/arch/powerpc/lib/crypto/poly1305-p10-glue.c b/lib/crypto/powerpc/poly1305-p10-glue.c
 similarity index 100%
-rename from arch/mips/lib/crypto/poly1305-glue.c
-rename to lib/crypto/mips/poly1305-glue.c
-diff --git a/arch/mips/lib/crypto/poly1305-mips.pl b/lib/crypto/mips/poly1305-mips.pl
+rename from arch/powerpc/lib/crypto/poly1305-p10-glue.c
+rename to lib/crypto/powerpc/poly1305-p10-glue.c
+diff --git a/arch/powerpc/lib/crypto/poly1305-p10le_64.S b/lib/crypto/powerpc/poly1305-p10le_64.S
 similarity index 100%
-rename from arch/mips/lib/crypto/poly1305-mips.pl
-rename to lib/crypto/mips/poly1305-mips.pl
+rename from arch/powerpc/lib/crypto/poly1305-p10le_64.S
+rename to lib/crypto/powerpc/poly1305-p10le_64.S
+diff --git a/arch/powerpc/lib/crypto/sha256-spe-asm.S b/lib/crypto/powerpc/sha256-spe-asm.S
+similarity index 100%
+rename from arch/powerpc/lib/crypto/sha256-spe-asm.S
+rename to lib/crypto/powerpc/sha256-spe-asm.S
+diff --git a/arch/powerpc/lib/crypto/sha256.c b/lib/crypto/powerpc/sha256.c
+similarity index 100%
+rename from arch/powerpc/lib/crypto/sha256.c
+rename to lib/crypto/powerpc/sha256.c
 -- 
 2.49.0
 
