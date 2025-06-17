@@ -1,96 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-9416-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9417-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F1EADC69C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jun 2025 11:35:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0578EADC6B0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Jun 2025 11:36:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bM1tz433cz30Qb;
-	Tue, 17 Jun 2025 19:35:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bM1wl6LKRz30RK;
+	Tue, 17 Jun 2025 19:36:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750152923;
-	cv=none; b=OfdYm2T8gPrUve1YS6VEgzDN7stFf8d9CVKmvwXShJtVgQfLXrLySK9y4XGlsRk3V8hJ6IFaG0u/rOYUQABLPd/gqKhiPDHQ6+62URCpjY6on+PyXaJXFl6ZbGiW/jLngFqDnsr6pCoTo1vtEBmOkiJTmdXUCBGRFeM/nQFKjW/lWcZDrIyHxAF8S2wEM08Mn+wIm7yHugLfGHVwI2oMT49PUDkaIlo2XTR7Jf+D5y03xiVMVx0Y9upbhb3z88Hyz4yj5NnR7+gf6aZW+aRpa7dIDZ8lQA5Jj1gi5o0lsyA9/JVnLOC2eAyZ+uHvyH05KkKTDShqPFYJ8lnQhdIgmg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750153015;
+	cv=none; b=TJ/01SsFg+0BV+N6f3Ut11H9qnwPSXKgC45lo0MfmKXH5x7N2Tzpi386T1b/VJY2n2NepHFTjFLWAfsMmORJLGpjbC70QZHHGDcAvZiFB7rrHJwoFnnBCKkrVOurJMhGiJXqjYABAOrg7VoO/leCgVx7cVU/8B/eG+fyrC8itqZNV/7hkIag+IDVesHjKuW6wwrIkl+scQLZKw7JvWrndTZFugAa2ZMzK0dtFByu6MEqmFcbrEVDMp71DfpMPbPhFYCDpif4ngyiPYDl9pFtw4uQcpiAMBVFoZ06PGhp2apFok3Oz4zIetr2Vy6Q5VeUUFudp8wItcvq0kivL661/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750152923; c=relaxed/relaxed;
-	bh=sxNGLVvBoDB549OTJwTVX80yqxzNkqnyUmP8nOzpMNA=;
+	t=1750153015; c=relaxed/relaxed;
+	bh=QeaQyg08N2bK9CSAL6amctKGL4o8t+/yBMjOyZjIdjM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eFDcgBcgV5EuAIyN9fstBrNxKxtjtHKUypGfroL+l6KZuJIz7P3Bsb61R5ZOaWCSnVQZ5JiZTmRMm1xyFuBWuoWxRyhRiiWNJZaQxI4ZdgKS0tqrV4AZghO3LvlIKYDrJV9nidFgxgM8zo3V/v8M0sNjuTYPOO1QWuLW8uc1HZQzltdR4m7t8ncsRNDIOmRClHOlHL5sNOoVE+BfDtK7O5QUa/tmORygJe0ebEIdXXuVF6CM3XHcDv3hjhiHDbjeBCnOdDkYgtgtgVXAZ4rhzwFp3IscNokysqzQNA+TZ9XM/qqlgHDdytpbcEBYIYJWTUJihttO7gPIFIQJIzt9Yw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AvQaWm3H; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AvQaWm3H; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=jbTf3vnMPpGHN7S3SL4e4mjjN8bSeS9d/7n6u5V0HAvIKeTyqu7u111dtSEAzN5zSUhII2Lc8WL2wPa9VbNRSq6RGRx1i90zOsibQ5zrQ4/9IF7dS/k1pwBoa3/PTrWkgdTCfQVHemavxUz0z66ejRgEVm3J0jP98DyyEBzh6pZ+W6qQTDBigTsCRBPw5b6+Da4Bt8GdH17ctmLdoAXK34H+2l9Un6c1lfxn3gVX0jFKs7SWNaZxiFmSZxofoNCEnC/HYMb+kKuukHI9ZuBGdt5n10flNh/zIWyF/7fa3GlgtXF281SFecH5XCZQIgouQkRze1sSNT2AdqyHDN2lxQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZVyyB7X+; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZVyyB7X+; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AvQaWm3H;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AvQaWm3H;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZVyyB7X+;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZVyyB7X+;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bM1ty5FPwz30P3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jun 2025 19:35:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bM1wl0JRGz30RJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jun 2025 19:36:54 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750152920;
+	s=mimecast20190719; t=1750153011;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sxNGLVvBoDB549OTJwTVX80yqxzNkqnyUmP8nOzpMNA=;
-	b=AvQaWm3Ht43NUfF8OAsJlinLYj89bH5Eq8bxCkS4mbxA9H1BceW2396vZ1qDdy45emtXj5
-	qpqEv05cJWHMFG0aICNwX9jXR1/EZt5eE5lq6cbzeoZSNA6JVBLDpPeGR17emuziG4LTJV
-	MnQMM//W58fqwMoG51P8ZntcvTxrYQA=
+	bh=QeaQyg08N2bK9CSAL6amctKGL4o8t+/yBMjOyZjIdjM=;
+	b=ZVyyB7X+jts3HvfhVYUcuDfffIBQzps7eagy/s0Whi2aKX9fYTYb2bAAngj72Hlp7Xj1dW
+	E0od7g6xKFrC07YohibICkHczlLkjfxRg5wLLcplrKyiyDrmqeGxOqOn+MazLRkVLYjDzS
+	p3c/3Je5c4hfY3bdvp+7QBSuI+ldXC4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750152920;
+	s=mimecast20190719; t=1750153011;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=sxNGLVvBoDB549OTJwTVX80yqxzNkqnyUmP8nOzpMNA=;
-	b=AvQaWm3Ht43NUfF8OAsJlinLYj89bH5Eq8bxCkS4mbxA9H1BceW2396vZ1qDdy45emtXj5
-	qpqEv05cJWHMFG0aICNwX9jXR1/EZt5eE5lq6cbzeoZSNA6JVBLDpPeGR17emuziG4LTJV
-	MnQMM//W58fqwMoG51P8ZntcvTxrYQA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=QeaQyg08N2bK9CSAL6amctKGL4o8t+/yBMjOyZjIdjM=;
+	b=ZVyyB7X+jts3HvfhVYUcuDfffIBQzps7eagy/s0Whi2aKX9fYTYb2bAAngj72Hlp7Xj1dW
+	E0od7g6xKFrC07YohibICkHczlLkjfxRg5wLLcplrKyiyDrmqeGxOqOn+MazLRkVLYjDzS
+	p3c/3Je5c4hfY3bdvp+7QBSuI+ldXC4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-RDnnJU1gNEOdTU42nEw2bw-1; Tue, 17 Jun 2025 05:35:18 -0400
-X-MC-Unique: RDnnJU1gNEOdTU42nEw2bw-1
-X-Mimecast-MFC-AGG-ID: RDnnJU1gNEOdTU42nEw2bw_1750152918
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45320bfc18dso3585945e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jun 2025 02:35:18 -0700 (PDT)
+ us-mta-537-BHh9whHFOdGgqgd70XXREA-1; Tue, 17 Jun 2025 05:36:50 -0400
+X-MC-Unique: BHh9whHFOdGgqgd70XXREA-1
+X-Mimecast-MFC-AGG-ID: BHh9whHFOdGgqgd70XXREA_1750153009
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-450d9f96f61so43242585e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Jun 2025 02:36:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750152917; x=1750757717;
+        d=1e100.net; s=20230601; t=1750153009; x=1750757809;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=sxNGLVvBoDB549OTJwTVX80yqxzNkqnyUmP8nOzpMNA=;
-        b=Cwtt/2SY4HF/JrKlsHLYXi47vtcySS6C1T/GqXVDTui0GVJDX21Ev0/TDih0Jj1ssE
-         9f9BN1pHvlRLpiXzpuJAFGNAXE1yyX3p4pUeiCes4l8fi5aQ0nM+wBfG41h/rntcvSLH
-         FKSsULeqVofVqOAK1F/03lnIDOYSwRHtNcqT8QKNQGi9xSMwa+NqHJrvVf4EP7adcyd5
-         aCidV3sezpNbKC0ydQiNdVNO0ZMoKi1VAm7J41VmK6cupxmrkTAa0JOOps7kWvGwcDL2
-         S4PJ8MJxgWaEYKwSfAknX6EGLH31v7lCBAAXXM+k9kPa5PyJwb8P/yl4vLMJWXAl+l/j
-         rkhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4D/9d9oa81A4SS8n1uFYR9bPzDQUSo4xX94ZNniudIJo/429ZGyQRT8M4b/cfm0g/xvVhNS70JMshBv8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxWG8ZWEn6hf9zj7d1JR+T4nqWxeQylIu75VLWaa2qql9rOV3dy
-	oPVWc5K8nK3ltLL5id7HxPfJdpeakjOxsx7WvUtZIsIZg9pKPJq0O4yit505vN2I0ENJMZESJ51
-	b1YwXhN+RxtBkwGlCuPZ29ArDWR3hSYbJu79lsg5tnT9FnZbmPS8guoe0jVS+likCuvM=
-X-Gm-Gg: ASbGncsLEIw9DOLtxRrr0JDKq7LxztC9OHBWs+1phqMe5Uo4rgvkQbhPIGffcAa9lKd
-	vOCMq73XKT7HYx7ZppKUSwsBx3a3MfB5xu6X1VQ8idyrMBQV93nZTi3R1reO1t9kOE1sa1rQU2E
-	a3c9xWuO/KSKg1n/ZapIbUW/i7zY/2hCF0szq01g1fIkR/zTK1ZUddwqVe9RtBtv6kiA8TLxkrx
-	TD7j5mExsQ1cLXwVUNiYHCKrp/Q3sTO/mH4TePbp3Ka3eJBI8KB+H2+TwRUXm35j0ek3PheEn7b
-	7E5uCyFVWCk4BvkVIBlcwgtNyPOuiD8dN7ZGTquyTNopJncOuzKdbK5aS9m1aJoQcPC2Kt/r+73
-	PG8E2Tids7MN+v3CW48Su3U1zR+Ea88ch62ego8qhdayWT3U=
-X-Received: by 2002:a05:600c:64c8:b0:442:d9fb:d9a5 with SMTP id 5b1f17b1804b1-4533c92e02dmr116197025e9.9.1750152917441;
-        Tue, 17 Jun 2025 02:35:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEit+yPVLJbHP2/NKoMhgu9bHwQKBDL8e7RYDOzVbEtAUjPvQmNHH9hZ4psmoetdsF5NGVCyg==
-X-Received: by 2002:a05:600c:64c8:b0:442:d9fb:d9a5 with SMTP id 5b1f17b1804b1-4533c92e02dmr116195515e9.9.1750152915523;
-        Tue, 17 Jun 2025 02:35:15 -0700 (PDT)
+        bh=QeaQyg08N2bK9CSAL6amctKGL4o8t+/yBMjOyZjIdjM=;
+        b=VM1xkX5oUcMwL/FCshYq3Z4cleMfjRlEUGBcMPCeB7e9NNo2aJaxpejPp70IGZrJRz
+         T6kfv6N8oSGJmdiUXsZ0joO9Y/MJQe9KDzR9LwRjbPpoh2Ci34prvQ3/hAxSwXosop0O
+         4PM24BJvPt8aKO3R3zUM2L+peP4oUg/GR1nwRph3TUlofgl/r324eJ/k+n7U6ikEYuNj
+         KT0bs0h1G9z1yKAJ0HsoThaNNI5JAlOn+hUEdLc1TO6FANrI1uQA3YcchkyHDKQVWgQT
+         vep5dMvYYJURL/vN7RQs7u4s3wDkBkEnzrt2t8X41mCti2AcbM3NDpAgV1dbcC4mJ+Y/
+         WCig==
+X-Forwarded-Encrypted: i=1; AJvYcCWswKoZ5xQGlAMct18wyy+Hg4u2oO7aabkvL5/eCmXxODARu71pW17bPYw29PmQfRmC7OZEYguIsOWKgRo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzPBkwfZ+OYXyQj/QdY90iRyeLFcxW+B5mi50/omrcAsQ2tPDpA
+	rvH/mgLwt1erwYjXdKT4QfWQxUVunUoRdek+93eDVPPCs4r3uWRQfnwsflZKXVb0TWh4xlzV45B
+	Ed47WWe9wR8sQ9G/3plHAvsPp2QE4SAoK7qlyMexBtOqwjOAvZjNQSezMUuSXrQx0HvY=
+X-Gm-Gg: ASbGncujScUMq1J7H7HklwKjGOPkhMKJw4ttOV0a8PlYTrcRb1Zo0GfVfhG9XbGgIFG
+	7LtE5LuYmbuHjekWEXeZGXrU+yVVThydIVuH0GdU56rq0u1ZVvlTWVJKe+/zwnlhbeu9HdyIYc7
+	KgHKC21f7wc9JdIBxiQgPVeUmuoXVd4d/QlcSnHarYa0leWvMljO7czJY2SGG8/VYFF3oM6d4QK
+	wIcJG5/RxyyjbCz/ReISDHBYOV1FsFOgeaDT737PupXiQDWsvdfSO0obHrE+65pFLtR9Ac5NtPj
+	xZuILzZm8ZVCVhUPW5UoLVw5QCz2Wz8hNhuZXX7alv9/1SiAjbgkHXjDss7Tak1LPBoVbWkoHnG
+	zSrB8/JqtB6JCw2SlyQjMtgw5NhjxoXTYMIi5ACJ/hPhapkc=
+X-Received: by 2002:a05:600c:6205:b0:441:a715:664a with SMTP id 5b1f17b1804b1-4533caa628fmr107487145e9.20.1750153008754;
+        Tue, 17 Jun 2025 02:36:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHiGU6rdJOxze5zntN178WfWP080iOaFrEHA392zHARPkcDs+AZMCwZ9uBzuwzj+r+ddywNSA==
+X-Received: by 2002:a05:600c:6205:b0:441:a715:664a with SMTP id 5b1f17b1804b1-4533caa628fmr107486885e9.20.1750153008407;
+        Tue, 17 Jun 2025 02:36:48 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f31:700:3851:c66a:b6b9:3490? (p200300d82f3107003851c66ab6b93490.dip0.t-ipconnect.de. [2003:d8:2f31:700:3851:c66a:b6b9:3490])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a57b15015fsm7801901f8f.95.2025.06.17.02.35.14
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a568a54a36sm13644198f8f.15.2025.06.17.02.36.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 17 Jun 2025 02:35:15 -0700 (PDT)
-Message-ID: <69bea6b9-e9e7-4d17-843c-001029d4f2c2@redhat.com>
-Date: Tue, 17 Jun 2025 11:35:13 +0200
+        Tue, 17 Jun 2025 02:36:47 -0700 (PDT)
+Message-ID: <911e7b40-e30e-477f-a4e5-df34df1d0e14@redhat.com>
+Date: Tue, 17 Jun 2025 11:36:46 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,7 +105,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/14] mm: Remove callers of pfn_t functionality
+Subject: Re: [PATCH v2 11/14] mm: Remove devmap related functions and page
+ table bits
 To: Alistair Popple <apopple@nvidia.com>, akpm@linux-foundation.org
 Cc: linux-mm@kvack.org, gerald.schaefer@linux.ibm.com,
  dan.j.williams@intel.com, jgg@ziepe.ca, willy@infradead.org,
@@ -117,9 +118,11 @@ Cc: linux-mm@kvack.org, gerald.schaefer@linux.ibm.com,
  linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
  linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
  linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org, John@Groves.net,
- m.szyprowski@samsung.com, Jason Gunthorpe <jgg@nvidia.com>
+ m.szyprowski@samsung.com, Will Deacon <will@kernel.org>,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
+ Jason Gunthorpe <jgg@nvidia.com>
 References: <cover.8d04615eb17b9e46fc0ae7402ca54b69e04b1043.1750075065.git-series.apopple@nvidia.com>
- <657be8fef1f0d15c377ad3c420d77ca4db918013.1750075065.git-series.apopple@nvidia.com>
+ <bf6221bf1e3a290845417a60c27cf301203fd99c.1750075065.git-series.apopple@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -166,13 +169,13 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <657be8fef1f0d15c377ad3c420d77ca4db918013.1750075065.git-series.apopple@nvidia.com>
+In-Reply-To: <bf6221bf1e3a290845417a60c27cf301203fd99c.1750075065.git-series.apopple@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 9IFFcMZDUr8OTY-kaS0irgT_NuxNNhd8-BgGB9ToSDs_1750152918
+X-Mimecast-MFC-PROC-ID: dvaduMU_3oVs2dB2WW1hYpbo8TKAL52tZ-f3eYKHtqk_1750153009
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
 	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
@@ -180,70 +183,17 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 16.06.25 13:58, Alistair Popple wrote:
-> All PFN_* pfn_t flags have been removed. Therefore there is no longer
-> a need for the pfn_t type and all uses can be replaced with normal
-> pfns.
+> Now that DAX and all other reference counts to ZONE_DEVICE pages are
+> managed normally there is no need for the special devmap PTE/PMD/PUD
+> page table bits. So drop all references to these, freeing up a
+> software defined page table bit on architectures supporting it.
 > 
 > Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Acked-by: Will Deacon <will@kernel.org> # arm64
+> Suggested-by: Chunyan Zhang <zhang.lyra@gmail.com>
+> Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
 > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> 
 > ---
-> 
-> Changes since v1:
-> 
->   - Rebased on David's cleanup[1]
-> 
-> [1] https://lore.kernel.org/linux-mm/20250611120654.545963-1-david@redhat.com/
-> ---
->   arch/x86/mm/pat/memtype.c                |  1 +-
->   drivers/dax/device.c                     | 23 +++----
->   drivers/dax/hmem/hmem.c                  |  1 +-
->   drivers/dax/kmem.c                       |  1 +-
->   drivers/dax/pmem.c                       |  1 +-
->   drivers/dax/super.c                      |  3 +-
->   drivers/gpu/drm/exynos/exynos_drm_gem.c  |  1 +-
->   drivers/gpu/drm/gma500/fbdev.c           |  3 +-
->   drivers/gpu/drm/i915/gem/i915_gem_mman.c |  1 +-
->   drivers/gpu/drm/msm/msm_gem.c            |  1 +-
->   drivers/gpu/drm/omapdrm/omap_gem.c       |  6 +--
->   drivers/gpu/drm/v3d/v3d_bo.c             |  1 +-
->   drivers/hwtracing/intel_th/msu.c         |  3 +-
->   drivers/md/dm-linear.c                   |  2 +-
->   drivers/md/dm-log-writes.c               |  2 +-
->   drivers/md/dm-stripe.c                   |  2 +-
->   drivers/md/dm-target.c                   |  2 +-
->   drivers/md/dm-writecache.c               | 11 +--
->   drivers/md/dm.c                          |  2 +-
->   drivers/nvdimm/pmem.c                    |  8 +--
->   drivers/nvdimm/pmem.h                    |  4 +-
->   drivers/s390/block/dcssblk.c             |  9 +--
->   drivers/vfio/pci/vfio_pci_core.c         |  5 +-
->   fs/cramfs/inode.c                        |  5 +-
->   fs/dax.c                                 | 50 +++++++--------
->   fs/ext4/file.c                           |  2 +-
->   fs/fuse/dax.c                            |  3 +-
->   fs/fuse/virtio_fs.c                      |  5 +-
->   fs/xfs/xfs_file.c                        |  2 +-
->   include/linux/dax.h                      |  9 +--
->   include/linux/device-mapper.h            |  2 +-
->   include/linux/huge_mm.h                  |  6 +-
->   include/linux/mm.h                       |  4 +-
->   include/linux/pfn.h                      |  9 +---
->   include/linux/pfn_t.h                    | 85 +-------------------------
->   mm/debug_vm_pgtable.c                    |  1 +-
->   mm/huge_memory.c                         | 21 +++---
->   mm/memory.c                              | 31 ++++-----
->   mm/memremap.c                            |  1 +-
->   mm/migrate.c                             |  1 +-
->   tools/testing/nvdimm/pmem-dax.c          |  6 +-
->   tools/testing/nvdimm/test/iomap.c        |  7 +--
->   tools/testing/nvdimm/test/nfit_test.h    |  1 +-
->   43 files changed, 109 insertions(+), 235 deletions(-)
->   delete mode 100644 include/linux/pfn_t.h
-> 
-
-Lovely
 
 Acked-by: David Hildenbrand <david@redhat.com>
 
