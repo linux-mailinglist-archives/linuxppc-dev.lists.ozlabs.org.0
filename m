@@ -1,64 +1,105 @@
-Return-Path: <linuxppc-dev+bounces-9511-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9512-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56854ADF78D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jun 2025 22:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E69CADF88D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jun 2025 23:17:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bMw5N6Kfpz3bnc;
-	Thu, 19 Jun 2025 06:17:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bMxQV1dY9z30Tf;
+	Thu, 19 Jun 2025 07:17:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750277848;
-	cv=none; b=LSqGgcneFLGZ6o/yqJ7OtXP9dPODNmQiGcm8LL0SCz4u778Jc5u6PCwd+ETnY/RSTZ5FcoFiH9MEvekfclgp/CeWtL6C+mll7hQVfQZVBn/qd6/DBNkuEWorDQ/+hoLGxu1YCK7s8gYhdBv7XPEAitvl2pSYdXGiEzcI86hvN8yTwcMWJvu0NmEW5ggJS+bnPklVI40GeXyD4Nhw7X9C316hneD42+jdQUgFGNVl7gVkxA5IGPCvVBp1KvgUXT9OVPIBQ8sJNq0/ueFsl1IYbIJ8cRDMzgVhZKnLQ96xICTHCthfKqPC7f7g0jCf9arY1KqgoI5JRmvtvMgmdt5nKg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750281442;
+	cv=none; b=VIKUhqApROKtmkyDOEcKi/+GPAB8RQbcCO+s55B/pBbRwo1noOuScJkBk4f89tb8Eu80sg1Bt2I5N66dmOQbGT7Clp44oL24zQJMteAmNb/Ej613m00rzmDyVj0b9ESe+fU0jnJdEu5saP1fxsKEZWt15NXZmdYRQFo/8RF3FscApOpyCBgEnJSGF1iVBxdciUyw4GPoRvJ6UdnjD+YlA3h2CqKV7lwYjdxoRnj3ClZ3CExbLnpLjWdZEJ9gYPcpHDloWCwzJOMgKONUoaxLc8D1+B05migiEGYBnG67lDQ8l6aiipl+iOdVL9Ji7FwS90O8FIaNkhOh5GHn0mL+iQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750277848; c=relaxed/relaxed;
-	bh=KX/VNcwEknSNnHQK8aKlcyRFXsNv13hLiK2kDNiE/Ys=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=MjiN1RXezTaxQKBGMq+U2Fj+TSYcfApYwcNAvM0Z7oAjgMB4sWa3dAE1xHheqFG+P1ADht+mKTnNMh2i6oDhFGIb6Rbs+Q7eSYL9nzYNO0gS0MfYX6ZYRCMUdHZgQ7yioVtjB1izeTRFavR5/jVw0/4XwXOilN0No1n1J2/pk+t89UWJnSXXuOeV1M/jw0FTFoMvoaLnFTDXg0DqTiNZ7ckQbLPpyutCNZxisFENzhL+jMdQSWB0R6ZlGYyE3iIX9mmu9SHoJEE7szRiEmcvc8S83VWo/95EmRWnYCr2mSs4SsxqMjcVT4Gb40DkcSwiaAWVa92FrvqR+n5DWJX1Dg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FOARzafB; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1750281442; c=relaxed/relaxed;
+	bh=NKT1ifgDcehUIE1HAe53SQPyP8IuUX2gapbhAhmqJBM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J0zXonzBcph2G3CWH6p2rdgJOd8WIGUMjBRlm1BXy9IFq8cdPGlm4LTlE3BnRyJHDqRVESY3jxa/DYLGwVp2VU/dhwCSFOsDvZ7hXOTi25UtpTUXL6willPnqBi73jC1NJvBS0KgrP+HViVU69ElJSWNNnH5XzBi6efCyecQLxt6O17pJFX7WX2rSNxDOuchGZrdmwPfPjOpkQbHt1p4YJ8+8m70kksgmX+fT0ucIEkUElULOOc5Ch4hzRTtW7dRH1OHgGdt65wUeKPWvBGZrp9LyC8PJ+hftsNYyAd5rYU519pRDnA+rjyTW9199+SxnvAiit224KwP7J3b0Y21Jg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xalkmmc9; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FOARzafB;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xalkmmc9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bMw5M5cCJz3bn4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 06:17:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bMxQT0Ybbz30TY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 07:17:20 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 53D2B5C6214;
-	Wed, 18 Jun 2025 20:15:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB27C4CEE7;
-	Wed, 18 Jun 2025 20:17:24 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 2AD4B5C6501;
+	Wed, 18 Jun 2025 21:15:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5740BC4CEEF;
+	Wed, 18 Jun 2025 21:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750277844;
-	bh=xt8r64iKztaGluvYHQ+nEmHkrlN0zD8k22lRNBw+eZk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=FOARzafBQCH4mhbZUSX3MH98F55tLlayT4MS64DrQ26ru2cMm/M+yF+FscGystMAK
-	 0CQma9JT95xIs7U+K1HMp/Z/U9ZfclyD935P5ZdedHfyuuVMdWfGxcjMxVNDL3VZtq
-	 kLYIts2/TIO9aXT4ITDKOIVP7tvcnQnttyhvDkyBX0uRIX6cu8hEVbW11K6/nJVLXU
-	 TYCHVddc6BvT/c1MJHUMD20a7ia6cvoqPypNfuKOeSqB50zMSq1UHzbSgjEKU5yZEN
-	 /uBRVpWVWLcm5YfhOu/Ug21FEc722Jpq7hOGt8MX4XOpYNYWhXfg3DIgM4PzHSPIPD
-	 tf7OpPfRTsrcQ==
-Date: Wed, 18 Jun 2025 15:17:22 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Timothy Pearson <tpearson@raptorengineering.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	linux-pci <linux-pci@vger.kernel.org>,
+	s=k20201202; t=1750281438;
+	bh=KOEdlJiFTe+BKwO/glGv/UDTx5u3EWhGFs42UjnrPvk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xalkmmc9lBVHnHqvSKVAyn2X9Z/p24HQJAE1EnfIInP6cyPmXNiIiZdgA4Vz9P0Ka
+	 vlTMUlRBiP7lfkGLnRMehreY/IaGQQL0FHJ0jyGMaOziObPyRrFqkWMd4h58jcOoBJ
+	 E50oJhdMsrxnP66TK66u/iwiozRJcVrd8WfoZhVD6YN8Y6rpYOI+opR+fbMZxSWahP
+	 NQfPVwI/LPEodjKco+bjeFFspeachc2uyBv+g/pACl5ktiuPgBDNxZxHulA/BmhDb8
+	 k96qY8/zzGBB/NbudKj3nDtjRMaCjMbPEdYGJlexw5KuiI6+B5D/hOnEC97J15D3wl
+	 CGmTR+mfC8Lcg==
+Date: Wed, 18 Jun 2025 14:17:17 -0700
+From: Kees Cook <kees@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	christophe leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH v2 2/6] pci/hotplug/pnv_php: Work around switches with
- broken
-Message-ID: <20250618201722.GA1220739@bhelgaas>
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-sgx@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	nvdimm@lists.linux.dev, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
+ consistently
+Message-ID: <202506181416.A32D378A6@keescook>
+References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
+ <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,55 +115,41 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1957898084.1311382.1750276204022.JavaMail.zimbra@raptorengineeringinc.com>
+In-Reply-To: <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Jun 18, 2025 at 02:50:04PM -0500, Timothy Pearson wrote:
-> ----- Original Message -----
-> > From: "Bjorn Helgaas" <helgaas@kernel.org>
-> > To: "Timothy Pearson" <tpearson@raptorengineering.com>
-> > Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel" <linux-kernel@vger.kernel.org>, "linux-pci"
-> > <linux-pci@vger.kernel.org>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>,
-> > "christophe leroy" <christophe.leroy@csgroup.eu>, "Naveen N Rao" <naveen@kernel.org>, "Bjorn Helgaas"
-> > <bhelgaas@google.com>, "Shawn Anastasio" <sanastasio@raptorengineering.com>, "Lukas Wunner" <lukas@wunner.de>
-> > Sent: Wednesday, June 18, 2025 2:44:00 PM
-> > Subject: Re: [PATCH v2 2/6] pci/hotplug/pnv_php: Work around switches with broken
+On Wed, Jun 18, 2025 at 08:42:53PM +0100, Lorenzo Stoakes wrote:
+> The core kernel code is currently very inconsistent in its use of
+> vm_flags_t vs. unsigned long. This prevents us from changing the type of
+> vm_flags_t in the future and is simply not correct, so correct this.
+
+Thank you for doing this!
+
 > 
-> > [+cc Lukas, pciehp expert]
-> > 
-> > On Wed, Jun 18, 2025 at 11:56:54AM -0500, Timothy Pearson wrote:
-> >>  presence detection
-> > 
-> > (subject/commit wrapping seems to be on all of these patches)
-> > 
-> >> The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
-> >> was observed to incorrectly assert the Presence Detect Set bit in its
-> >> capabilities when tested on a Raptor Computing Systems Blackbird system,
-> >> resulting in the hot insert path never attempting a rescan of the bus
-> >> and any downstream devices not being re-detected.
-> > 
-> > Seems like this switch supports standard PCIe hotplug?  Quite a bit of
-> > this driver looks similar to things in pciehp.  Is there some reason
-> > we can't use pciehp directly?  Maybe pciehp could work if there were
-> > hooks for the PPC-specific bits?
+> While this results in rather a lot of churn, it is a critical pre-requisite
+> for a future planned change to VMA flag type.
 > 
-> While that is a good long term goal that Raptor is willing to work
-> toward, it is non-trivial and will require buy-in from other
-> stakeholders (e.g. IBM).  If practical, I'd like to get this series
-> merged first, to fix the broken hotplug on our hardware that is
-> deployed worldwide, then in parallel see what can be done to merge
-> PowerNV support into pciehp.  Would that work?
+> Additionally, update VMA userland tests to account for the changes.
+> 
+> To make review easier and to break things into smaller parts, driver and
+> architecture-specific changes is left for a subsequent commit.
+> 
+> The code has been adjusted to cascade the changes across all calling code
+> as far as is needed.
+> 
+> We will adjust architecture-specific and driver code in a subsequent patch.
+> 
+> Overall, this patch does not introduce any functional change.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  fs/exec.c                        |   2 +-
 
-Yeah, it wouldn't make sense to switch horses at this stage.
+Acked-by: Kees Cook <kees@kernel.org>
 
-I guess I was triggered by this patch, which seems to be a workaround
-for a defect in a device that is probably also used on non-PPC
-systems, and pciehp would need a similar workaround.  But I guess you
-go on to say that pciehp already does something similar, so it guess
-it's already covered.
-
-Bjorn
+-- 
+Kees Cook
 
