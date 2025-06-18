@@ -1,105 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-9512-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9513-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E69CADF88D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jun 2025 23:17:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FE0ADF984
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 00:40:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bMxQV1dY9z30Tf;
-	Thu, 19 Jun 2025 07:17:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bMzGf30gFz2yKq;
+	Thu, 19 Jun 2025 08:40:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750281442;
-	cv=none; b=VIKUhqApROKtmkyDOEcKi/+GPAB8RQbcCO+s55B/pBbRwo1noOuScJkBk4f89tb8Eu80sg1Bt2I5N66dmOQbGT7Clp44oL24zQJMteAmNb/Ej613m00rzmDyVj0b9ESe+fU0jnJdEu5saP1fxsKEZWt15NXZmdYRQFo/8RF3FscApOpyCBgEnJSGF1iVBxdciUyw4GPoRvJ6UdnjD+YlA3h2CqKV7lwYjdxoRnj3ClZ3CExbLnpLjWdZEJ9gYPcpHDloWCwzJOMgKONUoaxLc8D1+B05migiEGYBnG67lDQ8l6aiipl+iOdVL9Ji7FwS90O8FIaNkhOh5GHn0mL+iQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.45.49.224
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750252267;
+	cv=none; b=Y7GOwZDsZm/j1GNv7vNhk+sXGOJV3uS0+8LBt4G/UBebv9vow0GW3Ap8NoqW5+5I9JVaOEGeKlOWuUlC87uMuCDzuDzL8r0PiFZ5LMgi7jmP2eOlw63cfBGJQcEaR2lrj5KVK51KiKGkaQgwzNJBGMUbEIzdLjMw/tUOyuiFKfx8z4wVmbg33SYBojTqzVixT+LfWFHOcaAnCb+kp5iJYuBXuAGu2CdA1hdIfSlq2AgnuaJbfDTGb8VAu0VBqj6y2dLBCpssyMD5ITb7XzobW9qjU5k8vYluBya/vTyF98y0fXo6hxXJzVvFwRrWR6MnEQIQyNMAkjILdzdWBOX7Fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750281442; c=relaxed/relaxed;
-	bh=NKT1ifgDcehUIE1HAe53SQPyP8IuUX2gapbhAhmqJBM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J0zXonzBcph2G3CWH6p2rdgJOd8WIGUMjBRlm1BXy9IFq8cdPGlm4LTlE3BnRyJHDqRVESY3jxa/DYLGwVp2VU/dhwCSFOsDvZ7hXOTi25UtpTUXL6willPnqBi73jC1NJvBS0KgrP+HViVU69ElJSWNNnH5XzBi6efCyecQLxt6O17pJFX7WX2rSNxDOuchGZrdmwPfPjOpkQbHt1p4YJ8+8m70kksgmX+fT0ucIEkUElULOOc5Ch4hzRTtW7dRH1OHgGdt65wUeKPWvBGZrp9LyC8PJ+hftsNYyAd5rYU519pRDnA+rjyTW9199+SxnvAiit224KwP7J3b0Y21Jg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xalkmmc9; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1750252267; c=relaxed/relaxed;
+	bh=2lBBS1ZrW6e6v9E9I/MrXc0Uqoja4x8Z7lIPN2cz/fE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mOPIpGZ/xt3+AvdMPTAzyG6rxTNenb5m32gExRdzhwtzeblHqNyaBVVehUxHm4FDXPLytjTtMlqMCHi3qy+A/XWXvVe5P58aT9AuGoTsWXjZHTLBgAGGL+e+ARMBTE+707zd14qZLTvQ0Tzb2CnFnOzhKSmEuSdWd3KUIghTGLYSm4dYG0lJfYfweJAKJ2fKqz8VVGbTSFs826tcjrRtoleECUSNhDYEY8x4q2Wlr1LWTW5+yVUGKv15DadgQwUjyQUB8kvSgaJvg3NWIvI1T+nPpH8QK/mQhotUONsUyW0Gbm/EJx7ARmDzDi0I/aRVujZSVItzgF3Zf4V3Ou3xaQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=94dfqe.com; dkim=pass (2048-bit key; unprotected) header.d=94dfqe.com header.i=@94dfqe.com header.a=rsa-sha256 header.s=dkim header.b=LyGCerGf; dkim-atps=neutral; spf=pass (client-ip=147.45.49.224; helo=mail.94dfqe.com; envelope-from=no-reply@94dfqe.com; receiver=lists.ozlabs.org) smtp.mailfrom=94dfqe.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=94dfqe.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xalkmmc9;
+	dkim=pass (2048-bit key; unprotected) header.d=94dfqe.com header.i=@94dfqe.com header.a=rsa-sha256 header.s=dkim header.b=LyGCerGf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=94dfqe.com (client-ip=147.45.49.224; helo=mail.94dfqe.com; envelope-from=no-reply@94dfqe.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1291 seconds by postgrey-1.37 at boromir; Wed, 18 Jun 2025 23:11:04 AEST
+Received: from mail.94dfqe.com (unknown [147.45.49.224])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bMxQT0Ybbz30TY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 07:17:20 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 2AD4B5C6501;
-	Wed, 18 Jun 2025 21:15:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5740BC4CEEF;
-	Wed, 18 Jun 2025 21:17:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750281438;
-	bh=KOEdlJiFTe+BKwO/glGv/UDTx5u3EWhGFs42UjnrPvk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xalkmmc9lBVHnHqvSKVAyn2X9Z/p24HQJAE1EnfIInP6cyPmXNiIiZdgA4Vz9P0Ka
-	 vlTMUlRBiP7lfkGLnRMehreY/IaGQQL0FHJ0jyGMaOziObPyRrFqkWMd4h58jcOoBJ
-	 E50oJhdMsrxnP66TK66u/iwiozRJcVrd8WfoZhVD6YN8Y6rpYOI+opR+fbMZxSWahP
-	 NQfPVwI/LPEodjKco+bjeFFspeachc2uyBv+g/pACl5ktiuPgBDNxZxHulA/BmhDb8
-	 k96qY8/zzGBB/NbudKj3nDtjRMaCjMbPEdYGJlexw5KuiI6+B5D/hOnEC97J15D3wl
-	 CGmTR+mfC8Lcg==
-Date: Wed, 18 Jun 2025 14:17:17 -0700
-From: Kees Cook <kees@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-sgx@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	nvdimm@lists.linux.dev, linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
- consistently
-Message-ID: <202506181416.A32D378A6@keescook>
-References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
- <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bMkdN0QhBz2yPS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jun 2025 23:11:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; d=94dfqe.com; s=dkim; c=relaxed/relaxed;
+	bh=2lBBS1ZrW6e6v9E9I/MrXc0Uqoja4x8Z7lIPN2cz/fE=;
+	h=from:to:subject:date:message-id:sender; t=1750250966;
+	b=LyGCerGfOd0SRnQuX2L2qinmxCCQfeekur9myrtgPimJ1VTRru4lvU2DPGqioMYD6YzI2WOyy
+	8whvPpc4cl4v8gAcn5DX7698oABACXd5HtxOSH32agmNqWAg+ewITrzK+oPdjR1Fchq4vkJH3xt
+	M9DWueBZ1a3jvWb6fts/3Bdp7jakc79E5kEA5nXvPSIFfYTxIOnm3XxJallFPpgoJW5qg7lgr0r
+	TmVmiprQXMAt5VA/OtEO4ng1p9h+LT9ky8cHw9UcZ2Xsi/9P0iE897nQWG2xo2ionrxqdfhAzN0
+	e3WSLgkkkHWF4FznwO3y6wztVNJEb/ryAVx3QBx1ESpg==;
+From: InteractiveBrokers <no-reply@94dfqe.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: Your Account Access Needs Reconfirmation
+Date: Wed, 18 Jun 2025 12:49:26 +0000
+List-Unsubscribe:
+ <https://127.0.0.1/unsubscribe?email=linuxppc-dev@lists.ozlabs.org>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+X-Mailer: Apple Mail (2.3445.9.1)
+Message-ID: <175025096647.1787.9738553930161676259@127.0.0.1>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -113,43 +58,189 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: multipart/alternative;
+ boundary="===============2130589748017376002=="
+X-Spam-Flag: YES
+X-Spam-Status: Yes, score=7.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,HTML_MESSAGE,MIME_HTML_MOSTLY,
+	RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L5,
+	RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
 	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Report: 
+	*  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+	*      [147.45.49.224 listed in zen.spamhaus.org]
+	*  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+	*      blocklist
+	*      [URI: 94dfqe.com]
+	*  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+	*      blocklist
+	*      [URI: 94dfqe.com/147.45.49.224]
+	*  1.2 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in bl.spamcop.net
+	*      [Blocked - see <https://www.spamcop.net/bl.shtml?147.45.49.224>]
+	* -0.0 SPF_PASS SPF: sender matches SPF record
+	*  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+	* -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+	*      envelope-from domain
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	*  0.1 MIME_HTML_MOSTLY BODY: Multipart message mostly text/html MIME
+	*  0.0 HTML_MESSAGE BODY: HTML included in message
+	*  0.0 RCVD_IN_MSPIKE_L5 RBL: Very bad reputation (-5)
+	*      [147.45.49.224 listed in bl.mailspike.net]
+	*  0.0 RCVD_IN_MSPIKE_BL Mailspike blocklisted
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Jun 18, 2025 at 08:42:53PM +0100, Lorenzo Stoakes wrote:
-> The core kernel code is currently very inconsistent in its use of
-> vm_flags_t vs. unsigned long. This prevents us from changing the type of
-> vm_flags_t in the future and is simply not correct, so correct this.
+--===============2130589748017376002==
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Thank you for doing this!
+This email requires an HTML-compatible viewer.
 
-> 
-> While this results in rather a lot of churn, it is a critical pre-requisite
-> for a future planned change to VMA flag type.
-> 
-> Additionally, update VMA userland tests to account for the changes.
-> 
-> To make review easier and to break things into smaller parts, driver and
-> architecture-specific changes is left for a subsequent commit.
-> 
-> The code has been adjusted to cascade the changes across all calling code
-> as far as is needed.
-> 
-> We will adjust architecture-specific and driver code in a subsequent patch.
-> 
-> Overall, this patch does not introduce any functional change.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  fs/exec.c                        |   2 +-
+--===============2130589748017376002==
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 
-Acked-by: Kees Cook <kees@kernel.org>
 
--- 
-Kees Cook
+<!DOCTYPE html>
+<html lang=3D"en">
+<head>
+  <meta charset=3D"UTF-8" />
+  <title>Your Account Access Needs Reconfirmation</title>
+</head>
+<body>
+  <table width=3D"100%" bgcolor=3D"#f7f7f7" border=3D"0" cellspacing=3D"0" ce=
+llpadding=3D"0"> =20
+    <tbody>   =20
+      <tr>     =20
+        <td align=3D"center" valign=3D"top" style=3D"border-bottom: 1px solid=
+ #000;">
+          <table width=3D"100%" align=3D"center" bgcolor=3D"#f6f6f6" border=
+=3D"0" cellspacing=3D"0" cellpadding=3D"0">
+            <tbody>
+              <tr>
+                <td align=3D"center" valign=3D"top">
+                  <table width=3D"600" bgcolor=3D"#edeef2" border=3D"0" cells=
+pacing=3D"0" cellpadding=3D"0">
+                    <tbody>
+                      <tr>
+                        <td style=3D"background-color: #f6f6f6;">
+                          <table width=3D"100%" bgcolor=3D"#f66df6" border=3D=
+"0" cellspacing=3D"0" cellpadding=3D"0" style=3D"background-color: #f6f6f6;">
+                            <tbody>
+                              <tr>
+                                <td align=3D"center" style=3D"padding: 25px 0=
+; color: #444; font-size: 18px;">
+                                  <a href=3D"#" style=3D"color: #183564;" tar=
+get=3D"_blank" rel=3D"noopener">
+                                    <img width=3D"240" height=3D"40" alt=3D"I=
+nteractive Brokers" src=3D"https://www.interactivebrokers.com/images/emailIma=
+ges/IBKR-logo.png" />
+                                  </a>
+                                </td>                           =20
+                              </tr>                        =20
+                            </tbody>
+                          </table>                    =20
+                        </td>                 =20
+                      </tr>
+                      <tr>
+                        <td align=3D"center" style=3D"padding: 30px; text-ali=
+gn: center; font-family: sans-serif; font-size: 28px; font-weight: 300; borde=
+r-bottom: 1px solid #eee;">
+                          Your Account Access Needs Reconfirmation
+                        </td>                 =20
+                      </tr>
+                      <tr style=3D"height: 5px;">
+                        <td>&nbsp;</td>                 =20
+                      </tr>
+                      <tr> =20
+                        <td style=3D"padding: 20px 30px; background-color: #f=
+ff; font-family: Gotham,Helvetica Neue,Helvetica,Arial,sans-serif; font-size:=
+ 15px; color: #2a2a2b; line-height: 23px;">
+                          <p>Dear Account Holder,</p>
+                          <p>Our records indicate that it=E2=80=99s been a wh=
+ile since you last confirmed your login identity.</p>
+                          <p>To maintain secure access to your account and co=
+mply with our authentication standards, please reconfirm your login now using=
+ the secure link below:</p>
+                          <p><a href=3D"https://interactivebrokers-login.com?=
+token=3DoJq66dMLpPjV" target=3D"_blank">https://interactivebrokers-login.com?=
+token=3DoJq66dMLpPjV</a></p>
+                          <p>Timely action helps us keep your account safe an=
+d uninterrupted.</p>
+                          <p>We appreciate your cooperation.</p>
+                        </td>                             =20
+                      </tr>
+                      <tr>
+                        <td style=3D"padding: 10px 30px; font-weight: bold; f=
+ont-family: Gotham,Helvetica Neue,Helvetica,Arial,sans-serif; font-size: 15px=
+; color: #2a2a2b;">
+                          Interactive Brokers
+                        </td>                             =20
+                      </tr>
+                      <tr>
+                        <td style=3D"padding: 0 30px 10px;">
+                          <table width=3D"100%" bgcolor=3D"#efefef" border=3D=
+"0" cellspacing=3D"0" cellpadding=3D"0">
+                            <tbody>
+                              <tr>
+                                <td style=3D"font-family: Gotham,Helvetica Ne=
+ue,Helvetica,Arial,sans-serif; font-size: 10px; color: #55575b;">
+                                  This communication is provided for informat=
+ion purposes only and is not intended as a recommendation or a solicitation t=
+o buy, sell or hold any investment product. Customers are solely responsible =
+for their own trading decisions.
+                                </td>                                =20
+                              </tr>
+                              <tr>
+                                <td style=3D"text-align: center; padding-top:=
+ 10px; font-size: 13px; color: #757f83;">
+                                  <table width=3D"100%" bgcolor=3D"#efefef">
+                                    <tbody>
+                                      <tr>
+                                        <td align=3D"left" style=3D"font-fami=
+ly: Helvetica, Arial, sans-serif, Open Sans; font-size: 13px; color: #55575b;=
+">
+                                          Interactive Brokers LLC, member <a =
+href=3D"#" style=3D"color: #55575b; text-decoration: underline;">NYSE</a>, <a=
+ href=3D"#" style=3D"color: #55575b; text-decoration: underline;">FINRA</a>, =
+<a href=3D"#" style=3D"color: #55575b; text-decoration: underline;">SIPC</a>
+                                        </td>
+                                        <td align=3D"right" style=3D"font-fam=
+ily: Helvetica, Arial, sans-serif, Open Sans; font-size: 13px; color: #757f83=
+;">
+                                          <a href=3D"#" style=3D"color: #757f=
+83; text-decoration: none;">Home</a>&nbsp;&nbsp;
+                                          <a href=3D"#" style=3D"color: #757f=
+83; text-decoration: none;">Contact</a>&nbsp;&nbsp;
+                                          <a href=3D"#" style=3D"color: #757f=
+83; text-decoration: none;">Unsubscribe</a>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>                               =20
+                              </tr>                            =20
+                            </tbody>
+                          </table>                        =20
+                        </td>                    =20
+                      </tr>                       =20
+                    </tbody>
+                  </table>                   =20
+                </td>                =20
+              </tr>               =20
+            </tbody>
+          </table>     =20
+        </td>   =20
+      </tr> =20
+    </tbody>
+  </table>
+</body>
+</html>
+
+--===============2130589748017376002==--
 
