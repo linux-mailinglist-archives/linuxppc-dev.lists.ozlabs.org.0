@@ -1,99 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-9510-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9511-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA1CADF761
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jun 2025 22:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56854ADF78D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jun 2025 22:17:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bMvp94TQYz30VM;
-	Thu, 19 Jun 2025 06:04:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bMw5N6Kfpz3bnc;
+	Thu, 19 Jun 2025 06:17:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750277057;
-	cv=none; b=BfEjuE+ioNFQfByqBRrFX3yvq7r4TnfmPDbvOntQGtwNGLG5Jiw41ZzXG5u3toWI4sMUTEUECyVCevCHrzGgQpDP6gPZr/ckdvgfm9NCTMwbjcSjGLzAutangUs+uM+Y5GZZbkUWxYnzIbnE7VbpZHlSZmm/1pS4VmYRrf//EcwBVnC7yLAB4cLhTlX0KK5uBW+2fQxOyhyURZJknPrrDn2rsmxUul/qtmUO/1W9f+DWUkI1kk7rECkU5W2rC/4Q8OU26ctJiWfoUZUugQBxhhNnMV08+u7TJ+Z+EIGlCIofjsABqOcrE+evbFLxbkylXKzV5hhlwNnBCrE/4pSOaQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750277848;
+	cv=none; b=LSqGgcneFLGZ6o/yqJ7OtXP9dPODNmQiGcm8LL0SCz4u778Jc5u6PCwd+ETnY/RSTZ5FcoFiH9MEvekfclgp/CeWtL6C+mll7hQVfQZVBn/qd6/DBNkuEWorDQ/+hoLGxu1YCK7s8gYhdBv7XPEAitvl2pSYdXGiEzcI86hvN8yTwcMWJvu0NmEW5ggJS+bnPklVI40GeXyD4Nhw7X9C316hneD42+jdQUgFGNVl7gVkxA5IGPCvVBp1KvgUXT9OVPIBQ8sJNq0/ueFsl1IYbIJ8cRDMzgVhZKnLQ96xICTHCthfKqPC7f7g0jCf9arY1KqgoI5JRmvtvMgmdt5nKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750277057; c=relaxed/relaxed;
-	bh=r+yILtYkX3FnYrUMXwUjtoYSq4aCkMrSL4SJ7/KGbLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G+mFWhc/FI/WMg3JOYOzSCfYIvh6sI8lnRGAFG6lYg7pi2WLokMcuu9bFFF3g2bPtTTsoLht5cye0SwhqAxTktqcVYTmsqEaySOCDqjnQVU4j1Wqlv5csv5U3MPt6WTaw42q5yd9yDurMje5owpPRcvckdwfMQ8ooinTS99MjiEbH2qJuW6Xt3IQoN3zcQHzqRNDFreBlDGy3HOYVyAiag1hF7VI4mbQdlMOL07L+lB5DkD7TQO2kWZOZDWc/mhthdthmFzB32NbbfaeDaJsgtDHZrsAb/Z+kG81GJaP9EpUWQseYd9PKtTkdhsxKqMXYbAiHAbEYzbOH2z+dHIhOQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ieseRAba; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+	t=1750277848; c=relaxed/relaxed;
+	bh=KX/VNcwEknSNnHQK8aKlcyRFXsNv13hLiK2kDNiE/Ys=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=MjiN1RXezTaxQKBGMq+U2Fj+TSYcfApYwcNAvM0Z7oAjgMB4sWa3dAE1xHheqFG+P1ADht+mKTnNMh2i6oDhFGIb6Rbs+Q7eSYL9nzYNO0gS0MfYX6ZYRCMUdHZgQ7yioVtjB1izeTRFavR5/jVw0/4XwXOilN0No1n1J2/pk+t89UWJnSXXuOeV1M/jw0FTFoMvoaLnFTDXg0DqTiNZ7ckQbLPpyutCNZxisFENzhL+jMdQSWB0R6ZlGYyE3iIX9mmu9SHoJEE7szRiEmcvc8S83VWo/95EmRWnYCr2mSs4SsxqMjcVT4Gb40DkcSwiaAWVa92FrvqR+n5DWJX1Dg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FOARzafB; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=ieseRAba;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FOARzafB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bMvp81C66z30Tf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 06:04:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=r+yILtYkX3FnYrUMXwUjtoYSq4aCkMrSL4SJ7/KGbLA=; b=ieseRAbaE2EB/gg0UrA4lAg0ya
-	OMIrk68qActWNIrlU4+o3MUxlOdzs0sAzy8pvh0C+/FzDPucczlLfYPfD00o24KCkCuH+FFOkwmhp
-	R1YimiUoY/XcQ89JvDBIwxhHk6PC6vuXgeyDcRBuG+/scNqdcGd/AmB3MCUJEVczHYhsFH/HtCuBD
-	QUWwg5HM3SO54YGjy9XPxlOrywxz6rlNYI4GbAr78NL3JYgieExT9cy4hxQWUtJGM3OQ5TZX+EmC6
-	ynJh94nA0G2clxmoy3o2IEFglpHpJc0flDhE2COS7zRIswWNpdaBNi0IJZT6aqdC3OgNSoC27mXmb
-	kXWvpJxQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uRz0r-00000004xfj-0q6I;
-	Wed, 18 Jun 2025 20:04:01 +0000
-Date: Wed, 18 Jun 2025 21:04:01 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bMw5M5cCJz3bn4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 06:17:27 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 53D2B5C6214;
+	Wed, 18 Jun 2025 20:15:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB27C4CEE7;
+	Wed, 18 Jun 2025 20:17:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750277844;
+	bh=xt8r64iKztaGluvYHQ+nEmHkrlN0zD8k22lRNBw+eZk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=FOARzafBQCH4mhbZUSX3MH98F55tLlayT4MS64DrQ26ru2cMm/M+yF+FscGystMAK
+	 0CQma9JT95xIs7U+K1HMp/Z/U9ZfclyD935P5ZdedHfyuuVMdWfGxcjMxVNDL3VZtq
+	 kLYIts2/TIO9aXT4ITDKOIVP7tvcnQnttyhvDkyBX0uRIX6cu8hEVbW11K6/nJVLXU
+	 TYCHVddc6BvT/c1MJHUMD20a7ia6cvoqPypNfuKOeSqB50zMSq1UHzbSgjEKU5yZEN
+	 /uBRVpWVWLcm5YfhOu/Ug21FEc722Jpq7hOGt8MX4XOpYNYWhXfg3DIgM4PzHSPIPD
+	 tf7OpPfRTsrcQ==
+Date: Wed, 18 Jun 2025 15:17:22 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Timothy Pearson <tpearson@raptorengineering.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	linux-pci <linux-pci@vger.kernel.org>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: Re: [PATCH RFC 08/29] mm/migrate: rename putback_movable_folio() to
- putback_movable_ops_page()
-Message-ID: <aFMbsdPYhcL8fyOo@casper.infradead.org>
-References: <20250618174014.1168640-1-david@redhat.com>
- <20250618174014.1168640-9-david@redhat.com>
- <AD158968-D369-4884-806A-18AEE2293C8B@nvidia.com>
- <aFMQ65hUoOoLaXms@casper.infradead.org>
- <DABB8764-8656-44A8-B252-0240F53BC0E3@nvidia.com>
+	christophe leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH v2 2/6] pci/hotplug/pnv_php: Work around switches with
+ broken
+Message-ID: <20250618201722.GA1220739@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,29 +74,55 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DABB8764-8656-44A8-B252-0240F53BC0E3@nvidia.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+In-Reply-To: <1957898084.1311382.1750276204022.JavaMail.zimbra@raptorengineeringinc.com>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Jun 18, 2025 at 03:25:46PM -0400, Zi Yan wrote:
-> On 18 Jun 2025, at 15:18, Matthew Wilcox wrote:
-> >> Why not use page version of lock, unlock, and put? Especially you are
-> >> thinking about not using folio for these pages. Just a question,
-> >> I am OK with current patch.
-> >
-> > That would reintroduce unnecessary calls to compound_head().
+On Wed, Jun 18, 2025 at 02:50:04PM -0500, Timothy Pearson wrote:
+> ----- Original Message -----
+> > From: "Bjorn Helgaas" <helgaas@kernel.org>
+> > To: "Timothy Pearson" <tpearson@raptorengineering.com>
+> > Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel" <linux-kernel@vger.kernel.org>, "linux-pci"
+> > <linux-pci@vger.kernel.org>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>,
+> > "christophe leroy" <christophe.leroy@csgroup.eu>, "Naveen N Rao" <naveen@kernel.org>, "Bjorn Helgaas"
+> > <bhelgaas@google.com>, "Shawn Anastasio" <sanastasio@raptorengineering.com>, "Lukas Wunner" <lukas@wunner.de>
+> > Sent: Wednesday, June 18, 2025 2:44:00 PM
+> > Subject: Re: [PATCH v2 2/6] pci/hotplug/pnv_php: Work around switches with broken
 > 
-> Got it. But here page is not folio, so it cannot be a compound page.
-> Then, we will need page versions without compound_head() for
-> non compound pages. Could that happen in the future when only folio
-> can be compound and page is only order-0?
+> > [+cc Lukas, pciehp expert]
+> > 
+> > On Wed, Jun 18, 2025 at 11:56:54AM -0500, Timothy Pearson wrote:
+> >>  presence detection
+> > 
+> > (subject/commit wrapping seems to be on all of these patches)
+> > 
+> >> The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
+> >> was observed to incorrectly assert the Presence Detect Set bit in its
+> >> capabilities when tested on a Raptor Computing Systems Blackbird system,
+> >> resulting in the hot insert path never attempting a rescan of the bus
+> >> and any downstream devices not being re-detected.
+> > 
+> > Seems like this switch supports standard PCIe hotplug?  Quite a bit of
+> > this driver looks similar to things in pciehp.  Is there some reason
+> > we can't use pciehp directly?  Maybe pciehp could work if there were
+> > hooks for the PPC-specific bits?
+> 
+> While that is a good long term goal that Raptor is willing to work
+> toward, it is non-trivial and will require buy-in from other
+> stakeholders (e.g. IBM).  If practical, I'd like to get this series
+> merged first, to fix the broken hotplug on our hardware that is
+> deployed worldwide, then in parallel see what can be done to merge
+> PowerNV support into pciehp.  Would that work?
 
-I think the assumption that we'll only see compound pages as part of
-folios is untrue.  For example, slabs will still allocate multiple
-pages (though slabs aren't migratable at this point).  The sketch at
-https://kernelnewbies.org/MatthewWilcox/Memdescs supports "misc pages"
-with an order stored in bits 12-17 of the memdesc.  I don't know
-how useful that will turn out to be; maybe we'll never implement that.
+Yeah, it wouldn't make sense to switch horses at this stage.
+
+I guess I was triggered by this patch, which seems to be a workaround
+for a defect in a device that is probably also used on non-PPC
+systems, and pciehp would need a similar workaround.  But I guess you
+go on to say that pciehp already does something similar, so it guess
+it's already covered.
+
+Bjorn
 
