@@ -1,69 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-9441-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9444-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C039CADE257
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jun 2025 06:24:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E265ADE318
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Jun 2025 07:39:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bMVxK4WCSz30WQ;
-	Wed, 18 Jun 2025 14:24:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bMXbw3qD4z30RN;
+	Wed, 18 Jun 2025 15:39:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=23.155.224.40
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750220645;
-	cv=none; b=Zoi1M+NL3ieNe5WzyC7AejUSOQJ9ZeFJZHB6kWVyeZwl7yjrpso9E8yKrwalEw2T+4C5GTA8Vf4st/aNplyhQWxl/wETEwCd62CRi65MnqkJJD63d3kd5gwQL8oewNHvVUwV05sPeTox4Zj0Ovu9gOiVt1kIsWjb9+CaysnuAL3BPUzT8mWoQv0jfJj/c+wCCBJr1VU/kRFRJoqPGXFu2QaKmos7PzUWLdZtL3wjudirAvW94qqOvoOY+bZ/TymYLqEdNcqQgc6ZJDmADn3E3OSG1Dg7KyFRJP9GoHoPbpoiK+h6AiIctPJ+PPASSpGeHjsJHQKXf4XlYsYsMP/Skw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::133"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750225148;
+	cv=none; b=Yt5oYWEt5Kbsi7Hx6/uvbzSqYlewOX1lAyyCOIduVLhEGTJmse4CaXex5dWdNOTC9cz6wahYd5XHPqwdKYzIf88YjkIJmMdEdBNbCMd2p3krNHbSvC4xfclNNqMfkNnNN5q0PbCjLX2P+8g8XNSINaMR0CSEFwe4wqiS3ddI535htw3xJ113PDddy1HfyJk9Wloy/aXvNfyz0j17Gzfx8h9nAiViWH5AA+gpWoyrsfqO56EYAiF8pKUmB6b7xLKSVSlmPUy1aP2Twg3LgoKN2k2GnfZATpMkpfNEsrKLzURpzQ6//TsOju3WrQRaI6chwi1iVdrlgZqsBDVciC9BZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750220645; c=relaxed/relaxed;
-	bh=o/1IBINWMrVso6KNgb8gMd8huCPM66zxZkZ7bvMLpVQ=;
-	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:Content-Type; b=bxUpLIzQRVMjadYotd0PZ+6pplxg6MyvvdATuQ/mxdZ8Q99/ogHt6Y/3X9CDAHa/KodTlHDaNSiLgeMeCgIuF+upjgmK7mPTiFsjdqtbu2fsgtC1gvjRq9LyFtexuxVyiN/7DbEKVLo8WyuexosRZ0RR8CeCSGzVE0dJeWRJBv432BJrbIzQCJNaWGCDn/ygVwilOWPKd/SDfx+zgrifYhJsAz2CyzZ4DN315FtUrgQroEZs2jDqg0f9qV6dHurV/AvVijVpuambwH9VECksrGzhKCzNbXkH8eR34dV+eiVK3bi5hDXKnlVcKgiKWOUGbUzokTJ/422UQpH1L2rigw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=RW36JUNL; dkim-atps=neutral; spf=pass (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=raptorengineering.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=RW36JUNL;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1750225148; c=relaxed/relaxed;
+	bh=0VfDKR79Vtwn5VxJOChmtPjWAJZfi4MTkhv0klH8VUU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nww1Ae0xR16gOAiobIso5a/OcVe1nVqwPyNg29Qple88OiCnGBqSYWB+jNNxFUaJPRlIGkw3EAZdGrqBGAcKC1gF7O64/UcYNKb1eVIeHQAaL59UOE2Z67sHZJHnowkg+nnncGhda9rKHXW9WouSgZeoq5j4xbuWJJ3i6uJ23NfE5peHwWu+BTnN9Gc7rpglFT/6o92g4rWAekuKFBVgdsiypP3m72gm4wlIDYA4mqdzv5DBrZvZuqzfh4h1VHPzIiy0IpKFwmSAsxS7QwLXLa02ynh0sys4WTnc+9Y9klvyX09iYgZ725ixaMCL7CgWkhugVmQHoT64OFlyrRKqlA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+826cfafe48c3f27d09fc+7969+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=bombadil.srs.infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+826cfafe48c3f27d09fc+7969+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bMVxJ50NCz30WF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jun 2025 14:24:04 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id E18E48288AE9;
-	Tue, 17 Jun 2025 23:24:02 -0500 (CDT)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id SHe2gD1KcKYp; Tue, 17 Jun 2025 23:24:02 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 2D8B0828884A;
-	Tue, 17 Jun 2025 23:24:02 -0500 (CDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 2D8B0828884A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1750220642; bh=o/1IBINWMrVso6KNgb8gMd8huCPM66zxZkZ7bvMLpVQ=;
-	h=Date:From:To:Message-ID:MIME-Version;
-	b=RW36JUNLcwayc7jLDx4GGxx7gpPVeCgX7oRK9NAHzdXjX3NlU2uTf2M0zh+meeOkr
-	 BbL5v/HpIJTvlA0dwagL8ZTWhq9ox2vo6fh12OSC6njlxTAHqx6++MkngJKN7ktOC6
-	 RWvUpioRJsl7IOWxhc8f9F4B4SYoU2jRcSl0LHxE=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 9wY7-oK45MhH; Tue, 17 Jun 2025 23:24:02 -0500 (CDT)
-Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 0748082887A2;
-	Tue, 17 Jun 2025 23:24:02 -0500 (CDT)
-Date: Tue, 17 Jun 2025 23:24:01 -0500 (CDT)
-From: Timothy Pearson <tpearson@raptorengineering.com>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-pci <linux-pci@vger.kernel.org>, 
-	Timothy Pearson <tpearson@raptorengineering.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, 
-	christophe leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bMXbn4M3Nz2yb9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jun 2025 15:38:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=0VfDKR79Vtwn5VxJOChmtPjWAJZfi4MTkhv0klH8VUU=; b=AhWyVqsA3j3LhyCrTsVnb6uTsn
+	9r6eUym64zHlFvMOujpVErXmuxZQzBpGAHf1t8TqLy87/VyIOL9uzm/ZdUVdiz/B19k2KVu7Ye40r
+	mbAeh0+vhywNjZniEURh0ncL8SIKwNm3DZU75mlqhPVHVZQY5qONFOShAFrwqXsxxwbGSEp2nsqis
+	sqMQZI/VXqT+yY4NrSb1Srah+zvhVs4VmAgrGpwwANoFS+Qy4WjpXkCUfgvPrD2Dcw7GG3iyEJEJY
+	l22KO9U5zP3AOTEuow7mmc/cEjcZVJnC4idkyj4mM2zRrVK9hm0cZbS8yFg3Hw7OO91YpFwVHUP90
+	HxZfSLCw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uRlVg-000000096Bv-3dIB;
+	Wed, 18 Jun 2025 05:38:56 +0000
+Date: Tue, 17 Jun 2025 22:38:56 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Timothy Pearson <tpearson@raptorengineering.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	linux-pci <linux-pci@vger.kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	christophe leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Shawn Anastasio <sanastasio@raptorengineering.com>
-Message-ID: <1984998826.1309773.1750220641884.JavaMail.zimbra@raptorengineeringinc.com>
-Subject: [PATCH 6/6] pci/hotplug/pnv_php: Enable third attention indicator
+Subject: Re: [PATCH 3/8] powerpc/pseries/eeh: Export eeh_unfreeze_pe() and
+ eeh_ops
+Message-ID: <aFJQ8AtYlKx1t_ri@infradead.org>
+References: <946966095.1309769.1750220559201.JavaMail.zimbra@raptorengineeringinc.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,72 +67,23 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC137 (Linux)/8.5.0_GA_3042)
-Thread-Index: eLJahenhbKp2Kz5NYOtowJbZINMJBw==
-Thread-Topic: pci/hotplug/pnv_php: Enable third attention indicator
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <946966095.1309769.1750220559201.JavaMail.zimbra@raptorengineeringinc.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=-2.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
- state
+On Tue, Jun 17, 2025 at 11:22:39PM -0500, Timothy Pearson wrote:
+>  /* Platform dependent EEH operations */
+>  struct eeh_ops *eeh_ops = NULL;
+> +EXPORT_SYMBOL(eeh_ops);
 
-The PCIe specification allows three attention indicator states,
-on, off, and blink.  Enable all three states instead of basic
-on / off control.
+Exporting ops vectors is generally a really bad idea.  Please build a
+proper abstraction instead.
 
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
----
- drivers/pci/hotplug/pnv_php.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+And use EXPORT_SYMBOL_GPL for any kind of low-level API.
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index 32f26f0d1ca6..c9003dec91c3 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -3,6 +3,7 @@
-  * PCI Hotplug Driver for PowerPC PowerNV platform.
-  *
-  * Copyright Gavin Shan, IBM Corporation 2016.
-+ * Copyright (C) 2025 Raptor Engineering, LLC
-  */
- 
- #include <linux/bitfield.h>
-@@ -439,10 +440,23 @@ static int pnv_php_get_adapter_state(struct hotplug_slot *slot, u8 *state)
- 	return ret;
- }
- 
-+static int pnv_php_get_raw_indicator_status(struct hotplug_slot *slot, u8 *state)
-+{
-+	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
-+	struct pci_dev *bridge = php_slot->pdev;
-+	u16 status;
-+
-+	pcie_capability_read_word(bridge, PCI_EXP_SLTCTL, &status);
-+	*state = (status & (PCI_EXP_SLTCTL_AIC | PCI_EXP_SLTCTL_PIC)) >> 6;
-+	return 0;
-+}
-+
-+
- static int pnv_php_get_attention_state(struct hotplug_slot *slot, u8 *state)
- {
- 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
- 
-+	pnv_php_get_raw_indicator_status(slot, &php_slot->attention_state);
- 	*state = php_slot->attention_state;
- 	return 0;
- }
-@@ -460,7 +474,7 @@ static int pnv_php_set_attention_state(struct hotplug_slot *slot, u8 state)
- 	mask = PCI_EXP_SLTCTL_AIC;
- 
- 	if (state)
--		new = PCI_EXP_SLTCTL_ATTN_IND_ON;
-+		new = FIELD_PREP(PCI_EXP_SLTCTL_AIC, state);
- 	else
- 		new = PCI_EXP_SLTCTL_ATTN_IND_OFF;
- 
--- 
-2.39.5
 
