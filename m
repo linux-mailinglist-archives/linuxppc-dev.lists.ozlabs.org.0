@@ -1,100 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-9539-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9545-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46520AE00CC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 11:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D9BAE0215
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 11:53:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bNF0y5qBqz3bcW;
-	Thu, 19 Jun 2025 18:59:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bNGCH31ZJz30WX;
+	Thu, 19 Jun 2025 19:53:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2412::623" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750323586;
-	cv=pass; b=d9GobQFzlgy11Z67nzEQaDJbwbLbEt9F5HB+w3mblCyk3FOL0DBTxnoyRM0xBnYZ+DLD4UdojFxR/tMgS5tfiZYuRYq6Pc2gM+cgLd26tYsenGd1ZDIRkV8muEXbvLsWmqynpwSpGL8D5dlb5pvmoyqTYP63Wa2aWNDd4skfPnZ4H7rdysdlXKZktObdS5V71tiX3NkRypBSzdexyZPlDnXk0rMjer6KtvE3Fdof8PDCgWUTRe6+jWI8fE04z3UZo5W6AN3sgRe7sjSGNKFC9aZIe62P//gbnwiR2lXtOzGCSZZvBZQvjaLdGzbaaR0mUtCZhy0dgkrvgxqbUdSCig==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750323586; c=relaxed/relaxed;
-	bh=dBlhFNYHf/H7J+iE1BwKelO7XiSj2kzaOPLJW8HeMcE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QYwYRrePapOMoGtV9HQeCLl+4/0CTPqt7z7e296WLeCYW1FMc1Ehlam+ryID6ahmGA+soBZyc+20LCg28izouWtKG5rJEydipB/DL5cvak2LfUl08d97udGSU3dp0C5iUsZwcDpEkl8XUh8IxNsFW/6jGlTMvJgsEFz+WWib7GsVqGARr++0GIiUqAPEi7RdxEkwMgGQHkjswINzQ43sE+gHHjf7giyeD9GxyeIO76nDb/DE2Hl0Ub80yy6ks1p44DjwyR4CijMwPuX+ZBZlAu+18J5b8ltrM2TwCqhhT13+rRnPYfygiyZh7iRzljd7lDzCKFE7DLz5B/KqDtqSWQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jinulDCt; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2412::623; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::135"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750326827;
+	cv=none; b=ZKGTAdiNNdaXf6eKreFmdDDdjP+FPbhBOpqlxIU4Q1yC2MKRdDq0rXNaZdqw4DiLfLEbJSKof7xW61KLYerL4+SVZPFwXtBgun27XpPjeCpWuz6AfG7VMST2+jpFxJQYvMRtG9+cwtA37hQZUYtjLFbZsIbB9PeozMVS3fWFAn6LCXRdbicIUw8nLWelOeP43ho18varbPVXxwjq2QvNUWl4t5k14VcSwMxdcKiLaRhG98D7/ufaV87cjdF3SNSgpgz1Ko/hBbOk0+0zDgTU6JfdHVRi9+G9Q4Hv8ccv2o+2cjvqnuG4tBxaOvheGyte/4o77NeVZPMILqYhuXnjYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1750326827; c=relaxed/relaxed;
+	bh=8lxye2GX1z6QI+SRVMkfZEngbWK9B27pd3eBJcWGrlg=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GGl/WL2YcdfUlBzi/EvfQsHXxXvLClyo8lHLjHNsZqY79IqjMVYwq6t75z3/qhlF9x3Dcg3KuAMjjdvyeDqlsW/HRO5qzJoPfRH7vDCOjQKIcZ8ajAhP8ZEofsC6X+9qz3d/kdZasD4FpZ99SEqS22MvUGLdQd8DpixlAOFqMg0Zl9RD6dspZwVASvC30x/sOLgkYEuy6V7BLs3y+37+0fCuf65lIwwzCw1Sl4/KSGoyjq+F6977JHCCPqypcea3WxLVgCpa0/Qa0YV8zpS8lToPE+qNkSgYawFy4slQUdJqCBLCnVOXVWE8zkWQglezv7C5g4XHUBqMfcG2qRCYLw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AH6hUm3Q; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::135; helo=mail-lf1-x135.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jinulDCt;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=AH6hUm3Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: No valid SPF record for included domain: 2.A.0.1.0.1.1.1.F.4.0.3.2.4.1.2.0.0.0.0.0.0.0.0.0.0.0.0.0.6.2.3._ip.nam10-mw2-obe.outbound.protection.outlook.com._ehlo.nvidia.com._spf.vali.email: include:%{i}._ip.%{h}._ehlo.%{d}._spf.vali.email) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2412::623; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20623.outbound.protection.outlook.com [IPv6:2a01:111:f403:2412::623])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::135; helo=mail-lf1-x135.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNF0y1Hvxz3bgr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 18:59:46 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WoD0yKOZ9gz3jy/uPTTen8fVlDB/wP7VUnGa3CnoeCaIHk8LF7eY/qdAfGPIi9crReqS+GIcmIwqwdyIzBREem1zTHS8bGafSSPLKJsHzI5l6mlH53GTag7oWWqqfcoSEF167ZLO71YbdECmbaMaTebydp1XlK1F+hglRIXWqzDBdbQJXn7eLp0vK1mESYoql7OkM5QUBxebO2EM3jbdj86O/rEKdrJD3ojyDT9hHlHDjyO9a/+mSXEiMbQqx6xR9kEYtq1Rn0eKLSo2GLq+RtGaYA9xzLNOwu4tHiJHdXjKncgGbp8kttzmEjKhNKRAom7jIrY3G9UzE5JwYstU2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dBlhFNYHf/H7J+iE1BwKelO7XiSj2kzaOPLJW8HeMcE=;
- b=ZXSy2SsjvwOMBx00pYLZ1OqGWov3QyC11cPpdLLtyuwH9hjstgavjtSxJeUS4Kw7RQ9Ds0jg3Ld50GHsVsK0jbKRSOY6yh3JmxaxLv3+WNCTHs5N57Tb15ciJcAFLnF+WWBC9wj1vpnIRA4hiTK1T/H/7GbIsPxQINxQ7lkdLLpm7PbI7MG/gPkCm/33qvuEvpAtvR1mJ2vECEEkMLUAZdKsRStMxXLXddrbiRFTeGnxHfNHaDeKPLwJRGhLRVGgsO3K4V4sLoX7JryVK1pTYSskT8eDIgDnIWz5nL/E4PiTD8AHSTbumVyjusdRp+4kC6prlmVfs1KWZhtDaOvtnQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dBlhFNYHf/H7J+iE1BwKelO7XiSj2kzaOPLJW8HeMcE=;
- b=jinulDCt8ux6iGe9N1IqAx2x35FikcWotkn+2iC0LWzw6yyL+vhn9+3TZsj+1bDA6XgGEJXnDYEo5aZseElLHLAzw+ux/hJkJ0bnAa1DLdzPQI+z/qFlbMPs9fGIpXi2wDmet7y6xQIjcC1QIIUBH24jGS+VfbCaDNt+jQjp4TQjSRnia8zuML4yYDqSJysbHdoddPXOtvsZkFosJQy5nn7Lwndkt8NvwNMR2vw7OBXT+yTie0p5AA73wE3uU1fFXWwcjjwYrWrlscNoHOkhLpSybiJiCrUrN32uIT9cKDVIyAh0ENq680O9PTmr0lZ1MVDqLXM9fZTWpPCmpOqIvg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB7705.namprd12.prod.outlook.com (2603:10b6:930:84::9)
- by PH7PR12MB8106.namprd12.prod.outlook.com (2603:10b6:510:2ba::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.20; Thu, 19 Jun
- 2025 08:59:25 +0000
-Received: from CY8PR12MB7705.namprd12.prod.outlook.com
- ([fe80::4b06:5351:3db4:95f6]) by CY8PR12MB7705.namprd12.prod.outlook.com
- ([fe80::4b06:5351:3db4:95f6%5]) with mapi id 15.20.8835.026; Thu, 19 Jun 2025
- 08:59:25 +0000
-From: Alistair Popple <apopple@nvidia.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	Alistair Popple <apopple@nvidia.com>,
-	gerald.schaefer@linux.ibm.com,
-	dan.j.williams@intel.com,
-	jgg@ziepe.ca,
-	willy@infradead.org,
-	david@redhat.com,
-	linux-kernel@vger.kernel.org,
-	nvdimm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-xfs@vger.kernel.org,
-	jhubbard@nvidia.com,
-	hch@lst.de,
-	zhang.lyra@gmail.com,
-	debug@rivosinc.com,
-	bjorn@kernel.org,
-	balbirs@nvidia.com,
-	lorenzo.stoakes@oracle.com,
-	linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-cxl@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	John@Groves.net,
-	m.szyprowski@samsung.com,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH v3 14/14] mm/memremap: Remove unused devmap_managed_key
-Date: Thu, 19 Jun 2025 18:58:06 +1000
-Message-ID: <11516e39f33f809292ffccab1d46062f9bc248b3.1750323463.git-series.apopple@nvidia.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <cover.176965585864cb8d2cf41464b44dcc0471e643a0.1750323463.git-series.apopple@nvidia.com>
-References: <cover.176965585864cb8d2cf41464b44dcc0471e643a0.1750323463.git-series.apopple@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SYCPR01CA0033.ausprd01.prod.outlook.com
- (2603:10c6:10:e::21) To CY8PR12MB7705.namprd12.prod.outlook.com
- (2603:10b6:930:84::9)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNGCF5pzWz30W5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 19:53:45 +1000 (AEST)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-54b10594812so588654e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 02:53:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750326822; x=1750931622; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8lxye2GX1z6QI+SRVMkfZEngbWK9B27pd3eBJcWGrlg=;
+        b=AH6hUm3QWW8cpo1Q33oidup99UHkVO7jQD62LA5suugyVCC3NvNRMgP9EsbPVY9gXQ
+         rxbw60PhfHzePCmIcpvPOMX6WX87hbBFY867OaKGFDqCU8lOti46PwLmHAxnxn2NTg2k
+         ndkzQtILBDOFy7YOgSGtM76bo+E8EyJ+CA5wxWFxtR7TQdggynubIf0Djr+WcvnBYZmT
+         SGfYxo6feTCDHOxJT8iNyKmV+dWT63kvlCECtH55crCr63xFJipTKD+IwvBz+kX+dfs2
+         eV82JY4gWUzjUYhWDdhqi65y/zeelelsD6kKqnOzquYfhwwoYEChGiKTTfnv58RPjrJK
+         nBIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750326822; x=1750931622;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8lxye2GX1z6QI+SRVMkfZEngbWK9B27pd3eBJcWGrlg=;
+        b=WwVQLeX2PUbOJ9jUUACv363nw0vSir7a9r/7kgCAD6EH8ERpp3RPYL658wnvvUEei2
+         qvxdc4SII6e2ZT0AmVFhPxR6AIjgcweu0+FMy2AYwUhe/5XG83QckJb5ULjSHMnQoxP9
+         3vRsEBp/Bs5SLyUrxMnZn920nIN8vaZ/K3h0VXp/+kvP+40PKPcCq2oQ1c842TXNK7us
+         fZXkKy/rtX6XzB4ALPVwinS6vtvIVuRCMLDFVEjWD9xEsGW/WuOxf1/ODwHPb2LnIptO
+         FyVQLhi9/nhLjSDliQBl2ozmzZg5ymVU+IuaKP3XcKffGvZkfoNVdLqeWf/Y7+enocs0
+         Ve5A==
+X-Forwarded-Encrypted: i=1; AJvYcCXBZqeLRHGNhwKoSQO/lJuthTizvPq/SyEzs63Wdzr5pAi0J7KVxBoGPGtfkRQhax686kTuoQZr/oQBl5k=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzZ7pQKaI7+SYSsSaVWYPHIpFdos+/LFhGCHWU2zRkgE8hT27W8
+	N9MVRYHeoMYH1CBWzR1h2qZIYFxvozE5tejQEgTAa6eoZd03o6v607ZI
+X-Gm-Gg: ASbGncuxTGbVl/e4eOoaor7GWckPoLdoUd4kIPy98M5EMkMN7EKbcVcN0AucSamLeKR
+	MSQN/JEAntEPkyZyBL6laYsRWLIgYkAjBDVZAivEcY1sluSMDjcWsQjbTNDU1hszSwF7P1DINGy
+	fN9Yx8EeQw+znf0/BAuVuVXl2sbN1Ejpn8NsHxDv5ZLvJ4p0XA8keuk8LXl7iVy5rQ4A9XHscma
+	OkURGUNgFRvAYpIJYoos1cJbHMjCqGAiItXaopdxO7OajYjYrychAEQdQQ6tfRCCRpYV5CsfuWE
+	kSxwxG3ih48W4srWmFb0mWLSE9cj+bfdoPFiI45y949+BIgFPosYA8vR0LGETKEQk+kdjMX/6lN
+	si4/CrmVVNT8=
+X-Google-Smtp-Source: AGHT+IEJV7RqZa9E1nD948cD6oSgemriE8btKJowGkw8tp48NbrB1jrcDoGclBvee7YrwcLZgS368g==
+X-Received: by 2002:a05:6512:1049:b0:553:1f90:cca4 with SMTP id 2adb3069b0e04-553b6e74ae6mr5656846e87.13.1750326821436;
+        Thu, 19 Jun 2025 02:53:41 -0700 (PDT)
+Received: from pc636 (host-95-203-1-180.mobileonline.telia.com. [95.203.1.180])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-553ac1367e9sm2541889e87.79.2025.06.19.02.53.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Jun 2025 02:53:41 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Thu, 19 Jun 2025 11:53:38 +0200
+To: Dan Carpenter <dan.carpenter@linaro.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild@lists.linux.dev, Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>, lkp@intel.com,
+	oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, sparclinux@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, Hugh Dickins <hughd@google.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>, Juergen Gross <jgross@suse.com>,
+	Jeremy Fitzhardinge <jeremy@goop.org>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [PATCH 2/6] mm: Lock kernel page tables before entering lazy MMU
+ mode
+Message-ID: <aFPeIisE3ufUGEUq@pc636>
+References: <7bd3a45dbc375dc2c15cebae09cb2bb972d6039f.1749747752.git.agordeev@linux.ibm.com>
+ <0be7d42e-5898-4b94-829b-59c661c2f07b@suswa.mountain>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -108,147 +104,133 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB7705:EE_|PH7PR12MB8106:EE_
-X-MS-Office365-Filtering-Correlation-Id: f508074d-3982-4562-6599-08ddaf0f9765
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?g6cFVxVnORHS/1A1DIr683Tf1lWQnm6B1YU5BRgUfymXjouhu/0XmK6tkA0v?=
- =?us-ascii?Q?soyCcobciCAQpr1upnl0/kiraQuHWdEso/yzX1PkTFeZwqaXyLcaNzEqrX9T?=
- =?us-ascii?Q?8ksJU0wIOtlbvHLrdmHpWZ8zjs+GR+1w3SCQcyWgUz6Fnl+NVacEe5pFv3pQ?=
- =?us-ascii?Q?/ptnLLaBWKejLP0f00Ii8XFU57ITGWTTB9Bjk1RypWdHu914TY0HhLlu5/82?=
- =?us-ascii?Q?Igdrt7M9N3oNccbkIWrip9S7Lu5ztRUprdrGhRS3O8r4oFOB9W8q1B5ap+Sy?=
- =?us-ascii?Q?9MO4tBHVp+SXyt9xS9bCh1V9xWKqNy2NBNDY+lLlBgGOTx51T/1nRc9ECqi5?=
- =?us-ascii?Q?/lMCyEaC9DuDTnrrhfrKXWzxLe6QfpadbCpobJtYAWYauFsAZwLJ83fm4O0B?=
- =?us-ascii?Q?FXYGVDh+locxE0grpqoxchHsTScluf7YD6nYMosjC7ucUfhQAM7QBg48pR6L?=
- =?us-ascii?Q?H1KWAw/7vKY6q5C7mehypz+D/EM9+2oeYQVb4CFnzkyycPppB619Ghh0gAbA?=
- =?us-ascii?Q?5HwsVEbYM8cbW6GhIcJO5IzJF7lQCR9byOpncryGrhCP/vh6JxoeSHhEztUK?=
- =?us-ascii?Q?q2b5NwR4hUE+SPqwUVKFLR1KUpbduN6/90S18Lmp2hony/KszmZEX7oRkY2Q?=
- =?us-ascii?Q?1W7fgTYfkNa4o6Mw0+m1i6sdl0zm4sQ51xswGJZ5BCYROO+2yUQG+OCYEBD/?=
- =?us-ascii?Q?/iehQt4YwnBCzU4swRBclO0WkDJ5Pi55w2owdwkFyH0YkHbNsucPmRwP5Ixi?=
- =?us-ascii?Q?3l/5gmiPFvAQXDY7mys4IBm2tQd+16fHMUc1MjrZT9ksA7Y4UEbFh1eywGpP?=
- =?us-ascii?Q?sY22H/xiAHPAEIXKp13ElDSqK60X8nxghJ8a1rDNv6CreR/F9MDkgIQ4HE3A?=
- =?us-ascii?Q?disPnxsBaPOAQf2HR+cRCvk/4gpMqG+HGf+837ccJzt+XW3Oy6VPFLvN0S+P?=
- =?us-ascii?Q?kAs0aFbQZUwHa+KWb9MVSmGQE/IrnEW1UKtKJJavglKyFlzg5ibm3m+FaQm8?=
- =?us-ascii?Q?VZ3Y15fyhjl1GfGaPG3I98wK/ydiaB151HVLnxZozqyuvljdYbSRaDE1EBF+?=
- =?us-ascii?Q?0Kz7ZgrKYoMfx6TIPYUogEB8c8BL1oWcmTIxpUAsP1Qj343NUu2hkKNbTgk8?=
- =?us-ascii?Q?nEnaqTrCbklGRzJ5Ah45xsuY3Mv0x8zscA5Cr40hdHayiMyH7IqQ9RZrFFdZ?=
- =?us-ascii?Q?KYWzKE7+C/bYoFsnR7+CVxnY8wIYTjmbsbfLVIzKGF4hCT6mUVyiBuasQa22?=
- =?us-ascii?Q?s0vEuDBqOL2+G/XFW91MK3Vzpb3x0LEZv/mWPvoOpX4Paf1+dfyqjhUFrccH?=
- =?us-ascii?Q?m5JUp9ylTLYZGGUc+4ZE+xClY8kk566dDnBp5nkSUyFfIrP5ZDlfiwpRygGY?=
- =?us-ascii?Q?klz/6MxibO/dcWg1N8Rf3X1A/o2FQnQwwkQTMZbJwthtbXqPqBMN3zc47Wq5?=
- =?us-ascii?Q?7chcrHrtLCI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7705.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5Nxewbk146M5OxWqwP9XN4j73cQv7ZgTD/kaqf5rJABkOYCewSQIwW+2mWCy?=
- =?us-ascii?Q?ECro7xGf1kc3/apbquBDs5olpfFbYIdhZm66WFyv4UOT37o4u4bJ4jV/zzce?=
- =?us-ascii?Q?GePhMI3stK4SUJmUuMW1jlAdFkypU8TZu/5kk5nJoquspbuyKc0udsOWEYh2?=
- =?us-ascii?Q?FKzMijBMgVVd8ywExBmS57XgfYG3nsfGXn8EvUrlRvc1ybbiLJDFnt/1iTv6?=
- =?us-ascii?Q?W3IwRqsPj46TF6tB9fJuJ/leKjxnjdA+Htzcpf/ZzQ1YgTZ8y4ahQSjOeozq?=
- =?us-ascii?Q?RgHjxI2U1XdciyZTQSBbCZxa9JpX/cziDDvjo7+rqitmrBmJOrnrZQedgOPF?=
- =?us-ascii?Q?Z5N00RNOCl5QlwA9Ca0z0kxaew6LT4AvPhTVGRNrd712DDWzvuaQ+g41NLhF?=
- =?us-ascii?Q?Y3TAqs1SyyHnKkoYyvJ2SQAlsbYA82VrlhqQbyiIuUn8PQxLi/CEa5etAsqj?=
- =?us-ascii?Q?BkzFvSG7U9K+qwssdLWNw+0d0Zh1eBF3vvk1uT1da0EQQvbiOwBCkcpo1QMU?=
- =?us-ascii?Q?l8sET/pxWsAyeznrHSMOS4j+l3PNaEcEkYbpsV+lIuK1yMfujxKXq9bnf5ga?=
- =?us-ascii?Q?ehiPcoSPId2GgDaRacUxKn9hALCqaAi13UxhoRzTJaNjS1FWZMZ3/uK0MGoI?=
- =?us-ascii?Q?AtNxWQ8T9DVJYvN5iKT7Bfh/nnjYXpMRCgXl/XIBXZ+8mz/yKpvWaS6Li1bK?=
- =?us-ascii?Q?jJOElVP2ZxtGZ+8yQtoFm/RLGXvPw9yJihd1JYbi802Xl5PXEAKbkcaY9ZPO?=
- =?us-ascii?Q?4SSkf+BnJUs4+T4YeL3ghnO0phUnqYd0mGx1jbGYHefRbbTdmMGTAKEyfMRY?=
- =?us-ascii?Q?+m7Gk6FwK3jDOhZQ2ZwEzwYlmEWCNvxak60hHPcvDR8Ph99e3BJPoi/Oiy+O?=
- =?us-ascii?Q?d0jqqiCJuYtbpy+VNjteC1d2TycjrX3htaJzl2DkirY4aUk04BGizr1++Cd9?=
- =?us-ascii?Q?NJUKs64Ov4VdNULTYzzSHI8vOSV5KO18aEchWyrzDTr8GUB0bWKkqIKh1vY/?=
- =?us-ascii?Q?9I8uPbdJ1BBxbNOS28jtaOxEsB1xJ+Ium2ioq+0bZwsGCJtyJVF8hueZgT5U?=
- =?us-ascii?Q?crXZHW60h6gdURjHVXWlRC8DIa2OZPpKFbjmm7+ERpYvS9Q3/opmRRGLx207?=
- =?us-ascii?Q?T9zFO1j6EvBj1GH7j6cqILQqhgiB9zVogMun71g4L+qm/3daNqIdpBjdo+wK?=
- =?us-ascii?Q?5z2tHBgI2F5B4oOqad/BixpVTbMlMltfFQOTU/M7wRkiQJi6XmV5tt8/ND3o?=
- =?us-ascii?Q?EvTpWGzCUZYEhbFCae2i0wpxCITgIeAdru+F4tLGOb5XvM2/9yEkCutPNSa/?=
- =?us-ascii?Q?9ACp3T97tyfGwSvKEhfcuMZQYjcwjinygAjWgzq/t+nXMNNqwhv/GwF/ZiJC?=
- =?us-ascii?Q?T3j0NllUeEvW8PNtYG/GfZjFczsjvTPReCvdRYMJ2eMS4ISZhdnG6g6QR6Fm?=
- =?us-ascii?Q?0eDE2ldvrGEnjh6CjBIeX4lFHeiUo07QHGynOaCr6i4ihTZU3IaQ+Xlyffyu?=
- =?us-ascii?Q?A1qt1wXN+o1U8JuHld0yMXSWyvq3DlU+lWe0W4V/CQeDv5tzNb40cRxBeLJ8?=
- =?us-ascii?Q?+aU8FBMfLszWVqWGPBZANhKJ1Dj9V38MZIysu3SM?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f508074d-3982-4562-6599-08ddaf0f9765
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7705.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2025 08:59:25.7868
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E3J6/K8sTsEufbtE9ULxjXPBT1I7qk4SDtBvbSIen6CgI3eOzd1ROxyetGn+Iq4RwDQzBduzbMEUs/Zn7Om1Aw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8106
-X-Spam-Status: No, score=-2.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	FORGED_SPF_HELO,SPF_HELO_PASS,T_SPF_TEMPERROR autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0be7d42e-5898-4b94-829b-59c661c2f07b@suswa.mountain>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-It's no longer used so remove it.
+On Wed, Jun 18, 2025 at 08:32:28PM +0300, Dan Carpenter wrote:
+> Hi Alexander,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Alexander-Gordeev/mm-Cleanup-apply_to_pte_range-routine/20250613-013835
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+> patch link:    https://lore.kernel.org/r/7bd3a45dbc375dc2c15cebae09cb2bb972d6039f.1749747752.git.agordeev%40linux.ibm.com
+> patch subject: [PATCH 2/6] mm: Lock kernel page tables before entering lazy MMU mode
+> config: x86_64-randconfig-161-20250613 (https://download.01.org/0day-ci/archive/20250613/202506132017.T1l1l6ME-lkp@intel.com/config)
+> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> | Closes: https://lore.kernel.org/r/202506132017.T1l1l6ME-lkp@intel.com/
+> 
+> smatch warnings:
+> mm/vmalloc.c:552 vmap_pages_pte_range() warn: inconsistent returns 'global &init_mm.page_table_lock'.
+> 
+> vim +552 mm/vmalloc.c
+> 
+> 0a264884046f1ab Nicholas Piggin   2021-04-29  517  static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+> 2ba3e6947aed9bb Joerg Roedel      2020-06-01  518  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> 2ba3e6947aed9bb Joerg Roedel      2020-06-01  519  		pgtbl_mod_mask *mask)
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16  520  {
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16  521  	pte_t *pte;
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16  522  
+> db64fe02258f150 Nicholas Piggin   2008-10-18  523  	/*
+> db64fe02258f150 Nicholas Piggin   2008-10-18  524  	 * nr is a running index into the array which helps higher level
+> db64fe02258f150 Nicholas Piggin   2008-10-18  525  	 * callers keep track of where we're up to.
+> db64fe02258f150 Nicholas Piggin   2008-10-18  526  	 */
+> db64fe02258f150 Nicholas Piggin   2008-10-18  527  
+> 2ba3e6947aed9bb Joerg Roedel      2020-06-01  528  	pte = pte_alloc_kernel_track(pmd, addr, mask);
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16  529  	if (!pte)
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16  530  		return -ENOMEM;
+> 44562c71e2cfc9e Ryan Roberts      2025-04-22  531  
+> dac0cc793368851 Alexander Gordeev 2025-06-12  532  	spin_lock(&init_mm.page_table_lock);
+> 44562c71e2cfc9e Ryan Roberts      2025-04-22  533  	arch_enter_lazy_mmu_mode();
+> 44562c71e2cfc9e Ryan Roberts      2025-04-22  534  
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16  535  	do {
+> db64fe02258f150 Nicholas Piggin   2008-10-18  536  		struct page *page = pages[*nr];
+> db64fe02258f150 Nicholas Piggin   2008-10-18  537  
+> c33c794828f2121 Ryan Roberts      2023-06-12  538  		if (WARN_ON(!pte_none(ptep_get(pte))))
+> db64fe02258f150 Nicholas Piggin   2008-10-18  539  			return -EBUSY;
+> db64fe02258f150 Nicholas Piggin   2008-10-18  540  		if (WARN_ON(!page))
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16  541  			return -ENOMEM;
+> 4fcdcc12915c707 Yury Norov        2022-04-28  542  		if (WARN_ON(!pfn_valid(page_to_pfn(page))))
+> 4fcdcc12915c707 Yury Norov        2022-04-28  543  			return -EINVAL;
+> 
+> These error paths don't unlock &init_mm.page_table_lock?
+> 
+> 4fcdcc12915c707 Yury Norov        2022-04-28  544  
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16  545  		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
+> db64fe02258f150 Nicholas Piggin   2008-10-18  546  		(*nr)++;
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16  547  	} while (pte++, addr += PAGE_SIZE, addr != end);
+> 44562c71e2cfc9e Ryan Roberts      2025-04-22  548  
+> 44562c71e2cfc9e Ryan Roberts      2025-04-22  549  	arch_leave_lazy_mmu_mode();
+> dac0cc793368851 Alexander Gordeev 2025-06-12  550  	spin_unlock(&init_mm.page_table_lock);
+> 2ba3e6947aed9bb Joerg Roedel      2020-06-01  551  	*mask |= PGTBL_PTE_MODIFIED;
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16 @552  	return 0;
+> ^1da177e4c3f415 Linus Torvalds    2005-04-16  553  }
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+> 
+> 
+This patch introduce a huge performance degrade when testing this by
+the test_vmalloc.sh performance tool. We return back to a single, not
+serialized global spilock where we spend 90% of cycles:
 
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
----
- mm/memremap.c | 27 ---------------------------
- 1 file changed, 27 deletions(-)
+<snip>
++   91.01%     1.67%  [kernel]          [k] _raw_spin_lock
+-   89.29%    89.25%  [kernel]          [k] native_queued_spin_lock_slowpath
+     69.82% ret_from_fork_asm
+      - ret_from_fork
+         - 69.81% kthread
+            - 69.66% test_func
+               - 26.31% full_fit_alloc_test
+                  - 19.11% __vmalloc_node_noprof
+                     - __vmalloc_node_range_noprof
+                        - 13.73% vmap_small_pages_range_noflush
+                             _raw_spin_lock
+                             native_queued_spin_lock_slowpath
+                        - 5.38% __get_vm_area_node
+                             alloc_vmap_area
+                             _raw_spin_lock
+                             native_queued_spin_lock_slowpath
+                  - 13.32% vfree.part.0
+                     - 13.31% remove_vm_area
+                        - 13.27% __vunmap_range_noflush
+                             _raw_spin_lock
+                             native_queued_spin_lock_slowpath
+               - 25.57% fix_size_alloc_test
+                  - 22.59% __vmalloc_node_noprof
+                     - __vmalloc_node_range_noprof
+                        - 17.34% vmap_small_pages_range_noflush
+                             _raw_spin_lock
+                             native_queued_spin_lock_slowpath
+                        - 5.25% __get_vm_area_node
+                             alloc_vmap_area
+                             _raw_spin_lock
+                             native_queued_spin_lock_slowpath
+                  - 11.59% vfree.part.0
+                     - remove_vm_area
+                        - 11.55% __vunmap_range_noflush
+                             _raw_spin_lock
+                             native_queued_spin_lock_slowpath
+               - 17.78% long_busy_list_alloc_test
+                  - 13.90% __vmalloc_node_noprof
+                     - __vmalloc_node_range_noprof
+                        - 9.95% vmap_small_pages_range_noflush
+                             _raw_spin_lock
+<snip>
 
-diff --git a/mm/memremap.c b/mm/memremap.c
-index 044a455..f75078c 100644
---- a/mm/memremap.c
-+++ b/mm/memremap.c
-@@ -38,30 +38,6 @@ unsigned long memremap_compat_align(void)
- EXPORT_SYMBOL_GPL(memremap_compat_align);
- #endif
- 
--#ifdef CONFIG_FS_DAX
--DEFINE_STATIC_KEY_FALSE(devmap_managed_key);
--EXPORT_SYMBOL(devmap_managed_key);
--
--static void devmap_managed_enable_put(struct dev_pagemap *pgmap)
--{
--	if (pgmap->type == MEMORY_DEVICE_FS_DAX)
--		static_branch_dec(&devmap_managed_key);
--}
--
--static void devmap_managed_enable_get(struct dev_pagemap *pgmap)
--{
--	if (pgmap->type == MEMORY_DEVICE_FS_DAX)
--		static_branch_inc(&devmap_managed_key);
--}
--#else
--static void devmap_managed_enable_get(struct dev_pagemap *pgmap)
--{
--}
--static void devmap_managed_enable_put(struct dev_pagemap *pgmap)
--{
--}
--#endif /* CONFIG_FS_DAX */
--
- static void pgmap_array_delete(struct range *range)
- {
- 	xa_store_range(&pgmap_array, PHYS_PFN(range->start), PHYS_PFN(range->end),
-@@ -150,7 +126,6 @@ void memunmap_pages(struct dev_pagemap *pgmap)
- 	percpu_ref_exit(&pgmap->ref);
- 
- 	WARN_ONCE(pgmap->altmap.alloc, "failed to free all reserved pages\n");
--	devmap_managed_enable_put(pgmap);
- }
- EXPORT_SYMBOL_GPL(memunmap_pages);
- 
-@@ -349,8 +324,6 @@ void *memremap_pages(struct dev_pagemap *pgmap, int nid)
- 	if (error)
- 		return ERR_PTR(error);
- 
--	devmap_managed_enable_get(pgmap);
--
- 	/*
- 	 * Clear the pgmap nr_range as it will be incremented for each
- 	 * successfully processed range. This communicates how many
--- 
-git-series 0.9.1
+No, we can not take this patch.
+
+--
+Uladzislau Rezki
 
