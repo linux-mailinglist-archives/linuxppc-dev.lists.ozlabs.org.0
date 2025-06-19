@@ -1,92 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-9548-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9549-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8661AAE0442
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 13:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE7FAE0446
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 13:49:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bNJlq6BSHz30TG;
-	Thu, 19 Jun 2025 21:48:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bNJmC0Sbcz30W5;
+	Thu, 19 Jun 2025 21:48:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750333719;
-	cv=none; b=N7OCaQWpEJBxAU4VNgDG4fJ4iQG0b5xqT0qpM+y6roCtgp5mnpoHf2hF2CdPuiQlMnvsUwvdg4qsHJ4TblUsVI2g0oFI+PjTknCqCySGesVgac7HKFwKUG2d+TdHYTRPwlk0GUnPiN4GtJOE1Z21U8caIoox8YDbgEyBbPrSGvgAyB7i0M7MKtRrDC1O/dHvABZCycnubqRQVKWZYKtwCW92nuHG350lCSCP4cdRtvEgaMgaQAQe+EZA0d5WA3vVg3x5XM1tT8XeCPfVkAK5a5JOV2uJ+aRKeTLGmmfRn52KWZ9scT8jAZflqb+6rC0gWGh/ki6Ac3qafyj2nEYx7Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750333739;
+	cv=none; b=iPhWsF5KTYFNWx/2OEMhJp0XU+fHR0jTnRhBfuNpWJlqOeCOpxGk1/E9yyiUApUc8EUgealOlbOcpM65ldBIoIPRWoSXBm0ywkGsQMwOaCfbeAG80EG3HMUApntRlI9bV3dWz4nPxiqL8GEeAL8swoFKuFrxSjly+Vxs0UvOF9ZnySeOlSCEygyBY7nJ+Ju2Tqacj/9qqJiIwHkrID+QaNWPGaDdc/Pz5pbRNNMKV9NPgOLz5DbRKwK7x5qzf/EnK/tMV+1Tk6LM3p4QcVlyjsF7Am5QEjXSYtMmAjw4bjFPCVRukaLmJ4QpK8vH6LYK/e0PhKwYlK2fNX4asw04Lw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750333719; c=relaxed/relaxed;
-	bh=045SGeXJhHUu8JEI4qhgsPRhkcMCEyOeFZ5KmNQEbxY=;
+	t=1750333739; c=relaxed/relaxed;
+	bh=Lt1aj+Q6ccq6O7aDE+Lq9tCSibHIyhB8GK5J4A5EHr4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FgnFr1uQx5P5jKUhIbuOXcmLzNKl5mjTCOHzeaY00Owr5G5Ki+KSvKRcdNALH046H4edRskG/sDysUxts7yzFz6puGAlsk0KokKUh6KHvaxmy0/+GxNSw8PXRs6YZ+31OnXJ8HyQcgNjVksz2q64KHUBO0txDHUXAr9gYDQSru79JDbdZpXfGdZWQ6fjNYqSzC9u0qIPaDOSY488ulEiSmgMYsdSNxGKFMQMU3VTuPgzHo5iAZB5e9jRyA2u0r77WlVVQeeJlJ5cVeugMvWXjiP7ZcWLPkhhfOA1PbvONJba9Ln6y6Ti3ES0/2L3z7hanIcbv67j9IhypHUFdxHttg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=GR60kMZn; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WsHbjhpp; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=GR60kMZn; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WsHbjhpp; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+	 In-Reply-To:Content-Type; b=SpM2Izck/ASBF651+19ipG/kEecl5HF2SrM0uiTNH7E85rPe/F4Sjv2to36KrytpCr04YPIDnqokBizWWGmtgyEk9Pp2Dvq85d0gv2oLNiB/fvIyGZanUGPIhe0DGnPXehfYFpTBfhJBctQnicF51R36pHH7TtupNkbba/eiRjzYd8+YsO+MCuMzzZ/s2gUhEvapHyI22rCHszV0wTNTMQ5Gw2b4ack8uRgbOLscehR63tOUPO5v1NCJZC4vTlbC36uRJHxsiRovOBF2aQ1zQG43qHD6V3Ynv2nJo0FLXXoSOXyug4h3MH+hDoY5ppdDEsZAcIBbuk8xbfdbDVb1wA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=WXV+NLRd; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Bi8pqM55; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=WXV+NLRd; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Bi8pqM55; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=GR60kMZn;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WsHbjhpp;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=GR60kMZn;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WsHbjhpp;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=WXV+NLRd;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Bi8pqM55;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=WXV+NLRd;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Bi8pqM55;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1019 seconds by postgrey-1.37 at boromir; Thu, 19 Jun 2025 21:48:57 AEST
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNJlp2p2Nz30T9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 21:48:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNJmB00mlz30T9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 21:48:57 +1000 (AEST)
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C68B2211A5;
-	Thu, 19 Jun 2025 11:48:34 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4F29521222;
+	Thu, 19 Jun 2025 11:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1750333714; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1750333735; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=045SGeXJhHUu8JEI4qhgsPRhkcMCEyOeFZ5KmNQEbxY=;
-	b=GR60kMZniEsFi4imY9KmMbHhGvpzq7XPb9jHieIiFEWXiDaL0GNw0vOxFUSA7Z3Rm6u5Lt
-	i8xCUliB6uPVWfbalcczoPtCAk+9qvj9Gkak5xihyA2mKX9GYqxQ2wPZEOiXelXGcrMMRR
-	3zx+ni6e31N4Ij2PxuFYtErktog15CA=
+	bh=Lt1aj+Q6ccq6O7aDE+Lq9tCSibHIyhB8GK5J4A5EHr4=;
+	b=WXV+NLRdLDzyN5dbccQQ9pvwaAAufEYDqPxhxtOTJeKprh9x2VTaJ/LwgB6drwgIKqY9HA
+	t89MmNRazhY8myYM3F7ksndvsFDAia+lnGpzg/MRrMa8rH6xy0ty5wwVaUC+/0uyWr7z8l
+	7YV+zOf3Sal+DwClGlDmqLYk9Q//1Fw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1750333714;
+	s=susede2_ed25519; t=1750333735;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=045SGeXJhHUu8JEI4qhgsPRhkcMCEyOeFZ5KmNQEbxY=;
-	b=WsHbjhppATojPNqwvpWdhAc8jff+LG48TR17NRq6+06zLcCadnM5O6A6z6saTAFbNIwtsW
-	5kNyZue9iIu4PTDQ==
+	bh=Lt1aj+Q6ccq6O7aDE+Lq9tCSibHIyhB8GK5J4A5EHr4=;
+	b=Bi8pqM554EEIgfW9tIUR0c072TendrxTOBNl6Xi68ligRgho7sCIG/TwCdBPr+tPqFeulm
+	JNB+G4XTjCqTTDAw==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1750333714; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1750333735; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=045SGeXJhHUu8JEI4qhgsPRhkcMCEyOeFZ5KmNQEbxY=;
-	b=GR60kMZniEsFi4imY9KmMbHhGvpzq7XPb9jHieIiFEWXiDaL0GNw0vOxFUSA7Z3Rm6u5Lt
-	i8xCUliB6uPVWfbalcczoPtCAk+9qvj9Gkak5xihyA2mKX9GYqxQ2wPZEOiXelXGcrMMRR
-	3zx+ni6e31N4Ij2PxuFYtErktog15CA=
+	bh=Lt1aj+Q6ccq6O7aDE+Lq9tCSibHIyhB8GK5J4A5EHr4=;
+	b=WXV+NLRdLDzyN5dbccQQ9pvwaAAufEYDqPxhxtOTJeKprh9x2VTaJ/LwgB6drwgIKqY9HA
+	t89MmNRazhY8myYM3F7ksndvsFDAia+lnGpzg/MRrMa8rH6xy0ty5wwVaUC+/0uyWr7z8l
+	7YV+zOf3Sal+DwClGlDmqLYk9Q//1Fw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1750333714;
+	s=susede2_ed25519; t=1750333735;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=045SGeXJhHUu8JEI4qhgsPRhkcMCEyOeFZ5KmNQEbxY=;
-	b=WsHbjhppATojPNqwvpWdhAc8jff+LG48TR17NRq6+06zLcCadnM5O6A6z6saTAFbNIwtsW
-	5kNyZue9iIu4PTDQ==
+	bh=Lt1aj+Q6ccq6O7aDE+Lq9tCSibHIyhB8GK5J4A5EHr4=;
+	b=Bi8pqM554EEIgfW9tIUR0c072TendrxTOBNl6Xi68ligRgho7sCIG/TwCdBPr+tPqFeulm
+	JNB+G4XTjCqTTDAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60CAD136CC;
-	Thu, 19 Jun 2025 11:48:34 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DADA4136CC;
+	Thu, 19 Jun 2025 11:48:54 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id iWtSFxL5U2g4cQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 19 Jun 2025 11:48:34 +0000
-Message-ID: <4735002d-3254-41a2-8a3a-5597afcdc6e6@suse.cz>
-Date: Thu, 19 Jun 2025 13:48:34 +0200
+	id kbYZNSb5U2hgcQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 19 Jun 2025 11:48:54 +0000
+Message-ID: <fe8843eb-cbbb-4dae-aff9-6f08b5e0d39c@suse.cz>
+Date: Thu, 19 Jun 2025 13:48:54 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,8 +102,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
- consistently
+Subject: Re: [PATCH 3/3] mm: update architecture and driver code to use
+ vm_flags_t
 Content-Language: en-US
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Andrew Morton <akpm@linux-foundation.org>
@@ -143,7 +144,7 @@ Cc: Russell King <linux@armlinux.org.uk>,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, nvdimm@lists.linux.dev,
  linux-trace-kernel@vger.kernel.org
 References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
- <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
+ <b6eb1894abc5555ece80bb08af5c022ef780c8bc.1750274467.git.lorenzo.stoakes@oracle.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -184,63 +185,48 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <b6eb1894abc5555ece80bb08af5c022ef780c8bc.1750274467.git.lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-8.30 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	NEURAL_HAM_SHORT(-0.20)[-1.000];
 	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RL81e5qggtdx371s8ik49ru6xr)];
 	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[64];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_CC(0.00)[armlinux.org.uk,arm.com,kernel.org,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,davemloft.net,gaisler.com,linux.intel.com,linutronix.de,redhat.com,alien8.de,zytor.com,infradead.org,zeniv.linux.org.uk,suse.cz,nvidia.com,linux.alibaba.com,oracle.com,zte.com.cn,linux.dev,google.com,suse.com,surriel.com,intel.com,goodmis.org,efficios.com,ziepe.ca,suse.de,cmpxchg.org,bytedance.com,lists.infradead.org,vger.kernel.org,lists.ozlabs.org,kvack.org,lists.linux.dev];
-	R_RATELIMIT(0.00)[to_ip_from(RL81e5qggtdx371s8ik49ru6xr)];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
 	TO_MATCH_ENVRCPT_SOME(0.00)[];
 	RCVD_COUNT_TWO(0.00)[2];
 	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_GT_50(0.00)[64];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,oracle.com:email]
 X-Spam-Level: 
-X-Spam-Score: -8.30
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Score: -4.30
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 6/18/25 21:42, Lorenzo Stoakes wrote:
-> The core kernel code is currently very inconsistent in its use of
-> vm_flags_t vs. unsigned long. This prevents us from changing the type of
-> vm_flags_t in the future and is simply not correct, so correct this.
+> In future we intend to change the vm_flags_t type, so it isn't correct for
+> architecture and driver code to assume it is unsigned long. Correct this
+> assumption across the board.
 > 
-> While this results in rather a lot of churn, it is a critical pre-requisite
-> for a future planned change to VMA flag type.
-> 
-> Additionally, update VMA userland tests to account for the changes.
-> 
-> To make review easier and to break things into smaller parts, driver and
-> architecture-specific changes is left for a subsequent commit.
-> 
-> The code has been adjusted to cascade the changes across all calling code
-> as far as is needed.
-> 
-> We will adjust architecture-specific and driver code in a subsequent patch.
-
-Nit: this line is redundant with 2 paragraphs above.
-
 > Overall, this patch does not introduce any functional change.
 > 
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
+Thanks!
 
