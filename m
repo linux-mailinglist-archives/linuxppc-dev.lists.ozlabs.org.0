@@ -1,83 +1,103 @@
-Return-Path: <linuxppc-dev+bounces-9515-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9516-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB312ADFA55
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 02:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A052ADFB56
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 04:45:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bN1zP1zsnz2xKd;
-	Thu, 19 Jun 2025 10:42:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bN4hV0J2Sz2yKq;
+	Thu, 19 Jun 2025 12:44:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2009::627" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750293761;
-	cv=pass; b=lf3K4pTkq7C1plQpDu4KFhpcixuTFwrm7sOz3ANHk8ZPbjSnO/YnGo/vxKawcqgfJYTlnPXMDmlKzTSFxmYhQLfHhQprIbn/jMqLR+v5W6J2S2uTsmOIzIaUi4bzPzIyCZZJbYwx+ZU9du1JS7FRrmOHwCCcO6lXONZTvVYUGsta944uqJSw5rtj9x7FzmxakSK8ERK/1iCxJhGD5+ctUfuQmVtvk2DrIun1XDvVAPnQ8Os3dWPHKNiqlqRqy2bOqjJzD0RREE5aOtBtJtjtcmUCALemLut8+xOTYdsIddQ8Ke8yNqz8UuFi3sQ8qASfmRC+vfGGv2Gn0LcwcsnUPA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750293761; c=relaxed/relaxed;
-	bh=lRlzqkTydM6SNii5dBh2dvD9J8DDJqQwFzUxGEbHsa0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MVf7AQaJnYFd7KIsg6QVdjir6foKf0QDV1XD0DQkj2HDOPVGDmxzNZK9ZaNfdcYUY+bQaAXZ+j3N3nkYmg28MBZzUOFh0DsI/hnUm6BPUa9NSoQIT/bg78OrI35QjSTe/DgDhtLe4eT6NHEyAGQWvJWL+caqkyQwpy1ltb6uBvf9CeBElvxxdqOd36K7xew3aRibSDgAOkEVO9dTTfT1n2wsb/AptLuokLj8+bKat/pDtGnKPWQac4OeMUaDePBAu2Jikf1JTEqt4INGasXQmg2s6eMknVar970vyUfTflfdoNGWxbOQG6KExlom32ZufQmkY4+lHDuuPnQriyGvFg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=qrSl0Iuf; dkim-atps=neutral; spf=temperror (client-ip=2a01:111:f403:2009::627; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750301097;
+	cv=none; b=a3D5BiNUkX+Lm95zKl9p+BavEQXNrasgDPESecUlAtvRs3frbwr6ueiNV1PQ+uIkyw2sO9E3fD+HsyG7Hw3mI9ozFOCkLsgc/FoVJbY5ZXuKfpaerZRk2pDaPzLve6dhhxbiERTyz3i8pWir5okYeExyY/q90xiendKryaVwjlCFF1bKsZwnNgkTReBQCUJzPRGLjQZa0xpZAeJcnKnVfy5Mpba4Mjju+IPnPwPlSl6U5Mp3Tt64QD1zsep9SmrjonyRkciZrNaxBQpulznm5qeg1Z7LfmyeXhtFsPjN89E774mHtCbGs9LbZp95jWCIlVXSAnscpJ/PCk6v8Z0+Qg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1750301097; c=relaxed/relaxed;
+	bh=NGiV4ZITlSkGta2ar3rISknYHCyA9ON09GdNG8pubLA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=INJD35HPTuXDhvmAxsGNDPhoMf3WkZVPW7VsuAbDtdKS35MR9DfqKcv3ennD4tqi78cHXilALEvcX/5RE3cAFlq1GaTmx/XHR5mKaXN1rfJJ4ti1GSQC0Grw6rpIeyMkAS+KdhQLHWzufW8y+kJI6ibu8IYbZIZihR/qKZsN2lGvGkAHfOaYB6JK3syqSRNobHnCmC8ZL8UJizzO2aF98LJej9l+wRKposLF2AcYZwRNco8yQ8zdMB4MU8WMiv99vtDWELeohzsMD31YCM8Kwg9gCTn8bbMcPIWGOJa8eNDz99PQwacy/7Y7PR+jAuYroYIIxegSKVErWZLudhPFZQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org; dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=dh5NV4Zj; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=senozhatsky@chromium.org; receiver=lists.ozlabs.org) smtp.mailfrom=chromium.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=qrSl0Iuf;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=dh5NV4Zj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=temperror (SPF Temporary Error: DNS Timeout) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2009::627; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on20627.outbound.protection.outlook.com [IPv6:2a01:111:f403:2009::627])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::42c; helo=mail-pf1-x42c.google.com; envelope-from=senozhatsky@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bN1z01NKFz30T9
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 10:42:00 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ui0dDiHWQ4B83sLohfbyz0t9lkO5t9UCIgDp4mu+A09n7JfHNASeTxthu15libS3kiGB85GVHe6Z7nUwiTCMJTQmln0/0j8pjEAwRsX3agwooWrQZzSdOB4sY/eQorD7kwXgQYRWby5qXigWk2uMs+PD+/GiTfrUBGj0tdefhVnaum/TULuOcZY+IxLQBLBbAbPXoNNe7/U+wBN9wRhg7rSuwRIQuCLn09ORxTw84Iu6LiGeaAEHf/U4CY3FmZ7sa4LYlmMp+NunKCBgCSgnFkeja1kZ47wUcjIavX06Tez9RyyXv2MZDSU1KtnycSG6/gbbxx47/N821lol88ujxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lRlzqkTydM6SNii5dBh2dvD9J8DDJqQwFzUxGEbHsa0=;
- b=fIGAsAIYHInzBucf9eCV+l+tsHU4PfnoIai9IiLjrdOrdlrBgQ7/b/oDso/yzq+sW/9wROk0Oj9Wo/GuuMzM5ddtLxpLjYS3S9P2jDg7C001D94Kw9NZkTjeiLVKnsRVBTGJxg8KUkknsiD9pDlJYnH30nkI8voX5HXVTttzNwws0tdT/TyHsOR8AoxclDaThSyPkV80WdaM+7XtDt9K/TQoxdiOOlNtbO+izPVRuAlWRWId9mhzTVnNHJ1+ouoXMQPrSdq8iRJBf5kLXeaIwP/Hf3bnevRqJnc0hEH4wjFdZov69NpOxZuDmPZUCa0yQ7G4KFY6YP6mR6hVUII5Vw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lRlzqkTydM6SNii5dBh2dvD9J8DDJqQwFzUxGEbHsa0=;
- b=qrSl0IufcbbxKjUjt5RoQNov/TZGg94C9wkX4mc0pop+fAu5WdRfibvRqf9XUCMOoJCDyFEyp+SjMEZ73kHVnhfS591LpoysgbZhyogUSdtAigks0DIr8ulKGgxmFF/fNHj6a0U7/D+l7fj80IwztTIT5Ascwrvq1Wg3vx6B1g48ivgtG3RcI3gt3DeFHxr7y8MTLzw6+pHvb0bLKQxdmuOyoqJUhjTDDeXRfDQjtoRdI46KtqXVLw4O6xl65dVDMMpyY7b6QA96p2tvbZBLU7ao53QxOuokz3jPE0SwSZb50itYTwlk6PS6LZHlCiu7QBW7alCd581xEkHamjNu3w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CY8PR12MB7705.namprd12.prod.outlook.com (2603:10b6:930:84::9)
- by PH0PR12MB8128.namprd12.prod.outlook.com (2603:10b6:510:294::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.20; Thu, 19 Jun
- 2025 00:41:40 +0000
-Received: from CY8PR12MB7705.namprd12.prod.outlook.com
- ([fe80::4b06:5351:3db4:95f6]) by CY8PR12MB7705.namprd12.prod.outlook.com
- ([fe80::4b06:5351:3db4:95f6%5]) with mapi id 15.20.8835.026; Thu, 19 Jun 2025
- 00:41:40 +0000
-Date: Thu, 19 Jun 2025 10:41:34 +1000
-From: Alistair Popple <apopple@nvidia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bN4hS0yCdz2yF1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 12:44:54 +1000 (AEST)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-7487d2b524eso152180b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Jun 2025 19:44:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1750301092; x=1750905892; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NGiV4ZITlSkGta2ar3rISknYHCyA9ON09GdNG8pubLA=;
+        b=dh5NV4ZjIj1FY89p+DiO1W5BwD9nX74Yr99u8EM+J1gEIWAY6sEz/P0WEBebwCeAju
+         LoMjUMTVJ8Hex2JoyDubRKGBrNrzJjKdYWnxD24rnf0+Fdp+Giusv8Ct/iN1diYdIlb1
+         OcWSHtiLXd2vR+GRacPMrvmtHVQPMHTUfjUE4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750301092; x=1750905892;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NGiV4ZITlSkGta2ar3rISknYHCyA9ON09GdNG8pubLA=;
+        b=ZYKJSKhWsbvX1fWBtQ4oWLFueK68Bm4i4CAOi/ND7BtURF2lx7SJ46mPEcyOObaq3U
+         vxYKfpkTf9TwraNYH9+SFok287JAD0uBZVYwgsqRBtZM0y2NhOrrBvKoRZC7nsv5f1GS
+         Lu/6iFqy6lQt/UwdVUMBAusD6tD9vvK5NjkzlEPs4FGq6zxqqfCBeXl97jgeVWuV1szN
+         8LBChiTgIjQV+z7fGw3oHY0hJO21A1FyjR7RWpmmvr9vDBO/h9IP1H0i6M/Ors/UUayz
+         pRadsaQK85QMCP3W8l5d/JFd/0pSvinFYHvuTXBXMqnFnQ/8kK7fvbMKHQLvMqXZ0/Tg
+         nuDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVPM5BpDlPtHT+pR1JYqFcjPA+ocLUiuWAPUueBoXppfE1/acYdljb2cMlpIEFC69wPQ6PWMI0p/TsbXVk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzKPBzqTZNTADPbglifdNPvUD+IfxMGaKcfsQykDFt5Iuz3Jq3/
+	lDtP+Tol/TWn4NpmU1tLoZ1kfLVnTqGBclddlaMonOfXKlf/rFsbIg2HcahMm23E6A==
+X-Gm-Gg: ASbGncu76QqcZs0TY8lQ3Zl7X6zr7tmePEd6AzhUhil86g/YlcOEDToZu7aWFloEuqe
+	N1Hif196JNRuEoPRnPQvBVvUI5V6hzLoEkOgIYq4IceQdHDSjf7QUNlE3gR+vP/ye/WJ6X0RB0U
+	V9ib+UVc6+y0ilE+e0l3Fo3Y79fQZj9ziIKDiG7Y3K25XizWY4W+skpMj36u0n0TN9uMloUhlYI
+	TYRdFjAgeGqUy0du+4ZfLbQsUV5fHuNx5g+h47yN/g58m9Zb28lpoWB8JQRUUnUXdZApFcVs0C0
+	Az/6Z0zAuMaHlH7srBi3y3FZ8ZHGrnyRN2YBBp5LIvL1ScoOxqlztzMEtUbp5fdKFg==
+X-Google-Smtp-Source: AGHT+IG6keXC3NsOp2Ins+/oPh724/MxHSdE1WbIS33oc9s9zagcbgJChxdFiOB1royOBlBoftNKog==
+X-Received: by 2002:a05:6a00:1d15:b0:748:e4f6:ff31 with SMTP id d2e1a72fcca58-748e4f7091emr9593788b3a.8.1750301091998;
+        Wed, 18 Jun 2025 19:44:51 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:7cb6:ce70:9b77:ed3b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-748ff646231sm44607b3a.146.2025.06.18.19.44.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Jun 2025 19:44:51 -0700 (PDT)
+Date: Thu, 19 Jun 2025 11:44:40 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	gerald.schaefer@linux.ibm.com, dan.j.williams@intel.com, jgg@ziepe.ca, willy@infradead.org, 
-	linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de, 
-	zhang.lyra@gmail.com, debug@rivosinc.com, bjorn@kernel.org, balbirs@nvidia.com, 
-	lorenzo.stoakes@oracle.com, linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, linux-cxl@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, John@groves.net, m.szyprowski@samsung.com
-Subject: Re: [PATCH v2 02/14] mm: Filter zone device pages returned from
- folio_walk_start()
-Message-ID: <5vxfjvgl5qu6n5qzru62mmk6saudeslt5f6fu4luhuezf6lh2p@dhz65hzro27h>
-References: <cover.8d04615eb17b9e46fc0ae7402ca54b69e04b1043.1750075065.git-series.apopple@nvidia.com>
- <11dd5b70546ec67593a4bf79f087b113f15d6bb1.1750075065.git-series.apopple@nvidia.com>
- <6afc2e67-3ecb-41a5-9c8f-00ecd64f035a@redhat.com>
- <b67f8dea-dc22-4c83-a71f-f5a2ecc8a8d7@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b67f8dea-dc22-4c83-a71f-f5a2ecc8a8d7@redhat.com>
-X-ClientProxiedBy: SY5P282CA0097.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:204::7) To CY8PR12MB7705.namprd12.prod.outlook.com
- (2603:10b6:930:84::9)
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Jerrin Shaji George <jerrin.shaji-george@broadcom.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH RFC 03/29] mm/zsmalloc: drop PageIsolated() related
+ VM_BUG_ONs
+Message-ID: <ved33aqy5rlayhagg3x6xcry3cyadw6eponaj6dfwkt7xmbep6@dpcvwrfgrjxx>
+References: <20250618174014.1168640-1-david@redhat.com>
+ <20250618174014.1168640-4-david@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,219 +111,19 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB7705:EE_|PH0PR12MB8128:EE_
-X-MS-Office365-Filtering-Correlation-Id: 615f7ef9-c92b-4adf-5cdd-08ddaeca0dc2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1R1FTHy6TStft9DyrmAoYI+bubnzGBmcfQ706HNOSCAcegatG7wxbXBxA7ZF?=
- =?us-ascii?Q?cZoYVI0lfiQVn//I2QFUaGiapD/tUZxhFIDuobtjOd1VlY3J9ye8pxAdIpeC?=
- =?us-ascii?Q?44EboM9t42w09xhO7ZxgxhfX5D3zeN5PeiroOeti9e6yKRXc0MPibrdzuWU6?=
- =?us-ascii?Q?zctAC6ttd3gs4GZaJfFGQHSqrDbG85/KmgwL9HuNu9S9mZsWBMIV2yorKif9?=
- =?us-ascii?Q?ZdcNHUNqEwKi+pIVSFKxkDEvRGeaeliY3c4CoNorsNXEYWrUg3+2kQiTfrK2?=
- =?us-ascii?Q?nEuJy7Ilo5LOFJRZryPqsiGzdh5kSnzHaccJuxOVWtJAJGQ9BUlflAi92VL/?=
- =?us-ascii?Q?IuS13Xm2Uv2nTS/rmTAMjnSmYaJw9F4WqFqL2hkHBNbDH80957END0fB7zgr?=
- =?us-ascii?Q?wzO/lyLi0O5E6vMu8Wy/q3KvOUJRyJqxHy3SlnUSk0An8w03Vpbth/sYNWX6?=
- =?us-ascii?Q?qqSOEFPsht4r75vHr7z1wqXxo0cbhfT1mMuYOTPAh3vU4p1ljlqfCUIilNk+?=
- =?us-ascii?Q?XOSNxqRBXBzjl+JnKnzshoXyxN7BF3BdFt7+cHy/x9wyzra0cpQ3EHMqQX45?=
- =?us-ascii?Q?wwzmx1VfZ5cPEQSxvx7pCqYxQJt4LhDMY3adaj6bAzr+5qozFg7O3H/MjUy5?=
- =?us-ascii?Q?hRNN1zbWXkhvklH30W4DLIBQrSj3O719ocDOhu3MVXepaH2pxa/8hEUedlE/?=
- =?us-ascii?Q?YugAKdR1v5c+C4JeiWI3MDi4QTnInNi6IwH3jV1TNp5oEDsO4Pcv05oOC5IQ?=
- =?us-ascii?Q?7zfVzMcshtNlmEhvJX0lAfmhrWsggJMWTQgC4pOmmENdWRDyiidSQHLFYLuN?=
- =?us-ascii?Q?a4vOnKAlX/UEkrvKUAb0jzNP7+yTR3AnPQX8srZ4LHcg67pdA4Ds4H1/YG+D?=
- =?us-ascii?Q?Ay+JYOUF/vVgHRunCoAQXGF9wAMzf7q43kJaCOreg526NFhIsXENsWdr3AMr?=
- =?us-ascii?Q?0vygMoSgKZ5SUXK7eRUsP4x+HE4zoUg4ji5m0JXJwRDoIhuD8X5rrWrlsTe+?=
- =?us-ascii?Q?+neyJZwrvorerZHtQ6kEDpcGT6QxOOhjBgL3RP4znPYAY/SU/nBEGj8ZXGy2?=
- =?us-ascii?Q?SSz4UCzbJMfy2PkA5AcN5Ax2/rNZY+OlVA4eEvj0IW1N5Tt3qGPinc3H7bTf?=
- =?us-ascii?Q?KwlGEvDCYbf07smlmQuRjBNlkvC//95H8SvJ2F4x44m5WabArD2x7CHVgfWd?=
- =?us-ascii?Q?e6Gky72d80mRlPAl53EuNGm2B/hGFX3HOt/iXeDe2A+DuQnJy199Ez3VczaM?=
- =?us-ascii?Q?iN82hPUlPPV+Z1qJOdH1iV2sYAbPCqczX5ksrNn5h9PmHmVLbzSorKGY/G90?=
- =?us-ascii?Q?qBZvknvRhGG9Q5Yyr57xYAAHKbaITEr7ea1vW3++lsGAtKiRtPkvAyb3JDAi?=
- =?us-ascii?Q?BAvnKtg1dJmHql/uaQtKkOeSo3f3BY8mefv2+ZsBBHTlrR/6YD/fq/FWIRhZ?=
- =?us-ascii?Q?iNvxQjP+2iE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7705.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HwXrLq7Hzr6LUA8gi5u+hx+e4ANBsaMzJWL0DZJ6/+sdwbhF0VuHl4zgRict?=
- =?us-ascii?Q?uL2CDhHlmv4v8ZU2UaAE6IEmb8RYUDesXtsCXd01ExAM/GojhgYOaJLvcqcx?=
- =?us-ascii?Q?Pw23FBwxuBUiyCRF+oq5S9P8Mr4VT0OQe8ku/y44grNxjlKAprnml7+7S5AP?=
- =?us-ascii?Q?18w3teNEYsnJk97kWTNuH34RB9DO4HStlszRh8Hjh9yQbqyrZ2VQSVoEd/Gr?=
- =?us-ascii?Q?eT8EolsJ1tHTUDHWiQHk5xQ2gVrz5TDzsqPwLSZuxKxD8571SgM2TwGzrWh5?=
- =?us-ascii?Q?SYCSwMocc9TjuaQckRrB5k/+Dz11b82e5EGZqCq61Gszb1ZmVj8qS9aPA9o5?=
- =?us-ascii?Q?n3lgYdXnV1x5yPqYEDqW5cLOgtO9d3cCir3Clwp3OVG0fIqiHehhc8bL6+wW?=
- =?us-ascii?Q?Zhd6iUoOBzDCuYB+mkeoU7cERX5yA+AlIfsBK987gEJnJw8EUqISEvHCxjyJ?=
- =?us-ascii?Q?OmEwaPLH22/64cE5tCH9vf9Be7/WP1upLNNYxfl0kUa8tBnqB9D96VnjTeF3?=
- =?us-ascii?Q?geUdxgcLqpfmQqq6NiF0D5zr3+4mtqS5oqPGbi/Sr6pjWYos/TD4ayGHvaAz?=
- =?us-ascii?Q?5H9+sh24PxGbqRVuxPsJlNSBQePtWkvVHKswAC7BY5RaYs+8LPHc6Qapre7p?=
- =?us-ascii?Q?Q4t0CGlsu4zOT2d0FbAEA2sSTSpH9ssQK5wU5YFl7u42HQzBg2aC3eYh5xaa?=
- =?us-ascii?Q?IABlgQHIDN86KhjI9S3cmJdlWUubwKSNATZfaH7yQCoavQYEe3FehfvFl+dr?=
- =?us-ascii?Q?SftR23s+oMb5v+5aZXYh8bAmqaqHFLa1Dn62ebYlYBglaEkvORvQbr2yX/vo?=
- =?us-ascii?Q?M9jrx2wwSwWAw8kD2OG3st1YIXPoeE84ZYVNzaVEg9gAW2h0wxVvlWePGaNN?=
- =?us-ascii?Q?lTCXaR3BUnbBpGyZ1rXbvanbQko2SNY4P85sjsMEihKNb9GSHOrfL5OfIMTP?=
- =?us-ascii?Q?PC2VH07S9S9c6ky0KAwZ1g9OVXH21wShC4mYaStcDdePu462LylLEyPYwiPZ?=
- =?us-ascii?Q?eDJQg0W2YloYPhV8OXXLa3Kw8sHkEEnUVap2DOYX1iN1LBNC6h+5ZFTx7X88?=
- =?us-ascii?Q?atSbRhXdQUs2PC9GxSOT8sP7zqf7t6XCinqNO89Zt6MpeJ/W57ioyg6a0fGF?=
- =?us-ascii?Q?Q0nyawkmNxrkzk5miry54vhWfAT0+6UtsCNIfEkBtMEotqwWJ9aQ22JVGKrs?=
- =?us-ascii?Q?Y3x0TB3SaJC4EWSj4oWW4zzhSCvqv53cmAQBOa+0xNT+vpb9SLqeueM4xG1C?=
- =?us-ascii?Q?bvmPPi8juEQ52ornj1AMzs8dUvvuBbCR7Ls3DbKt3+em8sKO3qrsJNFbt+Bg?=
- =?us-ascii?Q?+7bYT2x/X3QVjqJ9AmIYPuQF9DV0bCRIe/h9ItwYAKgWvAPYA0nxHWtizqgi?=
- =?us-ascii?Q?jOv8eVSsyMhSMIuZyeaVTkVu4JHgUOFxNxddTKSfIBbBLqBQaT2o9xV9UK0c?=
- =?us-ascii?Q?V7qk616x6k6tgc9JCjXeybD9n/OENNk3DzJoKiJYbJhmByKqrQCIsxnnxxrO?=
- =?us-ascii?Q?rjGw1XHRDDZk6rpK2OSj7eDyPrvTAE52HqK9QlXL/7qU9ms9VhnkeZYRaMcH?=
- =?us-ascii?Q?gI/QeHtgpOG7ETrKX8P/8iTx+S0ZRMfGDHp0WuXs?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 615f7ef9-c92b-4adf-5cdd-08ddaeca0dc2
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7705.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2025 00:41:39.8438
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 16b0Q8jT3qpWEQt6p4/95YWilrUUdjmh9BWAwcSj1YsqG1YlME3ti5BrKWmVrPwtHU1KPzVcmk6od3seXA8L5w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8128
-X-Spam-Status: No, score=-2.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	FORGED_SPF_HELO,SPF_HELO_PASS,T_SPF_TEMPERROR autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250618174014.1168640-4-david@redhat.com>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Jun 17, 2025 at 11:30:20AM +0200, David Hildenbrand wrote:
-> On 17.06.25 11:25, David Hildenbrand wrote:
-> > On 16.06.25 13:58, Alistair Popple wrote:
-> > > Previously dax pages were skipped by the pagewalk code as pud_special() or
-> > > vm_normal_page{_pmd}() would be false for DAX pages. Now that dax pages are
-> > > refcounted normally that is no longer the case, so the pagewalk code will
-> > > start returning them.
-> > > 
-> > > Most callers already explicitly filter for DAX or zone device pages so
-> > > don't need updating. However some don't, so add checks to those callers.
-> > > 
-> > > Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> > > 
-> > > ---
-> > > 
-> > > Changes since v1:
-> > > 
-> > >    - Dropped "mm/pagewalk: Skip dax pages in pagewalk" and replaced it
-> > >      with this new patch for v2
-> > > 
-> > >    - As suggested by David and Jason we can filter the folios in the
-> > >      callers instead of doing it in folio_start_walk(). Most callers
-> > >      already do this (see below).
-> > > 
-> > > I audited all callers of folio_walk_start() and found the following:
-> > > 
-> > > mm/ksm.c:
-> > > 
-> > > break_ksm() - doesn't need to filter zone_device pages because the can
-> > > never be KSM pages.
-> > > 
-> > > get_mergeable_page() - already filters out zone_device pages.
-> > > scan_get_next_rmap_iterm() - already filters out zone_device_pages.
-> > > 
-> > > mm/huge_memory.c:
-> > > 
-> > > split_huge_pages_pid() - already checks for DAX with
-> > > vma_not_suitable_for_thp_split()
-> > > 
-> > > mm/rmap.c:
-> > > 
-> > > make_device_exclusive() - only works on anonymous pages, although
-> > > there'd be no issue with finding a DAX page even if support was extended
-> > > to file-backed pages.
-> > > 
-> > > mm/migrate.c:
-> > > 
-> > > add_folio_for_migration() - already checks the vma with vma_migratable()
-> > > do_pages_stat_array() - explicitly checks for zone_device folios
-> > > 
-> > > kernel/event/uprobes.c:
-> > > 
-> > > uprobe_write_opcode() - only works on anonymous pages, not sure if
-> > > zone_device could ever work so add an explicit check
-> > > 
-> > > arch/s390/mm/fault.c:
-> > > 
-> > > do_secure_storage_access() - not sure so be conservative and add a check
-> > > 
-> > > arch/s390/kernel/uv.c:
-> > > 
-> > > make_hva_secure() - not sure so be conservative and add a check
-> > > ---
-> > >    arch/s390/kernel/uv.c   | 2 +-
-> > >    arch/s390/mm/fault.c    | 2 +-
-> > >    kernel/events/uprobes.c | 2 +-
-> > >    3 files changed, 3 insertions(+), 3 deletions(-)
-> > > 
-> > > diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
-> > > index b99478e..55aa280 100644
-> > > --- a/arch/s390/kernel/uv.c
-> > > +++ b/arch/s390/kernel/uv.c
-> > > @@ -424,7 +424,7 @@ int make_hva_secure(struct mm_struct *mm, unsigned long hva, struct uv_cb_header
-> > >    		return -EFAULT;
-> > >    	}
-> > >    	folio = folio_walk_start(&fw, vma, hva, 0);
-> > > -	if (!folio) {
-> > > +	if (!folio || folio_is_zone_device(folio)) {
-> > >    		mmap_read_unlock(mm);
-> > >    		return -ENXIO;
-> > >    	}
-> > > diff --git a/arch/s390/mm/fault.c b/arch/s390/mm/fault.c
-> > > index e1ad05b..df1a067 100644
-> > > --- a/arch/s390/mm/fault.c
-> > > +++ b/arch/s390/mm/fault.c
-> > > @@ -449,7 +449,7 @@ void do_secure_storage_access(struct pt_regs *regs)
-> > >    		if (!vma)
-> > >    			return handle_fault_error(regs, SEGV_MAPERR);
-> > >    		folio = folio_walk_start(&fw, vma, addr, 0);
-> > > -		if (!folio) {
-> > > +		if (!folio || folio_is_zone_device(folio)) {
-> > >    			mmap_read_unlock(mm);
-> > >    			return;
-> > >    		}
-> > 
-> > Curious, does s390 even support ZONE_DEVICE and could trigger this?
-
-In thoery yes. Now that we don't need the DEVMAP PTE bit someone could enable
-ZONE_DEVICE on s390 as it supports the rest of the prerequisites AFAICT:
-
-config ZONE_DEVICE
-        bool "Device memory (pmem, HMM, etc...) hotplug support"
-        depends on MEMORY_HOTPLUG
-        depends on MEMORY_HOTREMOVE
-        depends on SPARSEMEM_VMEMMAP
- 
-> Ah, I see you raised this above. Even if it could be triggered (which I
-> don't think), I wonder if there would actually be a problem with zone_device
-> folios in here?
-
-Yes, I'm not sure either - it seems unlikely but I know nothing about how secure
-storage works on s390 so was trying to be be conservative.
-
-> I think these two can be dropped for now
-
-Ok.
-
-> > I wonder if __uprobe_write_opcode() would just work with anon device folios?
-> >
-> > We only modify page content, and conditionally zap the page. Would there 
-> > be a problem with anon device folios?
-
-The two main types of anon device folios I know of are DEVICE_COHERENT
-and DEVICE_PRIVATE. I doubt it would be a problem for the former, but it
-would definitely be a problem for the latter as the actual page content is
-unaddressable from the CPU.
-
-So we could probably make the check specific to DEVICE_PRIVATE, although it's
-hard to imagine anyone caring about uprobes from DEVICE_COHERENT memory.
-
-> -- 
-> Cheers,
+On (25/06/18 19:39), David Hildenbrand wrote:
+> Let's drop these checks; these are conditions the core migration code
+> must make sure will hold either way, no need to double check.
 > 
-> David / dhildenb
-> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
