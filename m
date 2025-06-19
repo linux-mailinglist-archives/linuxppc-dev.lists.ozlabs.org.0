@@ -1,58 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-9556-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9557-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC59AE0683
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 15:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D44E9AE08C0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 16:29:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bNLV74s43z2yhX;
-	Thu, 19 Jun 2025 23:06:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bNNK31nKfz2xck;
+	Fri, 20 Jun 2025 00:29:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750338415;
-	cv=none; b=F13cUWXCLp2OzjqB+E1irhfG/WIYXCDZNGRc9pCnJw8PqgbUXOggBHYqDZH40CyEj2tAl75LYWkScoxnuGwQQsYMUB9KHNT7GcyIwUFboAiU0XtA7nHrxPgkFkg52qYDi0/ZhMH1ySrLBAbJVE3K5kbjPnjmOXfNTN3ZTgjSwMolFNcXHHWNMzOBKeOPxExJY0HQfVQpjhZr/JgzpWuszcv4kxzOI0gi3qVyJL2tANxi56ZeO07LC/pAOMd6seXVbGfEcmeWiNPEcTB+VhUzrzkQzqL31gNcoYcMgGherRnXg7sa3kFBAC6EzrTmndlM8kZWit9/ZFldvHYTUxjhZA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:638:a000:1025::14"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750343351;
+	cv=none; b=iGrzEf17T9EyiWEv8m+2x6Uw77itK0GVRsBK/SdXPwIaYVW2Z+A8nmVh8afHQ9vGt75qQeHkfSmcsfcrJmo5be/eBYdY92BCSCf+AmM8AGk01IFpOMNi1GP1wHtv99ToutBXeVQfm2vcdiPrehFfLzGVmVYBNewYoSXz/wO7xTfacypvPg+dGtLePuE9PPnACjBBm3N2npEpqF+aIIybtRnUuz2Y+gSdK744Z8RLrgu0PWKq3qjnifSEWyxdZTtyjPTOz5HOF+vuwWOIQ/0A421eVy3kNLsiSYBLyaCowolwxwQSBtgy2G318EZSmtPRS2207+eMc0ew++icCtxrNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750338415; c=relaxed/relaxed;
-	bh=jktagNNxBjLyT1gCDXB2rK9IAYWPETl3Q9PchaYKykg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WQiQp8DRXw5ycUh4UKxBB5HRC6/bEGjra84pl1ZR1f+PC388jY93DUpFDk4ufuGsUywPOqvTjTsraVIkmNNOQic19XNscbaXUILY8QCSN5+qKspiljFnrQm0OrgigQ2gYRDgSi2Y34JGyxSuppaltoZ4Tq9i6ocxmDYbFQiE776JXt4MYrNJYo77B1eGke6I2P7YfdnrtjoJg6sWWVrRXZWKM2F5ImzthrNQQ2HA7zCN2UtySK15cKeZooF+bapYE8AAxN96tE2wwUlkkcpqET2KqvmaqYqqWFTZxgKmuwgq+qVPvHGoz0F8+CcJZ/NkdhczdkSI3OCF5zHFm+qV8A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eC3DBKvG; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1750343351; c=relaxed/relaxed;
+	bh=S14nIAZKvZkp/VwnTFIYJCuXUidvu32HhMy8SRNMghs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ozIFY4GdaoDuyONFPpp+XYf1zl9uKp54TRJ3DfbZc5dkZs6RncFe0SejQeyy6cGiL7TBXn0YI4A3307B/bR7xAdONVV0JOUBs30UaJtgaw0rDSdi4WWClQhDCG4Nde7i+5jZzZgZId5SpN8sf27i8HIpmxGU/gf0dJgayDfyqe/POpax8RKNriVGWkCGtM3AT9P4+/rBb5Ui2SKq14lExqUEiNz2mnfcVw90GzogpQ45Y7eI5584AAmEThpel2AUkVlNYYpo++CSA/eYLERCeLSp5KsEkC8mAL8XAtWJ6gAFxt0EOvvCz3n8wV7kcMCcX+c6xyigpTaxZkdQDlMqpw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=fau.de; dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=XWPeZLyf; dkim-atps=neutral; spf=pass (client-ip=2001:638:a000:1025::14; helo=mx-rz-1.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org) smtp.mailfrom=fau.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=fau.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eC3DBKvG;
+	dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=XWPeZLyf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fau.de (client-ip=2001:638:a000:1025::14; helo=mx-rz-1.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org)
+Received: from mx-rz-1.rrze.uni-erlangen.de (mx-rz-1.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::14])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNLV633YXz2yPd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 23:06:54 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 45E7361148;
-	Thu, 19 Jun 2025 13:06:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C8DC4CEEA;
-	Thu, 19 Jun 2025 13:06:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750338411;
-	bh=uSL9ZGnQFzGSFlQq+vqI2UlchlcemJAv0hONIYX6tDM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eC3DBKvGSQXvbA5r6xWP0HiddSA/Al/8FiBeEUDpOBM6/SehKPNXwAwHlifTQLtSG
-	 u+FADHBYvp/ANrX5IJzrg5hAhBdsISj3hcMIpktlGLDSIa9fkhpPQhbtSD1c2GxnoK
-	 oOYNHzMl34SMsohwh5IFfJVCrUUPrBYAbJaU33YD8ElOMZXTnSZLIMFn7Mqb193j33
-	 Tnwrw+Go/CaJXG8+yOv+N1dKI4Ptn4maMgZYaheu6idQ4g+C/Ldc2TLMIj/Sh4BK4e
-	 RbiIORfDd/MmdL4n+sTJQOzJMg5lTjg5GB8f/uvJauseEg/DN69y9HfSVav7y4janl
-	 OqJkBtU2jSxzg==
-Date: Thu, 19 Jun 2025 18:36:39 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Hans Zhang <18255117159@163.com>
-Cc: mahesh@linux.ibm.com, bhelgaas@google.com, oohall@gmail.com, 
-	manivannan.sadhasivam@linaro.org, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNNJy2GH1z2xHZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jun 2025 00:29:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
+	t=1750343336; bh=S14nIAZKvZkp/VwnTFIYJCuXUidvu32HhMy8SRNMghs=;
+	h=From:To:Cc:Subject:Date:From:To:CC:Subject;
+	b=XWPeZLyf+OeOlBWfNzuhC15Vnxb95TmG2vo5NyCaRFC2kbC1jiYUkY0smdSnfkuFs
+	 aiBCQ2SuVwtJBj19lPaJhJlWP9IZRsQu7PL6+4CrVDG3b1lU88UjEmkUXeoAybvumU
+	 4rcOi5uhgJ01j0bek/6LpWvZgsbH4uUXgDE2WTdVgtltXmpA1UxSE9/pnJBY31N+Wd
+	 Y/5C/qRyV2BxtU/PDuvH1p7E6ub9+EdEJjOJ+Apx4G7ohUV2DsoOu770hUJRx3iaVN
+	 ZQROW8T15UrrOX4RCm662XlOqdWD1mZn8Vz9ff68GQfJbAQODbkzzWkQ+SPmfeVSQV
+	 gTfJ5FIZViFCQ==
+Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-rz-1.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4bNNJl6ZMyz8sqg;
+	Thu, 19 Jun 2025 16:28:55 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at boeck5.rrze.uni-erlangen.de (RRZE)
+X-RRZE-Flag: Not-Spam
+X-RRZE-Submit-IP: 2001:9e8:3610:e200:f74c:d89c:f3eb:14e2
+Received: from luis-tp.fritz.box (unknown [IPv6:2001:9e8:3610:e200:f74c:d89c:f3eb:14e2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: U2FsdGVkX19YMo4uslHrzyvMvsz98NrnEv3rvWYw/jc=)
+	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4bNNJh4dDMz8spN;
+	Thu, 19 Jun 2025 16:28:52 +0200 (CEST)
+From: Luis Gerhorst <luis.gerhorst@fau.de>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Luis Gerhorst <luis.gerhorst@fau.de>,
+	bpf@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] PCI/AER: Use pci_clear_and_set_config_dword() to
- simplify mask updates
-Message-ID: <zna2vcwagifaszcvrjg3o6f3kdmjc4zqzc6bh4xdqpayzbpgon@rky4zbodpadz>
-References: <20250607155159.805679-1-18255117159@163.com>
+Cc: kernel test robot <lkp@intel.com>
+Subject: [PATCH bpf-next] powerpc/bpf: Fix warning for unused ori31_emitted
+Date: Thu, 19 Jun 2025 16:26:47 +0200
+Message-ID: <20250619142647.2157017-1-luis.gerhorst@fau.de>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,117 +93,80 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250607155159.805679-1-18255117159@163.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, Jun 07, 2025 at 11:51:59PM +0800, Hans Zhang wrote:
-> Replace manual read-modify-write sequences in multiple functions with
-> pci_clear_and_set_config_dword() to ensure atomic operations and reduce
-> code duplication. 
-> 
+Without this, the compiler (clang21) might emit a warning under W=1
+because the variable ori31_emitted is set but never used if
+CONFIG_PPC_BOOK3S_64=n.
 
-No, pci_clear_and_set_config_dword() doesn't ensure atomicity. It just provides
-a helper to avoid code duplication for RMW kind of operations. Nothing
-guarantees the function to be atomic.
+Without this patch:
 
-> Signed-off-by: Hans Zhang <18255117159@163.com>
+$ make -j $(nproc) W=1 ARCH=powerpc SHELL=/bin/bash arch/powerpc/net
+  [...]
+  CC      arch/powerpc/net/bpf_jit_comp.o
+  CC      arch/powerpc/net/bpf_jit_comp64.o
+../arch/powerpc/net/bpf_jit_comp64.c: In function 'bpf_jit_build_body':
+../arch/powerpc/net/bpf_jit_comp64.c:417:28: warning: variable 'ori31_emitted' set but not used [-Wunused-but-set-variable]
+  417 |         bool sync_emitted, ori31_emitted;
+      |                            ^~~~~~~~~~~~~
+  AR      arch/powerpc/net/built-in.a
 
-But the change LGTM. With the above wording corrected,
+With this patch:
 
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+  [...]
+  CC      arch/powerpc/net/bpf_jit_comp.o
+  CC      arch/powerpc/net/bpf_jit_comp64.o
+  AR      arch/powerpc/net/built-in.a
 
-- Mani
+Fixes: dff883d9e93a ("bpf, arm64, powerpc: Change nospec to include v1 barrier")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506180402.uUXwVoSH-lkp@intel.com/
+Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
+---
+ arch/powerpc/net/bpf_jit_comp64.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-> ---
-> Changes for v2:
-> - The patch commit message were modified.
-> - New optimizations for the functions disable_ecrc_checking, aer_enable_irq, and aer_disable_irq have been added.
-> ---
->  drivers/pci/pcie/aer.c | 30 +++++++++++-------------------
->  1 file changed, 11 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 70ac66188367..86cbd204a73f 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -176,14 +176,13 @@ static int enable_ecrc_checking(struct pci_dev *dev)
->  static int disable_ecrc_checking(struct pci_dev *dev)
->  {
->  	int aer = dev->aer_cap;
-> -	u32 reg32;
->  
->  	if (!aer)
->  		return -ENODEV;
->  
-> -	pci_read_config_dword(dev, aer + PCI_ERR_CAP, &reg32);
-> -	reg32 &= ~(PCI_ERR_CAP_ECRC_GENE | PCI_ERR_CAP_ECRC_CHKE);
-> -	pci_write_config_dword(dev, aer + PCI_ERR_CAP, reg32);
-> +	pci_clear_and_set_config_dword(dev, aer + PCI_ERR_CAP,
-> +				       PCI_ERR_CAP_ECRC_GENE |
-> +				       PCI_ERR_CAP_ECRC_CHKE, 0);
->  
->  	return 0;
->  }
-> @@ -1101,15 +1100,12 @@ static bool find_source_device(struct pci_dev *parent,
->  static void pci_aer_unmask_internal_errors(struct pci_dev *dev)
->  {
->  	int aer = dev->aer_cap;
-> -	u32 mask;
->  
-> -	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK, &mask);
-> -	mask &= ~PCI_ERR_UNC_INTN;
-> -	pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_MASK, mask);
-> +	pci_clear_and_set_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,
-> +				       PCI_ERR_UNC_INTN, 0);
->  
-> -	pci_read_config_dword(dev, aer + PCI_ERR_COR_MASK, &mask);
-> -	mask &= ~PCI_ERR_COR_INTERNAL;
-> -	pci_write_config_dword(dev, aer + PCI_ERR_COR_MASK, mask);
-> +	pci_clear_and_set_config_dword(dev, aer + PCI_ERR_COR_MASK,
-> +				       PCI_ERR_COR_INTERNAL, 0);
->  }
->  
->  static bool is_cxl_mem_dev(struct pci_dev *dev)
-> @@ -1555,23 +1551,19 @@ static irqreturn_t aer_irq(int irq, void *context)
->  static void aer_enable_irq(struct pci_dev *pdev)
->  {
->  	int aer = pdev->aer_cap;
-> -	u32 reg32;
->  
->  	/* Enable Root Port's interrupt in response to error messages */
-> -	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
-> -	reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
-> -	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
-> +	pci_clear_and_set_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND,
-> +				       0, ROOT_PORT_INTR_ON_MESG_MASK);
->  }
->  
->  static void aer_disable_irq(struct pci_dev *pdev)
->  {
->  	int aer = pdev->aer_cap;
-> -	u32 reg32;
->  
->  	/* Disable Root Port's interrupt in response to error messages */
-> -	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
-> -	reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
-> -	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
-> +	pci_clear_and_set_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND,
-> +				       ROOT_PORT_INTR_ON_MESG_MASK, 0);
->  }
->  
->  /**
-> 
-> base-commit: ec7714e4947909190ffb3041a03311a975350fe0
-> -- 
-> 2.25.1
-> 
+diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+index 3665ff8bb4bc..a25a6ffe7d7c 100644
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -820,13 +820,12 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+ 		case BPF_ST | BPF_NOSPEC:
+ 			sync_emitted = false;
+ 			ori31_emitted = false;
+-#ifdef CONFIG_PPC_E500
+-			if (!bpf_jit_bypass_spec_v1()) {
++			if (IS_ENABLED(CONFIG_PPC_E500) &&
++			    !bpf_jit_bypass_spec_v1()) {
+ 				EMIT(PPC_RAW_ISYNC());
+ 				EMIT(PPC_RAW_SYNC());
+ 				sync_emitted = true;
+ 			}
+-#endif
+ 			if (!bpf_jit_bypass_spec_v4()) {
+ 				switch (stf_barrier) {
+ 				case STF_BARRIER_EIEIO:
+@@ -849,10 +848,10 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+ 					break;
+ 				}
+ 			}
+-#ifdef CONFIG_PPC_BOOK3S_64
+-			if (!bpf_jit_bypass_spec_v1() && !ori31_emitted)
++			if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) &&
++			    !bpf_jit_bypass_spec_v1() &&
++			    !ori31_emitted)
+ 				EMIT(PPC_RAW_ORI(_R31, _R31, 0));
+-#endif
+ 			break;
+ 
+ 		/*
 
+base-commit: cd7312a78f36e981939abe1cd1f21d355e083dfe
 -- 
-மணிவண்ணன் சதாசிவம்
+2.49.0
+
 
