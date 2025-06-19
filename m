@@ -1,93 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-9547-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9548-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B57AE03EB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 13:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8661AAE0442
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 13:48:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bNJWP60pJz2yPS;
-	Thu, 19 Jun 2025 21:37:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bNJlq6BSHz30TG;
+	Thu, 19 Jun 2025 21:48:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750333073;
-	cv=none; b=E0O7vMCZE5J0FySUcp5Izw3VndIiSs3vnxvfcq6p3/PmWorduAkabgwoUy6pwfUfk1LpkqzuQFszAipXVkwBQsYtrOXoVBFRkkQB0ZT6jAysKEjnyHaBuizUxRhj+IBpWWXoJ66OASoM0VJk7HZFHUZ6xgvfCOnMubOICPuX59ZjsJxeZoT2pG3JNrDuFrWoGtVKbLqVoBcxtD2LhdLARV/yZaepvsIAEPf8vE+XO7sgzBKoiXOPwBPwa0v6RWJNCHnKPkMdC8DpOT4dq3CzThAODtxUEMk3+3lhIVS0WNqu0mBZSIF8OihgzSIUZwobLvBcV3NykAI8ALbqHsBMSw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750333719;
+	cv=none; b=N7OCaQWpEJBxAU4VNgDG4fJ4iQG0b5xqT0qpM+y6roCtgp5mnpoHf2hF2CdPuiQlMnvsUwvdg4qsHJ4TblUsVI2g0oFI+PjTknCqCySGesVgac7HKFwKUG2d+TdHYTRPwlk0GUnPiN4GtJOE1Z21U8caIoox8YDbgEyBbPrSGvgAyB7i0M7MKtRrDC1O/dHvABZCycnubqRQVKWZYKtwCW92nuHG350lCSCP4cdRtvEgaMgaQAQe+EZA0d5WA3vVg3x5XM1tT8XeCPfVkAK5a5JOV2uJ+aRKeTLGmmfRn52KWZ9scT8jAZflqb+6rC0gWGh/ki6Ac3qafyj2nEYx7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750333073; c=relaxed/relaxed;
-	bh=Vy6q/qAZZ4wtLIbHS8N+vM6XFaUQj9p52F4nf7N5GdM=;
+	t=1750333719; c=relaxed/relaxed;
+	bh=045SGeXJhHUu8JEI4qhgsPRhkcMCEyOeFZ5KmNQEbxY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BFzI9vBiPAInLxO4qDFjvQTE0llJsxG9bsmk5fev7IbBaHuQDk2TqfxWw0Ly/naGzl1Zg8GwVURXllipXmQ7MrA9GvSDn/3TpBe2Qk4F/iNvF1+MEdVBxQBBS7VzVMWLGx+L6H93DsA0r/2F19B1rhk9yImcBi9NIx4FYjimMXRH0RyprABodLhNsFnoMzIDBGYkyHbHj374biUd88KeRu+2tf2CHFCOqjIkjAEJuG8kOsH2W/Ue5I5JbTb7PGSPRATkwL9ptV+xcs4Q/UfiqevaP2gOc6IL+or8zLCL40E2mAXzTtaeJPJgKA6q7SSm89eHLMyAtikIeRNiIR95PA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ORRDZCJo; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CawkEKS+; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ORRDZCJo; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CawkEKS+; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+	 In-Reply-To:Content-Type; b=FgnFr1uQx5P5jKUhIbuOXcmLzNKl5mjTCOHzeaY00Owr5G5Ki+KSvKRcdNALH046H4edRskG/sDysUxts7yzFz6puGAlsk0KokKUh6KHvaxmy0/+GxNSw8PXRs6YZ+31OnXJ8HyQcgNjVksz2q64KHUBO0txDHUXAr9gYDQSru79JDbdZpXfGdZWQ6fjNYqSzC9u0qIPaDOSY488ulEiSmgMYsdSNxGKFMQMU3VTuPgzHo5iAZB5e9jRyA2u0r77WlVVQeeJlJ5cVeugMvWXjiP7ZcWLPkhhfOA1PbvONJba9Ln6y6Ti3ES0/2L3z7hanIcbv67j9IhypHUFdxHttg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=GR60kMZn; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WsHbjhpp; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=GR60kMZn; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WsHbjhpp; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ORRDZCJo;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CawkEKS+;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ORRDZCJo;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CawkEKS+;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=GR60kMZn;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WsHbjhpp;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=GR60kMZn;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=WsHbjhpp;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=vbabka@suse.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 358 seconds by postgrey-1.37 at boromir; Thu, 19 Jun 2025 21:37:52 AEST
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNJWN0VwZz2yKq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 21:37:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNJlp2p2Nz30T9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Jun 2025 21:48:38 +1000 (AEST)
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id F16ED21167;
-	Thu, 19 Jun 2025 11:31:50 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C68B2211A5;
+	Thu, 19 Jun 2025 11:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1750332711; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1750333714; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Vy6q/qAZZ4wtLIbHS8N+vM6XFaUQj9p52F4nf7N5GdM=;
-	b=ORRDZCJoBM26nDpjd/KgUa/6ZP6tTmYRsVXaRbUN5TowbQQxCyChfOUTcYOFgRdwH7/NWe
-	t93sXgztHbsGfUDdQHOkOYx60mw4QvZHCvcjHbDpI9z36SFidB9BMD9sSeXPPkdlEPPdpx
-	IsNy7wdd8MXe2iaL8Kf+a/WuWlGGaMA=
+	bh=045SGeXJhHUu8JEI4qhgsPRhkcMCEyOeFZ5KmNQEbxY=;
+	b=GR60kMZniEsFi4imY9KmMbHhGvpzq7XPb9jHieIiFEWXiDaL0GNw0vOxFUSA7Z3Rm6u5Lt
+	i8xCUliB6uPVWfbalcczoPtCAk+9qvj9Gkak5xihyA2mKX9GYqxQ2wPZEOiXelXGcrMMRR
+	3zx+ni6e31N4Ij2PxuFYtErktog15CA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1750332711;
+	s=susede2_ed25519; t=1750333714;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Vy6q/qAZZ4wtLIbHS8N+vM6XFaUQj9p52F4nf7N5GdM=;
-	b=CawkEKS+EXyfYcE/uK+4SPivyxpmZHr+oR1eiPkK419rJYeqwUtwQX2UXZTSWdXK6Eq99z
-	EPyKy0xEKIcKsBAg==
+	bh=045SGeXJhHUu8JEI4qhgsPRhkcMCEyOeFZ5KmNQEbxY=;
+	b=WsHbjhppATojPNqwvpWdhAc8jff+LG48TR17NRq6+06zLcCadnM5O6A6z6saTAFbNIwtsW
+	5kNyZue9iIu4PTDQ==
 Authentication-Results: smtp-out1.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1750332711; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1750333714; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Vy6q/qAZZ4wtLIbHS8N+vM6XFaUQj9p52F4nf7N5GdM=;
-	b=ORRDZCJoBM26nDpjd/KgUa/6ZP6tTmYRsVXaRbUN5TowbQQxCyChfOUTcYOFgRdwH7/NWe
-	t93sXgztHbsGfUDdQHOkOYx60mw4QvZHCvcjHbDpI9z36SFidB9BMD9sSeXPPkdlEPPdpx
-	IsNy7wdd8MXe2iaL8Kf+a/WuWlGGaMA=
+	bh=045SGeXJhHUu8JEI4qhgsPRhkcMCEyOeFZ5KmNQEbxY=;
+	b=GR60kMZniEsFi4imY9KmMbHhGvpzq7XPb9jHieIiFEWXiDaL0GNw0vOxFUSA7Z3Rm6u5Lt
+	i8xCUliB6uPVWfbalcczoPtCAk+9qvj9Gkak5xihyA2mKX9GYqxQ2wPZEOiXelXGcrMMRR
+	3zx+ni6e31N4Ij2PxuFYtErktog15CA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1750332711;
+	s=susede2_ed25519; t=1750333714;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Vy6q/qAZZ4wtLIbHS8N+vM6XFaUQj9p52F4nf7N5GdM=;
-	b=CawkEKS+EXyfYcE/uK+4SPivyxpmZHr+oR1eiPkK419rJYeqwUtwQX2UXZTSWdXK6Eq99z
-	EPyKy0xEKIcKsBAg==
+	bh=045SGeXJhHUu8JEI4qhgsPRhkcMCEyOeFZ5KmNQEbxY=;
+	b=WsHbjhppATojPNqwvpWdhAc8jff+LG48TR17NRq6+06zLcCadnM5O6A6z6saTAFbNIwtsW
+	5kNyZue9iIu4PTDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8F9E913721;
-	Thu, 19 Jun 2025 11:31:50 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60CAD136CC;
+	Thu, 19 Jun 2025 11:48:34 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id SfepIib1U2htbAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 19 Jun 2025 11:31:50 +0000
-Message-ID: <fad65354-804e-447f-9779-2c69a87f3e4d@suse.cz>
-Date: Thu, 19 Jun 2025 13:31:50 +0200
+	id iWtSFxL5U2g4cQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 19 Jun 2025 11:48:34 +0000
+Message-ID: <4735002d-3254-41a2-8a3a-5597afcdc6e6@suse.cz>
+Date: Thu, 19 Jun 2025 13:48:34 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,8 +101,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm: change vm_get_page_prot() to accept vm_flags_t
- argument
+Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
+ consistently
 Content-Language: en-US
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Andrew Morton <akpm@linux-foundation.org>
@@ -144,7 +143,7 @@ Cc: Russell King <linux@armlinux.org.uk>,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, nvdimm@lists.linux.dev,
  linux-trace-kernel@vger.kernel.org
 References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
- <a12769720a2743f235643b158c4f4f0a9911daf0.1750274467.git.lorenzo.stoakes@oracle.com>
+ <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -185,10 +184,9 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <a12769720a2743f235643b158c4f4f0a9911daf0.1750274467.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Score: -8.30
 X-Spamd-Result: default: False [-8.30 / 50.00];
 	REPLY(-4.00)[];
 	BAYES_HAM(-3.00)[100.00%];
@@ -211,49 +209,38 @@ X-Spamd-Result: default: False [-8.30 / 50.00];
 	RCVD_COUNT_TWO(0.00)[2];
 	RCVD_TLS_ALL(0.00)[];
 	RCPT_COUNT_GT_50(0.00)[64];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:mid,suse.cz:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,oracle.com:email]
 X-Spam-Level: 
+X-Spam-Score: -8.30
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 6/18/25 21:42, Lorenzo Stoakes wrote:
-> We abstract the type of the VMA flags to vm_flags_t, however in may places
-> it is simply assumed this is unsigned long, which is simply incorrect.
+> The core kernel code is currently very inconsistent in its use of
+> vm_flags_t vs. unsigned long. This prevents us from changing the type of
+> vm_flags_t in the future and is simply not correct, so correct this.
 > 
-> At the moment this is simply an incongruity, however in future we plan to
-> change this type and therefore this change is a critical requirement for
-> doing so.
+> While this results in rather a lot of churn, it is a critical pre-requisite
+> for a future planned change to VMA flag type.
 > 
+> Additionally, update VMA userland tests to account for the changes.
+> 
+> To make review easier and to break things into smaller parts, driver and
+> architecture-specific changes is left for a subsequent commit.
+> 
+> The code has been adjusted to cascade the changes across all calling code
+> as far as is needed.
+> 
+> We will adjust architecture-specific and driver code in a subsequent patch.
+
+Nit: this line is redundant with 2 paragraphs above.
+
 > Overall, this patch does not introduce any functional change.
 > 
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-> diff --git a/arch/powerpc/include/asm/book3s/64/pkeys.h b/arch/powerpc/include/asm/book3s/64/pkeys.h
-> index 5b178139f3c0..6f2075636591 100644
-> --- a/arch/powerpc/include/asm/book3s/64/pkeys.h
-> +++ b/arch/powerpc/include/asm/book3s/64/pkeys.h
-> @@ -4,8 +4,9 @@
->  #define _ASM_POWERPC_BOOK3S_64_PKEYS_H
->  
->  #include <asm/book3s/64/hash-pkey.h>
-> +#include <linux/mm_types.h>
-
-Hopefully not causing a circular header include.
-
-> -static inline u64 vmflag_to_pte_pkey_bits(u64 vm_flags)
-> +static inline u64 vmflag_to_pte_pkey_bits(vm_flags_t vm_flags)
-
-Is this change rather for patch 3? It's not changing vm_get_page_prot().
-OTOH git grep shows me you missed:
-
-arch/powerpc/mm/book3s64/pgtable.c:pgprot_t vm_get_page_prot(unsigned long
-vm_flags)
-
-With that sorted out, feel free to add:
-
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-Thanks!
 
