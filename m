@@ -1,75 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-9572-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9573-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ADBEAE0EC2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 19 Jun 2025 22:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5925AAE1373
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jun 2025 07:56:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bNXrz42zVz2xjN;
-	Fri, 20 Jun 2025 06:53:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bNmtZ5nFmz2yf3;
+	Fri, 20 Jun 2025 15:56:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.17
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750366435;
-	cv=none; b=NxD/GIFZrRkDy7T4CoZkt2Fx6Lh6qK3A2IsUHBpBP72aACxncP2Z/rJ+rfw9N2KBQ9iwq/be9jiakriI422ridH6a1OPNIN+BU1CiH32L6agZi5L7LtR2Xyk0I/w9AetlcO4Id1CIcvgO2BwdIWBUQ7Fyw7WA4vf/WHH/RRwBGT7Q+uN/ywP4c0toYRw1z8XMw9a6SrCQ7lYb9jFFFEhTQ21e2sB9cz8sQUvtit61VWVOpKStuIQ/lpXjkNXqo+UjTH1/qToWWyhWjN1FwfjR7zTrua/CGyK6fZr8GbYMwrLo4Blpoak12ySbLE4loDhCkByiIDLjrWWI4Tsm9CwsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750366435; c=relaxed/relaxed;
-	bh=wuCrdIij0A9CgLqBWjLaxmZ2jWiXUF6Ua+DPiQVVfDI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IECEC4RaA9yd0C+E/P1nXRvjwiNoeJO71PB8T4B2a1lo3qouSxwun+geQ9omaYWOl0mYGSZaoM6ERkYNUyFG2k0/FqxRYphUD9Sdt3Vnh2jzp1jItPepkPe39vSmMry6uX/FfnEniVJMscmvmQncaFuE8qWUT6ampSI/OVGfprv5F7u7dm+MX8te9f/ifvdRLxJkXScTNycX30wzbUoX6H/hVP2/p1G6p+0qrsMBBZcUIEz68sqZadO40py/55crljOfy+VbSuG74xMS840pijsNzvx9SXhtJ6F2r9D/Wy8B2WFWz0B6LdLZSbweDMQsEXpKVfcvGnIxf3gzyp+LwQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lhmrXYXz; dkim-atps=neutral; spf=pass (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::1" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750398966;
+	cv=pass; b=IGL0EMF58G8y2wlehu0KdBKNK5hTI+VhmfjZPFnFVAz0uilqIBxA+eYxkUHL6KGd62CgyS6QcUjVHcScXAaBCN2zZv4cDOAv3bVvWOfUr4lWO4DAVh93kmV+PoCtB8nzX37kbaLsGU1oDWLSmDjF6ygMQc70PXFIoSI8P9meVu6TZa54x9lP7siCHpX9UgwIRRergYw3UxD0fvsLW3WMaZH2Y40+IEtDKgA5tBqUCQyg6MQs2fFdz0nq3N2aOEqL2fPG5t6b1sOfVyyHfoTgAXdd3B/6c/B4Z5vLQtiEu8PYWv248hjc7IFb4SybdyHQPIxh3FROXtZu+ywQAw9mgQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1750398966; c=relaxed/relaxed;
+	bh=IaBagXGmQLEdZKrKomKf4XpbKxcTPMjC2jVIY4/62zw=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=RZucY/PFYoLZds15O2lugr9P0qYhYHQeZrRAmY1YVC0G2bKuQPXbmxbLp7WUEvkwGC1c2C3c29ROIal/6QiVv/2whiE8f9Wb4NAsj/PdCug9+gs51ZUAjLtjOhfHUt8Ba5fPbXcCNaz2G1D8pe3zIQ4PSwEol7U34GGNNCkgnN7NXzVL+JwqprAO93pVVd8Sa4zzuLFr+c/+jzd7FWvj9jslG0WtxbOMZmFGIs/twR7YEM2UmzwMc3VJiOVt0zhhOlMZ4Dhm5SL5QrB2LOu+yW18qIhm+YWJcU0btUfeJXZij+Tdj6V6+8XCu81cp6TFweIKsRBJlpSPuTDrtHfjRw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=XuA3bjAW; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::1; helo=db3pr0202cu003.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lhmrXYXz;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=XuA3bjAW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::1; helo=db3pr0202cu003.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNXrw6Lc4z2xck
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jun 2025 06:53:50 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750366433; x=1781902433;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ybKBBbrvjmL01p8FtzTcnNdCgyhQhALzZsU71BczNpk=;
-  b=lhmrXYXz1NLfCjwrBd3GM5GU5XykjQtkthL6jQx6ATPqxM2HvCcunsN5
-   XwrFgXiLVtCwbzY/BaL3ITIMYWigMC/RlR9TdXbNp+7eQXrrGQOjMuvUZ
-   tltmDIjQr6aPRZNF0C1jE0gITwreehz12oiQazDU5pbN8KMYOgOjXsZp9
-   1VR2/M5zLb8AVWKka02cc7aepbL6gAJEW3RGbm+6GJvEIxiw2pMmX6htL
-   FAuFcSVX1jq47++In2HfqFTc7VsxD8CZ0p8BD0u8PXPhmxqJgvdZngwhe
-   4xcRFxAsFDHH+qOrm1q5BmF3ClvlMpKTDjJtQB3o2fZYbmt4CwIY/eTaz
-   w==;
-X-CSE-ConnectionGUID: OD0GPVeKSFyksmynbZyYXg==
-X-CSE-MsgGUID: Z3jRkuhtSOKkv8WtQH//Mw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11469"; a="52550790"
-X-IronPort-AV: E=Sophos;i="6.16,249,1744095600"; 
-   d="scan'208";a="52550790"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2025 13:53:47 -0700
-X-CSE-ConnectionGUID: CsHVsW6uQrOgHPs7GKcYtA==
-X-CSE-MsgGUID: /5cZjRSSROeMCHWjvlDFlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,249,1744095600"; 
-   d="scan'208";a="150871999"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 19 Jun 2025 13:53:43 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uSMGT-000L6c-27;
-	Thu, 19 Jun 2025 20:53:41 +0000
-Date: Fri, 20 Jun 2025 04:53:36 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chancel Liu <chancel.liu@nxp.com>, shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-	tiwai@suse.com, shawnguo@kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-sound@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] ASoC: imx-card: Add WM8524 support
-Message-ID: <202506200415.ATjQ5KCu-lkp@intel.com>
-References: <20250619062413.3946142-1-chancel.liu@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNmtV0RQpz2yYJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jun 2025 15:56:01 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V2nOXEJVGjSmebhNmG+J3k8RBwEUwEdV93zfAxMnyVIhnC3l8aDWoi8AuBLy2febRjpdpaViHV05XAdsrmuIzlVxOM6blqFBC6t25x37T7ZkpGfTzbMwEnYq7CUPb3ptaGRv8r4fzTSuYMae2lwVqRqG8JwzJvHViXhTN0qy2Bv7a/RVB0+o1ZKTV49Mqt7UFlOdNbWVeIB3xR046hONS8J8jNR/AoVzmKPooSX4KUkRHWbp+iM3rhD3bv/BK/xtqa1IFnLy0uVYG7gtqWzlSS3g7AMqtcqtZGnz3JnggEJ9hS0P6gIgbcvylt8s/B96jVWq3wDiMWPJe32wecePiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IaBagXGmQLEdZKrKomKf4XpbKxcTPMjC2jVIY4/62zw=;
+ b=Duc1jb2cO2ZbyF1iB9rWx/PH6sr/sQTX+Ed0dDxBo5yDReWln14yjs6/ASS109AgoWNoYwt/Papfe7ZjUdkD7hlX/X5JO/JFz5zCraK0vCIntUdZtluVW9i4lfceN4tENu8Y9aEtn/RU1BavtL9aVRvU5cutMG0txAbUNjuS94kXZD4XGgmGu8ZIvfjpKJj8LQPn15dhVCN5OZHtRrz+QiN+Sy86bwYntQ8h6tXr8cXkbIAStO6xaD1fkb7W+kGC6CCENU8z1Fc1XgHXm+DTLcukOgTgwpFd9XSsIC2ZAkIyZBXqp6pZ7qSGaxgfwUvRiAhazi3zGpjXrwqEXhxseg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IaBagXGmQLEdZKrKomKf4XpbKxcTPMjC2jVIY4/62zw=;
+ b=XuA3bjAWVKU4mNjJxOK6njIjPlcUrtyfQTi0s85pTPYHmGjdr4tFcKQ0Rjvjgd+H0V1s9ylZLn5mEHFb19cZmtKxG7d9OS04WwNpoBDgroj9hR19I2ueKJzK5FRqKgNriJMu6CJYdVN+sUKZ0gx5uFS/2NZOvHmuY0gC7Ws8pka31Has2q+awXgVdRthNGrmgq9iofLBjw2GgPI0M/tgAkwtr6G29lTkQ9GIbfNpRIWCQrQChAhqIAgDBC/lJH/17yz7K6L0xqwfIwR9rSHRTFwAJEn7kf07oX2HETfwlxkRsdHkw+/daZxIJesdfgQaH8wkcMVrRwNsr8dNKWtwMg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+ by DB9PR04MB9962.eurprd04.prod.outlook.com (2603:10a6:10:4c4::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.25; Fri, 20 Jun
+ 2025 05:55:38 +0000
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891%4]) with mapi id 15.20.8857.022; Fri, 20 Jun 2025
+ 05:55:38 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	cristian.marussi@arm.com,
+	peng.fan@nxp.com,
+	sudeep.holla@arm.com,
+	arnd@arndb.de,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/2] ASoC: fsl_mqs: support MQS2 on i.MX94 platform
+Date: Fri, 20 Jun 2025 13:52:27 +0800
+Message-Id: <20250620055229.965942-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2P153CA0005.APCP153.PROD.OUTLOOK.COM
+ (2603:1096:4:140::11) To AM0PR04MB7044.eurprd04.prod.outlook.com
+ (2603:10a6:208:191::20)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,218 +95,98 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250619062413.3946142-1-chancel.liu@nxp.com>
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|DB9PR04MB9962:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e5520d9-8f39-4c06-293a-08ddafbf1495
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|52116014|7416014|1800799024|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?kcCXKAnQBRw77V1ze/D1waLpe2HUWANlCzzbt+oGhDbIrFpXGLBC3RaMdnYZ?=
+ =?us-ascii?Q?kvmFG/RfU7VxfGf/xyO+5Orp/AwgKNQakHLIWd07dT4Hy//Jo5l3aeaGEcqb?=
+ =?us-ascii?Q?xbWtia4MJczWwa9Zth5f0qXYH27bjAVBN9dsRyK1npoLGka2KOZwRMod1vPA?=
+ =?us-ascii?Q?8Li9QzMFHTJmJ4Y1+ZCb4znOXDWk5XJjYWrecE7Mw52xYp71tPeqluQHnAeV?=
+ =?us-ascii?Q?hrr817cc49oMaDOpMFd9b8j+/LqzsKLZHqCqjJ4HC21A3pkaUJxKZIg81DeK?=
+ =?us-ascii?Q?uPU9zLj3SkENzzAa+RIVT2U+Tsc2DIGs0KVW4Mo0TigfG/mR0xNzjC0Jc32m?=
+ =?us-ascii?Q?Amib9OWW1oAFbcwHveTPnfnjO3Z8lK6yGngE6DHm+cPO6waMxDannvS7jjfS?=
+ =?us-ascii?Q?z5Qp9zP+WBXgoTdLc+LJZLH8PPbD3fpoSckhFXdqFpAWibiLMsXo+RffUTbJ?=
+ =?us-ascii?Q?PlOwVWWdBdgIc6igzS1Wx/nUA7PNi+JizZNja1cwG94Tlh73nBVTsKHTpfYw?=
+ =?us-ascii?Q?fkiAa5IasERvirG/NvkFDjBjUDTIjLNAgEoLn6i+DWlFbFAcY2aXLBXQ0fWw?=
+ =?us-ascii?Q?s4KPq6DYykEtbDUWoWc4yQN6gv3FWNYIput/o+/kzq+0/Wwm3dPbxs/79e/c?=
+ =?us-ascii?Q?pW6qF2sHz7Ri2JgnnmamFiXh7VEQzZGbrNgNlIYRnfzWHiQOAPc0PWeKs0B/?=
+ =?us-ascii?Q?3LQF1IOPzYQiTVS6fshVwCKw1zXQBuHl6tvxLsA1WqoknWvwzYiECGesH5Ct?=
+ =?us-ascii?Q?UQo1I2lwxZTj0scQDhMbrjif5LxVm3X6rRR5/03JiBxU0iHo2DKOEI2WGcQe?=
+ =?us-ascii?Q?RUwascnsf8vmnYQW4tBBggFdosizQmgTv7njHWkypmV13R2978G0XMfi9INP?=
+ =?us-ascii?Q?+sIfJg8sGsYIKbvex5mciFeF5ML2QbrUZ717h1mMGV6pSuASjZCcl67M4VNy?=
+ =?us-ascii?Q?dtKIWbjpvvYpSdEnkOy4SnsLDCZnZhyDOGKwmERqzNpgNH5bf/xjBahe+4nl?=
+ =?us-ascii?Q?qfMgMjd/LuIqfb4e7IAnORpEikqpbkoQA/xKu8YSfjdFdPQ683wX4h8jCtjK?=
+ =?us-ascii?Q?i9YquJuZHQKxoYytvtdsAvxaD+Twelr9EL/6HGaaPPhryZmw/0nW0GsvXCrZ?=
+ =?us-ascii?Q?ltwRsmP1yvXhC/s215PnwVXbc1D7p1DDvnijhSxSUlauo6PyRszeohMk9Ymj?=
+ =?us-ascii?Q?zxs4K65EP0yHEj6LkEK4aUdEk5bfhkjnCLiH5c7EFHpaujAD3DHOrjNeI1da?=
+ =?us-ascii?Q?t9yRUerNUy3BmVS3VrP3O4d+HghR4bD0vISjmpnWgRcdhtsNRKdm9ymLPLXJ?=
+ =?us-ascii?Q?nab1O/QJ8exdrsgNe6vtqaenM5fyHYPF0UXElO7Kqz4b/aZZHZ26aJBNSfab?=
+ =?us-ascii?Q?fCeo0heXJbI+G2oYmOveiGbYEMzzZSigEUZ5UQGDt7TuGsPg83C6vWnkdtH1?=
+ =?us-ascii?Q?lVwv4wOiLjezr7zpoFUmw7SeE2tskbxkhB6fdULf9tf9P8DNblcN1QGf9wu/?=
+ =?us-ascii?Q?tkK/w341bfux6pM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(7416014)(1800799024)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?28eUSAor7yEG3719g/i8uLFtt82MUJTcxu7jX9luHe06R2LxOOq5mKF1t+xZ?=
+ =?us-ascii?Q?phCXP1eoirRUG2z7jxMumskmi4Tsia2mcyetIXSix/wpkeNZqLwawMjF0ExP?=
+ =?us-ascii?Q?fUscMEBTAHHx3eKg4VJWaVK565CSDtK9LM1H7DO+v4fUmiIRquritGW0vUEn?=
+ =?us-ascii?Q?t/X7awTspywrdaF0+VZDqJrNX/73q9NyUi5qcuO0wmBS2nlZXYZtKQTqC9t6?=
+ =?us-ascii?Q?J30SNC1NGocfAfXGczhlQYi8YdQnV8gYZ4fosXeDViQvaBKZPQIVaEidGIxN?=
+ =?us-ascii?Q?T5d8ByyGAxZu8LzoRZZLcQyalFtN+BIDgQRLuWir899HAsfextnVtFjz5qZi?=
+ =?us-ascii?Q?a7YSE5w4ANDVk7dFYjxUr589Md8xC4VvNEObZBL/Xz/dIHZXJCuG5wHm/ho7?=
+ =?us-ascii?Q?zx/TdQ45NeW9hh2AcM6mQ4zkGlwT/Rncjdcmy+U+3L3sb9tbf405KIRULsTq?=
+ =?us-ascii?Q?DEEzGneNxhEh2f9vlHnzJyso8E0mIwHj7iM94o3hdUCBHxEJbAbNcEXS9WQ3?=
+ =?us-ascii?Q?IJEk9W4Vr5Ku+s/DDdD+QSwhVs1jMqkLGEme+lh21lm4AUoWleem3NMc9EEg?=
+ =?us-ascii?Q?gbqSwXNY8HkIjBL1g7vhFoFcUxgu9LG1pSvD+xran4TY/j9+uubBseGTK6tR?=
+ =?us-ascii?Q?WiB1lsFRinq2nN3n+b0HXKbiwg0M2dq78nMnh9SYUGi70ghvdVi/kF3/BclC?=
+ =?us-ascii?Q?mLQESS0AkXD9/9uMCA32s099Rk23oHiTD0Vw4NqKL+3GokpuSKSJCXBhjAYZ?=
+ =?us-ascii?Q?icsgb0P1AXgnQeTtKei7SYj1JamdT6hyr92uoS/9EpcieENRxHU0mXEH1GnE?=
+ =?us-ascii?Q?PKQAFELjamu2xgf3/nw7DViXZxcXdCk+r5EO6/0XmNF0bO1aEhOGc5yfAbnE?=
+ =?us-ascii?Q?ZwD4PDq0iqrTdZ/xKRSdOAb+XEbyRcfdxczKgRglngAeA+sGT0C+l/Bm1z6g?=
+ =?us-ascii?Q?gIS8Yp79ETGDHRln8C07iNWU51iuOIZwu6UyuITAn6ZWHFzJXTpRth4HSHIA?=
+ =?us-ascii?Q?peVFjDgSTKxV7d11HFSRcxQyFuyBzhp4gSYafSA2p0pAjiPNOU+nxCXNE7tJ?=
+ =?us-ascii?Q?waqI6xLNc0NdkqIOcSYIOQcJvezN8TIUfnlzP9viPo1DwDOl0I1pRHN0Ybgi?=
+ =?us-ascii?Q?HNCKgvIt539uxaXVBWosK6seQh6bah+mABsDLFrK4eR4G4pGtmLZQnSP+4+E?=
+ =?us-ascii?Q?ap7tKtWGliOk74KxUpkxeO9EBRY0o8KwZs8S5zkiXJdK++ehEBq3OSuaXyYg?=
+ =?us-ascii?Q?vpWdHoSQmujNDTUrz3waHPr6HyZufMzmuH7dELqYswOUqoEH44UQcjJWwtCI?=
+ =?us-ascii?Q?vYXZ6GM+dhQOTNDdcOdaVtGntBhnRVvVrINpeTxQxIOgV/8V63QPTq2peoWZ?=
+ =?us-ascii?Q?xjof+HCBtUGLiQ81rMIoO5DJhDqMH1Gi5Id9Fc84R2tGUGOKbRZv9oDv3gnD?=
+ =?us-ascii?Q?RjlVw37Zy/X/4dQHhCzfm2TggUbfB4tHST2wK5tVAmBtCwcy0J6m7f4fUqdh?=
+ =?us-ascii?Q?KHfXU3wy5iZEobWny7krtjPBd+nXzW7f99UcDr6V/GWrDoXFfBYLTsSgHMlh?=
+ =?us-ascii?Q?6nsa13KG+E9URNUtUOP8yTXaccBnPbe9jMa8h/4p?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e5520d9-8f39-4c06-293a-08ddafbf1495
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2025 05:55:38.0136
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YZWeUzoXg0dH2pTU5kNim87e6YUJGb0zqcYQgKy8BnmSvY/v0Ohmy+KoIJvUGoLDSv6+68rQk55GGy8FKiNPFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9962
+X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Chancel,
+ASoC: fsl_mqs: support MQS2 on i.MX94 platform
 
-kernel test robot noticed the following build warnings:
+Shengjiu Wang (2):
+  ASoC: fsl_mqs: Distinguish different modules by system manager indices
+  ASoC: fsl_mqs: rename system manager indices for i.MX95
 
-[auto build test WARNING on shawnguo/for-next]
-[also build test WARNING on linus/master v6.16-rc2 next-20250619]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Chancel-Liu/ASoC-imx-card-Add-WM8524-support/20250619-142646
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shawnguo/linux.git for-next
-patch link:    https://lore.kernel.org/r/20250619062413.3946142-1-chancel.liu%40nxp.com
-patch subject: [PATCH] ASoC: imx-card: Add WM8524 support
-config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20250620/202506200415.ATjQ5KCu-lkp@intel.com/config)
-compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250620/202506200415.ATjQ5KCu-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506200415.ATjQ5KCu-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> sound/soc/fsl/imx-card.c:884:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
-     884 |                 default:
-         |                 ^
-   sound/soc/fsl/imx-card.c:884:3: note: insert 'break;' to avoid fall-through
-     884 |                 default:
-         |                 ^
-         |                 break; 
-   1 warning generated.
-
-
-vim +884 sound/soc/fsl/imx-card.c
-
-aa736700f42fa0 Shengjiu Wang     2021-05-17  747  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  748  static int imx_card_probe(struct platform_device *pdev)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  749  {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  750  	struct snd_soc_dai_link *link_be = NULL, *link;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  751  	struct imx_card_plat_data *plat_data;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  752  	struct imx_card_data *data;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  753  	int ret, i;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  754  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  755  	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  756  	if (!data)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  757  		return -ENOMEM;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  758  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  759  	plat_data = devm_kzalloc(&pdev->dev, sizeof(*plat_data), GFP_KERNEL);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  760  	if (!plat_data)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  761  		return -ENOMEM;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  762  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  763  	data->plat_data = plat_data;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  764  	data->card.dev = &pdev->dev;
-47d7d3fd72afc7 Hui Wang          2024-10-02  765  	data->card.owner = THIS_MODULE;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  766  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  767  	dev_set_drvdata(&pdev->dev, &data->card);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  768  	snd_soc_card_set_drvdata(&data->card, data);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  769  	ret = imx_card_parse_of(data);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  770  	if (ret)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  771  		return ret;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  772  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  773  	data->num_dapm_routes = plat_data->num_codecs + 1;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  774  	data->dapm_routes = devm_kcalloc(&pdev->dev, data->num_dapm_routes,
-aa736700f42fa0 Shengjiu Wang     2021-05-17  775  					 sizeof(struct snd_soc_dapm_route),
-aa736700f42fa0 Shengjiu Wang     2021-05-17  776  					 GFP_KERNEL);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  777  	if (!data->dapm_routes)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  778  		return -ENOMEM;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  779  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  780  	/* configure the dapm routes */
-aa736700f42fa0 Shengjiu Wang     2021-05-17  781  	switch (plat_data->type) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  782  	case CODEC_AK4458:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  783  	case CODEC_AK4497:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  784  		if (plat_data->num_codecs == 1) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  785  			data->dapm_routes[0].sink = "Playback";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  786  			data->dapm_routes[0].source = "CPU-Playback";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  787  			i = 1;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  788  		} else {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  789  			for (i = 0; i < plat_data->num_codecs; i++) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  790  				data->dapm_routes[i].sink =
-aa736700f42fa0 Shengjiu Wang     2021-05-17  791  					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
-aa736700f42fa0 Shengjiu Wang     2021-05-17  792  						       i + 1, "Playback");
-93d34608fd162f Henry Martin      2025-04-01  793  				if (!data->dapm_routes[i].sink)
-93d34608fd162f Henry Martin      2025-04-01  794  					return -ENOMEM;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  795  				data->dapm_routes[i].source = "CPU-Playback";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  796  			}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  797  		}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  798  		data->dapm_routes[i].sink = "CPU-Playback";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  799  		data->dapm_routes[i].source = "ASRC-Playback";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  800  		break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  801  	case CODEC_AK5558:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  802  	case CODEC_AK5552:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  803  		if (plat_data->num_codecs == 1) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  804  			data->dapm_routes[0].sink = "CPU-Capture";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  805  			data->dapm_routes[0].source = "Capture";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  806  			i = 1;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  807  		} else {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  808  			for (i = 0; i < plat_data->num_codecs; i++) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  809  				data->dapm_routes[i].source =
-aa736700f42fa0 Shengjiu Wang     2021-05-17  810  					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
-aa736700f42fa0 Shengjiu Wang     2021-05-17  811  						       i + 1, "Capture");
-93d34608fd162f Henry Martin      2025-04-01  812  				if (!data->dapm_routes[i].source)
-93d34608fd162f Henry Martin      2025-04-01  813  					return -ENOMEM;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  814  				data->dapm_routes[i].sink = "CPU-Capture";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  815  			}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  816  		}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  817  		data->dapm_routes[i].sink = "ASRC-Capture";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  818  		data->dapm_routes[i].source = "CPU-Capture";
-aa736700f42fa0 Shengjiu Wang     2021-05-17  819  		break;
-b39eec95b84d5d Chancel Liu       2024-10-09  820  	case CODEC_CS42888:
-b39eec95b84d5d Chancel Liu       2024-10-09  821  		data->dapm_routes[0].sink = "Playback";
-b39eec95b84d5d Chancel Liu       2024-10-09  822  		data->dapm_routes[0].source = "CPU-Playback";
-b39eec95b84d5d Chancel Liu       2024-10-09  823  		data->dapm_routes[1].sink = "CPU-Capture";
-b39eec95b84d5d Chancel Liu       2024-10-09  824  		data->dapm_routes[1].source = "Capture";
-b39eec95b84d5d Chancel Liu       2024-10-09  825  		break;
-52377234f3ed64 Chancel Liu       2025-06-19  826  	case CODEC_WM8524:
-52377234f3ed64 Chancel Liu       2025-06-19  827  		data->dapm_routes[0].sink = "Playback";
-52377234f3ed64 Chancel Liu       2025-06-19  828  		data->dapm_routes[0].source = "CPU-Playback";
-52377234f3ed64 Chancel Liu       2025-06-19  829  		break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  830  	default:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  831  		break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  832  	}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  833  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  834  	/* default platform data for akcodecs */
-aa736700f42fa0 Shengjiu Wang     2021-05-17  835  	if (codec_is_akcodec(plat_data->type)) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  836  		plat_data->support_rates = akcodec_rates;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  837  		plat_data->num_rates = ARRAY_SIZE(akcodec_rates);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  838  		plat_data->support_tdm_rates = akcodec_tdm_rates;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  839  		plat_data->num_tdm_rates = ARRAY_SIZE(akcodec_tdm_rates);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  840  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  841  		switch (plat_data->type) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  842  		case CODEC_AK4458:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  843  			plat_data->fs_mul = ak4458_fs_mul;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  844  			plat_data->num_fs_mul = ARRAY_SIZE(ak4458_fs_mul);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  845  			plat_data->tdm_fs_mul = ak4458_tdm_fs_mul;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  846  			plat_data->num_tdm_fs_mul = ARRAY_SIZE(ak4458_tdm_fs_mul);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  847  			plat_data->support_channels = ak4458_channels;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  848  			plat_data->num_channels = ARRAY_SIZE(ak4458_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  849  			plat_data->support_tdm_channels = ak4458_tdm_channels;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  850  			plat_data->num_tdm_channels = ARRAY_SIZE(ak4458_tdm_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  851  			break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  852  		case CODEC_AK4497:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  853  			plat_data->fs_mul = ak4497_fs_mul;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  854  			plat_data->num_fs_mul = ARRAY_SIZE(ak4497_fs_mul);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  855  			plat_data->support_channels = ak4458_channels;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  856  			plat_data->num_channels = ARRAY_SIZE(ak4458_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  857  			break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  858  		case CODEC_AK5558:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  859  		case CODEC_AK5552:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  860  			plat_data->fs_mul = ak5558_fs_mul;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  861  			plat_data->num_fs_mul = ARRAY_SIZE(ak5558_fs_mul);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  862  			plat_data->tdm_fs_mul = ak5558_tdm_fs_mul;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  863  			plat_data->num_tdm_fs_mul = ARRAY_SIZE(ak5558_tdm_fs_mul);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  864  			plat_data->support_channels = ak5558_channels;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  865  			plat_data->num_channels = ARRAY_SIZE(ak5558_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  866  			plat_data->support_tdm_channels = ak5558_tdm_channels;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  867  			plat_data->num_tdm_channels = ARRAY_SIZE(ak5558_tdm_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17  868  			break;
-b39eec95b84d5d Chancel Liu       2024-10-09  869  		case CODEC_CS42888:
-b39eec95b84d5d Chancel Liu       2024-10-09  870  			plat_data->fs_mul = cs42888_fs_mul;
-b39eec95b84d5d Chancel Liu       2024-10-09  871  			plat_data->num_fs_mul = ARRAY_SIZE(cs42888_fs_mul);
-b39eec95b84d5d Chancel Liu       2024-10-09  872  			plat_data->tdm_fs_mul = cs42888_tdm_fs_mul;
-b39eec95b84d5d Chancel Liu       2024-10-09  873  			plat_data->num_tdm_fs_mul = ARRAY_SIZE(cs42888_tdm_fs_mul);
-b39eec95b84d5d Chancel Liu       2024-10-09  874  			plat_data->support_channels = cs42888_channels;
-b39eec95b84d5d Chancel Liu       2024-10-09  875  			plat_data->num_channels = ARRAY_SIZE(cs42888_channels);
-b39eec95b84d5d Chancel Liu       2024-10-09  876  			plat_data->support_tdm_channels = cs42888_tdm_channels;
-b39eec95b84d5d Chancel Liu       2024-10-09  877  			plat_data->num_tdm_channels = ARRAY_SIZE(cs42888_tdm_channels);
-b39eec95b84d5d Chancel Liu       2024-10-09  878  			break;
-52377234f3ed64 Chancel Liu       2025-06-19  879  		case CODEC_WM8524:
-52377234f3ed64 Chancel Liu       2025-06-19  880  			plat_data->fs_mul = wm8524_fs_mul;
-52377234f3ed64 Chancel Liu       2025-06-19  881  			plat_data->num_fs_mul = ARRAY_SIZE(wm8524_fs_mul);
-52377234f3ed64 Chancel Liu       2025-06-19  882  			plat_data->support_channels = wm8524_channels;
-52377234f3ed64 Chancel Liu       2025-06-19  883  			plat_data->num_channels = ARRAY_SIZE(wm8524_channels);
-aa736700f42fa0 Shengjiu Wang     2021-05-17 @884  		default:
-aa736700f42fa0 Shengjiu Wang     2021-05-17  885  			break;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  886  		}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  887  	}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  888  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  889  	/* with asrc as front end */
-aa736700f42fa0 Shengjiu Wang     2021-05-17  890  	if (data->card.num_links == 3) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  891  		data->card.dapm_routes = data->dapm_routes;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  892  		data->card.num_dapm_routes = data->num_dapm_routes;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  893  		for_each_card_prelinks(&data->card, i, link) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  894  			if (link->no_pcm == 1)
-aa736700f42fa0 Shengjiu Wang     2021-05-17  895  				link_be = link;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  896  		}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  897  		for_each_card_prelinks(&data->card, i, link) {
-aa736700f42fa0 Shengjiu Wang     2021-05-17  898  			if (link->dynamic == 1 && link_be) {
-efa527f984a110 Kuninori Morimoto 2024-10-20  899  				link->playback_only = link_be->playback_only;
-efa527f984a110 Kuninori Morimoto 2024-10-20  900  				link->capture_only  = link_be->capture_only;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  901  			}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  902  		}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  903  	}
-aa736700f42fa0 Shengjiu Wang     2021-05-17  904  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  905  	ret = devm_snd_soc_register_card(&pdev->dev, &data->card);
-2e6f557ca35aa3 Kuninori Morimoto 2021-12-14  906  	if (ret)
-2e6f557ca35aa3 Kuninori Morimoto 2021-12-14  907  		return dev_err_probe(&pdev->dev, ret, "snd_soc_register_card failed\n");
-aa736700f42fa0 Shengjiu Wang     2021-05-17  908  
-aa736700f42fa0 Shengjiu Wang     2021-05-17  909  	return 0;
-aa736700f42fa0 Shengjiu Wang     2021-05-17  910  }
-aa736700f42fa0 Shengjiu Wang     2021-05-17  911  
+ include/linux/firmware/imx/sm.h | 20 ++++++++++++++------
+ sound/soc/fsl/fsl_mqs.c         | 11 ++++++++---
+ 2 files changed, 22 insertions(+), 9 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
