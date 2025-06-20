@@ -1,49 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-9576-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9580-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EA8AE153C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jun 2025 09:50:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBDD9AE1558
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jun 2025 10:01:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bNqQh0qxNz30Sy;
-	Fri, 20 Jun 2025 17:50:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bNqff1Sdzz30Qk;
+	Fri, 20 Jun 2025 18:00:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750405836;
-	cv=none; b=BquDRPhf3lGcCwYr9w8qF+nWZQPYuK8s9XV1LCLnnBP+A5tNH1IqLlWRQpn7nRJMct6nEcF/kA00bBhNcPI+E1FsyEc1zVCLCiOM95jap05mtcy/MCEfcDOLJy8ayDSFzmNBOauiW+smFhp3HDJQWrrMiO6SXSplFD8LJwP9xHBdM8hnIUP8OTzKasAehHaiM3KlTGdFknlF38AVgeA+ize7avV/qLp15OwQ/AHd6T3pSdYUUhYvBpyqm+lnYAniYtuapLBU4UhXII7EkgGqgukWxA3LZMjRyzmc6imz++T1wxsMmTXF1osweIdv+hoxbcDIckV8jnWqgqf2vZubiw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:1000::53df:5f64:0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750406458;
+	cv=none; b=GRBFhzp7zJ7JtyAkSG5ZqZ9rHDHHimkrxDT8Te6aX+YlHJxYLE4kobZh4cJwEh36rcFp6bmXGtkay9gWAJ9nD/9hF0U0HNZNrQAyR/BRkfKfWhgQN6rwJ8udYDx8ld3ccgqkkktccHTmlOPIXFnN9c+lUE3pAgZ1xU6BgynvmXMI4JXocTax3ahSRPkZgYybOWWeRrMWqmJxg2QKfMZ6YuFIeAIFBGDl3X75XvJwc6ZkPQtwJLypfjSJNmCvGi5TGiPc8L852OLH+iC3dh3x0egf2bkyTG4pN6B/v1UthjqjP6dkosnSNcteRzHP8XEk+WEq2C/hu8ad/s/sSWg70Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750405836; c=relaxed/relaxed;
-	bh=bRjg2iHjWnJyu86U7ZYSqW3deYAAOecN+FT/NOyDoiE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ff+2D44LEsTEx7cp750L1/oucYQEodMx/aZ8xKl3pEwz9Pa37hIcglFyXQgNY9KHlvCtNPsizD64wUmIXXRxAnjl2Ke46onPvkaJ+z5ibC4orCPoLOIWY+6De/Eh0a5UJmluDwFlO78FJ2Fxchv+dzChXfn8qK3CG5eYSkySWwoufTA7zr0N/JereApWSFZxTWQIdgUCeyMYX/VmoxR6ZU6t69bOn/Qpxye+/9NVFxSlwOCwt3dF5wUnJHUCu3SDtBcONIBwm84hApZsPJOSpOfQanXRTniTTjxN6ybf69Un5TNUIljv2sZX1e7+JH/OgWIO0qEXu7+jn652zSQs6w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bNqQg2lCRz30RJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jun 2025 17:50:34 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bNqJ74FjMz9sXD;
-	Fri, 20 Jun 2025 09:44:55 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ZdnK-QQBFf1P; Fri, 20 Jun 2025 09:44:55 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bNqJ73VYhz9s28;
-	Fri, 20 Jun 2025 09:44:55 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 728D58B7AB;
-	Fri, 20 Jun 2025 09:44:55 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id K4i5McYStysj; Fri, 20 Jun 2025 09:44:55 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3B2E98B78C;
-	Fri, 20 Jun 2025 09:44:55 +0200 (CEST)
-Message-ID: <16e789a6-87f4-4f7a-9f13-edf47f9f401f@csgroup.eu>
-Date: Fri, 20 Jun 2025 09:44:55 +0200
+	t=1750406458; c=relaxed/relaxed;
+	bh=euQYHkzYJGsmTgfuv9xiO1cDWAyO+5v9JYtJJOd+t0w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Raq4mOLPexaXMX6Zt5Z67qCl+f99ZAB+VCVg6BRS77Di0L5KZIBkyjISKfbK/NwYvcT3qaYw/bjzJ0ux8fRtxwC5e6sRPxonbsUOhpp6XzdlP1//Ty6PNY8+irBoxRELuuuPWn0oU8HmfNiYE1XBRPwsKsM4h7BIM1B/qpxvk482ZzLq+pSdfpc18icrMqeDqknBDNe5tYW1UXDP2eU6pRgNhvLQyvz+eiMT7fisgZ7qcmBX/NDP4N4ZQwvz9y1BqRNhjxTBWkOlfEhETEdbXsuBYNyDcPawa0nDp0ZHgP6FSAccioViDnwP1KA7fDWySUmmmgs6o+goedsAzRSHMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout1.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout1.hostsharing.net (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 473 seconds by postgrey-1.37 at boromir; Fri, 20 Jun 2025 18:00:56 AEST
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNqfc5BX1z30QJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jun 2025 18:00:56 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 35B212C06671;
+	Fri, 20 Jun 2025 09:52:55 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 2FD183A0857; Fri, 20 Jun 2025 09:52:55 +0200 (CEST)
+Date: Fri, 20 Jun 2025 09:52:55 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Timothy Pearson <tpearson@raptorengineering.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	linux-pci <linux-pci@vger.kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	christophe leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>
+Subject: Re: [PATCH v2 2/6] pci/hotplug/pnv_php: Work around switches with
+ broken
+Message-ID: <aFUTV87SMdpHRbt8@wunner.de>
+References: <20250618201722.GA1220739@bhelgaas>
+ <1155677312.1313623.1750361373491.JavaMail.zimbra@raptorengineeringinc.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,60 +66,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: floppy: Add missing checks after DMA map
-To: Thomas Fourier <fourier.thomas@gmail.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20250619110739.323202-2-fourier.thomas@gmail.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250619110739.323202-2-fourier.thomas@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1155677312.1313623.1750361373491.JavaMail.zimbra@raptorengineeringinc.com>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Thomas,
+On Thu, Jun 19, 2025 at 02:29:33PM -0500, Timothy Pearson wrote:
+> To be perfectly frank the existing code quality in this driver
+> (and the associated EEH driver) is not the best, and it's been
+> a frustrating experience trying to hack it into semi-stable
+> operation.
+> 
+> I would vastly prefer to rewrite / integrate into the pciehp driver,
+> and we have plans to do so, but that will take an unacceptable amount
+> of time vs. trying to fix up the existing driver as a stopgap.
+> 
+> As you mentioned, pciehp already has this fix, so we just have to
+> deal with the duplicated code until we (Raptor) figures out how to
+> merge PowerNV support into pciehp.
 
-Le 19/06/2025 à 13:07, Thomas Fourier a écrit :
-> [Vous ne recevez pas souvent de courriers de fourier.thomas@gmail.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
-> 
-> The DMA map functions can fail and should be tested for errors.
-> 
-> Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-> ---
->   arch/powerpc/include/asm/floppy.h | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/floppy.h b/arch/powerpc/include/asm/floppy.h
-> index f8ce178b43b7..df8ce2ae636d 100644
-> --- a/arch/powerpc/include/asm/floppy.h
-> +++ b/arch/powerpc/include/asm/floppy.h
-> @@ -144,9 +144,14 @@ static int hard_dma_setup(char *addr, unsigned long size, int mode, int io)
->                  bus_addr = 0;
->          }
-> 
-> -       if (!bus_addr)  /* need to map it */
-> +       if (!bus_addr) {        /* need to map it */
->                  bus_addr = dma_map_single(&isa_bridge_pcidev->dev, addr, size,
->                                            dir);
-> +               if (dma_mapping_error(&isa_bridge_pcidev->dev, bus_addr)) {
-> +                       bus_addr = 0;
+I don't know how much PCIe hotplug on PowerNV differs from native,
+spec-compliant PCIe hotplug.  If the differences are vast (and I
+get the feeling they might be if I read terms like "PHB" and
+"EEH unfreeze", which sound completely foreign to me), it might
+be easier to refactor pnv_php.c and copy patterns or code from
+pciehp, than to integrate the functionality from pnv_php.c into
+pciehp.
 
-bus_addr is a local variable, there is no point in setting it to zero 
-here. Just return -ENOMEM.
+pciehp does carry some historic baggage of its own (such as poll mode),
+which you may not want to deal with on PowerNV.
 
-> +                       return -ENOMEM;
-> +               }
-> +       }
-> 
->          /* remember this one as prev */
->          prev_addr = addr;
-> --
-> 2.43.0
-> 
+One thing I don't quite understand is, it sounds like you've
+attached a PCIe switch to a Root Port and the hotplug ports
+are on the PCIe switch.  Aren't those hotplug ports just
+bog-standard ones that can be driven by pciehp?  My expectation
+would have been that a PowerNV-specific hotplug driver would
+only be necessary for hotplug-capable Root Ports.
 
+Thanks,
+
+Lukas
 
