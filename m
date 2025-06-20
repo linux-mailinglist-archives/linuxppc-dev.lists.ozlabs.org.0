@@ -1,78 +1,113 @@
-Return-Path: <linuxppc-dev+bounces-9582-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9584-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8AFAE1775
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jun 2025 11:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 479F7AE1B79
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Jun 2025 15:08:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bNsZB5qbrz2yf3;
-	Fri, 20 Jun 2025 19:27:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bNyTc0ztWz2yFK;
+	Fri, 20 Jun 2025 23:08:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750411634;
-	cv=none; b=fyf47BOavhttf9tckJFLrSdrSS3sUHODpNx+jsZCL5oi3NhfqeQ8OOPHmjnVyUAPcBrzAVObd//NJPLYq88a+CoeD8/2mltAf4NqqX6nAR1n2LLaVGwMySievV0NAGTNzDq3rPHJPNP6FpUGhpxYJjkqNN6tIgArHnCQ9ajQrjbCTZlryCpGNTxmnEpJ0QKOSL6sqBMKJaXHaJdXWx00cSThkpYKtT5ArVZYM/BanbxKXR4I0frgohMR35f/yzpkyU1+TrWFPcGwvDLoBiUU7Fp2XEqdF7yTenMm5RkKpE/ecWwZK/YPtRZFfvXofPEpAQQtto+uTAvfvnh8oXLv5g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750424916;
+	cv=none; b=K8R0Ww0495gGFoEaGBoAXNf1PdKzAKqlZJhNwv0kV+WDiimc94fnuY+7P4Yh1VSlXlRggiQyZmMsSyP0PXVadPVOH3etZLE8FQQPMoPSKewx4TfrHDDOc2bSd+LhoIh8dUz1vElLkiDlNXTm2hNSBBvqvxfr1LJtqNA32jXrfoOTAoe/edaUhAlyV90MQZhCzeqxz5/VvBqzmzw6J3b1/mNe7aQQOLM4mzt7EMscnPAmU87rXeBESEdaklOmpXeSAZ6zJCip0/rjlwLsXsIuZJqxpiMKNeOmQGZVxm8rN5p/9Vi3IIxY+J29gB2ZH5o8Q/MR57BTzPNpQLz7xhg/DQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750411634; c=relaxed/relaxed;
-	bh=xs4GwtZhq/RZpg0ApqIdO1ibqn3rjOuW0IdI803an9Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=SZfuCQt+4vABH5Fkoe25p9CtB9dOaqwQEzfJDuPTNX/ZtyCGJDXQqa0pQw1o8UKpsn2d2ZW5s1ZXc+JiP+FXSHl1Iy+Nbgc/eJ7mUET5LpO437I56NCOp82uko6npITYbyQbpD+Sn1bPBma2FyNVIXoUU60z3BpGkkKPHnMsNoCm+mGa6kNEkZdpKzYz4e0L0tKOPqd9fluioW7vAoaAHYL8B3QJ4Ek9AX+0MAqoJcIgAXhfL8hFEMNKYILuZl+YCMweSthjHPPTg6ZV2JTv4p+av6ID5YRnCBBYSTbbYM9RAFmI4odoWwdozJ0h686QpvpL0fcTk0SptqNGqqa7IQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tqljnBD8; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=krishnak@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1750424916; c=relaxed/relaxed;
+	bh=efezj3LnMENDrFh/B5S35gvfWn7TvlAanxYCoetZO3w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PV459xErGI3KLRrZBUdvVf0Aj0WGw+jVJM9ZHO4K+DMrTmGLxH8WalBrSkh1Rlq/2mTJs8AwYn48pDg050xXZIvI7ym1rDNwehShMc1jJIoCmOdUHYiZB/VKAXZDg/seJjB0wIrzQ2N6GJr8Bv2m8z3QiTcjitbQiiR8FNxtOy0LZeerwVNNxJPYtovFVI3Lo4RVcIF9m1WIBTHH7csk1wqrJtCzGqrDDtJW+J4kXo30aNNvi7MYV5YrJdfu1gQku62LsmvEtSzNFdsm0RVCzlA72UOe3yVPJ51rI03rghTnvYzgnhRTvpFA5SaIVTymXrA2SQAs3SSZS5WV1RFBiA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Acxdv75k; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YabQfA7U; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tqljnBD8;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Acxdv75k;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YabQfA7U;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=krishnak@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNsZ94TsPz2yYJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jun 2025 19:27:13 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55K2inRn003480;
-	Fri, 20 Jun 2025 09:27:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=xs4Gwt
-	Zhq/RZpg0ApqIdO1ibqn3rjOuW0IdI803an9Y=; b=tqljnBD8glea6ilpaQASVt
-	NdT0sMx+zhAPC4XkpLeorg3e0H6/qWgQUdQIEevgiWBvpxTNc9yjbqQWQLN4Qnhu
-	N4OOy7vMWejfkNkKbABJPhlWUkicxwV8uBeyP7aiTFOPqiCkFDF7YDShE5qBlPTP
-	yBKKhdnULf1qeE8lK5N2Z8sjKizOGGbHzC/nuK+/lMNBWM/T6IiX617nJqVHMawn
-	F+Im2ugjr5Bnag1v1IIO+MGFMlPXUOxHfTR8NCFA/xgROm94Nq5DwF6XqAZaSWYD
-	SvTvgraBzazf5r5hIe5NUKZwWFuYLGbSZfzmEkaDVb1b4hacgd9cMMAEP0uqeYRg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47cy4jspuw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Jun 2025 09:27:00 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55K9JHFJ003146;
-	Fri, 20 Jun 2025 09:27:00 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47cy4jspus-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Jun 2025 09:27:00 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55K95We1021600;
-	Fri, 20 Jun 2025 09:26:59 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 47cahwe8e9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Jun 2025 09:26:59 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55K9QvAJ55640484
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Jun 2025 09:26:57 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 62C7520043;
-	Fri, 20 Jun 2025 09:26:57 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7183920040;
-	Fri, 20 Jun 2025 09:26:55 +0000 (GMT)
-Received: from [9.109.241.85] (unknown [9.109.241.85])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 20 Jun 2025 09:26:55 +0000 (GMT)
-Message-ID: <19689b53-ac23-4b48-97c7-b26f360a7b75@linux.ibm.com>
-Date: Fri, 20 Jun 2025 14:56:51 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bNyTZ0Z7Cz2y2B
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jun 2025 23:08:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750424907;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=efezj3LnMENDrFh/B5S35gvfWn7TvlAanxYCoetZO3w=;
+	b=Acxdv75kA9nf1SSzZTpbq+w2lfXvWnJvWneOLecdXZtWaIVasuZq2NOjV0he2MoV0cVUjB
+	Q13wgCogFIf61XxH66zIBuYLsBsefFoJUmRkoixvuGzL0dczmQtrexaNOxxgapTISE9nL1
+	8jYbY0RSjsnkzCxWf83nHTSbpl7cUx8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1750424908;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=efezj3LnMENDrFh/B5S35gvfWn7TvlAanxYCoetZO3w=;
+	b=YabQfA7UfDp5o4/iO9AN8wMEHhfuW99PHVioJMDX6k1HosofGMWmn5cl7dC21NMIJGGeeG
+	9uX/ktaS+ROZlx+yej+FbRUoqGmAyjTEj+qpQ3K2T1qdejj3zxrFJe41694lZRDVDVbtr3
+	DC56VWBBQbTgdMVlIiIu3pkoVccLJWY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-244-FNMAvGLdOkSs0iRpnK2HuQ-1; Fri, 20 Jun 2025 09:08:25 -0400
+X-MC-Unique: FNMAvGLdOkSs0iRpnK2HuQ-1
+X-Mimecast-MFC-AGG-ID: FNMAvGLdOkSs0iRpnK2HuQ_1750424904
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a50816ccc6so1177335f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Jun 2025 06:08:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750424904; x=1751029704;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=efezj3LnMENDrFh/B5S35gvfWn7TvlAanxYCoetZO3w=;
+        b=CtdlenDMWoq1ZJ3nRjqMh6POrpb6wtrhkou26epSF8kMJ2LaRhVTNeF270sFXMRvfC
+         Q9oak1n47+UhE1fNn7ofePiyMRe5/RzfRFEqmfaUnt8q26Qb5bWqZWfj5aob0Zgp48cG
+         9rAdlYpnT75+rCkaAK3mJ1TJYKJTCaiVpK7DyfS99xSATSmHjGsER2ECVUQ0PwQKpFcZ
+         p+KSC0vr9V9I7+K1LZ9Km/xsu9zrlWCT2ETDmylB46pYCrTHbezgYNHXdlh+c97rJMzJ
+         /6g3+7NC7EEhyGCCLA7iELOLlX7+9RIzbeLmI8Qm5aOLj10fsv3YrOcBbl9eTWbYDRVo
+         M4Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCVp+Kzhqsk9QmTsVm1oWIZ5mhW3zfQmj7LxFo3oPQ+yK4jPbmFbWnZY14KleMhsVnUU3Gqt7ZAeyMGPC3g=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywp1mjJlM8kaW3NbEeSUmL0NIhZaho4nRzef9MynsGW3g24KKGr
+	2+5BQDea/FTW/r+dhSVZB5fBlqQ33a1AoYR+7WV+nttle1Z6CrlC+zbCkyBq8fDQ6XI1y6zbmIt
+	6T+F5wcMuKJ32rLVZ5XFAjVuio1/I2YPF+brEgtMh7UFbVO8E3/GBR9tvaaDArp9sKrQ=
+X-Gm-Gg: ASbGncuqhHqDxH+tZudR2i6Eav4pNARrUIE9CzWzYieSIjJqXAcBNE1YRrblQg54qT9
+	2y9rP6yVrdb79ab3SckG3iRzLe3se8t0wHWmGkfRY5U585iSOKNCyTvO61PpF634vNzf6ko2Dx1
+	sdJVtT19PW4bBiNdHig9SFhtLgrxawoW6IllGlcGKl7tOii1enms9VNDXb2SOG6Wwyr393aO+gk
+	00sA+nujp9RQKJXjFzKuizcQU7cAtHHGX3vrclpwlMldsziRV9/QIscR1q6WI3yzqqmlj/GPCaq
+	JBVBxzeGe/07/unxEcDzZk3uyvcuVy/D/BA=
+X-Received: by 2002:a05:6000:70d:b0:3a4:ec32:e4f3 with SMTP id ffacd0b85a97d-3a6d12e8d73mr1963673f8f.17.1750424903391;
+        Fri, 20 Jun 2025 06:08:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvQvIvRiOMOwY6vcPGATBD4+Ygw2boYIIBCDTjikBg4YIpBv3nF1VGt1H//5h9pdOChc4ssw==
+X-Received: by 2002:a05:6000:70d:b0:3a4:ec32:e4f3 with SMTP id ffacd0b85a97d-3a6d12e8d73mr1963604f8f.17.1750424902439;
+        Fri, 20 Jun 2025 06:08:22 -0700 (PDT)
+Received: from localhost.localdomain ([193.207.146.57])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d0f19f9esm2059296f8f.39.2025.06.20.06.08.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Jun 2025 06:08:21 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Sumit Garg <sumit.garg@kernel.org>,
+	linux-integrity@vger.kernel.org,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH v6 0/4] tpm: add support for sync send() and use it in ftpm and svsm drivers
+Date: Fri, 20 Jun 2025 15:08:06 +0200
+Message-ID: <20250620130810.99069-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,185 +121,100 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/6] pci/hotplug/pnv_php: Enable third attention
- indicator
-To: linuxppc-dev@lists.ozlabs.org,
-        Timothy Pearson <tpearson@raptorengineering.com>,
-        Shawn Anastasio <sanastasio@raptorengineering.com>
-References: <20250618190146.GA1213349@bhelgaas>
- <1469323476.1312174.1750293474949.JavaMail.zimbra@raptorengineeringinc.com>
-Content-Language: en-US
-From: Krishna Kumar <krishnak@linux.ibm.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "\"linux-pci\"," <linux-pci@vger.kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        christophe leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        "\"Bjorn Helgaas\","
- <bhelgaas@google.com>,
-        Shawn Anastasio <sanastasio@raptorengineering.com>
-In-Reply-To: <1469323476.1312174.1750293474949.JavaMail.zimbra@raptorengineeringinc.com>
-Content-Type: text/plain; charset=UTF-8
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: zu1h5dWSe9R5-xNEAsjWJ6FLlIvQ0MssqVkigzCvhAA_1750424904
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: H5gm5CuRg5G1vL8RnfCBsF8H5nEiiA25
-X-Authority-Analysis: v=2.4 cv=a7ww9VSF c=1 sm=1 tr=0 ts=68552964 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=_AprYWD3AAAA:8 a=voM4FWlXAAAA:8 a=VnNF1IyMAAAA:8 a=1UX6Do5GAAAA:8
- a=1XWaLZrsAAAA:8 a=l-zMBAn9ipa4B3h1PFYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=fKH2wJO7VO9AkD4yHysb:22 a=IC2XNlieTeVoXbcui8wp:22 a=Et2XPkok5AAZYJIKzHr1:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIwMDA2OCBTYWx0ZWRfXztuPp7Hmqghr 98gbmuDSvnfmXzBjLf9FY5ZDg1UEfltV+FYLasqzwXEfi6it0ilw1iXa7wJRm4ed1MK0UznOnPd 20FR3xZsgaCsA+7nFA6iSbzRPfNy+Ohf2HND1ChjMGP6H1KDRHHGPnDbIvMT2JOORD3V2kL7S6b
- URA+ebAFIEWt9hoLTBWL+F2XRKUVlx/+Hs25DW5+P0Avi+ZeZ3qId2XtGEPke4brhcSwhWWWBer joR/R0/Ieo1QRusCM2hiXSJ+9Hjw0z63rjiNf+9IxgeUKshhqGSP7tyZM2E5FdyJDldBeH7Z7LU sEiFVuiYkxNB+An9MproBX8WlLgCgioaSHUQmlekwULfktUZ6GgQ+P6qznStxFRyEKkdtjvPbaQ
- vRHB0Kb/HC4BPLLWTNWvNYZg1A6m4YrUSuxWHsf5lZP5PcXSoanI0/qO50F2311LwSadJ3lK
-X-Proofpoint-ORIG-GUID: 3PPcyUxRJT5_vYdplbgsuscFw7Wby9Ox
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-20_03,2025-06-18_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- impostorscore=0 phishscore=0 clxscore=1011 malwarescore=0
- priorityscore=1501 spamscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0
- adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506200068
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Shawn, Timothy:
+The content of this version is the same of v5, but rebased on current
+linux-tpmdd/next (`git range-diff` on v5 is empty) after the merge
+window since tpm-svsm patches were merged with another tree, so we
+agreed on postpone this series, see
+  https://lore.kernel.org/linux-integrity/aDCb-wkHGoLQ-IGg@kernel.org/
 
-Thanks for posting the series of patch. Few things I wanted to do better understand Raptor problem -
+This series is a follow-up to the discussion we had about whether or not
+to add send_recv() op in tpm_class_ops[1]. Much boilerplate code has
+already been removed by Jarkko with commit 980a573621ea ("tpm: Make
+chip->{status,cancel,req_canceled} opt"). With this series we try to
+avoid also the temporary buffers needed between send() and recv() for
+devices that do not support interrupts and provide a single operation
+to send the command and receive the response on the same buffer like
+tpm_ftpm_tee.
 
+The biggest advantage for this approach is with tpm_ftpm_tee where we
+remove the local buffer and extra memory copies. For tpm_svsm it does
+not change much since we continue to use the pre-allocated buffer,
+to avoid making an allocation for each command.
 
-1. Last time my two patches solved all the hotunplug operation and Kernel crash issue except nvme case. It did not work with
+Introduce a new flag (TPM_CHIP_FLAG_SYNC) to support synchronous send().
+If that flag is set by the driver, tpm_try_transmit() will use the send()
+callback to send the command and receive the response on the same buffer
+synchronously. In that case send() return the number of bytes of the
+response on success, or -errno on failure.
 
-    NVME since dpc support was not there. I was not able to do that due to being  occupied in some other work.
+Thanks,
+Stefano
 
-2. I want to understand the delta from last yr problem to this problem. Is the PHB freeze or hotunplug failure happens
+Changelog
+- v5 -> v6
+  - rebased on linux-tpmdd/next - commit e271ed52b344 ("Merge tag
+    'pm-6.16-rc1-3' of git://git.kernel.org/pub/scm/linux/kernel/git/rafael/linux-pm")
+- v4 -> v5: https://lore.kernel.org/linux-integrity/20250514134630.137621-1-sgarzare@redhat.com/
+  - changed order and parameter names to match tpm_try_transmit() [Jarkko]
+  - rebased on next-20250514
+- v3 -> v4: https://lore.kernel.org/linux-integrity/20250509085713.76851-1-sgarzare@redhat.com/
+  - reworked commit descriptions [Jarkko]
+  - added Jarkko's R-b on patch 2
+  - added Sumit's R-b on patch 3
+  - rebased on next-20250508
+- v2 -> v3: https://lore.kernel.org/linux-integrity/20250414145653.239081-1-sgarzare@redhat.com/
+  - fixed comment style [Jarkko]
+  - renamend `out_send_sync` label to `out_sync` [Jarkko]
+- v1 -> v2: https://lore.kernel.org/linux-integrity/20250408083208.43512-1-sgarzare@redhat.com/
+  - changed title since we removed send_recv() op
+  - implemented TPM_CHIP_FLAG_SYNC idea [Jarkko]
+  - removed Jens' T-b
+- RFC -> v1: https://lore.kernel.org/linux-integrity/20250320152433.144083-1-sgarzare@redhat.com/
+  - added Jens' T-b on ftpm driver
+  - removed last patch since [2] is not yet merged and will require a new version
+- RFC: https://lore.kernel.org/linux-integrity/20250311100130.42169-1-sgarzare@redhat.com/
 
-    only for particular Microsemi switch or it happens with all the switches. When did this problem started coming ? Till last yr 
+[1] https://lore.kernel.org/linux-integrity/Z8sfiDEhsG6RATiQ@kernel.org/
+[2] https://lore.kernel.org/linux-integrity/20250410135118.133240-1-sgarzare@redhat.com/
 
-    it was not there. Is it specific to particular Hardware ? Can I get your setup to test this problem and your patch ?
+Stefano Garzarella (4):
+  tpm: add bufsiz parameter in the .send callback
+  tpm: support devices with synchronous send()
+  tpm/tpm_ftpm_tee: support TPM_CHIP_FLAG_SYNC
+  tpm/tpm_svsm: support TPM_CHIP_FLAG_SYNC
 
-3. To me, hot unplug opertaion  --> AER triggering --> DPC support, this flow should mask the error to reach root port/cpu and it 
+ drivers/char/tpm/tpm_ftpm_tee.h      |  4 --
+ include/linux/tpm.h                  |  4 +-
+ drivers/char/tpm/st33zp24/st33zp24.c |  2 +-
+ drivers/char/tpm/tpm-interface.c     | 22 ++++++++--
+ drivers/char/tpm/tpm_atmel.c         |  3 +-
+ drivers/char/tpm/tpm_crb.c           |  2 +-
+ drivers/char/tpm/tpm_ftpm_tee.c      | 66 +++++++++-------------------
+ drivers/char/tpm/tpm_i2c_atmel.c     |  3 +-
+ drivers/char/tpm/tpm_i2c_infineon.c  |  3 +-
+ drivers/char/tpm/tpm_i2c_nuvoton.c   |  3 +-
+ drivers/char/tpm/tpm_ibmvtpm.c       |  6 ++-
+ drivers/char/tpm/tpm_infineon.c      |  3 +-
+ drivers/char/tpm/tpm_nsc.c           |  3 +-
+ drivers/char/tpm/tpm_svsm.c          | 28 +++++-------
+ drivers/char/tpm/tpm_tis_core.c      |  3 +-
+ drivers/char/tpm/tpm_tis_i2c_cr50.c  |  6 ++-
+ drivers/char/tpm/tpm_vtpm_proxy.c    |  4 +-
+ drivers/char/tpm/xen-tpmfront.c      |  3 +-
+ 18 files changed, 83 insertions(+), 85 deletions(-)
 
-    should solve the PHB freeze/ hot unplug failure operation. If there are AER/EEH related synchronization issue we need to solve them. 
+-- 
+2.49.0
 
-    Can you pls list the issue, I will pass it to EEH/AER team. But yeah, to me if AER implementation is correct and we add DPC support,
-
-    all the error will be contained by switch itself. The PHB/root port/cpu will not be impacted by this and there should not be any freeze.
-
-4. Ofcourse we can pick some of the fixes from pciehp driver if its missing in pnv_php.c. Also at the same time you have done
-
-    some cleanup in hot unplug path and fixed the attenuation button related code. If these works fine, we can pick it. But I want to test it.
-
-     Pls provide me setup.
-
-5. If point 3 and 4 does not solve the problem, then only we should move to pciehp.c. But AFAIK, PPC/Powernv is DT based while pciehp.c
-
-     may be only supporting acpi (I have to check it on this).  We need to provide PHB related information via DTB and maintain the related 
-
-     topology information via dtb and then it can be doable. Also , we need to do thorough planning/testing if we think to choose pciehp.c. 
-
-     But yeah, lets not jump here and lets try to fix the current issues via point 3 & 4. Point 5 will be our last option.
-
-
-Best Regards,
-
-Krishna
-
-
-
-
-On 6/19/25 6:07 AM, Timothy Pearson wrote:
->
-> ----- Original Message -----
->> From: "Bjorn Helgaas" <helgaas@kernel.org>
->> To: "Timothy Pearson" <tpearson@raptorengineering.com>
->> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel" <linux-kernel@vger.kernel.org>, "linux-pci"
->> <linux-pci@vger.kernel.org>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>,
->> "christophe leroy" <christophe.leroy@csgroup.eu>, "Naveen N Rao" <naveen@kernel.org>, "Bjorn Helgaas"
->> <bhelgaas@google.com>, "Shawn Anastasio" <sanastasio@raptorengineering.com>
->> Sent: Wednesday, June 18, 2025 2:01:46 PM
->> Subject: Re: [PATCH v2 6/6] pci/hotplug/pnv_php: Enable third attention indicator
->> On Wed, Jun 18, 2025 at 11:58:59AM -0500, Timothy Pearson wrote:
->>>  state
->> Weird wrapping of last word of subject to here.
-> I'll need to see what's up with my git format-patch setup. Apologies for that across the multiple series.
->
->>> The PCIe specification allows three attention indicator states,
->>> on, off, and blink.  Enable all three states instead of basic
->>> on / off control.
->>>
->>> Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
->>> ---
->>>  drivers/pci/hotplug/pnv_php.c | 15 ++++++++++++++-
->>>  1 file changed, 14 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
->>> index 0ceb4a2c3c79..c3005324be3d 100644
->>> --- a/drivers/pci/hotplug/pnv_php.c
->>> +++ b/drivers/pci/hotplug/pnv_php.c
->>> @@ -440,10 +440,23 @@ static int pnv_php_get_adapter_state(struct hotplug_slot
->>> *slot, u8 *state)
->>>  	return ret;
->>>  }
->>>  
->>> +static int pnv_php_get_raw_indicator_status(struct hotplug_slot *slot, u8
->>> *state)
->>> +{
->>> +	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
->>> +	struct pci_dev *bridge = php_slot->pdev;
->>> +	u16 status;
->>> +
->>> +	pcie_capability_read_word(bridge, PCI_EXP_SLTCTL, &status);
->>> +	*state = (status & (PCI_EXP_SLTCTL_AIC | PCI_EXP_SLTCTL_PIC)) >> 6;
->> Should be able to do this with FIELD_GET().
-> I used the same overall structure as the pciehp_hpc driver here.  Do you want me to also fix up that driver with FIELD_GET()?
->
->> Is the PCI_EXP_SLTCTL_PIC part needed?  It wasn't there before, commit
->> log doesn't mention it, and as far as I can tell, this would be the
->> only driver to do that.  Most expose only the attention status (0=off,
->> 1=on, 2=identify/blink).
->>
->>> +	return 0;
->>> +}
->>> +
->>> +
->>>  static int pnv_php_get_attention_state(struct hotplug_slot *slot, u8 *state)
->>>  {
->>>  	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
->>>  
->>> +	pnv_php_get_raw_indicator_status(slot, &php_slot->attention_state);
->> This is a change worth noting.  Previously we didn't read the AIC
->> state from PCI_EXP_SLTCTL at all; we used php_slot->attention_state to
->> keep track of whatever had been previously set via
->> pnv_php_set_attention_state().
->>
->> Now we read the current state from PCI_EXP_SLTCTL.  It's not clear
->> that php_slot->attention_state is still needed at all.
-> It probably isn't.  It's unclear why IBM took this path at all, given pciehp's attention handlers predate pnv-php's by many years.
->
->> Previously, the user could write any value at all to the sysfs
->> "attention" file and then read that same value back.  After this
->> patch, the user can still write anything, but reads will only return
->> values with PCI_EXP_SLTCTL_AIC and PCI_EXP_SLTCTL_PIC.
->>
->>>  	*state = php_slot->attention_state;
->>>  	return 0;
->>>  }
->>> @@ -461,7 +474,7 @@ static int pnv_php_set_attention_state(struct hotplug_slot
->>> *slot, u8 state)
->>>  	mask = PCI_EXP_SLTCTL_AIC;
->>>  
->>>  	if (state)
->>> -		new = PCI_EXP_SLTCTL_ATTN_IND_ON;
->>> +		new = FIELD_PREP(PCI_EXP_SLTCTL_AIC, state);
->> This changes the behavior in some cases:
->>
->>  write 0: previously turned indicator off, now writes reserved value
->>  write 2: previously turned indicator on, now sets to blink
->>  write 3: previously turned indicator on, now turns it off
-> If we're looking at normalizing with pciehp with an eye toward eventually deprecating / removing pnv-php, I can't think of a better time to change this behavior.  I suspect we're the only major user of this code path at the moment, with most software expecting to see pciehp-style handling.  Thoughts?
->
 
