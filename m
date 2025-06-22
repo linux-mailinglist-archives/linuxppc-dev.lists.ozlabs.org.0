@@ -1,74 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-9612-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9613-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CA7AE2FB8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Jun 2025 14:01:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F89AE2FBA
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Jun 2025 14:01:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bQ8vd3zvCz30VZ;
-	Sun, 22 Jun 2025 22:01:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bQ8vf0WQLz30Tf;
+	Sun, 22 Jun 2025 22:01:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750593709;
-	cv=none; b=SJ6XvJhT5+mzlCiURndwgjbQ7AQByUjzBVB+S65bw7EVYyFkxF6PaL/rAPCKkhuQbFzG4jZz1eep+zC9BnKgBCon4GsTThW3TOtWOXM1Wu4tB2Xh8KNNEAT+Vahr6CgFeWtfWQ/VPYX57lonXEHe/oouM0RuVpvh526GMetzAtrR6r5KAS8FeWu+XA8sRyVY6hBs4H6d0Av/jHz8dIGGuBOrVYOdDEd0n+9gnTIAsB1bnfLLkiIAxod4d2jGXhhzccxdAvZIAda7U1XSwsgZiji8RXTxCNWp24jvIPbCglHDl/6En8GXJqZLRrNmbM3BvwXJC/WKoZCuPPUq6W7a/Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750593710;
+	cv=none; b=VX2oBox3tt+XbS6mK6q+yTlTKzPqwcPMQzwGw41priYO0eFjdWa5/1O7nXVjpnTOwO3ev4AAtqWpWe5mJG8nw/hhZSIPchGE7Y5F2e8idfmTtiH0uFGfMC/ScLL4MWHLVg2ZSP2oIfLUiogl8aV/xJib+XByfqwdmrFoVILoiF3gcvJ2X4NbIPi9ZB5wm8JDiFA1TmA2P0RY8nKAphB5Wl9xM3Yal2+FRLd+ojHhXsHuAp1EPlgyzhHdYokU3UW4P5taArTjZQS3FcwxAsu8ZvyJX8HddjcXylh3w7tIfNEKAqPowJuwgqSzywE0PtvBL+GzdblyykxH1DOvkHYKGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750593709; c=relaxed/relaxed;
-	bh=ef0VbalxgvFFroWpQ1CXd3B27NS/ujuqE1tR87+85m4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O5HzmO8eBetQPlwR6CPD+EEcF2HLcka9jR2dzuLy0nmEKjRfgQe3RKsinjp2BbRLgzgYOdueiDCnuYbNlPEH+ebWTNMo+CWdEBjSAUNSAoqD88Jnch4pr+oiXdxCYix3Vm1ae0FvvKaX409At2uDfkfeNDDGHWdBvbNjG/YylNcVvVJrPm/vU4wCzDfjEvrEjXdLTzRh8J+eah6AdiyO0uoXoQlD53ZmCYNr6QIKM9fL+smis2KrxkB2O7c7Hzx+zLAGRC2w77D3loeJ0Y9DhdHem4cR0X4C/hbEuIguM9h/A5c9jLyfVlCw63XifgUUEGFOMWpp+gTW/F3MrLBWcQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QYq2GBVZ; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1750593710; c=relaxed/relaxed;
+	bh=fxxkq8WjWJfHkmAF9Cy2K99ipkyuSuX2PR6bpaiFFZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OlyQVK9DJk1lqEeHs6lZMJyZSSLHVYmrCYVFYH4z0nylJOSq2G54RYRMtC+54QvqCr+cTNG1ZDgVsooIUlvbt7Fi0GCBV4MJ925vXfO52vS336cCSXfB8XW0X2fSKUzZPtn/y9dR8hX2tI3WMqWXF8CqlUvkNeR4DSbq5UwEZ7HStwyC0DO5EpkiZ80IyLFexaLeUysIDUM9ZvuAMkHWxftV0YWEpSuxbAeAMlmb8hgqn7BK2dDHht3Ow37iZsI2pnwAShEEMzdN2IG3NXLqqUMVx050vGrvj8lZlrn9xDGhUaesYO/NPxATmE0YjiNfnobDf76/oN1afo76ZUA36Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UtUoQ9Sn; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QYq2GBVZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UtUoQ9Sn;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bQ8vc3Fbbz30Tf
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bQ8vc4Hvkz30VR
 	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jun 2025 22:01:47 +1000 (AEST)
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55M9maoS010062;
-	Sun, 22 Jun 2025 12:01:35 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55M0XUSh030749;
+	Sun, 22 Jun 2025 12:01:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=ef0VbalxgvFFroWpQ1CXd3B27NS/ujuqE1tR87+85
-	m4=; b=QYq2GBVZk+4/oF4Bwp1Ng5dh4pxa0jtPIYx3cNO68Es/ftXOE5681ALlp
-	YZVthtLjos2yOJCaiIhsWNcqkc678B8LnD0TsSPhKcirxU9mci/GnwKi7k62LQnC
-	WsD/oF1cUWiMHwhRrJaGSrWC/5FcEQhEnULEq2PH0Za022o2+7krn3vPFf3uwrwW
-	o75GojY7p1jk/6cPdOyDlAHxD3/ltEemLc4sQxkhLMk/7MRWSkXnitlhjTZnGGK9
-	lhRyIBfK8nzcrf7fsnSDpSVZf2t/C3Uvz8nNZ8H5TFcZ+jKtXiPVqxP0WNdm+NCZ
-	xiXL59TNeFZkoGp65F76ytT0be61A==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=fxxkq8WjWJfHkmAF9
+	Cy2K99ipkyuSuX2PR6bpaiFFZk=; b=UtUoQ9SnKbgeR8d7GsD8dJ+7BD4sukbBU
+	13j2pS/ysUlxNlJ8waHN94fgOtB4SXnVdzXwtuaf8G9Jy65sOyqqNDkxuLUJfJJY
+	Cxw5+rvdea8IVSjnOwGrHFqu6XZgAeyq4AE7gNfwPQFsseoCCNSspjLU2czH1QrU
+	sYdkWRlTcon1bsthUCP85msBmWIgARIxq2BIsgc7zUrjwKsed8O36TC6f/FShgIk
+	iG82k0NxMtgmiV6mRyi9q7fH+9Bj374Bl1luy6Ida62QMcMQo0xi3E7rM8Mqyp00
+	zpUGbsszt1s0M8QIWxOyEQOQrxQU+xkzGg+++we3kNY4pufyy07pw==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmfdvkn6-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmfdvknd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 22 Jun 2025 12:01:35 +0000 (GMT)
+	Sun, 22 Jun 2025 12:01:38 +0000 (GMT)
 Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55MC05sC007533;
-	Sun, 22 Jun 2025 12:01:34 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmfdvkmw-1
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55MC1bem009702;
+	Sun, 22 Jun 2025 12:01:37 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmfdvknb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 22 Jun 2025 12:01:34 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55M7gNqq002908;
-	Sun, 22 Jun 2025 12:01:33 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47e8jksjb5-1
+	Sun, 22 Jun 2025 12:01:37 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55M8wFrU014698;
+	Sun, 22 Jun 2025 12:01:36 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 47e9s21brn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 22 Jun 2025 12:01:33 +0000
+	Sun, 22 Jun 2025 12:01:36 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55MC1Tvs32899770
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55MC1Xu956295844
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 22 Jun 2025 12:01:29 GMT
+	Sun, 22 Jun 2025 12:01:33 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5008820049;
-	Sun, 22 Jun 2025 12:01:29 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 3316F20049;
+	Sun, 22 Jun 2025 12:01:33 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CE20920040;
-	Sun, 22 Jun 2025 12:01:27 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id BB50220040;
+	Sun, 22 Jun 2025 12:01:31 +0000 (GMT)
 Received: from ltczz402-lp1.aus.stglabs.ibm.com (unknown [9.40.194.31])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 22 Jun 2025 12:01:27 +0000 (GMT)
+	Sun, 22 Jun 2025 12:01:31 +0000 (GMT)
 From: Donet Tom <donettom@linux.ibm.com>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
@@ -77,10 +78,12 @@ To: Madhavan Srinivasan <maddy@linux.ibm.com>,
 Cc: Ritesh Harjani <ritesh.list@gmail.com>,
         Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
         linux-kernel@vger.kernel.org, Donet Tom <donettom@linux.ibm.com>
-Subject: [PATCH v2 1/2] book3s64/radix : Handle error conditions properly in radix_vmemmap_populate
-Date: Sun, 22 Jun 2025 07:01:24 -0500
-Message-ID: <7f95fe91c827a2fb76367a58dbea724e811fb152.1750593372.git.donettom@linux.ibm.com>
+Subject: [PATCH v2 2/2] book3s64/radix : Optimize vmemmap start alignment
+Date: Sun, 22 Jun 2025 07:01:25 -0500
+Message-ID: <895c4afd912c85d344a2065e348fac90529ed48f.1750593372.git.donettom@linux.ibm.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <7f95fe91c827a2fb76367a58dbea724e811fb152.1750593372.git.donettom@linux.ibm.com>
+References: <7f95fe91c827a2fb76367a58dbea724e811fb152.1750593372.git.donettom@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,17 +99,17 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Ko-1ZNUOnmS_lZIXjpwNo6inw7KsRJHM
-X-Proofpoint-GUID: bIjkYh3LCsCiCwK1X0Xbl0EkN5pl16-Y
-X-Authority-Analysis: v=2.4 cv=BpqdwZX5 c=1 sm=1 tr=0 ts=6857f09f cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=pGLkceISAAAA:8 a=ttLXqP_FGL-iw6hVZZ4A:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIyMDA3MiBTYWx0ZWRfX3C+tcKRn30zn 99Tqk3xu9v5yicEvgMQ6QLqrH4K8V8iVD6l9yXZAAd9jt6ykBS78WBmHXDnYy0RFnQmYmV+Kizj NL2Q86qcyGJOc/e/utWpIiCVwd5xxEf0+JNs2K1nnIjTW3rVuCv2WeVs+yJXKi3QGSBNazd/tb5
- LPjvEOYt8llhVOG3HCVzFqvT+S0AgrqOcIOKbMzeRKZzqZ+lstnP00DJZWvhk3U6VoRUaOvz7dy 6bajVi8HnLzxHywYlp0pU9v1pAnqGGTV74r97yYkKH9b7J2o0BPUEo27IJGCOCyTu7xIsLsPAtj tlx46YO4vgRf9E8a0OLPhJLBT4vjhCWjrzygajjnnvY+HLZQoCc6+c8e/3xN9eNwewlHuk2qatM
- SuNOJCjIDF5MmHbpt1B9ERxMokY+sw8D03MK7bQaIlBaFV2pPNcFct1nOHb8Glob5q5UEulg
+X-Proofpoint-ORIG-GUID: BRuroSmTb4v8LM2ozv5DJh5jLy1-JILn
+X-Proofpoint-GUID: ZWHvOwZ1p-CMSgjhV1MIPy4z--10CIk1
+X-Authority-Analysis: v=2.4 cv=BpqdwZX5 c=1 sm=1 tr=0 ts=6857f0a2 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=KK6s22nVDRcosj11uTcA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIyMDA3MiBTYWx0ZWRfXyUAaRK5pqt5V 08G3kghaOWKvzu/eddS+WFWvVnQuiBz0js2uUkMZcqJRS/Lekf+bZw8D1h9+dQDQHJ+1mKFjJGl pdxC0CEubigz20bxClHH10n6uIsTqvQUnrUAkGkG/4Mui95CMQQrcSixjqv2x7qUEbn7Nabzkk+
+ 3vnFJLj0wM75ZRXDIanjsn1Tf1fZIPGNcHm85QJXQ2KrHbezc2nPx5a/ele4hTusXewB2G7nbuI iQDJKSzuIp6zQFuWsX4KTkvfyW2rJi0Rovj47lRx2tCuvsaE9RvD9foBXUpbdSf+QCa78zSC0BV PQI0wuM30wkdS748BphgiQGtJ/zjwt1+i3Q0IlTZbbfMnKAJtCShmuXuG9e+fGB5i6zpMs0hEqE
+ WQpPox+Yo6OC9UWAK/jB4ctPD4UvrkbkkIZQPH0fLVdXwp4K4pO7SEP/i+dYgr43E4o8TBaj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-06-22_03,2025-06-20_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- impostorscore=0 clxscore=1015 spamscore=0 mlxlogscore=720
+ impostorscore=0 clxscore=1015 spamscore=0 mlxlogscore=999
  priorityscore=1501 phishscore=0 malwarescore=0 adultscore=0 bulkscore=0
  suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
@@ -116,34 +119,81 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Error conditions are not handled properly if altmap is not present
-and PMD_SIZE vmemmap_alloc_block_buf fails.
+If we always align the vmemmap start to PAGE_SIZE, there is a
+chance that we may end up allocating page-sized vmemmap backing
+pages in RAM in the altmap not present case, because a PAGE_SIZE
+aligned address is not PMD_SIZE-aligned.
 
-In this patch, if vmemmap_alloc_block_buf fails in the non-altmap
-case, we will fall back to the base mapping.
+In this patch, we are aligning the vmemmap start address to
+PMD_SIZE if altmap is not present. This ensures that a PMD_SIZE
+page is always allocated for the vmemmap mapping if altmap is
+not present.
 
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+If altmap is present, Make sure we align the start vmemmap addr to
+PAGE_SIZE so that we calculate the correct start_pfn in altmap
+boundary check to decide whether we should use altmap or RAM based
+backing memory allocation. Also the address need to be aligned for
+set_pte operation. If the start addr is already PMD_SIZE aligned
+and with in the altmap boundary then we will try to use a pmd size
+altmap mapping else we go for page size  mapping.
+
+So if altmap is present, we try to use the maximum number of
+altmap pages; otherwise, we allocate a PMD_SIZE RAM page.
+
 Signed-off-by: Donet Tom <donettom@linux.ibm.com>
 ---
-v1 -> v2 - rebased to v6.16-rc2
-v1 - https://lore.kernel.org/all/e876a700a4caa5610e994b946b84f71d0fe6f919.1746255312.git.donettom@linux.ibm.com/
----
- arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 29 +++++++++++++++---------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
 diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 9f764bc42b8c..3d67aee8c8ca 100644
+index 3d67aee8c8ca..c630cece8ed4 100644
 --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
 +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -1173,7 +1173,7 @@ int __meminit radix__vmemmap_populate(unsigned long start, unsigned long end, in
- 				vmemmap_set_pmd(pmd, p, node, addr, next);
- 				pr_debug("PMD_SIZE vmemmap mapping\n");
- 				continue;
--			} else if (altmap) {
-+			} else {
+@@ -1122,18 +1122,25 @@ int __meminit radix__vmemmap_populate(unsigned long start, unsigned long end, in
+ 	pte_t *pte;
+ 
+ 	/*
+-	 * Make sure we align the start vmemmap addr so that we calculate
+-	 * the correct start_pfn in altmap boundary check to decided whether
+-	 * we should use altmap or RAM based backing memory allocation. Also
+-	 * the address need to be aligned for set_pte operation.
+-
+-	 * If the start addr is already PMD_SIZE aligned we will try to use
+-	 * a pmd mapping. We don't want to be too aggressive here beacause
+-	 * that will cause more allocations in RAM. So only if the namespace
+-	 * vmemmap start addr is PMD_SIZE aligned we will use PMD mapping.
++	 * If altmap is present, Make sure we align the start vmemmap addr
++	 * to PAGE_SIZE so that we calculate the correct start_pfn in
++	 * altmap boundary check to decide whether we should use altmap or
++	 * RAM based backing memory allocation. Also the address need to be
++	 * aligned for set_pte operation. If the start addr is already
++	 * PMD_SIZE aligned and with in the altmap boundary then we will
++	 * try to use a pmd size altmap mapping else we go for page size
++	 * mapping.
++	 *
++	 * If altmap is not present, align the vmemmap addr to PMD_SIZE and
++	 * always allocate a PMD size page for vmemmap backing.
++	 *
+ 	 */
+ 
+-	start = ALIGN_DOWN(start, PAGE_SIZE);
++	if (altmap)
++		start = ALIGN_DOWN(start, PAGE_SIZE);
++	else
++		start = ALIGN_DOWN(start, PMD_SIZE);
++
+ 	for (addr = start; addr < end; addr = next) {
+ 		next = pmd_addr_end(addr, end);
+ 
+@@ -1159,7 +1166,7 @@ int __meminit radix__vmemmap_populate(unsigned long start, unsigned long end, in
+ 			 * in altmap block allocation failures, in which case
+ 			 * we fallback to RAM for vmemmap allocation.
+ 			 */
+-			if (!IS_ALIGNED(addr, PMD_SIZE) || (altmap &&
++			if (altmap && (!IS_ALIGNED(addr, PMD_SIZE) ||
+ 			    altmap_cross_boundary(altmap, addr, PMD_SIZE))) {
  				/*
- 				 * A vmemmap block allocation can fail due to
- 				 * alignment requirements and we trying to align
+ 				 * make sure we don't create altmap mappings
 -- 
 2.47.1
 
