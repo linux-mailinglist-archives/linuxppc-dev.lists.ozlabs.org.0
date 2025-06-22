@@ -1,79 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-9622-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9623-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D45AE3133
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Jun 2025 19:40:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62FF9AE319F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Jun 2025 21:08:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bQJQM4srgz30VR;
-	Mon, 23 Jun 2025 03:40:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bQLMz2JVYz30VR;
+	Mon, 23 Jun 2025 05:08:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::530"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750614027;
-	cv=none; b=OaUeaSxIXi41JMO+ro0nAhh8/Plh+PFn7rq5rT3G12AZd+F7uIiURw2oSTUUvAJaxb/4lmuNYOegmQ7hpN7dhx5CRhR1DbnqvLs5eWs0NKsjwCNZPo8rSL6ZOdSTQaUPScql5nIz7fPtJ0O9WPr0dwc6WvZYq7fI+6bqztzRpJpE4Yc+EH5NCyEToOiFVO5FIuZbDPpTj6BNtF2xQxk8S48JrelMkELnddBcVf7IgGj5e8dby4yo6mX4+Tw4O2J1jpOGYH+JpzflI5kOGjU0//rq+mrJXwa6NRD1BFByEnve1plxd9/Ibv1icuqhi5uBk+vTZzB7T6K0DYwbk3+aHQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750619311;
+	cv=none; b=QUYFnpHL5hcmKfOqHDn/IyBxa2xC+eYOz0Z4lbA4vCKvr28lLfBhuos8yyFczRWGq6JMT08sGuNhm3TQ6n7rxQlny4BWQPnmYlD32wnOqWcxqGImxnao1qEICaTLTathGG+9YuaoEgipcGyTIJNl5Rv3HWc7z/ZK0SA0apsNLqzGsSEUGQdJjAOb3M02t5z/wgKhyIIDFbBbZ1W4OhrTj2QmFr4O/3L8NgK0PT8D4xBLrD8FLNGtq4tzErtaANpuZIZ32MIUseBtsNn1IUG/Rit5CRBN7b16W4v6tdoVPZv2cHW9hFtOVIfrhrH1DBLYqMsVjRn69flEc+jWs2DbUA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750614027; c=relaxed/relaxed;
-	bh=Fg9hmyFycp3ZDNw8sLAPP4qprGRUQKA22JNcWYg14/Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bktr+Zoa6lArRHyDUykniSs3h0DMwn7A68xocOMSLnVC0RzLbOZ2WOhcOg/7Ehc+eBSXfXsSGPtI1dfqFxfwW745VI6zT5i25z0aNnGdzmiJCGCrOQZNujmcq+7kSxEYkeIkar+QCd3BNGzje9sSUy+C9tuNdEnojxRLkbrrwrI2VEV3zF11558EMenbr9U+r2SKPugZmNRlp5Xgm5bMKaWkqdohOcTvCx7ERo/RvPaiqMD7OqB1kN7FLRfgiXJJRiXyRB7z/EYoNAnl+1ME8lpisfEriYVCwWW/ll0OCJi1pA+bTczmV2XyAecEK2QR1bBLfP5f44Iaw8FpitGSAw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=VchkHIeI; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=VchkHIeI;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bQJQK4Qsgz30T9
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jun 2025 03:40:24 +1000 (AEST)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-604bff84741so6466281a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jun 2025 10:40:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1750614019; x=1751218819; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fg9hmyFycp3ZDNw8sLAPP4qprGRUQKA22JNcWYg14/Y=;
-        b=VchkHIeIOHJQe3b4Uo5cuLw1wjzBW1Q62Y9tbpm7P9j8gO6yCLbmcRjyAJ4N9Czv7b
-         eJi9II4matxc4rwUZ78fUbchXmYrpj1f6r2vtSIFyk5TtzKvJ0Xx8uYUuou1xTu6L2Sh
-         HYu8xLoa2N40KAXV9X+xyxm91IUKDgkeN/gVk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750614019; x=1751218819;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Fg9hmyFycp3ZDNw8sLAPP4qprGRUQKA22JNcWYg14/Y=;
-        b=Og9VzTKzkOtsMidAQ1VK1vdLjOzUIuFB8kXhSw8H7DD4Dk864XsFotEmw8hJq5NudO
-         uVjKzaa3d4kXdpr5QhcDu3gh0m8MvfwYVbd55H0mE4JA/qi0vwFsvBx0/vQs/UmomkQh
-         bN6e4xPMmEx2qsHl65jYrKTf/k6Wp/2guWR3TzGDKF8Q/wwdWjb2mZTTJdGlwSWrb3Qq
-         sG7plhCFDiahYwO1S+hBOLPovjDHR8wYhkZu28JweEUXq0vjc6AzTkLdy4CS1TiJcAjB
-         lY2qQyXW6VB9HN3hEFE3G+I2N4KA9IDylLBsx8pF9YJbjbJnz05A4q7mExG5vCSbEzgR
-         8ciw==
-X-Forwarded-Encrypted: i=1; AJvYcCX2WlocmK0O3NCFTATUVRuGb2rFLqxK+NNv/w6rjzcGbBv6wdh4EGYgTdhKOXFJJ1pA9BEdfD5yyNYiKUE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzkEsdYKT3/XE1R9bJyXOE/0t+wxATwMYyLsGN7MB8t7x0zKFBp
-	Q4JS0CnzmYfb0M8/EYUhSlTRPpR9DUMzDdaPxggOSpbetogwGtwyCEsFRH9bNvpgYUEnRFKTPXq
-	FSwPqGv8=
-X-Gm-Gg: ASbGncvgxVE7+M9G/InvbC5bUreOA9oKPcHtgqYLLLt4mN3nY3Wm0wHxEWCsvhjlP4a
-	RLQ1m+/wTBuUYUwdAjh7qa2u5bX3lyaaE+RiRtN85bNOh6VXcj8AJ6k0vBSOhwPnIj4dp8vhHZx
-	enQgtWVYzsJEG00jSXaICud0o22bQS9gHWUsxYGLzELpkQ8w2CFtwE9/MtET5/CFlD7Lk0xmer1
-	+fIfDs8YuATwvpMUdh4T04JOkiR00NungJFrcrGQGM/hw+ord004bBUgnvHemICBl61MJT3DVoF
-	2R7zUMFT+ODrWraV16XLcECPJDKMIarqqZnFgL2+Dnh7sB+MnVBizZGw/fhBpUjmbMXME9uVSnZ
-	KNgBpaBrxcga2Iv3xnclphT+lpvE3TvUdW2vL
-X-Google-Smtp-Source: AGHT+IHzoeR5z6HYJHLy/1ZE8ucecd7mn55oFDEuibK/lcnfn3/PA/ZAHI56h8Q/rGq7kRhqVsb6aA==
-X-Received: by 2002:a17:907:7fa3:b0:ad8:a329:b490 with SMTP id a640c23a62f3a-ae05794247emr967135766b.23.1750614019304;
-        Sun, 22 Jun 2025 10:40:19 -0700 (PDT)
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae05408300dsm572238466b.95.2025.06.22.10.40.17
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Jun 2025 10:40:17 -0700 (PDT)
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-604bff84741so6466245a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Jun 2025 10:40:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVZJ7XMpt2UupJKsJ9s2VoWxtVZ0nh7qDou9hXZSJ+cO2OB2Btzl2BLpd5NX1391r2CoEL27n0x3OeoceE=@lists.ozlabs.org
-X-Received: by 2002:a05:6402:13cb:b0:600:1167:7333 with SMTP id
- 4fb4d7f45d1cf-60a1ccb4175mr8817971a12.10.1750614017461; Sun, 22 Jun 2025
- 10:40:17 -0700 (PDT)
+	t=1750619311; c=relaxed/relaxed;
+	bh=lXvkinor2Kxjpw0TfsCTa3CsaB0P+Y72nKpP+5Ar/Z4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KsbAjHy1ISgxSmq/GJMy10zKr0xlzK+sGwhDVNnCbMREck+fZhm4f54KF7V4qaf2XbqoQkTh7DUxPaDlsaMLQ6ffFqfdHncYRUp0kTIMIojUI6/6xTpJGWUHqT27pJzt6qyKH98R6ebJRXnEi8B7DRLw3BagjQdpSe+6GuUvXzXXZgt+mZAokEn00FQzIPrF2ALafCc8yITwJyR1etwHNi6V2lvgDy0+ARwiw5SsOgX3AN7aSvP7Fyr7xGUUP+ID7N+/8gs1qx0FlFAYZ1OdREawUGVlT2IabBa9Lc3cg5uwdFhOxYh1deobIjWYgfbN/P5XAFRwhSf6JvGr7JeeMQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bQLMx3m4Tz30GV
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jun 2025 05:08:27 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 55MIvBBC005896;
+	Sun, 22 Jun 2025 13:57:11 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 55MIv72V005883;
+	Sun, 22 Jun 2025 13:57:07 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Sun, 22 Jun 2025 13:57:06 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Andre Almeida <andrealmeid@igalia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 5/5] powerpc: Implement masked user access
+Message-ID: <20250622185706.GB17294@gate.crashing.org>
+References: <cover.1750585239.git.christophe.leroy@csgroup.eu> <9dfb66c94941e8f778c4cabbf046af2a301dd963.1750585239.git.christophe.leroy@csgroup.eu> <20250622181351.08141b50@pumpkin>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,67 +63,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-References: <cover.1750585239.git.christophe.leroy@csgroup.eu>
- <9dfb66c94941e8f778c4cabbf046af2a301dd963.1750585239.git.christophe.leroy@csgroup.eu>
- <20250622181351.08141b50@pumpkin>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20250622181351.08141b50@pumpkin>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 22 Jun 2025 10:40:00 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgvyNdkYHWfL5NxK=k1DCdtyuHCMFZsbQ5FyP3KNvDNPw@mail.gmail.com>
-X-Gm-Features: AX0GCFvQX_rPJUp_TeA-MaZrJuZOHr7f0zzM4dAjSAouwLFkdoxMjL44_Wohcms
-Message-ID: <CAHk-=wgvyNdkYHWfL5NxK=k1DCdtyuHCMFZsbQ5FyP3KNvDNPw@mail.gmail.com>
-Subject: Re: [PATCH 5/5] powerpc: Implement masked user access
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Darren Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Andre Almeida <andrealmeid@igalia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mutt/1.4.2.3i
+X-Spam-Status: No, score=-0.0 required=3.0 tests=SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, 22 Jun 2025 at 10:13, David Laight <david.laight.linux@gmail.com> wrote:
->
-> Not checking the size is slightly orthogonal.
-> It really just depends on the accesses being 'reasonably sequential'.
-> That is probably always true since access_ok() covers a single copy.
+Hi!
 
-It is probably true in practice, but yeah, it's worth thinking about.
-Particularly for various user level structure accesses, we do end up
-often accessing the members individually and thus potentially out of
-order, but as you say "reasonable sequential" is still true: the
-accesses are within a reasonably small offset of each other.
+On Sun, Jun 22, 2025 at 06:13:51PM +0100, David Laight wrote:
+> On Sun, 22 Jun 2025 11:52:43 +0200
+> Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+> > e500 has the isel instruction which allows selecting one value or
+> > the other without branch and that instruction is not speculative, so
+> > use it. Allthough GCC usually generates code using that instruction,
+> > it is safer to use inline assembly to be sure. The result is:
 
-And when we have potentially very big accesses with large offsets from
-the beginning (ie things like read/write() calls), we do them
-sequentially.
+The instruction (which is a standard Power instruction since
+architecture version 2.03, published in 2006) can in principle be
+speculative, but there exist no Power implementations that do any data
+speculation like this at all.
 
-There *might* be odd ioctls and such that get offsets from user space,
-though. So any conversion to using 'masked_user_access_begin()' needs
-to have at least *some* thought and not be just a mindless conversion
-from access_ok().
+If you want any particular machine instructions to be generated you have
+to manually write it, sure, in inline asm or preferably in actual asm.
+But you can be sure that GCC will generate isel or similar (like the
+v3.1 set[n]bc[r] insns, best instructions ever!), whenever appropriate,
+i.e. when it is a) allowed at all, and b) advantageous.
 
-We have this same issue in access_ok() itself, and on x86-64 that does
+> >   14:	3d 20 bf fe 	lis     r9,-16386
+> >   18:	7c 03 48 40 	cmplw   r3,r9
+> >   1c:	7c 69 18 5e 	iselgt  r3,r9,r3
+> > 
+> > On other ones, when kernel space is over 0x80000000 and user space
+> > is below, the logic in mask_user_address_simple() leads to a
+> > 3 instruction sequence:
+> > 
+> >   14:	7c 69 fe 70 	srawi   r9,r3,31
+> >   18:	7c 63 48 78 	andc    r3,r3,r9
+> >   1c:	51 23 00 00 	rlwimi  r3,r9,0,0,0
+> > 
+> > This is the default on powerpc 8xx.
+> > 
+> > When the limit between user space and kernel space is not 0x80000000,
+> > mask_user_address_32() is used and a 6 instructions sequence is
+> > generated:
+> > 
+> >   24:	54 69 7c 7e 	srwi    r9,r3,17
+> >   28:	21 29 57 ff 	subfic  r9,r9,22527
+> >   2c:	7d 29 fe 70 	srawi   r9,r9,31
+> >   30:	75 2a b0 00 	andis.  r10,r9,45056
+> >   34:	7c 63 48 78 	andc    r3,r3,r9
+> >   38:	7c 63 53 78 	or      r3,r3,r10
+> > 
+> > The constraint is that TASK_SIZE be aligned to 128K in order to get
+> > the most optimal number of instructions.
+> > 
+> > When CONFIG_PPC_BARRIER_NOSPEC is not defined, fallback on the
+> > test-based masking as it is quicker than the 6 instructions sequence
+> > but not necessarily quicker than the 3 instructions sequences above.
+> 
+> Doesn't that depend on whether the branch is predicted correctly?
+> 
+> I can't read ppc asm well enough to check the above.
 
-  static inline bool __access_ok(const void __user *ptr, unsigned long size)
-  {
-        if (__builtin_constant_p(size <= PAGE_SIZE) && size <= PAGE_SIZE) {
-                return valid_user_address(ptr);
-        .. do the more careful one that actually uses the 'size' ...
+[ PowerPC or Power (or Power Architecture, or Power ISA) ]
 
-so it turns access_ok() itself into just a simple single-ended
-comparison with the starting address for small sizes, because we know
-it's ok to overflow by a bit (because of how valid_user_address()
-works on x86).
+> And the C is also a bit tortuous.
 
-           Linus
+I can read the code ;-)  All those instructions are normal simple
+integer instructions.  Shifts, adds, logicals.
+
+In general, correctly predicted non-taken bvranches cost absolutely
+nothing.  Correctly predicted taken branches cost the same as any taken
+branch, so a refetch, maybe resulting in a cycle or so of decode bubble.
+And a mispredicted branch can be very expensive, say on the order of a
+hundred cycles (but usually more like ten, which is still a lot of insns
+worth).
+
+So branches are great for predictable stuff, and "not so great" for
+not so predictable stuff.
+
+
+Segher
 
