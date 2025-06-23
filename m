@@ -1,80 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-9630-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9631-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC71AE38B3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jun 2025 10:42:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514F3AE3B45
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jun 2025 11:56:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bQhQb3T2hz2yDk;
-	Mon, 23 Jun 2025 18:41:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bQk4H44Gfz2xHW;
+	Mon, 23 Jun 2025 19:56:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750668119;
-	cv=none; b=mnvmzZ23kJ3D7qGYOHRBwVcckuATcpkJciwxexh/Te67mTpVSrwpOI5LXS+eNsmc6jRwi4zn7n6kCqcGXn6OB/TsIuP2iJ9fOmMHV2qr7KOfRBH8kWxL9B98/WJBnKqPCXJyS48AjS39XbqUn/FJ1BpDO4PMLLFpENVM/JIFBGQYbleUK6vIarnW4g2L5FP9L4yrKGgRY72xfc71+tMpk8PXap+PczEm8vsiRv2qXZRq7NMxp1SI25Q+8B75huzFtORU+tmuyIehSGIHQJfEPcG0/0d+mhe1vZ5k044kk16zBjUKTGY25CUnSFm4QDwm6KBTw2d7oopWk3aR6GMH/A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::134"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750672575;
+	cv=none; b=e7cLXxL7znib92mkZ3UnnzBza1Xud8QHkx8Tzfrj1ldXwZWrcSHB9MWH49YMZDYZBioXhg9o8OlmPvU14Vv9K9aDGCVHUlWEEKR9czZh5x0bKoEglK7HvjAcGU+5ehveT3E8VDTP68ujMP/GZPjnU/N2grvdxnpvPyULFmFU7L6tks98jGOLlJ1VNFfrZN6o+C/ACBjEWfz4ZxQXwgHyhX5V6ZOHknHmJgTeLvjSKAA9dqQJiCwdUhYyVrSBpUVUOz19gHzp2oREEcCpjoL1fmiqC9F2fZSRAoMrZGLFwbJ71UdyghZyDKhW2tYzP7gLYzfy/Q/8Xzo5P79cPb7Xkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750668119; c=relaxed/relaxed;
-	bh=TkKzrtwUg2fZOc/yGpYd05A47C3HgikZeiXFYnWNM1o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ecH7UG1fr0r5RxuydZNeDbrzcxUcnr2cbQbS7WFKE+xCMVlxQZigiM2vfdX5P3e1demd4S+G7lLbhy0nhXXUIHIT3RsMW0s5N234nYE9HD6aXkyKW1c4RDkl0lkDeiz2GZcM2/yHfryvvKccCHh/esCU5RORq9PLEoT4ZRSlt+gq/hYyIrWLYKvluXYiQc1WPVoVt4NQo/VF6xN7OFnckffObv4KBKDdci2g0x32f7rBnHfGqpzNP3bU+d/WQsMpecTPoHLXfr0+VAzPncLwQs10Zzli+zdIea+jtpFSC2f3YzXkNxRFUsHsLgFm4lNV3jIrr2dASbXzOz3mDSbi+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rnwh6Nhh; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1750672575; c=relaxed/relaxed;
+	bh=LPeDtzputbBG8BYmPS4Q6TNFFvEXgzemPhqRvBeZ31Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y4FhJe4IlKKaHQ94ECmuvYi4Cxkw/rvNSUnQJb2e4QDAipl7kL8Z6hP8kIfRxLDITAn7lwTH2FyNKxjWDvegsTqWOpt4WBEESN+ars7/JayZsLNCfCWfCxVPQ30DoGa/Z70hgQvT7CVQN7b6d1s5Da79gxXtwf11LcDJ+qnrk/3QmvkqVGFxcfJth3xEeVokYBVwPyy5FcWqB56rLR4zUKlivlEmHEFTMRRJKVUqJtavVhP/PT4FwAAAIKW/gwn/DAvuskqLyleNq0jHPevziTauWf3hdqNwuHTWo64ZhCZ/TI0nORGV6i9k+iDOHAI4WDB3B87IyygYddaWjsR4gA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=LVZ31njS; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::134; helo=mail-lf1-x134.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rnwh6Nhh;
+	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=LVZ31njS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::134; helo=mail-lf1-x134.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bQhQZ4cTLz30Vr
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jun 2025 18:41:58 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55MLPxm3011313;
-	Mon, 23 Jun 2025 08:41:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=TkKzrt
-	wUg2fZOc/yGpYd05A47C3HgikZeiXFYnWNM1o=; b=Rnwh6NhhPvmg5bOH1zfKyW
-	Rtn23HlEfKtmw0zApXDadM1TACElKPuLFkD/S/aZnLvfXWGy0FgCeNXsBZLj6jqD
-	Z3SqIK3i4SnH8/shzFunbjSxs40UfbVUQCsNmXYECYUHS0WI0/CiR1IZfIrI7CQs
-	Ko/Xa28QWFwRws6IcJ3/5xznLKHbUTPHWp8Y+9KLKjCuzuCKS1s6ajYbV2uKg23G
-	D4ryj+Uha+mhJuQwniCWzXWXFbsFtzw08OLbbOyOacxy5ZZ9VpI23lJM4fZc9qWO
-	4jzxoQbNEetlEb0XlZU7VXbCMp8P/pg3FRI3wRlG+4skmiAWumRB9TwFTO+DyWnQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dm8j0aj1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Jun 2025 08:41:53 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55N8X9Ds017305;
-	Mon, 23 Jun 2025 08:41:53 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dm8j0ahq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Jun 2025 08:41:53 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55N83Jfo030546;
-	Mon, 23 Jun 2025 08:41:51 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47e7eynee1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Jun 2025 08:41:51 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55N8fobU25952974
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Jun 2025 08:41:50 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 30F4658043;
-	Mon, 23 Jun 2025 08:41:50 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5CD5358059;
-	Mon, 23 Jun 2025 08:41:47 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Jun 2025 08:41:47 +0000 (GMT)
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-Date: Mon, 23 Jun 2025 10:41:33 +0200
-Subject: [PATCH v2 2/2] PCI/ERR: s390/pci: Use pci_uevent_ers() in PCI
- recovery
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bQk4F3WC6z2xHT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jun 2025 19:56:12 +1000 (AEST)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-553b6a349ccso3857835e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jun 2025 02:56:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1750672569; x=1751277369; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LPeDtzputbBG8BYmPS4Q6TNFFvEXgzemPhqRvBeZ31Y=;
+        b=LVZ31njSNZNw8dJUEwmykPuBHHWqbVZkx7Dvw8dMiUJsuVolUBwlsxro7myzbuNR8o
+         ApgsQKGEkcg14FURIE0lvOqAH9JCjrgiJXKEFltVy0WFDs0nGQw7AIDHcNSZ8RAHfLEw
+         JNdT/weAjMkwpii9rL0bYpt/wgKV9ags1oxFUtJQw3L/eVevit+D30Ymj7WdlwX6hVJI
+         IsPlANsM2WSzTY2lSCdmO7pFTWNfl666ZHraxoJifolSYBc2OxD1psZl0KkLZoDoscDl
+         xZOnSfjFFEtyVcqWJ1BwBj809MH6juJm7yE0cBpKI2DwCzGeR534OMH2LXB4Y9YjLB5r
+         0iEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750672569; x=1751277369;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LPeDtzputbBG8BYmPS4Q6TNFFvEXgzemPhqRvBeZ31Y=;
+        b=Q0KGVhXI0F2JmRA36ZVMuOBfUmSuQ7RxNqedQKidvlsOcb3jIg3i0cEaMpruhmoB0d
+         lTEu/tadGgJBeedJOqfXjh1alQmBw1P1DG4MraHMIVjSHSnZv7zWJlXGlaKGfViP1ECL
+         T24LZg9Vy17dlEMkiLv81lmI+WbEUFlMoKN/+JuzJD8lRRNJTqiEI69vFVpZ9y8lInwn
+         Eh7pw0lvtW8xG4BgtSffm0ZaQFA4k69KxQXK6O6qT4Hrd+TkKllzwQGK1k/gaN0Nuyqu
+         2qK5tR+76LFrhym/7mnFv/+d0M3vWDNX3EDjiNocIlo4I3+WSlaRp201+KQF2MoVTD/I
+         M2OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbAZXXoo5eXM6OlR+RQFdLg2qNyyx3Medc4TRXvNiHKqDXpaJuldnEc1fFvTdM+/vhrRzTIS9PLS0Ed3I=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwIlWNWj8LgKKr5/av3QJzTogt7IvWqmKxEJqEyymrHZaw38Eeh
+	Nl0oceAE6bhLW7iyBlNaU48vNsEAybyGmZvEcjUeiezCfs2IYcO0a6Ff6IOOCnRHfDI/VyDuB1X
+	iFSecq2rXdatS7rxfW3ydomLEFG1gdSV5j9NNNGFEnQ==
+X-Gm-Gg: ASbGncssekSal19Xx0+Rd9F4/iYnxC3X9TPtDdz7Msaa5M6MpKH8Hex/y+JBsMjFYQv
+	7VsENV+Rj7vYvqhoRjJNK0aB8YK9iLOzQ0HpM75obVAkAdIMO1rsty2IH7qfVvORbnAgF9PzU5W
+	eyswy7a02J1jKVgimavxAREyvqUE8iwtGvTp2tNF3BF6vCaOn+t3DMCOCOU1bxtrGCAmeualUCz
+	g==
+X-Google-Smtp-Source: AGHT+IGMaE9K7TjoPvRiPlXWOuU8YRsnFELOXhWXUfRnOBAE1HlGniGGtDxisVHNWEEQuzgyMBQMIN/+AwV3/43kfW8=
+X-Received: by 2002:a05:6512:3c88:b0:553:cc61:1724 with SMTP id
+ 2adb3069b0e04-553e3bb51camr3441310e87.24.1750672569238; Mon, 23 Jun 2025
+ 02:56:09 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,123 +79,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250623-add_err_uevents-v2-2-a3a2cf8e711d@linux.ibm.com>
-References: <20250623-add_err_uevents-v2-0-a3a2cf8e711d@linux.ibm.com>
-In-Reply-To: <20250623-add_err_uevents-v2-0-a3a2cf8e711d@linux.ibm.com>
-To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <bhelgaas@google.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        "Oliver O'Halloran" <oohall@gmail.com>, Sinan Kaya <okaya@kernel.org>,
-        Keith Busch <kbusch@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        Niklas Schnelle <schnelle@linux.ibm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2985;
- i=schnelle@linux.ibm.com; h=from:subject:message-id;
- bh=GjU0NEo5GVFERFWe9Jr9MTf1dpYmlEqhadodq5dMl1g=;
- b=owGbwMvMwCX2Wz534YHOJ2GMp9WSGDIihV2ats78/77k71PP2GLxxNvPGn7zKL8WvX5WqEgxu
- yFte4x2RykLgxgXg6yYIsuiLme/dQVTTPcE9XfAzGFlAhnCwMUpABPJt2P4H+HdxXA5T2+HN4No
- 6Cf7+ghniY8rtcoe7Zvm56KktoY3muF/1emWhf3vuDwSlk637uiNfPd1o+5WW/f87zps+V0F364
- xAAA=
-X-Developer-Key: i=schnelle@linux.ibm.com; a=openpgp;
- fpr=9DB000B2D2752030A5F72DDCAFE43F15E8C26090
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA0OCBTYWx0ZWRfX64SdLBpnT7x6 dWDHEqZNqIiduTmxjuAPi9mkd1Gp2aFk8AbH8f9D/XHMxwa0pAyc3RNGBunM94n40cX71Dl97qP n+ul/s97wGaNZBaCb20nYhaANrMTzSW8/WR0jHDyVH9QbEw/J28byCMYo4vbmmnp1FTSqT5UXmS
- 5pWbGRUJTj4RTBAPU2HaCTI2RDU9os9FErcCUhFgDAUY+268kRgES1d0h+44N/u+IQr/ePo/Kul cusvVYF3GX8nWeHwwzkEYAoJLWlZhQQszWk13XpuRZYEpEAft663t5FFhxcgucx4gUy5yBfpzhn PVFQtyp6619xegiuV6q7AJ6DaFxRCm8dyz646qum38QDrZcrV9s5QbVvb2u3W5T0BKgWwE+PMxQ
- KN/UwKCncDNIp7S2Y6th3MPMRKrDYDri0VnRaBiWA1DukPVCkci2KSdQyCFeAMvoJ+HVd1lw
-X-Proofpoint-GUID: q73tPqesKaxsDlZAmW-T1sTAlfLuG3yw
-X-Proofpoint-ORIG-GUID: 3v3CGwqtc-lm4njBAvmcHlflsrG7XDGs
-X-Authority-Analysis: v=2.4 cv=combk04i c=1 sm=1 tr=0 ts=68591351 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=EcUHtpB8bGtrbQ9pWRIA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-23_02,2025-06-20_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 spamscore=0 adultscore=0 mlxlogscore=822 clxscore=1015
- impostorscore=0 suspectscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506230048
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250610-gpiochip-set-rv-soc-v1-0-1a0c36c9deed@linaro.org>
+ <CAMRc=McVV=VBw0DRiz-4tTjh7ZtRLWg=N_LQ2-7O1sKyW30rxw@mail.gmail.com> <c6eece57-8767-4435-beda-c9f399e3fa80@csgroup.eu>
+In-Reply-To: <c6eece57-8767-4435-beda-c9f399e3fa80@csgroup.eu>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 23 Jun 2025 11:55:58 +0200
+X-Gm-Features: AX0GCFuwq80YRRas_rerTXxamhsQCeIBZVM5a2xh0c93mD5kLuLbXD7aaKlDuiI
+Message-ID: <CAMRc=MdYuk_O3P1QtepvF-6m01jn3xpDP4YxttQSp1-J-J2GvA@mail.gmail.com>
+Subject: Re: [PATCH 0/2] soc: use new GPIO line value setter callbacks
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Issue uevents during PCI recovery using pci_uevent_ers() as done by EEH
-and AER PCIe recovery routines.
+On Mon, Jun 23, 2025 at 11:54=E2=80=AFAM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> Hi,
+>
+>
+> Le 23/06/2025 =C3=A0 09:33, Bartosz Golaszewski a =C3=A9crit :
+> > On Tue, Jun 10, 2025 at 2:38=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev=
+.pl> wrote:
+> >>
+> >> Commit 98ce1eb1fd87e ("gpiolib: introduce gpio_chip setters that retur=
+n
+> >> values") added new line setter callbacks to struct gpio_chip. They all=
+ow
+> >> to indicate failures to callers. We're in the process of converting al=
+l
+> >> GPIO controllers to using them before removing the old ones. This seri=
+es
+> >> converts all GPIO chips implemented under drivers/soc/.
+> >>
+> >> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >> ---
+> >> Bartosz Golaszewski (2):
+> >>        soc: fsl: qe: use new GPIO line value setter callbacks
+> >>        soc: renesas: pwc-rzv2m: use new GPIO line value setter callbac=
+ks
+> >>
+> >>   drivers/soc/fsl/qe/gpio.c       | 6 ++++--
+> >>   drivers/soc/renesas/pwc-rzv2m.c | 8 +++++---
+> >>   2 files changed, 9 insertions(+), 5 deletions(-)
+> >> ---
+> >> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+> >> change-id: 20250523-gpiochip-set-rv-soc-14e1d9414f70
+> >>
+> >> Best regards,
+> >> --
+> >> Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >>
+> >
+> > I see Geert queued patch 2/2, who would take patch 1/2?
+>
+>
+> It is in my pipe for v6.17 but if someone else wants to take it I can
+> Ack it instead.
+>
+> Christophe
 
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
----
- arch/s390/pci/pci_event.c | 3 +++
- drivers/pci/pci-driver.c  | 2 +-
- include/linux/pci.h       | 2 +-
- 3 files changed, 5 insertions(+), 2 deletions(-)
+No, that's alright, I just didn't get any notification nor is it in
+linux-next yet.
 
-diff --git a/arch/s390/pci/pci_event.c b/arch/s390/pci/pci_event.c
-index 2fbee3887d13aa28e0621aa7b6d673f4517b5461..cdbe603ec2f59d95ff92210742d39d7c20f26186 100644
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -91,6 +91,7 @@ static pci_ers_result_t zpci_event_notify_error_detected(struct pci_dev *pdev,
- 	pci_ers_result_t ers_res = PCI_ERS_RESULT_DISCONNECT;
- 
- 	ers_res = driver->err_handler->error_detected(pdev,  pdev->error_state);
-+	pci_uevent_ers(pdev, ers_res);
- 	if (ers_result_indicates_abort(ers_res))
- 		pr_info("%s: Automatic recovery failed after initial reporting\n", pci_name(pdev));
- 	else if (ers_res == PCI_ERS_RESULT_NEED_RESET)
-@@ -226,6 +227,7 @@ static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- 		ers_res = zpci_event_do_reset(pdev, driver);
- 
- 	if (ers_res != PCI_ERS_RESULT_RECOVERED) {
-+		pci_uevent_ers(pdev, PCI_ERS_RESULT_DISCONNECT);
- 		pr_err("%s: Automatic recovery failed; operator intervention is required\n",
- 		       pci_name(pdev));
- 		status_str = "failed (driver can't recover)";
-@@ -235,6 +237,7 @@ static pci_ers_result_t zpci_event_attempt_error_recovery(struct pci_dev *pdev)
- 	pr_info("%s: The device is ready to resume operations\n", pci_name(pdev));
- 	if (driver->err_handler->resume)
- 		driver->err_handler->resume(pdev);
-+	pci_uevent_ers(pdev, PCI_ERS_RESULT_RECOVERED);
- out_unlock:
- 	pci_dev_unlock(pdev);
- 	zpci_report_status(zdev, "recovery", status_str);
-diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
-index 94ba6938b7c6271b557cc7f17ffb89631d83827e..2f3037050fd011108ef93e39d2d78a5c7e22fd05 100644
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -1578,7 +1578,7 @@ static int pci_uevent(const struct device *dev, struct kobj_uevent_env *env)
- 	return 0;
- }
- 
--#if defined(CONFIG_PCIEAER) || defined(CONFIG_EEH)
-+#if defined(CONFIG_PCIEAER) || defined(CONFIG_EEH) || defined(CONFIG_S390)
- /**
-  * pci_uevent_ers - emit a uevent during recovery path of PCI device
-  * @pdev: PCI device undergoing error recovery
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 05e68f35f39238f8b9ce08df97b384d1c1e89bbe..bcc412a21d93a6dcc566f011258ed39d80d896c2 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -2737,7 +2737,7 @@ static inline bool pci_is_thunderbolt_attached(struct pci_dev *pdev)
- 	return false;
- }
- 
--#if defined(CONFIG_PCIEPORTBUS) || defined(CONFIG_EEH)
-+#if defined(CONFIG_PCIEPORTBUS) || defined(CONFIG_EEH) || defined(CONFIG_S390)
- void pci_uevent_ers(struct pci_dev *pdev, enum  pci_ers_result err_type);
- #endif
- 
-
--- 
-2.48.1
-
+Bart
 
