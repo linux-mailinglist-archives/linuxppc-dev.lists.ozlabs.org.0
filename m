@@ -1,96 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-9638-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9639-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D848CAE4651
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jun 2025 16:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 374DAAE4657
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Jun 2025 16:18:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bQqtG5R9Tz2yF0;
-	Tue, 24 Jun 2025 00:17:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bQqtv0CZNz2ymc;
+	Tue, 24 Jun 2025 00:18:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750688278;
-	cv=none; b=nLVZJuZMOgey9KORqi986ePhYqb6SJkpG0SFBOC3Dk5/RSZjhuWgIDYwaW/ripHWM0MgFT6u7vEMM1oWSF7iuu9pvRdBhfIk8lRG7jMSUolVw5t5+pMggI/Hayx0eDs9tuuz9WXAWt8TwSMYpqD/Dh0TJuyN4yTC7N1EvuSc7hmlv74Vjco3tqed6JzD0yvs1e2AHNZ3laodTZZCIRc6QPzYTBCfvhSeL44xHKFO+kNIEshFzAiD7gZO8B/27EjgDYclZqJ/AgceCcAz5aF+oxjvckMKKj11rMecpaSk3NF8kTj+4+IHqXVoR7Ydm2dSv4HPAu/Q0PQgtsM4OmQ5hg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750688310;
+	cv=none; b=m4ljrcTSsy7eq84r4U+KJQOJiv8YiOtNA0kQdw3kPTXxWSbA/KNogrXQPq2iopG3PLGXOQW+OCLa2loHDDFlVBnr+EE1NSP7Fcpa+ERXucTqvMH9tItlxvtAJfZOyzNQ3KFzJIIQZts3wTGd/0bsbp108nxaN+m699DebkFSLPeRxP3p+UJJN1FmkOi0qa1ilGn4CUEKzRGgQcoI4UvO9j5ePaCbC0T/LLcvLPVQJjbm+x0VlLlPUdCSn/MWmk7MXJv4pSpkiEE1fKLIxTwknTcQnYPL/NabfXRmTeIT8s4WzGTmlvfKK7CUfcB7TwCbyNxDD0PboDsCr9Nfx/JbNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750688278; c=relaxed/relaxed;
-	bh=AT6z0J+Z7BRb7a4a/ZOwq8sPn4rNW6on998iWVe3KsU=;
+	t=1750688310; c=relaxed/relaxed;
+	bh=eTcutzrxaAuUOyNoy2cKMup7mulTM3ZpC6LFf2Ay4G8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hRt6sw++TaIeW9bbH+ybg85/H8myGaMBuv88DXXQNtP99nLPvTNySyzmRiw8FBj7478Rur9vKF63MSAScpgvgH6Rb56WF0a/K00AUvMl7dYwp+vfMvYnPZsvDKRk8QLrpVZYuSrUeH+LAOkewXaHqD6K61uo8ECOd031LcEKzxLYQX9mXwyvb+xBoeRHpLBSDIow3fHvTT8NGIppxAFQm9s1HvidZCGvRI+gQvQJCCTFQZm3cJA+/s0BJ2iCZP/WBfrcb8NS+ZNczL8oa8Nq3rStjeBWgw2aiUMsGEq1TKY1PNalslvwqf3yGUKChD6zRyAv/oWwdnL5a0w7iBpWNg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B+daUjLF; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EkXjMf7N; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=mLRXQRNKsbwmhnIV+c4nt7z0xkcvmssNGuY1GMoXrkc9MiEx2o/MVEL+0+jdA972QvyBBElYYJKDNEsL8nec5VddmCfcu0zPBIu4L080TyO9B7JHe1B1CKL5/u7nih2gsIGDanp/FdC1WxFr5Br0Mzxa5+k7Paz5lDd18LWfnSTbwgseBxjS+GirLByBFtjpOqkKbKB2FWQ6xEee67/aRkiV+aMy96Y0EFJ/WAx7vdEvHjlw9O6VS0B7bOf9/XIO0WFg+QU9bGmsxV+KBQ1fzfxqS2+c+jxsDlUPkeeXplma03mG3tjJGbNgJXuIZH6lKSntJxVv2ufJ4CjOg1EbnA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ktix/lXJ; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gn0zpM9w; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=B+daUjLF;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EkXjMf7N;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ktix/lXJ;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gn0zpM9w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bQqtF6b0Yz2xHZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jun 2025 00:17:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bQqtt1JRQz2yhX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jun 2025 00:18:29 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750688274;
+	s=mimecast20190719; t=1750688307;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AT6z0J+Z7BRb7a4a/ZOwq8sPn4rNW6on998iWVe3KsU=;
-	b=B+daUjLFSsYwq7pcPFwve5cCcxZN9NAXykXzE95AtEaEy41NOAPFvedPQEEcy6rgsCQAKE
-	OgZpVOMKpOelMcMiSOApukUZG4GeIAoRUuTdN9k2zGI6vkyASLPhrinwfuF0r0OIIi6Rzr
-	WSM5y/ELNb/l4SgHOyFmjCN+c5+zgp4=
+	bh=eTcutzrxaAuUOyNoy2cKMup7mulTM3ZpC6LFf2Ay4G8=;
+	b=Ktix/lXJvBcuvWcjLf1opvL76fJkh64DJ2RQsMACvqUa9rdwovX7v88NtM3jitnVENYvhI
+	NlNGgqfpBpHRJ1nlSP39k4sj9+6fSDR3eydqzR3KwgI6uSjbbFYnJYHzbnissbcnZWzmhk
+	+Pn8hNa2VfNe1aSl5/ADWJlSAFyMYmc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750688275;
+	s=mimecast20190719; t=1750688308;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AT6z0J+Z7BRb7a4a/ZOwq8sPn4rNW6on998iWVe3KsU=;
-	b=EkXjMf7NPRlkj77t6OSkUXkXD/Lm3nU3AZ6UOINfdvMzTVgDPoXL9aj75xPdrpJ+4py09A
-	rqeb8pr4DFz/h31tR+9DiNFyNEZKXiowItBHPkRaEZqfsGamIZjE4cQA8nUxxFnBGD9b2Y
-	TNFrDvDZSWNa0waT3Gk1rtxm9Fte8A4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=eTcutzrxaAuUOyNoy2cKMup7mulTM3ZpC6LFf2Ay4G8=;
+	b=gn0zpM9w+hsrYIPR8UGJynqzNnqF6PyZX2dTk5I3Ytn8zJ5+y2bYCZhjfdY9B1tctOt6Dr
+	9qa8zjBiiMt7sFRrH6b+XY/tCimC2IGZpmmyKXKnu8wM8d2tuYy9f695bM1EribJgiZWIT
+	WAPp+nCJWJuFwaNIr34Ux//XHjTPBbg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45-_4PyrFieP_CgJx3vgADOvw-1; Mon, 23 Jun 2025 10:17:52 -0400
-X-MC-Unique: _4PyrFieP_CgJx3vgADOvw-1
-X-Mimecast-MFC-AGG-ID: _4PyrFieP_CgJx3vgADOvw_1750688271
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a503f28b09so2138305f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jun 2025 07:17:52 -0700 (PDT)
+ us-mta-34-4RZfaN92PhWI9Ta9VdyijA-1; Mon, 23 Jun 2025 10:18:25 -0400
+X-MC-Unique: 4RZfaN92PhWI9Ta9VdyijA-1
+X-Mimecast-MFC-AGG-ID: 4RZfaN92PhWI9Ta9VdyijA_1750688305
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-453018b4ddeso27168235e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Jun 2025 07:18:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750688271; x=1751293071;
+        d=1e100.net; s=20230601; t=1750688305; x=1751293105;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=AT6z0J+Z7BRb7a4a/ZOwq8sPn4rNW6on998iWVe3KsU=;
-        b=hNBrqs7QCVduhQoK8I/buEoiVQ4DJxku2aRCEqQYHlnptPlKYGKnwN64ERN6Zeqf3U
-         R+rcDXYWa4IWQ4fwJnWilg7+FxND6CYZZy9C0DcwDqlicOWYIM+ihTnRsQ/7eqUvMIBQ
-         ozFw5WqnDhcI6WcNQVylzxNvn89D0UAOIQ4ZBHapLf2jBjbGtBxXvEztan4v5FJBU8e+
-         G3Qj6HL9+M3NdlRStkV+/tEQKpgbAJQDo+//HZcErZJ1dzVlU/W/+f4dN0OHwCKYv2fZ
-         TQnLUs4kUQ/ytbQ2DqMw1SIJzsue2ULs+K+UTUFD7CQFDe38oQ7JR8wqclCZTM3OW4fT
-         EeKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUn1eQrOT2DbDBHOrwOtBLtCbtAUCPYdLdzrD9RUMAJbdgPJ7TsN2JgBPV1ITwlnLnnJ0nGrC0Cq8qrHP4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzZSqDzr0C5eDt35LFElbTeq3oS9/jErPzQTjyLn+HJ/3r5xnwg
-	E6RxhQobLNLZx9J0i4Yd/8u7NCWtW5RNktF9q2+wLHnFAk+CrakB7W+gwAUtVNsoWd9FK6pGyR4
-	n/PVoNOLmPZdmRwqvMQ/TT9DvkMdEt8bWT3mJGcma/U0oYnB4Foz176ic+xwlsMDYmFw=
-X-Gm-Gg: ASbGncvrGFQAfbuDkOk2klzuEOhsoGvp/0h0qIxRoRo2/1A/a3pTBaycJo4Gu6tZeBS
-	FIpapICpByWdLCWADv2zIgbTXZG/ps12CH4KRXrKkRU3n7p7v130/NQQdmQX9tMCSijBeL+yZYW
-	r5sDUcRWnimxcKFYAUcKe2gS95hCjLbLh2wX5L9kng5Au6RUZBc9Swh1E8OPJvvNVSZFpCcxFkQ
-	1L/TvBxcqAMbOh9rWZ8pO4wwnF+HuWXuRfo1SQJjYJsZP9vlMZO0CmUNfWWefjlZSHoQPxuylXh
-	Qfvbq2Q7+fuw7g6A0bvM3RVZn2YLINtvYpL7hRcJrgKpH7zPcBsbVDH+8mjEiXKWjn9X9jQ6zNf
-	3LFM29XXsZVcVJrGBjPjRZqvREcSTaK73xNAEw/ui+bokInqMbA==
-X-Received: by 2002:a05:6000:2913:b0:3a4:d685:3de7 with SMTP id ffacd0b85a97d-3a6d2799e03mr8524093f8f.8.1750688271012;
-        Mon, 23 Jun 2025 07:17:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGVEYbdHympic4C845xjbGIaDAfJ4O6TUpDQzaRepXXtAy+1Ld3k5fQBQt9u4TU2HYvxvW5QQ==
-X-Received: by 2002:a05:6000:2913:b0:3a4:d685:3de7 with SMTP id ffacd0b85a97d-3a6d2799e03mr8524018f8f.8.1750688270392;
-        Mon, 23 Jun 2025 07:17:50 -0700 (PDT)
+        bh=eTcutzrxaAuUOyNoy2cKMup7mulTM3ZpC6LFf2Ay4G8=;
+        b=N6KzL/FQOukYoIdy1RadcXN7A0ys09AVUG3ZiDtvWG/BbvRZHgh9oYB+pPaQm8+R1N
+         v/FBmfXqR5p36SyNFI4Yq750pOLEeFqa0WlE9GgrMRBzmPbTyLZ9GpSw5ixSmaJyeOrN
+         VRvd6xEl9r/ZIpEADPcqxOuDeuJnjQ3cr1+XDZLnX9kY2MSsOv/gbStnuFMKx8AjH2kT
+         c4o4oMGtMbg4ArSepKE4sGZ9nv6CoVzMM5JXHgvay4Z2WnLOmweU/ybgZo06xU4e4z94
+         YXCIW2llXeEzrmHU5Bnm/VoJyQrH4sEYyp+UVgwH9UbI2qwhLnTk8Yi7L2EL8JHCQeq9
+         l0DA==
+X-Forwarded-Encrypted: i=1; AJvYcCWzJmbUOAk6XCGBgsA2rfK2T6uGVUOIpaOdj4J6/6Gn/olRn/fjNYZ5enFqL1Kk5TVlbwir86bvHj32j4c=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwJ98XU3xcqgXtUNmURVnN8ZjLIjI+X8KoVBcx6yOdgMFlj1ZLk
+	FtpPUFp5JR5z4N166vbzJ8ctLO+uAOAafapO6Xb+YVkdDBS8SZgVfWHdLekdU1o5ByiQc3QupHr
+	tz15GjTAwDEOApOTii4ZVv4GPP3XVEwl7tX+PLi3kCxCubJWHF1z6ApY7NkyzkcBAaro=
+X-Gm-Gg: ASbGnctg80ujyrt6H0q0r56Lvo9Ou3i8rBOjY6NnvEQkQgVyoNY7MFj7ZqsjWetgvkY
+	/PxdJCPWqInuj+yE+jDJCqW3IkmbdsyemOp5J/UgAT8ChWFU/dPhmFblm4cMntC7X5NXZkO+uZg
+	7HdmwdfzrC2YaNA3MfHxBNCD0CYoMV3lh8jTdAp5dy65kFKgxNkwisCn1ioGx/IdQuPagYB6W1D
+	RyHiW5dYn+3q7kBK4jsEozBbRgK67g7D/yUEFzJrD/tKjViB8dR9xfxJWmX+ffXTFLL2u3NwQ6f
+	cYN8Tny6jPM2t1zjCl4HNviQM6af/F9QEmkfK0PEjmv53swZP6PzyUeId3Mpho9v6fWkq1a4CXP
+	IpSi0Btez0BUklyGOnaAehKy49Kwvm/mIVGHP95Gb6a8uodwxCg==
+X-Received: by 2002:a05:600c:c3db:b0:450:d3b9:a5fc with SMTP id 5b1f17b1804b1-453655c2b88mr64884175e9.27.1750688304703;
+        Mon, 23 Jun 2025 07:18:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG3GfvVpO2Rh0X7lgF/+7vi5AEgx9LbhZSf69sunaiR0l7CJHPVzAX4/2QUR1+R4uUN63whfg==
+X-Received: by 2002:a05:600c:c3db:b0:450:d3b9:a5fc with SMTP id 5b1f17b1804b1-453655c2b88mr64883595e9.27.1750688304244;
+        Mon, 23 Jun 2025 07:18:24 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:fd00:8e13:e3b5:90c8:1159? (p200300d82f4efd008e13e3b590c81159.dip0.t-ipconnect.de. [2003:d8:2f4e:fd00:8e13:e3b5:90c8:1159])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4535eac8bb6sm147000545e9.25.2025.06.23.07.17.46
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4535e97b501sm144130925e9.2.2025.06.23.07.18.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jun 2025 07:17:49 -0700 (PDT)
-Message-ID: <18ef9a51-c029-40a8-b9e4-60c46c83ccef@redhat.com>
-Date: Mon, 23 Jun 2025 16:17:46 +0200
+        Mon, 23 Jun 2025 07:18:23 -0700 (PDT)
+Message-ID: <f34f65ee-f6cd-41b7-b5f6-3fe4cd13a687@redhat.com>
+Date: Mon, 23 Jun 2025 16:18:20 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,8 +105,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
- consistently
+Subject: Re: [PATCH 3/3] mm: update architecture and driver code to use
+ vm_flags_t
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Russell King <linux@armlinux.org.uk>,
@@ -145,7 +145,7 @@ Cc: Russell King <linux@armlinux.org.uk>,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, nvdimm@lists.linux.dev,
  linux-trace-kernel@vger.kernel.org
 References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
- <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
+ <b6eb1894abc5555ece80bb08af5c022ef780c8bc.1750274467.git.lorenzo.stoakes@oracle.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -192,9 +192,9 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <b6eb1894abc5555ece80bb08af5c022ef780c8bc.1750274467.git.lorenzo.stoakes@oracle.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GlDSzCQiFBwhI-rZTTVrDZQmXKSpliBFGpBi1Z6OSow_1750688271
+X-Mimecast-MFC-PROC-ID: 2HzBUSD9CUi86YD9QqLmpvPuv6VqbIlw8yo7iijsEVk_1750688305
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -206,29 +206,14 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 18.06.25 21:42, Lorenzo Stoakes wrote:
-> The core kernel code is currently very inconsistent in its use of
-> vm_flags_t vs. unsigned long. This prevents us from changing the type of
-> vm_flags_t in the future and is simply not correct, so correct this.
-> 
-> While this results in rather a lot of churn, it is a critical pre-requisite
-> for a future planned change to VMA flag type.
-> 
-> Additionally, update VMA userland tests to account for the changes.
-> 
-> To make review easier and to break things into smaller parts, driver and
-> architecture-specific changes is left for a subsequent commit.
-> 
-> The code has been adjusted to cascade the changes across all calling code
-> as far as is needed.
-> 
-> We will adjust architecture-specific and driver code in a subsequent patch.
+> In future we intend to change the vm_flags_t type, so it isn't correct for
+> architecture and driver code to assume it is unsigned long. Correct this
+> assumption across the board.
 > 
 > Overall, this patch does not introduce any functional change.
 > 
 > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > ---
-
-Probably some cases might sneak in in the meantime :)
 
 Acked-by: David Hildenbrand <david@redhat.com>
 
