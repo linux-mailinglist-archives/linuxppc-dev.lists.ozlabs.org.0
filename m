@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-9669-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9672-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F11AE5C0A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jun 2025 07:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEAC1AE5D8D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jun 2025 09:20:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bRDZR2cFzz2xRq;
-	Tue, 24 Jun 2025 15:50:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bRGZG3xDTz2xk5;
+	Tue, 24 Jun 2025 17:20:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750744239;
-	cv=none; b=KJaXvmitCN99ZeLlZ09Zs8Itp9bsINKxNNg+J3zQcu6fgSIsEHKAAgEQkLSYgc7BIto9WHkkXeFCC7lmrQxZlUqQA/SlK0ZAd7fFUuudwLqv6Fso50J//Yc2SOOCBYGpRZBvWwnHdIS9gKVCEcRMVi3CYqB3YMY2lpbcpJl31tja/ntILdqNhI06RSs83sp3ex3pYWyBdkFyCM6WPXEyl7K3MxLv8NYPTx4ejSfJ/zNUZkXiF4Ez7T5ZlGaD6dVICfKCsiBqeff8gOOKboYKr6de0u+YA5pLedpXZ6oiSErhOZ4H4BffFZHUoQHouDQybF1T+e8lVaZHb8gEfWOBKg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750749638;
+	cv=none; b=Oeh/bnJy40ZBa2h92jKod05yvaxx1iSp0aZlVgzimwdGW3W/aLd6ZFeFbTnSdibLNpIKU7kl4ZVsEjWm89vHZCYmaQlgAeEx6Wc4ifs6DWaw3C4RJMaVqh91YxHZVm/hwLxg2EEvoACH3dRMNFLWoRsZVN0w0RxG53yhC0J+853ix79+tyF8GcRF0vHGN5oMPZRUID+UTQXQ1QKvR43hkgGAhKihRsvap7dz75GvTxP4KiWylFiR3L11Yr8tY22POaVY0MDsoutm/T1Ja29raWrd4CBhobj7e/nCtBNF8ATWyHNO6OCMymtIrUFDdwyGOVySJAMQrTH6hzJ4TCcRmw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750744239; c=relaxed/relaxed;
-	bh=pZOxHzM6HNI3sFVl3hxIkbPLMYo5eqWVRMZxRVeJUkQ=;
+	t=1750749638; c=relaxed/relaxed;
+	bh=2Vxy75RJgMKu3B8tS63p7PxkIPm8NMgd8FlTRr9EKfM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=osnzEVklNg32C4bFYrStMvtx9PFCtPLx0zNVxcGIvjLQJdVEAcQ652NlnzhyDSfKpzhlAx+WgFvSy3AWXGeceazJoFb0SWdxlx8t1aNAVP9GpZ26RCANkNZl4rt2BKdvOk+pTXUwq8rJpGpBDXAXlwKdR7MysMdrNWxEBn8IpqZxKGmy5RZZkvBqvgFPHKYIhLgfwZwJ7Xkr/C3AQj/N9R1jOdJXurDRRH9KHooqDS8hjmzYRMsK8B7762br57F459pJGAZ5GYtcApN48VooXGtxG2x5TpsZxaiVNTKsNYFn8+KmJNPDNf4gfBAJXQM5jpEd3vjvku+CNR1iK12HPw==
+	 In-Reply-To:Content-Type; b=TCbFzhOIC7xBIviN5cOl5Dw9D+jWA7eR5OQsqlFbo2c+fQueH+Z7Ltsgog0UBGlJa+eLSkcXWfWMyTUI1kTJHyzdFRK1TiFGRNET9yIVzF265flHWMQMOM2sllZOq8z4U4rKbSGKtb/1VTLR67hHx/kDbWdIxIj18UVEsjtp31FfHzQ7jMkwWCcmd8HuAmwD7DAHFP9yOR1ASR8PPE9QI0Kpvsv/SZKw3SgHbYeOzrVhzVPsAKqAB7pDqAxcOcp58N872Muyl4wn6Qyp3JEpaFBLcIsehiyqTH9d72VbQ9Q+SpTllHdur2Ez6YJ2iaGygsBezZmWQwBx0+Vi2iiK/g==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bRDZQ3q2nz2xQ4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jun 2025 15:50:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bRGZF4BFJz2xHT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jun 2025 17:20:36 +1000 (AEST)
 Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bRDD93jvMz9sRp;
-	Tue, 24 Jun 2025 07:34:49 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4bRDXc6lZ6z9sSD;
+	Tue, 24 Jun 2025 07:49:04 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
 	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id EEbxvPxf50Ga; Tue, 24 Jun 2025 07:34:49 +0200 (CEST)
+	with ESMTP id 6SIPJQNC9zCD; Tue, 24 Jun 2025 07:49:04 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bRDD92K1Tz9sN6;
-	Tue, 24 Jun 2025 07:34:49 +0200 (CEST)
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4bRDXc5TpXz9sYQ;
+	Tue, 24 Jun 2025 07:49:04 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 47C598B768;
-	Tue, 24 Jun 2025 07:34:49 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C7138B768;
+	Tue, 24 Jun 2025 07:49:04 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id qwbFcTV72ImU; Tue, 24 Jun 2025 07:34:49 +0200 (CEST)
+	with ESMTP id 7ZgexA602m3K; Tue, 24 Jun 2025 07:49:04 +0200 (CEST)
 Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 512018B767;
-	Tue, 24 Jun 2025 07:34:48 +0200 (CEST)
-Message-ID: <ce2c8557-cda6-4211-9873-9afd993c0580@csgroup.eu>
-Date: Tue, 24 Jun 2025 07:34:48 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 79C188B767;
+	Tue, 24 Jun 2025 07:49:03 +0200 (CEST)
+Message-ID: <2f569008-dd66-4bb6-bf5e-f2317bb95e10@csgroup.eu>
+Date: Tue, 24 Jun 2025 07:49:03 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,8 +58,9 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] uaccess: Add masked_user_{read/write}_access_begin
-To: David Laight <david.laight.linux@gmail.com>
+Subject: Re: [PATCH 2/5] uaccess: Add speculation barrier to
+ copy_from_user_iter()
+To: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
  <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -69,16 +70,16 @@ Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
  Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>,
  Davidlohr Bueso <dave@stgolabs.net>, Andre Almeida <andrealmeid@igalia.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+ David Laight <david.laight.linux@gmail.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org
 References: <cover.1750585239.git.christophe.leroy@csgroup.eu>
- <6fddae0cf0da15a6521bb847b63324b7a2a067b1.1750585239.git.christophe.leroy@csgroup.eu>
- <20250622173554.7f016f96@pumpkin>
+ <f4b2a32853b5daba7aeac9e9b96ec1ab88981589.1750585239.git.christophe.leroy@csgroup.eu>
+ <CAHk-=wj4P6p1kBVW7aJbWAOGJZkB7fXFmwaXLieBRhjmvnWgvQ@mail.gmail.com>
 Content-Language: fr-FR
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250622173554.7f016f96@pumpkin>
+In-Reply-To: <CAHk-=wj4P6p1kBVW7aJbWAOGJZkB7fXFmwaXLieBRhjmvnWgvQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
@@ -87,93 +88,45 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 
-Le 22/06/2025 à 18:35, David Laight a écrit :
-> On Sun, 22 Jun 2025 11:52:39 +0200
-> Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
-> 
->> Allthough masked_user_access_begin() seems to only be used when reading
->> data from user at the moment, introduce masked_user_read_access_begin()
->> and masked_user_write_access_begin() in order to match
->> user_read_access_begin() and user_write_access_begin().
+Le 22/06/2025 à 18:57, Linus Torvalds a écrit :
+> On Sun, 22 Jun 2025 at 02:52, Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
 >>
->> Have them default to masked_user_access_begin() when they are
->> not defined.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->>   fs/select.c             | 2 +-
->>   include/linux/uaccess.h | 8 ++++++++
->>   kernel/futex/futex.h    | 4 ++--
->>   lib/strncpy_from_user.c | 2 +-
->>   lib/strnlen_user.c      | 2 +-
->>   5 files changed, 13 insertions(+), 5 deletions(-)
->>
->> diff --git a/fs/select.c b/fs/select.c
->> index 9fb650d03d52..d8547bedf5eb 100644
->> --- a/fs/select.c
->> +++ b/fs/select.c
->> @@ -777,7 +777,7 @@ static inline int get_sigset_argpack(struct sigset_argpack *to,
->>   	// the path is hot enough for overhead of copy_from_user() to matter
->>   	if (from) {
->>   		if (can_do_masked_user_access())
->> -			from = masked_user_access_begin(from);
->> +			from = masked_user_read_access_begin(from);
->>   		else if (!user_read_access_begin(from, sizeof(*from)))
->>   			return -EFAULT;
->>   		unsafe_get_user(to->p, &from->p, Efault);
->> diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
->> index 7c06f4795670..682a0cd2fe51 100644
->> --- a/include/linux/uaccess.h
->> +++ b/include/linux/uaccess.h
->> @@ -41,6 +41,14 @@
+>> The results of "access_ok()" can be mis-speculated.
 > 
->>   #ifdef masked_user_access_begin
->>    #define can_do_masked_user_access() 1
->>   #else
->>    #define can_do_masked_user_access() 0
->>    #define masked_user_access_begin(src) NULL
->>    #define mask_user_address(src) (src)
->>   #endif
->>   
->> +#ifndef masked_user_write_access_begin
->> +#define masked_user_write_access_begin masked_user_access_begin
->> +#endif
->> +#ifndef masked_user_read_access_begin
->> +#define masked_user_read_access_begin masked_user_access_begin
->> +#endif
-> 
-> I think that needs merging with the bit above.
-> Perhaps generating something like:
-> 
-> #ifdef masked_user_access_begin
-> #define masked_user_read_access_begin masked_user_access_begin
-> #define masked_user_write_access_begin masked_user_access_begin
-> #endif
-> 
-> #ifdef masked_user_read_access_begin
->    #define can_do_masked_user_access() 1
-> #else
->    #define can_do_masked_user_access() 0
->    #define masked_user_read_access_begin(src) NULL
->    #define masked_user_write_access_begin(src) NULL
->    #define mask_user_address(src) (src)
-> #endif
-> 
-> Otherwise you'll have to #define masked_user_access_begin even though
-> it is never used.
+> Hmm. This code is critical. I think it should be converted to use that
+> masked address thing if we have to add it here.
 
-I'm not sure I understand what you mean.
-
-masked_user_access_begin() is used, for instance in 
-arch/x86/include/asm/futex.h so it will remain.
-
-masked_user_access_begin() is the analogy of user_access_begin(), it 
-starts a read-write user access and is worth it.
+Ok, I'll add it.
 
 > 
-> Two more patches could change x86-64 to define both and then remove
-> the 'then unused' first check - but that has to be for later.
+> And at some point this access_ok() didn't even exist, because we check
+> the addresses at iter creation time. So this one might be a "belt and
+> suspenders" check, rather than something critical.
 > 
+> (Although I also suspect that when we added ITER_UBUF we might have
+> created cases where those user addresses aren't checked at iter
+> creation time any more).
+> 
+
+Let's take the follow path as an exemple:
+
+snd_pcm_ioctl(SNDRV_PCM_IOCTL_WRITEI_FRAMES)
+   snd_pcm_common_ioctl()
+     snd_pcm_xferi_frames_ioctl()
+       snd_pcm_lib_write()
+         __snd_pcm_lib_xfer()
+           default_write_copy()
+             copy_from_iter()
+               _copy_from_iter()
+                 __copy_from_iter()
+                   iterate_and_advance()
+                     iterate_and_advance2()
+                       iterate_iovec()
+                         copy_from_user_iter()
+
+As far as I can see, none of those functions check the accessibility of 
+the iovec. Am I missing something ?
 
 Christophe
 
