@@ -1,79 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-9679-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9680-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A2BAE6AAB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jun 2025 17:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 789DFAE6C7A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Jun 2025 18:34:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bRTGH2Yqtz2xlK;
-	Wed, 25 Jun 2025 01:22:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bRVsc3J6bz2xlK;
+	Wed, 25 Jun 2025 02:34:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::530"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750778551;
-	cv=none; b=dis6LD2xZjZSBEmLYcfU7hN8/EyGM2mci1a48XBfjxhNiwdDTVfDdHzwDSexKOy3UAKufsWSh0NlIpUTntztSgXi0EM3kJIG0IYwzsONahzyGs34njCk8rOVCxgmpMnuP+eKmux5+AG5HSKBvwZ9h1PYstUbb18ZlEc5lslaKaFN+/blCLiexd58mx4bu4I6AEgY5K3PGqquidMym/Kzy0daI3SPYs/EkpwPyEA7qKLmmCWhiSG/7O0t64U2x15d1Jeo+JW/FY1zMnoC849DhIbBQZNrsK4Ceu3X+UF30GgEGNjy7XRup2BGIF55m70onPvqJ/3+weud0IHXG2D0JA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=23.155.224.40
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750782884;
+	cv=none; b=XeAIfOy++WZRroGjqguOEEptUC21ddKDHwZ1ZkRLVayI2Xml8Lhb62zzzcUnLCt+3zB74BOYX1YM4g7TT36xLnK0CFHVJe3K+mKrlDj03zzwgaCFmyttlMzTDRuh9w4hay89QhXE3wHJoAwOfgJTeU8qMUut0jbflxDkapSC07LZ0aQYqx5Z2iKrd7wphhePb+46IdoTU5bIKgrS4CfIjfN9MrmzEVxjLMU054czakLGy9+OQRyyxL6zrpJ1Qr0LF0F3M1YYQwOqvicDHuOWJCCJgkmWRYcY1Pw6PU+QMPvCFYqSX6iSDx9tIDMbhPjDDzZfg0gFtxsLNPdluK9k2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750778551; c=relaxed/relaxed;
-	bh=eLkoFblRVcI4qlzicS3evY0eDoBrk4ZSgrPnvsJhZ+Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R3rYEfS3IxqUyOJvwZKq00KWLAYFe5lxg04ohAkGlBB0V/5ffYcmMeZbrTqAIkXSrwcoUlFI82s017I6tmh6UifG2Pt2eFlB0I78XWfAvN38tTPQKYDJ6AsRooXPfy/YSNYjO3f0437FjPtedhShrj81LjwxKXP80bxXl1jVN7JaiXpHSnS6wu8YtDmvBFUL8JO2FA5bXOsFhO6gjvDKrICJyDqMdSaFsYkm8TIVVlmNQdLPpv0z3ZwUbVzhyPUb4uot9QG41/ZVGqeGMap2WmyzmbC7CCnRZz0cSBb34JZIDbgpngWkvTiWJ0ESh+uygVykUR5sXBv9rbwg7G5yYw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=R/efDUyY; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1750782884; c=relaxed/relaxed;
+	bh=amzNAppIr7CphoKbkPeWe0Dr61MnvAb0JnqDfqxQ2Vo=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=TJmqQIN7fB+T7S2JbsFlUVqEYQ/ucbdomSuYrBoHJTDto8Wr7QVUOMYWv8w3gxdPKjZiSTmUWMEXuWwais/BgIvzdr+5BF3oTqjAtgKLKgIyB1omOAphZSHCyx/hLt8giRap+9wshEHn3NRLg4ffeVKgxhEM9/XPvhHElWq4j0gU4ZMfRwcffZAAzEYOMhkEEWc2RqkhJz2HgOzKBnSIfJXFFMZzckUaIFWT+uMvUChNc+GnKwVsS8FA0CIMGzzrxP31H2Sb25F1F6BZjKfpyvE6lDDymrGvLbRUsbYOOU6plTDp6flSIH6o+16V2Pulc4cxv9CIWeSQdDvi0emN+g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=uFlwhfDq; dkim-atps=neutral; spf=pass (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=raptorengineering.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=R/efDUyY;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=uFlwhfDq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bRTGF3zsQz2xk5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 01:22:28 +1000 (AEST)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-6077dea37easo10410551a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jun 2025 08:22:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bRVsY3Dh6z2xHZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 02:34:38 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 821488286F2E;
+	Tue, 24 Jun 2025 11:34:36 -0500 (CDT)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id sPLrPr_vJ3-F; Tue, 24 Jun 2025 11:34:33 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id C4FFA8287148;
+	Tue, 24 Jun 2025 11:34:33 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com C4FFA8287148
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1750778544; x=1751383344; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=eLkoFblRVcI4qlzicS3evY0eDoBrk4ZSgrPnvsJhZ+Q=;
-        b=R/efDUyYGNYzmGNW3BsjEmsu11IzFX57Wa31rtG1188VuTKM+KGGaD2cIXCKVv706W
-         Faio1Zg3NGbYgOYip3AGeNAuikDvv8r95gB2pdRttFCxYLlN9W0Zu7l2ZBhsKrztoBF9
-         PrRTEtjGORVGGLpsE1+tn520xzn41k19fVH8E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750778544; x=1751383344;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eLkoFblRVcI4qlzicS3evY0eDoBrk4ZSgrPnvsJhZ+Q=;
-        b=iB/BS91kqbXJI1vJUGgjFimgYrHqXwtEXJGBc6FphlSQ4KirY3OfgnlAtaCoIjJYu0
-         DuYqHDAX9SGRs+EHc6zHMgO0me4XqxlK/Gd7iVRWc++XEg14E6mww3p8NaD7z0oDGdG3
-         h1hQXW1a1qNELXtTnbPRA3XQtAyiEXduywxXPYtIhTxqeU9KxZtrLEEFKV862NYieK5A
-         MovUEGCdSIswcuJ5Z8wdatvdwH9k8TD+rmzGGjeM/uJOtRb4aCb5ZhEQiqSZfjwJ3ws3
-         HDbI+zo/ADc1qVjiRigpHBjzjBSoAcXb3KHtAL3H6fxx/m3xiNt3Ii2EK8rOL7SFTaT2
-         Czcw==
-X-Forwarded-Encrypted: i=1; AJvYcCWPSn9bdKohGpMyNVdF8LIcGvba66NonNfTcfr8n5+kYtm87n+5RwFbN8BHyypslcfSQJODek3jTl1q0JI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yww+zrVy+OVUnGpqHGJ9fNVMCtYTAmChhLoCydoIUbTS5Dd23G3
-	BSo5jdlEuHz63GdOvAEm+MAj6biLVqr8WwrHClBhURc72uGE+X5CTdSj5ZpQVQ3w+Rao9PJoC/F
-	2a2/uA6c=
-X-Gm-Gg: ASbGnctcn3ZAGNw1A4yBwW7VmsZogTnrDMhyKf9XjlFFPccfdJlI1UAylAXy2Rd/OIy
-	9qtWhIHRVA0inuT2DKg5XrTByADapRn4aTf7IOfUgc4G8UVvYjpgXTvIdxtmYm7u4cRwLb7U02X
-	d8gKO06XcsN3QuUfkDOnHHSu0ScPc69kqmd3PGi7D+2HXXDPdiT5pKu2bzyYS6Uf17JcB0zKPK7
-	HFFenm9YIbzhwS24KL7vk/A1TkQbt+dUklBmipHNM1UkA+PGW7gamuOUz1pfZLoJXDOd6feXlCi
-	lUXAcINyW4tOgPGZcdpH4VhMDtCYHcw+Iw/z+0oDkC6MYAZL7CFQnsXfG2HzI2k9Ya0Hk254Qfv
-	QW9c92H6fVpazMTCS/WkfNFkOZfVC+jtR5lg1
-X-Google-Smtp-Source: AGHT+IEUe+lLli+l2TFfeREQLBXx66KF0/muhyCMGM/D86KDeyS7c0TsHzFtuW2I7A45Ir4gmiIDbA==
-X-Received: by 2002:a17:907:6095:b0:ad8:a329:b4a9 with SMTP id a640c23a62f3a-ae057abdf77mr1764958766b.25.1750778544107;
-        Tue, 24 Jun 2025 08:22:24 -0700 (PDT)
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae054209b9fsm884599066b.161.2025.06.24.08.22.23
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Jun 2025 08:22:23 -0700 (PDT)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-60780d74c8cso8573414a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Jun 2025 08:22:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUd6A7aI+CKJsMxF1MwbIb98a6cG57JgN0tvXYIZu0nhTOsW5GDq/lI7g1M9toAPprJQ78SkE+4tj0qHNI=@lists.ozlabs.org
-X-Received: by 2002:a05:6402:4308:b0:608:330a:9f67 with SMTP id
- 4fb4d7f45d1cf-60a1d1a2ecamr15042057a12.32.1750778131214; Tue, 24 Jun 2025
- 08:15:31 -0700 (PDT)
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1750782873; bh=amzNAppIr7CphoKbkPeWe0Dr61MnvAb0JnqDfqxQ2Vo=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=uFlwhfDqfmm1ntFNbyrdybZmgGGETB+91oXVzN2qNB7ar3t4PlmUvfI6cT8DquJo1
+	 UZqDD9xiUPrdTwTTYXpQA41tn8i3OJoye0IWQqIXOyaweUfcwCAJPtoP7h0lUTPFEA
+	 PZozKbhyj6R2ScuW+ZIbC6v/RSHhPAn2Y7tI+Ifw=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 9CZvCiq25Gwc; Tue, 24 Jun 2025 11:34:33 -0500 (CDT)
+Received: from vali.starlink.edu (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 7B72E8286F2E;
+	Tue, 24 Jun 2025 11:34:33 -0500 (CDT)
+Date: Tue, 24 Jun 2025 11:34:30 -0500 (CDT)
+From: Timothy Pearson <tpearson@raptorengineering.com>
+To: Krishna Kumar <krishnak@linux.ibm.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	Shawn Anastasio <sanastasio@raptorengineering.com>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	linux-pci <linux-pci@vger.kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, 
+	christophe leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>
+Message-ID: <618050180.1322616.1750782870691.JavaMail.zimbra@raptorengineeringinc.com>
+In-Reply-To: <06aa6c91-9580-43a6-b63d-e219e9f363aa@linux.ibm.com>
+References: <20250618190146.GA1213349@bhelgaas> <1469323476.1312174.1750293474949.JavaMail.zimbra@raptorengineeringinc.com> <19689b53-ac23-4b48-97c7-b26f360a7b75@linux.ibm.com> <1675876510.1317449.1750518311479.JavaMail.zimbra@raptorengineeringinc.com> <06aa6c91-9580-43a6-b63d-e219e9f363aa@linux.ibm.com>
+Subject: Re: [PATCH v2 6/6] pci/hotplug/pnv_php: Enable third attention
+ indicator
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,81 +81,264 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1750585239.git.christophe.leroy@csgroup.eu>
- <f4b2a32853b5daba7aeac9e9b96ec1ab88981589.1750585239.git.christophe.leroy@csgroup.eu>
- <CAHk-=wj4P6p1kBVW7aJbWAOGJZkB7fXFmwaXLieBRhjmvnWgvQ@mail.gmail.com> <2f569008-dd66-4bb6-bf5e-f2317bb95e10@csgroup.eu>
-In-Reply-To: <2f569008-dd66-4bb6-bf5e-f2317bb95e10@csgroup.eu>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 24 Jun 2025 08:15:14 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh+zcmrHM5ryM=_71vEwjaRjwRHVgFu8WRG5xsgu3ku+A@mail.gmail.com>
-X-Gm-Features: Ac12FXyiIOMeVWX36Mt87GnZfIOR3ssqbql1oPQlXRyO409zF_tN4rQRqufbqcw
-Message-ID: <CAHk-=wh+zcmrHM5ryM=_71vEwjaRjwRHVgFu8WRG5xsgu3ku+A@mail.gmail.com>
-Subject: Re: [PATCH 2/5] uaccess: Add speculation barrier to copy_from_user_iter()
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Andre Almeida <andrealmeid@igalia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Laight <david.laight.linux@gmail.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC137 (Linux)/8.5.0_GA_3042)
+Thread-Topic: pci/hotplug/pnv_php: Enable third attention indicator
+Thread-Index: epA8na1st4b0IArDb6o4fKBjSmsoNw==
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 23 Jun 2025 at 22:49, Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
-> >
-> > (Although I also suspect that when we added ITER_UBUF we might have
-> > created cases where those user addresses aren't checked at iter
-> > creation time any more).
-> >
->
-> Let's take the follow path as an exemple:
->
-> snd_pcm_ioctl(SNDRV_PCM_IOCTL_WRITEI_FRAMES)
->    snd_pcm_common_ioctl()
->      snd_pcm_xferi_frames_ioctl()
->        snd_pcm_lib_write()
->          __snd_pcm_lib_xfer()
->            default_write_copy()
->              copy_from_iter()
->                _copy_from_iter()
->                  __copy_from_iter()
->                    iterate_and_advance()
->                      iterate_and_advance2()
->                        iterate_iovec()
->                          copy_from_user_iter()
->
-> As far as I can see, none of those functions check the accessibility of
-> the iovec. Am I missing something ?
 
-So we still to do this checking at creation time (see import_iovec ->
-__import_iovec, and import_ubuf).
 
-In the path you give as an example, the check happens at that
-"do_transfer()" stage when it does
+----- Original Message -----
+> From: "Krishna Kumar" <krishnak@linux.ibm.com>
+> To: "Timothy Pearson" <tpearson@raptorengineering.com>
+> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "Shawn Anastasio" <sa=
+nastasio@raptorengineering.com>, "linux-kernel"
+> <linux-kernel@vger.kernel.org>, "linux-pci" <linux-pci@vger.kernel.org>, =
+"Madhavan Srinivasan" <maddy@linux.ibm.com>,
+> "Michael Ellerman" <mpe@ellerman.id.au>, "christophe leroy" <christophe.l=
+eroy@csgroup.eu>, "Naveen N Rao"
+> <naveen@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>
+> Sent: Tuesday, June 24, 2025 2:07:30 AM
+> Subject: Re: [PATCH v2 6/6] pci/hotplug/pnv_php: Enable third attention i=
+ndicator
 
-        err = import_ubuf(type, (__force void __user *)data, bytes, &iter);
+> On 6/21/25 8:35 PM, Timothy Pearson wrote:
+>>
+>> ----- Original Message -----
+>>> From: "Krishna Kumar" <krishnak@linux.ibm.com>
+>>> To: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "Timothy Pearson"
+>>> <tpearson@raptorengineering.com>, "Shawn
+>>> Anastasio" <sanastasio@raptorengineering.com>
+>>> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel"
+>>> <linux-kernel@vger.kernel.org>, "linux-pci"
+>>> <linux-pci@vger.kernel.org>, "Madhavan Srinivasan" <maddy@linux.ibm.com=
+>,
+>>> "Michael Ellerman" <mpe@ellerman.id.au>,
+>>> "christophe leroy" <christophe.leroy@csgroup.eu>, "Naveen N Rao"
+>>> <naveen@kernel.org>, "Bjorn Helgaas"
+>>> <bhelgaas@google.com>, "Shawn Anastasio" <sanastasio@raptorengineering.=
+com>
+>>> Sent: Friday, June 20, 2025 4:26:51 AM
+>>> Subject: Re: [PATCH v2 6/6] pci/hotplug/pnv_php: Enable third attention
+>>> indicator
+>>> Shawn, Timothy:
+>>>
+>>> Thanks for posting the series of patch. Few things I wanted to do bette=
+r
+>>> understand Raptor problem -
+>>>
+>>>
+>>> 1. Last time my two patches solved all the hotunplug operation and Kern=
+el crash
+>>> issue except nvme case. It did not work with
+>>>
+>>> =C2=A0 =C2=A0 NVME since dpc support was not there. I was not able to d=
+o that due to being
+>>> =C2=A0 =C2=A0 =C2=A0 occupied in some other work.
+>> With the current series all hotplug is working correctly, including not =
+only
+>> NVMe on root port and bridge ports, but also suprise plug of the entire =
+PCIe
+>> switch at the root port.  The lack of DPC support *might* be related to =
+the PE
+>> freeze, but in any case we prefer the hotplug driver to be able to recov=
+er from
+>> a PE freeze (e.g. if a bridge card is faulty and needs to be replaced) w=
+ithout
+>> also requiring a reboot, so I would consider DPC implementation orthogon=
+al to
+>> this patch set.
+> Sounds Good !!
+>>
+>>> 2. I want to understand the delta from last yr problem to this problem.=
+ Is the
+>>> PHB freeze or hotunplug failure happens
+>>>
+>>> =C2=A0=C2=A0=C2=A0 only for particular Microsemi switch or it happens w=
+ith all the switches. When
+>>> =C2=A0=C2=A0=C2=A0 did this problem started coming ? Till last yr
+>> Hotplug has never worked reliably for us, if it worked at all it was alw=
+ays
+>> rolling the dice on whether the kernel would oops and take down the host=
+.  Even
+>> if the kernel didn't oops, suprise plug and auto-add / auto-remove never=
+ worked
+>> beyond one remove operation.
+> I would like to see this problem may be during our zoom/teams meeting. Th=
+ough I
+> have not tested surprise plug/unplug and only tested via sysfs, you may b=
+e
+> correct but I want to have a look of this problem.
+>>
+>>> =C2=A0=C2=A0=C2=A0 it was not there. Is it specific to particular Hardw=
+are ? Can I get your setup
+>>> =C2=A0=C2=A0=C2=A0 to test this problem and your patch ?
+>> Because you will need to be able to physically plug and unplug cards and=
+ drives
+>> this may be a bit tricky.  Do you have access to a POWER9 host system wi=
+th a
+>> x16 PCIe slot?  If so, all you need is a Supermicro SLC-AO3G-8E2P card a=
+nd some
+>> random U.2 NVMe drives -- these cards are readily available and provide
+>> relatively standardized OCuLink access to a Switchtec bridge.
+>>
+>> If you don't have access to a POWER9 host, we can set you up with remote=
+ access,
+>> but it won't show all of the crashing and problems that occur with surpr=
+ise
+>> plug unless we set up a live debug session (video call or similar).
+>=20
+>=20
+> Video Call should be fine. During the call I will have a look of existing
+> problem and fix along with driver/kernel logs.
 
-but yeah, it's very non-obvious (see __snd_pcm_lib_xfer(), which calls
-writer() which is either interleaved_copy() or noninterleaved_copy(),
-and then they do that do_transfer() thing which does that
-import_ubuf() thing.
+Sounds good.  We'll set up a machine in the DMZ for this session so you can=
+ also have access.  For anyone interested in logging on to the box for logs=
+, can you send over an SSH public key to my Email address directly?  Will g=
+et everyone added with root access to the test box prior to the call start.
 
-So *because* you were supposed to have checked your iov_iters
-beforehand, the actual iter code itself at some point just used
-__copy_to_user() directly with no checking at all.
+>>
+>>> 3. To me, hot unplug opertaion=C2=A0 --> AER triggering --> DPC support=
+, this flow
+>>> should mask the error to reach root port/cpu and it
+>>>
+>>> =C2=A0=C2=A0=C2=A0 should solve the PHB freeze/ hot unplug failure oper=
+ation. If there are AER/EEH
+>>> =C2=A0=C2=A0=C2=A0 related synchronization issue we need to solve them.
+>>>
+>>> =C2=A0=C2=A0=C2=A0 Can you pls list the issue, I will pass it to EEH/AE=
+R team. But yeah, to me if
+>>> =C2=A0=C2=A0=C2=A0 AER implementation is correct and we add DPC support=
+,
+>>>
+>>> =C2=A0=C2=A0=C2=A0 all the error will be contained by switch itself. Th=
+e PHB/root port/cpu will not
+>>> =C2=A0=C2=A0=C2=A0 be impacted by this and there should not be any free=
+ze.
+>> While this is a good goal to work toward, it only solves one possible fa=
+ult
+>> mode.  The patch series posted here will handle the general case of a PE=
+ freeze
+>> without requiring a host reboot, which is great for high-reliability sys=
+tems
+>> where there might be a desire to replace the entire switch card (this ha=
+s been
+>> tested with the patch series and works perfectly).
+>=20
+>=20
+> You may be correct on this and this is possible. If the driver and AER/EE=
+H
+> errors/events are properly
+>=20
+> handled then we may not need DPC in all cases. The point of DPC was to ab=
+sorb
+> the error at switch port
+>=20
+> itself so that it will not reach to PHB/Root-port/Cpu and will avoid furt=
+her
+> corruption. I was hoping that if
+>=20
+> DPC gets enabled, we may not need explicit reboot for drives to come up i=
+n case
+> of surprise hot unplug.
 
-And that all was really *much* too subtle, and Al fixed this a few
-years ago (see commit 09fc68dc66f7: "iov_iter: saner checks on
-copyin/copyout")
+I do understand the logic here, and it would theoretically work, but again =
+it's a bit more fragile than the solution we're presenting here in that it =
+relies on another chunk of device logic to work correctly in all cases, wit=
+h the consequence of a failure being a forced reboot.
 
-                  Linus
+With our patch series here we can hot plug and hot unplug NVMe drives all d=
+ay without requiring any reboots, including surprise plug.  DPC would simpl=
+y make this process a little bit faster, in that we don't have to wait a fe=
+w hundred milliseconds for the PE to unfreeze and the EEH driver to give up=
+.
+
+> But yeah, we can compare this with current result when this support will =
+be
+> enabled.
+>=20
+>>
+>>> 4. Ofcourse we can pick some of the fixes from pciehp driver if its mis=
+sing in
+>>> pnv_php.c. Also at the same time you have done
+>>>
+>>> =C2=A0=C2=A0=C2=A0 some cleanup in hot unplug path and fixed the attenu=
+ation button related code.
+>>> =C2=A0=C2=A0=C2=A0 If these works fine, we can pick it. But I want to t=
+est it.
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 Pls provide me setup.
+>>>
+>>> 5. If point 3 and 4 does not solve the problem, then only we should mov=
+e to
+>>> pciehp.c. But AFAIK, PPC/Powernv is DT based while pciehp.c
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 may be only supporting acpi (I have to check i=
+t on this).=C2=A0 We need to provide
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 PHB related information via DTB and maintain t=
+he related
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 topology information via dtb and then it can b=
+e doable. Also , we need to do
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 thorough planning/testing if we think to choos=
+e pciehp.c.
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 But yeah, lets not jump here and lets try to f=
+ix the current issues via point 3
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 & 4. Point 5 will be our last option.
+>> If possible I would like to see this series merged vs. being blocked on =
+DPC.
+>> Again, from where I sit DPC is orthogonal; many events can cause a PE fr=
+eeze
+>> and implementing DPC only solves one.  We do *not* want to require a hos=
+t
+>> reboot in any situation whatsoever short of a complete failure of a crit=
+ical
+>> element (e.g. the PHB itself or a CPU package); our use case as deployed=
+ is
+>> five nines critical infrastructure, and the broken hotplug has already b=
+een the
+>> sole reason we have not maintained 100% uptime on a key system.
+>=20
+> If you are in hurry and want to defer DPC for some time, I am fine with i=
+t since
+> it serves larger purpose like PE freeze and NVME drives working
+>=20
+> along with surprise hotplug fixes.=C2=A0 I have gone through your pnv_php=
+.c changes
+> and I am mostly fine with it. But, I would like to review it again
+>=20
+> from larger prespective w.r.t to EEH & pciehp.c, so give me some time.
+
+Sure, please let me know if anything is concerning.  My goal would be to ha=
+ve this reviewed from a code quality perspective and a v2 posted at least a=
+ couple of days before the video call.
+
+Also, if
+> possible you can show me
+>=20
+> the problem/fix along with log=C2=A0 during video call. it would be great=
+ if we can
+> meet sometimes next month in early first week may be on 5th of July.
+
+Let's plan for that -- this is somewhat urgent with Debian Trixie being rel=
+eased soon, and I want to see this repair backported.  We already ship Book=
+worm Debian kernels with completely broken VFIO and hotplug, our goal is to=
+ get that all fixed for Trixie and enable the functionality our customers a=
+re paying for.
+
+> I will request few of the EEH/AER developer to have a look into the patch=
+ and to
+> join the meeting if they have bandwidth. Please shoot the
+>=20
+> mail/invite on krishna.kumar11@ibm.com along with this email id. I am bas=
+ed in
+> Bangalore but can be available till night 10:00 pm.
+
+Will do, thanks!
 
