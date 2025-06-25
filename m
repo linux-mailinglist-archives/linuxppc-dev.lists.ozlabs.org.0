@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-9744-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9745-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01285AE844F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 15:20:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D0CAE8450
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 15:20:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bS2V56CmPz30Vf;
-	Wed, 25 Jun 2025 23:19:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bS2V91lLmz30Vr;
+	Wed, 25 Jun 2025 23:19:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750857581;
-	cv=none; b=KOLqxRz3kxw+k2dw7TbF/vuzmbFd/27WXlUhpM2c1BenLlWa/2fKR78h+vbO8c5eZvBrVSOkwjiq/JnlSUL1hvQT14ufo3IaIyFN8qfA5fvQllqzPHeqaALwtUwe1GVvLpZQPxOzgGHhh4JWzyUNliKECCpnrxW7eaDnEnshmM0nysfVT/Fl54bQIxvD22diTIMiLlPKCaZfhgo6Qv22i6JnmW8WqNOx9/6oiIg9Kv9fIcjR1PwDv7zQvD0t0H+tYcUm624MdaCr5V2Afk9ZC8un4O0DeI6wU0U0/eBR8pYyM6RnoDPs+cAMIhgOqh+68pKYigoAg54L3gXg5vMWUw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750857585;
+	cv=none; b=VdUjel/O1a1vBiRv5IVytlOigCon0uPJtnTb0HTyvaWY4hqnTjQHGN1HOcqeyRpeMseDfYmP33IHUTs0sDLVQcYELI+38AGOU753RqQXLvjLDrS0SLTspkNRM/LZUWCChHfMxoWuP/oXXlXB0SLaz/stEIN+OZDsL5Ppjkwi9MUsr0lp+awokTtyny6KufVGV5NFdA9bPocfMI5WKhLi5YVD/phF2jJwBwtj++3Wag1rNmPk/xu5GsPRr0eFtm4dMEAmEkOtwpmisZf8RX/1AEo4bPxBcuuFGhYI14f6a6xtFlCwO22gwwm23sCpnoEiExYC3xO/Jh4AbENEpQyHIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750857581; c=relaxed/relaxed;
-	bh=yT6++2TGmOpIUKHGdyhEudX+l9ewF2H6ydYa1C4h+jI=;
+	t=1750857585; c=relaxed/relaxed;
+	bh=VaTVD/mLalAtTgGY4GQNF+mAYuMi86gY31K7sa0UK48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGWypjJ4I4I6dynVvKiQ+l1nzZEiYPiQhTEh35kHabhbkdW1MjTd8eBeZpEIfLfwHkt3GbeSy35W32bmWNX5A2+z0vnDf5fj4CfS9+SGTwwBPWba/w7EUxa7Uf4vB/raFR4YxbPxQakZhrLRgDgTnxtBib6eW38HR9mN/VQxD/GiiJ7CtwANUfl+ycCDlEtBVuEBJi1xf8B4pKMHVuskdhzCdFssS1D97MjZEwRFbwa0EXpq8x03MtTUVdEmsHbpgQoiRto7G+2mRHBU6rC1+aWi7suuzWnOf/rSs7tKbuJKs/N2ozhEgl59sh+TPxnRBRWqcJBfBbC3Jrya5eklUg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JmvSEIY+; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=JKGbDYHBKfyshhLjACxCCDeiTviaQLSrhplcMEEoEQ9N/G4gUNSMKwFICIC7umb95215tIPd6l0JW7lfv+/emToFLKfEAIPx8pVTc3ZpdZwHkCOvgkmSciftp/koprQWZQsYBKs7qtplhLoIppCL3MswJPcJ6eb2YWhTYhzoa6GCVhBSmwmPOBqHMZ80Y1nWuN6EDvpTUzK7IvfThQpJc1hEl1IESc8s7rYEfyFtcKYBbxT4t+61KGtg+Qp7tIsKqmlT2HAXLMkThJUEfCKqdCqm9e8K6jqXHN3xMyr0ZV9edQ9Zg4p+cPaviaXodFG6nWlfTRF8IdtJypFfspYA4g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N0G3gV+E; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JmvSEIY+;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N0G3gV+E;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bS2V51yzWz30LS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 23:19:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bS2V83mVhz30LS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 23:19:44 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id BB698A5261A;
-	Wed, 25 Jun 2025 13:19:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C193CC4CEEA;
-	Wed, 25 Jun 2025 13:19:37 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 88376A52615;
+	Wed, 25 Jun 2025 13:19:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54036C4CEEE;
+	Wed, 25 Jun 2025 13:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750857578;
-	bh=pv7jnMJTkJVOWVb/twnbCICvjtCn/HJgKS2K42rWa78=;
+	s=k20201202; t=1750857582;
+	bh=U1ovqnANomb/cEXYdYYeiuP4LQydDqNW/NB4OU1aqgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JmvSEIY+7ban/csViJFvTitjdhG8lqD1RrM9Bs5vfSX9RUXW8VcItqnFKYK2IHLEp
-	 Oj2lQpsBja99AvsQZszqc5HRTCd6sTT2RtsSsG6njLkXmU7qMY7Vv1lVgBzXyQPbYb
-	 mwcqp68DZHG0wv/LITtswgnUm5CJOJrlmJA71Izf1q+m6fso9FWpqVFZFJs+E3/PJL
-	 bafB00mS656RTCoymMmH42juG8s5ossf9tDfV3oq8Q1fChuX8RreRxr/WBdOxO1x0w
-	 XEs/Im4vy1Epw96JlCjF5ya6mj/Q07IUEwpzgcRddZa4ZUr/RT6TslLGklPWGDJsVe
-	 KAxqIq8HM4v0Q==
+	b=N0G3gV+E4IJhrAeOantpO1cwUDcMsTCEPcIcE6wM9Gm6ZtwQv921RF9CtRTt0u2ST
+	 6zAGA6OPg7exrFGuRKaOuTBaAc3+xMSRRas96RdgU6LBRx9z1AHyuVVAaukNs4jqny
+	 w87lOQJxPHyIi2wWXWfNDG/uhOfNvtNKL7VptMtzDVYmgSu8W5Ffhyy3cXRQ8W1qeN
+	 RO1pVbaELBUG77Cpm2gj2Kg/KSFIyv8/ESeICwpQFGTpNKAYpx78H9+/4AK7jzqdgM
+	 J/dSHbdmM6OAh3JFhCQFo+OhjxQc9meDO5S/8S+hV8AyJv+sp1BqLnSLCmXIbqc8/6
+	 ldPiGE4Zu1Z0A==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -74,9 +74,9 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	kasan-dev@googlegroups.com,
 	linux-trace-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 6/8] dma-mapping: fail early if physical address is mapped through platform callback
-Date: Wed, 25 Jun 2025 16:19:03 +0300
-Message-ID: <5fc1f0ca52a85834b3e978c5d6a3171d7dd3c194.1750854543.git.leon@kernel.org>
+Subject: [PATCH 7/8] dma-mapping: export new dma_*map_phys() interface
+Date: Wed, 25 Jun 2025 16:19:04 +0300
+Message-ID: <7013881bb86a37e92ffaf93de6f53701943bf717.1750854543.git.leon@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1750854543.git.leon@kernel.org>
 References: <cover.1750854543.git.leon@kernel.org>
@@ -101,48 +101,110 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-All platforms which implement map_page interface don't support physical
-addresses without real struct page. Add condition to check it.
+Introduce new DMA mapping functions dma_map_phys() and dma_unmap_phys()
+that operate directly on physical addresses instead of page+offset
+parameters. This provides a more efficient interface for drivers that
+already have physical addresses available.
+
+The new functions are implemented as the primary mapping layer, with
+the existing dma_map_page_attrs() and dma_unmap_page_attrs() functions
+converted to simple wrappers around the phys-based implementations.
+
+The old page-based API is preserved in mapping.c to ensure that existing
+code won't be affected by changing EXPORT_SYMBOL to EXPORT_SYMBOL_GPL
+variant for dma_*map_phys().
 
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- kernel/dma/mapping.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ include/linux/dma-mapping.h | 13 +++++++++++++
+ kernel/dma/mapping.c        | 25 ++++++++++++++++++++-----
+ 2 files changed, 33 insertions(+), 5 deletions(-)
 
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index 55c03e5fe8cb..ba54bbeca861 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -118,6 +118,10 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+ 		unsigned long attrs);
+ void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr, size_t size,
+ 		enum dma_data_direction dir, unsigned long attrs);
++dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
++		enum dma_data_direction dir, unsigned long attrs);
++void dma_unmap_phys(struct device *dev, dma_addr_t addr, size_t size,
++		enum dma_data_direction dir, unsigned long attrs);
+ unsigned int dma_map_sg_attrs(struct device *dev, struct scatterlist *sg,
+ 		int nents, enum dma_data_direction dir, unsigned long attrs);
+ void dma_unmap_sg_attrs(struct device *dev, struct scatterlist *sg,
+@@ -172,6 +176,15 @@ static inline void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr,
+ 		size_t size, enum dma_data_direction dir, unsigned long attrs)
+ {
+ }
++static inline dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys,
++		size_t size, enum dma_data_direction dir, unsigned long attrs)
++{
++	return DMA_MAPPING_ERROR;
++}
++static inline void dma_unmap_phys(struct device *dev, dma_addr_t addr,
++		size_t size, enum dma_data_direction dir, unsigned long attrs)
++{
++}
+ static inline unsigned int dma_map_sg_attrs(struct device *dev,
+ 		struct scatterlist *sg, int nents, enum dma_data_direction dir,
+ 		unsigned long attrs)
 diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 709405d46b2b..74efb6909103 100644
+index 74efb6909103..29e8594a725a 100644
 --- a/kernel/dma/mapping.c
 +++ b/kernel/dma/mapping.c
-@@ -158,6 +158,7 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+@@ -152,12 +152,12 @@ static inline bool dma_map_direct(struct device *dev,
+ 	return dma_go_direct(dev, *dev->dma_mask, ops);
+ }
+ 
+-dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+-		size_t offset, size_t size, enum dma_data_direction dir,
+-		unsigned long attrs)
++dma_addr_t dma_map_phys(struct device *dev, phys_addr_t phys, size_t size,
++		enum dma_data_direction dir, unsigned long attrs)
  {
  	const struct dma_map_ops *ops = get_dma_ops(dev);
- 	phys_addr_t phys = page_to_phys(page) + offset;
-+	bool is_pfn_valid = true;
+-	phys_addr_t phys = page_to_phys(page) + offset;
++	struct page *page = phys_to_page(phys);
++	size_t offset = offset_in_page(page);
+ 	bool is_pfn_valid = true;
  	dma_addr_t addr;
  
- 	BUG_ON(!valid_dma_direction(dir));
-@@ -170,8 +171,20 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
- 		addr = dma_direct_map_phys(dev, phys, size, dir, attrs);
- 	else if (use_dma_iommu(dev))
- 		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
--	else
-+	else {
-+		if (IS_ENABLED(CONFIG_DMA_API_DEBUG))
-+			is_pfn_valid = pfn_valid(PHYS_PFN(phys));
+@@ -191,9 +191,17 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+ 
+ 	return addr;
+ }
++EXPORT_SYMBOL_GPL(dma_map_phys);
 +
-+		if (unlikely(!is_pfn_valid))
-+			return DMA_MAPPING_ERROR;
++dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
++		size_t offset, size_t size, enum dma_data_direction dir,
++		unsigned long attrs)
++{
++	return dma_map_phys(dev, page_to_phys(page) + offset, size, dir, attrs);
++}
+ EXPORT_SYMBOL(dma_map_page_attrs);
+ 
+-void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr, size_t size,
++void dma_unmap_phys(struct device *dev, dma_addr_t addr, size_t size,
+ 		enum dma_data_direction dir, unsigned long attrs)
+ {
+ 	const struct dma_map_ops *ops = get_dma_ops(dev);
+@@ -209,6 +217,13 @@ void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr, size_t size,
+ 	trace_dma_unmap_phys(dev, addr, size, dir, attrs);
+ 	debug_dma_unmap_phys(dev, addr, size, dir);
+ }
++EXPORT_SYMBOL_GPL(dma_unmap_phys);
 +
-+		/*
-+		 * All platforms which implement .map_page() don't support
-+		 * non-struct page backed addresses.
-+		 */
- 		addr = ops->map_page(dev, page, offset, size, dir, attrs);
-+	}
-+
- 	kmsan_handle_dma(phys, size, dir);
- 	trace_dma_map_phys(dev, phys, addr, size, dir, attrs);
- 	debug_dma_map_phys(dev, phys, size, dir, addr, attrs);
++void dma_unmap_page_attrs(struct device *dev, dma_addr_t addr, size_t size,
++		 enum dma_data_direction dir, unsigned long attrs)
++{
++	dma_unmap_phys(dev, addr, size, dir, attrs);
++}
+ EXPORT_SYMBOL(dma_unmap_page_attrs);
+ 
+ static int __dma_map_sg_attrs(struct device *dev, struct scatterlist *sg,
 -- 
 2.49.0
 
