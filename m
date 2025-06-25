@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-9792-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9793-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49210AE9089
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 23:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD81AE915A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 00:53:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bSFxz1ZG9z307K;
-	Thu, 26 Jun 2025 07:56:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSHD73j8Zz2xYl;
+	Thu, 26 Jun 2025 08:53:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::633"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750888567;
-	cv=none; b=ghj0tc1IdADwO1N6YGSavMVImyVE58Tv1QQ+DACgVh+GeWYwJlmfxGAd28It89OAcjwu+4cJex0BLsWtRNOTkpHwrE53VAnqSPwbJ1HwIUBTV/FxLbxiFMMU9T1ghwgHF1BZr5msd0TNWah7939Bs92woyIalmSd6M/VnG1subgomKSrV3XZzhjhlQTDISkF2G9qSn5mxJP2w+n27K+zl97wgVx6Wu0fUqVDksB57JmaKkWIfMoz0DXdgkjXKCC2+By2DglUa/7WllDuv0zxd5EnHs8cc0iSp34CAqQ/r+NWPT/zePC7y7+Mt6lnPiaNiKDA4kSl1f+rzinUEHPLpQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::430"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750892007;
+	cv=none; b=Y+U5EPTMk8pt3Wsps2WI+w25gFNykp1MP48yc4qkSx2jyLbic4WdGfR1kkOG8qiRSIuu9kLL6ExVPRqk8C7zJUap7ovWAQmMeVCWpy1bnYVV47C/a644o+Cg2TCF+C7FtNGgoK5db7LdoBAcJUYsqfJTDsPukfLv4b6/q2heD9n4OBqhS7RS4tQvlkCDTT+vww3E4IH7uUzIDt9AvAZKYPI8R9gy45TD/fOAvZL982HY5NaduQ98CcNbHUeE9DYgTufluoEMqOpTrhkP5YuFVVTCkFcml9AG8cEXeeNukFJUuMKJizOj89fMp4DcwUh2BXR4HYjqWfjrR4Vv0/dpSQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750888567; c=relaxed/relaxed;
-	bh=9LGxtwTUiUZfmjCFavT0wpko1sgth32s7AXdMmiF+7c=;
+	t=1750892007; c=relaxed/relaxed;
+	bh=yjVZNJVj1VyecmvfQv75DLyG9gWL1xdoouzFtGiwWo8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KUEiDZwayDd6qih8Id111xY3PvOQx8ZQSbtLLTH/Ml4VStsf+InAGkllWuzLis0uOVn6+L6nA2Cm7SpTObN5dLJdeBUzzFlTs9DOohJ6zFvN2Fm1luvo+NzkoQwghj7q8hj9TxcCqQIcBpcfKQ4Hc5I1sr/g6C8u9mzmS2gW9fu/k/TWvm4EEPAHpqGTgJs5CLPTG5edSFt6OS3ytqviK3w/UIELDHV/y2o1pku0g8jPH8OFqRf6SdIukieqH8Z+L6ifog6u66Wuze1yPhKuz/FEHGeaazdPP4rJTfimfOz2ePQ/oNi9r/J7Bk9JgxAbFTpzHcF/4inZ+gPPjn7fMQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RrabiP/z; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=iU4g6FTRWrFA4X+yECZF/sf0BDKSlPWoWOUK7qUWdvsZjnLCPdC0LRlNrqngibxfMZEZRJXIwnYwWLr0tcXaxThZ6LBERVlB3913utBWibqDvGaBzajpXw41P0AvTbz+YhrQUfhLcz4Se4bF3rz86CZJP0A341T+D4N5nOWzv4idsAuNNsQ/dMsskGtbsgvaZEAoIqPubeqQTiRwLl9syExDzLokt9RCjzWHlHB1HKJINRMMrIwUoOR8EBvtT+v4FIH02nMmKmgPejC3I7Yu/ChQ0tDWCQQWxpTJn+/jOSjCRHRbIMX7XkUjwy4U7PG8cErVzb+cMo9LRFh6eWaiuA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Sxcwmnda; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RrabiP/z;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Sxcwmnda;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSFxr0v6kz306l
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 07:55:58 +1000 (AEST)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-23636167afeso4233945ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 14:55:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSHD64F0vz2xWc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 08:53:25 +1000 (AEST)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-742c7a52e97so505275b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 15:53:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750888556; x=1751493356; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1750892003; x=1751496803; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9LGxtwTUiUZfmjCFavT0wpko1sgth32s7AXdMmiF+7c=;
-        b=RrabiP/zElHF1iM8lKIK+dXeRE2NCJGDzYhNnyDNB52QRxHk/pbfAPhdGToKD0po18
-         Hej59BkK8jj5tOLGYN0WeEcSDO2dMseSwUlBMOInhk+9v8eYgBj7bqHyELydN1/AYXW2
-         G5AIJRCT+haJqP35IqvfzcvBiyMxMYfEh5kgVuvJHf8ym389I8ut3hvNCjlTg4R9oFp6
-         hvAiFD40d70egiIkxMObBBUeJb3/ktMATrbLhNqDCgWegBYXK6ucuKhQ4gt1S2nX5/aK
-         OV4gWF+tc2GJa+5MeMmRUrEnIgU2iRsEFqN2kA1lZ4bcZO3uc7HiNK+eJl9wwnAq8XJ4
-         Pdyg==
+        bh=yjVZNJVj1VyecmvfQv75DLyG9gWL1xdoouzFtGiwWo8=;
+        b=SxcwmndanX1raiv6x5TDW1HsSFSbyAViTLM7GAmTgf4AxvB6l0EWmbtQNpGPMYlBAK
+         A/pzB2VIrH8SYPBv3/yqaD0X/qqXi+umx+sUI0v8XFSyv3W9ubBamAuixUanBWVtdkZa
+         KOH9+zaJwEl9oFK3blagNsRnEOKTt6S4PC/HsUYIQtnOkFW0LZkcj0JCMR4gIhkHUIYg
+         YB/EcRgwf0NDlIyNQbernZrs+jiyWq+463Ib+RsKOLmc7wPWuGZlKYCnyI0xPuzBGTnt
+         9X+tSFJcWlwoPOqCJRHQnBTvqAopiheQ3NPBb3OuxRQSJ2Eov6LlyhuxAWhS9MOVcOi7
+         +B5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750888556; x=1751493356;
+        d=1e100.net; s=20230601; t=1750892003; x=1751496803;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9LGxtwTUiUZfmjCFavT0wpko1sgth32s7AXdMmiF+7c=;
-        b=uB/av7chKMRy7Ywzx/KcLvLXQZ+B2FWKL47WyhVox4HJ8WrlzVZLyZye+eyAzfRyey
-         1A85Aojr30KhikxYiqz/96OSs5wFg+Q2AtMqI8oBEbWcZfjHZIIG6ClrHvW0rZ/2Y36W
-         TqN8D3uZdP/IrrEjzDP2bhc1hp5DQn0j4SwRya00dZZsZMvnBo94DlNZzaDJOf/3FfZO
-         AsP7+j59sm2fe8kHAq6aQ1KiAuQNsNslKYlHAE0JUv/67EMxzkLVgswedsnP/DSP5fvV
-         7ecsUM4a6c9Q0ZfIhXxtDGvrHu8vxusjENbeWO+jg8BPRixrpk9/a4T26r2vL+1HApFp
-         6D/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWB63I/OhMrdnJ/FZRPFPkoIe/eOjVu+yqgZwhLr3etlnssqwC9Z9GyuPZGpdbfy7rN4mftWnIF66N6ITA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwrGlkd4ufimxn7DSFkp2isvm9+9FCqyCGF+5LmywKSIOZBg1/S
-	L+pu5x9usmTrdtt2Fb1Y6g2IbCOnsxJp1F4S/qCBW/011ENVTVhTn2ep
-X-Gm-Gg: ASbGncvkoPVVYYwk8LzzFwfArS2IwbYinoyk+nlyAItK44ovcqdmpLTIMjTJDRxk8YO
-	ryBzoqYb25oZ847cSHCBx4wI28Kk/suFnFHuWjF8y3RKC7W+YiigNayWPRPSdb/iJSNXNFilOdI
-	ADItk53bvWqFr8OHlbiUZxES3KooYv1zF+7ZXyJhy01BXc+G9oqbYBEX5CrIdaebbGFrNKEp4Oi
-	gYAls4ymGs41DrtQIeyP6lsASiFYdx3SdrqrByEBszRc7soHqKQGSGn2APjIa20Br2MEstVlO1i
-	q/J/c4BdoQO1Jxec2lTaen7PufBAdtL40FOnwgM/MlqKAZxaJ5ASekC1DuOb7g==
-X-Google-Smtp-Source: AGHT+IEDI1YLUnjAmW35bzf+fq8eaKiorLa2kacWkfWatUza7rGvC8Y97Bnyyayyvde212EU8qgskw==
-X-Received: by 2002:a17:902:d58c:b0:21f:4649:fd49 with SMTP id d9443c01a7336-23824086a0emr85784225ad.49.1750888555480;
-        Wed, 25 Jun 2025 14:55:55 -0700 (PDT)
+        bh=yjVZNJVj1VyecmvfQv75DLyG9gWL1xdoouzFtGiwWo8=;
+        b=FXVGlEpzkvT6XNe6u8e3gMPTXit86RoVKt993MUDI/AfMf23a9s9RGWgy0k+jYut3o
+         JbG5NkHLd56MxJ7rtV12KGiInYTfGkmS5nMEAgQrfXYSR0WwywkeoM5umEkYR174ojc+
+         FFTIz7xbNg5zeIUeNU0v7f+A6zWieYzqKb/qtwcdFKPcCB1RGJs0vj3NLN2seMdB8x8Q
+         rPepqFNdzUiyq7jMjR3Bdq4e/I84U6jO9fSmO1LU+C4w9Z5tMMrEmf20XnZncWdzFW+L
+         F1a6wNTHEhn3iNZ/c1WKorVhC5r9xC1cMgRzPo/YlzX9mXDmaq6F7ff9VPRdb2YTWEta
+         YAfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXHVTROuRk1AOUvlxClEtzqcahs04PYNd+s5kiUINacbqTuJelzLwEAokGJkiXTJWit+tiho9GePnqskG4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw48DPK0NJ+CqiMGETsfOWQUuwg6q5vpbOLoP6bcy11TtCVSpT+
+	tx2culVc4bstgTDAw23KUzId7kzJOfCvgC6bGuATjoCCA0fzwozJAEQr
+X-Gm-Gg: ASbGnctnVPHMLmf9o6J/q5kfz93rDcAIlcDwfjMgwh0XAJfPviKZn5A3V21ueUbu8/4
+	lDFHk//bkKg4UIoCEH7yO9nx1/KVLZqb55VaVxd2OdtAsJnrTOyMlWvfB8rWHvAH95cJmiHbnR+
+	BCeg1ftKuvegsi67p6zaSvFmTkiSrlJmb6ZqxrbQeH0IWXAGSqAGbso8wkVgwvEDrE8qqmW3OgV
+	M2D9v11otT8AN/C9KvUZ83u1QOc7GCGHkZjkbusXDFNCSHIyy8pudnMNoclWML78ZdaeFb8okBj
+	oBBVSMHDo22D5LlCR5htKpLwlEYXWIz+wTZSLOrqz9oEUsVFIazhRHG36W+Ui0Jrau9phEOv
+X-Google-Smtp-Source: AGHT+IE88beKHh6OBkAbtxFt7Nvsoy5yyN1uxp5998LeU3T9z5d9GIj7QrS9GiVPtDjcAz7GT8jNfQ==
+X-Received: by 2002:a05:6a00:2185:b0:747:ab61:e4fa with SMTP id d2e1a72fcca58-74ad456a27emr6990406b3a.14.1750892003065;
+        Wed, 25 Jun 2025 15:53:23 -0700 (PDT)
 Received: from localhost ([216.228.127.131])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d866488csm140884085ad.158.2025.06.25.14.55.54
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-749c8850c9fsm5735950b3a.109.2025.06.25.15.53.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 14:55:54 -0700 (PDT)
-Date: Wed, 25 Jun 2025 17:55:52 -0400
+        Wed, 25 Jun 2025 15:53:22 -0700 (PDT)
+Date: Wed, 25 Jun 2025 18:53:20 -0400
 From: Yury Norov <yury.norov@gmail.com>
 To: Shrikanth Hegde <sshegde@linux.ibm.com>
 Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
@@ -77,9 +77,11 @@ Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
 	kprateek.nayak@amd.com, huschle@linux.ibm.com, srikar@linux.ibm.com,
 	linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu,
 	linuxppc-dev@lists.ozlabs.org, gregkh@linuxfoundation.org
-Subject: Re: [RFC v2 0/9] cpu avoid state and push task mechanism
-Message-ID: <aFxwaKwBykv5shN4@yury>
+Subject: Re: [RFC v2 9/9] [DEBUG] powerpc: add debug file for set/unset cpu
+ avoid
+Message-ID: <aFx94BDKk_WJ48pK@yury>
 References: <20250625191108.1646208-1-sshegde@linux.ibm.com>
+ <20250625191108.1646208-10-sshegde@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,131 +97,129 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250625191108.1646208-1-sshegde@linux.ibm.com>
+In-Reply-To: <20250625191108.1646208-10-sshegde@linux.ibm.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Jun 26, 2025 at 12:40:59AM +0530, Shrikanth Hegde wrote:
-> This is a followup version if [1] with few additions. This is still an RFC 
-> and would like get feedback on the idea and suggestions on improvement. 
+On Thu, Jun 26, 2025 at 12:41:08AM +0530, Shrikanth Hegde wrote:
+> Reference patch for how an architecture can make use of this infra. 
 > 
-> v1->v2:
-> - Renamed to cpu_avoid_mask in place of cpu_parked_mask.
+> This is not meant to be merged. Instead the vp_manual_hint should either
+> come from hardware or could be derived using steal time. 
 
-This one is not any better to the previous. Why avoid? When avoid?
-I already said that: for objects, having positive self-explaining
-noun names is much better than negative and/or function-style verb
-names. I suggested cpu_paravirt_mask, and I still believe it's a much
-better option.
+If you don't add any code that manages the 'avoid' mask on the host
+side, all this becomes a dead code.
+ 
+> When the provided hint is less than the total CPUs in the system, it
+> will enable the cpu avoid static key and set those CPUs as avoid. 
+> 
+> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/paravirt.h |  2 ++
+>  arch/powerpc/kernel/smp.c           | 50 +++++++++++++++++++++++++++++
+>  2 files changed, 52 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
+> index b78b82d66057..b6497e0b60d8 100644
+> --- a/arch/powerpc/include/asm/paravirt.h
+> +++ b/arch/powerpc/include/asm/paravirt.h
+> @@ -10,6 +10,8 @@
+>  #include <asm/hvcall.h>
+>  #endif
+>  
+> +DECLARE_STATIC_KEY_FALSE(paravirt_cpu_avoid_enabled);
+> +
+>  #ifdef CONFIG_PPC_SPLPAR
+>  #include <linux/smp.h>
+>  #include <asm/kvm_guest.h>
+> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+> index 5ac7084eebc0..e00cdc4de441 100644
+> --- a/arch/powerpc/kernel/smp.c
+> +++ b/arch/powerpc/kernel/smp.c
+> @@ -64,6 +64,7 @@
+>  #include <asm/systemcfg.h>
+>  
+>  #include <trace/events/ipi.h>
+> +#include <linux/debugfs.h>
+>  
+>  #ifdef DEBUG
+>  #include <asm/udbg.h>
+> @@ -82,6 +83,7 @@ bool has_big_cores __ro_after_init;
+>  bool coregroup_enabled __ro_after_init;
+>  bool thread_group_shares_l2 __ro_after_init;
+>  bool thread_group_shares_l3 __ro_after_init;
+> +static int vp_manual_hint = NR_CPUS;
+>  
+>  DEFINE_PER_CPU(cpumask_var_t, cpu_sibling_map);
+>  DEFINE_PER_CPU(cpumask_var_t, cpu_smallcore_map);
+> @@ -1727,6 +1729,7 @@ static void __init build_sched_topology(void)
+>  	BUG_ON(i >= ARRAY_SIZE(powerpc_topology) - 1);
+>  
+>  	set_sched_topology(powerpc_topology);
+> +	vp_manual_hint = num_present_cpus();
+>  }
+>  
+>  void __init smp_cpus_done(unsigned int max_cpus)
+> @@ -1807,4 +1810,51 @@ void __noreturn arch_cpu_idle_dead(void)
+>  	start_secondary_resume();
+>  }
+>  
+> +/*
+> + * sysfs hint to mark CPUs as Avoid. This will help in restricting
+> + * the workload to specified number of CPUs.
+> + * For example 40 > vp_manual_hint means, workload will run on
+> + * 0-39 CPUs.
+> + */
+> +
+> +static int pv_vp_manual_hint_set(void *data, u64 val)
+> +{
+> +	int cpu;
+> +
+> +	if (val == 0 || vp_manual_hint > num_present_cpus())
+> +		vp_manual_hint = num_present_cpus();
+> +
+> +	if (val != vp_manual_hint)
+> +		vp_manual_hint = val;
 
-> - Used a static key such that no impact to regular case. 
+This all is effectively just:
 
-Static keys are not free and designed for different purpose. You have
-CONFIG_PARAVIRT, and I don't understand why you're trying to avoid
-using it.
+	vp_manual_hint = val;
 
-I don't mind about static keys, if you prefer them, I just want to
-have feature-specific code under corresponding config.
+Isn't?
 
-Can you please print bloat-o-meter report for CONFIG_PARAVIRT=n?
-Have you any perf numbers to advocate static keys here? 
-
-> - add sysfs file to show avoid CPUs.
-> - Make RT understand avoid CPUs. 
-> - Add documentation patch 
-> - Took care of reported compile error in [1] when NR_CPUS=1
-> 
-> -----------------
-> Problem statement
-> -----------------
-> vCPU - Virtual CPUs - CPU in VM world.
-> pCPU - Physical CPUs - CPU in baremetal world.
-> 
-> A hypervisor is managing these vCPUs from different VMs. When a vCPU 
-> requests for CPU, hypervisor does the job of scheduling them on a pCPU.
-> 
-> So this issue occurs when there are more vCPUs(combined across all VMs) 
-> than the pCPU. So when *all* vCPUs are requesting for CPUs, hypervisor 
-> can only run a few of them and remaining will be preempted(waiting for pCPU).
-> 
-> If we take two VM's, When hypervisor preempts vCPU from VM1 to run vCPU from 
-> VM2, it has to do save/restore VM context.Instead if VM's can co-ordinate among
-> each other and request for *limited*  vCPUs, it avoids the above overhead and 
-                                       ^
-Did this extra whitespace escaped from the previous line, or the following?
-                                        v
-> there is context switching within vCPU(less expensive). Even if hypervisor
-> is preempting one vCPU to run another within the same VM, it is still more 
-> expensive than the task preemption within the vCPU. So *basic* aim to avoid 
-> vCPU preemption.
-> 
-> So to achieve this, use "CPU Avoid" concept, where it is better
-> if workload avoids these vCPUs at this moment.
-> (vCPUs stays online, we don't want the overhead of sched domain rebuild).
-> 
-> Contention is dynamic in nature. When there is contention for pCPU is to be 
-> detected and determined by architecture. Archs needs to update the mask 
-> accordingly.
-> 
-> When there is contention, use limited vCPUs as indicated by arch.
-> When there is no contention, use all vCPUs.
-> 
-> -------------------------
-> To be done and Questions: 
-> -------------------------
-> 1. IRQ - still don't understand this cpu_avoid_mask. Maybe irqbalance
-> code could be modified to do the same. Ran stress-ng --hrtimers, irq
-> moved out of avoid cpu though. So need to see if changes to irqbalance is
-> required or not.
-> 
-> 2. If a task is spawned by affining to only avoid CPUs. Should that fail
-> or throw a warning to user. 
-
-I think it's possible that existing codebase will do that. And because
-you don't want to break userspace, you should not restrict.
-
-> 3. Other classes such as SCHED_EXT, SCHED_DL won't understand this infra
-> yet.
-> 
-> 4. Performance testing yet to be done. RFC only verified the functional
-> aspects of whether task move out of avoid CPUs or not. Move happens quite
-> fast (around 1-2 seconds even on large systems with very high utilization) 
-> 
-> 5. Haven't come up an infra which could combine all push task related
-> changes. It is currently spread across rt, dl, fair. Maybe some
-> consolidation can be done. but which tasks to push/pull still remains in
-> the class. 
-> 
-> 6. cpu_avoid_mask may need some sort of locking to ensure read/write is
-> correct. 
-> 
-> [1]: https://lore.kernel.org/all/20250523181448.3777233-1-sshegde@linux.ibm.com/
-> 
-> Shrikanth Hegde (9):
->   sched/docs: Document avoid_cpu_mask and avoid CPU concept
->   cpumask: Introduce cpu_avoid_mask
->   sched/core: Don't allow to use CPU marked as avoid
->   sched/fair: Don't use CPU marked as avoid for wakeup and load balance
->   sched/rt: Don't select CPU marked as avoid for wakeup and push/pull rt task
->   sched/core: Push current task out if CPU is marked as avoid
->   sched: Add static key check for cpu_avoid
->   sysfs: Add cpu_avoid file
->   powerpc: add debug file for set/unset cpu avoid
-> 
->  Documentation/scheduler/sched-arch.rst | 25 +++++++++++++
->  arch/powerpc/include/asm/paravirt.h    |  2 ++
->  arch/powerpc/kernel/smp.c              | 50 ++++++++++++++++++++++++++
->  drivers/base/cpu.c                     |  8 +++++
->  include/linux/cpumask.h                | 17 +++++++++
->  kernel/cpu.c                           |  3 ++
->  kernel/sched/core.c                    | 50 +++++++++++++++++++++++++-
->  kernel/sched/fair.c                    | 11 +++++-
->  kernel/sched/rt.c                      |  9 +++--
->  kernel/sched/sched.h                   | 10 ++++++
->  10 files changed, 181 insertions(+), 4 deletions(-)
-> 
+> +	if (vp_manual_hint < num_present_cpus())
+> +		static_branch_enable(&paravirt_cpu_avoid_enabled);
+> +	else
+> +		static_branch_disable(&paravirt_cpu_avoid_enabled);
+> +
+> +	for_each_present_cpu(cpu) {
+> +		if (cpu >= vp_manual_hint)
+> +			set_cpu_avoid(cpu, true);
+> +		else
+> +			set_cpu_avoid(cpu, false);
+> +	}
+> +	return 0;
+> +}
+> +
+> +static int pv_vp_manual_hint_get(void *data, u64 *val)
+> +{
+> +	*val = vp_manual_hint;
+> +	return 0;
+> +}
+> +
+> +DEFINE_SIMPLE_ATTRIBUTE(fops_pv_vp_manual_hint, pv_vp_manual_hint_get, pv_vp_manual_hint_set, "%llu\n");
+> +
+> +static __init int paravirt_debugfs_init(void)
+> +{
+> +	if (is_shared_processor())
+> +		debugfs_create_file("vp_manual_hint", 0600, arch_debugfs_dir, NULL, &fops_pv_vp_manual_hint);
+> +	return 0;
+> +}
+> +
+> +device_initcall(paravirt_debugfs_init)
+>  #endif
 > -- 
 > 2.43.0
 
