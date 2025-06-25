@@ -1,67 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-9717-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9728-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD746AE7814
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 09:12:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4065AAE7988
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 10:08:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bRtJP2rk4z30WX;
-	Wed, 25 Jun 2025 17:10:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bRvZh363jz2yKq;
+	Wed, 25 Jun 2025 18:08:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750835445;
-	cv=none; b=eWj1YzTVx1LF/0SiVjmWTLvJ2WaWfPV3yQFC3m8RVaQHe7mqaYyZj7gBRkGAVyPjTV54Mee4D7yLVfje0W+uNNALYKaVnImQBi/pYO9DLLKsRsebO/8ZzOc3Ow6jLa/PWfEQT078BVg8JCd65CdVQHo7lEJaAnzpcwF0vYEuP+ycRNV2KKOn4T8WtpjCf0Ky1Tb7RcSwC/x87aahxpLBS6MEgFqGxemfIo6uX4zLDviITpcnYWlSEjAt0UZHPJh3VavfNW1Pdr0Ft2GWTBRoY+OlOaxHr3eU3V8P0K2DaCVRtQJjPLqQWg72VKlYnRg7spDNCguD12AcYTZtJlQSZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:1000::53df:5f64:0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750838892;
+	cv=none; b=TdMk0MIGp4Zidij708Z3dFqLnNVGXuwktJQezaWgXEpetn7RQfiAn+rB53gjgm/WU03O0TuQRnk++3BKQZA5p/pdJynxspuL0kEIRQ8V24D6uPKfNeDY3i2LM9jT8NJQKliqzlSAspX+fn9PO9voBUunTpIdC4um+wZscg7c7QVFXKyO9cYs4WB8R+AjqWMu3v0LmSaABUtLAiifT90ZiZGYykWLzeA4lcH3daEoulNNezavnJLlJ+FQPRTs0JxCJV+EMdE2wxcLjdXAWJYBLpBHHDzMf69aNgLAJGbm/5/OBA2bq1OUEKgL/fKb8d4aR+Y32IRzk212F1Is/0uHPg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750835445; c=relaxed/relaxed;
-	bh=RgNrCjq6lsOkp6g05Z5E9V8l08rRXcQ6exdzrdyOjWk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mI+irdq+OsKClgy++qmYXHppBYGEnphH1EFG4z0RQkSjMQRops2ILViBPm207QVrdjqYx9DLsSXOx1HEh+Izm2gALmxGbxj/C59oSEqChBaQU5bTbVsm935wn7JnGB8fxJ+AQZq8a5IKfqzcIMWyzDjqhlBb0QWlZLnMrBw8tNDcUTXWV19gfGm92oc2Dh/0ZGfSe8/AyoXSHq3GdsHpXw0d9UPE8IpVvOvPbWD20SCRcaAGSLIOb1v7A9azPolBB7KQ1Xjfr4EGskV2YlHlsliMX2FAk2fcEGi3ZMm7xibi6B7wTvDGroFfR9ZxW6iTeG2Aq0ptNfa/4M6wH0VOYw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eZmKP/fI; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eZmKP/fI;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	t=1750838892; c=relaxed/relaxed;
+	bh=vTZANFRYgO0h3OunI8tZBajHQMuEw20TiUsI3M2Xnm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EOcu45bMge6dwTTFjWuawNui9O7P1GrNuZJSubdHDgzgqFwWXUjngU05kr1IYVwzjMHsXMeEHUk/Au9Ah6bF6+r9pQPOAW0YgTDatNk569XB/mrv2JRtSpgAkV02coe5TvSDpVFp5U1YxtEbCQDmksemmv7Hf0+OHHVgtZrsNkug+2kZc204XXRIM2jOwB0+HZeDrm1tzTHuwDf9HRVZzY+4IPojfsC4DztzObc8blrPeyn5uTo9DhFfrTwAHPBwzhz77teYBr/OcuoRypQX4dh+3l/jwoOeq3aXkuqEHhwsdrXPj43JtgL6gWUaWpQ+9zbGEcn7XRTQiDq0G0CrIA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout1.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout1.hostsharing.net (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bRtJG4Mk4z3bcj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 17:10:37 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 053204AFEE;
-	Wed, 25 Jun 2025 07:10:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850B0C4CEF1;
-	Wed, 25 Jun 2025 07:10:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750835435;
-	bh=pkoFPfsdz5mUfc5I4FK+MnyFLsCjGsnnD9jc5ME9fN4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZmKP/fIDXW6rkeKR6Thsj7qhzrxUo7+anqcEdA8gXs47TnZN6DL2kX7bOmniF+Af
-	 +piPAyua5mV1/j2iaeJwcTEQSZit4PSpaEuHxsuX3Gh7qbJL1/S6+cmg48nAkVE0dN
-	 ZyGYkK4KNRVoHZ8kRyXFP+D5WRT1bmxJwqycb3x7/rHw4Si1XjQgAf3mJF4Ppbc3st
-	 vVZqoNdVE/MzcDZ1B21vwKhKKnzwJYGxof7gMCU3EX3I9Jd+xgPmhyMAFfRtKRsS7F
-	 8ucsuq7Ii9jB5dRSQBWrDMV+5Y5BLLHL58mBqSOsHYMJPjSbhmNrrHgtHdtCEEmFJL
-	 s0DeneNL1I14g==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	x86@kernel.org,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 18/18] lib/crypto: sha256: Document the SHA-224 and SHA-256 API
-Date: Wed, 25 Jun 2025 00:08:19 -0700
-Message-ID: <20250625070819.1496119-19-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250625070819.1496119-1-ebiggers@kernel.org>
-References: <20250625070819.1496119-1-ebiggers@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bRvZf6hJHz2xbX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 18:08:08 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id E93BD2C06E33;
+	Wed, 25 Jun 2025 10:08:02 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id E3CED3B708B; Wed, 25 Jun 2025 10:08:02 +0200 (CEST)
+Date: Wed, 25 Jun 2025 10:08:02 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Krishna Kumar <krishnak@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	"\"linux-pci\"," <linux-pci@vger.kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	christophe leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	"\"Bjorn Helgaas\"," <bhelgaas@google.com>
+Subject: Re: [PATCH v2 6/6] pci/hotplug/pnv_php: Enable third attention
+ indicator
+Message-ID: <aFuuYq0m0hDAdPRF@wunner.de>
+References: <20250618190146.GA1213349@bhelgaas>
+ <1469323476.1312174.1750293474949.JavaMail.zimbra@raptorengineeringinc.com>
+ <19689b53-ac23-4b48-97c7-b26f360a7b75@linux.ibm.com>
+ <aFaCfYre9N52ARWH@wunner.de>
+ <f13a2d2b-af52-4934-b4fa-66bc1e5ece32@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,137 +68,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f13a2d2b-af52-4934-b4fa-66bc1e5ece32@linux.ibm.com>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Add kerneldoc comments, consistent with the kerneldoc comments of the
-SHA-384 and SHA-512 API.
+On Wed, Jun 25, 2025 at 09:38:19AM +0530, Krishna Kumar wrote:
+> On 6/21/25 3:29 PM, Lukas Wunner wrote:
+> > On Fri, Jun 20, 2025 at 02:56:51PM +0530, Krishna Kumar wrote:
+> > > 5. If point 3 and 4 does not solve the problem, then only we should
+> > > move to pciehp.c. But AFAIK, PPC/Powernv is DT based while pciehp.c
+> > > may be only supporting acpi (I have to check it on this). We need to
+> > > provide PHB related information via DTB and maintain the related
+> > > topology information via dtb and then it can be doable.
+> > 
+> > pciehp is not ACPI-specific.  The PCIe port service driver in
+> > drivers/pci/pcie/portdrv.c binds to any PCIe port, examines the
+> > port's capabilities (e.g. hotplug, AER, DPC, ...) and instantiates
+> > sub-devices to which pciehp and the other drivers such as aer bind.
+> 
+> 1. If we get PHB info from mmcfg via acpi table in x86 and create a
+>    root port from there with some address/entity and if this Acpi and
+>    associated entity is not present for PPC, then it can be a problem.
+> 
+> 2. PPC is normally based on DTB entity and it identifies PHB and pcie
+>    devices from there. If this all the information is correctly map
+>    via portdrv.c then there is no problem and whatever you are telling
+>    is correct and it will work.
+> 
+> 3. But if point 2 is not handled correctly we need to just aligned with
+>    port related data structure to make it work.
 
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
- include/crypto/sha2.h | 76 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
+PCI devices do not have to be enumerated in the devicetree (or in ACPI
+DSDT) because PCI is an enumerable bus (like USB).  Only the host bridge
+has to be enumerated in the devicetree or DSDT.  The kernel can find the
+PCI devices below the host bridge itself.  Hot-plugged devices are
+usually not described in the devicetree or DSDT because one doesn't
+know their properties in advance.
 
-diff --git a/include/crypto/sha2.h b/include/crypto/sha2.h
-index 2e3fc2cf4aa0d..e0a08f6addd00 100644
---- a/include/crypto/sha2.h
-+++ b/include/crypto/sha2.h
-@@ -153,17 +153,55 @@ void __hmac_sha256_init(struct __hmac_sha256_ctx *ctx,
-  */
- struct sha224_ctx {
- 	struct __sha256_ctx ctx;
- };
- 
-+/**
-+ * sha224_init() - Initialize a SHA-224 context for a new message
-+ * @ctx: the context to initialize
-+ *
-+ * If you don't need incremental computation, consider sha224() instead.
-+ *
-+ * Context: Any context.
-+ */
- void sha224_init(struct sha224_ctx *ctx);
-+
-+/**
-+ * sha224_update() - Update a SHA-224 context with message data
-+ * @ctx: the context to update; must have been initialized
-+ * @data: the message data
-+ * @len: the data length in bytes
-+ *
-+ * This can be called any number of times.
-+ *
-+ * Context: Any context.
-+ */
- static inline void sha224_update(struct sha224_ctx *ctx,
- 				 const u8 *data, size_t len)
- {
- 	__sha256_update(&ctx->ctx, data, len);
- }
-+
-+/**
-+ * sha224_final() - Finish computing a SHA-224 message digest
-+ * @ctx: the context to finalize; must have been initialized
-+ * @out: (output) the resulting SHA-224 message digest
-+ *
-+ * After finishing, this zeroizes @ctx.  So the caller does not need to do it.
-+ *
-+ * Context: Any context.
-+ */
- void sha224_final(struct sha224_ctx *ctx, u8 out[SHA224_DIGEST_SIZE]);
-+
-+/**
-+ * sha224() - Compute SHA-224 message digest in one shot
-+ * @data: the message data
-+ * @len: the data length in bytes
-+ * @out: (output) the resulting SHA-224 message digest
-+ *
-+ * Context: Any context.
-+ */
- void sha224(const u8 *data, size_t len, u8 out[SHA224_DIGEST_SIZE]);
- 
- /**
-  * struct hmac_sha224_key - Prepared key for HMAC-SHA224
-  * @key: private
-@@ -273,17 +311,55 @@ void hmac_sha224_usingrawkey(const u8 *raw_key, size_t raw_key_len,
-  */
- struct sha256_ctx {
- 	struct __sha256_ctx ctx;
- };
- 
-+/**
-+ * sha256_init() - Initialize a SHA-256 context for a new message
-+ * @ctx: the context to initialize
-+ *
-+ * If you don't need incremental computation, consider sha256() instead.
-+ *
-+ * Context: Any context.
-+ */
- void sha256_init(struct sha256_ctx *ctx);
-+
-+/**
-+ * sha256_update() - Update a SHA-256 context with message data
-+ * @ctx: the context to update; must have been initialized
-+ * @data: the message data
-+ * @len: the data length in bytes
-+ *
-+ * This can be called any number of times.
-+ *
-+ * Context: Any context.
-+ */
- static inline void sha256_update(struct sha256_ctx *ctx,
- 				 const u8 *data, size_t len)
- {
- 	__sha256_update(&ctx->ctx, data, len);
- }
-+
-+/**
-+ * sha256_final() - Finish computing a SHA-256 message digest
-+ * @ctx: the context to finalize; must have been initialized
-+ * @out: (output) the resulting SHA-256 message digest
-+ *
-+ * After finishing, this zeroizes @ctx.  So the caller does not need to do it.
-+ *
-+ * Context: Any context.
-+ */
- void sha256_final(struct sha256_ctx *ctx, u8 out[SHA256_DIGEST_SIZE]);
-+
-+/**
-+ * sha256() - Compute SHA-256 message digest in one shot
-+ * @data: the message data
-+ * @len: the data length in bytes
-+ * @out: (output) the resulting SHA-256 message digest
-+ *
-+ * Context: Any context.
-+ */
- void sha256(const u8 *data, size_t len, u8 out[SHA256_DIGEST_SIZE]);
- 
- /**
-  * struct hmac_sha256_key - Prepared key for HMAC-SHA256
-  * @key: private
--- 
-2.50.0
+pnv_php.c seems to search the devicetree for hotplug slots and
+instantiates them.  My expectation would be that any hotplug-capable
+PCIe Root Port or Downstream Port, which is *not* described in the
+devicetree such that pnv_php.c creates a slot for it, is handled by
+pciehp.
 
+Timothy was talking about a Microsemi PCIe switch below the Root Port.
+My understanding is that the Downstream Ports of that switch are
+hotplug-capable.  So unless you've disabled CONFIG_HOTPLUG_PCI_PCIE,
+I'd expect those ports to be handled by pciehp.  Assuming they're not
+described as a "ibm,ioda2-phb" compatible device in the devicetree,
+but why would they?
+
+Thanks,
+
+Lukas
 
