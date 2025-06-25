@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-9781-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9784-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87CEDAE8E25
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 21:12:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8D7AE8E2B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 21:12:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bSBJp23vSz30NP;
-	Thu, 26 Jun 2025 05:12:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSBJw0sPvz30Vl;
+	Thu, 26 Jun 2025 05:12:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750878730;
-	cv=none; b=l7aDKDEq7+29e9thJjHVUPyfMAbAYFj8995jxF2GgYrOA1+ajIC9GO+hJQpCsZ6RuLV5tbHAMF3CeTq+4EdJlTMlrstNAYsclpv5WYXkGUFkSj1gwmVld06JjGE0xK9j1hMKYTL3WfjjcvKUtEaChcOxdvwH8hOOlVMFrWLl6mGu5gJG9ob1VXSMygG+jULxPWN7IVvK8/Tlbhz0MGMjIXe+iSzAdOM1Py31M7exzd1jfHT18ksTGPLlSV3jx6tXkw4J0xSVpwy3qbYV/nXGZ9YOjacUTeLI7kcMZbOYjgwuBGA7TmuIdqkG5zO1zbk7uMXXjrL0SwK0fBn63BTtXQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750878736;
+	cv=none; b=RJJlI54J0ywgdltOaHr8FPWdKWsI+9nwzDAbuOdD6Apl294NYXbXanYJXQWHZtEY38oY/xxst1+Q50vbpOP5/oGmELdu0A8h6AGgs8nCHt4e/HKwEKcjcTlZFobuoTSgfxI7bwaJCf0f0z/F+Mmpxysuc+cBKVSU6bw/6iWGNhOxqOi9nba+VRUvTq7gd5g/tEzI/StslET2PmHTjzaZtrjp05oZNYnHXPWrchERzBSXl58aXHZf4M1r5Ypz4Uk1bSGPgok8mhTSqHzCfqGDt+AOP6vxCYa6IGH7sOLKwNrDlejZi1YjmOU8T+R6tB4kbXQ7aa+5ydD4ULAgoWu70A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750878730; c=relaxed/relaxed;
-	bh=9+d7RfDCUMcyGi2BXCxRuU2xnlzRa42/iauZPwBkcyU=;
+	t=1750878736; c=relaxed/relaxed;
+	bh=GHer5xhnBVAf9AAcFjfq5ZgcgMov2g/1t4b6uVEZ2sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5q73spKyR5Cz6Mz0qaZiXS4LaQbping4uIAn3G/RQ9iiXR/ZP2dvTczXuum3fbiMk1mvAn9JCbmG192uIET4uf1CzQcBpC7rbvGpuZc46/u0fQvyiZJnR7nBf4ERBpjceMUMfvkJ8OdOxPN4rwS5jhaCnktHHRIJ1fYpN4ROP2zxWZNJrcHTljaIb6CC9vChtaMFlsdtTZ1PCfSZFKp5T598YFmu3dzH7THUY23ugZTljEFLepI3PJrRfMFspiJaY/bgSVerUeLTD2KOaIhGC0f8GvA+SRxsSHpsHoSDLWN20F0TVmng04ILphUajz9eIlJao5nFa+lM7YQeqInOA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I7j9hsKP; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=KuMh/RAahtWPjT760a9Lwt8S9Sc916lz1UpgF+MAaZJFtA/F2AU8CunqhT43DfweJbkA4/S/Aa95wEs8o4eVISH8m7KxJc03SLaa69+OBOQWTumYZ1hIBPx1tGCWIc0wiiUBPK89bJcJv7N1W0oDn9CdUpZ/ecSd5X678ZeGKH/zOdfZ6MvkckpMDSl6dFR8gkJuiRDFoVHqylntZuAzPR5IYjfwlyxqTinUD06uU3n21CFQ0vw75pU5d247NUo/iUmGbPvlLlf9aETMpoTkt/+DswKVH6RXmT2ukqK3FTl0iS/AUqiBdEqpMxq21ZaDbzp0aTJ4fQoyMx9TV/OFGA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cU4u2gwf; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I7j9hsKP;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cU4u2gwf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSBJn1PGYz30BG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 05:12:08 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55PELbb5002256;
-	Wed, 25 Jun 2025 19:11:38 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSBJv2FmXz30KY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 05:12:15 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55PIjF8F021390;
+	Wed, 25 Jun 2025 19:11:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=9+d7RfDCUMcyGi2BX
-	CxRuU2xnlzRa42/iauZPwBkcyU=; b=I7j9hsKPuyh2e3he1wR8KmwFe8lQA7f5y
-	rYxKu41fp/sfEjIwX4rW2yhSBAAcPLDI9kiKSWp1qzhf8EfM2exY4YvhmxBtEklF
-	N4gcfYpqek8GdSi4kZHoshnLzrYdvrwMh7ieFPjuhIb1Bg9TpfiQIjGFYPTYd5iK
-	D26gfc5tUip1KNh8VP8MHqnNN1MoFiASX8LCe0cEhUG3vcVnNI7jv5so1hD2qaNf
-	eh7V6RheSlq9H/suTEHOMNSC/o642v3fev3/JyxHfU5QBdwkwE3Qii+uMMkkQvd7
-	wP7ZygwJ/KHl7znanktJ40JYDvyfGrdfA4b2ZvsIS1wLAf6F3DFSA==
+	:mime-version:references:subject:to; s=pp1; bh=GHer5xhnBVAf9AAcF
+	jfq5ZgcgMov2g/1t4b6uVEZ2sg=; b=cU4u2gwfrbwbmauS1L3Q0hP6pCxUk7jQQ
+	8pN39+2FEXcwhQYesPmYz9aBmg7ic/4ydYy1dyyVs/3Ij4gEiqi4auyket/diAEG
+	RguLIn1QMf1qSQVWWhOqvxeAyLHKJP5rjU3/jX6k4NQ6S17vaKNEpklnrxLy40Ci
+	I7v1EwIqTgwntX1EPCSiOtTFGum767xpaDu90l0KDNVOE1rewZO7cbXGNdqmf1hz
+	WOC4JFK8kzwukIB9UUOwCPOU5YPKDpqFSH6CK62/0FXdyqgx+XHd8ls9f7QCvlNB
+	xI8uAW5V4VFxcfnCEOTDir2MJbQvg8A3dm9HY3AKRuAxDou5LItPg==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dm8jhhd1-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dj5u1e83-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 19:11:38 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55PJAD2u020289;
-	Wed, 25 Jun 2025 19:11:37 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dm8jhhcw-1
+	Wed, 25 Jun 2025 19:11:41 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55PJ3HWZ012306;
+	Wed, 25 Jun 2025 19:11:41 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dj5u1e7y-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 19:11:37 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55PGq7wY030487;
-	Wed, 25 Jun 2025 19:11:36 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47e7f030rd-1
+	Wed, 25 Jun 2025 19:11:40 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55PHm8qK002502;
+	Wed, 25 Jun 2025 19:11:40 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47e8jmasck-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 19:11:36 +0000
+	Wed, 25 Jun 2025 19:11:40 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55PJBWGM52494642
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55PJBajD43581934
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Jun 2025 19:11:32 GMT
+	Wed, 25 Jun 2025 19:11:36 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 105EC20040;
+	by IMSVA (Postfix) with ESMTP id 07D7520043;
+	Wed, 25 Jun 2025 19:11:36 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 67E0420040;
 	Wed, 25 Jun 2025 19:11:32 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6F22720043;
-	Wed, 25 Jun 2025 19:11:28 +0000 (GMT)
 Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.ibm.com.com (unknown [9.124.209.143])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 25 Jun 2025 19:11:28 +0000 (GMT)
+	Wed, 25 Jun 2025 19:11:32 +0000 (GMT)
 From: Shrikanth Hegde <sshegde@linux.ibm.com>
 To: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
         vincent.guittot@linaro.org, tglx@linutronix.de, yury.norov@gmail.com,
@@ -79,9 +79,9 @@ Cc: sshegde@linux.ibm.com, vschneid@redhat.com, dietmar.eggemann@arm.com,
         srikar@linux.ibm.com, linux-kernel@vger.kernel.org,
         christophe.leroy@csgroup.eu, linuxppc-dev@lists.ozlabs.org,
         gregkh@linuxfoundation.org
-Subject: [RFC v2 1/9] sched/docs: Document avoid_cpu_mask and avoid CPU concept
-Date: Thu, 26 Jun 2025 00:41:00 +0530
-Message-ID: <20250625191108.1646208-2-sshegde@linux.ibm.com>
+Subject: [RFC v2 2/9] cpumask: Introduce cpu_avoid_mask
+Date: Thu, 26 Jun 2025 00:41:01 +0530
+Message-ID: <20250625191108.1646208-3-sshegde@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250625191108.1646208-1-sshegde@linux.ibm.com>
 References: <20250625191108.1646208-1-sshegde@linux.ibm.com>
@@ -100,70 +100,124 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDE0MSBTYWx0ZWRfX57VmWe5XYxRc b58FKiEEVnlkADF1Y4ms1gpjAq+hnNW/yN+Xh/0hAwGZ21ac7AJbrQdynjCCmVuDviQ2p12GRYo s8uIxGSTratWHXmzKrMwzSOIZXkr8DWyMcSZ/c9bqS1DHIrmsyF38BlAsBAf4qDQzZm59XH4Ewg
- nc3l4orWLycmkkV1j0/YqhYqVN/tOMxSSy9iFJrzN+SC+AGDAfQbauX/JX3F6FTMICo/Hd5hb3u xItrAyJh3uTSKLFOE7sFP5GjjyzhKZiqfOY4odzWqihMT8vD0gvJ7wjRLmyqoem0z3GarbmoMRN Z5BVmObk0zAhpK7wfqVbZAYPbDE9IrpG6b6qpaYyn+x3tMqS9pdcaMTLL2CAtyuTUMVO5lxLeZ1
- M+VkhqQWR5O8vHeChKt8BsY5D8M9rao9cMCejpXDLt6GV0vmaoQj7W/Z/erZmxKhwbCp+fzz
-X-Proofpoint-GUID: CrdOf7y_8SXN7UNmObo2YZTj5GjREvzS
-X-Proofpoint-ORIG-GUID: wQj-IDrmhnmGmzaEQsz7vdRhdF1uncyG
-X-Authority-Analysis: v=2.4 cv=combk04i c=1 sm=1 tr=0 ts=685c49ea cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=5nzgSDI2G5BSHnRbDcAA:9
+X-Proofpoint-ORIG-GUID: dE9UtAVDRPTezjRgirKRyHN9rZp5_v0i
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDE0MSBTYWx0ZWRfX/UKBIUdc5CFJ npscVWmTiaWEZb8I2RHf2qPH94MOtjHrFraxwYledlw9DYyJ1xA3JHiG6MmvG0E9RcaCblO23MI gC9ec4PIWBGZZz0BSyqbOOPqRbm+aUwxoAn/cckUrEHdm3LS/lHSGQqWkG//+oo6uqrCWVz4TZB
+ N+AaYwjzrEbS0B2vbJMlQWDnpECM0GDj/Fo4AINce6WDhVgo1QFqA8h8XjX5An+19MR1a5C1NzM QBygdnjcGXDNbgRkwIpLgyCce5YxPJ49PkAfZziZGlI8zkXyyxvcAbSQt0nuQPaVdsO3xmVINK8 LmVZGHbRRcNFDB+w+pIMeMZ+qWgAypP/BGVgxqtZQkrdixQylTbuiqpqAKs0uHU5OyULvI6g40Z
+ WTclGm8WuvAXJmuluZQB+0oIx3eP8Y+2wnRSWwcFD6oyOBmsAzXwRzYN2FC/Fwxp7ba2lbel
+X-Authority-Analysis: v=2.4 cv=MshS63ae c=1 sm=1 tr=0 ts=685c49ed cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=43edTZbtrg5bJSvecBcA:9
+X-Proofpoint-GUID: 1B4I5-iUm_Kdo6JFcyZtVd6UUixFXvlq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-06-25_06,2025-06-25_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 spamscore=0 adultscore=0 mlxlogscore=977 clxscore=1015
- impostorscore=0 suspectscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=999 impostorscore=0
+ clxscore=1011 phishscore=0 malwarescore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2506250141
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This describes what avoid CPU means and what scheduler aims to do 
-when a CPU is marked as avoid. 
+Introduce cpu_avoid_mask and get/set routines for it.
 
+By having the mask, it is easier for other kernel subsystem to consume
+it as well. One could quickly know which CPUs are currently marked as
+avoid.
+ 
 Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 ---
- Documentation/scheduler/sched-arch.rst | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+There is a sysfs patch later in the series which prints this mask. If it 
+should be sqashed into this patch, let me know. 
+ 
+include/linux/cpumask.h | 17 +++++++++++++++++
+ kernel/cpu.c            |  3 +++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/Documentation/scheduler/sched-arch.rst b/Documentation/scheduler/sched-arch.rst
-index ed07efea7d02..d32755298fca 100644
---- a/Documentation/scheduler/sched-arch.rst
-+++ b/Documentation/scheduler/sched-arch.rst
-@@ -62,6 +62,31 @@ Your cpu_idle routines need to obey the following rules:
- arch/x86/kernel/process.c has examples of both polling and
- sleeping idle functions.
+diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
+index 7ae80a7ca81e..6394c67a4fb3 100644
+--- a/include/linux/cpumask.h
++++ b/include/linux/cpumask.h
+@@ -84,6 +84,7 @@ static __always_inline void set_nr_cpu_ids(unsigned int nr)
+  *     cpu_enabled_mask - has bit 'cpu' set iff cpu can be brought online
+  *     cpu_online_mask  - has bit 'cpu' set iff cpu available to scheduler
+  *     cpu_active_mask  - has bit 'cpu' set iff cpu available to migration
++ *     cpu_avoid_mask  - has bit 'cpu' set iff cpu is to be avoided now
+  *
+  *  If !CONFIG_HOTPLUG_CPU, present == possible, and active == online.
+  *
+@@ -101,6 +102,10 @@ static __always_inline void set_nr_cpu_ids(unsigned int nr)
+  *  (*) Well, cpu_present_mask is dynamic in the hotplug case.  If not
+  *      hotplug, it's a copy of cpu_possible_mask, hence fixed at boot.
+  *
++ *  A CPU is said to be avoided when there is contention for underlying
++ *  physical CPU resource in paravirtulized environment. It is recommneded
++ *  not run anything on that CPU though it is online.
++ *
+  * Subtleties:
+  * 1) UP ARCHes (NR_CPUS == 1, CONFIG_SMP not defined) hardcode
+  *    assumption that their single CPU is online.  The UP
+@@ -118,12 +123,14 @@ extern struct cpumask __cpu_enabled_mask;
+ extern struct cpumask __cpu_present_mask;
+ extern struct cpumask __cpu_active_mask;
+ extern struct cpumask __cpu_dying_mask;
++extern struct cpumask __cpu_avoid_mask;
+ #define cpu_possible_mask ((const struct cpumask *)&__cpu_possible_mask)
+ #define cpu_online_mask   ((const struct cpumask *)&__cpu_online_mask)
+ #define cpu_enabled_mask   ((const struct cpumask *)&__cpu_enabled_mask)
+ #define cpu_present_mask  ((const struct cpumask *)&__cpu_present_mask)
+ #define cpu_active_mask   ((const struct cpumask *)&__cpu_active_mask)
+ #define cpu_dying_mask    ((const struct cpumask *)&__cpu_dying_mask)
++#define cpu_avoid_mask    ((const struct cpumask *)&__cpu_avoid_mask)
  
-+CPU Avoid
-+=========
-+
-+Under paravirt conditions it is possible to overcommit CPU resources.
-+i.e sum of virtual CPU(vCPU) of all VM is greater than number of physical
-+CPUs(pCPU). Under such conditions when all or many VM have high utilization,
-+hypervisor won't be able to satisfy the requirement and has to context switch
-+within or across VM. VM level context switch is more expensive compared to
-+task context switch within the VM.
-+
-+In such cases it is better that VM's co-ordinate among themselves and ask for
-+less CPU request by not using some of the vCPUs. Such vCPUs where workload
-+can be avoided at the moment are called as "Avoid CPUs". Note that when the
-+pCPU contention goes away, these vCPUs can be used again by the workload.
-+
-+Arch need to set/unset the vCPU as avoid in cpu_avoid_mask. When set, avoid
-+the CPU and when unset, use it as usual.
-+
-+Scheduler will try to avoid those CPUs as much as it can.
-+This is achived by
-+1. Not selecting those CPU at wakeup.
-+2. Push the task away from avoid CPU at tick.
-+3. Not selecting avoid CPU at load balance.
-+
-+This works only for SCHED_RT and SCHED_NORMAL.
+ extern atomic_t __num_online_cpus;
  
- Possible arch/ problems
- =======================
+@@ -1133,6 +1140,7 @@ void init_cpu_possible(const struct cpumask *src);
+ #define set_cpu_present(cpu, present)	assign_cpu((cpu), &__cpu_present_mask, (present))
+ #define set_cpu_active(cpu, active)	assign_cpu((cpu), &__cpu_active_mask, (active))
+ #define set_cpu_dying(cpu, dying)	assign_cpu((cpu), &__cpu_dying_mask, (dying))
++#define set_cpu_avoid(cpu, avoid)       assign_cpu((cpu), &__cpu_avoid_mask, (avoid))
+ 
+ void set_cpu_online(unsigned int cpu, bool online);
+ 
+@@ -1222,6 +1230,11 @@ static __always_inline bool cpu_dying(unsigned int cpu)
+ 	return cpumask_test_cpu(cpu, cpu_dying_mask);
+ }
+ 
++static __always_inline bool cpu_avoid(unsigned int cpu)
++{
++	return cpumask_test_cpu(cpu, cpu_avoid_mask);
++}
++
+ #else
+ 
+ #define num_online_cpus()	1U
+@@ -1260,6 +1273,10 @@ static __always_inline bool cpu_dying(unsigned int cpu)
+ 	return false;
+ }
+ 
++static __always_inline bool cpu_avoid(unsigned int cpu)
++{
++	return false;
++}
+ #endif /* NR_CPUS > 1 */
+ 
+ #define cpu_is_offline(cpu)	unlikely(!cpu_online(cpu))
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index a59e009e0be4..44e8c66d2839 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -3107,6 +3107,9 @@ EXPORT_SYMBOL(__cpu_active_mask);
+ struct cpumask __cpu_dying_mask __read_mostly;
+ EXPORT_SYMBOL(__cpu_dying_mask);
+ 
++struct cpumask __cpu_avoid_mask __read_mostly;
++EXPORT_SYMBOL(__cpu_avoid_mask);
++
+ atomic_t __num_online_cpus __read_mostly;
+ EXPORT_SYMBOL(__num_online_cpus);
+ 
 -- 
 2.43.0
 
