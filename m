@@ -1,86 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-9780-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9782-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5DDAE8A2B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 18:43:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88EACAE8E26
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 21:12:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bS70W2kjFz30MY;
-	Thu, 26 Jun 2025 02:42:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSBJp2PlMz30P3;
+	Thu, 26 Jun 2025 05:12:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750869771;
-	cv=none; b=THa0WmQW6p+pe9pCN+rbkd8kx1XwzXySUAZUiQKNPeXnHTNzLbsui2TKAFDr0+Bfqnk7BVRmQjMTs13RKQjorngFz6dVavMibR06YVuySAzlDQRnd31jVwMRQMj1M9d2h/CZpE3uESQdIU+udp/LqjFmv22oEZktFAWpybZgem5eEb+MnFNY8yPUqlGBPOYznnCC5BeNrfqI+b/siABLK6VDcz6gQICyqJr+FPHmPPnIresxIYvwVdX30cAxseMlkCY54HqMQrDm/4qOMmOtlJ0U2zrJ48kwXaC0sUAfo+qx0awYsHt6zu5hTvOr0nLioUOGEi+ez/a4dwtu/uFMZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750878730;
+	cv=none; b=ZEwFkIVNMLy/tijPvwiGHCYCrIWWgdlYzzowAGX0MAP6jfoiDmz9t5GuYMjcEWDY/g/BCqYi+bOPYxg5j2diHBo6e+cbCmdPbkB0E8peHvA1Lm1jKvp27TXIFr1CtZP4xa/DPQnber8gyyK/vmtyVtT7/VmTV+ciYQvvCUgff54h7U0WxZGB90rzQUE88WsU6KMyBf1wxFBCnqY8hN0EG09cmBYR0PXPc4YDctMvQi5OFH2j5h9HpiVrjhoHBGbm9flGhA9nDZIV+7oBj65ypZheCIp0UI+QLD9gY78ff/+DWKdd1jVyczaJyi1RIpwsWHM+Bh6mASGlroqmyfZipA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750869771; c=relaxed/relaxed;
-	bh=Nlfl0HvL6p5C9wiWXuv3ZyT8srkPY79gCbVcPY25wgE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Nprpnxd3tbfgAKPDrptCgtHtLxhwSng6KnQBbpuEJo7fy02cX5N0TJ+kiTA7Y35TJ69vCjqMyHQa39SLjk0NVH5Rx3/vaxPUrgFyJ8OUfmdSxttSrCybYQjd9Il64k3a1COWuTICbhGNyqHXNr5gI2IzBKzlIwNQSRAvCiACfh8ALD/Ew2TJBrxlnlHAy8E6P0BIGCrOsfLaHDjoDF1kkuhS5JG82QLfOVXzVDk8NznI93Z1y6ZYQZubPN7nt9Dqig7mDqRnBt4fiP2Ck3zN+SjmvwxxGE2HHb9kwZKMxx6RjQZPoYodGy2g5U1nhCkVmXiWS/2k+ypxycouKJIQCA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YkTaL1mu; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KEAxUpn4; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1750878730; c=relaxed/relaxed;
+	bh=5Gw1RJHHZfttkqe23HirKDPVygLFpQ1CNF9vh/05TIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YUvrvp/ilaqIH2GrtS94hXfiMOjAT8SaAYRGM0HjTfVrELCLgQXELOB4vvHWIspF4ryZqh1pSUgm15f2lbKYqVHIki2ozrwV65wbg+/Ly5cOYQD/EEflYTcGI1p/nJ3AJbWvgjfbu3len1HbpPKCUxfK/gcmftTwwf6wmcgg8Af5tzh4M7WVRUcR8DW+45OCedBOgGNT/kC5c2SvhciH3VHl0F/faG14YpUg188GF9mWYCwLyl/5jPb9fVgQBinPk44JT4tcekYGQUjlYkCRchwGQZoZaI2fw54dN2NRzxNi6PPYQlnapzSXugAl8YDHxMt3AM2kqOatWpSE2nXxJQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j+5W3mGQ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YkTaL1mu;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KEAxUpn4;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j+5W3mGQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=sgarzare@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bS70V0p1Xz30Lt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 02:42:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750869762;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nlfl0HvL6p5C9wiWXuv3ZyT8srkPY79gCbVcPY25wgE=;
-	b=YkTaL1muQkscOMq/yYdhIlqoTzEznbiGIef6upiEu0ZjC5jNPUmta/33QbaWmdBOvaaBa1
-	DWRvmf+sBoPqhWOQ+JTzBaXzNvGegyJa5BjHP+GLiDEpmZFxHCSv+6kSHJ3LTBnc5uOcO3
-	1xJU7MCLlkUj3Huw7W6flPiQYv/krG4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750869763;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nlfl0HvL6p5C9wiWXuv3ZyT8srkPY79gCbVcPY25wgE=;
-	b=KEAxUpn4sI+pd+NIXAq5e6m5rSa+z1/vgh3OVVllUjaIxVgbTnaGygBt+sSjrlG8I1iSP0
-	WTo87YmMVOb63Mm/brnwRmfUGt4TOOpQLhOVeTL79FI5vXZmWmfF6WTqKjRmMXL6MYvtRo
-	xyjvaW/BLtNIoPpUknMHk4myyzCS4h0=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-WrKK6V80PGiXPsHl_uRzwA-1; Wed, 25 Jun 2025 12:42:39 -0400
-X-MC-Unique: WrKK6V80PGiXPsHl_uRzwA-1
-X-Mimecast-MFC-AGG-ID: WrKK6V80PGiXPsHl_uRzwA_1750869759
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-714052e5103so1090307b3.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 09:42:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750869759; x=1751474559;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Nlfl0HvL6p5C9wiWXuv3ZyT8srkPY79gCbVcPY25wgE=;
-        b=wNU/g837Py/vPPaHVcT1b+9/RxFORQwhg53UnYb8rHjmtMwAR/ErCd5lIgdmBCRFsJ
-         gAieWPy7+2n/ea1A8n9AMgGZkcWFW7XAwl2ysZta87ztW1FNP//TpNmX08kF3vP1AFOO
-         JDWCS/a5vdnO1jwF0V6e+w/v37KEdw5NOO7Y0U2/NGE6vqWNE0/GfiAHO3b3f4rzYWTO
-         b/bqKQ6vaAvbPNfPmPG5KZPHhEGcHihirNkGw1U5l/TVxzN/1UBjigVyLFpuMStArfz9
-         445p+mVKK0jzJ0w63swBjJ2HLQU2GIEYitEjm4uM+0XKS/nd7FKo+cn8GWk1+hi8r2v6
-         uKpg==
-X-Forwarded-Encrypted: i=1; AJvYcCVkedipaNKrg60R4TNzxe990fWOnJIjlDwcSQyazWqbf3mF9yn8sL7ArJmqAYZzCTWUP5lUo8S/rHYS49k=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxkF2J7Mi23xWNyXknfsSUBkPHVb+EUp5aFjXWEtakuh/1vYKua
-	jezNj0OFA+ppmf6UptN3Mv3WqkEtQolkQgzlaqvDLXphOk7ySkg35D+fHZSeczRk+dYxq+5VDYr
-	6G3IrM8FlP/xv1Nz+AMZJOFZg8DiDMPSgaKqR67J80wwzHsUqIj9XjhGgUwk3vo6OPj8A6IxiDo
-	e7u7f/MoLnWZRasZ74eubqsPAPzbmkiBPmUBaVEu353Q==
-X-Gm-Gg: ASbGncs2wyLyUA8L9Zls17HtnYk6Q9ayeDaEHK5ye9BYTL1/x7VwXlVAUCRa9dZIPCw
-	cESk68da6LqKtVsC1jVfbzuFz0xonSzv/N6MGkS79/9Y2d7R0d84NIO7jSPsBeiVh9MRLhsd6mp
-	4soi10pg==
-X-Received: by 2002:a05:690c:6b0c:b0:70f:8913:ed66 with SMTP id 00721157ae682-715087c70bdmr10121957b3.38.1750869759008;
-        Wed, 25 Jun 2025 09:42:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFieNmTUGgh1wCgADlrPL5JDmEvLuKpDHJRUgQ2djJiYYhZb7UVT6EWDckb5lNTgx4pKSPLhXjmzcMJTZ3XZMc=
-X-Received: by 2002:a05:690c:6b0c:b0:70f:8913:ed66 with SMTP id
- 00721157ae682-715087c70bdmr10121207b3.38.1750869758423; Wed, 25 Jun 2025
- 09:42:38 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSBJn1RHBz30Ff
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 05:12:08 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55PF8EH8007226;
+	Wed, 25 Jun 2025 19:11:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=5Gw1RJHHZfttkqe23HirKDPVygLFpQ1CNF9vh/05T
+	IY=; b=j+5W3mGQGE0U9zt9Y9RrzK2xD2bOCGwpNAHfgsfUSsQyqqU5olJa0MwpS
+	TAvjhzY2keWLRhu1mEFDrzEjF9mcq4KiRaj6h++g+AoXIl76m5fhQJOEYZZ15Ga2
+	p8DcWO4X6SxQcXJdOZL9AJJK3pFfcVHHJmQj/h8wmvZ/2AHEpq/iiPyXrxrjIKJx
+	OEhFi5zYp3zX81D9SNHqQxhlUoc8CcoF/LAkTDE1IB2uckmaMacM8c+nbELnw6db
+	BhsfkmsYzwvIbXEMu80clttTfJt4SVovILMYGskatMDKaO3l9Mix/S0J9rxZe++F
+	yfqgrYEkTW1I17W9ZGNfzUx6xPV/w==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dk6416gw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Jun 2025 19:11:33 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55PJ9Te5024643;
+	Wed, 25 Jun 2025 19:11:33 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dk6416gu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Jun 2025 19:11:32 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55PH6pl3006414;
+	Wed, 25 Jun 2025 19:11:32 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47e82paxun-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Jun 2025 19:11:32 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55PJBSqu49611032
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Jun 2025 19:11:28 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 167FE20043;
+	Wed, 25 Jun 2025 19:11:28 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 75C7D20040;
+	Wed, 25 Jun 2025 19:11:24 +0000 (GMT)
+Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.ibm.com.com (unknown [9.124.209.143])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 25 Jun 2025 19:11:24 +0000 (GMT)
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+To: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, tglx@linutronix.de, yury.norov@gmail.com,
+        maddy@linux.ibm.com
+Cc: sshegde@linux.ibm.com, vschneid@redhat.com, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, kprateek.nayak@amd.com, huschle@linux.ibm.com,
+        srikar@linux.ibm.com, linux-kernel@vger.kernel.org,
+        christophe.leroy@csgroup.eu, linuxppc-dev@lists.ozlabs.org,
+        gregkh@linuxfoundation.org
+Subject: [RFC v2 0/9] cpu avoid state and push task mechanism
+Date: Thu, 26 Jun 2025 00:40:59 +0530
+Message-ID: <20250625191108.1646208-1-sshegde@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,131 +95,123 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250620130810.99069-1-sgarzare@redhat.com> <20250620130810.99069-5-sgarzare@redhat.com>
- <aFvlaY0BNjaGxU1D@kernel.org> <aFwQ129i_HYzG3aY@kernel.org>
-In-Reply-To: <aFwQ129i_HYzG3aY@kernel.org>
-From: Stefano Garzarella <sgarzare@redhat.com>
-Date: Wed, 25 Jun 2025 18:42:26 +0200
-X-Gm-Features: Ac12FXxEB7j1Pqu364HQDxXaTieTzsNMquFeCJO9Pw5PNZpgUTeipi1JP5Ohhks
-Message-ID: <CAGxU2F4q_UyBiNqWfQMVAXqsWQbtu5ety9MTpg35eRcE=eVqjg@mail.gmail.com>
-Subject: Re: [PATCH v6 4/4] tpm/tpm_svsm: support TPM_CHIP_FLAG_SYNC
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Naveen N Rao <naveen@kernel.org>, Sumit Garg <sumit.garg@kernel.org>, 
-	linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>, 
-	Jens Wiklander <jens.wiklander@linaro.org>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: JhqGREWGA4FKC5u0KJX4j01L8-s8lR8ATQcMxyjaznM_1750869759
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDE0MSBTYWx0ZWRfX5o4c9SK/0Mgh zXmpWixIXtu9R3zEunkOUGhJELLe9G5632mNtUBVXggPiNvj8R0Kb2nEYQuy5DFoeiF2coBgYg4 Hc69dkKE4XkC/JIOSc39I2BtFkvBu/H8J7DttqrTVBzFh5Qjcod3K5RMOqfFR82/FLfwx5TjECC
+ Y53gnFlZFARS1iq69rCLhK4SNflV8P+/6klm1dQbkH3lV3/LDL1Yuorog1Cz6a4cMmyybqyTy4C AieBAhnUsi9J8tZi2jhWFUN0FLB+OcbgJ3farQ46VmvlPVu5rhch1pBwNSLWY+LSBGLy9ra/WU7 P/q9gQBq3oQB0MBNwxSFdBwn163ZDajIil4vPytNC2lXnhYUFkbyvcLbuVZq+pmXiuOZNM0hE3C
+ bhY6XivfNF7kQ+X9xD402I04Eb++7uoxJuEFIwUvCYO2YKyS3MQ8jDB9gKivkbkZaEFVtXYW
+X-Proofpoint-ORIG-GUID: JTNI2qIyFNqmERLTLVcxOMtf7NvJZj0x
+X-Proofpoint-GUID: j6xmZrWyKUdMLHBZyoW7swMnLCf1U6rb
+X-Authority-Analysis: v=2.4 cv=BfvY0qt2 c=1 sm=1 tr=0 ts=685c49e5 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=rao2rHU-l_mUQkgOp-sA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-25_06,2025-06-25_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 suspectscore=0 adultscore=0 spamscore=0
+ impostorscore=0 mlxlogscore=858 malwarescore=0 phishscore=0 bulkscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506250141
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 25 Jun 2025 at 17:08, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
-> On Wed, Jun 25, 2025 at 03:02:54PM +0300, Jarkko Sakkinen wrote:
-> > On Fri, Jun 20, 2025 at 03:08:10PM +0200, Stefano Garzarella wrote:
-> > > From: Stefano Garzarella <sgarzare@redhat.com>
-> > >
-> > > This driver does not support interrupts, and receiving the response is
-> > > synchronous with sending the command.
-> > >
-> > > Enable synchronous send() with TPM_CHIP_FLAG_SYNC, which implies that
-> > > ->send() already fills the provided buffer with a response, and ->recv()
-> > > is not implemented.
-> > >
-> > > Keep using the same pre-allocated buffer to avoid having to allocate
-> > > it for each command. We need the buffer to have the header required by
-> > > the SVSM protocol and the command contiguous in memory.
-> > >
-> > > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> > > ---
-> > > v5:
-> > > - changed order and parameter names to match tpm_try_transmit() [Jarkko]
-> > > v4:
-> > > - reworked commit description [Jarkko]
-> > > ---
-> > >  drivers/char/tpm/tpm_svsm.c | 27 +++++++++++----------------
-> > >  1 file changed, 11 insertions(+), 16 deletions(-)
-> > >
-> > > diff --git a/drivers/char/tpm/tpm_svsm.c b/drivers/char/tpm/tpm_svsm.c
-> > > index 0847cbf450b4..f5ba0f64850b 100644
-> > > --- a/drivers/char/tpm/tpm_svsm.c
-> > > +++ b/drivers/char/tpm/tpm_svsm.c
-> > > @@ -26,37 +26,31 @@ struct tpm_svsm_priv {
-> > >  };
-> > >
-> > >  static int tpm_svsm_send(struct tpm_chip *chip, u8 *buf, size_t bufsiz,
-> > > -                    size_t len)
-> > > +                    size_t cmd_len)
-> > >  {
-> > >     struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
-> > >     int ret;
-> > >
-> > > -   ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, len);
-> > > +   ret = svsm_vtpm_cmd_request_fill(priv->buffer, 0, buf, cmd_len);
-> > >     if (ret)
-> > >             return ret;
-> > >
-> > >     /*
-> > >      * The SVSM call uses the same buffer for the command and for the
-> > > -    * response, so after this call, the buffer will contain the response
-> > > -    * that can be used by .recv() op.
-> > > +    * response, so after this call, the buffer will contain the response.
-> > > +    *
-> > > +    * Note: we have to use an internal buffer because the device in SVSM
-> > > +    * expects the svsm_vtpm header + data to be physically contiguous.
-> > >      */
-> > > -   return snp_svsm_vtpm_send_command(priv->buffer);
-> > > -}
-> > > -
-> > > -static int tpm_svsm_recv(struct tpm_chip *chip, u8 *buf, size_t len)
-> > > -{
-> > > -   struct tpm_svsm_priv *priv = dev_get_drvdata(&chip->dev);
-> > > +   ret = snp_svsm_vtpm_send_command(priv->buffer);
-> > > +   if (ret)
-> > > +           return ret;
-> > >
-> > > -   /*
-> > > -    * The internal buffer contains the response after we send the command
-> > > -    * to SVSM.
-> > > -    */
-> > > -   return svsm_vtpm_cmd_response_parse(priv->buffer, buf, len);
-> > > +   return svsm_vtpm_cmd_response_parse(priv->buffer, buf, bufsiz);
-> > >  }
-> > >
-> > >  static struct tpm_class_ops tpm_chip_ops = {
-> > >     .flags = TPM_OPS_AUTO_STARTUP,
-> > > -   .recv = tpm_svsm_recv,
-> > >     .send = tpm_svsm_send,
-> > >  };
-> > >
-> > > @@ -85,6 +79,7 @@ static int __init tpm_svsm_probe(struct platform_device *pdev)
-> > >
-> > >     dev_set_drvdata(&chip->dev, priv);
-> > >
-> > > +   chip->flags |= TPM_CHIP_FLAG_SYNC;
-> > >     err = tpm2_probe(chip);
-> > >     if (err)
-> > >             return err;
-> > > --
-> > > 2.49.0
-> > >
-> >
-> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->
-> Applied.
+This is a followup version if [1] with few additions. This is still an RFC 
+and would like get feedback on the idea and suggestions on improvement. 
 
-Great, thanks!
-Stefano
+v1->v2:
+- Renamed to cpu_avoid_mask in place of cpu_parked_mask.
+- Used a static key such that no impact to regular case. 
+- add sysfs file to show avoid CPUs.
+- Make RT understand avoid CPUs. 
+- Add documentation patch 
+- Took care of reported compile error in [1] when NR_CPUS=1
+
+-----------------
+Problem statement
+-----------------
+vCPU - Virtual CPUs - CPU in VM world.
+pCPU - Physical CPUs - CPU in baremetal world.
+
+A hypervisor is managing these vCPUs from different VMs. When a vCPU 
+requests for CPU, hypervisor does the job of scheduling them on a pCPU.
+
+So this issue occurs when there are more vCPUs(combined across all VMs) 
+than the pCPU. So when *all* vCPUs are requesting for CPUs, hypervisor 
+can only run a few of them and remaining will be preempted(waiting for pCPU).
+
+If we take two VM's, When hypervisor preempts vCPU from VM1 to run vCPU from 
+VM2, it has to do save/restore VM context.Instead if VM's can co-ordinate among
+each other and request for *limited*  vCPUs, it avoids the above overhead and 
+there is context switching within vCPU(less expensive). Even if hypervisor
+is preempting one vCPU to run another within the same VM, it is still more 
+expensive than the task preemption within the vCPU. So *basic* aim to avoid 
+vCPU preemption.
+
+So to achieve this, use "CPU Avoid" concept, where it is better
+if workload avoids these vCPUs at this moment.
+(vCPUs stays online, we don't want the overhead of sched domain rebuild).
+
+Contention is dynamic in nature. When there is contention for pCPU is to be 
+detected and determined by architecture. Archs needs to update the mask 
+accordingly.
+
+When there is contention, use limited vCPUs as indicated by arch.
+When there is no contention, use all vCPUs.
+
+-------------------------
+To be done and Questions: 
+-------------------------
+1. IRQ - still don't understand this cpu_avoid_mask. Maybe irqbalance
+code could be modified to do the same. Ran stress-ng --hrtimers, irq
+moved out of avoid cpu though. So need to see if changes to irqbalance is
+required or not.
+
+2. If a task is spawned by affining to only avoid CPUs. Should that fail
+or throw a warning to user. 
+
+3. Other classes such as SCHED_EXT, SCHED_DL won't understand this infra
+yet.
+
+4. Performance testing yet to be done. RFC only verified the functional
+aspects of whether task move out of avoid CPUs or not. Move happens quite
+fast (around 1-2 seconds even on large systems with very high utilization) 
+
+5. Haven't come up an infra which could combine all push task related
+changes. It is currently spread across rt, dl, fair. Maybe some
+consolidation can be done. but which tasks to push/pull still remains in
+the class. 
+
+6. cpu_avoid_mask may need some sort of locking to ensure read/write is
+correct. 
+
+[1]: https://lore.kernel.org/all/20250523181448.3777233-1-sshegde@linux.ibm.com/
+
+Shrikanth Hegde (9):
+  sched/docs: Document avoid_cpu_mask and avoid CPU concept
+  cpumask: Introduce cpu_avoid_mask
+  sched/core: Don't allow to use CPU marked as avoid
+  sched/fair: Don't use CPU marked as avoid for wakeup and load balance
+  sched/rt: Don't select CPU marked as avoid for wakeup and push/pull rt task
+  sched/core: Push current task out if CPU is marked as avoid
+  sched: Add static key check for cpu_avoid
+  sysfs: Add cpu_avoid file
+  powerpc: add debug file for set/unset cpu avoid
+
+ Documentation/scheduler/sched-arch.rst | 25 +++++++++++++
+ arch/powerpc/include/asm/paravirt.h    |  2 ++
+ arch/powerpc/kernel/smp.c              | 50 ++++++++++++++++++++++++++
+ drivers/base/cpu.c                     |  8 +++++
+ include/linux/cpumask.h                | 17 +++++++++
+ kernel/cpu.c                           |  3 ++
+ kernel/sched/core.c                    | 50 +++++++++++++++++++++++++-
+ kernel/sched/fair.c                    | 11 +++++-
+ kernel/sched/rt.c                      |  9 +++--
+ kernel/sched/sched.h                   | 10 ++++++
+ 10 files changed, 181 insertions(+), 4 deletions(-)
+
+-- 
+2.43.0
 
 
