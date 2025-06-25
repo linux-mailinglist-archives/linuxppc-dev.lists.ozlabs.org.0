@@ -1,90 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-9790-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9791-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D67CAE8E3A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 21:13:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF05DAE8F39
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 22:12:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bSBK56vcNz30Wn;
-	Thu, 26 Jun 2025 05:12:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSCfY4TdYz307q;
+	Thu, 26 Jun 2025 06:12:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750878745;
-	cv=none; b=GlacuNQV9EkqAX7ItT0wG6br35ikIPNpmq9Iqq1JESFGr8ByuG/GunVHk3DNIB78BgJzEwFZNKIY1ioJ03ACcMd602uwvmnTLAe9QDYATu/iQO306+WeM0ThqRkJINuhCeHfOc/kKQ2z+MmhTiX9aHGa1w2BB+tGZvI72amkx+6DzBR7GwJxkiLcd5ZOZrZ190SZAwjEIVhyhDeqbBNZsPfIdM5tJLRJJHq1t/SnUnIB2DHffy/2rvGYMKX5+FBWdlc77Mze08VL1/i2UtmAxptJKidUYpM/BdusAmDJ422lCBH4iYTbZOQ3QC/jHM6fglzFg73xk/pF4ZbXfhAR0A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750882357;
+	cv=none; b=jAA17z+uJT/5jtW4WuTEn5ibdnwzgg0mDi8Md2cDJvbzzamocs0iD3IZ6UqydClj3OR47DRjbniJNiOgApDfM8YJAk61yViwAK/pQhgQk1389jgPFf3XespedKAhLWOwgZs1VMwaplDqcb9FhFPQkQy9Zz/k9XJS9h+q0Cevgai4/UH/H5KzWqrhWSO8VIBkIlCRD+lPrVaPBllRzLMv3SCF6GM53A5zp0IB7S+NGWi1AfcbzEocRjAyrspqkgG2H8Bv6KXYWr+Zp3Z9USawDvG+cwuO5xBbSiXEVI7H3gUu+1qzENdiUQF+nhX169/Q+4niO5HdsIm5vzSJb3TrqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750878745; c=relaxed/relaxed;
-	bh=sj4hwpYQjyOaXXLYMwbz9n8YmXdOIVju/O/KyJyJKkQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMq436PiNCcUauD4SopIK3plWES4tDVpxCiOSC5aw/Y9hiYkgKIucJB6zwfG9BzL7HM1GjKlxZLohjOmSMh0Z189EzhOYYZs7Hf1kuAmS4O1H/K6+IFD7721QP9UGOW+Z57c3lGOcBi2gS+id2/uKUAK4GdTmOv9za/nulRvUDbAw1DBxBPS7lSxoNIB04MJ6j3RlMuh1SZJqS4ASEmt6kc6O+ueZqhGzOidvM9QZJCW0LbptozHDWU06YoZjYlTRzPUNt+YSgmIjBfga6rZQYj5UX1RNy50wP7ZpIxmStOv28GXS0ZU8sJvPhaJksUxFf67amvLHE4mqFS0YltH7w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rQ23vrEl; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1750882357; c=relaxed/relaxed;
+	bh=9Sm/T7CYUS/dB3VGB3sR8lrBXoPXRgt5/1BjEHJnRmo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zsy4aCSKJY2rYQ9t+27P2PYwAl6q+SAcEtbx28gqqedDR2Zh66qpw+iyHUsz17VNNp7r1AciZjAM0NJda9BHzN900tGs0N7oAksDwTDQCo8b9Y04kaAD0dAGiACj5o2GOQ0LiQPGodNeKIo0rSIyD9UhdKmE57d7auhj3vHUuAJr86fTg7nvQNqk7/lfHGFthyHKB3ZBaLqHaiVLrl+rJ4Gawf4NA+o0cCRULbAcMsErDF26bxSXfuRddTyTYM1WjtuvjSdXCLIC1gzd426xYOCzJafgzjBDUXyK+/JuSmmLSTKvzi1btSfa8/j6mKIN/SNIeCU+FJ4egfDjYJG6sg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m0VYGUGi; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rQ23vrEl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=m0VYGUGi;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSBK43ljBz3bkb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 05:12:24 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55PIvp0T002954;
-	Wed, 25 Jun 2025 19:12:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=sj4hwpYQjyOaXXLYM
-	wbz9n8YmXdOIVju/O/KyJyJKkQ=; b=rQ23vrEliBZhkHyNP6uH/NX5D/iV90lz5
-	Sbzfh5xvFGQ3hhs8dranANb/CTkG5sbGz+v+0gQqHyOcPJ3OuJiXixNkwFyHAagh
-	B1yDfI9X+t8/y8sagSpPYtjTmumrY/LtP3Rgb/wZ+Dc9XF7eRq3Mo3qnkjz3P3Fp
-	bQCDp4A16iFQ65QD+LqMLaahVbJusXjk/KZyBP/lWSxJpfABb6xeJgLJAuchygX5
-	tFbdTW2b+IrdjsSkrtUjo1Fs21RO+mfeTC9qzYEihYNBaU4CgV6CF8jcBjkuiGY4
-	FbitLYvjLQq/GBQM8DHABv2PjwwlTQJb3sfIoauYmKc8FGL4KN4WQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmf394kx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 19:12:09 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55PJ7gLb013252;
-	Wed, 25 Jun 2025 19:12:09 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dmf394kt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 19:12:09 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55PHlU9B002512;
-	Wed, 25 Jun 2025 19:12:08 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47e8jmasem-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 19:12:08 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55PJC4Lx45351400
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Jun 2025 19:12:04 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 47CA520043;
-	Wed, 25 Jun 2025 19:12:04 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8E2EB20040;
-	Wed, 25 Jun 2025 19:12:00 +0000 (GMT)
-Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.ibm.com.com (unknown [9.124.209.143])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 25 Jun 2025 19:12:00 +0000 (GMT)
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, tglx@linutronix.de, yury.norov@gmail.com,
-        maddy@linux.ibm.com
-Cc: sshegde@linux.ibm.com, vschneid@redhat.com, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, kprateek.nayak@amd.com, huschle@linux.ibm.com,
-        srikar@linux.ibm.com, linux-kernel@vger.kernel.org,
-        christophe.leroy@csgroup.eu, linuxppc-dev@lists.ozlabs.org,
-        gregkh@linuxfoundation.org
-Subject: [RFC v2 9/9] [DEBUG] powerpc: add debug file for set/unset cpu avoid
-Date: Thu, 26 Jun 2025 00:41:08 +0530
-Message-ID: <20250625191108.1646208-10-sshegde@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250625191108.1646208-1-sshegde@linux.ibm.com>
-References: <20250625191108.1646208-1-sshegde@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSCfX3gWpz307K
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 06:12:36 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id F2F2E44E4B;
+	Wed, 25 Jun 2025 20:12:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93B2C4CEEE;
+	Wed, 25 Jun 2025 20:12:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750882353;
+	bh=vLWZngAGfCDpGI0elXfiXxVDXjZlkopXq/UkheYJOTc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m0VYGUGimSKzz5DTjTbgWDAi89aTOv4VUsxRCti22j5dEQm1MnHQIyb0sBCzIQCLp
+	 LnNOHCd5rUR6uKgcdma8+YvjwTkxcH2hNd8VMtBfbNi9KbTe3DLRLqXKVsqXjoHzD7
+	 0ste9wUPwCQD3/CsXpLTReTxttNUagX+ga1odwj1wxDD9nb+GzazO0hCyWaiE7AFyk
+	 cohzJXMIEVgTx5pa+vIyJqj/SnLl2V0NJAN6qV1d/G0nl3/3P915Qp/y+nmTYe44uK
+	 lB+MzMQ0fJuaf4ei0sFBe9uv2BKfsFadlNkZ41Rcutq7A30Axx7eAR4+Pnc5fujY02
+	 DsH+G7yuNqACA==
+Date: Wed, 25 Jun 2025 15:12:32 -0500
+From: Rob Herring <robh@kernel.org>
+To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.ne@posteo.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Crystal Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] dt-bindings: interrupt-controller: Convert
+ fsl,mpic-msi to YAML
+Message-ID: <20250625201232.GA2128052-robh@kernel.org>
+References: <20250611-msipic-yaml-v2-1-f2e174c48802@posteo.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,136 +72,171 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=M5FNKzws c=1 sm=1 tr=0 ts=685c4a09 cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=p-EdeYucjEwV52n1TQsA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDE0MSBTYWx0ZWRfX6kykvkwcHs8Q EmPt6oNDn72P8qGY1IlDGuJMzbvzyCBdy7RFg30K1X2Pub5eNmlPEAkNPNC3r4Ls1KH0dGKp4kx Ic4mdmdcq8iX6qfIs6MnKsqfjepUfWU7p+kaGPUpkYXjdIfDrYxgdnzBUyOVQC8NvBiMiHUlwWT
- DMkpXO3LHm5JSGOQRLe5T2LB0Ll4zZpzSQL8ilXEMfdEfjM0B0e9oNbZE9Nzy0pJ5yUINItFChj 3rEKD94QUQU6PpMph0ZbC+XwYI1jj42MpIUmn/fn86acbtdP4YcAxMLTpi8lQ4Pi/ButXvqYjrR ZQW5o3BOnmeYEsfacXWM1A9MkVUpQs1YIoXXllrFVkoWGCIPWWgeT44ddGDoUz9JugGAkKaM2AZ
- en3UwsXpSDHOHw2V3g2WmylHytXmFrh4JRjlQSqXYj+aeSqKzSKP8RM4m6x6nc/bc7yqG0VT
-X-Proofpoint-GUID: tSfwQunLDKfYkRT561MPEbEFGHR3E6AR
-X-Proofpoint-ORIG-GUID: YFBlOehKcrciiuM9VgjlQ--IrzfvbzFB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-25_06,2025-06-25_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0
- priorityscore=1501 phishscore=0 spamscore=0 clxscore=1015 adultscore=0
- mlxscore=0 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506250141
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250611-msipic-yaml-v2-1-f2e174c48802@posteo.net>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Reference patch for how an architecture can make use of this infra. 
+On Wed, Jun 11, 2025 at 11:42:09AM +0200, J. Neuschäfer wrote:
+> As part of a larger effort to bring various PowerPC-related bindings
+> into the YAML world, this patch converts msi-pic.txt to YAML and moves
+> it into the bindings/interrupt-controller/ directory. The conversion may
+> necessarily be a bit hard to read because the binding is quite verbose.
+> 
+> Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> ---
+> Changes in v2:
+> - Rebase on v6.16-rc1
+> - Address Conor Dooley's review comments:
+>   - Add multiline marker (|) to preserve formatting
+>   - Split 'reg' list in second example
+>   - Rewrite version dependent information as an if/else schema
+> 
+> Link to v1: https://lore.kernel.org/r/20250403-msipic-yaml-v1-1-f4248475714f@posteo.net
+> ---
+> ---
+>  .../interrupt-controller/fsl,mpic-msi.yaml         | 161 +++++++++++++++++++++
+>  .../devicetree/bindings/powerpc/fsl/msi-pic.txt    | 111 --------------
+>  2 files changed, 161 insertions(+), 111 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl,mpic-msi.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl,mpic-msi.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..89db7742c28b3650207b361bfa6fbaf4e69ccc45
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,mpic-msi.yaml
+> @@ -0,0 +1,161 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/interrupt-controller/fsl,mpic-msi.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Freescale MSI interrupt controller
+> +
+> +description: |
+> +  The Freescale hypervisor and msi-address-64
+> +  -------------------------------------------
+> +
+> +  Normally, PCI devices have access to all of CCSR via an ATMU mapping.  The
+> +  Freescale MSI driver calculates the address of MSIIR (in the MSI register
+> +  block) and sets that address as the MSI message address.
+> +
+> +  In a virtualized environment, the hypervisor may need to create an IOMMU
+> +  mapping for MSIIR.  The Freescale ePAPR hypervisor has this requirement
+> +  because of hardware limitations of the Peripheral Access Management Unit
+> +  (PAMU), which is currently the only IOMMU that the hypervisor supports.
+> +  The ATMU is programmed with the guest physical address, and the PAMU
+> +  intercepts transactions and reroutes them to the true physical address.
+> +
+> +  In the PAMU, each PCI controller is given only one primary window.  The
+> +  PAMU restricts DMA operations so that they can only occur within a window.
+> +  Because PCI devices must be able to DMA to memory, the primary window must
+> +  be used to cover all of the guest's memory space.
+> +
+> +  PAMU primary windows can be divided into 256 subwindows, and each
+> +  subwindow can have its own address mapping ("guest physical" to "true
+> +  physical").  However, each subwindow has to have the same alignment, which
+> +  means they cannot be located at just any address.  Because of these
+> +  restrictions, it is usually impossible to create a 4KB subwindow that
+> +  covers MSIIR where it's normally located.
+> +
+> +  Therefore, the hypervisor has to create a subwindow inside the same
+> +  primary window used for memory, but mapped to the MSIR block (where MSIIR
+> +  lives).  The first subwindow after the end of guest memory is used for
+> +  this.  The address specified in the msi-address-64 property is the PCI
+> +  address of MSIIR.  The hypervisor configures the PAMU to map that address to
+> +  the true physical address of MSIIR.
+> +
+> +maintainers:
+> +  - J. Neuschäfer <j.ne@posteo.net>
+> +
+> +properties:
+> +  compatible:
+> +    oneOf:
+> +      - enum:
+> +          - fsl,mpic-msi
+> +          - fsl,mpic-msi-v4.3
+> +          - fsl,ipic-msi
+> +          - fsl,vmpic-msi
+> +          - fsl,vmpic-msi-v4.3
+> +      - items:
+> +          - enum:
+> +              - fsl,mpc8572-msi
+> +              - fsl,mpc8610-msi
+> +              - fsl,mpc8641-msi
+> +          - const: fsl,mpic-msi
+> +
+> +  reg:
+> +    minItems: 1
+> +    items:
+> +      - description: Address and length of the shared message interrupt
+> +          register set
+> +      - description: Address of aliased MSIIR or MSIIR1 register for platforms
+> +          that have such an alias. If using MSIIR1, the second region must be
+> +          added because different MSI group has different MSIIR1 offset.
+> +
+> +  interrupts:
+> +    minItems: 1
+> +    maxItems: 16
+> +    description:
+> +      Each one of the interrupts here is one entry per 32 MSIs, and routed to
+> +      the host interrupt controller. The interrupts should be set as edge
+> +      sensitive. If msi-available-ranges is present, only the interrupts that
+> +      correspond to available ranges shall be present.
+> +
+> +  msi-available-ranges:
+> +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> +    items:
+> +      items:
+> +        - description: First MSI interrupt in this range
+> +        - description: Number of MSI interrupts in this range
+> +    description:
+> +      Define which MSI interrupt can be used in the 256 MSI interrupts.
+> +      If not specified, all the MSI interrupts can be used.
+> +      Each available range must begin and end on a multiple of 32 (i.e. no
+> +      splitting an individual MSI register or the associated PIC interrupt).
+> +
+> +  msi-address-64:
+> +    $ref: /schemas/types.yaml#/definitions/uint64
+> +    description:
+> +      64-bit PCI address of the MSIIR register. The MSIIR register is used for
+> +      MSI messaging.  The address of MSIIR in PCI address space is the MSI
+> +      message address.
+> +
+> +      This property may be used in virtualized environments where the hypervisor
+> +      has created an alternate mapping for the MSIR block.  See the top-level
+> +      description for an explanation.
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +anyOf:
 
-This is not meant to be merged. Instead the vp_manual_hint should either
-come from hardware or could be derived using steal time. 
+allOf
 
-When the provided hint is less than the total CPUs in the system, it
-will enable the cpu avoid static key and set those CPUs as avoid. 
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - fsl,mpic-msi-v4.3
+> +              - fsl,vmpic-msi-v4.3
+> +    then:
+> +      properties:
+> +        interrupts:
+> +          maxItems: 16
 
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
----
- arch/powerpc/include/asm/paravirt.h |  2 ++
- arch/powerpc/kernel/smp.c           | 50 +++++++++++++++++++++++++++++
- 2 files changed, 52 insertions(+)
+Don't you mean 'minItems: 16'? Otherwise, this schema has no effect.
 
-diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
-index b78b82d66057..b6497e0b60d8 100644
---- a/arch/powerpc/include/asm/paravirt.h
-+++ b/arch/powerpc/include/asm/paravirt.h
-@@ -10,6 +10,8 @@
- #include <asm/hvcall.h>
- #endif
- 
-+DECLARE_STATIC_KEY_FALSE(paravirt_cpu_avoid_enabled);
-+
- #ifdef CONFIG_PPC_SPLPAR
- #include <linux/smp.h>
- #include <asm/kvm_guest.h>
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 5ac7084eebc0..e00cdc4de441 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -64,6 +64,7 @@
- #include <asm/systemcfg.h>
- 
- #include <trace/events/ipi.h>
-+#include <linux/debugfs.h>
- 
- #ifdef DEBUG
- #include <asm/udbg.h>
-@@ -82,6 +83,7 @@ bool has_big_cores __ro_after_init;
- bool coregroup_enabled __ro_after_init;
- bool thread_group_shares_l2 __ro_after_init;
- bool thread_group_shares_l3 __ro_after_init;
-+static int vp_manual_hint = NR_CPUS;
- 
- DEFINE_PER_CPU(cpumask_var_t, cpu_sibling_map);
- DEFINE_PER_CPU(cpumask_var_t, cpu_smallcore_map);
-@@ -1727,6 +1729,7 @@ static void __init build_sched_topology(void)
- 	BUG_ON(i >= ARRAY_SIZE(powerpc_topology) - 1);
- 
- 	set_sched_topology(powerpc_topology);
-+	vp_manual_hint = num_present_cpus();
- }
- 
- void __init smp_cpus_done(unsigned int max_cpus)
-@@ -1807,4 +1810,51 @@ void __noreturn arch_cpu_idle_dead(void)
- 	start_secondary_resume();
- }
- 
-+/*
-+ * sysfs hint to mark CPUs as Avoid. This will help in restricting
-+ * the workload to specified number of CPUs.
-+ * For example 40 > vp_manual_hint means, workload will run on
-+ * 0-39 CPUs.
-+ */
-+
-+static int pv_vp_manual_hint_set(void *data, u64 val)
-+{
-+	int cpu;
-+
-+	if (val == 0 || vp_manual_hint > num_present_cpus())
-+		vp_manual_hint = num_present_cpus();
-+
-+	if (val != vp_manual_hint)
-+		vp_manual_hint = val;
-+
-+	if (vp_manual_hint < num_present_cpus())
-+		static_branch_enable(&paravirt_cpu_avoid_enabled);
-+	else
-+		static_branch_disable(&paravirt_cpu_avoid_enabled);
-+
-+	for_each_present_cpu(cpu) {
-+		if (cpu >= vp_manual_hint)
-+			set_cpu_avoid(cpu, true);
-+		else
-+			set_cpu_avoid(cpu, false);
-+	}
-+	return 0;
-+}
-+
-+static int pv_vp_manual_hint_get(void *data, u64 *val)
-+{
-+	*val = vp_manual_hint;
-+	return 0;
-+}
-+
-+DEFINE_SIMPLE_ATTRIBUTE(fops_pv_vp_manual_hint, pv_vp_manual_hint_get, pv_vp_manual_hint_set, "%llu\n");
-+
-+static __init int paravirt_debugfs_init(void)
-+{
-+	if (is_shared_processor())
-+		debugfs_create_file("vp_manual_hint", 0600, arch_debugfs_dir, NULL, &fops_pv_vp_manual_hint);
-+	return 0;
-+}
-+
-+device_initcall(paravirt_debugfs_init)
- #endif
--- 
-2.43.0
+I can fix these up when applying.
 
+> +          description:
+> +            Version 4.3 implies that there are 16 shared interrupts, and they
+> +            are configured through MSIIR1.
 
