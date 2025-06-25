@@ -1,70 +1,107 @@
-Return-Path: <linuxppc-dev+bounces-9760-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9748-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AF6AE857C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 16:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B13AE851A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 15:47:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bS3Rp3hWWz3bkg;
-	Thu, 26 Jun 2025 00:02:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bS35Y1sQfz307K;
+	Wed, 25 Jun 2025 23:46:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750855869;
-	cv=none; b=Z2DE7oGzB1KCkANsgOkRI5vH7Rnm055dJ/Kb9W8oQioY/7rPQMHahl9x78BzhuE8dbZhr1p0iYrQNXmrTSkbsU2zdMMTpRIECmKVMxCshbIQ8ztAiFclzji/aNplwezFpZWdVA7M3OHv0++VzM0RZdGJpeUsHTj1zM76/jrI4IeO1SAljgkBn0C0o1wAzBI8RebemSBC9L2SlBPjWeHqOAibE1ji7NR+KU/lZvrXpODBTx4we0ywb2cXLvSn5IEvujNl7901o7zOqeftX1/NxZXvRSdECrUMnXNO0m0G1zXewXQi44b/5q/t/Teu87C6OLERwycxxdMzqELGiXAppQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.149
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750856836;
+	cv=none; b=dwuGc4qM4ky7YpH8qybGV4uAl1xDLJbaflCzQljIT/n6fRDUaMkQwN2oa7ONhz5vlyh6ml3ZER0upAOucJk2rcvLHEG613mr+FN1wE1WtneMoNUVeE8TyfmB5aS0TR4BMVygU3a8vVztkat/b52AkUPtIpdxOjVuu4V3qmDPIukqgUBvdpmcfPRUhgKO/gPUQQMa1aNCcbMyw7wWr5Kp/UX4Rn+nMDzf/OazpzrKEt7lyAefmrrOxuUa5Q6qPDfWryjBLpLiqlu6jk5StLUpaFgu6ZLUTT/bz1UJM79bkPbUozduhy6UnBoTDHpEfKmBUBNB9MA28122+4cWfkcqcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750855869; c=relaxed/relaxed;
-	bh=CRwRhM1MtMEUcOGQgquJfle4LDepcccXWla+ZKxsdwI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XK7aIxkgsaz9myx4ktn12hvDvysqBPIPIAhGCISFRa3NdPqZIlVQCOohzLmO6khC6miWtJpm3rN3P0bH85WixaJevwURj5i2LjhTzO4PAQSD5uUpRhfyxbOBOgLxv0aIFLTph92/ms9NLxs8wtA+FfJ70Dj4dg6xscUGCYcq5HxAzxEmPHl+BH8F2obzyEgGaqRSzS0CwSfFQYUwHRg80rg+HztNiLVJnSEFMlpKXZ9qWcX0VNGBFCxXiLtk8T3JjoSbngsIR1+FuJVn8UjV1J4sk9iHBQr17rZeXdJG7mkJj9FxeV9QlAkj3zf1isKRkMuaVWa9oGqqxMsOb4wrwA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NTuYj7lD; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12c; helo=mail-lf1-x12c.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1750856836; c=relaxed/relaxed;
+	bh=mYAc1EALspLuVXr2tNLHf33N87U9klyBRW2qKuitYhc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AF7jNR7bLvOOA1ht/gGkEqn+iVcjUXuFAJNIktm0aVP8A2xuxdCAEKejL4B+qur9xTJ3rravtY0c9WliJ5wEnn0R2CV9JxsNIDIYQR9e39tqq/Wjn2KdfukclzWE/ddjIQnAy6KRQRiILuvKxF8N/L/fhdNSt6Sj8C0LL+IHYpe8QYkC93HWtKKx3hw7GnSjBEiN35Iji0A7s1oNhH/4Wb1UAldXzs/c2g0RCzIcctT73wN5ZprKpkqjf+Yja9po+GwXvgXqiBh3rKPOEsF1HS+KlxHBcr8ayesr4MVgUVaXco6SAx0L1lwaXhPd4N5VPmGeEgG3CC3eVmYPU2wRbw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=arunraghavan.net; dkim=pass (2048-bit key; unprotected) header.d=arunraghavan.net header.i=@arunraghavan.net header.a=rsa-sha256 header.s=fm1 header.b=NiRCZPsb; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Uz297v19; dkim-atps=neutral; spf=pass (client-ip=202.12.124.149; helo=fout-b6-smtp.messagingengine.com; envelope-from=arun@arunraghavan.net; receiver=lists.ozlabs.org) smtp.mailfrom=arunraghavan.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=arunraghavan.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NTuYj7lD;
+	dkim=pass (2048-bit key; unprotected) header.d=arunraghavan.net header.i=@arunraghavan.net header.a=rsa-sha256 header.s=fm1 header.b=NiRCZPsb;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=Uz297v19;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12c; helo=mail-lf1-x12c.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arunraghavan.net (client-ip=202.12.124.149; helo=fout-b6-smtp.messagingengine.com; envelope-from=arun@arunraghavan.net; receiver=lists.ozlabs.org)
+Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bS1s84zqNz2xjN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 22:51:07 +1000 (AEST)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-553b3316160so5027755e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 05:51:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750855864; x=1751460664; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CRwRhM1MtMEUcOGQgquJfle4LDepcccXWla+ZKxsdwI=;
-        b=NTuYj7lD+CmrtCe76HYl23t4eHZnUpuLyxgWvGKBWGQrwHKj3CQIbchSK25CrTYQAL
-         MwAMJz6H5K4qoESiMFWo6o8q/JVV+SYu41rzfIX79v6P21tc1EVk8E5YF+GBPStOvkkI
-         qYSOUQfx3DAE2R1jEx3OoYWzG/QDN3YMbLJX37PcWbZa0YcF6gJPka7sg4dsyjubxCgY
-         fUeQexRTviDsLbVSihS2ZHG/Pdd7AQaJqyEgLEX8Jvpd3RjjAb23vCqdlyYbO8hn1qT/
-         UbU5q0tvM0Xqbsn154O+euLvDfATR9elfsIdiaMWpR6VVOryqYxBbGG3eCZKJxlXsDxt
-         pcbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750855864; x=1751460664;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CRwRhM1MtMEUcOGQgquJfle4LDepcccXWla+ZKxsdwI=;
-        b=Rg3pt4lUmQUgvc05aWGqlrMLPVb2czwukPfL+RFWO5T87N9BcHiC3/2/CTM3lmGe5f
-         5psfDW2tPSCHlu5y9zmDSP7JA4UGrssWc5s0ss8jtZGc8qEGB3siEjIWPP3e8JOrR9mY
-         934xEphHXtQAIbYSSlF6z/p+PW/fHyrZdTw4g1RkNtFcLAXRjIJrmFymHG+FbEkube6C
-         qQlRoUJ8mNxMFcLvleCAGeCFE1PC/A9fYCa948AT5x98eV8ZjDekGIr/eXW86vJFLn56
-         8i9Cqkwx/6wn2kZySJnOPcg2re1wn+NzzKYPjlfHBDpvh+NxG91n7Iggq6q1PsI0AU4p
-         QlEg==
-X-Forwarded-Encrypted: i=1; AJvYcCW8A4FfsksCQpBDkz3/+b3xcWuCO7zAOVbWNTpNWnWa6ISANLia6cOjttfGSI5+/7B6Pq3hOE6ePXYCczQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywq+Eq9kqS7UEPy7VeglClODXUZasMdA/0q1JANIMOutcl0QBzU
-	ACj/IB3aqg7lQpxXIdmSdewUbyS4QCZC8cbOvrmQXSLImKfvynXNIkUvSvkynkuAyLlQl9Gca0S
-	NZT2oPZ39A1yfL8Gh/JXsoc/TKlsImAU=
-X-Gm-Gg: ASbGncuRl52GfF27xSXQbCoQN1wBzR5GlVvSc16yfpB1ihyfder8/g0Kb2rbkAHhZNs
-	ehowrDDL39C4Wp5YfUREMKiSBSbPIq4N8qAQkSF7n18n4KRX6kGUQO7mxRhgjAbydbGDb43R3QH
-	RHDodakjMwCX3lJPChN2zXepu2Z/fo4UxeQ99favwiUQ==
-X-Google-Smtp-Source: AGHT+IH4AdTi7obPWXsCps0Kqqd3RJ5D/he3Lezfcy1G4Eg5fA0HGJmj1VDSyHt6qyIqHAybfxlMpWZQjVgI2Xx3Mto=
-X-Received: by 2002:a05:6512:4011:b0:553:297b:3d45 with SMTP id
- 2adb3069b0e04-554fde58124mr1020525e87.43.1750855863865; Wed, 25 Jun 2025
- 05:51:03 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bS2Cj2zhwz306l
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 23:07:12 +1000 (AEST)
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 0327E1D00217;
+	Wed, 25 Jun 2025 09:07:08 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Wed, 25 Jun 2025 09:07:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	arunraghavan.net; h=cc:cc:content-transfer-encoding:content-type
+	:date:date:from:from:in-reply-to:message-id:mime-version
+	:reply-to:subject:subject:to:to; s=fm1; t=1750856828; x=
+	1750943228; bh=mYAc1EALspLuVXr2tNLHf33N87U9klyBRW2qKuitYhc=; b=N
+	iRCZPsbnH0kf8n0T3tzCALGVTdE+PGEtgVpNv/12qeHdRRgqV+f5VUV2IDGJbW75
+	DwT0YMujfHs4HHLSQpxvqcckpZz5zDcWoSYssh3eYpdCYKhhzjwcwfQOPKQ0HoM9
+	SexImBEwq0A/1ser+E7rIxm9EyMarN7ecbH0a348B76DhD4JtpOuMf4KK9MikN0N
+	f6NkgLVPjpQ+1UFeYpk5OZZ1qnC7qRTzaRSayZa96nfbglvFNNYyNjNoLl/p3YJ6
+	Ve0P6HIKuH+erc970GAGHnahzbsdlQN3bTzm8RFnjK2ggVVD1ABdAUcTOLO4/g5B
+	ACn40mBQtAj6ddaQG4VNw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1750856828; x=1750943228; bh=mYAc1EALspLuVXr2tNLHf33N87U9klyBRW2
+	qKuitYhc=; b=Uz297v19dxDBmaCgXDfknpPIZW+pHMmgOjDcFyB54SxvpZl6Vja
+	b7s0N7hUfSC4qs0ayFcAwqePPMSwvdjHYj2WppEEVeBlaZq1yHBSzmclPDs0+gE5
+	mzIMQZdZMsxLMo01OTltX1UsD9J7vab4fn9ZYaECZJV7Inb+1JRa8Y5cCVNaI3LB
+	ZC6Bk+MTBzMU+q4Cv8Y/m6x1MEv2pUAIJZqPM2DZhEVGLAhSkSAJnM3cdkexXENe
+	swLfgj0H55ja98Y8RoUJe8N9KEiiQlrNYrSdXUV9XEkx+240zalkmEIVyp8hyyRO
+	rZDusFTAenq5GWYGS2FelndeOxVhl0s+UDg==
+X-ME-Sender: <xms:e_RbaBJkMxaGd8E8pikNRd405FY43X_jhr45TSBzWwShZjklcnxSew>
+    <xme:e_RbaNLjV8QP-AqS623yT--JoEalmfCMsmoh4qqebQAPHuGeTPLV7a-SJNZexSR06
+    nY9p_JAld-vdOzeOg>
+X-ME-Received: <xmr:e_RbaJsEE6l4tAifTSWhNnVwCyl-WQJr1JP4GJddF-5H5b89QiXmekKpDStq1Trz>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgddvvdekhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeetrhhunhcutfgrghhh
+    rghvrghnuceorghruhhnsegrrhhunhhrrghghhgrvhgrnhdrnhgvtheqnecuggftrfgrth
+    htvghrnhepteduheelvedvledvudfhudevkefhhfeifefggeevkedvudfgueelvdehtdet
+    vdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hruhhnsegrrhhunhhrrghghhgrvhgrnhdrnhgvthdpnhgspghrtghpthhtohepudefpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopehshhgvnhhgjhhiuhdrfigrnhhgsehgmh
+    grihhlrdgtohhmpdhrtghpthhtohepgihiuhgsohdrlhgvvgesghhmrghilhdrtghomhdp
+    rhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomhdprhgtphhtthhopehnih
+    gtohhlvghothhsuhhkrgesghhmrghilhdrtghomhdprhgtphhtthhopehlghhirhgufiho
+    ohgusehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghrohhonhhivgeskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepphgvrhgvgiesphgvrhgvgidrtgiipdhrtghpthhtohepthhi
+    figrihesshhushgvrdgtohhmpdhrtghpthhtohepphdrtggrmhgvrhhlhihntghksehtvg
+    hlvghvihgtrdgtohhm
+X-ME-Proxy: <xmx:e_RbaCakAwEoJ-N3AuLc6sRbLQSp7FC_TzfgO_6jk7UkOpVN27ZgXA>
+    <xmx:e_RbaIbMUjfp5FiWTkCiO7V5ntXLGeuabYiGZUgSKLGs3ciGqwo2Iw>
+    <xmx:e_RbaGAVcDLFmlIN9eDjCOyUqdkCvA4KUQICVaKnCrF4L8n6mi42_g>
+    <xmx:e_RbaGbrCpRevF54zYbUdCgNvs3GHf8RhmhjIGf3hjsx9E4hbJSF7A>
+    <xmx:fPRbaCIbg9Vu5L40sdvsI0bLIuxbK8TFcuRsoolv83b_LMG0z0WTLYzy>
+Feedback-ID: i42c0435e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 25 Jun 2025 09:07:06 -0400 (EDT)
+From: Arun Raghavan <arun@arunraghavan.net>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>
+Cc: Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Pieterjan Camerlynck <p.camerlynck@televic.com>,
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Arun Raghavan <arun@asymptotic.io>
+Subject: [PATCH] ASoC: fsl_sai: Force a software reset when starting in consumer mode
+Date: Wed, 25 Jun 2025 09:06:48 -0400
+Message-ID: <20250625130648.201331-1-arun@arunraghavan.net>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,75 +115,54 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250625095224.118679-1-snovitoll@gmail.com> <20250625095224.118679-3-snovitoll@gmail.com>
- <750b6617-7abf-4adc-b3e6-6194ff10c547@csgroup.eu> <81a8b60be5b99ecd9b322d188738016376aff4aa.camel@sipsolutions.net>
-In-Reply-To: <81a8b60be5b99ecd9b322d188738016376aff4aa.camel@sipsolutions.net>
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Date: Wed, 25 Jun 2025 17:50:46 +0500
-X-Gm-Features: Ac12FXwt1iee6Yaba3PMavifTn-RFaMv0HhE7s3qnJv0p52DgpRl1n7RcMDkzZs
-Message-ID: <CACzwLxgCH6KuVDRS3d9MrmA=wY_rMA6R5TPB_v37BkD8-A9yuw@mail.gmail.com>
-Subject: Re: [PATCH 2/9] kasan: replace kasan_arch_is_ready with kasan_enabled
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, ryabinin.a.a@gmail.com, glider@google.com, 
-	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com, 
-	catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org, 
-	kernel@xen0n.name, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, richard@nod.at, 
-	anton.ivanov@cambridgegreys.com, dave.hansen@linux.intel.com, luto@kernel.org, 
-	peterz@infradead.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	x86@kernel.org, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
-	akpm@linux-foundation.org, guoweikang.kernel@gmail.com, geert@linux-m68k.org, 
-	rppt@kernel.org, tiwei.btw@antgroup.com, richard.weiyang@gmail.com, 
-	benjamin.berg@intel.com, kevin.brodsky@arm.com, kasan-dev@googlegroups.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Jun 25, 2025 at 5:24=E2=80=AFPM Johannes Berg <johannes@sipsolution=
-s.net> wrote:
->
-> On Wed, 2025-06-25 at 12:27 +0200, Christophe Leroy wrote:
-> >
-> > Le 25/06/2025 =C3=A0 11:52, Sabyrzhan Tasbolatov a =C3=A9crit :
-> > > Replace the existing kasan_arch_is_ready() calls with kasan_enabled()=
-.
-> > > Drop checks where the caller is already under kasan_enabled() conditi=
-on.
-> >
-> > If I understand correctly, it means that KASAN won't work anymore
-> > between patch 2 and 9, because until the arch calls kasan_init_generic(=
-)
-> > kasan_enabled() will return false.
-> >
-> > The transition should be smooth and your series should remain bisectabl=
-e.
-> >
-> > Or am I missing something ?
-> >
->
-> Seems right to me, it won't work for architectures that define
-> kasan_arch_is_ready themselves I think?
->
-> But since they have to literally #define it, could #ifdef on that
-> temporarily?
+From: Arun Raghavan <arun@asymptotic.io>
 
-Thanks for catching it. You're right. I need to change the order of patches=
- :
+In a setup with an external clock provider, when running the receiver
+(arecord) and triggering an xrun with xrun_injection, we see a channel
+swap/offset. This happens sometimes when running only the receiver, but
+occurs reliably if a transmitter (aplay) is also concurrently running.
 
-- kasan: unify static kasan_flag_enabled across modes
+The theory is that SAI seems to lose track of frame sync during the
+trigger stop -> trigger start cycle that occurs during an xrun. Doing
+just a FIFO reset in this case does not suffice, and only a software
+reset seems to get it back on track.
 
-, then we should apply arch specific changes
-where we call kasan_init_generic in kasan_init.
+Signed-off-by: Arun Raghavan <arun@asymptotic.io>
+Reported-by: Pieterjan Camerlynck <p.camerlynck@televic.com>
+---
+ sound/soc/fsl/fsl_sai.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-- kasan: replace kasan_arch_is_ready with kasan_enabled
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index af1a168d35e3..3a5ebf32903f 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -841,6 +841,18 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
+ 	case SNDRV_PCM_TRIGGER_START:
+ 	case SNDRV_PCM_TRIGGER_RESUME:
+ 	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
++		/*
++		 * Force a software reset if we are not the clock provider, as we
++		 * might have lost frame sync during xrun recovery.
++		 */
++		if (sai->is_consumer_mode) {
++			regmap_update_bits(sai->regmap,
++					FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR,
++					FSL_SAI_CSR_SR);
++			regmap_update_bits(sai->regmap,
++					FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR,
++					0);
++		}
+ 		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+ 				   FSL_SAI_CSR_FRDE, FSL_SAI_CSR_FRDE);
+ 
+-- 
+2.49.0
 
->
-> johannes
 
