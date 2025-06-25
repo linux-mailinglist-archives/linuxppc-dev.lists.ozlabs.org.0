@@ -1,81 +1,140 @@
-Return-Path: <linuxppc-dev+bounces-9726-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9700-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A5BCAE7898
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 09:32:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 870CEAE7766
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Jun 2025 08:49:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bRtnT28sDz30Vn;
-	Wed, 25 Jun 2025 17:32:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bRsqr0dFLz2xbX;
+	Wed, 25 Jun 2025 16:49:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750836749;
-	cv=none; b=CkK6DD3rmgdDwiyPS5q93CA+3DyILzb84T8a1pu1P+svGcy7GnZOJxQGr59D+XPBZRcx3Tfk9Lmtd3B+kao1r6bn4gCuvkqH7lKN96KUDdZ2FJv9PHqDLXcQXEH6FLRYIKYnTzgwDvERbsPtxA1WRzP97+9jUE1epTT+cR8hzMsZLrYkmbaowwJUJKdWWBm06XI43f6McIleq/ba1vdDShgEq3Ey8B5BAoFL7ubFR1jRNSwjL51O8TJtUWMSfiC8Y+4hV21UaZ7dYORHzmy16nBSUqJjtaKwq+C7HcypNrJlP2nkak6QUWoLuDo2bhhIQApbpHh6LXTW/FFjz2XNSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750836749; c=relaxed/relaxed;
-	bh=8eVeDX7Rq8lSsLa8fLIU8uh6YMB+VEKwp2qkfNH/XsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+4CyUcgyIu25V0DqbBC2wr2zw3JZ2Vt0f+SW5UrBmNMbTt4R81R84kUWYKJ0COAZIASlSE0WQIcGDb4XLUHamHJ6+w3a1+nLREfNRQdHkJFbxSmP/4wyc84W9PwC5rLBlakZcyVK5IABDCs3H4CBcdbFUAC1ByEGSvLgEaWOnvPzs8ltgjnNjIOrAVSeALaegljT0L+eA2N+oHjvuxAXz+tHUQOM9so66YMyMFh9FLcG7OpW+dkQrPmdNZDOsV7jB+FsDhRlv2I5MkNeqlGaBayoNp/gZu7T67o5+KdnHDPuZsiDvEylPs9Ppn+Qy9qp6039NX6A3IVLl80kS6Trg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SRBq00z2; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.177.32 arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750834168;
+	cv=pass; b=KF07jrW06TWpvgDJ0PEDBMK6vFuRIfY644I2vJ6CdF+BLs30YbI4gptbrT8AfMtlfEoqdeXnTZc68xl0U2yvLdDOlOEuoLZkWox8XDniVcEtIovJaSQtjzK/seF2+EzbH2oVpDEcnFtkBej4L02JMq0c0gDScltgAx4RJDAgyYaDfvf2X3JAsd7g3n/+emc2DwIfb6ARF7fOMSI2XectQTJrahnyiq7Jy/6EVG/4LnYHDlj6pe7uh3O/P8uQzorM2A73LO7fBt4opTJyEHu1fAC5ZtC7W75P60dt6q9/2rUtYXUhlkmt4RDfY6tLWUg3SuJViwfMNjCzmofRVhAo5g==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1750834168; c=relaxed/relaxed;
+	bh=aO3T4LFnY9oVX+2Pjmrz0kLUwHgxJvI3uc8hyy5ylC4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=e0PKtqgyS07HCRJkGOZ+rdkzNXXgTZL3vWb5OKoio8wYqaurLjbZmm7c0Mcp0CDsCdih3ZRNZpgZa5lKRaYM44WnqoOCz7eMPnqzC0F7Iq1Mk4inhvDzOoUhLsJpaXMla/mWve64dcrEi154+TbNBeJtXzwQ1R4BF1cVxb2cmH4E3swEA4s+N0v59s3CRg4n5La6XZdCCcWTHqM0hXPcnRYuUlnnBf49Aw15Kd9Gx5fPymg0M3SqZlXJHIXBF9OiaLJA0pmxjO+dggF6iqaT6lqpFSSTfHPQp4jGndJyYTXTdrbu16yQtiKoerkFF7SqH8nZxuPXIaTq7FSeHUf2yQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=aOKlrlp1; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=qnntC9DW; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SRBq00z2;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=aOKlrlp1;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=qnntC9DW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org)
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bRtnS3KJKz30VR
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 17:32:28 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55P20MGC007442;
-	Wed, 25 Jun 2025 07:32:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=8eVeDX7Rq8lSsLa8f
-	LIU8uh6YMB+VEKwp2qkfNH/XsY=; b=SRBq00z2VuYG0XLZhrAzrePmlA5MfGWR1
-	v4e++IC2b/LmEnk+BAqWR0DeHsrdRGyNT+8ARjzRBNa6MebvBkEUuGGdAZHLsJHg
-	nvsV8fIBqJZStV9mVpdzu0XTjXSefBMRrGR1VQoHytOzaopQzDYkSicsXzxV/8Oe
-	psN3uhGSvs4s8PFbx1K9IlqXUGId+SEt88I8BVFxr4oMSPgZKDCDuq87WTABwtow
-	6jYKVXxvhDhd402FP+OvFm9FALGONeqc6v4SQtUAne3tcFgo4MGfv28gZh+TteiH
-	RUH1MxNqO3pHRAPorpasmc0k55IEVg4UvS/Xp5Dwn2/QeYqnrvNtA==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dm8jdtfk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 07:32:13 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55P5OCoM014988;
-	Wed, 25 Jun 2025 07:32:12 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 47e72trbqy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 25 Jun 2025 07:32:12 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55P7WBYu29950272
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Jun 2025 07:32:11 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 46BE358932;
-	Wed, 25 Jun 2025 06:39:51 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A641B58913;
-	Wed, 25 Jun 2025 06:39:46 +0000 (GMT)
-Received: from jarvis.ozlabs.ibm.com.com (unknown [9.36.18.35])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 25 Jun 2025 06:39:46 +0000 (GMT)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, pasha.tatashin@soleen.com,
-        akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-        linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, sweettea-kernel@dorminy.me,
-        christophe.leroy@csgroup.eu, mingo@kernel.org
-Subject: [PATCH v15 13/13] powerpc: mm: Support page table check
-Date: Wed, 25 Jun 2025 16:37:53 +1000
-Message-ID: <20250625063753.77511-14-ajd@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250625063753.77511-1-ajd@linux.ibm.com>
-References: <20250625063753.77511-1-ajd@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bRsqp3ZWCz2xRq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 16:49:25 +1000 (AEST)
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55OMieMn027065;
+	Wed, 25 Jun 2025 06:47:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=aO3T4LFnY9oVX+2Pjm
+	rz0kLUwHgxJvI3uc8hyy5ylC4=; b=aOKlrlp1hepfPPYeXraU5a12tCoztM0Eu+
+	jemxjOCYXCF38nG2SHglf6gWKBg2vugB/0XOdxobjBx58hbBKaxCsro0BWsDkIDU
+	tv7wJtMaQkyvJ68rribb9/8FFFvXD0AEZlvRyYm5AJsLeANjbJBT2MZ25A/ZNKYN
+	wPYUolmuJ730rV5G6K5DhbS3TL33vrwFyb9pnPVik62xtvcMG8CsfeVb6zkreWMV
+	MZ1iysy/ZuEmdrIKH+q/3MkJt5Fa5Cty642Y6ZQgW3JYHLM0m6imjQ1uqbU3Oly8
+	8wndsHe2dRl3TH7dvNTAJlGIOuudcnIHntjoRNUjUyccTjh3MitA==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47egt1dhm2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Jun 2025 06:47:33 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55P5P5UC038982;
+	Wed, 25 Jun 2025 06:47:32 GMT
+Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04on2078.outbound.protection.outlook.com [40.107.100.78])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 47ehr5n3yu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Jun 2025 06:47:32 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O5zfchnunT7E6DKCcPUhG7yaWOPC594VazDeJAbrVYq5NaDKB7D1cgQMBknuvnH+INvZaKDWzjoUPQe2T9n5COtwSWwnwZTG0xAPPvX8m0vmnLh3Fz8mlbysM0W9/Gz+9/rFyzsCGEXSzHbm+eJedrMLgkk78b7O5AIH+55+sNsJZHiNSCA7tiRA5fk3myEn9gU39o6ATv41khOd03xoB+EVgNQOiTcJ3ZNeEVHORfaLdj8TWpCLabu4wbTlT9/S9YHEB6WCyjwhUm5PAPtcdmEcwSZfH5rKbsJHaW27XyBRG1rH7WJmDAiZv3hnvlMrO05UCqgjHU2Lviw2AxWZnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aO3T4LFnY9oVX+2Pjmrz0kLUwHgxJvI3uc8hyy5ylC4=;
+ b=DuHIguDee/fuy/d0VYAjW/ZfAHZyz4L0xGth+n2TEoDW2Km9z0BxBMC5Rkad3I57tD+PoJj2UD651e1kTfVWUGY7haE9FQQJxoJR7ZcZbGU0f7A3g+F2U9JvO8ioT6ZmGv9CwDHj4PfAGJ7cplHapcd2G5WDQN3JGRwQFcXBs8gpOCJjB9qivfn8LOC0IPL3tf8zO/r16G3C1PySd3A39h1tONjzxeMcgqu0+5Z7zwdkyTJf4P6BijClg/6Q/8RcKBt75PkWwmLMnCF28RbZogHN2e4khDGk1qt0AcMtphoUP45ax+gNswLVZol2A6Th318eYfKtXMTlL75TLpd6UA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aO3T4LFnY9oVX+2Pjmrz0kLUwHgxJvI3uc8hyy5ylC4=;
+ b=qnntC9DWUqszGULw5PETUYYZY8v/setXfsRbSw18FZtw+NbGQr28r1HjIuJh2IBzhfXudotSbgMatoBG4qmLE6Zv4105f2xh6VzZzRemZdibg7zadteK9gyTl32WC5Kq9nSCrewADbABcQFbiUMjVAIIT5Q3yAoFYcnjgUB2814=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by MW4PR10MB6559.namprd10.prod.outlook.com (2603:10b6:303:228::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.19; Wed, 25 Jun
+ 2025 06:47:28 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%6]) with mapi id 15.20.8857.026; Wed, 25 Jun 2025
+ 06:47:28 +0000
+Date: Wed, 25 Jun 2025 07:47:23 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S . Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Kees Cook <kees@kernel.org>, Peter Xu <peterx@redhat.com>,
+        David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Xu Xin <xu.xin16@zte.com.cn>,
+        Chengming Zhou <chengming.zhou@linux.dev>,
+        Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+        Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
+        Pedro Falcato <pfalcato@suse.de>, Johannes Weiner <hannes@cmpxchg.org>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Shakeel Butt <shakeel.butt@linux.dev>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-sgx@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        nvdimm@lists.linux.dev, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] use vm_flags_t consistently
+Message-ID: <d4286364-b138-4219-b022-a9f8f49305a3@lucifer.local>
+References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
+ <46432a2e-1a9d-44f7-aa09-689d6e2a022a@arm.com>
+ <20250624215050.83229f93cee5994f580720e6@linux-foundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250624215050.83229f93cee5994f580720e6@linux-foundation.org>
+X-ClientProxiedBy: LO4P123CA0025.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:151::12) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,325 +148,129 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDA1MyBTYWx0ZWRfXziz8tLuz+0HD j2btD5W9BWfTk54yQsllWw00sjqmwRNCO+PBDovCxD+25nx6n+mn/oUAD02DTZSQ3iY2JEsyMYM y8jDyGPiXZqoch+DezWLUf+v7hZ4GCOWLO+1pzGdsFqVbPBsWnn0F7nxdA5Xz7KwIChLM/5gGuw
- /XF/v+fuTq77VPLztL/RkMl/7nJZzNTv0EYc2JlD/hCXtr05qhhICt+ldqLtMXTewVlSPWwLiJG o70E+D+ec+3FYNtPFMmBCEkWOBlJjFG03+33ZckaxExaf38TQwzYG/e6DzhrKTkNUIbFoYhz/ca 8RNeOMnY7LzedcHZCxngZiELjFwy9fm4jZzPXLw8TtY5wnUQ5c50NdPOaVPgRsKg23E8VEGkYiH
- LSYogWXGnGxEgy4JwPojmdRBPpf7C+ePhvv5dyF12XZVEdArhXHUz71bqjHZ8tx/JRIJRzlP
-X-Proofpoint-GUID: L2X7dRi2faP1Q6bNV9YOO_B6WzYeZIuH
-X-Proofpoint-ORIG-GUID: L2X7dRi2faP1Q6bNV9YOO_B6WzYeZIuH
-X-Authority-Analysis: v=2.4 cv=combk04i c=1 sm=1 tr=0 ts=685ba5fd cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=1UX6Do5GAAAA:8 a=7ipKWUHlAAAA:8 a=X4bsUGyFbWMdYzZSxZoA:9 a=Et2XPkok5AAZYJIKzHr1:22
- a=gpc5p9EgBqZVLdJeV_V1:22
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|MW4PR10MB6559:EE_
+X-MS-Office365-Filtering-Correlation-Id: fcee87cf-6aa6-47d1-b2c1-08ddb3b42709
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?86Cq6bc3VEpF9CDvGhMxdzZ45el61fvKn4h47CzvQtfSaBR0liI29ZCqslJi?=
+ =?us-ascii?Q?WnS0EdeCMUyYj9TmukDcJqTYR2J6Ltd3wx69/9BRBE76MMj9wzE+G0rAj3CL?=
+ =?us-ascii?Q?rLBGG5bYVnn5Yb766QEGISTvqOFqFEikQgbGZM74u4O47DoO8UYzd58607xz?=
+ =?us-ascii?Q?kjzWzuL+XCdLl8uC3o3lQzcD3fFCmnBC1c8+M8Mbg2PV5A3nogewT4rlmj1W?=
+ =?us-ascii?Q?snRKBygoWrU7HVJ9CoGNR+vMSlYpKwkn/51ju+izDRGa48s2TXukJ3AIt/5h?=
+ =?us-ascii?Q?Fe2Wh7jAONYzzNfE6Ba6uy7Dpe7yQNfINEIzI++dtQmBphefxeyPoo0SaYER?=
+ =?us-ascii?Q?SzTZsU7Cuyh5vrbzbvpQVHZM80YowTUC5tPDEnOPAA7jwTp7z685ImM3BfL/?=
+ =?us-ascii?Q?bU+CG+cFs2RVH/y6BcVw7LNzltwaVtmkbj2QiBR2nCCHmhjT9vk6h9rp+cdN?=
+ =?us-ascii?Q?G8eGSJVd+GTrx1AdFPFsGOuuWBb4jSVqOgfUwgpJ9Mrb3joxJdSoQ3WlxX6g?=
+ =?us-ascii?Q?nR8r5f0yQ2SCEeWklLyTKB8n3qFaJqmltsDGStd3HFvvaEht59vTxpMmxFjs?=
+ =?us-ascii?Q?5omK2OTR7eZPdyL3PX3G86naQDEPcIJWKpyHe2vAwVMQlAXTDu8UK9YkqSfd?=
+ =?us-ascii?Q?pntEcQ+6zTu44WeaU9ajkcIslGyiLGfFYL+13mKtAxhiAnxGI+GUAnnBONBc?=
+ =?us-ascii?Q?IvqAcnVn4x+QByXZaBggO4DLC5c8PWl41o6ceFC/fMP4o+LJTAiRbRyPAcbs?=
+ =?us-ascii?Q?AC0knNDWr1WO6FUl7veWZ2bvT31QffQfTZfJS1YYvvSGGvtfxCDlgCNfvNgs?=
+ =?us-ascii?Q?e5vXkyfJeM4V5GKnyULT+CgrpGvAW/u6oIHcg2TdWfPwbf9Z5KYHj7Woon1x?=
+ =?us-ascii?Q?wCBl0ICkjNAYannXVzMX3MaOFRABEFILSswnddF6whRw0qVO2kHsGfM/HRIA?=
+ =?us-ascii?Q?lfP2KKCIXi9Z7fK2aR841cvPqahX/HKQ/niBcQVnnPZhvzA1cAs24LnP6pFp?=
+ =?us-ascii?Q?OIsdQvD5CE5FRt8a7LLORwscNk+50dTZ0znVUCc6rKcoqfK7lUi/q6aSPxER?=
+ =?us-ascii?Q?X5hRSsBr7EeXUBdN/gUPaFWTSMwzwr4GWD4Sn8DVGkaIejvvpV3f7tU90Rh/?=
+ =?us-ascii?Q?PpdCmFKM9TyQjG+oXkYsULCXZfs3Wrb9dfgGCuPfdofWRsOI1ibVA7vuKx4C?=
+ =?us-ascii?Q?7SJA2G2HR+fIWeMcSOCtfdSJrxDLPTEdChwb/AAbZzltFjYRNQCj7o9SPati?=
+ =?us-ascii?Q?GgXJ2Fc0P++jRcT7fqoOxM/lAmGHw1m9uERyouwgHaSsdaagOR2hVrTmK7cH?=
+ =?us-ascii?Q?AUw3KDqSMKvNehNSJijWX0PwksC+ErwMsY+teGmnSObL+AG37uUPoZN4xRsJ?=
+ =?us-ascii?Q?CRr223C+3iO5e0qpE/Z907C+iBIuJMI4z5b4I8Z69pw2MhxbxdxWtcqWEefT?=
+ =?us-ascii?Q?t5ONEdk06Jw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mXDfwIQTFvjHjCKqEHGBbpweWE5tGqTIfKW+4FgiPuLNz6ROaoNhH2IaSTEI?=
+ =?us-ascii?Q?VY0A3v8N5o3sdujvmCppvUXyphOWzcaBQ8LbG5zXEjyEw1cQs87WaCkbYHRc?=
+ =?us-ascii?Q?eqQUR5dVC2LgIDIfa8CQTIMT4bIvRBDyfg182jLZGmcsIZTAHCLOr3mFho7n?=
+ =?us-ascii?Q?ouZ1/iQy0cP2w0I7LwUXh9XF78HVEfyNLy2vQP/EhZtgcN/lB+9q1lCE50g0?=
+ =?us-ascii?Q?DgXrwnSDzm3FK7sDsPPZtTzYLOQyY8VbnmM0yt6jZAetU+Yl2EJzIBqaHdrc?=
+ =?us-ascii?Q?JVKaE+YkQh0PDBc/puS7GYAQo30xgF0OR2cSPCUf4jaUEoLZkPIVoPRBcrTG?=
+ =?us-ascii?Q?KLvgc9tFAngIl8KE7KXjR9Wc4zibFyErSJZIgf845W+RthQgtSJgZYjLZ+/3?=
+ =?us-ascii?Q?TzwQPOjouxsV7F4GjxOGVq/e3fY8QXT5L9JrV9ZeGAEeaz3jjWpsLepEdocN?=
+ =?us-ascii?Q?6eruWb5GQfazfc1kYhRe6nYiIyReVSLoYH2+UzMDUeoSgGKhwF2S31zQgx1M?=
+ =?us-ascii?Q?IqgvtKCHfa4mnU8/CiBqDnZDSo2ASSTfKd1mCnbnoqMndgC9ClCVVt4NkqG8?=
+ =?us-ascii?Q?ys1hScBqpDGn/yaVZPL8pWLB8zmKjp61fr/1Q4QnGP2pyUZOPGfJBNn/BUX2?=
+ =?us-ascii?Q?MvNAeUiifyEs1ajyEVtYkSiKzu5Z2RoZys1gcOfoEXRilj9joW+HPL8pR5Od?=
+ =?us-ascii?Q?hTykV/Gato6sR1l8eITg5sgYmsxaNaZs8NN5GCXvjG/MszNxKK1Kzykd5AKR?=
+ =?us-ascii?Q?ltN3KBXr3LRsIB4YMhqW7iDyEw4/PrpkF3ut9bv6FpetdOIzu3FesLKkxreu?=
+ =?us-ascii?Q?N1Kh1GpU1j9zMXYVHPTS6iYxMjdVrATkmHNLvSNvNXVCi6adPyluhL37aiRe?=
+ =?us-ascii?Q?LPh0/WbWLseVoeZhGWDy7m2uaTNosNz8rLl5i3rp6keVqPyH717xoC36pC/f?=
+ =?us-ascii?Q?OyKqVInHWOx/HQQwNKEd+iQAwT3UGSSjMoDkwqPRMSHTAQHub5nssgAY9PFC?=
+ =?us-ascii?Q?UMLISn4aOjmqoHmNvw1Ny4pCk5xDREVkMh3GMU0bfE5POwVW/KJGPgyO/en/?=
+ =?us-ascii?Q?jf19t8dy3c7pkWyraCnXSBfNU6QN1g/Blic78l9CqHIuBc82d7TOnppLJqD4?=
+ =?us-ascii?Q?T3jVAoR975yD9slbFHYy38ajI6r9XY99bBmJTw8s46+pyhbmx8YFPW7gzznh?=
+ =?us-ascii?Q?KXtEKpxToebRgxT3BbDqJ88ijBUTy9HDSng7P/OrVePFGVTMz5S5sihtW9Wr?=
+ =?us-ascii?Q?HWddtkqvLrjpfbfPEYnn3OIjHnqswlAKPJlhp79BjS05hA7OvPZEYXSpsjT+?=
+ =?us-ascii?Q?4MmZ8Vv4gl3wI2mpBl5++X4DUilUOWokKWzBo01Q/f9p8uQ2vodxcWaARo13?=
+ =?us-ascii?Q?xpte/TfYt7Kmv3B/D7WBp4HQsMtC4O9jrPkApsDq7FYVta081DSq/V8+fbkS?=
+ =?us-ascii?Q?H5RMfIwwZKzkNULdwVJIXIPnMA2JH1k37j7Eaimbl7UuecHUCBQRXqwVGkEv?=
+ =?us-ascii?Q?dgP27hzpfKzWLpoZYIMIV4sBPvuFS8viIMGX7YJmO/hNbr8/StUw3tyjLIns?=
+ =?us-ascii?Q?zCazIgucdZZKYu19cvnfjPc5bGkil5To0dLS8G/UnmPPSXvR6fgBquvzhJnM?=
+ =?us-ascii?Q?TA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	1hIZGFSuThG9eYxqK/ITd5jfBu9N0/YoDs9YCl8CFQeQFk/ynKoX1bW/4mjxZHGT5bTtn2BafMeyVKTf3bF/9koSEUp3IWJF6iMHVjVxqf9kcfYSBKYL5EKtyXfVVz0urOzXGCc65aIAErnaDt3x5jiYm4OXJgbliH40krIBPld/Kwa8rmQRr09zYwRqW/aM9sKQ5kb4opE8PS0kzzDlrzSnYwTahfJym9vCcpNyktTWgoMEcCq7z2vetlYJXTakZUSi8oXAic3OKbSDzWq3U4Fp6ajzJzpu0XMDbZ3ZIxfYo0mMG0lr7P7yzFaGPLoMVQk5hGt8HfiQWpYWX3ghrEAttyPVavSU665WvPUbSMZ5s+8rnvVsxJjt9y0bDXBQkxqRmS/OEf4kIMEC8E2d1dinRBiwNdSLQ3uuJIxxATtIlnHLOLcmFKIrKo4W2+3w3/XqkeXGiFgOluFtWLouNOla0givuXsucuiPGzdvJ0Hsv3dzzxKWixUGysOjRvHbtHEGICIqwK2ReZ7WVAumIS038IwyC8Ktub2jkGFWbPV75iEM4VYHMSKm2I5o2ZTLHwKZpevMrWhufz62ESMP4LikMpqH15aXZQ15Y9Jyg0s=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fcee87cf-6aa6-47d1-b2c1-08ddb3b42709
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2025 06:47:28.7737
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9AHmbbjKu+rWodn04r2Er/sbC8H8T82qjUJhJ22zaqg66lxB7X44qU6yiayTbZApRZXk+tpknW9QA1LVXV+6Koebl7dKOdV9p2RA135fPlw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6559
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-06-25_01,2025-06-23_07,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 spamscore=0 adultscore=0 mlxlogscore=886 clxscore=1015
- impostorscore=0 suspectscore=0 mlxscore=0 phishscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506250053
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 mlxscore=0
+ adultscore=0 mlxlogscore=860 suspectscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505160000
+ definitions=main-2506250048
+X-Proofpoint-GUID: oLr2_F-Tal5gz-R9VDd0opPybo2e-_Du
+X-Proofpoint-ORIG-GUID: oLr2_F-Tal5gz-R9VDd0opPybo2e-_Du
+X-Authority-Analysis: v=2.4 cv=cpebk04i c=1 sm=1 tr=0 ts=685b9b85 b=1 cx=c_pps a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=6IFa9wvqVegA:10 a=GoEa3M9JfhUA:10 a=7CQSdrXTAAAA:8 a=4-0xnxOgkHFIApZ0aV4A:9 a=CjuIK1q_8ugA:10 a=zZCYzV9kfG8A:10 a=a-qgeE7W1pNrGK8U0ZQC:22 cc=ntf awl=host:13206
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI1MDA0OSBTYWx0ZWRfX1yJt/Fy+O7qP 92BiULAB9HPhCTlDYkpQo3Pcr5F85wm5ZkvVtz9dzWQ1zVdH1FrdzBxbusSds+rKOpBFoSZGpa8 SQceJLYugZcSqGSZVTMe5KSRT2wliXCvMg4ex2rAhTV4f1x9foVN92puhNDFD6yoMxNN6p5Olw4
+ J98fVOBoJB99w7YazvCZjI1gU9XkNwn+QJsgHz1SdxKSGIMdlrcfNabsX6ufnRz42ga1HT31LIj RfehLD8iPDszu/sxNfgF4j1n8YdwhJtlRT0u2jIrmA7TN2LmScJBQ42BS1brcR1N1RfBF1ATvoE NRoP4xXAwNhpTiAGZIpo+69/KlJ/02mdglF+tyfdBkX4ZlErHsQoiEbHyQVuXGRbgADAEKqGfH4
+ gGpb/eoWikeAYaPpFtKy0+Lv/sOMO/rhC35eJ3HTQs8HQ/7OABnBTWCxldQSEE4DklUs+6Ao
+X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Rohan McLure <rmclure@linux.ibm.com>
+On Tue, Jun 24, 2025 at 09:50:50PM -0700, Andrew Morton wrote:
+> On Wed, 25 Jun 2025 08:25:35 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+>
+> > ust wondering which tree-branch this series applies ? Tried all the usual
+> > ones but could not apply the series cleanly.
+> >
+> > v6.16-rc3
+> > next-20250624
+> > mm-stable
+> > mm-unstable
+>
+> It's now in mm-unstable if that helps.
 
-On creation and clearing of a page table mapping, instrument such calls
-by invoking page_table_check_pte_set and page_table_check_pte_clear
-respectively. These calls serve as a sanity check against illegal
-mappings.
+Thanks Andrew!
 
-Enable ARCH_SUPPORTS_PAGE_TABLE_CHECK for all platforms.
+Just FYI Ashuman - it was applied against the new and shiny (TM) mm-new branch,
+maybe we didn't publicise this well enough...
 
-See also:
+This is the absolute tippy tip of mm development and so may be broken in hideous
+ways, but it's what new work should be rebased on.
 
-riscv support in commit 3fee229a8eb9 ("riscv/mm: enable
-ARCH_SUPPORTS_PAGE_TABLE_CHECK")
-arm64 in commit 42b2547137f5 ("arm64/mm: enable
-ARCH_SUPPORTS_PAGE_TABLE_CHECK")
-x86_64 in commit d283d422c6c4 ("x86: mm: add x86_64 support for page table
-check")
+Then if accepted + stable things trickle to mm-unstable for -next testing (we're
+trying to avoid breaking -next too much) and then later mm-stable if all's good
+for send ->Linus.
 
-[ajd@linux.ibm.com: rebase]
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Rohan McLure <rmclure@linux.ibm.com>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
----
- arch/powerpc/Kconfig                         |  1 +
- arch/powerpc/include/asm/book3s/32/pgtable.h |  7 ++-
- arch/powerpc/include/asm/book3s/64/pgtable.h | 45 +++++++++++++++-----
- arch/powerpc/include/asm/nohash/pgtable.h    |  8 +++-
- arch/powerpc/mm/book3s64/hash_pgtable.c      |  4 ++
- arch/powerpc/mm/book3s64/pgtable.c           | 11 +++--
- arch/powerpc/mm/book3s64/radix_pgtable.c     |  3 ++
- arch/powerpc/mm/pgtable.c                    |  4 ++
- 8 files changed, 68 insertions(+), 15 deletions(-)
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index c3e0cc83f120..be07827325cc 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -173,6 +173,7 @@ config PPC
- 	select ARCH_STACKWALK
- 	select ARCH_SUPPORTS_ATOMIC_RMW
- 	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx
-+	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
- 	select ARCH_USE_BUILTIN_BSWAP
- 	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
- 	select ARCH_USE_MEMTEST
-diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
-index b225967f85ea..68864a71ca5f 100644
---- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-@@ -202,6 +202,7 @@ void unmap_kernel_page(unsigned long va);
- #ifndef __ASSEMBLY__
- #include <linux/sched.h>
- #include <linux/threads.h>
-+#include <linux/page_table_check.h>
- 
- /* Bits to mask out from a PGD to get to the PUD page */
- #define PGD_MASKED_BITS		0
-@@ -315,7 +316,11 @@ static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
- static inline pte_t ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
- 				       pte_t *ptep)
- {
--	return __pte(pte_update(mm, addr, ptep, ~_PAGE_HASHPTE, 0, 0));
-+	pte_t old_pte = __pte(pte_update(mm, addr, ptep, ~_PAGE_HASHPTE, 0, 0));
-+
-+	page_table_check_pte_clear(mm, addr, old_pte);
-+
-+	return old_pte;
- }
- 
- #define __HAVE_ARCH_PTEP_SET_WRPROTECT
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 5de04302c6f4..b244bb558331 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -145,6 +145,8 @@
- #define PAGE_KERNEL_ROX	__pgprot(_PAGE_BASE | _PAGE_KERNEL_ROX)
- 
- #ifndef __ASSEMBLY__
-+#include <linux/page_table_check.h>
-+
- /*
-  * page table defines
-  */
-@@ -417,8 +419,11 @@ static inline void huge_ptep_set_wrprotect(struct mm_struct *mm,
- static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
- 				       unsigned long addr, pte_t *ptep)
- {
--	unsigned long old = pte_update(mm, addr, ptep, ~0UL, 0, 0);
--	return __pte(old);
-+	pte_t old_pte = __pte(pte_update(mm, addr, ptep, ~0UL, 0, 0));
-+
-+	page_table_check_pte_clear(mm, addr, old_pte);
-+
-+	return old_pte;
- }
- 
- #define __HAVE_ARCH_PTEP_GET_AND_CLEAR_FULL
-@@ -427,11 +432,16 @@ static inline pte_t ptep_get_and_clear_full(struct mm_struct *mm,
- 					    pte_t *ptep, int full)
- {
- 	if (full && radix_enabled()) {
-+		pte_t old_pte;
-+
- 		/*
- 		 * We know that this is a full mm pte clear and
- 		 * hence can be sure there is no parallel set_pte.
- 		 */
--		return radix__ptep_get_and_clear_full(mm, addr, ptep, full);
-+		old_pte = radix__ptep_get_and_clear_full(mm, addr, ptep, full);
-+		page_table_check_pte_clear(mm, addr, old_pte);
-+
-+		return old_pte;
- 	}
- 	return ptep_get_and_clear(mm, addr, ptep);
- }
-@@ -1308,19 +1318,34 @@ extern int pudp_test_and_clear_young(struct vm_area_struct *vma,
- static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
- 					    unsigned long addr, pmd_t *pmdp)
- {
--	if (radix_enabled())
--		return radix__pmdp_huge_get_and_clear(mm, addr, pmdp);
--	return hash__pmdp_huge_get_and_clear(mm, addr, pmdp);
-+	pmd_t old_pmd;
-+
-+	if (radix_enabled()) {
-+		old_pmd = radix__pmdp_huge_get_and_clear(mm, addr, pmdp);
-+	} else {
-+		old_pmd = hash__pmdp_huge_get_and_clear(mm, addr, pmdp);
-+	}
-+
-+	page_table_check_pmd_clear(mm, addr, old_pmd);
-+
-+	return old_pmd;
- }
- 
- #define __HAVE_ARCH_PUDP_HUGE_GET_AND_CLEAR
- static inline pud_t pudp_huge_get_and_clear(struct mm_struct *mm,
- 					    unsigned long addr, pud_t *pudp)
- {
--	if (radix_enabled())
--		return radix__pudp_huge_get_and_clear(mm, addr, pudp);
--	BUG();
--	return *pudp;
-+	pud_t old_pud;
-+
-+	if (radix_enabled()) {
-+		old_pud = radix__pudp_huge_get_and_clear(mm, addr, pudp);
-+	} else {
-+		BUG();
-+	}
-+
-+	page_table_check_pud_clear(mm, addr, old_pud);
-+
-+	return old_pud;
- }
- 
- static inline pmd_t pmdp_collapse_flush(struct vm_area_struct *vma,
-diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
-index a8bc4f24beb1..3a6630dca615 100644
---- a/arch/powerpc/include/asm/nohash/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/pgtable.h
-@@ -29,6 +29,8 @@ static inline pte_basic_t pte_update(struct mm_struct *mm, unsigned long addr, p
- 
- #ifndef __ASSEMBLY__
- 
-+#include <linux/page_table_check.h>
-+
- extern int icache_44x_need_flush;
- 
- #ifndef pte_huge_size
-@@ -122,7 +124,11 @@ static inline void ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr,
- static inline pte_t ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
- 				       pte_t *ptep)
- {
--	return __pte(pte_update(mm, addr, ptep, ~0UL, 0, 0));
-+	pte_t old_pte = __pte(pte_update(mm, addr, ptep, ~0UL, 0, 0));
-+
-+	page_table_check_pte_clear(mm, addr, old_pte);
-+
-+	return old_pte;
- }
- #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
- 
-diff --git a/arch/powerpc/mm/book3s64/hash_pgtable.c b/arch/powerpc/mm/book3s64/hash_pgtable.c
-index 988948d69bc1..c1c25d46dd16 100644
---- a/arch/powerpc/mm/book3s64/hash_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/hash_pgtable.c
-@@ -8,6 +8,7 @@
- #include <linux/sched.h>
- #include <linux/mm_types.h>
- #include <linux/mm.h>
-+#include <linux/page_table_check.h>
- #include <linux/stop_machine.h>
- 
- #include <asm/sections.h>
-@@ -231,6 +232,9 @@ pmd_t hash__pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long addres
- 
- 	pmd = *pmdp;
- 	pmd_clear(pmdp);
-+
-+	page_table_check_pmd_clear(vma->vm_mm, address, pmd);
-+
- 	/*
- 	 * Wait for all pending hash_page to finish. This is needed
- 	 * in case of subpage collapse. When we collapse normal pages
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 1468a815fa5e..73924e248087 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -10,6 +10,7 @@
- #include <linux/pkeys.h>
- #include <linux/debugfs.h>
- #include <linux/proc_fs.h>
-+#include <linux/page_table_check.h>
- 
- #include <asm/pgalloc.h>
- #include <asm/tlb.h>
-@@ -128,6 +129,7 @@ void set_pmd_at(struct mm_struct *mm, unsigned long addr,
- 	WARN_ON(!(pmd_leaf(pmd)));
- #endif
- 	trace_hugepage_set_pmd(addr, pmd_val(pmd));
-+	page_table_check_pmd_set(mm, addr, pmdp, pmd);
- 	return set_pte_at_unchecked(mm, addr, pmdp_ptep(pmdp), pmd_pte(pmd));
- }
- 
-@@ -145,6 +147,7 @@ void set_pud_at(struct mm_struct *mm, unsigned long addr,
- 	WARN_ON(!(pud_leaf(pud)));
- #endif
- 	trace_hugepage_set_pud(addr, pud_val(pud));
-+	page_table_check_pud_set(mm, addr, pudp, pud);
- 	return set_pte_at_unchecked(mm, addr, pudp_ptep(pudp), pud_pte(pud));
- }
- 
-@@ -180,12 +183,14 @@ void serialize_against_pte_lookup(struct mm_struct *mm)
- pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
- 		     pmd_t *pmdp)
- {
--	unsigned long old_pmd;
-+	pmd_t old_pmd;
- 
- 	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
--	old_pmd = pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, _PAGE_INVALID);
-+	old_pmd = __pmd(pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, _PAGE_INVALID));
- 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
--	return __pmd(old_pmd);
-+	page_table_check_pmd_clear(vma->vm_mm, address, old_pmd);
-+
-+	return old_pmd;
- }
- 
- pud_t pudp_invalidate(struct vm_area_struct *vma, unsigned long address,
-diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
-index 2a52089018a5..b0ad2afc0be0 100644
---- a/arch/powerpc/mm/book3s64/radix_pgtable.c
-+++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
-@@ -14,6 +14,7 @@
- #include <linux/of.h>
- #include <linux/of_fdt.h>
- #include <linux/mm.h>
-+#include <linux/page_table_check.h>
- #include <linux/hugetlb.h>
- #include <linux/string_helpers.h>
- #include <linux/memory.h>
-@@ -1468,6 +1469,8 @@ pmd_t radix__pmdp_collapse_flush(struct vm_area_struct *vma, unsigned long addre
- 	pmd = *pmdp;
- 	pmd_clear(pmdp);
- 
-+	page_table_check_pmd_clear(vma->vm_mm, address, pmd);
-+
- 	radix__flush_tlb_collapsed_pmd(vma->vm_mm, address);
- 
- 	return pmd;
-diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
-index 4cc9af7961ca..ed46151ae1d9 100644
---- a/arch/powerpc/mm/pgtable.c
-+++ b/arch/powerpc/mm/pgtable.c
-@@ -22,6 +22,7 @@
- #include <linux/mm.h>
- #include <linux/percpu.h>
- #include <linux/hardirq.h>
-+#include <linux/page_table_check.h>
- #include <linux/hugetlb.h>
- #include <asm/tlbflush.h>
- #include <asm/tlb.h>
-@@ -206,6 +207,9 @@ void set_ptes(struct mm_struct *mm, unsigned long addr, pte_t *ptep,
- 	 * and not hw_valid ptes. Hence there is no translation cache flush
- 	 * involved that need to be batched.
- 	 */
-+
-+	page_table_check_ptes_set(mm, addr, ptep, pte, nr);
-+
- 	for (;;) {
- 
- 		/*
--- 
-2.49.0
-
+Cheers, Lorenzo
 
