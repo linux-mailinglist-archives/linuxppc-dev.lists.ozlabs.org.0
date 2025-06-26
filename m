@@ -1,72 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-9814-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9815-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7296CAE9EC8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 15:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0C9AE9F1A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 15:39:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bSfgx3qFrz2xYl;
-	Thu, 26 Jun 2025 23:30:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSftj0vFBz30PF;
+	Thu, 26 Jun 2025 23:39:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750944621;
-	cv=none; b=Vd5EPKdDS62f2wsmiuTeiTzSa2cqjqMvqifSuGzMbvCBkkuNyV+SY0SYRM1IV46WAccU4R9Us8urVe1RY1BR6JPLazZdS/1rp2EYu9Awka6+XZfg0cyW+QAEYQwCCn8N9gGqmZ8rBSZn4mMaYPyL2oG1PTALWAcbJ/xPg0As5pn4Wkyv0ripAzTlczsTQI57a3/swiMYirW05yXBKPaCWY2i8Wz3t0aGa3jdOKKrhnnnODcJgGd50P7emfQ4z6KbLe8J9e0fFaWkdCKb2a5NOYJuiXF0swtjY3Yq+pN/lyubY3M4d7BROs2oX70MmLkF7oBm/ftSpdW+/OcPJFVEDw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750945181;
+	cv=none; b=DthwOycx8lFZrVuiq/r8hJb3RipsdbYS6zMMa/jHJ6Qea+YnVCMkeHxYbnexi4LmeAJV7RfyJy75pva7Iwp5ry7LV7/FR8+HD0VedUamFLTTKXmJ9KfjyGjlpMpPL9+vu2/UGm1t30cUJnBT27bJu1pGzDdoUkteY6I1Ux31PPpIUIXVGFZT7v1MrllD2NQh2Ka+ndzY9rjVP/ZQb+Kn/HdTKEhwusUHL9eqzrvITTVgnKArREHsw17kfW257TlyiJfYLMWpDrZgn7u2S5EMU/2K2IMvGpRAr6V+cnIjiPbvSUucV9mgAui4Zy6D2gSSP8HBpOKT3KhtSekLRY1QFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750944621; c=relaxed/relaxed;
-	bh=p1Vrlz3g9lucIoHJorqCas+zLBoRLvQnyL0+A+0WnpA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cQB4IIfwq5xJCTdeIFTm4FJF5GHxrCtnfeiRo8i+Kh/MypDo4JRi/dHr3nKJSDd5wlJfqzhR7CB/he4Xq4iEddnhA2l3AhFwPMbPKnzW3ecliZyuPH1JytAJWj6XysRD4AZgK5iLvyVpkUVz/06ffYdyOXnN6fIliCDnqhv9ouxOBcA2CGX497l6QItl/ctOTgu29aFzd+S1W8LetKYcfwTrFrBAwSPmCkI1Wx19VUFv8wLny54Zk9s4+p7VRHYACjs40ynMtG+l4nbQRNA4E4NXuiwyrHJS5y+aT9dbLxq10zXwm0KGTXv6QbK5yBgcHWizq6sSA/OF9muUPDrCNw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1750945181; c=relaxed/relaxed;
+	bh=q5jNi/g6640BeMFTzbuVYGtnlBOaFXWhE/mPz6/s6QM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m6ji+MySZCzWyZ7W14Mp8+vpBokyUOz/J89vby2wV7fYKaKH3XeVIZeQUhzm5siyc9HwVkQ7OqohcynH3eTEwi5ZPIXHbk2va2bACo9Jq5NoL/YzsCDuJKG7SsZbukhGBQKoRNlxQD2cE9EscoCMKcr20HUg/jfRFhn/WdyBMk2MtyTM+VcydhvoByp8bHXuC0oFdhSqTDeaoh3o0d19WXfQMdBHRWDOgkxP96CoeniMjZD6KvVHwsoH1SSwAaJRL5h4nM5FZDYz0+CL3miXyBA3S5F4rSjP3eEQYT5nV2yHI4xmNUVVDdqDg75ROEZAV7PfgOGCWEkbea+vBnnlgA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d/mBDFid; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=d/mBDFid;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSfgp0TQZz2xRw
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 23:30:12 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=p1Vrlz3g9lucIoHJorqCas+zLBoRLvQnyL0+A+0WnpA=; b=mBNUpeDFYHG7orfAPa6AC3yITs
-	wxmxpTh9AObxBPIaUX4pFb8wE8AnO8c/Ndl23AbEuOrgwlCO6RDGwY9LUiqizTNHkDoI9Ba+0Wgj0
-	pX7uLGlriKUYuHwiofMoZiktvWNgyLJyHYp2NhGz5Vprhr18X9IvHfEp22IACOrrf4gpKIotChlGj
-	imiUGNU/Z1GhPgSWoqhkp6W93i9q1tqHFWYzVQog0c7J4Qaj9QkShWqygMq6vv6Dv3w4ZgG5CZJ8m
-	IkpBbwX/8k7/3PaT7NRHYC9Gv6SQY4hlDJ2hX1sQHoXxFGE5cYATi5pWrT1Hi3oOxmDMXD08EG2Ez
-	N9J4GBiA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uUmfg-0000000Biam-20O3;
-	Thu, 26 Jun 2025 13:29:44 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 5644930BDA9; Thu, 26 Jun 2025 15:29:43 +0200 (CEST)
-Date: Thu, 26 Jun 2025 15:29:43 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
-	dvyukov@google.com, vincenzo.frascino@arm.com,
-	catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
-	kernel@xen0n.name, maddy@linux.ibm.com, mpe@ellerman.id.au,
-	npiggin@gmail.com, christophe.leroy@csgroup.eu, hca@linux.ibm.com,
-	gor@linux.ibm.com, agordeev@linux.ibm.com,
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, richard@nod.at,
-	anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-	dave.hansen@linux.intel.com, luto@kernel.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
-	chris@zankel.net, jcmvbkbc@gmail.com, akpm@linux-foundation.org,
-	guoweikang.kernel@gmail.com, geert@linux-m68k.org, rppt@kernel.org,
-	tiwei.btw@antgroup.com, richard.weiyang@gmail.com,
-	benjamin.berg@intel.com, kevin.brodsky@arm.com,
-	kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	linux-um@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH 5/9] kasan/loongarch: call kasan_init_generic in
- kasan_init
-Message-ID: <20250626132943.GJ1613200@noisy.programming.kicks-ass.net>
-References: <20250625095224.118679-1-snovitoll@gmail.com>
- <20250625095224.118679-6-snovitoll@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSfth09kDz30P3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 23:39:39 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55QDVTgT000847;
+	Thu, 26 Jun 2025 13:39:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=q5jNi/
+	g6640BeMFTzbuVYGtnlBOaFXWhE/mPz6/s6QM=; b=d/mBDFidI/p9Is/ahgBSBS
+	HtqTpLusGt9o6+PLVqdZpM/GSAxNk2jPL6V0Cve9/NkRQCfJnl69kysgdnT47qo8
+	3MIlxfjdv5d+T3VXT4hncYXKXOYG6jrqvBFAj1eTKY8gdKlA+1mIR0arPV7lDRCq
+	wBj5mPMJK0AuRPd0OoT94siUcVBYRddIEkpvGu5TBcGWd2ejraemIXyU8TN2FGgm
+	EX5RcIM5gGHphQ11eAkFN3CrwVX4OFB/Qg450BaOa8IhCX3WdmCNgO64WPKRvyGa
+	dUFYJgwuzEBpkpHBAOzxz2yoJKkgyAxav5jNXIHjo9nLBoEG7ULsk+USwT+SimNw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dj5u6sxr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Jun 2025 13:39:23 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 55QDbQsk006893;
+	Thu, 26 Jun 2025 13:39:22 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dj5u6sxm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Jun 2025 13:39:22 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55QBTDbS014951;
+	Thu, 26 Jun 2025 13:39:21 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 47e72tyb0g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 26 Jun 2025 13:39:21 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55QDdHRS39977268
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Jun 2025 13:39:18 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E0BBE2004B;
+	Thu, 26 Jun 2025 13:39:17 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A639220040;
+	Thu, 26 Jun 2025 13:39:14 +0000 (GMT)
+Received: from [9.39.23.153] (unknown [9.39.23.153])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 26 Jun 2025 13:39:14 +0000 (GMT)
+Message-ID: <760e230c-5699-485c-910b-ebeaa9f9bd09@linux.ibm.com>
+Date: Thu, 26 Jun 2025 19:09:13 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,97 +86,182 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250625095224.118679-6-snovitoll@gmail.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v2 9/9] [DEBUG] powerpc: add debug file for set/unset cpu
+ avoid
+To: Yury Norov <yury.norov@gmail.com>
+Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, tglx@linutronix.de, maddy@linux.ibm.com,
+        vschneid@redhat.com, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+        kprateek.nayak@amd.com, huschle@linux.ibm.com, srikar@linux.ibm.com,
+        linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu,
+        linuxppc-dev@lists.ozlabs.org, gregkh@linuxfoundation.org
+References: <20250625191108.1646208-1-sshegde@linux.ibm.com>
+ <20250625191108.1646208-10-sshegde@linux.ibm.com> <aFx94BDKk_WJ48pK@yury>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <aFx94BDKk_WJ48pK@yury>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: q3Pkjo1OFsX5i0Y-PcFsvXIlG1JylwbO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjI2MDExMiBTYWx0ZWRfX6paYNYC3u8vf afsHzV/XN88ftqchITg6B3cPoaDMvSEU0D5S77UJqTXnZBjTMz3Qpc7KV9vHWsXEywuSpH/vkoR bFOC7Wrsj/6Hf7oUe9Trkx5XKe+GkDGI3WZNRBuH/UAX51GgjXlO4ni8JjZNMmfmosmFYjb+Z/g
+ Ir7Gn+OX+VXRX6GRcCOiVoS65ny3XQlsu4S/LHzUs0ITsenFiSGypqX2nDcrXncF/KUFe7xUBJX YiLyjSx3assEmUgQsT2WyG7HgAHMQBx1X55M9YHVXqhRgXXpj72lt9ro6UFbDGjVXWYBfU2VVUZ DcTFVCzIiqu7DwjeF791QXmBE/jU0g6YtZbj/wAs/N71Qmrtwur+bB2wUNDOW9OF5eOJIKAK8ZG
+ YGubg8zBPJFUByYBQaGknZATrN6CAoO1z9MuQTHtwvPguwRR/0+ovQosL3oabVsZg7eGCtD8
+X-Authority-Analysis: v=2.4 cv=MshS63ae c=1 sm=1 tr=0 ts=685d4d8b cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VnNF1IyMAAAA:8 a=llwzAoz1qmXTQtL4rQUA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 3CwLmQllbHFcgz9X1juKvx_G2acL9eam
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-06-26_05,2025-06-26_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=999 impostorscore=0
+ clxscore=1015 phishscore=0 malwarescore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506260112
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Jun 25, 2025 at 02:52:20PM +0500, Sabyrzhan Tasbolatov wrote:
-> Call kasan_init_generic() which enables the static flag
-> to mark generic KASAN initialized, otherwise it's an inline stub.
-> 
-> Replace `kasan_arch_is_ready` with `kasan_enabled`.
-> Delete the flag `kasan_early_stage` in favor of the global static key
-> enabled via kasan_enabled().
-> 
-> printk banner is printed earlier right where `kasan_early_stage`
-> was flipped, just to keep the same flow.
-> 
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218315
-> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-> ---
->  arch/loongarch/include/asm/kasan.h | 7 -------
->  arch/loongarch/mm/kasan_init.c     | 7 ++-----
->  2 files changed, 2 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/loongarch/include/asm/kasan.h b/arch/loongarch/include/asm/kasan.h
-> index 7f52bd31b9d..b0b74871257 100644
-> --- a/arch/loongarch/include/asm/kasan.h
-> +++ b/arch/loongarch/include/asm/kasan.h
-> @@ -66,7 +66,6 @@
->  #define XKPRANGE_WC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKPRANGE_WC_KASAN_OFFSET)
->  #define XKVRANGE_VC_SHADOW_OFFSET	(KASAN_SHADOW_START + XKVRANGE_VC_KASAN_OFFSET)
->  
-> -extern bool kasan_early_stage;
->  extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
->  
->  #define kasan_mem_to_shadow kasan_mem_to_shadow
-> @@ -75,12 +74,6 @@ void *kasan_mem_to_shadow(const void *addr);
->  #define kasan_shadow_to_mem kasan_shadow_to_mem
->  const void *kasan_shadow_to_mem(const void *shadow_addr);
->  
-> -#define kasan_arch_is_ready kasan_arch_is_ready
-> -static __always_inline bool kasan_arch_is_ready(void)
-> -{
-> -	return !kasan_early_stage;
-> -}
-> -
->  #define addr_has_metadata addr_has_metadata
->  static __always_inline bool addr_has_metadata(const void *addr)
->  {
-> diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
-> index d2681272d8f..cf8315f9119 100644
-> --- a/arch/loongarch/mm/kasan_init.c
-> +++ b/arch/loongarch/mm/kasan_init.c
-> @@ -40,11 +40,9 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
->  #define __pte_none(early, pte) (early ? pte_none(pte) : \
->  ((pte_val(pte) & _PFN_MASK) == (unsigned long)__pa(kasan_early_shadow_page)))
->  
-> -bool kasan_early_stage = true;
-> -
->  void *kasan_mem_to_shadow(const void *addr)
->  {
-> -	if (!kasan_arch_is_ready()) {
-> +	if (!kasan_enabled()) {
->  		return (void *)(kasan_early_shadow_page);
->  	} else {
->  		unsigned long maddr = (unsigned long)addr;
-> @@ -298,7 +296,7 @@ void __init kasan_init(void)
->  	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
->  					kasan_mem_to_shadow((void *)KFENCE_AREA_END));
->  
-> -	kasan_early_stage = false;
-> +	kasan_init_generic();
->  
->  	/* Populate the linear mapping */
->  	for_each_mem_range(i, &pa_start, &pa_end) {
-> @@ -329,5 +327,4 @@ void __init kasan_init(void)
->  
->  	/* At this point kasan is fully initialized. Enable error messages */
->  	init_task.kasan_depth = 0;
-> -	pr_info("KernelAddressSanitizer initialized.\n");
->  }
 
-This one is weird because its the only arch that does things after
-marking early_state false.
+Hi Yury, Thanks for taking a look at this.
 
-Is that really correct, or should kasan_init_generic() be last, like all
-the other architectures?
+> On Thu, Jun 26, 2025 at 12:41:08AM +0530, Shrikanth Hegde wrote:
+>> Reference patch for how an architecture can make use of this infra.
+>>
+>> This is not meant to be merged. Instead the vp_manual_hint should either
+>> come from hardware or could be derived using steal time.
+> 
+> If you don't add any code that manages the 'avoid' mask on the host
+> side, all this becomes a dead code.
 
-Also, please move init_task.kasan_depth = 0 into the generic thing.
-ARM64 might have fooled you with the wrapper function, but they all do
-this right before that pr_info you're taking out.
+Ok.
+
+Maybe I can keep this debug file, until we get the infra where
+the hint derivation would be done by hardware by means of hcall or gets 
+calculated based on steal time.
+
+I think i will have polish this a bit and move it to appropriate place 
+if this is to be kept.
+
+>   
+>> When the provided hint is less than the total CPUs in the system, it
+>> will enable the cpu avoid static key and set those CPUs as avoid.
+>>
+>> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+>> ---
+>>   arch/powerpc/include/asm/paravirt.h |  2 ++
+>>   arch/powerpc/kernel/smp.c           | 50 +++++++++++++++++++++++++++++
+>>   2 files changed, 52 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
+>> index b78b82d66057..b6497e0b60d8 100644
+>> --- a/arch/powerpc/include/asm/paravirt.h
+>> +++ b/arch/powerpc/include/asm/paravirt.h
+>> @@ -10,6 +10,8 @@
+>>   #include <asm/hvcall.h>
+>>   #endif
+>>   
+>> +DECLARE_STATIC_KEY_FALSE(paravirt_cpu_avoid_enabled);
+>> +
+>>   #ifdef CONFIG_PPC_SPLPAR
+>>   #include <linux/smp.h>
+>>   #include <asm/kvm_guest.h>
+>> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+>> index 5ac7084eebc0..e00cdc4de441 100644
+>> --- a/arch/powerpc/kernel/smp.c
+>> +++ b/arch/powerpc/kernel/smp.c
+>> @@ -64,6 +64,7 @@
+>>   #include <asm/systemcfg.h>
+>>   
+>>   #include <trace/events/ipi.h>
+>> +#include <linux/debugfs.h>
+>>   
+>>   #ifdef DEBUG
+>>   #include <asm/udbg.h>
+>> @@ -82,6 +83,7 @@ bool has_big_cores __ro_after_init;
+>>   bool coregroup_enabled __ro_after_init;
+>>   bool thread_group_shares_l2 __ro_after_init;
+>>   bool thread_group_shares_l3 __ro_after_init;
+>> +static int vp_manual_hint = NR_CPUS;
+>>   
+>>   DEFINE_PER_CPU(cpumask_var_t, cpu_sibling_map);
+>>   DEFINE_PER_CPU(cpumask_var_t, cpu_smallcore_map);
+>> @@ -1727,6 +1729,7 @@ static void __init build_sched_topology(void)
+>>   	BUG_ON(i >= ARRAY_SIZE(powerpc_topology) - 1);
+>>   
+>>   	set_sched_topology(powerpc_topology);
+>> +	vp_manual_hint = num_present_cpus();
+>>   }
+>>   
+>>   void __init smp_cpus_done(unsigned int max_cpus)
+>> @@ -1807,4 +1810,51 @@ void __noreturn arch_cpu_idle_dead(void)
+>>   	start_secondary_resume();
+>>   }
+>>   
+>> +/*
+>> + * sysfs hint to mark CPUs as Avoid. This will help in restricting
+>> + * the workload to specified number of CPUs.
+>> + * For example 40 > vp_manual_hint means, workload will run on
+>> + * 0-39 CPUs.
+>> + */
+>> +
+>> +static int pv_vp_manual_hint_set(void *data, u64 val)
+>> +{
+>> +	int cpu;
+>> +
+>> +	if (val == 0 || vp_manual_hint > num_present_cpus())
+
+This should be
+	if (val == 0 || val > num_present_cpus())
+
+>> +		vp_manual_hint = num_present_cpus();
+>> +
+>> +	if (val != vp_manual_hint)
+>> +		vp_manual_hint = val;
+> 
+> This all is effectively just:
+> 
+> 	vp_manual_hint = val;
+> 
+> Isn't?
+
+Yes, With some checks for sane values.
+
+> 
+>> +	if (vp_manual_hint < num_present_cpus())
+>> +		static_branch_enable(&paravirt_cpu_avoid_enabled);
+>> +	else
+>> +		static_branch_disable(&paravirt_cpu_avoid_enabled);
+>> +
+>> +	for_each_present_cpu(cpu) {
+>> +		if (cpu >= vp_manual_hint)
+>> +			set_cpu_avoid(cpu, true);
+>> +		else
+>> +			set_cpu_avoid(cpu, false);
+>> +	}
+>> +	return 0;
+>> +}
+>> +
+>> +static int pv_vp_manual_hint_get(void *data, u64 *val)
+>> +{
+>> +	*val = vp_manual_hint;
+>> +	return 0;
+>> +}
+>> +
+>> +DEFINE_SIMPLE_ATTRIBUTE(fops_pv_vp_manual_hint, pv_vp_manual_hint_get, pv_vp_manual_hint_set, "%llu\n");
+>> +
+>> +static __init int paravirt_debugfs_init(void)
+>> +{
+>> +	if (is_shared_processor())
+>> +		debugfs_create_file("vp_manual_hint", 0600, arch_debugfs_dir, NULL, &fops_pv_vp_manual_hint);
+>> +	return 0;
+>> +}
+>> +
+>> +device_initcall(paravirt_debugfs_init)
+>>   #endif
+>> -- 
+>> 2.43.0
+
 
