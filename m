@@ -1,71 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-9844-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9841-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2682AEA912
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 23:53:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CE0AEA90A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 23:50:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bSsrv2sThz30PF;
-	Fri, 27 Jun 2025 07:53:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSsnN1G4Gz2xCd;
+	Fri, 27 Jun 2025 07:50:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750949868;
-	cv=none; b=YqCjyfNWIjUrFWjsPh/LsSA6/IMoClouh7OlqaoVVp5qbQWOrHSr5RUTQlcJFBvk/wWv+jWa+raTbjqW98MfOLDUD52SQYwX0G96Csr5rAJFulhTgKQ1ONhJLrRUqHAw0JabWGcUDlDuB7bwGm5KXN8LapFNt55RijcOIwt5cI0E5gb84p8LZQdaYHqyWERnXRJHgtNTteM5mcUswHahXyB1aBBN6a3RyzlusqJPpUHJQ+ZOVvwRbn7FuPeiXjjLxMNhiBSuNs15f5kCiEJ+rSXBnkDrsc/IBEggSjJxqx7bbMkVTqiuB47Chwsrrk3d9PKSdIvygfvD69ux4UJTBw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=63.228.1.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750974648;
+	cv=none; b=PYPdKJRsAfZvomAkgwFy0ypZxbuOQxhIWcBCD8gO3NI/MTk5Dmr+yOa1xq5ILgWDSipE1psdLe1kXwQEqpBtJvlFK/GtxlegkuTbsOryaAGShsji0s4/qKdFblXQEhxRJGfDpEdJ5DHOkwZQG9BBjUyWfdN6SpGvBPJCt9mPRJFe/1c3DjHCMM09dqg8+rGCIhAKAMLCagCcWOX+BBuCOxj39jzCCyWUX7nKJwrbcMiefvbGvU5HnV/X6w2mg8JEnzlpD3DKEukyLIy7Xe1Shxb/8588varjwSUCfip7QVsH/S0zq5w9ZFUu2aE77qilpMjdPFZ0vy9tt2CuhTyBDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750949868; c=relaxed/relaxed;
-	bh=LuXkt1+rIvwzDUp4FWqrW0ChG47m3fbaTKQUOS/L/zA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SWfQhtpCsWm58ZF8itIiXNhOSLR2G5UJTZRpM5capCNdyJJd2vO4MjPG6nw2/KvVA3Ub49M1mXfVtc40aad44J3AvwvuBeukQnOSCQpZ3KNJOIdo4PsCKvaZn5IUELBjo60vtMBVq8z04ZAnscgPKCKzM7JWjs8T0YAY+fa/+ah9Po/kBQaXTj3u3vuQGh12Qr8YTQf7lY5lH/YgH/Hqk6lX0lPsnAC3GIzgV1OaSGzgdJMZEpprXYmMWuMDSiYcAfLSxqHurdh8BuHfuX0rCZMxoAlvTway3S3DP72pqiXQp6L09JJo2bHSf3IiBmd32scIonIzuiKyUKX18O60nQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=obiaXYzL; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=4/SZI09w; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=obiaXYzL;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=4/SZI09w;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 576 seconds by postgrey-1.37 at boromir; Fri, 27 Jun 2025 00:57:45 AEST
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bShcn6XJRz2xYl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jun 2025 00:57:45 +1000 (AEST)
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1750949285;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LuXkt1+rIvwzDUp4FWqrW0ChG47m3fbaTKQUOS/L/zA=;
-	b=obiaXYzLtGHXEjiZsSEiI6dqhLAWhu2aWMmlL/3nUGPEad1fu+1ckyafNAlFv7ILW2qwDD
-	euDk1TA1Qh3ny7XPUYPGl2WMM+fLFn778hB1wYUPH+5pmY51fKJ+0Ha25shdcCWZKvVk1r
-	2pq/JcJ08j33tW5zUPNi7ar/fML7MpSg4KAJb6DANBlMLa094ewQwVpNcCOwwZJcxW3mye
-	fAONZyo+EEB+woMv52nirWp2uxrFIS+9EnO7XKpavLFFCES1F4YHP/xmepmc1hv45gdsDZ
-	Qz/4WHw12U+MNV3z/GCqFdiRxugYM0l+tGirJxfPFWIXfVjITe2Ds4FdzVbUew==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1750949285;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LuXkt1+rIvwzDUp4FWqrW0ChG47m3fbaTKQUOS/L/zA=;
-	b=4/SZI09wvpef+i/nrdr7aofSp4Tps5XWwNnztPbw/pYLIToMwRzcA7gNda0Sj6671N6SeA
-	bl3CaKyQdZ4cgxDQ==
-To: Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: Nam Cao <namcao@linutronix.de>
-Subject: [PATCH 3/3] powerpc/pseries/msi: Switch to msi_create_parent_irq_domain()
-Date: Thu, 26 Jun 2025 16:47:42 +0200
-Message-Id: <b19193e6fb9135818409057fd63fbabb8ca399d5.1750861319.git.namcao@linutronix.de>
-In-Reply-To: <cover.1750861319.git.namcao@linutronix.de>
-References: <cover.1750861319.git.namcao@linutronix.de>
+	t=1750974648; c=relaxed/relaxed;
+	bh=8AfLUpfXbLI4U/fAWmKo7PRiYWNETv7TueNspD+2Y8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a/QbGXA+/EL5NbMEpgKgdo12QV0RARNdEh0ZxO+j+L6AOUKekJdGQQIW/E3GLhmh6PRtj3n+CVqgRlnRJ9NuNBLfGTh8/NZi0Mdt2R9OwXhH/bpcXINuisozubrNkBmrSBQNz3wJhOObSWS/dv5M03jLzcS4Or+mBfKNUfvwwgoWoB5IMY8JBHxxVV5GlHAelYq0WRYVWY+vxcIgPNUYsOgkUA1o379RtZxyuWFpmMXGfQ9z0SWfOgjkYUskq18vzGLQPZ6JOjX9AW1sXKBp9+dLStB++DySfsOGyxAlv3+nSJMI+7TaRzPlDlx0ADQQ/PmCjBgVxUOn+2PKUe4NIg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.crashing.org (client-ip=63.228.1.57; helo=gate.crashing.org; envelope-from=segher@kernel.crashing.org; receiver=lists.ozlabs.org)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSsnK6xKqz2xCW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jun 2025 07:50:44 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 55QLdUFG018871;
+	Thu, 26 Jun 2025 16:39:31 -0500
+Received: (from segher@localhost)
+	by gate.crashing.org (8.14.1/8.14.1/Submit) id 55QLdRb4018869;
+	Thu, 26 Jun 2025 16:39:27 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
+Date: Thu, 26 Jun 2025 16:39:27 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Andre Almeida <andrealmeid@igalia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/5] powerpc: Implement masked user access
+Message-ID: <20250626213927.GQ17294@gate.crashing.org>
+References: <cover.1750585239.git.christophe.leroy@csgroup.eu> <20250622172043.3fb0e54c@pumpkin> <ff2662ca-3b86-425b-97f8-3883f1018e83@csgroup.eu> <20250624131714.GG17294@gate.crashing.org> <20250624175001.148a768f@pumpkin> <20250624182505.GH17294@gate.crashing.org> <20250624220816.078f960d@pumpkin>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,238 +63,158 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250624220816.078f960d@pumpkin>
+User-Agent: Mutt/1.4.2.3i
+X-Spam-Status: No, score=-0.0 required=3.0 tests=SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Move away from the legacy MSI domain setup, switch to use
-msi_create_parent_irq_domain().
+Hi!
 
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
- arch/powerpc/include/asm/pci-bridge.h  |   2 -
- arch/powerpc/platforms/pseries/Kconfig |   1 +
- arch/powerpc/platforms/pseries/msi.c   | 106 ++++++++++---------------
- 3 files changed, 45 insertions(+), 64 deletions(-)
+On Tue, Jun 24, 2025 at 10:08:16PM +0100, David Laight wrote:
+> On Tue, 24 Jun 2025 13:25:05 -0500
+> Segher Boessenkool <segher@kernel.crashing.org> wrote:
+> > On Tue, Jun 24, 2025 at 05:50:01PM +0100, David Laight wrote:
+> > > On Tue, 24 Jun 2025 08:17:14 -0500
+> > > Segher Boessenkool <segher@kernel.crashing.org> wrote:
+> > >   
+> > > > On Tue, Jun 24, 2025 at 07:27:47AM +0200, Christophe Leroy wrote:  
+> > > > > Ah ok, I overlooked that, I didn't know the cmove instruction, seem 
+> > > > > similar to the isel instruction on powerpc e500.    
+> > > > 
+> > > > cmove does a move (register or memory) when some condition is true.  
+> > > 
+> > > The destination of x86 'cmov' is always a register (only the source can be
+> > > memory - and is probably always read).  
+> > 
+> > Both source operands can be mem, right?  But probably not both at the
+> > same time.
+> 
+> It only has one 'real' source, but the implementation could easily
+> read the destination register and then decide which value to write
+> back - rather than doing a conditional write to the register file.
 
-diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/a=
-sm/pci-bridge.h
-index 2aa3a091ef20e..1dae53130782a 100644
---- a/arch/powerpc/include/asm/pci-bridge.h
-+++ b/arch/powerpc/include/asm/pci-bridge.h
-@@ -133,8 +133,6 @@ struct pci_controller {
-=20
- 	/* IRQ domain hierarchy */
- 	struct irq_domain	*dev_domain;
--	struct irq_domain	*msi_domain;
--	struct fwnode_handle	*fwnode;
-=20
- 	/* iommu_ops support */
- 	struct iommu_device	iommu;
-diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platform=
-s/pseries/Kconfig
-index fa3c2fff082a8..3e042218d6cd8 100644
---- a/arch/powerpc/platforms/pseries/Kconfig
-+++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -7,6 +7,7 @@ config PPC_PSERIES
- 	select OF_DYNAMIC
- 	select FORCE_PCI
- 	select PCI_MSI
-+	select IRQ_MSI_LIB
- 	select GENERIC_ALLOCATOR
- 	select PPC_XICS
- 	select PPC_XIVE_SPAPR
-diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/=
-pseries/msi.c
-index 10712477938e4..70be6e24427da 100644
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -7,6 +7,7 @@
- #include <linux/crash_dump.h>
- #include <linux/device.h>
- #include <linux/irq.h>
-+#include <linux/irqchip/irq-msi-lib.h>
- #include <linux/irqdomain.h>
- #include <linux/msi.h>
- #include <linux/seq_file.h>
-@@ -429,8 +430,9 @@ static int rtas_prepare_msi_irqs(struct pci_dev *pdev, =
-int nvec_in, int type,
- static int pseries_msi_ops_prepare(struct irq_domain *domain, struct devic=
-e *dev,
- 				   int nvec, msi_alloc_info_t *arg)
- {
-+	struct msi_domain_info *info =3D domain->host_data;
- 	struct pci_dev *pdev =3D to_pci_dev(dev);
--	int type =3D pdev->msix_enabled ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MSI;
-+	int type =3D (info->flags & MSI_FLAG_PCI_MSIX) ? PCI_CAP_ID_MSIX : PCI_CA=
-P_ID_MSI;
-=20
- 	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
- }
-@@ -447,11 +449,6 @@ static void pseries_msi_post_free(struct irq_domain *d=
-omain, struct device *dev)
- 	rtas_disable_msi(to_pci_dev(dev));
- }
-=20
--static struct msi_domain_ops pseries_pci_msi_domain_ops =3D {
--	.msi_prepare	=3D pseries_msi_ops_prepare,
--	.msi_post_free	=3D pseries_msi_post_free,
--};
--
- static void pseries_msi_shutdown(struct irq_data *d)
- {
- 	d =3D d->parent_data;
-@@ -459,18 +456,6 @@ static void pseries_msi_shutdown(struct irq_data *d)
- 		d->chip->irq_shutdown(d);
- }
-=20
--static void pseries_msi_mask(struct irq_data *d)
--{
--	pci_msi_mask_irq(d);
--	irq_chip_mask_parent(d);
--}
--
--static void pseries_msi_unmask(struct irq_data *d)
--{
--	pci_msi_unmask_irq(d);
--	irq_chip_unmask_parent(d);
--}
--
- static void pseries_msi_write_msg(struct irq_data *data, struct msi_msg *m=
-sg)
- {
- 	struct msi_desc *entry =3D irq_data_get_msi_desc(data);
-@@ -485,27 +470,39 @@ static void pseries_msi_write_msg(struct irq_data *da=
-ta, struct msi_msg *msg)
- 	entry->msg =3D *msg;
- }
-=20
--static struct irq_chip pseries_pci_msi_irq_chip =3D {
--	.name		=3D "pSeries-PCI-MSI",
--	.irq_shutdown	=3D pseries_msi_shutdown,
--	.irq_mask	=3D pseries_msi_mask,
--	.irq_unmask	=3D pseries_msi_unmask,
--	.irq_eoi	=3D irq_chip_eoi_parent,
--	.irq_write_msi_msg	=3D pseries_msi_write_msg,
--};
-+static bool pseries_init_dev_msi_info(struct device *dev, struct irq_domai=
-n *domain,
-+				      struct irq_domain *real_parent, struct msi_domain_info *info)
-+{
-+	struct irq_chip *chip =3D info->chip;
-=20
-+	if (!msi_lib_init_dev_msi_info(dev, domain, real_parent, info))
-+		return false;
-=20
--/*
-- * Set MSI_FLAG_MSIX_CONTIGUOUS as there is no way to express to
-- * firmware to request a discontiguous or non-zero based range of
-- * MSI-X entries. Core code will reject such setup attempts.
-- */
--static struct msi_domain_info pseries_msi_domain_info =3D {
--	.flags =3D (MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
--		  MSI_FLAG_MULTI_PCI_MSI  | MSI_FLAG_PCI_MSIX |
--		  MSI_FLAG_MSIX_CONTIGUOUS),
--	.ops   =3D &pseries_pci_msi_domain_ops,
--	.chip  =3D &pseries_pci_msi_irq_chip,
-+	chip->irq_shutdown =3D pseries_msi_shutdown;
-+	chip->irq_write_msi_msg	=3D pseries_msi_write_msg;
-+
-+	info->ops->msi_prepare =3D pseries_msi_ops_prepare;
-+	info->ops->msi_post_free =3D pseries_msi_post_free;
-+
-+	return true;
-+}
-+
-+#define PSERIES_PCI_MSI_FLAGS_REQUIRED (MSI_FLAG_USE_DEF_DOM_OPS	| \
-+					MSI_FLAG_USE_DEF_CHIP_OPS	| \
-+					MSI_FLAG_PCI_MSI_MASK_PARENT)
-+#define PSERIES_PCI_MSI_FLAGS_SUPPORTED (MSI_GENERIC_FLAGS_MASK		| \
-+					 MSI_FLAG_PCI_MSIX		| \
-+					 MSI_FLAG_MSIX_CONTIGUOUS	| \
-+					 MSI_FLAG_MULTI_PCI_MSI)
-+
-+static const struct msi_parent_ops pseries_msi_parent_ops =3D {
-+	.required_flags		=3D PSERIES_PCI_MSI_FLAGS_REQUIRED,
-+	.supported_flags	=3D PSERIES_PCI_MSI_FLAGS_SUPPORTED,
-+	.chip_flags		=3D MSI_CHIP_FLAG_SET_EOI,
-+	.bus_select_token	=3D DOMAIN_BUS_NEXUS,
-+	.bus_select_mask	=3D MATCH_PCI_MSI,
-+	.prefix			=3D "pSeries-",
-+	.init_dev_msi_info	=3D pseries_init_dev_msi_info,
- };
-=20
- static void pseries_msi_compose_msg(struct irq_data *data, struct msi_msg =
-*msg)
-@@ -593,6 +590,7 @@ static void pseries_irq_domain_free(struct irq_domain *=
-domain, unsigned int virq
- }
-=20
- static const struct irq_domain_ops pseries_irq_domain_ops =3D {
-+	.select	=3D msi_lib_irq_domain_select,
- 	.alloc  =3D pseries_irq_domain_alloc,
- 	.free   =3D pseries_irq_domain_free,
- };
-@@ -601,30 +599,18 @@ static int __pseries_msi_allocate_domains(struct pci_=
-controller *phb,
- 					  unsigned int count)
- {
- 	struct irq_domain *parent =3D irq_get_default_domain();
--
--	phb->fwnode =3D irq_domain_alloc_named_id_fwnode("pSeries-MSI",
--						       phb->global_number);
--	if (!phb->fwnode)
--		return -ENOMEM;
--
--	phb->dev_domain =3D irq_domain_create_hierarchy(parent, 0, count,
--						      phb->fwnode,
--						      &pseries_irq_domain_ops, phb);
-+	struct irq_domain_info info =3D {
-+		.fwnode		=3D of_fwnode_handle(phb->dn),
-+		.ops		=3D &pseries_irq_domain_ops,
-+		.host_data	=3D phb,
-+		.size		=3D count,
-+		.parent		=3D parent,
-+	};
-+
-+	phb->dev_domain =3D msi_create_parent_irq_domain(&info, &pseries_msi_pare=
-nt_ops);
- 	if (!phb->dev_domain) {
--		pr_err("PCI: failed to create IRQ domain bridge %pOF (domain %d)\n",
--		       phb->dn, phb->global_number);
--		irq_domain_free_fwnode(phb->fwnode);
--		return -ENOMEM;
--	}
--
--	phb->msi_domain =3D pci_msi_create_irq_domain(of_fwnode_handle(phb->dn),
--						    &pseries_msi_domain_info,
--						    phb->dev_domain);
--	if (!phb->msi_domain) {
- 		pr_err("PCI: failed to create MSI IRQ domain bridge %pOF (domain %d)\n",
- 		       phb->dn, phb->global_number);
--		irq_domain_free_fwnode(phb->fwnode);
--		irq_domain_remove(phb->dev_domain);
- 		return -ENOMEM;
- 	}
-=20
-@@ -646,12 +632,8 @@ int pseries_msi_allocate_domains(struct pci_controller=
- *phb)
-=20
- void pseries_msi_free_domains(struct pci_controller *phb)
- {
--	if (phb->msi_domain)
--		irq_domain_remove(phb->msi_domain);
- 	if (phb->dev_domain)
- 		irq_domain_remove(phb->dev_domain);
--	if (phb->fwnode)
--		irq_domain_free_fwnode(phb->fwnode);
- }
-=20
- static void rtas_msi_pci_irq_fixup(struct pci_dev *pdev)
---=20
-2.39.5
+Yeah, in x86 many (most insns?) can read any reg that they write.  Not
+a great design, but heh.
 
+> A conditional write would be a right PITA for the alu result
+> forwarding logic
+
+Depends.  An implementation can always do the register forwarding etc.,
+just annul the actual store where appropriate (and not put it in the
+various store queues either, heh -- annul all the effects of the store).
+
+> > x86 is not a RISC architecture, or more generally, a load/store
+> > architecture.
+> 
+> It sort of is these days.
+
+Not at all.  Most *implementations* are, the uarchs, but the
+architecture (which determines the required visible semantics) is not.
+That impedance difference is quite painful, yes, for code generation
+more than for the processor implementation even -- as usual the
+compilers have to save the day!
+
+> The memory transfers are separate u-ops, so a 'reg += mem' instruction
+> is split into two be the decoder.
+
+Yup.  Very expensive.  Both for the implementation, and for the
+performance of eventual code running on it.
+
+> Although some u-ops get merged together and executed in one clock,
+> obvious example is some 'compare+branch' pairs.
+
+On many other architectures such things run in 0 cycles anyway :-)
+
+> > A computational instruction is one that doesn't touch memory or does a
+> > branch, or some system function, some supervisor or hypervisor
+> > instruction maybe.
+> > 
+> > x86 does not have many computational insns, most insns can touch
+> > memory :-)
+> 
+> Except that the memory 'bit' is executed separately from any alu 'stuff'.
+
+On many uarchs, yes.  But not in the arch.  No uarch can decide to just
+not implement these difficult and expensive insns :-)
+
+> > > There is a planned new instruction that would do a conditional write
+> > > to memory - but not on any cpu yet.  
+> > 
+> > Interesting!  Instructions like the atomic store insns we got for p9,
+> > maybe?  They can do minimum/maximum and various kinds of more generic
+> > reductions and similar.
+> 
+> I think they are only conditional stores.
+> But they do save a conditional branch.
+
+Yeah, but those are not ever executed *anyway*, there is branch
+prediction and we require that to be pretty good to get reasonable
+performance anyway.
+
+A branch around the store insns is just fine if it can be predicted
+correctly.  If it cannot be predicted correctly, you can do the store
+always, just have the address that is stored to depend on the condition
+(such the data is stored to some dummy memory if it "should not be
+done").  Source code gets such a transform done manually in the
+performance critical paths not infrequently, already.
+
+GCC does not currently do such a transformation AFAIK, but it is a
+pretty basic thing to do.  Conditional stores are not often written in
+source code programs, or there would probably be an implementation for
+this already :-)
+
+> A late disable of a memory write is far less problematic than a disabled
+> register file write. No one minds (too much) about slight delays between
+> writes and reads of the same location (reduced by a store to load forwarder)
+> but you don't want to lose clocks between adjacent simple alu instructions.
+
+Writes to memory take tens of cycles *anyway*, but all of that is hidden
+by the various memory load and store queues (which let you do forwarding
+in just a few cycles).
+
+> For my sins I re-implemented a soft cpu last year...
+
+Ouch :-)  But it was fun to do I hope?
+
+> Which doesn't have a 'cmov' :-(
+
+The x86 flag register bits are so limited and complicated in the first
+place, cmov is the easier part there ;-) 
+
+> > But ancient things do not.  Both 970 (Apple G5) and Cell BE do not yet
+> > have it (they are ISA 2.01 and 2.02 respectively).  And the older p5's
+> > do not have it yet either, but the newer ones do.
+> > 
+> > And all classic PowerPC is ISA 1.xx of course.  Medieval CPUs :-)
+> 
+> That make more sense than the list in patch 5/5.
+
+Not sure what list that is.  I'll find it :-)
+
+> > > > But sure, seen from very far off both isel and cmove can be used to
+> > > > implement the ternary operator ("?:"), are similar in that way :-)  
+> > > 
+> > > Which is exactly what you want to avoid speculation.  
+> > 
+> > There are cheaper / simpler / more effective / better ways to get that,
+> > but sure, everything is better than a conditional branch, always :-)
+> 
+> Everything except a TLB miss :-)
+
+Heh.  TLBa are just a tiny part of translation on Power.  We mostly care
+about the ERATs.  Look it up, if you want to be introduced to another
+level of pain :-)
+
+> And for access_ok() avoiding the conditional is a good enough reason
+> to use a 'conditional move' instruction.
+> Avoiding speculation is actually free.
+
+*Assuming* that avoiding speculation is actually free, you mean?
+
+
+Segher
 
