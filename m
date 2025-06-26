@@ -1,86 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-9797-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9799-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFD6AE9342
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 02:12:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64820AE943F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 04:39:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bSJz23GP9z2xWc;
-	Thu, 26 Jun 2025 10:12:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSNF74y55z309v;
+	Thu, 26 Jun 2025 12:39:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::634"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750896734;
-	cv=none; b=oIz+pUtGNtqRda1CWr9x2moFGa3VrP82aut/IOP8wF2YZ5urYGxFYb1kroWoJZxysXvymbzOz5cieIFmF/y1WlQj/jwWMcodTYGGeLeK27kRpCjoop12fH4ygVxkQG6btYv/TFVM7DoPo7V6qfxFIANnFjP3H+tL7rfGJtqsWhYlabdFynVc5vnyVpcDHuWtOMdHBUslwaLED2y6ACr3vtCAPSe4lUCSam91G9rap+Umb1kJt2uvlMMdqRsx6Hpq0irEgfQ0gxUmBxHwTgXJh/NAjNZjp7QiJT/aio8gXRxVlF9wigexdYmfIt6RXH9RVOFKk5tATO4kYXXVSXVsjw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750905579;
+	cv=none; b=SG6RGHuHErignxMRklOawbxS9XOHQiXfVEJyDuVTFOsYAWDlgPL8DDmhMFxin+uvYROHWSChElfPzucn3anIJQ/wY4qYz1OD22JnaVWQ36CFH/T0o9Xvb6qZ59DvjYy8kfWMTPk7veGgJzLslJmJLN5wXfJQgFF7XESBDHh+UqAKdzrU8jxGeV/IKt5gDJKXU9RCUiQjWKzQI/H7ZLDN/NeplMDAXU7Nz8dp3eb6TPyUyxhrSZOyGRxXa5A7jZwXNVWS/CQ/vyogtYn2rXt+1DNGqrhxuNG+TtmXXP4BoHBZUycvjpSvTjBJ9gMedQKqer24xmcO9V5ci4zBZdFKIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750896734; c=relaxed/relaxed;
-	bh=lowV/nKzWTvWfWNiFO0HDvMPBtQosk45w4ddFI+eEJ4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JdOde/25ExIQxxPALRczMIIn1BwWTJ/s/rXWdS6ILV0ATZpSynJPlFdibdFm12Bm3THGt0+KCPu8carfSqVOtIzVRO6c7CX22gyTuqRX9gXjixxT8mxzVjA6pPikK077Hq8vPxhrkZe2ByTzwrZ5eITzbSwr6mP95BJlr95GEj2v8AhBCw0QqrexxAAuWmCw4dvpFFkrvmLHcckzAq5kwVwQeJ0GLFpKaImtBj95XQx9baX1gTNybXslLmyyeyCEG07fRD/CKumHSx1RwyrlKo1H3a4+g1cLGWPh3ygBctnk5qeugwhkitgvzOQ69089uokzE00wPlnPmqNssrbYEw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OYiHKKlA; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OYiHKKlA;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1750905579; c=relaxed/relaxed;
+	bh=0isuLOml1x4WiWFkwiROA+LItAitLuNjEbXAV7QpazM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Aa7H9naHuGFri7k9dbVrmcBBNU8VMDDNM+O5nzicwFXvl6gHfden2ZbsRcFI4W9pQvkdi61E6qJNaBDF/jztkP6ok/zWFwQOmm432Hnv0lIDJU6DTK79Qb6XGF2hMRtVdxJ0YbLuz9okB2wBxRQVBfYL1IryHHvWeIKqYcVrOvYmRHTRCjJnPLVsMOW2LwDtPZcuNU0kBw5DPpfP7MBavBTrQE5WOC84CJF53ZhxYZQi2nWZoPlYx3t1ieGhlHE956zQJjJ+Jg8MZ7S1iTSih7N2TM3qQ/F+L/MfcdTG7GGob1y7MkIGBKU5RQCuiNG8/gR/YTaWe9pVQGCniYwpPg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=gongruiqi1@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=gongruiqi1@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSJz14s7vz2xRt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 10:12:12 +1000 (AEST)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-23636167b30so5291475ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 17:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750896730; x=1751501530; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lowV/nKzWTvWfWNiFO0HDvMPBtQosk45w4ddFI+eEJ4=;
-        b=OYiHKKlALu7oy9kz0cXZkv7ujcjXld+IETpV1PcWUHrqg9ZOz+1pSsackO9f/pRUsx
-         tRf4aNT9I3kexA2rOoIeoM2O6kkuvLtUnpxiXA7QBs1h7HhIF/NCMUBp7O9rC0DZ89/N
-         6B9pKdGM2hRZZ6D2OrInmDNS6OQ32DsmDZX8nHkxQucPgK9urXTdiA7GmsC7q7CiRpRx
-         Y+yDoolAE0mg1U0mmSA4U5LcCypxpubSYATdvZU6a7gIkhEO2/XwAOKB694xVGmI/OnD
-         b1v0zgA1PLJDCI8hBBXIFn1BL4W7FU+w07+FTaGM1y9qOCrypiBQKJcGt7wmGElIpm19
-         X9Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750896730; x=1751501530;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lowV/nKzWTvWfWNiFO0HDvMPBtQosk45w4ddFI+eEJ4=;
-        b=AWHI1MoeKrARdYiB99lMZ0dJczCtWVrYRoqGazpQOFM+ejt/XKND+oRcnE4+VgsNx3
-         qM9u3wCdCfc3vOC5Nn+KmScM5/tch61zZaYc/7Noh4BaxIRdc3L6AqaWNwMV3M3Wb0tr
-         UwPZLNRIWJSa2Jm8o1IMMKChMHVMHWIoaNsj2HrDBv01dG6ob/cI9l8CHhmP0WmMT5+1
-         OKK5FX7kx4JRphlzAguXQLO6iWe0HuoJv9AFE94dLvIIBlw4wY9d/XWy60aFu5OYlpz8
-         kXkYdajB8N3JCJ0kSfcR+0XnMtqM/KsJxKcglBsmAjM4rzm94U3uqbKgPhpvKJOYWNC/
-         SAdg==
-X-Forwarded-Encrypted: i=1; AJvYcCWNttowxC4qCMj963N3CI3iVMx+pwxD2bj4QIMxE2DfM6GsVSwDpQKS0/adju3QYug0wJ9daXIwwvVPcRk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyKnOl4HLriC85T9MNajmAJVoCN/uUqqqrmDmyE9Xlt27roMtvO
-	cxd8QSrMjRsizMQa9X2eDSn45pCxdowNseSafJoxzq1lsWB9pVnFH6va
-X-Gm-Gg: ASbGncvuKz1eWASWL95oIsvfczuULuJAUPUHKzAwfBhL9sMbXgUd3Qg2GvAzh90ly9Y
-	zLt5OyUjjAdzN02uJl3CKEX2KiedNPDZ6M0OpVpTETgrB1tBThxXIDVo5PyFrgsMP27zoh7QSBg
-	RiyNlV984oADaelY7tmQB9NJB46H/17DECUWGEhIO4jyy4VrxmxKQRYBXHHwFTl6Fhz2ez5XR94
-	pxVRcDezCDvRmto/9fx7BMrT9Uxq2E1PFk/M1Bj57Hx7/qtrHeSOUuE+dY6/XtAnmUQNeoHmqgn
-	omSVy+DaAwgwvvODI/Dv4HvtTXdcVduFPndfJShnqxM2IYYVJCYh+UqD1xsj5w==
-X-Google-Smtp-Source: AGHT+IFdjaJJtcu1Ur4K2yZ0JHexKIy67/OGUnCR0lz66MZ8PefNDV+iP31fY0J968Af1oTeT5n7Nw==
-X-Received: by 2002:a17:902:f681:b0:234:9670:cc73 with SMTP id d9443c01a7336-23823f65de5mr93831885ad.5.1750896730581;
-        Wed, 25 Jun 2025 17:12:10 -0700 (PDT)
-Received: from localhost ([216.228.127.131])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d869fbfcsm151610165ad.194.2025.06.25.17.12.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 17:12:10 -0700 (PDT)
-Date: Wed, 25 Jun 2025 20:12:08 -0400
-From: Yury Norov <yury.norov@gmail.com>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-	vincent.guittot@linaro.org, tglx@linutronix.de, maddy@linux.ibm.com,
-	vschneid@redhat.com, dietmar.eggemann@arm.com, rostedt@goodmis.org,
-	kprateek.nayak@amd.com, huschle@linux.ibm.com, srikar@linux.ibm.com,
-	linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu,
-	linuxppc-dev@lists.ozlabs.org, gregkh@linuxfoundation.org
-Subject: Re: [RFC v2 7/9] sched: Add static key check for cpu_avoid
-Message-ID: <aFyQWLpI8B8B1AoM@yury>
-References: <20250625191108.1646208-1-sshegde@linux.ibm.com>
- <20250625191108.1646208-8-sshegde@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSNF62fVPz306d
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 12:39:36 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bSMlz6cfHz1W3Rc;
+	Thu, 26 Jun 2025 10:17:51 +0800 (CST)
+Received: from kwepemg100016.china.huawei.com (unknown [7.202.181.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 219E8140109;
+	Thu, 26 Jun 2025 10:20:20 +0800 (CST)
+Received: from huawei.com (10.67.174.33) by kwepemg100016.china.huawei.com
+ (7.202.181.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 26 Jun
+ 2025 10:20:19 +0800
+From: GONG Ruiqi <gongruiqi1@huawei.com>
+To: Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu
+	<roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>, Madhavan Srinivasan
+	<maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Heiko Carstens
+	<hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+	<agordeev@linux.ibm.com>
+CC: Eric Snowberg <eric.snowberg@oracle.com>, Christophe Leroy
+	<christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Christian
+ Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+	"Lee, Chun-Yi" <jlee@suse.com>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+	<linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>, Lu Jialin
+	<lujialin4@huawei.com>, <gongruiqi1@huawei.com>
+Subject: [PATCH] integrity: Extract secure boot enquiry function out of IMA
+Date: Thu, 26 Jun 2025 10:31:51 +0800
+Message-ID: <20250626023151.3884988-1-gongruiqi1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,59 +64,301 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250625191108.1646208-8-sshegde@linux.ibm.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.33]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemg100016.china.huawei.com (7.202.181.57)
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Jun 26, 2025 at 12:41:06AM +0530, Shrikanth Hegde wrote:
-> Checking if a CPU is avoid can add a slight overhead and should be 
-> done only when necessary. 
-> 
-> Add a static key check which makes it almost nop when key is false. 
-> Arch needs to set the key when it decides to. Refer to debug patch
-> for example. 
-> 
-> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-> ---
-> This method avoids additional ifdefs. So kept it that way instead of 
-> CONFIG_PARAVIRT. 
-> 
-> Added a helper function for cpu_avoid, since including sched.h fails in 
-> cpumask.h
-> 
->  kernel/sched/core.c  | 8 ++++----
->  kernel/sched/fair.c  | 5 +++--
->  kernel/sched/rt.c    | 8 ++++----
->  kernel/sched/sched.h | 9 +++++++++
->  4 files changed, 20 insertions(+), 10 deletions(-)
-> 
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index aea4232e3ec4..51426b17ef55 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -148,9 +148,9 @@ __read_mostly int sysctl_resched_latency_warn_once = 1;
->   * Limited because this is done with IRQs disabled.
->   */
->  __read_mostly unsigned int sysctl_sched_nr_migrate = SCHED_NR_MIGRATE_BREAK;
-> -
->  __read_mostly int scheduler_running;
->  
-> +DEFINE_STATIC_KEY_FALSE(paravirt_cpu_avoid_enabled);
->  #ifdef CONFIG_SCHED_CORE
->  
->  DEFINE_STATIC_KEY_FALSE(__sched_core_enabled);
-> @@ -2438,7 +2438,7 @@ static inline bool is_cpu_allowed(struct task_struct *p, int cpu)
->  		return false;
->  
->  	/* CPU marked as avoid, shouldn't chosen to run any task*/
-> -	if (cpu_avoid(cpu))
-> +	if (cpu_avoid_check(cpu))
->  		return false;
+Commit 92ad19559ea9 ("integrity: Do not load MOK and MOKx when secure
+boot be disabled") utilizes arch_ima_get_secureboot() to perform a
+secure boot status check before loading the Machine Owner Key (MOK).
+However, only when CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT=y can this
+function be functional, while this config has nothing to do with secure
+boot or MOK loading.
 
-Here you're patching the code that you've just added. Can you simply
-add it in a proper way?..
+Given that arch_ima_get_secureboot() is just a helper to retrieve info
+about secure boot via EFI and doesn't necessarily be a part of IMA,
+rename it to arch_integrity_get_secureboot(), decouple its functionality
+from IMA and extract it to be a integrity subsystem helper, so that both
+certificate loading and IMA can make use of it.
+
+Given that arch_ima_get_secureboot() is just a helper to retrieve info
+about secure boot via EFI and doesn't necessarily be a part of IMA,
+rename it to arch_integrity_get_secureboot(), decouple its functionality
+from IMA and transform it into a helper for the overall integrity
+subsystem, so that both certificate loading and IMA can make use of it.
+
+Compile-tested for powerpc, s390 and x86, all with allmodconfig.
+
+Signed-off-by: GONG Ruiqi <gongruiqi1@huawei.com>
+---
+ arch/powerpc/kernel/ima_arch.c                |  3 +-
+ arch/s390/kernel/ima_arch.c                   |  3 +-
+ include/linux/ima.h                           |  6 ---
+ include/linux/integrity.h                     |  1 +
+ security/integrity/Makefile                   |  3 +-
+ security/integrity/ima/Makefile               |  2 +-
+ security/integrity/ima/ima_appraise.c         |  2 +-
+ security/integrity/ima/ima_efi.c              | 47 +-----------------
+ security/integrity/ima/ima_main.c             |  2 +-
+ security/integrity/platform_certs/load_uefi.c |  2 +-
+ security/integrity/secureboot.c               | 48 +++++++++++++++++++
+ 11 files changed, 61 insertions(+), 58 deletions(-)
+ create mode 100644 security/integrity/secureboot.c
+
+diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
+index b7029beed847..4ceda3f534bd 100644
+--- a/arch/powerpc/kernel/ima_arch.c
++++ b/arch/powerpc/kernel/ima_arch.c
+@@ -5,9 +5,10 @@
+  */
+ 
+ #include <linux/ima.h>
++#include <linux/integrity.h>
+ #include <asm/secure_boot.h>
+ 
+-bool arch_ima_get_secureboot(void)
++bool arch_integrity_get_secureboot(void)
+ {
+ 	return is_ppc_secureboot_enabled();
+ }
+diff --git a/arch/s390/kernel/ima_arch.c b/arch/s390/kernel/ima_arch.c
+index f3c3e6e1c5d3..6fb2d551e2c2 100644
+--- a/arch/s390/kernel/ima_arch.c
++++ b/arch/s390/kernel/ima_arch.c
+@@ -1,9 +1,10 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ #include <linux/ima.h>
++#include <linux/integrity.h>
+ #include <asm/boot_data.h>
+ 
+-bool arch_ima_get_secureboot(void)
++bool arch_integrity_get_secureboot(void)
+ {
+ 	return ipl_secure_flag;
+ }
+diff --git a/include/linux/ima.h b/include/linux/ima.h
+index 8e29cb4e6a01..9faf3b964314 100644
+--- a/include/linux/ima.h
++++ b/include/linux/ima.h
+@@ -72,14 +72,8 @@ int __init ima_get_kexec_buffer(void **addr, size_t *size);
+ #endif
+ 
+ #ifdef CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT
+-extern bool arch_ima_get_secureboot(void);
+ extern const char * const *arch_get_ima_policy(void);
+ #else
+-static inline bool arch_ima_get_secureboot(void)
+-{
+-	return false;
+-}
+-
+ static inline const char * const *arch_get_ima_policy(void)
+ {
+ 	return NULL;
+diff --git a/include/linux/integrity.h b/include/linux/integrity.h
+index f5842372359b..4bc81fe4253e 100644
+--- a/include/linux/integrity.h
++++ b/include/linux/integrity.h
+@@ -61,5 +61,6 @@ integrity_inode_attrs_changed(const struct integrity_inode_attributes *attrs,
+ 		!inode_eq_iversion(inode, attrs->version));
+ }
+ 
++extern bool arch_integrity_get_secureboot(void);
+ 
+ #endif /* _LINUX_INTEGRITY_H */
+diff --git a/security/integrity/Makefile b/security/integrity/Makefile
+index 92b63039c654..0770c6554a8f 100644
+--- a/security/integrity/Makefile
++++ b/security/integrity/Makefile
+@@ -11,7 +11,8 @@ integrity-$(CONFIG_INTEGRITY_SIGNATURE) += digsig.o
+ integrity-$(CONFIG_INTEGRITY_ASYMMETRIC_KEYS) += digsig_asymmetric.o
+ integrity-$(CONFIG_INTEGRITY_PLATFORM_KEYRING) += platform_certs/platform_keyring.o
+ integrity-$(CONFIG_INTEGRITY_MACHINE_KEYRING) += platform_certs/machine_keyring.o
+-integrity-$(CONFIG_LOAD_UEFI_KEYS) += platform_certs/efi_parser.o \
++integrity-$(CONFIG_LOAD_UEFI_KEYS) += secureboot.o \
++				      platform_certs/efi_parser.o \
+ 				      platform_certs/load_uefi.o \
+ 				      platform_certs/keyring_handler.o
+ integrity-$(CONFIG_LOAD_IPL_KEYS) += platform_certs/load_ipl_s390.o
+diff --git a/security/integrity/ima/Makefile b/security/integrity/ima/Makefile
+index b376d38b4ee6..f81be17e25a8 100644
+--- a/security/integrity/ima/Makefile
++++ b/security/integrity/ima/Makefile
+@@ -16,5 +16,5 @@ ima-$(CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS) += ima_asymmetric_keys.o
+ ima-$(CONFIG_IMA_QUEUE_EARLY_BOOT_KEYS) += ima_queue_keys.o
+ 
+ ifeq ($(CONFIG_EFI),y)
+-ima-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT) += ima_efi.o
++ima-$(CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT) += ima_efi.o ../secureboot.o
+ endif
+diff --git a/security/integrity/ima/ima_appraise.c b/security/integrity/ima/ima_appraise.c
+index f435eff4667f..41bece645348 100644
+--- a/security/integrity/ima/ima_appraise.c
++++ b/security/integrity/ima/ima_appraise.c
+@@ -27,7 +27,7 @@ core_param(ima_appraise, ima_appraise_cmdline_default, charp, 0);
+ void __init ima_appraise_parse_cmdline(void)
+ {
+ 	const char *str = ima_appraise_cmdline_default;
+-	bool sb_state = arch_ima_get_secureboot();
++	bool sb_state = arch_integrity_get_secureboot();
+ 	int appraisal_state = ima_appraise;
+ 
+ 	if (!str)
+diff --git a/security/integrity/ima/ima_efi.c b/security/integrity/ima/ima_efi.c
+index 138029bfcce1..fcbc0727469e 100644
+--- a/security/integrity/ima/ima_efi.c
++++ b/security/integrity/ima/ima_efi.c
+@@ -2,52 +2,9 @@
+ /*
+  * Copyright (C) 2018 IBM Corporation
+  */
+-#include <linux/efi.h>
+ #include <linux/module.h>
+ #include <linux/ima.h>
+-#include <asm/efi.h>
+-
+-#ifndef arch_ima_efi_boot_mode
+-#define arch_ima_efi_boot_mode efi_secureboot_mode_unset
+-#endif
+-
+-static enum efi_secureboot_mode get_sb_mode(void)
+-{
+-	enum efi_secureboot_mode mode;
+-
+-	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
+-		pr_info("ima: secureboot mode unknown, no efi\n");
+-		return efi_secureboot_mode_unknown;
+-	}
+-
+-	mode = efi_get_secureboot_mode(efi.get_variable);
+-	if (mode == efi_secureboot_mode_disabled)
+-		pr_info("ima: secureboot mode disabled\n");
+-	else if (mode == efi_secureboot_mode_unknown)
+-		pr_info("ima: secureboot mode unknown\n");
+-	else
+-		pr_info("ima: secureboot mode enabled\n");
+-	return mode;
+-}
+-
+-bool arch_ima_get_secureboot(void)
+-{
+-	static enum efi_secureboot_mode sb_mode;
+-	static bool initialized;
+-
+-	if (!initialized && efi_enabled(EFI_BOOT)) {
+-		sb_mode = arch_ima_efi_boot_mode;
+-
+-		if (sb_mode == efi_secureboot_mode_unset)
+-			sb_mode = get_sb_mode();
+-		initialized = true;
+-	}
+-
+-	if (sb_mode == efi_secureboot_mode_enabled)
+-		return true;
+-	else
+-		return false;
+-}
++#include <linux/integrity.h>
+ 
+ /* secureboot arch rules */
+ static const char * const sb_arch_rules[] = {
+@@ -67,7 +24,7 @@ static const char * const sb_arch_rules[] = {
+ 
+ const char * const *arch_get_ima_policy(void)
+ {
+-	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_ima_get_secureboot()) {
++	if (IS_ENABLED(CONFIG_IMA_ARCH_POLICY) && arch_integrity_get_secureboot()) {
+ 		if (IS_ENABLED(CONFIG_MODULE_SIG))
+ 			set_module_sig_enforced();
+ 		if (IS_ENABLED(CONFIG_KEXEC_SIG))
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index f99ab1a3b0f0..9974d89f3eca 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -899,7 +899,7 @@ static int ima_load_data(enum kernel_load_data_id id, bool contents)
+ 	switch (id) {
+ 	case LOADING_KEXEC_IMAGE:
+ 		if (IS_ENABLED(CONFIG_KEXEC_SIG)
+-		    && arch_ima_get_secureboot()) {
++		    && arch_integrity_get_secureboot()) {
+ 			pr_err("impossible to appraise a kernel image without a file descriptor; try using kexec_file_load syscall.\n");
+ 			return -EACCES;
+ 		}
+diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
+index d1fdd113450a..3042a0c536d6 100644
+--- a/security/integrity/platform_certs/load_uefi.c
++++ b/security/integrity/platform_certs/load_uefi.c
+@@ -212,7 +212,7 @@ static int __init load_uefi_certs(void)
+ 	}
+ 
+ 	/* the MOK/MOKx can not be trusted when secure boot is disabled */
+-	if (!arch_ima_get_secureboot())
++	if (!arch_integrity_get_secureboot())
+ 		return 0;
+ 
+ 	mokx = get_cert_list(L"MokListXRT", &mok_var, &mokxsize, &status);
+diff --git a/security/integrity/secureboot.c b/security/integrity/secureboot.c
+new file mode 100644
+index 000000000000..5c50f8be6053
+--- /dev/null
++++ b/security/integrity/secureboot.c
+@@ -0,0 +1,48 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2025 Huawei Technologies Co., Ltd
++ */
++#include <linux/module.h>
++#include <linux/efi.h>
++#include <linux/integrity.h>
++
++#include <asm/efi.h>
++
++#ifndef arch_integrity_efi_boot_mode
++#define arch_integrity_efi_boot_mode efi_secureboot_mode_unset
++#endif
++
++static enum efi_secureboot_mode get_sb_mode(void)
++{
++	enum efi_secureboot_mode mode;
++
++	if (!efi_rt_services_supported(EFI_RT_SUPPORTED_GET_VARIABLE)) {
++		pr_info("integrity: secureboot mode unknown, no efi\n");
++		return efi_secureboot_mode_unknown;
++	}
++
++	mode = efi_get_secureboot_mode(efi.get_variable);
++	if (mode == efi_secureboot_mode_disabled)
++		pr_info("integrity: secureboot mode disabled\n");
++	else if (mode == efi_secureboot_mode_unknown)
++		pr_info("integrity: secureboot mode unknown\n");
++	else
++		pr_info("integrity: secureboot mode enabled\n");
++	return mode;
++}
++
++bool __weak arch_integrity_get_secureboot(void)
++{
++	static enum efi_secureboot_mode sb_mode;
++	static bool initialized;
++
++	if (!initialized && efi_enabled(EFI_BOOT)) {
++		sb_mode = arch_integrity_efi_boot_mode;
++
++		if (sb_mode == efi_secureboot_mode_unset)
++			sb_mode = get_sb_mode();
++		initialized = true;
++	}
++
++	return sb_mode == efi_secureboot_mode_enabled;
++}
+-- 
+2.25.1
+
 
