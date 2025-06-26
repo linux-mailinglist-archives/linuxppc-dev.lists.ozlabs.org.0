@@ -1,38 +1,39 @@
-Return-Path: <linuxppc-dev+bounces-9799-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9798-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64820AE943F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 04:39:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E53AE9405
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 04:24:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bSNF74y55z309v;
-	Thu, 26 Jun 2025 12:39:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSMvb6NjJz309v;
+	Thu, 26 Jun 2025 12:24:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750905579;
-	cv=none; b=SG6RGHuHErignxMRklOawbxS9XOHQiXfVEJyDuVTFOsYAWDlgPL8DDmhMFxin+uvYROHWSChElfPzucn3anIJQ/wY4qYz1OD22JnaVWQ36CFH/T0o9Xvb6qZ59DvjYy8kfWMTPk7veGgJzLslJmJLN5wXfJQgFF7XESBDHh+UqAKdzrU8jxGeV/IKt5gDJKXU9RCUiQjWKzQI/H7ZLDN/NeplMDAXU7Nz8dp3eb6TPyUyxhrSZOyGRxXa5A7jZwXNVWS/CQ/vyogtYn2rXt+1DNGqrhxuNG+TtmXXP4BoHBZUycvjpSvTjBJ9gMedQKqer24xmcO9V5ci4zBZdFKIw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750904667;
+	cv=none; b=aTRtkxQOV4Koo1CW60EVBTCr0QdQmdqvM5av7CXiFPIVkywur2tFOFRI0wejk7Z6vDWvm5/0DJ7+aoHB3l0A/Lc1zisIUsCngMZJoY8gVvYiiKT9K2kXzj/4cZJV7CavRaB/6TpHiTJie+qqugTjn6RVJpvlKp0MkYjEhPJ4ZHEuAi4+hHRFd1dGizkB7dS8OfsNgEb2OAeg1H03RoPE0iExANomZoJC0Az56pFf7AyNYeNf6hQEWgSgmgO1uvtHIdoSD9+sjKMN5hRsK3+671Cne1xUzvDL4DnJCbYKM1o9OC4xPNaTUXwwb+058DCHxQ3uXJS19kBjPm6t7ucXrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750905579; c=relaxed/relaxed;
-	bh=0isuLOml1x4WiWFkwiROA+LItAitLuNjEbXAV7QpazM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Aa7H9naHuGFri7k9dbVrmcBBNU8VMDDNM+O5nzicwFXvl6gHfden2ZbsRcFI4W9pQvkdi61E6qJNaBDF/jztkP6ok/zWFwQOmm432Hnv0lIDJU6DTK79Qb6XGF2hMRtVdxJ0YbLuz9okB2wBxRQVBfYL1IryHHvWeIKqYcVrOvYmRHTRCjJnPLVsMOW2LwDtPZcuNU0kBw5DPpfP7MBavBTrQE5WOC84CJF53ZhxYZQi2nWZoPlYx3t1ieGhlHE956zQJjJ+Jg8MZ7S1iTSih7N2TM3qQ/F+L/MfcdTG7GGob1y7MkIGBKU5RQCuiNG8/gR/YTaWe9pVQGCniYwpPg==
+	t=1750904667; c=relaxed/relaxed;
+	bh=sbB79F3I31v/N/Ro9DhW+ri4NxlSEDB/6kHhIjNKQQU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fRX6Z57o8OwGwE+ubYgdctT/sFc2NLEpT3sTgycRj9ZHM/lIjNUwmNcgrN3mmVW9SwjhF7OdiqM8e8vefF3GBIxEWZh9hPe2XxiFYNIwgWa8snLyF/1I98cvfnIH/LRMhUG9Wsdl3TYgq0bqeekzE7zroivoDotL57ndZGJ5R23tc3rY8XlqjxpMOlFaZOnJWVwdEr1Y6s0CY+KlonBQ5R98GPdqzlWt4241Q5aDGUiVgKmlARF87n43BuU4tAmobCiW4DguCBIng9ZIoJAsWb/dezkY4YazNR6D8oK5VaUlz89hKvN+MTBxU78ky2/jWNxtSuj+j0AQE8Dtw+CRdA==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=gongruiqi1@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=gongruiqi1@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 238 seconds by postgrey-1.37 at boromir; Thu, 26 Jun 2025 12:24:26 AEST
 Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSNF62fVPz306d
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 12:39:36 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bSMlz6cfHz1W3Rc;
-	Thu, 26 Jun 2025 10:17:51 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSMvZ1sRHz306d
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 12:24:26 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bSMrf0sY6z1W3Vj;
+	Thu, 26 Jun 2025 10:21:54 +0800 (CST)
 Received: from kwepemg100016.china.huawei.com (unknown [7.202.181.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 219E8140109;
-	Thu, 26 Jun 2025 10:20:20 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 4C4471400E8;
+	Thu, 26 Jun 2025 10:24:22 +0800 (CST)
 Received: from huawei.com (10.67.174.33) by kwepemg100016.china.huawei.com
  (7.202.181.57) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 26 Jun
- 2025 10:20:19 +0800
+ 2025 10:24:21 +0800
 From: GONG Ruiqi <gongruiqi1@huawei.com>
 To: Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu
 	<roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
@@ -47,9 +48,9 @@ CC: Eric Snowberg <eric.snowberg@oracle.com>, Christophe Leroy
 	<linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
 	<linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>, Lu Jialin
 	<lujialin4@huawei.com>, <gongruiqi1@huawei.com>
-Subject: [PATCH] integrity: Extract secure boot enquiry function out of IMA
-Date: Thu, 26 Jun 2025 10:31:51 +0800
-Message-ID: <20250626023151.3884988-1-gongruiqi1@huawei.com>
+Subject: [PATCH RESEND] integrity: Extract secure boot enquiry function out of IMA
+Date: Thu, 26 Jun 2025 10:36:17 +0800
+Message-ID: <20250626023617.3885806-1-gongruiqi1@huawei.com>
 X-Mailer: git-send-email 2.25.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -87,16 +88,14 @@ rename it to arch_integrity_get_secureboot(), decouple its functionality
 from IMA and extract it to be a integrity subsystem helper, so that both
 certificate loading and IMA can make use of it.
 
-Given that arch_ima_get_secureboot() is just a helper to retrieve info
-about secure boot via EFI and doesn't necessarily be a part of IMA,
-rename it to arch_integrity_get_secureboot(), decouple its functionality
-from IMA and transform it into a helper for the overall integrity
-subsystem, so that both certificate loading and IMA can make use of it.
-
 Compile-tested for powerpc, s390 and x86, all with allmodconfig.
 
 Signed-off-by: GONG Ruiqi <gongruiqi1@huawei.com>
 ---
+
+RESEND: Remove duplicated paragraph in commit message. Apology for the
+mistake.
+
  arch/powerpc/kernel/ima_arch.c                |  3 +-
  arch/s390/kernel/ima_arch.c                   |  3 +-
  include/linux/ima.h                           |  6 ---
