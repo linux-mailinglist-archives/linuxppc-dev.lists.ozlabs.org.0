@@ -1,49 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-9800-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9801-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2F1AE960D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 08:20:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 156E6AE9683
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 08:56:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bST870p0rz2xRw;
-	Thu, 26 Jun 2025 16:20:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSTwd6wM1z2xRw;
+	Thu, 26 Jun 2025 16:55:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750918839;
-	cv=none; b=B38Uwd012D9jqaopDEUFmTafgO8655j+qmItAvEU/MM2QA7obfxI9D/4lW+xttGJiPiuxkjqOdgjq2IF4vVKbliJtSu7m1uvuB50CC/Pyi+EfKSklfNOzx06D1dEpNSCHpLdk06L4yt4LXXzQ9pzoeklck1ifL1Y5BteU/oMozoGKIU/uCxCp1GoGIvrUP3B9Dw8FajxAX4LUJZUavZLNb7B9a5RP3oRgE1I1YFkkdFLaV9YJshHMj1X5GLc1El7bIaNS+QBaWB0F11qYaxOFzOLAo0Hdq1UwRC/Cy2oU4GYjyDmTZHDsgbGQNRZ0e2Tl+t8OV7+d7qZ1/lUWgsvxA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::135"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750920945;
+	cv=none; b=VHKoTeaSCFwNuY1R3mU6VlAaTvIlRT14Puhpye4TjjOreYRCLCb7Xn1O5rq5KVLQFe04XCHFepK3KDTQCBjn3sxspd7gbRwCw7ucq/alIgkTs4/XbOaWPxHj+q0IbJieZIHaS7pNq4wUeF7lpKekXb1TSD+Go6uESQTNt4orBotPFgcwrxU6ltT0dUyVH3iCjCiB1J23vrq3TRXcQ+G7Zxvq0GD2Q6XbsFdDqlEenYfi7/CN+t/sK8CisLHHsnCRJkSoMv+TOMv0plvdJVI8Pa5A0dvLLFcgpNmyW3lNp+sMOSsldqs5nIuwyANgeMuoCr8DF8/jvVdocHwCxWipfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750918839; c=relaxed/relaxed;
-	bh=MRQSDqU8wyvRI4kJVe1JEIgxi46WZlk0UdrU8AUDALg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MiY9M9P/sK6G9SMEYSyKYwtyL4P8UAgx2GorEtdyhZXDs50b1VK5SVeVGzAxtrhp6D487kAETpP9IkePy/HfFznXaALyPek8hkAvL5Fn/xglIOHpjcnx70cGeYJ6hXhFtd7ml7RNg4yykbIcvDCLadCzavg/ewC1ibf6OdejMoIRpNUG09jjivvu4GSiSC16QMpmZHzZVlKVEjVXBtiq0WbLWfVlEkF0T8YqOBbBCslmFXIZsqbsBSR0syOCBkgzswPGMwCIT4LZ+DcYkgr4IBFiwIgjHz+VyQVTha7edRqZ1/cmXaMgyBkF2oaVYc/d9YO6+UDV0WM8z4SyIJi/7g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bST861pHZz2xJ1
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 16:20:37 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bSSbw1jqdz9vG4;
-	Thu, 26 Jun 2025 07:56:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id q0xrpHJGhTt6; Thu, 26 Jun 2025 07:56:12 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bSSbw0vypz9vFr;
-	Thu, 26 Jun 2025 07:56:12 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 157358B7B7;
-	Thu, 26 Jun 2025 07:56:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id KbYfiNafM5QK; Thu, 26 Jun 2025 07:56:11 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 13B658B7A7;
-	Thu, 26 Jun 2025 07:56:11 +0200 (CEST)
-Message-ID: <83fb5685-a206-477c-bff3-03e0ebf4c40c@csgroup.eu>
-Date: Thu, 26 Jun 2025 07:56:10 +0200
+	t=1750920945; c=relaxed/relaxed;
+	bh=W19DxCupecPWn8c98PocInKxtCZZgrUgI9zm1Er7U/M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H75oIERW033d/5eG6x2UxOPze0VTStXUO7gfvyy5PleaXy1LOBFA0+XjOPKrv5gui7XfD3XBCRxwB/op5YXNuvclL2lVUN19IKQgu1a5vElACjqK/VaXCOXP95TzXaMJn2Osyvf7iwex6Y92mrxEm1hwUDSLggKNRKOjPxSWaEFqytXCoSBNPagm79cYKXsuxQuGo/88728W2fC6HdXpVkAEpIkrM7pBOT+NfaS4ItAhAbKNl6hCu8tNIPUcn4WRvxEBRGW+xADiQ2Z7330D3BNV9AFSu5alfqTfC+gXk9dwMcpNSrA1AEDvw80pQBl54TBBoxenXa9qkY7NYSD03g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WPL8xDKB; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::135; helo=mail-il1-x135.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WPL8xDKB;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::135; helo=mail-il1-x135.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSTwc3Cwtz2xJ1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 16:55:43 +1000 (AEST)
+Received: by mail-il1-x135.google.com with SMTP id e9e14a558f8ab-3da73df6c4eso5571865ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 23:55:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1750920941; x=1751525741; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W19DxCupecPWn8c98PocInKxtCZZgrUgI9zm1Er7U/M=;
+        b=WPL8xDKBPKh09YLgoF5Z//VVLST7YkkEO9n2IF2U9PKwc7d9uM/jMrnN/utls1Vt7c
+         +pB9DXxriaGleskL1SszLr+7L9DrCr6L1VcDEROoDf2eX5CSzxNg3eeN+rWD8vwsgtjx
+         QJMBMqOpXFBci7/cJISu7tVb0BJ73DVSbH4/EnIUvGpPm81LLM2eRCQbDGXCNdYQHGzQ
+         sMe7djXMXzbekAPqls6cxQDcZWeBEdYDdpRVmXy7LM2Bm5+eSmTWU70MOOoVUlH74EHK
+         305fr/ZVTvWU+h9gbcI4MhIffPlkQqjRuHwheM5EpY4CWjci4m2vIG+qe40ydPLpu8bG
+         scSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750920941; x=1751525741;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W19DxCupecPWn8c98PocInKxtCZZgrUgI9zm1Er7U/M=;
+        b=A5m/7ZRT+UArAwYxBXc7ctersOV5qUAJlj+C389hdpDPlY1O1Hr0iPOH4FbVyTsJjU
+         6znz9xhYApx3OIuHgI0ljKbVTOmC1Jdwzy7Vgl3blk3q6rLzdzwYRoMxYbI7t/Cvmx/j
+         4aMGphbjCzPqWeAob2TgvSi5txzS02o+HEOGaDhHRx2mBrwQaduCkWpfurAwxkuNDz1k
+         i6NM/iZhzTrk4Kz/XjYhzMhnyLD5GaFZiAWoUq4+PYPPS/9TCVklbliE1OryeRlcMz8t
+         WjxN6NVZtC3Ywwea9UUL/Wpbjvb3myiebGLHaS+OGo7f2O1/HLPI9iCmOFk69o5pZzXE
+         CvJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXnjasAmBDww2aeldnODgvn0sON4IvbbUhfsqS1nGJCZHZbQhecqlUyNKUHU+ERGPaBoPfqoMl85CxBiO8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywd2OHgNj7I45PcgnCNqTLYyS/Kf6Rz7DPagzbJWQZ+U3Fjj7QK
+	eWktd38rvCzDJLZaHYRqxPu/mzNYA8Mhu+JoMdyajM7OXeZBoC5Oyy1YqOkM92ns1zOsSdLbc87
+	vGSJBqpvuss/rA+llP2H6e1Awk0+5uAU=
+X-Gm-Gg: ASbGncukTbVU/xkN4SCeiGzwFW1N/FR0+vJbJwOPn15cO5D/fPrtmjOo/GeSlmjShS1
+	M2O6hQAPzMockeLiKsf9TcBeVrFTlUoqxwV0l0tZu+TDs24cyCMfIxUrGxJhdlihO8PXDp4xHHM
+	m6osM7BYaVkfkJGpianCdgkp6I0SOZI8IdP0BgVaL0B5MEubgbcoko2A==
+X-Google-Smtp-Source: AGHT+IHwMBmagiYehfnzdEnifB4yQU/6UnplTUQv1H0lEqwu0zZ7n4O4uKX5Lmcip85xytB376fVrbXKR02UrAEC1i8=
+X-Received: by 2002:a05:6e02:1c0d:b0:3dd:d321:79ab with SMTP id
+ e9e14a558f8ab-3df3e0bfa41mr37204905ab.18.1750920940715; Wed, 25 Jun 2025
+ 23:55:40 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,146 +78,119 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] powerpc: Implement masked user access
-To: David Laight <david.laight.linux@gmail.com>,
- Segher Boessenkool <segher@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>,
- Davidlohr Bueso <dave@stgolabs.net>, Andre Almeida <andrealmeid@igalia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-References: <cover.1750585239.git.christophe.leroy@csgroup.eu>
- <20250622172043.3fb0e54c@pumpkin>
- <ff2662ca-3b86-425b-97f8-3883f1018e83@csgroup.eu>
- <20250624131714.GG17294@gate.crashing.org> <20250624175001.148a768f@pumpkin>
- <20250624182505.GH17294@gate.crashing.org> <20250624220816.078f960d@pumpkin>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250624220816.078f960d@pumpkin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250625130648.201331-1-arun@arunraghavan.net> <20250625235757.68058-3-arun@arunraghavan.net>
+In-Reply-To: <20250625235757.68058-3-arun@arunraghavan.net>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 26 Jun 2025 14:55:28 +0800
+X-Gm-Features: Ac12FXySMQmkpT_YsYbDsQjt-wcOijwcIWgsdYkyL9-_W9kvTa4M5UfaGlI-Ptc
+Message-ID: <CAA+D8AN=K_ERUtc+mOW9Lm_B4wZT_qS5xg6RA2fDwrm9MTaCbw@mail.gmail.com>
+Subject: Re: [PATCH v2] ASoC: fsl_sai: Force a software reset when starting in
+ consumer mode
+To: Arun Raghavan <arun@arunraghavan.net>
+Cc: Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>, 
+	Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Pieterjan Camerlynck <p.camerlynck@televic.com>, linux-sound@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	Arun Raghavan <arun@asymptotic.io>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Thu, Jun 26, 2025 at 7:58=E2=80=AFAM Arun Raghavan <arun@arunraghavan.ne=
+t> wrote:
+>
+> From: Arun Raghavan <arun@asymptotic.io>
+>
+> In a setup with an external clock provider, when running the receiver
+> (arecord) and triggering an xrun with xrun_injection, we see a channel
+> swap/offset. This happens sometimes when running only the receiver, but
+> occurs reliably if a transmitter (aplay) is also concurrently running.
+>
+> The theory is that SAI seems to lose track of frame sync during the
+> trigger stop -> trigger start cycle that occurs during an xrun. Doing
+> just a FIFO reset in this case does not suffice, and only a software
+> reset seems to get it back on track.
+>
+> Signed-off-by: Arun Raghavan <arun@asymptotic.io>
+> Reported-by: Pieterjan Camerlynck <p.camerlynck@televic.com>
+> ---
+>
+> v2:
+> - Address build warning from kernel test robot
+>
+>  sound/soc/fsl/fsl_sai.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> index af1a168d35e3..d158352c7640 100644
+> --- a/sound/soc/fsl/fsl_sai.c
+> +++ b/sound/soc/fsl/fsl_sai.c
+> @@ -841,6 +841,18 @@ static int fsl_sai_trigger(struct snd_pcm_substream =
+*substream, int cmd,
+>         case SNDRV_PCM_TRIGGER_START:
+>         case SNDRV_PCM_TRIGGER_RESUME:
+>         case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
+> +               /*
+> +                * Force a software reset if we are not the clock provide=
+r, as we
+> +                * might have lost frame sync during xrun recovery.
+> +                */
+> +               if (sai->is_consumer_mode[tx]) {
+> +                       regmap_update_bits(sai->regmap,
+> +                                       FSL_SAI_xCSR(tx, ofs), FSL_SAI_CS=
+R_SR,
+> +                                       FSL_SAI_CSR_SR);
+> +                       regmap_update_bits(sai->regmap,
+> +                                       FSL_SAI_xCSR(tx, ofs), FSL_SAI_CS=
+R_SR,
+> +                                       0);
+> +               }
 
+Which platform are you using?  and please add chip info in your commit
+message.
 
-Le 24/06/2025 à 23:08, David Laight a écrit :
-> On Tue, 24 Jun 2025 13:25:05 -0500
-> Segher Boessenkool <segher@kernel.crashing.org> wrote:
-> 
->>>> isel (which is base PowerPC, not something "e500" only) is a
->>>> computational instruction, it copies one of two registers to a third,
->>>> which of the two is decided by any bit in the condition register.
->>>
->>> Does that mean it could be used for all the ppc cpu variants?
->>
->> No, only things that implement architecture version of 2.03 or later.
->> That is from 2006, so essentially everything that is still made
->> implements it :-)
->>
->> But ancient things do not.  Both 970 (Apple G5) and Cell BE do not yet
->> have it (they are ISA 2.01 and 2.02 respectively).  And the older p5's
->> do not have it yet either, but the newer ones do.
+This change can be moved to fsl_sai_config_disable(). that is:
 
-For book3s64, GCC only use isel with -mcpu=power9 or -mcpu=power10
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -798,18 +798,16 @@ static void fsl_sai_config_disable(struct
+fsl_sai *sai, int dir)
+                           FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
 
->>
->> And all classic PowerPC is ISA 1.xx of course.  Medieval CPUs :-)
-> 
-> That make more sense than the list in patch 5/5.
+        /*
+-        * For sai master mode, after several open/close sai,
++        * For sai master/slave mode, after several open/close sai,
+         * there will be no frame clock, and can't recover
+         * anymore. Add software reset to fix this issue.
+         * This is a hardware bug, and will be fix in the
+         * next sai version.
+         */
+-       if (!sai->is_consumer_mode[tx]) {
+-               /* Software Reset */
+-               regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+FSL_SAI_CSR_SR);
+-               /* Clear SR bit to finish the reset */
+-               regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
+-       }
++       /* Software Reset */
++       regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
++       /* Clear SR bit to finish the reset */
++       regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
+ }
 
-Sorry for the ambiguity. In patch 5/5 I was addressing only powerpc/32, 
-and as far as I know the only powerpc/32 supported by Linux that has 
-isel is the 85xx which has an e500 core.
+Could you please try the above change to also work for your case?
 
-For powerpc/64 we have less constraint than on powerpc32:
-- Kernel memory starts at 0xc000000000000000
-- User memory stops at 0x0010000000000000
+Best regards
+Shengjiu Wang
 
-So we can easily use 0x8000000000000000 as demarcation line, which 
-allows a 3 instructions sequence:
-
-	sradi	r9,r3,63   => shirt right algebric: r9 = 0 when r3 >= 0; r9 = -1 
-when r3 < 0
-	andc	r3,r3,r9   => and with complement: r3 unchanged when r9 = 0, r3 = 
-0 when r9 = -1
-	rldimi	r3,r9,0,1  => Rotate left and mask insert: Insert highest bit of 
-r9 into r3
-
-Whereas using isel requires a 4 instructions sequence:
-
-	li	r9, 1		=> load immediate: r9 = 1
-	rotldi	r9, r9, 63	=> rotate left: r9 = 0x8000000000000000
-	cmpld	r3, r9		=> compare logically
-	iselgt	r3, r9, r3	=> integer select greater than: select r3 when result 
-of above compare is <= ; select r9 when result of compare is >
-
-> 
->>
->>>> But sure, seen from very far off both isel and cmove can be used to
->>>> implement the ternary operator ("?:"), are similar in that way :-)
->>>
->>> Which is exactly what you want to avoid speculation.
->>
->> There are cheaper / simpler / more effective / better ways to get that,
->> but sure, everything is better than a conditional branch, always :-)
-> 
-> Everything except a TLB miss :-)
-> 
-> And for access_ok() avoiding the conditional is a good enough reason
-> to use a 'conditional move' instruction.
-> Avoiding speculation is actually free.
-> 
-
-And on CPUs that are not affected by Spectre and Meltdown like powerpc 
-8xx or powerpc 603, masking the pointer is still worth it as it 
-generates better code, even if the masking involves branching.
-
-That's the reason why I did:
-- e500 (affected by Spectre v1) ==> Use isel ==> 3 instructions sequence:
-
-	lis	r9, TASK_SIZE@h	=> load immediate shifted => r9 = (TASK_SIZE >> 16) 
-<< 16
-	cmplw	r3, r9		=> compare addr with TASK_SIZE
-	iselgt	r3, r9, r3	=> addr = TASK_SIZE when addr > TASK_SIZE; addr = 
-addr when <= TASK_SIZE
-
-For others:
-- If TASK_SIZE <= 0x80000000 and kernel >= 0x80000000 ==> 3 instructions 
-sequence similar to the 64 bits one above:
-
-	srawi	r9,r3,63
-	andc	r3,r3,r9
-	rlwimi	r3,r9,0,0,0
-
-- Otherwise, if speculation mitigation is required (e600), use the 
-6-instructions masking sequence (r3 contains the address to mask)
-
-	srwi	r9,r3,17	=> shift right: shift r3 by 17 to keep 15 bits (positive 
-16 bits)
-	subfic	r9,r9,22527	=> sub from immediate: r9 = (TASK_SIZE >> 17) - r9 
-=> r9 < 0 when r3 is greater
-	srawi	r9,r9,31	=> shift right algebric: r9 = 0 when r9 >= 0; r9 = -1 
-when r9 < 0
-	andis.	r10,r9,45056	=> and immediat shifted: r10 = r9 and upper part of 
-TASK_SIZE => r10 = TASK_SIZE when r3 > TASK_SIZE, r10 = 0 otherwise
-	andc	r3,r3,r9	=> and with complement: r3 is unchanged when r9 = 0 so 
-when r3 <= TASK_SIZE, r3 is cleared when r9 = -1 so when r3 > TASK_SIZE
-	or	r3,r3,r10	=> r3 = r3 | r10
-
-
-- If no speculation mitigation is required, let GCC do as it wants
-
-List of affected CPUs is available here: 
-https://docs.nxp.com/bundle/GUID-805CC0EA-4001-47AD-86CD-4F340751F6B7/page/GUID-17B5D04F-6471-4EC6-BEB9-DE4D0AFA034A.html
+>                 regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
+>                                    FSL_SAI_CSR_FRDE, FSL_SAI_CSR_FRDE);
+>
+> --
+> 2.49.0
+>
 
