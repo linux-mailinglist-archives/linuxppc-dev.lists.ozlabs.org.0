@@ -1,78 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-9840-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9842-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7ECAEA59D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 20:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 936A1AEA910
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 23:53:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bSngF424dz30PF;
-	Fri, 27 Jun 2025 04:45:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSsrT1v5Dz2xYl;
+	Fri, 27 Jun 2025 07:53:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750963513;
-	cv=none; b=TMEEdIdS4XSJskyx+PmrIPUVf3aJeKXqOdpRebvBxilnaqCmJ8Is/j6S/2SHbAbUXuRpLCRsPItKqIMBjSurgtgMMmTQ5MPWclAumiMaVfQpKzTxU4PSbdAiYkMGvopTyVatS+dimCK36Mt1wlWw7REmF4tZhxtgEPcBPamgALNF9jie8g72rjByRW+RIhmrXgy/ERjofEeiAvBVbjqRRAi7lQjI//26Oc7Qp8vSy6p2d1y/2RwbQIyG5CAtn4GcPOY0sb9FWq/iDIvh0O9Gc9AhlgRp3ByEX1rJvYk4fLstI2a12DT7OoBepgQk68oBhZHAsPBGzqzdzXy3C401ew==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750949867;
+	cv=none; b=ddWjAyoczL7FMEdYsAC5sA3c0BTIE6OUfOo6Ht103+vnX3h8qCbO+P91Ff5ctWhzJyjzCsw7A1XKnKfyFfxJuGTHfTYFRuXfB5bM68O7uWk3pmkzeOFrI4iRt4RnKf3AT7J4sKiWIQbFNuEo/wSHp31bxhdONaYwx+EXGnp5ZeAwzqf5Bnn4l/QX7IpkkhqULOj7lvrSGzjBr5IidYWHUpeMcboN/SzrJsMAt1RwD2rf28/YW8grA8bRkiiDhLtoup52Z94Pixszb24q1q+px8DM9aMNkOEDlNSZeWhsSXSfX1cmAgII5ib/IbPiSdlnksUNTOiSHtB6Zf5vZXEW0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750963513; c=relaxed/relaxed;
-	bh=zqOZ0nvJoY2kvs0ans1k/jor+XKnKoBEFfFm8tFXKgw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iQt2ck55Nx5P0qtRJSGb5lO1T4W3CRRghlZsS8p0zUrXE0FqghlhdaHH/dEpmavFVctEmaDe5sYV+yVOrs3zjiRB/MqwviuNdVgBSlsnMZhLGWdi8hvCgw1K84mbKRCz9PmgXdK/F0QdLrX/bgn4IOo21MhTt0ZDqITMgFlM9NovUx6MYfL0NkaUQaqezZsFq7kfwqZ2MOKwhvMgv89BWu9DqM8HpBikxsqS6ncpgLhezr+tyDvW+NY2xILZNbPYRKTVfb2H6jZ08qkJAXrcHHOEkH6PwALLYKWZX39afqt873tlj4gwxCaESfRbZDdTeLUANtB8W05nWI+bw4kDoA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hLP472CC; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1750949867; c=relaxed/relaxed;
+	bh=K8YPmhgd7GRWdTq4p5rz0ar2G7c+A7AteQJ8okEmiyU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OpN3OK1T4nH+7fjzLoVeZud1j3b9ggdJrqaQSpn1AmoLuMrJL5j1IHcEulSbgcYF97IV9/CthL7KhkDvdPGvOD1qJNLgrB3o9rdT1KV2JVbYlCRVdpgVC1eEOiCIddBGBEETelPTEJj1O+DZqmEwPv8aDCl/lsEdxGMwtdXXV/K44culzMunxapazYFuNq1HGpgGUqf7WBovTij4rfgukiMdmVkRm3aejUXEBz4+Itk82VxzA3ZN0e/Usxa4HabQKN8mcGynBttI2qmQECa2jGYk3ciabyxHEf2Bx0Rop2n5OOn0U0z5BkKASL5udqHfrU5RKVbF1siCEKRATkabrw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dkL6SNg1; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=N7DjUNXQ; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hLP472CC;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dkL6SNg1;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=N7DjUNXQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSngD3pHQz30NP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jun 2025 04:45:12 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A3BCB4375D;
-	Thu, 26 Jun 2025 18:45:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC281C4CEEB;
-	Thu, 26 Jun 2025 18:45:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750963509;
-	bh=qpuwIbsfFlx+vQqZ7u2g19cFy4P5mUElZNbXy5mDaBA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hLP472CCTg+PhX1yKdunFpJsdMOjYvhGyAgWrimK7DWPKkMd17pKMc1fIfwaPlCPA
-	 JIJRXr+shFAtyLcZe8XBwbY11mrvGDzVdJ3RsltqtREBwQkFGd8GfGcQGFurfXwhRi
-	 Gh6t0AupUp/xt8ImCbK8nrHJ6hmurZkalNqu+4nWd0M/d9ZfOF4iAVk+oNuFVT055z
-	 IXMV0SFHieGPFmST8cP/2Lrg5B0eeTJyP2e7jxgpdTCHDGUFGS4ovBwL7ynEjAeKFJ
-	 dwGKMZLnO96ObPriGbwvv4YKtLXuQsSnKwE/DIyBvIi2T6xOA6FnnFe1RuVAtw0cbK
-	 QWmFFBkB6n4+g==
-Date: Thu, 26 Jun 2025 21:45:04 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Alexander Potapenko <glider@google.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bShcp0bc4z30Nl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jun 2025 00:57:45 +1000 (AEST)
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1750949280;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=K8YPmhgd7GRWdTq4p5rz0ar2G7c+A7AteQJ8okEmiyU=;
+	b=dkL6SNg1bPhA+biVVEeT8puaUIOg12+2SWQ7defQnHIGc9BDeWFkd1ctQ0gUNZYvNeApXP
+	WKdDIs2QCoBK41hm/zn/jYT5Vh/jWy8U1ZykAdAolO8k+m2uoPgkAaXngSTm1YfYg9VL4s
+	xKAITZgt8HJDg6q2TgfDS7EgorR3Kwo4z0iVceePevM56nPtvaBhlcsdz/rHvth0L7ZdkE
+	lbHZiKhiM7y6T0d9NmsJ/FVmQYenLVaAs4br1GynVIFVRHhjwLnOaOXbrqcBiUzasF0T56
+	F5wOZLlxBTirOCSLMJKWgpboqFAeZRPNL+frv5rz2eVmsW136HWHf72DD07kSA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1750949280;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=K8YPmhgd7GRWdTq4p5rz0ar2G7c+A7AteQJ8okEmiyU=;
+	b=N7DjUNXQqh1nFLJCr+LThRh/bbiQX23ScEPQDSYJRD73sjpRqG1FOEFxPcaMl51rLMgJX1
+	kQa/d6OKtvnYh4Bw==
+To: Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
-	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 5/8] kmsan: convert kmsan_handle_dma to use physical
- addresses
-Message-ID: <20250626184504.GK17401@unreal>
-References: <cover.1750854543.git.leon@kernel.org>
- <cabe5b75fe1201baa6ecd209546c1f0913fc02ef.1750854543.git.leon@kernel.org>
- <CAG_fn=XWP-rpV-D2nV-a3wMbzqLn2T-43tyGnoS2AhVGU8oZMw@mail.gmail.com>
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: Nam Cao <namcao@linutronix.de>
+Subject: [PATCH 0/3] powerpc: Cleanup and convert to MSI parent domain
+Date: Thu, 26 Jun 2025 16:47:39 +0200
+Message-Id: <cover.1750861319.git.namcao@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,67 +73,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG_fn=XWP-rpV-D2nV-a3wMbzqLn2T-43tyGnoS2AhVGU8oZMw@mail.gmail.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Jun 26, 2025 at 07:43:06PM +0200, Alexander Potapenko wrote:
-> On Wed, Jun 25, 2025 at 3:19 PM Leon Romanovsky <leon@kernel.org> wrote:
-> >
-> > From: Leon Romanovsky <leonro@nvidia.com>
-> 
-> Hi Leon,
-> 
-> >
-> > Convert the KMSAN DMA handling function from page-based to physical
-> > address-based interface.
-> >
-> > The refactoring renames kmsan_handle_dma() parameters from accepting
-> > (struct page *page, size_t offset, size_t size) to (phys_addr_t phys,
-> > size_t size).
-> 
-> Could you please elaborate a bit why this is needed? Are you fixing
-> some particular issue?
+The initial implementation of PCI/MSI interrupt domains in the hierarchical
+interrupt domain model used a shortcut by providing a global PCI/MSI
+domain.
 
-It is soft of the fix and improvement at the same time.
-Improvement: 
-It allows direct call to kmsan_handle_dma() without need
-to convert from phys_addr_t to struct page for newly introduced
-dma_map_phys() routine.
+This works because the PCI/MSI[X] hardware is standardized and uniform, but
+it violates the basic design principle of hierarchical interrupt domains:
+Each hardware block involved in the interrupt delivery chain should have a
+separate interrupt domain.
 
-Fix:
-It prevents us from executing kmsan for addresses that don't have struct page
-(for example PCI_P2PDMA_MAP_THRU_HOST_BRIDGE pages), which we are doing
-with original code.
+For PCI/MSI[X], the interrupt controller is per PCI device and not a global
+made-up entity.
 
-dma_map_sg_attrs()
- -> __dma_map_sg_attrs()
-  -> dma_direct_map_sg()
-   -> PCI_P2PDMA_MAP_THRU_HOST_BRIDGE and nents > 0
-    -> kmsan_handle_dma_sg();
-     -> kmsan_handle_dma(g_page(item) <---- this is "fake" page.
+Unsurprisingly, the shortcut turned out to have downsides as it does not
+allow dynamic allocation of interrupt vectors after initialization and it
+prevents supporting IMS on PCI. For further details, see:
 
-We are trying to build DMA API that doesn't require struct pages.
+https://lore.kernel.org/lkml/20221111120501.026511281@linutronix.de/
 
-> 
-> > A PFN_VALID check is added to prevent KMSAN operations
-> > on non-page memory, preventing from non struct page backed address,
-> >
-> > As part of this change, support for highmem addresses is implemented
-> > using kmap_local_page() to handle both lowmem and highmem regions
-> > properly. All callers throughout the codebase are updated to use the
-> > new phys_addr_t based interface.
-> 
-> KMSAN only works on 64-bit systems, do we actually have highmem on any of these?
+The solution is implementing per device MSI domains, this means the
+entities which provide global PCI/MSI domain so far have to implement MSI
+parent domain functionality instead.
 
-I don't know, but the original code had this check:
-  344         if (PageHighMem(page)) 
-  345                 return;
+This series:
 
-Thanks
+   - Untangle XIVE driver from Powernv and Pseries drivers
+
+   - Convert the Powernv and Pseries drivers to implement MSI parent domain
+     functionality
+
+Nam Cao (3):
+  powerpc/xive: Untangle xive from child interrupt controller drivers
+  powerpc/powernv/pci: Switch to use msi_create_parent_irq_domain()
+  powerpc/pseries/msi: Switch to msi_create_parent_irq_domain()
+
+ arch/powerpc/include/asm/pci-bridge.h     |   2 -
+ arch/powerpc/include/asm/xive.h           |   1 -
+ arch/powerpc/platforms/powernv/Kconfig    |   1 +
+ arch/powerpc/platforms/powernv/pci-ioda.c |  96 ++++++-----------
+ arch/powerpc/platforms/pseries/Kconfig    |   1 +
+ arch/powerpc/platforms/pseries/msi.c      | 124 ++++++++--------------
+ arch/powerpc/sysdev/xive/common.c         |  63 ++++++-----
+ 7 files changed, 113 insertions(+), 175 deletions(-)
+
+--=20
+2.39.5
+
 
