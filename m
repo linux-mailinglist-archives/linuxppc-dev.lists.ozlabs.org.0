@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-9796-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9797-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFE5AE9329
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 02:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BFD6AE9342
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Jun 2025 02:12:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bSJmJ6WwDz2xYl;
-	Thu, 26 Jun 2025 10:02:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bSJz23GP9z2xWc;
+	Thu, 26 Jun 2025 10:12:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::536"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750896176;
-	cv=none; b=KlwSihipkW2jBzrmKxY47xRx3/X1LUP/l5FjbI0r98/CGdaJWAAHvnTwWoK98QdxEkazGV1hxXnbIb8dTaPGeBkOkrnw2DqAXewCrSFGDeYgCvZ+8A8jssgqfk8H/loT364WR36WNkY8kEdr4egynZq9ghZoJgwnI8gVkgXDTUMMEdu6XSdRgYZXXhj1Ba57/fiphBlf5cnIgUxWDikrSVmbLlS1djcqM3pwJqMOiiS2q022pklJfQ/Rtz8YoSsw7GG5ZuLzUe3vJ6l3W+vEOe/d6kQtwcp+Q889mr1MiD9PqIpZn/diAuzv1r0D0Wi72orSFfZA4hwYNrHgFxUpyw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::634"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750896734;
+	cv=none; b=oIz+pUtGNtqRda1CWr9x2moFGa3VrP82aut/IOP8wF2YZ5urYGxFYb1kroWoJZxysXvymbzOz5cieIFmF/y1WlQj/jwWMcodTYGGeLeK27kRpCjoop12fH4ygVxkQG6btYv/TFVM7DoPo7V6qfxFIANnFjP3H+tL7rfGJtqsWhYlabdFynVc5vnyVpcDHuWtOMdHBUslwaLED2y6ACr3vtCAPSe4lUCSam91G9rap+Umb1kJt2uvlMMdqRsx6Hpq0irEgfQ0gxUmBxHwTgXJh/NAjNZjp7QiJT/aio8gXRxVlF9wigexdYmfIt6RXH9RVOFKk5tATO4kYXXVSXVsjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750896176; c=relaxed/relaxed;
-	bh=lM1GTPPHV5WCR55djJT3W1q00iOrpCxrYOZ6QlrYZ6A=;
+	t=1750896734; c=relaxed/relaxed;
+	bh=lowV/nKzWTvWfWNiFO0HDvMPBtQosk45w4ddFI+eEJ4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NYqf9IUrPnwdzclYEzk1jtz9lSTZPJNAh1QL+4Fo2G4NTzQWM6v/mklBUWjS0l5dfRVGW6N6cI/H+y814ihfox2lX4XpLY2/SNSuknbhYBPsmxsi3YfFwBcANRMIUXmB0zzLJDCuMnBkUtY3VaLJtCx7w0ri+4pekOKjf/vygMOHSKGIDuyDrKQHP197APJ7f+c8wy0gwEUfXz0H6d2suAHe1PeOCETZxV39K11+ULocVyq1i2WKsUhCgiRwF60T0vbwEtfLZM+Gyb1PfQYgmXl5V+wCFLoGuOjluVmPEes8sC/VJJnxw8mHRSjUcTys2Zq0NUgIbPtBdOjxrdBe3Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EF2baae6; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=JdOde/25ExIQxxPALRczMIIn1BwWTJ/s/rXWdS6ILV0ATZpSynJPlFdibdFm12Bm3THGt0+KCPu8carfSqVOtIzVRO6c7CX22gyTuqRX9gXjixxT8mxzVjA6pPikK077Hq8vPxhrkZe2ByTzwrZ5eITzbSwr6mP95BJlr95GEj2v8AhBCw0QqrexxAAuWmCw4dvpFFkrvmLHcckzAq5kwVwQeJ0GLFpKaImtBj95XQx9baX1gTNybXslLmyyeyCEG07fRD/CKumHSx1RwyrlKo1H3a4+g1cLGWPh3ygBctnk5qeugwhkitgvzOQ69089uokzE00wPlnPmqNssrbYEw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OYiHKKlA; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EF2baae6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OYiHKKlA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::536; helo=mail-pg1-x536.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSJmH5HVDz2xRt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 10:02:54 +1000 (AEST)
-Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-b34c068faf8so432058a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 17:02:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bSJz14s7vz2xRt
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Jun 2025 10:12:12 +1000 (AEST)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-23636167b30so5291475ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Jun 2025 17:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750896173; x=1751500973; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1750896730; x=1751501530; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lM1GTPPHV5WCR55djJT3W1q00iOrpCxrYOZ6QlrYZ6A=;
-        b=EF2baae6KxXwqwz6QoEFVI/8Cg7ZdHjs4O5BvWchddSCKA7HJ9qV+1Pt30CRQxSIeY
-         hJS6ih7OGYdUTx9Z0Gb71BDcr3g1+I4rZ4M4Xp3XIVZv5vS+8vffTC0zwoMAXB0YkJyO
-         uRJsBTY7Ru0Kk9GCj1E8v2c2jdzen6AmN/Fjtv8+6aihvdXO4ZltihtB2OlUNN9Gtavv
-         noedK1IOzRB0/Yvt/IW22Uf65+5giWBMkDDol5Br2w1JkPLb0TxzQNBR59WP05/Ish9q
-         oUMgq72Kz5PSHbmOzUCWCYgya2YLIqiKCvpDM+gPUvssidYu6XgdY7+7wLeGJlVsEokd
-         NVfQ==
+        bh=lowV/nKzWTvWfWNiFO0HDvMPBtQosk45w4ddFI+eEJ4=;
+        b=OYiHKKlALu7oy9kz0cXZkv7ujcjXld+IETpV1PcWUHrqg9ZOz+1pSsackO9f/pRUsx
+         tRf4aNT9I3kexA2rOoIeoM2O6kkuvLtUnpxiXA7QBs1h7HhIF/NCMUBp7O9rC0DZ89/N
+         6B9pKdGM2hRZZ6D2OrInmDNS6OQ32DsmDZX8nHkxQucPgK9urXTdiA7GmsC7q7CiRpRx
+         Y+yDoolAE0mg1U0mmSA4U5LcCypxpubSYATdvZU6a7gIkhEO2/XwAOKB694xVGmI/OnD
+         b1v0zgA1PLJDCI8hBBXIFn1BL4W7FU+w07+FTaGM1y9qOCrypiBQKJcGt7wmGElIpm19
+         X9Ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750896173; x=1751500973;
+        d=1e100.net; s=20230601; t=1750896730; x=1751501530;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lM1GTPPHV5WCR55djJT3W1q00iOrpCxrYOZ6QlrYZ6A=;
-        b=EIhv5mcBMinCOIOh2U7sSXCxUVM4EJq5hIjNW04wKBImDXeBSX1qlV+beH6yJpjISn
-         EI56DX3DIk967VZsqlZchVdYFaDJMSUkR/3Z3ApuD/Rh2FpK1HKa+PXaBVzS3sZ5R2Wq
-         dKlKvGrT+1d6ofxKOGxWLWErIN98SkOM5WYdn2SKXUnZFptraRiv9VYiQJMYCtnDsB8A
-         X8wF4vPcqEkIGV6q+qwfNt6rtCvhz5cgIcn+947jHMMMsWiOEigWkIpwDaR40RYBvhts
-         RjXhiLHrE3yjPggPt1j9XaHT+7dJPp2C1AMjAI84J/sGMg4jHH8vPe09pUQIT28HQBe9
-         NeCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXmKgpiJ2MeA5ug0uhBy+DmD2PUghFbf2zSfWho5ess896bWF9IBLNXjK951I14q4vXUM/IfwUWcaV0KN0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YywJTmKpo8ZZPhejCIRN0He0M4hLv8/AAKw4I1dva6zOuDvjA5q
-	CR7QlJvBxoe5iwDSFcYedp5XBZmEQPMJKub5BR/21SajqtBGTAAA4ij0
-X-Gm-Gg: ASbGncuiFA8iMPLkKl9T1qrzZ/ED02Nj0r2nHZAMdBkR1zkg1hJYmHk3OXMLF4uVWoc
-	w2T2ZDpJuxDPCT1Ywp8RAfBleX8Jiwgo3WR9rl1FzRK473yXynxoQry5I4Cs9n951ThjLvr0X2r
-	SGHB1BPqCost9wfliTSf1angbfl21W7gSv5OLtpyLLB84t45UnBjl6rAMQeMS2kDs2flqoi6Qtd
-	kULngiVjcPSnskt5Q8brW0zyI9rT8l8/z7OvNhW4xGlT+5PRgY2dvzvX4mBeGafP8MyqlwrBMYC
-	OjhWYudZPnvX93CJ/73cSbsiyad80lggrdmQiF/yzQZNMPnDlBa6yd3PwGl/zQ==
-X-Google-Smtp-Source: AGHT+IHBlphPYG0R+Ezs3voKgmJntm9TCYEj5igU5EvDXw9i4W7TFCoT1JCE5a9iA/KumVZ68cBqOg==
-X-Received: by 2002:a05:6a20:d74d:b0:21f:f0b6:3d6d with SMTP id adf61e73a8af0-2207f19208amr6650183637.10.1750896172980;
-        Wed, 25 Jun 2025 17:02:52 -0700 (PDT)
+        bh=lowV/nKzWTvWfWNiFO0HDvMPBtQosk45w4ddFI+eEJ4=;
+        b=AWHI1MoeKrARdYiB99lMZ0dJczCtWVrYRoqGazpQOFM+ejt/XKND+oRcnE4+VgsNx3
+         qM9u3wCdCfc3vOC5Nn+KmScM5/tch61zZaYc/7Noh4BaxIRdc3L6AqaWNwMV3M3Wb0tr
+         UwPZLNRIWJSa2Jm8o1IMMKChMHVMHWIoaNsj2HrDBv01dG6ob/cI9l8CHhmP0WmMT5+1
+         OKK5FX7kx4JRphlzAguXQLO6iWe0HuoJv9AFE94dLvIIBlw4wY9d/XWy60aFu5OYlpz8
+         kXkYdajB8N3JCJ0kSfcR+0XnMtqM/KsJxKcglBsmAjM4rzm94U3uqbKgPhpvKJOYWNC/
+         SAdg==
+X-Forwarded-Encrypted: i=1; AJvYcCWNttowxC4qCMj963N3CI3iVMx+pwxD2bj4QIMxE2DfM6GsVSwDpQKS0/adju3QYug0wJ9daXIwwvVPcRk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyKnOl4HLriC85T9MNajmAJVoCN/uUqqqrmDmyE9Xlt27roMtvO
+	cxd8QSrMjRsizMQa9X2eDSn45pCxdowNseSafJoxzq1lsWB9pVnFH6va
+X-Gm-Gg: ASbGncvuKz1eWASWL95oIsvfczuULuJAUPUHKzAwfBhL9sMbXgUd3Qg2GvAzh90ly9Y
+	zLt5OyUjjAdzN02uJl3CKEX2KiedNPDZ6M0OpVpTETgrB1tBThxXIDVo5PyFrgsMP27zoh7QSBg
+	RiyNlV984oADaelY7tmQB9NJB46H/17DECUWGEhIO4jyy4VrxmxKQRYBXHHwFTl6Fhz2ez5XR94
+	pxVRcDezCDvRmto/9fx7BMrT9Uxq2E1PFk/M1Bj57Hx7/qtrHeSOUuE+dY6/XtAnmUQNeoHmqgn
+	omSVy+DaAwgwvvODI/Dv4HvtTXdcVduFPndfJShnqxM2IYYVJCYh+UqD1xsj5w==
+X-Google-Smtp-Source: AGHT+IFdjaJJtcu1Ur4K2yZ0JHexKIy67/OGUnCR0lz66MZ8PefNDV+iP31fY0J968Af1oTeT5n7Nw==
+X-Received: by 2002:a17:902:f681:b0:234:9670:cc73 with SMTP id d9443c01a7336-23823f65de5mr93831885ad.5.1750896730581;
+        Wed, 25 Jun 2025 17:12:10 -0700 (PDT)
 Received: from localhost ([216.228.127.131])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-749c88722e7sm5414333b3a.166.2025.06.25.17.02.51
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-237d869fbfcsm151610165ad.194.2025.06.25.17.12.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Jun 2025 17:02:52 -0700 (PDT)
-Date: Wed, 25 Jun 2025 20:02:50 -0400
+        Wed, 25 Jun 2025 17:12:10 -0700 (PDT)
+Date: Wed, 25 Jun 2025 20:12:08 -0400
 From: Yury Norov <yury.norov@gmail.com>
 To: Shrikanth Hegde <sshegde@linux.ibm.com>
 Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
@@ -77,11 +77,10 @@ Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
 	kprateek.nayak@amd.com, huschle@linux.ibm.com, srikar@linux.ibm.com,
 	linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu,
 	linuxppc-dev@lists.ozlabs.org, gregkh@linuxfoundation.org
-Subject: Re: [RFC v2 4/9] sched/fair: Don't use CPU marked as avoid for
- wakeup and load balance
-Message-ID: <aFyOITguo83GdxKv@yury>
+Subject: Re: [RFC v2 7/9] sched: Add static key check for cpu_avoid
+Message-ID: <aFyQWLpI8B8B1AoM@yury>
 References: <20250625191108.1646208-1-sshegde@linux.ibm.com>
- <20250625191108.1646208-5-sshegde@linux.ibm.com>
+ <20250625191108.1646208-8-sshegde@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,58 +96,57 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250625191108.1646208-5-sshegde@linux.ibm.com>
+In-Reply-To: <20250625191108.1646208-8-sshegde@linux.ibm.com>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Jun 26, 2025 at 12:41:03AM +0530, Shrikanth Hegde wrote:
-> Load balancer shouldn't spread CFS tasks into a CPU marked as Avoid. 
-> Remove those CPUs from load balancing decisions. 
+On Thu, Jun 26, 2025 at 12:41:06AM +0530, Shrikanth Hegde wrote:
+> Checking if a CPU is avoid can add a slight overhead and should be 
+> done only when necessary. 
 > 
-> At wakeup, don't select a CPU marked as avoid. 
+> Add a static key check which makes it almost nop when key is false. 
+> Arch needs to set the key when it decides to. Refer to debug patch
+> for example. 
 > 
 > Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 > ---
-> while tesing didn't see cpu being marked as avoid while new_cpu is. 
-> May need some more probing to see if even cpu can be. if so it could
-> lead to crash.  
+> This method avoids additional ifdefs. So kept it that way instead of 
+> CONFIG_PARAVIRT. 
 > 
->  kernel/sched/fair.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+> Added a helper function for cpu_avoid, since including sched.h fails in 
+> cpumask.h
 > 
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 7e2963efe800..406288aef535 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -8546,7 +8546,12 @@ select_task_rq_fair(struct task_struct *p, int prev_cpu, int wake_flags)
->  	}
->  	rcu_read_unlock();
+>  kernel/sched/core.c  | 8 ++++----
+>  kernel/sched/fair.c  | 5 +++--
+>  kernel/sched/rt.c    | 8 ++++----
+>  kernel/sched/sched.h | 9 +++++++++
+>  4 files changed, 20 insertions(+), 10 deletions(-)
+> 
+> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> index aea4232e3ec4..51426b17ef55 100644
+> --- a/kernel/sched/core.c
+> +++ b/kernel/sched/core.c
+> @@ -148,9 +148,9 @@ __read_mostly int sysctl_resched_latency_warn_once = 1;
+>   * Limited because this is done with IRQs disabled.
+>   */
+>  __read_mostly unsigned int sysctl_sched_nr_migrate = SCHED_NR_MIGRATE_BREAK;
+> -
+>  __read_mostly int scheduler_running;
 >  
-> -	return new_cpu;
-> +	/* Don't select a CPU marked as avoid for wakeup */
-> +	if (cpu_avoid(new_cpu))
-> +		return cpu;
-> +	else
-> +		return new_cpu;
-> +
->  }
+> +DEFINE_STATIC_KEY_FALSE(paravirt_cpu_avoid_enabled);
+>  #ifdef CONFIG_SCHED_CORE
+>  
+>  DEFINE_STATIC_KEY_FALSE(__sched_core_enabled);
+> @@ -2438,7 +2438,7 @@ static inline bool is_cpu_allowed(struct task_struct *p, int cpu)
+>  		return false;
+>  
+>  	/* CPU marked as avoid, shouldn't chosen to run any task*/
+> -	if (cpu_avoid(cpu))
+> +	if (cpu_avoid_check(cpu))
+>  		return false;
 
-There are more 'return's in this function, but you patch only one...
-
->  
->  /*
-> @@ -11662,6 +11667,9 @@ static int sched_balance_rq(int this_cpu, struct rq *this_rq,
->  
->  	cpumask_and(cpus, sched_domain_span(sd), cpu_active_mask);
->  
-> +	/* Don't spread load into CPUs marked as avoid */
-> +	cpumask_andnot(cpus, cpus, cpu_avoid_mask);
-> +
->  	schedstat_inc(sd->lb_count[idle]);
->  
->  redo:
-> -- 
-> 2.43.0
+Here you're patching the code that you've just added. Can you simply
+add it in a proper way?..
 
