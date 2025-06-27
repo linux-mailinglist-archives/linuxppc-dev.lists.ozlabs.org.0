@@ -1,62 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-9847-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9848-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EF3AEACF3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jun 2025 04:46:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6077AEB949
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jun 2025 15:53:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bT0Ll2Bpdz306l;
-	Fri, 27 Jun 2025 12:46:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bTH8H5qnGz2yNG;
+	Fri, 27 Jun 2025 23:53:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1750992399;
-	cv=none; b=RMKFt96kxzvI5EHj6UKkYWkzo16jyJs3EKfJDy6n/mhPRkmRJZ0kP8h07p8K36XUEiC4WWfTZUG20LnPCh5FErR8KLmcPcGVwaRQ2mfblbElNovU6Wm7E55Zfla4PJ51QCWowjICIQWHRy6FVeLLUM8DsqQmgNC2Nx4cY9sjn+pWecD5pgOuilcYeeKkXEyX+snkpNwHw4Kgaq6WdX3uhd6fufMqKAVjFQC8DDHIEzCHnOxNJqE3BMemL1QdbJx64KtwGTw+2M9yQUm7t93eHZS4ThZXnfRRn0XglVZDqkXIVmh0e/TZRjkNivqo+J+npX5XSyh/+AOUglAjUO88/Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=210.118.77.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751032415;
+	cv=none; b=O26C7d2FqzQ+2qunmX7sJWSellhzzqahQw0lC1roj6IwXzdoHosTf6PZ7xlGiwPMad+lnQM8mkB2TVJUQkGY7LiEJgUKL3EgsG1sXOqnHmxPWOr4HHaY0aUxQAFVcUbqo1s3Cexy5/U6HI6weChuLAAKu8FqsRI72IwX1nqb4e3kMWcHe1kBrORbyBPfQ0PKWeoULH5XumDl2nXW7M+7rjblgqJrp2yB8JXtN6T/PzT4qyM0kNXv8aRNr7O3Q58c6v4EXslKBNzydU9qgZHf3ChLoP4JXDIRdUJtRMPvUR44WwrXNANw7jE44GVuFhY7DOgXwFJf7UvRhNti2Is49w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1750992399; c=relaxed/relaxed;
-	bh=KSpGqoGHw4jdEeeuHnbaE8bdrNxce2rGRpAWn9ZiGh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i7FkjZZPYTD6LwRwX/fRY9fD86rYXgYPKnigM5R/Ae+2QiWO6S/83tMj5tJN/Xak7eJFBOR45Q8ReM0OCNHD5fXATEHT+8logoQlWwfIDNIGNZ26EKyISGHu5pm5qIU6weyydqiegy1sJNcQ+pxzKIhfu/mRCLhBJbm7hq5skZ4eeGjqzyLRKtaQ/adg4GGf14czzVpqQX4eimfWZ5HTKLEsAHvBEKuOZAth3vxlkfmJwqe5wHjCA62xsvxZsJBPgItjjh+u1au+gp3m7NNTM4dcbFoaR2ejMrdboqtSc+tiva2gUrY5b5Xk8woPXjQSglPlHMQDowUfjIor9mIkzg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FUmEdZKy; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1751032415; c=relaxed/relaxed;
+	bh=XkLT3H6zpZxdqKr2mL/WBFZuhTWHNBcRcJJv1Mo/N0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=fas/e6v1t1fWY9n+Q5FaratVuh/WbrOC/9j2ww7XNMxYfu/IhO8XfslG1rGSX6HSWxuAunyaHXCNb54dRumoKIQX8+wnbUeYy0oR0v2O5+/kY2YTNiSg0UOeHOuYooyNFe+nLUZykKCpLVrTJ29pKmG6v9Vtn3PI7GcB2+mxcQwTqHap17LDNg53R4qoMV6sYD5XEs1whao7wcVwEgKn6FLLoWGOFIY9bl0lL6+W6qaJkf1K1d/5QVRd6x671mmVhoGrkXuzUNBUqsQt+0Lc/8Rs9SnyjTbRUBKniyIMFZkjiDr+j/2qFP2iebSoOaKZy8mnKETkyrUfzglW4y6MDg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com; dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=WhvmDKIT; dkim-atps=neutral; spf=pass (client-ip=210.118.77.12; helo=mailout2.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org) smtp.mailfrom=samsung.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FUmEdZKy;
+	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=WhvmDKIT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.12; helo=mailout2.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 546 seconds by postgrey-1.37 at boromir; Fri, 27 Jun 2025 23:53:31 AEST
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bT0Lk11PBz2xCW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jun 2025 12:46:38 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A45286111F;
-	Fri, 27 Jun 2025 02:46:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF0CC4CEEE;
-	Fri, 27 Jun 2025 02:46:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750992394;
-	bh=LQms1tNsqpQ+nXQaH2KYlSJYLllazDGuxMMHkBk5CDs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FUmEdZKy5Pt85iIZINjlu6Rlw+WTOVjloMjWfOUMo1LHk6H53Te0c1wsyd8N4vhTL
-	 53kUWt5yc9a3iKDuavEg64TN6Q43K99IAq3pPC9PcKgpI2GIS6qBzQuYO1on5nVrYR
-	 s/RG/HdAzJaAfI7nPRGHfihNXYmCSy6JFzq/V+1VKJVbAVezkkf5RpbZ9e37qV1vuL
-	 2x0VbbiTZXMQQOMyud6dJRU217TdKsz5QbnJHwoljbfbZAha6cxt4d2MdAbgZaAfB2
-	 vYXACkfMBqv7cZhM2n833mbduEvSFugpShoskJ6/RhxH1RGxrtHdftTa4CBFseiqjV
-	 XaffibLNkkX2A==
-Date: Thu, 26 Jun 2025 21:46:33 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:FREESCALE SOC DRIVERS" <linuxppc-dev@lists.ozlabs.org>,
-	"moderated list:FREESCALE SOC DRIVERS" <linux-arm-kernel@lists.infradead.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v2 1/1] dt-bindings: soc: add vf610 reboot syscon
- controller
-Message-ID: <20250627024633.GA1656962-robh@kernel.org>
-References: <20250617155231.2023977-1-Frank.Li@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bTH8C3yX2z2xBb
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jun 2025 23:53:30 +1000 (AEST)
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250627134412euoutp02c06948a820e87256ec4a6abc6de62b68~M6jFZ9GUW2277422774euoutp02_
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jun 2025 13:44:12 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250627134412euoutp02c06948a820e87256ec4a6abc6de62b68~M6jFZ9GUW2277422774euoutp02_
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1751031852;
+	bh=XkLT3H6zpZxdqKr2mL/WBFZuhTWHNBcRcJJv1Mo/N0Y=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=WhvmDKITyLEkhw3MRTwTgoaWKOjFTMjKnV8wJOos+T/cXs8qV0a45KyYKjjHHphNR
+	 ejlC6A7c/3G9ZGM0g5x9rtRdfSUOXwvaNPvqe2cEjseVkiFdxFjJMEeYZdJBH545i+
+	 hY7QPcy7sQUOkaipwLKySn5wWBeenoGfWxQTqISc=
+Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250627134412eucas1p153bc3e4a1c0897bca604e6864667b66d~M6jEutC8v1155611556eucas1p1O;
+	Fri, 27 Jun 2025 13:44:12 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20250627134410eusmtip109d5d74275daabf2f21b42eb7440b88b~M6jDFXzcn2675526755eusmtip1I;
+	Fri, 27 Jun 2025 13:44:10 +0000 (GMT)
+Message-ID: <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
+Date: Fri, 27 Jun 2025 15:44:10 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,96 +62,70 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250617155231.2023977-1-Frank.Li@nxp.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+	<mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+	<christophe.leroy@csgroup.eu>, Robin Murphy <robin.murphy@arm.com>, Joerg
+	Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, "Michael S.
+	Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Alexander Potapenko <glider@google.com>, Marco Elver
+ <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>, Andrew Morton
+ <akpm@linux-foundation.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ iommu@lists.linux.dev, virtualization@lists.linux.dev,
+ kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <cover.1750854543.git.leon@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20250627134412eucas1p153bc3e4a1c0897bca604e6864667b66d
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf
+X-EPHeader: CA
+X-CMS-RootMailID: 20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf
+References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
+	<cover.1750854543.git.leon@kernel.org>
+X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Jun 17, 2025 at 11:52:30AM -0400, Frank Li wrote:
-> Add vf610 reboot controller, which used to reboot whole system. Fix below
-> CHECK_DTB warnings:
-> 
-> arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e000:
->     failed to match any schema with compatible: ['fsl,vf610-src', 'syscon']
-> 
-> IC reference manual call it as system reset controller(SRC), but it is not
-> module as linux reset controller, which used to reset individual device.
-> SRC work as reboot controller, which reboot whole system. It provides a
-> syscon interface to syscon-reboot.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change in v2
-> - change description to avoid confuse about reset controller.
-> - it is legacy device, more than 10 year. So try keep existed dts as it.
-> ---
->  .../bindings/soc/fsl/fsl,vf610-src.yaml       | 47 +++++++++++++++++++
->  1 file changed, 47 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> new file mode 100644
-> index 0000000000000..cb8aa510a21f7
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> @@ -0,0 +1,47 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas//soc/fsl/fsl,vf610-src.yaml#
+On 25.06.2025 15:18, Leon Romanovsky wrote:
+> This series refactors the DMA mapping to use physical addresses
+> as the primary interface instead of page+offset parameters. This
+> change aligns the DMA API with the underlying hardware reality where
+> DMA operations work with physical addresses, not page structures.
+>
+> The series consists of 8 patches that progressively convert the DMA
+> mapping infrastructure from page-based to physical address-based APIs:
+>
+> The series maintains backward compatibility by keeping the old
+> page-based API as wrapper functions around the new physical
+> address-based implementations.
 
-Double '/'
+Thanks for this rework! I assume that the next step is to add map_phys 
+callback also to the dma_map_ops and teach various dma-mapping providers 
+to use it to avoid more phys-to-page-to-phys conversions.
 
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale vf610 System Reset Controller (SRC)
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +description: |
+I only wonder if this newly introduced dma_map_phys()/dma_unmap_phys() 
+API is also suitable for the recently discussed PCI P2P DMA? While 
+adding a new API maybe we should take this into account? My main concern 
+is the lack of the source phys addr passed to the dma_unmap_phys() 
+function and I'm aware that this might complicate a bit code conversion 
+from old dma_map/unmap_page() API.
 
-Don't need '|'
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-> +  IC reference manual call it as SRC, but it is not module as linux reset
-> +  controller, which used to reset individual device. SRC work as reboot
-> +  controller, which reboot whole system. It provide a syscon interface to
-> +  syscon-reboot.
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - fsl,vf610-src
-> +      - const: syscon
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    syscon@4006e000 {
-> +        compatible = "fsl,vf610-src", "syscon";
-> +        reg = <0x4006e000 0x1000>;
-> +        interrupts = <96 IRQ_TYPE_LEVEL_HIGH>;
-> +    };
-> +
-> -- 
-> 2.34.1
-> 
 
