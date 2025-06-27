@@ -1,98 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-9850-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9849-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70ECAEBC86
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jun 2025 17:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCE4AEBC18
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jun 2025 17:38:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bTKqb2P0Hz2yNG;
-	Sat, 28 Jun 2025 01:54:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bTKSh33pBz2yNG;
+	Sat, 28 Jun 2025 01:37:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2009::60a" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751038407;
-	cv=pass; b=an2jJzIeiyA5/hb+vLoT6A72iBYScrQMYTo1OhYCoj9uYCBI11u0qHYNmlg9hjaVOec4LHmgR1iDs7XOSmEoOVum6919kNz3Npe9c9OeFgrmyiEnWqe2QZ7h3TZKooBpM5kZdad7ilsbGm+woAZxNgTHUerQReHwxDDSQBk3bI9E81TksmUupQTVVPpmvilyfhSGMAhhfaQQctuwYdrAZ35j/+Hz+pkqkc7Pq8Hr4/1oEnj8985e7sZqIp6vfdLE89WSYzfJ6ki4tYNjN1/2WrD3YC/rBDVGop1Si4LwHEJ8TVtJoGEm1lS0RXnlg3UPQoTocV7/5GKRaZDwT+ztPQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751038407; c=relaxed/relaxed;
-	bh=5fQboSs/5/bXDh8HLuZLTAl16XdVgH1rML49GhypkCY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cqnURBUCFbH1SUpBQ3uljdNeOM2xai/lDG0YvSbG2SLz7z+QEs8FMkvc7rRPsavDeU2egCpOC9bBrqMBYlIXSQQUAYbNfF6lAdrO8YWhLLVQfZUzbX44SLQhDmS+ULAkKyTFZi930tRgqwpUcTXk23Ux0MiccPl8hywcmRzSEEFPrSAgIrnofItgnDhtSA8LvGQwVi8yOwuNJEOx9mdJTeImqfvDRslFMlPX82aXucFJGNKOHUo5zzk6+FFA0ljiVzeUcgTzRgjBOUT77DM/dDbtDgD0og2BiomicwsrBuiQvQE2Xflo00fRbnM+hfXd7cwAq3zszBk22OklDr3low==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=ssZv8Jdo; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2009::60a; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=aurabindo.pillai@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751038676;
+	cv=none; b=oaQ1Cj+ccSaBULlQ0URxtcJUv1oYiE3PrlRNybBEJOgtYGflOMSyXK9RlSLO2+e7qYVtMzntXUnQ0ZAm/eZ8HxuBsVDyqK0QVXMQGJg10i2tShPXq1oxqcfweFh4HK5MyJnDOBc44UHwi3ACL7kjZSoAVWdmxXIEJ5fEEaOyjdAldyJT3aGV6bTeYg9mkpk403rZRC39Rz/bY3x78+zOUv+K/vWkD+4PpIKCSpkdchN/t/svIRzkEav7j5oB8AJXn5CzpjrcSUj/zySVfb9X1aZ1Zp1Ko5l/6qvIsCfK6TL24Y6ixJkZ0ZlfRB5e+sfN+G6fR2iNLN42sumkAT2Gkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1751038676; c=relaxed/relaxed;
+	bh=KJMIAhuzx2BDsLFGZhb6ZdM4Y3+j+fjYrUfv+csICHY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Kzgvxcy313xqH9FjXoTJcE5yp/Naq/p1ybMEvd9o2EtoihHJ97Vl1ndeyLZ/szcXVbu1VyNiuvb0sv3VBevDOZ+gETfVBXJ9zawJznpum4Vl2HyQP1RRQf7kIAoVmgyc0s1oqDuPuLdB3VmTZU/tfeqmk2kxhWKi52nj/opB93mVZpGZXVv2o6MAy371DBl4pKxpAYBebZN1ndF2r2h9hxstxOCwJuQK+EHqofQ9JfoiRu5MkPKCv0IMn2Sh6jJcgV0CGFFOwicFQ0lajcvd5JPOv8wn39+Wb2aNhf/ND57anUxuHTqRNnGbnEabfhhr1q6hxZUGUrRklSV8gENHDw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjLZSa6w; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjLZSa6w; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=ssZv8Jdo;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjLZSa6w;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BjLZSa6w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2009::60a; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=aurabindo.pillai@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2060a.outbound.protection.outlook.com [IPv6:2a01:111:f403:2009::60a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bTKMT3sHcz2xsW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jun 2025 01:33:25 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SuUpdt352Hx3IcuZ0v+qSL00hlhe8UI2UCpHt9gBOdtaDGMYyfOexubDhocG0WSBwm48h3WyR4kBEGQ1Wc53I1gvWnjIGt3hmvDMh2dqpWgtbb0+B5Q/c+O0fluCYvvKYuzM5ghYgFJiXyGD2YL+4DsBV+X3GUAgpuPyXuyxcjqVnWwYXlY4pWV43ZNYx7ivdPEDoZvxAV26IK3itznjnZWCr4fM6kEBnSdvEH2/bPO501FPF6lfohudRT5vb7gQppjst1fpRWhyEvcGzrjAvRxO5X8fBOgFyxiStpgwsFBhnsrZ9Q8ZFFH1gZsYr/gHCevB5FZApHX9hufgYj0moA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5fQboSs/5/bXDh8HLuZLTAl16XdVgH1rML49GhypkCY=;
- b=BjSxsuiA58g03dp9AVYNnguzlmvYIomXuFYk0FJ9484mlmhys9k0dBEWw+APaAnNu+FhwS7RlGlnsK/rv33j6QKuvpLSvcjlcRK2WOMy3KsVyVy8jgBM9Q/wNBUe2v7pj5JwjRblLxxNaBb3xlblz8FuQaaeewUU8SMR5jxqyUHCMI+GMR2qekwv8fGkskpnCtMrFCmFabjISOFhJqhyzXw6pU97datTaojIb8wsklGvaX0Zl58KLXeY4tpWSjSeTxjgtUktiDH4V/OB3JBqck8t93N28chEjjUX+DrpRLovg5yXrUikofmXBXJfDXi3OP2W4a/7779zWIehkAb/IQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5fQboSs/5/bXDh8HLuZLTAl16XdVgH1rML49GhypkCY=;
- b=ssZv8JdoAhqL6o59pxGEKslz0rTpErVGu63rEMIyDB9Q7wDSCE48U3tQ2OKI33AH4NqrwJbs3ERaeDKRAwPOO9YzuNkSWFtVl9XZ/cSL9X9T1hABMI1AEQPPYhjhVfHJg90xI/gRLHI1NMHOW+2fJOSwLBwEkbnYqTZp7LJETE8=
-Received: from DM6PR02CA0098.namprd02.prod.outlook.com (2603:10b6:5:1f4::39)
- by SA0PR12MB4461.namprd12.prod.outlook.com (2603:10b6:806:9c::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.22; Fri, 27 Jun
- 2025 15:33:01 +0000
-Received: from DS2PEPF00003443.namprd04.prod.outlook.com
- (2603:10b6:5:1f4:cafe::2b) by DM6PR02CA0098.outlook.office365.com
- (2603:10b6:5:1f4::39) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8880.20 via Frontend Transport; Fri,
- 27 Jun 2025 15:33:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS2PEPF00003443.mail.protection.outlook.com (10.167.17.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8880.14 via Frontend Transport; Fri, 27 Jun 2025 15:33:01 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 27 Jun
- 2025 10:33:00 -0500
-Received: from aaurabin-z5-cachy.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Fri, 27 Jun 2025 10:32:59 -0500
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-To: Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Guo Ren <guoren@kernel.org>, Michal Simek <monstr@monstr.eu>, Thomas
- Bogendoerfer <tsbogend@alpha.franken.de>, Madhavan Srinivasan
-	<maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
-	<npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N
- Rao <naveen@kernel.org>, "David S. Miller" <davem@davemloft.net>, Andreas
- Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max Filippov
-	<jcmvbkbc@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Juri Lelli
-	<juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
-	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>
-CC: <linux-snps-arc@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-csky@vger.kernel.org>,
-	<linux-mips@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<sparclinux@vger.kernel.org>
-Subject: [PATCH] kmap: fix header include to reflect actual path
-Date: Fri, 27 Jun 2025 11:32:57 -0400
-Message-ID: <20250627153259.301946-1-aurabindo.pillai@amd.com>
-X-Mailer: git-send-email 2.50.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bTKSg1s5Fz2xsW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jun 2025 01:37:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751038668;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=KJMIAhuzx2BDsLFGZhb6ZdM4Y3+j+fjYrUfv+csICHY=;
+	b=BjLZSa6w2JYQpLYYRRXyGcrEN56KV8RxBuUdz/tuaYP3sf5CuvAztUQrftMHFSbCiq7uao
+	ngmQtVg2Ta9wrjKZQeTbP6/+S3xgmidtpWO+tZHiDmG60dcfLpV1lau+kCGxN0SzDFVVJR
+	Cf80z//7upz+kJzMS1rdw+dC1a37/6Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751038668;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=KJMIAhuzx2BDsLFGZhb6ZdM4Y3+j+fjYrUfv+csICHY=;
+	b=BjLZSa6w2JYQpLYYRRXyGcrEN56KV8RxBuUdz/tuaYP3sf5CuvAztUQrftMHFSbCiq7uao
+	ngmQtVg2Ta9wrjKZQeTbP6/+S3xgmidtpWO+tZHiDmG60dcfLpV1lau+kCGxN0SzDFVVJR
+	Cf80z//7upz+kJzMS1rdw+dC1a37/6Q=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-203-GK6P97KROfuO0gh4291oRw-1; Fri, 27 Jun 2025 11:37:15 -0400
+X-MC-Unique: GK6P97KROfuO0gh4291oRw-1
+X-Mimecast-MFC-AGG-ID: GK6P97KROfuO0gh4291oRw_1751038635
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-450d290d542so14699765e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Jun 2025 08:37:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751038635; x=1751643435;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KJMIAhuzx2BDsLFGZhb6ZdM4Y3+j+fjYrUfv+csICHY=;
+        b=pivfRqj+BADlKFkVkTU0X5dfplqGreXZYLdhI2v1tiahBWFtTgj70l/L2Zf6IDFwQ0
+         7S60jJkhlqTmeYap8Sqf/jPyWzE7CgF7pbXdj3eacXsjGAWRGTWwCabQPM7fkaFhs19n
+         qKRPkcMZ1cOB3rDBUQKmx543Bto1yb31hwpklLkaM/WS4esvMzUGxc6rGeGf6HaxH8bx
+         6E8DnNIHE7N/3GbM18esr2riPeS96rKVMbz2lrKVMwxuUdxR05/hv5BlJzYVFeVssEv7
+         8/bXePcxVXMxhm3PTk9nXjhtkz2LgIdsPLCkbXBYPr948+C/VgXuLY7t5VewotvGtSXA
+         7ybg==
+X-Forwarded-Encrypted: i=1; AJvYcCUcmx4/sAjXe0dnr7sllS0ED6XCPhQHl377F8FJ8JZxeiOI/FEPKwllvReTSyJ2W8eWkIXuaGwfsA1NgvU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx4jgVETSVz7xnZaNNixRTwAOqyE7NyaOpgH0bbskQkP1UVlfgT
+	mWJ5WZzJzdcKi0EEugN+Vfb6pEEwv8FaHnSC5UKOw5W+JyqBna05OVmbG1xCcuPTqE5tNKwYutn
+	L/clIKP6LN8ztDEU+6Dvp4o48DnC6IDe3HweHfDIybZ7V1jk2ZTDg+sgvDBjkEKw/bkM=
+X-Gm-Gg: ASbGncsxa1jAMn7yTBIaOa2TA5cE3lD9KOWYiCGGzwxDiG5ymmF46VU4xFPI8THTwIs
+	GnTUDvxRYjkjIzmBIVWs0F4951xuv/LaBjj3lFFVM7H9KaxgE4mnOKULzPCf6ZP5WFe0FKXyaTd
+	8fheHbAw8KkDpecHFMKorFf9s0TLWCZQUeU1b6EIYmWK7QTNt8CY4QJ8+/eLFAgmxcFWIS0aDWe
+	f152TYKovAyZfDixIdvijtaw51jdpp/Kpk3T8+K09R+04aKDVDMG2uDPNdAtvaDkOaHZMly4Wx6
+	OoIrnSTQWHtguAdk/1Tozogf3/EInl4LJILg2UbnBYITX1rluYk10JABySfyTioEcEnoJw0u90d
+	5w0+s675Jd4117oLz0HR/VbzkU3Gy+6B6sSeQJLd4v6/IR041Tg==
+X-Received: by 2002:a05:600c:5392:b0:445:1984:2479 with SMTP id 5b1f17b1804b1-45390bad330mr28966875e9.5.1751038634603;
+        Fri, 27 Jun 2025 08:37:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFpemDZ40uiONDtZjJW+nV/evMunhZba+Qc1nWoeuTAFiMYSJpUOGLDvVkR2VDxHht8RT+tzw==
+X-Received: by 2002:a05:600c:5392:b0:445:1984:2479 with SMTP id 5b1f17b1804b1-45390bad330mr28966365e9.5.1751038634131;
+        Fri, 27 Jun 2025 08:37:14 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f2d:5d00:f1a3:2f30:6575:9425? (p200300d82f2d5d00f1a32f3065759425.dip0.t-ipconnect.de. [2003:d8:2f2d:5d00:f1a3:2f30:6575:9425])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4538f50c926sm13605245e9.0.2025.06.27.08.37.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 27 Jun 2025 08:37:13 -0700 (PDT)
+Message-ID: <468f845d-f048-4ac8-94e7-e2eb97b613e5@redhat.com>
+Date: Fri, 27 Jun 2025 17:37:10 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,247 +104,167 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: aurabindo.pillai@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003443:EE_|SA0PR12MB4461:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa3d1a8a-36d3-4a3c-f4d1-08ddb58fe6c3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dlTK7w1IbyyQXFUIhEzViuseygrINLnH56IMgdxHEBSJMaXKIuk/JIEza7n9?=
- =?us-ascii?Q?QjEmYTKodgqcsNCfznBYoRAoNHJgtm+MPDDUleoQHefXnfQQgEropvvmmqpo?=
- =?us-ascii?Q?+2AjICmWOhthgL9HGNp6B2N3i5gerr6VBMMdmVV8jN29lvutAJLQDhLPcEdG?=
- =?us-ascii?Q?7yCeuLAzCmOy+EOc5OKa4n6ML8ml1mFeSyzl4BnSMmzANKFBfksIAEaydM9v?=
- =?us-ascii?Q?yv3o1EJA5fU3YahtkksxfvzKg66Uk780ZgkSZejkBDdC9hrRS11k/5fsuC9Z?=
- =?us-ascii?Q?mdM3g2Fk8zRJIpkgGOK3PL5fs+f4lwQ6tR4MG8OvgkTltZ3+6+V5piCRtO9B?=
- =?us-ascii?Q?Nu3fhK/vbd93GDeBTDv4w+sghLyKvnl5pxREdrnlm+k88MndZRn7z19JjGEv?=
- =?us-ascii?Q?als1fLyQ9qm3wKGgNCX0gEwvopi1arG8jXEFSzKxAfolV6YlZCltOZS4H5Hq?=
- =?us-ascii?Q?5QQIDDneEipGJjGsbWmq22cJm/h2Bd7olOb7Po86IMNKKjKFPDvBkcNVAVsh?=
- =?us-ascii?Q?OMO4QG37OapwUIgPNktQHi92vO+QAhT4mIdgv0yzDuVJi7SMoNDJ6pBgNu/r?=
- =?us-ascii?Q?nTAbER+CaC2nl/twc9ESVsZKvNwMJu0lg12QZLZ8mQMBfRrCJLXvyAORhpH7?=
- =?us-ascii?Q?DD0JscF7L2aCLfE7PQ1ttLQxX49NT75LQ28OVSaO/HfrDT0Crd3yb+bziGMr?=
- =?us-ascii?Q?5J78/YjQVq9xV4VlDAYdyhsTpNVMnlH9kJeCNl69Omo+Adh0TDDbRljIyFSW?=
- =?us-ascii?Q?RXSJdHd1LDrjVs/ts8fKpGc5DVlPZouSg7jDqn9K6fy5RxgQ2x2lg6J1Xv1Z?=
- =?us-ascii?Q?CmOdO08eXGlp361wJSVErrAPR9cKnV21JTYkgJxJKm/m9dB3dcQ7pLRnWpFi?=
- =?us-ascii?Q?bOBx4C+9GcPTDx+sigV/P2XzPpNKi8ldcqS/Ao/WXFEF4hAJsruQfFlw3oYZ?=
- =?us-ascii?Q?7pegGpOAUyuLhzxJORnGUn1gckySXStq/dvelp2619H21G6FRsWPsmMwDts4?=
- =?us-ascii?Q?MPyeXIN6seAzy7PQBoDe8yhbMtDjiHsq1H7rNDTOw+4fiH5i6v4ue7/9Z8KV?=
- =?us-ascii?Q?nK9QO4jVSA1tFVO8LyAWzWuugnX/O7I7bR8aJXASXCfLmrnIMe46QIbvyY2t?=
- =?us-ascii?Q?5tjhXAQB9JUO/AbMrwmE7NWHDN6X/a6frg122XscTawW6A/RFa/NyBsiPvsC?=
- =?us-ascii?Q?waSkRJauUU1JsAZutUNIluTGcE8gnW61CvJa/0H47cuxSCzAd8+MTpZOasfc?=
- =?us-ascii?Q?v62FvM7DjLur1ANbuhXCNTpTyHvvFiB0nxt2npVixlkf69oNuI5zY3JTqT/W?=
- =?us-ascii?Q?kpnoIWh+6Vj9ezi+ofPGLdZwSliAovQNlCKS1dTfKtCN1f++VyRlhdhjW3kh?=
- =?us-ascii?Q?oU9K+9QC9NuvZZizvANExSDU1WKa92PLlUTPeXyuOqUhRMBRA0JDzCmI9LcI?=
- =?us-ascii?Q?UzE4d9O9ENre6q6sDEpczxaAhtmGzSNvgosiZHHclWzPptGHk837vfufmL58?=
- =?us-ascii?Q?2dV5hlCy5lQsu6kBSPzPhJCPcg6jdhdnoJJ+dh4nI3PU67A4+0hyF3+cDg?=
- =?us-ascii?Q?=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Jun 2025 15:33:01.2146
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa3d1a8a-36d3-4a3c-f4d1-08ddb58fe6c3
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS2PEPF00003443.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4461
-X-Spam-Status: No, score=-3.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 07/29] mm/migrate: rename isolate_movable_page() to
+ isolate_movable_ops_page()
+To: Zi Yan <ziy@nvidia.com>
+Cc: Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Miaohe Lin
+ <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Oscar Salvador <osalvador@suse.de>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+References: <20250618174014.1168640-1-david@redhat.com>
+ <20250618174014.1168640-8-david@redhat.com>
+ <9F76592E-BB0E-4136-BDBA-195CC6FF3B03@nvidia.com>
+ <aFMH0TmoPylhkSjZ@casper.infradead.org>
+ <4D6D7321-CAEC-4D82-9354-4B9786C4D05E@nvidia.com>
+ <bef13481-5218-4732-831d-fe22d95184c1@redhat.com>
+ <8FE2EDF1-DF20-4DC4-A179-83E598508748@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <8FE2EDF1-DF20-4DC4-A179-83E598508748@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: KzCcCH5bpxnDB47hZJi8pdMsT1AWJHE48_ojbtagEns_1751038635
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-There are plenty of header includes like:
+On 23.06.25 17:42, Zi Yan wrote:
+> On 23 Jun 2025, at 11:33, David Hildenbrand wrote:
+> 
+>> On 18.06.25 20:48, Zi Yan wrote:
+>>> On 18 Jun 2025, at 14:39, Matthew Wilcox wrote:
+>>>
+>>>> On Wed, Jun 18, 2025 at 02:14:15PM -0400, Zi Yan wrote:
+>>>>> On 18 Jun 2025, at 13:39, David Hildenbrand wrote:
+>>>>>
+>>>>>> ... and start moving back to per-page things that will absolutely not be
+>>>>>> folio things in the future. Add documentation and a comment that the
+>>>>>> remaining folio stuff (lock, refcount) will have to be reworked as well.
+>>>>>>
+>>>>>> While at it, convert the VM_BUG_ON() into a WARN_ON_ONCE() and handle
+>>>>>> it gracefully (relevant with further changes), and convert a
+>>>>>> WARN_ON_ONCE() into a VM_WARN_ON_ONCE_PAGE().
+>>>>>
+>>>>> The reason is that there is no upstream code, which use movable_ops for
+>>>>> folios? Is there any fundamental reason preventing movable_ops from
+>>>>> being used on folios?
+>>>>
+>>>> folios either belong to a filesystem or they are anonymous memory, and
+>>>> so either the filesystem knows how to migrate them (through its a_ops)
+>>>> or the migration code knows how to handle anon folios directly.
+>>
+>> Right, migration of folios will be handled by migration core.
+>>
+>>>
+>>> for device private pages, to support migrating >0 order anon or fs folios
+>>> to device, how should we represent them for devices? if you think folio is
+>>> only for anon and fs.
+>>
+>> I assume they are proper folios, so yes. Just like they are handled today (-> folios)
+>>
+>> I was asking a related question at LSF/MM in Alistair's session: are we sure these things will be folios even before they are assigned to a filesystem? I recall the answer was "yes".
+>>
+>> So we don't (and will not) support movable_ops for folios.
+> 
+> Got it. (I was abusing it to help develop alloc_contig_range() at pageblock
+> granularity, since it was easy to write a driver to allocate a compound page
+> at a specific PFN and claim the page is movable, then do page online/offline
+> the range containing the PFNs. :) )
+> 
+> For the patch, Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-	#include <asm/kmap_size.h>
+BTW, thinking about it, I think we could handle compound pages quite 
+easily, we'd just have to lookup the head at some point -- but we 
+wouldn't be using folios for that.
 
-However, the file kmap_size.h is actually inside the folder asm-generic.
-Fix the includes in various header files so that the correct path is
-referenced in the source, so rename them to:
+BUT, I am note sure how compound pages without a memdesc would look like 
+in a memdesc world, and if it would actually be "compound pages" in the 
+traditional sense.
 
-	#include <asm-generic/kmap_size.h>
+So, I think there would be ways to handle that, once we get to it.
 
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
----
- arch/arc/include/asm/highmem.h       | 2 +-
- arch/arm/include/asm/fixmap.h        | 2 +-
- arch/csky/include/asm/fixmap.h       | 2 +-
- arch/csky/include/asm/highmem.h      | 2 +-
- arch/microblaze/include/asm/fixmap.h | 2 +-
- arch/mips/include/asm/fixmap.h       | 2 +-
- arch/mips/include/asm/highmem.h      | 2 +-
- arch/powerpc/include/asm/fixmap.h    | 2 +-
- arch/sparc/include/asm/vaddrs.h      | 2 +-
- arch/x86/include/asm/fixmap.h        | 2 +-
- arch/xtensa/include/asm/fixmap.h     | 2 +-
- include/linux/sched.h                | 2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
-
-diff --git a/arch/arc/include/asm/highmem.h b/arch/arc/include/asm/highmem.h
-index a6b8e2c352c44..3be6754ab304d 100644
---- a/arch/arc/include/asm/highmem.h
-+++ b/arch/arc/include/asm/highmem.h
-@@ -9,7 +9,7 @@
- #ifdef CONFIG_HIGHMEM
- 
- #include <uapi/asm/page.h>
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- 
- #define FIXMAP_SIZE		PGDIR_SIZE
- #define PKMAP_SIZE		PGDIR_SIZE
-diff --git a/arch/arm/include/asm/fixmap.h b/arch/arm/include/asm/fixmap.h
-index 707068f852c27..149669def2e92 100644
---- a/arch/arm/include/asm/fixmap.h
-+++ b/arch/arm/include/asm/fixmap.h
-@@ -7,7 +7,7 @@
- #define FIXADDR_TOP		(FIXADDR_END - PAGE_SIZE)
- 
- #include <linux/pgtable.h>
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- 
- enum fixed_addresses {
- 	FIX_EARLYCON_MEM_BASE,
-diff --git a/arch/csky/include/asm/fixmap.h b/arch/csky/include/asm/fixmap.h
-index 49a77cbbe2a9c..c68aabec22429 100644
---- a/arch/csky/include/asm/fixmap.h
-+++ b/arch/csky/include/asm/fixmap.h
-@@ -7,7 +7,7 @@
- #include <asm/memory.h>
- #ifdef CONFIG_HIGHMEM
- #include <linux/threads.h>
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- #endif
- 
- enum fixed_addresses {
-diff --git a/arch/csky/include/asm/highmem.h b/arch/csky/include/asm/highmem.h
-index 1ed810effb3d1..c3c4d51a93d0d 100644
---- a/arch/csky/include/asm/highmem.h
-+++ b/arch/csky/include/asm/highmem.h
-@@ -8,7 +8,7 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <linux/uaccess.h>
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- #include <asm/cache.h>
- 
- /* undef for production */
-diff --git a/arch/microblaze/include/asm/fixmap.h b/arch/microblaze/include/asm/fixmap.h
-index e6e9288bff761..77996f6605949 100644
---- a/arch/microblaze/include/asm/fixmap.h
-+++ b/arch/microblaze/include/asm/fixmap.h
-@@ -20,7 +20,7 @@
- #include <asm/page.h>
- #ifdef CONFIG_HIGHMEM
- #include <linux/threads.h>
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- #endif
- 
- #define FIXADDR_TOP	((unsigned long)(-PAGE_SIZE))
-diff --git a/arch/mips/include/asm/fixmap.h b/arch/mips/include/asm/fixmap.h
-index b037718d7e8b4..85e2854a2fc50 100644
---- a/arch/mips/include/asm/fixmap.h
-+++ b/arch/mips/include/asm/fixmap.h
-@@ -17,7 +17,7 @@
- #include <spaces.h>
- #ifdef CONFIG_HIGHMEM
- #include <linux/threads.h>
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- #endif
- 
- /*
-diff --git a/arch/mips/include/asm/highmem.h b/arch/mips/include/asm/highmem.h
-index 92a3802100178..80a6409d4a137 100644
---- a/arch/mips/include/asm/highmem.h
-+++ b/arch/mips/include/asm/highmem.h
-@@ -24,7 +24,7 @@
- #include <linux/interrupt.h>
- #include <linux/uaccess.h>
- #include <asm/cpu-features.h>
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- 
- /* declarations for highmem.c */
- extern unsigned long highstart_pfn, highend_pfn;
-diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/fixmap.h
-index f9068dd8dfce7..b0622370fbab1 100644
---- a/arch/powerpc/include/asm/fixmap.h
-+++ b/arch/powerpc/include/asm/fixmap.h
-@@ -20,7 +20,7 @@
- #include <asm/page.h>
- #ifdef CONFIG_HIGHMEM
- #include <linux/threads.h>
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- #endif
- 
- /*
-diff --git a/arch/sparc/include/asm/vaddrs.h b/arch/sparc/include/asm/vaddrs.h
-index 4fec0341e2a81..f21d51153d6ef 100644
---- a/arch/sparc/include/asm/vaddrs.h
-+++ b/arch/sparc/include/asm/vaddrs.h
-@@ -32,7 +32,7 @@
- #define SRMMU_NOCACHE_ALCRATIO	64	/* 256 pages per 64MB of system RAM */
- 
- #ifndef __ASSEMBLY__
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- 
- enum fixed_addresses {
- 	FIX_HOLE,
-diff --git a/arch/x86/include/asm/fixmap.h b/arch/x86/include/asm/fixmap.h
-index d0dcefb5cc59d..ed2dc040747e4 100644
---- a/arch/x86/include/asm/fixmap.h
-+++ b/arch/x86/include/asm/fixmap.h
-@@ -14,7 +14,7 @@
- #ifndef _ASM_X86_FIXMAP_H
- #define _ASM_X86_FIXMAP_H
- 
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- 
- /*
-  * Exposed to assembly code for setting up initial page tables. Cannot be
-diff --git a/arch/xtensa/include/asm/fixmap.h b/arch/xtensa/include/asm/fixmap.h
-index 1c65dc1d33971..af09aafb66687 100644
---- a/arch/xtensa/include/asm/fixmap.h
-+++ b/arch/xtensa/include/asm/fixmap.h
-@@ -16,7 +16,7 @@
- #ifdef CONFIG_HIGHMEM
- #include <linux/threads.h>
- #include <linux/pgtable.h>
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- 
- /* The map slots for temporary mappings via kmap_atomic/local(). */
- enum fixed_addresses {
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 9c15365a30c08..28507df174ee7 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -46,7 +46,7 @@
- #include <linux/rv.h>
- #include <linux/livepatch_sched.h>
- #include <linux/uidgid_types.h>
--#include <asm/kmap_size.h>
-+#include <asm-generic/kmap_size.h>
- 
- /* task_struct member predeclarations (sorted alphabetically): */
- struct audit_context;
 -- 
-2.50.0
+Cheers,
+
+David / dhildenb
 
 
