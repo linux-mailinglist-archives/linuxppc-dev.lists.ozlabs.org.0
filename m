@@ -1,49 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-9853-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9854-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB0FAEBDCF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jun 2025 18:50:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9427AAEBDFE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Jun 2025 19:02:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bTM4b3SnSz2yNG;
-	Sat, 28 Jun 2025 02:50:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bTML64pR5z2xgX;
+	Sat, 28 Jun 2025 03:02:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751043038;
-	cv=none; b=k5AekjPssbqgHPlwRiJ0V6uTDD4I1pSC/o3o35/+4OqEWLybHEm1sK1yIeeBrvjVQoahudB7gAOBHs+wBAtrKB5yQMgp2DoT/UtHfLGWXfp8Q1U/hjyegkyCzKo8rLSUW6hX2VjjN6+aCsZlCwvfcu5c0bjmGxrw+gFLMEfIi2P68QlUqL+Jq/xyctelaWIrb+XrKC3nQjP8s6J8eQ63ZyvLr0pw00a0W+Rn8Mw97ftRywGMF3g7fDVP2SMZdC8kejl8VN5+o3H49QqulJ+vBI/cBVKXPKwwKHFi0Z06tLxL6KYgSHriJqlKpmH6PYMSNf3l7xMu/2V9dBCwmxzZmw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751043741;
+	cv=none; b=QozgIvyeKPBCFVGedwwJF1YXHHCZbe7th14MRCE50KuB/8BDV+8VDkWUNUlAX49eNCZMy1DEZgOapROV6D9gr8TwEv610sggsqLDKs02upfp6zKng97Q8cmNdPSJOMh7pIT3RQoWkyz9zKzV56HNPZI4DWtf9NiYhP50o5reB+6SCTpnnY2CZABXMYiBrREEeMcMAUQzy2YNyDdbKKCJ30ODlsSMaNmd0kp0qcvhbvY8ZXAe7cxMFIf96sa+1zZUJibq8visJu+KceCpPxPt6WW08f3C4ZNtKWZyEST0M2OhZSjetJQFfoNITT3g1xlx/7zs3iBFGzJHfnJniicQGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751043038; c=relaxed/relaxed;
-	bh=p9okuRDbCVY7a5r1Bx2bw39EwNLe91oBC1vxj6ex3/w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ibXn54ea8xtPjQKHXeGusnAuvGW10XgO8R0oqzSeVY9FYS1guQ+QV7MBk/onqmN8JzSDMmzMSFbQC3Tjsr6dRQz3W+5NmS0V7Qxt0/nI8I9FZtE57AL/x8w8ISmZ2StsCLdj/tWqnoh/PTYGQTugwK8hQGNGzzp4ocGfEjrJp0GfO+xZ9okp9kz4HKA8fOjV6pArsrKK5hxjDdEKGviHdgY2OVyp/uEZDYCLKrUNISAQX2+h1LIJl+4EjXrCRb18fZ8ZkoIpbDYpXfbkW114Nd6n7fc4du2FtnHm4FJceTAxJccckCAa8C7hRJSv6EV4vByqayY+KEqDSgsyILk0nw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bTM4Y6Vlpz2xBb
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jun 2025 02:50:36 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bTLkY73wNz9vHw;
-	Fri, 27 Jun 2025 18:35:01 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id KDIXtx_acZHc; Fri, 27 Jun 2025 18:35:01 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bTLkY629lz9vHn;
-	Fri, 27 Jun 2025 18:35:01 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C430B8B7B7;
-	Fri, 27 Jun 2025 18:35:01 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id eaDpLvMbeWNr; Fri, 27 Jun 2025 18:35:01 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E96A18B7A7;
-	Fri, 27 Jun 2025 18:34:57 +0200 (CEST)
-Message-ID: <5c371310-525c-4432-88f2-7c62ed563c9b@csgroup.eu>
-Date: Fri, 27 Jun 2025 18:34:57 +0200
+	t=1751043741; c=relaxed/relaxed;
+	bh=9bOe/JCswOnU7WdYHYnhxKuhHMqv5b1veFJCuFWhDL8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SZtnzN2+6lNqnEAeQ5e2XDJba9tPIVhmunrbIfqrEArwWaJ/nATjoXVMarsVo0wOhTlmibmc9VA5MytMFWRSEKlBY/ixx0oTfQ+J4KMwasDSKdd3dvU8kQqaQ96VcWeNqejL2HPfv9rmUGrMsrHsG7Hhfok1RWAnUhQ8SRSga47ZqkMkL+eQzq0dNXemHLWeYRgPF79x1JVSrL/zgLZWjm/GTS8xrrlMoXiWFN8K+HKgpkWPQVfsFZOoya+Ga/2YgmxIJ+qNvth7I6i2yNcO1L4mpjru+BZQWLTHtfIbqblHDTLtn8zbQKeWUvjglkYLsT9qMKrQQxKdl93F3QPvNg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tvSgedwL; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tvSgedwL;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bTML510Y9z2xd6
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jun 2025 03:02:21 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 52EEE5C6AAF;
+	Fri, 27 Jun 2025 17:02:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EE2C4CEE3;
+	Fri, 27 Jun 2025 17:02:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751043738;
+	bh=tYzCzCM3VZZF7WSTA7gi5cm/krCk6YzEM9VmpLpknjY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tvSgedwLkGNl0rMmzrS3+y77Cdl6mvdnS/K1+GmEohvH0tjCCcyHtHpGONE48PbuE
+	 klXY+q4z8M1Sr6BMdy5xKLE+7d0yKqmUTsHjPtcmxh4vJJtZd+k3yW/hyDz3WRQrN7
+	 9wzjcEy3jjvepJtDybVtHKrX2dD+yzLWynuamatcAKtm3zUP2H46mTYvoCARqj66Pz
+	 6UkaSbTPpQWjV9eejBMr9V3CGDdGIUzKXNzrhwjf9KcP57JXzI9oiJZKCpv4d77ArY
+	 EG95TYcKm5S2WkFdvbxGcvfwd6s5pEsCWXf4aKpX4Whf3v+9N/L6udSPyAT+368SB1
+	 8wWh+cVapuQEw==
+Date: Fri, 27 Jun 2025 20:02:13 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
+	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Jason Gunthorpe <jgg@ziepe.ca>
+Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
+Message-ID: <20250627170213.GL17401@unreal>
+References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
+ <cover.1750854543.git.leon@kernel.org>
+ <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,261 +86,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] kmap: fix header include to reflect actual path
-To: Aurabindo Pillai <aurabindo.pillai@amd.com>,
- Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Guo Ren <guoren@kernel.org>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
- Max Filippov <jcmvbkbc@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>
-Cc: linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org
-References: <20250627153259.301946-1-aurabindo.pillai@amd.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250627153259.301946-1-aurabindo.pillai@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
+X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-Le 27/06/2025 à 17:32, Aurabindo Pillai a écrit :
-> [Vous ne recevez pas souvent de courriers de aurabindo.pillai@amd.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+On Fri, Jun 27, 2025 at 03:44:10PM +0200, Marek Szyprowski wrote:
+> On 25.06.2025 15:18, Leon Romanovsky wrote:
+> > This series refactors the DMA mapping to use physical addresses
+> > as the primary interface instead of page+offset parameters. This
+> > change aligns the DMA API with the underlying hardware reality where
+> > DMA operations work with physical addresses, not page structures.
+> >
+> > The series consists of 8 patches that progressively convert the DMA
+> > mapping infrastructure from page-based to physical address-based APIs:
+> >
+> > The series maintains backward compatibility by keeping the old
+> > page-based API as wrapper functions around the new physical
+> > address-based implementations.
 > 
-> There are plenty of header includes like:
-> 
->          #include <asm/kmap_size.h>
+> Thanks for this rework! I assume that the next step is to add map_phys 
+> callback also to the dma_map_ops and teach various dma-mapping providers 
+> to use it to avoid more phys-to-page-to-phys conversions.
 
-Yes and in reality that includes those,
-
-./arch/arm64/include/generated/asm/kmap_size.h
-./arch/riscv/include/generated/asm/kmap_size.h
-./arch/arc/include/generated/asm/kmap_size.h
-./arch/x86/include/generated/asm/kmap_size.h
-./arch/powerpc/include/generated/asm/kmap_size.h
-./arch/arm/include/generated/asm/kmap_size.h
-
-Which contain:
-
-$ cat arch/powerpc/include/generated/asm/kmap_size.h
-#include <asm-generic/kmap_size.h>
-
-So what is the problem really ?
-
-architectures are allowed to override the generic kmap_size.h, so you 
-should definitely not change include/linux/sched.h
-
-Or if you think architectures shouldn't be allowed to override it, then 
-explain it and remove the following line in include/asm-generic/Kbuild:
-
-	mandatory-y += kmap_size.h
-
-Also I wonder why you didn't change in mm/highmem.c:
-
-	#include <asm/kmap_size.h>
-
-If you change how it works you have to explain it.
-
-Christophe
+Probably Christoph will say yes, however I personally don't see any
+benefit in this. Maybe I wrong here, but all existing .map_page()
+implementation platforms don't support p2p anyway. They won't benefit
+from this such conversion.
 
 > 
-> However, the file kmap_size.h is actually inside the folder asm-generic.
-> Fix the includes in various header files so that the correct path is
-> referenced in the source, so rename them to:
-> 
->          #include <asm-generic/kmap_size.h>
-> 
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> ---
->   arch/arc/include/asm/highmem.h       | 2 +-
->   arch/arm/include/asm/fixmap.h        | 2 +-
->   arch/csky/include/asm/fixmap.h       | 2 +-
->   arch/csky/include/asm/highmem.h      | 2 +-
->   arch/microblaze/include/asm/fixmap.h | 2 +-
->   arch/mips/include/asm/fixmap.h       | 2 +-
->   arch/mips/include/asm/highmem.h      | 2 +-
->   arch/powerpc/include/asm/fixmap.h    | 2 +-
->   arch/sparc/include/asm/vaddrs.h      | 2 +-
->   arch/x86/include/asm/fixmap.h        | 2 +-
->   arch/xtensa/include/asm/fixmap.h     | 2 +-
->   include/linux/sched.h                | 2 +-
->   12 files changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/arch/arc/include/asm/highmem.h b/arch/arc/include/asm/highmem.h
-> index a6b8e2c352c44..3be6754ab304d 100644
-> --- a/arch/arc/include/asm/highmem.h
-> +++ b/arch/arc/include/asm/highmem.h
-> @@ -9,7 +9,7 @@
->   #ifdef CONFIG_HIGHMEM
-> 
->   #include <uapi/asm/page.h>
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
-> 
->   #define FIXMAP_SIZE            PGDIR_SIZE
->   #define PKMAP_SIZE             PGDIR_SIZE
-> diff --git a/arch/arm/include/asm/fixmap.h b/arch/arm/include/asm/fixmap.h
-> index 707068f852c27..149669def2e92 100644
-> --- a/arch/arm/include/asm/fixmap.h
-> +++ b/arch/arm/include/asm/fixmap.h
-> @@ -7,7 +7,7 @@
->   #define FIXADDR_TOP            (FIXADDR_END - PAGE_SIZE)
-> 
->   #include <linux/pgtable.h>
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
-> 
->   enum fixed_addresses {
->          FIX_EARLYCON_MEM_BASE,
-> diff --git a/arch/csky/include/asm/fixmap.h b/arch/csky/include/asm/fixmap.h
-> index 49a77cbbe2a9c..c68aabec22429 100644
-> --- a/arch/csky/include/asm/fixmap.h
-> +++ b/arch/csky/include/asm/fixmap.h
-> @@ -7,7 +7,7 @@
->   #include <asm/memory.h>
->   #ifdef CONFIG_HIGHMEM
->   #include <linux/threads.h>
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
->   #endif
-> 
->   enum fixed_addresses {
-> diff --git a/arch/csky/include/asm/highmem.h b/arch/csky/include/asm/highmem.h
-> index 1ed810effb3d1..c3c4d51a93d0d 100644
-> --- a/arch/csky/include/asm/highmem.h
-> +++ b/arch/csky/include/asm/highmem.h
-> @@ -8,7 +8,7 @@
->   #include <linux/init.h>
->   #include <linux/interrupt.h>
->   #include <linux/uaccess.h>
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
->   #include <asm/cache.h>
-> 
->   /* undef for production */
-> diff --git a/arch/microblaze/include/asm/fixmap.h b/arch/microblaze/include/asm/fixmap.h
-> index e6e9288bff761..77996f6605949 100644
-> --- a/arch/microblaze/include/asm/fixmap.h
-> +++ b/arch/microblaze/include/asm/fixmap.h
-> @@ -20,7 +20,7 @@
->   #include <asm/page.h>
->   #ifdef CONFIG_HIGHMEM
->   #include <linux/threads.h>
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
->   #endif
-> 
->   #define FIXADDR_TOP    ((unsigned long)(-PAGE_SIZE))
-> diff --git a/arch/mips/include/asm/fixmap.h b/arch/mips/include/asm/fixmap.h
-> index b037718d7e8b4..85e2854a2fc50 100644
-> --- a/arch/mips/include/asm/fixmap.h
-> +++ b/arch/mips/include/asm/fixmap.h
-> @@ -17,7 +17,7 @@
->   #include <spaces.h>
->   #ifdef CONFIG_HIGHMEM
->   #include <linux/threads.h>
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
->   #endif
-> 
->   /*
-> diff --git a/arch/mips/include/asm/highmem.h b/arch/mips/include/asm/highmem.h
-> index 92a3802100178..80a6409d4a137 100644
-> --- a/arch/mips/include/asm/highmem.h
-> +++ b/arch/mips/include/asm/highmem.h
-> @@ -24,7 +24,7 @@
->   #include <linux/interrupt.h>
->   #include <linux/uaccess.h>
->   #include <asm/cpu-features.h>
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
-> 
->   /* declarations for highmem.c */
->   extern unsigned long highstart_pfn, highend_pfn;
-> diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/fixmap.h
-> index f9068dd8dfce7..b0622370fbab1 100644
-> --- a/arch/powerpc/include/asm/fixmap.h
-> +++ b/arch/powerpc/include/asm/fixmap.h
-> @@ -20,7 +20,7 @@
->   #include <asm/page.h>
->   #ifdef CONFIG_HIGHMEM
->   #include <linux/threads.h>
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
->   #endif
-> 
->   /*
-> diff --git a/arch/sparc/include/asm/vaddrs.h b/arch/sparc/include/asm/vaddrs.h
-> index 4fec0341e2a81..f21d51153d6ef 100644
-> --- a/arch/sparc/include/asm/vaddrs.h
-> +++ b/arch/sparc/include/asm/vaddrs.h
-> @@ -32,7 +32,7 @@
->   #define SRMMU_NOCACHE_ALCRATIO 64      /* 256 pages per 64MB of system RAM */
-> 
->   #ifndef __ASSEMBLY__
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
-> 
->   enum fixed_addresses {
->          FIX_HOLE,
-> diff --git a/arch/x86/include/asm/fixmap.h b/arch/x86/include/asm/fixmap.h
-> index d0dcefb5cc59d..ed2dc040747e4 100644
-> --- a/arch/x86/include/asm/fixmap.h
-> +++ b/arch/x86/include/asm/fixmap.h
-> @@ -14,7 +14,7 @@
->   #ifndef _ASM_X86_FIXMAP_H
->   #define _ASM_X86_FIXMAP_H
-> 
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
-> 
->   /*
->    * Exposed to assembly code for setting up initial page tables. Cannot be
-> diff --git a/arch/xtensa/include/asm/fixmap.h b/arch/xtensa/include/asm/fixmap.h
-> index 1c65dc1d33971..af09aafb66687 100644
-> --- a/arch/xtensa/include/asm/fixmap.h
-> +++ b/arch/xtensa/include/asm/fixmap.h
-> @@ -16,7 +16,7 @@
->   #ifdef CONFIG_HIGHMEM
->   #include <linux/threads.h>
->   #include <linux/pgtable.h>
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
-> 
->   /* The map slots for temporary mappings via kmap_atomic/local(). */
->   enum fixed_addresses {
-> diff --git a/include/linux/sched.h b/include/linux/sched.h
-> index 9c15365a30c08..28507df174ee7 100644
-> --- a/include/linux/sched.h
-> +++ b/include/linux/sched.h
-> @@ -46,7 +46,7 @@
->   #include <linux/rv.h>
->   #include <linux/livepatch_sched.h>
->   #include <linux/uidgid_types.h>
-> -#include <asm/kmap_size.h>
-> +#include <asm-generic/kmap_size.h>
-> 
->   /* task_struct member predeclarations (sorted alphabetically): */
->   struct audit_context;
-> --
-> 2.50.0
-> 
+> I only wonder if this newly introduced dma_map_phys()/dma_unmap_phys() 
+> API is also suitable for the recently discussed PCI P2P DMA? While 
+> adding a new API maybe we should take this into account?
 
+First, immediate user (not related to p2p) is blk layer:
+https://lore.kernel.org/linux-nvme/bcdcb5eb-17ed-412f-bf5c-303079798fe2@nvidia.com/T/#m7e715697d4b2e3997622a3400243477c75cab406
+
++static bool blk_dma_map_direct(struct request *req, struct device *dma_dev,
++		struct blk_dma_iter *iter, struct phys_vec *vec)
++{
++	iter->addr = dma_map_page(dma_dev, phys_to_page(vec->paddr),
++			offset_in_page(vec->paddr), vec->len, rq_dma_dir(req));
++	if (dma_mapping_error(dma_dev, iter->addr)) {
++		iter->status = BLK_STS_RESOURCE;
++		return false;
++	}
++	iter->len = vec->len;
++	return true;
++}
+
+Block layer started to store phys addresses instead of struct pages and
+this phys_to_page() conversion in data-path will be avoided.
+
+> My main concern is the lack of the source phys addr passed to the dma_unmap_phys() 
+> function and I'm aware that this might complicate a bit code conversion 
+> from old dma_map/unmap_page() API.
+> 
+> Best regards
+> -- 
+> Marek Szyprowski, PhD
+> Samsung R&D Institute Poland
+> 
+> 
 
