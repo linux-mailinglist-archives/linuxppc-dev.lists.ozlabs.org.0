@@ -1,71 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-9861-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9862-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F50AECAE7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jun 2025 03:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5EBAECC5E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jun 2025 14:06:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bVC6h0wBVz2yhX;
-	Sun, 29 Jun 2025 11:55:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bVShD5xgmz2yfx;
+	Sun, 29 Jun 2025 22:06:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751162124;
-	cv=none; b=SI9H6F7+D86KhjKOKV0Mxnhf7coNLz4YdubjgxMAOskykZR6oPAoE1yYXV+gj34XG+RXF8Z1n3EOdm5RNOqLgpStJFxk/y/qksZUbTbO3ISBFJT30jKAohkxOyfKCCyr3aOKyePV9466y2EOa14DZ+XucH2LyDW7yuxQ2P1QPbZzKusqQJkasMrsDUV6IcpXJS+j0qmybwfOCKYGzVkLaobMlHaeOslP6+uO2ePVXPDFxWcQOgtOObPRhu1ls0phzyOLSOYSwiEivuS+OWl3xZxxjuPb5nb2jD3gsoumgxGzFphWI5qfFeo91iANrrdpyXY13KYVjp4j15rjpSdBLQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.118
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751196557;
+	cv=none; b=bJOwdxL9zd0eg+evdE1rT+QKHXtRgO9hetN3D/I8drG0cqQTxLvZ3l62Buj2VOjVL7D2yeKv8PZca8pFGltWGIzc1cp6pfsbYfL8aIBM8Tkf97w+WgWzuiMEgh844PsG77DoXbkKt21mAMQC00eZwhH0Dz/oajUw6nXlqSJT/HCiXDEUd/3Nd1KskOLaJIUIcfZhItecpzyqGwv5tuN6ta/XK20OKSuiXaL6CGude/hq7cV/6Pz9VhChnb0DwPtovwvpzT3MUdnt9uD7j9So2Z9Qvk6mf6hvWYwTOBL9YkGBRDg/wS2PsN3d78SDUPDAOn904zLSoOT0x5E2TDjcCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751162124; c=relaxed/relaxed;
-	bh=wdTPHBtu+qNmk5C2Bn0zJ90/8NEFjhlUIq+Nt2kOfDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FvcKqrussC2eJHlwMFtKGkzcI41kE4R7YCeF5OEMpCMO06Ny+CgtIjO5tHcEy5vT8w2JqqhbdsvL2hEGchOijeW1d+3ZwhjH3sadQ/LU0/myyxYDB/bl7g9jMAT4xhmp2VKgbg6jB2PKn08r0lvw7wNKp9z7qM6frQTU9J7g4s50wi/C9UocK35DY8noegyFJTkSMMX3kFZd94uyjmaY9k1pjFjFdMEcBSN8CHGzDCiXo4OWFUd99aZoCNr8KOdkd0a1PG0yET4R3tWUZ+jpsOWrqZXvgf7G2aSblvzuka0zTypF6H9smVa7k46R/oURZkht/2yq6lKGKMBwpGoq7Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (3072-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=1984.ea087b header.b=HpODEQVQ; dkim-atps=neutral; spf=pass (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+	t=1751196557; c=relaxed/relaxed;
+	bh=Td91IaRHPLMg0S4S34rjLSxSTe+KTe00bq2/ozJgwkc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ZzR7RIkYZKx7PH25wbpqYQ8wilWnwIMZf7Z9SndTp0955uSaqomw3EOL9HCr8c9ozNiUD8+mF+8A+VQLHnCdPW2fwktoWUGw+LzlXu9JurIsHruQhrB/1FoCaKX5J8ujuhuskT67ZTk2VpCVEZTvkpdkLSegzxqn/lk4iV0JZmwM3jq1oHtu22iUjMaUWUfFOsiALWKv9jeGfJ4PwL1O9Uz1qCNP+PfQ216yYgDLAKpEvYEI6hV9W7CnETC2cEjoZ7aN7bAIBD39haSmuR9DZWMstP8j5JPBSe7GKwWnAGyXM2tY98tq+gBJUY//bDGfDHcdQHm0aGw3vqt17JnUWw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Hz1LZy6c; dkim-atps=neutral; spf=pass (client-ip=115.124.30.118; helo=out30-118.freemail.mail.aliyun.com; envelope-from=ying.huang@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (3072-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=1984.ea087b header.b=HpODEQVQ;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Hz1LZy6c;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
-X-Greylist: delayed 443 seconds by postgrey-1.37 at boromir; Sun, 29 Jun 2025 11:55:20 AEST
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.118; helo=out30-118.freemail.mail.aliyun.com; envelope-from=ying.huang@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bVC6c2ddJz2xHT
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jun 2025 11:55:19 +1000 (AEST)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id C0344240103
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jun 2025 03:47:49 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net;
-	s=1984.ea087b; t=1751161669;
-	bh=wdTPHBtu+qNmk5C2Bn0zJ90/8NEFjhlUIq+Nt2kOfDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=HpODEQVQ0LmdwqtslxkJoEOlGy0tEDdruH9DTSixJXJHAD7pJJe2j2BA7g/k7gBdg
-	 5sS15ZPnQW/bE8w6G6iejwMKHlgE6VIvgZyNnWvq3pH9ysgJubR9vjyJse8UbnEB6D
-	 IZRyhtc7IaH/LOhLUbwKvXEHYEKpdsyP7Q2YMglImdJLpEeI3O/YonQ9V24Z+qc4DN
-	 lr3VNmHEZvQDhJPvjkunnP1h7FaCkaEOHza3o60faH6UKMqhynBhKTPqyisyb/gysc
-	 tQxdyCbTyctdfb5cyvqFt9g8DB18Ek8+AENS6Rzn+VcjX5FuVft+BQuyD4hgijkTLo
-	 qjHp+wmocx9NR1/yHtyR1CD/tkhfEBZNalj+Mekaw/6r+fftnn5NVUUImbworlC51O
-	 XNwmEnrFFfsf9L0Yn++JBsSEKLU7x+iBqHr0ydERCTfrSOumg5nxVkTv3SdnI3GzTu
-	 eTziKcIP6MyTK2gkLOyvr7C9bP4oqhsmSY8K/OFrT9SM8v7u2rN
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4bVBxv5VVNz6tsf;
-	Sun, 29 Jun 2025 03:47:47 +0200 (CEST)
-Date: Sun, 29 Jun 2025 01:47:47 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Rob Herring <robh@kernel.org>
-Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Crystal Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] dt-bindings: interrupt-controller: Convert
- fsl,mpic-msi to YAML
-Message-ID: <aGCbQ100CFJz6BjK@probook>
-References: <20250611-msipic-yaml-v2-1-f2e174c48802@posteo.net>
- <20250625201232.GA2128052-robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bVRrq4vdxz2xS9
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jun 2025 21:29:13 +1000 (AEST)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1751196549; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=Td91IaRHPLMg0S4S34rjLSxSTe+KTe00bq2/ozJgwkc=;
+	b=Hz1LZy6cpy+H/wOTzfnlqkK8lssQzmn/0qTy1P7WmiV3KlwlMKbecPTJO8dyT12Irra+c5wVQIU6mV/MxRmYG1HYuJ+a1nmQuLH/MnhVO7sWE23LbsG/WtLxPFhWpwFsGvRITpRueFdcMg/mFOxpCmRNArqZfSdRE+Q+8K4M+PI=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WfwyPTY_1751196530 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sun, 29 Jun 2025 19:29:05 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>
+Cc: Matthew Wilcox <willy@infradead.org>,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org,  linux-doc@vger.kernel.org,
+  linuxppc-dev@lists.ozlabs.org,  virtualization@lists.linux.dev,
+  linux-fsdevel@vger.kernel.org,  Andrew Morton
+ <akpm@linux-foundation.org>,  Jonathan Corbet <corbet@lwn.net>,  Madhavan
+ Srinivasan <maddy@linux.ibm.com>,  Michael Ellerman <mpe@ellerman.id.au>,
+  Nicholas Piggin <npiggin@gmail.com>,  Christophe Leroy
+ <christophe.leroy@csgroup.eu>,  Jerrin Shaji George
+ <jerrin.shaji-george@broadcom.com>,  Arnd Bergmann <arnd@arndb.de>,  Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,  "Michael S. Tsirkin"
+ <mst@redhat.com>,  Jason Wang <jasowang@redhat.com>,  Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>,  Eugenio =?utf-8?Q?P=C3=A9rez?=
+ <eperezma@redhat.com>,
+  Alexander Viro <viro@zeniv.linux.org.uk>,  Christian Brauner
+ <brauner@kernel.org>,  Jan Kara <jack@suse.cz>,  Matthew Brost
+ <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,  Rakie
+ Kim <rakie.kim@sk.com>,  Byungchul Park <byungchul@sk.com>,  Gregory Price
+ <gourry@gourry.net>,  Alistair Popple <apopple@nvidia.com>,  Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>,  "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,  Mike
+ Rapoport <rppt@kernel.org>,  Suren Baghdasaryan <surenb@google.com>,
+  Michal Hocko <mhocko@suse.com>,  Minchan Kim <minchan@kernel.org>,
+  Sergey Senozhatsky <senozhatsky@chromium.org>,  Brendan Jackman
+ <jackmanb@google.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Jason
+ Gunthorpe <jgg@ziepe.ca>,  John Hubbard <jhubbard@nvidia.com>,  Peter Xu
+ <peterx@redhat.com>,  Xu Xin <xu.xin16@zte.com.cn>,  Chengming Zhou
+ <chengming.zhou@linux.dev>,  Miaohe Lin <linmiaohe@huawei.com>,  Naoya
+ Horiguchi <nao.horiguchi@gmail.com>,  Oscar Salvador <osalvador@suse.de>,
+  Rik van Riel <riel@surriel.com>,  Harry Yoo <harry.yoo@oracle.com>,  Qi
+ Zheng <zhengqi.arch@bytedance.com>,  Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH RFC 07/29] mm/migrate: rename isolate_movable_page() to
+ isolate_movable_ops_page()
+In-Reply-To: <bef13481-5218-4732-831d-fe22d95184c1@redhat.com> (David
+	Hildenbrand's message of "Mon, 23 Jun 2025 17:33:15 +0200")
+References: <20250618174014.1168640-1-david@redhat.com>
+	<20250618174014.1168640-8-david@redhat.com>
+	<9F76592E-BB0E-4136-BDBA-195CC6FF3B03@nvidia.com>
+	<aFMH0TmoPylhkSjZ@casper.infradead.org>
+	<4D6D7321-CAEC-4D82-9354-4B9786C4D05E@nvidia.com>
+	<bef13481-5218-4732-831d-fe22d95184c1@redhat.com>
+Date: Sun, 29 Jun 2025 19:28:50 +0800
+Message-ID: <87h5zyrdl9.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,69 +94,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250625201232.GA2128052-robh@kernel.org>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=ascii
+X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Jun 25, 2025 at 03:12:32PM -0500, Rob Herring wrote:
-> On Wed, Jun 11, 2025 at 11:42:09AM +0200, J. Neuschäfer wrote:
-> > As part of a larger effort to bring various PowerPC-related bindings
-> > into the YAML world, this patch converts msi-pic.txt to YAML and moves
-> > it into the bindings/interrupt-controller/ directory. The conversion may
-> > necessarily be a bit hard to read because the binding is quite verbose.
-> > 
-> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> > ---
-[...]
-> > +  interrupts:
-> > +    minItems: 1
-> > +    maxItems: 16
-[...]
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +
-> > +anyOf:
-> 
-> allOf
+David Hildenbrand <david@redhat.com> writes:
 
-AFAIUI, at the current moment it doesn't make a difference because there
-is only one item under the anyOf/allOf, but for robustness allOf looks
-better.
+> On 18.06.25 20:48, Zi Yan wrote:
+>> On 18 Jun 2025, at 14:39, Matthew Wilcox wrote:
+>> 
+>>> On Wed, Jun 18, 2025 at 02:14:15PM -0400, Zi Yan wrote:
+>>>> On 18 Jun 2025, at 13:39, David Hildenbrand wrote:
+>>>>
+>>>>> ... and start moving back to per-page things that will absolutely not be
+>>>>> folio things in the future. Add documentation and a comment that the
+>>>>> remaining folio stuff (lock, refcount) will have to be reworked as well.
+>>>>>
+>>>>> While at it, convert the VM_BUG_ON() into a WARN_ON_ONCE() and handle
+>>>>> it gracefully (relevant with further changes), and convert a
+>>>>> WARN_ON_ONCE() into a VM_WARN_ON_ONCE_PAGE().
+>>>>
+>>>> The reason is that there is no upstream code, which use movable_ops for
+>>>> folios? Is there any fundamental reason preventing movable_ops from
+>>>> being used on folios?
+>>>
+>>> folios either belong to a filesystem or they are anonymous memory, and
+>>> so either the filesystem knows how to migrate them (through its a_ops)
+>>> or the migration code knows how to handle anon folios directly.
+>
+> Right, migration of folios will be handled by migration core.
+>
+>> for device private pages, to support migrating >0 order anon or fs
+>> folios
+>> to device, how should we represent them for devices? if you think folio is
+>> only for anon and fs.
+>
+> I assume they are proper folios, so yes. Just like they are handled
+> today (-> folios)
+>
+> I was asking a related question at LSF/MM in Alistair's session: are
+> we sure these things will be folios even before they are assigned to a
+> filesystem? I recall the answer was "yes".
+>
+> So we don't (and will not) support movable_ops for folios.
 
-> 
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            enum:
-> > +              - fsl,mpic-msi-v4.3
-> > +              - fsl,vmpic-msi-v4.3
-> > +    then:
-> > +      properties:
-> > +        interrupts:
-> > +          maxItems: 16
-> 
-> Don't you mean 'minItems: 16'? Otherwise, this schema has no effect.
+Is it possible to use some device specific callbacks (DMA?) to copy
+from/to the device private folios (or pages) to/from the normal
+file/anon folios in the future?
 
-Indeed.
-
-> 
-> I can fix these up when applying.
-
-Please do. Thank you!
-
-J. Neuschäfer
-
-> 
-> > +          description:
-> > +            Version 4.3 implies that there are 16 shared interrupts, and they
-> > +            are configured through MSIIR1.
+---
+Best Regards,
+Huang, Ying
 
