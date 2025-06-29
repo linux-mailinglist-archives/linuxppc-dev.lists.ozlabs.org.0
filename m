@@ -1,70 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-9860-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9861-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC65AAEC762
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Jun 2025 15:25:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F50AECAE7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jun 2025 03:55:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bTtTj745Sz30DL;
-	Sat, 28 Jun 2025 23:25:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bVC6h0wBVz2yhX;
+	Sun, 29 Jun 2025 11:55:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::129"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751117145;
-	cv=none; b=Btsn4a7y0GPpPym6QI69qaZGa+zlG3ptKQdoLZbIG0SsFvSnUrKrPwxqYrplixaYd0+1hiZKRPMD1T/t3wezhxD3Od1DfxKCwz/N//s0h0qakBcPNNHocUXnHnedbv2u6q3WJMlZl39MXdWpvKHTshFevSWXOTYDsdpHx7vvwnw/69WDKGOGSTYxQWrOZ+pAmtcf07iJzU4AZbtIbxF0rcMiRSojv60tmO9O9wCMZjL1e4rGmM1VAKWSwtJ5rKbK7aKNRb8WoHnEwS8FcRfSyKL1aZMESPkbYtXRQGNRjIYpNxaKexCu8aYypKbY8vDFHgPagcBdfp6XTOV3YW+IZg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.66
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751162124;
+	cv=none; b=SI9H6F7+D86KhjKOKV0Mxnhf7coNLz4YdubjgxMAOskykZR6oPAoE1yYXV+gj34XG+RXF8Z1n3EOdm5RNOqLgpStJFxk/y/qksZUbTbO3ISBFJT30jKAohkxOyfKCCyr3aOKyePV9466y2EOa14DZ+XucH2LyDW7yuxQ2P1QPbZzKusqQJkasMrsDUV6IcpXJS+j0qmybwfOCKYGzVkLaobMlHaeOslP6+uO2ePVXPDFxWcQOgtOObPRhu1ls0phzyOLSOYSwiEivuS+OWl3xZxxjuPb5nb2jD3gsoumgxGzFphWI5qfFeo91iANrrdpyXY13KYVjp4j15rjpSdBLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751117145; c=relaxed/relaxed;
-	bh=L9hXJHuBvyYPVmVbLpoMFR4H07JOmA06RF+Wl4Z/7RE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Czo8MqtdkJeR0Rs9TrkX1aPl/JW98DiSNISgnK615GDjdOiWEJIO2X6kqb2kwteT+i1rc6GCj4W2mK3XW5p9062El5XgqfSz8lnv1d9gmnV6Iuf/ueg7CcGLZiNwQpj7Y6jQYRF00OslgRo92Q/JSmbI8ExOoFFss2Aty8znmxzdCp+YaB8fLS+z2TecnhpjcyhZQH3mflaE9HhrxvHz0Hy1Dsfp0O8PH+Wt8zZoNq9DeqUqBLyxu0AqPenZ35J56Q6pnVMYvUXHgqrDs+83chs7SRu2+B2jFjEUNAkTil9zbFphChaBV4S6Hff1RH0V9uC319sYJN8kxWbJigzwVg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EwS/gb+y; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1751162124; c=relaxed/relaxed;
+	bh=wdTPHBtu+qNmk5C2Bn0zJ90/8NEFjhlUIq+Nt2kOfDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FvcKqrussC2eJHlwMFtKGkzcI41kE4R7YCeF5OEMpCMO06Ny+CgtIjO5tHcEy5vT8w2JqqhbdsvL2hEGchOijeW1d+3ZwhjH3sadQ/LU0/myyxYDB/bl7g9jMAT4xhmp2VKgbg6jB2PKn08r0lvw7wNKp9z7qM6frQTU9J7g4s50wi/C9UocK35DY8noegyFJTkSMMX3kFZd94uyjmaY9k1pjFjFdMEcBSN8CHGzDCiXo4OWFUd99aZoCNr8KOdkd0a1PG0yET4R3tWUZ+jpsOWrqZXvgf7G2aSblvzuka0zTypF6H9smVa7k46R/oURZkht/2yq6lKGKMBwpGoq7Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (3072-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=1984.ea087b header.b=HpODEQVQ; dkim-atps=neutral; spf=pass (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EwS/gb+y;
+	dkim=pass (3072-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=1984.ea087b header.b=HpODEQVQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 443 seconds by postgrey-1.37 at boromir; Sun, 29 Jun 2025 11:55:20 AEST
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bTtTg5JC4z2xRs
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jun 2025 23:25:42 +1000 (AEST)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-553ba7f11cbso3474216e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Jun 2025 06:25:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751117135; x=1751721935; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L9hXJHuBvyYPVmVbLpoMFR4H07JOmA06RF+Wl4Z/7RE=;
-        b=EwS/gb+yS/bLssHclwDuA2c4O9Ow0wrJy6PcYoCuJkG2NLVAVgGlHqb3Cbc6gjsEk/
-         cwm0LOzOAk7dOHd1ucOgR37vY6A424uDZDvg5HXZ1cOw3TZcmuQXSeGgeJLclLF0pjc6
-         aJDm9c+QF9Dd6MExRNje5EMNz9mm1f6xa8FwiBSekrsuEQgEZasYd8aqC1lkngFl/GIt
-         NHy51J4eMfQpgKZYhj5qeqA8Py35YZiT+iAgBDYuG1QlQFQksstEQrdSEZVYEv+Vks67
-         t9fasIOTIdcDufYwR+I+yhuqq4+NhYy+AgRStREWfbEdNfE1vCffFsuRZQX50xP4rwCH
-         eJSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751117135; x=1751721935;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L9hXJHuBvyYPVmVbLpoMFR4H07JOmA06RF+Wl4Z/7RE=;
-        b=MMpAhbt9ToE/FTlO9DlbwtyOEwK6eldDnEuvbcD2he8IF2DAtd2ZuLY1H2gZRqXqZA
-         eFsgVRWBmFaTNZNUmEXAswp4t+IAHMDOMXFmQTLxESX/QcbG7p8jioaLtHnvfkXPZO0r
-         oPq8VlyDtqBkJWoEIcr4zDWH8SR9TWozUzmHFyqDpSEQaWgh1VFMtTw0hJoDCxpmlA1G
-         aTvgauxSfTA2UoHGajjUoiGG6ccazxSy4OFOPtWOZFwitueSRLwP72O4Zu30ECPTurPy
-         XZ1DU7LwStBJblLyGypXAf2QIluACFJVgwIL2uRqfSYJrAyHXy4A0aanJUORA56VwUh+
-         vGrA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7ENxg44kw0CNt9HiI1X8QIs1E+eIDtpjD8rI3TKiX6rNOV+MPhWOOAPwbEqT07xsp9I39h3PloL7rIq4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwUvvWNQD+jyQ1prQEDXpq50vYMW01kzYAKSVjce9LfNpja45G2
-	YA+QKXZvFXRMWxZSBxMtv4TPTBNrUP227SkP9Ur/EgPqAEL7lYcaYdQK+uhM+B3384B00vJKztb
-	P8sGPEK9udoKAY8ZUh3JgtqbkT+u5Rqk=
-X-Gm-Gg: ASbGncsLFhbf+waAoLXTKaf8Bo+/Rb3UMT6JEN1PzKr3YJ8cXu0ubSBQ+FhaH/CRMFg
-	Ds5oI/po7/3f2VLOuEfHPGkJTlXfRrQat7D9XI4PNW2erQZXpvT9Dr72Kr2/EcOLN1bdY+Bcghy
-	afm0snCsefSfuT7eZamRrFkV7yTHRwuU2fl5ewpo4rGM1ILnQ=
-X-Google-Smtp-Source: AGHT+IGcgqdYgD7HxbDyPqcYV3Heu4fL1zBBGlE2pOeLSvkf48pz8fpRePfbVo/DnCDwvNyc5box4+f/veOvw14SJEw=
-X-Received: by 2002:a05:6512:401e:b0:553:d1b0:1f1f with SMTP id
- 2adb3069b0e04-5550b817bf9mr2031982e87.21.1751117135042; Sat, 28 Jun 2025
- 06:25:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bVC6c2ddJz2xHT
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jun 2025 11:55:19 +1000 (AEST)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id C0344240103
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jun 2025 03:47:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net;
+	s=1984.ea087b; t=1751161669;
+	bh=wdTPHBtu+qNmk5C2Bn0zJ90/8NEFjhlUIq+Nt2kOfDE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=HpODEQVQ0LmdwqtslxkJoEOlGy0tEDdruH9DTSixJXJHAD7pJJe2j2BA7g/k7gBdg
+	 5sS15ZPnQW/bE8w6G6iejwMKHlgE6VIvgZyNnWvq3pH9ysgJubR9vjyJse8UbnEB6D
+	 IZRyhtc7IaH/LOhLUbwKvXEHYEKpdsyP7Q2YMglImdJLpEeI3O/YonQ9V24Z+qc4DN
+	 lr3VNmHEZvQDhJPvjkunnP1h7FaCkaEOHza3o60faH6UKMqhynBhKTPqyisyb/gysc
+	 tQxdyCbTyctdfb5cyvqFt9g8DB18Ek8+AENS6Rzn+VcjX5FuVft+BQuyD4hgijkTLo
+	 qjHp+wmocx9NR1/yHtyR1CD/tkhfEBZNalj+Mekaw/6r+fftnn5NVUUImbworlC51O
+	 XNwmEnrFFfsf9L0Yn++JBsSEKLU7x+iBqHr0ydERCTfrSOumg5nxVkTv3SdnI3GzTu
+	 eTziKcIP6MyTK2gkLOyvr7C9bP4oqhsmSY8K/OFrT9SM8v7u2rN
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4bVBxv5VVNz6tsf;
+	Sun, 29 Jun 2025 03:47:47 +0200 (CEST)
+Date: Sun, 29 Jun 2025 01:47:47 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Rob Herring <robh@kernel.org>
+Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Crystal Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] dt-bindings: interrupt-controller: Convert
+ fsl,mpic-msi to YAML
+Message-ID: <aGCbQ100CFJz6BjK@probook>
+References: <20250611-msipic-yaml-v2-1-f2e174c48802@posteo.net>
+ <20250625201232.GA2128052-robh@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,111 +79,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250626153147.145312-1-snovitoll@gmail.com> <CA+fCnZfAtKWx=+to=XQBREhou=Snb0Yms4D8GNGaxE+BQUYm4A@mail.gmail.com>
-In-Reply-To: <CA+fCnZfAtKWx=+to=XQBREhou=Snb0Yms4D8GNGaxE+BQUYm4A@mail.gmail.com>
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Date: Sat, 28 Jun 2025 18:25:17 +0500
-X-Gm-Features: Ac12FXz_1yZEfUGAygYOxkSS_g1GpWf3Y2t1PdPyYRlgb0h3dTvUyL8mVDVK8Qk
-Message-ID: <CACzwLxgsVkn98VDPpmm7pKcbvu87UBwPgYJmLfKixu4-x+yjSA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] kasan: unify kasan_arch_is_ready with kasan_enabled
-To: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com, 
-	vincenzo.frascino@arm.com, linux@armlinux.org.uk, catalin.marinas@arm.com, 
-	will@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name, 
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	christophe.leroy@csgroup.eu, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com, 
-	richard@nod.at, anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, 
-	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
-	hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
-	akpm@linux-foundation.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
-	morbo@google.com, justinstitt@google.com, arnd@arndb.de, rppt@kernel.org, 
-	geert@linux-m68k.org, mcgrof@kernel.org, guoweikang.kernel@gmail.com, 
-	tiwei.btw@antgroup.com, kevin.brodsky@arm.com, benjamin.berg@intel.com, 
-	kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250625201232.GA2128052-robh@kernel.org>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, Jun 28, 2025 at 3:57=E2=80=AFPM Andrey Konovalov <andreyknvl@gmail.=
-com> wrote:
->
-> On Thu, Jun 26, 2025 at 5:32=E2=80=AFPM Sabyrzhan Tasbolatov
-> <snovitoll@gmail.com> wrote:
-> >
-> > This patch series unifies the kasan_arch_is_ready() and kasan_enabled()
-> > interfaces by extending the existing kasan_enabled() infrastructure to
-> > work consistently across all KASAN modes (Generic, SW_TAGS, HW_TAGS).
-> >
-> > Currently, kasan_enabled() only works for HW_TAGS mode using a static k=
-ey,
-> > while other modes either return IS_ENABLED(CONFIG_KASAN) (compile-time
-> > constant) or rely on architecture-specific kasan_arch_is_ready()
-> > implementations with custom static keys and global variables.
-> >
-> > This leads to:
-> > - Code duplication across architectures
-> > - Inconsistent runtime behavior between KASAN modes
-> > - Architecture-specific readiness tracking
-> >
-> > After this series:
-> > - All KASAN modes use the same kasan_flag_enabled static key
-> > - Consistent runtime enable/disable behavior across modes
-> > - Simplified architecture code with unified kasan_init_generic() calls
-> > - Elimination of arch specific kasan_arch_is_ready() implementations
-> > - Unified vmalloc integration using kasan_enabled() checks
-> >
-> > This addresses the bugzilla issue [1] about making
-> > kasan_flag_enabled and kasan_enabled() work for Generic mode,
-> > and extends it to provide true unification across all modes.
-> >
-> > [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D217049
->
-> Hi Sabyrzhan,
->
-> Thank you for working on this!
->
-> One aspect that is missing from the patches is moving the
-> kasan_arch_is_ready() calls into the include/linux/kasan.h (this is
-> not explicitly mentioned in the issue, but this is what the "adding
-> __wrappers" part is about).
->
-> Another thing that needs careful consideration is whether it's
-> possible to combine kasan_arch_is_ready() and kasan_enabled() into the
-> same check logically at all. There's one issue mentioned in [1]:
+On Wed, Jun 25, 2025 at 03:12:32PM -0500, Rob Herring wrote:
+> On Wed, Jun 11, 2025 at 11:42:09AM +0200, J. Neuschäfer wrote:
+> > As part of a larger effort to bring various PowerPC-related bindings
+> > into the YAML world, this patch converts msi-pic.txt to YAML and moves
+> > it into the bindings/interrupt-controller/ directory. The conversion may
+> > necessarily be a bit hard to read because the binding is quite verbose.
+> > 
+> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> > ---
+[...]
+> > +  interrupts:
+> > +    minItems: 1
+> > +    maxItems: 16
+[...]
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - interrupts
+> > +
+> > +anyOf:
+> 
+> allOf
 
-Hello,
-I've removed kasan_arch_is_ready() at all in this series:
-[PATCH v2 11/11] kasan: replace kasan_arch_is_ready with kasan_enabled
+AFAIUI, at the current moment it doesn't make a difference because there
+is only one item under the anyOf/allOf, but for robustness allOf looks
+better.
 
-Is it not what's expected by unification?
+> 
+> > +  - if:
+> > +      properties:
+> > +        compatible:
+> > +          contains:
+> > +            enum:
+> > +              - fsl,mpic-msi-v4.3
+> > +              - fsl,vmpic-msi-v4.3
+> > +    then:
+> > +      properties:
+> > +        interrupts:
+> > +          maxItems: 16
+> 
+> Don't you mean 'minItems: 16'? Otherwise, this schema has no effect.
 
->
-> > In kasan_cache_create() we unconditionally allocate a metadata buffer,
-> > but the kasan_init_slab_obj() call to initialise it is guarded by
-> > kasan_enabled(). But later parts of the code only check the presence of
-> > the buffer before using it, so bad things happen if kasan_enabled()
-> > later turns on (I was getting some error about invalid lock state).
->
-> And there might be other callbacks that should be executed even before
-> kasan_init_...() completes. But then for the HW_TAGS mode, if
-> kasan_enabled() is off, then we don't want to execute any callbacks.
->
-> So maybe we do actually need a separate static key for
-> kasan_arch_is_ready(). But even if so, it still makes sense to move
-> kasan_arch_is_ready() into the __wrappers for the affected callbacks.
->
-> Thanks!
->
-> [1] https://lore.kernel.org/linux-mm/CA+fCnZf7JqTH46C7oG2Wk9NnLU7hgiVDEK0=
-EA8RAtyr-KgkHdg@mail.gmail.com/
+Indeed.
+
+> 
+> I can fix these up when applying.
+
+Please do. Thank you!
+
+J. Neuschäfer
+
+> 
+> > +          description:
+> > +            Version 4.3 implies that there are 16 shared interrupts, and they
+> > +            are configured through MSIIR1.
 
