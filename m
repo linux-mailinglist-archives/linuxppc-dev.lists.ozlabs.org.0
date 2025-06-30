@@ -1,64 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-9878-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9879-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3F4AEDB54
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jun 2025 13:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6055AEDB56
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jun 2025 13:40:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bW4383h8nz2y06;
-	Mon, 30 Jun 2025 21:40:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bW43D5m4dz30HB;
+	Mon, 30 Jun 2025 21:40:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751283620;
-	cv=none; b=EqgGjQBY9z1+5Fv1ktJzxuVyK6Fbn7/hiIhRUTmWHz8b/ZYPfNirwRg8edQJ/Si7Hy34e5uNJDGdPbHw/IgD/nBqHMswqPM7z4Cwcv2M3wjHFalVV9SMZgpIwaJCudqllLlsy40bVZFu71sLbScD9pT2wDNsZ4lKv/OwIhLGGHxCssvvMt5v/VhqREVTiOErwfEtx6Tam0pGYUkCSY8S303X1HgDxybbjtNdR3Atzfxeo3eGIV+yjYGkk1Pf5LbdbNOsPfn0S8zHDKDF2gPMhBuCU52ZoYlyh+sljruI8+pXk/CcXZukPFPzOnxBitlEkmQfAgL9TFa4ussWiS0hPQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751283624;
+	cv=none; b=QUmdHZxxEVRjCYhcEO0sCwRTjTDHVdlFz0cZ2yeHF20CRCysf217kreKyOkHXAo3MHXdXBNSUe4wjYIM8yxHvTL7Fn44pEaicP/JOhHHVXcd7eUP0ir/t3o2Z+XRoT5fv+gKbJL6Jj8579TURby6E3botIbR6GDPu5of8uSPF7pKbwEbr3A8FrCa3K17e3hhNzthHUP8JnfHY6pJNPD41OQqtYZ4qD+KGMkE1MaYTfWAxyE8VH56mO+ixZrBW0u3a83esoB7CayhYGU66YqLKDhlj/p6yt8zPUxBGx0m57GA4cm0ww7Yggu/cEnSenOnWzlwHVvPzzbTaPBOhP8uzg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751283620; c=relaxed/relaxed;
-	bh=Xnhe16BodUgjYRAdOO2hMGMLW+d9zODEJm05ZXt6bIs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=lokBqk/0E6c83xAO9ozNPszyGpAGvfPGhWwNZy9DEIibCbiZs42Poj0rrGsdn57t5SlOGZ1Lev9wpoETEStYh83kMK8Ldo/c0yqrmmExPTI373tjBo+iGjYOug8qn6CfLBXVUpo82nuF4Rr83JEe796XXRYEoZDvkKW2iHAac7QyVzH8TIMlxJeojrO0lIKsxlHxK2AMCkUmB1+DVQ76xUiyfgHSTFCPidgy1s+aSDj4PqccaP2S5wTQE0XV96i7q7qlW5rWGVXP1PiSkAUWV5tAr3s7kjFZy/Z5LrSdGTo89k7bd+/KxAPyyZ6boOt8+4JxZmvG76nJO8sMAJdhwA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jAo0Y5cq; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1751283624; c=relaxed/relaxed;
+	bh=gyZqTPyurPzBb9DrK1RoWbPXRlRQIlhSTJvYvcoz2l4=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=eKLFHukF5pDuKT0jMIa3MIdK7t+FhEEyzsq/0LiVAo/ehkoc8qDrDEZlTeTb3J0pHnrBW83gFWX/t80m8Om4xgU4u+Pow3Uv+ZcnV6/Or4wl29+Gx6vrpQRk4cxQ/vKAqHzbQEgnOl/rQBnXVJn2b3j0om4YemQdt9xoQD2CeZ6ieU3G5Lwq+HeHHfczW+WUAfPQ78FDWA1XSfprcYQXm1PNcw3pxOZiKeJCqZpQRjdaKgVnN3CkvemaqN3YBBJfv3g5Ia1JbIB7V+kR2nlWa//4phn+rTAHIz3hLM3VcSkK34QmeDaFYZTiGz8mnUZmw11pgHwgYhKwWm2K2G+HLQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IWN50wCh; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jAo0Y5cq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IWN50wCh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bW4370NPKz2xS9
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jun 2025 21:40:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bW43D1mnmz3091
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jun 2025 21:40:24 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0C2A25C5D37;
-	Mon, 30 Jun 2025 11:40:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36AD6C4CEEF;
-	Mon, 30 Jun 2025 11:40:13 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id DAA4D5C1331;
+	Mon, 30 Jun 2025 11:40:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A15C4CEE3;
+	Mon, 30 Jun 2025 11:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751283615;
-	bh=LKlH+AYR76n8DFV4IF91R80s3PE0sUN7OOb+h3R9KXk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=jAo0Y5cqO51tfTQigwo/NJEQq0+QcIu5+mlpcu0SMFAZZ2yGxDbGbaZIFrUtIDPMJ
-	 hFc66SForMUorqbW7VZnUx/qAfQQ9GId2+gvcywLPsbvbTl5TFaCRBA3pJKI8qC0kO
-	 x5fP/1sUfiCTGj7xUQBSbF8FN828Qd8Mpy4skxpShSR1l4CNP7ekmRUJ2dhdVJ3chY
-	 worfYae5O+OWwC3+6UO2Uvzm0HKJiQu2s+cKz3Hz2Iwc2O9bPdL/ruIEkSby3PxnF4
-	 cj/2720wx/4l1dT4bv62fHmRRwcAcdiDHYy2XL14kHRszO7JvFm/jy30I+zcCLhUmS
-	 5fgVjHT9YMVNg==
+	s=k20201202; t=1751283621;
+	bh=bQbVSfUXa8FwdDpMgxm9+FwRT0/4tpCPWYLfLYdQIQQ=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=IWN50wChPSxNS3GwdOeqKV91XefthwsnuLmgj0/G5cdOpvzsJcNgs4eieqJWjMicp
+	 QP1b+lE85HqQLBhISlJG5uk6h5gWn1UKiytVkvJesvWB567u3BPTtLzERGNWvy2QNx
+	 F8eTUupCY90chKvhPmIkmDGIhP/QsZ4SP7B//Jhh/6aZyEjlGuHfm4PtZEo+xlAqyr
+	 KTDxe9g8HEva3l7DGaD1qA0DT2AE1bMiYPPm9DqLM2wbEegA2NM5Vzb7FuhKvQVP/2
+	 UYWoDNMq/WQ+3rNdg96MMHEO09YF/vi1rO43vl+xCFGrX8DsTYu4fk+NH9U1jkelj1
+	 vBsJYS9FlofbQ==
 From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
- Arun Raghavan <arun@arunraghavan.net>
-Cc: Fabio Estevam <festevam@gmail.com>, 
- Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Pieterjan Camerlynck <p.camerlynck@televic.com>, 
+To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+ nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
  linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-kernel@vger.kernel.org, Arun Raghavan <arun@asymptotic.io>, 
- stable@vger.kernel.org
-In-Reply-To: <20250626130858.163825-1-arun@arunraghavan.net>
-References: <20250626130858.163825-1-arun@arunraghavan.net>
-Subject: Re: [PATCH v4] ASoC: fsl_sai: Force a software reset when starting
- in consumer mode
-Message-Id: <175128361295.28563.443890248287811390.b4-ty@kernel.org>
-Date: Mon, 30 Jun 2025 12:40:12 +0100
+ linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <20250625020504.2728161-1-shengjiu.wang@nxp.com>
+References: <20250625020504.2728161-1-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl_asrc: use internal measured ratio for
+ non-ideal ratio mode
+Message-Id: <175128361929.28563.16933348008978781242.b4-ty@kernel.org>
+Date: Mon, 30 Jun 2025 12:40:19 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,24 +70,17 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-cff91
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 26 Jun 2025 09:08:25 -0400, Arun Raghavan wrote:
-> On an imx8mm platform with an external clock provider, when running the
-> receiver (arecord) and triggering an xrun with xrun_injection, we see a
-> channel swap/offset. This happens sometimes when running only the
-> receiver, but occurs reliably if a transmitter (aplay) is also
-> concurrently running.
+On Wed, 25 Jun 2025 10:05:04 +0800, Shengjiu Wang wrote:
+> When USRC=0, there is underrun issue for the non-ideal ratio mode;
+> according to the reference mannual, the internal measured ratio can be
+> used with USRC=1 and IDRC=0.
 > 
-> It seems that the SAI loses track of frame sync during the trigger stop
-> -> trigger start cycle that occurs during an xrun. Doing just a FIFO
-> reset in this case does not suffice, and only a software reset seems to
-> get it back on track.
 > 
-> [...]
 
 Applied to
 
@@ -100,8 +88,8 @@ Applied to
 
 Thanks!
 
-[1/1] ASoC: fsl_sai: Force a software reset when starting in consumer mode
-      commit: dc78f7e59169d3f0e6c3c95d23dc8e55e95741e2
+[1/1] ASoC: fsl_asrc: use internal measured ratio for non-ideal ratio mode
+      commit: cbe876121633dadb2b0ce52711985328638e9aab
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
