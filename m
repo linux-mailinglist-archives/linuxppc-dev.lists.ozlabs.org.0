@@ -1,70 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-9863-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9864-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54CBAED036
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Jun 2025 22:05:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B2DAED1F4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jun 2025 02:21:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bVgJk5LG3z2yfx;
-	Mon, 30 Jun 2025 06:05:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bVmzk2qv0z2yft;
+	Mon, 30 Jun 2025 10:21:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751227542;
-	cv=none; b=Z9Duun2M+/WMcwf3DoOdP2upzHaVkCff3iwukIRkrntCgwg/B4CPejUDSi4icer6bj6a70c9AbSMMkXv9fu+a/WnWBVARDNh8UhlZ9ovKMppm26XGS5fuspL+ZFLAZNOq+/jehORZ3CgHwWY1RLsNWQDvS2MdELyKIB1V9IVspikyPYoGkneKrcm5CKZFHfjP/js7sdevxThzm6ZY5w+Q0cS5DCGxerswioj3Y1Vo3xxwyzCm8iyork0G5Mh1u756FTjHxvjLJ2NGvzDMMMfSfPLR2WPSbCDDA3rzwNwU7+GdThbQankbzKPp4wf3dkkpgKBXVxga5t37ftWPEQftg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751227542; c=relaxed/relaxed;
-	bh=qpjVZvBcIo5G28UGMNZaBkJZF6ITVDpFyOxvjBVjrQo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JdHyw3A3YsmdASes09oPb8Q/3f9fPTmYO4vnIiDIKAWbEjfvR/Z4d9GNDNIDEn85ZBvwyxUxObbTJ9t5zFwo9pRIIU3QjlM6ncwLCtcRsOy4cce8wwIjrdYg9jlGcwQj09w0Xp6FRPJ1Jz9yNv9zJRS6p1+dcVHYhnanksP6jBgktNhrImeEuggqGASAa8hDI+Nx+4UpbnwItF72h2905U5ILLA1IQhYogkfpWSCGELVdv4qjVG7FsUicFglMR4pUUpa4TQpfj8RwpUk30DGWZVSeEA6LOXQ5ZzGrHSvbNAOmQP2hSuXsz2tjIo+USLkS4c8r/JKwLYlF84uormVnw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cbmxv5b8; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=andreyknvl@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2413::607" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751242882;
+	cv=pass; b=l/X6oiZChRGv8axnt+73XfFQoCCLJ02UjbM2fQGmkmi1ABQpnT96skanqNiNWsKDzhRJxIwrtSJ2BewK8JMR5sNqajl4uVBJ/RQC339uj2pgTSVc/BoWQYzU0WDCHz2FmVUKXASwT1uQ3U0jf6C+b5WObfwoO0rTOsQKJOGl0uvS451nE5QC7/GKmxEOCYeA2idm3Z97mWBdo8uU1Mj/iOeoVTEBcUT9HnNJqiW8M3OIYZsZjyVexuf7ZZxheJajxCSc7YRqbfn1sm1cK+EtWj+7gdX7nwZbua7aoz30UeUsZliLe0sYVtykVosNN5TPnAWMcpUyMymilDiHlXroyw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1751242882; c=relaxed/relaxed;
+	bh=Kzf2Lm4xKI5Xj9lliHf2BeYd23lYDG8nXeZ35AIoxwI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=hblfffjqei2tPnGUwxBLxu3lv4KYjJrkK05VC+6kYq6ZqBaS/7jKiZVIeSwkG0E/tiQdPI9yxx+Y+8kJt9o5EKODdRirmfGQw3iUzQMJNhL0aXllyg5ndgkgxYlDxSCpqsNHeoXGCSMoTGHVgu7gmhFtv7uFiDJnAyVOVBhzn+fXWkSvbkpM9sLKHld4bD2HahY4wH5OuPmQT9mOQwmzxoHxh++bPWiitN0NBcf8Im2zlMdscj2JOljoKXQPAkfsNuuYUgqHnQg1Wo6SzoswPjggAFOuQC2gtbMvFhSrtIzOAKTNavJeJbB59rSXgR1/ZCeSvga0ji4TPVBeqB5HxQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=OM65qMuW; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2413::607; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cbmxv5b8;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=OM65qMuW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=andreyknvl@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2413::607; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on20607.outbound.protection.outlook.com [IPv6:2a01:111:f403:2413::607])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bVgJh4qT9z2yGf
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jun 2025 06:05:39 +1000 (AEST)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3a6e8b1fa37so1297293f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Jun 2025 13:05:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751227534; x=1751832334; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qpjVZvBcIo5G28UGMNZaBkJZF6ITVDpFyOxvjBVjrQo=;
-        b=cbmxv5b8F22Q+Ovk/Vgd5+4aEBMFV/mfty120ZrCJ3qxwrEXVHiv0Ka7RNrzsRg9S9
-         RpVCZZlFgKatmEQ7DIgu9FqFVQI9nOyzTqbMDnQVlXC9gf8gEKI/o7ZxgTdU9PqeROkK
-         dpFoE5RtNMaHAp8EC5lbBMF/7p/PF0Cx527JJ9cLfoqsd9OCK4QJUUXpWgA3U5BhoEaK
-         YyTW9QYAK/lWsuRAaVULh0/OWmypc5Nj1WuS5x2LF4DxIjw/fMd9rwJpf6WsmRkUKuLi
-         4SCyCuWoRS38pkwKbatXJiYSBUclag+w+z76LHChlxHoKY3z5cqJwxxbTHuRTEqE1tAu
-         WhLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751227534; x=1751832334;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qpjVZvBcIo5G28UGMNZaBkJZF6ITVDpFyOxvjBVjrQo=;
-        b=u1OVR+VG3p47ywe25c1yareravsRn/4gYpNg7EeU9Ix+C8Kyv202UhKgSf1ypsoL6v
-         +/V3/CsuTXIyO9ar4PmJihQWTRHWroC+qC6hwgeHgHDZJRA+uVU+vFbm5r+bwoz+XYTe
-         d1cLy6qqhImvqFRJ+w5hoprSWIkoQbWayL1vX225Fp6BjqIRbQ4e/yFbIiBUJvlFY6YQ
-         ouIS00UZwwS1oH16CsC3b+lMO7Niuf4tWJnjKaKRrUrwMq7v/dmpBnckaOjHrQDevnr6
-         MROvOymD09qsdeDeOhk58FDtH9hgfAEAAQFkN0TY+ieS832KRJpj0yfPuUodhJ9eNy6S
-         Z+2A==
-X-Forwarded-Encrypted: i=1; AJvYcCUfX/ss2gEu9cylNd8XK9o+uvMu7pYM+2QdOCzFGrSmgmrZVvTV0uGEc/xsxx0BIUiwoUYkKrRInv4lwhk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxL1lI/mesY1pQZAB70QTMQHSFDKiHPKjrq1zU/94YDOvvqcuTw
-	5mvT/DECK9a8l3fF8g2h0ElhUVKruAx0b7KRehg/0Rutrp3ZsfQd+mrlkkhLTTIetGF91a1Qxs3
-	FSgKFlJoPriOoerSZptIuH6yFJoigwkA=
-X-Gm-Gg: ASbGncvo5I9Y7GjBatuXTWbfFZIU+E0lTZl1/aX8ESKwUYWHRzDbpCF8eaNLQmFYAkv
-	GNVSdkihnBnLFCADgrZQtbKYCgYvJpqwt+v81jnTeB7RbHqeRo1/yZJ4Hv3pFE8GgbY6zSlgh1g
-	Ch1mixK/5NlUgiH+NFlO1oBYfVzXGnFTNQUgUf5SHEreJl0YMeWmYA5Ag=
-X-Google-Smtp-Source: AGHT+IG9Jnr7utU7Trd4lqTg8GWi9uRNVbru2WXxMPFleBJfH4kInx+LP9kDmy2SL/eaM5dKaQqnO/o2Ok4MjECqA8k=
-X-Received: by 2002:a5d:59c7:0:b0:3a4:fc3f:ed28 with SMTP id
- ffacd0b85a97d-3a8fee64fafmr10710844f8f.29.1751227533501; Sun, 29 Jun 2025
- 13:05:33 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bVmzj12nLz2yb9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Jun 2025 10:21:20 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lvAm5YoEJsoD1bzK5A5XqFbjwJsuIhWJ6pAn8vVRY29Uaxk3yFtyYdHz564TZ5J/LXksolBEh4olQjGskvU0AWkob0JYd5sXhieAtBONG27Vs715ZFVI1yXVHR8Afr2FMkp5JAWVz2XHtvjj7helq9O92ssFyfIi9yYrzsmpQR8zMvTljkvtm9LYhhW+mWlIlt//JXb12CEj2IXCfjF84hSboEZnkj6Z8+JVMQr4XAmbAUxdqVARuauhN+1td5I52jw9ANSxdGlbJn91pgiOWnVsTR/jHH1K0/pJcLbGYkW9p5nNiTuWnRAE2qyNY3H9XYbowG0Hu3C4PyB2OquPtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Kzf2Lm4xKI5Xj9lliHf2BeYd23lYDG8nXeZ35AIoxwI=;
+ b=uRx434UNfCgLp3wkt7q7OovWwcuHn0CzEQxcj23EwVa/WdthZ3RvsoGeFSOyQgiGF2hml6WlYewf2Js5ykNke9BwXzkH6HS49pVz5xADly2gWmbxnZSzyAWS3ofSYwFMyXwF3kf/vWPLfQXEeEtb8+tfSaxnVe+RPrYNPBwkuwn/zCllCJWV85mFrr05/NTomIggObLe0b19YMbxRFs/AUzc9rDpZU6F5cGdW8nnFQ+eOdfXsxrmxy1jlCORGANKoBr3nox+fC/k05rsVPzsgF0AGJZcvUED4QIfx630cz4in6alCq9LkKBlUxRTrPSzWX0PHJlkbq+D4YLzqkPH7A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Kzf2Lm4xKI5Xj9lliHf2BeYd23lYDG8nXeZ35AIoxwI=;
+ b=OM65qMuWcXUZCczER84UG5j4bVvIHV9tIDYUxvwTrlPJXRWO8GVravn8X7NHCRRcwqAn4FNQapSYGuuZDZfs5XbSZ2oRK6ZUarpvPntKGKtHUePyknsfwfkWHeIkj9kfh6y2l2LC1unt2wcEQADPz07Vbmwivx0WbdDmLOas7Na14EWV6+kkEGJt8D5YwUZLkoKZVr2ZRAM5yoBDk9CJ4FHTlwTH6yabjE03+z5UF4AMCbE044ZE6OHbHhCFvlMwYgs4IVUsyjuyP0OtfxaBcfgjdQe3EvckgTGONm39iJexGsHsROf/yaKT+ZlLh2uA+26aafszQNN0sCCxTSuFcg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ DS0PR12MB7899.namprd12.prod.outlook.com (2603:10b6:8:149::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8880.26; Mon, 30 Jun 2025 00:21:01 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.8880.024; Mon, 30 Jun 2025
+ 00:21:01 +0000
+Date: Mon, 30 Jun 2025 10:20:56 +1000
+From: Alistair Popple <apopple@nvidia.com>
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Jerrin Shaji George <jerrin.shaji-george@broadcom.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Brendan Jackman <jackmanb@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH RFC 07/29] mm/migrate: rename isolate_movable_page() to
+ isolate_movable_ops_page()
+Message-ID: <nr4e7unt2dtfav5y5ckmsrehu37xejqonarlulzcn6mnhnnvxl@o3ppo34wqyyj>
+References: <20250618174014.1168640-1-david@redhat.com>
+ <20250618174014.1168640-8-david@redhat.com>
+ <9F76592E-BB0E-4136-BDBA-195CC6FF3B03@nvidia.com>
+ <aFMH0TmoPylhkSjZ@casper.infradead.org>
+ <4D6D7321-CAEC-4D82-9354-4B9786C4D05E@nvidia.com>
+ <bef13481-5218-4732-831d-fe22d95184c1@redhat.com>
+ <87h5zyrdl9.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h5zyrdl9.fsf@DESKTOP-5N7EMDA>
+X-ClientProxiedBy: SY5P282CA0107.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:10:20b::12) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,127 +109,138 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250626153147.145312-1-snovitoll@gmail.com> <CA+fCnZfAtKWx=+to=XQBREhou=Snb0Yms4D8GNGaxE+BQUYm4A@mail.gmail.com>
- <CACzwLxgsVkn98VDPpmm7pKcbvu87UBwPgYJmLfKixu4-x+yjSA@mail.gmail.com>
-In-Reply-To: <CACzwLxgsVkn98VDPpmm7pKcbvu87UBwPgYJmLfKixu4-x+yjSA@mail.gmail.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Sun, 29 Jun 2025 22:05:22 +0200
-X-Gm-Features: Ac12FXwSsH6fvJE1vEp59zDWu481tFenq-ukDXNa3gyvAGzFlMqgNHF8VfcuM6Y
-Message-ID: <CA+fCnZcGyTECP15VMSPh+duLmxNe=ApHfOnbAY3NqtFHZvceZw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/11] kasan: unify kasan_arch_is_ready with kasan_enabled
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: ryabinin.a.a@gmail.com, glider@google.com, dvyukov@google.com, 
-	vincenzo.frascino@arm.com, linux@armlinux.org.uk, catalin.marinas@arm.com, 
-	will@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name, 
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	christophe.leroy@csgroup.eu, paul.walmsley@sifive.com, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com, gor@linux.ibm.com, 
-	agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com, 
-	richard@nod.at, anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, 
-	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org, 
-	tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
-	hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
-	akpm@linux-foundation.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, 
-	morbo@google.com, justinstitt@google.com, arnd@arndb.de, rppt@kernel.org, 
-	geert@linux-m68k.org, mcgrof@kernel.org, guoweikang.kernel@gmail.com, 
-	tiwei.btw@antgroup.com, kevin.brodsky@arm.com, benjamin.berg@intel.com, 
-	kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|DS0PR12MB7899:EE_
+X-MS-Office365-Filtering-Correlation-Id: a8c06805-c5da-4b9f-3e94-08ddb76bfe14
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?tGkB5pPBfDTSMowYXOo7iBFahDs+higauIN4ue5k3cYyRm9UFWp65JKhnpRE?=
+ =?us-ascii?Q?OKdNz8vgLC5z302bxI4ARpp2kcu/MGaTJX9+SbZyiKk4+9f761RXLjJd0X19?=
+ =?us-ascii?Q?ZtM9/lIi783i/iUupQgmcHrwotHsNM4a02mNRb7NOuCf9+3HCpPaqOzQPWUY?=
+ =?us-ascii?Q?w3PgXeI/PsGW2ehxwRXwEkU2CBN7N1vUxSoAX7ZfvzgBIaJ42MtqBF1u88fr?=
+ =?us-ascii?Q?pA5PzdvsWq13So/Z3pOFPLLs4VSu9jkXzZpJ559rbr+LA4szU5D9L61pmRHZ?=
+ =?us-ascii?Q?1VqWJb2OA75RL2hDs4vFxe24yvVnducLPTZ74NN4DQ6FHUfvL6USycaR5Czk?=
+ =?us-ascii?Q?p3AawJxuGCHk/Mver8xx0qqE5qjZ/dvCdffUAn7MUevpyOxsU/S+rJrfh5p0?=
+ =?us-ascii?Q?Um63vA0Cz8m2BRj79AiaTOWaMcWBVdzmKyepvCc3nvFiAUUYg39t8eUikz61?=
+ =?us-ascii?Q?E0uz3s5MyHZCKkvCbpvWzNyoo9bO2+2LZmcZL203ifLYUT6awwDTVrPnoxgD?=
+ =?us-ascii?Q?TeQHTKmEfJL3pPhvtuBcCQxBNpSR6/Qtp2k1JJJWQ+K21PvZou7BXG4annxZ?=
+ =?us-ascii?Q?MvCyJcjaROwwzbOkJfgDFVUItx4F7XFtXZTZ01dtfn2Vr1vhHhfOjYIXjDVE?=
+ =?us-ascii?Q?M3OJ4I7ES/yss8NVYWuBTTwzTb5BaMfE+xjATp2AuCHLLuDH18LgaJw0o3K/?=
+ =?us-ascii?Q?h52uo1SA3md4+ba4rxZP9lbwS5dhVdjaBA7DXF5FW/81K24D4W0lJfM5alVa?=
+ =?us-ascii?Q?rdLMEsVDxx6wiQZ4ItCNxq6Ha3a5czWBH4CBug0MIkJbfsXHxcbqs2iDqUsC?=
+ =?us-ascii?Q?vjkXyGVMlCeU+9R68Pof0oG7a6sqLmBuiEuhuabdqw4diY+XAtdT15xRjIh/?=
+ =?us-ascii?Q?s9opncv/7zOZ+gqdU+s8I+9s0D55Gpg2gaS326BSdqXTfmOFQAf8/D3+7eL4?=
+ =?us-ascii?Q?qBAQqobTZxvyYNQBDixE/jxJheARBpIJcb4TI7ZtRwPy6XkJ3/fzaZGcHmfe?=
+ =?us-ascii?Q?KBRoMWbCKYcRuNhcCjZDzUy0z+VCi7pi4nOzpvBHIlfLOEtoFo54++DxjOww?=
+ =?us-ascii?Q?XnXqj7JuLXdnekkNhlfnmVR3BmBMgu28aMml6Tnv8/pro2qB804tAwMXworx?=
+ =?us-ascii?Q?fMBemLDcEaNGo6tH7VTNN7BfIf0lpl0k+I6okCLxX0aQcYVkij70NsNWOqsD?=
+ =?us-ascii?Q?1rT/toRd8n7N0f5HHP2JFEk8GYeeH1kzY5YomP8ViYRZXOKgS+gVUP+k5plK?=
+ =?us-ascii?Q?wzgD/+e/lnhzKBMqm+qPuxIzGyja2mFQCvchVK5ibaUpC2Dpz2wiWKSTd/Vf?=
+ =?us-ascii?Q?AwkTHT3KZ8vK8XZ5QQeRla8QZiUPxLHjuH/mpcyfUdlr3nDh8gh5akc+/VBZ?=
+ =?us-ascii?Q?hh6jVSG6YeOq2Nz1MZtJLqupyWI2M2zTVWhObWu5xva+2dnIvT1WdE/TyOic?=
+ =?us-ascii?Q?jKy967Yf4JI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?G8CNU/Y0LspYozL5gXKXTv32TtZXzQiqKVxUkVPDSkbl6iaLOSEwjWOeTnSS?=
+ =?us-ascii?Q?1jlxzenB66hqiTdcyqjX9ksXCYD8EV90Ton7Hz0sSsUaUwb6h/5Gtrn/t5XF?=
+ =?us-ascii?Q?heXrz1l8kQqwkj0Q2h8EUitf2mVskI9SO31DxjUybeiRh8BM4U97E4DKozJm?=
+ =?us-ascii?Q?fS5IxNC0OWFjUHWv9vwI8HZSVatJ5POu65cox9Xwx2pZaWRHdrSkLnacP4x3?=
+ =?us-ascii?Q?KLIRZ/l7RvRVXS8QBCAGHogoKEpXFojcwN5pk2BYxmj4HkAmGJvtcMQIQlft?=
+ =?us-ascii?Q?sHM8ykHX6Br+eztGQMvy7h2E8pTrOBGgW0ZGG/B7gEs1hogWHrZ/HRTQc33V?=
+ =?us-ascii?Q?F2uOn0svjdkBmlTsTJwNUpBXUOXYLG1F0LPbrdxW3BwBaIP6z6+BEzba2PB5?=
+ =?us-ascii?Q?ucn0pO97XO68OQMJ8BQ3wYFrz4SRAQNsjWfbtltB+9YZfvlTaibbhtypEYc3?=
+ =?us-ascii?Q?RTOAHaToktBSJfKl64kWbt+TC5f1sxx4/CgYUFuMAAtyRdJpe9cCfQXMIBPS?=
+ =?us-ascii?Q?6Xoe8Zo8Z6K2icFaGJE17r6TWlHXeRBCoUH1XIU+UPtrldZakQK/04GpDQCF?=
+ =?us-ascii?Q?AvC2A9s5xxXDu2YxOS3ZGhnbP8qdgG6c0MwWb+SRpjQqeuNS3hqZHcHZESQE?=
+ =?us-ascii?Q?8sdIP0+kd1UXhHNeDHPWKEs4E5sJFcLDmLlu7aogPdovGIXybXScdwGYihSO?=
+ =?us-ascii?Q?oXtTN8Wz+AIwf3CeQsD4lR+1DpFKKoXn0940HxYdPlOG9Es9cf3IWHYAK2nK?=
+ =?us-ascii?Q?jwLkvW87QwEW056QJymny5LRTAkZ9U9YoSRddEg0yS7cNQP9+brG7uK00Qgt?=
+ =?us-ascii?Q?nnn3qugz2zQfXIDuTgUHddY+4ZefCSFpHAMZIu57jYvfUIVBiRYDfkP/E1Q3?=
+ =?us-ascii?Q?DuyrMRM45cpgbvg5lnmE6ebtiYbRj5IC9iQil+P+SngHE/y0qHC8OBGRIRao?=
+ =?us-ascii?Q?RCJ0OdLzbF9aTv8Lxdd++EjeYce9qLU7gs9L1nq6KNtQOl9RXR4jfx3sezmR?=
+ =?us-ascii?Q?FRA+giuF7W3S2IZD0whk72p8WHJGP0Uzfg/YGXvP7adp21suyeH4aiI8SaCx?=
+ =?us-ascii?Q?ZYs+NVvPSuENbaJbhC5YXzRdK1C+Z1MszOskacT5PwwR6uDe7Fxs/JqdN/IL?=
+ =?us-ascii?Q?ulGL5sBvRhdJ5gJk1o1t4CM9BVAvaL4yhIWqMLwEOf2l6VjmM1gEotUJWi6K?=
+ =?us-ascii?Q?RQZc+b1gx01GUiwPWTgZw4bUbtPxLBmgBA+i9t4P6HhGdOlmMdP8SwQ9BfZ1?=
+ =?us-ascii?Q?2hokLXOEWs1Y5Po4n7wKYwNGWhMApK0cWC3zdihjmHpe/SnWGfw5ldjVWeLf?=
+ =?us-ascii?Q?c1pAPmolrxzVbdJPOXWM9qad19dVBeLeC9Z66RYfHjSx9smtuQlBUHqlHYLL?=
+ =?us-ascii?Q?tDLkXbSxo6qjHSETxyp3Uf1QB+Fw+k23M5YQVULyLHFnPz7CbqCnf63E6XI5?=
+ =?us-ascii?Q?5Essq3OzCr666rsjW7jHxFXbDMABUXdUdBE7yUNfR/49T1VOC7c6VoKFJELU?=
+ =?us-ascii?Q?+U3wHlkm4Ff35NYHtnTL88obsgVJRhBVAWKXQjJReEjG70SZiDK+18t0ACU9?=
+ =?us-ascii?Q?6d/PsQraBpvPjMizXFIp9OsaGTh2w2PR+7HVo+GU?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a8c06805-c5da-4b9f-3e94-08ddb76bfe14
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 00:21:01.2328
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: c9WRceA1If6mAdot4PJgEsXWAO9OckOkGq+mToyjOaIeT4CH1RFadYsK3i0GB8Y6SoriD5Z530Qvq84nBVx1Ow==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7899
+X-Spam-Status: No, score=-3.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, Jun 28, 2025 at 3:25=E2=80=AFPM Sabyrzhan Tasbolatov
-<snovitoll@gmail.com> wrote:
->
-> On Sat, Jun 28, 2025 at 3:57=E2=80=AFPM Andrey Konovalov <andreyknvl@gmai=
-l.com> wrote:
+On Sun, Jun 29, 2025 at 07:28:50PM +0800, Huang, Ying wrote:
+> David Hildenbrand <david@redhat.com> writes:
+> 
+> > On 18.06.25 20:48, Zi Yan wrote:
+> >> On 18 Jun 2025, at 14:39, Matthew Wilcox wrote:
+> >> 
+> >>> On Wed, Jun 18, 2025 at 02:14:15PM -0400, Zi Yan wrote:
+> >>>> On 18 Jun 2025, at 13:39, David Hildenbrand wrote:
+> >>>>
+> >>>>> ... and start moving back to per-page things that will absolutely not be
+> >>>>> folio things in the future. Add documentation and a comment that the
+> >>>>> remaining folio stuff (lock, refcount) will have to be reworked as well.
+> >>>>>
+> >>>>> While at it, convert the VM_BUG_ON() into a WARN_ON_ONCE() and handle
+> >>>>> it gracefully (relevant with further changes), and convert a
+> >>>>> WARN_ON_ONCE() into a VM_WARN_ON_ONCE_PAGE().
+> >>>>
+> >>>> The reason is that there is no upstream code, which use movable_ops for
+> >>>> folios? Is there any fundamental reason preventing movable_ops from
+> >>>> being used on folios?
+> >>>
+> >>> folios either belong to a filesystem or they are anonymous memory, and
+> >>> so either the filesystem knows how to migrate them (through its a_ops)
+> >>> or the migration code knows how to handle anon folios directly.
 > >
-> > On Thu, Jun 26, 2025 at 5:32=E2=80=AFPM Sabyrzhan Tasbolatov
-> > <snovitoll@gmail.com> wrote:
-> > >
-> > > This patch series unifies the kasan_arch_is_ready() and kasan_enabled=
-()
-> > > interfaces by extending the existing kasan_enabled() infrastructure t=
-o
-> > > work consistently across all KASAN modes (Generic, SW_TAGS, HW_TAGS).
-> > >
-> > > Currently, kasan_enabled() only works for HW_TAGS mode using a static=
- key,
-> > > while other modes either return IS_ENABLED(CONFIG_KASAN) (compile-tim=
-e
-> > > constant) or rely on architecture-specific kasan_arch_is_ready()
-> > > implementations with custom static keys and global variables.
-> > >
-> > > This leads to:
-> > > - Code duplication across architectures
-> > > - Inconsistent runtime behavior between KASAN modes
-> > > - Architecture-specific readiness tracking
-> > >
-> > > After this series:
-> > > - All KASAN modes use the same kasan_flag_enabled static key
-> > > - Consistent runtime enable/disable behavior across modes
-> > > - Simplified architecture code with unified kasan_init_generic() call=
-s
-> > > - Elimination of arch specific kasan_arch_is_ready() implementations
-> > > - Unified vmalloc integration using kasan_enabled() checks
-> > >
-> > > This addresses the bugzilla issue [1] about making
-> > > kasan_flag_enabled and kasan_enabled() work for Generic mode,
-> > > and extends it to provide true unification across all modes.
-> > >
-> > > [1] https://bugzilla.kernel.org/show_bug.cgi?id=3D217049
+> > Right, migration of folios will be handled by migration core.
 > >
-> > Hi Sabyrzhan,
+> >> for device private pages, to support migrating >0 order anon or fs
+> >> folios
+> >> to device, how should we represent them for devices? if you think folio is
+> >> only for anon and fs.
 > >
-> > Thank you for working on this!
+> > I assume they are proper folios, so yes. Just like they are handled
+> > today (-> folios)
+
+Yes, they should be proper folios.
+
+> > I was asking a related question at LSF/MM in Alistair's session: are
+> > we sure these things will be folios even before they are assigned to a
+> > filesystem? I recall the answer was "yes".
 > >
-> > One aspect that is missing from the patches is moving the
-> > kasan_arch_is_ready() calls into the include/linux/kasan.h (this is
-> > not explicitly mentioned in the issue, but this is what the "adding
-> > __wrappers" part is about).
-> >
-> > Another thing that needs careful consideration is whether it's
-> > possible to combine kasan_arch_is_ready() and kasan_enabled() into the
-> > same check logically at all. There's one issue mentioned in [1]:
->
-> Hello,
-> I've removed kasan_arch_is_ready() at all in this series:
-> [PATCH v2 11/11] kasan: replace kasan_arch_is_ready with kasan_enabled
->
-> Is it not what's expected by unification?
+> > So we don't (and will not) support movable_ops for folios.
+> 
+> Is it possible to use some device specific callbacks (DMA?) to copy
+> from/to the device private folios (or pages) to/from the normal
+> file/anon folios in the future?
 
-I guess the issue description diverged a bit from what needs to be
-done, sorry about that.
+I guess we could put such callbacks on the folio->pgmap, but I'm not sure why
+we would want to. Currently all migration to/from device private (or coherent)
+folios is managed by the device, which is one of the features of ZONE_DEVICE.
+Did you have some particular reason/idea for why we might want to do this?
 
-The core 2 things I wanted to address with the unification are:
-
-1. Avoid spraying kasan_arch_is_ready() throughout the KASAN
-implementation and move these checks into include/linux/kasan.h (and
-add __wrappers when required).
-
-2. Avoid architectures redefining the same kasan_enabled global
-variable/static key.
-
-Initially, I thought that s/kasan_arch_is_ready/kasan_enabled + simply
-moving the calls into affected include/linux/kasan.h functions would
-be enough. But then, based on [1], turns out it's not that simple.
-
-So now, I think we likely still need two separate checks/flags:
-kasan_enabled() that controls whether KASAN is enabled at all and
-kasan_arch_is_ready() that gets turned on by kasan_init() when shadow
-is initialized (should we rename it to kasan_shadow_initialized()?).
-But then we can still move kasan_arch_is_ready() into
-include/linux/kasan.h and use the proper combination of checks for
-each affected function before calling __wrappers. And we can still
-remove the duplicated flags/keys code from the arch code.
-
-[1] https://lore.kernel.org/linux-mm/CA+fCnZf7JqTH46C7oG2Wk9NnLU7hgiVDEK0EA=
-8RAtyr-KgkHdg@mail.gmail.com/
+> ---
+> Best Regards,
+> Huang, Ying
 
