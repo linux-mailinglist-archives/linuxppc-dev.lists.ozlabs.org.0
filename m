@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-9927-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9932-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0A7AEE39E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jun 2025 18:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9308DAEE3A5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jun 2025 18:11:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bWB1p4YnQz3btt;
-	Tue,  1 Jul 2025 02:09:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bWB1t5Qlvz30Qb;
+	Tue,  1 Jul 2025 02:09:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751299774;
-	cv=none; b=A3TAm9VpIZr1t8Drc3lSXYjpQWTTPj5mGqnfVtioJFXb0upGcAqT0deGLr+COfSKu2Ldq6AaUBFGAECM8MLhWo+hWOwJsMA9Ex6EDe3lNKJyuvlX1oPY1wXNaKQe/Nu6ZHrfMf6S596pTIsRfdaOEYWN8e21qclFeufV192grBaMFEvcovvtHRXNcRbLooDdxg+/RqaP/kO239uShfEZJ7d8bbMQIglERhw3wtx4CiRFn578R0PRuagf9scJTHJSGYGwY6R9t1F5LuQ4gp4sCMnRDwbmS+tFfkNDR0/RqFY1rqSSGnK4WpJg5XOEM98YOjQEuGg7KwDThjYk4mD6/w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751299777;
+	cv=none; b=nvbPf8bwJGjkrmduwbu2wRpYKYCCN+ogsPhazYbbnPh+XZAMUOYhTxxuWLv3b/i/BroYlD2eiLyejqpkJXO6Cij9G8+eQkQ6tgt2jLYaQjzV3MfD4oHvOYEDU7B2vynJLEPxzXM0vIpVwZE9GrrMNgnBFV/0k1S0zi00MerAqmNXYcRbpujpuK4od4bPh/Oaoci64mMskxxQMDjLmAqvnOORW5dt68P0JFbzhLjTaHS6bHX2Spd+avfBY10wLGJdJCMh6n1XB+DcnXOMLeyu/MMDPM2pBgLKWvXKMVoVD8oueQ7hVu2ih+zAIozZAHRarKkQSlEs3CEUeDOiiWZlSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751299774; c=relaxed/relaxed;
-	bh=yEP3nEF4suXztEVxed5w1165cW8JrFC2ZGIZr2vQaKQ=;
+	t=1751299777; c=relaxed/relaxed;
+	bh=RgNrCjq6lsOkp6g05Z5E9V8l08rRXcQ6exdzrdyOjWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jShPeM46XoKAyGlURhjGNRCgYCJ/tH9SkP/Td/Ke33c6GhFWbDZr8ljk+T/I6OuVVaWRbO4+zWr1dHu4YP+HzysJDUy1uWP4adpmcBXbUxqDz3XlyvxbM3t5kFaJis3TP5fDX9L9yYk7qULLH7D8wz+fhwxYAjjVcc9jqnXrgHwA7brmKAI7zWUwe51yU39gIrdEoXI3d68p8gyouR6ixYp6fw+nUM3+YtWEtwVoAwD+1dJ8mUs/4sxLnFSiVH33jWX1aEl9eXYuevYOP69X7CzyTZWuNClWonPYQrJ1/z/mN0aRtVl7lzIBLqS1eQ7ZXAgoCmaH+HKNzXjbVSgCmg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oN5D7nM6; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=L0AX+NBhRBC6Q4pRCWSXtp1j87In9zOEN0Pn6BIkmNwsQnTFXYN0CzkVlIGW4oSUHejN3k5NQSESiyrelOrn/d6IODr5MZ+eZwB4rPsu4m2lw6pckeWYurE+s2l17tjW51+GiA5s7wQh6Geb6rhgFHiLDV4zt1ca3BJ1i81R/EhBm2PRDR2fmB9/MvQpfeW58rIcjsvFzn9O+pzY+umJkAJ+021s2/nQJSkXQWK3WDayl0OSD5ZZWJly9vrVqh2hP2BRCrinYBoy4y6Jha9WCcJHjp9UnJDvEt/lIj6RPiZ5JAN8Nom6DerHl+9jg50iPICe594KMOkgk5Ddowo++w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jnBxR32k; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=oN5D7nM6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jnBxR32k;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bWB1j38LHz3brr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 02:09:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bWB1l0Wsmz3brx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 02:09:30 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 6C7A9A53426;
+	by nyc.source.kernel.org (Postfix) with ESMTP id 19317A53519;
+	Mon, 30 Jun 2025 16:09:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC2DC4CEF3;
 	Mon, 30 Jun 2025 16:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4921C4CEF2;
-	Mon, 30 Jun 2025 16:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1751299767;
-	bh=hI7/9MXXn63qxg1DA2W2CAE23ZWS/FopAAuRjD/xhFs=;
+	bh=pkoFPfsdz5mUfc5I4FK+MnyFLsCjGsnnD9jc5ME9fN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oN5D7nM68TGKPGZYZfUCmR2idT6QSU/9V6Bm4Nd+BH4W3ccbIdeb6eX7QizYZe7ce
-	 b1C5ugHHJ0UyxkvLvqKHVwgxGKT2tGHhB6SkNjeJGS9EyxEhNmgQq5gaTCKepPBrbJ
-	 5/KKuQsavBRZWjviiWq9Uc2bjEiTbU9DMXo7pTiwZtgmTIrc/Rb1onnm2pYpEKE2nL
-	 jc5sTkLpA1W6qHTjKTlNmOXhKDDJcBdsrgZFT2ZZcVkciO2+Tsu4E2Cq1YITmIm7m9
-	 uWHqbWEOtWiMOYhvUlspb4D980aEHInjhTTJMzcxAAfrmqYalRCh3cKOmAFJLmFBiN
-	 uueT2Z+/VqTzA==
+	b=jnBxR32keuveFDD/erORneyVQFZMExFVwQ2m1PRHBM8e09zhVEcpdxXezXwhIRIep
+	 1b/hAsrsEPE4GO34uoemDkgD6DfhLn2c+0We3yqTqkDW1Zdqk+usXyKw0ahpO/QyDk
+	 kq8OJiVNVNYv+79sZjwcLRLPE8u+AXxrFrb5rUo1EG4MgLQWKf4VRjl6PqF6ZW6RvL
+	 tO/4ewF4TqSoMw0NJ2cWpzPbScaI6j0B3laWfK7QYlGoz9vuy6ps6Y8wwL6bttBzRT
+	 i6YDWFUv5OhMZDpFhfE2wkKZC04+niDSZ+wBsXg2HLi3z3ji0M2HuML4L/kX6ufOLl
+	 sxIXnWBzurdOw==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -56,9 +56,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Ard Biesheuvel <ardb@kernel.org>,
 	"Jason A . Donenfeld" <Jason@zx2c4.com>,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH v2 13/14] lib/crypto: sha256: Sync sha256_update() with sha512_update()
-Date: Mon, 30 Jun 2025 09:06:44 -0700
-Message-ID: <20250630160645.3198-14-ebiggers@kernel.org>
+Subject: [PATCH v2 14/14] lib/crypto: sha256: Document the SHA-224 and SHA-256 API
+Date: Mon, 30 Jun 2025 09:06:45 -0700
+Message-ID: <20250630160645.3198-15-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250630160645.3198-1-ebiggers@kernel.org>
 References: <20250630160645.3198-1-ebiggers@kernel.org>
@@ -76,76 +76,135 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The BLOCK_HASH_UPDATE_BLOCKS macro is difficult to read.  For now, let's
-just write the update explicitly in the straightforward way, mirroring
-sha512_update().  It's possible that we'll bring back a macro for this
-later, but it needs to be properly justified and hopefully a bit more
-readable.
+Add kerneldoc comments, consistent with the kerneldoc comments of the
+SHA-384 and SHA-512 API.
 
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- lib/crypto/sha256.c | 28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+ include/crypto/sha2.h | 76 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 76 insertions(+)
 
-diff --git a/lib/crypto/sha256.c b/lib/crypto/sha256.c
-index 68936d5cd7745..808438d4f4278 100644
---- a/lib/crypto/sha256.c
-+++ b/lib/crypto/sha256.c
-@@ -8,11 +8,10 @@
-  * Copyright (c) 2014 Red Hat Inc.
-  * Copyright 2025 Google LLC
+diff --git a/include/crypto/sha2.h b/include/crypto/sha2.h
+index 2e3fc2cf4aa0d..e0a08f6addd00 100644
+--- a/include/crypto/sha2.h
++++ b/include/crypto/sha2.h
+@@ -153,17 +153,55 @@ void __hmac_sha256_init(struct __hmac_sha256_ctx *ctx,
   */
+ struct sha224_ctx {
+ 	struct __sha256_ctx ctx;
+ };
  
- #include <crypto/hmac.h>
--#include <crypto/internal/blockhash.h>
- #include <crypto/sha2.h>
- #include <linux/export.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/string.h>
-@@ -178,12 +177,35 @@ EXPORT_SYMBOL_GPL(sha256_init);
- void __sha256_update(struct __sha256_ctx *ctx, const u8 *data, size_t len)
++/**
++ * sha224_init() - Initialize a SHA-224 context for a new message
++ * @ctx: the context to initialize
++ *
++ * If you don't need incremental computation, consider sha224() instead.
++ *
++ * Context: Any context.
++ */
+ void sha224_init(struct sha224_ctx *ctx);
++
++/**
++ * sha224_update() - Update a SHA-224 context with message data
++ * @ctx: the context to update; must have been initialized
++ * @data: the message data
++ * @len: the data length in bytes
++ *
++ * This can be called any number of times.
++ *
++ * Context: Any context.
++ */
+ static inline void sha224_update(struct sha224_ctx *ctx,
+ 				 const u8 *data, size_t len)
  {
- 	size_t partial = ctx->bytecount % SHA256_BLOCK_SIZE;
- 
- 	ctx->bytecount += len;
--	BLOCK_HASH_UPDATE_BLOCKS(sha256_blocks, &ctx->state, data, len,
--				 SHA256_BLOCK_SIZE, ctx->buf, partial);
-+
-+	if (partial + len >= SHA256_BLOCK_SIZE) {
-+		size_t nblocks;
-+
-+		if (partial) {
-+			size_t l = SHA256_BLOCK_SIZE - partial;
-+
-+			memcpy(&ctx->buf[partial], data, l);
-+			data += l;
-+			len -= l;
-+
-+			sha256_blocks(&ctx->state, ctx->buf, 1);
-+		}
-+
-+		nblocks = len / SHA256_BLOCK_SIZE;
-+		len %= SHA256_BLOCK_SIZE;
-+
-+		if (nblocks) {
-+			sha256_blocks(&ctx->state, data, nblocks);
-+			data += nblocks * SHA256_BLOCK_SIZE;
-+		}
-+		partial = 0;
-+	}
-+	if (len)
-+		memcpy(&ctx->buf[partial], data, len);
+ 	__sha256_update(&ctx->ctx, data, len);
  }
- EXPORT_SYMBOL(__sha256_update);
++
++/**
++ * sha224_final() - Finish computing a SHA-224 message digest
++ * @ctx: the context to finalize; must have been initialized
++ * @out: (output) the resulting SHA-224 message digest
++ *
++ * After finishing, this zeroizes @ctx.  So the caller does not need to do it.
++ *
++ * Context: Any context.
++ */
+ void sha224_final(struct sha224_ctx *ctx, u8 out[SHA224_DIGEST_SIZE]);
++
++/**
++ * sha224() - Compute SHA-224 message digest in one shot
++ * @data: the message data
++ * @len: the data length in bytes
++ * @out: (output) the resulting SHA-224 message digest
++ *
++ * Context: Any context.
++ */
+ void sha224(const u8 *data, size_t len, u8 out[SHA224_DIGEST_SIZE]);
  
- static void __sha256_final(struct __sha256_ctx *ctx,
- 			   u8 *out, size_t digest_size)
+ /**
+  * struct hmac_sha224_key - Prepared key for HMAC-SHA224
+  * @key: private
+@@ -273,17 +311,55 @@ void hmac_sha224_usingrawkey(const u8 *raw_key, size_t raw_key_len,
+  */
+ struct sha256_ctx {
+ 	struct __sha256_ctx ctx;
+ };
+ 
++/**
++ * sha256_init() - Initialize a SHA-256 context for a new message
++ * @ctx: the context to initialize
++ *
++ * If you don't need incremental computation, consider sha256() instead.
++ *
++ * Context: Any context.
++ */
+ void sha256_init(struct sha256_ctx *ctx);
++
++/**
++ * sha256_update() - Update a SHA-256 context with message data
++ * @ctx: the context to update; must have been initialized
++ * @data: the message data
++ * @len: the data length in bytes
++ *
++ * This can be called any number of times.
++ *
++ * Context: Any context.
++ */
+ static inline void sha256_update(struct sha256_ctx *ctx,
+ 				 const u8 *data, size_t len)
+ {
+ 	__sha256_update(&ctx->ctx, data, len);
+ }
++
++/**
++ * sha256_final() - Finish computing a SHA-256 message digest
++ * @ctx: the context to finalize; must have been initialized
++ * @out: (output) the resulting SHA-256 message digest
++ *
++ * After finishing, this zeroizes @ctx.  So the caller does not need to do it.
++ *
++ * Context: Any context.
++ */
+ void sha256_final(struct sha256_ctx *ctx, u8 out[SHA256_DIGEST_SIZE]);
++
++/**
++ * sha256() - Compute SHA-256 message digest in one shot
++ * @data: the message data
++ * @len: the data length in bytes
++ * @out: (output) the resulting SHA-256 message digest
++ *
++ * Context: Any context.
++ */
+ void sha256(const u8 *data, size_t len, u8 out[SHA256_DIGEST_SIZE]);
+ 
+ /**
+  * struct hmac_sha256_key - Prepared key for HMAC-SHA256
+  * @key: private
 -- 
 2.50.0
 
