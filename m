@@ -1,67 +1,109 @@
-Return-Path: <linuxppc-dev+bounces-9932-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9936-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9308DAEE3A5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jun 2025 18:11:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A70AEE3E5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jun 2025 18:14:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bWB1t5Qlvz30Qb;
-	Tue,  1 Jul 2025 02:09:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bWB7X6hh4z30RK;
+	Tue,  1 Jul 2025 02:14:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751299777;
-	cv=none; b=nvbPf8bwJGjkrmduwbu2wRpYKYCCN+ogsPhazYbbnPh+XZAMUOYhTxxuWLv3b/i/BroYlD2eiLyejqpkJXO6Cij9G8+eQkQ6tgt2jLYaQjzV3MfD4oHvOYEDU7B2vynJLEPxzXM0vIpVwZE9GrrMNgnBFV/0k1S0zi00MerAqmNXYcRbpujpuK4od4bPh/Oaoci64mMskxxQMDjLmAqvnOORW5dt68P0JFbzhLjTaHS6bHX2Spd+avfBY10wLGJdJCMh6n1XB+DcnXOMLeyu/MMDPM2pBgLKWvXKMVoVD8oueQ7hVu2ih+zAIozZAHRarKkQSlEs3CEUeDOiiWZlSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751299777; c=relaxed/relaxed;
-	bh=RgNrCjq6lsOkp6g05Z5E9V8l08rRXcQ6exdzrdyOjWk=;
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2417::607" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751300072;
+	cv=pass; b=HYWEOXSoaarwcnZBVIRBFQnMFYdPYQnKq0YJ3hdc3FfkWr8qi5Qp1c0jCnt+4c9UujjRAs4VohwVPaJr8/JpcKL5rUOU1foHNc/XM7qowAZ2HPlV+V73tZnmV8BYyJ7Zw6oAZhjJY2HOUAffNzlDRWjyadzdgkYGh1M6UdSVMc6UP3/DJikkyvhcNECv+Ayf6j8CB87JbzjAKklp+kroew/8L+D1AOmFDXMD77bYY6uw1w+TqKEhmrIqUujqvvMZijLc6s1+Z4l+TUvBkUPeV0/ZVNcYdNOJ6ukDghxQA4qnLECrAJKLGLsojXo/TFlcZHVltEo0fgQWjZwO1OGKVA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1751300072; c=relaxed/relaxed;
+	bh=KywnhJjRvdLILjsZMjGn6ZA+yQQDw3+bTFr6uySxKvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0AX+NBhRBC6Q4pRCWSXtp1j87In9zOEN0Pn6BIkmNwsQnTFXYN0CzkVlIGW4oSUHejN3k5NQSESiyrelOrn/d6IODr5MZ+eZwB4rPsu4m2lw6pckeWYurE+s2l17tjW51+GiA5s7wQh6Geb6rhgFHiLDV4zt1ca3BJ1i81R/EhBm2PRDR2fmB9/MvQpfeW58rIcjsvFzn9O+pzY+umJkAJ+021s2/nQJSkXQWK3WDayl0OSD5ZZWJly9vrVqh2hP2BRCrinYBoy4y6Jha9WCcJHjp9UnJDvEt/lIj6RPiZ5JAN8Nom6DerHl+9jg50iPICe594KMOkgk5Ddowo++w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jnBxR32k; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:MIME-Version; b=ipNvZS1DLn25Kb2Dl/NFcjHQVNP5XWGgr4xtUmlp5/dhL69iMk9zqn7zJEUtm4y31H9bD4AmcWGVXrPpkc9u6M7abKSJHnFEY85uxbtbTe29dolSJbin7ke+4ONxz8xJhqMAG1FwZ3frO7Nau9pJk2giMt0y3ViNBf5LauzrL4xbtgC5lhoFVLScb8YAu92P1r56nrnUrJz0zu2Ft06m+I7nAaIdmX18dqmYE8D14XcosAUslTUH25Ek2pkM6DiM+1H3DNGJ+O7xuaKxdxC+mxRTj00sLkZD1eym2YJh6Wep2T08sjcdd3k20exG7cC8W0PnQAvdsW4n1jCeiLl4Mw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=LevwA0Tm; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2417::607; helo=nam12-dm6-obe.outbound.protection.outlook.com; envelope-from=ziy@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jnBxR32k;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=LevwA0Tm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2417::607; helo=nam12-dm6-obe.outbound.protection.outlook.com; envelope-from=ziy@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on20607.outbound.protection.outlook.com [IPv6:2a01:111:f403:2417::607])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bWB1l0Wsmz3brx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 02:09:30 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 19317A53519;
-	Mon, 30 Jun 2025 16:09:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC2DC4CEF3;
-	Mon, 30 Jun 2025 16:09:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751299767;
-	bh=pkoFPfsdz5mUfc5I4FK+MnyFLsCjGsnnD9jc5ME9fN4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnBxR32keuveFDD/erORneyVQFZMExFVwQ2m1PRHBM8e09zhVEcpdxXezXwhIRIep
-	 1b/hAsrsEPE4GO34uoemDkgD6DfhLn2c+0We3yqTqkDW1Zdqk+usXyKw0ahpO/QyDk
-	 kq8OJiVNVNYv+79sZjwcLRLPE8u+AXxrFrb5rUo1EG4MgLQWKf4VRjl6PqF6ZW6RvL
-	 tO/4ewF4TqSoMw0NJ2cWpzPbScaI6j0B3laWfK7QYlGoz9vuy6ps6Y8wwL6bttBzRT
-	 i6YDWFUv5OhMZDpFhfE2wkKZC04+niDSZ+wBsXg2HLi3z3ji0M2HuML4L/kX6ufOLl
-	 sxIXnWBzurdOw==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH v2 14/14] lib/crypto: sha256: Document the SHA-224 and SHA-256 API
-Date: Mon, 30 Jun 2025 09:06:45 -0700
-Message-ID: <20250630160645.3198-15-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250630160645.3198-1-ebiggers@kernel.org>
-References: <20250630160645.3198-1-ebiggers@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bWB7W1nMrz30QJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 02:14:31 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Tm+xAg++5We5ICBPRE8V9yy0vInkrfCfXuKadTogxF6qpjWCitKxDkz+bCNahlQFQR3qrSGyJrLeit8D3AyZJ/HbaJLI+Vy1QAldJVC//Q39K4IN5OgPXy+SlGciav9bqGoM9QxgZ57LJZ7pOMMe0sLWuInPB13357eeBKi/hkCOAhgQs99hBZIcfhoZowo07qMQLRV02e6QKaOp8jIdXSIyKwCpB4qSVruFbd5Azs1LSI9HYtOx9kUthkjoHnqFRGgbEOmW7LsiBDxBi21DeMsKgR7/XJWA+wveCzwlQnrle1JjSp8jEycaNsiKKQPn0YY+LaH64Utew0gEGKIPZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KywnhJjRvdLILjsZMjGn6ZA+yQQDw3+bTFr6uySxKvU=;
+ b=LA8lBLV9GGKjsWXP1cZHpwVcupHD7BeyRtv7tGsaRy4J5yrJdYLJz0MXrW/WbvI+NqC7SXgzu9ff7X+Y10WqTnBtehhbqq7evAjW63uegjFZHr7QSFXvZsDYdfPILiaesTZ48MHJQb9J5Wj0VsEzJGK9xzIhar8OBULiFmhDzsUkKpeovMF4QF9EY2Z7Xuzw4/CZr9JH40dionspC5O8euLFZ6DHVLaPjp+gbNka9cl63dMrckJOYmuHImvm2PMUFiZ7KoY30aS5ozzOa1GV8r8jZhg44oOKJallKdai0O5H9Dkuatz/LsOocRlHTVuWX8r+vVRnKDfTK5H/T6v17w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KywnhJjRvdLILjsZMjGn6ZA+yQQDw3+bTFr6uySxKvU=;
+ b=LevwA0TmxmkuNUr9YJ+sPxDcOgKEPq5S4cWzGxAHRdrslutJUb6ZFD7o3TBoOEh4MV/+zIw13XpA8mxFIOivmJyLgWYaGnvP7JrVOmWjVDimVzgMbn5gJC1hLJ0fOlbfp00+uXjJC1j5m+NNzGwxovOqXOQuiFmoA/9kv58FnSjIDu7PxXcbVlwN+glrwBIuUC1vOCAJ/A6FMlut6mvtTNI6hlmhmKXgL0LNoQ5gEtoaQRPtY0niWMyRqOrVHLGInrgXCFIM9+ppxU6iYM+YpGg/jS1J8eZJuNNg2XpjBNjy36xSs8AcHIs3aLvm6I4dVpY8YP6svYOpz6V9PgituA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ SA3PR12MB7975.namprd12.prod.outlook.com (2603:10b6:806:320::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8880.27; Mon, 30 Jun
+ 2025 16:14:05 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.8880.029; Mon, 30 Jun 2025
+ 16:14:05 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ virtualization@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Oscar Salvador <osalvador@suse.de>, Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Qi Zheng <zhengqi.arch@bytedance.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH v1 05/29] mm/balloon_compaction: make PageOffline sticky
+ until the page is freed
+Date: Mon, 30 Jun 2025 12:14:01 -0400
+X-Mailer: MailMate (2.0r6265)
+Message-ID: <595C96DA-C652-455F-91DB-F7893B95124B@nvidia.com>
+In-Reply-To: <6a6cde69-23de-4727-abd7-bae4c0918643@lucifer.local>
+References: <20250630130011.330477-1-david@redhat.com>
+ <20250630130011.330477-6-david@redhat.com>
+ <6a6cde69-23de-4727-abd7-bae4c0918643@lucifer.local>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BL1P221CA0025.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:2c5::13) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,137 +117,111 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA3PR12MB7975:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01dbd93d-ead7-4c1f-2ab1-08ddb7f1229b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?0dt+gH9hTJB9mzYjeeW7InxHvBU7jZPl358295vDM5m7uU8BJ0NDSugpAo5r?=
+ =?us-ascii?Q?pOUUShi+44M3Ne7N/ANyLPC2odM2U6S2wdFZpjnqSe3d6H7kZmaX4wyzk3SQ?=
+ =?us-ascii?Q?EKYEjI9oXrZyBSIuFSukkF3bXvO2Z+CRhxn+kULdPuPdEYodYmNqW5jDY6gj?=
+ =?us-ascii?Q?0JsUWjuUGCWRLuxZxHinmmACmsNNVwwZeBfOPxh97WtQ9DMf4GhHsH52Jfkh?=
+ =?us-ascii?Q?yCSPOFzh2XtNSWvqHYdbXGW3cRq0KZf+KWvBBmsW9tKBLtV9tpUNLzcQvNqe?=
+ =?us-ascii?Q?Dj76ymRve7wMyJpwJbs8BTIQp1g8gpyerV4JKpCBalEFgCuCRA5sD3S9pYBu?=
+ =?us-ascii?Q?MJwLjyY6RWSZOr7TAnbBLtoxk6/Q9KFRMM1N0fOyzroet9OwWtjzdAM165Rv?=
+ =?us-ascii?Q?N7Tnz81XlEoVl7htOAEfSmuDsp13v8FLA0Gbk4KTHlrMJhuG6pTsLDE4d/GC?=
+ =?us-ascii?Q?skLtIBT6lXi0VAI9gMPyGjwtEcd86TT94AAoWrw7WovEPqV9iEj3hBMO1yH2?=
+ =?us-ascii?Q?kYkMlYGqneC0W8vUlxoQwNSWsU2y+aPQaxcMjfFZeQg9RyBkGlQnPcN4MBFv?=
+ =?us-ascii?Q?vrxava1y9putvuqRv2nyu3feIyVi7HwqQpZvahQdfnyR76270yXL89GdQ1Fi?=
+ =?us-ascii?Q?qezaD17epxNrw7wBombo9+N3eT57Oyl6H6qRQmxh/80OzgL4CsbODN+qbotj?=
+ =?us-ascii?Q?6WRBxpkFuuspQXe8xIYn6UQAMnR3TyfiN3Gy6gDJe1ElXxsrjsWs+9y2QSFz?=
+ =?us-ascii?Q?NYzHkOqgHejuSZeKBObYqz5fFdUFOkExU33ZvIHoyhXzcRg2qNPjZQNKUKTP?=
+ =?us-ascii?Q?ZWFpsWc1J4gu8LphDBNn62I6dAtHY3m+MsY5wIOpRRxEjs8mNahgEz1HpEEB?=
+ =?us-ascii?Q?3uFj3UmOGYSampbzJb4nJakYAma+V28KvUfUgoCSK7qhKhETNTF7mpiA5lUy?=
+ =?us-ascii?Q?sU7Sug4HSUEEeBOBqXTditBVtq4FsGMLPmR7TWBlHOqqoDmvNqe7QJ0eUtJG?=
+ =?us-ascii?Q?r6IoyIhIEg+XyB1TqjOEFYpvsma7ZtkltlPeQg9cvBp096Y5W3I09RQAz3sk?=
+ =?us-ascii?Q?9iSaXpbeh+7ESP9IcgSqPRBPU95lBEcXbql0Ae0EfVrkNzND6SYgijhol/HI?=
+ =?us-ascii?Q?cUBj/1MvNnaSvQiOddDpda41taiUM3KfRzmlLYlHpb6+C/8AKMfGBirIv/5q?=
+ =?us-ascii?Q?w65r8WyZgG+yi2fJ7zLSEVgYRmxCjVgAZYusTzoV5fBiTct8J5FRJvpl10jr?=
+ =?us-ascii?Q?ybiJw+8h8nbATQP7gR58oIuk09BSDPnRvWBH0ZYF+65kCwn5RR3hpBFjqwgq?=
+ =?us-ascii?Q?nt2KYPiXqSiVLQx/QD2Hbap5SUxDGVd3UQAGQULe8uD/vOQsrnrCHdGOJbdX?=
+ =?us-ascii?Q?y0941aVM+nyCk1OEBANYMF/4KjpB+Z57uNvNhETyjtsYZCfFCWl2Zn5JfnR+?=
+ =?us-ascii?Q?6cLKGs7Tiz4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZYDxaasFFONSzHncEI/QEvzmZtbcNreVaiYqILc4o+lFa/liTOtC3zClEade?=
+ =?us-ascii?Q?G91oc7cj1jWbgtUdtOjbet2LkYybTpBWl3aTLS4U6g61FEojtFHK9/6bHt2X?=
+ =?us-ascii?Q?PFHBZA8N0RQm+OI0ZhD0cEK+AqUsh91uHvPrwTJ5IhwQvZaA8E6AY3Beu7A/?=
+ =?us-ascii?Q?tnte4T9uZgpU3P4VwpHqNNm2tgB7UdgcjObVFTFfAIqmd5dAwWkP6Ejo25jV?=
+ =?us-ascii?Q?xXUOIW3+rQp653z4oRmZVLl7Kn1LuACzk7uI6lvkgm5J1BWcN5T8SMASJV9Z?=
+ =?us-ascii?Q?zlEVQJKnPVkb07hQRIUYoLabpaJOzNUt1YgngjTVQXqKFR+fehIGoVEu4RVP?=
+ =?us-ascii?Q?ZBLzE/rLxi8JZftEtPViGkVl+59+9Lbwhjv/yjSTvuLa4Z2pBZLoHPbXRADi?=
+ =?us-ascii?Q?jk1SCqe2TIg52WWYIWwqv8VCrq7+E/MPHrVLLSMhYcgj0qNTnbO7qgTnmUQk?=
+ =?us-ascii?Q?KTdJySCuDfQdrSMUbUOchrO7+wwIrdFqiIgT+Tb93qjhqcwXX6EsSeEFyxOA?=
+ =?us-ascii?Q?S4vbPo1snDFAP1JfYSp9gcF04T1Uh0j571SofvlgUSTNNsOYklJqHOsbrOPZ?=
+ =?us-ascii?Q?tKvIhHhKn773tcul3p/i1trcUgigCkX6Xmvh4/Zt7esNPL0bGb8VzDXhQWIT?=
+ =?us-ascii?Q?kGJq5zueVBJ2KuCjTjWvxr3VAS9WNNMOrFBhicnKNZ6a4YXZ5yhxxsZsmqZQ?=
+ =?us-ascii?Q?JpVXmKW+rvrVhtZt8LO3zJjnSE+rcv/IgnqyGme6ZYus0yc50b2jUKxNHdKR?=
+ =?us-ascii?Q?PMpHb/oWwW+1qJIChO+qKeDn6IiFUz0BXOLNmkoHJaOB44MSEWDwCAulbQHM?=
+ =?us-ascii?Q?tgZkemo89AwkKP7grf5mCooUifCC81LJ51rOR11PRQVxGhxU1I/P/zcktr7D?=
+ =?us-ascii?Q?zMzP7+z20WxxunGIw3Nd+N/trH8ZM8faltrQiyutqRD1NeUE8zQT/x9zaZki?=
+ =?us-ascii?Q?0ooWPeeVyJOR/+mg2TM32uMZZ2THXiGImuSjf1J7YOjxJrxlHjl4jpbH5vH8?=
+ =?us-ascii?Q?XlH8tTQjjOUUuBG7CiW/MisEGmCZbtaEn9eR5+lRO9UcXcmMLWA9gSDDqqqv?=
+ =?us-ascii?Q?rt2hsy1q1zcaEqxYKWKV/sCM9HeL1yJEdkjMoN3me03C1efVkfj7aQomhVVt?=
+ =?us-ascii?Q?jfTCkHzYZLXwHxxCI2yiWYViib3ZQjtngS/uolMRDtcW4W/YRWTzLIJoDgKe?=
+ =?us-ascii?Q?D2jkE+gKS1b4hUTNn5QndQqDdDbcm3GdVa+MTkF2nssoBelS2jYKirb4DNqn?=
+ =?us-ascii?Q?h2NrmyBvtjK/34qpbmdRx1IHD3fOa37+BGzzoq6kKTnkjXbJXKvghI/Aayiy?=
+ =?us-ascii?Q?V5O0P+VE+BgWlGKZEFpetvBukdOfKkviO3XXTbdMNPgUPV8QDq7HkeUfJwkI?=
+ =?us-ascii?Q?/djctq8kOkLNlvkL+B7HtPZ1RL2Q3aYORRNtLHYzdSRCNwPQ89AGxVanHTxf?=
+ =?us-ascii?Q?tSmXTY+djTHUuyS1fFxHAGd0X8uUOg+AvPh7hRgaUv4WqF2rD87oV8kZ0EAk?=
+ =?us-ascii?Q?FUmWFNQ3qjkes4gleSZdTYQZrfi0VJIczQW1Z1oQkicNKj4vG1nvgkaYIiAS?=
+ =?us-ascii?Q?CLZhCdvR0u2zSvgAaq9sAxtgIKGE8L0giTcxKrcw?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01dbd93d-ead7-4c1f-2ab1-08ddb7f1229b
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 16:14:05.4536
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: kOyHvJnFXfFlNCU3J1ZI0k/d1PcN2xSzW+LsnuHGI2AxmIzp+qS46FWA46FMmqyo
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7975
+X-Spam-Status: No, score=-3.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Add kerneldoc comments, consistent with the kerneldoc comments of the
-SHA-384 and SHA-512 API.
+On 30 Jun 2025, at 12:01, Lorenzo Stoakes wrote:
 
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
----
- include/crypto/sha2.h | 76 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 76 insertions(+)
+> On Mon, Jun 30, 2025 at 02:59:46PM +0200, David Hildenbrand wrote:
+>> Let the page freeing code handle clearing the page type.
+>
+> Why is this advantageous? We want to keep the page marked offline for l=
+onger?
+>
+>>
+>> Acked-by: Zi Yan <ziy@nvidia.com>
+>> Acked-by: Harry Yoo <harry.yoo@oracle.com>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>
+> On assumption this UINT_MAX stuff is sane :)) I mean this is straightfo=
+rward I
+> guess:
 
-diff --git a/include/crypto/sha2.h b/include/crypto/sha2.h
-index 2e3fc2cf4aa0d..e0a08f6addd00 100644
---- a/include/crypto/sha2.h
-+++ b/include/crypto/sha2.h
-@@ -153,17 +153,55 @@ void __hmac_sha256_init(struct __hmac_sha256_ctx *ctx,
-  */
- struct sha224_ctx {
- 	struct __sha256_ctx ctx;
- };
- 
-+/**
-+ * sha224_init() - Initialize a SHA-224 context for a new message
-+ * @ctx: the context to initialize
-+ *
-+ * If you don't need incremental computation, consider sha224() instead.
-+ *
-+ * Context: Any context.
-+ */
- void sha224_init(struct sha224_ctx *ctx);
-+
-+/**
-+ * sha224_update() - Update a SHA-224 context with message data
-+ * @ctx: the context to update; must have been initialized
-+ * @data: the message data
-+ * @len: the data length in bytes
-+ *
-+ * This can be called any number of times.
-+ *
-+ * Context: Any context.
-+ */
- static inline void sha224_update(struct sha224_ctx *ctx,
- 				 const u8 *data, size_t len)
- {
- 	__sha256_update(&ctx->ctx, data, len);
- }
-+
-+/**
-+ * sha224_final() - Finish computing a SHA-224 message digest
-+ * @ctx: the context to finalize; must have been initialized
-+ * @out: (output) the resulting SHA-224 message digest
-+ *
-+ * After finishing, this zeroizes @ctx.  So the caller does not need to do it.
-+ *
-+ * Context: Any context.
-+ */
- void sha224_final(struct sha224_ctx *ctx, u8 out[SHA224_DIGEST_SIZE]);
-+
-+/**
-+ * sha224() - Compute SHA-224 message digest in one shot
-+ * @data: the message data
-+ * @len: the data length in bytes
-+ * @out: (output) the resulting SHA-224 message digest
-+ *
-+ * Context: Any context.
-+ */
- void sha224(const u8 *data, size_t len, u8 out[SHA224_DIGEST_SIZE]);
- 
- /**
-  * struct hmac_sha224_key - Prepared key for HMAC-SHA224
-  * @key: private
-@@ -273,17 +311,55 @@ void hmac_sha224_usingrawkey(const u8 *raw_key, size_t raw_key_len,
-  */
- struct sha256_ctx {
- 	struct __sha256_ctx ctx;
- };
- 
-+/**
-+ * sha256_init() - Initialize a SHA-256 context for a new message
-+ * @ctx: the context to initialize
-+ *
-+ * If you don't need incremental computation, consider sha256() instead.
-+ *
-+ * Context: Any context.
-+ */
- void sha256_init(struct sha256_ctx *ctx);
-+
-+/**
-+ * sha256_update() - Update a SHA-256 context with message data
-+ * @ctx: the context to update; must have been initialized
-+ * @data: the message data
-+ * @len: the data length in bytes
-+ *
-+ * This can be called any number of times.
-+ *
-+ * Context: Any context.
-+ */
- static inline void sha256_update(struct sha256_ctx *ctx,
- 				 const u8 *data, size_t len)
- {
- 	__sha256_update(&ctx->ctx, data, len);
- }
-+
-+/**
-+ * sha256_final() - Finish computing a SHA-256 message digest
-+ * @ctx: the context to finalize; must have been initialized
-+ * @out: (output) the resulting SHA-256 message digest
-+ *
-+ * After finishing, this zeroizes @ctx.  So the caller does not need to do it.
-+ *
-+ * Context: Any context.
-+ */
- void sha256_final(struct sha256_ctx *ctx, u8 out[SHA256_DIGEST_SIZE]);
-+
-+/**
-+ * sha256() - Compute SHA-256 message digest in one shot
-+ * @data: the message data
-+ * @len: the data length in bytes
-+ * @out: (output) the resulting SHA-256 message digest
-+ *
-+ * Context: Any context.
-+ */
- void sha256(const u8 *data, size_t len, u8 out[SHA256_DIGEST_SIZE]);
- 
- /**
-  * struct hmac_sha256_key - Prepared key for HMAC-SHA256
-  * @key: private
--- 
-2.50.0
+This is how page type is cleared.
+See: https://elixir.bootlin.com/linux/v6.15.4/source/include/linux/page-f=
+lags.h#L1013.
 
+I agree with you that patch 4 should have a comment in free_pages_prepare=
+()
+about what the code is for and why UINT_MAX is used.
+
+
+Best Regards,
+Yan, Zi
 
