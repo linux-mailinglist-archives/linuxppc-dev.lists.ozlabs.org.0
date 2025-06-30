@@ -1,134 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-9935-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9923-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68281AEE3AA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jun 2025 18:11:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCD8AEE396
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Jun 2025 18:09:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bWB2F5Qd3z3c5m;
-	Tue,  1 Jul 2025 02:09:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bWB1h0S46z3bpL;
+	Tue,  1 Jul 2025 02:09:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.165.32 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751299797;
-	cv=pass; b=M0jDnXQvncRniaxf7Bd8mYNCrkIrqXqL8gqN8Fq196dpm1Ch96X5sR+SWzY4v6LKDJgwuWqg5KEtoUiOUqVGNybUjb7933Q1FMMrP2F/MOPBKO2oqIBhi27MgPBKb+BvGu2ajw18FGyS4wHoak1WhahZ0q8sNRAM/jLQgew8ylqtCcSJYyGoCIk7lsCj1dnw3cEkKrzzdCYwd+u/fanCACHxxKYDtIfI/Nz5ec71VoMSOivCgs34O55J/YYy3aPSJElR+f45i2bzV2mCQsBlUbI1FUmhXuINDjlhEVIq6+gimHLdTJMTk/ZBAr0RV3I0nLIauJOUcfCFZXFBHu8URA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751299797; c=relaxed/relaxed;
-	bh=6/Eq+U30vhc3IFsh/lB/ShXJ2j30DgZdCdH6tKXPZuI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VOGampMacXlyyTA3pbkXZX3qhoa47GF1NlXer6Nu66f91cWG7V/wVtST4orUlWa9xQUDBwY6TXVCCli4emu3100Txx/+BOCdTHIhzft/sibsdpQuy2buKqfjvqmfYpXYfyGME9RC/r9Aex1LfbDhQzJunwEZMzTBcGRk/JvpdNqfowsTDSPi+FwMtek5ULN2EaEX7HRJRmy4IKclEAXoSUrk7QXqp4wziASIS+BIlE++Hle7E0rZhdurg3XxQTqWjW703F2yoaXUFIGotkX9RhllZGraBEhYfJJvSH07PTykzKWGPC/MFWvWot8dypl1b+Z8+CV7qTpAzAerLWttTQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=NT4f0ooE; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=YeVK3Xhr; dkim-atps=neutral; spf=pass (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751299767;
+	cv=none; b=YZnx6SSYYl167oGYcKajlOcEbZy2uWfVmC0Vy70qdXncwa8mowWfWrhlw0f58UUUrHgH75thRUxMLURPTE1tTPkGh+ETv138HcaWp4sNI2EqkTWb2Jk/WBfUOynfWCypkyycjwlj6+zi0WZodXp7KGPz/t5rbFheDLQpT7UHysGGOc9z0Vt1DKIx5w1E7YKFQ+buXOwEDeaSYKuRIpyNS40AY7j8mjujW8kadGXqo0kyizhlbYJtujPlxglDPsiSFCVxDAqAewE957PRHrMKfHBRL/JPNwWiN7q9sQX3ZsYTavjjUx25SyieT+8Jg2yLTcnZAcoJHDRQn01FZDAg9w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1751299767; c=relaxed/relaxed;
+	bh=d9fUYZmc/3Epl2iylX0t/MD0TSv3vwOVZJgxtOCjkPA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RqeHQmVF1Y6p5KYub/mt/wJn2QEhCEhGvIYrEGdSDAYWjXkRU5uEdceyNMDP/zdd7YOHl9oBYCYLMZqN0Vu7H7075VGkE9dSMTfdOq2vFsr9BmUffiV6oOSVTpIkzKq4p4wavpZqgRiZ2t4zTaSFickVQ0aV6fPX0xQRyF006dR18SqWX804CDtsiVUIHEcvwhmxMH6+svC1RFjNHqCU+qymHltXZqhczidV++zHlm4Eu88gk2qI2/U0GXiEi1lTfGtAZi9OucWmmwzAl5WaAaG6PmHM2Cw30luYnGzrnQJ8bc72gx284SqjC2H0+YCfEGEt6EkxoUjOtNpAPkQIiA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lJs0niP7; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=NT4f0ooE;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=YeVK3Xhr;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lJs0niP7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.165.32; helo=mx0a-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org)
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bWB2D2sbXz3c5h
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 02:09:55 +1000 (AEST)
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55UElfNq020341;
-	Mon, 30 Jun 2025 16:03:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=6/Eq+U30vhc3IFsh/l
-	B/ShXJ2j30DgZdCdH6tKXPZuI=; b=NT4f0ooE/miN3k+vgS3u5bEZ7iHnLlJk+m
-	F85iaDK1ZyQVuIqbki7fpOSsVV78Y90WJf9DQUdpYM9zueYiPawOw557HePLH4/8
-	vDobftzoreDEtznD2RWjUWM/kVp9juG1yNe0Jcet/G7pHxGpiqnF2J0/J0kmlLP8
-	W8/PEgdweJs6XkXq3fqKyturb4aPLQBkBW4aPJsxJtQfyF+I+RDyBgdTCoT+vUdd
-	Sr/bwmGqDu35sHvfvrN2R+jhkHJgbtVirC1b5uuYQgPfe7AXjET1O2kG3JkWeZzi
-	XSGFDTsG37desw8cn8CAb3gejQnBcPjuRR/qgONRQ6iCcrzAWQCw==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47jum7t5vd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Jun 2025 16:03:52 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 55UFchkq011855;
-	Mon, 30 Jun 2025 16:03:51 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10on2081.outbound.protection.outlook.com [40.107.93.81])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47j6u89w1c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 30 Jun 2025 16:03:51 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WlszEnHNpxtuxbsvr6GjTxZEUP6ss2rdCX8h+eOgWFjRYpq47KehM+XhLN9YGhU9GaVLlwXMmE9IEmh/3asVEPgQyDMBY31mSfMPel1v10Cm5p2mwtb+ugNHfDSrMkONAHCRBqVw1z2JUfEsqHnwi1XUWUfyBCZdwg4Duu9q5Gvs1XicX6sNdoEzWHmHF9F/wUzu/kdhaByCGWEPT29JRzdUcJcB/L8ZINcWF9RQ4pTgvlVs7hrVhVhCyxyRp3ugvhMl6mwC/9BA0RA7VG48zpMafe/fcGfzbE8iq2H8HqjUQtEIJt2271BjYHkwWafEBOHRBRAoUlI7nxyEirHuTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6/Eq+U30vhc3IFsh/lB/ShXJ2j30DgZdCdH6tKXPZuI=;
- b=x9yOXHNs8gltUMzuqOeTB4zgnXm029i3awYu2yU4bhKnP45yZoenEas2Fx58GzSaJpwIqW3U7fvl4RlzvBqZcYpeSGnZ1N1g6eBi5/R/t3cq8xPwTNnvRDz7MzVkfJ69EVmi4rgVIupFkV6tBOGPEKzkLZUQPWn3luQURvIxpYT36wmzEejpsbx1HoGJaXVzHbniz4AYUoT1Rwq/RNxTdpqWLP9MIDP11PEd7hePTE18RjVmH86H5af+vEZXhy+cpAzLeXM5FBVkZD/0BMliAyy5W2HZ+qTAD5LTax93oGZfJk0gI4BHxYEYlc9qM6ZpXggv3pCWj3Met8+iYeSDwg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6/Eq+U30vhc3IFsh/lB/ShXJ2j30DgZdCdH6tKXPZuI=;
- b=YeVK3XhrWq1IoEauPZC++Joiu0k1rRLg+gThfbyoJMP3IKRUjDjghylQcjPuvaVdgf+sow42Y83zL/s1vAUzWFTNMkebhDxyvVCIem11RZR5Ah+VukS5F1z93Ebp7zwq3hyvFpOeaIEMJA+Jxnhu1xC8qnOKyPKQabFfsRAMri8=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CY8PR10MB6537.namprd10.prod.outlook.com (2603:10b6:930:5b::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8835.25; Mon, 30 Jun
- 2025 16:03:47 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%6]) with mapi id 15.20.8880.027; Mon, 30 Jun 2025
- 16:03:47 +0000
-Date: Mon, 30 Jun 2025 17:03:45 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        virtualization@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Minchan Kim <minchan@kernel.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Brendan Jackman <jackmanb@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
-        Xu Xin <xu.xin16@zte.com.cn>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Miaohe Lin <linmiaohe@huawei.com>,
-        Naoya Horiguchi <nao.horiguchi@gmail.com>,
-        Oscar Salvador <osalvador@suse.de>, Rik van Riel <riel@surriel.com>,
-        Harry Yoo <harry.yoo@oracle.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Shakeel Butt <shakeel.butt@linux.dev>
-Subject: Re: [PATCH v1 06/29] mm/zsmalloc: make PageZsmalloc() sticky until
- the page is freed
-Message-ID: <74894b3e-9a64-4600-aa3a-e212d2f63e1b@lucifer.local>
-References: <20250630130011.330477-1-david@redhat.com>
- <20250630130011.330477-7-david@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250630130011.330477-7-david@redhat.com>
-X-ClientProxiedBy: LO6P123CA0029.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:313::14) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bWB1d2pqgz30W9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 02:09:25 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id CB005A52F3D;
+	Mon, 30 Jun 2025 16:09:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAB8C4CEE3;
+	Mon, 30 Jun 2025 16:09:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751299760;
+	bh=jSaZckhEe13RC9QBR74JJ8nh/qIlst0hCu0t6sAzGQ4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lJs0niP7c4sUx22SprZKZIPiIso64WKvtDPQJT6G30TxCGEWIR3EFb6SHnOqRAtUk
+	 fN7c8bb4CH9QiW+9XdpNAcD4nsumnealLOj5hrYxucozl0FKYV/DaI3BwX/T1giLNC
+	 z4FsBdQX+fpiqP2wY/i6FG+tKAqKfsWh6AWZun7jpHH1CVKMc/tUzcuV+yllDSZbLx
+	 O18dqp2yaiZKu7TnaX1hbLP0VK2d8NbRA+aR3I9Eb+V9RdGjkJYfsgDEb2AY2UbGmc
+	 copcTlE59ZwHiTuLQgVaXqDuZGTyksyBwBtx7VvTZzI9J8I64QckbRinKefQAZmPS4
+	 PlAo6f4KbPMQg==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH v2 00/14] SHA-256 library improvements
+Date: Mon, 30 Jun 2025 09:06:31 -0700
+Message-ID: <20250630160645.3198-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.50.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -142,166 +72,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CY8PR10MB6537:EE_
-X-MS-Office365-Filtering-Correlation-Id: 297dc354-efff-4dfd-47ba-08ddb7efb251
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?1U8qMfZBVbW7ETKYcwOV6muGvBMM12kOn8s1s9m3rbuEB0Zomrzsy6yWY4IH?=
- =?us-ascii?Q?7JojdP/yal+Gtp6Mp2SHB42AdCdbFnR3NGVYZ4A67bkNs2eymbaG9HAeZWG1?=
- =?us-ascii?Q?curwvmUvrepzSPOu8YHagS92k6rNeYP/22YxiaJUdc6zg6ZdA6gUmASBb0HU?=
- =?us-ascii?Q?zP/rnEUKWCPNscOKh/hyCN6RPRbmNpRlyA3euP3wJeAszMrMUZr2JyHBybjH?=
- =?us-ascii?Q?Ukqxi5LRc5ERQB8iFDOBY73JkORLs7o/xXuSOqBSpB6t65YZ8rdzFgncLe2q?=
- =?us-ascii?Q?xPe8xRSRmGU8d+tliGfY15Y3VaWv1zoKoa27tdTq0qLFRwqR8iaqQZaqcFs9?=
- =?us-ascii?Q?Vuw9UFC7L5K+dqWVCO20oKfvGGzGs6Q6NIt9ttxjS93J5tJxIjFiWiGPveUl?=
- =?us-ascii?Q?ZAwUj/R7zXd7ZjtqaGUTwuUbFGbKeCjOQ1H+TU+0G4WFIDuVa/tfVk4ZNIgZ?=
- =?us-ascii?Q?ntSgMfFVIcMCw8pexafMyiIgt2NQbBx793IBQJUzYmDufSk/WXnN+IHeAEig?=
- =?us-ascii?Q?KWlR3E6rJrPkUOvRKYO5GU66hz+yXTzjidWqtShwsb0Qz+G/VYMT27YFv+k3?=
- =?us-ascii?Q?6vPQaOMC0EZDfIV6r3i8owykBQ2Hcc4Zg92SVhlJNrcmMpVMq0xENw44tg2R?=
- =?us-ascii?Q?W9bhamzBG6SXJWAkbvBhka37K5KssTuArRNYzEC6oKhVsZFjqYSILDMThwEK?=
- =?us-ascii?Q?YfxNcnBldJZvoh6dF8D1A0fGqotWcMffQLL9Zo0MS5DKYqD1whO94RyGgZ5b?=
- =?us-ascii?Q?+OuyyKWMOLa+/Go2YrIr6IL1v/xrUpizLGNWCfEuz6Rf2FekMK0hC8Fi2d8s?=
- =?us-ascii?Q?HDgMfTRwkrnfBUOZnGsKcW5OGOg4l8H/tqd0205USYl3CXOZ9pPtTp+n4wi0?=
- =?us-ascii?Q?2emLg7azPPAQ0RTPoyP/VCleiYgKnOYufuPRRYYte4ZyJo87/k2k0yyYAALb?=
- =?us-ascii?Q?IZ8OD7xQWQ/cNWFCQJ/r3/CX4s2nvFEZrhEImFOIdRjAY0HlRpR2bjnt6Fj9?=
- =?us-ascii?Q?XI5dxKUfAdY/x9N8ym5aOObfC/KGgfCD7KaEatTel/c8bt+9qaVZ2SQJc2Hy?=
- =?us-ascii?Q?4LK7n76+R7p1tf6d1i3l+TL3rX1+NHpq/7Q0dc+PtEczxpisTK9Gh1B0erYW?=
- =?us-ascii?Q?J7cuBpd819vKZoVRmHDaTEFbqP/z0j3tL39JNQPv9lwXGauW8wFPKL2uUQeU?=
- =?us-ascii?Q?aEn9LKRVoEqXCqMeEgQb1YzImxc63QRoAlLKtNjljCDnmJZw/atT9tGdcCPJ?=
- =?us-ascii?Q?8Icvp8vH3TM5gkmnXkQyhluVW5TdKq57J2/oHc7OhxiEQ/ow4VWeCtfE3y3l?=
- =?us-ascii?Q?CCRYmyaeFz4pcoJZ6aSxmMbOpgSXjUJD6Cjn3ySpIHMBbnkyue/mIUPXh10Q?=
- =?us-ascii?Q?efDtzcJtleKYZqwpAD/RWku/9uFhAUinPjApP4yYj6T9Zhe/LA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?To8nraBC2CyPIcXazJ/GuwjgoqAlDTdItVMqjrWkBPnPJeDe0edbq9jchdxv?=
- =?us-ascii?Q?Ra+AbQTMEbSNSGk5ymCdAYrjTGcQ5SUZtadNmmioE8sg56X1e8L4SMH9WWoq?=
- =?us-ascii?Q?DTLCJQaSd1TznuJav6gt6+J8FH8KCTabXg8b2lDzRja7NEzONO3p+HVFFwFl?=
- =?us-ascii?Q?/xcsvmL15Ca9POMirzrkPsA5vBumxs4eev+9/pVaq6/KUzUYoKm8t4wDEYH5?=
- =?us-ascii?Q?CuflZvMQ1YvzV6Nhhnk+lB9ZEviJuDqYDYugaUoyFB8zL/Av4+2YSwaU4uXf?=
- =?us-ascii?Q?9tZ8BCEpfomCNRh0y/Cu2OPe9ivbvoTxcRMlc4HB/kKb0IT3MST3JkxAJZEY?=
- =?us-ascii?Q?uWAOwpfMG4I3HwrLFd3DDsMwH/zAamdWc28xeoyrAYi4/HJXiIJbzz6v93iU?=
- =?us-ascii?Q?gLNW7QYTbXzm1Kv1HxZ+IzEOBIND4qrNEZZfsXSzO9ugwXtQ7qyf9PIUnaQ5?=
- =?us-ascii?Q?fzBk9QATL6CHMKhItHJAsSe+ikG0RXt+9OFNuVDPZUIBrYnCZiBfIbI0H8Lt?=
- =?us-ascii?Q?qhTpJhSTMBa5HuohzBJTF1m2q7NpCicJsNeE6QGGzbPnRgOikkh0urtnXIGr?=
- =?us-ascii?Q?LNZxh0OTiNqeUe/JBA/k22pY3n1IedBoe9hQVbdSwVm9XZaGaFjfNb8aPgXs?=
- =?us-ascii?Q?s5CE3BlZlEFcPH3y3WrXwiM9IPCW1vXa+Jly/zm20Ah6RjipW1rj954GvdPL?=
- =?us-ascii?Q?mMoiosIIjltVGRDLcgxnh7PbV0BIQXbS88ozXF1932QlYHdaxHCVo9jKalIT?=
- =?us-ascii?Q?fYZVIiihyisNfzdYEpxjyX0FFLcM1Ix6TlfbC6dsZN8x7YwSDSqU7IZ8I8S7?=
- =?us-ascii?Q?LDqvtqJUYrvAMxzUSwliOz/vXT5PaEzMwxmsRPfAmaufnSQORwfifqwUC6tk?=
- =?us-ascii?Q?qKz0dptNiqQ9qOiYgMhkcoE/5ilGYaFzOiTWsb4nhcTYDWqUXQL+GMtj6QAj?=
- =?us-ascii?Q?edqJoDnFgF0VuvWWuqoZGuUDxJxPBFRoN1VHkjizQ9K5r0QNJlWB9OSFFV6a?=
- =?us-ascii?Q?oMDcYUfzv2Mt/jGOIWBVKfxOz1AsI45VsyiSDiMlD/lekqMoyKEskTzKo6wC?=
- =?us-ascii?Q?QJtpeFb4eBLmSejintA2+8hyi3Q20gDO44gtXgWrhVAetKMfMNZin8tATLK7?=
- =?us-ascii?Q?H0klAZU/n28C2XKKl/d8OZev2fGLM4xW2+wTk25tyDMc5OO7iAewItB944+r?=
- =?us-ascii?Q?Dx6Incdqn3J6crGo7HRBfhnB2vNQHNkGlRvfM1wGQ4nZ7ZeJOpQZTLAi9BcQ?=
- =?us-ascii?Q?ugzKOmFNbV1GsBXMoRoKO7RNHNpVxQxzR7EyoYFSre47+atZ8VZWFugzl+Np?=
- =?us-ascii?Q?lezASnYIw/K7pt6GoZQdawEqQUj2pDiIV5+pI1vz4KggcwfvHKAMKofP1YTU?=
- =?us-ascii?Q?IEyvBIu+poi/G427iqMCDzINSqQ/6pO0oGs/RqwHK8N1Iy/DTE16hCkciQLD?=
- =?us-ascii?Q?FIBSqCZs6B8yPAshS71MYJNrueIfyHCpfYyUiXLXdrphi+/jGu2FUnUebjQa?=
- =?us-ascii?Q?0J+38h8oHmS6A/taHmwV2kS/JcyLJ0zI5NXA3YDUshBnJ11/EwMC14VyUy/P?=
- =?us-ascii?Q?YGzU/csxsilIUicZLCQG1TbMi2mrzBrvWiabIuHVAlbgCmHp4+6C7/f5lZ1L?=
- =?us-ascii?Q?3A=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	QKHhfsxo3sq/iZC7uQnUe+xRneztmFzkR5EJjRUQdQV9cN0PNBBr8/FnN/Nznm3AjI30IWXXfyNWSNWSekxtckF1IstDVY1b2r/jAzy0gFEEH4kByL0LCzUqY/fxdl/7kINO3p5RfxCixPdFGrr/APaPOsSc1VqrXbEvVKxFgcxoDIAKE46gpU2YtvUFqK7O7jGvG3kUj0p5FvGr8g1R4pZUtO5RPD1gDwRxNSrPpz3cUIjfPWD+uWeqyy2NJNLF+OpW5lww7o7I0LDPM7EiTHG2RorXNFD/1r52Pq6aw/h+9D3oyKZUzVG/Kx2/N0XA9E3qfa41EERpVBDaU+MvXFJhkdT70Kc8Utd+shU65oPXScRFKTdkJX3MMx5mnnGBX85NaZBG0z+d4CxghYIZnWEk1d818fbm2vmgkTg9jMjD1SNgn67AY+QZgWEBho6LDorVyjVBkrarlpJjx0wJTHDDi5giKo+LHy7TqxC6B0fZ6/mPaxLU2sD9v40FjMgZj2bKoRA1w7Ae0waMyIwOlgWNGr3DFrK8XKOI/bSKEwmOvP3R2vVKoWBip/TJ6zZwnFjyoz3Zn9BLG/jstV/UpHMqUWLwWmG52zXTHffZk0M=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 297dc354-efff-4dfd-47ba-08ddb7efb251
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2025 16:03:47.3966
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XnFA+zyec8O4T2i14ZV3HxY3xZ4GQ4QCbIcdLAg/hZlEa87NwfhswCxvpJZHBVQp2A9tdq/cWqHjcXtQORmjdl+Kzt6sC27ltKjlPcO8XBE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB6537
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-06-30_04,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
- suspectscore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2505160000 definitions=main-2506300131
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjMwMDEzMiBTYWx0ZWRfX60C67jRVe+lg OuPV6fl3YvKXMs7jvNSB/R9yqY2+U0nk77qHWnH8k21+GkatDM9dn7DrCc0tFc+PdKNzfrg5LMZ OFmzPjr4q5RfyXUlJ3bgIMeCAPoLTgwt+W0K7Tt85abowxNCOY6SxlUKwM8yg23xMjKZBKxhSIq
- j7ticSO9baGrGFlLvwwQXhSatDjNwa7MLiZHqBzdC9QinYrpR5CQwFQxMxRNl9jL7kpQMoJ27vo NjmtivCzaNxox378A8iMO+hloQWKEUZ9VYwV0FU08MbU/G2l851AQph9KorFxbvc/4k3NaO51RE QTCHThhZ1/QrCwcfie7HQYQUg26u93EchPAg7uYZ0hJE1ELR+EZuNMtkfyq0NGngBJq4I9Ou3vD
- udyRRNSFaQn/6PauUokAVv2Xk4/pqUkZBcI0fl+zUDdrMIhYxmWeiovFMEYNdXJBy7dZwFJJ
-X-Authority-Analysis: v=2.4 cv=MvBS63ae c=1 sm=1 tr=0 ts=6862b568 b=1 cx=c_pps a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=6IFa9wvqVegA:10 a=GoEa3M9JfhUA:10 a=Ikd4Dj_1AAAA:8 a=cm27Pg_UAAAA:8 a=yPCof4ZbAAAA:8 a=20KFwNOVAAAA:8 a=LEvmu-3r5RuW8tMfl3MA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: _ZcTgVCtJ1U8XAd3ClJ-fgJ_kW-SJWeW
-X-Proofpoint-GUID: _ZcTgVCtJ1U8XAd3ClJ-fgJ_kW-SJWeW
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Jun 30, 2025 at 02:59:47PM +0200, David Hildenbrand wrote:
-> Let the page freeing code handle clearing the page type.
->
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> Acked-by: Harry Yoo <harry.yoo@oracle.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+This series is also available at:
 
-On basis of sanity of UINT_MAX thing:
+    git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git sha256-lib-cleanup-v2
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+This series improves the SHA-224 and SHA-256 library code to be
+consistent with what I did for SHA-384 and SHA-512.  This includes:
 
-> ---
->  mm/zpdesc.h   | 5 -----
->  mm/zsmalloc.c | 3 +--
->  2 files changed, 1 insertion(+), 7 deletions(-)
->
-> diff --git a/mm/zpdesc.h b/mm/zpdesc.h
-> index 5cb7e3de43952..5763f36039736 100644
-> --- a/mm/zpdesc.h
-> +++ b/mm/zpdesc.h
-> @@ -163,11 +163,6 @@ static inline void __zpdesc_set_zsmalloc(struct zpdesc *zpdesc)
->  	__SetPageZsmalloc(zpdesc_page(zpdesc));
->  }
->
-> -static inline void __zpdesc_clear_zsmalloc(struct zpdesc *zpdesc)
-> -{
-> -	__ClearPageZsmalloc(zpdesc_page(zpdesc));
-> -}
-> -
->  static inline struct zone *zpdesc_zone(struct zpdesc *zpdesc)
->  {
->  	return page_zone(zpdesc_page(zpdesc));
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 7f1431f2be98f..f98747aed4330 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -880,7 +880,7 @@ static void reset_zpdesc(struct zpdesc *zpdesc)
->  	ClearPagePrivate(page);
->  	zpdesc->zspage = NULL;
->  	zpdesc->next = NULL;
-> -	__ClearPageZsmalloc(page);
-> +	/* PageZsmalloc is sticky until the page is freed to the buddy. */
->  }
->
->  static int trylock_zspage(struct zspage *zspage)
-> @@ -1055,7 +1055,6 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
->  		if (!zpdesc) {
->  			while (--i >= 0) {
->  				zpdesc_dec_zone_page_state(zpdescs[i]);
+- Use stronger typing in the SHA-224 and SHA-256 functions.
 
-Maybe for consistency put a
+- Add support for HMAC-SHA224 and HMAC-SHA256.  (I'll send a separate
+  patch with KUnit test cases for this.)
 
-/* PageZsmalloc is sticky until the page is freed to the buddy. */
+- Make the old-school crypto API's support for sha224 and sha256 just
+  use the actual library API, instead of unsafe low-level functions.
 
-comment here also?
+- Consolidate the CPU-based SHA-224 and SHA-256 code into a single
+  module, with better inlining and dead code elimination.
 
-> -				__zpdesc_clear_zsmalloc(zpdescs[i]);
->  				free_zpdesc(zpdescs[i]);
->  			}
->  			cache_free_zspage(pool, zspage);
-> --
-> 2.49.0
->
+- Properly document the SHA-224 and SHA-256 functions.
+
+- Other changes to synchronize the code with SHA-384 and SHA-512.
+
+Changed in v2:
+- Dropped sha224_kunit.c changes; it will be added later in the history
+- Dropped some patches that I folded into the SHA-512 series
+- Removed redundant checks of IS_ENABLED(CONFIG_KERNEL_MODE_NEON)
+- Removed obsolete setting of -DARCH for sha256.o
+- Fixed a commit title to mention sha256 instead of sha512
+- Excluded HMAC-SHA{224,256} code from purgatory, where it isn't needed
+
+Eric Biggers (14):
+  libceph: Rename hmac_sha256() to ceph_hmac_sha256()
+  cxl/test: Simplify fw_buf_checksum_show()
+  lib/crypto: sha256: Reorder some code
+  lib/crypto: sha256: Remove sha256_blocks_simd()
+  lib/crypto: sha256: Add sha224() and sha224_update()
+  lib/crypto: sha256: Make library API use strongly-typed contexts
+  lib/crypto: sha256: Propagate sha256_block_state type to
+    implementations
+  lib/crypto: sha256: Add HMAC-SHA224 and HMAC-SHA256 support
+  crypto: sha256 - Wrap library and add HMAC support
+  crypto: sha256 - Use same state format as legacy drivers
+  lib/crypto: sha256: Remove sha256_is_arch_optimized()
+  lib/crypto: sha256: Consolidate into single module
+  lib/crypto: sha256: Sync sha256_update() with sha512_update()
+  lib/crypto: sha256: Document the SHA-224 and SHA-256 API
+
+ arch/mips/cavium-octeon/Kconfig               |   6 -
+ arch/mips/cavium-octeon/crypto/Makefile       |   1 -
+ arch/riscv/purgatory/purgatory.c              |   8 +-
+ arch/s390/purgatory/purgatory.c               |   2 +-
+ arch/x86/purgatory/purgatory.c                |   2 +-
+ crypto/Kconfig                                |   4 +-
+ crypto/Makefile                               |   1 -
+ crypto/sha256.c                               | 371 +++++++++-------
+ crypto/testmgr.c                              |  12 +
+ drivers/char/tpm/tpm2-sessions.c              |  12 +-
+ drivers/crypto/img-hash.c                     |   4 +-
+ drivers/crypto/starfive/jh7110-hash.c         |   8 +-
+ include/crypto/internal/sha2.h                |  66 ---
+ include/crypto/sha2.h                         | 390 +++++++++++++++--
+ kernel/kexec_file.c                           |  10 +-
+ lib/crypto/Kconfig                            |  34 +-
+ lib/crypto/Makefile                           |  39 +-
+ lib/crypto/arm/Kconfig                        |   7 -
+ lib/crypto/arm/Makefile                       |   8 +-
+ lib/crypto/arm/sha256-armv4.pl                |  20 +-
+ lib/crypto/arm/sha256-ce.S                    |   2 +-
+ lib/crypto/arm/sha256.c                       |  64 ---
+ lib/crypto/arm/sha256.h                       |  46 ++
+ lib/crypto/arm64/Kconfig                      |   6 -
+ lib/crypto/arm64/Makefile                     |   9 +-
+ lib/crypto/arm64/sha2-armv8.pl                |   2 +-
+ lib/crypto/arm64/sha256-ce.S                  |   2 +-
+ lib/crypto/arm64/sha256.c                     |  75 ----
+ lib/crypto/arm64/sha256.h                     |  57 +++
+ lib/crypto/arm64/sha512.h                     |   6 +-
+ .../crypto/mips/sha256.h                      |  20 +-
+ lib/crypto/powerpc/Kconfig                    |   6 -
+ lib/crypto/powerpc/Makefile                   |   3 -
+ lib/crypto/powerpc/{sha256.c => sha256.h}     |  19 +-
+ lib/crypto/riscv/Kconfig                      |   8 -
+ lib/crypto/riscv/Makefile                     |   3 -
+ .../sha256-riscv64-zvknha_or_zvknhb-zvkb.S    |   2 +-
+ lib/crypto/riscv/sha256.c                     |  67 ---
+ lib/crypto/riscv/sha256.h                     |  42 ++
+ lib/crypto/s390/Kconfig                       |   6 -
+ lib/crypto/s390/Makefile                      |   3 -
+ lib/crypto/s390/sha256.c                      |  47 --
+ lib/crypto/s390/sha256.h                      |  28 ++
+ lib/crypto/sha256-generic.c                   | 138 ------
+ lib/crypto/sha256.c                           | 413 ++++++++++++++++--
+ lib/crypto/sparc/Kconfig                      |   8 -
+ lib/crypto/sparc/Makefile                     |   4 -
+ lib/crypto/sparc/{sha256.c => sha256.h}       |  37 +-
+ lib/crypto/x86/Kconfig                        |   8 -
+ lib/crypto/x86/Makefile                       |   3 -
+ lib/crypto/x86/sha256-avx-asm.S               |   2 +-
+ lib/crypto/x86/sha256-avx2-asm.S              |   2 +-
+ lib/crypto/x86/sha256-ni-asm.S                |   2 +-
+ lib/crypto/x86/sha256-ssse3-asm.S             |   2 +-
+ lib/crypto/x86/sha256.c                       |  80 ----
+ lib/crypto/x86/sha256.h                       |  55 +++
+ net/ceph/messenger_v2.c                       |  12 +-
+ tools/testing/cxl/test/mem.c                  |  21 +-
+ 58 files changed, 1307 insertions(+), 1008 deletions(-)
+ delete mode 100644 include/crypto/internal/sha2.h
+ delete mode 100644 lib/crypto/arm/sha256.c
+ create mode 100644 lib/crypto/arm/sha256.h
+ delete mode 100644 lib/crypto/arm64/sha256.c
+ create mode 100644 lib/crypto/arm64/sha256.h
+ rename arch/mips/cavium-octeon/crypto/octeon-sha256.c => lib/crypto/mips/sha256.h (76%)
+ rename lib/crypto/powerpc/{sha256.c => sha256.h} (76%)
+ delete mode 100644 lib/crypto/riscv/sha256.c
+ create mode 100644 lib/crypto/riscv/sha256.h
+ delete mode 100644 lib/crypto/s390/sha256.c
+ create mode 100644 lib/crypto/s390/sha256.h
+ delete mode 100644 lib/crypto/sha256-generic.c
+ delete mode 100644 lib/crypto/sparc/Kconfig
+ delete mode 100644 lib/crypto/sparc/Makefile
+ rename lib/crypto/sparc/{sha256.c => sha256.h} (53%)
+ delete mode 100644 lib/crypto/x86/sha256.c
+ create mode 100644 lib/crypto/x86/sha256.h
+
+-- 
+2.50.0
+
 
