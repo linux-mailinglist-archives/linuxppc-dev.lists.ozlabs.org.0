@@ -1,102 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-10010-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10011-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7464AEFB51
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jul 2025 15:57:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55082AEFB52
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jul 2025 15:57:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bWl2Y4ssQz2xHT;
-	Tue,  1 Jul 2025 23:57:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bWl2v6rmrz30FR;
+	Tue,  1 Jul 2025 23:57:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751378229;
-	cv=none; b=X9i6aIEVVxOFBOAmSBJhWJu7fZoc4XTb+k1NhIBMLfk4bRiNPk2cwGQK+qMkEGhDMdutEHw3ABDDhiGbfnlvRXE9F/w19JBoipY3iSFpbAJAx1ibvDEI1gACWiTj1WM4Pm1Y/Zq/fLB4FI7FHWpEVTb71Ox33Ww/11v5J+Q6nvsF/gVPTBFDaqSDcI2YN8Yg4LSws6PBqqdLr8C0IKvd6U+l0S7kKB1cVPmcNSqxSc/dyod42ClbivC7qynfTc3xjYqPQRveLFZ9PKvMkuW5Y9vNem1k6ps5JfIE9eguHLF9/vD80vg+XvW1M0vLrH+wAOI+IpcuYwmvlBoNUSdQKg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751378247;
+	cv=none; b=TXbxNJnFxumXzPsDz2ShTQxKimMwLrM9mmLXa7qkQBwP/90lDBhK96Q4zyaDczJC3PXNcQR00tAbl3LEzmOOybJ0Mp+JP4wL2ANDdMpiTgpzvBUSvwQWsl4VudkG7r9HW7HJBjG8GsQIt9wAO0cKRiEv6CH9n7WcPL9Xq1pReRF/i4piyRSsHAtmLVqplyq/axj5Rn9RSqGHOKJed27rw6GcZRH5ITYMbL7ebtiqwQSBaAUh+woF6CxQAfZ6CzJ++gH9FQpb34CXxrcDqFFZcpMNyfMXzGpgpeac1WiGzySlBtTHWStuDrQ4RUN9VmNJou+CjMpnzTJnHEvy/5EsYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751378229; c=relaxed/relaxed;
-	bh=Z+ycC8VMqDRdTxmVTZEG6lFYLS1Cbyrp7bI8bIheStU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NyJerrTyZlktdZEs7Qu10DWaoH1kEeBtCiOWwtzQCQmbIk0lN54Ve3GMkETOci1rWCVgJvGl5L1y8vrlPT4RVMSC+T4hLmLm5JXQ/tIiG0Vf8tuwqF/cl6TishNl5sz/MJjwNVnzGf25H3RCgaU85e07FX2jnpqsX5YHw0xbnWv1xiw/2tEqAyu0TwmujTqBVKICIm3WTrjd8dRSJ3WcfwuseV+a1l9T2Z5lonR7IDQ8bWKvgjq7mg4vFaWXVPGGOaTRPQLzpSowoHMu87YO+QyEZpxOWNKWLZz7mx4kuHwdeMOhGvtP0c2OM9xr7YF835yj7EntWE97rfYInvm8pg==
+	t=1751378247; c=relaxed/relaxed;
+	bh=V3vZ9R0uTy7fJQAGMm1n+hXS6eJOFIoIbjbMiil+6MI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nRyfqFGWxHYrVuj5HPwPBhchtKFJzn5YXbDcJtmfD/ISDKeKjzNA0NNqsrATplCVWqjKLXuyCHwBb7UMnIm7iWAjz7AHc+x+x5EWxVctNmpWYCcBp5phCfIk3Uoidwb1m5xzgt6Ia7EgieBB8rkH6sBPEHWC44GljJq9iEX438AEqm/0lsEIbhENLFupGDi7sCz/UA11irepMeMh8pn9VzfYUaKzNqzPeIN3mXFFvTqDJfFcOgoP7A55RiaEDasfkQ5O7L0RylDvsalNi8B7gXseOPQsdNmJAYN4EQq3JfJnty2/7zkqDhD6X+wqM7cdKEqlcKKeK2YrUPJ2nUdkJA==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bWl2X3PTzz2xBV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 23:57:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bWl2v18jMz30DP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 23:57:27 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4C6151515;
-	Tue,  1 Jul 2025 06:56:18 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AA1D22E98;
+	Tue,  1 Jul 2025 06:56:40 -0700 (PDT)
 Received: from e133380.cambridge.arm.com (e133380.arm.com [10.1.197.52])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE12C3F58B;
-	Tue,  1 Jul 2025 06:56:23 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6CABC3F58B;
+	Tue,  1 Jul 2025 06:56:54 -0700 (PDT)
 From: Dave Martin <Dave.Martin@arm.com>
 To: linux-kernel@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Akihiko Odaki <akihiko.odaki@daynix.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Brian Cain <bcain@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chris Zankel <chris@zankel.net>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Helge Deller <deller@gmx.de>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonas Bonn <jonas@southpole.se>,
-	Kees Cook <kees@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Max Filippov <jcmvbkbc@gmail.com>,
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Oleg Nesterov <oleg@redhat.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Rich Felker <dalias@libc.org>,
-	Richard Weinberger <richard@nod.at>,
-	Russell King <linux@armlinux.org.uk>,
-	Stafford Horne <shorne@gmail.com>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Will Deacon <will@kernel.org>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	linux-arch@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-um@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev,
-	sparclinux@vger.kernel.org,
-	x86@kernel.org
-Subject: [PATCH 00/23] binfmt_elf,arch/*: Use elf.h for coredump note names
-Date: Tue,  1 Jul 2025 14:55:53 +0100
-Message-Id: <20250701135616.29630-1-Dave.Martin@arm.com>
+	Kees Cook <kees@kernel.org>,
+	Akihiko Odaki <akihiko.odaki@daynix.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 15/23] powerpc/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+Date: Tue,  1 Jul 2025 14:56:08 +0100
+Message-Id: <20250701135616.29630-16-Dave.Martin@arm.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250701135616.29630-1-Dave.Martin@arm.com>
+References: <20250701135616.29630-1-Dave.Martin@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -111,148 +58,283 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=FILL_THIS_FORM,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This series aims to clean up an aspect of coredump generation:
+Instead of having the core code guess the note name for each regset,
+use USER_REGSET_NOTE_TYPE() to pick the correct name from elf.h.
 
-ELF coredumps contain a set of notes describing the state of machine
-registers and other information about the dumped process.
-
-Notes are identified by a numeric identifier n_type and a "name"
-string, although this terminology is somewhat misleading.  Officially,
-the "name" of a note is really an "originator" or namespace identifier
-that indicates how to interpret n_type [1], although in practice it is
-often used more loosely.
-
-Either way, each kind of note needs _both_ a specific "name" string and
-a specific n_type to identify it robustly.
-
-To centralise this knowledge in one place and avoid the need for ad-hoc
-code to guess the correct name for a given note, commit 7da8e4ad4df0
-("elf: Define note name macros") [2] added an explicit NN_<foo> #define
-in elf.h to give the name corresponding to each named note type
-NT_<foo>.
-
-Now that the note name for each note is specified explicitly, the
-remaining guesswork for determining the note name for common and
-arch-specific regsets in ELF core dumps can be eliminated.
-
-This series aims to do just that:
-
- * Patch 2 adds a user_regset field to specify the note name, and a
-   helper macro to populate it correctly alongside the note type.
-
- * Patch 3 ports away the ad-hoc note names in the common coredump
-   code.
-
- * Patches 4-22 make the arch-specific changes.  (This is pretty
-   mechanical for most arches.)
-
- * The final patch adds a WARN() when no note name is specified,
-   and simplifies the fallback guess.  This should only be applied
-   when all arches have ported across.
-
-See the individual patches for details.
-
-
-Testing:
-
- * x86, arm64: Booted in a VM and triggered a core dump with no WARN(),
-   and verified that the dumped notes are the same.
-
- * arm: Build-tested only (for now).
-
- * Other arches: not tested yet
-
-Any help with testing is appreciated.  If the following generates the
-same notes (as dumped by readelf -n core) and doesn't trigger a WARN,
-then we are probably good.
-
-$ sleep 60 &
-$ kill -QUIT $!
-
-(Register content might differ between runs, but it should be safe to
-ignore that -- this series only deals with the note names and types.)
-
-Cheers
----Dave
-
-
-[1] System V Application Binary Interface, Edition 4.1,
-Section 5 (Program Loading and Dynamic Linking) -> "Note Section"
-
-https://refspecs.linuxfoundation.org/elf/gabi41.pdf
-
-[2] elf: Define note name macros
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/uapi/linux/elf.h?id=7da8e4ad4df0dd12f37357af62ce1b63e75ae2e6
-
-
-Dave Martin (23):
-  regset: Fix kerneldoc for struct regset_get() in user_regset
-  regset: Add explicit core note name in struct user_regset
-  binfmt_elf: Dump non-arch notes with strictly matching name and type
-  ARC: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-  ARM: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-  arm64: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
-    names
-  csky: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-  hexagon: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
-    names
-  LoongArch: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
-    names
-  m68k: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-  MIPS: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-  nios2: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
-    names
-  openrisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
-    names
-  parisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
-    names
-  powerpc/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
-    names
-  riscv: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
-    names
-  s390/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-  sh: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-  sparc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
-    names
-  x86/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-  um: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-  xtensa: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
-    names
-  binfmt_elf: Warn on missing or suspicious regset note names
-
- arch/arc/kernel/ptrace.c                 |  4 +-
- arch/arm/kernel/ptrace.c                 |  6 +-
- arch/arm64/kernel/ptrace.c               | 52 ++++++++---------
- arch/csky/kernel/ptrace.c                |  4 +-
- arch/hexagon/kernel/ptrace.c             |  2 +-
- arch/loongarch/kernel/ptrace.c           | 16 ++---
- arch/m68k/kernel/ptrace.c                |  4 +-
- arch/mips/kernel/ptrace.c                | 20 +++----
- arch/nios2/kernel/ptrace.c               |  2 +-
- arch/openrisc/kernel/ptrace.c            |  4 +-
- arch/parisc/kernel/ptrace.c              |  8 +--
+Signed-off-by: Dave Martin <Dave.Martin@arm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
  arch/powerpc/kernel/ptrace/ptrace-view.c | 74 ++++++++++++------------
- arch/riscv/kernel/ptrace.c               | 12 ++--
- arch/s390/kernel/ptrace.c                | 42 +++++++-------
- arch/sh/kernel/ptrace_32.c               |  4 +-
- arch/sparc/kernel/ptrace_32.c            |  4 +-
- arch/sparc/kernel/ptrace_64.c            |  8 +--
- arch/x86/kernel/ptrace.c                 | 22 +++----
- arch/x86/um/ptrace.c                     | 10 ++--
- arch/xtensa/kernel/ptrace.c              |  4 +-
- fs/binfmt_elf.c                          | 36 +++++++-----
- fs/binfmt_elf_fdpic.c                    | 17 +++---
- include/linux/regset.h                   | 12 +++-
- 23 files changed, 194 insertions(+), 173 deletions(-)
+ 1 file changed, 37 insertions(+), 37 deletions(-)
 
-
-base-commit: 86731a2a651e58953fc949573895f2fa6d456841
+diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c b/arch/powerpc/kernel/ptrace/ptrace-view.c
+index c1819e0a6684..0310f9097e39 100644
+--- a/arch/powerpc/kernel/ptrace/ptrace-view.c
++++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
+@@ -568,114 +568,114 @@ static int pkey_set(struct task_struct *target, const struct user_regset *regset
+ 
+ static const struct user_regset native_regsets[] = {
+ 	[REGSET_GPR] = {
+-		.core_note_type = NT_PRSTATUS, .n = ELF_NGREG,
++		USER_REGSET_NOTE_TYPE(PRSTATUS), .n = ELF_NGREG,
+ 		.size = sizeof(long), .align = sizeof(long),
+ 		.regset_get = gpr_get, .set = gpr_set
+ 	},
+ 	[REGSET_FPR] = {
+-		.core_note_type = NT_PRFPREG, .n = ELF_NFPREG,
++		USER_REGSET_NOTE_TYPE(PRFPREG), .n = ELF_NFPREG,
+ 		.size = sizeof(double), .align = sizeof(double),
+ 		.regset_get = fpr_get, .set = fpr_set
+ 	},
+ #ifdef CONFIG_ALTIVEC
+ 	[REGSET_VMX] = {
+-		.core_note_type = NT_PPC_VMX, .n = 34,
++		USER_REGSET_NOTE_TYPE(PPC_VMX), .n = 34,
+ 		.size = sizeof(vector128), .align = sizeof(vector128),
+ 		.active = vr_active, .regset_get = vr_get, .set = vr_set
+ 	},
+ #endif
+ #ifdef CONFIG_VSX
+ 	[REGSET_VSX] = {
+-		.core_note_type = NT_PPC_VSX, .n = 32,
++		USER_REGSET_NOTE_TYPE(PPC_VSX), .n = 32,
+ 		.size = sizeof(double), .align = sizeof(double),
+ 		.active = vsr_active, .regset_get = vsr_get, .set = vsr_set
+ 	},
+ #endif
+ #ifdef CONFIG_SPE
+ 	[REGSET_SPE] = {
+-		.core_note_type = NT_PPC_SPE, .n = 35,
++		USER_REGSET_NOTE_TYPE(PPC_SPE), .n = 35,
+ 		.size = sizeof(u32), .align = sizeof(u32),
+ 		.active = evr_active, .regset_get = evr_get, .set = evr_set
+ 	},
+ #endif
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	[REGSET_TM_CGPR] = {
+-		.core_note_type = NT_PPC_TM_CGPR, .n = ELF_NGREG,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CGPR), .n = ELF_NGREG,
+ 		.size = sizeof(long), .align = sizeof(long),
+ 		.active = tm_cgpr_active, .regset_get = tm_cgpr_get, .set = tm_cgpr_set
+ 	},
+ 	[REGSET_TM_CFPR] = {
+-		.core_note_type = NT_PPC_TM_CFPR, .n = ELF_NFPREG,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CFPR), .n = ELF_NFPREG,
+ 		.size = sizeof(double), .align = sizeof(double),
+ 		.active = tm_cfpr_active, .regset_get = tm_cfpr_get, .set = tm_cfpr_set
+ 	},
+ 	[REGSET_TM_CVMX] = {
+-		.core_note_type = NT_PPC_TM_CVMX, .n = ELF_NVMX,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CVMX), .n = ELF_NVMX,
+ 		.size = sizeof(vector128), .align = sizeof(vector128),
+ 		.active = tm_cvmx_active, .regset_get = tm_cvmx_get, .set = tm_cvmx_set
+ 	},
+ 	[REGSET_TM_CVSX] = {
+-		.core_note_type = NT_PPC_TM_CVSX, .n = ELF_NVSX,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CVSX), .n = ELF_NVSX,
+ 		.size = sizeof(double), .align = sizeof(double),
+ 		.active = tm_cvsx_active, .regset_get = tm_cvsx_get, .set = tm_cvsx_set
+ 	},
+ 	[REGSET_TM_SPR] = {
+-		.core_note_type = NT_PPC_TM_SPR, .n = ELF_NTMSPRREG,
++		USER_REGSET_NOTE_TYPE(PPC_TM_SPR), .n = ELF_NTMSPRREG,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = tm_spr_active, .regset_get = tm_spr_get, .set = tm_spr_set
+ 	},
+ 	[REGSET_TM_CTAR] = {
+-		.core_note_type = NT_PPC_TM_CTAR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CTAR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = tm_tar_active, .regset_get = tm_tar_get, .set = tm_tar_set
+ 	},
+ 	[REGSET_TM_CPPR] = {
+-		.core_note_type = NT_PPC_TM_CPPR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CPPR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = tm_ppr_active, .regset_get = tm_ppr_get, .set = tm_ppr_set
+ 	},
+ 	[REGSET_TM_CDSCR] = {
+-		.core_note_type = NT_PPC_TM_CDSCR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CDSCR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = tm_dscr_active, .regset_get = tm_dscr_get, .set = tm_dscr_set
+ 	},
+ #endif
+ #ifdef CONFIG_PPC64
+ 	[REGSET_PPR] = {
+-		.core_note_type = NT_PPC_PPR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_PPR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.regset_get = ppr_get, .set = ppr_set
+ 	},
+ 	[REGSET_DSCR] = {
+-		.core_note_type = NT_PPC_DSCR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_DSCR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.regset_get = dscr_get, .set = dscr_set
+ 	},
+ #endif
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	[REGSET_TAR] = {
+-		.core_note_type = NT_PPC_TAR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_TAR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.regset_get = tar_get, .set = tar_set
+ 	},
+ 	[REGSET_EBB] = {
+-		.core_note_type = NT_PPC_EBB, .n = ELF_NEBB,
++		USER_REGSET_NOTE_TYPE(PPC_EBB), .n = ELF_NEBB,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = ebb_active, .regset_get = ebb_get, .set = ebb_set
+ 	},
+ 	[REGSET_PMR] = {
+-		.core_note_type = NT_PPC_PMU, .n = ELF_NPMU,
++		USER_REGSET_NOTE_TYPE(PPC_PMU), .n = ELF_NPMU,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = pmu_active, .regset_get = pmu_get, .set = pmu_set
+ 	},
+ 	[REGSET_DEXCR] = {
+-		.core_note_type = NT_PPC_DEXCR, .n = ELF_NDEXCR,
++		USER_REGSET_NOTE_TYPE(PPC_DEXCR), .n = ELF_NDEXCR,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = dexcr_active, .regset_get = dexcr_get
+ 	},
+ #ifdef CONFIG_CHECKPOINT_RESTORE
+ 	[REGSET_HASHKEYR] = {
+-		.core_note_type = NT_PPC_HASHKEYR, .n = ELF_NHASHKEYR,
++		USER_REGSET_NOTE_TYPE(PPC_HASHKEYR), .n = ELF_NHASHKEYR,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = hashkeyr_active, .regset_get = hashkeyr_get, .set = hashkeyr_set
+ 	},
+@@ -683,7 +683,7 @@ static const struct user_regset native_regsets[] = {
+ #endif
+ #ifdef CONFIG_PPC_MEM_KEYS
+ 	[REGSET_PKEY] = {
+-		.core_note_type = NT_PPC_PKEY, .n = ELF_NPKEY,
++		USER_REGSET_NOTE_TYPE(PPC_PKEY), .n = ELF_NPKEY,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = pkey_active, .regset_get = pkey_get, .set = pkey_set
+ 	},
+@@ -843,92 +843,92 @@ static int gpr32_set(struct task_struct *target,
+  */
+ static const struct user_regset compat_regsets[] = {
+ 	[REGSET_GPR] = {
+-		.core_note_type = NT_PRSTATUS, .n = ELF_NGREG,
++		USER_REGSET_NOTE_TYPE(PRSTATUS), .n = ELF_NGREG,
+ 		.size = sizeof(compat_long_t), .align = sizeof(compat_long_t),
+ 		.regset_get = gpr32_get, .set = gpr32_set
+ 	},
+ 	[REGSET_FPR] = {
+-		.core_note_type = NT_PRFPREG, .n = ELF_NFPREG,
++		USER_REGSET_NOTE_TYPE(PRFPREG), .n = ELF_NFPREG,
+ 		.size = sizeof(double), .align = sizeof(double),
+ 		.regset_get = fpr_get, .set = fpr_set
+ 	},
+ #ifdef CONFIG_ALTIVEC
+ 	[REGSET_VMX] = {
+-		.core_note_type = NT_PPC_VMX, .n = 34,
++		USER_REGSET_NOTE_TYPE(PPC_VMX), .n = 34,
+ 		.size = sizeof(vector128), .align = sizeof(vector128),
+ 		.active = vr_active, .regset_get = vr_get, .set = vr_set
+ 	},
+ #endif
+ #ifdef CONFIG_SPE
+ 	[REGSET_SPE] = {
+-		.core_note_type = NT_PPC_SPE, .n = 35,
++		USER_REGSET_NOTE_TYPE(PPC_SPE), .n = 35,
+ 		.size = sizeof(u32), .align = sizeof(u32),
+ 		.active = evr_active, .regset_get = evr_get, .set = evr_set
+ 	},
+ #endif
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	[REGSET_TM_CGPR] = {
+-		.core_note_type = NT_PPC_TM_CGPR, .n = ELF_NGREG,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CGPR), .n = ELF_NGREG,
+ 		.size = sizeof(long), .align = sizeof(long),
+ 		.active = tm_cgpr_active,
+ 		.regset_get = tm_cgpr32_get, .set = tm_cgpr32_set
+ 	},
+ 	[REGSET_TM_CFPR] = {
+-		.core_note_type = NT_PPC_TM_CFPR, .n = ELF_NFPREG,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CFPR), .n = ELF_NFPREG,
+ 		.size = sizeof(double), .align = sizeof(double),
+ 		.active = tm_cfpr_active, .regset_get = tm_cfpr_get, .set = tm_cfpr_set
+ 	},
+ 	[REGSET_TM_CVMX] = {
+-		.core_note_type = NT_PPC_TM_CVMX, .n = ELF_NVMX,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CVMX), .n = ELF_NVMX,
+ 		.size = sizeof(vector128), .align = sizeof(vector128),
+ 		.active = tm_cvmx_active, .regset_get = tm_cvmx_get, .set = tm_cvmx_set
+ 	},
+ 	[REGSET_TM_CVSX] = {
+-		.core_note_type = NT_PPC_TM_CVSX, .n = ELF_NVSX,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CVSX), .n = ELF_NVSX,
+ 		.size = sizeof(double), .align = sizeof(double),
+ 		.active = tm_cvsx_active, .regset_get = tm_cvsx_get, .set = tm_cvsx_set
+ 	},
+ 	[REGSET_TM_SPR] = {
+-		.core_note_type = NT_PPC_TM_SPR, .n = ELF_NTMSPRREG,
++		USER_REGSET_NOTE_TYPE(PPC_TM_SPR), .n = ELF_NTMSPRREG,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = tm_spr_active, .regset_get = tm_spr_get, .set = tm_spr_set
+ 	},
+ 	[REGSET_TM_CTAR] = {
+-		.core_note_type = NT_PPC_TM_CTAR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CTAR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = tm_tar_active, .regset_get = tm_tar_get, .set = tm_tar_set
+ 	},
+ 	[REGSET_TM_CPPR] = {
+-		.core_note_type = NT_PPC_TM_CPPR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CPPR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = tm_ppr_active, .regset_get = tm_ppr_get, .set = tm_ppr_set
+ 	},
+ 	[REGSET_TM_CDSCR] = {
+-		.core_note_type = NT_PPC_TM_CDSCR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_TM_CDSCR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = tm_dscr_active, .regset_get = tm_dscr_get, .set = tm_dscr_set
+ 	},
+ #endif
+ #ifdef CONFIG_PPC64
+ 	[REGSET_PPR] = {
+-		.core_note_type = NT_PPC_PPR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_PPR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.regset_get = ppr_get, .set = ppr_set
+ 	},
+ 	[REGSET_DSCR] = {
+-		.core_note_type = NT_PPC_DSCR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_DSCR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.regset_get = dscr_get, .set = dscr_set
+ 	},
+ #endif
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	[REGSET_TAR] = {
+-		.core_note_type = NT_PPC_TAR, .n = 1,
++		USER_REGSET_NOTE_TYPE(PPC_TAR), .n = 1,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.regset_get = tar_get, .set = tar_set
+ 	},
+ 	[REGSET_EBB] = {
+-		.core_note_type = NT_PPC_EBB, .n = ELF_NEBB,
++		USER_REGSET_NOTE_TYPE(PPC_EBB), .n = ELF_NEBB,
+ 		.size = sizeof(u64), .align = sizeof(u64),
+ 		.active = ebb_active, .regset_get = ebb_get, .set = ebb_set
+ 	},
 -- 
 2.34.1
 
