@@ -1,109 +1,102 @@
-Return-Path: <linuxppc-dev+bounces-10009-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10010-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98AAAEFAD8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jul 2025 15:38:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7464AEFB51
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jul 2025 15:57:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bWkd605DDz2xPc;
-	Tue,  1 Jul 2025 23:38:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bWl2Y4ssQz2xHT;
+	Tue,  1 Jul 2025 23:57:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751377113;
-	cv=none; b=clBV2V7onky6VjGAp6cNY1tcYF8kncKD69rbBm7UxRTXIx5Ho1sw8xyvqdWoUNQQ4tcmRJ5bihQf14R2sn3Fb0dheWF5U/ipDyd98DPRZdKf9KKyVKx6uc8kgC+Sv42Gpbo4E5zHiGoHuBveoJQeZx9lX/rjLV96GtEATA7SKq/qWqm3Rm65rXFtB0HlyhzQc2TnqroKMQpMSAK/rZstqZ0FWkpuhGlw/hDwSSvmK52+QslIdjSIGEZ6NOip3mZ7cPuIn7yPF4VcNOWRYehEngvJEUuvTfXtWaWzVHQm8wufy5Eg121ChoQXN+FVmo8RQqqNaas6JxqJ9eEzLnBTZg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751378229;
+	cv=none; b=X9i6aIEVVxOFBOAmSBJhWJu7fZoc4XTb+k1NhIBMLfk4bRiNPk2cwGQK+qMkEGhDMdutEHw3ABDDhiGbfnlvRXE9F/w19JBoipY3iSFpbAJAx1ibvDEI1gACWiTj1WM4Pm1Y/Zq/fLB4FI7FHWpEVTb71Ox33Ww/11v5J+Q6nvsF/gVPTBFDaqSDcI2YN8Yg4LSws6PBqqdLr8C0IKvd6U+l0S7kKB1cVPmcNSqxSc/dyod42ClbivC7qynfTc3xjYqPQRveLFZ9PKvMkuW5Y9vNem1k6ps5JfIE9eguHLF9/vD80vg+XvW1M0vLrH+wAOI+IpcuYwmvlBoNUSdQKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751377113; c=relaxed/relaxed;
-	bh=AJLNXeZBidDlQX/9niKzeIA7RdIQ35aaPXD/kLpTeHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XpcLJLUXa5XYAOC00c8+EznRGb3BNRqxsKL7S7l+mSeMxDQ7XCUzJtvAN9KpKmcBVLmW04f4iWc3gEuhBJW+WhOxXl3hUKZlY+Hxx+q5YFdmcs2822jFBMm4IoP1VgzLk0VCLxEqoWAXZqfYMfGuVCpJ0jILfQzmvVbQ78pHhiFSwLy0rI8Ox0ZaSiIh47GOzR+ngmDa6iziSiQNvyroXqNhQd2kQx/pqRTRAC0WLuLIiCEc+k2WczO0bhPjpzL20nC1CA1P29e/AdzbN+F6d0r2GIaEv2m9rUeMEfsf2hs25kbs9FO35Zgd4v/D3bvhkezDXRsQHTQx++76oz2LWA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rlhS3ni/; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rlhS3ni/;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bWkd50DSnz2xCd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 23:38:32 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 561Ao1Lm012254;
-	Tue, 1 Jul 2025 13:37:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=AJLNXeZBidDlQX/9niKzeIA7RdIQ35
-	aaPXD/kLpTeHk=; b=rlhS3ni/cF+oHD+o2LmQH00Tt1yf+IXrQwS8k/NYdNoQmt
-	duh9xElSzAv31IeesiKLOuUaS7Js+v1FcCM3idLgVIqiFfWon7XDGjUUaGS1gO7k
-	A0JrbTyaswrFc7s4ZFW4HADsPTEgUor320+59p+Q02H940E/xpViJv61e7ViyNjJ
-	vMcXo0c5xDHAYQwHYeEOaFbcipPGvNgKtWbscb8fvFkysHG+EG7pEVr+wrBpt5rP
-	TvpzBk/V8AqMNvTK7fz483B21FzXBpDlDdKDMGCI6bWWjVPpwYCBxl8uHjAuPKPZ
-	sumQ0qg/FxaZ17KQzTSCoQkinixWtocLfr+JROcQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j7wrfqxp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 01 Jul 2025 13:37:34 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 561DK4Af030631;
-	Tue, 1 Jul 2025 13:37:33 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j7wrfqxj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 01 Jul 2025 13:37:33 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 561CFQo0021945;
-	Tue, 1 Jul 2025 13:37:32 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47juqpju2u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 01 Jul 2025 13:37:32 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 561DbRkS39191032
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 1 Jul 2025 13:37:28 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D64A12004B;
-	Tue,  1 Jul 2025 13:37:27 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 79D812005A;
-	Tue,  1 Jul 2025 13:37:25 +0000 (GMT)
-Received: from osiris (unknown [9.111.81.242])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  1 Jul 2025 13:37:25 +0000 (GMT)
-Date: Tue, 1 Jul 2025 15:37:24 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>,
-        Sabyrzhan Tasbolatov <snovitoll@gmail.com>, ryabinin.a.a@gmail.com,
-        glider@google.com, dvyukov@google.com, vincenzo.frascino@arm.com,
-        linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
-        chenhuacai@kernel.org, kernel@xen0n.name, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, richard@nod.at, anton.ivanov@cambridgegreys.com,
-        johannes@sipsolutions.net, dave.hansen@linux.intel.com,
-        luto@kernel.org, peterz@infradead.org, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
-        chris@zankel.net, jcmvbkbc@gmail.com, akpm@linux-foundation.org,
-        nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
-        justinstitt@google.com, arnd@arndb.de, rppt@kernel.org,
-        geert@linux-m68k.org, mcgrof@kernel.org, guoweikang.kernel@gmail.com,
-        tiwei.btw@antgroup.com, kevin.brodsky@arm.com, benjamin.berg@intel.com,
-        kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-mm@kvack.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2 00/11] kasan: unify kasan_arch_is_ready with
- kasan_enabled
-Message-ID: <20250701133724.10162Bea-hca@linux.ibm.com>
-References: <20250626153147.145312-1-snovitoll@gmail.com>
- <CA+fCnZfAtKWx=+to=XQBREhou=Snb0Yms4D8GNGaxE+BQUYm4A@mail.gmail.com>
- <CACzwLxgsVkn98VDPpmm7pKcbvu87UBwPgYJmLfKixu4-x+yjSA@mail.gmail.com>
- <CA+fCnZcGyTECP15VMSPh+duLmxNe=ApHfOnbAY3NqtFHZvceZw@mail.gmail.com>
- <20250701101537.10162Aa0-hca@linux.ibm.com>
- <0400f0be-6b63-4bc7-846e-8852e1d01485@csgroup.eu>
+	t=1751378229; c=relaxed/relaxed;
+	bh=Z+ycC8VMqDRdTxmVTZEG6lFYLS1Cbyrp7bI8bIheStU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NyJerrTyZlktdZEs7Qu10DWaoH1kEeBtCiOWwtzQCQmbIk0lN54Ve3GMkETOci1rWCVgJvGl5L1y8vrlPT4RVMSC+T4hLmLm5JXQ/tIiG0Vf8tuwqF/cl6TishNl5sz/MJjwNVnzGf25H3RCgaU85e07FX2jnpqsX5YHw0xbnWv1xiw/2tEqAyu0TwmujTqBVKICIm3WTrjd8dRSJ3WcfwuseV+a1l9T2Z5lonR7IDQ8bWKvgjq7mg4vFaWXVPGGOaTRPQLzpSowoHMu87YO+QyEZpxOWNKWLZz7mx4kuHwdeMOhGvtP0c2OM9xr7YF835yj7EntWE97rfYInvm8pg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bWl2X3PTzz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 23:57:06 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4C6151515;
+	Tue,  1 Jul 2025 06:56:18 -0700 (PDT)
+Received: from e133380.cambridge.arm.com (e133380.arm.com [10.1.197.52])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CE12C3F58B;
+	Tue,  1 Jul 2025 06:56:23 -0700 (PDT)
+From: Dave Martin <Dave.Martin@arm.com>
+To: linux-kernel@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Chris Zankel <chris@zankel.net>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Jonas Bonn <jonas@southpole.se>,
+	Kees Cook <kees@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Rich Felker <dalias@libc.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Will Deacon <will@kernel.org>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org,
+	x86@kernel.org
+Subject: [PATCH 00/23] binfmt_elf,arch/*: Use elf.h for coredump note names
+Date: Tue,  1 Jul 2025 14:55:53 +0100
+Message-Id: <20250701135616.29630-1-Dave.Martin@arm.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -117,39 +110,150 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0400f0be-6b63-4bc7-846e-8852e1d01485@csgroup.eu>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=E/PNpbdl c=1 sm=1 tr=0 ts=6863e49e cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=kj9zAlcOel0A:10 a=Wb1JkmetP80A:10 a=voM4FWlXAAAA:8 a=pGLkceISAAAA:8 a=9kVARt_T5sJ8cKZ6P08A:9 a=CjuIK1q_8ugA:10
- a=IC2XNlieTeVoXbcui8wp:22
-X-Proofpoint-GUID: RhlQaPOLrhblKhkyaR8lhPAADXtAGdqv
-X-Proofpoint-ORIG-GUID: GE-5RQzQLYwKSRuZzvD2Ieha-YyMeWy7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDA4NSBTYWx0ZWRfXzvbPIXoCFjaA YSsHPBvgZlo8uA940MrN2nhmDxVD4yrQC0Blr21wUJpIGCnNlNYIEYn0zUSw91bxc/h5BgvR4PQ 8+gmBbA2hDH7/zlVMxuAui0Eg0eLEMWJxQ2/qxuHFp9hM4UusUMJXT1gcIBCqFiNlncOSMVN5PG
- Ld5QIjM0M/RCgeT9uZc/VoQiigSg/ZOOijWeB0ApYuTWAn6oTpW5uLedkuEa+H9gsqL267RFsh+ hsZlShfTEsI5dV1qJMDiUaZYdjPAHbt+/Y5HPTDay65IxTT2JuvXcJaPY0TCfNXxBXRdcK6cNfg T9ENU2fNsIOPb8h0JhVPWTlgBKUQsNsQrY0goxWlNMztanR3wFR0fwoMfm4Jvvns3yERoc04SWn
- h0O40s/ZVSLp603nO33OhPNgBdCIeQQuKGnHgEsIbQLtMjKZdTC34lQKNuw31VIbsvBRZVlt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-01_02,2025-06-27_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- bulkscore=0 priorityscore=1501 phishscore=0 suspectscore=0 mlxlogscore=594
- lowpriorityscore=0 mlxscore=0 clxscore=1015 adultscore=0 impostorscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507010085
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=FILL_THIS_FORM,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Jul 01, 2025 at 12:25:32PM +0200, Christophe Leroy wrote:
-> Your patch below is simpler than what I proposed, but it keeps the static
-> branches so the overhead remains.
-> 
-> I also proposed a change, it goes further by removing the static branch for
-> architectures that don't need it, see https://patchwork.ozlabs.org/project/linuxppc-dev/cover/20250626153147.145312-1-snovitoll@gmail.com/#3537388
-> . Feedback welcome.
+This series aims to clean up an aspect of coredump generation:
 
-Yes, removing the static branches during compile time is of course
-even better.
+ELF coredumps contain a set of notes describing the state of machine
+registers and other information about the dumped process.
+
+Notes are identified by a numeric identifier n_type and a "name"
+string, although this terminology is somewhat misleading.  Officially,
+the "name" of a note is really an "originator" or namespace identifier
+that indicates how to interpret n_type [1], although in practice it is
+often used more loosely.
+
+Either way, each kind of note needs _both_ a specific "name" string and
+a specific n_type to identify it robustly.
+
+To centralise this knowledge in one place and avoid the need for ad-hoc
+code to guess the correct name for a given note, commit 7da8e4ad4df0
+("elf: Define note name macros") [2] added an explicit NN_<foo> #define
+in elf.h to give the name corresponding to each named note type
+NT_<foo>.
+
+Now that the note name for each note is specified explicitly, the
+remaining guesswork for determining the note name for common and
+arch-specific regsets in ELF core dumps can be eliminated.
+
+This series aims to do just that:
+
+ * Patch 2 adds a user_regset field to specify the note name, and a
+   helper macro to populate it correctly alongside the note type.
+
+ * Patch 3 ports away the ad-hoc note names in the common coredump
+   code.
+
+ * Patches 4-22 make the arch-specific changes.  (This is pretty
+   mechanical for most arches.)
+
+ * The final patch adds a WARN() when no note name is specified,
+   and simplifies the fallback guess.  This should only be applied
+   when all arches have ported across.
+
+See the individual patches for details.
+
+
+Testing:
+
+ * x86, arm64: Booted in a VM and triggered a core dump with no WARN(),
+   and verified that the dumped notes are the same.
+
+ * arm: Build-tested only (for now).
+
+ * Other arches: not tested yet
+
+Any help with testing is appreciated.  If the following generates the
+same notes (as dumped by readelf -n core) and doesn't trigger a WARN,
+then we are probably good.
+
+$ sleep 60 &
+$ kill -QUIT $!
+
+(Register content might differ between runs, but it should be safe to
+ignore that -- this series only deals with the note names and types.)
+
+Cheers
+---Dave
+
+
+[1] System V Application Binary Interface, Edition 4.1,
+Section 5 (Program Loading and Dynamic Linking) -> "Note Section"
+
+https://refspecs.linuxfoundation.org/elf/gabi41.pdf
+
+[2] elf: Define note name macros
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/include/uapi/linux/elf.h?id=7da8e4ad4df0dd12f37357af62ce1b63e75ae2e6
+
+
+Dave Martin (23):
+  regset: Fix kerneldoc for struct regset_get() in user_regset
+  regset: Add explicit core note name in struct user_regset
+  binfmt_elf: Dump non-arch notes with strictly matching name and type
+  ARC: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  ARM: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  arm64: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  csky: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  hexagon: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  LoongArch: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  m68k: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  MIPS: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  nios2: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  openrisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  parisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  powerpc/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  riscv: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  s390/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  sh: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  sparc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  x86/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  um: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
+  xtensa: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note
+    names
+  binfmt_elf: Warn on missing or suspicious regset note names
+
+ arch/arc/kernel/ptrace.c                 |  4 +-
+ arch/arm/kernel/ptrace.c                 |  6 +-
+ arch/arm64/kernel/ptrace.c               | 52 ++++++++---------
+ arch/csky/kernel/ptrace.c                |  4 +-
+ arch/hexagon/kernel/ptrace.c             |  2 +-
+ arch/loongarch/kernel/ptrace.c           | 16 ++---
+ arch/m68k/kernel/ptrace.c                |  4 +-
+ arch/mips/kernel/ptrace.c                | 20 +++----
+ arch/nios2/kernel/ptrace.c               |  2 +-
+ arch/openrisc/kernel/ptrace.c            |  4 +-
+ arch/parisc/kernel/ptrace.c              |  8 +--
+ arch/powerpc/kernel/ptrace/ptrace-view.c | 74 ++++++++++++------------
+ arch/riscv/kernel/ptrace.c               | 12 ++--
+ arch/s390/kernel/ptrace.c                | 42 +++++++-------
+ arch/sh/kernel/ptrace_32.c               |  4 +-
+ arch/sparc/kernel/ptrace_32.c            |  4 +-
+ arch/sparc/kernel/ptrace_64.c            |  8 +--
+ arch/x86/kernel/ptrace.c                 | 22 +++----
+ arch/x86/um/ptrace.c                     | 10 ++--
+ arch/xtensa/kernel/ptrace.c              |  4 +-
+ fs/binfmt_elf.c                          | 36 +++++++-----
+ fs/binfmt_elf_fdpic.c                    | 17 +++---
+ include/linux/regset.h                   | 12 +++-
+ 23 files changed, 194 insertions(+), 173 deletions(-)
+
+
+base-commit: 86731a2a651e58953fc949573895f2fa6d456841
+-- 
+2.34.1
+
 
