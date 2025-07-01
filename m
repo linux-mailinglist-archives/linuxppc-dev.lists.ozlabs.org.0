@@ -1,73 +1,136 @@
-Return-Path: <linuxppc-dev+bounces-9963-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-9964-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B29AEF235
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jul 2025 11:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD60AEF244
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Jul 2025 11:02:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bWcTN0pCSz2xPc;
-	Tue,  1 Jul 2025 19:01:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bWcW24RkGz307q;
+	Tue,  1 Jul 2025 19:02:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751360488;
-	cv=none; b=UdX7O9kzMDtEphm5r9sWw9/BC2UGBaucegVvN81ZAYa8dA2mo8VJEe1WZBN/PO10yEuTp6LUzLjgnplGOYbMOGwDKKlPRO1pUQXjuxQ+QuUuyYDzE6wg1BhJM8STDCHuxxUC4rbguah8s8qpWtE1iuInkgcdFRSCq3oOrmdmCPI5MGm8kvKpz815PHhWo8g9G/+nrUXidwNx/AX3MI1IlliVSZsR8NG5mMWmsI0lI+Igc4fPnQ9KHD1ujfOCZHoElKVVWwlZl6uYncJc6OoMHR4heLCJfaTxuOLNTV+2BLtFmYopZ4U0xfzYPsmY68pmKYgPE2BodC2bbafflBRDpw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751360488; c=relaxed/relaxed;
-	bh=yJxgGbUntkNOcE4lDNiP6hFImXKhe0xXtkpErc+HjG8=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=SoG0Adm7PzDX4jedcLrGuUXNAUa/VOR3wwxZor3HKxcfaG9g7qAQkMBn3pc3J0sxW9jshGOUUrC7Ho87XSaKjtxQCBVt2KdTjrM+I6Fs3OutaTOrH+2cJhf7TCJEFhaUx6rr+fZOw/BSI08nRywL30cXdjJ/ZVPsX6aQ6fa0OuxTMrBzZJjPT3cBvytAHl+QMqJYvp/PMkeabmZgn9fDLazba5jCwBkvsiADB+zrTMh7YfHjGp+eesDbfx+82nBhEfOyKs75x+abCeM9fJtD7r1VxT5QKEg1eKJtoAh5RJD5FxK2pChlTbHtsJwD2WGeaXR00vl1GQjxrKYkhInL6g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MovC6f5S; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.177.32 arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751360574;
+	cv=pass; b=cSH1c33h6xxH9cfu/ZQK/W46MllIo+rr1gDJLmicS5/rVU2cUMZy4BD2cTBDDpDEYCihEkQRgjfo8uA1M6WJiLVGhMi+RR/CCbsDtY0CDx+irGjVQVPHkyCu+ckzzLtgt1uumkuRMkbOKukSAJ5/fs8uQbazQXlURUaIV/1FeZN1E1xmlhVFxVT6kpnftpz9Kg7QW2ype+gMTG/RR+WQUJfDjznG56M6OW9GJL456gng8vOkz4eWHvuiP7zBJVROlny525qT8mtn9k7yOGZPSMUYsEUeN0+2knikgEebgkI3IFTZe/DrLBa4sx6Xjakdvqpx3rysJ7NuJABET3WCXg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1751360574; c=relaxed/relaxed;
+	bh=FoQ2aLYBja0Vjo39mjE13MGX3mPx9DU2ghID3c9esg8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=R2WX2cpN14yFDlbfYRqJ6aoQQEJndgn+C8Y1aeF2WBQU/rQQGDvBAUbhbybUIzLBKRvvvwDhuHRzdpgVaaDQ7Lk03iXtWEaUTmsWYfpR2jWwcHF1gaEEfX9vVkmYsAxF6gh+5JnKPddBBTxtzz6goKjAvIcLJz6/ZNhC/D9+jNFUEQAgR8lKQem+9mst5mixY079vzLgMWq3lc2OQsZw8+c/nioy7SyHY2DCvpiC7bgxoKwDvbpaaqHZSKorD/u5cL403Kick46f586y9c/5ebx4KnNOoY7FI16aKRQLNLsngee9A5Zyf1iK1V3CV4t3UulK1apcVH92+56r6cxcDA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=TXav9aXE; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=aCulqfep; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MovC6f5S;
+	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=TXav9aXE;
+	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=aCulqfep;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org)
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bWcTK30Jzz2xHY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 19:01:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751360486; x=1782896486;
-  h=date:from:to:cc:subject:message-id;
-  bh=P0j0mN/4Bh82MBImG6w9H1J5Ott2Qr5YTVOxkfAAe+I=;
-  b=MovC6f5S43F/11+IPYMRLsxF3lEUE3eUiK/RE6sR7JqTaHzIYeTAhfHy
-   kJi7rI8RZa98qe/olpUvKcs8IfzIBQ92T27jR8NYH5L9uCdvI+iDcAy2q
-   Sqr7tNoy9PTZPcyJ8SXqAqZEbM/JDXL3m38rXHnG1vM9E51pp2STs5Of1
-   XER2981tU94giNeZiZw4YN2JmLlnMzVDTR+lEOvZT/gzXY0A3K9+aY5Q2
-   iHjQoUFQ0lEHR0dlJCDvo4je+ttlGXSD066l/i123kKYJ0x2tOfQgB/em
-   nTvDyd7/K8SB2VZEqUcUc7zyg6twwRSZxtKa3e6o81oDxyQ5szuMXMNrY
-   w==;
-X-CSE-ConnectionGUID: cgGSg6fHT9qo43qVKRpAtQ==
-X-CSE-MsgGUID: D7+1YhIDTnuN7OnvntYqWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11480"; a="71043688"
-X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
-   d="scan'208";a="71043688"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jul 2025 02:01:21 -0700
-X-CSE-ConnectionGUID: RRGMvOcnSmmY2colOgECzQ==
-X-CSE-MsgGUID: eVigLmtHSGG59I9bdd/T2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,279,1744095600"; 
-   d="scan'208";a="184642983"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 01 Jul 2025 02:01:19 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uWWrc-000ZvS-33;
-	Tue, 01 Jul 2025 09:01:16 +0000
-Date: Tue, 01 Jul 2025 17:00:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 837f3b82898b077b38ea6739f4dc87e4ccfc7751
-Message-ID: <202507011738.vxVEYLgN-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bWcW14MZkz2xHY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Jul 2025 19:02:51 +1000 (AEST)
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5611Mwdq008527;
+	Tue, 1 Jul 2025 09:01:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=FoQ2aLYBja0Vjo39mj
+	E13MGX3mPx9DU2ghID3c9esg8=; b=TXav9aXErk7+xWPXuNjOZfKzvHCggywPYo
+	0RYMaPacPafZjFGXb/JoKdZaC9z2tTf1JdeWVMHnayxBqhQmfcfk1X76YUVKAzHz
+	9C1XtJTSExVpVu0JQo8KlUkDy8oEtgECQlSqD6A/MZMvd+6E8l4qNX67eEZvWWXf
+	gqBLffkjM7hRg5bOYmLw4DCIC/WA9PF47Tob8ORK+HbqZqzWw8rzAjEoQQwOgOnT
+	sNwblAe88Ne1X49thcECMyjw9RbCYDEGzL0JY/23R7H8r8Gy6dmTcHBo1XllEmt2
+	X2bhLaBIoM6BEIOh4QWfB79xSHnHneY/HQce5Tglczym+nhxESuA==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j766cb8c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 01 Jul 2025 09:01:12 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5617FTRu005783;
+	Tue, 1 Jul 2025 09:01:12 GMT
+Received: from nam02-sn1-obe.outbound.protection.outlook.com (mail-sn1nam02on2067.outbound.protection.outlook.com [40.107.96.67])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 47j6ugqq51-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 01 Jul 2025 09:01:12 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=r18RbbyrgBCspBHITZ4V0g+bQfVhxdpAy1NwOGV4WxMuoCxai/4c66tqFZqZYsyd38W62AQigaKGZb7YW8v7W/86EFAkTS4V+kNc2WzUz/3eS+hWQTnpIWyi6nmQc1QFYPlmHBk0IuDctf47Csd3xh40c+2Ix8KHX3iC57W2uFsXe1ZZOeUrVl5Fy81qC9bYDNK+QH9zriNbLmBexp506K8oVEneGfkKE8TgXTqEIcbY7vu/dUlFZu+jTeS/F6JHT3y5SsDVG2mxPUvyCrz6630kKe7+pNRph7EEMFdjykKwmj8w6sqkCa9653Ct/tqL0XC2PQL3Qd8c9BY48HIwbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FoQ2aLYBja0Vjo39mjE13MGX3mPx9DU2ghID3c9esg8=;
+ b=uKWg/L5RKbaQ7sAy3Vb+DMXUqMWApFFZf8YlfpuAKbpEcH+rDvCmBC+06bnDd0iBfTo6aYfV7n3jPiZ+2aIk23BebiTskX12w9XEBioatXzPPhu4VLq3BiMRo4SRAUbqRXgOWm3Gd/cGDlzTqKR+vWiqiMSDy+mtAUHbZXgpmV/50QZLmwpjeFnB1onAoXMXmQDEkWlj8/Qe3EFGZL97BWAaJJJfgYS3L/ARyKNbSlWPqhbTnUHholLrpX857Jeb8nlTfNkBGMwMmuJrZpri4LTzbqdeYw0AAVQQbVtxFwMY9fguf3xx8p1X7KWiEsrbklxajafepCpmRKgKWLwJeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FoQ2aLYBja0Vjo39mjE13MGX3mPx9DU2ghID3c9esg8=;
+ b=aCulqfepYwrCxaF7W3tsy8oixO/mxnarO5IbFMxjfPc2ATRcfpuRom7bqdtvv5+4XHFOsy8IKMOnsitsY7i/C92ZqMq0sbSkX0cTZm0NBiENAVm01PgC7N2uk6+2Ah/AbrpAFb1NALnLblJsg401Oj0MOPaF7lVcOsf70snyZJ8=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by SJ0PR10MB5720.namprd10.prod.outlook.com (2603:10b6:a03:3ef::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.26; Tue, 1 Jul
+ 2025 09:01:08 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%6]) with mapi id 15.20.8880.027; Tue, 1 Jul 2025
+ 09:01:08 +0000
+Date: Tue, 1 Jul 2025 10:01:06 +0100
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        virtualization@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+        Ying Huang <ying.huang@linux.alibaba.com>,
+        Alistair Popple <apopple@nvidia.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Minchan Kim <minchan@kernel.org>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Brendan Jackman <jackmanb@google.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+        Xu Xin <xu.xin16@zte.com.cn>,
+        Chengming Zhou <chengming.zhou@linux.dev>,
+        Miaohe Lin <linmiaohe@huawei.com>,
+        Naoya Horiguchi <nao.horiguchi@gmail.com>,
+        Oscar Salvador <osalvador@suse.de>, Rik van Riel <riel@surriel.com>,
+        Harry Yoo <harry.yoo@oracle.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Shakeel Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH v1 02/29] mm/balloon_compaction: convert
+ balloon_page_delete() to balloon_page_finalize()
+Message-ID: <7b8a62f1-3e81-4012-8b44-219498f37152@lucifer.local>
+References: <20250630130011.330477-1-david@redhat.com>
+ <20250630130011.330477-3-david@redhat.com>
+ <f9cb1865-aa9d-409f-bce5-7051480c1a71@lucifer.local>
+ <277e094d-b159-411f-940d-13b62493f6c5@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <277e094d-b159-411f-940d-13b62493f6c5@redhat.com>
+X-ClientProxiedBy: LO6P123CA0041.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:2fe::12) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,198 +143,309 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ0PR10MB5720:EE_
+X-MS-Office365-Filtering-Correlation-Id: d2bc15be-f13e-4e6a-aaa6-08ddb87dd15f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?q8Ctwm8I4BYMenW82DT2zu9oHrvvFJYrsEjRPhTQU7TnXj/eIYfdXP4kULBr?=
+ =?us-ascii?Q?bH6HrnOZzhatN4k9enjSnqUUyUmyM0+tuhbHuBrotZ8nx/MKCeAOLYWrPyEz?=
+ =?us-ascii?Q?Mwm7zKQ4ZCR1Fj21Dax4m7uhES2+VyGT4P6ECuKq9fs0rgASoK2AnWH8R/Hz?=
+ =?us-ascii?Q?imYfsjVzDGPpyLm/dEvUxcq5GzIXYMsjeRO3+jNNfcuqQINOS/KdRh8TaVr5?=
+ =?us-ascii?Q?dF6KygEec/kpGQJ1QyGIvzLb8A3qeTAUHH8/9bSs3U9CL+iN9c64lWeuxvyE?=
+ =?us-ascii?Q?t6NvKPw2fe+1F5ln8wnyYE9A7epOwqX4Ll36m0CqoCT9RB5Vp7+bymvsmCHB?=
+ =?us-ascii?Q?0SKznxiwP8F/EqFUzdMbraKqTTA2qmZGeC38QQFhN1rBtabqUNvAaDRfhChd?=
+ =?us-ascii?Q?dONzQHL1vTmbAHUDgCqTNu7qZubppmDf11DplGW8koHs/T7DW+uwqJbGEqNC?=
+ =?us-ascii?Q?kCg0LvwykFgkWVEWHtH9A7cGQWavqRQ5pJ+7JbUk59joKQJl0YHZzSGZ8LbA?=
+ =?us-ascii?Q?+rJfYfO1KnGCUkfQG2gHWH57zsIezzqjb/Lh0UwrL7Q7bhOPculP1/iZMHaT?=
+ =?us-ascii?Q?h+nwmJPR8ZlB+m5+/0vsjazKVqFOwt9NVFEsbXuOcPW6JQT2CCZi21J/yAh1?=
+ =?us-ascii?Q?xeKcn/Ve7Rs5pV1lRzb5pMy40bhie0uRNnaAnWt7D1suKmdCdMKzjMUoYyZv?=
+ =?us-ascii?Q?t4pPqBjQyLTNB4jRUG22rly7csUG0b/QzW2RMfkDKKbONDzxAM+dJGVQemI/?=
+ =?us-ascii?Q?2M80IuvnCta3dYMhWUSotAn8LmUyvS8X8T32gnsLLleg2TsuIszoVz2AuoKM?=
+ =?us-ascii?Q?CfoKeDMNGzR0PiHKsAE3LKO/FnYaREnL8WFKw9taNFj+wcS+4gm2xrymy+Vt?=
+ =?us-ascii?Q?FqGueGlQ/ei3v0isDf5Bf5rJUtk/nt6cjb33x2DdKy+qOzJVCxiCZH179UFf?=
+ =?us-ascii?Q?qECVFKokAKsHj1C1gVscMokD++NV+1pjgnmTURlZQkAVOE/uNBoVF/XWmMzF?=
+ =?us-ascii?Q?sAfo1zvOQZTMWaQ16/iF6vRWh1T3YgxgvTmoUigiO7KE08fJu7t2peKLlxcr?=
+ =?us-ascii?Q?h2zPEBCGtq6RelsXQWUAKrhGjm7Qy1rDkcfqFt7pL4LrckZ2pNlkV5n0WFE2?=
+ =?us-ascii?Q?WcLpzugC/KeMtg5VAW0BKK4ig+lmd60EHiScAaEutT4Tt08ydNGN1BBF2QIl?=
+ =?us-ascii?Q?qpMUmhyXsyfwm2Ix9D6jNqV9mGIgKDQNVU0aWwqxifEbGL1FdZiyLaQnGasL?=
+ =?us-ascii?Q?JeZ5n9Q45UAc29GCqpMrmA1s+uh/LAK7YD+AnxM1EAaLre8/JgUsTMucqTWi?=
+ =?us-ascii?Q?y4DBE9JRgq9F34coMc1h+J6hgHgoLJNP+KLZKMlD9dgjMZ3WWrNj69p0Acbq?=
+ =?us-ascii?Q?4xM8jSidJqtuy1d79B3nXRlR0glR7DB6Vn7zoER8Xf5eL/tR6oxDEOGv2i7B?=
+ =?us-ascii?Q?Etwd7UqyoHc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?VG5lg0ayNHGOqpHfdfrkhAmte7sNxVGWHqrX6dm5nJu6SpmtYrvRB8aYkO4P?=
+ =?us-ascii?Q?Z1Nzeev13Tw8gB9Xtfrgztc3mB8jCx56t93GtqT+gt9BJzXIOpLBtPyUxjZP?=
+ =?us-ascii?Q?KpW6JDi+OAUtLd0APki/egE7grsYKVDyRiJHrv3VMZ6ll+wbtU3xB/adCU1p?=
+ =?us-ascii?Q?wDhuknZZ+QIFgBUxKAEW20mL55Y1gRX1QSUj765tR2P2lU3O9N5xpPOpYcwZ?=
+ =?us-ascii?Q?jjgORzgQwWqMlLz1LTRx5Vwon8RsT8bzybYfIWgei8KV7+DmBlL7g9Zt39NS?=
+ =?us-ascii?Q?BttnMWZcVLVg3lSUrPLKpOm+1d4lJp+BimqBFvwvZ4EWvUiwzogUS0g8nIwo?=
+ =?us-ascii?Q?4bl8mqmxhcKqg0+PAY+OW9tTqAu4yJcu6DjvbIuevJsCw7PTWXnaMrJVJr6o?=
+ =?us-ascii?Q?4OBz1+wHU+1/nHJkKzDdpqHZN6rXMEpsoC2IThIKotVM7/1JdXfcVHPQwMnX?=
+ =?us-ascii?Q?T82BoOFggd+tgefjv0Q2TWdOj/nGg0tSmEo3B3WHEKA/VjlkH/kgeGemzojU?=
+ =?us-ascii?Q?2bvKUM3ajAt9R/6Vxrvv02HJEUhVBiZ/51Rurn3wzGo+la06HxyX9qtDRGo2?=
+ =?us-ascii?Q?oE75wcmr08MdydILkOc3nYkHYUjRRWHM/ln8etpXPYX6BFYC/Wl2fKoB5BC1?=
+ =?us-ascii?Q?KHyskaNwRnSHi9a4kM4s/hcGON4JawF6TzsQSavhBh+rDnIvZI0n1e4poHGY?=
+ =?us-ascii?Q?uTfAMK1aS1yeWinIfNYAJ5QRFuXoSE+/PbUBMJy5igraP8QwuAjzF22FraIk?=
+ =?us-ascii?Q?Dly+wsX1yKdQxuKwQhUyTqpFDAj3JRQMNUE7CVMtfYCAU2Ff20izEYixlEyz?=
+ =?us-ascii?Q?HxjAZjQ/0cFMNK2JKmMlEucCvxkowORgb/fOsGMcprxr323Pl0zZfXQhJwkc?=
+ =?us-ascii?Q?fQTulPTsGbkSooiy0gjEe3Wozk+kQMbLrFpW5KMFtDqlBHGS7gWs23g28dO0?=
+ =?us-ascii?Q?cREC6IeVhcvfw8tk9GiDtUpxZXJqIdCTHPxHPa3iTupIq13dKew4UG3J5GDd?=
+ =?us-ascii?Q?uSyxWjBPd7yooHl5Yw0WKzTtvz/uwHt2ddpuJO8beOfV1UGB8NaupY3qv/8F?=
+ =?us-ascii?Q?37hOmzCeaklkBzxadX40VNN8R0PnIb8wS54lnvcQHXiho1oKe8EGfTfjCK80?=
+ =?us-ascii?Q?NaQ98p62E37962mx3JKMiRTn3AWGPLSPFka/8jXFnG2mDod82pPKkiqhJM56?=
+ =?us-ascii?Q?L2eILej7+T59XHK8CTuJdJS6Wn9YhbrJPNdTpv+oGHr14h4Nr2RY3DJH7TMi?=
+ =?us-ascii?Q?rRhmU7Im4ArNmrls7J1QD9jV06PNMmOMqXGChz5xt6m1UDizWGflGGRmSVBF?=
+ =?us-ascii?Q?Mo2Mnui6dnMP5Le0nQL3VN+HTuyLaXWMDHQu/UJbiCOJAZ+Wvldx8V9jwfFx?=
+ =?us-ascii?Q?wPV58Fg5myg1vi304fDcz7bw3xh007LaYCpkdBWsBhnZWit2p8aZ4zC+K8Ui?=
+ =?us-ascii?Q?BXrUl/+KHMYcEtLFc60sbeTudv62TveWjiH33s0yyoXH/erO7Uf/p4nVx7vH?=
+ =?us-ascii?Q?P0mGKvBO9n//OeH5WZELCv+LhzG0y7OJkxcM0C0+VxouERpxOf5BoUb0c2Tk?=
+ =?us-ascii?Q?KtS80YP95YpZhUwSJLjjD0xaS7ilUBybXVmCvn1owjxiymDWV5UlwD6phqEY?=
+ =?us-ascii?Q?Kw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	uUk3QQJfXTZUjCNaL2U3WMvrwfYvMb5X6+Sukq9vjKYI91gx5XMIHR7E4o4ltJyZvXZ0gnqxHTdKciv5jvCWreDmVYfEf0n4Qofmzzomjqy3fEqdktWloozIuF2KJ8r2doTVNt0AscdZoEDxvKB93vJlBi3ii453yHhaWKOdWTahrNc/htLL+ZYtGXwCucxTn6O2+IBS9/lupwMRDgIrWZfliZAJoxhWGx3n7GpWXLgd21VgCzCa6URfwhG7zgNMO3rAqvsNIESshBUhsm33rdJf6SBKf7Rhbh9FhxuztsDoz8XrqnoMSZ9fvb/77Qb6NUt0Ry4bMRw2rC7Q7wUTtCSEl5Kf1YfBSHa+czDlXDu5AFVOS3+Bjk7DEIssPF+zO6hF4Ny3V3344P0Gw0DfOseP83G5ztNLKamef/1Ds81IY/VNqqN3vEfunmfTe/6eR6KglM5vFCnNvODsfcWalqpywiWLpulIMQw0frdK/FiupvZoPi1Lpuv7dT4inYrjEvSn6HWiK/eNmisf4D7SxghmYIrlnj1zEVsFIIKj/oLHhclf8EJnanxWzVIA94Hn5VrSj9MevOz6akoGSJNN6ngFKrWvJ6JVvVYK4/Jo9t0=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d2bc15be-f13e-4e6a-aaa6-08ddb87dd15f
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jul 2025 09:01:08.0396
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9jNvYeKK0fd0y24wQRCpUxtUMMs3rqnf4qOOgJn3ypQ9OWpyHUo7AWb0pHOeEZ7wENIr3e2qZXaJ360aW2PlT+PozKkbhpvE0AypnNmiF1s=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5720
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-01_01,2025-06-27_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ bulkscore=0 malwarescore=0 spamscore=0 phishscore=0 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2505160000 definitions=main-2507010052
+X-Proofpoint-GUID: w_j8vXpVEzlj7oQZmXuMmq4WS_4h93mg
+X-Proofpoint-ORIG-GUID: w_j8vXpVEzlj7oQZmXuMmq4WS_4h93mg
+X-Authority-Analysis: v=2.4 cv=b82y4sGx c=1 sm=1 tr=0 ts=6863a3d8 b=1 cx=c_pps a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
+ a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8 a=yyffBvel1Gi8w3360QYA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:13215
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAxMDA1MyBTYWx0ZWRfXxgISnpAIuZhz 96sFVz5WHOwPbdYcEl0XMHd3/1/mXTFd9DbfUPnEHS6wzmilrGtmyewCPV7yIqXJOGiDKtJSsm0 4jbcm0Jb15R3IuJ9usG/xNof1uxpA3SdQOnxWYS+dJam+XQlCtP7TLwlzcPpEDzMnfF0Lrt22N1
+ bTXr5DNKWcAGCXfABK5F5me0PjDpDqYHptt8TmYJlHFh2LzNtSC0L5276DKb1Cex7rvamGsLXw+ 1HJN6JV3w/9owawlCDlXgp60hyg4ggowUcLO2jBm/Vl2BcGxZcKkUmUdOHWdmLZR133bv/t/KdW 5Wax4+6MWie8U7Ulw3gGO3ej+FX75LtIBPp7R5T5naW/3I3OdSuRWV9ksKTfVU2Pl/HY2BE7n1s
+ fNQuRMd51J/v2qTgjFY3KD0T5wN362mwvqGV9dgnldJyzickur9Ykc+TIFr87nPSWU5VSvfM
+X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 837f3b82898b077b38ea6739f4dc87e4ccfc7751  Automatic merge of 'next' into merge (2025-06-30 13:19)
+On Tue, Jul 01, 2025 at 09:58:09AM +0200, David Hildenbrand wrote:
+> On 30.06.25 17:15, Lorenzo Stoakes wrote:
+> > On Mon, Jun 30, 2025 at 02:59:43PM +0200, David Hildenbrand wrote:
+> > > Let's move the removal of the page from the balloon list into the single
+> > > caller, to remove the dependency on the PG_isolated flag and clarify
+> > > locking requirements.
+> > >
+> > > We'll shuffle the operations a bit such that they logically make more sense
+> > > (e.g., remove from the list before clearing flags).
+> > >
+> > > In balloon migration functions we can now move the balloon_page_finalize()
+> > > out of the balloon lock and perform the finalization just before dropping
+> > > the balloon reference.
+> > >
+> > > Document that the page lock is currently required when modifying the
+> > > movability aspects of a page; hopefully we can soon decouple this from the
+> > > page lock.
+> > >
+> > > Signed-off-by: David Hildenbrand <david@redhat.com>
 
-elapsed time: 1462m
+Based on below this LGTM, so:
 
-configs tested: 177
-configs skipped: 5
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+> > > ---
+> > >   arch/powerpc/platforms/pseries/cmm.c |  2 +-
+> > >   drivers/misc/vmw_balloon.c           |  3 +-
+> > >   drivers/virtio/virtio_balloon.c      |  4 +--
+> > >   include/linux/balloon_compaction.h   | 43 +++++++++++-----------------
+> > >   mm/balloon_compaction.c              |  3 +-
+> > >   5 files changed, 21 insertions(+), 34 deletions(-)
+> > >
+> > > diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
+> > > index 5f4037c1d7fe8..5e0a718d1be7b 100644
+> > > --- a/arch/powerpc/platforms/pseries/cmm.c
+> > > +++ b/arch/powerpc/platforms/pseries/cmm.c
+> > > @@ -532,7 +532,6 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
+> > >
+> > >   	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
+> > >   	balloon_page_insert(b_dev_info, newpage);
+> > > -	balloon_page_delete(page);
+> >
+>
+> Hi Lorenzo,
+>
+> as always, thanks for the detailed review!
 
-tested configs:
-alpha                            alldefconfig    gcc-15.1.0
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                            hsdk_defconfig    gcc-15.1.0
-arc                   randconfig-001-20250630    gcc-10.5.0
-arc                   randconfig-001-20250701    gcc-13.3.0
-arc                   randconfig-002-20250630    gcc-12.4.0
-arc                   randconfig-002-20250701    gcc-15.1.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-21
-arm                              allyesconfig    gcc-15.1.0
-arm                          collie_defconfig    gcc-15.1.0
-arm                                 defconfig    clang-21
-arm                   randconfig-001-20250630    clang-21
-arm                   randconfig-001-20250701    clang-17
-arm                   randconfig-002-20250630    gcc-12.4.0
-arm                   randconfig-002-20250701    gcc-8.5.0
-arm                   randconfig-003-20250630    gcc-14.3.0
-arm                   randconfig-003-20250701    clang-21
-arm                   randconfig-004-20250630    clang-21
-arm                   randconfig-004-20250701    clang-21
-arm                         vf610m4_defconfig    gcc-15.1.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20250630    gcc-9.5.0
-arm64                 randconfig-001-20250701    clang-21
-arm64                 randconfig-002-20250630    gcc-14.3.0
-arm64                 randconfig-002-20250701    gcc-15.1.0
-arm64                 randconfig-003-20250630    clang-21
-arm64                 randconfig-003-20250701    clang-18
-arm64                 randconfig-004-20250630    clang-21
-arm64                 randconfig-004-20250701    gcc-8.5.0
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20250630    gcc-15.1.0
-csky                  randconfig-002-20250630    gcc-10.5.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-21
-hexagon                             defconfig    clang-21
-hexagon               randconfig-001-20250630    clang-16
-hexagon               randconfig-002-20250630    clang-19
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250630    clang-20
-i386        buildonly-randconfig-001-20250701    gcc-12
-i386        buildonly-randconfig-002-20250630    gcc-12
-i386        buildonly-randconfig-002-20250701    gcc-12
-i386        buildonly-randconfig-003-20250630    clang-20
-i386        buildonly-randconfig-003-20250701    gcc-12
-i386        buildonly-randconfig-004-20250630    gcc-12
-i386        buildonly-randconfig-004-20250701    gcc-12
-i386        buildonly-randconfig-005-20250630    gcc-12
-i386        buildonly-randconfig-005-20250701    gcc-12
-i386        buildonly-randconfig-006-20250630    clang-20
-i386        buildonly-randconfig-006-20250701    clang-20
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    gcc-15.1.0
-loongarch                         allnoconfig    gcc-15.1.0
-loongarch                           defconfig    gcc-15.1.0
-loongarch             randconfig-001-20250630    gcc-15.1.0
-loongarch             randconfig-002-20250630    gcc-15.1.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-m68k                        m5307c3_defconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-nios2                            alldefconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20250630    gcc-14.2.0
-nios2                 randconfig-002-20250630    gcc-8.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250630    gcc-8.5.0
-parisc                randconfig-002-20250630    gcc-8.5.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-21
-powerpc                 canyonlands_defconfig    clang-21
-powerpc                      ep88xc_defconfig    gcc-15.1.0
-powerpc               randconfig-001-20250630    clang-18
-powerpc               randconfig-002-20250630    clang-21
-powerpc               randconfig-003-20250630    gcc-13.3.0
-powerpc                     tqm8540_defconfig    gcc-15.1.0
-powerpc64             randconfig-001-20250630    gcc-10.5.0
-powerpc64             randconfig-002-20250630    gcc-14.3.0
-powerpc64             randconfig-003-20250630    gcc-10.5.0
-riscv                            allmodconfig    clang-21
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-21
-riscv                    nommu_k210_defconfig    clang-21
-riscv                    nommu_virt_defconfig    clang-21
-riscv                 randconfig-001-20250630    gcc-8.5.0
-riscv                 randconfig-001-20250701    gcc-14.3.0
-riscv                 randconfig-002-20250630    clang-16
-riscv                 randconfig-002-20250701    gcc-10.5.0
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-21
-s390                  randconfig-001-20250630    gcc-8.5.0
-s390                  randconfig-001-20250701    gcc-9.3.0
-s390                  randconfig-002-20250630    clang-21
-s390                  randconfig-002-20250701    clang-17
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                    randconfig-001-20250630    gcc-15.1.0
-sh                    randconfig-001-20250701    gcc-15.1.0
-sh                    randconfig-002-20250630    gcc-15.1.0
-sh                    randconfig-002-20250701    gcc-13.3.0
-sh                            titan_defconfig    gcc-15.1.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                 randconfig-001-20250630    gcc-8.5.0
-sparc                 randconfig-001-20250701    gcc-10.3.0
-sparc                 randconfig-002-20250630    gcc-8.5.0
-sparc                 randconfig-002-20250701    gcc-15.1.0
-sparc64                             defconfig    gcc-15.1.0
-sparc64               randconfig-001-20250630    gcc-8.5.0
-sparc64               randconfig-001-20250701    gcc-8.5.0
-sparc64               randconfig-002-20250630    gcc-8.5.0
-sparc64               randconfig-002-20250701    gcc-12.4.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-21
-um                               allyesconfig    gcc-12
-um                                  defconfig    clang-21
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250630    clang-21
-um                    randconfig-001-20250701    gcc-12
-um                    randconfig-002-20250630    gcc-12
-um                    randconfig-002-20250701    gcc-12
-um                           x86_64_defconfig    clang-21
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250630    gcc-12
-x86_64      buildonly-randconfig-001-20250701    gcc-12
-x86_64      buildonly-randconfig-002-20250630    clang-20
-x86_64      buildonly-randconfig-002-20250701    gcc-12
-x86_64      buildonly-randconfig-003-20250630    clang-20
-x86_64      buildonly-randconfig-003-20250701    gcc-12
-x86_64      buildonly-randconfig-004-20250630    clang-20
-x86_64      buildonly-randconfig-004-20250701    gcc-12
-x86_64      buildonly-randconfig-005-20250630    gcc-12
-x86_64      buildonly-randconfig-005-20250701    clang-20
-x86_64      buildonly-randconfig-006-20250630    gcc-12
-x86_64      buildonly-randconfig-006-20250701    clang-20
-x86_64                              defconfig    gcc-11
-x86_64                          rhel-9.4-rust    clang-18
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                  nommu_kc705_defconfig    gcc-15.1.0
-xtensa                randconfig-001-20250630    gcc-13.3.0
-xtensa                randconfig-001-20250701    gcc-15.1.0
-xtensa                randconfig-002-20250630    gcc-8.5.0
-xtensa                randconfig-002-20250701    gcc-13.3.0
-xtensa                    smp_lx200_defconfig    gcc-15.1.0
+You're welcome :>)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>
+> > We seem to just be removing this and not replacing with finalize, is this right?
+>
+> See below.
+>
+> >
+> > >   	b_dev_info->isolated_pages--;
+> > >   	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
+> > >
+> > > @@ -542,6 +541,7 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
+> > >   	 */
+> > >   	plpar_page_set_active(page);
+> > >
+> > > +	balloon_page_finalize(page);
+>
+> ^ here it is, next to the put_page() just like for the other cases.
+
+OK so it's just moved to a different place for consistency.
+
+>
+> Or did you mean something else?
+
+No this is what I meant :)
+
+>
+> > >   	/* balloon page list reference */
+> > >   	put_page(page);
+> > >
+> > > diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
+> > > index c817d8c216413..6653fc53c951c 100644
+> > > --- a/drivers/misc/vmw_balloon.c
+> > > +++ b/drivers/misc/vmw_balloon.c
+> > > @@ -1778,8 +1778,7 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
+> > >   	 * @pages_lock . We keep holding @comm_lock since we will need it in a
+> > >   	 * second.
+> > >   	 */
+> > > -	balloon_page_delete(page);
+> > > -
+> > > +	balloon_page_finalize(page);
+> > >   	put_page(page);
+> > >
+>
+>
+> [...]
+>
+> > > -/*
+> > > - * balloon_page_delete - delete a page from balloon's page list and clear
+> > > - *			 the page->private assignement accordingly.
+> > > - * @page    : page to be released from balloon's page list
+> > > - *
+> > > - * Caller must ensure the page is locked and the spin_lock protecting balloon
+> > > - * pages list is held before deleting a page from the balloon device.
+> > > - */
+> > > -static inline void balloon_page_delete(struct page *page)
+> > > -{
+> > > -	__ClearPageOffline(page);
+> > > -	__ClearPageMovable(page);
+> > > -	set_page_private(page, 0);
+> > > -	/*
+> > > -	 * No touch page.lru field once @page has been isolated
+> > > -	 * because VM is using the field.
+> > > -	 */
+> > > -	if (!PageIsolated(page))
+> > > -		list_del(&page->lru);
+> >
+> > I don't see this check elsewhere, is it because, as per the 1/xx of this series,
+> > because by the time we do the finalize
+>
+> balloon_page_delete() was used on two paths
+>
+> 1) Removing a page from the balloon for deflation through
+> balloon_page_list_dequeue()
+>
+> 2) Removing an isolated page from the balloon for migration in the
+> per-driver migration handlers. Isolated pages were already removed from the
+> balloon list during ... isolation.
+>
+> With this change, 1) does the list_del(&page->lru) manually and 2) only
+> calls balloon_page_finalize().
+>
+> During 1) the same reasoning as in 1/xx applies: isolated pages cannot be in
+> the balloon list.
+
+Right yeah this is what I thought, thanks!
+
+>
+> >
+> > > -}
+> > > -
+> > >   /*
+> > >    * balloon_page_device - get the b_dev_info descriptor for the balloon device
+> > >    *			 that enqueues the given page.
+> > > @@ -141,12 +120,6 @@ static inline void balloon_page_insert(struct balloon_dev_info *balloon,
+> > >   	list_add(&page->lru, &balloon->pages);
+> > >   }
+> > >
+> > > -static inline void balloon_page_delete(struct page *page)
+> > > -{
+> > > -	__ClearPageOffline(page);
+> > > -	list_del(&page->lru);
+> > > -}
+> > > -
+> > >   static inline gfp_t balloon_mapping_gfp_mask(void)
+> > >   {
+> > >   	return GFP_HIGHUSER;
+> > > @@ -154,6 +127,22 @@ static inline gfp_t balloon_mapping_gfp_mask(void)
+> > >
+> > >   #endif /* CONFIG_BALLOON_COMPACTION */
+> > >
+> > > +/*
+> > > + * balloon_page_finalize - prepare a balloon page that was removed from the
+> > > + *			   balloon list for release to the page allocator
+> > > + * @page: page to be released to the page allocator
+> > > + *
+> > > + * Caller must ensure that the page is locked.
+> >
+> > Can we assert this?
+>
+> We could, but I'm planning on removing the page lock next (see patch
+> description), so not too keen to create more code around that.
+>
+> Maybe mention that the balloon lock should not be held?
+>
+> Not a limitation. It could be called with it, just not a requirement today.
+>
+> I suspect that once we remove the page lock, that we might use the balloon
+> lock and rework balloon_page_migrate() to take the lock. TBD.
+
+OK fair enough!
+
+>
+> > >> + */
+> > > +static inline void balloon_page_finalize(struct page *page)
+> > > +{
+> > > +	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
+> > > +		__ClearPageMovable(page);
+> > > +		set_page_private(page, 0);
+> > > +	}
+> >
+> > Why do we check this? Is this function called from anywhere where that config won't be set?
+>
+> Sure. balloon_page_list_dequeue() is called from balloon_page_dequeue(),
+> which resides outside the CONFIG_BALLOON_COMPACTION ifdef in
+> mm/balloon_compaction.c.
+>
+> At some point (not in this series) we should probably rename
+>
+> balloon_compaction.c -> balloon.c
+>
+> To match CONFIG_MEMORY_BALLOON.
+>
+> Because the compaction part is just one extra bit in there. (an important
+> one, but still, you can use the balloon infrastructure without
+> compaction/page migration)
+
+Yeah this would be nice!
 
