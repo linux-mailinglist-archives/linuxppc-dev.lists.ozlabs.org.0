@@ -1,134 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-10050-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10051-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69051AF5B08
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jul 2025 16:24:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C582AF5BB6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jul 2025 16:53:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bXMbr4wpgz2yLJ;
-	Thu,  3 Jul 2025 00:24:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bXNDf3nVhz2yLJ;
+	Thu,  3 Jul 2025 00:53:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.177.32 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751466280;
-	cv=pass; b=f59jjZ7hAFDMJ1cRsPyRFB0AOaHioWSqtevASFNEaNMJoXwkrcO+wcGlscU7oXzL28Dtin/14Y4cmWOZ9pS306AAUhx1u9bciAk+oeHkZkbO7OMQ7OXNN0NQEe4AR2FmttJuXEQt8upSLiZoKwLEfkVfYn/3akV6U/ItUvrsGNk3rtl4QEg8Batcyj0/Kou//2fpvfNYHNCH6kOW51WikRuhsYoe9+HcWQobpkqPZkr4qjKMBqcIK6+eEoq+kWGS3kg4Pshb3VYCieofYzTxg8+CKfzESGa3I3KFeYOTcpAv4GU/zHAXEVjI/0RhI/gfV2qae1NmSlC/sTIUJeWT0w==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751466280; c=relaxed/relaxed;
-	bh=V40uP1JeR5vrr8sza+B5qF7ID3hdxqfawZlwFYuA5NE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=os//+zSlQMacfpoUW7LCaWUupe0Jeoug0FiatVdtPgqU+zHwLUd9yCtOC/SZQt+BAIuJ32/1t3ncOlEBUHqypnef+2jNY8EC2b37oI3APiV5ni8fx8/405gjLcIxoxeNwdIMO1c7VkNylUCzBkFsQfcQzavBIYd6BvSyhL3yKaUNFDRKoYL0n6bmAUh5izl9MQFeNy//q+OROrdDWs2b2aWSm5iuOAryViQETj0HGeNsNYRlkUgxPEYZy1CUiTZvi3sF+JVla2yp+5qBhvaDuZ8YNNdaoItQTgKSahr+AqEyOMhsDOjEruLGUU/eK+SUM5iF8hV/4e9MG6feK1SmqQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=XVFFF+le; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=cQtA+WSw; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=harry.yoo@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751467986;
+	cv=none; b=atBF3HXynwOfzvMMzSBYIr6GK1SD5k3FkLdOu7zMqnQk51juNFlIvY/sk3WJbHEMxpBHY1ZPSu2UBBdxIb2XARNhdYNbnHFJKXVrG8inv9QArmfPipZMei56gZzQE3jJxtxg768fpXyc/9VDfLjbb6PRbmfmIZES1DVCu+JvESrhE00yxtwxkYNvkfkISf07Aepo4QK0w6F8Hs/ydWyjDa51JazoWEDgNPjX62gJiHAXfP5ZtJYgKLqJ2Bv7RnBqHo+M7+eYbHuDR+viCubpUimzzEwnWwaZBLBO0MmGPSLQL2xj4OhjmMAzXm9bFhEZyMGkPHqMEGIRyhk3902jfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1751467986; c=relaxed/relaxed;
+	bh=T5nj6T4+km6XBVJylVpc2FdMnDZamikSe9UfbX+MJzI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=V04EhwiHFXkqgBUPJ2p8Dz8XxwXApQXTIjz+7fKot1aBipB8Pku0yt5Fpy65IR3ldgSjQghpuO02Wci03bzSgNcadUfzMNLcrmUUHSQGOCVRKMQ8b+ExTfLnq6u2+jMfpRUvVRxdhdkU5dTkKbhXDkwM/OfoettZ/nuh2CUpIsfAq63+d3TQWN3QuHyyx1p7d6bg8ANWLQ8hR6EUmoVNuB0QEuC/jIMw/ki10gqx8wNGyOh1SB3T7TyC8BszcCZzYO4WP9JXRpbCSdODVCGyFBD1nlqcwX2BIKpY2dMfWSUgmTBAlinDkIHQ5hUrnX5489NO/Pi/rKCQbPV+TBs6Og==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NeqRbALn; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NeqRbALn; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=XVFFF+le;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=cQtA+WSw;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NeqRbALn;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=NeqRbALn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=harry.yoo@oracle.com; receiver=lists.ozlabs.org)
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bXMbq4f2dz2xlQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jul 2025 00:24:38 +1000 (AEST)
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562BiSs1027326;
-	Wed, 2 Jul 2025 14:23:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=V40uP1JeR5vrr8sza+
-	B5qF7ID3hdxqfawZlwFYuA5NE=; b=XVFFF+legpUhuDPQXFVknxBApP/lz8exD2
-	F6wB+C63yKiHvSzZoGj1SMyIgnOLCiSQjXPhM7Myqxkb71jN+yrr8iIVdDo4UGOk
-	T0HgGIlJ4udrW8nB+4XbCngV+k2Fl7YTEt4LWWq6dAwplpGsSlyCoes5buMy9gQK
-	61nLq9wpVc5QjqKJBW2W+l0uaQLg/mhF2rNs9kWawoaZQ0zEUg+vWd8zm3Y5+ziQ
-	LJK2iZ0xFirbFHbF1tbvPDIIWhthau9BymyRXJFTbu11oJHW9g/oYPpHtaxpWcBO
-	wcqzt6fnTWtUoAn04tMirnfkoF1R0ZklSYO9EKROrF0NsqGTiF8g==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 47j766f3rk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Jul 2025 14:23:45 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 562D0ttv019579;
-	Wed, 2 Jul 2025 14:23:44 GMT
-Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02on2047.outbound.protection.outlook.com [40.107.212.47])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 47j6ub1hrc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 02 Jul 2025 14:23:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IQev7pMuRn0eBOiZEqu9R7xblLstgUIlUpyvdoLOX9gMuIZ5SRy1jTAu5YvpVVNwb1/qOd8hym2Vo+kYA0vDnKTRyCSReiIi34gftkdi780aIdxt1ZjWzHV2BJTKORFoEuIaCrZBbaizfWi6ArrhI10/PdMkDAkoGR1/AAmfFhxrWG4daPYm03A83PFpHgM8fA5zS06I9yXTyxiQsWDINj9jduQ//24i4uOpAILC7C7Uocy1crV7OvmN9U/aOlx7YUeyC2edyQTYeUnEeOqQ+DFjfJEh/F6lk7iqI/kOjjlbKIWk6KmkVeYFSs1pDMOaqUtYJ9jkn5TobY5uXMXihQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V40uP1JeR5vrr8sza+B5qF7ID3hdxqfawZlwFYuA5NE=;
- b=qMOqFN2kMCh/a4X6x5jnJfGPiO3RlH09tK1l8hm4BmdL/JFW0+TW5v3oUanA0lYD2L5JYZ5b7sHLItDAmRpxivgXlWFHeTcQb1wpbwYY82CoyIqB8jKMsrTGkpPPekoF9AkLfKH7lQgKHNbfMbFb4U6Z8E36rUHo9zqG61Gq3NYARTqUTEsGXR041ajKwg+RxjF+fAL2qIPluq3GTI/OM1kXGyQf+Vt7o4dDD63yj82/3CKRbpMZcbzCS50eZaLzHX8WsGvr739PsMwBtveW1OXIZKx0KCOOwXXoOTRkzxUSVXoaHaaGDBh8U7kpmiVCQGuEY+M5RMBnF+AVSnN65A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=V40uP1JeR5vrr8sza+B5qF7ID3hdxqfawZlwFYuA5NE=;
- b=cQtA+WSwrnXIP5/tNVc73NZdiUf+XKel6uo4askZHYfrkXZkalOZ0XJrvE3uQfs6yqjNrGMj+UV44qBFzrZTNGYSt9VhwflKj5XXtbY7O+qg1mSRvCDOPLkILCe58wj8mb4UbNR7CkWu2BHRE7hqC/rVFSZ7zFx8mxWyzVwEKEM=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by DM3PPF83BEC1808.namprd10.prod.outlook.com (2603:10b6:f:fc00::c33) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8901.19; Wed, 2 Jul
- 2025 14:23:41 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%6]) with mapi id 15.20.8880.029; Wed, 2 Jul 2025
- 14:23:41 +0000
-Date: Wed, 2 Jul 2025 23:23:22 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        virtualization@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Minchan Kim <minchan@kernel.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Brendan Jackman <jackmanb@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
-        Xu Xin <xu.xin16@zte.com.cn>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Miaohe Lin <linmiaohe@huawei.com>,
-        Naoya Horiguchi <nao.horiguchi@gmail.com>,
-        Oscar Salvador <osalvador@suse.de>, Rik van Riel <riel@surriel.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Shakeel Butt <shakeel.butt@linux.dev>
-Subject: Re: [PATCH v1 27/29] docs/mm: convert from "Non-LRU page migration"
- to "movable_ops page migration"
-Message-ID: <aGVA2p5mUWoBDVKJ@hyeyoo>
-References: <20250630130011.330477-1-david@redhat.com>
- <20250630130011.330477-28-david@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250630130011.330477-28-david@redhat.com>
-X-ClientProxiedBy: SE2P216CA0064.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:118::19) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bXNDd4RbDz2xlQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jul 2025 00:53:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751467981;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=T5nj6T4+km6XBVJylVpc2FdMnDZamikSe9UfbX+MJzI=;
+	b=NeqRbALnpfq/Rkyxi4ps3WxXEIwU2fFDeHOrC/Hx+WR2IMc34lxO9b+Lfb7JDu8E8OQqJj
+	hpKc/cDTMfMEw54sltywAjE5dRzucteGhNXp7vsREa99YVpcud+yC37JXuzh3l40CpCFAw
+	keA/MIoMku3sqweZQM3PszwOA9Tpjw4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1751467981;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=T5nj6T4+km6XBVJylVpc2FdMnDZamikSe9UfbX+MJzI=;
+	b=NeqRbALnpfq/Rkyxi4ps3WxXEIwU2fFDeHOrC/Hx+WR2IMc34lxO9b+Lfb7JDu8E8OQqJj
+	hpKc/cDTMfMEw54sltywAjE5dRzucteGhNXp7vsREa99YVpcud+yC37JXuzh3l40CpCFAw
+	keA/MIoMku3sqweZQM3PszwOA9Tpjw4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-216-0xDf4bvjPJScCvFDBJei4w-1; Wed, 02 Jul 2025 10:52:58 -0400
+X-MC-Unique: 0xDf4bvjPJScCvFDBJei4w-1
+X-Mimecast-MFC-AGG-ID: 0xDf4bvjPJScCvFDBJei4w_1751467978
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a503f28b09so3612834f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Jul 2025 07:52:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751467977; x=1752072777;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=T5nj6T4+km6XBVJylVpc2FdMnDZamikSe9UfbX+MJzI=;
+        b=DmQFUyxzXqH6g03Jtk+pOSSvGOyW9h4tQ95thrqrjiajRsAWW+sumXKMqGblVT6esL
+         iFUXWIot7an+FzV+Xm3u5uWaxbS4azbMNaltzYSvPjI2kb2O9ykJyCfy1XoTePU1GGKT
+         bcxYImGOqbsl7xk8RAwXlx41IjT6feKoLxeW5x7sq6GficBWbrdYRgS+ars+dYwnkzoV
+         JyCi4zg2bcJztcCVDOtAm8Q41e4wVeDqv9N95E8JSU63SfS/O7LkQly6eb4kkEFPtZHd
+         TK09N1NV3xjcktcIFTzlPAlqKJ1kHCr4kOxrbLe1OXEj3RGPwZPjVQvd137+VlLLxspH
+         1nPg==
+X-Forwarded-Encrypted: i=1; AJvYcCVL8LykI2rDD/nZco625eV2GkRarhsOyn4i8A3zrDz4MvRCpipS+wo8hrgYqPLlSRv4KVK6ku0/kUeMrsg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywx6Wtw/yzSOBEu9/B/BXVLT/1R5Xm4tq8CNWIOmFQDgigGbjCj
+	ySIN/quSsXHOAXNX82vCyKtd03OiNhmcliQDSqf5LjjHJpcSuneUkaxoghc8wbm2PIiUiWvtywc
+	VsTAX71Cnh+elf9TOhhfFaxGjjUSU6TfMv/rWrTmHTtltZnFaESGa8t/gT04MuTCMTzU=
+X-Gm-Gg: ASbGnct3YRy9m50VTdwMJ1zWpRCKUzAMDRrg9l+zN3fRJu7looh/Xl4EFAvHvSq1VSI
+	lQsWXXFLqFSH+JljQfYbp7oB1Y9qXpdEqJgD4Bjafm9LKGR967CqF+JP76rL0QSnlebSNpcRIB8
+	ihFLGeBq631duFx0mrAhrAyeF0RxCiJ9vqpq0db1Vv94iiPP/4EZSzNHyzJhJD+yDZD3Ma0zg35
+	dzypom5W4wnc2URHRkS8fIHdI9z0QUdqWzSBSycFrsEBeflcLoZ4xdolqz/+IdW4TxXbsPw7kLk
+	hpk8RbWjr6L3cWHBRxC0SGzmIU+4qkaDDWAqh9mDc0a0xHYosgPEMVk=
+X-Received: by 2002:a05:6000:2302:b0:3a5:1388:9a55 with SMTP id ffacd0b85a97d-3b1f5813ebbmr2700896f8f.5.1751467977360;
+        Wed, 02 Jul 2025 07:52:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6zmp9d2w2MJkn7HSBDnoWuF5cmgkYx/VRxm4DVngK4kJgBtnY9v5ljh4jmUYVqeNL+t+SYg==
+X-Received: by 2002:a05:6000:2302:b0:3a5:1388:9a55 with SMTP id ffacd0b85a97d-3b1f5813ebbmr2700827f8f.5.1751467976689;
+        Wed, 02 Jul 2025 07:52:56 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a88c7e76e1sm16577247f8f.16.2025.07.02.07.52.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Jul 2025 07:52:56 -0700 (PDT)
+Message-ID: <bd162903-6854-4b69-ad4b-89deb8e0d695@redhat.com>
+Date: Wed, 2 Jul 2025 16:52:53 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -142,147 +103,143 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|DM3PPF83BEC1808:EE_
-X-MS-Office365-Filtering-Correlation-Id: d3f6d7a5-ed22-478b-fc30-08ddb9740ad3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?gVR6H9G2ymTe3Nb3g3OaebDlJkhwwFQ9cvNY0KsXm37cfETk1dhw78FyNEIG?=
- =?us-ascii?Q?kFW9TpPTaC3xPgP2PAu/paz2ZuK4FBQ7/n9IF21L92OV/PkG2EPvsUkb/eZC?=
- =?us-ascii?Q?1ALTZ88ZE+NxXxZzBHXqfG0CZB23/JuiK2O+BXbGpl1tBxKX1XEWds3CQ/ZT?=
- =?us-ascii?Q?ogMvT5BhQ9pel9YMNB76SqvjhTm0ukB7JbfTjnztEUBfGQ9Y4kzkdx3bA/ze?=
- =?us-ascii?Q?IHkfVr7nV2BbZf/iGh7MIvKAu2f0/rwVEbNd4VvVIImKqDeNYtXn+4+FvEPC?=
- =?us-ascii?Q?uFW3H7SZ1QgFmLEhA0OqlPfOoYFDR/fGiQZOQ/U0ZpQLpwKAW7aJBT/QgOQo?=
- =?us-ascii?Q?Y8S3WdK/JYFTYjhM2yWRS6YnN0abw6mJuoplACtugLNVC3/ZBTN7qHxpxIv/?=
- =?us-ascii?Q?CeoHDrvj9fflRMfkCTclxIY5TVrzIaQ94seZ0W4T+5Wj2BkTz3IzOgHnFx9z?=
- =?us-ascii?Q?eq+jbfZIUwZSppgzkusHDFABb8Wi5z0UNG+Qb9tbiZ2FwvXpDf99wBg/I5RP?=
- =?us-ascii?Q?x0Ehps4v+9SijBwktefB/IVcVeZ5xzVa531sA8/9mzMbDtHvTxxoDMoe1Wm+?=
- =?us-ascii?Q?d22YDVde2EV7aM8Ha7qIsKBryiDz4Lz7FnYQylOlfwyNvbIfVystO4n9DF+8?=
- =?us-ascii?Q?+Ug1rKecNT2vyQ8VUTEbqWN+2CvoIigxPqDxFQgd+SXrrOgZk7gacUu6Cf0H?=
- =?us-ascii?Q?5zzMzYHTwogCkTvuF8yfgiud2SPuuqFPBu+BgxDQ5/AbGCCXU/7jSmn6MmA0?=
- =?us-ascii?Q?S6+YK26DdEZCFWq+mVRDfNsacMngpG/X60vOl2X1XYzh0BXJeQ3E/k0OKhq2?=
- =?us-ascii?Q?/FPrS14e2qapoaGstNAkEMNGAz0ArrgvpwwUV+Tdxk2Lgd4l1lC4QHyj1W0Y?=
- =?us-ascii?Q?ZqvYe9Xda9ukg+3YxxeNX9eezF9tCzwXdVOpYmIM52O+eSxTBYo1LjF0+mn0?=
- =?us-ascii?Q?TZxO47SkBT/H3rYadE2/YYjNZrEXtavEiLVzoq4pYt94FLn2H/Jg2m0+OHBP?=
- =?us-ascii?Q?3P1UkA9TbHWHiEpC1WArGX8cIvj6HwSOs6ySbo7lp9vlp0gtWcWGClQAvYWo?=
- =?us-ascii?Q?Rf2997hmtgbMP/QFr7VwUpd0UMRjpCRPXzu5QiJ/W6YsMJo77eiH5D+o14ko?=
- =?us-ascii?Q?RliEXdgXHpQ3cjT90z8+kSbFT7vCla0sbg2xA7jY4Sb7QRU0Ih5ZmiEFjgGx?=
- =?us-ascii?Q?g97HUp8Y7So/9ZYbE10GqIpImIyxiwIsxuLcAQMSYlEGFEOIbEVOIIGHr6xS?=
- =?us-ascii?Q?B5N4jPmX++fb66JQ9e90zvDAtgJhR+NJ965ojCwj4IrnjvdK0nu42Bnx/uGx?=
- =?us-ascii?Q?mowVPRGpHIfpCNZanNjWLj92wPlHQ349slb0Wpdt7Cg5lpnB5aeZZaUgnOLK?=
- =?us-ascii?Q?tjFxpDjUo8jjXikvIMo8M0yA85I5EG7jHKjsvIS1WekgxZtaE0a7YAegAMfD?=
- =?us-ascii?Q?EWUSI7U7nkk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?yjOkVOeXR9eDyk32zhdmFk0kJU72LgvJkuPlq3/gga+KohuyPJumQZ0XrxET?=
- =?us-ascii?Q?LK7PH02f0ovELGRrR7+x1OWn9PmJnCh0NAEJ8peLC7XdGuVa+5amwgRBjzAx?=
- =?us-ascii?Q?RfdFT2w8ci4EPeLa7tQheJpbSoxw6/ul/FfeFw4b9t/WRL2qAnZ1aFZ/vgRd?=
- =?us-ascii?Q?HhnK6kvr7Opji+nnLREUBfRf+OcsGL7Mkc6XicwxywBDmvvPKYTU5Eu1f9EG?=
- =?us-ascii?Q?3a9MlH9kxJQPojWRn0XK0FybqmIFl3NBma2EFrl0XuqFPODtKtdAiyYx5SJS?=
- =?us-ascii?Q?PMJ7C/ihK7HQg3mhmCMqRf0QfXpUaTpqxOPs4kooyl+kgZ6egj5zB8KooKb5?=
- =?us-ascii?Q?ZgOSDbTxX87e8IEPSLo/taCcSY8798i2sJJUDSrMJ5KyeGnPYpmFSVTFY/hn?=
- =?us-ascii?Q?Ih/fpZKdEdp6hhu9JLrR1z8Re5Xkld+ryoOoxCbH6RWdryo78ltRMU490gXY?=
- =?us-ascii?Q?Jy3ttELUZS4Yq3U5MlNDJ7R/mQWANgZOL0vYRbV+HbzZNNKs5S0XlT+o/W0S?=
- =?us-ascii?Q?T1Zbb+fTJcwEMVpryMtw9+wLsLo6IvrrobLw/DLWiLJXTNAX3ljtocLyMBjK?=
- =?us-ascii?Q?Vs+gchZwy2v7ebMXCdoAiYBcv3WTJSsAxfGSDy9SWTyhBVfalcbswv7azo3n?=
- =?us-ascii?Q?mnTQUBf1TOghXvWknGQ9D0dk1ytlW8nUrmbGr+tdJSqPvsC3xmT4ssMdQ4t3?=
- =?us-ascii?Q?aOmFOQoEbtfZd/b+2dYn/XIyG/8NaRW8zmgFg+HGWpjPGxnmwKUEmJxeOQQx?=
- =?us-ascii?Q?axVkiZnJQcrJHV+ZCV8eX4UOUQ/JfsV9+IYK2mo35XRnVkdXRvDwy3xcKAx1?=
- =?us-ascii?Q?YZAbwJPOIp0v9f0viDUGDM5mCnry7yGnX1v2ozJJMaqDbIH1DqKoH0jQHQyb?=
- =?us-ascii?Q?ucbkXy1SjKlpzjyPTT88Ii3Yt8TycdKkuF28nX97nXdV+4VS13Tr7JsDW9BY?=
- =?us-ascii?Q?MsZzYRLJVAyOUz5KrrWfvWkNzezj50wYNsofIPuaP+lPoGkrvceWF6fAT3VG?=
- =?us-ascii?Q?FLIu3EoBkynvtQIYvMA96wMnpI7IqBF0QkMwpZnek/6dlPhcenxBfx4FSGpw?=
- =?us-ascii?Q?yFjTDpLVMWgg8BV6tktGF9DvPcC/oNRA9NDdop2iYQNMRCNgDrPnjZbgFkWw?=
- =?us-ascii?Q?DqzOqETlZjlWJZ+FWYjhap/q168Jf0vb+C0JSCx8B0SnsS4Z5lmD7NUBoeEO?=
- =?us-ascii?Q?xcW26onCtmiBdjxds/B1FWPQSfyFTMkigEZBnDAizMAlYFGI6+mP0gtQ6S6k?=
- =?us-ascii?Q?YCZwN4nCFzciAK6VAlGLC1pg9DRyADg+CP7wFXZZg7oA5JvGYFL2sGs1iGwH?=
- =?us-ascii?Q?LuDVeLnfMMDJ/JYwEk9W8/sQpgx3Apz+ImQCgKz4z0nZewl+pHqiywUwmwDw?=
- =?us-ascii?Q?8oOGr/QdB/NsJo6uGiHvoU/RtVCk920SOerLOzpHJgXL5+zQdykIbTFld1tw?=
- =?us-ascii?Q?c3QeoZeiUcNOH1eEZsffJXVERyi0fIICQWvpmLNznAtEywZ7kSiOSL41TCbU?=
- =?us-ascii?Q?6qCSsvlTSeUyuurshLPemEa7ohPozESB0jsSiIojzznsgIbZeV72c/8VNoWD?=
- =?us-ascii?Q?EQykNfpUPOIUSWlvbxy3eRq5mpLol0bFErFeGhXm?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	WMzD94Yd9GoIgfwN/bhzcPmGBg3wNz/L/mIWv4NSMlIP1zsn5t5F+dNnKoMB8mQ1VwzZuOaZqG3BH0iWUMOVq6iv1L0bKe3LxfSldiwUdh5Tf9uC5YUHTcb6p87HWyRkzB1CqU8eAjkB8+2hx7ItRbULzE8eZnexjSj3NBT92xQbvtDJZdMlQC5qjvz8gFGSaEuMS/00cbZ3FFS+Ks7YNGBUuvtT/d0acbppNPsPL5xAbvwqKZtG7V13JfpEOBLpgQfKF3BNHmzKthVfpft0nHPB1q75l8eNPhiaAkIwcPjqraOO9n9Lm7U2QX5Sgs4BhHbTo9mdRzaQe8NW+od3Mn1/1W+Nh699bS5G8mn+tHPRYf4Xu2IMytvLNUNtzjSmsE03LqvTyj300I3XdIMAZFZIgcRyaxy4VEXl/NJU/HbYosnVfqknM+/sxUd+SH0d6g6948KWFkIQspZYCFCsBjx9NS1G5JUjJOk/Cg9wZwy3Go6dn8S0IGNNUzfJFuJKnL9OK9D7FFmZ64l2yDUcwxGErMDGLb7CqsLkAJyrGgkOvKJdp0PmRbLxJKLuwxDZRqkg4wzDyfQcYUHR9isOOQB+9RBF3dmhc4ZU/ERkWdc=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3f6d7a5-ed22-478b-fc30-08ddb9740ad3
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jul 2025 14:23:40.7991
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 39gB/jIt0gO4AUUJSNA0ROw22A08x+/zYHsjAj8VJeB0//KioTwWcMFEU2NungZeI3F7GH6l53iiC5A80mjLJQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF83BEC1808
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-02_02,2025-07-02_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 phishscore=0
- suspectscore=0 mlxscore=0 bulkscore=0 adultscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2505160000 definitions=main-2507020118
-X-Proofpoint-GUID: KXUNQ6WlIqDPMqA6XX7SUv_ftC3N4u8w
-X-Proofpoint-ORIG-GUID: KXUNQ6WlIqDPMqA6XX7SUv_ftC3N4u8w
-X-Authority-Analysis: v=2.4 cv=b82y4sGx c=1 sm=1 tr=0 ts=686540f2 b=1 cx=c_pps a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=Wb1JkmetP80A:10 a=GoEa3M9JfhUA:10 a=Ikd4Dj_1AAAA:8 a=20KFwNOVAAAA:8 a=yPCof4ZbAAAA:8 a=SkZFB6aTyI1deJJJTvsA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAyMDExNyBTYWx0ZWRfX0viCwo7bJXGU j4cr/xCDcpstvPiozA28I8mu/ofN3OcFAfd8VOWgK6YcA6NoRY6BkMYX/dJxDRX1Bme5HIjhJXz sTAc5PR5XYGIzG94kCyiFjtt0Y0Hj7Sw/JkMJ8RneWN4bZZIgUjaKgpRPReZKXyfxAWPxXOJ8Pq
- VHwIqgtVBCJqHNpVvoXeXkAkodelo5D5AKO5ATQ6G+Sc6KfABxqFFYZ8zlYt6kSypqIMrDLhDz4 yr8UzmXSjWoOCaS1DuaZLc97QtxDscNn54D9v1Mre+tTeZFrECGWvUiSt2wS7GKu7kaRapxnMiQ 2v1Pe9SbBUhrPRdTOsokwswxYtIRHhdC0aApFqxmphvBRtYSzjJkEc/2jXKxZ7l009tZBGa6sn2
- sggjcmnzbYwDQq6Wg+iKmOt80cWbb/PB1qdC5JZgXUhiqnUblGcFwdWQjB0kUGgrDVUTJ2rM
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 27/29] docs/mm: convert from "Non-LRU page migration"
+ to "movable_ops page migration"
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ virtualization@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Minchan Kim <minchan@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Miaohe Lin
+ <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Oscar Salvador <osalvador@suse.de>, Rik van Riel <riel@surriel.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>
+References: <20250630130011.330477-1-david@redhat.com>
+ <20250630130011.330477-28-david@redhat.com> <aGVA2p5mUWoBDVKJ@hyeyoo>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <aGVA2p5mUWoBDVKJ@hyeyoo>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ObX1Bqi833CLIiMZ1JY75rfmdBGEzwkvPiVe3hBja2Y_1751467978
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Jun 30, 2025 at 03:00:08PM +0200, David Hildenbrand wrote:
-> Let's bring the docs up-to-date.
+On 02.07.25 16:23, Harry Yoo wrote:
+> On Mon, Jun 30, 2025 at 03:00:08PM +0200, David Hildenbrand wrote:
+>> Let's bring the docs up-to-date.
+>>
+>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> ---
+>>
+>> +movable_ops page migration
+>> +==========================
+>> +
+>> +Selected typed, non-folio pages (e.g., pages inflated in a memory balloon,
+>> +zsmalloc pages) can be migrated using the movable_ops migration framework.
+>> +
+>> +The "struct movable_operations" provide callbacks specific to a page type
+>> +for isolating, migrating and un-isolating (putback) these pages.
+>> +
+>> +Once a page is indicated as having movable_ops, that condition must not
+>> +change until the page was freed back to the buddy. This includes not
+>> +changing/clearing the page type and not changing/clearing the
+>> +PG_movable_ops page flag.
+>> +
+>> +Arbitrary drivers cannot currently make use of this framework, as it
+>> +requires:
+>> +
+>> +(a) a page type
+>> +(b) indicating them as possibly having movable_ops in page_has_movable_ops()
+>> +    based on the page type
 > 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
->
-> +movable_ops page migration
-> +==========================
-> +
-> +Selected typed, non-folio pages (e.g., pages inflated in a memory balloon,
-> +zsmalloc pages) can be migrated using the movable_ops migration framework.
-> +
-> +The "struct movable_operations" provide callbacks specific to a page type
-> +for isolating, migrating and un-isolating (putback) these pages.
-> +
-> +Once a page is indicated as having movable_ops, that condition must not
-> +change until the page was freed back to the buddy. This includes not
-> +changing/clearing the page type and not changing/clearing the
-> +PG_movable_ops page flag.
-> +
-> +Arbitrary drivers cannot currently make use of this framework, as it
-> +requires:
-> +
-> +(a) a page type
-> +(b) indicating them as possibly having movable_ops in page_has_movable_ops()
-> +    based on the page type
+>> +(c) returning the movable_ops from page_has_movable_ops() based on the page
+>> +    type
+> 
+> I think you meant page_movable_ops()?
 
-> +(c) returning the movable_ops from page_has_movable_ops() based on the page
-> +    type
-
-I think you meant page_movable_ops()?
-
-Otherwise LGTM :)
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-
-> +(d) not reusing the PG_movable_ops and PG_movable_ops_isolated page flags
-> +    for other purposes
-> +
-> +For example, balloon drivers can make use of this framework through the
-> +balloon-compaction infrastructure residing in the core kernel.
+Very right, thanks!
 
 -- 
 Cheers,
-Harry / Hyeonggon
+
+David / dhildenb
+
 
