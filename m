@@ -1,95 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-10047-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10048-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C31AF5A8A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jul 2025 16:08:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A52DFAF5A9C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  2 Jul 2025 16:10:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bXMDX66msz30LS;
-	Thu,  3 Jul 2025 00:07:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bXMH80N5wz30RK;
+	Thu,  3 Jul 2025 00:10:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751465276;
-	cv=none; b=g07O+jUom8JLo4rUQfC1OyQKdaa/NCmNmxtAxBU/sawBnZxcatriZRMbg/lxnvW5BkIG8A35ZdWFZM8MVxNeAW/tsvKPNYA6JcA79lqiUyBL4eHONMWxbWSLjtMQCQniHArCVItJh2+Be4sR3xdUpJJQl2kmLu5RGJ+rcGDDaqsGZISkqka6UkZ3WIIZUIfa6ziHEOZzAWjKzAkAHDBvsLaa/k4gvERDPRlDpaJuMMXJkvWKKyfFCVviKw2QAnS+y2u/sbSwWYasWUoMnw3AhJx+vNOHn2iRdL+C1sFFdpU+zLkIOxRU20hZDROfHwnYGYoqpq8AAvKN5Cf9AGSXqQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751465411;
+	cv=none; b=LIsbpD36h0XSHirYX5mYcUlAffNNS2ku18g4zyKW4e1+PzBgmeQ65kHMPQJBzzvywreY0dOma75dBXnHbz8v85JDktCow4R8RsJ1sIjnnP6FdfaV9bC3ufRaxRE+fL/6b16QZLGG663v60+ghLDQFm+Zqi/Ol5wr8cNs+q/hhjL6kTTDyvchb5lEDrignMTIApTSEsaX7+DsnmV3fmsTadyJZ0aQcZrIozUh2t76wzz0mTC4ZGPLwvB6QgwHFqADkPFahpgK47uO3wCenYhyn/zDX7vR0ZADTIw6LznI11EtcV2hwM6nt7d9dNzuyyWwrbvpY40fxroRmQVU8Ot4bg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751465276; c=relaxed/relaxed;
-	bh=QtugXBwpmof8PtjrVGSF5iQiiRq53WoQXJVBl10e0QY=;
+	t=1751465411; c=relaxed/relaxed;
+	bh=TgZwYQY/6//7Y1IiL72sIvHhk7c1rsqVRlKePVxyg/g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aHoAuVB8fyT+ODEyjNG4n/k9rHZT4i5gCQitQxAxxFIwVRfaRIHzo0Ap6XNE6mXrQCGD5tbw2W083ZrhX0BuEPMixqGwbOVEabq2slB+d6FyV24UEXW5FLn+vmwjh0gKylQTQRmLFyKI1iuocHkhl/astvJk9i4jbiIpNZtWTvmh+odjS7EUusHM4ke8ftJvI4TVD6nv9xYzDIc85Pty8cGBTSgo247HyFCs3z1togGABFE/P5exTHPLBT22GRk+zysWVc/pPu+HUlqN8tmoVrWtH1UPBw7NMAaYEes1SUDAT0mqzDr/kDU7j4zr4TpSewsmt67ecdrQ1GMjXF7DNA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TOMCJzde; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TOMCJzde; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=nlUh3dxAaLmubeoKncuPIEVP6iuUq2MEs3ha27ftQxcrr1QJomhgEyAhnLKdLSe8iHQ4D8n+HN78+19r9U4Jf1Dcm0f39wSwGzRpLF00V3ulPrD8d2QgajWVa9kuU8sTHLUX94ayo5/kD11mVtEzvvMNpR/UO6pZmH/pirxxHKQ+RqjjAV5cdTtJ9kPlYmLtRuxQuhlTt9SBBLZ+edxu/CocYb/QLKxXOHCkhJV5bnnwb1WZsZ/95ZnyyXPO/JJqZi7sZglAD4kojy13fqFN6knU4w+hX0T6E0A7R5Mo8BGQ3MdI6ICnofphSkK9pKd+j6nItHJrrwX7nB+NZc6F7w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MwYtWHqV; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MwYtWHqV; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TOMCJzde;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=TOMCJzde;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MwYtWHqV;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MwYtWHqV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bXMDT68n3z2yRn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jul 2025 00:07:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bXMH621G7z2yRn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jul 2025 00:10:09 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751465266;
+	s=mimecast20190719; t=1751465407;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QtugXBwpmof8PtjrVGSF5iQiiRq53WoQXJVBl10e0QY=;
-	b=TOMCJzdeTs6knaxCuSnSUVXvuFm/Yj41wQQYc4MIvwGtkb5MBoIQJSdo0XX0AFV0vcfeiQ
-	scIDOaZ3gK3plLGl+lelfirlAfb/bokpF9XXvfouMu01RMmgJnf/189AhzJZ2SrAQXavxI
-	PzouxnJ5LuZFXuRsqSUgBFCsEAOA+Ug=
+	bh=TgZwYQY/6//7Y1IiL72sIvHhk7c1rsqVRlKePVxyg/g=;
+	b=MwYtWHqVMjQHr3CJcTNfDKZvIA7iLymUtfddzSLPI1VVHk4ifTvCaOyt7INPqWsXagm4tR
+	c8tHZIl5evYqOlW92yXiT+GK9LK/RpivPwp1rDJmyWPspVBCW8eJ6VHx2xaGzOwDalgy7x
+	+aHRvZXgdyYviJ6nKs8h/1yOpbEvMQY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751465266;
+	s=mimecast20190719; t=1751465407;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=QtugXBwpmof8PtjrVGSF5iQiiRq53WoQXJVBl10e0QY=;
-	b=TOMCJzdeTs6knaxCuSnSUVXvuFm/Yj41wQQYc4MIvwGtkb5MBoIQJSdo0XX0AFV0vcfeiQ
-	scIDOaZ3gK3plLGl+lelfirlAfb/bokpF9XXvfouMu01RMmgJnf/189AhzJZ2SrAQXavxI
-	PzouxnJ5LuZFXuRsqSUgBFCsEAOA+Ug=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=TgZwYQY/6//7Y1IiL72sIvHhk7c1rsqVRlKePVxyg/g=;
+	b=MwYtWHqVMjQHr3CJcTNfDKZvIA7iLymUtfddzSLPI1VVHk4ifTvCaOyt7INPqWsXagm4tR
+	c8tHZIl5evYqOlW92yXiT+GK9LK/RpivPwp1rDJmyWPspVBCW8eJ6VHx2xaGzOwDalgy7x
+	+aHRvZXgdyYviJ6nKs8h/1yOpbEvMQY=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-456-Xa0GPkC6OAysxW_upO2UBg-1; Wed, 02 Jul 2025 10:07:44 -0400
-X-MC-Unique: Xa0GPkC6OAysxW_upO2UBg-1
-X-Mimecast-MFC-AGG-ID: Xa0GPkC6OAysxW_upO2UBg_1751465263
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-451d3f03b74so36209395e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Jul 2025 07:07:44 -0700 (PDT)
+ us-mta-263-XheaiIEENRK690anlBwIwQ-1; Wed, 02 Jul 2025 10:10:03 -0400
+X-MC-Unique: XheaiIEENRK690anlBwIwQ-1
+X-Mimecast-MFC-AGG-ID: XheaiIEENRK690anlBwIwQ_1751465402
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a4eb6fcd88so3385859f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 02 Jul 2025 07:10:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751465263; x=1752070063;
+        d=1e100.net; s=20230601; t=1751465402; x=1752070202;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=QtugXBwpmof8PtjrVGSF5iQiiRq53WoQXJVBl10e0QY=;
-        b=VcjjSs7+VtAoOGPH726CGgoAKOC/4s5xZL1xNvKxg7rDvhFvW6fVh75mdRWOlUiU9h
-         gN2U1nDLlSaWdCoTViDRLdcqO+b1PxlJvQcEeqqjVqibId/CJtYr9I1RZ0GqbqRjxbnF
-         HOJxetwaaIXTADRvq+ppSkcC54rI03TV3dYpmRy6U8qhrpm0c4hIgeuVdhYkntnadgEd
-         lNRjK14dFe3za9Py0ijVSS1BxoTJkMyao585lOAfsBn7ncMGL0AOywR7XB3KHa+jj1cT
-         deIXSnkuVjS+Bm929PhbhQ0jrx5iLL5U2NVANOs4shXUG1SvWO/9u9Rf7gKvdKfq1Lc8
-         AzBw==
-X-Forwarded-Encrypted: i=1; AJvYcCVTaO59MLfFNcMBoe/S9vSmv/ubEPkVlkbs7fJbyjLtKcriulEc+QiChYaV3peVkeRjvJrE7yby1SROSqs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzd65d68h44R/EELpxLco1MHBp/Fc19dqFPVUugaJ/Z2Je/HOjG
-	5KdpcqBd6Nsosh8j2iJP6fG7WoP9eOfBo0khmRjBweycW/eGsQxZ1ZWvVg/EL4vtcd32ZNVrzwu
-	QmOC01QfypVK/3R7H27nZ+6OgisvHBCJULr5Qh8+IEOn5yY1xGuzQFLJvHF7XElZKNws=
-X-Gm-Gg: ASbGncuQP4285F5gy0UGcV+xPuClE+0PoS8I5/EdmNq2icSANGjmGJF9GNj5a3hOBkr
-	2r2FTceGmShjqZKuJBcdbEXR/naboEahzM2SHS/3pbiQa6ucKy7/zDvDoh9WFrRzF/R8iSae0/i
-	ZhDBt2mpnl3uaFqQVfZqcTXHSuiPZR5RWDCmkCboUAMUvjimRtBZLkaDOI3Ztp34Ux7orms52/m
-	ZrIi1ZGeXPahqqi7E+lGhQZaH57DfVybZ7r9w27Lkbh0cNffjveyI3ARfIZQJqP7dfb7QCgA5ty
-	L+eKseu9Q/Ua9wFY5yY4oedSAsAOSzJnsW4Vpoyn/AqGi8Kf+IoNv0dyyW0h7w==
-X-Received: by 2002:a05:600c:3b01:b0:453:99f:b1b0 with SMTP id 5b1f17b1804b1-454a3706e45mr28815155e9.20.1751465263161;
-        Wed, 02 Jul 2025 07:07:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF5YuCq5rpUy6RMv0jfgdQbgLyOb/XAUKuoXtz40yFdPi0MgOsaJG33C7l4K2KM2eHAFCoDsQ==
-X-Received: by 2002:a05:600c:3b01:b0:453:99f:b1b0 with SMTP id 5b1f17b1804b1-454a3706e45mr28812865e9.20.1751465261164;
-        Wed, 02 Jul 2025 07:07:41 -0700 (PDT)
+        bh=TgZwYQY/6//7Y1IiL72sIvHhk7c1rsqVRlKePVxyg/g=;
+        b=iEJw7nKb2Hm79YhLPHuZWySEOl2oepvrOmMP8GLTj93qY1zGTT6J5PLNwTiFrfa0rW
+         /Txtlhoi6WD+1eJ4fRqZTngMntw2aWVoh6P98Eya1JkWdy8QtOKvUYYRer3XuhrRgy44
+         e4qR1/DIxRdZsGqz5HHEDCtudR5IZCcvXr6zb/R+RM4q+MXOla/Hu2scAdzkbnK//6zS
+         Qah/PUeV6Vsg6hN8Ay0UXCyLws0N+2AG/Q6CUEiaQ1HNC7q2uevz/N4Qw9NKHpKon1YT
+         AFE3gApGURWUviT2brAKobzhaVeKevfr5+LgofIiLFTa0Jn5k5ntz+qK/xaVr3cZKNWZ
+         fhzA==
+X-Forwarded-Encrypted: i=1; AJvYcCXl7e9jUfmlZyrHBKQcKzG0ms6fZV4coNJEo5JNckd7w9OuL8Y2zEYXJri+/gtD7NL/RrQN3ZIiSbFflGw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YySJRwZRtSi0Ja9J1EDHDWEHURvI3jeLJklCf0UFI8lQxjUty4K
+	kYDtCqsuE+HW8gsBhFM+UduO2Hd9BOdrLhThyakTW24Ch31BywA9wq4h7gghTu8jeb5d597ZJjf
+	qGHxF9yDm338O1cAC42FZG4p9TRLT5egiyfkdrOr5cBrknkUNzGFC9aDge7vzJHf+TEm7kNeR1j
+	A=
+X-Gm-Gg: ASbGncsFjhVph0M4Y9wXgKpyxUsRujzxpnGT4cF4wR/FnGn1OZlZON5GD1iKB7NQDoD
+	/btECS0wtGpbhR8K/y8Qt/16Z3iY4uDYvXSFWgesOXdJtK+b1tGJaSC9wLCYHriA8A2KDGaBomb
+	LOilLJ3dgKwYOu2RT9bSmTJFMlrFA73oBcrGzPx1i7Pax+PIRatIpVfQXndJ9lh9+l3RbVNJQ/d
+	7EQDMiL9jRAHWJOG/6/yMrH7qT2ZMUbEMGD6R6Xyk1Nf7FXYbFPUg4gt5V+ceFWR0CXAGlemdoX
+	xhPoOxivRdaTPM1SwNAScgkaBGzrgsmmHsNEh9HdFLPLCBNJeM9YJS5eq/pgwQ==
+X-Received: by 2002:a05:6000:18a5:b0:3a3:5f36:33ee with SMTP id ffacd0b85a97d-3b20048e6acmr2349172f8f.32.1751465402212;
+        Wed, 02 Jul 2025 07:10:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHTHkYd/ujfN4fgDDxoyAu+QvDaaEzPHy6fqG+fLvYE5NiiLRk5DOmUub4YoMfZz682a8//Nw==
+X-Received: by 2002:a05:6000:18a5:b0:3a3:5f36:33ee with SMTP id ffacd0b85a97d-3b20048e6acmr2349116f8f.32.1751465401643;
+        Wed, 02 Jul 2025 07:10:01 -0700 (PDT)
 Received: from [192.168.0.6] (ltea-047-064-114-041.pools.arcor-ip.net. [47.64.114.41])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453a85b3d44sm36303505e9.0.2025.07.02.07.07.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453823c57d7sm240986715e9.40.2025.07.02.07.10.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 02 Jul 2025 07:07:40 -0700 (PDT)
-Message-ID: <69c1b5df-2b49-4a3c-811c-ad6141a22dbe@redhat.com>
-Date: Wed, 2 Jul 2025 16:07:39 +0200
+        Wed, 02 Jul 2025 07:10:01 -0700 (PDT)
+Message-ID: <627b4dd5-b08c-41b4-a3cb-99d522fc2063@redhat.com>
+Date: Wed, 2 Jul 2025 16:09:59 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,8 +105,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH 1/2] scripts: unittests.cfg: Rename
- 'extra_params' to 'qemu_params'
+Subject: Re: [kvm-unit-tests PATCH 2/2] scripts: Add 'test_args' test
+ definition parameter
 To: Alexandru Elisei <alexandru.elisei@arm.com>, kvm@vger.kernel.org,
  andrew.jones@linux.dev, lvivier@redhat.com, frankja@linux.ibm.com,
  imbrenda@linux.ibm.com, nrb@linux.ibm.com, pbonzini@redhat.com,
@@ -114,7 +115,7 @@ To: Alexandru Elisei <alexandru.elisei@arm.com>, kvm@vger.kernel.org,
  david@redhat.com, linux-s390@vger.kernel.org
 Cc: Shaoqin Huang <shahuang@redhat.com>
 References: <20250625154354.27015-1-alexandru.elisei@arm.com>
- <20250625154354.27015-2-alexandru.elisei@arm.com>
+ <20250625154354.27015-3-alexandru.elisei@arm.com>
 From: Thomas Huth <thuth@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
@@ -158,9 +159,9 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20250625154354.27015-2-alexandru.elisei@arm.com>
+In-Reply-To: <20250625154354.27015-3-alexandru.elisei@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: twuyoCsR68fk595MElt5mOxLBGbYg50cOgfovqJffQM_1751465263
+X-Mimecast-MFC-PROC-ID: yoV-2vX_aa6rlTfaUf3XdcEUa3TQT1L83xAJ9Yq8dBU_1751465402
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -172,51 +173,32 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 25/06/2025 17.43, Alexandru Elisei wrote:
-> The arm and arm64 architectures can also be run with kvmtool, and work is
-> under way to have it supported by the run_tests.sh test runner. Not
-> suprisingly, kvmtool's syntax for running a virtual machine is different to
-> qemu's.
+> kvm-unit-tests, on arm and arm64, is getting ready to support running all
+> the test automatically under kvmtool. Even though kvmtool has a different
+> syntax for configuring and running a virtual machine, kvmtool and qemu have
+> in common the test arguments that are passed to the main() function.
 > 
-> Add a new unittest parameter, 'qemu_params', with the goal to add a similar
-> parameter for kvmtool, when that's supported.
+> Add a new test definition parameter, 'test_args', that contains only the
+> VMM-independent arguments that are passed to the main() function, with the
+> intention for the parameter to be used by both qemu and kvmtool, when
+> support for kvmtool is added.
 > 
-> 'extra_params' has been kept in the scripts as an alias for 'qemu_params'
-> to preserve compatibility with custom test definition, but it is expected
-> that going forward new tests will use 'qemu_params'.
-> 
+> Suggested-by: Andrew Jones <andrew.jones@linux.dev>
 > Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
 > Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
 > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
 > ---
-...
-> diff --git a/docs/unittests.txt b/docs/unittests.txt
-> index c4269f6230c8..3d19fd70953f 100644
-> --- a/docs/unittests.txt
-> +++ b/docs/unittests.txt
-> @@ -24,9 +24,9 @@ param = value format.
->   
->   Available parameters
->   ====================
-> -Note! Some parameters like smp and extra_params modify how a test is run,
-> -while others like arch and accel restrict the configurations in which the
-> -test is run.
-> +Note! Some parameters like smp and qemu_params/extra_params modify how a
-> +test is run, while others like arch and accel restrict the configurations
-> +in which the test is run.
->   
->   file
->   ----
-> @@ -56,13 +56,18 @@ smp = <number>
->  Optional, the number of processors created in the machine to run the test.
->  Defaults to 1. $MAX_SMP can be used to specify the maximum supported.
->   
-> -extra_params
-> +qemu_params
->  ------------
+>   arm/unittests.cfg     | 94 ++++++++++++++++++++++++++-----------------
+>   docs/unittests.txt    | 17 ++++++--
+>   powerpc/unittests.cfg | 19 +++++----
+>   riscv/unittests.cfg   |  2 +-
+>   s390x/unittests.cfg   | 13 +++---
+>   scripts/common.bash   |  8 +++-
+>   scripts/runtime.bash  | 18 ++++++---
+>   x86/unittests.cfg     | 92 ++++++++++++++++++++++++++----------------
+>   8 files changed, 164 insertions(+), 99 deletions(-)
 
-Please adjust the length of the "---" line now, too.
-
-With that nit fixed:
+FWIW,
 Acked-by: Thomas Huth <thuth@redhat.com>
 
 
