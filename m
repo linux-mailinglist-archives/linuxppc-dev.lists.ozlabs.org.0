@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-10074-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10075-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D8AEAF6ADE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jul 2025 08:58:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54EADAF6AF3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jul 2025 09:00:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bXnfW5Dfgz2yf3;
-	Thu,  3 Jul 2025 16:58:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bXnhl347Tz2yhb;
+	Thu,  3 Jul 2025 17:00:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751525907;
-	cv=none; b=N8d7AFollPetDfTLMsfBauzhsL1FHGLZB3izDNH+P/Qds9Xrq1hX2mEeGznJn8nEFs5PkTKRkqBvrFqPRi8/4vsvW09LjDl7xtucWVdQchlFOkKWNW3rzmbepgkT+KgwdsACYw+uU2Ptsoa1FHtsaSvFvpmGIIboCaCib1u69/qbNCD0KUHxC4To8utm31+ng3rIyif2GY062SRqcqO9xi/HBh6WqkSiIXn54t0uxG4dOtRp88NOiYX7QrE2bQJaHC7HTqPbcwmH6HT4+yNr6RU1FTf97D0qe8BgfRoExACjrEnRBdi9rROTR06CmsC6qInA8qJYegkSlMkukmeqig==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751526023;
+	cv=none; b=b7IOgZ20z5awTo4pi8WYIWs0h8gow0eB0HoJz0gtY2cCJxN+ptYbDqMXiwNLM4ap+Kj+8rrBJoxA3WarJbE3vPh9qp1tZon6hcd8N3q8KVbZ/I+31oOdhXhh9iib4XYDgFEBbe04mGf7rIXQTDEkpj5DwabMMlwWuNUuBoADaQKCYWOzF7OgoSUPVJxwgDoXECH4UfXzhvS/ywWBceglDubuV2JgHT1BWolaF8081uhJ5SH1OsdvUwK+eZDLB524/2HkA9mH/hdKmLyALGMUe4siPzO+Q2hMLa3zfXVFhttOddApT5FM1zOZkPuRitZ4ePe8GwRS8jXF9BmcNNY0MA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751525907; c=relaxed/relaxed;
-	bh=5X6X+fFiIO4L7wybWvQXmEHCFEABl8djrHs9yH4yAOw=;
+	t=1751526023; c=relaxed/relaxed;
+	bh=lkylsKXH+QEA1UhXFEMCjtnY0NCHohSsB/si2BZzrl0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LUt37DY66lUdYVUfL4r1Y+mfIOp2WzAGxxjWcmM+bissFLZi5LkB1J6uydH7Ua0xiADNcaQw46odWO8EY2bqvSAVBJMoCdzXWkGlEEwhg12UjECaOkVc7aNZh3B5B6hZdoCctzPJz0x5saFtGHFi+DDaxiVs2QThqMs6U6SD4WhxZbn6ryyX8KOQGqiii6e37kEoxsRWeeXgeyfzTHuwQoJ3i0px4iC4dIh17UHh8CGH3oHR06P6RYs7g1D/Exl7kAzZGHCWPnyXp9zmwmbzgcnBVxFSb+1Gt5R1IPiCy79CgyiG8P7YT10nSYLC8PYumdIR5mRmC85tHP14CtYl6w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rty1+aQy; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=JnniaIiQFbDGMiwJqzNerg2WWk/MUDliwm5hMpFXsnE3zg+QmBYPrc6QuWhcDcx0SnWMQJGrzYUKiRSpAr5W8HuPN+RqQ5Rn+pgNpTuf8N0piCsQ16iCzpNbxheacjuG3Z+M30IyIJCC6lrBu3ghYGLYpA+Vna+nZZj6h68j+ZE6R5ftI+LZ6NseS/qrTYt/jO6V4z1ahhqcw7MM6lEJr2E43dIjR9LYEUppOHherymhYmEm7Q8OWlsDb8m/adfec+QmHKiB21tHyvGpnOOH0eCMUtTkyPEIJXQR3SkdF8IFHYmFxPiCqh1HVC2LpnwSyguweUm6GMNq/NbOuPR8NQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XzAtYH73; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Rty1+aQy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XzAtYH73;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bXnfV5SVDz2xHY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jul 2025 16:58:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bXnhk4HSmz2yhX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jul 2025 17:00:22 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 75B0345A0A;
-	Thu,  3 Jul 2025 06:58:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13ACDC4CEE3;
-	Thu,  3 Jul 2025 06:58:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 18AAD61142;
+	Thu,  3 Jul 2025 07:00:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4874C4CEE3;
+	Thu,  3 Jul 2025 07:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751525904;
-	bh=xRGTZRYLZAlIj5TonGK1jrkvc5pectpy+MebLxc8+WQ=;
+	s=k20201202; t=1751526019;
+	bh=RJxYqix0M49SAg8BSVQruWOj2VMiP2GPZSRKVyrU5fk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Rty1+aQyAY2bRrMne8H5wgmG90cyg6YyUq9NCopEypQarTSNxg0tMEKFCC+boZ7vG
-	 TABTxOORxDYGjmyklaf534gad49/1a0cdCzZmrV5+pXblDPgBuX5mEl6jfys2S4pds
-	 v5LW8ydwaIWGyo3GEs/jPZBgcMQ/+xtbwwm22ulGOdbd9AZbU93soH70d+VZmYzrr6
-	 She7wqqIN4bsDWi2DHS4GOjUYQYbQGzOIldqqv1+/B5YEhKf8UtDlh1zyoDC0L+09R
-	 8xnJ6jP7lEFqS/VQKh0tiCi3XMBX8rCYbkWYgFXqR4ARibyxWiUnvaD4YFk958tgA1
-	 B43vfj1k0kfrw==
-Message-ID: <6ce5e5d2-0e6c-47a7-b1c8-7e03372c62bb@kernel.org>
-Date: Thu, 3 Jul 2025 08:58:18 +0200
+	b=XzAtYH73OZqnlUTTj0yaVJvZgzhhUEkkbVYKZ2zGmS2Lz+59ZaAxZbyY7VgQOxeNI
+	 dW5E/HAY1pOQyjRT3IDFXo0nW5hKHcMwOqZ63Do3gj4X8CilOi5Zn2RAsCVSSgqn9e
+	 pAcrgtGIVQlMBBYifqzuMYNGJM5QTsFzrdd3p+fbouYwFB8h9eWOyvsBoItdthiK1W
+	 H42DfsmjESNA5g9/VmMWQLCpsAeQb+ZcMJwrnAIeRmdhnFAlBlJUNDrieNhk8borKD
+	 mqxdyFW91Z9f1+j9/5dx66xCpHOpJcouXVDfAhob3MuuB5mKPfPSqwdVJb4+5ZNKTF
+	 3UU5JvdV2mSBg==
+Message-ID: <6824e14b-8f79-4fee-85f6-e5f78a8ef265@kernel.org>
+Date: Thu, 3 Jul 2025 09:00:14 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,14 +59,14 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 3/9] powerpc/pseries: Add papr-hvpipe char driver for
- HVPIPE interfaces
+Subject: Re: [PATCH RFC 7/9] powerpc/pseries: Enable HVPIPE event message
+ interrupt
 To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
  msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
  hbabu@us.ibm.com
 References: <20250702221444.879256-1-haren@linux.ibm.com>
- <20250702221444.879256-4-haren@linux.ibm.com>
+ <20250702221444.879256-8-haren@linux.ibm.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -112,7 +112,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250702221444.879256-4-haren@linux.ibm.com>
+In-Reply-To: <20250702221444.879256-8-haren@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -121,45 +121,28 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 03/07/2025 00:14, Haren Myneni wrote:
-> +static struct miscdevice papr_hvpipe_dev = {
-> +	.minor	=	MISC_DYNAMIC_MINOR,
-> +	.name	=	"papr-hvpipe",
-> +	.fops	=	&papr_hvpipe_ops,
-> +};
-> +
-> +static int __init papr_hvpipe_init(void)
+> +static int __init enable_hvpipe_IRQ(void)
 > +{
-> +	int ret;
+> +	struct device_node *np;
 > +
-> +	if (!of_find_property(rtas.dev, "ibm,hypervisor-pipe-capable",
-
-Where did you document the ABI? Anyway, so you just run it on x86 and
-every other arch? Why you cannot use proper devices and device driver
-matching/binding?
-
-
-> +		NULL))
-> +		return -ENODEV;
-
-Totally odd wrapping.
-
-> +
-> +	if (!rtas_function_implemented(RTAS_FN_IBM_SEND_HVPIPE_MSG) ||
-> +		!rtas_function_implemented(RTAS_FN_IBM_RECEIVE_HVPIPE_MSG))
-
-
-Odd alignment.
-
+> +	hvpipe_check_exception_token = rtas_function_token(RTAS_FN_CHECK_EXCEPTION);
+> +	if (hvpipe_check_exception_token  == RTAS_UNKNOWN_SERVICE)
 > +		return -ENODEV;
 > +
-> +	ret = misc_register(&papr_hvpipe_dev);
-> +	if (ret) {
-> +		pr_err("misc-dev registration failed %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
+> +	/* hvpipe events */
+> +	np = of_find_node_by_path("/event-sources/ibm,hvpipe-msg-events");
+
+Undocumented ABI, NAK. Plus node names should not be used at all as
+ABI... and naming does not follow DT spec/style, not sure if you care
+about it, though.
+
+
+> +	if (np != NULL) {
+> +		request_event_sources_irqs(np, hvpipe_event_interrupt,
+> +					"HPIPE_EVENT");
+> +		of_node_put(np);
+> +	} else {
+> +		pr_err("Can not enable hvpipe event IRQ\n");
 
 
 Best regards,
