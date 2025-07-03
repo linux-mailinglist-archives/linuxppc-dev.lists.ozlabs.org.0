@@ -1,109 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-10077-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10081-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D87AF6BF9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Jul 2025 09:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7144CAF83A8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 00:42:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bXpnx2Lkqz2yhX;
-	Thu,  3 Jul 2025 17:49:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bYBc01PPFz2xRq;
+	Fri,  4 Jul 2025 08:42:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::631"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751528997;
-	cv=none; b=KuWqJf++E3DAG+mnFzv2bvG45JpUx8IbwABy/vZr37w4ohsiYANEK7KNHDw/Bos38uIX7Lx2TOpQVuTDWL376iq+Yr1ujNFdqHjllsU00mq+AyyqFPPLSVKCY9yWQNfLKupximei39Oxy1F4t6ZSMaxpzoDDkfvxYZXErybu/646yPcFumGv3r+25cAaoHBqdPHPW0E3pSHNWSkVKFnqAkIoy5VGBpFe2gCfzzgcD024xXMAJJsSkGRRLV5IFEIQAackhkNE3yvHtpuHMUtpF7Ig2CJHFumVXQwS7mDxcJRJeOMBPOLIOINF77j/P7o1yaJjnCSKxxW26eI38v5oPQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.188.205.243
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751546965;
+	cv=none; b=SjG9XPewKF0gFDPpg9eD8XQzNMCsHWJVXuLcagBQPc2PbeuTsW7Q2Gl9d5Vi5nMfzBGa6FKqnIOzHrAA+sG/zRGvODwAwzp7Y9AyhCVkYOQSh7AfVZIyiXataX1aMTXTioCifBCsuBeKcW4yK18tBc0eVGlmUz6PsYbYKSqg0gq3kYNLlkdvTDuSNdeavpio2HxWW4kQBH6Y1mlZAmr57dHG5u27+6cmyVPWobFbLyWelRqxhJmWtmoTcmXzDOfypARw6dIeGmT5S2feHHnZGZ8DyUFL7W8aaBZUopmc3pSjytPD9jKl/1n7gxrs/7MU3/7uTA9wgOOAk+IXKoj7AA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751528997; c=relaxed/relaxed;
-	bh=4rdlP0nTwM1j9GZkgPlLuvN9K1I59CDnggPz0pqAh0M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lGlBy1lDSHj0k5GpfOSUVJBwlizElHWvbeH9U/gpq40HiJ4h1L81/Ns5tzz734DPgvQV+fg9Qq4AEUKVwOTdVSEmUjOkMBXPUa4LSzXgHkP4Hq0dKV7/Au+RTF3SD3futtPfAPjnjwxru6vggFHyuVl1k92+ovTjHQ7KufNPCZRg8lCwrCjqrT8LWa+N4LZZpXi0j9pyhRlb+9noS5za78q82dB0TDfkhx2GP6YpOZyNC7PvqGQ1A+UVTjLzt3FT9kkQd5seAcclDLTbKdA7Pc09kUI61knO+pZzKuE3YVIy5cuqj8byVU7wYFJVmbpObgR+KuG+E2bso4+pV/hh3Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org; dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=i9vWAlkm; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=senozhatsky@chromium.org; receiver=lists.ozlabs.org) smtp.mailfrom=chromium.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+	t=1751546965; c=relaxed/relaxed;
+	bh=35didlx/nd6Jatkhda9mievVgfC9CDJ2gKtI1u3wrmQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nYERCuKIl9ZN5DhrZpYzLKLNzrtNhBTY3SL+hPXQMkJm6Ghg6ICEvQcCFXVyl11e0w+MIrWgUaYhBALRCilMxAeO3SUybF5n3GvuLpAQM2JnuaG6W98aT5PDqYR1mg2+VUvBerLnEd66ioSC8pPtS7LWX4IvUmMJxytSbQQhYjyARqUjvko3PCyCr1GitbBxowluO/sHJC1F9Bi6W+/1L5PJtDhguATCByEPCo5w7aNEkDcVXWyVYE+fW9cPKznmlAcSBfkwf5NakwUufhgav4ZxprUSyW/J/n4OMn3qxiCqlR5opUzmR7cZdOaKcYVosUWoMHu98Ep1GpamBL5Wfw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; dkim=pass (2048-bit key; unprotected) header.d=astralinux.ru header.i=@astralinux.ru header.a=rsa-sha256 header.s=mail header.b=05MTyX4I; dkim-atps=neutral; spf=pass (client-ip=93.188.205.243; helo=mail-gw02.astralinux.ru; envelope-from=abelova@astralinux.ru; receiver=lists.ozlabs.org) smtp.mailfrom=astralinux.ru
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=i9vWAlkm;
+	dkim=pass (2048-bit key; unprotected) header.d=astralinux.ru header.i=@astralinux.ru header.a=rsa-sha256 header.s=mail header.b=05MTyX4I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=senozhatsky@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=astralinux.ru (client-ip=93.188.205.243; helo=mail-gw02.astralinux.ru; envelope-from=abelova@astralinux.ru; receiver=lists.ozlabs.org)
+X-Greylist: delayed 601 seconds by postgrey-1.37 at boromir; Thu, 03 Jul 2025 22:49:21 AEST
+Received: from mail-gw02.astralinux.ru (mail-gw02.astralinux.ru [93.188.205.243])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bXpns23lHz2yPd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jul 2025 17:49:52 +1000 (AEST)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-234f17910d8so75289685ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Jul 2025 00:49:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1751528990; x=1752133790; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4rdlP0nTwM1j9GZkgPlLuvN9K1I59CDnggPz0pqAh0M=;
-        b=i9vWAlkmwtI5cA+SVhVbuxlpXFmiwbhJTmm8vtSmD687kE32lJ0pzfaLyFokMYKPiq
-         ckF2TO0yeVUkdYhxbmipPJAwC1yL3BXsOx7IvzHWtTPa0klRMCZQSQZEmzbYU1AcvSpI
-         grtnn6ItYys3+YG0V7B7rOWWBLnCyNArAnYUQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751528990; x=1752133790;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4rdlP0nTwM1j9GZkgPlLuvN9K1I59CDnggPz0pqAh0M=;
-        b=fL1sHTZqtjEOCWn/RGDRj+OSPpjvRAiP2PRYpOFzCc4FKyjl24K5TgckyVJ4733Q2N
-         w4myvsb47VQg0AA50xWqm6URScpUSkmUCMEVN6Q5VJC/JHmNFoOY3BQX7xTlwhf5EaZz
-         gfGo4kSlBqAWzTApaD8hLKzITGgCtSqCqobOkbZGnas0GAo2wIqvSH0dMaxNz0zGDfLK
-         foHB9owwYE4GMtnOc+gZI33HWayDUJ4LYg7oCn3DXjZvJaxZd/Wzvjyx306T6+Pi1T+e
-         okNwDUyaJdPJrR7v0z0u8GxinBTZ9FVREPbQm8BXgaavZ3nvzZ112SD03vk2ljqshynr
-         Gerg==
-X-Forwarded-Encrypted: i=1; AJvYcCXeWuPinDs6SSQ/eUy7ypeUcsB6lmg5RxvaFjfeVGO28BEMsTaNtA+ouNiDL2yUA3PKja2iUKew8TBulSg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxK7Q2mbOW4XEYg5RkQ9TkFGXbX7HKUFWNAafBleD1urmwue/wM
-	3X0WOVzEDE8WfA1/UqKzj+5P/Mtbao5/BPjyqhZlQYnTzQp8kVY6XDvIsfdj9K3pYg==
-X-Gm-Gg: ASbGncsVy6HgH9Ovqi7/jjzSP+/gJbxeZ/ikS4d5iWuztceQSfG1e9KI7vmG1kMTP/O
-	M9P4Y+IMt2TqUwRO6QRpRNwycxGMAV/43P9rHX7LTQfJMheLlC5czW5uyU49rA2AIZWvzyot7EL
-	5/RCWHI2/V2I7rGCLKToARK6cqmIWc+m/Dv33brfB2ICq2MKGMJjzclxoiE+RQAdaqeaznRP6lQ
-	SopSETE3wi0IPjuwYzzQk3N0z63tW1Okbs6dVMwSonWfpQWkg0UPpI707MIZ718GGUDCEke4ANC
-	KbrqFKVKuL8rKRSl172r0Wotlykt/x2rnhLq+zuz4mxIO6uRodQuj3oLGNDfd3sG5w==
-X-Google-Smtp-Source: AGHT+IEKxYsiAxh8kaPSjnmxQLTx3GgbE7KRESYB7LYtUj4r49YBA8q40hB+RM5u8/Kf7sPDiMHXFw==
-X-Received: by 2002:a17:903:1b65:b0:235:f2d7:375e with SMTP id d9443c01a7336-23c79842f5cmr39376735ad.52.1751528990271;
-        Thu, 03 Jul 2025 00:49:50 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:8e3f:7c33:158f:349b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-23acb39ba83sm144377755ad.89.2025.07.03.00.49.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Jul 2025 00:49:49 -0700 (PDT)
-Date: Thu, 3 Jul 2025 16:49:37 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: David Hildenbrand <david@redhat.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Minchan Kim <minchan@kernel.org>, Brendan Jackman <jackmanb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>
-Subject: Re: [PATCH v1 12/29] mm/zsmalloc: stop using __ClearPageMovable()
-Message-ID: <w2hhkx6nwgtk22bcyqm7drvozddwiumj6glixpyrrub7f4ivvf@3as22jquijyu>
-References: <20250630130011.330477-1-david@redhat.com>
- <20250630130011.330477-13-david@redhat.com>
- <zmsay3nrpmjec5n7v44svfa7iwl6vklqan4dgjn4wpvsr5hqt7@cqfwdvhncgrg>
- <757cf6b9-730b-4b12-9a3d-27699e20e3ac@redhat.com>
- <ugm7j66msq2w2hd3jg3thsxd2mv7vudozal3nblnfemclvut64@yp7d6vgesath>
- <11de6ae0-d4ec-43d5-a82e-146d82f17fff@redhat.com>
- <5thkl2h5qan5gm7putqd4o6yn5ht2c5zeei5qbjoni677xr7po@kbfokuekiubj>
- <vscedd6m3cq73c5ggjjz6ndordivgeh4dmvzeok222bnderr5c@dujm4ndthtxb>
- <6a83e3e1-ab1d-409b-8395-df363321cade@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bXxRP5jpqz2xgQ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Jul 2025 22:49:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=astralinux.ru;
+	s=mail; t=1751546352;
+	bh=dnPaUSVSFnBxHAuvBN3ugpTqEkDkWs7TpZEV1h+4drE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=05MTyX4ITmjSMjBJJ4gpDexb0esJniSCqDHJD837JQ0h6PBDCH36iDwSgrT/ddafZ
+	 bp/okzXoVjAhluguf3FRJ7A27UMyv+fDezNQa6l+YMDKfIZgAYAu2kCepJeT2k7eKO
+	 u2JJ/V33II2dJkW94CiMrjaB+FRtvUHs5D65M9K0Jm5LW28/vCDm9tuBA0wsIauzS5
+	 vZuV+uBlGkqwG0s9BJo02gh5CkaXsGwvbL/tQrDDjcnWWY24GkDZpEZgFh+vFM45uy
+	 625C9VzW9jG6lSHp+av4vYzYB9CC9gUMUTd0+ufsdYYh2VYfpCzQiKjfEPzHpD7OX6
+	 SfbJcCkgUjWcA==
+Received: from gca-msk-a-srv-ksmg01.astralinux.ru (localhost [127.0.0.1])
+	by mail-gw02.astralinux.ru (Postfix) with ESMTP id B6CB81FA37;
+	Thu,  3 Jul 2025 15:39:12 +0300 (MSK)
+Received: from new-mail.astralinux.ru (unknown [10.177.185.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail-gw02.astralinux.ru (Postfix) with ESMTPS;
+	Thu,  3 Jul 2025 15:39:10 +0300 (MSK)
+Received: from localhost.localdomain (unknown [10.190.6.76])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4bXxBy4vVBz16Hny;
+	Thu,  3 Jul 2025 15:38:34 +0300 (MSK)
+From: Anastasia Belova <abelova@astralinux.ru>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Anastasia Belova <abelova@astralinux.ru>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Paul Mackerras <paulus@samba.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Gavin Shan <gwshan@linux.vnet.ibm.com>,
+	Mauricio Faria de Oliveira <mauricfo@linux.vnet.ibm.com>,
+	Andrew Donnellan <andrew.donnellan@au1.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	David Dai <zdai@linux.ibm.com>,
+	Sachin Sant <sachinp@linux.ibm.com>
+Subject: [PATCH 5.10] powerpc/pseries: Fix use after free in remove_phb_dynamic()
+Date: Thu,  3 Jul 2025 15:38:30 +0300
+Message-ID: <20250703123831.29005-1-abelova@astralinux.ru>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -117,18 +83,117 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6a83e3e1-ab1d-409b-8395-df363321cade@redhat.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-KSMG-AntiPhishing: NotDetected, bases: 2025/07/03 11:46:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: abelova@astralinux.ru
+X-KSMG-AntiSpam-Info: LuaCore: 63 0.3.63 9cc2b4b18bf16653fda093d2c494e542ac094a39, {Tracking_uf_ne_domains}, {Tracking_from_domain_doesnt_match_to}, lore.kernel.org:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;astralinux.ru:7.1.1;new-mail.astralinux.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 194527 [Jul 03 2025]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.11
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.0.7854, bases: 2025/07/03 05:31:00 #27614197
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2025/07/03 11:46:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 1
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On (25/07/03 09:45), David Hildenbrand wrote:
-> Not sure if there is real value for that; given the review status, I assume
-> this series won't take too long to be ready for upstream. Of course, if that
-> is not the case we could try pulling them out.
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-Sounds good to me.
+[ Upstream commit fe2640bd7a62f1f7c3f55fbda31084085075bc30 ]
+
+In remove_phb_dynamic() we use &phb->io_resource, after we've called
+device_unregister(&host_bridge->dev). But the unregister may have freed
+phb, because pcibios_free_controller_deferred() is the release function
+for the host_bridge.
+
+If there are no outstanding references when we call device_unregister()
+then phb will be freed out from under us.
+
+This has gone mainly unnoticed, but with slub_debug and page_poison
+enabled it can lead to a crash:
+
+  PID: 7574   TASK: c0000000d492cb80  CPU: 13  COMMAND: "drmgr"
+   #0 [c0000000e4f075a0] crash_kexec at c00000000027d7dc
+   #1 [c0000000e4f075d0] oops_end at c000000000029608
+   #2 [c0000000e4f07650] __bad_page_fault at c0000000000904b4
+   #3 [c0000000e4f076c0] do_bad_slb_fault at c00000000009a5a8
+   #4 [c0000000e4f076f0] data_access_slb_common_virt at c000000000008b30
+   Data SLB Access [380] exception frame:
+   R0:  c000000000167250    R1:  c0000000e4f07a00    R2:  c000000002a46100
+   R3:  c000000002b39ce8    R4:  00000000000000c0    R5:  00000000000000a9
+   R6:  3894674d000000c0    R7:  0000000000000000    R8:  00000000000000ff
+   R9:  0000000000000100    R10: 6b6b6b6b6b6b6b6b    R11: 0000000000008000
+   R12: c00000000023da80    R13: c0000009ffd38b00    R14: 0000000000000000
+   R15: 000000011c87f0f0    R16: 0000000000000006    R17: 0000000000000003
+   R18: 0000000000000002    R19: 0000000000000004    R20: 0000000000000005
+   R21: 000000011c87ede8    R22: 000000011c87c5a8    R23: 000000011c87d3a0
+   R24: 0000000000000000    R25: 0000000000000001    R26: c0000000e4f07cc8
+   R27: c00000004d1cc400    R28: c0080000031d00e8    R29: c00000004d23d800
+   R30: c00000004d1d2400    R31: c00000004d1d2540
+   NIP: c000000000167258    MSR: 8000000000009033    OR3: c000000000e9f474
+   CTR: 0000000000000000    LR:  c000000000167250    XER: 0000000020040003
+   CCR: 0000000024088420    MQ:  0000000000000000    DAR: 6b6b6b6b6b6b6ba3
+   DSISR: c0000000e4f07920     Syscall Result: fffffffffffffff2
+   [NIP  : release_resource+56]
+   [LR   : release_resource+48]
+   #5 [c0000000e4f07a00] release_resource at c000000000167258  (unreliable)
+   #6 [c0000000e4f07a30] remove_phb_dynamic at c000000000105648
+   #7 [c0000000e4f07ab0] dlpar_remove_slot at c0080000031a09e8 [rpadlpar_io]
+   #8 [c0000000e4f07b50] remove_slot_store at c0080000031a0b9c [rpadlpar_io]
+   #9 [c0000000e4f07be0] kobj_attr_store at c000000000817d8c
+  #10 [c0000000e4f07c00] sysfs_kf_write at c00000000063e504
+  #11 [c0000000e4f07c20] kernfs_fop_write_iter at c00000000063d868
+  #12 [c0000000e4f07c70] new_sync_write at c00000000054339c
+  #13 [c0000000e4f07d10] vfs_write at c000000000546624
+  #14 [c0000000e4f07d60] ksys_write at c0000000005469f4
+  #15 [c0000000e4f07db0] system_call_exception at c000000000030840
+  #16 [c0000000e4f07e10] system_call_vectored_common at c00000000000c168
+
+To avoid it, we can take a reference to the host_bridge->dev until we're
+done using phb. Then when we drop the reference the phb will be freed.
+
+Fixes: 2dd9c11b9d4d ("powerpc/pseries: use pci_host_bridge.release_fn() to kfree(phb)")
+Reported-by: David Dai <zdai@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Tested-by: Sachin Sant <sachinp@linux.ibm.com>
+Link: https://lore.kernel.org/r/20220318034219.1188008-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+---
+Backport fix for CVE-2022-49196
+ arch/powerpc/platforms/pseries/pci_dlpar.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
+index a8f9140a24fa..325871d6f5b0 100644
+--- a/arch/powerpc/platforms/pseries/pci_dlpar.c
++++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
+@@ -74,6 +74,9 @@ int remove_phb_dynamic(struct pci_controller *phb)
+ 		}
+ 	}
+ 
++	/* Keep a reference so phb isn't freed yet */
++	get_device(&host_bridge->dev);
++
+ 	/* Remove the PCI bus and unregister the bridge device from sysfs */
+ 	phb->bus = NULL;
+ 	pci_remove_bus(b);
+@@ -97,6 +100,7 @@ int remove_phb_dynamic(struct pci_controller *phb)
+ 	 * the pcibios_free_controller_deferred() callback;
+ 	 * see pseries_root_bridge_prepare().
+ 	 */
++	put_device(&host_bridge->dev);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
