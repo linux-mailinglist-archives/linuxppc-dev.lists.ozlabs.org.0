@@ -1,58 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-10118-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10119-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD19EAF9415
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 15:27:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4F3AF9474
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 15:44:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bYZDc1cCjz3blH;
-	Fri,  4 Jul 2025 23:27:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bYZbz2bNwz3bmQ;
+	Fri,  4 Jul 2025 23:43:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751635632;
-	cv=none; b=Z1beOL8q7cp4rtAwcoEgyORNvxLzIvnmNqT9vCTrNXMAkOEh6Ua0gD9uDjjpmnWSUJB30sgVp6WHWCEqsZvRXlaFycQLlmwD/Js3QA2d7o3XCOy3hrQ4WzRYozbZjO0sKNDE5vnT3Bd40HIJQEFYlLw0T76NTDXxgr8eWQw2Z3HN775hDUzjaQqn9w2KPTo6eMNkpdBAicrXis7YUhcxJ0UI5ZYSai2HNU9Hn+XPi231OTB29fDScRtF0oyiY3eDz+1b0rmrFoYFKNF9c9rQB+T5xvZy+HCzc1+lEDF/BoTQB3HaV428/TrjDpqn9m9xiJUpM5zvbS71W9EryKVXxg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.14
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751636639;
+	cv=none; b=h5q82t/vkjCLomQj9T8mfQ03fb2FUf0yexmqOctTuRzzmUqBxWKNFGGbzbaF2dyPmgize52ykivMov3aT11nLCiB1Cr/b6sCnESZhAeT5Qz9hO9tdLs5OrZabIeQlOAC2+3JF2c6J3i36C5CSZM263ALfrOwUNUYpCcdD22JxCQUCl01mSOkF1wAnP1pYu1pBGKE3W8Ut19B8x+MWfsIgxNxSYZeShwdTNz+C0SxfcJfB52aSMfM+sTDWKEMWQxQF/MrzDTHjrcbpi/NwoEeKFI0Q+dfNx6fDFmgoi7fqUQfVaxHq47KcNEODT4dN14YYHsgWLsgib91rAXCL6V0og==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751635632; c=relaxed/relaxed;
-	bh=Y67omdNsRzGiYfKThMM73Sspj4UJQkYkveftpUDTVCE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B5zj5T/lPnFyuxHyPHYJNB4uSDnKl/Uu/3x3cRQHrJVKXOuLSfXA6ri+Dyz6CeOUSpYT0qV+AKppqiKWsu6TREIFzCaWUZOqKT9M+qCzs0NHs9Do624wAnEgtDswIUKDNxvLqe6J5fN65fNZLTKdKo49Sf66aCbG6C27y9o/t7ZlojDqAB2ww2e+GxWefiPTslDZgXG+KRYTbwCQScxwjUXXs8SvbtgLDdLFsBOKbF+F42br5Z5iLD/Xx7iZOsSAhfaUBvx8RKvTpnpSMeOh0hLkPHyhDJBEN6dDu0pjPCiDQNGB+d/qqpjMP3YTnZTa4JOQpCYGljJYvtt9RixQbg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lu0fEi+g; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1751636639; c=relaxed/relaxed;
+	bh=hlrAIUubpmcgN51JUzcGLPRxEyewbvaMgK3cuuOKFjI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=e98dv/u9wXHiKSqSBN6CjYn5oSXVylvTFmEEXELjVFxT/d8kF62gkZZp8z7rHsZIQRX+7W9IqODQsmEkhjTVYiuxVvAsfQPi/QgnfpcArmdE4tpt18SbJFJCotslOuAzvZch0WDM+Xl6n1BBPFn0koRC+qsqZe3kGky+wxfOiaWXPuTpIsIs1MRCrVPf75IdCLoEkE4p/Dah4hcIv66hs+FF9NUeA4nil3DIl1jehAlMCSzg8JWmETMXQmgs+18AdsWaYEpd1ksGSsKXIdNRwrTVAnczp7lJyCKi9M8O7O5Gq8uVt4f5GMsg/ywhGYDozpGwCIs5p6rhh4TcnkR7Eg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eIrQ9YtB; dkim-atps=neutral; spf=none (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lu0fEi+g;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eIrQ9YtB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYZDZ6RtLz3bgX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 23:27:10 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4D83B4408A
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 13:27:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AF1C4AF0C
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 13:27:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751635628;
-	bh=UmMK4vWBWCkUTxLdUKXC8/KSjdp8rccHH64kZT4FmmU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lu0fEi+gQsq8IUwn6EEfu/eI1rogJbit7P7CqTe0KP86Hy+4bXK37MxUdwohdMj7J
-	 BIljCNK7dh5Q+/SSrlI6W10bclsGAg7d7FkAeKju8IDrpBStrpPkZnkXRG4yB7rO6+
-	 McdqYfs4MnyQ0tuim5erEKaX0MenHVTu+HbQVW6J5lRzj2AxzinKbWZG9k0qsR0/lZ
-	 7bZdRuTweHSHHVfLL/y8T0loZmktCIhTCXGmjmKvBZ1sMpdPKBNCUEcAOVg/OKR0QN
-	 0qE28/95dJUOrDVnsJuKAdTEjv1KZ57WKoL0GJxEIF4hRZDjNS2Np6UYRK2EU3VxUm
-	 sJKGqlCd7WAtA==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55502821bd2so1101951e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jul 2025 06:27:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXu6HuaW/AcumUt8UyQ3G80h+G3dvExe0I6AdIWkz+MG3+14LepnptEbP8bCsexuDtkckoSxfxSra6R2ps=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyGaluUbqK4tNNL2JCNaJfaP73b3mpChpLFMENzydvR8XUSyOWo
-	z2Yq1kqtjxZUwUWLfmKIeQKtjjJoioYQwC32B9C6cAu2yzn2aJWohJRPYNZpu51p1HMaI2nplBn
-	MHtGyn+NctrLtv6bM7cBtIhGGtsFwtPI=
-X-Google-Smtp-Source: AGHT+IHbXsSqxiQQgTganngCHyLYaDZCz1QOmHZXPSAjSWrJrmUK1ng5PlRRa0qT4YG3miebycXJXkcbsNGhKOePUQw=
-X-Received: by 2002:a05:6512:3da6:b0:553:d8ca:4fcb with SMTP id
- 2adb3069b0e04-556dbf81a40mr784811e87.21.1751635626524; Fri, 04 Jul 2025
- 06:27:06 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYZbx019Qz3blH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 23:43:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1751636637; x=1783172637;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=KmpX5zxlGsQARhawRN1W4dV47zBrJ2MU4Gpq1Itt2mE=;
+  b=eIrQ9YtBVcOmyr8HNh4Fm+NlBVmf2chs5QWBSsddMvdegujN/dtPL9vP
+   0co+SG239msrWglpJ1VSEl7+1ZqCB6LfwZQH17L6n2wWjPDLeLsE8YIRm
+   HC8yZ5MbmTp4b5mNTqG5KFyk6cOKGhHUoPFwUMpRpMevzc3vdg0gpWPB3
+   zCek2kcgRGgiN5hLxeNLBOUwzNzK7jt6AFo+dqxjSf7wsKPGk3FvyQj4j
+   zIiU3zyoi5hZ3XVqOY7S51rji7/izn+jhnfg4eBqIHBT8kQ+f8EfC5oYE
+   OBvTrmi3VVq5VhhqUlv57TB0fcV0Lv2k96Z/zY9u9mt/flaEbasqHFsJC
+   g==;
+X-CSE-ConnectionGUID: 0vwkPmDtQTm+AeJGHURsWA==
+X-CSE-MsgGUID: F3sOQoguR6+G4AC080coZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11484"; a="57745982"
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
+   d="scan'208";a="57745982"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 06:43:53 -0700
+X-CSE-ConnectionGUID: Xlct5SpASzGOsWnvRo5+Cg==
+X-CSE-MsgGUID: al4pzX24RQSY0KYIv3BFLA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
+   d="scan'208";a="155408398"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO fdefranc-mobl3.localnet) ([10.245.246.112])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 06:43:46 -0700
+From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: linux-cxl@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Len Brown <lenb@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+ Dave Jiang <dave.jiang@intel.com>,
+ Alison Schofield <alison.schofield@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+ linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-edac@vger.kernel.org,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject:
+ Re: [PATCH 3/3 v4] ACPI: extlog: Trace CPER CXL Protocol Error Section
+Date: Fri, 04 Jul 2025 15:43:43 +0200
+Message-ID: <2114182.IDvDuAF1LB@fdefranc-mobl3>
+In-Reply-To: <20250701140503.00006a48@huawei.com>
+References:
+ <20250623145453.1046660-1-fabio.m.de.francesco@linux.intel.com>
+ <20250623145453.1046660-4-fabio.m.de.francesco@linux.intel.com>
+ <20250701140503.00006a48@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,157 +91,109 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250630160645.3198-1-ebiggers@kernel.org>
-In-Reply-To: <20250630160645.3198-1-ebiggers@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 4 Jul 2025 15:26:54 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGTSfgVoqpmC=5z1kuAHw_JXo=rCEEFy4tRJdwAb2ExZA@mail.gmail.com>
-X-Gm-Features: Ac12FXyPp6fnvKb4WZAS9lUDfLS7Jj9PzhxOzqBaJq_NKIJbrn4XwJZRpCZIh-c
-Message-ID: <CAMj1kXGTSfgVoqpmC=5z1kuAHw_JXo=rCEEFy4tRJdwAb2ExZA@mail.gmail.com>
-Subject: Re: [PATCH v2 00/14] SHA-256 library improvements
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org, 
-	"Jason A . Donenfeld" <Jason@zx2c4.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-5.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 30 Jun 2025 at 18:09, Eric Biggers <ebiggers@kernel.org> wrote:
+On Tuesday, July 1, 2025 3:05:03=E2=80=AFPM Central European Summer Time Jo=
+nathan Cameron wrote:
+> On Mon, 23 Jun 2025 16:54:20 +0200
+> "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
+>=20
+> > When Firmware First is enabled, BIOS handles errors first and then it m=
+akes
+> > them available to the kernel via the Common Platform Error Record (CPER)
+> > sections (UEFI 2.10 Appendix N). Linux parses the CPER sections via one=
+ of
+> > two similar paths, either ELOG or GHES. The errors managed by ELOG are
+> > signaled to the BIOS by the I/O Machine Check Architecture (I/O MCA).
+> >=20
+> > Currently, ELOG and GHES show some inconsistencies in how they report to
+> > userspace via trace events.
+> >=20
+> > Therefore, make the two mentioned paths act similarly by tracing the CP=
+ER
+> > CXL Protocol Error Section (UEFI v2.10, Appendix N.2.13).
+> >=20
+> > Cc: Dan Williams <dan.j.williams@intel.com>
+> > Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@lin=
+ux.intel.com>
+> > Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.=
+com>
+> > ---
+> >  drivers/acpi/acpi_extlog.c | 62 ++++++++++++++++++++++++++++++++++++++
+> >  drivers/cxl/core/ras.c     |  6 ++++
+> >  include/cxl/event.h        |  2 ++
+> >  3 files changed, 70 insertions(+)
+> >=20
+> > diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+> > index cefe8d2d8affc..9a37b08aacfea 100644
+> > --- a/drivers/acpi/acpi_extlog.c
+> > +++ b/drivers/acpi/acpi_extlog.c
+> > @@ -12,6 +12,7 @@
+> >  #include <linux/ratelimit.h>
+> >  #include <linux/edac.h>
+> >  #include <linux/ras.h>
+> > +#include <cxl/event.h>
+> >  #include <acpi/ghes.h>
+> >  #include <asm/cpu.h>
+> >  #include <asm/mce.h>
+> > @@ -160,6 +161,60 @@ static void extlog_print_pcie(struct cper_sec_pcie=
+ *pcie_err,
+> >  	pci_dev_put(pdev);
+> >  }
+> > =20
+> > +static void
+> > +extlog_cxl_cper_handle_prot_err(struct cxl_cper_sec_prot_err *prot_err,
+> > +				int severity)
+> > +{
+> > +	struct cxl_cper_prot_err_work_data wd;
+> > +	u8 *dvsec_start, *cap_start;
+>=20
+>=20
+> A bunch of this is identical to cxl_cper_post_prot_err()
+> Can we factor that stuff out for common use?
+>=20
+> > +
+> > +	if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
+> > +		pr_warn_ratelimited("CXL CPER invalid agent type\n");
+> > +		return;
+> > +	}
+> > +
+> > +	if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
+> > +		pr_warn_ratelimited("CXL CPER invalid protocol error log\n");
+> > +		return;
+> > +	}
+> > +
+> > +	if (prot_err->err_len !=3D sizeof(struct cxl_ras_capability_regs)) {
+> > +		pr_warn_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
+> > +				    prot_err->err_len);
+> > +		return;
+> > +	}
+> > +
+> > +	if ((prot_err->agent_type =3D=3D RCD || prot_err->agent_type =3D=3D D=
+EVICE ||
+> > +	     prot_err->agent_type =3D=3D LD || prot_err->agent_type =3D=3D FM=
+LD) &&
+> > +	    !(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
+> > +		pr_warn_ratelimited(FW_WARN
+> > +				    "CXL CPER no device serial number\n");
+>=20
+> Whilst some of this check isn't present in cxl_cper_post_prot_err(), it s=
+hould
+> be harmless.
 >
-> This series is also available at:
->
->     git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git sha256-lib-cleanup-v2
->
-> This series improves the SHA-224 and SHA-256 library code to be
-> consistent with what I did for SHA-384 and SHA-512.  This includes:
->
-> - Use stronger typing in the SHA-224 and SHA-256 functions.
->
-> - Add support for HMAC-SHA224 and HMAC-SHA256.  (I'll send a separate
->   patch with KUnit test cases for this.)
->
-> - Make the old-school crypto API's support for sha224 and sha256 just
->   use the actual library API, instead of unsafe low-level functions.
->
-> - Consolidate the CPU-based SHA-224 and SHA-256 code into a single
->   module, with better inlining and dead code elimination.
->
-> - Properly document the SHA-224 and SHA-256 functions.
->
-> - Other changes to synchronize the code with SHA-384 and SHA-512.
->
-> Changed in v2:
-> - Dropped sha224_kunit.c changes; it will be added later in the history
-> - Dropped some patches that I folded into the SHA-512 series
-> - Removed redundant checks of IS_ENABLED(CONFIG_KERNEL_MODE_NEON)
-> - Removed obsolete setting of -DARCH for sha256.o
-> - Fixed a commit title to mention sha256 instead of sha512
-> - Excluded HMAC-SHA{224,256} code from purgatory, where it isn't needed
->
-> Eric Biggers (14):
->   libceph: Rename hmac_sha256() to ceph_hmac_sha256()
->   cxl/test: Simplify fw_buf_checksum_show()
->   lib/crypto: sha256: Reorder some code
->   lib/crypto: sha256: Remove sha256_blocks_simd()
->   lib/crypto: sha256: Add sha224() and sha224_update()
->   lib/crypto: sha256: Make library API use strongly-typed contexts
->   lib/crypto: sha256: Propagate sha256_block_state type to
->     implementations
->   lib/crypto: sha256: Add HMAC-SHA224 and HMAC-SHA256 support
->   crypto: sha256 - Wrap library and add HMAC support
->   crypto: sha256 - Use same state format as legacy drivers
->   lib/crypto: sha256: Remove sha256_is_arch_optimized()
->   lib/crypto: sha256: Consolidate into single module
->   lib/crypto: sha256: Sync sha256_update() with sha512_update()
->   lib/crypto: sha256: Document the SHA-224 and SHA-256 API
->
+Maybe all these checks should go to a static helper in cxl/core/ras.c which
+cxl_cper_handle_prot_err can call? But I'm not entirely sure yet it would=20
+really be worth. Anyway, I'll look into it.
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Thanks,
+
+=46abio
 
 
->  arch/mips/cavium-octeon/Kconfig               |   6 -
->  arch/mips/cavium-octeon/crypto/Makefile       |   1 -
->  arch/riscv/purgatory/purgatory.c              |   8 +-
->  arch/s390/purgatory/purgatory.c               |   2 +-
->  arch/x86/purgatory/purgatory.c                |   2 +-
->  crypto/Kconfig                                |   4 +-
->  crypto/Makefile                               |   1 -
->  crypto/sha256.c                               | 371 +++++++++-------
->  crypto/testmgr.c                              |  12 +
->  drivers/char/tpm/tpm2-sessions.c              |  12 +-
->  drivers/crypto/img-hash.c                     |   4 +-
->  drivers/crypto/starfive/jh7110-hash.c         |   8 +-
->  include/crypto/internal/sha2.h                |  66 ---
->  include/crypto/sha2.h                         | 390 +++++++++++++++--
->  kernel/kexec_file.c                           |  10 +-
->  lib/crypto/Kconfig                            |  34 +-
->  lib/crypto/Makefile                           |  39 +-
->  lib/crypto/arm/Kconfig                        |   7 -
->  lib/crypto/arm/Makefile                       |   8 +-
->  lib/crypto/arm/sha256-armv4.pl                |  20 +-
->  lib/crypto/arm/sha256-ce.S                    |   2 +-
->  lib/crypto/arm/sha256.c                       |  64 ---
->  lib/crypto/arm/sha256.h                       |  46 ++
->  lib/crypto/arm64/Kconfig                      |   6 -
->  lib/crypto/arm64/Makefile                     |   9 +-
->  lib/crypto/arm64/sha2-armv8.pl                |   2 +-
->  lib/crypto/arm64/sha256-ce.S                  |   2 +-
->  lib/crypto/arm64/sha256.c                     |  75 ----
->  lib/crypto/arm64/sha256.h                     |  57 +++
->  lib/crypto/arm64/sha512.h                     |   6 +-
->  .../crypto/mips/sha256.h                      |  20 +-
->  lib/crypto/powerpc/Kconfig                    |   6 -
->  lib/crypto/powerpc/Makefile                   |   3 -
->  lib/crypto/powerpc/{sha256.c => sha256.h}     |  19 +-
->  lib/crypto/riscv/Kconfig                      |   8 -
->  lib/crypto/riscv/Makefile                     |   3 -
->  .../sha256-riscv64-zvknha_or_zvknhb-zvkb.S    |   2 +-
->  lib/crypto/riscv/sha256.c                     |  67 ---
->  lib/crypto/riscv/sha256.h                     |  42 ++
->  lib/crypto/s390/Kconfig                       |   6 -
->  lib/crypto/s390/Makefile                      |   3 -
->  lib/crypto/s390/sha256.c                      |  47 --
->  lib/crypto/s390/sha256.h                      |  28 ++
->  lib/crypto/sha256-generic.c                   | 138 ------
->  lib/crypto/sha256.c                           | 413 ++++++++++++++++--
->  lib/crypto/sparc/Kconfig                      |   8 -
->  lib/crypto/sparc/Makefile                     |   4 -
->  lib/crypto/sparc/{sha256.c => sha256.h}       |  37 +-
->  lib/crypto/x86/Kconfig                        |   8 -
->  lib/crypto/x86/Makefile                       |   3 -
->  lib/crypto/x86/sha256-avx-asm.S               |   2 +-
->  lib/crypto/x86/sha256-avx2-asm.S              |   2 +-
->  lib/crypto/x86/sha256-ni-asm.S                |   2 +-
->  lib/crypto/x86/sha256-ssse3-asm.S             |   2 +-
->  lib/crypto/x86/sha256.c                       |  80 ----
->  lib/crypto/x86/sha256.h                       |  55 +++
->  net/ceph/messenger_v2.c                       |  12 +-
->  tools/testing/cxl/test/mem.c                  |  21 +-
->  58 files changed, 1307 insertions(+), 1008 deletions(-)
->  delete mode 100644 include/crypto/internal/sha2.h
->  delete mode 100644 lib/crypto/arm/sha256.c
->  create mode 100644 lib/crypto/arm/sha256.h
->  delete mode 100644 lib/crypto/arm64/sha256.c
->  create mode 100644 lib/crypto/arm64/sha256.h
->  rename arch/mips/cavium-octeon/crypto/octeon-sha256.c => lib/crypto/mips/sha256.h (76%)
->  rename lib/crypto/powerpc/{sha256.c => sha256.h} (76%)
->  delete mode 100644 lib/crypto/riscv/sha256.c
->  create mode 100644 lib/crypto/riscv/sha256.h
->  delete mode 100644 lib/crypto/s390/sha256.c
->  create mode 100644 lib/crypto/s390/sha256.h
->  delete mode 100644 lib/crypto/sha256-generic.c
->  delete mode 100644 lib/crypto/sparc/Kconfig
->  delete mode 100644 lib/crypto/sparc/Makefile
->  rename lib/crypto/sparc/{sha256.c => sha256.h} (53%)
->  delete mode 100644 lib/crypto/x86/sha256.c
->  create mode 100644 lib/crypto/x86/sha256.h
->
-> --
-> 2.50.0
->
+
 
