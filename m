@@ -1,83 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-10119-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10120-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4F3AF9474
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 15:44:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122CAAF9BD5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 23:06:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bYZbz2bNwz3bmQ;
-	Fri,  4 Jul 2025 23:43:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bYmQZ6dGJz30Tm;
+	Sat,  5 Jul 2025 07:06:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.14
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751636639;
-	cv=none; b=h5q82t/vkjCLomQj9T8mfQ03fb2FUf0yexmqOctTuRzzmUqBxWKNFGGbzbaF2dyPmgize52ykivMov3aT11nLCiB1Cr/b6sCnESZhAeT5Qz9hO9tdLs5OrZabIeQlOAC2+3JF2c6J3i36C5CSZM263ALfrOwUNUYpCcdD22JxCQUCl01mSOkF1wAnP1pYu1pBGKE3W8Ut19B8x+MWfsIgxNxSYZeShwdTNz+C0SxfcJfB52aSMfM+sTDWKEMWQxQF/MrzDTHjrcbpi/NwoEeKFI0Q+dfNx6fDFmgoi7fqUQfVaxHq47KcNEODT4dN14YYHsgWLsgib91rAXCL6V0og==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751663190;
+	cv=none; b=ZvOXX7teYmr2PlKSJ26+/ckQoGmT4WrlRd0F5U3jpTuRABgTNvJkyNJla1My0SPOuUu+pTXHy0fzglPa0iRXKPb3VOlSbuO5UPR73qALqA49fgH8edvJdyd6YD1AsdBv+0k+gy/rFO99jPfS3o24xv2bfVU++r3LfZfLsehpTQOm8lm2qTqFJMJvfYi3R2Xf4tGUKBMxRqGzr6HqDKccPelILNAPXTkSQaY0RKvtN9MgTbY+5aqv2sRknd+533DC8DvdShkbFcBBckwAJNiT1cEh9qhg4t1k0az5GmCYTlk+mUgCG8VBHLwF/vemmyxunTqgqsYEEUEQ+r0ILT08/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751636639; c=relaxed/relaxed;
-	bh=hlrAIUubpmcgN51JUzcGLPRxEyewbvaMgK3cuuOKFjI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e98dv/u9wXHiKSqSBN6CjYn5oSXVylvTFmEEXELjVFxT/d8kF62gkZZp8z7rHsZIQRX+7W9IqODQsmEkhjTVYiuxVvAsfQPi/QgnfpcArmdE4tpt18SbJFJCotslOuAzvZch0WDM+Xl6n1BBPFn0koRC+qsqZe3kGky+wxfOiaWXPuTpIsIs1MRCrVPf75IdCLoEkE4p/Dah4hcIv66hs+FF9NUeA4nil3DIl1jehAlMCSzg8JWmETMXQmgs+18AdsWaYEpd1ksGSsKXIdNRwrTVAnczp7lJyCKi9M8O7O5Gq8uVt4f5GMsg/ywhGYDozpGwCIs5p6rhh4TcnkR7Eg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eIrQ9YtB; dkim-atps=neutral; spf=none (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1751663190; c=relaxed/relaxed;
+	bh=rz1wYmtKueq5l7IHoM3D8osm91cbs1ouesF/PNHx3gU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=iZov3JkOjJcp4Ct6iMGMQG3g2C7SvJPuOSk70T5UCL/z4hav/P4euebJ2WSBwiuZQDSv7SactM7RtbjrBtYKjXr1SdylCke9Po6C8HyhVhR9C7m4DvFlRA6t9BlCi51t5KCU6E/T87yP5x6Tr0PH4JjCBc+zU+XAfr0xkUofo4SaaOqlJ3X6E70SZY57FzQPqzzgbDXKcpXmN6q4FvFJH5bKFEJODLSBwzkZqONI4XtKTQ1TC7q75l/D7ZXCf2P7HYRvMOIbSFuzNcVHwqA8xYvhhHixQOYusasM+ZRXtHIzpRCLY9RljUXO9YLmQQwT9J//q05AV+h4hp9Arjb2Rg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=y88kB/pc; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=eIrQ9YtB;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=y88kB/pc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=fabio.m.de.francesco@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYZbx019Qz3blH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 23:43:55 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751636637; x=1783172637;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=KmpX5zxlGsQARhawRN1W4dV47zBrJ2MU4Gpq1Itt2mE=;
-  b=eIrQ9YtBVcOmyr8HNh4Fm+NlBVmf2chs5QWBSsddMvdegujN/dtPL9vP
-   0co+SG239msrWglpJ1VSEl7+1ZqCB6LfwZQH17L6n2wWjPDLeLsE8YIRm
-   HC8yZ5MbmTp4b5mNTqG5KFyk6cOKGhHUoPFwUMpRpMevzc3vdg0gpWPB3
-   zCek2kcgRGgiN5hLxeNLBOUwzNzK7jt6AFo+dqxjSf7wsKPGk3FvyQj4j
-   zIiU3zyoi5hZ3XVqOY7S51rji7/izn+jhnfg4eBqIHBT8kQ+f8EfC5oYE
-   OBvTrmi3VVq5VhhqUlv57TB0fcV0Lv2k96Z/zY9u9mt/flaEbasqHFsJC
-   g==;
-X-CSE-ConnectionGUID: 0vwkPmDtQTm+AeJGHURsWA==
-X-CSE-MsgGUID: F3sOQoguR6+G4AC080coZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11484"; a="57745982"
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
-   d="scan'208";a="57745982"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 06:43:53 -0700
-X-CSE-ConnectionGUID: Xlct5SpASzGOsWnvRo5+Cg==
-X-CSE-MsgGUID: al4pzX24RQSY0KYIv3BFLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,287,1744095600"; 
-   d="scan'208";a="155408398"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO fdefranc-mobl3.localnet) ([10.245.246.112])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jul 2025 06:43:46 -0700
-From: "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-cxl@vger.kernel.org, "Rafael J . Wysocki" <rafael@kernel.org>,
- Len Brown <lenb@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
- Dave Jiang <dave.jiang@intel.com>,
- Alison Schofield <alison.schofield@intel.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Ira Weiny <ira.weiny@intel.com>,
- Dan Williams <dan.j.williams@intel.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
- linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-edac@vger.kernel.org,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject:
- Re: [PATCH 3/3 v4] ACPI: extlog: Trace CPER CXL Protocol Error Section
-Date: Fri, 04 Jul 2025 15:43:43 +0200
-Message-ID: <2114182.IDvDuAF1LB@fdefranc-mobl3>
-In-Reply-To: <20250701140503.00006a48@huawei.com>
-References:
- <20250623145453.1046660-1-fabio.m.de.francesco@linux.intel.com>
- <20250623145453.1046660-4-fabio.m.de.francesco@linux.intel.com>
- <20250701140503.00006a48@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYmQY1Kj6z2xd3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  5 Jul 2025 07:06:28 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1EE5861469;
+	Fri,  4 Jul 2025 21:06:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27406C4CEE3;
+	Fri,  4 Jul 2025 21:06:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1751663185;
+	bh=f1hFiasjHfmlcHU6lmk4NYAher/zzJdd1u4QQBrYVJ8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=y88kB/pcD4E4EqtT4CkMHjZGaNV/MSL+BfunpDneJYf0u7QKpcXsSW9s14r8BkNmx
+	 WaI24KqTkwL1L2kVQDd0U0gUqzKoB3oOSJKBdiYtW2qefak2kybpZOsGNd5sTK4MTP
+	 njKj4JxNYga3WE9rzmNqEaH7gILlxUtdajr7p1I8=
+Date: Fri, 4 Jul 2025 14:06:23 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ virtualization@lists.linux.dev, linux-fsdevel@vger.kernel.org, Jonathan
+ Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, Jerrin Shaji George
+ <jerrin.shaji-george@broadcom.com>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, Eugenio =?UTF-8?B?UMOpcmV6?=
+ <eperezma@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
+ Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Zi Yan
+ <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, Joshua Hahn
+ <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park
+ <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Minchan
+ Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard
+ <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, Xu Xin
+ <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, Miaohe
+ Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Oscar Salvador <osalvador@suse.de>, Rik van Riel <riel@surriel.com>, Harry
+ Yoo <harry.yoo@oracle.com>, Qi Zheng <zhengqi.arch@bytedance.com>, Shakeel
+ Butt <shakeel.butt@linux.dev>
+Subject: Re: [PATCH v2 00/29] mm/migration: rework movable_ops page
+ migration (part 1)
+Message-Id: <20250704140623.d6b9a013984bc2a109dd4dc9@linux-foundation.org>
+In-Reply-To: <20250704102524.326966-1-david@redhat.com>
+References: <20250704102524.326966-1-david@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,110 +90,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-5.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tuesday, July 1, 2025 3:05:03=E2=80=AFPM Central European Summer Time Jo=
-nathan Cameron wrote:
-> On Mon, 23 Jun 2025 16:54:20 +0200
-> "Fabio M. De Francesco" <fabio.m.de.francesco@linux.intel.com> wrote:
->=20
-> > When Firmware First is enabled, BIOS handles errors first and then it m=
-akes
-> > them available to the kernel via the Common Platform Error Record (CPER)
-> > sections (UEFI 2.10 Appendix N). Linux parses the CPER sections via one=
- of
-> > two similar paths, either ELOG or GHES. The errors managed by ELOG are
-> > signaled to the BIOS by the I/O Machine Check Architecture (I/O MCA).
-> >=20
-> > Currently, ELOG and GHES show some inconsistencies in how they report to
-> > userspace via trace events.
-> >=20
-> > Therefore, make the two mentioned paths act similarly by tracing the CP=
-ER
-> > CXL Protocol Error Section (UEFI v2.10, Appendix N.2.13).
-> >=20
-> > Cc: Dan Williams <dan.j.williams@intel.com>
-> > Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@lin=
-ux.intel.com>
-> > Signed-off-by: Fabio M. De Francesco <fabio.m.de.francesco@linux.intel.=
-com>
-> > ---
-> >  drivers/acpi/acpi_extlog.c | 62 ++++++++++++++++++++++++++++++++++++++
-> >  drivers/cxl/core/ras.c     |  6 ++++
-> >  include/cxl/event.h        |  2 ++
-> >  3 files changed, 70 insertions(+)
-> >=20
-> > diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-> > index cefe8d2d8affc..9a37b08aacfea 100644
-> > --- a/drivers/acpi/acpi_extlog.c
-> > +++ b/drivers/acpi/acpi_extlog.c
-> > @@ -12,6 +12,7 @@
-> >  #include <linux/ratelimit.h>
-> >  #include <linux/edac.h>
-> >  #include <linux/ras.h>
-> > +#include <cxl/event.h>
-> >  #include <acpi/ghes.h>
-> >  #include <asm/cpu.h>
-> >  #include <asm/mce.h>
-> > @@ -160,6 +161,60 @@ static void extlog_print_pcie(struct cper_sec_pcie=
- *pcie_err,
-> >  	pci_dev_put(pdev);
-> >  }
-> > =20
-> > +static void
-> > +extlog_cxl_cper_handle_prot_err(struct cxl_cper_sec_prot_err *prot_err,
-> > +				int severity)
-> > +{
-> > +	struct cxl_cper_prot_err_work_data wd;
-> > +	u8 *dvsec_start, *cap_start;
->=20
->=20
-> A bunch of this is identical to cxl_cper_post_prot_err()
-> Can we factor that stuff out for common use?
->=20
-> > +
-> > +	if (!(prot_err->valid_bits & PROT_ERR_VALID_AGENT_ADDRESS)) {
-> > +		pr_warn_ratelimited("CXL CPER invalid agent type\n");
-> > +		return;
-> > +	}
-> > +
-> > +	if (!(prot_err->valid_bits & PROT_ERR_VALID_ERROR_LOG)) {
-> > +		pr_warn_ratelimited("CXL CPER invalid protocol error log\n");
-> > +		return;
-> > +	}
-> > +
-> > +	if (prot_err->err_len !=3D sizeof(struct cxl_ras_capability_regs)) {
-> > +		pr_warn_ratelimited("CXL CPER invalid RAS Cap size (%u)\n",
-> > +				    prot_err->err_len);
-> > +		return;
-> > +	}
-> > +
-> > +	if ((prot_err->agent_type =3D=3D RCD || prot_err->agent_type =3D=3D D=
-EVICE ||
-> > +	     prot_err->agent_type =3D=3D LD || prot_err->agent_type =3D=3D FM=
-LD) &&
-> > +	    !(prot_err->valid_bits & PROT_ERR_VALID_SERIAL_NUMBER))
-> > +		pr_warn_ratelimited(FW_WARN
-> > +				    "CXL CPER no device serial number\n");
->=20
-> Whilst some of this check isn't present in cxl_cper_post_prot_err(), it s=
-hould
-> be harmless.
->
-Maybe all these checks should go to a static helper in cxl/core/ras.c which
-cxl_cper_handle_prot_err can call? But I'm not entirely sure yet it would=20
-really be worth. Anyway, I'll look into it.
+On Fri,  4 Jul 2025 12:24:54 +0200 David Hildenbrand <david@redhat.com> wrote:
 
-Thanks,
+> In the future, as we decouple "struct page" from "struct folio", pages
+> that support "non-lru page migration" -- movable_ops page migration
+> such as memory balloons and zsmalloc -- will no longer be folios. They
+> will not have ->mapping, ->lru, and likely no refcount and no
+> page lock. But they will have a type and flags 🙂
+> 
+> This is the first part (other parts not written yet) of decoupling
+> movable_ops page migration from folio migration.
+> 
+> In this series, we get rid of the ->mapping usage, and start cleaning up
+> the code + separating it from folio migration.
+> 
+> Migration core will have to be further reworked to not treat movable_ops
+> pages like folios. This is the first step into that direction.
+> 
+> Heavily tested with virtio-balloon and lightly tested with zsmalloc
+> on x86-64. Cross-compile-tested.
 
-=46abio
-
-
+Thanks, I added this to mm-new.  I suppressed the 1363 mm-commits
+emails to avoid breaking the internet.
 
 
