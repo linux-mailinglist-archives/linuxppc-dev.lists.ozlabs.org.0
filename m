@@ -1,93 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-10093-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10094-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB6AAF9005
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 12:26:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F6FAF9008
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 12:26:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bYVCK2MHrz30Vb;
-	Fri,  4 Jul 2025 20:25:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bYVCM0kSzz3bNt;
+	Fri,  4 Jul 2025 20:25:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751624749;
-	cv=none; b=UAonw156ToZza9pHqgGdMxBN5cxQtupV6+kIGj1QNvTe/T1JGkAOZ6KV+auPRLB4ElyRXS6J3bpXDhMdspKPwEmi8WdwM0myiUQC3M8spXwlpV5iKtd28YeaaHABz4CIKdatzAHVnU4KBK2CmqVUJ3nQLYvUNbWL41GmFTqlPBdUQkXbLEHpcwV367/oNyBUsUBK61axnd6rbU2a2aKPVIJw28+T7FPP1ea/6QeEkH2JCZqiRUbITiHieaa61jUq3xOsJLV8lKCJ3JgcoeHxqAhs/kxyFXiBiiX03z/ydsSDtetoVNSJ4W89zJMBa5dK8guEZLJOv8OUoNb2Jp61GQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751624751;
+	cv=none; b=Q/vUy/G8ODM5cR6ZrQpNzd0vQtU4qQdSxcyH7AxL8hwzQISBHCmJuSqDINJbDfu4K+nntoT5KdhxRaxHUD5fXOBxZRh45kXZ6VJvfkTA2YxjSGX5usbrULnjBfHqZYE90OIwnngJKwL5wm3Xk9RjTq2wGd9b1KzhpD5OBhRaJz6xt+/ksXiHkAL0JlKb6nb1qRkrk04YRU3EnOFZA/g8rgCgCrGoTOf61R8C6W3RwjNwFac9Ca4F3sJsQue+IgXl2mjNsIV4blcKxYwxkdrOKkUvNZjmSdxuAPw6cJoXm3+Fb2JG8JxxKZmWbklUk6AiU6IS15sxRcicfoVO2anE0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751624749; c=relaxed/relaxed;
-	bh=+4vricv2e71NWYYMzs8BIQr/CRgQSzBMTqlFovEI9fk=;
+	t=1751624751; c=relaxed/relaxed;
+	bh=ONGts7/hBJv/SI9LHH6S4PEHXTtUzsYSWsi4Xmz5Gpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=RBAD45rmLcwsub4SpQS9jgtkjJVop1vg6mXq/ND59+NvVBmeJxouVPOXXHXiU4brcLiV7CxL3lfbHWoTVmpcd08lCzHtjJbB3X+YXSlmIvReIbTpRPExvM8QvU28IIB86/ozuI1DMP1CuuPxGSZr3FZzfO3Hy162MGlMgJ4B6xXdCIB+UzeR7CLhrgwSyzG7VS6JYlL6FRlydXErVZu4J+a9e3/mAGos2Gg0ceUZGHc/HIvXQvA63KpuCyOdv9Nz1zQcwhGRIvXjmHU6JMmbhoo88R1bM6SYxT/htY4yj7+WzJ1FKSIZ9tchRNDB14iB5Ippv1ImUA+11PQDSgJMPA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a11tLrq9; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a11tLrq9; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:content-type; b=DnRvdOAKdCCH6odsuM8190+JZK+ycjvh+xfLzgImJJU4q3jwJcK1Hpx4+c0NR8chocKeOEJ6TqeBBt/hw0WrFcduTq5Gl9h3pJwRW6k4lb+jv4VtCwpR9+GzTzl1FRTqdI+1Z2nUoPHfPxWyH05ZbWyIp/B6S89KPjhbuxpEkihnpYG86g8U84LRrHW+QRCefMlxhPkE7Qbj3cWOSRJXE2HGScx7tE9VOnak8a8b6BPE5WGkTZ1jRhYWqEDXQmyijjbXNNZp0D9TJ0YfAc9Kq1uHCaV7P5sTErP+9ZbF7IPmP7gmm90JchpIKZ8dUWikD7fdXZzSzi42QBCXQjOC9A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ImGIfB9q; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZuLuTfk/; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a11tLrq9;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=a11tLrq9;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ImGIfB9q;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZuLuTfk/;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYVCJ4Pkxz30Wg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 20:25:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYVCL2sw2z30Wg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 20:25:50 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751624746;
+	s=mimecast20190719; t=1751624747;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+4vricv2e71NWYYMzs8BIQr/CRgQSzBMTqlFovEI9fk=;
-	b=a11tLrq9SQfZXfxzEMnb9UoI1ViOgh2MsqFnUKIMshemVFVAeCSd6D67tprG5B415ysYDD
-	D7Zq3n02gwjLTbaWMP/9mHww08F4Cw82EbLt2fWJKsvo8Tcsr+Ul561wjY5yEwXrgqPKN7
-	0qYmqTSwvE9uDkM6ZO53aVIviu2lsjw=
+	bh=ONGts7/hBJv/SI9LHH6S4PEHXTtUzsYSWsi4Xmz5Gpg=;
+	b=ImGIfB9qQtNHlsYyTKX6eCgUVdEHLg2T7WtH3H1hXH6E1aJXpotT/6WlKTDZpM55uJubu+
+	YoKVIpG6l/qJgrpxSE7XJ/iyF91u0vp3pxTORN1w7rCcGuU1P1e3f9NjQZmrXV4JGqzwEJ
+	Vl84VLHNv/QI6Zkp6S+ej6Sd5YCzYtc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751624746;
+	s=mimecast20190719; t=1751624748;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+4vricv2e71NWYYMzs8BIQr/CRgQSzBMTqlFovEI9fk=;
-	b=a11tLrq9SQfZXfxzEMnb9UoI1ViOgh2MsqFnUKIMshemVFVAeCSd6D67tprG5B415ysYDD
-	D7Zq3n02gwjLTbaWMP/9mHww08F4Cw82EbLt2fWJKsvo8Tcsr+Ul561wjY5yEwXrgqPKN7
-	0qYmqTSwvE9uDkM6ZO53aVIviu2lsjw=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ONGts7/hBJv/SI9LHH6S4PEHXTtUzsYSWsi4Xmz5Gpg=;
+	b=ZuLuTfk/LmlWWsElpn6g+uR00pOVuk9MiJ2LH/n3UQkuxtf596P3GY4QXBsvZ5/RFw0ijA
+	BUEmCNH/2bRQuG9jyAZ2IgofjK8i8F8dOyY60B7pyZz+sI+pcUS+dPtY2bPcoPwosUeWV5
+	RkE0IW7+gDm7jmQC38+5REr1BD1SAiA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-314-eBNB4oDoPSepS4MdWw4CKg-1; Fri, 04 Jul 2025 06:25:44 -0400
-X-MC-Unique: eBNB4oDoPSepS4MdWw4CKg-1
-X-Mimecast-MFC-AGG-ID: eBNB4oDoPSepS4MdWw4CKg_1751624744
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a58939191eso293917f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jul 2025 03:25:44 -0700 (PDT)
+ us-mta-460-v7Bawfy8MyWr2WiBkY97Rg-1; Fri, 04 Jul 2025 06:25:46 -0400
+X-MC-Unique: v7Bawfy8MyWr2WiBkY97Rg-1
+X-Mimecast-MFC-AGG-ID: v7Bawfy8MyWr2WiBkY97Rg_1751624745
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3a5780e8137so973158f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jul 2025 03:25:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751624743; x=1752229543;
+        d=1e100.net; s=20230601; t=1751624745; x=1752229545;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+4vricv2e71NWYYMzs8BIQr/CRgQSzBMTqlFovEI9fk=;
-        b=cfePKunXovnyXK9Sp3rmW4IfN5NWmaSW2hv70/+xfN4voaOIGjCKSHEWwqyUMYPfMX
-         8gbr325jeXq91ipUw7ODwNjxIYt/ELUQ6X2CLV+1lAlupF4IgUmxjOgitDnwn80B8f7X
-         ktedhAZWYGr1VAp5w7THUaiy4umj6BT/Sny8ekDMie3SbjaxomK2FNTGJO77/+ZrS0yI
-         YDwYKrbdI08s2DlVqwo5OBG34sE6nnGyPX4eBarWQG3eQ1qgQInUyfyIH33yV7QrnSNv
-         TYDsDCLq/iYHyrmO/iaaYCx1hoTgSv31JtzaL/G1AC9NCnxcDgA2u8ioFQkPMH6CEQe4
-         78PA==
-X-Forwarded-Encrypted: i=1; AJvYcCW8ERLZVIjnSwWxUvGZiZHVVr5gLE3wWWaozOdLtsk97906QogxtmwMFwXmaxEIIAHtSDv4e5L//erld8E=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwBOovXrj08zLZjO5ObMABwTDdrm/NpWUFZW59VTXgFR1bzF+Em
-	NOuLAs8gCn1Cbu44N16Gbm+nifU/FLfBa3HQlOuJ26EQwe6PyfFOhX6zYHkHop+8mcZBjg8Bnu8
-	WE8jFZrvrcc9YXOG0o9AtsMOE2n1K/Q7IY6013tRAhiGDX4GbpYG4xFcEPM4pNql9RX8=
-X-Gm-Gg: ASbGnctTC1rE9zDe3DyIlQ8FEoS2YQKCc1LdyhLXIXsZ9MywvHn28DtMwG9Qdcy+rr4
-	a7tjLNIABdgDsg1OjBAUdJcGztoUI5491zw12rTeIeFXzq04MEC4RL6JoMV6AugDQhrx7qHJ2UL
-	55x0JFua+CciRFqsk73umWuIzi29f0y4KpKrzpY3v75ZlvpIMQRbZ+R7i9xEk3qedPCnjna4aqv
-	QylHj2I7KN+1TBzkcyvt79wKV5JvaXDulqMl9JOFlVrdk9PxKeFNGdElbfkfpBUf6thAZZmKuZo
-	svXSSxHwTSL6kesLGPdgF0GYF42fB9N8ORM0SgO9OTfmk7Yot2zQf/GIoaMA8CR85cLEWDnkfQL
-	ef10d2A==
-X-Received: by 2002:a05:6000:25e7:b0:3a5:2d42:aa17 with SMTP id ffacd0b85a97d-3b4964ded13mr1424145f8f.31.1751624743501;
-        Fri, 04 Jul 2025 03:25:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHFw2GicaPInsB28PjQGll7qbBWs9+u0wQOGd0rdAKVxiB08VA9zODFfDmMz6Eob0+nsp252Q==
-X-Received: by 2002:a05:6000:25e7:b0:3a5:2d42:aa17 with SMTP id ffacd0b85a97d-3b4964ded13mr1424048f8f.31.1751624741867;
-        Fri, 04 Jul 2025 03:25:41 -0700 (PDT)
+        bh=ONGts7/hBJv/SI9LHH6S4PEHXTtUzsYSWsi4Xmz5Gpg=;
+        b=v1EOKbqxMMbmWCxQak+kudALJHAlwWfgaA3rYKO+hTalC00TcvbFZV1GeH+Oyjm4rO
+         UKPP1r4bMtH0mBDcNQGmwU3SPUfJfD6sXhU8MbnriEtt7gxDkWfOzmH8RXH9XB7Fx01u
+         jHcHHoHY24YfGfDr2ZwxqpLKJm0w4Gz5HZeEZRwsL3gn9llRoUQaWd1owgSZQHKvV7UG
+         tunbHKzidPduTVzsiNY7PunHJC102WQLouxsCi1RRKDTcSwSLwT6wQruREE/Oo2ygLSr
+         6mmjRH6wz9nkm3s/AmRIiO6piZw7iIzkXPSSg7rjBFjHXj20tKQax0355seuikgAEPHY
+         gAeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVPeGG3GLQiv8VRitmtZFBiS1B6wJrJwyKf/12593GI8crKVyoij4GCjN4dpL054bTYDMrie7ZII2u1eBE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwHvPteyuQl7teqhIcOvHINRdAEw955Zz9mg4vmn2DSgV8xTo9V
+	MGQ2Nk/POkbmucN0ldCnmy4CM7dXwtCITmmMr35An6CtlhmtpXCNVtbbfkkgHdRqfRsPh0Xbyi3
+	bHmFtQpP4rBHldxcrcYU+xoG0ecKmM68vjEehLtzYjMe1SRxpLXk/b1A2pDIFoMQES7k=
+X-Gm-Gg: ASbGncuS+bJDdyqJufw6Ev0GR4Q2CI8+eTkaUJYXv+zk0t0R1wIXK+HdQ8kgWff24tf
+	WUqwQoh3F+zRZPgRVR7aB6cPEqPgWtwx+eL1L47FHGv/2MLfZDvW2PInpJ/am50Nn2BfomZJuOq
+	m4hOUGNuNcwwV13VTeVXtjMCo6j9R2hPOzdtvUWZSz/KQsW349nKQ6IWZtxSaTEM4o3Tsz0PBpE
+	/OCK2u8sVbGTty4QtKpBy/eIxREutmI0nDNRqK6UA9ljqCZoPeJm9WKmm7ZbU4nPIOzgvjYhcvp
+	LoTmSpJCNe2+PmIh9xBs6/MJZeazuYdF8Pb6akizidSveRoz7JRasD/ESGyRDfd9xQl2TuMabTQ
+	cUjtZ+w==
+X-Received: by 2002:a5d:5846:0:b0:3a5:7991:fd3 with SMTP id ffacd0b85a97d-3b495b94916mr2217857f8f.11.1751624745018;
+        Fri, 04 Jul 2025 03:25:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECnxpY/j05u6/I6xCq4leYolGKDWTZ8k8uJQRmE44kdkts1pPfCbxB96EsSkR3GWRBi0mgpw==
+X-Received: by 2002:a5d:5846:0:b0:3a5:7991:fd3 with SMTP id ffacd0b85a97d-3b495b94916mr2217787f8f.11.1751624744465;
+        Fri, 04 Jul 2025 03:25:44 -0700 (PDT)
 Received: from localhost (p200300d82f2c5500098823f9faa07232.dip0.t-ipconnect.de. [2003:d8:2f2c:5500:988:23f9:faa0:7232])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b47225a2dcsm2114225f8f.71.2025.07.04.03.25.39
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b47030ba14sm2117357f8f.6.2025.07.04.03.25.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Jul 2025 03:25:40 -0700 (PDT)
+        Fri, 04 Jul 2025 03:25:44 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -143,9 +143,9 @@ Cc: linux-mm@kvack.org,
 	Harry Yoo <harry.yoo@oracle.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
 	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: [PATCH v2 05/29] mm/balloon_compaction: make PageOffline sticky until the page is freed
-Date: Fri,  4 Jul 2025 12:24:59 +0200
-Message-ID: <20250704102524.326966-6-david@redhat.com>
+Subject: [PATCH v2 06/29] mm/zsmalloc: make PageZsmalloc() sticky until the page is freed
+Date: Fri,  4 Jul 2025 12:25:00 +0200
+Message-ID: <20250704102524.326966-7-david@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250704102524.326966-1-david@redhat.com>
 References: <20250704102524.326966-1-david@redhat.com>
@@ -163,7 +163,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: zzI1hpInkGPuM2piNCkB_oqH-m9a5welzRz3U0NTnYo_1751624744
+X-Mimecast-MFC-PROC-ID: HTslK949Niof89lcZDmhgiZ0qTJSBFpswZ0Cn75S7mg_1751624745
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
@@ -178,26 +178,60 @@ identify balloon pages until actually freed is a requirement for
 upcoming movable_ops migration changes.
 
 Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Acked-by: Harry Yoo <harry.yoo@oracle.com>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/balloon_compaction.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/zpdesc.h   | 5 -----
+ mm/zsmalloc.c | 4 ++--
+ 2 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_compaction.h
-index b9f19da37b089..bfc6e50bd004b 100644
---- a/include/linux/balloon_compaction.h
-+++ b/include/linux/balloon_compaction.h
-@@ -140,7 +140,7 @@ static inline void balloon_page_finalize(struct page *page)
- 		__ClearPageMovable(page);
- 		set_page_private(page, 0);
- 	}
--	__ClearPageOffline(page);
-+	/* PageOffline is sticky until the page is freed to the buddy. */
+diff --git a/mm/zpdesc.h b/mm/zpdesc.h
+index 5cb7e3de43952..5763f36039736 100644
+--- a/mm/zpdesc.h
++++ b/mm/zpdesc.h
+@@ -163,11 +163,6 @@ static inline void __zpdesc_set_zsmalloc(struct zpdesc *zpdesc)
+ 	__SetPageZsmalloc(zpdesc_page(zpdesc));
  }
  
- /*
+-static inline void __zpdesc_clear_zsmalloc(struct zpdesc *zpdesc)
+-{
+-	__ClearPageZsmalloc(zpdesc_page(zpdesc));
+-}
+-
+ static inline struct zone *zpdesc_zone(struct zpdesc *zpdesc)
+ {
+ 	return page_zone(zpdesc_page(zpdesc));
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 7f1431f2be98f..626f09fb27138 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -244,6 +244,7 @@ static inline void free_zpdesc(struct zpdesc *zpdesc)
+ {
+ 	struct page *page = zpdesc_page(zpdesc);
+ 
++	/* PageZsmalloc is sticky until the page is freed to the buddy. */
+ 	__free_page(page);
+ }
+ 
+@@ -880,7 +881,7 @@ static void reset_zpdesc(struct zpdesc *zpdesc)
+ 	ClearPagePrivate(page);
+ 	zpdesc->zspage = NULL;
+ 	zpdesc->next = NULL;
+-	__ClearPageZsmalloc(page);
++	/* PageZsmalloc is sticky until the page is freed to the buddy. */
+ }
+ 
+ static int trylock_zspage(struct zspage *zspage)
+@@ -1055,7 +1056,6 @@ static struct zspage *alloc_zspage(struct zs_pool *pool,
+ 		if (!zpdesc) {
+ 			while (--i >= 0) {
+ 				zpdesc_dec_zone_page_state(zpdescs[i]);
+-				__zpdesc_clear_zsmalloc(zpdescs[i]);
+ 				free_zpdesc(zpdescs[i]);
+ 			}
+ 			cache_free_zspage(pool, zspage);
 -- 
 2.49.0
 
