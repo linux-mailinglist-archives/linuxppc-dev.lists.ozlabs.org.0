@@ -1,154 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-10116-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10118-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 897A5AF904A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 12:29:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD19EAF9415
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 15:27:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bYVDh6gH6z3bwp;
-	Fri,  4 Jul 2025 20:27:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bYZDc1cCjz3blH;
+	Fri,  4 Jul 2025 23:27:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751624820;
-	cv=none; b=kc0xtxlVCwM7VEhWoZJ9oN/6Ak0v4ChTkgh1mQ8kcI2+j9YmIQ1jPDPI0poS6P0sZq1QtWr2hiLdZ3ogpzqNOVE/g2HI9a7xexMElL9Ot6U8gLYAD7wnut33h3eZNB4rgv5YvRDiMjarxTvLFpQRVnSMW1p8NKjUv4tYFpScKusO1zZ+OWVWbgl2fN0hAChNtnzRDud3PM5BQ1JZ2PVT69yNnu4zYMG85FpZ4uO6RaOme4A0uGMMRyJNrbhpg7xJbOYGYn1aQpZIFSa3y80DcGc77++xInmRTbGtsB39OD4+NrmCab/bhX8jKi//pOTDKG5OONYwhm9Jpi9M/p3mDA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751635632;
+	cv=none; b=Z1beOL8q7cp4rtAwcoEgyORNvxLzIvnmNqT9vCTrNXMAkOEh6Ua0gD9uDjjpmnWSUJB30sgVp6WHWCEqsZvRXlaFycQLlmwD/Js3QA2d7o3XCOy3hrQ4WzRYozbZjO0sKNDE5vnT3Bd40HIJQEFYlLw0T76NTDXxgr8eWQw2Z3HN775hDUzjaQqn9w2KPTo6eMNkpdBAicrXis7YUhcxJ0UI5ZYSai2HNU9Hn+XPi231OTB29fDScRtF0oyiY3eDz+1b0rmrFoYFKNF9c9rQB+T5xvZy+HCzc1+lEDF/BoTQB3HaV428/TrjDpqn9m9xiJUpM5zvbS71W9EryKVXxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751624820; c=relaxed/relaxed;
-	bh=DAmNizoml8pi0FWiSRf1K1mTve+PnYDWvVyOK7ajbGc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=Bzf/1i/AHMGE4Edm3TSLiuJ2z6urhO/owdvuJjaZqgLAbXpq6iU4G4vE7QavJbURdo41WCq3X2oeYPGpP68OYjyaozJdTjt9xmq6oK6az6cIxEFiDUICBnuVV5669cSQIVzlQYC5uNlg8muFAX4t6HUOAsf4q24p10EF9YaXPHXL2j2DQQ0I/4r3uAiAg6ze4rGn4ZmfE5aUrKZtl73FMLUbV/1V0yAoa8xmw/YmEJuSuqNhNm0tC62x5EtXYOUAJfkQP5K/GEO5tHSUunzI8xGPngv2Cu1/hAyIHY5ycJ5aSex2J7inbJXjm370bGOxKwcUr2qssbv6ZPUL15r5kA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bOifjdlA; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bOifjdlA; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1751635632; c=relaxed/relaxed;
+	bh=Y67omdNsRzGiYfKThMM73Sspj4UJQkYkveftpUDTVCE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B5zj5T/lPnFyuxHyPHYJNB4uSDnKl/Uu/3x3cRQHrJVKXOuLSfXA6ri+Dyz6CeOUSpYT0qV+AKppqiKWsu6TREIFzCaWUZOqKT9M+qCzs0NHs9Do624wAnEgtDswIUKDNxvLqe6J5fN65fNZLTKdKo49Sf66aCbG6C27y9o/t7ZlojDqAB2ww2e+GxWefiPTslDZgXG+KRYTbwCQScxwjUXXs8SvbtgLDdLFsBOKbF+F42br5Z5iLD/Xx7iZOsSAhfaUBvx8RKvTpnpSMeOh0hLkPHyhDJBEN6dDu0pjPCiDQNGB+d/qqpjMP3YTnZTa4JOQpCYGljJYvtt9RixQbg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lu0fEi+g; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bOifjdlA;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bOifjdlA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lu0fEi+g;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYVDh0zQQz3bwf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 20:26:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751624817;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DAmNizoml8pi0FWiSRf1K1mTve+PnYDWvVyOK7ajbGc=;
-	b=bOifjdlABqDiVmOOdxKqTVDYnEIb6NT/hMDKMpIW2OactrcQ5BDDw5MJ2QgMjgH3MSdelj
-	RU7PO1uZQevsMs0YQwDvHayi5UmGJYByp1cXMMjzwxhE5Eb+zRQQyFd+NqbtaYa4lBuBJs
-	PbrH9LV5gpZPNsVFdztEoHMs2Zd8Ajk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751624817;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DAmNizoml8pi0FWiSRf1K1mTve+PnYDWvVyOK7ajbGc=;
-	b=bOifjdlABqDiVmOOdxKqTVDYnEIb6NT/hMDKMpIW2OactrcQ5BDDw5MJ2QgMjgH3MSdelj
-	RU7PO1uZQevsMs0YQwDvHayi5UmGJYByp1cXMMjzwxhE5Eb+zRQQyFd+NqbtaYa4lBuBJs
-	PbrH9LV5gpZPNsVFdztEoHMs2Zd8Ajk=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-TYnFTVCWNzKr1Bi3sYEK5w-1; Fri, 04 Jul 2025 06:26:51 -0400
-X-MC-Unique: TYnFTVCWNzKr1Bi3sYEK5w-1
-X-Mimecast-MFC-AGG-ID: TYnFTVCWNzKr1Bi3sYEK5w_1751624810
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a4f7f1b932so500531f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jul 2025 03:26:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751624810; x=1752229610;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DAmNizoml8pi0FWiSRf1K1mTve+PnYDWvVyOK7ajbGc=;
-        b=bnw8sVSXmSMu0rgtW32UZZ3kTqGmYkuGaC6f7XEqYf1nOuSx+QTzVPdczsqMP3yZpL
-         80ckjCwQ2gXBt4K6aphFOMjxMfnsRw+bMbqmiYPBbe0wDekRYeeIErrVSOQs1KaLpNi7
-         dP+v2g0BNtS3Rs1WqSZrss/g6TfYdGPtKlkj4IxcvsTbN5mMVO43QamZXoOjuEayXIS9
-         hW/JwG6w/opd87CvaahDnlfcNvxWhfBMjtlDJWlPQt/c54oetpaAZSSt3T3YQo5PTi33
-         7N4yFwZIpTRlE/KSt689tbLuOPKkLzAMBYhI60OLdosJvVX2uRMTPiXijaA+ibL06Pgt
-         35MA==
-X-Forwarded-Encrypted: i=1; AJvYcCX4bEU63way81PNmn6t/fnJ1t32R2SXB1ixcxnmEmV3tDdkCgeCtOx5b9W2ZhnCWsJBTE0vBZ0a7E0h1zk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw9Cl9Ebi0YZX1zvwkyWtMErzKBzlsies6ExoPNmfSSg+8Bx5R1
-	vV2C7D9mYeB2uLJMVTmYSfFEF4ah2Na2jeuKcDhuqxOBmnftceQ5Qd24RbCcjAeiBBc+YmtN0Mq
-	F2bXfj54Q7sEw+tITA9+yJr9Xoe0CDpUsPqDwPbjNV36X01gqxjQsUG+mZjenIdUg1E8=
-X-Gm-Gg: ASbGncuUXTTVvuPkuzDTrX0T6/WeYkXtOmSn7KnlezO+4fZZx5FnV7h2i0ZfK2G1FP3
-	kGjArRb4dRR/SQh8Pt4Uo9rOGJm9QqPIBm1ssNvWL4e364Nwn0VihVAZde8g+w9epXvWBp8/5qd
-	mKHtfa/Qtobg8mQnyWFRa1uy7/X9v+cJxh56OJXZpE+Ukf/kI7aqpm5n1OxF5Kx7cn3UTv7VTrn
-	ajW2tRUIoo2ZYJAGaybOxFU6KMs/iykelclnTahku6UCdaHJMooo3lR+30VWCLWd09tmU4zdhMd
-	qjwp0baDBEdbaFC5/Ce7j5oVEMrznBUI5bfFnM0vnfGQFPUPukcgGyjKadPkfJUXNFMKjuz+6OF
-	aPY2Ppw==
-X-Received: by 2002:a05:6000:2906:b0:3a6:e2d5:f14c with SMTP id ffacd0b85a97d-3b4970294bamr1229499f8f.30.1751624810313;
-        Fri, 04 Jul 2025 03:26:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGU9MKO4L2eImwXLAzlEGTAbbgXQLTQHWpn061Frnhroy+xSoAIVNW9jaIe3vRaTd6Fz7itPA==
-X-Received: by 2002:a05:6000:2906:b0:3a6:e2d5:f14c with SMTP id ffacd0b85a97d-3b4970294bamr1229434f8f.30.1751624809815;
-        Fri, 04 Jul 2025 03:26:49 -0700 (PDT)
-Received: from localhost (p200300d82f2c5500098823f9faa07232.dip0.t-ipconnect.de. [2003:d8:2f2c:5500:988:23f9:faa0:7232])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b47030bc5asm2113887f8f.20.2025.07.04.03.26.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Jul 2025 03:26:49 -0700 (PDT)
-From: David Hildenbrand <david@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	virtualization@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Peter Xu <peterx@redhat.com>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: [PATCH v2 29/29] mm/balloon_compaction: provide single balloon_page_insert() and balloon_mapping_gfp_mask()
-Date: Fri,  4 Jul 2025 12:25:23 +0200
-Message-ID: <20250704102524.326966-30-david@redhat.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250704102524.326966-1-david@redhat.com>
-References: <20250704102524.326966-1-david@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYZDZ6RtLz3bgX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 23:27:10 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4D83B4408A
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 13:27:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AF1C4AF0C
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 13:27:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1751635628;
+	bh=UmMK4vWBWCkUTxLdUKXC8/KSjdp8rccHH64kZT4FmmU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lu0fEi+gQsq8IUwn6EEfu/eI1rogJbit7P7CqTe0KP86Hy+4bXK37MxUdwohdMj7J
+	 BIljCNK7dh5Q+/SSrlI6W10bclsGAg7d7FkAeKju8IDrpBStrpPkZnkXRG4yB7rO6+
+	 McdqYfs4MnyQ0tuim5erEKaX0MenHVTu+HbQVW6J5lRzj2AxzinKbWZG9k0qsR0/lZ
+	 7bZdRuTweHSHHVfLL/y8T0loZmktCIhTCXGmjmKvBZ1sMpdPKBNCUEcAOVg/OKR0QN
+	 0qE28/95dJUOrDVnsJuKAdTEjv1KZ57WKoL0GJxEIF4hRZDjNS2Np6UYRK2EU3VxUm
+	 sJKGqlCd7WAtA==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-55502821bd2so1101951e87.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jul 2025 06:27:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXu6HuaW/AcumUt8UyQ3G80h+G3dvExe0I6AdIWkz+MG3+14LepnptEbP8bCsexuDtkckoSxfxSra6R2ps=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyGaluUbqK4tNNL2JCNaJfaP73b3mpChpLFMENzydvR8XUSyOWo
+	z2Yq1kqtjxZUwUWLfmKIeQKtjjJoioYQwC32B9C6cAu2yzn2aJWohJRPYNZpu51p1HMaI2nplBn
+	MHtGyn+NctrLtv6bM7cBtIhGGtsFwtPI=
+X-Google-Smtp-Source: AGHT+IHbXsSqxiQQgTganngCHyLYaDZCz1QOmHZXPSAjSWrJrmUK1ng5PlRRa0qT4YG3miebycXJXkcbsNGhKOePUQw=
+X-Received: by 2002:a05:6512:3da6:b0:553:d8ca:4fcb with SMTP id
+ 2adb3069b0e04-556dbf81a40mr784811e87.21.1751635626524; Fri, 04 Jul 2025
+ 06:27:06 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -162,95 +66,157 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: KgzzPpPY3YxnftnxqgimxsmZAKbAW4ZlqQzNY0QRwgE_1751624810
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
+References: <20250630160645.3198-1-ebiggers@kernel.org>
+In-Reply-To: <20250630160645.3198-1-ebiggers@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 4 Jul 2025 15:26:54 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGTSfgVoqpmC=5z1kuAHw_JXo=rCEEFy4tRJdwAb2ExZA@mail.gmail.com>
+X-Gm-Features: Ac12FXyPp6fnvKb4WZAS9lUDfLS7Jj9PzhxOzqBaJq_NKIJbrn4XwJZRpCZIh-c
+Message-ID: <CAMj1kXGTSfgVoqpmC=5z1kuAHw_JXo=rCEEFy4tRJdwAb2ExZA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/14] SHA-256 library improvements
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, x86@kernel.org, 
+	"Jason A . Donenfeld" <Jason@zx2c4.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Let's just special-case based on IS_ENABLED(CONFIG_BALLOON_COMPACTION)
-like we did for balloon_page_finalize().
+On Mon, 30 Jun 2025 at 18:09, Eric Biggers <ebiggers@kernel.org> wrote:
+>
+> This series is also available at:
+>
+>     git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git sha256-lib-cleanup-v2
+>
+> This series improves the SHA-224 and SHA-256 library code to be
+> consistent with what I did for SHA-384 and SHA-512.  This includes:
+>
+> - Use stronger typing in the SHA-224 and SHA-256 functions.
+>
+> - Add support for HMAC-SHA224 and HMAC-SHA256.  (I'll send a separate
+>   patch with KUnit test cases for this.)
+>
+> - Make the old-school crypto API's support for sha224 and sha256 just
+>   use the actual library API, instead of unsafe low-level functions.
+>
+> - Consolidate the CPU-based SHA-224 and SHA-256 code into a single
+>   module, with better inlining and dead code elimination.
+>
+> - Properly document the SHA-224 and SHA-256 functions.
+>
+> - Other changes to synchronize the code with SHA-384 and SHA-512.
+>
+> Changed in v2:
+> - Dropped sha224_kunit.c changes; it will be added later in the history
+> - Dropped some patches that I folded into the SHA-512 series
+> - Removed redundant checks of IS_ENABLED(CONFIG_KERNEL_MODE_NEON)
+> - Removed obsolete setting of -DARCH for sha256.o
+> - Fixed a commit title to mention sha256 instead of sha512
+> - Excluded HMAC-SHA{224,256} code from purgatory, where it isn't needed
+>
+> Eric Biggers (14):
+>   libceph: Rename hmac_sha256() to ceph_hmac_sha256()
+>   cxl/test: Simplify fw_buf_checksum_show()
+>   lib/crypto: sha256: Reorder some code
+>   lib/crypto: sha256: Remove sha256_blocks_simd()
+>   lib/crypto: sha256: Add sha224() and sha224_update()
+>   lib/crypto: sha256: Make library API use strongly-typed contexts
+>   lib/crypto: sha256: Propagate sha256_block_state type to
+>     implementations
+>   lib/crypto: sha256: Add HMAC-SHA224 and HMAC-SHA256 support
+>   crypto: sha256 - Wrap library and add HMAC support
+>   crypto: sha256 - Use same state format as legacy drivers
+>   lib/crypto: sha256: Remove sha256_is_arch_optimized()
+>   lib/crypto: sha256: Consolidate into single module
+>   lib/crypto: sha256: Sync sha256_update() with sha512_update()
+>   lib/crypto: sha256: Document the SHA-224 and SHA-256 API
+>
 
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- include/linux/balloon_compaction.h | 42 +++++++++++-------------------
- 1 file changed, 15 insertions(+), 27 deletions(-)
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
 
-diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_compaction.h
-index 2fecfead91d26..7cfe48769239e 100644
---- a/include/linux/balloon_compaction.h
-+++ b/include/linux/balloon_compaction.h
-@@ -77,6 +77,15 @@ static inline void balloon_devinfo_init(struct balloon_dev_info *balloon)
- 
- #ifdef CONFIG_BALLOON_COMPACTION
- extern const struct movable_operations balloon_mops;
-+/*
-+ * balloon_page_device - get the b_dev_info descriptor for the balloon device
-+ *			 that enqueues the given page.
-+ */
-+static inline struct balloon_dev_info *balloon_page_device(struct page *page)
-+{
-+	return (struct balloon_dev_info *)page_private(page);
-+}
-+#endif /* CONFIG_BALLOON_COMPACTION */
- 
- /*
-  * balloon_page_insert - insert a page into the balloon's page list and make
-@@ -91,41 +100,20 @@ static inline void balloon_page_insert(struct balloon_dev_info *balloon,
- 				       struct page *page)
- {
- 	__SetPageOffline(page);
--	SetPageMovableOps(page);
--	set_page_private(page, (unsigned long)balloon);
--	list_add(&page->lru, &balloon->pages);
--}
--
--/*
-- * balloon_page_device - get the b_dev_info descriptor for the balloon device
-- *			 that enqueues the given page.
-- */
--static inline struct balloon_dev_info *balloon_page_device(struct page *page)
--{
--	return (struct balloon_dev_info *)page_private(page);
--}
--
--static inline gfp_t balloon_mapping_gfp_mask(void)
--{
--	return GFP_HIGHUSER_MOVABLE;
--}
--
--#else /* !CONFIG_BALLOON_COMPACTION */
--
--static inline void balloon_page_insert(struct balloon_dev_info *balloon,
--				       struct page *page)
--{
--	__SetPageOffline(page);
-+	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
-+		SetPageMovableOps(page);
-+		set_page_private(page, (unsigned long)balloon);
-+	}
- 	list_add(&page->lru, &balloon->pages);
- }
- 
- static inline gfp_t balloon_mapping_gfp_mask(void)
- {
-+	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION))
-+		return GFP_HIGHUSER_MOVABLE;
- 	return GFP_HIGHUSER;
- }
- 
--#endif /* CONFIG_BALLOON_COMPACTION */
--
- /*
-  * balloon_page_finalize - prepare a balloon page that was removed from the
-  *			   balloon list for release to the page allocator
--- 
-2.49.0
 
+>  arch/mips/cavium-octeon/Kconfig               |   6 -
+>  arch/mips/cavium-octeon/crypto/Makefile       |   1 -
+>  arch/riscv/purgatory/purgatory.c              |   8 +-
+>  arch/s390/purgatory/purgatory.c               |   2 +-
+>  arch/x86/purgatory/purgatory.c                |   2 +-
+>  crypto/Kconfig                                |   4 +-
+>  crypto/Makefile                               |   1 -
+>  crypto/sha256.c                               | 371 +++++++++-------
+>  crypto/testmgr.c                              |  12 +
+>  drivers/char/tpm/tpm2-sessions.c              |  12 +-
+>  drivers/crypto/img-hash.c                     |   4 +-
+>  drivers/crypto/starfive/jh7110-hash.c         |   8 +-
+>  include/crypto/internal/sha2.h                |  66 ---
+>  include/crypto/sha2.h                         | 390 +++++++++++++++--
+>  kernel/kexec_file.c                           |  10 +-
+>  lib/crypto/Kconfig                            |  34 +-
+>  lib/crypto/Makefile                           |  39 +-
+>  lib/crypto/arm/Kconfig                        |   7 -
+>  lib/crypto/arm/Makefile                       |   8 +-
+>  lib/crypto/arm/sha256-armv4.pl                |  20 +-
+>  lib/crypto/arm/sha256-ce.S                    |   2 +-
+>  lib/crypto/arm/sha256.c                       |  64 ---
+>  lib/crypto/arm/sha256.h                       |  46 ++
+>  lib/crypto/arm64/Kconfig                      |   6 -
+>  lib/crypto/arm64/Makefile                     |   9 +-
+>  lib/crypto/arm64/sha2-armv8.pl                |   2 +-
+>  lib/crypto/arm64/sha256-ce.S                  |   2 +-
+>  lib/crypto/arm64/sha256.c                     |  75 ----
+>  lib/crypto/arm64/sha256.h                     |  57 +++
+>  lib/crypto/arm64/sha512.h                     |   6 +-
+>  .../crypto/mips/sha256.h                      |  20 +-
+>  lib/crypto/powerpc/Kconfig                    |   6 -
+>  lib/crypto/powerpc/Makefile                   |   3 -
+>  lib/crypto/powerpc/{sha256.c => sha256.h}     |  19 +-
+>  lib/crypto/riscv/Kconfig                      |   8 -
+>  lib/crypto/riscv/Makefile                     |   3 -
+>  .../sha256-riscv64-zvknha_or_zvknhb-zvkb.S    |   2 +-
+>  lib/crypto/riscv/sha256.c                     |  67 ---
+>  lib/crypto/riscv/sha256.h                     |  42 ++
+>  lib/crypto/s390/Kconfig                       |   6 -
+>  lib/crypto/s390/Makefile                      |   3 -
+>  lib/crypto/s390/sha256.c                      |  47 --
+>  lib/crypto/s390/sha256.h                      |  28 ++
+>  lib/crypto/sha256-generic.c                   | 138 ------
+>  lib/crypto/sha256.c                           | 413 ++++++++++++++++--
+>  lib/crypto/sparc/Kconfig                      |   8 -
+>  lib/crypto/sparc/Makefile                     |   4 -
+>  lib/crypto/sparc/{sha256.c => sha256.h}       |  37 +-
+>  lib/crypto/x86/Kconfig                        |   8 -
+>  lib/crypto/x86/Makefile                       |   3 -
+>  lib/crypto/x86/sha256-avx-asm.S               |   2 +-
+>  lib/crypto/x86/sha256-avx2-asm.S              |   2 +-
+>  lib/crypto/x86/sha256-ni-asm.S                |   2 +-
+>  lib/crypto/x86/sha256-ssse3-asm.S             |   2 +-
+>  lib/crypto/x86/sha256.c                       |  80 ----
+>  lib/crypto/x86/sha256.h                       |  55 +++
+>  net/ceph/messenger_v2.c                       |  12 +-
+>  tools/testing/cxl/test/mem.c                  |  21 +-
+>  58 files changed, 1307 insertions(+), 1008 deletions(-)
+>  delete mode 100644 include/crypto/internal/sha2.h
+>  delete mode 100644 lib/crypto/arm/sha256.c
+>  create mode 100644 lib/crypto/arm/sha256.h
+>  delete mode 100644 lib/crypto/arm64/sha256.c
+>  create mode 100644 lib/crypto/arm64/sha256.h
+>  rename arch/mips/cavium-octeon/crypto/octeon-sha256.c => lib/crypto/mips/sha256.h (76%)
+>  rename lib/crypto/powerpc/{sha256.c => sha256.h} (76%)
+>  delete mode 100644 lib/crypto/riscv/sha256.c
+>  create mode 100644 lib/crypto/riscv/sha256.h
+>  delete mode 100644 lib/crypto/s390/sha256.c
+>  create mode 100644 lib/crypto/s390/sha256.h
+>  delete mode 100644 lib/crypto/sha256-generic.c
+>  delete mode 100644 lib/crypto/sparc/Kconfig
+>  delete mode 100644 lib/crypto/sparc/Makefile
+>  rename lib/crypto/sparc/{sha256.c => sha256.h} (53%)
+>  delete mode 100644 lib/crypto/x86/sha256.c
+>  create mode 100644 lib/crypto/x86/sha256.h
+>
+> --
+> 2.50.0
+>
 
