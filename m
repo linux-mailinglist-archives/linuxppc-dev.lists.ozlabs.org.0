@@ -1,93 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-10098-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10099-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBA4AF9013
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 12:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B803AF9017
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 12:27:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bYVCb42kqz3bkP;
-	Fri,  4 Jul 2025 20:26:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bYVCf20LGz3blH;
+	Fri,  4 Jul 2025 20:26:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751624763;
-	cv=none; b=MWpBM8AR9k0ArHyLLrj03T7LfHoisUmSJDvMgkVse+URep99MhWJqahTag5JlmXyQ4FgslrhNTY8kRsJMaAKdj48u8PXRUgDPXJxYUPLm9dyo8F2LYweBfwXS21gs8ACAH1Y3E8Ajbiar8H72JE+En+7atSjXegMtbQoDBuK6nt0nrf4Vk3oXDF2wOwvTXBm30j98b/2IdazNlqZd2stYrQu/sSo/RpU18PPin4K9VO0zY3pWC8EeBj8EHvLYf0RMTe6kE9FhwJMCEaJSv94ffUTNNDy3lZSQqMiobWw1/pajry5jqF3/SI7mgVhNwpQJuM4ZRwi03S96+YUEoioIA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751624766;
+	cv=none; b=Z8/QNOR7MPY8SmFG0ulHvzV4ItSg01VR4DUTcVO1N8aH8cW5K9yg7G7ERHmBRx9Do0RKsDyf4lhYDO/289305U6EdWDvtTkceQRhqZA0zg0mzyIO6HdsyRIX/MGFegyk84EGSLF7HOYuqCdTw8welA2PVwAwcVJMMIZPrROmRaBmKdReBrgV1x4NP6/t2qX71EHbQJ2QFA+ykEw+G3uq1KpJ7cdLCOaNMlsOPEFg4M3QFdR/k7NLyHTkJjpFmgnUM30dTI0nkBdMYPHGwXMg4p81PFG3++LapUjg3sQifFq93kXzpHVeUORAl5byobyXMPS5mQ4puShHukYxwuHhaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751624763; c=relaxed/relaxed;
-	bh=YZJ0pN+qk8np2TVjDZumvdXYQEUJdQ541mKybIkqdFY=;
+	t=1751624766; c=relaxed/relaxed;
+	bh=bNuyprjgbIdX6AHgfTXgzVcFKi/kDd27yjboz7bS+HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=Bw8sAYO4iylrNfUXsocylXHeKhV02w3Lvzil7uWK10EIVd6eNbob+kO9BAoT5P4qBv5BkgwH7jSNbY7gyFR18QJBk4WhJ5J/Xj3Wq+72FprlAfGwcGZLNjvAviUSfpYbExr7qBGgSR9lvbQe+ADiFrXwEhcODiR4HlX+v6wrT1LlTiBWUlK9nVU7zCia3no3duaUCUgoradw3vEAGCq4aZ11A+74G8ofv+zR4DNuli5Ib7yT6Ab7NJgqWQwdJlPYS/3JneCIp51DM4ZB8f42wq8utmGhfSA3GbER9vwVqtfub2tvgP6hCNNa7rHMRv5o8vfI7rCyLL5u40ptsv2jeg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AuSySbeb; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EvBtKcmJ; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:content-type; b=fFIJucm+FCBSPlV0l/OMHcVb8QV42rw0AaRtbahelPo8PV2oPHaXYLoZhUr8y8joAKhme7k5RWDGuPjHupjis4mOAKtdnxrUAU7SOYwki0NGA2iIXsNRwIQ3+CEjo+OoCOcGaTGk170Sp9hu5seAvuf2hEoou9xwqHtadJq3Ikb0JOKppHizzQNfdgc8X0SrLy4+FNAxFGIzwFE3DbbRTsQI9X9xaJp7VDvD2JePSz8GIzp4Y77shA4LWM3NIKYUyGizxUwvtYKllV4rRcDsBage9avrV/4eloHBK+n+RhqQEoBCxyKcgOZWGu9jcD3JUdlCTpqRVgnlB5HuAzjmsA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hvf6N3yC; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hvf6N3yC; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AuSySbeb;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EvBtKcmJ;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hvf6N3yC;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Hvf6N3yC;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYVCZ5bMyz30Vq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 20:26:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYVCd3lP1z30Vq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 20:26:05 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751624759;
+	s=mimecast20190719; t=1751624763;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YZJ0pN+qk8np2TVjDZumvdXYQEUJdQ541mKybIkqdFY=;
-	b=AuSySbeb2ar592H3z30N2n4I3gUDyJ6f73qrrLT6jGWxJ4nzF4Mxw/62ia1aWxf21x95MY
-	XR7axZFsq9ydASU+JtGkTzfL6tsbArOnE/uets2p2xgE6RFZsW89mL2wM8kYe6JrfN8Sw1
-	XqhURKaVXkB1mLDSXB7Q9zRydGe8HLk=
+	bh=bNuyprjgbIdX6AHgfTXgzVcFKi/kDd27yjboz7bS+HY=;
+	b=Hvf6N3yC91gYoP2tUU49XiPBgzGG/L7VW6AdD2JBioeb7P2zJXcDT9Rysyh6RPXmsKf5Z6
+	Pp1q3FJ/WC582x8U46Al8RZsJA+CU6pHtstqBzvYps6ErRqt2QvKNk+0mN2wf2zqgX2uyi
+	5emTAxUerg3yzcg16NderkvxCz7RVZA=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751624760;
+	s=mimecast20190719; t=1751624763;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YZJ0pN+qk8np2TVjDZumvdXYQEUJdQ541mKybIkqdFY=;
-	b=EvBtKcmJVxHSkwC/tlruXfz92suOgkYjU0GMf8QBgO4y6x+dPEfqdxAo/zNUK1nRxFEQ2F
-	PFJ/9FKu8O4+7++CaRE3A9sNO5KP7klh2hLahkQth5yWPIH26a7VBsKoDJvH9pG8blu8Jr
-	PEg9DA2aQbVknZfhwibeP3vwk7AhuIw=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=bNuyprjgbIdX6AHgfTXgzVcFKi/kDd27yjboz7bS+HY=;
+	b=Hvf6N3yC91gYoP2tUU49XiPBgzGG/L7VW6AdD2JBioeb7P2zJXcDT9Rysyh6RPXmsKf5Z6
+	Pp1q3FJ/WC582x8U46Al8RZsJA+CU6pHtstqBzvYps6ErRqt2QvKNk+0mN2wf2zqgX2uyi
+	5emTAxUerg3yzcg16NderkvxCz7RVZA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-586-im4uIv6dM5m2lDPsa7O8PA-1; Fri, 04 Jul 2025 06:25:59 -0400
-X-MC-Unique: im4uIv6dM5m2lDPsa7O8PA-1
-X-Mimecast-MFC-AGG-ID: im4uIv6dM5m2lDPsa7O8PA_1751624758
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a4f8192e2cso419298f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jul 2025 03:25:58 -0700 (PDT)
+ us-mta-22-B1IvmVcyMN6Xx89jD6HIEA-1; Fri, 04 Jul 2025 06:26:02 -0400
+X-MC-Unique: B1IvmVcyMN6Xx89jD6HIEA-1
+X-Mimecast-MFC-AGG-ID: B1IvmVcyMN6Xx89jD6HIEA_1751624761
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-45311704d22so4287875e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jul 2025 03:26:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751624758; x=1752229558;
+        d=1e100.net; s=20230601; t=1751624760; x=1752229560;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YZJ0pN+qk8np2TVjDZumvdXYQEUJdQ541mKybIkqdFY=;
-        b=VH46puFieW4kFJsYjgcQtFVxP5Wixm/rsCSIu37IGJSd2Stn/i8AldBX+JQaHBs90S
-         iOjd7KAl499nZzupAgiRNYSs7T3U3/ukLi69jBGvwLpnxpu/dgoi1D95WtnAT/8QvP/i
-         yfNCw1ARduBvJuabnAzx3diZGVXevcPhQMIQMr0AtKlw6yBHXPzxRVjIEYBgpgbZN2wW
-         KgaYowzZNGVaAx6jFSrbwa55hta5lUs+qcQjGmhxkqIc7QqvpZzud2m7qz2uYVmyI+5Z
-         0pLPQZ3GQtMCMGucB13pDUkZIVVFZKElGPx4Beh8VVjYzY0kDGjW5DW/prH5iP4V6J/O
-         B2Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCXEUPgEq+zBVxW4WGgY+XG56m8eQHoRy6qKSRXQ05T9M1fYZ7YzuIEo1wCfQWXHhz618SLUF/Z/ekmI7D8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx1H150YR9+bhFmfu2VfDY9ff54fBJCO0YjLnbqyWU2nCNFHn8R
-	lQxonOIDDBKGVMxHz86vllHgd5mKAWBurziFIL9xTOBDcQwKtlVeR7jYYDgoYIQx75obzPFQ/jB
-	3Ue/4Cgs3chHsXFUQrJp1vJtK3w7J88L9Ew6iDcUYktECMeU6XASGH5Cxbl+BM7DzF5Y=
-X-Gm-Gg: ASbGncslykU/OId8WDP/epryG+KElIFDPLYxITE3MOGuYatHG4WBMZloVAgY7llZ+jI
-	+FpRjevGxdXP1wqw79wlfSjfdbKHigGPZvpbE8q8yIp1C0+kiM6+Cx29nGRTzcNNwZ32ggvqph1
-	S85yiVxLT7Y7MRu17lowvEFIsucRhkPOUKuOChae0SvNNghIUcs/tvqHX61jaOY+69W6NQYRJbb
-	th5ZuC+DBKb+Bm517XJT8h2OLjqf9vyB/Gn4b946KuKqYc8Q0aitxNLDIJhL0reBLDZZzITyE6e
-	E7dOF2OxvskeIFYtwUHLIpRqr3bo9s+Uvk7QFJQuLaKQMPOLG8FzrC/ttpHRTVUNiqqm+RbLJS+
-	h2DTqVg==
-X-Received: by 2002:a05:6000:40e0:b0:3a5:26fd:d450 with SMTP id ffacd0b85a97d-3b49702e8bbmr1184022f8f.47.1751624757542;
-        Fri, 04 Jul 2025 03:25:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGjTF6Bi5YHLD4LeEN00n0rlH4Rvb7Qu4SkJgVJFS3bHVyzx6sYZQQ7vAELvz5hrZ++LyEv3g==
-X-Received: by 2002:a05:6000:40e0:b0:3a5:26fd:d450 with SMTP id ffacd0b85a97d-3b49702e8bbmr1183969f8f.47.1751624757061;
-        Fri, 04 Jul 2025 03:25:57 -0700 (PDT)
+        bh=bNuyprjgbIdX6AHgfTXgzVcFKi/kDd27yjboz7bS+HY=;
+        b=vLoAvDQvRlvErLkXCgzxNctiicgI0vv6nXbCzGv+Bh5G99MFegI/hf+4uCRLuv3ch6
+         ZQ67p5vvvjxln2iNw8ZYtwRxG6DcdYJ3ZZL4qObn2iAS6V4XeIKHa9qt7tFBNnR4AQA/
+         M9cMX0X/ZtQkQqlAgN+yPrb8qcEBqjVjYAGSsWw/tXQmUmuhPNUp/pDDcrcpoHU7TGON
+         3x6wfJpd160LeG22Xljq0NZY67seY7mrGvvAelQaRSJLTAjM1BhTuVoP71cpZsxfiy4r
+         Cs+Z56R/wLdviSaznWNysL+m6oOmFxocyKeCdb7yVl+uMKgRDDydrLiP6to3/x+tqoEj
+         njNg==
+X-Forwarded-Encrypted: i=1; AJvYcCXHEXkkBpSeA5b264K8KfuUnEENlfO+iPLAMuFHaHGVKhOm4O6LBtNMvaSqQ+8dmLIjSJB3fC7/j1xoStA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzqITn6SXtyP9H8yjYd5HAdcYMyfKOLn0rH+y9InU980gVvXfCU
+	N+bqfJ5c28DrCUpvcyCGIG+5KI6A5WummsTaVF4CbiO23t7wBsgR7cUCSxGtA/vmWGdGEGvPhG2
+	N6sGleRSwne9YMD6XA5JT6/AqDqiJPmXMNKZPN0rhqGax/vIey3Ea7NSEE7N6fNe6Lpo=
+X-Gm-Gg: ASbGncu6lWwg4MaGEGGb7AQqHRNH1HWlM2b8TETZB+G1n48lIqOTQNsi0tO6rFT2NN1
+	+uiNnvxyQt0g+M6FWK5FTzNMluKvCWga24XMtPq5mqkruxVLwMubPQN0MazxwcteNxxLGiPTZke
+	+IzwsLPR0IYCrNXiYTVEJ1vC4FTjm3D0vCIfcQxtgY5mi0LJIBvUI5setyKGznjvBZPusDnb/ko
+	v4kEpXFAUvF81A6X6MnQDyS6qtwT1Jcu74btEfF8ihQpqi3hjn2HVC1FEF2W0CphZW9NmB+bE5j
+	22UQ3AkssKrHmWb0C02orPWz+0BqSUTHS3gPCQVjcbgG1b67BvmDd/puDdfyQqJqXl0VpmJMW8T
+	BNEH27w==
+X-Received: by 2002:a05:600c:8214:b0:450:d568:909b with SMTP id 5b1f17b1804b1-454b4e74957mr16127655e9.14.1751624760451;
+        Fri, 04 Jul 2025 03:26:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH8vCOgrvNVf6Wu0EKSuY1xmeHKjerawOF5tOLzHfBQzCNUvjojZFchXxtXOEn9U9CGQYVIhQ==
+X-Received: by 2002:a05:600c:8214:b0:450:d568:909b with SMTP id 5b1f17b1804b1-454b4e74957mr16127045e9.14.1751624759877;
+        Fri, 04 Jul 2025 03:25:59 -0700 (PDT)
 Received: from localhost (p200300d82f2c5500098823f9faa07232.dip0.t-ipconnect.de. [2003:d8:2f2c:5500:988:23f9:faa0:7232])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b4708d0fdfsm2172535f8f.32.2025.07.04.03.25.55
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b47030bd42sm2093511f8f.5.2025.07.04.03.25.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Jul 2025 03:25:56 -0700 (PDT)
+        Fri, 04 Jul 2025 03:25:59 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -143,9 +143,9 @@ Cc: linux-mm@kvack.org,
 	Harry Yoo <harry.yoo@oracle.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
 	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: [PATCH v2 10/29] mm/migrate: remove folio_test_movable() and folio_movable_ops()
-Date: Fri,  4 Jul 2025 12:25:04 +0200
-Message-ID: <20250704102524.326966-11-david@redhat.com>
+Subject: [PATCH v2 11/29] mm/migrate: move movable_ops page handling out of move_to_new_folio()
+Date: Fri,  4 Jul 2025 12:25:05 +0200
+Message-ID: <20250704102524.326966-12-david@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250704102524.326966-1-david@redhat.com>
 References: <20250704102524.326966-1-david@redhat.com>
@@ -163,7 +163,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: O0Helh-fyIqBmqu2OWonEJ30biEzLNhdRmoxge2j3mM_1751624758
+X-Mimecast-MFC-PROC-ID: uY60XAQXvP-Et_gJkcJcQP8FU56zwOxDObVTFP_NZzc_1751624761
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
@@ -173,45 +173,135 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Folios will have nothing to do with movable_ops page migration. These
-functions are now unused, so let's remove them.
+Let's move that handling directly into migrate_folio_move(), so we can
+simplify move_to_new_folio(). While at it, fixup the documentation a
+bit.
 
-Note that __folio_test_movable() and friends will be removed separately
-next, after more rework.
+Note that unmap_and_move_huge_page() does not care, because it only
+deals with actual folios. (we only support migration of
+individual movable_ops pages)
 
 Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/migrate.h | 14 --------------
- 1 file changed, 14 deletions(-)
+ mm/migrate.c | 63 +++++++++++++++++++++++++---------------------------
+ 1 file changed, 30 insertions(+), 33 deletions(-)
 
-diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-index c0ec7422837bd..c99a00d4ca27d 100644
---- a/include/linux/migrate.h
-+++ b/include/linux/migrate.h
-@@ -118,20 +118,6 @@ static inline void __ClearPageMovable(struct page *page)
+diff --git a/mm/migrate.c b/mm/migrate.c
+index d66d0776036c3..9a63bd338d30b 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1024,11 +1024,12 @@ static int fallback_migrate_folio(struct address_space *mapping,
  }
- #endif
  
--static inline bool folio_test_movable(struct folio *folio)
--{
--	return PageMovable(&folio->page);
--}
--
--static inline
--const struct movable_operations *folio_movable_ops(struct folio *folio)
--{
--	VM_BUG_ON(!__folio_test_movable(folio));
--
--	return (const struct movable_operations *)
--		((unsigned long)folio->mapping - PAGE_MAPPING_MOVABLE);
--}
--
- static inline
- const struct movable_operations *page_movable_ops(struct page *page)
+ /*
+- * Move a page to a newly allocated page
+- * The page is locked and all ptes have been successfully removed.
++ * Move a src folio to a newly allocated dst folio.
+  *
+- * The new page will have replaced the old page if this function
+- * is successful.
++ * The src and dst folios are locked and the src folios was unmapped from
++ * the page tables.
++ *
++ * On success, the src folio was replaced by the dst folio.
+  *
+  * Return value:
+  *   < 0 - error code
+@@ -1037,34 +1038,30 @@ static int fallback_migrate_folio(struct address_space *mapping,
+ static int move_to_new_folio(struct folio *dst, struct folio *src,
+ 				enum migrate_mode mode)
  {
++	struct address_space *mapping = folio_mapping(src);
+ 	int rc = -EAGAIN;
+-	bool is_lru = !__folio_test_movable(src);
+ 
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(src), src);
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(dst), dst);
+ 
+-	if (likely(is_lru)) {
+-		struct address_space *mapping = folio_mapping(src);
+-
+-		if (!mapping)
+-			rc = migrate_folio(mapping, dst, src, mode);
+-		else if (mapping_inaccessible(mapping))
+-			rc = -EOPNOTSUPP;
+-		else if (mapping->a_ops->migrate_folio)
+-			/*
+-			 * Most folios have a mapping and most filesystems
+-			 * provide a migrate_folio callback. Anonymous folios
+-			 * are part of swap space which also has its own
+-			 * migrate_folio callback. This is the most common path
+-			 * for page migration.
+-			 */
+-			rc = mapping->a_ops->migrate_folio(mapping, dst, src,
+-								mode);
+-		else
+-			rc = fallback_migrate_folio(mapping, dst, src, mode);
++	if (!mapping)
++		rc = migrate_folio(mapping, dst, src, mode);
++	else if (mapping_inaccessible(mapping))
++		rc = -EOPNOTSUPP;
++	else if (mapping->a_ops->migrate_folio)
++		/*
++		 * Most folios have a mapping and most filesystems
++		 * provide a migrate_folio callback. Anonymous folios
++		 * are part of swap space which also has its own
++		 * migrate_folio callback. This is the most common path
++		 * for page migration.
++		 */
++		rc = mapping->a_ops->migrate_folio(mapping, dst, src,
++							mode);
++	else
++		rc = fallback_migrate_folio(mapping, dst, src, mode);
+ 
+-		if (rc != MIGRATEPAGE_SUCCESS)
+-			goto out;
++	if (rc == MIGRATEPAGE_SUCCESS) {
+ 		/*
+ 		 * For pagecache folios, src->mapping must be cleared before src
+ 		 * is freed. Anonymous folios must stay anonymous until freed.
+@@ -1074,10 +1071,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
+ 
+ 		if (likely(!folio_is_zone_device(dst)))
+ 			flush_dcache_folio(dst);
+-	} else {
+-		rc = migrate_movable_ops_page(&dst->page, &src->page, mode);
+ 	}
+-out:
+ 	return rc;
+ }
+ 
+@@ -1328,20 +1322,23 @@ static int migrate_folio_move(free_folio_t put_new_folio, unsigned long private,
+ 	int rc;
+ 	int old_page_state = 0;
+ 	struct anon_vma *anon_vma = NULL;
+-	bool is_lru = !__folio_test_movable(src);
+ 	struct list_head *prev;
+ 
+ 	__migrate_folio_extract(dst, &old_page_state, &anon_vma);
+ 	prev = dst->lru.prev;
+ 	list_del(&dst->lru);
+ 
++	if (unlikely(__folio_test_movable(src))) {
++		rc = migrate_movable_ops_page(&dst->page, &src->page, mode);
++		if (rc)
++			goto out;
++		goto out_unlock_both;
++	}
++
+ 	rc = move_to_new_folio(dst, src, mode);
+ 	if (rc)
+ 		goto out;
+ 
+-	if (unlikely(!is_lru))
+-		goto out_unlock_both;
+-
+ 	/*
+ 	 * When successful, push dst to LRU immediately: so that if it
+ 	 * turns out to be an mlocked page, remove_migration_ptes() will
 -- 
 2.49.0
 
