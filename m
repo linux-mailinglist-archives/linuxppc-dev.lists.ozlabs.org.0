@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-10085-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10086-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933E4AF8C3E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 10:43:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B450DAF8C44
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 10:43:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bYRwg3MKNz30Pn;
-	Fri,  4 Jul 2025 18:42:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bYRx13PmQz30VF;
+	Fri,  4 Jul 2025 18:43:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751618579;
-	cv=none; b=GzQ4ACxA+CSOwXG37sVIdHN5Wppz/Xa7qF/gTlEloHxnvcJrKtOOTgsq8mqOEZ0IqBurdaITuMwtEK/EPySCXpfJp5lcZG7EYcWgW2R919getKATq04wZouFBgHM/dmvwXcRowMbqaaD+2uSwiUkbA9pTFIMmfhkWtoCREwKQsipjAlcZ1W+uHlRnFfoFnd+oUTBiDf+bLrLsuO9uIDpkynExjp4E8vbW4yn/4hZw9N9I4isxXxH1uzX2qGaVcmxYfOYrZIYt5NMaRhTwS7vOkeAcQrqrWjEr05L+RxM+F51QETbx0lNFjwoJkAQoY+5pM6DQ9ofiuV3yGq1rqcU4Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751618597;
+	cv=none; b=XVXkcqEB7i8aMZMt5CD+8Z7jRUtSAh6OZDOB0d/Km2gjGewpgjqTs1NlSIcsALAD78IkEXac3veHugMiW222x/urE9OqLnKjh8Bvtp6F3DNHGSsGEF5ia1M0G7MxplDNi3UFGWUkoYYxgRvQpLjLhaU3FJ1/V8pzCcGX46+2yZWc0R2cZegBm8EHLoEhwHIseQCaCiNWuC48MRCopjY+yBigPainwCapSOziRbopjDcwlPJL2sQPSnGmAJWXWqt2cG9/Av1+20iOygdHivPnLvIT4MTBkdgSck+5Xc8gtd0nA98v587oOENeZbCLSCf2Vv2JT2dWD5PnGGInSXaEXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751618579; c=relaxed/relaxed;
-	bh=3UdQ8Dxjk4XDYNnQQ3bQvUxc58xt/mNU1w0LcNH4EvA=;
+	t=1751618597; c=relaxed/relaxed;
+	bh=OhOmXYAj/2Vy0m+ws5zyVcX4kOdXzVFqtuhyr/O1J18=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c7YxsCkk5KMae03Uxl/pRqKx8hH5/LakdrB6kqa+G62jxBittFofsQ9A8vnv8fUokZEBUDWdiH4bzFxWrjB4raXPdGFy5Oz6Fo21KWK4h/hhJzpnjU2sC5W1R9oErdhcwEcL0UwsxekEoxLBIghg/4vJT9F/Xd0M5Wz5MYW8nB8eTDWO0pd6PzgcDRsaz+5UvmH8gISjsjo+md4b4f147ux9wlK/RwKQvx5EQZRI9nORuPh43pcF1Sax4mjzI9wLyXZ7W3BcR9S9aYI3sk8UBZc/Z5PL2OfwGjJiVog19/2w6qTG9cTDWXQw43H7aG2CSoOhXqdFAEFRWChsgeFQ/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TCcWXlqc; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rnsastry@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=FXxlR0/px/995Slt2KqA82pNPGkN8bQ09Iesc7WGp2pSHi5M4OhHaMtglV4gCsn8xYzcNaWk58CWp3uroOuCgaB4U1sZWcAoEjwGq/esh1dLKr600B5T64OvrxxuY9VuuBnFJ5uKqTG0k7+SXtWkFebyUSBrn0V8v5M9g5QkbrzfIhgrYcZ4+6P+HJuHC5MKDt4HT1fe+EZ3KmM1lFKz+pb2PPbmoieoO02YY4T8IuXhHUADexkevwdnmREdaxwfuLrPTlIYsQAgdG4rrYH8HGov5emzW43t6jUVEWordUsTjNfXm3i+fEH9N3/GeC/HIGLfHGWU2Khijapf3y9gng==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A8LMSWFk; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rnsastry@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TCcWXlqc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A8LMSWFk;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=rnsastry@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYRwf4BS6z2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 18:42:58 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5643QCx3020597;
-	Fri, 4 Jul 2025 08:42:44 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYRx04lZLz30V7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 18:43:16 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5646qXdq008983;
+	Fri, 4 Jul 2025 08:43:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3UdQ8D
-	xjk4XDYNnQQ3bQvUxc58xt/mNU1w0LcNH4EvA=; b=TCcWXlqc8GcxQktbr9NM6q
-	ttXDjiepo6npGnqo4dXoc20L0cM1yZLbYtit3jH9llDNLP97qOCs3o6QvPL2H3tg
-	B0PMI2tJFEAix9Z6FJ/JwnW0GERHUzpEXSNKIP7L5H5VB8eCKungDdk5TilZTi+Q
-	+sy24DTHcJz/7b3sBoJb+LDjlAw7vSoYRf7Y+i1npdFY/eJjkvl5MDd1eXwbfZU3
-	t/ZfBudt2FRWAi6aE4I86gm8tRX6GtvB+wxc6cuFs0iLi6siq43J25htoU5BzSML
-	nDQU7sHcct2YuVgI/TcYzX7SkL/LkOQ4GuItpZxQ4WHSnOrgJHmx21Utz0fiWPyw
+	:message-id:mime-version:references:subject:to; s=pp1; bh=OhOmXY
+	Aj/2Vy0m+ws5zyVcX4kOdXzVFqtuhyr/O1J18=; b=A8LMSWFkXTZXb45HoNVSXh
+	iuLvbVCzskreMNkozbUe0mgx20SeQxmiLcF6ljeqqi1Th0n/G82dmjeeZ0H03aJ7
+	wEQNH5De+crB3G6kVeargOCyVJbSdUeyTa78+f4mEqnojNZ0kKG2HA9QKlo8UtOM
+	2MfVHyHwkPLZ6ddTk/iNp8ox8wdIYvQQoN/JD879pPrz1M51B0u/kaKAS3X7kVez
+	yKXq6sNUtxQxtWEG/m7HhEqAqCk+3HtbfS86KMPoFgH6z0YLsSBLukfo5XFE9XZG
+	0UWexjNLZCdy5euwBRORgQkDhsJxVrfN7Te1us6ePKwJAxN50ZhpqbY/7NHCUFCg
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j6u287n2-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j82g84bc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 04 Jul 2025 08:42:44 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5648bLAL021704;
-	Fri, 4 Jul 2025 08:42:44 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j6u287mx-1
+	Fri, 04 Jul 2025 08:43:03 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5648acbL022614;
+	Fri, 4 Jul 2025 08:43:03 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j82g84b7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 04 Jul 2025 08:42:44 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56461FKL032151;
-	Fri, 4 Jul 2025 08:42:43 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47ju4116vq-1
+	Fri, 04 Jul 2025 08:43:02 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5648GALh021371;
+	Fri, 4 Jul 2025 08:43:02 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 47jwe3rrv4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 04 Jul 2025 08:42:43 +0000
+	Fri, 04 Jul 2025 08:43:02 +0000
 Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5648gdCh58327392
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5648gwEd51184018
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 4 Jul 2025 08:42:39 GMT
+	Fri, 4 Jul 2025 08:42:58 GMT
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 230E82004B;
-	Fri,  4 Jul 2025 08:42:39 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 50E5520043;
+	Fri,  4 Jul 2025 08:42:58 +0000 (GMT)
 Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1093B20040;
-	Fri,  4 Jul 2025 08:42:34 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C60A22004B;
+	Fri,  4 Jul 2025 08:42:52 +0000 (GMT)
 Received: from [9.61.253.3] (unknown [9.61.253.3])
 	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  4 Jul 2025 08:42:33 +0000 (GMT)
-Message-ID: <ea69919d-87dd-4d5c-b096-620a4050af6f@linux.ibm.com>
-Date: Fri, 4 Jul 2025 14:12:30 +0530
+	Fri,  4 Jul 2025 08:42:52 +0000 (GMT)
+Message-ID: <b6e8f65a-234f-4543-961b-076a088ae819@linux.ibm.com>
+Date: Fri, 4 Jul 2025 14:12:49 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,8 +87,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] powerpc/pseries: Correct secvar format
- representation for static key management
+Subject: Re: [PATCH v4 2/3] powerpc/secvar: Expose secvars relevant to the key
+ management mode
 To: Srish Srinivasan <ssrish@linux.ibm.com>, linux-integrity@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org
 Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
@@ -96,26 +96,26 @@ Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
         zohar@linux.ibm.com, nayna@linux.ibm.com, msuchanek@suse.de,
         linux-kernel@vger.kernel.org
 References: <20250610211907.101384-1-ssrish@linux.ibm.com>
- <20250610211907.101384-2-ssrish@linux.ibm.com>
+ <20250610211907.101384-3-ssrish@linux.ibm.com>
 Content-Language: en-US
 From: R Nageswara Sastry <rnsastry@linux.ibm.com>
-In-Reply-To: <20250610211907.101384-2-ssrish@linux.ibm.com>
+In-Reply-To: <20250610211907.101384-3-ssrish@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: gVgEwNCUjoQDvVkuldKTtmrvcZX4v83C
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDA2NCBTYWx0ZWRfX5VMG+ECazCKX L3bYeVBvWCDf/09q5KykN1lagxUyLzrHF2qFzzMaPa8XneKmDIX0S8jA+zzZFJfrV+23OwE3Fcz TOkwcrt3QTEqFPasMrdHn/q4idiWc1+CHqzcVSrb8ls1vA75RtTagu0Z9d9Th4YB3tPDSfQj8B1
- +R+GgR8jVLUACxnpC7Anon9ClblIuRBVTvorNH3SVZodWLIMRN7zQ6px7kt8lKfmG4uYei5YIQu OaFBJ4ZRRo3ePD+gSLE+Ui7xenx5LsBQHGRRpN4vjkwauyGXeNQUryRhGENxFTfqSJZhGFe8U7L es3NI6UUsyByHCX1t441C2w6Yb1LNRWNlgCyphVerkqIiIUy0AfnqJ/OZgu+6ugmDLpXj41TNR0
- MRpWRqDf+BkUQVti8uEsPOmTTsqlPbNSBdrJH8G8Ev1DhKG9ZkE3aNtoHFphkaD0UZ9dBfLI
-X-Proofpoint-GUID: EHLgPpDBDYIi4ey7y9-9AwS7zr8TuSZc
-X-Authority-Analysis: v=2.4 cv=GrRC+l1C c=1 sm=1 tr=0 ts=68679404 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=JeGirNJSJm6n8U7jAzIA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: _ZCsWS_I4BWE0w9I80nvT2k7t-FmBJnC
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA0MDA2NCBTYWx0ZWRfX98GxvNa98QK1 B56FU+8wjb1Ho3ofFdGEKVuvJdKr/K7QbDcCNmKAtbAk/IQXOZtkIbir5tyd/ZRcm4MJauKGuwV 8HAJHvfUA+TUxAV8xhRAL9hFlNq16O/PiG446xNGlDsK3wMgf3zOy1W3EG/NvbNR/zqinkLleeY
+ Mi9EnlsA9xFLxlQ3EN3TYESO4HzHBd7J5Ny6glPEirBNcFSCZUsBSHuaFuSGfrZzzxrgQb4hLOf bcDYgMdMRwjRRYjW9/w52Q+BBpuctxeUh2DBhexUyWF8yjVgFPORuE7z7DXRa0eNrke9oLes0y7 NTLBSUXt+MBlKcOWmASxOHjGsGZN4KMpEkvb7y6d5SNooRqGedIUT55TgiMIVI6f5KZ4Mgeppu+
+ zv7JJPtEnj+6F5Ak+fidrdhQ27R5m46Z5kSUER5gevPi86rZ8Jg+NcIeZ15XXcCluWdxSios
+X-Authority-Analysis: v=2.4 cv=LpeSymdc c=1 sm=1 tr=0 ts=68679417 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=1BM8l147YzEeg-DoTtwA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: hEM-4Tx3Tu_gdYPd0gXpOtHVYGv4GjD6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-04_03,2025-07-02_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
- priorityscore=1501 adultscore=0 mlxlogscore=999 mlxscore=0 impostorscore=0
- phishscore=0 spamscore=0 suspectscore=0 bulkscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ spamscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 clxscore=1011
+ impostorscore=0 mlxscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2507040064
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -125,21 +125,19 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 On 11/06/25 2:49 AM, Srish Srinivasan wrote:
-> On a PLPKS enabled PowerVM LPAR, the secvar format property for static
-> key management is misrepresented as "ibm,plpks-sb-unknown", creating
-> reason for confusion.
+> The PLPKS enabled PowerVM LPAR sysfs exposes all of the secure boot
+> secvars irrespective of the key management mode.
 >
-> Static key management mode uses fixed, built-in keys. Dynamic key
-> management mode allows keys to be updated in production to handle
-> security updates without firmware rebuilds.
+> The PowerVM LPAR supports static and dynamic key management for secure
+> boot. The key management option can be updated in the management
+> console. The secvars PK, trustedcadb, and moduledb can be consumed both
+> in the static and dynamic key management modes for the loading of signed
+> third-party kernel modules. However, other secvars i.e. KEK, grubdb,
+> grubdbx, sbat, db and dbx, which are used to verify the grub and kernel
+> images, are consumed only in the dynamic key management mode.
 >
-> Define a function named plpks_get_sb_keymgmt_mode() to retrieve the
-> key management mode based on the existence of the SB_VERSION property
-> in the firmware.
->
-> Set the secvar format property to either "ibm,plpks-sb-v<version>" or
-> "ibm,plpks-sb-v0" based on the key management mode, and return the
-> length of the secvar format property.
+> Expose only PK, trustedcadb, and moduledb in the static key management
+> mode.
 >
 > Co-developed-by: Souradeep <soura@imap.linux.ibm.com>
 > Signed-off-by: Souradeep <soura@imap.linux.ibm.com>
@@ -148,130 +146,93 @@ On 11/06/25 2:49 AM, Srish Srinivasan wrote:
 > Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 > Reviewed-by: Nayna Jain <nayna@linux.ibm.com>
 > Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-
 Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
 With the following scenarios:
 1. With and with out secure boot by enabling keystore_signed_updates and 
 keystore_kbytes
 2. With Dynamic Key Guest Secure Boot
 3. With Static Key Guest Secure Boot
-
 > ---
->   Documentation/ABI/testing/sysfs-secvar        | 10 ++-
->   arch/powerpc/platforms/pseries/plpks-secvar.c | 76 +++++++++++--------
->   2 files changed, 53 insertions(+), 33 deletions(-)
+>   Documentation/ABI/testing/sysfs-secvar        |  7 +++++
+>   arch/powerpc/platforms/pseries/plpks-secvar.c | 28 ++++++++++++++++---
+>   2 files changed, 31 insertions(+), 4 deletions(-)
 >
 > diff --git a/Documentation/ABI/testing/sysfs-secvar b/Documentation/ABI/testing/sysfs-secvar
-> index 857cf12b0904..f001a4f4bd2e 100644
+> index f001a4f4bd2e..1016967a730f 100644
 > --- a/Documentation/ABI/testing/sysfs-secvar
 > +++ b/Documentation/ABI/testing/sysfs-secvar
-> @@ -22,9 +22,13 @@ Description:	A string indicating which backend is in use by the firmware.
->   		and is expected to be "ibm,edk2-compat-v1".
+> @@ -38,6 +38,13 @@ Description:	Each secure variable is represented as a directory named as
+>   		representation. The data and size can be determined by reading
+>   		their respective attribute files.
 >   
->   		On pseries/PLPKS, this is generated by the kernel based on the
-> -		version number in the SB_VERSION variable in the keystore, and
-> -		has the form "ibm,plpks-sb-v<version>", or
-> -		"ibm,plpks-sb-unknown" if there is no SB_VERSION variable.
-> +		version number in the SB_VERSION variable in the keystore. The
-> +		version numbering in the SB_VERSION variable starts from 1. The
-> +		format string takes the form "ibm,plpks-sb-v<version>" in the
-> +		case of dynamic key management mode. If the SB_VERSION variable
-> +		does not exist (or there is an error while reading it), it takes
-> +		the form "ibm,plpks-sb-v0", indicating that the key management
-> +		mode is static.
->   
->   What:		/sys/firmware/secvar/vars/<variable name>
+> +		Only secvars relevant to the key management mode are exposed.
+> +		Only in the dynamic key management mode should the user have
+> +		access (read and write) to the secure boot secvars db, dbx,
+> +		grubdb, grubdbx, and sbat. These secvars are not consumed in the
+> +		static key management mode. PK, trustedcadb and moduledb are the
+> +		secvars common to both static and dynamic key management modes.
+> +
+>   What:		/sys/firmware/secvar/vars/<variable_name>/size
 >   Date:		August 2019
+>   Contact:	Nayna Jain <nayna@linux.ibm.com>
 > diff --git a/arch/powerpc/platforms/pseries/plpks-secvar.c b/arch/powerpc/platforms/pseries/plpks-secvar.c
-> index 257fd1f8bc19..767e5e8c6990 100644
+> index 767e5e8c6990..f9e9cc40c9d0 100644
 > --- a/arch/powerpc/platforms/pseries/plpks-secvar.c
 > +++ b/arch/powerpc/platforms/pseries/plpks-secvar.c
-> @@ -152,39 +152,55 @@ static int plpks_set_variable(const char *key, u64 key_len, u8 *data,
->   	return rc;
+> @@ -59,7 +59,14 @@ static u32 get_policy(const char *name)
+>   		return PLPKS_SIGNEDUPDATE;
 >   }
 >   
-> -// PLPKS dynamic secure boot doesn't give us a format string in the same way OPAL does.
-> -// Instead, report the format using the SB_VERSION variable in the keystore.
-> -// The string is made up by us, and takes the form "ibm,plpks-sb-v<n>" (or "ibm,plpks-sb-unknown"
-> -// if the SB_VERSION variable doesn't exist). Hypervisor defines the SB_VERSION variable as a
-> -// "1 byte unsigned integer value".
-> -static ssize_t plpks_secvar_format(char *buf, size_t bufsize)
-> +/*
-> + * Return the key management mode.
-> + *
-> + * SB_VERSION is defined as a "1 byte unsigned integer value", taking values
-> + * starting from 1. It is owned by the Partition Firmware and its presence
-> + * indicates that the key management mode is dynamic. Any failure in
-> + * reading SB_VERSION defaults the key management mode to static. The error
-> + * codes -ENOENT or -EPERM are expected in static key management mode. An
-> + * unexpected error code will have to be investigated. Only signed variables
-> + * have null bytes in their names, SB_VERSION does not.
-> + *
-> + * Return 0 to indicate that the key management mode is static. Otherwise
-> + * return the SB_VERSION value to indicate that the key management mode is
-> + * dynamic.
-> + */
-> +static u8 plpks_get_sb_keymgmt_mode(void)
+> -static const char * const plpks_var_names[] = {
+> +static const char * const plpks_var_names_static[] = {
+> +	"PK",
+> +	"moduledb",
+> +	"trustedcadb",
+> +	NULL,
+> +};
+> +
+> +static const char * const plpks_var_names_dynamic[] = {
+>   	"PK",
+>   	"KEK",
+>   	"db",
+> @@ -213,21 +220,34 @@ static int plpks_max_size(u64 *max_size)
+>   	return 0;
+>   }
+>   
+> +static const struct secvar_operations plpks_secvar_ops_static = {
+> +	.get = plpks_get_variable,
+> +	.set = plpks_set_variable,
+> +	.format = plpks_secvar_format,
+> +	.max_size = plpks_max_size,
+> +	.config_attrs = config_attrs,
+> +	.var_names = plpks_var_names_static,
+> +};
+>   
+> -static const struct secvar_operations plpks_secvar_ops = {
+> +static const struct secvar_operations plpks_secvar_ops_dynamic = {
+>   	.get = plpks_get_variable,
+>   	.set = plpks_set_variable,
+>   	.format = plpks_secvar_format,
+>   	.max_size = plpks_max_size,
+>   	.config_attrs = config_attrs,
+> -	.var_names = plpks_var_names,
+> +	.var_names = plpks_var_names_dynamic,
+>   };
+>   
+>   static int plpks_secvar_init(void)
 >   {
-> -	struct plpks_var var = {0};
-> -	ssize_t ret;
-> -	u8 version;
-> -
-> -	var.component = NULL;
-> -	// Only the signed variables have null bytes in their names, this one doesn't
-> -	var.name = "SB_VERSION";
-> -	var.namelen = strlen(var.name);
-> -	var.datalen = 1;
-> -	var.data = &version;
-> -
-> -	// Unlike the other vars, SB_VERSION is owned by firmware instead of the OS
-> -	ret = plpks_read_fw_var(&var);
-> -	if (ret) {
-> -		if (ret == -ENOENT) {
-> -			ret = snprintf(buf, bufsize, "ibm,plpks-sb-unknown");
-> -		} else {
-> -			pr_err("Error %ld reading SB_VERSION from firmware\n", ret);
-> -			ret = -EIO;
-> -		}
-> -		goto err;
 > +	u8 mode;
-> +	ssize_t rc;
-> +	struct plpks_var var = {
-> +		.component = NULL,
-> +		.name = "SB_VERSION",
-> +		.namelen = 10,
-> +		.datalen = 1,
-> +		.data = &mode,
-> +	};
 > +
-> +	rc = plpks_read_fw_var(&var);
-> +	if (rc) {
-> +		if (rc != -ENOENT && rc != -EPERM)
-> +			pr_info("Error %ld reading SB_VERSION from firmware\n", rc);
-> +		mode = 0;
->   	}
-> +	return mode;
-> +}
+>   	if (!plpks_is_available())
+>   		return -ENODEV;
 >   
-> -	ret = snprintf(buf, bufsize, "ibm,plpks-sb-v%hhu", version);
-> -err:
-> -	return ret;
-> +/*
-> + * PLPKS dynamic secure boot doesn't give us a format string in the same way
-> + * OPAL does. Instead, report the format using the SB_VERSION variable in the
-> + * keystore. The string, made up by us, takes the form of either
-> + * "ibm,plpks-sb-v<n>" or "ibm,plpks-sb-v0", based on the key management mode,
-> + * and return the length of the secvar format property.
-> + */
-> +static ssize_t plpks_secvar_format(char *buf, size_t bufsize)
-> +{
-> +	u8 mode;
-> +
+> -	return set_secvar_ops(&plpks_secvar_ops);
 > +	mode = plpks_get_sb_keymgmt_mode();
-> +	return snprintf(buf, bufsize, "ibm,plpks-sb-v%hhu", mode);
+> +	if (mode)
+> +		return set_secvar_ops(&plpks_secvar_ops_dynamic);
+> +	return set_secvar_ops(&plpks_secvar_ops_static);
 >   }
->   
->   static int plpks_max_size(u64 *max_size)
+>   machine_device_initcall(pseries, plpks_secvar_init);
 
 -- 
 Thanks and Regards
