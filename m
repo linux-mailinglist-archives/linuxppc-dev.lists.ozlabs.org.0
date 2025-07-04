@@ -1,93 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-10095-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10096-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64F4AF900B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 12:26:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64EFAF900C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Jul 2025 12:26:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bYVCR6VSPz30W9;
-	Fri,  4 Jul 2025 20:25:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bYVCT5BkRz3bft;
+	Fri,  4 Jul 2025 20:25:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751624755;
-	cv=none; b=obLPs77NV6GKcXqM1Ew3RhxFcXu0YhV/wf+vh4kjT0eyNc5C2K23jVDkGhN/EpHfy84UwQSOLucWRGfrySDISQ7ZHhS5Jqnsw2ob3rkIKf1g5CmU6GhC29dC+UGZ9Jm3TJwjLb0GZbWle6+pLCxGJavnJ9WTnSkyHHmu3ja/dTJXAsbI6F1fVUSmWqTE4toebp1XO47AD9s22QPB1382m5olWCUOkqVkRjSeg9w+tC4j27ymr5xGTBviZ7QlFk6hjQoSRQt6k3fYdEcqOrKpTK9hSoolCjclf1J/HeQE3pnDQfS5GHPOeXNfpmOUcIStBXhdsrAP+6/EKej1Bpxq9A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751624757;
+	cv=none; b=fgRoLfP6nc6Llai3xMvGUmmvC9vMLXCBX7ShSaKWs1OW1M9xdKwSUxej65cIXpc3ZSTNSzI15kWp3xLlUS1uMSMXAvTjkosAubGFFmpgWEJLovSEpZSnMHKgOayEEZRzObLQ/h3u/qlUNEe5ixFt4QEpUJRZJnGP+HGaYTHQDqCFld4mrbgHDcieXe8IRlTnNe0RgcKyXXCpET+ibb3MRAnKQD86DSyWfsLjUqur/beEfa269yVXjDWWBe+Gbqxs+BzeJhb3Nszb7BRzTh56kRI9P9H5AI8YOJCtPjPqcQ8gHY3ZaQjfYKrur5DHSF1t7TnWyIYHWTDd3yA6MLE6Tg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751624755; c=relaxed/relaxed;
-	bh=2hFW2iBTC0y3bbUq+s26fylaJsmqdGOzvykr6tgw4lA=;
+	t=1751624757; c=relaxed/relaxed;
+	bh=OVyour2UNFNS7aNaSR0hE5hzdL3B1bhwCvX/GUFQiSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=bZZakudxYs06br52nQl60dSurzBfaQr9AgfsrClst5K57Qq4aWL99ckIVC3cR9k1eNJIelrt3vAZxhFPCQpk6qD069619tkhwM01FamkZaZJ72qGWTrBW8ThGrcak7TucT87IWuKzF6+5hJhf4HNQIz1CsrOg0tV1hVJPvHd2g4pPqvEFg3JJ4t0n+GoC6UG4ARATznI/J16J3OdbTZ531g/8nZ5wm+tVpuUNY9CBoky1ouD0dICSXPLTJUTxlJfSNPBY6PGOv89a8hYOlS0YttB+i9x1cK0sF+mrJxzQX2Nmyx9BRs7z95zNkYzGYA/SXdB4oqoCrWoXHp9RiFINg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fn6/0ETW; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fn6/0ETW; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:content-type; b=C/XAju4TbyXiaKE2DSb3flgeNuBPRGgRJfisma1z0XJH06S0/2fNJG1+99r5qHb+tes3KsFC2/2e4f3axbZ2HIFRWcuw+AbYbAIrdzCtWPj0KxkfH37TVCHQ6ujsfdbq8srJjrt4UEk8gbQnC79m+NUqB92srbi8GTBhrNEFyr7ZFx8NSv2sfr7IBP5L+1HBTptMCxZxMGjQkqlNPCLQd4ykm0/U5f/ny+7DMKQkQsZDL7hiJ3m6OTEUXoKPqC2mHO+iNTTKnbeGYyJUayPZzkTes2kVyzmIswlGt3XcWvBW9k0fWf51kcCj3VSOrbDC5HWA/tv02rTJzKY5BwG9xQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W1srpfHS; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W1srpfHS; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fn6/0ETW;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fn6/0ETW;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W1srpfHS;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W1srpfHS;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYVCR0sYVz30Vq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 20:25:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bYVCT010Tz30Vq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Jul 2025 20:25:56 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751624752;
+	s=mimecast20190719; t=1751624754;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2hFW2iBTC0y3bbUq+s26fylaJsmqdGOzvykr6tgw4lA=;
-	b=fn6/0ETWPB2xcCnDIKCNr1dHPQKlEmYNFbCIUtnFimrnol4YKq87tMdn+BZcB7UVzwEZ6G
-	1nhJqOEdze4sZCGkH77VyhrxhbabbJIZ73FDlEdUk2c2NtgoHRMm8UsirWXCylo/DTNP5C
-	6Wqs02qq9eZFT4A441y0onHPM/HzbA4=
+	bh=OVyour2UNFNS7aNaSR0hE5hzdL3B1bhwCvX/GUFQiSw=;
+	b=W1srpfHSaPp5GZ/pMVWBJJdydFMIBbZiCZSqpTnGCok1GU3kFUwBYxmYltMs6qxKpa1MYm
+	nbCZF71b/pXb+X1w5FD1QwKFoNvtu+EOLOSlq7sGRbwMerOmCbHb2YgMXAsVMEFvf66atR
+	Zlh/z/BeLbzHeOmojYlnFKQCIa02T7w=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1751624752;
+	s=mimecast20190719; t=1751624754;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2hFW2iBTC0y3bbUq+s26fylaJsmqdGOzvykr6tgw4lA=;
-	b=fn6/0ETWPB2xcCnDIKCNr1dHPQKlEmYNFbCIUtnFimrnol4YKq87tMdn+BZcB7UVzwEZ6G
-	1nhJqOEdze4sZCGkH77VyhrxhbabbJIZ73FDlEdUk2c2NtgoHRMm8UsirWXCylo/DTNP5C
-	6Wqs02qq9eZFT4A441y0onHPM/HzbA4=
+	bh=OVyour2UNFNS7aNaSR0hE5hzdL3B1bhwCvX/GUFQiSw=;
+	b=W1srpfHSaPp5GZ/pMVWBJJdydFMIBbZiCZSqpTnGCok1GU3kFUwBYxmYltMs6qxKpa1MYm
+	nbCZF71b/pXb+X1w5FD1QwKFoNvtu+EOLOSlq7sGRbwMerOmCbHb2YgMXAsVMEFvf66atR
+	Zlh/z/BeLbzHeOmojYlnFKQCIa02T7w=
 Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
  [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-564-tTLICLJpOvmn0cAH5w1hjw-1; Fri, 04 Jul 2025 06:25:49 -0400
-X-MC-Unique: tTLICLJpOvmn0cAH5w1hjw-1
-X-Mimecast-MFC-AGG-ID: tTLICLJpOvmn0cAH5w1hjw_1751624748
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43e9b0fd00cso4597485e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jul 2025 03:25:49 -0700 (PDT)
+ us-mta-648-xrGxrIYxOdGXet4_Hp2-dA-1; Fri, 04 Jul 2025 06:25:53 -0400
+X-MC-Unique: xrGxrIYxOdGXet4_Hp2-dA-1
+X-Mimecast-MFC-AGG-ID: xrGxrIYxOdGXet4_Hp2-dA_1751624752
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-454acc74f22so5102705e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 04 Jul 2025 03:25:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751624748; x=1752229548;
+        d=1e100.net; s=20230601; t=1751624752; x=1752229552;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2hFW2iBTC0y3bbUq+s26fylaJsmqdGOzvykr6tgw4lA=;
-        b=Txx2RRhmn09hZQTju5c4uMwUOsK1OpUWF9PM40dX/dmtr00Ccn5SNUuq/RzA8Uu2sw
-         92MnnjeI1vYj8pcz/CVJRPosdmXFsrd8kXDKhbYa49+DMw93pTg4k12ldaJ3dSDADquU
-         knlMVdvyuPyIpN+ATm6cdBHuWzvl2tv4x2GjZIAtuwjcb5QXcdNGavuT7PpcTZb9xOXX
-         CV6/Jg/GdJOKTYXHBETpySXYtBuTgT2LkDzlBw6PdE8oiRhwMUUDP5Bf3/Mg+P2eJuRF
-         Kixlq5AC9jcRpwCNnoarLJFCA4c+195lO0u+OE5V0qrn9DIZQ3nHxQcFStg90JZX0GJt
-         VKSg==
-X-Forwarded-Encrypted: i=1; AJvYcCWvW+KxSd71f58kIfJMzrgfrfbdLpy+a6vUY9IUix5Hi4703ke4Z4ERDYMua6sxIJ8wJ5g0ZrFTlrTfook=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxLAjndcxGaGndnYDusVdjmeMpwI5jD9j6WlMQnBQjzANU7K7DI
-	AdusriepM/o+H17qdj9IXcqyNK9TtCdg80CfwbWfzWnY6EWct+JnLXU+nEPLtrer/jQLDUuVDu5
-	gRaDygOdWhXb26s6tQw+GzyQqqx0W4wa4T+dZjuygrN1z2DyNalf31wwwQX6EkfBYfF8=
-X-Gm-Gg: ASbGncunRBqm10P+iONYKPvbAZIybBsTfMplYzEf5zy+jNicXTHxhbEqWvis0Or3B2Y
-	wJFhKsliBITPYtYykoqDOyOsgCGsO7Rtw54BOc8Zd5zWmj9ME6K2SAy5xpiE3y2RXUOUv0APP80
-	tbTOyeaDOv8YdZ/qyT4+Sz1+w7UwzE8vV84G5q+AKFGLvB3uuVpd01JQ1Xcw3CWXLi/a/rNDmJa
-	A0wqlTrqXLEtz9rKa53vG4oUXlhHZ7LVc4SD981J8Fr8TXtfQc3eOQaqDjHc5wWq74WaIT28p7u
-	15FJzTd/kKEMAJU+qoFDwO8h64I2toxj44H64/TpO8mVAaW/h47oq6AlxCVjqg0R9tTBdVtebND
-	4dAtVkA==
-X-Received: by 2002:a05:600c:4fc9:b0:439:4b23:9e8e with SMTP id 5b1f17b1804b1-454b3ab874dmr19032595e9.3.1751624748160;
-        Fri, 04 Jul 2025 03:25:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYcpd9SFcoaWfQeqRe14xBG83tSrWUHlht+bCd9eNO7YiXJuE62xvkx/e2Wc1s4dDi7NCxDg==
-X-Received: by 2002:a05:600c:4fc9:b0:439:4b23:9e8e with SMTP id 5b1f17b1804b1-454b3ab874dmr19032085e9.3.1751624747587;
-        Fri, 04 Jul 2025 03:25:47 -0700 (PDT)
+        bh=OVyour2UNFNS7aNaSR0hE5hzdL3B1bhwCvX/GUFQiSw=;
+        b=gQhCuWbBc9mLCWr0wJarQBNqD8pHN8jnrxFPp3arx26PTwCGPgZYOEoicyoRYXP0V2
+         6O5P4iWkwB+ZPV1/hWYjQUidiQ2sQSCcgOlV1/G3FZHObOIQ99b4dSV8RWTrM+UzOIST
+         wm3M6zAr+0ivQzFOsNlCW7TbW01juGwxe1SrYe6pxetQb7HYZVxwvAWfIxJZl8glq0pT
+         DU/Xxx/qNeBYVwkYPq2nKp51RT1EmwhUWzGXtGPnMKv3+fpC1yk447MOuAmY3lkPlPc1
+         G26HllepSdEHog2cc47wIs5Do2um3/j9zYaPpPLlyBEM2F/UcjYlHfsY2fHcpkEulnJh
+         QHpA==
+X-Forwarded-Encrypted: i=1; AJvYcCUjY9LLF+/AeUcEuCOvs0jV83hlDRClfgj0ois14QXjB19hbaT44iVFQADFNp1IAXTHeWPUPTqOA1Uvxa0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzeDKXfA1N/RuY2D2h/Pe5mQUYDk1jT0uHRHDJlujQVp2sJZTTT
+	vR10W9QRUIC0D3BB8SZY197moj+/3fQKRNf7erxPEL73uP2dWGbzkbqLuEQVfjmdmQLCwq5mpXO
+	F1/Go9y9wFECCC/ETPL7aKVhkn42nH0AJ648vYi5NMUOgBlWmJi6vETytTEewkrDISi8=
+X-Gm-Gg: ASbGnctKHuqtKry3ou7C5JZkmhxvcl3zIIfVHyB7edPveBAg+QxxmUo56mjbUF4utOt
+	jPx/vIWVpH/PohwjU8WjKtSNDy7ZibVPojAOvPChPQI9louzGlFUqps/loX0CYcAsHFJfjT7KyQ
+	KEk5KN8ZsIWXXvMaIiY9JhKIzorUkRoPSbGEUo/OvtshNZNGjDqDOhDzjPAMbbc4IX+u5vcZFUG
+	aPp5J946+9sM3XTHHXPBx6YzqPvBok2FpzElHrl9trGcieXm5dnASc5giflh7Yzv9LuBe8X0s4O
+	KAEb5YwGTAnjSMsBVu6hGp1fKMK6JS7eZomQXiq9U1LJllCB+7Js0qz4INmVuxydhSu0RBXMyK3
+	v4kqzuA==
+X-Received: by 2002:a05:600c:4f07:b0:43b:cc42:c54f with SMTP id 5b1f17b1804b1-454b835631bmr1455875e9.14.1751624751465;
+        Fri, 04 Jul 2025 03:25:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE2Rez8KVGPQFiDbU29hzAgNjBI7xFdtw4twkMv/+PHLeFt8+nZnPGBAy1buVfR9Z9nLRQVCg==
+X-Received: by 2002:a05:600c:4f07:b0:43b:cc42:c54f with SMTP id 5b1f17b1804b1-454b835631bmr1455215e9.14.1751624750855;
+        Fri, 04 Jul 2025 03:25:50 -0700 (PDT)
 Received: from localhost (p200300d82f2c5500098823f9faa07232.dip0.t-ipconnect.de. [2003:d8:2f2c:5500:988:23f9:faa0:7232])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-454a9bcef22sm52038125e9.19.2025.07.04.03.25.45
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-454b1634b0fsm22804075e9.17.2025.07.04.03.25.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Jul 2025 03:25:46 -0700 (PDT)
+        Fri, 04 Jul 2025 03:25:49 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -143,9 +143,9 @@ Cc: linux-mm@kvack.org,
 	Harry Yoo <harry.yoo@oracle.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
 	Shakeel Butt <shakeel.butt@linux.dev>
-Subject: [PATCH v2 07/29] mm/migrate: rename isolate_movable_page() to isolate_movable_ops_page()
-Date: Fri,  4 Jul 2025 12:25:01 +0200
-Message-ID: <20250704102524.326966-8-david@redhat.com>
+Subject: [PATCH v2 08/29] mm/migrate: rename putback_movable_folio() to putback_movable_ops_page()
+Date: Fri,  4 Jul 2025 12:25:02 +0200
+Message-ID: <20250704102524.326966-9-david@redhat.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250704102524.326966-1-david@redhat.com>
 References: <20250704102524.326966-1-david@redhat.com>
@@ -163,7 +163,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -q5jCpx9tkjo8u-WQx-KUGVmJg1X4dE9BTZC6dPUS0U_1751624748
+X-Mimecast-MFC-PROC-ID: 7Sxgc313VbYhFOgqXUdkFxvAO3JRxLkrk8sbvYLN3OY_1751624752
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
@@ -173,141 +173,75 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-... and start moving back to per-page things that will absolutely not be
-folio things in the future. Add documentation and a comment that the
-remaining folio stuff (lock, refcount) will have to be reworked as well.
+... and factor the complete handling of movable_ops pages out.
+Convert it similar to isolate_movable_ops_page().
 
-While at it, convert the VM_BUG_ON() into a WARN_ON_ONCE() and handle
-it gracefully (relevant with further changes), and convert a
-WARN_ON_ONCE() into a VM_WARN_ON_ONCE_PAGE().
+While at it, convert the VM_BUG_ON_FOLIO() into a VM_WARN_ON_PAGE().
 
-Note that we will leave anything that needs a rework (lock, refcount,
-->lru) to be using folios for now: that perfectly highlights the
-problematic bits.
-
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/migrate.h |  4 ++--
- mm/compaction.c         |  2 +-
- mm/migrate.c            | 39 +++++++++++++++++++++++++++++----------
- 3 files changed, 32 insertions(+), 13 deletions(-)
+ mm/migrate.c | 37 ++++++++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-index aaa2114498d6d..c0ec7422837bd 100644
---- a/include/linux/migrate.h
-+++ b/include/linux/migrate.h
-@@ -69,7 +69,7 @@ int migrate_pages(struct list_head *l, new_folio_t new, free_folio_t free,
- 		  unsigned long private, enum migrate_mode mode, int reason,
- 		  unsigned int *ret_succeeded);
- struct folio *alloc_migration_target(struct folio *src, unsigned long private);
--bool isolate_movable_page(struct page *page, isolate_mode_t mode);
-+bool isolate_movable_ops_page(struct page *page, isolate_mode_t mode);
- bool isolate_folio_to_list(struct folio *folio, struct list_head *list);
- 
- int migrate_huge_page_move_mapping(struct address_space *mapping,
-@@ -90,7 +90,7 @@ static inline int migrate_pages(struct list_head *l, new_folio_t new,
- static inline struct folio *alloc_migration_target(struct folio *src,
- 		unsigned long private)
- 	{ return NULL; }
--static inline bool isolate_movable_page(struct page *page, isolate_mode_t mode)
-+static inline bool isolate_movable_ops_page(struct page *page, isolate_mode_t mode)
- 	{ return false; }
- static inline bool isolate_folio_to_list(struct folio *folio, struct list_head *list)
- 	{ return false; }
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 3925cb61dbb8f..17455c5a4be05 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -1093,7 +1093,7 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
- 					locked = NULL;
- 				}
- 
--				if (isolate_movable_page(page, mode)) {
-+				if (isolate_movable_ops_page(page, mode)) {
- 					folio = page_folio(page);
- 					goto isolate_success;
- 				}
 diff --git a/mm/migrate.c b/mm/migrate.c
-index 208d2d4a2f8d4..2e648d75248e4 100644
+index 2e648d75248e4..c3cd66b05fe2f 100644
 --- a/mm/migrate.c
 +++ b/mm/migrate.c
-@@ -51,8 +51,26 @@
- #include "internal.h"
- #include "swap.h"
+@@ -133,12 +133,30 @@ bool isolate_movable_ops_page(struct page *page, isolate_mode_t mode)
+ 	return false;
+ }
  
--bool isolate_movable_page(struct page *page, isolate_mode_t mode)
+-static void putback_movable_folio(struct folio *folio)
 +/**
-+ * isolate_movable_ops_page - isolate a movable_ops page for migration
-+ * @page: The page.
-+ * @mode: The isolation mode.
++ * putback_movable_ops_page - putback an isolated movable_ops page
++ * @page: The isolated page.
 + *
-+ * Try to isolate a movable_ops page for migration. Will fail if the page is
-+ * not a movable_ops page, if the page is already isolated for migration
-+ * or if the page was just was released by its owner.
++ * Putback an isolated movable_ops page.
 + *
-+ * Once isolated, the page cannot get freed until it is either putback
-+ * or migrated.
-+ *
-+ * Returns true if isolation succeeded, otherwise false.
++ * After the page was putback, it might get freed instantly.
 + */
-+bool isolate_movable_ops_page(struct page *page, isolate_mode_t mode)
++static void putback_movable_ops_page(struct page *page)
  {
+-	const struct movable_operations *mops = folio_movable_ops(folio);
+-
+-	mops->putback_page(&folio->page);
+-	folio_clear_isolated(folio);
 +	/*
 +	 * TODO: these pages will not be folios in the future. All
 +	 * folio dependencies will have to be removed.
 +	 */
- 	struct folio *folio = folio_get_nontail_page(page);
- 	const struct movable_operations *mops;
++	struct folio *folio = page_folio(page);
++
++	VM_WARN_ON_ONCE_PAGE(!PageIsolated(page), page);
++	folio_lock(folio);
++	/* If the page was released by it's owner, there is nothing to do. */
++	if (PageMovable(page))
++		page_movable_ops(page)->putback_page(page);
++	ClearPageIsolated(page);
++	folio_unlock(folio);
++	folio_put(folio);
+ }
  
-@@ -73,7 +91,7 @@ bool isolate_movable_page(struct page *page, isolate_mode_t mode)
- 	 * we use non-atomic bitops on newly allocated page flags so
- 	 * unconditionally grabbing the lock ruins page's owner side.
- 	 */
--	if (unlikely(!__folio_test_movable(folio)))
-+	if (unlikely(!__PageMovable(page)))
- 		goto out_putfolio;
- 
- 	/*
-@@ -90,18 +108,19 @@ bool isolate_movable_page(struct page *page, isolate_mode_t mode)
- 	if (unlikely(!folio_trylock(folio)))
- 		goto out_putfolio;
- 
--	if (!folio_test_movable(folio) || folio_test_isolated(folio))
-+	if (!PageMovable(page) || PageIsolated(page))
- 		goto out_no_isolated;
- 
--	mops = folio_movable_ops(folio);
--	VM_BUG_ON_FOLIO(!mops, folio);
-+	mops = page_movable_ops(page);
-+	if (WARN_ON_ONCE(!mops))
-+		goto out_no_isolated;
- 
--	if (!mops->isolate_page(&folio->page, mode))
-+	if (!mops->isolate_page(page, mode))
- 		goto out_no_isolated;
- 
- 	/* Driver shouldn't use the isolated flag */
--	WARN_ON_ONCE(folio_test_isolated(folio));
--	folio_set_isolated(folio);
-+	VM_WARN_ON_ONCE_PAGE(PageIsolated(page), page);
-+	SetPageIsolated(page);
- 	folio_unlock(folio);
- 
- 	return true;
-@@ -175,8 +194,8 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list)
- 	if (lru)
- 		isolated = folio_isolate_lru(folio);
- 	else
--		isolated = isolate_movable_page(&folio->page,
--						ISOLATE_UNEVICTABLE);
-+		isolated = isolate_movable_ops_page(&folio->page,
-+						    ISOLATE_UNEVICTABLE);
- 
- 	if (!isolated)
- 		return false;
+ /*
+@@ -166,14 +184,7 @@ void putback_movable_pages(struct list_head *l)
+ 		 * have PAGE_MAPPING_MOVABLE.
+ 		 */
+ 		if (unlikely(__folio_test_movable(folio))) {
+-			VM_BUG_ON_FOLIO(!folio_test_isolated(folio), folio);
+-			folio_lock(folio);
+-			if (folio_test_movable(folio))
+-				putback_movable_folio(folio);
+-			else
+-				folio_clear_isolated(folio);
+-			folio_unlock(folio);
+-			folio_put(folio);
++			putback_movable_ops_page(&folio->page);
+ 		} else {
+ 			node_stat_mod_folio(folio, NR_ISOLATED_ANON +
+ 					folio_is_file_lru(folio), -folio_nr_pages(folio));
 -- 
 2.49.0
 
