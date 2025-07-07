@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-10138-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10139-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7501DAFADA1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jul 2025 09:51:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF4FAFADE9
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jul 2025 10:01:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bbGdk6SVSz30Tf;
-	Mon,  7 Jul 2025 17:51:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bbGsH3dwQz30Tm;
+	Mon,  7 Jul 2025 18:01:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751874682;
-	cv=none; b=dfEubBNRIau3RERSpsxVmtrnogf9rfu2cLsrQSxVHDb2hA8TigQFirrgS0YVqnInojLRtTJbpU/VO1jfgVjmHrP0GxQmhrfkRSY9KBWr3UHbXF86g5kogeb/Sx7ju2PzJLMyJCL5Nl0EAv0jzyrydYNuRh4cXlwhdHRTIxcdhRQnb2b24uZDW+PXrUTVzl983opPh5IfH4HiNUBbUtJ3anD9nE5cv/Exxik7n8WJNEpdV8do+Lh7pf14hGjP33dfUwqVGctGFjUSOyl0LsJK9bFQ1QYRQRxvWqIQi94Qpbtsr0ZP69tQxJBA+QRZnzgvaVMNI5evoWAdUuw88/eLUg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751875283;
+	cv=none; b=Ue0WTRWYzlV+FE1QNMGD/Lq8U0BUJLk1aLGHy0nnNMay48j3eaVBMcaZooODWhDCu/8Ce/e4JTarxSBPwGHBHl+/WiTfAkXGPy62eSzL1d7CDtUpaVB3rCDC1ce/EiBQrgFBgnEGWjyiwN4TvDXFGsFe+9sGaNsVfmiIYUh648QHJbfTYkOeXTLvFjJ47tf4URNgga5jrQwowHeYQoK2hDzqVDOmpzIiLfQwMcrUeSA+biur+eyXFW/yR3BNLYZGj5kNRvIqAMOYZuODDJ4Rj4xtGRf5ZIIsP/mnH9IZ5n5vXDn7NlIYJVoXNvNNB+xQ7pBPzksuikVEpJVrdpz55Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751874682; c=relaxed/relaxed;
-	bh=ZuMkWlfg2yIZ12AfcbIyqWDMfVaAXICSgAm1nwmXIcA=;
+	t=1751875283; c=relaxed/relaxed;
+	bh=EzRUp73z34SHGEivuSu2RUhOIhbeJLqoOp+hOwWfx6w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FK72aHN1ebD9Kv0ea4CBftV3rBvs9NNiyOqnk61osbqkfBkZOTmfzW9dMgiT9l7+fZMiqQu1Y66Eha+zO4Up829zS/a9JzpyPKTXEaHEYN7IeOpaQSJy+NJq3ET6W6GkJfQ+RTmW8LRwaUvR5PUGwWhUXlYMX1A3smlbhh7OxOFFbasMHa8wI/XDPFB7d74AjDHxGcbhByFsiIdVWOxFiYh96bh2hr1ZDvMCAVoyWBOY+eelQ8tqybyhBLcH59vn7F9j+JUmjtWxHu9R2C61dAVLsphGygKWHi27ztJkAl+/1r5OHlTyMS/p4I7ttvXCjzAPMZDnf27i/DRVo6sl4w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a1mtwR+y; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityab1@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=Fq38Nzls0giQbZYcFJ3791YQmA+/u5sVEWcaDKHopDdg22fawpHyX6HzZcKX6miwDkXX7v+cA87L/qsF8ePwx+VcZph1aigjJJx3/OS33OQKfajBqJFGsPkBuJZKEE3rMLD+pcMMY+3JJHdRrAPXogaGgSJ5Y1v8XssHkD3SimlStDwUF3iO6h4UimHSay0tAu1SRkR3rVw1zHDBqjqJT1nuOoNtKfznrW5clBvF3B9ze3pYuC7WXhdMB7Vmgh7n00Qd4oaiNXhw7snlnp7CX7/BhC1q5MhSeRFgWUehekTM3VhcFj/nvI0KnWMmjGqBPgLVe4uA7PNlEtAC4d0wig==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cuz3otFy; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=krishnak@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a1mtwR+y;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cuz3otFy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityab1@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=krishnak@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bbGdj28bpz30TG
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jul 2025 17:51:20 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 566GwooP032132;
-	Mon, 7 Jul 2025 07:51:05 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bbGsG5LgKz30TG
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jul 2025 18:01:22 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 566HlJVH012718;
+	Mon, 7 Jul 2025 08:01:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ZuMkWl
-	fg2yIZ12AfcbIyqWDMfVaAXICSgAm1nwmXIcA=; b=a1mtwR+y7gaKJcXklZ1DLK
-	j/lnoBYvtyjA1yglICGSYjHYa9vbTGDjcZSPU+p6n4ZBtqCJzAsvQon71b51y1g/
-	9NM6bHy/huxzTBj9lT+n5cQZztD+h1MBXppsosuQ7keLn55GCIrnybxlTCR1+Ibm
-	PhZ7/glFD9TVl9s/uoqIGV5D3Soua1xvmTtu6xg316QS/p7e1a/kAc/E8oKinpDp
-	GKwQSjiR1sWpiQSN+IqjqzjVL/K1sUJ5ODuSkKDG8TDJyv2US2x1d+S1KZOdqglm
-	+2UN0w0L37KZwrVg8IzwHEi5an5dlwDQqaT3CnnuzIBXgwdbAGxRVUCw5ZTJleCA
+	:message-id:mime-version:references:subject:to; s=pp1; bh=EzRUp7
+	3z34SHGEivuSu2RUhOIhbeJLqoOp+hOwWfx6w=; b=cuz3otFyYXKh/nJgcaxlEJ
+	Bh53Y3HHJrIjVyDStRb70r1ARVriATavMBbRVwIAVJe1VkjYcJCh6Fb6rvtay1AN
+	Vi/Fk/ubc6g7FMb/LItb5N/qq6ZDBLJpNWOqARmQlQDrgPQXPdLDW2IJX3la6u72
+	OeuMc5wa7RNj4u2U9gMBsuTV67Gtdl3yTz4TJXUvP7evXm1k0Y9PWmOpliXx2vy4
+	lBHKbNB2yhU3qX3uhPUdnTaiHU9GkLoE8LmjF8AIC2jmgajpVLOIYjIn6FccK4JM
+	hXMnwbXXHyJ96+THOz2sQFQ7uCicfUmtnf+wXp9BsOonTGhf8IGkr/XdiPOUAT7g
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47ptfyfx0v-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47pur6r7xd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Jul 2025 07:51:04 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5677lnma008904;
-	Mon, 7 Jul 2025 07:51:04 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47ptfyfx0t-1
+	Mon, 07 Jul 2025 08:01:08 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5677wdD6029682;
+	Mon, 7 Jul 2025 08:01:07 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47pur6r7x9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Jul 2025 07:51:04 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5674AWhu025618;
-	Mon, 7 Jul 2025 07:51:03 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47qfcnw3cp-1
+	Mon, 07 Jul 2025 08:01:07 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5673raGg010841;
+	Mon, 7 Jul 2025 08:01:06 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47qeryw7yd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Jul 2025 07:51:03 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5677p18G21889284
+	Mon, 07 Jul 2025 08:01:06 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 567814KE14418336
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Jul 2025 07:51:01 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8697520043;
-	Mon,  7 Jul 2025 07:51:01 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8AEFC2004F;
-	Mon,  7 Jul 2025 07:50:59 +0000 (GMT)
-Received: from [9.43.94.242] (unknown [9.43.94.242])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Jul 2025 07:50:59 +0000 (GMT)
-Message-ID: <5f71c60f-ab63-43a3-8696-2ba349151c42@linux.ibm.com>
-Date: Mon, 7 Jul 2025 13:20:58 +0530
+	Mon, 7 Jul 2025 08:01:04 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 389EA2004D;
+	Mon,  7 Jul 2025 08:01:04 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 83BA420040;
+	Mon,  7 Jul 2025 08:01:01 +0000 (GMT)
+Received: from [9.39.28.208] (unknown [9.39.28.208])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  7 Jul 2025 08:01:01 +0000 (GMT)
+Message-ID: <3ebe82c1-d9ae-419e-9e49-61fcb71abe34@linux.ibm.com>
+Date: Mon, 7 Jul 2025 13:31:00 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,168 +87,222 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] powerpc/ftrace: support CONFIG_FUNCTION_GRAPH_RETVAL
-To: linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, rostedt@goodmis.org, mhiramat@kernel.org,
-        mark.rutland@arm.com
-References: <20250707071837.59753-1-adityab1@linux.ibm.com>
+Subject: Re: [PATCH v2 6/6] pci/hotplug/pnv_php: Enable third attention
+ indicator
+To: Bjorn Helgaas <helgaas@kernel.org>,
+        Timothy Pearson <tpearson@raptorengineering.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        christophe leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        Shawn Anastasio <sanastasio@raptorengineering.com>,
+        Lukas Wunner <lukas@wunner.de>
+References: <20250624223413.GA1550003@bhelgaas>
 Content-Language: en-US
-From: Aditya Bodkhe <adityab1@linux.ibm.com>
-In-Reply-To: <20250707071837.59753-1-adityab1@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Krishna Kumar <krishnak@linux.ibm.com>
+In-Reply-To: <20250624223413.GA1550003@bhelgaas>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=crubk04i c=1 sm=1 tr=0 ts=686b7c68 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=GVWLqetRcDZtiWko8XAA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: 4-hHMKSEtEMKFlTGPDLgEqFF0eqiJqJJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA3MDA0NCBTYWx0ZWRfX++Lk59MKVT67 pref/8sJxu7m0nxZXIA0PlHdvPVdp3y+aqkRg7iNr0QfecoLtAiB4YZ9NzOIya1DJY8ZIiI7VgI nU5Tu8eiOqjNiAYeO0LfdAGa353za0aTt0GY6RPSgTAUMzLpowRmzHHxFBVawPngDh6yBvkMalN
- 8UR+MTwgUbUcoLnkgdGYNAXgurr74J9ERYLIYhFu3ZxFvqBQ5vV71vRlsJ4qeAUKB4vFAAR31Oo QYJy2gpldnlpxose9q1d/uLBnmd30nuoE9/s+uw85+BS9du9M1IAlgTSylXeYrof0EUngveTu0Q 3mgIag34b1CDZ+jNt4TCxnnkY9YRUd3njSZEth7oe0gTg6p4tvKkWYqjko0xacLL5Yyk9qk44jH
- aBb1RQR2uCpTmm/N71J+5/2LTzgkVnQeI+BUFIQMVDQ3jqFOZMai3L7HFD8vElhRihiZlMef
-X-Proofpoint-GUID: 5a7OJ_X1-yNPWM1WwZh6rp79htJnwkoB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA3MDA0NCBTYWx0ZWRfX0W8hzeI9bZbu cxoWJIicovCuuPNDDNI+BRVmo5XKqPeu4leTUAv3AjdTGlTwxo3p4fSm+6lxImbfDMOpo1ZQS8m FJzJfzcETxUvim1ToyrVTcdbQW88RENvAVcBjUJ3Poox/dTJyiW9xmP65PsPEKsUrLo9Idhm8tr
+ b8Gl/7tezemDQpXXFYZgmf3HK1RdLPi0O/2JvwMr/bMHxwPm0qh6Oev1XTeKJS0m6FyMqmwpHRv pqBuv0I9A5u8SkvTpMIQOay2C6B+ox4S7Sv3hSz8qcOymzxBwKlmNBEYoj4foWPUXddUD2WgBBl GhSNWn4wBtrNYUrXLGNT4fJVp5aFYoY5N5zK7OIaz5L2gCjVfKVQT3uw6H3Zr6eji/bf0Eij2K+
+ 3S3kzfahcR0tdFaMpoI/gaV6pammmMBbJtoswNrYrLe/ahxkJ16cfuaLPG55aWQCkGh9W9R2
+X-Proofpoint-GUID: Ecs3JysoJt8mU_lQtglqJi1hLvMtE8Eu
+X-Proofpoint-ORIG-GUID: _wfs4VuPJ9FbReg9dPwfaWA4mI87GAsQ
+X-Authority-Analysis: v=2.4 cv=W/M4VQWk c=1 sm=1 tr=0 ts=686b7ec4 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=_AprYWD3AAAA:8 a=voM4FWlXAAAA:8 a=VnNF1IyMAAAA:8 a=1UX6Do5GAAAA:8
+ a=1XWaLZrsAAAA:8 a=hNuwOlM9Oy3Jar5w7j4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=fKH2wJO7VO9AkD4yHysb:22 a=IC2XNlieTeVoXbcui8wp:22 a=Et2XPkok5AAZYJIKzHr1:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
  definitions=2025-07-07_01,2025-07-07_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
- priorityscore=1501 adultscore=0 suspectscore=0 lowpriorityscore=0
- clxscore=1015 impostorscore=0 malwarescore=0 spamscore=0 bulkscore=0
- phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ mlxscore=0 priorityscore=1501 adultscore=0 clxscore=1011 suspectscore=0
+ spamscore=0 lowpriorityscore=0 mlxlogscore=999 bulkscore=0 impostorscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2505280000
  definitions=main-2507070044
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Posted wrong version by mistake please ignore .
+Thanks all for the review and Thanks a bunch to Timothy for fixing the PE Freeze issue. The hotplug issues are like you fix N issue and N+1 th issue will come with new HW.
 
-On 07/07/25 12:48 pm, Aditya Bodkhe wrote:
-> commit a1be9ccc57f0 ("function_graph: Support recording and printing the
-> return value of function") introduced support for function graph return
-> value tracing.
+We had a meeting of around 1.5 -2.0 hr with demo, code review and log review and we decided to let these fixes go ahead. I am consolidating what we discussed -
+
+
+1. Let these fixes go ahead as it solves wider and much needed customer issue and its urgently needed for time being. We have verified in live demo that nothing is broken from legacy flow and 
+
+PE/PHB freeze, race condition, hung, oops etc has been solved correctly. Basically it fixes below issues -
+
+root-port(phb) -> switch(having4 port)--> 2 nvme devices
+
+1st case - only removal of EP-nvme device (surprise hotplug disables msi at root port), soft removal may work
+2nd case  - If we remove switch itself (surprise hotplug disable msi at root port) .
+
+
+Some explanation of problem -
+
+PHB Freeze (Interrupt is not reaching there) - Fence - Need to reset ||
+EP device on removal generated msi - goes to cpu (via root port and then apic mmio region to cpu ),
+PHB/root port itself got freeze and cpu never get interrupt - No wq/event going to work - driver is noit working
+
+
+One area what I thought to fix it with OPAL call is below piece of code-
+
+ret = pnv_php_set_slot_power_state(slot, OPAL_PCI_SLOT_POWER_ON);
++    if (ret) {
++        SLOT_WARN(php_slot, "PCI slot activation failed with error code %d, possible frozen PHB", ret);
++        SLOT_WARN(php_slot, "Attempting complete PHB reset before retrying slot activation\n");
++        for (i = 0; i < 3; i++) {
++            /* Slot activation failed, PHB may be fenced from a prior device failure
++             * Use the OPAL fundamental reset call to both try a device reset and clear
++             * any potentially active PHB fence / freeze
++             */
++            SLOT_WARN(php_slot, "Try %d...\n", i + 1);
++            pci_set_pcie_reset_state(php_slot->pdev, pcie_warm_reset);
++            msleep(250);
++            pci_set_pcie_reset_state(php_slot->pdev, pcie_deassert_reset);
++
++            ret = pnv_php_set_slot_power_state(slot, OPAL_PCI_SLOT_POWER_ON);
++            if (!ret)
++                break;
++        }
+
+
+I would like to see this fix in skiboot, the opal call should reset it and it should work. Normally opal call is responsible for  link training and reset, so ideally it should  happens from there. As if now, Timothy has some explanation for it, so its fine for now. He can add his points for record.
+
+
+2. In future we have decided to work on items like - removal of Work-queue with threaded irq, addition of dpc support in this driver.
+
+3. We have also discussed if we want to move pciehpc.c driver in future, we have to keep below things in mind, Timothy can add some more points for record.
+
+Device Node (DTB) & its relationship with slot, Can we decouple it and will pciehpc.c going to work correctly for this ?
+Driver binding and unbinding based on hotplug event and its relationship with slot. Role of DTB in this. Our driver  also depends on OPAL call for link reset etc, can we decouple from it ? If we add some PPC specific code in pciehpc.c, how will it gets handled (by VFT/Function-Pointer or #ifdef or by seperate files ?)
+
+
+Lukas has some points for above and I am somewhat aligned with below points, but it needs to be tested to see conceptually it fixes above issues, I am consolidating his points and he can add more  if needed-
+
+Only the host bridge
+has to be enumerated in the devicetree or DSDT.
+
+pnv_php.c seems to search the devicetree for hotplug slots and
+instantiates them.
+
+We've traditionally dealt with such issues by inserting pcibios_*()
+hooks in generic code, with a __weak implementation (which is usually
+an empty stub) and a custom implementation in arch/powerpc/.
+
+The linker then chooses the custom implementation over the __weak one.
+
+You can find the existing hooks with:
+
+git grep "__weak .*pcibios" -- drivers/pci
+git grep pcibios -- arch/powerpc
+
+An alternative method is to add a callback to struct pci_host_bridge.
+
+pciehp is used on all kinds of arches, it's just an implementation of the PCIe Base Spec.
+
+
+
+Best Regards,
+
+Krishna
+
+
+
+
+On 6/25/25 4:04 AM, Bjorn Helgaas wrote:
+> On Wed, Jun 18, 2025 at 07:37:54PM -0500, Timothy Pearson wrote:
+>> ----- Original Message -----
+>>> From: "Bjorn Helgaas" <helgaas@kernel.org>
+>>> To: "Timothy Pearson" <tpearson@raptorengineering.com>
+>>> Cc: "linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>, "linux-kernel" <linux-kernel@vger.kernel.org>, "linux-pci"
+>>> <linux-pci@vger.kernel.org>, "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>,
+>>> "christophe leroy" <christophe.leroy@csgroup.eu>, "Naveen N Rao" <naveen@kernel.org>, "Bjorn Helgaas"
+>>> <bhelgaas@google.com>, "Shawn Anastasio" <sanastasio@raptorengineering.com>
+>>> Sent: Wednesday, June 18, 2025 2:01:46 PM
+>>> Subject: Re: [PATCH v2 6/6] pci/hotplug/pnv_php: Enable third attention indicator
+>>> On Wed, Jun 18, 2025 at 11:58:59AM -0500, Timothy Pearson wrote:
+>>>>  state
+>>> Weird wrapping of last word of subject to here.
+>> I'll need to see what's up with my git format-patch setup. Apologies
+>> for that across the multiple series.
+> No worries.  If you can figure out how to make your mailer use the
+> normal "On xxx, somebody wrote:" attribution instead of duplicating
+> all those headers, that would be far more useful :)
 >
-> Additionally, commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with
-> ftrace_regs") further refactored and optimized the implementation,
-> making `struct fgraph_ret_regs` unnecessary.
+>>>> +static int pnv_php_get_raw_indicator_status(struct hotplug_slot *slot, u8
+>>>> *state)
+>>>> +{
+>>>> +	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
+>>>> +	struct pci_dev *bridge = php_slot->pdev;
+>>>> +	u16 status;
+>>>> +
+>>>> +	pcie_capability_read_word(bridge, PCI_EXP_SLTCTL, &status);
+>>>> +	*state = (status & (PCI_EXP_SLTCTL_AIC | PCI_EXP_SLTCTL_PIC)) >> 6;
+>>> Should be able to do this with FIELD_GET().
+>> I used the same overall structure as the pciehp_hpc driver here.  Do
+>> you want me to also fix up that driver with FIELD_GET()?
+> Nope, I think it's fine to keep this looking like pciehp for now.
+> If somebody wants to use FIELD_GET() in pciehp, I'd probably be OK
+> with that, but no need for you to open that can of worms.
 >
-> This patch enables the above modifications for powerpc64, ensuring that
-> function graph return value tracing is available on this architecture.
+>>> Is the PCI_EXP_SLTCTL_PIC part needed?  It wasn't there before, commit
+>>> log doesn't mention it, and as far as I can tell, this would be the
+>>> only driver to do that.  Most expose only the attention status (0=off,
+>>> 1=on, 2=identify/blink).
+>>>
+>>>> +	return 0;
+>>>> +}
+>>>> +
+>>>> +
+>>>>  static int pnv_php_get_attention_state(struct hotplug_slot *slot, u8 *state)
+>>>>  {
+>>>>  	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
+>>>>  
+>>>> +	pnv_php_get_raw_indicator_status(slot, &php_slot->attention_state);
+>>> This is a change worth noting.  Previously we didn't read the AIC
+>>> state from PCI_EXP_SLTCTL at all; we used php_slot->attention_state to
+>>> keep track of whatever had been previously set via
+>>> pnv_php_set_attention_state().
+>>>
+>>> Now we read the current state from PCI_EXP_SLTCTL.  It's not clear
+>>> that php_slot->attention_state is still needed at all.
+>> It probably isn't.  It's unclear why IBM took this path at all,
+>> given pciehp's attention handlers predate pnv-php's by many years.
+>>
+>>> Previously, the user could write any value at all to the sysfs
+>>> "attention" file and then read that same value back.  After this
+>>> patch, the user can still write anything, but reads will only return
+>>> values with PCI_EXP_SLTCTL_AIC and PCI_EXP_SLTCTL_PIC.
+>>>
+>>>>  	*state = php_slot->attention_state;
+>>>>  	return 0;
+>>>>  }
+>>>> @@ -461,7 +474,7 @@ static int pnv_php_set_attention_state(struct hotplug_slot
+>>>> *slot, u8 state)
+>>>>  	mask = PCI_EXP_SLTCTL_AIC;
+>>>>  
+>>>>  	if (state)
+>>>> -		new = PCI_EXP_SLTCTL_ATTN_IND_ON;
+>>>> +		new = FIELD_PREP(PCI_EXP_SLTCTL_AIC, state);
+>>> This changes the behavior in some cases:
+>>>
+>>>  write 0: previously turned indicator off, now writes reserved value
+>>>  write 2: previously turned indicator on, now sets to blink
+>>>  write 3: previously turned indicator on, now turns it off
+>> If we're looking at normalizing with pciehp with an eye toward
+>> eventually deprecating / removing pnv-php, I can't think of a better
+>> time to change this behavior.  I suspect we're the only major user
+>> of this code path at the moment, with most software expecting to see
+>> pciehp-style handling.  Thoughts?
+> I'm OK with changing this, but I do think it would be worth calling
+> out the different behavior in the commit log.
 >
-> After this patch, v6.14+ kernel can also be built with FPROBE on powerpc
-> but there are a few other build and runtime dependencies for FPROBE to
-> work properly. The next patch addresses them.
+> Bjorn
 >
-> Signed-off-by: Aditya Bodkhe <adityab1@linux.ibm.com>
-> ---
->   arch/powerpc/Kconfig                     |  1 +
->   arch/powerpc/include/asm/ftrace.h        | 15 +++++++++
->   arch/powerpc/kernel/trace/ftrace_entry.S | 41 ++++++++++++++----------
->   3 files changed, 40 insertions(+), 17 deletions(-)
->
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index c3e0cc83f120..9163521bc4b9 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -250,6 +250,7 @@ config PPC
->   	select HAVE_FUNCTION_ARG_ACCESS_API
->   	select HAVE_FUNCTION_DESCRIPTORS	if PPC64_ELF_ABI_V1
->   	select HAVE_FUNCTION_ERROR_INJECTION
-> +	select HAVE_FUNCTION_GRAPH_FREGS
->   	select HAVE_FUNCTION_GRAPH_TRACER
->   	select HAVE_FUNCTION_TRACER		if !COMPILE_TEST && (PPC64 || (PPC32 && CC_IS_GCC))
->   	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
-> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-> index 82da7c7a1d12..6ffc9c9cf4e3 100644
-> --- a/arch/powerpc/include/asm/ftrace.h
-> +++ b/arch/powerpc/include/asm/ftrace.h
-> @@ -50,6 +50,21 @@ static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *
->   		asm volatile("mfmsr %0" : "=r" ((_regs)->msr));	\
->   	} while (0)
->   
-> +#undef ftrace_regs_get_return_value
-> +static __always_inline unsigned long
-> +ftrace_regs_get_return_value(const struct ftrace_regs *fregs)
-> +{
-> +	return arch_ftrace_regs(fregs)->regs.gpr[3];
-> +}
-> +#define ftrace_regs_get_return_value ftrace_regs_get_return_value
-> +
-> +#undef ftrace_regs_get_frame_pointer
-> +static __always_inline unsigned long
-> +ftrace_regs_get_frame_pointer(const struct ftrace_regs *fregs)
-> +{
-> +	return arch_ftrace_regs(fregs)->regs.gpr[1];
-> +}
-> +
->   static __always_inline void
->   ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
->   				    unsigned long ip)
-> diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-> index 3565c67fc638..eafbfb7584ed 100644
-> --- a/arch/powerpc/kernel/trace/ftrace_entry.S
-> +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-> @@ -409,23 +409,30 @@ EXPORT_SYMBOL(_mcount)
->   _GLOBAL(return_to_handler)
->   	/* need to save return values */
->   #ifdef CONFIG_PPC64
-> -	std	r4,  -32(r1)
-> -	std	r3,  -24(r1)
-> +	stdu	r1, -SWITCH_FRAME_SIZE(r1)
-> +	std	r4, GPR4(r1)
-> +	std	r3, GPR3(r1)
-> +  /* Save previous stack pointer (r1) */
-> +	addi	r3, r1, SWITCH_FRAME_SIZE
-> +	std	r3, GPR1(r1)
->   	/* save TOC */
-> -	std	r2,  -16(r1)
-> -	std	r31, -8(r1)
-> +	std	r2,  24(r1)
-> +	std	r31, 32(r1)
->   	mr	r31, r1
-> -	stdu	r1, -112(r1)
-> -
-> +  /* pass ftrace_regs/pt_regs to ftrace_return_to_handler */
-> +	addi	r3,  r1, STACK_INT_FRAME_REGS
->   	/*
->   	 * We might be called from a module.
->   	 * Switch to our TOC to run inside the core kernel.
->   	 */
->   	LOAD_PACA_TOC()
->   #else
-> -	stwu	r1, -16(r1)
-> -	stw	r3, 8(r1)
-> -	stw	r4, 12(r1)
-> +	stwu	r1, -SWITCH_FRAME_SIZE(r1)
-> +	stw	r4, GPR4(r1)
-> +	stw	r3, GPR3(r1)
-> +	addi	r3, r1, SWITCH_FRAME_SIZE
-> +	stw	r3, GPR1(r1)
-> +	addi	r3, r1, STACK_INT_FRAME_REGS
->   #endif
->   
->   	bl	ftrace_return_to_handler
-> @@ -435,15 +442,15 @@ _GLOBAL(return_to_handler)
->   	mtlr	r3
->   
->   #ifdef CONFIG_PPC64
-> -	ld	r1, 0(r1)
-> -	ld	r4,  -32(r1)
-> -	ld	r3,  -24(r1)
-> -	ld	r2,  -16(r1)
-> -	ld	r31, -8(r1)
-> +	ld	r4,  GPR4(r1)
-> +	ld	r3,  GPR3(r1)
-> +	ld	r2,  24(r1)
-> +	ld	r31, 32(r1)
-> +	ld	r1,  0(r1)
->   #else
-> -	lwz	r3, 8(r1)
-> -	lwz	r4, 12(r1)
-> -	addi	r1, r1, 16
-> +	lwz	r3, GPR3(r1)
-> +	lwz	r4, GPR4(r1)
-> +	addi	r1, r1, SWITCH_FRAME_SIZE
->   #endif
->   
->   	/* Jump back to real return address */
 
