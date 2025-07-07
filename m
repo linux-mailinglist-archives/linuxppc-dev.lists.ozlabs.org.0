@@ -1,71 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-10142-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10143-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3E5AFAEC3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jul 2025 10:41:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D771AFAF26
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jul 2025 11:02:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bbHlG5lnWz30VZ;
-	Mon,  7 Jul 2025 18:41:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bbJCj4zCsz30V7;
+	Mon,  7 Jul 2025 19:02:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::132"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751877674;
-	cv=none; b=U/4HNMJCC2ciGp/cSt7nIbm6z4sOhIpfvNwpb3R/XfKSrGfjW+R288PJy9BBXzceedy0eNVVERCHpLonVwtWCWg9NFNaFUzcMQQ/TMNA0WCdsOhrun/lo0yRhswVpuJFX+4FxE0jRCQtcesC45ZTcwLLwoBBvyL0ti8H2ZOC6x9IDIRU4maZzRnGY0GAlacsO2U/hQnd7mjF/2JC8A4MRbIxLpDCvl+CWikhzFjjgy9JQlqHMPUHUNzAKulrR2hbRQ5QQJrKmDaHx0X6LLmf68uYNXFRpT0tBf/QulHNUKzDLTtnNQbGQn16BW5/iBYhF1LwPXcH5GEXeJ0Ce0ZVzg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.146
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751878945;
+	cv=none; b=a0adj+z/UYHRd4t+xAjseK/M9OThBprv1C6CytlJ4+JmEtKSav7J+M9HzJlQFu3BAB6PeAPnERpK8OoK5y2cLD1Vnvu2car4KYrQt2YVQTKk2JxoGX70iCORx36WrioZ6p6GVadvuhz2byCbN7ooA05wGAG47Gdd/0DmdF0MzBopJ8sJft4YG4jTUJ777qrM6cAaSvDqaDPqdTc6x17q34bKw10pSYIp9JdFog3rq51/cTAIfzEu9XihXd6LMQn0FcGPjoV0kmWaZsSGU+llJgmLKlWNUI+7+U//XhGjzk+G3jAO+HIQEAm+XwAF+jxWn0RbSS/f25fvU2UUevWzHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751877674; c=relaxed/relaxed;
-	bh=M2ty42UaDUqlMkiP5xE2a1tdArjdzwbm7ssbtaWE4oU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MAMfpMgw5Fbis9HVVRYHRX4bchZ3RuxTuz4fWloqyQPaXjA/F9sJkkkxWSi83fT0r/LaDOq42FbUscFohkhAiqBY1cF0cOXxTbMWW7Q5VNNEU4QufXaMXOWQXGL60dQ7aUAjLB0PtxQhJxrbpJxQEpUAPp63EUl3gvP4dgAT5qpKgIBywmSCAUWVK24V2rSOhpn4LDv3nGfSwxXqmzy3QmT+6/0MCSqfq7jyQxUJStGkMu4wasqiXXR2Z3LI3K9Cg/3nNCbdd8KTJ32AfeezkqFpr5eLCgt0IgeLz3Y37jffo6G/U0lulzmuZ5qj19VHbTHxQFKBTVXuV2pbu/E2+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gGaIr/MO; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+	t=1751878945; c=relaxed/relaxed;
+	bh=x5RAfZVMPJFJCrDqrPzzBGj1iJyK9B75WsIFFR5pUZk=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=AKZtoIgiEFdHwMyg/WK22Uri6/ZOvXr1ueBHcCmZsQDw95tKE5XZJrBH+58MLfbbqE20crShQrOEcJvajR1GoWLUwByuFDeh5z9/0kYDgcFHQY55wV0kqgXi1lG2kUuBwzco09PsI9KM0vXdFN0CxuZLA2/Hx0ecSxuN4X5P+uEJnHN3BHm1XYKIkRn5ZIrzqHuDM3oyyHuyacQpQctcocvpNlbvUxLbcBuycCuCSk/wTunmUBZKIIMseq64ci39SwC8aNGjd3z6OErNpw7GIbphYEW8PPZQkd/y1VF0LVbi9zhk3b8Ah1q3OEJnqKd2EM5/RenWz+rN6gS30HG6PQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=MRPltjlH; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=VqAPi0DX; dkim-atps=neutral; spf=pass (client-ip=202.12.124.146; helo=fout-b3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gGaIr/MO;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=MRPltjlH;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm2 header.b=VqAPi0DX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.146; helo=fout-b3-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bbHlD2Zdrz30V7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jul 2025 18:41:11 +1000 (AEST)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-553b9eb2299so3177921e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Jul 2025 01:41:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1751877666; x=1752482466; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M2ty42UaDUqlMkiP5xE2a1tdArjdzwbm7ssbtaWE4oU=;
-        b=gGaIr/MOst14JClLZkBg6GYUZk562Hh+/WT+wLHHiDwFpRHMraSiGE7ON/xBgpW202
-         G27zuYJoZpGQRcbX+z5RCsB3dLr1Av0WSxf07uTWBfRElI/r9M6YozTm3cvkwuCSNKDN
-         7hmRAfvC7d1RuP9ToDmwMHLVhlrtlTXH3/MhYTf9UJIlB7sMKY3/y9WHIHODmrRTol4u
-         xHXXgJas+P0tmQ8YkcSoay9wxJaXVhM3wIk+Ff7plNqPUSAh9ZJd8zmW8osWl3NOajUf
-         1oCO/N+nzBA0PSMzYWoF7Y6foc2z9BEoukr7DT/i8cjCx7XGBgaQuBMUr6j6/jPnHgXM
-         J49Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751877666; x=1752482466;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M2ty42UaDUqlMkiP5xE2a1tdArjdzwbm7ssbtaWE4oU=;
-        b=ere3HIZGP2xZisJZFdPDP6wJ0FDuQMVNMUohJVMk/gnii68ghuvxELiNLNI0zY3drL
-         8aXcU8Pq4Sl7dKrNVYKUgZfFGss3t+Pr07UnWlt4wJ9BcJcVl/qjKowH67qgzBvhaRIZ
-         0GVrjpuqwBH28SDntP4hR6ggdRpZNmEPiZXeWL9JZfZN9FxyfxHs3dxfUzjVALzniLm8
-         ZD+w2cZFshyKnzq2ncqJ1KxDZ86n6i5oZ9OkdYWYJ7u6Hg0IzsnUMeVXEQgXg4CZH8mQ
-         rpfGV4fKLUvNC+pJD4jEEP7ddBQIeJg5lVUl8PdNah/d2AYbBr02O+QztBYXBGiFjmvs
-         4Wdg==
-X-Forwarded-Encrypted: i=1; AJvYcCVV/kXtyIx1TuQhukFrw/n2zxBkPakss7S5IA8H3sxv6rDx7f8XcbFmDtaDbBjCUQsJRd5sT2K3kXwUwes=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyG1arGqnKKryr94TGy6L1WznzK64Ul6viwomHcBWMgM+KRQkrw
-	5PMnPDdCMqMVjgj6u7U+1/mzmOiAX7VtaAR7U0+M84kni6vHIfCE4Mk8vtOx2MXfpMqt9hqJeHV
-	rF/UDJGQREAuiw/wzrpwQZGYMjxUEyWPvWk2jWRQG7w==
-X-Gm-Gg: ASbGnctIXAbKIcMFaY/FenOdJxIdSV54F9LiGaIy//rX7czJl9uZ9ab5UKzRo4jSL0d
-	X9/XJ63SpV+EkOevGuqEKsS2tEaRwtdKWo8OVbD5DKH1H/YsVbz9/0LfSPjCk3zwf+T1ktU9750
-	EgKEs1XrVoiTZA2FVqF9z6QbdFNqvcJmMj2nXVCjcGJ950IEp7sFNt/dFWoIg0gP0Pj71ThU4JQ
-	7Y=
-X-Google-Smtp-Source: AGHT+IEBQJMgjjxGPUxNMZyf6ChFNk5EekGKfeAHU3z/3d2roa2tlgeHgq/aGpK6K+cYyFTqaK6iHRGTmDCxnni6ogY=
-X-Received: by 2002:a05:6512:b24:b0:554:f82f:181a with SMTP id
- 2adb3069b0e04-55658402866mr3009050e87.2.1751877666314; Mon, 07 Jul 2025
- 01:41:06 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bbJCf1vCqz30TG
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jul 2025 19:02:21 +1000 (AEST)
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfout.stl.internal (Postfix) with ESMTP id 85BCE1D00056;
+	Mon,  7 Jul 2025 05:02:18 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Mon, 07 Jul 2025 05:02:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1751878938;
+	 x=1751965338; bh=x5RAfZVMPJFJCrDqrPzzBGj1iJyK9B75WsIFFR5pUZk=; b=
+	MRPltjlH0iB5ABfrEAPz8jxlQzIzkA0C8NHl466fcTH0nM1xGALmLY6qJlzD72KS
+	/OWvnjDSiOG0iC5X8m4V9b7TnFv+EHGgmMPXPs5MiPdD+ORGlO8h1u3dT/tGKAak
+	3kRTwPmqFyGnAgg/2yJBtJfQw7lWapSc2IG4iylPyTBtGad2quSh/BpN/N2zKM0I
+	rlC94nxlvPPe+7nfnPmdXK7WuRY35aI20QwdNEOlST65lpDUq04xA3+qurCG3YP8
+	hg57oQds6lGOZfuMk1m+iGFC8LFXnZdXkyTywoEjjT+KSGfZcMYYP1Kd509Ubltc
+	k0WFIyUNVW068evpVAxopA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1751878938; x=
+	1751965338; bh=x5RAfZVMPJFJCrDqrPzzBGj1iJyK9B75WsIFFR5pUZk=; b=V
+	qAPi0DXwZHrfg5lhevVIl6pOXVVk98H1tYn136DOUIAgHs/zyKnWcpkwyz4HcBAW
+	FnIp5nupq03Jz/ch7/xXB8c2vj3oQpXHKBCuvrgXqHd1Ohi+Ie7umjbeBmz5eT46
+	Yme+IlFuFpwCbRp36hJ2idvW7TPZBdAv8fkLb+IxnmyDjjSRI9x+O6Fk3RygQ5rE
+	jooN8W9So/hXGYZEUgpsScWYX8gGavy//kkHe8cenM26Ov4IZRaWQ9dN+f+kQ1NE
+	nVenC44344PkcTjtn0ta3Tg+g0+B8CEbXzCX7PFMlwhsCvSJ+GEFIievAsqm/k1z
+	i0Ugcxark8eVBaYjl95Ug==
+X-ME-Sender: <xms:Go1raICblR90SCI6WKtE8UjdZexet7Og6r0H9PPLOCcUz8SGy7vsSQ>
+    <xme:Go1raKhRXn5mxEuus7oJB1LK6aJykgDrVza7G1WiJF4hB9AyaknfhWllyzD6gzNqN
+    r6sOzPJ3vT9PM9xjag>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdefudefkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertd
+    ertddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhn
+    uggsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeegge
+    etfefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghr
+    rghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtoh
+    epiedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplhhkphesihhnthgvlhdrtgho
+    mhdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhope
+    grkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepohgv
+    qdhksghuihhlugdqrghllheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhope
+    hlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpdhrtghpthht
+    oheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:Go1raNyFpFHXbUmeHAspkEPC1wKv1-1elgq7av2FHzeqx7ZfkvF5Rg>
+    <xmx:Go1raK2CZK0XxpxLCXzqaUM6k5pGrVsxHfh99F3LB1WClE-TVKoiZA>
+    <xmx:Go1raNx_Xi2G_320AHJVIVlnAtCnXdcmVSy-zLTdfMVEWlPKGmvumA>
+    <xmx:Go1raBHtoCYbdKwNzASDDlfkkcQM7aN3iQge38PcKXJoD7bEiJHq3g>
+    <xmx:Go1raB4fBUUMSyNdSJ4zr7Nfd6NOj3cjv_wF2_034T855DVAoTGXoTYQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id E951F700065; Mon,  7 Jul 2025 05:02:17 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,96 +96,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250610-gpiochip-set-rv-soc-v1-0-1a0c36c9deed@linaro.org>
- <CAMRc=McVV=VBw0DRiz-4tTjh7ZtRLWg=N_LQ2-7O1sKyW30rxw@mail.gmail.com>
- <c6eece57-8767-4435-beda-c9f399e3fa80@csgroup.eu> <CAMRc=MdYuk_O3P1QtepvF-6m01jn3xpDP4YxttQSp1-J-J2GvA@mail.gmail.com>
- <f527c6a8-faf2-45b8-81f5-03def802e485@csgroup.eu>
-In-Reply-To: <f527c6a8-faf2-45b8-81f5-03def802e485@csgroup.eu>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 7 Jul 2025 10:40:55 +0200
-X-Gm-Features: Ac12FXzfvvERymQK11WeRhKmee48-1A3WRn820qRFk7sl4RxseqyIge4xppkQTw
-Message-ID: <CAMRc=McCu=VdHAEaYwdD5OLTy9MrFO=Mqq-drU1Dnr=-KfJHJw@mail.gmail.com>
-Subject: Re: [PATCH 0/2] soc: use new GPIO line value setter callbacks
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-ThreadId: Td6fd7ddbb462d16f
+Date: Mon, 07 Jul 2025 11:01:41 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "kernel test robot" <lkp@intel.com>, linuxppc-dev@lists.ozlabs.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Linux Memory Management List" <linux-mm@kvack.org>
+Message-Id: <a38f2413-b13b-411d-88eb-7bde2852f9c2@app.fastmail.com>
+In-Reply-To: <202507071557.SDU74U31-lkp@intel.com>
+References: <202507071557.SDU74U31-lkp@intel.com>
+Subject: Re: mm/slub.o: warning: objtool: ___slab_alloc.isra.111.part.112+0x4c0: can't
+ find jump dest instruction at .text.___slab_alloc.isra.111.part.112+0x68c
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Jun 23, 2025 at 12:05=E2=80=AFPM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
+On Mon, Jul 7, 2025, at 09:56, kernel test robot wrote:
+> commit: 4496e1c1354bd4837bcc1414f6e1a4d042857903 crash_dump, nvme: 
+> select CONFIGFS_FS as built-in
+...
+>>> mm/slub.o: warning: objtool: ___slab_alloc.isra.111.part.112+0x4c0: can't find jump dest instruction at .text.___slab_alloc.isra.111.part.112+0x68c
 >
+> Kconfig warnings: (for reference only)
+>    WARNING: unmet direct dependencies detected for HUGETLBFS
+>    Depends on [n]: (X86 || SPARC64 || ARCH_SUPPORTS_HUGETLBFS [=y] || 
+> BROKEN [=n]) && (SYSFS [=n] || SYSCTL [=n])
+>    Selected by [y]:
+>    - PPC_8xx [=y] && PPC32 [=y]
 >
->
-> Le 23/06/2025 =C3=A0 11:55, Bartosz Golaszewski a =C3=A9crit :
-> > On Mon, Jun 23, 2025 at 11:54=E2=80=AFAM Christophe Leroy
-> > <christophe.leroy@csgroup.eu> wrote:
-> >>
-> >> Hi,
-> >>
-> >>
-> >> Le 23/06/2025 =C3=A0 09:33, Bartosz Golaszewski a =C3=A9crit :
-> >>> On Tue, Jun 10, 2025 at 2:38=E2=80=AFPM Bartosz Golaszewski <brgl@bgd=
-ev.pl> wrote:
-> >>>>
-> >>>> Commit 98ce1eb1fd87e ("gpiolib: introduce gpio_chip setters that ret=
-urn
-> >>>> values") added new line setter callbacks to struct gpio_chip. They a=
-llow
-> >>>> to indicate failures to callers. We're in the process of converting =
-all
-> >>>> GPIO controllers to using them before removing the old ones. This se=
-ries
-> >>>> converts all GPIO chips implemented under drivers/soc/.
-> >>>>
-> >>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >>>> ---
-> >>>> Bartosz Golaszewski (2):
-> >>>>         soc: fsl: qe: use new GPIO line value setter callbacks
-> >>>>         soc: renesas: pwc-rzv2m: use new GPIO line value setter call=
-backs
-> >>>>
-> >>>>    drivers/soc/fsl/qe/gpio.c       | 6 ++++--
-> >>>>    drivers/soc/renesas/pwc-rzv2m.c | 8 +++++---
-> >>>>    2 files changed, 9 insertions(+), 5 deletions(-)
-> >>>> ---
-> >>>> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
-> >>>> change-id: 20250523-gpiochip-set-rv-soc-14e1d9414f70
-> >>>>
-> >>>> Best regards,
-> >>>> --
-> >>>> Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >>>>
-> >>>
-> >>> I see Geert queued patch 2/2, who would take patch 1/2?
-> >>
-> >>
-> >> It is in my pipe for v6.17 but if someone else wants to take it I can
-> >> Ack it instead.
-> >>
-> >> Christophe
-> >
-> > No, that's alright, I just didn't get any notification nor is it in
-> > linux-next yet.
->
-> Don't worry, it is not lost, see
-> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D&submitt=
-er=3D&state=3D&q=3D&archive=3D&delegate=3D61610
 
-Hi,
+This is an existing bug on PPC_8xx that got exposed by my patch
+but could already be triggered in randconfig builds without
+CONFIG_SYSFS.
 
-This is still not in linux-next and the status on patchwork didn't
-change. This will be the last remaining patch not under drivers/gpio/
-that's needed to complete this rework by the next cycle. Would you
-mind just Acking it and I can take it through the GPIO tree?
-
-Bart
+      Arnd
 
