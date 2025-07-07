@@ -1,88 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-10141-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10142-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B4DAFADF0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jul 2025 10:02:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3E5AFAEC3
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jul 2025 10:41:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bbGtb3ZmVz30Vl;
-	Mon,  7 Jul 2025 18:02:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bbHlG5lnWz30VZ;
+	Mon,  7 Jul 2025 18:41:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751875351;
-	cv=none; b=bP4n1lTyFBweGF3n0xdBnIARaHs3t5P2iVy9RXqLG4lqvtlHXdyWY+fK7kMzwc9nCAIrCAZLWM96HfdZGOnnrGSHsbJBSkH2+MPpSdc8B/AckvFdhXGmUqADBc6ogU/7qJo+GyOlLMlLNm6ysgrFjcOjaKC7PLGVAggsnC9FWTAb7oodHt9AzJaImhd29ozTPiveoAPNMmnh8r6MefdV/eBYfU4nk+10KNQDGL1ZBDcbe1JFgOiQql2zL7fJ6d7wvF9yuihBx7gNtwIq99GpxVa/OqsuByZoLtJqD/VYue7oKmKhx09ssiHPaxlPj1f6hxY41VZ98OMu9vm4BvJnyQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::132"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751877674;
+	cv=none; b=U/4HNMJCC2ciGp/cSt7nIbm6z4sOhIpfvNwpb3R/XfKSrGfjW+R288PJy9BBXzceedy0eNVVERCHpLonVwtWCWg9NFNaFUzcMQQ/TMNA0WCdsOhrun/lo0yRhswVpuJFX+4FxE0jRCQtcesC45ZTcwLLwoBBvyL0ti8H2ZOC6x9IDIRU4maZzRnGY0GAlacsO2U/hQnd7mjF/2JC8A4MRbIxLpDCvl+CWikhzFjjgy9JQlqHMPUHUNzAKulrR2hbRQ5QQJrKmDaHx0X6LLmf68uYNXFRpT0tBf/QulHNUKzDLTtnNQbGQn16BW5/iBYhF1LwPXcH5GEXeJ0Ce0ZVzg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751875351; c=relaxed/relaxed;
-	bh=vmhU+FR2k26av2hIZiV+NNFmRQFDTiIkuVxAjb0IsSQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGtDD5plhq02ait4j25h3Aw9P3YywIzHLvhSFiKGtYfjiXzGcbr1XG9+kLLDSGDqsmNzYGx+wZlYlu0KYk5Na0qXMEMPRWb8O3N46y4g8H4KwF5QNuOvGoJ8Mt9aFE+dzZhqd/rzAa48DtWkkQ3I74hJ6w0zfBo/AAsa488gecADNfFjtQ9YlI0uogxEhkKmrOHTLE/5XPb4NdQCNczuV5C2nd1tsu+3H/9C+cXDP7gX0Uq0wz+T7tqQtrLG2obwzjBjnglgrA6rbvxCmyGbD3mBSdzlBYOsH71RGvs+UktNZOiVYRAwtfn0/x4Wt3NlTje9KG1RMiv/lwrlfiL/zw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jb3BXnqx; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adityab1@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1751877674; c=relaxed/relaxed;
+	bh=M2ty42UaDUqlMkiP5xE2a1tdArjdzwbm7ssbtaWE4oU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MAMfpMgw5Fbis9HVVRYHRX4bchZ3RuxTuz4fWloqyQPaXjA/F9sJkkkxWSi83fT0r/LaDOq42FbUscFohkhAiqBY1cF0cOXxTbMWW7Q5VNNEU4QufXaMXOWQXGL60dQ7aUAjLB0PtxQhJxrbpJxQEpUAPp63EUl3gvP4dgAT5qpKgIBywmSCAUWVK24V2rSOhpn4LDv3nGfSwxXqmzy3QmT+6/0MCSqfq7jyQxUJStGkMu4wasqiXXR2Z3LI3K9Cg/3nNCbdd8KTJ32AfeezkqFpr5eLCgt0IgeLz3Y37jffo6G/U0lulzmuZ5qj19VHbTHxQFKBTVXuV2pbu/E2+Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gGaIr/MO; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jb3BXnqx;
+	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=gGaIr/MO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adityab1@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bbGtZ5R3lz30V7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jul 2025 18:02:30 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 566ElGFi026476;
-	Mon, 7 Jul 2025 08:02:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=vmhU+FR2k26av2hIZ
-	iV+NNFmRQFDTiIkuVxAjb0IsSQ=; b=jb3BXnqxVUicitAdHvgfSUqNzpKpMXj6b
-	+C6FeogoxevXVHbac2rL5KiC+LG2JNGbiKSJAQ6exqPhU71fm4MmpzRwKDlAU21g
-	p4LutUUXAsfcB/wgfLC1cJ+hltNPcpYdJki+ZUrni+xgw6yM0H5YaYNw7nPWKKdE
-	YptVQbqscHjUk1TJrfPnQMJogWkCmWztK8t5trQgHpT/IHCkw5mdreNUupeiBqK7
-	R+4ma7jywF2VWlrtYVrPRQLPHgTGBO42kX0wZLQrdLbji0X/hbUD/UdAFqWOAyVJ
-	JLZKrXMTW/BS8UQ7TcBzBSlO2bRoqfn+u09RES7/YsJwXYwZzc44w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47pusrr8sn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Jul 2025 08:02:16 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5677mxpO004028;
-	Mon, 7 Jul 2025 08:02:16 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47pusrr8sf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Jul 2025 08:02:16 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5674OPID025528;
-	Mon, 7 Jul 2025 08:02:15 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47qfcnw4kw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Jul 2025 08:02:15 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56782BNX60359056
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Jul 2025 08:02:11 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0C8412004B;
-	Mon,  7 Jul 2025 08:02:11 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 96CED2004D;
-	Mon,  7 Jul 2025 08:02:08 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.94.242])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Jul 2025 08:02:08 +0000 (GMT)
-From: Aditya Bodkhe <adityab1@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, rostedt@goodmis.org, mhiramat@kernel.org,
-        mark.rutland@arm.com, Hari Bathini <hbathini@linux.ibm.com>,
-        Aditya Bodkhe <adityab1@linux.ibm.com>
-Subject: [PATCH 2/2] powerpc/fprobe: fix updated fprobe for function-graph tracer
-Date: Mon,  7 Jul 2025 13:31:56 +0530
-Message-ID: <20250707080156.64874-2-adityab1@linux.ibm.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250707080156.64874-1-adityab1@linux.ibm.com>
-References: <20250707080156.64874-1-adityab1@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bbHlD2Zdrz30V7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jul 2025 18:41:11 +1000 (AEST)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-553b9eb2299so3177921e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Jul 2025 01:41:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1751877666; x=1752482466; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=M2ty42UaDUqlMkiP5xE2a1tdArjdzwbm7ssbtaWE4oU=;
+        b=gGaIr/MOst14JClLZkBg6GYUZk562Hh+/WT+wLHHiDwFpRHMraSiGE7ON/xBgpW202
+         G27zuYJoZpGQRcbX+z5RCsB3dLr1Av0WSxf07uTWBfRElI/r9M6YozTm3cvkwuCSNKDN
+         7hmRAfvC7d1RuP9ToDmwMHLVhlrtlTXH3/MhYTf9UJIlB7sMKY3/y9WHIHODmrRTol4u
+         xHXXgJas+P0tmQ8YkcSoay9wxJaXVhM3wIk+Ff7plNqPUSAh9ZJd8zmW8osWl3NOajUf
+         1oCO/N+nzBA0PSMzYWoF7Y6foc2z9BEoukr7DT/i8cjCx7XGBgaQuBMUr6j6/jPnHgXM
+         J49Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751877666; x=1752482466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=M2ty42UaDUqlMkiP5xE2a1tdArjdzwbm7ssbtaWE4oU=;
+        b=ere3HIZGP2xZisJZFdPDP6wJ0FDuQMVNMUohJVMk/gnii68ghuvxELiNLNI0zY3drL
+         8aXcU8Pq4Sl7dKrNVYKUgZfFGss3t+Pr07UnWlt4wJ9BcJcVl/qjKowH67qgzBvhaRIZ
+         0GVrjpuqwBH28SDntP4hR6ggdRpZNmEPiZXeWL9JZfZN9FxyfxHs3dxfUzjVALzniLm8
+         ZD+w2cZFshyKnzq2ncqJ1KxDZ86n6i5oZ9OkdYWYJ7u6Hg0IzsnUMeVXEQgXg4CZH8mQ
+         rpfGV4fKLUvNC+pJD4jEEP7ddBQIeJg5lVUl8PdNah/d2AYbBr02O+QztBYXBGiFjmvs
+         4Wdg==
+X-Forwarded-Encrypted: i=1; AJvYcCVV/kXtyIx1TuQhukFrw/n2zxBkPakss7S5IA8H3sxv6rDx7f8XcbFmDtaDbBjCUQsJRd5sT2K3kXwUwes=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyG1arGqnKKryr94TGy6L1WznzK64Ul6viwomHcBWMgM+KRQkrw
+	5PMnPDdCMqMVjgj6u7U+1/mzmOiAX7VtaAR7U0+M84kni6vHIfCE4Mk8vtOx2MXfpMqt9hqJeHV
+	rF/UDJGQREAuiw/wzrpwQZGYMjxUEyWPvWk2jWRQG7w==
+X-Gm-Gg: ASbGnctIXAbKIcMFaY/FenOdJxIdSV54F9LiGaIy//rX7czJl9uZ9ab5UKzRo4jSL0d
+	X9/XJ63SpV+EkOevGuqEKsS2tEaRwtdKWo8OVbD5DKH1H/YsVbz9/0LfSPjCk3zwf+T1ktU9750
+	EgKEs1XrVoiTZA2FVqF9z6QbdFNqvcJmMj2nXVCjcGJ950IEp7sFNt/dFWoIg0gP0Pj71ThU4JQ
+	7Y=
+X-Google-Smtp-Source: AGHT+IEBQJMgjjxGPUxNMZyf6ChFNk5EekGKfeAHU3z/3d2roa2tlgeHgq/aGpK6K+cYyFTqaK6iHRGTmDCxnni6ogY=
+X-Received: by 2002:a05:6512:b24:b0:554:f82f:181a with SMTP id
+ 2adb3069b0e04-55658402866mr3009050e87.2.1751877666314; Mon, 07 Jul 2025
+ 01:41:06 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,83 +79,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Vaj3PEp9 c=1 sm=1 tr=0 ts=686b7f08 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=eJdZZeSqwtc_5qrUTOUA:9
-X-Proofpoint-GUID: ATgY4xVqoYy0zFQSa2JxU8rxQcmuDFq3
-X-Proofpoint-ORIG-GUID: _GclW8kBloXE7CtCBkTpiYDakd8G5Bsx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzA3MDA0NCBTYWx0ZWRfX45WWdWiqH+H6 zsEF8g73Ft4aEfhHN2VazVV1jF6hsvDjS3v5B4BiN0/lTYWWqhhHhBhH8OrasTEcVWuUoIwT69c HGauyyVa2URH8NGWcDzv3UoaqI9RP5GABTxxHuv9iUshGWlVWiLhLCbTthzVkjyeD8uZi+hH7ak
- Pg7cYSnEcbdhBherRwW5Pb8bwrXU7fRgpO9ED3YcnMcE3hFghdms5kAsORKC33M7VVUclENsb++ 9/XNHkKmw7sqvvyshmRDMFzuD8Rtm3BVOAlMCBSVPxzlTKFIYar3VOh4CeXqgMa7C9lLltps0yV I3Jx0TAlirwCV1Lu3SYlxZz9mM3EIP3H9VSG6CopYdNi40WGE56BDPZuTlSMWRP+K4dLLkmRCcJ
- B5lt/hC5/KqCIZEWW7Y7h9bv+Lzf9/7y8npoHhZZDA37SblU+KW6s9O02ZcvlZI0uE9WzW/T
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-07_01,2025-07-07_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=606 suspectscore=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 impostorscore=0 malwarescore=0 bulkscore=0 mlxscore=0
- spamscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507070044
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250610-gpiochip-set-rv-soc-v1-0-1a0c36c9deed@linaro.org>
+ <CAMRc=McVV=VBw0DRiz-4tTjh7ZtRLWg=N_LQ2-7O1sKyW30rxw@mail.gmail.com>
+ <c6eece57-8767-4435-beda-c9f399e3fa80@csgroup.eu> <CAMRc=MdYuk_O3P1QtepvF-6m01jn3xpDP4YxttQSp1-J-J2GvA@mail.gmail.com>
+ <f527c6a8-faf2-45b8-81f5-03def802e485@csgroup.eu>
+In-Reply-To: <f527c6a8-faf2-45b8-81f5-03def802e485@csgroup.eu>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 7 Jul 2025 10:40:55 +0200
+X-Gm-Features: Ac12FXzfvvERymQK11WeRhKmee48-1A3WRn820qRFk7sl4RxseqyIge4xppkQTw
+Message-ID: <CAMRc=McCu=VdHAEaYwdD5OLTy9MrFO=Mqq-drU1Dnr=-KfJHJw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] soc: use new GPIO line value setter callbacks
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+On Mon, Jun 23, 2025 at 12:05=E2=80=AFPM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 23/06/2025 =C3=A0 11:55, Bartosz Golaszewski a =C3=A9crit :
+> > On Mon, Jun 23, 2025 at 11:54=E2=80=AFAM Christophe Leroy
+> > <christophe.leroy@csgroup.eu> wrote:
+> >>
+> >> Hi,
+> >>
+> >>
+> >> Le 23/06/2025 =C3=A0 09:33, Bartosz Golaszewski a =C3=A9crit :
+> >>> On Tue, Jun 10, 2025 at 2:38=E2=80=AFPM Bartosz Golaszewski <brgl@bgd=
+ev.pl> wrote:
+> >>>>
+> >>>> Commit 98ce1eb1fd87e ("gpiolib: introduce gpio_chip setters that ret=
+urn
+> >>>> values") added new line setter callbacks to struct gpio_chip. They a=
+llow
+> >>>> to indicate failures to callers. We're in the process of converting =
+all
+> >>>> GPIO controllers to using them before removing the old ones. This se=
+ries
+> >>>> converts all GPIO chips implemented under drivers/soc/.
+> >>>>
+> >>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >>>> ---
+> >>>> Bartosz Golaszewski (2):
+> >>>>         soc: fsl: qe: use new GPIO line value setter callbacks
+> >>>>         soc: renesas: pwc-rzv2m: use new GPIO line value setter call=
+backs
+> >>>>
+> >>>>    drivers/soc/fsl/qe/gpio.c       | 6 ++++--
+> >>>>    drivers/soc/renesas/pwc-rzv2m.c | 8 +++++---
+> >>>>    2 files changed, 9 insertions(+), 5 deletions(-)
+> >>>> ---
+> >>>> base-commit: 19272b37aa4f83ca52bdf9c16d5d81bdd1354494
+> >>>> change-id: 20250523-gpiochip-set-rv-soc-14e1d9414f70
+> >>>>
+> >>>> Best regards,
+> >>>> --
+> >>>> Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >>>>
+> >>>
+> >>> I see Geert queued patch 2/2, who would take patch 1/2?
+> >>
+> >>
+> >> It is in my pipe for v6.17 but if someone else wants to take it I can
+> >> Ack it instead.
+> >>
+> >> Christophe
+> >
+> > No, that's alright, I just didn't get any notification nor is it in
+> > linux-next yet.
+>
+> Don't worry, it is not lost, see
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D&submitt=
+er=3D&state=3D&q=3D&archive=3D&delegate=3D61610
 
-Since commit 4346ba160409 ("fprobe: Rewrite fprobe on function-graph
-tracer"), FPROBE depends on HAVE_FUNCTION_GRAPH_FREGS. With previous
-patch adding HAVE_FUNCTION_GRAPH_FREGS for powerpc, FPROBE can be
-enabled on powerpc. But with the commit b5fa903b7f7c ("fprobe: Add
-fprobe_header encoding feature"), asm/fprobe.h header is needed to
-define arch dependent encode/decode macros. The fprobe header MSB
-pattern on powerpc is not 0xf. So, define FPROBE_HEADER_MSB_PATTERN
-expected on powerpc.
+Hi,
 
-Also, commit 762abbc0d09f ("fprobe: Use ftrace_regs in fprobe exit
-handler") introduced HAVE_FTRACE_REGS_HAVING_PT_REGS for archs that
-have pt_regs in ftrace_regs. Advertise that on powerpc to reuse
-common definitions like ftrace_partial_regs().
+This is still not in linux-next and the status on patchwork didn't
+change. This will be the last remaining patch not under drivers/gpio/
+that's needed to complete this rework by the next cycle. Would you
+mind just Acking it and I can take it through the GPIO tree?
 
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Aditya Bodkhe <adityab1@linux.ibm.com>
----
- arch/powerpc/Kconfig              |  1 +
- arch/powerpc/include/asm/fprobe.h | 12 ++++++++++++
- 2 files changed, 13 insertions(+)
- create mode 100644 arch/powerpc/include/asm/fprobe.h
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 9163521bc4b9..2203e4fb64c1 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -246,6 +246,7 @@ config PPC
- 	select HAVE_EFFICIENT_UNALIGNED_ACCESS
- 	select HAVE_GUP_FAST
- 	select HAVE_FTRACE_GRAPH_FUNC
-+	select HAVE_FTRACE_REGS_HAVING_PT_REGS
- 	select HAVE_FTRACE_MCOUNT_RECORD
- 	select HAVE_FUNCTION_ARG_ACCESS_API
- 	select HAVE_FUNCTION_DESCRIPTORS	if PPC64_ELF_ABI_V1
-diff --git a/arch/powerpc/include/asm/fprobe.h b/arch/powerpc/include/asm/fprobe.h
-new file mode 100644
-index 000000000000..d64bc28fb3d3
---- /dev/null
-+++ b/arch/powerpc/include/asm/fprobe.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _ASM_PPC_FPROBE_H
-+#define _ASM_PPC_FPROBE_H
-+
-+#include <asm-generic/fprobe.h>
-+
-+#ifdef CONFIG_64BIT
-+#undef FPROBE_HEADER_MSB_PATTERN
-+#define FPROBE_HEADER_MSB_PATTERN	(PAGE_OFFSET & ~FPROBE_HEADER_MSB_MASK)
-+#endif
-+
-+#endif /* _ASM_PPC_FPROBE_H */
--- 
-2.50.0
-
+Bart
 
