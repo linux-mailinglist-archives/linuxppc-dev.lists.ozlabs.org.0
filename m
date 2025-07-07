@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-10136-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10137-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47199AFAD4C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jul 2025 09:35:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF145AFAD70
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Jul 2025 09:43:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bbGHj53ZQz30T9;
-	Mon,  7 Jul 2025 17:35:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bbGSr12s9z30TY;
+	Mon,  7 Jul 2025 17:43:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751873745;
-	cv=none; b=jKjgurc+sEr05dvtA1ks25eyQk601FtVtDe8A0MHhsHkr3OR5/67/EFV2HziGiZLB5L2frG/CCGGt18q1MExNo15HsUxZP15vJj3yiZEEejSx6du7/Q+V52Bja3awQmiTsqGkhIALv5/ToPHlwcWuBUWsRRAnwGEd3YyORYvKsW+9AwJZCCHUuRt923jg6Ho22phl0PFN/uCBEe61rIVPpvTKSN+Tf/zMAdzPep3k2AOr+WZlmjG9UxjnD3/+TnBS2ep7xPwGHbyK2Ey7JXk+kByj1JoHjUNRWiNvO4Yu92sEcZS8E9e5RX9NTfTTls6VOMTJ0Vr1BIs0gQsEL4SjA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1751874220;
+	cv=none; b=Z3AF0hwvPq7UzLHIpYlOzfx7jp0zXwp5weuM6OG/GvNQpjle7HcA3pjhOR+kFMMXjTzEXSo/QqN6J4DtyIhlJWuSToOF9U60H/JSFlyP0FSfU/zdsrVg9jWA8T5kV2rLGqIL1TfzdkFD2gKhrYNcfeLwFMAWSwk7PMp5/eq34NjRwTQ/AUtvkTg7Dvh9ycgr07ilFJvbWftTmzrZMxWqGfJHJRnLzANDMrCPyvl2GLwDekOnfnQrx0N+ovt3LIxx4zjhJiSjE/ka8x4Wo0WCFpiiHaJ/n3UNJl12sslVXRfffqMMsIXDVzXvvXxdj2qeq5tAUtTijeEykDZFc4TKKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1751873745; c=relaxed/relaxed;
-	bh=ABXH3onFi97YtWynUEy9vMOpnm1vPcc5/a/67nL0tkE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZlqYU8+v7gzcO0xl7fdgggWsGxh61vGDPTke1Ts98fY4H696nCKEGQHE2315ZOWF/KVxbnPmvFPhnRvKoi+qGcwBFiulRcV3EKizvwjz9FX0qupZl5ho/dWAMr+stemdBYFcG6Tko0suXgr3jdtcsJrt6pYYxsg5jDZyaOn2dP38vUgLg6VoAkY6ii3pA2ZSC2f3/B3ROasacP1v4rly7eiSuz7/D2KkJRexDwfx9i3Hno7fs69lc71SJoOegQZWU9W6t6gqb1aQokT6PlAVwKIKip85QqzqTZoRFDKJDH/eh5GZl/QyRR9o4YKMFJWTTS9ZgkPcv38yBsYt1GDBzw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FExtB27K; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1751874220; c=relaxed/relaxed;
+	bh=EwXnxxdnVvnCjxZxZ6I8QfcFkUgZYLfqjV4jaFYM3go=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=bf5JOU3P5z5rTJwx9Nm8XS9hclY3wDaQ+e0xxAwlrYrGDXOXQ+SbsdsF4NIVYv3P2oqhn4qY8NZL5soZnWkF1knTGEwpK5Xzm7Gb2eAIliG9mOOLgn3h308EiOiYTch/6zwvltrIVRG8numahLN9Duv8sD9VmQm+dUBiOqJWhoItFVv5h94UdpOjVvGYlu0AZJuJS3mW+hTfSO5vkhS2T4Ewx13GDZuCkxkc09nCikoJhFLpBSmnUr8aHVpZDDIM2HF+AlTohTTAAWqc9AJnbpgvpSPF7sIGZEAPC5Vb324cKfK9D+uckB88M3F2+lozs9jOEy96Z5TSykWbGf6N7w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WrzucuMS; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FExtB27K;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WrzucuMS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bbGHh4w3jz30T8
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jul 2025 17:35:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bbGSq25Jcz30TG
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Jul 2025 17:43:39 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 0737BA534BF;
-	Mon,  7 Jul 2025 07:35:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92734C4CEE3;
-	Mon,  7 Jul 2025 07:35:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A9AFC61130;
+	Mon,  7 Jul 2025 07:43:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58206C4CEF1;
+	Mon,  7 Jul 2025 07:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751873741;
-	bh=EP4cluLD4EQvDCJMBqKTtGlaim/x7ix4T0eX4OGdEUc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FExtB27KAZEB2pRey+DTLaXkmXZOoS8VNXFIdp08+Z8tnwztOGF0W6raMzuEvY6aG
-	 5GYSp1XN9bBC2661BCVOgku65y8cvUxP3qdpOVIUXFbVE/z6Ob4wLcSoADFlVHpVCV
-	 njGCNsbk3LcM7zVUp2Iv5bfOEqVM1qw9orZ/69keSxdzwZtMkk3Rh14JzpjGX5RPGs
-	 dcIax/3YcZ0WQpn3zbT5NOmNg9OavCXa1L7/crII7EWT+9gyXucRLPpyazoJ7AqZI2
-	 4FqYHNGgNcAzpKwxFZZpBrcg3/xQ2mhZfQukouTQ4IhHNqL+6GlCF4zIzU0L/wZOs2
-	 aId8/CkqktyOA==
-Message-ID: <5cb4a9fc-50a8-4b13-8ad7-21610fb5cfe4@kernel.org>
-Date: Mon, 7 Jul 2025 09:35:37 +0200
+	s=k20201202; t=1751874216;
+	bh=3Ke6aXW6YoppDJzVu3xQy7YrXkx0H6XvpDlKZBbNpRk=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=WrzucuMSGq9hPSWekeqS59OPp3NZQEga+pObhSLzRI//C7Lv3C4D8iVDdKY0KjDyh
+	 6z4bVbywOMLd84n640nlPRxuvcItpVKEtEFaHCvgZzUZRqCUn7kgv5V+3tBwBOl+ha
+	 GjyHitgwYxiiDbQGTbG90nT4ZYopyeQLjYG2A0Si930LsCXOwcNKzwmF2Zn123Akfw
+	 scgAjAfAQzQKp9+XykDA0FmoQH+F52qGIUubGUqtaIRUfwyVqs44cP4Vnectpa03UH
+	 xUfaRufYGttSgAxFi4XeAusGanMo7AK4HZMkmT75ytZ0X0jsSqB6IHqTCZ5g9/TYK4
+	 Hu7PS5ckFosZA==
+Message-ID: <d42ba792-6051-4035-bffd-a984d11c7b7c@kernel.org>
+Date: Mon, 7 Jul 2025 09:43:31 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,6 +61,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC 7/9] powerpc/pseries: Enable HVPIPE event message
  interrupt
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
  msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
@@ -69,7 +70,7 @@ References: <20250702221444.879256-1-haren@linux.ibm.com>
  <20250702221444.879256-8-haren@linux.ibm.com>
  <6824e14b-8f79-4fee-85f6-e5f78a8ef265@kernel.org>
  <b9d2274ae6f4f53ea5ee6ffa23bdeea953181040.camel@linux.ibm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <5cb4a9fc-50a8-4b13-8ad7-21610fb5cfe4@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -114,61 +115,66 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <b9d2274ae6f4f53ea5ee6ffa23bdeea953181040.camel@linux.ibm.com>
+In-Reply-To: <5cb4a9fc-50a8-4b13-8ad7-21610fb5cfe4@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 07/07/2025 09:02, Haren Myneni wrote:
-> On Thu, 2025-07-03 at 09:00 +0200, Krzysztof Kozlowski wrote:
->> On 03/07/2025 00:14, Haren Myneni wrote:
->>> +static int __init enable_hvpipe_IRQ(void)
->>> +{
->>> +	struct device_node *np;
->>> +
->>> +	hvpipe_check_exception_token =
->>> rtas_function_token(RTAS_FN_CHECK_EXCEPTION);
->>> +	if (hvpipe_check_exception_token  == RTAS_UNKNOWN_SERVICE)
->>> +		return -ENODEV;
->>> +
->>> +	/* hvpipe events */
->>> +	np = of_find_node_by_path("/event-sources/ibm,hvpipe-msg-
->>> events");
+On 07/07/2025 09:35, Krzysztof Kozlowski wrote:
+> On 07/07/2025 09:02, Haren Myneni wrote:
+>> On Thu, 2025-07-03 at 09:00 +0200, Krzysztof Kozlowski wrote:
+>>> On 03/07/2025 00:14, Haren Myneni wrote:
+>>>> +static int __init enable_hvpipe_IRQ(void)
+>>>> +{
+>>>> +	struct device_node *np;
+>>>> +
+>>>> +	hvpipe_check_exception_token =
+>>>> rtas_function_token(RTAS_FN_CHECK_EXCEPTION);
+>>>> +	if (hvpipe_check_exception_token  == RTAS_UNKNOWN_SERVICE)
+>>>> +		return -ENODEV;
+>>>> +
+>>>> +	/* hvpipe events */
+>>>> +	np = of_find_node_by_path("/event-sources/ibm,hvpipe-msg-
+>>>> events");
+>>>
+>>> Undocumented ABI, NAK. Plus node names should not be used at all as
+>>> ABI... and naming does not follow DT spec/style, not sure if you care
+>>> about it, though.
 >>
->> Undocumented ABI, NAK. Plus node names should not be used at all as
->> ABI... and naming does not follow DT spec/style, not sure if you care
->> about it, though.
+>> These new interfaces are documented in new version of PAPR. Please note
 > 
-> These new interfaces are documented in new version of PAPR. Please note
-
-Which version? PAPR defines standard, but not the kernel ABI. You still
-need to document kernel ABI, just like every other OF usage.
-
-
-> that /proc/device-tree/event-sources node is different which will not
-> have ibm,phandle unlike in some other node. event-sources already has
-> several event messages such as io, EPOW, hot-plug, internal-errors
-> events and adding hvpipe-msg events now. We can see the similar
-> of_find_node_by_path() usage in the current code.
+> Which version? PAPR defines standard, but not the kernel ABI. You still
+> need to document kernel ABI, just like every other OF usage.
 > 
-> io_event_irq.c:	np = of_find_node_by_path("/event-sources/ibm,io-
-> events");
-> ras.c:	np = of_find_node_by_path("/event-sources/hot-plug-events");
-> ras.c	np = of_find_node_by_path("/event-sources/internal-errors");
-> ras.c:	np = of_find_node_by_path("/event-sources/epow-events");
+> 
+>> that /proc/device-tree/event-sources node is different which will not
+>> have ibm,phandle unlike in some other node. event-sources already has
+>> several event messages such as io, EPOW, hot-plug, internal-errors
+>> events and adding hvpipe-msg events now. We can see the similar
+>> of_find_node_by_path() usage in the current code.
+>>
+>> io_event_irq.c:	np = of_find_node_by_path("/event-sources/ibm,io-
+>> events");
+>> ras.c:	np = of_find_node_by_path("/event-sources/hot-plug-events");
+>> ras.c	np = of_find_node_by_path("/event-sources/internal-errors");
+>> ras.c:	np = of_find_node_by_path("/event-sources/epow-events");
+> 
+> So you find more issues. Are you going to fix them? What are such
+> arguments proving? Nothing. If these are bugs, are you allowed to do the
+> same? Obviously not.
+> 
+> Bring argument about the ABI - ABI is documented here or ABI is does not
+> need documentation, because of something, or this is not ABI because of
+> something (although it is). I don't see usage of these in DTS, so
+> probably there is something I don't get, but your arguments are not
+> helping at all.
 
-So you find more issues. Are you going to fix them? What are such
-arguments proving? Nothing. If these are bugs, are you allowed to do the
-same? Obviously not.
-
-Bring argument about the ABI - ABI is documented here or ABI is does not
-need documentation, because of something, or this is not ABI because of
-something (although it is). I don't see usage of these in DTS, so
-probably there is something I don't get, but your arguments are not
-helping at all.
+Although probably if you do not have any DTS, or let's say in-kernel DTS
+for these, it is indeed enough that PAPR spec defines it and no need to
+document it twice.
 
 Best regards,
 Krzysztof
