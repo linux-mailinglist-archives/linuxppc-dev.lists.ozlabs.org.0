@@ -1,100 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-10174-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10175-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2C0AFFFDF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jul 2025 12:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A119B00175
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jul 2025 14:17:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bdBg12t4fz30VZ;
-	Thu, 10 Jul 2025 20:59:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bdDP86qZSz30VZ;
+	Thu, 10 Jul 2025 22:17:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=136.143.188.15 arc.chain=zohomail.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752145149;
-	cv=pass; b=me+N2gP/d9cBogzIOEonrUtD0p8YhINfpzZjR/EJewOi3DH8AjYh4M/VRy4OwJVhs9eSidVsIrl/IjEPqpNLL90ogVnGlLHbWH1SVQI125TFt8ihrfcqS7YqZn7KbK1SrVQrbqcEuNrCKm9DksEp4wBjd2GhlalKfLs7YGr8+ps9ghD5cwF2mXLpz4v0VP+uxKUQ/GvP60PGrgI28F6F6sRmrHsEWdzZB61fa4ZBUyJf5BZLJy41yVUINyn/WVroZSeta692JiUFlZJfAGZFdPI/I3TfBM6AWrIBIa3HYTV+q4eHHAy/I58lAE8hFVMIyamnwHTZOryq+QO8gyhsfA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752145149; c=relaxed/relaxed;
-	bh=fovm6MYKiboCe5FxyWaHfC+A2oY5VAqlOylsUIo+kbo=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qx7AslH0OJgQmXVwn7kUtqqQLoudjW7yD9g4QNC39qhNBR5eNRdugXYfRqzslG32WQW4kRMhMzO8juK9OTaMhOE+UM/7GXlVFPe2/OcuZiq9aPOoUGKFu6Bfd604zIvPwzq8Fx6YFMS8QCAq5Uv7GjumEnRG0whiA2TAYV6YK8AqoAxGGAXoAoJHJ/sCRP3dyAQ9VS3m7kQ3zzVBh7qJB9Z5mCGAExgay3ytrx2hxlSa3dveGuF/SevheiPg81kaBqgPkQdq9oQuorCljx+h7g9CwjFMbjRLrKpGd4TlKnDNolA9N7di0W3MTRhLZZccrY5dpHk442757P5+HVdd0g==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux.beauty; dkim=pass (1024-bit key; unprotected) header.d=linux.beauty header.i=me@linux.beauty header.a=rsa-sha256 header.s=zmail header.b=XG/EuUFr; dkim-atps=neutral; spf=pass (client-ip=136.143.188.15; helo=sender4-op-o15.zoho.com; envelope-from=me@linux.beauty; receiver=lists.ozlabs.org) smtp.mailfrom=linux.beauty
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux.beauty
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752149836;
+	cv=none; b=H18sY/zgCKduLVlxqUca65CgF9MGxrkmwSGNQT072S4wIX3XMkjHVNamSUKlsRP7/W/BFG/JNwGcVQ5bH+Hk63kAshaM4f5zGhC26DuZb/v8H3MOCmDw7JZQeJqxiPysVgB/Zvr44xQz8ey/CYOoASzr3N8HTFBAC8JP/hglYZdUFwIbM8NAN8FbHk3v1lKkD0xr7caaGMw5EV8DN8PHnvlU7y6mElro5mWLsNRtmpeWADg2gM5oqNcXTEBQ9r1VaW5ZBOnMZHpLzyc66Bc+txBzipgORggqyxtkWwWYHB39fXDdKYkJqJKpTnrBL8ZYFNd6SphC0BGUAL2kOFwrzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1752149836; c=relaxed/relaxed;
+	bh=p3er1+S1ghqVmC558ORCh1Xcymb4Uf9m+2L2EUwIcoU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XDVGG/+/524EftoTiJ3yOHC0Cu4muufDbqw5om2D1RPf24UHn8XQaTLsf/zT8EzEgwrylsDN8dSsocbEz0OXBhZqMgBq8/398bkRnxUxzpRD8Qs71esz+zZ5kXzxtk32qMG0F1BY86ohtmB5iGN8kN4ehxe0es+oqoRKW06kw/ftVy6Ly8IOaV4yRakznfGboux9l470FYygP46U9IbVYC/Ds/iX0AMgSA/HcNdN0/DrpuCGDpLYrgIOcLhsqCf71fNdhyhr2Fr9WoMBtKCWl6EUlKS1nQXtAKdzG09MiRXmKyzzsFtwdLIvyBEr9kLAWjLdpkhVw6FA/yvyEcXF+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MpF306nn; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MpF306nn; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.beauty header.i=me@linux.beauty header.a=rsa-sha256 header.s=zmail header.b=XG/EuUFr;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MpF306nn;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MpF306nn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.beauty (client-ip=136.143.188.15; helo=sender4-op-o15.zoho.com; envelope-from=me@linux.beauty; receiver=lists.ozlabs.org)
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bdBg00cCHz2yF0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jul 2025 20:59:07 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1752145052; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZBGAHjspqPm4xCjCCo138Zi9x3j/3l1KpbRRGtuh4JEiWlqzVu2tAkirgwQBSb4wXy2vFcXnlthtxBSroK8ovXg6uOjLK9ZP7OWGn/BxxksB9rO5lW7yz213Te8uyly/jfCAuZYo9tmJXjr4HrDvOdE0bvfVW0lD9UkZSUU5jok=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1752145052; h=Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=fovm6MYKiboCe5FxyWaHfC+A2oY5VAqlOylsUIo+kbo=; 
-	b=HiYjxHRpCQmXGSXVqRWXAdSk0tmJhrIgD5hqIaOWPznJimODP5H3U6hMr3AytUzbX5y8xzzpWmGhrW/zYm6z8U5S+obDwLvDk4EiCEQfuHzczNnzhXyXWRtAtACppzYv6/tQYNLe/O1FqNWU1AlmlNpuoQIHjJHzCfBpDEf+5S4=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752145052;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=From:From:To:To:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=fovm6MYKiboCe5FxyWaHfC+A2oY5VAqlOylsUIo+kbo=;
-	b=XG/EuUFr+Dd3e5Kj/dqUEReF1ky87KXHsTziwAlxhnoYtxCWLbqWQYg1nWdAsQRs
-	W3YcXaSCPPKz0C9Dzaro97Wf68bHl12Ulkxktc8R6yLHUxYCQagpjD5oistX7CGArDR
-	5BdlAHAKtIJsRS3X22wefieFt+q1DMj2TvTxVfpM=
-Received: by mx.zohomail.com with SMTPS id 1752145051054917.4579948465466;
-	Thu, 10 Jul 2025 03:57:31 -0700 (PDT)
-From: Li Chen <me@linux.beauty>
-To: "Thomas Gleixner" <tglx@linutronix.de>,
-	"Ingo Molnar" <mingo@redhat.com>,
-	"Borislav Petkov" <bp@alien8.de>,
-	"Dave Hansen" <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	"Peter Zijlstra" <peterz@infradead.org>,
-	"Sohil Mehta" <sohil.mehta@intel.com>,
-	"Brian Gerst" <brgerst@gmail.com>,
-	"Patryk Wlazlyn" <patryk.wlazlyn@linux.intel.com>,
-	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bdDP74b1Xz30MY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jul 2025 22:17:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752149829;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=p3er1+S1ghqVmC558ORCh1Xcymb4Uf9m+2L2EUwIcoU=;
+	b=MpF306nnQgAZn+bxcABCfIMXJZh2xzos0PH/AEFVUHsfXkmYhC1OHRl2n1saQhu39uziGb
+	zJ7C/7cq2De+7021cgDR9yo+NlYZGmSiW4qUa1ol0Tv/xNMcoFa5H48bDNhgJzU6WSAgFP
+	3HHEDwVq3rKoCD5mNk3Tlf8khgRrBtQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752149829;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=p3er1+S1ghqVmC558ORCh1Xcymb4Uf9m+2L2EUwIcoU=;
+	b=MpF306nnQgAZn+bxcABCfIMXJZh2xzos0PH/AEFVUHsfXkmYhC1OHRl2n1saQhu39uziGb
+	zJ7C/7cq2De+7021cgDR9yo+NlYZGmSiW4qUa1ol0Tv/xNMcoFa5H48bDNhgJzU6WSAgFP
+	3HHEDwVq3rKoCD5mNk3Tlf8khgRrBtQ=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-103-nkj96xV3NyKnbAJI-mOrKw-1; Thu,
+ 10 Jul 2025 08:17:05 -0400
+X-MC-Unique: nkj96xV3NyKnbAJI-mOrKw-1
+X-Mimecast-MFC-AGG-ID: nkj96xV3NyKnbAJI-mOrKw_1752149824
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A8AD419560B0;
+	Thu, 10 Jul 2025 12:17:03 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.45.224.72])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 551A5195607A;
+	Thu, 10 Jul 2025 12:16:59 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Li Chen <chenl311@chinatelecom.cn>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Tobias Huschle <huschle@linux.ibm.com>,
-	Mete Durlu <meted@linux.ibm.com>,
-	Joel Granados <joel.granados@kernel.org>,
-	Guo Weikang <guoweikang.kernel@gmail.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Swapnil Sapkal <swapnil.sapkal@amd.com>,
+	Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org
-Subject: [PATCH v5 1/4] smpboot: introduce SDTL_INIT() helper to tidy sched topology setup
-Date: Thu, 10 Jul 2025 18:57:07 +0800
-Message-ID: <20250710105715.66594-2-me@linux.beauty>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250710105715.66594-1-me@linux.beauty>
-References: <20250710105715.66594-1-me@linux.beauty>
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: [PATCH] powerpc: Replace the obsolete address of the FSF
+Date: Thu, 10 Jul 2025 14:16:57 +0200
+Message-ID: <20250710121657.169969-1-thuth@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,211 +87,141 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
 	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Li Chen <chenl311@chinatelecom.cn>
+From: Thomas Huth <thuth@redhat.com>
 
-Define a small SDTL_INIT(maskfn, flagsfn, name) macro and use it to build the
-sched_domain_topology_level array. Purely a cleanup; behaviour is unchanged.
+The FSF does not reside in the Franklin street anymore. Let's update
+the address with the link to their website, as suggested in the latest
+revision of the GPL-2.0 license.
+(See https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt for example)
 
-Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- arch/powerpc/kernel/smp.c      | 34 +++++++++++++---------------------
- arch/s390/kernel/topology.c    | 10 +++++-----
- arch/x86/kernel/smpboot.c      | 21 ++++++---------------
- include/linux/sched/topology.h |  4 ++--
- kernel/sched/topology.c        | 24 ++++++++----------------
- 5 files changed, 34 insertions(+), 59 deletions(-)
+ arch/powerpc/boot/crtsavres.S            | 5 ++---
+ arch/powerpc/include/uapi/asm/eeh.h      | 5 ++---
+ arch/powerpc/include/uapi/asm/kvm.h      | 5 ++---
+ arch/powerpc/include/uapi/asm/kvm_para.h | 5 ++---
+ arch/powerpc/include/uapi/asm/ps3fb.h    | 3 +--
+ arch/powerpc/lib/crtsavres.S             | 5 ++---
+ arch/powerpc/xmon/ppc.h                  | 5 +++--
+ 7 files changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 5ac7084eebc0b..0b7ab7d2eb142 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1700,28 +1700,20 @@ static void __init build_sched_topology(void)
- #ifdef CONFIG_SCHED_SMT
- 	if (has_big_cores) {
- 		pr_info("Big cores detected but using small core scheduling\n");
--		powerpc_topology[i++] = (struct sched_domain_topology_level){
--			smallcore_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT)
--		};
--	} else {
--		powerpc_topology[i++] = (struct sched_domain_topology_level){
--			cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT)
--		};
--	}
-+		powerpc_topology[i++] =
-+			SDTL_INIT(smallcore_smt_mask, powerpc_smt_flags, SMT);
-+	} else
-+		powerpc_topology[i++] = SDTL_INIT(cpu_smt_mask, powerpc_smt_flags, SMT);
- #endif
--	if (shared_caches) {
--		powerpc_topology[i++] = (struct sched_domain_topology_level){
--			shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE)
--		};
--	}
--	if (has_coregroup_support()) {
--		powerpc_topology[i++] = (struct sched_domain_topology_level){
--			cpu_mc_mask, powerpc_shared_proc_flags, SD_INIT_NAME(MC)
--		};
--	}
--	powerpc_topology[i++] = (struct sched_domain_topology_level){
--		cpu_cpu_mask, powerpc_shared_proc_flags, SD_INIT_NAME(PKG)
--	};
-+	if (shared_caches)
-+		powerpc_topology[i++] =
-+			SDTL_INIT(shared_cache_mask, powerpc_shared_cache_flags, CACHE);
-+
-+	if (has_coregroup_support())
-+		powerpc_topology[i++] =
-+			SDTL_INIT(cpu_mc_mask, powerpc_shared_proc_flags, MC);
-+
-+	powerpc_topology[i++] = SDTL_INIT(cpu_cpu_mask, powerpc_shared_proc_flags, PKG);
- 
- 	/* There must be one trailing NULL entry left.  */
- 	BUG_ON(i >= ARRAY_SIZE(powerpc_topology) - 1);
-diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
-index 3df048e190b11..46569b8e47dde 100644
---- a/arch/s390/kernel/topology.c
-+++ b/arch/s390/kernel/topology.c
-@@ -531,11 +531,11 @@ static const struct cpumask *cpu_drawer_mask(int cpu)
- }
- 
- static struct sched_domain_topology_level s390_topology[] = {
--	{ cpu_thread_mask, cpu_smt_flags, SD_INIT_NAME(SMT) },
--	{ cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
--	{ cpu_book_mask, SD_INIT_NAME(BOOK) },
--	{ cpu_drawer_mask, SD_INIT_NAME(DRAWER) },
--	{ cpu_cpu_mask, SD_INIT_NAME(PKG) },
-+	SDTL_INIT(cpu_thread_mask, cpu_smt_flags, SMT),
-+	SDTL_INIT(cpu_coregroup_mask, cpu_core_flags, MC),
-+	SDTL_INIT(cpu_book_mask, NULL, BOOK),
-+	SDTL_INIT(cpu_drawer_mask, NULL, DRAWER),
-+	SDTL_INIT(cpu_cpu_mask, NULL, PKG),
- 	{ NULL, },
- };
- 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 58ede3fa6a75b..445127df2cb19 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -485,35 +485,26 @@ static void __init build_sched_topology(void)
- 	int i = 0;
- 
- #ifdef CONFIG_SCHED_SMT
--	x86_topology[i++] = (struct sched_domain_topology_level){
--		cpu_smt_mask, cpu_smt_flags, SD_INIT_NAME(SMT)
--	};
-+	x86_topology[i++] = SDTL_INIT(cpu_smt_mask, cpu_smt_flags, SMT);
- #endif
- #ifdef CONFIG_SCHED_CLUSTER
--	x86_topology[i++] = (struct sched_domain_topology_level){
--		cpu_clustergroup_mask, x86_cluster_flags, SD_INIT_NAME(CLS)
--	};
-+	x86_topology[i++] = SDTL_INIT(cpu_clustergroup_mask, x86_cluster_flags, CLS);
- #endif
- #ifdef CONFIG_SCHED_MC
--	x86_topology[i++] = (struct sched_domain_topology_level){
--		cpu_coregroup_mask, x86_core_flags, SD_INIT_NAME(MC)
--	};
-+	x86_topology[i++] = SDTL_INIT(cpu_coregroup_mask, x86_core_flags, MC);
- #endif
- 	/*
- 	 * When there is NUMA topology inside the package skip the PKG domain
- 	 * since the NUMA domains will auto-magically create the right spanning
- 	 * domains based on the SLIT.
- 	 */
--	if (!x86_has_numa_in_package) {
--		x86_topology[i++] = (struct sched_domain_topology_level){
--			cpu_cpu_mask, x86_sched_itmt_flags, SD_INIT_NAME(PKG)
--		};
--	}
-+	if (!x86_has_numa_in_package)
-+		x86_topology[i++] = SDTL_INIT(cpu_cpu_mask, x86_sched_itmt_flags, PKG);
- 
- 	/*
- 	 * There must be one trailing NULL entry left.
- 	 */
--	BUG_ON(i >= ARRAY_SIZE(x86_topology)-1);
-+	BUG_ON(i >= ARRAY_SIZE(x86_topology) - 1);
- 
- 	set_sched_topology(x86_topology);
- }
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index e54e7fa76ba63..0d5daaa277b75 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -196,8 +196,8 @@ struct sched_domain_topology_level {
- extern void __init set_sched_topology(struct sched_domain_topology_level *tl);
- extern void sched_update_asym_prefer_cpu(int cpu, int old_prio, int new_prio);
- 
--
--# define SD_INIT_NAME(type)		.name = #type
-+#define SDTL_INIT(maskfn, flagsfn, dname) ((struct sched_domain_topology_level) \
-+	    { .mask = maskfn, .sd_flags = flagsfn, .name = #dname })
- 
- #if defined(CONFIG_ENERGY_MODEL) && defined(CONFIG_CPU_FREQ_GOV_SCHEDUTIL)
- extern void rebuild_sched_domains_energy(void);
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 8e06b1d22e91e..d01f5a49f2e7a 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1737,17 +1737,17 @@ sd_init(struct sched_domain_topology_level *tl,
+diff --git a/arch/powerpc/boot/crtsavres.S b/arch/powerpc/boot/crtsavres.S
+index 085fb2b9a8b89..a710a49a5dbca 100644
+--- a/arch/powerpc/boot/crtsavres.S
++++ b/arch/powerpc/boot/crtsavres.S
+@@ -26,9 +26,8 @@
+  * General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License
+- * along with this program; see the file COPYING.  If not, write to
+- * the Free Software Foundation, 51 Franklin Street, Fifth Floor,
+- * Boston, MA 02110-1301, USA.
++ * along with this program; see the file COPYING.  If not, see
++ * <https://www.gnu.org/licenses/>.
+  *
+  *    As a special exception, if you link this library with files
+  *    compiled with GCC to produce an executable, this does not cause
+diff --git a/arch/powerpc/include/uapi/asm/eeh.h b/arch/powerpc/include/uapi/asm/eeh.h
+index 28186071fafc4..4a117cc475299 100644
+--- a/arch/powerpc/include/uapi/asm/eeh.h
++++ b/arch/powerpc/include/uapi/asm/eeh.h
+@@ -9,9 +9,8 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, see <https://www.gnu.org/licenses/>.
+  *
+  * Copyright IBM Corp. 2015
+  *
+diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
+index eaeda001784eb..75c1d7a48ad52 100644
+--- a/arch/powerpc/include/uapi/asm/kvm.h
++++ b/arch/powerpc/include/uapi/asm/kvm.h
+@@ -9,9 +9,8 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, see <https://www.gnu.org/licenses/>.
+  *
+  * Copyright IBM Corp. 2007
+  *
+diff --git a/arch/powerpc/include/uapi/asm/kvm_para.h b/arch/powerpc/include/uapi/asm/kvm_para.h
+index a809b1b44ddfe..66d1e17e427a6 100644
+--- a/arch/powerpc/include/uapi/asm/kvm_para.h
++++ b/arch/powerpc/include/uapi/asm/kvm_para.h
+@@ -9,9 +9,8 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, see <https://www.gnu.org/licenses/>.
+  *
+  * Copyright IBM Corp. 2008
+  *
+diff --git a/arch/powerpc/include/uapi/asm/ps3fb.h b/arch/powerpc/include/uapi/asm/ps3fb.h
+index fd7e3a0d35d57..af6322042b3b0 100644
+--- a/arch/powerpc/include/uapi/asm/ps3fb.h
++++ b/arch/powerpc/include/uapi/asm/ps3fb.h
+@@ -13,8 +13,7 @@
+  * General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License along
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ * with this program; if not, see <https://www.gnu.org/licenses/>.
   */
- static struct sched_domain_topology_level default_topology[] = {
- #ifdef CONFIG_SCHED_SMT
--	{ cpu_smt_mask, cpu_smt_flags, SD_INIT_NAME(SMT) },
-+	SDTL_INIT(cpu_smt_mask, cpu_smt_flags, SMT),
- #endif
  
- #ifdef CONFIG_SCHED_CLUSTER
--	{ cpu_clustergroup_mask, cpu_cluster_flags, SD_INIT_NAME(CLS) },
-+	SDTL_INIT(cpu_clustergroup_mask, cpu_cluster_flags, CLS),
- #endif
+ #ifndef _ASM_POWERPC_PS3FB_H_
+diff --git a/arch/powerpc/lib/crtsavres.S b/arch/powerpc/lib/crtsavres.S
+index 8967903c15e99..c7e58b6614169 100644
+--- a/arch/powerpc/lib/crtsavres.S
++++ b/arch/powerpc/lib/crtsavres.S
+@@ -27,9 +27,8 @@
+  * General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License
+- * along with this program; see the file COPYING.  If not, write to
+- * the Free Software Foundation, 51 Franklin Street, Fifth Floor,
+- * Boston, MA 02110-1301, USA.
++ * along with this program; see the file COPYING.  If not, see
++ * <https://www.gnu.org/licenses/>.
+  *
+  *    As a special exception, if you link this library with files
+  *    compiled with GCC to produce an executable, this does not cause
+diff --git a/arch/powerpc/xmon/ppc.h b/arch/powerpc/xmon/ppc.h
+index 1d98b8dd134ef..270097f6e905b 100644
+--- a/arch/powerpc/xmon/ppc.h
++++ b/arch/powerpc/xmon/ppc.h
+@@ -15,8 +15,9 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
+ the GNU General Public License for more details.
  
- #ifdef CONFIG_SCHED_MC
--	{ cpu_coregroup_mask, cpu_core_flags, SD_INIT_NAME(MC) },
-+	SDTL_INIT(cpu_coregroup_mask, cpu_core_flags, MC),
- #endif
--	{ cpu_cpu_mask, SD_INIT_NAME(PKG) },
-+	SDTL_INIT(cpu_cpu_mask, NULL, PKG),
- 	{ NULL, },
- };
+ You should have received a copy of the GNU General Public License
+-along with this file; see the file COPYING.  If not, write to the Free
+-Software Foundation, 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.  */
++along with this file; see the file COPYING.  If not, see
++<https://www.gnu.org/licenses/>.
++*/
  
-@@ -2008,23 +2008,15 @@ void sched_init_numa(int offline_node)
- 	/*
- 	 * Add the NUMA identity distance, aka single NODE.
- 	 */
--	tl[i++] = (struct sched_domain_topology_level){
--		.mask = sd_numa_mask,
--		.numa_level = 0,
--		SD_INIT_NAME(NODE)
--	};
-+	tl[i++] = SDTL_INIT(sd_numa_mask, NULL, NODE);
- 
- 	/*
- 	 * .. and append 'j' levels of NUMA goodness.
- 	 */
- 	for (j = 1; j < nr_levels; i++, j++) {
--		tl[i] = (struct sched_domain_topology_level){
--			.mask = sd_numa_mask,
--			.sd_flags = cpu_numa_flags,
--			.flags = SDTL_OVERLAP,
--			.numa_level = j,
--			SD_INIT_NAME(NUMA)
--		};
-+		tl[i] = SDTL_INIT(sd_numa_mask, cpu_numa_flags, NUMA);
-+		tl[i].numa_level = j;
-+		tl[i].flags = SDTL_OVERLAP;
- 	}
- 
- 	sched_domain_topology_saved = sched_domain_topology;
+ #ifndef PPC_H
+ #define PPC_H
 -- 
 2.50.0
 
