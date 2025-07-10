@@ -1,84 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-10170-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10169-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7005DAFFAC7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jul 2025 09:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDCBAFFABE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Jul 2025 09:23:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bd5vG1Zk1z30VV;
-	Thu, 10 Jul 2025 17:24:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bd5t50PVKz30MY;
+	Thu, 10 Jul 2025 17:23:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::635"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752131915;
-	cv=none; b=O27eE1UXqZV9tb/U2Z3f7qyall90VrbQzxTdIy3spf9EXTvgqzlYHwzng1/mHyzyOZdfqRQ6mDV0sqCOpEFcAFKS8/gHL36TgtdOmtCGRmk0RWLMDZCAn5Iw3Dfhiv/fAQMSQd5p4xmYOIGtoXGNJb/WSNQNFZF1EWMRvDKxl1mwunqikaSAzI7S/W2YJBpj8RpqcDA53pN43llqYr9xfCI1CHffCKbmZ19EyT/NAfzppQDyAcuzEklTuEPmlEZjH6h+LcRIQmIn550SELue+ZR3Y86zIFzhv8r6wHOMvMe6wvBBw+iS6rv8qEngM7mB/4Q3Ae1vLabK7PQ8haccwg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752132205;
+	cv=none; b=GS00tODVqomLO5HB4RCq6r/eEsNgsW0TrRoV4ca06Zqjuki3NvGc8Gwm42mHnk+A2PGshi/rC8Gw6rs5O9YzbgS7HWPRXzeM7sK4K8BaxdD2ILc5PAd6gJ3TJZME2t+Wf1z0EMjgopY8x6DpGN07c6qtPyAPatiswbL7Qf0EHw1rEK0c8ef7LLX+oxwuRfGqOTJZfiAkSFzPg5l2emv+WgT0QvRXL8oTuykQRWXUxsA1mVNGuKwGeSCivodqZUIER73d/vT7aDyIRzJaFMOa1hr1glyC+uM0m9S045zEIlKB5GoE2HwIwZnD4xsorI8Z//OiJmv3T2PcbFaP9eqcFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752131915; c=relaxed/relaxed;
-	bh=6g1IiPrFyHwJRTaDBspibWxL1+SD9wnK3iKsVFGEiqY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZbJ4o5QB8dQFgWN5lTVXWg5i70pct0oSiw+YLDesNgS3UgRl+DVFu07uadGVk47h/5wRHCNcR0T2vZ/pjy2LDwUwfciGqxmw2i7/z5h0s8YMPI3qXUVT2c2epajFz3msUZj4OsxkQeKf/SwQY6jfVyZ0al5xq4VDo4DqNHUZbGEWSqiOyt5pWrdFoVLqN5LbMJ+RJUKNSbMaDK26FabTAQx7y5u8yXYwQFkLEBoTqAw8BU6wdwS1nwCf0KkdYCaTt1v1Ecnrc8UMOc3TtOobvDT3vXePRFexsnudftPtUb8mDqYNczP/cfRs9kt4mKXD7dVpoMlfEqeSLrsIEIInMQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=hnWjwX6x; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=seokwoo.chung130@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1752132205; c=relaxed/relaxed;
+	bh=jNdjqexWD9dvYK3FbcoWaXW00tzKthPqJvN4dLJv1oc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XxdB4SQ9MeudWT0fqzN3OCOuTyMG63p5bRyD4fs+jw/bbHe1dVZnIeBoEFgURIvMuAgMnJF4l35rPNraw8Cozszvd//TK4srpLTC6JAbQBbMd2rHl1nO6J/YDKugxeehPHmn2KoZaIsvvQuCd62GmsAViz0y1Y1on2l/L5EoDbyWg2ASeGIFRuq/mZQlBRU/0g0QD92+u5RUzlil48tUJWWXCH13V519Chx2cIZVtyp6pd1P+Po+RYg3DolSLMjvrrnf+kMV5lI3DOBYWrvvGG3wiyAP41nDMPSWMsnqNy9bHx/ivljGYk9Wjx9dVn7abnVQ9R6fQLHWMT/oJ1vWew==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GDLLPJK0; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=hnWjwX6x;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GDLLPJK0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=seokwoo.chung130@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bd5mV0rtVz2yYJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jul 2025 17:18:33 +1000 (AEST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-23c8a505177so6606915ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jul 2025 00:18:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752131909; x=1752736709; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6g1IiPrFyHwJRTaDBspibWxL1+SD9wnK3iKsVFGEiqY=;
-        b=hnWjwX6xL1MeXzYr+xFNB3hEOxFmy8CFEXcxERppWBA6PZmVWiWSeoDKqPy+bGZBck
-         4N6Z/jnCr0OVXgNvWqGfU0VVFvYLXbhLQ8/oDqPNsKdD6YWF0fFYexzSYMxeFPB48dq0
-         slSTtgdreyLzG3hfI/BCktWopiW6OTJQ04SFcMqhyb2d3/92LCLPJsJwaTysVtRZjlL+
-         USnhYvRl1Sy9RR3mfd1e/dn39tk5H6driGb0lD4F/cLiMfV4AbOpofth7sMFdSDyC+6Z
-         wW/XRzfVcCYnuRgKJtPijHBX55dfO5zpn0EFwb1j1QaNIeTKTH0LVYFxEE5sHNtkg7GH
-         EqqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752131909; x=1752736709;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6g1IiPrFyHwJRTaDBspibWxL1+SD9wnK3iKsVFGEiqY=;
-        b=ipMRPNLr6uZtXtixY4/Rv46dBIoyOJWJjvWF94rlvxs+tVJevkxY9joAsmZWq1mr7V
-         1X2XVR/Zwo0SeeiZobpn1OlD1EqYpQksbglTkYR89lOWFWpSpC1mKBdtQBgklV3mBDqu
-         4ntJ5GT1oSaXsn2qNPaJUxqck+Vax62ZNqW9wn3Uk8CKETKt2vlIV6q1PUItj4iLLjiq
-         dPmzo7911GVItF+TjfkLjQMfzVI1Zv0166P2j323U6BSOrfVNVfE2h5FzlM39nH33JY7
-         FWXfQffb9O+inXgEX+P1OKenxZhj3SpiTfOyzYIV/fx5yn7oT0c9mxBKT7tK3LKx9PF1
-         Zo+w==
-X-Gm-Message-State: AOJu0YzLUw9gs6UN86HI09qREgRwpDJXh2zqwGQe1V6R4GiZWAtb3z+l
-	SOkr+NcgNKBPMoKJhW63fSEQdZ03t37Mt3t9mopG26Sos5ygHG32OsqZ
-X-Gm-Gg: ASbGnctldLBw97lX9TNnxWZyxoL3MJT0QH1X23F8cG1XfboloT3p4FBDyurCMmdaTnZ
-	rBXLHNdTn2ukcQk84FCzlyq6qu8UbzjnjzM2hPEk4Wkwh/HT8IxF1mYL5//He0cH3bq5ANs2fbf
-	fqljp0+XEeWLTHDvXJm3efVu4Us6oia5eBOeRwUZ02xtfUMwEWFezdTDg4Eq2vz83RU7vWGoFN2
-	fLPc5Jv7/+w3KJjq7bkktAnaR52eXeoebWh8hKGgFAglf2T4mw+ybujTe2K7P1NIavcxwuCruo+
-	e8m+AZwzsiUTs8Z+zz621Cg9yyMjDl0MU4oMbUhFnNBsNujzq+bM1/0fdHhiDT+F95t0AmCkMHg
-	5NmaPQuvE
-X-Google-Smtp-Source: AGHT+IFVGyOnm1nwsQ+ze1erHvM2Rxv0pNSLgjOlw0v0EXpaUJJf5eUudFsAasW06wcKg1niVA8W2A==
-X-Received: by 2002:a17:902:ef07:b0:235:ef79:2997 with SMTP id d9443c01a7336-23de2510c87mr46529115ad.47.1752131908813;
-        Thu, 10 Jul 2025 00:18:28 -0700 (PDT)
-Received: from localhost.localdomain ([115.137.3.141])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31c3eb45c7csm1331530a91.25.2025.07.10.00.18.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jul 2025 00:18:28 -0700 (PDT)
-From: Ryan Chung <seokwoo.chung130@gmail.com>
-To: fbarrat@linux.ibm.com,
-	ajd@linux.ibm.com,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Ryan Chung <seokwoo.chung130@gmail.com>
-Subject: [PATCH] ocxl: sysfs.c: Replace scnprintf() with sysfs_emit()
-Date: Thu, 10 Jul 2025 16:18:15 +0900
-Message-ID: <20250710071815.351069-1-seokwoo.chung130@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bd5t41FKDz2yYJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Jul 2025 17:23:23 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 569MmLxD019358;
+	Thu, 10 Jul 2025 07:23:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=jNdjqe
+	xWD9dvYK3FbcoWaXW00tzKthPqJvN4dLJv1oc=; b=GDLLPJK0KPWUnpOHh57cTl
+	jQH1DOrwKVl9jNRne9xgV03rbi22JyIeoCem54a0Pl3BjTkK/fMXGibRjwLrAVb9
+	8qd+h94kOZ1kRnLH/U5ALlVOvRZrFVNo2Q9DW4Mm+FHGWWLiI8FHu/uDEncAgj12
+	f1nt+RkZL+FtgaDritrc6IecCdEt5QtLjVGvymgGtzOP7tVV2RYqVGd3JSTARRyh
+	mVG7C/HvDRWyTo3BozHv4KU9pIXSITyTItu3Ds8X3jTvKmwuz2T+n7y+AMeh4uIg
+	F6d5PQmK/zavK4Z2IEIdLSTjK3Pw6RLbOAeTNfavbreNt0gpKweuz2Qwgxq/cCuw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47puk4bbpy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Jul 2025 07:23:18 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56A7KgN9010608;
+	Thu, 10 Jul 2025 07:23:18 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47puk4bbpw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Jul 2025 07:23:17 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56A5enaX021561;
+	Thu, 10 Jul 2025 07:23:16 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 47qectvn80-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Jul 2025 07:23:16 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56A7NGgK32375300
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Jul 2025 07:23:16 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4A37D58053;
+	Thu, 10 Jul 2025 07:23:16 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DCC2058043;
+	Thu, 10 Jul 2025 07:23:13 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (unknown [9.90.171.232])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 10 Jul 2025 07:23:13 +0000 (GMT)
+Message-ID: <8bda71d7c25900616beb706c73a04bd54830252b.camel@linux.ibm.com>
+Subject: Re: [PATCH] ocxl: sysfs.c: Replace scnprintf() with sysfs_emit()
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Ryan Chung <seokwoo.chung130@gmail.com>, fbarrat@linux.ibm.com,
+        arnd@arndb.de, gregkh@linuxfoundation.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Date: Thu, 10 Jul 2025 17:23:12 +1000
+In-Reply-To: <20250710071815.351069-1-seokwoo.chung130@gmail.com>
+References: <20250710071815.351069-1-seokwoo.chung130@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,77 +96,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzEwMDA2MSBTYWx0ZWRfX3cpkbFpWlich 7VKpJrRtWSHtUtVoeCxuZ9CZ0HTjL+wRrHVZvA8le2faTE/WMVRduSw7JnZI6GcbQnBd3k8u0Of ZxTw22AHCUZvtISWQUXG8vCCPxNcTDxMHZfuzfxU5wJubLlv6wCY5XdAtzZtdNGnI6937OSAHFM
+ dTluHK4/PUlwKn5tdZ/0U1OtFkcS1pzfyxeBt6zUP+Zf4Vtao8byFWlPvKPF6QmIj6ATP8LZAUM fVoYOX1lzcEKhNJoD33QORg8xaErSYnU0tsCwUdgQ11RwqGKsyOoG/+1OxDD2osMBVfnU1WTxpq u5jgy+JftOwkNNjHDTXcN4Q4wRYHwePCr83RLzEx1oClbY1j8/HHD6CA6qbt0lcoNKxayUyE7kP
+ HwmL26I4s/Jb08nMJNGG6R2teEBkxhnJ/ZvWs/eRKmpAPYHbAhJaZEMUdXBfXoBBisTHivpZ
+X-Authority-Analysis: v=2.4 cv=XYeJzJ55 c=1 sm=1 tr=0 ts=686f6a66 cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=voM4FWlXAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=ywHtLLQGUfgKd5ouuJYA:9
+ a=QEXdDO2ut3YA:10 a=IC2XNlieTeVoXbcui8wp:22
+X-Proofpoint-ORIG-GUID: xK_GEAAhqq0p9QJ5-w3E_7rDrPGfAyLU
+X-Proofpoint-GUID: 04QUFcX3Cf19Hy3NCJIhVqO8slIh68Kp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-09_05,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ mlxscore=0 impostorscore=0 phishscore=0 bulkscore=0 clxscore=1015
+ spamscore=0 mlxlogscore=531 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507100061
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This change uses sysfs_emit() API usage for sysfs 'show'
-functions as recommended from Documentation/filesystems/sysfs.rst.
-Intended for safety and consistency.
+On Thu, 2025-07-10 at 16:18 +0900, Ryan Chung wrote:
+> This change uses sysfs_emit() API usage for sysfs 'show'
+> functions as recommended from Documentation/filesystems/sysfs.rst.
+> Intended for safety and consistency.
+>=20
+> No functional change intended.
+>=20
+> Signed-off-by: Ryan Chung <seokwoo.chung130@gmail.com>
 
-No functional change intended.
+An identical patch has already been merged in char-misc-next:
 
-Signed-off-by: Ryan Chung <seokwoo.chung130@gmail.com>
----
- drivers/misc/ocxl/sysfs.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20250620024705.1132=
+1-1-ankitchauhan2065@gmail.com/
 
-diff --git a/drivers/misc/ocxl/sysfs.c b/drivers/misc/ocxl/sysfs.c
-index e849641687a0..f194c159a778 100644
---- a/drivers/misc/ocxl/sysfs.c
-+++ b/drivers/misc/ocxl/sysfs.c
-@@ -16,7 +16,7 @@ static ssize_t global_mmio_size_show(struct device *device,
- {
- 	struct ocxl_afu *afu = to_afu(device);
- 
--	return scnprintf(buf, PAGE_SIZE, "%d\n",
-+	return sysfs_emit(buf, "%d\n",
- 			afu->config.global_mmio_size);
- }
- 
-@@ -26,7 +26,7 @@ static ssize_t pp_mmio_size_show(struct device *device,
- {
- 	struct ocxl_afu *afu = to_afu(device);
- 
--	return scnprintf(buf, PAGE_SIZE, "%d\n",
-+	return sysfs_emit(buf, "%d\n",
- 			afu->config.pp_mmio_stride);
- }
- 
-@@ -36,7 +36,7 @@ static ssize_t afu_version_show(struct device *device,
- {
- 	struct ocxl_afu *afu = to_afu(device);
- 
--	return scnprintf(buf, PAGE_SIZE, "%hhu:%hhu\n",
-+	return sysfs_emit(buf, "%hhu:%hhu\n",
- 			afu->config.version_major,
- 			afu->config.version_minor);
- }
-@@ -47,7 +47,7 @@ static ssize_t contexts_show(struct device *device,
- {
- 	struct ocxl_afu *afu = to_afu(device);
- 
--	return scnprintf(buf, PAGE_SIZE, "%d/%d\n",
-+	return sysfs_emit(buf, "%d/%d\n",
- 			afu->pasid_count, afu->pasid_max);
- }
- 
-@@ -61,9 +61,9 @@ static ssize_t reload_on_reset_show(struct device *device,
- 	int val;
- 
- 	if (ocxl_config_get_reset_reload(pci_dev, &val))
--		return scnprintf(buf, PAGE_SIZE, "unavailable\n");
-+		return sysfs_emit(buf, "unavailable\n");
- 
--	return scnprintf(buf, PAGE_SIZE, "%d\n", val);
-+	return sysfs_emit(buf, "%d\n", val);
- }
- 
- static ssize_t reload_on_reset_store(struct device *device,
--- 
-2.43.0
 
+Andrew
+
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
