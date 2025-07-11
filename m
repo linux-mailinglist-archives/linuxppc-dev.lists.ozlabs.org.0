@@ -1,71 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-10179-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10180-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752F7B011CC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jul 2025 05:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29652B012BE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jul 2025 07:35:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bddFg6Lgrz30VF;
-	Fri, 11 Jul 2025 13:57:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bdgR773rbz30Qk;
+	Fri, 11 Jul 2025 15:35:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752206231;
-	cv=none; b=I5qXC9YQq5lu01KewyTliK4cqwYzz1V3c7h76DXNnr+/MRlsMkO86L+zl4DXgcanyqBft7Yn1iy30e8sSjZOwCAIe0ZiT+sM2h1HSLdwqTaAZ5JqBn7pUz5Azb2eUVhSFk1FwEVEsyTQS9/3KawvXJ3x7zqUKVHn3qt9SI8x68HYs4NaFQaOWpjUlCz0PY62p+Iy8acFGq/1xVPtN1m3EN3aLpaWlQv5OtuJrzzm5yh3z9imbvESiovShQpqRlygemye5XUph11SPb3ImiKbKsiiG+qNQpDnCZhWGddtpEJnxeIFuAbqA3JImWPbKhutW0LnWW/znSGoL337zYuw7A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752212131;
+	cv=none; b=SmuizL/l41g5gk4ZnI0Ljm93Yh6V42mMzGZteSJ9fQmMEiMHzfuy2emP/DaW+9GgHCiOe/txCxDWK3rQRMEkigVayJiifrZrEZBqDS9wctO5Xv4l8G/M33D0tqfiVgCDxmaWCUxeArF7hk/8BCWwZ+1gZ9uMWxY9rCwjM48NDCiDXsANhPtWdvGCI+qEKu2U/YQIYF8ZGsBedoRXQRrJF/+IhwBQ4/e68vQ7N1D1mY4wgMaryQvUvB5PHu0AGNXCRlcQgGYbw68fAd7m5vPk2T8BWugZkaSNI2MjMbs6a01FhH/mehfQIqw82GKEkefLkGpNgYvEma0523A2wMUroQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752206231; c=relaxed/relaxed;
-	bh=PpFaaKOyRLlzmKKw/kVccNlMuBTJgCal3Vp5o+WDkAY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TPyRu4fDveu8xunpH2e5bMepB5j1/0wv7gfFzR9FpOV7QYwtbfpn/JO/njsYkNHfXDJi5FGvpozfRYEuhb6JcwLaV2+T/uR4zT1uoJ03jUS/0KP0EY2J7dUp4ufrVF0ic6EzxCanrdmdMSFqJ9YFfMc8VAtwhlo/mRjUlZtMLWsYhvdLv1sNYL4faak+iNkaBYhRa6Qs+EhGi1l1eoIRtEnRafFheXqqkfcVLWC6pv6+Q+OxtwFMyb2gMXGzbmdo1oIck5J9mD59RJI762XdCTohRjh88nDRdapO2SXACDeezJR0f1KONlaYxohMEhS1eMXsvCHbh5f4nd1O5qmizA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F9KtfoQ1; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1752212131; c=relaxed/relaxed;
+	bh=CUP6yUq85IP+SbffWiWOIbOd/lABj5i3O3SyytybOTE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CeeVMeZWX+kq+jQHULeMkbiuF2v4+cK1A8O0N/jVPf/KH2KgrKdPUu0DW7U0WOLWrOGNaSwkIyD4cKYkMNrKLKPpWixG8AvSgyd9bhKBHvIP/umYZ9S/XxkNYYIWvDdmf2RroUZsDxm50yxlBQhbmqbRaa+iDR62qZwUPQPp9V3LUBsxUdv95UNlPDfk8KkHHcLvehvUtxNQDTfqbPLobaqKH2QJKuGoilcqhAmYKYn5Y2/z55GD8h6X+KisduB5A1WUkG5BYHS0lkinsm+4qHdU6QOM6UEDkeFKCIGAubYShi6WrT6mwBnWVFWQRJN836pWblr9RWiQpXk1tQEnvQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WzE84dAa; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WzE84dAa; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F9KtfoQ1;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WzE84dAa;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WzE84dAa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bddFg0NVFz2yF0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jul 2025 13:57:10 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56AN3g3i021182;
-	Fri, 11 Jul 2025 03:57:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=PpFaaK
-	OyRLlzmKKw/kVccNlMuBTJgCal3Vp5o+WDkAY=; b=F9KtfoQ1lV+rTa78XFQnQV
-	PUgKR/GseqM+8G8GZB6ICruh6pqe9T3unIGvuuSbHv2Zn0SaW0m2YXyNhx5TOyNW
-	mOymnaDf1snhFyKL6Yh1FRTN7JNUT9guxyIMnx7MYGqIY6ZxbVgAA53YXpmVENZL
-	tqcCm0Y4Hje+iBu+aKPeYn7BC2DvWUWuazK40r22Ns370RaoUJYi1LyCbHKhJjC7
-	SjV99tGRQj6lf1sZNfKTQMTB8Jk2IVWOaL39qNUs1pc6D9RDHzp9HuK71iGqMh0C
-	zxK2vAM3dm5kIcSGc0QyhnhW+AlVHi4K1m1NnOiTGKJIYOC85wb2WOcBfsjrAzgA
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47pussgnqk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Jul 2025 03:57:00 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56B1vung010807;
-	Fri, 11 Jul 2025 03:56:59 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47qes0h1mj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Jul 2025 03:56:59 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56B3uwUG27525680
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Jul 2025 03:56:59 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B588C5805D;
-	Fri, 11 Jul 2025 03:56:58 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EB9315805A;
-	Fri, 11 Jul 2025 03:56:56 +0000 (GMT)
-Received: from [9.61.253.167] (unknown [9.61.253.167])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 11 Jul 2025 03:56:56 +0000 (GMT)
-Message-ID: <ba967f4d-4b55-4199-af1e-f3a7f30d7158@linux.ibm.com>
-Date: Fri, 11 Jul 2025 09:26:54 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bdgR60MG8z30LS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jul 2025 15:35:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752212124;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CUP6yUq85IP+SbffWiWOIbOd/lABj5i3O3SyytybOTE=;
+	b=WzE84dAaldG9nPrT7lRB87ksOX1IPaZz7qd+VwEQXUQxZXoCRlzrBd7Sm6iHNmT9ZGXfCQ
+	OBx28hVNqgplsKRKe9Vss61qYucCGD0gRPr6FONT05vKrSBWw1D8lSIdWzKwat6MNQimXR
+	Mq2QUYOnBI3MfH5lsgLDKyADfs6XVIM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1752212124;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=CUP6yUq85IP+SbffWiWOIbOd/lABj5i3O3SyytybOTE=;
+	b=WzE84dAaldG9nPrT7lRB87ksOX1IPaZz7qd+VwEQXUQxZXoCRlzrBd7Sm6iHNmT9ZGXfCQ
+	OBx28hVNqgplsKRKe9Vss61qYucCGD0gRPr6FONT05vKrSBWw1D8lSIdWzKwat6MNQimXR
+	Mq2QUYOnBI3MfH5lsgLDKyADfs6XVIM=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-204--icJXwQgOw2IuU4FmKUyrw-1; Fri,
+ 11 Jul 2025 01:35:20 -0400
+X-MC-Unique: -icJXwQgOw2IuU4FmKUyrw-1
+X-Mimecast-MFC-AGG-ID: -icJXwQgOw2IuU4FmKUyrw_1752212118
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1B6EC1956080;
+	Fri, 11 Jul 2025 05:35:17 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.45.224.54])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B14EF18003FC;
+	Fri, 11 Jul 2025 05:35:11 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-spdx@vger.kernel.org
+Subject: [PATCH v2] powerpc: Replace the obsolete address of the FSF
+Date: Fri, 11 Jul 2025 07:35:09 +0200
+Message-ID: <20250711053509.194751-1-thuth@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,72 +89,147 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [next-20250709] Fails to boot on IBM Power Server
-Content-Language: en-GB
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>
-References: <fe13e9e2-8ac5-46c7-b925-b61d35104ed1@linux.ibm.com>
- <20250710202234.7fd45cd1@canb.auug.org.au>
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <20250710202234.7fd45cd1@canb.auug.org.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Vaj3PEp9 c=1 sm=1 tr=0 ts=68708b8d cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=rOUgymgbAAAA:8 a=VnNF1IyMAAAA:8 a=iKqzQSD2Ew3xwzP_rSsA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=MP9ZtiD8KjrkvI0BhSjB:22
-X-Proofpoint-GUID: i7TFREHMfo9NBbnkytgXXIQUuY-_KvqH
-X-Proofpoint-ORIG-GUID: i7TFREHMfo9NBbnkytgXXIQUuY-_KvqH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzExMDAyMiBTYWx0ZWRfX3qYvB6M5xKWR inPzwIEvFfyuKODhFBQu9nees6V9KbSPWjJQ/MWJ2dkdBbuZCtWVwx5lOxZfWM69dn/QsbCM0i7 KcoOf1SDLSGRr/WjMzkZ84A7453kGlqxkIlzmgSiDUBIhxv7DhxW8AchEXxdQQ0R+GflI2W0PgM
- xCoDAtLteXFLfwLZwLMAfcUHavkuNw8ZcIxS6Dvg0TJLOFLijSR7pkkE30FCilsD1mF1rhYlidn b/+FV/6kKH0Uao6tXlvyqOhENISi2N9H3LXKObmzQuZ/KMOC1f0ROYIgezD8bH3WUrK8aLmGe/8 RHiZ8j2oYNm8HxzsWvGW9Ba9RdA5J5BQ6z0lsdt0cIgFrwGDBuOPBqpiHEj7RWF9lXtJYF0wCmo
- TRwYv5e4PWIROd5TBYHzYzzUlzs/0BkWv79E42CZ1ZxlJgSo0BJ/4NPv62JGhmj7PnbO4LKD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-11_01,2025-07-09_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=557 suspectscore=0 clxscore=1015 adultscore=0
- lowpriorityscore=0 impostorscore=0 malwarescore=0 bulkscore=0 mlxscore=0
- spamscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507110022
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+From: Thomas Huth <thuth@redhat.com>
 
-On 10/07/25 3:52 pm, Stephen Rothwell wrote:
-> Hi Venkat,
->
-> On Thu, 10 Jul 2025 14:56:38 +0530 Venkat Rao Bagalkote <venkat88@linux.ibm.com> wrote:
->> Greetings!!!
->>
->>
->> IBM CI has reported a boot issue on the latest linux-next(20250709) kernel fails on IBM Power servers.
->>
->> System entering to emergency mode.
->>
->>
->> Error:
->>
->>
->> [    1.071678] ibmveth 30000002 net0: renamed from eth0
->> [    1.074227] ibmvscsi 30000069: SRP_VERSION: 16.a
->> [    1.074238] ibmvscsi 30000069: Error -4 opening adapter
->> [    1.074255] ibmvscsi 30000069: couldn't initialize crq. rc=-1
->> [    1.181132] ibmvscsi 30000069: probe with driver ibmvscsi failed with error -1
-> This has been fixed in next-20250710, just released.
->
-> See: https://lore.kernel.org/linux-next/20250709233953.7afb7a8a@canb.auug.org.au/
+The FSF does not reside in the Franklin street anymore. Let's update
+the address with the link to their website, as suggested in the latest
+revision of the GPL-2.0 license.
+(See https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt for example)
 
-Thank you Stephen.
+Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ v2: Resend with CC: linux-spdx@vger.kernel.org as suggested here:
+     https://lore.kernel.org/linuxppc-dev/e5de8010-5663-47f4-a2f0-87fd88230925@csgroup.eu
+     
+ arch/powerpc/boot/crtsavres.S            | 5 ++---
+ arch/powerpc/include/uapi/asm/eeh.h      | 5 ++---
+ arch/powerpc/include/uapi/asm/kvm.h      | 5 ++---
+ arch/powerpc/include/uapi/asm/kvm_para.h | 5 ++---
+ arch/powerpc/include/uapi/asm/ps3fb.h    | 3 +--
+ arch/powerpc/lib/crtsavres.S             | 5 ++---
+ arch/powerpc/xmon/ppc.h                  | 5 +++--
+ 7 files changed, 14 insertions(+), 19 deletions(-)
 
-
-Regards,
-
-Venkat.
+diff --git a/arch/powerpc/boot/crtsavres.S b/arch/powerpc/boot/crtsavres.S
+index 085fb2b9a8b89..a710a49a5dbca 100644
+--- a/arch/powerpc/boot/crtsavres.S
++++ b/arch/powerpc/boot/crtsavres.S
+@@ -26,9 +26,8 @@
+  * General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License
+- * along with this program; see the file COPYING.  If not, write to
+- * the Free Software Foundation, 51 Franklin Street, Fifth Floor,
+- * Boston, MA 02110-1301, USA.
++ * along with this program; see the file COPYING.  If not, see
++ * <https://www.gnu.org/licenses/>.
+  *
+  *    As a special exception, if you link this library with files
+  *    compiled with GCC to produce an executable, this does not cause
+diff --git a/arch/powerpc/include/uapi/asm/eeh.h b/arch/powerpc/include/uapi/asm/eeh.h
+index 28186071fafc4..4a117cc475299 100644
+--- a/arch/powerpc/include/uapi/asm/eeh.h
++++ b/arch/powerpc/include/uapi/asm/eeh.h
+@@ -9,9 +9,8 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, see <https://www.gnu.org/licenses/>.
+  *
+  * Copyright IBM Corp. 2015
+  *
+diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
+index eaeda001784eb..75c1d7a48ad52 100644
+--- a/arch/powerpc/include/uapi/asm/kvm.h
++++ b/arch/powerpc/include/uapi/asm/kvm.h
+@@ -9,9 +9,8 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, see <https://www.gnu.org/licenses/>.
+  *
+  * Copyright IBM Corp. 2007
+  *
+diff --git a/arch/powerpc/include/uapi/asm/kvm_para.h b/arch/powerpc/include/uapi/asm/kvm_para.h
+index a809b1b44ddfe..66d1e17e427a6 100644
+--- a/arch/powerpc/include/uapi/asm/kvm_para.h
++++ b/arch/powerpc/include/uapi/asm/kvm_para.h
+@@ -9,9 +9,8 @@
+  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  * GNU General Public License for more details.
+  *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
++ * You should have received a copy of the GNU General Public License along
++ * with this program; if not, see <https://www.gnu.org/licenses/>.
+  *
+  * Copyright IBM Corp. 2008
+  *
+diff --git a/arch/powerpc/include/uapi/asm/ps3fb.h b/arch/powerpc/include/uapi/asm/ps3fb.h
+index fd7e3a0d35d57..af6322042b3b0 100644
+--- a/arch/powerpc/include/uapi/asm/ps3fb.h
++++ b/arch/powerpc/include/uapi/asm/ps3fb.h
+@@ -13,8 +13,7 @@
+  * General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License along
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ * with this program; if not, see <https://www.gnu.org/licenses/>.
+  */
+ 
+ #ifndef _ASM_POWERPC_PS3FB_H_
+diff --git a/arch/powerpc/lib/crtsavres.S b/arch/powerpc/lib/crtsavres.S
+index 8967903c15e99..c7e58b6614169 100644
+--- a/arch/powerpc/lib/crtsavres.S
++++ b/arch/powerpc/lib/crtsavres.S
+@@ -27,9 +27,8 @@
+  * General Public License for more details.
+  *
+  * You should have received a copy of the GNU General Public License
+- * along with this program; see the file COPYING.  If not, write to
+- * the Free Software Foundation, 51 Franklin Street, Fifth Floor,
+- * Boston, MA 02110-1301, USA.
++ * along with this program; see the file COPYING.  If not, see
++ * <https://www.gnu.org/licenses/>.
+  *
+  *    As a special exception, if you link this library with files
+  *    compiled with GCC to produce an executable, this does not cause
+diff --git a/arch/powerpc/xmon/ppc.h b/arch/powerpc/xmon/ppc.h
+index 1d98b8dd134ef..270097f6e905b 100644
+--- a/arch/powerpc/xmon/ppc.h
++++ b/arch/powerpc/xmon/ppc.h
+@@ -15,8 +15,9 @@ warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See
+ the GNU General Public License for more details.
+ 
+ You should have received a copy of the GNU General Public License
+-along with this file; see the file COPYING.  If not, write to the Free
+-Software Foundation, 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.  */
++along with this file; see the file COPYING.  If not, see
++<https://www.gnu.org/licenses/>.
++*/
+ 
+ #ifndef PPC_H
+ #define PPC_H
+-- 
+2.50.0
 
 
