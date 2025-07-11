@@ -1,98 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-10178-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10179-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06533B0102A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jul 2025 02:26:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 752F7B011CC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jul 2025 05:57:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bdXZM2d9Yz2yN1;
-	Fri, 11 Jul 2025 10:26:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bddFg6Lgrz30VF;
+	Fri, 11 Jul 2025 13:57:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=136.143.188.12 arc.chain=zohomail.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752193579;
-	cv=pass; b=istmfZeadv81KDaMWWNqtk+DslnbsyW0/fuXnmOOqeMgTfCML8PridA982raTL+ebcdCTf3yE6jcuQRqu90FNYwC2Pwfj4b8TmM7PtvuLuIcQUfF2+G6y34ttlrGsuv9eVO1SNPelTEw7MxhwpCO6O985Ys6m16mK2cGzTY7kFnxkeRUJM8HbNpPRSjIdMyMYa/xJe+j9RCJ42gDSRdLVLVUngM6kOPWHmHupKNg7HtbLQUd34gs2C9kxBn04W/+LBK9s0OQ7BPm4ZTOEdm47fVrVf2sVKoKwMRwsAdb8QEibstLV6/kLr7bSv51lG+TcDjBnX/DGFDhkWtj2bSpdw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752193579; c=relaxed/relaxed;
-	bh=Cso21EcGT/s8s2wk1z/Mf8lcRLKY5dQSvb6M9DdLo+w=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=UhJcQFpZPOi9RlssbFce7YUAkWUaZvRgJ2kioySxLBeXhBrnzWOP1FIw3agLbYhl/+bzaPQEOk/qQ0mDuUwQjWJ7JX6Fv+6VS0zRyk41no9mGkLT/STrzSw+Pv54yLfv8Dy4Q6/9FYYKCYc7jdvijKP9vNJsLlGDwODP2ICVI6S+r6IUhlA4FMwStuW+Nw2yKueP/0YgJibXVyTmp30A5vfJUUVMKyYGirBEA9EnAZsJUdegHAWKuSODEghDlWtdzQgNvDujcL6xE1JSMHBb0plo+Rl3NqifoxdT6iIEvx8Zv0iOxEoMgnwoexl3icQ8t7KIwsGsEfKewKm7aJl45g==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux.beauty; dkim=pass (1024-bit key; unprotected) header.d=linux.beauty header.i=me@linux.beauty header.a=rsa-sha256 header.s=zmail header.b=SwX7Ky0Z; dkim-atps=neutral; spf=pass (client-ip=136.143.188.12; helo=sender4-op-o12.zoho.com; envelope-from=me@linux.beauty; receiver=lists.ozlabs.org) smtp.mailfrom=linux.beauty
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux.beauty
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752206231;
+	cv=none; b=I5qXC9YQq5lu01KewyTliK4cqwYzz1V3c7h76DXNnr+/MRlsMkO86L+zl4DXgcanyqBft7Yn1iy30e8sSjZOwCAIe0ZiT+sM2h1HSLdwqTaAZ5JqBn7pUz5Azb2eUVhSFk1FwEVEsyTQS9/3KawvXJ3x7zqUKVHn3qt9SI8x68HYs4NaFQaOWpjUlCz0PY62p+Iy8acFGq/1xVPtN1m3EN3aLpaWlQv5OtuJrzzm5yh3z9imbvESiovShQpqRlygemye5XUph11SPb3ImiKbKsiiG+qNQpDnCZhWGddtpEJnxeIFuAbqA3JImWPbKhutW0LnWW/znSGoL337zYuw7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1752206231; c=relaxed/relaxed;
+	bh=PpFaaKOyRLlzmKKw/kVccNlMuBTJgCal3Vp5o+WDkAY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TPyRu4fDveu8xunpH2e5bMepB5j1/0wv7gfFzR9FpOV7QYwtbfpn/JO/njsYkNHfXDJi5FGvpozfRYEuhb6JcwLaV2+T/uR4zT1uoJ03jUS/0KP0EY2J7dUp4ufrVF0ic6EzxCanrdmdMSFqJ9YFfMc8VAtwhlo/mRjUlZtMLWsYhvdLv1sNYL4faak+iNkaBYhRa6Qs+EhGi1l1eoIRtEnRafFheXqqkfcVLWC6pv6+Q+OxtwFMyb2gMXGzbmdo1oIck5J9mD59RJI762XdCTohRjh88nDRdapO2SXACDeezJR0f1KONlaYxohMEhS1eMXsvCHbh5f4nd1O5qmizA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F9KtfoQ1; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.beauty header.i=me@linux.beauty header.a=rsa-sha256 header.s=zmail header.b=SwX7Ky0Z;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=F9KtfoQ1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.beauty (client-ip=136.143.188.12; helo=sender4-op-o12.zoho.com; envelope-from=me@linux.beauty; receiver=lists.ozlabs.org)
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bdXZH3glYz2xHv
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jul 2025 10:26:15 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1752193502; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Y7iShuCKuWRtC1eSfY8suvhgtBlX1OLua0p+xXXP4ngfWcNSIdFTFRM+cHuvStnV2kzcmX7h3bAY7S0V1Tg7Oy+uRn9v/pm2c/65sWtYHsAZiiM3QZ7HJEEmndhEBf3iU/j4ttoU3GO/KF6aNu+wy1UGp1oXwjA+Gg+/PSaz1fY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1752193502; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Cso21EcGT/s8s2wk1z/Mf8lcRLKY5dQSvb6M9DdLo+w=; 
-	b=Kc1galt7OOo4SfDw6GAmMJm6W8k5AF3nJO3PsnRCtsDXC4+i79GB6XhH+bgzSNJBZK2FuNBQzbQ2ggMNhSfKYfaiCV0U3c3RVHqMvwAVzxhP9hnC3u4vhO3Prc1aswwB45edX/W2aWHn7TP1O67bpRQHDykPiVCA3WIJuQSiPdk=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1752193502;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=Cso21EcGT/s8s2wk1z/Mf8lcRLKY5dQSvb6M9DdLo+w=;
-	b=SwX7Ky0ZXjAojYyMiIJ5PBtLOgT97rgGLACle/VZpOHSqbKx4PxnGF3mtyhEorrd
-	Gl3SgstpU9z5VldnMnCvMVTnm/2BLChe/Lwroti0oViFjbaBO0MHupozj2wTdwJyMFT
-	myxGUAZtKxsoAzaFugsXgK6nD03/xxhcGehVUqmk=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1752193499988464.8625971507744; Thu, 10 Jul 2025 17:24:59 -0700 (PDT)
-Date: Fri, 11 Jul 2025 08:24:59 +0800
-From: Li Chen <me@linux.beauty>
-To: "K Prateek Nayak" <kprateek.nayak@amd.com>
-Cc: "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
-	"Borislav Petkov" <bp@alien8.de>,
-	"Dave Hansen" <dave.hansen@linux.intel.com>, "x86" <x86@kernel.org>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	"Peter Zijlstra" <peterz@infradead.org>,
-	"Sohil Mehta" <sohil.mehta@intel.com>,
-	"Brian Gerst" <brgerst@gmail.com>,
-	"Patryk Wlazlyn" <patryk.wlazlyn@linux.intel.com>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>,
-	"Madhavan Srinivasan" <maddy@linux.ibm.com>,
-	"Michael Ellerman" <mpe@ellerman.id.au>,
-	"Nicholas Piggin" <npiggin@gmail.com>,
-	"Christophe Leroy" <christophe.leroy@csgroup.eu>,
-	"Heiko Carstens" <hca@linux.ibm.com>,
-	"Vasily Gorbik" <gor@linux.ibm.com>,
-	"Alexander Gordeev" <agordeev@linux.ibm.com>,
-	"Christian Borntraeger" <borntraeger@linux.ibm.com>,
-	"Sven Schnelle" <svens@linux.ibm.com>,
-	"Juri Lelli" <juri.lelli@redhat.com>,
-	"Vincent Guittot" <vincent.guittot@linaro.org>,
-	"Dietmar Eggemann" <dietmar.eggemann@arm.com>,
-	"Steven Rostedt" <rostedt@goodmis.org>,
-	"Ben Segall" <bsegall@google.com>, "Mel Gorman" <mgorman@suse.de>,
-	"Valentin Schneider" <vschneid@redhat.com>,
-	=?UTF-8?Q?=22Thomas_Wei=C3=9Fschuh=22?= <thomas.weissschuh@linutronix.de>,
-	"Bibo Mao" <maobibo@loongson.cn>,
-	"Li Chen" <chenl311@chinatelecom.cn>,
-	"Huacai Chen" <chenhuacai@kernel.org>,
-	"Tobias Huschle" <huschle@linux.ibm.com>,
-	"Mete Durlu" <meted@linux.ibm.com>,
-	"Joel Granados" <joel.granados@kernel.org>,
-	"Guo Weikang" <guoweikang.kernel@gmail.com>,
-	"Swapnil Sapkal" <swapnil.sapkal@amd.com>,
-	"linuxppc-dev" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-s390" <linux-s390@vger.kernel.org>
-Message-ID: <197f6df0342.5b351ed5512924.4548698833385126603@linux.beauty>
-In-Reply-To: <f391491d-f886-4579-9b40-78a57f2ed1b5@amd.com>
-References: <20250706030636.397197-1-me@linux.beauty>
- <20250706030636.397197-2-me@linux.beauty> <f391491d-f886-4579-9b40-78a57f2ed1b5@amd.com>
-Subject: Re: [PATCH v4 1/4] smpboot: introduce SDTL() helper to tidy sched
- topology setup
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bddFg0NVFz2yF0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jul 2025 13:57:10 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56AN3g3i021182;
+	Fri, 11 Jul 2025 03:57:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=PpFaaK
+	OyRLlzmKKw/kVccNlMuBTJgCal3Vp5o+WDkAY=; b=F9KtfoQ1lV+rTa78XFQnQV
+	PUgKR/GseqM+8G8GZB6ICruh6pqe9T3unIGvuuSbHv2Zn0SaW0m2YXyNhx5TOyNW
+	mOymnaDf1snhFyKL6Yh1FRTN7JNUT9guxyIMnx7MYGqIY6ZxbVgAA53YXpmVENZL
+	tqcCm0Y4Hje+iBu+aKPeYn7BC2DvWUWuazK40r22Ns370RaoUJYi1LyCbHKhJjC7
+	SjV99tGRQj6lf1sZNfKTQMTB8Jk2IVWOaL39qNUs1pc6D9RDHzp9HuK71iGqMh0C
+	zxK2vAM3dm5kIcSGc0QyhnhW+AlVHi4K1m1NnOiTGKJIYOC85wb2WOcBfsjrAzgA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47pussgnqk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Jul 2025 03:57:00 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56B1vung010807;
+	Fri, 11 Jul 2025 03:56:59 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47qes0h1mj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Jul 2025 03:56:59 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56B3uwUG27525680
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Jul 2025 03:56:59 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B588C5805D;
+	Fri, 11 Jul 2025 03:56:58 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EB9315805A;
+	Fri, 11 Jul 2025 03:56:56 +0000 (GMT)
+Received: from [9.61.253.167] (unknown [9.61.253.167])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 11 Jul 2025 03:56:56 +0000 (GMT)
+Message-ID: <ba967f4d-4b55-4199-af1e-f3a7f30d7158@linux.ibm.com>
+Date: Fri, 11 Jul 2025 09:26:54 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,100 +79,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [next-20250709] Fails to boot on IBM Power Server
+Content-Language: en-GB
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>
+References: <fe13e9e2-8ac5-46c7-b925-b61d35104ed1@linux.ibm.com>
+ <20250710202234.7fd45cd1@canb.auug.org.au>
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20250710202234.7fd45cd1@canb.auug.org.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Vaj3PEp9 c=1 sm=1 tr=0 ts=68708b8d cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=rOUgymgbAAAA:8 a=VnNF1IyMAAAA:8 a=iKqzQSD2Ew3xwzP_rSsA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=MP9ZtiD8KjrkvI0BhSjB:22
+X-Proofpoint-GUID: i7TFREHMfo9NBbnkytgXXIQUuY-_KvqH
+X-Proofpoint-ORIG-GUID: i7TFREHMfo9NBbnkytgXXIQUuY-_KvqH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzExMDAyMiBTYWx0ZWRfX3qYvB6M5xKWR inPzwIEvFfyuKODhFBQu9nees6V9KbSPWjJQ/MWJ2dkdBbuZCtWVwx5lOxZfWM69dn/QsbCM0i7 KcoOf1SDLSGRr/WjMzkZ84A7453kGlqxkIlzmgSiDUBIhxv7DhxW8AchEXxdQQ0R+GflI2W0PgM
+ xCoDAtLteXFLfwLZwLMAfcUHavkuNw8ZcIxS6Dvg0TJLOFLijSR7pkkE30FCilsD1mF1rhYlidn b/+FV/6kKH0Uao6tXlvyqOhENISi2N9H3LXKObmzQuZ/KMOC1f0ROYIgezD8bH3WUrK8aLmGe/8 RHiZ8j2oYNm8HxzsWvGW9Ba9RdA5J5BQ6z0lsdt0cIgFrwGDBuOPBqpiHEj7RWF9lXtJYF0wCmo
+ TRwYv5e4PWIROd5TBYHzYzzUlzs/0BkWv79E42CZ1ZxlJgSo0BJ/4NPv62JGhmj7PnbO4LKD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-11_01,2025-07-09_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=557 suspectscore=0 clxscore=1015 adultscore=0
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 bulkscore=0 mlxscore=0
+ spamscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507110022
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi K,
 
-Thanks for your reviews and test! I have addressed all issues in v5:
-https://www.spinics.net/lists/kernel/msg5761848.html
+On 10/07/25 3:52 pm, Stephen Rothwell wrote:
+> Hi Venkat,
+>
+> On Thu, 10 Jul 2025 14:56:38 +0530 Venkat Rao Bagalkote <venkat88@linux.ibm.com> wrote:
+>> Greetings!!!
+>>
+>>
+>> IBM CI has reported a boot issue on the latest linux-next(20250709) kernel fails on IBM Power servers.
+>>
+>> System entering to emergency mode.
+>>
+>>
+>> Error:
+>>
+>>
+>> [    1.071678] ibmveth 30000002 net0: renamed from eth0
+>> [    1.074227] ibmvscsi 30000069: SRP_VERSION: 16.a
+>> [    1.074238] ibmvscsi 30000069: Error -4 opening adapter
+>> [    1.074255] ibmvscsi 30000069: couldn't initialize crq. rc=-1
+>> [    1.181132] ibmvscsi 30000069: probe with driver ibmvscsi failed with error -1
+> This has been fixed in next-20250710, just released.
+>
+> See: https://lore.kernel.org/linux-next/20250709233953.7afb7a8a@canb.auug.org.au/
 
- ---- On Mon, 07 Jul 2025 13:33:53 +0800  K Prateek Nayak <kprateek.nayak@a=
-md.com> wrote ---=20
- > Hello Li,
- >=20
- > Apart from few comments inline below, feel free to include:
- >=20
- > Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
- >=20
- > for the entire series.
- >=20
- > On 7/6/2025 8:36 AM, Li Chen wrote:
- > > diff --git a/include/linux/sched/topology.h b/include/linux/sched/topo=
-logy.h
- > > index 198bb5cc1774b..0b53e372c445c 100644
- > > --- a/include/linux/sched/topology.h
- > > +++ b/include/linux/sched/topology.h
- > > @@ -197,9 +197,9 @@ struct sched_domain_topology_level {
- > >  extern void __init set_sched_topology(struct sched_domain_topology_le=
-vel *tl);
- > >  extern void sched_update_asym_prefer_cpu(int cpu, int old_prio, int n=
-ew_prio);
- > > =20
- > > -
- > > -# define SD_INIT_NAME(type)        .name =3D #type
- > > -
- > > +#define SDTL(maskfn, flagsfn, dname) \
- > > +    ((struct sched_domain_topology_level) \
- > > +        { .mask =3D maskfn, .sd_flags =3D flagsfn, .name =3D #dname, =
-.numa_level =3D 0 })
- >=20
- > I prefer the following alignment:
- >=20
- > #define SDTL(maskfn, flagsfn, dname) ((struct sched_domain_topology_leve=
-l) \
- >     { .mask =3D maskfn, .sd_flags =3D flagsfn, .name =3D #dname })
- >=20
- > instead of having 3 lines. "numa_level" is 0 by default so I don't think
- > we need to explicitly specify it again.
- >=20
- > Also perhaps the macro can be named "SDTL_INIT()" to keep consistent
- > with the naming convention.
- >=20
- > >  #else /* CONFIG_SMP */
- >=20
- > A bunch of the CONFIG_SMP related ifdeffry is being removed for the
- > next cycle. You can perhaps rebase the series on top of the tip tree
- > (git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git)
- >=20
- > > =20
- > >  struct sched_domain_attr;
- >=20
- > [..snip..]
- >=20
- > > diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
- > > index b958fe48e0205..e6ec65ae4b75d 100644
- > > --- a/kernel/sched/topology.c
- > > +++ b/kernel/sched/topology.c
- > > @@ -2025,7 +2021,7 @@ void sched_init_numa(int offline_node)
- > >              .sd_flags =3D cpu_numa_flags,
- > >              .flags =3D SDTL_OVERLAP,
- > >              .numa_level =3D j,
- > > -            SD_INIT_NAME(NUMA)
- > > +            .name =3D "NUMA",
- >=20
- > This can use SDTL() macro too. Just explicitly set "tl[i].numa_level" to
- > "j" after.
- >=20
- > >          };
- > >      }
- > > =20
- >=20
- > --=20
- > Thanks and Regards,
- > Prateek
- >=20
- >=20
+Thank you Stephen.
+
+
 Regards,
 
-Li=E2=80=8B
+Venkat.
 
 
