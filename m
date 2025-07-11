@@ -1,96 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-10188-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10189-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF72B018F7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jul 2025 11:58:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27212B01A99
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Jul 2025 13:32:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bdnH44kgMz30VF;
-	Fri, 11 Jul 2025 19:58:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bdqMN2zHfz30VF;
+	Fri, 11 Jul 2025 21:32:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752227936;
-	cv=none; b=QPb30vaKNSIazh/HQN3Ia1jIp5VHyXC30/+zzs89xaCeTZ+z4nkmM8ewGSZZsYh4wP77gaMH+PMNOFQ6f5/oHaTKb76VGbl3ZQkEkkwedAKbKXMyA4MoFWpEeqDeWDJzBsjASQlsb8ZGCh2ZigyTk6IdhdxrY583YPHaiY0CYesAd0nyQDYAUi+8ugNbnVOpGxSEEB15Er+9SrMNwHb6kaJf++CHrY330oNS0L0CHcNgXGZsF7VzdcG3OTV5RgzaSqOTc2OXhy2sA9P+FwFmJLqM4sOKMLBIgFi7dCMGiwhXwIkFhBCw9StyQcHrA/3B48fIKF1p+v3tmDvcTrzK/A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752233568;
+	cv=none; b=fbLYja43QdlVGXN4wZaIl2ZFKZw0g7rW6chdVFD1LFqUf5YX3nt7pQvN8IkJyEbEU3PgJG02KJ7pl++5nXE1DsMy6/cZ5kRlUSc3oZK6qywymJnVtMuiEpXlEtgBydZceqyaEhHhYUaixeJc2svzjwAYNOCjY8t/KTSOGJRLWbz7Z2TGUbkccYUDbA/i3PIoo9HWxIBgpp9kG1VkI+PbF0021poFiolAOAlKKefILz3fpKSx03Uvx5fUN+RGspEalfX/V5vc3arfO0tR7+y/SqNooHVR9mlkAzZADPhp9NClgIcXRvt8V5C5A83irREAKIspgr+PSX3pyMwgPmINpg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752227936; c=relaxed/relaxed;
-	bh=+UKKl1tl/4X4RmJ4nRhAivPInQxndntWwMlFBpiS/So=;
+	t=1752233568; c=relaxed/relaxed;
+	bh=rBaMeUalwqPGHF1pXuNNlqoOhLhH/XgvIyFgh+zaVmk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SzNellwHHJhIloGkQ6PlNL+reD3GNl5xdlu6J8TOLSRAx8r/Pt5oc4Qr9fOeLvZ0qfrL8T/XDHl6hiIMVmtJUaoeeV5FFD7QT4qy00V/1IYsF6i/tWWngRSuS4xGmFehPEL+XtdeXxS6AO/rIGVAPPVMhBu+K13CWNdOiFkLmEkaxIejZuXm/3ndFLd9FlxAjyGZeFHjDL30JeyGprP5wSnuLfIh0WLr9BphXwfW9Th07nZ8b9EZjd9CiVd8VPdAAqnv87XcESufQsSG/L7kqAIDbDtGH8vvYnnYHS7i1218SJAoiXb79ippZIT/3ybx/QUGENE+hiKsqE025VKNKQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jDMX0wtt; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CtF9bTyw; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=ZxVY2H114VMHN7qW8e16gci+5jslnavUqzzDCggXyOxAyJ0UDFLWjsbrrzD9dPEq//Jc8ImrbuqGBZmfFzkYa/UYRHDkAlzSfgXsBhFyNvSc6O2K2XAzBOTFeu569Ar/+L/TMujJ9k/e9d6vS80wLTzs2HgKuV9IpRgD1shn1p+6f2eY8hQVS8m8/Xc3UKWtSIB1askKf3jaMLFazK7dEPdzkvdSyd+zui1T/kLQlQVfJz/C6wEX4Z3GdPTEXJWWvN3+Sv5uTzkIN+WYO5C/cVXb74oOjtTyNfpg9IYf0X5IJNXq7D2o5UkI4Xn3nI4s0CjxP6gp3Wl6ewa6uFu1YA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dGdqqahn; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iipWTCRK; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jDMX0wtt;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CtF9bTyw;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dGdqqahn;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=iipWTCRK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bdnH31b3Mz2yF0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jul 2025 19:58:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bdqML6S7Tz2xfB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jul 2025 21:32:45 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752227929;
+	s=mimecast20190719; t=1752233561;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+UKKl1tl/4X4RmJ4nRhAivPInQxndntWwMlFBpiS/So=;
-	b=jDMX0wtt701pngElWf2VLp/KYvU+HYVtV6LTQIr5Zk4SRfrAB8N15usJ/mJ/qvi5HWP3kn
-	7ONCPJDkTt1dQTFui6EtsZ5jq2IRgL2Z1c3mzfCaXOcAjoNXBQlsJviRS9/yYrQCWjahnD
-	rmVMEmQoKT1UnBP3qBqMWkzrO2IVVy8=
+	bh=rBaMeUalwqPGHF1pXuNNlqoOhLhH/XgvIyFgh+zaVmk=;
+	b=dGdqqahnT+55sIaJzyVnvaP3Yj4DUqKMxoY9/BJmcwhav20SFbpnZnaWWUwF8NbShO8eGO
+	HLEuDxFnv4In/dnGa7MDIQkRj/+7mbH5VlPGc5C6iL5OjDQ1h73NMQJ76UaUp284n4ZekX
+	h7ebaRqJc8Zv+oDG973Vb2fN1JKBWwk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1752227930;
+	s=mimecast20190719; t=1752233562;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=+UKKl1tl/4X4RmJ4nRhAivPInQxndntWwMlFBpiS/So=;
-	b=CtF9bTywY+U+Yj7Vcj3AlXUItYbKvfCww9JWcdA+u+FsD2uI331I2/9bE1Jw7JYoy0s5Tz
-	VGFScqLrdUT6VDZOudrwsLFTX+DdfCTrz4qPN2jh1GL5NsAYdTm3VDicm5LQCIGfRdF+6j
-	BxghmCGx0MS/7QwPfgazrSnYt/K+fhk=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=rBaMeUalwqPGHF1pXuNNlqoOhLhH/XgvIyFgh+zaVmk=;
+	b=iipWTCRK0qGoPgrvls2RK4bLcb5+tj1C3RgF5NzkxiPwGTR8j7gFGIKGReoXrwplClwsYA
+	chmmwNhtjv+OiV5qBHKSKLIbscFE/kPCDQZpY17DNXnvBRNA2ZIP+QXaq6EissS3wfM0XK
+	gxbBRDSQ0bJdUtYEPbK1SPES01wXdAI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-361-IYgTLJhUPcOcG5-ggXiSHA-1; Fri, 11 Jul 2025 05:58:48 -0400
-X-MC-Unique: IYgTLJhUPcOcG5-ggXiSHA-1
-X-Mimecast-MFC-AGG-ID: IYgTLJhUPcOcG5-ggXiSHA_1752227927
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a4e713e05bso1011933f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jul 2025 02:58:48 -0700 (PDT)
+ us-mta-460-oid2jaeiMmOXtxbTuLWDoA-1; Fri, 11 Jul 2025 07:32:38 -0400
+X-MC-Unique: oid2jaeiMmOXtxbTuLWDoA-1
+X-Mimecast-MFC-AGG-ID: oid2jaeiMmOXtxbTuLWDoA_1752233557
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-455e9daab1cso1185145e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Jul 2025 04:32:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752227927; x=1752832727;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+UKKl1tl/4X4RmJ4nRhAivPInQxndntWwMlFBpiS/So=;
-        b=VFm7ibtD0KFXgLh3vmh2369t4MTQ3jK00pHHtB6s4YC4y16sPiKTtBTGf82pbLsebC
-         hRiS95MsASuj0NFsdXhi6bxoTi3uK8T22noMmAmYIWBzMt3NWksLauNqp1xmpe0/sYiF
-         pnmqaEao9S2DCEpjgottJ2+Uyyr4Edq572bqF4uZz0gKnLQsiMR0wTF33ODCmU1W/9Fz
-         u0tmpPQsnoTrW1Z2cvaJyqm0TBTeGcUG3xk4TA11CIAoDWncVNSrYwibkXExqYNfv9qH
-         DfEgOSMi8RTTmGgIz6En1Q69gup2MndjXR8wvdUcm1KBRkO7p+rYYEv/JbF3ctHMvRwK
-         B6Og==
-X-Forwarded-Encrypted: i=1; AJvYcCW+kzJWgUkyRlcyZZaVPCNsPtL36nJeBLet7LPbD2kG6+iwueTb2ObxyZ4lfdj8PVWHwrKxxOqUKIRIn/8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzNC2bVokZzakTJ0/KqnQF82nfSr35qSjUNwanc1/nfWOqwD48t
-	8AgykDIzcW6YSK6fZFob1SrDajgsU7voVX2Fdz//0Ee0ufsOqRULf4bhKRS8Jw7f1QmqygBl39J
-	DxYYMNq6Qcv6GKScOJZHo30yeCsKaGTvfyGLbenSkP1wkqWX9BhPuc6qZfaDGPRLEKDg=
-X-Gm-Gg: ASbGncs1R6h5m2qsU2Puou3XnXIQcwcO/IqeyaE1UwHfv47ZTodycCT7K+pg2zDwSQz
-	Go58kB2XfbbkknOW08r9ebxDQrM13j6zoAnZoSenVV5mPQ6fC4BR3W+dM1/wjB/wf4SbY2vAC30
-	zTGPXzfdAsBS9SP+la2OMJeTg75x+/SJzCiPA135hFkOoMmCGidqf1RvLL8K00f83JriSRuIggd
-	Qn/b+BECZsnQl4DbH6VUw9SotfAQtESSplwkFRKrQ3mUFnPtORf2MaZNu1T9XiucKLcmCPQmpmq
-	osm9HefkRQDlQSVrk6MZV5dGegvZLhVmB6wXED5R0m4CQNeHRDpnW8X8Emz4h2gvipNagEwa3Km
-	dEkW4qWt4PO4+lw64vUL9zFwxKniV7DdRzgBc5A+xEQgk5jqCRHDV6WH128tCGdm2LNo=
-X-Received: by 2002:a5d:648d:0:b0:3a6:d255:7eda with SMTP id ffacd0b85a97d-3b5f2dfd1b8mr1404517f8f.28.1752227927118;
-        Fri, 11 Jul 2025 02:58:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBZmauJhH+3iF5EU/3X92DU30FEe2aNm1uPMNqVM2/Rpwxm5AE5/oI+EKrP1imiuyTuELdjg==
-X-Received: by 2002:a5d:648d:0:b0:3a6:d255:7eda with SMTP id ffacd0b85a97d-3b5f2dfd1b8mr1404495f8f.28.1752227926612;
-        Fri, 11 Jul 2025 02:58:46 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f3c:3a00:5662:26b3:3e5d:438e? (p200300d82f3c3a00566226b33e5d438e.dip0.t-ipconnect.de. [2003:d8:2f3c:3a00:5662:26b3:3e5d:438e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b5e8e0d727sm4072600f8f.51.2025.07.11.02.58.44
+        d=1e100.net; s=20230601; t=1752233557; x=1752838357;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rBaMeUalwqPGHF1pXuNNlqoOhLhH/XgvIyFgh+zaVmk=;
+        b=YgCa8yPlrf3eQjFKdw9H8Qfy8lKq6WarW7pbpy6bTSb3sDmggYig/2vTSJxyXi+jTH
+         wTTPrLSqn8UOuKmeo1/bXQPbd5ZbdA926JlUBuTcQBA7p3abIeNtib2z828sHIeqdgPr
+         DznmTgP1bwsxOVkn6Kkrh9T5PguAgfke5QuPnUU7d9GVuFUHSi5maT1EpK6oSs0yPoNN
+         YdLNkj12/8UOtofb5P2R+j03MikIJPup7t6UyQN8MWNhou+WIstpyPagAOw4aJxFOPHD
+         KWchWmxfvguaA1saEdnwmDzHb10Hax4LMSHWGLuePoX2ipAwlZYXNesJjppD3vsESnMO
+         3ARw==
+X-Forwarded-Encrypted: i=1; AJvYcCUy5bL4h8zO9TFpETvnoE+6grhEtHtINXLm2x4HUr7+dtPE+dWoRzA5wn1FEha9Rg9VUV52tm8/ujaoriM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwBFxvYkFGrrrUML5c1yCF+sHHvJzBvO53fPNjcNkipYuIRwOd2
+	DCOZx5ryYjKQTzw8w2R7yu3dcSgAEfi3sxvb82UNCXPU+x1sF5btddCPnv3rtt1G4L4UJhsj6mf
+	JgjZGjA6s3zplWbtDDJEnAI++M68ROzQb3fx3ZArgNpF2Zsf2TCAIEExnWfxBTq8SzGA=
+X-Gm-Gg: ASbGncsSHkoD2gTq5KV51x20SRll9TPS12Qmk50zBmyHNOpQw3DzUswzK7W+3rPjqgY
+	ZDy+9eyuexc29L83GLAiTnC1IcLg6jKAtSXCrJEdpEQfo/0UheAj6lBnoad1j3mM67alOCuNGux
+	FZ7Wl5OCRdRH3Epj6+qzcsj6VPsRyhbYdWPAqat4d37MmvoKG5Wh7W2RGGh0ztKBvytJOgjFOkR
+	3cJO8cMOxGcRaFqg4kfiBv1HzRBrBUDZYukKdc6vy6W96vmLyxGOFKkjtc9eg7TrYjAwOU4b3hw
+	RCn/QOpbfLrVr1hLQcstk0lnwqSHnEQghmMLAV+Zepvc8zud9QOOxh1SfUqtizo2kD3S/mwoRWk
+	By7Wz
+X-Received: by 2002:a05:600c:1549:b0:43d:300f:fa1d with SMTP id 5b1f17b1804b1-454f425585amr28408905e9.31.1752233556791;
+        Fri, 11 Jul 2025 04:32:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE61oWTKweMEXZfo4uTm9GgpnpWiVgolfLMo+v8sGn4fN8oDtJ8j83cwuweqsXezmErlhJuKA==
+X-Received: by 2002:a05:600c:1549:b0:43d:300f:fa1d with SMTP id 5b1f17b1804b1-454f425585amr28408305e9.31.1752233556153;
+        Fri, 11 Jul 2025 04:32:36 -0700 (PDT)
+Received: from [192.168.0.6] (ltea-047-064-115-149.pools.arcor-ip.net. [47.64.115.149])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-454d5032ff4sm83722835e9.8.2025.07.11.04.32.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Jul 2025 02:58:46 -0700 (PDT)
-Message-ID: <65601756-e9ae-4a26-acd4-2dcfe58a7f7f@redhat.com>
-Date: Fri, 11 Jul 2025 11:58:43 +0200
+        Fri, 11 Jul 2025 04:32:35 -0700 (PDT)
+Message-ID: <ce92db8c-6d26-4953-9f74-142d00d2bc2a@redhat.com>
+Date: Fri, 11 Jul 2025 13:32:33 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,93 +105,66 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 20/29] mm: convert "movable" flag in page->mapping to a
- page flag
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Corbet <corbet@lwn.net>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>, Miaohe Lin
- <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Oscar Salvador <osalvador@suse.de>, Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry.yoo@oracle.com>, Qi Zheng <zhengqi.arch@bytedance.com>,
- Shakeel Butt <shakeel.butt@linux.dev>
-References: <20250704102524.326966-1-david@redhat.com>
- <20250704102524.326966-21-david@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250704102524.326966-21-david@redhat.com>
+Subject: Re: [kvm-unit-tests PATCH v4 07/13] scripts: Add default arguments
+ for kvmtool
+To: Alexandru Elisei <alexandru.elisei@arm.com>, andrew.jones@linux.dev,
+ eric.auger@redhat.com, lvivier@redhat.com, frankja@linux.ibm.com,
+ imbrenda@linux.ibm.com, nrb@linux.ibm.com, david@redhat.com,
+ pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, kvmarm@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, will@kernel.org, julien.thierry.kdev@gmail.com,
+ maz@kernel.org, oliver.upton@linux.dev, suzuki.poulose@arm.com,
+ yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com,
+ shahuang@redhat.com, Boqiao Fu <bfu@redhat.com>
+References: <20250625154813.27254-1-alexandru.elisei@arm.com>
+ <20250625154813.27254-8-alexandru.elisei@arm.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20250625154813.27254-8-alexandru.elisei@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6iJrYC-h21L9CIqSxUmoUhrYJkbRveCG6edz4e-yRi4_1752227927
+X-Mimecast-MFC-PROC-ID: NWZxD3IAe7IQbxm2mm4KLC5Bb8JtaK4a5yHcM3aa3Pk_1752233557
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
@@ -202,187 +175,154 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 04.07.25 12:25, David Hildenbrand wrote:
-> Instead, let's use a page flag. As the page flag can result in
-> false-positives, glue it to the page types for which we
-> support/implement movable_ops page migration.
+On 25/06/2025 17.48, Alexandru Elisei wrote:
+> kvmtool, unless told otherwise, will do its best to make sure that a kernel
+> successfully boots in a virtual machine. It does things like automatically
+> creating a rootfs and adding extra parameters to the kernel command line.
+> This is actively harmful to kvm-unit-tests, because some tests parse the
+> kernel command line and they will fail if they encounter the options added
+> by kvmtool.
 > 
-> We are reusing PG_uptodate, that is for example used to track file
-> system state and does not apply to movable_ops pages. So
-> warning in case it is set in page_has_movable_ops() on other page types
-> could result in false-positive warnings.
+> Fortunately for us, kvmtool commit 5613ae26b998 ("Add --nodefaults command
+> line argument") addded the --nodefaults kvmtool parameter which disables
+> all the implicit virtual machine configuration that cannot be disabled by
+> using other parameters, like modifying the kernel command line. So always
+> use --nodefaults to allow a test to run.
 > 
-> Likely we could set the bit using a non-atomic update: in contrast to
-> page->mapping, we could have others trying to update the flags
-> concurrently when trying to lock the folio. In
-> isolate_movable_ops_page(), we already take care of that by checking if
-> the page has movable_ops before locking it. Let's start with the atomic
-> variant, we could later switch to the non-atomic variant once we are
-> sure other cases are similarly fine. Once we perform the switch, we'll
-> have to introduce __SETPAGEFLAG_NOOP().
+> kvmtool can also be too verbose when running a virtual machine, and this is
+> controlled by several parameters. Add those to the default kvmtool command
+> line to reduce this verbosity to a minimum.
 > 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Before:
+> 
+> $ vm run arm/selftest.flat --cpus 2 --mem 256 --params "setup smp=2 mem=256"
+> Info: # lkvm run -k arm/selftest.flat -m 256 -c 2 --name guest-5035
+> Unknown subtest
+> 
+> EXIT: STATUS=127
+> Warning: KVM compatibility warning.
+>      virtio-9p device was not detected.
+>      While you have requested a virtio-9p device, the guest kernel did not initialize it.
+>      Please make sure that the guest kernel was compiled with CONFIG_NET_9P_VIRTIO=y enabled in .config.
+> Warning: KVM compatibility warning.
+>      virtio-net device was not detected.
+>      While you have requested a virtio-net device, the guest kernel did not initialize it.
+>      Please make sure that the guest kernel was compiled with CONFIG_VIRTIO_NET=y enabled in .config.
+> Info: KVM session ended normally.
+> 
+> After:
+> 
+> $ vm run arm/selftest.flat --nodefaults --network mode=none --loglevel=warning --cpus 2 --mem 256 --params "setup smp=2 mem=256"
+> PASS: selftest: setup: smp: number of CPUs matches expectation
+> INFO: selftest: setup: smp: found 2 CPUs
+> PASS: selftest: setup: mem: memory size matches expectation
+> INFO: selftest: setup: mem: found 256 MB
+> SUMMARY: 2 tests
+> 
+> EXIT: STATUS=1
+> 
+> Note that KVMTOOL_DEFAULT_OPTS can be overwritten by an environment
+> variable with the same name, but it's not documented in the help string for
+> run_tests.sh. This has been done on purpose, since overwritting
+> KVMTOOL_DEFAULT_OPTS should only be necessary for debugging or development
+> purposes.
+> 
+> Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
+> Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
 > ---
->   include/linux/balloon_compaction.h |  2 +-
->   include/linux/migrate.h            |  8 -----
->   include/linux/page-flags.h         | 54 ++++++++++++++++++++++++------
->   mm/compaction.c                    |  6 ----
->   mm/zpdesc.h                        |  2 +-
->   5 files changed, 46 insertions(+), 26 deletions(-)
 > 
-> diff --git a/include/linux/balloon_compaction.h b/include/linux/balloon_compaction.h
-> index a8a1706cc56f3..b222b0737c466 100644
-> --- a/include/linux/balloon_compaction.h
-> +++ b/include/linux/balloon_compaction.h
-> @@ -92,7 +92,7 @@ static inline void balloon_page_insert(struct balloon_dev_info *balloon,
->   				       struct page *page)
->   {
->   	__SetPageOffline(page);
-> -	__SetPageMovable(page);
-> +	SetPageMovableOps(page);
->   	set_page_private(page, (unsigned long)balloon);
->   	list_add(&page->lru, &balloon->pages);
->   }
-> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-> index 6aece3f3c8be8..acadd41e0b5cf 100644
-> --- a/include/linux/migrate.h
-> +++ b/include/linux/migrate.h
-> @@ -103,14 +103,6 @@ static inline int migrate_huge_page_move_mapping(struct address_space *mapping,
->   
->   #endif /* CONFIG_MIGRATION */
->   
-> -#ifdef CONFIG_COMPACTION
-> -void __SetPageMovable(struct page *page);
-> -#else
-> -static inline void __SetPageMovable(struct page *page)
-> -{
-> -}
-> -#endif
-> -
->   #ifdef CONFIG_NUMA_BALANCING
->   int migrate_misplaced_folio_prepare(struct folio *folio,
->   		struct vm_area_struct *vma, int node);
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 4c27ebb689e3c..5f2b570735852 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -170,6 +170,11 @@ enum pageflags {
->   	/* non-lru isolated movable page */
->   	PG_isolated = PG_reclaim,
->   
-> +#ifdef CONFIG_MIGRATION
-> +	/* this is a movable_ops page (for selected typed pages only) */
-> +	PG_movable_ops = PG_uptodate,
-> +#endif
+> Changes v3->v4:
+> 
+> * Use vmm_default_opts() instead of indexing into vmm_optname
+> * Reworded the help test for --nodefaults as per Shaoqin's suggestion.
+> 
+>   scripts/common.bash |  6 +++---
+>   scripts/vmm.bash    | 18 ++++++++++++++++++
+>   2 files changed, 21 insertions(+), 3 deletions(-)
+> 
+> diff --git a/scripts/common.bash b/scripts/common.bash
+> index 7c1b89f1b3c2..d5d3101c8089 100644
+> --- a/scripts/common.bash
+> +++ b/scripts/common.bash
+> @@ -37,7 +37,7 @@ function for_each_unittest()
+>   			# -append as a kernel parameter instead of a command
+>   			# line option.
+>   			test_args=""
+> -			opts=""
+> +			opts="$(vmm_default_opts)"
+>   			groups=""
+>   			arch=""
+>   			machine=""
+> @@ -51,7 +51,7 @@ function for_each_unittest()
+>   		elif [[ $line =~ ^test_args\ *=\ *(.*)$ ]]; then
+>   			test_args="$(vmm_optname_args) ${BASH_REMATCH[1]}"
+>   		elif [[ $line =~ ^$params_name\ *=\ *'"""'(.*)$ ]]; then
+> -			opts=${BASH_REMATCH[1]}$'\n'
+> +			opts="$(vmm_defaults_opts) ${BASH_REMATCH[1]}$'\n'"
+>   			while read -r -u $fd; do
+>   				#escape backslash newline, but not double backslash
+>   				if [[ $opts =~ [^\\]*(\\*)$'\n'$ ]]; then
+> @@ -67,7 +67,7 @@ function for_each_unittest()
+>   				fi
+>   			done
+>   		elif [[ $line =~ ^$params_name\ *=\ *(.*)$ ]]; then
+> -			opts=${BASH_REMATCH[1]}
+> +			opts="$(vmm_default_opts) ${BASH_REMATCH[1]}"
+>   		elif [[ $line =~ ^groups\ *=\ *(.*)$ ]]; then
+>   			groups=${BASH_REMATCH[1]}
+>   		elif [[ $line =~ ^arch\ *=\ *(.*)$ ]]; then
+> diff --git a/scripts/vmm.bash b/scripts/vmm.bash
+> index 0dd3f971ecdf..368690d62473 100644
+> --- a/scripts/vmm.bash
+> +++ b/scripts/vmm.bash
+> @@ -1,3 +1,14 @@
+> +# The following parameters are enabled by default when running a test with
+> +# kvmtool:
+> +# --nodefaults: suppress VM configuration that cannot be disabled (like
+> +#               modifying the supplied kernel command line). Otherwise tests
+> +#               that use the command line will fail without this parameter.
+> +# --network mode=none: do not create a network device. kvmtool tries to help the
+> +#               user by automatically create one, and then prints a warning
+> +#               when the VM terminates if the device hasn't been initialized.
+> +# --loglevel=warning: reduce verbosity
+> +: "${KVMTOOL_DEFAULT_OPTS:="--nodefaults --network mode=none --loglevel=warning"}"
 > +
->   	/* Only valid for buddy pages. Used to track pages that are reported */
->   	PG_reported = PG_uptodate,
+>   ##############################################################################
+>   # qemu_fixup_return_code translates the ambiguous exit status in Table1 to that
+>   # in Table2.  Table3 simply documents the complete status table.
+> @@ -82,11 +93,13 @@ function kvmtool_fixup_return_code()
 >   
-> @@ -698,9 +703,6 @@ PAGEFLAG_FALSE(VmemmapSelfHosted, vmemmap_self_hosted)
->    * bit; and then folio->mapping points, not to an anon_vma, but to a private
->    * structure which KSM associates with that merged page.  See ksm.h.
->    *
-> - * PAGE_MAPPING_KSM without PAGE_MAPPING_ANON is used for non-lru movable
-> - * page and then folio->mapping points to a struct movable_operations.
-> - *
->    * Please note that, confusingly, "folio_mapping" refers to the inode
->    * address_space which maps the folio from disk; whereas "folio_mapped"
->    * refers to user virtual address space into which the folio is mapped.
-> @@ -743,13 +745,6 @@ static __always_inline bool PageAnon(const struct page *page)
->   {
->   	return folio_test_anon(page_folio(page));
+>   declare -A vmm_optname=(
+>   	[qemu,args]='-append'
+> +	[qemu,default_opts]=''
+>   	[qemu,fixup_return_code]=qemu_fixup_return_code
+>   	[qemu,initrd]='-initrd'
+>   	[qemu,nr_cpus]='-smp'
+>   
+>   	[kvmtool,args]='--params'
+> +	[kvmtool,default_opts]="$KVMTOOL_DEFAULT_OPTS"
+>   	[kvmtool,fixup_return_code]=kvmtool_fixup_return_code
+>   	[kvmtool,initrd]='--initrd'
+>   	[kvmtool,nr_cpus]='--cpus'
+> @@ -97,6 +110,11 @@ function vmm_optname_args()
+>   	echo ${vmm_optname[$(vmm_get_target),args]}
 >   }
-> -
-> -static __always_inline bool page_has_movable_ops(const struct page *page)
-> -{
-> -	return ((unsigned long)page->mapping & PAGE_MAPPING_FLAGS) ==
-> -				PAGE_MAPPING_MOVABLE;
-> -}
-> -
->   #ifdef CONFIG_KSM
->   /*
->    * A KSM page is one of those write-protected "shared pages" or "merged pages"
-> @@ -1133,6 +1128,45 @@ bool is_free_buddy_page(const struct page *page);
 >   
->   PAGEFLAG(Isolated, isolated, PF_ANY);
->   
-> +#ifdef CONFIG_MIGRATION
-> +/*
-> + * This page is migratable through movable_ops (for selected typed pages
-> + * only).
-> + *
-> + * Page migration of such pages might fail, for example, if the page is
-> + * already isolated by somebody else, or if the page is about to get freed.
-> + *
-> + * While a subsystem might set selected typed pages that support page migration
-> + * as being movable through movable_ops, it must never clear this flag.
-> + *
-> + * This flag is only cleared when the page is freed back to the buddy.
-> + *
-> + * Only selected page types support this flag (see page_movable_ops()) and
-> + * the flag might be used in other context for other pages. Always use
-> + * page_has_movable_ops() instead.
-> + */
-> +TESTPAGEFLAG(MovableOps, movable_ops, PF_NO_TAIL);
-> +SETPAGEFLAG(MovableOps, movable_ops, PF_NO_TAIL);
-> +#else /* !CONFIG_MIGRATION */
-> +TESTPAGEFLAG_FALSE(MovableOps, movable_ops);
-> +SETPAGEFLAG_NOOP(MovableOps, movable_ops);
-> +#endif /* CONFIG_MIGRATION */
-> +
-> +/**
-> + * page_has_movable_ops - test for a movable_ops page
-> + * @page The page to test.
-> + *
-> + * Test whether this is a movable_ops page. Such pages will stay that
-> + * way until freed.
-> + *
-> + * Returns true if this is a movable_ops page, otherwise false.
-> + */
-> +static inline bool page_has_movable_ops(const struct page *page)
+> +function vmm_default_opts()
 > +{
-> +	return PageMovableOps(page) &&
-> +	       (PageOffline(page) || PageZsmalloc(page));
+> +	echo ${vmm_optname[$(vmm_get_target),default_opts]}
 > +}
-> +
-
-The following fixup on top:
-
- From 3a52911a299d3328d9fa2aeba00170240795702d Mon Sep 17 00:00:00 2001
-From: David Hildenbrand <david@redhat.com>
-Date: Fri, 11 Jul 2025 11:57:43 +0200
-Subject: [PATCH] fixup: "mm: convert "movable" flag in page->mapping to a page
-  flag"
-
-We're missing a ":".
-
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
-  include/linux/page-flags.h | 2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 970600d79daca..8e4d6eda8a8d6 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -1150,7 +1150,7 @@ PAGEFLAG_FALSE(MovableOpsIsolated, movable_ops_isolated);
-  
-  /**
-   * page_has_movable_ops - test for a movable_ops page
-- * @page The page to test.
-+ * @page: The page to test.
-   *
-   * Test whether this is a movable_ops page. Such pages will stay that
-   * way until freed.
--- 
-2.50.1
 
 
--- 
-Cheers,
+This causes now a problem on s390x:
 
-David / dhildenb
+https://gitlab.com/kvm-unit-tests/kvm-unit-tests/-/jobs/10604334029#L591
+
+scripts/common.bash: line 56: vmm_defaults_opts: command not found
+
+... any ideas how to fix it?
+
+  Thomas
 
 
