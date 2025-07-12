@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-10227-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10225-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6995BB02DF6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:29:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2366B02DF0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:29:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8f0Nnzz3bTf;
-	Sun, 13 Jul 2025 09:26:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8d1y1Fz3bqM;
+	Sun, 13 Jul 2025 09:26:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752362802;
-	cv=none; b=Yva+E6lxED0E/feIkA8sN0qDCmqlcq3QbKgUUpo81PPvNx8eS8aOqAXdlyneSzNyik+bvASnucefcVWJ82r3PTFs90BDE5VpG3F7LUwwZ3YqL2W00N7YAmX+zkB1nmT/cv7jgHinqd/7Tp8MSjQJ/uEJxZrwURk9ypqP/9X+mRKFov42DBVAAxuIMS6RBSlZgxPjK9fPZjYvaKoe7c3UapZ18D5BicxfdJlaYOFT1goaxU3xx4KTxGsLTaJK8XUepLw9sLxeEZfOA3yrop6dmMxMApqYYbtHAtUlR8DlDfsxAh90DK8auec2FZvDpudbOm9Opb8ud9kpSm4OfQBGPg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752362801;
+	cv=none; b=n54NescEghYAS1QDJhSy97zKR6SboH8N71awddv0YOLRB2OEnftG8rK+m1A4qAu8BCLvh+Qnx+UuKgkfT7EmxIKW3JsqewMRTuWefJKzsToi3RC3/2am5nXSIW2SCKFiY08hONhw+mcjn/6vsHmfYnE5zz3ct6BLZORv2OHIEOr1SBbhqAvYCgIWfK56pNEiRg983Wzk2V6e8VQqNoSyeM9KJjstKDH6JMwvQVmNjz6nkqswVtKR7RGoKrQPEU+xTQCM3om6+0A9tgmbC2MnIWOmmWVvlrlrb+5BwlJzo2C/hk32U57/jRWkz8+RxbfAs5lJL2jLNrSEdsbbf4rkqw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752362802; c=relaxed/relaxed;
-	bh=Mtm5lo+g8ZX2LiJ5ezp1zW6EHD2ya7LYJDCuds37EjM=;
+	t=1752362801; c=relaxed/relaxed;
+	bh=zUlm4PeJQztSEdAXDcmnmQt+VbS5kv2O484A8pafujA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IovTyul5F4ajm/22vd6Wll7KKUrTytsDMQV8u554oU5DY1Iss6M7WTfMDi9SjjEDgNiYqB138FjfXWXXVAS67Rr3/2S2oKZwW9kRnjPkYzci3cEF/Q6VPJ05UAw096G0Nxcc1t/99QEUtbOoqvyQ3jHWwraItpg73Rr88QYRNPeumxBgtyP+zCwDyU3rLkmqIfrR3SwGJLMGjE4YbQhTsZKsHpQjQx3kefm7z4vE8JHX5c0bDuWKeynM4L8bfTfIJn0sYgqeE6GI2EV9ATUshOhDVq8cOCC/QJzAIe5eA38HQ1KbqBOmHN64SYrfhKf+BSStr8fEST3H+DBukNwGsQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zj8p+TOd; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=fSJUR58yBju9qsmUbUL8DrabL0iY8sgKpA7vEWO5DXfabqARUo/ROcwHMwyfyFjRBVJTqIm4JTcKQp0O61LS7TGMR0HFIOxDLAN6LNe2fUNl87bVpNIxwceTxDnmqA6sC1BEoKkMfQyNlQJlZbDfweIFvMQ7h+xJFIEaHhpw529VzAE3HZmX1rTd4B+Af2KnNoYKVwdIBj1CjtLdySkiUb4iV2weeIEs08x7IKDIjhdoP0XzrNa42dFT4YcnzZKf4aJg7tKXaNMettCrpn7G3FOEAeQw0z5up+FJvP2z8aPFnYEopHP+IclHFQWlnAPS5O6gQScebxZkJ4MegNHVYA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fX0E8o1k; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zj8p+TOd;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fX0E8o1k;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8W1y0Bz3blg
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8V12QNz3brC
 	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 09:26:34 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4FA385C556E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9435844A09;
 	Sat, 12 Jul 2025 23:26:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C7AC4CEF1;
-	Sat, 12 Jul 2025 23:26:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25260C4CEF7;
+	Sat, 12 Jul 2025 23:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1752362792;
-	bh=oVRGZdE8JlbqTZ+/Vc8lJfxP7t8h25c1QhOzJeVqedA=;
+	bh=yc9nP0AyrYTSdnZBDBrGS14R619T+8Od6p+X/EDi6Wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zj8p+TOdVPu5lLHwjDdEJchVLZkO8F/qQjiyuD+eFQGiCyDQXvpReA3aDYR+mQdXN
-	 KP5SpOK4fB3lqKTD1miviKDDEE0Rh1/t2wj68FTUNFC3sg/5fiECZziA+PJrcihbcg
-	 EO2THy+IhzDgyjilv+vvjzNXCOgoFE/oeN39RE/9xR7cJuXS8JgPpnNegYYtrAHJn/
-	 BP8LivY5YkQlIiBVMIrbibin415AHX10jV1s3KUYIvwDc/U1pvHnZVHEgqZskmXPls
-	 60wYxMyihVBMQ31CfcCFnnUSBzCLxCm2+RHUrC7Fd2ORRkenalB5pgZEw3rJ9WKA4R
-	 jV4MTcMcL6DBQ==
+	b=fX0E8o1k57ipPAfx4Uzk0gPIv9zXrwOi7EklV1MTTwN4CCofX0j1AgCETrLo46xpR
+	 Fb/HAiIDk0Q2P043QlgVPWAz6ctV/JLTH2RJwvNw1pAU/2HI7xBrHJ7zDBInTtl6pG
+	 mzEoqG3qquK7rGUpI1L2ysFaTLshgPnAeVAFNEt+PnuRxP2jzd7FmS0aJqJE6xV0G4
+	 UAiLiC0Y1UK5bxhY8SxwNggognGdbLAPtfPBg71+lwZI1/NRIuLrUi/bGrX7oCfzlo
+	 jkJE8G03Pxs0HpkZAiPARUZk5aGWGElD8l3JOFy2Vc19sZYmnKIZ8d0fCNYAFiC01z
+	 WBJQa9HaiH7NQ==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 25/26] ipv6: Switch to higher-level SHA-1 functions
-Date: Sat, 12 Jul 2025 16:23:16 -0700
-Message-ID: <20250712232329.818226-26-ebiggers@kernel.org>
+Subject: [PATCH 26/26] lib/crypto: sha1: Remove low-level functions from API
+Date: Sat, 12 Jul 2025 16:23:17 -0700
+Message-ID: <20250712232329.818226-27-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250712232329.818226-1-ebiggers@kernel.org>
 References: <20250712232329.818226-1-ebiggers@kernel.org>
@@ -75,99 +75,163 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-There's now a proper SHA-1 API that follows the usual conventions for
-hash function APIs: sha1_init(), sha1_update(), sha1_final(), sha1().
-The only remaining user of the older low-level SHA-1 API,
-sha1_init_raw() and sha1_transform(), is ipv6_generate_stable_address().
-I'd like to remove this older API, which is too low-level.
+Now that there are no users of the low-level SHA-1 interface, remove it.
 
-Unfortunately, ipv6_generate_stable_address() does in fact skip the
-SHA-1 finalization for some reason.  So the values it computes are not
-standard SHA-1 values, and it sort of does want the low-level API.
+Specifically:
 
-Still, it's still possible to use the higher-level functions sha1_init()
-and sha1_update() to get the same result, provided that the resulting
-state is used directly, skipping sha1_final().
-
-So, let's do that instead.  This will allow removing the low-level API.
+- Remove SHA1_DIGEST_WORDS (no longer used)
+- Remove sha1_init_raw() (no longer used)
+- Rename sha1_transform() to sha1_block_generic() and make it static
+- Move SHA1_WORKSPACE_WORDS into lib/crypto/sha1.c
 
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- net/ipv6/addrconf.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ include/crypto/sha1.h | 10 -------
+ lib/crypto/sha1.c     | 63 ++++++++++++-------------------------------
+ 2 files changed, 17 insertions(+), 56 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index d0e5b94c10af4..a4d47044f4557 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -3336,12 +3336,11 @@ static bool ipv6_reserved_interfaceid(struct in6_addr address)
- static int ipv6_generate_stable_address(struct in6_addr *address,
- 					u8 dad_count,
- 					const struct inet6_dev *idev)
- {
- 	static DEFINE_SPINLOCK(lock);
--	static __u32 digest[SHA1_DIGEST_WORDS];
--	static __u32 workspace[SHA1_WORKSPACE_WORDS];
-+	static struct sha1_ctx sha_ctx;
+diff --git a/include/crypto/sha1.h b/include/crypto/sha1.h
+index 162a529ec8413..34658f4d76e3b 100644
+--- a/include/crypto/sha1.h
++++ b/include/crypto/sha1.h
+@@ -24,20 +24,10 @@ struct sha1_state {
+ 	u32 state[SHA1_DIGEST_SIZE / 4];
+ 	u64 count;
+ 	u8 buffer[SHA1_BLOCK_SIZE];
+ };
  
- 	static union {
- 		char __data[SHA1_BLOCK_SIZE];
- 		struct {
- 			struct in6_addr secret;
-@@ -3353,36 +3352,40 @@ static int ipv6_generate_stable_address(struct in6_addr *address,
- 
- 	struct in6_addr secret;
- 	struct in6_addr temp;
- 	struct net *net = dev_net(idev->dev);
- 
--	BUILD_BUG_ON(sizeof(data.__data) != sizeof(data));
+-/*
+- * An implementation of SHA-1's compression function.  Don't use in new code!
+- * You shouldn't be using SHA-1, and even if you *have* to use SHA-1, this isn't
+- * the correct way to hash something with SHA-1 (use crypto_shash instead).
+- */
+-#define SHA1_DIGEST_WORDS	(SHA1_DIGEST_SIZE / 4)
+-#define SHA1_WORKSPACE_WORDS	16
+-void sha1_init_raw(__u32 *buf);
+-void sha1_transform(__u32 *digest, const char *data, __u32 *W);
 -
- 	if (idev->cnf.stable_secret.initialized)
- 		secret = idev->cnf.stable_secret.secret;
- 	else if (net->ipv6.devconf_dflt->stable_secret.initialized)
- 		secret = net->ipv6.devconf_dflt->stable_secret.secret;
- 	else
- 		return -1;
+ /* State for the SHA-1 compression function */
+ struct sha1_block_state {
+ 	u32 h[SHA1_DIGEST_SIZE / 4];
+ };
  
- retry:
- 	spin_lock_bh(&lock);
+diff --git a/lib/crypto/sha1.c b/lib/crypto/sha1.c
+index 89831f7f27793..87a76bf97f445 100644
+--- a/lib/crypto/sha1.c
++++ b/lib/crypto/sha1.c
+@@ -49,11 +49,11 @@ static const struct sha1_block_state sha1_iv = {
+ #else
+   #define setW(x, val) (W(x) = (val))
+ #endif
  
--	sha1_init_raw(digest);
-+	sha1_init(&sha_ctx);
+ /* This "rolls" over the 512-bit array */
+-#define W(x) (array[(x)&15])
++#define W(x) (workspace[(x)&15])
+ 
+ /*
+  * Where do we get the source from? The first 16 iterations get it from
+  * the input data, the next mix it from the 512-bit array.
+  */
+@@ -70,38 +70,24 @@ static const struct sha1_block_state sha1_iv = {
+ #define T_16_19(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, (((C^D)&B)^D) , 0x5a827999, A, B, C, D, E )
+ #define T_20_39(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, (B^C^D) , 0x6ed9eba1, A, B, C, D, E )
+ #define T_40_59(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, ((B&C)+(D&(B^C))) , 0x8f1bbcdc, A, B, C, D, E )
+ #define T_60_79(t, A, B, C, D, E) SHA_ROUND(t, SHA_MIX, (B^C^D) ,  0xca62c1d6, A, B, C, D, E )
+ 
+-/**
+- * sha1_transform - single block SHA1 transform (deprecated)
+- *
+- * @digest: 160 bit digest to update
+- * @data:   512 bits of data to hash
+- * @array:  16 words of workspace (see note)
+- *
+- * This function executes SHA-1's internal compression function.  It updates the
+- * 160-bit internal state (@digest) with a single 512-bit data block (@data).
+- *
+- * Don't use this function.  SHA-1 is no longer considered secure.  And even if
+- * you do have to use SHA-1, this isn't the correct way to hash something with
+- * SHA-1 as this doesn't handle padding and finalization.
+- *
+- * Note: If the hash is security sensitive, the caller should be sure
+- * to clear the workspace. This is left to the caller to avoid
+- * unnecessary clears between chained hashing operations.
+- */
+-void sha1_transform(__u32 *digest, const char *data, __u32 *array)
++#define SHA1_WORKSPACE_WORDS 16
 +
- 	memset(&data, 0, sizeof(data));
--	memset(workspace, 0, sizeof(workspace));
- 	memcpy(data.hwaddr, idev->dev->perm_addr, idev->dev->addr_len);
- 	data.prefix[0] = address->s6_addr32[0];
- 	data.prefix[1] = address->s6_addr32[1];
- 	data.secret = secret;
- 	data.dad_count = dad_count;
-+	sha1_update(&sha_ctx, (const u8 *)&data, sizeof(data));
++static void sha1_block_generic(struct sha1_block_state *state,
++			       const u8 data[SHA1_BLOCK_SIZE],
++			       u32 workspace[SHA1_WORKSPACE_WORDS])
+ {
+ 	__u32 A, B, C, D, E;
+ 	unsigned int i = 0;
  
--	sha1_transform(digest, data.__data, workspace);
+-	A = digest[0];
+-	B = digest[1];
+-	C = digest[2];
+-	D = digest[3];
+-	E = digest[4];
++	A = state->h[0];
++	B = state->h[1];
++	C = state->h[2];
++	D = state->h[3];
++	E = state->h[4];
+ 
+ 	/* Round 1 - iterations 0-16 take their input from 'data' */
+ 	for (; i < 16; ++i)
+ 		T_0_15(i, A, B, C, D, E);
+ 
+@@ -119,39 +105,24 @@ void sha1_transform(__u32 *digest, const char *data, __u32 *array)
+ 
+ 	/* Round 4 */
+ 	for (; i < 80; ++i)
+ 		T_60_79(i, A, B, C, D, E);
+ 
+-	digest[0] += A;
+-	digest[1] += B;
+-	digest[2] += C;
+-	digest[3] += D;
+-	digest[4] += E;
+-}
+-EXPORT_SYMBOL(sha1_transform);
 -
-+	/*
-+	 * Note that the SHA-1 finalization is omitted here, and the digest is
-+	 * pulled directly from the internal SHA-1 state (making it incompatible
-+	 * with standard SHA-1).  Unusual, but technically okay since the data
-+	 * length is fixed and is a multiple of the SHA-1 block size.
-+	 */
-+	static_assert(sizeof(data) % SHA1_BLOCK_SIZE == 0);
- 	temp = *address;
--	temp.s6_addr32[2] = (__force __be32)digest[0];
--	temp.s6_addr32[3] = (__force __be32)digest[1];
-+	temp.s6_addr32[2] = (__force __be32)sha_ctx.state.h[0];
-+	temp.s6_addr32[3] = (__force __be32)sha_ctx.state.h[1];
+-/**
+- * sha1_init_raw - initialize the vectors for a SHA1 digest
+- * @buf: vector to initialize
+- */
+-void sha1_init_raw(__u32 *buf)
+-{
+-	buf[0] = 0x67452301;
+-	buf[1] = 0xefcdab89;
+-	buf[2] = 0x98badcfe;
+-	buf[3] = 0x10325476;
+-	buf[4] = 0xc3d2e1f0;
++	state->h[0] += A;
++	state->h[1] += B;
++	state->h[2] += C;
++	state->h[3] += D;
++	state->h[4] += E;
+ }
+-EXPORT_SYMBOL(sha1_init_raw);
  
- 	spin_unlock_bh(&lock);
+ static void __maybe_unused sha1_blocks_generic(struct sha1_block_state *state,
+ 					       const u8 *data, size_t nblocks)
+ {
+ 	u32 workspace[SHA1_WORKSPACE_WORDS];
  
- 	if (ipv6_reserved_interfaceid(temp)) {
- 		dad_count++;
+ 	do {
+-		sha1_transform(state->h, data, workspace);
++		sha1_block_generic(state, data, workspace);
+ 		data += SHA1_BLOCK_SIZE;
+ 	} while (--nblocks);
+ 
+ 	memzero_explicit(workspace, sizeof(workspace));
+ }
 -- 
 2.50.1
 
