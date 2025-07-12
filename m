@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-10223-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE82BB02DE7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4215EB02DD7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:28:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8c3N0tz3bp7;
-	Sun, 13 Jul 2025 09:26:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8Z3LwJz3btP;
+	Sun, 13 Jul 2025 09:26:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752362800;
-	cv=none; b=QlvE3gney7IVnWkwbxIlIGg9Ng1Z+BlKEWowuadoW8Raege9TABHay9g7/21PE1x974jykFFkmK+zfLh6RtVObr3D2oQAnWp7c8RsqBHReq1b91vDbamvrDawEeIVj+xvV2sF996JR0zhsIWdrfElDI84YPRpiBh1jllyP0qduA4Kdno9MFg9ojxNyHZxoK27hWJj/OmvnkXANNlOfCNPyaL0nzEjiBHZtahDlzeKIRB7DpxafxEvOQDfSoRvCk1zZUy000lL78vhDfyqEBoMjLOwQDSdYibK4URM+RHdDkLtZ7jHuwih/ByzAOZAY6eQnoxFOy1a4Xe+8awd3vvBw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752362798;
+	cv=none; b=FasMav6rh5gVkenLzc30NhibtuJtHEamqb5A02S0awMgeOwypvc0IMC3ioMp+qTHYG7a3p9LaVjW+VT7emT2oNgWK4UUNuqoY4njYP50HH3PHCcd8uSCd63sE/qyZePSF/YWka63JeNgAPy3qSYWggoRhh7+riKCAkOwtFuBQHusIiVUKmDU6K6sBHvtWCxVQz0035zeEI5or3OSEXzvHmLFprWJRb0SGhqe5IPPupjLqfE0XUqk9y/EXSxmM7Ze0b9h1KO4k8stex9tobE9TdhziA17UmQUiY3EUlRzLS7R+4xKTjRg6T3tmf2cxW5aar7gMfXSaUekmPDVfGJqJA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752362800; c=relaxed/relaxed;
-	bh=nuX1ud78/VxRBT7LeIurfx88B3B30dpQ41jGp+WBhmo=;
+	t=1752362798; c=relaxed/relaxed;
+	bh=zx0KRsr6Z94mFqcy8f/S8MW+ZSAXG2w2PHmp+/LpmB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZoa/sFzybiMJIY5Io8RhUamsTj1XFsEYvqRbPsP9eY9ucD0gLyOZmBqsdbU540htfgvMn/o7juXf0ZFK0glXZEx1mNcSnWJA7RKBNba+QcRkAsWehgFXBz3RxEb7U3hxxyvBUhoYWVVnsM04n6CLV4Q8xVCUpAl/cIrfiALW5qI8Yb+vVQyrqcjcODgaTaava6r4hdRlDOSipvTofQWFNIoC7Kk84Z0JNmfTJTcoN8fml8GZtCEFpT4ERQXTaUEkrvBUmTJUVSby2MSX6/IKQHzdcaLJAkXDRlLS6S8/dQpslAgAzQxNwuT08kVoeVUBCGnKRB+l8cnP9OKha6Wjw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jHOgR8/e; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=PQMDK65ti7xWTgHwbD/KjzZU/gVh6mR110jhJv9OEppo3l6W4Adkja5swvEKHAYroicaLkTgWmlWzkhNhzNtQABgS2HIKwxiZX7AnimRCOmIB02qv3As+BVGFSkYSa9ZRvx7jdltNIkxpXR93yHX3nZ3KhbGUfMSK85rKPeUvNC/31IiCFu1Nq//5Gz8+IJcoMlMWgpQksFsCmMqKymIIHCFJu/oA/AQ5pbtQt8xmYm8lEeryig/ofveA+ZzGuxlnitAdCM3QtS5ja/mJrmdTttbMPnKbMmV803xm3puYD1bJabTx0kXjk41vw31h2rC+SSkXF0YPp+RDS95953Tlg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IPqiN3o3; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jHOgR8/e;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IPqiN3o3;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8T2myMz3bqh
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8S4fjtz3bpL
 	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 09:26:32 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 528005C558A;
+	by dfw.source.kernel.org (Postfix) with ESMTP id C44DE5C5586;
 	Sat, 12 Jul 2025 23:26:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9477C4CEF8;
-	Sat, 12 Jul 2025 23:26:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D7EC4CEF7;
+	Sat, 12 Jul 2025 23:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1752362790;
-	bh=xZzl/xlzSt8gsN4p0nytxwCdAqxySD8jh31PuuGyOBQ=;
+	bh=CDCYvw9FzfgzLkUqSoVUscxv3AohvreIQRjFCF8Awe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHOgR8/eAUWb+TKPF25TOK6Sliz7m1aUYz+j/MLYKMsxt4rKWRZJGo5hPIHSV64zn
-	 7of82OAPvifGLUpuHuFDsjdQA92aH7ZkFpmPXS8OiM9eZNvip/CMvh2gfWUfpsJ3l4
-	 CkTk+rCEkdibLqaQH8fh3UiGr6mwjUtiZs07/Qkt+YZg1C0SccjXKZMsmT6RS+7pet
-	 /YF/SspJy/r11r/BVbRD6U5wKlFEU4eWNfug2GDWZgxrSSqch+PUOQAWyZXRrUKu2z
-	 Vu/ThPYn8ewEdUblbxsMvgsAY7zmfj03U8oqUd9gKkQTaGl7/Z/+oEZXpbIf/sMfr8
-	 r38CY8t/o97kQ==
+	b=IPqiN3o3F2CcnU/lSiSEcezOvpLqcfESj5gdIyQXIgp9TcpJNc4+SEOkjA/C+spGj
+	 Zfst73HKBkJ3RTDUfFDKvQl7Mmw5pFdQYEglIXAhZC+EODLHKRSiXTX9qIZsb0r+6+
+	 1IfmLcXJraIBl0WHAvq6RVh9qLNWkjfrS6B3lhzdE9bVdL3PclsJIcFWKGGHADQexc
+	 oT0UaUvZGa0iS8nC0/6k8yEYGLRNGqkkHiXlesa3+yHAYn4wA3zfIhdu47yh0jD44S
+	 7YhcfQhrICpQD72yjxbbQ4I94wj4xoa+kWSTHNjoYKh6ovpvEJkyWDNQRcS909kSeF
+	 7YLhXtd85zZdA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 21/26] drm/bridge: it6505: Use SHA-1 library instead of crypto_shash
-Date: Sat, 12 Jul 2025 16:23:12 -0700
-Message-ID: <20250712232329.818226-22-ebiggers@kernel.org>
+Subject: [PATCH 22/26] nfc: s3fwrn5: Use SHA-1 library instead of crypto_shash
+Date: Sat, 12 Jul 2025 16:23:13 -0700
+Message-ID: <20250712232329.818226-23-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250712232329.818226-1-ebiggers@kernel.org>
 References: <20250712232329.818226-1-ebiggers@kernel.org>
@@ -85,97 +85,74 @@ faster.
 
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- drivers/gpu/drm/bridge/Kconfig      |  3 +--
- drivers/gpu/drm/bridge/ite-it6505.c | 33 ++---------------------------
- 2 files changed, 3 insertions(+), 33 deletions(-)
+ drivers/nfc/s3fwrn5/Kconfig    |  3 +--
+ drivers/nfc/s3fwrn5/firmware.c | 17 +----------------
+ 2 files changed, 2 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
-index b9e0ca85226a6..89ac820a13e1e 100644
---- a/drivers/gpu/drm/bridge/Kconfig
-+++ b/drivers/gpu/drm/bridge/Kconfig
-@@ -118,12 +118,11 @@ config DRM_ITE_IT6505
- 	select DRM_DISPLAY_HDCP_HELPER
- 	select DRM_DISPLAY_HELPER
- 	select DRM_DISPLAY_DP_AUX_BUS
- 	select DRM_KMS_HELPER
- 	select EXTCON
+diff --git a/drivers/nfc/s3fwrn5/Kconfig b/drivers/nfc/s3fwrn5/Kconfig
+index 8a6b1a79de253..96386b73fa2b6 100644
+--- a/drivers/nfc/s3fwrn5/Kconfig
++++ b/drivers/nfc/s3fwrn5/Kconfig
+@@ -1,10 +1,9 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config NFC_S3FWRN5
+ 	tristate
 -	select CRYPTO
 -	select CRYPTO_HASH
 +	select CRYPTO_LIB_SHA1
  	help
- 	  ITE IT6505 DisplayPort bridge chip driver.
+ 	  Core driver for Samsung S3FWRN5 NFC chip. Contains core utilities
+ 	  of chip. It's intended to be used by PHYs to avoid duplicating lots
+ 	  of common code.
  
- config DRM_LONTIUM_LT8912B
- 	tristate "Lontium LT8912B DSI/HDMI bridge"
-diff --git a/drivers/gpu/drm/bridge/ite-it6505.c b/drivers/gpu/drm/bridge/ite-it6505.c
-index 1383d1e21afea..319d956c0a28c 100644
---- a/drivers/gpu/drm/bridge/ite-it6505.c
-+++ b/drivers/gpu/drm/bridge/ite-it6505.c
-@@ -19,11 +19,11 @@
- #include <linux/regulator/consumer.h>
- #include <linux/types.h>
- #include <linux/wait.h>
- #include <linux/bitfield.h>
+diff --git a/drivers/nfc/s3fwrn5/firmware.c b/drivers/nfc/s3fwrn5/firmware.c
+index 781cdbcac104c..64d61b2a715ae 100644
+--- a/drivers/nfc/s3fwrn5/firmware.c
++++ b/drivers/nfc/s3fwrn5/firmware.c
+@@ -6,11 +6,10 @@
+  * Robert Baldyga <r.baldyga@samsung.com>
+  */
  
+ #include <linux/completion.h>
+ #include <linux/firmware.h>
 -#include <crypto/hash.h>
-+#include <crypto/sha1.h>
+ #include <crypto/sha1.h>
  
- #include <drm/display/drm_dp_helper.h>
- #include <drm/display/drm_hdcp_helper.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
-@@ -2105,39 +2105,10 @@ static void it6505_hdcp_part1_auth(struct it6505 *it6505)
- 			HDCP_TRIGGER_START);
+ #include "s3fwrn5.h"
+ #include "firmware.h"
  
- 	it6505->hdcp_status = HDCP_AUTH_GOING;
- }
- 
--static int it6505_sha1_digest(struct it6505 *it6505, u8 *sha1_input,
--			      unsigned int size, u8 *output_av)
--{
--	struct shash_desc *desc;
+@@ -409,31 +408,17 @@ bool s3fwrn5_fw_check_version(const struct s3fwrn5_fw_info *fw_info, u32 version
+ int s3fwrn5_fw_download(struct s3fwrn5_fw_info *fw_info)
+ {
+ 	struct device *dev = &fw_info->ndev->nfc_dev->dev;
+ 	struct s3fwrn5_fw_image *fw = &fw_info->fw;
+ 	u8 hash_data[SHA1_DIGEST_SIZE];
 -	struct crypto_shash *tfm;
--	int err;
--	struct device *dev = it6505->dev;
+ 	u32 image_size, off;
+ 	int ret;
+ 
+ 	image_size = fw_info->sector_size * fw->image_sectors;
+ 
+ 	/* Compute SHA of firmware data */
 -
 -	tfm = crypto_alloc_shash("sha1", 0, 0);
 -	if (IS_ERR(tfm)) {
--		dev_err(dev, "crypto_alloc_shash sha1 failed");
+-		dev_err(dev, "Cannot allocate shash (code=%pe)\n", tfm);
 -		return PTR_ERR(tfm);
 -	}
--	desc = kzalloc(sizeof(*desc) + crypto_shash_descsize(tfm), GFP_KERNEL);
--	if (!desc) {
--		crypto_free_shash(tfm);
--		return -ENOMEM;
--	}
 -
--	desc->tfm = tfm;
--	err = crypto_shash_digest(desc, sha1_input, size, output_av);
--	if (err)
--		dev_err(dev, "crypto_shash_digest sha1 failed");
+-	ret = crypto_shash_tfm_digest(tfm, fw->image, image_size, hash_data);
 -
 -	crypto_free_shash(tfm);
--	kfree(desc);
--	return err;
--}
--
- static int it6505_setup_sha1_input(struct it6505 *it6505, u8 *sha1_input)
- {
- 	struct device *dev = it6505->dev;
- 	u8 binfo[2];
- 	int down_stream_count, err, msg_count = 0;
-@@ -2203,11 +2174,11 @@ static bool it6505_hdcp_part2_ksvlist_check(struct it6505 *it6505)
- 	if (i <= 0) {
- 		dev_err(dev, "SHA-1 Input length error %d", i);
- 		return false;
- 	}
+-	if (ret) {
+-		dev_err(dev, "Cannot compute hash (code=%d)\n", ret);
+-		return ret;
+-	}
++	sha1(fw->image, image_size, hash_data);
  
--	it6505_sha1_digest(it6505, it6505->sha1_input, i, (u8 *)av);
-+	sha1(it6505->sha1_input, i, (u8 *)av);
- 	/*1B-05 V' must retry 3 times */
- 	for (retry = 0; retry < 3; retry++) {
- 		err = it6505_get_dpcd(it6505, DP_AUX_HDCP_V_PRIME(0), (u8 *)bv,
- 				      sizeof(bv));
+ 	/* Firmware update process */
+ 
+ 	dev_info(dev, "Firmware update: %s\n", fw_info->fw_name);
  
 -- 
 2.50.1
