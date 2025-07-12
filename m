@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-10207-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10208-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55441B02DA7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:27:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CF2B02DAA
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:27:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8N3wvTz3blc;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8N5RJqz3bm3;
 	Sun, 13 Jul 2025 09:26:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752362788;
-	cv=none; b=b5Z/BqrPzxRpas1Wl0qqINp+rMmhVp1JkP5CVewfconHZYrukzB2cKci3f3vbp6g2dT1yUngzF7mwG1tomBYdiWzPU2P0xRBlNICB/bYv1gXvG1lNCDbH4MqM9+7wZi0aaV4jmVwZ1HRbd+46cHw6HJTfCu0D2alzbOuNk6030eO3INTnuxIPujLk9efG4Kk4TTwHJPCcEYbzgZNc2mxZ21vVU3QsoRSov4QQGhvXrbNx/Y7dTbE25zkjiuDDesoskMIJCQ+5EvrrQq/0pH7nP8tAu5uUw7Blw4qZmM3gm3i2k3Pj1IzC2++XX+kBNb4yRfRTouYCwhfbiM4Zxlhdw==
+	cv=none; b=Ecmi93P2huhHCamr9rZ2fHZ3IuhAWrS+SckH3drO/E1uycGE/+IQrs5vG7jtZtfzYnPqwrNsppSOCFk5STp+eZlVnkj4vKSEnYEhonGF3++nK8ccP6FI/AP4y9qe8xHInLannIjbNEu+oFAk7wyqMgxuktGiGAeunIlhLxR5GDCxq3vHSowld//L/erLp//yCQGusDjy9WrKDgxUgNxC2aIL3dWBGaPJ5O2tuPpHYrANjdFd1fzP97rNdBTFvLJNcYzThY+qxWT1/+HpG+gkLe3ARDYILrwk2g8mIyu8kz1FEltCPL1d+BSAFJ18fUFVqg9NH4+DcI4BJzL6qjT1QA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1752362788; c=relaxed/relaxed;
-	bh=IjtML0TrbQ6Mne9IOubMaoGP9UHhnYHbKnbqj6FjkFE=;
+	bh=E0NBiZ6WLxLxF7Gi1K9zQFBAmoLGzX9ivZTRhCFh3mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2kie+wXTwIKndwNl7h13QEaGrcGLLwNagiCzomI6PtO+4iY5To5r7L9012ZWmMkcWQ7M8VDC657HRPL+JAL117nrabuPYCy1iDOheRr6+w9CCIxGu3qDc0+bG+s7VsI9UrbwHEMAKA2VKLv0KxBSRPlER6HVkvfFWCxWnHfEWwu0o6W1jle4es40F0CwhgJXMQCWPMDDQ/Z9qRxrbJinjO/pf527Xe/qSUYMauiIsm79dJk+DLbwI/Se32OgahbHXTYMF7cWHhOhz42xIaPrc4ZjlfQNNnQwByjOnMmzSJqun7iwYEN0lKB+lB1wNZH2BFsx6QYoTYTbshKPgCWRA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ePEcZTid; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=iSZ+Es85x8ACEHMsaojjZ7gEFd30MFAZs+b4V9GrkDBMjfQJCwgcVjmOQydb5aD++RhUcEvxDMbuojn9MMif5hz/q4S6nCmnB9u+twjnIWJ4bP413viqxqWMpVT7S8dxsMQe9LDNrbAZB4qfB3L6k3muvhUC4bQMNF6TgsD7RVpsmmTkvhjIVBHXHCSNZ+8wXPNUzQLGnf6qbDdtEVvWhMQf+yfUAcf/E3sqI9Fxhu22mu9XjXmLt/uHB0SiDcTQAKnfACogIO+muKGEDtWFW3tTJKlmDgh57XgUe3FafBvRnVMw9C/zoBPSdilWkJzQiNXnwvhBb1sXVNubU5BAHA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a45xcfmJ; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ePEcZTid;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=a45xcfmJ;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8J1mGKz30VZ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 09:26:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8J3zcgz30W5
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 09:26:24 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 47DC346B4A;
+	by sea.source.kernel.org (Postfix) with ESMTP id C403C46A4C;
 	Sat, 12 Jul 2025 23:26:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E75C4CEF8;
-	Sat, 12 Jul 2025 23:26:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7B8C4CEEF;
+	Sat, 12 Jul 2025 23:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1752362782;
-	bh=p3kE84TCz0VQuyy8H041drVH/O+OxCoctuuVLXqPVR4=;
+	bh=AlEfsWshuJVJoEqIWDUHgVA6EIWkvwPPCzh+qlha/7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePEcZTid0NAvCm5AHIwLUw51pnGSlOVO3QO2ZZZKukCAL0jPAivjBViMyqd0cL+hG
-	 PneEbJdkasyj4e93lFgzizFcnxdnYEpdgvoAmia9YkahWKua7t+qOKdzZU5XwRsWbT
-	 0fMYEfl53qEmj9L+Qnjj9HKk2E77XueRCs2gv3cOpk+PS31Ipuv5WiqArGmWFoMY6e
-	 K09W2ZJOvtzDwv3BOyhSwP8L5q3NVmdi/8Dtl0CcbqNC8lkNOPjHXpxG1QCulGsKVi
-	 OtbtsNJ9Jcot1qoCCfys5OcHVXjhKc4elRBw329mjauV/R9FhqeK5KM052hbqr2du0
-	 2X8QRQDnj4fXw==
+	b=a45xcfmJxSdS2gmP8Arke0HTOR8xVfTQZ3wbcilteIj4ntdMDu9slJhe//M/jB8bX
+	 fKSvKhuDxUW7NqL2XbNdHzN125wzKynYOGdG7BPCKKw+vyIsz+ymx2YzA/BeKz3sft
+	 Kg67dJX9xNYEJIECVlK3C7vtWISPqdOsa2nbQu1D6IcLd/C2oEYpgxz7WotH+AM2/0
+	 TIQcPsKlVtGLtiEfS0tLHKIGXa/p3BruwzUS3sV5IYNsOKCMTQI58R7TnA/cLSc79q
+	 SNX6M/G5iSJPQJdI0WgB5L6O/2ybDntJkcoDTKsI3N7QRZ1adU2k96AJvsUDUfxHsg
+	 thxXtYqtTspLA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 04/26] lib/crypto: sha1: Add HMAC support
-Date: Sat, 12 Jul 2025 16:22:55 -0700
-Message-ID: <20250712232329.818226-5-ebiggers@kernel.org>
+Subject: [PATCH 05/26] crypto: sha1 - Wrap library and add HMAC support
+Date: Sat, 12 Jul 2025 16:22:56 -0700
+Message-ID: <20250712232329.818226-6-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250712232329.818226-1-ebiggers@kernel.org>
 References: <20250712232329.818226-1-ebiggers@kernel.org>
@@ -80,316 +80,364 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Add HMAC support to the SHA-1 library, again following what was done for
-SHA-2.  Besides providing the basis for a more streamlined "hmac(sha1)"
-shash, this will also be useful for multiple in-kernel users such as
-net/sctp/auth.c, net/ipv6/seg6_hmac.c, and
-security/keys/trusted-keys/trusted_tpm1.c.  Those are currently using
-crypto_shash, but using the library functions would be much simpler.
+Like I did for crypto/sha512.c, rework crypto/sha1_generic.c (renamed to
+crypto/sha1.c) to simply wrap the normal library functions instead of
+accessing the low-level block function directly.  Also add support for
+HMAC-SHA1, again just wrapping the library functions.
+
+Since the replacement crypto_shash algorithms are implemented using the
+(potentially arch-optimized) library functions, give them driver names
+ending with "-lib" rather than "-generic".  Update crypto/testmgr.c and
+an odd driver to take this change in driver name into account.
+
+Note: to see the diff from crypto/sha1_generic.c to crypto/sha1.c, view
+this commit with 'git show -M10'.
 
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- include/crypto/sha1.h | 118 ++++++++++++++++++++++++++++++++++++++++++
- lib/crypto/sha1.c     | 106 ++++++++++++++++++++++++++++++++++++-
- 2 files changed, 222 insertions(+), 2 deletions(-)
+ crypto/Makefile           |   2 +-
+ crypto/sha1.c             | 135 ++++++++++++++++++++++++++++++++++++++
+ crypto/sha1_generic.c     |  87 ------------------------
+ crypto/testmgr.c          |   6 ++
+ drivers/crypto/img-hash.c |   2 +-
+ 5 files changed, 143 insertions(+), 89 deletions(-)
+ create mode 100644 crypto/sha1.c
+ delete mode 100644 crypto/sha1_generic.c
 
-diff --git a/include/crypto/sha1.h b/include/crypto/sha1.h
-index 387f6123a05e8..162a529ec8413 100644
---- a/include/crypto/sha1.h
-+++ b/include/crypto/sha1.h
-@@ -94,6 +94,124 @@ void sha1_final(struct sha1_ctx *ctx, u8 out[SHA1_DIGEST_SIZE]);
-  *
-  * Context: Any context.
-  */
- void sha1(const u8 *data, size_t len, u8 out[SHA1_DIGEST_SIZE]);
- 
-+/**
-+ * struct hmac_sha1_key - Prepared key for HMAC-SHA1
-+ * @istate: private
-+ * @ostate: private
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 816607e0e78ce..9110f708e5a9f 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -73,11 +73,11 @@ obj-$(CONFIG_CRYPTO_HMAC) += hmac.o
+ obj-$(CONFIG_CRYPTO_XCBC) += xcbc.o
+ obj-$(CONFIG_CRYPTO_NULL) += crypto_null.o
+ obj-$(CONFIG_CRYPTO_MD4) += md4.o
+ obj-$(CONFIG_CRYPTO_MD5) += md5.o
+ obj-$(CONFIG_CRYPTO_RMD160) += rmd160.o
+-obj-$(CONFIG_CRYPTO_SHA1) += sha1_generic.o
++obj-$(CONFIG_CRYPTO_SHA1) += sha1.o
+ obj-$(CONFIG_CRYPTO_SHA256) += sha256.o
+ obj-$(CONFIG_CRYPTO_SHA512) += sha512.o
+ obj-$(CONFIG_CRYPTO_SHA3) += sha3_generic.o
+ obj-$(CONFIG_CRYPTO_SM3_GENERIC) += sm3_generic.o
+ obj-$(CONFIG_CRYPTO_STREEBOG) += streebog_generic.o
+diff --git a/crypto/sha1.c b/crypto/sha1.c
+new file mode 100644
+index 0000000000000..00e273b0401db
+--- /dev/null
++++ b/crypto/sha1.c
+@@ -0,0 +1,135 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Crypto API support for SHA-1 and HMAC-SHA1
++ *
++ * Copyright (c) Alan Smithee.
++ * Copyright (c) Andrew McDonald <andrew@mcdonald.org.uk>
++ * Copyright (c) Jean-Francois Dive <jef@linuxbe.org>
++ * Copyright 2025 Google LLC
 + */
-+struct hmac_sha1_key {
-+	struct sha1_block_state istate;
-+	struct sha1_block_state ostate;
++#include <crypto/internal/hash.h>
++#include <crypto/sha1.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++
++const u8 sha1_zero_message_hash[SHA1_DIGEST_SIZE] = {
++	0xda, 0x39, 0xa3, 0xee, 0x5e, 0x6b, 0x4b, 0x0d,
++	0x32, 0x55, 0xbf, 0xef, 0x95, 0x60, 0x18, 0x90,
++	0xaf, 0xd8, 0x07, 0x09
++};
++EXPORT_SYMBOL_GPL(sha1_zero_message_hash);
++
++#define SHA1_CTX(desc) ((struct sha1_ctx *)shash_desc_ctx(desc))
++
++static int crypto_sha1_init(struct shash_desc *desc)
++{
++	sha1_init(SHA1_CTX(desc));
++	return 0;
++}
++
++static int crypto_sha1_update(struct shash_desc *desc,
++			      const u8 *data, unsigned int len)
++{
++	sha1_update(SHA1_CTX(desc), data, len);
++	return 0;
++}
++
++static int crypto_sha1_final(struct shash_desc *desc, u8 *out)
++{
++	sha1_final(SHA1_CTX(desc), out);
++	return 0;
++}
++
++static int crypto_sha1_digest(struct shash_desc *desc,
++			      const u8 *data, unsigned int len, u8 *out)
++{
++	sha1(data, len, out);
++	return 0;
++}
++
++#define HMAC_SHA1_KEY(tfm) ((struct hmac_sha1_key *)crypto_shash_ctx(tfm))
++#define HMAC_SHA1_CTX(desc) ((struct hmac_sha1_ctx *)shash_desc_ctx(desc))
++
++static int crypto_hmac_sha1_setkey(struct crypto_shash *tfm,
++				   const u8 *raw_key, unsigned int keylen)
++{
++	hmac_sha1_preparekey(HMAC_SHA1_KEY(tfm), raw_key, keylen);
++	return 0;
++}
++
++static int crypto_hmac_sha1_init(struct shash_desc *desc)
++{
++	hmac_sha1_init(HMAC_SHA1_CTX(desc), HMAC_SHA1_KEY(desc->tfm));
++	return 0;
++}
++
++static int crypto_hmac_sha1_update(struct shash_desc *desc,
++				   const u8 *data, unsigned int len)
++{
++	hmac_sha1_update(HMAC_SHA1_CTX(desc), data, len);
++	return 0;
++}
++
++static int crypto_hmac_sha1_final(struct shash_desc *desc, u8 *out)
++{
++	hmac_sha1_final(HMAC_SHA1_CTX(desc), out);
++	return 0;
++}
++
++static int crypto_hmac_sha1_digest(struct shash_desc *desc,
++				   const u8 *data, unsigned int len, u8 *out)
++{
++	hmac_sha1(HMAC_SHA1_KEY(desc->tfm), data, len, out);
++	return 0;
++}
++
++static struct shash_alg algs[] = {
++	{
++		.base.cra_name		= "sha1",
++		.base.cra_driver_name	= "sha1-lib",
++		.base.cra_priority	= 300,
++		.base.cra_blocksize	= SHA1_BLOCK_SIZE,
++		.base.cra_module	= THIS_MODULE,
++		.digestsize		= SHA1_DIGEST_SIZE,
++		.init			= crypto_sha1_init,
++		.update			= crypto_sha1_update,
++		.final			= crypto_sha1_final,
++		.digest			= crypto_sha1_digest,
++		.descsize		= sizeof(struct sha1_ctx),
++	},
++	{
++		.base.cra_name		= "hmac(sha1)",
++		.base.cra_driver_name	= "hmac-sha1-lib",
++		.base.cra_priority	= 300,
++		.base.cra_blocksize	= SHA1_BLOCK_SIZE,
++		.base.cra_ctxsize	= sizeof(struct hmac_sha1_key),
++		.base.cra_module	= THIS_MODULE,
++		.digestsize		= SHA1_DIGEST_SIZE,
++		.setkey			= crypto_hmac_sha1_setkey,
++		.init			= crypto_hmac_sha1_init,
++		.update			= crypto_hmac_sha1_update,
++		.final			= crypto_hmac_sha1_final,
++		.digest			= crypto_hmac_sha1_digest,
++		.descsize		= sizeof(struct hmac_sha1_ctx),
++	},
 +};
 +
-+/**
-+ * struct hmac_sha1_ctx - Context for computing HMAC-SHA1 of a message
-+ * @sha_ctx: private
-+ * @ostate: private
-+ */
-+struct hmac_sha1_ctx {
-+	struct sha1_ctx sha_ctx;
-+	struct sha1_block_state ostate;
-+};
-+
-+/**
-+ * hmac_sha1_preparekey() - Prepare a key for HMAC-SHA1
-+ * @key: (output) the key structure to initialize
-+ * @raw_key: the raw HMAC-SHA1 key
-+ * @raw_key_len: the key length in bytes.  All key lengths are supported.
-+ *
-+ * Note: the caller is responsible for zeroizing both the struct hmac_sha1_key
-+ * and the raw key once they are no longer needed.
-+ *
-+ * Context: Any context.
-+ */
-+void hmac_sha1_preparekey(struct hmac_sha1_key *key,
-+			  const u8 *raw_key, size_t raw_key_len);
-+
-+/**
-+ * hmac_sha1_init() - Initialize an HMAC-SHA1 context for a new message
-+ * @ctx: (output) the HMAC context to initialize
-+ * @key: the prepared HMAC key
-+ *
-+ * If you don't need incremental computation, consider hmac_sha1() instead.
-+ *
-+ * Context: Any context.
-+ */
-+void hmac_sha1_init(struct hmac_sha1_ctx *ctx, const struct hmac_sha1_key *key);
-+
-+/**
-+ * hmac_sha1_init_usingrawkey() - Initialize an HMAC-SHA1 context for a new
-+ *				  message, using a raw key
-+ * @ctx: (output) the HMAC context to initialize
-+ * @raw_key: the raw HMAC-SHA1 key
-+ * @raw_key_len: the key length in bytes.  All key lengths are supported.
-+ *
-+ * If you don't need incremental computation, consider hmac_sha1_usingrawkey()
-+ * instead.
-+ *
-+ * Context: Any context.
-+ */
-+void hmac_sha1_init_usingrawkey(struct hmac_sha1_ctx *ctx,
-+				const u8 *raw_key, size_t raw_key_len);
-+
-+/**
-+ * hmac_sha1_update() - Update an HMAC-SHA1 context with message data
-+ * @ctx: the HMAC context to update; must have been initialized
-+ * @data: the message data
-+ * @data_len: the data length in bytes
-+ *
-+ * This can be called any number of times.
-+ *
-+ * Context: Any context.
-+ */
-+static inline void hmac_sha1_update(struct hmac_sha1_ctx *ctx,
-+				    const u8 *data, size_t data_len)
++static int __init crypto_sha1_mod_init(void)
 +{
-+	sha1_update(&ctx->sha_ctx, data, data_len);
++	return crypto_register_shashes(algs, ARRAY_SIZE(algs));
 +}
++module_init(crypto_sha1_mod_init);
 +
-+/**
-+ * hmac_sha1_final() - Finish computing an HMAC-SHA1 value
-+ * @ctx: the HMAC context to finalize; must have been initialized
-+ * @out: (output) the resulting HMAC-SHA1 value
-+ *
-+ * After finishing, this zeroizes @ctx.  So the caller does not need to do it.
-+ *
-+ * Context: Any context.
-+ */
-+void hmac_sha1_final(struct hmac_sha1_ctx *ctx, u8 out[SHA1_DIGEST_SIZE]);
++static void __exit crypto_sha1_mod_exit(void)
++{
++	crypto_unregister_shashes(algs, ARRAY_SIZE(algs));
++}
++module_exit(crypto_sha1_mod_exit);
 +
-+/**
-+ * hmac_sha1() - Compute HMAC-SHA1 in one shot, using a prepared key
-+ * @key: the prepared HMAC key
-+ * @data: the message data
-+ * @data_len: the data length in bytes
-+ * @out: (output) the resulting HMAC-SHA1 value
-+ *
-+ * If you're using the key only once, consider using hmac_sha1_usingrawkey().
-+ *
-+ * Context: Any context.
-+ */
-+void hmac_sha1(const struct hmac_sha1_key *key,
-+	       const u8 *data, size_t data_len, u8 out[SHA1_DIGEST_SIZE]);
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Crypto API support for SHA-1 and HMAC-SHA1");
 +
-+/**
-+ * hmac_sha1_usingrawkey() - Compute HMAC-SHA1 in one shot, using a raw key
-+ * @raw_key: the raw HMAC-SHA1 key
-+ * @raw_key_len: the key length in bytes.  All key lengths are supported.
-+ * @data: the message data
-+ * @data_len: the data length in bytes
-+ * @out: (output) the resulting HMAC-SHA1 value
-+ *
-+ * If you're using the key multiple times, prefer to use hmac_sha1_preparekey()
-+ * followed by multiple calls to hmac_sha1() instead.
-+ *
-+ * Context: Any context.
-+ */
-+void hmac_sha1_usingrawkey(const u8 *raw_key, size_t raw_key_len,
-+			   const u8 *data, size_t data_len,
-+			   u8 out[SHA1_DIGEST_SIZE]);
-+
- #endif /* _CRYPTO_SHA1_H */
-diff --git a/lib/crypto/sha1.c b/lib/crypto/sha1.c
-index 7c0763cbf9f1e..89831f7f27793 100644
---- a/lib/crypto/sha1.c
-+++ b/lib/crypto/sha1.c
-@@ -4,17 +4,19 @@
-  * and to avoid unnecessary copies into the context array.
-  *
-  * This was based on the git SHA1 implementation.
-  */
- 
-+#include <crypto/hmac.h>
- #include <crypto/sha1.h>
- #include <linux/bitops.h>
- #include <linux/export.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/string.h>
- #include <linux/unaligned.h>
-+#include <linux/wordpart.h>
- 
- static const struct sha1_block_state sha1_iv = {
- 	.h = { SHA1_H0, SHA1_H1, SHA1_H2, SHA1_H3, SHA1_H4 },
- };
- 
-@@ -198,11 +200,11 @@ void sha1_update(struct sha1_ctx *ctx, const u8 *data, size_t len)
- 	if (len)
- 		memcpy(&ctx->buf[partial], data, len);
++MODULE_ALIAS_CRYPTO("sha1");
++MODULE_ALIAS_CRYPTO("sha1-lib");
++MODULE_ALIAS_CRYPTO("hmac(sha1)");
++MODULE_ALIAS_CRYPTO("hmac-sha1-lib");
+diff --git a/crypto/sha1_generic.c b/crypto/sha1_generic.c
+deleted file mode 100644
+index 024e8043bab02..0000000000000
+--- a/crypto/sha1_generic.c
++++ /dev/null
+@@ -1,87 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Cryptographic API.
+- *
+- * SHA1 Secure Hash Algorithm.
+- *
+- * Derived from cryptoapi implementation, adapted for in-place
+- * scatterlist interface.
+- *
+- * Copyright (c) Alan Smithee.
+- * Copyright (c) Andrew McDonald <andrew@mcdonald.org.uk>
+- * Copyright (c) Jean-Francois Dive <jef@linuxbe.org>
+- */
+-#include <crypto/internal/hash.h>
+-#include <crypto/sha1.h>
+-#include <crypto/sha1_base.h>
+-#include <linux/kernel.h>
+-#include <linux/module.h>
+-#include <linux/string.h>
+-
+-const u8 sha1_zero_message_hash[SHA1_DIGEST_SIZE] = {
+-	0xda, 0x39, 0xa3, 0xee, 0x5e, 0x6b, 0x4b, 0x0d,
+-	0x32, 0x55, 0xbf, 0xef, 0x95, 0x60, 0x18, 0x90,
+-	0xaf, 0xd8, 0x07, 0x09
+-};
+-EXPORT_SYMBOL_GPL(sha1_zero_message_hash);
+-
+-static void sha1_generic_block_fn(struct sha1_state *sst, u8 const *src,
+-				  int blocks)
+-{
+-	u32 temp[SHA1_WORKSPACE_WORDS];
+-
+-	while (blocks--) {
+-		sha1_transform(sst->state, src, temp);
+-		src += SHA1_BLOCK_SIZE;
+-	}
+-	memzero_explicit(temp, sizeof(temp));
+-}
+-
+-static int crypto_sha1_update(struct shash_desc *desc, const u8 *data,
+-			      unsigned int len)
+-{
+-	return sha1_base_do_update_blocks(desc, data, len,
+-					  sha1_generic_block_fn);
+-}
+-
+-static int crypto_sha1_finup(struct shash_desc *desc, const u8 *data,
+-			     unsigned int len, u8 *out)
+-{
+-	sha1_base_do_finup(desc, data, len, sha1_generic_block_fn);
+-	return sha1_base_finish(desc, out);
+-}
+-
+-static struct shash_alg alg = {
+-	.digestsize	=	SHA1_DIGEST_SIZE,
+-	.init		=	sha1_base_init,
+-	.update		=	crypto_sha1_update,
+-	.finup		=	crypto_sha1_finup,
+-	.descsize	=	SHA1_STATE_SIZE,
+-	.base		=	{
+-		.cra_name	=	"sha1",
+-		.cra_driver_name=	"sha1-generic",
+-		.cra_priority	=	100,
+-		.cra_flags	=	CRYPTO_AHASH_ALG_BLOCK_ONLY,
+-		.cra_blocksize	=	SHA1_BLOCK_SIZE,
+-		.cra_module	=	THIS_MODULE,
+-	}
+-};
+-
+-static int __init sha1_generic_mod_init(void)
+-{
+-	return crypto_register_shash(&alg);
+-}
+-
+-static void __exit sha1_generic_mod_fini(void)
+-{
+-	crypto_unregister_shash(&alg);
+-}
+-
+-module_init(sha1_generic_mod_init);
+-module_exit(sha1_generic_mod_fini);
+-
+-MODULE_LICENSE("GPL");
+-MODULE_DESCRIPTION("SHA1 Secure Hash Algorithm");
+-
+-MODULE_ALIAS_CRYPTO("sha1");
+-MODULE_ALIAS_CRYPTO("sha1-generic");
+diff --git a/crypto/testmgr.c b/crypto/testmgr.c
+index 4e95567f7ed17..be78e39307692 100644
+--- a/crypto/testmgr.c
++++ b/crypto/testmgr.c
+@@ -4235,33 +4235,37 @@ static const struct alg_test_desc alg_test_descs[] = {
+ 		.suite = {
+ 			.aead = __VECS(hmac_md5_ecb_cipher_null_tv_template)
+ 		}
+ 	}, {
+ 		.alg = "authenc(hmac(sha1),cbc(aes))",
++		.generic_driver = "authenc(hmac-sha1-lib,cbc(aes-generic))",
+ 		.test = alg_test_aead,
+ 		.fips_allowed = 1,
+ 		.suite = {
+ 			.aead = __VECS(hmac_sha1_aes_cbc_tv_temp)
+ 		}
+ 	}, {
+ 		.alg = "authenc(hmac(sha1),cbc(des))",
++		.generic_driver = "authenc(hmac-sha1-lib,cbc(des-generic))",
+ 		.test = alg_test_aead,
+ 		.suite = {
+ 			.aead = __VECS(hmac_sha1_des_cbc_tv_temp)
+ 		}
+ 	}, {
+ 		.alg = "authenc(hmac(sha1),cbc(des3_ede))",
++		.generic_driver = "authenc(hmac-sha1-lib,cbc(des3_ede-generic))",
+ 		.test = alg_test_aead,
+ 		.suite = {
+ 			.aead = __VECS(hmac_sha1_des3_ede_cbc_tv_temp)
+ 		}
+ 	}, {
+ 		.alg = "authenc(hmac(sha1),ctr(aes))",
+ 		.test = alg_test_null,
+ 		.fips_allowed = 1,
+ 	}, {
+ 		.alg = "authenc(hmac(sha1),ecb(cipher_null))",
++		.generic_driver = "authenc(hmac-sha1-lib,ecb-cipher_null)",
+ 		.test = alg_test_aead,
+ 		.suite = {
+ 			.aead = __VECS(hmac_sha1_ecb_cipher_null_tv_temp)
+ 		}
+ 	}, {
+@@ -5120,10 +5124,11 @@ static const struct alg_test_desc alg_test_descs[] = {
+ 		.suite = {
+ 			.hash = __VECS(hmac_rmd160_tv_template)
+ 		}
+ 	}, {
+ 		.alg = "hmac(sha1)",
++		.generic_driver = "hmac-sha1-lib",
+ 		.test = alg_test_hash,
+ 		.fips_allowed = 1,
+ 		.suite = {
+ 			.hash = __VECS(hmac_sha1_tv_template)
+ 		}
+@@ -5460,10 +5465,11 @@ static const struct alg_test_desc alg_test_descs[] = {
+ 		.suite = {
+ 			.akcipher = __VECS(rsa_tv_template)
+ 		}
+ 	}, {
+ 		.alg = "sha1",
++		.generic_driver = "sha1-lib",
+ 		.test = alg_test_hash,
+ 		.fips_allowed = 1,
+ 		.suite = {
+ 			.hash = __VECS(sha1_tv_template)
+ 		}
+diff --git a/drivers/crypto/img-hash.c b/drivers/crypto/img-hash.c
+index f312eb075feca..a8f735390f0dd 100644
+--- a/drivers/crypto/img-hash.c
++++ b/drivers/crypto/img-hash.c
+@@ -703,11 +703,11 @@ static int img_hash_cra_md5_init(struct crypto_tfm *tfm)
+ 	return img_hash_cra_init(tfm, "md5-generic");
  }
- EXPORT_SYMBOL_GPL(sha1_update);
  
--void sha1_final(struct sha1_ctx *ctx, u8 out[SHA1_DIGEST_SIZE])
-+static void __sha1_final(struct sha1_ctx *ctx, u8 out[SHA1_DIGEST_SIZE])
+ static int img_hash_cra_sha1_init(struct crypto_tfm *tfm)
  {
- 	u64 bitcount = ctx->bytecount << 3;
- 	size_t partial = ctx->bytecount % SHA1_BLOCK_SIZE;
- 
- 	ctx->buf[partial++] = 0x80;
-@@ -215,10 +217,15 @@ void sha1_final(struct sha1_ctx *ctx, u8 out[SHA1_DIGEST_SIZE])
- 	*(__be64 *)&ctx->buf[SHA1_BLOCK_SIZE - 8] = cpu_to_be64(bitcount);
- 	sha1_blocks(&ctx->state, ctx->buf, 1);
- 
- 	for (size_t i = 0; i < SHA1_DIGEST_SIZE; i += 4)
- 		put_unaligned_be32(ctx->state.h[i / 4], out + i);
-+}
-+
-+void sha1_final(struct sha1_ctx *ctx, u8 out[SHA1_DIGEST_SIZE])
-+{
-+	__sha1_final(ctx, out);
- 	memzero_explicit(ctx, sizeof(*ctx));
+-	return img_hash_cra_init(tfm, "sha1-generic");
++	return img_hash_cra_init(tfm, "sha1-lib");
  }
- EXPORT_SYMBOL_GPL(sha1_final);
  
- void sha1(const u8 *data, size_t len, u8 out[SHA1_DIGEST_SIZE])
-@@ -229,10 +236,105 @@ void sha1(const u8 *data, size_t len, u8 out[SHA1_DIGEST_SIZE])
- 	sha1_update(&ctx, data, len);
- 	sha1_final(&ctx, out);
- }
- EXPORT_SYMBOL_GPL(sha1);
- 
-+static void __hmac_sha1_preparekey(struct sha1_block_state *istate,
-+				   struct sha1_block_state *ostate,
-+				   const u8 *raw_key, size_t raw_key_len)
-+{
-+	union {
-+		u8 b[SHA1_BLOCK_SIZE];
-+		unsigned long w[SHA1_BLOCK_SIZE / sizeof(unsigned long)];
-+	} derived_key = { 0 };
-+
-+	if (unlikely(raw_key_len > SHA1_BLOCK_SIZE))
-+		sha1(raw_key, raw_key_len, derived_key.b);
-+	else
-+		memcpy(derived_key.b, raw_key, raw_key_len);
-+
-+	for (size_t i = 0; i < ARRAY_SIZE(derived_key.w); i++)
-+		derived_key.w[i] ^= REPEAT_BYTE(HMAC_IPAD_VALUE);
-+	*istate = sha1_iv;
-+	sha1_blocks(istate, derived_key.b, 1);
-+
-+	for (size_t i = 0; i < ARRAY_SIZE(derived_key.w); i++)
-+		derived_key.w[i] ^= REPEAT_BYTE(HMAC_OPAD_VALUE ^
-+						HMAC_IPAD_VALUE);
-+	*ostate = sha1_iv;
-+	sha1_blocks(ostate, derived_key.b, 1);
-+
-+	memzero_explicit(&derived_key, sizeof(derived_key));
-+}
-+
-+void hmac_sha1_preparekey(struct hmac_sha1_key *key,
-+			  const u8 *raw_key, size_t raw_key_len)
-+{
-+	__hmac_sha1_preparekey(&key->istate, &key->ostate,
-+			       raw_key, raw_key_len);
-+}
-+EXPORT_SYMBOL_GPL(hmac_sha1_preparekey);
-+
-+void hmac_sha1_init(struct hmac_sha1_ctx *ctx, const struct hmac_sha1_key *key)
-+{
-+	ctx->sha_ctx.state = key->istate;
-+	ctx->sha_ctx.bytecount = SHA1_BLOCK_SIZE;
-+	ctx->ostate = key->ostate;
-+}
-+EXPORT_SYMBOL_GPL(hmac_sha1_init);
-+
-+void hmac_sha1_init_usingrawkey(struct hmac_sha1_ctx *ctx,
-+				const u8 *raw_key, size_t raw_key_len)
-+{
-+	__hmac_sha1_preparekey(&ctx->sha_ctx.state, &ctx->ostate,
-+			       raw_key, raw_key_len);
-+	ctx->sha_ctx.bytecount = SHA1_BLOCK_SIZE;
-+}
-+EXPORT_SYMBOL_GPL(hmac_sha1_init_usingrawkey);
-+
-+void hmac_sha1_final(struct hmac_sha1_ctx *ctx, u8 out[SHA1_DIGEST_SIZE])
-+{
-+	/* Generate the padded input for the outer hash in ctx->sha_ctx.buf. */
-+	__sha1_final(&ctx->sha_ctx, ctx->sha_ctx.buf);
-+	memset(&ctx->sha_ctx.buf[SHA1_DIGEST_SIZE], 0,
-+	       SHA1_BLOCK_SIZE - SHA1_DIGEST_SIZE);
-+	ctx->sha_ctx.buf[SHA1_DIGEST_SIZE] = 0x80;
-+	*(__be32 *)&ctx->sha_ctx.buf[SHA1_BLOCK_SIZE - 4] =
-+		cpu_to_be32(8 * (SHA1_BLOCK_SIZE + SHA1_DIGEST_SIZE));
-+
-+	/* Compute the outer hash, which gives the HMAC value. */
-+	sha1_blocks(&ctx->ostate, ctx->sha_ctx.buf, 1);
-+	for (size_t i = 0; i < SHA1_DIGEST_SIZE; i += 4)
-+		put_unaligned_be32(ctx->ostate.h[i / 4], out + i);
-+
-+	memzero_explicit(ctx, sizeof(*ctx));
-+}
-+EXPORT_SYMBOL_GPL(hmac_sha1_final);
-+
-+void hmac_sha1(const struct hmac_sha1_key *key,
-+	       const u8 *data, size_t data_len, u8 out[SHA1_DIGEST_SIZE])
-+{
-+	struct hmac_sha1_ctx ctx;
-+
-+	hmac_sha1_init(&ctx, key);
-+	hmac_sha1_update(&ctx, data, data_len);
-+	hmac_sha1_final(&ctx, out);
-+}
-+EXPORT_SYMBOL_GPL(hmac_sha1);
-+
-+void hmac_sha1_usingrawkey(const u8 *raw_key, size_t raw_key_len,
-+			   const u8 *data, size_t data_len,
-+			   u8 out[SHA1_DIGEST_SIZE])
-+{
-+	struct hmac_sha1_ctx ctx;
-+
-+	hmac_sha1_init_usingrawkey(&ctx, raw_key, raw_key_len);
-+	hmac_sha1_update(&ctx, data, data_len);
-+	hmac_sha1_final(&ctx, out);
-+}
-+EXPORT_SYMBOL_GPL(hmac_sha1_usingrawkey);
-+
- #ifdef sha1_mod_init_arch
- static int __init sha1_mod_init(void)
+ static int img_hash_cra_sha224_init(struct crypto_tfm *tfm)
  {
- 	sha1_mod_init_arch();
- 	return 0;
-@@ -243,7 +345,7 @@ static void __exit sha1_mod_exit(void)
- {
- }
- module_exit(sha1_mod_exit);
- #endif
- 
--MODULE_DESCRIPTION("SHA-1 library functions");
-+MODULE_DESCRIPTION("SHA-1 and HMAC-SHA1 library functions");
- MODULE_LICENSE("GPL");
+ 	return img_hash_cra_init(tfm, "sha224-lib");
 -- 
 2.50.1
 
