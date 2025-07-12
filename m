@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-10203-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10205-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD62B02D96
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F335BB02DA1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:26:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8K2GJnz2xCd;
-	Sun, 13 Jul 2025 09:26:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8M6wrQz30Tf;
+	Sun, 13 Jul 2025 09:26:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752362785;
-	cv=none; b=bsAxMDHtaJ1nL7ixcEvNK/LLLh7D2EAhkpk3bZbdVKU8Rn/jkBYz2DxAKtq3+ws4DCX6BiM5hwr4fH51D3GEUwH6JM1xWfXMC2CPhtNPwIizZvH4i8HvkcgTShR0+K2aMmIDnona+FlqFJqDuwNRRk6J9oVMrkkL03Ez3daAk4Sv8Yf+52OOfu+qVrCNvxCsc+PN3MRl+72e7Ucn1uMR4NkpYQTofP4sXDtO+4X0aBAj3qZDT8jenRY4J/9Cna8/f1woFXPpgjEfOcWzXBMVYC7b4nl81Gt3lxplaCTvagaIBhKPMUpi3MEDMnBCPFfvpVTCiiyjPmUxobyxrVXVMw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752362787;
+	cv=none; b=DWOx8PA1fDxm0Bn2i6YB6pG/e3CCoJ9c7KV50CMv95b9pGcQJX9gViLKGW2jq1Y9V4dnHbBrSzRqNid4zgjOKkZx2NVue2CvPSbvuNdtRqBdgtlFmMAbPSexCjn8qIwHVOs6av8ToYMFVpakO8iL1CV9iPXDIHHzX/IXfZWU6ew7yVh5lLz36Tm9XRQfYPH4m9nRFihDrb099gybNiafg1YgoSP3ooHtiGOfCAv3ow0WB7771h9gCSvQkwY5KRFoF/neY4alsN9nVqGEPliY7Mi1awl+WDlc1J7ufiemYKqsFbEimtrYiheKUTzlwU3CnN1rmZV4fsVydjTcIgSvyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752362785; c=relaxed/relaxed;
-	bh=QfGb++iyqZlDvhqlROnQtUURr27G9aCS+kWzxTx8Tu0=;
+	t=1752362787; c=relaxed/relaxed;
+	bh=FjL/m5wOHohCbMSwBZiIlGCXY+r/VfCy4XSHShezJwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZCZYTjNskFmytHYD/Ou5rQZ4BHqf4gKmXdEGnGOqBBY+zHQI4v+MdF9VmzTQfgF+a0fUj2esSux7Mg2UT388XRWXoJ9fmXF/Lm7KflIWzXJHH7uaVx6LM4h/SuGtEk3sLt/P/lNzFx6xxd4f41hrBNvDPaI7MyKBRASlIQHWfSrvJyIBXLr/0dNxbRXE471pQUPNejei+nvAP+tR4kajR0IVtsmToiva/LX9oVwXpbAb+c8h3j/0eQ4rBrbRDkRlMqerxYj0rn7+XpFSahYQog8OSWJVDjFY8EjiLn81fndpZpDFbec6Ekq2sMwooOJCYx+4Yws67/UgQrTzY3EmqA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cmmwf+fA; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=MAEMKlvKL3FZEmF9Jtj5DjxJfxrbOAHHOFcBDh3jJuCJzCbpcV2Y4cpTvPiQHq/qoVr8JBLlgzWTwbAgyCdyDicZNGDJxRIvgCDIIKZimOg4QtEy2F8NWnKmOWwp7AOEuTUQuBRX64QSW907uiSjMf2L7Zb3IK+RTu9VGjt/pqz+mQXAc2SnJyU3UNeQIMxXPeb9HG8tbeBSzi3MMC12eyIO6bys9IeTDkulfQSDBtmlhWUL5Bt0BhoX5SJKlTeOPL5vd2lro4l2JFw9Q11rHBULbJ8yEdyNXwqEJUWDPuLOdiQWFnBl4+7fOnbIZM4jWs5vWkzYlrA0tGBzxKJndA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AESXCqC0; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cmmwf+fA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AESXCqC0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8H5PcLz2yPS
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 09:26:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8J1svZz30Vr
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 09:26:24 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 59078468EE;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 09D395C5563;
+	Sat, 12 Jul 2025 23:26:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0C1C4CEEF;
 	Sat, 12 Jul 2025 23:26:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19DEC4CEF8;
-	Sat, 12 Jul 2025 23:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1752362781;
-	bh=E22JI/nh2KoyIuwx+c+Le9v+4pE3ucXhZL4d/YBdz7g=;
+	bh=7FCBsAJrrnnuA4T7D71YIVEm2XZIVKTGyQn5RJhvcdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cmmwf+fAlxfZeUlUdvV1RStLqLkPiW2zfJ2zBPrVlnr7L04CcfPF3I/ZY61mhxqzF
-	 UmqYAUQ4svnDAjD64/qd2nbDs5VfdmZ+Wdl6axs+Pp2dBobCdfzKvfiUfyjWyV0Emu
-	 bnFJy4JMfW/NLQp1h1EAuLTEdvJJVjXcMFnzNKc2usi851QxfTu1Eem5KjkNwGll5f
-	 lgQrbXzEIq4c4ZedmXzCDpa9WeJNZgMl9S3h/6kVtOWN5EVdkv3MDG/a3Oum868UU6
-	 SfJiyW/fELObXrfYbVzrJFLlz3eNbYdmWQXsdfzTPEmjVRv+y4B1yYLAvoaYPKAIou
-	 1xYQp8kEh20rg==
+	b=AESXCqC0z6pOQ9CUMUWhaUwDe7++NcZw3AkLl0Yfi0I7+dpBw5r3npCKV7bLhWYBP
+	 xaqjcxQ18FNqMMPZ78UZNtsR7pL7zZSAClydv+Nd7OeiLFyi7h8wZnzEfyiTvREzLE
+	 s6GzQO7R7wVH1ysDJveWRNmIZqa5oCW0DT8MDtQ08U1ghX0K8+Yg+PpsnHcoCMJSSs
+	 g8dmb32IhNUuXJnbhoiSiYajsRhlpebCwJAzut4xyIcwp5IJL2MaPCyiPxDOBxPRKO
+	 uVX2GN4FX8bPqJ16M4wrOL2SlllBXxZBhyhIMx2Aej4zsc7M7X8Kc5ExmIKzuG99gj
+	 RwTgzg1CKVUAA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 02/26] lib/crypto: sha1: Rename sha1_init() to sha1_init_raw()
-Date: Sat, 12 Jul 2025 16:22:53 -0700
-Message-ID: <20250712232329.818226-3-ebiggers@kernel.org>
+Subject: [PATCH 03/26] lib/crypto: sha1: Add SHA-1 library functions
+Date: Sat, 12 Jul 2025 16:22:54 -0700
+Message-ID: <20250712232329.818226-4-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250712232329.818226-1-ebiggers@kernel.org>
 References: <20250712232329.818226-1-ebiggers@kernel.org>
@@ -80,95 +80,267 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Rename the existing sha1_init() to sha1_init_raw(), since it conflicts
-with the upcoming library function.  This will later be removed, but
-this keeps the kernel building for the introduction of the library.
+Add a library interface for SHA-1, following the SHA-2 one.  As was the
+case with SHA-2, this will be useful for various in-kernel users.  The
+crypto_shash interface will be reimplemented on top of it as well.
 
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- include/crypto/sha1.h | 2 +-
- kernel/bpf/core.c     | 2 +-
- lib/crypto/sha1.c     | 6 +++---
- net/ipv6/addrconf.c   | 2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ include/crypto/sha1.h |  60 +++++++++++++++++++++++
+ lib/crypto/Kconfig    |   7 +++
+ lib/crypto/Makefile   |   9 +++-
+ lib/crypto/sha1.c     | 110 +++++++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 183 insertions(+), 3 deletions(-)
 
 diff --git a/include/crypto/sha1.h b/include/crypto/sha1.h
-index f48230b1413c3..d853d3b931699 100644
+index d853d3b931699..387f6123a05e8 100644
 --- a/include/crypto/sha1.h
 +++ b/include/crypto/sha1.h
-@@ -31,9 +31,9 @@ struct sha1_state {
-  * You shouldn't be using SHA-1, and even if you *have* to use SHA-1, this isn't
-  * the correct way to hash something with SHA-1 (use crypto_shash instead).
-  */
+@@ -34,6 +34,66 @@ struct sha1_state {
  #define SHA1_DIGEST_WORDS	(SHA1_DIGEST_SIZE / 4)
  #define SHA1_WORKSPACE_WORDS	16
--void sha1_init(__u32 *buf);
-+void sha1_init_raw(__u32 *buf);
+ void sha1_init_raw(__u32 *buf);
  void sha1_transform(__u32 *digest, const char *data, __u32 *W);
  
++/* State for the SHA-1 compression function */
++struct sha1_block_state {
++	u32 h[SHA1_DIGEST_SIZE / 4];
++};
++
++/**
++ * struct sha1_ctx - Context for hashing a message with SHA-1
++ * @state: the compression function state
++ * @bytecount: number of bytes processed so far
++ * @buf: partial block buffer; bytecount % SHA1_BLOCK_SIZE bytes are valid
++ */
++struct sha1_ctx {
++	struct sha1_block_state state;
++	u64 bytecount;
++	u8 buf[SHA1_BLOCK_SIZE];
++};
++
++/**
++ * sha1_init() - Initialize a SHA-1 context for a new message
++ * @ctx: the context to initialize
++ *
++ * If you don't need incremental computation, consider sha1() instead.
++ *
++ * Context: Any context.
++ */
++void sha1_init(struct sha1_ctx *ctx);
++
++/**
++ * sha1_update() - Update a SHA-1 context with message data
++ * @ctx: the context to update; must have been initialized
++ * @data: the message data
++ * @len: the data length in bytes
++ *
++ * This can be called any number of times.
++ *
++ * Context: Any context.
++ */
++void sha1_update(struct sha1_ctx *ctx, const u8 *data, size_t len);
++
++/**
++ * sha1_final() - Finish computing a SHA-1 message digest
++ * @ctx: the context to finalize; must have been initialized
++ * @out: (output) the resulting SHA-1 message digest
++ *
++ * After finishing, this zeroizes @ctx.  So the caller does not need to do it.
++ *
++ * Context: Any context.
++ */
++void sha1_final(struct sha1_ctx *ctx, u8 out[SHA1_DIGEST_SIZE]);
++
++/**
++ * sha1() - Compute SHA-1 message digest in one shot
++ * @data: the message data
++ * @len: the data length in bytes
++ * @out: (output) the resulting SHA-1 message digest
++ *
++ * Context: Any context.
++ */
++void sha1(const u8 *data, size_t len, u8 out[SHA1_DIGEST_SIZE]);
++
  #endif /* _CRYPTO_SHA1_H */
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index c20babbf998f4..dae281a1286d5 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -302,11 +302,11 @@ int bpf_prog_calc_tag(struct bpf_prog *fp)
+diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
+index c2a28a50ac576..ff54c9a631f86 100644
+--- a/lib/crypto/Kconfig
++++ b/lib/crypto/Kconfig
+@@ -137,10 +137,17 @@ config CRYPTO_LIB_CHACHA20POLY1305
+ 	select CRYPTO_LIB_POLY1305
+ 	select CRYPTO_LIB_UTILS
  
- 	raw = vmalloc(raw_size);
- 	if (!raw)
- 		return -ENOMEM;
+ config CRYPTO_LIB_SHA1
+ 	tristate
++	help
++	  The SHA-1 library functions.  Select this if your module uses any of
++	  the functions from <crypto/sha1.h>.
++
++config CRYPTO_LIB_SHA1_ARCH
++	bool
++	depends on CRYPTO_LIB_SHA1 && !UML
  
--	sha1_init(digest);
-+	sha1_init_raw(digest);
- 	memset(ws, 0, sizeof(ws));
+ config CRYPTO_LIB_SHA256
+ 	tristate
+ 	help
+ 	  Enable the SHA-256 library interface. This interface may be fulfilled
+diff --git a/lib/crypto/Makefile b/lib/crypto/Makefile
+index 8aaec39b85608..c96abfc4b9d3b 100644
+--- a/lib/crypto/Makefile
++++ b/lib/crypto/Makefile
+@@ -65,12 +65,17 @@ libpoly1305-y					+= poly1305.o
+ obj-$(CONFIG_CRYPTO_LIB_POLY1305_GENERIC)	+= libpoly1305-generic.o
+ libpoly1305-generic-y				:= poly1305-donna32.o
+ libpoly1305-generic-$(CONFIG_ARCH_SUPPORTS_INT128) := poly1305-donna64.o
+ libpoly1305-generic-y				+= poly1305-generic.o
  
- 	/* We need to take out the map fd for the digest calculation
- 	 * since they are unstable from user space side.
- 	 */
+-obj-$(CONFIG_CRYPTO_LIB_SHA1)			+= libsha1.o
+-libsha1-y					:= sha1.o
++################################################################################
++
++obj-$(CONFIG_CRYPTO_LIB_SHA1) += libsha1.o
++libsha1-y := sha1.o
++ifeq ($(CONFIG_CRYPTO_LIB_SHA1_ARCH),y)
++CFLAGS_sha1.o += -I$(src)/$(SRCARCH)
++endif # CONFIG_CRYPTO_LIB_SHA1_ARCH
+ 
+ ################################################################################
+ 
+ obj-$(CONFIG_CRYPTO_LIB_SHA256) += libsha256.o
+ libsha256-y := sha256.o
 diff --git a/lib/crypto/sha1.c b/lib/crypto/sha1.c
-index 6d809c3088be3..813ad96daa25a 100644
+index 813ad96daa25a..7c0763cbf9f1e 100644
 --- a/lib/crypto/sha1.c
 +++ b/lib/crypto/sha1.c
-@@ -122,20 +122,20 @@ void sha1_transform(__u32 *digest, const char *data, __u32 *array)
- 	digest[4] += E;
- }
- EXPORT_SYMBOL(sha1_transform);
+@@ -12,10 +12,14 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/string.h>
+ #include <linux/unaligned.h>
  
- /**
-- * sha1_init - initialize the vectors for a SHA1 digest
-+ * sha1_init_raw - initialize the vectors for a SHA1 digest
-  * @buf: vector to initialize
-  */
--void sha1_init(__u32 *buf)
-+void sha1_init_raw(__u32 *buf)
- {
- 	buf[0] = 0x67452301;
- 	buf[1] = 0xefcdab89;
- 	buf[2] = 0x98badcfe;
++static const struct sha1_block_state sha1_iv = {
++	.h = { SHA1_H0, SHA1_H1, SHA1_H2, SHA1_H3, SHA1_H4 },
++};
++
+ /*
+  * If you have 32 registers or more, the compiler can (and should)
+  * try to change the array[] accesses into registers. However, on
+  * machines with less than ~25 registers, that won't really work,
+  * and at least gcc will make an unholy mess of it.
+@@ -135,7 +139,111 @@ void sha1_init_raw(__u32 *buf)
  	buf[3] = 0x10325476;
  	buf[4] = 0xc3d2e1f0;
  }
--EXPORT_SYMBOL(sha1_init);
-+EXPORT_SYMBOL(sha1_init_raw);
+ EXPORT_SYMBOL(sha1_init_raw);
  
- MODULE_DESCRIPTION("SHA-1 Algorithm");
+-MODULE_DESCRIPTION("SHA-1 Algorithm");
++static void __maybe_unused sha1_blocks_generic(struct sha1_block_state *state,
++					       const u8 *data, size_t nblocks)
++{
++	u32 workspace[SHA1_WORKSPACE_WORDS];
++
++	do {
++		sha1_transform(state->h, data, workspace);
++		data += SHA1_BLOCK_SIZE;
++	} while (--nblocks);
++
++	memzero_explicit(workspace, sizeof(workspace));
++}
++
++#ifdef CONFIG_CRYPTO_LIB_SHA1_ARCH
++#include "sha1.h" /* $(SRCARCH)/sha1.h */
++#else
++#define sha1_blocks sha1_blocks_generic
++#endif
++
++void sha1_init(struct sha1_ctx *ctx)
++{
++	ctx->state = sha1_iv;
++	ctx->bytecount = 0;
++}
++EXPORT_SYMBOL_GPL(sha1_init);
++
++void sha1_update(struct sha1_ctx *ctx, const u8 *data, size_t len)
++{
++	size_t partial = ctx->bytecount % SHA1_BLOCK_SIZE;
++
++	ctx->bytecount += len;
++
++	if (partial + len >= SHA1_BLOCK_SIZE) {
++		size_t nblocks;
++
++		if (partial) {
++			size_t l = SHA1_BLOCK_SIZE - partial;
++
++			memcpy(&ctx->buf[partial], data, l);
++			data += l;
++			len -= l;
++
++			sha1_blocks(&ctx->state, ctx->buf, 1);
++		}
++
++		nblocks = len / SHA1_BLOCK_SIZE;
++		len %= SHA1_BLOCK_SIZE;
++
++		if (nblocks) {
++			sha1_blocks(&ctx->state, data, nblocks);
++			data += nblocks * SHA1_BLOCK_SIZE;
++		}
++		partial = 0;
++	}
++	if (len)
++		memcpy(&ctx->buf[partial], data, len);
++}
++EXPORT_SYMBOL_GPL(sha1_update);
++
++void sha1_final(struct sha1_ctx *ctx, u8 out[SHA1_DIGEST_SIZE])
++{
++	u64 bitcount = ctx->bytecount << 3;
++	size_t partial = ctx->bytecount % SHA1_BLOCK_SIZE;
++
++	ctx->buf[partial++] = 0x80;
++	if (partial > SHA1_BLOCK_SIZE - 8) {
++		memset(&ctx->buf[partial], 0, SHA1_BLOCK_SIZE - partial);
++		sha1_blocks(&ctx->state, ctx->buf, 1);
++		partial = 0;
++	}
++	memset(&ctx->buf[partial], 0, SHA1_BLOCK_SIZE - 8 - partial);
++	*(__be64 *)&ctx->buf[SHA1_BLOCK_SIZE - 8] = cpu_to_be64(bitcount);
++	sha1_blocks(&ctx->state, ctx->buf, 1);
++
++	for (size_t i = 0; i < SHA1_DIGEST_SIZE; i += 4)
++		put_unaligned_be32(ctx->state.h[i / 4], out + i);
++	memzero_explicit(ctx, sizeof(*ctx));
++}
++EXPORT_SYMBOL_GPL(sha1_final);
++
++void sha1(const u8 *data, size_t len, u8 out[SHA1_DIGEST_SIZE])
++{
++	struct sha1_ctx ctx;
++
++	sha1_init(&ctx);
++	sha1_update(&ctx, data, len);
++	sha1_final(&ctx, out);
++}
++EXPORT_SYMBOL_GPL(sha1);
++
++#ifdef sha1_mod_init_arch
++static int __init sha1_mod_init(void)
++{
++	sha1_mod_init_arch();
++	return 0;
++}
++subsys_initcall(sha1_mod_init);
++
++static void __exit sha1_mod_exit(void)
++{
++}
++module_exit(sha1_mod_exit);
++#endif
++
++MODULE_DESCRIPTION("SHA-1 library functions");
  MODULE_LICENSE("GPL");
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index ba2ec7c870ccb..d0e5b94c10af4 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -3365,11 +3365,11 @@ static int ipv6_generate_stable_address(struct in6_addr *address,
- 		return -1;
- 
- retry:
- 	spin_lock_bh(&lock);
- 
--	sha1_init(digest);
-+	sha1_init_raw(digest);
- 	memset(&data, 0, sizeof(data));
- 	memset(workspace, 0, sizeof(workspace));
- 	memcpy(data.hwaddr, idev->dev->perm_addr, idev->dev->addr_len);
- 	data.prefix[0] = address->s6_addr32[0];
- 	data.prefix[1] = address->s6_addr32[1];
 -- 
 2.50.1
 
