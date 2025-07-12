@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-10212-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10213-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D49FB02DB8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4133FB02DC1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:27:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8S6xBtz3bpS;
-	Sun, 13 Jul 2025 09:26:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8V1Dwpz3brM;
+	Sun, 13 Jul 2025 09:26:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752362792;
-	cv=none; b=ZaczsrtKdd5bBkgsAWiFbAQBhmHfrC0CECJlHS7uZHwgTbKJCTsbaBROJgfMfEobO0x65i1AbPUCmP13Z16D8Vzj7CEDAu7y/4X4zPqvP8iodDRyMwLGSMvckG+Y0eOD7TXX3Ffc1xu2AZ1NWuslg9Pfq/H3P9CJgT9PX5IKc60a/IuI5L4aWhvSn1O8i6x31oRpjrnY9RrEZUPDGj3+0ULaE43Vj6MYZuQkjXspVl26CNsN4mRhOzkJXQ49i/iG6waEFNu2sutXd6pAs+rytsKZ3SM7/4r/uhRF9hhYgg3MOwBnDGIDBd6mu22vwfQFvyiLLfL9ZUbn6e8OwFY5Hg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752362794;
+	cv=none; b=f2uqUNVmr2Xv2edeahxJRNEwrIgZSGfIhXxLnmTXapL1NvFxYng3AbDePlJyWfFiClV5a6ChBzgNrgHkYEtNmwG9spdNVKR9Vun8WYez6PmnG7X29DtdMwCRU6AX96gD21jhX3ca+hEpfSxQwc0ubJ6zbkPmg8tq0Zj2AHJ4XHva4kXd8cX0c5ztdXj15R+3NMvG8EDYQcIKERwQJaqJcC++xH97bquvpmtJeUIbum03Apwa547vlZ4lXo/E2qGJ5mdNNA9AH5JdupDwZuav9Mhfu9Ji2J/kqzmQAjwVK5Bh4qm9oPTukXcvZbp/8s99xyZ4af+CuNIyACKjDP+JeQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752362792; c=relaxed/relaxed;
-	bh=HNWWsKh64rxYoYsd5FB4+JxWx9NdtbkvvWlgYyP1j+Q=;
+	t=1752362794; c=relaxed/relaxed;
+	bh=+DmkwOoDCk6FpJstARBhRMfWibfO27MXl8Jp0cb9ovY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqzlnlLgweZkx7AIT8bPCLHBUIk2C6jz2uWEHG7Ixcz8ixqD46RjtFv+ukcooeLhqBKtgj0e9MvuBKfjPRsdsgmIKc6vvBu5PJkvrUfKiKdVV7VhCRN+sT615FRBb3VI5e71Njsyw3J8sdHnYkl2m57eIVIgHDE2yae39y1CQ2vu8yXQyQzHO6pCUxFSjzUroh2oaSkvbe89KJn7UNMpHOOKX+AzdtQDOaj8vbvv/bfGaUs8yFJk+yomP0y/U/oBImVxD8KWTIiMUforwrnwfT9NgkP6yk8tNrNSbbKxkRxKtgejZ9DrCWLOy7nAfQmT4p3+ULSrA/YtpAOxPr4qiA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ql03WPlf; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=i+hc5nW7cTHr8aD6ZEO85yUxaVcWcFVkS5+rmrMVDznfQQyRcWcXriNabF/INmvfeVQ2EBjbX18w6HMNDzOuwCNWqhWOqhMQafLq2jmUIRnmjUxi5c7mFx/6WGOtYqNota7Kp0k4KuTul+cOH/p52IzwPGDOWHrWSP2fubvho9Tmfk0KsiV6ye0abCZE/DLU341Q/FGUAYD+g3rE0EwawtnZQIh4ufBY4DcMgEgHBdajjrrCZiuSGxhixmyvtMryLpgg9tgzkhBUzLdV1FNNx6x1TFt1QHgi8mhwYigSaMwDo0y6huoQCpg2tfc1fFgQKOMhvXs+70ygmj2zdiADeg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lthbmvWL; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ql03WPlf;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lthbmvWL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8L3T6yz3bby
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 09:26:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8N495Lz3blg
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 09:26:28 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A748546CC7;
-	Sat, 12 Jul 2025 23:26:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1C4C4CEF7;
+	by nyc.source.kernel.org (Postfix) with ESMTP id 49A4AA54792;
+	Sat, 12 Jul 2025 23:26:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF62C4CEFC;
 	Sat, 12 Jul 2025 23:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752362784;
-	bh=7ZRIBZU5x4vLuGnKLqYWd5FSpgoUhoGAtMZsYPpXQZI=;
+	s=k20201202; t=1752362785;
+	bh=+8vC3G9AEhz9GDqIivLu8sIg+zlvL2n5kSxCFBEHZMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ql03WPlfahGzZKJvzjVHpg0MVKVv87jg4wSl6hXWxAStNBs0vKSuNhJLBZoY8lT3v
-	 5JD9s4EBAGSslO44R/DSdr8IZL8xST5Ov/Il60WNomC/QH7OXf8WuVlBc+t9f3BDxH
-	 XTkmyQqqa2O5DpZXC+IYi1ApggxeJ08yYBDPXzLwps7Q/oOaCWGAenJcMFlX9THEDe
-	 cUQ3jYmhk4MotHHTrip9lxdL8x8P2VSXwC7Z6t1cTYdsfsUtvcd6ug3fLIi7HmkOOu
-	 gUP6YVxLUNYdVrCjjpvTNpSDXnMmeq42Rp8KpVFpi17210zsJAX5MfRw4j+HAeS/iL
-	 wi+5ogv9RDvMA==
+	b=lthbmvWLFBZkamzkq8eewPrB6hxUeGFP3EWU1TNaUceuzv22JG1U/ehFGlSQkpWzu
+	 DzydsCXzUVxfLwawFmojHbWMQStwkoX84VMjBL8v/xrjNIueNbMQtYw368aEjXkUs9
+	 Kvx036/YNOsyCLXOFLczY0gss8kOZBCmHHhtrjl3ZohnG11dD4z3wPl9sCVTDl948i
+	 k1RZAnEG/bFGoFwPRsErxiJ41wHc9+SUMwDMCpkU9YZbvrLVGojY4whVzVmaqjTacY
+	 YhMs6KhPWS/C38aKivzy1VNf4aqICRdskNqNvw3YXULYYJQlucBeCqFXO/wuE1OZty
+	 2X8nVMgRTzmFQ==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 09/26] lib/crypto: mips/sha1: Migrate optimized code into library
-Date: Sat, 12 Jul 2025 16:23:00 -0700
-Message-ID: <20250712232329.818226-10-ebiggers@kernel.org>
+Subject: [PATCH 10/26] lib/crypto: powerpc/sha1: Migrate optimized code into library
+Date: Sat, 12 Jul 2025 16:23:01 -0700
+Message-ID: <20250712232329.818226-11-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250712232329.818226-1-ebiggers@kernel.org>
 References: <20250712232329.818226-1-ebiggers@kernel.org>
@@ -75,337 +75,457 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Instead of exposing the mips-optimized SHA-1 code via mips-specific
-crypto_shash algorithms, instead just implement the sha1_blocks()
-library function.  This is much simpler, it makes the SHA-1 library
-functions be mips-optimized, and it fixes the longstanding issue where
-the mips-optimized SHA-1 code was disabled by default.  SHA-1 still
-remains available through crypto_shash, but individual architectures no
-longer need to handle it.
+Instead of exposing the powerpc-optimized SHA-1 code via
+powerpc-specific crypto_shash algorithms, instead just implement the
+sha1_blocks() library function.  This is much simpler, it makes the
+SHA-1 library functions be powerpc-optimized, and it fixes the
+longstanding issue where the powerpc-optimized SHA-1 code was disabled
+by default.  SHA-1 still remains available through crypto_shash, but
+individual architectures no longer need to handle it.
 
-Note: to see the diff from arch/mips/cavium-octeon/crypto/octeon-sha1.c
-to lib/crypto/mips/sha1.h, view this commit with 'git show -M10'.
+Note: to see the diff from arch/powerpc/crypto/sha1-spe-glue.c to
+lib/crypto/powerpc/sha1.h, view this commit with 'git show -M10'.
 
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- arch/mips/cavium-octeon/crypto/Makefile      |   1 -
- arch/mips/cavium-octeon/crypto/octeon-sha1.c | 146 -------------------
- arch/mips/configs/cavium_octeon_defconfig    |   1 -
- arch/mips/crypto/Kconfig                     |  10 --
- lib/crypto/Kconfig                           |   1 +
- lib/crypto/mips/sha1.h                       |  81 ++++++++++
- 6 files changed, 82 insertions(+), 158 deletions(-)
- delete mode 100644 arch/mips/cavium-octeon/crypto/octeon-sha1.c
- create mode 100644 lib/crypto/mips/sha1.h
+ arch/powerpc/configs/44x/akebono_defconfig    |   1 -
+ arch/powerpc/configs/powernv_defconfig        |   1 -
+ arch/powerpc/configs/ppc64_defconfig          |   1 -
+ arch/powerpc/crypto/Kconfig                   |  16 ---
+ arch/powerpc/crypto/Makefile                  |   4 -
+ arch/powerpc/crypto/sha1-spe-glue.c           | 107 ------------------
+ arch/powerpc/crypto/sha1.c                    |  78 -------------
+ lib/crypto/Kconfig                            |   1 +
+ lib/crypto/Makefile                           |   4 +
+ .../crypto/powerpc}/sha1-powerpc-asm.S        |   0
+ .../crypto/powerpc}/sha1-spe-asm.S            |   0
+ lib/crypto/powerpc/sha1.h                     |  67 +++++++++++
+ 12 files changed, 72 insertions(+), 208 deletions(-)
+ delete mode 100644 arch/powerpc/crypto/sha1-spe-glue.c
+ delete mode 100644 arch/powerpc/crypto/sha1.c
+ rename {arch/powerpc/crypto => lib/crypto/powerpc}/sha1-powerpc-asm.S (100%)
+ rename {arch/powerpc/crypto => lib/crypto/powerpc}/sha1-spe-asm.S (100%)
+ create mode 100644 lib/crypto/powerpc/sha1.h
 
-diff --git a/arch/mips/cavium-octeon/crypto/Makefile b/arch/mips/cavium-octeon/crypto/Makefile
-index db428e4b30bce..83f2f5dd93ccc 100644
---- a/arch/mips/cavium-octeon/crypto/Makefile
-+++ b/arch/mips/cavium-octeon/crypto/Makefile
-@@ -4,6 +4,5 @@
+diff --git a/arch/powerpc/configs/44x/akebono_defconfig b/arch/powerpc/configs/44x/akebono_defconfig
+index fde4824f235ef..1882eb2da354a 100644
+--- a/arch/powerpc/configs/44x/akebono_defconfig
++++ b/arch/powerpc/configs/44x/akebono_defconfig
+@@ -126,8 +126,7 @@ CONFIG_XMON_DEFAULT=y
+ CONFIG_PPC_EARLY_DEBUG=y
+ CONFIG_PPC_EARLY_DEBUG_44x_PHYSLOW=0x00010000
+ CONFIG_PPC_EARLY_DEBUG_44x_PHYSHIGH=0x33f
+ CONFIG_CRYPTO_PCBC=y
+ CONFIG_CRYPTO_MD5=y
+-CONFIG_CRYPTO_SHA1_PPC=y
+ CONFIG_CRYPTO_DES=y
+ # CONFIG_CRYPTO_HW is not set
+diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
+index 379229c982a49..98f56e63ad21c 100644
+--- a/arch/powerpc/configs/powernv_defconfig
++++ b/arch/powerpc/configs/powernv_defconfig
+@@ -320,11 +320,10 @@ CONFIG_XMON=y
+ CONFIG_CRYPTO_BENCHMARK=m
+ CONFIG_CRYPTO_PCBC=m
+ CONFIG_CRYPTO_HMAC=y
+ CONFIG_CRYPTO_MD5_PPC=m
+ CONFIG_CRYPTO_MICHAEL_MIC=m
+-CONFIG_CRYPTO_SHA1_PPC=m
+ CONFIG_CRYPTO_SHA256=y
+ CONFIG_CRYPTO_WP512=m
+ CONFIG_CRYPTO_ANUBIS=m
+ CONFIG_CRYPTO_BLOWFISH=m
+ CONFIG_CRYPTO_CAST6=m
+diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
+index 3423c405cad4b..dca67aae5da3c 100644
+--- a/arch/powerpc/configs/ppc64_defconfig
++++ b/arch/powerpc/configs/ppc64_defconfig
+@@ -386,11 +386,10 @@ CONFIG_CRYPTO_PCBC=m
+ CONFIG_CRYPTO_MICHAEL_MIC=m
+ CONFIG_CRYPTO_SHA256=y
+ CONFIG_CRYPTO_WP512=m
+ CONFIG_CRYPTO_LZO=m
+ CONFIG_CRYPTO_MD5_PPC=m
+-CONFIG_CRYPTO_SHA1_PPC=m
+ CONFIG_CRYPTO_AES_GCM_P10=m
+ CONFIG_CRYPTO_DEV_NX=y
+ CONFIG_CRYPTO_DEV_NX_ENCRYPT=m
+ CONFIG_CRYPTO_DEV_VMX=y
+ CONFIG_SYSTEM_TRUSTED_KEYRING=y
+diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+index caaa359f47420..cfe39fc221cf8 100644
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -21,26 +21,10 @@ config CRYPTO_MD5_PPC
+ 	help
+ 	  MD5 message digest algorithm (RFC1321)
+ 
+ 	  Architecture: powerpc
+ 
+-config CRYPTO_SHA1_PPC
+-	tristate "Hash functions: SHA-1"
+-	help
+-	  SHA-1 secure hash algorithm (FIPS 180)
+-
+-	  Architecture: powerpc
+-
+-config CRYPTO_SHA1_PPC_SPE
+-	tristate "Hash functions: SHA-1 (SPE)"
+-	depends on SPE
+-	help
+-	  SHA-1 secure hash algorithm (FIPS 180)
+-
+-	  Architecture: powerpc using
+-	  - SPE (Signal Processing Engine) extensions
+-
+ config CRYPTO_AES_PPC_SPE
+ 	tristate "Ciphers: AES, modes: ECB/CBC/CTR/XTS (SPE)"
+ 	depends on SPE
+ 	select CRYPTO_SKCIPHER
+ 	help
+diff --git a/arch/powerpc/crypto/Makefile b/arch/powerpc/crypto/Makefile
+index 8c2936ae466fc..bc8fd27344b8b 100644
+--- a/arch/powerpc/crypto/Makefile
++++ b/arch/powerpc/crypto/Makefile
+@@ -5,20 +5,16 @@
+ # Arch-specific CryptoAPI modules.
  #
  
- obj-y += octeon-crypto.o
+ obj-$(CONFIG_CRYPTO_AES_PPC_SPE) += aes-ppc-spe.o
+ obj-$(CONFIG_CRYPTO_MD5_PPC) += md5-ppc.o
+-obj-$(CONFIG_CRYPTO_SHA1_PPC) += sha1-powerpc.o
+-obj-$(CONFIG_CRYPTO_SHA1_PPC_SPE) += sha1-ppc-spe.o
+ obj-$(CONFIG_CRYPTO_AES_GCM_P10) += aes-gcm-p10-crypto.o
+ obj-$(CONFIG_CRYPTO_DEV_VMX_ENCRYPT) += vmx-crypto.o
+ obj-$(CONFIG_CRYPTO_CURVE25519_PPC64) += curve25519-ppc64le.o
  
- obj-$(CONFIG_CRYPTO_MD5_OCTEON)		+= octeon-md5.o
--obj-$(CONFIG_CRYPTO_SHA1_OCTEON)	+= octeon-sha1.o
-diff --git a/arch/mips/cavium-octeon/crypto/octeon-sha1.c b/arch/mips/cavium-octeon/crypto/octeon-sha1.c
+ aes-ppc-spe-y := aes-spe-core.o aes-spe-keys.o aes-tab-4k.o aes-spe-modes.o aes-spe-glue.o
+ md5-ppc-y := md5-asm.o md5-glue.o
+-sha1-powerpc-y := sha1-powerpc-asm.o sha1.o
+-sha1-ppc-spe-y := sha1-spe-asm.o sha1-spe-glue.o
+ aes-gcm-p10-crypto-y := aes-gcm-p10-glue.o aes-gcm-p10.o ghashp10-ppc.o aesp10-ppc.o
+ vmx-crypto-objs := vmx.o aesp8-ppc.o ghashp8-ppc.o aes.o aes_cbc.o aes_ctr.o aes_xts.o ghash.o
+ curve25519-ppc64le-y := curve25519-ppc64le-core.o curve25519-ppc64le_asm.o
+ 
+ ifeq ($(CONFIG_CPU_LITTLE_ENDIAN),y)
+diff --git a/arch/powerpc/crypto/sha1-spe-glue.c b/arch/powerpc/crypto/sha1-spe-glue.c
 deleted file mode 100644
-index e4a369a7764fb..0000000000000
---- a/arch/mips/cavium-octeon/crypto/octeon-sha1.c
+index 04c88e173ce15..0000000000000
+--- a/arch/powerpc/crypto/sha1-spe-glue.c
 +++ /dev/null
-@@ -1,146 +0,0 @@
+@@ -1,107 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * Cryptographic API.
+- * Glue code for SHA-1 implementation for SPE instructions (PPC)
 - *
-- * SHA1 Secure Hash Algorithm.
+- * Based on generic implementation.
 - *
-- * Adapted for OCTEON by Aaro Koskinen <aaro.koskinen@iki.fi>.
-- *
-- * Based on crypto/sha1_generic.c, which is:
-- *
-- * Copyright (c) Alan Smithee.
-- * Copyright (c) Andrew McDonald <andrew@mcdonald.org.uk>
-- * Copyright (c) Jean-Francois Dive <jef@linuxbe.org>
+- * Copyright (c) 2015 Markus Stockhausen <stockhausen@collogia.de>
 - */
 -
--#include <asm/octeon/crypto.h>
--#include <asm/octeon/octeon.h>
+-#include <asm/switch_to.h>
 -#include <crypto/internal/hash.h>
 -#include <crypto/sha1.h>
 -#include <crypto/sha1_base.h>
--#include <linux/errno.h>
 -#include <linux/kernel.h>
+-#include <linux/preempt.h>
 -#include <linux/module.h>
 -
 -/*
-- * We pass everything as 64-bit. OCTEON can handle misaligned data.
+- * MAX_BYTES defines the number of bytes that are allowed to be processed
+- * between preempt_disable() and preempt_enable(). SHA1 takes ~1000
+- * operations per 64 bytes. e500 cores can issue two arithmetic instructions
+- * per clock cycle using one 32/64 bit unit (SU1) and one 32 bit unit (SU2).
+- * Thus 2KB of input data will need an estimated maximum of 18,000 cycles.
+- * Headroom for cache misses included. Even with the low end model clocked
+- * at 667 MHz this equals to a critical time window of less than 27us.
+- *
 - */
+-#define MAX_BYTES 2048
 -
--static void octeon_sha1_store_hash(struct sha1_state *sctx)
+-asmlinkage void ppc_spe_sha1_transform(u32 *state, const u8 *src, u32 blocks);
+-
+-static void spe_begin(void)
 -{
--	u64 *hash = (u64 *)sctx->state;
--	union {
--		u32 word[2];
--		u64 dword;
--	} hash_tail = { { sctx->state[4], } };
--
--	write_octeon_64bit_hash_dword(hash[0], 0);
--	write_octeon_64bit_hash_dword(hash[1], 1);
--	write_octeon_64bit_hash_dword(hash_tail.dword, 2);
--	memzero_explicit(&hash_tail.word[0], sizeof(hash_tail.word[0]));
+-	/* We just start SPE operations and will save SPE registers later. */
+-	preempt_disable();
+-	enable_kernel_spe();
 -}
 -
--static void octeon_sha1_read_hash(struct sha1_state *sctx)
+-static void spe_end(void)
 -{
--	u64 *hash = (u64 *)sctx->state;
--	union {
--		u32 word[2];
--		u64 dword;
--	} hash_tail;
--
--	hash[0]		= read_octeon_64bit_hash_dword(0);
--	hash[1]		= read_octeon_64bit_hash_dword(1);
--	hash_tail.dword	= read_octeon_64bit_hash_dword(2);
--	sctx->state[4]	= hash_tail.word[0];
--	memzero_explicit(&hash_tail.dword, sizeof(hash_tail.dword));
+-	disable_kernel_spe();
+-	/* reenable preemption */
+-	preempt_enable();
 -}
 -
--static void octeon_sha1_transform(struct sha1_state *sctx, const u8 *src,
--				  int blocks)
+-static void ppc_spe_sha1_block(struct sha1_state *sctx, const u8 *src,
+-			       int blocks)
 -{
 -	do {
--		const u64 *block = (const u64 *)src;
+-		int unit = min(blocks, MAX_BYTES / SHA1_BLOCK_SIZE);
 -
--		write_octeon_64bit_block_dword(block[0], 0);
--		write_octeon_64bit_block_dword(block[1], 1);
--		write_octeon_64bit_block_dword(block[2], 2);
--		write_octeon_64bit_block_dword(block[3], 3);
--		write_octeon_64bit_block_dword(block[4], 4);
--		write_octeon_64bit_block_dword(block[5], 5);
--		write_octeon_64bit_block_dword(block[6], 6);
--		octeon_sha1_start(block[7]);
+-		spe_begin();
+-		ppc_spe_sha1_transform(sctx->state, src, unit);
+-		spe_end();
 -
--		src += SHA1_BLOCK_SIZE;
--	} while (--blocks);
+-		src += unit * SHA1_BLOCK_SIZE;
+-		blocks -= unit;
+-	} while (blocks);
 -}
 -
--static int octeon_sha1_update(struct shash_desc *desc, const u8 *data,
+-static int ppc_spe_sha1_update(struct shash_desc *desc, const u8 *data,
 -			unsigned int len)
 -{
--	struct sha1_state *sctx = shash_desc_ctx(desc);
--	struct octeon_cop2_state state;
--	unsigned long flags;
--	int remain;
--
--	flags = octeon_crypto_enable(&state);
--	octeon_sha1_store_hash(sctx);
--
--	remain = sha1_base_do_update_blocks(desc, data, len,
--					    octeon_sha1_transform);
--
--	octeon_sha1_read_hash(sctx);
--	octeon_crypto_disable(&state, flags);
--	return remain;
+-	return sha1_base_do_update_blocks(desc, data, len, ppc_spe_sha1_block);
 -}
 -
--static int octeon_sha1_finup(struct shash_desc *desc, const u8 *src,
--			     unsigned int len, u8 *out)
+-static int ppc_spe_sha1_finup(struct shash_desc *desc, const u8 *src,
+-			      unsigned int len, u8 *out)
 -{
--	struct sha1_state *sctx = shash_desc_ctx(desc);
--	struct octeon_cop2_state state;
--	unsigned long flags;
--
--	flags = octeon_crypto_enable(&state);
--	octeon_sha1_store_hash(sctx);
--
--	sha1_base_do_finup(desc, src, len, octeon_sha1_transform);
--
--	octeon_sha1_read_hash(sctx);
--	octeon_crypto_disable(&state, flags);
+-	sha1_base_do_finup(desc, src, len, ppc_spe_sha1_block);
 -	return sha1_base_finish(desc, out);
 -}
 -
--static struct shash_alg octeon_sha1_alg = {
+-static struct shash_alg alg = {
 -	.digestsize	=	SHA1_DIGEST_SIZE,
 -	.init		=	sha1_base_init,
--	.update		=	octeon_sha1_update,
--	.finup		=	octeon_sha1_finup,
+-	.update		=	ppc_spe_sha1_update,
+-	.finup		=	ppc_spe_sha1_finup,
 -	.descsize	=	SHA1_STATE_SIZE,
 -	.base		=	{
 -		.cra_name	=	"sha1",
--		.cra_driver_name=	"octeon-sha1",
--		.cra_priority	=	OCTEON_CR_OPCODE_PRIORITY,
+-		.cra_driver_name=	"sha1-ppc-spe",
+-		.cra_priority	=	300,
 -		.cra_flags	=	CRYPTO_AHASH_ALG_BLOCK_ONLY,
 -		.cra_blocksize	=	SHA1_BLOCK_SIZE,
 -		.cra_module	=	THIS_MODULE,
 -	}
 -};
 -
--static int __init octeon_sha1_mod_init(void)
+-static int __init ppc_spe_sha1_mod_init(void)
 -{
--	if (!octeon_has_crypto())
--		return -ENOTSUPP;
--	return crypto_register_shash(&octeon_sha1_alg);
+-	return crypto_register_shash(&alg);
 -}
 -
--static void __exit octeon_sha1_mod_fini(void)
+-static void __exit ppc_spe_sha1_mod_fini(void)
 -{
--	crypto_unregister_shash(&octeon_sha1_alg);
+-	crypto_unregister_shash(&alg);
 -}
 -
--module_init(octeon_sha1_mod_init);
--module_exit(octeon_sha1_mod_fini);
+-module_init(ppc_spe_sha1_mod_init);
+-module_exit(ppc_spe_sha1_mod_fini);
 -
 -MODULE_LICENSE("GPL");
--MODULE_DESCRIPTION("SHA1 Secure Hash Algorithm (OCTEON)");
--MODULE_AUTHOR("Aaro Koskinen <aaro.koskinen@iki.fi>");
-diff --git a/arch/mips/configs/cavium_octeon_defconfig b/arch/mips/configs/cavium_octeon_defconfig
-index effdfb2bb738b..3f50e1d78894a 100644
---- a/arch/mips/configs/cavium_octeon_defconfig
-+++ b/arch/mips/configs/cavium_octeon_defconfig
-@@ -154,11 +154,10 @@ CONFIG_NLS_UTF8=y
- CONFIG_SECURITY=y
- CONFIG_SECURITY_NETWORK=y
- CONFIG_CRYPTO_CBC=y
- CONFIG_CRYPTO_HMAC=y
- CONFIG_CRYPTO_MD5_OCTEON=y
--CONFIG_CRYPTO_SHA1_OCTEON=m
- CONFIG_CRYPTO_DES=y
- CONFIG_DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT=y
- CONFIG_DEBUG_FS=y
- CONFIG_MAGIC_SYSRQ=y
- # CONFIG_SCHED_DEBUG is not set
-diff --git a/arch/mips/crypto/Kconfig b/arch/mips/crypto/Kconfig
-index 51a76a5ee3b16..7b91f4ec65bff 100644
---- a/arch/mips/crypto/Kconfig
-+++ b/arch/mips/crypto/Kconfig
-@@ -10,16 +10,6 @@ config CRYPTO_MD5_OCTEON
- 	help
- 	  MD5 message digest algorithm (RFC1321)
- 
- 	  Architecture: mips OCTEON using crypto instructions, when available
- 
--config CRYPTO_SHA1_OCTEON
--	tristate "Hash functions: SHA-1 (OCTEON)"
--	depends on CPU_CAVIUM_OCTEON
--	select CRYPTO_SHA1
--	select CRYPTO_HASH
--	help
--	  SHA-1 secure hash algorithm (FIPS 180)
+-MODULE_DESCRIPTION("SHA1 Secure Hash Algorithm, SPE optimized");
 -
--	  Architecture: mips OCTEON
+-MODULE_ALIAS_CRYPTO("sha1");
+-MODULE_ALIAS_CRYPTO("sha1-ppc-spe");
+diff --git a/arch/powerpc/crypto/sha1.c b/arch/powerpc/crypto/sha1.c
+deleted file mode 100644
+index 4593946aa9b33..0000000000000
+--- a/arch/powerpc/crypto/sha1.c
++++ /dev/null
+@@ -1,78 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Cryptographic API.
+- *
+- * powerpc implementation of the SHA1 Secure Hash Algorithm.
+- *
+- * Derived from cryptoapi implementation, adapted for in-place
+- * scatterlist interface.
+- *
+- * Derived from "crypto/sha1.c"
+- * Copyright (c) Alan Smithee.
+- * Copyright (c) Andrew McDonald <andrew@mcdonald.org.uk>
+- * Copyright (c) Jean-Francois Dive <jef@linuxbe.org>
+- */
+-#include <crypto/internal/hash.h>
+-#include <crypto/sha1.h>
+-#include <crypto/sha1_base.h>
+-#include <linux/kernel.h>
+-#include <linux/module.h>
 -
- endmenu
+-asmlinkage void powerpc_sha_transform(u32 *state, const u8 *src);
+-
+-static void powerpc_sha_block(struct sha1_state *sctx, const u8 *data,
+-			      int blocks)
+-{
+-	do {
+-		powerpc_sha_transform(sctx->state, data);
+-		data += 64;
+-	} while (--blocks);
+-}
+-
+-static int powerpc_sha1_update(struct shash_desc *desc, const u8 *data,
+-			       unsigned int len)
+-{
+-	return sha1_base_do_update_blocks(desc, data, len, powerpc_sha_block);
+-}
+-
+-/* Add padding and return the message digest. */
+-static int powerpc_sha1_finup(struct shash_desc *desc, const u8 *src,
+-			      unsigned int len, u8 *out)
+-{
+-	sha1_base_do_finup(desc, src, len, powerpc_sha_block);
+-	return sha1_base_finish(desc, out);
+-}
+-
+-static struct shash_alg alg = {
+-	.digestsize	=	SHA1_DIGEST_SIZE,
+-	.init		=	sha1_base_init,
+-	.update		=	powerpc_sha1_update,
+-	.finup		=	powerpc_sha1_finup,
+-	.descsize	=	SHA1_STATE_SIZE,
+-	.base		=	{
+-		.cra_name	=	"sha1",
+-		.cra_driver_name=	"sha1-powerpc",
+-		.cra_flags	=	CRYPTO_AHASH_ALG_BLOCK_ONLY,
+-		.cra_blocksize	=	SHA1_BLOCK_SIZE,
+-		.cra_module	=	THIS_MODULE,
+-	}
+-};
+-
+-static int __init sha1_powerpc_mod_init(void)
+-{
+-	return crypto_register_shash(&alg);
+-}
+-
+-static void __exit sha1_powerpc_mod_fini(void)
+-{
+-	crypto_unregister_shash(&alg);
+-}
+-
+-module_init(sha1_powerpc_mod_init);
+-module_exit(sha1_powerpc_mod_fini);
+-
+-MODULE_LICENSE("GPL");
+-MODULE_DESCRIPTION("SHA1 Secure Hash Algorithm");
+-
+-MODULE_ALIAS_CRYPTO("sha1");
+-MODULE_ALIAS_CRYPTO("sha1-powerpc");
 diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
-index 189bdae58c812..278ac6a7eca97 100644
+index 278ac6a7eca97..e842f173cadec 100644
 --- a/lib/crypto/Kconfig
 +++ b/lib/crypto/Kconfig
-@@ -146,10 +146,11 @@ config CRYPTO_LIB_SHA1
- config CRYPTO_LIB_SHA1_ARCH
+@@ -147,10 +147,11 @@ config CRYPTO_LIB_SHA1_ARCH
  	bool
  	depends on CRYPTO_LIB_SHA1 && !UML
  	default y if ARM
  	default y if ARM64 && KERNEL_MODE_NEON
-+	default y if MIPS && CPU_CAVIUM_OCTEON
+ 	default y if MIPS && CPU_CAVIUM_OCTEON
++	default y if PPC
  
  config CRYPTO_LIB_SHA256
  	tristate
  	help
  	  Enable the SHA-256 library interface. This interface may be fulfilled
-diff --git a/lib/crypto/mips/sha1.h b/lib/crypto/mips/sha1.h
+diff --git a/lib/crypto/Makefile b/lib/crypto/Makefile
+index 11c8ac54bf7d1..3f4199c079307 100644
+--- a/lib/crypto/Makefile
++++ b/lib/crypto/Makefile
+@@ -77,10 +77,14 @@ ifeq ($(CONFIG_ARM),y)
+ libsha1-y += arm/sha1-armv4-large.o
+ libsha1-$(CONFIG_KERNEL_MODE_NEON) += arm/sha1-armv7-neon.o \
+ 				      arm/sha1-ce-core.o
+ endif
+ libsha1-$(CONFIG_ARM64) += arm64/sha1-ce-core.o
++ifeq ($(CONFIG_PPC),y)
++libsha1-y += powerpc/sha1-powerpc-asm.o
++libsha1-$(CONFIG_SPE) += powerpc/sha1-spe-asm.o
++endif
+ endif # CONFIG_CRYPTO_LIB_SHA1_ARCH
+ 
+ ################################################################################
+ 
+ obj-$(CONFIG_CRYPTO_LIB_SHA256) += libsha256.o
+diff --git a/arch/powerpc/crypto/sha1-powerpc-asm.S b/lib/crypto/powerpc/sha1-powerpc-asm.S
+similarity index 100%
+rename from arch/powerpc/crypto/sha1-powerpc-asm.S
+rename to lib/crypto/powerpc/sha1-powerpc-asm.S
+diff --git a/arch/powerpc/crypto/sha1-spe-asm.S b/lib/crypto/powerpc/sha1-spe-asm.S
+similarity index 100%
+rename from arch/powerpc/crypto/sha1-spe-asm.S
+rename to lib/crypto/powerpc/sha1-spe-asm.S
+diff --git a/lib/crypto/powerpc/sha1.h b/lib/crypto/powerpc/sha1.h
 new file mode 100644
-index 0000000000000..ba1965002e4a3
+index 0000000000000..e2c010f0370bd
 --- /dev/null
-+++ b/lib/crypto/mips/sha1.h
-@@ -0,0 +1,81 @@
++++ b/lib/crypto/powerpc/sha1.h
+@@ -0,0 +1,67 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +/*
-+ * Cryptographic API.
++ * SHA-1 optimized for PowerPC
 + *
-+ * SHA1 Secure Hash Algorithm.
-+ *
-+ * Adapted for OCTEON by Aaro Koskinen <aaro.koskinen@iki.fi>.
-+ *
-+ * Based on crypto/sha1_generic.c, which is:
-+ *
-+ * Copyright (c) Alan Smithee.
-+ * Copyright (c) Andrew McDonald <andrew@mcdonald.org.uk>
-+ * Copyright (c) Jean-Francois Dive <jef@linuxbe.org>
++ * Copyright (c) 2015 Markus Stockhausen <stockhausen@collogia.de>
 + */
 +
-+#include <asm/octeon/crypto.h>
-+#include <asm/octeon/octeon.h>
++#include <asm/switch_to.h>
++#include <linux/preempt.h>
 +
++#ifdef CONFIG_SPE
 +/*
-+ * We pass everything as 64-bit. OCTEON can handle misaligned data.
++ * MAX_BYTES defines the number of bytes that are allowed to be processed
++ * between preempt_disable() and preempt_enable(). SHA1 takes ~1000
++ * operations per 64 bytes. e500 cores can issue two arithmetic instructions
++ * per clock cycle using one 32/64 bit unit (SU1) and one 32 bit unit (SU2).
++ * Thus 2KB of input data will need an estimated maximum of 18,000 cycles.
++ * Headroom for cache misses included. Even with the low end model clocked
++ * at 667 MHz this equals to a critical time window of less than 27us.
++ *
 + */
++#define MAX_BYTES 2048
 +
-+static void octeon_sha1_store_hash(struct sha1_block_state *state)
++asmlinkage void ppc_spe_sha1_transform(struct sha1_block_state *state,
++				       const u8 *data, u32 nblocks);
++
++static void spe_begin(void)
 +{
-+	u64 *hash = (u64 *)&state->h[0];
-+	union {
-+		u32 word[2];
-+		u64 dword;
-+	} hash_tail = { { state->h[4], } };
-+
-+	write_octeon_64bit_hash_dword(hash[0], 0);
-+	write_octeon_64bit_hash_dword(hash[1], 1);
-+	write_octeon_64bit_hash_dword(hash_tail.dword, 2);
-+	memzero_explicit(&hash_tail.word[0], sizeof(hash_tail.word[0]));
++	/* We just start SPE operations and will save SPE registers later. */
++	preempt_disable();
++	enable_kernel_spe();
 +}
 +
-+static void octeon_sha1_read_hash(struct sha1_block_state *state)
++static void spe_end(void)
 +{
-+	u64 *hash = (u64 *)&state->h[0];
-+	union {
-+		u32 word[2];
-+		u64 dword;
-+	} hash_tail;
-+
-+	hash[0]		= read_octeon_64bit_hash_dword(0);
-+	hash[1]		= read_octeon_64bit_hash_dword(1);
-+	hash_tail.dword	= read_octeon_64bit_hash_dword(2);
-+	state->h[4]	= hash_tail.word[0];
-+	memzero_explicit(&hash_tail.dword, sizeof(hash_tail.dword));
++	disable_kernel_spe();
++	/* reenable preemption */
++	preempt_enable();
 +}
 +
 +static void sha1_blocks(struct sha1_block_state *state,
 +			const u8 *data, size_t nblocks)
 +{
-+	struct octeon_cop2_state cop2_state;
-+	unsigned long flags;
-+
-+	if (!octeon_has_crypto())
-+		return sha1_blocks_generic(state, data, nblocks);
-+
-+	flags = octeon_crypto_enable(&cop2_state);
-+	octeon_sha1_store_hash(state);
-+
 +	do {
-+		const u64 *block = (const u64 *)data;
++		u32 unit = min_t(size_t, nblocks, MAX_BYTES / SHA1_BLOCK_SIZE);
 +
-+		write_octeon_64bit_block_dword(block[0], 0);
-+		write_octeon_64bit_block_dword(block[1], 1);
-+		write_octeon_64bit_block_dword(block[2], 2);
-+		write_octeon_64bit_block_dword(block[3], 3);
-+		write_octeon_64bit_block_dword(block[4], 4);
-+		write_octeon_64bit_block_dword(block[5], 5);
-+		write_octeon_64bit_block_dword(block[6], 6);
-+		octeon_sha1_start(block[7]);
++		spe_begin();
++		ppc_spe_sha1_transform(state, data, unit);
++		spe_end();
 +
++		data += unit * SHA1_BLOCK_SIZE;
++		nblocks -= unit;
++	} while (nblocks);
++}
++#else /* CONFIG_SPE */
++asmlinkage void powerpc_sha_transform(struct sha1_block_state *state,
++				      const u8 data[SHA1_BLOCK_SIZE]);
++
++static void sha1_blocks(struct sha1_block_state *state,
++			const u8 *data, size_t nblocks)
++{
++	do {
++		powerpc_sha_transform(state, data);
 +		data += SHA1_BLOCK_SIZE;
 +	} while (--nblocks);
-+
-+	octeon_sha1_read_hash(state);
-+	octeon_crypto_disable(&cop2_state, flags);
 +}
++#endif /* !CONFIG_SPE */
 -- 
 2.50.1
 
