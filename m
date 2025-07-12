@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-10220-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10222-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425A0B02DDD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:28:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C31B02DE6
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 01:28:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8b1Wm2z3bpL;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bfl8b3rDjz3bwL;
 	Sun, 13 Jul 2025 09:26:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752362799;
-	cv=none; b=i+HB7TCP83ZZaFb95oxdU3vaM5mxueU+TB2cOcva4kJ0KkKKdotBFu7nbPFx0Z0qyFvWh/s14bJ0mApAflsnyvK2ctmsMstNZCBk6X1dGRqkAZ67Z3XG33zTbTi9DTzTopwooNH2hGWmkwKeLeNXNDQsSrjuGX8PEewDH1jDxGVGSaMPScO1TpXgeukNhQr/GLqdr6gWwn4nYdzfQrc2WMGSzZIe14jf/2wXReHHE2y5cg0ZidIV57G9zFJMi7rHKLwyGpbdz1BUB/cy4TaX/8DvaxSv0lgRQBI7Qwr//YvKh3k7+nkJYXnHWpJxZBiYaL87lF+Lo5/gmx7qjCZdZw==
+	cv=none; b=Mj5oWsfPuOuk3l7kqnehkgaNpCZXtBgOG1fid/XgazDzgnaqlKc8McVCul9I/C4Xq+GxV4t0mukgVvctvMKlhc8MJ+CBqSYXg6sxYHhMUYu8Knt6xBHwUgW+FaOtQbtQFat2IVDqmJ24YZlhTnyqY8ZHp8DJbxbwU+mlvWfdMaUOCgkqYrYW+Tns1oKOPXsKz8OFKqLOYr3OlJKqmujLC8CFNR1vEe5r2b8hWn0xFaCBaNTh/x+aM8kRwul+u5R6RDuQ/lhnZGNqX4c6q0OjDlXC0en/h9PLvMHm8ZNny8SZCWn+NTkD7yvLYQpdeilVr6+Hpap1akBdeCjeE1a3+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1752362799; c=relaxed/relaxed;
-	bh=ZYE7gLewlb47DZCT5sSzMCMauCIPSx/9IlBf7xfG/eg=;
+	bh=X2MGdzYvcst5IMa/Q4V1TYN4Ms7TUXjTRtBPro8Troo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqXW5/cAXXEZnk2FoYKzkQdNjKOPjHLvmVKPGwau2w3FNh8hGlJfWDeOQTwB1PmYQv7qJCA06tX5LWG2AUG+tmEoyt3hqWM8YgEjarjAPlVUD2nJNQui2hANZNuT1U5sWSHS1lspF7yaiBF226ySx4ULmetuK4c2sd+MneWzWQvqyMjyKWxMzdiLy9mIwKZYGP/ZU1KutFKkXTSMOxKx7HiGoFsorit2HcAkaKBYnTxy37QTzzql4eLODavNCG5CKgQbU67Ykbfs8aGRUORFrKrL/JgKY2az8uhAngxJCbRtCnSoyvR58BL+dbrqVeVISsKJKrEMORrXpPsvavT2NA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ROFWht91; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=ZdLhgSjxDCb8G58bq5yhnVC6h+Dfp5fs/LDHy/CnsaEzNSlyg3mtcTOIJ5+1ZHXS+TRVkPt0oXyYj5jU9+dUJpElibs0Dx4blH7gvgdOc/7jQCZOb5dfbC74Hs+DysopAu/2ZcJyXXDJq30HK60QOEB97is9MP1TOXQuxrIsosYfBMYEbZXaD0kRYRb/vV76JuW3t5+TfCEASU5ltqKN3lMQ4WaeR7UWzzDlUP3nhZ16crQEAM/T5UBTlLF85P/efJzQzmnWPJJNcH8y11t5gp4Wl/hPa4LRuNaJq3FZ9UtY9LfBkNxzGbR+h4vf7xZ1i2J7VwR7LNQT79/EeYlqWA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TruHvLVH; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ROFWht91;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TruHvLVH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8Q49dHz30W5
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 09:26:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bfl8S3W15z3bp7
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 09:26:31 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id E615D5C559B;
-	Sat, 12 Jul 2025 23:26:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68845C4CEF5;
+	by tor.source.kernel.org (Postfix) with ESMTP id 7C70E61127;
+	Sat, 12 Jul 2025 23:26:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DD0C4CEEF;
 	Sat, 12 Jul 2025 23:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752362788;
-	bh=upgrbJIyKUJoRun4h/w8rzDBpBYiF16g2cfEnbcJkVg=;
+	s=k20201202; t=1752362789;
+	bh=RedRxFFHKVy5vtVyY+MZJNiBk1oOHQ1I/68b2H+lbA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROFWht91DC5XpPUdH8iXRlXvtmJOeGAoILEueEXRbxTAPmypO9d9+eWkmEkY7OfkC
-	 EznYlgw770sM+2hauKHQe9ZXD1pmPfGnLAWBZEKvJ68wP2iozUUeXCcATDci9H+nql
-	 53wI7ihD56fb/OKj38J+495wElTRth1QNz9lquAmwXhzHyShTkHCCg1y7/9DV5nE7E
-	 DU6aJPNVq/OYfOPBT9oIPAopTGITq//h/vgYLJmpT7RxnkrmoKv6FuCRonUZesj0o0
-	 SKmYw0xcwLeiizFPDxQqieqRzqlDu+cKh4N4/Cjwnsv1xm5C8P4t3ULqlN0Wr+zUrc
-	 BRmisBhki99bw==
+	b=TruHvLVHxzmKSDlYw1X7RzNkw2reqbswxSziZxBysLXETgCfeJYJssRnoaL1nzchi
+	 mi9LuEPvy1/hCsL7g5ruwnoqxWESCQwA0R6D++X5zLp+a1AP/SYpw+WEAZjvmFQX6i
+	 m5sZe95u3ReCd2zA9v1HzPEzPx2HWU3ceCbr7feHlOPjPGB1S+Avh8UHhOh6Qd9t+q
+	 9f4qhYO4xgQ30f+8sg3fvb3SJc4mvuEfy5lY9MGKg3uEMndll+YQh3+Gn88Rkq4xXy
+	 9QbE4KXhY4FA2wx4Y5mO4lq71JIx2mLl3fKyCGcWwCY0X/KHwZI+dqmIh49OgDsD95
+	 5DEcBVAIH3xUw==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 18/26] ipv6: sr: Use HMAC-SHA1 and HMAC-SHA256 library functions
-Date: Sat, 12 Jul 2025 16:23:09 -0700
-Message-ID: <20250712232329.818226-19-ebiggers@kernel.org>
+Subject: [PATCH 19/26] tee: Use SHA-1 library instead of crypto_shash
+Date: Sat, 12 Jul 2025 16:23:10 -0700
+Message-ID: <20250712232329.818226-20-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250712232329.818226-1-ebiggers@kernel.org>
 References: <20250712232329.818226-1-ebiggers@kernel.org>
@@ -80,411 +80,143 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Use the HMAC-SHA1 and HMAC-SHA256 library functions instead of
-crypto_shash.  This is simpler and faster.
+Use the SHA-1 library functions instead of crypto_shash.  This is
+simpler and faster.
 
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- include/net/seg6_hmac.h |  12 ---
- net/ipv6/Kconfig        |   6 +-
- net/ipv6/seg6.c         |   7 --
- net/ipv6/seg6_hmac.c    | 199 ++++------------------------------------
- 4 files changed, 22 insertions(+), 202 deletions(-)
+ drivers/tee/Kconfig    |  3 +--
+ drivers/tee/tee_core.c | 55 +++++++-----------------------------------
+ 2 files changed, 10 insertions(+), 48 deletions(-)
 
-diff --git a/include/net/seg6_hmac.h b/include/net/seg6_hmac.h
-index 24f733b3e3fe9..3fe4123dbbf0a 100644
---- a/include/net/seg6_hmac.h
-+++ b/include/net/seg6_hmac.h
-@@ -17,11 +17,10 @@
- #include <linux/route.h>
- #include <net/seg6.h>
- #include <linux/seg6_hmac.h>
- #include <linux/rhashtable-types.h>
- 
--#define SEG6_HMAC_MAX_DIGESTSIZE	160
- #define SEG6_HMAC_RING_SIZE		256
- 
- struct seg6_hmac_info {
- 	struct rhash_head node;
- 	struct rcu_head rcu;
-@@ -30,17 +29,10 @@ struct seg6_hmac_info {
- 	char secret[SEG6_HMAC_SECRET_LEN];
- 	u8 slen;
- 	u8 alg_id;
- };
- 
--struct seg6_hmac_algo {
--	u8 alg_id;
--	char name[64];
--	struct crypto_shash * __percpu *tfms;
--	struct shash_desc * __percpu *shashs;
--};
--
- extern int seg6_hmac_compute(struct seg6_hmac_info *hinfo,
- 			     struct ipv6_sr_hdr *hdr, struct in6_addr *saddr,
- 			     u8 *output);
- extern struct seg6_hmac_info *seg6_hmac_info_lookup(struct net *net, u32 key);
- extern int seg6_hmac_info_add(struct net *net, u32 key,
-@@ -48,17 +40,13 @@ extern int seg6_hmac_info_add(struct net *net, u32 key,
- extern int seg6_hmac_info_del(struct net *net, u32 key);
- extern int seg6_push_hmac(struct net *net, struct in6_addr *saddr,
- 			  struct ipv6_sr_hdr *srh);
- extern bool seg6_hmac_validate_skb(struct sk_buff *skb);
- #ifdef CONFIG_IPV6_SEG6_HMAC
--extern int seg6_hmac_init(void);
--extern void seg6_hmac_exit(void);
- extern int seg6_hmac_net_init(struct net *net);
- extern void seg6_hmac_net_exit(struct net *net);
- #else
--static inline int seg6_hmac_init(void) { return 0; }
--static inline void seg6_hmac_exit(void) {}
- static inline int seg6_hmac_net_init(struct net *net) { return 0; }
- static inline void seg6_hmac_net_exit(struct net *net) {}
- #endif
- 
- #endif
-diff --git a/net/ipv6/Kconfig b/net/ipv6/Kconfig
-index 1c9c686d9522f..76eb48e766382 100644
---- a/net/ipv6/Kconfig
-+++ b/net/ipv6/Kconfig
-@@ -302,14 +302,12 @@ config IPV6_SEG6_LWTUNNEL
- 	  If unsure, say N.
- 
- config IPV6_SEG6_HMAC
- 	bool "IPv6: Segment Routing HMAC support"
- 	depends on IPV6
+diff --git a/drivers/tee/Kconfig b/drivers/tee/Kconfig
+index 61b507c187801..a84767940fbfc 100644
+--- a/drivers/tee/Kconfig
++++ b/drivers/tee/Kconfig
+@@ -1,12 +1,11 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ # Generic Trusted Execution Environment Configuration
+ menuconfig TEE
+ 	tristate "Trusted Execution Environment support"
+ 	depends on HAVE_ARM_SMCCC || COMPILE_TEST || CPU_SUP_AMD
 -	select CRYPTO
--	select CRYPTO_HMAC
 -	select CRYPTO_SHA1
--	select CRYPTO_SHA256
 +	select CRYPTO_LIB_SHA1
-+	select CRYPTO_LIB_SHA256
+ 	select DMA_SHARED_BUFFER
+ 	select GENERIC_ALLOCATOR
  	help
- 	  Support for HMAC signature generation and verification
- 	  of SR-enabled packets.
- 
- 	  If unsure, say N.
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 180da19c148c1..a5c4c629b788c 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -520,20 +520,14 @@ int __init seg6_init(void)
- 
- 	err = seg6_local_init();
- 	if (err)
- 		goto out_unregister_iptun;
- 
--	err = seg6_hmac_init();
--	if (err)
--		goto out_unregister_seg6;
--
- 	pr_info("Segment Routing with IPv6\n");
- 
- out:
- 	return err;
--out_unregister_seg6:
--	seg6_local_exit();
- out_unregister_iptun:
- 	seg6_iptunnel_exit();
- out_unregister_genl:
- 	genl_unregister_family(&seg6_genl_family);
- out_unregister_pernet:
-@@ -541,11 +535,10 @@ int __init seg6_init(void)
- 	goto out;
- }
- 
- void seg6_exit(void)
- {
--	seg6_hmac_exit();
- 	seg6_local_exit();
- 	seg6_iptunnel_exit();
- 	genl_unregister_family(&seg6_genl_family);
- 	unregister_pernet_subsys(&ip6_segments_ops);
- }
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index f78ecb6ad8383..17e57da813012 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -14,11 +14,10 @@
- #include <linux/net.h>
- #include <linux/netdevice.h>
- #include <linux/in6.h>
- #include <linux/icmpv6.h>
- #include <linux/mroute6.h>
--#include <linux/slab.h>
- #include <linux/rhashtable.h>
- 
- #include <linux/netfilter.h>
- #include <linux/netfilter_ipv6.h>
- 
-@@ -32,11 +31,12 @@
- #include <net/ndisc.h>
- #include <net/ip6_route.h>
- #include <net/addrconf.h>
- #include <net/xfrm.h>
- 
+ 	  This implements a generic interface towards a Trusted Execution
+ 	  Environment (TEE).
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index acc7998758ad8..4c82a171bff20 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -12,11 +12,10 @@
+ #include <linux/module.h>
+ #include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/tee_core.h>
+ #include <linux/uaccess.h>
 -#include <crypto/hash.h>
-+#include <crypto/sha1.h>
-+#include <crypto/sha2.h>
- #include <net/seg6.h>
- #include <net/genetlink.h>
- #include <net/seg6_hmac.h>
- #include <linux/random.h>
+ #include <crypto/sha1.h>
+ #include "tee_private.h"
  
-@@ -75,21 +75,10 @@ static const struct rhashtable_params rht_params = {
- 	.key_len		= sizeof(u32),
- 	.automatic_shrinking	= true,
- 	.obj_cmpfn		= seg6_hmac_cmpfn,
- };
+ #define TEE_NUM_DEVICES	32
  
--static struct seg6_hmac_algo hmac_algos[] = {
--	{
--		.alg_id = SEG6_HMAC_ALGO_SHA1,
--		.name = "hmac(sha1)",
--	},
--	{
--		.alg_id = SEG6_HMAC_ALGO_SHA256,
--		.name = "hmac(sha256)",
--	},
--};
--
- static struct sr6_tlv_hmac *seg6_get_tlv_hmac(struct ipv6_sr_hdr *srh)
+@@ -140,72 +139,36 @@ static int tee_release(struct inode *inode, struct file *filp)
+  * UUIDv5 is specific in RFC 4122.
+  *
+  * This implements section (for SHA-1):
+  * 4.3.  Algorithm for Creating a Name-Based UUID
+  */
+-static int uuid_v5(uuid_t *uuid, const uuid_t *ns, const void *name,
+-		   size_t size)
++static void uuid_v5(uuid_t *uuid, const uuid_t *ns, const void *name,
++		    size_t size)
  {
- 	struct sr6_tlv_hmac *tlv;
++	struct sha1_ctx ctx;
+ 	unsigned char hash[SHA1_DIGEST_SIZE];
+-	struct crypto_shash *shash = NULL;
+-	struct shash_desc *desc = NULL;
+-	int rc;
+-
+-	shash = crypto_alloc_shash("sha1", 0, 0);
+-	if (IS_ERR(shash)) {
+-		rc = PTR_ERR(shash);
+-		pr_err("shash(sha1) allocation failed\n");
+-		return rc;
+-	}
+-
+-	desc = kzalloc(sizeof(*desc) + crypto_shash_descsize(shash),
+-		       GFP_KERNEL);
+-	if (!desc) {
+-		rc = -ENOMEM;
+-		goto out_free_shash;
+-	}
+-
+-	desc->tfm = shash;
  
- 	if (srh->hdrlen < (srh->first_segment + 1) * 2 + 5)
-@@ -105,79 +94,17 @@ static struct sr6_tlv_hmac *seg6_get_tlv_hmac(struct ipv6_sr_hdr *srh)
- 		return NULL;
+-	rc = crypto_shash_init(desc);
+-	if (rc < 0)
+-		goto out_free_desc;
+-
+-	rc = crypto_shash_update(desc, (const u8 *)ns, sizeof(*ns));
+-	if (rc < 0)
+-		goto out_free_desc;
+-
+-	rc = crypto_shash_update(desc, (const u8 *)name, size);
+-	if (rc < 0)
+-		goto out_free_desc;
+-
+-	rc = crypto_shash_final(desc, hash);
+-	if (rc < 0)
+-		goto out_free_desc;
++	sha1_init(&ctx);
++	sha1_update(&ctx, (const u8 *)ns, sizeof(*ns));
++	sha1_update(&ctx, (const u8 *)name, size);
++	sha1_final(&ctx, hash);
  
- 	return tlv;
+ 	memcpy(uuid->b, hash, UUID_SIZE);
+ 
+ 	/* Tag for version 5 */
+ 	uuid->b[6] = (hash[6] & 0x0F) | 0x50;
+ 	uuid->b[8] = (hash[8] & 0x3F) | 0x80;
+-
+-out_free_desc:
+-	kfree(desc);
+-
+-out_free_shash:
+-	crypto_free_shash(shash);
+-	return rc;
  }
  
--static struct seg6_hmac_algo *__hmac_get_algo(u8 alg_id)
--{
--	struct seg6_hmac_algo *algo;
--	int i, alg_count;
--
--	alg_count = ARRAY_SIZE(hmac_algos);
--	for (i = 0; i < alg_count; i++) {
--		algo = &hmac_algos[i];
--		if (algo->alg_id == alg_id)
--			return algo;
--	}
--
--	return NULL;
--}
--
--static int __do_hmac(struct seg6_hmac_info *hinfo, const char *text, u8 psize,
--		     u8 *output, int outlen)
--{
--	struct seg6_hmac_algo *algo;
--	struct crypto_shash *tfm;
--	struct shash_desc *shash;
--	int ret, dgsize;
--
--	algo = __hmac_get_algo(hinfo->alg_id);
--	if (!algo)
--		return -ENOENT;
--
--	tfm = *this_cpu_ptr(algo->tfms);
--
--	dgsize = crypto_shash_digestsize(tfm);
--	if (dgsize > outlen) {
--		pr_debug("sr-ipv6: __do_hmac: digest size too big (%d / %d)\n",
--			 dgsize, outlen);
--		return -ENOMEM;
--	}
--
--	ret = crypto_shash_setkey(tfm, hinfo->secret, hinfo->slen);
--	if (ret < 0) {
--		pr_debug("sr-ipv6: crypto_shash_setkey failed: err %d\n", ret);
--		goto failed;
--	}
--
--	shash = *this_cpu_ptr(algo->shashs);
--	shash->tfm = tfm;
--
--	ret = crypto_shash_digest(shash, text, psize, output);
--	if (ret < 0) {
--		pr_debug("sr-ipv6: crypto_shash_digest failed: err %d\n", ret);
--		goto failed;
--	}
--
--	return dgsize;
--
--failed:
--	return ret;
--}
--
- int seg6_hmac_compute(struct seg6_hmac_info *hinfo, struct ipv6_sr_hdr *hdr,
- 		      struct in6_addr *saddr, u8 *output)
+ int tee_session_calc_client_uuid(uuid_t *uuid, u32 connection_method,
+ 				 const u8 connection_data[TEE_IOCTL_UUID_LEN])
  {
- 	__be32 hmackeyid = cpu_to_be32(hinfo->hmackeyid);
--	u8 tmp_out[SEG6_HMAC_MAX_DIGESTSIZE];
--	int plen, i, dgsize, wrsize;
-+	int plen, i, ret = 0;
- 	char *ring, *off;
+ 	gid_t ns_grp = (gid_t)-1;
+ 	kgid_t grp = INVALID_GID;
+ 	char *name = NULL;
+ 	int name_len;
+-	int rc;
++	int rc = 0;
  
--	/* a 160-byte buffer for digest output allows to store highest known
--	 * hash function (RadioGatun) with up to 1216 bits
--	 */
--
- 	/* saddr(16) + first_seg(1) + flags(1) + keyid(4) + seglist(16n) */
- 	plen = 16 + 1 + 1 + 4 + (hdr->first_segment + 1) * 16;
- 
- 	/* this limit allows for 14 segments */
- 	if (plen >= SEG6_HMAC_RING_SIZE)
-@@ -216,26 +143,29 @@ int seg6_hmac_compute(struct seg6_hmac_info *hinfo, struct ipv6_sr_hdr *hdr,
- 	for (i = 0; i < hdr->first_segment + 1; i++) {
- 		memcpy(off, hdr->segments + i, 16);
- 		off += 16;
+ 	if (connection_method == TEE_IOCTL_LOGIN_PUBLIC ||
+ 	    connection_method == TEE_IOCTL_LOGIN_REE_KERNEL) {
+ 		/* Nil UUID to be passed to TEE environment */
+ 		uuid_copy(uuid, &uuid_null);
+@@ -258,11 +221,11 @@ int tee_session_calc_client_uuid(uuid_t *uuid, u32 connection_method,
+ 	default:
+ 		rc = -EINVAL;
+ 		goto out_free_name;
  	}
  
--	dgsize = __do_hmac(hinfo, ring, plen, tmp_out,
--			   SEG6_HMAC_MAX_DIGESTSIZE);
-+	memset(output, 0, SEG6_HMAC_FIELD_LEN);
-+	switch (hinfo->alg_id) {
-+	case SEG6_HMAC_ALGO_SHA1:
-+		hmac_sha1_usingrawkey(hinfo->secret, hinfo->slen, ring, plen,
-+				      output);
-+		static_assert(SHA1_DIGEST_SIZE <= SEG6_HMAC_FIELD_LEN);
-+		break;
-+	case SEG6_HMAC_ALGO_SHA256:
-+		hmac_sha256_usingrawkey(hinfo->secret, hinfo->slen, ring, plen,
-+					output);
-+		static_assert(SHA256_DIGEST_SIZE <= SEG6_HMAC_FIELD_LEN);
-+		break;
-+	default:
-+		ret = -ENOENT;
-+		break;
-+	}
- 	local_unlock_nested_bh(&hmac_storage.bh_lock);
- 	local_bh_enable();
--
--	if (dgsize < 0)
--		return dgsize;
--
--	wrsize = SEG6_HMAC_FIELD_LEN;
--	if (wrsize > dgsize)
--		wrsize = dgsize;
--
--	memset(output, 0, SEG6_HMAC_FIELD_LEN);
--	memcpy(output, tmp_out, wrsize);
--
--	return 0;
-+	return ret;
+-	rc = uuid_v5(uuid, &tee_client_uuid_ns, name, name_len);
++	uuid_v5(uuid, &tee_client_uuid_ns, name, name_len);
+ out_free_name:
+ 	kfree(name);
+ 
+ 	return rc;
  }
- EXPORT_SYMBOL(seg6_hmac_compute);
- 
- /* checks if an incoming SR-enabled packet's HMAC status matches
-  * the incoming policy.
-@@ -357,106 +287,17 @@ int seg6_push_hmac(struct net *net, struct in6_addr *saddr,
- 	rcu_read_unlock();
- 	return err;
- }
- EXPORT_SYMBOL(seg6_push_hmac);
- 
--static int seg6_hmac_init_algo(void)
--{
--	struct seg6_hmac_algo *algo;
--	struct crypto_shash *tfm;
--	struct shash_desc *shash;
--	int i, alg_count, cpu;
--	int ret = -ENOMEM;
--
--	alg_count = ARRAY_SIZE(hmac_algos);
--
--	for (i = 0; i < alg_count; i++) {
--		struct crypto_shash **p_tfm;
--		int shsize;
--
--		algo = &hmac_algos[i];
--		algo->tfms = alloc_percpu(struct crypto_shash *);
--		if (!algo->tfms)
--			goto error_out;
--
--		for_each_possible_cpu(cpu) {
--			tfm = crypto_alloc_shash(algo->name, 0, 0);
--			if (IS_ERR(tfm)) {
--				ret = PTR_ERR(tfm);
--				goto error_out;
--			}
--			p_tfm = per_cpu_ptr(algo->tfms, cpu);
--			*p_tfm = tfm;
--		}
--
--		p_tfm = raw_cpu_ptr(algo->tfms);
--		tfm = *p_tfm;
--
--		shsize = sizeof(*shash) + crypto_shash_descsize(tfm);
--
--		algo->shashs = alloc_percpu(struct shash_desc *);
--		if (!algo->shashs)
--			goto error_out;
--
--		for_each_possible_cpu(cpu) {
--			shash = kzalloc_node(shsize, GFP_KERNEL,
--					     cpu_to_node(cpu));
--			if (!shash)
--				goto error_out;
--			*per_cpu_ptr(algo->shashs, cpu) = shash;
--		}
--	}
--
--	return 0;
--
--error_out:
--	seg6_hmac_exit();
--	return ret;
--}
--
--int __init seg6_hmac_init(void)
--{
--	return seg6_hmac_init_algo();
--}
--
- int __net_init seg6_hmac_net_init(struct net *net)
- {
- 	struct seg6_pernet_data *sdata = seg6_pernet(net);
- 
- 	return rhashtable_init(&sdata->hmac_infos, &rht_params);
- }
- 
--void seg6_hmac_exit(void)
--{
--	struct seg6_hmac_algo *algo = NULL;
--	struct crypto_shash *tfm;
--	struct shash_desc *shash;
--	int i, alg_count, cpu;
--
--	alg_count = ARRAY_SIZE(hmac_algos);
--	for (i = 0; i < alg_count; i++) {
--		algo = &hmac_algos[i];
--
--		if (algo->shashs) {
--			for_each_possible_cpu(cpu) {
--				shash = *per_cpu_ptr(algo->shashs, cpu);
--				kfree(shash);
--			}
--			free_percpu(algo->shashs);
--		}
--
--		if (algo->tfms) {
--			for_each_possible_cpu(cpu) {
--				tfm = *per_cpu_ptr(algo->tfms, cpu);
--				crypto_free_shash(tfm);
--			}
--			free_percpu(algo->tfms);
--		}
--	}
--}
--EXPORT_SYMBOL(seg6_hmac_exit);
--
- void __net_exit seg6_hmac_net_exit(struct net *net)
- {
- 	struct seg6_pernet_data *sdata = seg6_pernet(net);
- 
- 	rhashtable_free_and_destroy(&sdata->hmac_infos, seg6_free_hi, NULL);
 -- 
 2.50.1
 
