@@ -1,66 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-10233-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10234-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2222B03237
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Jul 2025 18:54:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A8C3B03415
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Jul 2025 03:05:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bgBPD0SZpz3bgw;
-	Mon, 14 Jul 2025 02:54:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bgPHn4GgMz2xlQ;
+	Mon, 14 Jul 2025 11:05:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752425647;
-	cv=none; b=jl19b3dRtGr78ZQz3kw5yPp38jItME0Qn67RXRcM/fB7q3h6xE1LaWKqEPzvD6pLThDmBTBqDuuXQv+9n+xNB/3SeOvNAhN4+DcbcDj0sP0TB9KM3IvXcy7PDgPfAQXubQedM/yR+Kdu/U2pUwz3ekm29In8MduG+6LnnhN6fy4VhONx0WzX5xMo/kOCvW6/OogK1Vmbq/Lv/zAt3Fl0uBOQIO4+nB09Txkl/zzLDT5mXth9lp7u0qHc80MsD1Jpq69HAWpB3CGiBj8EFUBE3z6XGKz5mrnfdv8rYYEO4zfqmL9lhGe4z5GDWDAxl2rfPwzoDwFm/DeBF1Vg82c4UA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::636"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752455109;
+	cv=none; b=O8sVWqaB59KLhpIbTiaGO3xbPWedUIfxmDOCogQxCOSBUAyzBdILKwY1BbYzQ8fopKegwPPgGanSlCCM+eF6x5kUyHNomo+sBdHKXzASBlXCI8gtunWUcBI676c8orK3zd6XUzr9ClNjsAbO/f3+LttIeSZxw7uf/uSdbfuILB85tHz7sewzetpTcEMzmif9gO0uw3Gcji765I+m2wcByxwXP6Ph7oQ/sKbDKQhATvnWJraPOTa1uEmlfSseFMLJ/Tgiy8I3nppKQeaVKnzNDOw5b8SNdr/v9P+/Q2/916sXpRBaV+Uszi4gB7FuWTvuLDxCzfBpgpN5AI/P/W/pzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752425647; c=relaxed/relaxed;
-	bh=iSlq3w/NWZiDr688hgN1b6ijc9WOIvCGvW1QO0Zr6Hw=;
+	t=1752455109; c=relaxed/relaxed;
+	bh=OgjzoolF9QAkZAGrz9Zh/lCii89swrUvWtInk88c+zg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JJV/n+yCydQvx9FXEvCmz/PLWqS6gUTbCAW1A6MPS6epSNtE93wC8jZ7xFKZG2VDbmbxT69JDJ22d7/QL5oFGGdemwslLddqWT9TVfc171SlHf5iowXOokMIg8nTWCEsketpqdjoxaheFzenPSwO/CPPPS4P1NWVyChsjV2Ci2+yQiwlEfjmQ7F8QsCbs1sRa7xAzqeQEal6uketw8Jmup0/2NNCMe1hqcqLart2QMFjM0BPZai0AfeZiIBGcFUTdlX9ikQDmInIeyu0cyqM+RfVGn2JcTGKxHKMEsccV1fiLwNkPajrAAhUBxe24+bmr7FhtFw+LL/FBBBJK6GZSQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=psBeNjv+; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=GWcSeHmGrvxlF5L0O6wmvnkYXSug8zKib4IvFzPZlTDdawZTi9iWM0oiGVttkM5pjU2gzVh6wDzDfCVB0DRlJhe3wQnAGk3T23J5mD4vJ7s38ZyMkNWbu8LHdhhNO+0eDTIJoHQu8Ip1HCy0HpbS/PIG0HF/GppI7qn+Fk6dTLAOi/7J5+KknipuTKjcNGJa/3mLpLbzL8GFNTbCVkfABMF7+jcxWI3kZy5/jbeZqrgC/AiFAresbSMX+zz2N6gTHFq5sL6NOQcwwiVKXS+eZdOTFZFGTdjuyXgvv/FM45J+2JBta5lUaX8f2kn5xG7nc0Gf6jHuDLye4LR6hE/WYQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Y44HVB0g; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=bagasdotme@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=psBeNjv+;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Y44HVB0g;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=bagasdotme@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bgBPC1r0jz3bgX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jul 2025 02:54:07 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D42FC43AFC;
-	Sun, 13 Jul 2025 16:54:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB5CC4CEE3;
-	Sun, 13 Jul 2025 16:54:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752425644;
-	bh=Ow06yQH+u1TUlWbbAwuQ6n6w8NZPq6HcKp1HGVfdQHc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=psBeNjv+mOu40r53jPAVUKkDWtOk29oQIjMtjuLacb0tSv7EYhwPGGy6ZIDNaeC5J
-	 KLGDmHHNB6+CME4dLYfequUVCrgryGgkQH3/ZtSzl4Yh3rWI+TLRdtDli+cU7oBIR9
-	 zTOcoykL/TuRZrmJp07fl9qyX5HaP+gNdLKl1Qkj21ZJxQ4c34NFHgWsvkF1Yvqpac
-	 eXeBG/x7hXS2z+QMZ9oYTXXdBknoip3I9nOkH1YdWeRxSH9ljLerT2DjATvVmjB0kV
-	 z3v7vio7962xSabdWzzE4DRFI1u18UTLVjtmdSYnSdykM0mDtU6xhHaZqh0NBwhRGn
-	 IFi7rHIUzSk7Q==
-Date: Sun, 13 Jul 2025 09:54:01 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: "Elliott, Robert (Servers)" <elliott@hpe.com>
-Cc: "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-	"sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-	"x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH 03/26] lib/crypto: sha1: Add SHA-1 library functions
-Message-ID: <20250713165401.GA1773@quark>
-References: <20250712232329.818226-1-ebiggers@kernel.org>
- <20250712232329.818226-4-ebiggers@kernel.org>
- <IA4PR84MB4011819C07CD123FEDD4EC75AB55A@IA4PR84MB4011.NAMPRD84.PROD.OUTLOOK.COM>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bgPHl6Wb3z2xlK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Jul 2025 11:05:07 +1000 (AEST)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-ae3c5f666bfso674538666b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Jul 2025 18:05:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752455103; x=1753059903; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OgjzoolF9QAkZAGrz9Zh/lCii89swrUvWtInk88c+zg=;
+        b=Y44HVB0gNQpuZa8tFYi1V45nNn5LlyC2wceKNO4v5EFvw1myN8AxHY6cNUzDFzZgYg
+         LZqzsPdmMFg8ZjBLOlwDqZye6xvcEY1c/3mmEPBLPTZC/HXtuO0R01ooHA6NQr8nluA9
+         Aowec0op26KVGU8WKdyCFIjcOxjRnZWWAs2gob5OLlEbtVcdd8OjwhOulleKmMADK6/N
+         E3dHlpjSHM2J6wlUBRB5eajSAlcbwoddtofbCbCqJLBrFh5z06tK2nMSGP5sDNlKH0AT
+         zzaWh1fIZcvdebDPNyQmiig6l4Wsb55saTDXSkbxmTPUDZI2x8FXUHj0Hkla8Nj0qPSM
+         LCSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752455103; x=1753059903;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OgjzoolF9QAkZAGrz9Zh/lCii89swrUvWtInk88c+zg=;
+        b=EllR6rcRGe6JjPmkQNqdgGqi5ZcAPW0zmmtNnE5p9ZckIvE4/I9m9/dheHOI5JXGjG
+         0ULwyyGgVr4OEbrAhy6ebdTgLj7EslR+gOctv0RG05vYUZQxZzuUZx87BHwrhpqcMY51
+         VGyAJ9rDKQyzuEQo3q0gTuOI4yExtooGRFloccImn5JwI6Afgc2cYqkLMLkDBax+bCf6
+         IjDIRvyiVxRNVcjnXAZa7CO8jfji+57UEJRa5Q80Uvb9rObcDMYG7/tXda74lqWXHhn4
+         wYA3/m0rw3g3mm1UUUJDob/qR/XEduuLYTclcOi7v+ZU4PS2QzDBc/gUFCdrD/hT8A1m
+         pw/g==
+X-Forwarded-Encrypted: i=1; AJvYcCUJGxBlyHRCaSiQfCY2VsCCOdftPUeU4xN+lBdBdzlws8xqh3TppveZ0uDFdYF55g9a7RxJdUmeBv+os1I=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzH/atuJw9l/Zgc06FL4dSIi+uSmqHLLOs4O7kc0CFbL89paRJp
+	E4c2gfk7l8xklDCs6B8cthHUM8+KHhbgczKUe2grr1YDgW2D97RyHVVd
+X-Gm-Gg: ASbGncuF0eGzJGOxA2ZBTVZhMnO8jfGUPol+rONWs5VL+CDzqSw6OgWyV5jsd6X8oq0
+	MKl7k5pDa7nbZWW9Wh7o4TeCEf03X2wEsnCWE0OUBtJApDxYqruDZK0GK/Ttrq8FyMAOyQ0WVRI
+	s/taD+U4SofVcLa3KbkXpux9wNyRqTlU8WqSXpzEF5wrRVov9yAAegqz1pMivJCYShW2Ks2kC0W
+	lPSkh+bOvFWPwE/AUaIkRwEhombjJMSRHOeml5lGs4u/tsU4jGxYFJadwvjA0v2bbR+fWM1wBJJ
+	TcVo9zWh4jGJL1ZgI6MzqjMmp7IDmIsBEBWTQOqMMEwu6ZJmYbTLcl/ZyYPT254rhO3NA/+1k2s
+	INh+xRnghex+7rspg1mzsEg==
+X-Google-Smtp-Source: AGHT+IF4N0NBIMf66QVWdB2Wvpxc2yAm9emz4Bom0q51CWzc2xcY8yNkAgcJ3cJqRGg6aAKkWLvcpA==
+X-Received: by 2002:a17:907:6e8b:b0:ae0:c976:cc84 with SMTP id a640c23a62f3a-ae6fbda3f38mr1099077466b.24.1752455102421;
+        Sun, 13 Jul 2025 18:05:02 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ae6e8264756sm737302166b.105.2025.07.13.18.05.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Jul 2025 18:05:01 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id 52EAB420A817; Mon, 14 Jul 2025 08:04:55 +0700 (WIB)
+Date: Mon, 14 Jul 2025 08:04:55 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Haren Myneni <haren@linux.ibm.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Documentation <linux-doc@vger.kernel.org>,
+	Linux PowerPC <linuxppc-dev@lists.ozlabs.org>,
+	Linux Networking <netdev@vger.kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Donnellan <ajd@linux.ibm.com>
+Subject: Re: [PATCH RESEND 1/3] Documentation: ioctl-number: Fix linuxppc-dev
+ mailto link
+Message-ID: <aHRXtzxOeL3CnR5L@archie.me>
+References: <20250708004334.15861-1-bagasdotme@gmail.com>
+ <20250708004334.15861-2-bagasdotme@gmail.com>
+ <3cdeef45acba94a1ab14e263cbb9764591343059.camel@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,42 +102,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="KXgAq2S9Sh2ErA+o"
 Content-Disposition: inline
-In-Reply-To: <IA4PR84MB4011819C07CD123FEDD4EC75AB55A@IA4PR84MB4011.NAMPRD84.PROD.OUTLOOK.COM>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <3cdeef45acba94a1ab14e263cbb9764591343059.camel@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, Jul 13, 2025 at 03:05:16PM +0000, Elliott, Robert (Servers) wrote:
-> > -----Original Message-----
-> > From: Eric Biggers <ebiggers@kernel.org>
-> > Sent: Saturday, July 12, 2025 6:23 PM
-> > Subject: [PATCH 03/26] lib/crypto: sha1: Add SHA-1 library functions
-> ...
-> > +static void __maybe_unused sha1_blocks_generic(struct sha1_block_state
-> > *state,
-> > +					       const u8 *data, size_t nblocks)
-> > +{
-> > +	u32 workspace[SHA1_WORKSPACE_WORDS];
-> > +
-> > +	do {
-> > +		sha1_transform(state->h, data, workspace);
-> > +		data += SHA1_BLOCK_SIZE;
-> > +	} while (--nblocks);
-> > +
-> > +	memzero_explicit(workspace, sizeof(workspace));
-> > +}
-> 
-> That assumes the caller will never pass nblocks of 0... should that be
-> checked first?
 
-No.  This is a static function, and it's easy to verify that all callers
-pass a positive nblocks.  All these code paths are also well-covered by
-sha1_kunit.  Also, lib/crypto/sha256.c and lib/crypto/sha512.c do the
-exact same thing.  Also, most of the architecture-specfiic
-implementations of sha{1,256,512}_blocks() assume positive nblocks too.
+--KXgAq2S9Sh2ErA+o
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-- Eric
+On Mon, Jul 07, 2025 at 11:23:30PM -0700, Haren Myneni wrote:
+> On Tue, 2025-07-08 at 07:43 +0700, Bagas Sanjaya wrote:
+> > Spell out full Linux PPC mailing list address like other subsystem
+> > mailing lists listed in the table.
+> >=20
+> >=20
+> Please also add:
+>   Fixes: 514f6ff4369a ("powerpc/pseries: Add papr-vpd character driver
+> for VPD retrieval")
+>   Fixes: 905b9e48786e ("powerpc/pseries/papr-sysparm: Expose character
+> device to user space")
+
+OK, thanks! I will add these in v2.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--KXgAq2S9Sh2ErA+o
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCaHRXsgAKCRD2uYlJVVFO
+o9QUAP9hSnB9sVrTHZuYxdfH5z761AvDoeyCceLOal5lxQ5VoQD+KxDB/HFCPvXc
+UeYj+rGMuNLiSKWOuxQcSY0TQLyOcQ0=
+=Fvx7
+-----END PGP SIGNATURE-----
+
+--KXgAq2S9Sh2ErA+o--
 
