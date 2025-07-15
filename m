@@ -1,57 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-10259-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10260-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1068B068A7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jul 2025 23:37:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA494B068AA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Jul 2025 23:38:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bhXbP6KsYz2y8W;
-	Wed, 16 Jul 2025 07:37:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bhXcM4Zlwz2y2B;
+	Wed, 16 Jul 2025 07:38:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=23.155.224.40
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752615457;
-	cv=none; b=nIPyrx+25JdIdNHalJ6yMEKkJgP1a4AD872yv5lSPAFqc5RwfISSYvJB/RmyiSIg4oVQBDxTGEVCEgt2C8/Hp+85yq8gODRqR75M7Bt5UED0tZ7L++wH4nNeyEamt4JzkZ5cZEzsbu/fVGNhF1eXAyZXz9+bLpdCtGoRy/y4uOJSpaDu3C/blEPZcFLV3yts2jK3CgcfVLHjO4yAFXuJ2JAniM5qPTXmiLBGMF1EiJv6RpXTEq4TDVyV7eWNXW6+joQ+nTE0Ybe9agbg8aCuBEptoGV+FQdZps7nDQBL5IDGniTPbdLFlVJG0a3/WWsGRMJRYGNkfcNSA5jMfq7J6A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752615507;
+	cv=none; b=LCmOC5kVrGjjl90/hYzole9QWjdBXUtrYKbw4hPZXIP9yI4Dy3V++c6XF3Xz0XlhxXABXzrZZF/CzgzNKDIcRPXs5259b7+XtuWPLU0pAzCuNdTIkpX8eEkcnkuXQMcg8ekfojMBiAHJbVbEDbVYvT4Lvt7brzafRhysHxJfFDgXH+SYb2yzhgq581ya/kuf04KRA8rfv83lUwC0VoTLWkbTCIL7J96po0UIHI+9ATNwk6rMt833BGia6NZ2Rfjn/Bv+4wYi9curXWSDoRwSUCIOS+XA7CAGIIRmAoNcqQ22YLzxslYxRhW10hRslRBSJcW5AoU8ummw4zDpYGNC3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752615457; c=relaxed/relaxed;
-	bh=a/RHOZtuKI3IFnHAVZbUtLVWSIeWz5dK8J8PMYUdjSM=;
+	t=1752615507; c=relaxed/relaxed;
+	bh=AzvxEw34wp1D5TRYWoqBxaNBDOvxPv48PtS4dQyEJ24=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Qu8foS/hswhqqGAuQXmzWe/N++JkJdlbK+XPX05oo2fljm2T13zOEiUXdMa/fx/n+oo4GrGfg9/+1G5EeBr4QFh5jyuzZlx0UnCCo3mw1m7dKtCMuVg1KiUk76JwK1rcVfxU6rVVRjNgIx9laq1x3I75yBFMiPmvNpfjRngCgV3qlpBbd2gSf1mhTTXIP8JPddBmCF2YsP51okFAF8zzsr6Zpg0E6ApyxuGPEXdi5NhEOLIlG88ToQKq37r/DkSdFomx60CZu/jKafgQtV/8j13R9tVnxVC694WM/JlwO3HXiX0KPe12O9zWU/9WcsMnwtAQ/CiwXwEvPJ0QaSLcGw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=BixKi5jV; dkim-atps=neutral; spf=pass (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=raptorengineering.com
+	 MIME-Version:Content-Type; b=g3W7Ip5oBmC9rMz0oH43tOu4RQkOOSPiPp2Ph1Oh8ByKz2vpxVLOYNk1FOp7y8JH3bBaFlgvpS65P7jbOrpIZcXosoxhSFIc/Nn5DlJKWmC2h2AeocOvsAjVj7lja08zg2Gt5buUsIFjt0s4GP0mN6Ktpx6GFwvTuRCEXzcOQuF2qkRWjnkxzZBMrrMAYPL2XlLLPajstcuzEb/TtAyDEGNhbnFS8Ip4YM9UPT11vIkY/bH50jKUox2oY0TXWtroXwFvhnSk2wKLcIoE8/FeWJ+EK8bKRCDfHWVfv/KDskSosDfsNfwsClzBgWIfxkasei+3YDoJkGClHRTDGzqD2g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=jIxJcX2W; dkim-atps=neutral; spf=pass (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=raptorengineering.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=BixKi5jV;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=jIxJcX2W;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
 Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bhXbP2FWpz2xd6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jul 2025 07:37:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bhXcL4T7bz2xd6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Jul 2025 07:38:26 +1000 (AEST)
 Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 8008B8287698;
-	Tue, 15 Jul 2025 16:37:35 -0500 (CDT)
+	by mail.rptsys.com (Postfix) with ESMTP id C69F88287698;
+	Tue, 15 Jul 2025 16:38:24 -0500 (CDT)
 Received: from mail.rptsys.com ([127.0.0.1])
 	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id DXqvs6LDPYCI; Tue, 15 Jul 2025 16:37:35 -0500 (CDT)
+	with ESMTP id TrGGvDmz4rZm; Tue, 15 Jul 2025 16:38:23 -0500 (CDT)
 Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id E43148288591;
-	Tue, 15 Jul 2025 16:37:34 -0500 (CDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com E43148288591
+	by mail.rptsys.com (Postfix) with ESMTP id 7D1738288591;
+	Tue, 15 Jul 2025 16:38:23 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 7D1738288591
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1752615454; bh=a/RHOZtuKI3IFnHAVZbUtLVWSIeWz5dK8J8PMYUdjSM=;
+	t=1752615503; bh=AzvxEw34wp1D5TRYWoqBxaNBDOvxPv48PtS4dQyEJ24=;
 	h=Date:From:To:Message-ID:MIME-Version;
-	b=BixKi5jVzM1CraSKJsc/j0p65Q52gyeo3hTO/e4RST7uJhulhOPSkAzgY8mRW6vA6
-	 vrsf58GgVMF8udf1XFP+aOqazqL/HsM3bZiTasLSxvthaY/FcScEKMms6dhypiuSxs
-	 e3AJxjNziEmTIAPWG13wC8PSWiCGbb6zd1YBUPSQ=
+	b=jIxJcX2WRxl4nSywEZGn+vl4wE3YHhYFtu7Gm/FpZepSdPbebbPDrqn78SArsroiq
+	 X6EkBK7CYwQT+kYvpMCgue+tLqU5RPET4BMP5gquftgPIicx/L3ssx2BRXAuZc2yhV
+	 FH6YaDkAOLnhlrJTYEmzxNaJszDMTHJSsLq63j+k=
 X-Virus-Scanned: amavisd-new at rptsys.com
 Received: from mail.rptsys.com ([127.0.0.1])
 	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id jUiqRAhxzMqk; Tue, 15 Jul 2025 16:37:34 -0500 (CDT)
+	with ESMTP id dNDVnC83S7-x; Tue, 15 Jul 2025 16:38:23 -0500 (CDT)
 Received: from vali.starlink.edu (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id AB7398287698;
-	Tue, 15 Jul 2025 16:37:34 -0500 (CDT)
-Date: Tue, 15 Jul 2025 16:37:34 -0500 (CDT)
+	by mail.rptsys.com (Postfix) with ESMTP id 3E77D8287698;
+	Tue, 15 Jul 2025 16:38:23 -0500 (CDT)
+Date: Tue, 15 Jul 2025 16:38:23 -0500 (CDT)
 From: Timothy Pearson <tpearson@raptorengineering.com>
 To: Timothy Pearson <tpearson@raptorengineering.com>
 Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
@@ -63,10 +63,10 @@ Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
 	Naveen N Rao <naveen@kernel.org>, 
 	Bjorn Helgaas <bhelgaas@google.com>, 
 	Shawn Anastasio <sanastasio@raptorengineering.com>
-Message-ID: <1778535414.1359858.1752615454618.JavaMail.zimbra@raptorengineeringinc.com>
+Message-ID: <1334208367.1359861.1752615503144.JavaMail.zimbra@raptorengineeringinc.com>
 In-Reply-To: <1268570622.1359844.1752615109932.JavaMail.zimbra@raptorengineeringinc.com>
 References: <1268570622.1359844.1752615109932.JavaMail.zimbra@raptorengineeringinc.com>
-Subject: [PATCH v3 3/6] powerpc/eeh: Export eeh_unfreeze_pe()
+Subject: [PATCH v3 4/6] powerpc/eeh: Make EEH driver device hotplug safe
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,37 +83,249 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC138 (Linux)/8.5.0_GA_3042)
-Thread-Topic: powerpc/eeh: Export eeh_unfreeze_pe()
-Thread-Index: XyF2OaMn/3q+H+nwsGaxXLVF4U4PF4wBZI2J
+Thread-Topic: powerpc/eeh: Make EEH driver device hotplug safe
+Thread-Index: XyF2OaMn/3q+H+nwsGaxXLVF4U4PF0HA+s8u
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The PowerNV hotplug driver needs to be able to clear any frozen PE(s)
-on the PHB after suprise removal of a downstream device.
+Multiple race conditions existed between the PCIe hotplug driver and
+the EEH driver, leading to a variety of kernel oopses of the same
+general nature:
 
-Export the eeh_unfreeze_pe() symbol to allow implementation of this
-functionality in the php_nv module.
+<pcie device unplug>
+<eeh driver trigger>
+<hotplug removal trigger>
+<pcie tree reconfiguration>
+<eeh recovery next step>
+<oops in EEH driver bus iteration loop>
+
+A second class of oops is also seen when the underling bus disappears
+during device recovery.
+
+Refactor the EEH module to be PCI rescan and remove safe.  Also clean
+up a few minor formatting / readability issues.
 
 Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
 ---
- arch/powerpc/kernel/eeh.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kernel/eeh_driver.c | 48 +++++++++++++++++++++-----------
+ arch/powerpc/kernel/eeh_pe.c     | 10 ++++---
+ 2 files changed, 38 insertions(+), 20 deletions(-)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index ca7f7bb2b478..2b5f3323e107 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1139,6 +1139,7 @@ int eeh_unfreeze_pe(struct eeh_pe *pe)
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 7efe04c68f0f..dd50de91c438 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -257,13 +257,12 @@ static void eeh_pe_report_edev(struct eeh_dev *edev, eeh_report_fn fn,
+ 	struct pci_driver *driver;
+ 	enum pci_ers_result new_result;
  
- 	return ret;
+-	pci_lock_rescan_remove();
+ 	pdev = edev->pdev;
+ 	if (pdev)
+ 		get_device(&pdev->dev);
+-	pci_unlock_rescan_remove();
+ 	if (!pdev) {
+ 		eeh_edev_info(edev, "no device");
++		*result = PCI_ERS_RESULT_DISCONNECT;
+ 		return;
+ 	}
+ 	device_lock(&pdev->dev);
+@@ -304,8 +303,9 @@ static void eeh_pe_report(const char *name, struct eeh_pe *root,
+ 	struct eeh_dev *edev, *tmp;
+ 
+ 	pr_info("EEH: Beginning: '%s'\n", name);
+-	eeh_for_each_pe(root, pe) eeh_pe_for_each_dev(pe, edev, tmp)
+-		eeh_pe_report_edev(edev, fn, result);
++	eeh_for_each_pe(root, pe)
++		eeh_pe_for_each_dev(pe, edev, tmp)
++			eeh_pe_report_edev(edev, fn, result);
+ 	if (result)
+ 		pr_info("EEH: Finished:'%s' with aggregate recovery state:'%s'\n",
+ 			name, pci_ers_result_name(*result));
+@@ -383,6 +383,8 @@ static void eeh_dev_restore_state(struct eeh_dev *edev, void *userdata)
+ 	if (!edev)
+ 		return;
+ 
++	pci_lock_rescan_remove();
++
+ 	/*
+ 	 * The content in the config space isn't saved because
+ 	 * the blocked config space on some adapters. We have
+@@ -393,14 +395,19 @@ static void eeh_dev_restore_state(struct eeh_dev *edev, void *userdata)
+ 		if (list_is_last(&edev->entry, &edev->pe->edevs))
+ 			eeh_pe_restore_bars(edev->pe);
+ 
++		pci_unlock_rescan_remove();
+ 		return;
+ 	}
+ 
+ 	pdev = eeh_dev_to_pci_dev(edev);
+-	if (!pdev)
++	if (!pdev) {
++		pci_unlock_rescan_remove();
+ 		return;
++	}
+ 
+ 	pci_restore_state(pdev);
++
++	pci_unlock_rescan_remove();
  }
-+EXPORT_SYMBOL_GPL(eeh_unfreeze_pe);
  
+ /**
+@@ -647,9 +654,7 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	if (any_passed || driver_eeh_aware || (pe->type & EEH_PE_VF)) {
+ 		eeh_pe_dev_traverse(pe, eeh_rmv_device, rmv_data);
+ 	} else {
+-		pci_lock_rescan_remove();
+ 		pci_hp_remove_devices(bus);
+-		pci_unlock_rescan_remove();
+ 	}
  
- static struct pci_device_id eeh_reset_ids[] = {
+ 	/*
+@@ -665,8 +670,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	if (rc)
+ 		return rc;
+ 
+-	pci_lock_rescan_remove();
+-
+ 	/* Restore PE */
+ 	eeh_ops->configure_bridge(pe);
+ 	eeh_pe_restore_bars(pe);
+@@ -674,7 +677,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	/* Clear frozen state */
+ 	rc = eeh_clear_pe_frozen_state(pe, false);
+ 	if (rc) {
+-		pci_unlock_rescan_remove();
+ 		return rc;
+ 	}
+ 
+@@ -709,7 +711,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
+ 	pe->tstamp = tstamp;
+ 	pe->freeze_count = cnt;
+ 
+-	pci_unlock_rescan_remove();
+ 	return 0;
+ }
+ 
+@@ -843,10 +844,13 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		{LIST_HEAD_INIT(rmv_data.removed_vf_list), 0};
+ 	int devices = 0;
+ 
++	pci_lock_rescan_remove();
++
+ 	bus = eeh_pe_bus_get(pe);
+ 	if (!bus) {
+ 		pr_err("%s: Cannot find PCI bus for PHB#%x-PE#%x\n",
+ 			__func__, pe->phb->global_number, pe->addr);
++		pci_unlock_rescan_remove();
+ 		return;
+ 	}
+ 
+@@ -1094,10 +1098,15 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
+ 		eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
+ 
+-		pci_lock_rescan_remove();
+-		pci_hp_remove_devices(bus);
+-		pci_unlock_rescan_remove();
++		bus = eeh_pe_bus_get(pe);
++		if (bus)
++			pci_hp_remove_devices(bus);
++		else
++			pr_err("%s: PCI bus for PHB#%x-PE#%x disappeared\n",
++				__func__, pe->phb->global_number, pe->addr);
++
+ 		/* The passed PE should no longer be used */
++		pci_unlock_rescan_remove();
+ 		return;
+ 	}
+ 
+@@ -1114,6 +1123,8 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 			eeh_clear_slot_attention(edev->pdev);
+ 
+ 	eeh_pe_state_clear(pe, EEH_PE_RECOVERING, true);
++
++	pci_unlock_rescan_remove();
+ }
+ 
+ /**
+@@ -1132,6 +1143,7 @@ void eeh_handle_special_event(void)
+ 	unsigned long flags;
+ 	int rc;
+ 
++	pci_lock_rescan_remove();
+ 
+ 	do {
+ 		rc = eeh_ops->next_error(&pe);
+@@ -1171,10 +1183,12 @@ void eeh_handle_special_event(void)
+ 
+ 			break;
+ 		case EEH_NEXT_ERR_NONE:
++			pci_unlock_rescan_remove();
+ 			return;
+ 		default:
+ 			pr_warn("%s: Invalid value %d from next_error()\n",
+ 				__func__, rc);
++			pci_unlock_rescan_remove();
+ 			return;
+ 		}
+ 
+@@ -1186,7 +1200,9 @@ void eeh_handle_special_event(void)
+ 		if (rc == EEH_NEXT_ERR_FROZEN_PE ||
+ 		    rc == EEH_NEXT_ERR_FENCED_PHB) {
+ 			eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
++			pci_unlock_rescan_remove();
+ 			eeh_handle_normal_event(pe);
++			pci_lock_rescan_remove();
+ 		} else {
+ 			eeh_for_each_pe(pe, tmp_pe)
+ 				eeh_pe_for_each_dev(tmp_pe, edev, tmp_edev)
+@@ -1199,7 +1215,6 @@ void eeh_handle_special_event(void)
+ 				eeh_report_failure, NULL);
+ 			eeh_set_channel_state(pe, pci_channel_io_perm_failure);
+ 
+-			pci_lock_rescan_remove();
+ 			list_for_each_entry(hose, &hose_list, list_node) {
+ 				phb_pe = eeh_phb_pe_get(hose);
+ 				if (!phb_pe ||
+@@ -1218,7 +1233,6 @@ void eeh_handle_special_event(void)
+ 				}
+ 				pci_hp_remove_devices(bus);
+ 			}
+-			pci_unlock_rescan_remove();
+ 		}
+ 
+ 		/*
+@@ -1228,4 +1242,6 @@ void eeh_handle_special_event(void)
+ 		if (rc == EEH_NEXT_ERR_DEAD_IOC)
+ 			break;
+ 	} while (rc != EEH_NEXT_ERR_NONE);
++
++	pci_unlock_rescan_remove();
+ }
+diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
+index d283d281d28e..e740101fadf3 100644
+--- a/arch/powerpc/kernel/eeh_pe.c
++++ b/arch/powerpc/kernel/eeh_pe.c
+@@ -671,10 +671,12 @@ static void eeh_bridge_check_link(struct eeh_dev *edev)
+ 	eeh_ops->write_config(edev, cap + PCI_EXP_LNKCTL, 2, val);
+ 
+ 	/* Check link */
+-	if (!edev->pdev->link_active_reporting) {
+-		eeh_edev_dbg(edev, "No link reporting capability\n");
+-		msleep(1000);
+-		return;
++	if (edev->pdev) {
++		if (!edev->pdev->link_active_reporting) {
++			eeh_edev_dbg(edev, "No link reporting capability\n");
++			msleep(1000);
++			return;
++		}
+ 	}
+ 
+ 	/* Wait the link is up until timeout (5s) */
 -- 
 2.39.5
-
 
