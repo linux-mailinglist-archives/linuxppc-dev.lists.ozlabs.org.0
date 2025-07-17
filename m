@@ -1,76 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-10283-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10284-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767DBB08AA3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jul 2025 12:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4DBB08AA8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jul 2025 12:33:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bjTlZ3mW4z3bnJ;
-	Thu, 17 Jul 2025 20:32:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bjTlc55Tnz3bpM;
+	Thu, 17 Jul 2025 20:33:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752748378;
-	cv=none; b=MTyyw/em+MHuIwnvpn4EmbP3vjYIy8oJ85Bv9OoflzMurMn6FfM4qMrIzDoerlvlXl21W9BtW9od/e1yRGCCXeCfvX2eEGv5UVILl977fHtIpSPW4mFLSW8fOKMZtTqTUz7+GG1CQe3bowZAKFi7UhHnIU+KohjgunZrR9szabbClWOoGu/vwJBY6VPhP6XsAZTIWT1g/heOlL6k4lAO4by5U6zqswr27pVbdaGlEDF47X9IphTam+VDdbMDPIiJbT00k9TgwHgGMr2zhB2i/qRazzxIRroN9Hp2t8oJGc3JhJSQRszXhSjzfxLJiNJyG2GcGhWWEQUGSo3wjiwZGg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::329"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752748380;
+	cv=none; b=l28i6UrjHRyWhtEAt9enfAEygD9drc2EOa66n1xXqCrVmGeJgEf23nV+6i/rjxxXN5XUV6/0uRiJx1shaoAaDCs1bnccPpQMrRCQEWRGE/jKDpXKhh3bbbT2el5ON9Zsx1pJ1gwrsdIWp73WUQwCOYTBGLc5XqGPnMmZ3zB3CbqRJfQJgr5qNQAzvgf+2IualdupTc83wUNVQBXuCdvsXLE1PhZmh6jUIGNjO/Iv2bkC+B09/aoQb3OfPhIP1Z3AHPIzZr2C09DLEHX+bkHGhGs+rdhXVC3d6ivxNSRjc+DIU16cWE8h3hQJxWsCn8tgXleTGSafqaH8mU6BEK9Eow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752748378; c=relaxed/relaxed;
-	bh=3GoTBLEmLxVjzP5x5JCQ9EAKICcOeZGsg/sgJv78VUk=;
+	t=1752748380; c=relaxed/relaxed;
+	bh=5KTffJpKMpn8uJ1Va+yFB5k6/yxUZURkt0Rt5PLMCHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSGYnlNXfPHSpEMieOhNlfVeYE4uCn+0NLHDEaZHSXICze46f8u8yoxLrvRca43XSKw7GgS0HXXNpZzUdRfYBqkxcqfQTbQWcu+h0E0muqvJrJe+4wA7A4+XvY2CyChwdldiq8zx0P4Gi1rvZxumJp1P90JohOO9HlzXWiA5ioRsSbcnrS38h5aZ5FqlP0jOGqLOHAabybw5t3d2TbYZPOADf07585bJJHtxVKyRj3iqYvHZZ2sMgaCoNvgnaUIxhFJAJ0uIntUMdcszi29jfbjUbmAPEwVuD6z3lIycZdmpfmjtpXv0c5cC7JO5jCxRCZJ2SpUBZ3qSigMiJVYjWA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Ur//lWaT; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=W7FCMng+yOhG+D5mZ6qZ35sZLdqIsnMEVkd9O6T5OIYTS+k75jl2EAXsv5q+kuB8RTYuyZRGmmjHD7Z6/En1ioxi9BxDfWV4MwmmGkHKmchxl6So0j2yEunJ5rSHzEx6fB3vUMX8hKnB6o7Gau8I7D0VkdiHXQx7RmiMKI0n8evTScgrg2fY1/eGWHgeuUmovwMTF7cZwMoyhr5LES/psDbjVapljHRqrzwRKrkX2Ghk1z1Ubkk06If9r/Ob/P16FYZp+grziV03UQHOuQakiyC2rD1K2uzeXidJiSYBFGlyLkNA6mDCcNBHe+JARED4RiIVAOrQn2AAX7HyyM+9gA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UvmeckbX; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Ur//lWaT;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UvmeckbX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42a; helo=mail-wr1-x42a.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bjTlY4kPtz3064
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jul 2025 20:32:57 +1000 (AEST)
-Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-3a548a73ff2so761283f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jul 2025 03:32:57 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bjTlb5VxFz3064
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jul 2025 20:32:59 +1000 (AEST)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-45622a1829eso2576965e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Jul 2025 03:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752748375; x=1753353175; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1752748377; x=1753353177; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3GoTBLEmLxVjzP5x5JCQ9EAKICcOeZGsg/sgJv78VUk=;
-        b=Ur//lWaTxgJCYBFPdcNLvcnbQrrHyZslWS0PgPR1RYBJhLdpgEdMthCaX+SC3Q9FH2
-         HUJXSLaMYJndj3R4s8ZvNynLIvt8mU/QkPYDIVycPIocAX901orUU03eF8nulAEtZKmv
-         iJHgcE6Jl6mw9fLBCQ5lSJCLZzuW2Z1ZcRsNBe49EYGNVHEQxe5JEo8N9oxxYysRtPVF
-         OvEXUNdn8Q5r3V8rDYlmsqf+cys1Q9xCPdK+RdqeYV8fEp5ApdbWFbyebqXApScT5uvY
-         zmrt/p5RHi9ypzlId358MtyQoi6C0Qe/Obr4F50xsJLNg7KpK/6V2xAtQ+stCVK4xair
-         LAsg==
+        bh=5KTffJpKMpn8uJ1Va+yFB5k6/yxUZURkt0Rt5PLMCHI=;
+        b=UvmeckbXpoMxcEY8otRnVdCL40J1tjgEPPdKBdDmnxcB2/YVmYce9DvuW00XsGulk5
+         coV4SL1DHLxTYCeLK600YNCs7sxuMNAKIFmfCKK6Vk/8XjBEpikkZPAMBziBI1BCwDrt
+         b3g21rEOyT2Dvbuj+nGTSO6zsCfe4GjAUYQXh/KGI+RgVqV/xWSusv1bBclFVJ0kKoSH
+         fIA4DTa9eC5IDSNdvyjskQy3oLhFVlmxDDJPE6mt9XxWq8w3kzUCikfdd9XFFxE/YSPG
+         RpZmjuklQIOxrIa3psAOAcNOX+chO9KmzvI9gdwTp1r771kcAykTi3NxuwQ1ObsEh/ZW
+         9LKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752748375; x=1753353175;
+        d=1e100.net; s=20230601; t=1752748377; x=1753353177;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3GoTBLEmLxVjzP5x5JCQ9EAKICcOeZGsg/sgJv78VUk=;
-        b=Qx/77drdjj+3K0HKeXNNV3fxReE+0QFF1GsdLeGCzjuyY5nJ+UE1zuaj0IlDDrj4pc
-         tJqADLvhRyIMnBqGZ1lxo+6bEKMqZSNzJ8DIH28y0o2DCbUWl+HXh9g2eb+Cx3m1Tjso
-         jWP5z5AGW3fvfy6xO0pefxrrpMe9/osgeSjwIJdEeNdufpDwXzg92LulxFn+FiEPm+0T
-         dDNCUZr/9dA15N9gi0KvNwobdtlPD4021VyQ4qVMB8mJwZN78A8A1eDhEZwUmhkpgVIe
-         tdtouhXrHVC5CpdNbqEqXdRBqd2lBuNi0Fokl/4Sr1g3jhXCvK/8reupqTwPR0V1iGs7
-         s3YQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNPm7X3D3fjjf9ZRqiRVIr9H39p/1Lr1stJ5E/w/k5ycLm13Fhv+2l0mH+V73KipYQHuaEEPnUH3a7AvE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzQRRBD1blfD6H9k2ddNDSjPSuszMv2NK9T2GBImnFjL6UVR2qh
-	UDtj+AnMEWJ4WbhbJ3qcrDPL6s3UJkTRl0gb6l171aeXUIwnQL4Rf+tb
-X-Gm-Gg: ASbGncv0yrqguZlKtysLhGTB+dMEyr4cNWaPfHdKse7e5Vtg/JZhxudGjyYWeVjXCKq
-	xE+OymMRQF3Y7TgFIUNKHeOuW0agWGh7bZXJhKx38a02H6d7Wn8IYwb/HyEEBjAmfgE0rf/lzOa
-	U4+UrnOR+F4unkvQ/pRScnONUy6nfwj9AhGOoJvhj+FOs3+FlbkwfhGvG0qO/+J6lSaKvrtqbXZ
-	ctKaZrttdA4Wo6WcHXT4BeslRxqBEVazibiwHpx0o7S7Kt23sqQXEFllBWQ6kRaewZj+NAFAwiA
-	i0PXZ7cPYN3iT5IR7WYfhHKcF9dVNvIy506rx2HGrMi9CS8LedU/Vx7tdXj9j4h3xjM99ytr9pt
-	ie+4hgPEIfZVd8AACLVSHVjwQb1YeD8B40HTlNtCKHmOddcV7RnQ76nrqFGGFY0IH2kzoxINJcY
-	HrKSfx/6KcSDnd5Q==
-X-Google-Smtp-Source: AGHT+IFzelVEVcHZ/OEffn+B3ZOPH1G6XXdnoiZLhN8P1cfO9z6/oEzmEO+w51ye1sA65QFg9m/KUA==
-X-Received: by 2002:a05:6000:2d84:b0:3a4:fb33:85ce with SMTP id ffacd0b85a97d-3b60dd7d98emr3809652f8f.46.1752748374338;
-        Thu, 17 Jul 2025 03:32:54 -0700 (PDT)
+        bh=5KTffJpKMpn8uJ1Va+yFB5k6/yxUZURkt0Rt5PLMCHI=;
+        b=LhRfRzEyQt1HI9JjBM7Q/xGgLJCc+frOEmdG1lM7fPPq7+4IMrhf25bKFlUnWy2jNI
+         g1wEwmCOikxbJ0L1ESeXALDQscep4vAFkfZSQzhotHFnbxHbeloZgtQjqG1Gbg9K7EqZ
+         C5dOnj761nh/s4QbNX+mXeRPkY8rmutKtf5fWhVn/heWiusBckZ8h6nJwJRLG2c6aNYz
+         6FtHh0exeaw9SBcB5uX5GwDZy2DbRJ42pfGeTuvUo3BOXCPtyepOjKRSE6lFmUEBEo7y
+         fjtIrJzDKvByUGRvy0M0n3VLdvS2CosmsEAYt6OYglO2tw2+jd2ra+vZgMHIBx+hs1Su
+         a5VA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZgpcJK+Mu5wGrtVyo2lWZb0V2MzOc5MHaKDvkW5VllJbQ6zzhjucB82REDVQYyyNljxHVHJEfiu6QfPQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy7sWbxQJmE0lyd2zNcBV0VZgoUe8cw/MWEuKlR5TRvRit9se0B
+	JB6K3y3c6RvRlnIxV2TS3qQR8hoxuCCVYdMWlRFqXWpbhcRddrZv83tQ
+X-Gm-Gg: ASbGncv9SB/n32KYWfE01coT4mmbWQAnVwbIpUowFaov5Je3RNl4VjyFBaEL4Z5eYHm
+	2Gwb+HFRuN5FmvUSrcQakkZynQAPYtT7KpNn0h7XYDeWMRhShSoi2Sl7Y7u/S9keDcsAJJgXOr/
+	VfkrEvH1OaYyIomHMaWm85MY2WNg6VwqCTjs6eX030FZ4Q40U10icW8lIgFbRPSQEo1rm1DeZYv
+	6c+hSG3fPvQmMb4LJ2kQBfIfYQdMTShippJKFOt2BOHX8BlJT/asTzTckYJ+46y1MRPmcp1dwuB
+	n0CtrG0dObqtBFlGXL2vYRRzcStW2p/TIh3OP60Pjtl9F7GiAxcQRctmFx8UHAcW8LKYdrOEFGE
+	Xzg0U8ZCDQ+AFkIPCNnt9gkt/nRI2Dwx5VpKuG/YfSuAZf5hQ4+k+8mmq3zgX5FMGUtxFJpo1Xb
+	E6xELBbRdUcxaNbk5XvuLTWGNe
+X-Google-Smtp-Source: AGHT+IHc8vQXtNpyThvJpHCdFDQv27nKu7NYwqVFIiEhHTf13nJ3NAM+LgvjkH4nGyp8L9aYlCB8Ng==
+X-Received: by 2002:a05:600c:5246:b0:456:207e:fd86 with SMTP id 5b1f17b1804b1-4562e03bdf0mr74830065e9.2.1752748376435;
+        Thu, 17 Jul 2025 03:32:56 -0700 (PDT)
 Received: from localhost (p200300e41f4e9b00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f4e:9b00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b5e8bd163csm20204660f8f.4.2025.07.17.03.32.53
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-45634f4c34dsm18373635e9.6.2025.07.17.03.32.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Jul 2025 03:32:53 -0700 (PDT)
+        Thu, 17 Jul 2025 03:32:55 -0700 (PDT)
 From: Thierry Reding <thierry.reding@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: x86@kernel.org,
@@ -83,9 +83,9 @@ Cc: x86@kernel.org,
 	linux-pci@vger.kernel.org,
 	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/7] bus: mvebu-mbus: Embed syscore_ops in mbus context
-Date: Thu, 17 Jul 2025 12:32:37 +0200
-Message-ID: <20250717103241.2806798-4-thierry.reding@gmail.com>
+Subject: [PATCH v2 4/7] clk: ingenic: tcu: Embed syscore_ops in TCU context
+Date: Thu, 17 Jul 2025 12:32:38 +0200
+Message-ID: <20250717103241.2806798-5-thierry.reding@gmail.com>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250717103241.2806798-1-thierry.reding@gmail.com>
 References: <20250717103241.2806798-1-thierry.reding@gmail.com>
@@ -112,80 +112,107 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Thierry Reding <treding@nvidia.com>
 
-This enables the syscore callbacks to obtain the mbus context without
+This enables the syscore callbacks to obtain the TCU context without
 relying on a separate global variable.
 
 Signed-off-by: Thierry Reding <treding@nvidia.com>
 ---
- drivers/bus/mvebu-mbus.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/clk/ingenic/tcu.c | 54 ++++++++++++++++++---------------------
+ 1 file changed, 25 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/bus/mvebu-mbus.c b/drivers/bus/mvebu-mbus.c
-index 92daa45cc844..1f22bff0773c 100644
---- a/drivers/bus/mvebu-mbus.c
-+++ b/drivers/bus/mvebu-mbus.c
-@@ -130,6 +130,7 @@ struct mvebu_mbus_win_data {
- };
+diff --git a/drivers/clk/ingenic/tcu.c b/drivers/clk/ingenic/tcu.c
+index 85bd4bc73c1b..503a58d08224 100644
+--- a/drivers/clk/ingenic/tcu.c
++++ b/drivers/clk/ingenic/tcu.c
+@@ -53,9 +53,9 @@ struct ingenic_tcu {
+ 	struct clk *clk;
  
- struct mvebu_mbus_state {
+ 	struct clk_hw_onecell_data *clocks;
+-};
+ 
+-static struct ingenic_tcu *ingenic_tcu;
 +	struct syscore_ops syscore;
- 	void __iomem *mbuswins_base;
- 	void __iomem *sdramwins_base;
- 	void __iomem *mbusbridge_base;
-@@ -148,6 +149,12 @@ struct mvebu_mbus_state {
- 	struct mvebu_mbus_win_data wins[MBUS_WINS_MAX];
++};
+ 
+ static inline struct ingenic_tcu_clk *to_tcu_clk(struct clk_hw *hw)
+ {
+@@ -332,6 +332,24 @@ static const struct of_device_id __maybe_unused ingenic_tcu_of_match[] __initcon
+ 	{ /* sentinel */ }
  };
  
-+static inline struct mvebu_mbus_state *
-+syscore_to_mbus(struct syscore_ops *ops)
++static int __maybe_unused tcu_pm_suspend(struct syscore_ops *ops)
 +{
-+	return container_of(ops, struct mvebu_mbus_state, syscore);
++	struct ingenic_tcu *tcu = container_of(ops, typeof(*tcu), syscore);
++
++	if (tcu->clk)
++		clk_disable(tcu->clk);
++
++	return 0;
 +}
 +
- static struct mvebu_mbus_state mbus_state;
- 
- /*
-@@ -1008,7 +1015,7 @@ fs_initcall(mvebu_mbus_debugfs_init);
- 
- static int mvebu_mbus_suspend(struct syscore_ops *ops)
++static void __maybe_unused tcu_pm_resume(struct syscore_ops *ops)
++{
++	struct ingenic_tcu *tcu = container_of(ops, typeof(*tcu), syscore);
++
++	if (tcu->clk)
++		clk_enable(tcu->clk);
++}
++
+ static int __init ingenic_tcu_probe(struct device_node *np)
  {
--	struct mvebu_mbus_state *s = &mbus_state;
-+	struct mvebu_mbus_state *s = syscore_to_mbus(ops);
- 	int win;
- 
- 	if (!s->mbusbridge_base)
-@@ -1042,7 +1049,7 @@ static int mvebu_mbus_suspend(struct syscore_ops *ops)
- 
- static void mvebu_mbus_resume(struct syscore_ops *ops)
- {
--	struct mvebu_mbus_state *s = &mbus_state;
-+	struct mvebu_mbus_state *s = syscore_to_mbus(ops);
- 	int win;
- 
- 	writel(s->mbus_bridge_ctrl,
-@@ -1069,11 +1076,6 @@ static void mvebu_mbus_resume(struct syscore_ops *ops)
+ 	const struct of_device_id *id = of_match_node(ingenic_tcu_of_match, np);
+@@ -430,7 +448,11 @@ static int __init ingenic_tcu_probe(struct device_node *np)
+ 		goto err_unregister_ost_clock;
  	}
- }
  
--static struct syscore_ops mvebu_mbus_syscore_ops = {
--	.suspend	= mvebu_mbus_suspend,
--	.resume		= mvebu_mbus_resume,
--};
--
- static int __init mvebu_mbus_common_init(struct mvebu_mbus_state *mbus,
- 					 phys_addr_t mbuswins_phys_base,
- 					 size_t mbuswins_size,
-@@ -1118,7 +1120,9 @@ static int __init mvebu_mbus_common_init(struct mvebu_mbus_state *mbus,
- 		writel(UNIT_SYNC_BARRIER_ALL,
- 		       mbus->mbuswins_base + UNIT_SYNC_BARRIER_OFF);
- 
--	register_syscore_ops(&mvebu_mbus_syscore_ops);
-+	mbus->syscore.suspend = mvebu_mbus_suspend;
-+	mbus->syscore.resume = mvebu_mbus_resume;
-+	register_syscore_ops(&mbus->syscore);
+-	ingenic_tcu = tcu;
++	if (IS_ENABLED(CONFIG_PM_SLEEP)) {
++		tcu->syscore.suspend = tcu_pm_suspend;
++		tcu->syscore.resume = tcu_pm_resume;
++		register_syscore_ops(&tcu->syscore);
++	}
  
  	return 0;
+ 
+@@ -455,38 +477,12 @@ static int __init ingenic_tcu_probe(struct device_node *np)
+ 	return ret;
  }
+ 
+-static int __maybe_unused tcu_pm_suspend(struct syscore_ops *ops)
+-{
+-	struct ingenic_tcu *tcu = ingenic_tcu;
+-
+-	if (tcu->clk)
+-		clk_disable(tcu->clk);
+-
+-	return 0;
+-}
+-
+-static void __maybe_unused tcu_pm_resume(struct syscore_ops *ops)
+-{
+-	struct ingenic_tcu *tcu = ingenic_tcu;
+-
+-	if (tcu->clk)
+-		clk_enable(tcu->clk);
+-}
+-
+-static struct syscore_ops __maybe_unused tcu_pm_ops = {
+-	.suspend = tcu_pm_suspend,
+-	.resume = tcu_pm_resume,
+-};
+-
+ static void __init ingenic_tcu_init(struct device_node *np)
+ {
+ 	int ret = ingenic_tcu_probe(np);
+ 
+ 	if (ret)
+ 		pr_crit("Failed to initialize TCU clocks: %d\n", ret);
+-
+-	if (IS_ENABLED(CONFIG_PM_SLEEP))
+-		register_syscore_ops(&tcu_pm_ops);
+ }
+ 
+ CLK_OF_DECLARE_DRIVER(jz4740_cgu, "ingenic,jz4740-tcu", ingenic_tcu_init);
 -- 
 2.50.0
 
