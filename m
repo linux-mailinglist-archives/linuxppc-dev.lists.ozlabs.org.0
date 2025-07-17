@@ -1,87 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-10306-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10307-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D71B093F5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jul 2025 20:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D3CB095B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Jul 2025 22:30:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bjhNM4MT0z3brN;
-	Fri, 18 Jul 2025 04:32:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bjl0P39BFz3blc;
+	Fri, 18 Jul 2025 06:29:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::1" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752777123;
-	cv=pass; b=BwfWhQDG5ghrnGvWWbP1JxbBqdR2xnD3kLjCSId049m4dyzVc5IAYpaJlppwUDlhu3DtnCYKfxSo5Ax4/SnHEOTZCPdWS0rzc9ob1pii7cjk5KE8Rk8eF2Gp6UtwI54hrcA1ohcxoXHfEsEvTCrBrv/iwddUIhVdd3A8poKK7P3QAwaUzqs3Cd97yosEiuQ3pvTkOZJ7LQDq5efA19X8625i3U8lbslgOOVoYNNSK49n/TiGWXJNWX5+1IC1PDYFtn7wb7Y95Qahar8qjtSJ+32Ao6BLHBqfpHtRHccGEXEddRvC7m0M9buOrwSo1ynOuJZTRkZC+aBfDZ2ovfnD4g==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752777123; c=relaxed/relaxed;
-	bh=6D0L7dRD3X0aKxCfSUgowc2ATkrbBsTIgo1OEyWclvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Qbel1SaJkvkdkBfPM4BRs2R+O/mMxgLOiEk8vvGTK1bY/y7CKs6CKdiNkwQm8r2GA+l1Hv/0mHDAeOX1yZ+nefB4AHY2r2QajeZsd4I0E9QdD5PtJQ6IeSbdoPQGjvqX4jOIee7EaaTC4QBQlUQaM+Vix/XUnKTxgrqlsnDaptS+LP2B1hYkJ0A6PEg3Vfd6ZhH/dxDSyx1OVPTnFnQmF5ph6Ql8U7ogiAOYPtDxAKi2LKvbScZjBLWtppDxZeCboKGdF891Qge1wuSK6ozqjhPrrSYmRA6gqyMHZZpOOYl7aOYeRwm2WBTUVQzlfNU/nq+oJj16qW2+bY1IPDulRA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=EaA6jdv0; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::1; helo=db3pr0202cu003.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752784197;
+	cv=none; b=DVZXXlCj2lXraNsoOh6lXCqntoPOdi1sJc41preGnF2zAS2tvQMNMySf3yHZ9w9nP2j5n8kJrvrpPO5gho7rIcT1dT1tWYPylOg1XjKn3D3n+8OKXvUss0mUUav/UbQ7lwRtmiCfHFfaIKuMmocz5AmmVAvoSwjEPBkAxjyootRaQIKU+a9g9np0FQsJs9uELFS6nbLsHSlwVNx05EDj8bYf42Z9nFfsMM/K5MCkBj12Vb40X3MaPNHw0+pchG4OIJL+2TKA5iuKV7obRxyBON0Rpc1zapkNz1KFGMmxvV+6ZbA0YcO96qsmrN8TR3fBh0eLxBcjpBbJoUBB/T8DvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1752784197; c=relaxed/relaxed;
+	bh=nZLgnvBfpUwPDoQV8fmk8sWnUfq6T+axrtqOmEMdNlk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hixtZRQyVfM5WTWXEFhpF+kXe2XlQGCqyS0Au4HwWKlvcyLQQ0cD4Izl4oz+iyinLNRUtf2p+pGnKC/aocj9u2aWVM0oVJV4rb2HwstJJKWZ1Beuj186NScO407LmSTeDqd5BUieZ5ylWq4jTNyrsH1hcc9HTLcHkaX8SqnoBmV8sxzxN6xb1TtRoMMXFBx3tF6dC/Vx6nOQSjL7UzCbIasBSquEDZBAUmJ13iqnIhrQCzgj2z3RIuJ6N3gI0/yH3/A3Xt8RfxyXxPzPiVHokvmih5Br0DqMA+vwlLZd6xvszt+x3/DpSCfBvfvilVN6uVjPkvZrQ4PEVlzNUYoBqQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d+i09C/R; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=puranjay@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=EaA6jdv0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d+i09C/R;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::1; helo=db3pr0202cu003.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=puranjay@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bjhNL2Ykpz3bmC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jul 2025 04:32:01 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SuPd5TIn6maiUwmu8FMooDJ4h4lUTbmdcelce6V6gBkrer9cZ1he8HjajNVyl168PZ7XZcZ/jnFqf+OL7q7MlkaPAuPYmGZXr7P1ACt2q25jsPj4bKnLWS9ErKOUVIn2l/0wsinGaOzMvTm1djL6uXtOB4FfIqqDoFDBiZw9WcG8/Nqt7MqQH7XL0i+k9h4qwQ8sMNaVlQ9vxOrthLFF1j2jEVLG07XjX+ktij0wH78FJfZ/waNoYSPTvwsQ+43egxrA19jHhmuTtWcHQbDNyEuQFwWEHooBd82mqsPNbynr2S0QVvN2LTq3eeb3ar2/dDkIPNem457XnP14ugAO2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6D0L7dRD3X0aKxCfSUgowc2ATkrbBsTIgo1OEyWclvk=;
- b=EvQcVrkyjy821j4cXCKfZ/A/YyJm240mTPoYrduKoBFOX3BIm2lxrbLsxy4ld1wIQs7hqQq67vtmnB6agDPUIkZ8SqC3+UxUHHllPUnlndf0KGDFIZckzRp9s/6iFu8LKcqf2GM2qOfN3WfyBSlwkJ0yCVM8auTFfXZmQ4eurdYcpnP9+zkJp32+57ifv4Pzf+ZEBZkLX40NDgISvmF0KONSyJ4Wh715AWbFIkia8519AFGNWBN9juCfYdrGwh3ZKdwzQVGoMN87brpS4zqDiOfua7rBEqnViejRiFj5SWlrXtzip4h/DU7Yf2r4MqmPFJWuGWjyPjB9PxKqJu78jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6D0L7dRD3X0aKxCfSUgowc2ATkrbBsTIgo1OEyWclvk=;
- b=EaA6jdv0YAYRaQL8mVC/GpW8I3dVrwNwLig1cCXdZpN1V+vo2YL5+1m/CcqcYaPqLn2ylfJyELP5fJdFry7WnOHIADQCArh2uXx+XyKRxQBivxxB7lIhLOGkLZvo9KIA7xxT+/HcvXmTdWSL/Qd/TbkEIOBIdWQ73bdmlV3780IZz1mvy9H7wz/lz/w9Zh8Ejrepvbbg5Q0CeEULkKke0tDRmSjjnpQ4jooLYLkS97ak41TBFqDErChBENJSqFUOKqxT6F1vjqqSPIuUhVufL2HIzPtBI0OjmSBLx9tudkkhY1OaYqs5xtLhPUOaW0O8NvBE1+Wlv/ovL96NxYOPnA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by VE1PR04MB7216.eurprd04.prod.outlook.com (2603:10a6:800:1b0::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8922.32; Thu, 17 Jul
- 2025 18:31:32 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8922.037; Thu, 17 Jul 2025
- 18:31:32 +0000
-Date: Thu, 17 Jul 2025 14:31:26 -0400
-From: Frank Li <Frank.li@nxp.com>
-To: manivannan.sadhasivam@oss.qualcomm.com
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>, Will Deacon <will@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Niklas Cassel <cassel@kernel.org>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH v6 2/4] PCI: host-common: Add link down handling for Root
- Portsy
-Message-ID: <aHlBfhYvNNOfqoq1@lizhi-Precision-Tower-5810>
-References: <20250715-pci-port-reset-v6-0-6f9cce94e7bb@oss.qualcomm.com>
- <20250715-pci-port-reset-v6-2-6f9cce94e7bb@oss.qualcomm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250715-pci-port-reset-v6-2-6f9cce94e7bb@oss.qualcomm.com>
-X-ClientProxiedBy: AM9P193CA0028.EURP193.PROD.OUTLOOK.COM
- (2603:10a6:20b:21e::33) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bjl0M5HpPz30Vn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jul 2025 06:29:55 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0290F45980;
+	Thu, 17 Jul 2025 20:29:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E24BC4CEE3;
+	Thu, 17 Jul 2025 20:29:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752784192;
+	bh=q8eKevXXi+UQ1OwFBOXGgOAL2sn/edb+P2x0UDs5fKY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=d+i09C/R+8o4J/2j6CW0+DVpc4NDnNYt9863nRnffuBeGEbkm0Nwgci/v2axWWwP7
+	 SJfAy/K4l24Jn6St9TtdI8/oceR54KczEnj4PnFLJCy4sDmthCrmEqUL/0sIs0EYUu
+	 At6Q8YR40GX+fiJ8Qb+AR4mw9bKqZXhiUl9KaalHsplkEd/cmkt2Ep7OIfsGBbUPrp
+	 WZn5yoGN7Qf/4QZj8OcCg3EKwThrmkeYDOyWxbUMa5Accj2YDD1V/DdJXzo26e79Sr
+	 +0HjXM2J6vGd+MHb4j8Zpc0v1Ye0CZ+LEkKcPgYGbQkKAZQlDkqX+epPYYpdIV5DEl
+	 1HZ08FQCQSWsA==
+From: Puranjay Mohan <puranjay@kernel.org>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Mykola Lysenko <mykolal@fb.com>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Peilin Ye <yepeilin@google.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	lkmm@lists.linux.dev
+Subject: [PATCH RESEND bpf-next 1/1] powerpc64/bpf: Add jit support for load_acquire and store_release
+Date: Thu, 17 Jul 2025 20:29:17 +0000
+Message-ID: <20250717202935.29018-2-puranjay@kernel.org>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250717202935.29018-1-puranjay@kernel.org>
+References: <20250717202935.29018-1-puranjay@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,212 +90,233 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|VE1PR04MB7216:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac29f30d-dd70-4bca-4f3b-08ddc560273d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|366016|1800799024|376014|19092799006|7416014|38350700014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TpgGkWvkg5cC1Dy5q3kWidZjMLPWfhOJXLlghvcgFUAcjrSre+z5x+aYDnsd?=
- =?us-ascii?Q?BZdyRijKJ1VlQD5XCxIWkXz0Lf6bIqIxGaHFwYCJKM/IbZZKVfMPqeaab0f2?=
- =?us-ascii?Q?1ieWQPjuNNhKVY6lAGqfTav811gjaaU84//Vr+AeSnUToYs+ut4DVz/kttDF?=
- =?us-ascii?Q?1+9RzWV3jwklqzuQQC48tSRBXrjtidA4Cx9FBzUvQkyb8ZJ7YT61AqOWnfbB?=
- =?us-ascii?Q?1ZuInCh8RKzd7ry1lgbIrL3tv6tv4f3q5B41IrwJWbRdbHfx9h/SkYqcJ4KD?=
- =?us-ascii?Q?fZv4DqHuIJ1t94rfkxLzDQW7yg6kn+SvSQU3lr+w1eWnED3dwbBu5UggiOUu?=
- =?us-ascii?Q?z+9nnn9AIf0gyJwUByfPPiIa1P8rmoRtdTk7uBIaKPEHP9xGFbVV0eiVq+JS?=
- =?us-ascii?Q?0aVT50+v7gTUKeLvVAUw9SGX/H/rNPovL730ONOE7kBKD6w58Xn338DMo6cc?=
- =?us-ascii?Q?EvdQuAGTv6ijWsNzEMLcrjpHPu9gmJik/z8WRKU5HLIjICGYaywLhI3Wmkr/?=
- =?us-ascii?Q?gBUb8YzAo1e4F3jo9vHABg7ww682f2uUy3Gs7auzjIMqcD+xMa56jQWtevaw?=
- =?us-ascii?Q?HewfC/oqVH9bUkvaoVbUyHOW/qmVvFNkO0Yz03jPhRdQCDz4b/kToTUP5m/d?=
- =?us-ascii?Q?Lbae1VI1OeBtJwGt+GhE9HJqSAqvU5t/vXovndhGl5Pl9d1iPynPQ/14kCL2?=
- =?us-ascii?Q?che+YVHeVJWZ9KcTrD2YZmVGNybYatT/Hjy0fRBlE8/hH4MpnldRaKHtQcr1?=
- =?us-ascii?Q?LOSQ3aKyZddz8mrJdGQCeRq29zvNjTHQHMRkWx06i37WBTXoyZWr8BqtVOAA?=
- =?us-ascii?Q?8DFIvZrSK7tmrOafTIfBOSRkzKpBZVCrTF+hzEGg70+mUSMCFPgAUvWWf0I+?=
- =?us-ascii?Q?S3zL+3deMWGFxkFGnOfNq8XSANgDqQ/RA97Mq4AuW+J1ULyjp1QQfRSH4Xmf?=
- =?us-ascii?Q?+WhjTG5PJEl271m+48Piw4YMeLrkMz+cRGMsUCcEID9QgKk9FOg3nGMcXs3o?=
- =?us-ascii?Q?ZeU3DmEDqWSetKc3whNGITtZgpNU/68l7zr06TFAWiY/+GDdo6S0iOMYN8qt?=
- =?us-ascii?Q?kSGqLWUiyvcVc1zP1dvt6aZJ9v1kKePPaCossZUa5ZR0wwGvRFnv57fywXzY?=
- =?us-ascii?Q?MpVcQm+5LKGrf6mVW/Jv60TluJmlef8liZQ4nbbAmgVSvcPHW9L6jKQ+WOOY?=
- =?us-ascii?Q?v60aBISHTWeNidwTpr6e93eFQAgdtU42/imGS1oqz4C9Q/qst6quigZiz6rE?=
- =?us-ascii?Q?9bcgfg6/DBpxoY0knznJdFMbHmA7kVx5Ui5ncj473QH+uzJPrKjiNU1aEjPU?=
- =?us-ascii?Q?8R+plgOlhrvhrgRhdIInLP21Qt5ywdViOwQ72WuZ/k6Ql+XgQI0d0lX23zum?=
- =?us-ascii?Q?FIqhbo4g7rykLHKYl9J4yGAPklftaXDg3Dk1d+Ahgh1H+XyQGeiOCXuV5xTW?=
- =?us-ascii?Q?c6SALK1ODSa2WJU+zrK3QJElmzvQbu3F/G7ZiajLVArM+8OzzCCIEw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(1800799024)(376014)(19092799006)(7416014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?afiABw8oPuRL6mgY0utr9OFQ8WLLnIXnBHuDBp/0W16hVWEUDAilGlJFAyHy?=
- =?us-ascii?Q?++oh3+rsGEMjpPK0t6v/Trg14P7QRj2CA6b14kjvX6gMVeqiNnOK9jXLhnud?=
- =?us-ascii?Q?+0Riz2nMOSbm+PqNnvWoOLiEyPsrcRCE36gAt5Uob9SbKQyGSKk1gRjOvFy7?=
- =?us-ascii?Q?YknVbWI8knl4SIai0NCq9FN7WLB6ERDpmegP2IlYWFwcF2x6cXUARemvmIIq?=
- =?us-ascii?Q?HI/a3iCCEXBMnHWcxXnQa+uN4eEERdT2YGgR+rPr9vimoltKt5B949Pmoe3v?=
- =?us-ascii?Q?rn3X2v2VZBLwIW3ai59Fh6b561u3hMx/TMKS3E/YJotddaMxL52BXMhMv6FJ?=
- =?us-ascii?Q?DFkK4PiZ27f7yNtQiTNKCnmsZjIY6TPWBzSUPpN0+mjVz8M8hmwudbC41Daj?=
- =?us-ascii?Q?tPE/bKvi6snB92BYZcD8D1ZKGFOwng+KgAROqfQP5PrJ2di2nIhGPrBu4KeJ?=
- =?us-ascii?Q?8S7qjiq+dljB4FqI3Jcw0wt4eW08i9ScyLclGesBhwlCDUsfWQpv/WLBUF9S?=
- =?us-ascii?Q?AVVA0hhxy44h17Zgcqg862JMuNRWDh0d5kIyARf77WKvYNhPmMJvYf03k5jr?=
- =?us-ascii?Q?1Gsr6VOxBYmYP7Tq6oWbFWJi3SBuYcyPDCu/MiTcSZpK6o8XfFbNyKgqMUOa?=
- =?us-ascii?Q?C4qA3cPgJ1MZBDVXAhXjP9mw2mjBR8L45vbb9ymmx98i8ezHRR1UlITQJXkU?=
- =?us-ascii?Q?ZbYES1qhgDSD+j2nN0Qex+jD51S+uIEnW4mNlCNF8V2Iaa5McSKXoXI8/mxX?=
- =?us-ascii?Q?UNaZTIGZYFLWgbJgJ6YBPs131qS+XxidjctPuGu0XObTjx7CQgc+QQc4lX58?=
- =?us-ascii?Q?rguDrHH4/hiFy+fMCW6Gobk6tdEFoQCotW3JleIEwHD7bwII8cQA624XZTco?=
- =?us-ascii?Q?/9osikpDVBt5Qn/j85jxGCu8yPo78J2RWQ2AQagjLknrkY/9dU94GSyRXdbN?=
- =?us-ascii?Q?Tgiy0sjMfzMI4H2TWL8P8eKcUn7VOwJ6WJstodFzISyR55Qub9aD2SMAfO74?=
- =?us-ascii?Q?ivXOnhW37FpsY8j054u9zkv2AtlvAzdC2fXmtZZo4U20tIDxEIMzJl7A5EiD?=
- =?us-ascii?Q?binUq71qEKCybjh6XYsNFQZj319FBAlbtY7bKxDnz3UGQJZQwboOiQK9njh+?=
- =?us-ascii?Q?2lsRrobl/jbRxwmPaZsqblr2V0V/qXkFRgBR8vpaRUAbAVreqHId7M2U3GjM?=
- =?us-ascii?Q?mpMnLh5oZ4FxWKgjKmTFBwo2AIwIFJIiax+oS6F6LGKWsuNV3PhA2sIPiSMP?=
- =?us-ascii?Q?RmiWkYkbbq6zRoTu6T4LjKD1LQ0/zoOr609I3ixOSp49xtvE5A4cnt6577+F?=
- =?us-ascii?Q?VLTq9BAhc1PbEvL2NAiKlivnHEhxEjw54UOdkzKETZYhsBFmzsvcM10UzPq+?=
- =?us-ascii?Q?uTApYXPx4NnI5F/aQNfPwRQOqCdKD3ECf79NWerFz1ZdmSsPolosElFgdodZ?=
- =?us-ascii?Q?uXYAyWoL05lRSyMN1m7Nez79qfyLY+YWkTbTYmX7E4R7S4oLmuY7w1z0EUyX?=
- =?us-ascii?Q?07PaJtmtpAefaPO41Tr3nPtwCejaIhTg0f6XlRNopKqHoaRs0rPYycYPZDtw?=
- =?us-ascii?Q?+njtOtM1jvaS6Yi8W2/nlOapkJWCYUKrhSMNnf3n?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac29f30d-dd70-4bca-4f3b-08ddc560273d
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2025 18:31:32.3669
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sDTtbB2mCr5oT6jxmUbFaqDq88t7kHLcSWeFJGsngSxr9LLvCyx2uUqBflRQy9bzvNi0ojj3k2zqm1MjgXwHcw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7216
-X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Jul 15, 2025 at 07:51:05PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> From: Manivannan Sadhasivam <mani@kernel.org>
->
-> The PCI link, when down, needs to be recovered to bring it back. But on
-> some platforms, that cannot be done in a generic way as link recovery
-> procedure is platform specific. So add a new API
-> pci_host_handle_link_down() that could be called by the host bridge drivers
-> for a specific Root Port when the link goes down.
->
-> The API accepts the 'pci_dev' corresponding to the Root Port which observed
-> the link down event. If CONFIG_PCIEAER is enabled, the API calls
-> pcie_do_recovery() function with 'pci_channel_io_frozen' as the state. This
-> will result in the execution of the AER Fatal error handling code. Since
-> the link down recovery is pretty much the same as AER Fatal error handling,
-> pcie_do_recovery() helper is reused here. First, the AER error_detected()
-> callback will be triggered for the bridge and then for the downstream
-> devices. Finally, pci_host_reset_root_port() will be called for the Root
-> Port, which will reset the Root Port using 'reset_root_port' callback to
-> recover the link. Once that's done, resume message will be broadcasted to
-> the bridge and the downstream devices, indicating successful link recovery.
->
-> But if CONFIG_PCIEAER is not enabled in the kernel, only
-> pci_host_reset_root_port() API will be called, which will in turn call
-> pci_bus_error_reset() to just reset the Root Port as there is no way we
-> could inform the drivers about link recovery.
->
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Add JIT support for the load_acquire and store_release instructions. The
+implementation is similar to the kernel where:
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+        load_acquire  => plain load -> lwsync
+        store_release => lwsync -> plain store
 
-> ---
->  drivers/pci/controller/pci-host-common.c | 33 ++++++++++++++++++++++++++++++++
->  drivers/pci/controller/pci-host-common.h |  1 +
->  drivers/pci/pci.c                        |  1 +
->  drivers/pci/pcie/err.c                   |  1 +
->  4 files changed, 36 insertions(+)
->
-> diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
-> index b0992325dd65f0da8e216ec8a2153af365225d1d..51eacb6cb57443338e995f17afd3b2564bbd1f83 100644
-> --- a/drivers/pci/controller/pci-host-common.c
-> +++ b/drivers/pci/controller/pci-host-common.c
-> @@ -12,9 +12,11 @@
->  #include <linux/of.h>
->  #include <linux/of_address.h>
->  #include <linux/of_pci.h>
-> +#include <linux/pci.h>
->  #include <linux/pci-ecam.h>
->  #include <linux/platform_device.h>
->
-> +#include "../pci.h"
->  #include "pci-host-common.h"
->
->  static void gen_pci_unmap_cfg(void *ptr)
-> @@ -104,5 +106,36 @@ void pci_host_common_remove(struct platform_device *pdev)
->  }
->  EXPORT_SYMBOL_GPL(pci_host_common_remove);
->
-> +static pci_ers_result_t pci_host_reset_root_port(struct pci_dev *dev)
-> +{
-> +	int ret;
-> +
-> +	ret = pci_bus_error_reset(dev);
-> +	if (ret) {
-> +		pci_err(dev, "Failed to reset Root Port: %d\n", ret);
-> +		return PCI_ERS_RESULT_DISCONNECT;
-> +	}
-> +
-> +	pci_info(dev, "Root Port has been reset\n");
-> +
-> +	return PCI_ERS_RESULT_RECOVERED;
-> +}
-> +
-> +static void pci_host_recover_root_port(struct pci_dev *port)
-> +{
-> +#if IS_ENABLED(CONFIG_PCIEAER)
-> +	pcie_do_recovery(port, pci_channel_io_frozen, pci_host_reset_root_port);
-> +#else
-> +	pci_host_reset_root_port(port);
-> +#endif
-> +}
-> +
-> +void pci_host_handle_link_down(struct pci_dev *port)
-> +{
-> +	pci_info(port, "Recovering Root Port due to Link Down\n");
-> +	pci_host_recover_root_port(port);
-> +}
-> +EXPORT_SYMBOL_GPL(pci_host_handle_link_down);
-> +
->  MODULE_DESCRIPTION("Common library for PCI host controller drivers");
->  MODULE_LICENSE("GPL v2");
-> diff --git a/drivers/pci/controller/pci-host-common.h b/drivers/pci/controller/pci-host-common.h
-> index 65bd9e032353827221a6af59858c46fdbe5916bf..cb0a07c8773ec87838164e994b34a62d2c8118be 100644
-> --- a/drivers/pci/controller/pci-host-common.h
-> +++ b/drivers/pci/controller/pci-host-common.h
-> @@ -16,5 +16,6 @@ int pci_host_common_probe(struct platform_device *pdev);
->  int pci_host_common_init(struct platform_device *pdev,
->  			 const struct pci_ecam_ops *ops);
->  void pci_host_common_remove(struct platform_device *pdev);
-> +void pci_host_handle_link_down(struct pci_dev *port);
->
->  #endif
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index b29264aa2be33b18a58b3b3db1d1fb0f6483e5e8..39310422634a9551efc8aded565b7cc30f4989d0 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -5768,6 +5768,7 @@ int pci_bus_error_reset(struct pci_dev *bridge)
->  	mutex_unlock(&pci_slot_mutex);
->  	return pci_bus_reset(bridge->subordinate, PCI_RESET_DO_RESET);
->  }
-> +EXPORT_SYMBOL_GPL(pci_bus_error_reset);
->
->  /**
->   * pci_probe_reset_bus - probe whether a PCI bus can be reset
-> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-> index b834fc0d705938540d3d7d3d8739770c09fe7cf1..3e3084bb7cb7fa06b526e6fab60e77927aba0ad0 100644
-> --- a/drivers/pci/pcie/err.c
-> +++ b/drivers/pci/pcie/err.c
-> @@ -270,3 +270,4 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->
->  	return status;
->  }
-> +EXPORT_SYMBOL_GPL(pcie_do_recovery);
->
-> --
-> 2.45.2
->
->
+To test the correctness of the implementation, following selftests were
+run:
+
+  [fedora@linux-kernel bpf]$ sudo ./test_progs -a \
+  verifier_load_acquire,verifier_store_release,atomics
+  #11/1    atomics/add:OK
+  #11/2    atomics/sub:OK
+  #11/3    atomics/and:OK
+  #11/4    atomics/or:OK
+  #11/5    atomics/xor:OK
+  #11/6    atomics/cmpxchg:OK
+  #11/7    atomics/xchg:OK
+  #11      atomics:OK
+  #519/1   verifier_load_acquire/load-acquire, 8-bit:OK
+  #519/2   verifier_load_acquire/load-acquire, 8-bit @unpriv:OK
+  #519/3   verifier_load_acquire/load-acquire, 16-bit:OK
+  #519/4   verifier_load_acquire/load-acquire, 16-bit @unpriv:OK
+  #519/5   verifier_load_acquire/load-acquire, 32-bit:OK
+  #519/6   verifier_load_acquire/load-acquire, 32-bit @unpriv:OK
+  #519/7   verifier_load_acquire/load-acquire, 64-bit:OK
+  #519/8   verifier_load_acquire/load-acquire, 64-bit @unpriv:OK
+  #519/9   verifier_load_acquire/load-acquire with uninitialized
+  src_reg:OK
+  #519/10  verifier_load_acquire/load-acquire with uninitialized src_reg
+  @unpriv:OK
+  #519/11  verifier_load_acquire/load-acquire with non-pointer src_reg:OK
+  #519/12  verifier_load_acquire/load-acquire with non-pointer src_reg
+  @unpriv:OK
+  #519/13  verifier_load_acquire/misaligned load-acquire:OK
+  #519/14  verifier_load_acquire/misaligned load-acquire @unpriv:OK
+  #519/15  verifier_load_acquire/load-acquire from ctx pointer:OK
+  #519/16  verifier_load_acquire/load-acquire from ctx pointer @unpriv:OK
+  #519/17  verifier_load_acquire/load-acquire with invalid register R15:OK
+  #519/18  verifier_load_acquire/load-acquire with invalid register R15
+  @unpriv:OK
+  #519/19  verifier_load_acquire/load-acquire from pkt pointer:OK
+  #519/20  verifier_load_acquire/load-acquire from flow_keys pointer:OK
+  #519/21  verifier_load_acquire/load-acquire from sock pointer:OK
+  #519     verifier_load_acquire:OK
+  #556/1   verifier_store_release/store-release, 8-bit:OK
+  #556/2   verifier_store_release/store-release, 8-bit @unpriv:OK
+  #556/3   verifier_store_release/store-release, 16-bit:OK
+  #556/4   verifier_store_release/store-release, 16-bit @unpriv:OK
+  #556/5   verifier_store_release/store-release, 32-bit:OK
+  #556/6   verifier_store_release/store-release, 32-bit @unpriv:OK
+  #556/7   verifier_store_release/store-release, 64-bit:OK
+  #556/8   verifier_store_release/store-release, 64-bit @unpriv:OK
+  #556/9   verifier_store_release/store-release with uninitialized
+  src_reg:OK
+  #556/10  verifier_store_release/store-release with uninitialized src_reg
+  @unpriv:OK
+  #556/11  verifier_store_release/store-release with uninitialized
+  dst_reg:OK
+  #556/12  verifier_store_release/store-release with uninitialized dst_reg
+  @unpriv:OK
+  #556/13  verifier_store_release/store-release with non-pointer
+  dst_reg:OK
+  #556/14  verifier_store_release/store-release with non-pointer dst_reg
+  @unpriv:OK
+  #556/15  verifier_store_release/misaligned store-release:OK
+  #556/16  verifier_store_release/misaligned store-release @unpriv:OK
+  #556/17  verifier_store_release/store-release to ctx pointer:OK
+  #556/18  verifier_store_release/store-release to ctx pointer @unpriv:OK
+  #556/19  verifier_store_release/store-release, leak pointer to stack:OK
+  #556/20  verifier_store_release/store-release, leak pointer to stack
+  @unpriv:OK
+  #556/21  verifier_store_release/store-release, leak pointer to map:OK
+  #556/22  verifier_store_release/store-release, leak pointer to map
+  @unpriv:OK
+  #556/23  verifier_store_release/store-release with invalid register
+  R15:OK
+  #556/24  verifier_store_release/store-release with invalid register R15
+  @unpriv:OK
+  #556/25  verifier_store_release/store-release to pkt pointer:OK
+  #556/26  verifier_store_release/store-release to flow_keys pointer:OK
+  #556/27  verifier_store_release/store-release to sock pointer:OK
+  #556     verifier_store_release:OK
+  Summary: 3/55 PASSED, 0 SKIPPED, 0 FAILED
+
+Signed-off-by: Puranjay Mohan <puranjay@kernel.org>
+---
+ arch/powerpc/include/asm/ppc-opcode.h        |  1 +
+ arch/powerpc/net/bpf_jit_comp64.c            | 82 ++++++++++++++++++++
+ tools/testing/selftests/bpf/progs/bpf_misc.h |  3 +-
+ 3 files changed, 85 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index 4312bcb913a42..8053b24afc395 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -425,6 +425,7 @@
+ #define PPC_RAW_SC()			(0x44000002)
+ #define PPC_RAW_SYNC()			(0x7c0004ac)
+ #define PPC_RAW_ISYNC()			(0x4c00012c)
++#define PPC_RAW_LWSYNC()		(0x7c2004ac)
+ 
+ /*
+  * Define what the VSX XX1 form instructions will look like, then add
+diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+index a25a6ffe7d7cc..025524378443e 100644
+--- a/arch/powerpc/net/bpf_jit_comp64.c
++++ b/arch/powerpc/net/bpf_jit_comp64.c
+@@ -409,6 +409,71 @@ asm (
+ "		blr				;"
+ );
+ 
++static int emit_atomic_ld_st(const struct bpf_insn insn, struct codegen_context *ctx, u32 *image)
++{
++	u32 code = insn.code;
++	u32 dst_reg = bpf_to_ppc(insn.dst_reg);
++	u32 src_reg = bpf_to_ppc(insn.src_reg);
++	u32 size = BPF_SIZE(code);
++	u32 tmp1_reg = bpf_to_ppc(TMP_REG_1);
++	u32 tmp2_reg = bpf_to_ppc(TMP_REG_2);
++	s16 off = insn.off;
++	s32 imm = insn.imm;
++
++	switch (imm) {
++	case BPF_LOAD_ACQ:
++		switch (size) {
++		case BPF_B:
++			EMIT(PPC_RAW_LBZ(dst_reg, src_reg, off));
++			break;
++		case BPF_H:
++			EMIT(PPC_RAW_LHZ(dst_reg, src_reg, off));
++			break;
++		case BPF_W:
++			EMIT(PPC_RAW_LWZ(dst_reg, src_reg, off));
++			break;
++		case BPF_DW:
++			if (off % 4) {
++				EMIT(PPC_RAW_LI(tmp1_reg, off));
++				EMIT(PPC_RAW_LDX(dst_reg, src_reg, tmp1_reg));
++			} else {
++				EMIT(PPC_RAW_LD(dst_reg, src_reg, off));
++			}
++			break;
++		}
++		EMIT(PPC_RAW_LWSYNC());
++		break;
++	case BPF_STORE_REL:
++		EMIT(PPC_RAW_LWSYNC());
++		switch (size) {
++		case BPF_B:
++			EMIT(PPC_RAW_STB(src_reg, dst_reg, off));
++			break;
++		case BPF_H:
++			EMIT(PPC_RAW_STH(src_reg, dst_reg, off));
++			break;
++		case BPF_W:
++			EMIT(PPC_RAW_STW(src_reg, dst_reg, off));
++			break;
++		case BPF_DW:
++			if (off % 4) {
++				EMIT(PPC_RAW_LI(tmp2_reg, off));
++				EMIT(PPC_RAW_STDX(src_reg, dst_reg, tmp2_reg));
++			} else {
++				EMIT(PPC_RAW_STD(src_reg, dst_reg, off));
++			}
++			break;
++		}
++		break;
++	default:
++		pr_err_ratelimited("unexpected atomic load/store op code %02x\n",
++				   imm);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ /* Assemble the body code between the prologue & epilogue */
+ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct codegen_context *ctx,
+ 		       u32 *addrs, int pass, bool extra_pass)
+@@ -898,8 +963,25 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+ 		/*
+ 		 * BPF_STX ATOMIC (atomic ops)
+ 		 */
++		case BPF_STX | BPF_ATOMIC | BPF_B:
++		case BPF_STX | BPF_ATOMIC | BPF_H:
+ 		case BPF_STX | BPF_ATOMIC | BPF_W:
+ 		case BPF_STX | BPF_ATOMIC | BPF_DW:
++			if (bpf_atomic_is_load_store(&insn[i])) {
++				ret = emit_atomic_ld_st(insn[i], ctx, image);
++				if (ret)
++					return ret;
++
++				if (size != BPF_DW && insn_is_zext(&insn[i + 1]))
++					addrs[++i] = ctx->idx * 4;
++				break;
++			} else if (size == BPF_B || size == BPF_H) {
++				pr_err_ratelimited(
++					"eBPF filter atomic op code %02x (@%d) unsupported\n",
++					code, i);
++				return -EOPNOTSUPP;
++			}
++
+ 			save_reg = tmp2_reg;
+ 			ret_reg = src_reg;
+ 
+diff --git a/tools/testing/selftests/bpf/progs/bpf_misc.h b/tools/testing/selftests/bpf/progs/bpf_misc.h
+index 530752ddde8e4..c1cfd297aabf1 100644
+--- a/tools/testing/selftests/bpf/progs/bpf_misc.h
++++ b/tools/testing/selftests/bpf/progs/bpf_misc.h
+@@ -229,7 +229,8 @@
+ 
+ #if __clang_major__ >= 18 && defined(ENABLE_ATOMICS_TESTS) &&		\
+ 	(defined(__TARGET_ARCH_arm64) || defined(__TARGET_ARCH_x86) ||	\
+-	 (defined(__TARGET_ARCH_riscv) && __riscv_xlen == 64))
++	 (defined(__TARGET_ARCH_riscv) && __riscv_xlen == 64)) || \
++	  (defined(__TARGET_ARCH_powerpc))
+ #define CAN_USE_LOAD_ACQ_STORE_REL
+ #endif
+ 
+-- 
+2.47.1
+
 
