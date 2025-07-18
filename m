@@ -1,102 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-10315-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10316-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA347B09D0D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jul 2025 09:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24862B09D61
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jul 2025 10:06:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bk2Dl2j7Xz2y8W;
-	Fri, 18 Jul 2025 17:56:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bk2RT66PZz30RK;
+	Fri, 18 Jul 2025 18:05:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752825399;
-	cv=none; b=Fguai8ko9ZaFUSbIKt5dQLYYxKHX+im4XGST7F8cLIgmdPLzW38rX11FmUYMReAdYrgzfdCC1o7DEHhbuNDDDLE2QTiPgVBGi14fPyqgExoEF0HxlxkhjGWBpDSJCKRJz6lb/OwnuuKLyI7A4dXGbTSZB6tG0zbMFWSg3lIs2JD8ukw6RxMPfi8owcQZ/qCzX6J0tc86tb8i5ikTR0gW0k9PCzr6mA30dCLmRbyUkVVRIgtZGPhb+Gqpu6hWnREgrLYTgq5S83GsYgEzVihgTlJgS3x54TXkkT82OYqBrnNWNPSyEVwUc3r9NkIFVcpsH3v02D8gDUzFC/L4XbWARw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::22f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752825957;
+	cv=none; b=LPJWfZYOtWS4Klx2P6ANFYIOGVIj0t9hbbELP3zD8r7ZhQ+KtAPVIgwRZXeM4A1Yb05QnDXGX5tzNAGuIsDQSD1tZIArnexUC79l5KsnNmFHl5Xkdxyg0YIwy5G55nUgRYDpVZW4HO5m2DOpihgKELsFq9T3cRYwt+dc4n57NspEiLR2szLsDqu3/pEXa1Q3ZUVC6OzOBTpdpDfmNDNkJwCuNJQoLx9GiljhfLhhXIJfnIrAq4k7wHtNq2GEFaAC2flbxrPrUX8qSq4TkFKIgaLv5xGucYQ5fXQrwjwIc6hK2HViabpQAXbnG5X1zLQpcC+EArhxCLfljQY4/jU5aQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752825399; c=relaxed/relaxed;
-	bh=yIkRard6W+E126nlrFH68FBbJJING0uBmwMIZSswXsA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iUKtERkn1b1PM3w1uX0Pt/0wJuxZyXqR+zGW0awlZ1k2ggtFNxQLTgeExDoXyuAJTIBllNdN+7RVMAlYkcQDCDVIzDsfgnMex6vo3kqGbbVnLof5UuoJmfJ/HIA6gO9hZn5fqCVJOqXoiWzy8Vm6jAB5PwnBFRh+nWdCzgrxxHuphrFTrJpQY0izuDWqWCSL/bobdhZ997qpc4ErZlqZfobeprY0/lxYJd2uMLJArvL1txe8zb3n39ObYEF8SpcsSKoylZvV1aFgnchGojfaU0YRLQA0378wC5qVYPqeKPyb6oHBtUZCKm1FYbDpZ+y9sbuEfwcy9uXysiUWy4CoPw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ZlkaQP/Q; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+	t=1752825957; c=relaxed/relaxed;
+	bh=mE5OlSABnLgWhYl6SAq4PjOG8cGD+M3libfM2kaqTAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kCeU9cjIEtY9c/gk+mOCRqVCD++geVe0jW3oecD0hpFVWMVLGNyh3zz9Jq6q9N2gwwt4C9yzSnKoM2FCeKl3oi32rxCswHnqV8dVkCUSxbhTbdmmr0u+oreJeZsEoZ/0+cIWzYGM4UC165cdfgOGfyLFGJB6Ps1s3HQbDOJLQ7nZ+myrFQznWZGxWJu9coGYaqwywT8mQdVhLEaZzzyDwNhEVI6nEQsf8jfmfCZx05CHKY9IS/seq9Qc6P5i099+CnCAbD8smn7dckPHcOkpUitK0KpF06nUXx99h8cP2Tbvw1GcSYSUjXaexk3lsM+XAqauGcnqeK+mjb1ykacFfg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QN8os2rt; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::22f; helo=mail-lj1-x22f.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=ZlkaQP/Q;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QN8os2rt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22f; helo=mail-lj1-x22f.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bk2Dj4TL4z2xtt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jul 2025 17:56:35 +1000 (AEST)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3a6f2c6715fso1436875f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jul 2025 00:56:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bk2RS2dGGz30RJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jul 2025 18:05:56 +1000 (AEST)
+Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-32b5931037eso13738661fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jul 2025 01:05:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1752825393; x=1753430193; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1752825950; x=1753430750; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yIkRard6W+E126nlrFH68FBbJJING0uBmwMIZSswXsA=;
-        b=ZlkaQP/Q3Ahe3RyI9LGwr6gL8399G2To5Y/aUcEr/5HO2mQr5TKP5hnSBfzci/AupP
-         5ODYCkde1bajpenlI5SQhqW4GjFHSyLXMC5l6IeXoVJaqtqJ5QEIvqq/ypaqQnb/z31D
-         I9FdzJnnPow2tzNPEh/0eSVBCh8EwpG959SZ+OIsZMWszBi1qylChMoWebj1z0UAKL0g
-         znfpyXYlSFdLlJRtX4epNGsY1oqRuTYBvUOeOd1Pc+PFj1W9o8bHYdtvmxXwmKfyX4KD
-         owfq5ucukjmUik2guSM8l3jokcIAyoqxmwbLojsa3rAQboW4U3q9jADZq2oJA5GRyeLW
-         tEhw==
+        bh=mE5OlSABnLgWhYl6SAq4PjOG8cGD+M3libfM2kaqTAg=;
+        b=QN8os2rtVGslObskSqZ5UONq81BTLrktz+uAHUrWl2NNuHtghiOrKEe+/LjbPuBGS2
+         DS9MDs763Kc/6CJAWox04eWhOphWWnYR60N8q2D/mY4uNtFnElm1I4SbeNITjHVBMuup
+         9OZc6uDrM+7VsGadZEtzAFLKSjfjSOXfd0n+/yF3W+9l/gJPspLRf7b+hfPB8a7R+5Dp
+         U27ynZYhGaofoVvEMcQ6FV9apq5V89S5051iJJelCyyYL/hIz/OtbRq6VQFM8pKwVW4X
+         caih4lyzosEMLUYw72Dmb6N7YhrjBw2Ucgj/YThhUOiyxad5YXBBV8C/rNxL4frNwvTy
+         6lHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752825393; x=1753430193;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1752825950; x=1753430750;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yIkRard6W+E126nlrFH68FBbJJING0uBmwMIZSswXsA=;
-        b=cayLlFgwnWyKB2UyWJvbhWGiFf9ooMF98T9tYvhd5tzlybjmBr6ZHo44U7nCOOlylm
-         1MhZ/ZA9X71d0WMFOP9sx+Ehst2D+BWC4y2tkNw/g4uGQQ8lC0iZpGA+g0MBboxmsvWc
-         nRjQhd6Sj5LzcGQkrOmTKHSaHj0oPpPvkZQ13Byk1phfhHg7XkZgW1ucPAaRagU984N4
-         aTXWCy1/ogc2lzUxfh8MBuRd0tQD80ha3TOtFjoQhb8PX/44U+huWMwjMrI+RBhNYs7a
-         KU9ubr3US7aHTh8h3cEuzNl68PWqLw8d35wyePOFbiP+redRMOMg9SEk21AZFKpdxSe6
-         UNLg==
-X-Forwarded-Encrypted: i=1; AJvYcCXSghUdnY4gQiFZQvaFyF9tQx+lfDQ8Up46npvkA5eBssQI7EqhSoCqr+XGhnMtVutzCqUj7kNYTAjJX/g=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyTBDVZyGVBaJbi3qf7RDAf8kB6WPlQ3zT8+Au0VTf+eeaUfAtq
-	ojZClWjy8mPnE5+aJ1zhexScq5yIKLJIYYKUqDG4mMHn0da35p7/Sw4ITqfAYgMSsWQ=
-X-Gm-Gg: ASbGncu31gqfYkcSB1lJ8PHjUWU/ld9MAjZsfZ2bXxXDOxHTZkbuqXiah85jZ1y+lUf
-	o/BpRpSz66CEmBjgEA5UoAsFmV8NOKeZVDmEi7r+Sg/zeLrVoAPoG1AxuCFDAeeXZ5f44U32bdG
-	THlTo0F1L6Bq1aEatgLVdBfbRWA+02Dv4u4F44Y1VnLolWCe9wBGA8mrH0Vs3MeVczWICz0KfJe
-	ZdrK5QFusAwtl60gVrhMNJ5rytNcdDouxC7EUUbB4EN8TLghZB7dWp3YnpHoRKXuuWPR1LHdAX1
-	ARmiA+JIyyYLj/+9kKvT3jORjDh3IwxYNzAobnFVggQVB7y/15LT3peiE4uk9YVTaQ3k0nA/mwE
-	NisqtXne0Z6Vbuj6YID6E
-X-Google-Smtp-Source: AGHT+IFR7z0xrtW7kV+L/PWsVn19Mve34KO13llGmq0De9UTBvi6IEowVSVAnjHLfBTTi45HhGu+EQ==
-X-Received: by 2002:a05:6000:1a85:b0:3a4:ef36:1f4d with SMTP id ffacd0b85a97d-3b60e4f2c6amr7520566f8f.38.1752825392621;
-        Fri, 18 Jul 2025 00:56:32 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:be63:a233:df8:a223])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca48a23sm1080851f8f.54.2025.07.18.00.56.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Jul 2025 00:56:32 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Lee Jones <lee@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] dt-bindings: gpio: Create a trivial GPIO schema
-Date: Fri, 18 Jul 2025 09:56:01 +0200
-Message-ID: <175282531516.45055.8482528409833116992.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250714201959.2983482-1-robh@kernel.org>
-References: <20250714201959.2983482-1-robh@kernel.org>
+        bh=mE5OlSABnLgWhYl6SAq4PjOG8cGD+M3libfM2kaqTAg=;
+        b=WBSoBnDoj4Oje8Rm43GvLs8+qUlY7/jpKpl5hvs30dZa845QKaeRJvibM6FqX9IIL9
+         8835dI4xBFdO3lYj5pc+rIoGRaqw7qUa2kc2WIrgXH0iUBtHsZtZ/M1gXFLQe4qVqRKX
+         2Vta2Eqxs8gKbGWatwIzHldFw+DbNcGCWrsCa3RKG/IAo7evkKB9sfinKSMBBGgPSfMU
+         DdtuTK1mKLNIFFctBEdbj6/0GxlGygxwNTYXoysJkzAgm66YxW3wgqwKDFvJhgwCG8kn
+         rZay2HfjPA8GS1kpGnAiXd0ufn+e/PJ1c7TqqQK/uP9WLFUzDxTEyWGVZMCrE73FwxUJ
+         fifg==
+X-Forwarded-Encrypted: i=1; AJvYcCUlNBXGP0NfnzMk5cq2UJg+RK24qLqoD/bVh9DGxTKcMCBLdxHwmWw6wzSJuQjiCLexsFFpVyN3/gqa1L0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyzSHlBA+DrDyvoKxDJ1B2kNkgrSk7An3X/vyj+DtPs4CVOiq5I
+	hbK+Bipbiez3gVCJtMW7GEazExwbGBL/IXdi1Ukgzkl1Cpefd5cj2ZPGaXCe5zp++lQ7aprZmV4
+	0ykR+2YY6Vd2udKW4t8R6rCrHIpjw808=
+X-Gm-Gg: ASbGncv1mWdzI6vqe9OIb+vDv388jP0M8/SUvXWz74hIKUjlLfxwfKCYE9p0gN2jo8A
+	yvJSWn51NLYgaAw1ytP4Uzi0mJp7qRhv2o3yFTr6BtQI6ru7QNqlRdzLr4p84Mb8zChcfHa+2h2
+	FkLWEmnG18kpqFRMXmIAwzu8gL5DxU6IX2NeGIeeaN9Wr/0lK9EbfK3iCAihySS7wq7hBAE6ukU
+	rzAlog=
+X-Google-Smtp-Source: AGHT+IHyLMKDBrDr7Srvy/Ikd0HaWMaoK7ylFo11Rc1uD9JBuJ8oBsq1gin5zNroA8IEeJqMbuI/vDPTs3/MNmSKtdw=
+X-Received: by 2002:a2e:80d4:0:b0:32b:755e:6cd7 with SMTP id
+ 38308e7fff4ca-3308e56e179mr28488571fa.32.1752825949700; Fri, 18 Jul 2025
+ 01:05:49 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -110,34 +79,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+References: <20250717142732.292822-1-snovitoll@gmail.com> <20250717142732.292822-2-snovitoll@gmail.com>
+ <20250717151048.bb6124bea54a31cd2b41faaf@linux-foundation.org>
+In-Reply-To: <20250717151048.bb6124bea54a31cd2b41faaf@linux-foundation.org>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Date: Fri, 18 Jul 2025 13:05:32 +0500
+X-Gm-Features: Ac12FXz9YqNA1eFVik-g2DCaFm9kQISkxpcsj01QS2Zo6EkvjPY09aiUDIQMxqs
+Message-ID: <CACzwLxgyd9yd3ah=LK93Bn7SwAy7H1Hhi=ncFzZYUs+6YGEqvg@mail.gmail.com>
+Subject: Re: [PATCH v3 01/12] lib/kasan: introduce CONFIG_ARCH_DEFER_KASAN option
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com, 
+	agordeev@linux.ibm.com, ryabinin.a.a@gmail.com, glider@google.com, 
+	dvyukov@google.com, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-mm@kvack.org, 
+	Peter Zijlstra <peterz@infradead.org>, Johannes Berg <johannes@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+On Fri, Jul 18, 2025 at 3:10=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Thu, 17 Jul 2025 19:27:21 +0500 Sabyrzhan Tasbolatov <snovitoll@gmail.=
+com> wrote:
+>
+> > Introduce CONFIG_ARCH_DEFER_KASAN to identify architectures that need
+> > to defer KASAN initialization until shadow memory is properly set up.
+> >
+> > Some architectures (like PowerPC with radix MMU) need to set up their
+> > shadow memory mappings before KASAN can be safely enabled, while others
+> > (like s390, x86, arm) can enable KASAN much earlier or even from the
+> > beginning.
+> >
+> > This option allows us to:
+> > 1. Use static keys only where needed (avoiding overhead)
+> > 2. Use compile-time constants for arch that don't need runtime checks
+> > 3. Maintain optimal performance for both scenarios
+> >
+> > Architectures that need deferred KASAN should select this option.
+> > Architectures that can enable KASAN early will get compile-time
+> > optimizations instead of runtime checks.
+>
+> Looks nice and appears quite mature.  I'm reluctant to add it to mm.git
+> during -rc6, especially given the lack of formal review and ack tags.
+>
+> But but but, that's what the mm-new branch is for.  I guess I'll add it
+> to get some additional exposure, but whether I'll advance it into
+> mm-unstable/linux-next for this cycle is unclear.
+>
+> What do you (and others) think?
 
+Thanks for the positive feedback!
+Adding it to mm-new for additional exposure would be great.
+Given the complexity of this cross-architecture change,
+I think of taking the conservative approach of:
+1. mm-new branch for exposure and review collection
+2. Advancing to mm-unstable/linux-next only after we get proper acks from
+    KASAN maintainers/reviewers, at least.
 
-On Mon, 14 Jul 2025 15:19:51 -0500, Rob Herring (Arm) wrote:
-> Many simple GPIO controllers without interrupt capability have the same
-> schema other than their compatible value. Combine all these bindings
-> into a single schema. The criteria to be included here is must use 2
-> cells, have no interrupt capability, have 0 or 1 "reg" entries, and
-> have no other resources (like clocks).
-> 
-> Note that "ngpios" is now allowed in some cases it wasn't before and
-> constraints on it have been dropped.
-> 
-> [...]
+The series has been thoroughly tested by me - compiled all affected arch an=
+d
+ran QEMU on arm64, x86 with KUnits.
 
-Applied, thanks!
-
-[1/1] dt-bindings: gpio: Create a trivial GPIO schema
-      https://git.kernel.org/brgl/linux/c/2ace85b5bbd065a4e037970154854dc2b41d7b31
-
-Best regards,
--- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
++ Forgot to add in CC Johannes Berg, Peter Zijlstra who commented in v1.
+https://lore.kernel.org/all/20250625095224.118679-1-snovitoll@gmail.com/
 
