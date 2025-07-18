@@ -1,70 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-10318-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10319-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2098BB0A0CF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jul 2025 12:40:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DD7B0A44B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 18 Jul 2025 14:38:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bk5sD3TF1z2xfR;
-	Fri, 18 Jul 2025 20:40:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bk8V53GMqz2xfR;
+	Fri, 18 Jul 2025 22:38:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752835200;
-	cv=none; b=Bef0a0Td3YvhCX/nXsuqcl2k7/51rEffLw7Zv1eQRT30qheBowiRyL2RZsRl21hviLgWMzioOjT3cQ7YyfhoKlVcvJMf9aiNP/uXEjmlfG4Mv3E+AmM3l2RUPbJNQapXgUpLcci8PGi3BfVVeTh/nI2dxCuuuogCMUbd3M7YFUU00T74TSYoQr9+Y611YD6o4Z1I5vkYSJtJx4igumNy1nQl6Pk+hStHi3yS9rjNirDrslq+e0bbQ8ojH/3VryirVu3uzYFCuLlC+r6LBWqBnlL312FTVjw/SIL+JKPv8gBgH3vyhHNqunYDehIW2RJ6GwNN9ORPjy1aW1quO/Fm5g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752842317;
+	cv=none; b=hncaTKBCLW8vUZydrbFNjC3z4K/KPyJjGLgfzybU05Nnq7F4mSJBs9WK4jG/UhfDqxwSh/7IebfjIm1d7wS24n2DNj31nZY6WENlTmWM2cn2R+5d9Sq3gkBIhbmis90sZIvEIDuQPCsAlyJY8jLxluyCYRVZzG6pSnWXt6jrrb/KGOCQ8Ls4rg9SEK9iwcR8rQMsEt/DbM1BjJhLuXARzRX/e+74gvaK390cxoOR5s6CFw4TKr9DGKvxmSjG3CzqBoDwSnpAaGujEY+SaGr5SJVRjn1J6Nf8c2qTyaF/abtpxAywM6yuVoYCK+pu+vsRgIj2Bm8TOUmixB9pmGY5Tg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752835200; c=relaxed/relaxed;
-	bh=IFGNSXyBzlfv/Oj4MgwjqyjIVax4i6/p74f+gTytbJs=;
+	t=1752842317; c=relaxed/relaxed;
+	bh=AJ7Yc9S8ybUjsYZ6mEaq1yLAIUmrbNSGYdtADWMsG68=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QfQh1u5SbKs8lJrZ27Jryclhk8i8TgWPk/duhvhf3SFPbrMuZpE96rjLJ47S7tNQxvWFMpOA0Pgl2X0A8gb9KHuKm3x5dm2jUQhYc752HAq7tYLW6VSJ/AbNimTW1YfYite/7ibT0TcZqdkc+oJxb/u/brpJbVb6fyCDk1umanwCrocenAwivD8oaoTO4eFpCijP04aWUN5bA8chgF4EOtFvdQMfCUgpbe2FXWLvOWbtmI6aVexNpSu0EToJ4Jm0WCC+6HkSYxxalBd3sFHLJipgzs5naiwTX0FXkEEWu0lFa9OZVbP/ocHNmmS/UAOfKQr9l9/3eu1IzVyPuTTH7A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IPlrFQBt; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=BP8WyMoN2XvzHcOUbmCjmGOZD7s9lnLNoQYJut4bnTzlQfHxPhpbLeRiYMNE05Wmq0RTFZfd6b0WLzLer8qQHKxN8b1YbuT9dxCLQ8YYGzgVE3hWQkg0LiytBgmKUDOP+OkWTw5iKH00hfQ/ARLKf41UGnVvmOOldstnrARiPIUYCq8Vo9kC/to3cksEf7D5oMIUojJlTVtbILCmXUx8ZEBEWqAa2xIdAtjuVd3T5uvKGvPBze+/uOEyjq5U1WNUJl1IREkMQgRDrrjVERYbH88BSE9Tw50lH4THgUwf4/gDg5aHV682ftYi73PYM+RWFVc89ReJK4B+x22sBf0KVw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=URKeXKJu; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IPlrFQBt;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=URKeXKJu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cassel@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bk5sC53blz2xTh
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jul 2025 20:39:59 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5234E5C5C60;
-	Fri, 18 Jul 2025 10:39:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161EFC4CEF0;
-	Fri, 18 Jul 2025 10:39:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752835197;
-	bh=J3EdFx6SeghEC/3QrFs16mdw3ziovg04wubMBc5qbUM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IPlrFQBtvUlZfA7a+pVin1pFTP7wye2etea45L0KxgzvuN5VA5/XYu1MyW3Xtw9BX
-	 cXL2kXR7CiYeUQP0DsONWFLp7zbJ9zl7KUXlq5LI945F+NGunAFWedcpd57Nt4nS+B
-	 DO/r/Cx19XXM7KfS03jieyFoNUBzNpU8bbxrw2L511QVxGAr98ZXWB2uYjftwZ5dnD
-	 4YDpEFwUNh03TE5Ar8Vq6XqGAlWb5aflWRTH/TOH7rLvuWOPgTv+CLF6liQVsvP2ah
-	 yveNKo3QRKnzR2f/ScmBsawG2qE80GXNLSf3orq5fHbG8Mrq+dAmRyfBuGAtgXeiOq
-	 s1uZKCsgGIvXg==
-Date: Fri, 18 Jul 2025 12:39:50 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: manivannan.sadhasivam@oss.qualcomm.com
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>, Will Deacon <will@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	Lukas Wunner <lukas@wunner.de>
-Subject: Re: [PATCH v6 0/4] PCI: Add support for resetting the Root Ports in
- a platform specific way
-Message-ID: <aHokdhpJUhSZ5FSp@ryzen>
-References: <20250715-pci-port-reset-v6-0-6f9cce94e7bb@oss.qualcomm.com>
- <aHoh1XfhR8EB_5yY@ryzen>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bk8V411Xyz2xd6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Jul 2025 22:38:35 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56I8Vqmq024126;
+	Fri, 18 Jul 2025 12:38:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=AJ7Yc9S8ybUjsYZ6mEaq1yLAIUmrbN
+	SGYdtADWMsG68=; b=URKeXKJunyhD1+j06LLJVhu9nrCnwkh/iFkJ+KqLceutkJ
+	lH6azZ0lpfqejdykiNA3ZxSbHRAY7I1Oe2ofzfG5FzAI81cs8IAywk1t82gctF96
+	/o3jbVwuMc5cil0FbQWACOQ5ZiQG4vV2etuzyQz7URfPR/nrPJQf1DZhlXuVKOJN
+	NxJh8+4yqJ/OcK6D3BIv27rMR7G4j3h0s8vutnVnqpzJ4Q5oCFJu277PfekDn5LD
+	Ri6rCWReLXVlipONFhPvQw1CmFlhUlr0AiE4bsbADWqh1oin2aa3yJuOHm08spDj
+	aZMThCv5XUcYajgl9Ap22Ps1QEW4jLA4rijDIR9Q==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47y07txh9t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Jul 2025 12:38:18 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56ICcIx9012599;
+	Fri, 18 Jul 2025 12:38:18 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47y07txh9p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Jul 2025 12:38:18 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56I9BoEl025987;
+	Fri, 18 Jul 2025 12:38:17 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47v31q18vh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 18 Jul 2025 12:38:16 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56ICcEjA53543262
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Jul 2025 12:38:15 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2E4A2004B;
+	Fri, 18 Jul 2025 12:38:14 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B69C620043;
+	Fri, 18 Jul 2025 12:38:13 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.87.132.117])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 18 Jul 2025 12:38:13 +0000 (GMT)
+Date: Fri, 18 Jul 2025 14:38:12 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com,
+        akpm@linux-foundation.org, ryabinin.a.a@gmail.com, glider@google.com,
+        dvyukov@google.com, kasan-dev@googlegroups.com,
+        linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH v3 10/12] kasan/s390: call kasan_init_generic in
+ kasan_init
+Message-ID: <8412bf39-8235-4abb-ae35-db6029a605b3-agordeev@linux.ibm.com>
+References: <20250717142732.292822-1-snovitoll@gmail.com>
+ <20250717142732.292822-11-snovitoll@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,57 +100,64 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aHoh1XfhR8EB_5yY@ryzen>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250717142732.292822-11-snovitoll@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: mdxNuC1xCFhuxtIpSH9TZqP6KhLLlotA
+X-Proofpoint-GUID: vIORyTF4ypaBonjC46BtYf4jbJ2mxKDQ
+X-Authority-Analysis: v=2.4 cv=d/v1yQjE c=1 sm=1 tr=0 ts=687a403b cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=kj9zAlcOel0A:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=cM5Q7b1H7_XZ2lFhe3QA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzE4MDA5NSBTYWx0ZWRfXwYseivfKqS1x J8WeqMyeE4+9+fwXyYNzZbOhx8wQEU+BxVKA5pL924Piu0WwYnZ0ds8Gg6cLrfaUCEmqngt+K2h v0iQpTIsCHidE0ZLR0UHnsBWuH3UYoIGkKH5HBy3pVo4QZasuFlmAgru0z1FY/j8NsXwfkpXZxf
+ P46pOLu6NzYfd/QSa1kpO8S7p+tsd29lPZD2iYUmkG34IGk5n0wysprtNon/KZ0ojmcC9eLbIuy IJZ06FnAowNYqChDKS5euUgyI5PN9bMJlP6hA85NQeYAk9U5yWGraX/LIaWr6M8JtPEGSrTaRm/ 97uHxnx4L8KCPt+hyzHTf8w8bwvZvsP8xkv54H22+2e+so4ZRLAKAvDB9IiTB51ufI4/jZQUx39
+ cC7c3CC6MUmnD00YlyhwGtbDdUSPCITIRC25vIbBO7x884VH8097j8NcoFOgTL8icQ3rTJvo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-18_02,2025-07-17_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=984
+ suspectscore=0 spamscore=0 adultscore=0 mlxscore=0 priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507180095
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Jul 18, 2025 at 12:28:44PM +0200, Niklas Cassel wrote:
-> On Tue, Jul 15, 2025 at 07:51:03PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> 2) Testing link down reset:
+On Thu, Jul 17, 2025 at 07:27:30PM +0500, Sabyrzhan Tasbolatov wrote:
+> Call kasan_init_generic() which handles Generic KASAN initialization
+> and prints the banner. Since s390 doesn't select ARCH_DEFER_KASAN,
+> kasan_enable() will be a no-op, and kasan_enabled() will return
+> IS_ENABLED(CONFIG_KASAN) for optimal compile-time behavior.
 > 
-> selftests before link down reset:
-> # FAILED: 14 / 16 tests passed.
+> s390 sets up KASAN mappings in the decompressor and can run with KASAN
+> enabled from very early, so it doesn't need runtime control.
 > 
-> ## On EP side:
-> # echo 0 > /sys/kernel/config/pci_ep/controllers/a40000000.pcie-ep/start && \
->   sleep 0.1 && echo 1 > /sys/kernel/config/pci_ep/controllers/a40000000.pcie-ep/start
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
+> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+> ---
+>  arch/s390/kernel/early.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> 
-> [  111.137162] rockchip-dw-pcie a40000000.pcie: PCIE_CLIENT_INTR_STATUS_MISC: 0x4
-> [  111.137881] rockchip-dw-pcie a40000000.pcie: LTSSM_STATUS: 0x0
-> [  111.138432] rockchip-dw-pcie a40000000.pcie: hot reset or link-down reset
-> [  111.139067] pcieport 0000:00:00.0: Recovering Root Port due to Link Down
-> [  111.139686] pci-endpoint-test 0000:01:00.0: AER: can't recover (no error_detected callback)
-> [  111.255407] rockchip-dw-pcie a40000000.pcie: PCIe Gen.3 x4 link up
-> [  111.256019] rockchip-dw-pcie a40000000.pcie: Root Port reset completed
-> [  111.383401] pcieport 0000:00:00.0: Root Port has been reset
-> [  111.384060] pcieport 0000:00:00.0: AER: device recovery failed
-> [  111.384582] rockchip-dw-pcie a40000000.pcie: PCIE_CLIENT_INTR_STATUS_MISC: 0x3
-> [  111.385218] rockchip-dw-pcie a40000000.pcie: LTSSM_STATUS: 0x230011
-> [  111.385771] rockchip-dw-pcie a40000000.pcie: Received Link up event. Starting enumeration!
-> [  111.390866] pcieport 0000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
-> [  111.391650] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
-> 
-> Basically all tests timeout
-> # FAILED: 1 / 16 tests passed.
-> 
-> Which is the same as before this patch series.
+> diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
+> index 54cf0923050..7ada1324f6a 100644
+> --- a/arch/s390/kernel/early.c
+> +++ b/arch/s390/kernel/early.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/kernel.h>
+>  #include <asm/asm-extable.h>
+>  #include <linux/memblock.h>
+> +#include <linux/kasan.h>
+>  #include <asm/access-regs.h>
+>  #include <asm/asm-offsets.h>
+>  #include <asm/machine.h>
+> @@ -65,7 +66,7 @@ static void __init kasan_early_init(void)
+>  {
+>  #ifdef CONFIG_KASAN
+>  	init_task.kasan_depth = 0;
+> -	pr_info("KernelAddressSanitizer initialized\n");
+> +	kasan_init_generic();
+>  #endif
+>  }
 
-The above was with CONFIG_PCIEAER=y
-
-Wilfred suggested that I tried without this config set.
-
-However, doing so, I got the exact same result:
-# FAILED: 1 / 16 tests passed.
-
-
-For the record, the test that passes is not actually passing either,
-it is the BAR4 test, which is skipped, since BAR4 is reserved on rock5b:
-ok 5 pci_ep_bar.BAR4.BAR_TEST # SKIP BAR is disabled
-
-
-Kind regards,
-Niklas
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
 
