@@ -1,88 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-10330-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10331-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95672B0B30F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jul 2025 03:06:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C48B0B4F1
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 20 Jul 2025 12:45:53 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bl52023Wcz30Tf;
-	Sun, 20 Jul 2025 11:06:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4blKv21ldgz30WS;
+	Sun, 20 Jul 2025 20:45:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b34"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1752973560;
-	cv=none; b=GpeATIEUlpMugKjUmUFGUJINeCKiSsZclgE2g3NZKUkYbpwhzpKpxKTCuEV0zoqW+EjKWcnRyv7/Lhk8qa3l9K/uE2FLYvYjtP4UCnodeD/2rWZSPyuatV3u0ewAOTnWNoUUeQQmVDOgNfQJpryCYzEZoOH8U69P+96oOVdNDWcZnY8ePUDPEr3T7/PB0vGY8bsmJ7jokhF1ows0frSVFlBVtpgILEy8TmcyqCDAY8z+z+kBJq9NHq7XnLtQ3ZLBksZ/Dv25UbV3lGJxJr0njYFepwLkVoQByDtz/3JKW09XJOZrcSG65HBiNY/DThKv+CP2j8BTnfPurgBRfTvZ3Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753008349;
+	cv=none; b=JHqF2NEObWCjSME6hWjWJrRzpVtZLfZUX+85YvPc+bIOwMttJkaztv355Q2FjTp+USP5NT7Qe0DXpUi9ftzMMxFf2eCu55NrBsMTjHJbtj+hV7Sfnw8MADgOVhGw+sWQKI6sVnnPa8sppL9LKSOTSM3oEKKO4mpZ1I4qjRM9C9uKSYddYksHKbYd3R7JfatXeA1SRAvVC8/2knRHtCVFfnZoYyYMk38Gpbc8utqzWSm8HngBHu0E46waunmVLDhc6Vg6QG+MV7Lomy/TaatzSU4aP4KOU73I+DLi3KOZS8yMo8Kaw+7Arr01GxsLlGe7ZJSkJpXnjSqzLy6KuK6IQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1752973560; c=relaxed/relaxed;
-	bh=mQmf+c5bZ9rMmpqmhX1dMY+jiaKOV1/OjtVkovYw+zM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=ZyJ35aFDN3cVQWGxmJ9m5mOJU31pMVxPaxAVkU5LWzAfDq4oJ4Xr2PJefWY1PhAtbRiP5zIqWoOHnEFSI7W2DLG6cbESYo5R9XZcNSw9BcB/SB7PpSi2WXyDAlihptVm0O6ORbLGxWzHlrsQIYvDMngn06g5dAfvw2OdAeg2V0DzXfOUje/QHGIIzc5V12oIASckHTgvfQskCm+IsyFUmZSofAV0GPIyjh6ps1TfSpJ7v5rAkzn989WoWekDHgw1yPVZpLYp6tXhiyvvCpob/owfHeF3aqfIyadfXbmS4TjGwjD8ti5jNVWPrFbMtQdq6o8OL0VZDuy6Cj4SOm9qBg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IFPd1Uh5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1753008349; c=relaxed/relaxed;
+	bh=eUC0ZUJmk9/9Ww+pi9OYCw9XQPVrf4mf3V4VZE4N6YQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ax7vbH/NHb+e4Cgu7uHe64HooOjCNX+xaAyyl7+iZJeUeVx/WOfa6vPVA8AW7RIEktJ9RgRnQnrtXP8s74oPAtthJSCIr/zSgdOlfz9u/D8pjAXC1aYbbtu5oANginrMsAXl0GXxlt/dEnN7xxHXiurUegQ7wN3mXf7bO3B6jm7SElrfAUfbXU2OLDnlTj3rePjbbW8jAQ8KFUFXDPyo3v5i3VfHvVcua2cX/uSi13++elnKanX6KaP9KGwSfmDc9b+qSz2r+Xx1SgOZ7C7lwZKc5RCMp8nGFp6Ark/+bSRbdBSLBhEOOQHHZ3EDkPV2Hp4R+4RhdoQQ/hkszwWYtA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L8CW69PX; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IFPd1Uh5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=L8CW69PX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b34; helo=mail-yb1-xb34.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bl51y754dz2yhX
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Jul 2025 11:05:58 +1000 (AEST)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-e8275f110c6so2485944276.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 19 Jul 2025 18:05:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1752973555; x=1753578355; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mQmf+c5bZ9rMmpqmhX1dMY+jiaKOV1/OjtVkovYw+zM=;
-        b=IFPd1Uh5Gf7ePl1lK+E2txGTdNb0+xYL2vaKf4vmvqz487J0GPP3SGOe3PXFZL/VCp
-         hK0P4yGx6sYbM2nnoCjrZva5eyt5oRciFWoalTkGsgP4dcq64Y9N5ipvtSSRajQmeMOT
-         c2/SH1snU720qlgVIW7Lz4+R+BLKOjLYadoP2lRdhYVJLw8muOdqcpMoZX4+E/ALp0W6
-         EALN2tCXYZDgLSbEQViWTtthdp8hIceZDEmtnj88M8bcuGLGpouHZfzyXDQG63hlKrI3
-         5ZDu1TZAuG6Rx1G2o/r0NCm1h4ZMf2WWbRd7IdJnXwrNBaGQflMcm08/c++n90eapO96
-         lLoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752973555; x=1753578355;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mQmf+c5bZ9rMmpqmhX1dMY+jiaKOV1/OjtVkovYw+zM=;
-        b=eo1V4d5hU37S5GLBD7JXzl7eM3XParYCvzs69VHhreKKmiqsEYiMXwv4TD80p66860
-         yMGjhzbyWWrnWILnbmQkr5U7dVCjvSwXJR3/m7LV6xQdZQTsgBwBFC5BgLLA/ZRlCaKQ
-         2MzANU3SvW4fVuYAz3GVud1m9NkwxoD4yQuhi7Mjju41ubCtCWi+gPMLIgP1OYF2dllZ
-         xobvc4ckyJcsFHHbjgr/sFhksIpwYx3VKRnqKc/d7pC1OKn2rUHA49yVwm8l1uDjk54I
-         C+sPGRoCXH2P2jP4shsTDSQIPqQIzMk+1Pe1KpXjctY39ySrtjhgC++SyeCl3+nTjEGe
-         DTxA==
-X-Forwarded-Encrypted: i=1; AJvYcCUx27VPPAh5j+X1b4cAxDUdlX1yiJ2+Ubs8ZEe1NiCX59J8C3TkRnjn4lSj5a7KO2rSyD7mXomdmL3zDjk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwYmj8VHgG5Tvcc/l/KM7us1g0hufnBrF9dXEweRU0glKdWaPJL
-	NB+zbJICOOg5XLo2J9Kp4GUBAeDXansO2IahMgnVW9RD8PvWXYpzqe91
-X-Gm-Gg: ASbGncsE4QaMfjM5U1kj7sPt1WPqIUDhzg2uknjQn8+aETTvI3q4BvSNfocvYg5Fj0Z
-	hS8wp772TCcSWPCnqCX6gt0NEa6TBe+gPpIl1rQGdo5PJzySzBk8FJr4qvZjnmxgcU7GerckGvD
-	OGs831yg3XvWCV188b16/cs7x8dbxfWbgjhZjM/a/Pk++8tQ3WpwnhYD1NOWiK7gx5yPaeu4bZk
-	CiJEaWs1Or75zFhj5W+oa3QcvUdB/qON885rlwCI+Wv++DPVdGwALTc3Gm5VOQwO7f9FnNMoNxm
-	Bh7e9bi5kWMkG39+IAQCzRsFPbwPtl7BEFDuBXvJrZTummyxoPUMTcPy5Tmul9EbHaXyQ/XqycW
-	NUeiaWU+OS2hdrJYiki9rv87qqf58viW9kEvjauQ06hX/c8T6MmLZdRHR9Q==
-X-Google-Smtp-Source: AGHT+IGu+G5AiJkiYySFy9R0/aF0YP+PLBPO+QptaRa6ym2gOBhSNYj4CwHNuN/M/zM8S9U7NAIPMA==
-X-Received: by 2002:a05:6902:c09:b0:e81:7e60:c158 with SMTP id 3f1490d57ef6-e8bc261fe8fmr17241942276.24.1752973555357;
-        Sat, 19 Jul 2025 18:05:55 -0700 (PDT)
-Received: from localhost (c-73-224-175-84.hsd1.fl.comcast.net. [73.224.175.84])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e8d7ce4a667sm1495227276.37.2025.07.19.18.05.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Jul 2025 18:05:54 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Frederic Barrat <fbarrat@linux.ibm.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc: pci-ioda: Optimize pnv_ioda_pick_m64_pe()
-Date: Sat, 19 Jul 2025 21:05:50 -0400
-Message-ID: <20250720010552.427903-1-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4blKv05DJ3z30Vr
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 20 Jul 2025 20:45:48 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id A6D67A51EAB;
+	Sun, 20 Jul 2025 10:45:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B8F8C4CEEB;
+	Sun, 20 Jul 2025 10:45:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753008345;
+	bh=DN719qsScgBppgUAmwXoJ0mGKLQSOt3EtG58RyMWE1g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L8CW69PXm+6ZCGN76xnQDueS0cH1fryY85s0KlBaStVCvi0NV98J/SMFGaxsWy7RK
+	 v6QwQ/Ius9t3jjCKsTCzHdmWg4REwZ4YZKACkIUqbGirbdGtfNWfuOChLBMnrct0cE
+	 rq6YiiE+jKZU0L22y/On5JgeqCUZFaH5N9HJi9T83UoTL1VGJWOxuOcESdX2wh2d8E
+	 VYbRa6hrMXEF2rPOW1lT+d7F7/s7I3OsT/U/zUh9Z0E9L86hWC0LZBXdRfnVK5qZR2
+	 uOojWuKW4IqJ6LAm/i2gZnVz3FkCyuBQRXMrk2v8MnFP2khwBge7Z02zziLy+rmyen
+	 UhlyFRpZG3qdQ==
+Date: Sun, 20 Jul 2025 11:45:40 +0100
+From: Simon Horman <horms@kernel.org>
+To: Mingming Cao <mmc@linux.ibm.com>
+Cc: netdev@vger.kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
+	ricklind@linux.ibm.com, davemarq@linux.ibm.com, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+	andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+	edumazet@google.com, pabeni@redhat.com,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next v2] ibmveth: Add multi buffers rx replenishment
+ hcall support
+Message-ID: <20250720104540.GU2459@horms.kernel.org>
+References: <20250719091356.57252-1-mmc@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,58 +69,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250719091356.57252-1-mmc@linux.ibm.com>
+X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-bitmap_empty() in pnv_ioda_pick_m64_pe() is O(N) and useless, because
-the following find_next_bit() does the same work.
+On Sat, Jul 19, 2025 at 05:13:56AM -0400, Mingming Cao wrote:
+> This patch enables batched RX buffer replenishment in ibmveth by
+> using the new firmware-supported h_add_logical_lan_buffers() hcall
+>  to submit up to 8 RX buffers in a single call, instead of repeatedly
+> calling the single-buffer h_add_logical_lan_buffer() hcall.
+> 
+> During the probe, with the patch, the driver queries ILLAN attributes
+> to detect IBMVETH_ILLAN_RX_MULTI_BUFF_SUPPORT bit. If the attribute is
+> present, rx_buffers_per_hcall is set to 8, enabling batched replenishment.
+> Otherwise, it defaults to 1, preserving the original upstream behavior
+>  with no change in code flow for unsupported systems.
+> 
+> The core rx replenish logic remains the same. But when batching
+> is enabled, the driver aggregates up to 8 fully prepared descriptors
+> into a single h_add_logical_lan_buffers() hypercall. If any allocation
+> or DMA mapping fails while preparing a batch, only the successfully
+> prepared buffers are submitted, and the remaining are deferred for
+> the next replenish cycle.
+> 
+> If at runtime the firmware stops accepting the batched hcall—e,g,
+> after a Live Partition Migration (LPM) to a host that does not
+> support h_add_logical_lan_buffers(), the hypercall returns H_FUNCTION.
+> In that case, the driver transparently disables batching, resets
+> rx_buffers_per_hcall to 1, and falls back to the single-buffer hcall
+> in next future replenishments to take care of these and future buffers.
+> 
+> Test were done on systems with firmware that both supports and
+> does not support the new h_add_logical_lan_buffers hcall.
+> 
+> On supported firmware, this reduces hypercall overhead significantly
+> over multiple buffers. SAR measurements showed about a 15% improvement
+> in packet processing rate under moderate RX load, with heavier traffic
+> seeing gains more than 30%
+> 
+> Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+> Reviewed-by: Brian King <bjking1@linux.ibm.com>
+> Reviewed-by: Haren Myneni <haren@linux.ibm.com>
+> Reviewed-by: Dave Marquardt <davemarq@linux.ibm.com>
 
-Drop it, and while there replace a while() loop with the dedicated
-for_each_set_bit().
+Thanks for the update.
 
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
----
- arch/powerpc/platforms/powernv/pci-ioda.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index d8ccf2c9b98a..c7a421ead992 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -313,24 +313,16 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
- 	/* Figure out reserved PE numbers by the PE */
- 	pnv_ioda_reserve_m64_pe(bus, pe_alloc, all);
- 
--	/*
--	 * the current bus might not own M64 window and that's all
--	 * contributed by its child buses. For the case, we needn't
--	 * pick M64 dependent PE#.
--	 */
--	if (bitmap_empty(pe_alloc, phb->ioda.total_pe_num)) {
--		kfree(pe_alloc);
--		return NULL;
--	}
--
- 	/*
- 	 * Figure out the master PE and put all slave PEs to master
- 	 * PE's list to form compound PE.
-+	 *
-+	 * The current bus might not own M64 window and that's all
-+	 * contributed by its child buses. For the case, we needn't
-+	 * pick M64 dependent PE#.
- 	 */
- 	master_pe = NULL;
--	i = -1;
--	while ((i = find_next_bit(pe_alloc, phb->ioda.total_pe_num, i + 1)) <
--		phb->ioda.total_pe_num) {
-+	for_each_set_bit(i, pe_alloc, phb->ioda.total_pe_num) {
- 		pe = &phb->ioda.pe_array[i];
- 
- 		phb->ioda.m64_segmap[pe->pe_number] = pe->pe_number;
--- 
-2.43.0
-
+...
 
