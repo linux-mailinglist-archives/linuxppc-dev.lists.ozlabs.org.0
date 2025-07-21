@@ -1,72 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-10334-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10335-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC6DB0BE75
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jul 2025 10:11:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EDC5B0BF79
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jul 2025 10:56:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bltQH3MtVz2xKd;
-	Mon, 21 Jul 2025 18:11:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4blvQ60tPLz2xKd;
+	Mon, 21 Jul 2025 18:56:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=203.205.221.236
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753073693;
-	cv=none; b=dMbqPTnzd6zshYiuDB7h/WFkEkAUGbSYizTWlMdXVYk7ioRvyA9mptNFvy/P0VT9QpwvM+A3JAYQmHz2s01a2Qd7EsIBq3q2DrK2rWpnoSCZJcxmLex/4FDXemJs3fe31XiFFatagcFoO/i/c0C8lyibmJ2oOPGAX9qMDSgJ/WmF+b0ie0sME7zsMy+3FWRSblmPmtP6nYlj5YAOKbfmg0Tajnea5tad/I4kbl5mAMuy5XppStY5VQXQO7GFUfNJAD2zugDcdGrYInZ5z0c5NVpMjshyrgYiE0d+sW70IXIc5MBSjH/0Sw4rMLYCXhFk7YOg3k1BAyElEk7rHu+Itw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.208.48
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753088174;
+	cv=none; b=KsozoQ4cDtYhLX5/RCvGFP9YIsxwTxus+3duU6dynpVqVqARJ0tXtgk42rdm/DUzqEsy/7MreZjtTG+0FIrfsrahI4qa1xnHcZuELy/t43ydsdf7beDBAOaFjiVo8jlvfI7Mj4fuKWCXk/TvUP99U4gSA50dYhUTBQ/SLfB+3Hq6eWoPGsskYs2OsTXmMB3mg5YGOb4LjC+y/6b+/fbDq7o3nBYpUEU3sYgj1yPsmIn3W2Jxqkfj3u0e3qq5hjHhkkmMzI+aCYy8Dyp0l4zzrM0VrTTfOdNxRxgniKQxQj/FTnKTwLR5YFpLEvnHyVrva/PbrYUK3SV5/6TMBKLm5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753073693; c=relaxed/relaxed;
-	bh=huuCQOiCI/l/o5VOAp01tohbM7fD8xmvpEMzGbxvGwI=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=Oo25lP23zSN5UXzugfW72a7Ua0Wat131pwSaC1/Is7RKbq1KsFs30DJVIScaPQAZ7Q2lC9vtW9bAaj4FWZJETzu+y87PeMzi+cP4qLFDAOKkzSvYIASBU3YTWYEM+L8Go45E2BWCq+Xb9r7HgmJUvBO9wTTjKlDf3SWOKEcQeI/ZTOAVP0QBEq7UHgfGcQFZrIdAr9rdOjF4iY5onagHPf5KIhVVBSzGU7RMN8DYSU+SDo6PRmH/TTLFC+X0OxEijPxfR9Eu5OlbdEvRGi0zEaHEBfbKTqvgMDlAAnOy/Tt1uEEbRnBaFa+GKJDA64dnQa+el3S8jJtTZPNfuCVxvw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; dkim=pass (1024-bit key; unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=wd9gtk7n; dkim-atps=neutral; spf=pass (client-ip=203.205.221.236; helo=out203-205-221-236.mail.qq.com; envelope-from=1972843537@qq.com; receiver=lists.ozlabs.org) smtp.mailfrom=qq.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=wd9gtk7n;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=qq.com (client-ip=203.205.221.236; helo=out203-205-221-236.mail.qq.com; envelope-from=1972843537@qq.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1846 seconds by postgrey-1.37 at boromir; Mon, 21 Jul 2025 14:54:49 AEST
-Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1753088174; c=relaxed/relaxed;
+	bh=7a+mMHsMlXSHJfvHPELmbgN6W6iJdxKKlOu5d6bzUb0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bvwlo5QzJ6sSpphwrh+R33P1uFa+q7tFMHV76qC2hFKH2GPrC1tupUs3tgC5XcC4ReOkfAJ4q5Zi9299fc8x0sTLZC86h/D+7rTHi/IfEVbsWYd8YJahLvxfdbtHVxERpSweIRnKwAf350QAjIRc7ALp7uYB0wj4gpncaWuuRdqoOVuE63DNfvTw9mrw+rlhq7bsJuUX6vNA//4K7RqiB0kYqaaRd1w9NYwft/c1oQ/0BPd0UiQYLPDEndPdiAok+SSvXXahhPKiOheSnfdD669hvqFQBsyVhoihKXcDN0NDZlE3rXmJcjblXA3xLeDypG6+QZhGostUiHGR3pD72Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass (client-ip=209.85.208.48; helo=mail-ed1-f48.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.48; helo=mail-ed1-f48.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4blp3Y0Pr7z2yRD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jul 2025 14:54:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1753073685; bh=huuCQOiCI/l/o5VOAp01tohbM7fD8xmvpEMzGbxvGwI=;
-	h=From:To:Cc:Subject:Date;
-	b=wd9gtk7nyzSGXncwTzXsTfF9LKYpTdssrV4NQWxRKIe0wao6hEUADMNW5AmorDYys
-	 qlYTSqoBSWrUSd7USLmlFok2p9hyLPSl2s/ycGXJPJi3gVuSq6wXkMianQfwnvpV49
-	 hhCRKxusuDCVMHZ6BSUUamwp4HyS2367z1N963jM=
-Received: from VM-222-126-tencentos.localdomain ([14.116.239.34])
-	by newxmesmtplogicsvrszb20-0.qq.com (NewEsmtp) with SMTP
-	id 469040FD; Mon, 21 Jul 2025 12:17:41 +0800
-X-QQ-mid: xmsmtpt1753071461tsh4xanrk
-Message-ID: <tencent_E9EF29CDB2286A690EB871B78BFE62491908@qq.com>
-X-QQ-XMAILINFO: MsOOLhKAF3pPEXAa6VcqPqM6yfUgLB3ZpPoC5IRU4CTBRBcx6fLzuitNnRl1OL
-	 i5PghUVGrZYkOOMpRRsv6E2wNsBrGkSFzWB25dD8Ys8bh0Y2ccPa6OQv8lo5SChErfXnKtCJ83+O
-	 v+TXt2v9dNh9i3Y+EwJS/XMlxNCniGYbWoggoRdRzWZ60VcKEy5CgddW2LI5YfA0L8EQzO92aqDx
-	 lo1QqaM3oIJdKQxP7hW+U8ktlrJOQdO7pers5xgrITKgG8IvvabrFYX4LLwmDvqHsaG3CvbDWTdV
-	 tkV5KGifRjazgnZv+3JAECNJyf9c+pSIeied5gwLZWyVYmOIh0ikAwsoekgiJm1Cni91HUtMurwb
-	 h3TkK2tGIEFNzO+O1Ddzh3WxxWDFgXa/+gX3ehHtxJv66LYbjWqsRWDSoG7OHenyGjblnzDsPFsW
-	 xcm9jncFOMS5rzx+3HPWZt4ufpg3Ki+n5Yk2KN2+N90cAkevp1rDJZUOzdHbVhPkB7n0gjmSidhh
-	 nd7+sukXUfiN78MUvcWeMcC5GZaNE/A7AYgxsJUafQtepCiwc88EOnvP8O1f3d7e+SCfqD/V2J1R
-	 vu5lmnvwHOwzemHtL5dTme33Y7Iv+Tlef5H7Ubi7vRCvzs7rQTHoRvDk8WXlTvjyFQCW8fRBq9UR
-	 Kc9mNvKMSOG1hqSRRPFyzT3XQmQPXiMYUNFIn9anfvevF0U+uTcner60S/mwi8OUzFYs//A++2Sp
-	 lgxv8/9U5nFgxNEBhz8I3mHRqDytXup/N+trrU0eK2+ZWM0YrmV2VqFNM2/7Z4ah4x1EU+D5DB0R
-	 BzmU1BRtlQ1fIg/GXHEpfSE8k5coFr5IYV35hALOeRzmGz2OjU+XISVEWyELKOF8KR2BEBKx6BOB
-	 I6BZD1+KIeQX76Kywk/pn/TJR/nUvMaWR+Hvh9RP6ifDHXT5HUPL5/gxcCXiUJxMyNl6B3M8NYGJ
-	 u8dK92bv3U0NQJxDorBLe/RrX3Uu04/sJfGp91PYbzF3cB+divCU4rE+kqzTbzUrMYhtltzojBnJ
-	 nxax7QKaMAP84zo9+K+JQI/pjpBbsPdZtDjUsjZ8l49DjwJmZ2LSPm0298v1e0PwpReJjf0KtOQO
-	 dIGl6wJbnpgNcIsa4=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-From: jackysliu <1972843537@qq.com>
-To: maddy@linux.ibm.com
-Cc: mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	1972843537@qq.com,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc : fix resource leak in holly_init_IRQ()
-Date: Mon, 21 Jul 2025 12:17:32 +0800
-X-OQ-MSGID: <20250721041732.145920-1-1972843537@qq.com>
-X-Mailer: git-send-email 2.43.5
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4blvQ42bhzz2xHp
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jul 2025 18:56:11 +1000 (AEST)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-607cf70b00aso7351492a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jul 2025 01:56:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753088167; x=1753692967;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7a+mMHsMlXSHJfvHPELmbgN6W6iJdxKKlOu5d6bzUb0=;
+        b=KQesxXq/4xj5xqyy0UqyftkjNCsJTfxH//37kpCEkJlsXfCwbO76vxwu90zmOZ5sgp
+         yR70aDBFDVI9hAtzXxP6fS+XOyDd5fCXlfZgH3KmXF7R2NRHhkVvIVxGlOmltjaGtG6F
+         eoudWZohPP7QDmVYXAtB2VU/uHBj9m/ddQteb/80lEs+kpl9g+fjOsaVUA3ntXzeF4LP
+         jCsqGFkD4LEvmlXa72x4zAYo2VT/IRh/ljTRLJRHI3ZlhkgOM1UFJaZAdOkPw1T8GrM2
+         J4TcQ7Dkkn8Ly4nCVtB0bAUCjuP2gYdJgiJ2c8q2lSyi1EdXd4KAHshIQEEF0qmRdbtI
+         FO8A==
+X-Forwarded-Encrypted: i=1; AJvYcCUAB938ENRYPI7vM9BJKOpf/pE3kxCfHzcanXEVtXZGKb/4Hnj0WmQoBsskC/PThWyVfgv0DL2R8M4aVHU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzttpyipZMoAny18gCzrcbrTE0pKgvgFdqEuyJlX360nHS9Loco
+	ABVPA0/EpRk+RVRJn0jzUMocC+CmuHKn47XKvZZdxEHo7JSAImlVwzat
+X-Gm-Gg: ASbGncuX0C6LbsDmI4JIrnI7UZ95arK+XyXD8Tl8FWIz7kbiTmzbnsN/WbSQOZbPbCg
+	Za6e4cL9Hu7ejS/phL6CnZFswXvtQLBl/5EngU0Lypqmsiy54wJ35OJFpi+iV7Gue2D0XF2Kmpn
+	+u63NDBjfQeLeMhUViXpRqXYlFTpwdMbxo7o0VeMMDubn1g2dd8d4Jm14PmD/C7cDnxolYDr7zP
+	b5PcZIgS//aqKE/6D5zRVavc7pjicADRgwfYBM4hI+vMcWEcz4YPt4Q6yxrnpzo3s6Oe0gfOATh
+	MlnUVtmZRFOTQHkfmlDLZSSCPSy8ifBXm2eKzXp2CJxj10ZQuAebAZJQ9WjXIgUT3JTiGKYBpVo
+	amrLpjwWQVfQSlQ==
+X-Google-Smtp-Source: AGHT+IEO4SybCFLnv0FdYsHmbgrbP3TZ+2cOjGcDGUgtwCXqHHCS19zQvONNtXYlZVgWK8Y/lPeVZg==
+X-Received: by 2002:a17:906:8c2:b0:ae3:f3c1:a5dd with SMTP id a640c23a62f3a-aec4fca259amr1202375766b.61.1753088166300;
+        Mon, 21 Jul 2025 01:56:06 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:74::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c79e16esm636036866b.15.2025.07.21.01.56.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Jul 2025 01:56:05 -0700 (PDT)
+Date: Mon, 21 Jul 2025 01:56:03 -0700
+From: Breno Leitao <leitao@debian.org>
+To: "Luck, Tony" <tony.luck@intel.com>
+Cc: "xueshuai@linux.alibaba.com" <xueshuai@linux.alibaba.com>, 
+	"mahesh@linux.ibm.com" <mahesh@linux.ibm.com>, "oohall@gmail.com" <oohall@gmail.com>, 
+	Borislav Petkov <bp@alien8.de>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
+	"Moore, Robert" <robert.moore@intel.com>, "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "acpica-devel@lists.linux.dev" <acpica-devel@lists.linux.dev>, 
+	"kernel-team@meta.com" <kernel-team@meta.com>, "osandov@osandov.com" <osandov@osandov.com>, 
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH] ghes: Track number of recovered hardware errors
+Message-ID: <yk7ocbvfb7hswfdi2bft6lkatonn2ulu34kz44hypjwdagzeos@g6lmdncwrqhl>
+References: <20250714-vmcore_hw_error-v1-1-8cf45edb6334@debian.org>
+ <20250714171040.GOaHU6EKH2xxSZFnZd@fat_crate.local>
+ <SJ1PR11MB6083C38E6DA922E05E1748D6FC54A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <20250714173556.GQaHU__LL6IUIPCDIW@fat_crate.local>
+ <aHWC-J851eaHa_Au@agluck-desk3>
+ <kw7mwmca3ir4nfyofumqiack5sht3aisdchevykdtmlio6xo7z@5xbdibpqvqix>
+ <SJ1PR11MB6083CEAB23FCE85937DC5403FC51A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <mazejvrglvtqdfsevduahqxvlvjv6hlo3apivossn2jnxpsuds@os6kxmmsq3xt>
+ <SJ1PR11MB6083D08A2F94FAEE5261AA6CFC50A@SJ1PR11MB6083.namprd11.prod.outlook.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,65 +90,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: YES
-X-Spam-Status: Yes, score=3.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_NONE,RDNS_DYNAMIC,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Report: 
-	* -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at https://www.dnswl.org/, no
-	*      trust
-	*      [203.205.221.236 listed in list.dnswl.org]
-	* -0.0 SPF_PASS SPF: sender matches SPF record
-	*  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-	* -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-	*      envelope-from domain
-	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-	*      valid
-	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
-	*       domain
-	*  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail provider
-	*      [1972843537(at)qq.com]
-	*  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends in
-	*      digit
-	*      [1972843537(at)qq.com]
-	*  3.2 HELO_DYNAMIC_IPADDR Relay HELO'd using suspicious hostname (IP addr
-	*      1)
-	*  0.4 RDNS_DYNAMIC Delivered to internal network by host with
-	*      dynamic-looking rDNS
-X-Spam-Level: ***
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SJ1PR11MB6083D08A2F94FAEE5261AA6CFC50A@SJ1PR11MB6083.namprd11.prod.outlook.com>
+X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Siyang Liu <1972843537@qq.com>
+Hello Tony,
 
-When the 'pic-router' device node lookup fails in holly_init_IRQ(),
-the function returns without releasing the previously acquired
-'tsi_pci' node. This violates the device tree reference counting
-rules and causes a resource leak.
+On Fri, Jul 18, 2025 at 05:36:50PM +0000, Luck, Tony wrote:
+> > I found that I don't need to expose the metrics in vmcore info at all to
+> > be able to read them from vmcore, given crash/drgn can read those
+> > symbols.
+> >
+> > Global variable hwerror_tracking will be write-only during kernel
+> > run-time, and only read during post morten analyzes. I am still not sure
+> > if the compiler might not get rid of them completely, given no on reads.
+> > I am wondering if I should EXPORT_SYMBOL_GPL(hwerror_tracking) to avoid
+> > any optimization there.
+> 
+> Thanks for fleshing this out into a patch. It looks very much like I
+> imagined.
+> 
+> I'd be amazed if a compiler did elide all this code and data because it
+> noticed it was written but never read.
+> 
+> Is the spinlock when logging really helping anything? You weren't
+> worried about locking/atomics in your original patch because users
+> mostly care about zero vs. non-zero (or maybe vs. "many"). If the
+> count is slightly off when many logs happen, it may not matter.
+> 
+> The spinlock doesn't help with the timestamp part at all.
 
-This issue was detected by rule based static tools
-developed by Tencent.
+Agree, precise number is not important there, and if there are
+conflicts, it will not hurt the message.
 
-Signed-off-by: Siyang Liu <1972843537@qq.com>
----
- arch/powerpc/platforms/embedded6xx/holly.c | 1 +
- 1 file changed, 1 insertion(+)
+Let me remove the spinlock completely them and send a new version.
 
-diff --git a/arch/powerpc/platforms/embedded6xx/holly.c b/arch/powerpc/platforms/embedded6xx/holly.c
-index ce9e58ee9754..fefb7fd2365f 100644
---- a/arch/powerpc/platforms/embedded6xx/holly.c
-+++ b/arch/powerpc/platforms/embedded6xx/holly.c
-@@ -178,6 +178,7 @@ static void __init holly_init_IRQ(void)
- 	cascade_node = of_find_node_by_type(NULL, "pic-router");
- 	if (cascade_node == NULL) {
- 		printk(KERN_ERR "%s: No tsi108 pci cascade node found !\n", __func__);
-+		of_node_put(tsi_pci);
- 		return;
- 	}
- 
--- 
-2.43.5
-
+Thanks for your support,
+--breno
 
