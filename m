@@ -1,77 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-10340-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10341-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D65B0C7DD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jul 2025 17:43:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A942B0C8A1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 21 Jul 2025 18:25:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bm4S60z0fz2yRn;
-	Tue, 22 Jul 2025 01:43:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bm5N050hGz2xjP;
+	Tue, 22 Jul 2025 02:25:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.208.47
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753112614;
-	cv=none; b=ie7NvDv4qtmxDPmcTkIc49JQAVlK7CAEMvaGMhmg+P4x/8O4rwesQjwW7nFdJQZouB8FkvqQ9eLEM4X12gVgwseXCy0uWVTUkkh0rf2YUwH+pLV869Kjl4lc4RIqnHufpoA5eexaPaMIZzOFeGRyZwPP7XDuAvoeJk3ywHUaSznj2T3jmu22+8dUUaPokXyFGvI4N+liCvz5g0gzUqEMtYT7clzXDSb3ljozcoKI9DB/M39OjqfD6NPZEoHxZWC2Bo3/G32Qvyy+TGNPyZWLvsyAqB2eYC3enGLEOqCDsj3uRKMu8M6bNyULIZY8ADXoRjEGTteBxlPg2tUQWwWpTA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753115104;
+	cv=none; b=VjvzMR7XNxOK6NO/s/aof1bsuxgB1Br6vtwutlObALScweUwcApppAaT6Kryvr6fSK+wQHvAyJX8YWb++4MUQBsO15tLkA4jBWM7kHQ2NQLXsTYrz6S2ujAkNKUeB75xpkFOWI4VyWkafCVVP3SO9/5OqhSpRb8Txqpa8AizIf8xzHinnqCN4R+TwWvuRXGA55SDJ7kankPe/Lx1vegUVuIQV+diSIkhhhe2VyIZb8G6aK8kQkXy/AlQZH8t9Nky1kfAyjLLQpIZ78vRfIWGr1f9PRyPY55k0Q0eEhyipvRAM8Npa/mV8Rs1Jm3xBw/gnFQn9UB5zi5msglVb9xZ2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753112614; c=relaxed/relaxed;
-	bh=q8EMch7mkTjcU9bPeMD8J/i/5F0EvPo6dc4/iWe3Dl8=;
+	t=1753115104; c=relaxed/relaxed;
+	bh=B+SJSRGhTtUjjGn0dVgPf5rbq33uYZdF3S0wAhc6Iso=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hnuFvTWL9KRZG4A/nIKw8YK470swzHp+Fe2ZwEQ+A/XhBpLOJKbc10Mfk6K+mrwPQYoGOK7llXS92bL7yk/jmCC6CzkatqQH5KryoBnO6KHdG0ShAoS/PYjcmsuNwpSdbvEtY7+41+CGJbkcEfkX5ohQeOfnu3SrH686EHZcubaSXSCpiZPKPxUdW4Cv9Okvi8FVl6bSZShZpPk8E7r7S63SZrUPegz9ttgEwzDqSfQ9pcb5DPePXEtIb0e/cWnB4f0oBgDG4ayxFkygNdRSpVCAhhj4VJb0qlMRweDtyr8sRjwwy2ew/PxbgKEF0YUhYd3aiZ1OQIzs9zJezVsq7Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass (client-ip=209.85.208.47; helo=mail-ed1-f47.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.47; helo=mail-ed1-f47.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 Content-Type:Content-Disposition:In-Reply-To; b=i21LV4QANRQx4tr1d+uEUQ5HjJ8o1kbaXskglS7K4AXrxxMn+JDaVnlc6vdtNYPc7DF2ww2RrFMlt94PPMYStbPF+EajaXASo8lt1K91VlUhTdqLmfLS9ZfjvZ/RtmitZWbIMC38/BF8U7ZkwShtAxkqIU7s1Le3o36PVsULdRXgvMI/rV9zWeYsxaEHowF+TbHCXzB2Z9KMyi817N7C93dOa6N2MpeW9fMhnQrcPh028TDqEcYDp/p7IzwcR8egKbvDNvJKWLDAsNHMwyugiLcQO+flukaDoL+aga3sdI5QDAK+8Cj4b9MPGaYzuZsIOm1DR4pRsvvQEVdSjUb/tw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GorkCq/t; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GorkCq/t;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bm4S46Wg6z2yRD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jul 2025 01:43:31 +1000 (AEST)
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-60707b740a6so6439967a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 21 Jul 2025 08:43:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753112608; x=1753717408;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q8EMch7mkTjcU9bPeMD8J/i/5F0EvPo6dc4/iWe3Dl8=;
-        b=SmX1Do8VeSMdO1IBObrNsUm0YEDPdM/Q34V2mtk0kt7drPLa5xqw12tf0KGgb6gg6s
-         njROVlh7PMKGvu30qeP+q8AxmYrQkJOi1iP/F0tKOGUq1UZ/GxnhnH+u4JlZPScCx4KV
-         Otxv2yLcSrCPna3PxdviBy+pmgx9jh2snkSlZyV9KMt4ku02/b/yFMhIlAfM1oej29F+
-         O1xbV4DeSMsZqAE7veXQKeeML3nscn71fuCSuuDE1UtUHYQyKHbRaylU5cWRZ9yC0Lhp
-         QvO4hETlqHkrVd8ITRPQi5Ez6X8LxGcH+D/RIN5txeE4dmpVp13lsyM7fx5KsVozbDyY
-         RVLg==
-X-Forwarded-Encrypted: i=1; AJvYcCWJ3WfPHd+KbrBhQFJM3R8AAusJctH2Lxdy+kOOgqxkyRRQoT0U/jXsMh76oqjd7xfj24B3CrcO3OWkOw8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzKz5bH/+4PkmHqRt5oSUelg6yH7s6f46FOj7KS14BKE9/l0U9w
-	ynk5xFwO7EPUrYhdXxRWQTI5ClVIOEVtBbeG4pQkbs+6uvd2rdiw5CC0
-X-Gm-Gg: ASbGncvfmHLzpcuHMviLHTEGWcbBtXr3E9lGuxs51mzjxB486kNCSDmsOllGL63lVr+
-	jZFRWaT/k7ZYZUjkeJH7kL9+OXasGQBishcXRlmrSDoDaoLUCbCN1HjeN3JMz3qd2gjZVvfRVxC
-	4sR/dFN8a8ZjdT6lZRdkwVGd9EvX75IAYK/Bl0GfW01P4RPVjTAMHvgX4YXOJCne1B+au9iegCx
-	BpRhKvU+Kw9RaUI7SD5OK8n5BzLP3H3IvkzOWSyHJQOkmL5AM6QhS2G7Qd1aOKU25RtiUZ783aZ
-	nxeUbt0P8AAjgQhSdFnoRALXEItZrmg51uWy48qVX4ba29N/eMw756qprraSieDShybkHITMrpZ
-	aHBjf9QnRhZHRU+U8zpfT8ps=
-X-Google-Smtp-Source: AGHT+IHiVZajLNzCqasc/a84TFi9Eq0YagQ04C+1iS6aqNPgOjIXzg/tFI2BWhK3viZOkIp11MJmpg==
-X-Received: by 2002:a05:6402:13c8:b0:612:b573:f4bb with SMTP id 4fb4d7f45d1cf-612b57401cfmr14728022a12.0.1753112608001;
-        Mon, 21 Jul 2025 08:43:28 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:4::])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-612c8f0a0e2sm5675860a12.4.2025.07.21.08.43.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Jul 2025 08:43:27 -0700 (PDT)
-Date: Mon, 21 Jul 2025 08:43:24 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
-	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, 
-	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, osandov@osandov.com, 
-	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com, linux-edac@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, kernel-team@meta.com
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bm5Mx3Srrz2xRq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jul 2025 02:24:59 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753115102; x=1784651102;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Y0c8fyTNCDbBI1ib06Eg9UDIUghtCzMuq8qbf2t/k5w=;
+  b=GorkCq/td9AA22ifkHKrmoQclWlQn9T5J6u2n0TMq/51rGaJFHCyyiti
+   KI7WxDP3frWtqkvSWh0b9YU4dxI5cHuEl6yfAYLVWQSTZr7sSHPQ3nMG9
+   fUHVyzx4QgrlTHv7hf94l967C3TxX2ZHYP0P5ejWy12LDjRrqw5Y0itzw
+   FdmbgP8Sq+gsVv8ZRxWwKRu0h8/s5JDnXSA3lV9ZN+EVh4+oYb/nLkkCe
+   SafTM/QLIENmAiAx8onD2Vss98IlDXQZUTh3NNXlpcqougmBVQoIONEhC
+   OSjWlP3UEO4Vt8sc3i+To7gLcNPQtYnmJCw8e2LN/fgcNxA+O0tq2fjBx
+   A==;
+X-CSE-ConnectionGUID: pfObUgVMSUOvMLcFhw0ERw==
+X-CSE-MsgGUID: WBq7RroRTSqwR8QY0G51Bw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11499"; a="72791496"
+X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; 
+   d="scan'208";a="72791496"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2025 09:24:56 -0700
+X-CSE-ConnectionGUID: /80dSFaRRlanM/T6SY8zFw==
+X-CSE-MsgGUID: l0qUhxBCQz+Cpzl2V+Cj2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,329,1744095600"; 
+   d="scan'208";a="158184620"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 21 Jul 2025 09:24:49 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1udtJn-000GyP-0h;
+	Mon, 21 Jul 2025 16:24:47 +0000
+Date: Tue, 22 Jul 2025 00:24:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Breno Leitao <leitao@debian.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
+	Robert Moore <robert.moore@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <helgaas@kernel.org>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-media@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev,
+	osandov@osandov.com, xueshuai@linux.alibaba.com,
+	konrad.wilk@oracle.com, linux-edac@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+	kernel-team@meta.com, Breno Leitao <leitao@debian.org>
 Subject: Re: [PATCH v2] vmcoreinfo: Track and log recoverable hardware errors
-Message-ID: <crxrexye2nmqebct6eisgkvpc7btrg6ckh5qr7tmhpkdnqys2h@6dpf2j6yhlxq>
+Message-ID: <202507220057.iVSR8aqd-lkp@intel.com>
 References: <20250721-vmcore_hw_error-v2-1-ab65a6b43c5a@debian.org>
- <20250721135718.GAaH5HPinaKvXjM-1g@renoirsky.local>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,76 +98,56 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250721135718.GAaH5HPinaKvXjM-1g@renoirsky.local>
-X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+In-Reply-To: <20250721-vmcore_hw_error-v2-1-ab65a6b43c5a@debian.org>
+X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello Borislav,
+Hi Breno,
 
-On Mon, Jul 21, 2025 at 03:57:18PM +0200, Borislav Petkov wrote:
-> On Mon, Jul 21, 2025 at 03:13:40AM -0700, Breno Leitao wrote:
-> > Introduce a generic infrastructure for tracking recoverable hardware
-> > errors (HW errors that did not cause a panic) and record them for vmcore
-> > consumption. This aids post-mortem crash analysis tools by preserving
-> > a count and timestamp for the last occurrence of such errors.
-> > 
-> > This patch adds centralized logging for three common sources of
-> 
-> "Add centralized... "
+kernel test robot noticed the following build warnings:
 
-Ack!
+[auto build test WARNING on 97987520025658f30bb787a99ffbd9bbff9ffc9d]
 
-> > recoverable hardware errors:
-> > 
-> >   - PCIe AER Correctable errors
-> >   - x86 Machine Check Exceptions (MCE)
-> >   - APEI/CPER GHES corrected or recoverable errors
-> > 
-> > hwerror_tracking is write-only at kernel runtime, and it is meant to be
-> > read from vmcore using tools like crash/drgn. For example, this is how
-> > it looks like when opening the crashdump from drgn.
-> > 
-> > 	>>> prog['hwerror_tracking']
-> > 	(struct hwerror_tracking_info [3]){
-> > 		{
-> > 			.count = (int)844,
-> > 			.timestamp = (time64_t)1752852018,
-> > 		},
-> > 		...
-> > 
-> 
-> I'm still missing the justification why rasdaemon can't be used here.
-> You did explain it already in past emails.
+url:    https://github.com/intel-lab-lkp/linux/commits/Breno-Leitao/vmcoreinfo-Track-and-log-recoverable-hardware-errors/20250721-181439
+base:   97987520025658f30bb787a99ffbd9bbff9ffc9d
+patch link:    https://lore.kernel.org/r/20250721-vmcore_hw_error-v2-1-ab65a6b43c5a%40debian.org
+patch subject: [PATCH v2] vmcoreinfo: Track and log recoverable hardware errors
+config: i386-buildonly-randconfig-001-20250721 (https://download.01.org/0day-ci/archive/20250722/202507220057.iVSR8aqd-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250722/202507220057.iVSR8aqd-lkp@intel.com/reproduce)
 
-Sorry, I will update it.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202507220057.iVSR8aqd-lkp@intel.com/
 
-> > +enum hwerror_tracking_source {
-> > +	HWE_RECOV_AER,
-> > +	HWE_RECOV_MCE,
-> > +	HWE_RECOV_GHES,
-> > +	HWE_RECOV_MAX,
-> > +};
-> 
-> Are we confident this separation will serve all cloud dudes?
+All warnings (new ones prefixed by >>):
 
-I am not, but, I've added them to CC list of this patch, so, they are
-more than free to chime in.
+   In file included from init/initramfs.c:603:
+   In file included from include/linux/kexec.h:18:
+>> include/linux/vmcore_info.h:91:6: warning: no previous prototype for function 'hwerror_tracking_log' [-Wmissing-prototypes]
+      91 | void hwerror_tracking_log(enum hwerror_tracking_source src) {};
+         |      ^
+   include/linux/vmcore_info.h:91:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+      91 | void hwerror_tracking_log(enum hwerror_tracking_source src) {};
+         | ^
+         | static 
+   1 warning generated.
 
-> > +void hwerror_tracking_log(enum hwerror_tracking_source src)
-> 
-> A function should have a verb in its name explaining what it does:
-> 
-> hwerr_log_error_type()
-> 
-> or so.
 
-Ack!
+vim +/hwerror_tracking_log +91 include/linux/vmcore_info.h
 
-I will wait a bit more and send an updated version.
+    87	
+    88	#ifdef CONFIG_VMCORE_INFO
+    89	void hwerror_tracking_log(enum hwerror_tracking_source src);
+    90	#else
+  > 91	void hwerror_tracking_log(enum hwerror_tracking_source src) {};
+    92	#endif
+    93	
 
-Thanks for the review
---breno
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
