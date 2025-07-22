@@ -1,71 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-10359-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10360-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B00BB0DD9E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jul 2025 16:17:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5607CB0E238
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jul 2025 18:57:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bmfVG0z1rz3bb2;
-	Wed, 23 Jul 2025 00:17:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bmk2J53Nfz2yb9;
+	Wed, 23 Jul 2025 02:56:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::236"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753193846;
-	cv=none; b=C6d7CwqI8xDHtdfNr3JKEIsm2ZL+tzKlSC1D+oa9wvgvhm700DfliSy725P5r8mXi9mVxUfRI5mSLZFE97QYXo5FphGuzgWDp5ztw4L61VJpSDmcRr0apOBnxLmZNb7H8UmSiZjZyUZfB/QEWM6/s0izQLeBliHsdDaA9mXfRNo9ACUEzoetYQuqs6l2fNZt/TtJWfX5eZgli0iTbUT4LgyeyzkVceCqvdtdE//TdBvm5LYpDpUCXusvz9rMM8R6OYzd2HDJGB2pcjCJ3XnMFk9vzsTPM8RhHuAqm86d4kaMvALElAvbv+CqD/qM1nCnFr/YzO0W+KCcqJY5P/cPGw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.208.45
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753203416;
+	cv=none; b=beA05I+STiWwIA5NPEiym3DRnyTFAxlCnlXobwrEYETumpfJeqI7sBCCWakJu6kxyxD0GCZ/fV4X4z3gUEhFFhxlwIercLCOLn3V7R8hNkhhxO13/wh9fDrxdyX+OdYfCeM9zgk78nzQCJy9/7g2GStxjIdc8ErBx3FC4yWtWofY6qaGD+/9eFvCZmGbfeQMtp4L0beikVnrWrzxZtvOcZ+5KvKKnvi9PUESm0tVX8SNZcLT49/hfs0DtnFlfmu3Brchb8w9U4fiWBcvDU9fJluBRl6KkZAqTcvZSbkFLXyIIhkeGMdFudlpGWg1pXz2nWnUXZrnW0UuaQVciq858Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753193846; c=relaxed/relaxed;
-	bh=GboL0eWXtD3fDsEKzgJ1xepA1JQohVF9co6pstDgRM8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i+vrwWJFAOGl3AYtgKCyPJbgI8iHP2f4uu1TatBKbCtcxDxNAO6k76jTu5K4K1eQS2beNQxsQr2QA9bUJejSqLEEDrCr0FIpgRg9JjSjqvRmzrcV3Pwfz0jOtrDyGqSDAeWd0v3vp9fF66WkaOL+YPfy784tyoYCOvgNvqU6VJu3e3Tva9qDi9f4CvSDNesQc9QkZNFAIqnwk1cwFF1N+jrbJThmNHSGkhfvSs5BFzhvGNgBzDrfuajiIiTYx2Z9odZggu8HUG05f7QyTmu5KD0E6iyhNNIwcH9MhqCBXgbb2eKD8uzy944/evPR//L4lgrBiaLAIDyLeIwSfvWfFA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=O8t0J/9j; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::236; helo=mail-lj1-x236.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=O8t0J/9j;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::236; helo=mail-lj1-x236.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+	t=1753203416; c=relaxed/relaxed;
+	bh=Y65MISs+ayKi1h/c+6Q6S5YM36LuH85b0lohq9HpFs4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LOMyXFQ+0fJo91VDS17aiFM83U76ahEqPzoipfrGzVVtzdkCvZcBFxGSqnr2s7dzf0AnbrNtCh1wHiJk0TpSkehxlvmKVJIXd8gQIRFRWJ+9kXALnkH5Fx3Z8sYxp0ReCCL5a9BIItuRBx6MsxW/iD8gdYN583ZKkBCfgeWIseNqt3p1A3q4grnFZC4vrds0cbtk4ofpn3OamOI0fAcUqRUf+IGXF0xq5e17qNuXxgzqjub/7ejCnvKfPhqv/MDQl+qsHgi7uiiPgjq1jMo24pnBPAzf92Yw0J02EoDcQa2sy5j73V3LOYjz6Jgx7px4YZSmRBocC1CecKuYdDjBZg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass (client-ip=209.85.208.45; helo=mail-ed1-f45.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.45; helo=mail-ed1-f45.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bmfVF2NqPz2xTh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 00:17:25 +1000 (AEST)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-32cd0dfbdb8so51051801fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jul 2025 07:17:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753193842; x=1753798642; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GboL0eWXtD3fDsEKzgJ1xepA1JQohVF9co6pstDgRM8=;
-        b=O8t0J/9j3vqjXmdBQ0ZemTCM4fhbQViOMoMPfy3IYmzDkJg4o2mtq+G6cRwS7URYfw
-         mc0SNZWn+KHBxgTtIJI17s8YZ3wlpJNIlAs4Ucrnl7tdfxeiCb5oLQdAlcIIAsU9a+H+
-         4RQIuB2m7b3/5lMMm8aGcN5ryhIYmNWxnP8DhqBA2bRIM7HlCwMjHbBRpU+ioYVwGi0+
-         n1BGyTUg56Xeebpgb6Ff2OcZhKyTsv7rKrFdgUKHirmhQNqnIGRt4U9YxPwPToKaaM1K
-         ueGQN+E9Nt7YNJXvX+O4zaATRZcFHa2xthngKSRYtW1dCXkiF2fsyoDQlu9JO/TVZcBD
-         GBqA==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bmk2H4rVqz2xck
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 02:56:54 +1000 (AEST)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-612a338aed8so8709595a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jul 2025 09:56:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753193842; x=1753798642;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GboL0eWXtD3fDsEKzgJ1xepA1JQohVF9co6pstDgRM8=;
-        b=K+y8TuH05NrXZnB7hkUxIB6xYHex+1ajTA7UvczAk0J6CISrpVsDYaFalwQ+vAK6m2
-         Gp7Dmma+bDIN6nPRpImgzPbg5j8JOVw0OGgydmNewnNIUYfy0tXOpW+kxuyhn7N51WG8
-         wRgOPI4e7coKLO+jLzg8vWmXgkxs0reyCndsjJS4+CNtFaTAvOPFpEuYO3axY6WIBFBJ
-         W60PHjIIt7d7/zu3HPRbLoZ73aC6bfGuCjOvIZPfOsKvWuvpbsKK4Je4nDDwtI9gquir
-         ehZK57v5vmQSEaBK1UsJYaMBjiCKTMajCRJeyPU3BRF07P/j4sZ8H0KmBac5r/uI9W2z
-         Ldrg==
-X-Forwarded-Encrypted: i=1; AJvYcCVlm4BiffT8TEoVbcvjbX92pF2yvGb9tHwK5+jVStmJqpW39VKeNjlihBXA2/Hxe/x18efnz2AXuCEBAKc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz9LEEdEcqCQbN/jSYgYVWDkgPhKe0rRfFL8LHlGxbgbtXGwrDW
-	B3ow0qlqMQm/vrrKrfEKAv3Pw5HfUnlbpnkv+KqoL5NHXxzJRjDr7MNNV1XwEHDQFCLXtFkZH3s
-	rW33k3nXKcfw7MUlKU1Vs4f869v1IpXs=
-X-Gm-Gg: ASbGncsgV7zXSQHWu+H3QQCt8kBQjv/TngRB5Qo1NEfZuLdMmJVwdUeKz+tAIfyqanh
-	2OGz7z4D1FnKxyPHiUTVOS8ivbjdRB/zbx0uRM47Vu18/41ivyZUrwLr9WaaRM/tMyDQrePerko
-	mHMunEoIluFAagtxzZIxlStDBzfrlD9nKKc9dMLsEbsEs7tYXI+vSmoXDxymKb2jM73Tfj5FpNI
-	/wr674=
-X-Google-Smtp-Source: AGHT+IHWyFSdlAJ08NCU6ABmF9BGYFP4zXRYUy0aJCm6G+P21nbWRd00HVhqfmwkvmBdoun3tyqTRuImHuMXXJuHVwM=
-X-Received: by 2002:a05:651c:110d:b0:32b:75f0:cfa4 with SMTP id
- 38308e7fff4ca-3308f5c95f9mr70998461fa.25.1753193841372; Tue, 22 Jul 2025
- 07:17:21 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1753203411; x=1753808211;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y65MISs+ayKi1h/c+6Q6S5YM36LuH85b0lohq9HpFs4=;
+        b=vfULaoffs2r3GdKS003Oxc2yFCYbfmUU9B+55g1mE8c7i0kQOYhQgQmMZ+7fOCJ+y6
+         QPbdOzo63AF1b23Pw8+ZL7vW5hS5iSlV7n6Pg6fPYP8+yNYmk391ConevL5LK0pdXmT2
+         sGGd2VBdAkDQsQpvT1EENIdyZ7vCx8+LnYIT2Et+eGz1cBU/fM8/VWiaUtCP2DQwaIlp
+         j3/qPsGOi6YtII78fiJWvfsArQ6qz1cpJAYqhnyFMOLPhRmgkkQFJU495a28YJett24W
+         jRNhm/cmUWaSgCtvRStOPR5nPeVT+Odt1D9g92ppuybrAkl1vfATRza49H/Gk1py+wDh
+         5cWw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFMmFnoW4VHAOtgwrrLGbmxQHUldatsw0LmlUOiDjpaWjOeFwwX5DXxsHctfoG2B+X+f4VoKQD8MUCaFM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwdeZxWIzKttzL194EeFwEzo3fJ954ewqz4ord5f8ZrGxj4PlZD
+	HqpjR54UrziFNRy1uphYSCatry9nuCqgGPPlH0ul77PzWa6Qea5Qwqoc
+X-Gm-Gg: ASbGnctUSkXAOe6sjt3zKHpBDwx8/jKXzMHiVy5/zQC6fQR5/hcUpIqokIxp5/itoOD
+	/3IYer33ykzTChhlvN5ltFbYKaM3fUOtWje3ANUPaQO59PqQcJQ7vPgyoyUuZirW6wAD0O6qsSA
+	J4Pq2D2U6H3cCOiZsps5h/q+eO3tj/2pcRmOMcxgn3BLc3xpcQzpv/mO+2/cb0eFBLmLDg/g2vV
+	8wAaU9z7uxdUDbV1GM8xS99vU6HZGHGX2kKE/ajRq7cgVXYciCAQ3kC7KaUXTXVqKiguTss/ycW
+	sTeR4h98fV+YqYurZPTiqZxEDqLab3V0fE0FmMlzg0rYUt9VG6GNykOfrKKK66EnsXq3Gh3zdqF
+	UJNm+aA0+DVN0xrG3hKieG28=
+X-Google-Smtp-Source: AGHT+IH1AYyufkWnx6tJRuJWQqKT1LagkvCibf5kL4lR2YqMxA4GaifFCKYDzqx6UoyX8YSH9UzPZQ==
+X-Received: by 2002:a17:907:a647:b0:ad8:a935:b8ff with SMTP id a640c23a62f3a-ae9ce094585mr2656153566b.31.1753203410260;
+        Tue, 22 Jul 2025 09:56:50 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:7::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aec6c7d81e9sm891979866b.49.2025.07.22.09.56.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jul 2025 09:56:49 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Date: Tue, 22 Jul 2025 09:56:37 -0700
+Subject: [PATCH v3] vmcoreinfo: Track and log recoverable hardware errors
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,127 +70,246 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250717142732.292822-1-snovitoll@gmail.com> <20250717142732.292822-9-snovitoll@gmail.com>
- <85de2e1f-a787-4862-87e4-2681e749cef0@gmail.com>
-In-Reply-To: <85de2e1f-a787-4862-87e4-2681e749cef0@gmail.com>
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Date: Tue, 22 Jul 2025 19:17:03 +0500
-X-Gm-Features: Ac12FXzF_nEInn7KovIF1rCbPeOEkryRpoS2Hx7q1NkLYIXq7eXxsmx3CUCidIg
-Message-ID: <CACzwLxiD98BLmEmPhkJQgv297bP_7qw+Vm_icFhTiDYN7WvLjw@mail.gmail.com>
-Subject: Re: [PATCH v3 08/12] kasan/um: select ARCH_DEFER_KASAN and call kasan_init_generic
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com, 
-	agordeev@linux.ibm.com, akpm@linux-foundation.org, glider@google.com, 
-	dvyukov@google.com, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250722-vmcore_hw_error-v3-1-ff0683fc1f17@debian.org>
+X-B4-Tracking: v=1; b=H4sIAMTCf2gC/23PwQrCMBAE0F8Je26k2aSp9uR/iEiSbm0ONrKVq
+ JT+u1QUFL0OzBtmgpE40giNmIApxzGmARqhCwGhd8ORZGyhEYAlVmVd1jKfQmI69NcDMSeWGtH
+ ghmzQykIh4MzUxdtT3O0LAX0cL4nvz4GslvRlKfNjZSWVXIfOVNR6q7XZtuSjG1aJj7BgGT8B+
+ wugVLJT67qrW4vOu0+geL9A9b/ovK2c9UaH6qu4n+f5AaB/gXMpAQAA
+X-Change-ID: 20250707-vmcore_hw_error-322429e6c316
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+ James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, 
+ Borislav Petkov <bp@alien8.de>, Robert Moore <robert.moore@intel.com>, 
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ acpica-devel@lists.linux.dev, osandov@osandov.com, 
+ xueshuai@linux.alibaba.com, konrad.wilk@oracle.com, 
+ linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-pci@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-dd21f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6616; i=leitao@debian.org;
+ h=from:subject:message-id; bh=mDC8389t2+JWUjueofRYUrCIHY6cXFw3h6b4pxyIR1A=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBof8LQP0mW5Apo3fJr4Kr3UWtr7a5fUV3ENzs3z
+ bsR6oroctuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaH/C0AAKCRA1o5Of/Hh3
+ bfrmEACWV0Y2NzNaS+rMrKfK+UXuqYwjEo8CgQ+ePFSlXXZwP6FW3WTvwMh7PSTQdr7ywWj4Axk
+ wwTbPaFU5BYeUK1aKZ8d3hkkuT7SD9ea4mOPr9rqK9h6yw+NkQbC/CuKVWHzuv8mpDZavcZ7b+V
+ oK04g/W4hahVLe0TcmPc1npBK4Bk+cubix+NP7YG1TelB2vHAr44zCdlp732X+0sIZ7vSqg+IHV
+ FSWEEMoU5x/aG75jE7VKxbfgpOBkqenHN7akQrh6MnD7eahJu2fY/q5HQOUmXPAv0oE9ZMOOjK6
+ iYAkjaL8E3pGUksfwB4omeIzF/J5bnMwm3TMamhYbrx/5A3MCn0JBiTxkPpjw8OOE0ySRFEXX49
+ 2jbUXS+1tr9sx6TgQUKt729saRYUe5fJBuoYMA+b8OqebtNpV43EKQgA2q5pGqA/ak4R78MeDOT
+ Bnq1CGyZ0oH1UqLbMxjrEQZVGUQbM8xhmluGo57IG5crD6XJjLNzjx5xloqE4Ohvj1SZ/mAnHYy
+ DzJRuAiLhkYtcxVEombXzHMpYVO+7jflrN7vsn8ND67bODDLjUbd7V475HSx2pTxD+P4aLKnju3
+ BgYljXOPgd5Pdi6NphcpJaC+OteLJxrk/F0hrvVL2Cql5+QkBy32qJ/+FSUul+BxYmqfjU9mbQu
+ E0VQF/26shq/x+Q==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Jul 22, 2025 at 4:00=E2=80=AFAM Andrey Ryabinin <ryabinin.a.a@gmail=
-.com> wrote:
->
->
->
-> On 7/17/25 4:27 PM, Sabyrzhan Tasbolatov wrote:
-> > UserMode Linux needs deferred KASAN initialization as it has a custom
-> > kasan_arch_is_ready() implementation that tracks shadow memory readines=
-s
-> > via the kasan_um_is_ready flag.
-> >
-> > Select ARCH_DEFER_KASAN to enable the unified static key mechanism
-> > for runtime KASAN control. Call kasan_init_generic() which handles
-> > Generic KASAN initialization and enables the static key.
-> >
-> > Delete the key kasan_um_is_ready in favor of the unified kasan_enabled(=
-)
-> > interface.
-> >
-> > Note that kasan_init_generic has __init macro, which is called by
-> > kasan_init() which is not marked with __init in arch/um code.
-> >
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217049
-> > Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-> > ---
-> > Changes in v3:
-> > - Added CONFIG_ARCH_DEFER_KASAN selection for proper runtime control
-> > ---
-> >  arch/um/Kconfig             | 1 +
-> >  arch/um/include/asm/kasan.h | 5 -----
-> >  arch/um/kernel/mem.c        | 4 ++--
-> >  3 files changed, 3 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-> > index f08e8a7fac9..fd6d78bba52 100644
-> > --- a/arch/um/Kconfig
-> > +++ b/arch/um/Kconfig
-> > @@ -8,6 +8,7 @@ config UML
-> >       select ARCH_WANTS_DYNAMIC_TASK_STRUCT
-> >       select ARCH_HAS_CPU_FINALIZE_INIT
-> >       select ARCH_HAS_FORTIFY_SOURCE
-> > +     select ARCH_DEFER_KASAN
-> >       select ARCH_HAS_GCOV_PROFILE_ALL
-> >       select ARCH_HAS_KCOV
-> >       select ARCH_HAS_STRNCPY_FROM_USER
-> > diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
-> > index f97bb1f7b85..81bcdc0f962 100644
-> > --- a/arch/um/include/asm/kasan.h
-> > +++ b/arch/um/include/asm/kasan.h
-> > @@ -24,11 +24,6 @@
-> >
-> >  #ifdef CONFIG_KASAN
-> >  void kasan_init(void);
-> > -extern int kasan_um_is_ready;
-> > -
-> > -#ifdef CONFIG_STATIC_LINK
-> > -#define kasan_arch_is_ready() (kasan_um_is_ready)
-> > -#endif
-> >  #else
-> >  static inline void kasan_init(void) { }
-> >  #endif /* CONFIG_KASAN */
-> > diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-> > index 76bec7de81b..058cb70e330 100644
-> > --- a/arch/um/kernel/mem.c
-> > +++ b/arch/um/kernel/mem.c
-> > @@ -21,9 +21,9 @@
-> >  #include <os.h>
-> >  #include <um_malloc.h>
-> >  #include <linux/sched/task.h>
-> > +#include <linux/kasan.h>
-> >
-> >  #ifdef CONFIG_KASAN
-> > -int kasan_um_is_ready;
-> >  void kasan_init(void)
-> >  {
-> >       /*
-> > @@ -32,7 +32,7 @@ void kasan_init(void)
-> >        */
-> >       kasan_map_memory((void *)KASAN_SHADOW_START, KASAN_SHADOW_SIZE);
-> >       init_task.kasan_depth =3D 0;
-> > -     kasan_um_is_ready =3D true;
-> > +     kasan_init_generic();
->
-> I think this runs before jump_label_init(), and static keys shouldn't be =
-switched before that.>  }
+Introduce a generic infrastructure for tracking recoverable hardware
+errors (HW errors that did not cause a panic) and record them for vmcore
+consumption. This aids post-mortem crash analysis tools by preserving
+a count and timestamp for the last occurrence of such errors.
 
-I got the warning in my local compilation and from kernel CI [1].
+Add centralized logging for three common sources of recoverable hardware
+errors:
 
-arch/um places kasan_init() in own `.kasan_init` section, while
-kasan_init_generic() is called from __init.
-Could you suggest a way how I can verify the functions call order?
+  - PCIe AER Correctable errors
+  - x86 Machine Check Exceptions (MCE)
+  - APEI/CPER GHES corrected or recoverable errors
 
-I need to familiarize myself with how to run arch/um locally and try
-to fix this warning.
+hwerror_data is write-only at kernel runtime, and it is meant to be
+read from vmcore using tools like crash/drgn. For example, this is how
+it looks like when opening the crashdump from drgn.
 
-[1] https://lore.kernel.org/all/CACzwLxicmky4CRdmABtN8m2cr2EpuMxLPqeF5Hk375=
-cN2Kvu-Q@mail.gmail.com/
+	>>> prog['hwerror_data']
+	(struct hwerror_info[3]){
+		{
+			.count = (int)844,
+			.timestamp = (time64_t)1752852018,
+		},
+		...
 
-> >
-> >  static void (*kasan_init_ptr)(void)
->
+This helps fleet operators quickly triage whether a crash may be
+influenced by hardware recoverable errors (which executes a uncommon
+code path in the kernel), especially when recoverable errors occurred
+shortly before a panic, such as the bug fixed by
+commit ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them
+when destroying the pool")
+
+This is not intended to replace full hardware diagnostics but provides
+a fast way to correlate hardware events with kernel panics quickly.
+
+Suggested-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v3:
+- Add more information about this feature in the commit message
+  (Borislav Petkov)
+- Renamed the function to hwerr_log_error_type() and use hwerr as
+  suffix (Borislav Petkov)
+- Make the empty function static inline (kernel test robot)
+- Link to v2: https://lore.kernel.org/r/20250721-vmcore_hw_error-v2-1-ab65a6b43c5a@debian.org
+
+Changes in v2:
+- Split the counter by recoverable error (Tony Luck)
+- Link to v1: https://lore.kernel.org/r/20250714-vmcore_hw_error-v1-1-8cf45edb6334@debian.org
+---
+ arch/x86/kernel/cpu/mce/core.c |  3 +++
+ drivers/acpi/apei/ghes.c       |  8 ++++++--
+ drivers/pci/pcie/aer.c         |  2 ++
+ include/linux/vmcore_info.h    | 14 ++++++++++++++
+ kernel/vmcore_info.c           | 18 ++++++++++++++++++
+ 5 files changed, 43 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 4da4eab56c81d..cb225a42eebbb 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -45,6 +45,7 @@
+ #include <linux/task_work.h>
+ #include <linux/hardirq.h>
+ #include <linux/kexec.h>
++#include <linux/vmcore_info.h>
+ 
+ #include <asm/fred.h>
+ #include <asm/cpu_device_id.h>
+@@ -1692,6 +1693,8 @@ noinstr void do_machine_check(struct pt_regs *regs)
+ out:
+ 	instrumentation_end();
+ 
++	/* Given it didn't panic, mark it as recoverable */
++	hwerr_log_error_type(HWERR_RECOV_MCE);
+ clear:
+ 	mce_wrmsrq(MSR_IA32_MCG_STATUS, 0);
+ }
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index a0d54993edb3b..ebda2aa3d68f2 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -43,6 +43,7 @@
+ #include <linux/uuid.h>
+ #include <linux/ras.h>
+ #include <linux/task_work.h>
++#include <linux/vmcore_info.h>
+ 
+ #include <acpi/actbl1.h>
+ #include <acpi/ghes.h>
+@@ -1136,13 +1137,16 @@ static int ghes_proc(struct ghes *ghes)
+ {
+ 	struct acpi_hest_generic_status *estatus = ghes->estatus;
+ 	u64 buf_paddr;
+-	int rc;
++	int rc, sev;
+ 
+ 	rc = ghes_read_estatus(ghes, estatus, &buf_paddr, FIX_APEI_GHES_IRQ);
+ 	if (rc)
+ 		goto out;
+ 
+-	if (ghes_severity(estatus->error_severity) >= GHES_SEV_PANIC)
++	sev = ghes_severity(estatus->error_severity);
++	if (sev == GHES_SEV_RECOVERABLE || sev ==  GHES_SEV_CORRECTED)
++		hwerr_log_error_type(HWERR_RECOV_GHES);
++	else if (sev >= GHES_SEV_PANIC)
+ 		__ghes_panic(ghes, estatus, buf_paddr, FIX_APEI_GHES_IRQ);
+ 
+ 	if (!ghes_estatus_cached(estatus)) {
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index e286c197d7167..1ab744a3b7310 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -30,6 +30,7 @@
+ #include <linux/kfifo.h>
+ #include <linux/ratelimit.h>
+ #include <linux/slab.h>
++#include <linux/vmcore_info.h>
+ #include <acpi/apei.h>
+ #include <acpi/ghes.h>
+ #include <ras/ras_event.h>
+@@ -746,6 +747,7 @@ static void pci_dev_aer_stats_incr(struct pci_dev *pdev,
+ 	switch (info->severity) {
+ 	case AER_CORRECTABLE:
+ 		aer_info->dev_total_cor_errs++;
++		hwerr_log_error_type(HWERR_RECOV_AER);
+ 		counter = &aer_info->dev_cor_errs[0];
+ 		max = AER_MAX_TYPEOF_COR_ERRS;
+ 		break;
+diff --git a/include/linux/vmcore_info.h b/include/linux/vmcore_info.h
+index 37e003ae52626..39afce28bfaac 100644
+--- a/include/linux/vmcore_info.h
++++ b/include/linux/vmcore_info.h
+@@ -77,4 +77,18 @@ extern u32 *vmcoreinfo_note;
+ Elf_Word *append_elf_note(Elf_Word *buf, char *name, unsigned int type,
+ 			  void *data, size_t data_len);
+ void final_note(Elf_Word *buf);
++
++enum hwerr_error_type {
++	HWERR_RECOV_AER,
++	HWERR_RECOV_MCE,
++	HWERR_RECOV_GHES,
++	HWERR_RECOV_MAX,
++};
++
++#ifdef CONFIG_VMCORE_INFO
++void hwerr_log_error_type(enum hwerr_error_type src);
++#else
++static inline void hwerr_log_error_type(enum hwerr_error_type src) {};
++#endif
++
+ #endif /* LINUX_VMCORE_INFO_H */
+diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
+index e066d31d08f89..4b5ab45d468f5 100644
+--- a/kernel/vmcore_info.c
++++ b/kernel/vmcore_info.c
+@@ -31,6 +31,13 @@ u32 *vmcoreinfo_note;
+ /* trusted vmcoreinfo, e.g. we can make a copy in the crash memory */
+ static unsigned char *vmcoreinfo_data_safecopy;
+ 
++struct hwerr_info {
++	int __data_racy count;
++	time64_t __data_racy timestamp;
++};
++
++static struct hwerr_info hwerr_data[HWERR_RECOV_MAX];
++
+ Elf_Word *append_elf_note(Elf_Word *buf, char *name, unsigned int type,
+ 			  void *data, size_t data_len)
+ {
+@@ -118,6 +125,17 @@ phys_addr_t __weak paddr_vmcoreinfo_note(void)
+ }
+ EXPORT_SYMBOL(paddr_vmcoreinfo_note);
+ 
++void hwerr_log_error_type(enum hwerr_error_type src)
++{
++	if (src < 0 || src >= HWERR_RECOV_MAX)
++		return;
++
++	/* No need to atomics/locks given the precision is not important */
++	hwerr_data[src].count++;
++	hwerr_data[src].timestamp = ktime_get_real_seconds();
++}
++EXPORT_SYMBOL_GPL(hwerr_log_error_type);
++
+ static int __init crash_save_vmcoreinfo_init(void)
+ {
+ 	vmcoreinfo_data = (unsigned char *)get_zeroed_page(GFP_KERNEL);
+
+---
+base-commit: 97987520025658f30bb787a99ffbd9bbff9ffc9d
+change-id: 20250707-vmcore_hw_error-322429e6c316
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
