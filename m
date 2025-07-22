@@ -1,63 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-10363-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10364-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C48B0E512
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jul 2025 22:47:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A98B0E60D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jul 2025 00:03:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bmq7y3B41z2yhb;
-	Wed, 23 Jul 2025 06:47:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bmrr53dH2z2xd6;
+	Wed, 23 Jul 2025 08:03:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753217230;
-	cv=none; b=B46hp3p61mqIVImzfC1WWQfvnmXjWlui/EOTDp5VZ63ZesB+d6ErIEB1naLk+MYdeex80tz6iNkLeRJOzhMv3PY9SifUJYEyF327Yz98jS/X4G6WiifobhP/hSecgdiqYf+3CM4N0CY9Iuo46fwM/C04seT9w+DbEiL5ghhjWQN8N30QLsiqSVdOb65G7rYZ/P8c0bkbE6bGQTw5hlrrqM4M8llzc5GyRA2QmVXeB5wHQ+hWRuuQHOJFfrsw9ZQsMQNsP8r9rdxli+Kf7goEtV+ZOVtNCmwiNLqQ095l/PyhX+UALLj94l+Sj9qk/2D7UJfqCfloLR2yM7YKnmW0Nw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::831"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753221813;
+	cv=none; b=heJjV7J8K0atOSA/AfBcIxPWqtawY4R9aY5D8x4KWtGyz2B+7yPdFZdHNz2DVu0/d7tP4+C+D1hLPv+mJjqpqy8BYyyygyQXHEANkbbNQCLgCQCuFexwGKkAyYOqB2iFUpbabuM31/Xeh9Cq3QfutXAXSOZ73yFP3a6Zxm4lJ7P1tH1gA1rQ3OBRpsXI/RrbBlExG9u7B+uIao8VAPlRly2CnzVpfI65MmDnXK37VIkhrMJHMVsk0+HBROb2hOQaU407gSMtMd1HRyAT6p3eFZElgnj05jerLy42wiQWEQS8nxgAyzQxUQLyi+neyiWGIMaHJTw5Nl2M4+gaoDWPdw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753217230; c=relaxed/relaxed;
-	bh=iu6+kH10SE0HlwJiugoAKUg8HcdkEnhLm/TQ4agqgyw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Cv1rPZMhfdoYb0KjGulcIOF3BLpY3Woxw5izs5wAoMDdepsuQkH/0jL8YKkfvIWGm+WlOXoOL9Q1rX2t+YzqBhdb0QGFfg0X9VhEWUiiTP1r/tYq+S4pIcXI4aRttkp/wKKrHtmpexVA+uvdOCAMiNvor+KaiFGwwXoNDU1tpYcinF71NNY/kLjqD92ZDH9hTf/LPlZ5wVj8mlNGq8dGVX3iIvW0crfpLPVyIvNYyx42nCrrl64xcq+LjbdUNoXGCPezOrmc1oBER7Bvkj5iXT6WSyRi9rUJebg8wJ7iDHPGBn4/zvkggHf7Aq9dksKwo1ka+OWj8b96ch9gGaGlXQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aO6hZyB7; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1753221813; c=relaxed/relaxed;
+	bh=8gaRC/p4Q4aGxtDVDBYY4mEonX+wM6f6zjphXhzfSvI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eho2ZklNJGa/AzShXtio6mmHkviEwu8d3S3f28/e5nL0sLb0s+exx0sXa1qFgsT4mrkUBjFWV8k3ACyWTxZPVeJ8DO68kyfZdAE9t3boB/uC/z7/kexKMbmNgf9A7gp1c847pwqmJU8BsC7Fbh64AwsXQt0zvv83Ww5EoZr+GvHHM5oX6syGsXMnW29H7npAfurxOPpNSAThwIysdjogeYmti5iCXxo3YAr2Dskj7DkOyjz4UzlDtLcj/63hcKtuUqKhBPMj954uyxC4quTRFLSXgFfwoYGqoW+WW1h4F9omPIYfVFmxM6AXRQcy9I7nrN0wRk2P6PbK+guUHryD+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fOLmXeuD; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::831; helo=mail-qt1-x831.google.com; envelope-from=unixbhaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aO6hZyB7;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fOLmXeuD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::831; helo=mail-qt1-x831.google.com; envelope-from=unixbhaskar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bmq7x1kG7z2xck
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 06:47:09 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 08556A56408;
-	Tue, 22 Jul 2025 20:47:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88561C4CEEB;
-	Tue, 22 Jul 2025 20:47:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753217225;
-	bh=/sxFwYUyBdxHVgbNyek2wBg4Uk82NRyFiZxIzDBnIs4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=aO6hZyB7vN81Un5hba7wW6Ql7I5ci2Z6++fnxK1N+B6uWOg2jTwNX1Uau7rZiYT5e
-	 AOcAgtWIFwH7Nz7plV0qxsFzT9sOlR4vz4FaTVau6e1tcQhlZgVhsEYur1Ddxb+2Up
-	 i0uRqXQuq1y15hjJ7pQ+4offCfJ6eK6OlyzR/DZUiWo8J7wg9hheEgm24Fvt04kTFu
-	 PoAVyzmb6Z4Ue4KyFxdq1k++Fo6uJE4HtCM1XFxyQCWhRClM2tMgz1jJyaSZFAWw32
-	 mzbgFKQFD7LWON8AQD9BqQg+KisPWLzKmseMc4c8E+743oZjhhTP8RmpEU/MMmhORD
-	 KezzqnP4+4FDg==
-Date: Tue, 22 Jul 2025 15:47:04 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	linux-pci <linux-pci@vger.kernel.org>,
-	christophe leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	Timothy Pearson <tpearson@raptorengineering.com>
-Subject: Re: [PATCH v3 0/6] PowerNV PCIe Hotplug Driver Fixes
-Message-ID: <20250722204704.GA2815491@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bmrr41J70z2xRs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 08:03:31 +1000 (AEST)
+Received: by mail-qt1-x831.google.com with SMTP id d75a77b69052e-4ab82eb3417so62039911cf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jul 2025 15:03:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753221808; x=1753826608; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8gaRC/p4Q4aGxtDVDBYY4mEonX+wM6f6zjphXhzfSvI=;
+        b=fOLmXeuDGYwdy4ta89tSMgdgw/L//J+rUBrb1KtZNgg9aj/UfpnpN+ulhIVebTroxF
+         /S0Zqvn/MI32jitaEEAVfra+Cf9DudpwqgVNaav3u7E2U1BBrAkIEQRYI3U49oIVuhQQ
+         t5+bVKkCmzeBogKr0iMtds4YyQM+YH43ItgtbZxE02qm+EPezUXhvb3ModyZ89XGazJQ
+         3MHlMha7c4ox6FneKY6pabFwid1SAN5leitTC0kX5glTAuMM+yF5lPbM8Dt8a0YRxJIf
+         TDwkFamSdy4xqfUrSs0ydTSgdROxYqv/+XLZcBSz5aoIlncJXImlKZpUHh+YCfjLdH5d
+         dO5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753221808; x=1753826608;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8gaRC/p4Q4aGxtDVDBYY4mEonX+wM6f6zjphXhzfSvI=;
+        b=EoIvZKUhpEEug/2TROHovN2/08S0xls2dzYD+9snL/2AM7Ce6BUfqrxd4L9a9QRbHk
+         ITyOT+1NScoaa8g1ze5tf++2Pxmq/gp7PC65e8iqb3HbSVGrFEH0aL+C1u+rBV9U85+K
+         fuwcVDx6keOQilhFZD17lyeOG1GHLSLqq6n5QO2x7TVYiEbNgN4o9vMBB2vwGTbqLS6o
+         eplqblvVZf0cW6WTdvBqhFwWLawduv9Br/tablGTjn7xPQTwLUqfs3+QdgzUX4ytraBu
+         PzVDZnj8erTPRiezB7mXAC0C31X3+7z45ntlXsUG8HONHbmOlGvF9GSyTjKh6KqJS4Hi
+         opzA==
+X-Forwarded-Encrypted: i=1; AJvYcCW9fjEykqTXHsRrU41TzTgwm/W0BK+RQ0H89AGK2e7n8+uS+xIZZOANtCuoqsDYWe6Nut7AJZQBUEcyMWk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyrNRtDNVQqKz6VrLtz3Uvy+XUlsGj/HG/hPN2ezYtNwmEnZ+Ws
+	T3nCquh9vUjwURPdq9LZW+UpDJyQzWBQ2TQOcpIqHvMOA/57cTpXNfpd
+X-Gm-Gg: ASbGnctJPa97Rz8GS30gwv3PJTwTNGvl6vnTA8jJBpUWhqCz8FeZE1/vK+JSRFdB1RZ
+	RVW03pKUEVIrJSB/COG31LGqKCfHwpWMAH0wCvsimhalcwS/+OaKtOlIqc3EeKjVMpfbUpsI57i
+	V99xLshFFNgYP4jP/XlqZfBuF7PYoCzvqLsfj4b7pIHQ/NaAVEmfCPA5rmVEjqpUXAFE1RGOFbz
+	nyahT6pTUxxevaxpJusOgB257HY+NPOKxvmHpdSoktJNkmsmcNC7SHbIKcU0jW+MLHxiMkEqDke
+	aCZCidmm2L06Cvv3ztaUB66tvUnKMQXS5CAihbanfmxWlQpq2tNAZfQ4XRQn66ej9O4ARDjdN5t
+	BMaOqV3erz/Jc6u5xCpu8qAREbG4BmeU=
+X-Google-Smtp-Source: AGHT+IEpNRQJ6T5vzv/FNgL39gSRzTBG2YyecWT7w994rp7SG04PiWOJwSGopyCWX528hfAKFDRFNg==
+X-Received: by 2002:ac8:7d46:0:b0:4a6:f532:431b with SMTP id d75a77b69052e-4ae6de559dcmr9515681cf.5.1753221808232;
+        Tue, 22 Jul 2025 15:03:28 -0700 (PDT)
+Received: from Gentoo.localdomain ([37.19.198.68])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4abb4980305sm59143691cf.6.2025.07.22.15.03.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Jul 2025 15:03:27 -0700 (PDT)
+From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To: maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	unixbhaskar@gmail.com,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] arch:powerpc:tools This file was missing shebang line, so added it
+Date: Wed, 23 Jul 2025 03:29:36 +0530
+Message-ID: <20250722220043.14862-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.49.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,71 +92,30 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250717232752.GA2662535@bhelgaas>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-[-> to: Madhavan, Michael, Mahesh; seeking acks]
+This file was missing the shebang line, so added it.
 
-On Thu, Jul 17, 2025 at 06:27:52PM -0500, Bjorn Helgaas wrote:
-> On Tue, Jul 15, 2025 at 04:31:49PM -0500, Timothy Pearson wrote:
-> > Hello all,
-> > 
-> > This series includes several fixes for bugs in the PowerNV PCIe hotplug
-> > driver that were discovered in testing with a Microsemi Switchtec PM8533
-> > PFX 48xG3 PCIe switch on a PowerNV system, as well as one workaround for
-> > PCIe switches that don't correctly implement slot presence detection
-> > such as the aforementioned one. Without the workaround, the switch works
-> > and downstream devices can be hot-unplugged, but the devices never come
-> > back online after being plugged in again until the system is rebooted.
-> > Other hotplug drivers (like pciehp_hpc) use a similar workaround.
-> > 
-> > Also included are fixes for the EEH driver to make it hotplug safe,
-> > and a small patch to enable all three attention indicator states per
-> > the PCIe specification.
-> > 
-> > Thanks,
-> > 
-> > Shawn Anastasio (2):
-> >   PCI: pnv_php: Properly clean up allocated IRQs on unplug
-> >   PCI: pnv_php: Work around switches with broken presence detection
-> > 
-> > Timothy Pearson (4):
-> >   powerpc/eeh: Export eeh_unfreeze_pe()
-> >   powerpc/eeh: Make EEH driver device hotplug safe
-> >   PCI: pnv_php: Fix surprise plug detection and recovery
-> >   PCI: pnv_php: Enable third attention indicator state
-> > 
-> >  arch/powerpc/kernel/eeh.c         |   1 +
-> >  arch/powerpc/kernel/eeh_driver.c  |  48 ++++--
-> >  arch/powerpc/kernel/eeh_pe.c      |  10 +-
-> >  arch/powerpc/kernel/pci-hotplug.c |   3 +
-> >  drivers/pci/hotplug/pnv_php.c     | 244 +++++++++++++++++++++++++++---
-> >  5 files changed, 263 insertions(+), 43 deletions(-)
-> 
-> I'm OK with this from a PCI perspective, and I optimistically put it
-> on pci/hotplug.
-> 
-> I'm happy to merge via the PCI tree, but would need acks from the
-> powerpc folks for the arch/powerpc parts.
-> 
-> Alternatively it could be merged via powerpc with my ack on the
-> drivers/pci patches:
-> 
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> If you do merge via powerpc, I made some comment formatting and commit
-> log tweaks that I would like reflected in the drivers/pci part.  These
-> are on
-> https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/log/?h=hotplug
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ arch/powerpc/tools/head_check.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-Powerpc folks: let me know how you want to handle this.  I haven't
-included it in pci/next yet because I don't have acks for the
-arch/powerpc parts.
+diff --git a/arch/powerpc/tools/head_check.sh b/arch/powerpc/tools/head_check.sh
+index 689907cda996..a9cd06958921 100644
+--- a/arch/powerpc/tools/head_check.sh
++++ b/arch/powerpc/tools/head_check.sh
+@@ -1,3 +1,4 @@
++#!/bin/sh
+ # Copyright © 2016 IBM Corporation
 
-Bjorn
+ # This program is free software; you can redistribute it and/or
+--
+2.49.1
+
 
