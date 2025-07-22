@@ -1,60 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-10358-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10357-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356D1B0DD8D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jul 2025 16:16:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB1AB0DD24
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jul 2025 16:09:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bmfT85bySz2yhb;
-	Wed, 23 Jul 2025 00:16:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bmfK66Qsxz2yb9;
+	Wed, 23 Jul 2025 00:09:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753193788;
-	cv=none; b=J/x1ELyoetYlIFQ03SVNIH2l8D0OnrALcpAtmgZiMywIUd0JxI8PbO5zaho6yDmlPo6j75LshTgrz6ky41xjVlxTzrtIMhoYIjGORTEzHhNjhSR7c2cLxG8X0T5yfR2L7B7lKQEUtZF2xZY0oOy8FPQe+VnoPtGx7mMuGJuRdk0GpIGXktueAbNsVJVG6lH736NPh70cDHGcbAjxEJnN8RPVBab9ekFzOgG4mtXWGHhaUIIasLtSQi7EDJdkju4WXCQ1pr8vxvHeodFYWKO8pTyKjHFgCsP4bNpoJPSDjk359pGa94RrDBxVqeiwRdDWVmAEKgkodZgj2MEl/42IPQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::229"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753193370;
+	cv=none; b=ZUpD2uNWFxUjY7CX83gh93f53ksnbr93PeRcf87HTaojRQhAaKuueW9VdR3ujtkFzLS84RjWtULR5HEeU3ATrrVfIBouIyRgVWNyRX1v+S1eTyi+zcDgSo6fEMFWXFwqHpPgZMxHhmeCRBSt2iAI2upfwW9WfWFNLuE5aB15nIByTAQNrEhNORKLHIPF0MFeSN4w9tIzVoL2X3IfLzx8sNPADd9e3OmsO1Gxhj+K4xv3ri5i+5+ihKMvDwlGXHEAP8injeJ7Tal7dOF/NdAs4KiqgLoyqGd9jnNe+ICmUckveZdGNCD/Y0xp5Lm1CDeHpPlQVpAZzJKValWbNgNFyg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753193788; c=relaxed/relaxed;
-	bh=NGHIfZZg9vCV7ObhM8p6DUd8A+06EAeVw0cw3XCBIHA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YYelUlrVV4gFh73Zdtdl/H3ol1T1n8LQLgogesKCom7NDn4UyVVAApBzenm6YSuKx+XRABVc3Z3/DA6Vqk2NYDbPQfXIkL/XMvb+brrcTgYRlNGkZC3HwqvB82vNRR/7DmyRhUeP9NepwoBJ64mGLRUuNuKh8w4kow2x0Plq/ebfm9mkD9k4mxTVZpwlJi5NaLdQZZdEq3v6sRdNjE0VMhlm+oHYFop7ViBQPfSZ8HNiGTFyCQ7JuSpTT/FdTl7gDugpjgLsvSot9vvLLZVGZBYQrpCNzI3seEUDyxd/H60sTVM51RCyEqitHy/q3Hx4n4RIaEBuhd2bVEA55OC8aw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ei5JrRZT; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+	t=1753193370; c=relaxed/relaxed;
+	bh=Z72Y4lywtzmWJK50j4gaS5KcylDNvYHYQchCkK6Shzo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RgKrtE9a9GNrcqCYcpXI68ChpkFZDJSIO7dlntjjZqnmuSCLAkFUi/L/EIXnXBJPvm3qdVuiUHyBqpcfqvitpzRnQM0dsD57PHo3xyiryg40NxAbFbhw2/y7VdpuvLH92qHWhmazMZuR2cRjHjW61NLfQlf/Cum5VV8HsuJRoBDZwS3G0a8/xuaadub1PowQQoe46CCWnPztrwq9HjqllYRpPtkYOFE9FoUon3AOJ/JMh8hoL1OOGD35j6rdFg+rAFZT9DqaieDGqsZa+GdNoq71bDTwphEFQTQVAQSxEncRry1ZPkxd20sWv6lAT5OyxtxLI0gO/8yMNn7zRix9ZQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FP1EVpya; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::229; helo=mail-lj1-x229.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=ei5JrRZT;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FP1EVpya;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::229; helo=mail-lj1-x229.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bmfT73gvsz2xTh
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 00:16:26 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 795766112A;
-	Tue, 22 Jul 2025 14:16:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B386DC4CEEB;
-	Tue, 22 Jul 2025 14:16:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1753193783;
-	bh=lvlIsTL0552lQuywV3G4MsYNUlFAfmcSfSeYBIIh/yY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ei5JrRZTyN4C5B/4kFm4mwRhz+yqyweq7Xu0VMe2JC6B36JyEJjvIhc0YpT2ob8/3
-	 uIgaSeOb/sndGFzmsiBkJyC+aljVAtzdyWS/X4+aylan5gA6gM89fmmOlI1Hv+6l5T
-	 FMUDpu5MUXtgb06TpotvnTRYwnOAeo49xyDNAkks=
-Date: Tue, 22 Jul 2025 16:08:09 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Thierry Reding <thierry.reding@gmail.com>
-Cc: x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org,
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-sh@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/7] syscore: Pass context data to callbacks
-Message-ID: <2025072218-decipher-spree-327d@gregkh>
-References: <20250717103241.2806798-1-thierry.reding@gmail.com>
- <2025071716-phoney-object-1648@gregkh>
- <rzbzah5iigz25jtxyqadnitkzkazxsaxntajhlfrfdslyioevk@pylcjkfh5n42>
- <2025071919-patience-cattishly-cf7c@gregkh>
- <l54i36uk33je744w4f47tehdopk5dsjotvozfv5b2hehmxrwpq@eins7awyq4dy>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bmfK53SyCz2xTh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 00:09:28 +1000 (AEST)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-32f1df58f21so56308181fa.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jul 2025 07:09:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753193365; x=1753798165; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z72Y4lywtzmWJK50j4gaS5KcylDNvYHYQchCkK6Shzo=;
+        b=FP1EVpyaHL1AjU1NGMJ1LOyhPcBSmu/ql5qupO+cI9ND0YQG0+/ve3U43wirhiTqSm
+         F44NM1lj/Z6TT29oJ1dL9uQXPizK0YyAOjre0B8ZzNiIoNn3hJ3NPN8A1dQDW41iAjFx
+         ktgmV/ole6Vu4UzLvp+cG/w3T9caRNOTScbNel58vRVMeWeTPvoLoHbxgfa8cHvbXCtA
+         8c6JhZTkQlX5pn/o6uc2kqsTnrDuBbFXDlyci+TDNrIDMyVAw0KkMaJPcCp6DMBizmsU
+         NUIrfITEv3bhqFL6SWzDw1XksAcDjjTTG7vTJyRP6MX/78xOXI3Nzsa4tYhSZU3vbloF
+         TmFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753193365; x=1753798165;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z72Y4lywtzmWJK50j4gaS5KcylDNvYHYQchCkK6Shzo=;
+        b=LH9e0KdiJ1OX3InSUpdc+9MtHKQBpNdzjB9TJQUIDm4Z4wjELVQA9e+jav+gV0b94H
+         1nxW1bIIYzlX+HDogKTSuVjYGwJnqO6JGrG9Zc76sB3t/Z5bIar1UwYwdZ0ktGyjHQdQ
+         Ho4xAVQJU7c67Ens6amjbJneZZMZLrpLqNAnJhPFNQpAB3AfSpn6ZFtI6Ao0C+TUtI/K
+         Cu0ivAhOE3yGAma+fNfv1hTp12tsHOZWxP6gEWn607k92IhAKeA+mYw4O/hrmyCze0Jo
+         9ZnbYUgxFrx63CsFehswVcnGmjZYDaqJ5eT8kiFmtCGGeS1vyvEg6V4YcXcaujjyGj5j
+         BZ8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVJp97TN7c2Eik06hj/wbmjuffe/r1wE8h6xDaXOwVwQ3VfcKZ/wucdQ0Q0eZnmncy/5Jwbcs4F6OD1erY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzrXuCmyQzEqF+OcEXnAizjbiMYx9Z3I8GydSXiNnJMMAjERVy5
+	Z5rntdGOEXRsNBCiVbIDHkw7DFTaZuYrXPVaoBPFP3Fa4lSqT/+FvaoCAvCpn4erbmN301KitKx
+	0pfiAxVguyKIMxCB86KEZvq4jcCLcIbc=
+X-Gm-Gg: ASbGncspsphToSmASWMcIU98O86ixB7AHfvWIxU3j+isWNcsN3x19Vmzie6M3v8RRI0
+	5Wqaomx2PRITjU3gOZdxLNz380zQxYULWA76JwIrtq73XZuXKnUB2o72jSWWCoVW7IG7aSl87+1
+	K+3DSyodmqisioZ3zMiBejtqez6cHgLfvWg1VrO4+JEYSKXvzwi91EoqD5npmJ8ocLVTGzyiBQQ
+	A/OkGc=
+X-Google-Smtp-Source: AGHT+IHxVK00NMC1GHSpVq/sT2EfSuq7omX6wX24xSvgGhrc9yg0F8isqB5neLuF1et0yPorDOiVEfN1u9rtptu/xSU=
+X-Received: by 2002:a05:651c:4110:b0:32a:885b:d0f with SMTP id
+ 38308e7fff4ca-3308f5e2852mr36383791fa.24.1753193364861; Tue, 22 Jul 2025
+ 07:09:24 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,58 +79,91 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <l54i36uk33je744w4f47tehdopk5dsjotvozfv5b2hehmxrwpq@eins7awyq4dy>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250717142732.292822-1-snovitoll@gmail.com> <20250717142732.292822-8-snovitoll@gmail.com>
+ <c8b0be89-6c89-46ed-87c3-8905b6ccbbeb@gmail.com>
+In-Reply-To: <c8b0be89-6c89-46ed-87c3-8905b6ccbbeb@gmail.com>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Date: Tue, 22 Jul 2025 19:09:07 +0500
+X-Gm-Features: Ac12FXxpDsEYsUfFuRK9xdlLStcuqGTW4Nrf9JrgjFdTiyEs4CW8gE7SGsQYdo4
+Message-ID: <CACzwLxgjKz-bc1w4SvGu-EeoMvK9Dh=2WpB-A_zC-u7H38QqVg@mail.gmail.com>
+Subject: Re: [PATCH v3 07/12] kasan/loongarch: select ARCH_DEFER_KASAN and
+ call kasan_init_generic
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com, 
+	agordeev@linux.ibm.com, akpm@linux-foundation.org, glider@google.com, 
+	dvyukov@google.com, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Jul 22, 2025 at 03:56:40PM +0200, Thierry Reding wrote:
-> On Sat, Jul 19, 2025 at 08:52:41AM +0200, Greg Kroah-Hartman wrote:
-> > On Fri, Jul 18, 2025 at 03:49:37PM +0200, Thierry Reding wrote:
-> > > On Thu, Jul 17, 2025 at 02:11:41PM +0200, Greg Kroah-Hartman wrote:
-> > > > On Thu, Jul 17, 2025 at 12:32:34PM +0200, Thierry Reding wrote:
-> [...]
-> > > 	struct syscore;
-> > > 
-> > > 	struct syscore_ops {
-> > > 		int (*suspend)(struct syscore *syscore);
-> > > 		void (*resume)(struct syscore *syscore);
-> > > 		void (*shutdown)(struct syscore *syscore);
-> > > 	};
-> > > 
-> > > 	struct syscore {
-> > > 		const struct syscore_ops *ops;
-> > > 		struct list_head node;
-> > > 	};
-> > > 
-> > > Is that what you had in mind?
-> > 
-> > I missed the list_head, so yes, this would be better, but don't pass
-> > back the syscore structure, how about just a void * instead, making the
-> > whole container_of() stuff go away?
-> 
-> Yeah, that's a possibility. I personally don't like passing the void *
-> around because it's easier to make mistakes that way. I also find it
-> unintuitive because it doesn't immediately show you what the functions
-> expect.
-> 
-> My understanding is that the container_of() should get optimized away
-> most of the time, so there aren't any obvious downsides that I can see.
+On Tue, Jul 22, 2025 at 4:00=E2=80=AFAM Andrey Ryabinin <ryabinin.a.a@gmail=
+.com> wrote:
+>
+>
+>
+> On 7/17/25 4:27 PM, Sabyrzhan Tasbolatov wrote:
+>
+> > diff --git a/arch/loongarch/include/asm/kasan.h b/arch/loongarch/includ=
+e/asm/kasan.h
+> > index 62f139a9c87..0e50e5b5e05 100644
+> > --- a/arch/loongarch/include/asm/kasan.h
+> > +++ b/arch/loongarch/include/asm/kasan.h
+> > @@ -66,7 +66,6 @@
+> >  #define XKPRANGE_WC_SHADOW_OFFSET    (KASAN_SHADOW_START + XKPRANGE_WC=
+_KASAN_OFFSET)
+> >  #define XKVRANGE_VC_SHADOW_OFFSET    (KASAN_SHADOW_START + XKVRANGE_VC=
+_KASAN_OFFSET)
+> >
+> > -extern bool kasan_early_stage;
+> >  extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
+> >
+> >  #define kasan_mem_to_shadow kasan_mem_to_shadow
+> > @@ -75,12 +74,6 @@ void *kasan_mem_to_shadow(const void *addr);
+> >  #define kasan_shadow_to_mem kasan_shadow_to_mem
+> >  const void *kasan_shadow_to_mem(const void *shadow_addr);
+> >
+> > -#define kasan_arch_is_ready kasan_arch_is_ready
+> > -static __always_inline bool kasan_arch_is_ready(void)
+> > -{
+> > -     return !kasan_early_stage;
+> > -}
+> > -
+> >  #define addr_has_metadata addr_has_metadata
+> >  static __always_inline bool addr_has_metadata(const void *addr)
+> >  {
+> > diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_i=
+nit.c
+> > index d2681272d8f..cf8315f9119 100644
+> > --- a/arch/loongarch/mm/kasan_init.c
+> > +++ b/arch/loongarch/mm/kasan_init.c
+> > @@ -40,11 +40,9 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata _=
+_aligned(PAGE_SIZE);
+> >  #define __pte_none(early, pte) (early ? pte_none(pte) : \
+> >  ((pte_val(pte) & _PFN_MASK) =3D=3D (unsigned long)__pa(kasan_early_sha=
+dow_page)))
+> >
+> > -bool kasan_early_stage =3D true;
+> > -
+> >  void *kasan_mem_to_shadow(const void *addr)
+> >  {
+> > -     if (!kasan_arch_is_ready()) {
+> > +     if (!kasan_enabled()) {
+>
+> This doesn't make sense, !kasan_enabled() is compile-time check which is =
+always false here.
 
-container_of() is just pointer math, but a cast is even faster :)
+I should've used `!kasan_shadow_initialized()` check here which provides
+the needed runtime behavior that kasan_early_stage used to provide.
+Will do in v4. Thanks!
 
-> But I don't feel very strongly, so if you have a strong preference for
-> void pointers, I can do that.
-
-That's what you really want to have here, it's a syscore data type
-thing, that the callback wants to reference.  Just like a irqrequest_t
-function passes back a void * that the handler "knows" how to deal with
-properly.
-
-thanks,
-
-greg k-h
+>
+> >               return (void *)(kasan_early_shadow_page);
+> >       } else {
+> >               unsigned long maddr =3D (unsigned long)addr;
 
