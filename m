@@ -1,50 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-10349-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10351-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4054FB0D4C5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jul 2025 10:36:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08CBB0D50F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 22 Jul 2025 10:57:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bmVwZ51W1z3bb2;
-	Tue, 22 Jul 2025 18:36:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bmWNt3t04z3bb2;
+	Tue, 22 Jul 2025 18:57:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753173374;
-	cv=none; b=NmxA2s/19bIGYaPM9AS19oMgrlJeU/zLN4BkvpgIuqnw3irEm9Y6SviplvowHqfkFzVpAdfJTPotnj1T5vld4I5tIIxqUYtJe5FmNbmUHMeR5kazwmbsmdkjmctiEEhRw/2HUvtBLrBwsgV6sss+2F/1c3i29LySQ/LYF74MhU32PGLD9aTHvlWP3wFFtgnLFUi4OowkG08JIZVHnzWNteuHxeYHG8p3gwWeP9fVxJtLBtT9d1M2CPa2NiZLLSXbjiZtrBebBucMogk8z65XK/Vb4MfzhTvfNfeQk7v0mBLpaX7OnE18JXswlnnCv1p4TjXX+iP95pBO7zCA9QQ6AA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753174638;
+	cv=none; b=U1FyXSwuCAmDDWHkhobYc/vuiTp37Sw9xmWdd5OTlfeZ2/EQ9K/OaXZDUNUOoYDjDGPQBCXKrTMnQaYe7V/LUQfFiG741H4eJHiNqv/7p7ITO05ekGHA5GaUqMV087eKpV+cCbcKTSRWuaxTNeOhSP3nDNQbIdGVsuQJIu8AX+qp0i8HsN2qjNHv3EoicwK/mq0p5qFMkvc1VLEcsy6AD+wC3xLHN8+A6R9Y9KnOI5+9MVRACMLp513Yq9Rc0OKU9XFTpbsf1VczGaZUbJEtL+PJplU+51cjyjyfSLoEv0QbpWH51utZ/F3VW+4c6gYCNsIid2gLIhrAlTzcS345kw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753173374; c=relaxed/relaxed;
-	bh=7bNig7bH2FgjkRYBbeZ8hEsa6IlTj+il2SbO7PN/Jug=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=j+7eJU2edqCvAUX5V6+lY86sy1u1LdvjCZgrcNURE03merZR22t+NYUjyjEtm0hlZlG5xosBuFWbSP1IB6uOLYPfsFkWoFg9YW/vNCZiKg9Ub0TBnvdIsrqAb47dKmSGCwFceWJJaDfbluKMLfNxhSLQNkLCUOtUFiBO7NAFVl5NwSl8o0JOQ5cUO//MgIoOYfXOAF4sSyeuHxDvFCH1WhhQfDo089BPIyN8t5BJKnthWWWb/WLJ9oIf+FpgJK2AWCELBEtxaV3p8eHi4Hfhd7Th5scSbBhYypFRktd6nj7HWDMwqAXbNb0tw39nbgdzaai7zbsb/jkV5TuKJtU32A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IuqSx5yX; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1753174638; c=relaxed/relaxed;
+	bh=em+kt+G+S8hZmWj+BUrIILDuNJsbBL+CX65OlPE83lY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hdJx/U8cbZO3Q4C8IJdMTkqOG2qsQ+ua7Y4NMMsmZQR5A2mPZ7Kw6PqVhAlqLwtckNkwlqjgKkRkXXScgeULIvCGKqD5DkkH0RKb8pCnmH3J4aUiq7Hz0Ex5jX06Q7xXr2ByDsRSqLSIdt9P9pMNm03E2pe+MznbLF6RAdI7ppl/q0ICu9zgi+p82RwimolCfyRd4DghCn/AfQi38R45AHqUnJcVecoFLK/5hfFGhtQejoxhwZJdkwleDCCPl8hyobcQqLWPjvvc9EpAysPsVvMQdcBghv9gUqvn14ScJqJObWUaJQRzSU8gcyhTQOHPS2BHJ95EhMhwOE8B2mM2Jg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=azfLFVPJ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityab1@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IuqSx5yX;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=azfLFVPJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityab1@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bmVwY2mJbz2yHs
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jul 2025 18:36:13 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 42D19A53C26;
-	Tue, 22 Jul 2025 08:36:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC31C4CEEB;
-	Tue, 22 Jul 2025 08:36:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753173369;
-	bh=n9bVkjbkbp8D4PYy1fqMbBFg8aL3F8Zum+FdA5TpMtg=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=IuqSx5yXBRB7pJ/pIi29WvPHFxCshHQ/lzWSkdekZ2IB/p/UjQuTzw1X8txQPhc87
-	 vwv30BL28DOh3zGNnChvXU4UEH5eGYlmJ57xk52Nyp3AznJRa7bv3ONRDOEIfEFUcp
-	 /xkeyIbMXqZghbCVkCqPhhI6rJO6HzYYO3rFeeZtXucc4KnSAQoQ/wgNZMf6bjGmnW
-	 cf+1tUgjY734L0ZnoH1RBVr9UGRT2p0v+KLfeY2RxAJYNT2DSBcIicrNA3t4Cn3zOq
-	 gR1gGCPoVkyfXNwwJqDwMPHo+OHKzMT664CXH9KR6RQUmsCNfX5R16Iq/Z7CFZFTaZ
-	 7hrmhJ7IDSsGw==
-Message-ID: <874a2b30-ec4d-4b72-9f25-81429f03ccb7@kernel.org>
-Date: Tue, 22 Jul 2025 10:36:05 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bmWNs3sV9z2yHs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 22 Jul 2025 18:57:16 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56M15RGi011010;
+	Tue, 22 Jul 2025 08:57:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=em+kt+G+S8hZmWj+BUrIILDuNJsbBL+CX65OlPE83
+	lY=; b=azfLFVPJu9V9/yc+yBwcHqATte6YucGZlKlB2gWE/+kgOwSejryINyqua
+	rYbV2G8uPY+DF4sFRbuuJHV6EHhv+HvU/8+d99ETMVDwi4eHpWEIFGKZgV9RxiLA
+	1DjlcJr1YLXS4q3H5kHlqgGaqsYQNtDyV7R2klmWwBYHIsxzdnwotH189+9D2Gyv
+	4Gmv/Lh8amYjcB6LBMGcf/fUfbP7g9AZOt1QSSzeJRRduqCvXiZul+KXygfi0c7m
+	/DUFtlIdwJeJzcZiqFnMtgorMWtpezf4uu+CQARqkqqKbkYBBDID/poRjfladapa
+	FvLBfGECaxXF4/Kk6vVLQvaUyk4Vw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4805uqwbeu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Jul 2025 08:57:00 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56M8lWei024513;
+	Tue, 22 Jul 2025 08:57:00 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4805uqwber-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Jul 2025 08:57:00 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56M6ZYWC004133;
+	Tue, 22 Jul 2025 08:56:59 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 480u8fs89f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Jul 2025 08:56:59 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56M8utdd45613502
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Jul 2025 08:56:55 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0EBDE20040;
+	Tue, 22 Jul 2025 08:56:55 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D100720043;
+	Tue, 22 Jul 2025 08:56:52 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.109.199.41])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 22 Jul 2025 08:56:52 +0000 (GMT)
+From: Aditya Bodkhe <adityab1@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, rostedt@goodmis.org, mhiramat@kernel.org,
+        mark.rutland@arm.com, venkat88@linux.ibm.com,
+        Aditya Bodkhe <adityab1@linux.ibm.com>
+Subject: [PATCH v2 1/2] powerpc/ftrace: support CONFIG_FUNCTION_GRAPH_RETVAL
+Date: Tue, 22 Jul 2025 14:26:47 +0530
+Message-ID: <20250722085648.1640-1-adityab1@linux.ibm.com>
+X-Mailer: git-send-email 2.50.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,120 +93,182 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: pci-ioda: Optimize pnv_ioda_pick_m64_pe()
-To: Yury Norov <yury.norov@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Thomas Gleixner <tglx@linutronix.de>, Frederic Barrat
- <fbarrat@linux.ibm.com>, Andrew Donnellan <ajd@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20250720010552.427903-1-yury.norov@gmail.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20250720010552.427903-1-yury.norov@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: U8dQhvN24Q4MFv_KRg1SnPiwVjLESJwb
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIyMDA3MSBTYWx0ZWRfX1AN4ZemIuZa0
+ olXWi+IJZXqQDOFIhwbcIwzD4r9EJr45Ht64Xgo1W/idIvRSxCv3hDJffCKEYrwoqsT8SO/nq37
+ dgD802z6dy2fl0limv31NUBZCAqXYv6gwNt1HfiInJELS2f9Q+w51XaIroD/rhBGxUhoqQVq1XY
+ 5q7Y0V6M/Mb7gKKCxqabn8RFsuAe5JiUzz9eo1fF+RnjKI7TnQtQGY2WoTm7uppja+T8bxIKNmw
+ HutLlDvWOPRrdpr/eDSgKETxckkkSvIaLqZYixletRHoK1Ac+gTghjc0q5ZB6S8QqMb7ndUUnMU
+ FxLGNwX8537jJgWIDCktCE77CEbhlOPx+Xl3ZwiWutMTuJYj+MgZqLAqspxxNg7KfxAlqlzBuTD
+ HHQjoZ4ufLkZRVELcU2ndnOJnQ3qFF9O5M6O5HzEhSbqKrXN96BRCqM7Xerklgb3nqWngklc
+X-Authority-Analysis: v=2.4 cv=dpnbC0g4 c=1 sm=1 tr=0 ts=687f525c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=f-JPSP1mq3vSRxYuwIAA:9
+X-Proofpoint-GUID: Zqytb6L4fNSzmhhgppjFwLE_bxEJ82nN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-22_01,2025-07-21_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 suspectscore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 priorityscore=1501 bulkscore=0 mlxscore=0 malwarescore=0
+ mlxlogscore=999 clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507220071
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 20. 07. 25, 3:05, Yury Norov wrote:
-> bitmap_empty() in pnv_ioda_pick_m64_pe() is O(N) and useless, because
-> the following find_next_bit() does the same work.
-> 
-> Drop it, and while there replace a while() loop with the dedicated
-> for_each_set_bit().
-> 
-> Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> ---
->   arch/powerpc/platforms/powernv/pci-ioda.c | 18 +++++-------------
->   1 file changed, 5 insertions(+), 13 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index d8ccf2c9b98a..c7a421ead992 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -313,24 +313,16 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
->   	/* Figure out reserved PE numbers by the PE */
->   	pnv_ioda_reserve_m64_pe(bus, pe_alloc, all);
->   
-> -	/*
-> -	 * the current bus might not own M64 window and that's all
-> -	 * contributed by its child buses. For the case, we needn't
-> -	 * pick M64 dependent PE#.
-> -	 */
-> -	if (bitmap_empty(pe_alloc, phb->ioda.total_pe_num)) {
-> -		kfree(pe_alloc);
-> -		return NULL;
-> -	}
-> -
->   	/*
->   	 * Figure out the master PE and put all slave PEs to master
->   	 * PE's list to form compound PE.
-> +	 *
-> +	 * The current bus might not own M64 window and that's all
-> +	 * contributed by its child buses. For the case, we needn't
-> +	 * pick M64 dependent PE#.
->   	 */
->   	master_pe = NULL;
-> -	i = -1;
-> -	while ((i = find_next_bit(pe_alloc, phb->ioda.total_pe_num, i + 1)) <
-> -		phb->ioda.total_pe_num) {
-> +	for_each_set_bit(i, pe_alloc, phb->ioda.total_pe_num) {
+commit a1be9ccc57f0 ("function_graph: Support recording and printing the
+return value of function") introduced support for function graph return
+value tracing.
 
-Makes sense. Could you also:
-* use bitmap_alloc()
-* use __cleanup() to free the bitmap
-* make i unsigned
-?
+Additionally, commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with
+ftrace_regs") further refactored and optimized the implementation,
+making `struct fgraph_ret_regs` unnecessary.
 
-thanks,
+This patch enables the above modifications for powerpc all, ensuring that
+function graph return value tracing is available on this architecture.
+
+In this patch we have redefined two functions:
+- 'ftrace_regs_get_return_value()' - the existing implementation on
+ppc returns -ve of return value based on some conditions not
+relevant to our patch.
+- 'ftrace_regs_get_frame_pointer()' - always returns 0 in current code .
+
+We also allocate stack space to equivalent of 'SWITCH_FRAME_SIZE',
+allowing us to directly use predefined offsets like 'GPR3' and 'GPR4'
+this keeps code clean and consistent with already defined offsets .
+
+After this patch, v6.14+ kernel can also be built with FPROBE on powerpc
+but there are a few other build and runtime dependencies for FPROBE to
+work properly. The next patch addresses them.
+
+Signed-off-by: Aditya Bodkhe <adityab1@linux.ibm.com>
+---
+
+Changelog:
+v1 -> v2:
+- Added explanation for redefining ftrace_regs_get_return_value() 
+and ftrace_regs_get_frame_pointer()
+- Explained why stack space equivalent to 'SWITCH_FRAME_SIZE' is allocated.
+
+ arch/powerpc/Kconfig                     |  1 +
+ arch/powerpc/include/asm/ftrace.h        | 15 +++++++++
+ arch/powerpc/kernel/trace/ftrace_entry.S | 42 ++++++++++++++----------
+ 3 files changed, 41 insertions(+), 17 deletions(-)
+
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index c3e0cc83f120..9163521bc4b9 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -250,6 +250,7 @@ config PPC
+ 	select HAVE_FUNCTION_ARG_ACCESS_API
+ 	select HAVE_FUNCTION_DESCRIPTORS	if PPC64_ELF_ABI_V1
+ 	select HAVE_FUNCTION_ERROR_INJECTION
++	select HAVE_FUNCTION_GRAPH_FREGS
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_FUNCTION_TRACER		if !COMPILE_TEST && (PPC64 || (PPC32 && CC_IS_GCC))
+ 	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
+diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+index 82da7c7a1d12..6ffc9c9cf4e3 100644
+--- a/arch/powerpc/include/asm/ftrace.h
++++ b/arch/powerpc/include/asm/ftrace.h
+@@ -50,6 +50,21 @@ static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *
+ 		asm volatile("mfmsr %0" : "=r" ((_regs)->msr));	\
+ 	} while (0)
+ 
++#undef ftrace_regs_get_return_value
++static __always_inline unsigned long
++ftrace_regs_get_return_value(const struct ftrace_regs *fregs)
++{
++	return arch_ftrace_regs(fregs)->regs.gpr[3];
++}
++#define ftrace_regs_get_return_value ftrace_regs_get_return_value
++
++#undef ftrace_regs_get_frame_pointer
++static __always_inline unsigned long
++ftrace_regs_get_frame_pointer(const struct ftrace_regs *fregs)
++{
++	return arch_ftrace_regs(fregs)->regs.gpr[1];
++}
++
+ static __always_inline void
+ ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
+ 				    unsigned long ip)
+diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
+index 3565c67fc638..3da14d8271d9 100644
+--- a/arch/powerpc/kernel/trace/ftrace_entry.S
++++ b/arch/powerpc/kernel/trace/ftrace_entry.S
+@@ -409,23 +409,31 @@ EXPORT_SYMBOL(_mcount)
+ _GLOBAL(return_to_handler)
+ 	/* need to save return values */
+ #ifdef CONFIG_PPC64
+-	std	r4,  -32(r1)
+-	std	r3,  -24(r1)
++	stdu	r1, -SWITCH_FRAME_SIZE(r1)
++	std	r4, GPR4(r1)
++	std	r3, GPR3(r1)
++	/* Save previous stack pointer (r1) */
++	addi	r3, r1, SWITCH_FRAME_SIZE
++	std	r3, GPR1(r1)
+ 	/* save TOC */
+-	std	r2,  -16(r1)
+-	std	r31, -8(r1)
++	std	r2, 24(r1)
++	std	r31, 32(r1)
+ 	mr	r31, r1
+-	stdu	r1, -112(r1)
+-
++	/* pass ftrace_regs/pt_regs to ftrace_return_to_handler */
++	addi	r3, r1, STACK_INT_FRAME_REGS
+ 	/*
+ 	 * We might be called from a module.
+ 	 * Switch to our TOC to run inside the core kernel.
+ 	 */
+ 	LOAD_PACA_TOC()
+ #else
+-	stwu	r1, -16(r1)
+-	stw	r3, 8(r1)
+-	stw	r4, 12(r1)
++	stwu	r1, -SWITCH_FRAME_SIZE(r1)
++	stw	r4, GPR4(r1)
++	stw	r3, GPR3(r1)
++	addi	r3, r1, SWITCH_FRAME_SIZE
++	stw	r3, GPR1(r1)
++	/* pass ftrace_regs/pt_regs to ftrace_return_to_handler */
++	addi	r3, r1, STACK_INT_FRAME_REGS
+ #endif
+
+ 
+ 	bl	ftrace_return_to_handler
+@@ -435,15 +443,15 @@ _GLOBAL(return_to_handler)
+ 	mtlr	r3
+ 
+ #ifdef CONFIG_PPC64
+-	ld	r1, 0(r1)
+-	ld	r4,  -32(r1)
+-	ld	r3,  -24(r1)
+-	ld	r2,  -16(r1)
+-	ld	r31, -8(r1)
++	ld	r4,  GPR4(r1)
++	ld	r3,  GPR3(r1)
++	ld	r2,  24(r1)
++	ld	r31, 32(r1)
++	ld	r1,  0(r1)
+ #else
+-	lwz	r3, 8(r1)
+-	lwz	r4, 12(r1)
+-	addi	r1, r1, 16
++	lwz	r3, GPR3(r1)
++	lwz	r4, GPR4(r1)
++	addi	r1, r1, SWITCH_FRAME_SIZE
+ #endif
+ 
+ 	/* Jump back to real return address */
 -- 
-js
-suse labs
+2.50.0
+
 
