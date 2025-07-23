@@ -1,77 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-10385-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10386-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8EC5B0F91C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jul 2025 19:33:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740B7B0FA95
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jul 2025 20:59:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bnLnt3wY8z30QJ;
-	Thu, 24 Jul 2025 03:33:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bnNjN4X7Bz3bmS;
+	Thu, 24 Jul 2025 04:59:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::132"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753292002;
-	cv=none; b=BfcJ2duajvDfUG4Drksmm5I/2Y9KvmsMOLr2hLUTd9dYyAZxloQglWmaj9ZtNbHQc7hbtiLjaD+AlAOzIS4aVSd7vIWS42twJcuGhrpE2GLq9DkOkQLM+guEtf54ONJ67+JtV36WWzhKSHE3RhpGPwMe2w0t72h3TUOPsqq/Fvzn2SKyu7NPKdaxqQ0+w5qEH0io0p8WtjVOnSJA5nfcxiPwGxNOEWvmf0sRE2Ft9M+g/UI5mW57bnxJcOqUF2Ye90rVpqERdabPYvrjMxIe0M+sSJFWRuwz7+Itb8TcrZHRDh/I0Qa709zcZvobOmHdKkSenO5ngYxTK8rBWwyaRQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f9:3051:3f93::2"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753297176;
+	cv=none; b=cSMgtGrOXe+woCWGJY+sH0c8IyrSYIdk/on4OqlsvfXO0gh6qDUUebupjg7nXhBDQ+t0ZMjbnYBUpTkWj3L5RVAejrmRy3K6iFvD3oHjwB01pj+PXbqNb0uNW1BhsF8UzawFA2EAVXmiTGGV5pNZH3VsgdtKwCn5hrtq+1G7ScbtpBCXk3G/hqGfTCxm6eDbFcRRQ6jL2asRSYwc9pjpHRpGqA7xCxC2xSdvwiAnq5EipklgSYbovcwEIQwn4u2pN0wLSaT6kxl1CcaafTNPUwQSRzfqXuQqwYHXLdSJSnuSNis8ASu89wlZVpPEk/WZ0tj9KBmMpu0udF9ejW8UJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753292002; c=relaxed/relaxed;
-	bh=KBM3XOa1GXkPG7AU5j/kIOwYcdf4HqHkAm2pQZ3zu3U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SlUdCMEE4a3cM3GKuKiNNcb67GdFJwtigk+dHjlAuEWNlrW0R4j/M5deRszDZcgfW7f2iaHA1NjuJNf7k418yOYeG1E2JdNwgVONjP7nDWWQjBVedRQUHrZLg4K52E5Tei+1JOQ5AXd0y3hPT6vKx9JdZex5RyW+zCEhFznTUYoITGRarzu+5CKrruqlOag42nG9kLUNWMRbORvVqxAOwgfaVdncYg5bGUvmrL5dxReDC+rPZXfXYSnm2/U60y/HqAun3uT/SGhhbuSMW+oQR3oPzLNiMIE5f78DksmpfOH3SycX/7ni2XIs3aWS2dXPnx4AxrX73KmlORrcRt/pUw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=M3c9L09R; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=ryabinin.a.a@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1753297176; c=relaxed/relaxed;
+	bh=3/iUg3kpzsiZrZyEgEoQDrYxpq8863x42bI2MvnPvd8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=extlr2tObPr7MW/Cv8cj6My780f/T33meonT9VnJbQZl4V5kjH/ReFSOd0FEn5N6iOGGlG800jlYLjINy74RJwyuwpid9NoQSwkHqeDYqQ83+Z5YSkHf8xGtHMz0BWDhu0fUFENNs94g1KymhzWRwA/ihhBrYq2RQopNufvAlIDedq+l3cXnCDrAI9ZCQKGox3QP8rmsXJcLXV05AwStqgOiFnIhz/TkbNjQdN5/zU/i/oGfsUc+v2iMEwnPlLbW4q/rNEzHcgUKQ8uhVfm5jCPKJ6gesVhRBoZkkOVCrxA/OwSyJJJV1sl0E0p1z9nVj8nR6pdHwemODRJpXZ82tw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=WNhhE56j; dkim-atps=neutral; spf=pass (client-ip=2a01:4f9:3051:3f93::2; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=M3c9L09R;
+	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=WNhhE56j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=ryabinin.a.a@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=2a01:4f9:3051:3f93::2; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
+Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bnLns3L8Vz30HB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jul 2025 03:33:20 +1000 (AEST)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-5550bb2787dso6629e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 10:33:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1753291998; x=1753896798; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KBM3XOa1GXkPG7AU5j/kIOwYcdf4HqHkAm2pQZ3zu3U=;
-        b=M3c9L09RySppH1clAdL46QvfdmAh1Z8bkpi7VFTZP3TJ6rMsxEiZT8S+4NZ/zOe8Rc
-         woeb7BRfyah1oQPMVZqRO6B8P+7IvHz4YZ+5T6dwQoIa5Qu2SEnWJmKHwhXF/kFBvYMJ
-         25Ng6tGPzbLKmVbEi6t9Gc/xQ8RDQTqEN+EFjmqjB9BnP8EY3Tne/i8dZUk0Opcj+VhJ
-         GP8z1zW5dHrWuBy4H0kQpq9+K1R1KQ57UGFSM+D1MTfWbMykYGCCB+rTPIToeNb3nY7M
-         9qXRkUjxDSPv4o426nv2NdXPW4djdez2cC+Z/lkwYXxm8Zn5dtJg4Gfua5+kOcnJvVEc
-         pHrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753291998; x=1753896798;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KBM3XOa1GXkPG7AU5j/kIOwYcdf4HqHkAm2pQZ3zu3U=;
-        b=I1DTD9IPa2WbexOEeV8XsggfQGiHALQyZZF04SsjSwrJ0A6c5v64E3RjYuQFZz8d2N
-         ZHXghT91sRLGoxN5W98V1E47L5qACJD78BVwrzDqjpT5g9D/JqToLKiYsVHi/BmeDCeB
-         9xavfMZv9KlHH72elknLbRcUyj0YNrlCEvPkxLfrrd5uEVFroJcsOeZUeWnRSpd9eBza
-         SfpKwcRaaNAIFGIzJFQVfDJxU2Xy7ha7eqoyq70MSBBEjWVX5fivEVIWzZwSBgSS8Rub
-         4oZDUTYdFzkLZlC8Q5c3mGE/knqK9Y8OUK9oKDl2wCgguQYueVR55iwmN0jpaaJrtdLM
-         ++Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCWlsADdwTjl/yrK9Dc+hIs4ikm9N5fh7Y4N/mEPfdZZ26PGZSw4jGg5wbg3hYN/E47jJE3WmXjVejQPpj4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxmbFydXP8xnhH9ajxO+KtF0TdyXeJA2QSGFiQirwZcyT7K6f0W
-	8ygOfSLz63lDP6/BcIvMfrPGzaRE09j6a9r4LPPvCVNIdFm+kumYyYMO
-X-Gm-Gg: ASbGnctZkUNnQzQzAHfdIVqH1PVDd6qyu00XfC+tsOoDQmeEcqwerUeWSG1woxZaw3o
-	GA48JB7f4KC9jDG4TFJuKCA+Vy4U53VNtjyoGd852EZvdh9X4Wf38Yho1a3bzVG2GWq6lMq5SDB
-	rcDpW8fb9GKfNJlytNhPXAkUHkI+vlXkRTp3+GZQHeM4kSQXPIJM4e+3OxKk4pCKIYNA5oeb5kH
-	vtSrnTLGY8hUQlvGmWlMA0N12/Z2MP9WQ5fpPqCRTbpWMR2wVk10LGPddogUEWmhPv7NUQ8xF0T
-	KhplEodzqc1PHHIOFERZKS+QOauL2uIVVt55rcP7mN76swPplRX+FKKdxysDVvwwu3FYnkW2h1T
-	I+cewS2D1UshJyZda6JML6jOIWzSXkU9ETplWfgw=
-X-Google-Smtp-Source: AGHT+IEhfKgja72kmMEVu8mg+y0GPA2wBPQGXBF9w7fJkfAZVikcQ8zyKptW1cZk85GIYWtzdxftWQ==
-X-Received: by 2002:a05:6512:3c8b:b0:553:24b4:6492 with SMTP id 2adb3069b0e04-55a5132157emr458860e87.5.1753291997236;
-        Wed, 23 Jul 2025 10:33:17 -0700 (PDT)
-Received: from [10.214.35.248] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55a31aac980sm2396014e87.74.2025.07.23.10.33.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Jul 2025 10:33:16 -0700 (PDT)
-Message-ID: <f7051d82-559f-420d-a766-6126ba2ed5ab@gmail.com>
-Date: Wed, 23 Jul 2025 19:32:51 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bnNjF3878z30QJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 24 Jul 2025 04:59:27 +1000 (AEST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C1C1740E0163;
+	Wed, 23 Jul 2025 18:59:20 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id NV1TOurcSxM6; Wed, 23 Jul 2025 18:59:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1753297157; bh=3/iUg3kpzsiZrZyEgEoQDrYxpq8863x42bI2MvnPvd8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WNhhE56jaVQu8KmDXYrC1yQdKtIH4nMnxxKq6HHMfPn3KWLUYHkITgL5pmZOmECm2
+	 qIx5yZsp9NhxWPtrmSuKgpzrdK+6tDoipIeQAsybPeBFHe8nsxHbu9eGiRUwKvN35I
+	 moWd3v49g+xVRScU8E2A1IRcf9nJuTnXJf0IoCcR5ViZ97oHkY2LPBNpggxXfI8909
+	 KElCdwzek1ygeNaV95IzQSFtsYmW6y8EmMOZaOMj7eOAXvijsv9rBOh2DZ3mFNzXuu
+	 ZF+l+TxcKo2TiX2+lIhI3pFmBVZA83e5J1tRBwTLfOopbAJnkvNL9m60r/t253U8pg
+	 q/8ZlCL3IKF5Fg+PYg5+iDhJ3zt+Grhz4SPpVg3gvV2nq1fO3tKXzlnUZTy76DuQqZ
+	 8w5WlekiffnTR7PRFrECf+uRApDOGb6dhTBLovo+ph+FCh/pMiKZbcADaVPA9P6JDc
+	 pDVpuaKA19Snh/y1Uoa6TATlcEZ6FfJ1U2zkredBLcHM+xaX/TaPvBxUquapEQtLZw
+	 bz3KciijHf7kc2P7gju5ur8KnwqmE+AAwyZx7tJYAGWAqA7ro+T4GvvI9YCkERW2Or
+	 kRbhhGcn+OTYKMO/PQ2vTfHBNSTB5iEv+4o44KOwVfGCIiShLJhDiCKGmo+1U0Em4x
+	 mws8PKuTNcbxgVonXq9TlbUc=
+Received: from rn.tnic (unknown [78.130.214.207])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id C25CE40E0254;
+	Wed, 23 Jul 2025 18:58:47 +0000 (UTC)
+Date: Wed, 23 Jul 2025 21:00:48 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Breno Leitao <leitao@debian.org>
+Cc: kernel test robot <lkp@intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Robert Moore <robert.moore@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <helgaas@kernel.org>, oe-kbuild-all@lists.linux.dev,
+	linux-media@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev,
+	osandov@osandov.com, xueshuai@linux.alibaba.com,
+	konrad.wilk@oracle.com, linux-edac@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v3] vmcoreinfo: Track and log recoverable hardware errors
+Message-ID: <20250723190048.GBaIExYJYiHWnSBFye@renoirsky.local>
+References: <20250722-vmcore_hw_error-v3-1-ff0683fc1f17@debian.org>
+ <202507232209.GrgpSr47-lkp@intel.com>
+ <cdlrppnrheyq7z3gmwmwsmktpmoiwq7g5hxa67rcx4iem5i6ge@jksa5o5use4w>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,140 +97,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/12] kasan: unify kasan_arch_is_ready() and remove
- arch-specific implementations
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com,
- agordeev@linux.ibm.com, akpm@linux-foundation.org, glider@google.com,
- dvyukov@google.com, kasan-dev@googlegroups.com,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
-References: <20250717142732.292822-1-snovitoll@gmail.com>
- <f10f3599-509d-4455-94a3-fcbeeffd8219@gmail.com>
- <CACzwLxjD0oXGGm2dkDdXjX0sxoNC2asQbjigkDWGCn48bitxSw@mail.gmail.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <CACzwLxjD0oXGGm2dkDdXjX0sxoNC2asQbjigkDWGCn48bitxSw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <cdlrppnrheyq7z3gmwmwsmktpmoiwq7g5hxa67rcx4iem5i6ge@jksa5o5use4w>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Wed, Jul 23, 2025 at 08:36:52AM -0700, Breno Leitao wrote:
+> Basically there are two approaches, from what I understand:
+> 
+> 	1) mark do_machine_check() as noinstr
 
+do_machine_check is already noinstr. I think you mean mark
+hwerr_log_error_type() noinstr.
 
-On 7/22/25 8:21 PM, Sabyrzhan Tasbolatov wrote:
-> On Tue, Jul 22, 2025 at 3:59 AM Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
->>
->>
->>
->> On 7/17/25 4:27 PM, Sabyrzhan Tasbolatov wrote:
->>
->>> === Testing with patches
->>>
->>> Testing in v3:
->>>
->>> - Compiled every affected arch with no errors:
->>>
->>> $ make CC=clang LD=ld.lld AR=llvm-ar NM=llvm-nm STRIP=llvm-strip \
->>>       OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf \
->>>       HOSTCC=clang HOSTCXX=clang++ HOSTAR=llvm-ar HOSTLD=ld.lld \
->>>       ARCH=$ARCH
->>>
->>> $ clang --version
->>> ClangBuiltLinux clang version 19.1.4
->>> Target: x86_64-unknown-linux-gnu
->>> Thread model: posix
->>>
->>> - make ARCH=um produces the warning during compiling:
->>>       MODPOST Module.symvers
->>>       WARNING: modpost: vmlinux: section mismatch in reference: \
->>>               kasan_init+0x43 (section: .ltext) -> \
->>>               kasan_init_generic (section: .init.text)
->>>
->>> AFAIU, it's due to the code in arch/um/kernel/mem.c, where kasan_init()
->>> is placed in own section ".kasan_init", which calls kasan_init_generic()
->>> which is marked with "__init".
->>>
->>> - Booting via qemu-system- and running KUnit tests:
->>>
->>> * arm64  (GENERIC, HW_TAGS, SW_TAGS): no regression, same above results.
->>> * x86_64 (GENERIC): no regression, no errors
->>>
->>
->> It would be interesting to see whether ARCH_DEFER_KASAN=y arches work.
->> These series add static key into __asan_load*()/_store*() which are called
->> from everywhere, including the code patching static branches during the switch.
->>
->> I have suspicion that the code patching static branches during static key switch
->> might not be prepared to the fact the current CPU might try to execute this static
->> branch in the middle of switch.
-> 
-> AFAIU, you're referring to this function in mm/kasan/generic.c:
-> 
-> static __always_inline bool check_region_inline(const void *addr,
-> 
->       size_t size, bool write,
-> 
->       unsigned long ret_ip)
-> {
->         if (!kasan_shadow_initialized())
->                 return true;
-> ...
-> }
-> 
-> and particularly, to architectures that selects ARCH_DEFER_KASAN=y, which are
-> loongarch, powerpc, um. So when these arch try to enable the static key:
-> 
-> 1. static_branch_enable(&kasan_flag_enabled) called
-> 2. Kernel patches code - changes jump instructions
-> 3. Code patching involves memory writes
-> 4. Memory writes can trigger any KASAN wrapper function
-> 5. Wrapper calls kasan_shadow_initialized()
-> 6. kasan_shadow_initialized() calls static_branch_likely(&kasan_flag_enabled)
-> 7. This reads the static key being patched --- this is the potential issue?
-> 
+And yes, you can mark it. hwerr_log_error_type() is not that fascinating
+to allow instrumentation for it.
 
+> 	2) Move hwerr_log_error_type() earlier inside the
+> 	instrumentation_begin() area.
 
-Yes, that's right.
+Or you can do that - that looks like less of an effort btw.
 
+-- 
+Regards/Gruss,
+    Boris.
 
-> The current runtime check is following in tis v3 patch series:
-> 
-> #ifdef CONFIG_ARCH_DEFER_KASAN
-> ...
-> static __always_inline bool kasan_shadow_initialized(void)
-> {
->         return static_branch_likely(&kasan_flag_enabled);
-> }
-> ...
-> #endif
-> 
-> I wonder, if I should add some protection only for KASAN_GENERIC,
-> where check_region_inline() is called (or for all KASAN modes?):
-> 
-> #ifdef CONFIG_ARCH_DEFER_KASAN
-> ...
-> static __always_inline bool kasan_shadow_initialized(void)
-> {
->         /* Avoid recursion (?) during static key patching */
->         if (static_key_count(&kasan_flag_enabled.key) < 0)
->                 return false;
->         return static_branch_likely(&kasan_flag_enabled);
-> }
-> ...
-> #endif
-> 
-> Please suggest where the issue is and if I understood the problem.
-
-I don't know if it's a real problem or not. I'm just pointing out that we might
-have tricky use case here and maybe that's a problem, because nobody had such use
-case in mind. But maybe it's just fine.
-I think we just need to boot test it, to see if this works.
-
-> I might try to run QEMU on powerpc with KUnits to see if I see any logs.
-powerpc used static key same way before your patches, so powerpc should be fine.
+https://people.kernel.org/tglx/notes-about-netiquette
 
