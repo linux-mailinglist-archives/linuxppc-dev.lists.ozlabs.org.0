@@ -1,78 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-10377-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10378-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A46B0F0A5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jul 2025 13:00:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6102DB0F123
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jul 2025 13:27:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bnB4k1RS0z3bkb;
-	Wed, 23 Jul 2025 21:00:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bnBgf6n0mz3bh0;
+	Wed, 23 Jul 2025 21:27:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753268438;
-	cv=none; b=gqw5nKlPZ9Q+viX+hJ00den9+xUmts6ODzBjfTR7Q3M1261MtRKGKzliFh5heuyz193jgWYxHepNmle47ObW9ZgEDN2biwYUef9SYa0rMoMybKLwjWmbW7q3CTwZWUzprJmXPU7oW88hAHmKKByrexjuJTKLYlQOZVv2bgt3FpFpBSpd+1p6xjIm58AN0XfZ/LOwVCfOwG0/1GOsmNyYam/WqTS6Uapv99cK1SYhi6QC7QiNhN2KAYVj+Vt5z88q3nDz0eUe3qHLbvO10uhmz+fx+OSbOHceSczK1hMCOr/WHGR/VC4FBJbayk/OS0qk2vibfeqvXAtFN5ZRycPHzg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753270046;
+	cv=none; b=lFujujEAv7MRtOPwm/NQlUDV7/hODtG/n/A1ILqciSxtibeIdnh1jQ+5c1jz7gysbxTklqjdX/cJJPkYHbEIayWk+hFGoP1nS7TCzaKsjAoVbHSeTwrJmUyDHTMiFGHCwgno9YMmnXhKwyu8UHxEcohymCrd+ONCRIRIlFtsfP2nplOJmbTQ8SbRvZAXZ9ByJidsioz+U1RF/DwtVFV3zA3SMmAKysfUaESqdFpYidMWulqootoMz+kh0yHXXOO/LKgr+3p8OREM2pbSLp1vTlgQvwXFK+am7eiu6/HfuRfd+dNRhuSBhXWMkFxoU31113sqFAsb39sKTQcoWsQ/YQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753268438; c=relaxed/relaxed;
-	bh=rXyY98gBFsKNIUwm61q4RC5iDzASeVtBCRo/LxrSEvc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tj/YBvVtBkgDp8xeAIlBX/SQxn3YRfUbbTqwFv1tRxISpncVuSvC4D42jRt/MnXNkhu03njyZeIWDDmbjAfyd8onwry54OC5I7nmcxA5tEUeqOcWQaS8B7TcVc1zRJyzTkSSe1P+FEvMm5nbQChz14ye79zQGEMthp7t8McekIXgb1pK37+DwlOlV4BYxATfjrQZAFimLojt5Y8VMF8CwFny+3Zr8st+P4Ti6ZZ2vew2tRckcyBNnFnHi5WTtVpz1h8X6hS55zb9w3d6Wzl+sT1gUArVtkdWDaVv2Pa4KDhTXtAWKcdELjxf+t04mcXhvHLNR69KbZNje/vaykWE8Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I6MV5ZZv; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1753270046; c=relaxed/relaxed;
+	bh=HCWuYRG63599CeGL0cu+BIdFInFPtoPb0KezmWqBc2U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=anbHiC7si2L3pWMVawqng7Xsak+0RFmP8hzBf+hh65218IvaU8/LcylogEQXhqEy9egSVAdgB4LdZATzGj/oWHb9Gefo7lHkSTfjnxg2+0FHHa/vK6z98SgiMMs8gRStBDfWG4niOFpSGTXtGdxNwRkzJyI6lGn28fHSLAfu9osKDMQRbcMjMCNDCP3iJrnZiAuVwP3wpsH+7w59Q5U+Apq0bOgoOdW5YGCt2VMI8Z5Cv7I9yjoTVw/GKv3HSq891VcdVPPBg3AW6Iye4ZaihhKyyXaPnw2CWW/BRihATSnTPLzX/5OiSBtffL8om2YGab5ktTnY0gz22MNzFXrYNA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SUdVHNc/; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I6MV5ZZv;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SUdVHNc/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bnB4j3YMDz3bkT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 21:00:37 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56N9e34g028685;
-	Wed, 23 Jul 2025 11:00:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=rXyY98
-	gBFsKNIUwm61q4RC5iDzASeVtBCRo/LxrSEvc=; b=I6MV5ZZv9n9cYCf8R+K924
-	A7bq/OnQu7Th26ym7jCug8MQcHa771Ps3g3FoDqyvhZGZhGDglSp8/l0sTgzRJmk
-	s/KAR3Bah2eyB03U9fS2RhWwM3R7Oa5sMN+r6lJuZ4d6mhah+US5j2Ac5wWZp1qt
-	YjATeZ3Y1T34ktuGv/f7qMO6JGTI4HRT5hYbvH5zi671fe2g0k/84Bq9W9WisVAM
-	rw0DSGMgb9oXoM1DtyBXJ+ZE/PzC1z0TRefMbghV69ORHTbd9JvZV2GJXDaeqFUa
-	VeyP24ow73n/mfYkwcv2BakCfIYAPEUkbUQlmEwxvOhwk5ONFzCMNxcCbl3N6aVw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482kdyk0r7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 11:00:25 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56NB0LTb005675;
-	Wed, 23 Jul 2025 11:00:25 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482kdyk0qx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 11:00:25 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56N86YaI004133;
-	Wed, 23 Jul 2025 11:00:24 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 480u8fxn7p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 11:00:23 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56NB0NSC21365436
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Jul 2025 11:00:23 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 25BAC58060;
-	Wed, 23 Jul 2025 11:00:23 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7FFA658063;
-	Wed, 23 Jul 2025 11:00:19 +0000 (GMT)
-Received: from [9.204.206.224] (unknown [9.204.206.224])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 23 Jul 2025 11:00:19 +0000 (GMT)
-Message-ID: <97289b39-ca4b-47ac-af81-c5223932ff63@linux.ibm.com>
-Date: Wed, 23 Jul 2025 16:30:18 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bnBgf1GrBz3bby
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 21:27:26 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 320C15C0C32
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 11:27:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E81C4CEF6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 11:27:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753270043;
+	bh=hD86L6FsrlkjppEeAolQw2+wF9G9eL2p4jeufpqBKxk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SUdVHNc/aWpcFyqi0c/ImfOYjRQUiFP+rK1f80HK+AmhVgduX5msiRWhEhg1s+hiW
+	 s7V5fsU/uhIBFeKySwzuXQ9BfdxVoYhid9ufOAKrdUj+5KF33m3lRUe8oxf0Cwfa3G
+	 PAj6KQ4HGDysGEzUeqbGoXcEsGrTE+WGU8uiIskXtyhHc5ZVmHBzSVzbhah+PdKtkJ
+	 B6bYI7NyCgjopp5nxtJIfyi2MQl9rYFcv0L6MFftn+yL2G/Azg205ACyhpuudVcnZK
+	 Tw9kNx5J4K7v3JXj2/qR5a6ofMcynO7+qNQVdxzBIuF42MddOCjUhYN2cf+cvhsSyT
+	 WFbNCzvSwVVDA==
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-615950642d9so3685529eaf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 04:27:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWkZxF3z/F715/zWwiLrTNnbcrqUlrFXcfB5M6epJmBmBCdc1crWWU07VBfmPTLwaq2QqUAaI7uxEJQuXo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YynQJUVOX2psU7gt3JSVI57ANWBDZ00L6QlUzGVe6el1gy35Mgg
+	5wKrAAOLkza96671W05uE1c7XLd7y9k5xjl9Bci83aFWimgVQoU4nenIc8qiyXGeMniJj2kGAIC
+	XSqDmSkxsUEF68M23yGBX+BOEien/rN4=
+X-Google-Smtp-Source: AGHT+IFBBrTSzcKsgRsjEmVEi3AQj37BeFlkMYzSpLg5VvEYvowlyBOnql/yOqAWuu2WwDYjxLgaMwyjRGbr4TyyCQA=
+X-Received: by 2002:a05:6820:1792:b0:615:d742:6672 with SMTP id
+ 006d021491bc7-6187d90ed5dmr1918110eaf.8.1753270043105; Wed, 23 Jul 2025
+ 04:27:23 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,122 +66,149 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] PowerNV PCIe Hotplug Driver Fixes
-To: Bjorn Helgaas <helgaas@kernel.org>, Michael Ellerman
- <mpe@ellerman.id.au>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        christophe leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-        Shawn Anastasio <sanastasio@raptorengineering.com>,
-        Timothy Pearson <tpearson@raptorengineering.com>
-References: <20250722204704.GA2815491@bhelgaas>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <20250722204704.GA2815491@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 3Nm6biQkwCC6kDwcAJfurgg3QHzgi2LN
-X-Authority-Analysis: v=2.4 cv=XP0wSRhE c=1 sm=1 tr=0 ts=6880c0c9 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8
- a=1pD9pYlTiUhiYWAN9AsA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: Wh94iUv_xNberR8-A23dJ-8HaY003zBx
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDA5MCBTYWx0ZWRfX+FSqIcfZ5YmY
- K8vjJImsB2oiS+he4B+1JzHzyhSpRQ6FxkySAjN3uS9PnVyVDPvA5m8ZK6qJrZmfifPINNQyqTd
- 3xnKwrGcCTEPjCgpatpm7w86UniY+QbuWFYNixHIARf61rCz+DPEYIXYgD5Rg5VfbOOu1GKOLuB
- zxexJMpOORGwkxBUndvan/F9S3BqvPcckbCs1Elc7beI5Fro4xVTAE0xTL/mWz38qvMU4rzjgc9
- 2WHwwy1XmY6CEyrsEyruazDROq0/g8MCrAqTpcVOEXaxps6QNGwdlDSQ+oZxDvbqa2S60owJy/X
- bPFUv5iSWs0pywB3ceZ0EPbokt687c1htlDU7o3rODz1H4AOeGygpEb2W1RH20xShCQ80EuadjF
- GgT1Z69X1zsSexugWL/Rnpf0V9BYl4CdfHpqD/3IGZgFmCAw2bCnAO90OJHco4d9GgZasYuB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-23_02,2025-07-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999 spamscore=0
- suspectscore=0 clxscore=1011 malwarescore=0 impostorscore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2507230090
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+References: <20250717103241.2806798-1-thierry.reding@gmail.com>
+ <2025071716-phoney-object-1648@gregkh> <rzbzah5iigz25jtxyqadnitkzkazxsaxntajhlfrfdslyioevk@pylcjkfh5n42>
+ <2025071919-patience-cattishly-cf7c@gregkh> <l54i36uk33je744w4f47tehdopk5dsjotvozfv5b2hehmxrwpq@eins7awyq4dy>
+ <2025072218-decipher-spree-327d@gregkh> <awvdox3bgabbc42aamezlg33k4cje6y75qoxn7ruh3nhd4qv5n@u3spdahehad4>
+In-Reply-To: <awvdox3bgabbc42aamezlg33k4cje6y75qoxn7ruh3nhd4qv5n@u3spdahehad4>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 23 Jul 2025 13:27:09 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0iYBOephv29sj0DSKZVyF3JLBsoUCckhTbGcbYHUUhYyQ@mail.gmail.com>
+X-Gm-Features: Ac12FXzC6e4YCoK78tnnsrW1OvCOkcpvLKri7HC2f5clbN5j5h64RJlwkH_QRPE
+Message-ID: <CAJZ5v0iYBOephv29sj0DSKZVyF3JLBsoUCckhTbGcbYHUUhYyQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/7] syscore: Pass context data to callbacks
+To: Thierry Reding <thierry.reding@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, x86@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-mips@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Wed, Jul 23, 2025 at 11:01=E2=80=AFAM Thierry Reding
+<thierry.reding@gmail.com> wrote:
+>
+> On Tue, Jul 22, 2025 at 04:08:09PM +0200, Greg Kroah-Hartman wrote:
+> > On Tue, Jul 22, 2025 at 03:56:40PM +0200, Thierry Reding wrote:
+> > > On Sat, Jul 19, 2025 at 08:52:41AM +0200, Greg Kroah-Hartman wrote:
+> > > > On Fri, Jul 18, 2025 at 03:49:37PM +0200, Thierry Reding wrote:
+> > > > > On Thu, Jul 17, 2025 at 02:11:41PM +0200, Greg Kroah-Hartman wrot=
+e:
+> > > > > > On Thu, Jul 17, 2025 at 12:32:34PM +0200, Thierry Reding wrote:
+> > > [...]
+> > > > >         struct syscore;
+> > > > >
+> > > > >         struct syscore_ops {
+> > > > >                 int (*suspend)(struct syscore *syscore);
+> > > > >                 void (*resume)(struct syscore *syscore);
+> > > > >                 void (*shutdown)(struct syscore *syscore);
+> > > > >         };
+> > > > >
+> > > > >         struct syscore {
+> > > > >                 const struct syscore_ops *ops;
+> > > > >                 struct list_head node;
+> > > > >         };
+> > > > >
+> > > > > Is that what you had in mind?
+> > > >
+> > > > I missed the list_head, so yes, this would be better, but don't pas=
+s
+> > > > back the syscore structure, how about just a void * instead, making=
+ the
+> > > > whole container_of() stuff go away?
+> > >
+> > > Yeah, that's a possibility. I personally don't like passing the void =
+*
+> > > around because it's easier to make mistakes that way. I also find it
+> > > unintuitive because it doesn't immediately show you what the function=
+s
+> > > expect.
+> > >
+> > > My understanding is that the container_of() should get optimized away
+> > > most of the time, so there aren't any obvious downsides that I can se=
+e.
+> >
+> > container_of() is just pointer math, but a cast is even faster :)
+> >
+> > > But I don't feel very strongly, so if you have a strong preference fo=
+r
+> > > void pointers, I can do that.
+> >
+> > That's what you really want to have here, it's a syscore data type
+> > thing, that the callback wants to reference.  Just like a irqrequest_t
+> > function passes back a void * that the handler "knows" how to deal with
+> > properly.
+>
+> IRQ handlers are different, though, because you pass the void * data
+> when you register the interrupt. That void * then gets stored and passed
+> to the handler when the interrupt is processed.
+>
+> We'd have to change it to something like this:
+>
+>         struct syscore_ops {
+>                 /* parameters now changed to driver-specific data */
+>                 int (*suspend)(void *data);
+>                 void (*resume)(void *data);
+>                 void (*shutdown)(void *data);
+>         };
+>
+>         struct syscore {
+>                 const struct syscore_ops *ops;
+>                 struct list_head node;
+>                 /* NEW driver-specific data */
+>                 void *data;
+>         };
 
+I like this more than the original, but I would do
 
-On 7/23/25 2:17 AM, Bjorn Helgaas wrote:
-> [-> to: Madhavan, Michael, Mahesh; seeking acks]
-> 
-> On Thu, Jul 17, 2025 at 06:27:52PM -0500, Bjorn Helgaas wrote:
->> On Tue, Jul 15, 2025 at 04:31:49PM -0500, Timothy Pearson wrote:
->>> Hello all,
->>>
->>> This series includes several fixes for bugs in the PowerNV PCIe hotplug
->>> driver that were discovered in testing with a Microsemi Switchtec PM8533
->>> PFX 48xG3 PCIe switch on a PowerNV system, as well as one workaround for
->>> PCIe switches that don't correctly implement slot presence detection
->>> such as the aforementioned one. Without the workaround, the switch works
->>> and downstream devices can be hot-unplugged, but the devices never come
->>> back online after being plugged in again until the system is rebooted.
->>> Other hotplug drivers (like pciehp_hpc) use a similar workaround.
->>>
->>> Also included are fixes for the EEH driver to make it hotplug safe,
->>> and a small patch to enable all three attention indicator states per
->>> the PCIe specification.
->>>
->>> Thanks,
->>>
->>> Shawn Anastasio (2):
->>>   PCI: pnv_php: Properly clean up allocated IRQs on unplug
->>>   PCI: pnv_php: Work around switches with broken presence detection
->>>
->>> Timothy Pearson (4):
->>>   powerpc/eeh: Export eeh_unfreeze_pe()
->>>   powerpc/eeh: Make EEH driver device hotplug safe
->>>   PCI: pnv_php: Fix surprise plug detection and recovery
->>>   PCI: pnv_php: Enable third attention indicator state
->>>
->>>  arch/powerpc/kernel/eeh.c         |   1 +
->>>  arch/powerpc/kernel/eeh_driver.c  |  48 ++++--
->>>  arch/powerpc/kernel/eeh_pe.c      |  10 +-
->>>  arch/powerpc/kernel/pci-hotplug.c |   3 +
->>>  drivers/pci/hotplug/pnv_php.c     | 244 +++++++++++++++++++++++++++---
->>>  5 files changed, 263 insertions(+), 43 deletions(-)
->>
->> I'm OK with this from a PCI perspective, and I optimistically put it
->> on pci/hotplug.
->>
->> I'm happy to merge via the PCI tree, but would need acks from the
->> powerpc folks for the arch/powerpc parts.
->>
->> Alternatively it could be merged via powerpc with my ack on the
->> drivers/pci patches:
->>
->> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
->>
->> If you do merge via powerpc, I made some comment formatting and commit
->> log tweaks that I would like reflected in the drivers/pci part.  These
->> are on
->> https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/log/?h=hotplug
-> 
-> Powerpc folks: let me know how you want to handle this.  I haven't
-> included it in pci/next yet because I don't have acks for the
-> arch/powerpc parts.
-> 
+struct syscore_ops_ops {
+                 int (*suspend)(void *data);
+                 void (*resume)(void *data);
+                 void (*shutdown)(void *data);
+};
 
-Patchset looks fine to be. 
+struct syscore_ops {
+                 struct list_head node;
+                 const struct syscore_ops_ops *ops;
+                 void *data;
+};
 
-I am fine to take it via my tree since I already have your Acked-by.
+and change register_syscore_ops() to take three arguments, the struct
+syscore_ops pointer, the (constified) struct syscore_ops_ops one, and
+the (void *) data one.
 
-Maddy
+Note that it is not necessary to change the signature of
+unregister_syscore_ops() in this case.
 
+> It ends up increasing the syscore structure's size, about 33%, though
+> given that there aren't a lot of these that's probably negligible.
 
-> Bjorn
-> 
+That's not a problem IMV.
 
+> What I think is a bit more unnatural about it in this case is that we
+> embed the struct syscore into some driver-private data anyway so that
+> it becomes per instance, and then we have a circular reference:
+>
+>         foo->syscore.ops =3D &foo_syscore_ops;
+>         foo->syscore.data =3D foo;
+
+That depends because "data" need not be "foo" in all cases, but also
+see above.  If the initialization of struct syscore_ops is all done by
+register_syscore_ops(), it doesn't look circular any more.
+
+> Which looks kind of weird. Alternatively I suppose we could completely
+> rework it and make register_syscore_ops() allocate struct syscore, and
+> hide the internals from drivers completely:
+>
+>         err =3D register_syscore(&foo_syscore_ops, foo);
+>
+> With that it may be problematic that register_syscore() can now fail.
+
+Yes, that might be a problem.
 
