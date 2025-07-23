@@ -1,71 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-10372-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10373-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D992B0EC2B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jul 2025 09:45:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB823B0EDF5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jul 2025 11:01:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bn5kz5ZxRz3bh0;
-	Wed, 23 Jul 2025 17:44:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bn7R3210Vz3bh0;
+	Wed, 23 Jul 2025 19:01:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753256699;
-	cv=none; b=F1r43Uf0NzTAF0Vhb5pui9am7uMVm0jj/jFA17bJKBKLi/JrdoBMdkdImJ/lejOCP3PyWuFQzRrxBNixvxfWTtICT6kWBsHrh41Xjas3D/WyXzpwY6wr6lPaBtsWv8gCWb9rYVbkInK22Q6oqFqo9J58uVjyuJ7OCDoCnGGVc03IOVxx8vOjbyN8EJ6mhLht7qcEiARJdTlkjBB2apjNV77l+HyCTbvkRjuxg+6AE2BQ7iiZsnwx0f+vDxj6iu0Fn1A3b30sND73GwFfmqI9m1U3UAc1mTXxvPsq5OAwAJJuF5pCtOknKr83ZXt2QCDSpNXpIehXnejF8PbhKc+E2g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::329"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753261279;
+	cv=none; b=n0Vpe+oW3JFyxB8Hi67+BXlmkdi8D9Nva5arZ25+Z2X2w6HznCYbAHxoFi9KrlDJ+bctriCHjapB3t0Hju7O8m4GbWO9TMOSsplWT/TZPv7h5oDNkI4QJggyr6ZdliaWi+j2aZl/Wkflv5fNMJl7DMJXEA6pGLCl5W2+Y1wqnsXRCqRiSm0q/YgYHyWJExHjPNsvh9ei+tvtp5PK0z4HyvxB3/hvU/kwiiBnRxWVcQrlT16adheyLVepWrwj3v0jxaCI1kzjf1J1YphH0W+LcTk1InwNrhSPY7y81j+VH22QFUoqW8g83PYoRG/xKhK6hm47rShk+hyJJlwXw0UWKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753256699; c=relaxed/relaxed;
-	bh=BY/ZzYWr4cNWW3EQSwOprqiT2o6v7aJDfx+9lHRlxRg=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=BC4myGUy6ur+WhruBRwhaa2hkVpka1zDCq9AWy6Vo4GSWnQqtZ3QtAH+x2bPjCC/3vMaxfcm+9mD8SAiUeUMLgxDp0N79QNpQetvDLf3hpsuOeqFYbepbMPnmkdl72ATsLSlnOZA70SsfC5FCL6iIwXgkFJjG0q5PL+6ZOaFTxRW6UNAhn7TN1lvoax5XH4QvuolOYwqwbuj8bhLku9OJOYMO40WUfCbQni/yifHp/FW59VHQvfHAg7kSYZB8KyBzDSjURwKk0Rf2iwVL+noOrxo197+lsKpFNuMcyYfxYIeJtwR2oGac/q5Pj1v8kv69kUGCHm4M9qkvCRPgRisAg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DcPzTND0; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1753261279; c=relaxed/relaxed;
+	bh=vfi+7jzS+QroB9ovq5xCDmfLCYDKNlqIdXI2M9FMRkQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KFVJMDFTtH9+3LrinHJFqdJKXw6Vafmj5Rr5k0Yvw6TdPc0US6IVE+rnGmH0ruuZgmY5wmFOB4JHQpjwQHe/P9IF89rM0kj8hmHPcpG3uIJbppehSYR2cznY93f4L9njwv7n4Ad6D0j9mk6l3LiQdQPwDoHrE5X37xwL98cyl2Cm7cDwmduUTZ7wmzYxpOgVTUEj/JnMlHHck68dl53/gA0a+FtdKnkgkB71JIgjf30emwfQdTAfotpqPpfeVxKDpyqeEzBOgXO6cgejta7R/s7i/wiR3NwtUL82xLDF+boMTedAvOGk6zovCtQXIERSjOdx9zPRfOdT163Yj7dcFQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EWz+lNYj; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DcPzTND0;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EWz+lNYj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::329; helo=mail-wm1-x329.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bn5ky67y5z30P3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 17:44:58 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56N61OE3013448;
-	Wed, 23 Jul 2025 07:44:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=BY/ZzYWr4cNWW3EQSwOprqiT2o6v
-	7aJDfx+9lHRlxRg=; b=DcPzTND0ux3ZdS+Pu8R+TH85QqvG4j6/GeZxgCCg0Ku2
-	CZZEy4mNi6v5SqSuuM4SZPr6P1dzY9hVoy1MviMco3BPmk1y/JJHG+wgzcfS3R4C
-	2v5mzLQ4OwX1/ReB/dZZjQ+BcpC2nyhzDBgZtzPILgkg9GcfSUvqUF3DKG0Btdkm
-	uvktHzoqtgDlPSKdGiwxRDneW81UPhc5/ZVtcetcBvozkQJA9MKwJczxKv57T+g8
-	Z/zYMNjN9tTDJPqESjWkG5kY0p6YlKLwYLONS2zVc2zPQwfZ9EUDN0i1FkR9PWT0
-	4Sw91zU87vtWZhdfszHbf6NR4HrOPFI3mTCTkuX8PQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482ffqbcy5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 07:44:42 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56N7iedd024964;
-	Wed, 23 Jul 2025 07:44:41 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 480nptq1ws-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 07:44:41 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56N7idSK24117848
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Jul 2025 07:44:40 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C8FE358061;
-	Wed, 23 Jul 2025 07:44:39 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 047D858056;
-	Wed, 23 Jul 2025 07:44:37 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.252.202])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 23 Jul 2025 07:44:36 +0000 (GMT)
-From: Venkat <venkat88@linux.ibm.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bn7R13FT3z2yDk
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 19:01:16 +1000 (AEST)
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-45555e3317aso37268405e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 02:01:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753261271; x=1753866071; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vfi+7jzS+QroB9ovq5xCDmfLCYDKNlqIdXI2M9FMRkQ=;
+        b=EWz+lNYjYY6r95+3HbOtRWHsTilQo8J3DjJze+jAd2+Vx3M6CyoewbT3mw4hHeyczj
+         RT3ZIEdnyv6Z8EPu6nYupKX/vpxn7jDW6AN2XQrI5t5V9gvaGU4EOugjGjfFP/VdXgQ7
+         yZzq7kLzsQaGruje6C1tjnDiatXhlD0vxVoFt4ugf268wlRUcQxj874Ub/8Gz/EinTrh
+         AQ8QPK5ArGRzmWy61tpC99pSQrT5MggiBwnaCKoqXbDKPeKbdJQc3mepY+Z5t11Wq4Xp
+         sS3Nk2wYFk9D+W7UN6oIaNiQ+SwTe1fpU5YjZ3CatZCSeFrU9sHn7KnM1HN+gBYktHeS
+         RNqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753261271; x=1753866071;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vfi+7jzS+QroB9ovq5xCDmfLCYDKNlqIdXI2M9FMRkQ=;
+        b=T36I9uicSd/jWIrcWI5CGo7uy6ZsM+nfMPSIvrbyF3OxHO6KCNoT19upClM1nrJgAf
+         DRHCANqHtVSoZuvLvUHIphSYBVlW6avhnGjyL6oK6fuXmt/5mU/ihnyrO9C2sdEv0Ytc
+         1rk8kTLsid1ADkObYuNgJ4jc/vB43DLi5n6M8PAEFJglIDB7UGAn/tCK0KNuMLPc+6WT
+         Ahltx6FofAngE/lU1V9unc1EOTkAdXv+QfGSYYN/6zfx3eKEOAGaMr6V7lZlpVedepuC
+         YcGrRCeQndDiXXIRobnIsLWyBgAa+kGjn3q21ZnQzhBM2Rvoddtzkxub4vOXG4ErmiVY
+         XpYw==
+X-Forwarded-Encrypted: i=1; AJvYcCXVLQXGVG0XqlIjPdFRiDQk08xm/Wk4brU8mQ2lWF6Uclo44iPGJ0t38/wIX5OATXHZySyOo5WyKcEJKWg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz5gY4x7VSgqqng0PTUn0s5x/Y1FdY5fJ08st5gnPVY4OQxHCbm
+	9L3NZwrC6NKE7v4d1BX4jYpLRxU8cZ0p/x/iKkt7A8d6QxR12d/esesS
+X-Gm-Gg: ASbGncs7cqz9GDIKwtA/jNsdXElwps1lI3WwGkcEUJ4cCy4c4zV6HAnoDzhgT90/LnL
+	jowTHvFr8wGXjtj8i3I99rIAlBhXVlXN44JfjoPWGJ8l0/3IHQG88J1Z3+5sPfuIVc5x3zi6tqR
+	otSmPAhYbUf9HxhW2D8AfUNUvLhMmg7DIenuNQiJ0dpWq7q7lt0Plcs0s8UxvDfnI7cg8Vh53FN
+	x/Q3JNon/lVqnbNaYk3BHyUQHWCza7CVnjfRUNSHqZZw5qMAK3Apl2zWGSoldN3eS4pfeAjdmCD
+	/PXKKizPyBxHZ71Fe1BkGoRCnAS+MG9Mkx+9NtxexrU93pRLmsHvPZDbRHi3YL0QAcsEjN91X59
+	vq/d6z9B4koyoTEb5w6aqV+SNNeokioAEoqKXV6NEQplHU3ifoWJUJ4my88QxZ05Svy70LlJXk7
+	JIGK4aw1Eq
+X-Google-Smtp-Source: AGHT+IEknrstHg6cUD/SgoHhNho7BNCTRJA/GS5vJOJzPvYI6zayldv/5uJL7C58FRXa6VpYJz8Fmg==
+X-Received: by 2002:a05:600c:8b08:b0:456:1b93:76b with SMTP id 5b1f17b1804b1-45868c79052mr16967605e9.4.1753261270574;
+        Wed, 23 Jul 2025 02:01:10 -0700 (PDT)
+Received: from orome (p200300e41f4e9b00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f4e:9b00:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3b61ca25533sm15448303f8f.11.2025.07.23.02.01.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Jul 2025 02:01:09 -0700 (PDT)
+Date: Wed, 23 Jul 2025 11:01:07 +0200
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: x86@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-mips@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/7] syscore: Pass context data to callbacks
+Message-ID: <awvdox3bgabbc42aamezlg33k4cje6y75qoxn7ruh3nhd4qv5n@u3spdahehad4>
+References: <20250717103241.2806798-1-thierry.reding@gmail.com>
+ <2025071716-phoney-object-1648@gregkh>
+ <rzbzah5iigz25jtxyqadnitkzkazxsaxntajhlfrfdslyioevk@pylcjkfh5n42>
+ <2025071919-patience-cattishly-cf7c@gregkh>
+ <l54i36uk33je744w4f47tehdopk5dsjotvozfv5b2hehmxrwpq@eins7awyq4dy>
+ <2025072218-decipher-spree-327d@gregkh>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,55 +97,130 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [PATCH v2 1/1] sched: preempt: Move dynamic keys into
- kernel/sched
-Message-Id: <1D4FF009-177E-48AF-B236-F64F0FE2DCDE@linux.ibm.com>
-Date: Wed, 23 Jul 2025 13:14:22 +0530
-Cc: bigeasy@linutronix.de, LKML <linux-kernel@vger.kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-        mark.rutland@arm.com, mingo@redhat.com,
-        Peter Zijlstra <peterz@infradead.org>, tglx@linutronix.de,
-        will@kernel.org
-To: sshegde@linux.ibm.com
-X-Mailer: Apple Mail (2.3774.600.62)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDA2NCBTYWx0ZWRfX3xwWfm5j4UCF
- 1dGNgSVL+AOAXDnGeuOctIGb6dfO5h1BZfswLAwsKbm/9LvgrnDFxQ8H/ByKu+RkX1aWhf9zxvV
- W5EEAtcfs8qvXFTw5jvQCAzld3baINRjkJ8jlANiddQyTGLD+6OUzalLjyTCFJzfle6nOtBXfSm
- rERVucX+HeaZiur1mjDA3WadkW5Jwfg8qLI3j7ZeOSLqmLzDWxce3wyePa11/shQ50Hhl6mowB9
- ZWoPxAo1938FvQ7QU7M6YRBXjZD3trLKDNmlpH4MbEyWoGQJHtJOzVAx4bgScQtEKe0XRZ7uVHT
- eRYyVLczAy1J81E5TSA56ESQmCX4/CsskV/K/CCLZjqPA9mFRF1fqlkhplWroSE6kT71MXAdbWJ
- JpgaaM+4Nqq0XAImdndybcV66QDiwFZJS33FY3f5ywlA7Q3RKD6trBCsGEsTXSxxMIdMRcTW
-X-Proofpoint-ORIG-GUID: A3poDvbQ0D5r__m3NauW-cBgXowUkeHD
-X-Proofpoint-GUID: A3poDvbQ0D5r__m3NauW-cBgXowUkeHD
-X-Authority-Analysis: v=2.4 cv=eqvfzppX c=1 sm=1 tr=0 ts=688092ea cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=J52luZ3L32VaiGxZi9YA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-23_01,2025-07-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0 spamscore=0 lowpriorityscore=0 malwarescore=0
- phishscore=0 clxscore=1011 suspectscore=0 bulkscore=0 impostorscore=0
- mlxlogscore=605 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507230064
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="t3b24mrvydogtoje"
+Content-Disposition: inline
+In-Reply-To: <2025072218-decipher-spree-327d@gregkh>
+X-Spam-Status: No, score=2.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS autolearn=disabled
+	version=4.0.1 OzLabs 8
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
+--t3b24mrvydogtoje
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2 0/7] syscore: Pass context data to callbacks
+MIME-Version: 1.0
 
+On Tue, Jul 22, 2025 at 04:08:09PM +0200, Greg Kroah-Hartman wrote:
+> On Tue, Jul 22, 2025 at 03:56:40PM +0200, Thierry Reding wrote:
+> > On Sat, Jul 19, 2025 at 08:52:41AM +0200, Greg Kroah-Hartman wrote:
+> > > On Fri, Jul 18, 2025 at 03:49:37PM +0200, Thierry Reding wrote:
+> > > > On Thu, Jul 17, 2025 at 02:11:41PM +0200, Greg Kroah-Hartman wrote:
+> > > > > On Thu, Jul 17, 2025 at 12:32:34PM +0200, Thierry Reding wrote:
+> > [...]
+> > > > 	struct syscore;
+> > > >=20
+> > > > 	struct syscore_ops {
+> > > > 		int (*suspend)(struct syscore *syscore);
+> > > > 		void (*resume)(struct syscore *syscore);
+> > > > 		void (*shutdown)(struct syscore *syscore);
+> > > > 	};
+> > > >=20
+> > > > 	struct syscore {
+> > > > 		const struct syscore_ops *ops;
+> > > > 		struct list_head node;
+> > > > 	};
+> > > >=20
+> > > > Is that what you had in mind?
+> > >=20
+> > > I missed the list_head, so yes, this would be better, but don't pass
+> > > back the syscore structure, how about just a void * instead, making t=
+he
+> > > whole container_of() stuff go away?
+> >=20
+> > Yeah, that's a possibility. I personally don't like passing the void *
+> > around because it's easier to make mistakes that way. I also find it
+> > unintuitive because it doesn't immediately show you what the functions
+> > expect.
+> >=20
+> > My understanding is that the container_of() should get optimized away
+> > most of the time, so there aren't any obvious downsides that I can see.
+>=20
+> container_of() is just pointer math, but a cast is even faster :)
+>=20
+> > But I don't feel very strongly, so if you have a strong preference for
+> > void pointers, I can do that.
+>=20
+> That's what you really want to have here, it's a syscore data type
+> thing, that the callback wants to reference.  Just like a irqrequest_t
+> function passes back a void * that the handler "knows" how to deal with
+> properly.
 
-Tested this patch, by applying on top of mainline kernel. 
+IRQ handlers are different, though, because you pass the void * data
+when you register the interrupt. That void * then gets stored and passed
+to the handler when the interrupt is processed.
 
-Dynamically changed the preemption modes, and its working as expected. Hence,
+We'd have to change it to something like this:
 
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+	struct syscore_ops {
+		/* parameters now changed to driver-specific data */
+		int (*suspend)(void *data);
+		void (*resume)(void *data);
+		void (*shutdown)(void *data);
+	};
 
-Regards,
-Venkat.
+	struct syscore {
+		const struct syscore_ops *ops;
+		struct list_head node;
+		/* NEW driver-specific data */
+		void *data;
+	};
+
+It ends up increasing the syscore structure's size, about 33%, though
+given that there aren't a lot of these that's probably negligible.
+
+What I think is a bit more unnatural about it in this case is that we
+embed the struct syscore into some driver-private data anyway so that
+it becomes per instance, and then we have a circular reference:
+
+	foo->syscore.ops =3D &foo_syscore_ops;
+	foo->syscore.data =3D foo;
+
+Which looks kind of weird. Alternatively I suppose we could completely
+rework it and make register_syscore_ops() allocate struct syscore, and
+hide the internals from drivers completely:
+
+	err =3D register_syscore(&foo_syscore_ops, foo);
+
+With that it may be problematic that register_syscore() can now fail.
+
+Thierry
+
+--t3b24mrvydogtoje
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmiApM8ACgkQ3SOs138+
+s6G76RAAlyjbBOBTf8eNokhrwb69GbuFv4iEunTnd/Xy91IhOncqHjdYHN3rqTn9
+GZWy+L9VFYLaEmLV5W1ChOD3rYHCxZ3gep+jdE5ThLQvJaK4IBB4oGZ0OGXLHmVy
+TqNy+Tq/dQi2jM2o7MW1DUDM8EunrbLmjBWZZONJzH18GqJPn3LWazuC7tBBL6vu
+bmowzEXxm+4NWx5Ow3IvFnLzDa05JLaBKtVREPuf/UdRHcjzrra1RyYLyaYUI9Gy
+pWZHkgUA+1gAO2hutK8eyL98cZlnl8zrArmduJZsyZQhcNe1ltwPTzUq9wejYOr+
+Vywgy/CxznLtvKd0e27hP/I7zCx64ktofCb6l0SwueraLWYTcpJLQ23T93g1bDwY
+02o6cq0874YQdndJytU7t3cKETe5uXF0AGmepX/+GKvcQN6lBqo04OL+Ge6yRMyy
+G9gv6P2nxqY+RWkDrFtqO6RwFB+lJSwc2J3RfxHC/2ygMy2Zr2AJ5oeeAKOtTZ/0
+smpK40Y2FB6y4ohGq3UK3uPyBvOJi/jw6sMuRyv2Ou7tJIFE2EtSpA5+m5DcwUcR
+gRcfO6O0V9Y6qWBx2Tt+i6Fzekj/0xBzlQdyvCom8xrhRZ9VGbZBfpIaXDs/Anp6
+ovlk/rkbo8DsYQQxINnmSBx2uQcWSCYAU53leg5fnr4EoSGPCsg=
+=l8CI
+-----END PGP SIGNATURE-----
+
+--t3b24mrvydogtoje--
 
