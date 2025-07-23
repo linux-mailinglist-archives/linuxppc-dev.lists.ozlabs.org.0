@@ -1,78 +1,38 @@
-Return-Path: <linuxppc-dev+bounces-10380-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10381-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4620B0F18D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jul 2025 13:47:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61859B0F2E5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 23 Jul 2025 15:04:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bnC7G3BSQz3bkT;
-	Wed, 23 Jul 2025 21:47:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bnDqX3cGgz3bh0;
+	Wed, 23 Jul 2025 23:04:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753271274;
-	cv=none; b=RP/WALQ+rViWXnhqL4VAz9RJ9tLLBONu9Sck7kSNZWoNrszSS61rQTNQdgsr+NkaTzEYxvA7vwcsqXvo6cqYqvukba0BjpEfIEbbzdOBbasOEHCot0p0SWPfO3gKWrBBZL2zbpJWGqmsK7WzUpALk5qI9XTlRwxbgw1oIky6LcplEYDftnTQxANbS9b51Jhki+p766t84QWmIfivliB+i5Mv+cqwydJFftR4rz/woc5+3MNx0Hh0RaoaDwIOvCC8IUm5MqhpULCeF3LwEE0JHp6svAbOm8XXEEQLEAT/4eAmn/4VbzOy/L83m0hxaIWgVlOxi0jkJug0SqJHPpSFvw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a02:c206:3008:6895::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753268135;
+	cv=none; b=cSrye2BCOP3+3KPcM8JMuzNa9PmSL7FHKpnZAxYSrqSUMzDjdF2kn+vsiDl1nI/3RXOi4LaR+wWX9lQW5aKgesVUzNBvjO9C/iklU/YnD5HNzDXsPye1z1LXH9JkpN+nDPZTQn3iSN3fFYWlhB5mFZMjgaahtltwxLUWcCfV1FyF7QEfV2BPkrJPRGpcejkAXnM4vAxxCIMYbqiooJEpLheWvLmGiv6xTsrX18Bo/xs4xSFm2Nj+AlpN1/TZGtp2RsP7Uv/lwzpjY4xU0gxhceBqG5K5Cf+9eWjVXDlBuqN7Um3BRxSAblS1NlfDKQ1ngT6y9lj8iqxxomECtTXZ/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753271274; c=relaxed/relaxed;
-	bh=eIyEAdZRh36EldcukgS6BUyXF96IrPz4zaXg8TxPe9k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bZ/ji8sEImh/a2o8hwUJwhU1Ix/4ScCOKE9kFxLDmW5W4f0Kte6OZNrJ2w4FSZJX3o155WFeJNnZLIVbaRXDA4dLls6T5nEziOUf2MlHlVnqLSK5k3EW8uEppav/J3haHsZ8DofUy8B+4dzJzYA9MSYvwNGP+U7X887LkEQoIXJPegQalSpX43Li2CPjPZRdCTuJulxy/pzYCJ402rVbf4kAg6f/WYCq3aKKarPknrxudp162J8ErupjhQjWDcbr3U0XVt3kDr5cisDmuY+ii4SI53Ioj+lUWq0vCoKtsZloV4d6gxaC+ZZqnfq/LdsTYuvucIOahTqwjI84lk2Ckw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TBLBrCjX; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TBLBrCjX;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1753268135; c=relaxed/relaxed;
+	bh=zWgxmTRAdTuIthUI5xCWlXcfVlVji5AofN4UYNLE+10=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=dsjW+UpmR18qZg5+PmXLcOQV1dntoDIDVEtC8xU+pNGkEoOo3LKVjMcElLgFqZSvoIGxNSfz1zl7cRCgmIJ65dq4XWSpPC1efb4EWSU4D5cYCtX9JTJAjOYzoYWEG82XTZrrQqo7B4/gwR4l8ljyJX/PkroblR1PcOYjXqz28r+UFiLTcHyVusVpWgPgLxkOuGslTqHpj/wRYP6U8j6KT+8eOclb5xeU8B/guZOB22eu9YCZmGN2wJmZ6NoKjmGPTVdtVMcTRd0m9T3/r+G1bhKWYdDvgOsC6Wxtddlho3a+zU6zYlWo0srhel7PcYcWtv5hRQrrbOzW7SVpXV2EFQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=hogyros.de; spf=pass (client-ip=2a02:c206:3008:6895::1; helo=psionic.psi5.com; envelope-from=simon.richter@hogyros.de; receiver=lists.ozlabs.org) smtp.mailfrom=hogyros.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=hogyros.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hogyros.de (client-ip=2a02:c206:3008:6895::1; helo=psionic.psi5.com; envelope-from=simon.richter@hogyros.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 391 seconds by postgrey-1.37 at boromir; Wed, 23 Jul 2025 20:55:33 AEST
+Received: from psionic.psi5.com (psionic.psi5.com [IPv6:2a02:c206:3008:6895::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bnC7F2xTjz3bjG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 21:47:53 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56N5Smoo004873;
-	Wed, 23 Jul 2025 11:47:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=eIyEAd
-	ZRh36EldcukgS6BUyXF96IrPz4zaXg8TxPe9k=; b=TBLBrCjXSL601Us6jMrKLQ
-	tkXqSSeex4myfsBzQaepkc9vjgOxZE6uuuje7hF/NE5rmL8rTouRcqmNOR1mAEdK
-	lkwzGUQPRIs2l2LDbuwEGRVTjcNkQDaG+o50JCCxwlmE5INL3DwkGee9UINKMHAs
-	AL/uy7P7q97pLe/xczsOybsbn8vnf1sQXIyQg32pS3p+PXbTb+jZe74N5Ybvay2G
-	ggFq4HKTIPfcLm5Gc5xxgdE7NwM49MopLVrTjmJ6GYjgUZeMwOe5rhSoe/grPKGz
-	cyeDpI8E9feMVDy3Z40sgRhrXU/ZR3V58ayfBbO3Qds7pQugNY6q2KgDhpIShSjg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482ff4vesm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 11:47:33 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 56NBiCRK017838;
-	Wed, 23 Jul 2025 11:47:33 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 482ff4vesf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 11:47:33 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56N7NWqo025138;
-	Wed, 23 Jul 2025 11:47:31 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 480nptqtck-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Jul 2025 11:47:31 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56NBlU5w48562432
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Jul 2025 11:47:30 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 330C220043;
-	Wed, 23 Jul 2025 11:47:30 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1F89220040;
-	Wed, 23 Jul 2025 11:47:27 +0000 (GMT)
-Received: from [9.111.21.101] (unknown [9.111.21.101])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 23 Jul 2025 11:47:26 +0000 (GMT)
-Message-ID: <4193678b-6da2-4a26-99d4-f983cccfbfd1@linux.ibm.com>
-Date: Wed, 23 Jul 2025 17:17:25 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bn9ys5jdxz3bby
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 23 Jul 2025 20:55:33 +1000 (AEST)
+Received: from [IPV6:2400:2410:b120:f200:a1f3:73da:3a04:160d] (unknown [IPv6:2400:2410:b120:f200:a1f3:73da:3a04:160d])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by psionic.psi5.com (Postfix) with ESMTPSA id 95B7D3F108;
+	Wed, 23 Jul 2025 12:48:48 +0200 (CEST)
+Message-ID: <c4e878ae-e97c-4826-9962-fab15d7da632@hogyros.de>
+Date: Wed, 23 Jul 2025 19:48:45 +0900
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,89 +47,28 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] PowerNV PCIe Hotplug Driver Fixes
-To: Timothy Pearson <tpearson@raptorengineering.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        christophe leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-        Shawn Anastasio <sanastasio@raptorengineering.com>
-References: <1268570622.1359844.1752615109932.JavaMail.zimbra@raptorengineeringinc.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Content-Language: en-US
-From: Ganesh G R <ganeshgr@linux.ibm.com>
-In-Reply-To: <1268570622.1359844.1752615109932.JavaMail.zimbra@raptorengineeringinc.com>
+From: Simon Richter <Simon.Richter@hogyros.de>
+Subject: POWER9: duplicate interrupt line in /proc/interrupts, kernel problem
+ or userspace problem?
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GrPG7rWcnqgOFLFjMarm7Ds_J6CS3TMf
-X-Proofpoint-ORIG-GUID: h4VW4sHEgTYpZiTYtC7FIzCHqBTQx7RE
-X-Authority-Analysis: v=2.4 cv=Ae2xH2XG c=1 sm=1 tr=0 ts=6880cbd5 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=OMBMyebMs2Y3HpCz7_AA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzIzMDA5OSBTYWx0ZWRfX/dY45bIcYssF
- g373SHNhGIoOpywHkjY+ZjPyJ5rat9WVtCeER24D07vu9/Sm/ni2CyCQn/6UEbuz0MjW9Gk5e6D
- d7uYU0VUm32YU2QER4LYMK3OSaVgAuXN14Zis7u3EE3Dqha/qW9gxJafjePE64q5v+ZZhng6dDK
- HFtSEgFQmb0OJxvl4RYPt0bi8K41xbo/vvTSoMmyrAvpGqaHQvpb1SjI0fpsGNec5XrFu7RsHwN
- b4aXhH+HWSczEhs6u6X0K0e8hjs3xdBzTrbNdrjsAC/F034o/qW65gMDz2omwjroiqXzzcn0rZ5
- Q/Zeh48m5Z5TeTqXdk/Fuaarp/lrsQZ6WC9GucB1W7NTSiNTOrj1szY0TOjqPKIWWuC+MkFcNBI
- pw2/LzvB7nRaK/y3dda7EXT0TcpjIpa3lbUWnYjJgZu5O0itwzKEN7lQev5txGQJW1AK1CT2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-23_02,2025-07-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=952 lowpriorityscore=0 adultscore=0 malwarescore=0 bulkscore=0
- clxscore=1011 phishscore=0 impostorscore=0 suspectscore=0 priorityscore=1501
- spamscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507230099
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 7/16/25 3:01 AM, Timothy Pearson wrote:
-> Hello all,
-> 
-> This series includes several fixes for bugs in the PowerNV PCIe hotplug
-> driver that were discovered in testing with a Microsemi Switchtec PM8533
-> PFX 48xG3 PCIe switch on a PowerNV system, as well as one workaround for
-> PCIe switches that don't correctly implement slot presence detection
-> such as the aforementioned one. Without the workaround, the switch works
-> and downstream devices can be hot-unplugged, but the devices never come
-> back online after being plugged in again until the system is rebooted.
-> Other hotplug drivers (like pciehp_hpc) use a similar workaround.
-> 
-> Also included are fixes for the EEH driver to make it hotplug safe,
-> and a small patch to enable all three attention indicator states per
-> the PCIe specification.
-> 
-> Thanks,
-> 
-> Shawn Anastasio (2):
->    PCI: pnv_php: Properly clean up allocated IRQs on unplug
->    PCI: pnv_php: Work around switches with broken presence detection
-> 
-> Timothy Pearson (4):
->    powerpc/eeh: Export eeh_unfreeze_pe()
->    powerpc/eeh: Make EEH driver device hotplug safe
->    PCI: pnv_php: Fix surprise plug detection and recovery
->    PCI: pnv_php: Enable third attention indicator state
-> 
->   arch/powerpc/kernel/eeh.c         |   1 +
->   arch/powerpc/kernel/eeh_driver.c  |  48 ++++--
->   arch/powerpc/kernel/eeh_pe.c      |  10 +-
->   arch/powerpc/kernel/pci-hotplug.c |   3 +
->   drivers/pci/hotplug/pnv_php.c     | 244 +++++++++++++++++++++++++++---
->   5 files changed, 263 insertions(+), 43 deletions(-)
-> 
-Tested the patch series for EEH and hotplug on powernv, recovery is 
-working as expected, EEH changes looks good to me.
-Tested-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Hi,
 
-Thanks
-Ganesh
+I have two lines starting with "LOC:" in /proc/interrupts, one with a 
+comment "Local timer interrupts for timer event device", the other 
+"Local timer interrupts for others".
+
+This makes collectd unhappy, because it uses the first column as a 
+unique identifier.
+
+Is this column supposed to be unique? (i.e. is this a kernel bug, or 
+should collectd expect this?)
+
+    Simon
 
