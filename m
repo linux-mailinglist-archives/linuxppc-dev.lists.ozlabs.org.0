@@ -1,76 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-10404-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10405-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27443B11EEB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jul 2025 14:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CCDB121B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jul 2025 18:16:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bpSJB07pGz30Yb;
-	Fri, 25 Jul 2025 22:44:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bpY0Q4NZzz30Yb;
+	Sat, 26 Jul 2025 02:16:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753447497;
-	cv=none; b=UVo89jUz3GozV/3Nc/mglJIGpGkb3Icd6nFNOqwRm0EgV4ymXylP+XqeJVYbSebmnOkAuxB49rGo+EI6AhO4JuJ8VAGOlS1tdzaP1Qucb9jN6SVBZaGkKSy3zPJ3NreblsGaKeYgMXRWXKUv9khtn4QJieT7AZybKs4NAsiE6NvWm/SyO5aVMNgeZVmTNtzfruyuf707aRXztHgfaybw8Z/7o8Xw8HfnDQXtmNVWln4M30JYo7P3fZYj79YiX/TvzpfX2gpCeYHJd7bMvqfOwjQ4HK2YF74VzBTabPQAAziyorrCeLL7tN4jKQ/U0yOdPR5HcIDyGVTmwzIdTaHM0w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.218.46
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753460198;
+	cv=none; b=fyA+PE3HVwPQBCCsoml2zlbjZ8ECBnIOfGKfGpnSXujZzaVAzPqnwrkLN0Ng4hMwo0DjAqxZQUo1L4YbuM3MzZdVBBCOAyGPUITamdi2TpbLTrMY6Ai7aVr9vqvlmAWwCYgeG2/NQ2C6n3KCrhfswCkn7RDchrkhtxbBvkoodgRXjFDjeo9XXa0Goirp33/WG/c113p1v8BNaoZEXwCwTifKEIUOQNExKeD2WK649UbEJIjLU/JnDqODGdNuuWxTbon+EsQnlu7yUjRb11VaGSb43ycIb3BCzqTqHTG0ydw5DjZpobkuLpkl3tMGlzIztGef2AkkEIvUBBdgreOL3w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753447497; c=relaxed/relaxed;
-	bh=LhGoEkvDx81osjEVCD3xrJb4ydJ82npGxmrhpmy9hFA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eFTTNYgfawjNC1jjaqRB/5CQMxrANsvdVLY2YBFvu5jccDrltFqmtRCpQrwgnr2ox/RBSK2SZp973c6k2c9NQQyj2GN/EPgUODyRj/3XVnxbHZNXToO+lN98Vjf5dAPM31jkri9J1FClC2OVU76x2vkZFpUAic/PASvfQOCzPNS/nDBoiCPxnvBcWyZI6tdRH1fUy+PKowT9MEBd3mIGVGnsME5avpWJMhLN9BclHwwk0VWnlN/tY/GeA6I67ZIeHB6Mc0LURl27rjCqlF//bh5ocNdTV0pJHsCGo1UQ24j2hgrtCR42Q4ZRkccoxLG825aLnuDanfbRABNvwa1M8Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=noqytH8d; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=noqytH8d;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1753460198; c=relaxed/relaxed;
+	bh=k9lVzColSUbzoyzWK1v2ytYya9LR+3IJRUPOrRIrYkE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EaSpClqcyTX3uPlW+7yFm6GY699zKSbV8R8pXQceFDfa0H2MBEHbPMQSMMAMOlxYPOT8Fb12JkcKPiilSPGhMnLMXI34qRDi5/vyNh7u1N2owqaMQlQnseORvStt98l/7OZplZrSLLXcI7WfHdT7JY4Gk5GNbcCOq0qZChnba4bcz6ribQ/oVBsOvFyGMiIfy6q3Fscnccy5Yn9PfYgVQAfBpfbmwhLymhnJgQezQFShxT0Q9VU/AJ7zJwaznsI/ml4DrtMVDhvdBrvcimLTVL6FwqCbX6LGzspPwszRQgWScpa85dbr8IZq7mvTLTpC7/Yw5xaTCyaET0ESbpoCgw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass (client-ip=209.85.218.46; helo=mail-ej1-f46.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.218.46; helo=mail-ej1-f46.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bpSJ86N7Rz30Qk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jul 2025 22:44:56 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56PBQ8od012183;
-	Fri, 25 Jul 2025 12:44:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=LhGoEkvDx81osjEVCD3xrJb4ydJ82npGxmrhpmy9h
-	FA=; b=noqytH8dGP/2wqcsnfZ1Wr8xJDeHIsHXqiQOzyCoNWUiurWInDPaQ7Lcd
-	U5PhAhmpz+1cpB2/3cTis13Pawv/bOG8bBkNE5tyAxAspjyds4OmptQgdRaMtSgy
-	rkY+z3dsCywGSHfK2+VQSPCJOmouXDoQUuuAeRuG+sy9x2NJWnvPbXb6b2ccGjZ8
-	PrLhH/jWMXpbUE3p95KYFUmxlayUjTnAqa6org8yGH66XvFOQjPCxMQfZEyRZ6VG
-	O6U8vvJYRTm/+8o5YsautKEbb/BNsfFxdWSYIuMoVNaKNKwhLR7/K8jHph2fIFcR
-	CxoOqeGPJJqAwXdWhSsWxX2maaO9Q==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 483wchk365-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Jul 2025 12:44:46 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56P9h5Ru024744;
-	Fri, 25 Jul 2025 12:44:46 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 480rd2s9tx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Jul 2025 12:44:46 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56PCigbB51511584
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 25 Jul 2025 12:44:42 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 72A8120040;
-	Fri, 25 Jul 2025 12:44:42 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 34E1920043;
-	Fri, 25 Jul 2025 12:44:41 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.111.62.194])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 25 Jul 2025 12:44:40 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: powerpc/kexec_file: print configured kernel command line
-Date: Fri, 25 Jul 2025 18:14:38 +0530
-Message-ID: <20250725124438.327593-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bpY0P31j2z30Wn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jul 2025 02:16:36 +1000 (AEST)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ae3b336e936so448581766b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 25 Jul 2025 09:16:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753460192; x=1754064992;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k9lVzColSUbzoyzWK1v2ytYya9LR+3IJRUPOrRIrYkE=;
+        b=dBpFD+XcPgbuLXcRjupfTqIqVwoWoX2OOgXkXO7Z9hBTU4BBamKXfDiIxFpNsA9Y/K
+         amqCURaSOsNWA/LnDwyaZn5H7R5cl7JU1FGBPuIJzF1Ru47pg8xd5PxC49lQwml0csTE
+         esvbP3cJWEOcnrT5VxFL1FCh8uTKy2W8MlNKgU5iAG39O2o75kVAoKLQla1SsxKQmxv+
+         sYP2I+iZCC8/ghZDLx91F/64lUV/bSs/BzsqZNrSrMHDKtErcYYW6dhYC5AUGKqgpzaO
+         GVpPFHld1LM0KyvCkkiELosxNx0tl+Y1uh5iQRe+UCRFenFiJJqk3w2o0pod+er1xUrR
+         krpw==
+X-Forwarded-Encrypted: i=1; AJvYcCVyF9lDZduwHeNw4r7QJR6C4cnYxVYu/pmg5JbKlyTLMcZZT7qBilZHhxrZyNJ7808ERTDGBHq1Jzf5amY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwdTUxGfKb5SqdbWr8LSag78s4zFLnBiV9lmuOYvNvC4FqrMVnL
+	DxVUissneNMieAV9I+cgCOUH1xb+14UuVZxxzIh9cjM6d/eSBT4WeEAv
+X-Gm-Gg: ASbGncuCVk6tgeHETdJSRkWMt/2aNupQfmAJd25MRlgJPm/LVhzZrRcQuldrCyRgoWG
+	GjBYSDmVUu7tKDfrKGomW+d2KviMoI7twBaLVFkhX3m/XHzyGsaVMxVGlBPgdVzsMUDTyE2L5gT
+	PPGOCDoT+w14NRQNe3rNGoJwgXURTdDJy7LDo3qfkgF4DCtc9ejnBZ/+HnC/NDCzO1+OY2cxgGa
+	P0bCSVZLzGagq4FwVyL90eriDJ1w9rmfhaMuvfPVnffzoGNEpQaZbkGl+JZCkPH52WD/GjQ59EW
+	Ql4oMcWrHJv5rRP2AusQuBPlds3GnD6d9DJ0lPDaSUxxjiWcq7h+ukzIUobkD3emqkxfRQovwVa
+	dDyRVB8Lh1Phrzw==
+X-Google-Smtp-Source: AGHT+IHbjaJ8cbbWsPvmFdchaHgB59gZMNGBegBtlGVNhjnCNqWbZSGSDTI+qaKic8T0W3LbKoDy/Q==
+X-Received: by 2002:a17:907:7ea9:b0:ae0:9fdf:25e8 with SMTP id a640c23a62f3a-af61e6368d8mr274930166b.47.1753460191687;
+        Fri, 25 Jul 2025 09:16:31 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:74::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af635af9967sm11514466b.131.2025.07.25.09.16.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Jul 2025 09:16:31 -0700 (PDT)
+Date: Fri, 25 Jul 2025 09:16:28 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
+	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, osandov@osandov.com, 
+	konrad.wilk@oracle.com, linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-pci@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v3] vmcoreinfo: Track and log recoverable hardware errors
+Message-ID: <ldlansfiesfxf4a6dzp5z2etquz5jgiq6ttx3al6q7sesgros6@xh4lkevbzsow>
+References: <20250722-vmcore_hw_error-v3-1-ff0683fc1f17@debian.org>
+ <7ce9731a-b212-4e27-8809-0559eb36c5f2@linux.alibaba.com>
+ <4qh2wbcbzdajh2tvki26qe4tqjazmyvbn7v7aqqhkxpitdrexo@ucch4ppo7i4e>
+ <fdb5dced-ea5a-48b8-bbb4-fc3ade7f3df8@linux.alibaba.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,71 +87,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Q7rS452a c=1 sm=1 tr=0 ts=68837c3e cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=fihODjdxrHx0HrrFdSIA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI1MDEwOCBTYWx0ZWRfXzj6762CCsJnJ
- ZH5+pgxkCpiXzBPR+yQ9jbxgMEfP6jZveJbj61FR76QaVWxl94ugXfhl3O/AuhCez8L55xUtQzp
- P3diHg644u8ilIxRe8yJRn0kV7N+l2uBLV3nyrg/IeuoDpIwS5jyWAoTVKCpF11q31fdk18gcD5
- ZuYW9mkrEo7GwOus8tVnGljhpsr3zhZ1aSH5pRuX9K6YaW9JdwpbETNwuiFbSWIyT0XfscmpSjD
- 4o4iLwxr6FNDhcQQF7V4MFxZE6Ba8kJi5mf4l7Wkj8nWbaIWznIlrl9ex245IpDk5eb6ovyyTmZ
- YhN6HbswynU+H6GkwHFnAT9azu2CXx5sSt1Y/bdxKQgePJyXM0IbN9UunF8DQTnXezMJlJBoqWx
- edEi/PmFr956b3uNAX/AqK3zoJX+oIVSW2PMXN4YJNSwcw2vmaEToimlHJkd/WpvUrFQySBa
-X-Proofpoint-GUID: k6kuGVEOV5CJha-ExvFjwGq8Wtg2Ygd_
-X-Proofpoint-ORIG-GUID: k6kuGVEOV5CJha-ExvFjwGq8Wtg2Ygd_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-07-25_03,2025-07-24_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0 priorityscore=1501 malwarescore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxlogscore=999 impostorscore=0 adultscore=0
- bulkscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507250108
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <fdb5dced-ea5a-48b8-bbb4-fc3ade7f3df8@linux.alibaba.com>
+X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Kexec with the -d option prints extra logs about the kexec/kdump kernel
-that help debug kexec and kdump. For example, it shows what kexec
-segments are loaded, their locations, and sizes.
+Hello Shuai,
 
-One key piece of information still missing is the kernel command line
-configured for the kexec/kdump kernel.
+On Fri, Jul 25, 2025 at 03:40:58PM +0800, Shuai Xue wrote:
+> > > APEI does not define an error type named GHES. GHES is just a kernel
+> > > driver name. Many hardware error types can be handled in GHES (see
+> > > ghes_do_proc), for example, AER is routed by GHES when firmware-first
+> > > mode is used. As far as I know, firmware-first mode is commonly used in
+> > > production. Should GHES errors be categorized into AER, memory, and CXL
+> > > memory instead?
+> > 
+> > I also considered slicing the data differently initially, but then
+> > realized it would add more complexity than necessary for my needs.
+> > 
+> > If you believe we should further subdivide the data, I’m happy to do so.
+> > 
+> > You’re suggesting a structure like this, which would then map to the
+> > corresponding CPER_SEC_ sections:
+> > 
+> > 	enum hwerr_error_type {
+> > 	HWERR_RECOV_AER,     // maps to CPER_SEC_PCIE
+> > 	HWERR_RECOV_MCE,     // maps to default MCE + CPER_SEC_PCIE
+> 
+> CPER_SEC_PCIE is typo?
 
-With this patch included, the kernel will print the kernel command line
-configured for the kexec/kdump kernel as shown below:
+Correct, HWERR_RECOV_MCE would map to the regular MCE and not errors
+coming from GHES.
 
-kexec --initrd=./initrd ./kernel -lspd --command-line="test1 test2"
+> > 	HWERR_RECOV_CXL,     // maps to CPER_SEC_CXL_*
+> > 	HWERR_RECOV_MEMORY,  // maps to CPER_SEC_PLATFORM_MEM
+> > 	}
+> > 
+> > Additionally, what about events related to CPU, Firmware, or DMA
+> > errors—for example, CPER_SEC_PROC, CPER_SEC_FW, CPER_SEC_DMAR? Should we
+> > include those in the classification as well?
+> 
+> I would like to split a error from ghes to its own type,
+> it sounds more reasonable. I can not tell what happened from HWERR_RECOV_AERat all :(
 
-Loaded elf core header at 0x22e30000, bufsz=0x2000 memsz=0x80000
-kexec_elf: Command line: elfcorehdr=0x22e30000 test1 test2   <--- New
-kexec_elf: Loaded initrd at 0x22eb0000
+Makes sense. Regarding your answer, I suppose we might want to have
+something like the following:
 
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- arch/powerpc/kexec/elf_64.c | 2 ++
- 1 file changed, 2 insertions(+)
+	enum hwerr_error_type {
+		HWERR_RECOV_MCE,     // maps to errors in do_machine_check()
+		HWERR_RECOV_CXL,     // maps to CPER_SEC_CXL_
+		HWERR_RECOV_PCI,     // maps to AER (pci_dev_aer_stats_incr()) and CPER_SEC_PCIE and CPER_SEC_PCI
+		HWERR_RECOV_MEMORY,  // maps to CPER_SEC_PLATFORM_MEM_
+		HWERR_RECOV_CPU,     // maps to CPER_SEC_PROC_
+		HWERR_RECOV_DMA,     // maps to CPER_SEC_DMAR_
+		HWERR_RECOV_OTHERS,  // maps to CPER_SEC_FW_, CPER_SEC_DMAR_, 
+	}
 
-diff --git a/arch/powerpc/kexec/elf_64.c b/arch/powerpc/kexec/elf_64.c
-index 5d6d616404cf..db0af790c784 100644
---- a/arch/powerpc/kexec/elf_64.c
-+++ b/arch/powerpc/kexec/elf_64.c
-@@ -90,6 +90,8 @@ static void *elf64_load(struct kimage *image, char *kernel_buf,
- 		cmdline = modified_cmdline;
- 	}
- 
-+	kexec_dprintk("Command line: %s", cmdline ? cmdline : "");
-+
- 	if (initrd != NULL) {
- 		kbuf.buffer = initrd;
- 		kbuf.bufsz = kbuf.memsz = initrd_len;
--- 
-2.50.1
+Is this what you think we should track?
 
+Thanks
+--breno
 
