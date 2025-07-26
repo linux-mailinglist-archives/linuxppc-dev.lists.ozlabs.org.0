@@ -1,35 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-10409-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10410-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4E2B12527
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 25 Jul 2025 22:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE17B12AE5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jul 2025 16:16:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bpf5Z0Rr9z3bTf;
-	Sat, 26 Jul 2025 06:06:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bq6HM2FLJz30Qk;
+	Sun, 27 Jul 2025 00:16:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753473986;
-	cv=none; b=WDPD2/wW+4XkLa0B02FuT+2qJlyPVG/LrT7mVxmXl8z2eCSo11hyEcOpUDtAX+uJ25VpWIztwAi/vyByhTceWtAGR7d1BNTQ7echsafyE+OYK+aEmkR5WNOP/n+lmFRcz1IwyMMxxjHG1u/fNor8NWi3QctSrmz5BMvTgFOHsew1Fvy5Z1rj/pvx9hQXqlwVrF/vFzEONSeZaUXD3RkdUccpD2HliqnngpiOeA14xtwn/mirGNnWALLKCAoSPLEn/KD04DEvlXI+58m4tzQTcRFuPHqprLbNURXBJY5TfRw1VIUWUR8/o6jLkAuE8mYArGCMiPcLEkq+HxUd+sr85Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753539391;
+	cv=none; b=fBjQeevbVoVcdAABcbuwIDUWQkW/L4m31HdCWQ939jZy1Pk6oOg3OWcsI1kOsTjr8XZrZ67Mo7cxpJsfH138zypFB+W3hMJRm9IE1BeABXKLF7HLvUgZmd6dZEZeicxui9GtQxl9KrO/VVbvIcBP7zDEE4W/eNfGmpzZcDX+QZpi//Wa+JawMFW7N/ZC6qVyatiZFJ9K8jOKaEWdvF71wky8/T60ryrxa6ZTbtqymYEC2Zc7ztHIlUIDhxPrb+chVWEovd90+WaEOnYVaT4gUJW5dVVaTGDdpsodHRdQPnx7ey+DN56Cpo1B9Uc5vL/c2k6aPI4UumWT30SyEKeaLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753473986; c=relaxed/relaxed;
-	bh=7KxOmurkyhSp/5ecauaZ/zErl9WiG9PB8RxRwEHPPjE=;
+	t=1753539391; c=relaxed/relaxed;
+	bh=m4WMh1T5qEZ14i2wktI5urCi5smka4mqDvCq8eIjikc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WjZ6LxzVN5xjBvopVvOwILMI2Vck190kcAyE9M0/Co5NtWbL60A3Exv3Wc7yFRtEFrpBQvq7WFeOf6cMFq+b3SoOaqem31YpilmqYwUzuLwRAb1tm/DCRTHHQpLPh6b55rInx3Gk1dhqhDYxqKxgB6s2l0VY/6Y7RdjJob/+XLpDGuXPtjLCCQV6AebnZGP7lqo0LlUhQHQuWY3bxA5cslHTAwhcKDHkVEN/FSpoJBzDl5oybRlIntDmnA5+yoIU5SHwvAsMSR2MIp/qQ3rA/DgOiw578o65rWMDV/nidnsxeHgxDJ3JqPpz8yyYefJdPhDqnIMTBt/HDsxl5efq0w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=robin.murphy@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=robin.murphy@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bpf5Y25nVz30Qk
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 26 Jul 2025 06:06:25 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4BFC91A00;
-	Fri, 25 Jul 2025 13:05:47 -0700 (PDT)
-Received: from [10.57.4.83] (unknown [10.57.4.83])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1A7893F6A8;
-	Fri, 25 Jul 2025 13:05:48 -0700 (PDT)
-Message-ID: <751e7ece-8640-4653-b308-96da6731b8e7@arm.com>
-Date: Fri, 25 Jul 2025 21:05:46 +0100
+	 In-Reply-To:Content-Type; b=NElzzStnlkPSAi9dydFNxMrn/MCUcbqaNGKeWNPcXHm1zwsBgdjtURf35dk8cRK0e+hqbd/92tvHYSFuTYNKHy4H5RHcaXlO0YMkb/W1Gbo/4y3Ewf5/4s02txMcar6LHl3Xu7rLMoef1ty0j8/uiIeo7i0M06+5OiDG3O3hUCxqNIzJr1S3OI1SctjWPLfU/o04l4PS8gnMRoL+iUOB75gnjnshBRMhD3EMB2dcMyOnTo9DWZPUbiSXgGCNGR8lUgZKjdEYYAaBYarLNPSl2pmCiQkOL5Nxfahnc8AcW2bMpbT7OKS3j2+gXdoiDN9ww+g2xRTM8jbpFFqximdmrA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ohBTbFBd; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ohBTbFBd;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bq6HL0p89z30FR
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Jul 2025 00:16:29 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56QEFYHO025639;
+	Sat, 26 Jul 2025 14:16:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=m4WMh1
+	T5qEZ14i2wktI5urCi5smka4mqDvCq8eIjikc=; b=ohBTbFBdgfVA/EBXL19vJy
+	4ql/lkZQZAgqmNoJVkuAg+QdseOvuMbWYhjuS6egpYRSOH8hHGBPbJG597tqpWuK
+	cBZGHGH4vLewpfVSn4lFPhRizhoXroe6pCbPr1W3RFVWy7W4XEVFo3UrkVtCN8xk
+	E6gavcePKa9H0x0Zh42r5+V/F7iyeciMUzFdoULMwxVDl8dO87I0NBjHOdYbXdz+
+	iAO2B7ZCQA1ohUe6n7dsSL+r7mNPAn3fehr+9V+mXO67wLPRHo3b6zz/KqD5n1d5
+	g7hO7b6Msdkm8Y1b63ZXBWLhk0w26Oy3Bg6uDqfJAujRhvqUHseQ9esz7FsM1Jww
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 484qd1sfw3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 26 Jul 2025 14:16:03 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 56QEG2Xu026543;
+	Sat, 26 Jul 2025 14:16:02 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 484qd1sfvp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 26 Jul 2025 14:16:02 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 56QCIs5b005812;
+	Sat, 26 Jul 2025 14:15:51 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 484t2w174a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 26 Jul 2025 14:15:50 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 56QEFlRQ34865806
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 26 Jul 2025 14:15:47 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 12AF220043;
+	Sat, 26 Jul 2025 14:15:47 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4AA1620040;
+	Sat, 26 Jul 2025 14:15:44 +0000 (GMT)
+Received: from [9.43.49.31] (unknown [9.43.49.31])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sat, 26 Jul 2025 14:15:44 +0000 (GMT)
+Message-ID: <12112eb1-3ece-4968-a277-4c035c7d0010@linux.ibm.com>
+Date: Sat, 26 Jul 2025 19:45:43 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -44,149 +87,111 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
-To: Leon Romanovsky <leon@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>, Alexander Potapenko <glider@google.com>,
- Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- iommu@lists.linux.dev, virtualization@lists.linux.dev,
- kasan-dev@googlegroups.com, linux-trace-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <cover.1750854543.git.leon@kernel.org>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <cover.1750854543.git.leon@kernel.org>
+Subject: Re: [PATCH v2 2/2] powerpc/fprobe: fix updated fprobe for
+ function-graph tracer
+To: Aditya Bodkhe <adityab1@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, rostedt@goodmis.org, mhiramat@kernel.org,
+        mark.rutland@arm.com, venkat88@linux.ibm.com
+References: <20250722085648.1640-1-adityab1@linux.ibm.com>
+ <20250722085648.1640-2-adityab1@linux.ibm.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <20250722085648.1640-2-adityab1@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: zHR_0VfeDZSOBo--V9nLxe7u8hifTIlQ
+X-Proofpoint-ORIG-GUID: 23MutpeS0dypybJRuzXv5GGf0hz0rw1e
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzI2MDEyNSBTYWx0ZWRfX0z+Cr3N/g3n3
+ 9SLuy9MwMXfz/J54Si9X9iM5yO4UIgX33J6BP41iTvWaEOjqPuvmGMjesAWSAVL0yXAwDhDOAxT
+ mdmOmZsSN7Ax87uHycwysDcm37m82gv1JP6UQvoYFRJT+B27xbIqysHnunil5ly9JV/MvfDElfy
+ 5u2GtXnPCB8a/e/UC4BrrS6wkEoRWuflpDwupERgu3WDSHVxcp2hdePyUwPFw/amMW9JXndJWm4
+ UCzgUU2cKZHVp7gZlP85Xmc+m2r0MhmqiXrl6R6/G0Xz/je9XboHBu2TRR7emWXSh/1ancXqCIE
+ qQzc/HViU7xr//T5q3mP0lEGTyn3xiSYXVEMQwkBa1PdoLQHGoj04oZRxFQLF8/k+cCjp0km56D
+ 9N/87mYb5u7EL2Fvo8LFt8d2+SaJiJp7EcIE/f0ZGlwAuqWQVbVBwkbFztOhYFzeWdSn7bNY
+X-Authority-Analysis: v=2.4 cv=RYWQC0tv c=1 sm=1 tr=0 ts=6884e323 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=hjLnkWndKg4kFgHkvr4A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-07-26_03,2025-07-24_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 impostorscore=0 malwarescore=0 phishscore=0 priorityscore=1501
+ spamscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ mlxlogscore=920 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507260125
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 2025-06-25 2:18 pm, Leon Romanovsky wrote:
-> This series refactors the DMA mapping to use physical addresses
-> as the primary interface instead of page+offset parameters. This
-> change aligns the DMA API with the underlying hardware reality where
-> DMA operations work with physical addresses, not page structures.
 
-That is obvious nonsense - the DMA *API* does not exist in "hardware 
-reality"; the DMA API abstracts *software* operations that must be 
-performed before and after the actual hardware DMA operation in order to 
-preserve memory coherency etc.
 
-Streaming DMA API callers get their buffers from alloc_pages() or 
-kmalloc(); they do not have physical addresses, they have a page or 
-virtual address. The internal operations of pretty much every DMA API 
-implementation that isn't a no-op also require a page and/or virtual 
-address. It is 100% logical for the DMA API interfaces to take a page or 
-virtual address (and since virt_to_page() is pretty trivial, we already 
-consolidated the two interfaces ages ago).
-
-Yes, once you get right down to the low-level arch_sync_dma_*() 
-interfaces that passes a physical address, but that's mostly an artefact 
-of them being factored out of old dma_sync_single_*() implementations 
-that took a (physical) DMA address. Nearly all of them then use __va() 
-or phys_to_virt() to actually consume it. Even though it's a 
-phys_addr_t, the implicit guarantee that it represents page-backed 
-memory is absolutely vital.
-
-Take a step back; what do you imagine that a DMA API call on a 
-non-page-backed physical address could actually *do*?
-
-- Cache maintenance? No, it would be illogical for a P2P address to be 
-cached in a CPU cache, and anyway it would almost always crash because 
-it requires page-backed memory with a virtual address.
-
-- Bounce buffering? Again no, that would be illogical, defeat the entire 
-point of a P2P operation, and anyway would definitely crash because it 
-requires page-backed memory with a virtual address.
-
-- IOMMU mappings? Oh hey look that's exactly what dma_map_resource() has 
-been doing for 9 years. Not to mention your new IOMMU API if callers 
-want to be IOMMU-aware (although without the same guarantee of not also 
-doing the crashy things.)
-
-- Debug tracking? Again, already taken care of by dma_map_resource().
-
-- Some entirely new concept? Well, I'm eager to be enlightened if so!
-
-But given what we do already know of from decades of experience, obvious 
-question: For the tiny minority of users who know full well when they're 
-dealing with a non-page-backed physical address, what's wrong with using 
-dma_map_resource?
-
-Does it make sense to try to consolidate our p2p infrastructure so 
-dma_map_resource() could return bus addresses where appropriate? Yes, 
-almost certainly, if it makes it more convenient to use. And with only 
-about 20 users it's not too impractical to add some extra arguments or 
-even rejig the whole interface if need be. Indeed an overhaul might even 
-help solve the current grey area as to when it should take dma_range_map 
-into account or not for platform devices.
-
-> The series consists of 8 patches that progressively convert the DMA
-> mapping infrastructure from page-based to physical address-based APIs:
-
-And as a result ends up making said DMA mapping infrastructure slightly 
-more complicated and slightly less efficient for all its legitimate 
-users, all so one or two highly specialised users can then pretend to 
-call it in situations where it must be a no-op anyway? Please explain 
-convincingly why that is not a giant waste of time.
-
-Are we trying to remove struct page from the kernel altogether? If yes, 
-then for goodness' sake lead with that, but even then I'd still prefer 
-to see the replacements for critical related infrastructure like 
-pfn_valid() in place before we start trying to reshape the DMA API to fit.
-
-Thanks,
-Robin.
-
-> The series maintains backward compatibility by keeping the old
-> page-based API as wrapper functions around the new physical
-> address-based implementations.
+On 22/07/25 2:26 pm, Aditya Bodkhe wrote:
+> From: Hari Bathini <hbathini@linux.ibm.com>
 > 
-> Thanks
+> Since commit 4346ba160409 ("fprobe: Rewrite fprobe on function-graph
+> tracer"), FPROBE depends on HAVE_FUNCTION_GRAPH_FREGS. With previous
+> patch adding HAVE_FUNCTION_GRAPH_FREGS for powerpc, FPROBE can be
+> enabled on powerpc. But with the commit b5fa903b7f7c ("fprobe: Add
+> fprobe_header encoding feature"), asm/fprobe.h header is needed to
+> define arch dependent encode/decode macros. The fprobe header MSB
+> pattern on powerpc is not 0xf. So, define FPROBE_HEADER_MSB_PATTERN
+> expected on powerpc.
 > 
-> Leon Romanovsky (8):
->    dma-debug: refactor to use physical addresses for page mapping
->    dma-mapping: rename trace_dma_*map_page to trace_dma_*map_phys
->    iommu/dma: rename iommu_dma_*map_page to iommu_dma_*map_phys
->    dma-mapping: convert dma_direct_*map_page to be phys_addr_t based
->    kmsan: convert kmsan_handle_dma to use physical addresses
->    dma-mapping: fail early if physical address is mapped through platform
->      callback
->    dma-mapping: export new dma_*map_phys() interface
->    mm/hmm: migrate to physical address-based DMA mapping API
+> Also, commit 762abbc0d09f ("fprobe: Use ftrace_regs in fprobe exit
+> handler") introduced HAVE_FTRACE_REGS_HAVING_PT_REGS for archs that
+> have pt_regs in ftrace_regs. Advertise that on powerpc to reuse
+> common definitions like ftrace_partial_regs().
 > 
->   Documentation/core-api/dma-api.rst |  4 +-
->   arch/powerpc/kernel/dma-iommu.c    |  4 +-
->   drivers/iommu/dma-iommu.c          | 14 +++----
->   drivers/virtio/virtio_ring.c       |  4 +-
->   include/linux/dma-map-ops.h        |  8 ++--
->   include/linux/dma-mapping.h        | 13 ++++++
->   include/linux/iommu-dma.h          |  7 ++--
->   include/linux/kmsan.h              | 12 +++---
->   include/trace/events/dma.h         |  4 +-
->   kernel/dma/debug.c                 | 28 ++++++++-----
->   kernel/dma/debug.h                 | 16 ++++---
->   kernel/dma/direct.c                |  6 +--
->   kernel/dma/direct.h                | 13 +++---
->   kernel/dma/mapping.c               | 67 +++++++++++++++++++++---------
->   kernel/dma/ops_helpers.c           |  6 +--
->   mm/hmm.c                           |  8 ++--
->   mm/kmsan/hooks.c                   | 36 ++++++++++++----
->   tools/virtio/linux/kmsan.h         |  2 +-
->   18 files changed, 159 insertions(+), 93 deletions(-)
+
+Aditya, I assume there is no change on this patch from v1. I see
+you missed the Acked-by tag from Masami while sending v2 though:
+
+https://lore.kernel.org/all/20250609164700.d8afe4ac1b4dea195bb7e379@kernel.org/ 
+
+
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> Signed-off-by: Aditya Bodkhe <adityab1@linux.ibm.com>
+> ---
+>   arch/powerpc/Kconfig              |  1 +
+>   arch/powerpc/include/asm/fprobe.h | 12 ++++++++++++
+>   2 files changed, 13 insertions(+)
+>   create mode 100644 arch/powerpc/include/asm/fprobe.h
 > 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index 9163521bc4b9..2203e4fb64c1 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -246,6 +246,7 @@ config PPC
+>   	select HAVE_EFFICIENT_UNALIGNED_ACCESS
+>   	select HAVE_GUP_FAST
+>   	select HAVE_FTRACE_GRAPH_FUNC
+> +	select HAVE_FTRACE_REGS_HAVING_PT_REGS
+>   	select HAVE_FTRACE_MCOUNT_RECORD
+>   	select HAVE_FUNCTION_ARG_ACCESS_API
+>   	select HAVE_FUNCTION_DESCRIPTORS	if PPC64_ELF_ABI_V1
+> diff --git a/arch/powerpc/include/asm/fprobe.h b/arch/powerpc/include/asm/fprobe.h
+> new file mode 100644
+> index 000000000000..d64bc28fb3d3
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/fprobe.h
+> @@ -0,0 +1,12 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_PPC_FPROBE_H
+> +#define _ASM_PPC_FPROBE_H
+> +
+> +#include <asm-generic/fprobe.h>
+> +
+> +#ifdef CONFIG_64BIT
+> +#undef FPROBE_HEADER_MSB_PATTERN
+> +#define FPROBE_HEADER_MSB_PATTERN	(PAGE_OFFSET & ~FPROBE_HEADER_MSB_MASK)
+> +#endif
+> +
+> +#endif /* _ASM_PPC_FPROBE_H */
 
 
