@@ -1,106 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-10411-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10412-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F64FB12CB1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jul 2025 23:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4452DB12CB4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 26 Jul 2025 23:42:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bqJ6P6YWbz2xWc;
-	Sun, 27 Jul 2025 07:39:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bqJB517y0z2xjP;
+	Sun, 27 Jul 2025 07:42:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753565965;
-	cv=none; b=OcN8sBDFzY3FGMlltLVKEMDlbKB7HDIRA6bp9cCEXZO5/ajwkPi31+tP8v1qTeizjKjanDDjdiVrDcH4ZHOipf9PtT4NVg1Q/k/yyTQhF7IcDarXuaN4V42Dvkg3lYGJG5G2+wETTKCQzh2LvhuJy/sTTWWlWMlrb4SjwHZPHBdA9K2AaL9yOuTC2IzB51r+t5wJLx0GKLiWxxLuWsJSeJTj4N5yWRX5UzZt/CTGGk1N4Zu89B5qInJ5BM5qNVI3lIvaYha8xYikymyiUA9Q8qGlWQ7f4q2mm9TruQ5/3KYWJq02Ha7K5v/N0sSYA8sxv8XwxUI98OWcLcE2AKapFw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.16
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753566157;
+	cv=none; b=msAdmisZTHIWm1aJjStcSBa7PiNL1DZxI/Rvku+3tbYwEGZd/zE1e9gxzxjHI3yrJYtffhnS8yd4Ocae2933jNM8qJ2GZNU6QEbFhC4MsKvGL7SZKZgYXcDxrCcH/UdL/i2Yt825vuxZNZvmnwR/oT5ZQbAXVGR4TUrvyK2+0u0u89EVKyPm2rdNE+rdTQITnwuw43TjzmjEu2xMOd7BiDlyHdTrfwq4g1keBitUXonKEsttUuiLOKJR7uVaSyuzVqUp0D632jm0qqet7wtCaM1a8Y89MWfjAEpbF2fGO4cDF2Vs3lJ1M2iuFrReRI2zd00QS3Hl4iVK3qbIGdqt/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753565965; c=relaxed/relaxed;
-	bh=3Xsf8BwNfX+9WQapyUmLR6LbHjEJWolG21G8mCBRHLw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=QY5mGj5tNxj8ElRSE6si1op71HxtqsOsAnB+vcT74VWd7B22UemBt5ru74D3OZ1gK9j00FZmGcXRUMttV8cQO59xcjwLmE4/Ki9LhaTPnwfbj3mo1g0or7OfOheN8e3K+WoMIqyIVTogplMZi95qY2jOS4LgBh84CgDwcV2SAfqRmYJAetlc9GrdKOUu96e7T2Sz53Ev4QVKgzMedVTnBVzTYEPPlzIVZPEIlAppRnCktsGt/FXR2rkMOLdRg+hUkEkIETjM1yeJj0CbavvWkYMrbBRK5m/W3RXYz7Mmagjf/zuTGKEp6TJ4BlPYk8MtzIp2I+t1C9B1Rr7g/BV8EQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XHrb3axi; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1753566157; c=relaxed/relaxed;
+	bh=0RgsxJS0lLHybYl5+Xi5oKhQvIB38zMMiYSiiQmeXGg=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=b0oiZJMTXYKJmrEYo+fL7N7TG7earet5j2omerlZ6SLt6z5w476yC1MtASR/UasG9Noxl7lIoCIXHZPtEZUXJTLIdzzV0VQ8vF4xPgw0t1O/+746gpQKEM8+YBIej8z8wiERDC3U0E5cbBuI2qaU1ovRZrblxQyv3Jo3j3TqjmvIYyG7IaM5p0GIkYODEKKJzdj+N/NY8VeGOJAxH/CPmL8sepIPZkqgDbY3gLXyjK24GGFkLJEYDMbC1jUwcnk2kSPf/WM/NWPrnipABiPiyjJIfvCXh69GMpvlGn11PGGfe37/m5jiUS5qV85UmveiyIM6tAs8e9hz6KQ3O/rc2Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OXj7n89R; dkim-atps=neutral; spf=pass (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XHrb3axi;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OXj7n89R;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bqJ6N41lsz2xRq
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Jul 2025 07:39:24 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id DDE2A5C136A;
-	Sat, 26 Jul 2025 21:39:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8BEC4CEED;
-	Sat, 26 Jul 2025 21:39:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1753565960;
-	bh=bE8gOgUvTZi4vI0lg9qUYLnf/GEXOkxooNHihx3vuJw=;
-	h=Date:From:To:Cc:Subject:From;
-	b=XHrb3axiSsGzIoF2z2Ix7pQjSMf1Hy42ar894fKLOABDtiMSiJhU7EOw7iJrgd6tB
-	 IbaRdb5qeWEpZin3fRvADFhKWu6rwXZK251hn0vmJbDMaGw9ALbzwGt5jlO4g1Ev/5
-	 38kyT5jk9ILeJA/C732uod/apU+rxyQj7EYgW1D/FfLwRv3xciKcU+EEYDtA1K1HQw
-	 89qGLSJb5I1UF5EVZNysHbVA4poyaagUpDWiSn+7w1Wkxrul3aS8xbgWpQmDVmq97o
-	 1XX7DFiDUydJ2ZJduymhDp4XdKL9MxP2XYT1rwFJYEc0IFFTjUHBVSjh8qB39SdIcg
-	 FmVRs5hgMDysg==
-Date: Sat, 26 Jul 2025 14:39:20 -0700
-From: Kees Cook <kees@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
-	Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Chris Zankel <chris@zankel.net>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dave Martin <Dave.Martin@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Dishank Jogi <dishank.jogi@siqol.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
-	Helge Deller <deller@gmx.de>, "H. Peter Anvin" <hpa@zytor.com>,
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Jonas Bonn <jonas@southpole.se>, Kees Cook <kees@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-um@lists.infradead.org, loongarch@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Richard Weinberger <richard@nod.at>, Rich Felker <dalias@libc.org>,
-	Russell King <linux@armlinux.org.uk>, sparclinux@vger.kernel.org,
-	Stafford Horne <shorne@gmail.com>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Will Deacon <will@kernel.org>,
-	x86@kernel.org, Yin Fengwei <fengwei_yin@linux.alibaba.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [GIT PULL] execve updates for v6.17
-Message-ID: <202507261437.F2079B3B7@keescook>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bqJB23h4bz2xRq
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 27 Jul 2025 07:42:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1753566154; x=1785102154;
+  h=date:from:to:cc:subject:message-id;
+  bh=lFFEwOcGRbFr0wWxObPdNM0VV+k2i1jEaeHd/jODvQA=;
+  b=OXj7n89RGUqrFqahoFJyrXzBM9EV3MKPPoNE8cCaUGj3PwYr9KccPfba
+   bnPNYJ+/xqHxj3RRC+G8CbmAhvaHeJkQQVmtz6Pa3nX91DgB5OHyLkc0T
+   8fxAI5L7QTsItBEUz7ghbQDzomuigFGP2rF3cALg0OmIuN3JjPk0m5C+o
+   L4uPlLFm+qWC+LpTZnRExCpJfDLNNZvnFvbrr2scm1js8XX5MLij0WPzp
+   qZ25mw5wls53PfFcsRX+0mYctwZQKpowSBm5o+vnAQHK/0UyNadtKQxUo
+   naHmsj17tKTUtaY+0AtHXRa7+qXV8XPnovIU3dHZvwFsHFs0XRRZW9H46
+   g==;
+X-CSE-ConnectionGUID: GERJWu0iQ8WKLR31aF6qkQ==
+X-CSE-MsgGUID: 29DwxCrPTu6fXx+8B5Y12A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11504"; a="56011777"
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
+   d="scan'208";a="56011777"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2025 14:42:29 -0700
+X-CSE-ConnectionGUID: Iw5u3MLQRWixzUwOxVm9/w==
+X-CSE-MsgGUID: 45Y/2B9NSKGQftj7MKgEKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.16,339,1744095600"; 
+   d="scan'208";a="192642394"
+Received: from lkp-server01.sh.intel.com (HELO 9ee84586c615) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 26 Jul 2025 14:42:28 -0700
+Received: from kbuild by 9ee84586c615 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ufmev-000MIp-1j;
+	Sat, 26 Jul 2025 21:42:25 +0000
+Date: Sun, 27 Jul 2025 05:41:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:next-test] BUILD SUCCESS
+ a8f2b96ca9ee87be8091fcc2746b811c173648a0
+Message-ID: <202507270540.KCseBZzs-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -113,103 +80,142 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Linus,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: a8f2b96ca9ee87be8091fcc2746b811c173648a0  PCI: pnv_php: Enable third attention indicator state
 
-Please pull these execve updates for v6.17. Note that while the REGSET
-macro changes touch all the architectures, they are fairly mechanical
-and have been in linux-next for almost the entire development window.
+elapsed time: 820m
 
-Thanks!
+configs tested: 121
+configs skipped: 3
 
--Kees
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-The following changes since commit e04c78d86a9699d136910cfc0bdcf01087e3267e:
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                   randconfig-001-20250726    gcc-14.3.0
+arc                   randconfig-002-20250726    gcc-12.5.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-22
+arm                              allyesconfig    gcc-15.1.0
+arm                   randconfig-001-20250726    gcc-8.5.0
+arm                   randconfig-002-20250726    gcc-10.5.0
+arm                   randconfig-003-20250726    gcc-10.5.0
+arm                   randconfig-004-20250726    gcc-8.5.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250726    gcc-8.5.0
+arm64                 randconfig-002-20250726    clang-22
+arm64                 randconfig-003-20250726    gcc-12.5.0
+arm64                 randconfig-004-20250726    clang-22
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250726    gcc-15.1.0
+csky                  randconfig-001-20250727    gcc-15.1.0
+csky                  randconfig-002-20250726    gcc-15.1.0
+csky                  randconfig-002-20250727    gcc-12.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-22
+hexagon               randconfig-001-20250726    clang-22
+hexagon               randconfig-001-20250727    clang-22
+hexagon               randconfig-002-20250726    clang-20
+hexagon               randconfig-002-20250727    clang-22
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250726    gcc-12
+i386        buildonly-randconfig-002-20250726    gcc-12
+i386        buildonly-randconfig-003-20250726    clang-20
+i386        buildonly-randconfig-004-20250726    gcc-12
+i386        buildonly-randconfig-005-20250726    clang-20
+i386        buildonly-randconfig-006-20250726    gcc-12
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch             randconfig-001-20250726    gcc-15.1.0
+loongarch             randconfig-001-20250727    clang-22
+loongarch             randconfig-002-20250726    gcc-14.3.0
+loongarch             randconfig-002-20250727    clang-22
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20250726    gcc-8.5.0
+nios2                 randconfig-001-20250727    gcc-8.5.0
+nios2                 randconfig-002-20250726    gcc-8.5.0
+nios2                 randconfig-002-20250727    gcc-11.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250726    gcc-8.5.0
+parisc                randconfig-002-20250726    gcc-8.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-22
+powerpc               randconfig-001-20250726    clang-16
+powerpc               randconfig-002-20250726    gcc-11.5.0
+powerpc               randconfig-003-20250726    gcc-8.5.0
+powerpc64             randconfig-001-20250726    clang-22
+powerpc64             randconfig-002-20250726    gcc-10.5.0
+powerpc64             randconfig-003-20250726    clang-22
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                 randconfig-001-20250726    gcc-11.5.0
+riscv                 randconfig-002-20250726    clang-17
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                  randconfig-001-20250726    clang-22
+s390                  randconfig-002-20250726    clang-22
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                    randconfig-001-20250726    gcc-12.5.0
+sh                    randconfig-002-20250726    gcc-9.5.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250726    gcc-8.5.0
+sparc                 randconfig-002-20250726    gcc-15.1.0
+sparc64               randconfig-001-20250726    clang-22
+sparc64               randconfig-002-20250726    gcc-8.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250726    gcc-12
+um                    randconfig-002-20250726    gcc-12
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250726    gcc-12
+x86_64      buildonly-randconfig-002-20250726    gcc-12
+x86_64      buildonly-randconfig-003-20250726    gcc-12
+x86_64      buildonly-randconfig-004-20250726    clang-20
+x86_64      buildonly-randconfig-005-20250726    clang-20
+x86_64      buildonly-randconfig-006-20250726    gcc-12
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250726    gcc-8.5.0
+xtensa                randconfig-002-20250726    gcc-8.5.0
 
-  Linux 6.16-rc2 (2025-06-15 13:49:41 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git tags/execve-v6.17
-
-for you to fetch changes up to 7f71195c15dcf5f34c4c7f056603659374e3a525:
-
-  fork: reorder function qualifiers for copy_clone_args_from_user (2025-07-17 16:37:05 -0700)
-
-----------------------------------------------------------------
-execve updates for v6.17
-
-- Introduce regular REGSET note macros arch-wide (Dave Martin)
-
-- Remove arbitrary 4K limitation of program header size (Yin Fengwei)
-
-- Reorder function qualifiers for copy_clone_args_from_user() (Dishank Jogi)
-
-----------------------------------------------------------------
-Dave Martin (23):
-      regset: Fix kerneldoc for struct regset_get() in user_regset
-      regset: Add explicit core note name in struct user_regset
-      binfmt_elf: Dump non-arch notes with strictly matching name and type
-      ARC: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      ARM: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      arm64: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      csky: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      hexagon: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      LoongArch: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      m68k: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      MIPS: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      nios2: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      openrisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      parisc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      powerpc/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      riscv: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      s390/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      sh: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      sparc: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      x86/ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      um: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      xtensa: ptrace: Use USER_REGSET_NOTE_TYPE() to specify regset note names
-      binfmt_elf: Warn on missing or suspicious regset note names
-
-Dishank Jogi (1):
-      fork: reorder function qualifiers for copy_clone_args_from_user
-
-Yin Fengwei (1):
-      binfmt_elf: remove the 4k limitation of program header size
-
- include/linux/regset.h                   | 12 +++++-
- arch/arc/kernel/ptrace.c                 |  4 +-
- arch/arm/kernel/ptrace.c                 |  6 +--
- arch/arm64/kernel/ptrace.c               | 52 +++++++++++-----------
- arch/csky/kernel/ptrace.c                |  4 +-
- arch/hexagon/kernel/ptrace.c             |  2 +-
- arch/loongarch/kernel/ptrace.c           | 16 +++----
- arch/m68k/kernel/ptrace.c                |  4 +-
- arch/mips/kernel/ptrace.c                | 20 ++++-----
- arch/nios2/kernel/ptrace.c               |  2 +-
- arch/openrisc/kernel/ptrace.c            |  4 +-
- arch/parisc/kernel/ptrace.c              |  8 ++--
- arch/powerpc/kernel/ptrace/ptrace-view.c | 74 ++++++++++++++++----------------
- arch/riscv/kernel/ptrace.c               | 12 +++---
- arch/s390/kernel/ptrace.c                | 42 +++++++++---------
- arch/sh/kernel/ptrace_32.c               |  4 +-
- arch/sparc/kernel/ptrace_32.c            |  4 +-
- arch/sparc/kernel/ptrace_64.c            |  8 ++--
- arch/x86/kernel/ptrace.c                 | 22 +++++-----
- arch/x86/um/ptrace.c                     | 10 ++---
- arch/xtensa/kernel/ptrace.c              |  4 +-
- fs/binfmt_elf.c                          | 38 ++++++++++------
- fs/binfmt_elf_fdpic.c                    | 17 ++++----
- kernel/fork.c                            |  2 +-
- 24 files changed, 196 insertions(+), 175 deletions(-)
-
--- 
-Kees Cook
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
