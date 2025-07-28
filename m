@@ -1,76 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-10423-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10424-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6B4B13616
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jul 2025 10:11:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BCD3B13A53
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 28 Jul 2025 14:17:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4brB5N2hV4z2xd6;
-	Mon, 28 Jul 2025 18:11:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4brHXz6F4Dz30Nl;
+	Mon, 28 Jul 2025 22:17:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.21.126.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753680710;
-	cv=none; b=Upcwrx5lZzg5KNDYyZUggiA8lx8z0AyWO1AE09+wBtm87dqZ/msH7W3vzufWBYzavm8mZledKdFbGW39jy+zZjx9coinvmZUTP4kC5TLlZ1JBMrUtllH4dBuztTzM2MP5Ug9eJfGzY0dlaIT2zM/QmWsp8O7B6bc6+OXHU47Wqnr2IDJMed9tOrjIL1HcFNH9JUBp+1MkZKllI2aUEiFNFhiqHz+tjlPsrAINa3oBL/C0nBSoCcXGtPMa/GitYtNK1mu9ZCkpLrxl1yaSOstnyHeBJQblDGjeTtxpXRMGgiYRpdu8wCdjVnPOqjCLWseis0S4gvybopQL11ZxT9gyA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.189
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753705043;
+	cv=none; b=aXq2VACDqMvMPI17RZqCRJqoMXSr+8WCbuQ0VnDWvLKsZC9mQHGEvjdv7uH66ElIZhyIprXDMxRzaQnnFKov7x5f+8X3+gLrPzo3+KbHLJFANZRdW7O76YMBjJtpDggVRQ8zTEugnA38aCm8T+QmtBWjTvfcE1F6hRF9vfdj0CBrqOZzDWQttT53bURyhRfta7jqe6KWlzQIo8tSW34ku3z+OWe8RN8H+xTnweVE6WNI5Nsc+c4vXplI15vySo8whmUQfV3DWz1k2snqaJorDuy79FtU8+canqoRDxYm+DW3MDX9aThCcxwCLmKfQUHg6F1ilCpNJLZeCiuiqChglA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753680710; c=relaxed/relaxed;
-	bh=76+XsNkI1Vvm/cj68EELqdniznvp+JYoM6cazIfRklM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bHf6LygAONPTKCUFIbW+T3q0jNGj3YlvIbda+nTOe5ekitzNru3He8Mk5Xa3POAQqDMHSljiDjAiUzejIPvJk9DEGgtK+WT8dpoSpULHn/rn77YmGXhF3FDnB2HDHhUa/ty2E9acyw3GRHdSBadHluAsKEjYSOOHNdMl4f9/KYGf7LE1FcnVGSRylyH6jKyv7XNZvH0CHE+Ml3sH2ifRYYhE1iGg/KRs33aq09FqNnFcWA1bvxoFzHyKfOJ4WnaYiyMNaroVhfcSE2ZlZDOowoCwERkF/kGKJseKfXGKABOkVm501OCmnUDdurcS5KbBLq4pKViyOnj8kvK4PKUZdQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in; dkim=pass (1024-bit key; unprotected) header.d=iitb.ac.in header.i=@iitb.ac.in header.a=rsa-sha256 header.s=mail header.b=OVjajOh5; dkim-atps=neutral; spf=pass (client-ip=103.21.126.57; helo=smtp1.iitb.ac.in; envelope-from=akhilesh@ee.iitb.ac.in; receiver=lists.ozlabs.org) smtp.mailfrom=ee.iitb.ac.in
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=ee.iitb.ac.in
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=iitb.ac.in header.i=@iitb.ac.in header.a=rsa-sha256 header.s=mail header.b=OVjajOh5;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ee.iitb.ac.in (client-ip=103.21.126.57; helo=smtp1.iitb.ac.in; envelope-from=akhilesh@ee.iitb.ac.in; receiver=lists.ozlabs.org)
-Received: from smtp1.iitb.ac.in (smtpd2.iitb.ac.in [103.21.126.57])
+	t=1753705043; c=relaxed/relaxed;
+	bh=inZscz3FaGMweZ79cxuFZA4873l4hvFjm90jEC127fM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=I4/TIXxv8oyyMbf2T6bj92W1IMkw2ciKszvGPgj9RHsE9YTvEWG9QzNMprQLqSddA5VBkQC4zFOOuMEZ9W0TGDVKjUgY7Jx2Cwt7IBlRVyJSrOjb/EJycpdklnbQ8n4lkSw7hi69JzqN808Z5yX/0t5PwFjKuvf9/+Q/E+jvDeUV5GvyDneab+eOqcPwiJl9SLXEi3hmEtwaVxDn6HoTfq3zJnNvY0B2s6kAeWZRtYwEq2plFfa3pDi6Br2FKUs0TIzfXjLqhi9tzFHynVZiej4nzRGaW2Fpl0TqKp0mpg50gZB5W4rOIXhEeWV0do8++B8hj9CbRRnu/J2qLaKWbA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=gongruiqi1@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=gongruiqi1@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4br6Y03hRxz2xRq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jul 2025 15:31:47 +1000 (AEST)
-Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
-	by smtp1.iitb.ac.in (Postfix) with SMTP id B2194104CBAD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jul 2025 11:01:44 +0530 (IST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 smtp1.iitb.ac.in B2194104CBAD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=iitb.ac.in; s=mail;
-	t=1753680704; bh=xsovHFmFZz4ZVIsR/kFcDv+maxVHaOLgUGsuwMwZh8M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OVjajOh5q4lbdIPsNIo2Y0PKT4z8D1TFvijaXayeuSr8ufMJXM4AsBsh8y5mMaYhY
-	 X+OfK0kNl5m5+tQogUFb3H0fpX3JcU3eZNCGNtq/ccd3sksUZWN1tsZbv94NjWl8SG
-	 xqXN+rCtgjgg49vMFEtOhAvB8czTfXnzcr3i2Agk=
-Received: (qmail 7314 invoked by uid 510); 28 Jul 2025 11:01:44 +0530
-X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <akhilesh@ee.iitb.ac.in>, uid 501) with qmail-scanner-2.11
- spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/26337} 
- Clear:RC:1(10.200.1.25):SA:0(0.0/7.0):. Processed in 5.178536 secs; 28 Jul 2025 11:01:44 +0530
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Pyzor: Reported 0 times.
-X-Envelope-From: akhilesh@ee.iitb.ac.in
-X-Qmail-Scanner-Mime-Attachments: |
-X-Qmail-Scanner-Zip-Files: |
-Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
-  by ldns2.iitb.ac.in with SMTP; 28 Jul 2025 11:01:39 +0530
-Received: from bhairav.ee.iitb.ac.in (bhairav.ee.iitb.ac.in [10.107.1.1])
-	by ldns2.iitb.ac.in (Postfix) with ESMTP id CBC4E3414E2;
-	Mon, 28 Jul 2025 11:01:38 +0530 (IST)
-Received: from bhairav-test.ee.iitb.ac.in (bhairav.ee.iitb.ac.in [10.107.1.1])
-	(Authenticated sender: akhilesh)
-	by bhairav.ee.iitb.ac.in (Postfix) with ESMTPSA id 91D1B1E8127E;
-	Mon, 28 Jul 2025 11:01:38 +0530 (IST)
-Date: Mon, 28 Jul 2025 11:01:33 +0530
-From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: jirislaby@kernel.org, andriy.shevchenko@linux.intel.com,
-	john.ogness@linutronix.de, pmladek@suse.com, johan@kernel.org,
-	namcao@linutronix.de, timur@kernel.org,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, akhileshpatilvnit@gmail.com,
-	skhan@linuxfoundation.org
-Subject: Re: [PATCH] tty: serial: ucc_uart: use WARN_ON() instead of BUG()
-Message-ID: <aIcLNXkXG3UFbSrv@bhairav-test.ee.iitb.ac.in>
-References: <aIbV+WbhFMDamaiW@bhairav-test.ee.iitb.ac.in>
- <2025072814-splicing-sassy-f33a@gregkh>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4brHXy3D3lz2xRq
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 28 Jul 2025 22:17:19 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4brHRw6X1Bzdbw2;
+	Mon, 28 Jul 2025 20:13:00 +0800 (CST)
+Received: from kwepemg100016.china.huawei.com (unknown [7.202.181.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 939681402EA;
+	Mon, 28 Jul 2025 20:17:13 +0800 (CST)
+Received: from [10.67.110.48] (10.67.110.48) by kwepemg100016.china.huawei.com
+ (7.202.181.57) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 28 Jul
+ 2025 20:17:12 +0800
+Message-ID: <a8bec841-149c-4349-b7a0-ffebe43dd671@huawei.com>
+Date: Mon, 28 Jul 2025 20:17:12 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,66 +49,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2025072814-splicing-sassy-f33a@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] integrity: Extract secure boot enquiry function out of
+ IMA
+To: Nayna Jain <nayna@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin
+	<dmitry.kasatkin@gmail.com>, Jarkko Sakkinen <jarkko@kernel.org>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+CC: Eric Snowberg <eric.snowberg@oracle.com>, Christophe Leroy
+	<christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Christian
+ Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
+	"Lee, Chun-Yi" <jlee@suse.com>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
+	<linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>, Lu Jialin
+	<lujialin4@huawei.com>
+References: <20250628063251.321370-1-gongruiqi1@huawei.com>
+ <eb91dcf034db28e457a4482faa397dd7632f00fd.camel@linux.ibm.com>
+ <4c59f417-86cc-4dec-ae45-8fcf8c7eb16a@huawei.com>
+ <e8aa7f94-3e52-488d-a858-564d3d1edd4b@linux.ibm.com>
+ <362b3e8a-0949-42d1-a1d0-90bd12d86b09@huawei.com>
+ <683380bb-ef1b-44ab-b7df-83c23dd76ff7@linux.ibm.com>
+Content-Language: en-US
+From: GONG Ruiqi <gongruiqi1@huawei.com>
+In-Reply-To: <683380bb-ef1b-44ab-b7df-83c23dd76ff7@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.110.48]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemg100016.china.huawei.com (7.202.181.57)
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Jul 28, 2025 at 06:07:22AM +0200, Greg KH wrote:
-> On Mon, Jul 28, 2025 at 07:14:25AM +0530, Akhilesh Patil wrote:
-> > Replace BUG() with WARN_ON() as recommended in
-> > Documentation/process/deprecated.rst
-> > Fix system entering into unstable/break/undebuggable state due to use
-> > of BUG(). Follow strict suggestions as per [1] [2].
-> > 
-> > Link: https://lore.kernel.org/lkml/CA+55aFy6jNLsywVYdGp83AMrXBo_P-pkjkphPGrO=82SPKCpLQ@mail.gmail.com/ [1]
-> > Link: https://lore.kernel.org/lkml/CAHk-=whDHsbK3HTOpTF=ue_o04onRwTEaK_ZoJp_fjbqq4+=Jw@mail.gmail.com/ [2]
-> > Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-> > ---
-> >  drivers/tty/serial/ucc_uart.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
-> > index 0613f8c11ab1..6214ab1b67cb 100644
-> > --- a/drivers/tty/serial/ucc_uart.c
-> > +++ b/drivers/tty/serial/ucc_uart.c
-> > @@ -223,7 +223,7 @@ static inline dma_addr_t cpu2qe_addr(void *addr, struct uart_qe_port *qe_port)
-> >  
-> >  	/* something nasty happened */
-> >  	printk(KERN_ERR "%s: addr=%p\n", __func__, addr);
-> > -	BUG();
-> > +	WARN_ON(1);
-> >  	return 0;
-> >  }
-> >  
-> > @@ -242,7 +242,7 @@ static inline void *qe2cpu_addr(dma_addr_t addr, struct uart_qe_port *qe_port)
-> >  
-> >  	/* something nasty happened */
-> >  	printk(KERN_ERR "%s: addr=%llx\n", __func__, (u64)addr);
-> > -	BUG();
-> > +	WARN_ON(1);
-> >  	return NULL;
-> >  }
+
+On 7/26/2025 2:29 AM, Nayna Jain wrote:
 > 
-> You can't just do a search/replace for these types of things, otherwise
-> we would have done so a long time ago.
+> On 7/17/25 8:29 AM, GONG Ruiqi wrote:
+>> On 7/8/2025 4:35 AM, Nayna Jain wrote:
+>>> On 7/2/25 10:07 PM, GONG Ruiqi wrote:
+>>>> ...
+>>
+>> Yes, IMA_ARCH_POLICY was not set. The testing was conducted on
+>> openEuler[1], a Linux distro mainly for arm64 & x86, and the kernel was
+>> compiled based on its own openeuler_defconfig[2], which set
+>> IMA_ARCH_POLICY to N.
 > 
-
-Hi greg, Agree. Let me dive deep to understand this BUG() -> WARN()
-recommendation and come back after detailed analysis for this change.
-> How did you test this patch?  The BUG() here assumes that if this ever
-
-I have done only build check with NXP p1025rdb configuration as I do not
-have this particular hardware handy.
-> fires, the system is really broken, how have you recovered from that
-> broken state?
+> Thanks Ruiqi for the response.
 > 
-> thanks,
+> It seems the main cause of the problem was that IMA_ARCH_POLICY config
+> wasn't enabled; and it sounds like you don't need IMA arch policies but
+> you do need the arch specific function to get the secure boot status.
 > 
-> greg k-h
+> In that case, removing IMA_SECURE_AND_OR_TRUSTED_BOOT config dependency
+> on IMA_ARCH_POLICY config and updating the corresponding help is all
+> that is needed.
 
-Thanks for the review :) 
+I think it doesn't solve the real problems, which are: 1. the implicit
+dependency of LOAD_UEFI_KEYS to IMA_SECURE_AND_OR_TRUSTED_BOOT, which
+surprises people, and 2. what arch_ima_get_secureboot() does is
+essentially a stand-alone function and it's not necessarily be a part of
+IMA, but it's still controlled by IMA_SECURE_AND_OR_TRUSTED_BOOT.
 
-Regards,
-Akhilesh
+I agree that adjusting Kconfig could be simpler, but breaking
+IMA_SECURE_AND_OR_TRUSTED_BOOT's dependency to IMA_ARCH_POLICY doesn't
+help on both. If that's gonna be the way we will take, what I would
+propose is to let LOAD_UEFI_KEYS select IMA_SECURE_AND_OR_TRUSTED_BOOT,
+which states the dependency explicitly so at least solves the problem 1.
+
+-Ruiqi
+
+> 
+> The help text can be updated to:
+> This option is selected by architectures to detect systems with secure
+> and/or trusted boot enabled, in order to load the appropriate IMA
+> runtime policies and keys.
+> 
+> Thanks & Regards,
+> 
+>     - Nayna
+> 
 
 
