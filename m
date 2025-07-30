@@ -1,86 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-10472-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10473-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F78B16563
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Jul 2025 19:23:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FE5B1675C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Jul 2025 22:09:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bsfDm1yz5z30Vs;
-	Thu, 31 Jul 2025 03:23:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bsjwS208Qz2yFK;
+	Thu, 31 Jul 2025 06:09:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.218.54
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753896184;
-	cv=none; b=G/oCjbCX6DNk3Em5gAWJpPkfu1A0RU9kDy8bd94lhVNUNzM9MuEs88x+4bLmnyLhZK518iGBie+QJ6vAmtUYW2f4Vj9IN8m65ApHML+7ccK/bZV+HCTYrCc+AHHGhGvHv0i+u1EzqkownmXLcDP9veNb6ic2lbKykTEbSjEQRxEd7TBQ7sbbp/+o82jFyI8cmnMXDHmvRQTsNCSfU/KKP+MdTXU6hyJVwNkjyYSF5hsX6nuDi55zVe0bvi8P1hHnbAxN3FmzgXTGU+1iK/ZeS0bzacr35QosSfzY4xsEBnCFO4tWHFufcVU+43quxc0nndB+iwopa1nQlRgBBeCrXg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:3000::53df:4ef0:0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753906152;
+	cv=none; b=gLGatNCFABm61hP/5cVTh/iIctEqRDJk3Tvcg+SOZJKYSL5/cGN7aeyQ6Af2c2+OvfywM19kpRpRcZcwq573SnNQJJf2UlfBi6s0OjKbHojvY2ldM4zbM3+VnspKse2xscjkoQBBTel35dlJHLme+itedWvd6ff0qecJm2cdI3MvKR3KZ7A0uVizaZsHmMvnNzVICrjrlc36uZqnNsNYsKsLqh1b9J6ywvLTwL/9Yt6ROD6ly8jj+ikbsxd0thO0sAzxLqGHH9dYNrs948CQMs3WhYMJ3snehMvayZMkBo6IX3F7t/Oib1dwCMlv0/tTLuLdcHUz6nQqjtftdtFSvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753896184; c=relaxed/relaxed;
-	bh=RVG5g2ageWB6fvYTmlrchc1VftQuavVCJU6Q16hxq1Q=;
+	t=1753906152; c=relaxed/relaxed;
+	bh=lRRC/kUPR7Lt53zDYZqNO2z2QpH9xZzEkK9856ivb9Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DxtNMBDBUgZ/KL0v/RuYaVatEj1Fr/HoW+AC7XxIst8+k4azHwEut+93hGTI+YOK/26ExYaLBbfMwAp1aCh/vXS7GlCTEj9CeGg7PIYMruU1PcHU3jfWYXu8C3w8Vh6kqVSoytXT/Y/lRP8tM2T+ssQn1F7noUQnrEssaiOKXxtqwG9JEK14qy0aVv4GIklhDxNL2/bZ6VD1lmUscARMrQMPCrbp0SW+GMM8z3WWKyNpNdARXt0CiV1lQn2cHQfVZpD1GE08ZeA12qnIcjg1RTe5aWxU7jYlbGMYRdsIwYt+yGjz4m2RNXb56RBW+yZhoXEeUxSV3agWFE3uTcyfBg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass (client-ip=209.85.218.54; helo=mail-ej1-f54.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.218.54; helo=mail-ej1-f54.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cg3jPbjn7DktPvQ4eo4YxCzADvRmr7RNO+gcPwruEPK/x9jIvFacRDwJ23oUTANU2nn9Kz3OkxjvFvMok7cLDt4XjBpJarct1dwBCQdVoWp4hkrCOdUgmsJzyo5KSDzF7e2hBD1kfW8wN/bTkhHZ1y9itxlHJzZ7p3/KmziAaH9ZZLlfIdNLHv4/P+jnrhX2wmYwCuqS4kVOU5OT4VxiZQ3IFHF5OJqHpBBuWmlvDyJudlzKHIaYXRgB8jKjUGapjYld59hppm+53JJpAk+uZBQUSdgzwsJA+uDJPFVvO6wO4gi6E4NMZNw2ZNaE0KtjLlpOLw+V8Wd66uh76o9eWA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout2.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout2.hostsharing.net (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 432 seconds by postgrey-1.37 at boromir; Thu, 31 Jul 2025 06:09:11 AEST
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [IPv6:2a01:37:3000::53df:4ef0:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bsfDl13JCz2yRn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Jul 2025 03:23:02 +1000 (AEST)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ae36dc91dc7so2845666b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Jul 2025 10:23:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753896179; x=1754500979;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RVG5g2ageWB6fvYTmlrchc1VftQuavVCJU6Q16hxq1Q=;
-        b=SQlnMU1TYaML1vooBGmrIVOg2BfQCyCDUyiesAttMRFoYyRm6EXlHJexiLrO27QeUy
-         MnR8SkdJZI1cpHSd94l/2Q2sZHIkFj9gk1p6qxnNoZAOSAI1lGe/wpUEJlSVG6RWRDpq
-         RpS/IUqOLpdC95yC+xgtnmkEcj7pHr1FPVumZWVZpBMcMX6fxYSV/Kg5nOpCgv2JQpjy
-         Q8pDCM5Na9fMcw+dj15J0Bfg27/v/lgqR8RtBM+Ugge8SdLU5fu+o7YN/MKB4bofaIQR
-         tbkTkfiM2x4ZJ68lvSE68ylejQ2qHpJ4r6+3mC6jkqc5D4PFySOYG39TnZsDR1H7m6hf
-         sHjg==
-X-Forwarded-Encrypted: i=1; AJvYcCXxW4CneeOr7c0+eBbvs4U3rxU+0TEyUDpkkP02X85BTRLzVG8C45GG3vx4S7YKAHhJRbfQnoveQ44W690=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxeCf6TyMc72gJEsoV3HV1BWFOZdaItg7HMAtCNIM4IQL5WG8to
-	CZQ974bmV6xHAA+OhZXgD5TjxjGzySoXOKS6F3yNK7whm/7mrCjbMFf/
-X-Gm-Gg: ASbGncuhHm+BDy5dQOQZK7CHIFqRWmEnWpaAsLZa+5mB5kRsX8qy2jc6Q3XRFAdQvBZ
-	bQeqqhLcmG0IF2B6srMTImchZCF/YDRHX/ZsC3cAcNXmiWBENICt0ppr/cAwoeu1N4y39Z7GqaK
-	DH/2nS0RXkERO/p1PVMIJfL2SCSZSer5SMigqpn1+aCgAu7mms7XEKV62WjtHW9B72RlsvN8rKj
-	VLdIYN+9TnpSkxB27wtMJUzJRS4JhN+wDRVqk2yCuW2mcRcx46sR29JRb1M9r1fzotgU/YDdQig
-	a41eSJ0/ZKvms7Vp2XRhVeSEHj9PKI0Q8bTa0D4qkp99UjsfEF58y7HDGmjyZyBCILIYb8VD3Ke
-	aX13JG/AVzoT4
-X-Google-Smtp-Source: AGHT+IEUbbT7MGZ9RPV14AyB319B+ILu1Zn4HTqqRjqhmc6jefo1B6r2lcAh4WufQuwJ5cKV1ZycMA==
-X-Received: by 2002:a17:907:3d0f:b0:ade:3eb6:3c6 with SMTP id a640c23a62f3a-af8fd71454bmr552748166b.15.1753896178789;
-        Wed, 30 Jul 2025 10:22:58 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:9::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af635a63a5bsm781297566b.93.2025.07.30.10.22.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Jul 2025 10:22:58 -0700 (PDT)
-Date: Wed, 30 Jul 2025 10:22:55 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>, 
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, James Morse <james.morse@arm.com>, 
-	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, osandov@osandov.com, 
-	konrad.wilk@oracle.com, linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-pci@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v3] vmcoreinfo: Track and log recoverable hardware errors
-Message-ID: <4w7adjalaisxhdx4l2zzl6ghanky4geijl523q2ezz7b5kj4kq@fr44nlwsw6qa>
-References: <20250722-vmcore_hw_error-v3-1-ff0683fc1f17@debian.org>
- <7ce9731a-b212-4e27-8809-0559eb36c5f2@linux.alibaba.com>
- <4qh2wbcbzdajh2tvki26qe4tqjazmyvbn7v7aqqhkxpitdrexo@ucch4ppo7i4e>
- <fdb5dced-ea5a-48b8-bbb4-fc3ade7f3df8@linux.alibaba.com>
- <ldlansfiesfxf4a6dzp5z2etquz5jgiq6ttx3al6q7sesgros6@xh4lkevbzsow>
- <4ef01be1-44b2-4bf5-afec-a90d4f71e955@linux.alibaba.com>
- <2a7ok3hdq3hmz45fzosd5vve4qpn6zy5uoogg33warsekigazu@wgfi7qsg5ixo>
- <a87c5e74-082f-4be6-bbfd-4867bf72ddcc@linux.alibaba.com>
- <zc4jm3hwvtwo5y2knk2bqzwmpf7ma7bdzs6uv2osavzcdew3nk@lfjrlp6sr7zz>
- <20250730182137.18605ea1@foz.lan>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bsjwR0506z2xWc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Jul 2025 06:09:10 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 71CAD200B1CF;
+	Wed, 30 Jul 2025 22:01:50 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 5A85339C007; Wed, 30 Jul 2025 22:01:50 +0200 (CEST)
+Date: Wed, 30 Jul 2025 22:01:50 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Niklas Schnelle <schnelle@linux.ibm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Linas Vepstas <linasvepstas@gmail.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>, Sinan Kaya <okaya@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	Keith Busch <kbusch@kernel.org>
+Subject: Re: [PATCH v3 1/2] PCI/AER: Fix missing uevent on recovery when a
+ reset is requested
+Message-ID: <aIp6LiKJor9KLVpv@wunner.de>
+References: <20250730-add_err_uevents-v3-0-540b158c070f@linux.ibm.com>
+ <20250730-add_err_uevents-v3-1-540b158c070f@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,50 +75,46 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250730182137.18605ea1@foz.lan>
-X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250730-add_err_uevents-v3-1-540b158c070f@linux.ibm.com>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello Mauro,
+On Wed, Jul 30, 2025 at 01:20:57PM +0200, Niklas Schnelle wrote:
+> Since commit 7b42d97e99d3 ("PCI/ERR: Always report current recovery
+> status for udev") AER uses the result of error_detected() as parameter
+> to pci_uevent_ers(). As pci_uevent_ers() however does not handle
+> PCI_ERS_RESULT_NEED_RESET this results in a missing uevent for the
+> beginning of recovery if drivers request a reset. Fix this by treating
+> PCI_ERS_RESULT_NEED_RESET as beginning recovery.
+[...]
+> +++ b/drivers/pci/pci-driver.c
+> @@ -1592,6 +1592,7 @@ void pci_uevent_ers(struct pci_dev *pdev, enum pci_ers_result err_type)
+>  	switch (err_type) {
+>  	case PCI_ERS_RESULT_NONE:
+>  	case PCI_ERS_RESULT_CAN_RECOVER:
+> +	case PCI_ERS_RESULT_NEED_RESET:
+>  		envp[idx++] = "ERROR_EVENT=BEGIN_RECOVERY";
+>  		envp[idx++] = "DEVICE_ONLINE=0";
+>  		break;
 
-On Wed, Jul 30, 2025 at 06:21:37PM +0200, Mauro Carvalho Chehab wrote:
-> Em Wed, 30 Jul 2025 06:11:52 -0700
-> Breno Leitao <leitao@debian.org> escreveu:
-> > On Wed, Jul 30, 2025 at 10:13:13AM +0800, Shuai Xue wrote:
-> > > In ghes_log_hwerr(), you're counting both CPER_SEV_CORRECTED and
-> > > CPER_SEV_RECOVERABLE errors:  
-> > 
-> > Thanks. I was reading this code a bit more, and I want to make sure my
-> > understanding is correct, giving I was confused about CORRECTED and
-> > RECOVERABLE errors.
-> > 
-> > CPER_SEV_CORRECTED means it is corrected in the background, and the OS
-> > was not even notified about it. That includes 1-bit ECC error.
-> > THose are not the errors we are interested in, since they are irrelavant
-> > to the OS.
-> 
-> Hardware-corrected errors aren't irrelevant. The rasdaemon utils capture
-> such errors, as they may be a symptom of a hardware defect. In a matter
-> of fact, at rasdamon, thresholds can be set to trigger an action, like
-> for instance, disable memory blocks that contain defective memories.
+I note that PCI_ERS_RESULT_NO_AER_DRIVER is also missing in that
+switch/case statement.  I guess for the patch to be complete,
+it needs to be added to the PCI_ERS_RESULT_DISCONNECT case.
+Do you agree?
 
-Sorry, I meant that Hardware-corrected errors aren't relevant in the
-context of this patch, where we are errors that the OS has some
-influence and decision.
+If you do and respin the patch with that change, feel free to add
+my Reviewed-by.
 
-> This is specially relevant on HPC and supercomputer workloads, where
-> it is a lot cheaper to disable a block of bad memory than to lose
-> an entire job because that could take several weeks of run time on
-> a supercomputer, just because a defective memory ended causing a
-> failure at the application.
+Since you're an IBMer and EEH is maintained by IBM, I'm wondering
+if it would be possible to amend EEH to report "rc" instead of
+PCI_ERS_RESULT_NONE in eeh_report_error()?  There are multiple
+deviations between AER and EEH, this is one of them.  It would
+be good to move towards a more consistent recovery process across
+platforms.
 
-Agree. These errors are used in several ways, including to detect
-hardware aging and hardware replacement at maintenance windows.
+Thanks,
 
-In this patchset, I am more focused on what information to add to
-crashdump, so, it makes it easy to correlate crashes to hardware events,
-and RECOVERABLE are the main ones.
+Lukas
 
