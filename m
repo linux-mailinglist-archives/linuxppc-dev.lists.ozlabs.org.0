@@ -1,83 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-10458-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10461-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EEEFB1613B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Jul 2025 15:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1A7B161CC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Jul 2025 15:50:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bsXn71Hb2z30Vs;
-	Wed, 30 Jul 2025 23:17:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bsYWj6Fjjz3bm3;
+	Wed, 30 Jul 2025 23:50:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.221 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753881435;
-	cv=pass; b=fCZLht5gGo9wsElsNcvWOf5uZJnjtLLyJHtH+I5PpiurA5P5x+TJYB7edHZQW7Ibph4/TpS1kc5hX5KuP4g+f9xMutLnZgg/34dXq/wFZscsdqVx8HdeqpX3qtadYZuDmTuDUdH/iF8TB7J5haWci09NH/1G8hSlY0OANOTffmK13saeaU6SfNy/sQpzrJZazacCRU2NJUbAiGZ8ikOMgWwtQDcBDnb66VC/WlVYY7iDjFmsCw8sCytH492zuxkiuNN3NtWXpADSxUG3MVZITm34Ipd5jTvF+WRi1PMW7MSN2yYo0zcQqnUvQNeW9VC45G5vTYnn8FlBuUgASwPKzg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753881435; c=relaxed/relaxed;
-	bh=6/tj94J5qAjk0aEhTz6SogSCgzWuoJFHB3XbBkZVPpo=;
-	h=Content-Type:From:Mime-Version:Date:Subject:Message-Id:To; b=XwIUyq/1gWxiW+L9XqE8G3Q1f0Kc9xFhjf1yaEuwLjx6v76R/QV2gXriuYQLu1RR7k7KnFdW0t27b2RitEFqPENlxS4GXpVtbuYt6vw3KgBY7o0pHpsbMjgOj0mFUSHSDGwbB5iidT8d9bHzyuzJJae6KPWP41pNPuqrK3zoxsBcbR8N2aShaacoUVsRl/Yj+GUq00I4uC5T6cC4kUe85jFbwLelSgXtYR1rz4zQdgn1qKsqPyX4S005fKKMxYm9Q49Bvd993agxTWtBxKu85cyKEfO8meS8kJxG+0JancEdXdSMMYr6dBn6X/YzWzl7ji1XnT3SpYQ3rulXspKWDw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=kf4t03+I; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=gOZXrF75; dkim-atps=neutral; spf=pass (client-ip=81.169.146.221; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p00-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=kf4t03+I;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=gOZXrF75;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.221; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 180 seconds by postgrey-1.37 at boromir; Wed, 30 Jul 2025 23:17:11 AEST
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.221])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bsXn32pwvz30RK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Jul 2025 23:17:10 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1753881245; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=h/LwW9cZ20s7ALflckva075l/NI7WIj5zNl1hZvuGfBXevaszjI/+jHrkLFbVbJAhR
-    WhEg2sKIihg9SfoJao+i8JShRAmOfm6IL6TBUVhQiV+RfkgPSsKvRiEhEbDc7cqGtUdJ
-    MdNqjXR5fGc+Ctr2D0uBnH/q7PTUAFvV4YKkFGDJjnNMxzcnHNKT2S+mPPUVxzbr7OI+
-    XqT5N0A2lzv79wNy5qg3ZEhz+GnGtN9rIyRbxR9pAe9kB/tnlsVSiFOiwRLVSlbk08wz
-    F1mXRuD80X8/l8NveX4yMxFI7RPQx190PJ45WeaGaSgEjZ2vfIyWOPxJhBQ5OAx+oR1v
-    UR8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1753881245;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
-    bh=6/tj94J5qAjk0aEhTz6SogSCgzWuoJFHB3XbBkZVPpo=;
-    b=AXEjfQxHj/b3hPJAURP4tP0LBQgU7ZbGqhDHWCZf9TIDDPXI/boW9/NTXK864ZbnHu
-    Y2adXdvj8axbO4b7PBd4F6EcxwZeoaXG0EGej5juaBcdq4LBOba/15XqIWb4hSpKRsVn
-    B6V2GxLhIMAJy/kf7slroW0CubszzjiXuWejILk657EkkxXw2WoqR1LRx01qMXApn84X
-    LcsnSWJUOB+4m5lwrtxTYbQbJpR5FEynqW8gAaViP02mHT16ZqJaP6v1uy44pgBS605L
-    oJj0YgJIe1YDbYrkN7h75+gj9mItXjh87968kBufePLeYZgJ1rPRDVG5+f2mIk9uSPgj
-    6FQQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1753881245;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
-    bh=6/tj94J5qAjk0aEhTz6SogSCgzWuoJFHB3XbBkZVPpo=;
-    b=kf4t03+I5eySgx9tUlrzwFINmkGeEWbJ9LGFxfkkPOUjI5DYfiAlSQV+77lPkw04j6
-    SA+i/hzNSzWobi5GznBjMf4UNh1lz1aumMqPw0A5UhDQLZ5DD2iqNV0fB8mdFP+t0Oj+
-    mkPpzLqdVsx1HiHqx15CmLjBeTid+IukDRL/LAWMFR/L15CnWlho35EkwBwCHdMwFzxj
-    XKuGLz8R0ZJJcbR6yeG9pc37PSvJhKuJwRn6GJ6adUzi4N0nWMtNqYXJLg4ScyBNgrSG
-    o0hZ1mbsWKTbXbVe6nQTbgncQpEcaFoJsHqNydGXsbPGgLdsui06owrdyIyM3MiN6Qxb
-    wv8g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1753881245;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=To:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
-    bh=6/tj94J5qAjk0aEhTz6SogSCgzWuoJFHB3XbBkZVPpo=;
-    b=gOZXrF75bJ6Hzu7hqErwhmvLv8wSN8gmHn93qnhSGZJNcJs5lg13e+Clr3xvU6uscb
-    ruAvRuqwlcuWpzc4O4BQ==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5ngsy/CW3yGhU8fYuVA3geGyCkt3iJ6t3tsliw="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 52.1.2 AUTH)
-    with ESMTPSA id e6066c16UDE4cCB
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate)
-    for <linuxppc-dev@lists.ozlabs.org>;
-    Wed, 30 Jul 2025 15:14:04 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753883441;
+	cv=none; b=SxzzAKb9tZ1C3/CmTNk9gRjLzx98WCKjNaF1gruxFbdvqDHZ+DtcBQm9CpLlKIWqaewXC9thWh0BRNLEpVUfgcqyqTZuIxgd+NS0l5vpdlqGaW0l0qdLiG4BRkuCbNoKuhoiYJQk1AReTTDR5E0IINNLN6oQOi9MMzU9mgV42O2Mylh71rvXhN5TxghyojCeRUp363OTEzmnk8GXSsxsZQChoqRPUacwp8Bbv6D9OEu9ho2tZjYK/p8efvsZnVEz+lyZPA3WvcZHW6G1mq82MgnfDYEocIptaSIee91vwMA31VDLX/6zb4/vVTcfbGlTkeU5gpvQ/dxg11PAQ6QKTQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1753883441; c=relaxed/relaxed;
+	bh=ZI5DAmK+8UZTo8BKllrVIz00Tuglcysu0tyWwoMJ9Vg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g5p56SW+XzPByXQS6VXsSIG9uZ7npgi8a66Ax9MOjnQGqo8jRbMa02/GEYvS3VxWClmCwgEBSxkz4kZmOjsUVjRhJrqbZZ6Rt7FPMip2CI3PUXu4+A+JKzV8Kvi6rCKCSFg3qrDxBg0Zy6q1nFWuJgv4u7e+a2tPykP66sV0hZWVwkMkr6DcU3Y99rDA8xTZMLc6jTAUiRMfjAo6YBgHlvISn/gIbCybOLgpVaLP1DsUZ4D7qK+BzffiKSQgKfnt6VTcalpxNyN6kL65LXfiX7xkOHfoA4K5vi0odjKVlYh3KyPBX5PfUAwEUIMoyzAjn7LeWy7OGjLbBIEj3jGnOQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bsYWj2qR3z30RK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 30 Jul 2025 23:50:41 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4bsY9h1rxmz9v53;
+	Wed, 30 Jul 2025 15:35:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 5MxTpDkr189x; Wed, 30 Jul 2025 15:35:04 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4bsY9C2Symz9t5l;
+	Wed, 30 Jul 2025 15:34:39 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4F1908B76E;
+	Wed, 30 Jul 2025 15:34:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id B3TTTuOPHS02; Wed, 30 Jul 2025 15:34:39 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [10.25.207.160])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 32F008B763;
+	Wed, 30 Jul 2025 15:34:39 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+	by PO20335.IDSI0.si.c-s.fr (8.18.1/8.17.1) with ESMTPS id 56UDYXEm271745
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 30 Jul 2025 15:34:33 +0200
+Received: (from chleroy@localhost)
+	by PO20335.IDSI0.si.c-s.fr (8.18.1/8.18.1/Submit) id 56UDYXMb271743;
+	Wed, 30 Jul 2025 15:34:33 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Qiang Zhao <qiang.zhao@nxp.com>, Linus Walleij <linus.walleij@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH 1/2] soc: fsl: qe: use new GPIO line value setter callbacks
+Date: Wed, 30 Jul 2025 15:34:22 +0200
+Message-ID: <175388235172.270971.7957080828511695950.b4-ty@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250610-gpiochip-set-rv-soc-v1-1-1a0c36c9deed@linaro.org>
+References: <20250610-gpiochip-set-rv-soc-v1-0-1a0c36c9deed@linaro.org> <20250610-gpiochip-set-rv-soc-v1-1-1a0c36c9deed@linaro.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,33 +78,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Date: Wed, 30 Jul 2025 15:13:54 +0200
-Subject: PowerPC updates 6.17-1: Switching VT failed
-Message-Id: <D8BCBAE7-8D8B-4A71-9616-ACEDB1281E8F@xenosoft.de>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: iPhone Mail (22F76)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1753882464; l=407; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=/o4cDiVkyPr0JbwYVaNEzFDJY8Bq/G7J5zt/xxb12Qo=; b=T8m3DHSjY8I3U43L/rEU2ojmXAySZGPQXNqoopT4g+PYQNfxMX5El9+y8GY8hGY8L71TgIJwE TRZuWcHBtxgDaNODgHwZ2PPCnKlCVyMagmq7d9dn3uva5+yc1VmKmGa
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi All,
 
-Could you please test Xorg with the latest Git kernel including the new Powe=
-rPC updates 6.17-1?=20
-Xorg doesn=E2=80=99t start anymore.
+On Tue, 10 Jun 2025 14:38:50 +0200, Bartosz Golaszewski wrote:
+> struct gpio_chip now has callbacks for setting line values that return
+> an integer, allowing to indicate failures. Convert the driver to using
+> them.
+> 
+> 
 
-Error message:
+Applied, thanks!
 
-xf86OpenConsole: Switching VT failed.
+[1/2] soc: fsl: qe: use new GPIO line value setter callbacks
+      (no commit info)
 
-I tested it with QEMU with virtio-gpu-pci and VGA,vgamem_mb=3D256 with some L=
-inux distributions today.
-
-Unfortunately I can=E2=80=99t bisect because of the lack of time.
-
-Thanks,
-Christian=
-
+Best regards,
+-- 
+Christophe Leroy <christophe.leroy@csgroup.eu>
 
