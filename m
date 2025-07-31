@@ -1,82 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-10478-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10479-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9FCB16BC8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Jul 2025 07:58:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE15B16BD3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Jul 2025 08:01:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bsz0T3qNWz305v;
-	Thu, 31 Jul 2025 15:58:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bsz3p2rKHz30Wn;
+	Thu, 31 Jul 2025 16:01:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.104.207.81
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753941513;
-	cv=none; b=VRtCBjrCsb1e/P8g0ZLzX0ULQtDbLu9uN6rFO2FJZpooQfUYlLFQf4dDT7bIzOAMpi/uq1Mvwxs107seFebiikptGnSoP2A1xA9nNclb9/LHVyIPU9bbLdsZXekJTYKqQkzWdeh90w+GG3jzwzChOComYZRBJqUgK5k3vRGmcT7GLk6eb03RgOo3VT6l8RTXhzGINNg+baXt8DEhQ1AoWMXS1phPtX28ImxaZbmJnkclofSj5xc+oSMxn2XgJZRb5QyKuR22m0BGfVT82Bm64W00rEkFtDjq/FBVqIy2KPu/wxl/nUTlWPhCA5+xLs+h//MdUdntiE4Fdr5qu91emw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753941686;
+	cv=none; b=cjSd7cJ6H6hNJp4mSYR37SnBuZI8UQU1HR10WdypB90k+vGVputnqxoEbQ1BzEBrK5tybFbzFkUdgiJIcJBnJem1nBI7wz923dX9i6pVYWA2sAyFJZyBqpOZwRPj3Q177zR1bXsh/XLKgUWCmCGRsb3JmBEWEbF71RZWBYHsML83OvCQ/eDQ3GmluFz36FhP8yVWRS9RWluTz+M1J4WL5ssT3YDhliBsgfgxcK+F/oyQ/XIqliDrmTAzQ6KoFlI9t++vZ5xxIajRi9u6y0uCe+1HZHw6Azm21MONt4EKVm/KXzGV7NQsZpsgAp7e+SqJBfDusLyK+F3GpWzrt6xkjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753941513; c=relaxed/relaxed;
-	bh=98SHBebru6MCJ/QnRQtH2DcDv15Ssbf4Sj22mQlx6D8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cetiq1ps86A5zndaDSxdaqEHnHuWqmwjyWThxtV3rOgIb7oqnEpMvkTzklWBalYwwUfwboqCMBsYZaV7rcSZPqlW51YXXQ9on4gaLvobgYRbjsl6u9paAKlmb1zh8GQBCLBOTnsLmdW451I3uiifRE0+qYej6XO7ghOs+A/3yV2eZ2ETPrUOYewcRbzt1ZQIyTudtsfMHDDY6lJWaKWGnCS8ByhD6BGNGnpLak4OBjPZFmJBA6SH/u/dYzajIII1BBfpcNWR9JCbYWv1WZZ+6SwoSeggty1u4iNKuQE0b5O/zQv/fBgaC/aA3gKho2lrAhGI/M2bscVaubUpl0niKw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=ivMHBEJx; dkim=fail header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=dkim header.b=fYaC+P1x reason="key not found in DNS"; dkim-atps=neutral; spf=pass (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=lists.ozlabs.org) smtp.mailfrom=ew.tq-group.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+	t=1753941686; c=relaxed/relaxed;
+	bh=IGpAwwv6EOU3J+szo0L/6K6hjZMUC6+znFU4vGOXvqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZiMPugdllmszuYOKP33WuM4ZUddPo7FbWy5mEbgwRmqYNJ6U2iBlFpvc13ATlJiKKb13ej/SEyzb/dciTLyKShgFhkLR3nloG65Ne/v2dUEX27ByJS1Z8aW2KFQp+STrj0AjQS0jFU1ewTI8OkYUqjmyTm+bToUUDRB5ErjQa9h1ukNnBIUKOFpGDcMGyZ/WgAiv2X5N1NM6gUpwUeTytkVt70HEHv4qfgZLcZtSboOF8ijvLSrj+5UxjkhE9idbvA5+bZS4S1HZvTe00RpKJvuFaP4re8DQ/pu85B879TdLdVdxg9xkQiBdd2MRX+dOTlc45ZssoHahzXaewUKlbA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DKKF3Cek; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=ivMHBEJx;
-	dkim=fail reason="key not found in DNS" header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=dkim header.b=fYaC+P1x;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DKKF3Cek;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=lists.ozlabs.org)
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bsz0P5MSBz2yLB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Jul 2025 15:58:27 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1753941510; x=1785477510;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=98SHBebru6MCJ/QnRQtH2DcDv15Ssbf4Sj22mQlx6D8=;
-  b=ivMHBEJxe5U5MqUQcNhmsgkKsrfzOUH7Vk/zTUUVNpJB0Ho9EXkg/db/
-   Z2zF4W5Wi7VpM+Ogh/lMYc600aeaBSV4mVc7jjcUpB9IYj4XjsNm0Xirc
-   ZKB7L6Y/rH/dqd+mhY4d6vvIj9U0cf16okplNJPBCIUSO4mzjQuI+ZDty
-   K0dfOmszRDe2/r3vfYMI0Y9l+njNAbPd5h5Hnx7feHxpbCgKvZI+a6OC/
-   bpNOt9m4ktO3MVWr1tLTfKTSoFWUCn9qez5miY43s7GH2Z/xTPg5SIXis
-   ZIwTq2OQfON5Se6t7D1wALBDAou5PjvboLEzVdDhqfw2dL/b67GYASC5x
-   A==;
-X-CSE-ConnectionGUID: 42qa7/ZfSFKqzF0ESfeQZw==
-X-CSE-MsgGUID: Yx8XBTCYSbecOEUDS8gpeg==
-X-IronPort-AV: E=Sophos;i="6.16,353,1744063200"; 
-   d="scan'208";a="45509996"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 31 Jul 2025 07:58:23 +0200
-X-CheckPoint: {688B05FF-6-FE216C80-D1ADDD01}
-X-MAIL-CPID: 343950EB2E7D3053FAAC216CA983035A_4
-X-Control-Analysis: str=0001.0A00210A.688B05FA.005F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 66CD616B0A1;
-	Thu, 31 Jul 2025 07:58:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1753941498;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=98SHBebru6MCJ/QnRQtH2DcDv15Ssbf4Sj22mQlx6D8=;
-	b=fYaC+P1xLljM/NdSckBIk110Nhmd1J/Ou3zJkfO2E39fvTHYbPAkTpDurN7pZ5dqN1zv7t
-	32gjV002+v6EELCUgr6ThmxHXKVlNMeilROyXBWFtHOrK0mIg6HCLG64oHpx+lPUv3ZyOL
-	oicN55gMPoRsRRX1unSIYzfpsGYiaSf0SjHtbNCOw0DDPPsMmIgElei9iCHwFM6qnOwg90
-	GUNkwpWN+9KFonU63w42lG+IXMI72z4E4qP/behfKf2Z+uiAUe2y/iFVZVGqM9bgEErckL
-	ahkJBbhgEpYYOzgGirYRBYo6Scj5gXbNPfS2Omwhybral1ccJDG2LLXM/Cdz4w==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/1] dt-bindings: fsl: fsl,rcpm: Add #power-domain-cells
-Date: Thu, 31 Jul 2025 07:58:04 +0200
-Message-ID: <20250731055806.2265628-1-alexander.stein@ew.tq-group.com>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bsz3n4pXjz2yF1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Jul 2025 16:01:25 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id D3EB15C5A6E;
+	Thu, 31 Jul 2025 06:01:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8ED7C4CEEF;
+	Thu, 31 Jul 2025 06:01:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753941682;
+	bh=I82Ku1sBUzvQwy4NqAe/XyR//viXY99kTa/2l5/jmhM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DKKF3Cekf++SZHUOWA04jjlZuOEM8jGgJfAc0aVSPmvXHb//UmelF3TSqVbMPTbIj
+	 MP6ZY5kK/EHxFqzZkhJ00XfylribvAhaYrLfaOpKcfokV5B/m/YCRirZ6t18pB4ZsQ
+	 bsaI+/poV49jhLpK/ZRr0Q26G8cpUoxT/F6a+V9gIC9BqoNiSkyVuYGzpHG8jsb4gD
+	 kIHsaNE1F48jrFXtV51opjZqdV2cVTpPGIvzjcT2MgCfaAhoBQdDME7Z3UNkBRnB9F
+	 9X1Zop5ceYd7F2qaq0bvgxU4gZ8+qznN5tM1C/ZQL7YhzeOUqryCvMmIs0/hr+BEoT
+	 BFZZ8xU/xu5mA==
+Date: Thu, 31 Jul 2025 09:01:17 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Christoph Hellwig <hch@lst.de>, Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
+	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
+Message-ID: <20250731060117.GR402218@unreal>
+References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
+ <cover.1750854543.git.leon@kernel.org>
+ <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
+ <20250627170213.GL17401@unreal>
+ <20250630133839.GA26981@lst.de>
+ <69b177dc-c149-40d3-bbde-3f6bad0efd0e@samsung.com>
+ <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
+ <20250730134026.GQ402218@unreal>
+ <20250730142818.GL26511@ziepe.ca>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,48 +94,44 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250730142818.GL26511@ziepe.ca>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-dtbs_check for ls1021.dtsi warns about unsupported property:
- power-controller@1ee2140 (fsl,ls1021a-rcpm): '#power-domain-cells' does not match any of the regexes: '^pinctrl-[0-9]+$'
+On Wed, Jul 30, 2025 at 11:28:18AM -0300, Jason Gunthorpe wrote:
+> On Wed, Jul 30, 2025 at 04:40:26PM +0300, Leon Romanovsky wrote:
 
-But if removed the check warns about missing property:
- power-controller@1ee2140 (fsl,ls1021a-rcpm): '#power-domain-cells' is a required property
+<...>
 
-Given commit 8bcf67b8d893b ("ARM: dts: ls1021a: add #power-domain-cells
-for power-controller node") explicitly added that property, add it
-to the expected property list as well.
+> > The most reasonable way to prevent DMA_ATTR_SKIP_CPU_SYNC leakage is to
+> > introduce new DMA attribute (let's call it DMA_ATTR_MMIO for now) and
+> > pass it to both dma_map_phys() and dma_iova_link(). This flag will
+> > indicate that p2p type is PCI_P2PDMA_MAP_THRU_HOST_BRIDGE and call to
+> > right callbacks which will set IOMMU_MMIO flag and skip CPU sync,
+> 
+> So the idea is if the memory is non-cachable, no-KVA you'd call
+> dma_iova_link(phys_addr, DMA_ATTR_MMIO) and dma_map_phys(phys_addr,
+> DMA_ATTR_MMIO) ?
 
-Fixes: ad21e3840a88 ("dt-bindings: soc: fsl: Convert rcpm to yaml format")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
----
+Yes
 
-Changes in v2:
-* Add the property instead of referencinf power-domain.yaml
-* Adjust commit message
-* v1: https://lore.kernel.org/all/20250725055835.260930-1-alexander.stein@ew.tq-group.com/
+> 
+> And then internally the dma_ops and dma_iommu would use the existing
+> map_page/map_resource variations based on the flag, thus ensuring that
+> MMIO is never kmap'd or cache flushed?
+> 
+> dma_map_resource is really then just
+> dma_map_phys(phys_addr, DMA_ATTR_MMIO)?
+> 
+> I like this, I think it well addresses the concerns.
 
- Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+Yes, I had this idea and implementation before. :(
 
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
-index 03d71ab930d79..2aa8e8a2643ba 100644
---- a/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
-@@ -49,6 +49,8 @@ properties:
-   reg:
-     maxItems: 1
- 
-+  "#power-domain-cells": true
-+
-   "#fsl,rcpm-wakeup-cells":
-     description: |
-       The number of IPPDEXPCR register cells in the
--- 
-2.43.0
-
+> 
+> Jason
+> 
 
