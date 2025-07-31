@@ -1,78 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-10491-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10492-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B8CB175B0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Jul 2025 19:37:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6583B1762A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Jul 2025 20:45:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4btGWM42tmz30Wn;
-	Fri,  1 Aug 2025 03:37:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4btJ1R1yqNz3bm3;
+	Fri,  1 Aug 2025 04:45:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753983471;
-	cv=none; b=DroHcER1+E6AOTbe3ufqsCn90JxupV0wgvqvU86dIYp3vv13al7kN/bo/qn78w/UlDhqtcGRnX9qbZIuPz7a+ACuN21zxlrdZMnGPG/wtVNJhte48Yr3j8gusPJG0J3Q8RUxY+eZT2aKzv2xr58nQL0lXucxmPtyCXpJgKbknUI51y8mvTwVakT0xNwm82ePr8VM5uLPN2u7bgMhlMhmkOeOjIpYHnBjVIX4C3ZPmSxZR9q3Nn4hWlJ+PqaJr3S1QJIrJX9H3pd6PRn1ey1cxvZOabeURqMpBdLMw4To6wzw9FpsG5GKVVnyw/HdSXBwINvoWfwrXKdQnazEtvR+Pw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::530"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753987531;
+	cv=none; b=nqtPKMF+ln/QjeADasouZYm4Qj7LrSrMCPcrSZkLMWIDsW/hzTGnqdLaOiBhqrtZ1NWe1GOjHM7XO9iTFz10ClF2+fr9ZzOg7+Vwmg+lWg2libMJ15HaJZzWgrRD5+mz19qQoGV542kGz8W7/BESLZjmw68PkVHIjSuOgAhrFIo5HZHnDqAEAjtsez+GqNPYX5IWpY0H+LTUghW9chJJwc/xO/Wr5pTFPiz9uJVoJxwJFLpv9no9thfxzi79vcbyCCd668yDkVutTuHwaKpr9DfLG+yRqxa7suqlnGKe/fdFzKaEXkgUCBDNJx4RgXMw0mZLHzP9ixjjeAhXjhiTHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753983471; c=relaxed/relaxed;
-	bh=p81bLGAEXCTve0S2bSlDolWBTWQ0gkC1ozZDbrTl9gw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FjYJdE/4PCEpVzOOCsWfEGQ0Emx4sjMjz64jUE13WvzL+5EzvSgCmpnzpbbOvFZ0tObXXlGKMInk6HvkJCEZl+/WdWtBsgk33wNWyfS6bKkpBzwvMxx4U+pvDS7nfsut9uSU1Rh8XtyOAG0pFswSUOFKtZrtnsrGjaLE6XezHJC2YNL4If3aPsf5ut1uOWolwEOBI8jYiB2C3LAzIesMALpRs6XDYNLY+k/LXxsqBOMn6/UB9KYPNuKQ+cYGmyWhtBmquRDUV0s2Hcnh0FEw2gVdkCMqcHnC4gY4y7+lx03Oq49sMc2kotEZq0A1phedmWzUggePzJtYzP5H13FRlQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	t=1753987531; c=relaxed/relaxed;
+	bh=PJeyEpTILqOg780uBAW/1Q6eRMKdUSQqGOp04S222AQ=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-version:Content-type; b=BAKgy3LFLgshEzjtyDOTc4kTTndGBYpKczwRxuqzv7v4zE/ao5m/w3JnQ2R7YFOG7wHmfnA0toVxUHERdjuRmifvVOx7SQmG8YyBZP2a6P4a+keAUvC/pHE0jjr7xD06R7mqwY5d874gPpYCIhyYhFTcIJDsj448hFethX8dRePFKnUG5/ZYCZf2mKEjh1jsZcej6idKlw31rQn6YGRAirEUKO5gncgN5vzuwxRR4vIhph2NDcvylAmgT5ZQJGWYazcFpRgtH4PxrQtX/keSMP8ceNcDjWolUHh5dNIMS0oSD6EdNAfKob0A/eEPZSEFmZtug14oVS8dejHY031MXg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HvZcnE6a; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=HvZcnE6a;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::530; helo=mail-pg1-x530.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4btGWD3Shgz306l
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Aug 2025 03:37:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=p81bLGAEXCTve0S2bSlDolWBTWQ0gkC1ozZDbrTl9gw=; b=iKWwh1a88Q0pAf4bvxfAD5Txdc
-	EE90MjrkC8Uduz8SZ6vXiansbV8frsRKlWXThc48w73PhEqccyoX4tMljfHq+8Rhz9i2ceiiTpnNQ
-	7hjsoOf+OUPX+pHbDNVQLDykrMSNBfUePqaONzx/4EcyEuzR/wo0kYwvkbEPCkU9M1bzxAWY1d2bj
-	ohP5kNlKgUTJVA9ZUQHkyV+nsX3SWV9d4/YDSTVwIwFe2VNJRwzXwJ/sEIwEa9qaSxvuX+eYykKKV
-	Yo/BB2cxQ9KFglR+QaHCwdd6BFZFTPe+0RrFxYMe0Vnzv0Y1POwKGhi1jrFc7WsVSY+Z/IRvpV2Bt
-	sXEcrVpw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uhXDL-0000000H6sX-2SDg;
-	Thu, 31 Jul 2025 17:37:11 +0000
-Date: Thu, 31 Jul 2025 18:37:11 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
-	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
-Message-ID: <aIupx_8vOg8wQh6w@casper.infradead.org>
-References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
- <cover.1750854543.git.leon@kernel.org>
- <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
- <20250627170213.GL17401@unreal>
- <20250630133839.GA26981@lst.de>
- <69b177dc-c149-40d3-bbde-3f6bad0efd0e@samsung.com>
- <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4btJ1P3RJQz2xFl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 Aug 2025 04:45:28 +1000 (AEST)
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-b3220c39cffso94251a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Jul 2025 11:45:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1753987523; x=1754592323; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PJeyEpTILqOg780uBAW/1Q6eRMKdUSQqGOp04S222AQ=;
+        b=HvZcnE6anKc20MZ/W0fSqrf3vj+0aiPDqkZey86pfRB9eTZPQ+xwJSPnUXMusrHdAw
+         Xn3qRdM4f8z+G2uYgqnXBYa8zdcZL3nnjmQQdsjJ5hLJAdkcK4ZvsUmRkCRuv2gvEaZy
+         8dCvFP410NgqNdtMLCkctqzcIaqoh0oztFs6GefM76wh+PpZaw2WtVQmFLA10X6yeHGR
+         m3ov7HgidisS1nfivd1ZtObgZpbLG9X2vHkYsp2cUSBt+hb+EozYw56ZsGC79dguyMiV
+         WPuKhq4tNOJj6WtVOczXYRI+UAyBVqwseE4jZ6h+KkffqQ7fk2F1mXHpqW7PNgdkyc75
+         JJvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753987523; x=1754592323;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PJeyEpTILqOg780uBAW/1Q6eRMKdUSQqGOp04S222AQ=;
+        b=V7fF7Gu7l3i3gdSZ9cRXsSNpA5071NQuIqcySy3FfrYv4YL2WUzInTEOGm+4UMTPss
+         rKCnRQns5XMmku+UcB9CfJj8dvKX1EGHKF2yf31IIyCFu4yYTwhaoTe0/e+ce9Y8GBtt
+         4+cu1iNnFS85tFFFd5hzx6AdGg6y9hOmFEUGRcNj7tbqjW6UJCxyWLzU+tFDT1dT9xqL
+         JrdE2RBbUg83c71Tqqf/zGvfaMDFJmXmPW+9FinXlPtuwn5p1ulKmbb+AbxMZ7EuKVec
+         GvSMpHLgdBGa5PHsRC3LAaofpdsAEA8F7B1YnfSITTRMj+ub/M/XkjukI9p+a0vZHlZM
+         a6iA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrEmwvfrihc1eugtukfgquSxHjm0OPPVv6XuktaTvP1ZiclXKw9l5ed7i6FKYvwfoRipBU6v/ukyJ0kE8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YybvHwqkMcDtIaT8zt+4CYB+zmEQ9VDf45+8XRoz3FFUDEbqZ2I
+	+Gl4BsfqRN698y0vxI4syw/Xi4WoRzmDS973HmzfvUXJT9x+L374wDMobMy+rA==
+X-Gm-Gg: ASbGncvQ/zYe8jljJ3MUBsXgxAhalHSUL0/kYG1lHN5uldajnFJjvkiNVTTfXzb3dd4
+	xd9HPM/jhqkjZPVwF7iZGxALD9CSFAAb1i/tfH7wkhHVWrgfEYhaFENqDgbypMSzBGdnbA13nTt
+	feS0UEoqTK//3Bx49ZRPi/GvSECxwia6QU48zis1EE+pnDLhVFS4KeuRCXRLbzdRBL+Bpqgvmge
+	nYRXE6sn8jN38JB0us40MHpF/+0/mFSyM9VajqfRz9uiig65nDxqUn6acVaAvl/gIkPyMHkSPlp
+	n0+s3oLC3o0z3pr7+YZ59fqDDFExvftRWEuZr/84qUJ4IFO0/DcmYrCDcqboWgXV0SaQ4uj3305
+	N/WuiqMU7JjG2kh8=
+X-Google-Smtp-Source: AGHT+IGIKXi870n++oqGLeS8pVvIqOPLThRSJdGG8l23A2iY/Sca4F/BW6iTpJ39GXAVOT3CjLDwRQ==
+X-Received: by 2002:a17:90b:3d06:b0:31f:1db2:69b1 with SMTP id 98e67ed59e1d1-31f5de96c7cmr13967732a91.18.1753987523009;
+        Thu, 31 Jul 2025 11:45:23 -0700 (PDT)
+Received: from dw-tp ([49.205.218.89])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31f63da57b4sm5427406a91.5.2025.07.31.11.45.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Jul 2025 11:45:22 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Donet Tom <donettom@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Vishal Chourasia <vishalc@linux.ibm.com>, Donet Tom <donettom@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc/mm: Switch MMU context on hash MMU if SLB preload cache is aged
+In-Reply-To: <20250731161027.966196-1-donettom@linux.ibm.com>
+Date: Thu, 31 Jul 2025 23:40:07 +0530
+Message-ID: <87y0s4qlj4.fsf@gmail.com>
+References: <20250731161027.966196-1-donettom@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,56 +90,190 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.1 OzLabs 8
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Robin,
+Donet Tom <donettom@linux.ibm.com> writes:
 
-I don't know the DMA mapping code well and haven't reviewed this
-patch set in particular, but I wanted to comment on some of the things
-you say here.
+> On systems using the hash MMU, there is a software SLB preload cache that
+> mirrors the entries loaded into the hardware SLB buffer. This preload
+> cache is subject to periodic eviction — typically after every 256 context
+> switches — to remove old entry.
+>
+> Currently, the kernel skips the MMU context switch in switch_mm_irqs_off()
+> if the prev and next mm_struct are the same, as an optimization. However,
+> this behavior can lead to problems on hash MMU systems.
+>
 
-> Marek, I'm surprised that even you aren't seeing why that would at best be
-> pointless churn. The fundamental design of dma_map_page() operating on
-> struct page is that it sits in between alloc_pages() at the caller and
-> kmap_atomic() deep down in the DMA API implementation (which also subsumes
-> any dependencies on having a kernel virtual address at the implementation
-> end). The natural working unit for whatever replaces dma_map_page() will be
-> whatever the replacement for alloc_pages() returns, and the replacement for
-> kmap_atomic() operates on. Until that exists (and I simply cannot believe it
-> would be an unadorned physical address) there cannot be any *meaningful*
-> progress made towards removing the struct page dependency from the DMA API.
-> If there is also a goal to kill off highmem before then, then logically we
-> should just wait for that to land, then revert back to dma_map_single()
-> being the first-class interface, and dma_map_page() can turn into a trivial
-> page_to_virt() wrapper for the long tail of caller conversions.
+Let's also add detailed flow of events, as this was not really an easy
+problem to catch. 
 
-While I'm sure we'd all love to kill off highmem, that's not a realistic
-goal for another ten years or so.  There are meaningful improvements we
-can make, for example pulling page tables out of highmem, but we need to
-keep file data and anonymous memory in highmem, so we'll need to support
-DMA to highmem for the foreseeable future.
+CPU 0                                   CPU 1
 
-The replacement for kmap_atomic() is already here -- it's
-kmap_(atomic|local)_pfn().  If a simple wrapper like kmap_local_phys()
-would make this more palatable, that would be fine by me.  Might save
-a bit of messing around with calculating offsets in each caller.
+Process P
+exec                                    swapper/1
+ load_elf_binary
+  begin_new_exc
+    activate_mm
+     switch_mm_irqs_off 
+      switch_mmu_context
+       switch_slb
+       /* 
+        * This invalidates all the
+        * entries in the HW and setup 
+        * the new HW SLB entries as per 
+        * the preload cache.
+        */
+switch_switch
+sched_migrate_task migrates process P to cpu-1
 
-As far as replacing alloc_pages() goes, some callers will still use
-alloc_pages().  Others will use folio_alloc() or have used kmalloc().
-Or maybe the caller won't have used any kind of page allocation because
-they're doing I/O to something that isn't part of Linux's memory at all.
-Part of the Grand Plan here is for Linux to catch up with Xen's ability
-to do I/O to guests without allocating struct pages for every page of
-memory in the guests.
+Process swapper/0                       context switch (to process P)
+(uses mm_struct of Process P)           switch_mm_irqs_off()
+                                         switch_slb
+                                           load_slb++
+                                            /*
+                                            * load_slb becomes 0 here
+                                            * and we evict an entry from
+                                            * the preload cache with
+                                            * preload_age(). We still
+                                            * keep HW SLB and preload
+                                            * cache in sync, that is
+                                            * because all HW SLB entries
+                                            * anyways gets evicted in
+                                            * switch_slb during SLBIA.
+                                            * We then only add those
+                                            * entries back in HW SLB,
+                                            * which are currently
+                                            * present in preload_cache
+                                            * (after eviction).
+                                            */
+                                        load_elf_binary continues...
+                                         setup_new_exec()
+                                          slb_setup_new_exec()
 
-You say that a physical address will need some adornment -- can you
-elaborate on that for me?  It may be that I'm missing something
-important here.
+                                        sched_switch event
+                                        sched_migrate_task migrates 
+                                        process P to cpu-0
+
+context_switch from swapper/0 to Process P
+ switch_mm_irqs_off()
+  /*
+   * Since both prev and next mm struct are same we don't call
+   * switch_mmu_context(). This will cause the HW SLB and SW preload
+   * cache to go out of sync in preload_new_slb_context. Because there
+   * was an SLB entry which was evicted from both HW and preload cache
+   * on cpu-1. Now later in preload_new_slb_context(), when we will try
+   * to add the same preload entry again, we will add this to the SW
+   * preload cache and then will add it to the HW SLB. Since on cpu-0
+   * this entry was never invalidated, hence adding this entry to the HW
+   * SLB will cause a SLB multi-hit error.
+   */
+load_elf_binary continues...
+ START_THREAD
+  start_thread
+   preload_new_slb_context
+   /*
+    * This tries to add a new EA to preload cache which was earlier
+    * evicted from both cpu-1 HW SLB and preload cache. This caused the
+    * HW SLB of cpu-0 to go out of sync with the SW preload cache. The
+    * reason for this was, that when we context switched back on CPU-0,
+    * we should have ideally called switch_mmu_context() which will
+    * bring bring the HW SLB entries on CPU-0 in sync with SW preload cache
+    * entries by setting up the mmu context properly. But we didn't do
+    * that since the prev mm_struct running on cpu-0 was same as the
+    * next mm_struct (which is true for swapper / kernel threads). So
+    * now when we try to add this new entry into the HW SLB of cpu-0,
+    * we hit a SLB multi-hit error.
+    */
+
+WARNING: CPU: 0 PID: 1810970 at arch/powerpc/mm/book3s64/slb.c:62 assert_slb_presence+0x2c/0x50(48 results) 02:47:29 [20157/42149]
+Modules linked in:
+CPU: 0 UID: 0 PID: 1810970 Comm: dd Not tainted 6.16.0-rc3-dirty #12 VOLUNTARY
+Hardware name: IBM pSeries (emulated by qemu) POWER8 (architected) 0x4d0200 0xf000004 of:SLOF,HEAD hv:linux,kvm pSeries
+NIP:  c00000000015426c LR: c0000000001543b4 CTR: 0000000000000000
+REGS: c0000000497c77e0 TRAP: 0700   Not tainted  (6.16.0-rc3-dirty)
+MSR:  8000000002823033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 28888482  XER: 00000000
+CFAR: c0000000001543b0 IRQMASK: 3
+<...>
+NIP [c00000000015426c] assert_slb_presence+0x2c/0x50
+LR [c0000000001543b4] slb_insert_entry+0x124/0x390
+Call Trace:
+  0x7fffceb5ffff (unreliable)
+  preload_new_slb_context+0x100/0x1a0
+  start_thread+0x26c/0x420
+  load_elf_binary+0x1b04/0x1c40
+  bprm_execve+0x358/0x680
+  do_execveat_common+0x1f8/0x240
+  sys_execve+0x58/0x70
+  system_call_exception+0x114/0x300
+  system_call_common+0x160/0x2c4
+
+
+> Consider the following scenario: a process is running on CPU A and gets
+> context-switched to CPU B. During this time, one of its SLB preload cache
+> entries is evicted. Later, the process is rescheduled on CPU A, which was
+> running swapper in the meantime, using the same mm_struct. Because
+> prev == next, the kernel skips the MMU context switch. As a result, the
+> hardware SLB buffer still contains the entry, but the software preload
+> cache does not.
+> 
+> The absence of the entry in the preload cache causes it to attempt to
+> reload the SLB. However, since the entry is already present in the hardware
+> SLB, this leads to a SLB multi-hit error.
+>
+
+Can we use the detailed commit msg from above instead of above two paragraphs.
+It is easier to visualize and document if we have it that way.
+
+
+> To fix this issue, we add a code change to always switch the MMU context on
+> hash MMU if the SLB preload cache has aged. With this change, the
+> SLB multi-hit error no longer occurs.
+>
+> Fixes: 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
+
+CC: stable@vger.kernel.org
+
+Otherwise LGTM.
+
+> Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+> ---
+>  arch/powerpc/mm/book3s64/slb.c | 2 +-
+>  arch/powerpc/mm/mmu_context.c  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
+> index 6b783552403c..08daac3f978c 100644
+> --- a/arch/powerpc/mm/book3s64/slb.c
+> +++ b/arch/powerpc/mm/book3s64/slb.c
+> @@ -509,7 +509,7 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
+>  	 * SLB preload cache.
+>  	 */
+>  	tsk->thread.load_slb++;
+> -	if (!tsk->thread.load_slb) {
+> +	if (tsk->thread.load_slb == U8_MAX) {
+>  		unsigned long pc = KSTK_EIP(tsk);
+>  
+>  		preload_age(ti);
+> diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
+> index 3e3af29b4523..d7b9ac8c9971 100644
+> --- a/arch/powerpc/mm/mmu_context.c
+> +++ b/arch/powerpc/mm/mmu_context.c
+> @@ -84,7 +84,7 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
+>  	switch_mm_pgdir(tsk, next);
+>  
+>  	/* Nothing else to do if we aren't actually switching */
+> -	if (prev == next)
+> +	if ((prev == next) && (tsk->thread.load_slb != U8_MAX))
+>  		return;
+>  
+>  	/*
+> -- 
+> 2.50.1
 
