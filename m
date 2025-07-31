@@ -1,61 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-10476-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10478-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02BADB167C6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 30 Jul 2025 22:51:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9FCB16BC8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Jul 2025 07:58:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bsksB3m4lz2yFK;
-	Thu, 31 Jul 2025 06:51:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bsz0T3qNWz305v;
+	Thu, 31 Jul 2025 15:58:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.79.88.28
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753908686;
-	cv=none; b=Fr6CkPuueaEN9zbRx1ztGH7IftA4HP88dj3fmAhZMGf41Y8lmf3kVGEFsrhQO81QwxK9eG+9whV7rXyuhNMtsrqqqHFpIn+YNvwZ5PzxIEyvXDbWf7xj6OpnTna0YvLWXyhCt/NdB2OuX0IKd7XsyYnjq8kC2tdx+mg6sDSrQIiOnbhCZDqwtpiEHThQiwFeVpXZYngMdw0Ebv1RklNpBviPx9yoBer26uNMzzAMgmR8P8wh2DedIvJIGNluCCDp/jKSPHgcUqhS+Fy9Da9qbORtbSbGdBTIX6Q+1buARg85PUEPLuZ+5Ew7/uKzkpQT6Ak3LncGVJ4eRJmjSKZ5MA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.104.207.81
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753941513;
+	cv=none; b=VRtCBjrCsb1e/P8g0ZLzX0ULQtDbLu9uN6rFO2FJZpooQfUYlLFQf4dDT7bIzOAMpi/uq1Mvwxs107seFebiikptGnSoP2A1xA9nNclb9/LHVyIPU9bbLdsZXekJTYKqQkzWdeh90w+GG3jzwzChOComYZRBJqUgK5k3vRGmcT7GLk6eb03RgOo3VT6l8RTXhzGINNg+baXt8DEhQ1AoWMXS1phPtX28ImxaZbmJnkclofSj5xc+oSMxn2XgJZRb5QyKuR22m0BGfVT82Bm64W00rEkFtDjq/FBVqIy2KPu/wxl/nUTlWPhCA5+xLs+h//MdUdntiE4Fdr5qu91emw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753908686; c=relaxed/relaxed;
-	bh=02MqzAQL13wGSkiV79PTgEwMNUoLXFSOZapwySxtdHs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YFgxIgXcqsvf5x3au6Kh3zUIBDqmh4dGNiGNZwa0BKJXFXhWdupMjqX0NWUXBg7XrkRVwxN5PnGB1jFCCTMvDOoHtfi2pNDkJLOVT3V42HcI/vYTjHYh1ICoxJn0I9HLFypASDfXRuDqf5dR7TELjNbjI6sDRTsCr0oD44WGFLoDqVEBedm963lWDZHpi+YBOxtUYqAGlimuuWFSZplMBjbRztID35Rq9IjRZAGbV3NkE1MLkRp75gV4wpz80jcKzg9NGIX7mqB5izHgYbgpisEhGDn2GOXQEPL3CK4aZW7c3Xn4icwiXpYZUrDeBb/eZPie4xgm4NhOBcGRVQobyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lwn.net; dkim=pass (2048-bit key; unprotected) header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256 header.s=20201203 header.b=U39lTtPt; dkim-atps=neutral; spf=pass (client-ip=45.79.88.28; helo=ms.lwn.net; envelope-from=corbet@lwn.net; receiver=lists.ozlabs.org) smtp.mailfrom=lwn.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+	t=1753941513; c=relaxed/relaxed;
+	bh=98SHBebru6MCJ/QnRQtH2DcDv15Ssbf4Sj22mQlx6D8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cetiq1ps86A5zndaDSxdaqEHnHuWqmwjyWThxtV3rOgIb7oqnEpMvkTzklWBalYwwUfwboqCMBsYZaV7rcSZPqlW51YXXQ9on4gaLvobgYRbjsl6u9paAKlmb1zh8GQBCLBOTnsLmdW451I3uiifRE0+qYej6XO7ghOs+A/3yV2eZ2ETPrUOYewcRbzt1ZQIyTudtsfMHDDY6lJWaKWGnCS8ByhD6BGNGnpLak4OBjPZFmJBA6SH/u/dYzajIII1BBfpcNWR9JCbYWv1WZZ+6SwoSeggty1u4iNKuQE0b5O/zQv/fBgaC/aA3gKho2lrAhGI/M2bscVaubUpl0niKw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=ivMHBEJx; dkim=fail header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=dkim header.b=fYaC+P1x reason="key not found in DNS"; dkim-atps=neutral; spf=pass (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=lists.ozlabs.org) smtp.mailfrom=ew.tq-group.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=lwn.net header.i=@lwn.net header.a=rsa-sha256 header.s=20201203 header.b=U39lTtPt;
+	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=ivMHBEJx;
+	dkim=fail reason="key not found in DNS" header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=dkim header.b=fYaC+P1x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=lwn.net (client-ip=45.79.88.28; helo=ms.lwn.net; envelope-from=corbet@lwn.net; receiver=lists.ozlabs.org)
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=lists.ozlabs.org)
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bsks859v3z2xtt
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Jul 2025 06:51:23 +1000 (AEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 1A49D406F8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1753908681; bh=02MqzAQL13wGSkiV79PTgEwMNUoLXFSOZapwySxtdHs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=U39lTtPtf4k9A2d2EgfZUKo2Ists2QHrOkoBrC7tz7IDvbDfTiLnYdeaQE6c2wiRA
-	 JGpMR+9yUCXoFuz5Ki76yYTxkKZOoPiQbWyrvfMEhGlRHOyqIP4Z/Bil7Pm2fHwjdN
-	 POfd4IK2EchMQYKKsIg9aZWKClpCV+vDcavVNtQPhOOjmGCY2J4VBzAgTkvHgFqVmy
-	 qZNS2GYGNab3u/1N4JM79Unz8qGnaNFPe5IeKeZkhr/OAnVbJD8NGZfhlACNwvGf/b
-	 KmBB3Z3LIBvQFFpz2qjBawRdx62UvZVYaJI+Iw73nfoplxq1OMK7KsyGG8btXlMVX4
-	 sOelNx303hhuA==
-Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 1A49D406F8;
-	Wed, 30 Jul 2025 20:51:21 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Kriish Sharma <kriish.sharma2006@gmail.com>, skhan@linuxfoundation.org,
- maddy@linux.ibm.com, mpe@ellerman.id.au
-Cc: linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, christophe.leroy@csgroup.eu,
- npiggin@gmail.com, linux-kernel-mentees@lists.linux.dev, Kriish Sharma
- <kriish.sharma2006@gmail.com>
-Subject: Re: [PATCH] docs/powerpc: add htm.rst to toctree to fix warning
-In-Reply-To: <20250730202752.8508-1-kriish.sharma2006@gmail.com>
-References: <20250730202752.8508-1-kriish.sharma2006@gmail.com>
-Date: Wed, 30 Jul 2025 14:51:20 -0600
-Message-ID: <87qzxxtnav.fsf@trenco.lwn.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bsz0P5MSBz2yLB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Jul 2025 15:58:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1753941510; x=1785477510;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=98SHBebru6MCJ/QnRQtH2DcDv15Ssbf4Sj22mQlx6D8=;
+  b=ivMHBEJxe5U5MqUQcNhmsgkKsrfzOUH7Vk/zTUUVNpJB0Ho9EXkg/db/
+   Z2zF4W5Wi7VpM+Ogh/lMYc600aeaBSV4mVc7jjcUpB9IYj4XjsNm0Xirc
+   ZKB7L6Y/rH/dqd+mhY4d6vvIj9U0cf16okplNJPBCIUSO4mzjQuI+ZDty
+   K0dfOmszRDe2/r3vfYMI0Y9l+njNAbPd5h5Hnx7feHxpbCgKvZI+a6OC/
+   bpNOt9m4ktO3MVWr1tLTfKTSoFWUCn9qez5miY43s7GH2Z/xTPg5SIXis
+   ZIwTq2OQfON5Se6t7D1wALBDAou5PjvboLEzVdDhqfw2dL/b67GYASC5x
+   A==;
+X-CSE-ConnectionGUID: 42qa7/ZfSFKqzF0ESfeQZw==
+X-CSE-MsgGUID: Yx8XBTCYSbecOEUDS8gpeg==
+X-IronPort-AV: E=Sophos;i="6.16,353,1744063200"; 
+   d="scan'208";a="45509996"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 31 Jul 2025 07:58:23 +0200
+X-CheckPoint: {688B05FF-6-FE216C80-D1ADDD01}
+X-MAIL-CPID: 343950EB2E7D3053FAAC216CA983035A_4
+X-Control-Analysis: str=0001.0A00210A.688B05FA.005F,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 66CD616B0A1;
+	Thu, 31 Jul 2025 07:58:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1753941498;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=98SHBebru6MCJ/QnRQtH2DcDv15Ssbf4Sj22mQlx6D8=;
+	b=fYaC+P1xLljM/NdSckBIk110Nhmd1J/Ou3zJkfO2E39fvTHYbPAkTpDurN7pZ5dqN1zv7t
+	32gjV002+v6EELCUgr6ThmxHXKVlNMeilROyXBWFtHOrK0mIg6HCLG64oHpx+lPUv3ZyOL
+	oicN55gMPoRsRRX1unSIYzfpsGYiaSf0SjHtbNCOw0DDPPsMmIgElei9iCHwFM6qnOwg90
+	GUNkwpWN+9KFonU63w42lG+IXMI72z4E4qP/behfKf2Z+uiAUe2y/iFVZVGqM9bgEErckL
+	ahkJBbhgEpYYOzgGirYRBYo6Scj5gXbNPfS2Omwhybral1ccJDG2LLXM/Cdz4w==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/1] dt-bindings: fsl: fsl,rcpm: Add #power-domain-cells
+Date: Thu, 31 Jul 2025 07:58:04 +0200
+Message-ID: <20250731055806.2265628-1-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,38 +90,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Kriish Sharma <kriish.sharma2006@gmail.com> writes:
+dtbs_check for ls1021.dtsi warns about unsupported property:
+ power-controller@1ee2140 (fsl,ls1021a-rcpm): '#power-domain-cells' does not match any of the regexes: '^pinctrl-[0-9]+$'
 
-> The htm.rst file was not included in any toctree, leading to a Sphinx
-> warning when building documentation.
->
-> Include it in Documentation/arch/powerpc/index.rst to fix the warning.
->
-> Signed-off-by: Kriish Sharma <kriish.sharma2006@gmail.com>
-> ---
->  Documentation/arch/powerpc/index.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/Documentation/arch/powerpc/index.rst b/Documentation/arch/powerpc/index.rst
-> index 0560cbae5fa1..ae0280383315 100644
-> --- a/Documentation/arch/powerpc/index.rst
-> +++ b/Documentation/arch/powerpc/index.rst
-> @@ -36,7 +36,7 @@ powerpc
->      vas-api
->      vcpudispatch_stats
->      vmemmap_dedup
-> -
-> +    htm
->      features
+But if removed the check warns about missing property:
+ power-controller@1ee2140 (fsl,ls1021a-rcpm): '#power-domain-cells' is a required property
 
-Thanks...but we already have two conflicting versions of this fix headed
-upstream, so a third is probably not needed :)
+Given commit 8bcf67b8d893b ("ARM: dts: ls1021a: add #power-domain-cells
+for power-controller node") explicitly added that property, add it
+to the expected property list as well.
 
-jo
+Fixes: ad21e3840a88 ("dt-bindings: soc: fsl: Convert rcpm to yaml format")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+
+Changes in v2:
+* Add the property instead of referencinf power-domain.yaml
+* Adjust commit message
+* v1: https://lore.kernel.org/all/20250725055835.260930-1-alexander.stein@ew.tq-group.com/
+
+ Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
+index 03d71ab930d79..2aa8e8a2643ba 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,rcpm.yaml
+@@ -49,6 +49,8 @@ properties:
+   reg:
+     maxItems: 1
+ 
++  "#power-domain-cells": true
++
+   "#fsl,rcpm-wakeup-cells":
+     description: |
+       The number of IPPDEXPCR register cells in the
+-- 
+2.43.0
+
 
