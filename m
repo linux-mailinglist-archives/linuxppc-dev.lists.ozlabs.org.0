@@ -1,87 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-10482-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10483-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2944EB16C90
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Jul 2025 09:17:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF8AB171AB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 31 Jul 2025 15:01:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bt0l91p0Fz305v;
-	Thu, 31 Jul 2025 17:17:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bt8Nc5Qvkz2yLB;
+	Thu, 31 Jul 2025 23:01:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.21 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753946229;
-	cv=pass; b=cMdKRyEvQ/L/ugT0ockaq0tzF5BqZW64mEwunay0FTU0a94FAwUCbYTQvgzcxS5Gpau/6e3SIi5q/WPC//ZBARVE/qcwZpwV4qAi6i5uuNMEKm0SXdxddTq5QnJlQ8I9d+jK06jvpa8IaopZz6/2LOyKoos7EH1hudYnDnuN4dkMrxlweDjjsC2X3zVP1diJEouOdwuP85aDBNmsy+U5FGrR5JmJ/nitGX88xL3WOrWS7mr+ceN5ag5wwGataFjA06JXaSLsBuCxg75q+KTiooXcpaeSdck0eiiJxem6XDQpmbk8JdZ0yH/N2xzvj+tUqBxMAvtgLB7d/RTPpJxLNA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1753946229; c=relaxed/relaxed;
-	bh=tBDx+9UC6WEm9gwwpPzWfHeLKUjU0zmv01xkFgYmYcY=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 In-Reply-To:To; b=NJrBq7CladYz8hYr24VskkIid/EePqo1kLSG8xwB9FgqA9V4+pruww91wr2ujPVW74uiIr9GOGwNIWEYbVuXPdT4ngpZZivRTQ9xNXhv1fM9wxz/ILEF9+QjKVllyunFg6e92t6rU/PcpWjThf7O9e+IJe8F0AD7XmQeSxONOB1EbBd1toPhPlJCc7KjlM/8n5s17cezNmxWO+pf5U8YVyu0+wqxugGM4psEToZW+NY14MWnGSPXXLir+YQQsgnpRHxaaZtZ9ucr3DvR28kJuWMEvAl/aaZEksuHgDtPk8uwooNKnsXYz0lG8n6g4WEjf8h3oVhg++U6TvT6SLdJ8Q==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=qnxrqadR; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=NtTuECCi; dkim-atps=neutral; spf=pass (client-ip=85.215.255.21; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p00-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=qnxrqadR;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=NtTuECCi;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.21; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 183 seconds by postgrey-1.37 at boromir; Thu, 31 Jul 2025 17:17:05 AEST
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [85.215.255.21])
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:1000::53df:5f64:0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1753966896;
+	cv=none; b=E8D1+7hn4tBasttO/B+jlBi8FZz5e+Pg8+W8pLLcpM2/ULBuKZcS4zj8Bu6BDFwulKNw98gcXlknx8ed5OA8v7xvB6ZDbVnwg2iGUnkhI+vlzZaf0VqWkx2PXSFrPNoxuMPXVb6zW1PePYlsvBQdXymN1J1gKaz+cw/YJrqg68KJwzwEEAXAnGJEklBVXy7Q+OUkwV+e8dYV4mjhKjvPGPu+QntM5kvYw23dI03tkQVhVf0zj52lx2x3nsaUMy7uiyv+0h4EGci4Z5sO+3TmbiU/Dr4zxnnxhaMIIZUvC/n9XekxdIx5oDc7CMfzyaS5LxuEBwf5s/uL+H1NFte2Pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1753966896; c=relaxed/relaxed;
+	bh=jxW+6785tJEz/E3KGQE/g1RUSoxOfHYk4JGiyk+THwk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IqCbfhmX+O9TdgofJFeUD7wM4AtMsmASc0o22XE/YUd0t0fbU+yJDQQ+zS9h+HQlfaWQiI5jHi7ROD7bytojgt3QmIYXj05va91W6h2OMwUkL3zrVL0mgh2ApcWhrdyutq7Bc6OvaC1zrCaywsquA0mEv5yqnLCKB5ytcQm6TW1anDNFoBTOOQZdw8XcC/Kie6APglkGtgcN6D785BHnQcbr4sRQDlEoKQjGJjg/LXXv2b3PWr4iwTa0mK2ykejBrbcIlipP+2RSCwBRru/L6qkadpRGyi4L2X9HzHQFTsDPrJ+k9HZoZePU+vLZjY94JjwM5EVA+S7ZFEdh1YEwdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout1.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout1.hostsharing.net (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bt0l56jtqz2yLB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Jul 2025 17:17:05 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1753946036; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=cEYzBVHjP5FeO0UmsdWFNk+N9AkL2I2jJzShUHRfaPFnSJSTlWfSEijdqSsd7+60qc
-    LCedDAAsxpxB6PiIDOGS0AvGNtobBKxYZ2gUDQhIP5P3xhdTam7Oqo5yiBsHFhEy/uBs
-    lkctxv9FRJRcQXXnekaKk1nYJrylRX0NZlaPuuxF94jxYb8sgTqPPk6xLFrHjkEDVS5p
-    s5XS4RNLyTW4rFjtcol7nym4RPUPH3W2aKJL3sHyDKAlYx+xSRN+xG2AzoszlBuHRBR1
-    tEERwkCin2xrQ2NWiEzZNGSoN/8JZjEn3wmX/E9A4S694IRq+KYNCQyEiqUlIjWzk2jC
-    Jwdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1753946036;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:References:Message-Id:Date:Subject:From:Cc:Date:From:
-    Subject:Sender;
-    bh=tBDx+9UC6WEm9gwwpPzWfHeLKUjU0zmv01xkFgYmYcY=;
-    b=hdHymX5dEAyvCU+eEXAqmwdxwQXqXgxqKThTtAdJzl6zQWuw66OQrmSL1rgd5RXV60
-    6F1Zh4gDO4SiaST3fNFhhsdR69jbPtbkmGLvuxcSQlWC24TFv7PyVtmuOcMQGkVbgCdo
-    YG8v7mFuSUZpzkl1l0V3dbUEzRvw9Rz/O5VFThBokK6iifxk6Rvcv4/aHSWPHqjhV4NB
-    SQOPmdhM6diW4Quxikozq0Kcx6fDMIGqdr9bUV9GuiVW3JrCk5opECV/NdjlCDOaYOkX
-    XfOz7UwywHUMfgx7bjgI/pvIkwBYzTfIT4EWJLNt6ytiqYrt9x7oYzb3/iJCU4Qqjuen
-    UnHw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1753946036;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:References:Message-Id:Date:Subject:From:Cc:Date:From:
-    Subject:Sender;
-    bh=tBDx+9UC6WEm9gwwpPzWfHeLKUjU0zmv01xkFgYmYcY=;
-    b=qnxrqadR+mJi7HsItOf+6Bi0oQRqsspMAiRWw2YiCQZ29Q0NuwjTXb7MNyq+Niuc9U
-    HIMgVpRRyS6L3NCSy9vWFiYtFNUp2zw/DxnQEmH7TqQY8k7w3ZYI4/3Bb/YynjQ1EKcH
-    rhgkLiyZn9Jo1w9B8QCEgqCEkI/7eApCEw6SxpGKUpMGPDmbu57TfPL2Cx4lCPuA0IHc
-    tbVhqlvxTAarE851i9ojs1ZTC2LU7uKsHx7B8IVq16VEygenca0a/tBz/LHHZZRNmziF
-    iz2Ze7Eb4EErpYpF+mLLsy8G7AuwRKzpo4pnkExTMcyEh9l80EvtemDkWaZvOpoyIk8s
-    RVzg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1753946036;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=To:In-Reply-To:References:Message-Id:Date:Subject:From:Cc:Date:From:
-    Subject:Sender;
-    bh=tBDx+9UC6WEm9gwwpPzWfHeLKUjU0zmv01xkFgYmYcY=;
-    b=NtTuECCiPWmKmETLyvcpX3yJaVJrebgHnc4MSCehFHXB1y/4f6oC5piUNjzQp6Cfzy
-    0UBru5Y6ymXfUUrEoKAA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5mzs3zHCHUPVA3N/gJLdDvXsmHsmXN/cif88k0="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 52.1.2 AUTH)
-    with ESMTPSA id e6066c16V7DueEj
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate)
-    for <linuxppc-dev@lists.ozlabs.org>;
-    Thu, 31 Jul 2025 09:13:56 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bt8Nb392sz2xQ6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 31 Jul 2025 23:01:32 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 6C3922C06E34;
+	Thu, 31 Jul 2025 15:01:28 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 550D02A060F; Thu, 31 Jul 2025 15:01:28 +0200 (CEST)
+Date: Thu, 31 Jul 2025 15:01:28 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Niklas Schnelle <schnelle@linux.ibm.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Linas Vepstas <linasvepstas@gmail.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>, Sinan Kaya <okaya@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	Keith Busch <kbusch@kernel.org>
+Subject: Re: [PATCH v3 1/2] PCI/AER: Fix missing uevent on recovery when a
+ reset is requested
+Message-ID: <aItpKIhYr0T8jf7A@wunner.de>
+References: <20250730-add_err_uevents-v3-0-540b158c070f@linux.ibm.com>
+ <20250730-add_err_uevents-v3-1-540b158c070f@linux.ibm.com>
+ <aIp6LiKJor9KLVpv@wunner.de>
+ <aIp_Z9IdwSjMtDho@wunner.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,46 +73,92 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: Re: PowerPC updates 6.17-1: Switching VT failed
-Date: Thu, 31 Jul 2025 09:13:45 +0200
-Message-Id: <2ECC65F5-18CF-4330-8E5C-9FD863BDA4CD@xenosoft.de>
-References: <D8BCBAE7-8D8B-4A71-9616-ACEDB1281E8F@xenosoft.de>
-In-Reply-To: <D8BCBAE7-8D8B-4A71-9616-ACEDB1281E8F@xenosoft.de>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-X-Mailer: iPhone Mail (22G86)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aIp_Z9IdwSjMtDho@wunner.de>
+X-Spam-Status: No, score=0.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi All,
+On Wed, Jul 30, 2025 at 10:24:07PM +0200, Lukas Wunner wrote:
+> On Wed, Jul 30, 2025 at 10:01:50PM +0200, Lukas Wunner wrote:
+> > On Wed, Jul 30, 2025 at 01:20:57PM +0200, Niklas Schnelle wrote:
+> > > Since commit 7b42d97e99d3 ("PCI/ERR: Always report current recovery
+> > > status for udev") AER uses the result of error_detected() as parameter
+> > > to pci_uevent_ers(). As pci_uevent_ers() however does not handle
+> > > PCI_ERS_RESULT_NEED_RESET this results in a missing uevent for the
+> > > beginning of recovery if drivers request a reset. Fix this by treating
+> > > PCI_ERS_RESULT_NEED_RESET as beginning recovery.
+> > [...]
+> > > +++ b/drivers/pci/pci-driver.c
+> > > @@ -1592,6 +1592,7 @@ void pci_uevent_ers(struct pci_dev *pdev, enum pci_ers_result err_type)
+> > >  	switch (err_type) {
+> > >  	case PCI_ERS_RESULT_NONE:
+> > >  	case PCI_ERS_RESULT_CAN_RECOVER:
+> > > +	case PCI_ERS_RESULT_NEED_RESET:
+> > >  		envp[idx++] = "ERROR_EVENT=BEGIN_RECOVERY";
+> > >  		envp[idx++] = "DEVICE_ONLINE=0";
+> > >  		break;
+> > 
+> > I note that PCI_ERS_RESULT_NO_AER_DRIVER is also missing in that
+> > switch/case statement.  I guess for the patch to be complete,
+> > it needs to be added to the PCI_ERS_RESULT_DISCONNECT case.
+> > Do you agree?
+> 
+> I realize now there's a bigger problem here:  In pcie_do_recovery(),
+> when control reaches the "failed:" label, a uevent is only signaled
+> for the *bridge*.  Shouldn't a uevent instead be signaled for every
+> device *below* the bridge?  (And possibly the bridge itself if it was
+> the device reporting the error.)
 
-The PowerPC updates 6.17-1 aren=E2=80=99t responsible for this issue.
-I reverted the PowerPC updates 6.17-1 but Xorg doesn=E2=80=99t start.
+The small patch below should resolve this issue.
+Please let me know what you think.
 
-Cheers,
-Christian
+> In that case you don't need to add PCI_ERS_RESULT_NO_AER_DRIVER to
+> the switch/case statement because we wouldn't want to have multiple
+> uevents reporting disconnect, so the one emitted below the "failed:"
+> label would be sufficient.
 
-> On 30 July 2025 at 03:13 pm, Christian Zigotzky <chzigotzky@xenosoft.de> w=
-rote:
->=20
-> =EF=BB=BFHi All,
->=20
-> Could you please test Xorg with the latest Git kernel including the new Po=
-werPC updates 6.17-1?
-> Xorg doesn=E2=80=99t start anymore.
->=20
-> Error message:
->=20
-> xf86OpenConsole: Switching VT failed.
->=20
-> I tested it with QEMU with virtio-gpu-pci and VGA,vgamem_mb=3D256 with som=
-e Linux distributions today.
->=20
-> Unfortunately I can=E2=80=99t bisect because of the lack of time.
->=20
-> Thanks,
-> Christian
+I'll send a separate Reviewed-by for your original patch as the small
+patch below should resolve my concern about PCI_ERS_RESULT_NO_AER_DRIVER.
 
+> This all looks so broken that I'm starting to wonder if there's any
+> user space application at all that takes advantage of these uevents?
+
+I'd still be interested to know which user space application you're
+using to track these uevents?
+
+Thanks,
+
+Lukas
+
+-- >8 --
+
+diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+index e795e5ae..3a95aa2 100644
+--- a/drivers/pci/pcie/err.c
++++ b/drivers/pci/pcie/err.c
+@@ -165,6 +165,12 @@ static int report_resume(struct pci_dev *dev, void *data)
+ 	return 0;
+ }
+ 
++static int report_disconnect(struct pci_dev *dev, void *data)
++{
++	pci_uevent_ers(dev, PCI_ERS_RESULT_DISCONNECT);
++	return 0;
++}
++
+ /**
+  * pci_walk_bridge - walk bridges potentially AER affected
+  * @bridge:	bridge which may be a Port, an RCEC, or an RCiEP
+@@ -272,7 +278,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+ failed:
+ 	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
+ 
+-	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
++	pci_walk_bridge(bridge, report_disconnect, NULL);
+ 
+ 	pci_info(bridge, "device recovery failed\n");
+ 
 
