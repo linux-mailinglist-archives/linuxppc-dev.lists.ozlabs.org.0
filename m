@@ -1,62 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-10511-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10512-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653B5B18441
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Aug 2025 16:53:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32CCEB184B9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 Aug 2025 17:13:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4btpqG6LPsz2yfL;
-	Sat,  2 Aug 2025 00:53:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4btqGR66yqz2yfL;
+	Sat,  2 Aug 2025 01:13:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754060010;
-	cv=none; b=l0h47rtdNMly6WbixULr+T+symiUcO8AB8DFYIRuOZ4XNgVOyAgL9z7h81s40ehTqbctoUUu8aed0yHycUOiuNtxiyDuDdO8R3NfG+sXOv0eaEXi1zo/g+eJz4n+ymoTvuK0kckjeojbvlHkZi8FO0xzRy2UMGU+6Z44/PWPbzRNHlXiFx4THlbkUM9emHEva8q7cGV9Oq1hCn/oS9BauRdiSZ5W6hwnD9lPryEMCfJRIzifolb/EzjP3a9B3zQ9/ChpD9B1lkjAZ+LM7AkBRdViZ8az+JkxZvBN/qfM8h/BGOzT6PJEYkk1L5CDLVsonzDdrw89UF9u8EBQDcKKKQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.218.44
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754061215;
+	cv=none; b=X9zxEcyTbb0i2IEr/K+ax99i+Gtly701KXEtp6KrdnnFI0sR38VF77bI28Ua6YC4lI96iQP2hYoNr/QMlvefHyARCbVK+6ldKJPwY2GJaQsZ0lzIHs/O6KrVv0v0BAnjGuSX40xwQQTZPr7uykJ67h90wIRhzRTI8t84mTIOBfNvpSYYXoU7aUt92VG9BUErAlpsa2nhWSg9wp13SoY4sXo9dXjfAiK6QSkeQhVzUYxkfOMNaOnmYTbesUvISvQ0BNQajoN9QwzzovTfLkGvwtEcvaeWxtgondPaTaRySeEpiA20IwvIr+FatLTJowMMb1PLP5nL6l/fwM4OWYRVXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754060010; c=relaxed/relaxed;
-	bh=ADDPtUToLP1PL4w/rddTfZ4yahs/srP5rxSdZmpIW64=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=anuV52YoqmBBN9h6ZaWY2n86R8NKknobBmXTbXdZCCNS+eOnUyXTogu/ScWvDB8pObSBcfgXeeJD7hC3vqFCXCQIdRqVWZSQNqiEDwJqNTMWRmzT14MBf0HVZYQ76UzeCGSfvMsanQoApCkNpfc5eiOfnq90+C9p8pMw/1/wkg0DrRX85mhFaLBFxkZc0Ygo6LfLZLuqAp4xDYOmeyfVtyyMKnzqtK4JDGrVdok5eW+6hTAf+NTafDYHrCrlDvLYRMXQ2IR4QAXo5dXp3dmvmAMaDyDNI97b7JrUSojIPbK/56cen833W8XAtQQGa30WCeu0dIMHRgWDbW/Kq3+wyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jur77nIt; dkim-atps=neutral; spf=pass (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jur77nIt;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Sat, 02 Aug 2025 00:53:28 AEST
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1754061215; c=relaxed/relaxed;
+	bh=pLvAFPQ8DYraj8LtMTWkc3DYDv2AWsFej7nsT5sUEtI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H6Ep3HIk3rSFjCIBGke81G5ym6+gs/J666tvi836GUTVWBewZWBppUP6mgZx2kdRMAwfWNut4OclK9zqeFFEuTOBWhe9YzoLEu4YDhf3rSj+LS3fa+Rj9hLAOdetNJt6LcRGTeECIaVmy89ocrVVRPwBjvU4+6lXzCRlPLcox64h4Yc50yrVVCYHftgK3tosSJrnWH0aiTMoCF7XtV0EWShexd9aUGQr2tOiWX1ZivlwH7EyREzuNncG+0UAFddbSKsWqdGNnAdWOVsd9+YJ6xEX+vSmLOiKlv8+uoJXZoM1+9wbRaHb946mVm2uC3dK0MZ3smGcSqiArEuEoHnvjA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass (client-ip=209.85.218.44; helo=mail-ej1-f44.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.218.44; helo=mail-ej1-f44.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4btpqD4KZnz2xHY
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Aug 2025 00:53:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1754060008; x=1785596008;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sBCCqUHyxvz+lx9/+L/ZjF2F6jrGowmd9wNhC0XHTCo=;
-  b=jur77nItprdxQZwGpwiWlKC7BN7d3y7fOtPdn9a+KTilGr2iM8eSRPt7
-   d7XS+QH46itSnLxtx3YxUBO+dZVev2k8m6rOUcLHOdO6Ux7zeUiSm2XvU
-   LJSBIF3Cpw0ofRhO45eV+H7O/DNXIKItN5rV4mi7Y+FzpCp0RTsGX4es3
-   GSzt4f8FZo8iYU+SZSKva0BAuXjFNa5OsDriVWDWh6olqx4mKv6ZKpnM0
-   oXmLSi6Y2SAYnP1kkgsZms+RrgJKrid8p51wWAWgsq3T7xEAi6dgRSTaO
-   MpgM5+DaX+eEiI39tgjtOg2wHwxCgnPMsIG8YWX7J5PJJMSZrLgVxfqpY
-   Q==;
-X-CSE-ConnectionGUID: njgjbnhxQLikW5+SL3dMjA==
-X-CSE-MsgGUID: 8YVq5yWwT9u1Z4IsmNsSJw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11508"; a="55468002"
-X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
-   d="scan'208";a="55468002"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2025 07:52:18 -0700
-X-CSE-ConnectionGUID: Nl9OPwNcQKKMMDbkvbHtxA==
-X-CSE-MsgGUID: 1BXYkWYaTV2Xzf1rXpYVdA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,255,1747724400"; 
-   d="scan'208";a="162864754"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO [10.125.109.249]) ([10.125.109.249])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Aug 2025 07:52:18 -0700
-Message-ID: <85663f65-d746-4e2c-b8a6-d594d9d0ba42@intel.com>
-Date: Fri, 1 Aug 2025 07:52:17 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4btqGQ2PMrz2xHY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 Aug 2025 01:13:33 +1000 (AEST)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ae0dd7ac1f5so325743266b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 Aug 2025 08:13:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754061210; x=1754666010;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pLvAFPQ8DYraj8LtMTWkc3DYDv2AWsFej7nsT5sUEtI=;
+        b=nQWNzBcFqMexkiJ2oJvZGyCTc41+wLBd+ZF7eX9vpgH4w6w6c/Bo4MDwU8LaA4aoUn
+         ecAEmpMx/PEKTiusheZH4Xaxs+BnM28hy4sBKdvjeVEG5+zaoeGxxX4nGEoCUACFU+FU
+         MINkC6D22mO1v523IUEo1+681h+ObXTAZbVuvP7K7W6zLJSsqtPuuXnpr3u7a2nbfFjv
+         WYSdY3nqFrJgf/wfnbTg46M9nThEMRMmP6+tEZeA2sYIaJzIoKRF3zT/GgcVcdfDrTcm
+         enzOUqkPFxJbjy/7mUzsxk34J9z+R6W4hc7A1+n1aUp6DYgi2RWRggNF5AMV1IjOW+x9
+         2byA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRt0QfUkmxlC2B3IDi3oH/6Wa0nBqRYk9+4DXIWxelLuvbJ3h2nAgTlunEizhxa2he+jN9rsf5+oXkApI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxcYDTyOMzN0MunEwTTODZs+j2xGToGu/ANZM+uLEG2P6tJIew/
+	H29DggifnagwhgI5kAs+JM+hwVUwV3aENGiLQqHwXkA/tcILHXl+BH8J
+X-Gm-Gg: ASbGncuJQXnJOri+jF5EkfasRRHN73YG9QufkwUjdi/ahcDlYbVtrdG0ITVnTm1POzB
+	E6mszLIJoBseb4wi9Yt+IdadytbXIW9T9cvfIu/N8kd9rudwRt/e8hm/Png+GMvVWZJwtuazIZn
+	G890rurOy7RnwXvKkkESP445hCio9alne6ihBVTneCSvjfZ+/QWOqxW3kOrZViyvZUOGZn4rwdz
+	qk5Att+yEbFTVGyOI0tDyknsWl9cnLV/Db0UFRs0mZV1GrHu+JaQVgUbf0oDY5tKOOT+fTEY765
+	Zx8CxEiMd9/3ddFqmMu0oDE4HD0Y9txgH7x9uwgBxa5R5QJn6BjnbRBWRh3Y/5WfcETne6zwuvY
+	lEklpZtxG9RdDgA==
+X-Google-Smtp-Source: AGHT+IHxwNCV+mxtZBzz5cvZjpfuoqtgwb9V8VUnUiYcYZ36deiu6WNQjZZGI0DAGbFT+RybIxFgAA==
+X-Received: by 2002:a17:907:9706:b0:ae3:cd73:efde with SMTP id a640c23a62f3a-af9401b0c5emr13383466b.44.1754061210083;
+        Fri, 01 Aug 2025 08:13:30 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:30ff:72::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a24062esm303137466b.126.2025.08.01.08.13.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Aug 2025 08:13:29 -0700 (PDT)
+Date: Fri, 1 Aug 2025 08:13:26 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+	James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>, 
+	Robert Moore <robert.moore@intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, linux-acpi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, acpica-devel@lists.linux.dev, osandov@osandov.com, 
+	xueshuai@linux.alibaba.com, konrad.wilk@oracle.com, linux-edac@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, kernel-team@meta.com, osandov@fb.com
+Subject: Re: [PATCH v4] vmcoreinfo: Track and log recoverable hardware errors
+Message-ID: <f3yl424iqiyctgz4j36hzjrhkgae3a2h5smhalm2qbmq3nrpzd@oeuprthscfez>
+References: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
+ <85663f65-d746-4e2c-b8a6-d594d9d0ba42@intel.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,133 +85,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] vmcoreinfo: Track and log recoverable hardware errors
-To: Breno Leitao <leitao@debian.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
- James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>,
- Borislav Petkov <bp@alien8.de>, Robert Moore <robert.moore@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
- acpica-devel@lists.linux.dev, osandov@osandov.com,
- xueshuai@linux.alibaba.com, konrad.wilk@oracle.com,
- linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org, kernel-team@meta.com, osandov@fb.com
-References: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <85663f65-d746-4e2c-b8a6-d594d9d0ba42@intel.com>
+X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_MSPIKE_H2,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 8/1/25 05:31, Breno Leitao wrote:
-> Introduce a generic infrastructure for tracking recoverable hardware
-> errors (HW errors that are visible to the OS but does not cause a panic)
-> and record them for vmcore consumption.
-...
+Hello Dave,
 
-Are there patches for the consumer side of this, too? Or do humans
-looking at crash dumps have to know what to go digging for?
+On Fri, Aug 01, 2025 at 07:52:17AM -0700, Dave Hansen wrote:
+> On 8/1/25 05:31, Breno Leitao wrote:
+> > Introduce a generic infrastructure for tracking recoverable hardware
+> > errors (HW errors that are visible to the OS but does not cause a panic)
+> > and record them for vmcore consumption.
+> ...
+> 
+> Are there patches for the consumer side of this, too? Or do humans
+> looking at crash dumps have to know what to go digging for?
+> 
+> In either case, don't we need documentation for this new ABI?
 
-In either case, don't we need documentation for this new ABI?
+I have considered this, but the documentation for vmcoreinfo
+(admin-guide/kdump/vmcoreinfo.rst) solely documents what is explicitly
+exposed by vmcore, which differs from the nature of these counters.
 
-> diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-> index 4da4eab56c81d..f85759453f89a 100644
-> --- a/arch/x86/kernel/cpu/mce/core.c
-> +++ b/arch/x86/kernel/cpu/mce/core.c
-> @@ -45,6 +45,7 @@
->  #include <linux/task_work.h>
->  #include <linux/hardirq.h>
->  #include <linux/kexec.h>
-> +#include <linux/vmcore_info.h>
->  
->  #include <asm/fred.h>
->  #include <asm/cpu_device_id.h>
-> @@ -1690,6 +1691,9 @@ noinstr void do_machine_check(struct pt_regs *regs)
->  	}
->  
->  out:
-> +	/* Given it didn't panic, mark it as recoverable */
-> +	hwerr_log_error_type(HWERR_RECOV_MCE);
-> +
+Where would be a good place to document it?
 
-Does "MCE" mean anything outside of x86?
+> > @@ -1690,6 +1691,9 @@ noinstr void do_machine_check(struct pt_regs *regs)
+> >  	}
+> >  
+> >  out:
+> > +	/* Given it didn't panic, mark it as recoverable */
+> > +	hwerr_log_error_type(HWERR_RECOV_MCE);
+> > +
+> 
+> Does "MCE" mean anything outside of x86?
 
-I wonder if this would be better left as "HWERR_RECOV_ARCH" or something.
+AFAIK this is a MCE concept.
 
-...
-> +void hwerr_log_error_type(enum hwerr_error_type src)
-> +{
-> +	if (src < 0 || src >= HWERR_RECOV_MAX)
-> +		return;
-> +
-> +	/* No need to atomics/locks given the precision is not important */
+> I wonder if this would be better left as "HWERR_RECOV_ARCH" or something.
 
-Sure, but it's not even more lines of code to do:
+Sure. I can update it to be more generic.
 
-	atomic_inc(&hwerr_data[src].count);
-	WRITE_ONCE(hwerr_data[src].timestamp, ktime_get_real_seconds());
+> > +void hwerr_log_error_type(enum hwerr_error_type src)
+> > +{
+> > +	if (src < 0 || src >= HWERR_RECOV_MAX)
+> > +		return;
+> > +
+> > +	/* No need to atomics/locks given the precision is not important */
+> 
+> Sure, but it's not even more lines of code to do:
+> 
+> 	atomic_inc(&hwerr_data[src].count);
+> 	WRITE_ONCE(hwerr_data[src].timestamp, ktime_get_real_seconds());
+> 
+> So why not?
 
-So why not?
+Sure, we can do that, I will update it also.
 
-> +	hwerr_data[src].count++;
-> +	hwerr_data[src].timestamp = ktime_get_real_seconds();
-> +}
-> +EXPORT_SYMBOL_GPL(hwerr_log_error_type);
+> > +	hwerr_data[src].count++;
+> > +	hwerr_data[src].timestamp = ktime_get_real_seconds();
+> > +}
+> > +EXPORT_SYMBOL_GPL(hwerr_log_error_type);
+> 
+> I'd also love to hear more about _actual_ users of this. Surely, someone
+> hit a real world problem and thought this would be a nifty solution. Who
+> was that? What problem did they hit? How does this help them?
 
-I'd also love to hear more about _actual_ users of this. Surely, someone
-hit a real world problem and thought this would be a nifty solution. Who
-was that? What problem did they hit? How does this help them?
+Yes, this has been extensively discussed in the very first version of
+the patch. Borislav raised the same question, which was discussed in the
+following link:
+
+https://lore.kernel.org/all/20250715125327.GGaHZPRz9QLNNO-7q8@fat_crate.local/
+
+Thanks for the review,
+--breno
 
