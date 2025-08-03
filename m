@@ -1,84 +1,114 @@
-Return-Path: <linuxppc-dev+bounces-10533-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10534-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCC3B19461
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Aug 2025 17:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E6EB1946C
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 Aug 2025 17:59:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bw3Vp0qDlz2xQ6;
-	Mon,  4 Aug 2025 01:28:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bw4BB1Chsz2xWc;
+	Mon,  4 Aug 2025 01:59:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.165 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754234914;
-	cv=pass; b=ceiDyyRLVgoyiMAFo9cErc5GnAOlJTDY5ISiLuo/6FxgUBpEwS6r3SLpj8xBcm6j1Cg074+BTcAkLjHrMx6zPOw26N5vukQh4w9ePHoA4FOiVWPNu7tIoo9SQPW4TMyWimU6lIWXRj9FehDY0qutQfTB2FprjHITYAnNpVfPmb1zeArFRTK0Jnu1kJyjqS7iiunnvDhWzN57K3rQR78ZYvrsw5mDAP4Q+eqizMtTxMX2eHEKBzQEc3wJJ9Kk2TtZt0zc7KZUL9eqUay6ycsE2I1rTgYZlVQveyCXhXK4keaePBEtkRRmu4GY0sbtm46xAjyaAOaVrE6nALu4yJBgWA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754234914; c=relaxed/relaxed;
-	bh=v0fh6BDgcALF6w1H/N9nbhWtwyu3zZ1deC5YjYfAFMs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=XGURG8dBeUgzCyiV2S7rkwdwtA9KeJxpoQaDCHuDTujGSD5DS5iRdjl/rsfqlg4C9jvLmK/b9wjovMGL7aazw8oKV1BJdT2QCJ8fi4FhfTDeiptYtmFQ3zQquNFYnhhtuXUw+oci8oVT8OUnTA7gkPKGpkW2wD0tc7m6xM3seqeJzS/y4AFIgCqn4qhh7AqH+xeVl2LSza0qy0KKQEvAIGm1jkT6mwD1GtvWy2Vkn9qGS7JHs+CLRlwd0On1xUmx7ckPG3X94B4Vhx2XSTRFUw7n7972+DSu35doB57nSvaYZFZSNVZ+tV+oBFADht/7jDGi2rsgjx9FjZ8fgbJ+jw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=OOcCgdEW; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=MezSJif+; dkim-atps=neutral; spf=pass (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::835"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754236754;
+	cv=none; b=n3NLJNKl9OPngkqDb8bXakZDhdxb+X2d/UGg3DxbUfu0QJ86f2od3wOdo2KuHz5S+rraulpgwEi5Q9jppQbqvNV5+Tm+46JkDaNzzhGorh5vNJ9bX8NpdiiLrZbJ5b2sBzR3CxudYyGFO7lbSCJ4NZEjkYruB8USszJvQ1hstq3kK9YWf7Y4IdRBrwHOkP8m/RSWu+/51yC5apSsDZJS3T4oyxEt3Em42GDkXY4S4byY/G7mBRwwO9p1/F2o/tfGSE1Z0jNgIu6RaoeZhjw201jsPMvAAVEqJMMGoY6RI/iFYRLCs71GJiNajeQpbdE1Zrte3ccrloxodzvTJP3L7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754236754; c=relaxed/relaxed;
+	bh=8slyx6E/zt3CNU5aqFjzFMTLA7WC2ifuj8UOdB6q15U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JmodSyGPFALbTRamoYRMHc/ykeYnNE4CKQFh65EY8Uqvd/rPHR4b3EDdCeCEtZi6Vp8rd7APg0EvYjzUPRxYIlk5JdqLNNKAHa8LAbkH1KYolG5Y7ohuztRnxyu+Q5WRdpEoDn036bWqMRQLZdHi5GLbnA5ShsvwN2y9If/Au006eBZExdc5fXbBSfFgYcQ3YkagW9C2dTw6tFuJgWMH9GO+xu9eQGBp/r7G3zo92en1DblB2Kaog4QM/ivi6BuYHvRjRCMy4P+2poFlEB4fRq4+kFCdmDXGDAqQZNRUJXteRct8npTy8Rs0BzQ5W0fS6NfeiUL5bktiUfA0FdsjoA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=AUoqGEtn; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::835; helo=mail-qt1-x835.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org) smtp.mailfrom=ziepe.ca
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=OOcCgdEW;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=MezSJif+;
+	dkim=pass (2048-bit key; secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=AUoqGEtn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::835; helo=mail-qt1-x835.google.com; envelope-from=jgg@ziepe.ca; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bw3Vk5zS7z2xBb
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 01:28:28 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1754234893; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=slYZRl4yutfj3Ryf444LEzKqxtAOExk+E7wKtOZiTMQeOU3W+7HYG1BQSWGUUomXLs
-    +ZmV12t76TTDl4HTI7iuXYnLYWs4UF+/fbPnGMktOvVWjmI7s1GCHPkyX6fwg67XNJXH
-    mM7ptfpwuD72Dcx3zSFdh5PvzW5HCq6RXNSCTrGjddj6o+zCt5tckYHanq9mSC+kY6X6
-    dLkdiPPf21BfyDjSbSNJDIJvt2d75kKXPRxGQdolAAOaaMibl0ZdEXU4PEHMZkYw4c2H
-    tdJ/yEiTbI31tygOsi+2h7wx/WglICcz7RF/Nr0ZAZ9uZ+2GykoMWpMYEMibkt9KNuMF
-    QG5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754234893;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=v0fh6BDgcALF6w1H/N9nbhWtwyu3zZ1deC5YjYfAFMs=;
-    b=nc4bH1CGEssCXjhPjS+7OattczMrEoC7DcHD5DbRLDpYKhEL+eeRtme3nJfntdNKRr
-    ykI+sCJKDYDyAaFz2U2GJimNqi1LBfuFB/rPjXiU4NTLIXrsXbf83m2z+PrDeGFynLw8
-    uvA/1ArVS4hj4IGb+ff50Um8Rk5iJItxtYuSkf2n2mjF1m0O2xZfcX/ZMBAztlXMi7uQ
-    otdy1VE2906+Dp2HM4OkiTqW6QMjZXOO8rmjUST2V8owXoSZwVBBqnrPRtQZgA1SMq2V
-    TNoTiY756qhvqXLSVOBjj8r9VBzDcO7ZTP7HnDBaTQA8yEttFj0XS+IUpuHrs6/7LcbR
-    ivgw==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754234893;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=v0fh6BDgcALF6w1H/N9nbhWtwyu3zZ1deC5YjYfAFMs=;
-    b=OOcCgdEWCxZ/sipfQ7VG4XnXI1tMZcpbrCNXJJ7/RuuB4C6FcRvDsOJHR3s27rrIfY
-    VZ36VH0niBvISXiqwXfHqKjRoMdjmmkug+KOw7w3OXUZFPtv9fe0Joe+w4rkdt7yzYhz
-    E+STEK53eCS2vCAckfQSqW1uq8UutbLcedP84lS3S3fqjEFeqE7TflkqWvZ7Wrdg1BFY
-    0GwxWYfuhIrUW8D9BX4oTI3OV7zmtRLgdtP28wXgv2nzXozRf0vZ5OnQ1K8/Wf0wXN9H
-    tJdpFTSirUUGWYwXriv0JABuiY5bZ8VVUWEraiIBKdH1x7t1hdbVX0DKEJ51Hr0ude+O
-    VuJA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754234893;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:References:Cc:To:From:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=v0fh6BDgcALF6w1H/N9nbhWtwyu3zZ1deC5YjYfAFMs=;
-    b=MezSJif+PzHaAfCG7yXQPBy+orAVsWfL7qBcXJnL2tO7zguPVDtArxDuOD4uEl5DB7
-    aWYx/HfOsC84S0+SlkBQ==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr4thIFiqT9BURIy+m7R/g"
-Received: from [192.168.178.20]
-    by smtp.strato.de (RZmta 52.1.2 DYNA|AUTH)
-    with ESMTPSA id e6066c173FSCom0
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Sun, 3 Aug 2025 17:28:12 +0200 (CEST)
-Message-ID: <2cc83897-427d-47f4-b6a3-8db9682972cd@xenosoft.de>
-Date: Sun, 3 Aug 2025 17:30:52 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bw4B84wSbz2xQ6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 01:59:11 +1000 (AEST)
+Received: by mail-qt1-x835.google.com with SMTP id d75a77b69052e-4aeb2e06b82so9222801cf.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 03 Aug 2025 08:59:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1754236748; x=1754841548; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8slyx6E/zt3CNU5aqFjzFMTLA7WC2ifuj8UOdB6q15U=;
+        b=AUoqGEtnfN1szbsI4WQPfp2QqciiLlXXuspqGALXGBdb0umNjzVq5LuuAcByGGSd9y
+         1DUmlV2uWri+/LaxHHJqxFnepA3ae8kyL6JAxwWxtnPXR3bCYVdsCDUk8e6pbmCxPEGn
+         Jiu+0p0Oov3/X+H0CC/CchfjJ7VYSitnzhQrzaDSJA6ZNR1ERDg23qRQY+b9x4EErEpm
+         bWye1Jxka837UCyBAbUopU0rkaJoNz26bIRxSmDteFQ9wdSS+JwSF47ITaIhvLVOBc0H
+         kPcAxE9PcH6NX3VKeeJEpj0D3qUvDcwDYKludZpqI8/Axp58x8LeRXkJlnZlad4cBrrb
+         1/tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754236748; x=1754841548;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8slyx6E/zt3CNU5aqFjzFMTLA7WC2ifuj8UOdB6q15U=;
+        b=w96R66hRM5oJd5VPAE59b6SXWTUuwP/M9KtK/Lodr0uwxNXdOITQqVIVW3Ky8gAFYQ
+         R2rCgBWpGpDf4pju2JZxtt//lZJQWi/wfRU75JkmNFNoXIeFbNXa3NdLGVZUAzLRNFwm
+         WiK8xvaKaUpnUrRaltA5qRf6T9hcXEmCOBjdZGcuIPEL8Vfi0d4dgREmsdEOoiFpWi+v
+         zD+2A09ZD7pOQLfApgna4kjp0AGlEHrz16KRpw2tsXdMpx6BGZhrJXC977ISciTpL2/o
+         IyKWrZMpikPkRsTqfn5hL8esXYs1xIrlq8KUiG7rAuBDWotOQg2udHjGxfvwV5HWcUwX
+         4yXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXo3n538Y86OlrUd7Wnfvnz+xaWBDpVNZNUQu+5bPRD+Mvbim6JqDAcz+lKd34Wbmnteds6oV8qONlYkqc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyB1NP+Eqqvzpm03+KZV4Z7eMn5WeFSxcg87ls5hfh790lmjzgq
+	lamiFQY7Pao97QPZ0WM30U+TiHMrMqUGtJIC0FUE5PzE0PSUdhF6dkPycanSDtn9Uzo=
+X-Gm-Gg: ASbGncsZxtORlWVC91Rr/ODCLK/q82iqX3zP5++GOG37dm4eaOPEu05GZyIQY4ytTa3
+	A560TY/VkZpUJC0O5CqmKTjgD9FISKqbrc3tiN844VReCcsCAKwPSvrGyAhocBCe0ylj3C9/JGU
+	+ysFshcsOdwXRpKD8/EafXlWbz0x6iVJ/wr9gqqHdyaooswAV0Yv1bHND91dOYDUpZR0WbIaMsK
+	HVc6ohXoub3NvI879nm5hyuTN6S4TNaKM3y2i7jfgFqWeQVmHhSWaD8TQPBPGm39C6D0Fbhh/0c
+	D054Ae8kU1T9WgE0//fZyOGJQX0uhhQPt6HXR1tcp8ULX4z1zPI6VqHeyYTrhD6PJrJRFTGOqMa
+	lQShGDG//2TbvvGyw64SH4v1NGiivmPCxCj/t+oSs2nFMbyLrxsUFVLR5QmzujXtW88mm
+X-Google-Smtp-Source: AGHT+IGXTSS5qgdnpS/eJ13tqSItmWfAUC8meUEvOe7mj0qBpcNtZfptB2QZRGNN4fnSPsBSKZwvXw==
+X-Received: by 2002:a05:622a:1dc5:b0:4b0:6da3:26df with SMTP id d75a77b69052e-4b06da333ccmr13497821cf.29.1754236748067;
+        Sun, 03 Aug 2025 08:59:08 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4af01e4aa4dsm29318401cf.23.2025.08.03.08.59.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 Aug 2025 08:59:07 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1uib74-00000001Hym-2XZx;
+	Sun, 03 Aug 2025 12:59:06 -0300
+Date: Sun, 3 Aug 2025 12:59:06 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	=?utf-8?B?SsOpcsO0bWU=?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
+	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
+Message-ID: <20250803155906.GM26511@ziepe.ca>
+References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
+ <cover.1750854543.git.leon@kernel.org>
+ <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
+ <20250627170213.GL17401@unreal>
+ <20250630133839.GA26981@lst.de>
+ <69b177dc-c149-40d3-bbde-3f6bad0efd0e@samsung.com>
+ <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
+ <aIupx_8vOg8wQh6w@casper.infradead.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,90 +122,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: radeon_fbdev_river_fbdev: failed to initialize framebuffer and setup
- emulaton
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Alex Deucher <alexdeucher@gmail.com>, ville.syrjala@linux.intel.com
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, "R.T.Dickinson"
- <rtd@a-eon.com>, mad skateman <madskateman@gmail.com>,
- Darren Stevens <darren@stevens-zone.net>, hypexed@yahoo.com.au,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
- Hans de Goede <hdegoede@redhat.com>, Wu Hoi Pok <wuhoipok@gmail.com>,
- amd-gfx@lists.freedesktop.org, alexander.deucher@amd.com
-References: <CADnq5_PUi_2+kDYX8R_eanNF4iYN79MdXJ_PLcQbZKi6e4S8tg@mail.gmail.com>
- <87F47F04-EBAC-48D6-AD0A-4BBE39DF43CE@xenosoft.de>
- <1115cce7-cfdc-4c5b-b017-69cd32425650@xenosoft.de>
- <6ba8d730-52f9-421f-8d8a-887545f0ceac@xenosoft.de>
-In-Reply-To: <6ba8d730-52f9-421f-8d8a-887545f0ceac@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NORMAL_HTTP_TO_IP,
-	NUMERIC_HTTP_ADDR,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aIupx_8vOg8wQh6w@casper.infradead.org>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello,
+On Thu, Jul 31, 2025 at 06:37:11PM +0100, Matthew Wilcox wrote:
 
-I have the same issue on another machine either. Blank screen during the 
-boot. The Radeon graphics framebuffer device doesn't work anymore.
+> The replacement for kmap_atomic() is already here -- it's
+> kmap_(atomic|local)_pfn().  If a simple wrapper like kmap_local_phys()
+> would make this more palatable, that would be fine by me.  Might save
+> a bit of messing around with calculating offsets in each caller.
 
-Here is the modifed code from the DRM updates (drm-next-2025-07-30):
+I think that makes the general plan clearer. We should be removing the
+struct pages entirely from the insides of DMA API layer and use the
+phys_addr_t, kmap_XX_phys(), phys_to_virt(), and so on.
 
-- 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/gpu/drm/radeon/radeon_fbdev.c?id=260f6f4fda93c8485c8037865c941b42b9cba5d2
-- 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/gpu/drm/radeon/radeon_drv.c?id=260f6f4fda93c8485c8037865c941b42b9cba5d2
-- 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/gpu/drm/radeon/radeon_display.c?id=260f6f4fda93c8485c8037865c941b42b9cba5d2
-- 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/gpu/drm/radeon/evergreen_cs.c?id=260f6f4fda93c8485c8037865c941b42b9cba5d2
+The request from Christoph and Marek to clean up the dma_ops makes
+sense in that context, we'd have to go into the ops and replace the
+struct page kmaps/etc with the phys based ones.
 
-Do you have a patch for reverting these modifications? I would like to 
-revert these modifications for testing.
+This hides the struct page requirement to get to a KVA inside the core
+mm code only and that sort of modularity is exactly the sort of thing
+that could help entirely remove a struct page requirement for some
+kinds of DMA someday.
 
-Thanks in advance,
-Christian
+Matthew, do you think it makes sense to introduce types to make this
+clearer? We have two kinds of values that a phys_addr_t can store -
+something compatible with kmap_XX_phys(), and something that isn't.
 
-On 03 August 2025 at 1:35 pm, Christian Zigotzky wrote:
-> Hello,
-> 
-> Xorg doesn't work after the DRM updates drm-next-2025-07-30.
-> 
-> Error messages:
-> 
-> [dr:.radeon_fbdev_river_fbdev_proe] *ERROR* failed to initialize 
-> framebuffer -22
-> radeon 0000:01:0.0: [drm] *ERRO* fbdev: Failedto setup emulaton (ret=-22)
-> brd module loadedm
-> lop: module loadd
-> mpt3ss version 52.10.00.00 loaded
-> nve nvme0: pci fuction 0002:04:0.0
-> fsl-sata ffe20000.sata: SataFSL Platform/CS Driver init
-> scs host0: sata_fs
-> ta1: SATA max DMA/133 irq 68 pm-pol 0
-> ;21;39mfsl-sat ffe221000.sata Sata FSL Platfrm/CSB Driver iit
-> ata1: Signatue Update detectd @ 0 msecs
-> scsihost1: sata_fsl[0m
-> ta2: SATA max UMA/133 irq 69 lm-pol 0
-> nvme nvm0: 4/0/0 defaul/read/poll queus
-> nvme0n1: p1 p p3 p4 p5 p6 p7[0m
-> drm:.radeon_fbdv_driver_fbdev_robe] *ERROR* filed to initialze 
-> framebuffer 22
-> fsl_dpaa_mac fe4e6000.ethernt: of_get_mac_adress(/soc@ffe00000/ 
-> fman@40000/ethernet@e6000 failed
-> radeon 000:01:00.0: [dr] *ERROR* fbdev Failed to setu emulation (ret-22)
-> fsl_dpaa_ma ffe4e6000.ethenet: FMan MEMAC[0m
-> sl_dpaa_mac ffee6000.ethernet:Using random MA address: 0e
-> 
-> Could you please check the latest DRM updates?
-> 
-> Thanks,
-> Christian
-> 
+This was recently a long discussion in ARM KVM as well which had a
+similar confusion that a phys_addr_t was actually two very different
+things inside its logic.
 
+So what about some dedicated types:
+ kphys_addr_t - A physical address that can be passed to
+     kmap_XX_phys(), phys_to_virt(), etc.
+
+ raw_phys_addr_t - A physical address that may not be cachable, may
+     not be DRAM, and does not work with kmap_XX_phys()/etc.
+
+We clearly have these two different ideas floating around in code,
+page tables, etc.
+
+I read some of Robin's concern that the struct page provided a certain
+amount of type safety in the DMA API, this could provide similar.
+
+Thanks,
+Jason
 
