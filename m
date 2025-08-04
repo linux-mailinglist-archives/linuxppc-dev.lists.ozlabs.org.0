@@ -1,49 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-10569-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10568-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4A1B1A133
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 14:20:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 406C9B1A0F7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 14:14:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwbHT2mxPz3bV6;
-	Mon,  4 Aug 2025 22:20:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwb8b5Gg1z3069;
+	Mon,  4 Aug 2025 22:14:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754310037;
-	cv=none; b=ZsqJgetNUZOAGJokYhwnACMwURufrqh17prRoS5UymJzUJ8/xj3B1FH3J90CT1Hsn/XxRH6R8SZRI6JvvaalMa/3HOVzjlp+pimKR87s0HBvnlKhNzpwICw7o9q+MBYuu0E9vulwXo460bwN0wK64h05h28+plHHzRvmRJHSuCCWUgN7Fr5e8eSIsfPtUeaWodEU+dc8tQ6NNHh4eNw5MMfaNOYDG6OSfq8gm3T+j9C7MjKr50aZkGY8IAn5qU7ihPuXnOID/TXVula+N/9GxgPNk9LDv/ANbJZQtvejmTRVtRZLnW5CuIe+RvHYZggrMYEWH9jOOUPJmhy7PeHXeg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754309679;
+	cv=none; b=oRhNtsYAryMlxHxLVJ6U2s6BCZcCMMpzUD7AkXYCOXK7tJqbfBmkumZTKV7Cy/grETDjxNDuvsUZo5ABzmb/4B/7kscEGL9q7KdxmFLBj0+GvPB7fLtIlrhyTB/6mHf87f7KFv3Tb9R00PI7aRdnrcM0p0wui4eebFvVzj2jUOEZLmBGc9vr9Th8ybp9LWJmTve8hHEuZJQ4oKure2BgqXb+5zIjwaKs0TJf+7dAKhxLjsjhUbCCWp1fU5ibK0x6b81DPEfffEyf51PbwWOwl88RhzGJ8QcC9qFN8tVA6ErO3cFaGSA7HVOF0b4CWBxO7BogaXb6leMO13BX9cCZ8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754310037; c=relaxed/relaxed;
-	bh=EEXPPFH4l8VuLr/3UDtR2Lyz5HeTqsVq+1KVy/ssu0I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hrUWg6jdpezuILw/RwuoKcOETgE+wq6VeTVVYO6lvA/IxC7V4IP46ZSCOFLRMvnKgzuJ5zpF7ZFIcjdKqhdQP3Wy1EWy6+ION3Ig7qQ8+qdX9HueYTUOtcpMidisZot1BVm8x0WPz1n7zmxhLt/MeSxxkpj9IfK/4nOmTPIbm1zXdcCmGV55ioKd9ughMf4pl7XTAU0nAETDBEgwv+Ji6upsBeDLo49Lag/To2JrkVEOIvcn+s5h15QYQn6E4ojJayhxNG3XsyInwA5t0k1XSbeUx1dj+1PGQgCA9KHC5tKzsqYXmQqw6kbP5tY3IaWEkB2EULkhIlB075dcksD1Ow==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwbHS2cpWz30gC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 22:20:35 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bwZxK1dGRz9t2s;
-	Mon,  4 Aug 2025 14:04:53 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id dlBu_8hLK5co; Mon,  4 Aug 2025 14:04:53 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bwZws04Yhz9sr6;
-	Mon,  4 Aug 2025 14:04:29 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E7AA88B764;
-	Mon,  4 Aug 2025 14:04:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id CvwZaHj2jN54; Mon,  4 Aug 2025 14:04:28 +0200 (CEST)
-Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BA7898B763;
-	Mon,  4 Aug 2025 14:04:28 +0200 (CEST)
-Message-ID: <74b373bb-cf18-49b3-84ed-56d04e09c71e@csgroup.eu>
-Date: Mon, 4 Aug 2025 14:04:28 +0200
+	t=1754309679; c=relaxed/relaxed;
+	bh=bkCaliAq08k6pthvg5cnXDYw9hW8fQnGbzG6ffz5kQw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m2vwen3cH7YGXq8YO3nLqvzyzOxWY3cQeR87EXftLEZ/xCaiA6vSjwmgX+bfgscv8fpZZfRRYRvcfYlHB0fEjmthE+P5+ygfqyWRdDeSs1R42MdxQp8yGqRLuvJ6iI+4V40F64Vo0ky7wIM+t+fDxqVQtQEJv1fh6/7oUY3Fgl0CaY69qZmIHud4+GEI1T5Zr8JfGC8UCioO5XEQwWLCkNJt5DlMDFutGH1hKmq1efEa44EpHDDl70VhoRRS8tB53sXobsAaZJksT5/BxuDvCusX0TG4IEKaFRL0n5u08/Ltni5YJn2YFzix2t7uWa7dAJn//UhS9tl7toF4WujS8w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ULjTUi6Z; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ULjTUi6Z;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwb8Z3d3Gz2yLJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 22:14:37 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 574BWg2M014721;
+	Mon, 4 Aug 2025 12:14:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=bkCali
+	Aq08k6pthvg5cnXDYw9hW8fQnGbzG6ffz5kQw=; b=ULjTUi6ZfTRV+fckyGtK3O
+	qfhFlVexaHIAvlW2iN6+prIMqYcGPxtg07ROxzIXXBau8h0Y2rt1butGbKhLTqQI
+	5FppwdxR4GitCGXs8GuhQ8I9ttU5hAnsFl6r2/HEBMmw2kfd00Q9z3KjJ803fnrm
+	7/j+Ts3ote5mMLqQ2MJTB83rEOHlVntozq7rHpQTCylCVMmSpvJvAdbSl85q1W1c
+	eozm4ltAD//pd1c5OhMalBu9SJhhwWmfEnANYDk4cxQ9lOJK0NyB06ZYjsrYh/sb
+	BElM+AsJGIBBuhUUtsM9TzGBJQQgD4jBGgsCF1fpfg3Z2yKu9J1LQWQmU/LRro/A
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48983t16w2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Aug 2025 12:14:24 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 574CAJY4011078;
+	Mon, 4 Aug 2025 12:14:24 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48983t16vx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Aug 2025 12:14:24 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 574AXJsY006836;
+	Mon, 4 Aug 2025 12:14:23 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 489xgmdpkr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 04 Aug 2025 12:14:23 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 574CEJa252494670
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 4 Aug 2025 12:14:19 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D43F2004B;
+	Mon,  4 Aug 2025 12:14:19 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A1E020040;
+	Mon,  4 Aug 2025 12:14:17 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.124.212.175])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  4 Aug 2025 12:14:16 +0000 (GMT)
+Date: Mon, 4 Aug 2025 17:44:11 +0530
+From: Vishal Chourasia <vishalc@linux.ibm.com>
+To: Donet Tom <donettom@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev@lists.ozlabs.org, Ritesh Harjani <ritesh.list@gmail.com>,
+        linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] powerpc/mm: Fix SLB multihit issue during SLB preload
+Message-ID: <aJCkE_80YfYUWIzZ@linux.ibm.com>
+References: <20250801103747.21864-1-donettom@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,434 +95,222 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/12] kasan: unify kasan_arch_is_ready() and remove
- arch-specific implementations
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrey Konovalov <andreyknvl@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Cc: hca@linux.ibm.com, akpm@linux-foundation.org,
- kasan-dev <kasan-dev@googlegroups.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-References: <20250717142732.292822-1-snovitoll@gmail.com>
- <f10f3599-509d-4455-94a3-fcbeeffd8219@gmail.com>
- <CACzwLxjD0oXGGm2dkDdXjX0sxoNC2asQbjigkDWGCn48bitxSw@mail.gmail.com>
- <f7051d82-559f-420d-a766-6126ba2ed5ab@gmail.com>
- <CACzwLxjESCT_=1BG2rWiaxz1wCYbVWHAvf+v4=S5dzeHJ8c97g@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <CACzwLxjESCT_=1BG2rWiaxz1wCYbVWHAvf+v4=S5dzeHJ8c97g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250801103747.21864-1-donettom@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA2NSBTYWx0ZWRfXzplmM8FaVGkJ
+ BGW95B9VBj0mvQuehAtnAQHOfa2WQo0xB2q44cXXF44P/8AXPKY/88dLektrfkmY6Jxg/FXdmRZ
+ f/+UvKxnOUD8gGmMrmN2MA6cnczzHPNzyqWVD1zuJ26KGutFznwnI7jEMnqMI8T+iMhkHgVJ9hl
+ h60nUBzpqcmvJOKiS9fetaa1hA6jXafxoTBoYEwyRtUpiaIxQkUMHOQ8HAJFBVx/b1JOu4J3p1+
+ aukbtgwpOHfeYFvxQYy9Kgmj6eQcVLFdLeyvYEaY0ITKvWhQ1DfSba2irPM/0tKwSLeix9HoZzm
+ PLYv+iO4J/HsBAMTSarz09MwdgEpP6Jv7i0liB1BdB36I7ACw8YPisL0veTTSZiybIjI43XjTHR
+ R+05bYI0XcWrStucQmHVpzqZcRU3yk/RQSI7zG7Jz/z2hJ/caZMOITeFV45KYei9qOkKm3DS
+X-Proofpoint-GUID: Xi1C_RZ5eyuRNvg804c77mtb1ljWn-zF
+X-Proofpoint-ORIG-GUID: 2ff2BdISzjA-CTAzgsIgqvjC26p_SUqW
+X-Authority-Analysis: v=2.4 cv=AZSxH2XG c=1 sm=1 tr=0 ts=6890a420 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=1UX6Do5GAAAA:8 a=pGLkceISAAAA:8 a=xPUkudSxAZQojQN1IlsA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=Et2XPkok5AAZYJIKzHr1:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-04_05,2025-08-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 priorityscore=1501 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 mlxscore=0 spamscore=0 malwarescore=0 phishscore=0
+ suspectscore=0 mlxlogscore=999 adultscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505280000 definitions=main-2508040065
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
-
-Le 03/08/2025 à 21:27, Sabyrzhan Tasbolatov a écrit :
-> On Wed, Jul 23, 2025 at 10:33 PM Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
->>
->> ...
->>
->> I don't know if it's a real problem or not. I'm just pointing out that we might
->> have tricky use case here and maybe that's a problem, because nobody had such use
->> case in mind. But maybe it's just fine.
->> I think we just need to boot test it, to see if this works.
->> ...
->> powerpc used static key same way before your patches, so powerpc should be fine.
+On Fri, Aug 01, 2025 at 04:07:47PM +0530, Donet Tom wrote:
+> On systems using the hash MMU, there is a software SLB preload cache that
+> mirrors the entries loaded into the hardware SLB buffer. This preload
+> cache is subject to periodic eviction — typically after every 256 context
+> switches — to remove old entry.
 > 
-> Hello,
+> To optimize performance, the kernel skips switch_mmu_context() in
+> switch_mm_irqs_off() when the prev and next mm_struct are the same.
+> However, on hash MMU systems, this can lead to inconsistencies between
+> the hardware SLB and the software preload cache.
 > 
-> Just heads up that I am still working on v4.
-> While I can verify the success on compile and booting with my changes
-> on x86, arm with SW/HW_TAGS modes, I'm having issues with PowerPC, UML
-> arch that selects ARCH_DEFER_KASAN.
+> If an SLB entry for a process is evicted from the software cache on one
+> CPU, and the same process later runs on another CPU without executing
+> switch_mmu_context(), the hardware SLB may retain stale entries. If the
+> kernel then attempts to reload that entry, it can trigger an SLB
+> multi-hit error.
 > 
-> Adding Christophe Leroy in TO. Please advise on the powerpc panic issue.
+> The following timeline shows how stale SLB entries are created and can
+> cause a multi-hit error when a process moves between CPUs without a
+> MMU context switch.
+> 
+> CPU 0                                   CPU 1
+> -----                                    -----
+> Process P
+> exec                                    swapper/1
+>  load_elf_binary
+>   begin_new_exc
+>     activate_mm
+>      switch_mm_irqs_off
+>       switch_mmu_context
+>        switch_slb
+>        /*
+>         * This invalidates all
+>         * the entries in the HW
+>         * and setup the new HW
+>         * SLB entries as per the
+>         * preload cache.
+>         */
+> context_switch
+> sched_migrate_task migrates process P to cpu-1
+> 
+> Process swapper/0                       context switch (to process P)
+> (uses mm_struct of Process P)           switch_mm_irqs_off()
+>                                          switch_slb
+>                                            load_slb++
+>                                             /*
+>                                             * load_slb becomes 0 here
+>                                             * and we evict an entry from
+>                                             * the preload cache with
+>                                             * preload_age(). We still
+>                                             * keep HW SLB and preload
+>                                             * cache in sync, that is
+>                                             * because all HW SLB entries
+>                                             * anyways gets evicted in
+>                                             * switch_slb during SLBIA.
+>                                             * We then only add those
+>                                             * entries back in HW SLB,
+>                                             * which are currently
+>                                             * present in preload_cache
+>                                             * (after eviction).
+>                                             */
+>                                         load_elf_binary continues...
+>                                          setup_new_exec()
+>                                           slb_setup_new_exec()
+> 
+>                                         sched_switch event
+>                                         sched_migrate_task migrates
+>                                         process P to cpu-0
+> 
+> context_switch from swapper/0 to Process P
+>  switch_mm_irqs_off()
+>   /*
+>    * Since both prev and next mm struct are same we don't call
+>    * switch_mmu_context(). This will cause the HW SLB and SW preload
+>    * cache to go out of sync in preload_new_slb_context. Because there
+>    * was an SLB entry which was evicted from both HW and preload cache
+>    * on cpu-1. Now later in preload_new_slb_context(), when we will try
+>    * to add the same preload entry again, we will add this to the SW
+>    * preload cache and then will add it to the HW SLB. Since on cpu-0
+>    * this entry was never invalidated, hence adding this entry to the HW
+>    * SLB will cause a SLB multi-hit error.
+>    */
+> load_elf_binary continues...
+>  START_THREAD
+>   start_thread
+>    preload_new_slb_context
+>    /*
+>     * This tries to add a new EA to preload cache which was earlier
+>     * evicted from both cpu-1 HW SLB and preload cache. This caused the
+>     * HW SLB of cpu-0 to go out of sync with the SW preload cache. The
+>     * reason for this was, that when we context switched back on CPU-0,
+>     * we should have ideally called switch_mmu_context() which will
+>     * bring the HW SLB entries on CPU-0 in sync with SW preload cache
+>     * entries by setting up the mmu context properly. But we didn't do
+>     * that since the prev mm_struct running on cpu-0 was same as the
+>     * next mm_struct (which is true for swapper / kernel threads). So
+>     * now when we try to add this new entry into the HW SLB of cpu-0,
+>     * we hit a SLB multi-hit error.
+>     */
+> 
+> WARNING: CPU: 0 PID: 1810970 at arch/powerpc/mm/book3s64/slb.c:62
+> assert_slb_presence+0x2c/0x50(48 results) 02:47:29 [20157/42149]
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 1810970 Comm: dd Not tainted 6.16.0-rc3-dirty #12
+> VOLUNTARY
+> Hardware name: IBM pSeries (emulated by qemu) POWER8 (architected)
+> 0x4d0200 0xf000004 of:SLOF,HEAD hv:linux,kvm pSeries
+> NIP:  c00000000015426c LR: c0000000001543b4 CTR: 0000000000000000
+> REGS: c0000000497c77e0 TRAP: 0700   Not tainted  (6.16.0-rc3-dirty)
+> MSR:  8000000002823033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 28888482  XER: 00000000
+> CFAR: c0000000001543b0 IRQMASK: 3
+> <...>
+> NIP [c00000000015426c] assert_slb_presence+0x2c/0x50
+> LR [c0000000001543b4] slb_insert_entry+0x124/0x390
+> Call Trace:
+>   0x7fffceb5ffff (unreliable)
+>   preload_new_slb_context+0x100/0x1a0
+>   start_thread+0x26c/0x420
+>   load_elf_binary+0x1b04/0x1c40
+>   bprm_execve+0x358/0x680
+>   do_execveat_common+0x1f8/0x240
+>   sys_execve+0x58/0x70
+>   system_call_exception+0x114/0x300
+>   system_call_common+0x160/0x2c4
+> 
+> To fix this issue, we add a code change to always switch the MMU context on
+> hash MMU if the SLB preload cache has aged. With this change, the
+> SLB multi-hit error no longer occurs.
+> 
+> cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> cc: Michael Ellerman <mpe@ellerman.id.au>
+> cc: Nicholas Piggin <npiggin@gmail.com>
+> Fixes: 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
+> cc: stable@vger.kernel.org
+> Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+> ---
+> 
+> v1 -> v2 : Changed commit message and added a comment in
+> switch_mm_irqs_off()
+> 
+> v1 - https://lore.kernel.org/all/20250731161027.966196-1-donettom@linux.ibm.com/
+> ---
+>  arch/powerpc/mm/book3s64/slb.c | 2 +-
+>  arch/powerpc/mm/mmu_context.c  | 7 +++++--
+>  2 files changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
+> index 6b783552403c..08daac3f978c 100644
+> --- a/arch/powerpc/mm/book3s64/slb.c
+> +++ b/arch/powerpc/mm/book3s64/slb.c
+> @@ -509,7 +509,7 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
+>  	 * SLB preload cache.
+>  	 */
+>  	tsk->thread.load_slb++;
+> -	if (!tsk->thread.load_slb) {
+> +	if (tsk->thread.load_slb == U8_MAX) {
+>  		unsigned long pc = KSTK_EIP(tsk);
+>  
+>  		preload_age(ti);
+> diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
+> index 3e3af29b4523..95455d787288 100644
+> --- a/arch/powerpc/mm/mmu_context.c
+> +++ b/arch/powerpc/mm/mmu_context.c
+> @@ -83,8 +83,11 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
+>  	/* Some subarchs need to track the PGD elsewhere */
+>  	switch_mm_pgdir(tsk, next);
+>  
+> -	/* Nothing else to do if we aren't actually switching */
+> -	if (prev == next)
+> +	/*
+> +	 * Nothing else to do if we aren't actually switching and
+> +	 * the preload slb cache has not aged
+> +	 */
+> +	if ((prev == next) && (tsk->thread.load_slb != U8_MAX))
+>  		return;
+>  
+>  	/*
+> -- 
+> 2.50.1
+> 
+LGTM.
 
-I don't have the problem you report. Is it with your v3 series ?
-
-I started from 
-https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?h=merge 
-(commit de12314b471bf)
-
-Took your series with
-
-   b4 shazam 20250717142732.292822-1-snovitoll@gmail.com
-
-built ppc64le_defconfig
-
-And successfully boot it under QEMU:
-
-$ qemu-system-ppc64 -M pseries,x-vof=on -m 1G -nographic -vga none 
--kernel vmlinux -initrd qemu/rootfs-el.cpio.gz -append noreboot
-qemu-system-ppc64: warning: TCG doesn't support requested feature, 
-cap-cfpc=workaround
-qemu-system-ppc64: warning: TCG doesn't support requested feature, 
-cap-sbbc=workaround
-qemu-system-ppc64: warning: TCG doesn't support requested feature, 
-cap-ibs=workaround
-qemu-system-ppc64: warning: TCG doesn't support requested feature, 
-cap-ccf-assist=on
-[    0.000000][    T0] random: crng init done
-[    0.000000][    T0] radix-mmu: Page sizes from device-tree:
-[    0.000000][    T0] radix-mmu: Page size shift = 12 AP=0x0
-[    0.000000][    T0] radix-mmu: Page size shift = 16 AP=0x5
-[    0.000000][    T0] radix-mmu: Page size shift = 21 AP=0x1
-[    0.000000][    T0] radix-mmu: Page size shift = 30 AP=0x2
-[    0.000000][    T0] Activating Kernel Userspace Access Prevention
-[    0.000000][    T0] Activating Kernel Userspace Execution Prevention
-[    0.000000][    T0] radix-mmu: Mapped 
-0x0000000000000000-0x0000000003e00000 with 2.00 MiB pages (exec)
-[    0.000000][    T0] radix-mmu: Mapped 
-0x0000000003e00000-0x0000000040000000 with 2.00 MiB pages
-[    0.000000][    T0] lpar: Using radix MMU under hypervisor
-[    0.000000][    T0] Linux version 6.16.0-02450-g1c11a8599f68 
-(chleroy@PO20335.IDSI0.si.c-s.fr) (powerpc64-linux-gcc (GCC) 8.5.0, GNU 
-ld (GNU Binutils) 2.36.1) #1459 SMP Mon Aug  4 12:49:11 CEST 2025
-[    0.000000][    T0] KernelAddressSanitizer initialized (generic)
-[    0.000000][    T0] OF: reserved mem: Reserved memory: No 
-reserved-memory node in the DT
-[    0.000000][    T0] Found initrd at 0xc000000004cf0000:0xc00000000530d15a
-[    0.000000][    T0] Hardware name: IBM pSeries (emulated by qemu) 
-POWER9 (architected) 0x4e1202 0xf000005 pSeries
-[    0.000000][    T0] printk: legacy bootconsole [udbg0] enabled
-[    0.000000][    T0] Partition configured for 1 cpus.
-[    0.000000][    T0] CPU maps initialized for 1 thread per core
-[    0.000000][    T0] numa: Partition configured for 1 NUMA nodes.
-[    0.000000][    T0] -----------------------------------------------------
-[    0.000000][    T0] phys_mem_size     = 0x40000000
-[    0.000000][    T0] dcache_bsize      = 0x80
-[    0.000000][    T0] icache_bsize      = 0x80
-[    0.000000][    T0] cpu_features      = 0x0001c06b8f4f9187
-[    0.000000][    T0]   possible        = 0x003ffbfbcf5fb187
-[    0.000000][    T0]   always          = 0x0000000380008181
-[    0.000000][    T0] cpu_user_features = 0xdc0065c2 0xaef00000
-[    0.000000][    T0] mmu_features      = 0x3c007641
-[    0.000000][    T0] firmware_features = 0x00000a85455a445f
-[    0.000000][    T0] vmalloc start     = 0xc008000000000000
-[    0.000000][    T0] IO start          = 0xc00a000000000000
-[    0.000000][    T0] vmemmap start     = 0xc00c000000000000
-[    0.000000][    T0] -----------------------------------------------------
-[    0.000000][    T0] NODE_DATA(0) allocated [mem 0x3fb30800-0x3fb37fff]
-[    0.000000][    T0] rfi-flush: fallback displacement flush available
-[    0.000000][    T0] rfi-flush: ori type flush available
-[    0.000000][    T0] rfi-flush: mttrig type flush available
-[    0.000000][    T0] count-cache-flush: hardware flush enabled.
-[    0.000000][    T0] link-stack-flush: software flush enabled.
-[    0.000000][    T0] stf-barrier: eieio barrier available
-[    0.000000][    T0] PPC64 nvram contains 65536 bytes
-[    0.000000][    T0] barrier-nospec: using ORI speculation barrier
-[    0.000000][    T0] Zone ranges:
-[    0.000000][    T0]   Normal   [mem 
-0x0000000000000000-0x000000003fffffff]
-[    0.000000][    T0]   Device   empty
-[    0.000000][    T0] Movable zone start for each node
-[    0.000000][    T0] Early memory node ranges
-[    0.000000][    T0]   node   0: [mem 
-0x0000000000000000-0x000000003fffffff]
-[    0.000000][    T0] Initmem setup node 0 [mem 
-0x0000000000000000-0x000000003fffffff]
-[    0.000000][    T0] percpu: Embedded 3 pages/cpu s122904 r0 d73704 
-u196608
-[    0.000000][    T0] Kernel command line: noreboot
-[    0.000000][    T0] Unknown kernel command line parameters 
-"noreboot", will be passed to user space.
-[    0.000000][    T0] printk: log buffer data + meta data: 262144 + 
-917504 = 1179648 bytes
-[    0.000000][    T0] Dentry cache hash table entries: 131072 (order: 
-4, 1048576 bytes, linear)
-[    0.000000][    T0] Inode-cache hash table entries: 65536 (order: 3, 
-524288 bytes, linear)
-[    0.000000][    T0] Fallback order for Node 0: 0
-[    0.000000][    T0] Built 1 zonelists, mobility grouping on.  Total 
-pages: 16384
-[    0.000000][    T0] Policy zone: Normal
-[    0.000000][    T0] mem auto-init: stack:off, heap alloc:off, heap 
-free:off
-[    0.000000][    T0] stackdepot: allocating hash table via 
-alloc_large_system_hash
-[    0.000000][    T0] stackdepot hash table entries: 1048576 (order: 8, 
-16777216 bytes, linear)
-[    0.000000][    T0] SLUB: HWalign=128, Order=0-3, MinObjects=0, 
-CPUs=1, Nodes=1
-[    0.000000][    T0] ftrace: allocating 47840 entries in 12 pages
-[    0.000000][    T0] ftrace: allocated 12 pages with 2 groups
-[    0.000000][    T0] rcu: Hierarchical RCU implementation.
-[    0.000000][    T0] rcu: 	RCU event tracing is enabled.
-[    0.000000][    T0] rcu: 	RCU restricting CPUs from NR_CPUS=2048 to 
-nr_cpu_ids=1.
-[    0.000000][    T0] 	Rude variant of Tasks RCU enabled.
-[    0.000000][    T0] 	Tracing variant of Tasks RCU enabled.
-[    0.000000][    T0] rcu: RCU calculated value of scheduler-enlistment 
-delay is 100 jiffies.
-[    0.000000][    T0] rcu: Adjusting geometry for rcu_fanout_leaf=16, 
-nr_cpu_ids=1
-[    0.000000][    T0] RCU Tasks Rude: Setting shift to 0 and lim to 1 
-rcu_task_cb_adjust=1 rcu_task_cpu_ids=1.
-[    0.000000][    T0] RCU Tasks Trace: Setting shift to 0 and lim to 1 
-rcu_task_cb_adjust=1 rcu_task_cpu_ids=1.
-[    0.000000][    T0] NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
-[    0.000000][    T0] xive: Using IRQ range [0-0]
-[    0.000000][    T0] xive: Interrupt handling initialized with spapr 
-backend
-[    0.000000][    T0] xive: Using priority 6 for all interrupts
-[    0.000000][    T0] xive: Using 64kB queues
-[    0.000000][    T0] rcu: srcu_init: Setting srcu_struct sizes based 
-on contention.
-[    0.000290][    T0] time_init: 56 bit decrementer (max: 7fffffffffffff)
-[    0.001690][    T0] clocksource: timebase: mask: 0xffffffffffffffff 
-max_cycles: 0x761537d007, max_idle_ns: 440795202126 ns
-[    0.003232][    T0] clocksource: timebase mult[1f40000] shift[24] 
-registered
-[    0.040308][    T0] Console: colour dummy device 80x25
-[    0.042553][    T0] printk: legacy console [hvc0] enabled
-[    0.042553][    T0] printk: legacy console [hvc0] enabled
-[    0.043883][    T0] printk: legacy bootconsole [udbg0] disabled
-[    0.043883][    T0] printk: legacy bootconsole [udbg0] disabled
-[    0.052810][    T0] pid_max: default: 32768 minimum: 301
-[    0.062682][    T0] LSM: initializing 
-lsm=lockdown,capability,landlock,yama,selinux,bpf,ima
-[    0.075902][    T0] landlock: Up and running.
-[    0.076246][    T0] Yama: becoming mindful.
-[    0.077639][    T0] SELinux:  Initializing.
-[    0.157184][    T0] LSM support for eBPF active
-[    0.170713][    T0] Mount-cache hash table entries: 8192 (order: 0, 
-65536 bytes, linear)
-[    0.171081][    T0] Mountpoint-cache hash table entries: 8192 (order: 
-0, 65536 bytes, linear)
-[    0.319421][    T1] POWER9 performance monitor hardware support 
-registered
-[    0.329508][    T1] rcu: Hierarchical SRCU implementation.
-[    0.329940][    T1] rcu: 	Max phase no-delay instances is 400.
-[    0.382714][    T1] smp: Bringing up secondary CPUs ...
-[    0.385679][    T1] smp: Brought up 1 node, 1 CPU
-[    0.392599][    T1] numa: Node 0 CPUs: 0
-[    0.445093][   T20] node 0 deferred pages initialised in 21ms
-[    0.447420][    T1] Memory: 784000K/1048576K available (25600K kernel 
-code, 9216K rwdata, 23552K rodata, 13824K init, 2373K bss, 254528K 
-reserved, 0K cma-reserved)
-[    0.469596][   T20] pgdatinit0 (20) used greatest stack depth: 29936 
-bytes left
-[    0.504269][    T1] devtmpfs: initialized
-[    0.605561][    T1] PCI host bridge /pci@800000020000000  ranges:
-[    0.607269][    T1]   IO 0x0000200000000000..0x000020000000ffff -> 
-0x0000000000000000
-[    0.607837][    T1]  MEM 0x0000200080000000..0x00002000ffffffff -> 
-0x0000000080000000
-[    0.608141][    T1]  MEM 0x0000210000000000..0x000021ffffffffff -> 
-0x0000210000000000
-[    0.623659][    T1] clocksource: jiffies: mask: 0xffffffff 
-max_cycles: 0xffffffff, max_idle_ns: 1911260446275000 ns
-[    0.625600][    T1] posixtimers hash table entries: 512 (order: -3, 
-8192 bytes, linear)
-[    0.627067][    T1] futex hash table entries: 256 (32768 bytes on 1 
-NUMA nodes, total 32 KiB, linear).
-[    0.692128][    T1] NET: Registered PF_NETLINK/PF_ROUTE protocol family
-[    0.714282][    T1] audit: initializing netlink subsys (disabled)
-[    0.722232][   T25] audit: type=2000 audit(1754308137.543:1): 
-state=initialized audit_enabled=0 res=1
-[    0.743697][    T1] cpuidle: using governor menu
-[    0.755015][    T1] WARNING: nvram corruption detected: 0-length 
-partition
-[    0.755541][    T1] nvram: No room to create ibm,rtas-log partition, 
-deleting any obsolete OS partitions...
-[    0.755794][    T1] nvram: Failed to find or create ibm,rtas-log 
-partition, err -28
-[    0.756219][    T1] nvram: No room to create lnx,oops-log partition, 
-deleting any obsolete OS partitions...
-[    0.756379][    T1] nvram: Failed to find or create lnx,oops-log 
-partition, err -28
-Linux ppc64le
-#1459 SMP Mon Au[    0.756539][    T1] nvram: Failed to initialize oops 
-partition!
-[    0.762921][    T1] EEH: pSeries platform initialized
-[    0.808097][    T1] kprobes: kprobe jump-optimization is enabled. All 
-kprobes are optimized if possible.
-[    1.365147][    T1] HugeTLB: allocation took 0ms with 
-hugepage_allocation_threads=1
-[    1.366269][    T1] HugeTLB: registered 2.00 MiB page size, 
-pre-allocated 0 pages
-[    1.366456][    T1] HugeTLB: 0 KiB vmemmap can be freed for a 2.00 
-MiB page
-[    1.366728][    T1] HugeTLB: registered 1.00 GiB page size, 
-pre-allocated 0 pages
-[    1.366870][    T1] HugeTLB: 0 KiB vmemmap can be freed for a 1.00 
-GiB page
-[    1.486251][    T1] iommu: Default domain type: Translated
-[    1.486543][    T1] iommu: DMA domain TLB invalidation policy: strict 
-mode
-[    1.525452][    T1] SCSI subsystem initialized
-[    1.552424][    T1] usbcore: registered new interface driver usbfs
-[    1.554049][    T1] usbcore: registered new interface driver hub
-[    1.559907][    T1] usbcore: registered new device driver usb
-[    1.562100][    T1] pps_core: LinuxPPS API ver. 1 registered
-[    1.562266][    T1] pps_core: Software ver. 5.3.6 - Copyright 
-2005-2007 Rodolfo Giometti <giometti@linux.it>
-[    1.566642][    T1] PTP clock support registered
-[    1.577168][    T1] EDAC MC: Ver: 3.0.0
-[    1.672772][    T1] PCI: Probing PCI hardware
-[    1.833395][    T1] PCI host bridge to bus 0000:00
-[    1.834524][    T1] pci_bus 0000:00: root bus resource [io 
-0x10000-0x1ffff] (bus address [0x0000-0xffff])
-[    1.835316][    T1] pci_bus 0000:00: root bus resource [mem 
-0x200080000000-0x2000ffffffff] (bus address [0x80000000-0xffffffff])
-[    1.835750][    T1] pci_bus 0000:00: root bus resource [mem 
-0x210000000000-0x21ffffffffff 64bit]
-[    1.836268][    T1] pci_bus 0000:00: root bus resource [bus 00-ff]
-[    1.852192][    T1] IOMMU table initialized, virtual merging enabled
-[    1.864698][    T1] pci_bus 0000:00: resource 4 [io  0x10000-0x1ffff]
-[    1.864967][    T1] pci_bus 0000:00: resource 5 [mem 
-0x200080000000-0x2000ffffffff]
-[    1.865136][    T1] pci_bus 0000:00: resource 6 [mem 
-0x210000000000-0x21ffffffffff 64bit]
-[    1.865619][    T1] EEH: No capable adapters found: recovery disabled.
-[    1.895816][    T1] vgaarb: loaded
-[    1.906597][    T1] clocksource: Switched to clocksource timebase
-[    7.645823][    T1] NET: Registered PF_INET protocol family
-[    7.650783][    T1] IP idents hash table entries: 16384 (order: 1, 
-131072 bytes, linear)
-[    7.684628][    T1] tcp_listen_portaddr_hash hash table entries: 4096 
-(order: 0, 65536 bytes, linear)
-[    7.686311][    T1] Table-perturb hash table entries: 65536 (order: 
-2, 262144 bytes, linear)
-[    7.687827][    T1] TCP established hash table entries: 8192 (order: 
-0, 65536 bytes, linear)
-[    7.690430][    T1] TCP bind hash table entries: 8192 (order: 2, 
-262144 bytes, linear)
-[    7.694736][    T1] TCP: Hash tables configured (established 8192 
-bind 8192)
-[    7.697887][    T1] UDP hash table entries: 1024 (order: 0, 65536 
-bytes, linear)
-[    7.700717][    T1] UDP-Lite hash table entries: 1024 (order: 0, 
-65536 bytes, linear)
-[    7.709437][    T1] NET: Registered PF_UNIX/PF_LOCAL protocol family
-[    7.728670][    T1] RPC: Registered named UNIX socket transport module.
-[    7.729411][    T1] RPC: Registered udp transport module.
-[    7.729661][    T1] RPC: Registered tcp transport module.
-[    7.729825][    T1] RPC: Registered tcp-with-tls transport module.
-[    7.731574][    T1] RPC: Registered tcp NFSv4.1 backchannel transport 
-module.
-[    7.732309][    T1] PCI: CLS 0 bytes, default 128
-[    7.769612][   T12] Trying to unpack rootfs image as initramfs...
-[    7.937617][    T1] Initialise system trusted keyrings
-[    7.942505][    T1] Key type blacklist registered
-[    7.964894][    T1] workingset: timestamp_bits=38 max_order=14 
-bucket_order=0
-[    8.127738][    T1] NFS: Registering the id_resolver key type
-[    8.129779][    T1] Key type id_resolver registered
-[    8.130646][    T1] Key type id_legacy registered
-[    8.150761][    T1] SGI XFS with ACLs, security attributes, no debug 
-enabled
-[    8.343926][    T1] integrity: Platform Keyring initialized
-[    8.348809][    T1] Key type asymmetric registered
-[    8.354232][    T1] Asymmetric key parser 'x509' registered
-[    8.372851][    T1] Block layer SCSI generic (bsg) driver version 0.4 
-loaded (major 247)
-[    8.375844][    T1] io scheduler mq-deadline registered
-[    8.377498][    T1] io scheduler kyber registered
-[   11.082153][    T1] Serial: 8250/16550 driver, 4 ports, IRQ sharing 
-disabled
-[   11.199822][    T1] Non-volatile memory driver v1.3
-[   11.749528][    T1] brd: module loaded
-[   12.062135][    T1] loop: module loaded
-[   12.078153][    T1] ipr: IBM Power RAID SCSI Device Driver version: 
-2.6.4 (March 14, 2017)
-[   12.118444][    T1] ibmvscsi 71000003: SRP_VERSION: 16.a
-[   12.134566][    T1] ibmvscsi 71000003: Maximum ID: 64 Maximum LUN: 32 
-Maximum Channel: 3
-[   12.135207][    T1] scsi host0: IBM POWER Virtual SCSI Adapter 1.5.9
-[   12.188126][    C0] ibmvscsi 71000003: partner initialization complete
-[   12.191555][    C0] ibmvscsi 71000003: host srp version: 16.a, host 
-partition qemu (0), OS 2, max io 2097152
-[   12.192709][    C0] ibmvscsi 71000003: sent SRP login
-[   12.193698][    C0] ibmvscsi 71000003: SRP_LOGIN succeeded
-[   12.381686][    T1] scsi 0:0:2:0: CD-ROM            QEMU     QEMU 
-CD-ROM      2.5+ PQ: 0 ANSI: 5
-[   17.470934][   T12] Freeing initrd memory: 6208K
-[   18.458146][    C0] sr 0:0:2:0: Power-on or device reset occurred
-[   18.468304][    T1] sr 0:0:2:0: [sr0] scsi3-mmc drive: 16x/50x cd/rw 
-xa/form2 cdda tray
-[   18.469176][    T1] cdrom: Uniform CD-ROM driver Revision: 3.20
-[   18.507507][    T1] sr 0:0:2:0: Attached scsi generic sg0 type 5
-[   18.535454][    T1] e100: Intel(R) PRO/100 Network Driver
-[   18.535682][    T1] e100: Copyright(c) 1999-2006 Intel Corporation
-[   18.536741][    T1] e1000: Intel(R) PRO/1000 Network Driver
-[   18.536894][    T1] e1000: Copyright (c) 1999-2006 Intel Corporation.
-[   18.538093][    T1] e1000e: Intel(R) PRO/1000 Network Driver
-[   18.538241][    T1] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
-[   18.548528][    T1] i2c_dev: i2c /dev entries driver
-[   18.551722][    T1] device-mapper: core: CONFIG_IMA_DISABLE_HTABLE is 
-disabled. Duplicate IMA measurements will not be recorded in the IMA log.
-[   18.553452][    T1] device-mapper: uevent: version 1.0.3
-[   18.564534][    T1] device-mapper: ioctl: 4.50.0-ioctl (2025-04-28) 
-initialised: dm-devel@lists.linux.dev
-[   18.591869][    T1] usbcore: registered new interface driver usbhid
-[   18.592226][    T1] usbhid: USB HID core driver
-[   18.594958][    T1] ipip: IPv4 and MPLS over IPv4 tunneling driver
-[   18.611797][    T1] NET: Registered PF_INET6 protocol family
-[   18.651618][    T1] Segment Routing with IPv6
-[   18.653186][    T1] In-situ OAM (IOAM) with IPv6
-[   18.656776][    T1] sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
-[   18.672737][    T1] NET: Registered PF_PACKET protocol family
-[   18.676757][    T1] Key type dns_resolver registered
-[   18.678951][    T1] secvar-sysfs: Failed to retrieve secvar operations
-[   18.683474][    T1] Running code patching self-tests ...
-[   19.045499][    T1] registered taskstats version 1
-[   19.055453][    T1] Loading compiled-in X.509 certificates
-[   19.106895][    T1] Loaded X.509 cert 'Build time autogenerated 
-kernel key: 9f01b0d991e9d73077cd296c67edb3efb56e2c47'
-[   19.372917][    T1] Demotion targets for Node 0: null
-[   19.373664][    T1] page_owner is disabled
-[   19.385615][    T1] Secure boot mode disabled
-[   19.387815][    T1] ima: No TPM chip found, activating TPM-bypass!
-[   19.389833][    T1] Loading compiled-in module X.509 certificates
-[   19.406497][    T1] Loaded X.509 cert 'Build time autogenerated 
-kernel key: 9f01b0d991e9d73077cd296c67edb3efb56e2c47'
-[   19.407680][    T1] ima: Allocated hash algorithm: sha256
-[   19.416714][    T1] Secure boot mode disabled
-[   19.417345][    T1] Trusted boot mode disabled
-[   19.417596][    T1] ima: No architecture policies found
-[   19.426439][    T1] printk: legacy console [netcon0] enabled
-[   19.426791][    T1] netconsole: network logging started
-[   19.610553][    T1] Freeing unused kernel image (initmem) memory: 13824K
-[   19.766345][    T1] Checked W+X mappings: passed, no W+X pages found
-[   19.767739][    T1] rodata_test: all tests were successful
-[   19.768936][    T1] Run /init as init process
-[   20.432221][   T58] mount (58) used greatest stack depth: 26992 bytes 
-left
-[   20.808923][   T60] mount (60) used greatest stack depth: 26416 bytes 
-left
-mount: mounting devtmpfs on /dev failed: Device or resource busy
-Starting syslogd: OK
-Starting klogd: OK
-Running sysctl: [   24.879851][   T83] find (83) used greatest stack 
-depth: 26368 bytes left
-[   24.945794][   T84] xargs (84) used greatest stack depth: 26240 bytes 
-left
-OK
-Saving 256 bits of creditable seed for next boot
-Starting network: [   26.530674][   T96] ip (96) used greatest stack 
-depth: 26048 bytes left
-[   27.018425][   T97] ip (97) used greatest stack depth: 24256 bytes left
-Waiting for interface eth0 to appear..... timeout!
-run-parts: /etc/network/if-pre-up.d/wait_iface: exit status 1
-FAIL
-[   33.902403][    C0] hrtimer: interrupt took 3450588 ns
-Found console hvc0
-
-Linux version 6.16.0-02450-g1c11a8599f68 
-(chleroy@PO20335.IDSI0.si.c-s.fr) (powerpc64-linux-gcc (GCC) 8.5.0, GNU 
-ld (GNU Binutils) 2.36.1) #1459 SMP Mon Aug  4 12:49:11 CEST 2025
-Network interface test failed
-TPM selftest failed
-File system test skipped
-Boot successful.
-~ #
-
-
-Christophe
-
+Reviewed-by: Vishal Chourasia <vishalc@linux.ibm.com>
 
