@@ -1,76 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-10591-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10594-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AF8B1A419
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 16:10:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A82DB1A53C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 16:50:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwdjg6N2lz3byF;
-	Tue,  5 Aug 2025 00:09:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwfcY60pYz3bxf;
+	Tue,  5 Aug 2025 00:50:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754316599;
-	cv=none; b=bM47+4UlFsItVEqZVe5vugL75oTFs+FyY/gtH+7ilZw3VH2lwFjY5cr/XHxdvvkuC0PQBKqyYE267JR9thrmxbMH4TkUltrm2U5u/dqHSc9fJbcuNj/GsMAIFfSWbBTiBiU5litwYgji4EFsRS1LfylTgpG3fDx9YeqYM4zSBjHRYwxjEHKhijon6RWJcEBC/SEaeaoNc3OsBTovjypOt9yp+4WCLjNx2QpIWkgspzPTQJJjO5PIjYOKJEST5K0AT1Trt1NBfcnxjLIKrNyGMCoTZTTkWljPaTGxGUUUi09W7As9V89XTOUYH5jwypC+a6zteg47l6j91CVliQo0oA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754319037;
+	cv=none; b=CaPjXSpUnL9fRaDs2TntlCBtHrxvTAF38hvSi2H5mVjHpyCw+aGUQ26z7dK2bWq+ee8rChH83XwkDfm2o8YziQxBV8vj4zNZCHEdL12NKbdJpJWHbBCer4T3QY9htfg28yLAkD65HqbQzT5GWqSgGeEl4b5JjzqER8nfrES/Py5iM5Pzlx8rrzdGPZ3r8i36AImePETgztn7xQAG/xNrQu4LFc06Hj2UROePvGToNVAxM+qNjRASIs9jX0V2l2M0Jv749jSAaGtWRJShCvSbZESAg720QFn9fYQO7bZFkVJTwryVhSNQxV4kXEec5szMWbljJNG1Yx9lsdz1jofpMw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754316599; c=relaxed/relaxed;
-	bh=maeUrwruKZ5pcRHm1lii96PPS/UgYKiMKyss5hALvWw=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=MkzadED76sUWZa9bBB+U0T3FNQKzFQKQJz80rTM9tDXzDLW1Mv8YPNWDXbmXZ2Mg4KhAGIDdPHrwHz5ROpXXJQ/DVbC/KIYMfpbz7W/4MUPiEoTsOOOYApxZS81lBygKB23XSjCfGOKLluPN6U3WJTN9bRUjy3vYn64/I0Hk4OQSnsCsmKfQuB1owjnnnLOezS+k/6H38ob95+otWtbzRhg6nE/wCPvT89vcdJJg5EhSYUfKtrMriGtIQgqfgbxHR1yvTHgtJezEC3HSxFDA55xoRcMOiAISOE1t2B2Mpoj1t/yhHbINegPMOU7FL40ewJzd6g6EVzdW5q+VyPG2iw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cwRGgNT2; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cwRGgNT2;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwdjf733vz3by8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 00:09:58 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id B1D085C6251
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 14:09:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5D0C1C4CEF6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 14:09:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754316596;
-	bh=LBBjk71rUAycmLq8HPSd7ebX20gJuj9bSBiP+qiR7pY=;
-	h=From:To:Subject:Date:From;
-	b=cwRGgNT20FUCgZsWxlBsiU8+9CWejo5TldtGwyJ66Nztns+8TlRHgw5nvmKO2hGFO
-	 oRvRlxnfSrJm387VDebB//yJxhIkU/fDMjfh6Rg9oujWP2YCA7RUELG3cgrTrxOxbF
-	 o4lHDTXtnTQraDJEHT4IHdh9GPLYyxkTewnGN0RZRDxxV6wa1Ijkbt06uLhjlLHqQp
-	 1bIhWXjIlsu+sg82V7rnZoOu3R9Me1PBsczBe4oaub1W26XT59mbSNUwAJ8/ZBBpyu
-	 EI7y9Dydb5g1nLXHmQ95vu6bjWqqUf7Me1lQfEdKv8Rw8JTJ7ZOYkB7uqxrTwJC5Wb
-	 pY6ztoVqr9Lwg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 4EE6BC4160E; Mon,  4 Aug 2025 14:09:56 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 220407] New: arch/powerpc/boot/types.h:43:13: error: 'bool'
- cannot be defined via 'typedef' when building with GCC 15
-Date: Mon, 04 Aug 2025 14:09:56 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: anhollander516@gmail.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version rep_platform
- op_sys bug_status bug_severity priority component assigned_to reporter
- cf_regression attachments.created
-Message-ID: <bug-220407-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	t=1754319037; c=relaxed/relaxed;
+	bh=vKxcm2Bk3faS3VLs5jBU85JbSxp1gIFdk6pboYvkzrA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TLyIQpKnmNCsHnwq1t0NmEM/kUsvRMAD8gYEOo2QqJtFo91CDEEvoRynvCHqILxYd4KASMmrMDCzUVWqtXYiQNDEMP75nxs1D7YEsbMUtuQFw1yIv7AK2scpTHoyY5+atm81D0IZdLiy6RvAdJDg4MADJBaGwCguhJtNf1t3yjQXPhRPAlkqqmhjei3cf5wIhQcsXie7NH6V7oW6cweKVQ9JGeycIu+5x0xEz/WjNnqRg2dTo8NZ202bM1HUs5dSnjjZzjKb/xyPvcMZKjL5Hs/zmZnwPMIo8zbtprVHmBBvgfF8oaARsL0DKi8cWTl1sZqGj0Z39xqollCsN2hHbw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwfcY1VS4z3bxR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 00:50:36 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4bwdx61Fwbz9t2k;
+	Mon,  4 Aug 2025 16:19:54 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id aafYWNPsnuTc; Mon,  4 Aug 2025 16:19:54 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4bwdx60NySz9t2V;
+	Mon,  4 Aug 2025 16:19:54 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0679F8B766;
+	Mon,  4 Aug 2025 16:19:54 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 25xDQtsmUhRS; Mon,  4 Aug 2025 16:19:53 +0200 (CEST)
+Received: from [10.25.207.160] (unknown [10.25.207.160])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BF56C8B763;
+	Mon,  4 Aug 2025 16:19:53 +0200 (CEST)
+Message-ID: <7e1adda9-4348-4c4e-953e-3fd21e4ff3c5@csgroup.eu>
+Date: Mon, 4 Aug 2025 16:19:53 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,240 +57,176 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] powerpc/ftrace: support
+ CONFIG_FUNCTION_GRAPH_RETVAL
+To: Aditya Bodkhe <adityab1@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ rostedt@goodmis.org, mhiramat@kernel.org, mark.rutland@arm.com,
+ venkat88@linux.ibm.com
+References: <20250722085648.1640-1-adityab1@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250722085648.1640-1-adityab1@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D220407
-
-            Bug ID: 220407
-           Summary: arch/powerpc/boot/types.h:43:13: error: 'bool' cannot
-                    be defined via 'typedef' when building with GCC 15
-           Product: Platform Specific/Hardware
-           Version: 2.5
-          Hardware: PPC-32
-                OS: Linux
-            Status: NEW
-          Severity: normal
-          Priority: P3
-         Component: PPC-32
-          Assignee: platform_ppc-32@kernel-bugs.osdl.org
-          Reporter: anhollander516@gmail.com
-        Regression: No
-
-Created attachment 308441
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D308441&action=3Dedit
-Gentoo default kernel config
-
-I have been slowly bringing up a Gentoo PPC system in QEMU to host binary
-packages for an iBook G3.
-
-The kernel fails to compile with GCC 15 due to C23 issues:
-
-  DESCEND objtool
-  CALL    scripts/checksyscalls.sh
-  INSTALL libsubcmd_headers
-  COPY    arch/powerpc/boot/inflate.c
-  COPY    arch/powerpc/boot/inffast.c
-  COPY    arch/powerpc/boot/inftrees.c
-  BOOTCC  arch/powerpc/boot/cuboot.o
-  COPY    arch/powerpc/boot/fdt.c
-  BOOTCC  arch/powerpc/boot/devtree.o
-  COPY    arch/powerpc/boot/fdt_ro.c
-  COPY    arch/powerpc/boot/fdt_rw.c
-  COPY    arch/powerpc/boot/fdt_strerror.c
-  COPY    arch/powerpc/boot/fdt_sw.c
-  COPY    arch/powerpc/boot/fdt_wip.c
-  BOOTCC  arch/powerpc/boot/libfdt-wrapper.o
-  BOOTCC  arch/powerpc/boot/main.o
-  BOOTCC  arch/powerpc/boot/ns16550.o
-  BOOTCC  arch/powerpc/boot/ofconsole.o
-  BOOTCC  arch/powerpc/boot/oflib.o
-  BOOTCC  arch/powerpc/boot/serial.o
-  BOOTCC  arch/powerpc/boot/simple_alloc.o
-  BOOTCC  arch/powerpc/boot/stdio.o
-  BOOTCC  arch/powerpc/boot/stdlib.o
-In file included from arch/powerpc/boot/ops.h:13,
-                 from arch/powerpc/boot/cuboot.c:12:
-arch/powerpc/boot/types.h:43:13: error: 'bool' cannot be defined via 'typed=
-ef'
-   43 | typedef int bool;
-      |             ^~~~
-arch/powerpc/boot/types.h:43:13: note: 'bool' is a keyword with '-std=3Dc23'
-onwards
-arch/powerpc/boot/types.h:43:1: warning: useless type name in empty declara=
-tion
-   43 | typedef int bool;
-      | ^~~~~~~
-In file included from arch/powerpc/boot/devtree.c:12:
-arch/powerpc/boot/types.h:43:13: error: 'bool' cannot be defined via 'typed=
-ef'
-   43 | typedef int bool;
-      |             ^~~~
-In file included from arch/powerpc/boot/serial.c:14:
-arch/powerpc/boot/types.h:43:13: error: 'bool' cannot be defined via 'typed=
-ef'
-   43 | typedef int bool;
-      |             ^~~~
-arch/powerpc/boot/types.h:43:13: note: 'bool' is a keyword with '-std=3Dc23'
-onwards
-In file included from arch/powerpc/boot/ns16550.c:13:
-arch/powerpc/boot/types.h:43:13: error: 'bool' cannot be defined via 'typed=
-ef'
-   43 | typedef int bool;
-      |             ^~~~
-arch/powerpc/boot/types.h:43:13: note: 'bool' is a keyword with '-std=3Dc23'
-onwards
-arch/powerpc/boot/types.h:43:13: note: 'bool' is a keyword with '-std=3Dc23'
-onwards
-arch/powerpc/boot/types.h:43:1: warning: useless type name in empty declara=
-tion
-   43 | typedef int bool;
-      | ^~~~~~~
-arch/powerpc/boot/types.h:43:1: warning: useless type name in empty declara=
-tion
-   43 | typedef int bool;
-      | ^~~~~~~
-arch/powerpc/boot/types.h:43:1: warning: useless type name in empty declara=
-tion
-   43 | typedef int bool;
-      | ^~~~~~~
-In file included from arch/powerpc/boot/ops.h:13,
-                 from arch/powerpc/boot/main.c:13:
-arch/powerpc/boot/types.h:43:13: error: 'bool' cannot be defined via 'typed=
-ef'
-   43 | typedef int bool;
-      |             ^~~~
-In file included from ./arch/powerpc/boot/libfdt_env.h:5,
-                 from ./arch/powerpc/boot/libfdt.h:9,
-                 from arch/powerpc/boot/libfdt-wrapper.c:13:
-./arch/powerpc/boot/types.h:43:13: error: 'bool' cannot be defined via
-'typedef'
-   43 | typedef int bool;
-      |             ^~~~
-arch/powerpc/boot/types.h:43:13: note: 'bool' is a keyword with '-std=3Dc23'
-onwards
-./arch/powerpc/boot/types.h:43:13: note: 'bool' is a keyword with '-std=3Dc=
-23'
-onwards
-./arch/powerpc/boot/types.h:43:1: warning: useless type name in empty
-declaration
-   43 | typedef int bool;
-      | ^~~~~~~
-arch/powerpc/boot/types.h:43:1: warning: useless type name in empty declara=
-tion
-   43 | typedef int bool;
-      | ^~~~~~~
-In file included from arch/powerpc/boot/oflib.c:6:
-arch/powerpc/boot/types.h:43:13: error: 'bool' cannot be defined via 'typed=
-ef'
-   43 | typedef int bool;
-      |             ^~~~
-In file included from arch/powerpc/boot/ofconsole.c:8:
-arch/powerpc/boot/types.h:43:13: error: 'bool' cannot be defined via 'typed=
-ef'
-   43 | typedef int bool;
-      |             ^~~~
-arch/powerpc/boot/types.h:43:13: note: 'bool' is a keyword with '-std=3Dc23'
-onwards
-arch/powerpc/boot/types.h:43:13: note: 'bool' is a keyword with '-std=3Dc23'
-onwards
-arch/powerpc/boot/types.h:43:1: warning: useless type name in empty declara=
-tion
-   43 | typedef int bool;
-      | ^~~~~~~
-arch/powerpc/boot/types.h:43:1: warning: useless type name in empty declara=
-tion
-   43 | typedef int bool;
-      | ^~~~~~~
-make[2]: *** [arch/powerpc/boot/Makefile:234: arch/powerpc/boot/cuboot.o] E=
-rror
-1
-make[2]: *** Waiting for unfinished jobs....
-In file included from arch/powerpc/boot/simple_alloc.c:11:
-arch/powerpc/boot/types.h:43:13: error: 'bool' cannot be defined via 'typed=
-ef'
-   43 | typedef int bool;
-      |             ^~~~
-arch/powerpc/boot/types.h:43:13: note: 'bool' is a keyword with '-std=3Dc23'
-onwards
-arch/powerpc/boot/types.h:43:1: warning: useless type name in empty declara=
-tion
-   43 | typedef int bool;
-      | ^~~~~~~
-In file included from arch/powerpc/boot/ops.h:13,
-                 from arch/powerpc/boot/stdio.c:9:
-arch/powerpc/boot/types.h:43:13: error: 'bool' cannot be defined via 'typed=
-ef'
-   43 | typedef int bool;
-      |             ^~~~
-arch/powerpc/boot/types.h:43:13: note: 'bool' is a keyword with '-std=3Dc23'
-onwards
-arch/powerpc/boot/types.h:43:1: warning: useless type name in empty declara=
-tion
-   43 | typedef int bool;
-      | ^~~~~~~
-make[2]: *** [arch/powerpc/boot/Makefile:234: arch/powerpc/boot/ns16550.o]
-Error 1
-make[2]: *** [arch/powerpc/boot/Makefile:234: arch/powerpc/boot/serial.o] E=
-rror
-1
-make[2]: *** [arch/powerpc/boot/Makefile:234: arch/powerpc/boot/devtree.o]
-Error 1
-make[2]: *** [arch/powerpc/boot/Makefile:234: arch/powerpc/boot/ofconsole.o]
-Error 1
-make[2]: *** [arch/powerpc/boot/Makefile:234: arch/powerpc/boot/main.o] Err=
-or 1
-make[2]: *** [arch/powerpc/boot/Makefile:234: arch/powerpc/boot/simple_allo=
-c.o]
-Error 1
-make[2]: *** [arch/powerpc/boot/Makefile:234: arch/powerpc/boot/oflib.o] Er=
-ror
-1
-make[2]: *** [arch/powerpc/boot/Makefile:234:
-arch/powerpc/boot/libfdt-wrapper.o] Error 1
-make[2]: *** [arch/powerpc/boot/Makefile:234: arch/powerpc/boot/stdio.o] Er=
-ror
-1
-make[1]: *** [arch/powerpc/Makefile:236: zImage] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-I tried adding KBUILD_CFLAGS +=3D -std=3Dgnu11 to arch/powerpc/boot/Makefil=
-e, but
-that didn't fix the issue. I am building Linux 6.15.9 because that is the
-latest that Gentoo has an official default config for, but
-arch/powerpc/boot/types.h and arch/powerpc/boot/Makefile haven't changed fr=
-om
-there to master. 6.12 fails too, for that matter.
 
 
+Le 22/07/2025 à 10:56, Aditya Bodkhe a écrit :
+> commit a1be9ccc57f0 ("function_graph: Support recording and printing the
+> return value of function") introduced support for function graph return
+> value tracing.
+> 
+> Additionally, commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with
+> ftrace_regs") further refactored and optimized the implementation,
+> making `struct fgraph_ret_regs` unnecessary.
+> 
+> This patch enables the above modifications for powerpc all, ensuring that
+> function graph return value tracing is available on this architecture.
+> 
+> In this patch we have redefined two functions:
+> - 'ftrace_regs_get_return_value()' - the existing implementation on
+> ppc returns -ve of return value based on some conditions not
+> relevant to our patch.
+> - 'ftrace_regs_get_frame_pointer()' - always returns 0 in current code .
+> 
+> We also allocate stack space to equivalent of 'SWITCH_FRAME_SIZE',
+> allowing us to directly use predefined offsets like 'GPR3' and 'GPR4'
+> this keeps code clean and consistent with already defined offsets .
+> 
+> After this patch, v6.14+ kernel can also be built with FPROBE on powerpc
+> but there are a few other build and runtime dependencies for FPROBE to
+> work properly. The next patch addresses them.
+> 
+> Signed-off-by: Aditya Bodkhe <adityab1@linux.ibm.com>
 
-(Truncated) output from emerge --info (I am using a 64-bit kernel in the
-emulator, and building a 32-bit userland + kernel for the target system):
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Portage 3.0.68 (python 3.13.5-final-0, default/linux/ppc/23.0/desktop, gcc-=
-15,
-glibc-2.41-r4, 6.12.21-gentoo-ppc64-ppc ppc64)
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-System uname:
-Linux-6.12.21-gentoo-ppc64-ppc-ppc64-POWER9_-architected-,_altivec_supporte=
-d-with-glibc2.41
-KiB Mem:    24096492 total,  10071272 free
-KiB Swap:          0 total,         0 free
-Head commit of repository gentoo: 5fbe5609e04996b5d2c6bed17f8bc55970d759bb
+> ---
+> 
+> Changelog:
+> v1 -> v2:
+> - Added explanation for redefining ftrace_regs_get_return_value()
+> and ftrace_regs_get_frame_pointer()
+> - Explained why stack space equivalent to 'SWITCH_FRAME_SIZE' is allocated.
+> 
+>   arch/powerpc/Kconfig                     |  1 +
+>   arch/powerpc/include/asm/ftrace.h        | 15 +++++++++
+>   arch/powerpc/kernel/trace/ftrace_entry.S | 42 ++++++++++++++----------
+>   3 files changed, 41 insertions(+), 17 deletions(-)
+> 
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index c3e0cc83f120..9163521bc4b9 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -250,6 +250,7 @@ config PPC
+>   	select HAVE_FUNCTION_ARG_ACCESS_API
+>   	select HAVE_FUNCTION_DESCRIPTORS	if PPC64_ELF_ABI_V1
+>   	select HAVE_FUNCTION_ERROR_INJECTION
+> +	select HAVE_FUNCTION_GRAPH_FREGS
+>   	select HAVE_FUNCTION_GRAPH_TRACER
+>   	select HAVE_FUNCTION_TRACER		if !COMPILE_TEST && (PPC64 || (PPC32 && CC_IS_GCC))
+>   	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
+> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+> index 82da7c7a1d12..6ffc9c9cf4e3 100644
+> --- a/arch/powerpc/include/asm/ftrace.h
+> +++ b/arch/powerpc/include/asm/ftrace.h
+> @@ -50,6 +50,21 @@ static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *
+>   		asm volatile("mfmsr %0" : "=r" ((_regs)->msr));	\
+>   	} while (0)
+>   
+> +#undef ftrace_regs_get_return_value
+> +static __always_inline unsigned long
+> +ftrace_regs_get_return_value(const struct ftrace_regs *fregs)
+> +{
+> +	return arch_ftrace_regs(fregs)->regs.gpr[3];
+> +}
+> +#define ftrace_regs_get_return_value ftrace_regs_get_return_value
+> +
+> +#undef ftrace_regs_get_frame_pointer
+> +static __always_inline unsigned long
+> +ftrace_regs_get_frame_pointer(const struct ftrace_regs *fregs)
+> +{
+> +	return arch_ftrace_regs(fregs)->regs.gpr[1];
+> +}
+> +
+>   static __always_inline void
+>   ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
+>   				    unsigned long ip)
+> diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
+> index 3565c67fc638..3da14d8271d9 100644
+> --- a/arch/powerpc/kernel/trace/ftrace_entry.S
+> +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
+> @@ -409,23 +409,31 @@ EXPORT_SYMBOL(_mcount)
+>   _GLOBAL(return_to_handler)
+>   	/* need to save return values */
+>   #ifdef CONFIG_PPC64
+> -	std	r4,  -32(r1)
+> -	std	r3,  -24(r1)
+> +	stdu	r1, -SWITCH_FRAME_SIZE(r1)
+> +	std	r4, GPR4(r1)
+> +	std	r3, GPR3(r1)
+> +	/* Save previous stack pointer (r1) */
+> +	addi	r3, r1, SWITCH_FRAME_SIZE
+> +	std	r3, GPR1(r1)
+>   	/* save TOC */
+> -	std	r2,  -16(r1)
+> -	std	r31, -8(r1)
+> +	std	r2, 24(r1)
+> +	std	r31, 32(r1)
+>   	mr	r31, r1
+> -	stdu	r1, -112(r1)
+> -
+> +	/* pass ftrace_regs/pt_regs to ftrace_return_to_handler */
+> +	addi	r3, r1, STACK_INT_FRAME_REGS
+>   	/*
+>   	 * We might be called from a module.
+>   	 * Switch to our TOC to run inside the core kernel.
+>   	 */
+>   	LOAD_PACA_TOC()
+>   #else
+> -	stwu	r1, -16(r1)
+> -	stw	r3, 8(r1)
+> -	stw	r4, 12(r1)
+> +	stwu	r1, -SWITCH_FRAME_SIZE(r1)
+> +	stw	r4, GPR4(r1)
+> +	stw	r3, GPR3(r1)
+> +	addi	r3, r1, SWITCH_FRAME_SIZE
+> +	stw	r3, GPR1(r1)
+> +	/* pass ftrace_regs/pt_regs to ftrace_return_to_handler */
+> +	addi	r3, r1, STACK_INT_FRAME_REGS
+>   #endif
+> 
+>   
+>   	bl	ftrace_return_to_handler
+> @@ -435,15 +443,15 @@ _GLOBAL(return_to_handler)
+>   	mtlr	r3
+>   
+>   #ifdef CONFIG_PPC64
+> -	ld	r1, 0(r1)
+> -	ld	r4,  -32(r1)
+> -	ld	r3,  -24(r1)
+> -	ld	r2,  -16(r1)
+> -	ld	r31, -8(r1)
+> +	ld	r4,  GPR4(r1)
+> +	ld	r3,  GPR3(r1)
+> +	ld	r2,  24(r1)
+> +	ld	r31, 32(r1)
+> +	ld	r1,  0(r1)
+>   #else
+> -	lwz	r3, 8(r1)
+> -	lwz	r4, 12(r1)
+> -	addi	r1, r1, 16
+> +	lwz	r3, GPR3(r1)
+> +	lwz	r4, GPR4(r1)
+> +	addi	r1, r1, SWITCH_FRAME_SIZE
+>   #endif
+>   
+>   	/* Jump back to real return address */
 
-ld GNU ld (Gentoo 2.44 p4) 2.44.0
-sys-devel/binutils:        2.44-r3::gentoo, 2.45::gentoo
-sys-devel/gcc:             15.1.1_p20250705-r1::gentoo
-sys-kernel/linux-headers:  6.16::gentoo (virtual/os-headers)
-sys-libs/glibc:            2.41-r4::gentoo
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
 
