@@ -1,69 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-10550-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10551-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF513B19A20
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 04:18:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A60B19A86
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 05:38:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwKx23KVyz30Wn;
-	Mon,  4 Aug 2025 12:18:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwMjC3szNz30Wn;
+	Mon,  4 Aug 2025 13:38:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754273926;
-	cv=none; b=mSiNT/YwURcXSj6xYeHuaCQOzgWX29Lts/MpmQjqqeY6xhGD5ZWH3Yql/U4ZXOVBptdUQ6WpSnbce3vxyfD/qibj8ONLL3Cqt8SPIYch9mZ856JgMp/sJuRw96W+csN64HS3KgqNG6Uy/F94C7ZNhRIvXrvu29QmLqwmF1wOiDpRmFPu0Y1I07KVOijwcZnIwx16j8qSCJBS4ah8v6Gw6rZGfWvKBICAGw8lHCqVDwLfQ6Fwm1ZqiWI/XVc2o+UHdp4OlA3fQxZzKEFUrSTBz7LauvSMe4EgCoPo0zj3e5w9nrksGWjYKjl/nYjiPWf2k/P5ZnIC7cwiYSXsL/lIRg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754278719;
+	cv=none; b=MEVhuqgxXNK9mZ8dwJS57U8SjtHGRuhqqrveD7c7Je0RU3QtCNdcjfFfL9B+uF9SlxDOi/yNzCEW8j08qEiB+RFi3VsULpBODIQN1G12q/DK9Ei2E93CZ6ki6av5emkpG9y7+GEgtFFxLxDuwqsUaHQNKtqzlvI0b6dZhy7lMFZuWH594UDGxi08PyH8d3F7Cdr8C0udKWN6CTNA06EEy1OYYILmi004QqPSANas7sQJi/+vVUQS5/SBr5wUOSVBaIO3U/A+XwDPWMpC1TtmB1wo5Dw/bBTW+47D1LgL/YBzSR1T34FsA+WEgFi5M8aWGOYL86zuo9ROX5FDbwu6KA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754273926; c=relaxed/relaxed;
-	bh=fLEJGegW49KnZkE04w0c+c/r0lv8mutMoA5ypr7iKxo=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=Dpw0d5RftDGlltHkT0DRRaTTvWzNC8cgwMeoHsnplqycpc8DoOS1HczKuhozUUFJn5SXUh4jPbKQqW3Fojln0lve13Q4iaCvzlo0qw5ja//a8EyZFpuVquvKY/hCMYXfLkCdmTe3u9MXF/zblSvNW7ezDa18DBhn5MX7ctP0h696xgGdYwE/alAdg8wz7IOyJb/ucwpjM9Bm807bF+yupK49/p8XNWB12M7XTp5Q2N2rkLwiytKfEqPxhKB6ZAVxEiw06xHxFneGseFikmBieHAhGOJUVniLR3k92Hv390xgX3oK1HbeFXK7WArJ6P8gqxGNvG2IbY79DtP22IMtVw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XjxTeM5O; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XjxTeM5O;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	t=1754278719; c=relaxed/relaxed;
+	bh=SmxoINSQKVJVK+Bn4i2QXaigutnESsGDJWcnHJouMq8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hV1eiTzF3GeUKYRlIN8kKXZEZGonUT1d04VA3fm6bpJWy/from2vZ/htk5s8ngg9C7OeUxgQINo8qkMrPaI5z0bNpfmYuFknkk+zkHTWheSpKWrxsPlIA9eXEXiqS5YSRjt8OtjvM3TvOT1Sj5cGh1NJuWlYg6Z+6a0C1Cv3W7k0AKWJhLgit1gAZiQnNGc2CwhG94EJ9BW027KyaGquzfw2PHZucWssjUXvZ39yGfhm3mu245TrcjR/IuXU9pqpoFWRJjw/kIrc9AjewaUKnHXL/TZObIhQ7KRy0+6dlQRfKDy+6z0aiQf+ns8ufnUxDf0dFSXcVtvjCQMZRBK1LQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwKx16Jtsz30Wg
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 12:18:45 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0C5B05C4A09;
-	Mon,  4 Aug 2025 02:18:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69CBC4CEEB;
-	Mon,  4 Aug 2025 02:18:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754273922;
-	bh=xvrL03XVtT1uRfIlXkMCWbpAdmjMleDH3xLX7av3QpU=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=XjxTeM5OcdLsH5IEmpFyhdBjKNSRrCaQuGabbKvHPh0967vwvptKSr7w8HFsI2T+5
-	 T5UVTvM0eP79vD2tdTq7+42fWRVts3DP1YySDv/6bBrysoy/EmBoWzOdehyw0jgsZ0
-	 r1R1HUZj19DcxSk9Aox/tP3j1ara+O4szASrMFOiYxgUtiGIt97h2igSAY2QjfbbYu
-	 cBjmxNmajmwVhpOnPlR6HSsDWkAXbKjNL2KP18liZFefk30LAbcz30dDEQ+kbQ9OB4
-	 tyDaS8Wz4sDBPF3e5hxt4Gj0qO8BY/2OkBqpadpjYXKDbu5z1gkTw1x9hBKhedIwxn
-	 5CTWQauBWQidQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71096383BF56;
-	Mon,  4 Aug 2025 02:18:58 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.17-2 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <9c2b1303-bc28-41c3-b87b-e8640960fcd1@linux.ibm.com>
-References: <9c2b1303-bc28-41c3-b87b-e8640960fcd1@linux.ibm.com>
-X-PR-Tracked-List-Id: <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <9c2b1303-bc28-41c3-b87b-e8640960fcd1@linux.ibm.com>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.17-2
-X-PR-Tracked-Commit-Id: cf2a6de32cabbf84a889e24a9ee7c51dee4a1f70
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 806381e1a24c6eec2b431cbba2ba1b81e518fea8
-Message-Id: <175427393711.614779.15118827673980406029.pr-tracker-bot@kernel.org>
-Date: Mon, 04 Aug 2025 02:18:57 +0000
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, puranjay@kernel.org, tpearson@raptorengineering.com, vishistriker@gmail.com, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwMj44mMbz2yLB
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 13:38:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=SmxoINSQKVJVK+Bn4i2QXaigutnESsGDJWcnHJouMq8=; b=vIsLKdYFH8YXGskFCYuFxM0Kri
+	4LEo9ReJIfgKFC95xymdzIuZHgWmCy4G3xVF1JqLP/afdrq9I84T2Y/HuFvZL4VO6QmU21lsUX/J7
+	vabemJeVXNbK57caQoIcupupdF5BH7q6dfJPU0J/aad1iPWgFP1Pta6YnAxGVC/HxIlB76K9yRSGM
+	9j3b/WmA+tZKaDnoC39qDIVxVYX23JxNjVp20InQWi7XyuBDNDCOuusdG9eda9qGfK1Uki2htTbQ5
+	+Xwy3IqaT9W3uDTeg3KYHyV0grcCXOdru7B95ajExnsHQEygus1gpnlTvvukrNJXtwkIJZ4HcTmaN
+	wXIAK1ig==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uim1N-000000099Z0-0JOE;
+	Mon, 04 Aug 2025 03:37:57 +0000
+Date: Mon, 4 Aug 2025 04:37:56 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Christoph Hellwig <hch@lst.de>, Leon Romanovsky <leon@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	=?iso-8859-1?B?Suly9G1l?= Glisse <jglisse@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, iommu@lists.linux.dev,
+	virtualization@lists.linux.dev, kasan-dev@googlegroups.com,
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 0/8] dma-mapping: migrate to physical address-based API
+Message-ID: <aJArFNkuP8DJIdMY@casper.infradead.org>
+References: <CGME20250625131920eucas1p271b196cde042bd39ac08fb12beff5baf@eucas1p2.samsung.com>
+ <cover.1750854543.git.leon@kernel.org>
+ <35df6f2a-0010-41fe-b490-f52693fe4778@samsung.com>
+ <20250627170213.GL17401@unreal>
+ <20250630133839.GA26981@lst.de>
+ <69b177dc-c149-40d3-bbde-3f6bad0efd0e@samsung.com>
+ <f912c446-1ae9-4390-9c11-00dce7bf0fd3@arm.com>
+ <aIupx_8vOg8wQh6w@casper.infradead.org>
+ <20250803155906.GM26511@ziepe.ca>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,17 +87,54 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250803155906.GM26511@ziepe.ca>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The pull request you sent on Mon, 4 Aug 2025 07:15:29 +0530:
+On Sun, Aug 03, 2025 at 12:59:06PM -0300, Jason Gunthorpe wrote:
+> Matthew, do you think it makes sense to introduce types to make this
+> clearer? We have two kinds of values that a phys_addr_t can store -
+> something compatible with kmap_XX_phys(), and something that isn't.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.17-2
+I was with you up until this point.  And then you said "What if we have
+a raccoon that isn't a raccoon" and my brain derailed.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/806381e1a24c6eec2b431cbba2ba1b81e518fea8
+> This was recently a long discussion in ARM KVM as well which had a
+> similar confusion that a phys_addr_t was actually two very different
+> things inside its logic.
 
-Thank you!
+No.  A phys_addr_t is a phys_addr_t.  If something's abusing a
+phys_addr_t to store something entirely different then THAT is what
+should be using a different type.  We've defined what a phys_addr_t
+is.  That was in Documentation/core-api/bus-virt-phys-mapping.rst
+before Arnd removed it; to excerpt the relevant bit:
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+---
+
+- CPU untranslated.  This is the "physical" address.  Physical address
+  0 is what the CPU sees when it drives zeroes on the memory bus.
+
+[...]
+So why do we care about the physical address at all? We do need the physical
+address in some cases, it's just not very often in normal code.  The physical
+address is needed if you use memory mappings, for example, because the
+"remap_pfn_range()" mm function wants the physical address of the memory to
+be remapped as measured in units of pages, a.k.a. the pfn.
+
+---
+
+So if somebody is stuffing something else into phys_addr_t, *THAT* is
+what needs to be fixed, not adding a new sub-type of phys_addr_t for
+things which are actually phys_addr_t.
+
+> We clearly have these two different ideas floating around in code,
+> page tables, etc.
+
+No.  No, we don't.  I've never heard of this asininity before.
+
 
