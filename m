@@ -1,41 +1,136 @@
-Return-Path: <linuxppc-dev+bounces-10565-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10566-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58175B19F99
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 12:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB7AB1A006
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 12:54:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwXb9442Nz3bjG;
-	Mon,  4 Aug 2025 20:19:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwYNB59ywz30Yb;
+	Mon,  4 Aug 2025 20:54:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754302741;
-	cv=none; b=GmHSN5O89WwTUGyXO8X/PPd2flXXdQBCWSNTN5G0pW2wK6YTNRrrslpJMkfhlJpvQKZuXD/r4nOqzIVCtMHtogYRz5ZbKU0np5ySP6lAPfVJukBBXhZIAyM3hVM1CkWUaKCn1AIvxPnGwKz8LV0C5cgVwtRWmDqx3ZDoYCq4t+qN1yn65ij+QDdXvpCz7yihf0R3w0GUShvsJAZhlL/If2ophy4F7RPovYOkGzv88idtfcNwIjrO6ukFr0Mq7MtDprrma789XLeu3s7xKGE75oYX/yWiArPKpcjH40Nh62bGUBnrPmeS3agunoYdLGSPchJGuzVZtSSMqzMiCcFPyg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::22e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754304874;
+	cv=none; b=TcLr4SooCxDgm4iiaOgn0kNJrG3Qr3vDeVLxT9jdZ/Iq9hB5Id/5YjgYlDjd9pt9Lu+QqgmtmRfs+OOC/l32GRi3P2HYT/i3rStnpWPEmyp2tvO39jJmoKe3YjNViN7nWRYYkJDIv2lN0s3rJvVk+3w27KLT3S/KM90QfqW6FbKHcOrH7ghInN2BqJ2X0D8gpgXki1uuXHUh+Ixb/2UIrEVBslOCrba/nmO+FOabMjR8K4bQoi7OIdSsMi9L6K3Z/a8cwszNGkwRsjISaDJjZrfzTy/59e31H6EVDGTWArpOfv7Bg3Ir8USJAQgYhVGES2AnFrP8GU1tnZVTSxIEkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754302741; c=relaxed/relaxed;
-	bh=oHDS8F2t3O11aFULfIoDQi75zX3spxmp7uoVKpjj694=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G+wbgWirdD86C13aqy32R11MA0XPwmrYLKycS5JHbY9xflinvHo285bW3D98rWcxpq8CO9rmMkcA7jZCbnSglrXT8RT4Zek18ZZhX/fQ8AFfbaZ8aQC4p3cU3DRbducvYNa2SIM2ehgdHuM7rNJjzhhFnt3hUrWkY07g4Bpfc6Q8NBugr6clG7rnCDx3X8QJ2SVbUrQTtP9k6zzOzTOsehViq4Z3MysZUT9liaABTmPBb6Iaw+C5Y7CQsevTAeNvala84t+hOdX9Ss4wpkTesweyNPVDT4x4T2+CLSYOMGOgqV6U0JmQzARsRTJ8NRqwB5mEnCUcgJ9ZJ8i1iqpwFg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kaod.org; spf=pass (client-ip=150.107.74.76; helo=mail.ozlabs.org; envelope-from=srs0=rltb=2q=kaod.org=clg@ozlabs.org; receiver=lists.ozlabs.org) smtp.mailfrom=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kaod.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ozlabs.org (client-ip=150.107.74.76; helo=mail.ozlabs.org; envelope-from=srs0=rltb=2q=kaod.org=clg@ozlabs.org; receiver=lists.ozlabs.org)
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	t=1754304874; c=relaxed/relaxed;
+	bh=X4RxvHMamXD48DKrjLVxOGxx8Xo0bomZZqlvqy6+mMo=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ERAYAHe5sCNzqWMzAWZFTIh/V0E+/HGGesW/31EHwxoREeeLrq5TvXvFck3qqgmS51Suy97cRKmuoaN+oVS1W2tQRAS6nATevDquTfQ1Ex9ISX/6LR7ZxE8e4UZvwJQsqHc0Fs6cUHChyiQE0NNIXybCvQ4KJyMVzI84EjQCEuzFKdlnqackG3BCfb/ibAiIIYsYHOmICIhpeom6CyMgzSrj+IZdAxViE3EhkSbyx6bJGM8OjNGetn1CoRdgnqyeRxSKCVCCudltqHcKu4qaepVs08DJBD+1ZF0KaBxRoOkBpB7bwadm1iKnlC+K78EH9A8xDreGu2spWERuDoqCWg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=U5psyo0S; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=U5psyo0S;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=urezki@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwXb92WJ4z2yPS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 20:19:01 +1000 (AEST)
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	by gandalf.ozlabs.org (Postfix) with ESMTP id 4bwXb91Qz1z4x5K;
-	Mon,  4 Aug 2025 20:19:01 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4bwXb56nFkz4x3q;
-	Mon,  4 Aug 2025 20:18:57 +1000 (AEST)
-Message-ID: <0d0b203f-b753-41ee-97c5-fa4739f4915c@kaod.org>
-Date: Mon, 4 Aug 2025 12:18:57 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwYN84gjbz2yLJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 20:54:31 +1000 (AEST)
+Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-33245e653bbso20770531fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Aug 2025 03:54:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754304868; x=1754909668; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X4RxvHMamXD48DKrjLVxOGxx8Xo0bomZZqlvqy6+mMo=;
+        b=U5psyo0Si2oGcjEJv/IdnbW6zWNG/JyqZEWkwFQsbMepHTq25+8MDbs930OOCUhn9D
+         TjBU/JXCK0TJiXm1VPOSwF5Q8oIdNiO9zJkoKm2IXOhkYbDNMeIPl6ZfVtaoYJtdmpEJ
+         dbU6P/fS27BXELCPcxGAdi8tB4i9Rg7xiS1+7JlInxaHqYCdQk57fNZwFIIbghNgKnnk
+         KLHQl7JVju69D/BcJwI1axvKq6UjOY1Gu1Uap8Sj3oKqkLyhQt8J6rBrJwrgWUVRT9MV
+         BEJQnUym4NyXfLGc/CAkVdZ2O5OLFd+Yhocac4CgRFZoxOL1brEWu7UzhjWaXICbWZN6
+         dEvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754304868; x=1754909668;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X4RxvHMamXD48DKrjLVxOGxx8Xo0bomZZqlvqy6+mMo=;
+        b=fI43L/697FI0XgUr0uClgmHwvrhCL22DYU9Via8MmWXRIF0T0iu9hl8Mmd0p/StT/i
+         nBso/V5g+Sd7RhaoiXJRjbtb4/5VRLrqArV8qZ4NW7PeKv3G4f6iL/RDwuWGvCAmJver
+         ffxHKCbXeGejs8iQJFGuZGyvpbDVZn/zxOx/vwmpezDF6wFu6TqpiId3esTJGV13clY1
+         2J19n8vB4rDWCnfZxqmP32Ydt+E0gr2PsbT95ymWsoPUaa2ZJB6Z5YZMrpjQwOlMBSDw
+         sZaqLjee/daQsVgAj1ICWWi8bZgJyEToUv2/Wpj8PEUaKoz3utO7v1bayEsTfKvAUcSM
+         MogA==
+X-Forwarded-Encrypted: i=1; AJvYcCVOqki8ZRxALZaXJgtbaT/CEMiwXezDtoHwEitzZD70RmwSyoWGE4N1bkdPXbAf8Kz+fHuveygr92caOUY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzhnPg8jcaaIcTS4xKbRgWOjAcr/y5BMBUdx/xUWz1MUWSPD2rr
+	w7wsTZ+WDKxwP0Yg12RtEJ8qV/F0F78BnLkqcx1gwnlaIWnIV14o3pg9
+X-Gm-Gg: ASbGncumW8wbm/in9e6n4l0kcE2i1I5seOwSj8zd9kjUKsNu7BNwHGYW9W9shwPo/7R
+	HJmBtBhh/orhAPJ/ps3xsL1iqlISlWh3qbuLU/lzB7c/y4BgTvMahU28cSZR9y9ndQV+NQxWNwc
+	My1NrxGsY39QVz9pExV0ziXqihT2dIOnUV+VRseX12BoNOBVV9QMxl6IpFhyh5qorWUJxjEtW7g
+	WrW56FBnqZS+zKNGmv1uWsxNeXRn8/R4XHGru3Sq7tmos/B5zsxA1ytmxhm/KHLQ/D5SAweh8DV
+	KOE4z2dTbWcIBsTkPfujoSEvRfkrW7klw4GtPn+FsyyvlP3pPsuL7grSRSAPHxtm1c8WuLe28z3
+	oTaaRMesVm1WGL3nzvO7eLzwn4lmAELFKEImIl6W5BLQFh/NQlv2+CVFs0rU8
+X-Google-Smtp-Source: AGHT+IGJZZFcFy8qBb/9BVJvSpxogtzfM17wxVB5B1bfSxKSrolhCiqzChAu468YcmIMkpSbHFvpbA==
+X-Received: by 2002:a05:651c:20ce:20b0:332:4a77:ad9f with SMTP id 38308e7fff4ca-3325677af91mr12521651fa.24.1754304867614;
+        Mon, 04 Aug 2025 03:54:27 -0700 (PDT)
+Received: from pc636 (host-95-203-22-207.mobileonline.telia.com. [95.203.22.207])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-33238271bdfsm16396311fa.6.2025.08.04.03.54.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Aug 2025 03:54:26 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Mon, 4 Aug 2025 12:54:21 +0200
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, Harry Yoo <harry.yoo@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>, Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-sgx@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	nvdimm@lists.linux.dev, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
+ consistently
+Message-ID: <aJCRXVP-ZFEPtl1Y@pc636>
+References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
+ <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
+ <aIgSpAnU8EaIcqd9@hyeyoo>
+ <73764aaa-2186-4c8e-8523-55705018d842@lucifer.local>
+ <aIkVRTouPqhcxOes@pc636>
+ <69860c97-8a76-4ce5-b1d6-9d7c8370d9cd@lucifer.local>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -49,95 +144,87 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] powerpc/powernv/pci: Fix underflow and leak issue
-To: Nam Cao <namcao@linutronix.de>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <cover.1754300646.git.namcao@linutronix.de>
- <70f8debe8688e0b467367db769b71c20146a836d.1754300646.git.namcao@linutronix.de>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-Content-Language: en-US, fr
-Autocrypt: addr=clg@kaod.org; keydata=
- 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
-In-Reply-To: <70f8debe8688e0b467367db769b71c20146a836d.1754300646.git.namcao@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69860c97-8a76-4ce5-b1d6-9d7c8370d9cd@lucifer.local>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 8/4/25 12:07, Nam Cao wrote:
-> pnv_irq_domain_alloc() allocates interrupts at parent's interrupt
-> domain. If it fails in the progress, all allocated interrupts are
-> freed.
-> 
-> The number of successfully allocated interrupts so far is stored
-> "i". However, "i - 1" interrupts are freed. This is broken:
-> 
->      - One interrupt is not be freed
-> 
->      - If "i" is zero, "i - 1" wraps around
-> 
-> Correct the number of freed interrupts to "i".
-> 
-> Fixes: 0fcfe2247e75 ("powerpc/powernv/pci: Add MSI domains")
-> Signed-off-by: Nam Cao <namcao@linutronix.de>
-> Cc: stable@vger.kernel.org
-> ---
->   arch/powerpc/platforms/powernv/pci-ioda.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+Hello, Lorenzo!
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+> So sorry Ulad, I meant to get back to you on this sooner!
+> 
+> On Tue, Jul 29, 2025 at 08:39:01PM +0200, Uladzislau Rezki wrote:
+> > On Tue, Jul 29, 2025 at 06:25:39AM +0100, Lorenzo Stoakes wrote:
+> > > Andrew - FYI there's nothing to worry about here, the type remains
+> > > precisely the same, and I'll send a patch to fix this trivial issue so when
+> > > later this type changes vmalloc will be uaffected.
+> > >
+> > > On Tue, Jul 29, 2025 at 09:15:51AM +0900, Harry Yoo wrote:
+> > > > [Adding Uladzislau to Cc]
+> > >
+> > > Ulad - could we PLEASE get rid of 'vm_flags' in vmalloc? It's the precise
+> > > same name and (currently) type as vma->vm_flags and is already the source
+> > > of confusion.
+> > >
+> > You mean all "vm_flags" variable names? "vm_struct" has flags as a
+> > member. So you want:
+> >
+> > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
+> > 29:                          pgprot_t pgprot, unsigned long vm_flags)
+> > 39:             vm_flags |= VM_DEFER_KMEMLEAK;
+> > 41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
+> > 45:                              pgprot, vm_flags, NUMA_NO_NODE,
+> > 51:                                      pgprot, vm_flags, NUMA_NO_NODE,
+> > 85:                          pgprot_t pgprot, unsigned long vm_flags)
+> > 259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+> > 266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+> > 376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
+> > 385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
+> > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/vmalloc.c
+> > 3853: * @vm_flags:                additional vm area flags (e.g. %VM_NO_GUARD)
+> > 3875:                   pgprot_t prot, unsigned long vm_flags, int node,
+> > 3894:   if (vmap_allow_huge && (vm_flags & VM_ALLOW_HUGE_VMAP)) {
+> > 3912:                             VM_UNINITIALIZED | vm_flags, start, end, node,
+> > 3977:   if (!(vm_flags & VM_DEFER_KMEMLEAK))
+> > 4621:   vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+> > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
+> > 29:                          pgprot_t pgprot, unsigned long vm_flags)
+> > 39:             vm_flags |= VM_DEFER_KMEMLEAK;
+> > 41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
+> > 45:                              pgprot, vm_flags, NUMA_NO_NODE,
+> > 51:                                      pgprot, vm_flags, NUMA_NO_NODE,
+> > 85:                          pgprot_t pgprot, unsigned long vm_flags)
+> > 259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+> > 266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+> > 376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
+> > 385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
+> > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags ./include/linux/vmalloc.h
+> > 172:                    pgprot_t prot, unsigned long vm_flags, int node,
+> > urezki@pc638:~/data/backup/coding/linux-not-broken.git$
+> >
+> > to rename all those "vm_flags" to something, for example, like "flags"?
+> 
+> Yeah, sorry I know it's a churny pain, but I think it's such a silly source
+> of confusion _in general_, not only this series where I made a mistake (of
+> course entirely my fault but certainly more understandable given the
+> naming), but in the past I've certainly sat there thinking 'hmmm wait' :)
+> 
+> Really I think we should rename 'vm_struct' too, but if that causes _too
+> much_ churn fair enough.
+> 
+> I think even though it's long-winded, 'vmalloc_flags' would be good, both
+> in fields and local params as it makes things very very clear.
+>
+> 
+> Equally 'vm_struct' -> 'vmalloc_struct' would be a good change.
+> 
+Uh.. This could be a pain :) I will have a look and see what we can do.
 
-Thanks,
+Thanks!
 
-C.
-
-
+--
+Uladzislau Rezki
 
