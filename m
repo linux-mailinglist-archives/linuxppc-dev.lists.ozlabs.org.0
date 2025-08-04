@@ -1,49 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-10625-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10624-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BAA3B1AB0C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 00:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9068B1A95A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 21:05:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwsGS3Nclz2y06;
-	Tue,  5 Aug 2025 08:50:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwmGn2YH8z2yZ6;
+	Tue,  5 Aug 2025 05:05:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754347840;
-	cv=none; b=S0Jox1AxSJNKkJmVm8nVBG1l5D8waqvVoKtFuhLVy0rkebZ4ivmKsJ5Y+cs6hiXBVcYz6r4zbvs8D/CMtLdSgFt6mflgPaPSV1NF4ZuIWC/8JV+2AwTbkaE8foqybCmVn3/H+6m1IcbzoUaAme2u+1JjC4K/H7OtUYbA9BtDa/MU2ESpRV3pT7xBWM3EholJ7ygPAXJJXDAdu54SRHwv7/oRSTolqbdqbsa7ACrkwDngTOIKliZl2qmrcg0ENIwwgGfMNrOXvvbXZDhsmKDaKQOGPWAmLthkZZV2Jrn+zR5v6oig/N8XM8PoXKoM32iaE3ifVAEz7E7pWv3m54yDXg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754334337;
+	cv=none; b=K6DUSIWiLAoaXOtP81YzBoZbqNAPrBjtl57yrL3Lu0yK2oize4CCK0Xe+wrjA0LcoEYdwcDothQRxLPky268rgkkj/Otpf9enZHsHdFn0IBxqmkoA+l/qU6KBvC0dV/1ri3N0COkLFhD0+DX/Wk5gro7291cY1uz0x15GcaPmt7ZC9PMnpzjvKBBty4r6/dLQ6NnkalT2Ro9kdBpqNBGW9kauFZyDXm+TkmjvmtKUv4Jdn0jRBwybu4wWBB+wthvESA5Na3ILvEfZNX5ECxO5kgY+qZXE8TneyXg9gS8UhQCjkKp7NdPGQyufpTzF6zmTyMU4ycSAqOuJWGLxjdDTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754347840; c=relaxed/relaxed;
-	bh=Tt964GcbDZm1EIllb6PTgoX8tjiCQZMvcYN22tpyJ7E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RQDFD+eFQGVq5cT9bVi6J4sikuG6XmP20nIO6lyNBobWczNcKMcBaR/RVdPrE4fpqCCPwxux2oy/G20l82CqQ8+G3pSD8k2tXIcPSi14LjDg/yWdND1hisWUxv2KUqHm9PTgJmx4XnnQaxJ9UhrVtEftqkcGEgB4Dx48tyF2BMLTuD8EEHdwNKcepbvH51Dx+0iPzwGMtRsJLvSPEnMs1fbb22hCcacYRdxjj8RloAY8eC6D4oGMBiLjGGHL1ei3kmliRYy9CJU1zwdCSJ82EK643hj3Gj3QQfv0sZ+Hh3llDJxl702mb3HrEl5+MxiFAHlgczsBLHG1Vmcj/Ph3bQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwsGR2C00z2xnM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 08:50:37 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bwmCH6vkyz9vF1;
-	Mon,  4 Aug 2025 21:02:35 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id dzPhUKf9CYtV; Mon,  4 Aug 2025 21:02:35 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bwmCF5SFSz9vDl;
-	Mon,  4 Aug 2025 21:02:33 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 695098B765;
-	Mon,  4 Aug 2025 21:02:28 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id KC5YIf5SR_OU; Mon,  4 Aug 2025 21:02:28 +0200 (CEST)
-Received: from [192.168.202.221] (unknown [192.168.202.221])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B770B8B763;
-	Mon,  4 Aug 2025 21:02:27 +0200 (CEST)
-Message-ID: <187412bd-3ae0-4fe8-b526-f96af6bea6dc@csgroup.eu>
-Date: Mon, 4 Aug 2025 21:02:27 +0200
+	t=1754334337; c=relaxed/relaxed;
+	bh=MTHshTZ3G/LzUYu/KonrSHvVnqlf3hz/kQLzD3Es+CM=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VRUNLqLh8n5/cqwLEAsnCHiZzOVTtKNePNFu0hZNPSWmlqR0z7J2ntLU+4bmGt2zAcuSci9L7NWYjfhBe7yYccXLoPegveJMKP/XpIoOe0Q5IeNdd7Bu2BbVvjFy4tG6oJ3d+DHRDcApFoHmQnjKjsCM5ac3y1+XT6x7w7u5NZCB0C/i/Jv9IlforUb7EneR/DTj176YeHQjxzvNAdsC+ttBbzROv1JE7Y0EPJQRWs3rAKhTKDxy0jsKwzyszrh0WyperUjw1EcId1s9zpA9qLkIZHRdFcHOWN4NHxIyaphA3LSAyKVTO5zc4Nwn4ILzyBUeUcElQcpQ453Eeo3Zow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RVyaMPXp; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RVyaMPXp;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwmGm5tMKz2ySY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 05:05:36 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 93E0643D8D
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 19:05:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 74208C4CEE7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 19:05:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754334334;
+	bh=MTHshTZ3G/LzUYu/KonrSHvVnqlf3hz/kQLzD3Es+CM=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=RVyaMPXp2rS02rgAeivchA5zK05h8/xrEGcENa2SOke5uKyEQXhLIlzWk4GOaCV8/
+	 zwyqcH+zt3wgYHL2Z3h4KvHePSE9ptUG3byqB7HVoNL4Ac7snhozWjK3NWgiFyGjDp
+	 Jwo3ztvwuM2f3V5cUaSy53rgx8hr7BdhLO9+L7iKrhB0SxuVdbwQaKzFHAX04Fm73J
+	 DW/oBCTq069F50zO4H8KswMI+rhO0/2yI9xT9kgLqK/eUsEoOGq1lDCsc18MNXVWvI
+	 X9C/T7EU0Zr9Sn6e9hFXPspuzfOMbF9cplxFZBxtUAlLglcxumP0/F478j7DFyKwRd
+	 sYubE9ePmBt0w==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 6C072C433E1; Mon,  4 Aug 2025 19:05:34 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 220407] arch/powerpc/boot/types.h:43:13: error: 'bool' cannot
+ be defined via 'typedef' when building with GCC 15
+Date: Mon, 04 Aug 2025 19:05:34 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: anhollander516@gmail.com
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: PATCH_ALREADY_AVAILABLE
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-220407-206035-7xqTaPW6Zh@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-220407-206035@https.bugzilla.kernel.org/>
+References: <bug-220407-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,103 +85,32 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/7] crypto: powerpc/md5 - Remove PowerPC optimized MD5
- code
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
- Ard Biesheuvel <ardb@kernel.org>, "Jason A . Donenfeld" <Jason@zx2c4.com>,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org
-References: <20250803204433.75703-1-ebiggers@kernel.org>
- <20250803204433.75703-4-ebiggers@kernel.org>
- <593b6997-9da4-439c-ba82-84e8bb2ed980@csgroup.eu>
- <20250804180923.GA54248@google.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250804180923.GA54248@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=2.3 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
-	TVD_SUBJ_WIPE_DEBT autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Level: **
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D220407
 
+--- Comment #2 from Avraham Hollander (anhollander516@gmail.com) ---
+(In reply to Christophe Leroy from comment #1)
+> This is fixed with commit
+> https://github.com/torvalds/linux/commit/
+> 5a821e2d69e26b51b7f3740b6b0c3462b8cacaff
 
-Le 04/08/2025 à 20:09, Eric Biggers a écrit :
-> On Mon, Aug 04, 2025 at 07:42:15PM +0200, Christophe Leroy wrote:
->>
->>
->> Le 03/08/2025 à 22:44, Eric Biggers a écrit :
->>> MD5 is insecure, is no longer commonly used, and has never been
->>> optimized for the most common architectures in the kernel.  Only mips,
->>> powerpc, and sparc have optimized MD5 code in the kernel.  Of these,
->>> only the powerpc one is actually testable in QEMU.  The mips one works
->>> only on Cavium Octeon SoCs.
->>>
->>> Taken together, it's clear that it's time to retire these additional MD5
->>> implementations, and focus maintenance on the MD5 generic C code.
->>
->> Sorry, for me it is not that clear. Even if MD5 is depracated we still have
->> several applications that use MD5 for various reasons on our boards.
->>
->> I ran the test on kernel v6.16 with following file:
->>
->> # ls -l avion.au
->> -rw-------    1 root     root      12130159 Jan  1  1970 avion.au
->>
->> With CONFIG_CRYPTO_MD5_PPC:
->>
->> # time md5sum avion.au
->> 6513851d6109d42477b20cd56bf57f28  avion.au
->> real    0m 1.02s
->> user    0m 0.01s
->> sys     0m 1.01s
->>
->> Without CONFIG_CRYPTO_MD5_PPC:
->>
->> # time md5sum avion.au
->> 6513851d6109d42477b20cd56bf57f28  avion.au
->> real    0m 1.35s
->> user    0m 0.01s
->> sys     0m 1.34s
->>
->> I think the difference is big enough to consider keeping optimised MD5 code.
-> 
-> But md5sum doesn't use the kernel's MD5 code.  So it's implausible that
-> it has any effect on md5sum.  The difference you saw must be due to an
-> unrelated reason like I/O caching, CPU frequency, etc.  Try running your
-> test multiple times to eliminate other sources of variation.
+Oh now I see that that commit is already present in Linux 6.16 but not 6.15=
+.x.
+Not sure how I missed that. It should probably be backported at some point =
+but
+for now I can just patch it myself.
 
-md5sum uses the kernel's MD5 code:
+So -std=3Dgnu11 goes to BOOTCFLAGS, not KBUILD_CFLAGS. Makes sense. Thanks =
+for
+pointing me to the patch.
 
-# ldd `which md5sum`
-         linux-vdso32.so.1 (0x77b90000)
-         libkcapi.so.1 => /usr/lib/libkcapi.so.1 (0x6ffa0000)    <==
-         libcrypt.so.1 => /lib/libcrypt.so.1 (0x6ff50000)
-         libc.so.6 => /lib/libc.so.6 (0x6fd10000)
-         /lib/ld.so.1 => //lib/ld.so.1 (0x77ba0000)
+--=20
+You may reply to this email to add a comment.
 
-Previous test was on an mpc8xx.
-
-I now did the test on mpc832x and the difference is even bigger:
-
-With CONFIG_CRYPTO_MD5_PPC:
-
-# time md5sum avion.au
-6513851d6109d42477b20cd56bf57f28  avion.au
-real    0m 0.41s
-user    0m 0.00s
-sys     0m 0.34s
-
-Without CONFIG_CRYPTO_MD5_PPC:
-
-# time md5sum avion.au
-6513851d6109d42477b20cd56bf57f28  avion.au
-real    0m 0.58s
-user    0m 0.00s
-sys     0m 0.47s
-
-Christophe
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 
