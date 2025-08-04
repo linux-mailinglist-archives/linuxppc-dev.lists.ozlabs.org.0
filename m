@@ -1,72 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-10595-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10596-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AE3B1A624
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 17:35:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0F2B1A6FC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 18:04:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwgcG5nydz3bx0;
-	Tue,  5 Aug 2025 01:35:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwhFD5mkQz3bpG;
+	Tue,  5 Aug 2025 02:04:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.218.54
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754321726;
-	cv=none; b=aekBK8rYmpT92IdynTQxtx7kYZOjARpYSuesEU88p3RCeyIEVGcxcN51Ay5rww1sWO9ed1acSZZaEoBV7nbOf0oCVx3YAwgpcWN2PBshe13vU6Wo5IBP9mESSSw3P9dcRSNzydMKzefJCVkNsprIXVnnoyh0VHvzFquzc5LejBLSlf6OCk6rijgLrslDMMcUIKFOGAKXYmkaWFA46SytUOH1FqdRNjOrPu0uYADJIhi8gf3LVIFlxOYPrqcRlYOTZAKSCCUAGCT4BWFA7U6Ee1+VNvex21FLqvA70Fagj5Zime6BiHDPVHPjIKde/pFyOxHgXUvnY7N7ZiiWKgYFKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754321726; c=relaxed/relaxed;
-	bh=UkvknQsIRTLNlHjYffIfMN8B8TJuS69lKIHDLLVrOcs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jGe9KRlcBAC6ED+9diMBAnFNejJwLgarlDMFI4MYw7Dv0ejQIgy0N8Hu8R4DokzxVePo3jnV9uJaICmIy9/aloVbtzgnDHqpkF/JLSnTgblnH/fEqhDnLyTWOAM1huUjlNlfoZDAsNQcWtWO1qd2QYrYCXpjQBvgefJzTzVGs23uF70YQMxE9nZy9QhQL63EPWVhwSWa8lPFa8cdvevdcx/379oo4mhJcqhr7invm0mKsZFj5ddzO05JILt6GBhF7SMrkgxiZBcJjacjcaRkXcXisPB4eW5dmF+mZQ16IRsdhI4BSLsB8va2WUdPoBzgHpLmFkBHrC0pVC6wZZemuw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass (client-ip=209.85.218.54; helo=mail-ej1-f54.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.218.54; helo=mail-ej1-f54.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.53 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754323440;
+	cv=pass; b=ZnPKKDa5xDV34Dzu5RFFgLGeE4YbQyIwwG0IerVp6cuUiM4E/K8aq7DkN8QivIaeNOabcvjly0RwUb7a6uxTATvFbFPNE2GLQB33iffeaQvpe2XR1M0tpYnicfVzcoGoHxxft/NiAPXbCgqih+Foa5lnO47co5YduRwhxwWGVu7kMlYmcShQ8gRe2RncGg3MLROGEVjMFHFtsNwULo+KCfO3wW5XSmzT5jjUrpfw183xHcDuJ3LLYCfCAJ5xY9gYpw9Bubrz4FqcI8OU2ygmSQcEa7LjzL3nw9Sgn837GN8JmMaEZdZyBoOvHwLFDWH+NJdjfi863BfmMj366APe3A==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754323440; c=relaxed/relaxed;
+	bh=M56Whp0iiDJxqyvQ/vFIYTMbOneXnKVIV6eIN4usUKY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=co4qp4RN5toy2Lj7c2fzVVXK63q4bAEocwjnultcjVlDXm830iWfjHd/RBg5TmpAJAIazeDouSHx5zUBY+OSg9qQ3OTtgPFDqODVCuwiplLQNmORLf09tDNdsFEhZph1iZHO9Mu9c/c8ckBrscJBDaDVPjr4sKhFCuvPQu/Tbte6XvhscOENRtUFAk+4vjhbA6khUX0btBNYKVz2uDcQp1g4a1WvbXkmS72h9ydsAKrf4dM6J6jhAScorpz3TLBz8NRNp9DbZodnq7cJVEVi3fPhdZKF6o8pKIj7lDlWnt7zhLbu+kssNQEJNbxw9HXwa/RucBAqLlzzWgslcyg3mw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=jzSmbHar; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=aEX1VtAO; dkim-atps=neutral; spf=pass (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=jzSmbHar;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=aEX1VtAO;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwgcF6NT1z3bwf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 01:35:25 +1000 (AEST)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-af9618282a5so294901766b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Aug 2025 08:35:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754321722; x=1754926522;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UkvknQsIRTLNlHjYffIfMN8B8TJuS69lKIHDLLVrOcs=;
-        b=lyMhAeHd8mN0KvDkpfk124cReDJUlEbgHyYVyXqqHUnBCmXSSGbMBHxxRE9w1XOA5o
-         AkUpKchWMUKWt16Vpa65/jldfwgjoeoLMlkwz5Ha/b98aGftsW31HgU5LrPqx30WAOlf
-         PrwtoGTOHY1Zh0TZE+YYQNqj8zN4hD8hhgeo7Lgw1M5eAfOzTRaBeGj1ylVPSE23pq0M
-         uXyF16rfBQaOV6lgYRf/YhpzTiTAb848M2lm9y2UBitPHM4lXAGvDTUreeWTMmr2NRYp
-         UvT39Ff3TEA9xCvL0ukRQQAklT2PorxcXt3pyA7cQOPswdxljg5o+qPAOhQdwGhbVs+u
-         G1GA==
-X-Forwarded-Encrypted: i=1; AJvYcCVPHOlCNyQURlEM+H1NLXU6KNCI9BJndN0QxI9i0fGp24Y5U3FctDmQd/ycFx4EQGLxYjIXSKVC8AtH5xQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxZ0OqPnNE0dQUQKyDu79cO6uwGW00ZAfnkD3EgNxybi3yilXSA
-	6TYQ0aUrtstU2kp6XhkffZTBoWAMAyoVWDGgcolmxyYzuD48IMqFd5rL
-X-Gm-Gg: ASbGncs/aPOFkEDCoCCYWIDo9J3hrPxtPpm1Lm/PgE21+rD0TqHgUIxShix3+8Mt+0Q
-	vpUx15yJnGW3f++tTINCgoozVt7wsMJWqDV6d3UMo/HN4cR/Vf8PSJHFo3CqByq+ZZ9eEWCrO9l
-	/vpmwkBWGLPlXRV/85iDsNmvHvOKd8kNGJVApkZwsYSyfeOeO8hRGl/DCSu2q2rJk2V4/3pXB+P
-	nEab08XPi+Qk3mUtaIjBtJcantrUr9dSd0dOAikm8z2ICRQkFt4zhCuxZ86a/eQ3zDVYt6lF+tu
-	ofW/Y6yGRQKvSKREK31hB4J6q8oqJnSwbid+LwDHpghHWhPuOcHsDOr8rflviBWFQC2cgLjgnZ5
-	L2h0V+Xt0X6GouE+LZg1Scdw=
-X-Google-Smtp-Source: AGHT+IGY6yKz+FByCTSLRPrfqErAuLhPrr9SDzfJMrRAtdl7cm5w7Ayr/q2YVc1pbEeuWrcQqViPkA==
-X-Received: by 2002:a17:907:c25:b0:ae3:4f80:ac4c with SMTP id a640c23a62f3a-af93ffc139emr1027516966b.12.1754321722244;
-        Mon, 04 Aug 2025 08:35:22 -0700 (PDT)
-Received: from gmail.com ([2a03:2880:30ff:4::])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a2436a4sm753208266b.134.2025.08.04.08.35.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Aug 2025 08:35:21 -0700 (PDT)
-Date: Mon, 4 Aug 2025 08:35:19 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Jon Pan-Doh <pandoh@google.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] PCI/AER: Check for NULL aer_info before ratelimiting in
- pci_print_aer()
-Message-ID: <3kpkazpe4j4pws7rean5kelwmpfp5ij62psvdzvimcr37do47a@y2pvypskynno>
-References: <20250804-aer_crash_2-v1-1-fd06562c18a4@debian.org>
- <9cd9f4cf-72ab-40f1-9ead-3e6807b4d474@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwhF91gj9z3bnx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 02:03:55 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1754323385; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=Mt5zmzsWKj7fxEHIt9QWfdDLcPDxN8An5wK6gex5ajSPfSrmmphu8PQoDzIVBpeSw4
+    oS82h2PIQ7ucf4fq1u+NfrU9v3OKAAzgGEbLJlD2REo7eapRKikYyJHiGRBwd8EnkL/H
+    wuXPPBCz4U2UY8jrOz4lU2E4e1+K1xc4iR6LsXJ6je6Zbyuh6ub2eqnbN81w3hSwgdaO
+    NMsewAuRaB4yp2ZcWViwfwOoqbLP19u6iMvzzi/C0l6tTm1l0p0DMcJBUxHwjP7re//M
+    IxDsB5GJNxahYYhJzoMSQ99eRj0/BFiivRM4fhUzlG8KDDHrRXie3BgqeNh8QWQsqPLD
+    2CLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754323385;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=M56Whp0iiDJxqyvQ/vFIYTMbOneXnKVIV6eIN4usUKY=;
+    b=VIEqkqOVSEYf2S7LNKL9yWpnWAu5Ylf381bfQU0vfhnPwoSsSkiGiTPuNRQIKmmxv9
+    P2veAcSopU3+keozb8ef2XrVSlHr12C22lTJq49ahUsx1e0FkpS2J3q+aWJpbbj3JQq9
+    61vo+0H0BOSMwnPAXK58zn2y4Wt992fEB6NL1F36loRxBz+xVtLaIRCRN4kzwed+KNha
+    6ettixeMTSkFqXmz/L/Nll8NzdjgnZsuhKn9M5goD3OD4inQVRI8dfIXJinLECiYQLuU
+    J7+tujicx7kRRDL9CgD8QFSusx4UwzM7/pOUbbkf2UnwYhVslzVGdllx1FPWN10eY4U6
+    y+/g==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754323385;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=M56Whp0iiDJxqyvQ/vFIYTMbOneXnKVIV6eIN4usUKY=;
+    b=jzSmbHarlJQf0Kjkum37/nYUBTJ4+E/vgOO0TSw6+n6cxfiXtV+J4G0273k6n/qkZR
+    M7fitdr1labaUenQx5VZ08EXDE6g/+ktLGP2aci19TQ0woREE+whoOoJwAJqEAjbyhhu
+    WdXG87255WHNxy6XOpyyuPHhz3WX5W5MBIRbfOKBA7Niitk+tzsWodzdcd4TiztPtflL
+    rzdskf+2OqrtKGf889B+TYpUdEgjroQVWjNzoTEX1o19u0mJo6d63C1Wzs84FnZktJU9
+    RdYZ19MU0NhrWxVvk0HzDV5mLvSWjL7n3KJjVybUgO+rGc5eI+EdKzmaFpfNUYodpVpM
+    q/Zg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754323385;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=M56Whp0iiDJxqyvQ/vFIYTMbOneXnKVIV6eIN4usUKY=;
+    b=aEX1VtAOCCqPqeh39irZzABAhoFmyHVEzT5A9OFuK6Q7jS+bFJhUiQxiMUccLbEDVb
+    JBJtOIModOfmW67Wu4Bg==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6P1rfO5KiO55fErqxeyEb6mwJICPXWVIboBgAwJC8PHVKCftd3qfPg=="
+Received: from [IPV6:2001:16b8:50e1:3200:c3cb:9020:d3e9:5d1d]
+    by smtp.strato.de (RZmta 52.1.2 AUTH)
+    with ESMTPSA id e6066c174G34t59
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 4 Aug 2025 18:03:04 +0200 (CEST)
+Message-ID: <48b61c14-f83d-4e4a-b5d3-857099058eda@xenosoft.de>
+Date: Mon, 4 Aug 2025 18:05:44 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,40 +92,136 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9cd9f4cf-72ab-40f1-9ead-3e6807b4d474@linux.intel.com>
-X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: radeon_fbdev_river_fbdev: failed to initialize framebuffer and setup
+ emulation
+To: Alex Deucher <alexdeucher@gmail.com>
+Cc: ville.syrjala@linux.intel.com, Jeff Johnson <quic_jjohnson@quicinc.com>,
+ mad skateman <madskateman@gmail.com>,
+ Darren Stevens <darren@stevens-zone.net>, hypexed@yahoo.com.au,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+ Hans de Goede <hdegoede@redhat.com>, Wu Hoi Pok <wuhoipok@gmail.com>,
+ amd-gfx@lists.freedesktop.org, alexander.deucher@amd.com,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>
+References: <CADnq5_PUi_2+kDYX8R_eanNF4iYN79MdXJ_PLcQbZKi6e4S8tg@mail.gmail.com>
+ <87F47F04-EBAC-48D6-AD0A-4BBE39DF43CE@xenosoft.de>
+ <1115cce7-cfdc-4c5b-b017-69cd32425650@xenosoft.de>
+ <6ba8d730-52f9-421f-8d8a-887545f0ceac@xenosoft.de>
+ <2cc83897-427d-47f4-b6a3-8db9682972cd@xenosoft.de>
+ <CADnq5_OpJdbc4YKtV-9+5JyeKyqd4+irhT6OtFq_K9KJF24VSQ@mail.gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <CADnq5_OpJdbc4YKtV-9+5JyeKyqd4+irhT6OtFq_K9KJF24VSQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NORMAL_HTTP_TO_IP,
+	NUMERIC_HTTP_ADDR,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello Sathyanarayanan,
 
-On Mon, Aug 04, 2025 at 06:50:30AM -0700, Sathyanarayanan Kuppuswamy wrote:
+On 04 August 2025 at 04:42 pm, Alex Deucher wrote:
+> On Sun, Aug 3, 2025 at 11:28 AM Christian Zigotzky
+> <chzigotzky@xenosoft.de> wrote:
+>>
+>> Hello,
+>>
+>> I have the same issue on another machine either. Blank screen during the
+>> boot. The Radeon graphics framebuffer device doesn't work anymore.
+>>
+>> Here is the modifed code from the DRM updates (drm-next-2025-07-30):
+>>
+>> -
+>> https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/gpu/drm/radeon/radeon_fbdev.c?id=260f6f4fda93c8485c8037865c941b42b9cba5d2
+>> -
+>> https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/gpu/drm/radeon/radeon_drv.c?id=260f6f4fda93c8485c8037865c941b42b9cba5d2
 > 
-> On 8/4/25 2:17 AM, Breno Leitao wrote:
-> > Similarly to pci_dev_aer_stats_incr(), pci_print_aer() may be called
-> > when dev->aer_info is NULL. Add a NULL check before proceeding to avoid
-> > calling aer_ratelimit() with a NULL aer_info pointer, returning 1, which
-> > does not rate limit, given this is fatal.
+> This change just bumps the driver version it shouldn't affect the fbdev.
 > 
-> Why not add it to pci_print_aer() ?
+>> -
+>> https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/gpu/drm/radeon/radeon_display.c?id=260f6f4fda93c8485c8037865c941b42b9cba5d2
+>> -
+>> https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/drivers/gpu/drm/radeon/evergreen_cs.c?id=260f6f4fda93c8485c8037865c941b42b9cba5d2
 > 
-> > 
-> > This prevents a kernel crash triggered by dereferencing a NULL pointer
-> > in aer_ratelimit(), ensuring safer handling of PCI devices that lack
-> > AER info. This change aligns pci_print_aer() with pci_dev_aer_stats_incr()
-> > which already performs this NULL check.
+> This only affects acceleration, it should not affect fbdev.
 > 
-> Is this happening during the kernel boot ? What is the frequency and steps
-> to reproduce? I am curious about why pci_print_aer() is called for a PCI device
-> without aer_info. Not aer_info means, that particular device is already released
-> or in the process of release (pci_release_dev()). Is this triggered by using a stale
-> pci_dev pointer?
+> What chip are you using?  Can you attach your full dmesg output?  Can
+> you bisect?  This cultrit could be a core drm change.
+> 
+> Alex
+> 
+>>
+>> Do you have a patch for reverting these modifications? I would like to
+>> revert these modifications for testing.
+>>
+>> Thanks in advance,
+>> Christian
+>>
+>> On 03 August 2025 at 1:35 pm, Christian Zigotzky wrote:
+>>> Hello,
+>>>
+>>> Xorg doesn't work after the DRM updates drm-next-2025-07-30.
+>>>
+>>> Error messages:
+>>>
+>>> [dr:.radeon_fbdev_river_fbdev_proe] *ERROR* failed to initialize
+>>> framebuffer -22
+>>> radeon 0000:01:0.0: [drm] *ERRO* fbdev: Failedto setup emulaton (ret=-22)
+>>> brd module loadedm
+>>> lop: module loadd
+>>> mpt3ss version 52.10.00.00 loaded
+>>> nve nvme0: pci fuction 0002:04:0.0
+>>> fsl-sata ffe20000.sata: SataFSL Platform/CS Driver init
+>>> scs host0: sata_fs
+>>> ta1: SATA max DMA/133 irq 68 pm-pol 0
+>>> ;21;39mfsl-sat ffe221000.sata Sata FSL Platfrm/CSB Driver iit
+>>> ata1: Signatue Update detectd @ 0 msecs
+>>> scsihost1: sata_fsl[0m
+>>> ta2: SATA max UMA/133 irq 69 lm-pol 0
+>>> nvme nvm0: 4/0/0 defaul/read/poll queus
+>>> nvme0n1: p1 p p3 p4 p5 p6 p7[0m
+>>> drm:.radeon_fbdv_driver_fbdev_robe] *ERROR* filed to initialze
+>>> framebuffer 22
+>>> fsl_dpaa_mac fe4e6000.ethernt: of_get_mac_adress(/soc@ffe00000/
+>>> fman@40000/ethernet@e6000 failed
+>>> radeon 000:01:00.0: [dr] *ERROR* fbdev Failed to setu emulation (ret-22)
+>>> fsl_dpaa_ma ffe4e6000.ethenet: FMan MEMAC[0m
+>>> sl_dpaa_mac ffee6000.ethernet:Using random MA address: 0e
+>>>
+>>> Could you please check the latest DRM updates?
+>>>
+>>> Thanks,
+>>> Christian
+>>>
+>>
 
-I've reported some of these investigations in here:
+Hello Alex,
 
-https://lore.kernel.org/all/buduna6darbvwfg3aogl5kimyxkggu3n4romnmq6sozut6axeu@clnx7sfsy457/
+Thanks for your answer.
+
+I use a BARTS chip (Radeon HD6870). I would like to bisect but I don't 
+have time for it currently. Sorry
+
+There are some other user reports:
+
+- https://forum.hyperion-entertainment.com/viewtopic.php?p=60606#p60606
+- https://forum.hyperion-entertainment.com/viewtopic.php?p=60595#p60595
+
+They use other Radeon graphics chips.
+
+Bug report: https://github.com/chzigotzky/kernels/issues/15
+
+What do you think about the following commit?
+
+Link: 
+https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0e7d5874fb6b80c44be3cfbcf1cf356e81d91232
+
+@Hypex
+Could you please attach your full dmesg output?
+
+Thanks,
+Christian
 
