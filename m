@@ -1,49 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-10594-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10592-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A82DB1A53C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 16:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA47B1A4D1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 16:25:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwfcY60pYz3bxf;
-	Tue,  5 Aug 2025 00:50:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwf3M3wtLz3bpP;
+	Tue,  5 Aug 2025 00:25:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754319037;
-	cv=none; b=CaPjXSpUnL9fRaDs2TntlCBtHrxvTAF38hvSi2H5mVjHpyCw+aGUQ26z7dK2bWq+ee8rChH83XwkDfm2o8YziQxBV8vj4zNZCHEdL12NKbdJpJWHbBCer4T3QY9htfg28yLAkD65HqbQzT5GWqSgGeEl4b5JjzqER8nfrES/Py5iM5Pzlx8rrzdGPZ3r8i36AImePETgztn7xQAG/xNrQu4LFc06Hj2UROePvGToNVAxM+qNjRASIs9jX0V2l2M0Jv749jSAaGtWRJShCvSbZESAg720QFn9fYQO7bZFkVJTwryVhSNQxV4kXEec5szMWbljJNG1Yx9lsdz1jofpMw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754317519;
+	cv=none; b=IXqE2RS3IgIyVfuHEONg9b9aycQx5hsrdvKm1EXd9QoKpidRt0L+kCiJFTdx/gY0S0ROkj7ZfW73zuKy6KJAb99hRItUF5eeuFtSrxasKHa2KqhbxisCXu11B4STOP96qAQ+5DMhGq1MxH3JiDEzD64LeQah0rvp37IxeyPjsNJwbCgug7gfbqNYrjMB5n3Ew4NA785MHJbpFNNPHXwznXB4J1vG58vHKB1JvVyQoQ2z6lUiPrppguU0n0myaZzEMPHwAGoQ1pM+w1wlTmQiNODeqliht5Ot/aOcKXCZYVSv/Q0k3n1o6NXMEIKaDirO6bJaoOocC9alKia3Bpgc5Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754319037; c=relaxed/relaxed;
-	bh=vKxcm2Bk3faS3VLs5jBU85JbSxp1gIFdk6pboYvkzrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TLyIQpKnmNCsHnwq1t0NmEM/kUsvRMAD8gYEOo2QqJtFo91CDEEvoRynvCHqILxYd4KASMmrMDCzUVWqtXYiQNDEMP75nxs1D7YEsbMUtuQFw1yIv7AK2scpTHoyY5+atm81D0IZdLiy6RvAdJDg4MADJBaGwCguhJtNf1t3yjQXPhRPAlkqqmhjei3cf5wIhQcsXie7NH6V7oW6cweKVQ9JGeycIu+5x0xEz/WjNnqRg2dTo8NZ202bM1HUs5dSnjjZzjKb/xyPvcMZKjL5Hs/zmZnwPMIo8zbtprVHmBBvgfF8oaARsL0DKi8cWTl1sZqGj0Z39xqollCsN2hHbw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwfcY1VS4z3bxR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 00:50:36 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bwdx61Fwbz9t2k;
-	Mon,  4 Aug 2025 16:19:54 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id aafYWNPsnuTc; Mon,  4 Aug 2025 16:19:54 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bwdx60NySz9t2V;
-	Mon,  4 Aug 2025 16:19:54 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 0679F8B766;
-	Mon,  4 Aug 2025 16:19:54 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 25xDQtsmUhRS; Mon,  4 Aug 2025 16:19:53 +0200 (CEST)
-Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BF56C8B763;
-	Mon,  4 Aug 2025 16:19:53 +0200 (CEST)
-Message-ID: <7e1adda9-4348-4c4e-953e-3fd21e4ff3c5@csgroup.eu>
-Date: Mon, 4 Aug 2025 16:19:53 +0200
+	t=1754317519; c=relaxed/relaxed;
+	bh=JnE/XQebxhZoJ4GRVlUCrOpacOVFTDN+5mw2JDUfuYM=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mAf0+rrGb8DfGVuFZE35VAh3b7comqh8qAEGNjaQdPLlfQc86ho2MoeYGYpvSGg25+wj4hvJZKQGmdhTUSaQEfMqAjatsHpojgOEdq6hBjag0uG1ECogoeFn/lyZ3GxCcT6hew9LWMOakgjVk6Nc5Gogv+YKTeRVQNmcoZ+QtwjzzP6RLwV0pDbmJ9y0WWX4U4QgKVFL14gNG5h9CwPPFg525pXpSVD+72KCK8WfZwsKXbgthmwJI9xuK49qC+G94dSEFEkxxkwXVbfmsmukaVbAkZ0a+tIdZhHLTSN/MA3u4vmiiy8Vg18FG+MqXiA17DE2VhsmHZNeARgttaAVNA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Age+vrxr; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Age+vrxr;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=bugzilla-daemon@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwf3L39f2z3bpG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 00:25:18 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 716D25C54BE
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 14:25:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A5D7C4CEE7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 14:25:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754317516;
+	bh=cphDNL22VYTOCLcH8OPM5SL76V4lXPM4lLaUzVaJFZo=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=Age+vrxreE37/9oheQxkdrwJ5rpPdBj0zism/mmwKcMAKwXPS45xqr7RvDo0UNTJn
+	 myCxdhQUlYv7S6VwE1aE2a4nNNKI2SlhM3bVZVO3m759pB704PSbhsUEMJcmzi0Ogq
+	 nTzm6piE69D3oe/VAnZ6zwgmWNGuQgJp+t16CltGqLTh6JydAh33RJ/b5Wbowi5/W0
+	 Ow73wlM0bwx8HbZ+MB4i1sfmbMYgTodr374nkauHR6la6zrUIbT1SVGM+8Zc9NdFrz
+	 1UG1gov6awTpIOIXQ7g6lEwZFFkFcUDMM+IxHXIftj7dphTwBZep/PhaWKIyTs1yl9
+	 lP6WP/djhNzig==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 113A2C41613; Mon,  4 Aug 2025 14:25:16 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 220407] arch/powerpc/boot/types.h:43:13: error: 'bool' cannot
+ be defined via 'typedef' when building with GCC 15
+Date: Mon, 04 Aug 2025 14:25:15 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: christophe.leroy@csgroup.eu
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-220407-206035-pL2Cw9FtiA@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-220407-206035@https.bugzilla.kernel.org/>
+References: <bug-220407-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,176 +85,27 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] powerpc/ftrace: support
- CONFIG_FUNCTION_GRAPH_RETVAL
-To: Aditya Bodkhe <adityab1@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
- rostedt@goodmis.org, mhiramat@kernel.org, mark.rutland@arm.com,
- venkat88@linux.ibm.com
-References: <20250722085648.1640-1-adityab1@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250722085648.1640-1-adityab1@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D220407
 
+Christophe Leroy (christophe.leroy@csgroup.eu) changed:
 
-Le 22/07/2025 à 10:56, Aditya Bodkhe a écrit :
-> commit a1be9ccc57f0 ("function_graph: Support recording and printing the
-> return value of function") introduced support for function graph return
-> value tracing.
-> 
-> Additionally, commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with
-> ftrace_regs") further refactored and optimized the implementation,
-> making `struct fgraph_ret_regs` unnecessary.
-> 
-> This patch enables the above modifications for powerpc all, ensuring that
-> function graph return value tracing is available on this architecture.
-> 
-> In this patch we have redefined two functions:
-> - 'ftrace_regs_get_return_value()' - the existing implementation on
-> ppc returns -ve of return value based on some conditions not
-> relevant to our patch.
-> - 'ftrace_regs_get_frame_pointer()' - always returns 0 in current code .
-> 
-> We also allocate stack space to equivalent of 'SWITCH_FRAME_SIZE',
-> allowing us to directly use predefined offsets like 'GPR3' and 'GPR4'
-> this keeps code clean and consistent with already defined offsets .
-> 
-> After this patch, v6.14+ kernel can also be built with FPROBE on powerpc
-> but there are a few other build and runtime dependencies for FPROBE to
-> work properly. The next patch addresses them.
-> 
-> Signed-off-by: Aditya Bodkhe <adityab1@linux.ibm.com>
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |christophe.leroy@csgroup.eu
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+--- Comment #1 from Christophe Leroy (christophe.leroy@csgroup.eu) ---
+This is fixed with commit
+https://github.com/torvalds/linux/commit/5a821e2d69e26b51b7f3740b6b0c3462b8=
+cacaff
 
-> ---
-> 
-> Changelog:
-> v1 -> v2:
-> - Added explanation for redefining ftrace_regs_get_return_value()
-> and ftrace_regs_get_frame_pointer()
-> - Explained why stack space equivalent to 'SWITCH_FRAME_SIZE' is allocated.
-> 
->   arch/powerpc/Kconfig                     |  1 +
->   arch/powerpc/include/asm/ftrace.h        | 15 +++++++++
->   arch/powerpc/kernel/trace/ftrace_entry.S | 42 ++++++++++++++----------
->   3 files changed, 41 insertions(+), 17 deletions(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index c3e0cc83f120..9163521bc4b9 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -250,6 +250,7 @@ config PPC
->   	select HAVE_FUNCTION_ARG_ACCESS_API
->   	select HAVE_FUNCTION_DESCRIPTORS	if PPC64_ELF_ABI_V1
->   	select HAVE_FUNCTION_ERROR_INJECTION
-> +	select HAVE_FUNCTION_GRAPH_FREGS
->   	select HAVE_FUNCTION_GRAPH_TRACER
->   	select HAVE_FUNCTION_TRACER		if !COMPILE_TEST && (PPC64 || (PPC32 && CC_IS_GCC))
->   	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
-> diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-> index 82da7c7a1d12..6ffc9c9cf4e3 100644
-> --- a/arch/powerpc/include/asm/ftrace.h
-> +++ b/arch/powerpc/include/asm/ftrace.h
-> @@ -50,6 +50,21 @@ static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *
->   		asm volatile("mfmsr %0" : "=r" ((_regs)->msr));	\
->   	} while (0)
->   
-> +#undef ftrace_regs_get_return_value
-> +static __always_inline unsigned long
-> +ftrace_regs_get_return_value(const struct ftrace_regs *fregs)
-> +{
-> +	return arch_ftrace_regs(fregs)->regs.gpr[3];
-> +}
-> +#define ftrace_regs_get_return_value ftrace_regs_get_return_value
-> +
-> +#undef ftrace_regs_get_frame_pointer
-> +static __always_inline unsigned long
-> +ftrace_regs_get_frame_pointer(const struct ftrace_regs *fregs)
-> +{
-> +	return arch_ftrace_regs(fregs)->regs.gpr[1];
-> +}
-> +
->   static __always_inline void
->   ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
->   				    unsigned long ip)
-> diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-> index 3565c67fc638..3da14d8271d9 100644
-> --- a/arch/powerpc/kernel/trace/ftrace_entry.S
-> +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-> @@ -409,23 +409,31 @@ EXPORT_SYMBOL(_mcount)
->   _GLOBAL(return_to_handler)
->   	/* need to save return values */
->   #ifdef CONFIG_PPC64
-> -	std	r4,  -32(r1)
-> -	std	r3,  -24(r1)
-> +	stdu	r1, -SWITCH_FRAME_SIZE(r1)
-> +	std	r4, GPR4(r1)
-> +	std	r3, GPR3(r1)
-> +	/* Save previous stack pointer (r1) */
-> +	addi	r3, r1, SWITCH_FRAME_SIZE
-> +	std	r3, GPR1(r1)
->   	/* save TOC */
-> -	std	r2,  -16(r1)
-> -	std	r31, -8(r1)
-> +	std	r2, 24(r1)
-> +	std	r31, 32(r1)
->   	mr	r31, r1
-> -	stdu	r1, -112(r1)
-> -
-> +	/* pass ftrace_regs/pt_regs to ftrace_return_to_handler */
-> +	addi	r3, r1, STACK_INT_FRAME_REGS
->   	/*
->   	 * We might be called from a module.
->   	 * Switch to our TOC to run inside the core kernel.
->   	 */
->   	LOAD_PACA_TOC()
->   #else
-> -	stwu	r1, -16(r1)
-> -	stw	r3, 8(r1)
-> -	stw	r4, 12(r1)
-> +	stwu	r1, -SWITCH_FRAME_SIZE(r1)
-> +	stw	r4, GPR4(r1)
-> +	stw	r3, GPR3(r1)
-> +	addi	r3, r1, SWITCH_FRAME_SIZE
-> +	stw	r3, GPR1(r1)
-> +	/* pass ftrace_regs/pt_regs to ftrace_return_to_handler */
-> +	addi	r3, r1, STACK_INT_FRAME_REGS
->   #endif
-> 
->   
->   	bl	ftrace_return_to_handler
-> @@ -435,15 +443,15 @@ _GLOBAL(return_to_handler)
->   	mtlr	r3
->   
->   #ifdef CONFIG_PPC64
-> -	ld	r1, 0(r1)
-> -	ld	r4,  -32(r1)
-> -	ld	r3,  -24(r1)
-> -	ld	r2,  -16(r1)
-> -	ld	r31, -8(r1)
-> +	ld	r4,  GPR4(r1)
-> +	ld	r3,  GPR3(r1)
-> +	ld	r2,  24(r1)
-> +	ld	r31, 32(r1)
-> +	ld	r1,  0(r1)
->   #else
-> -	lwz	r3, 8(r1)
-> -	lwz	r4, 12(r1)
-> -	addi	r1, r1, 16
-> +	lwz	r3, GPR3(r1)
-> +	lwz	r4, GPR4(r1)
-> +	addi	r1, r1, SWITCH_FRAME_SIZE
->   #endif
->   
->   	/* Jump back to real return address */
+--=20
+You may reply to this email to add a comment.
 
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 
