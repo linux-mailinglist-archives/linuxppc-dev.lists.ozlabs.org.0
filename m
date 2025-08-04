@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-10607-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10608-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0FBB1A7D0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 18:45:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 580C1B1A7E1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 18:45:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwj7s6GYcz3c5W;
-	Tue,  5 Aug 2025 02:44:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwj7t2Xtjz3c6P;
+	Tue,  5 Aug 2025 02:44:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754325865;
-	cv=none; b=Hq0xalywpZXymVCRGolqsN99/7xe+vYMsQ0P+Alx5HuTm4sNo3ZRk1QfNSBZKb07c7ycCmewEEqDBFIY/R/pojgaN+KpwG7muf0EAg0n4Dkva8Ip9537plhpFGVgcD6P5E0yLoJPXjiRJ0mrplhHGr2H2qV5U1XKAraLRVWkpy+ogvtY0PHRsU4F82bl4rsI3luUcNjrwMsgk9a/1kIQVyvWBmJMxvJwFiY7PbY2SO47zFCOxXbkPgwXhbUTnGyzh+KNdVyi08eFfHzPCOaSZTnIbZkocWQtC/EyugsikZ7QOvluERuqCV5nzrH2kL9DZLXRcu43jbfOLjLEJl23Ow==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754325866;
+	cv=none; b=TtIfNYEW5SjTNfOBVRPbGFvSXMQ3gwnnBowh9oFBOgIGyW6rC8ob1QnsRX385IdVo6A6kP+Ol96+YZ/RaynJ1zNEdp4poCi3hi4+yBblJz/Vo3f5ct0yje4qGeuHpohXtnYMPVNp2b7pXawWt7xhbQGj/+aTlHtQhlRYy+OswoFjNvouDzHJOHieAc7lNS6A19ZG4ovwqRX2KWDWyYuiJwR//HdYFbGPmiL4K8kv5y54BKrIv8X8DiI7MsjWuiQsOhH5EzxQayy5oIZ8Ye6NEZ3/9v1+irdzyZFHsDS+OFvaHL+YYDMdn6nyRU1/ZNrDqUycCXgClQSmCBMb7C38xQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754325865; c=relaxed/relaxed;
-	bh=8yojL5jftPopQmiTfKHDYo/Q+EOYkhC/6lngTgIqs2M=;
+	t=1754325866; c=relaxed/relaxed;
+	bh=Kpq1/OD8bs4if6qpXIYU8IHl5rcbcQYkkWyupNdd6mY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kM4l1OtNZ96UEUpnR/5+PdyfE43dXaLaxNlx7NwJ7FG5rZaeos0JhkSM4u3sNG+buSfdehAAeGN/ny2IEA9elXlPh2S7/sYp1Sk6vvriR3nx8ZwxBlBr97GcYdUoVE6GH+l9KQwNCNEoA6+XTPEuBlqzy1WlvC0JeKVj1F4e2Krc0kdOq0PuvldXhR1jonBEeYLJ9DKClKtKHBK6C/NMpR8JpauV9YSAsCUlQNDYjIOW40ST3m4Z0BY+gZqxeZr/ZdNC1iwRSfhjROVu/71aMF2GhTO3vzcHYO6YxSDap8lIbfkcuyEmfDpuEWukXyyIC+RjLmWhwFNfeu+RtT2NEA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iCRKQ61m; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=CU187+GfGg/z8Jd2Kk6r/euhDYnULZZJ1vgb5lriGNz5ye0267yvqvUJf9O8C2WjCHzMcpfO7xy7i+gLx3EYF8A0J+1a6O3V1Fxk//GTNqEgKi3j1+FGaG4pG6VuJhrz1al/U9d+ngKt0CCjV/IKoKqaV0CslXRDcHZIaRvexTm/QpKX9h1l2Y1zwg7l+z1Qcq/+x8O5EW8mxTzCAvDbcv+zTBI2yBOnRnT6HAqAXUxHHja2St+EsjZC8b2PdFJpu3zHdepjeFpGyrc/Uu2xXcltVUYncxA6ogHnmrfjYRQJk+Z7bKHJhrRVOWHRNZiNsK1kCHLhpRDPKgtcrWvdiQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZNX2f+uk; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iCRKQ61m;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZNX2f+uk;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwj7n1kW2z3bpS
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwj7n2NcFz3bqP
 	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 02:44:21 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3517F45D64;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3F16845DAE;
 	Mon,  4 Aug 2025 16:44:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BABC4CEFC;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E879C4CEFF;
 	Mon,  4 Aug 2025 16:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1754325858;
-	bh=f1BJyviPYJxx8kFp/yukIUneK3tevM8t3j60E+6mJ1Y=;
+	bh=adGs1kuuk4zPQI9OS9eVOvJux65kSL76tPiJyL+ncj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCRKQ61mm01MZTvc3CPPe2Ki/UrPAJKulntT266Ebe8TeWDAN/PSv0m32mZuiBkpN
-	 lk/deOYVzRLtSp7i6p4G7JOZzGDwuaAryUY11pGGbT30Ubny4bRA9VoK9foPrUhkFy
-	 5Kdb9YBAUZfg0XipfrZDkRGYNiY8gnoYygkru433UuRkZYLKddHKgD3V1i3NRUr65E
-	 jI3qDVxgAjgs0faGOdEZKxTlRUMVWRKKtbD/zPFJkkQmhZoOks1gC8mF1Wrrb6/rxq
-	 Brmye/Z8DZwW8aMN1Lsr/FFUXXIYCbg+wC0d/XKLVlJHJdrQIxU0buKqimdXSNKiTB
-	 sP5NLdQ1qXfMw==
+	b=ZNX2f+ukbjZ1j6eu9fz/+prTtT0vGsnjndcPXpFpG7P0Ia1Ril8Zf05ioP7FLpyo+
+	 Mm2+aQHENVj0SHKpUPkPNDfgX5KBmrxkUcMnELWwkSRO5YI2iFCS8V36kFAf3sXzwz
+	 zIvsdeC0pDzY9IKgCqH+xjQqPw2s+/XGMq9xJey9eoC5Sun/SfxY85adcWU/9qVD5I
+	 Eh9+V8XR+/ZCwx0FSYMbTtEWnpevQ2WhcEQ/mvJoIbxn3Y2oVc+jESY8sptZ+6Y1E7
+	 hXKnvnLGQgbuK3ouTYEW2vnpMJujCrVf4XcvM08Nb1q67D1mup4HnPed6XG6GGawWY
+	 izdWDqT9JS+RA==
 From: Kees Cook <kees@kernel.org>
 To: linux-arch@vger.kernel.org
 Cc: Kees Cook <kees@kernel.org>,
@@ -62,9 +62,9 @@ Cc: Kees Cook <kees@kernel.org>,
 	sparclinux@vger.kernel.org,
 	llvm@lists.linux.dev,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH 03/17] csky: Add __attribute_const__ to ffs()-family implementations
-Date: Mon,  4 Aug 2025 09:43:59 -0700
-Message-Id: <20250804164417.1612371-3-kees@kernel.org>
+Subject: [PATCH 04/17] x86: Add __attribute_const__ to ffs()-family implementations
+Date: Mon,  4 Aug 2025 09:44:00 -0700
+Message-Id: <20250804164417.1612371-4-kees@kernel.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250804163910.work.929-kees@kernel.org>
 References: <20250804163910.work.929-kees@kernel.org>
@@ -81,7 +81,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2307; i=kees@kernel.org; h=from:subject; bh=f1BJyviPYJxx8kFp/yukIUneK3tevM8t3j60E+6mJ1Y=; b=owGbwMvMwCVmps19z/KJym7G02pJDBkTHkf4pKfxelzOuX/uzqPPOxs0l05ZFhCiyao9Jeqci 3ziSXXxjlIWBjEuBlkxRZYgO/c4F4+37eHucxVh5rAygQxh4OIUgIks2MXIsEItKTpFNdpgi2AC T4VsWqPxkidZFV7pHLJyKvtDK1pbGBmmVyyW697n81XsnYVwT1DQGWaXqglTVk1a8WJH3VlBbyE GAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3280; i=kees@kernel.org; h=from:subject; bh=adGs1kuuk4zPQI9OS9eVOvJux65kSL76tPiJyL+ncj8=; b=owGbwMvMwCVmps19z/KJym7G02pJDBkTHkdcn9HKVsXGsIr7AKdfgqSU+aeIrz0tzpYr9wkum fXBvsyko5SFQYyLQVZMkSXIzj3OxeNte7j7XEWYOaxMIEMYuDgF4CbnMTJ099c09f3590OhLee3 kxnL/7s7bxwLjPFLUap6/mJdAGsII8MONcmt6pUnOeTOCVhKzbgjGJmr7T41n6lg2nSB8PZMR24 A
 X-Developer-Key: i=kees@kernel.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -98,59 +98,77 @@ __attribute__const__, the compiler had to assume the function might
 change variable states as a side-effect (which is not true for ffs(),
 which provides deterministic math results).
 
-Add missing __attribute_const__ annotations to C-SKY's implementations of
-ffs(), __ffs(), fls(), and __fls() functions. These are pure mathematical
-functions that always return the same result for the same input with no
-side effects, making them eligible for compiler optimization.
+Add missing __attribute_const__ annotations to x86's implementations of
+variable__ffs(), variable_ffz(), __fls(), variable_ffs(), and fls() functions.
+These are pure mathematical functions that always return the same result for the same
+input with no side effects, making them eligible for compiler optimization.
 
-Build tested ARCH=csky defconfig with GCC csky-linux 15.1.0.
+Build tested ARCH=x86_64 defconfig with GCC gcc 14.2.0.
 
 Link: https://github.com/KSPP/linux/issues/364 [1]
 Signed-off-by: Kees Cook <kees@kernel.org>
 ---
- arch/csky/include/asm/bitops.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/bitops.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/csky/include/asm/bitops.h b/arch/csky/include/asm/bitops.h
-index 72e1b2aa29a0..80d67eee6e86 100644
---- a/arch/csky/include/asm/bitops.h
-+++ b/arch/csky/include/asm/bitops.h
-@@ -9,7 +9,7 @@
- /*
-  * asm-generic/bitops/ffs.h
-  */
--static inline int ffs(int x)
-+static inline __attribute_const__ int ffs(int x)
+diff --git a/arch/x86/include/asm/bitops.h b/arch/x86/include/asm/bitops.h
+index eebbc8889e70..a835f891164d 100644
+--- a/arch/x86/include/asm/bitops.h
++++ b/arch/x86/include/asm/bitops.h
+@@ -246,7 +246,7 @@ arch_test_bit_acquire(unsigned long nr, const volatile unsigned long *addr)
+ 					  variable_test_bit(nr, addr);
+ }
+ 
+-static __always_inline unsigned long variable__ffs(unsigned long word)
++static __always_inline __attribute_const__ unsigned long variable__ffs(unsigned long word)
  {
- 	if (!x)
- 		return 0;
-@@ -26,7 +26,7 @@ static inline int ffs(int x)
- /*
-  * asm-generic/bitops/__ffs.h
-  */
--static __always_inline unsigned long __ffs(unsigned long x)
-+static __always_inline __attribute_const__ unsigned long __ffs(unsigned long x)
+ 	asm("tzcnt %1,%0"
+ 		: "=r" (word)
+@@ -265,7 +265,7 @@ static __always_inline unsigned long variable__ffs(unsigned long word)
+ 	 (unsigned long)__builtin_ctzl(word) :	\
+ 	 variable__ffs(word))
+ 
+-static __always_inline unsigned long variable_ffz(unsigned long word)
++static __always_inline __attribute_const__ unsigned long variable_ffz(unsigned long word)
  {
- 	asm volatile (
- 		"brev %0\n"
-@@ -39,7 +39,7 @@ static __always_inline unsigned long __ffs(unsigned long x)
- /*
-  * asm-generic/bitops/fls.h
+ 	return variable__ffs(~word);
+ }
+@@ -287,7 +287,7 @@ static __always_inline unsigned long variable_ffz(unsigned long word)
+  *
+  * Undefined if no set bit exists, so code should check against 0 first.
+  */
+-static __always_inline unsigned long __fls(unsigned long word)
++static __always_inline __attribute_const__ unsigned long __fls(unsigned long word)
+ {
+ 	if (__builtin_constant_p(word))
+ 		return BITS_PER_LONG - 1 - __builtin_clzl(word);
+@@ -301,7 +301,7 @@ static __always_inline unsigned long __fls(unsigned long word)
+ #undef ADDR
+ 
+ #ifdef __KERNEL__
+-static __always_inline int variable_ffs(int x)
++static __always_inline __attribute_const__ int variable_ffs(int x)
+ {
+ 	int r;
+ 
+@@ -355,7 +355,7 @@ static __always_inline int variable_ffs(int x)
+  * set bit if value is nonzero. The last (most significant) bit is
+  * at position 32.
   */
 -static __always_inline int fls(unsigned int x)
 +static __always_inline __attribute_const__ int fls(unsigned int x)
  {
- 	asm volatile(
- 		"ff1 %0\n"
-@@ -52,7 +52,7 @@ static __always_inline int fls(unsigned int x)
- /*
-  * asm-generic/bitops/__fls.h
+ 	int r;
+ 
+@@ -400,7 +400,7 @@ static __always_inline int fls(unsigned int x)
+  * at position 64.
   */
--static __always_inline unsigned long __fls(unsigned long x)
-+static __always_inline __attribute_const__ unsigned long __fls(unsigned long x)
+ #ifdef CONFIG_X86_64
+-static __always_inline int fls64(__u64 x)
++static __always_inline __attribute_const__ int fls64(__u64 x)
  {
- 	return fls(x) - 1;
- }
+ 	int bitpos = -1;
+ 
 -- 
 2.34.1
 
