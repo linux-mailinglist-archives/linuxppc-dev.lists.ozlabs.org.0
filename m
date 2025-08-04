@@ -1,38 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-10552-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10553-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21E3B19ACF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 06:44:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A10ACB19B53
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 08:09:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwP9L3pjFz3069;
-	Mon,  4 Aug 2025 14:44:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwR2d5Y0Nz3069;
+	Mon,  4 Aug 2025 16:08:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a02:c206:3008:6895::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754282678;
-	cv=none; b=WU4pJwHgmwqA37FxGaRu0qTuwN3cvNAQzpcZ4mmQ6J6Z2sdEaTMAZEqk2NwnxAALFGrCmYO8c5i3Kr4rPHnyLcE+R86pXz38LNf58Dh1u5BGwZGFK2TbCdZJLSJV80UikrO/416ffdfp/WqoIMoZJyi8q+QgZH33DfnS62yFfJKB+7x35AlC3dI5z1NXVHdzqYxA0IiGIx154vHCuI0JRgz7+ZBFCssaOrBf1XtHfr/axp+CC6fFolGl0tuCKi7r/7yZxgg9VE52AlJaphwuTN0FeNCt6R3/mIhF1RXJLxQI8I5yAIhdW4oQ7X/CmRjbAchbRa8z2L6SO1T3lt6zQw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754287737;
+	cv=none; b=IAropplxvE+t0SSllRe4LhTUJGBIMTYBH9NMK9q6N7oaMRS9MUibkPspdP+RmZOTztEj5nNcFK5DjvGiJYYNBh35U3IcTzq4MmmNZ0irP3sZaz4Be+bagxxBZj1ABm+c6lXpCc6IYokMAVHDFNU+aHXyh3UNiOnRQMu2sACmW39NvTO67mVdsYDzkJEOa67Oaxv8WfFKPwB8+DPNRHVdjSagM4m6FJIGyyoHaB2v6GGeaXNBiUhtN7baa5613tlpktqqbdklR+MKzdYNOY4S5vGshVT1v6Hp5MxvCphahe5+MZj92c8w0s0RemGRD8Ud4Ea/3IArw0+CygpUD6XmMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754282678; c=relaxed/relaxed;
-	bh=NFXyhfUs5Te3lCJdt/qxRZhkKJ703L35yMDkdigijmU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oCDOv7K538+PwNKfS7aH0jWXfkARSuM9rsCzdWnBwOSxz8pMkbP91E3aAoa59Zx4FINimI860+cJALVPg0JLtx0w5nc2+07C4PDQXUx5WKhA5F/63svYeSOyR182TT5xHzpFse4gBUnJ5OS0S3XYp2XrniGt/ipFkNl7SBOgJhIiISGsFTcOxrWFcmzOl/11hxF5urLSl+HO3JRftRINKaeOqeijLytMJcuTTK+ghJOGTjzOpCjzN40C/1Z4WG+uk/wL+oNUSN9iOHqOFAgFHC45HvprnSmTJeYkNMVTw/osZ81aGy1/9rdA0J4CGMru8rCebBpfilfkMd38jeS9WQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=hogyros.de; spf=pass (client-ip=2a02:c206:3008:6895::1; helo=psionic.psi5.com; envelope-from=simon.richter@hogyros.de; receiver=lists.ozlabs.org) smtp.mailfrom=hogyros.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=hogyros.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hogyros.de (client-ip=2a02:c206:3008:6895::1; helo=psionic.psi5.com; envelope-from=simon.richter@hogyros.de; receiver=lists.ozlabs.org)
-Received: from psionic.psi5.com (psionic.psi5.com [IPv6:2a02:c206:3008:6895::1])
+	t=1754287737; c=relaxed/relaxed;
+	bh=MPKQa24PqOP4kWICOSj866CvW2pho+C7bBpsH2p7oxw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ndl2PVTB+GsDxNr7ImlQs3LwvlEw6J+gZFHRlMqWYYYVnd4FSPqeGTA2nNRzEvTa/91bIujOx8giCw7LJOg42RrHi55Fb2BtHJ+lx6WeS7NRNVVuucbSZeIsshN0ozSRxBxPQlhfdzY4LPrMbr4qfchjOGUKjS2oYbxgmKVDwUfn+W2SxQwm894qHow2GogkXCLcrn49+BAjSgBhs7pjR/onfeCa6+Bblt8GGvF/zTFHXfnSVcQifNPvxX9oklSKRQ+c4yXcBbDCz02+pXVaddwUfNeiooJd0cPqmDfDRnl3CJkijzu3gO9ICTJD4dNtonG5fRD9uX0mvn2PTPvPyg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WB5Ojvzz; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WB5Ojvzz;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwP9K3DNsz2yPS
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 14:44:37 +1000 (AEST)
-Received: from [IPV6:2400:2410:b120:f200:a1f3:73da:3a04:160d] (unknown [IPv6:2400:2410:b120:f200:a1f3:73da:3a04:160d])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by psionic.psi5.com (Postfix) with ESMTPSA id 8D25B3F108;
-	Mon,  4 Aug 2025 06:44:24 +0200 (CEST)
-Message-ID: <3de7cc4d-cb88-4107-9265-066cbedd4561@hogyros.de>
-Date: Mon, 4 Aug 2025 13:44:21 +0900
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwR2d03Kgz2yPS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 16:08:56 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8FC3D44A20;
+	Mon,  4 Aug 2025 06:08:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F8CC4CEE7;
+	Mon,  4 Aug 2025 06:08:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754287734;
+	bh=ipRZKPKGvZYye+NbUN1kZp7BEdItabd5U7NljxzHgfU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WB5OjvzzZ9vAddGUmIgd58d+GXAOhK71sgg1sPjKZ2V4EdqoOJbqAVclrdZTG/XGi
+	 Rv4OLHjfwhr7v2ooiI/Y5m0mdTZlLU2yegwzf+bUDcd7s6iwcEdBh06+6nVz8/Wa/O
+	 +nBnfaXt4XJKLaoT1RHqMmETX8rjF2Kmy/dnJIcDEMFfT32WMoSpIh/T72/QhtzayO
+	 wodMKqYXABzuIYri2XMu2dcy12w6CtEODa+LxF9rvgQZnWzVvzu9RJJN6NHZ3iDIfB
+	 stPKSSjzPiUTU8EaLaIBQafQgp2iiOYNb0jxbpJZIqI9VBJDNEZXHdhqUN4pmoXW8a
+	 x2CW/8wn0ESAQ==
+Date: Sun, 3 Aug 2025 23:07:58 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Simon Richter <Simon.Richter@hogyros.de>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH 4/7] crypto: sparc/md5 - Remove SPARC64 optimized MD5 code
+Message-ID: <20250804060758.GA108924@sol>
+References: <20250803204433.75703-1-ebiggers@kernel.org>
+ <20250803204433.75703-5-ebiggers@kernel.org>
+ <3de7cc4d-cb88-4107-9265-066cbedd4561@hogyros.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -46,53 +68,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] crypto: sparc/md5 - Remove SPARC64 optimized MD5 code
-To: Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
- "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-References: <20250803204433.75703-1-ebiggers@kernel.org>
- <20250803204433.75703-5-ebiggers@kernel.org>
-Content-Language: en-US
-From: Simon Richter <Simon.Richter@hogyros.de>
-In-Reply-To: <20250803204433.75703-5-ebiggers@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3de7cc4d-cb88-4107-9265-066cbedd4561@hogyros.de>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
+On Mon, Aug 04, 2025 at 01:44:21PM +0900, Simon Richter wrote:
+> Hi,
+> 
+> On 8/4/25 05:44, Eric Biggers wrote:
+> 
+> > Taken together, it's clear that it's time to retire these additional MD5
+> > implementations, and focus maintenance on the MD5 generic C code.
+> 
+> [...]
+> 
+> > -	ldd	[%o1 + 0x00], %f8
+> > -	ldd	[%o1 + 0x08], %f10
+> > -	ldd	[%o1 + 0x10], %f12
+> > -	ldd	[%o1 + 0x18], %f14
+> > -	ldd	[%o1 + 0x20], %f16
+> > -	ldd	[%o1 + 0x28], %f18
+> > -	ldd	[%o1 + 0x30], %f20
+> > -	ldd	[%o1 + 0x38], %f22
+> > -
+> > -	MD5
+> 
+> This is a literal CPU instruction that ingests sixteen registers (f8 to f23)
+> and updates the hash state in f0 to f3.
 
-On 8/4/25 05:44, Eric Biggers wrote:
+Note that QEMU doesn't support this instruction.  I don't actually know
+whether the SPARC64 MD5 code even works, especially after (presumably
+untested) refactoring like commit cc1f5bbe428c91.  I don't think anyone
+does, TBH.  No one seems to be running the crypto tests on SPARC64.
 
-> Taken together, it's clear that it's time to retire these additional MD5
-> implementations, and focus maintenance on the MD5 generic C code.
+> I can see the point of removing hand-optimized assembler code when a
+> compiler can generate something that runs just as well from generic code,
+> but this here is using CPU extensions that were made for this specific
+> purpose.
 
-[...]
+You do realize this is MD5, right?  And also SPARC64?
 
-> -	ldd	[%o1 + 0x00], %f8
-> -	ldd	[%o1 + 0x08], %f10
-> -	ldd	[%o1 + 0x10], %f12
-> -	ldd	[%o1 + 0x18], %f14
-> -	ldd	[%o1 + 0x20], %f16
-> -	ldd	[%o1 + 0x28], %f18
-> -	ldd	[%o1 + 0x30], %f20
-> -	ldd	[%o1 + 0x38], %f22
-> -
-> -	MD5
+I'm confused why people are so attached to still having MD5 assembly
+code in 2025, and *only for rare platforms*.  It's illogical.
 
-This is a literal CPU instruction that ingests sixteen registers (f8 to 
-f23) and updates the hash state in f0 to f3.
+We should just treat MD5 like the other legacy algorithms MD4 and RC4,
+for which the kernel just has generic C code.  That works perfectly fine
+for the few users that still need those algorithms for compatibility
+reasons.
 
-I can see the point of removing hand-optimized assembler code when a 
-compiler can generate something that runs just as well from generic 
-code, but this here is using CPU extensions that were made for this 
-specific purpose.
+> This is exactly the kind of thing you would point to as an argument why
+> asynchronous hardware offload support is unnecessary.
 
-This is exactly the kind of thing you would point to as an argument why 
-asynchronous hardware offload support is unnecessary.
+For an algorithm that is actually worthwhile to accelerate, sure.  For
+MD5, it's not worthwhile anyway.
 
-    Simon
+- Eric
 
