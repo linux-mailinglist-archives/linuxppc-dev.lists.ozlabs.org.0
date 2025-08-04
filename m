@@ -1,87 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-10568-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10570-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 406C9B1A0F7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 14:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8FFB1A170
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 Aug 2025 14:32:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bwb8b5Gg1z3069;
-	Mon,  4 Aug 2025 22:14:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bwbY76kCWz3069;
+	Mon,  4 Aug 2025 22:32:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754309679;
-	cv=none; b=oRhNtsYAryMlxHxLVJ6U2s6BCZcCMMpzUD7AkXYCOXK7tJqbfBmkumZTKV7Cy/grETDjxNDuvsUZo5ABzmb/4B/7kscEGL9q7KdxmFLBj0+GvPB7fLtIlrhyTB/6mHf87f7KFv3Tb9R00PI7aRdnrcM0p0wui4eebFvVzj2jUOEZLmBGc9vr9Th8ybp9LWJmTve8hHEuZJQ4oKure2BgqXb+5zIjwaKs0TJf+7dAKhxLjsjhUbCCWp1fU5ibK0x6b81DPEfffEyf51PbwWOwl88RhzGJ8QcC9qFN8tVA6ErO3cFaGSA7HVOF0b4CWBxO7BogaXb6leMO13BX9cCZ8Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::529"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754310747;
+	cv=none; b=fTYPTWM0e3nhBW2AT8TfTLYPfx5cd10f6SEQivoorhlCYykvwN9ccm/ih9CLukcLyXxLkKTiXESPQp0FCdXx2cZMml342w2RK7K+e7AMS9k1m0Fv0ufWtUeG6C9NNpeOyKYFpl7U0Y/R7hx2q1KAgpw649qSmwF1v4TJNIv/nHL+FZg7ccTzZ/InQgeJwCileWLav/Yo9RodnWkj2Ckv6D2I/oR05StSuLHK4pOCuEpiEKKvS2MqLB1SSn8gaxV3s1sQeYZD9WHCvwaB7GRWBiHNWhKBy2PDz2YquhcROpvLMyWKWTj0H9ZedlSoTm0VaFj0PB1GggaXCs3kaWQ+Tw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754309679; c=relaxed/relaxed;
-	bh=bkCaliAq08k6pthvg5cnXDYw9hW8fQnGbzG6ffz5kQw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m2vwen3cH7YGXq8YO3nLqvzyzOxWY3cQeR87EXftLEZ/xCaiA6vSjwmgX+bfgscv8fpZZfRRYRvcfYlHB0fEjmthE+P5+ygfqyWRdDeSs1R42MdxQp8yGqRLuvJ6iI+4V40F64Vo0ky7wIM+t+fDxqVQtQEJv1fh6/7oUY3Fgl0CaY69qZmIHud4+GEI1T5Zr8JfGC8UCioO5XEQwWLCkNJt5DlMDFutGH1hKmq1efEa44EpHDDl70VhoRRS8tB53sXobsAaZJksT5/BxuDvCusX0TG4IEKaFRL0n5u08/Ltni5YJn2YFzix2t7uWa7dAJn//UhS9tl7toF4WujS8w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ULjTUi6Z; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1754310747; c=relaxed/relaxed;
+	bh=sz81oS+khM9qasQTVZz4MiZgKna2JCQJHFNcckb6X6E=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Nnlsi/OsdsWDfg6kt2OTDrcORAzooAUFaDtb0bVlKyB7PZ1O+rWNDu56+b03Iei/LetKkAN5iQ4Ysb3IZnTzSgoAAlh+eeq3KCbPLt1hNQVbNMEAdB0WkQEng/Ns1lj0U/PnEA5B1neEkhzIoEc32LI6XApXJUz8/Nm6Q5RbXt86m3UIErKB3AwhPDB3KBVT8UTtBGrG0JGmrnKHzUYfJI3p/T5YUW62TAaHO0VtfYenZi8tV7eFJ1cvJ2McOVAFX3w6guNIcYyHOAUqZh3PH4b2ezRU+STZl2HMHhWLFUUxwEGjAQjsy0CHHJJL6uVITcuOpSNt3JpFAUmAmOA0pw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=CFW1S9Dm; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::529; helo=mail-pg1-x529.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ULjTUi6Z;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=CFW1S9Dm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vishalc@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::529; helo=mail-pg1-x529.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwb8Z3d3Gz2yLJ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 22:14:37 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 574BWg2M014721;
-	Mon, 4 Aug 2025 12:14:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=bkCali
-	Aq08k6pthvg5cnXDYw9hW8fQnGbzG6ffz5kQw=; b=ULjTUi6ZfTRV+fckyGtK3O
-	qfhFlVexaHIAvlW2iN6+prIMqYcGPxtg07ROxzIXXBau8h0Y2rt1butGbKhLTqQI
-	5FppwdxR4GitCGXs8GuhQ8I9ttU5hAnsFl6r2/HEBMmw2kfd00Q9z3KjJ803fnrm
-	7/j+Ts3ote5mMLqQ2MJTB83rEOHlVntozq7rHpQTCylCVMmSpvJvAdbSl85q1W1c
-	eozm4ltAD//pd1c5OhMalBu9SJhhwWmfEnANYDk4cxQ9lOJK0NyB06ZYjsrYh/sb
-	BElM+AsJGIBBuhUUtsM9TzGBJQQgD4jBGgsCF1fpfg3Z2yKu9J1LQWQmU/LRro/A
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48983t16w2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 Aug 2025 12:14:24 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 574CAJY4011078;
-	Mon, 4 Aug 2025 12:14:24 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48983t16vx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 Aug 2025 12:14:24 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 574AXJsY006836;
-	Mon, 4 Aug 2025 12:14:23 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 489xgmdpkr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 Aug 2025 12:14:23 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 574CEJa252494670
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 4 Aug 2025 12:14:19 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8D43F2004B;
-	Mon,  4 Aug 2025 12:14:19 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3A1E020040;
-	Mon,  4 Aug 2025 12:14:17 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.124.212.175])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  4 Aug 2025 12:14:16 +0000 (GMT)
-Date: Mon, 4 Aug 2025 17:44:11 +0530
-From: Vishal Chourasia <vishalc@linux.ibm.com>
-To: Donet Tom <donettom@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linuxppc-dev@lists.ozlabs.org, Ritesh Harjani <ritesh.list@gmail.com>,
-        linux-kernel@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] powerpc/mm: Fix SLB multihit issue during SLB preload
-Message-ID: <aJCkE_80YfYUWIzZ@linux.ibm.com>
-References: <20250801103747.21864-1-donettom@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bwbY6330Tz2yLJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 Aug 2025 22:32:25 +1000 (AEST)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-b424d2eb139so1107035a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 Aug 2025 05:32:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754310741; x=1754915541; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sz81oS+khM9qasQTVZz4MiZgKna2JCQJHFNcckb6X6E=;
+        b=CFW1S9DmRxTU6La/vNUK3+Viy6KtJNVUXg053yAQVC+e4cEAthjUdDNPT1x2OBwyBq
+         0B6vgjUl9sp5+5+HhDJ6RW1CnrgLnAcGotJsXx1bnfRHppDDprzAKXR1quVDv2gFdofW
+         /oO6gGbO+vPM8l0Xtx/+GehQuR8b7IsgGIMJAhLybptsCsopREr6OMVU8BRfJHtKByhc
+         cHXXVntsgl2uUTQH6gDNtY8/sBRo0jJVzOOpBBDyzw8bAZKhG4yvFbzOMsCRNuegxluS
+         GCxozYyZkQZtJjMOrC1WmcdQZrdnwDKz2IGhIPYX2KhlFPjP1yap68cTLwg7rfSuxDRc
+         XkTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754310741; x=1754915541;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=sz81oS+khM9qasQTVZz4MiZgKna2JCQJHFNcckb6X6E=;
+        b=OWJ4GxJ9g7sQnjreU/KaObs8iQwSnT6M9BAk5WwOV/tL5XDZNMfCtYeUL60gdMIkJI
+         04D18jPkNxldxdmkVhzzUwkPCsPNyV8WhPfYuliW0X6iPJhrfbE40QySuGa0Y6pMbHW8
+         A4SZ8U5wSNzI4L9Wvjani8O3xeXVo8gHFQ3m9W6rg5oIk2ugfiid2/BdyRBzMcIS6W4y
+         FoDy+i+IaCl5ZrpM3K8VyN+7sdeiwEQcKulPgdLe226ElQMgq1Sy/vX+EM22yHM7DvF4
+         nOk3jP4E3aY145szZb7tlyIGqBGC+aAkLsr9xRB5eqADj7TlRmt4SahohOC6OCd6LDu8
+         PwYg==
+X-Forwarded-Encrypted: i=1; AJvYcCXwz1DP1H8pvCP/z9jf6FY2Cdib8bjjUwhYsCqlYLZsWB/KYtq3Gt34wOIUuKevV3ZmuhXX8Svj+EC7Ou8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzH1jH2T3XpzmNJc+/uhR8hZ3PAlwP5AbiqK6HdW4efNUlGcaHn
+	fQ3BYV/sTKAjY4/sQAoBQn0OQq4NEhma+jHkQBbGZl/5O4is1VOFfBZm
+X-Gm-Gg: ASbGncuH/fWNuPx8BIaxpyPNw0xkLbMy+m4/EY/6EAEWhYOAOimllFJnPwCh+qCH488
+	23n/LnfwggYrFy+SuT7DZkmVODGj3dnv9OAf+nvBoHodUmeXdYmsI+mpGUaz57M46Hrwe4MrDXK
+	asUo7cfakbimwhjO+QD3UQP2ZPKzChsEYMHGduI199/Qcn2IENl1e1oimlUbmDBTrFqHKgVf4j3
+	MSlAJSmU7Lsi+SsUZTP7mVEDN4e0Oxbjk4E/hpXBU/SLLItJlwjSqRKqznwZTc7tJYEbNIuxzMo
+	dkxFitC17tvaToX4tL8+DIx0DL0+V5U5dcvUbSpI1y+wgkp0SN7nw70vsU/wqXiP1Xxv1n4LoRz
+	+xlxkExJUTU/HzTX3zuNzr5/FKbbSkd7HtRZkxArDvcLdh/sJdqH3FQ==
+X-Google-Smtp-Source: AGHT+IEe2A8axB/3Y14iPkh2FI0QHWMcwcqvzGaU/WwLKwhmaCDZ0BvYQraBItJoSJLtr0gTXUl2IQ==
+X-Received: by 2002:a17:90b:2b84:b0:31f:35f:96a1 with SMTP id 98e67ed59e1d1-32116ad3520mr9953044a91.15.1754310740620;
+        Mon, 04 Aug 2025 05:32:20 -0700 (PDT)
+Received: from localhost (123.253.189.97.qld.leaptel.network. [123.253.189.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32102a5b2cdsm4417443a91.1.2025.08.04.05.32.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Aug 2025 05:32:20 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,61 +82,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 04 Aug 2025 22:32:11 +1000
+Message-Id: <DBTN94725QGF.9OV4JD5UDTHL@gmail.com>
+Cc: "Ritesh Harjani" <ritesh.list@gmail.com>,
+ <linux-kernel@vger.kernel.org>, "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Vishal Chourasia" <vishalc@linux.ibm.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] powerpc/mm: Fix SLB multihit issue during SLB
+ preload
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Donet Tom" <donettom@linux.ibm.com>, "Madhavan Srinivasan"
+ <maddy@linux.ibm.com>, "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ <linuxppc-dev@lists.ozlabs.org>
+X-Mailer: aerc 0.20.0
+References: <20250801103747.21864-1-donettom@linux.ibm.com>
 In-Reply-To: <20250801103747.21864-1-donettom@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA0MDA2NSBTYWx0ZWRfXzplmM8FaVGkJ
- BGW95B9VBj0mvQuehAtnAQHOfa2WQo0xB2q44cXXF44P/8AXPKY/88dLektrfkmY6Jxg/FXdmRZ
- f/+UvKxnOUD8gGmMrmN2MA6cnczzHPNzyqWVD1zuJ26KGutFznwnI7jEMnqMI8T+iMhkHgVJ9hl
- h60nUBzpqcmvJOKiS9fetaa1hA6jXafxoTBoYEwyRtUpiaIxQkUMHOQ8HAJFBVx/b1JOu4J3p1+
- aukbtgwpOHfeYFvxQYy9Kgmj6eQcVLFdLeyvYEaY0ITKvWhQ1DfSba2irPM/0tKwSLeix9HoZzm
- PLYv+iO4J/HsBAMTSarz09MwdgEpP6Jv7i0liB1BdB36I7ACw8YPisL0veTTSZiybIjI43XjTHR
- R+05bYI0XcWrStucQmHVpzqZcRU3yk/RQSI7zG7Jz/z2hJ/caZMOITeFV45KYei9qOkKm3DS
-X-Proofpoint-GUID: Xi1C_RZ5eyuRNvg804c77mtb1ljWn-zF
-X-Proofpoint-ORIG-GUID: 2ff2BdISzjA-CTAzgsIgqvjC26p_SUqW
-X-Authority-Analysis: v=2.4 cv=AZSxH2XG c=1 sm=1 tr=0 ts=6890a420 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=1UX6Do5GAAAA:8 a=pGLkceISAAAA:8 a=xPUkudSxAZQojQN1IlsA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=Et2XPkok5AAZYJIKzHr1:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-04_05,2025-08-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 impostorscore=0 bulkscore=0
- lowpriorityscore=0 mlxscore=0 spamscore=0 malwarescore=0 phishscore=0
- suspectscore=0 mlxlogscore=999 adultscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2505280000 definitions=main-2508040065
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Aug 01, 2025 at 04:07:47PM +0530, Donet Tom wrote:
+Hmm, interesting bug. Impressive work to track it down.
+
+On Fri Aug 1, 2025 at 8:37 PM AEST, Donet Tom wrote:
 > On systems using the hash MMU, there is a software SLB preload cache that
 > mirrors the entries loaded into the hardware SLB buffer. This preload
-> cache is subject to periodic eviction — typically after every 256 context
-> switches — to remove old entry.
-> 
+> cache is subject to periodic eviction =E2=80=94 typically after every 256=
+ context
+> switches =E2=80=94 to remove old entry.
+>
 > To optimize performance, the kernel skips switch_mmu_context() in
 > switch_mm_irqs_off() when the prev and next mm_struct are the same.
 > However, on hash MMU systems, this can lead to inconsistencies between
 > the hardware SLB and the software preload cache.
-> 
+>
 > If an SLB entry for a process is evicted from the software cache on one
 > CPU, and the same process later runs on another CPU without executing
 > switch_mmu_context(), the hardware SLB may retain stale entries. If the
 > kernel then attempts to reload that entry, it can trigger an SLB
 > multi-hit error.
-> 
+>
 > The following timeline shows how stale SLB entries are created and can
 > cause a multi-hit error when a process moves between CPUs without a
 > MMU context switch.
-> 
+>
 > CPU 0                                   CPU 1
 > -----                                    -----
 > Process P
@@ -168,7 +147,7 @@ On Fri, Aug 01, 2025 at 04:07:47PM +0530, Donet Tom wrote:
 >         */
 > context_switch
 > sched_migrate_task migrates process P to cpu-1
-> 
+>
 > Process swapper/0                       context switch (to process P)
 > (uses mm_struct of Process P)           switch_mm_irqs_off()
 >                                          switch_slb
@@ -192,11 +171,11 @@ On Fri, Aug 01, 2025 at 04:07:47PM +0530, Donet Tom wrote:
 >                                         load_elf_binary continues...
 >                                          setup_new_exec()
 >                                           slb_setup_new_exec()
-> 
+>
 >                                         sched_switch event
 >                                         sched_migrate_task migrates
 >                                         process P to cpu-0
-> 
+>
 > context_switch from swapper/0 to Process P
 >  switch_mm_irqs_off()
 >   /*
@@ -227,7 +206,12 @@ On Fri, Aug 01, 2025 at 04:07:47PM +0530, Donet Tom wrote:
 >     * now when we try to add this new entry into the HW SLB of cpu-0,
 >     * we hit a SLB multi-hit error.
 >     */
-> 
+
+Okay, so what happens is CPU0 has SLB entries remaining from when
+P last ran on there, and the preload aging happens on CPU1 at a
+time when that CPU does clear its SLB. That slb aging step doesn't
+account for the fact CPU0 SLB entries still exist.
+>
 > WARNING: CPU: 0 PID: 1810970 at arch/powerpc/mm/book3s64/slb.c:62
 > assert_slb_presence+0x2c/0x50(48 results) 02:47:29 [20157/42149]
 > Modules linked in:
@@ -237,7 +221,8 @@ On Fri, Aug 01, 2025 at 04:07:47PM +0530, Donet Tom wrote:
 > 0x4d0200 0xf000004 of:SLOF,HEAD hv:linux,kvm pSeries
 > NIP:  c00000000015426c LR: c0000000001543b4 CTR: 0000000000000000
 > REGS: c0000000497c77e0 TRAP: 0700   Not tainted  (6.16.0-rc3-dirty)
-> MSR:  8000000002823033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 28888482  XER: 00000000
+> MSR:  8000000002823033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 28888482  XER:=
+ 00000000
 > CFAR: c0000000001543b0 IRQMASK: 3
 > <...>
 > NIP [c00000000015426c] assert_slb_presence+0x2c/0x50
@@ -252,11 +237,12 @@ On Fri, Aug 01, 2025 at 04:07:47PM +0530, Donet Tom wrote:
 >   sys_execve+0x58/0x70
 >   system_call_exception+0x114/0x300
 >   system_call_common+0x160/0x2c4
-> 
-> To fix this issue, we add a code change to always switch the MMU context on
+>
+> To fix this issue, we add a code change to always switch the MMU context =
+on
 > hash MMU if the SLB preload cache has aged. With this change, the
 > SLB multi-hit error no longer occurs.
-> 
+>
 > cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 > cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 > cc: Michael Ellerman <mpe@ellerman.id.au>
@@ -266,51 +252,67 @@ On Fri, Aug 01, 2025 at 04:07:47PM +0530, Donet Tom wrote:
 > Suggested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 > Signed-off-by: Donet Tom <donettom@linux.ibm.com>
 > ---
-> 
+>
 > v1 -> v2 : Changed commit message and added a comment in
 > switch_mm_irqs_off()
-> 
-> v1 - https://lore.kernel.org/all/20250731161027.966196-1-donettom@linux.ibm.com/
+>
+> v1 - https://lore.kernel.org/all/20250731161027.966196-1-donettom@linux.i=
+bm.com/
 > ---
 >  arch/powerpc/mm/book3s64/slb.c | 2 +-
 >  arch/powerpc/mm/mmu_context.c  | 7 +++++--
 >  2 files changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
+>
+> diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/sl=
+b.c
 > index 6b783552403c..08daac3f978c 100644
 > --- a/arch/powerpc/mm/book3s64/slb.c
 > +++ b/arch/powerpc/mm/book3s64/slb.c
-> @@ -509,7 +509,7 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
+> @@ -509,7 +509,7 @@ void switch_slb(struct task_struct *tsk, struct mm_st=
+ruct *mm)
 >  	 * SLB preload cache.
 >  	 */
 >  	tsk->thread.load_slb++;
 > -	if (!tsk->thread.load_slb) {
-> +	if (tsk->thread.load_slb == U8_MAX) {
->  		unsigned long pc = KSTK_EIP(tsk);
->  
+> +	if (tsk->thread.load_slb =3D=3D U8_MAX) {
+>  		unsigned long pc =3D KSTK_EIP(tsk);
+> =20
 >  		preload_age(ti);
-> diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.c
+> diff --git a/arch/powerpc/mm/mmu_context.c b/arch/powerpc/mm/mmu_context.=
+c
 > index 3e3af29b4523..95455d787288 100644
 > --- a/arch/powerpc/mm/mmu_context.c
 > +++ b/arch/powerpc/mm/mmu_context.c
-> @@ -83,8 +83,11 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
+> @@ -83,8 +83,11 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct=
+ mm_struct *next,
 >  	/* Some subarchs need to track the PGD elsewhere */
 >  	switch_mm_pgdir(tsk, next);
->  
+> =20
 > -	/* Nothing else to do if we aren't actually switching */
-> -	if (prev == next)
+> -	if (prev =3D=3D next)
 > +	/*
 > +	 * Nothing else to do if we aren't actually switching and
 > +	 * the preload slb cache has not aged
 > +	 */
-> +	if ((prev == next) && (tsk->thread.load_slb != U8_MAX))
+> +	if ((prev =3D=3D next) && (tsk->thread.load_slb !=3D U8_MAX))
 >  		return;
->  
+> =20
 >  	/*
-> -- 
-> 2.50.1
-> 
-LGTM.
 
-Reviewed-by: Vishal Chourasia <vishalc@linux.ibm.com>
+I see couple of issues with this fix. First of all, it's a bit wrong to
+call switch subsequent switch_mm functions if prev =3D=3D next, they are no=
+t
+all powerpc specific. We could work around that somehow with some hash
+specific knowledge. But worse I think is that load_slb could be
+incremented again if we context switched P again before migrating back
+here, then we would miss it.
+
+How about removing preload_new_slb_context() and slb_setup_new_exec()
+entirely? Then slb preload is a much simpler thing that is only loaded
+after the SLB has been cleared. Those functions were always a bit
+janky and for performance, context switch is the most improtant I think,
+new thread/proc creation less so.
+
+Thanks,
+Nick
 
