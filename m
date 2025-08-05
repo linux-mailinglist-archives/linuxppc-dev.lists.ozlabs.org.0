@@ -1,77 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-10672-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10673-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE902B1B92E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 19:20:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B12BB1BAC6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 21:14:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bxKtS4yTkz3bn4;
-	Wed,  6 Aug 2025 03:20:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bxNQw3hLCz3blg;
+	Wed,  6 Aug 2025 05:14:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754414400;
-	cv=none; b=IrGMl50qUX9zcQokK3jLe6emyynZc9oq5GZM6VSgT33RT8rl72DkEla6LjJuwKvxEKa2F6a12xZv3uqDLufG0lSmyPk78HW9+zZj46/HWlMADIn+ixM+1DDzTqgRS0NsPITj7bT/NTYEarfB3u7Tufi/jXz3/+CIOYeFP5e8NzVT2K5QiDCnW6SSEY+ZYH2+wBTbkw1FrWLhe7q7rK4wJyyTS3cvGXcLI78ZHisFkt8JZx7xc75fD3G+Xu8KfHikgaFfA1gv8tMXvzQEcUGq591Jc0dQf7WwdiIqwpbIxEuPntaNmsg5Hy9H6EAbPLLzLds3kU6LZG7tiwAXiQnZYQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754421288;
+	cv=none; b=oZsDBkUUCsUGLBBpymjAtfqEBFUtMKVEMU+4IZNN8neSzqUSH9A7ZZNVXIdyBwh8OIkL3PMRtqWEOvB/4SIK6bPfkUh+1/Taf4G8atoR1AGK9Kgh6mSBr7hmhd4f+OSM2vckIyQiN86qji7VagRF8PPVGrMvjIytsVfz9IRnwIzwmrbYLwgdDcAnmOFlIcqLt0p8cnedaUfeR2cBCdxEvKSs/trkPkcH+w+JlOWrLI19COqOPH3JecBidZWG0JTNanRYouMCTKr9MWvGfaIhyTakziyuL6uul7L/w5H7UhtzPQQGmZsfsmWu8gdDH+SnkNm8Ou+suFcbbjyfPwV3vQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754414400; c=relaxed/relaxed;
-	bh=Q/FfZaSan1eV7HDF3Wa83lEa0xPcSUpZYrzYE5G9wjk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n9ejvfF4YXFjKvnV3dJz/ikxEpMjhepDewZe88JqTG18gdNUQZ6f/GYjoVeW/uXGev3KfQn5mtWdXuUr5RzO23GYzTDzsopG2EHflEsa2DfHWnnR2mH8NIFts2791oVBW1UAn16+/NpY0praz6p8KS8pmI3K2qTTNqF/ZA6gPHCWAEvtl0Zcbw/Zw/0UnM97j35+VnsoZcIS7UxQlt8jrSEqExXarTYUX1cTnIxnwll6Zzy6u+Q1xX1gYLtVBqb+tJnMFlH0icDpp4LFG+fzNABde+a+2zszHeCRfbayivy7SGngs2BxFGohFz8cQ5+gjmyh8lDoYIt0mU4R+HEhpQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OlVLHgJ4; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12e; helo=mail-lf1-x12e.google.com; envelope-from=ryabinin.a.a@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1754421288; c=relaxed/relaxed;
+	bh=E04hp16oCzu7VbNG7XYvIT9if+uPmtLmVgKY4onVOjQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dvIDr6i/UY8l4AIAf3bHYXEkR91MM72no4cNGedaIMrRbNPXCqsycY7KH87gIwdPqkebSqYPd2Sp7tBsgtQCyEOmt6vYU0uE0ghRxj0m7Lw2WdGwGeGFHGHAVraXWgMIS6VofntMRDWExEB4JSpiYLPVUgG7s8BYeLE6N9Oei9+0NEQvDWhG8Xa4aL568Rn36E8VcumIx5Nr+cIaMQCAlo43lMCcFXbRlFSQDhmgFXE3lK2UuLVg556t20aOKdxFQLH86BFgCaamyh7iEGU3B1FhUhJYkqwaLWGSVfyMHGK5oe1IIiAPjrUhy5FTzUX2XifSKkWKsvoVYG33cy2dPg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G3dPcJal; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OlVLHgJ4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G3dPcJal;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12e; helo=mail-lf1-x12e.google.com; envelope-from=ryabinin.a.a@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxKtR5j5Jz3bmy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 03:19:59 +1000 (AEST)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-55b858e8778so214019e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 10:19:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754414396; x=1755019196; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Q/FfZaSan1eV7HDF3Wa83lEa0xPcSUpZYrzYE5G9wjk=;
-        b=OlVLHgJ4EZ5G48jg0C6psXlRzCBjDHAFPELgoEtm683JBIPXH0mFhrGKhmrDl9i1BI
-         KWTcVK7n1MfhiZ3CjsI+vT364MS87jqIehPy7NfPXBfFdotwo5MsX65R/83c1cmBpmWT
-         IS9aQK4PgynxSLmBkcWRMua46SUTtGC5bcaMEVC/9i61qXla73X1XV2AY9aoasV3fVh9
-         w7SHA+jYN5gr42v1P1p6rTBhY7Opzkyk/PDo8ycTozWe21ojB5NGkjquCKLFWJ1+evxu
-         mAilyZZrs9Tn6wBHM70z4VFs5Uvh3FmSKBR1V3R1SdrxZHn1FYy23BLZfnoHeg6VDwVw
-         ld3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754414396; x=1755019196;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q/FfZaSan1eV7HDF3Wa83lEa0xPcSUpZYrzYE5G9wjk=;
-        b=DoFaIIJNIFW1drdr0YZPcbaZQIHLNW/dKYVRuPHWOIcJ0J/VhAlIdVoXYH4mgNCC38
-         x2Gz55kplfAm/5SunKwiEZYP/83MG+hi+U8leYcV8Ur3MnKrjaF9BXT3AqfJoFc0wYPW
-         l3gpXb6chxeGURGkasqsLbG0nYhg0DlqF9Y7+GTvtB36KpAaws2GA+7NfFvFmBnLM9WS
-         oddpyVDlFvA60MUHf/sCgFsyeJ2eCu+IvCMZYqAQRNLcuTvREfd+iMD1AE4ZqjeNFO2J
-         yiTM4mKHlUNN+V+NcuEMArzDzLMNYahRCz7DaEJcsYAqiKtg3GrUe5dkMm3Ob6pdV1jt
-         tIWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUOCdRXD1eWxOi2tul06Kej9W8LIhJrtLVx3JSDSB3S2EEA6oUJdbk1mkWzU6/KoorRHe+lY9x79+Gbp64=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw4zu82Fd8axNSdKD7F7ReKWVbd8yqWbtTUDdXRA0fqMSk0XN6J
-	dgSd45aQ5dtL3pVcu7MVgx4vzg4BxxR/1FBQ6nKWVHA3vnWhAGm8LZ3S
-X-Gm-Gg: ASbGncvEpgkdwbjrhrZJL1928xGgP59Nk3aSnGeWzupK4Ge8zRtZLdmi750EqvviISl
-	Bs1yfwmlLvN7lEB2wPnswzLAlWrnOFh2nxIci1Wuf9B0Xisgl47ffyjKrX+luV2AAmFxWPaqNs3
-	4gbaJXosT/sPasGNZGV6D17rVGVYwK6PsIQXVuYitVzNioz9cr0cakz/twXIvv5RthJVCkEWH4z
-	qLcCBFNRoAblj/n2tkRAq005rWNCbIs8jQIH+pztbw3EYY0KvW1BF5TVsrudeMC+Eee3YBtbdEJ
-	ZGrwl8L+tXAuDfPvaf8LmKF7r2uQpAmU8uPWfC8m3d4c965hEj3jJznpurE2NtM+2iGDYSiGE8p
-	phb5cZKCYWgQcRi4QLuN2Dn6BT45K
-X-Google-Smtp-Source: AGHT+IFZ9pdK1jvsk2cxgalB1qSoH0zZWAWc/VG+Lc+QySUYQJ+aNEU1tTzI15MgaTEZ+riRKR17/A==
-X-Received: by 2002:a05:6512:6d1:b0:553:2480:230a with SMTP id 2adb3069b0e04-55b979b819amr1540170e87.0.1754414396425;
-        Tue, 05 Aug 2025 10:19:56 -0700 (PDT)
-Received: from [10.214.35.248] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-332382a9483sm19586481fa.23.2025.08.05.10.19.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 10:19:56 -0700 (PDT)
-Message-ID: <60895f3d-abe2-4fc3-afc3-176a188f06d4@gmail.com>
-Date: Tue, 5 Aug 2025 19:19:09 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxNQt4DN3z3bkg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 05:14:46 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id E89B35C66FF;
+	Tue,  5 Aug 2025 19:14:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756CCC4CEF0;
+	Tue,  5 Aug 2025 19:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754421283;
+	bh=AEMRptBFjWgx5a1Ym2+nos+6PWqs3+LMFSgUwIQVLIE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G3dPcJalG17ku7oEIWTs5Ls+56/huVhNo7/lzR90I0htrrz3cEHs7K3JuTfISRBle
+	 va/0F1/10adpotN5Uc/5tAHF1l7hZ80hMaHe5FJjE83hAH8iOw77tUU6BVmBMjIfeu
+	 qpobc6zP75QG8ccIFWUaKTd+EVQBlBnDhbz6kzWcTnCqQs/RE22Wxf33cicK5O6b3c
+	 3L4U+DNMkCEFq1GsHbV1Zt5ZogZvNmedvWY0Z9RoygIID374LQ6zG7o0q2JBhTSZAA
+	 gZ3veMfODYsLMsmrGsWQJIvc81oegoOaXf21Bi+OaHgGEXEkYHRSBUN5xI7j50jt1g
+	 4L9q5OIRtiLZw==
+Date: Tue, 5 Aug 2025 20:14:36 +0100
+From: Simon Horman <horms@kernel.org>
+To: Mingming Cao <mmc@linux.ibm.com>
+Cc: netdev@vger.kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
+	ricklind@linux.ibm.com, kuba@kernel.org, edumazet@google.com,
+	pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
+	maddy@linux.ibm.com, mpe@ellerman.id.au
+Subject: Re: [PATCH v3 net-next] ibmvnic: Increase max subcrq indirect
+ entries with fallback
+Message-ID: <20250805191436.GY8494@horms.kernel.org>
+References: <20250804231704.12309-1-mmc@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,62 +67,182 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 6/9] kasan/um: select ARCH_DEFER_KASAN and call
- kasan_init_generic
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>, hca@linux.ibm.com,
- christophe.leroy@csgroup.eu, andreyknvl@gmail.com, agordeev@linux.ibm.com,
- akpm@linux-foundation.org, zhangqing@loongson.cn, chenhuacai@loongson.cn,
- trishalfonso@google.com, davidgow@google.com
-Cc: glider@google.com, dvyukov@google.com, kasan-dev@googlegroups.com,
- linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
-References: <20250805142622.560992-1-snovitoll@gmail.com>
- <20250805142622.560992-7-snovitoll@gmail.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <20250805142622.560992-7-snovitoll@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250804231704.12309-1-mmc@linux.ibm.com>
+X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-On 8/5/25 4:26 PM, Sabyrzhan Tasbolatov wrote:
+On Mon, Aug 04, 2025 at 04:17:04PM -0700, Mingming Cao wrote:
+> POWER8 support a maximum of 16 subcrq indirect descriptor entries per
+>  H_SEND_SUB_CRQ_INDIRECT call, while POWER9 and newer hypervisors
+>  support up to 128 entries. Increasing the max number of indirect
+> descriptor entries improves batching efficiency and reduces
+> hcall overhead, which enhances throughput under large workload on POWER9+.
 > 
-> diff --git a/arch/um/Kconfig b/arch/um/Kconfig
-> index 9083bfdb773..8d14c8fc2cd 100644
-> --- a/arch/um/Kconfig
-> +++ b/arch/um/Kconfig
-> @@ -5,6 +5,7 @@ menu "UML-specific options"
->  config UML
->  	bool
->  	default y
-> +	select ARCH_DEFER_KASAN
+> Currently, ibmvnic driver always uses a fixed number of max indirect
+> descriptor entries (16). send_subcrq_indirect() treats all hypervisor
+> errors the same:
+>  - Cleanup and Drop the entire batch of descriptors.
+>  - Return an error to the caller.
+>  - Rely on TCP/IP retransmissions to recover.
+>  - If the hypervisor returns H_PARAMETER (e.g., because 128
+>    entries are not supported on POWER8), the driver will continue
+>    to drop batches, resulting in unnecessary packet loss.
+> 
+> In this patch:
+> Raise the default maximum indirect entries to 128 to improve ibmvnic
+> batching on morden platform. But also gracefully fall back to
+> 16 entries for Power 8 systems.
+> 
+> Since there is no VIO interface to query the hypervisor’s supported
+> limit, vnic handles send_subcrq_indirect() H_PARAMETER errors:
+>  - On first H_PARAMETER failure, log the failure context
+>  - Reduce max_indirect_entries to 16 and allow the single batch to drop.
+>  - Subsequent calls automatically use the correct lower limit,
+>     avoiding repeated drops.
+> 
+> The goal is to  optimizes performance on modern systems while handles
+> falling back for older POWER8 hypervisors.
+> 
+> Performance shows 40% improvements with MTU (1500) on largework load.
+> 
+> --------------------------------------
+> Changes since v2:
+> link to v2: https://www.spinics.net/lists/netdev/msg1104669.html
+> 
+> -- was Patch 4 from a patch series v2. v2 introduced a module parameter
+> for backward compatibility. Based on review feedback, This patch handles
+> older systems fall back case without adding a module parameter.
+> 
+> Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+> Reviewed-by: Brian King <bjking1@linux.ibm.com>
+> Reviewed-by: Haren Myneni <haren@linux.ibm.com>
+> ---
+>  drivers/net/ethernet/ibm/ibmvnic.c | 56 ++++++++++++++++++++++++++----
+>  drivers/net/ethernet/ibm/ibmvnic.h |  6 ++--
+>  2 files changed, 53 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
 
-select ARCH_DEFER_KASAN if STATIC_LINK
+...
 
->  	select ARCH_WANTS_DYNAMIC_TASK_STRUCT
->  	select ARCH_HAS_CACHE_LINE_SIZE
->  	select ARCH_HAS_CPU_FINALIZE_INIT
-> diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
-> index f97bb1f7b85..81bcdc0f962 100644
-> --- a/arch/um/include/asm/kasan.h
-> +++ b/arch/um/include/asm/kasan.h
-> @@ -24,11 +24,6 @@
+> @@ -862,6 +862,19 @@ static void replenish_rx_pool(struct ibmvnic_adapter *adapter,
+>  failure:
+>  	if (lpar_rc != H_PARAMETER && lpar_rc != H_CLOSED)
+>  		dev_err_ratelimited(dev, "rx: replenish packet buffer failed\n");
+> +
+> +	/* Detect platform limit H_PARAMETER */
+> +	if (lpar_rc == H_PARAMETER &&
+> +	    adapter->cur_max_ind_descs > IBMVNIC_MAX_IND_DESC_MIN) {
+> +		netdev_info(adapter->netdev,
+> +			    "H_PARAMETER, set ind desc to safe limit %u\n",
+> +			    IBMVNIC_MAX_IND_DESC_MIN);
+> +		adapter->cur_max_ind_descs = IBMVNIC_MAX_IND_DESC_MIN;
+> +	}
+
+Hi Mingming, all,
+
+The logic above seems to appear twice in this patch.
+I think it would be good to consolidate it somehow.
+E.g. in a helper function.
+
+> +
+> +	/* for all error case, temporarily drop only this batch
+> +	 * Rely on TCP/IP retransmissions to retry and recover
+> +	 */
+
+Thanks for adding this comment.
+Although perhaps 'for' -> 'For'.
+
+Likewise below.
+
+>  	for (i = ind_bufp->index - 1; i >= 0; --i) {
+>  		struct ibmvnic_rx_buff *rx_buff;
 >  
->  #ifdef CONFIG_KASAN
->  void kasan_init(void);
-> -extern int kasan_um_is_ready;
-> -
-> -#ifdef CONFIG_STATIC_LINK
-> -#define kasan_arch_is_ready() (kasan_um_is_ready)
-> -#endif
->  #else
->  static inline void kasan_init(void) { }
->  #endif /* CONFIG_KASAN */
+> @@ -2381,16 +2394,33 @@ static int ibmvnic_tx_scrq_flush(struct ibmvnic_adapter *adapter,
+>  		rc = send_subcrq_direct(adapter, handle,
+>  					(u64 *)ind_bufp->indir_arr);
+>  
+> -	if (rc)
+> +	if (rc) {
+> +		dev_err_ratelimited(&adapter->vdev->dev,
+> +				    "tx_flush failed, rc=%u (%llu entries dma=%pad handle=%llx)\n",
+> +				    rc, entries, &dma_addr, handle);
+> +		/* Detect platform limit H_PARAMETER */
+> +		if (rc == H_PARAMETER &&
+> +		    adapter->cur_max_ind_descs > IBMVNIC_MAX_IND_DESC_MIN) {
+> +			netdev_info(adapter->netdev,
+> +				    "H_PARAMETER, set ind descs to safe limit %u\n",
+> +				    IBMVNIC_MAX_IND_DESC_MIN);
+> +			adapter->cur_max_ind_descs = IBMVNIC_MAX_IND_DESC_MIN;
+> +		}
+> +
+> +		/* for all error case, temporarily drop only this batch
+> +		 * Rely on TCP/IP retransmissions to retry and recover
+> +		 */
+>  		ibmvnic_tx_scrq_clean_buffer(adapter, tx_scrq);
+> -	else
+> +	} else {
+>  		ind_bufp->index = 0;
+> +	}
+>  	return rc;
+>  }
+
+...
+
+> @@ -6369,6 +6399,17 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter, bool reset)
+>  			rc = reset_sub_crq_queues(adapter);
+>  		}
+>  	} else {
+> +		if (adapter->reset_reason == VNIC_RESET_MOBILITY) {
+> +			/* post migrtione reset the max
+> +			 * indirect descriptors per hcall to be default max
+> +			 * (e.g p8 ->p10)
+> +			 * if the destination is on the platform supports
+> +			 * do not support max (e.g. p10->p8) the threshold
+> +			 * will be reduced to safe min limit for p8 later
+> +			 */
+
+nits: Post migration, reset.
+
+      The line breaking seems uneven.
+
+      And if p8 and p10 are POWER8 and POWER10 then I think it would
+      be worth spelling that out.
+ 
+> +			adapter->cur_max_ind_descs = IBMVNIC_MAX_IND_DESC_MAX;
+> +		}
+> +
+>  		rc = init_sub_crqs(adapter);
+>  	}
+>  
+
+...
+
+> diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
+> index 246ddce753f9..829a16116812 100644
+> --- a/drivers/net/ethernet/ibm/ibmvnic.h
+> +++ b/drivers/net/ethernet/ibm/ibmvnic.h
+> @@ -29,8 +29,9 @@
+>  #define IBMVNIC_BUFFS_PER_POOL	100
+>  #define IBMVNIC_MAX_QUEUES	16
+>  #define IBMVNIC_MAX_QUEUE_SZ   4096
+> -#define IBMVNIC_MAX_IND_DESCS  16
+> -#define IBMVNIC_IND_ARR_SZ	(IBMVNIC_MAX_IND_DESCS * 32)
+> +#define IBMVNIC_MAX_IND_DESC_MAX 128
+> +#define IBMVNIC_MAX_IND_DESC_MIN 16
+
+...MAX...{MAX,MIN} seems like an unfortunate name.
+But I don't feel particularly strongly about this one.
+
+> +#define IBMVNIC_IND_MAX_ARR_SZ (IBMVNIC_MAX_IND_DESC_MAX * 32)
+>  
+>  #define IBMVNIC_TSO_BUF_SZ	65536
+>  #define IBMVNIC_TSO_BUFS	64
+
+...
 
