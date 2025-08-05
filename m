@@ -1,49 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-10644-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10641-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30189B1B0E8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 11:20:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACDAB1B007
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 10:13:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bx7FK5d0mz3064;
-	Tue,  5 Aug 2025 19:20:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bx5lY2gWHz3bh6;
+	Tue,  5 Aug 2025 18:13:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754385637;
-	cv=none; b=XIt6timpGalwPZTm5gJIf3q1cKyWqF6mC8qChNiJxMIFeKMCqa1DA8Jnoa+tjjMc588ufJrRJd/TdNF8LBNdS+tD0USsRhbF8c4UFfFMp0UOAsLu1Ab8FEfvT/9fBFw3/Tn2GbSW7lD5hF4ixrSQnfTyPWfnkZVFhzwC8wnQMy2zQrqpoc1wUfiZ8xOT32VKoed33QbVXze9u6n3jhOIinTSJ98CAb5LtS2eYX0PIMaUiShz/OB6pn+edT+jvDDC3XoRy0WnhUlcQvrwQ0cskpHWd8VgGjW3BFhGxybuThv2uB/4Of9MltcegyK9PC9POj54wyUm27/USt0eiiszBQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.177
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754381593;
+	cv=none; b=BNVjzW4OcI3oQ3Z3WQDchRMdqc/apz/e0QbV5GC8MeROCGDXCwvLGdrUH110OWtjusybIGHdhZORdQ2pVHxzhMHitwS1q0fuWBL6efY6xYJoWcxxuiHQRGC0bPAWZK3zemyymwazV1SmXWk3kgxmJEDflCd5QAz4bKPi0ZdJgXZ9EjRxTibmAgy32K9rNZsTmZpBtFzj4t5PHTYRuhbwdcJJ/LyDqST6LJyFJ+roXXpRCDupTxuikT3lzqejWVA84uo2TrOzcT9si1ZSy/FWkRWRgt7RwTPf1V06VKLbu53oecZugkyprt4wbliVdlm2Gx5ctlhCg16oWaksPaZLDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754385637; c=relaxed/relaxed;
-	bh=CBrrvSaPA5MonzYhzA5TrnEGvQfCVf5g6Ia5pCKwZ8g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UE9cvMhHYVZzZ6RoGJqt3q/QLZgm3KxPpEzmlcYcfzSYqlqmAyZEenChG+NdtWsALVw8vDytCPqMHLo/hj0CjJIUJHFTO3P3RJcRw+sMazfaUHQ9lvKVIEancJdjrU5z5wIJHuYaM4TTRUWtcg8JQrwuR8fCz6tivosc6yHp/SEfN/UI8BvNzN5HzIuSmhFB6txxmbuec+nZnLzX9mAsILj/ZevK535Mt6er7AdGWVH/2NjwoNt9eMF4xwbwNwKQxT8Muos3mMN+VPf1ojaDWbunIMUhdX/fQTAALBYIQfI9fdanlixGkhspJKBX4wNyug/7kwi1mUdTvwAAUqlXIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bx7FK1R8Pz3bh6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 19:20:37 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4bx57n0CXYz9tMd;
-	Tue,  5 Aug 2025 09:45:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id IuSqCUxyKqzr; Tue,  5 Aug 2025 09:45:40 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4bx57m6FKRz9tMS;
-	Tue,  5 Aug 2025 09:45:40 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id CD7068B765;
-	Tue,  5 Aug 2025 09:45:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id flY4ShmDsG9w; Tue,  5 Aug 2025 09:45:40 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8ACC88B763;
-	Tue,  5 Aug 2025 09:45:39 +0200 (CEST)
-Message-ID: <5af0d7d9-71cb-4977-b496-6046c2c64d52@csgroup.eu>
-Date: Tue, 5 Aug 2025 09:45:39 +0200
+	t=1754381593; c=relaxed/relaxed;
+	bh=FYbREyEF6GDi+6BqzkUaervyY8mSRtfMj7JERduR6Tc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FGlrFK8IBFE3e3QNBEZZWtn/uZ1Xr/7afTFUmQ3ZwpNaVbYpyqYu+rYLVb/jt//Kev81IwoRjkf91PgJjWnfI/ul3otoiqEbxvyZhdGSUUYXic1NyUK+8HA7RA3mTSoG8i/ao4DD4z++kh2192pR6dVX2HrqpjG6fPvYthIKjyY1V55jlwLyPaC04gbV8cMO/MI3dTN9ORUU2zP67x5orNvzNW2p7o25NHLcSzPlBKo23Re2Th2fD+zOqc3XuGf8WGi+wy5twrdjMORaRI8XSlvb3iP/blhs3o9BRVAJ0Mem1YAKAcK/PutNYwA8vrpsdCG9/Ke6UePDGRSj8VgOUA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.221.177; helo=mail-vk1-f177.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.177; helo=mail-vk1-f177.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bx5lW4PP3z2xnM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 18:13:10 +1000 (AEST)
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5397c00ad9eso538216e0c.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 01:13:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754381588; x=1754986388;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FYbREyEF6GDi+6BqzkUaervyY8mSRtfMj7JERduR6Tc=;
+        b=QzyfwVE6o48Xc6usgfgUByO29Ep9n7+eDzlVSXBWl2Tx3ah1OqCGIb3/+KYLXTg/n7
+         T0pWvKyp43ZOIYqRv7R/UA1j2Y6YOe3xivAL1dh/7X47FfNGYSz3Dx6+Esn9/W9lPJXt
+         GKZAuJKHtjo591y/ZgnznAQrklDwFUJRMEi5UuybNY0jDq1SazoMywgGtlMLRITFTpyY
+         S1j5prSrJvbqNfBQgb0q+GrhSgO1Sj/PDQq9f/KvqXuYoWElC490giafT8cYlKw9yMtJ
+         7eCk79WnVCh3w4lRxyRxfOlWdnxS2LKy6I/wpslfP31+KUTuYBO8g1LP530AdHd3kt2G
+         AMrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV52au0JXRYY8vhtfeHrRsOHljIgSoD1B55Q2ir1/UyqrOnuJyKEF8LH1Latlwik4MkTiU44ynBcwKE6rk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy89HwordcZJTY3pX6GZLRHob4IXvVgQMZxkcUXy0x8cr04tzFA
+	/abiFd5sVzf564CzPFglyk+SgdqELvOH3nh3UUILim29eL5n7Hu3+zNWay5ILcQs
+X-Gm-Gg: ASbGncu121v0wT728VAq1GifZlIB1DMMshrR+fV0AiPJmQD7vQH55YbVuNobFCBMP9g
+	yqDqBctpqpKG5mdYFH2zyIKg+3T8paBQ7nlV9Jo+P9UjC3m+OSAjv4NQq6khip341Y9EufDzk49
+	85feN9ch4Ek93PA0lSGdr/s+3UwcQcXcoVduxzQOTK8nL3OSVWNp3Kti53fF3kVkPpEDK8W2OM+
+	Gu6qpP6heROK3tCv+voSwbTT35tWA7lsXBjl3sXnIF8C3wbreYbRONnROg8W80sbp4dQRaHzFo7
+	0gxs7oXu1ei3sB4CexbQ2h3hSZzml+fTgcvaRHqK0zAwFQK0y354ojuQ34M9Vunw2UtqhTSro5m
+	xbWjI0k1Ixg19VzG7ws1AkNKqUFGzH1wlc/iu/A6CeZt3xUEhD15yuOS2E4cC
+X-Google-Smtp-Source: AGHT+IEi8+OQRgR/a5RZQE6QdqpYNge2H/5zOdKixm/XkanD0mH59MnzRbhtjbhTYQx79im2xBNdHg==
+X-Received: by 2002:a05:6122:30ac:b0:531:45f1:604d with SMTP id 71dfb90a1353d-5395f2ae17amr5140910e0c.6.1754381587987;
+        Tue, 05 Aug 2025 01:13:07 -0700 (PDT)
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-53936cb4c27sm3315443e0c.21.2025.08.05.01.13.07
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Aug 2025 01:13:07 -0700 (PDT)
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-88bbfe763ecso1192578241.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 01:13:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVshLnX1STOpvzY4odP1jXdjNzHw12o2KSCFTLD9uBd6gpC73qcuVzemSQY93eBOthc2LJMAa2Gig90BO0=@lists.ozlabs.org
+X-Received: by 2002:a05:6102:3a0b:b0:4d7:11d1:c24e with SMTP id
+ ada2fe7eead31-4fdc480dc77mr4806207137.21.1754381587163; Tue, 05 Aug 2025
+ 01:13:07 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,133 +75,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bpf-next 0/6] bpf,powerpc: Add support for bpf arena and arena
- atomics
-To: Saket Kumar Bhaskar <skb99@linux.ibm.com>, bpf@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
- andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
- daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, naveen@kernel.org,
- maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
- memxor@gmail.com, iii@linux.ibm.com, shuah@kernel.org
-References: <20250805062747.3479221-1-skb99@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250805062747.3479221-1-skb99@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250804163910.work.929-kees@kernel.org> <20250804164417.1612371-11-kees@kernel.org>
+In-Reply-To: <20250804164417.1612371-11-kees@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 5 Aug 2025 10:12:55 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWRAxGqLxPY0eZkrg4zMr4qY5KUcTqPjNXEKOTeNYGc8A@mail.gmail.com>
+X-Gm-Features: Ac12FXxoASDmKZziFEtov1BZOWBk9xds-hH6z1CBqhINtQO4YVRNUk0c1YQzJUM
+Message-ID: <CAMuHMdWRAxGqLxPY0eZkrg4zMr4qY5KUcTqPjNXEKOTeNYGc8A@mail.gmail.com>
+Subject: Re: [PATCH 11/17] m68k: Add __attribute_const__ to ffs()-family implementations
+To: Kees Cook <kees@kernel.org>
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	linux-alpha@vger.kernel.org, linux-csky@vger.kernel.org, 
+	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, llvm@lists.linux.dev, 
+	linux-hardening@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Mon, 4 Aug 2025 at 18:44, Kees Cook <kees@kernel.org> wrote:
+> While tracking down a problem where constant expressions used by
+> BUILD_BUG_ON() suddenly stopped working[1], we found that an added static
+> initializer was convincing the compiler that it couldn't track the state
+> of the prior statically initialized value. Tracing this down found that
+> ffs() was used in the initializer macro, but since it wasn't marked with
+> __attribute__const__, the compiler had to assume the function might
+> change variable states as a side-effect (which is not true for ffs(),
+> which provides deterministic math results).
+>
+> Add missing __attribute_const__ annotations to M68K's implementations
+> of ffs(), __ffs(), fls(), __fls(), and ffz() functions. These are
+> pure mathematical functions that always return the same result for
+> the same input with no side effects, making them eligible for compiler
+> optimization.
+>
+> Build tested ARCH=m68k defconfig with GCC m68k-linux-gnu 14.2.0.
+>
+> Link: https://github.com/KSPP/linux/issues/364 [1]
+> Signed-off-by: Kees Cook <kees@kernel.org>
 
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Le 05/08/2025 à 08:27, Saket Kumar Bhaskar a écrit :
-> This patch series introduces support for the PROBE_MEM32,
-> bpf_addr_space_cast and PROBE_ATOMIC instructions in the powerpc BPF JIT,
-> facilitating the implementation of BPF arena and arena atomics.
+# ffs: pass:9 fail:0 skip:0 total:9
 
-This series seems to be limited to powerpc64. Please make it explicit in 
-all patches subject, see exemple below:
+Gr{oetje,eeting}s,
 
-$ git log --oneline arch/powerpc/net/bpf_jit_comp64.c
-cf2a6de32cabb (tag: powerpc-6.17-2, origin/next-test, origin/next) 
-powerpc64/bpf: Add jit support for load_acquire and store_release
-59ba025948be2 powerpc/bpf: fix JIT code size calculation of bpf trampoline
-d243b62b7bd3d powerpc64/bpf: Add support for bpf trampolines
-9670f6d2097c4 powerpc64/bpf: Fold bpf_jit_emit_func_call_hlp() into 
-bpf_jit_emit_func_call_rel()
-fde318326daa4 powerpc64/bpf: jit support for signed division and modulo
-597b1710982d1 powerpc64/bpf: jit support for sign extended mov
-717756c9c8dda powerpc64/bpf: jit support for sign extended load
-a71c0b09a14db powerpc64/bpf: jit support for unconditional byte swap
-3c086ce222cef powerpc64/bpf: jit support for 32bit offset jmp instruction
-b1e7cee961274 powerpc/bpf: enforce full ordering for ATOMIC operations 
-with BPF_FETCH
-61688a82e047a powerpc/bpf: enable kfunc call
+                        Geert
 
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-> 
-> The last patch in the series has fix for arena spinlock selftest
-> failure.
-> 
-> This series is rebased on top of:
-> https://lore.kernel.org/bpf/20250717202935.29018-2-puranjay@kernel.org/
-> 
-> All selftests related to bpf_arena, bpf_arena_atomic(except
-> load_acquire/store_release) enablement are passing:
-> 
-> # ./test_progs -t arena_list
-> #5/1     arena_list/arena_list_1:OK
-> #5/2     arena_list/arena_list_1000:OK
-> #5       arena_list:OK
-> Summary: 1/2 PASSED, 0 SKIPPED, 0 FAILED
-> 
-> # ./test_progs -t arena_htab
-> #4/1     arena_htab/arena_htab_llvm:OK
-> #4/2     arena_htab/arena_htab_asm:OK
-> #4       arena_htab:OK
-> Summary: 1/2 PASSED, 0 SKIPPED, 0 FAILED
-> 
-> # ./test_progs -t verifier_arena
-> #464/1   verifier_arena/basic_alloc1:OK
-> #464/2   verifier_arena/basic_alloc2:OK
-> #464/3   verifier_arena/basic_alloc3:OK
-> #464/4   verifier_arena/iter_maps1:OK
-> #464/5   verifier_arena/iter_maps2:OK
-> #464/6   verifier_arena/iter_maps3:OK
-> #464     verifier_arena:OK
-> #465/1   verifier_arena_large/big_alloc1:OK
-> #465/2   verifier_arena_large/big_alloc2:OK
-> #465     verifier_arena_large:OK
-> Summary: 2/8 PASSED, 0 SKIPPED, 0 FAILED
-> 
-> # ./test_progs -t arena_atomics
-> #3/1     arena_atomics/add:OK
-> #3/2     arena_atomics/sub:OK
-> #3/3     arena_atomics/and:OK
-> #3/4     arena_atomics/or:OK
-> #3/5     arena_atomics/xor:OK
-> #3/6     arena_atomics/cmpxchg:OK
-> #3/7     arena_atomics/xchg:OK
-> #3/8     arena_atomics/uaf:OK
-> #3/9     arena_atomics/load_acquire:SKIP
-> #3/10    arena_atomics/store_release:SKIP
-> #3       arena_atomics:OK (SKIP: 2/10)
-> Summary: 1/8 PASSED, 2 SKIPPED, 0 FAILED
-> 
-> All selftests related to arena_spin_lock are passing:
-> 
-> # ./test_progs -t arena_spin_lock
-> #6/1     arena_spin_lock/arena_spin_lock_1:OK
-> #6/2     arena_spin_lock/arena_spin_lock_1000:OK
-> #6/3     arena_spin_lock/arena_spin_lock_50000:OK
-> #6       arena_spin_lock:OK
-> Summary: 1/3 PASSED, 0 SKIPPED, 0 FAILED
-> 
-> Saket Kumar Bhaskar (6):
->    bpf,powerpc: Introduce bpf_jit_emit_probe_mem_store() to emit store
->      instructions
->    bpf,powerpc: Implement PROBE_MEM32 pseudo instructions
->    bpf,powerpc: Implement bpf_addr_space_cast instruction
->    bpf,powerpc: Introduce bpf_jit_emit_atomic_ops() to emit atomic
->      instructions
->    bpf,powerpc: Implement PROBE_ATOMIC instructions
->    selftests/bpf: Fix arena_spin_lock selftest failure
-> 
->   arch/powerpc/net/bpf_jit.h                    |   6 +-
->   arch/powerpc/net/bpf_jit_comp.c               |  32 +-
->   arch/powerpc/net/bpf_jit_comp32.c             |   2 +-
->   arch/powerpc/net/bpf_jit_comp64.c             | 378 +++++++++++++-----
->   .../bpf/prog_tests/arena_spin_lock.c          |  23 +-
->   .../selftests/bpf/progs/arena_spin_lock.c     |   8 +-
->   .../selftests/bpf/progs/bpf_arena_spin_lock.h |   4 +-
->   7 files changed, 348 insertions(+), 105 deletions(-)
-> 
-> base-commit: ea2aecdf7a954a8c0015e185cc870c4191d1d93f
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
