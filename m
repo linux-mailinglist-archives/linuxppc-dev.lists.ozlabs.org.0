@@ -1,110 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-10645-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10648-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D57BB1B14A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 11:38:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F6FB1B2FC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 14:00:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bx7dr57wRz3069;
-	Tue,  5 Aug 2025 19:38:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bxBnx6gLjz3bkT;
+	Tue,  5 Aug 2025 22:00:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754386704;
-	cv=none; b=W8KPW+0oeoEOEmwfwz/QTTwl2FvD0vspVxtGpcfeUz/8ce7md8eOoyYSnPmwvsVfQznJEUrc0AUDSZUOmFPFKQGvQUfOSnA5rD26BZnRysRGJSdi76YKBu3kHDz9O7JKV1gzYFUqf5VXGiWa4k+7DBgaWyorE3GVclbjkBXwKi+GTxeHAp3ko1on7lYX3NQhSnFlN3Ur6vhNuZctqYx9dMyFyx/UDg5Zn0uVfQ6w+/7GLN0Me2WpPtGuX7ZDQAvARRJHIsUqituMHg6l6Rn+dmJqHDiqglSMEpnBWlSe5BvvUcCFTdU/PrQ9TE8iCgS6QfwRTCKuqO3kyNMJniH/dA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754395237;
+	cv=none; b=aQtvXzGWG/o1qc8+IBXQww4rbbaWTbNH0LsS/iEDS6FiKdvgiVyNEUrCB698GIgf0eFdxA5GCAEkUGqBeRoJ8pvQn4XollB3/EG5EXKUEoTseShbroemLj/5gocPJy3F5ew3HNZYiPwsTHqUIsoafIQimvIG4nUIH6damKEnvp4P4ykHcKLXFb7F6ST3SSPFDiq58p9PWllrBWzHFiSZKgoRVxAmxi3WW4JbH7HPAhwFClgQyKk9xf/hnjhhmtpbsAkU01l0kk2e13/RnzmuB61ExuWOeMuVVviKUTFz1laBIiY1fbdwauOVsrwYswM6OIpefwJhhzv6QFNqozSosQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754386704; c=relaxed/relaxed;
-	bh=qq75wLn4Jr35PxKHT8Ir8YDRfOwxEOJ3fDUl+YJWOlw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q8VabYWR46wcRp2P5FGdwvmjpskmd6L3eCEYxdNm7bJUzPPkl6oyaOL+klm77J7+syxpGmsn+tP7trfV3jddSlwv9UPjihXACgU8EgobSil7wAydS6L+7mUpJ/e7jMGzp65DhEpmcEp4kl4xU9BSZoHC6fhYj2+/JYLFNi5GNMGoLG87lXU9jmmXsESTXmJmJdjGW+1RUKQSXVmCNccKzA2JkRx+B6TTm4WPkRozbSwjFrQiTH/AQMAtL+WJ4++eWibFXF0Xzcr10mwbxCSYhOw0lQ06XK14f4MlJbGBcWBnk21oPvFnQ4rvpYV66sIvSSfKJqTFX6YZLUTShvMklg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WaqdWXeH; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1754395237; c=relaxed/relaxed;
+	bh=gDxUPJqKGqjr8rlHOZKNB+EVcQ3fCKRGkCpMd7qiHs4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N7lwNUIQQcTkWY/LNrwR6nlsC0avOVQDbSQXqnMs995K2rgbgNvxS3JuUzCSdDR3wZxP/VPr5uQb9a1fcgdkDxnwgoMtDyvQkcsIQVb9FBIKo8eA0wR9CERxBgopQBvi2PRwq+hGoLgZ28jei5If+JZkL+v1+mb8dzJbr/Wi7j20hds+ww1T1riTUfDCsYKw0tq6rph4XPivRA2zNuTl540fw3P7DKeX9D/ZJ0nT9pCt8p6i1ABOUS/oL7XajKOEXd3bZSL3zNtN1hzoovMPM6KhvfMICtrUU35HYsn94jz4PfzI6dT4rZc8SDY18JaQpIFSRWBwslAfq3pnAgNYRQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MtdzQSM2; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WaqdWXeH;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MtdzQSM2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bx7dq4s4bz3064
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 19:38:23 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 230995C3FEF;
-	Tue,  5 Aug 2025 09:38:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73A3C4CEF7;
-	Tue,  5 Aug 2025 09:38:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754386699;
-	bh=PtcIziWKmeZojE8NbukEIlxT+NCLvvfcRfGscENjViM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WaqdWXeHFq4oltQn9PTlA505X/oL+/hHqNtgIoY7zKJ2rAIIyFMHaM+0OG/yh2pw4
-	 a4OPg6vNpHqwYzZOYWH9z2eFj0o9qdjphfKwQATxpDET/tUKgH15v5CCmaccGtiziI
-	 K47HqBXpuuIazHWs7f7nOBdJzkPcC6o7Uz2XE0NjVLokbL/vEdh4tvhC3lSlpz6wIJ
-	 cRJvBI/3D77VRI3Nw6Ov+py/jFgFc5Ni8OH6Dnx4eGST8kP5vZjYp9Nb+FQNxwUhWq
-	 2m2r86L7YkwtCZGME114r4pdSCFeteEHhrAOdiqvbKwV054IIClCJwCyv020K+cNSI
-	 X5cmccT7jkP9Q==
-Date: Tue, 5 Aug 2025 12:37:57 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"David S . Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Kees Cook <kees@kernel.org>, Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-sgx@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	nvdimm@lists.linux.dev, linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
- consistently
-Message-ID: <aJHQ9XCLtibFjt93@kernel.org>
-References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
- <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
- <aIgSpAnU8EaIcqd9@hyeyoo>
- <73764aaa-2186-4c8e-8523-55705018d842@lucifer.local>
- <aIkVRTouPqhcxOes@pc636>
- <69860c97-8a76-4ce5-b1d6-9d7c8370d9cd@lucifer.local>
- <aJCRXVP-ZFEPtl1Y@pc636>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxBnw4Jrtz3bkL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 22:00:35 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5757T01F005960;
+	Tue, 5 Aug 2025 11:59:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=gDxUPJ
+	qKGqjr8rlHOZKNB+EVcQ3fCKRGkCpMd7qiHs4=; b=MtdzQSM2trJ7mAFiZz2Gc3
+	OoqUWe1o/kprh3BGhMZ4a43IVzGQEWIOIlSEmA780gfd1YqVQsChmCk2a3LgxxGl
+	a4qtTUfTpwOgb7M1XBui7vxg3xW3UpRnnPfcpudaBxzSDoaosrCcxW8q9Ej8jUrN
+	e31xy6WfPRJmp2oJ+Wj5LAEgtLHf5YBwMPyFkqescKqxEKDX3YRF+95rQDWQ4VJh
+	v9xTaDSH4t3FEnhhynQeM5iX4pDyVDZTZXF41PS02oJvc8/SHZTALCQYVAqAzyIV
+	ZIwGQpY5vOTqKqhpPlwYKCWewBT3gep+ukUQP5DkWQ5n4At0UOgcB5c3+HOpJatA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 489ab3p606-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Aug 2025 11:59:59 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 575BoKXX002111;
+	Tue, 5 Aug 2025 11:59:58 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 489ab3p603-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Aug 2025 11:59:58 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5758uXBw009971;
+	Tue, 5 Aug 2025 11:59:58 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 489x0p27ys-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Aug 2025 11:59:58 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 575Bxu9U12124836
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 Aug 2025 11:59:56 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AF76558061;
+	Tue,  5 Aug 2025 11:59:56 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0274F58057;
+	Tue,  5 Aug 2025 11:59:49 +0000 (GMT)
+Received: from [9.61.255.245] (unknown [9.61.255.245])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 Aug 2025 11:59:48 +0000 (GMT)
+Message-ID: <8cfa1cb2-57bf-4984-a64e-53c82440e87f@linux.ibm.com>
+Date: Tue, 5 Aug 2025 17:29:47 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -118,101 +86,167 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aJCRXVP-ZFEPtl1Y@pc636>
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [bpf-next 1/6] bpf,powerpc: Introduce
+ bpf_jit_emit_probe_mem_store() to emit store instructions
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Saket Kumar Bhaskar <skb99@linux.ibm.com>, bpf@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, andrii@kernel.org,
+        eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        naveen@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        npiggin@gmail.com, memxor@gmail.com, iii@linux.ibm.com,
+        shuah@kernel.org
+References: <20250805062747.3479221-1-skb99@linux.ibm.com>
+ <20250805062747.3479221-2-skb99@linux.ibm.com>
+ <e65548d0-14aa-4b9c-8051-7c91c5dffd1f@csgroup.eu>
+Content-Language: en-GB
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <e65548d0-14aa-4b9c-8051-7c91c5dffd1f@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Z+jsHGRA c=1 sm=1 tr=0 ts=6891f23f cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=Oh2cFVv5AAAA:8
+ a=VnNF1IyMAAAA:8 a=7K6N0i7FaoFpiFnlUvQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=7KeoIwV6GZqOttXkcoxL:22
+X-Proofpoint-ORIG-GUID: ou2P2lE5vzwaHKjkyE6NV709Xb4msYv1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA1MDA4NiBTYWx0ZWRfX1CnmoYQjwmFj
+ zmfX82cU1YVSukbVR2EeOTPfk411IxX96NzsnBsnJG9jUh1nt5uK31dJ4ysc0SKdRhzMO4aunzs
+ KYeFfKTQBa1lWi6BGhx6lQlnlemviSAnz39whxxnzeJ5u+RisNyx3uefUekSalD+DDm5LdVd6Eg
+ t+VCdkNpxbQJ0JyVwtBaxmqS7b3bbelWxJB3noTrTFWU2PzZMFECXiCWUXHosmI8a4q9MgpVGnZ
+ AB/W1u0WfIBV+EpjvKGBLwzZBAZdIEwL6D+bUUtWSeEI2m/Y0bd/JKgAxADq8VvB31couGvWW51
+ hJlQZ9YrlRbT3CMYigc7/vPlcGx/HQxjEIzwj+yBkcPyIl01uFEochApb36mjIgNjfmq1rtV67o
+ O5HzA7oaNxdonnQlfuUbA3oWT+7qhcrkPAdV8y+FgFzh2Kddy4vpNLBw5ileSLqPFlg8jm/X
+X-Proofpoint-GUID: noiSPkXud0KeF4qGBUGl8bOA2EH1cmrK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-05_03,2025-08-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 spamscore=0 malwarescore=0 clxscore=1011 suspectscore=0
+ priorityscore=1501 mlxlogscore=999 adultscore=0 phishscore=0 mlxscore=0
+ bulkscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2508050086
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Aug 04, 2025 at 12:54:21PM +0200, Uladzislau Rezki wrote:
-> Hello, Lorenzo!
-> 
-> > So sorry Ulad, I meant to get back to you on this sooner!
-> > 
-> > On Tue, Jul 29, 2025 at 08:39:01PM +0200, Uladzislau Rezki wrote:
-> > > On Tue, Jul 29, 2025 at 06:25:39AM +0100, Lorenzo Stoakes wrote:
-> > > > Andrew - FYI there's nothing to worry about here, the type remains
-> > > > precisely the same, and I'll send a patch to fix this trivial issue so when
-> > > > later this type changes vmalloc will be uaffected.
-> > > >
-> > > > On Tue, Jul 29, 2025 at 09:15:51AM +0900, Harry Yoo wrote:
-> > > > > [Adding Uladzislau to Cc]
-> > > >
-> > > > Ulad - could we PLEASE get rid of 'vm_flags' in vmalloc? It's the precise
-> > > > same name and (currently) type as vma->vm_flags and is already the source
-> > > > of confusion.
-> > > >
-> > > You mean all "vm_flags" variable names? "vm_struct" has flags as a
-> > > member. So you want:
-> > >
-> > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
-> > > 29:                          pgprot_t pgprot, unsigned long vm_flags)
-> > > 39:             vm_flags |= VM_DEFER_KMEMLEAK;
-> > > 41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
-> > > 45:                              pgprot, vm_flags, NUMA_NO_NODE,
-> > > 51:                                      pgprot, vm_flags, NUMA_NO_NODE,
-> > > 85:                          pgprot_t pgprot, unsigned long vm_flags)
-> > > 259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
-> > > 266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
-> > > 376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
-> > > 385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
-> > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/vmalloc.c
-> > > 3853: * @vm_flags:                additional vm area flags (e.g. %VM_NO_GUARD)
-> > > 3875:                   pgprot_t prot, unsigned long vm_flags, int node,
-> > > 3894:   if (vmap_allow_huge && (vm_flags & VM_ALLOW_HUGE_VMAP)) {
-> > > 3912:                             VM_UNINITIALIZED | vm_flags, start, end, node,
-> > > 3977:   if (!(vm_flags & VM_DEFER_KMEMLEAK))
-> > > 4621:   vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
-> > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
-> > > 29:                          pgprot_t pgprot, unsigned long vm_flags)
-> > > 39:             vm_flags |= VM_DEFER_KMEMLEAK;
-> > > 41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
-> > > 45:                              pgprot, vm_flags, NUMA_NO_NODE,
-> > > 51:                                      pgprot, vm_flags, NUMA_NO_NODE,
-> > > 85:                          pgprot_t pgprot, unsigned long vm_flags)
-> > > 259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
-> > > 266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
-> > > 376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
-> > > 385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
-> > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags ./include/linux/vmalloc.h
-> > > 172:                    pgprot_t prot, unsigned long vm_flags, int node,
-> > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$
-> > >
-> > > to rename all those "vm_flags" to something, for example, like "flags"?
-> > 
-> > Yeah, sorry I know it's a churny pain, but I think it's such a silly source
-> > of confusion _in general_, not only this series where I made a mistake (of
-> > course entirely my fault but certainly more understandable given the
-> > naming), but in the past I've certainly sat there thinking 'hmmm wait' :)
-> > 
-> > Really I think we should rename 'vm_struct' too, but if that causes _too
-> > much_ churn fair enough.
 
-Well, it's not that terrible :)
+On 05/08/25 1:04 pm, Christophe Leroy wrote:
+>
+>
+> Le 05/08/2025 à 08:27, Saket Kumar Bhaskar a écrit :
+>> bpf_jit_emit_probe_mem_store() is introduced to emit instructions for
+>> storing memory values depending on the size (byte, halfword,
+>> word, doubleword).
+>
+> Build break with this patch
+>
+>   CC      arch/powerpc/net/bpf_jit_comp64.o
+> arch/powerpc/net/bpf_jit_comp64.c:395:12: error: 
+> 'bpf_jit_emit_probe_mem_store' defined but not used 
+> [-Werror=unused-function]
+>  static int bpf_jit_emit_probe_mem_store(struct codegen_context *ctx, 
+> u32 src_reg, s16 off,
+>             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> cc1: all warnings being treated as errors
+> make[4]: *** [scripts/Makefile.build:287: 
+> arch/powerpc/net/bpf_jit_comp64.o] Error 1
+>
+I tried this on top of bpf-next, and for me build passed.
 
-~/git/linux$ git grep -w vm_struct | wc -l
-173
+Note: I applied 
+https://lore.kernel.org/bpf/20250717202935.29018-2-puranjay@kernel.org/ 
+before applying current patch.
 
-> > I think even though it's long-winded, 'vmalloc_flags' would be good, both
-> > in fields and local params as it makes things very very clear.
-> > 
-> > Equally 'vm_struct' -> 'vmalloc_struct' would be a good change.
+gcc version 14.2.1 20250110
 
-Do we really need the _struct suffix?
-How about vmalloc_area?
+uname -r: 6.16.0-gf2844c7fdb07
 
-It also seems that struct vmap_area can be made private to mm/.
+bpf-next repo: 
+https://kernel.googlesource.com/pub/scm/linux/kernel/git/bpf/bpf-next
 
-> Uh.. This could be a pain :) I will have a look and see what we can do.
-> 
-> Thanks!
-> 
-> --
-> Uladzislau Rezki
+HEAD:
 
--- 
-Sincerely yours,
-Mike.
+commit f3af62b6cee8af9f07012051874af2d2a451f0e5 (origin/master, origin/HEAD)
+Author: Tao Chen <chen.dylane@linux.dev>
+Date:   Wed Jul 23 22:44:42 2025 +0800
+
+     bpftool: Add bash completion for token argument
+
+
+Build Success logs:
+
+   TEST-OBJ [test_progs-cpuv4] xdp_vlan.test.o
+   TEST-OBJ [test_progs-cpuv4] xdpwall.test.o
+   TEST-OBJ [test_progs-cpuv4] xfrm_info.test.o
+   BINARY   bench
+   BINARY   test_maps
+   BINARY   test_progs
+   BINARY   test_progs-no_alu32
+   BINARY   test_progs-cpuv4
+
+
+Regards,
+
+Venkat.
+
+>
+>>
+>> Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+>> ---
+>>   arch/powerpc/net/bpf_jit_comp64.c | 30 ++++++++++++++++++++++++++++++
+>>   1 file changed, 30 insertions(+)
+>>
+>> diff --git a/arch/powerpc/net/bpf_jit_comp64.c 
+>> b/arch/powerpc/net/bpf_jit_comp64.c
+>> index 025524378443..489de21fe3d6 100644
+>> --- a/arch/powerpc/net/bpf_jit_comp64.c
+>> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+>> @@ -409,6 +409,36 @@ asm (
+>>   "        blr                ;"
+>>   );
+>>   +static int bpf_jit_emit_probe_mem_store(struct codegen_context 
+>> *ctx, u32 src_reg, s16 off,
+>> +                    u32 code, u32 *image)
+>> +{
+>> +    u32 tmp1_reg = bpf_to_ppc(TMP_REG_1);
+>> +    u32 tmp2_reg = bpf_to_ppc(TMP_REG_2);
+>> +
+>> +    switch (BPF_SIZE(code)) {
+>> +    case BPF_B:
+>> +        EMIT(PPC_RAW_STB(src_reg, tmp1_reg, off));
+>> +        break;
+>> +    case BPF_H:
+>> +        EMIT(PPC_RAW_STH(src_reg, tmp1_reg, off));
+>> +        break;
+>> +    case BPF_W:
+>> +        EMIT(PPC_RAW_STW(src_reg, tmp1_reg, off));
+>> +        break;
+>> +    case BPF_DW:
+>> +        if (off % 4) {
+>> +            EMIT(PPC_RAW_LI(tmp2_reg, off));
+>> +            EMIT(PPC_RAW_STDX(src_reg, tmp1_reg, tmp2_reg));
+>> +        } else {
+>> +            EMIT(PPC_RAW_STD(src_reg, tmp1_reg, off));
+>> +        }
+>> +        break;
+>> +    default:
+>> +        return -EINVAL;
+>> +    }
+>> +    return 0;
+>> +}
+>> +
+>>   static int emit_atomic_ld_st(const struct bpf_insn insn, struct 
+>> codegen_context *ctx, u32 *image)
+>>   {
+>>       u32 code = insn.code;
+>
 
