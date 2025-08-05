@@ -1,103 +1,104 @@
-Return-Path: <linuxppc-dev+bounces-10662-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10663-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4FEB1B675
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 16:27:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51AF9B1B722
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 17:07:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bxG2j6Pr6z3bmS;
-	Wed,  6 Aug 2025 00:26:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bxGxB6yMYz3blg;
+	Wed,  6 Aug 2025 01:07:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::129"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754404013;
-	cv=none; b=d8TgrtmoqJT1p08jKjzmY1cwuJGn9XKRsS7tUbU87fp4O/PC7DhyZ9DTOly1E+4DmUSCbxbxmKdwfGjwrVgPzPsQ8/XOzDypYkmLbYK7Rw3QyJvsK4FFC3Lu+YzK9Sg+uSpCYikfaLh+zl/KCCvV/VD8jLyftOup7CFh61ss5aM4DnyqdYgOEpHCudlMhMFHm55jVqNXBzKJhajUfB3xZuJ6S1iE1Nv9AszY4J4e/qYeWKho6RJph9ouTrb3LokN1W31upc6KErtHyKuX+yy2gu80QgtjeIVq9bMpj6HRIWC4BteAkQPiZs6u/PTkzpItKOfk9s+GsWiILrNXYSBvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754404013; c=relaxed/relaxed;
-	bh=axtwyv1QW9Jl3sEVwduJUxW6lENRlEEn6jAlKX1Xswk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BBm7l3X4ojoKMoz8AN1zBLA8OM8Ozw3xF/044H4UWDRIq8/bPYIdipYAv82nMz/GsRSaqqDceVrjSPv+0l5vgX612hjz0xR3UO+qtfCfuPm9iGgrpbNyyDofiFy0/rH4nulqniE8n11a7+vT/C2WV8DXOqD71xDdwcbr/57YW0Db8L5XnPiezXhHTtgEFwC88k27wjrOwEQtLhCSqLoaENpdUs5q43DJzHtgnEfVZFXkzbPTUZH3y9JwctTOJDyzGBu9+eUj5NelVaWPgfTDkx9kiFtoXNOatYQOMqwhUYp1TlOO2WOwmiH2ZkLA+0a0/vQTSIU4vnrItK5z7Pzodg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H44nFR8v; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.80 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754406430;
+	cv=pass; b=JtzkXkmIPFEq4jHbrWHZ7+dn5j9iHU0fON+CXKUCvmwQcxn7xDbFOgMT5sUlBXeYimFygCPj51mK4lvZ8Ka+9WQmKb8NALX/oPK4tA4JiFJDoy/6N2vtF6ZCNuIqj9NFEMhd4NkvPp30BwX2jo7bEvskC8ysN/+lj/Dvt8kZZ1VZ3IZUlaIRcGFhVzXybgauOHTRsfYI0WnQt2DBmzbnAlFFeZRl0LBIxjlf3vJccrokY9EXybIxG6s5EK2bzQul4twU0SXSsgQ2FOjZHh49IicAPDrqHvIl8ag6WjC6bM0ROY4jJKBOdhLVSv+lUa5vbWyUB3EiKBCyBoFmXbV/Xg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754406430; c=relaxed/relaxed;
+	bh=9P3R4bXNvZUH1Y9NZ9ByMStxmHC3/CrOso5VMFYCiWc=;
+	h=Subject:From:To:References:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Aae+5v0GjV57u6rM16xOrD7IvP4RJsSe7TYS9z6vyfBDW2UjPARg5VWZti/sS4XLRLfdublJoraembb2i8x6B1jj/ZRjGz9Yqdb2dLuCxOi6kWSb2DWz0SZ4U0ErNIc+l0tJaGouyBxoZEbcBzDIKcJobVRb2PS5OaTWqTZf8pg/U+5o0kHiQAYA+KF7x1n/UhzffB1jg8JAY3ZcgsoLQHhbheMvCMdbaFBXcx30eH429x5CKz31j8hxyhWy5z4wYCCrqjAneyhKcDsBlvQZGET6nYVZMqgccjH2SU5ElRpRrww+1OyKH8NYT4L6UClqdyI57REezO3dea7/1C/BFA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=UtW3xNul; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=/VuVr0ey; dkim-atps=neutral; spf=pass (client-ip=85.215.255.80; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p02-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H44nFR8v;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=UtW3xNul;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=/VuVr0ey;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=85.215.255.80; helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.80])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxG2h6j7Fz3brv
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 00:26:52 +1000 (AEST)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-55b88369530so6962616e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 07:26:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754404010; x=1755008810; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=axtwyv1QW9Jl3sEVwduJUxW6lENRlEEn6jAlKX1Xswk=;
-        b=H44nFR8vub8nb8UbgKD2EOAOz7xQSPRBx6qzS5YN+K1VGUfFT9E95ZKOHbC1dZfWW1
-         GRS9es/5NGfQcFj9Kn/g+HJP1y5R4WgRwbJCTjowkg/ZnQOnRm0g7olAhF2rGgwa38Bq
-         HGTdSJ5vypC4BiXwOLNpKaN/7dEMm07g1V3qat++d1Br+ezaxiPU+Hv4c5BGw+N42wIt
-         CaDqA424Am1TeexHykXmyUrvuR/w+GzQxshYwUMj7o0Cc6anXxxeb11JL1b3HPUSy/LZ
-         APZ8h8vmbu/Bxioj0ILmPhUro0o8dHvNXoBz2N7bmCSEfr2Vjhigxpm6jMkq3rC4ekqg
-         61tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754404010; x=1755008810;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=axtwyv1QW9Jl3sEVwduJUxW6lENRlEEn6jAlKX1Xswk=;
-        b=WB3qcrIqjiQcg10u1ymwFSwagKfp7oR8C/jyBdqhJUJC2hbofVTGdmTPtenj5jKXch
-         FPJWqxSIH2UQdnLHcG9rz4CrBiYmK8PlQQX8RBmsDcM6XFVYflZRJrRlP6piWxjWEqdK
-         HwxlYWIeY0mbXDaTTycQP8Edlpq24pIvnngSyS4G0OH+fecCUZnAxLrdB2X0L5JsVE4F
-         QCQGaUKNc1iMr2+SeYL7W+1R/uBeL1asxpVuLZsibi2/SOHw996jkJugWAexcMgCyA4Q
-         U0uxfycKXA2s5kc4eZzhVbEp5kygYH19z8zR+RThl7GBW5/mO5JHOkXxaNmDnlxR3Qqh
-         62Mw==
-X-Forwarded-Encrypted: i=1; AJvYcCWIKakl4IP0hBg887Q6MMTOdiKNz1dwFyiXSHwxu/uVKBkUzsGHBnGH0NUCNabG68+i8uh3XNVjxu3TTYc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxFrnlUJYtaO6OKlffygn21n6C9FcC6xkDsSxsjsKGbi/5U9mKE
-	z8KmLEYaIW/cbz150q/19v6mbDaTVeGQ5z9db+dCp1h6R5QQIq3A2w49
-X-Gm-Gg: ASbGnctK/1L1tGVlhKBnzcMCpr07zee/Iqp+nAyQpx0bLgRUXynPA2Znt/20V/VlwJQ
-	Y/cYkdVwmZgnTj1JdJ2f0tx9PtkuOFBeWIq9DQpBrJc8t+IBHcp8UoaazJI590Qb+ncLOajUlSs
-	fE8xUSxlowFNIWrG+AFgIG6UXFQV22PP4O7JMdjphflP5eOOAszCxvudUuYPcCqM4qcfkkNAUcy
-	Y1V5f/MJ8dbnXZLBUNfkefceaM11/tCMaXtNwpn+re3P5ZAwT0aaK751PMKoRCJN8CACrMCo7mn
-	HAulj0td2Vs4zbO+ucyGgFP77a/qESUUg4lEpOuRM/MjYYTHzcnl4C+MkvVppeedN2ihfnrZvKb
-	IewWFzZgdG+6Nach2KTyhi+N648H3IaPlHqzBoraNQ5LEgYg0ofWwjc6ppkOqNL5U+nKCRw==
-X-Google-Smtp-Source: AGHT+IEuo6xaqIABZcTJ/AY4HFbxdZ3CAT0b3T807lmpaRovzDFMVVkpiUz/KiBR8yrsIvUCLLc9/A==
-X-Received: by 2002:a05:6512:3e1d:b0:558:f694:a65e with SMTP id 2adb3069b0e04-55b97b41812mr3194986e87.34.1754404009682;
-        Tue, 05 Aug 2025 07:26:49 -0700 (PDT)
-Received: from localhost.localdomain (178.90.89.143.dynamic.telecom.kz. [178.90.89.143])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b889a290fsm1976379e87.54.2025.08.05.07.26.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Aug 2025 07:26:49 -0700 (PDT)
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-To: ryabinin.a.a@gmail.com,
-	hca@linux.ibm.com,
-	christophe.leroy@csgroup.eu,
-	andreyknvl@gmail.com,
-	agordeev@linux.ibm.com,
-	akpm@linux-foundation.org,
-	zhangqing@loongson.cn,
-	chenhuacai@loongson.cn,
-	trishalfonso@google.com,
-	davidgow@google.com
-Cc: glider@google.com,
-	dvyukov@google.com,
-	kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-mm@kvack.org,
-	snovitoll@gmail.com
-Subject: [PATCH v4 9/9] kasan/riscv: call kasan_init_generic in kasan_init
-Date: Tue,  5 Aug 2025 19:26:22 +0500
-Message-Id: <20250805142622.560992-10-snovitoll@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250805142622.560992-1-snovitoll@gmail.com>
-References: <20250805142622.560992-1-snovitoll@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxGx72bnrz3bkg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 01:07:05 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1754406324; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=fgRbQ5zUhRnflwfCjOlK90oksMsU6ipBwgMm9uc+df/bCRQAzFA3jHYKU88iZRsChR
+    k+qQG/Z1jrdH14Crq7S7I8KUuHTLB5hgbyjMj0HsxzNxDOKsmDRLO05K9vz+jzrboIlF
+    9Nib2tb9TtUAIuMiMc2G1Vk8H1dnacXRw9BmaymPMfOm8FkPOiYnVTQzaYBi2fXPN6Cp
+    2F7XgQZKRyJLmj5dy3henOaVBbdBDNp/QMHsMYR4OK25CGwb2kIWYF5HiTtGn6Wl5uKi
+    Exe0DkP2NSOwKWNp6oHuj/k9doWnuHWZEQEndAobRLwpSjMEX9x1nlm1cDrEcMMHL/w1
+    3IOQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754406324;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:Date:Message-ID:References:To:From:Subject:Cc:Date:From:
+    Subject:Sender;
+    bh=9P3R4bXNvZUH1Y9NZ9ByMStxmHC3/CrOso5VMFYCiWc=;
+    b=a9ytIFBIvvsKbVYFcbXkOEp4ZJf9XPBUJJPKsQih2pS8UX0Faihsz9p3S7dZJ9BA9f
+    KlwyZfU+1qp1o2QGlql4BNDajoWSA06FER/EVrBjWC2w0XKXm21t/BoEFhWLllmdiOhV
+    QdnpbCSNpsIKINFr2sztW3SRrLLHgL/NxXpxvQ0AuSCvgdddaTDpXdp1rfFe2KVuLg9T
+    RAQGuXge1E4knuMSjDN9Li92Z8pJCdjRBGF6rxRKokEPpCr/Ok1TfJpykloWAuXDFQF+
+    c0NMUJ8Pqs/Y3e8Pg9QpWgbrIc5TlcYf9rY0eRggHLStTmarDT4/vgn3QjIxq3JejY1O
+    S3IQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754406324;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:References:To:From:Subject:Cc:Date:From:
+    Subject:Sender;
+    bh=9P3R4bXNvZUH1Y9NZ9ByMStxmHC3/CrOso5VMFYCiWc=;
+    b=UtW3xNul30Fc1nmj7i3hE08b/Ox68PDVHclKRxXZktH2dlmFWr6EoYRNObitBsMFzq
+    IIa6qEOouahJxQLXPPGT+FXAaVeRXa6Jv4jR1R1zw+hGTzqKfST3TAQXg/hSUrPGtV9Q
+    aaQoU7VYlk1F6hHImLzfYhXI7aoV+Akb9Nmwy3MKh66I8Yko4cHlu0xAcIh+LjDnAyvI
+    XaePNBp8nccThtLkkxdC6+WW3uCFNMgtggDw0C+vKsmbsxnSGRim7a32lm9meSXiF87T
+    gKbIBzwkGeEMAhIFh+49V6dwFmzsx65dMCYpVa6B8DCUdZHpumZWmMYFF7Mz5qqTrmH7
+    o9Qw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754406324;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:References:To:From:Subject:Cc:Date:From:
+    Subject:Sender;
+    bh=9P3R4bXNvZUH1Y9NZ9ByMStxmHC3/CrOso5VMFYCiWc=;
+    b=/VuVr0eyHwhEgbbhpMMvFiwAD+nbNPloUcmg16YCvYJ4Kpmn0wL/pI8qChYJpeNqHn
+    fcNpz/Q5gRUWySSXRGCA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6P1rfO5KiO55fErqxu2Eb6sxKV3/YxiaQ02jtbYNVUhhB5DTrFOLgA=="
+Received: from [IPv6:2001:16b8:50f0:3000:cf5c:728c:e924:df58]
+    by smtp.strato.de (RZmta 52.1.2 AUTH)
+    with ESMTPSA id e6066c175F5Mwwo
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Tue, 5 Aug 2025 17:05:22 +0200 (CEST)
+Subject: [Linux PPC] [X1000] [e5500] Kernel 6.17 testing and DRM issue
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: Jamie Krueger <jamie@bitbybitsoftwaregroup.com>,
+ =?UTF-8?Q?G=c3=bcrkan_Sinan?= <sinan.amigaone@gmail.com>,
+ Julian Margetson <runaway@candw.ms>, Darren Stevens
+ <darren@stevens-zone.net>, Steven Jeffery <sajeffer@gmail.com>,
+ Pat Wall <pjwall@mac.com>, Pat Wall <pjwall@me.com>,
+ Lyle Hazelwood <lylehaze@gmail.com>, Steve-David Marguet <steve@esdeem.ch>,
+ George Sokianos <walkero@gmail.com>, TJ Ferreira <macsociety1@gmail.com>,
+ Christian Zigotzky <info@xenosoft.de>, pjs@pjsa.net,
+ Ben Cato Malkenes <ben.cato@gmail.com>, Kenneth Lester <ken@five-star.com>,
+ madskateman@gmail.com, Allan Cairns <acefnq@gmail.com>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Daniel Reimann <halle_saale@arcor.de>,
+ hypexed@yahoo.com.au, Alex Deucher <alexander.deucher@amd.com>,
+ developers DRI <dri-devel@lists.freedesktop.org>,
+ linuxppc-dev@lists.ozlabs.org
+References: <3D84DBE3-1A8B-4BBD-8663-B7B5D1B36B27@xenosoft.de>
+ <29E89652-6101-46CD-850B-846BB4EC59A0@xenosoft.de>
+Organization: A-EON
+Message-ID: <d5225281-5a90-7e3b-840e-bb5c3d7eda7a@xenosoft.de>
+Date: Tue, 5 Aug 2025 17:08:02 +0200
+X-Mailer: BrassMonkey/33.7.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -111,36 +112,45 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <29E89652-6101-46CD-850B-846BB4EC59A0@xenosoft.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Call kasan_init_generic() which handles Generic KASAN initialization
-and prints the banner. Since riscv doesn't select ARCH_DEFER_KASAN,
-kasan_enable() will be a no-op, and kasan_enabled() will return
-IS_ENABLED(CONFIG_KASAN) for optimal compile-time behavior.
+On 05.08.2025 15:12, Christian Zigotzky wrote:
+> Hi All,
+>
+> Here is the alpha5 of kernel 6.17 for X1000 and e5500 machines (X5000/20, X5000/40, Mirari, and QEMU VMs).
+>
+> I created kernels with and without the drm-next-2025-07-30 updates [1] because of the issue with the Radeon graphics framebuffer device #15. [2]
+>
+> Download and further information: https://github.com/chzigotzky/kernels/releases/tag/v6.17.0-alpha5
+>
+> Please test both kernels.
+>
+> Thanks,
+> Christian
+>
+> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=260f6f4fda93c8485c8037865c941b42b9cba5d2
+>
+> [2] https://github.com/chzigotzky/kernels/issues/15
+I tested both kernels on my X1000 today and I can definitely confirm, 
+that the issue is somewhere in the commit drm-next-2025-07-30 updates [1]
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
-Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
----
- arch/riscv/mm/kasan_init.c | 1 +
- 1 file changed, 1 insertion(+)
+The Radeon graphics framebuffer doesn't work with the kernel with the 
+drm-next-2025-07-30 updates [1]. Without these updates, the framebuffer 
+works.
 
-diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
-index 41c635d6aca..ba2709b1eec 100644
---- a/arch/riscv/mm/kasan_init.c
-+++ b/arch/riscv/mm/kasan_init.c
-@@ -530,6 +530,7 @@ void __init kasan_init(void)
- 
- 	memset(kasan_early_shadow_page, KASAN_SHADOW_INIT, PAGE_SIZE);
- 	init_task.kasan_depth = 0;
-+	kasan_init_generic();
- 
- 	csr_write(CSR_SATP, PFN_DOWN(__pa(swapper_pg_dir)) | satp_mode);
- 	local_flush_tlb_all();
+-- Christian
+
+
+[1] 
+https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=260f6f4fda93c8485c8037865c941b42b9cba5d2
+
 -- 
-2.34.1
+Sent with BrassMonkey 33.7.2 (https://github.com/chzigotzky/Web-Browsers-and-Suites-for-Linux-PPC/releases/tag/BrassMonkey_33.7.2)
 
 
