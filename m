@@ -1,67 +1,110 @@
-Return-Path: <linuxppc-dev+bounces-10641-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10645-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ACDAB1B007
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 10:13:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D57BB1B14A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 11:38:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bx5lY2gWHz3bh6;
-	Tue,  5 Aug 2025 18:13:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bx7dr57wRz3069;
+	Tue,  5 Aug 2025 19:38:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.177
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754381593;
-	cv=none; b=BNVjzW4OcI3oQ3Z3WQDchRMdqc/apz/e0QbV5GC8MeROCGDXCwvLGdrUH110OWtjusybIGHdhZORdQ2pVHxzhMHitwS1q0fuWBL6efY6xYJoWcxxuiHQRGC0bPAWZK3zemyymwazV1SmXWk3kgxmJEDflCd5QAz4bKPi0ZdJgXZ9EjRxTibmAgy32K9rNZsTmZpBtFzj4t5PHTYRuhbwdcJJ/LyDqST6LJyFJ+roXXpRCDupTxuikT3lzqejWVA84uo2TrOzcT9si1ZSy/FWkRWRgt7RwTPf1V06VKLbu53oecZugkyprt4wbliVdlm2Gx5ctlhCg16oWaksPaZLDQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754386704;
+	cv=none; b=W8KPW+0oeoEOEmwfwz/QTTwl2FvD0vspVxtGpcfeUz/8ce7md8eOoyYSnPmwvsVfQznJEUrc0AUDSZUOmFPFKQGvQUfOSnA5rD26BZnRysRGJSdi76YKBu3kHDz9O7JKV1gzYFUqf5VXGiWa4k+7DBgaWyorE3GVclbjkBXwKi+GTxeHAp3ko1on7lYX3NQhSnFlN3Ur6vhNuZctqYx9dMyFyx/UDg5Zn0uVfQ6w+/7GLN0Me2WpPtGuX7ZDQAvARRJHIsUqituMHg6l6Rn+dmJqHDiqglSMEpnBWlSe5BvvUcCFTdU/PrQ9TE8iCgS6QfwRTCKuqO3kyNMJniH/dA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754381593; c=relaxed/relaxed;
-	bh=FYbREyEF6GDi+6BqzkUaervyY8mSRtfMj7JERduR6Tc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FGlrFK8IBFE3e3QNBEZZWtn/uZ1Xr/7afTFUmQ3ZwpNaVbYpyqYu+rYLVb/jt//Kev81IwoRjkf91PgJjWnfI/ul3otoiqEbxvyZhdGSUUYXic1NyUK+8HA7RA3mTSoG8i/ao4DD4z++kh2192pR6dVX2HrqpjG6fPvYthIKjyY1V55jlwLyPaC04gbV8cMO/MI3dTN9ORUU2zP67x5orNvzNW2p7o25NHLcSzPlBKo23Re2Th2fD+zOqc3XuGf8WGi+wy5twrdjMORaRI8XSlvb3iP/blhs3o9BRVAJ0Mem1YAKAcK/PutNYwA8vrpsdCG9/Ke6UePDGRSj8VgOUA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.221.177; helo=mail-vk1-f177.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.177; helo=mail-vk1-f177.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
+	t=1754386704; c=relaxed/relaxed;
+	bh=qq75wLn4Jr35PxKHT8Ir8YDRfOwxEOJ3fDUl+YJWOlw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q8VabYWR46wcRp2P5FGdwvmjpskmd6L3eCEYxdNm7bJUzPPkl6oyaOL+klm77J7+syxpGmsn+tP7trfV3jddSlwv9UPjihXACgU8EgobSil7wAydS6L+7mUpJ/e7jMGzp65DhEpmcEp4kl4xU9BSZoHC6fhYj2+/JYLFNi5GNMGoLG87lXU9jmmXsESTXmJmJdjGW+1RUKQSXVmCNccKzA2JkRx+B6TTm4WPkRozbSwjFrQiTH/AQMAtL+WJ4++eWibFXF0Xzcr10mwbxCSYhOw0lQ06XK14f4MlJbGBcWBnk21oPvFnQ4rvpYV66sIvSSfKJqTFX6YZLUTShvMklg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WaqdWXeH; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WaqdWXeH;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bx5lW4PP3z2xnM
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 18:13:10 +1000 (AEST)
-Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-5397c00ad9eso538216e0c.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 01:13:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754381588; x=1754986388;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FYbREyEF6GDi+6BqzkUaervyY8mSRtfMj7JERduR6Tc=;
-        b=QzyfwVE6o48Xc6usgfgUByO29Ep9n7+eDzlVSXBWl2Tx3ah1OqCGIb3/+KYLXTg/n7
-         T0pWvKyp43ZOIYqRv7R/UA1j2Y6YOe3xivAL1dh/7X47FfNGYSz3Dx6+Esn9/W9lPJXt
-         GKZAuJKHtjo591y/ZgnznAQrklDwFUJRMEi5UuybNY0jDq1SazoMywgGtlMLRITFTpyY
-         S1j5prSrJvbqNfBQgb0q+GrhSgO1Sj/PDQq9f/KvqXuYoWElC490giafT8cYlKw9yMtJ
-         7eCk79WnVCh3w4lRxyRxfOlWdnxS2LKy6I/wpslfP31+KUTuYBO8g1LP530AdHd3kt2G
-         AMrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV52au0JXRYY8vhtfeHrRsOHljIgSoD1B55Q2ir1/UyqrOnuJyKEF8LH1Latlwik4MkTiU44ynBcwKE6rk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy89HwordcZJTY3pX6GZLRHob4IXvVgQMZxkcUXy0x8cr04tzFA
-	/abiFd5sVzf564CzPFglyk+SgdqELvOH3nh3UUILim29eL5n7Hu3+zNWay5ILcQs
-X-Gm-Gg: ASbGncu121v0wT728VAq1GifZlIB1DMMshrR+fV0AiPJmQD7vQH55YbVuNobFCBMP9g
-	yqDqBctpqpKG5mdYFH2zyIKg+3T8paBQ7nlV9Jo+P9UjC3m+OSAjv4NQq6khip341Y9EufDzk49
-	85feN9ch4Ek93PA0lSGdr/s+3UwcQcXcoVduxzQOTK8nL3OSVWNp3Kti53fF3kVkPpEDK8W2OM+
-	Gu6qpP6heROK3tCv+voSwbTT35tWA7lsXBjl3sXnIF8C3wbreYbRONnROg8W80sbp4dQRaHzFo7
-	0gxs7oXu1ei3sB4CexbQ2h3hSZzml+fTgcvaRHqK0zAwFQK0y354ojuQ34M9Vunw2UtqhTSro5m
-	xbWjI0k1Ixg19VzG7ws1AkNKqUFGzH1wlc/iu/A6CeZt3xUEhD15yuOS2E4cC
-X-Google-Smtp-Source: AGHT+IEi8+OQRgR/a5RZQE6QdqpYNge2H/5zOdKixm/XkanD0mH59MnzRbhtjbhTYQx79im2xBNdHg==
-X-Received: by 2002:a05:6122:30ac:b0:531:45f1:604d with SMTP id 71dfb90a1353d-5395f2ae17amr5140910e0c.6.1754381587987;
-        Tue, 05 Aug 2025 01:13:07 -0700 (PDT)
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-53936cb4c27sm3315443e0c.21.2025.08.05.01.13.07
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 01:13:07 -0700 (PDT)
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-88bbfe763ecso1192578241.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 01:13:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVshLnX1STOpvzY4odP1jXdjNzHw12o2KSCFTLD9uBd6gpC73qcuVzemSQY93eBOthc2LJMAa2Gig90BO0=@lists.ozlabs.org
-X-Received: by 2002:a05:6102:3a0b:b0:4d7:11d1:c24e with SMTP id
- ada2fe7eead31-4fdc480dc77mr4806207137.21.1754381587163; Tue, 05 Aug 2025
- 01:13:07 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bx7dq4s4bz3064
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 19:38:23 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 230995C3FEF;
+	Tue,  5 Aug 2025 09:38:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73A3C4CEF7;
+	Tue,  5 Aug 2025 09:38:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754386699;
+	bh=PtcIziWKmeZojE8NbukEIlxT+NCLvvfcRfGscENjViM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WaqdWXeHFq4oltQn9PTlA505X/oL+/hHqNtgIoY7zKJ2rAIIyFMHaM+0OG/yh2pw4
+	 a4OPg6vNpHqwYzZOYWH9z2eFj0o9qdjphfKwQATxpDET/tUKgH15v5CCmaccGtiziI
+	 K47HqBXpuuIazHWs7f7nOBdJzkPcC6o7Uz2XE0NjVLokbL/vEdh4tvhC3lSlpz6wIJ
+	 cRJvBI/3D77VRI3Nw6Ov+py/jFgFc5Ni8OH6Dnx4eGST8kP5vZjYp9Nb+FQNxwUhWq
+	 2m2r86L7YkwtCZGME114r4pdSCFeteEHhrAOdiqvbKwV054IIClCJwCyv020K+cNSI
+	 X5cmccT7jkP9Q==
+Date: Tue, 5 Aug 2025 12:37:57 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"David S . Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Kees Cook <kees@kernel.org>, Peter Xu <peterx@redhat.com>,
+	David Hildenbrand <david@redhat.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Hugh Dickins <hughd@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-sgx@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	nvdimm@lists.linux.dev, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] mm: update core kernel code to use vm_flags_t
+ consistently
+Message-ID: <aJHQ9XCLtibFjt93@kernel.org>
+References: <cover.1750274467.git.lorenzo.stoakes@oracle.com>
+ <d1588e7bb96d1ea3fe7b9df2c699d5b4592d901d.1750274467.git.lorenzo.stoakes@oracle.com>
+ <aIgSpAnU8EaIcqd9@hyeyoo>
+ <73764aaa-2186-4c8e-8523-55705018d842@lucifer.local>
+ <aIkVRTouPqhcxOes@pc636>
+ <69860c97-8a76-4ce5-b1d6-9d7c8370d9cd@lucifer.local>
+ <aJCRXVP-ZFEPtl1Y@pc636>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,64 +118,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250804163910.work.929-kees@kernel.org> <20250804164417.1612371-11-kees@kernel.org>
-In-Reply-To: <20250804164417.1612371-11-kees@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 5 Aug 2025 10:12:55 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWRAxGqLxPY0eZkrg4zMr4qY5KUcTqPjNXEKOTeNYGc8A@mail.gmail.com>
-X-Gm-Features: Ac12FXxoASDmKZziFEtov1BZOWBk9xds-hH6z1CBqhINtQO4YVRNUk0c1YQzJUM
-Message-ID: <CAMuHMdWRAxGqLxPY0eZkrg4zMr4qY5KUcTqPjNXEKOTeNYGc8A@mail.gmail.com>
-Subject: Re: [PATCH 11/17] m68k: Add __attribute_const__ to ffs()-family implementations
-To: Kees Cook <kees@kernel.org>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	linux-alpha@vger.kernel.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aJCRXVP-ZFEPtl1Y@pc636>
+X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 4 Aug 2025 at 18:44, Kees Cook <kees@kernel.org> wrote:
-> While tracking down a problem where constant expressions used by
-> BUILD_BUG_ON() suddenly stopped working[1], we found that an added static
-> initializer was convincing the compiler that it couldn't track the state
-> of the prior statically initialized value. Tracing this down found that
-> ffs() was used in the initializer macro, but since it wasn't marked with
-> __attribute__const__, the compiler had to assume the function might
-> change variable states as a side-effect (which is not true for ffs(),
-> which provides deterministic math results).
->
-> Add missing __attribute_const__ annotations to M68K's implementations
-> of ffs(), __ffs(), fls(), __fls(), and ffz() functions. These are
-> pure mathematical functions that always return the same result for
-> the same input with no side effects, making them eligible for compiler
-> optimization.
->
-> Build tested ARCH=m68k defconfig with GCC m68k-linux-gnu 14.2.0.
->
-> Link: https://github.com/KSPP/linux/issues/364 [1]
-> Signed-off-by: Kees Cook <kees@kernel.org>
+On Mon, Aug 04, 2025 at 12:54:21PM +0200, Uladzislau Rezki wrote:
+> Hello, Lorenzo!
+> 
+> > So sorry Ulad, I meant to get back to you on this sooner!
+> > 
+> > On Tue, Jul 29, 2025 at 08:39:01PM +0200, Uladzislau Rezki wrote:
+> > > On Tue, Jul 29, 2025 at 06:25:39AM +0100, Lorenzo Stoakes wrote:
+> > > > Andrew - FYI there's nothing to worry about here, the type remains
+> > > > precisely the same, and I'll send a patch to fix this trivial issue so when
+> > > > later this type changes vmalloc will be uaffected.
+> > > >
+> > > > On Tue, Jul 29, 2025 at 09:15:51AM +0900, Harry Yoo wrote:
+> > > > > [Adding Uladzislau to Cc]
+> > > >
+> > > > Ulad - could we PLEASE get rid of 'vm_flags' in vmalloc? It's the precise
+> > > > same name and (currently) type as vma->vm_flags and is already the source
+> > > > of confusion.
+> > > >
+> > > You mean all "vm_flags" variable names? "vm_struct" has flags as a
+> > > member. So you want:
+> > >
+> > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
+> > > 29:                          pgprot_t pgprot, unsigned long vm_flags)
+> > > 39:             vm_flags |= VM_DEFER_KMEMLEAK;
+> > > 41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
+> > > 45:                              pgprot, vm_flags, NUMA_NO_NODE,
+> > > 51:                                      pgprot, vm_flags, NUMA_NO_NODE,
+> > > 85:                          pgprot_t pgprot, unsigned long vm_flags)
+> > > 259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+> > > 266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+> > > 376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
+> > > 385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
+> > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/vmalloc.c
+> > > 3853: * @vm_flags:                additional vm area flags (e.g. %VM_NO_GUARD)
+> > > 3875:                   pgprot_t prot, unsigned long vm_flags, int node,
+> > > 3894:   if (vmap_allow_huge && (vm_flags & VM_ALLOW_HUGE_VMAP)) {
+> > > 3912:                             VM_UNINITIALIZED | vm_flags, start, end, node,
+> > > 3977:   if (!(vm_flags & VM_DEFER_KMEMLEAK))
+> > > 4621:   vm_flags_set(vma, VM_DONTEXPAND | VM_DONTDUMP);
+> > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags mm/execmem.c
+> > > 29:                          pgprot_t pgprot, unsigned long vm_flags)
+> > > 39:             vm_flags |= VM_DEFER_KMEMLEAK;
+> > > 41:     if (vm_flags & VM_ALLOW_HUGE_VMAP)
+> > > 45:                              pgprot, vm_flags, NUMA_NO_NODE,
+> > > 51:                                      pgprot, vm_flags, NUMA_NO_NODE,
+> > > 85:                          pgprot_t pgprot, unsigned long vm_flags)
+> > > 259:    unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+> > > 266:    p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+> > > 376:    unsigned long vm_flags = VM_FLUSH_RESET_PERMS;
+> > > 385:            p = execmem_vmalloc(range, size, pgprot, vm_flags);
+> > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$ grep -rn vm_flags ./include/linux/vmalloc.h
+> > > 172:                    pgprot_t prot, unsigned long vm_flags, int node,
+> > > urezki@pc638:~/data/backup/coding/linux-not-broken.git$
+> > >
+> > > to rename all those "vm_flags" to something, for example, like "flags"?
+> > 
+> > Yeah, sorry I know it's a churny pain, but I think it's such a silly source
+> > of confusion _in general_, not only this series where I made a mistake (of
+> > course entirely my fault but certainly more understandable given the
+> > naming), but in the past I've certainly sat there thinking 'hmmm wait' :)
+> > 
+> > Really I think we should rename 'vm_struct' too, but if that causes _too
+> > much_ churn fair enough.
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Well, it's not that terrible :)
 
-# ffs: pass:9 fail:0 skip:0 total:9
+~/git/linux$ git grep -w vm_struct | wc -l
+173
 
-Gr{oetje,eeting}s,
+> > I think even though it's long-winded, 'vmalloc_flags' would be good, both
+> > in fields and local params as it makes things very very clear.
+> > 
+> > Equally 'vm_struct' -> 'vmalloc_struct' would be a good change.
 
-                        Geert
+Do we really need the _struct suffix?
+How about vmalloc_area?
+
+It also seems that struct vmap_area can be made private to mm/.
+
+> Uh.. This could be a pain :) I will have a look and see what we can do.
+> 
+> Thanks!
+> 
+> --
+> Uladzislau Rezki
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Sincerely yours,
+Mike.
 
