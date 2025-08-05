@@ -1,39 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-10640-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10647-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B21B1AF44
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 09:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C729B1B2C9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 13:50:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bx4Ws0Ynwz3bh6;
-	Tue,  5 Aug 2025 17:18:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bxBZP5MdNz3069;
+	Tue,  5 Aug 2025 21:50:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.187.169.70
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754378281;
-	cv=none; b=ThLYWgsgB9OgRk10SKVA47aMvyTLjvHidsPLq5Yox+gJoo8ckilSQHdJgXK3wjG+LVhQPT/33zRs9OTI0LtgSEuwAIdFn9RHWkIGRjBX9cclzeELOsonEfdgoMsqQwXEdiHeSgebUjCISVXUYMLJAUxa8joxpMdmKTjfw12hy0LqEnkoic3i/wm08vp8R/QRu26t36PY3g2q2MVuwB2Lsr/q1LVijzoucqwQtV3aH+KwZQYbnRZiNmmHoK0cOZxwjpQ56qZXAKl/4QOY7hqwdI7X8/Zmz72eXXZwj4bisTB/8du7+I0MJLI8rL42/KPZieWrpRaZaK9cPiS2RdP0Hg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754394637;
+	cv=none; b=ArGpz9NuKNKeRVgu4dJYCHs4u6f2IJuQ8ge6TpF9BqaGzJnnSctQrM7Ii05gte0xu/svV7onBRkmmAp7+1AtNVvDgoOFjX/AFO7r+zPeXNiZkoVhzmiI8ioQUr+6y0nVASGLXOsYt2MWk2sFvZHKtwlaFFf//Py+v6uMUDEITnkY4VlYVMrEwC1NG+/E36nyyXaZ0TdNBzTbFh8IM/fQsQhpOj+pdoo7+MxanbMcGZoqoV7cxBTQw5ed1Exhk5A4dWJbIpnjE+Hw11bJ13U01SqIe2OFiDKBlUOqW/w6+s5xJQS1BUnpnW+MsErbIWkbXayx6Xwymck4jgeDNjBR0Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754378281; c=relaxed/relaxed;
-	bh=QQl+hB7Csyy6I7YCKs0ymgsTb9OeTENPHuER3l/L980=;
+	t=1754394637; c=relaxed/relaxed;
+	bh=0XegkD5Rd5Nq6xn48Zh63K19hcHMe+xuFfJJ0ywcfIk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XdzQh19U4VGN84Zqh2f0GnYxZzbCYde/c+6KQ1StrMws4xVW42x8P2Cep9ZZ3yTCRBN9TpuEXCkVdpiEjjrnynQh7cDkT+Grpi8U6/6nye5wsskvpPCGe9DfcyHtmARpJOsNbZqc5sV/EaRyb2mz7//qRO0KwThhSy8tPb7SzNOCdp/nRJqGzgXsznOBP08PKhoxcIMsfbTuunua84EfIfLxg9UhaMJuj6BDHgTcCHduB5wpSiZX8hPohBQPUeYFuqTOKML+7oL/XlYd5h4195VPnKpvfZe9qd4evcBJx/u4hyH9ULf7vjwVijRP3YAs/2fpNqzzYiq2yiqp+b+sYw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=hogyros.de; spf=pass (client-ip=185.187.169.70; helo=psionic.psi5.com; envelope-from=simon.richter@hogyros.de; receiver=lists.ozlabs.org) smtp.mailfrom=hogyros.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=hogyros.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=hogyros.de (client-ip=185.187.169.70; helo=psionic.psi5.com; envelope-from=simon.richter@hogyros.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 95606 seconds by postgrey-1.37 at boromir; Tue, 05 Aug 2025 17:17:59 AEST
-Received: from psionic.psi5.com (psionic.psi5.com [185.187.169.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bx4Wq55fQz3064
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 17:17:58 +1000 (AEST)
-Received: from [IPV6:2400:2410:b120:f200:a1f3:73da:3a04:160d] (unknown [IPv6:2400:2410:b120:f200:a1f3:73da:3a04:160d])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by psionic.psi5.com (Postfix) with ESMTPSA id AE0C53F1DF;
-	Tue,  5 Aug 2025 09:17:52 +0200 (CEST)
-Message-ID: <854efc41-c40f-46c9-b8ae-84bda9d17faa@hogyros.de>
-Date: Tue, 5 Aug 2025 16:17:49 +0900
+	 In-Reply-To:Content-Type; b=cWdvJafPnj9OQJ1nFqb0aQyV19aBndOC9jwtF4zxOaa4m9lVvWMVXvMHU/JnA+KiovKB70o7msioJ3uGRn6eP6pvdMvA+fdvbxqeoX+fHmizSamWI0HIlpmnQun89/1LKGNAd0eLAMicYffk5mlmygqP7SpSliaJihGT95vi5MnV4vp/BNxVNo/nqPnMHhD2g4Z43ig/jzJtY44DDS5QfnN7bfco3K4KUtfjzCQby0LDxHilQP751xpPlngXtlzKcGrrsQxIt6YU5MGoi0rkM9wYWDz7xc6ael7/pHc3gDk80LZSp6kVIccDqOaOXufU2fp4cK/JWq5BPF3tuvtkbA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bxBZN6cPWz3064
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 Aug 2025 21:50:36 +1000 (AEST)
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4bx4mh5xdKz9snj;
+	Tue,  5 Aug 2025 09:29:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 223RPuL6PMvc; Tue,  5 Aug 2025 09:29:08 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4bx4mh57Wpz9slR;
+	Tue,  5 Aug 2025 09:29:08 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A64AA8B765;
+	Tue,  5 Aug 2025 09:29:08 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 9rErELeUWBy6; Tue,  5 Aug 2025 09:29:08 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6A2B08B763;
+	Tue,  5 Aug 2025 09:29:07 +0200 (CEST)
+Message-ID: <bc6ef2d1-da06-4b29-a0ec-67549074bc0b@csgroup.eu>
+Date: Tue, 5 Aug 2025 09:29:07 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -48,74 +58,110 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Crypto use cases
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
- linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
- Ard Biesheuvel <ardb@kernel.org>, "Jason A . Donenfeld" <Jason@zx2c4.com>,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org
-References: <20250803204433.75703-1-ebiggers@kernel.org>
- <20250803204433.75703-4-ebiggers@kernel.org>
- <593b6997-9da4-439c-ba82-84e8bb2ed980@csgroup.eu>
- <20250804180923.GA54248@google.com>
- <187412bd-3ae0-4fe8-b526-f96af6bea6dc@csgroup.eu>
- <20250804225901.GC54248@google.com>
- <913e23f9-d039-4de1-a0d3-d1067dcda8ac@hogyros.de>
- <20250805045846.GA10695@sol>
-Content-Language: en-US
-From: Simon Richter <Simon.Richter@hogyros.de>
-In-Reply-To: <20250805045846.GA10695@sol>
+Subject: Re: [bpf-next 3/6] bpf,powerpc: Implement bpf_addr_space_cast
+ instruction
+To: Saket Kumar Bhaskar <skb99@linux.ibm.com>, bpf@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
+ andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+ daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+ sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, naveen@kernel.org,
+ maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ memxor@gmail.com, iii@linux.ibm.com, shuah@kernel.org
+References: <20250805062747.3479221-1-skb99@linux.ibm.com>
+ <20250805062747.3479221-4-skb99@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250805062747.3479221-4-skb99@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
 
-On 8/5/25 13:58, Eric Biggers wrote:
 
-> What does this have to do with this thread, which is about the PowerPC
-> optimized MD5 code?
+Le 05/08/2025 à 08:27, Saket Kumar Bhaskar a écrit :
+> LLVM generates bpf_addr_space_cast instruction while translating
+> pointers between native (zero) address space and
+> __attribute__((address_space(N))). The addr_space=0 is reserved as
+> bpf_arena address space.
+> 
+> rY = addr_space_cast(rX, 0, 1) is processed by the verifier and
+> converted to normal 32-bit move: wX = wY.
+> 
+> rY = addr_space_cast(rX, 1, 0) : used to convert a bpf arena pointer to
+> a pointer in the userspace vma. This has to be converted by the JIT.
+> 
+> Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+> ---
+>   arch/powerpc/net/bpf_jit.h        |  1 +
+>   arch/powerpc/net/bpf_jit_comp.c   |  6 ++++++
+>   arch/powerpc/net/bpf_jit_comp64.c | 11 +++++++++++
+>   3 files changed, 18 insertions(+)
+> 
+> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+> index 2d095a873305..748e30e8b5b4 100644
+> --- a/arch/powerpc/net/bpf_jit.h
+> +++ b/arch/powerpc/net/bpf_jit.h
+> @@ -165,6 +165,7 @@ struct codegen_context {
+>   	unsigned int exentry_idx;
+>   	unsigned int alt_exit_addr;
+>   	u64 arena_vm_start;
+> +	u64 user_vm_start;
+>   };
+>   
+>   #define bpf_to_ppc(r)	(ctx->b2p[r])
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index 35bfdf4d8785..2b3f90930c27 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -205,6 +205,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+>   	/* Make sure that the stack is quadword aligned. */
+>   	cgctx.stack_size = round_up(fp->aux->stack_depth, 16);
+>   	cgctx.arena_vm_start = bpf_arena_get_kern_vm_start(fp->aux->arena);
+> +	cgctx.user_vm_start = bpf_arena_get_user_vm_start(fp->aux->arena);
+>   
+>   	/* Scouting faux-generate pass 0 */
+>   	if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
+> @@ -441,6 +442,11 @@ bool bpf_jit_supports_kfunc_call(void)
+>   	return true;
+>   }
+>   
+> +bool bpf_jit_supports_arena(void)
+> +{
+> +	return IS_ENABLED(CONFIG_PPC64);
+> +}
+> +
+>   bool bpf_jit_supports_far_kfunc_call(void)
+>   {
+>   	return IS_ENABLED(CONFIG_PPC64);
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 16e62766c757..d4fe4dacf2d6 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -812,6 +812,17 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>   		 */
+>   		case BPF_ALU | BPF_MOV | BPF_X: /* (u32) dst = src */
+>   		case BPF_ALU64 | BPF_MOV | BPF_X: /* dst = src */
+> +
+> +			if (insn_is_cast_user(&insn[i])) {
+> +				EMIT(PPC_RAW_RLDICL(tmp1_reg, src_reg, 0, 32));
 
-Hence the new subject. It is still related to removal of code, but asks 
-about the bigger picture.
+Define and use PPC_RAW_RLDICL_DOT to avoid the CMPDI below.
 
-The code removal changes you've been pushing lately absolutely make 
-sense in the context of "the crypto subsystem is for internal use by the 
-kernel, and all known users will only ever submit small work items."
+> +				PPC_LI64(dst_reg, (ctx->user_vm_start & 0xffffffff00000000UL));
+> +				EMIT(PPC_RAW_CMPDI(tmp1_reg, 0));
+> +				PPC_BCC_SHORT(COND_EQ, (ctx->idx + 2) * 4);
+> +				EMIT(PPC_RAW_OR(tmp1_reg, dst_reg, tmp1_reg));
+> +				EMIT(PPC_RAW_MR(dst_reg, tmp1_reg));
+> +				break;
+> +			}
+> +
+>   			if (imm == 1) {
+>   				/* special mov32 for zext */
+>   				EMIT(PPC_RAW_RLWINM(dst_reg, dst_reg, 0, 0, 31));
 
-However, there is also the userspace API, and hardware accelerators also 
-register with the crypto subsystem, so it is *also* the way for 
-userspace to use specialized hardware.
-
-If these are separate, then it makes sense to acknowledge that the 
-kernel will never use asynchronous transforms for anything, simplify the 
-internal API, and move all the hardware support to a separate registry 
-that is for userspace applications only.
-
-However if we don't want separate registries, then it makes no sense for 
-the kernel to set policy for userspace here; it should offer all the 
-alternatives. The kernel can, and should, define policy for itself, and 
-I wholeheartedly agree that offloading small requests does not make 
-sense, unless we're on battery power.
-
-I'm also not convinced that fscrypt cannot ever learn to submit a single 
-large request or a large batch of small requests if it is asked to 
-decrypt a large file, so in my opinion the common registry makes more sense.
-
-Making sure that hardware support actually works and is tested is the 
-responsibility of the driver and port maintainers. We understand that 
-subsystem maintainers do not have all the hardware available, but the 
-same goes for all the other subsystems -- the DRM maintainers routinely 
-merge drivers for hardware they do not own, because the changes come 
-from people who *do* own the hardware, and have tested the changes.
-
-The latter is a project management issue, mostly: if there is a lack of 
-working relationships with driver and port maintainers, then that needs 
-to be fixed, not assumed to be an unchangeable part of the environment 
-that technical decisions are made in.
-
-    Simon
 
