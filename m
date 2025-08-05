@@ -1,59 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-10673-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10674-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B12BB1BAC6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 21:14:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCBBB1BC86
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Aug 2025 00:30:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bxNQw3hLCz3blg;
-	Wed,  6 Aug 2025 05:14:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bxSmL2hwXz2xck;
+	Wed,  6 Aug 2025 08:30:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754421288;
-	cv=none; b=oZsDBkUUCsUGLBBpymjAtfqEBFUtMKVEMU+4IZNN8neSzqUSH9A7ZZNVXIdyBwh8OIkL3PMRtqWEOvB/4SIK6bPfkUh+1/Taf4G8atoR1AGK9Kgh6mSBr7hmhd4f+OSM2vckIyQiN86qji7VagRF8PPVGrMvjIytsVfz9IRnwIzwmrbYLwgdDcAnmOFlIcqLt0p8cnedaUfeR2cBCdxEvKSs/trkPkcH+w+JlOWrLI19COqOPH3JecBidZWG0JTNanRYouMCTKr9MWvGfaIhyTakziyuL6uul7L/w5H7UhtzPQQGmZsfsmWu8gdDH+SnkNm8Ou+suFcbbjyfPwV3vQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754433010;
+	cv=none; b=lRbom1EN75EMGzfRmU2QJHRz/bQ0jUPX75YBSH577/fjKnxj2t/fe3ayA1EL7CCoN8NOIzZcVjA+2hF+bmjxa5u6RsW5Qg6xkjUWx8CjfXu7RoY9WYmPyKevZI/DvQUfiWI3Rn3UW+lf3XcgerCrqm1IMueX8LyeghfGas5fN7EWflgOCzNolWqUvkRl81U7HX9VULgdea4Q9Q00E9bl8DPBqbFBS2n0GSNpB4QWt/GRGbOQH5IgPPeuQfYwbYRyzEGRD/yvX8btfEUJ8bAJ7XR53rSW9IgNFzYvNGiF/Q8cGkwAqtg91QuQOHEA+aTpQgCP8FJ4TRwf91Ru8vwfiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754421288; c=relaxed/relaxed;
-	bh=E04hp16oCzu7VbNG7XYvIT9if+uPmtLmVgKY4onVOjQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dvIDr6i/UY8l4AIAf3bHYXEkR91MM72no4cNGedaIMrRbNPXCqsycY7KH87gIwdPqkebSqYPd2Sp7tBsgtQCyEOmt6vYU0uE0ghRxj0m7Lw2WdGwGeGFHGHAVraXWgMIS6VofntMRDWExEB4JSpiYLPVUgG7s8BYeLE6N9Oei9+0NEQvDWhG8Xa4aL568Rn36E8VcumIx5Nr+cIaMQCAlo43lMCcFXbRlFSQDhmgFXE3lK2UuLVg556t20aOKdxFQLH86BFgCaamyh7iEGU3B1FhUhJYkqwaLWGSVfyMHGK5oe1IIiAPjrUhy5FTzUX2XifSKkWKsvoVYG33cy2dPg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G3dPcJal; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1754433010; c=relaxed/relaxed;
+	bh=R0HKXZbhk+4h3gUwmA1OE+TXHM+1bwdStufOcAInYxU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JDdAykhxuqVCqhiOBe8t8eVQiL+MrLRDFW5dVpqRjEzdea5LJVEO6jhSRQI9L8ATgaxo6tLh5sFsBnPnhVdjjUyWgLj5DX1VFGuVK3+/X3rYggtTxXfY7PAmoxhl2QX15PT59alKgm8w9FvkhdGq4Pk16fM2pwEjLvbPH6ZjaSM6HibVwKkaK/o5XOU1mZ1GuWaMJ53fjEf2kcbDB40EGio5m7wbX3dUp1HTWQFsbnDkkm0n9e+z2Mw8ihhC61Xrx1fue+S8KyoF5jqKTpJz/EMD4GXRI4fDzc/VDZ65Vc3IPlk7EWaN92jYeu1Sp6Gl1YdaeMh9MivcYkj4YssR2Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uI+dm8Jr; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=G3dPcJal;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uI+dm8Jr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxNQt4DN3z3bkg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 05:14:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxSmK2jlNz2xRs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 08:30:09 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id E89B35C66FF;
-	Tue,  5 Aug 2025 19:14:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756CCC4CEF0;
-	Tue,  5 Aug 2025 19:14:41 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E5ED9601D1;
+	Tue,  5 Aug 2025 22:30:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E859BC4CEF0;
+	Tue,  5 Aug 2025 22:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754421283;
-	bh=AEMRptBFjWgx5a1Ym2+nos+6PWqs3+LMFSgUwIQVLIE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G3dPcJalG17ku7oEIWTs5Ls+56/huVhNo7/lzR90I0htrrz3cEHs7K3JuTfISRBle
-	 va/0F1/10adpotN5Uc/5tAHF1l7hZ80hMaHe5FJjE83hAH8iOw77tUU6BVmBMjIfeu
-	 qpobc6zP75QG8ccIFWUaKTd+EVQBlBnDhbz6kzWcTnCqQs/RE22Wxf33cicK5O6b3c
-	 3L4U+DNMkCEFq1GsHbV1Zt5ZogZvNmedvWY0Z9RoygIID374LQ6zG7o0q2JBhTSZAA
-	 gZ3veMfODYsLMsmrGsWQJIvc81oegoOaXf21Bi+OaHgGEXEkYHRSBUN5xI7j50jt1g
-	 4L9q5OIRtiLZw==
-Date: Tue, 5 Aug 2025 20:14:36 +0100
-From: Simon Horman <horms@kernel.org>
-To: Mingming Cao <mmc@linux.ibm.com>
-Cc: netdev@vger.kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
-	ricklind@linux.ibm.com, kuba@kernel.org, edumazet@google.com,
-	pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com, mpe@ellerman.id.au
-Subject: Re: [PATCH v3 net-next] ibmvnic: Increase max subcrq indirect
- entries with fallback
-Message-ID: <20250805191436.GY8494@horms.kernel.org>
-References: <20250804231704.12309-1-mmc@linux.ibm.com>
+	s=k20201202; t=1754433006;
+	bh=7ylTPhqKIZKqcaCZzAUkFz0JFvQR09C/unf3SduQA68=;
+	h=From:To:Cc:Subject:Date:From;
+	b=uI+dm8JrGYlbEptuLosbA376eEtZB3eyNYrv7b5JBvFPQSxCZXVXb+gHdeAkVZAes
+	 C7h6VOmn3DI/jO1iy81zLEC64c4bGfyw7Xn1Z0gnFy3GJHHOODVU18dw+NdH1UWatj
+	 vaXBnMEEqR96Fv81P8iqtkf9SM968MEnDOXEbpZK9NSiIOqsPL9UnF1/uYElHxkTYu
+	 dY5FExx/Gh0Gp1GVh50gEomRbvqQ+P66nq3xIquMXRh0O5aCUvUnJdWS4lYwTdf+HX
+	 WWcGDMVh0kOnqKg5kB9kPMbBGYyW95b52Zn6HoJXKITouqAY2RYQZoO/Ia1q1ZoMK2
+	 9UAsRpJ37UeVg==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH v2 0/7] MD5 library functions
+Date: Tue,  5 Aug 2025 15:28:48 -0700
+Message-ID: <20250805222855.10362-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,182 +68,87 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250804231704.12309-1-mmc@linux.ibm.com>
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Aug 04, 2025 at 04:17:04PM -0700, Mingming Cao wrote:
-> POWER8 support a maximum of 16 subcrq indirect descriptor entries per
->  H_SEND_SUB_CRQ_INDIRECT call, while POWER9 and newer hypervisors
->  support up to 128 entries. Increasing the max number of indirect
-> descriptor entries improves batching efficiency and reduces
-> hcall overhead, which enhances throughput under large workload on POWER9+.
-> 
-> Currently, ibmvnic driver always uses a fixed number of max indirect
-> descriptor entries (16). send_subcrq_indirect() treats all hypervisor
-> errors the same:
->  - Cleanup and Drop the entire batch of descriptors.
->  - Return an error to the caller.
->  - Rely on TCP/IP retransmissions to recover.
->  - If the hypervisor returns H_PARAMETER (e.g., because 128
->    entries are not supported on POWER8), the driver will continue
->    to drop batches, resulting in unnecessary packet loss.
-> 
-> In this patch:
-> Raise the default maximum indirect entries to 128 to improve ibmvnic
-> batching on morden platform. But also gracefully fall back to
-> 16 entries for Power 8 systems.
-> 
-> Since there is no VIO interface to query the hypervisor’s supported
-> limit, vnic handles send_subcrq_indirect() H_PARAMETER errors:
->  - On first H_PARAMETER failure, log the failure context
->  - Reduce max_indirect_entries to 16 and allow the single batch to drop.
->  - Subsequent calls automatically use the correct lower limit,
->     avoiding repeated drops.
-> 
-> The goal is to  optimizes performance on modern systems while handles
-> falling back for older POWER8 hypervisors.
-> 
-> Performance shows 40% improvements with MTU (1500) on largework load.
-> 
-> --------------------------------------
-> Changes since v2:
-> link to v2: https://www.spinics.net/lists/netdev/msg1104669.html
-> 
-> -- was Patch 4 from a patch series v2. v2 introduced a module parameter
-> for backward compatibility. Based on review feedback, This patch handles
-> older systems fall back case without adding a module parameter.
-> 
-> Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-> Reviewed-by: Brian King <bjking1@linux.ibm.com>
-> Reviewed-by: Haren Myneni <haren@linux.ibm.com>
-> ---
->  drivers/net/ethernet/ibm/ibmvnic.c | 56 ++++++++++++++++++++++++++----
->  drivers/net/ethernet/ibm/ibmvnic.h |  6 ++--
->  2 files changed, 53 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+This series is targeting libcrypto-next and can also be retrieved from:
 
-...
+    git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git md5-lib-v2
 
-> @@ -862,6 +862,19 @@ static void replenish_rx_pool(struct ibmvnic_adapter *adapter,
->  failure:
->  	if (lpar_rc != H_PARAMETER && lpar_rc != H_CLOSED)
->  		dev_err_ratelimited(dev, "rx: replenish packet buffer failed\n");
-> +
-> +	/* Detect platform limit H_PARAMETER */
-> +	if (lpar_rc == H_PARAMETER &&
-> +	    adapter->cur_max_ind_descs > IBMVNIC_MAX_IND_DESC_MIN) {
-> +		netdev_info(adapter->netdev,
-> +			    "H_PARAMETER, set ind desc to safe limit %u\n",
-> +			    IBMVNIC_MAX_IND_DESC_MIN);
-> +		adapter->cur_max_ind_descs = IBMVNIC_MAX_IND_DESC_MIN;
-> +	}
+This series introduces a library API for MD5 and HMAC-MD5 and
+reimplements the crypto_shash "md5" and "hmac(md5)" on top of it.
 
-Hi Mingming, all,
+The library API will also be usable directly by various in-kernel users
+that are stuck with MD5 due to having to implement legacy protocols.
 
-The logic above seems to appear twice in this patch.
-I think it would be good to consolidate it somehow.
-E.g. in a helper function.
+This should again look quite boring and familiar, as it mirrors the
+SHA-1 and SHA-2 changes closely.
 
-> +
-> +	/* for all error case, temporarily drop only this batch
-> +	 * Rely on TCP/IP retransmissions to retry and recover
-> +	 */
+Changed in v2:
+  - Kept the architecture-optimized MD5 code, since unfortunately there
+    were objections to removing it.
 
-Thanks for adding this comment.
-Although perhaps 'for' -> 'For'.
+Eric Biggers (7):
+  lib/crypto: md5: Add MD5 and HMAC-MD5 library functions
+  lib/crypto: mips/md5: Migrate optimized code into library
+  mips: cavium-octeon: Move octeon-crypto.c into parent dir
+  lib/crypto: powerpc/md5: Migrate optimized code into library
+  lib/crypto: sparc/md5: Migrate optimized code into library
+  crypto: md5 - Wrap library and add HMAC support
+  lib/crypto: tests: Add KUnit tests for MD5 and HMAC-MD5
 
-Likewise below.
+ arch/mips/cavium-octeon/Makefile              |   2 +-
+ arch/mips/cavium-octeon/crypto/Makefile       |   8 -
+ arch/mips/cavium-octeon/crypto/octeon-md5.c   | 214 -----------
+ .../{crypto => }/octeon-crypto.c              |   0
+ arch/mips/configs/cavium_octeon_defconfig     |   1 -
+ arch/mips/crypto/Kconfig                      |  10 -
+ arch/powerpc/configs/powernv_defconfig        |   1 -
+ arch/powerpc/configs/ppc64_defconfig          |   1 -
+ arch/powerpc/crypto/Kconfig                   |   8 -
+ arch/powerpc/crypto/Makefile                  |   2 -
+ arch/powerpc/crypto/md5-glue.c                |  99 -----
+ arch/sparc/crypto/Kconfig                     |  10 -
+ arch/sparc/crypto/Makefile                    |   4 -
+ arch/sparc/crypto/md5_glue.c                  | 174 ---------
+ crypto/Kconfig                                |   2 +-
+ crypto/md5.c                                  | 359 ++++++++----------
+ crypto/testmgr.c                              |   3 +
+ drivers/crypto/img-hash.c                     |   2 +-
+ include/crypto/md5.h                          | 181 ++++++++-
+ lib/crypto/Kconfig                            |  13 +
+ lib/crypto/Makefile                           |  12 +
+ lib/crypto/md5.c                              | 322 ++++++++++++++++
+ lib/crypto/mips/md5.h                         |  65 ++++
+ .../crypto => lib/crypto/powerpc}/md5-asm.S   |   0
+ lib/crypto/powerpc/md5.h                      |  12 +
+ lib/crypto/sparc/md5.h                        |  48 +++
+ .../crypto => lib/crypto/sparc}/md5_asm.S     |   0
+ lib/crypto/tests/Kconfig                      |  10 +
+ lib/crypto/tests/Makefile                     |   1 +
+ lib/crypto/tests/md5-testvecs.h               | 186 +++++++++
+ lib/crypto/tests/md5_kunit.c                  |  39 ++
+ 31 files changed, 1060 insertions(+), 729 deletions(-)
+ delete mode 100644 arch/mips/cavium-octeon/crypto/Makefile
+ delete mode 100644 arch/mips/cavium-octeon/crypto/octeon-md5.c
+ rename arch/mips/cavium-octeon/{crypto => }/octeon-crypto.c (100%)
+ delete mode 100644 arch/powerpc/crypto/md5-glue.c
+ delete mode 100644 arch/sparc/crypto/md5_glue.c
+ create mode 100644 lib/crypto/md5.c
+ create mode 100644 lib/crypto/mips/md5.h
+ rename {arch/powerpc/crypto => lib/crypto/powerpc}/md5-asm.S (100%)
+ create mode 100644 lib/crypto/powerpc/md5.h
+ create mode 100644 lib/crypto/sparc/md5.h
+ rename {arch/sparc/crypto => lib/crypto/sparc}/md5_asm.S (100%)
+ create mode 100644 lib/crypto/tests/md5-testvecs.h
+ create mode 100644 lib/crypto/tests/md5_kunit.c
 
->  	for (i = ind_bufp->index - 1; i >= 0; --i) {
->  		struct ibmvnic_rx_buff *rx_buff;
->  
-> @@ -2381,16 +2394,33 @@ static int ibmvnic_tx_scrq_flush(struct ibmvnic_adapter *adapter,
->  		rc = send_subcrq_direct(adapter, handle,
->  					(u64 *)ind_bufp->indir_arr);
->  
-> -	if (rc)
-> +	if (rc) {
-> +		dev_err_ratelimited(&adapter->vdev->dev,
-> +				    "tx_flush failed, rc=%u (%llu entries dma=%pad handle=%llx)\n",
-> +				    rc, entries, &dma_addr, handle);
-> +		/* Detect platform limit H_PARAMETER */
-> +		if (rc == H_PARAMETER &&
-> +		    adapter->cur_max_ind_descs > IBMVNIC_MAX_IND_DESC_MIN) {
-> +			netdev_info(adapter->netdev,
-> +				    "H_PARAMETER, set ind descs to safe limit %u\n",
-> +				    IBMVNIC_MAX_IND_DESC_MIN);
-> +			adapter->cur_max_ind_descs = IBMVNIC_MAX_IND_DESC_MIN;
-> +		}
-> +
-> +		/* for all error case, temporarily drop only this batch
-> +		 * Rely on TCP/IP retransmissions to retry and recover
-> +		 */
->  		ibmvnic_tx_scrq_clean_buffer(adapter, tx_scrq);
-> -	else
-> +	} else {
->  		ind_bufp->index = 0;
-> +	}
->  	return rc;
->  }
 
-...
+base-commit: 186f3edfdd41f2ae87fc40a9ccba52a3bf930994
+-- 
+2.50.1
 
-> @@ -6369,6 +6399,17 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter, bool reset)
->  			rc = reset_sub_crq_queues(adapter);
->  		}
->  	} else {
-> +		if (adapter->reset_reason == VNIC_RESET_MOBILITY) {
-> +			/* post migrtione reset the max
-> +			 * indirect descriptors per hcall to be default max
-> +			 * (e.g p8 ->p10)
-> +			 * if the destination is on the platform supports
-> +			 * do not support max (e.g. p10->p8) the threshold
-> +			 * will be reduced to safe min limit for p8 later
-> +			 */
-
-nits: Post migration, reset.
-
-      The line breaking seems uneven.
-
-      And if p8 and p10 are POWER8 and POWER10 then I think it would
-      be worth spelling that out.
- 
-> +			adapter->cur_max_ind_descs = IBMVNIC_MAX_IND_DESC_MAX;
-> +		}
-> +
->  		rc = init_sub_crqs(adapter);
->  	}
->  
-
-...
-
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
-> index 246ddce753f9..829a16116812 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.h
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.h
-> @@ -29,8 +29,9 @@
->  #define IBMVNIC_BUFFS_PER_POOL	100
->  #define IBMVNIC_MAX_QUEUES	16
->  #define IBMVNIC_MAX_QUEUE_SZ   4096
-> -#define IBMVNIC_MAX_IND_DESCS  16
-> -#define IBMVNIC_IND_ARR_SZ	(IBMVNIC_MAX_IND_DESCS * 32)
-> +#define IBMVNIC_MAX_IND_DESC_MAX 128
-> +#define IBMVNIC_MAX_IND_DESC_MIN 16
-
-...MAX...{MAX,MIN} seems like an unfortunate name.
-But I don't feel particularly strongly about this one.
-
-> +#define IBMVNIC_IND_MAX_ARR_SZ (IBMVNIC_MAX_IND_DESC_MAX * 32)
->  
->  #define IBMVNIC_TSO_BUF_SZ	65536
->  #define IBMVNIC_TSO_BUFS	64
-
-...
 
