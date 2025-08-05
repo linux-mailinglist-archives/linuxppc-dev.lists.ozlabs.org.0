@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-10661-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10662-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56E1B1B673
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 16:27:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4FEB1B675
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 Aug 2025 16:27:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bxG2h0cpXz3bqM;
-	Wed,  6 Aug 2025 00:26:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bxG2j6Pr6z3bmS;
+	Wed,  6 Aug 2025 00:26:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754404012;
-	cv=none; b=GRqYeR+pc6OkP21aqUmKx8LifWCSAHsxLF2R3pmEXrau0zCk9bSDAvGpW2yCrkNJqQG471Qsga47LJoDXjrkICGHt6+vHo2Uto++BLna13d9LRNBbveuYGkYXk1yBmfOPoj5C85EaDLYgV8jaCoh5vnqIRE56jm4o0PxGwXjeXggz/Ldav95qF+1p9x/w1myqLBVSmIZyGmYjBhJnJmkuM4Hp9v+F5qVozLdeWqlI7FArv9j4Prox7HxqeVHE0+QBWD5eaKh8jSJkIoresYmV1fZFkNC8B1OrSkvj7MaFmQhJ169Tojsb4bFiAbpnl9G9Pv/yI0P9nFH19PZksT4zA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::129"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754404013;
+	cv=none; b=d8TgrtmoqJT1p08jKjzmY1cwuJGn9XKRsS7tUbU87fp4O/PC7DhyZ9DTOly1E+4DmUSCbxbxmKdwfGjwrVgPzPsQ8/XOzDypYkmLbYK7Rw3QyJvsK4FFC3Lu+YzK9Sg+uSpCYikfaLh+zl/KCCvV/VD8jLyftOup7CFh61ss5aM4DnyqdYgOEpHCudlMhMFHm55jVqNXBzKJhajUfB3xZuJ6S1iE1Nv9AszY4J4e/qYeWKho6RJph9ouTrb3LokN1W31upc6KErtHyKuX+yy2gu80QgtjeIVq9bMpj6HRIWC4BteAkQPiZs6u/PTkzpItKOfk9s+GsWiILrNXYSBvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754404012; c=relaxed/relaxed;
-	bh=DdpO03g2oqaaq9F6m1+GGOlZl0qQTOQbdkE3YGqW9w0=;
+	t=1754404013; c=relaxed/relaxed;
+	bh=axtwyv1QW9Jl3sEVwduJUxW6lENRlEEn6jAlKX1Xswk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JQ3WVXdZSYFoWuZV1ZlTVHKMAnCI4YLbc8vBSmzfFppLPRpJ0pTjfbpZfZATOt9IPS5AkAS3S7Us5SpigJmFYpxbWqnO3LbB9fVUdf67O7Y3jIx4WeIKwhhiCf+T0TCnovBmPbI/JGWjfRehqzxD2vAQthrqufgHFwLxCeD8dcMRtK2CK9U1SQtbNG+r5868LNlUylc2ZppmZXpGHS597JzMfr4kC1Raq8gdFe9jbI/DwgVy9FgzTo6a4S0De4bCnMeTEhAoJ0/yzYzcVVmbfNgVik9CyFC6fbvwc91Cubud+JHFRIffqERTDEtyJPVP5u2zd4QQM1bMqu2+ch3sVw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=d6vnE+TA; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=BBm7l3X4ojoKMoz8AN1zBLA8OM8Ozw3xF/044H4UWDRIq8/bPYIdipYAv82nMz/GsRSaqqDceVrjSPv+0l5vgX612hjz0xR3UO+qtfCfuPm9iGgrpbNyyDofiFy0/rH4nulqniE8n11a7+vT/C2WV8DXOqD71xDdwcbr/57YW0Db8L5XnPiezXhHTtgEFwC88k27wjrOwEQtLhCSqLoaENpdUs5q43DJzHtgnEfVZFXkzbPTUZH3y9JwctTOJDyzGBu9+eUj5NelVaWPgfTDkx9kiFtoXNOatYQOMqwhUYp1TlOO2WOwmiH2ZkLA+0a0/vQTSIU4vnrItK5z7Pzodg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H44nFR8v; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=d6vnE+TA;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=H44nFR8v;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxG2g0t03z3bmS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 00:26:51 +1000 (AEST)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-55ba26abd62so2665791e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 07:26:50 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxG2h6j7Fz3brv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 00:26:52 +1000 (AEST)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-55b88369530so6962616e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 07:26:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754404008; x=1755008808; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1754404010; x=1755008810; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DdpO03g2oqaaq9F6m1+GGOlZl0qQTOQbdkE3YGqW9w0=;
-        b=d6vnE+TAOk8fkPATSjhgMBwbC+Qz6Gv9f3AX3XdOz/9sDyztxGyfHDbqhP1T6M/Iwq
-         nDGa1C+JnWeNlAEfznMkn5LJjnueHmyOdCOdKy62RqzwSq33hkVPWAsySLaLVg3T6VnN
-         5zunCVQZ/K4mF2iaS8Mj2v/uau72k0jAbH3hJ0z2Uz78P4BmGg0WNVTEKjXgveXl1lFQ
-         bNYhOCzIqGdT+eXuky7WSe0wYBtwPWP40XmBpt7uWlmN+7Qzj1r9ig9Ux/ozAWSnT7Uc
-         4/WOjPTDp518xiFpMuCBDGKncEQeP3WLIsM0+c2DR14T+qlZSHAl6+gPkJWV1ZB+v3UO
-         ecbw==
+        bh=axtwyv1QW9Jl3sEVwduJUxW6lENRlEEn6jAlKX1Xswk=;
+        b=H44nFR8vub8nb8UbgKD2EOAOz7xQSPRBx6qzS5YN+K1VGUfFT9E95ZKOHbC1dZfWW1
+         GRS9es/5NGfQcFj9Kn/g+HJP1y5R4WgRwbJCTjowkg/ZnQOnRm0g7olAhF2rGgwa38Bq
+         HGTdSJ5vypC4BiXwOLNpKaN/7dEMm07g1V3qat++d1Br+ezaxiPU+Hv4c5BGw+N42wIt
+         CaDqA424Am1TeexHykXmyUrvuR/w+GzQxshYwUMj7o0Cc6anXxxeb11JL1b3HPUSy/LZ
+         APZ8h8vmbu/Bxioj0ILmPhUro0o8dHvNXoBz2N7bmCSEfr2Vjhigxpm6jMkq3rC4ekqg
+         61tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754404008; x=1755008808;
+        d=1e100.net; s=20230601; t=1754404010; x=1755008810;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DdpO03g2oqaaq9F6m1+GGOlZl0qQTOQbdkE3YGqW9w0=;
-        b=wrVRqZINuNI409rrmk1reWyIlTr/fXpxSSlQnljOqoCNBZjZNo852rudNi1ApMFcuH
-         e0WaDzuZ1zYPO+k5jLs5TZ1nhp/Yz0mB3BIxrD9xmeqe0u6+ZiqOLCk7U7xBLwhxKd5t
-         SvYRF0tZvHG9ZYMv2U1sVK5kEibQHqAi8JIK9ZTIP4cyE/8KHMVCyyomWmSrqHJCEdWh
-         9EvqNd52cNLo5kYnDK9jOlY0SH+GeMLuswl+VvE6ipV6xb3r3Ru7CEbNPez+Rahq1EH9
-         upPPJuCnQyntLCwDeJiT2t0+GRZxssuyBL/RtYUQxWn/qvGYWGJP3VC3Scyc6qQ4KbzQ
-         Np4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVwzH8Xr6z9pXPgPBLzUV7SbKYGjFvE3PRUKM4xgzfj5HCI7HKLaHO/9T8Clqo5XvWcaeVfGqZTBayZZlk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyzyZ63h6uoa30PNJw0MqsugzwKpad/3IWC3RgowOpfW5Qvxz4K
-	Jh/i0o1DUE6wK3hGkDoiGVt9MhcAg4rcdziDb93zLnwcjNQLmZ8UofT0
-X-Gm-Gg: ASbGncsJbMg3esPkdbPKmPAwhzeBMwkKCjZQ2p5OuR2ucNlDpMxu806QAQxHtIghthG
-	b9sBZskax+zVczcIhe2LCpGsfovPf9FVUsDDxAmIcQnZwcKwMs0wnEgD8opbF4XmjGok7w86vEB
-	7RBEHf+KJHMobNfZHto++L+1peGaNqlaDLQBHsEzD563UyfUkkWLnZTQ3rIf0UyS1qVXQ0llIRe
-	+HHkh3uQ2h2Nqwm4Nd1qKh0qg6K1ZtKIVEAXnfDp6WaxWcJrHarwREmIkInk6P8l0BSxA2a1tDX
-	fOYEsC+fvD7+VI+VEV41M8xmvDqwr/kpmk7XVNMipQxzyPonl/uYE0agwOT7Leci5nKbIZ83ae7
-	RRk8wqS4pencyj2leyrx4khJIEBSEPn0vtAmSOnVa0+aZqKYdng8m8k50pK6SAWfAVlp7nA==
-X-Google-Smtp-Source: AGHT+IEVcUaDrsN/KncF3Ds7Ejr3CDmhOGcodfBsVHrYzHQORJKCgwrZQppnXPfaGPKlSAziWl9h7g==
-X-Received: by 2002:a05:6512:1254:b0:55b:842d:5825 with SMTP id 2adb3069b0e04-55b97b9395fmr4615455e87.43.1754404007496;
-        Tue, 05 Aug 2025 07:26:47 -0700 (PDT)
+        bh=axtwyv1QW9Jl3sEVwduJUxW6lENRlEEn6jAlKX1Xswk=;
+        b=WB3qcrIqjiQcg10u1ymwFSwagKfp7oR8C/jyBdqhJUJC2hbofVTGdmTPtenj5jKXch
+         FPJWqxSIH2UQdnLHcG9rz4CrBiYmK8PlQQX8RBmsDcM6XFVYflZRJrRlP6piWxjWEqdK
+         HwxlYWIeY0mbXDaTTycQP8Edlpq24pIvnngSyS4G0OH+fecCUZnAxLrdB2X0L5JsVE4F
+         QCQGaUKNc1iMr2+SeYL7W+1R/uBeL1asxpVuLZsibi2/SOHw996jkJugWAexcMgCyA4Q
+         U0uxfycKXA2s5kc4eZzhVbEp5kygYH19z8zR+RThl7GBW5/mO5JHOkXxaNmDnlxR3Qqh
+         62Mw==
+X-Forwarded-Encrypted: i=1; AJvYcCWIKakl4IP0hBg887Q6MMTOdiKNz1dwFyiXSHwxu/uVKBkUzsGHBnGH0NUCNabG68+i8uh3XNVjxu3TTYc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxFrnlUJYtaO6OKlffygn21n6C9FcC6xkDsSxsjsKGbi/5U9mKE
+	z8KmLEYaIW/cbz150q/19v6mbDaTVeGQ5z9db+dCp1h6R5QQIq3A2w49
+X-Gm-Gg: ASbGnctK/1L1tGVlhKBnzcMCpr07zee/Iqp+nAyQpx0bLgRUXynPA2Znt/20V/VlwJQ
+	Y/cYkdVwmZgnTj1JdJ2f0tx9PtkuOFBeWIq9DQpBrJc8t+IBHcp8UoaazJI590Qb+ncLOajUlSs
+	fE8xUSxlowFNIWrG+AFgIG6UXFQV22PP4O7JMdjphflP5eOOAszCxvudUuYPcCqM4qcfkkNAUcy
+	Y1V5f/MJ8dbnXZLBUNfkefceaM11/tCMaXtNwpn+re3P5ZAwT0aaK751PMKoRCJN8CACrMCo7mn
+	HAulj0td2Vs4zbO+ucyGgFP77a/qESUUg4lEpOuRM/MjYYTHzcnl4C+MkvVppeedN2ihfnrZvKb
+	IewWFzZgdG+6Nach2KTyhi+N648H3IaPlHqzBoraNQ5LEgYg0ofWwjc6ppkOqNL5U+nKCRw==
+X-Google-Smtp-Source: AGHT+IEuo6xaqIABZcTJ/AY4HFbxdZ3CAT0b3T807lmpaRovzDFMVVkpiUz/KiBR8yrsIvUCLLc9/A==
+X-Received: by 2002:a05:6512:3e1d:b0:558:f694:a65e with SMTP id 2adb3069b0e04-55b97b41812mr3194986e87.34.1754404009682;
+        Tue, 05 Aug 2025 07:26:49 -0700 (PDT)
 Received: from localhost.localdomain (178.90.89.143.dynamic.telecom.kz. [178.90.89.143])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b889a290fsm1976379e87.54.2025.08.05.07.26.45
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b889a290fsm1976379e87.54.2025.08.05.07.26.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Aug 2025 07:26:46 -0700 (PDT)
+        Tue, 05 Aug 2025 07:26:49 -0700 (PDT)
 From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
 To: ryabinin.a.a@gmail.com,
 	hca@linux.ibm.com,
@@ -92,9 +92,9 @@ Cc: glider@google.com,
 	linux-um@lists.infradead.org,
 	linux-mm@kvack.org,
 	snovitoll@gmail.com
-Subject: [PATCH v4 8/9] kasan/s390: call kasan_init_generic in kasan_init
-Date: Tue,  5 Aug 2025 19:26:21 +0500
-Message-Id: <20250805142622.560992-9-snovitoll@gmail.com>
+Subject: [PATCH v4 9/9] kasan/riscv: call kasan_init_generic in kasan_init
+Date: Tue,  5 Aug 2025 19:26:22 +0500
+Message-Id: <20250805142622.560992-10-snovitoll@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250805142622.560992-1-snovitoll@gmail.com>
 References: <20250805142622.560992-1-snovitoll@gmail.com>
@@ -118,40 +118,28 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 Call kasan_init_generic() which handles Generic KASAN initialization
-and prints the banner. Since s390 doesn't select ARCH_DEFER_KASAN,
+and prints the banner. Since riscv doesn't select ARCH_DEFER_KASAN,
 kasan_enable() will be a no-op, and kasan_enabled() will return
 IS_ENABLED(CONFIG_KASAN) for optimal compile-time behavior.
-
-s390 sets up KASAN mappings in the decompressor and can run with KASAN
-enabled from very early, so it doesn't need runtime control.
 
 Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
 Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
 ---
- arch/s390/kernel/early.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/mm/kasan_init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-index 9adfbdd377d..544e5403dd9 100644
---- a/arch/s390/kernel/early.c
-+++ b/arch/s390/kernel/early.c
-@@ -21,6 +21,7 @@
- #include <linux/kernel.h>
- #include <asm/asm-extable.h>
- #include <linux/memblock.h>
-+#include <linux/kasan.h>
- #include <asm/access-regs.h>
- #include <asm/asm-offsets.h>
- #include <asm/machine.h>
-@@ -65,7 +66,7 @@ static void __init kasan_early_init(void)
- {
- #ifdef CONFIG_KASAN
- 	init_task.kasan_depth = 0;
--	pr_info("KernelAddressSanitizer initialized\n");
-+	kasan_init_generic();
- #endif
- }
+diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
+index 41c635d6aca..ba2709b1eec 100644
+--- a/arch/riscv/mm/kasan_init.c
++++ b/arch/riscv/mm/kasan_init.c
+@@ -530,6 +530,7 @@ void __init kasan_init(void)
  
+ 	memset(kasan_early_shadow_page, KASAN_SHADOW_INIT, PAGE_SIZE);
+ 	init_task.kasan_depth = 0;
++	kasan_init_generic();
+ 
+ 	csr_write(CSR_SATP, PFN_DOWN(__pa(swapper_pg_dir)) | satp_mode);
+ 	local_flush_tlb_all();
 -- 
 2.34.1
 
