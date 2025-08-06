@@ -1,71 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-10686-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10687-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8CEB1BFA2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Aug 2025 06:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E03D4B1C01D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Aug 2025 07:56:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bxcwl2yFLz3bkb;
-	Wed,  6 Aug 2025 14:37:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bxfgC1CMDz3bkb;
+	Wed,  6 Aug 2025 15:56:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::235"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754455079;
-	cv=none; b=Gv9hswrlPsvzEB60H7DU5mtwut4J1T2ujIVRdKayz/K7FomToHg0J7USU33iw+N12hRtTOCwft6v5klXJrBjdjBhLfUy+keR7IQXZbX3GherhZIF+rzhldyt4x3528qYSOiuef58gZ4Mo2P1IwhgZqiyZRQvF/pv0iEevVsEGlMOS6PiOKmHSwO3zyaaV4PC1GqjEUjfp6Qrg7GlGVn7vb+jCpjF8wKhiF8W7R/6eFKLcm+jpY46vhL20SR5147vgbXHVXOd+QmH/9XTGfqIBX9W3ywiMd8QjJwwlYami7276UtcMCmR4sHiY0Lgflm+7bOS8yfPrnpj1DosZEQnHQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754459783;
+	cv=none; b=lUyW5H53+5YGD5XgFNpINveQJtB6oLoo8Mcze/D2NJE1uJPKxm5KJhbESTgb6nRto0DegqKXJTI74szxPv0OO2jJvKuYFGLwi7hl8+0IwMGU7mZdwJar4hgsMBLVwKONXCus5jdvseIR8i4eZ25Cqhu4wJycGJhFJfzkxrf2Am3n/Eh6csrb6KVSRPwTNq0e7wx2UhhrHRCqjikVTGgE8pk/1SIbHXS0RM/ib81U9AXIoz1RbXOWMABd1bygr8NAr7CFuCgOx6YmV9ylB7tj/4A6U6GJ01nRYHcUSiDlVpseSTjvnuXHpVIbODpkhzMlE33suJUOG4iJ484th70NRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754455079; c=relaxed/relaxed;
-	bh=Qo/Viw2qcvpv/MoBS3iI99BxX9ghV/qd2Tz3ezwRf/E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eVzdLhmLwM8GxzCf5bIFCeQxENPA/JOa3rKWCssfClx7LyEoIPu6+Ce0GSbxJfAqAZD1Vvf+mIlNZyu5lYdEmmCc3jpmk4qMTAYA+jUhsmklTnC+UMVAO425jRF23BcmjZ9rWfFSjoSShhbdJ/sTi23x+4H2xV9Q5ei27toDfFJCzJ4e9dFqenpFu4I5awXFSUcC8R6ZwUqNEktp31SrXcHLF86qLte9m9WBQTv0c1x/3zEkvHuX/IEfSAQzNYF0HXP3s6WSV79Clwqv4YKSZ+/nrzlWa+bVwJAKzYM62vowN25K9PXUWdsZ6QfOzjxko6/n77QJOpMQA1NF856TUg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ikDoC91H; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1754459783; c=relaxed/relaxed;
+	bh=YS/ILQBjmDtK+sCleswm9x2dCFYN64fiPVefPUMnyP0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=IcUK9g/TARfqG8cZnmTPVrbhxIbQPWcWhXKc8B86uyEox65JPUzC2n2tIvg2aZuxCLZeQnXgzfKA7QTUx2VHoTXk+RMGqdrWEBFr/vgf9KhPeHVnouS1h2zWJ0S94J932L8r8YCpcl36MszxGdRP+flwQe0atYbR68ChY3GkHX+7dvXFhdTEmMb6V3j4cBV70Yl7oT/qD0yctGgbfqr+yASocRf1rcX4F56eWoQHCoyuXIvMej9++GTkOxe2om5zA5YJ2LNDp7lM6y02MuVqbUm3o+zk5MycC0IyVolcOCxbdwpCyDEMGGInjm2W2NQO23CsHNfaz2oJM+2BxiuPdw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZXeo0DYA; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ikDoC91H;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZXeo0DYA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxcwk2z7Mz2xck
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 14:37:58 +1000 (AEST)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-3338252b2e6so1641941fa.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 21:37:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754455075; x=1755059875; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qo/Viw2qcvpv/MoBS3iI99BxX9ghV/qd2Tz3ezwRf/E=;
-        b=ikDoC91HfJtXFufw0RaQAvJItJkYuHi0WRIwYht/UwOKN9UAXJ/+g6LiyilvIX9SuP
-         AzZaZkvZV+JimdtXvKzz2AyJ+hPshE1tITEtZPo7gPqRWG5RT3CJqwgzrIwvZwrkdzyk
-         CgA+skupSVnBRECZtIH6Y3miiM1hZBBeLIjPgo8+jwjHyLpNM+1WTGA0jWpLU7BD98Gq
-         pJhOehfbM0KwpakfZkvUM/cvJxSZjnZTvFdkXgZz/asB+xA4zhS5FlTBghmkYxQ1lSxb
-         nMdMCVPFIUraQ3l4S6abYQUFW6I366FXB+IXSNGRz+OXX/Rq2rpSFb4jx3QbFRVdt6tS
-         Qw3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754455075; x=1755059875;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Qo/Viw2qcvpv/MoBS3iI99BxX9ghV/qd2Tz3ezwRf/E=;
-        b=fu/wbfLAlJvbTRSkStqpowMg97YfUjf6PTyjL0rK9nELSZnFoyhczjZWUnE1c1jYLr
-         4pQhYJK+uN/3wtBWbJUVGgXfStloi0SX5GFnx17qbX+FJgba4GE0p19/xOi7nxFcYm93
-         VZFZycaYZZPoFNUMZcwlslhLTj/ubiYrGCwaVD8BuBCa5++J4GKBWtp7L/naB9zsRS78
-         qJx8Gx5RNN9zQmusR+V0y/SA9T9wdnEPQoG5TX8CUAwiU5B7LviXTZSMPOhi6HUv8Q9m
-         yReP/b8/D54HNcAwPrDYkuP2AJCb/uo6sJGDExOE79ufUgUtGwYMrTQRkKhYTnzdJS6d
-         Rozg==
-X-Forwarded-Encrypted: i=1; AJvYcCVk+lS6txYux2e8k4qZINEINhLUlu1lGJOZ/BPhUkOiuJR1iL0tQE3uMutMfFzfP1IMe++lJgvydiVa0PA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyg4rxNLPb9Vq2yfXnV4BXkXs7F7fgV3Vb2X4qV/OeDZ8Fr+iou
-	ZSSP5GAjnJbRRLYENMZNIbe2TSpxv74+ji1cGE7LxMyncDknFSbtZBRs7HjsutxzP8ETJgj9I+c
-	M1f3eUeA4nLrsbQQUhplzav/GQzturSo=
-X-Gm-Gg: ASbGnctdowJvy82u1dW7+IUN+FYWIwoQcuxhCDatZBXyEXo5yey1ZpLekNzlHcMSB2c
-	RdJx+K9kZad+uNdLwoAl5kXt16epuLJDtUk1p8k0SxJWPL2HR0Q1aLUtCtRYF1Bx2WnRhgzci//
-	NyvEZ+cFwSdjY7WdAThc9XIF+lokhfY/s9T7ot1cLj+2RIt27qHB7CTRMCBMD4xhuwOnLBoTg+W
-	Pj92qY=
-X-Google-Smtp-Source: AGHT+IFdsEW+IENwPRijll82h/DPiknLKACQZ/o9KWIJ/PhoBk1+OGng4Q7CbEgSQ8dHEzo+wdS/ckXYJp2kTJF5j88=
-X-Received: by 2002:a05:651c:1509:b0:32a:739d:fac with SMTP id
- 38308e7fff4ca-3338144cd8fmr3796161fa.36.1754455075078; Tue, 05 Aug 2025
- 21:37:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxfgB1Ldsz2xck
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 15:56:21 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 575IpRra012314;
+	Wed, 6 Aug 2025 05:56:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=YS/ILQBjmDtK+sCleswm9x2dCFYN64fiPVefPUMny
+	P0=; b=ZXeo0DYAzzny6hYPyzWWAnu2GlfVaHmGgkwrKolOgVnOZc0gB8/KZrESK
+	4brO8yU1Xb4bACJbUwwTNdj7GUULpZuG2LBJop8e6zxXHvHIPzcb8HVlu0QH1AB4
+	HmTXHjotWYVbqvAdgWJUSOPadwaSayfCfSJoshpgVbTx6Tk1ThlhiACQUCyTE2Tb
+	neXjuSSjgbugYDjZ5Siyaz1FDN5QaN1gYX5zVxJS5D9af8qkA++5VfhVp+reOCg8
+	iVzUgIJH65pq0LQtGWO2++AEPYE4ye3hEr5TzMwefcKAxiP/bO6Vse3+lfWETtOL
+	Y+2kRRwNWqLh5PjM1HSIh8KkuKraw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63jaxt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Aug 2025 05:56:18 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5763Dri8020600;
+	Wed, 6 Aug 2025 05:56:17 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwmt75m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Aug 2025 05:56:17 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5765uHkT20775660
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 6 Aug 2025 05:56:17 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E251658056;
+	Wed,  6 Aug 2025 05:56:16 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 735965803F;
+	Wed,  6 Aug 2025 05:56:15 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com.com (unknown [9.36.0.205])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  6 Aug 2025 05:56:15 +0000 (GMT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
+Subject: [PATCH] KVM: PPC: Fix misleading interrupts comment in kvmppc_prepare_to_enter()
+Date: Wed,  6 Aug 2025 15:56:07 +1000
+Message-ID: <20250806055607.17081-1-ajd@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,189 +81,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250805142622.560992-1-snovitoll@gmail.com> <20250805142622.560992-6-snovitoll@gmail.com>
- <e15e1012-566f-45a7-81d5-fd504af780da@gmail.com>
-In-Reply-To: <e15e1012-566f-45a7-81d5-fd504af780da@gmail.com>
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Date: Wed, 6 Aug 2025 09:37:38 +0500
-X-Gm-Features: Ac12FXyJN7pElMlaw_o-aZoTkQ3byDjTMvUiVf1-1J0u8uF_nrAwTbgiBAXxjhE
-Message-ID: <CACzwLxj0nOQT0+Z+AFDG3Cvun5jGaET6C3mp9PnLbCHjdw51Pg@mail.gmail.com>
-Subject: Re: [PATCH v4 5/9] kasan/loongarch: select ARCH_DEFER_KASAN and call kasan_init_generic
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com, 
-	agordeev@linux.ibm.com, akpm@linux-foundation.org, zhangqing@loongson.cn, 
-	chenhuacai@loongson.cn, trishalfonso@google.com, davidgow@google.com, 
-	glider@google.com, dvyukov@google.com, kasan-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA2MDAzMCBTYWx0ZWRfX1n0iGyoe2r0m
+ +N5bkh1eON6MyfxhwFeRIQlQYqicEJKaXlu9Cljl1yrrKSQjARftd2gqkkHz40BhABLx2xpbJyD
+ +41CRyC7ly18r1Uv1JkFcNqNy00FZ3VIodT17TJjPGhLZwXxVCNXfgWDdwRz+vt5pWOhStycNVr
+ 5Sax8sCa9Ou1YAJyWqh3/L46h9tSVfzwN9rfiQV8H8EtTqeAewlB890iQdqP9kO4SZH67zhqjBn
+ BQ2jXfk0p2IolYT3Cqn07QubUEgFB9/NnxNIUp6deAHvY5Vk3uJwdZXfhqjWG5gkw0/wW3CnmzP
+ eT6c1MfpK5cHeEfMgGIwRR9xtKRrOQ+TeVFQaEtzpR6rTeCL6gvoab1fsBc1cG8CwIKgtcqagHd
+ gW/1R7cnqxLKNhZyf4SBMBqxeced55dS7QUD5Kqo9m8T0AYQBYshpiFpORfcrhMpGHBxtGow
+X-Proofpoint-ORIG-GUID: RiK7N33Soo0SePg9LqJA9kXtJqAvnHwF
+X-Authority-Analysis: v=2.4 cv=LreSymdc c=1 sm=1 tr=0 ts=6892ee82 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=gr7D_48Ji271olD-KTQA:9
+X-Proofpoint-GUID: RiK7N33Soo0SePg9LqJA9kXtJqAvnHwF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-05_05,2025-08-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 mlxlogscore=618 bulkscore=0
+ malwarescore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
+ definitions=main-2508060030
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 5, 2025 at 10:18=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@gmail=
-.com> wrote:
->
->
->
-> On 8/5/25 4:26 PM, Sabyrzhan Tasbolatov wrote:
-> > LoongArch needs deferred KASAN initialization as it has a custom
-> > kasan_arch_is_ready() implementation that tracks shadow memory
-> > readiness via the kasan_early_stage flag.
-> >
-> > Select ARCH_DEFER_KASAN to enable the unified static key mechanism
-> > for runtime KASAN control. Call kasan_init_generic() which handles
-> > Generic KASAN initialization and enables the static key.
-> >
-> > Replace kasan_arch_is_ready() with kasan_enabled() and delete the
-> > flag kasan_early_stage in favor of the unified kasan_enabled()
-> > interface.
-> >
-> > Note that init_task.kasan_depth =3D 0 is called after kasan_init_generi=
-c(),
-> > which is different than in other arch kasan_init(). This is left
-> > unchanged as it cannot be tested.
-> >
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217049
-> > Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-> > ---
-> > Changes in v4:
-> > - Replaced !kasan_enabled() with !kasan_shadow_initialized() in
-> >   loongarch which selects ARCH_DEFER_KASAN (Andrey Ryabinin)
-> > ---
-> >  arch/loongarch/Kconfig             | 1 +
-> >  arch/loongarch/include/asm/kasan.h | 7 -------
-> >  arch/loongarch/mm/kasan_init.c     | 8 ++------
-> >  3 files changed, 3 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-> > index f0abc38c40a..f6304c073ec 100644
-> > --- a/arch/loongarch/Kconfig
-> > +++ b/arch/loongarch/Kconfig
-> > @@ -9,6 +9,7 @@ config LOONGARCH
-> >       select ACPI_PPTT if ACPI
-> >       select ACPI_SYSTEM_POWER_STATES_SUPPORT if ACPI
-> >       select ARCH_BINFMT_ELF_STATE
-> > +     select ARCH_DEFER_KASAN
-> >       select ARCH_DISABLE_KASAN_INLINE
-> >       select ARCH_ENABLE_MEMORY_HOTPLUG
-> >       select ARCH_ENABLE_MEMORY_HOTREMOVE
-> > diff --git a/arch/loongarch/include/asm/kasan.h b/arch/loongarch/includ=
-e/asm/kasan.h
-> > index 62f139a9c87..0e50e5b5e05 100644
-> > --- a/arch/loongarch/include/asm/kasan.h
-> > +++ b/arch/loongarch/include/asm/kasan.h
-> > @@ -66,7 +66,6 @@
-> >  #define XKPRANGE_WC_SHADOW_OFFSET    (KASAN_SHADOW_START + XKPRANGE_WC=
-_KASAN_OFFSET)
-> >  #define XKVRANGE_VC_SHADOW_OFFSET    (KASAN_SHADOW_START + XKVRANGE_VC=
-_KASAN_OFFSET)
-> >
-> > -extern bool kasan_early_stage;
-> >  extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
-> >
-> >  #define kasan_mem_to_shadow kasan_mem_to_shadow
-> > @@ -75,12 +74,6 @@ void *kasan_mem_to_shadow(const void *addr);
-> >  #define kasan_shadow_to_mem kasan_shadow_to_mem
-> >  const void *kasan_shadow_to_mem(const void *shadow_addr);
-> >
-> > -#define kasan_arch_is_ready kasan_arch_is_ready
-> > -static __always_inline bool kasan_arch_is_ready(void)
-> > -{
-> > -     return !kasan_early_stage;
-> > -}
-> > -
-> >  #define addr_has_metadata addr_has_metadata
-> >  static __always_inline bool addr_has_metadata(const void *addr)
-> >  {
-> > diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_i=
-nit.c
-> > index d2681272d8f..57fb6e98376 100644
-> > --- a/arch/loongarch/mm/kasan_init.c
-> > +++ b/arch/loongarch/mm/kasan_init.c
-> > @@ -40,11 +40,9 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata _=
-_aligned(PAGE_SIZE);
-> >  #define __pte_none(early, pte) (early ? pte_none(pte) : \
-> >  ((pte_val(pte) & _PFN_MASK) =3D=3D (unsigned long)__pa(kasan_early_sha=
-dow_page)))
-> >
-> > -bool kasan_early_stage =3D true;
-> > -
-> >  void *kasan_mem_to_shadow(const void *addr)
-> >  {
-> > -     if (!kasan_arch_is_ready()) {
-> > +     if (!kasan_shadow_initialized()) {
-> >               return (void *)(kasan_early_shadow_page);
-> >       } else {
-> >               unsigned long maddr =3D (unsigned long)addr;
-> > @@ -298,8 +296,6 @@ void __init kasan_init(void)
-> >       kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_S=
-TART),
-> >                                       kasan_mem_to_shadow((void *)KFENC=
-E_AREA_END));
-> >
-> > -     kasan_early_stage =3D false;
-> > -
->
-> There is a reason for this line to be here.
-> Your patch will change the result of the follow up kasan_mem_to_shadow() =
-call and
-> feed the wrong address to kasan_map_populate()
+Until commit 6c85f52b10fd ("kvm/ppc: IRQ disabling cleanup"),
+kvmppc_prepare_to_enter() was called with interrupts already disabled by
+the caller, which was documented in the comment above the function.
 
-Thanks, I've missed it. Here the upcoming v5 for this:
+Post-cleanup, the function is now called with interrupts enabled, and
+disables interrupts itself.
 
-diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.=
-c
-index d2681272d8f..0e6622b57ce 100644
---- a/arch/loongarch/mm/kasan_init.c
-+++ b/arch/loongarch/mm/kasan_init.c
-@@ -40,11 +40,9 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata
-__aligned(PAGE_SIZE);
-#define __pte_none(early, pte) (early ? pte_none(pte) : \
-((pte_val(pte) & _PFN_MASK) =3D=3D (unsigned long)__pa(kasan_early_shadow_p=
-age)))
--bool kasan_early_stage =3D true;
--
-void *kasan_mem_to_shadow(const void *addr)
-{
-- if (!kasan_arch_is_ready()) {
-+ if (!kasan_shadow_initialized()) {
-return (void *)(kasan_early_shadow_page);
-} else {
-unsigned long maddr =3D (unsigned long)addr;
-@@ -298,7 +296,10 @@ void __init kasan_init(void)
-kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
-kasan_mem_to_shadow((void *)KFENCE_AREA_END));
-- kasan_early_stage =3D false;
-+ /* Enable KASAN here before kasan_mem_to_shadow() which checks
-+ * if kasan_shadow_initialized().
-+ */
-+ kasan_init_generic();
-/* Populate the linear mapping */
-for_each_mem_range(i, &pa_start, &pa_end) {
-@@ -329,5 +330,4 @@ void __init kasan_init(void)
-/* At this point kasan is fully initialized. Enable error messages */
-init_task.kasan_depth =3D 0;
-- pr_info("KernelAddressSanitizer initialized.\n");
-}
---=20
-2.34.1
+Fix the comment to reflect the current behaviour.
 
->
->
-> >       /* Populate the linear mapping */
-> >       for_each_mem_range(i, &pa_start, &pa_end) {
-> >               void *start =3D (void *)phys_to_virt(pa_start);
-> > @@ -329,5 +325,5 @@ void __init kasan_init(void)
-> >
-> >       /* At this point kasan is fully initialized. Enable error message=
-s */
-> >       init_task.kasan_depth =3D 0;
-> > -     pr_info("KernelAddressSanitizer initialized.\n");
-> > +     kasan_init_generic();
-> >  }
->
+Fixes: 6c85f52b10fd ("kvm/ppc: IRQ disabling cleanup")
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+---
+ arch/powerpc/kvm/powerpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 153587741864..2ba057171ebe 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -69,7 +69,7 @@ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
+ 
+ /*
+  * Common checks before entering the guest world.  Call with interrupts
+- * disabled.
++ * enabled.
+  *
+  * returns:
+  *
+-- 
+2.50.1
+
 
