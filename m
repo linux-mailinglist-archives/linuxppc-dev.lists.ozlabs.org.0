@@ -1,77 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-10684-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10685-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5D2B1BE79
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Aug 2025 03:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5A6B1BF9D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 Aug 2025 06:36:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bxYJz3RpBz2xck;
-	Wed,  6 Aug 2025 11:55:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bxctb5l8Bz30W5;
+	Wed,  6 Aug 2025 14:36:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::542"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754445315;
-	cv=none; b=DjJzgfqd7dEH8/asvEX6eXGVZPi+tw/0PE6SkOVMIaTYHTO20X0XMpvPhCysUWYhJ2FulxC9dMUZKcSdZmN8hj6rkdsu5f6VisHnUV/QZ0fFo6OMxwL5EmRJ7N5ejAusdZ1VB7M+nE4OMLjzc3fe5VsyHS0yVDHifCBdVqQPlbStIxL8mNxPO/em7P0FIMIt7hy4VW/M8Cga1xP6jxVjzDWX6/ozh1XhVbCAS3ViYoHGxajkf2ZaGyL/cjHoKqYTvRhiExbETDcTVqfU+woaNXCavs9vs1MW8mQ3vv/MeVEBLK0ACukTcNv7tc/0JXRcY4FhdFo8XJ9/NIR1lnU+bQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::22b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754454967;
+	cv=none; b=bzoO0aEaFV6sW1FSVpZx+PM8MgnDuFzwoRcCwaEv0pGnLIAkm/SJGjHxEnigRACGsP7o0y55XGdlLEarQ1HR2gRjNOnUHr9XytTf+5W13EMFP+iAY1VLDUqr/ALkiVmxvZJVBliZVfhlszR6tWa0J5p/c4E9sw3sX6Y3hAX2wKrxKop4e14gwScJgu8fUHpUO5FrBpzx4QgKiqnKz88ui8JoO6IB+qr0GGWGWuzene3nG4hutdI19LgbpNRcb1B85UneqdwBBMYdwT8I459PGzz6ApKOFwfWxjLLFm1pTgtZAaPINvlAQwr4ADRCRpspaBeeYkQ840o+OYQezQQz0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754445315; c=relaxed/relaxed;
-	bh=SwUvDCDGNTjgSGRxvkjU5V1Z70GTc/BlM8QTHRxaQ9I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BE7CeT2GG9dbYXM4HqAddiGCWl9ixsrk/F5gHpVA+degJFUuD/Y9nfuSX2ScrKiLcRmVq1KXwjOnz+MckLrrtQDTAUHoxj5oycHoBUWCN8ABMA6MUbxS8tnzbsPLDf3TLwTGT3xN94L8g7F+OcKjokLvH6rDoUuDPQUQHXMNu6z/k106MpsyoxH89RkMehA8+CeCzSECKOcg7/7b5bYA5V4PQ+4V0sywQlUySIylzkJM+lNGDJMF2VG9T8n4M7gEbAlevdHS1MynxcS2/mG/gn4/ex/66uyvpMmarxXUuGCJk7N0vPifJDnMLmMGN8xosV2pG0viePVA3RUZMWAF/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=a5TLXZT+; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com; envelope-from=etzhao1900@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1754454967; c=relaxed/relaxed;
+	bh=dyl+4iOlTi/aeKebUp39F24cwHyqM1kxjjt1F2AMIE8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MFouH7dcz5YSNBqNNW2fZtrZwrw6DvNjbKgdOVG2GZ5U1VZ+mWXvjpnwvyN9Dk3wz5jWgVYWOxNoxQBewdE0E963B50z2VhJ+g1Q7u7RXY2OKs7quuB93UiYgtN+eAgStgzwvodC8pP+nTEjpP6PKTsGzdKabT6zbVD/qmfwd8fvSmnoEVPOlNcjbH5ifEl9ff1Cv8Zg0aQDoMMzCSBsjm6y6ULi6npnd+I4hh83i0vJgQ7GtpEAFkw8re/4w64x/XgVbKiU1HnZdVK/ztJ7QlHC8Yt39PUfbOE7bfmNEb8m4SiDL2SePc1Lt9KjQqEPXBO6ys/Y4/cIQAvMBocNtw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eI+B9c8s; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::22b; helo=mail-lj1-x22b.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=a5TLXZT+;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eI+B9c8s;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::542; helo=mail-ed1-x542.google.com; envelope-from=etzhao1900@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22b; helo=mail-lj1-x22b.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxYJx1ZgRz2xRs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 11:55:12 +1000 (AEST)
-Received: by mail-ed1-x542.google.com with SMTP id 4fb4d7f45d1cf-615c29fc31eso10090121a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 18:55:11 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bxctT3GS2z2xck
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 Aug 2025 14:36:00 +1000 (AEST)
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-3322e4ac12cso43156391fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 Aug 2025 21:36:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754445308; x=1755050108; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SwUvDCDGNTjgSGRxvkjU5V1Z70GTc/BlM8QTHRxaQ9I=;
-        b=a5TLXZT+lyo28o0Nl6aDobekq0PhLomBYBHGjwl4eTEs42urXkJwYgvupTwNopGSlm
-         ijZcBukzf8+5UE0nj6/a+LppHsX/56JAAjjKWuo1x4FVlclCtNlK3TzMcmLyDhHvxL0C
-         KE95evFT57oI5JnjsWZH6Je7Ap1+Sv0sjeLfARAR51EmJM5mtzrfb7Q8hE++jwAbKquh
-         TYOLWWHYh7yJZgxsmUM8Oqj1eKlkBEKxEMC2uI4iJW0/rS6Sn4cmguGVE+es7BsQ7YNS
-         kpM6QcmOaNZ6nyReLE6X7OCjICbRtgOjTHG9rgaD5AuKkGhGdHkcPaCn4Wbhx9oB2oKz
-         oosQ==
+        d=gmail.com; s=20230601; t=1754454955; x=1755059755; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dyl+4iOlTi/aeKebUp39F24cwHyqM1kxjjt1F2AMIE8=;
+        b=eI+B9c8sufnh9vKTZihhG6AiMCFT2UwVql3YNO8ZOLoBD/WzrgAqvZMwC6MlyUBsPz
+         qMebGR7Ka44UKz1fZnN4yMwsWaWQTU8hDxqFfwU1izxctVH6/97RCpnxVws1BPICA9xO
+         5idO/e9pwsH/UuaKpuGWwSfIFWd0kIEkujI4rm2MbE5ZDEflO6dk9I95RAUsNRDOgagl
+         +vl3AMAiL8oy0z3PvRUVev5MXxk4gttSRPGhpN8bZXz0LS73Qu8fO1XgVTedOb8JR/hG
+         O42vi/Sj8I7DCAbUFmLC8SO90YvxENdpBNbz7u0W2+AO9VMI3I53AdbnX/0o2U+1bU63
+         gaTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754445308; x=1755050108;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SwUvDCDGNTjgSGRxvkjU5V1Z70GTc/BlM8QTHRxaQ9I=;
-        b=sXhEA7O6fMt1aSY3kKCtxuezYmY6PIXoFqV18t8Dx6TAW0H7S9S3KNzdvMM2wbDE4s
-         8QIVL5QISr28fNaeH6tP1/ezYZBAPbvm+ozJHenVQx/ScQRx2/az3rTGBnExId2dltQV
-         fGKGWOG3on7ChQxslkanMMw5KyUy1UYBGkUg40jkT7AeXTLOsHWuOoXrEGJ08ZiPvQxx
-         xY23VwrHmfRh9pxTXS+utRVeIDcNI04lni2JbNuL96pbJGhuiNou6ckRlCev5SdX4Mg6
-         Gh2hpiH7WB5ipeM/y+WA039IvcCKIHpSde/d20zGOfneaCfQyhYwM8GccaJ4mWf2Kz7g
-         AuGw==
-X-Gm-Message-State: AOJu0YwG7WbDNDLkGILvpX//Sw7BNUu+Oj/togas1qd09v3QVOLFQlKI
-	0E3zXScC+thnkVGWgyTTDE9kJZndchH9urczU48MV7DJ+Hc6pFfiGpZN
-X-Gm-Gg: ASbGncsidXrRbeLnB84sRlC6Jd607BYmi/gK5/forNxi6HNeqnzltzzzn8e4s/1T06y
-	/Avh5LZAZhfvSkOcfxXc6y1wjANytogY8XoQRaP7aCN4gEPaN3nHyTw1udHQ6ejkBO732AjEpQX
-	UpCG29kARgGZVovcKtiaHzc3thuuK6Yfp8L5O+ACRBtgDqgJ+4FX9GcLEisj2LRoKENID3nAzXu
-	5n88OGx4A0C6GTLqRMOCigIqmX5peKVbumCCCjNUD2CjDCH4dnCqcnL5tf54TvSYaTvbGxK3aho
-	M2Wr0nC/ALC4UJJzdfp2SscS6FV4WvKsJKMyYRUbFqMQ9uA0lMTKN4PyM24k9YECewB6C6PBHVl
-	mCSGyiWa+AxbR/iwFivjIcUv0LWRChKGOWb9DO3FVDu7ozEtXv3v19krwp3OeMM0m7GE9g19VRO
-	cav8YelXYvdsMc4Rlf5qlE8z4Jxq5DrQ==
-X-Google-Smtp-Source: AGHT+IGHGjRRe6J/8f38FMv+b/ctFpC2mzgoSfGhiIh3DMk0vlEB5YMRV5JVbv1qLNEU4LSdMZOlEQ==
-X-Received: by 2002:a17:907:1c0f:b0:ae3:7022:b210 with SMTP id a640c23a62f3a-af99005e566mr101376466b.12.1754445308254;
-        Tue, 05 Aug 2025 18:55:08 -0700 (PDT)
-Received: from [26.26.26.1] (ec2-3-72-134-22.eu-central-1.compute.amazonaws.com. [3.72.134.22])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a21c076sm976544866b.102.2025.08.05.18.55.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Aug 2025 18:55:07 -0700 (PDT)
-Message-ID: <50f6c23f-1f46-4be1-813a-c11f2db3ec4f@gmail.com>
-Date: Wed, 6 Aug 2025 09:55:05 +0800
+        d=1e100.net; s=20230601; t=1754454955; x=1755059755;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dyl+4iOlTi/aeKebUp39F24cwHyqM1kxjjt1F2AMIE8=;
+        b=ntqPtZJ/LaZGCMA9e0nmdQK/8p9LxHIUJqxxJok/MHlkR2YX1s7lu+GaLfp2qBnw7p
+         7bXgrd2OlncDTmGFTutWWCGWwXenHRzVdyE4TsccpUKv+MfVYdOgXLx+SD2shSLcawbT
+         vm658YeaycO39j58ttmHUydyUFAQAJKnxhlEiNNf6mVMPkYRqAWa7Y1G8P/axIp7Ag9x
+         cotpPfD9mMg+ScAHuER4PietUZRg9jNSuJfKTY4V9vbwINSqqu087JbjHAXciTWsmJ7n
+         Fkw3lA4hqP73HxMGfU/GfHY87/XvvBpDl5prLAa/ra+/It8ItdE5vwZzzluELUVTw3ia
+         59iA==
+X-Forwarded-Encrypted: i=1; AJvYcCXbHme/72tj1ftrgUjkwR5wbVvM467i0RGz/5u3a1Z3xXxVRdLIrl0V1wYcVmTwKUhx1hcc8IbiRL30xns=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yyf5WaWMCnypw/H/dB/7GMX5+6N/am/Yswm6F736bUlZG5nbvaR
+	/l7qBLfjdZ3UR5NSnqUaHTf6g3NK3N33rk17PhdMwS75FvY0ZII4X+TUsc1wprzTJ48bL1U9eHr
+	N6J5/C3XCM/WGqWhazGqH6vjCibkWW64=
+X-Gm-Gg: ASbGncvfpCwh1k0Tg777Ek3RjByY4ALdPpXWHvmf0Ma252ghpIYjYismhiufxSo9hYJ
+	ePkoQ7Jr28abkOO8qB1Ox2QY0wS5lBE2oWmkAJhf935yzV2JdjLKHAjzjHT3I3y2/+hc6u87HTF
+	MG56kEl79GJ9lD1WxmCZequDFVh8UiVhyZR9gz/Z7Di7Y/VIimEmd239hWMNjOyH2jZXDMdZcko
+	IVTjq4=
+X-Google-Smtp-Source: AGHT+IELREFbM69cWDMgkv0oAyeZWfUsogtR626ngafWyGyn4A7prZJUgwVT4kX8m1x5U9hUnIU0ztH0bEfAmGCquxc=
+X-Received: by 2002:a05:651c:f0e:b0:32c:e253:20cc with SMTP id
+ 38308e7fff4ca-3338128c651mr2551171fa.11.1754454955157; Tue, 05 Aug 2025
+ 21:35:55 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,96 +79,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PCI/AER: Check for NULL aer_info before ratelimiting in
- pci_print_aer()
-To: Breno Leitao <leitao@debian.org>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Jon Pan-Doh <pandoh@google.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20250804-aer_crash_2-v1-1-fd06562c18a4@debian.org>
-Content-Language: en-US
-From: Ethan Zhao <etzhao1900@gmail.com>
-In-Reply-To: <20250804-aer_crash_2-v1-1-fd06562c18a4@debian.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+References: <20250805142622.560992-1-snovitoll@gmail.com> <20250805142622.560992-7-snovitoll@gmail.com>
+ <60895f3d-abe2-4fc3-afc3-176a188f06d4@gmail.com>
+In-Reply-To: <60895f3d-abe2-4fc3-afc3-176a188f06d4@gmail.com>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Date: Wed, 6 Aug 2025 09:35:38 +0500
+X-Gm-Features: Ac12FXwBfBQD8yoFidSr60fw7LigvE8ZBweRU29uoAzLmmdybvheO1FdbNA_5DM
+Message-ID: <CACzwLxhs+Rt9-q6tKi3Kvu7HpZ2VgZAc4XEXZ4MEB60UbFjDKg@mail.gmail.com>
+Subject: Re: [PATCH v4 6/9] kasan/um: select ARCH_DEFER_KASAN and call kasan_init_generic
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: hca@linux.ibm.com, christophe.leroy@csgroup.eu, andreyknvl@gmail.com, 
+	agordeev@linux.ibm.com, akpm@linux-foundation.org, zhangqing@loongson.cn, 
+	chenhuacai@loongson.cn, trishalfonso@google.com, davidgow@google.com, 
+	glider@google.com, dvyukov@google.com, kasan-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Tue, Aug 5, 2025 at 10:19=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@gmail=
+.com> wrote:
+>
+>
+>
+> On 8/5/25 4:26 PM, Sabyrzhan Tasbolatov wrote:
+> >
+> > diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+> > index 9083bfdb773..8d14c8fc2cd 100644
+> > --- a/arch/um/Kconfig
+> > +++ b/arch/um/Kconfig
+> > @@ -5,6 +5,7 @@ menu "UML-specific options"
+> >  config UML
+> >       bool
+> >       default y
+> > +     select ARCH_DEFER_KASAN
+>
+> select ARCH_DEFER_KASAN if STATIC_LINK
 
+As pointed out in commit 5b301409e8bc("UML: add support for KASAN
+under x86_64"),
 
-On 8/4/2025 5:17 PM, Breno Leitao wrote:
-> Similarly to pci_dev_aer_stats_incr(), pci_print_aer() may be called
-> when dev->aer_info is NULL. Add a NULL check before proceeding to avoid
-> calling aer_ratelimit() with a NULL aer_info pointer, returning 1, which
-> does not rate limit, given this is fatal.
-> 
-> This prevents a kernel crash triggered by dereferencing a NULL pointer
-> in aer_ratelimit(), ensuring safer handling of PCI devices that lack
-> AER info. This change aligns pci_print_aer() with pci_dev_aer_stats_incr()
-> which already performs this NULL check.
-> 
-The enqueue side has lock to protect the ring, but the dequeue side no 
-lock held.
+: Also note that, while UML supports both KASAN in inline mode
+(CONFIG_KASAN_INLINE)
+: and static linking (CONFIG_STATIC_LINK), it does not support both at
+the same time.
 
-The kfifo_get in
-static void aer_recover_work_func(struct work_struct *work)
-{
-...
-while (kfifo_get(&aer_recover_ring, &entry)) {
-...
-}
-should be replaced by
-kfifo_out_spinlocked()
+I've tested that for UML,
+ARCH_DEFER_KASAN works if STATIC_LINK && KASAN_OUTLINE
+ARCH_DEFER_KASAN works if KASAN_INLINE && !STATIC_LINK
 
-as
-static void aer_recover_work_func(struct work_struct *work)
-{
-...
-while (kfifo_out_spinlocked(&aer_recover_ring, 
-&entry,1`,&aer_recover_ring_lock )) {
-...
-}
+ARCH_DEFER_KASAN if STATIC_LINK, and KASAN_INLINE=3Dy by default from defco=
+nfig
+crashes with SEGFAULT here (I didn't understand what it is, I think
+the main() constructors
+is not prepared in UML):
 
+ =E2=96=BA 0       0x609d6f87 strlen+43
+   1       0x60a20db0 _dl_new_object+48
+   2       0x60a24627 _dl_non_dynamic_init+103
+   3       0x60a25f9a __libc_init_first+42
+   4       0x609eb6b2 __libc_start_main_impl+2434
+   5       0x6004a025 _start+37
 
-Thanks,
-Ethan
+Since this is the case only for UML, AFAIU, I don't think we want to change
+conditions in lib/Kconfig.kasan. Shall I leave UML Kconfig as it is? e.g.
 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> Fixes: a57f2bfb4a5863 ("PCI/AER: Ratelimit correctable and non-fatal error logging")
-> ---
->   drivers/pci/pcie/aer.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 70ac661883672..b5f96fde4dcda 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -786,6 +786,9 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
->   
->   static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
->   {
-> +	if (!dev->aer_info)
-> +		return 1;
-> +
->   	switch (severity) {
->   	case AER_NONFATAL:
->   		return __ratelimit(&dev->aer_info->nonfatal_ratelimit);
-> 
-> ---
-> base-commit: 89748acdf226fd1a8775ff6fa2703f8412b286c8
-> change-id: 20250801-aer_crash_2-b21cc2ef0d00
-> 
-> Best regards,
-> --
-> Breno Leitao <leitao@debian.org>
-> 
-> 
+select ARCH_DEFER_KASAN
 
+>
+> >       select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+> >       select ARCH_HAS_CACHE_LINE_SIZE
+> >       select ARCH_HAS_CPU_FINALIZE_INIT
+> > diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
+> > index f97bb1f7b85..81bcdc0f962 100644
+> > --- a/arch/um/include/asm/kasan.h
+> > +++ b/arch/um/include/asm/kasan.h
+> > @@ -24,11 +24,6 @@
+> >
+> >  #ifdef CONFIG_KASAN
+> >  void kasan_init(void);
+> > -extern int kasan_um_is_ready;
+> > -
+> > -#ifdef CONFIG_STATIC_LINK
+> > -#define kasan_arch_is_ready() (kasan_um_is_ready)
+> > -#endif
+> >  #else
+> >  static inline void kasan_init(void) { }
+> >  #endif /* CONFIG_KASAN */
 
