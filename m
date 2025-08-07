@@ -1,71 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-10704-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10706-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39D2B1D1B2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 06:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82778B1D2F4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 09:05:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4byF3416SFz30RJ;
-	Thu,  7 Aug 2025 14:45:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4byJ8Z50FHz2xck;
+	Thu,  7 Aug 2025 17:05:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754541936;
-	cv=none; b=BJV5mH0SvrQDyobhk7DylgKACA1zDci9MyYMURUbEsn/2bU2A9YNKRbrnfqtrQulxgvTIYk6JuSO/AA/Dy1dwmq5NfryhS5qkBbQ66AUhsb+KSu6Ny+RKVqTWkjEtiPHVPXfU5c1pH3zlSIBfpvjUez8WuIzxY27Mul43Wm+aRQI6XIWHPDdUMDk1yi1xSgF0sdkzGxxwaZjsTC29+vGzSuCVf7Bl+qCn9/sNk/hCSxk8f+V1966MkwD4gpDZvD3y17jAMgGcLzgvTAOxZhBvbQYfBhbo0XhcOPAm88/s8X/Fi0yjqETcwkc3FF1YH4HKT7sCIy7QZtFavIT3N4kLw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754550334;
+	cv=none; b=d3yOOiDxpclr9zU5uQGYXPTfAS75PS6DXMd77puzdRI0qGu75L9qqf3Rsfh3X64/IcnUyBHl3a4+lVTtxWKQCJ2atWFVygzFx1TH/QFIqVBFvHQSCDX+D7HfG27GEhpMoElFD8CNwYjIcNavX1z0o7eH+RyfP/kTRwRmj5OehhFBvkODZJtXpHNirk8MjeydqOxMRlDZMavebfaLaZQlvvO3D20rm0wjfzW+QMNjcwyJWfVYgI7g+9VdJ1dbZDuLojKgUerKZcE5ESDD3uvbvrUgZ2RZef86jcCbxZW7fDWNIpUbq/+tdimrpbgnBaommEdWP/COq111g1/2H+qZSQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754541936; c=relaxed/relaxed;
-	bh=H9CRSste/NHsQRZw0qsq+5701S8wkfWLjHHrfuvfY2E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=VAth5u6uBHzMMd156KCCHn9CS02+py4d/eYAG86xPyGiwKOvLaSBsBOu6RdStQFLo0RoPlJVZ/BPFomBCbWpgWjIqLcb7eKy4OCygl0qcu+kKtbEZiO7Y3Jng4Vd1j0Mn81MXc1m20Ko84OpH8ew89JwkdxZU6+rUGoYhqkw4Y/X7gWtXRIvkXUWXcNeg6dWS6s5IwnteAJGUN1AHHgXRB4P8UaGOKhXsj+EJvHxQ44ay1D+Ktc+f7XarsQEX6qeAomKwygRo5mwYU8F8IBoi2h+V/xLebmTBSbgmQxwgZAoMy/j7LZhpA0aR1tGfsUR81MtDtcBaCtMxFfac6fIGA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pfBQhBnh; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1754550334; c=relaxed/relaxed;
+	bh=UGgZPqwfgoUb3FUlEOMOsj4NuTWgvSdptoWgx08oWgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DLA3gNUAaB5KaGH5GYJAJLmZolw0VkYezziy4+O9PmObvnZH8317Bene9A4xxD9LVUk1AsUUy4o2u82wIKY+fwRVcoG4AnFisDyFzogMnrXXXqmnba56HdXWlwN4EJnYy71hlqJj+ouTqGC5xScjTqhrj0EI5q0OrkqX5JbnvklQhaeJhzOmd6p2GLG9p3m9v1jCokz0/VSK2E9F6TzLeIDeDGtnU4FB8y/sBdJI6P14ptuI6MtMzBE2E/YdMqkdROPQjh8IpM3Neh6WHkKsxnx5/kcZpNVbR49YLNMglneLqhCDOvSYZ5ZQm4ObjwIMeBKKOXb7d/Ujoy2HqHf7mA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZQ9APmb; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pfBQhBnh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZQ9APmb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4byF330MFLz2yS4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 14:45:33 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5773wdDd019459;
-	Thu, 7 Aug 2025 04:45:31 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4byJ8Y2Zl4z2xcG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 17:05:32 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5775YUbd012331;
+	Thu, 7 Aug 2025 07:05:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=H9CRSs
-	te/NHsQRZw0qsq+5701S8wkfWLjHHrfuvfY2E=; b=pfBQhBnhtdRkBoPw0oDguj
-	7yJImJrXZLxvKyW3kv4slgG2TNIXo2IsWgV6Yzz0l8t3x8hVEuPM4SGuklx6uoyE
-	LI1mjRwiYQzpeIv1Nld+m8dxaXlz/nkeumwzYrpFCxzAet4etIOXRBUU9NivyZGs
-	LJIiQLb6KAivVjVwxibtdg2HDed4ol3OopWVReF7EfJ7PhoxlgD236qBaTxB8MeG
-	8n/eu8Y3WJh7T+40wN8MERqpjIbTN119EvUCH5hHXAj7a/rIJOK+Ay77zpbmjQbY
-	l0A+2hP5wtr2SVDAwHazTI+g4Cbdzq4WdeQ8HR5MbuXTxOvmYrnXrrCwM9WTEVKw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48c26twd42-1
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:to; s=pp1; bh=UGgZPqwfgoUb3FUlEOMOs
+	j4NuTWgvSdptoWgx08oWgU=; b=TZQ9APmbgZnNtgh6y7KPIiWdbYBTUE0TGiwrd
+	SPy1G5K5W1ZHOq5lLwcYuxqfzFUVHjrC+av6h1ZAKfRqIR/wEhkAnECuNCWb5EIC
+	/E8pIRsUzO/GfJP7/eKwWvZyFbmQlCZXfTS+fiNrLOrz2gRcLFZ7aNmY51fKR/7X
+	Nr8GCHn9Lu1891t6BYy+1VFUqqIlAX+9bP+6ks3niKAkHcz8rJ3oIJXSTPD5O/+z
+	40ibi7x9pUgaDJoF1xwasBkYeks07XALNbIQZKK42xTWgRNBNBDbKdSMSDS8Wl+g
+	jQjxOKpgUDd3L7bFBoW8IoFrtN7qKzsn237nt1+E8rUsEriVg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63rhb5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 04:45:30 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5770f86r031321;
-	Thu, 7 Aug 2025 04:45:29 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwnexnt-1
+	Thu, 07 Aug 2025 07:05:04 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 577753gr002323;
+	Thu, 7 Aug 2025 07:05:03 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63rhb1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 04:45:29 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5774jPZ115532306
+	Thu, 07 Aug 2025 07:05:03 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5775o8mp025899;
+	Thu, 7 Aug 2025 07:05:03 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48bpwn7du3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Aug 2025 07:05:02 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57774x1051773888
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Aug 2025 04:45:25 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B9AE62004B;
-	Thu,  7 Aug 2025 04:45:25 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C4F320040;
-	Thu,  7 Aug 2025 04:45:25 +0000 (GMT)
-Received: from [9.109.215.252] (unknown [9.109.215.252])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  7 Aug 2025 04:45:24 +0000 (GMT)
-Message-ID: <01d8e15b-5feb-4db0-beed-67bb5cc765de@linux.ibm.com>
-Date: Thu, 7 Aug 2025 10:15:24 +0530
+	Thu, 7 Aug 2025 07:04:59 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3252C20049;
+	Thu,  7 Aug 2025 07:04:59 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 01FD52004B;
+	Thu,  7 Aug 2025 07:04:57 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.126.150.29])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Thu,  7 Aug 2025 07:04:56 +0000 (GMT)
+Date: Thu, 7 Aug 2025 12:34:56 +0530
+From: Srikar Dronamraju <srikar@linux.ibm.com>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+        Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+        Tyrel Datwyler <tyreld@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>
+Subject: Re: [PATCH] pseries/lparcfg: Add resource group monitoring
+Message-ID: <aJRQGGr0E5Z9Fqjw@linux.ibm.com>
+Reply-To: Srikar Dronamraju <srikar@linux.ibm.com>
+References: <20250716104600.59102-1-srikar@linux.ibm.com>
+ <da3a0717-fe3a-49db-bebd-f231a7fdedb7@linux.ibm.com>
+ <aJGZ5_Sf4c1ByCeb@linux.ibm.com>
+ <b2e88230-84ed-4b2a-b097-1b813fb42e2a@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,63 +102,167 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: PPC: Fix misleading interrupts comment in
- kvmppc_prepare_to_enter()
-To: Andrew Donnellan <ajd@linux.ibm.com>
-References: <20250806055607.17081-1-ajd@linux.ibm.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
-In-Reply-To: <20250806055607.17081-1-ajd@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <b2e88230-84ed-4b2a-b097-1b813fb42e2a@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: SLsYH1L2uwvatNhfa8VqdcQ1OvFr4PKz
-X-Authority-Analysis: v=2.4 cv=F/xXdrhN c=1 sm=1 tr=0 ts=68942f6a cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=x6bhQlrcOuA10pbQGD8A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: SLsYH1L2uwvatNhfa8VqdcQ1OvFr4PKz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDAyOSBTYWx0ZWRfX2b5LITlRTEI2
- e/ZZRIjyitRU3vqFVeNS10q6fh3GNvrZxEOZN0AzVfyd5ruf/1Iuz4jJyUgxLsM6a1fJWefP4L+
- jgm4+HQDSjUGYhibNiedqBEDbNTN4VcQ5lx4I6WzDm2AnwwA+2qrTNMKqNmqNU5KvLgpg/QrOyW
- JZqbguXcqPgksM8vUvlyyqkdhwyhRHs2Dbigcie3+mG4RfjMX/wsGcUmw/MhwBkuX4DZAS8iyIC
- kVRKWeSk5akhrCgQvxK9RNwjDKwO3qGUvGJqv+tUI1WzTxireoCXBR6S+XA/zYrR6eEQFVYK0i3
- 22KMdNkzXjXg4rhde1QGSNEVA6B5gZQntecPI5HZykwhY0NWpOzmTk8JCwPUxoqOevXA1WFJeSb
- SZ3SPZU7se6wWBXzuZEXRpZOm4K9+PZSrZqg5j3pAuhcw1LfBxIFnHhCWZ4N1LO8+XtvAq5I
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDA1MiBTYWx0ZWRfXyXc7JPVTH3CF
+ GlHtMuE0tXwwWztY/BfUPj422RDEKmYo9tdmWTKN+Q6Q3rwK+kAUKrIjC2TmNrjOmS9VEa8QNBD
+ /Lb6WNJ3qb5DUv9ht9yPQAofxkf7TYOma5XNdtaUomBpBXjrNDlBOAI55kqan2KqvY2m12CvpTa
+ BIhcSlYeDurnE41w5LM/6T0jPFoyK43m+uWcIhrzTt5KiAGZMhUpxDldwqaermSBDhaQBxFF7qX
+ kCdxXkq8+Sywvbrdu9o/FkDSLGyQ2n0m2Tgz4lskYEL/kupoFTCQHAH5nlXCZUDQPAoIGxsqbWR
+ r2EC6Qfb6Ma9l1ghaB0LloFsOzF0OCzzi9cZKXifDkvdqdbrbqDaHJQZ9/BtnbMeHVgqsUXgybk
+ 1VrUCc2yR6xXTWwDIiXmulw+6vIFXttejp1qfFUlB/aWdzgUTp19+JAOQcI4RFdTiUgv0Ws+
+X-Proofpoint-ORIG-GUID: 92DFMifLVMEtyCLB6HMF5bsGv6EH0L73
+X-Authority-Analysis: v=2.4 cv=LreSymdc c=1 sm=1 tr=0 ts=68945020 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=8nJEP1OIZ-IA:10 a=2OwXVqhp2XgA:10 a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8
+ a=VgkgaohVKf-vvqSBLYMA:9 a=wPNLvfGTeEIA:10
+X-Proofpoint-GUID: YQZDuHdl6EoFe6JuTBtixTAuqOvpVhzM
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-06_05,2025-08-06_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- clxscore=1011 spamscore=0 bulkscore=0 adultscore=0 mlxlogscore=532
- malwarescore=0 phishscore=0 suspectscore=0 classifier=spam authscore=0
- authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508070029
+ suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 mlxlogscore=999 bulkscore=0
+ malwarescore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
+ definitions=main-2508070052
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+* Shrikanth Hegde <sshegde@linux.ibm.com> [2025-08-06 19:49:13]:
 
-
-On 8/6/25 11:26, Andrew Donnellan wrote:
-> Until commit 6c85f52b10fd ("kvm/ppc: IRQ disabling cleanup"),
-> kvmppc_prepare_to_enter() was called with interrupts already disabled by
-> the caller, which was documented in the comment above the function.
 > 
-> Post-cleanup, the function is now called with interrupts enabled, and
-> disables interrupts itself.
 > 
-> Fix the comment to reflect the current behaviour.
+> On 8/5/25 11:13, Srikar Dronamraju wrote:
+> > * Shrikanth Hegde <sshegde@linux.ibm.com> [2025-08-01 19:27:22]:
+> > 
 > 
-> Fixes: 6c85f52b10fd ("kvm/ppc: IRQ disabling cleanup")
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> > > 
+> > > Could you please add a link to patch on power utils on how it is being consumed?
+> > 
+> > I am not sure I understood your query, it looks a bit ambiguous.
+> > 
+> > If your query is on how lparcfg data is being consumed.
+> > All tools that are consuming lparcfg will continue to use the same way.
+> > Since this is not changing the way lparcfg is being consumed, I think it is
+> > redundant information that need not be carried in all the changes/commits to
+> > lparcfg. Such an information would be required when lparcfg file was
+> > created.
+> 
+> I was saying you could point to power utils patch that you have sent which says how
+> one would consume this.
+> 
+> https://groups.google.com/g/powerpc-utils-devel/c/8b2Ixk8vk2w
 
-Given that there is WARN_ON which would trigger if IRQ were disabled
-and further we flip irq before calling schedule, indicates that IRQ must 
-be enabled while calling it.
+I guess, power utils patch would need a linuxppc-dev mail reference and not
+vice-versa. Since this patch would sent first and the reviewers of the power
+utils patch would a need a reference to this patch.
 
-Reviewed-by:: Shrikanth Hegde <sshegde@linux.ibm.com>
+Since this patch needs to be sent first, how do I generate a url for the
+second / subsequent patch?
+
+> 
+> > 
+> > If your query is on how resource group data is being consumed by users.
+> 
+> > > 
+> > > Does MODULE_VERS need to increased?
+> > 
+> > All tools that are consuming lparcfg will continue to use the same way.
+> > If there was some conditional changes that need to be done by the tools,
+> > then we should have updated the same.
+> > Hence there is not need to update MODULE_VERS.
+> > 
+> 
+> Since there are two new fields user scripts might need change is why i was suggesting
+> we might need to increase MODULE_VERS
+
+I still dont see a reason for increasing the MODULE_VERS
+
+> 
+> > > 
+> > > > @@ -78,6 +78,8 @@ struct hvcall_ppp_data {
+> > > >    	u8	capped;
+> > > >    	u8	weight;
+> > > >    	u8	unallocated_weight;
+> > > > +	u8      resource_group_index;
+> > > > +	u16     active_procs_in_resource_group;
+> > > >    	u16	active_procs_in_pool;
+> > > >    	u16	active_system_procs;
+> > > >    	u16	phys_platform_procs;
+> > > > @@ -86,7 +88,7 @@ struct hvcall_ppp_data {
+> > > >    };
+> > > >    /*
+> > > > - * H_GET_PPP hcall returns info in 4 parms.
+> > > > + * H_GET_PPP hcall returns info in 5 parms.
+> > > >     *  entitled_capacity,unallocated_capacity,
+> > > >     *  aggregation, resource_capability).
+> > > >     *
+> > > > @@ -94,11 +96,11 @@ struct hvcall_ppp_data {
+> > > >     *  R5 = Unallocated Processor Capacity Percentage.
+> > > >     *  R6 (AABBCCDDEEFFGGHH).
+> > > >     *      XXXX - reserved (0)
+> > > > - *          XXXX - reserved (0)
+> > > > + *          XXXX - Active Cores in Resource Group
+> > > >     *              XXXX - Group Number
+> > > >     *                  XXXX - Pool Number.
+> > > >     *  R7 (IIJJKKLLMMNNOOPP).
+> > > > - *      XX - reserved. (0)
+> > > > + *      XX - Resource group Number
+> > > >     *        XX - bit 0-6 reserved (0).   bit 7 is Capped indicator.
+> > > >     *          XX - variable processor Capacity Weight
+> > > >     *            XX - Unallocated Variable Processor Capacity Weight.
+> > > > @@ -120,9 +122,11 @@ static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
+> > > >    	ppp_data->entitlement = retbuf[0];
+> > > >    	ppp_data->unallocated_entitlement = retbuf[1];
+> > > > +	ppp_data->active_procs_in_resource_group = (retbuf[2] >> 4 * 8) & 0xffff;
+> > > >    	ppp_data->group_num = (retbuf[2] >> 2 * 8) & 0xffff;
+> > > >    	ppp_data->pool_num = retbuf[2] & 0xffff;
+> > > > +	ppp_data->resource_group_index = (retbuf[3] >> 7 *  8) & 0xff;
+> > > >    	ppp_data->capped = (retbuf[3] >> 6 * 8) & 0x01;
+> > > >    	ppp_data->weight = (retbuf[3] >> 5 * 8) & 0xff;
+> > > >    	ppp_data->unallocated_weight = (retbuf[3] >> 4 * 8) & 0xff;
+> > > > @@ -236,6 +240,13 @@ static void parse_ppp_data(struct seq_file *m)
+> > > >    	seq_printf(m, "unallocated_capacity=%lld\n",
+> > > >    		   ppp_data.unallocated_entitlement);
+> > > > +	if (ppp_data.active_procs_in_resource_group)  {
+> > > 
+> > > ppp_data.active_procs_in_resource_group can ever be zero?
+> > > 
+> > > If the entry is absent in lparcfg, then lparstat will print it as 0 (which happens to be
+> > > default RG, while default RG may have processors)
+> > 
+> > If active_procs_in_resource_group is 0, then we are not printing the
+> > resource group information. If active_procs_in_resource_group is non-zero
+> > and resource_group_index is wrong, we need to report a bug to the firmware
+> > to update it. Kernel is very transparent with respect to this information.
+> > It can neither verify the information received nor should we even be doing
+> > this.
+> > 
+> > > 
+> The comment was more on the necessity of if statement there.
+> 
+> +	if (ppp_data.active_procs_in_resource_group)  {
+> 
+> If one runs lparstat in the LPAR, that means ppp_data.active_procs_in_resource_group is non zero. and when
+> ppp_data.active_procs_in_resource_group is zero, i don't think one can run lparstat in any of such LPAR.
+> 
+> btw, ppp_data.active_procs_in_resource_group can be fraction between 0,1 or is it always an integer number?
+> 
+
+ppp_data.active_procs_in_resource_group being 0 is valid, it means its running
+on an hypervisor, that doesn't support Resource group.
+
+if ppp_data.active_procs_in_resource_group is non zero and
+ppp_data.resource_group_index is not present, then its a bug.
+
+ppp_data.active_procs_in_resource_group can only be integers.
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
 
