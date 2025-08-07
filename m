@@ -1,76 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-10721-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10722-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF58B1D7CC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 14:23:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F895B1D838
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 14:47:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4byRCm6W0nz3cQs;
-	Thu,  7 Aug 2025 22:23:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4byRlY4JN5z3cR8;
+	Thu,  7 Aug 2025 22:47:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754569428;
-	cv=none; b=LC4zj1vD1Zf9/ian9vZA9H8PmcmRG3sklGUJsRnKKCD+ZSaX8VVJFcL35X/NL+FXTe+fIDKMXPkYoiVhpI1CztNC9goFtiPli2jwgyZcbjcqosldoM4UJXf+ptl2iIXTp5Elz6Jn8Yt+54Za11Qo40q3FeJS8hRyVkNDC47jYcDdtjjBbWba/txShk+M4zlq8+XWictwE+DInQtYGmlt6ORXYGk5Y+B29IVsdMhqZSO53ziCNEY4QTn+aWL5e2yYbAU3OrHBJ8wiFJ11q9uMSKc+eJBl1ivXZK6iv204ANVW7/7P6r5NkPf8F8wmX7op8KZV52L3xZTP8fbPik1Ptg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754570873;
+	cv=none; b=cA/7I0A2rnpHW0PcQRfJnzMKwYr4Y1xqGzMMHrqKEu3M9Gxsma37prMBl+X4WiQhGvBtWOvvWNYBorApMZcezh4+PsQCtM/q+yHu6rAIU0f5PBoyk706G+e3y1p3J3BMtAgvbi+QEPMDeP1YjUJFcC2pWtOYJuHt/9z3oR+JhCVPy3C9Dir2gLzSHHZn5aeiAE/ESJSy4NpqYLGPbwiel1K1YsHKDGkSIitk0nRVAJyeqkQTJKGPMerge0/QAQiSxFuedM0pm0XIZJBxUHCbuTH2QowVf/uwTc9bx3kT38IEdW1+cvX3euTVzXVaQbIhKhvFYA3Jl/Q6ZsVgZ4KPww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754569428; c=relaxed/relaxed;
-	bh=7cvhc2n6Alx46S4I49BYrgerwP0OHDrJPDXqoNg5sY8=;
+	t=1754570873; c=relaxed/relaxed;
+	bh=7U+/hi1NU75wi5GyHPqbltoDvWO6scxSVbUq/rTUbyc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HUk5WZ7RsQhECDt33IVdsZWj+S9vknLOJoVXssDr3E3vIM/YWoQrYaNBLVlXL0G0xcuwVNjnwmWZW+gmAkro5Yh0n2IkBu8G5Vnhh3wt/Cax3SqW9vTeODoQxLiS1ti5WtmnSO7ur6/i7e1QogF3z6JgZ8DiN3PJCqplZWh1JK9Z3ZCxrCQhMHKVFoAV7DLca6X/eSzyBXuog/+S3QewBucrDUKYgoXA0Oj1oW/Lwzu34Su5UHzfDdpIZaqfzV+BmtpMY47i+MmaIoFt8zrK791mg/xkkE1FBg0LQRavONF8moE/GOufDEh1KlQeI1EOtCb+OqR/Pg+PhuDPGdF4OQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=okyG7YYo; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=AJjqtqFm9fy5tg8ucSV65eE8DY1uTWsa3wBncRTD/uV5AcXNP+THss9n3HISrU+NP/x+7UAqlQzHmuYNt5mO+EpbZAG2jNzYXz9nWz3WCZaaldqGUNFDXvt6AE+J7P9q67HxZukpfsOLv4tGi41yh+vD//pFuuu15L4xcUQFBuACEFSq9/LtnbZFzOzLxf2BiN60jV4MxdP/qddmlAja0nwT1PVoAVGl+5kuHps6mSxWJfNVi1sbMlvRJH3YIMfn5Vp9Y8aXjPwbA74yyHuSOddeXDDMZzeWjqtalWYK0Ww/mApGe/XkAL55e2GM33t61UzrgKYGUqMygcvT3RQ4Fg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i8wUd7ug; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=okyG7YYo;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i8wUd7ug;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4byRCl5CZWz3cQr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 22:23:47 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5774x6Gq029224;
-	Thu, 7 Aug 2025 12:23:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=7cvhc2n6Alx46S4I49BYrgerwP0OHD
-	rJPDXqoNg5sY8=; b=okyG7YYoE9g+vKwtOwWd4wOgZYsKc+5O0PblUVbhc+dJui
-	XFB66No08Sek3fb1QEBE7LkYTpO1aLJh3B8RVUsPPZveorWbkDjoV1L5SSABqg2b
-	Od0ltPtoF95c6uyxWDOgRd9gdWF+731q4nODr4awdgfg0KazYz9oFNqdPvdTMZ+a
-	N84qcDEXlcqPk9ITw7DGlx6LnGgPGd66xPymvjAMqpce7PzLs60Sdj5WRlAuXkEl
-	/8k6XsRxB51oKqiuJet/Er8cmrevhVpiFE9F0xWXRDkLxehY6YJV39C1TA/EEL4L
-	VIh9L/RuLumueqV4tnoPZgx3A/iV8qehQD5YBsVw==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq61249k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 12:23:44 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5779QRBp020616;
-	Thu, 7 Aug 2025 12:23:43 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwn0gyk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 12:23:43 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 577CNdPk51708386
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Aug 2025 12:23:39 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 63F0120043;
-	Thu,  7 Aug 2025 12:23:39 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 769CC20040;
-	Thu,  7 Aug 2025 12:23:38 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.204.207.58])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  7 Aug 2025 12:23:38 +0000 (GMT)
-Date: Thu, 7 Aug 2025 17:53:13 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Andrew Donnellan <ajd@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org
-Subject: Re: [PATCH] KVM: PPC: Fix misleading interrupts comment in
- kvmppc_prepare_to_enter()
-Message-ID: <aJSasSXIz19k6hCM@li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com>
-References: <20250806055607.17081-1-ajd@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4byRlW6Chzz3cQs
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 22:47:51 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id C4B015C65DA;
+	Thu,  7 Aug 2025 12:47:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5277DC4CEEB;
+	Thu,  7 Aug 2025 12:47:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754570868;
+	bh=+egBy+RMpqLtNh79AR9yQ2T/2DAqtjLVFMqu+wyMIP8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i8wUd7ugI+2eJCVQlgR+OWX8+BpJQNJTOm6DQpGqSByBgbhWZ4JMAe4XUxtOwcUHQ
+	 ZamyIuuHFEKz0UhGPx01ZSJcNMDpG+tPY0tqtokc6dam69DCtoqxhjzWwIpA5biQ9r
+	 CMBRVoGYIdMh68PaqAxLX62m1Xy6PI9Iiu1llWywiYt+A8zMlqmCW/v5nvmeSv7r1b
+	 5F/Iq1i3cCuCQONi46KeKCIyflVwZ+3RqCLqYGUKKHEXYLkUqgrDstXnlmXLb4wOSw
+	 DgBDrwpoig72ZM19FeM5ZOgqTzP3lAEA6ac22715rowvudm/PNG4umLM6RC3iFDwY+
+	 i8DGTMrazccHw==
+Date: Thu, 7 Aug 2025 13:47:44 +0100
+From: Simon Horman <horms@kernel.org>
+To: Mingming Cao <mmc@linux.ibm.com>
+Cc: netdev@vger.kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
+	ricklind@linux.ibm.com, kuba@kernel.org, edumazet@google.com,
+	pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
+	maddy@linux.ibm.com, mpe@ellerman.id.au
+Subject: Re: [PATCH net-next v4] ibmvnic: Increase max subcrq indirect
+ entries with fallback
+Message-ID: <20250807124744.GJ61519@horms.kernel.org>
+References: <20250806184449.94278-1-mmc@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,75 +67,147 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250806055607.17081-1-ajd@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 06EAVvl4PHnjptIkK1PdGjr93hknL5eX
-X-Proofpoint-ORIG-GUID: 06EAVvl4PHnjptIkK1PdGjr93hknL5eX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDA5OSBTYWx0ZWRfX96pEbhvEIrmG
- BWKrw1NdaLR4enGpV4jbAS+7SgnznjsmBeuy0kh7N00u2Z4QvYOQsH4yGkdsR92g43IkFeuoMFb
- DqX9mdjiQRYEsW9bUF2NDSBTlEEctS+G7BekHOgq7hNHaEXZMRGVevdIS3xPRpygdEQuLKksrsV
- uCih2OFKCpH+GTiOYYHl5Fu8MqG/cOToYTL5MaoknkDXin4Yr1YpdIcz17/jAMGajlcA5vUSdqw
- qoU1jb09YRKOfVk8drYFlVhDlBAXjHEcDbqIXQPiimrLsJ5Du7VdcUYxKM1iCyrUBH0WNIijWFH
- YYPQYyLZbqL3fa9dppMO1PBfH+rvrraibS3ZWqAVWtLzuFeK5vIh/XmIL3Wzz/AB0hZ1E08lyyd
- HmMAg196PwGVsCXUZKJhQeoWx9dWAQXqybc8Cq4dLLrYdErpZDn+cGFlsiPqDxlzfRsRR3HX
-X-Authority-Analysis: v=2.4 cv=TayWtQQh c=1 sm=1 tr=0 ts=68949ad0 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=T-Jo5Y6SYTEF9Fg7UwAA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-07_02,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 phishscore=0 impostorscore=0 spamscore=0
- mlxlogscore=747 bulkscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0
- malwarescore=0 clxscore=1015 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
- definitions=main-2508070099
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250806184449.94278-1-mmc@linux.ibm.com>
+X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Aug 06, 2025 at 03:56:07PM +1000, Andrew Donnellan wrote:
-> Until commit 6c85f52b10fd ("kvm/ppc: IRQ disabling cleanup"),
-> kvmppc_prepare_to_enter() was called with interrupts already disabled by
-> the caller, which was documented in the comment above the function.
+On Wed, Aug 06, 2025 at 11:44:49AM -0700, Mingming Cao wrote:
+> POWER8 support a maximum of 16 subcrq indirect descriptor entries per
+>  H_SEND_SUB_CRQ_INDIRECT call, while POWER9 and newer hypervisors
+>  support up to 128 entries. Increasing the max number of indirect
+> descriptor entries improves batching efficiency and reduces
+> hcall overhead, which enhances throughput under large workload on POWER9+.
 > 
-> Post-cleanup, the function is now called with interrupts enabled, and
-> disables interrupts itself.
+> Currently, ibmvnic driver always uses a fixed number of max indirect
+> descriptor entries (16). send_subcrq_indirect() treats all hypervisor
+> errors the same:
+>  - Cleanup and Drop the entire batch of descriptors.
+>  - Return an error to the caller.
+>  - Rely on TCP/IP retransmissions to recover.
+>  - If the hypervisor returns H_PARAMETER (e.g., because 128
+>    entries are not supported on POWER8), the driver will continue
+>    to drop batches, resulting in unnecessary packet loss.
 > 
-> Fix the comment to reflect the current behaviour.
+> In this patch:
+> Raise the default maximum indirect entries to 128 to improve ibmvnic
+> batching on morden platform. But also gracefully fall back to
+> 16 entries for Power 8 systems.
 > 
-> Fixes: 6c85f52b10fd ("kvm/ppc: IRQ disabling cleanup")
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+> Since there is no VIO interface to query the hypervisor’s supported
+> limit, vnic handles send_subcrq_indirect() H_PARAMETER errors:
+>  - On first H_PARAMETER failure, log the failure context
+>  - Reduce max_indirect_entries to 16 and allow the single batch to drop.
+>  - Subsequent calls automatically use the correct lower limit,
+>     avoiding repeated drops.
+> 
+> The goal is to  optimizes performance on modern systems while handles
+> falling back for older POWER8 hypervisors.
+> 
+> Performance shows 40% improvements with MTU (1500) on largework load.
+> 
+> --------------------------------------
+> Changes since v3:
+> Link to v3: https://www.spinics.net/lists/netdev/msg1112828.html
+> - consolidate H_PARAMTER handling & subcrq ind desc limit reset for RX/TX
+>   into a helper function
+> - Cleanup and clarify comments in post migration case
+> - Renamed the limits to be a clear and simple name
+
+Thanks for the updates.
+
+I'm sorry for not mentioning this in my review of v3, but net-next
+is currently closed for the merge window. Could you please repost,
+or post a v4, once it re-opens. That should happen once v6.17-rc1
+has been released. Probably early next week (week of 11th August).
+
+My minor nits below notwithstanding this looks good to me.
+So feel free to include.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+N.b.: I will be on a break when net-next reopens.
+      So please don't wait for feedback from me then.
+
+> 
+> Changes since v2:
+> link to v2: https://www.spinics.net/lists/netdev/msg1104669.html
+> 
+> -- was Patch 4 from a patch series v2. v2 introduced a module parameter
+> for backward compatibility. Based on review feedback, This patch handles
+> older systems fall back case without adding a module parameter.
+> 
+> Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+> Reviewed-by: Brian King <bjking1@linux.ibm.com>
+> Reviewed-by: Haren Myneni <haren@linux.ibm.com>
 > ---
->  arch/powerpc/kvm/powerpc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index 153587741864..2ba057171ebe 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -69,7 +69,7 @@ int kvm_arch_vcpu_should_kick(struct kvm_vcpu *vcpu)
->  
->  /*
->   * Common checks before entering the guest world.  Call with interrupts
-> - * disabled.
-> + * enabled.
->   *
->   * returns:
->   *
-> -- 
-> 2.50.1
-> 
-> 
 
+These days it is preferable to put the revision history here.
+Rather than above your Signed-off-by line, as is currently the case.
 
-Good catch
-Reviewed-by: Gautam Menghani <gautam@linux.ibm.com>
+>  drivers/net/ethernet/ibm/ibmvnic.c | 59 ++++++++++++++++++++++++++----
+>  drivers/net/ethernet/ibm/ibmvnic.h |  6 ++-
+>  2 files changed, 56 insertions(+), 9 deletions(-)
 
-Thanks,
-Gautam
+Or here.
+
+> 
+> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+
+...
+
+> @@ -6369,6 +6400,19 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter, bool reset)
+>  			rc = reset_sub_crq_queues(adapter);
+>  		}
+>  	} else {
+> +		if (adapter->reset_reason == VNIC_RESET_MOBILITY) {
+> +			/* After an LPM, reset the max number of indirect
+> +			 * subcrq descriptors per H_SEND_SUB_CRQ_INDIRECT
+> +			 * hcall to the default max (e.g POWER8 -> POWER10)
+> +			 *
+> +			 * If the new destination platform does not support
+> +			 * the higher limit max (e.g. POWER10-> POWER8 LPM)
+> +			 * H_PARAMETER will trigger automatic fallback to the
+> +			 * safe minimium limit.
+
+minimum
+
+> +			 */
+> +			adapter->cur_max_ind_descs = IBMVNIC_MAX_IND_DESCS;
+> +		}
+> +
+>  		rc = init_sub_crqs(adapter);
+>  	}
+
+...
+
+> diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
+
+> index 246ddce753f9..480dc587078f 100644
+> --- a/drivers/net/ethernet/ibm/ibmvnic.h
+> +++ b/drivers/net/ethernet/ibm/ibmvnic.h
+> @@ -29,8 +29,9 @@
+>  #define IBMVNIC_BUFFS_PER_POOL	100
+>  #define IBMVNIC_MAX_QUEUES	16
+>  #define IBMVNIC_MAX_QUEUE_SZ   4096
+> -#define IBMVNIC_MAX_IND_DESCS  16
+> -#define IBMVNIC_IND_ARR_SZ	(IBMVNIC_MAX_IND_DESCS * 32)
+> +#define IBMVNIC_MAX_IND_DESCS 128
+> +#define IBMVNIC_SAFE_IND_DESC 16
+> +#define IBMVNIC_IND_MAX_ARR_SZ (IBMVNIC_MAX_IND_DESCS * 32)
+
+nit: maybe move towards using tabs before the values here?
+
++#define IBMVNIC_MAX_IND_DESCS	128
++#define IBMVNIC_SAFE_IND_DESC	16
++#define IBMVNIC_IND_MAX_ARR_SZ	(IBMVNIC_MAX_IND_DESCS * 32)
+
+...
+
+-- 
+pw-bot: deferred
 
