@@ -1,95 +1,98 @@
-Return-Path: <linuxppc-dev+bounces-10727-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10728-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93452B1D8F8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 15:26:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D238B1D930
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 15:39:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4byScR1z7Pz3cRr;
-	Thu,  7 Aug 2025 23:26:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4byStj5cg6z3cRn;
+	Thu,  7 Aug 2025 23:39:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754573207;
-	cv=none; b=FuSh9U3cpQyy7zIU+B1HwwLXpggxAAKoNhzC12vzg7vaLVCwPRXkm0asK9ESAkWgPeDjiXHH5fVYqj29d+3o0/Ud4dZiXiRO4GdO49PLLX5D8ZnTvejWxnzJIo6sGvOGgExine87kieZzWXKgPRdj2QoQ1ij5G7+ewzA6d3LfFB7FLAPipJLYjIsGcvLnq2l07//zwdo670fPcWi3lKtJ9WB0a1ydds1QwHM2e8FeYfTSkkM6AUdoDyqhQvwM61HW+DiQTztqNP1gKRh4qrjKNu/9XJKSxLZLqYyXmZKuWcRZr3m9HIl9sGHjwu9sihzsWZVd2D0HCg7hoc1eE/hBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754573207; c=relaxed/relaxed;
-	bh=9oVqEej9wiaQjQl3Hk9fdlTeBWzpOkwFCwpLKucQfvY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bOceY1jnkmPi+2IzWlCIu0/zWmyRriNVZd0iMsstI9QVsuovuCvCXWLajEzoU7jMPRk6fzig33XEXWrXM5DB+2OOTzxhXHkBndQNGXqqpwMVq1/9t+L2FUqX3V5I2hVbtPvEuZKVERRzi/Z3c/LvGbR3UPeXThJVS81O3CQSG1waArC0HVucnTKDd5sWmUpiyDlObH89q66PDuGHgNusYm2mI1Zv9K31y5thCKn9TfP36hb3IXfOBy/1hWKYJE4bOJQ/CfRkg3RDbRej+9+uD0RN/ET2jxyGpp6LDkmOokTRlg+aZezajy3uH1+iYeOaoQZwjCcowMoQAaJSSMQo3g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Gn5mMbzy; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2406::601" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754573949;
+	cv=pass; b=RcXXAlYgh4SjBCuqBZPfM1u7VaNU+ZoT7Sfqy0pO0dXpadTuQ4l3Ycmcf8/r+uNnB/k8AgAdl7ZiBp1TdzoWfL1SOVXfNdlc1NkX4A0XNOFpF4UlHn91leTIe51TmmdNUd7+v8C/h7TGZkiZ8GU0uy5SGIE/CxQOh6IAlMmnNzrd3MNnLL5VgkunbgN49n+4g85ZxVSKbRo3qWxYtQBIwzdbTSTvm0+D5xw0kaWksfLw3p9e77KuqIco8gvjUpXWMh3TOWLSOExVXO1LnfF777IYXhLr12Fi2lNcRFZAIYyRHm4Y5+S+JyjYjc0l9tckzDQMvWzczfNWWnzCSCuOAQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754573949; c=relaxed/relaxed;
+	bh=54Px3zvYf4CuEyxVRynpi6iF48N3mew5kEum4tnD5v0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=OIQx4qA/YLOM6QAivhz0RyC0sQ+P84kqYVwcqvHZVoZYKyGNWeJLy0KvpXUSetQ4LeRxpVP0yhW7IRUvs8cr9q32qyDxIcFTTFphr7dS6rnUsFgcp9VeGLxH3a3mjuChGkBsgT0/5E6XAo9fxxfR0ugQl5nAApeaFn/Fsb7CCu6NZ7KLYExdjXQPX+UkuZb2Qqa3LwVZPYWlg5nB22NxcFt3Mbrs560FZfj3w+ZryZGzDo9jekT29VX9bqalCWr0TW+4EZSSfsXTQXAPiRlz9Ojdr9jPJfEAvwj3OCPPOflEk274ztdEKe6dJCBduJr9Ijd6O4HLNnwQ9I3wykTLGQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Bf0mhOSD; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2406::601; helo=nam02-sn1-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Gn5mMbzy;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Bf0mhOSD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2406::601; helo=nam02-sn1-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:2406::601])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4byScQ2CMyz3cRq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 23:26:45 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5773hi2J017879;
-	Thu, 7 Aug 2025 13:26:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=9oVqEe
-	j9wiaQjQl3Hk9fdlTeBWzpOkwFCwpLKucQfvY=; b=Gn5mMbzyp8Y4jCK0TxCu/R
-	obNSQ3+tbhzPPinnlIF0Mn+g29VBbQ7h546MbVZBUCr5YgHDNEVA9+9FMLyyEXpD
-	Dki1GCUf+km7ofosPf9S1VTK3JjWnA2HDAG6R6geNFXxdkv4ZGtS8qlCgq59QrGK
-	01Ne3bIj5BLE5af3sLXy6KA8N64J42fxZzNCI2n2FVoxVGqK30yHbS0E84nZRrIF
-	ugIdr0Cw8E19HtjMt6Wo8n8tjqCb8qlxLCSot63Iskbdjhc3ugff0EGeX/W4OIhL
-	n38/LTl/6oQSh+Ro3bGQkUvpljvpW7zwUgUszCJzx0TRIoIUyVxpCPmm/h+V9YyA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63a6kv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 13:26:10 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 577DMSoX002781;
-	Thu, 7 Aug 2025 13:26:09 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63a6kr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 13:26:09 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5779chwF022668;
-	Thu, 7 Aug 2025 13:26:08 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwqgsk5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 13:26:08 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 577DQ4H920120054
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Aug 2025 13:26:04 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 728AC20043;
-	Thu,  7 Aug 2025 13:26:04 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BF21D20040;
-	Thu,  7 Aug 2025 13:25:57 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.43.75.32])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  7 Aug 2025 13:25:57 +0000 (GMT)
-Date: Thu, 7 Aug 2025 18:55:54 +0530
-From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
-        andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
-        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
-        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
-        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
-        naveen@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        npiggin@gmail.com, memxor@gmail.com, iii@linux.ibm.com,
-        shuah@kernel.org
-Subject: Re: [bpf-next 2/6] bpf,powerpc: Implement PROBE_MEM32 pseudo
- instructions
-Message-ID: <aJSpYtksqwp4IVkX@linux.ibm.com>
-References: <20250805062747.3479221-1-skb99@linux.ibm.com>
- <20250805062747.3479221-3-skb99@linux.ibm.com>
- <c53da8e9-c15d-47b4-9422-4461f0b7c188@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bySth4YTgz3cRk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 23:39:08 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=odOtssjFOkCHYaLHQ+/p9kfwL3oWQqyiWiKZLpw7XJiF0foKdV34qpOhsa1iNCspSxVdxU4gA0WIItvoFQ9sRtdvvhlbhXyTBk5Ca0RXJ3RlP78IzX7daEYxP+3DERHoiEVZUq6MhT6APGT5uklKHYQGIFquSh71x2Puus3T4i8nJPnglcxkCDj+8H6wruHDXuIIsoc9Tm1p4FS/4NhFdVpTORh7rLv1w8bBVZVxzJvWspW37QJRE8JbsVFRKO7JzmyP7iBHI65AgMr19mjmpCkS4hgxSVfHwg581jbnkd35C/EEQ7HPbqjeAMv/llJMdnXVlbhEQw0Qywxz9wytHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=54Px3zvYf4CuEyxVRynpi6iF48N3mew5kEum4tnD5v0=;
+ b=WHGqL+evN1vHpZ7qbQ6RVVDVkvnpn9fYJEwlKcNw2tuS3UHw/cekUJCZobaYpQw5oT7ZwdVyQKnVpTVWm91I3/g6uByftqmmGJajARVQMwsOO9dqOj08ynUXbkUqDt6SJ5/gtWuR9mLD8+eLzSM5/PNlgbOjQw+WTLl9Q+Wilktn4nmyWf4bk60zuNCZL/pFTfeMO+nffuX/AI27zQBaZMKSFQQb2GELkui8GmIZSdjYczrggAtJANFiIiV2RKlxQg+TV+OCwfC3kU1vxB88biOmpAblynNudTd1fLMHTUoWJN7e0avj0G1kzWej0DCDpJG7TOjvkxlpUnW+JZo5Vg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=54Px3zvYf4CuEyxVRynpi6iF48N3mew5kEum4tnD5v0=;
+ b=Bf0mhOSD+JdgReLtcb1INqB0/uyZWs8MTJetWOhSwa3/PLkVmbmv/hM6Jl3dg3NDMwPrsdDM/AlzyEUrUBURHkACZ6cjHLXiooKnG2YMGnzXwkRRzEcBCBNXbcVCGh58e12vxDNvxaaYSD3/bhb5e9s0aMvTNDZ9mGcWTWp5Z0O13GK0Lzmffv4MQJjFCGVLtyoFeRFT2sBeSM6zy6Jvlf/218RHAdsr+LCFfAT+PZAJJKhqdojdp/MgjqxqGvZgP7XN2ZxopR4zMA620B+mgkDwCkQXS11WIz7ZuvEqkQWL/b9jGOLORKloIcURxJ7DSXvoNKuXdOWI1COqBddbww==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by DS0PR12MB8768.namprd12.prod.outlook.com (2603:10b6:8:14f::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.13; Thu, 7 Aug
+ 2025 13:38:49 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9009.017; Thu, 7 Aug 2025
+ 13:38:49 +0000
+Date: Thu, 7 Aug 2025 10:38:48 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v1 11/16] dma-mapping: export new dma_*map_phys()
+ interface
+Message-ID: <20250807133848.GL184255@nvidia.com>
+References: <cover.1754292567.git.leon@kernel.org>
+ <b96c639433d3b614288be4b305ecba3a9fb2c00f.1754292567.git.leon@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b96c639433d3b614288be4b305ecba3a9fb2c00f.1754292567.git.leon@kernel.org>
+X-ClientProxiedBy: YT4PR01CA0497.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10c::15) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,307 +106,153 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c53da8e9-c15d-47b4-9422-4461f0b7c188@csgroup.eu>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDEwOCBTYWx0ZWRfX/iEXtPdpd1Eg
- 6g8RAHUynDG+j2LPpWMxbIzSAYgHmLZvggunwNd6WdY+o0Wu753R+D/EkBzHkLgcFXeYDZh63bu
- dEX+o7bGxgP/RHj8OQACTVn9VeKaCdLiFMyhjL6tXCGD71VrG/9RZ0f8KtC2UqArdGmub2Df56i
- csCTLyOvMaDrYGuWrPprmXmiPoVLJ2cT8Z/9H33DQ1qKHfLcU84TvbOrY9CnQuWQDZtA7UD7wUq
- Dks7hllZM60dBYwizrhqO23ZgZ8qokvXL34P7JWRa56ouEVEl0SM9Lg4IM5SOCVYSWOHnnr6o67
- gwUPpkriSp5pFk8B4NFFnajkz4oLlGn3JwQO/YzKnlzt8QlKu0hcLxLogPY1t9+qcguLOPTO2Kx
- NXFwL5J2EjSoNnN1yrwdf2Xlwtb2xa1jOtt33mMZAYz7hfclqzNKEhsntzHqzWHPsM0ESi2H
-X-Proofpoint-GUID: X-mH1yrkqFE2hfomJdku2NBcgpwQzPab
-X-Authority-Analysis: v=2.4 cv=PoCTbxM3 c=1 sm=1 tr=0 ts=6894a972 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=8nJEP1OIZ-IA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=_ttamy9umuXLLvATu48A:9
- a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
-X-Proofpoint-ORIG-GUID: vEDoO0hLNA0SKg24SpSXOqYsQmNfBFJT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-07_02,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 adultscore=0 clxscore=1015 bulkscore=0
- priorityscore=1501 impostorscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
- lowpriorityscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
- definitions=main-2508070108
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DS0PR12MB8768:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5c6203ba-7b89-4eee-7a5d-08ddd5b7bd5f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?AMKVoTshkoWihCrrnOUvbEbK3Gi7aXCYIDForZBGpYKryA4uJRbN0UDpbFTN?=
+ =?us-ascii?Q?H/nr1xjNK0yCSTAH2/3voqKzqcPQ8JjFMyfvCCv2aMnvNbHTA33B63muGzmW?=
+ =?us-ascii?Q?5DuQYeQkxu9Uw2xN2G18A8DecvYxjTEqqa7EJ52Dz0bjjAPXvhQ6AbLFGWBo?=
+ =?us-ascii?Q?59GavV3fO9HNdDxXcrP+paneiJa1nxYzUrzHDIscVuUyHiCjrFZNgOHhDikR?=
+ =?us-ascii?Q?7wcVcGvgI+hCp9HjXxKQW7tGN8V0FZgKJ/bqXmnsX/x5N/3zlk0pVa9FtJCH?=
+ =?us-ascii?Q?CLPxOt79JdMBCRMDwcNL4hI95vmDbD6/mce+8brYWOpRzcZnRWyO0Z5vCBGI?=
+ =?us-ascii?Q?JDKz/8pIG7Vb3fuJmFMrtI+6ePyGKdAZgWpMJplKOpaDdL8hONs1XFxGY7VF?=
+ =?us-ascii?Q?svLNjoB5HWfHueL7yuniD8+OFfjxkYeo06UE1BdxGED3DIddzKnkvCsYbmy2?=
+ =?us-ascii?Q?VVwT75RYTyr6y5rIgz8ZLeboijTMVYkuysX3l8Ek+VqpZpozDcvGgOwi5WrW?=
+ =?us-ascii?Q?TLv867KYTn5yifskzFshdlklW2WRDN6LKSXpACxyJQaInAZ5DaBuhGWJmIoI?=
+ =?us-ascii?Q?DaBEtwnyLGOS/S1BvFNEUiuqy0i++7tiaJLQxVzGHrqb1qEGEukHyzAMHjZi?=
+ =?us-ascii?Q?TDdil9vH++NAqfwB+u16QWc/W04KAsYHH0kgRD1OlGGP4AQ/OWmGu2I69nP3?=
+ =?us-ascii?Q?IeWJNgKGb2zPeCIR5L77759PtmgLjN9ZhwxCfwgEgrCcd6CywpMAD2pVM8hu?=
+ =?us-ascii?Q?3mZVa0GoXXJgLkCn2cznn+Rk7DSN3JZxQZRyFAC7E5crCHy/caMXV0IW6cKu?=
+ =?us-ascii?Q?u34KX7iKGK8KAze/O4LNUcsx+v3h1RnDfd/N/Rou0rM+Z5viJS4XumBIE1Jz?=
+ =?us-ascii?Q?SzYPcu8cpkdfVKdtTBdSm0oGs3ugExQh0AgyzrygW3AI/wEbU+hmjREG4iGS?=
+ =?us-ascii?Q?qtmNR6urQDwKamP16/n/ls1+o0YkvBPAuhiwtpUP9HOlaORcZB3FN29xVU1v?=
+ =?us-ascii?Q?TqXUAq7QjNtdswDx9oAvbvt/vTce4GRKf/wneoIZAVvOjUckgyP6SfE/Y193?=
+ =?us-ascii?Q?jwhYRGUwASumZDJM62eTSJoZUQEb7/X0M+i1nPjqPkJP33D4vu3NtK94/gKB?=
+ =?us-ascii?Q?wGakF67m/iwQtk5r07m1A/AtX6+j5UjwVztZ34j7mNl+c1EeLAnYfnmrB7aw?=
+ =?us-ascii?Q?sJwNviOQtRPsQfeJqQ/GG5CFr4zbQt7E0hoxpBm9rXEMb8O7/x3Nu0rM+YS6?=
+ =?us-ascii?Q?rxP5rXjWZsJa9uzk+4HAdEq4C3vazwpTl7fBeNJsDiScIPUUvpC5+7OteGZ3?=
+ =?us-ascii?Q?pM8bimM2DTTDvatW94F9tddt+JSq7lKAKgOsbF3YH0ARnXa7VuNBAwsbNsbU?=
+ =?us-ascii?Q?Kt8K+jvchAm+kmGcMUFNcXaGLGeT2VGjqdTOqFq/nWWV8fszgKi6LZ8x6BWB?=
+ =?us-ascii?Q?oJRmbUVR0z0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MBPINjYfPGiE5jDtZnc+kL6Tem1DGVvWnnr4IAqOJ3QqDGwGQYyBqSEdaTWv?=
+ =?us-ascii?Q?rCrkX2y/Sk4d6j61UbByvUXt3nKTkD+MeO8cPgtXL/XPX2sGtHrb8gNrSr/u?=
+ =?us-ascii?Q?OEKNTVQZ7CHsvHCdnd9X5FXuoX0i/hrhFXJMhY5OxAO2m5eI/uVKfnRhtNME?=
+ =?us-ascii?Q?WfPPxcc0BXNl1H77XG1bbVfLl4VNWDgxX70H0hEofaU4W5E3P1swLrZW9mdQ?=
+ =?us-ascii?Q?Feukc/5DifHe2SePpUv2EKDGC4VLP8K0ep5Ci+eTGyK2EaR19DpqUB7DqHVw?=
+ =?us-ascii?Q?ocoo7Xx2dFbyGGwWrbx8IanAzYUqZ6w3V2/BwdDcAbpOYtPMk++ubsPaWkJS?=
+ =?us-ascii?Q?86KBb6LCEKOCBbnz91YiL8E+jtdRHZk0nVLho1rNXZKq6wB0lX7GySKFPJYi?=
+ =?us-ascii?Q?4omNcGV34wSS0K+GJyD46PR/zDcAmDow1riE3YHKDXpojGGSfyFt7iU3pvfH?=
+ =?us-ascii?Q?wc8uUrVB+XPvmrMfTcW6f6GhHRWWtb4Dv4kTaBpvPOa+uihaAGvn0nj+7oA0?=
+ =?us-ascii?Q?lH1msGlh5aLcnLykZ0KM2VqWGkDwK1aa8TxDl0T7g19lHp/PkCYYEyI4Oydg?=
+ =?us-ascii?Q?x36u5MNNY4csSkfMtShIOKMjAXTOfgsV3noFPXKv7GWBj4G63jQRQy7KIztY?=
+ =?us-ascii?Q?iPkXT0BhYBwhfcaZNLxAMZv/8/Vpu40Cz3B5loET0MoCiijmOSqhjQdf7GwW?=
+ =?us-ascii?Q?D35UMZoK5FjnyeDHRoCkY78/CsRcdqBbRu0V6nzyYh7xTVf8SEmvcU4/IM9+?=
+ =?us-ascii?Q?3LW+QVoPsOUarqzKeGJeU5AoFMb/rluC1yy28WSJumduJKF/GZW2yw51wFAB?=
+ =?us-ascii?Q?AX9Y4SJw5BaOn58fwEy4isBeUtWN43pvqqdfGWTuVGltm4QnzrrRrmFYQxzo?=
+ =?us-ascii?Q?YCfQhh0zaLBvD0u0iYz56hPKffO19tDiR+lPXZxIpIVEszLomukhAvwhOJUW?=
+ =?us-ascii?Q?Mw+9j/MEH0hp09oZ3t8tmTi9yYBa4OvVYhtPBCu7s0rvRmL1yCnVTkTlJvQ5?=
+ =?us-ascii?Q?l3+N6jLtVsMz+54ZIPO8T0dp0FSwyKmeiM2I57nUM+9+kei6xaLYl/nsyMcS?=
+ =?us-ascii?Q?lFDpa4criGr7VWHlF9ecZdlmf8lRoqzbwaY2QJALFxY+Yy8lXP2jKXIhGrlI?=
+ =?us-ascii?Q?nsR1LN7f5+rqLOuMwqDQX4KgxOZc2rBg31tXp98jmNTtVA0VPrwb7rTxuXnP?=
+ =?us-ascii?Q?K7xw5frFaQTc7Tm/sId0dEa4GdyvSh4TxEDupjoJUpbOPfqqUDwiCgIA8VCG?=
+ =?us-ascii?Q?qGb3DHiGYlIQyyN5h8MRnLL5ilAlfSWqxXHhjp5U3+BnT323tDZHc4o4W3Hr?=
+ =?us-ascii?Q?xKkMQNzUFeKjJZjncuQgF/AamcRWrEHt26fXixwlZVz+XJNC3GEHrBc+Ri4r?=
+ =?us-ascii?Q?0+lMkCA/HXc2Shv8z27rCCJ46nrnGEQEFheADapJYipY4Mc0WWth2NBJ4r/t?=
+ =?us-ascii?Q?SM90I4M3q/2GCRG7KRKfbnaRI5P/PHGCBgNBYW/YrXQ62mQggCHMTmkRy/6E?=
+ =?us-ascii?Q?aahjgO1NFxrLDGTYgcHOkgZKuqC/j4pfzuZPIHHd7UDLyQf/J9B+7fmCNSfu?=
+ =?us-ascii?Q?sxifWglQ0mC+PDduUgw=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c6203ba-7b89-4eee-7a5d-08ddd5b7bd5f
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 13:38:49.1750
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ONwX7mHa1EuCmMcNdBKJGTu1Z2nQrZWEhwSNbSygKKjIuQb9Rcj66qSQFOkzaU9W
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8768
+X-Spam-Status: No, score=-3.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 05, 2025 at 09:41:37AM +0200, Christophe Leroy wrote:
+On Mon, Aug 04, 2025 at 03:42:45PM +0300, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
 > 
+> Introduce new DMA mapping functions dma_map_phys() and dma_unmap_phys()
+> that operate directly on physical addresses instead of page+offset
+> parameters. This provides a more efficient interface for drivers that
+> already have physical addresses available.
 > 
-> Le 05/08/2025 à 08:27, Saket Kumar Bhaskar a écrit :
-> > Add support for [LDX | STX | ST], PROBE_MEM32, [B | H | W | DW]
-> > instructions.  They are similar to PROBE_MEM instructions with the
-> > following differences:
-> > - PROBE_MEM32 supports store.
-> > - PROBE_MEM32 relies on the verifier to clear upper 32-bit of the
-> > src/dst register
-> > - PROBE_MEM32 adds 64-bit kern_vm_start address (which is stored in _R26
-> > in the prologue). Due to bpf_arena constructions such _R26 + reg +
-> > off16 access is guaranteed to be within arena virtual range, so no
-> > address check at run-time.
-> > - PROBE_MEM32 allows STX and ST. If they fault the store is a nop. When
-> > LDX faults the destination register is zeroed.
-> > 
-> > To support these on powerpc, we do tmp1 = _R26 + src/dst reg and then use
-> > tmp1 as the new src/dst register. This allows us to reuse most of the
-> > code for normal [LDX | STX | ST].
-> > 
-> > Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-> > ---
-> >   arch/powerpc/net/bpf_jit.h        |   5 +-
-> >   arch/powerpc/net/bpf_jit_comp.c   |  10 ++-
-> >   arch/powerpc/net/bpf_jit_comp32.c |   2 +-
-> >   arch/powerpc/net/bpf_jit_comp64.c | 108 ++++++++++++++++++++++++++++--
-> >   4 files changed, 114 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-> > index 4c26912c2e3c..2d095a873305 100644
-> > --- a/arch/powerpc/net/bpf_jit.h
-> > +++ b/arch/powerpc/net/bpf_jit.h
-> > @@ -161,9 +161,10 @@ struct codegen_context {
-> >   	unsigned int seen;
-> >   	unsigned int idx;
-> >   	unsigned int stack_size;
-> > -	int b2p[MAX_BPF_JIT_REG + 2];
-> > +	int b2p[MAX_BPF_JIT_REG + 3];
-> >   	unsigned int exentry_idx;
-> >   	unsigned int alt_exit_addr;
-> > +	u64 arena_vm_start;
-> >   };
-> >   #define bpf_to_ppc(r)	(ctx->b2p[r])
-> > @@ -201,7 +202,7 @@ int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx, int tmp_reg,
-> >   int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass,
-> >   			  struct codegen_context *ctx, int insn_idx,
-> > -			  int jmp_off, int dst_reg);
-> > +			  int jmp_off, int dst_reg, u32 code);
-> >   #endif
-> > diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-> > index c0684733e9d6..35bfdf4d8785 100644
-> > --- a/arch/powerpc/net/bpf_jit_comp.c
-> > +++ b/arch/powerpc/net/bpf_jit_comp.c
-> > @@ -204,6 +204,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
-> >   	/* Make sure that the stack is quadword aligned. */
-> >   	cgctx.stack_size = round_up(fp->aux->stack_depth, 16);
-> > +	cgctx.arena_vm_start = bpf_arena_get_kern_vm_start(fp->aux->arena);
-> >   	/* Scouting faux-generate pass 0 */
-> >   	if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
-> > @@ -326,7 +327,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
-> >    */
-> >   int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass,
-> >   			  struct codegen_context *ctx, int insn_idx, int jmp_off,
-> > -			  int dst_reg)
-> > +			  int dst_reg, u32 code)
-> >   {
-> >   	off_t offset;
-> >   	unsigned long pc;
-> > @@ -354,7 +355,12 @@ int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass
-> >   		(fp->aux->num_exentries * BPF_FIXUP_LEN * 4) +
-> >   		(ctx->exentry_idx * BPF_FIXUP_LEN * 4);
-> > -	fixup[0] = PPC_RAW_LI(dst_reg, 0);
-> > +	if ((BPF_CLASS(code) == BPF_LDX && BPF_MODE(code) == BPF_PROBE_MEM32) ||
-> > +	    (BPF_CLASS(code) == BPF_LDX && BPF_MODE(code) == BPF_PROBE_MEM))
-> > +		fixup[0] = PPC_RAW_LI(dst_reg, 0);
-> > +	else if (BPF_CLASS(code) == BPF_ST || BPF_CLASS(code) == BPF_STX)
-> > +		fixup[0] = PPC_RAW_NOP();
-> > +
-> 
-> Is there also a 'else' to consider ? If not, why not just a 'else' instead
-> of an 'if else' ?
-> 
-Thanks Chris, for pointing it out. Will try to accomodate this in v2.
-> >   	if (IS_ENABLED(CONFIG_PPC32))
-> >   		fixup[1] = PPC_RAW_LI(dst_reg - 1, 0); /* clear higher 32-bit register too */
-> > diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-> > index 0aace304dfe1..3087e744fb25 100644
-> > --- a/arch/powerpc/net/bpf_jit_comp32.c
-> > +++ b/arch/powerpc/net/bpf_jit_comp32.c
-> > @@ -1087,7 +1087,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
-> >   				}
-> >   				ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx, insn_idx,
-> > -							    jmp_off, dst_reg);
-> > +							    jmp_off, dst_reg, code);
-> >   				if (ret)
-> >   					return ret;
-> >   			}
-> > diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-> > index 489de21fe3d6..16e62766c757 100644
-> > --- a/arch/powerpc/net/bpf_jit_comp64.c
-> > +++ b/arch/powerpc/net/bpf_jit_comp64.c
-> > @@ -44,6 +44,7 @@
-> >   /* BPF register usage */
-> >   #define TMP_REG_1	(MAX_BPF_JIT_REG + 0)
-> >   #define TMP_REG_2	(MAX_BPF_JIT_REG + 1)
-> > +#define ARENA_VM_START  (MAX_BPF_JIT_REG + 2)
-> >   /* BPF to ppc register mappings */
-> >   void bpf_jit_init_reg_mapping(struct codegen_context *ctx)
-> > @@ -61,6 +62,8 @@ void bpf_jit_init_reg_mapping(struct codegen_context *ctx)
-> >   	ctx->b2p[BPF_REG_7] = _R28;
-> >   	ctx->b2p[BPF_REG_8] = _R29;
-> >   	ctx->b2p[BPF_REG_9] = _R30;
-> > +	/* non volatile register for kern_vm_start address */
-> > +	ctx->b2p[ARENA_VM_START] = _R26;
-> >   	/* frame pointer aka BPF_REG_10 */
-> >   	ctx->b2p[BPF_REG_FP] = _R31;
-> >   	/* eBPF jit internal registers */
-> > @@ -69,8 +72,8 @@ void bpf_jit_init_reg_mapping(struct codegen_context *ctx)
-> >   	ctx->b2p[TMP_REG_2] = _R10;
-> >   }
-> > -/* PPC NVR range -- update this if we ever use NVRs below r27 */
-> > -#define BPF_PPC_NVR_MIN		_R27
-> > +/* PPC NVR range -- update this if we ever use NVRs below r26 */
-> > +#define BPF_PPC_NVR_MIN		_R26
-> >   static inline bool bpf_has_stack_frame(struct codegen_context *ctx)
-> >   {
-> > @@ -170,10 +173,17 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
-> >   		if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
-> >   			EMIT(PPC_RAW_STD(bpf_to_ppc(i), _R1, bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
-> > +	if (ctx->arena_vm_start)
-> > +		EMIT(PPC_RAW_STD(bpf_to_ppc(ARENA_VM_START), _R1,
-> > +				 bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
-> > +
-> >   	/* Setup frame pointer to point to the bpf stack area */
-> >   	if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)))
-> >   		EMIT(PPC_RAW_ADDI(bpf_to_ppc(BPF_REG_FP), _R1,
-> >   				STACK_FRAME_MIN_SIZE + ctx->stack_size));
-> > +
-> > +	if (ctx->arena_vm_start)
-> > +		PPC_LI64(bpf_to_ppc(ARENA_VM_START), ctx->arena_vm_start);
-> >   }
-> >   static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx)
-> > @@ -185,6 +195,10 @@ static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx
-> >   		if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
-> >   			EMIT(PPC_RAW_LD(bpf_to_ppc(i), _R1, bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
-> > +	if (ctx->arena_vm_start)
-> > +		EMIT(PPC_RAW_LD(bpf_to_ppc(ARENA_VM_START), _R1,
-> > +				bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
-> > +
-> >   	/* Tear down our stack frame */
-> >   	if (bpf_has_stack_frame(ctx)) {
-> >   		EMIT(PPC_RAW_ADDI(_R1, _R1, BPF_PPC_STACKFRAME + ctx->stack_size));
-> > @@ -990,6 +1004,50 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
-> >   			}
-> >   			break;
-> > +		case BPF_STX | BPF_PROBE_MEM32 | BPF_B:
-> > +		case BPF_STX | BPF_PROBE_MEM32 | BPF_H:
-> > +		case BPF_STX | BPF_PROBE_MEM32 | BPF_W:
-> > +		case BPF_STX | BPF_PROBE_MEM32 | BPF_DW:
-> > +
-> > +			EMIT(PPC_RAW_ADD(tmp1_reg, dst_reg, bpf_to_ppc(ARENA_VM_START)));
-> > +
-> > +			ret = bpf_jit_emit_probe_mem_store(ctx, src_reg, off, code, image);
-> > +			if (ret)
-> > +				return ret;
-> > +
-> > +			ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
-> > +						    ctx->idx - 1, 4, -1, code);
-> > +			if (ret)
-> > +				return ret;
-> > +
-> > +			break;
-> > +
-> > +		case BPF_ST | BPF_PROBE_MEM32 | BPF_B:
-> > +		case BPF_ST | BPF_PROBE_MEM32 | BPF_H:
-> > +		case BPF_ST | BPF_PROBE_MEM32 | BPF_W:
-> > +		case BPF_ST | BPF_PROBE_MEM32 | BPF_DW:
-> > +
-> > +			EMIT(PPC_RAW_ADD(tmp1_reg, dst_reg, bpf_to_ppc(ARENA_VM_START)));
-> > +
-> > +			if (BPF_SIZE(code) == BPF_W || BPF_SIZE(code) == BPF_DW) {
-> > +				PPC_LI32(tmp2_reg, imm);
-> > +				src_reg = tmp2_reg;
-> > +			} else {
-> > +				EMIT(PPC_RAW_LI(tmp2_reg, imm));
-> > +				src_reg = tmp2_reg;
-> > +			}
-> > +
-> > +			ret = bpf_jit_emit_probe_mem_store(ctx, src_reg, off, code, image);
-> > +			if (ret)
-> > +				return ret;
-> > +
-> > +			ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
-> > +						    ctx->idx - 1, 4, -1, code);
-> > +			if (ret)
-> > +				return ret;
-> > +
-> > +			break;
-> > +
-> >   		/*
-> >   		 * BPF_STX ATOMIC (atomic ops)
-> >   		 */
-> > @@ -1142,9 +1200,10 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
-> >   				 * Check if 'off' is word aligned for BPF_DW, because
-> >   				 * we might generate two instructions.
-> >   				 */
-> > -				if ((BPF_SIZE(code) == BPF_DW ||
-> > -				    (BPF_SIZE(code) == BPF_B && BPF_MODE(code) == BPF_PROBE_MEMSX)) &&
-> > -						(off & 3))
-> > +				if ((BPF_SIZE(code) == BPF_DW && (off & 3)) ||
-> > +				    (BPF_SIZE(code) == BPF_B &&
-> > +				     BPF_MODE(code) == BPF_PROBE_MEMSX) ||
-> > +				    (BPF_SIZE(code) == BPF_B && BPF_MODE(code) == BPF_MEMSX))
-> >   					PPC_JMP((ctx->idx + 3) * 4);
-> >   				else
-> >   					PPC_JMP((ctx->idx + 2) * 4);
-> > @@ -1190,12 +1249,49 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
-> >   			if (BPF_MODE(code) == BPF_PROBE_MEM) {
-> >   				ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
-> > -							    ctx->idx - 1, 4, dst_reg);
-> > +							    ctx->idx - 1, 4, dst_reg, code);
-> >   				if (ret)
-> >   					return ret;
-> >   			}
-> >   			break;
-> > +		/* dst = *(u64 *)(ul) (src + ARENA_VM_START + off) */
-> > +		case BPF_LDX | BPF_PROBE_MEM32 | BPF_B:
-> > +		case BPF_LDX | BPF_PROBE_MEM32 | BPF_H:
-> > +		case BPF_LDX | BPF_PROBE_MEM32 | BPF_W:
-> > +		case BPF_LDX | BPF_PROBE_MEM32 | BPF_DW:
-> > +
-> > +			EMIT(PPC_RAW_ADD(tmp1_reg, src_reg, bpf_to_ppc(ARENA_VM_START)));
-> > +
-> > +			switch (size) {
-> > +			case BPF_B:
-> > +				EMIT(PPC_RAW_LBZ(dst_reg, tmp1_reg, off));
-> > +				break;
-> > +			case BPF_H:
-> > +				EMIT(PPC_RAW_LHZ(dst_reg, tmp1_reg, off));
-> > +				break;
-> > +			case BPF_W:
-> > +				EMIT(PPC_RAW_LWZ(dst_reg, tmp1_reg, off));
-> > +				break;
-> > +			case BPF_DW:
-> > +				if (off % 4) {
-> > +					EMIT(PPC_RAW_LI(tmp2_reg, off));
-> > +					EMIT(PPC_RAW_LDX(dst_reg, tmp1_reg, tmp2_reg));
-> > +				} else {
-> > +					EMIT(PPC_RAW_LD(dst_reg, tmp1_reg, off));
-> > +				}
-> > +				break;
-> > +			}
-> > +
-> > +			if (size != BPF_DW && insn_is_zext(&insn[i + 1]))
-> > +				addrs[++i] = ctx->idx * 4;
-> > +
-> > +			ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
-> > +						    ctx->idx - 1, 4, dst_reg, code);
-> > +			if (ret)
-> > +				return ret;
-> > +			break;
-> > +
-> >   		/*
-> >   		 * Doubleword load
-> >   		 * 16 byte instruction that uses two 'struct bpf_insn'
-> 
-Thanks for reviewing, Chris.
+> The new functions are implemented as the primary mapping layer, with
+> the existing dma_map_page_attrs() and dma_unmap_page_attrs() functions
+> converted to simple wrappers around the phys-based implementations.
 
-Regards,
-Saket
+Briefly explain how the existing functions are remapped into wrappers
+calling the phys functions.
+
+> +dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+> +		size_t offset, size_t size, enum dma_data_direction dir,
+> +		unsigned long attrs)
+> +{
+> +	phys_addr_t phys = page_to_phys(page) + offset;
+> +
+> +	if (unlikely(attrs & DMA_ATTR_MMIO))
+> +		return DMA_MAPPING_ERROR;
+> +
+> +	if (IS_ENABLED(CONFIG_DMA_API_DEBUG))
+> +		WARN_ON_ONCE(!pfn_valid(PHYS_PFN(phys)));
+
+This is not useful, if we have a struct page and did page_to_phys then
+pfn_valid is always true.
+
+Instead this should check for any ZONE_DEVICE page and reject that.
+And handle the error:
+
+  if (WARN_ON_ONCE()) return DMA_MAPPING_ERROR;
+
+I'd add another debug check inside dma_map_phys that if !ATTR_MMIO
+then pfn_valid, and not zone_device
+
+> @@ -337,41 +364,18 @@ EXPORT_SYMBOL(dma_unmap_sg_attrs);
+>  dma_addr_t dma_map_resource(struct device *dev, phys_addr_t phys_addr,
+>  		size_t size, enum dma_data_direction dir, unsigned long attrs)
+>  {
+
+> -	const struct dma_map_ops *ops = get_dma_ops(dev);
+> -	dma_addr_t addr = DMA_MAPPING_ERROR;
+> -
+> -	BUG_ON(!valid_dma_direction(dir));
+> -
+> -	if (WARN_ON_ONCE(!dev->dma_mask))
+> +	if (IS_ENABLED(CONFIG_DMA_API_DEBUG) &&
+> +	    WARN_ON_ONCE(pfn_valid(PHYS_PFN(phys_addr))))
+>  		return DMA_MAPPING_ERROR;
+>  
+> -	if (dma_map_direct(dev, ops))
+> -		addr = dma_direct_map_resource(dev, phys_addr, size, dir, attrs);
+> -	else if (use_dma_iommu(dev))
+> -		addr = iommu_dma_map_resource(dev, phys_addr, size, dir, attrs);
+> -	else if (ops->map_resource)
+> -		addr = ops->map_resource(dev, phys_addr, size, dir, attrs);
+> -
+> -	trace_dma_map_resource(dev, phys_addr, addr, size, dir, attrs);
+> -	debug_dma_map_resource(dev, phys_addr, size, dir, addr, attrs);
+> -	return addr;
+> +	return dma_map_phys(dev, phys_addr, size, dir, attrs | DMA_ATTR_MMIO);
+>  }
+>  EXPORT_SYMBOL(dma_map_resource);
+
+I think this makes alot of sense at least.
+
+Jason
 
