@@ -1,108 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-10744-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10745-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE17B1DD95
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 21:40:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8B3B1DEFF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 23:44:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bycvg3J05z3cQx;
-	Fri,  8 Aug 2025 05:40:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bygg21pWpz2ywR;
+	Fri,  8 Aug 2025 07:44:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::129"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754595631;
-	cv=none; b=CGbHzIM4eEI3tkgrtJ9EI6gMu6eEl2Le1yf7H+2Ca/U7SUu8fQOeuPhYa25YFCSfW2r+HeHVzI9BkgVK+TAzncRcVaWPrqToIE++hG+yHsOCAyl66WpelNPGnNzDzsw3FiOqpoI8R28aJuiNJmCXHcnhACpA9Bv9VYrZxFUhXknMqmLFG2oyaf1Uhp+p3bqCyTTh0XQPGacaoaxZJsJCIT6vxyZpWmPqojiUQjnhnUuhrqzUGOMbLJ3WzfSrGadQui8C+P2kNxOmhpf9SlPn59QdnVMLdkkzB88f5t9LEyLZs4xcvyoj2XJXsGYY48K+jfzqZfaL+A3I9O91QIWovQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754603086;
+	cv=none; b=LQE2IroJDZwXXdcKzDJzQcEnb7FtAVecnXx0JH1eNI/+xdMTugFsZu9o88i9SNe2ybQhwkOV6RKqxCKUBDrnwtO1lGBOrhsJy9u7oF9M+D/JezKf7ciwU4OBgIsncKRm4kwnd4lGmUv9J2C+WQBjM4I9pigzIG8ac2XPzqO+JO+OlxLNIujBZHbcno8pK3BZH7/wKHq1C4ksRdd3gQhjw7B13mDVeI3G7m6oUQABYh/xp0Z/+B15uTqPtT83ph4/ywUA6rb/B0ft32p4NWYnLRua5jF6W5YDad3I/l6uZDZ/NzQc15JGzfLcDDEyG1l6eN2qpvl0pmo1n787fs6odQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754595631; c=relaxed/relaxed;
-	bh=sNdBwl8v2OqAa3v0ByxYoV2FZHtZfSuaaApNKvSqvMU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hi0QIWXaoY/gqNU/j6CKfnZdFpOSDG+xV8CyeZlq+hg9eC3AZonUp7EmEMTJoLnnfFs8uSMKhnUt/WlLRGYVGFT9lVt5A2yvfOOoaSgFSxPcuLvl9C+llrVGOougXozAmk02v2W0dTUDxCnSGyz0Mo0T0khe5Q1LRAsYFJmKBC+CT44KFwYOCH6LROkFvpNzMn5/P/vYpyj3J84GNTT9pk1nn6D1V9jTjGQSzqAyBS8UIdR7gKSEJ0agwAAknYjlelgEACNqWZKz4nWHgQD1JfIabJVpr2T14SQXaWposbLswkNyU/D/q3q9HQ1cCBCiiRwBmstJQ5RTOwmys1ppMw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WCRGXCaJ; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1754603086; c=relaxed/relaxed;
+	bh=3yoelE6V1hBrn+GbmRB10CU2lYWuQYrahtZoYEPoYV0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b6B0PP3zvSHoeFT9zWEF72w7FO2aozZs06HySk+/36Q5qNLou9Wzb+4fRIF/Y+ObyIAbICm2CCNWS426w0N3tGpda9gTrFDU/NiG35w/w3+cwh+ZAH3Fe3kR6+eNPhZtM2V8bFl3fEIOLWJtLyeZRoiUgNyYc1yPmJWiHyQZD4qnkuf+qQv9zY5J665+W9m3cXTPQ9o2XVFOehRGsUPb7actatujD3r4x3vcg8U+8gUY531x7d/ebpMCzn5YZ/u6zG1YXIMkMUqAf5hQzbVUjLEcTnpNW+eg0gei9xGvWKQIkPgD2DCWqWkBktTbOgPOYVO8ow7YaHOwRRUOdunQoA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qLq4yByf; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WCRGXCaJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qLq4yByf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bycvf3tHqz2xcB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Aug 2025 05:40:30 +1000 (AEST)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-55b9375d703so1373082e87.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Aug 2025 12:40:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754595627; x=1755200427; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sNdBwl8v2OqAa3v0ByxYoV2FZHtZfSuaaApNKvSqvMU=;
-        b=WCRGXCaJ7oq5VMTxz3nz7G2h5otagXPKBHf3UpXa3O7Mu9DuyxO7JlTftPQgTXXQCt
-         FvfCz5hDV4GF1qcXOyF6dSmegQEBuoV0rx0HY8bt9xNII7ESkyWClSvi9QHk44n71RwU
-         O+4LTYdXJ3eokqJqFpslEJRvQUIpO5m9RTCHCgUV9hhxA6+EfVRzP/W0NMCfMByaS1+2
-         kNtHws9d/xUwBwBpgfLUPmw1dtyHLWFHWmedDX67b987BWKaTNn9FLp0n+WmKpLq/MdO
-         dpvquDed1MzhULzczeM9xdA9G+MsgwyUpk2zOtlq3oAvUR5oGEghTtTsT+qp5NktPfBY
-         sXxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754595627; x=1755200427;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sNdBwl8v2OqAa3v0ByxYoV2FZHtZfSuaaApNKvSqvMU=;
-        b=ZD3n2LP4kYQdxOuestxm1GobwReFmZBsjhwhFlTjT9FYxj6PWWPTCqM0jyWOA6DbgG
-         /XH2BTryTNuS6qAJtsph9C7u4keCyyXyMUP1XxWo9YjvVfl30p9u1NXKyFWsl6vjAgID
-         Hx4t+j9vXkfh50/cmbLA/kTnJ02S4WJ51WKrurTOcBxaw5DTznSJdBRM+Gc2NCfZDfVR
-         JtGE3JaMvlKb/W7gXA/K6oOBsp6Sv/G1v/EmF3QV9OoIIHL6RdiFQ3jkxVc8VdvqXWiz
-         GDhYuoRlZUWd1rXH4Rahe3A30NhYVCY+e92jKiVF9ViRk2tydydV7MszUksuCEBW5hE8
-         SyRA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjW0eq1/1EsT3ui+k2ZKv3CQFwYWWtfjV4HTO7wrCld1Q3BGNdt+6wBavXe20gZMBcvVbIWdjQb3+Tr5E=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxVq2TTWNoxbRx0rsIzLT1H51B/2Fcx3kDnPFzIg04an9YXeEX+
-	oA677Ry4IEsMC52Rnc+j+dbPM4AHZje5e0oh4/uXr2LRFb963KHSb2Q9
-X-Gm-Gg: ASbGncsU3wYAJ81wjTuh4oyz3VMzrU800+janRfXjFJCbU5+pv5eHmT/HZRP8cvWTsf
-	i14fMg8aw8yl5WMLtDo0qDpKpTsqf/+CuZUPQGUB0U815enVK9Q8mB/xE4wx4AG/i+1cyUd5Ks+
-	yoat+PFRPXjqQaTzjl1HfFWIPZ+aLOER0sk5ShePcNh0x61nHFC0AB8zkiYTi3Lhx1FtRM4XvLT
-	vLtiPdwb8HhhDennvFiqVKAiRZlhYIO8f3U80thMXqocK+/MnXZSeWggUX3bt9RzQmXr1pMMtIQ
-	84yF9p3uwpPCexs/xgi182a9HMRxIAgeD3odE1Cvl/S7cIfbVlAM7vxpAlSjFwS/DsriBry9UMu
-	X3+YwSYaGSFLo3Cg4Cy01md8isKQGTOBvu6ZpTY8GMyW+xGwE3nPbYsNANUY7QHi2SzrSCg==
-X-Google-Smtp-Source: AGHT+IFy1K+04TTf6HeQynR9tEb65FcTbYVkR/07BpvyTspaDpSD1TTrgV/AzkLRIY/TwnnFAN629A==
-X-Received: by 2002:ac2:4e14:0:b0:55b:8f46:80ed with SMTP id 2adb3069b0e04-55cc00e3a66mr10263e87.21.1754595627098;
-        Thu, 07 Aug 2025 12:40:27 -0700 (PDT)
-Received: from localhost.localdomain (178.90.89.143.dynamic.telecom.kz. [178.90.89.143])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88c98c2asm2793570e87.77.2025.08.07.12.40.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Aug 2025 12:40:26 -0700 (PDT)
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-To: ryabinin.a.a@gmail.com,
-	bhe@redhat.com,
-	hca@linux.ibm.com,
-	christophe.leroy@csgroup.eu,
-	andreyknvl@gmail.com,
-	akpm@linux-foundation.org,
-	zhangqing@loongson.cn,
-	chenhuacai@loongson.cn,
-	davidgow@google.co,
-	glider@google.com,
-	dvyukov@google.com
-Cc: alex@ghiti.fr,
-	agordeev@linux.ibm.com,
-	vincenzo.frascino@arm.com,
-	elver@google.com,
-	kasan-dev@googlegroups.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-mm@kvack.org,
-	snovitoll@gmail.com,
-	Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: [PATCH v5 2/2] kasan: call kasan_init_generic in kasan_init
-Date: Fri,  8 Aug 2025 00:40:12 +0500
-Message-Id: <20250807194012.631367-3-snovitoll@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250807194012.631367-1-snovitoll@gmail.com>
-References: <20250807194012.631367-1-snovitoll@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bygg13Gtkz2xcD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Aug 2025 07:44:45 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id C2B69A4EA6C;
+	Thu,  7 Aug 2025 21:44:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56085C4CEEB;
+	Thu,  7 Aug 2025 21:44:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754603082;
+	bh=+DBg50Szd+rGRxJ8Bc8+14Qwysk4w0Ub9V4nfqyXPng=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qLq4yByfFTTUMIgpVTPav3ckUdC2tFL3Dzf5pr4eGDYayIxoCIYwWyuHmlAjjrlZD
+	 b1xOnVNYIvzxUqiQZqxCYc0eerWaXQptmHFRRUpi6XkuswpVCFAAZBVSI0OTmhRo+l
+	 yxjmqKSWxg7auAq672/RgiP+IQ1DG9lHe1I12HXCQXhvHlq77ofngFC9mOFF5QFbMn
+	 BI1tfcjVZ/theHodpUFFBSAEFVmGGyo6FV0erjfKUrf58HEap+Tl0ZQAk/haAa424S
+	 c/MWnspjS81T5bvzGe9eoXyr5Db0o2ASvfE6T26SXl4VToleg6dq2bWuYv3J5kHL3d
+	 hlepU1Om+NWiQ==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Scott Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] dt-bindings: powerpc: Drop duplicate fsl/mpic.txt
+Date: Thu,  7 Aug 2025 16:44:30 -0500
+Message-ID: <20250807214432.4173273-1-robh@kernel.org>
+X-Mailer: git-send-email 2.47.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -117,126 +72,283 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-3.8 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Call kasan_init_generic() which handles Generic KASAN initialization.
-For architectures that do not select ARCH_DEFER_KASAN,
-this will be a no-op for the runtime flag but will
-print the initialization banner.
+The chrp,open-pic binding schema already supports the "fsl,mpic"
+compatible. A couple of properties are missing, so add them and remove
+fsl/mpic.txt.
 
-For SW_TAGS and HW_TAGS modes, their respective init functions will
-handle the flag enabling, if they are enabled/implemented.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
-Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com> # s390
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 ---
-Changes in v5:
-- Unified arch patches into a single one, where we just call
-	kasan_init_generic()
-- Added Tested-by tag for riscv (tested the same change in v4)
-- Added Acked-by tag for s390 (tested the same change in v4)
----
- arch/arm/mm/kasan_init.c    | 2 +-
- arch/arm64/mm/kasan_init.c  | 4 +---
- arch/riscv/mm/kasan_init.c  | 1 +
- arch/s390/kernel/early.c    | 3 ++-
- arch/x86/mm/kasan_init_64.c | 2 +-
- arch/xtensa/mm/kasan_init.c | 2 +-
- 6 files changed, 7 insertions(+), 7 deletions(-)
+ .../interrupt-controller/chrp,open-pic.yaml   |  12 +
+ .../devicetree/bindings/powerpc/fsl/mpic.txt  | 231 ------------------
+ 2 files changed, 12 insertions(+), 231 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/powerpc/fsl/mpic.txt
 
-diff --git a/arch/arm/mm/kasan_init.c b/arch/arm/mm/kasan_init.c
-index 111d4f70313..c6625e808bf 100644
---- a/arch/arm/mm/kasan_init.c
-+++ b/arch/arm/mm/kasan_init.c
-@@ -300,6 +300,6 @@ void __init kasan_init(void)
- 	local_flush_tlb_all();
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/chrp,open-pic.yaml b/Documentation/devicetree/bindings/interrupt-controller/chrp,open-pic.yaml
+index f0d9bbd7d510..f748d42d2273 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/chrp,open-pic.yaml
++++ b/Documentation/devicetree/bindings/interrupt-controller/chrp,open-pic.yaml
+@@ -42,6 +42,18 @@ properties:
+     description: Indicates the PIC shall not be reset during runtime initialization.
+     type: boolean
  
- 	memset(kasan_early_shadow_page, 0, PAGE_SIZE);
--	pr_info("Kernel address sanitizer initialized\n");
- 	init_task.kasan_depth = 0;
-+	kasan_init_generic();
- }
-diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
-index d541ce45dae..abeb81bf6eb 100644
---- a/arch/arm64/mm/kasan_init.c
-+++ b/arch/arm64/mm/kasan_init.c
-@@ -399,14 +399,12 @@ void __init kasan_init(void)
- {
- 	kasan_init_shadow();
- 	kasan_init_depth();
--#if defined(CONFIG_KASAN_GENERIC)
-+	kasan_init_generic();
- 	/*
- 	 * Generic KASAN is now fully initialized.
- 	 * Software and Hardware Tag-Based modes still require
- 	 * kasan_init_sw_tags() and kasan_init_hw_tags() correspondingly.
- 	 */
--	pr_info("KernelAddressSanitizer initialized (generic)\n");
--#endif
- }
- 
- #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
-diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
-index 41c635d6aca..ba2709b1eec 100644
---- a/arch/riscv/mm/kasan_init.c
-+++ b/arch/riscv/mm/kasan_init.c
-@@ -530,6 +530,7 @@ void __init kasan_init(void)
- 
- 	memset(kasan_early_shadow_page, KASAN_SHADOW_INIT, PAGE_SIZE);
- 	init_task.kasan_depth = 0;
-+	kasan_init_generic();
- 
- 	csr_write(CSR_SATP, PFN_DOWN(__pa(swapper_pg_dir)) | satp_mode);
- 	local_flush_tlb_all();
-diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-index 9adfbdd377d..544e5403dd9 100644
---- a/arch/s390/kernel/early.c
-+++ b/arch/s390/kernel/early.c
-@@ -21,6 +21,7 @@
- #include <linux/kernel.h>
- #include <asm/asm-extable.h>
- #include <linux/memblock.h>
-+#include <linux/kasan.h>
- #include <asm/access-regs.h>
- #include <asm/asm-offsets.h>
- #include <asm/machine.h>
-@@ -65,7 +66,7 @@ static void __init kasan_early_init(void)
- {
- #ifdef CONFIG_KASAN
- 	init_task.kasan_depth = 0;
--	pr_info("KernelAddressSanitizer initialized\n");
-+	kasan_init_generic();
- #endif
- }
- 
-diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
-index 0539efd0d21..998b6010d6d 100644
---- a/arch/x86/mm/kasan_init_64.c
-+++ b/arch/x86/mm/kasan_init_64.c
-@@ -451,5 +451,5 @@ void __init kasan_init(void)
- 	__flush_tlb_all();
- 
- 	init_task.kasan_depth = 0;
--	pr_info("KernelAddressSanitizer initialized\n");
-+	kasan_init_generic();
- }
-diff --git a/arch/xtensa/mm/kasan_init.c b/arch/xtensa/mm/kasan_init.c
-index f39c4d83173..0524b9ed5e6 100644
---- a/arch/xtensa/mm/kasan_init.c
-+++ b/arch/xtensa/mm/kasan_init.c
-@@ -94,5 +94,5 @@ void __init kasan_init(void)
- 
- 	/* At this point kasan is fully initialized. Enable error messages. */
- 	current->kasan_depth = 0;
--	pr_info("KernelAddressSanitizer initialized\n");
-+	kasan_init_generic();
- }
++  single-cpu-affinity:
++    description:
++      If present, non-IPI interrupts will be routed to a single CPU at a time.
++    type: boolean
++
++  last-interrupt-source:
++    description:
++      Some MPICs do not correctly report the number of hardware sources in the
++      global feature registers. This value, if specified, overrides the value
++      read from MPIC_GREG_FEATURE_LAST_SRC.
++    $ref: /schemas/types.yaml#/definitions/uint32
++
+ required:
+   - compatible
+   - reg
+diff --git a/Documentation/devicetree/bindings/powerpc/fsl/mpic.txt b/Documentation/devicetree/bindings/powerpc/fsl/mpic.txt
+deleted file mode 100644
+index dc5744636a57..000000000000
+--- a/Documentation/devicetree/bindings/powerpc/fsl/mpic.txt
++++ /dev/null
+@@ -1,231 +0,0 @@
+-=====================================================================
+-Freescale MPIC Interrupt Controller Node
+-Copyright (C) 2010,2011 Freescale Semiconductor Inc.
+-=====================================================================
+-
+-The Freescale MPIC interrupt controller is found on all PowerQUICC
+-and QorIQ processors and is compatible with the Open PIC.  The
+-notable difference from Open PIC binding is the addition of 2
+-additional cells in the interrupt specifier defining interrupt type
+-information.
+-
+-PROPERTIES
+-
+-  - compatible
+-      Usage: required
+-      Value type: <string>
+-      Definition: Shall include "fsl,mpic".  Freescale MPIC
+-          controllers compatible with this binding have Block
+-          Revision Registers BRR1 and BRR2 at offset 0x0 and
+-          0x10 in the MPIC.
+-
+-  - reg
+-      Usage: required
+-      Value type: <prop-encoded-array>
+-      Definition: A standard property.  Specifies the physical
+-          offset and length of the device's registers within the
+-          CCSR address space.
+-
+-  - interrupt-controller
+-      Usage: required
+-      Value type: <empty>
+-      Definition: Specifies that this node is an interrupt
+-          controller
+-
+-  - #interrupt-cells
+-      Usage: required
+-      Value type: <u32>
+-      Definition: Shall be 2 or 4.  A value of 2 means that interrupt
+-          specifiers do not contain the interrupt-type or type-specific
+-          information cells.
+-
+-  - #address-cells
+-      Usage: required
+-      Value type: <u32>
+-      Definition: Shall be 0.
+-
+-  - pic-no-reset
+-      Usage: optional
+-      Value type: <empty>
+-      Definition: The presence of this property specifies that the
+-          MPIC must not be reset by the client program, and that
+-          the boot program has initialized all interrupt source
+-          configuration registers to a sane state-- masked or
+-          directed at other cores.  This ensures that the client
+-          program will not receive interrupts for sources not belonging
+-          to the client.  The presence of this property also mandates
+-          that any initialization related to interrupt sources shall
+-          be limited to sources explicitly referenced in the device tree.
+-
+-  - big-endian
+-      Usage: optional
+-      Value type: <empty>
+-          If present the MPIC will be assumed to be big-endian.  Some
+-          device-trees omit this property on MPIC nodes even when the MPIC is
+-          in fact big-endian, so certain boards override this property.
+-
+-  - single-cpu-affinity
+-      Usage: optional
+-      Value type: <empty>
+-          If present the MPIC will be assumed to only be able to route
+-          non-IPI interrupts to a single CPU at a time (EG: Freescale MPIC).
+-
+-  - last-interrupt-source
+-      Usage: optional
+-      Value type: <u32>
+-          Some MPICs do not correctly report the number of hardware sources
+-          in the global feature registers.  If specified, this field will
+-          override the value read from MPIC_GREG_FEATURE_LAST_SRC.
+-
+-INTERRUPT SPECIFIER DEFINITION
+-
+-  Interrupt specifiers consists of 4 cells encoded as
+-  follows:
+-
+-   <1st-cell>   interrupt-number
+-
+-                Identifies the interrupt source.  The meaning
+-                depends on the type of interrupt.
+-
+-                Note: If the interrupt-type cell is undefined
+-                (i.e. #interrupt-cells = 2), this cell
+-                should be interpreted the same as for
+-                interrupt-type 0-- i.e. an external or
+-                normal SoC device interrupt.
+-
+-   <2nd-cell>   level-sense information, encoded as follows:
+-                    0 = low-to-high edge triggered
+-                    1 = active low level-sensitive
+-                    2 = active high level-sensitive
+-                    3 = high-to-low edge triggered
+-
+-   <3rd-cell>   interrupt-type
+-
+-                The following types are supported:
+-
+-                  0 = external or normal SoC device interrupt
+-
+-                      The interrupt-number cell contains
+-                      the SoC device interrupt number.  The
+-                      type-specific cell is undefined.  The
+-                      interrupt-number is derived from the
+-                      MPIC a block of registers referred to as
+-                      the "Interrupt Source Configuration Registers".
+-                      Each source has 32-bytes of registers
+-                      (vector/priority and destination) in this
+-                      region.   So interrupt 0 is at offset 0x0,
+-                      interrupt 1 is at offset 0x20, and so on.
+-
+-                  1 = error interrupt
+-
+-                      The interrupt-number cell contains
+-                      the SoC device interrupt number for
+-                      the error interrupt.  The type-specific
+-                      cell identifies the specific error
+-                      interrupt number.
+-
+-                  2 = MPIC inter-processor interrupt (IPI)
+-
+-                      The interrupt-number cell identifies
+-                      the MPIC IPI number.  The type-specific
+-                      cell is undefined.
+-
+-                  3 = MPIC timer interrupt
+-
+-                      The interrupt-number cell identifies
+-                      the MPIC timer number.  The type-specific
+-                      cell is undefined.
+-
+-   <4th-cell>   type-specific information
+-
+-                The type-specific cell is encoded as follows:
+-
+-                 - For interrupt-type 1 (error interrupt),
+-                   the type-specific cell contains the
+-                   bit number of the error interrupt in the
+-                   Error Interrupt Summary Register.
+-
+-EXAMPLE 1
+-	/*
+-	 * mpic interrupt controller with 4 cells per specifier
+-	 */
+-	mpic: pic@40000 {
+-		compatible = "fsl,mpic";
+-		interrupt-controller;
+-		#interrupt-cells = <4>;
+-		#address-cells = <0>;
+-		reg = <0x40000 0x40000>;
+-	};
+-
+-EXAMPLE 2
+-	/*
+-	 * The MPC8544 I2C controller node has an internal
+-	 * interrupt number of 27.  As per the reference manual
+-	 * this corresponds to interrupt source configuration
+-	 * registers at 0x5_0560.
+-	 *
+-	 * The interrupt source configuration registers begin
+-	 * at 0x5_0000.
+-	 *
+-	 * To compute the interrupt specifier interrupt number
+-         *
+-	 *       0x560 >> 5 = 43
+-	 *
+-	 * The interrupt source configuration registers begin
+-	 * at 0x5_0000, and so the i2c vector/priority registers
+-	 * are at 0x5_0560.
+-	 */
+-	i2c@3000 {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		cell-index = <0>;
+-		compatible = "fsl-i2c";
+-		reg = <0x3000 0x100>;
+-		interrupts = <43 2>;
+-		interrupt-parent = <&mpic>;
+-		dfsrr;
+-	};
+-
+-
+-EXAMPLE 3
+-	/*
+-	 *  Definition of a node defining the 4
+-	 *  MPIC IPI interrupts.  Note the interrupt
+-	 *  type of 2.
+-	 */
+-	ipi@410a0 {
+-		compatible = "fsl,mpic-ipi";
+-		reg = <0x40040 0x10>;
+-		interrupts = <0 0 2 0
+-		              1 0 2 0
+-		              2 0 2 0
+-		              3 0 2 0>;
+-	};
+-
+-EXAMPLE 4
+-	/*
+-	 *  Definition of a node defining the MPIC
+-	 *  global timers.  Note the interrupt
+-	 *  type of 3.
+-	 */
+-	timer0: timer@41100 {
+-		compatible = "fsl,mpic-global-timer";
+-		reg = <0x41100 0x100 0x41300 4>;
+-		interrupts = <0 0 3 0
+-		              1 0 3 0
+-		              2 0 3 0
+-		              3 0 3 0>;
+-	};
+-
+-EXAMPLE 5
+-	/*
+-	 * Definition of an error interrupt (interrupt type 1).
+-	 * SoC interrupt number is 16 and the specific error
+-         * interrupt bit in the error interrupt summary register
+-	 * is 23.
+-	 */
+-	memory-controller@8000 {
+-		compatible = "fsl,p4080-memory-controller";
+-		reg = <0x8000 0x1000>;
+-		interrupts = <16 2 1 23>;
+-	};
 -- 
-2.34.1
+2.47.2
 
 
