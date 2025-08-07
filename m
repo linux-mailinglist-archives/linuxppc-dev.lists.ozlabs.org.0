@@ -1,167 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-10716-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10717-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20085B1D6ED
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 13:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33FF8B1D72D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 14:02:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4byQSP3s7dz2xck;
-	Thu,  7 Aug 2025 21:49:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4byQl65CRNz2xcG;
+	Thu,  7 Aug 2025 22:02:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754567381;
-	cv=none; b=TKiUoNB/3S5FRIMhH7ckf8zQUNHhddUFNwqJwTB0pOnsVpElPZQ3bgCF5amLgyC1vSnK5yIQ6UFdQ8F12XAMKV6pewovdXH3jEKKTEg67dq7/3HZllCFCne7Fr6YiPhneXwXqA+usf3nNHNL/bEIvTYiWkh92uSvADT7qFfkJhaQm8xUGDCRExGaWpaBLL6R3rCY47OYckrY5Uth29F7/d2KG9r7hqjWQgZijm3fds6n7hRyuZxcXKC8+Z0d9ByOo/Za6YuEphZ0I9tBrqq6bAtSP5WaUI9PnwvXK4bHSCi+IVizQb1qAc8XJse6GKUeK6h7N2eEAadC+yhRbewylA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.218.49
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754568146;
+	cv=none; b=RdIbfuI78Z1B0Vv4dHfPNVJr5LzwSYMOCvUwQ3yiFzoM68hqt183qZFkzDYjX0DK0/oLbi2ebU259DR9n5NvniQj52WlV+NyRbiREMJDxAeJ3FCI2yHNZqR+1PU3efjdc5Q+M2kdcLH+nkfadawamG+T0w9Id0vLPGPh5vN5AIorVwJuOjTLI9NInRPW4pU6gbhxhjEqorzHTDdcqaGdbQaqQBvKfgkG0kTfCyMtfUc55AdzAv41RzNLkx2O0MQcKEniVQJ1Y+3baAd9Fp++hd9g2OFRzQiTywhtrIMmm20BT3COgVJfqK9xOnCNwM830Ov5bbtP9ezUDlNWcsvV+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754567381; c=relaxed/relaxed;
-	bh=BT1HlxdXNuTIhguxoWsF6urixgs3t34G1XWxfUWA/MA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nbqDEri1bvO7fn24TxiUJI9IKSgroOF75EHzyg7S0u12C8AIA0hXnedo1p3nMmbRDkTPjCDOeq1HiVhpEHvwx90rXnGS5h+9gon60/asMS1zdWWmdycHfdWF98dennI377LyC5UCm6Qmxiwlilb0WHji37T+i0AyoyZh+ZWeNzSMq36aExJXcmVa+zc2PeRQoiVPHg/GEJJTiZA+jv9TObVhheZpMsX7TYzRVQUvQaDZeDrrBfMlN+JjG1EGYLOyV6WMcR3GeVjvgddaYUBHyB952Skl/nrfymYHXLvbXk0LZuOkV1n1vm+thf/7nXWv50RRQX4TGSogaoKrccNxRw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IK7cjiJN; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IK7cjiJN;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1754568146; c=relaxed/relaxed;
+	bh=TcEqD2Pp6Z225d6tl17GjpdF9VhMMcRo1GStFJJS27w=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=l9rsbJwpaFwdiHo7tOtbS3vsfJzhqOcwLpSAulZlxcBhQPI/5+EMGVOz55LHUlHhLNLayZYZhNQs4QhSKfQZ2WURUq5hw0W1jtp+W2XzPCAMFUJ5PM/gQcdnepxmKMrenBhnByCrNLIlrGO0C16b4zDiwuryI1fP0+30NKbDxEvZiYJsRcmLXCjJspBrXEK6xMkfIe2QdsLxHUoMr5bjM/HF4OgC3Vr8eQWrpfCdam3uNHIabcYpEmAZQaguTCKlRidH2vg4QwJ0mfhGBHseJ42D1RXpdDDvOlUYI118xQdMpx+o/8CCPK4LtGEw6WnDSc5cC20nDB0XmcTSuzpbwA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass (client-ip=209.85.218.49; helo=mail-ej1-f49.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.218.49; helo=mail-ej1-f49.google.com; envelope-from=breno.debian@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4byQSN2dSlz2xcG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 21:49:39 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5775bj2b012372;
-	Thu, 7 Aug 2025 11:49:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=BT1Hlx
-	dXNuTIhguxoWsF6urixgs3t34G1XWxfUWA/MA=; b=IK7cjiJNi4o97y1CyXr4YY
-	xBiYwwKVU5zPMDDMK1gMp8LUNVDuskcKWbk8I9r+mQ3BRQrvlAh5EcYy/9DNMDRb
-	HwlSbVmgSC30377j3NhQpHSMGtx97xz3S3iW1tICkzgC260+vKR9TjAd4lMOsgOB
-	e7tPujpLcCaSKCb48KLxB5D2jqSEI4cx4qrQtdUSAAQ3W1z9BzLlDpm/PeBjeF+K
-	dx3/MY1Bq+DE3KfUJR3m5f7vIzfkSiYZJZn0mWW4tEk62rWDy1oHXTXpjZk+s0MQ
-	FPOKY5xOaj3GZ1qMeVJZOAe0Hob74Sa4caflmd8gOdwyxg9DsG20XXFFxBaARG8w
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63ss6f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 11:49:32 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 577BgXVn018736;
-	Thu, 7 Aug 2025 11:49:32 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63ss6d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 11:49:32 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5779QR3g020616;
-	Thu, 7 Aug 2025 11:49:31 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwn0cy5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 11:49:31 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 577BnTml64815412
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Aug 2025 11:49:30 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B21A75805E;
-	Thu,  7 Aug 2025 11:49:29 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EF16858055;
-	Thu,  7 Aug 2025 11:49:26 +0000 (GMT)
-Received: from [9.152.212.100] (unknown [9.152.212.100])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  7 Aug 2025 11:49:26 +0000 (GMT)
-Message-ID: <9e27675effcee26fce059a7e81ea4ba0fecfa86d.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 2/3] powerpc/eeh: Use result of error_detected() in
- uevent
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-        Mahesh J Salgaonkar	
- <mahesh@linux.ibm.com>,
-        Linas Vepstas <linasvepstas@gmail.com>,
-        Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Manivannan
- Sadhasivam <mani@kernel.org>,
-        Gerald Schaefer	
- <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily
- Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger	 <borntraeger@linux.ibm.com>,
-        Sven Schnelle
- <svens@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Matthew
- Rosato <mjrosato@linux.ibm.com>,
-        "Oliver O'Halloran"	 <oohall@gmail.com>, Sinan Kaya <okaya@kernel.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        Keith Busch	 <kbusch@kernel.org>
-Date: Thu, 07 Aug 2025 13:49:26 +0200
-In-Reply-To: <aJSPU6bF-DRNN1ZT@wunner.de>
-References: <20250807-add_err_uevents-v4-0-c624bfd8638d@linux.ibm.com>
-	 <20250807-add_err_uevents-v4-2-c624bfd8638d@linux.ibm.com>
-	 <aJSPU6bF-DRNN1ZT@wunner.de>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4byQl54TTWz2xcD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 22:02:25 +1000 (AEST)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-af93381a1d2so147235766b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 Aug 2025 05:02:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754568141; x=1755172941;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TcEqD2Pp6Z225d6tl17GjpdF9VhMMcRo1GStFJJS27w=;
+        b=i8f+eH6FwpNWKtsTQaxSpWsUI/Y2xLhR/KcaSmbvzT7BD88Qm9MGjq4/dQRJ+XP7Yb
+         bpUtfcnPaZn006bhcM3V4C05dEWzIXkMOHvwHEqaSNeseLL22KXkRj51MNd0w+VxDyNz
+         kev4k7CUlaeHbByY2PO6jXG8+gmnEuWgLdUwNkyYMF9S7WTHDL2aNcK+3mZUQRKT1ZXL
+         UyfNj1e9sCHx48omJ8FbJs9+B9Q2TAf/E01mJxd5kScnrsITdegRD+20km7qDE603gk+
+         CQDq5kxej0ze7wQw+3QzEMTKCmubdAcHowB0Ag8/3HDqiZPVh92/OYMW8CcmINJ+VdXe
+         NxgA==
+X-Forwarded-Encrypted: i=1; AJvYcCXbgIL5HSeZQPWM1bzZxRZeBsj87HhVREkouSh0nKFvHZb3ULxmbBAXYsoHb8QNrzec8dPgXHwhN1c+aXM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YykFpnKji+rNJOAsLVuflwYEiYYc2EtoxUj/yssShOGjflDx7Xo
+	+1bsg9rLc3/COvZXGiaKIqunZOlalo5GvWPv4Bfk1B43qC8/1ykNrxMW
+X-Gm-Gg: ASbGncuP1C14cioUKf5ImZHMprA+IZ0I7Cit04Wx4FzzwsyCw1uR6XxMAf47hPG88kB
+	a8EqW95Q+Lt9ZL6sH4bQWADyRz+znZND3X/0/viJhaLPlyov6hEcW+sSlr8NRvdjrv0yRbFBbNA
+	v8GtMrNCp24EsW8qbUMP13+0vsHV8/3L3Mu0w2HRgN5MAy/I3Jiihguy18WtHh3VUyQYIUccryW
+	2T1mhiChQWRc0kr1gLEVbqAFxaTyUvrtg8K9dGrmQbieS8CELv3lcINDqOXn2O6NAleqv8DBIbG
+	XcGdy8K56ylqNKDm7+v9zkAA/SypeanAAUVTUvtZuwYA9Q5CZZjkiJ+wttLbs0O7Vm23rKIB4rH
+	Bgsywlu8YEoNcRpNZdRwWg7E=
+X-Google-Smtp-Source: AGHT+IGa1I/ilvIOBCvInSAxZfDpaVsMb4OkBgAFcX5LwdXi64LWkAcj3+hpGQebA5QV/8oJSjfE7g==
+X-Received: by 2002:a17:907:3d93:b0:af5:a834:c327 with SMTP id a640c23a62f3a-af99031cd5fmr577553966b.21.1754568140812;
+        Thu, 07 Aug 2025 05:02:20 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:9::])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-af91a219ef2sm1295120066b.96.2025.08.07.05.02.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Aug 2025 05:02:20 -0700 (PDT)
+From: Breno Leitao <leitao@debian.org>
+Date: Thu, 07 Aug 2025 05:02:11 -0700
+Subject: [PATCH v5] vmcoreinfo: Track and log recoverable hardware errors
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -175,70 +70,383 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDA5MCBTYWx0ZWRfX9Pye0DKyMrAL
- b7tNmwL/8ush2E2mCttj/E4tERwjnctVAyPcZKV62Jy43G7ej/Ea89yCGWqLDpCLQ4tDRNDptPX
- 44xWlZ4we3aUVV5sUWLHPxBmoa4qGKi5DRWg+wLU4545QFltBf2Fu/sXL2wApFssxowqT97C6o6
- lKbS/5o27I6VwYjrrwcHWg7r1foYSnC/0XcpFr1vpm71QY1rtJdU51RzpweRdCirc2VQRCAMQP9
- iEcLTK9CDRjZIARx34rttrZV8Duyn+JWSJjoG2kE4fu2cKfFgctlRAa5naso7RkSVkMsnAgyF92
- 7BBqqnneLZjrNoKscWgwi6pCySBZ/KQcr9cflJ6Wv/TQKKx4PIqxVkS9xlifhy7LmGEEO4o3PG1
- OrCocExyjo8vl+1PdVx4dKr252e85V+tFDAJo6h/nGRNXLm+s+97BDZnGiY4OgdLudSn5iuP
-X-Proofpoint-ORIG-GUID: IDnsoJ2r8JayJPGOrGhM0d7NiaaXetfZ
-X-Authority-Analysis: v=2.4 cv=LreSymdc c=1 sm=1 tr=0 ts=689492cc cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=y5LWfs1rpAMjDq6n04wA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: MRF2tTobtj6c6Dbk-XeirXgADp0PnXUS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-07_02,2025-08-06_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 mlxlogscore=999 bulkscore=0
- malwarescore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
- definitions=main-2508070090
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250807-vmcore_hw_error-v5-1-0df35396e4b2@debian.org>
+X-B4-Tracking: v=1; b=H4sIAMKVlGgC/23PzWrDMAzA8VcxOsfDkr+ynPYeYxTHkRsflgxnp
+ B0l7z5SNpbhXgX6/aUbLFwyL9CJGxRe85LnCTphGwFxDNOZZR6gE0CKrPLKy/U9zoVP4+XEpcx
+ FaiJDz+yiRgeNgI/CKV/v4utbI2DMy+dcvu6BFffpj4WmslaUKNuYjOWhd1qbl4H7HKanuZxhx
+ 1Y6Aq4GSKJM2PrkB0ehD0eg+f2C8PFi6J0Nrjc62lCV9aFMVAN6LyflWp0iJvQVYP6AVj24wOx
+ AwMRu/77V/4Bt274Bb1xdTasBAAA=
+X-Change-ID: 20250707-vmcore_hw_error-322429e6c316
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
+ James Morse <james.morse@arm.com>, Tony Luck <tony.luck@intel.com>, 
+ Borislav Petkov <bp@alien8.de>, Robert Moore <robert.moore@intel.com>, 
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Hanjun Guo <guohanjun@huawei.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ acpica-devel@lists.linux.dev, osandov@osandov.com, 
+ xueshuai@linux.alibaba.com, konrad.wilk@oracle.com, 
+ linux-edac@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-pci@vger.kernel.org, kernel-team@meta.com, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.15-dev-dd21f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11826; i=leitao@debian.org;
+ h=from:subject:message-id; bh=WmmLTqk2OgTgbcaK+tbH9f2X98OF6Jw7cAoJOaXSLIE=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBolJXLLipo1TDCKVywDcpai5J+PL9QnUPwrqKfW
+ P8sDVDZTvKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaJSVywAKCRA1o5Of/Hh3
+ bSrHD/95S6d363l5YVcJC+RC5CaiPry+uBeGaRYCZ46OUPPhWLlCd14I+s8M3tyZau7hg+Ng47C
+ 0+jMJjzWQhYrPrWiVshbf2JA8oxwx6ZImBx3VPaYlKWNUz1k+GyH468Rj+3juO+KeERQIT4HDoU
+ DapphCHFmO0joirLNNEAAA5vfLN2vChY4CXyAGFrZq3ONzyPRowry0Tv93UcRlfvVhwrNMGeipT
+ ymVpDgfkdfvApspenJjvsPanUC1a9QWB0LLaTqDaNVwML/MmLVyaxlGTZIW5jP5jhAM9RBN3x9q
+ r6LivoXpbAQBIJScHrrMgPz1FcuvcdvyQcBfd/L8GnHZs8uPpemmOF8+yBkPJSpAuJSQuirMrnG
+ Yxco9PV5o3LOmBfRT5giYRqr4AzsEuTg5rhARhS/v8uAa360I7NmmYlkvP5jE5zykGpY+k5ofDe
+ MOv61/NfOHSIbbNrnxJcvFsOpZj/dmQ25ipxsJ5i1OG29W9X8M2Re+HfNK3R+cya5UdLp0G0p+Q
+ 3DrciRehC6/8tnIZ1PNSlZ4bpUTYOeS3q6qDq+BHYkh1urV4NCEcIJDi/5oKZzakvPUeEJO4pQZ
+ ST6OsrwjYBE0gFGwQPmoBmfBe8aP7eI8/EENCYjviC1ZmKtFYyqxHE3pgIsZVl8q5irbq0PKhqx
+ Q5K1jD22+WLzL6w==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Spam-Status: No, score=0.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 2025-08-07 at 13:34 +0200, Lukas Wunner wrote:
-> On Thu, Aug 07, 2025 at 12:15:32PM +0200, Niklas Schnelle wrote:
-> > With pci_uevent_ers() handling PCI_ERS_RESULT_NEED_RESET the result of
-> > error_detected() can be used in pci_uevent_ers() even if drivers reques=
-t
-> > a reset. This aligns EEH's behavior with both AER.
->=20
-> I guess the sentence is supposed to end with "and s390"?
+Introduce a generic infrastructure for tracking recoverable hardware
+errors (HW errors that are visible to the OS but does not cause a panic)
+and record them for vmcore consumption. This aids post-mortem crash
+analysis tools by preserving a count and timestamp for the last
+occurrence of such errors. On the other side, correctable errors, which
+the OS typically remains unaware of because the underlying hardware
+handles them transparently, are less relevant for crash dump
+and therefore are NOT tracked in this infrastructure.
 
-Yes had it there and then realized that this is only true after the
-last patch, did a bad job of adjusting.
+Add centralized logging for sources of recoverable hardware
+errors based on the subsystem it has been notified.
 
->=20
-> I would have recounted the history a bit, e.g.:
->=20
-> Ever since uevent support was added for AER and EEH with commit
-> 856e1eb9bdd4 ("PCI/AER: Add uevents in AER and EEH error/resume"), it
-> reported PCI_ERS_RESULT_NONE as the result of ->error_detected() to
-> user space.
->=20
-> Commit 7b42d97e99d3 ("PCI/ERR: Always report current recovery status for
-> udev") subsequently amended AER to report the actual return value of
-> ->error_detected().
->=20
-> Make the same change to EEH to align it with AER (and s390 error
-> recovery).
+hwerror_data is write-only at kernel runtime, and it is meant to be read
+from vmcore using tools like crash/drgn. For example, this is how it
+looks like when opening the crashdump from drgn.
 
-Thanks for figuring out the history, I'll incorporate this and send a
-v5.
+	>>> prog['hwerror_data']
+	(struct hwerror_info[1]){
+		{
+			.count = (int)844,
+			.timestamp = (time64_t)1752852018,
+		},
+		...
 
->=20
-> > Suggested-by: Lukas Wunner <lukas@wunner.de>
-> > Link: https://lore.kernel.org/linux-pci/aIp6LiKJor9KLVpv@wunner.de/
-> > Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
->=20
-> Reviewed-by: Lukas Wunner <lukas@wunner.de>
+This helps fleet operators quickly triage whether a crash may be
+influenced by hardware recoverable errors (which executes a uncommon
+code path in the kernel), especially when recoverable errors occurred
+shortly before a panic, such as the bug fixed by
+commit ee62ce7a1d90 ("page_pool: Track DMA-mapped pages and unmap them
+when destroying the pool")
 
-Thanks for the R-b.
+This is not intended to replace full hardware diagnostics but provides
+a fast way to correlate hardware events with kernel panics quickly.
+
+Rare machine check exceptions—like those indicated by mce_flags.p5 or
+mce_flags.winchip—are not accounted for in this method, as they fall
+outside the intended usage scope for this feature’s user base.
+
+Suggested-by: Tony Luck <tony.luck@intel.com>
+Suggested-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
+---
+Changes in v5:
+- Move the headers to uapi file (Dave Hansen)
+- Use atomic operations in the tracking struct (Dave Hansen)
+- Drop the MCE enum type, and track MCE errors as "others"
+- Document this feature better
+- Link to v4: https://lore.kernel.org/r/20250801-vmcore_hw_error-v4-1-fa1fe65edb83@debian.org
+
+Changes in v4:
+- Split the error by hardware subsystem instead of kernel
+  subsystem/driver (Shuai)
+- Do not count the corrected errors, only focusing on recoverable errors (Shuai)
+- Link to v3: https://lore.kernel.org/r/20250722-vmcore_hw_error-v3-1-ff0683fc1f17@debian.org
+
+Changes in v3:
+- Add more information about this feature in the commit message
+  (Borislav Petkov)
+- Renamed the function to hwerr_log_error_type() and use hwerr as
+  suffix (Borislav Petkov)
+- Make the empty function static inline (kernel test robot)
+- Link to v2: https://lore.kernel.org/r/20250721-vmcore_hw_error-v2-1-ab65a6b43c5a@debian.org
+
+Changes in v2:
+- Split the counter by recoverable error (Tony Luck)
+- Link to v1: https://lore.kernel.org/r/20250714-vmcore_hw_error-v1-1-8cf45edb6334@debian.org
+---
+ Documentation/driver-api/hw-recoverable-errors.rst | 60 ++++++++++++++++++++++
+ arch/x86/kernel/cpu/mce/core.c                     |  4 ++
+ drivers/acpi/apei/ghes.c                           | 36 +++++++++++++
+ drivers/pci/pcie/aer.c                             |  2 +
+ include/linux/vmcore_info.h                        |  8 +++
+ include/uapi/linux/vmcore.h                        |  9 ++++
+ kernel/vmcore_info.c                               | 17 ++++++
+ 7 files changed, 136 insertions(+)
+
+diff --git a/Documentation/driver-api/hw-recoverable-errors.rst b/Documentation/driver-api/hw-recoverable-errors.rst
+new file mode 100644
+index 0000000000000..fc526c3454bd7
+--- /dev/null
++++ b/Documentation/driver-api/hw-recoverable-errors.rst
+@@ -0,0 +1,60 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++=================================================
++Recoverable Hardware Error Tracking in vmcoreinfo
++=================================================
++
++Overview
++--------
++
++This feature provides a generic infrastructure within the Linux kernel to track
++and log recoverable hardware errors. These are hardware recoverable errors
++visible that might not cause immediate panics but may influence health, mainly
++because new code path will be executed in the kernel.
++
++By recording counts and timestamps of recoverable errors into the vmcoreinfo
++crash dump notes, this infrastructure aids post-mortem crash analysis tools in
++correlating hardware events with kernel failures. This enables faster triage
++and better understanding of root causes, especially in large-scale cloud
++environments where hardware issues are common.
++
++Benefits
++--------
++
++- Facilitates correlation of hardware recoverable errors with kernel panics or
++  unusual code paths that lead to system crashes.
++- Provides operators and cloud providers quick insights, improving reliability
++  and reducing troubleshooting time.
++- Complements existing full hardware diagnostics without replacing them.
++
++Data Exposure and Consumption
++-----------------------------
++
++- The tracked error data consists of per-error-type counts and timestamps of
++  last occurrence.
++- This data is stored in the `hwerror_data` array, categorized by error source
++  types like CPU, memory, PCI, CXL, and others.
++- It is exposed via vmcoreinfo crash dump notes and can be read using tools
++  like `crash`, `drgn`, or other kernel crash analysis utilities.
++- There is no other way to read these data other than from crash dumps.
++- These errors are divided by area, which includes CPU, Memory, PCI, CXL and
++  others.
++
++Typical usage example (in drgn REPL):
++
++.. code-block:: python
++
++    >>> prog['hwerror_data']
++    (struct hwerror_info[HWERR_RECOV_MAX]){
++        {
++            .count = (int)844,
++            .timestamp = (time64_t)1752852018,
++        },
++        ...
++    }
++
++Enabling
++--------
++
++- This feature is enabled when CONFIG_VMCORE_INFO is set.
++
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 4da4eab56c81d..9cc38c5ffb77a 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -45,6 +45,7 @@
+ #include <linux/task_work.h>
+ #include <linux/hardirq.h>
+ #include <linux/kexec.h>
++#include <linux/vmcore_info.h>
+ 
+ #include <asm/fred.h>
+ #include <asm/cpu_device_id.h>
+@@ -1690,6 +1691,9 @@ noinstr void do_machine_check(struct pt_regs *regs)
+ 	}
+ 
+ out:
++	/* Given it didn't panic, mark it as recoverable */
++	hwerr_log_error_type(HWERR_RECOV_OTHERS);
++
+ 	instrumentation_end();
+ 
+ clear:
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index a0d54993edb3b..562459e9d632e 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -43,6 +43,7 @@
+ #include <linux/uuid.h>
+ #include <linux/ras.h>
+ #include <linux/task_work.h>
++#include <linux/vmcore_info.h>
+ 
+ #include <acpi/actbl1.h>
+ #include <acpi/ghes.h>
+@@ -867,6 +868,40 @@ int cxl_cper_kfifo_get(struct cxl_cper_work_data *wd)
+ }
+ EXPORT_SYMBOL_NS_GPL(cxl_cper_kfifo_get, "CXL");
+ 
++static void ghes_log_hwerr(int sev, guid_t *sec_type)
++{
++	if (sev != CPER_SEV_RECOVERABLE)
++		return;
++
++	if (guid_equal(sec_type, &CPER_SEC_PROC_ARM) ||
++	    guid_equal(sec_type, &CPER_SEC_PROC_GENERIC) ||
++	    guid_equal(sec_type, &CPER_SEC_PROC_IA)) {
++		hwerr_log_error_type(HWERR_RECOV_CPU);
++		return;
++	}
++
++	if (guid_equal(sec_type, &CPER_SEC_CXL_PROT_ERR) ||
++	    guid_equal(sec_type, &CPER_SEC_CXL_GEN_MEDIA_GUID) ||
++	    guid_equal(sec_type, &CPER_SEC_CXL_DRAM_GUID) ||
++	    guid_equal(sec_type, &CPER_SEC_CXL_MEM_MODULE_GUID)) {
++		hwerr_log_error_type(HWERR_RECOV_CXL);
++		return;
++	}
++
++	if (guid_equal(sec_type, &CPER_SEC_PCIE) ||
++	    guid_equal(sec_type, &CPER_SEC_PCI_X_BUS)) {
++		hwerr_log_error_type(HWERR_RECOV_PCI);
++		return;
++	}
++
++	if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
++		hwerr_log_error_type(HWERR_RECOV_MEMORY);
++		return;
++	}
++
++	hwerr_log_error_type(HWERR_RECOV_OTHERS);
++}
++
+ static void ghes_do_proc(struct ghes *ghes,
+ 			 const struct acpi_hest_generic_status *estatus)
+ {
+@@ -888,6 +923,7 @@ static void ghes_do_proc(struct ghes *ghes,
+ 		if (gdata->validation_bits & CPER_SEC_VALID_FRU_TEXT)
+ 			fru_text = gdata->fru_text;
+ 
++		ghes_log_hwerr(sev, sec_type);
+ 		if (guid_equal(sec_type, &CPER_SEC_PLATFORM_MEM)) {
+ 			struct cper_sec_mem_err *mem_err = acpi_hest_get_payload(gdata);
+ 
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index e286c197d7167..d814c06cdbee6 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -30,6 +30,7 @@
+ #include <linux/kfifo.h>
+ #include <linux/ratelimit.h>
+ #include <linux/slab.h>
++#include <linux/vmcore_info.h>
+ #include <acpi/apei.h>
+ #include <acpi/ghes.h>
+ #include <ras/ras_event.h>
+@@ -751,6 +752,7 @@ static void pci_dev_aer_stats_incr(struct pci_dev *pdev,
+ 		break;
+ 	case AER_NONFATAL:
+ 		aer_info->dev_total_nonfatal_errs++;
++		hwerr_log_error_type(HWERR_RECOV_PCI);
+ 		counter = &aer_info->dev_nonfatal_errs[0];
+ 		max = AER_MAX_TYPEOF_UNCOR_ERRS;
+ 		break;
+diff --git a/include/linux/vmcore_info.h b/include/linux/vmcore_info.h
+index 37e003ae52626..e71518caacdfc 100644
+--- a/include/linux/vmcore_info.h
++++ b/include/linux/vmcore_info.h
+@@ -5,6 +5,7 @@
+ #include <linux/linkage.h>
+ #include <linux/elfcore.h>
+ #include <linux/elf.h>
++#include <uapi/linux/vmcore.h>
+ 
+ #define CRASH_CORE_NOTE_HEAD_BYTES ALIGN(sizeof(struct elf_note), 4)
+ #define CRASH_CORE_NOTE_NAME_BYTES ALIGN(sizeof(NN_PRSTATUS), 4)
+@@ -77,4 +78,11 @@ extern u32 *vmcoreinfo_note;
+ Elf_Word *append_elf_note(Elf_Word *buf, char *name, unsigned int type,
+ 			  void *data, size_t data_len);
+ void final_note(Elf_Word *buf);
++
++#ifdef CONFIG_VMCORE_INFO
++void hwerr_log_error_type(enum hwerr_error_type src);
++#else
++static inline void hwerr_log_error_type(enum hwerr_error_type src) {};
++#endif
++
+ #endif /* LINUX_VMCORE_INFO_H */
+diff --git a/include/uapi/linux/vmcore.h b/include/uapi/linux/vmcore.h
+index 3e9da91866ffd..2ba89fafa518a 100644
+--- a/include/uapi/linux/vmcore.h
++++ b/include/uapi/linux/vmcore.h
+@@ -15,4 +15,13 @@ struct vmcoredd_header {
+ 	__u8 dump_name[VMCOREDD_MAX_NAME_BYTES]; /* Device dump's name */
+ };
+ 
++enum hwerr_error_type {
++	HWERR_RECOV_CPU,
++	HWERR_RECOV_MEMORY,
++	HWERR_RECOV_PCI,
++	HWERR_RECOV_CXL,
++	HWERR_RECOV_OTHERS,
++	HWERR_RECOV_MAX,
++};
++
+ #endif /* _UAPI_VMCORE_H */
+diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
+index e066d31d08f89..fe9bf8db1922e 100644
+--- a/kernel/vmcore_info.c
++++ b/kernel/vmcore_info.c
+@@ -31,6 +31,13 @@ u32 *vmcoreinfo_note;
+ /* trusted vmcoreinfo, e.g. we can make a copy in the crash memory */
+ static unsigned char *vmcoreinfo_data_safecopy;
+ 
++struct hwerr_info {
++	atomic_t count;
++	time64_t timestamp;
++};
++
++static struct hwerr_info hwerr_data[HWERR_RECOV_MAX];
++
+ Elf_Word *append_elf_note(Elf_Word *buf, char *name, unsigned int type,
+ 			  void *data, size_t data_len)
+ {
+@@ -118,6 +125,16 @@ phys_addr_t __weak paddr_vmcoreinfo_note(void)
+ }
+ EXPORT_SYMBOL(paddr_vmcoreinfo_note);
+ 
++void hwerr_log_error_type(enum hwerr_error_type src)
++{
++	if (src < 0 || src >= HWERR_RECOV_MAX)
++		return;
++
++	atomic_inc(&hwerr_data[src].count);
++	WRITE_ONCE(hwerr_data[src].timestamp, ktime_get_real_seconds());
++}
++EXPORT_SYMBOL_GPL(hwerr_log_error_type);
++
+ static int __init crash_save_vmcoreinfo_init(void)
+ {
+ 	vmcoreinfo_data = (unsigned char *)get_zeroed_page(GFP_KERNEL);
+
+---
+base-commit: 54efec8782214652b331c50646013f8526570e8d
+change-id: 20250707-vmcore_hw_error-322429e6c316
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
