@@ -1,77 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-10712-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10713-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF756B1D5C3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 12:25:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2BEB1D5CB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 12:27:23 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4byNbS2bqzz2xck;
-	Thu,  7 Aug 2025 20:25:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4byNdN6kBvz2xlR;
+	Thu,  7 Aug 2025 20:27:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754562340;
-	cv=none; b=IcZTMsGtAXA22F24FoyHAYL2sC8aKvcPADUeJ/0junR8T5R2oCM8otQlrOeQGSfuMiQ/o6c2Ss5FZicttUlZUcmET78ZVKMBI7XV/OWbTnPKOwl4smtHesUwIk8OqiDWOUGtHpFIg9KvyVOx2xBsVOkOXieJcfEXwReOZ4lbTtV5jLAHAWLfND6Byt073mJj+WREGa5G8wZyjD+OaK4gYt5RpJrE4gA01/SqAi7cqBgn5756eqhgiRQJRjj2pjnG2OUOyGDyAVJCXk4LAYIKB+Czzq6bH4EwuYGwD8un3jMKXnR56IyjJBW28GbvjS+FOxEWpA9tW/xb6CsNBQa2pg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754562440;
+	cv=none; b=HyOmJv7Do41MDdtrVVf2rolqLLBHiNg6WHtBe6EaoxuaP8GGOkNcUWzU+uicgI2hFAbPhXhN/tfgVploI/AESJKjMexnbHh3LsXXbjsYNlvUnGVOxRy2Sezq4Ip/ytfQEIKW9GY408tUh8p3GgzksOvMwfVBjvLbmjqvne29ZsAV6p+iAmwUOXzPjXB+BeGee+60tQjK0ZMiWaoZ1w5TudAEUz+8HF2JRMBL0B7dNDgRp4mgxktcmKS+zw4LSZP6/jtHHXA6xkdcu0PrAAKewV0Z4PnmVgZnStMSNb2bGsDoB3MAal3jaG44rhjgo8EGXvT1lmbX4kfPqdfTPflawg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754562340; c=relaxed/relaxed;
-	bh=q/n9IOoKSeE8+THMQcptmNLhqb7HZ1tOw0supiHJzNM=;
+	t=1754562440; c=relaxed/relaxed;
+	bh=MvYuJIBaTbglptud8BUxVWG/aFzgyTUty/UijXRHP0A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O2jBuQ6SSM1ac/mC8OBCSzDhHiBGuMmDUA38bhpB0KlV2Q2sVmumbAolxzVkhPi3MkvwYqqauhehVDstm+QzG+IMcmB6EnJ/agrdiMKQXZVUE6EqpPWzRdva0j+4Lvxlj5mIMJ9qWInPYYLj4om3ljWGOiO7xF74+v711ALLixtTLfFhOZ4IYhOKegsHpfsvEN6CJLCLcvn8bm+4v8LagEDWjmGdWvv8/0GJf9ZoF7FP0wldou2xxzKG/9LAk46G8OyASwyLP+9b1iTuQ7FirQAPU2YNgajlS9r6SbLg5EAKaEJjh9ZkRwgr9E1ij57C+OAxVe0oydbRByg6W1G46A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SIkY1pPY; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kj4ID/HEXsnMaS9lHBqHN2v67kCYNOgClvi9ZZS5744lTbd7KtY0djbI8EBt7eKoHX5w/G//OYpO92uziu1eBINXJVOchuL3bp/QQoSoB78ylyHqnqT3PUL7DuPmlE/HoYL4VkaDcXBokvvWexr95rfP8VBKob4BXpJxPkY10OB2QuIrx9UjBYU7DPe+Fk/8n1nbiUpyxKBte/+klZ8v0omK8CuPUVh/YCZsIZe4gfcZaMLDreGm5uFl8cPC7F83JpFSaL/49OUAh3Gr5TBthxKOvSSt4yehVSwI/q+w8Qiu/cJUk16bveBicd+rxeEe7VuF8JGhNM6I9tQnsN5fTQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XWacN0CX; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SIkY1pPY;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XWacN0CX;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4byNbQ6NnJz2xcD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 20:25:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4byNdN0Y48z2xcD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 20:27:19 +1000 (AEST)
 Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5772hmhH017964;
-	Thu, 7 Aug 2025 10:25:03 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5779AwrV018010;
+	Thu, 7 Aug 2025 10:26:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=q/n9IO
-	oKSeE8+THMQcptmNLhqb7HZ1tOw0supiHJzNM=; b=SIkY1pPYn9+X0G1rNERlQk
-	v42Rkt6lR4IzfGcvV1otHLv+cotW2HNqsaQmx3ZChzvC0UvmJ9/7nqEd7/shOZQc
-	dL5H1e9qD8VOawQOKmd5swBJF/7Ty8Q1yvxBXkZsd1S9RlR/AsRZ5kDw4UvimY6E
-	NNFxpWSE5NTiggkkd/zIVWu5Hhx2dT7x5njURQPMiZl4IDLkqUz4tYul47TrDeiG
-	D/V9fCQaGlSJ8uN+MlqHEFRwYbsUYXCk01W261afZXdCbVYj90/FjUSOVkJa2Zjo
-	ZETDe2qebEJj6AA+wpCC104J3XTdXaAD3G4DS53eCJ6T6zDM5zvWGGP0ud594Bqg
+	:message-id:mime-version:references:subject:to; s=pp1; bh=MvYuJI
+	BaTbglptud8BUxVWG/aFzgyTUty/UijXRHP0A=; b=XWacN0CXRj93+b4OQRBX76
+	tFfQfKjrKE3x9NVim1yHBVohPTOLDLI7ORbJAiBxvtifEDNTx3pngHW3BgJ+VCYW
+	4LHjfaYfz3+JKnvF8sveskfHwCrj2Lybc587XR/2GTJogHvFRYcwLHZvPhMf2aLr
+	cCexhL4/cN+ST8t1HB4WVJjSq5za2fNBIvHxtjJjiBOR8qEhxNfRPF+SBPyUQ2RF
+	6ZJZ462P3bIXs4w+ac1AI++NLCG+ZXhm9IiNYjGGp6V7rQWnkX0ZkPWyyPyzQWkD
+	pGxFvbL33Al1oSNy/IlfTNODqWO/de+gzAJ4m2E5JhX5njZGDG2jDtSROH+OghFg
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq639chs-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq639cr7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 10:25:03 +0000 (GMT)
+	Thu, 07 Aug 2025 10:26:48 +0000 (GMT)
 Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 577ANGww023432;
-	Thu, 7 Aug 2025 10:25:02 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq639chk-1
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 577AHZMU012539;
+	Thu, 7 Aug 2025 10:26:47 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq639cr4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 10:25:02 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5779UA6A007973;
-	Thu, 7 Aug 2025 10:25:01 GMT
+	Thu, 07 Aug 2025 10:26:47 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5779eOPv020592;
+	Thu, 7 Aug 2025 10:26:46 GMT
 Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48bpwn03mk-1
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwn03rt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 10:25:01 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 577AOv0o38863326
+	Thu, 07 Aug 2025 10:26:46 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 577AQgYd53608722
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Aug 2025 10:24:57 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C21820087;
-	Thu,  7 Aug 2025 10:24:57 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E3F4E20089;
-	Thu,  7 Aug 2025 10:24:52 +0000 (GMT)
+	Thu, 7 Aug 2025 10:26:42 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9BBD12004B;
+	Thu,  7 Aug 2025 10:26:42 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E6C0520043;
+	Thu,  7 Aug 2025 10:26:37 +0000 (GMT)
 Received: from linux.ibm.com (unknown [9.109.219.153])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  7 Aug 2025 10:24:52 +0000 (GMT)
-Date: Thu, 7 Aug 2025 15:54:50 +0530
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  7 Aug 2025 10:26:37 +0000 (GMT)
+Date: Thu, 7 Aug 2025 15:56:35 +0530
 From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
@@ -84,12 +84,11 @@ Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         naveen@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
         npiggin@gmail.com, memxor@gmail.com, iii@linux.ibm.com,
         shuah@kernel.org
-Subject: Re: [bpf-next 3/6] bpf,powerpc: Implement bpf_addr_space_cast
- instruction
-Message-ID: <aJR+8t1CnEig3exH@linux.ibm.com>
+Subject: Re: [bpf-next 0/6] bpf,powerpc: Add support for bpf arena and arena
+ atomics
+Message-ID: <aJR/W7w/csyL7Ov4@linux.ibm.com>
 References: <20250805062747.3479221-1-skb99@linux.ibm.com>
- <20250805062747.3479221-4-skb99@linux.ibm.com>
- <bc6ef2d1-da06-4b29-a0ec-67549074bc0b@csgroup.eu>
+ <5af0d7d9-71cb-4977-b496-6046c2c64d52@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,27 +105,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <bc6ef2d1-da06-4b29-a0ec-67549074bc0b@csgroup.eu>
+In-Reply-To: <5af0d7d9-71cb-4977-b496-6046c2c64d52@csgroup.eu>
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDA4MiBTYWx0ZWRfX4X8+b7TBCu10
- v2FCM2q/D7IdqTTAEakrGIKjyOEKAyfJyz4xOc3naRg72vBrs4oX23mnL/+aPQPyWrCZ7UzX1gT
- PrgAjOcFAJmuXXs1dCyEZQlbpZA5TRMYa9vGGbPE989pS6o6AVwLdkLL9noesgPwUtdQa7mLvLW
- LXKPBZ8TI+dnot0xrOpKMO1YxoiQxfraoDKDidsFfC2A8o7ARgyTXIu9xTz84glEvWWzryX1A+S
- TtxbHCOeRqaJ/TvfUeRDcEW2ugQcxNm/p4jBCuwjU15knWhLo1SsSdvWP/UGiH6/gPJ2J14mBBF
- eCfOMcQTmKcDS76nd+QHUv0+ApCsXGY8pHr5J4J8SvGWtKrD9ADMbnPBdkzCAVHy8Npooq233t0
- aK/PkLvhooFW2z/b1C9wCa1lwyFsU8Zng5Ptq1nH6o3/VcPStExn+XqkTqDK4rpEq7vQnPkw
-X-Proofpoint-GUID: aA2OhVPsH9My90VlPxNb2NK2hg2CIuoO
-X-Authority-Analysis: v=2.4 cv=PoCTbxM3 c=1 sm=1 tr=0 ts=68947eff cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=8nJEP1OIZ-IA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=hIbISvocxoUqj33YnGsA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDA4MiBTYWx0ZWRfXyAn5EK3DnGtN
+ MJBX/qUB/39erTlaqBtSQ/Z+nfTyh/YMv7VUJuKpzAowq2y1K08lC0zQv1AJ/8x/NCDFtEMOLWU
+ EpNYpDm1h0GPofCCd6Io9sDK0vnb1NaKUPW5gOnyxDwNRuktLne4Oh6dOIHQeOC7yzFC8XJh2NO
+ nGvcK6QhjSIyfXkKZ4O6nGOwGIHuKyPA5kxBgaHmHT9/Flfa9mOi41zaAvAJ0lSzTcZxxtqU1Os
+ ySHFD4zSk7EI7DMgLpgFzti6zvfCWpOgeoTAIEBYmWZtDgvGBWUQlQZsD09TyCQ/u4a+DT5np06
+ ZGoP131WpVr699aRiAwf3HIRzXvvg6McV3rCiVH2D94/9vr2xB9Ic6wdOqgNFZuzLJJTGpEi2y4
+ FtBZZhuMXq6FmEct+9mvwDRT9bzmg/akfegrYTA9QiOEGsDKdx7KPYNbcvxWYnedlRWuzDZr
+X-Proofpoint-GUID: VHgF_G3YeGlqFtACXPJeRatxucYmKxt0
+X-Authority-Analysis: v=2.4 cv=PoCTbxM3 c=1 sm=1 tr=0 ts=68947f68 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=8nJEP1OIZ-IA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=muU3JWixXP3YJbJcO1YA:9
  a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
-X-Proofpoint-ORIG-GUID: gG9yARwJAw8rtXy6ojXK43-BLELMc_XA
+X-Proofpoint-ORIG-GUID: hLwI0__C5l9eor7AFoAsBFZu824w8krA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-07_01,2025-08-06_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  suspectscore=0 malwarescore=0 adultscore=0 clxscore=1015 bulkscore=0
- priorityscore=1501 impostorscore=0 mlxlogscore=944 mlxscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 mlxlogscore=999 mlxscore=0 phishscore=0
  lowpriorityscore=0 spamscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
  definitions=main-2508070082
@@ -135,86 +134,112 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 05, 2025 at 09:29:07AM +0200, Christophe Leroy wrote:
+On Tue, Aug 05, 2025 at 09:45:39AM +0200, Christophe Leroy wrote:
 > 
 > 
 > Le 05/08/2025 à 08:27, Saket Kumar Bhaskar a écrit :
-> > LLVM generates bpf_addr_space_cast instruction while translating
-> > pointers between native (zero) address space and
-> > __attribute__((address_space(N))). The addr_space=0 is reserved as
-> > bpf_arena address space.
-> > 
-> > rY = addr_space_cast(rX, 0, 1) is processed by the verifier and
-> > converted to normal 32-bit move: wX = wY.
-> > 
-> > rY = addr_space_cast(rX, 1, 0) : used to convert a bpf arena pointer to
-> > a pointer in the userspace vma. This has to be converted by the JIT.
-> > 
-> > Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-> > ---
-> >   arch/powerpc/net/bpf_jit.h        |  1 +
-> >   arch/powerpc/net/bpf_jit_comp.c   |  6 ++++++
-> >   arch/powerpc/net/bpf_jit_comp64.c | 11 +++++++++++
-> >   3 files changed, 18 insertions(+)
-> > 
-> > diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-> > index 2d095a873305..748e30e8b5b4 100644
-> > --- a/arch/powerpc/net/bpf_jit.h
-> > +++ b/arch/powerpc/net/bpf_jit.h
-> > @@ -165,6 +165,7 @@ struct codegen_context {
-> >   	unsigned int exentry_idx;
-> >   	unsigned int alt_exit_addr;
-> >   	u64 arena_vm_start;
-> > +	u64 user_vm_start;
-> >   };
-> >   #define bpf_to_ppc(r)	(ctx->b2p[r])
-> > diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-> > index 35bfdf4d8785..2b3f90930c27 100644
-> > --- a/arch/powerpc/net/bpf_jit_comp.c
-> > +++ b/arch/powerpc/net/bpf_jit_comp.c
-> > @@ -205,6 +205,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
-> >   	/* Make sure that the stack is quadword aligned. */
-> >   	cgctx.stack_size = round_up(fp->aux->stack_depth, 16);
-> >   	cgctx.arena_vm_start = bpf_arena_get_kern_vm_start(fp->aux->arena);
-> > +	cgctx.user_vm_start = bpf_arena_get_user_vm_start(fp->aux->arena);
-> >   	/* Scouting faux-generate pass 0 */
-> >   	if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
-> > @@ -441,6 +442,11 @@ bool bpf_jit_supports_kfunc_call(void)
-> >   	return true;
-> >   }
-> > +bool bpf_jit_supports_arena(void)
-> > +{
-> > +	return IS_ENABLED(CONFIG_PPC64);
-> > +}
-> > +
-> >   bool bpf_jit_supports_far_kfunc_call(void)
-> >   {
-> >   	return IS_ENABLED(CONFIG_PPC64);
-> > diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-> > index 16e62766c757..d4fe4dacf2d6 100644
-> > --- a/arch/powerpc/net/bpf_jit_comp64.c
-> > +++ b/arch/powerpc/net/bpf_jit_comp64.c
-> > @@ -812,6 +812,17 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
-> >   		 */
-> >   		case BPF_ALU | BPF_MOV | BPF_X: /* (u32) dst = src */
-> >   		case BPF_ALU64 | BPF_MOV | BPF_X: /* dst = src */
-> > +
-> > +			if (insn_is_cast_user(&insn[i])) {
-> > +				EMIT(PPC_RAW_RLDICL(tmp1_reg, src_reg, 0, 32));
+> > This patch series introduces support for the PROBE_MEM32,
+> > bpf_addr_space_cast and PROBE_ATOMIC instructions in the powerpc BPF JIT,
+> > facilitating the implementation of BPF arena and arena atomics.
 > 
-> Define and use PPC_RAW_RLDICL_DOT to avoid the CMPDI below.
+> This series seems to be limited to powerpc64. Please make it explicit in all
+> patches subject, see exemple below:
 > 
-Alright Chris, will define and implement it here.
-> > +				PPC_LI64(dst_reg, (ctx->user_vm_start & 0xffffffff00000000UL));
-> > +				EMIT(PPC_RAW_CMPDI(tmp1_reg, 0));
-> > +				PPC_BCC_SHORT(COND_EQ, (ctx->idx + 2) * 4);
-> > +				EMIT(PPC_RAW_OR(tmp1_reg, dst_reg, tmp1_reg));
-> > +				EMIT(PPC_RAW_MR(dst_reg, tmp1_reg));
-> > +				break;
-> > +			}
-> > +
-> >   			if (imm == 1) {
-> >   				/* special mov32 for zext */
-> >   				EMIT(PPC_RAW_RLWINM(dst_reg, dst_reg, 0, 0, 31));
+> $ git log --oneline arch/powerpc/net/bpf_jit_comp64.c
+> cf2a6de32cabb (tag: powerpc-6.17-2, origin/next-test, origin/next)
+> powerpc64/bpf: Add jit support for load_acquire and store_release
+> 59ba025948be2 powerpc/bpf: fix JIT code size calculation of bpf trampoline
+> d243b62b7bd3d powerpc64/bpf: Add support for bpf trampolines
+> 9670f6d2097c4 powerpc64/bpf: Fold bpf_jit_emit_func_call_hlp() into
+> bpf_jit_emit_func_call_rel()
+> fde318326daa4 powerpc64/bpf: jit support for signed division and modulo
+> 597b1710982d1 powerpc64/bpf: jit support for sign extended mov
+> 717756c9c8dda powerpc64/bpf: jit support for sign extended load
+> a71c0b09a14db powerpc64/bpf: jit support for unconditional byte swap
+> 3c086ce222cef powerpc64/bpf: jit support for 32bit offset jmp instruction
+> b1e7cee961274 powerpc/bpf: enforce full ordering for ATOMIC operations with
+> BPF_FETCH
+> 61688a82e047a powerpc/bpf: enable kfunc call
+> 
+Chris, will keep this in mind while sending v2.
+> 
+> > 
+> > The last patch in the series has fix for arena spinlock selftest
+> > failure.
+> > 
+> > This series is rebased on top of:
+> > https://lore.kernel.org/bpf/20250717202935.29018-2-puranjay@kernel.org/
+> > 
+> > All selftests related to bpf_arena, bpf_arena_atomic(except
+> > load_acquire/store_release) enablement are passing:
+> > 
+> > # ./test_progs -t arena_list
+> > #5/1     arena_list/arena_list_1:OK
+> > #5/2     arena_list/arena_list_1000:OK
+> > #5       arena_list:OK
+> > Summary: 1/2 PASSED, 0 SKIPPED, 0 FAILED
+> > 
+> > # ./test_progs -t arena_htab
+> > #4/1     arena_htab/arena_htab_llvm:OK
+> > #4/2     arena_htab/arena_htab_asm:OK
+> > #4       arena_htab:OK
+> > Summary: 1/2 PASSED, 0 SKIPPED, 0 FAILED
+> > 
+> > # ./test_progs -t verifier_arena
+> > #464/1   verifier_arena/basic_alloc1:OK
+> > #464/2   verifier_arena/basic_alloc2:OK
+> > #464/3   verifier_arena/basic_alloc3:OK
+> > #464/4   verifier_arena/iter_maps1:OK
+> > #464/5   verifier_arena/iter_maps2:OK
+> > #464/6   verifier_arena/iter_maps3:OK
+> > #464     verifier_arena:OK
+> > #465/1   verifier_arena_large/big_alloc1:OK
+> > #465/2   verifier_arena_large/big_alloc2:OK
+> > #465     verifier_arena_large:OK
+> > Summary: 2/8 PASSED, 0 SKIPPED, 0 FAILED
+> > 
+> > # ./test_progs -t arena_atomics
+> > #3/1     arena_atomics/add:OK
+> > #3/2     arena_atomics/sub:OK
+> > #3/3     arena_atomics/and:OK
+> > #3/4     arena_atomics/or:OK
+> > #3/5     arena_atomics/xor:OK
+> > #3/6     arena_atomics/cmpxchg:OK
+> > #3/7     arena_atomics/xchg:OK
+> > #3/8     arena_atomics/uaf:OK
+> > #3/9     arena_atomics/load_acquire:SKIP
+> > #3/10    arena_atomics/store_release:SKIP
+> > #3       arena_atomics:OK (SKIP: 2/10)
+> > Summary: 1/8 PASSED, 2 SKIPPED, 0 FAILED
+> > 
+> > All selftests related to arena_spin_lock are passing:
+> > 
+> > # ./test_progs -t arena_spin_lock
+> > #6/1     arena_spin_lock/arena_spin_lock_1:OK
+> > #6/2     arena_spin_lock/arena_spin_lock_1000:OK
+> > #6/3     arena_spin_lock/arena_spin_lock_50000:OK
+> > #6       arena_spin_lock:OK
+> > Summary: 1/3 PASSED, 0 SKIPPED, 0 FAILED
+> > 
+> > Saket Kumar Bhaskar (6):
+> >    bpf,powerpc: Introduce bpf_jit_emit_probe_mem_store() to emit store
+> >      instructions
+> >    bpf,powerpc: Implement PROBE_MEM32 pseudo instructions
+> >    bpf,powerpc: Implement bpf_addr_space_cast instruction
+> >    bpf,powerpc: Introduce bpf_jit_emit_atomic_ops() to emit atomic
+> >      instructions
+> >    bpf,powerpc: Implement PROBE_ATOMIC instructions
+> >    selftests/bpf: Fix arena_spin_lock selftest failure
+> > 
+> >   arch/powerpc/net/bpf_jit.h                    |   6 +-
+> >   arch/powerpc/net/bpf_jit_comp.c               |  32 +-
+> >   arch/powerpc/net/bpf_jit_comp32.c             |   2 +-
+> >   arch/powerpc/net/bpf_jit_comp64.c             | 378 +++++++++++++-----
+> >   .../bpf/prog_tests/arena_spin_lock.c          |  23 +-
+> >   .../selftests/bpf/progs/arena_spin_lock.c     |   8 +-
+> >   .../selftests/bpf/progs/bpf_arena_spin_lock.h |   4 +-
+> >   7 files changed, 348 insertions(+), 105 deletions(-)
+> > 
+> > base-commit: ea2aecdf7a954a8c0015e185cc870c4191d1d93f
 > 
 
