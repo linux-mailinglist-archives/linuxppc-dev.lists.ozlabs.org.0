@@ -1,59 +1,99 @@
-Return-Path: <linuxppc-dev+bounces-10722-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10723-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F895B1D838
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 14:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 656BAB1D896
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 15:08:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4byRlY4JN5z3cR8;
-	Thu,  7 Aug 2025 22:47:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bySCX6rb9z3cQr;
+	Thu,  7 Aug 2025 23:08:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754570873;
-	cv=none; b=cA/7I0A2rnpHW0PcQRfJnzMKwYr4Y1xqGzMMHrqKEu3M9Gxsma37prMBl+X4WiQhGvBtWOvvWNYBorApMZcezh4+PsQCtM/q+yHu6rAIU0f5PBoyk706G+e3y1p3J3BMtAgvbi+QEPMDeP1YjUJFcC2pWtOYJuHt/9z3oR+JhCVPy3C9Dir2gLzSHHZn5aeiAE/ESJSy4NpqYLGPbwiel1K1YsHKDGkSIitk0nRVAJyeqkQTJKGPMerge0/QAQiSxFuedM0pm0XIZJBxUHCbuTH2QowVf/uwTc9bx3kT38IEdW1+cvX3euTVzXVaQbIhKhvFYA3Jl/Q6ZsVgZ4KPww==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754570873; c=relaxed/relaxed;
-	bh=7U+/hi1NU75wi5GyHPqbltoDvWO6scxSVbUq/rTUbyc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AJjqtqFm9fy5tg8ucSV65eE8DY1uTWsa3wBncRTD/uV5AcXNP+THss9n3HISrU+NP/x+7UAqlQzHmuYNt5mO+EpbZAG2jNzYXz9nWz3WCZaaldqGUNFDXvt6AE+J7P9q67HxZukpfsOLv4tGi41yh+vD//pFuuu15L4xcUQFBuACEFSq9/LtnbZFzOzLxf2BiN60jV4MxdP/qddmlAja0nwT1PVoAVGl+5kuHps6mSxWJfNVi1sbMlvRJH3YIMfn5Vp9Y8aXjPwbA74yyHuSOddeXDDMZzeWjqtalWYK0Ww/mApGe/XkAL55e2GM33t61UzrgKYGUqMygcvT3RQ4Fg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i8wUd7ug; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2418::621" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754572120;
+	cv=pass; b=c4ffZCXFmeroF+Qicew2Wp683bvYEWnE3F3Q6ERQS73aqxmXUSwJDxo3QgBFrpuQp35i9bvoO2YH9TCBfBS1WrKEyM8344U2EtdTN5gq4pRzRKamzNQVmCQ4z7px6Iq7YuloVUsjj/Pg0GsSw3ekla92mwH97Yci6oriSZsH98XsYoWHkzWKSLhMZZHrvctLybXM1sDD3WH5v2YettpDneaTShAu0JhKYBBaYH0y1lJ0bL2U2zTNc/LRTMZbaWjt+rwFtP1phRUN1Gg46ejOrWXBC/besuB8C5estBuPt1ozs0sWdM6XMCE1j4IFXjsJurovH3d+Wgeb4N7xY26yYw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754572120; c=relaxed/relaxed;
+	bh=HcNahN9GoGL0AP88sLUVxLsV+OiezgDlSya5Beqdmb4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=IEB0pfqEPMokXVsY/9lEYyOpiwOPLRBePLMPPyWwLURzBf+QRUkyXX3phradDVPBaRYc4vNwc46CI5m3Kk7VSdBsoyfmfea2RPc7fTSep0Qa7iOC/U/rV7F4QZyPCe266gx+gZyvFGpEp0wA/gi8lsjbvvY/7x/KCMAjdd8vug75+Ij+539zkHVF1AXyh4yaKTv/pa6voxWR6jNypRYKJNYdiiWk2R2dXr3Fa27pyjDyyB16Gg3a3KZcmc3lFqJV4prOnD7rntrkKVRcNZuYh/qLXkvLO9oB03D77rrgZmpUlZo+gwsD5zV+AmGr0odRRHHWM+gNfCJ8J9db3tgpBg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=M/m2K/JO; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2418::621; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i8wUd7ug;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=M/m2K/JO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=horms@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2418::621; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on20621.outbound.protection.outlook.com [IPv6:2a01:111:f403:2418::621])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4byRlW6Chzz3cQs
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 22:47:51 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id C4B015C65DA;
-	Thu,  7 Aug 2025 12:47:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5277DC4CEEB;
-	Thu,  7 Aug 2025 12:47:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754570868;
-	bh=+egBy+RMpqLtNh79AR9yQ2T/2DAqtjLVFMqu+wyMIP8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i8wUd7ugI+2eJCVQlgR+OWX8+BpJQNJTOm6DQpGqSByBgbhWZ4JMAe4XUxtOwcUHQ
-	 ZamyIuuHFEKz0UhGPx01ZSJcNMDpG+tPY0tqtokc6dam69DCtoqxhjzWwIpA5biQ9r
-	 CMBRVoGYIdMh68PaqAxLX62m1Xy6PI9Iiu1llWywiYt+A8zMlqmCW/v5nvmeSv7r1b
-	 5F/Iq1i3cCuCQONi46KeKCIyflVwZ+3RqCLqYGUKKHEXYLkUqgrDstXnlmXLb4wOSw
-	 DgBDrwpoig72ZM19FeM5ZOgqTzP3lAEA6ac22715rowvudm/PNG4umLM6RC3iFDwY+
-	 i8DGTMrazccHw==
-Date: Thu, 7 Aug 2025 13:47:44 +0100
-From: Simon Horman <horms@kernel.org>
-To: Mingming Cao <mmc@linux.ibm.com>
-Cc: netdev@vger.kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
-	ricklind@linux.ibm.com, kuba@kernel.org, edumazet@google.com,
-	pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com, mpe@ellerman.id.au
-Subject: Re: [PATCH net-next v4] ibmvnic: Increase max subcrq indirect
- entries with fallback
-Message-ID: <20250807124744.GJ61519@horms.kernel.org>
-References: <20250806184449.94278-1-mmc@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bySCW14FQz30Vq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 23:08:38 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tQ1+zt8SxkWpi6XQvKb/4txJLmNhj/lKE1tbbt1yHm5Mc5mfMh1id0s7n9GI5o++auSo5fgwsbyFF8RGHy/AhtAQmxzQ50KAfwY+Lk+ne7i9/mPM6kIjAisy9OVGCuJDn89lx40GkRUvA92ncv0c2r7XBOY1KlrUvG81hcJl/JCd1EKx5Qz3kZ488T0o9nNYANzl74kNcFUIhK1EKWagmcQFDl7gCFYfa/YppIhvPXVVWPvY0tosrnQ06eTFBoFUEu1y4rfvyEjIg0ev32yYzL/OxMyWvHTDYb6Vc3xTRZh/5pybM9kmC5wf/gCuvZ7fNOa3OtGQIP1Q8Pvuvl0srQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HcNahN9GoGL0AP88sLUVxLsV+OiezgDlSya5Beqdmb4=;
+ b=kzDGV6ClUN6JhAsCb/Tg2C17AqRbsb3oWrHgWl17B9xc8vaSbqHGdsTIoTLBp8xnm7fuotA5anPz87YJfP9LyCJ4aXVEJHepCizOuK5BZjEA6OSQ/wJlCsuslw8jZAGYQ+OVW7nHymzqFALhtmHmdtBC1jSarxIPH4iwu6ViqOWNDcXBuuGW3KqEEcm67zRTLCtxpgU50wz0Xa3B+SNZIKomGv06gR3y1AtY4jwGFe7EDNtR2A0Cu1gQr0YYJQf9F4b331gjSHFe+aMKXkuj3/CMchqVpsMKgeSg3af87PgeGXihKo06Xheu+myXJZautZ77luPaUmCww9ZssjNJug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HcNahN9GoGL0AP88sLUVxLsV+OiezgDlSya5Beqdmb4=;
+ b=M/m2K/JOv5Yv/ToHUCusN/WyEgwTM6QbQuHVoqqc47QW+gR1ysR4Pg6h76Sl+YdllzPOb0n72NW81+RCaZjQxsxyywcvEPM5ArW+4Qa8V8qy3uXMm42Sv/2JIXJ+qMYfEs/p+4xbYG9JB5SeI+QyzFxQiWcm0FsDBoVoEYNVFORQvqGgDWZOFyUu2tVHRM4HOJ+Yo6Y9/CL2luVzoALO4GJ9ScwWm6W8ZSmHB/Je55r4hNG+nARGUVDGA8uaF9aoxwLgdp+QJRTSyuL08tlXFnGCKylCGENcMF7jfRoUjmRDnnZ16+AGtOItUsGDZUWM4k3EY7kQJ0WZQ3tWW/2NKQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by DM4PR12MB8558.namprd12.prod.outlook.com (2603:10b6:8:187::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.16; Thu, 7 Aug
+ 2025 13:08:13 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9009.017; Thu, 7 Aug 2025
+ 13:08:13 +0000
+Date: Thu, 7 Aug 2025 10:08:11 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v1 09/16] dma-mapping: handle MMIO flow in
+ dma_map|unmap_page
+Message-ID: <20250807130811.GI184255@nvidia.com>
+References: <cover.1754292567.git.leon@kernel.org>
+ <152745932ce4200e4baaedcc59ef45c230e47896.1754292567.git.leon@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <152745932ce4200e4baaedcc59ef45c230e47896.1754292567.git.leon@kernel.org>
+X-ClientProxiedBy: YT3PR01CA0108.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:85::25) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,147 +107,141 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250806184449.94278-1-mmc@linux.ibm.com>
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DM4PR12MB8558:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08950cc1-2de1-4780-484f-08ddd5b376d7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Nq/4a2aPxe/mtkoI+QV41hdJKUg3cdlvSoOR/muTmjH0jenhZt1pRK5w3IzH?=
+ =?us-ascii?Q?p/QFHExc/MgAgAc9aZQDcNnoHwi28teNBmt1OWbiyYcoTOc5Cb2wtWDPulgK?=
+ =?us-ascii?Q?lRbbS7eEZagenmxQTEc+UUnF8s1mRoMLRy32fpksYmbw5v8mYjrbqJAKM1u7?=
+ =?us-ascii?Q?KOTKhGVh777MbtRutO4zJRcrF1kRDXeKNnthTkAOSt/dKpif4LMWsvTKEha4?=
+ =?us-ascii?Q?Q1VF2VW8cL2wutuXlsjVj8hGa8LVjTreJD7E3Z1xkfakk9+ka0SyNAseQpcG?=
+ =?us-ascii?Q?gsLbMjQCzBddVDXCW1kuNJvSGpoI7lnQiSfA7pZ8ADRalwfE+Wd03wgQR3C2?=
+ =?us-ascii?Q?kLpHy3kjaXHOmiEXvOv++7pxX5zMW7IRAtLjqcjoQHoev6H3/qXbKik5wHXc?=
+ =?us-ascii?Q?RRyt/ae8W9ZVP6FekBsEETq2wOTaO9MlqpMCLFsWmX8vKQVuI+iYUOTaTd04?=
+ =?us-ascii?Q?HUBwHFwWjIpnrD3cFb3qcNkg4yi+bm8/GC/Et6ucLgPJXJbUKe2YkwKSZqSs?=
+ =?us-ascii?Q?CDXXbkHaVZwJbeU0WnrPRZbrfPcUDbVI5eA10870B0FyKaIHyMRI0x7/zCCP?=
+ =?us-ascii?Q?AQ3jJ9Op0mto7K0skfRbtGmvyreJY3Nh4Leuq440dmD3GbRTxpMmUJeTrSFB?=
+ =?us-ascii?Q?sFdvVDqzXfYUTFxKXAmkp+H3L5XiaIg5fTDbsHh3T31qSBy+4Ggfd0FDv0wB?=
+ =?us-ascii?Q?QGRI2WkOXf2Kln/xZiyDkCqR6+CtYgA9c23F0/9VpyPCk5ZIYjUdKhKWc/l6?=
+ =?us-ascii?Q?TM16Zonii3uyIvOX+gBnQbtIVf8om4ZEYnCLTSajZ5xI3/rcs+rp549OwAaH?=
+ =?us-ascii?Q?v4pwvGo9mvAy3l8n82aOYSmGg7xY25BQIvsalU3qzA9AWBQgz7SMLMNJpPSD?=
+ =?us-ascii?Q?g8W0JjY7HjdwX5em71q4xpApzR95Q6pUwlfnbKpMtaz1BMNHNYXpfaiQmK4T?=
+ =?us-ascii?Q?U30RbT4w7xqdhd7GCtAugnvLNCa0ZYjBubYnmojSsQNfh8blXE5jjBIyEvyl?=
+ =?us-ascii?Q?N1ML8UBAaT/6M4w8S9RWSQ1HXCw3gyVhmA5qVYz6kRnwYAuH4jttPqqU21ts?=
+ =?us-ascii?Q?mc6+jLwdCTRLxaqX0cAjTWTnOURE0pG7WC78sDc2oRS+nazzJoxhLoQR3j8R?=
+ =?us-ascii?Q?ovpm0N+kaQoi6TiloWW4BZ8JiuhTZ9orE5xiKzRfsva9gFbF67IV1C1iLGHE?=
+ =?us-ascii?Q?3Izs9IQYnVOP0aFr/uYb9NX1NcfuEY5HPyY1iQw5B6mk5As1LaYlHuIYnodk?=
+ =?us-ascii?Q?mF32bjbDXsSDkQIxF/0LhDcdp9IuwTqAbTgUeSi9SOrVI3x8sat/XVh1s/GM?=
+ =?us-ascii?Q?bmQc+MvkzYeqQSqXEvWk/4BPL43BorkZoPfZfxAAlzy9x+MlHnog1mzE/DD5?=
+ =?us-ascii?Q?bl0OWTpu948qX9qOmmcDYGR17MxIM/C5TBPx+yLLOQF062Nxw7t4KN9UiIOI?=
+ =?us-ascii?Q?P1tH+x/69d0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Rj4qcstFxUNxsRt471nCdJj82wmdEq5/Kx7zvkQBLfZLQRl+ga88yJlYaCsf?=
+ =?us-ascii?Q?CbdR5MQ2vuVy3EpcYdVVFFFuGDV6c/18dGgVy+aIQX4Xz3Taj0QWItN6MfAp?=
+ =?us-ascii?Q?fdK3eG9vIwBOxPgwq3r8hbXL8FUymx7Ury4B1K21cfVGfAHu0/T8/7mSvooq?=
+ =?us-ascii?Q?jJIMjROfGb2SglfRzuidjznIqdf3HNmIvDb9Vf0G8LS1A52miIu11TW9wBUe?=
+ =?us-ascii?Q?1BGs6bBOxq8N9mz/FIwxof2vawn/poPbtXLbRIpUYk8UgzUBrBv1v4c1JtYn?=
+ =?us-ascii?Q?otlxohDx2mxKpVCgHnOqkg5xVBuF0zgfBgBf0AlwsLRpwd4Q8G3xdiwPTnR4?=
+ =?us-ascii?Q?Sspl65u0J6IPBVkwiQgyZatvFlT3rrhAQ+tuJO2UQ0mG239MR9IeOUJg9kSE?=
+ =?us-ascii?Q?gW82aHqUFkerfU8AD3AFAWXH+Jfs6lzIna8/opyIEIDZIE73ZPXwj4CB5c8P?=
+ =?us-ascii?Q?ioeE2zfcTc3PdvivMeeXMulub5u5IHBdiy2g5fVp/PRSrplWN1lgGq5TaOoW?=
+ =?us-ascii?Q?EmfRJ957EM/oJ/1LU6bjRlXSt5CGu7B55SDYzKgMVCUNqIxc1mmDGOAArrwe?=
+ =?us-ascii?Q?UihpLdOIVq2JzAecSr1X2GDfb3wYgiwSAORwRdpg4e4LyyimuAnso83lo+b1?=
+ =?us-ascii?Q?ta0eoJPuf3AAa0xtEh+F1Rk89sYQF5ye5EZ9yOBx3VC1VC1NiMA5E2rIr7P4?=
+ =?us-ascii?Q?uoSqNodY+GPN5iARUia8nXINxqfJBJNu3xlleOAE/SRO0smabmoLTY1a1FO1?=
+ =?us-ascii?Q?piaXqyKi7ywfW73iD0HP7uZx2/0i/hfqglw01epL/KqZYbC60xX7iT5hW49Z?=
+ =?us-ascii?Q?9cfUqCcxOAmwSFJR0PO/GKRiqarvC+1sD6fP7GS4kcFZ8jPtpItFsF9aWYX7?=
+ =?us-ascii?Q?0FQVBSuV5d7s2mCE5WH8vNkQagG4ongmjy9XtQwwxlu/RH+LpeVH0NxyluGu?=
+ =?us-ascii?Q?CULKE00Q+0mZc984ezCco3ZtV14RqVSsiCyR+XWoGXeCFv8hg9rD0s5tQGGd?=
+ =?us-ascii?Q?YbKb24R9elV2YHlqk4oYH0kER3H2kQqdSdVXkIN7LeuWGVVN2E0boCQAWVrW?=
+ =?us-ascii?Q?V3Vn6ZdR+qj3JARf/nEiTsP17PDBHDFKU6+Mfs0psjZXvdgFKHAl0TQqnLDZ?=
+ =?us-ascii?Q?hWedoX7mADffbzxiSX2BhY2PCTciTJbseJX7GwyG6+FcZP+B3w3iakMH/pPZ?=
+ =?us-ascii?Q?KcCtjslOcZ5QaDx6+zFxoEVghkCAbFOVxC7jA715eh+7ppgYr6nlG50Qimnc?=
+ =?us-ascii?Q?Ge89r+xdDkrN+ZcjOqiXojuASnecl3FGDce7S6+ovPgNRbvtjNei5tn2J6Zt?=
+ =?us-ascii?Q?CUVkOheZnHigLiuTQ/sJQ0//HdwQ9VAAgv+dMPZjKsNgbkF7N1cC5CZXI0uc?=
+ =?us-ascii?Q?K9ct3Peu/gXnCYvZMLdFnl5mP/9x3jzXxseDC2Xq0GURAfeZAaZxCTjReqh5?=
+ =?us-ascii?Q?CZ4WSzmbS5FGb4DPjk7IkC2gHvwHSDkiFBy0bOmm4ars19OIebfBS8MDl3C9?=
+ =?us-ascii?Q?aoQdrCQAc1YMTs90T867gbeVLXS3snMjDLJlzsIbMvkkksphpbdW5Jz4pryX?=
+ =?us-ascii?Q?Ma1w0FcmuWectGjgXy4=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08950cc1-2de1-4780-484f-08ddd5b376d7
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 13:08:12.8802
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vOq4jHUsSKGMaJyXZYTLbMWHzFOPikNkJkIkpgwbuFDcTt8ZteeQkm001BjRjw4P
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8558
+X-Spam-Status: No, score=-3.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Aug 06, 2025 at 11:44:49AM -0700, Mingming Cao wrote:
-> POWER8 support a maximum of 16 subcrq indirect descriptor entries per
->  H_SEND_SUB_CRQ_INDIRECT call, while POWER9 and newer hypervisors
->  support up to 128 entries. Increasing the max number of indirect
-> descriptor entries improves batching efficiency and reduces
-> hcall overhead, which enhances throughput under large workload on POWER9+.
+On Mon, Aug 04, 2025 at 03:42:43PM +0300, Leon Romanovsky wrote:
+> From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> Currently, ibmvnic driver always uses a fixed number of max indirect
-> descriptor entries (16). send_subcrq_indirect() treats all hypervisor
-> errors the same:
->  - Cleanup and Drop the entire batch of descriptors.
->  - Return an error to the caller.
->  - Rely on TCP/IP retransmissions to recover.
->  - If the hypervisor returns H_PARAMETER (e.g., because 128
->    entries are not supported on POWER8), the driver will continue
->    to drop batches, resulting in unnecessary packet loss.
-> 
-> In this patch:
-> Raise the default maximum indirect entries to 128 to improve ibmvnic
-> batching on morden platform. But also gracefully fall back to
-> 16 entries for Power 8 systems.
-> 
-> Since there is no VIO interface to query the hypervisor’s supported
-> limit, vnic handles send_subcrq_indirect() H_PARAMETER errors:
->  - On first H_PARAMETER failure, log the failure context
->  - Reduce max_indirect_entries to 16 and allow the single batch to drop.
->  - Subsequent calls automatically use the correct lower limit,
->     avoiding repeated drops.
-> 
-> The goal is to  optimizes performance on modern systems while handles
-> falling back for older POWER8 hypervisors.
-> 
-> Performance shows 40% improvements with MTU (1500) on largework load.
-> 
-> --------------------------------------
-> Changes since v3:
-> Link to v3: https://www.spinics.net/lists/netdev/msg1112828.html
-> - consolidate H_PARAMTER handling & subcrq ind desc limit reset for RX/TX
->   into a helper function
-> - Cleanup and clarify comments in post migration case
-> - Renamed the limits to be a clear and simple name
+> Extend base DMA page API to handle MMIO flow.
 
-Thanks for the updates.
+I would mention here this follows the long ago agreement that we don't
+need to enable P2P in the legacy dma_ops area. Simply failing when
+getting an ATTR_MMIO is OK.
 
-I'm sorry for not mentioning this in my review of v3, but net-next
-is currently closed for the merge window. Could you please repost,
-or post a v4, once it re-opens. That should happen once v6.17-rc1
-has been released. Probably early next week (week of 11th August).
+> --- a/kernel/dma/mapping.c
+> +++ b/kernel/dma/mapping.c
+> @@ -158,6 +158,7 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+>  {
+>  	const struct dma_map_ops *ops = get_dma_ops(dev);
+>  	phys_addr_t phys = page_to_phys(page) + offset;
+> +	bool is_mmio = attrs & DMA_ATTR_MMIO;
+>  	dma_addr_t addr;
+>  
+>  	BUG_ON(!valid_dma_direction(dir));
+> @@ -166,12 +167,23 @@ dma_addr_t dma_map_page_attrs(struct device *dev, struct page *page,
+>  		return DMA_MAPPING_ERROR;
+>  
+>  	if (dma_map_direct(dev, ops) ||
+> -	    arch_dma_map_phys_direct(dev, phys + size))
+> +	    (!is_mmio && arch_dma_map_phys_direct(dev, phys + size)))
+>  		addr = dma_direct_map_phys(dev, phys, size, dir, attrs);
 
-My minor nits below notwithstanding this looks good to me.
-So feel free to include.
+I don't know this area, maybe explain a bit in the commit message how
+you see ATTR_MMIO interacts with arch_dma_map_phys_direct ?
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-N.b.: I will be on a break when net-next reopens.
-      So please don't wait for feedback from me then.
-
-> 
-> Changes since v2:
-> link to v2: https://www.spinics.net/lists/netdev/msg1104669.html
-> 
-> -- was Patch 4 from a patch series v2. v2 introduced a module parameter
-> for backward compatibility. Based on review feedback, This patch handles
-> older systems fall back case without adding a module parameter.
-> 
-> Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-> Reviewed-by: Brian King <bjking1@linux.ibm.com>
-> Reviewed-by: Haren Myneni <haren@linux.ibm.com>
-> ---
-
-These days it is preferable to put the revision history here.
-Rather than above your Signed-off-by line, as is currently the case.
-
->  drivers/net/ethernet/ibm/ibmvnic.c | 59 ++++++++++++++++++++++++++----
->  drivers/net/ethernet/ibm/ibmvnic.h |  6 ++-
->  2 files changed, 56 insertions(+), 9 deletions(-)
-
-Or here.
-
-> 
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-
-...
-
-> @@ -6369,6 +6400,19 @@ static int ibmvnic_reset_init(struct ibmvnic_adapter *adapter, bool reset)
->  			rc = reset_sub_crq_queues(adapter);
->  		}
->  	} else {
-> +		if (adapter->reset_reason == VNIC_RESET_MOBILITY) {
-> +			/* After an LPM, reset the max number of indirect
-> +			 * subcrq descriptors per H_SEND_SUB_CRQ_INDIRECT
-> +			 * hcall to the default max (e.g POWER8 -> POWER10)
-> +			 *
-> +			 * If the new destination platform does not support
-> +			 * the higher limit max (e.g. POWER10-> POWER8 LPM)
-> +			 * H_PARAMETER will trigger automatic fallback to the
-> +			 * safe minimium limit.
-
-minimum
-
-> +			 */
-> +			adapter->cur_max_ind_descs = IBMVNIC_MAX_IND_DESCS;
-> +		}
+>  	else if (use_dma_iommu(dev))
+>  		addr = iommu_dma_map_phys(dev, phys, size, dir, attrs);
+> -	else
+> +	else if (is_mmio) {
+> +		if (!ops->map_resource)
+> +			return DMA_MAPPING_ERROR;
 > +
->  		rc = init_sub_crqs(adapter);
->  	}
+> +		addr = ops->map_resource(dev, phys, size, dir, attrs);
+> +	} else {
+> +		/*
+> +		 * All platforms which implement .map_page() don't support
+> +		 * non-struct page backed addresses.
+> +		 */
+>  		addr = ops->map_page(dev, page, offset, size, dir, attrs);
 
-...
+Comment could be clearer maybe just:
 
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.h b/drivers/net/ethernet/ibm/ibmvnic.h
+ The dma_ops API contract for ops->map_page() requires kmappable memory, while
+ ops->map_resource() does not.
 
-> index 246ddce753f9..480dc587078f 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.h
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.h
-> @@ -29,8 +29,9 @@
->  #define IBMVNIC_BUFFS_PER_POOL	100
->  #define IBMVNIC_MAX_QUEUES	16
->  #define IBMVNIC_MAX_QUEUE_SZ   4096
-> -#define IBMVNIC_MAX_IND_DESCS  16
-> -#define IBMVNIC_IND_ARR_SZ	(IBMVNIC_MAX_IND_DESCS * 32)
-> +#define IBMVNIC_MAX_IND_DESCS 128
-> +#define IBMVNIC_SAFE_IND_DESC 16
-> +#define IBMVNIC_IND_MAX_ARR_SZ (IBMVNIC_MAX_IND_DESCS * 32)
+But this approach looks good to me, it prevents non-kmappable phys
+from going down to the legacy dma_ops map_page where it cannot work.
 
-nit: maybe move towards using tabs before the values here?
+From here you could do what Marek and Christoph asked to flush the
+struct page out of the ops->map_page() and replace it with
+kmap_local_phys().
 
-+#define IBMVNIC_MAX_IND_DESCS	128
-+#define IBMVNIC_SAFE_IND_DESC	16
-+#define IBMVNIC_IND_MAX_ARR_SZ	(IBMVNIC_MAX_IND_DESCS * 32)
-
-...
-
--- 
-pw-bot: deferred
+Jason
 
