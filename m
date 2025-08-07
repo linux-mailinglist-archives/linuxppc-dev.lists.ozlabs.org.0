@@ -1,99 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-10725-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10726-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD1CB1D8BD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 15:15:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A235B1D8CA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 15:18:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bySMD2bH9z3cRR;
-	Thu,  7 Aug 2025 23:15:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bySQP1v5Bz3cRp;
+	Thu,  7 Aug 2025 23:18:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2413::61f" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754572520;
-	cv=pass; b=iDHCzCc5psJHTzTBNRHkLML1cfxs9bxZiYJxnlKy2bnE9brsbNfXLAzMeU9rONWQ+JkTeB3/6UZS6dVX6W+Ww5V1lLqoH9k8pd8eHypzQy6wAIkvgd+K0ANFLl0kspeXiQqTgeooRuEfxBiaCIXT4QHFkr2UKps6qujrvcKbpa4sLVqY/rJyAClqNjVdFqjTfjR2ziwrtPy1w514Ekkzoy8L8B5lHmq+2z0QpOw+r/zqABNGsgdYHmODRGz9P3dokI1kcuOmWqDbLKQpcgSzNSeuHtu+E5b/FRYxkOxvTEJf9RLFCzZyI1SR4fZTJPH/PgwUd6aTSe7MosC9ztBexg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754572520; c=relaxed/relaxed;
-	bh=fhrpJXFQJ413bVBg/dYiA6Su59FLs9ca9I3Q/eQtjEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=AZYdd1UnOkbJX0Cj+u+OlhqufTjLWQp590DMGTYBNMno4Nvnp9Be2oXFbhKvB8/5ZGyNrXa+JnQyGxuNwpORUbto5yHjvMhFzobR7Tv9wje3JcjMqKLMbxUPsVSPekX3kCbwT59bWxkH768Xh5ashnohbancfRD1Ryh3AZaGrvlhSTM+Vc3KJIhu0rAfdfrgDrLjDvfBq+pXrY5b5N9S+bxY7Nc65IX6/o2nwZTM3jZHTRiGlEd7Nn0sNcMTbsbyfdbybb+b31jBcLkB7PbaeXnLof8F7h4v9gB++15oDgDEPebxgeQQssqJPgArQsZH/C9dqobf9Gj3cJp0pLsVog==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hRuZURXL; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2413::61f; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754572685;
+	cv=none; b=KlV500Mw0nMNDI/8LmR1ApsECJR5nwHU/IxOJiwfQmDo/pTQSKh9DtshnEEmofhwOD4CQeYmXep2E/GWx3rDo46als4P5DweLvPPDnsIBu1efT6wtnYv1WybCcSKWLjPHt7vqf8dlDlrv0U01iMurXxa3ZgeKRnHufvx8VDNbTgwtToe0v7sS4OBZdGJH/TBDoB+R1lQLr80jP4a9wlacB7zcgKC6+eAvjcfopLBRojsS37ayCDM9PwqdMMa4fRWRjX4wxw4fC65f/xRESfa5eHEkV5l83DQLTdkbmReacwAUYBQ7ScFgEUDerqKYgLYztH9YJYmU5NWmx/4+kn4bA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754572685; c=relaxed/relaxed;
+	bh=ReRMI1w5O5kV+P3X1vvXZsrm2JTNYKpxE8su60j9QmI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UHOoe6VZccaVPQ/CQV7Rx8wWNh0pK3m+PrJxDKlzdOeIcvlK3Db28YdUvYlpjsoii6Sp5PKW/e6Ee08xuJnpR6a4a/Lcch3zZHuA9vai4FHB1Tk1bbWLripTGOhQ8x8sNp1yRR3QuO1ZDhUc2s3WVqCGNU681xZvlAQBnz+w7KsHXemXjwYQXASrYqI08V9IBP+8/YedUHcF3599Y4l/M5m0Uu6G7+WV+WAtwul9u/EXhX870rzLdKyfpsv7o8GmzFRJr452p+D398CqSHKs+JocBZWWIc6/5JgEXwCUk/qk0X8XXOZs4fgy6ggXO2G6Y+NIBuhZjuvVRxlgcs+oJA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iME6Fw4Q; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=hRuZURXL;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iME6Fw4Q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2413::61f; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2061f.outbound.protection.outlook.com [IPv6:2a01:111:f403:2413::61f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bySMC5034z2xCd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 23:15:19 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wo7k/uTJcp855ED3LJ2trHqYOTev4jBcYYE5YCzT2lh6ZrTAiSZnK6310k5CwU2DX10KGyyyMZKZBU8RMc5vPnCUrXZ75/vrnILosqT52b0KVH5q9zE8A4M5Rwvmz9MtWNd7qxKnJ2PJbQaEVj+yzxHyEJ8kCvuCefO9Ww9d5NaSKaNRQaLHCygKxRzuBAmOGUT8kuX4N6Lm5YS5EXO+L8UOfUGCf7+tmb/xnK/rzrG+vjOLVIThtuO4YGYEYXs+xyfjnuuOFbK3vRkOaoziwWcicM0MdtajbyNIgdgnQ9B895Gx2eXja2Jdm23RboMkhF3jUyeex9YxhdtqrEmCoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fhrpJXFQJ413bVBg/dYiA6Su59FLs9ca9I3Q/eQtjEk=;
- b=EHGeulZn/cEjtXGORzllVslfrrFvgrgMnl/ePhrHnBOHldTAU8S8irht6EJwWSYJKvMe1oo3TlyGX7HHg89opsTeE9+b/k5ud81AEpmH4nGwg6JRWUHwXbHjisHW4FLEvfXhT+2gWLCYc9LS1Zep8h6WJa134oN59w6WfAzyDVPGU5EKTIYoLEOhmEscKKmBs/1eHdLnbaJ/4RKp5qM+xm9RJuhwkIXsK9OnATvBAdfkKdp0FvwkVOsEo3pEzyEaqwKhuKj6a2ct20xIOkVenCjiCIZcP//vJOlO1JkbQIZk32YdvShMWKBhXz+Bw25fXOrSXffAm5e7mG7YvvXQag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fhrpJXFQJ413bVBg/dYiA6Su59FLs9ca9I3Q/eQtjEk=;
- b=hRuZURXLK+zmTbd9v35xpwN73YrZJmzpo6AohN1GdvatI0CQeIaAvaF2e7/fshyFGm/sFxcxDnGai5zoVbgqmz6fqFdwhVvOWWZoi3JmCc+Wod51RqwLJPaGBcifo2mL/pyA6TKZ2cuibWLWy9ZK8Dw6+fjlPqRmkp+n/NdBuyOJplcEl/OjMyTarZxlQu/1JjdFptZTshnQeonCEnwSKQENPqRMBNPfv19CulsZKLx+ZO+twSitmWu+5m6czW6wMVJWKPj0V2vcBTWXMQrvBc6JzDZo3jwFDyZrNXvwQGf99enE7yZ6tmEIiVP8HyRBiTo0SgS0s8i6bAGqbA1oMw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by SJ2PR12MB7848.namprd12.prod.outlook.com (2603:10b6:a03:4ca::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.15; Thu, 7 Aug
- 2025 13:14:59 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9009.017; Thu, 7 Aug 2025
- 13:14:59 +0000
-Date: Thu, 7 Aug 2025 10:14:58 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v1 12/16] mm/hmm: migrate to physical address-based DMA
- mapping API
-Message-ID: <20250807131458.GK184255@nvidia.com>
-References: <cover.1754292567.git.leon@kernel.org>
- <6d5896c3c1eb4d481b7d49f1eb661f61353bcfdb.1754292567.git.leon@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6d5896c3c1eb4d481b7d49f1eb661f61353bcfdb.1754292567.git.leon@kernel.org>
-X-ClientProxiedBy: YT4PR01CA0453.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10d::14) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bySQN21Hjz3cRn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 23:18:03 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 577Cmb0p019634;
+	Thu, 7 Aug 2025 13:17:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ReRMI1
+	w5O5kV+P3X1vvXZsrm2JTNYKpxE8su60j9QmI=; b=iME6Fw4Q2AlpWBaRqruKU0
+	/GUbmKqw2xwrh/F0+EI0Dco3u13BS6bex2gFBJwzTRgAtBBWHEk2ogIY1FajKvNC
+	s2HHB8rzH+e9Eaa8ppYyLisNVMV5yiNYtVGJ7nYcZ+uO0+4Rs64UfQFJD73MsRTw
+	kSUZbdv4cDY/7gB4ur++wcS7fza48BngaDpm47myHNy8mDmdt/WAFKUCymWiZ96w
+	Z689RwinbhzWd1DyRYS4ibGuBdQj70dZrYpS+zXd0n7MGiEn+Gd0kNAlnxwxumee
+	L8i0FsL5Fct/0eb8FoyTeNGAkjxt3Ug5zura4qow9J+PrighkNiI9of5zGfulfMA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48c26tynbf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Aug 2025 13:17:32 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 577DHVaX002921;
+	Thu, 7 Aug 2025 13:17:31 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48c26tynb9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Aug 2025 13:17:31 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5779vWDG007960;
+	Thu, 7 Aug 2025 13:17:30 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48bpwn0r16-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Aug 2025 13:17:30 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 577DHQf450594166
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 Aug 2025 13:17:27 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DBEC620040;
+	Thu,  7 Aug 2025 13:17:26 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C35DA20043;
+	Thu,  7 Aug 2025 13:17:19 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.43.75.32])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  7 Aug 2025 13:17:19 +0000 (GMT)
+Date: Thu, 7 Aug 2025 18:47:16 +0530
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        hbathini@linux.ibm.com, sachinpb@linux.ibm.com, andrii@kernel.org,
+        eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
+        iii@linux.ibm.com, shuah@kernel.org
+Subject: Re: [bpf-next 0/6] bpf,powerpc: Add support for bpf arena and arena
+ atomics
+Message-ID: <aJSnXO62QRglnNsw@linux.ibm.com>
+References: <20250805062747.3479221-1-skb99@linux.ibm.com>
+ <e918bef7-5f9b-4591-b671-fe3c0f681862@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -107,112 +102,167 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SJ2PR12MB7848:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a07515f-ddaa-4ac5-b3a8-08ddd5b46965
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GSImJahfz0YNnt1fwDp+mBc8ssN50vC6AfMAVhkIOcvn/O3sKKoVm/4ksk+C?=
- =?us-ascii?Q?ocO/j51p/V7ugnNBtvoABaUqHrSIHA9Hm3UvgFM8lP6vQxcc6ItyQVS8sL+1?=
- =?us-ascii?Q?AFJZ2QOJt7mdJGm1fDtTNPXa0+l/bFsl4GGBxccS/ZBCMRWwW6kOnrInWdhN?=
- =?us-ascii?Q?83XGe+RKzaNtVWcHVBFBaBo56C/aGBb5C+9EM6ZUTolx2BRnrpu86JJU/wly?=
- =?us-ascii?Q?9szly7j+qUXn/j4XVZcOHY5lDECADNx528PGUctcbByhNzn1Nb1j9ruTOZq+?=
- =?us-ascii?Q?mS0giz6+NtlYc7Sj5f39bXIjYeyXMDM+3/5HOLSrKpEO7nkBUtlg7hVlfYKB?=
- =?us-ascii?Q?0XwxqyC+ToKBhD4XgCtw+Iq+U8Mo0KraoFrBPq+1wyov3kpH0c8gjn5r6K3W?=
- =?us-ascii?Q?j3BHaQxj+rE9iX6vsQJDexzC1wmVL/mrIxtKjiFoM5HcDocs3VBn2jPVMLJ3?=
- =?us-ascii?Q?BdwIUdxEwiEfV0GpNoRxxguI0E0FYCcuf/MKIAW3891CA5OFHWqirQlpsgDY?=
- =?us-ascii?Q?XkURAwqUb0dWLrOxoL5l1X1/NqGr0QT4Suj4DNnf4ohQmbMpToCrPb2zl8EB?=
- =?us-ascii?Q?q1viVoNJz8xho2ph51Tdx9z+bDtkvRC1kXGyv7sI8UEgJt/f99Cxpgtx7g77?=
- =?us-ascii?Q?vnX2EJLvSGKe3KSusQvb55iJieU6kCocSj/sIXxsDZq3RKVn8Ne04l+MHgU6?=
- =?us-ascii?Q?CMmGigO1sUjkKIYoUiZeOYP4AlwB1yCIMR3GAr/99Nuoc370O35GK1mGVfuY?=
- =?us-ascii?Q?e5Wiv3u/K9vUiSL2kX+g43gTTZAdICuCcJz204KRJttcQl79pgkqkxi/EIvA?=
- =?us-ascii?Q?sTFGuLo4MafZMKHhqgEtiJxm/b5gtT+nRMhxgVUSObDw3JIp2bvXm75dYN/w?=
- =?us-ascii?Q?6l5nyT/xIRGSEitQu/Lr2FHKQKHn9MHFRQNRWp0DSTUG+3qXMxQad5hJvV5n?=
- =?us-ascii?Q?dWqC71GofP4YKjxsIZ0c/H3MDQ8nkezQjLX/dCrCvLwkNlzb6m0AgT7K2jqx?=
- =?us-ascii?Q?9R6bD2ZfdnvuXjOGyJ6fhlN4SLJQbtPufxDLKQTfQB05olRPoAUqIBiCO5bW?=
- =?us-ascii?Q?yH7Pe2lbyALqgNdWAIp/EqvK6E4Thye+lVnh6zwiLrDMa65lu8lekZ4aiXIi?=
- =?us-ascii?Q?c/b6ljhCYqJfdsScF1CbUScdoN0Ap1gfOL7Vuu8zQoVZqupoIt/yxUbtfQ4A?=
- =?us-ascii?Q?tZaSCbtFmaRduYZYpoPmB5tyb6mpkhRYiwdd6eaAJU0ybvtQ0OKqyLXxeiQv?=
- =?us-ascii?Q?OWjcSpaA7rvKBbgiXM0giidUJTWnVU6jrP6WmyNtYgMrKTzflx6Tgz6pe/l7?=
- =?us-ascii?Q?4AvALcXlgU4yOMOFDaKMZS5SK/bTKr96s0QiJhGb3mzDbYBU3EgfkOp0Jxr3?=
- =?us-ascii?Q?pFlomqRCIkf/qHucrTbTlGSNMnPQq8DSC6J2iHHFV4+igvw8ctO77QccHuvG?=
- =?us-ascii?Q?BSNvcvV7iDM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uVQwG2u0CVNbXDDS+5ZdwxowmLZ5OHkQuEUxGqmleC+7gjjEVrPza8qdCu2H?=
- =?us-ascii?Q?DqmgrtbTEojW6zJDsVFIcNi1mJtxn/lW5SIBCCh4cx4QK6iHT6bCoistEIsr?=
- =?us-ascii?Q?V81Ce1X6q1kOGhUq4wgeXBtDhahFfmTQ5ljjrt1UI+qnmP4Ilj/Zcc7yLrts?=
- =?us-ascii?Q?4iDSIZoTfHlAI5W7hlopIAm7a4w63jWe4fKj71k1Qumik5Nh6xIYj7zfpR3r?=
- =?us-ascii?Q?i5uOwuhZ3HvtWgwSuJhT1aS7m5u41Ag2I2lrRUwqL0AVtiIjLPjwX/qK6Zrq?=
- =?us-ascii?Q?KO41KlW1eTh02FnnoO1GT/Ib+kl0sV39jUP4abkPVRba2S63iWWmInlZ+xzW?=
- =?us-ascii?Q?ujOMQ9ef4P240ZAM4NRcuIMcQRURHa1gE+rjuzIMMEDO4pLl7/pzjlZdn6lq?=
- =?us-ascii?Q?MznwkkeNxk6uvq487o4jFJpPpsUdZz2nEzvUuBx/rPzAaCFQNNNC0RQN7svm?=
- =?us-ascii?Q?dhMy0qzKzFQXhQh65YVbx6AzQmkyN5Uk2APUSFJjGWZY4Az3xQTMtf2NXZnB?=
- =?us-ascii?Q?nzR8e0xSr3JS3DKhLaWw530AwSv4hpYooUcrB0NnM8F6A+0woOQdR0VaT+iC?=
- =?us-ascii?Q?Vadjw9RX4KbqHbKVGsoKSjkTk+bA57fulc3p/bWQIHlEn8Kyxi1eGatWiFK/?=
- =?us-ascii?Q?jHdn0+a3csJUb5cBRLs+rVWoY+1AqrvRqbg+U08UNpCurQBWF6i5J087gACH?=
- =?us-ascii?Q?LW2aYjif9bGLKfmDzee3sqwJ5AJkGUmbB6UKRJFW1+HCxZBnOqUwx+HsA7EB?=
- =?us-ascii?Q?zOLqpjCMVfm49rgIfbh8WSfJPplF9WKE0FZWXrSxYOofC7kDOSj/W5e0Y3Dr?=
- =?us-ascii?Q?6GJ+XRM0WEAXZQzPzSWJ+jLw7tbuNqCuEDn7e8h5uCpfXo2ppikWX2hZbwW3?=
- =?us-ascii?Q?xgrQ3DesCQzZLLs2caRCHXivsYaNx938WILpK9WWFsgmSoyhc8MGyNESDvJb?=
- =?us-ascii?Q?4qvLGxLu4SfHFaPcYHm209mQY6xpelBXVSXJA442Yp+hJm7e3p9IMFi8RoBP?=
- =?us-ascii?Q?MmAZ4EjmfuSqZXz/PL11o/ynTW1D1jHmnKn3HIqrahsFm4/JoYyOlQZP4UHq?=
- =?us-ascii?Q?YfregCimSaNIXwVWh108NkwU5pbdz3yPazMSYvuL45kMcHa/70fUn0/9tjkZ?=
- =?us-ascii?Q?/fJSdzrrdW9cUHpkHtiOQXTckFjVfNpxgXDuS4tvv6cLaDbscTAfeiW8RVgf?=
- =?us-ascii?Q?HRFm5YF4KRqmY4ZEgrsyGu7clCF7UXAFWGnbmM11qCj7cImhrJAYXMDQ2b0Z?=
- =?us-ascii?Q?4UkpZKzb552akcXznmWtJe5aSm9v5fj7+ipUL1EuxH3aI0Bg6mF3EUzbLH9A?=
- =?us-ascii?Q?umBxh3cGpH+Mdf0Uka6xf4IPU5USIcPJWKiyNaQXVSAXsm9PlUfTLQdcc/ld?=
- =?us-ascii?Q?WhI2SVYFqbI/1QXzwljSHsxSi8jYAMow6c0+uff7K5biL+6kvgE5khgWhjcO?=
- =?us-ascii?Q?FX/WHQsGoZXDDdOGj3cexmCiGtYwnzdnHV/f0WHDVT6/xj7SB1e5mL5hFpTQ?=
- =?us-ascii?Q?1AltKpMuPum0qbcYABG//OJr8UX1BsZ8/wiz2T/B2maxJTItHhJS/pj5YFQq?=
- =?us-ascii?Q?xY1T4eXY8Gl9xBE6JQM=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a07515f-ddaa-4ac5-b3a8-08ddd5b46965
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 13:14:59.7997
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aRilX0OJKybLQvXrxDL1luTg64hyjr54mJCIoCxuOa64E1WkO3f40ZTT12LJxHyK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7848
-X-Spam-Status: No, score=-3.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e918bef7-5f9b-4591-b671-fe3c0f681862@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: YXGzjED4pJhXligsrAzBvBlxy0HdLnrb
+X-Authority-Analysis: v=2.4 cv=F/xXdrhN c=1 sm=1 tr=0 ts=6894a76c cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=8nJEP1OIZ-IA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=NEAV23lmAAAA:8
+ a=alihBsh1ZAGIVrIkydwA:9 a=3ZKOabzyN94A:10 a=wPNLvfGTeEIA:10
+X-Proofpoint-GUID: 6kbce07YtCxIaLhugwtQhO4aIFlYDmMx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDEwMyBTYWx0ZWRfX4IsiQ9WBU6y2
+ 730rC1TJZQZvrnmYLmcctkvELPG9Ir9+k1xV0LCmmDwFZPHtUJQVUFuotTz0tkwZJTROc1TnoMO
+ mqeXIuP2v8cgnspXRlQzjrKT3ZV/DyHY7uMJmyNQ0GaR7r0XTfCYS3zxykukzQsIb21U/E7LEU9
+ h5vcEDlvr1rWF/wViHhmEEH9eIb22oAXPCPI/OeYJhmQAxjQcgloGRNdbwAjccQLaynVLE+UQi+
+ aPuG2RSH71pzS2DOfEIwjbhsdzI2jc8+56bPCZPaHnrbxkC3uoe4uyNbjDgWXamUZ3yMxkfwfTD
+ kF4YG+5AMOpmuOMoKcLqIv5VM9zXwwsEdkoCynpBBDwHsyWQeydAL2Y8adqd02yJT8xS2/n9C2N
+ WYMm/vBkT9JSDhz1Ww2dQnUmvU39rGXpO2SULE+ZdoOILjjCtwdHOQnI0GssfxeZNWwALFPI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-07_02,2025-08-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ clxscore=1015 spamscore=0 bulkscore=0 adultscore=0 mlxlogscore=999
+ malwarescore=0 phishscore=0 suspectscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508070103
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Aug 04, 2025 at 03:42:46PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+On Tue, Aug 05, 2025 at 05:37:00PM +0530, Venkat Rao Bagalkote wrote:
 > 
-> Convert HMM DMA operations from the legacy page-based API to the new
-> physical address-based dma_map_phys() and dma_unmap_phys() functions.
-> This demonstrates the preferred approach for new code that should use
-> physical addresses directly rather than page+offset parameters.
+> On 05/08/25 11:57 am, Saket Kumar Bhaskar wrote:
+> > This patch series introduces support for the PROBE_MEM32,
+> > bpf_addr_space_cast and PROBE_ATOMIC instructions in the powerpc BPF JIT,
+> > facilitating the implementation of BPF arena and arena atomics.
+> > 
+> > The last patch in the series has fix for arena spinlock selftest
+> > failure.
+> > 
+> > This series is rebased on top of:
+> > https://lore.kernel.org/bpf/20250717202935.29018-2-puranjay@kernel.org/
+> > 
+> > All selftests related to bpf_arena, bpf_arena_atomic(except
+> > load_acquire/store_release) enablement are passing:
 > 
-> The change replaces dma_map_page() and dma_unmap_page() calls with
-> dma_map_phys() and dma_unmap_phys() respectively, using the physical
-> address that was already available in the code. This eliminates the
-> redundant page-to-physical address conversion and aligns with the
-> DMA subsystem's move toward physical address-centric interfaces.
 > 
-> This serves as an example of how new code should be written to leverage
-> the more efficient physical address API, which provides cleaner interfaces
-> for drivers that already have access to physical addresses.
+> Hello Saket,
 > 
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> ---
->  mm/hmm.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> I see couple of selftests are failing on my set up.
+> 
+> > 
+> > # ./test_progs -t arena_list
+> > #5/1     arena_list/arena_list_1:OK
+> > #5/2     arena_list/arena_list_1000:OK
+> > #5       arena_list:OK
+> > Summary: 1/2 PASSED, 0 SKIPPED, 0 FAILED
+> > 
+> > # ./test_progs -t arena_htab
+> > #4/1     arena_htab/arena_htab_llvm:OK
+> > #4/2     arena_htab/arena_htab_asm:OK
+> > #4       arena_htab:OK
+> > Summary: 1/2 PASSED, 0 SKIPPED, 0 FAILED
+> > 
+> > # ./test_progs -t verifier_arena
+> > #464/1   verifier_arena/basic_alloc1:OK
+> > #464/2   verifier_arena/basic_alloc2:OK
+> > #464/3   verifier_arena/basic_alloc3:OK
+> > #464/4   verifier_arena/iter_maps1:OK
+> > #464/5   verifier_arena/iter_maps2:OK
+> > #464/6   verifier_arena/iter_maps3:OK
+> > #464     verifier_arena:OK
+> > #465/1   verifier_arena_large/big_alloc1:OK
+> > #465/2   verifier_arena_large/big_alloc2:OK
+> > #465     verifier_arena_large:OK
+> > Summary: 2/8 PASSED, 0 SKIPPED, 0 FAILED
+> 
+> 
+> All error logs:
+> tester_init:PASS:tester_log_buf 0 nsec
+> process_subtest:PASS:obj_open_mem 0 nsec
+> process_subtest:PASS:specs_alloc 0 nsec
+> run_subtest:PASS:obj_open_mem 0 nsec
+> run_subtest:PASS:unexpected_load_failure 0 nsec
+> do_prog_test_run:PASS:bpf_prog_test_run 0 nsec
+> run_subtest:FAIL:1103 Unexpected retval: 4 != 0
+> #513/7   verifier_arena/reserve_invalid_region:FAIL
+> #513     verifier_arena:FAIL
+> Summary: 1/14 PASSED, 0 SKIPPED, 1 FAILED
+> 
+> 
+Hi Venkat,
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+It is known failure. This selftest was added recently. We are working on it to
+fix this. Will post the fix for this selftest separately.
+> > 
+> > # ./test_progs -t arena_atomics
+> > #3/1     arena_atomics/add:OK
+> > #3/2     arena_atomics/sub:OK
+> > #3/3     arena_atomics/and:OK
+> > #3/4     arena_atomics/or:OK
+> > #3/5     arena_atomics/xor:OK
+> > #3/6     arena_atomics/cmpxchg:OK
+> > #3/7     arena_atomics/xchg:OK
+> > #3/8     arena_atomics/uaf:OK
+> > #3/9     arena_atomics/load_acquire:SKIP
+> > #3/10    arena_atomics/store_release:SKIP
+> > #3       arena_atomics:OK (SKIP: 2/10)
+> > Summary: 1/8 PASSED, 2 SKIPPED, 0 FAILED
+> > 
+> > All selftests related to arena_spin_lock are passing:
+> > 
+> > # ./test_progs -t arena_spin_lock
+> > #6/1     arena_spin_lock/arena_spin_lock_1:OK
+> > #6/2     arena_spin_lock/arena_spin_lock_1000:OK
+> > #6/3     arena_spin_lock/arena_spin_lock_50000:OK
+> > #6       arena_spin_lock:OK
+> > Summary: 1/3 PASSED, 0 SKIPPED, 0 FAILED
+> test_arena_spin_lock_size:FAIL:check counter value unexpected check counter
+> value: actual 15999 != expected 16000
+> #6/1     arena_spin_lock/arena_spin_lock_1:FAIL
+> #6       arena_spin_lock:FAIL
+> Summary: 0/2 PASSED, 0 SKIPPED, 1 FAILED
 
-Maybe the next patch should be squished into here too if it is going
-to be a full example
+This too, with llvm-19 the failure is known to us, where llvm doesn't have support for
+may_goto insn https://github.com/llvm/llvm-project/commit/0e0bfacff71859d1f9212205f8f873d47029d3fb.
+Though, there is else condition which is envoked incase llvm doesn't have support for may_goto insn,
+which we are looking into.
 
-Jason
+Since llvm-20 has support for may_goto, we are not seeing this failure there(the selftest passes).
+So we are planning to fix this in separate patch for llvm-19 for now.
+
+Regards,
+Saket
+> > Saket Kumar Bhaskar (6):
+> >    bpf,powerpc: Introduce bpf_jit_emit_probe_mem_store() to emit store
+> >      instructions
+> >    bpf,powerpc: Implement PROBE_MEM32 pseudo instructions
+> >    bpf,powerpc: Implement bpf_addr_space_cast instruction
+> >    bpf,powerpc: Introduce bpf_jit_emit_atomic_ops() to emit atomic
+> >      instructions
+> >    bpf,powerpc: Implement PROBE_ATOMIC instructions
+> >    selftests/bpf: Fix arena_spin_lock selftest failure
+> > 
+> >   arch/powerpc/net/bpf_jit.h                    |   6 +-
+> >   arch/powerpc/net/bpf_jit_comp.c               |  32 +-
+> >   arch/powerpc/net/bpf_jit_comp32.c             |   2 +-
+> >   arch/powerpc/net/bpf_jit_comp64.c             | 378 +++++++++++++-----
+> >   .../bpf/prog_tests/arena_spin_lock.c          |  23 +-
+> >   .../selftests/bpf/progs/arena_spin_lock.c     |   8 +-
+> >   .../selftests/bpf/progs/bpf_arena_spin_lock.h |   4 +-
+> >   7 files changed, 348 insertions(+), 105 deletions(-)
+> > 
+> > base-commit: ea2aecdf7a954a8c0015e185cc870c4191d1d93f
+> 
+> 
+> Regards,
+> 
+> Venkat.
+> 
 
