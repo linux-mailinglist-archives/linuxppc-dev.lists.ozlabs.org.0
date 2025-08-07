@@ -1,94 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-10706-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10707-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82778B1D2F4
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 09:05:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C690B1D52A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 11:47:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4byJ8Z50FHz2xck;
-	Thu,  7 Aug 2025 17:05:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4byMl431sQz2xck;
+	Thu,  7 Aug 2025 19:47:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754550334;
-	cv=none; b=d3yOOiDxpclr9zU5uQGYXPTfAS75PS6DXMd77puzdRI0qGu75L9qqf3Rsfh3X64/IcnUyBHl3a4+lVTtxWKQCJ2atWFVygzFx1TH/QFIqVBFvHQSCDX+D7HfG27GEhpMoElFD8CNwYjIcNavX1z0o7eH+RyfP/kTRwRmj5OehhFBvkODZJtXpHNirk8MjeydqOxMRlDZMavebfaLaZQlvvO3D20rm0wjfzW+QMNjcwyJWfVYgI7g+9VdJ1dbZDuLojKgUerKZcE5ESDD3uvbvrUgZ2RZef86jcCbxZW7fDWNIpUbq/+tdimrpbgnBaommEdWP/COq111g1/2H+qZSQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754560032;
+	cv=none; b=jBNxEaWCWQ7+HKVu9sT/JrlLWAzKadYmWgzpb3qdjbK5C9Mju7A/paT8P/epaPMCAtWpd59w+PgA14xQUM3hkNlaLRKc2og30AebeQw/u42G53iIEyBOcEvXl5yfb66aFfKKc/7utpuoLpIWkzl1HPAC6Xd9sBe7fbOP6y/p7Dy6xx2wD2mG7YTx2ghpqvYP6higkf+KFdyd+rndhxMxbldNoWSgY8/rEkjk2BzN0ePJObw+UJK0B53tgU3mD2+cmX6oG8bNL62O9gT+mTBQXjip29SDAvT/vSQNY0HXgLmuEeMZLkP27+32XoYOcdBoQ0lKeSmiuheM6/ULAGfbag==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754550334; c=relaxed/relaxed;
-	bh=UGgZPqwfgoUb3FUlEOMOsj4NuTWgvSdptoWgx08oWgU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DLA3gNUAaB5KaGH5GYJAJLmZolw0VkYezziy4+O9PmObvnZH8317Bene9A4xxD9LVUk1AsUUy4o2u82wIKY+fwRVcoG4AnFisDyFzogMnrXXXqmnba56HdXWlwN4EJnYy71hlqJj+ouTqGC5xScjTqhrj0EI5q0OrkqX5JbnvklQhaeJhzOmd6p2GLG9p3m9v1jCokz0/VSK2E9F6TzLeIDeDGtnU4FB8y/sBdJI6P14ptuI6MtMzBE2E/YdMqkdROPQjh8IpM3Neh6WHkKsxnx5/kcZpNVbR49YLNMglneLqhCDOvSYZ5ZQm4ObjwIMeBKKOXb7d/Ujoy2HqHf7mA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZQ9APmb; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1754560032; c=relaxed/relaxed;
+	bh=ImRZUe6tVuS8TT869/9J1UoTQ8hVJxjnFHqcKjWzkmg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mu72u8uOIiTAz8ITladIy4XGz7HHRIyA1nvxMLMssFjbpALu0s5TMfZ9/aYZ19ZJaLThwe6nM04mtWTYkeLMkmIsch5Z7IkAOaur3S+Z3VqNDoMpA8D/F0ShSygOwZmu0/wO6WDBtb5RckpWfzXTkPgAvQ+IS5JAPU49GDh5p14mS/lSIB1o6FfXiEIP0lcCVDr8U18DWZFLkN9XFt4mhIVo4Qcy9SQKt3LXiOtf/DfAnqHeALfQc7d0VDkQjFSkgoGvEylIYP/Mgk5vEiQaOy2BdSLy0s/k+H/B4T5D19GfXMUAoq07V08OxzpSzhVyx2zTc+0D2nh4fftt7DZa3g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=go9qRIE7; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZQ9APmb;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=go9qRIE7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=srikar@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4byJ8Y2Zl4z2xcG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 17:05:32 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5775YUbd012331;
-	Thu, 7 Aug 2025 07:05:04 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4byMl26qMZz2xcD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 Aug 2025 19:47:10 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57790AX3021567;
+	Thu, 7 Aug 2025 09:46:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:to; s=pp1; bh=UGgZPqwfgoUb3FUlEOMOs
-	j4NuTWgvSdptoWgx08oWgU=; b=TZQ9APmbgZnNtgh6y7KPIiWdbYBTUE0TGiwrd
-	SPy1G5K5W1ZHOq5lLwcYuxqfzFUVHjrC+av6h1ZAKfRqIR/wEhkAnECuNCWb5EIC
-	/E8pIRsUzO/GfJP7/eKwWvZyFbmQlCZXfTS+fiNrLOrz2gRcLFZ7aNmY51fKR/7X
-	Nr8GCHn9Lu1891t6BYy+1VFUqqIlAX+9bP+6ks3niKAkHcz8rJ3oIJXSTPD5O/+z
-	40ibi7x9pUgaDJoF1xwasBkYeks07XALNbIQZKK42xTWgRNBNBDbKdSMSDS8Wl+g
-	jQjxOKpgUDd3L7bFBoW8IoFrtN7qKzsn237nt1+E8rUsEriVg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63rhb5-1
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ImRZUe
+	6tVuS8TT869/9J1UoTQ8hVJxjnFHqcKjWzkmg=; b=go9qRIE70CfPyS9Kn8TPsq
+	JkZyaxDOMfgvgd9oOkezsaYQ7nO6H1+vyJlxnFf+6IS8gazLQFoHJPSCtC/ozPKm
+	6VKICh++4mFIXlvEA+Fv861i489NybwU9awUyTQXXGMIfzvBpYV01KVsDF9Iz4YI
+	Ww/eXWrOH1iZah1GKzst8ykQD8OdLbBS52aH5gpTLX9hzYzJnzq1Wj6ghnhGN7K+
+	HeSCbGXR0u5BWfqTnzNxp7wSohfiND9Ay/p0FkDgE9Qit35GSbcVN7CqdFOj9pan
+	uk5bsEsgRkx16zjIPUzdIH9a6QpTBUGyN7bRfWvIADnQUc0lqNAVn74p649+uPzA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq621brx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 07:05:04 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 577753gr002323;
-	Thu, 7 Aug 2025 07:05:03 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63rhb1-1
+	Thu, 07 Aug 2025 09:46:53 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5779eRBP008042;
+	Thu, 7 Aug 2025 09:46:52 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48bpwmyygs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 07:05:03 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5775o8mp025899;
-	Thu, 7 Aug 2025 07:05:03 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48bpwn7du3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Aug 2025 07:05:02 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57774x1051773888
+	Thu, 07 Aug 2025 09:46:52 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5779kpb241746786
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 Aug 2025 07:04:59 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3252C20049;
-	Thu,  7 Aug 2025 07:04:59 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 01FD52004B;
-	Thu,  7 Aug 2025 07:04:57 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.126.150.29])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu,  7 Aug 2025 07:04:56 +0000 (GMT)
-Date: Thu, 7 Aug 2025 12:34:56 +0530
-From: Srikar Dronamraju <srikar@linux.ibm.com>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-        Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
-        Tyrel Datwyler <tyreld@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>
-Subject: Re: [PATCH] pseries/lparcfg: Add resource group monitoring
-Message-ID: <aJRQGGr0E5Z9Fqjw@linux.ibm.com>
-Reply-To: Srikar Dronamraju <srikar@linux.ibm.com>
-References: <20250716104600.59102-1-srikar@linux.ibm.com>
- <da3a0717-fe3a-49db-bebd-f231a7fdedb7@linux.ibm.com>
- <aJGZ5_Sf4c1ByCeb@linux.ibm.com>
- <b2e88230-84ed-4b2a-b097-1b813fb42e2a@linux.ibm.com>
+	Thu, 7 Aug 2025 09:46:51 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 450E158055;
+	Thu,  7 Aug 2025 09:46:51 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2F5705804E;
+	Thu,  7 Aug 2025 09:46:39 +0000 (GMT)
+Received: from [9.197.227.8] (unknown [9.197.227.8])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  7 Aug 2025 09:46:38 +0000 (GMT)
+Message-ID: <7f4f4d07-38f7-444c-adff-ec2a2387e86b@linux.ibm.com>
+Date: Thu, 7 Aug 2025 15:16:35 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,167 +79,105 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <b2e88230-84ed-4b2a-b097-1b813fb42e2a@linux.ibm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/17] powerpc: Add __attribute_const__ to ffs()-family
+ implementations
+To: Kees Cook <kees@kernel.org>, linux-arch@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, llvm@lists.linux.dev,
+        linux-hardening@vger.kernel.org
+References: <20250804163910.work.929-kees@kernel.org>
+ <20250804164417.1612371-5-kees@kernel.org>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <20250804164417.1612371-5-kees@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDA1MiBTYWx0ZWRfXyXc7JPVTH3CF
- GlHtMuE0tXwwWztY/BfUPj422RDEKmYo9tdmWTKN+Q6Q3rwK+kAUKrIjC2TmNrjOmS9VEa8QNBD
- /Lb6WNJ3qb5DUv9ht9yPQAofxkf7TYOma5XNdtaUomBpBXjrNDlBOAI55kqan2KqvY2m12CvpTa
- BIhcSlYeDurnE41w5LM/6T0jPFoyK43m+uWcIhrzTt5KiAGZMhUpxDldwqaermSBDhaQBxFF7qX
- kCdxXkq8+Sywvbrdu9o/FkDSLGyQ2n0m2Tgz4lskYEL/kupoFTCQHAH5nlXCZUDQPAoIGxsqbWR
- r2EC6Qfb6Ma9l1ghaB0LloFsOzF0OCzzi9cZKXifDkvdqdbrbqDaHJQZ9/BtnbMeHVgqsUXgybk
- 1VrUCc2yR6xXTWwDIiXmulw+6vIFXttejp1qfFUlB/aWdzgUTp19+JAOQcI4RFdTiUgv0Ws+
-X-Proofpoint-ORIG-GUID: 92DFMifLVMEtyCLB6HMF5bsGv6EH0L73
-X-Authority-Analysis: v=2.4 cv=LreSymdc c=1 sm=1 tr=0 ts=68945020 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=8nJEP1OIZ-IA:10 a=2OwXVqhp2XgA:10 a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8
- a=VgkgaohVKf-vvqSBLYMA:9 a=wPNLvfGTeEIA:10
-X-Proofpoint-GUID: YQZDuHdl6EoFe6JuTBtixTAuqOvpVhzM
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA3MDA3MyBTYWx0ZWRfX0unUnmBlk9BR
+ JyFnhjGUCcX72+ZTvzudrWhw0DB4YVlTamytH3O0p7bgfe1t3RFHu6oXmijVRlkSINNESQcI2ed
+ WV3l/gYRQ2VZynkYP3Tav0+7jWhZaLSgpYND2noyaRsJ968IyHQXslrcztFRDh0MZBgxPGbCx8b
+ +uiLKSt+6Y6IffZklEx4VluWHkjrCmfWHrp45aQanh3SGagw7gHzrJqpepYvNT4HS8EbCADH/Wn
+ zPt3JFi7B14TKcENIp/5NLm0esF1T5EYGCGzXF9hdI2cf8y7VhMMiJqeZefBkl9p6Z1CLp13muG
+ PGN5oX3iZrejuEHJm8J9sJaxrIF5Rg9tb8/6Jc0aiE3VKei/f3z6YRAKdY8HGg4pDBW4p1GLl1f
+ BVmzVXfbgFB6avmCIX9UByEecqNiyQFlc4BOgzcQYghhJIGa/JLCPKcNMH7ACy88lL+pl3p9
+X-Proofpoint-GUID: _d76WmYcTWXQ7iz_O6QVqZlqoAE5ZdTK
+X-Authority-Analysis: v=2.4 cv=BIuzrEQG c=1 sm=1 tr=0 ts=6894760d cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=NEAV23lmAAAA:8 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=ob59Q8BqYF9JHPHMJZcA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: _d76WmYcTWXQ7iz_O6QVqZlqoAE5ZdTK
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-06_05,2025-08-06_01,2025-03-28_01
+ definitions=2025-08-07_01,2025-08-06_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 adultscore=0 mlxlogscore=999 bulkscore=0
- malwarescore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
- definitions=main-2508070052
+ mlxscore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 adultscore=0 clxscore=1011
+ malwarescore=0 phishscore=0 bulkscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508070073
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-* Shrikanth Hegde <sshegde@linux.ibm.com> [2025-08-06 19:49:13]:
 
-> 
-> 
-> On 8/5/25 11:13, Srikar Dronamraju wrote:
-> > * Shrikanth Hegde <sshegde@linux.ibm.com> [2025-08-01 19:27:22]:
-> > 
-> 
-> > > 
-> > > Could you please add a link to patch on power utils on how it is being consumed?
-> > 
-> > I am not sure I understood your query, it looks a bit ambiguous.
-> > 
-> > If your query is on how lparcfg data is being consumed.
-> > All tools that are consuming lparcfg will continue to use the same way.
-> > Since this is not changing the way lparcfg is being consumed, I think it is
-> > redundant information that need not be carried in all the changes/commits to
-> > lparcfg. Such an information would be required when lparcfg file was
-> > created.
-> 
-> I was saying you could point to power utils patch that you have sent which says how
-> one would consume this.
-> 
-> https://groups.google.com/g/powerpc-utils-devel/c/8b2Ixk8vk2w
 
-I guess, power utils patch would need a linuxppc-dev mail reference and not
-vice-versa. Since this patch would sent first and the reviewers of the power
-utils patch would a need a reference to this patch.
-
-Since this patch needs to be sent first, how do I generate a url for the
-second / subsequent patch?
-
+On 8/4/25 10:14 PM, Kees Cook wrote:
+> While tracking down a problem where constant expressions used by
+> BUILD_BUG_ON() suddenly stopped working[1], we found that an added static
+> initializer was convincing the compiler that it couldn't track the state
+> of the prior statically initialized value. Tracing this down found that
+> ffs() was used in the initializer macro, but since it wasn't marked with
+> __attribute__const__, the compiler had to assume the function might
+> change variable states as a side-effect (which is not true for ffs(),
+> which provides deterministic math results).
 > 
-> > 
-> > If your query is on how resource group data is being consumed by users.
+> Add missing __attribute_const__ annotations to PowerPC's implementations of
+> fls() function. These are pure mathematical functions that always return
+> the same result for the same input with no side effects, making them eligible
+> for compiler optimization.
 > 
-> > > 
-> > > Does MODULE_VERS need to increased?
-> > 
-> > All tools that are consuming lparcfg will continue to use the same way.
-> > If there was some conditional changes that need to be done by the tools,
-> > then we should have updated the same.
-> > Hence there is not need to update MODULE_VERS.
-> > 
-> 
-> Since there are two new fields user scripts might need change is why i was suggesting
-> we might need to increase MODULE_VERS
-
-I still dont see a reason for increasing the MODULE_VERS
-
-> 
-> > > 
-> > > > @@ -78,6 +78,8 @@ struct hvcall_ppp_data {
-> > > >    	u8	capped;
-> > > >    	u8	weight;
-> > > >    	u8	unallocated_weight;
-> > > > +	u8      resource_group_index;
-> > > > +	u16     active_procs_in_resource_group;
-> > > >    	u16	active_procs_in_pool;
-> > > >    	u16	active_system_procs;
-> > > >    	u16	phys_platform_procs;
-> > > > @@ -86,7 +88,7 @@ struct hvcall_ppp_data {
-> > > >    };
-> > > >    /*
-> > > > - * H_GET_PPP hcall returns info in 4 parms.
-> > > > + * H_GET_PPP hcall returns info in 5 parms.
-> > > >     *  entitled_capacity,unallocated_capacity,
-> > > >     *  aggregation, resource_capability).
-> > > >     *
-> > > > @@ -94,11 +96,11 @@ struct hvcall_ppp_data {
-> > > >     *  R5 = Unallocated Processor Capacity Percentage.
-> > > >     *  R6 (AABBCCDDEEFFGGHH).
-> > > >     *      XXXX - reserved (0)
-> > > > - *          XXXX - reserved (0)
-> > > > + *          XXXX - Active Cores in Resource Group
-> > > >     *              XXXX - Group Number
-> > > >     *                  XXXX - Pool Number.
-> > > >     *  R7 (IIJJKKLLMMNNOOPP).
-> > > > - *      XX - reserved. (0)
-> > > > + *      XX - Resource group Number
-> > > >     *        XX - bit 0-6 reserved (0).   bit 7 is Capped indicator.
-> > > >     *          XX - variable processor Capacity Weight
-> > > >     *            XX - Unallocated Variable Processor Capacity Weight.
-> > > > @@ -120,9 +122,11 @@ static unsigned int h_get_ppp(struct hvcall_ppp_data *ppp_data)
-> > > >    	ppp_data->entitlement = retbuf[0];
-> > > >    	ppp_data->unallocated_entitlement = retbuf[1];
-> > > > +	ppp_data->active_procs_in_resource_group = (retbuf[2] >> 4 * 8) & 0xffff;
-> > > >    	ppp_data->group_num = (retbuf[2] >> 2 * 8) & 0xffff;
-> > > >    	ppp_data->pool_num = retbuf[2] & 0xffff;
-> > > > +	ppp_data->resource_group_index = (retbuf[3] >> 7 *  8) & 0xff;
-> > > >    	ppp_data->capped = (retbuf[3] >> 6 * 8) & 0x01;
-> > > >    	ppp_data->weight = (retbuf[3] >> 5 * 8) & 0xff;
-> > > >    	ppp_data->unallocated_weight = (retbuf[3] >> 4 * 8) & 0xff;
-> > > > @@ -236,6 +240,13 @@ static void parse_ppp_data(struct seq_file *m)
-> > > >    	seq_printf(m, "unallocated_capacity=%lld\n",
-> > > >    		   ppp_data.unallocated_entitlement);
-> > > > +	if (ppp_data.active_procs_in_resource_group)  {
-> > > 
-> > > ppp_data.active_procs_in_resource_group can ever be zero?
-> > > 
-> > > If the entry is absent in lparcfg, then lparstat will print it as 0 (which happens to be
-> > > default RG, while default RG may have processors)
-> > 
-> > If active_procs_in_resource_group is 0, then we are not printing the
-> > resource group information. If active_procs_in_resource_group is non-zero
-> > and resource_group_index is wrong, we need to report a bug to the firmware
-> > to update it. Kernel is very transparent with respect to this information.
-> > It can neither verify the information received nor should we even be doing
-> > this.
-> > 
-> > > 
-> The comment was more on the necessity of if statement there.
-> 
-> +	if (ppp_data.active_procs_in_resource_group)  {
-> 
-> If one runs lparstat in the LPAR, that means ppp_data.active_procs_in_resource_group is non zero. and when
-> ppp_data.active_procs_in_resource_group is zero, i don't think one can run lparstat in any of such LPAR.
-> 
-> btw, ppp_data.active_procs_in_resource_group can be fraction between 0,1 or is it always an integer number?
+> Build tested ARCH=powerpc defconfig with GCC powerpc-linux-gnu 14.2.0.
 > 
 
-ppp_data.active_procs_in_resource_group being 0 is valid, it means its running
-on an hypervisor, that doesn't support Resource group.
+Also tested with gcc 8.1.
 
-if ppp_data.active_procs_in_resource_group is non zero and
-ppp_data.resource_group_index is not present, then its a bug.
+Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-ppp_data.active_procs_in_resource_group can only be integers.
 
--- 
-Thanks and Regards
-Srikar Dronamraju
+> Link: https://github.com/KSPP/linux/issues/364 [1]
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+>  arch/powerpc/include/asm/bitops.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/bitops.h b/arch/powerpc/include/asm/bitops.h
+> index 671ecc6711e3..0d0470cd5ac3 100644
+> --- a/arch/powerpc/include/asm/bitops.h
+> +++ b/arch/powerpc/include/asm/bitops.h
+> @@ -276,7 +276,7 @@ static inline void arch___clear_bit_unlock(int nr, volatile unsigned long *addr)
+>   * fls: find last (most-significant) bit set.
+>   * Note fls(0) = 0, fls(1) = 1, fls(0x80000000) = 32.
+>   */
+> -static __always_inline int fls(unsigned int x)
+> +static __always_inline __attribute_const__ int fls(unsigned int x)
+>  {
+>  	int lz;
+>  
+> @@ -294,7 +294,7 @@ static __always_inline int fls(unsigned int x)
+>   * 32-bit fls calls.
+>   */
+>  #ifdef CONFIG_PPC64
+> -static __always_inline int fls64(__u64 x)
+> +static __always_inline __attribute_const__ int fls64(__u64 x)
+>  {
+>  	int lz;
+>  
+
 
