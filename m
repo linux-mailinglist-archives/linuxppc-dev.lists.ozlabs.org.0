@@ -1,85 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-10734-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10735-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D69B1D9B6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 16:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9173FB1D9D9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 Aug 2025 16:19:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4byTcX0VxNz3cRJ;
-	Fri,  8 Aug 2025 00:11:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4byTnk2mXdz3cRh;
+	Fri,  8 Aug 2025 00:19:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.165 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754575916;
-	cv=pass; b=KQpPf10T40u1VfZLh0rYTLVFPLtKmI+dPZpk729caEubUQQJcdiZzB5Yj7qxJuQobH78Ol+Nk3EH46nxrXHDCzljO7RfD+4ZhJp7sk2mh42JO4Dbf/wBHFKUp8vfqNkOuXY5lGsv8iZGNk5oPlMF090yoaWQe2cstQHcT2H9Gpi3CGVSBz9gm3RdTp71xW65XtDCKOMtPNU3v3BUpRbIoOQVqzqulBtsosImdJVRGrFJbfBoZxfvps/NXI16t7t89Q41EOvbvkalYb9kpep6PiG8YGxdEQLGzqEH1X6qMRVoyRXkb6OxE2MBkpoqbCzQGtigG9QblsJxcxSlmmglTw==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2412::61c" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754576394;
+	cv=pass; b=QQ5At+lG01agPggxsXMbw6AHPkc82BegjO4gommxb64lthSqr8BCi+CGyZSPGgqCikmTOwOXR9Xpv0QD92G2FkCuLTcR5WiKdyTaNPaf4auzwgFETBEbkLizxn6vb0O0DiRRtP4dehuDp69iQDDfKtZqmES1OroZ6wYyVPCfhFhUXWGccFKnR2vAKc8wXgq2ggD+m8RPXDl7ByrpYMucBwBcCnvTK253N4q9XXJQ31S1/gyg9vhTATkVnWRd0HSY+H7Skv9ueKcj7HJbkcN5q9mZYmYPvhDdPcuyFyqXSvvY93ss1pfpk6R+wdJnhgnE1ODwj454sR0EnGRmq5svXw==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754575916; c=relaxed/relaxed;
-	bh=Fi7s1UkIuqw0mEFnNe9HGhSrdVwj64AYbKwdHjWG7vc=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=ETXXuESP5Rj9YYlmN6Jh83jKVQpA9rvwUGZnX6nbVWn9YIQIOXd50PMOXqn9v0fAzW8eW83vMS1MLwl6LjcyaeqFmKXvpTR3uGzSx+gzXQmFA5Oe8ZrArZaP4DwkNorpE+xdimJtE8wpVdbs/K09iNZfurmdw82xijUdJtTSeDi6aj4CCp0CiikIHzTn6BHLdx6ZIp95X79+OAvwG1MS5Fl9/pEqUrs6Ykn6+7LQ4TCfBztl7EJTy6iYF4M+V/ZnJVYGU04utt9FIOWXOkoc8t/YjTntUTXjdAVxnFclItNApZQAooWRIGtaoHsLSXD+L7LRnR4mlXmXGFxLimwPDA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=UulJonZ9; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=65Jy9w0g; dkim-atps=neutral; spf=pass (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+	t=1754576394; c=relaxed/relaxed;
+	bh=V4HzQPlBoiRj3TiTMS/fKOC7xLbLGVXzngTW/oiL3VM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=LX7keHLQWMAxYjyFnBVS8kpnAwkzZS1cbu5s+uTQAQnFySg7c+PFZ9RsC5JzUILXkmk3aDpgbyPipgrg9bbGSIvjHs8vYDu6RlUE8d5VXbtIJiMR0+uUVJxVFiXOCdl0RMPdF6uPoi+Bd8hutzjNrpjxazWoxWItElv8jvsPWjiijtoPLCEyp+fEPxiTc09fpF8e9x7lzJ7UrBJU2lq977HgXiyJ3NPGOn2xLurovnAZ+wlEAFpgEsKLlXgqVU4ANgtrfUn3R9wFzwtRbYpuMvj1YPHwCZ9r87sv6OZhs1I38tdWSHQfTN6dA+ztUD4ToBuwbFSKy/rCgqlzWhCwsg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=UvWxmJcX; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2412::61c; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=UulJonZ9;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=65Jy9w0g;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=UvWxmJcX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2412::61c; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2061c.outbound.protection.outlook.com [IPv6:2a01:111:f403:2412::61c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4byTcS2pZ5z3cRH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Aug 2025 00:11:50 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1754575863; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=GTCLAUlx1j4sBDnHpJvrTICj2PTgKxHOjoaajiTXmLvjhuds+R8gJXCKNYqQiHN0Vy
-    beKK9gS/xenWogwmK+/hzmRRjyCZGFjP7mDnN91buCiLzafQeAyEUeqAQwIoJpZNEZXp
-    cXDB6EOpR6ty6vXp1nPJkft+9jIpt+3xLAUQtAPVx0XaVWi8oGTHuPFEBU18IWwdxReR
-    y495tDexQKj6+gP1N6OjDvOXNkGMt90okplWfFQDxpCKlCerWupmcvasW00p8dy/dduV
-    E9t8l8mO8cQ0NIvgdDxlog1AtCgZp7X2iZmBIo3WEZZlyEFJU3rhAO03S7T+UAaOiK/k
-    FMJg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754575863;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=Fi7s1UkIuqw0mEFnNe9HGhSrdVwj64AYbKwdHjWG7vc=;
-    b=cR+kvaL/7IOKB0cVpcBkDPK7J7nFcEiQKjdbHNkWejL+LFmp3Q9ccLBZStDtMAnqQ1
-    Ol4vYPSh8TdEatPkfaYSzzs+xDvRpNfpzn4iY5hI2TgFH5vve1al3sjCpZqUVrbZgHNa
-    ZTgUH/9dO9xXjHKfEloykPfbrdHxfghKwZvRI1oitdPM3T0L/j9rfU5kBBanudRpGI3N
-    +mtBgqTGuMXFEn8weUXz9EQ4Edd6+MxR+akVevf2ExF1ophmqfoflC9AKx2khA74sSht
-    OkB0ePWpGTrU5U2gU5p7CdBRjU3SgE5JqtGIqBbHv1rJFUhJ+4UBHyyAB3NbykRFxkp3
-    SFaA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754575863;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=Fi7s1UkIuqw0mEFnNe9HGhSrdVwj64AYbKwdHjWG7vc=;
-    b=UulJonZ9uLMI0KbTW7Z/so0pOQkVcT7+lq7kOLPxv5OeEg8ctnXTiIMTQqXgHsfWiT
-    SANLS+DXhUgltTssh/GPAtdqcPZa1gjfTfw+bJn5a3kLhXITVH/SmOHra0gyGJjtc+sB
-    rg4/vWk393q1J6XkRWa9ABhhu4vXbYte1B4Psd6sOGXpLD/0wmy6r3/lXhCms52HYvXp
-    o4As5ThMZQzSQSoXezL+xINm0no8FuLFDHFkacBpDz2kUawnRoPOhLs1tJee509uoSY7
-    rP3mfrI76kftccAiZj9a87PP/pKQUvrdpKl4TH5XFLzdHsVVh6j6ThmL3l6xW/2iM2im
-    wryA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754575863;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=Fi7s1UkIuqw0mEFnNe9HGhSrdVwj64AYbKwdHjWG7vc=;
-    b=65Jy9w0gDriyzZ63kan5GMCxTcAcE3TftfWC+mymZMUey79YbuTAspvWg2pZPPX21/
-    q+CAhhT2uiO15uE8OABw==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5m2s3jFWinvWQAExapN1WKXrI0REZC0pX5emA=="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 52.1.2 AUTH)
-    with ESMTPSA id e6066c177EB34EZ
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 7 Aug 2025 16:11:03 +0200 (CEST)
-Content-Type: multipart/alternative; boundary=Apple-Mail-12B86B8C-A310-4918-BF15-0E45D471C480
-Content-Transfer-Encoding: 7bit
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4byTnj2124z30Vq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Aug 2025 00:19:53 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ux/HYFV3SrMs+NkvAGWaBPvM8dPG+iYroa33c0PdCqfPrAoG0ZRgrGME385hE4yAA1k7fv0fA9zHUzG3M6GMaWwSZNjdsLQs/Bnc1Qyr9HVWXoun+kpz5R6qHBeJqmJZUhhG5VTp0TyqI/X0tosUuUfRu+ietnHG5YdkrEQNsZ8x57bzleIvnjcntYu/Zg/rJdEhJBXAAPwOgXkzxVXVXHdVXzQaormdnei/p136nRj+7JltuFTHc8NSXWPD5bLvWQMZSwHVDF8Xzb46T5dCCmMBDRzxayy+pIj8Ekdc3l5iwN/MbJwOM63CF4iS0aRW0h6v2Qmduc8xwq/S+A7NPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V4HzQPlBoiRj3TiTMS/fKOC7xLbLGVXzngTW/oiL3VM=;
+ b=Pxnf4cfrY/mfaH5i1PlrKlv0lgqq+NICjmiOL+s5flU99eGje3dcKGfsMCklWXvaJipe2UtNSQwj8fFDb4a+eRyZtCI1WhaSy5U1/MLk+kPNnFx2ZsdZDqEYsUG4VLoykEJqKfnV7YvPkghSqkm9Pd/va5qfXmiFP5cRHMXxGzWP9wk5QRHltHq0FN4X7jEnBDUKjjvU0EZsBtbWza1Na9r3p4lLtDr27eoWAFm6LzuscpF29UO7O/l/y/VJyTO/0T7oIUz2zdxR8DjCCRhIiunG9N7N+S2k3nNxvTV1jWNF6HbpFh1u9fQqsWErYwoeSbYb1aJ4g3R68R7InzIs+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V4HzQPlBoiRj3TiTMS/fKOC7xLbLGVXzngTW/oiL3VM=;
+ b=UvWxmJcXt5NCpifzR9GlYyrGKCU0K0TdOCc/fc34AkyQG/07h8Ud7hIwkRMB2KJ41PDnjYRjCf7ILKNiQaIfLJSgl1YkJWLnzrt7aQLsdEYSsIq6e7WKf9ltlPlY+BwxAoKf6b0bUgA7+pZBWu8DkPx+sqNm4hSz9CspwMmVmohAK307/le+YJplhcfFcWVMOJTG0YzGNZj+Z/p641UdRdlIcMy/ztEpMoupmNbXDO3Rh48u8D9VHCBv0jhoXz36CwZqCimiK3MS1ih1p9N5mvU2CgKzSMXQML0sGacrezsSbBvbx6kFLDeUPHU1oVJwWmbVUO3fpwF1lAWDkiUpew==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by PH7PR12MB6588.namprd12.prod.outlook.com (2603:10b6:510:210::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9009.13; Thu, 7 Aug
+ 2025 14:19:31 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9009.017; Thu, 7 Aug 2025
+ 14:19:31 +0000
+Date: Thu, 7 Aug 2025 11:19:29 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v1 00/16] dma-mapping: migrate to physical address-based
+ API
+Message-ID: <20250807141929.GN184255@nvidia.com>
+References: <cover.1754292567.git.leon@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1754292567.git.leon@kernel.org>
+X-ClientProxiedBy: YT4P288CA0083.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d0::19) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,247 +104,159 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: radeon_fbdev_river_fbdev: failed to initialize framebuffer and setup emulation
-Date: Thu, 7 Aug 2025 16:10:52 +0200
-Message-Id: <DA680712-472D-46BE-A2DF-9E923A4E6EE1@xenosoft.de>
-References: <CAHkrCmHKSR+3gCjs7E=Qnini_CCEa+wjx9gWNPMjSWWFOScQtw@mail.gmail.com>
-Cc: Alex Deucher <alexdeucher@gmail.com>, ville.syrjala@linux.intel.com,
- Jeff Johnson <quic_jjohnson@quicinc.com>,
- Darren Stevens <darren@stevens-zone.net>, hypexed@yahoo.com.au,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
- Hans de Goede <hdegoede@redhat.com>, Wu Hoi Pok <wuhoipok@gmail.com>,
- amd-gfx@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, mario.limonciello@amd.com,
- bhelgaas@google.com, benato.denis96@gmail.com, Yijun_Shen@Dell.com,
- david.perry@amd.com, rafael@kernel.org, dri-devel@lists.freedesktop.org
-In-Reply-To: <CAHkrCmHKSR+3gCjs7E=Qnini_CCEa+wjx9gWNPMjSWWFOScQtw@mail.gmail.com>
-To: mad skateman <madskateman@gmail.com>
-X-Mailer: iPhone Mail (22G86)
-X-Spam-Status: No, score=-0.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HTML_MESSAGE,
-	MIME_HTML_ONLY,MIME_HTML_ONLY_MULTI,MIME_QP_LONG_LINE,MPART_ALT_DIFF,
-	NORMAL_HTTP_TO_IP,NUMERIC_HTTP_ADDR,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-	autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|PH7PR12MB6588:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae70dbcf-4d4f-440e-182f-08ddd5bd6d0d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?B9tNliylgIkVWzk+gttBK52S8uyZSnBPrdlqMANarwihh1iz5HDw9DuT0/hz?=
+ =?us-ascii?Q?pPBvqHEDsFN1CcZA780EFUfOwQsxZf6+SovYZmu5SFpEdEKOqhzE7ccvwPXB?=
+ =?us-ascii?Q?d9fhcq4vqA7B3VHHEr2QwNktuaHgZBg0mfXUO27IJQksn1GUv467eV9m3kYp?=
+ =?us-ascii?Q?zeRZjufwMXBqEmp9lSxyAtI/FYEOwl/OTRaqLd4eUkBmR9iR11+zVCTyjqJX?=
+ =?us-ascii?Q?FyiKBpgUCod6UknHqNUjeSk7xpamNtDPyQQXQJE5gyLHgII/gtRgwMPLs9rl?=
+ =?us-ascii?Q?VJYaoI4XHo9LXlfjPNp1b4xV8dIR0P4LFtblPVPnGJ2pu6pUa0nXMZMAEPZL?=
+ =?us-ascii?Q?txAR349UNH9JDuLSeOsF/6Am9TLe2PDjhcUZbrVMiFPCKVnrC83/BkwFkjbs?=
+ =?us-ascii?Q?rhlDU0anUP7S72xxxONN7M111WE3/FEe6sz5sz/sNAXEPsxnacAsv08auES4?=
+ =?us-ascii?Q?xzXTWb4AKhEn+At91sgj1F10XViQgPYlyGlYBkD56hicheFWE7MFTM2u0brm?=
+ =?us-ascii?Q?29DmF0LPvmGbUa5rh179BXi2MJhDLHxxB2efSrDClnB7SakzahAsv5Rwg1Ow?=
+ =?us-ascii?Q?7XegQvTCTKmpr10T9O7pN6miwGjQKLZOPameOzZBL6XiatNnuG1zuG+Sectp?=
+ =?us-ascii?Q?GZ+AsVklJT5rwto+1nrg/44LcA+ZyVWOaJgkRawWO+XcVfjKF1Xit2S+S9Du?=
+ =?us-ascii?Q?A1SitDf/YwAA09E/FJoMsAUplJo+yJVwgXAmEhp0FguJY/87BrkrEilXUZFs?=
+ =?us-ascii?Q?AieS+FH/9jm/nwhq+ZKNyAaz+g9HOB5bzB/5v/HoWPc2qEnGs3uvA855ekvw?=
+ =?us-ascii?Q?UEEBZWKzIgzhEdtspN/8cEa7pL7k5TbuELLLA3M2UsUMuP4yH9QqD44PXnlk?=
+ =?us-ascii?Q?le02wZa+SROyxt1IvH+0ijUe0orkCw/zx8gNVNfGD0Z6979NDYnLMkJt4bBo?=
+ =?us-ascii?Q?W8iuYrdHd3iqY+yDjKvVuHatC68t9hy4ypADpVdUGGmaQiDbIj5s9R+0An3T?=
+ =?us-ascii?Q?zdeiuGpEGlDnXnEKq1V5moJfMcrDIUhZkYa6iUTwi2Tc1OQRAGIDSpWA5GUv?=
+ =?us-ascii?Q?UjuyoQyWRTwKUkyvL3wnYpaDirtZ31ipYZuXbcpO4M1VTVRX+vK2aizHG5a9?=
+ =?us-ascii?Q?IHJPSag0KP9F34ghLBieq3CcgYiXrGCOvca3LQtQupfiyI4YdOGx7fslTLEV?=
+ =?us-ascii?Q?kNJL+GjtvJGIsltRq5oZMzq11CbPr7lnuV2a6DAB4zYGiztXp5fUlC3Mri28?=
+ =?us-ascii?Q?X7CCp200e/89Izyr0VXRbjylVbzandsTLZxl2kR0on2rFyYuPn5t452MNVOE?=
+ =?us-ascii?Q?R7H2RPUiB9YPz/+ryYJPDjM+63qObob1RQ4SnjRIM19oCho5cIbByzr1uDeb?=
+ =?us-ascii?Q?MB2xgadEOpgIB6FlWic93IL0kZw5lZR24NBphD8wRZjdcYeNLkqOCW1/Sy7j?=
+ =?us-ascii?Q?bmMRergMvaM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7m6qQrIZoL6i8N1g3znV2tQ4KvfciEiqOZZQJRQTWtnU7WjHOMjde+QydDME?=
+ =?us-ascii?Q?mUDUrpS9390oTKIfGFcT1mK7xvkdka8xIq1GJ3tKVpq9AOXSJgip45vUgFVg?=
+ =?us-ascii?Q?9Ap3Ju3KeNAui+8i5KuxBd9n0HVmsQOgGrjXMt1tthaQKqWfHX0hlsD2n0Lu?=
+ =?us-ascii?Q?UYsoG/7OfcfDropPkCiO5jJIt8eQr16Y0qeLUfiaDKEev6Gfk4lCeTlkOc25?=
+ =?us-ascii?Q?rloak9Msam4Zb/dD+/0xh85vsH1j2wWzl8WiTczYETvD4G4n5fTge+xlBGCr?=
+ =?us-ascii?Q?kSxmPgaA9/FNrdgmYMBR7/uiJPFEVnj/uGGrcAUDb/DF57Xda1NjRUK85nMv?=
+ =?us-ascii?Q?UzNmzIFE7q84UO1TwMPdwsfbNAHGnupCl6H4I9K/C1GX/eONUBTaRh4vqZaK?=
+ =?us-ascii?Q?yB2G3zjrBMcBepTPvHWFibWD+IBiBaIEzIcc/vBWeJfzzOjQ4hEBkVByM+6j?=
+ =?us-ascii?Q?r5qPqXrzooA2DznqgbZ8TAkI2PCHxHxssmHkUgZD8HPBT3QoKAhNrzB+o7vS?=
+ =?us-ascii?Q?2TW8eQxB1m5+1cN1Bf91i593KBtbwCDpBoXuOkncHgGROWmXG2eJMEKs7cnU?=
+ =?us-ascii?Q?sYj0zrV22wFh5bY8svayBlI0rvc5EMS+iYgk5HOpUGdYnLk3korFArvyKmk7?=
+ =?us-ascii?Q?22reQMNtSb50vHSCfcqHSoNFJ+vs+K7Ys7jrs34BxjHy0vMdfBvc4KmcKl4y?=
+ =?us-ascii?Q?mE0i7FauCtty4ncc2WgEgmFQQvdFX7UwJcJR6S+qE7u+IBIt5D7NYEYGWj40?=
+ =?us-ascii?Q?recr6cmcvAqLxSVHgQDFKyKRsldvR7oVH4m6GeAYeOtbuTMu2nq8krRSqMtB?=
+ =?us-ascii?Q?EQb4HCJKcBUKWVPH8HLAmxoZ5ROfTcHBfZAeVcgNHsicFUNzwQ3JMkPmSSu0?=
+ =?us-ascii?Q?aaOHUzcGSqlNQ5twDziT3rbncFCDiMP8P5gSqUxNn/BGjVAPOGwvd3PM7jIx?=
+ =?us-ascii?Q?SLcHnkVuvcwWUBNV5D8O66rCSjufmnPQM4jcKJ2Rxhk1hdsbUUtuQQkQb8Mx?=
+ =?us-ascii?Q?mmMVDauvokCEO6PZXd/HBz2i/Kr02SlhFRYMGFxwSgJTO+sXJSaW+KJ65n3I?=
+ =?us-ascii?Q?grd1YaWpy2pakSEIU2G9sntmYLb5l0KFETaWtV8JwnOgkchkV79twXudlNJk?=
+ =?us-ascii?Q?bTbogLkAO5iSod5dvtCNVRvjrkzVjgpmkYMmpdGn6uWgEAPm/UeEz/VG3qJz?=
+ =?us-ascii?Q?bg3s3HfFw1uns8n9bOMufjcok4uhvPyMtNRoIep3oMqjZx4Psy4R9syf8+hi?=
+ =?us-ascii?Q?tUfHmEfaQ+Z5H0POkQ+MBujb3hmZxmlxRxLOAz0l3Y8o2WOKksiLE+0RJIPH?=
+ =?us-ascii?Q?s/1Vqg0OAmeKE5T4aFFjEY7EeFCc5Ugc0k58pmMIsy7I8QQ8Xo6esmGMaoMV?=
+ =?us-ascii?Q?VOpJqS9TBJjsX/1bPmmyt9pSqM2b1e27HUPvpB0T6VFRm083/mlNeVJEjqrm?=
+ =?us-ascii?Q?jbtAii7eZV9BuHSzPWMywLvWewoicgmdNDQ9EsSG24u64A/PxV7Nxg7WMfll?=
+ =?us-ascii?Q?T//RyKhtL5IDDp+sHf+4frB50biC1Z1Asn9WPfG0tIa6QIWfIpTYkm0JRK0U?=
+ =?us-ascii?Q?3TrdqWdPk8GkiiaYfAc=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae70dbcf-4d4f-440e-182f-08ddd5bd6d0d
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2025 14:19:31.4180
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +coMWha09t2B/DL2OsRf4sc3LI4FnlUef4SJgqADc5IZdZrEaYGExrUCxRibJwt7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6588
+X-Spam-Status: No, score=-3.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Mon, Aug 04, 2025 at 03:42:34PM +0300, Leon Romanovsky wrote:
+> Changelog:
+> v1:
+>  * Added new DMA_ATTR_MMIO attribute to indicate
+>    PCI_P2PDMA_MAP_THRU_HOST_BRIDGE path.
+>  * Rewrote dma_map_* functions to use thus new attribute
+> v0: https://lore.kernel.org/all/cover.1750854543.git.leon@kernel.org/
+> ------------------------------------------------------------------------
+> 
+> This series refactors the DMA mapping to use physical addresses
+> as the primary interface instead of page+offset parameters. This
+> change aligns the DMA API with the underlying hardware reality where
+> DMA operations work with physical addresses, not page structures.
 
---Apple-Mail-12B86B8C-A310-4918-BF15-0E45D471C480
-Content-Type: text/html;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Lets elaborate this as Robin asked:
 
-<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
-utf-8"></head><body dir=3D"auto"><div dir=3D"ltr"><div dir=3D"ltr">I bisecte=
-d today.</div><div dir=3D"ltr"><br></div><div dir=3D"ltr">git clone https://=
-gitlab.freedesktop.org/drm/kernel a</div><div dir=3D"ltr"><br></div><div dir=
-=3D"ltr">git bisect start</div><div dir=3D"ltr"><br></div><div dir=3D"ltr">g=
-it bisect good 2f29b5c231011b94007d2c8a6d793992f2275db1</div><div dir=3D"ltr=
-">(Good: video: screen_info: Relocate framebuffers behind PCI bridges)</div>=
-<div dir=3D"ltr"><br></div><div dir=3D"ltr">git bisect bad f62408efc8669b825=
-41295a4611494c8c8c52684</div><div dir=3D"ltr">(Bad: drm/xe/vf: Disable CSC s=
-upport on VF)</div><div dir=3D"ltr"><br></div><div dir=3D"ltr">4d4c10f763d78=
-08fbade28d83d237411603bca05 is the first bad commit</div><div dir=3D"ltr">co=
-mmit 4d4c10f763d7808fbade28d83d237411603bca05</div><div dir=3D"ltr">Author: M=
-ario Limonciello &lt;mario.limonciello@amd.com&gt;</div><div dir=3D"ltr">Dat=
-e: &nbsp; Wed Apr 23 23:31:32 2025 -0500</div><div dir=3D"ltr"><br></div><di=
-v dir=3D"ltr">&nbsp; &nbsp; PCI: Explicitly put devices into D0 when initial=
-izing</div><div dir=3D"ltr"><br></div><div dir=3D"ltr">&nbsp; &nbsp; AMD BIO=
-S team has root caused an issue that NVMe storage failed to come</div><div d=
-ir=3D"ltr">&nbsp; &nbsp; back from suspend to a lack of a call to _REG when N=
-VMe device was probed.</div><div dir=3D"ltr"><br></div><div dir=3D"ltr">&nbs=
-p; &nbsp; 112a7f9c8edbf ("PCI/ACPI: Call _REG when transitioning D-states") a=
-dded</div><div dir=3D"ltr">&nbsp; &nbsp; support for calling _REG when trans=
-itioning D-states, but this only works</div><div dir=3D"ltr">&nbsp; &nbsp; i=
-f the device actually "transitions" D-states.</div><div dir=3D"ltr"><br></di=
-v><div dir=3D"ltr">&nbsp; &nbsp; 967577b062417 ("PCI/PM: Keep runtime PM ena=
-bled for unbound PCI devices")</div><div dir=3D"ltr">&nbsp; &nbsp; added sup=
-port for runtime PM on PCI devices, but never actually</div><div dir=3D"ltr"=
->&nbsp; &nbsp; 'explicitly' sets the device to D0.</div><div dir=3D"ltr"><br=
-></div><div dir=3D"ltr">&nbsp; &nbsp; To make sure that devices are in D0 an=
-d that platform methods such as</div><div dir=3D"ltr">&nbsp; &nbsp; _REG are=
- called, explicitly set all devices into D0 during initialization.</div><div=
- dir=3D"ltr"><br></div><div dir=3D"ltr">&nbsp; &nbsp; Fixes: 967577b062417 (=
-"PCI/PM: Keep runtime PM enabled for unbound PCI devices")</div><div dir=3D"=
-ltr">&nbsp; &nbsp; Signed-off-by: Mario Limonciello &lt;mario.limonciello@am=
-d.com&gt;</div><div dir=3D"ltr">&nbsp; &nbsp; Signed-off-by: Bjorn Helgaas &=
-lt;bhelgaas@google.com&gt;</div><div dir=3D"ltr">&nbsp; &nbsp; Tested-by: De=
-nis Benato &lt;benato.denis96@gmail.com&gt;</div><div dir=3D"ltr">&nbsp; &nb=
-sp; Tested-By: Yijun Shen &lt;Yijun_Shen@Dell.com&gt;</div><div dir=3D"ltr">=
-&nbsp; &nbsp; Tested-By: David Perry &lt;david.perry@amd.com&gt;</div><div d=
-ir=3D"ltr">&nbsp; &nbsp; Reviewed-by: Rafael J. Wysocki &lt;rafael@kernel.or=
-g&gt;</div><div dir=3D"ltr">&nbsp; &nbsp; Link: https://patch.msgid.link/202=
-50424043232.1848107-1-superm1@kernel.org</div><div dir=3D"ltr"><br></div><di=
-v dir=3D"ltr">&nbsp;drivers/pci/pci-driver.c | &nbsp;6 ------</div><div dir=3D=
-"ltr">&nbsp;drivers/pci/pci.c &nbsp; &nbsp; &nbsp; &nbsp;| 13 ++++++++++---<=
-/div><div dir=3D"ltr">&nbsp;drivers/pci/pci.h &nbsp; &nbsp; &nbsp; &nbsp;| &=
-nbsp;1 +</div><div dir=3D"ltr">&nbsp;3 files changed, 11 insertions(+), 9 de=
-letions(-)</div><div dir=3D"ltr"><br></div><div dir=3D"ltr">I bisected with a=
- ATi Radeon 7000 / VE (-device ati-vga,model=3Drv100) :-)</div></div><div di=
-r=3D"ltr"><br><blockquote type=3D"cite">On 04 August 2025 at 06:26 pm, mad s=
-kateman &lt;madskateman@gmail.com&gt; wrote:<br><br></blockquote></div><bloc=
-kquote type=3D"cite"><div dir=3D"ltr">=EF=BB=BF<div dir=3D"auto">I am using t=
-he R580 chip which is the Radeon X1950 XT.<div dir=3D"auto"><br></div><div d=
-ir=3D"auto">The board i am using is a T1042 PowerPC based one with e5500 cor=
-e.</div><div dir=3D"auto"><br></div><div dir=3D"auto">I also lost the abilit=
-y to start Xorg and therefore just a blank screen.</div><div dir=3D"auto"><b=
-r></div><div dir=3D"auto">Dave</div><div dir=3D"auto"><br></div><div dir=3D"=
-auto"><br></div><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div></di=
-v><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" clas=
-s=3D"gmail_attr">Op ma 4 aug 2025, 18:04 schreef Christian Zigotzky &lt;<a h=
-ref=3D"mailto:chzigotzky@xenosoft.de">chzigotzky@xenosoft.de</a>&gt;:<br></d=
-iv><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:=
-1px #ccc solid;padding-left:1ex"><br>
-On 04 August 2025 at 04:42 pm, Alex Deucher wrote:<br>
-&gt; On Sun, Aug 3, 2025 at 11:28=E2=80=AFAM Christian Zigotzky<br>
-&gt; &lt;<a href=3D"mailto:chzigotzky@xenosoft.de" target=3D"_blank" rel=3D"=
-noreferrer">chzigotzky@xenosoft.de</a>&gt; wrote:<br>
-&gt;&gt;<br>
-&gt;&gt; Hello,<br>
-&gt;&gt;<br>
-&gt;&gt; I have the same issue on another machine either. Blank screen durin=
-g the<br>
-&gt;&gt; boot. The Radeon graphics framebuffer device doesn't work anymore.<=
-br>
-&gt;&gt;<br>
-&gt;&gt; Here is the modifed code from the DRM updates (drm-next-2025-07-30)=
-:<br>
-&gt;&gt;<br>
-&gt;&gt; -<br>
-&gt;&gt; <a href=3D"https://web.git.kernel.org/pub/scm/linux/kernel/git/torv=
-alds/linux.git/diff/drivers/gpu/drm/radeon/radeon_fbdev.c?id=3D260f6f4fda93c=
-8485c8037865c941b42b9cba5d2" rel=3D"noreferrer noreferrer" target=3D"_blank"=
->https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff=
-/drivers/gpu/drm/radeon/radeon_fbdev.c?id=3D260f6f4fda93c8485c8037865c941b42=
-b9cba5d2</a><br>
-&gt;&gt; -<br>
-&gt;&gt; <a href=3D"https://web.git.kernel.org/pub/scm/linux/kernel/git/torv=
-alds/linux.git/diff/drivers/gpu/drm/radeon/radeon_drv.c?id=3D260f6f4fda93c84=
-85c8037865c941b42b9cba5d2" rel=3D"noreferrer noreferrer" target=3D"_blank">h=
-ttps://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff/d=
-rivers/gpu/drm/radeon/radeon_drv.c?id=3D260f6f4fda93c8485c8037865c941b42b9cb=
-a5d2</a><br>
-&gt; <br>
-&gt; This change just bumps the driver version it shouldn't affect the fbdev=
-.<br>
-&gt; <br>
-&gt;&gt; -<br>
-&gt;&gt; <a href=3D"https://web.git.kernel.org/pub/scm/linux/kernel/git/torv=
-alds/linux.git/diff/drivers/gpu/drm/radeon/radeon_display.c?id=3D260f6f4fda9=
-3c8485c8037865c941b42b9cba5d2" rel=3D"noreferrer noreferrer" target=3D"_blan=
-k">https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/di=
-ff/drivers/gpu/drm/radeon/radeon_display.c?id=3D260f6f4fda93c8485c8037865c94=
-1b42b9cba5d2</a><br>
-&gt;&gt; -<br>
-&gt;&gt; <a href=3D"https://web.git.kernel.org/pub/scm/linux/kernel/git/torv=
-alds/linux.git/diff/drivers/gpu/drm/radeon/evergreen_cs.c?id=3D260f6f4fda93c=
-8485c8037865c941b42b9cba5d2" rel=3D"noreferrer noreferrer" target=3D"_blank"=
->https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/diff=
-/drivers/gpu/drm/radeon/evergreen_cs.c?id=3D260f6f4fda93c8485c8037865c941b42=
-b9cba5d2</a><br>
-&gt; <br>
-&gt; This only affects acceleration, it should not affect fbdev.<br>
-&gt; <br>
-&gt; What chip are you using?&nbsp; Can you attach your full dmesg output?&n=
-bsp; Can<br>
-&gt; you bisect?&nbsp; This cultrit could be a core drm change.<br>
-&gt; <br>
-&gt; Alex<br>
-&gt; <br>
-&gt;&gt;<br>
-&gt;&gt; Do you have a patch for reverting these modifications? I would like=
- to<br>
-&gt;&gt; revert these modifications for testing.<br>
-&gt;&gt;<br>
-&gt;&gt; Thanks in advance,<br>
-&gt;&gt; Christian<br>
-&gt;&gt;<br>
-&gt;&gt; On 03 August 2025 at 1:35 pm, Christian Zigotzky wrote:<br>
-&gt;&gt;&gt; Hello,<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; Xorg doesn't work after the DRM updates drm-next-2025-07-30.<br=
->
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; Error messages:<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; [dr:.radeon_fbdev_river_fbdev_proe] *ERROR* failed to initializ=
-e<br>
-&gt;&gt;&gt; framebuffer -22<br>
-&gt;&gt;&gt; radeon 0000:01:0.0: [drm] *ERRO* fbdev: Failedto setup emulaton=
- (ret=3D-22)<br>
-&gt;&gt;&gt; brd module loadedm<br>
-&gt;&gt;&gt; lop: module loadd<br>
-&gt;&gt;&gt; mpt3ss version 52.10.00.00 loaded<br>
-&gt;&gt;&gt; nve nvme0: pci fuction 0002:04:0.0<br>
-&gt;&gt;&gt; fsl-sata ffe20000.sata: SataFSL Platform/CS Driver init<br>
-&gt;&gt;&gt; scs host0: sata_fs<br>
-&gt;&gt;&gt; ta1: SATA max DMA/133 irq 68 pm-pol 0<br>
-&gt;&gt;&gt; ;21;39mfsl-sat ffe221000.sata Sata FSL Platfrm/CSB Driver iit<b=
-r>
-&gt;&gt;&gt; ata1: Signatue Update detectd @ 0 msecs<br>
-&gt;&gt;&gt; scsihost1: sata_fsl[0m<br>
-&gt;&gt;&gt; ta2: SATA max UMA/133 irq 69 lm-pol 0<br>
-&gt;&gt;&gt; nvme nvm0: 4/0/0 defaul/read/poll queus<br>
-&gt;&gt;&gt; nvme0n1: p1 p p3 p4 p5 p6 p7[0m<br>
-&gt;&gt;&gt; drm:.radeon_fbdv_driver_fbdev_robe] *ERROR* filed to initialze<=
-br>
-&gt;&gt;&gt; framebuffer 22<br>
-&gt;&gt;&gt; fsl_dpaa_mac fe4e6000.ethernt: of_get_mac_adress(/soc@ffe00000/=
-<br>
-&gt;&gt;&gt; fman@40000/ethernet@e6000 failed<br>
-&gt;&gt;&gt; radeon 000:01:00.0: [dr] *ERROR* fbdev Failed to setu emulation=
- (ret-22)<br>
-&gt;&gt;&gt; fsl_dpaa_ma ffe4e6000.ethenet: FMan MEMAC[0m<br>
-&gt;&gt;&gt; sl_dpaa_mac ffee6000.ethernet:Using random MA address: 0e<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; Could you please check the latest DRM updates?<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; Thanks,<br>
-&gt;&gt;&gt; Christian<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;<br>
-<br>
-Hello Alex,<br>
-<br>
-Thanks for your answer.<br>
-<br>
-I use a BARTS chip (Radeon HD6870). I would like to bisect but I don't <br>
-have time for it currently. Sorry<br>
-<br>
-There are some other user reports:<br>
-<br>
-- <a href=3D"https://forum.hyperion-entertainment.com/viewtopic.php?p=3D6060=
-6#p60606" rel=3D"noreferrer noreferrer" target=3D"_blank">https://forum.hype=
-rion-entertainment.com/viewtopic.php?p=3D60606#p60606</a><br>
-- <a href=3D"https://forum.hyperion-entertainment.com/viewtopic.php?p=3D6059=
-5#p60595" rel=3D"noreferrer noreferrer" target=3D"_blank">https://forum.hype=
-rion-entertainment.com/viewtopic.php?p=3D60595#p60595</a><br>
-<br>
-They use other Radeon graphics chips.<br>
-<br>
-Bug report: <a href=3D"https://github.com/chzigotzky/kernels/issues/15" rel=3D=
-"noreferrer noreferrer" target=3D"_blank">https://github.com/chzigotzky/kern=
-els/issues/15</a><br>
-<br>
-What do you think about the following commit?<br>
-<br>
-Link: <br>
-<a href=3D"https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linu=
-x.git/commit/?id=3D0e7d5874fb6b80c44be3cfbcf1cf356e81d91232" rel=3D"noreferr=
-er noreferrer" target=3D"_blank">https://web.git.kernel.org/pub/scm/linux/ke=
-rnel/git/torvalds/linux.git/commit/?id=3D0e7d5874fb6b80c44be3cfbcf1cf356e81d=
-91232</a><br>
-<br>
-@Hypex<br>
-Could you please attach your full dmesg output?<br>
-<br>
-Thanks,<br>
-Christian<br>
-</blockquote></div>
-</div></blockquote></body></html>=
+This series refactors the DMA mapping API to provide a phys_addr_t
+based, and struct-page free, external API that can handle all the
+mapping cases we want in modern systems:
 
---Apple-Mail-12B86B8C-A310-4918-BF15-0E45D471C480--
+ - struct page based cachable DRAM
+ - struct page MEMORY_DEVICE_PCI_P2PDMA PCI peer to peer non-cachable MMIO
+ - struct page-less PCI peer to peer non-cachable MMIO
+ - struct page-less "resource" MMIO
+
+Overall this gets much closer to Matthew's long term wish for
+struct-pageless IO to cachable DRAM. The remaining primary work would
+be in the mm side to allow kmap_local_pfn()/phys_to_virt() to work on
+phys_addr_t without a struct page.
+
+The general design is to remove struct page usage entirely from the
+DMA API inner layers. For flows that need to have a KVA for the
+physical address they can use kmap_local_pfn() or phys_to_virt(). This
+isolates the struct page requirements to MM code only. Long term all
+removals of struct page usage are supporting Matthew's memdesc
+project which seeks to substantially transform how struct page works.
+
+Instead make the DMA API internals work on phys_addr_t. Internally
+there are still dedicated 'page' and 'resource' flows, except they are
+now distinguished by a new DMA_ATTR_MMIO instead of by callchain. Both
+flows use the same phys_addr_t.
+
+When DMA_ATTR_MMIO is specified things work similar to the existing
+'resource' flow. kmap_local_pfn(), phys_to_virt(), phys_to_page(),
+pfn_valid(), etc are never called on the phys_addr_t. This requires
+rejecting any configuration that would need swiotlb. CPU cache
+flushing is not required, and avoided, as ATTR_MMIO also indicates the
+address have no cachable mappings. This effectively removes any
+DMA API side requirement to have struct page when DMA_ATTR_MMIO is
+used.
+
+In the !DMA_ATTR_MMIO mode things work similarly to the 'page' flow,
+except on the common path of no cache flush, no swiotlb it never
+touches a struct page. When cache flushing or swiotlb copying
+kmap_local_pfn()/phys_to_virt() are used to get a KVA for CPU
+usage. This was already the case on the unmap side, now the map side
+is symmetric.
+
+Callers are adjusted to set DMA_ATTR_MMIO. Existing 'resource' users
+must set it. The existing struct page based MEMORY_DEVICE_PCI_P2PDMA
+path must also set it. This corrects some existing bugs where iommu
+mappings for P2P MMIO were improperly marked IOMMU_CACHE.
+
+Since ATTR_MMIO is made to work with all the existing DMA map entry
+points, particularly dma_iova_link(), this finally allows a way to use
+the new DMA API to map PCI P2P MMIO without creating struct page. The
+VFIO DMABUF series demonstrates how this works. This is intended to
+replace the incorrect driver use of dma_map_resource() on PCI BAR
+addresses.
+
+This series does the core code and modern flows. A followup series
+will give the same treatement to the legacy dma_ops implementation.
+
+Jason
 
