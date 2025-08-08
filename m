@@ -1,53 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-10771-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10772-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81B6B1EE8C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 20:51:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF3DB1EEEF
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 21:35:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bzCmj2XNwz2xCW;
-	Sat,  9 Aug 2025 04:51:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bzDlp420Yz3bn8;
+	Sat,  9 Aug 2025 05:35:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=210.118.77.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754679093;
-	cv=none; b=CFKbmTPzwHnhf/0pTgZA4yuKp8IjmfZBTlPe42tBS/vHEYKBq+VvVp0pOaO6QAr4S3StKhKrLe2Bk7OHKpSfaUPADADt6u+tQr2olghXv5PW9AdV1tJ4GmTU4Xj9ia/aayfRGPnGU/nUu6vJfG2Trmyw+F+5/ulj2S3sk8qusGwqg0VSO/Yl4yYph5GJ4QhKC04B9YSatCdUirOMlN9DzG0M53m/5fkxSHu97BnzA53H3+eOn2yvs6LTj7K6qE8wYoFU7sZj7BX256yQ2lFGkd34lPNuS2qMh0XwaMzfiHv7/Od5hg7mYaaNHAoMbJ8d7EoamKK6SoxgCh4bYB9aVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754679093; c=relaxed/relaxed;
-	bh=eZMpLLPpWLfEcYOqjTqa6+eB/bqRZJ+BbYqsgnnPbkY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=BxKuV9LRU9rS55mfyGsmuo/znNKTx3tDP0pdDWcX5k/7d6mpwqTFnN+pxPa66JSw8oGef8iMLnl4HR8Co4E8b8LPrdokVUcf86NWtcoTDgI+1S8+3YySCp+fpFe2hagjNplqH4NrlZRc+7/u9fAQB6QVZtbXcj7Ra6FZ1wuVzZbPn3SvvMJDQepoTaIx87JhdwCFg2e2ezgabZrsNNy5HT77tXP7VZRGVDoYGyI8luXv6LjBjqKbM1VwqZ24j/0RNERQ4mqMFeEiZ9Qu2Ed6kiwfklRCpTQ3fg9IL/VhoJIuMmCZiaIjvrDowTR42VPPPqv1YzxTdL8yU8ldTvpjkQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com; dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=WGyqUFMD; dkim-atps=neutral; spf=pass (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org) smtp.mailfrom=samsung.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.54 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754681750;
+	cv=pass; b=Hn0pFfvPP+3aZi3p2ARVs1jcWf5ANhrspX7NSYHgd2qkdk0JDVaVXvpOZ6O26F8+JoUhAoBdFtonnMh2s1ddCK9lkpbveBe8mFKbys+WwDcDaADYptFi8FMChugK8gwKbEF5MV0a7zFTA+KAdTkfBUWwC/C8LJiVc0J7ZGP1750eIgMOboZG19pOAKXSHVEUJ6JSxfftCWIey0z/WCpazZltfmJOsIWdbWcYrdQZJAiqOEKgh6g7eNAZBgZJQz2t9SSaNj8CZaWZbqFz959lbfSqJduVLDWJ/FvKYFhb6ZXdKyyCj7CBY44TZokpkVCnwqH+sVjpvZbNy55Fs2oDag==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754681750; c=relaxed/relaxed;
+	bh=FuB74Lz56YvahQ6QzPBql1iyXkEpCYCdoAlKAXgnLOE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bYdDyOLbXPYUU9NntJZRYmrHtRZxDkBpShQA4+A4Z+rhvSkpyd9MoTHIrzEbFPTVndKCEhMH7HBPkk2JeamerfKNe1xZAkIQehVJlMD65lFAZe6D9rUspQ1jw9r6QKjsqYIIYOjjgcjL8JY2FgQSERMBc4t1Eo1ZR2SgfwpeBVCp+THeMkRon5Rp/oPLA2EHAVsnc34C+2wFHGBeNB7McSUft4UFKQdRUHMutBek5llL2S8YZrB5F0UqPEmCtkxfSScQ3GKOjTWZcN5/BFcKvWZK2O/gY5n24+sgKkyr78jNs9WFnLlUyCHqBkwrV7fvkOmZsyYGpOCX+ly7v64Esw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=rXEUVnZX; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=L7bf7ZgV; dkim-atps=neutral; spf=pass (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256 header.s=mail20170921 header.b=WGyqUFMD;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=rXEUVnZX;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=L7bf7ZgV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=samsung.com (client-ip=210.118.77.11; helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com; receiver=lists.ozlabs.org)
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bzCmc2ry6z301K
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Aug 2025 04:51:26 +1000 (AEST)
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250808185114euoutp0162c911292defe8bfee54f2309b1e8171~Z31I7WGpl0720707207euoutp01Y;
-	Fri,  8 Aug 2025 18:51:14 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250808185114euoutp0162c911292defe8bfee54f2309b1e8171~Z31I7WGpl0720707207euoutp01Y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1754679074;
-	bh=eZMpLLPpWLfEcYOqjTqa6+eB/bqRZJ+BbYqsgnnPbkY=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=WGyqUFMDFBBsAtsI8xiD1Ayr7WYuZYdyBJMCoPCRGfrVxwAdMcl3GCV7Qwkcc4nI/
-	 gnDfUeRP8iiJIUgEStFM4TfVVnoq/LDogKUpBA2D+NmwrtJRryBOG1ru2ITf74oehS
-	 IO287BU42jFk8ZARXzvIDO/cRSfPjtUJVNlWylGo=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250808185112eucas1p285bfbeb3352a16df0b5c8f262fadbf2f~Z31Hzuzfc1555715557eucas1p2H;
-	Fri,  8 Aug 2025 18:51:12 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250808185109eusmtip1cf791168d581e5b5b824a27d8cdd9069~Z31ElK-rK1126511265eusmtip1F;
-	Fri,  8 Aug 2025 18:51:09 +0000 (GMT)
-Message-ID: <a154e058-c0e6-4208-9f52-57cec22eaf7d@samsung.com>
-Date: Fri, 8 Aug 2025 20:51:08 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bzDll155Vz2yLB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Aug 2025 05:35:45 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1754681719; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=Em/tOlRn3neXSiKx7JzypFHPBdcqWvW5f9uTuGubZ/1teKbaT/vbaXYlOMoN0sW+Y+
+    M+f1U9bWI/LuKdoU5lEKEPAKRxWEIZgb5dImjZrq7zD+PqhJOT+Z+5VestjThe5Vg0qj
+    VtEm9Qra2SI7e0rQcVvPbLD3MaLOA8t+IIRswpl3soC1sIUBZvUHUdsWhn+W8+PVff/I
+    O12QnDWq0M6DP/g2433wBo4iP+D3aFfuRB6ijJZBlthjvtr2mnm+L6ZTELgGqLRR8YhQ
+    CW+3U+ijWcgSDIujZ9nZt8yBbVVhnxQ7cojQfkm9UI2sEF4SBgasdcQ5Qxa+GHF2YO1y
+    D/bA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754681719;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=FuB74Lz56YvahQ6QzPBql1iyXkEpCYCdoAlKAXgnLOE=;
+    b=VG8JehbC+uTxOziuiB/ljATZvMI+noI+rDdNR5utjJbCYjLMVvo1UBz9zyquSJjmyR
+    4v0s1zuqyS9Yf8gZQlezRYFDS1UZqEAXLyav+2mf8u8a+9HZ6c535oiFKr7CxQOFg+xn
+    n0w7QYkAoN8tQIGnzh7JQHT1cEhvtzU7/4wGHg/+qgZV96x+oZ9Smw9BUHhM1nmYjC65
+    nSKz9Nz2fQKXw4+KoX+1gegSQG3nNc0Vurftdxotp+2tRignLThhdT2ECxoKdPAt83Lk
+    1g03S3pkVvD7+GlLz+WHQ4XlNN1Jfj79QUTKfGXsiE9OK/Sp6UpxMryCeuWJgCFFPMtg
+    9TlQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754681719;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=FuB74Lz56YvahQ6QzPBql1iyXkEpCYCdoAlKAXgnLOE=;
+    b=rXEUVnZX/kxdUDYH7yZpwwLDFOHfiuEEwRpC84qb2VSbcKnf/AIywf02drxTxJNn72
+    9esMpnuc4x1Ka9FdyBDEZFBEqnXsk0hUQ42O12aExFt+zaAcURNdLrHV/5NxHsFjHNOu
+    63fjqEXUNHP+IwYwfVymOT+FCf4gJAUB9ux3b8NeQInE0c+F1RqKsbzMQ5MtsqwBglqQ
+    58ohMHaUuQtGzMJ3Sq4tC88U6nz1Z4fJe53HgJyyjUaZcBuamyS5Zup1gP5zxn9JplTr
+    6QQAquMKjNsioL9xI+DVYmdAjENWDVOZEsngv+s61gxUDPS0AotwVn+Rnp0MdfXtTWuG
+    Gp4w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754681719;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=FuB74Lz56YvahQ6QzPBql1iyXkEpCYCdoAlKAXgnLOE=;
+    b=L7bf7ZgVWXTi25wucNloXI3n+pbKcP3W0izDmhoQG5CVLjlSkbeqO85wWuf+PPvvXh
+    wS4vYy7TtRMOxn8Q6nDg==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6P1rfO5KiO55fErqkemEbq79cbXtVWCxg7cN+9zD89Zv+intOJE/PA=="
+Received: from [IPV6:2001:16b8:5014:2500:4e12:bd2f:a193:bf30]
+    by smtp.strato.de (RZmta 52.1.2 AUTH)
+    with ESMTPSA id e6066c178JZH7lV
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Fri, 8 Aug 2025 21:35:17 +0200 (CEST)
+Message-ID: <0ea5105b-f96f-4330-a82b-c0c1f35f7b38@xenosoft.de>
+Date: Fri, 8 Aug 2025 21:38:00 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,150 +92,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH v1 00/16] dma-mapping: migrate to physical address-based
- API
-To: Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leon@kernel.org>
-Cc: Abdiel Janulgue <abdiel.janulgue@gmail.com>, Alexander Potapenko
-	<glider@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Christoph Hellwig <hch@lst.de>, Danilo
-	Krummrich <dakr@kernel.org>, iommu@lists.linux.dev, Jason Wang
-	<jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>, Joerg Roedel
-	<joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>, Juergen Gross
-	<jgross@suse.com>, kasan-dev@googlegroups.com, Keith Busch
-	<kbusch@kernel.org>, linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org, Madhavan Srinivasan
-	<maddy@linux.ibm.com>, Masami Hiramatsu <mhiramat@kernel.org>, Michael
-	Ellerman <mpe@ellerman.id.au>, "Michael S. Tsirkin" <mst@redhat.com>, Miguel
-	Ojeda <ojeda@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	rust-for-linux@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>, Stefano
-	Stabellini <sstabellini@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20250807141929.GN184255@nvidia.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250808185112eucas1p285bfbeb3352a16df0b5c8f262fadbf2f
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250807141938eucas1p2319a0526b25db120b3c9aeb49f69cce1
-X-EPHeader: CA
-X-CMS-RootMailID: 20250807141938eucas1p2319a0526b25db120b3c9aeb49f69cce1
-References: <cover.1754292567.git.leon@kernel.org>
-	<CGME20250807141938eucas1p2319a0526b25db120b3c9aeb49f69cce1@eucas1p2.samsung.com>
-	<20250807141929.GN184255@nvidia.com>
-X-Spam-Status: No, score=-2.1 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: radeon_fbdev_river_fbdev: failed to initialize framebuffer and
+ setup emulation
+To: Damien Stewart <hypexed@yahoo.com.au>,
+ Alex Deucher <alexdeucher@gmail.com>
+Cc: ville.syrjala@linux.intel.com, Jeff Johnson <quic_jjohnson@quicinc.com>,
+ mad skateman <madskateman@gmail.com>,
+ Darren Stevens <darren@stevens-zone.net>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christian Zigotzky <info@xenosoft.de>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+ Hans de Goede <hdegoede@redhat.com>, Wu Hoi Pok <wuhoipok@gmail.com>,
+ amd-gfx@lists.freedesktop.org, alexander.deucher@amd.com,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>
+References: <CADnq5_PUi_2+kDYX8R_eanNF4iYN79MdXJ_PLcQbZKi6e4S8tg@mail.gmail.com>
+ <87F47F04-EBAC-48D6-AD0A-4BBE39DF43CE@xenosoft.de>
+ <1115cce7-cfdc-4c5b-b017-69cd32425650@xenosoft.de>
+ <6ba8d730-52f9-421f-8d8a-887545f0ceac@xenosoft.de>
+ <2cc83897-427d-47f4-b6a3-8db9682972cd@xenosoft.de>
+ <CADnq5_OpJdbc4YKtV-9+5JyeKyqd4+irhT6OtFq_K9KJF24VSQ@mail.gmail.com>
+ <48b61c14-f83d-4e4a-b5d3-857099058eda@xenosoft.de>
+ <4bab7915-9739-4aea-be67-5ea122de1f5c@yahoo.com.au>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <4bab7915-9739-4aea-be67-5ea122de1f5c@yahoo.com.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 07.08.2025 16:19, Jason Gunthorpe wrote:
-> On Mon, Aug 04, 2025 at 03:42:34PM +0300, Leon Romanovsky wrote:
->> Changelog:
->> v1:
->>   * Added new DMA_ATTR_MMIO attribute to indicate
->>     PCI_P2PDMA_MAP_THRU_HOST_BRIDGE path.
->>   * Rewrote dma_map_* functions to use thus new attribute
->> v0: https://lore.kernel.org/all/cover.1750854543.git.leon@kernel.org/
->> ------------------------------------------------------------------------
+On 08 August 2025 at 06:01 pm, Damien Stewart wrote:
+> On 5/8/25 2:05 am, Christian Zigotzky wrote:
 >>
->> This series refactors the DMA mapping to use physical addresses
->> as the primary interface instead of page+offset parameters. This
->> change aligns the DMA API with the underlying hardware reality where
->> DMA operations work with physical addresses, not page structures.
-> Lets elaborate this as Robin asked:
->
-> This series refactors the DMA mapping API to provide a phys_addr_t
-> based, and struct-page free, external API that can handle all the
-> mapping cases we want in modern systems:
->
->   - struct page based cachable DRAM
->   - struct page MEMORY_DEVICE_PCI_P2PDMA PCI peer to peer non-cachable MMIO
->   - struct page-less PCI peer to peer non-cachable MMIO
->   - struct page-less "resource" MMIO
->
-> Overall this gets much closer to Matthew's long term wish for
-> struct-pageless IO to cachable DRAM. The remaining primary work would
-> be in the mm side to allow kmap_local_pfn()/phys_to_virt() to work on
-> phys_addr_t without a struct page.
->
-> The general design is to remove struct page usage entirely from the
-> DMA API inner layers. For flows that need to have a KVA for the
-> physical address they can use kmap_local_pfn() or phys_to_virt(). This
-> isolates the struct page requirements to MM code only. Long term all
-> removals of struct page usage are supporting Matthew's memdesc
-> project which seeks to substantially transform how struct page works.
->
-> Instead make the DMA API internals work on phys_addr_t. Internally
-> there are still dedicated 'page' and 'resource' flows, except they are
-> now distinguished by a new DMA_ATTR_MMIO instead of by callchain. Both
-> flows use the same phys_addr_t.
->
-> When DMA_ATTR_MMIO is specified things work similar to the existing
-> 'resource' flow. kmap_local_pfn(), phys_to_virt(), phys_to_page(),
-> pfn_valid(), etc are never called on the phys_addr_t. This requires
-> rejecting any configuration that would need swiotlb. CPU cache
-> flushing is not required, and avoided, as ATTR_MMIO also indicates the
-> address have no cachable mappings. This effectively removes any
-> DMA API side requirement to have struct page when DMA_ATTR_MMIO is
-> used.
->
-> In the !DMA_ATTR_MMIO mode things work similarly to the 'page' flow,
-> except on the common path of no cache flush, no swiotlb it never
-> touches a struct page. When cache flushing or swiotlb copying
-> kmap_local_pfn()/phys_to_virt() are used to get a KVA for CPU
-> usage. This was already the case on the unmap side, now the map side
-> is symmetric.
->
-> Callers are adjusted to set DMA_ATTR_MMIO. Existing 'resource' users
-> must set it. The existing struct page based MEMORY_DEVICE_PCI_P2PDMA
-> path must also set it. This corrects some existing bugs where iommu
-> mappings for P2P MMIO were improperly marked IOMMU_CACHE.
->
-> Since ATTR_MMIO is made to work with all the existing DMA map entry
-> points, particularly dma_iova_link(), this finally allows a way to use
-> the new DMA API to map PCI P2P MMIO without creating struct page. The
-> VFIO DMABUF series demonstrates how this works. This is intended to
-> replace the incorrect driver use of dma_map_resource() on PCI BAR
-> addresses.
->
-> This series does the core code and modern flows. A followup series
-> will give the same treatement to the legacy dma_ops implementation.
+>> @Hypex
+>> Could you please attach your full dmesg output? 
+> 
+> Hi. Sorry just found this. Do you still need a dmesg? I collected a few 
+> and can provide one for any broken version.
+> 
+> 
 
-Thanks for the elaborate description, that's something that was missing 
-in the previous attempt. I read again all the previous discussion and 
-this explanation and there are still two things that imho needs more 
-clarification.
+Hi Damien,
 
+Never mind. There is a patch [1]. The issue is solved. (Thanks to Alex)
 
-First - basing the API on the phys_addr_t.
+Cheers,
+Christian
 
-Page based API had the advantage that it was really hard to abuse it and 
-call for something that is not 'a normal RAM'. I initially though that 
-phys_addr_t based API will somehow simplify arch specific 
-implementation, as some of them indeed rely on phys_addr_t internally, 
-but I missed other things pointed by Robin. Do we have here any 
-alternative?
-
-
-Second - making dma_map_phys() a single API to handle all cases.
-
-Do we really need such single function to handle all cases? To handle 
-P2P case, the caller already must pass DMA_ATTR_MMIO, so it must somehow 
-keep such information internally. Cannot it just call existing 
-dma_map_resource(), so there will be clear distinction between these 2 
-cases (DMA to RAM and P2P DMA)? Do we need additional check for 
-DMA_ATTR_MMIO for every typical DMA user? I know that branching is 
-cheap, but this will probably increase code size for most of the typical 
-users for no reason.
-
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+[1] 
+https://github.com/chzigotzky/kernels/blob/main/patches/v2-3-3-drm-radeon-Pass-along-the-format-info-from-.fb_create-to-drm_helper_mode_fill_fb_struct.diff
 
