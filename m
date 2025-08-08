@@ -1,85 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-10753-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10755-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE80B1E37E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 09:36:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91131B1E44F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 10:22:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bywny3KRmz3cPG;
-	Fri,  8 Aug 2025 17:36:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4byxqN1hj1z3cR2;
+	Fri,  8 Aug 2025 18:22:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.166 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754638598;
-	cv=pass; b=CNozxQvmVy7Z3iLDA8OKcbUdLPKXRlpTXgoX7SGzA3uB51i8clTqKR3XZjJUu18lr9UFfhsaMwJ9Ld5VHgCxEwC0xx/QZlWMh3eOPYELyRPSe+vslzzJFkewqRyjquC+Nc5cqbaD7gnnH0H3EkC9/5nD/JAV/TyPvtUV9VQyrbyMUeNdRkQIBAbxmR0N1BWetcoWeVFsK4k0T97f0bPJ6WIV7NfkLI1D4a0ttzEYqcr36oBF/GAQH5o390YEwlqXxOecz9l5zYZUFTyo7bB9ECHabZ+s0173XO6pIIyFTVRFuE40s03q0frIPPcLustdv3QhaSWvXxKh61sbYbAPbA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754638598; c=relaxed/relaxed;
-	bh=hEibWoeKfJI5icTt/pHJWWZJzdwlXwFgqSZtoHw9OSA=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=kNsAEE2+R0ZIOidophBJ9em5Ol9ZjkavlFunKKhkIZT8iZzrBDfRvzhi3yHrVQ4M/y/R1YE/PndYN6EgVr6gVXzZZBkTJXBDOmFTT2zXrHTnP3642fOQRoL9GKJdL9DLBYVNsgRXd9CT4wHv1FHVN+RnzIuQD5D5EbtwUrahhcrRfrRkqCGZiBtwh6Ac9ihHNWIJ1GNSpzY9CCXxVT36mBZ+eLU8RknUWLuQ8N5mywEr3QWxAUlFKfIipxF89U2RZ7H7CUpbgFyVDQcOGaULHZEY5hiuhuh9EBipW/3e8tklmfTcuPrXOfRGIDYgD70T9NdTPb/zpKMPM/bz5I1kXg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=eDTuwjDp; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=4r7JARm8; dkim-atps=neutral; spf=pass (client-ip=81.169.146.166; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754641376;
+	cv=none; b=F+D+nQyZNybwTlPoLaWMiA5qZx1ttOnltMw4Jwi9jVFiVGS5wZBB9hvic4HBynxNKtfphd7WDq1UODpCaVvqDe1zmi/8RieFIJR3+P0WBlY2mtvq5iRQWIgoqxaaPbCJg3zDwJMIordKFKCDIcfcVatGtcCQHtuny9gY9tXPXgL6pKNw1DqDcW6xpBgNbx4mF9zgradUs0x0W9U0w8Jt8ojRNa+JtGMI/K13uTUT9pEtQn71XrQNEMouUgOeWtjmBsP4kgwTyOYKOGI0EDiGn4bLJRSIXb87H3NOMqS6p4FxeamV9eUNP2zU/rUa+iWz/rpKUNuPVUc+k2IItWqjSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754641376; c=relaxed/relaxed;
+	bh=M8H8VatuFDhz85n97YqA7df4qaC3IJcBKVKFKpZb8bA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cmrOg/fbAoGOCEWfYsFAFT6UlR4l8YMoe1mVNRykDTBdRlW6I314ZJLgpOA56jV4dsTXZ6ReCG2WIzM0o8AoriUneUa7JzYrw0sUvuNve1wnrfVqflWeNurhn1/kA4dqDebRjq4gqJSuCv+OeAaR5n/CV3VQ9NUIe3A2HM7NPxC/ROEDFhMgfQdSPQaNxTU8+5XIHTM4d9edcRRW2KMFWcWSdtUwSmcGpt9MBCsn49MfRXmkYRkmo8G7XjjQlrDys7DKe9W/UAVfhWgUjQLQBLi/XgwR6TJbn+vCvwtKZqoD+VputIQEVgGt9aVWquupgmZ6A+dwEzEDZ6NQtYd/Fg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fIbEcEBR; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=eDTuwjDp;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=4r7JARm8;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fIbEcEBR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.166; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bywnv2Gbvz3cBW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Aug 2025 17:36:33 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1754638579; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=lNFGPDPDPyWlkENtmbBcYkUImtRUUkhRK2lJV73EnS7yQNJ6/C4XDrDbnmf3et8XDv
-    VqHUYmrDmpw7YZ5hAwLIrPdgjI60Os0O/FEJgBfN0FQKYY2X4Xplh18b6pwvvF9MFg72
-    eENx5CK4Cal5T+Moni8bP2R+QG8OpPcxXnz0hBKN/VW1YkZwhIoBiqKdsMrDwxWR6v65
-    7+1PbP4vsxao9aFvRii4yoM8WTLgC7XRXrFtE53rD3L7IjjW6ThSLIOPjroy+jyu/dGp
-    u2XN2/yMeSkfC73WsQaQhZ1DR20UFKO2DVLjdYSHHHVTG4TCzzj96ks1ZIjkrb3lKTUn
-    MGkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754638579;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=hEibWoeKfJI5icTt/pHJWWZJzdwlXwFgqSZtoHw9OSA=;
-    b=SsYw6tz+ebCEhxv9XYJ0i9lQId1YYk7qKKWosq9ZUc216aZQVSCpze9Tmo7WU6yW/O
-    xdwqYtpcSyqD5S/Onwj1w2rZWxINq8jJzFu+MWmdbSyN6kBhh0UgwEowsw+JSrr9ax8N
-    2lFK9knE44UCpUwW+GvSsRIS7IC278Sqgl/+wAV0SyqQCpXAEgIzvZHJKK0mvisBhaNJ
-    8GvEU1EtGImlEGDZO4Z959uH0nPfQoiMmqo/AqMhlJn5Khj39/xfGUwsuN3HW3M4l0HS
-    yto+0qbkAaEmB/M5bhMilKIzSxbm+EgEpvwEC4lbD+LkXYicdONxjo7lhlpXBvZsEvK4
-    kk9w==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754638579;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=hEibWoeKfJI5icTt/pHJWWZJzdwlXwFgqSZtoHw9OSA=;
-    b=eDTuwjDp1I2+vEC0dHNxIwj2UFtw7MYrGlbkfGwKBtsKS676wYO5ZiTARWgl+VVXJg
-    yd2BXK9txMDbQk7FhI2SkttKvTuoUh+j6PK/cJlAW/pLm28feZLXueBKzZRivStNvsnZ
-    3pKCk5P3GuqJewfDun/bs8tW9TgXOcLQBfJSsg2CSHJegSRccE6Nt2JfcPRoIgO/U2NM
-    ZyYCV9M4bVl42wEe2k7mv5dH8tvpEViJgeHZE5mVhWthU2ugmhiiQ+KX6KoNIFkYpKeD
-    bDMnGcfrRVGuvz96+eRM9l7cLlTZk/q+Nz0GlXe9kFH8nLJLgO/M9ibHnOIaW5ACFahZ
-    5tSw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754638579;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=hEibWoeKfJI5icTt/pHJWWZJzdwlXwFgqSZtoHw9OSA=;
-    b=4r7JARm8pW8v67SeR9uuTEeKoERBacRf2PFvge3VdfmH4q6QOXihdcTJGyRwJDzkj0
-    mCVOO+j6zTzlb0zWo9Dw==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5m2s3nHCn41v9Nkb0mWmpM67xZiJcLlItnQ0v4="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 52.1.2 AUTH)
-    with ESMTPSA id e6066c1787aI5lK
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Fri, 8 Aug 2025 09:36:18 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4byxqM1j1Lz3cR1
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Aug 2025 18:22:54 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5781Nlh2010278;
+	Fri, 8 Aug 2025 08:22:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=M8H8VatuFDhz85n97YqA7df4qaC3IJcBKVKFKpZb8
+	bA=; b=fIbEcEBRQRXu3+dixFbBf5tJ9R7VKQjaGiKklrqRw4/sg54xThaME8K9E
+	DFgSoGnXkppQSzH17gW73z59tpgFIZo+8YR8vUmXpqhT4mMSDdDYxjvez8TwmxJ3
+	eCyYOCL1BXEUBjIwQTYMQUgiDf9sLOPnqgpB3FA4mtqjTboRBZtvivEuEAXgy+hX
+	xuNsxfTmikw2M6Ov/uaK+pKMM+A/aF9KiqCx77LSXuw/TOccmsJyOkkCvhE901Ti
+	sNaax9n/6khI0pRyDhdjV+kAtzyiYypBwWgxWnqN0q5YxnLksNH8RUMi3Upj1mKW
+	skSCMCa+lmsoBb5NatqkDYoVMeRMQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48bq63xyk6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Aug 2025 08:22:43 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57866Kcs031444;
+	Fri, 8 Aug 2025 08:22:42 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48bpwnmt8s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Aug 2025 08:22:42 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5788McGk57082208
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Aug 2025 08:22:38 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BD0742004D;
+	Fri,  8 Aug 2025 08:22:38 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 221DD20040;
+	Fri,  8 Aug 2025 08:22:37 +0000 (GMT)
+Received: from tp-ibm-com.ibmuc.com (unknown [9.111.53.205])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  8 Aug 2025 08:22:36 +0000 (GMT)
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, mahesh@linux.ibm.com,
+        Ganesh Goudar <ganeshgr@linux.ibm.com>
+Subject: [PATCH v2] powerpc/eeh: parse AER registers
+Date: Fri,  8 Aug 2025 13:52:34 +0530
+Message-ID: <20250808082234.645375-1-ganeshgr@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,83 +82,159 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: radeon_fbdev_river_fbdev: failed to initialize framebuffer and setup emulation
-Date: Fri, 8 Aug 2025 09:36:07 +0200
-Message-Id: <EBCB1171-0CF8-4B7A-97C9-0E7816EBA6B5@xenosoft.de>
-References: <69bac1ee-4fea-4225-b222-d7f274a8ea3c@amd.com>
-Cc: mad skateman <madskateman@gmail.com>,
- Alex Deucher <alexdeucher@gmail.com>, ville.syrjala@linux.intel.com,
- Jeff Johnson <quic_jjohnson@quicinc.com>,
- Darren Stevens <darren@stevens-zone.net>, hypexed@yahoo.com.au,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
- Hans de Goede <hdegoede@redhat.com>, Wu Hoi Pok <wuhoipok@gmail.com>,
- amd-gfx@lists.freedesktop.org,
- Alexander Deucher <Alexander.Deucher@amd.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, bhelgaas@google.com,
- benato.denis96@gmail.com, Yijun_Shen@dell.com,
- David Perry <David.Perry@amd.com>, rafael@kernel.org,
- dri-devel@lists.freedesktop.org
-In-Reply-To: <69bac1ee-4fea-4225-b222-d7f274a8ea3c@amd.com>
-To: Mario Limonciello <Mario.Limonciello@amd.com>
-X-Mailer: iPhone Mail (22G86)
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
-	autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODA4MDA2OCBTYWx0ZWRfXwwwfBzvGYWHz
+ 145BYgbhnI2F3tzKMkXj+oPdoRLfnzxFEY75vXFUfPsuDbHKEBiQzNbvVGLXfOE751MI0T+bNUX
+ KIXn2xKw0/oeu3P3QQDwm36/a3U05+uK/EdIgq8fTdzQQxf2z+k4bYoj87mWAGVEfyrHv887AWz
+ o761NYM3pEUy7uHYX0FSVM70LtOJ2l7yC24uSvq72dBjl5I8gfQAB0CL5CRf37sc8vKhn+mmB8l
+ BbfuaeLeL5eL+Gz2eysl4MYNbvApEAAY4fTLF2pBIgwsHrJsscfHRpo7UbHIrRz3HlvYsEjzntA
+ hbOWZx0qx0Ssh1g0xKpZbpEQTKkW79eHFezkfn9MkLHtQsDAmp2N5W61FYTXQ1y0eWza/qjvvd6
+ TAfLJbfBztjUa54mgq2rRyHnCNiMVlMVBPbsQYcjTC1sDNS/vJFlJHgPlQ5JaTSwiwbUGg4f
+X-Proofpoint-ORIG-GUID: KEgwo3rA2s9aqwcA3myW2FCsRlQLrbBt
+X-Authority-Analysis: v=2.4 cv=LreSymdc c=1 sm=1 tr=0 ts=6895b3d3 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=vpK28AJng4gpH6vAUrYA:9
+X-Proofpoint-GUID: KEgwo3rA2s9aqwcA3myW2FCsRlQLrbBt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-08_02,2025-08-06_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 mlxlogscore=975 bulkscore=0
+ malwarescore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
+ definitions=main-2508080068
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+parse AER uncorrectable and correctable error status
+registers to print error type and severity.
 
-On 07 August 2025 at 04:21 pm, Limonciello, Mario <Mario.Limonciello@amd.com=
-> wrote:
+output looks like
+EEH:AER severity=Uncorrected (Fatal), Error Type: Data Link Protocol Error
 
-Does applying
-https://github.com/torvalds/linux/commit/907a7a2e5bf40c6a359b2f6cc53d6fdca04=
-009e0
-help?
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+---
+v2:
+* Remove unnecessary checks.
+* Change the error message format.
+---
+ arch/powerpc/kernel/eeh.c | 81 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 80 insertions(+), 1 deletion(-)
 
-- - -
-
-Hello Mario,
-
-Thanks a lot for your patch.
-
-I tested it today but unfortunately it doesn=E2=80=99t solve the issue with t=
-he Radeon framebuffer.
-
-I have created two kernels with and without the drm-next-2025-07-30 updates [=
-1] because of the issue with the Radeon graphics framebuffer device #15. [2]=
-
-
-Download and further information: https://github.com/chzigotzky/kernels/rele=
-ases/tag/v6.17.0-alpha5
-
-I have tested both kernels this week and I can definitely confirm, that the i=
-ssue is somewhere in the commit drm-next-2025-07-30 updates [1].
-
-The Radeon graphics framebuffer doesn't work with the kernel with the drm-ne=
-xt-2025-07-30 updates [1]. Without these updates, the framebuffer works.
-
-I bisected yesterday. [2]
-
-There are some other user reports:
-
-- https://forum.hyperion-entertainment.com/viewtopic.php?p=3D60606#p60606
-- https://forum.hyperion-entertainment.com/viewtopic.php?p=3D60595#p60595
-
-They use other Radeon graphics chips.
-
-@All
-Please check the drm-next-2025-07-30 updates [1]
-
-Thanks,
-Christian
-
-[1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/c=
-ommit/?id=3D260f6f4fda93c8485c8037865c941b42b9cba5d2
-
-[2] https://github.com/chzigotzky/kernels/issues/15=
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index 83fe99861eb1..cd083e59d6b3 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -139,6 +139,49 @@ struct eeh_stats {
+ 
+ static struct eeh_stats eeh_stats;
+ 
++static const char * const aer_uncor_errors[] = {
++	"Undefined",
++	"Undefined",
++	"Undefined",
++	"Undefined",
++	"Data Link Protocol",
++	"Surprise Down",
++	"Poisoned TLP",
++	"Flow Control Protocol",
++	"Completion Timeout",
++	"Completer Abort",
++	"Unexpected Completion",
++	"Receiver Overflow",
++	"Malformed TLP",
++	"ECRC Error",
++	"Unsupported Request",
++	"ACS Violation",
++	"Uncorrectable Internal Error",
++	"MC Blocked TLP",
++	"AtomicOp Egress Blocked",
++	"TLPPrefix Blocked",
++	"Poisoned TLP Egress Blocked"
++};
++
++static const char * const aer_cor_errors[] = {
++	"Receiver Error",
++	"Undefined",
++	"Undefined",
++	"Undefined",
++	"Undefined",
++	"Undefined",
++	"Bad TLP",
++	"Bad DLLP",
++	"Replay Num Rollover",
++	"Undefined",
++	"Undefined",
++	"Undefined",
++	"Replay Timer Timeout",
++	"Advisory Non-Fatal Error",
++	"Corrected Internal Error",
++	"Header Log Overflow",
++};
++
+ static int __init eeh_setup(char *str)
+ {
+ 	if (!strcmp(str, "off"))
+@@ -160,6 +203,40 @@ void eeh_show_enabled(void)
+ 		pr_info("EEH: No capable adapters found: recovery disabled.\n");
+ }
+ 
++static void eeh_parse_aer_registers(struct eeh_dev *edev, int cap)
++{
++	int i;
++	const char *error_type;
++	u32 uncor_status, uncor_severity, cor_status;
++
++	eeh_ops->read_config(edev, cap + PCI_ERR_UNCOR_STATUS, 4, &uncor_status);
++	eeh_ops->read_config(edev, cap + PCI_ERR_UNCOR_SEVER, 4, &uncor_severity);
++	eeh_ops->read_config(edev, cap + PCI_ERR_COR_STATUS, 4, &cor_status);
++
++	if (uncor_status) {
++		for (i = 0; i < ARRAY_SIZE(aer_uncor_errors); i++) {
++			if (uncor_status & (1 << i)) {
++				error_type = (i < ARRAY_SIZE(aer_uncor_errors))
++					     ? aer_uncor_errors[i] : "Unknown";
++				pr_err("EEH:AER severity=Uncorrected (%s), Error type: %s\n",
++				       (uncor_severity & (1 << i)) ?
++				       "Fatal" : "Non-Fatal", error_type);
++			}
++		}
++	}
++
++	if (cor_status) {
++		for (i = 0; i < ARRAY_SIZE(aer_cor_errors); i++) {
++			if (cor_status & (1 << i)) {
++				error_type = (i < ARRAY_SIZE(aer_cor_errors))
++					      ? aer_cor_errors[i] : "Unknown";
++				pr_err("EEH:AER severity=Correctable, Error Type: %s\n",
++				       error_type);
++			}
++		}
++	}
++}
++
+ /*
+  * This routine captures assorted PCI configuration space data
+  * for the indicated PCI device, and puts them into a buffer
+@@ -237,9 +314,11 @@ static size_t eeh_dump_dev_log(struct eeh_dev *edev, char *buf, size_t len)
+ 		pr_warn("%s\n", buffer);
+ 	}
+ 
+-	/* If AER capable, dump it */
++	/* If AER capable, parse and dump it */
+ 	cap = edev->aer_cap;
+ 	if (cap) {
++		eeh_parse_aer_registers(edev, cap);
++
+ 		n += scnprintf(buf+n, len-n, "pci-e AER:\n");
+ 		pr_warn("EEH: PCI-E AER capability register set follows:\n");
+ 
+-- 
+2.48.1
 
 
