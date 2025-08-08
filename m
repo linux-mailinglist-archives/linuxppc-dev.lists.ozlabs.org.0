@@ -1,49 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-10770-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10769-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41395B1EDB8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 19:20:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B16D9B1ED9E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 19:04:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bz9lp5n5Yz3bb6;
-	Sat,  9 Aug 2025 03:20:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bz9Nn03MTz30Wn;
+	Sat,  9 Aug 2025 03:04:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754673638;
-	cv=none; b=JphDwpyt3ihqekzpF87kYJFF3DbXaqkWGFyVpzNXs7gp0XHyyOl1yvWUcE/F0Xro0UmIWFOW1Iy+g+EDxKn+0d/DFWpji/EaOG1sDEp/SRmdOk6tjiF7776HWJXsWv3vR4lvtmEk66Ug4nGs2Gv2fmWq6Bekk2OM9QoB5TnK3Sk40VLN4vXGd5+EHLgLXqcukFr1SPB+g3G9kBg8v1QOTog/Ql60sKm47okViFnlqk1VnxqWFnz+5uDyGNW++15xw1G0ep8YlX89Ac4JlSucBCCijQc3e+hofeyxDHfNsmbZKPyRLf8KnoSf3rC9j5hKf6IGUFE+sq17snw6coA/Vg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754672648;
+	cv=none; b=Kb/YWRu2NwUqU37vo4peowkeXlrr3rbbO2bqkpB5ruqay3a0yNfnYNPqUM4TlJ+6cT3glhTMyd751d9DUGqxGA7bwmUOVtvsfH7hS6zxHW/7gDJNVgiDHX8xm1J95pXC/8k+ueT/YE+t3DlFWA2BPRZea42IHIQGR9XgHM0uCiLjR3ENd/tuEXgEz61ftK1YOvBd2OkN/CNL7b/uWEQGl9Sb6YERfq/CgT3DMhEsdhowGHT4ORJzz0OLEJp8sI2XRmeLQ72Kplto2j9lPh64ar05ZP3iIv690xNbSR4k4T488o2qn82PwF8v4PAuch2iJr1sHVPHFrnRr3jDBva+6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754673638; c=relaxed/relaxed;
-	bh=bro5Z1PL2eLig5Q2ncFtimJM/b9sdMd4TeRUxnnShL0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W5C3K5Q5JvwnhMOgaEKG+xbf9Q4qhpNRhDYzFC7AQc4hyly9ErxAoU2vnEV1s3A1Mkf1p05YXd0OGYqapVYjHgsGkXasdvry5yyKCLqaRcTh9QJkc47ORCQQiqzDJjEth8Ue2X+YzGuE6vtPT/ecQWuVvVdCjLww+V9C9m+x9koMwSwhKnFmPSSrPT+R0WZn07G0z5PtgrE6J8aSuB31QlTpqEdQWnU/2idk8j29lnrPo15hRiziNnXSydYqGv8WNxUCVlYOFPacSqs6nCAAfHVS9SpLkA2bzPys/fgEHlxmIeCUYE3rMRRP1J/b1xoor6oxXzavkd9zLL2dvnFxVQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bz9ln74qsz2yLB
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Aug 2025 03:20:36 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4bz9NX4Hmyz9sSb;
-	Fri,  8 Aug 2025 19:03:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 4LtEzBBocysS; Fri,  8 Aug 2025 19:03:56 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4bz9NX36z3z9sSZ;
-	Fri,  8 Aug 2025 19:03:56 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 55AF68B770;
-	Fri,  8 Aug 2025 19:03:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Z2c0fwWGRIPg; Fri,  8 Aug 2025 19:03:56 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 20F878B763;
-	Fri,  8 Aug 2025 19:03:55 +0200 (CEST)
-Message-ID: <af677847-e625-43d7-8750-b2ce4ba9626c@csgroup.eu>
-Date: Fri, 8 Aug 2025 19:03:54 +0200
+	t=1754672648; c=relaxed/relaxed;
+	bh=jcXe+DepAsVRyeS9ZMZs9hUSlZtMli7xwsMPgZxiVYY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W/J4mg0r7xI4Et0T/tz5LqtIt1P2JOiOX4adfKQQ9VI789e6Bn2x9dvs8ckZmBl7mu7hpvEQVUibNS9VOK16UWhjCdKq6ObMknZpZDFCSf5ew94kXTgMhrG8tIdgm7aj5M7qult3Wm3N3B5qZbBNDVtP8SQ+B1AL6K1d2XbJoUoboKISccCY98jxpMugH8KqmcUoUujNMJIpKyFh6rhfa+b08AeKIZMJuLTTqQzoPDiZRVZEm5R452bdmYfgpAbYHQIZ2n6s9c29N7TH9MRf3zqmdg17yB+HPPoXrgfi4rDijRX999PBcoIf0yuA0GZX9MAQpdSbJR9ucWI8Yepdfg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VsKW5hA8; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VsKW5hA8;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bz9Nm1d3yz301K
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Aug 2025 03:04:08 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 089454187B;
+	Fri,  8 Aug 2025 17:04:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8392FC4CEED;
+	Fri,  8 Aug 2025 17:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754672645;
+	bh=1x1qHlFBl7yOrv3dMBvgEuOQ3c4yYXP9OfIu5ljyKq4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VsKW5hA8wPmgp8sy7LkNtPiwfpcKqVsfIawuPDnGBM8zhJivEtTWBPKQ3Vl/ql4S1
+	 eH1ySNTFEueCtU/Rj62cy7ETAcreEwhqktphO4asIbYH59DwUzlwQakxNN6daHQ+TB
+	 fDlwYaqACF1QvoCTlUUR9luecJHrADGYNzldSbzSlA2vLKTHrmDjyqDPiEWa2M2dly
+	 knr9f1m6fDbb0gRsZeDZmAx7Zbu5esVDFQE/mX+kNs1kBj5EBrJhEluB6dOGJ9F2Zs
+	 fa43D9b7G04BBCEdmwAvzLLakuDyKD4sCrgtTg/FkIHGh/KEr0QYFIYWzO8cmDzTVr
+	 G5EKGmcpdvQNA==
+Date: Fri, 8 Aug 2025 13:04:02 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Timothy Pearson <tpearson@raptorengineering.com>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH AUTOSEL 6.16-5.10] PCI: pnv_php: Clean up allocated IRQs
+ on unplug
+Message-ID: <aJYuAoqFT206dYwI@lappy>
+References: <20250808153054.1250675-1-sashal@kernel.org>
+ <20250808153054.1250675-14-sashal@kernel.org>
+ <1852420641.1614920.1754668740466.JavaMail.zimbra@raptorengineeringinc.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,149 +71,30 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/2] kasan: introduce ARCH_DEFER_KASAN and unify static
- key across modes
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: ryabinin.a.a@gmail.com, bhe@redhat.com, hca@linux.ibm.com,
- andreyknvl@gmail.com, akpm@linux-foundation.org, zhangqing@loongson.cn,
- chenhuacai@loongson.cn, davidgow@google.co, glider@google.com,
- dvyukov@google.com, alex@ghiti.fr, agordeev@linux.ibm.com,
- vincenzo.frascino@arm.com, elver@google.com, kasan-dev@googlegroups.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-um@lists.infradead.org, linux-mm@kvack.org
-References: <20250807194012.631367-1-snovitoll@gmail.com>
- <20250807194012.631367-2-snovitoll@gmail.com>
- <22872a3f-85dc-4740-b605-ba80b5a3b1bc@csgroup.eu>
- <CACzwLxjnofD0EsxrtgbG3svXHL+TpYcio4B67SCY9Mi3C-jdsQ@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <CACzwLxjnofD0EsxrtgbG3svXHL+TpYcio4B67SCY9Mi3C-jdsQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <1852420641.1614920.1754668740466.JavaMail.zimbra@raptorengineeringinc.com>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Fri, Aug 08, 2025 at 10:59:00AM -0500, Timothy Pearson wrote:
+>While the autoselector has the right idea, in that this is critical functionality that currently induces panics on older stable kernels, this entire patch series should be backported, not just these two isolated patches.
+>
+>The correct series for backport would be:
+>
+> PCI: pnv_php: Fix surprise plug detection and recovery
+> powerpc/eeh: Make EEH driver device hotplug safe
+> powerpc/eeh: Export eeh_unfreeze_pe()
+> PCI: pnv_php: Work around switches with broken presence detection
+> PCI: pnv_php: Clean up allocated IRQs on unplug
+>
+>Backport is especially critical for Debian, so that we don't ship a broken kernel with the soon to be released Trixie version.
 
+Okay, I'll just queue these up directly. Thanks!
 
-Le 08/08/2025 à 17:33, Sabyrzhan Tasbolatov a écrit :
-> On Fri, Aug 8, 2025 at 10:03 AM Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->>
->>
->>
->> Le 07/08/2025 à 21:40, Sabyrzhan Tasbolatov a écrit :
->>> Introduce CONFIG_ARCH_DEFER_KASAN to identify architectures [1] that need
->>> to defer KASAN initialization until shadow memory is properly set up,
->>> and unify the static key infrastructure across all KASAN modes.
->>
->> That probably desserves more details, maybe copy in informations from
->> the top of cover letter.
->>
->> I think there should also be some exeplanations about
->> kasan_arch_is_ready() becoming kasan_enabled(), and also why
->> kasan_arch_is_ready() completely disappear from mm/kasan/common.c
->> without being replaced by kasan_enabled().
->>
->>>
->>> [1] PowerPC, UML, LoongArch selects ARCH_DEFER_KASAN.
->>>
->>> Closes: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fbugzilla.kernel.org%2Fshow_bug.cgi%3Fid%3D217049&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cfe4f5a759ad6452b047408ddd691024a%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638902640503259176%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=UM4uvQihJdeWwcC6DIiJXbn4wGsrijjRcHc55uCMErI%3D&reserved=0
->>> Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
->>> ---
->>> Changes in v5:
->>> - Unified patches where arch (powerpc, UML, loongarch) selects
->>>     ARCH_DEFER_KASAN in the first patch not to break
->>>     bisectability
->>> - Removed kasan_arch_is_ready completely as there is no user
->>> - Removed __wrappers in v4, left only those where it's necessary
->>>     due to different implementations
->>>
->>> Changes in v4:
->>> - Fixed HW_TAGS static key functionality (was broken in v3)
->>> - Merged configuration and implementation for atomicity
->>> ---
->>>    arch/loongarch/Kconfig                 |  1 +
->>>    arch/loongarch/include/asm/kasan.h     |  7 ------
->>>    arch/loongarch/mm/kasan_init.c         |  8 +++----
->>>    arch/powerpc/Kconfig                   |  1 +
->>>    arch/powerpc/include/asm/kasan.h       | 12 ----------
->>>    arch/powerpc/mm/kasan/init_32.c        |  2 +-
->>>    arch/powerpc/mm/kasan/init_book3e_64.c |  2 +-
->>>    arch/powerpc/mm/kasan/init_book3s_64.c |  6 +----
->>>    arch/um/Kconfig                        |  1 +
->>>    arch/um/include/asm/kasan.h            |  5 ++--
->>>    arch/um/kernel/mem.c                   | 10 ++++++--
->>>    include/linux/kasan-enabled.h          | 32 ++++++++++++++++++--------
->>>    include/linux/kasan.h                  |  6 +++++
->>>    lib/Kconfig.kasan                      |  8 +++++++
->>>    mm/kasan/common.c                      | 17 ++++++++++----
->>>    mm/kasan/generic.c                     | 19 +++++++++++----
->>>    mm/kasan/hw_tags.c                     |  9 +-------
->>>    mm/kasan/kasan.h                       |  8 ++++++-
->>>    mm/kasan/shadow.c                      | 12 +++++-----
->>>    mm/kasan/sw_tags.c                     |  1 +
->>>    mm/kasan/tags.c                        |  2 +-
->>>    21 files changed, 100 insertions(+), 69 deletions(-)
->>>
->>> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
->>> index f0abc38c40a..cd64b2bc12d 100644
->>> --- a/arch/loongarch/Kconfig
->>> +++ b/arch/loongarch/Kconfig
->>> @@ -9,6 +9,7 @@ config LOONGARCH
->>>        select ACPI_PPTT if ACPI
->>>        select ACPI_SYSTEM_POWER_STATES_SUPPORT if ACPI
->>>        select ARCH_BINFMT_ELF_STATE
->>> +     select ARCH_DEFER_KASAN if KASAN
->>
->> Instead of adding 'if KASAN' in all users, you could do in two steps:
->>
->> Add a symbol ARCH_NEEDS_DEFER_KASAN.
->>
->> +config ARCH_NEEDS_DEFER_KASAN
->> +       bool
->>
->> And then:
->>
->> +config ARCH_DEFER_KASAN
->> +       def_bool
->> +       depends on KASAN
->> +       depends on ARCH_DEFER_KASAN
->> +       help
->> +         Architectures should select this if they need to defer KASAN
->> +         initialization until shadow memory is properly set up. This
->> +         enables runtime control via static keys. Otherwise, KASAN uses
->> +         compile-time constants for better performance.
->>
-> 
-> Actually, I don't see the benefits from this option. Sorry, have just
-> revisited this again.
-> With the new symbol, arch (PowerPC, UML, LoongArch) still needs select
-> 2 options:
-> 
-> select ARCH_NEEDS_DEFER_KASAN
-> select ARCH_DEFER_KASAN
-
-Sorry, my mistake, ARCH_DEFER_KASAN has to be 'def_bool y'. Missing the 
-'y'. That way it is automatically set to 'y' as long as KASAN and 
-ARCH_NEEDS_DEFER_KASAN are selected. Should be:
-
-config ARCH_DEFER_KASAN
-	def_bool y
-	depends on KASAN
-	depends on ARCH_NEEDS_DEFER_KASAN
-
-
-> 
-> and the oneline with `if` condition is cleaner.
-> select ARCH_DEFER_KASAN if KASAN
-> 
-
-I don't think so because it requires all architectures to add 'if KASAN' 
-which is not convenient.
-
-Christophe
+-- 
+Thanks,
+Sasha
 
