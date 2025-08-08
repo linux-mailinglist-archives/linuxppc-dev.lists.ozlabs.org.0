@@ -1,85 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-10758-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10759-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11348B1E943
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 15:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28501B1E9B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 15:57:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bz4fP0bhHz2xK5;
-	Fri,  8 Aug 2025 23:30:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bz5Dq5pQGz2xPw;
+	Fri,  8 Aug 2025 23:56:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.51 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754659837;
-	cv=pass; b=lN1Boy4eP06tgJrPYbnYVUx46ZLXinTmneZZkK2EmAvDHWFYcCFlq7NbPXiqNVPy6bE/SRx0edyoc6JRwgou65e4Ga4n4W4VOCs1w2hN6v5WfkmNwAyv0CmMsAkgztu45g7r/y00yX2PjVZfmfOU0bDLQ3cBwfWvmXZjIu9WC2IxjGOoIvaOVfEpgik6H4uu378Rvo+NZOv+M5g7ebi2Q+/T+hVFro8MhcjTFIZY6R67iOH5KMeK9xsCw+EN+txOxqCyILZE/QXs1BxauvGulbHLeC2z7NVJWXfUIFaSj9dWZVm4caqTreFjUXF7wvP5vPq1kJP/jSfXPSCOSAWOsw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754659837; c=relaxed/relaxed;
-	bh=szxC9HtsLathAsiBUge4AOh28xZOX235WGFzuZVindU=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=RXi5FDzNs71IZEjWxgYjy2eMS2aFrtPdh6ZHrW6L6u9jSILEqeftdZGNLnRGECV26Yf6d9nwXhmoG6VnfbxCt6mpEygRZf/5oYzxWJsDrY3Q9o0qKE+D1qBFJcxAbrwOYdXCT7iIC5PZl6yplyM+kW46rDQlmmZgHS/hl2Ns+h6Rg2nh0s+2MzRSES11iIdLzR+aJBSq2Cp5lULNhL16suBnQGatx4sbckI7CbrHBRO0DKOyCtDNkuFn5prybdmv/NbYX1H2wqkqa+fifL1QGjHfY589nrr2yyP0YNJTRgL4GQyp4gyfUkPm/Z8Zwg+3j7qq8UDPFj79Y1aifeVYiA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=kwe5RroF; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=z+GyQF24; dkim-atps=neutral; spf=pass (client-ip=85.215.255.51; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=98.137.69.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754661419;
+	cv=none; b=hTlKK6Kslsjm06SL2I4tQUt87yWqEwKJdGJAvfHK4NgKEn22k4qiVo8kCC4sft+nc1ub+KVZpu2WIAwk/L6MjyLi8fmp4/5CDZDX4G3YOI+3877y2b+cKkXaRyEY5xRM1kn2q8ZzneClRdxyozVfi6qVO/uLCvq25nAj2OJZIHPzmGDdtlvvf1nZ04f/2tP3vTmlHhsG/08+zlA2oCcTYTrEE1AwJFhcFUmFnM6XpUSx3F9sJMpND3TREjQTvOGiv1DDL0pI7OfHqht1TEuDsZTsuAoQR5xERI0VRtn0ZpknwPnpfz0KfrFBhq6/wMIbF9/pkM59CE25Mdbd+iUlBQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754661419; c=relaxed/relaxed;
+	bh=EooGbwPs+v+2bHAWjdJXN5r3lizWAhjM5/u1waLqsHs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CGMdlwVTEDJ+7ZQBqr8xsud1QF4Fh63GPWkEaGZP4HY/ab5WShB3Npywkvtgy80veKIa1H+7OIZb4uOALjntKv+oKtnnqLQl/l3EaCATaEYNV9s8rFCtPCLX4aUDtwVKlRddl+YmMC2zlQFBHO/ceSaqNtq+fQbpqwfwiumWBXbKbCIHHVWF9gzao167m7aQJHUe5A9JDCzJaPDeddhW0MAN1P7w+kQHd3XQmF+8dXBbHiVXgL9NphgLaEyBFrkjeiRp3lOdSFWcwrLP+oqEpTP1N8DsjrZkemSzmKzEOcL3/xis25AiRTXegEuioS7k8AOU/awF69OOdF5TvbQHvA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=aol.com; dkim=pass (2048-bit key; unprotected) header.d=aol.com header.i=@aol.com header.a=rsa-sha256 header.s=a2048 header.b=Ogi1eJzh; dkim-atps=neutral; spf=pass (client-ip=98.137.69.57; helo=sonic316-33.consmr.mail.gq1.yahoo.com; envelope-from=rubenru09@aol.com; receiver=lists.ozlabs.org) smtp.mailfrom=aol.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=aol.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=kwe5RroF;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=z+GyQF24;
+	dkim=pass (2048-bit key; unprotected) header.d=aol.com header.i=@aol.com header.a=rsa-sha256 header.s=a2048 header.b=Ogi1eJzh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.51; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=aol.com (client-ip=98.137.69.57; helo=sonic316-33.consmr.mail.gq1.yahoo.com; envelope-from=rubenru09@aol.com; receiver=lists.ozlabs.org)
+Received: from sonic316-33.consmr.mail.gq1.yahoo.com (sonic316-33.consmr.mail.gq1.yahoo.com [98.137.69.57])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bz4fL50Ydz2xHY
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Aug 2025 23:30:33 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1754659817; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=hep1b6AE477RjVcDGZUXoHkaTIIDTunHvYhalbdOwKMRBddWFV5v9AqUrcUacm+QVG
-    GdcEgyx8Xc16a+BByOwZK/9EjEFH3KMR1nRx3fgNott5tEEMRQdTepyvrTryHLpMQSW1
-    oKWsWPdEBq8xgjyY8iKNYlIslSfHaND4RW7YNMhl0mGCB8oX7t+SxujSxqK8xU26XPG2
-    NTJttXTG6euC0pDeNYg6PY0qtjdP9mFF2YEEcgXPUwx+AHuhXA42wZKz+3RftzhcNqk3
-    5TksXo3HonVcnB+es415Siz4XAKu8pyRBGpMLVTM3m4+AgtmD157SXBVzgt+zWynPdvw
-    a2Bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754659817;
-    s=strato-dkim-0002; d=strato.com;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=szxC9HtsLathAsiBUge4AOh28xZOX235WGFzuZVindU=;
-    b=TEPKajmrokiXkQrTkDvh1XHhFugEzFYRFw5tjJdsQyiSTU5r7rydeGgkMBhm/GdOgv
-    6Vo/qY9ePeL2Vd4A5Wummkp1uCYUtyaL6/fb4cgMjBiDwz0RYs8SZJsqN/s/jK1T4Wuc
-    7cmevKXyQasFpZ9cn4Ed3XruHfxdB9gBA4qbJ8D+Uu1gUZyBjEo20A0aoAs9SMRQtdft
-    js4tPmJFdgacpxApBFadJ0+OlxRiGZEmoGhaFs2fJjgvS6nG4Ze/NJviPEaeHXDJIU5D
-    jm710w41q8u7DhScoK4yVcpayvECIiyRs/DI4eBjD4/ddKx1NqaJ45DewbFqE71id2aj
-    M/Ww==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754659817;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=szxC9HtsLathAsiBUge4AOh28xZOX235WGFzuZVindU=;
-    b=kwe5RroF6dj2gY0kv8G7NJGTAKEciD3aR7a1GfyiLRT7s/qVYYsXD4FN6Oy6XehDuN
-    aqo+IbH+qpF5CRThSaR/uhm+A7I+RpAl96m3HS1+20QwISoBwpkwvo9bePKbqUR3o07T
-    OIMVXOgR5oUOTT2G9T+KBWvX+XXn5JTgofP8Tne1884Y5tlEo7lsMjxcgOIWG9ppZ4Zu
-    RrLeBxnVEizyZxYECSKOzHyOK/Goaf/FMnZyW2eK25963X70mM8m/f98R0j0qdNDGrTD
-    f/i11c8kk/clapJ33a0h46uK0zpJfLeV+2N9OzicGolV9AHGcE6fmKH/9XQlotl0BTEy
-    UurQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754659817;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
-    From:Subject:Sender;
-    bh=szxC9HtsLathAsiBUge4AOh28xZOX235WGFzuZVindU=;
-    b=z+GyQF246kRXw4tvalcO3ZXLlp2olBKyTxJdGcxCDPT115MQNBndbckfB1Ilpt8Qh2
-    waHMUp+CYlwG92H0VAAA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5m2s3nHCn4174Rhb0mYyao0unG2oENUO6LNlA=="
-Received: from smtpclient.apple
-    by smtp.strato.de (RZmta 52.1.2 AUTH)
-    with ESMTPSA id e6066c178DUG7Dn
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Fri, 8 Aug 2025 15:30:16 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bz5Dn66Qsz2xK7
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 Aug 2025 23:56:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1754661413; bh=EooGbwPs+v+2bHAWjdJXN5r3lizWAhjM5/u1waLqsHs=; h=Subject:From:To:Cc:Date:In-Reply-To:References:From:Subject:Reply-To; b=Ogi1eJzhGUwOf9X/GqpkzLThKNV4USY5M2pDKAteilyVPRfkFqMzyNoIdZlYUtGCukVkNNV4fJXh9df+8o2B6IR5JzBLbvt/TMK2YL664jyhUHr2KUCy8IxvIpFiKOj2pziiGy2874E3XqAYkoovf4irj9lZTR0UO4JCMBpTf7/DPO3UTR1RnagERtqc1Yju87+HD05/F+655eqZYZO/Ahf+Z8K9jOgboDkwlh5PCHWad+zTu2Ylu+DPhfLqeEB3mkil9Mlz5cPHywfKXWoEeCW+JVa/XvterKTf2Gtatm6mLPZRFU1MHfv2agJ365J58N+UWFja32C8QZ7oVKCddQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1754661413; bh=dHFPG5EgNxiaPKNgpgOppmuGpB87h6rrVPfsW/Lp9DP=; h=X-Sonic-MF:Subject:From:To:Date:From:Subject; b=cmCtS6zoCWvQSNjrz6GIaL1rqZe6FKkU2bGmy5/KsGnzDsTmdgPIX8udDe/ZbE5rBqg9kH4YpvYxA1Sg6UrKL4Wjumz46eVsDt1pVe3bZ44cSg/2Pa4yA8vyq0rHU+Ys2j8dHR+mJSdE0JAeOnc9mxHKPIFVAObMr+6qTeE+wlnll4t3De/NBl1x2tMx4kiwyjhoVrQ4AX4h0RdCeoI5LBzNi3lfmNQNu2hqkfUXjqY3ermrLsupfAhuPUumrRIziQGl61wWPBoC36OLclE+4UYLDsB6Qux1VXZ3jcxuDxBamEsPGFjjcZ+6zKYbyw6NRCgUWz+3mf+nZQqRzB7MMg==
+X-YMail-OSG: Nar9BHYVM1mgAR3RdcPkbl9hdOVAdZ9Nhrgz8rsVznhI9FhmhfQ6pyZ8nsC745o
+ Cb3wWMdIJeOJEnG4A2pFKvqsw6tNoHXKUfqCoplZUKgFEI5nlf14FRrtJL_l_zbJC0w_rnEyVFy_
+ 9a2rho4kF1NCsTkkTS64.peNg2S_U6T1h9OT7rAuP0A8xRbC6AlR295TXJL_THnfeXSgLxBUmtVt
+ 5tzWg4CXSBDVDePDpk4Jx71kuva6s5FCuHUAXygvW1aCAw29_aSZc63.tTtzHdPtfZ2.qPgJ3r.c
+ vNx8pcJ.S1B06BDGvm2LynSRV0ihpDgM4G8lTnQ4VMKMF.Z2oXqHd8zOeMaHn9dqa8.8vpx1_41k
+ qaDIb6HKMdAsXrks5yIoVrQuOrsCt6GMU9mcrEacTbqcxRbe99x6pJcTsjCzpFGWOy_VfBuyPbB7
+ Yr.xsl97h5MPiFFNY2MHVaU2nBXz_GbPTiMSQkJ_HMRXyAMhByk6_OrzL.3hakfnhwYx8Ksg2wlt
+ 1oN5J0Hbv.QAQADMA2khjKgrn7LXbAL8B96JmXYzkA7bnPrYlPDEPxciK8eFsF92MT6ggqqRfFQk
+ YMsE6BZqwNIQJCklrfk3SaQSkEzW8lQ.iAMvuVUyfT3aK4oOOMn8CmLX7uWJm4bMAjNMfan0nrMK
+ LagnsAk.B8jyj.LqaD7oNqcCMMvgpKj6bMq5AkmqP5vgwGst0jNv0qwj4P7xhNUzWSJm2Ledz88k
+ xAA028UNeT0CkOeOi1GrCNxFz0dNFHzgxYAHUHH4lwquxp6gB1x8d5xTHkuGmkgF3KIaBHgvFv7p
+ c419xzd8_Bw8FylAyCWxczOhqK4xD_wigxrFMc8JkTZ8dChigObwMuI3Ds4nxxnoQkmojO6l00DO
+ gXtnEW2V9uJZSj_O5lFvygYM9VkiCfVyb5NGg78i.A5EtiQwit2vPj4nxJnUTIER9w2ttD2Uxo7P
+ InNCo7BsqKWzD37yIFTy.Pgqi7gxlkFnShvhP3lC.amR10N44qe2F8gL537M81W4fujQNUE0e4Z1
+ W2CbJRxH5h..WC_vaaZc6RsO41pHc4qmIpjvGjgHOoAypTG22FJtGOcwUjGNnMjy0POuDGn8RNKr
+ M5CPWNe1aZiCeDyXyIGQ1_oI5wHeUlhplZaAgXKyC64Y6Cdg2WlZkc54vxI3913IwBvKgdH3kzjb
+ Vn.YIAhoBPHh44ZEfENRkasmdsW4WeCg6bq_4hJLv2Lwy3lG0LOkXk3.Ao19HRPRTYVLQK1wSWj0
+ dCEINsOw4g1gU.k.hxoiKbFs5hF9brGT24CyYQh4aIsHduSMNp0GbS4H.IX6WA9za0fsR.7LvlaW
+ av575ItzDn8qsRD4uXPnrJFjSE4Kd..pVlVU_wusT5xNv46521IKg423hoa1ie5KyjTH_2ShOn0C
+ dNI7sPTZ.x9LieyhaGlNT7igJo262uqFC_oZsMGgSVmLoiUcLwVnvG1c_AYeRmMNwRUmobEeQOAC
+ HCWhJIlb6Gzv5_5.iiBBfCvL5W6_5S1L0ztNsVwpnY.GqnmtwEpOuvSucJYhhsKprSR99z78zO5P
+ _l1hTYtYviMp6H8De3tlXi48J13DXALOdFiQplrFzu71jdPs8oh1N039zpTcd2v4MxnU6i2mYI0M
+ G79rLFaGam.Mw6o1yY98DIyBHqjD3df7l2aFBGEGpQ4B.OXgg0nfcvwp8zCDG97.2pICX3lWqAGS
+ wy_w0s7lYFgn3GiJrw51FQOKIP2XGwNCXCxwS_N8AD5qt_Arlxuxxc9nhDMzrVXWTewoh3XU.P2f
+ vd5G_rJ0v8P6UgiX6drz1e3JUrKJYteevHrCuxjMK2FyiBIL_loq8Beu_dEYg_JSqYEhS6l6bmaK
+ jxaFrepGV2qkn_3itt0hUgrpXTDIuSEuM5TYAPzsXFzu12_Kdixa2sejQkaAY_a4cBIdXNfaKP_B
+ KV7iiFld0gDT5HCCOUoEToR3W2PTVtThE2UazqAGpJU4UNzcYJ1rC5S5mj0n0hQaBXmQ24cNXdWs
+ cSOxr.bIsjbLCH1Q7pto_Qs24BPptQEBxd5UYNqYtxY4Z10v4DS7gz2bH8W0VZu_M_Bw0XcfPCLW
+ SW34tyBQatRhw27oEmc04aYubqlS0c.TJsxn1LTM86699Mb84itoWiMCfhW60MhEPtGl3guwStj2
+ 3HKT7IM1bOvHyvDKnpObmCIBSqCcO0lJ4bfacjLLKqbVgRb4JLqPGHXAx4DD079._GuE1hAdNysI
+ 2GJP4dtQbzSXPb1wfpvUxHwYbyVAlMD1lpa1T8IZpPmIO3Ova1uRh51BEwFfGewNMEr_xzPL61Ql
+ iovEAGE3GLl5doMB3QLJo
+X-Sonic-MF: <rubenru09@aol.com>
+X-Sonic-ID: 8be475bf-9be6-4332-bdbe-567bf5fee304
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.gq1.yahoo.com with HTTP; Fri, 8 Aug 2025 13:56:53 +0000
+Received: by hermes--production-ir2-858bd4ff7b-w59v5 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID ed84e5f4b215a994529c6b9786431bc1;
+          Fri, 08 Aug 2025 13:54:49 +0000 (UTC)
+Message-ID: <60ab8434533d214b53af15bb51d830e5f07d512f.camel@aol.com>
+Subject: Re: [PATCH] powerpc/xmon: replace sizeof calculations with
+ ARRAY_SIZE macro
+From: Ruben Wauters <rubenru09@aol.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Madhavan Srinivasan	
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+ Piggin	 <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	kernel-janitors@vger.kernel.org
+Date: Fri, 08 Aug 2025 14:54:45 +0100
+In-Reply-To: <8381a142d72f3cd0e92de4dac6acfc0241a87365.camel@aol.com>
+References: <20250719225225.2132-2-rubenru09.ref@aol.com>
+		 <20250719225225.2132-2-rubenru09@aol.com>
+		 <62aa5231-ed31-43e2-84b7-d6b6ec86e78d@csgroup.eu>
+	 <8381a142d72f3cd0e92de4dac6acfc0241a87365.camel@aol.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
+User-Agent: Evolution 3.56.2 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,123 +97,141 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (1.0)
-Subject: Re: radeon_fbdev_river_fbdev: failed to initialize framebuffer and setup emulation
-Date: Fri, 8 Aug 2025 15:30:05 +0200
-Message-Id: <DA926904-FB40-4826-B0F1-729DF181CE05@xenosoft.de>
-References: <CADnq5_PMu0tqCaGccdL2JDZuHqSb2Q2mgo12Cba-pDAL9bAmBw@mail.gmail.com>
-Cc: Mario Limonciello <superm1@kernel.org>,
- mad skateman <madskateman@gmail.com>, ville.syrjala@linux.intel.com,
- Jeff Johnson <quic_jjohnson@quicinc.com>,
- Darren Stevens <darren@stevens-zone.net>, hypexed@yahoo.com.au,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Christian Zigotzky <info@xenosoft.de>,
- =?utf-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
- Hans de Goede <hdegoede@redhat.com>, Wu Hoi Pok <wuhoipok@gmail.com>,
- amd-gfx@lists.freedesktop.org,
- Alexander Deucher <Alexander.Deucher@amd.com>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, bhelgaas@google.com,
- benato.denis96@gmail.com, Yijun_Shen@dell.com,
- David Perry <David.Perry@amd.com>, rafael@kernel.org,
- dri-devel@lists.freedesktop.org
-In-Reply-To: <CADnq5_PMu0tqCaGccdL2JDZuHqSb2Q2mgo12Cba-pDAL9bAmBw@mail.gmail.com>
-To: Alex Deucher <alexdeucher@gmail.com>
-X-Mailer: iPhone Mail (22G86)
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+MIME-Version: 1.0
+X-Mailer: WebService/1.1.24260 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-> On 08 August 2025 at 02:56 pm, Alex Deucher <alexdeucher@gmail.com> wrote :=
-
+On Thu, 2025-07-31 at 17:40 +0100, Ruben Wauters wrote:
+> On Wed, 2025-07-30 at 08:14 +0200, Christophe Leroy wrote:
+> >=20
+> >=20
+> > Le 20/07/2025 =C3=A0 00:43, Ruben Wauters a =C3=A9crit=C2=A0:
+> > > [Vous ne recevez pas souvent de courriers de rubenru09@aol.com.
+> > > D=C3=A9couvrez pourquoi ceci est important =C3=A0
+> > > https://aka.ms/LearnAboutSenderIdentification=C2=A0]
+> > >=20
+> > > The calculations for operand/opcode/macro numbers are done in an
+> > > identical manner to the already existing ARRAY_SIZE macro in
+> > > linux/array_size.h
+> > >=20
+> > > This patch replaces the sizeof calculations with the macro to
+> > > make
+> > > the
+> > > code cleaner and more immediately obvious what it is doing.
+> > >=20
+> > > Signed-off-by: Ruben Wauters <rubenru09@aol.com>
+> > > ---
+> > > =C2=A0 arch/powerpc/xmon/ppc-opc.c | 16 ++++++----------
+> >=20
+> > This file is mostly taken from binutils, refer commit 08d96e0b127e=20
+> > ("powerpc/xmon: Apply binutils changes to upgrade disassembly").
+> >=20
+> > I think your change should be done in binutils then backported to
+> > the
+> > kernel. The more we diverge from binutils the worse it is
 >=20
-> =EF=BB=BFOn Fri, Aug 8, 2025 at 7:48=E2=80=AFAM Christian Zigotzky
-> <chzigotzky@xenosoft.de> wrote:
->>=20
->>=20
->>=20
->>>> On 08 August 2025 um 01:23 pm, Mario Limonciello <superm1@kernel.org> w=
-rote:
->>>=20
->>> =EF=BB=BF
->>>=20
->>>> On 8/8/25 2:36 AM, Christian Zigotzky wrote:
->>>> On 07 August 2025 at 04:21 pm, Limonciello, Mario <Mario.Limonciello@am=
-d.com> wrote:
->>>> Does applying
->>>> https://github.com/torvalds/linux/commit/907a7a2e5bf40c6a359b2f6cc53d6f=
-dca04009e0
->>>> help?
->>>> - - -
->>>> Hello Mario,
->>>> Thanks a lot for your patch.
->>>> I tested it today but unfortunately it doesn=E2=80=99t solve the issue w=
-ith the Radeon framebuffer.
->>>> I have created two kernels with and without the drm-next-2025-07-30 upd=
-ates [1] because of the issue with the Radeon graphics framebuffer device #1=
-5. [2]
->>>> Download and further information: https://github.com/chzigotzky/kernels=
-/releases/tag/v6.17.0-alpha5
->>>> I have tested both kernels this week and I can definitely confirm, that=
- the issue is somewhere in the commit drm-next-2025-07-30 updates [1].
->>>> The Radeon graphics framebuffer doesn't work with the kernel with the d=
-rm-next-2025-07-30 updates [1]. Without these updates, the framebuffer works=
-.
->>>> I bisected yesterday. [2]
->>>> There are some other user reports:
->>>> - https://forum.hyperion-entertainment.com/viewtopic.php?p=3D60606#p606=
-06
->>>> - https://forum.hyperion-entertainment.com/viewtopic.php?p=3D60595#p605=
-95
->>>> They use other Radeon graphics chips.
->>>> @All
->>>> Please check the drm-next-2025-07-30 updates [1]
->>>> Thanks,
->>>> Christian
->>>> [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.=
-git/commit/?id=3D260f6f4fda93c8485c8037865c941b42b9cba5d2
->>>> [2] https://github.com/chzigotzky/kernels/issues/15
->>>=20
->>> I think there is a mistake in your bisect, which I notice from looking a=
-t your other user reports.
->>>=20
->>> The original commit you identified in your bisect and thus CC'ed me came=
- in 6.16-rc1.
->>>=20
->>> =E2=9D=AF git describe --contains 4d4c10f763d7808fbade28d83d237411603bca=
-05
->>> v6.16-rc1~50^2~19^2
->>>=20
->>> There absolutely was a regression for that was raised, but this was fixe=
-d in 6.16-rc3.
->>>=20
->>> =E2=9D=AF git describe --contains 907a7a2e5bf40c6a359b2f6cc53d6fdca04009=
-e0
->>> v6.16-rc3~13^2~1
->>>=20
->>> Users in your forums posts talk about 6.16 final working fine.  So I thi=
-nk that when you bisected you ran into multiple confounding issues and repli=
-cated in a similar fashion.  You should check every single bisect step to se=
-e if 4d4c10f763d7808fbade28d83d237411603bca05 is applied.  If it's applied b=
-ut 907a7a2e5bf40c6a359b2f6cc53d6fdca04009e0 is not applied in that step you s=
-hould apply 907a7a2e5bf40c6a359b2f6cc53d6fdca04009e0.
->>>=20
->>> Hopefully that will get you down to the real cause.
->>=20
->> Thanks for the hint. Unfortunately I don=E2=80=99t have more time for fig=
-uring out the issue.
+> While this is somewhat reasonable, the header (linux/array_size.h) is
+> linux specific, and is included through kernel.h
 >=20
-> Does this patch help?
-> https://patchwork.kernel.org/project/dri-devel/patch/20250805175752.690504=
--4-imre.deak@intel.com/
+> I can probably see if binutils has a similar header, or if they would
+> accept an equivalent header to make the file equivalent, but I'm
+> unsure
+> if they would
 >=20
-> Alex
+Hello, I have checked the binutils source, and have noticed that
+binutils already uses the ARRAY_SIZE macro, and this patch actually
+brings the kernel more in line with the equivalent file in binutils
+(opcodes/ppc-opc.c)
 
-Yes, it helps. The Radeon framebuffer works again.
+As such, I would like to request that the patch be applied as-is.
 
-Thank you=
+Thank you
 
+Ruben
+
+> Ruben
+>=20
+> > Christophe
+> >=20
+> >=20
+> > > =C2=A0 1 file changed, 6 insertions(+), 10 deletions(-)
+> > >=20
+> > > diff --git a/arch/powerpc/xmon/ppc-opc.c b/arch/powerpc/xmon/ppc-
+> > > opc.c
+> > > index 0774d711453e..de9b4236728c 100644
+> > > --- a/arch/powerpc/xmon/ppc-opc.c
+> > > +++ b/arch/powerpc/xmon/ppc-opc.c
+> > > @@ -954,8 +954,7 @@ const struct powerpc_operand
+> > > powerpc_operands[]
+> > > =3D
+> > > =C2=A0=C2=A0=C2=A0 { 0xff, 11, NULL, NULL, PPC_OPERAND_SIGNOPT },
+> > > =C2=A0 };
+> > >=20
+> > > -const unsigned int num_powerpc_operands =3D (sizeof
+> > > (powerpc_operands)
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 / sizeof
+> > > (powerpc_operands[0]));
+> > > +const unsigned int num_powerpc_operands =3D
+> > > ARRAY_SIZE(powerpc_operands);
+> > >=20
+> > > =C2=A0 /* The functions used to insert and extract complicated
+> > > operands.=C2=A0 */
+> > >=20
+> > > @@ -6968,9 +6967,8 @@ const struct powerpc_opcode
+> > > powerpc_opcodes[]
+> > > =3D {
+> > > =C2=A0 {"fcfidu.",=C2=A0=C2=A0=C2=A0 XRC(63,974,1),=C2=A0 XRA_MASK, P=
+OWER7|PPCA2,
+> > > PPCVLE,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 {FRT, FRB}},
+> > > =C2=A0 };
+> > >=20
+> > > -const int powerpc_num_opcodes =3D
+> > > -=C2=A0 sizeof (powerpc_opcodes) / sizeof (powerpc_opcodes[0]);
+> > > -
+> > > +const int powerpc_num_opcodes =3D ARRAY_SIZE(powerpc_opcodes);
+> > > +
+> > > =C2=A0 /* The VLE opcode table.
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0 The format of this opcode table is the same =
+as the main
+> > > opcode
+> > > table.=C2=A0 */
+> > > @@ -7207,9 +7205,8 @@ const struct powerpc_opcode vle_opcodes[] =3D
+> > > {
+> > > =C2=A0 {"se_bl",=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BD8(58,0,1),=C2=A0=C2=
+=A0=C2=A0 BD8_MASK,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 PPCVLE,
+> > > 0,=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 {B8}},
+> > > =C2=A0 };
+> > >=20
+> > > -const int vle_num_opcodes =3D
+> > > -=C2=A0 sizeof (vle_opcodes) / sizeof (vle_opcodes[0]);
+> > > -
+> > > +const int vle_num_opcodes =3D ARRAY_SIZE(vle_opcodes);
+> > > +
+> > > =C2=A0 /* The macro table.=C2=A0 This is only used by the assembler.=
+=C2=A0 */
+> > >=20
+> > > =C2=A0 /* The expressions of the form (-x ! 31) & (x | 31) have the
+> > > value 0
+> > > @@ -7276,5 +7273,4 @@ const struct powerpc_macro powerpc_macros[]
+> > > =3D
+> > > {
+> > > =C2=A0 {"e_clrlslwi",4, PPCVLE, "e_rlwinm %0,%1,%3,(%2)-(%3),31-
+> > > (%3)"},
+> > > =C2=A0 };
+> > >=20
+> > > -const int powerpc_num_macros =3D
+> > > -=C2=A0 sizeof (powerpc_macros) / sizeof (powerpc_macros[0]);
+> > > +const int powerpc_num_macros =3D ARRAY_SIZE(powerpc_macros);
+> > > --
+> > > 2.49.1
+> > >=20
 
