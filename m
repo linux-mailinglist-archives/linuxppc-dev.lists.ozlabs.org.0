@@ -1,60 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-10763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD685B1EC0B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 17:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9D9B1EC0C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 17:31:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bz7Kl55gkz2xpn;
-	Sat,  9 Aug 2025 01:31:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bz7Kt1BLNz2xck;
+	Sat,  9 Aug 2025 01:31:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754667083;
-	cv=none; b=nODvoV0LmHGQ/ZTXxGLivsM+8By/iOnd3rQ9wZDJo1bARp8lU7za9smb74BANSrEFJwqNuMeJFD+48C35zIddRL7Kcw7e0/0jM4CkVuvRfbIi0erOllXAGv3IasDbeequroFiRsBA6QPlPgMxS/S07f7I4G/gMLRrK/sPInLeDfOUaYi1xzjAh8FBz2tDai4iWBdMAFu/xCTUraL50c69fgog4DJXBo4Zz5gwHhQfZLZmwS2S9bUERHkqRSLCjPdBPepE29WRNgVBNZXoOXbzhymtWDlKPsFLDBE03ZxTc4ELXKJHmRhc+jnLu/g8Vak3u/MSCUsHsrfZ2SjzYJi1Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754667090;
+	cv=none; b=Iy48B6dyWcqDqpsWFk1ZrNAnW3I3QWhUToaQuVgc/4yDbuJsXJD6HLbYgZdytBz+8UHdb6QOKsXYLkA3biwllsbPWrVT49MVoIDABGtwARDjyKzxqSjmWUHr+AgzohZn/ipyc+ydtR2whR229wT50KRPBBmnIPPp0U4CiJCH75qH0XommDhQZBNPlhfVwK1edFUyh7ybjXvg5AJGjIXTSZrkYcNmAItAct/uV9nYMTNWv0fPVdoMAS0QQBveAdfkFb4JM6jhGYEOxquVqglKO4sQ6TuUv8N43nhQ1BiiHVplzpVxjFoRbwzCloKeqi2kZMrt4mMD93gG6jF616JMtg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754667083; c=relaxed/relaxed;
-	bh=efnbVXMC7ZOteleCFwefUBLp+DUBqOdfmhfJeBukDwY=;
+	t=1754667090; c=relaxed/relaxed;
+	bh=Pdv20NrVsDZ97emzHMMSxFmsRm0Ks6qauZuelLBM7Co=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=F0vpw+vDwUNahNo2+26j7bMvH6yuqgjMYQhh8Mp7cP07ATPBa81P1YoUqRYXLZSqQcm7smGKDUC9eLuGTt6CAT4xE/P6WK2kX1ODT9pEF0zVfEkfHuyrl+St83AFaYw8O8+tV19ubI2afreMl6eg+wKPbpR6dHiyba1iU9KFirDy+p9yZty8ry71GQocax7m9akR9yFfgYZJwJed9e20GWBeMTz8wqKvlM+XlldvpqUhDOO21LMLXmPPVxJb29QqMsb8bCerX9stiKqOARTqy/xEOEdtiGhP6H9RBocpCDnqeLkfjr74OY8oLUWJc9liZH9AJlYTrYx9nv6JeayESw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J5nfC4Lj; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=MOYCL2vFd5S1GfzOT91tTKnf+pwvV8SMaZXL4FtEugMC7EM+5gEgCEb+7hBYUltwsgCIxRWpgo4e8gzcetld1Xigxz2DrYpRjruFliHqBisciWslpLkPCH3+f4AV3Hxay3GvOKwqaXVBuYEA04ojObokWvUgM9kL13m94K4yHiG8uN6c1cIyeb2EblkqaVd4uIyDx8iTHWpy/vpOQWkS1AyNyQLNcmtWEwoODirMud//wjTAkFgvB7kvzXQCC3FSgODEYFM8oJg20p00tP5cSZLQhhcJe+jFk8w3SDSXZMeYsalxjWz6O8ZybJSVCHKfYZZYhQ9Yvz9PxRA0Rrw88w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RHdhpt+g; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J5nfC4Lj;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RHdhpt+g;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bz7Kk6SF8z2xHY
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Aug 2025 01:31:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bz7Ks0N50z2xHY
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Aug 2025 01:31:29 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 0174AA55AF9;
-	Fri,  8 Aug 2025 15:31:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8BCC4CEF7;
-	Fri,  8 Aug 2025 15:31:18 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 13D88A56A15;
+	Fri,  8 Aug 2025 15:31:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2074BC4CEF6;
+	Fri,  8 Aug 2025 15:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754667080;
-	bh=X1AhUCKCUNMHG7AhrYCMyABgRQsIbWAveiaYKrESRr4=;
+	s=k20201202; t=1754667086;
+	bh=8Iej5uQHq7Y2Cnb+h8iyLE18Z+x8JbvqwRaBoFb61fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J5nfC4Ljhus24QE2bfM1Dm2iP4Bk9knUapLab7O69YwOX/LnpRGMdjXVFCSEJxnaS
-	 MPS19Tylqt/p09uRBM6DuR8KeuRNBwFyChp7ewvL/MGur6KMri9PC+WleJypfwY9mf
-	 aoEtPOYSa05kB+atwvz3CIV7L6gGuxTWiFPpMLfOwtLkwfIOTKHGjM5baVT8f3HG65
-	 kS7YHzQcvE1R0yhbZxLecboaZdTW4BhJ8b6IQ2G7CcoMJH8IXWoA6qxrp2F4t6asNG
-	 /BLZop+d8PCJxRKBgT0hHFnVPuQB3X/dM0zWhckyXcWTwc+zf2tCPmma94+Iu4O6ij
-	 r0GF9GgpmilQg==
+	b=RHdhpt+gopgkSP0XLxV1Demn+maLZOl2nxsMUHkgFrnn2/ok8EdkBSV4G4QCfgWq2
+	 YANwyipbmZqsXwzUdsnooTqPXmX9bndG9Jdrcvi+5IkhiM048QukVwjLhfxSiW+CMa
+	 MYViN/dJPHLYtLe9YWbU3CnmG7PO0EtW8cCD2s6GP8SUBwGnFZHmVrQuzre5/rG3td
+	 NnenUGQynTp8LmDMToaQ2sxCbHLKdcQqZq1mTp9zSFtcuMRYC/CMPsC7ansXTh3tqu
+	 RWZ25Vsnwkh5Cs0FUTAJZtq3OF1VlogIAC588AEQ+wHfZoOIkuIPXSeXKIXDic+GzZ
+	 tvkOA9NAHQL3g==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
 Cc: Timothy Pearson <tpearson@raptorengineering.com>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mahesh@linux.ibm.com,
+	mpe@ellerman.id.au,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.16-6.6] powerpc/eeh: Make EEH driver device hotplug safe
-Date: Fri,  8 Aug 2025 11:30:51 -0400
-Message-Id: <20250808153054.1250675-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.16-5.10] PCI: pnv_php: Clean up allocated IRQs on unplug
+Date: Fri,  8 Aug 2025 11:30:54 -0400
+Message-Id: <20250808153054.1250675-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250808153054.1250675-1-sashal@kernel.org>
 References: <20250808153054.1250675-1-sashal@kernel.org>
@@ -82,310 +83,273 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Timothy Pearson <tpearson@raptorengineering.com>
 
-[ Upstream commit 1010b4c012b0d78dfb9d3132b49aa2ef024a07a7 ]
+[ Upstream commit 4668619092554e1b95c9a5ac2941ca47ba6d548a ]
 
-Multiple race conditions existed between the PCIe hotplug driver and the
-EEH driver, leading to a variety of kernel oopses of the same general
-nature:
+When the root of a nested PCIe bridge configuration is unplugged, the
+pnv_php driver leaked the allocated IRQ resources for the child bridges'
+hotplug event notifications, resulting in a panic.
 
-<pcie device unplug>
-<eeh driver trigger>
-<hotplug removal trigger>
-<pcie tree reconfiguration>
-<eeh recovery next step>
-<oops in EEH driver bus iteration loop>
+Fix this by walking all child buses and deallocating all its IRQ resources
+before calling pci_hp_remove_devices().
 
-A second class of oops is also seen when the underlying bus disappears
-during device recovery.
+Also modify the lifetime of the workqueue at struct pnv_php_slot::wq so
+that it is only destroyed in pnv_php_free_slot(), instead of
+pnv_php_disable_irq(). This is required since pnv_php_disable_irq() will
+now be called by workers triggered by hot unplug interrupts, so the
+workqueue needs to stay allocated.
 
-Refactor the EEH module to be PCI rescan and remove safe.  Also clean
-up a few minor formatting / readability issues.
+The abridged kernel panic that occurs without this patch is as follows:
 
+  WARNING: CPU: 0 PID: 687 at kernel/irq/msi.c:292 msi_device_data_release+0x6c/0x9c
+  CPU: 0 UID: 0 PID: 687 Comm: bash Not tainted 6.14.0-rc5+ #2
+  Call Trace:
+   msi_device_data_release+0x34/0x9c (unreliable)
+   release_nodes+0x64/0x13c
+   devres_release_all+0xc0/0x140
+   device_del+0x2d4/0x46c
+   pci_destroy_dev+0x5c/0x194
+   pci_hp_remove_devices+0x90/0x128
+   pci_hp_remove_devices+0x44/0x128
+   pnv_php_disable_slot+0x54/0xd4
+   power_write_file+0xf8/0x18c
+   pci_slot_attr_store+0x40/0x5c
+   sysfs_kf_write+0x64/0x78
+   kernfs_fop_write_iter+0x1b0/0x290
+   vfs_write+0x3bc/0x50c
+   ksys_write+0x84/0x140
+   system_call_exception+0x124/0x230
+   system_call_vectored_common+0x15c/0x2ec
+
+Signed-off-by: Shawn Anastasio <sanastasio@raptorengineering.com>
 Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+[bhelgaas: tidy comments]
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/1334208367.1359861.1752615503144.JavaMail.zimbra@raptorengineeringinc.com
+Link: https://patch.msgid.link/2013845045.1359852.1752615367790.JavaMail.zimbra@raptorengineeringinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-**YES**
+Based on my analysis of the commit, here is my assessment:
+
+**Backport Status: YES**
 
 This commit should be backported to stable kernel trees for the
 following reasons:
 
-## 1. **Critical Bug Fix for Race Conditions**
-The commit explicitly fixes "Multiple race conditions" between the PCIe
-hotplug driver and the EEH (Enhanced Error Handling) driver that lead to
-kernel oopses. These are serious kernel crashes that can cause system
-instability or complete system failure.
+1. **Fixes a Real Bug with Kernel Panic**: The commit explicitly fixes a
+   kernel panic (WARNING and crash) that occurs when unplugging nested
+   PCIe bridge configurations. The panic trace shows it happens in
+   `msi_device_data_release()` during hotplug operations, which is a
+   serious stability issue.
 
-## 2. **Clear Bug Symptoms Described**
-The commit message describes two classes of kernel oopses:
-- Race conditions during concurrent PCIe device unplug and EEH recovery
-  operations
-- Crashes when the underlying bus disappears during device recovery
+2. **Clear Resource Leak Fix**: The commit addresses a specific IRQ
+   resource leak where child bridge IRQ resources were not being
+   properly cleaned up during hot unplug operations. This is a real bug
+   that affects system stability and resource management.
 
-These are real-world stability issues that affect system reliability.
+3. **Small and Contained Fix**: The changes are well-contained within
+   the PowerNV PHP (PCI Hotplug) driver. The modifications include:
+   - Adding a new `disable_msi` parameter to `pnv_php_disable_irq()`
+   - Moving workqueue destruction to `pnv_php_free_slot()`
+   - Adding functions to recursively disable IRQs for child slots
+   - Re-enabling IRQ on slot enable for surprise hotplug support
 
-## 3. **Focused Fix with Clear Scope**
-The changes are focused on making the EEH driver "PCI rescan and remove
-safe" by properly coordinating locking around critical sections. The key
-changes include:
+4. **Meets Stable Criteria**:
+   - Fixes a real bug (kernel panic/crash)
+   - Is obviously correct - properly cleans up resources
+   - Has clear testing evidence (fixes the described panic)
+   - Size is reasonable (under 100 lines of actual changes)
+   - Doesn't introduce new features or architectural changes
 
-- Moving `pci_lock_rescan_remove()` calls to protect larger critical
-  sections in `eeh_handle_normal_event()` and
-  `eeh_handle_special_event()`
-- Removing scattered lock/unlock pairs from individual functions like
-  `eeh_pe_report_edev()` and `eeh_reset_device()`
-- Adding proper NULL checks (e.g., checking if `edev->pdev` exists
-  before dereferencing in `eeh_bridge_check_link()`)
-- Adding `*result = PCI_ERS_RESULT_DISCONNECT` when no device is found
+5. **Critical for PowerNV Platform Users**: This affects IBM PowerNV
+   platforms using PCIe hotplug functionality, where nested bridge
+   configurations can cause system crashes without this fix.
 
-## 4. **Minimal Risk of Regression**
-The changes are:
-- Confined to the PowerPC EEH subsystem
-- Primarily involve moving existing locking to broader scopes
-- Add defensive NULL checks
-- Don't introduce new features or change architecture
+6. **Well-Documented Problem**: The commit message provides a clear
+   description of the issue, including the kernel panic trace, making it
+   easy to verify the problem and solution.
 
-## 5. **Follows Stable Kernel Rules**
-This fix meets the stable kernel criteria:
-- Fixes a real bug (kernel oopses)
-- Has been tested (signed off by multiple maintainers)
-- Is self-contained to a specific subsystem
-- Doesn't add new features
-- Has clear bug symptoms that users experience
+The fix follows proper cleanup patterns by ensuring IRQ resources are
+freed before removing devices, and properly manages the lifetime of the
+workqueue to avoid use-after-free scenarios. This is exactly the type of
+bug fix that stable kernels should include to maintain system stability.
 
-## 6. **Critical for PowerPC Server Systems**
-EEH is crucial for PowerPC server systems' reliability, especially in
-environments with PCIe hotplug operations. The race conditions can lead
-to unexpected downtime in production systems.
+ drivers/pci/hotplug/pnv_php.c | 96 ++++++++++++++++++++++++++++-------
+ 1 file changed, 77 insertions(+), 19 deletions(-)
 
-The refactoring to consolidate the locking at higher levels (in the main
-event handlers) rather than scattered throughout the code makes the
-locking strategy clearer and reduces the chance of deadlocks or missed
-locking, which is a good defensive programming practice for stable
-kernels.
-
- arch/powerpc/kernel/eeh_driver.c | 48 +++++++++++++++++++++-----------
- arch/powerpc/kernel/eeh_pe.c     | 10 ++++---
- 2 files changed, 38 insertions(+), 20 deletions(-)
-
-diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index 7efe04c68f0f..dd50de91c438 100644
---- a/arch/powerpc/kernel/eeh_driver.c
-+++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -257,13 +257,12 @@ static void eeh_pe_report_edev(struct eeh_dev *edev, eeh_report_fn fn,
- 	struct pci_driver *driver;
- 	enum pci_ers_result new_result;
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index aaa8e0a2a893..5476c9e7760d 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -3,6 +3,7 @@
+  * PCI Hotplug Driver for PowerPC PowerNV platform.
+  *
+  * Copyright Gavin Shan, IBM Corporation 2016.
++ * Copyright (C) 2025 Raptor Engineering, LLC
+  */
  
--	pci_lock_rescan_remove();
- 	pdev = edev->pdev;
- 	if (pdev)
- 		get_device(&pdev->dev);
--	pci_unlock_rescan_remove();
- 	if (!pdev) {
- 		eeh_edev_info(edev, "no device");
-+		*result = PCI_ERS_RESULT_DISCONNECT;
- 		return;
- 	}
- 	device_lock(&pdev->dev);
-@@ -304,8 +303,9 @@ static void eeh_pe_report(const char *name, struct eeh_pe *root,
- 	struct eeh_dev *edev, *tmp;
+ #include <linux/bitfield.h>
+@@ -36,8 +37,10 @@ static void pnv_php_register(struct device_node *dn);
+ static void pnv_php_unregister_one(struct device_node *dn);
+ static void pnv_php_unregister(struct device_node *dn);
  
- 	pr_info("EEH: Beginning: '%s'\n", name);
--	eeh_for_each_pe(root, pe) eeh_pe_for_each_dev(pe, edev, tmp)
--		eeh_pe_report_edev(edev, fn, result);
-+	eeh_for_each_pe(root, pe)
-+		eeh_pe_for_each_dev(pe, edev, tmp)
-+			eeh_pe_report_edev(edev, fn, result);
- 	if (result)
- 		pr_info("EEH: Finished:'%s' with aggregate recovery state:'%s'\n",
- 			name, pci_ers_result_name(*result));
-@@ -383,6 +383,8 @@ static void eeh_dev_restore_state(struct eeh_dev *edev, void *userdata)
- 	if (!edev)
- 		return;
- 
-+	pci_lock_rescan_remove();
++static void pnv_php_enable_irq(struct pnv_php_slot *php_slot);
 +
- 	/*
- 	 * The content in the config space isn't saved because
- 	 * the blocked config space on some adapters. We have
-@@ -393,14 +395,19 @@ static void eeh_dev_restore_state(struct eeh_dev *edev, void *userdata)
- 		if (list_is_last(&edev->entry, &edev->pe->edevs))
- 			eeh_pe_restore_bars(edev->pe);
- 
-+		pci_unlock_rescan_remove();
- 		return;
+ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+-				bool disable_device)
++				bool disable_device, bool disable_msi)
+ {
+ 	struct pci_dev *pdev = php_slot->pdev;
+ 	u16 ctrl;
+@@ -53,19 +56,15 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 		php_slot->irq = 0;
  	}
  
- 	pdev = eeh_dev_to_pci_dev(edev);
--	if (!pdev)
-+	if (!pdev) {
-+		pci_unlock_rescan_remove();
- 		return;
+-	if (php_slot->wq) {
+-		destroy_workqueue(php_slot->wq);
+-		php_slot->wq = NULL;
+-	}
+-
+-	if (disable_device) {
++	if (disable_device || disable_msi) {
+ 		if (pdev->msix_enabled)
+ 			pci_disable_msix(pdev);
+ 		else if (pdev->msi_enabled)
+ 			pci_disable_msi(pdev);
 +	}
  
- 	pci_restore_state(pdev);
-+
-+	pci_unlock_rescan_remove();
++	if (disable_device)
+ 		pci_disable_device(pdev);
+-	}
  }
  
- /**
-@@ -647,9 +654,7 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
- 	if (any_passed || driver_eeh_aware || (pe->type & EEH_PE_VF)) {
- 		eeh_pe_dev_traverse(pe, eeh_rmv_device, rmv_data);
- 	} else {
--		pci_lock_rescan_remove();
- 		pci_hp_remove_devices(bus);
--		pci_unlock_rescan_remove();
- 	}
+ static void pnv_php_free_slot(struct kref *kref)
+@@ -74,7 +73,8 @@ static void pnv_php_free_slot(struct kref *kref)
+ 					struct pnv_php_slot, kref);
  
- 	/*
-@@ -665,8 +670,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
- 	if (rc)
- 		return rc;
+ 	WARN_ON(!list_empty(&php_slot->children));
+-	pnv_php_disable_irq(php_slot, false);
++	pnv_php_disable_irq(php_slot, false, false);
++	destroy_workqueue(php_slot->wq);
+ 	kfree(php_slot->name);
+ 	kfree(php_slot);
+ }
+@@ -588,8 +588,58 @@ static int pnv_php_reset_slot(struct hotplug_slot *slot, bool probe)
+ static int pnv_php_enable_slot(struct hotplug_slot *slot)
+ {
+ 	struct pnv_php_slot *php_slot = to_pnv_php_slot(slot);
++	u32 prop32;
++	int ret;
++
++	ret = pnv_php_enable(php_slot, true);
++	if (ret)
++		return ret;
++
++	/* (Re-)enable interrupt if the slot supports surprise hotplug */
++	ret = of_property_read_u32(php_slot->dn, "ibm,slot-surprise-pluggable",
++				   &prop32);
++	if (!ret && prop32)
++		pnv_php_enable_irq(php_slot);
  
--	pci_lock_rescan_remove();
--
- 	/* Restore PE */
- 	eeh_ops->configure_bridge(pe);
- 	eeh_pe_restore_bars(pe);
-@@ -674,7 +677,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
- 	/* Clear frozen state */
- 	rc = eeh_clear_pe_frozen_state(pe, false);
- 	if (rc) {
--		pci_unlock_rescan_remove();
- 		return rc;
- 	}
- 
-@@ -709,7 +711,6 @@ static int eeh_reset_device(struct eeh_pe *pe, struct pci_bus *bus,
- 	pe->tstamp = tstamp;
- 	pe->freeze_count = cnt;
- 
--	pci_unlock_rescan_remove();
- 	return 0;
+-	return pnv_php_enable(php_slot, true);
++	return 0;
++}
++
++/*
++ * Disable any hotplug interrupts for all slots on the provided bus, as well as
++ * all downstream slots in preparation for a hot unplug.
++ */
++static int pnv_php_disable_all_irqs(struct pci_bus *bus)
++{
++	struct pci_bus *child_bus;
++	struct pci_slot *slot;
++
++	/* First go down child buses */
++	list_for_each_entry(child_bus, &bus->children, node)
++		pnv_php_disable_all_irqs(child_bus);
++
++	/* Disable IRQs for all pnv_php slots on this bus */
++	list_for_each_entry(slot, &bus->slots, list) {
++		struct pnv_php_slot *php_slot = to_pnv_php_slot(slot->hotplug);
++
++		pnv_php_disable_irq(php_slot, false, true);
++	}
++
++	return 0;
++}
++
++/*
++ * Disable any hotplug interrupts for all downstream slots on the provided
++ * bus in preparation for a hot unplug.
++ */
++static int pnv_php_disable_all_downstream_irqs(struct pci_bus *bus)
++{
++	struct pci_bus *child_bus;
++
++	/* Go down child buses, recursively deactivating their IRQs */
++	list_for_each_entry(child_bus, &bus->children, node)
++		pnv_php_disable_all_irqs(child_bus);
++
++	return 0;
  }
  
-@@ -843,10 +844,13 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		{LIST_HEAD_INIT(rmv_data.removed_vf_list), 0};
- 	int devices = 0;
+ static int pnv_php_disable_slot(struct hotplug_slot *slot)
+@@ -606,6 +656,13 @@ static int pnv_php_disable_slot(struct hotplug_slot *slot)
+ 	    php_slot->state != PNV_PHP_STATE_REGISTERED)
+ 		return 0;
  
-+	pci_lock_rescan_remove();
++	/*
++	 * Free all IRQ resources from all child slots before remove.
++	 * Note that we do not disable the root slot IRQ here as that
++	 * would also deactivate the slot hot (re)plug interrupt!
++	 */
++	pnv_php_disable_all_downstream_irqs(php_slot->bus);
 +
- 	bus = eeh_pe_bus_get(pe);
- 	if (!bus) {
- 		pr_err("%s: Cannot find PCI bus for PHB#%x-PE#%x\n",
- 			__func__, pe->phb->global_number, pe->addr);
-+		pci_unlock_rescan_remove();
- 		return;
+ 	/* Remove all devices behind the slot */
+ 	pci_lock_rescan_remove();
+ 	pci_hp_remove_devices(php_slot->bus);
+@@ -674,6 +731,15 @@ static struct pnv_php_slot *pnv_php_alloc_slot(struct device_node *dn)
+ 		return NULL;
  	}
  
-@@ -1094,10 +1098,15 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
- 		eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
- 
--		pci_lock_rescan_remove();
--		pci_hp_remove_devices(bus);
--		pci_unlock_rescan_remove();
-+		bus = eeh_pe_bus_get(pe);
-+		if (bus)
-+			pci_hp_remove_devices(bus);
-+		else
-+			pr_err("%s: PCI bus for PHB#%x-PE#%x disappeared\n",
-+				__func__, pe->phb->global_number, pe->addr);
++	/* Allocate workqueue for this slot's interrupt handling */
++	php_slot->wq = alloc_workqueue("pciehp-%s", 0, 0, php_slot->name);
++	if (!php_slot->wq) {
++		SLOT_WARN(php_slot, "Cannot alloc workqueue\n");
++		kfree(php_slot->name);
++		kfree(php_slot);
++		return NULL;
++	}
 +
- 		/* The passed PE should no longer be used */
-+		pci_unlock_rescan_remove();
- 		return;
- 	}
+ 	if (dn->child && PCI_DN(dn->child))
+ 		php_slot->slot_no = PCI_SLOT(PCI_DN(dn->child)->devfn);
+ 	else
+@@ -870,14 +936,6 @@ static void pnv_php_init_irq(struct pnv_php_slot *php_slot, int irq)
+ 	u16 sts, ctrl;
+ 	int ret;
  
-@@ -1114,6 +1123,8 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 			eeh_clear_slot_attention(edev->pdev);
- 
- 	eeh_pe_state_clear(pe, EEH_PE_RECOVERING, true);
-+
-+	pci_unlock_rescan_remove();
- }
- 
- /**
-@@ -1132,6 +1143,7 @@ void eeh_handle_special_event(void)
- 	unsigned long flags;
- 	int rc;
- 
-+	pci_lock_rescan_remove();
- 
- 	do {
- 		rc = eeh_ops->next_error(&pe);
-@@ -1171,10 +1183,12 @@ void eeh_handle_special_event(void)
- 
- 			break;
- 		case EEH_NEXT_ERR_NONE:
-+			pci_unlock_rescan_remove();
- 			return;
- 		default:
- 			pr_warn("%s: Invalid value %d from next_error()\n",
- 				__func__, rc);
-+			pci_unlock_rescan_remove();
- 			return;
- 		}
- 
-@@ -1186,7 +1200,9 @@ void eeh_handle_special_event(void)
- 		if (rc == EEH_NEXT_ERR_FROZEN_PE ||
- 		    rc == EEH_NEXT_ERR_FENCED_PHB) {
- 			eeh_pe_state_mark(pe, EEH_PE_RECOVERING);
-+			pci_unlock_rescan_remove();
- 			eeh_handle_normal_event(pe);
-+			pci_lock_rescan_remove();
- 		} else {
- 			eeh_for_each_pe(pe, tmp_pe)
- 				eeh_pe_for_each_dev(tmp_pe, edev, tmp_edev)
-@@ -1199,7 +1215,6 @@ void eeh_handle_special_event(void)
- 				eeh_report_failure, NULL);
- 			eeh_set_channel_state(pe, pci_channel_io_perm_failure);
- 
--			pci_lock_rescan_remove();
- 			list_for_each_entry(hose, &hose_list, list_node) {
- 				phb_pe = eeh_phb_pe_get(hose);
- 				if (!phb_pe ||
-@@ -1218,7 +1233,6 @@ void eeh_handle_special_event(void)
- 				}
- 				pci_hp_remove_devices(bus);
- 			}
--			pci_unlock_rescan_remove();
- 		}
- 
- 		/*
-@@ -1228,4 +1242,6 @@ void eeh_handle_special_event(void)
- 		if (rc == EEH_NEXT_ERR_DEAD_IOC)
- 			break;
- 	} while (rc != EEH_NEXT_ERR_NONE);
-+
-+	pci_unlock_rescan_remove();
- }
-diff --git a/arch/powerpc/kernel/eeh_pe.c b/arch/powerpc/kernel/eeh_pe.c
-index d283d281d28e..e740101fadf3 100644
---- a/arch/powerpc/kernel/eeh_pe.c
-+++ b/arch/powerpc/kernel/eeh_pe.c
-@@ -671,10 +671,12 @@ static void eeh_bridge_check_link(struct eeh_dev *edev)
- 	eeh_ops->write_config(edev, cap + PCI_EXP_LNKCTL, 2, val);
- 
- 	/* Check link */
--	if (!edev->pdev->link_active_reporting) {
--		eeh_edev_dbg(edev, "No link reporting capability\n");
--		msleep(1000);
+-	/* Allocate workqueue */
+-	php_slot->wq = alloc_workqueue("pciehp-%s", 0, 0, php_slot->name);
+-	if (!php_slot->wq) {
+-		SLOT_WARN(php_slot, "Cannot alloc workqueue\n");
+-		pnv_php_disable_irq(php_slot, true);
 -		return;
-+	if (edev->pdev) {
-+		if (!edev->pdev->link_active_reporting) {
-+			eeh_edev_dbg(edev, "No link reporting capability\n");
-+			msleep(1000);
-+			return;
-+		}
+-	}
+-
+ 	/* Check PDC (Presence Detection Change) is broken or not */
+ 	ret = of_property_read_u32(php_slot->dn, "ibm,slot-broken-pdc",
+ 				   &broken_pdc);
+@@ -896,7 +954,7 @@ static void pnv_php_init_irq(struct pnv_php_slot *php_slot, int irq)
+ 	ret = request_irq(irq, pnv_php_interrupt, IRQF_SHARED,
+ 			  php_slot->name, php_slot);
+ 	if (ret) {
+-		pnv_php_disable_irq(php_slot, true);
++		pnv_php_disable_irq(php_slot, true, true);
+ 		SLOT_WARN(php_slot, "Error %d enabling IRQ %d\n", ret, irq);
+ 		return;
  	}
- 
- 	/* Wait the link is up until timeout (5s) */
 -- 
 2.39.5
 
