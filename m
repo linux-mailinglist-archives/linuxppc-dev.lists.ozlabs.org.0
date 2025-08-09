@@ -1,84 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-10772-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10776-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF3DB1EEEF
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 Aug 2025 21:35:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5E95B1F491
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 Aug 2025 14:33:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4bzDlp420Yz3bn8;
-	Sat,  9 Aug 2025 05:35:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4bzgLF60yFz3cYb;
+	Sat,  9 Aug 2025 22:33:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.54 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754681750;
-	cv=pass; b=Hn0pFfvPP+3aZi3p2ARVs1jcWf5ANhrspX7NSYHgd2qkdk0JDVaVXvpOZ6O26F8+JoUhAoBdFtonnMh2s1ddCK9lkpbveBe8mFKbys+WwDcDaADYptFi8FMChugK8gwKbEF5MV0a7zFTA+KAdTkfBUWwC/C8LJiVc0J7ZGP1750eIgMOboZG19pOAKXSHVEUJ6JSxfftCWIey0z/WCpazZltfmJOsIWdbWcYrdQZJAiqOEKgh6g7eNAZBgZJQz2t9SSaNj8CZaWZbqFz959lbfSqJduVLDWJ/FvKYFhb6ZXdKyyCj7CBY44TZokpkVCnwqH+sVjpvZbNy55Fs2oDag==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754681750; c=relaxed/relaxed;
-	bh=FuB74Lz56YvahQ6QzPBql1iyXkEpCYCdoAlKAXgnLOE=;
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=74.6.129.125
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754718835;
+	cv=none; b=XyKHOByEJBdHfrtWQB5YQzEqx3q0z38K+98KgmNV5Sp4SbcWjwTjWrfDs0E9O93uBmNECOtx6FdmgeJ7y5H7AgL8N2GBX1rclsqUgJOWWE8cmyGei34YV4CI9cD1Kec8x47Y0zg3fatwNnQpNaztYh34RDOfVWCOClWIJMbPnZ3uoD+C9iNno0+NO7+2Ts2ol1LtQ0B1TKsyjSiXiQSxorFksgOl3o2jl6VD92taoU6Mz51hsCRzQCQIB1UVMspsNId9JBnm+1RQltIBguOvRzbahVBmxJMCTB/fNpjNWn3mFNFEFDla0JORuB1X6ctb12CozPHIGDM/3Iijl7JbSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754718835; c=relaxed/relaxed;
+	bh=JfI2h9lqm8rkHs20h3EmDX/On5NLbq3Nk1Yt1E/4aZc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bYdDyOLbXPYUU9NntJZRYmrHtRZxDkBpShQA4+A4Z+rhvSkpyd9MoTHIrzEbFPTVndKCEhMH7HBPkk2JeamerfKNe1xZAkIQehVJlMD65lFAZe6D9rUspQ1jw9r6QKjsqYIIYOjjgcjL8JY2FgQSERMBc4t1Eo1ZR2SgfwpeBVCp+THeMkRon5Rp/oPLA2EHAVsnc34C+2wFHGBeNB7McSUft4UFKQdRUHMutBek5llL2S8YZrB5F0UqPEmCtkxfSScQ3GKOjTWZcN5/BFcKvWZK2O/gY5n24+sgKkyr78jNs9WFnLlUyCHqBkwrV7fvkOmZsyYGpOCX+ly7v64Esw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=rXEUVnZX; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=L7bf7ZgV; dkim-atps=neutral; spf=pass (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
+	 In-Reply-To:Content-Type; b=jaDbdhRT2OaIsQMRqQZLrdor+fSWFQHAqjLuXH5JHTvl6Mt7SVmEB82qnOvFLNo/Grov4PGQ/Dwl1LFFPjuhKgBrv0rWlH2Q1KV90LZjZVTztgKqGYtSanKvre9hMpK/Qdh34QCOv87r5qMYI+gqDy6nfb0iGXor3fDMbG8bwjwtSdFCU4Vm18r9DDopa6+qyhSDI+n1PXre46ZgXrmHP4gkznnEgvTLHYO8rsx+LsJ5yLfsf7GIV80adLZWxhDz++ZJ9r/qh17qRDkhnvD6Rf7X1j0uRjYPvJlXsKUm8jZBIHHJIW5cW/BfBcAZsfiW4Sji52bdjw+Y+H16FvJkXA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com.au; dkim=pass (2048-bit key; unprotected) header.d=yahoo.com.au header.i=@yahoo.com.au header.a=rsa-sha256 header.s=s2048 header.b=ehSUzmEq; dkim-atps=neutral; spf=pass (client-ip=74.6.129.125; helo=sonic309-15.consmr.mail.bf2.yahoo.com; envelope-from=hypexed@yahoo.com.au; receiver=lists.ozlabs.org) smtp.mailfrom=yahoo.com.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=rXEUVnZX;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=L7bf7ZgV;
+	dkim=pass (2048-bit key; unprotected) header.d=yahoo.com.au header.i=@yahoo.com.au header.a=rsa-sha256 header.s=s2048 header.b=ehSUzmEq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=yahoo.com.au (client-ip=74.6.129.125; helo=sonic309-15.consmr.mail.bf2.yahoo.com; envelope-from=hypexed@yahoo.com.au; receiver=lists.ozlabs.org)
+Received: from sonic309-15.consmr.mail.bf2.yahoo.com (sonic309-15.consmr.mail.bf2.yahoo.com [74.6.129.125])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4bzDll155Vz2yLB
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Aug 2025 05:35:45 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; t=1754681719; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=Em/tOlRn3neXSiKx7JzypFHPBdcqWvW5f9uTuGubZ/1teKbaT/vbaXYlOMoN0sW+Y+
-    M+f1U9bWI/LuKdoU5lEKEPAKRxWEIZgb5dImjZrq7zD+PqhJOT+Z+5VestjThe5Vg0qj
-    VtEm9Qra2SI7e0rQcVvPbLD3MaLOA8t+IIRswpl3soC1sIUBZvUHUdsWhn+W8+PVff/I
-    O12QnDWq0M6DP/g2433wBo4iP+D3aFfuRB6ijJZBlthjvtr2mnm+L6ZTELgGqLRR8YhQ
-    CW+3U+ijWcgSDIujZ9nZt8yBbVVhnxQ7cojQfkm9UI2sEF4SBgasdcQ5Qxa+GHF2YO1y
-    D/bA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754681719;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=FuB74Lz56YvahQ6QzPBql1iyXkEpCYCdoAlKAXgnLOE=;
-    b=VG8JehbC+uTxOziuiB/ljATZvMI+noI+rDdNR5utjJbCYjLMVvo1UBz9zyquSJjmyR
-    4v0s1zuqyS9Yf8gZQlezRYFDS1UZqEAXLyav+2mf8u8a+9HZ6c535oiFKr7CxQOFg+xn
-    n0w7QYkAoN8tQIGnzh7JQHT1cEhvtzU7/4wGHg/+qgZV96x+oZ9Smw9BUHhM1nmYjC65
-    nSKz9Nz2fQKXw4+KoX+1gegSQG3nNc0Vurftdxotp+2tRignLThhdT2ECxoKdPAt83Lk
-    1g03S3pkVvD7+GlLz+WHQ4XlNN1Jfj79QUTKfGXsiE9OK/Sp6UpxMryCeuWJgCFFPMtg
-    9TlQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754681719;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=FuB74Lz56YvahQ6QzPBql1iyXkEpCYCdoAlKAXgnLOE=;
-    b=rXEUVnZX/kxdUDYH7yZpwwLDFOHfiuEEwRpC84qb2VSbcKnf/AIywf02drxTxJNn72
-    9esMpnuc4x1Ka9FdyBDEZFBEqnXsk0hUQ42O12aExFt+zaAcURNdLrHV/5NxHsFjHNOu
-    63fjqEXUNHP+IwYwfVymOT+FCf4gJAUB9ux3b8NeQInE0c+F1RqKsbzMQ5MtsqwBglqQ
-    58ohMHaUuQtGzMJ3Sq4tC88U6nz1Z4fJe53HgJyyjUaZcBuamyS5Zup1gP5zxn9JplTr
-    6QQAquMKjNsioL9xI+DVYmdAjENWDVOZEsngv+s61gxUDPS0AotwVn+Rnp0MdfXtTWuG
-    Gp4w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754681719;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=FuB74Lz56YvahQ6QzPBql1iyXkEpCYCdoAlKAXgnLOE=;
-    b=L7bf7ZgVWXTi25wucNloXI3n+pbKcP3W0izDmhoQG5CVLjlSkbeqO85wWuf+PPvvXh
-    wS4vYy7TtRMOxn8Q6nDg==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6P1rfO5KiO55fErqkemEbq79cbXtVWCxg7cN+9zD89Zv+intOJE/PA=="
-Received: from [IPV6:2001:16b8:5014:2500:4e12:bd2f:a193:bf30]
-    by smtp.strato.de (RZmta 52.1.2 AUTH)
-    with ESMTPSA id e6066c178JZH7lV
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Fri, 8 Aug 2025 21:35:17 +0200 (CEST)
-Message-ID: <0ea5105b-f96f-4330-a82b-c0c1f35f7b38@xenosoft.de>
-Date: Fri, 8 Aug 2025 21:38:00 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4bzVSw4H4bz30Vl
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 Aug 2025 15:53:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com.au; s=s2048; t=1754718828; bh=JfI2h9lqm8rkHs20h3EmDX/On5NLbq3Nk1Yt1E/4aZc=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=ehSUzmEqCVJwnLo0u23cBqM1AI9md67x8gSg/qc7f5lZPhkusYi65fI0bwoyo12w7rao71e0U0hNEJCoJxkTvYH/j7Ukc2YmbzQ9RIKeLii9YiBOb6UWA95xgR5zwI/TYygNghBmXd5yWryTXJa2eNaHt4hA5mvop2vZX3waSEOcGL76e9j7oEWzYEbetjkasTEFuPUKArKCF9VBoiWeAwsr0ap7d4DAN/RNILDdQP2dPjOjXQSowRXJbvikGYQe1gUydnb6ZCCAO+E334UBTCx7E0Fr7gUoSLwniefHyD05X9VBOwGRJtTS6lBFWguzYgMlS5Y8Sh65hPkTsG6yvA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1754718828; bh=rZaTEHO5BHp9sATZxIUV1pNTfXPyk90RcKLJK+APZqz=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=dH15756p6TxWJci1OFhnSpyGqZ+lxTVmsmycGMEfDj5IR2Nq/xb0mKXfhdmOFHkl/y93LenXlptAP4kNuGBnmNlSmjurgdAc9TahYqhIq9TF/uaVb4H6JXQNAxGxJ3N6AFYIXSo16Aq9xXqDHvesHRZXLOFnHtgfPwRLMdAX60XWkITXppfrX2wzoxHOvQY+7hbfgGLK8QW9NhzTgyoYygk74AIUAOr8Zd0sSYH0OIP36MVjDCzHvvULDPFwBz5jB/JonW8moI5nXuVit6J9aXrr4TnNeAEqOF0hXIzA6w4G6pRh9BaUo1dFmJTtLjUOgS9c5Wpp39b95UrN+4p6eQ==
+X-YMail-OSG: 133YHlYVM1l0xjf3Jsw2H88x1o4fUyyD9MiYGuDi1e6ECLnEZkWammttJ7auS59
+ liDtr01.i8tqO8ediBr5Cdklcz8H7UZCiNlMngECD7sjVvVV6jqwGCJ96_q3OpXXjGxkde13WxGd
+ 4dhfBBvgQoWe_cwokShBlJCF4haOIoEpK7v5.rrsIabWFz3PixHWdGoWjoZl_U_V74DDIFEtaeDS
+ P_6N3QWF9BwfJkHA0kzVk6LWXNgN7dR9ZRSHZ7mpexRPt6A0NIKdnYFR3EHUY4Xirhx11Pk8wAIp
+ cgmhk36KpU8RgDkaLkdzIX0BnCXW5o1_ZMgpl_d3ienf45SkxjZvzkX1cGU_R5Y10hv9qHsULm5z
+ 78bEozTS7yAzkNlyBowzaH1tFA1ZYY600dcn1L1fHvIIH3OddnxBNrzyhUWX381vu7s70bWeMXmN
+ ATFJW4sIfw6rroAs6FH2TjB5TgZ6YufSeGYmfOMKZ.yfp7VOY5EvaSNzS2qvxHipVlC1J8bF8r5I
+ 8Co06W01UG32xgluZJxjy.FoHvVOYg0isjmpLfdG156Vg4nGQ0mWhg1w9E9skUJGGvfpDWvu4w.s
+ V20cqIKRI8Sw9BLpTwi8Z.FWJuZCJm.IFPimiaD0SHrQq2gGscO2VEVpJ1l.vZhcAef_mPywlPvM
+ JwOtyD7457LYh9COKpGfmUbB2IwusbmPP063WerMxB5MkgEQT626TNIutfxLcKfcpF5zOhU46D2M
+ Q0KBv3.CtrG1kFTYCqa.D_uGKC14LHw.irWJe_Y6H2FvjBxypsCIt7l_13qXzlHKku5zx_7oz1Ij
+ M6Fxz2D85m7hwQ3xqWnhEBGAuAm52ajVLp9doQPWZt1YoLhw7wIEocmoONXN4DG6UKbIy7WzXHRL
+ FDRL1izqGJSxH71SMLB1Tn5RPZMGrK2kdJaiO.GIbk3LMhtR5QOKQ5cEmHFVydoQVEF.sOQu9MAe
+ bvI9mvfGSZFdZnh7RrWwsPfCXekp_rdB8n03YCtg_D8jY7mgDiuAfvdJXlg1FS95ObVZF4Thrko9
+ f.wuCllGQHkWX.44DRlvB32d8HjCTIYcPRkeQqzgi3KcXXjldi1gdqs9kdaOkmxC48G_uSkKc690
+ _LOQT.3J3h3LL.axSPbYXe8CW1RUOfZ40U8wqY26UnncLGMe8Zs2vRV7tX9SlYTeMfphoKgkGevL
+ FTh6NHfZGIGct41RYREAXduloa0oEtAlB7Rxxi5BVLyENfUxrdKFs2l1tm8lPDRjvzl7kSeNwpLP
+ tOfQi04qgsm7zOSzkKgJVc9aZzvklZ.H7shJ4BTafzmDt_04gUPD.nZBYSjricE7aCY07Kn8fYMa
+ 09gIHOKVOUKr.3G5JhSqc5PPtl5FxIN4eKj0nv3qcRIsR.U3VNIhsgP3.SfWOwYJTmDUfcn.RLPD
+ huHWnXLRI73K2ld4eH5.R.DQWqW7813z4.8R6cfG7QaD09h3G6ucPTUakD31evgCtQCI3jm1IP02
+ He8cU7HUrvp3uS7vxtxGi.mjaN5mdnqRFSz0lEUkXGTaRZvPworF3znPl8QLEBcIhJasnd_OrbNZ
+ t4Txd2_NqVbUdmmeEQjvufa7tIFzW2khIFQY.a38TE1C8ClGRfxHxptXt2hgy.nTuI1hkuK7TILH
+ KFV7MyrIr4PRDghj9mYKsQykCeei6H1GMntCJ83bSXY8x70N.21y6_gyh2qv3y4d5Ym.n3FCrdx7
+ vdQ9l4OVXo_e6vrYsCNi8lQY30rJ9ofB3swUU4n5rCEVfLjelcZPxiPEs4.zjzNU0zEXdL8flK0W
+ JldWi9Tl_w.Y_E4D_J0rVI9K1okoqzyMzgOCb1rmVkuPu02ENZ2Fl_7QLGC6lakbd.HxXo6bJdpo
+ srVPXBVAP0FBESXGnfus_3mK39tHQC1JvF1Oj.LtZpCBxtYvebQ_Bmjcq9w_CeRBNAfH4eODc2rz
+ 3lohLGDAtNQN5nymlM74F9XH57APkNnCo_PtI_TFi8y77AxfzFcVrRQDBZQtqiKywrCLasXEAPUA
+ mGICEzAcewjPqVMTMcAheKRI6rhovt1mOySaKNJ8yYFwbzASBBRbRhBG709yKgrIALW725LYf9Jl
+ 0VdqeIdTZvG4Cv5fb22eVsziQ5MCsytNhj_2jrnkDoalFYr5EPEbfx5Nfp70Fv.FhWJOBSEFBhav
+ HRJ3eTt._PIE4WmyZKxA06wPrRPyK57uIFtr.YtEkQYUklb.KhLHYwSnFyvWG1oTjQ7aFgaaHkN9
+ KJBtUsuURXSA2JBv3OCZUeDnvQO60PovO89KOh2DHull.8JwzxAEWBGb7o84mI3F9I2LL5hAHegZ
+ FRrjmLYuHILaEh5mgsBpwMv7F
+X-Sonic-MF: <hypexed@yahoo.com.au>
+X-Sonic-ID: 7548a160-9315-4ae6-812b-d94c9ff24bdd
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.bf2.yahoo.com with HTTP; Sat, 9 Aug 2025 05:53:48 +0000
+Received: by hermes--production-gq1-74d64bb7d7-lwch7 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID e96f6ae1e1972342cf65b1849a2d4637;
+          Sat, 09 Aug 2025 05:53:44 +0000 (UTC)
+Message-ID: <ab59a5ec-4263-4d73-bb20-5752c65af50f@yahoo.com.au>
+Date: Sat, 9 Aug 2025 15:53:37 +1000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,7 +85,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: radeon_fbdev_river_fbdev: failed to initialize framebuffer and
  setup emulation
-To: Damien Stewart <hypexed@yahoo.com.au>,
+To: Christian Zigotzky <chzigotzky@xenosoft.de>,
  Alex Deucher <alexdeucher@gmail.com>
 Cc: ville.syrjala@linux.intel.com, Jeff Johnson <quic_jjohnson@quicinc.com>,
  mad skateman <madskateman@gmail.com>,
@@ -114,34 +104,39 @@ References: <CADnq5_PUi_2+kDYX8R_eanNF4iYN79MdXJ_PLcQbZKi6e4S8tg@mail.gmail.com>
  <CADnq5_OpJdbc4YKtV-9+5JyeKyqd4+irhT6OtFq_K9KJF24VSQ@mail.gmail.com>
  <48b61c14-f83d-4e4a-b5d3-857099058eda@xenosoft.de>
  <4bab7915-9739-4aea-be67-5ea122de1f5c@yahoo.com.au>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-In-Reply-To: <4bab7915-9739-4aea-be67-5ea122de1f5c@yahoo.com.au>
+ <0ea5105b-f96f-4330-a82b-c0c1f35f7b38@xenosoft.de>
+Content-Language: en-US
+From: Damien Stewart <hypexed@yahoo.com.au>
+In-Reply-To: <0ea5105b-f96f-4330-a82b-c0c1f35f7b38@xenosoft.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+X-Mailer: WebService/1.1.24260 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 08 August 2025 at 06:01 pm, Damien Stewart wrote:
-> On 5/8/25 2:05 am, Christian Zigotzky wrote:
->>
->> @Hypex
->> Could you please attach your full dmesg output? 
-> 
-> Hi. Sorry just found this. Do you still need a dmesg? I collected a few 
-> and can provide one for any broken version.
-> 
-> 
+On 9/8/25 5:38 am, Christian Zigotzky wrote:
+> Hi Damien,
+>
+> Never mind. There is a patch [1]. The issue is solved. (Thanks to Alex)
+>
+> Cheers,
+> Christian
+>
+> [1] 
+> https://github.com/chzigotzky/kernels/blob/main/patches/v2-3-3-drm-radeon-Pass-along-the-format-info-from-.fb_create-to-drm_helper_mode_fill_fb_struct.diff
 
-Hi Damien,
+Okay that's good. Patch looks simple given the trouble this issue 
+caused. I actually found the email on the forums when following the 
+links and noticed an at me. I do obviously receive the emails. But don't 
+always read them all and tend to check the forum for updates.
 
-Never mind. There is a patch [1]. The issue is solved. (Thanks to Alex)
 
-Cheers,
-Christian
+-- 
+My regards,
 
-[1] 
-https://github.com/chzigotzky/kernels/blob/main/patches/v2-3-3-drm-radeon-Pass-along-the-format-info-from-.fb_create-to-drm_helper_mode_fill_fb_struct.diff
+Damien Stewart.
+
 
