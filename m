@@ -1,108 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-10784-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10785-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC42B1FA0D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Aug 2025 14:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 112FFB1FB0C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 Aug 2025 18:47:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c0Hr75ZBxz3cZL;
-	Sun, 10 Aug 2025 22:58:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c0Nwv5FJMz3cZB;
+	Mon, 11 Aug 2025 02:47:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::129"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754830695;
-	cv=none; b=kyZ/7J4QtmaTS6n0LgVHKTu+6veRR9I+hJceSTMVsaoH9XXiCI+BcN6j+Ea5JmvYNt94zcjvP2AU/QoPSDpnTGaAOZtKAFy3kUM723y62kR8DV2RCxB0Qi5Q390GUjANnsSf3SDeY/WERoxQtz3d+kagKYqrI2NqEj4u/tiIG7tW//jZJA5JlT6jTY/u420gRA2vFCRNssIzJycjuES1R6V/WZJb3AREiJPONJK7BK28BhfJjHfpIzN9KkCJ/yrHLw3C0sCwv3+b82pEaIFbF4dHckpbHwP6KJTx73bb6WeiufYYnubE1ptTyJMXi5dEs2dnB5ivk8Qx3lU11+zizQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754830695; c=relaxed/relaxed;
-	bh=qPUEdIdCRmt+MYJsQtBbxjY1GnPuX9CU1RwbVybqcDU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fatyDZTOnotlFD+yIZc66m7HaRqgs4EsBukGcRx2iBoq8yLg10ImiJig2ihsOx+PTnpv7bFqwgeuhwyK4evhV9v09txn9WYXHwgnxraEiAUPpz7/TbmLvhKIMBUWEdi6rqLTCFe/LLw3CqzGJCMHB4csNdngXSdPrBgDGS70OY6FHhcHsi3ItDwoXaqX4IbpZ0CIlQZKMt+P5lSsrxklmacnsCJkMS6mSH72iYFIgoMqN1qBU/IwF4V7ZnNQ6rApXAtecLl0VxRhNnEsJPJ9dQoFVLJlur31nouaV9ohTScahdXpKHkU6fAw1si1HWwwJqNcyuhEBF8tVNEn3dqhIA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gfYSgA4/; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.163 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754844463;
+	cv=pass; b=A9rxtmYhQ1CIUcNqSt4Ggv+zsztoizkthzgwz5kAdYCNdlhrZpgX6yDCaV0Nnza/CKrCoJKyT8G+/DC83J9cWRIo/hzP3N4RDg5LZgFvOMgQRw8Q27cTFslaSaKM9aek7hZ2JPqX+2wUMA3vQXh2WgQFyopPNagKN+YpfR2eCHGB3VkWO08UYrTrMjBQpzT35nyziuxhk4IbugZOdpPBfcXzSLzf0WY5Gw6vvG71plYfTE7uJXZuhFc0ku6RpZEumsYLDJ+72CiFicwEConFrzJIoDUi6yH0r/zNZZ1mYrk9y2YxznQHFjoDDOuC2dKx8nB+qNp5tItpieANE6yTTg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754844463; c=relaxed/relaxed;
+	bh=K8pt8WbN3XbRW6chuXyhwg2rF9l+Wdgb+Ie3sXEsGx4=;
+	h=Content-Type:From:Mime-Version:Date:Subject:Message-Id:Cc:To; b=DynYd8Ha2g/HhctniwOmHMywx1g3SeyEuyZnqhVZQmEEoEIUrrVqF6PBsDokME/82YAB68aG/+S1d/4pzlmB6v739r8/EDsb8aVRCuF+QCMrhcBIXbCGr/+/aozDm0LqsBpRDmK0wbFH71kK3hmlHabJK2sr91QrQYfnAzTsm58uBEkQmhKmXmvdY9VAyodLg/pUAr/68GskmYlp5WOmy265QtSLuFOk1MeuIgTP5MgS6tao1nFwKhW3+CrmzTjPe1zU7Th2Y/hMZZLChLHTNAYWIvOkV5PfIpyhZj+VTFnpySQwfdOAM/dosqKCXaafQSLMN8UJU7sHjZxLnCqjMA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=i07nSyft; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=ZdyWeubP; dkim-atps=neutral; spf=pass (client-ip=81.169.146.163; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p00-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gfYSgA4/;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=i07nSyft;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=ZdyWeubP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.163; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.163])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c0Hr669z0z3cYy
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Aug 2025 22:58:14 +1000 (AEST)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-55b978c61acso3355000e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 Aug 2025 05:58:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754830692; x=1755435492; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qPUEdIdCRmt+MYJsQtBbxjY1GnPuX9CU1RwbVybqcDU=;
-        b=gfYSgA4/jHOlQBV/+EK1Off11pEgQBKR8QYATgaUWuMeka4Tx0NK9gE1gZ3Z8fBYgV
-         YxUOMy/1Cg0brcrPlXeR4Uv7hvjhLBX8iHT72p/Gigo6JB2+L8Ahw4gDdLerQM7MCbK4
-         LD3wZxulXy5zhx6hZ88ARr4fsir0/t1oKTaBaNfEJY63cNckbsWNNdh96QBgXAygb+gZ
-         BCBxgyeto/gUmYJJLBHHuOIv+5Km1rog4RCOXy+lWc/QAmj6K0XyJfVLf/mkWbE8aKG7
-         0qy0lCvgcUiqMLQhTLGpXhxYWNdEryxK/vu2UfOjHLuQC8sJ0BG2r+nbFyKDDzg5ydT5
-         QGyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754830692; x=1755435492;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qPUEdIdCRmt+MYJsQtBbxjY1GnPuX9CU1RwbVybqcDU=;
-        b=jkbcoI20YHDzDk8u3Jo7DtMhsw6iQDCWYvY+HiQTnHZuPil6XoFIDQeYzMNAUM/78K
-         IAjxePdpoqBTeUji3h8P6sRPBtz9TI/CpIcSUh8LbLkZfWpNmoLFz/899RqWb4St+oxb
-         yzpiBmzx0PuE1zLf4RRMFUHCCenBeTlYJp4Rla0W29gayLaW4EqYTb6zHQObr8gOd66B
-         m3sBfFe3ZPmhRb8bUq+uGBgOCf0k3uYXQlIp2yDcelyv849c2tR4rc1/7AltZ7t/gV90
-         /zhDZVNqvN6F7Y1DqG/gLcQXYbjkJxZrrdP3Ske0WkX+rXB25zgfMdxO2VWhpETAIOTW
-         MvNA==
-X-Forwarded-Encrypted: i=1; AJvYcCWuxccEF8vRz38cGy7CLQzeNSsoRx/B9rxjoof8EYK+PhBtEHWPxuy1elvaaUup6a8EBClgQn4ls45ruCo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzT0KB6LvqE6h1vPXgqNVzL16zW+5SXrdEWDYHegRk5p38nRo54
-	fjmPDsjFLUhRSgCUTOVmp6X4e5nNtbvaMw7oIkeC04cn1xAVwMNBWuUl
-X-Gm-Gg: ASbGnctsHdN14eBscb34OG02gHP/o0C403dIXvHYD+kBC4Ofyn5FCNXLX3ywRie5DHW
-	NQFI8a1IJilfkOpfdCe7GCRX04Ia/P6DSXTomWXCc1AX8ddtjbjw3Ob5ZUkCeB7wxxqxzyMhZjd
-	rWEiBSpml1LJRxKSJB8JJPdAmVC1cicNwIGp5HY/3WxKXI6/VdG+MT6nXSwU2qJ+h+vG6wEHUGL
-	QvDCL9RBLedaM+1imTOajKlfqjFFSJZSBZvVX/I42uEgYIpED0f8hHeKnPPXc0MkGLYMwF+0yJt
-	JXheO9jK2sSRW729YEbN9RQb7V3P/0nLp6LXrc8IrBZauZlT20We4CTzxV1DhUzR1U1eMCbBMVR
-	flv1YRSLLe2AcN1TIz/u82h7RbN9gia63UNHo0g==
-X-Google-Smtp-Source: AGHT+IFrIl3eJCoqqHt0ANltzYIq2yL9Jka0mZA2tOEeoGsTnUPJed1OxDGIgQlZCm+SP4loyYZbRA==
-X-Received: by 2002:a05:6512:3502:b0:55b:732d:931 with SMTP id 2adb3069b0e04-55cc00b14c8mr2560689e87.12.1754830691289;
-        Sun, 10 Aug 2025 05:58:11 -0700 (PDT)
-Received: from localhost.localdomain ([2a03:32c0:2e:37dd:bfc4:9fdc:ddc6:5962])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-55b88c9908esm3804561e87.76.2025.08.10.05.58.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Aug 2025 05:58:10 -0700 (PDT)
-From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-To: ryabinin.a.a@gmail.com,
-	christophe.leroy@csgroup.eu,
-	bhe@redhat.com,
-	hca@linux.ibm.com,
-	andreyknvl@gmail.com,
-	akpm@linux-foundation.org,
-	zhangqing@loongson.cn,
-	chenhuacai@loongson.cn,
-	davidgow@google.com,
-	glider@google.com,
-	dvyukov@google.com,
-	alexghiti@rivosinc.com
-Cc: alex@ghiti.fr,
-	agordeev@linux.ibm.com,
-	vincenzo.frascino@arm.com,
-	elver@google.com,
-	kasan-dev@googlegroups.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-mm@kvack.org,
-	snovitoll@gmail.com
-Subject: [PATCH v6 2/2] kasan: call kasan_init_generic in kasan_init
-Date: Sun, 10 Aug 2025 17:57:46 +0500
-Message-Id: <20250810125746.1105476-3-snovitoll@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250810125746.1105476-1-snovitoll@gmail.com>
-References: <20250810125746.1105476-1-snovitoll@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c0Nwr1S2Xz3cZ8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 02:47:37 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1754844446; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=VXz0zV/10okRV7NZRFQ3L4TxH1I4T+qVPDVojbrQwnzr6r+upDmrcl3f2ODdv71ryc
+    ICw2UBJ+pBeP40ld+62fatwwLcs64Sj2BbpsMDOvr65NOz3dJIlhyQ70LOPLuBcJMA8M
+    zCypae7pnuQYfI4G8x/EN2US6JI7lMSHlVRgXjxZjop5AaXsE9EA8hUoyraAj423AZzo
+    0z9WhhYyCZ/BJnWbSfBCuXwbgbec74UF/x1cElKGK70Aqlt0ut69dYehWBCDoJ4+y0A5
+    JXBmjJ7zVmLnv+R2Ku9YfsEP9wcyQkEoEdZ69jQlWmOKNjWtTvBG9qyVntfrLwW5yzse
+    wSsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754844446;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:Cc:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
+    bh=K8pt8WbN3XbRW6chuXyhwg2rF9l+Wdgb+Ie3sXEsGx4=;
+    b=n1PUK/YvBdWNBq1OAHS/wOavNvEjhe9IvqXEBml7GnqnNEjGHHcsFnjhY4V1OgAfGm
+    LE+KW8Kl0LVIMsEY+lQNNGxj4zgKg/oxJeHLREwRz8GdtkjG5Z56xLMmUCg+HEssHnq+
+    T4wTDGSTYMSR0UKZA5KXwuyRyuYABThBByHGi3BK/AlN1uwJZCRgqAbkGoo2QInNbbF6
+    TqwM8xugXOEADbJ2U8mhJhUCh6Ra2UPROmgp6DSvQjb2ST8nhUi4G8XC+SPElSo+urqd
+    E8cB6Ygfs9hi9M9co8uHBryX/U8N4EXOp5NEpaw7AwfFCondJA1dDghsiqC0CzIwDPgx
+    6aug==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754844446;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=To:Cc:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
+    bh=K8pt8WbN3XbRW6chuXyhwg2rF9l+Wdgb+Ie3sXEsGx4=;
+    b=i07nSyftgzRQ1n6gCY5Gumj2m/bT4oRp42V6WSgq12Y9n6yGxHlRwJrZM+sihHkmDS
+    xg5KwOaFv8O9xfsa6iJ2zB2xIJAbz1zXqm1zlrFyMB2pQKQGwjhEzSQZseX1YV89sR+K
+    2A8HKGtqDiDhPpvYUJqLWfRPFHNr2fXgGf+YoT5OMmfMOVCyT7FUY5HiDp/BMWk9gM+1
+    93Dpw6LaZH16xvnUZowKi+nos7V75f9zX/hMhv8G7ntjCBUjL2UB+gy1zZW+KDN+Oo3O
+    ef945ocJRCz5SkgQMG6Ifc2GBGT39cCjMVQqNAMdToRTlEk+VaQakn95p1w8ntLudYHr
+    F6uQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754844446;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=To:Cc:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
+    bh=K8pt8WbN3XbRW6chuXyhwg2rF9l+Wdgb+Ie3sXEsGx4=;
+    b=ZdyWeubP9kqqk+4WLh2X+4LmDERZFexOO1gR6oF1N5gDBMezkWAsVPBPHg35tHWir9
+    3zHv2oKhXbwES5tTTQAA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7X5i0sy3CAXlxGfGpTL+7TUpaIT1L8AmWoezzKas="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 52.1.2 AUTH)
+    with ESMTPSA id e6066c17AGlQAhZ
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Sun, 10 Aug 2025 18:47:26 +0200 (CEST)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -115,123 +88,39 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0 (1.0)
+Date: Sun, 10 Aug 2025 18:47:15 +0200
+Subject: i2c-pasemi messages since kernel 6.16
+Message-Id: <2810E95B-8DB4-48CB-80F6-DF01EB7BEEFC@xenosoft.de>
+Cc: linux-i2c@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ hypexed@yahoo.com.au, Christian Zigotzky <info@xenosoft.de>
+To: Sven Peter <sven@svenpeter.dev>
+X-Mailer: iPhone Mail (22G86)
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Call kasan_init_generic() which handles Generic KASAN initialization.
-For architectures that do not select ARCH_DEFER_KASAN,
-this will be a no-op for the runtime flag but will
-print the initialization banner.
+Hello Sven,
 
-For SW_TAGS and HW_TAGS modes, their respective init functions will
-handle the flag enabling, if they are enabled/implemented.
+Since the kernel 6.16 we have the following messages during the boot.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217049
-Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com> # s390
----
-Changes in v6:
-- Call kasan_init_generic() in arch/riscv _after_ local_flush_tlb_all()
----
- arch/arm/mm/kasan_init.c    | 2 +-
- arch/arm64/mm/kasan_init.c  | 4 +---
- arch/riscv/mm/kasan_init.c  | 1 +
- arch/s390/kernel/early.c    | 3 ++-
- arch/x86/mm/kasan_init_64.c | 2 +-
- arch/xtensa/mm/kasan_init.c | 2 +-
- 6 files changed, 7 insertions(+), 7 deletions(-)
+[    9.459706] i2c-pasemi 0000:00:1c.0: NACK, status 0x08210100
+[    9.649736] i2c-pasemi 0000:00:1c.0: Issuing reset due to status 0x082101=
+00 (xfstatus 0x00000001)
+[    9.690696] i2c-pasemi 0000:00:1c.1: NACK, status 0x08210100
+[    9.708651] i2c-pasemi 0000:00:1c.1: Issuing reset due to status 0x082101=
+00 (xfstatus 0x00000001)
+[    9.892693] i2c-pasemi 0000:00:1c.2: NACK, status 0x08210100
+[    9.911535] i2c-pasemi 0000:00:1c.2: Issuing reset due to status 0x082101=
+00 (xfstatus 0x00000001)
 
-diff --git a/arch/arm/mm/kasan_init.c b/arch/arm/mm/kasan_init.c
-index 111d4f703136..c6625e808bf8 100644
---- a/arch/arm/mm/kasan_init.c
-+++ b/arch/arm/mm/kasan_init.c
-@@ -300,6 +300,6 @@ void __init kasan_init(void)
- 	local_flush_tlb_all();
- 
- 	memset(kasan_early_shadow_page, 0, PAGE_SIZE);
--	pr_info("Kernel address sanitizer initialized\n");
- 	init_task.kasan_depth = 0;
-+	kasan_init_generic();
- }
-diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
-index d541ce45daeb..abeb81bf6ebd 100644
---- a/arch/arm64/mm/kasan_init.c
-+++ b/arch/arm64/mm/kasan_init.c
-@@ -399,14 +399,12 @@ void __init kasan_init(void)
- {
- 	kasan_init_shadow();
- 	kasan_init_depth();
--#if defined(CONFIG_KASAN_GENERIC)
-+	kasan_init_generic();
- 	/*
- 	 * Generic KASAN is now fully initialized.
- 	 * Software and Hardware Tag-Based modes still require
- 	 * kasan_init_sw_tags() and kasan_init_hw_tags() correspondingly.
- 	 */
--	pr_info("KernelAddressSanitizer initialized (generic)\n");
--#endif
- }
- 
- #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
-diff --git a/arch/riscv/mm/kasan_init.c b/arch/riscv/mm/kasan_init.c
-index 41c635d6aca4..c4a2a9e5586e 100644
---- a/arch/riscv/mm/kasan_init.c
-+++ b/arch/riscv/mm/kasan_init.c
-@@ -533,4 +533,5 @@ void __init kasan_init(void)
- 
- 	csr_write(CSR_SATP, PFN_DOWN(__pa(swapper_pg_dir)) | satp_mode);
- 	local_flush_tlb_all();
-+	kasan_init_generic();
- }
-diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-index 9adfbdd377dc..544e5403dd91 100644
---- a/arch/s390/kernel/early.c
-+++ b/arch/s390/kernel/early.c
-@@ -21,6 +21,7 @@
- #include <linux/kernel.h>
- #include <asm/asm-extable.h>
- #include <linux/memblock.h>
-+#include <linux/kasan.h>
- #include <asm/access-regs.h>
- #include <asm/asm-offsets.h>
- #include <asm/machine.h>
-@@ -65,7 +66,7 @@ static void __init kasan_early_init(void)
- {
- #ifdef CONFIG_KASAN
- 	init_task.kasan_depth = 0;
--	pr_info("KernelAddressSanitizer initialized\n");
-+	kasan_init_generic();
- #endif
- }
- 
-diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
-index 0539efd0d216..998b6010d6d3 100644
---- a/arch/x86/mm/kasan_init_64.c
-+++ b/arch/x86/mm/kasan_init_64.c
-@@ -451,5 +451,5 @@ void __init kasan_init(void)
- 	__flush_tlb_all();
- 
- 	init_task.kasan_depth = 0;
--	pr_info("KernelAddressSanitizer initialized\n");
-+	kasan_init_generic();
- }
-diff --git a/arch/xtensa/mm/kasan_init.c b/arch/xtensa/mm/kasan_init.c
-index f39c4d83173a..0524b9ed5e63 100644
---- a/arch/xtensa/mm/kasan_init.c
-+++ b/arch/xtensa/mm/kasan_init.c
-@@ -94,5 +94,5 @@ void __init kasan_init(void)
- 
- 	/* At this point kasan is fully initialized. Enable error messages. */
- 	current->kasan_depth = 0;
--	pr_info("KernelAddressSanitizer initialized\n");
-+	kasan_init_generic();
- }
--- 
-2.34.1
+What exactly do these messages mean?
+
+Thanks,
+Christian=
 
 
