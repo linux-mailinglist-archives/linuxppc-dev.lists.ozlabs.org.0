@@ -1,93 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-10801-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10802-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761A7B207B2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 13:27:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0455DB207B5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 13:27:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c0smJ1TRBz3d2g;
-	Mon, 11 Aug 2025 21:26:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c0smP1dVXz3d32;
+	Mon, 11 Aug 2025 21:27:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754911616;
-	cv=none; b=iH6a1YZy4EOd+ciqtICanwnP8UPZWRqj3CdcVtn5ZLByZ6M3JKIfM7CmDuQ38xwV7/AHXfOVBTM84XFBNtEwtD1CAjXNjoW4zQbi4MNpk7IVSD9+GoWtcGabnSlgAlLHjX3Av/nmNgFA3VmG7iCJtXW4Wf9MGX34KXqjhsUgiUnruv76R9WFVbv+hHzpSQ4Z/Ps6MJkFNfrKMvPGp7YCfBuPRW5nMf/bSNjkf+eZkWl+5OALSMeGbwmnE8n1ITbiieDuYv0Th18vKjxe1pmf0j+Uw4hxdkyPl2s5HHmClOieQsiE+pE/1TjoFDGHRhQn7TDTweL9RQX9TKgbicbi2Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754911621;
+	cv=none; b=fXQL9vkkhr+VojqYGwMr7iMZc8mkAUb4N+45gAE4SOLDVFG8D2gL65pJvdibBWADjRFaRLfAweMBQGe6zGlBLWZG8sg/r0I4BWkMshTo9+ATaNWwvnWqS9pIFpZY2ngSAOqxi43Pvr78HOC/3AeaT/6g+jV8Kn+Gs+cvlVevPGjOkYwL9WXXHNQ1E1NUZN6/6JvAW9sjhgh2qt0SYXKoA/9U4eHQz8K07iNxp6OjmJCID9yItIg2h3zAif8dg+1iHFvX5YuySmv4aYrk6CbAUyWpEPpy/jVtYS9jlOCePnoLK4Cx3x50a6gep7TuQl3Yo9fgWTK2+EBOe61Q2RJNBg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754911616; c=relaxed/relaxed;
-	bh=UJDg4sW92zbLWKqBjb1tVZssT9gBBixv5gdvUlii8Zs=;
+	t=1754911621; c=relaxed/relaxed;
+	bh=P87rLpAYrvMbmMGGuIRrtBN562miOXHo6Y54j1JPV6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=nJVEiI09bhZfGyW9xPCEeA58Da0dVM+CbxgpuoHZOYRh8BqOcRDk/KNbpPP9kFmyJEFHV8Qrx9J7sHws5mHQ/Oo1XWi+XJM9xuDjGX2dgKY4DuqJAsXXEBildDc35wRiJq3BGBNMm+HeTpsCI7GdS9DhyhAyzJkOPviEEWAgy3ZD+t1bJbEhUnS2l5dyqdY6i8E8JNRuKJ4tzdYiSXJJh6f/40unufxE15k+WeginvGpscAZlthULOYOAp1Aul57rh7ga0BFLXOb1L+ArASz4AQTrynWnSJ4PojWBrENTcX9NzQUq6Ebx0FGH5IRXZ79xsT4IogtZYKfopA7SP0Ktw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dw7hYDSn; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MyPXC0XI; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:content-type; b=eFiGfMFg5R0KAjPasTUyf3owN6y5hUdAYSvf67EU3BHkFb9d8Gttv7WRZGa9JDteT8Km186ybZlwR/omRjRrOKHwIrtisjOY5FGDecOAYE1qdbIL4M9towazADyEQmwfAcuyDxzymwnW7RoYQsaPMxr20fRSzQsyo149VQTrl4sUZ2/JWI7yXzafZrGSDQn+bKtAClACKd5CxIGYlim61pbCtQZw5pP8/bjI900tZqrnh1w1Ou8iz51ooZyldNEi3rnNkpUQ7MrZzrzGZ+xhT6MjtP+4dw9iaQwfbBly4mwaXqO1VAI4wZGsRuRcO0hv65ATQ5BM96iPNg9cG94jeA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CDZdfQnP; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CDZdfQnP; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dw7hYDSn;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MyPXC0XI;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CDZdfQnP;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CDZdfQnP;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c0smH2xlgz3d2c
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 21:26:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c0smM4wcpz3d2c
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 21:26:59 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754911612;
+	s=mimecast20190719; t=1754911617;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UJDg4sW92zbLWKqBjb1tVZssT9gBBixv5gdvUlii8Zs=;
-	b=Dw7hYDSn4ECdNdnpa6TzGzoX5SH1fo2SKgFssJItHmYvklx91CAYj5o+2ABXjcY/u4gWDD
-	d6CQLcHShyJgVUl9k0eMRfsfMmliaFqWdYBFuyf75U07P62r875NBLQI2a1KovrvpTdNHg
-	zexyAy+1g/yo9F4j1QYoIm34b+RnVVE=
+	bh=P87rLpAYrvMbmMGGuIRrtBN562miOXHo6Y54j1JPV6I=;
+	b=CDZdfQnPdDdmxAXniKUCqiywXqna/h8Ei8beRgZx6KAB/7msXiRsQPJVvn2uRb/6k7K3ie
+	TYzly4QdkjcEvMPnStIlZAgoCHVu7w1/aqnNtWMEuynrfCtYn/B84noALTrBu3z06xKwnf
+	61zRrA7Uag1jXA3RAr+SV7KZ1Ogbqow=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754911613;
+	s=mimecast20190719; t=1754911617;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UJDg4sW92zbLWKqBjb1tVZssT9gBBixv5gdvUlii8Zs=;
-	b=MyPXC0XIg7g5JhENW/CXpMmSyxPHsJSF73U94cOihzQptFe1FrxPz4bT1QJjQh4i0vQlPz
-	CXuvTidwWacll4TLoz23wf+tlle+pd3aIEL9vbWq58yO7JEQlsU2LtgyiJKjg3r96RYgyd
-	gAU6EAutwzvQuEhPJsuSTN+aRpk8jrA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=P87rLpAYrvMbmMGGuIRrtBN562miOXHo6Y54j1JPV6I=;
+	b=CDZdfQnPdDdmxAXniKUCqiywXqna/h8Ei8beRgZx6KAB/7msXiRsQPJVvn2uRb/6k7K3ie
+	TYzly4QdkjcEvMPnStIlZAgoCHVu7w1/aqnNtWMEuynrfCtYn/B84noALTrBu3z06xKwnf
+	61zRrA7Uag1jXA3RAr+SV7KZ1Ogbqow=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-4l24TsvWNCeFTbdoGo8-qg-1; Mon, 11 Aug 2025 07:26:51 -0400
-X-MC-Unique: 4l24TsvWNCeFTbdoGo8-qg-1
-X-Mimecast-MFC-AGG-ID: 4l24TsvWNCeFTbdoGo8-qg_1754911610
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b7891afb31so3196135f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 04:26:51 -0700 (PDT)
+ us-mta-637-h7aexi8JMYqRQoJFuvIjzQ-1; Mon, 11 Aug 2025 07:26:54 -0400
+X-MC-Unique: h7aexi8JMYqRQoJFuvIjzQ-1
+X-Mimecast-MFC-AGG-ID: h7aexi8JMYqRQoJFuvIjzQ_1754911613
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-458b9ded499so28000435e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 04:26:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754911610; x=1755516410;
+        d=1e100.net; s=20230601; t=1754911613; x=1755516413;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UJDg4sW92zbLWKqBjb1tVZssT9gBBixv5gdvUlii8Zs=;
-        b=igo+MmEfgw3+/rWK4t/7VC2FkvHHmYyaLxR7nFvf/wNAUruPN4o6o/Xw5X8uL6tJc7
-         9bh2hHr1EGxgGP59DXwBNCdAhvMmdjRZFBfq9n8FNbGxf2voth0mNPe4pG6Cq+VIPHdH
-         bLp31IK5WBGQn7h294zApN9PcQSRnPPy1jDxQ4wTosA2SNuyKuO78JadVHuPO3jLLXQa
-         1A85+QAlVDTcJLsMo3I2j0CuFmYm2kIk4p9bl+1CgX31IMdcJ48pqFSgf0MeyWDtPhnl
-         nHDbrglPkvjLRrePxInim6G6X7/ltmOj9B+cAKbwvmfSjKIagW15El2OVPwXKBnRwxfn
-         2mdA==
-X-Forwarded-Encrypted: i=1; AJvYcCXJNYFCSEN1TwvJAk9lQE1pxuBw0xaGnqW7q/TE3BNuUGz44/zEUzU/NwHVkc/ANdE7Eib69pBjAwMhcEo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw2uEIhOMaYywmoOuVS+o0HpEUQQPBgJ7dkWe5D1ZkKl8wyrEIY
-	ARCRyIAUhP3jE1r9fYgXI3ztG8Ra3UyA093MMX7BykcmUASXXog3g8l1+DxQZUNaVvaZibAyigz
-	4noUe1UBNWGibkgaOPtOAX0QLD/JVAKgXQg+ZkRExH8wfZ2kPRp5jVzwtLt/IbwA6zVY=
-X-Gm-Gg: ASbGncsPW1wK1hONlVmOZXmzosQg8eKu8v3rbKPDecW8cQovphOkqJxVG8IJjHf+V+J
-	NMEBR9F4GLN14uFjUnoY3KEcXFp0x1g2S+P9HQeWLm2F3IGFHHNVOmH4ORiUB2tShqZ7lOr7ooR
-	wbe9rPWh99xc7QQS/2LtNf5fjFfTa/ZTvnj793AqVaCc1/E/mG1K1srqU5mQGFCj7tzEde3OHCI
-	+CpbEH945edahT+B2SzC8I6heTSvVJ5LvkXxtOzUH4NkK3YhaP/brUwpZ+d9jz1kGeMzsuKxzW/
-	EuJTZavoJsryDw5BlefF3XTsD3i8z2FcsYxgYX9J0iygTB835CoDDAqEqcty5TKAeqXSw0xjuFo
-	hsj8Gk4qVcvtyXXwN/QgOCDru
-X-Received: by 2002:a05:6000:2010:b0:3b7:9d83:5104 with SMTP id ffacd0b85a97d-3b900b83ce4mr10356643f8f.51.1754911610087;
-        Mon, 11 Aug 2025 04:26:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH28XXBuV6P4eMmACbygagN9E2w90dcNlvtCQwFebmNkdYsSnJof6QrfGHsOh8VfCIdvok2gg==
-X-Received: by 2002:a05:6000:2010:b0:3b7:9d83:5104 with SMTP id ffacd0b85a97d-3b900b83ce4mr10356583f8f.51.1754911609552;
-        Mon, 11 Aug 2025 04:26:49 -0700 (PDT)
+        bh=P87rLpAYrvMbmMGGuIRrtBN562miOXHo6Y54j1JPV6I=;
+        b=B/JfgSCCRhcplyGg736wHjm8p2SuPEbrpbULP1xFi2+Y/rkgLUjfWRkgP3ARnCXMl6
+         5sKeFOY2akMQlTBP/lx3HczgztDfm2qQJyKFQiMyS8QyK0T2kIdCom1EKvi2H4+b95N7
+         z6HCcXw6/gYzHZQu/duLHrwz3AxGxybOx4n2Apc+8QhHALoBjNIMGsTaeLe5IvhqAwRz
+         IJxxfOGvBM1qxJ2/ovo7Rx0ZSlzEOeKAqrAO2qeLM/9uVTpAc28fhyvVet5X2fI9Z9Cw
+         o5sAH6sMv5jpWgMVEQFXHbfvprfIDsqeqhTzFhUFzWVfwZ1hFsa3UyIEVEARc/nNv8HX
+         irUw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3Lll2Q4tCNl3UZyDksmCbtNwxf9h0MGPAayBSqlmSJNX5A3ZLM1zuPd6TU75OdLzU95UTumMrNK1wlLo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwjtBJ7Zv0ZHQrO+H8ghrSRRuUYQmk0nLgWk7LrjxE+m0x6ZvKx
+	gaefEUXxCmOMqJ7YdM/anG9NNFDNyNjjmr4dN3J4gnRCRGmgyfjSUl/DISqj+qwjDuBFlblbEMI
+	XUK18rsBkmdMNhufX+7xfpJG4gFzVy8DquottYquk+U0TAblB3bPAYkvOMo4Pyj8Jqxk=
+X-Gm-Gg: ASbGnctyxgQrGO1vrDVbMYR+3xYVzHg7EbVB78AcgDpzHDXOmusj/C2AZ6UQs8gwR2d
+	9mVged2bkxGH/IiIJYfF+8CSGp0lNvhL0iDK5M+rhv/N12ogg2/CgVmmE/VOoU7ciDnfyZg5ymG
+	vobIepr8rYSmqpXSMMH4D83xForutkXsNrSG/jNfRC2Qs2D/IAJ0g2CwIQOkrbJlWC9w2TvLQV/
+	4a3Rs9CnTgJYarFt59AauwgD6NsBiW3cpXgQhQ3WnPJnPEVFVAi3pI7WmGlUjQjEDaoKod2IS6V
+	aSCBImvItidcIW7wzdy8UzSVjnx2Hb6/v9EjPH3H2aU9gu47/xlZ+j6E277F9Pi1gK9cSplHIAQ
+	WtyXz30gyY8VGxzMKaNcJufbJ
+X-Received: by 2002:a05:600c:3589:b0:459:dfa8:b881 with SMTP id 5b1f17b1804b1-459f4f3cfd9mr103523605e9.7.1754911612611;
+        Mon, 11 Aug 2025 04:26:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEiy2Q6M1gIlNBDGe4u7ez53xLkuOFeUzXf29NvQrYJzqDFFp1B3pMcW/PtvRUdMabZHM2Urw==
+X-Received: by 2002:a05:600c:3589:b0:459:dfa8:b881 with SMTP id 5b1f17b1804b1-459f4f3cfd9mr103523005e9.7.1754911612074;
+        Mon, 11 Aug 2025 04:26:52 -0700 (PDT)
 Received: from localhost (p200300d82f06a600a397de1d2f8bb66f.dip0.t-ipconnect.de. [2003:d8:2f06:a600:a397:de1d:2f8b:b66f])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3bf93dsm40408983f8f.27.2025.08.11.04.26.47
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3bf93dsm40409120f8f.27.2025.08.11.04.26.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 04:26:48 -0700 (PDT)
+        Mon, 11 Aug 2025 04:26:51 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -126,9 +126,9 @@ Cc: linux-mm@kvack.org,
 	Hugh Dickins <hughd@google.com>,
 	Oscar Salvador <osalvador@suse.de>,
 	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v3 06/11] powerpc/ptdump: rename "struct pgtable_level" to "struct ptdump_pglevel"
-Date: Mon, 11 Aug 2025 13:26:26 +0200
-Message-ID: <20250811112631.759341-7-david@redhat.com>
+Subject: [PATCH v3 07/11] mm/rmap: convert "enum rmap_level" to "enum pgtable_level"
+Date: Mon, 11 Aug 2025 13:26:27 +0200
+Message-ID: <20250811112631.759341-8-david@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250811112631.759341-1-david@redhat.com>
 References: <20250811112631.759341-1-david@redhat.com>
@@ -146,7 +146,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OCeqKzz5p6vUmGuuNaAQZWdyIJ0XOZ0gBSQ5c74Ajt0_1754911610
+X-Mimecast-MFC-PROC-ID: Gf8C90e9yDUvXbRR8Pp4Bp4BmnaVvtew_Nue1TyC5yI_1754911613
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
@@ -156,79 +156,464 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-We want to make use of "pgtable_level" for an enum in core-mm. Other
-architectures seem to call "struct pgtable_level" either:
-* "struct pg_level" when not exposed in a header (riscv, arm)
-* "struct ptdump_pg_level" when expose in a header (arm64)
-
-So let's follow what arm64 does.
+Let's factor it out, and convert all checks for unsupported levels to
+BUILD_BUG(). The code is written in a way such that force-inlining will
+optimize out the levels.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- arch/powerpc/mm/ptdump/8xx.c      | 2 +-
- arch/powerpc/mm/ptdump/book3s64.c | 2 +-
- arch/powerpc/mm/ptdump/ptdump.h   | 4 ++--
- arch/powerpc/mm/ptdump/shared.c   | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ include/linux/pgtable.h |  8 ++++++
+ include/linux/rmap.h    | 60 +++++++++++++++++++----------------------
+ mm/rmap.c               | 56 +++++++++++++++++++++-----------------
+ 3 files changed, 66 insertions(+), 58 deletions(-)
 
-diff --git a/arch/powerpc/mm/ptdump/8xx.c b/arch/powerpc/mm/ptdump/8xx.c
-index b5c79b11ea3c2..4ca9cf7a90c9e 100644
---- a/arch/powerpc/mm/ptdump/8xx.c
-+++ b/arch/powerpc/mm/ptdump/8xx.c
-@@ -69,7 +69,7 @@ static const struct flag_info flag_array[] = {
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 4c035637eeb77..bff5c4241bf2e 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1958,6 +1958,14 @@ static inline bool arch_has_pfn_modify_check(void)
+ /* Page-Table Modification Mask */
+ typedef unsigned int pgtbl_mod_mask;
+ 
++enum pgtable_level {
++	PGTABLE_LEVEL_PTE = 0,
++	PGTABLE_LEVEL_PMD,
++	PGTABLE_LEVEL_PUD,
++	PGTABLE_LEVEL_P4D,
++	PGTABLE_LEVEL_PGD,
++};
++
+ #endif /* !__ASSEMBLY__ */
+ 
+ #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 6cd020eea37a2..9d40d127bdb78 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -394,18 +394,8 @@ typedef int __bitwise rmap_t;
+ /* The anonymous (sub)page is exclusive to a single process. */
+ #define RMAP_EXCLUSIVE		((__force rmap_t)BIT(0))
+ 
+-/*
+- * Internally, we're using an enum to specify the granularity. We make the
+- * compiler emit specialized code for each granularity.
+- */
+-enum rmap_level {
+-	RMAP_LEVEL_PTE = 0,
+-	RMAP_LEVEL_PMD,
+-	RMAP_LEVEL_PUD,
+-};
+-
+ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
+-		const struct page *page, int nr_pages, enum rmap_level level)
++		const struct page *page, int nr_pages, enum pgtable_level level)
+ {
+ 	/* hugetlb folios are handled separately. */
+ 	VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
+@@ -427,18 +417,18 @@ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
+ 	VM_WARN_ON_FOLIO(page_folio(page + nr_pages - 1) != folio, folio);
+ 
+ 	switch (level) {
+-	case RMAP_LEVEL_PTE:
++	case PGTABLE_LEVEL_PTE:
+ 		break;
+-	case RMAP_LEVEL_PMD:
++	case PGTABLE_LEVEL_PMD:
+ 		/*
+ 		 * We don't support folios larger than a single PMD yet. So
+-		 * when RMAP_LEVEL_PMD is set, we assume that we are creating
++		 * when PGTABLE_LEVEL_PMD is set, we assume that we are creating
+ 		 * a single "entire" mapping of the folio.
+ 		 */
+ 		VM_WARN_ON_FOLIO(folio_nr_pages(folio) != HPAGE_PMD_NR, folio);
+ 		VM_WARN_ON_FOLIO(nr_pages != HPAGE_PMD_NR, folio);
+ 		break;
+-	case RMAP_LEVEL_PUD:
++	case PGTABLE_LEVEL_PUD:
+ 		/*
+ 		 * Assume that we are creating a single "entire" mapping of the
+ 		 * folio.
+@@ -447,7 +437,7 @@ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
+ 		VM_WARN_ON_FOLIO(nr_pages != HPAGE_PUD_NR, folio);
+ 		break;
+ 	default:
+-		VM_WARN_ON_ONCE(true);
++		BUILD_BUG();
  	}
- };
  
--struct pgtable_level pg_level[5] = {
-+struct ptdump_pg_level pg_level[5] = {
- 	{ /* pgd */
- 		.flag	= flag_array,
- 		.num	= ARRAY_SIZE(flag_array),
-diff --git a/arch/powerpc/mm/ptdump/book3s64.c b/arch/powerpc/mm/ptdump/book3s64.c
-index 5ad92d9dc5d10..6b2da9241d4c4 100644
---- a/arch/powerpc/mm/ptdump/book3s64.c
-+++ b/arch/powerpc/mm/ptdump/book3s64.c
-@@ -102,7 +102,7 @@ static const struct flag_info flag_array[] = {
+ 	/*
+@@ -567,14 +557,14 @@ static inline void hugetlb_remove_rmap(struct folio *folio)
+ 
+ static __always_inline void __folio_dup_file_rmap(struct folio *folio,
+ 		struct page *page, int nr_pages, struct vm_area_struct *dst_vma,
+-		enum rmap_level level)
++		enum pgtable_level level)
+ {
+ 	const int orig_nr_pages = nr_pages;
+ 
+ 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
+ 
+ 	switch (level) {
+-	case RMAP_LEVEL_PTE:
++	case PGTABLE_LEVEL_PTE:
+ 		if (!folio_test_large(folio)) {
+ 			atomic_inc(&folio->_mapcount);
+ 			break;
+@@ -587,11 +577,13 @@ static __always_inline void __folio_dup_file_rmap(struct folio *folio,
+ 		}
+ 		folio_add_large_mapcount(folio, orig_nr_pages, dst_vma);
+ 		break;
+-	case RMAP_LEVEL_PMD:
+-	case RMAP_LEVEL_PUD:
++	case PGTABLE_LEVEL_PMD:
++	case PGTABLE_LEVEL_PUD:
+ 		atomic_inc(&folio->_entire_mapcount);
+ 		folio_inc_large_mapcount(folio, dst_vma);
+ 		break;
++	default:
++		BUILD_BUG();
  	}
- };
+ }
  
--struct pgtable_level pg_level[5] = {
-+struct ptdump_pg_level pg_level[5] = {
- 	{ /* pgd */
- 		.flag	= flag_array,
- 		.num	= ARRAY_SIZE(flag_array),
-diff --git a/arch/powerpc/mm/ptdump/ptdump.h b/arch/powerpc/mm/ptdump/ptdump.h
-index 154efae96ae09..4232aa4b57eae 100644
---- a/arch/powerpc/mm/ptdump/ptdump.h
-+++ b/arch/powerpc/mm/ptdump/ptdump.h
-@@ -11,12 +11,12 @@ struct flag_info {
- 	int		shift;
- };
+@@ -609,13 +601,13 @@ static __always_inline void __folio_dup_file_rmap(struct folio *folio,
+ static inline void folio_dup_file_rmap_ptes(struct folio *folio,
+ 		struct page *page, int nr_pages, struct vm_area_struct *dst_vma)
+ {
+-	__folio_dup_file_rmap(folio, page, nr_pages, dst_vma, RMAP_LEVEL_PTE);
++	__folio_dup_file_rmap(folio, page, nr_pages, dst_vma, PGTABLE_LEVEL_PTE);
+ }
  
--struct pgtable_level {
-+struct ptdump_pg_level {
- 	const struct flag_info *flag;
- 	size_t num;
- 	u64 mask;
- };
+ static __always_inline void folio_dup_file_rmap_pte(struct folio *folio,
+ 		struct page *page, struct vm_area_struct *dst_vma)
+ {
+-	__folio_dup_file_rmap(folio, page, 1, dst_vma, RMAP_LEVEL_PTE);
++	__folio_dup_file_rmap(folio, page, 1, dst_vma, PGTABLE_LEVEL_PTE);
+ }
  
--extern struct pgtable_level pg_level[5];
-+extern struct ptdump_pg_level pg_level[5];
+ /**
+@@ -632,7 +624,7 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
+ 		struct page *page, struct vm_area_struct *dst_vma)
+ {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, RMAP_LEVEL_PTE);
++	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, PGTABLE_LEVEL_PTE);
+ #else
+ 	WARN_ON_ONCE(true);
+ #endif
+@@ -640,7 +632,7 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
  
- void pt_dump_size(struct seq_file *m, unsigned long delta);
-diff --git a/arch/powerpc/mm/ptdump/shared.c b/arch/powerpc/mm/ptdump/shared.c
-index 39c30c62b7ea7..58998960eb9a4 100644
---- a/arch/powerpc/mm/ptdump/shared.c
-+++ b/arch/powerpc/mm/ptdump/shared.c
-@@ -67,7 +67,7 @@ static const struct flag_info flag_array[] = {
+ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
+ 		struct page *page, int nr_pages, struct vm_area_struct *dst_vma,
+-		struct vm_area_struct *src_vma, enum rmap_level level)
++		struct vm_area_struct *src_vma, enum pgtable_level level)
+ {
+ 	const int orig_nr_pages = nr_pages;
+ 	bool maybe_pinned;
+@@ -665,7 +657,7 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
+ 	 * copying if the folio maybe pinned.
+ 	 */
+ 	switch (level) {
+-	case RMAP_LEVEL_PTE:
++	case PGTABLE_LEVEL_PTE:
+ 		if (unlikely(maybe_pinned)) {
+ 			for (i = 0; i < nr_pages; i++)
+ 				if (PageAnonExclusive(page + i))
+@@ -687,8 +679,8 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
+ 		} while (page++, --nr_pages > 0);
+ 		folio_add_large_mapcount(folio, orig_nr_pages, dst_vma);
+ 		break;
+-	case RMAP_LEVEL_PMD:
+-	case RMAP_LEVEL_PUD:
++	case PGTABLE_LEVEL_PMD:
++	case PGTABLE_LEVEL_PUD:
+ 		if (PageAnonExclusive(page)) {
+ 			if (unlikely(maybe_pinned))
+ 				return -EBUSY;
+@@ -697,6 +689,8 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
+ 		atomic_inc(&folio->_entire_mapcount);
+ 		folio_inc_large_mapcount(folio, dst_vma);
+ 		break;
++	default:
++		BUILD_BUG();
  	}
- };
+ 	return 0;
+ }
+@@ -730,7 +724,7 @@ static inline int folio_try_dup_anon_rmap_ptes(struct folio *folio,
+ 		struct vm_area_struct *src_vma)
+ {
+ 	return __folio_try_dup_anon_rmap(folio, page, nr_pages, dst_vma,
+-					 src_vma, RMAP_LEVEL_PTE);
++					 src_vma, PGTABLE_LEVEL_PTE);
+ }
  
--struct pgtable_level pg_level[5] = {
-+struct ptdump_pg_level pg_level[5] = {
- 	{ /* pgd */
- 		.flag	= flag_array,
- 		.num	= ARRAY_SIZE(flag_array),
+ static __always_inline int folio_try_dup_anon_rmap_pte(struct folio *folio,
+@@ -738,7 +732,7 @@ static __always_inline int folio_try_dup_anon_rmap_pte(struct folio *folio,
+ 		struct vm_area_struct *src_vma)
+ {
+ 	return __folio_try_dup_anon_rmap(folio, page, 1, dst_vma, src_vma,
+-					 RMAP_LEVEL_PTE);
++					 PGTABLE_LEVEL_PTE);
+ }
+ 
+ /**
+@@ -770,7 +764,7 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
+ {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	return __folio_try_dup_anon_rmap(folio, page, HPAGE_PMD_NR, dst_vma,
+-					 src_vma, RMAP_LEVEL_PMD);
++					 src_vma, PGTABLE_LEVEL_PMD);
+ #else
+ 	WARN_ON_ONCE(true);
+ 	return -EBUSY;
+@@ -778,7 +772,7 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
+ }
+ 
+ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+-		struct page *page, int nr_pages, enum rmap_level level)
++		struct page *page, int nr_pages, enum pgtable_level level)
+ {
+ 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
+ 	VM_WARN_ON_FOLIO(!PageAnonExclusive(page), folio);
+@@ -873,7 +867,7 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+ static inline int folio_try_share_anon_rmap_pte(struct folio *folio,
+ 		struct page *page)
+ {
+-	return __folio_try_share_anon_rmap(folio, page, 1, RMAP_LEVEL_PTE);
++	return __folio_try_share_anon_rmap(folio, page, 1, PGTABLE_LEVEL_PTE);
+ }
+ 
+ /**
+@@ -904,7 +898,7 @@ static inline int folio_try_share_anon_rmap_pmd(struct folio *folio,
+ {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	return __folio_try_share_anon_rmap(folio, page, HPAGE_PMD_NR,
+-					   RMAP_LEVEL_PMD);
++					   PGTABLE_LEVEL_PMD);
+ #else
+ 	WARN_ON_ONCE(true);
+ 	return -EBUSY;
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 84a8d8b02ef77..0e9c4041f8687 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1265,7 +1265,7 @@ static void __folio_mod_stat(struct folio *folio, int nr, int nr_pmdmapped)
+ 
+ static __always_inline void __folio_add_rmap(struct folio *folio,
+ 		struct page *page, int nr_pages, struct vm_area_struct *vma,
+-		enum rmap_level level)
++		enum pgtable_level level)
+ {
+ 	atomic_t *mapped = &folio->_nr_pages_mapped;
+ 	const int orig_nr_pages = nr_pages;
+@@ -1274,7 +1274,7 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
+ 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
+ 
+ 	switch (level) {
+-	case RMAP_LEVEL_PTE:
++	case PGTABLE_LEVEL_PTE:
+ 		if (!folio_test_large(folio)) {
+ 			nr = atomic_inc_and_test(&folio->_mapcount);
+ 			break;
+@@ -1300,11 +1300,11 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
+ 
+ 		folio_add_large_mapcount(folio, orig_nr_pages, vma);
+ 		break;
+-	case RMAP_LEVEL_PMD:
+-	case RMAP_LEVEL_PUD:
++	case PGTABLE_LEVEL_PMD:
++	case PGTABLE_LEVEL_PUD:
+ 		first = atomic_inc_and_test(&folio->_entire_mapcount);
+ 		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
+-			if (level == RMAP_LEVEL_PMD && first)
++			if (level == PGTABLE_LEVEL_PMD && first)
+ 				nr_pmdmapped = folio_large_nr_pages(folio);
+ 			nr = folio_inc_return_large_mapcount(folio, vma);
+ 			if (nr == 1)
+@@ -1323,7 +1323,7 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
+ 				 * We only track PMD mappings of PMD-sized
+ 				 * folios separately.
+ 				 */
+-				if (level == RMAP_LEVEL_PMD)
++				if (level == PGTABLE_LEVEL_PMD)
+ 					nr_pmdmapped = nr_pages;
+ 				nr = nr_pages - (nr & FOLIO_PAGES_MAPPED);
+ 				/* Raced ahead of a remove and another add? */
+@@ -1336,6 +1336,8 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
+ 		}
+ 		folio_inc_large_mapcount(folio, vma);
+ 		break;
++	default:
++		BUILD_BUG();
+ 	}
+ 	__folio_mod_stat(folio, nr, nr_pmdmapped);
+ }
+@@ -1427,7 +1429,7 @@ static void __page_check_anon_rmap(const struct folio *folio,
+ 
+ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
+ 		struct page *page, int nr_pages, struct vm_area_struct *vma,
+-		unsigned long address, rmap_t flags, enum rmap_level level)
++		unsigned long address, rmap_t flags, enum pgtable_level level)
+ {
+ 	int i;
+ 
+@@ -1440,20 +1442,22 @@ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
+ 
+ 	if (flags & RMAP_EXCLUSIVE) {
+ 		switch (level) {
+-		case RMAP_LEVEL_PTE:
++		case PGTABLE_LEVEL_PTE:
+ 			for (i = 0; i < nr_pages; i++)
+ 				SetPageAnonExclusive(page + i);
+ 			break;
+-		case RMAP_LEVEL_PMD:
++		case PGTABLE_LEVEL_PMD:
+ 			SetPageAnonExclusive(page);
+ 			break;
+-		case RMAP_LEVEL_PUD:
++		case PGTABLE_LEVEL_PUD:
+ 			/*
+ 			 * Keep the compiler happy, we don't support anonymous
+ 			 * PUD mappings.
+ 			 */
+ 			WARN_ON_ONCE(1);
+ 			break;
++		default:
++			BUILD_BUG();
+ 		}
+ 	}
+ 
+@@ -1507,7 +1511,7 @@ void folio_add_anon_rmap_ptes(struct folio *folio, struct page *page,
+ 		rmap_t flags)
+ {
+ 	__folio_add_anon_rmap(folio, page, nr_pages, vma, address, flags,
+-			      RMAP_LEVEL_PTE);
++			      PGTABLE_LEVEL_PTE);
+ }
+ 
+ /**
+@@ -1528,7 +1532,7 @@ void folio_add_anon_rmap_pmd(struct folio *folio, struct page *page,
+ {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	__folio_add_anon_rmap(folio, page, HPAGE_PMD_NR, vma, address, flags,
+-			      RMAP_LEVEL_PMD);
++			      PGTABLE_LEVEL_PMD);
+ #else
+ 	WARN_ON_ONCE(true);
+ #endif
+@@ -1609,7 +1613,7 @@ void folio_add_new_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
+ 
+ static __always_inline void __folio_add_file_rmap(struct folio *folio,
+ 		struct page *page, int nr_pages, struct vm_area_struct *vma,
+-		enum rmap_level level)
++		enum pgtable_level level)
+ {
+ 	VM_WARN_ON_FOLIO(folio_test_anon(folio), folio);
+ 
+@@ -1634,7 +1638,7 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
+ void folio_add_file_rmap_ptes(struct folio *folio, struct page *page,
+ 		int nr_pages, struct vm_area_struct *vma)
+ {
+-	__folio_add_file_rmap(folio, page, nr_pages, vma, RMAP_LEVEL_PTE);
++	__folio_add_file_rmap(folio, page, nr_pages, vma, PGTABLE_LEVEL_PTE);
+ }
+ 
+ /**
+@@ -1651,7 +1655,7 @@ void folio_add_file_rmap_pmd(struct folio *folio, struct page *page,
+ 		struct vm_area_struct *vma)
+ {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	__folio_add_file_rmap(folio, page, HPAGE_PMD_NR, vma, RMAP_LEVEL_PMD);
++	__folio_add_file_rmap(folio, page, HPAGE_PMD_NR, vma, PGTABLE_LEVEL_PMD);
+ #else
+ 	WARN_ON_ONCE(true);
+ #endif
+@@ -1672,7 +1676,7 @@ void folio_add_file_rmap_pud(struct folio *folio, struct page *page,
+ {
+ #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
+ 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+-	__folio_add_file_rmap(folio, page, HPAGE_PUD_NR, vma, RMAP_LEVEL_PUD);
++	__folio_add_file_rmap(folio, page, HPAGE_PUD_NR, vma, PGTABLE_LEVEL_PUD);
+ #else
+ 	WARN_ON_ONCE(true);
+ #endif
+@@ -1680,7 +1684,7 @@ void folio_add_file_rmap_pud(struct folio *folio, struct page *page,
+ 
+ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ 		struct page *page, int nr_pages, struct vm_area_struct *vma,
+-		enum rmap_level level)
++		enum pgtable_level level)
+ {
+ 	atomic_t *mapped = &folio->_nr_pages_mapped;
+ 	int last = 0, nr = 0, nr_pmdmapped = 0;
+@@ -1689,7 +1693,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
+ 
+ 	switch (level) {
+-	case RMAP_LEVEL_PTE:
++	case PGTABLE_LEVEL_PTE:
+ 		if (!folio_test_large(folio)) {
+ 			nr = atomic_add_negative(-1, &folio->_mapcount);
+ 			break;
+@@ -1719,11 +1723,11 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ 
+ 		partially_mapped = nr && atomic_read(mapped);
+ 		break;
+-	case RMAP_LEVEL_PMD:
+-	case RMAP_LEVEL_PUD:
++	case PGTABLE_LEVEL_PMD:
++	case PGTABLE_LEVEL_PUD:
+ 		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
+ 			last = atomic_add_negative(-1, &folio->_entire_mapcount);
+-			if (level == RMAP_LEVEL_PMD && last)
++			if (level == PGTABLE_LEVEL_PMD && last)
+ 				nr_pmdmapped = folio_large_nr_pages(folio);
+ 			nr = folio_dec_return_large_mapcount(folio, vma);
+ 			if (!nr) {
+@@ -1743,7 +1747,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ 			nr = atomic_sub_return_relaxed(ENTIRELY_MAPPED, mapped);
+ 			if (likely(nr < ENTIRELY_MAPPED)) {
+ 				nr_pages = folio_large_nr_pages(folio);
+-				if (level == RMAP_LEVEL_PMD)
++				if (level == PGTABLE_LEVEL_PMD)
+ 					nr_pmdmapped = nr_pages;
+ 				nr = nr_pages - (nr & FOLIO_PAGES_MAPPED);
+ 				/* Raced ahead of another remove and an add? */
+@@ -1757,6 +1761,8 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ 
+ 		partially_mapped = nr && nr < nr_pmdmapped;
+ 		break;
++	default:
++		BUILD_BUG();
+ 	}
+ 
+ 	/*
+@@ -1796,7 +1802,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ void folio_remove_rmap_ptes(struct folio *folio, struct page *page,
+ 		int nr_pages, struct vm_area_struct *vma)
+ {
+-	__folio_remove_rmap(folio, page, nr_pages, vma, RMAP_LEVEL_PTE);
++	__folio_remove_rmap(folio, page, nr_pages, vma, PGTABLE_LEVEL_PTE);
+ }
+ 
+ /**
+@@ -1813,7 +1819,7 @@ void folio_remove_rmap_pmd(struct folio *folio, struct page *page,
+ 		struct vm_area_struct *vma)
+ {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	__folio_remove_rmap(folio, page, HPAGE_PMD_NR, vma, RMAP_LEVEL_PMD);
++	__folio_remove_rmap(folio, page, HPAGE_PMD_NR, vma, PGTABLE_LEVEL_PMD);
+ #else
+ 	WARN_ON_ONCE(true);
+ #endif
+@@ -1834,7 +1840,7 @@ void folio_remove_rmap_pud(struct folio *folio, struct page *page,
+ {
+ #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
+ 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+-	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, RMAP_LEVEL_PUD);
++	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, PGTABLE_LEVEL_PUD);
+ #else
+ 	WARN_ON_ONCE(true);
+ #endif
 -- 
 2.50.1
 
