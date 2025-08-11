@@ -1,93 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-10800-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10801-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA6AB207AF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 13:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 761A7B207B2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 13:27:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c0smG0x57z3d24;
-	Mon, 11 Aug 2025 21:26:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c0smJ1TRBz3d2g;
+	Mon, 11 Aug 2025 21:26:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754911614;
-	cv=none; b=kbY6JQlWnPaB4LC1TQ2WIugwyk57/E82pssMT//WQ16DUwIgIo4rxio1VC1FuxHpnF+kQaVorQXhHulGGcT6OaBy7BDOi8MdIjTfcZcMF8kQWJtQQM8jD4YncAOhqbM7YmmeR25zkYcbRr7bGpHO9Sowc3M+xDKydOgCA5XArh2WCyEZHQLSXflD9r9OByqeDjy4H/Cj7Hl7BbUn0Htn1LHi3QVDEskUbAtVTvnspgBVSal4PNc6xjFJlCKGhTqmYiHPnYcd2tZjcKY+A32nSjllX30kDov61ljN8oeG9Ipg4KMmmftonKcuqm2oYhdTJ7Q+6PMfRBKXrhrAx6bdmQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754911616;
+	cv=none; b=iH6a1YZy4EOd+ciqtICanwnP8UPZWRqj3CdcVtn5ZLByZ6M3JKIfM7CmDuQ38xwV7/AHXfOVBTM84XFBNtEwtD1CAjXNjoW4zQbi4MNpk7IVSD9+GoWtcGabnSlgAlLHjX3Av/nmNgFA3VmG7iCJtXW4Wf9MGX34KXqjhsUgiUnruv76R9WFVbv+hHzpSQ4Z/Ps6MJkFNfrKMvPGp7YCfBuPRW5nMf/bSNjkf+eZkWl+5OALSMeGbwmnE8n1ITbiieDuYv0Th18vKjxe1pmf0j+Uw4hxdkyPl2s5HHmClOieQsiE+pE/1TjoFDGHRhQn7TDTweL9RQX9TKgbicbi2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754911614; c=relaxed/relaxed;
-	bh=DNeO4mnK34t1j+RunD3+GtheXBl5F9uGzS1IAgGiaS8=;
+	t=1754911616; c=relaxed/relaxed;
+	bh=UJDg4sW92zbLWKqBjb1tVZssT9gBBixv5gdvUlii8Zs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=M+nkHI80m+4BxNEM+MpPSF/OOl/cj4RcZ1zRVLH6UtAYn1iefMNSBfOLl1VOwcHaAejn1qo31Kl0ru/nDkYWPJ3E40wsJg/cMn4nBPgm7Fu68Ug0PPAF80mOlatR+RPgz2TTgcE90YSd0xjR1I6RWJZOqL5YU2ds/9s4DtrNTuwQ7YSdhqxOTXAfYe1+o0OqN4XTJQr725ukTM0+HwDZXrBhuXuHOtHdGerFBbueaKxCw5YEft9hJfMyzaRFsbR4qNPGe4FVNgyNjeG469wB/iOOvRpOeFdOYS0Pl9RWtbHDFpTYiHxvP11USQwwUOUBLVWTokLTqxPqtB+K5cHIgg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Pt5Q9C49; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Pt5Q9C49; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:content-type; b=nJVEiI09bhZfGyW9xPCEeA58Da0dVM+CbxgpuoHZOYRh8BqOcRDk/KNbpPP9kFmyJEFHV8Qrx9J7sHws5mHQ/Oo1XWi+XJM9xuDjGX2dgKY4DuqJAsXXEBildDc35wRiJq3BGBNMm+HeTpsCI7GdS9DhyhAyzJkOPviEEWAgy3ZD+t1bJbEhUnS2l5dyqdY6i8E8JNRuKJ4tzdYiSXJJh6f/40unufxE15k+WeginvGpscAZlthULOYOAp1Aul57rh7ga0BFLXOb1L+ArASz4AQTrynWnSJ4PojWBrENTcX9NzQUq6Ebx0FGH5IRXZ79xsT4IogtZYKfopA7SP0Ktw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dw7hYDSn; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MyPXC0XI; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Pt5Q9C49;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Pt5Q9C49;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Dw7hYDSn;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=MyPXC0XI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c0smF2SXDz3cp1
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 21:26:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c0smH2xlgz3d2c
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 21:26:55 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754911610;
+	s=mimecast20190719; t=1754911612;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DNeO4mnK34t1j+RunD3+GtheXBl5F9uGzS1IAgGiaS8=;
-	b=Pt5Q9C49U0MA2RSk9HKbRM8Qj/VtWDWDUkjRRhWmCh7hzKi00By8B7MrmJp3usNiWDbtun
-	BAVsihozI0YFiYUZAAoy3CjdDK4S39RsTGNdp2Vxm4EZd7J9Nb3xQaEH9LmCCiXwAXIjE0
-	dWs64th2nV0epC/0zXScEQG+ZMBYhmQ=
+	bh=UJDg4sW92zbLWKqBjb1tVZssT9gBBixv5gdvUlii8Zs=;
+	b=Dw7hYDSn4ECdNdnpa6TzGzoX5SH1fo2SKgFssJItHmYvklx91CAYj5o+2ABXjcY/u4gWDD
+	d6CQLcHShyJgVUl9k0eMRfsfMmliaFqWdYBFuyf75U07P62r875NBLQI2a1KovrvpTdNHg
+	zexyAy+1g/yo9F4j1QYoIm34b+RnVVE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754911610;
+	s=mimecast20190719; t=1754911613;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DNeO4mnK34t1j+RunD3+GtheXBl5F9uGzS1IAgGiaS8=;
-	b=Pt5Q9C49U0MA2RSk9HKbRM8Qj/VtWDWDUkjRRhWmCh7hzKi00By8B7MrmJp3usNiWDbtun
-	BAVsihozI0YFiYUZAAoy3CjdDK4S39RsTGNdp2Vxm4EZd7J9Nb3xQaEH9LmCCiXwAXIjE0
-	dWs64th2nV0epC/0zXScEQG+ZMBYhmQ=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=UJDg4sW92zbLWKqBjb1tVZssT9gBBixv5gdvUlii8Zs=;
+	b=MyPXC0XIg7g5JhENW/CXpMmSyxPHsJSF73U94cOihzQptFe1FrxPz4bT1QJjQh4i0vQlPz
+	CXuvTidwWacll4TLoz23wf+tlle+pd3aIEL9vbWq58yO7JEQlsU2LtgyiJKjg3r96RYgyd
+	gAU6EAutwzvQuEhPJsuSTN+aRpk8jrA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-4JNEYsywPHWOoYNT2YIIxQ-1; Mon, 11 Aug 2025 07:26:48 -0400
-X-MC-Unique: 4JNEYsywPHWOoYNT2YIIxQ-1
-X-Mimecast-MFC-AGG-ID: 4JNEYsywPHWOoYNT2YIIxQ_1754911608
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45359bfe631so21791965e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 04:26:48 -0700 (PDT)
+ us-mta-651-4l24TsvWNCeFTbdoGo8-qg-1; Mon, 11 Aug 2025 07:26:51 -0400
+X-MC-Unique: 4l24TsvWNCeFTbdoGo8-qg-1
+X-Mimecast-MFC-AGG-ID: 4l24TsvWNCeFTbdoGo8-qg_1754911610
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-3b7891afb31so3196135f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 04:26:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754911607; x=1755516407;
+        d=1e100.net; s=20230601; t=1754911610; x=1755516410;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DNeO4mnK34t1j+RunD3+GtheXBl5F9uGzS1IAgGiaS8=;
-        b=aXLzJX6fjIEK8rih0IBEzs0lHFcXW8w7QYKKo7ZqjfCclwgxTxDS1UJQVFFNIcUoWn
-         dOa0xJQ2s/NGmbfizNPgYwb1bkedad3W36OFzwcID6DUXYGryYoac1lKC0g6ewaluWEr
-         La5oHr8aYwd3EOQVzQmzG0cNXH5vbf0et78v4oul8xy1SWjajKSvJsb1Cq5I6dYrdNrc
-         r+BjBmKSwLUusg9W6PxTDkVYRoNk0MLgnpMAd/uKYwceDIrP/GO+N7Xy00jt6o17JCrJ
-         vUS99OiE626HnHTXrnTB3fGvAfjWYbE4sjgQDiNWJm4+vYPGkkKC2rfGsVyH6ma+m7EU
-         +W+A==
-X-Forwarded-Encrypted: i=1; AJvYcCW3lwUWOKBtjW08JkTKFR5RLuahHxy8lQ/XJLL0Hul+HjvXFjv8UfmmapvXeW2YG5E/2JS8XvFk48OZRYc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzzlT6oL2jPc2uVR5uEuXBw6voa/gLJqj0Fm2587UwjCJtrS1DN
-	37Vz0fxoK4rGT6DVUnwv9atQhTOmL5z5PD8vRyDO6u2hZ7sPqoSgO/Q7dZdwkEeK2FfcLTG3Hfi
-	BNC8tMUgPiW9TXN05tHGL08AQk8c4X7Sn8tMrXwwzbHKw+A7AZN2Ez3MpDJRD+07tO74=
-X-Gm-Gg: ASbGncumvtYOje/e00m/C1GyfaR22+JEIV+TYjDvUMpzYh8p1r2CDYpECHUCxOY7lvg
-	GaixFTtZTQICNFy417MGNV8YluQ0DlwxOI7M+b3dngtrliSya16IIETu+DsyXhzJPq2iuKqnbNX
-	a79dLEWujSmBIasqt8WEwxCEOXwFgR/QPCJ0lS/JQbXzMAsz+1q1ZTcAGeZ1nlcma3ck1Q5R9eq
-	81GOBF9ifIWRr8OqWFk7vBxpeSOh2QRSJwIhthErCUxyc8/qjeAHXF3sURJsZ83XO+2mYoBDBHk
-	7IP6WzuQwotzovXC5iVPOrQ0KnAhrtR/av3AimwVRcrGxXGl1q7IW97AuVhKWzUdeQNzT1hOIVs
-	vvWL/WfenitQkkIwttrxRV97Q
-X-Received: by 2002:a05:600c:4746:b0:453:23fe:ca86 with SMTP id 5b1f17b1804b1-459f4ea0f2dmr115559555e9.4.1754911607425;
-        Mon, 11 Aug 2025 04:26:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+SYBbVCDa86Al3Rw//iuzbWoSgvjLT8uLZDTY5p6isO9HqDz+nOTt8CKLJXWJJ2UJD3ft4A==
-X-Received: by 2002:a05:600c:4746:b0:453:23fe:ca86 with SMTP id 5b1f17b1804b1-459f4ea0f2dmr115559215e9.4.1754911607000;
-        Mon, 11 Aug 2025 04:26:47 -0700 (PDT)
+        bh=UJDg4sW92zbLWKqBjb1tVZssT9gBBixv5gdvUlii8Zs=;
+        b=igo+MmEfgw3+/rWK4t/7VC2FkvHHmYyaLxR7nFvf/wNAUruPN4o6o/Xw5X8uL6tJc7
+         9bh2hHr1EGxgGP59DXwBNCdAhvMmdjRZFBfq9n8FNbGxf2voth0mNPe4pG6Cq+VIPHdH
+         bLp31IK5WBGQn7h294zApN9PcQSRnPPy1jDxQ4wTosA2SNuyKuO78JadVHuPO3jLLXQa
+         1A85+QAlVDTcJLsMo3I2j0CuFmYm2kIk4p9bl+1CgX31IMdcJ48pqFSgf0MeyWDtPhnl
+         nHDbrglPkvjLRrePxInim6G6X7/ltmOj9B+cAKbwvmfSjKIagW15El2OVPwXKBnRwxfn
+         2mdA==
+X-Forwarded-Encrypted: i=1; AJvYcCXJNYFCSEN1TwvJAk9lQE1pxuBw0xaGnqW7q/TE3BNuUGz44/zEUzU/NwHVkc/ANdE7Eib69pBjAwMhcEo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw2uEIhOMaYywmoOuVS+o0HpEUQQPBgJ7dkWe5D1ZkKl8wyrEIY
+	ARCRyIAUhP3jE1r9fYgXI3ztG8Ra3UyA093MMX7BykcmUASXXog3g8l1+DxQZUNaVvaZibAyigz
+	4noUe1UBNWGibkgaOPtOAX0QLD/JVAKgXQg+ZkRExH8wfZ2kPRp5jVzwtLt/IbwA6zVY=
+X-Gm-Gg: ASbGncsPW1wK1hONlVmOZXmzosQg8eKu8v3rbKPDecW8cQovphOkqJxVG8IJjHf+V+J
+	NMEBR9F4GLN14uFjUnoY3KEcXFp0x1g2S+P9HQeWLm2F3IGFHHNVOmH4ORiUB2tShqZ7lOr7ooR
+	wbe9rPWh99xc7QQS/2LtNf5fjFfTa/ZTvnj793AqVaCc1/E/mG1K1srqU5mQGFCj7tzEde3OHCI
+	+CpbEH945edahT+B2SzC8I6heTSvVJ5LvkXxtOzUH4NkK3YhaP/brUwpZ+d9jz1kGeMzsuKxzW/
+	EuJTZavoJsryDw5BlefF3XTsD3i8z2FcsYxgYX9J0iygTB835CoDDAqEqcty5TKAeqXSw0xjuFo
+	hsj8Gk4qVcvtyXXwN/QgOCDru
+X-Received: by 2002:a05:6000:2010:b0:3b7:9d83:5104 with SMTP id ffacd0b85a97d-3b900b83ce4mr10356643f8f.51.1754911610087;
+        Mon, 11 Aug 2025 04:26:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH28XXBuV6P4eMmACbygagN9E2w90dcNlvtCQwFebmNkdYsSnJof6QrfGHsOh8VfCIdvok2gg==
+X-Received: by 2002:a05:6000:2010:b0:3b7:9d83:5104 with SMTP id ffacd0b85a97d-3b900b83ce4mr10356583f8f.51.1754911609552;
+        Mon, 11 Aug 2025 04:26:49 -0700 (PDT)
 Received: from localhost (p200300d82f06a600a397de1d2f8bb66f.dip0.t-ipconnect.de. [2003:d8:2f06:a600:a397:de1d:2f8b:b66f])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-459e6214640sm259832575e9.1.2025.08.11.04.26.45
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3bf93dsm40408983f8f.27.2025.08.11.04.26.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 04:26:46 -0700 (PDT)
+        Mon, 11 Aug 2025 04:26:48 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -126,9 +126,9 @@ Cc: linux-mm@kvack.org,
 	Hugh Dickins <hughd@google.com>,
 	Oscar Salvador <osalvador@suse.de>,
 	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v3 05/11] mm/huge_memory: mark PMD mappings of the huge zero folio special
-Date: Mon, 11 Aug 2025 13:26:25 +0200
-Message-ID: <20250811112631.759341-6-david@redhat.com>
+Subject: [PATCH v3 06/11] powerpc/ptdump: rename "struct pgtable_level" to "struct ptdump_pglevel"
+Date: Mon, 11 Aug 2025 13:26:26 +0200
+Message-ID: <20250811112631.759341-7-david@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250811112631.759341-1-david@redhat.com>
 References: <20250811112631.759341-1-david@redhat.com>
@@ -146,7 +146,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: SDU-1iFEHvEclfuNCvQ9C5ZxQxoOeSCbn4uUR35h2Ug_1754911608
+X-Mimecast-MFC-PROC-ID: OCeqKzz5p6vUmGuuNaAQZWdyIJ0XOZ0gBSQ5c74Ajt0_1754911610
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
@@ -156,114 +156,79 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The huge zero folio is refcounted (+mapcounted -- is that a word?)
-differently than "normal" folios, similarly (but different) to the ordinary
-shared zeropage.
+We want to make use of "pgtable_level" for an enum in core-mm. Other
+architectures seem to call "struct pgtable_level" either:
+* "struct pg_level" when not exposed in a header (riscv, arm)
+* "struct ptdump_pg_level" when expose in a header (arm64)
 
-For this reason, we special-case these pages in
-vm_normal_page*/vm_normal_folio*, and only allow selected callers to
-still use them (e.g., GUP can still take a reference on them).
+So let's follow what arm64 does.
 
-vm_normal_page_pmd() already filters out the huge zero folio, to
-indicate it a special (return NULL). However, so far we are not making
-use of pmd_special() on architectures that support it
-(CONFIG_ARCH_HAS_PTE_SPECIAL), like we would with the ordinary shared
-zeropage.
-
-Let's mark PMD mappings of the huge zero folio similarly as special, so we
-can avoid the manual check for the huge zero folio with
-CONFIG_ARCH_HAS_PTE_SPECIAL next, and only perform the check on
-!CONFIG_ARCH_HAS_PTE_SPECIAL.
-
-In copy_huge_pmd(), where we have a manual pmd_special() check to handle
-PFNMAP, we have to manually rule out the huge zero folio. That code
-needs a serious cleanup, but that's something for another day.
-
-While at it, update the doc regarding the shared zero folios.
-
-No functional change intended: vm_normal_page_pmd() still returns NULL
-when it encounters the huge zero folio.
-
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- mm/huge_memory.c |  8 ++++++--
- mm/memory.c      | 15 ++++++++++-----
- 2 files changed, 16 insertions(+), 7 deletions(-)
+ arch/powerpc/mm/ptdump/8xx.c      | 2 +-
+ arch/powerpc/mm/ptdump/book3s64.c | 2 +-
+ arch/powerpc/mm/ptdump/ptdump.h   | 4 ++--
+ arch/powerpc/mm/ptdump/shared.c   | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index ec89e0607424e..58bac83e7fa31 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1309,6 +1309,7 @@ static void set_huge_zero_folio(pgtable_t pgtable, struct mm_struct *mm,
- {
- 	pmd_t entry;
- 	entry = folio_mk_pmd(zero_folio, vma->vm_page_prot);
-+	entry = pmd_mkspecial(entry);
- 	pgtable_trans_huge_deposit(mm, pmd, pgtable);
- 	set_pmd_at(mm, haddr, pmd, entry);
- 	mm_inc_nr_ptes(mm);
-@@ -1418,7 +1419,9 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
- 	if (fop.is_folio) {
- 		entry = folio_mk_pmd(fop.folio, vma->vm_page_prot);
+diff --git a/arch/powerpc/mm/ptdump/8xx.c b/arch/powerpc/mm/ptdump/8xx.c
+index b5c79b11ea3c2..4ca9cf7a90c9e 100644
+--- a/arch/powerpc/mm/ptdump/8xx.c
++++ b/arch/powerpc/mm/ptdump/8xx.c
+@@ -69,7 +69,7 @@ static const struct flag_info flag_array[] = {
+ 	}
+ };
  
--		if (!is_huge_zero_folio(fop.folio)) {
-+		if (is_huge_zero_folio(fop.folio)) {
-+			entry = pmd_mkspecial(entry);
-+		} else {
- 			folio_get(fop.folio);
- 			folio_add_file_rmap_pmd(fop.folio, &fop.folio->page, vma);
- 			add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PMD_NR);
-@@ -1643,7 +1646,8 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 	int ret = -ENOMEM;
+-struct pgtable_level pg_level[5] = {
++struct ptdump_pg_level pg_level[5] = {
+ 	{ /* pgd */
+ 		.flag	= flag_array,
+ 		.num	= ARRAY_SIZE(flag_array),
+diff --git a/arch/powerpc/mm/ptdump/book3s64.c b/arch/powerpc/mm/ptdump/book3s64.c
+index 5ad92d9dc5d10..6b2da9241d4c4 100644
+--- a/arch/powerpc/mm/ptdump/book3s64.c
++++ b/arch/powerpc/mm/ptdump/book3s64.c
+@@ -102,7 +102,7 @@ static const struct flag_info flag_array[] = {
+ 	}
+ };
  
- 	pmd = pmdp_get_lockless(src_pmd);
--	if (unlikely(pmd_present(pmd) && pmd_special(pmd))) {
-+	if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
-+		     !is_huge_zero_pmd(pmd))) {
- 		dst_ptl = pmd_lock(dst_mm, dst_pmd);
- 		src_ptl = pmd_lockptr(src_mm, src_pmd);
- 		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
-diff --git a/mm/memory.c b/mm/memory.c
-index 0ba4f6b718471..626caedce35e0 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -555,7 +555,14 @@ static void print_bad_pte(struct vm_area_struct *vma, unsigned long addr,
-  *
-  * "Special" mappings do not wish to be associated with a "struct page" (either
-  * it doesn't exist, or it exists but they don't want to touch it). In this
-- * case, NULL is returned here. "Normal" mappings do have a struct page.
-+ * case, NULL is returned here. "Normal" mappings do have a struct page and
-+ * are ordinarily refcounted.
-+ *
-+ * Page mappings of the shared zero folios are always considered "special", as
-+ * they are not ordinarily refcounted: neither the refcount nor the mapcount
-+ * of these folios is adjusted when mapping them into user page tables.
-+ * Selected page table walkers (such as GUP) can still identify mappings of the
-+ * shared zero folios and work with the underlying "struct page".
-  *
-  * There are 2 broad cases. Firstly, an architecture may define a pte_special()
-  * pte bit, in which case this function is trivial. Secondly, an architecture
-@@ -585,9 +592,8 @@ static void print_bad_pte(struct vm_area_struct *vma, unsigned long addr,
-  *
-  * VM_MIXEDMAP mappings can likewise contain memory with or without "struct
-  * page" backing, however the difference is that _all_ pages with a struct
-- * page (that is, those where pfn_valid is true) are refcounted and considered
-- * normal pages by the VM. The only exception are zeropages, which are
-- * *never* refcounted.
-+ * page (that is, those where pfn_valid is true, except the shared zero
-+ * folios) are refcounted and considered normal pages by the VM.
-  *
-  * The disadvantage is that pages are refcounted (which can be slower and
-  * simply not an option for some PFNMAP users). The advantage is that we
-@@ -667,7 +673,6 @@ struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
- {
- 	unsigned long pfn = pmd_pfn(pmd);
+-struct pgtable_level pg_level[5] = {
++struct ptdump_pg_level pg_level[5] = {
+ 	{ /* pgd */
+ 		.flag	= flag_array,
+ 		.num	= ARRAY_SIZE(flag_array),
+diff --git a/arch/powerpc/mm/ptdump/ptdump.h b/arch/powerpc/mm/ptdump/ptdump.h
+index 154efae96ae09..4232aa4b57eae 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.h
++++ b/arch/powerpc/mm/ptdump/ptdump.h
+@@ -11,12 +11,12 @@ struct flag_info {
+ 	int		shift;
+ };
  
--	/* Currently it's only used for huge pfnmaps */
- 	if (unlikely(pmd_special(pmd)))
- 		return NULL;
+-struct pgtable_level {
++struct ptdump_pg_level {
+ 	const struct flag_info *flag;
+ 	size_t num;
+ 	u64 mask;
+ };
  
+-extern struct pgtable_level pg_level[5];
++extern struct ptdump_pg_level pg_level[5];
+ 
+ void pt_dump_size(struct seq_file *m, unsigned long delta);
+diff --git a/arch/powerpc/mm/ptdump/shared.c b/arch/powerpc/mm/ptdump/shared.c
+index 39c30c62b7ea7..58998960eb9a4 100644
+--- a/arch/powerpc/mm/ptdump/shared.c
++++ b/arch/powerpc/mm/ptdump/shared.c
+@@ -67,7 +67,7 @@ static const struct flag_info flag_array[] = {
+ 	}
+ };
+ 
+-struct pgtable_level pg_level[5] = {
++struct ptdump_pg_level pg_level[5] = {
+ 	{ /* pgd */
+ 		.flag	= flag_array,
+ 		.num	= ARRAY_SIZE(flag_array),
 -- 
 2.50.1
 
