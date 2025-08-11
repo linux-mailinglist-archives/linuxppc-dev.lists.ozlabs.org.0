@@ -1,71 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-10813-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10815-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A2CB2127F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 18:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F252FB21291
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 18:51:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c10sf4tmpz3dCm;
-	Tue, 12 Aug 2025 02:47:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c10z06h1jz3d8n;
+	Tue, 12 Aug 2025 02:51:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754930822;
-	cv=none; b=FIOGGcNqauGJnOrEiea0LfmgZvpC6OsS9LgHd2Q2i4d6hkr8KT04KcxgQLzj6Vx20XdBJytsgEjKxasXnACKuiH9MiPLC3iI6ytBZGGP2ta+BMe44FiH+L6FvXABuWr8xFqUc46ujwRtbDRaM3iTHlhFpYD8dBGiEgj94YZY4Gt/bCu9jHHSs6V8i0GpXGUSkMszCUw1B0NOp/TLscmMYKM5oNzZEFWsCJ4d38HIXfE9PDhfcmAdrbQG4oFZ9gqRjqRGjzHvsFXENbolH2Z7K9/mWFxiV51V7exqty57QA2mgJMm/LVxxUBc3RB521EHg7MgnUm6Ky/QjAcC3vbenw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754931100;
+	cv=none; b=edBN0URmVqm8EdTwHj15WOf1clqcTZ6ZQhvYyIh9SS6GQLwybYLpETx6nsgygwCqqhRDF8hQZAe91XZcSn8U84xzMvwIuF8MVCSMtvbXNkSHFJYwI/Rjjk0PzG9MWChA8GKnXFmq2X0w6bfdk4062LYrWWKFx8NQbcOAzeqPUD3z91c7nG+rwPX9Ml+YNORcWci+taeqgyxkOD9I27LiFZKlo4GUFiori3vaLitfH+6mjMlvSooJ8ExnG8Vne2srNpyYyZcpZdgwJCyUVtxvA0o6aI5fJC86ZFg/9XdCgcTb00UxzY0Fp4GCdJt3b2iB/dJTq9BRLvJI4iQyt5Pj+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754930822; c=relaxed/relaxed;
-	bh=i8LsXBMRBe/Icg4da9jE4AlWAsPYCbJGuzx7DJqs7+8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nCnF8JBr0/znIYHGko6Qc8Gde0EIjiBp/3q6t/dZ5N4LJLja8/TayVNcdZkDnoHhg3vu9h9V8D7f01tu1g0CfqWW4SPp99siGt45tYAfTw6ZZM9765aT5RXPa9muRe5REKQv4y5neOFd7sJxstfI2EwNK0x1nsDo5QSFDTnnxN9JjCkTnyEzkdaI7S0pvQHIFGpVTwfRyQPQfAhhMbwC1HR67JHy27+d5oh5JUPdMZcjODn5vntvElBjoI1GofVFXsM1sdkipYqilroy3hcQfABQX4kPoiX1HJrijOjiRaC/cZ0RKW0SEx8VnMS0zbVFhcR8i2PWR70w1l8g5kdPKA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pvUcqneq; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1754931100; c=relaxed/relaxed;
+	bh=LERbV0S38RbJIKVdlX/fCrWEtk21kg3d1o9P6dPP59Q=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=FL+KPqSqId7NTQ2Ib1vxo5Zad+8+wspcRQH999lz1OZPBQUj/8ZfhLBq8Iq4owP6nX8qIICmMgiXTGN7gD810TuE45pwAiKGeKMjLcew91OG7r5OUfCsqFCw+UafJmZjVz9a3Yfe1hgUZtWNbej0rr0NpXYgi9bxjtKXgZR4EnNIln+KCLxDVFyqieKP4bwPTLYc+3YNYbq9fijALLuCuuIqt9cR2ZlEbgo+v94UT6T2puCoVLqznRcXhXkySHPKfbbkFYTbxMSBBeYSkkV2o9qb80Dxjq8ziWcQ4t2V0CSsbwzFPQ4gfOwgnWCazTDGu/SfI74F5coaGstfmaiGgw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TirO8jTP; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pvUcqneq;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TirO8jTP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c10sd2bS6z3dBs
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 02:47:00 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57BA8WMr027956;
-	Mon, 11 Aug 2025 16:46:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=i8LsXB
-	MRBe/Icg4da9jE4AlWAsPYCbJGuzx7DJqs7+8=; b=pvUcqneqANvc7ZJ3wXGNpF
-	8d/UNG2ORVtv9z8kuz1JFSj+2Pf307wacnhWibXtJ8MvSudc2ZRNc6MALykKZysf
-	p9svoc9ee2SxmWSto1ih9W3gx9757J/a/K1EsSGhlnYJyJUn6F8bAdJLLilQAvUx
-	E/OrYd6sUwcZ/+tbMhVNqOLWFMq5narkdFfsWfMP/rv3yp79pxqR139nJz2Qy0N6
-	ZnmQkT4EYmlu63YOcnCzC9oL4KXtPqd4VIotCVAuOB1aF33VN93o7xoUYtGukMtj
-	rd51vZ9kuqEOcgF6gFkgXCKIpKu7k6dicxxpXbgix/vXQtf1ZBQ4AN8ahdTQ6eSA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx2ctdat-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Aug 2025 16:46:43 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57BG7uH8017617;
-	Mon, 11 Aug 2025 16:46:42 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48ekc3ed6b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Aug 2025 16:46:42 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57BGkeJZ47448424
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 Aug 2025 16:46:40 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 59F5A20043;
-	Mon, 11 Aug 2025 16:46:40 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 023E020040;
-	Mon, 11 Aug 2025 16:46:39 +0000 (GMT)
-Received: from [9.39.30.243] (unknown [9.39.30.243])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 11 Aug 2025 16:46:38 +0000 (GMT)
-Message-ID: <f3ecce9f-22cf-48e2-843e-63f08a577e69@linux.ibm.com>
-Date: Mon, 11 Aug 2025 22:16:38 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c10yz3rMDz3cnc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 02:51:39 +1000 (AEST)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-76a3818eb9bso4172597b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 09:51:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1754931094; x=1755535894; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LERbV0S38RbJIKVdlX/fCrWEtk21kg3d1o9P6dPP59Q=;
+        b=TirO8jTPKUqjy83LGgOFRrKjXDHLci+w1jJ+gGRx0T1aLe3IhNibrAEVdX3PxbNKLg
+         Lq+5R9ylmnoowKA/k2p9gF0PFOPmssYuzBj+xcWZ1pNTg43D2xnUaY4ihtPbKC6quyzS
+         OLHNTJwNgDZxFZfVblqZG+HlXqk9lruq688CUlqb2dXcbXYfNEtOEqp4LrHnEIcESXL2
+         pgcXwKRy8kNy/8F+XJ0Qu3YACImw8/StwSD/UVw37SXk0Bu1A2Jbpoh1wRu3G+FXwMP2
+         R3pgROFxyB/CYR+/7hvgPgnU5k5FirULvop+vYudgoR5NjgoOks6y14CMPRXv/tkUnuP
+         wS8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754931094; x=1755535894;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LERbV0S38RbJIKVdlX/fCrWEtk21kg3d1o9P6dPP59Q=;
+        b=G0bCQhmaqMTJdt8qkGls2kFe6CAF9DdkxKIzI4YGhymnGx3AM+AsfQ08dzG3lEC2Ld
+         RL7OLx3WO8P5DGKqLDEzuIQBtk6S6Cb0JzG+N0GXy+L1msqOLayqlsX6VqckzhH2XJzP
+         5uaU1xVcuQAaV9Mzy0y9IG2KO0f/PK91YghVlzjkrlvMjbfsGAkR31nu3FRKCdWkSxrt
+         WBwqafMz4WQ1XduBJn6spmjSa+KTD3FkRJWIVTWaTsTnjB2LwPxaAh1JYi3jMmbDchYW
+         p+FD9W/JpEDs4XLv2DO7tIYTQQb6bfxEI4JTk6c0gcN7y84ExzQsDJZMCPk/fm0ZDf6e
+         rGRg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZmyKh9aJq4E8EwuZLo16joGi+dRcYnC/3oMzsSnTj/wRWw599ExZLLBMTM8N3nZ+4FI+bIRobvTgdsYM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yyfy0No5VkDIlmzV4V2l7aSV7bFU9DqjP2CqCID7uDi+ocvwsXf
+	/MkawvIzpVcyzNKjwCc6mUHIwrplIafPwR+YSds184S+5l3eAurO1p6veZE1qQ==
+X-Gm-Gg: ASbGncufoG2VFdLrrph/lPsiew790/sONZCmunPCJQzbTKp+cT1Hib9z/JTnp1oNS5q
+	7640gCgP2oJ+TjA7q2wSK1FsaH8839VTKtQCDSgzdA5kGeqxaZLAG/W/OupxDRBpB/YnDJjyVkm
+	Ei0xkA+ZRJmVYhBeQNwlue4HgAQHCKlCdnfK9Yy10DUANvy1nDdPZFmkChSlR3v/tM4l8o3Suzo
+	7wOa8VcxwjWLXvOVR1TpUD2wD7RJK0eR9t95+ntG02jh/vZLSFMjBikikyutrfygvRkhR6TFzJ7
+	lsolCbwmml3aCO61s1f8BWqqGfjWs9p8gg0hdTfBvVGlEkXPgEzsmVoufX0QXlXIVlr5l8YBxEs
+	TILlX6od+zocbIv/KX6OxSA==
+X-Google-Smtp-Source: AGHT+IHdxDU1+GsAONPyuYx2xGLExrkYYSwAJYQG9U47O5KfVxLBq4NaK2X4lcJNVXSJvnN26C4h3g==
+X-Received: by 2002:a05:6a00:3c86:b0:76c:503:180d with SMTP id d2e1a72fcca58-76c4606bd5dmr20521364b3a.8.1754931093831;
+        Mon, 11 Aug 2025 09:51:33 -0700 (PDT)
+Received: from localhost ([216.228.127.130])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76c46a05464sm8661470b3a.96.2025.08.11.09.51.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Aug 2025 09:51:33 -0700 (PDT)
+From: Yury Norov <yury.norov@gmail.com>
+To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Barrat <fbarrat@linux.ibm.com>,
+	Andrew Donnellan <ajd@linux.ibm.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/2] powerpc: pci-ioda: Rework pnv_ioda_pick_m64_pe()
+Date: Mon, 11 Aug 2025 12:51:26 -0400
+Message-ID: <20250811165130.37552-1-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,90 +96,27 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] soc/fsl/qbman: Use for_each_online_cpu() instead of
- for_each_cpu()
-To: Fushuai Wang <wangfushuai@baidu.com>
-Cc: frederic@kernel.org, christophe.leroy@csgroup.eu,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org
-References: <20250811065216.3320-1-wangfushuai@baidu.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20250811065216.3320-1-wangfushuai@baidu.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDEwNiBTYWx0ZWRfXzUjSuxKKKX8J
- NIaAIJsCrluSo5NbhwWQJ+X9uLkf919nigjMkco6BbFFc5a/uHZT8WzAC+py6gT6myDO/mgBYve
- +HVOAOr/0qvkXD66X2bNKuE5c4LzorK3dQrdvFz+ZXC/0UTx8CmLBk0dOWN1A/mJg/kEFqt5C2E
- ggZhjUhfdNwm4QjQXJ2M+6ysrhYzMelsLKVvVt50crY9g7uUKJ81EDEZn/lGr5yNdvtouZoDk0I
- wjLYwCHZ9WNXwrWu5a4C/3Vi5io9qe8jsxEykyGqG3v5eXfozxE81sgwoR08weXvGNWy/5noMk2
- d6ny8FdV7zbFkMT8OUNk3cEiMJsU6jw6gXpvoCCWE231RkZ3d0FcJPjowMA0LELm7lijW1kgr25
- T0XItL4i+K4UpQKRn0B2g8GyzubcCNPnRBaQxrcwdqaZft4uPn0oEcJxJ9naryoEdT63hryq
-X-Proofpoint-GUID: TDgLOFCUzs6KSeu4QXexSOYJXoB8Jad6
-X-Authority-Analysis: v=2.4 cv=C9zpyRP+ c=1 sm=1 tr=0 ts=689a1e73 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=zuLzuavZAAAA:8 a=VATuJ96wsPKbvXY_zzoA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: TDgLOFCUzs6KSeu4QXexSOYJXoB8Jad6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-11_03,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0
- mlxlogscore=977 suspectscore=0 impostorscore=0 clxscore=1011 malwarescore=0
- spamscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
- definitions=main-2508110106
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Use cleanup functionality and better bitmap API in the function
 
+v1: https://lore.kernel.org/all/20250720010552.427903-1-yury.norov@gmail.com/
+v2: 
+ - add patch v2#1 that switches the function to bitmap_alloc() and
+   clenup engine (Jiri);
 
-On 8/11/25 12:22, Fushuai Wang wrote:
-> Replace the opencoded for_each_cpu(cpu, cpu_online_mask) loop with the
-> more readable and equivalent for_each_online_cpu(cpu) macro.
-> 
-> Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
-> ---
->   drivers/soc/fsl/qbman/qman_test_stash.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/soc/fsl/qbman/qman_test_stash.c b/drivers/soc/fsl/qbman/qman_test_stash.c
-> index f4d3c2146f4f..6f7597950aa3 100644
-> --- a/drivers/soc/fsl/qbman/qman_test_stash.c
-> +++ b/drivers/soc/fsl/qbman/qman_test_stash.c
-> @@ -103,7 +103,7 @@ static int on_all_cpus(int (*fn)(void))
->   {
->   	int cpu;
->   
-> -	for_each_cpu(cpu, cpu_online_mask) {
-> +	for_each_online_cpu(cpu) {
->   		struct bstrap bstrap = {
->   			.fn = fn,
->   			.started = ATOMIC_INIT(0)
+Yury Norov (NVIDIA) (2):
+  powerpc: pci-ioda: use bitmap_alloc() in pnv_ioda_pick_m64_pe()
+  powerpc: pci-ioda: Optimize pnv_ioda_pick_m64_pe()
 
-Yes. This change makes sense given that for_each_online_cpu expands into the same.
+ arch/powerpc/platforms/powernv/pci-ioda.c | 27 +++++++----------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
-Why not do for the remaining ones too?
-
-linux_tip$ grep -Rw "for_each_cpu" * | grep  cpu_online_mask
-arch/riscv/kernel/unaligned_access_speed.c:     for_each_cpu(cpu, cpu_online_mask) {
-arch/riscv/kernel/unaligned_access_speed.c:     for_each_cpu(cpu, cpu_online_mask) {
-drivers/soc/fsl/qbman/qman_test_stash.c:        for_each_cpu(cpu, cpu_online_mask) {    ** current patch addresses this.
-drivers/infiniband/hw/hfi1/sdma.c:      for_each_cpu(cpu, cpu_online_mask) {
-drivers/cpuidle/cpuidle-tegra.c:        for_each_cpu(lcpu, cpu_online_mask) {
-include/rv/da_monitor.h:        for_each_cpu(cpu, cpu_online_mask) {
-kernel/trace/trace_osnoise.c:   for_each_cpu(cpu, cpu_online_mask) {
-kernel/trace/trace_osnoise.c:   for_each_cpu(cpu, cpu_online_mask) {
-
-
-Rest everyone seems to have moved.
-linux_tip$ grep -Rw "for_each_online_cpu" * | wc
-     416    1141   23047
-
+-- 
+2.43.0
 
 
