@@ -1,63 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-10818-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10819-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59328B21325
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 19:28:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB349B213CD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 20:01:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c11nz0q23z3dFS;
-	Tue, 12 Aug 2025 03:28:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c12Wb1HSYz3cmw;
+	Tue, 12 Aug 2025 04:01:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754933335;
-	cv=none; b=cKdK7zh0QAqkTT34b6q5KJbpm7cRSkOuGKZhnFrSNZtY4wbWVMli59Q2DQPAr9ds3BLD+TD5SRxbAEey1lUvDh33vpxGg63Kjs5HJj+bYg83s660TbAdooQwQrDLOqkVjVyLfe989cXyOAFP7iAzDHlUHKjcTFSWBHLW+ZTrMBoAayaIYDq6zlmsisrz+cOtmB3uXoFKE773IlvCpy7l+UQ8VX0VUnb4rjQsW1ZLnIaJiijdrdDn13WdsTlxQKXfTdyZfPu3J+SeM/8gVaSPsQHZvNPdzGU0x3Lku4TGUWDG9BCu7iakGkqpzoWhHHlBuluaeroa+/VFN4A2TWnyjg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754935291;
+	cv=none; b=FEYdfhfnbopChizdmbE2xUjrZveOA4LJ5+vfJN3u5lycUy6QvZuBK8zR7Bq2D7Ce4e+Y9StBy4q9iGxjBlguUVpKVBbwr55fIIf0DyYOlLPxsBWfTEFXOBXHDE5etqK5eOuJzzHhHN/58h0BYjqIXP6pe9e7urusOQduUo8iqbLraUPrQlh0Ur9p6Pa2VPSfXTbubmokAAmuhmVJrr/cg6jPd/Wlvg1e0GaoFyYRfdHOxswiy/eZ4WCpewllFfuOwh+Oco5iXJWJpZDxxlvYV++wno+biqknTpN4D1jblrQxYmRXlflue7a0KVwfqS2n324xFrsow6VBiFZySbeZ7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754933335; c=relaxed/relaxed;
-	bh=ztqQwoo6+KUPLDZvylz/n2KJXoFMlt958vmwd5nxUG8=;
+	t=1754935291; c=relaxed/relaxed;
+	bh=Utp41nigf8qwg3TGCeD7rU7db4o6+GuWmMBaFCTtmoA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fc9XnKH9TGNvVFKN3X3yT1scCc1hu4wetifLOycZUiLaP225IM+eE0/Zh54kPU1kOwO/76rcM1jYHCdiZDqnYFM9d6dN1Kcf5QtllWgbJTuBXqk3B4l6SYddS3Tl3+fplQD11VEmPhlLqoJIL1Sr9J5nmQ/jVPULm6BHOu1Erwakl7Z3MnY3Q56NB4W1+FMjOI4VGjTYMbWIYcXCOjF593sNlXS3AU+lWUR3WVOsnuv6D3gphtXsxIJN4310knKK0wPcPle/RS8vP1hfBo4KJCwy/GdicGQRPPlCWrgA/rNiWGbJ3+h9G9jXZ7N4AXKitikqj44Ylp6KbAYJu2h/Jg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KTE7tFWc; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mxaj2fSbLVQCoiOqItC4pMVULcZ7f9Pc38ynXIy4MLVkH9tDAX8ha+gi4ebR9AJZEw8HiR1ZZzBYBalikKhgXP+DqUazlHslXSBKtbBbSwzLm+NKHRR1sOiIFinzmNx3YZLxhzS1KWHM3VJLCUJ3wX2MI8SkArHA+gHzUGSs7W/NOB0508Ul2A/b/rEU7qYCrTJIgLlsugJ4l1rjpOcOORnk5fA2oKVeeV2mzuV/ylDSn4RepekcSOYJS3hYTF5p7dig1IKJ+Wg602CmianCjpLiYNlgHFzJ4fKmLqM2+V5ou/XlOmOvXui15LEcGf5f/nF73v+wVyt4JRk/dMjMMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X5EXUN2p; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KTE7tFWc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=X5EXUN2p;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c11nx6jHmz3dBs
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 03:28:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c12WZ4fB2z3cmg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 04:01:30 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D887361482;
-	Mon, 11 Aug 2025 17:28:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BD8C4CEED;
-	Mon, 11 Aug 2025 17:28:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 96663601FA;
+	Mon, 11 Aug 2025 18:01:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A15AC4CEED;
+	Mon, 11 Aug 2025 18:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754933330;
-	bh=9XSbHbfFnw3XIaRpvKnt/hioK7AaWjMpyvzXjCeNyEA=;
+	s=k20201202; t=1754935288;
+	bh=oaStqyeej7yqSzgI8HKKqj00CWEPmn5WsFskP+XUK+c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KTE7tFWchqSfKGfWKXO+oLy2j2snSzC+gwd/SC7Zn2Cffnn18e1k3l9cXgXa/F86h
-	 0cJFMZk4mJMXr0x15gQAo1zB6Im31tDgvtWVKCUh9Oon7vTw9+KqZzHRMX9LaTqfK7
-	 rs9Dn2oqM0/hghOMcIDBEyQS/3WuUhccCs+XevhptWl8mkVCNnRIjYdPqnK1FrKe7H
-	 Ydy8ple9K7VqfKWHQa48s692TrDWf+IbGp3ID2ulJmP9wt1KfuoEHFD58jkUvNrthp
-	 22BT2SVhhpbmYVlODBpBcG/ctqMnx2IIYNVdwFoQ/+KiE/mSkdHIE5Cr6fvH/yLULB
-	 AEVajkqahSRYA==
-Date: Mon, 11 Aug 2025 12:28:49 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Michael Ellerman <mpe@ellerman.id.au>, devicetree@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linuxppc-dev@lists.ozlabs.org, Scott Wood <oss@buserror.net>,
-	linux-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>
-Subject: Re: [PATCH] dt-bindings: powerpc: Drop duplicate fsl/mpic.txt
-Message-ID: <175493332847.3843132.2055857937103048620.robh@kernel.org>
-References: <20250807214432.4173273-1-robh@kernel.org>
+	b=X5EXUN2pGcp6CPXoxCDazABPuA3K/Ss0elSgvoV3BfFwp7d5jrU5QSyxDUELmOMd2
+	 sM4EMfjt4Zp80NM2W42zzXwNk38urPB/VDMqcB99ruw2QxEIbE/jt9IAHtqC9Y84Rh
+	 6MEfDvxGuyyB8BbiiRsZBcdtxQkMZnyFQl/XLxG56uNmacJ7XAeKWk76tzsp/j0PUl
+	 PYb5DK6m3mxfYIAjxvof4AFHKCQ0Bf/ULogD17GOdSH64J65XFTdvKKiG2IUr1XE5l
+	 VUozKpvR83OAufVEPGOiRtZxoMi2WQQrV3lVogX3uzxXDfbhqBKBfe9L88ohsPpeQ3
+	 CC+YdkmSomrYQ==
+Date: Mon, 11 Aug 2025 11:00:26 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v2 0/7] MD5 library functions
+Message-ID: <20250811180026.GG1268@sol>
+References: <20250805222855.10362-1-ebiggers@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,26 +67,42 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250807214432.4173273-1-robh@kernel.org>
+In-Reply-To: <20250805222855.10362-1-ebiggers@kernel.org>
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-On Thu, 07 Aug 2025 16:44:30 -0500, Rob Herring (Arm) wrote:
-> The chrp,open-pic binding schema already supports the "fsl,mpic"
-> compatible. A couple of properties are missing, so add them and remove
-> fsl/mpic.txt.
+On Tue, Aug 05, 2025 at 03:28:48PM -0700, Eric Biggers wrote:
+> This series is targeting libcrypto-next and can also be retrieved from:
 > 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
->  .../interrupt-controller/chrp,open-pic.yaml   |  12 +
->  .../devicetree/bindings/powerpc/fsl/mpic.txt  | 231 ------------------
->  2 files changed, 12 insertions(+), 231 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/powerpc/fsl/mpic.txt
+>     git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git md5-lib-v2
 > 
+> This series introduces a library API for MD5 and HMAC-MD5 and
+> reimplements the crypto_shash "md5" and "hmac(md5)" on top of it.
+> 
+> The library API will also be usable directly by various in-kernel users
+> that are stuck with MD5 due to having to implement legacy protocols.
+> 
+> This should again look quite boring and familiar, as it mirrors the
+> SHA-1 and SHA-2 changes closely.
+> 
+> Changed in v2:
+>   - Kept the architecture-optimized MD5 code, since unfortunately there
+>     were objections to removing it.
+> 
+> Eric Biggers (7):
+>   lib/crypto: md5: Add MD5 and HMAC-MD5 library functions
+>   lib/crypto: mips/md5: Migrate optimized code into library
+>   mips: cavium-octeon: Move octeon-crypto.c into parent dir
+>   lib/crypto: powerpc/md5: Migrate optimized code into library
+>   lib/crypto: sparc/md5: Migrate optimized code into library
+>   crypto: md5 - Wrap library and add HMAC support
+>   lib/crypto: tests: Add KUnit tests for MD5 and HMAC-MD5
 
-Applied, thanks!
+Applied to https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git/log/?h=libcrypto-next
 
+Reviews and acks still greatly appreciated, of course!
+
+- Eric
 
