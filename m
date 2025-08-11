@@ -1,93 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-10816-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10817-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A071B21292
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 18:51:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E380CB212A4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 18:57:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c10z26cbZz3dF0;
-	Tue, 12 Aug 2025 02:51:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c115b4xpdz3dFB;
+	Tue, 12 Aug 2025 02:57:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754931102;
-	cv=none; b=nqcrKkuo661bJ7n+nZNLD4fENQVoO4/n72yeIi69a/gKQNsYkYzR84BbfSeDx5/GXNipDJI14KbM8E8ibUrKnQQZR/tgyKz2vb6j7TYEKrsunn7NcaxkFu2KroIh0lL5JUVmZQfCExWpf9KKY4Q5xQixH9xGDhopUSnRCvwOVhQ/aCoaB6ANsewgqdSFcMmaeZkYnpF4yQrpM8RSeKmoGai1QHrcfqZwQZ/SL1l1u4gfqAaHMJk+m3gHL9+Mr8o2wIkHUQmxMm9gd3nWrPxoX30kvGUpUEFCOTOCE4kfVbyUgTRD8VQep7Uk+zFJ7x7QoKR5+9lwmX9We/VzmrlFMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754931102; c=relaxed/relaxed;
-	bh=TpaBsV9SP95dUvhDAYzFMq9u9AsNNIRTwXToAnWSLqY=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUR8BHm5s6Ph5S4S/hf4tgqqFbMRaFcb+q961FSr0YdR+dTyA+oTh2QmbWnogkA+sQMaGYFmfcmUCYOciACO8OIf88JHSSgpt4q1D9IR1YLk0ceJeBQUsO08HRe4nSv7m4F2zl1I6V7zJS+tzk1/9fwEdSAHEdpBWCdHRMXvtXtGpZxbgREgeDJw8TCleGWa2E3cjtXFhF3XCqa/PglECsuMiGKzV+N74V9O/vLyN3Ehm0QfwFlqK0XMysC/AxlxyYI5AYb9IIpqKlXzOvsdHJBgxP1VgkECgPLBLfi4oy8NVHEULuogITl8DvvR3DWMe7GKG1LUP8ezX83UzB40rA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eZQhEr9A; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.21 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754931443;
+	cv=pass; b=AThGh+BATxzel5QGPNgt4zou/PX2S20fCBPPBnw3k0SrUW0OnNdiR4srPGu+OjHlcsBlKUUCWdeiarfDrHck1w5rOsyrPhj71AhtlduTUs4/KbqabKqdzcs3C/LVw0wPQTs/eXxo/x/ej2wfO4NaLCvJNrV0VGuR9j8ePc9PN8xKAlXW+7iBsQzDiGgZuFQip12+Rv4sf6RhbjADFjL43bHf/3RDiVna0tA0nyoeq6HYfsafpZC6NzKxZX9O2eGuG/ws8rKbC9D14HPHoAyhFx7mIg/z4vFV6DWD30q4jBSDm5we7W/JmJzHnOdm8HKXeoBv1A8Nw02iqs7xp+JPoA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1754931443; c=relaxed/relaxed;
+	bh=tru+5MX/zJL5yTAewuscQjg5+n2+3GfPhnXXJk3grEM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fniofym3cV+GTu3avqK6DC2uIoQp4xZpUFHiQweZIaZisErcLPYELDmWYJL6j0VpKDZabtJKkU1Ak0In/GThdfJ/Tp8v3lCFwccxy1ow1GiQefYuHeairquFNNpwovSecyMsUuJp91dA+LJnAQV4/h8Khkcp83tdmlp2U6peYTu4S92lW/v0U6duY9buWT+M2wvXES6fRXyBFTWVF18Bt6ulEjXlfsFGLkBJahW2gkzMGpKaOWu+KEICjXgz5HwNb0LBK2woKlw8SHQfA9knn5XTG+lY90rhySkU6cIqIeL8bIsXzrhy9F/O2GRJgZyt3LGwJaODmTJNj52vTYqswg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=S+112Bm1; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=pknGW+py; dkim-atps=neutral; spf=pass (client-ip=85.215.255.21; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p00-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eZQhEr9A;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=S+112Bm1;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=pknGW+py;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102a; helo=mail-pj1-x102a.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.21; helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [85.215.255.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c10z2238Tz3cnc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 02:51:42 +1000 (AEST)
-Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-31f325c1bc1so4033237a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 09:51:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1754931100; x=1755535900; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TpaBsV9SP95dUvhDAYzFMq9u9AsNNIRTwXToAnWSLqY=;
-        b=eZQhEr9ASvigJ9pHlPuOx03qAVQQfKxFcgdxuLutx6VjEP+2+qJLjTwHta+u8PeMI7
-         jdxW8T35Bs4VXgqZI+2XmupKJpXdFY1eVXW/mvhMmNIoI/QcwIQIlYRpAx4YHx72NQM/
-         5CASPfFt5HmMcHOotwwY9IpOcjKbLWdcwdSnzvCvb96eV9jPAXdUAUduGUUpi30RlGOC
-         T3HekjtMf/yFNEb5pDLKMzVF6udZqPAIFVRU15bnI40pf2j/OhjAdRr0MXQ/dzB1pIr7
-         Xpb1Ce+KFcYkCvk4DUfRigw5ivRKTOBYvyKaSDDHTTC5U+dkYf8ZXAgN4pE5dQOyaiC8
-         MrVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754931100; x=1755535900;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TpaBsV9SP95dUvhDAYzFMq9u9AsNNIRTwXToAnWSLqY=;
-        b=NcxIkI3V8GA3lMEHNlLl1SfhRaIQdzMRFVX9pB77VM+4P2703ALKCeRY9OQuKILFtz
-         biAzpOWjTRs3goIwq7wtaCj7aefTZdS+eqvuZx2xQp91l0XoL+4mR0T2tE25uRxICk2L
-         rQm0kmrBRpGQNDMupjz9JkD1S071y0OG/n2O7GNCLvSqrKAj3hKRGxtmDYSoZAF+AdJs
-         f14zTMjFjNXt08abuxRjM/teyWnQkLw3r+APG2vA6tMIl4oupvbR8u50JM7WMxgEpYSX
-         CFdrGaImV3egvZXnRO4KZjo8AHAunyaS1IjGRwXM4la45+g1lOFOUkcC1ltmpCjCfT/l
-         sbJw==
-X-Forwarded-Encrypted: i=1; AJvYcCXKFxMQjLSrz7lYCjs8tAnGGhltkehC2//TgC3nivbHL2n994hJVPxntLWr/SHoH3pKaE4XdX6wfdeY0gk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwMu6V5wDJ4GdYFYEIlalgLd6+CgKKgvDj+RRRr0jfPMTZXJAl5
-	PkUDZajy8e5C7N98yCs8o23R7U91OHxVZWpXgpvEvam4/UGSu4UQ88NWgsuUyA==
-X-Gm-Gg: ASbGncuDWMHxyfJIhKs/tQliOi02YTbP9Q7ZXedjBZpV59k/MZc+/HHKVq/Tl4f6jp+
-	83GVpQdEjS9x8er1QUI5tIZzO897fw6LHMeTY02xHT+1EStoWAiy74hVtBkbbfetVo+SbJOGLVD
-	VHe0AouYZtpyVAPMvfjZvRc3bOTGGGrC7jlYAh3mrViBSnGqPNDZk+sCPpTGLvbki5wMB6huEDr
-	AocdaYr3jCtTLz04ZI7n3kF7mWb9tpXWCx2w3nnyFP/FM0C/mr10ZXevedBlTIeZcj/Ywx1P8ry
-	GzxN5LfifqZbQZJN99XArsXXJUnz2Z0SPDYsrH+smffm2FJzraCGBbqGwvSdMLiYTsn1T/KU3Ia
-	RgKoGBM09Syxq7VLgzfdKiIZZPepvJQKc
-X-Google-Smtp-Source: AGHT+IEnMob+OASgMciN2iOwD3AQExjTZg0txKEu5PZg0AB3URB7DM8uN2lLQYYlMVfKbzDw45a7AA==
-X-Received: by 2002:a17:90b:2fc8:b0:321:87fa:e206 with SMTP id 98e67ed59e1d1-32187fae455mr15484709a91.20.1754931100403;
-        Mon, 11 Aug 2025 09:51:40 -0700 (PDT)
-Received: from localhost ([216.228.127.130])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-31f63da5719sm32201110a91.6.2025.08.11.09.51.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Aug 2025 09:51:39 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Barrat <fbarrat@linux.ibm.com>,
-	Andrew Donnellan <ajd@linux.ibm.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] powerpc: pci-ioda: Optimize pnv_ioda_pick_m64_pe()
-Date: Mon, 11 Aug 2025 12:51:28 -0400
-Message-ID: <20250811165130.37552-3-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250811165130.37552-1-yury.norov@gmail.com>
-References: <20250811165130.37552-1-yury.norov@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c115X1RrTz3dBs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 02:57:18 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; t=1754931422; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=Lfw3xhcT9e6Bv/tFrVbfmfVMXrmLMvIMUgG7mXTPmEZpaYSlZ8UpQxNIuzviMFMGyM
+    KAlFZo9CCgnEUWnXBGZ9fWIAfVbYUDmcua0qDwe9s/kX+FrGHCetR8jORnCshCiKxRIc
+    GgY2HBiVX3dD/DCpr2jbbOaHYKdZxR/grzRFl308JkUESh1pEmIm9aZqCyA0Z3/Ss/2D
+    YKjJxnbTXI89X3r9Yz5JzvMOuEQ4anfhCdTtCt9IfjgoRfrkmx4ayXmA9PQ7igCMiydq
+    Tau6XbgfAa27FOA3fS3UCrX16ehJ5nE2wZvM4Fb/2pACCOSJ//az5g77udBAyvSngVJo
+    7V0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1754931422;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=tru+5MX/zJL5yTAewuscQjg5+n2+3GfPhnXXJk3grEM=;
+    b=ayp0DflGPYpEvy+i8uI9xvuJp8StcomzRReLOEQ33/Q3M2Q6F0FHNDW+a5/HbTPNru
+    i5/jxFbfi8L9RY5J8YmPuXQqHuGr4j7AQsSgtImrqBWWeFfsaJfFjSL7rgbH8bYyReI1
+    3Xrr0da3hSYFLhUMj4QFriJsr06SNkI0xZeYr9D0zG3+WX0rW3Lc8lWflkxqlA/d6H8Y
+    ReV2Nq01+qZWf2KQ8ZQ5OIQVlWG6kaMpa0chKYFUdupRNeNx8SLtnbSs/ZUYc3L3ht/Q
+    8mT0KGKS/gwTI6QfWDkTGXstT2glVMIy0Qx8hIyIvS7OouZQ1975NO4nDLjHJUr0Ed+h
+    eQOA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1754931422;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=tru+5MX/zJL5yTAewuscQjg5+n2+3GfPhnXXJk3grEM=;
+    b=S+112Bm1mdbtr0garHnXK5JDGLGSnPCvGFT6lK9gkoaqRt4TzwjyWWaGV9bJMSkUVS
+    FxRrRCLJk1O76xr/k+6HFMInHm2yf6p/BP4qOf1lNKz+Bh2RmRY89gLhm1fgw+CXFtJ6
+    kKzYfuaDdCYkwFTrJHBM1kSjEN5FIUItjChRUkhAZr0irfMmHeFvTpCHgU7SdB41ZD9S
+    VxCbWFcuflib4tF8Hco3qT+Hb4UcGMP5bnly5cfALUzqDwYVCZ2e5yoNArDJxRa6fZVC
+    0QrhqDqVCE1wdzzjO84v1GPtjWj+0GXi+PMX4mn6Jlr5D2h8LKlzSFr4RWKXsIwQ+ecc
+    Vbtw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1754931422;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=tru+5MX/zJL5yTAewuscQjg5+n2+3GfPhnXXJk3grEM=;
+    b=pknGW+pyQwNG08NReh2VUn37gevhUkAdcLJ9869doyIbSywRStSDkwPlE8lwh4g7Ds
+    UItxZWsSi42H03p4CaAw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6P1rfO5KiO55fErqk+SEbqP8NhOCyDhaDCIbC4OSPncFYTSyvQv/KQ=="
+Received: from [IPV6:2001:16b8:5039:2800:ccef:2896:9625:9203]
+    by smtp.strato.de (RZmta 52.1.2 AUTH)
+    with ESMTPSA id e6066c17BGv1EYY
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 11 Aug 2025 18:57:01 +0200 (CEST)
+Message-ID: <5e0a55a9-10ff-4594-aada-34eb31b2d8aa@xenosoft.de>
+Date: Mon, 11 Aug 2025 18:59:43 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,68 +92,152 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: i2c-pasemi messages since kernel 6.16
+To: Sven Peter <sven@kernel.org>
+Cc: linux-i2c@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ hypexed@yahoo.com.au, Christian Zigotzky <info@xenosoft.de>
+References: <2810E95B-8DB4-48CB-80F6-DF01EB7BEEFC@xenosoft.de>
+ <d4b0a847-0617-4735-b6a1-ff5375f166bd@kernel.org>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+In-Reply-To: <d4b0a847-0617-4735-b6a1-ff5375f166bd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>
+On 11 August 2025 at 06:12 pm, Sven Peter wrote:
+> hi,
+> 
+> On 10.08.25 18:47, Christian Zigotzky wrote:
+>> Hello Sven,
+>>
+>> Since the kernel 6.16 we have the following messages during the boot.
+>>
+>> [    9.459706] i2c-pasemi 0000:00:1c.0: NACK, status 0x08210100
+>> [    9.649736] i2c-pasemi 0000:00:1c.0: Issuing reset due to status 
+>> 0x08210100 (xfstatus 0x00000001)
+>> [    9.690696] i2c-pasemi 0000:00:1c.1: NACK, status 0x08210100
+>> [    9.708651] i2c-pasemi 0000:00:1c.1: Issuing reset due to status 
+>> 0x08210100 (xfstatus 0x00000001)
+>> [    9.892693] i2c-pasemi 0000:00:1c.2: NACK, status 0x08210100
+>> [    9.911535] i2c-pasemi 0000:00:1c.2: Issuing reset due to status 
+>> 0x08210100 (xfstatus 0x00000001)
+>>
+>> What exactly do these messages mean?
+> 
+> Do you just see these messages or are there also any other issues like a 
+> device on the i2c bus not working anymore when it worked fine before?
+> We added some additional logging recently and I suspect that this has 
+> always been happening and no one noticed.
+> 
+> 
+> 
+> Sven
+> 
+> 
 
-bitmap_empty() in pnv_ioda_pick_m64_pe() is O(N) and useless because
-the following find_next_bit() does the same work.
+Hello Sven,
 
-Drop it, and while there replace a while() loop with the dedicated
-for_each_set_bit().
+Thank you for your answer.
 
-Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
----
- arch/powerpc/platforms/powernv/pci-ioda.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+I just see these messages. There aren't any other issues.
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index e2b0132fb6a1..325197ac19e5 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -295,7 +295,7 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
- 	unsigned long *pe_alloc __free(bitmap) = NULL;
- 	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
- 	struct pnv_ioda_pe *master_pe, *pe;
--	int i;
-+	unsigned int i;
- 
- 	/* Root bus shouldn't use M64 */
- 	if (pci_is_root_bus(bus))
-@@ -311,23 +311,16 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
- 	/* Figure out reserved PE numbers by the PE */
- 	pnv_ioda_reserve_m64_pe(bus, pe_alloc, all);
- 
--	/*
--	 * the current bus might not own M64 window and that's all
--	 * contributed by its child buses. For the case, we needn't
--	 * pick M64 dependent PE#.
--	 */
--	if (bitmap_empty(pe_alloc, phb->ioda.total_pe_num)) {
--		return NULL;
--	}
--
- 	/*
- 	 * Figure out the master PE and put all slave PEs to master
- 	 * PE's list to form compound PE.
-+	 *
-+	 * The current bus might not own M64 window and that's all
-+	 * contributed by its child buses. For the case, we needn't
-+	 * pick M64 dependent PE#.
- 	 */
- 	master_pe = NULL;
--	i = -1;
--	while ((i = find_next_bit(pe_alloc, phb->ioda.total_pe_num, i + 1)) <
--		phb->ioda.total_pe_num) {
-+	for_each_set_bit(i, pe_alloc, phb->ioda.total_pe_num) {
- 		pe = &phb->ioda.pe_array[i];
- 
- 		phb->ioda.m64_segmap[pe->pe_number] = pe->pe_number;
--- 
-2.43.0
+Further information:
 
+$ cat /proc/version
+Linux version 6.12.22-powerpc64-smp (geeko@buildhost) 
+(powerpc64-suse-linux-gcc (SUSE Linux) 7.5.0, GNU ld (GNU Binutils; 
+devel:gcc / SLE-15) 2.43.1.20240828-150300.536) #1 SMP Tue Apr  8 
+09:47:26 CEST 2025
+
+$ sudo dmesg | grep -i i2c
+[    5.032840] i2c_dev: i2c /dev entries driver
+[    5.440998] i2c i2c-9: Detected TI TMP423 chip at 0x4c
+
+$ sudo i2cdetect -l
+[sudo] password for christian:
+i2c-3	i2c       	Radeon i2c bit bus 0x93         	I2C adapter
+i2c-10	i2c       	PA Semi SMBus adapter (0000:00:1c.1)	I2C adapter
+i2c-1	i2c       	Radeon i2c bit bus 0x91         	I2C adapter
+i2c-8	i2c       	card0-DP-1                      	I2C adapter
+i2c-6	i2c       	Radeon i2c bit bus 0x96         	I2C adapter
+i2c-4	i2c       	Radeon i2c bit bus 0x94         	I2C adapter
+i2c-11	i2c       	PA Semi SMBus adapter (0000:00:1c.2)	I2C adapter
+i2c-2	i2c       	Radeon i2c bit bus 0x92         	I2C adapter
+i2c-0	i2c       	Radeon i2c bit bus 0x90         	I2C adapter
+i2c-9	i2c       	PA Semi SMBus adapter (0000:00:1c.0)	I2C adapter
+i2c-7	i2c       	Radeon i2c bit bus 0x97         	I2C adapter
+i2c-5	i2c       	Radeon i2c bit bus 0x95         	I2C adapter
+
+
+$ cat /proc/version
+Linux version 6.16.0-powerpc64-smp (geeko@buildhost) 
+(powerpc64-suse-linux-gcc (SUSE Linux) 11.5.0, GNU ld (GNU Binutils; 
+devel:gcc / SLE-15) 2.43.1.20240828-150300.536) #1 SMP Mon Jul 28 
+06:44:21 CEST 2025
+
+$ sudo dmesg | grep -i i2c
+[sudo] password for christian:
+[    3.381852] i2c_dev: i2c /dev entries driver
+[    3.591326] i2c-pasemi 0000:00:1c.0: NACK, status 0x08210100
+[    3.604687] i2c-pasemi 0000:00:1c.0: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.623181] i2c i2c-9: Detected TI TMP423 chip at 0x4c
+[    3.640313] i2c-pasemi 0000:00:1c.0: NACK, status 0x08210100
+[    3.653561] i2c-pasemi 0000:00:1c.0: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.667314] i2c-pasemi 0000:00:1c.0: NACK, status 0x08210100
+[    3.680416] i2c-pasemi 0000:00:1c.0: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.694312] i2c-pasemi 0000:00:1c.0: NACK, status 0x08210100
+[    3.708309] i2c-pasemi 0000:00:1c.1: NACK, status 0x08210100
+[    3.721268] i2c-pasemi 0000:00:1c.1: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.735309] i2c-pasemi 0000:00:1c.1: NACK, status 0x08210100
+[    3.748276] i2c-pasemi 0000:00:1c.1: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.762309] i2c-pasemi 0000:00:1c.1: NACK, status 0x08210100
+[    3.775289] i2c-pasemi 0000:00:1c.1: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.789309] i2c-pasemi 0000:00:1c.1: NACK, status 0x08210100
+[    3.802265] i2c-pasemi 0000:00:1c.1: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.816315] i2c-pasemi 0000:00:1c.1: NACK, status 0x08210100
+[    3.830308] i2c-pasemi 0000:00:1c.2: NACK, status 0x08210100
+[    3.843392] i2c-pasemi 0000:00:1c.2: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.857308] i2c-pasemi 0000:00:1c.2: NACK, status 0x08210100
+[    3.870637] i2c-pasemi 0000:00:1c.2: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.884307] i2c-pasemi 0000:00:1c.2: NACK, status 0x08210100
+[    3.897148] i2c-pasemi 0000:00:1c.2: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.911309] i2c-pasemi 0000:00:1c.2: NACK, status 0x08210100
+[    3.924874] i2c-pasemi 0000:00:1c.2: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+[    3.939307] i2c-pasemi 0000:00:1c.2: NACK, status 0x08210100
+[    9.335546] i2c-pasemi 0000:00:1c.0: Issuing reset due to status 
+0x08210100 (xfstatus 0x00000001)
+
+sudo i2cdetect -l
+[sudo] password for christian:
+i2c-3	i2c       	Radeon i2c bit bus 0x93         	I2C adapter
+i2c-10	i2c       	PA Semi SMBus adapter (0000:00:1c.1)	I2C adapter
+i2c-1	i2c       	Radeon i2c bit bus 0x91         	I2C adapter
+i2c-8	i2c       	card0-DP-1                      	I2C adapter
+i2c-6	i2c       	Radeon i2c bit bus 0x96         	I2C adapter
+i2c-4	i2c       	Radeon i2c bit bus 0x94         	I2C adapter
+i2c-11	i2c       	PA Semi SMBus adapter (0000:00:1c.2)	I2C adapter
+i2c-2	i2c       	Radeon i2c bit bus 0x92         	I2C adapter
+i2c-0	i2c       	Radeon i2c bit bus 0x90         	I2C adapter
+i2c-9	i2c       	PA Semi SMBus adapter (0000:00:1c.0)	I2C adapter
+i2c-7	i2c       	Radeon i2c bit bus 0x97         	I2C adapter
+i2c-5	i2c       	Radeon i2c bit bus 0x95         	I2C adapter
+
+Cheers,
+Christian
 
