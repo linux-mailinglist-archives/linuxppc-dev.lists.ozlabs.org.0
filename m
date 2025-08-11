@@ -1,71 +1,132 @@
-Return-Path: <linuxppc-dev+bounces-10793-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10796-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F5EB20390
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 11:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D11B20799
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 13:26:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c0q8T4zr4z3chS;
-	Mon, 11 Aug 2025 19:29:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c0sm41PTNz3cfW;
+	Mon, 11 Aug 2025 21:26:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754904553;
-	cv=none; b=UMIrfbCQjD3XrIxz6/GJDimtgrOtO07s2o41G9AxS4pbctPGVlZBVQBBXMcPIbE392sk5h5mnIsgtWtIbBnAdezM0Y6sfdTkckPhizWamAELzTzkClo/xlzmOKU+TR+e+efy84uFWvMV9Up1GzjYyFBnrJrC7jWDOkFRd/r6H6eFJ28Y6Lf7Z6I7v4jm84E2fR7Rk2WnuRIVKTpUz/zoNSHW9Etu0q19tqdrsIIK1pbVnUIC3c8fZ9uvxOdGhuafeqyn9v+QDbOMjSEBvid0heYCCt/AluZNL+ZZG7NkLYe1r5cttJYonBgLuetp/yjZ61uQccNcHBpZ+/VficIQfg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754911604;
+	cv=none; b=MYnevGZX23D27zUc8S+dEDkeZgatue07viNt0UxkdHvAFPyQURH1x1+L1SRGzdrpf9uT5L5eMJQu2iVLEarsWe77536Ez00NYxFpQ893ljKJw5CdlgTCtJ1pzVAg/UHX9N0oBbjLnw40selcxyHJmm4PjcLnjeq8/0X9pWWXEJdlwrbAIbdk7m4GCBfmXLczEM4qK0RWYrdhJEbUPqHGu+dp9ZI64x+Qzd0cn5iBTOwvo9jkKnH7Cl0DiIWKfGFGH04VOJP8/mjOiCAcMDjjiJKMOEFc3zwBhQNgVOeIYN8tU30YIzUkYbB+CvnRVPTzjJSEUdET6+ieGnAK/28x/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754904553; c=relaxed/relaxed;
-	bh=o1nZtiw0Ye3ybc0i6zjBCyyaQcqnd1yxvsfwvT7j5S0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fOZGzg5raS5Cp7HndW0IeuDdGETr9Rv2pK2BQVO8RuVgogLuoQamwAioto+JZ1BflI1RE6ZosjObgHItMs8UHq+BnTBA3EIJJ631KN4Sm02BYQKUnBEroQ30335ZLFxkftNfORYEZOdx9WiN2Iwm8R0AKzqFhkHZ0KIY0/X3JX0wkBkDT4nxmqs0rrSjqUUpTLMkUIC8rzk8R8nRcmdO44q1mnKllsiSKXHx/nVM7wb8bm0I+lugQgWnxv+0w/5Q9BHKckFyxBg5llSKCNpWL106ttkusAkbejIb9ufeiFRfWiXJlw7y1oRED3D+75AEV1ikjKojNwUd65W5J2Hgfw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=I45gjItm; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=PX2Ru60j; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1754911604; c=relaxed/relaxed;
+	bh=gjYKWewbFPIH0RV/ky7WxO7hTalH23xVuPMUQKkA/fk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=QoMHxLdhN12vLyQUTQyd3bXpWOGlcYir4c6NLTEz38NyuGFhUkYAOH/CR1rTOap58aiQReNoYcrWgAYnq0bQPCdN0m9/JHwudY+FRBNR7TJC2lDbWNWpvLlMs1g16pKHxReS47G2Ubw/Ud10EtKygngYiezZHBJO/uUg48zCEmndOTGOAkmj0Jg1hWPd4NXtnwNRYcqeM34zE8VH/wjnjnzEYOg9MFUilprXwOaUwJtc7s/+vjwbw+jpoN1mLeodoHwtwihXlmvZC4TLHzz6QlqhBwqNUH0UVecdTWu7L9k7INK9Pw15hthJu+Pa/0DT3+gS/K60rdyHJBntbPS5HQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b9N4yw0q; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PEwCTQx7; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=I45gjItm;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=PX2Ru60j;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=b9N4yw0q;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=PEwCTQx7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=namcao@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c0q8T0Qxrz3cht
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 19:29:13 +1000 (AEST)
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1754904543;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c0sm2687kz3ccf
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 21:26:40 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754911597;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o1nZtiw0Ye3ybc0i6zjBCyyaQcqnd1yxvsfwvT7j5S0=;
-	b=I45gjItmGz0E3EwboiTQfPADQd//2Ghz1CtQ3IjRiMNjHwHuz55Rwv4OUvDH+nHykXD+I6
-	402bHjOfQd5H0q82wiIjvoadkhjq2IqMNaX2jB/G6n5TyyjwzW66QNmpMK/wiXV9JoiXgb
-	GIwuGlZLu61Mvjy75GWAyW4cW2MbgWagnZTG64la31wbB+JAe1O8P8YPGyrBWBrzKhlrMU
-	bwrAosPd8NoyLfeRoA4xEw1s7GchYt30n2tYUj9B0rpfgK6tx2Ry2Ks4L5I+QPIFItBt/r
-	NCbp3gs9i39DNSvz+qO9i5WRVjgMQ0L/Ws3HnbY/zWuMbVUcPWCG4AEvgsiQiw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1754904543;
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gjYKWewbFPIH0RV/ky7WxO7hTalH23xVuPMUQKkA/fk=;
+	b=b9N4yw0qMi0C8VmE0T8CzhuELAtoRudiBaBzoe2QxuU0jGyQZeVcsguuEgSKWiNTzYZlmD
+	Qqbex8QzN7gqvjsJMa1MbWNJJr0hHw1MEWUxVgVlR8Fn/+nFpClSj6NhO3CuAgGkWx+0UA
+	FR0tB7Bn/9Vw2hKooJuAhpDPIVgwpUo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1754911598;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o1nZtiw0Ye3ybc0i6zjBCyyaQcqnd1yxvsfwvT7j5S0=;
-	b=PX2Ru60jsn00nGrVZVAjjpQEe9giQ07k/m+7UUzIYAX0OkV3S4tgoSdcLvbbNUQTrmKf3r
-	Z0/A/QEO4WDJbkAw==
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gjYKWewbFPIH0RV/ky7WxO7hTalH23xVuPMUQKkA/fk=;
+	b=PEwCTQx7hyfWgz4eVMC/7rABj6YjnEgWXjEDKMSf5uRO97ZlfruCNWa+YNoURQYPvX5Jcf
+	XxPR7yLKCYYZVjAWRTqGpHKqBWaOI1Q7c6ZRMvyl8hotQY9xroa0glc8VL/AzrHVSWNqEV
+	UOjW3d+oFHWzvWdfk9nr3RfbYAsFfbQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-259-KaOieIcyP7O3YEzWaPEbqQ-1; Mon, 11 Aug 2025 07:26:36 -0400
+X-MC-Unique: KaOieIcyP7O3YEzWaPEbqQ-1
+X-Mimecast-MFC-AGG-ID: KaOieIcyP7O3YEzWaPEbqQ_1754911595
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3b78aa2a113so2046508f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 04:26:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1754911595; x=1755516395;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gjYKWewbFPIH0RV/ky7WxO7hTalH23xVuPMUQKkA/fk=;
+        b=S/Km17hFfOCTQ5m+cOajs0Teq7C6RJf9Jvh3dp1SiVLV0QHwnKJV5b466yg3DHXbVf
+         +uLQblNc2EsCMKB9DHN7TR3vY98agtS8v395aA/IkJeVKQyRsJaYLUIKgQwzLmN+MPN6
+         rAuf36d/TFgXRduJdpZeeoOtX02XRy157RWbncYOmLERJ1zgmLyzwuHd9QbWilM6IdpY
+         XYufWcGZMkF8bru/NQWlCmeqNwzULHGT/3RbQa2k2HFp7IaXlj79XHOsIIakdeS+xl0O
+         TThdxiHIVHt0jrsuWkdCxWImxBZ0vNmGUAWzyj0PdJjqi5z3+GYZjkKV/VH+bTzC1iwm
+         RKaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUs/iofkU/UgrsEHILcpN+o+ptZvgQXtH3ZSCfh3oFEqldXJ8Jt6v3ex9YHSlZJGW2za1iInv8X4L+//N0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwnGmR/3QLgUB3mT3EAB1tLDfN9ZV5K1eQ3935lU4rjtq/zvO9V
+	gqKabQq5jXwbaGGPigfjYrxT/VyKkBN5TBMQHJYOhwUKwkPGHmNpPjV2lK0B5NoJzKij2l1qOfI
+	AyVdQGmh6hy+UdEUgkuQDoPOx/G5lVCyoCcVeaoe22mj7gpkrXfxTLsisRSyeN8Snb1U=
+X-Gm-Gg: ASbGncugie4k9W8robRZkF2r8BhsyJPBbpNC7CeHw4fzU0MH6gXHDzjBCqFefttPPCm
+	1yTS/NK0LKzkDggwrUjw6RaeZqNt7b+lpTbN1hD44uUGFIsJDStCiMbArhujxw6+R8rWlDKw43w
+	ycRt/P+rTp39SS/3t3EySUHJfbyt2g8evsNexkO/ByCIjnTKeMhOXhT3jjDCnEU1xXC0/nauxhH
+	YN682BFFNmwFebKbMSEY2zEp4LCwmZ7IJQVe0FELxgrEPer5mPmrvMT7YiWYE6z2ZR8DlMRNb6s
+	UWM6FURuoYPu2jyvYgSGNsVxahsfvwzbTvvfmH8P0y0guN9SJIg/WHLiI5gOexAniwCTntuso43
+	e+0/f7pEEVyOWgWtBLkXf3sPB
+X-Received: by 2002:a05:6000:2f85:b0:3b7:8d70:e0ad with SMTP id ffacd0b85a97d-3b900b4d8c1mr8490186f8f.32.1754911594910;
+        Mon, 11 Aug 2025 04:26:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHdQyxmL2k0hEit4q6ggWaLK63vDyy/XYp/bptTEvLLiDZ4Kssrq6afY7SHtzCWpxX9HX5tXQ==
+X-Received: by 2002:a05:6000:2f85:b0:3b7:8d70:e0ad with SMTP id ffacd0b85a97d-3b900b4d8c1mr8490151f8f.32.1754911594303;
+        Mon, 11 Aug 2025 04:26:34 -0700 (PDT)
+Received: from localhost (p200300d82f06a600a397de1d2f8bb66f.dip0.t-ipconnect.de. [2003:d8:2f06:a600:a397:de1d:2f8b:b66f])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3c4beasm39217323f8f.30.2025.08.11.04.26.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Aug 2025 04:26:33 -0700 (PDT)
+From: David Hildenbrand <david@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	xen-devel@lists.xenproject.org,
+	linux-fsdevel@vger.kernel.org,
+	nvdimm@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: Nam Cao <namcao@linutronix.de>
-Subject: [PATCH v2 3/3] powerpc/pseries/msi: Switch to msi_create_parent_irq_domain()
-Date: Mon, 11 Aug 2025 11:28:56 +0200
-Message-Id: <c7a6d8f27fd217021dea4daad777e81a525ae460.1754903590.git.namcao@linutronix.de>
-In-Reply-To: <cover.1754903590.git.namcao@linutronix.de>
-References: <cover.1754903590.git.namcao@linutronix.de>
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Hugh Dickins <hughd@google.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH v3 00/11] mm: vm_normal_page*() improvements
+Date: Mon, 11 Aug 2025 13:26:20 +0200
+Message-ID: <20250811112631.759341-1-david@redhat.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,254 +140,141 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: JG0FnMmAGyM3x__Wr6e5DBsh5xJlUCtMpVK-fValnv0_1754911595
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Move away from the legacy MSI domain setup, switch to use
-msi_create_parent_irq_domain().
+Based on mm/mm-new from today.
 
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
-v2: Use msi_teardown() instead of msi_post_free() to fix boot issue with
-    NVMe
----
- arch/powerpc/include/asm/pci-bridge.h  |   2 -
- arch/powerpc/platforms/pseries/Kconfig |   1 +
- arch/powerpc/platforms/pseries/msi.c   | 114 +++++++++++--------------
- 3 files changed, 49 insertions(+), 68 deletions(-)
+Cleanup and unify vm_normal_page_*() handling, also marking the
+huge zerofolio as special in the PMD. Add+use vm_normal_page_pud() and
+cleanup that XEN vm_ops->find_special_page thingy.
 
-diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/a=
-sm/pci-bridge.h
-index 2aa3a091ef20..1dae53130782 100644
---- a/arch/powerpc/include/asm/pci-bridge.h
-+++ b/arch/powerpc/include/asm/pci-bridge.h
-@@ -133,8 +133,6 @@ struct pci_controller {
-=20
- 	/* IRQ domain hierarchy */
- 	struct irq_domain	*dev_domain;
--	struct irq_domain	*msi_domain;
--	struct fwnode_handle	*fwnode;
-=20
- 	/* iommu_ops support */
- 	struct iommu_device	iommu;
-diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platform=
-s/pseries/Kconfig
-index fa3c2fff082a..3e042218d6cd 100644
---- a/arch/powerpc/platforms/pseries/Kconfig
-+++ b/arch/powerpc/platforms/pseries/Kconfig
-@@ -7,6 +7,7 @@ config PPC_PSERIES
- 	select OF_DYNAMIC
- 	select FORCE_PCI
- 	select PCI_MSI
-+	select IRQ_MSI_LIB
- 	select GENERIC_ALLOCATOR
- 	select PPC_XICS
- 	select PPC_XIVE_SPAPR
-diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/=
-pseries/msi.c
-index 10712477938e..7da142dd5baa 100644
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -7,6 +7,7 @@
- #include <linux/crash_dump.h>
- #include <linux/device.h>
- #include <linux/irq.h>
-+#include <linux/irqchip/irq-msi-lib.h>
- #include <linux/irqdomain.h>
- #include <linux/msi.h>
- #include <linux/seq_file.h>
-@@ -429,8 +430,9 @@ static int rtas_prepare_msi_irqs(struct pci_dev *pdev, =
-int nvec_in, int type,
- static int pseries_msi_ops_prepare(struct irq_domain *domain, struct devic=
-e *dev,
- 				   int nvec, msi_alloc_info_t *arg)
- {
-+	struct msi_domain_info *info =3D domain->host_data;
- 	struct pci_dev *pdev =3D to_pci_dev(dev);
--	int type =3D pdev->msix_enabled ? PCI_CAP_ID_MSIX : PCI_CAP_ID_MSI;
-+	int type =3D (info->flags & MSI_FLAG_PCI_MSIX) ? PCI_CAP_ID_MSIX : PCI_CA=
-P_ID_MSI;
-=20
- 	return rtas_prepare_msi_irqs(pdev, nvec, type, arg);
- }
-@@ -439,19 +441,14 @@ static int pseries_msi_ops_prepare(struct irq_domain =
-*domain, struct device *dev
-  * RTAS can not disable one MSI at a time. It's all or nothing. Do it
-  * at the end after all IRQs have been freed.
-  */
--static void pseries_msi_post_free(struct irq_domain *domain, struct device=
- *dev)
-+static void pseries_msi_ops_teardown(struct irq_domain *domain, msi_alloc_=
-info_t *arg)
- {
--	if (WARN_ON_ONCE(!dev_is_pci(dev)))
--		return;
-+	struct msi_desc *desc =3D arg->desc;
-+	struct pci_dev *pdev =3D msi_desc_to_pci_dev(desc);
-=20
--	rtas_disable_msi(to_pci_dev(dev));
-+	rtas_disable_msi(pdev);
- }
-=20
--static struct msi_domain_ops pseries_pci_msi_domain_ops =3D {
--	.msi_prepare	=3D pseries_msi_ops_prepare,
--	.msi_post_free	=3D pseries_msi_post_free,
--};
--
- static void pseries_msi_shutdown(struct irq_data *d)
- {
- 	d =3D d->parent_data;
-@@ -459,18 +456,6 @@ static void pseries_msi_shutdown(struct irq_data *d)
- 		d->chip->irq_shutdown(d);
- }
-=20
--static void pseries_msi_mask(struct irq_data *d)
--{
--	pci_msi_mask_irq(d);
--	irq_chip_mask_parent(d);
--}
--
--static void pseries_msi_unmask(struct irq_data *d)
--{
--	pci_msi_unmask_irq(d);
--	irq_chip_unmask_parent(d);
--}
--
- static void pseries_msi_write_msg(struct irq_data *data, struct msi_msg *m=
-sg)
- {
- 	struct msi_desc *entry =3D irq_data_get_msi_desc(data);
-@@ -485,27 +470,39 @@ static void pseries_msi_write_msg(struct irq_data *da=
-ta, struct msi_msg *msg)
- 	entry->msg =3D *msg;
- }
-=20
--static struct irq_chip pseries_pci_msi_irq_chip =3D {
--	.name		=3D "pSeries-PCI-MSI",
--	.irq_shutdown	=3D pseries_msi_shutdown,
--	.irq_mask	=3D pseries_msi_mask,
--	.irq_unmask	=3D pseries_msi_unmask,
--	.irq_eoi	=3D irq_chip_eoi_parent,
--	.irq_write_msi_msg	=3D pseries_msi_write_msg,
--};
-+static bool pseries_init_dev_msi_info(struct device *dev, struct irq_domai=
-n *domain,
-+				      struct irq_domain *real_parent, struct msi_domain_info *info)
-+{
-+	struct irq_chip *chip =3D info->chip;
-=20
-+	if (!msi_lib_init_dev_msi_info(dev, domain, real_parent, info))
-+		return false;
-=20
--/*
-- * Set MSI_FLAG_MSIX_CONTIGUOUS as there is no way to express to
-- * firmware to request a discontiguous or non-zero based range of
-- * MSI-X entries. Core code will reject such setup attempts.
-- */
--static struct msi_domain_info pseries_msi_domain_info =3D {
--	.flags =3D (MSI_FLAG_USE_DEF_DOM_OPS | MSI_FLAG_USE_DEF_CHIP_OPS |
--		  MSI_FLAG_MULTI_PCI_MSI  | MSI_FLAG_PCI_MSIX |
--		  MSI_FLAG_MSIX_CONTIGUOUS),
--	.ops   =3D &pseries_pci_msi_domain_ops,
--	.chip  =3D &pseries_pci_msi_irq_chip,
-+	chip->irq_shutdown =3D pseries_msi_shutdown;
-+	chip->irq_write_msi_msg	=3D pseries_msi_write_msg;
-+
-+	info->ops->msi_prepare =3D pseries_msi_ops_prepare;
-+	info->ops->msi_teardown =3D pseries_msi_ops_teardown;
-+
-+	return true;
-+}
-+
-+#define PSERIES_PCI_MSI_FLAGS_REQUIRED (MSI_FLAG_USE_DEF_DOM_OPS	| \
-+					MSI_FLAG_USE_DEF_CHIP_OPS	| \
-+					MSI_FLAG_PCI_MSI_MASK_PARENT)
-+#define PSERIES_PCI_MSI_FLAGS_SUPPORTED (MSI_GENERIC_FLAGS_MASK		| \
-+					 MSI_FLAG_PCI_MSIX		| \
-+					 MSI_FLAG_MSIX_CONTIGUOUS	| \
-+					 MSI_FLAG_MULTI_PCI_MSI)
-+
-+static const struct msi_parent_ops pseries_msi_parent_ops =3D {
-+	.required_flags		=3D PSERIES_PCI_MSI_FLAGS_REQUIRED,
-+	.supported_flags	=3D PSERIES_PCI_MSI_FLAGS_SUPPORTED,
-+	.chip_flags		=3D MSI_CHIP_FLAG_SET_EOI,
-+	.bus_select_token	=3D DOMAIN_BUS_NEXUS,
-+	.bus_select_mask	=3D MATCH_PCI_MSI,
-+	.prefix			=3D "pSeries-",
-+	.init_dev_msi_info	=3D pseries_init_dev_msi_info,
- };
-=20
- static void pseries_msi_compose_msg(struct irq_data *data, struct msi_msg =
-*msg)
-@@ -593,6 +590,7 @@ static void pseries_irq_domain_free(struct irq_domain *=
-domain, unsigned int virq
- }
-=20
- static const struct irq_domain_ops pseries_irq_domain_ops =3D {
-+	.select	=3D msi_lib_irq_domain_select,
- 	.alloc  =3D pseries_irq_domain_alloc,
- 	.free   =3D pseries_irq_domain_free,
- };
-@@ -601,30 +599,18 @@ static int __pseries_msi_allocate_domains(struct pci_=
-controller *phb,
- 					  unsigned int count)
- {
- 	struct irq_domain *parent =3D irq_get_default_domain();
--
--	phb->fwnode =3D irq_domain_alloc_named_id_fwnode("pSeries-MSI",
--						       phb->global_number);
--	if (!phb->fwnode)
--		return -ENOMEM;
--
--	phb->dev_domain =3D irq_domain_create_hierarchy(parent, 0, count,
--						      phb->fwnode,
--						      &pseries_irq_domain_ops, phb);
-+	struct irq_domain_info info =3D {
-+		.fwnode		=3D of_fwnode_handle(phb->dn),
-+		.ops		=3D &pseries_irq_domain_ops,
-+		.host_data	=3D phb,
-+		.size		=3D count,
-+		.parent		=3D parent,
-+	};
-+
-+	phb->dev_domain =3D msi_create_parent_irq_domain(&info, &pseries_msi_pare=
-nt_ops);
- 	if (!phb->dev_domain) {
--		pr_err("PCI: failed to create IRQ domain bridge %pOF (domain %d)\n",
--		       phb->dn, phb->global_number);
--		irq_domain_free_fwnode(phb->fwnode);
--		return -ENOMEM;
--	}
--
--	phb->msi_domain =3D pci_msi_create_irq_domain(of_fwnode_handle(phb->dn),
--						    &pseries_msi_domain_info,
--						    phb->dev_domain);
--	if (!phb->msi_domain) {
- 		pr_err("PCI: failed to create MSI IRQ domain bridge %pOF (domain %d)\n",
- 		       phb->dn, phb->global_number);
--		irq_domain_free_fwnode(phb->fwnode);
--		irq_domain_remove(phb->dev_domain);
- 		return -ENOMEM;
- 	}
-=20
-@@ -646,12 +632,8 @@ int pseries_msi_allocate_domains(struct pci_controller=
- *phb)
-=20
- void pseries_msi_free_domains(struct pci_controller *phb)
- {
--	if (phb->msi_domain)
--		irq_domain_remove(phb->msi_domain);
- 	if (phb->dev_domain)
- 		irq_domain_remove(phb->dev_domain);
--	if (phb->fwnode)
--		irq_domain_free_fwnode(phb->fwnode);
- }
-=20
- static void rtas_msi_pci_irq_fixup(struct pci_dev *pdev)
---=20
-2.39.5
+There are plans of using vm_normal_page_*() more widely soon.
+
+Briefly tested on UML (making sure vm_normal_page() still works as expected
+without pte_special() support) and on x86-64 with a bunch of tests.
+Cross-compiled for a variety of weird archs.
+
+v2 -> v3:
+* "mm/huge_memory: mark PMD mappings of the huge zero folio special"
+ -> Extend vm_normal_page_pmd() comment + patch description
+ -> Take care of copy_huge_pmd() checking for pmd_special().
+* "powerpc/ptdump: rename "struct pgtable_level" to "struct ptdump_pglevel""
+ -> Added
+* "mm/rmap: convert "enum rmap_level" to "enum pgtable_level""
+ -> Added
+* "mm/memory: convert print_bad_pte() to print_bad_page_map()"
+ -> Consume level so we can keep the level indication through
+    pgtable_level_to_str().
+ -> Improve locking comments
+* "mm/memory: factor out common code from vm_normal_page_*()"
+ -> Factor everything out into __vm_normal_page() and let it consume the
+    special bit + pfn (and the value+level for error reporting purposes)
+ -> Improve function docs
+ -> Improve patch description
+
+v1 -> v2:
+* "mm/memory: convert print_bad_pte() to print_bad_page_map()"
+ -> Don't use pgdp_get(), because it's broken on some arm configs
+ -> Extend patch description
+ -> Don't use pmd_val(pmdp_get()), because that doesn't work on some
+    m68k configs
+* Added RBs
+
+RFC -> v1:
+* Dropped the highest_memmap_pfn removal stuff and instead added
+  "mm/memory: convert print_bad_pte() to print_bad_page_map()"
+* Dropped "mm: compare pfns only if the entry is present when inserting
+  pfns/pages" for now, will probably clean that up separately.
+* Dropped "mm: remove "horrible special case to handle copy-on-write
+  behaviour"", and "mm: drop addr parameter from vm_normal_*_pmd()" will
+  require more thought
+* "mm/huge_memory: support huge zero folio in vmf_insert_folio_pmd()"
+ -> Extend patch description.
+* "fs/dax: use vmf_insert_folio_pmd() to insert the huge zero folio"
+ -> Extend patch description.
+* "mm/huge_memory: mark PMD mappings of the huge zero folio special"
+ -> Remove comment from vm_normal_page_pmd().
+* "mm/memory: factor out common code from vm_normal_page_*()"
+ -> Adjust to print_bad_page_map()/highest_memmap_pfn changes.
+ -> Add proper kernel doc to all involved functions
+* "mm: introduce and use vm_normal_page_pud()"
+ -> Adjust to print_bad_page_map() changes.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Lance Yang <lance.yang@linux.dev>
+
+David Hildenbrand (11):
+  mm/huge_memory: move more common code into insert_pmd()
+  mm/huge_memory: move more common code into insert_pud()
+  mm/huge_memory: support huge zero folio in vmf_insert_folio_pmd()
+  fs/dax: use vmf_insert_folio_pmd() to insert the huge zero folio
+  mm/huge_memory: mark PMD mappings of the huge zero folio special
+  powerpc/ptdump: rename "struct pgtable_level" to "struct
+    ptdump_pglevel"
+  mm/rmap: convert "enum rmap_level" to "enum pgtable_level"
+  mm/memory: convert print_bad_pte() to print_bad_page_map()
+  mm/memory: factor out common code from vm_normal_page_*()
+  mm: introduce and use vm_normal_page_pud()
+  mm: rename vm_ops->find_special_page() to vm_ops->find_normal_page()
+
+ arch/powerpc/mm/ptdump/8xx.c      |   2 +-
+ arch/powerpc/mm/ptdump/book3s64.c |   2 +-
+ arch/powerpc/mm/ptdump/ptdump.h   |   4 +-
+ arch/powerpc/mm/ptdump/shared.c   |   2 +-
+ drivers/xen/Kconfig               |   1 +
+ drivers/xen/gntdev.c              |   5 +-
+ fs/dax.c                          |  47 +----
+ include/linux/mm.h                |  20 +-
+ include/linux/pgtable.h           |  27 +++
+ include/linux/rmap.h              |  60 +++---
+ mm/Kconfig                        |   2 +
+ mm/huge_memory.c                  | 122 +++++------
+ mm/memory.c                       | 332 +++++++++++++++++++++---------
+ mm/pagewalk.c                     |  20 +-
+ mm/rmap.c                         |  56 ++---
+ tools/testing/vma/vma_internal.h  |  18 +-
+ 16 files changed, 421 insertions(+), 299 deletions(-)
+
+
+base-commit: 53c448023185717d0ed56b5546dc2be405da92ff
+-- 
+2.50.1
 
 
