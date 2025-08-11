@@ -1,50 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-10812-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10813-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874DDB21136
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 18:13:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4A2CB2127F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 18:47:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c106V4khTz3d3M;
-	Tue, 12 Aug 2025 02:13:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c10sf4tmpz3dCm;
+	Tue, 12 Aug 2025 02:47:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754928786;
-	cv=none; b=BLbrFdgd8HjDj7xZSHNPz6eQl92fO28scfCgcODn4hnyJ85GeYQhol8jt7l9Iw3TGdyWHovQCUsS+1745RnSzEfi7FfijAhMo6STGPR68pPv6Xv8tYtvKkXwV3spxkZa9L8SSV4jYRtzSc72zlKO0q2Gv4zTRjjh2ssR6iTKa5mkvWOCbDZt3P8DBdyIZNYPDpnpvUUBzO8OstluPsGlr0p6Ygri8Dk4AC2o8TSElfhwf60g6xUcT1HNZnhR4ojwov1tcJrJ75eoTy1a/6JCGbcQnrONLhuyEkiBokqRi5p1+dS6GRIRP47x7Uh00x8BMoh6+8ad2+Pf2aUNon4OJg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754930822;
+	cv=none; b=FIOGGcNqauGJnOrEiea0LfmgZvpC6OsS9LgHd2Q2i4d6hkr8KT04KcxgQLzj6Vx20XdBJytsgEjKxasXnACKuiH9MiPLC3iI6ytBZGGP2ta+BMe44FiH+L6FvXABuWr8xFqUc46ujwRtbDRaM3iTHlhFpYD8dBGiEgj94YZY4Gt/bCu9jHHSs6V8i0GpXGUSkMszCUw1B0NOp/TLscmMYKM5oNzZEFWsCJ4d38HIXfE9PDhfcmAdrbQG4oFZ9gqRjqRGjzHvsFXENbolH2Z7K9/mWFxiV51V7exqty57QA2mgJMm/LVxxUBc3RB521EHg7MgnUm6Ky/QjAcC3vbenw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754928786; c=relaxed/relaxed;
-	bh=s/zTYD4qQEy0ve9tQCzps7rSClGIjdTwWyvUkrLMc6U=;
+	t=1754930822; c=relaxed/relaxed;
+	bh=i8LsXBMRBe/Icg4da9jE4AlWAsPYCbJGuzx7DJqs7+8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ixJjmPP4pp/4yJR515gU70JEauICKeTLnKg4iTqvPbAX6QdQX+49Rc3K7D145UFRGFGZEEDFWzarhydg+6JYb9XgL2swUq7v5hOyw76sJvNvsB5HCzttGpNsY1MZynNHxwTOKARaXRzWixRwSRJnuh5hhPhqG/Bbg+l538yd3kh/5DZau2kYViNuStOIISfOx86uXoWAEQ4RZS7EfizMx6MVKMCQTgB5A7Xr4AoWVf+ZDvLnDRYP8BUlQR9birmf4/XTJxnKAPNFUdb6Dxeoo9MyhNQwoK9pd5/hKY6Y+HEKOv0l9C8Chyxc8Z72JKm2ecZ2YmpuotgvqWs0CG4alg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WSyh0M2p; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=sven@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 In-Reply-To:Content-Type; b=nCnF8JBr0/znIYHGko6Qc8Gde0EIjiBp/3q6t/dZ5N4LJLja8/TayVNcdZkDnoHhg3vu9h9V8D7f01tu1g0CfqWW4SPp99siGt45tYAfTw6ZZM9765aT5RXPa9muRe5REKQv4y5neOFd7sJxstfI2EwNK0x1nsDo5QSFDTnnxN9JjCkTnyEzkdaI7S0pvQHIFGpVTwfRyQPQfAhhMbwC1HR67JHy27+d5oh5JUPdMZcjODn5vntvElBjoI1GofVFXsM1sdkipYqilroy3hcQfABQX4kPoiX1HJrijOjiRaC/cZ0RKW0SEx8VnMS0zbVFhcR8i2PWR70w1l8g5kdPKA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pvUcqneq; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WSyh0M2p;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pvUcqneq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=sven@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c106T1zs5z3d2c
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 02:13:05 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D82DD43468;
-	Mon, 11 Aug 2025 16:13:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A02FC4CEED;
-	Mon, 11 Aug 2025 16:13:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754928782;
-	bh=sdcquYL9LCEdj0rf4SjNKoacwa3L7q0NPmRbFt63VgM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WSyh0M2pKerUaE6ZU/c25KWrQzfnS5upssYVicTGvR+Gj+gEhHlDc5RnZpf6aGAQA
-	 owMm7ZcWzqIS3i4k8mgvk1pfgY15q5+H5LX4wTjDWnMLnG+73sfqvxijUb8TCf5n/e
-	 6sw9rviRAasvexyubCFsdJ5ur8w8DWqlgAo0LY4lIncToCc0y9C7ck9bfSkQMBtETf
-	 WewFxgX6k6qFUTPcJMngbXNWauoxaVhKKEDxk+Xu3txIThNjBKtAHk6tK9jqDgbLX1
-	 GI9ZkCeDj7sW13JKpRbJImOm1ZsjNbpKVktrqeE8OtRf6C2/WxI9ER4LQJJNhT7+gW
-	 Gc31F9lilPPlg==
-Message-ID: <d4b0a847-0617-4735-b6a1-ff5375f166bd@kernel.org>
-Date: Mon, 11 Aug 2025 18:12:59 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c10sd2bS6z3dBs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 02:47:00 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57BA8WMr027956;
+	Mon, 11 Aug 2025 16:46:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=i8LsXB
+	MRBe/Icg4da9jE4AlWAsPYCbJGuzx7DJqs7+8=; b=pvUcqneqANvc7ZJ3wXGNpF
+	8d/UNG2ORVtv9z8kuz1JFSj+2Pf307wacnhWibXtJ8MvSudc2ZRNc6MALykKZysf
+	p9svoc9ee2SxmWSto1ih9W3gx9757J/a/K1EsSGhlnYJyJUn6F8bAdJLLilQAvUx
+	E/OrYd6sUwcZ/+tbMhVNqOLWFMq5narkdFfsWfMP/rv3yp79pxqR139nJz2Qy0N6
+	ZnmQkT4EYmlu63YOcnCzC9oL4KXtPqd4VIotCVAuOB1aF33VN93o7xoUYtGukMtj
+	rd51vZ9kuqEOcgF6gFkgXCKIpKu7k6dicxxpXbgix/vXQtf1ZBQ4AN8ahdTQ6eSA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx2ctdat-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Aug 2025 16:46:43 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57BG7uH8017617;
+	Mon, 11 Aug 2025 16:46:42 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48ekc3ed6b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 11 Aug 2025 16:46:42 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57BGkeJZ47448424
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 Aug 2025 16:46:40 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 59F5A20043;
+	Mon, 11 Aug 2025 16:46:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 023E020040;
+	Mon, 11 Aug 2025 16:46:39 +0000 (GMT)
+Received: from [9.39.30.243] (unknown [9.39.30.243])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 11 Aug 2025 16:46:38 +0000 (GMT)
+Message-ID: <f3ecce9f-22cf-48e2-843e-63f08a577e69@linux.ibm.com>
+Date: Mon, 11 Aug 2025 22:16:38 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,46 +80,89 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: i2c-pasemi messages since kernel 6.16
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: linux-i2c@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- mad skateman <madskateman@gmail.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- hypexed@yahoo.com.au, Christian Zigotzky <info@xenosoft.de>
-References: <2810E95B-8DB4-48CB-80F6-DF01EB7BEEFC@xenosoft.de>
+Subject: Re: [PATCH] soc/fsl/qbman: Use for_each_online_cpu() instead of
+ for_each_cpu()
+To: Fushuai Wang <wangfushuai@baidu.com>
+Cc: frederic@kernel.org, christophe.leroy@csgroup.eu,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org
+References: <20250811065216.3320-1-wangfushuai@baidu.com>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 Content-Language: en-US
-From: Sven Peter <sven@kernel.org>
-In-Reply-To: <2810E95B-8DB4-48CB-80F6-DF01EB7BEEFC@xenosoft.de>
+In-Reply-To: <20250811065216.3320-1-wangfushuai@baidu.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODExMDEwNiBTYWx0ZWRfXzUjSuxKKKX8J
+ NIaAIJsCrluSo5NbhwWQJ+X9uLkf919nigjMkco6BbFFc5a/uHZT8WzAC+py6gT6myDO/mgBYve
+ +HVOAOr/0qvkXD66X2bNKuE5c4LzorK3dQrdvFz+ZXC/0UTx8CmLBk0dOWN1A/mJg/kEFqt5C2E
+ ggZhjUhfdNwm4QjQXJ2M+6ysrhYzMelsLKVvVt50crY9g7uUKJ81EDEZn/lGr5yNdvtouZoDk0I
+ wjLYwCHZ9WNXwrWu5a4C/3Vi5io9qe8jsxEykyGqG3v5eXfozxE81sgwoR08weXvGNWy/5noMk2
+ d6ny8FdV7zbFkMT8OUNk3cEiMJsU6jw6gXpvoCCWE231RkZ3d0FcJPjowMA0LELm7lijW1kgr25
+ T0XItL4i+K4UpQKRn0B2g8GyzubcCNPnRBaQxrcwdqaZft4uPn0oEcJxJ9naryoEdT63hryq
+X-Proofpoint-GUID: TDgLOFCUzs6KSeu4QXexSOYJXoB8Jad6
+X-Authority-Analysis: v=2.4 cv=C9zpyRP+ c=1 sm=1 tr=0 ts=689a1e73 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=zuLzuavZAAAA:8 a=VATuJ96wsPKbvXY_zzoA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: TDgLOFCUzs6KSeu4QXexSOYJXoB8Jad6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-11_03,2025-08-11_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0
+ mlxlogscore=977 suspectscore=0 impostorscore=0 clxscore=1011 malwarescore=0
+ spamscore=0 priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
+ definitions=main-2508110106
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-hi,
 
-On 10.08.25 18:47, Christian Zigotzky wrote:
-> Hello Sven,
+
+On 8/11/25 12:22, Fushuai Wang wrote:
+> Replace the opencoded for_each_cpu(cpu, cpu_online_mask) loop with the
+> more readable and equivalent for_each_online_cpu(cpu) macro.
 > 
-> Since the kernel 6.16 we have the following messages during the boot.
+> Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+> ---
+>   drivers/soc/fsl/qbman/qman_test_stash.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> [    9.459706] i2c-pasemi 0000:00:1c.0: NACK, status 0x08210100
-> [    9.649736] i2c-pasemi 0000:00:1c.0: Issuing reset due to status 0x08210100 (xfstatus 0x00000001)
-> [    9.690696] i2c-pasemi 0000:00:1c.1: NACK, status 0x08210100
-> [    9.708651] i2c-pasemi 0000:00:1c.1: Issuing reset due to status 0x08210100 (xfstatus 0x00000001)
-> [    9.892693] i2c-pasemi 0000:00:1c.2: NACK, status 0x08210100
-> [    9.911535] i2c-pasemi 0000:00:1c.2: Issuing reset due to status 0x08210100 (xfstatus 0x00000001)
-> 
-> What exactly do these messages mean?
+> diff --git a/drivers/soc/fsl/qbman/qman_test_stash.c b/drivers/soc/fsl/qbman/qman_test_stash.c
+> index f4d3c2146f4f..6f7597950aa3 100644
+> --- a/drivers/soc/fsl/qbman/qman_test_stash.c
+> +++ b/drivers/soc/fsl/qbman/qman_test_stash.c
+> @@ -103,7 +103,7 @@ static int on_all_cpus(int (*fn)(void))
+>   {
+>   	int cpu;
+>   
+> -	for_each_cpu(cpu, cpu_online_mask) {
+> +	for_each_online_cpu(cpu) {
+>   		struct bstrap bstrap = {
+>   			.fn = fn,
+>   			.started = ATOMIC_INIT(0)
 
-Do you just see these messages or are there also any other issues like a 
-device on the i2c bus not working anymore when it worked fine before?
-We added some additional logging recently and I suspect that this has 
-always been happening and no one noticed.
+Yes. This change makes sense given that for_each_online_cpu expands into the same.
+
+Why not do for the remaining ones too?
+
+linux_tip$ grep -Rw "for_each_cpu" * | grep  cpu_online_mask
+arch/riscv/kernel/unaligned_access_speed.c:     for_each_cpu(cpu, cpu_online_mask) {
+arch/riscv/kernel/unaligned_access_speed.c:     for_each_cpu(cpu, cpu_online_mask) {
+drivers/soc/fsl/qbman/qman_test_stash.c:        for_each_cpu(cpu, cpu_online_mask) {    ** current patch addresses this.
+drivers/infiniband/hw/hfi1/sdma.c:      for_each_cpu(cpu, cpu_online_mask) {
+drivers/cpuidle/cpuidle-tegra.c:        for_each_cpu(lcpu, cpu_online_mask) {
+include/rv/da_monitor.h:        for_each_cpu(cpu, cpu_online_mask) {
+kernel/trace/trace_osnoise.c:   for_each_cpu(cpu, cpu_online_mask) {
+kernel/trace/trace_osnoise.c:   for_each_cpu(cpu, cpu_online_mask) {
 
 
-
-Sven
+Rest everyone seems to have moved.
+linux_tip$ grep -Rw "for_each_online_cpu" * | wc
+     416    1141   23047
 
 
 
