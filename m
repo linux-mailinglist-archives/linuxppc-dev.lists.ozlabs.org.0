@@ -1,93 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-10802-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10803-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0455DB207B5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 13:27:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20695B207B8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 Aug 2025 13:27:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c0smP1dVXz3d32;
-	Mon, 11 Aug 2025 21:27:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c0smR0PPcz3d3Z;
+	Mon, 11 Aug 2025 21:27:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754911621;
-	cv=none; b=fXQL9vkkhr+VojqYGwMr7iMZc8mkAUb4N+45gAE4SOLDVFG8D2gL65pJvdibBWADjRFaRLfAweMBQGe6zGlBLWZG8sg/r0I4BWkMshTo9+ATaNWwvnWqS9pIFpZY2ngSAOqxi43Pvr78HOC/3AeaT/6g+jV8Kn+Gs+cvlVevPGjOkYwL9WXXHNQ1E1NUZN6/6JvAW9sjhgh2qt0SYXKoA/9U4eHQz8K07iNxp6OjmJCID9yItIg2h3zAif8dg+1iHFvX5YuySmv4aYrk6CbAUyWpEPpy/jVtYS9jlOCePnoLK4Cx3x50a6gep7TuQl3Yo9fgWTK2+EBOe61Q2RJNBg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754911623;
+	cv=none; b=Bvs3DXLZhDysyvA/CoDpGwiw1ZfIH957AxZAFcjQuGbrGXd1Cv0VHI4BHtWU52G8T3B4gUTYUIYPYxEjJLK1riBPsUa6o55PeJ6wfChf77PaP3yK7Izq6sAOfsYLVxl5zK62UCLBUm8Ls2X2CvdZljlvLdvQDmiWsmE72W0ezIZw24QDuY1OitKIsFkHjDOZsG5nnHFwl7BVOIz9HbsrreVXYsYfTQpuIIrkafv+3KeuVpnzD30yO8AjPNOt/T4bO1YL2ZjjdoD9sLl5Zt5l6Uu2WFGbmQw4QJHoin2JrL0/hbJdoNY8OIT7vmpFTiTmFkQl9zjL/Ubl/eTfRmtEAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754911621; c=relaxed/relaxed;
-	bh=P87rLpAYrvMbmMGGuIRrtBN562miOXHo6Y54j1JPV6I=;
+	t=1754911623; c=relaxed/relaxed;
+	bh=cAxz8wtEYwnzSbLFT0UZ22FzefKNNzcleMeX5Ma3lWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=eFiGfMFg5R0KAjPasTUyf3owN6y5hUdAYSvf67EU3BHkFb9d8Gttv7WRZGa9JDteT8Km186ybZlwR/omRjRrOKHwIrtisjOY5FGDecOAYE1qdbIL4M9towazADyEQmwfAcuyDxzymwnW7RoYQsaPMxr20fRSzQsyo149VQTrl4sUZ2/JWI7yXzafZrGSDQn+bKtAClACKd5CxIGYlim61pbCtQZw5pP8/bjI900tZqrnh1w1Ou8iz51ooZyldNEi3rnNkpUQ7MrZzrzGZ+xhT6MjtP+4dw9iaQwfbBly4mwaXqO1VAI4wZGsRuRcO0hv65ATQ5BM96iPNg9cG94jeA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CDZdfQnP; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CDZdfQnP; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:content-type; b=YPo4aNUBvVMCwCVw2i3nsnHk9VcvDNJfjVb6XEMHcPzsneH0iVYqXmUXz0L1OQav3wBfoFmFtCS4q1QMwCm8Z/55hPdtMkNrSE0O6p0/Wulft/3LxWT0cL3ftQqs2nJLN+mfPLWjJmmpEEuOQ56UK79p9/X2ZTBOURTxaw0CdQsE7pbZdtLheKIQ16xFyOKE6QQKxmR+AtCVsMgGL7Xor6YdljT2tHyjT6omXTaya2eJXv6dJdNCDT3vafRPKyKuDpesSdHN0pTIkeL/xzuvEJliBCTsUS2nnv/P8lh5xtuSRb/3wnN3oHuU2rqX1seZw8bmazG9i905vylmwG1QkA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OzY6BA0u; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AxMjKFg7; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CDZdfQnP;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=CDZdfQnP;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OzY6BA0u;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=AxMjKFg7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=dhildenb@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c0smM4wcpz3d2c
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 21:26:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c0smQ1y2jz3d2c
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 21:27:02 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754911617;
+	s=mimecast20190719; t=1754911619;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P87rLpAYrvMbmMGGuIRrtBN562miOXHo6Y54j1JPV6I=;
-	b=CDZdfQnPdDdmxAXniKUCqiywXqna/h8Ei8beRgZx6KAB/7msXiRsQPJVvn2uRb/6k7K3ie
-	TYzly4QdkjcEvMPnStIlZAgoCHVu7w1/aqnNtWMEuynrfCtYn/B84noALTrBu3z06xKwnf
-	61zRrA7Uag1jXA3RAr+SV7KZ1Ogbqow=
+	bh=cAxz8wtEYwnzSbLFT0UZ22FzefKNNzcleMeX5Ma3lWM=;
+	b=OzY6BA0uDT6lXYsWYJDCSZfSFeuEvXLw6qqBEehs+Hll7x8eEM+3MohhumbQ7nl/P5Oljl
+	7yXNYZ7EM5t1fe8E39lAs+Tumqr8wchhEbCLDPXhYVFTNTiYxodqOC/wMLAS7a/7DQy7jg
+	ns+OWWIoxOiiVkFmmepT1tAmwaU9S1c=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1754911617;
+	s=mimecast20190719; t=1754911620;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P87rLpAYrvMbmMGGuIRrtBN562miOXHo6Y54j1JPV6I=;
-	b=CDZdfQnPdDdmxAXniKUCqiywXqna/h8Ei8beRgZx6KAB/7msXiRsQPJVvn2uRb/6k7K3ie
-	TYzly4QdkjcEvMPnStIlZAgoCHVu7w1/aqnNtWMEuynrfCtYn/B84noALTrBu3z06xKwnf
-	61zRrA7Uag1jXA3RAr+SV7KZ1Ogbqow=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=cAxz8wtEYwnzSbLFT0UZ22FzefKNNzcleMeX5Ma3lWM=;
+	b=AxMjKFg7inC9zbvnHR5rzbBbxGeJlvZWfekIqw1bJ8937knxjTnO8qmxOwcm5ernEHBxhv
+	o1VivLj6a94YvhMonfpeyH3x5RyrIcKQsC2/AdCUjpQh6Pgitc/Bcky8zYnETsORHGYlZb
+	1baK3L8HJDIzsvva4Rb/c0jfNlMEypk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-637-h7aexi8JMYqRQoJFuvIjzQ-1; Mon, 11 Aug 2025 07:26:54 -0400
-X-MC-Unique: h7aexi8JMYqRQoJFuvIjzQ-1
-X-Mimecast-MFC-AGG-ID: h7aexi8JMYqRQoJFuvIjzQ_1754911613
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-458b9ded499so28000435e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 04:26:53 -0700 (PDT)
+ us-mta-230-9mVAGi-NN5eeCbqDRS3YmA-1; Mon, 11 Aug 2025 07:26:56 -0400
+X-MC-Unique: 9mVAGi-NN5eeCbqDRS3YmA-1
+X-Mimecast-MFC-AGG-ID: 9mVAGi-NN5eeCbqDRS3YmA_1754911615
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-451d30992bcso40949635e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 Aug 2025 04:26:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1754911613; x=1755516413;
+        d=1e100.net; s=20230601; t=1754911615; x=1755516415;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=P87rLpAYrvMbmMGGuIRrtBN562miOXHo6Y54j1JPV6I=;
-        b=B/JfgSCCRhcplyGg736wHjm8p2SuPEbrpbULP1xFi2+Y/rkgLUjfWRkgP3ARnCXMl6
-         5sKeFOY2akMQlTBP/lx3HczgztDfm2qQJyKFQiMyS8QyK0T2kIdCom1EKvi2H4+b95N7
-         z6HCcXw6/gYzHZQu/duLHrwz3AxGxybOx4n2Apc+8QhHALoBjNIMGsTaeLe5IvhqAwRz
-         IJxxfOGvBM1qxJ2/ovo7Rx0ZSlzEOeKAqrAO2qeLM/9uVTpAc28fhyvVet5X2fI9Z9Cw
-         o5sAH6sMv5jpWgMVEQFXHbfvprfIDsqeqhTzFhUFzWVfwZ1hFsa3UyIEVEARc/nNv8HX
-         irUw==
-X-Forwarded-Encrypted: i=1; AJvYcCW3Lll2Q4tCNl3UZyDksmCbtNwxf9h0MGPAayBSqlmSJNX5A3ZLM1zuPd6TU75OdLzU95UTumMrNK1wlLo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwjtBJ7Zv0ZHQrO+H8ghrSRRuUYQmk0nLgWk7LrjxE+m0x6ZvKx
-	gaefEUXxCmOMqJ7YdM/anG9NNFDNyNjjmr4dN3J4gnRCRGmgyfjSUl/DISqj+qwjDuBFlblbEMI
-	XUK18rsBkmdMNhufX+7xfpJG4gFzVy8DquottYquk+U0TAblB3bPAYkvOMo4Pyj8Jqxk=
-X-Gm-Gg: ASbGnctyxgQrGO1vrDVbMYR+3xYVzHg7EbVB78AcgDpzHDXOmusj/C2AZ6UQs8gwR2d
-	9mVged2bkxGH/IiIJYfF+8CSGp0lNvhL0iDK5M+rhv/N12ogg2/CgVmmE/VOoU7ciDnfyZg5ymG
-	vobIepr8rYSmqpXSMMH4D83xForutkXsNrSG/jNfRC2Qs2D/IAJ0g2CwIQOkrbJlWC9w2TvLQV/
-	4a3Rs9CnTgJYarFt59AauwgD6NsBiW3cpXgQhQ3WnPJnPEVFVAi3pI7WmGlUjQjEDaoKod2IS6V
-	aSCBImvItidcIW7wzdy8UzSVjnx2Hb6/v9EjPH3H2aU9gu47/xlZ+j6E277F9Pi1gK9cSplHIAQ
-	WtyXz30gyY8VGxzMKaNcJufbJ
-X-Received: by 2002:a05:600c:3589:b0:459:dfa8:b881 with SMTP id 5b1f17b1804b1-459f4f3cfd9mr103523605e9.7.1754911612611;
-        Mon, 11 Aug 2025 04:26:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEiy2Q6M1gIlNBDGe4u7ez53xLkuOFeUzXf29NvQrYJzqDFFp1B3pMcW/PtvRUdMabZHM2Urw==
-X-Received: by 2002:a05:600c:3589:b0:459:dfa8:b881 with SMTP id 5b1f17b1804b1-459f4f3cfd9mr103523005e9.7.1754911612074;
-        Mon, 11 Aug 2025 04:26:52 -0700 (PDT)
+        bh=cAxz8wtEYwnzSbLFT0UZ22FzefKNNzcleMeX5Ma3lWM=;
+        b=jkiCZfpj3PcMm2V03x2uTn2wVYVBTAdm6z7iP8MigeGGg40Y1s1840qUCYGbQUy0sY
+         MuhFa63r7UAB+Dc7q2Ea4ZpWeunMjb2TzU7q/snzMRAQ6UF2Pnfl9FVKW6q1oNmViHtG
+         +RX4Rs5EVGyHttqhEQ/DMDd7aafVxHZh0dddAPrCZs90WyJnRgVE2rRkxb2OYUYCALwH
+         LuqHhr5SQTEYnqrtnBzK83vKyP3HZ3FWN5ZxI4IvmU7T2oox9Of93dk/zDIBd12UBEvm
+         cZdI0X93W7cuJypCKn/8FUVW0oMKE/6IwbDznwDkzih4B9i4E/2fAbTRXzWWmvpE0UY+
+         ALHA==
+X-Forwarded-Encrypted: i=1; AJvYcCXFnulE3qcMKR+SjkVLrDHJnxd6ODwhzLVUJJGAqFKuhWM6XTPg3YMmRNE54nfp//+MpTxDLxwt733rZMs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxHb7SmnpMNOqDEMUOz+HQNyWsZWoDOMUbe+d7n+D9Js2D+lH/t
+	hmezBA15TFXSZ7FHBkvNgWxkPSWJ3r5RKGp01da0GRMbKij4NUQPgHcDHDmMCvHYPOZUqcIC02y
+	7DBuFXeAeCMDUB0cI2GO4FxoJ84HV6T8AEihz5w9wN+5ojzq+P4f3mdMwOmQaIfSv9WA=
+X-Gm-Gg: ASbGncv3VxWWw9RekaB2t3vpJVjE1e+2CV8oqWnonz+yoRZ7+/FVHZ4EDZe98TvTrXF
+	R1ccQRaNlJZAOPkBdO/sd11v6L38E9cZ9Q4tKcryonjnrv/Y0zQOQu7ODfa+z1sEVAttmBFFor4
+	BXN4Mb4TD7lJmsxaYzloKB2+X9KGL++k9G0PaO8bJj+/g2jvFnFYRaPOGC1NFC+b1P6Orc9nlvc
+	H2DbDrxKhcpTAFk7eT39xO2rH454soJ5cDgQCmhRZLWu4GMLnR9g5pITmOqH7/t4pMAgW/XPacT
+	50iH1UpXi2JmOOyf4RH7ikoJ36wMa0IWWhIO95KZgZfx1aZN9fZ69sgq7mV5jBrDufm5vqWGJ3W
+	V9yebFqBnARcklqmhtLdmQ/YP
+X-Received: by 2002:a05:600c:350f:b0:456:1560:7c63 with SMTP id 5b1f17b1804b1-459f4f3dde5mr124070775e9.3.1754911615175;
+        Mon, 11 Aug 2025 04:26:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHKs8kYesKmGWPRfo05vS75I0Yn/yE7Pq2L/J4XRbC28zXbi7Rocgkv1+OCyQd3aXR+1J2h1Q==
+X-Received: by 2002:a05:600c:350f:b0:456:1560:7c63 with SMTP id 5b1f17b1804b1-459f4f3dde5mr124070425e9.3.1754911614678;
+        Mon, 11 Aug 2025 04:26:54 -0700 (PDT)
 Received: from localhost (p200300d82f06a600a397de1d2f8bb66f.dip0.t-ipconnect.de. [2003:d8:2f06:a600:a397:de1d:2f8b:b66f])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c3bf93dsm40409120f8f.27.2025.08.11.04.26.50
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3b79c4530b3sm41080102f8f.34.2025.08.11.04.26.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Aug 2025 04:26:51 -0700 (PDT)
+        Mon, 11 Aug 2025 04:26:54 -0700 (PDT)
 From: David Hildenbrand <david@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: linux-mm@kvack.org,
@@ -126,9 +126,9 @@ Cc: linux-mm@kvack.org,
 	Hugh Dickins <hughd@google.com>,
 	Oscar Salvador <osalvador@suse.de>,
 	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v3 07/11] mm/rmap: convert "enum rmap_level" to "enum pgtable_level"
-Date: Mon, 11 Aug 2025 13:26:27 +0200
-Message-ID: <20250811112631.759341-8-david@redhat.com>
+Subject: [PATCH v3 08/11] mm/memory: convert print_bad_pte() to print_bad_page_map()
+Date: Mon, 11 Aug 2025 13:26:28 +0200
+Message-ID: <20250811112631.759341-9-david@redhat.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250811112631.759341-1-david@redhat.com>
 References: <20250811112631.759341-1-david@redhat.com>
@@ -146,7 +146,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Gf8C90e9yDUvXbRR8Pp4Bp4BmnaVvtew_Nue1TyC5yI_1754911613
+X-Mimecast-MFC-PROC-ID: 0dU0AfW3DZoRkUiEd0W0g8H0bh0ZYbq6Sz9YKwb2_YQ_1754911615
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
@@ -156,464 +156,215 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Let's factor it out, and convert all checks for unsupported levels to
-BUILD_BUG(). The code is written in a way such that force-inlining will
-optimize out the levels.
+print_bad_pte() looks like something that should actually be a WARN
+or similar, but historically it apparently has proven to be useful to
+detect corruption of page tables even on production systems -- report
+the issue and keep the system running to make it easier to actually detect
+what is going wrong (e.g., multiple such messages might shed a light).
+
+As we want to unify vm_normal_page_*() handling for PTE/PMD/PUD, we'll have
+to take care of print_bad_pte() as well.
+
+Let's prepare for using print_bad_pte() also for non-PTEs by adjusting the
+implementation and renaming the function to print_bad_page_map().
+Provide print_bad_pte() as a simple wrapper.
+
+Document the implicit locking requirements for the page table re-walk.
+
+To make the function a bit more readable, factor out the ratelimit check
+into is_bad_page_map_ratelimited() and place the printing of page
+table content into __print_bad_page_map_pgtable(). We'll now dump
+information from each level in a single line, and just stop the table
+walk once we hit something that is not a present page table.
+
+The report will now look something like (dumping pgd to pmd values):
+
+[   77.943408] BUG: Bad page map in process XXX  pte:80000001233f5867
+[   77.944077] addr:00007fd84bb1c000 vm_flags:08100071 anon_vma: ...
+[   77.945186] pgd:10a89f067 p4d:10a89f067 pud:10e5a2067 pmd:105327067
+
+Not using pgdp_get(), because that does not work properly on some arm
+configs where pgd_t is an array. Note that we are dumping all levels
+even when levels are folded for simplicity.
 
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- include/linux/pgtable.h |  8 ++++++
- include/linux/rmap.h    | 60 +++++++++++++++++++----------------------
- mm/rmap.c               | 56 +++++++++++++++++++++-----------------
- 3 files changed, 66 insertions(+), 58 deletions(-)
+ include/linux/pgtable.h |  19 ++++++++
+ mm/memory.c             | 104 ++++++++++++++++++++++++++++++++--------
+ 2 files changed, 103 insertions(+), 20 deletions(-)
 
 diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 4c035637eeb77..bff5c4241bf2e 100644
+index bff5c4241bf2e..33c84b38b7ec6 100644
 --- a/include/linux/pgtable.h
 +++ b/include/linux/pgtable.h
-@@ -1958,6 +1958,14 @@ static inline bool arch_has_pfn_modify_check(void)
- /* Page-Table Modification Mask */
- typedef unsigned int pgtbl_mod_mask;
+@@ -1966,6 +1966,25 @@ enum pgtable_level {
+ 	PGTABLE_LEVEL_PGD,
+ };
  
-+enum pgtable_level {
-+	PGTABLE_LEVEL_PTE = 0,
-+	PGTABLE_LEVEL_PMD,
-+	PGTABLE_LEVEL_PUD,
-+	PGTABLE_LEVEL_P4D,
-+	PGTABLE_LEVEL_PGD,
-+};
++static inline const char *pgtable_level_to_str(enum pgtable_level level)
++{
++	switch (level) {
++	case PGTABLE_LEVEL_PTE:
++		return "pte";
++	case PGTABLE_LEVEL_PMD:
++		return "pmd";
++	case PGTABLE_LEVEL_PUD:
++		return "pud";
++	case PGTABLE_LEVEL_P4D:
++		return "p4d";
++	case PGTABLE_LEVEL_PGD:
++		return "pgd";
++	default:
++		VM_WARN_ON_ONCE(1);
++		return "unknown";
++	}
++}
 +
  #endif /* !__ASSEMBLY__ */
  
  #if !defined(MAX_POSSIBLE_PHYSMEM_BITS) && !defined(CONFIG_64BIT)
-diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index 6cd020eea37a2..9d40d127bdb78 100644
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -394,18 +394,8 @@ typedef int __bitwise rmap_t;
- /* The anonymous (sub)page is exclusive to a single process. */
- #define RMAP_EXCLUSIVE		((__force rmap_t)BIT(0))
+diff --git a/mm/memory.c b/mm/memory.c
+index 626caedce35e0..dc0107354d37b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -491,22 +491,8 @@ static inline void add_mm_rss_vec(struct mm_struct *mm, int *rss)
+ 			add_mm_counter(mm, i, rss[i]);
+ }
  
 -/*
-- * Internally, we're using an enum to specify the granularity. We make the
-- * compiler emit specialized code for each granularity.
+- * This function is called to print an error when a bad pte
+- * is found. For example, we might have a PFN-mapped pte in
+- * a region that doesn't allow it.
+- *
+- * The calling function must still handle the error.
 - */
--enum rmap_level {
--	RMAP_LEVEL_PTE = 0,
--	RMAP_LEVEL_PMD,
--	RMAP_LEVEL_PUD,
--};
--
- static inline void __folio_rmap_sanity_checks(const struct folio *folio,
--		const struct page *page, int nr_pages, enum rmap_level level)
-+		const struct page *page, int nr_pages, enum pgtable_level level)
+-static void print_bad_pte(struct vm_area_struct *vma, unsigned long addr,
+-			  pte_t pte, struct page *page)
++static bool is_bad_page_map_ratelimited(void)
  {
- 	/* hugetlb folios are handled separately. */
- 	VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
-@@ -427,18 +417,18 @@ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
- 	VM_WARN_ON_FOLIO(page_folio(page + nr_pages - 1) != folio, folio);
- 
- 	switch (level) {
--	case RMAP_LEVEL_PTE:
-+	case PGTABLE_LEVEL_PTE:
- 		break;
--	case RMAP_LEVEL_PMD:
-+	case PGTABLE_LEVEL_PMD:
- 		/*
- 		 * We don't support folios larger than a single PMD yet. So
--		 * when RMAP_LEVEL_PMD is set, we assume that we are creating
-+		 * when PGTABLE_LEVEL_PMD is set, we assume that we are creating
- 		 * a single "entire" mapping of the folio.
- 		 */
- 		VM_WARN_ON_FOLIO(folio_nr_pages(folio) != HPAGE_PMD_NR, folio);
- 		VM_WARN_ON_FOLIO(nr_pages != HPAGE_PMD_NR, folio);
- 		break;
--	case RMAP_LEVEL_PUD:
-+	case PGTABLE_LEVEL_PUD:
- 		/*
- 		 * Assume that we are creating a single "entire" mapping of the
- 		 * folio.
-@@ -447,7 +437,7 @@ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
- 		VM_WARN_ON_FOLIO(nr_pages != HPAGE_PUD_NR, folio);
- 		break;
- 	default:
--		VM_WARN_ON_ONCE(true);
-+		BUILD_BUG();
- 	}
- 
- 	/*
-@@ -567,14 +557,14 @@ static inline void hugetlb_remove_rmap(struct folio *folio)
- 
- static __always_inline void __folio_dup_file_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *dst_vma,
--		enum rmap_level level)
-+		enum pgtable_level level)
- {
- 	const int orig_nr_pages = nr_pages;
- 
- 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
- 
- 	switch (level) {
--	case RMAP_LEVEL_PTE:
-+	case PGTABLE_LEVEL_PTE:
- 		if (!folio_test_large(folio)) {
- 			atomic_inc(&folio->_mapcount);
- 			break;
-@@ -587,11 +577,13 @@ static __always_inline void __folio_dup_file_rmap(struct folio *folio,
+-	pgd_t *pgd = pgd_offset(vma->vm_mm, addr);
+-	p4d_t *p4d = p4d_offset(pgd, addr);
+-	pud_t *pud = pud_offset(p4d, addr);
+-	pmd_t *pmd = pmd_offset(pud, addr);
+-	struct address_space *mapping;
+-	pgoff_t index;
+ 	static unsigned long resume;
+ 	static unsigned long nr_shown;
+ 	static unsigned long nr_unshown;
+@@ -518,7 +504,7 @@ static void print_bad_pte(struct vm_area_struct *vma, unsigned long addr,
+ 	if (nr_shown == 60) {
+ 		if (time_before(jiffies, resume)) {
+ 			nr_unshown++;
+-			return;
++			return true;
  		}
- 		folio_add_large_mapcount(folio, orig_nr_pages, dst_vma);
- 		break;
--	case RMAP_LEVEL_PMD:
--	case RMAP_LEVEL_PUD:
-+	case PGTABLE_LEVEL_PMD:
-+	case PGTABLE_LEVEL_PUD:
- 		atomic_inc(&folio->_entire_mapcount);
- 		folio_inc_large_mapcount(folio, dst_vma);
- 		break;
-+	default:
-+		BUILD_BUG();
+ 		if (nr_unshown) {
+ 			pr_alert("BUG: Bad page map: %lu messages suppressed\n",
+@@ -529,15 +515,91 @@ static void print_bad_pte(struct vm_area_struct *vma, unsigned long addr,
  	}
- }
- 
-@@ -609,13 +601,13 @@ static __always_inline void __folio_dup_file_rmap(struct folio *folio,
- static inline void folio_dup_file_rmap_ptes(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *dst_vma)
- {
--	__folio_dup_file_rmap(folio, page, nr_pages, dst_vma, RMAP_LEVEL_PTE);
-+	__folio_dup_file_rmap(folio, page, nr_pages, dst_vma, PGTABLE_LEVEL_PTE);
- }
- 
- static __always_inline void folio_dup_file_rmap_pte(struct folio *folio,
- 		struct page *page, struct vm_area_struct *dst_vma)
- {
--	__folio_dup_file_rmap(folio, page, 1, dst_vma, RMAP_LEVEL_PTE);
-+	__folio_dup_file_rmap(folio, page, 1, dst_vma, PGTABLE_LEVEL_PTE);
- }
- 
- /**
-@@ -632,7 +624,7 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
- 		struct page *page, struct vm_area_struct *dst_vma)
- {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, RMAP_LEVEL_PTE);
-+	__folio_dup_file_rmap(folio, page, HPAGE_PMD_NR, dst_vma, PGTABLE_LEVEL_PTE);
- #else
- 	WARN_ON_ONCE(true);
- #endif
-@@ -640,7 +632,7 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
- 
- static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *dst_vma,
--		struct vm_area_struct *src_vma, enum rmap_level level)
-+		struct vm_area_struct *src_vma, enum pgtable_level level)
- {
- 	const int orig_nr_pages = nr_pages;
- 	bool maybe_pinned;
-@@ -665,7 +657,7 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
- 	 * copying if the folio maybe pinned.
- 	 */
- 	switch (level) {
--	case RMAP_LEVEL_PTE:
-+	case PGTABLE_LEVEL_PTE:
- 		if (unlikely(maybe_pinned)) {
- 			for (i = 0; i < nr_pages; i++)
- 				if (PageAnonExclusive(page + i))
-@@ -687,8 +679,8 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
- 		} while (page++, --nr_pages > 0);
- 		folio_add_large_mapcount(folio, orig_nr_pages, dst_vma);
- 		break;
--	case RMAP_LEVEL_PMD:
--	case RMAP_LEVEL_PUD:
-+	case PGTABLE_LEVEL_PMD:
-+	case PGTABLE_LEVEL_PUD:
- 		if (PageAnonExclusive(page)) {
- 			if (unlikely(maybe_pinned))
- 				return -EBUSY;
-@@ -697,6 +689,8 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
- 		atomic_inc(&folio->_entire_mapcount);
- 		folio_inc_large_mapcount(folio, dst_vma);
- 		break;
-+	default:
-+		BUILD_BUG();
- 	}
- 	return 0;
- }
-@@ -730,7 +724,7 @@ static inline int folio_try_dup_anon_rmap_ptes(struct folio *folio,
- 		struct vm_area_struct *src_vma)
- {
- 	return __folio_try_dup_anon_rmap(folio, page, nr_pages, dst_vma,
--					 src_vma, RMAP_LEVEL_PTE);
-+					 src_vma, PGTABLE_LEVEL_PTE);
- }
- 
- static __always_inline int folio_try_dup_anon_rmap_pte(struct folio *folio,
-@@ -738,7 +732,7 @@ static __always_inline int folio_try_dup_anon_rmap_pte(struct folio *folio,
- 		struct vm_area_struct *src_vma)
- {
- 	return __folio_try_dup_anon_rmap(folio, page, 1, dst_vma, src_vma,
--					 RMAP_LEVEL_PTE);
-+					 PGTABLE_LEVEL_PTE);
- }
- 
- /**
-@@ -770,7 +764,7 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
- {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	return __folio_try_dup_anon_rmap(folio, page, HPAGE_PMD_NR, dst_vma,
--					 src_vma, RMAP_LEVEL_PMD);
-+					 src_vma, PGTABLE_LEVEL_PMD);
- #else
- 	WARN_ON_ONCE(true);
- 	return -EBUSY;
-@@ -778,7 +772,7 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
- }
- 
- static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
--		struct page *page, int nr_pages, enum rmap_level level)
-+		struct page *page, int nr_pages, enum pgtable_level level)
- {
- 	VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
- 	VM_WARN_ON_FOLIO(!PageAnonExclusive(page), folio);
-@@ -873,7 +867,7 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
- static inline int folio_try_share_anon_rmap_pte(struct folio *folio,
- 		struct page *page)
- {
--	return __folio_try_share_anon_rmap(folio, page, 1, RMAP_LEVEL_PTE);
-+	return __folio_try_share_anon_rmap(folio, page, 1, PGTABLE_LEVEL_PTE);
- }
- 
- /**
-@@ -904,7 +898,7 @@ static inline int folio_try_share_anon_rmap_pmd(struct folio *folio,
- {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	return __folio_try_share_anon_rmap(folio, page, HPAGE_PMD_NR,
--					   RMAP_LEVEL_PMD);
-+					   PGTABLE_LEVEL_PMD);
- #else
- 	WARN_ON_ONCE(true);
- 	return -EBUSY;
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 84a8d8b02ef77..0e9c4041f8687 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1265,7 +1265,7 @@ static void __folio_mod_stat(struct folio *folio, int nr, int nr_pmdmapped)
- 
- static __always_inline void __folio_add_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *vma,
--		enum rmap_level level)
+ 	if (nr_shown++ == 0)
+ 		resume = jiffies + 60 * HZ;
++	return false;
++}
++
++static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
++{
++	unsigned long long pgdv, p4dv, pudv, pmdv;
++	p4d_t p4d, *p4dp;
++	pud_t pud, *pudp;
++	pmd_t pmd, *pmdp;
++	pgd_t *pgdp;
++
++	/*
++	 * Although this looks like a fully lockless pgtable walk, it is not:
++	 * see locking requirements for print_bad_page_map().
++	 */
++	pgdp = pgd_offset(mm, addr);
++	pgdv = pgd_val(*pgdp);
++
++	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
++		pr_alert("pgd:%08llx\n", pgdv);
++		return;
++	}
++
++	p4dp = p4d_offset(pgdp, addr);
++	p4d = p4dp_get(p4dp);
++	p4dv = p4d_val(p4d);
++
++	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
++		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
++		return;
++	}
++
++	pudp = pud_offset(p4dp, addr);
++	pud = pudp_get(pudp);
++	pudv = pud_val(pud);
++
++	if (!pud_present(pud) || pud_leaf(pud)) {
++		pr_alert("pgd:%08llx p4d:%08llx pud:%08llx\n", pgdv, p4dv, pudv);
++		return;
++	}
++
++	pmdp = pmd_offset(pudp, addr);
++	pmd = pmdp_get(pmdp);
++	pmdv = pmd_val(pmd);
++
++	/*
++	 * Dumping the PTE would be nice, but it's tricky with CONFIG_HIGHPTE,
++	 * because the table should already be mapped by the caller and
++	 * doing another map would be bad. print_bad_page_map() should
++	 * already take care of printing the PTE.
++	 */
++	pr_alert("pgd:%08llx p4d:%08llx pud:%08llx pmd:%08llx\n", pgdv,
++		 p4dv, pudv, pmdv);
++}
++
++/*
++ * This function is called to print an error when a bad page table entry (e.g.,
++ * corrupted page table entry) is found. For example, we might have a
++ * PFN-mapped pte in a region that doesn't allow it.
++ *
++ * The calling function must still handle the error.
++ *
++ * This function must be called during a proper page table walk, as it will
++ * re-walk the page table to dump information: the caller MUST prevent page
++ * table teardown (by holding mmap, vma or rmap lock) and MUST hold the leaf
++ * page table lock.
++ */
++static void print_bad_page_map(struct vm_area_struct *vma,
++		unsigned long addr, unsigned long long entry, struct page *page,
 +		enum pgtable_level level)
- {
- 	atomic_t *mapped = &folio->_nr_pages_mapped;
- 	const int orig_nr_pages = nr_pages;
-@@ -1274,7 +1274,7 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
- 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
++{
++	struct address_space *mapping;
++	pgoff_t index;
++
++	if (is_bad_page_map_ratelimited())
++		return;
  
- 	switch (level) {
--	case RMAP_LEVEL_PTE:
-+	case PGTABLE_LEVEL_PTE:
- 		if (!folio_test_large(folio)) {
- 			nr = atomic_inc_and_test(&folio->_mapcount);
- 			break;
-@@ -1300,11 +1300,11 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
+ 	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
+ 	index = linear_page_index(vma, addr);
  
- 		folio_add_large_mapcount(folio, orig_nr_pages, vma);
- 		break;
--	case RMAP_LEVEL_PMD:
--	case RMAP_LEVEL_PUD:
-+	case PGTABLE_LEVEL_PMD:
-+	case PGTABLE_LEVEL_PUD:
- 		first = atomic_inc_and_test(&folio->_entire_mapcount);
- 		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
--			if (level == RMAP_LEVEL_PMD && first)
-+			if (level == PGTABLE_LEVEL_PMD && first)
- 				nr_pmdmapped = folio_large_nr_pages(folio);
- 			nr = folio_inc_return_large_mapcount(folio, vma);
- 			if (nr == 1)
-@@ -1323,7 +1323,7 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
- 				 * We only track PMD mappings of PMD-sized
- 				 * folios separately.
- 				 */
--				if (level == RMAP_LEVEL_PMD)
-+				if (level == PGTABLE_LEVEL_PMD)
- 					nr_pmdmapped = nr_pages;
- 				nr = nr_pages - (nr & FOLIO_PAGES_MAPPED);
- 				/* Raced ahead of a remove and another add? */
-@@ -1336,6 +1336,8 @@ static __always_inline void __folio_add_rmap(struct folio *folio,
- 		}
- 		folio_inc_large_mapcount(folio, vma);
- 		break;
-+	default:
-+		BUILD_BUG();
- 	}
- 	__folio_mod_stat(folio, nr, nr_pmdmapped);
+-	pr_alert("BUG: Bad page map in process %s  pte:%08llx pmd:%08llx\n",
+-		 current->comm,
+-		 (long long)pte_val(pte), (long long)pmd_val(*pmd));
++	pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
++		 pgtable_level_to_str(level), entry);
++	__print_bad_page_map_pgtable(vma->vm_mm, addr);
+ 	if (page)
+-		dump_page(page, "bad pte");
++		dump_page(page, "bad page map");
+ 	pr_alert("addr:%px vm_flags:%08lx anon_vma:%px mapping:%px index:%lx\n",
+ 		 (void *)addr, vma->vm_flags, vma->anon_vma, mapping, index);
+ 	pr_alert("file:%pD fault:%ps mmap:%ps mmap_prepare: %ps read_folio:%ps\n",
+@@ -549,6 +611,8 @@ static void print_bad_pte(struct vm_area_struct *vma, unsigned long addr,
+ 	dump_stack();
+ 	add_taint(TAINT_BAD_PAGE, LOCKDEP_NOW_UNRELIABLE);
  }
-@@ -1427,7 +1429,7 @@ static void __page_check_anon_rmap(const struct folio *folio,
++#define print_bad_pte(vma, addr, pte, page) \
++	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
  
- static __always_inline void __folio_add_anon_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *vma,
--		unsigned long address, rmap_t flags, enum rmap_level level)
-+		unsigned long address, rmap_t flags, enum pgtable_level level)
- {
- 	int i;
- 
-@@ -1440,20 +1442,22 @@ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
- 
- 	if (flags & RMAP_EXCLUSIVE) {
- 		switch (level) {
--		case RMAP_LEVEL_PTE:
-+		case PGTABLE_LEVEL_PTE:
- 			for (i = 0; i < nr_pages; i++)
- 				SetPageAnonExclusive(page + i);
- 			break;
--		case RMAP_LEVEL_PMD:
-+		case PGTABLE_LEVEL_PMD:
- 			SetPageAnonExclusive(page);
- 			break;
--		case RMAP_LEVEL_PUD:
-+		case PGTABLE_LEVEL_PUD:
- 			/*
- 			 * Keep the compiler happy, we don't support anonymous
- 			 * PUD mappings.
- 			 */
- 			WARN_ON_ONCE(1);
- 			break;
-+		default:
-+			BUILD_BUG();
- 		}
- 	}
- 
-@@ -1507,7 +1511,7 @@ void folio_add_anon_rmap_ptes(struct folio *folio, struct page *page,
- 		rmap_t flags)
- {
- 	__folio_add_anon_rmap(folio, page, nr_pages, vma, address, flags,
--			      RMAP_LEVEL_PTE);
-+			      PGTABLE_LEVEL_PTE);
- }
- 
- /**
-@@ -1528,7 +1532,7 @@ void folio_add_anon_rmap_pmd(struct folio *folio, struct page *page,
- {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	__folio_add_anon_rmap(folio, page, HPAGE_PMD_NR, vma, address, flags,
--			      RMAP_LEVEL_PMD);
-+			      PGTABLE_LEVEL_PMD);
- #else
- 	WARN_ON_ONCE(true);
- #endif
-@@ -1609,7 +1613,7 @@ void folio_add_new_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
- 
- static __always_inline void __folio_add_file_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *vma,
--		enum rmap_level level)
-+		enum pgtable_level level)
- {
- 	VM_WARN_ON_FOLIO(folio_test_anon(folio), folio);
- 
-@@ -1634,7 +1638,7 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
- void folio_add_file_rmap_ptes(struct folio *folio, struct page *page,
- 		int nr_pages, struct vm_area_struct *vma)
- {
--	__folio_add_file_rmap(folio, page, nr_pages, vma, RMAP_LEVEL_PTE);
-+	__folio_add_file_rmap(folio, page, nr_pages, vma, PGTABLE_LEVEL_PTE);
- }
- 
- /**
-@@ -1651,7 +1655,7 @@ void folio_add_file_rmap_pmd(struct folio *folio, struct page *page,
- 		struct vm_area_struct *vma)
- {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	__folio_add_file_rmap(folio, page, HPAGE_PMD_NR, vma, RMAP_LEVEL_PMD);
-+	__folio_add_file_rmap(folio, page, HPAGE_PMD_NR, vma, PGTABLE_LEVEL_PMD);
- #else
- 	WARN_ON_ONCE(true);
- #endif
-@@ -1672,7 +1676,7 @@ void folio_add_file_rmap_pud(struct folio *folio, struct page *page,
- {
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
- 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
--	__folio_add_file_rmap(folio, page, HPAGE_PUD_NR, vma, RMAP_LEVEL_PUD);
-+	__folio_add_file_rmap(folio, page, HPAGE_PUD_NR, vma, PGTABLE_LEVEL_PUD);
- #else
- 	WARN_ON_ONCE(true);
- #endif
-@@ -1680,7 +1684,7 @@ void folio_add_file_rmap_pud(struct folio *folio, struct page *page,
- 
- static __always_inline void __folio_remove_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *vma,
--		enum rmap_level level)
-+		enum pgtable_level level)
- {
- 	atomic_t *mapped = &folio->_nr_pages_mapped;
- 	int last = 0, nr = 0, nr_pmdmapped = 0;
-@@ -1689,7 +1693,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 	__folio_rmap_sanity_checks(folio, page, nr_pages, level);
- 
- 	switch (level) {
--	case RMAP_LEVEL_PTE:
-+	case PGTABLE_LEVEL_PTE:
- 		if (!folio_test_large(folio)) {
- 			nr = atomic_add_negative(-1, &folio->_mapcount);
- 			break;
-@@ -1719,11 +1723,11 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 
- 		partially_mapped = nr && atomic_read(mapped);
- 		break;
--	case RMAP_LEVEL_PMD:
--	case RMAP_LEVEL_PUD:
-+	case PGTABLE_LEVEL_PMD:
-+	case PGTABLE_LEVEL_PUD:
- 		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
- 			last = atomic_add_negative(-1, &folio->_entire_mapcount);
--			if (level == RMAP_LEVEL_PMD && last)
-+			if (level == PGTABLE_LEVEL_PMD && last)
- 				nr_pmdmapped = folio_large_nr_pages(folio);
- 			nr = folio_dec_return_large_mapcount(folio, vma);
- 			if (!nr) {
-@@ -1743,7 +1747,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 			nr = atomic_sub_return_relaxed(ENTIRELY_MAPPED, mapped);
- 			if (likely(nr < ENTIRELY_MAPPED)) {
- 				nr_pages = folio_large_nr_pages(folio);
--				if (level == RMAP_LEVEL_PMD)
-+				if (level == PGTABLE_LEVEL_PMD)
- 					nr_pmdmapped = nr_pages;
- 				nr = nr_pages - (nr & FOLIO_PAGES_MAPPED);
- 				/* Raced ahead of another remove and an add? */
-@@ -1757,6 +1761,8 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 
- 		partially_mapped = nr && nr < nr_pmdmapped;
- 		break;
-+	default:
-+		BUILD_BUG();
- 	}
- 
- 	/*
-@@ -1796,7 +1802,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- void folio_remove_rmap_ptes(struct folio *folio, struct page *page,
- 		int nr_pages, struct vm_area_struct *vma)
- {
--	__folio_remove_rmap(folio, page, nr_pages, vma, RMAP_LEVEL_PTE);
-+	__folio_remove_rmap(folio, page, nr_pages, vma, PGTABLE_LEVEL_PTE);
- }
- 
- /**
-@@ -1813,7 +1819,7 @@ void folio_remove_rmap_pmd(struct folio *folio, struct page *page,
- 		struct vm_area_struct *vma)
- {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	__folio_remove_rmap(folio, page, HPAGE_PMD_NR, vma, RMAP_LEVEL_PMD);
-+	__folio_remove_rmap(folio, page, HPAGE_PMD_NR, vma, PGTABLE_LEVEL_PMD);
- #else
- 	WARN_ON_ONCE(true);
- #endif
-@@ -1834,7 +1840,7 @@ void folio_remove_rmap_pud(struct folio *folio, struct page *page,
- {
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
- 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
--	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, RMAP_LEVEL_PUD);
-+	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, PGTABLE_LEVEL_PUD);
- #else
- 	WARN_ON_ONCE(true);
- #endif
+ /*
+  * vm_normal_page -- This function gets the "struct page" associated with a pte.
 -- 
 2.50.1
 
