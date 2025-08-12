@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-10875-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10876-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21BEB22B9A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Aug 2025 17:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DAEB22BB5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Aug 2025 17:30:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c1ZzP1Qp3z2xCW;
-	Wed, 13 Aug 2025 01:24:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c1b706JB9z2xCd;
+	Wed, 13 Aug 2025 01:30:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755012241;
-	cv=none; b=hJPawmUudpao9gRyQi2Zf/nhCKT0wF2Fh+DBeTs2XYaC0/xOnaQbAylr7rqgfQc+jZyLSFKsUUoQfr6SwqvTNShCDBpt7jKIAbpLMtB2rpfvWz/OSGlTjoaLWExYn4amTHZVHS91LFVgl6f+C68jBTuYvpju/Bng9Onlb6blzm1bJhCsW+7llD8AJmVjigxUAr/vl5Je/4udg7JrhUY9ihVGiOr73JvA4F2kAdtw2eNt8Le+3lcRwp7LXNUMr+9p6jxvvL4bO1waeNhTTWbGnN2s+V2tPbugrpNTqb28ofEgS0gRO7nXU4J7rMsICPOeVtR6jFnghEn0o7zncabx5w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755012636;
+	cv=none; b=Jm8yhwvMgJ32tLTrDyhvHU7afQm4m9H7i79yp68M1FJT3dp3+rIQDqj/hjAoNOm/Z11ZKcASJYgEWX6ha/psZLEVMiOhdLTqwAKbheJaHt02/ND6BKesbEtJBwaNP9iF/9lqIuj9d9QU78dsmw1nxqmkQ7IqZMopNZ+cIg3kDfIqjTqpUNb33UJQmu5je6N9vS/qHeXWdQzNZix4ICNHoMLHiMQCNTGdQ8r2o6jX7bhjVPNvn6QQsVDH7OMLV+gJwxudlp+yN7k9xYAqgClTTxT7Tmfbrk0RcLgzoQ1aPUMbEjzw1wIPVU65hawbI8y14iWP0t2G29KK9ung3mnJDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755012241; c=relaxed/relaxed;
-	bh=DMj/X7ByCnHio4E+HPJpAiwgeu61rKX0epElnm7c0rA=;
+	t=1755012636; c=relaxed/relaxed;
+	bh=CEiF06+TEUUIqDR3VvN9MkJtr/XidlGtx2MqKgonKEg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mYTWIgN7aHqYiA4aHi7YNMapG+xjsEgZk++mRap50vpbl40HiSVRbqM3jH+rJukBlbriI3SkmhQvdK1HdQrcCKam0PkqPR38nCUklu5X4MuS4LwsmcFmNQlflN0AkejoVJZkwJfaiOss37Fl+cBAFVx9jK926VKI4n9ChSLgWrDy6awVkVn9RItfrLkTThu54cTSiiI6ktX9W3vx6OsvUfAOUKkmuk+23VoyT+2sK42d0sYV0ZFMlBD2t5fDQqr8c2/L/26+e9kHsuDmw4C6y/6Y5AUPajDn5xcXh6Yr9cEZhwT4b+Q/feZtn6jetW4LlLbYvK/G+HkObrtF/977iQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=H4uw3FOF; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=e4MfFW86ef36LJPmzSYk7zDTWRWK1HC6tDsOERCUZ4tOVslgVosLirgJnYXJ05aTrMKZsFAOhPWcbrRqGcxXy0+WDzcRN0X74fZStCg9dEFObL41aBKPFZag+veyLM2WG0YTtfUEFxoTUzsWJJ3hsYJqujj61bk7Xjr7btWCz2dS8kLawdPc+Hp1r7ICJ7bZJNOfyqXAeutQT26YhgFvqUH5TmtpiF+cVJmZTSH1vWt6NJNzx9mqSq8BPjPC7AHyYOjosPZeAiwbAAEJ0uBWigMXBzb2ju5jiXVtJ/9HGQ7vtZv6Wn04i7XRqYsKG/chIh49+ZeFNrtRpn7DwqCu9A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j6s1h4hh; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=H4uw3FOF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=j6s1h4hh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c1ZzN1jSKz2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 01:24:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c1b6z6PcHz2xC3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 01:30:35 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 635225C692E;
-	Tue, 12 Aug 2025 15:23:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CF1C4CEF6;
-	Tue, 12 Aug 2025 15:23:54 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 67033A5684E;
+	Tue, 12 Aug 2025 15:30:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DDBC4CEF0;
+	Tue, 12 Aug 2025 15:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755012237;
-	bh=mX6tR4+Ke57loofg2X/TVfboE2bhITCHejUM+A1Udjg=;
+	s=k20201202; t=1755012633;
+	bh=fSpC7xHCqIbWLnou6SZi6B0P5Vb+1fpce9qaTi/b3gA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=H4uw3FOFtceDyVXfp2hkab8EBMAGh6+jXNXurLp3g7xpXd899UiLoYprwvEiDFj8g
-	 ysEXiSt0VNG2Vh142IEL2VQ3/otMit935/8wPO28T1lsOoxTYwvBiiB1LhVjcJ2qk+
-	 3PeRKrEQYmduxF/DJpS733Ojbu/CyCCKM6B5Guov+rJPQKeaeEAjNMeV3tqYnHIE4B
-	 GK82buDJxXO2p26YhMNXKvnSujwDkBCKgjVYpM7kgqwnUk2jJTPnxRRCGMSNDtFklu
-	 SBACn4xSHt8YauzOcYZ6KXAGsesPB1FO8SizrDD+iOInWtve73k4VoP1A18RyZfpGN
-	 21xQd2dgEtuiA==
-Message-ID: <0fd6fefc-9fad-4ea6-a619-e9f480747ac0@kernel.org>
-Date: Tue, 12 Aug 2025 17:23:52 +0200
+	b=j6s1h4hhIOSVDqhNeSAI3iCo3Yl4LfJRBM4UYOH7ygRYj+ll1xhynNsETQEDKb/8M
+	 Dth1dKho/DG7cb560HHymVZYFnVOAMW9EPyNeigdcq1v+5uzIeiq6NFPQRbwyY0gtI
+	 eRrbrg1T+TL1cZhkuXhYt8unQoTvjSVE7LfJHjxwuCRQOfPrm7WQ76mvUKtKBbXIu7
+	 Sp7ALBfaCC/BowA1ZsrH5R5jX29v3tjKATyWOkAZ82dKCNeI06st4jx/R/PUad49Kx
+	 hBXoqG5S3tDCH74pTpGYxxkm7BHkwOUrBSxuf5bPbeiyN4EuL+2tnFQCRalv2inXyw
+	 zkA75PhP/BJmA==
+Message-ID: <fd39f667-9153-4c62-9993-2156f2cebf1d@kernel.org>
+Date: Tue, 12 Aug 2025 17:30:28 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,8 +59,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] dt-bindings: soc: fsl: qe: Add an interrupt
- controller for QUICC Engine Ports
+Subject: Re: [PATCH 3/4] soc: fsl: qe: Add support of IRQ in QE GPIO
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
  Qiang Zhao <qiang.zhao@nxp.com>, Linus Walleij <linus.walleij@linaro.org>,
  Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
@@ -69,7 +68,7 @@ Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
  devicetree@vger.kernel.org
 References: <cover.1754996033.git.christophe.leroy@csgroup.eu>
- <0b56ef403a7c8d0f8305e847d68959a1037d365e.1754996033.git.christophe.leroy@csgroup.eu>
+ <22b3847fd0011024c10aff48f1e5223894ce718a.1754996033.git.christophe.leroy@csgroup.eu>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -115,7 +114,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <0b56ef403a7c8d0f8305e847d68959a1037d365e.1754996033.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <22b3847fd0011024c10aff48f1e5223894ce718a.1754996033.git.christophe.leroy@csgroup.eu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -124,58 +123,18 @@ X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 12/08/2025 13:02, Christophe Leroy wrote:
-> The QUICC Engine provides interrupts for a few I/O ports. This is
-> handled via a separate interrupt ID and managed via a triplet of
-> dedicated registers hosted by the SoC.
-> 
-> Implement an interrupt driver for it for that those IRQs can then
-> be linked to the related GPIOs.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  .../soc/fsl/cpm_qe/fsl,qe-ports-ic.yaml       | 63 +++++++++++++++++++
->  1 file changed, 63 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ports-ic.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ports-ic.yaml b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ports-ic.yaml
-> new file mode 100644
-> index 0000000000000..7c98706d03dd1
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ports-ic.yaml
-> @@ -0,0 +1,63 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +
-> +title: Freescale QUICC Engine I/O Ports Interrupt Controller
-> +
-> +maintainers:
-> +  - name: Christophe Leroy
-> +    email: christophe.leroy@csgroup.eu
+>  
+>  	qe_gc = kzalloc(sizeof(*qe_gc), GFP_KERNEL);
+>  	if (!qe_gc) {
+> @@ -313,6 +324,14 @@ static int qe_gpio_probe(struct platform_device *ofdev)
+>  
+>  	spin_lock_init(&qe_gc->lock);
+>  
+> +	if (!of_property_read_u32(np, "fsl,qe-gpio-irq-mask", &mask)) {
 
-Oh no...
+Undocumented ABI. You cannot add such stuff and testing your DTS would
+point it out.
 
-> +
-> +description: |
-> +  Interrupt controller for the QUICC Engine I/O ports found on some
-> +  Freescale/NXP PowerQUICC and QorIQ SoCs.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,mpc8323-qe-ports-ic
-> +      - fsl,mpc8360-qe-ports-ic
-> +      - fsl,mpc8568-qe-ports-ic
-> +
-> +  reg:
-> +    description: Base address and size of the QE I/O Ports Interrupt Controller registers.
-> +    minItems: 1
-> +    maxItems: 1
-
-This was never tested but more important this and everything further
-looks like generated by AI. Please don't do that or at least mark it
-clearly, so I will prioritize accordingly (hint: AI generates poor code
-and burden to decipher AI slop should not be on open source reviewers
-but on users of AI, but as one of maintainers probably you already know
-that, so sorry for lecturing).
 
 Best regards,
 Krzysztof
