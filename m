@@ -1,47 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-10854-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10855-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C559B21E5F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Aug 2025 08:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2181CB2206E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Aug 2025 10:14:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c1MBm3lPNz3dLq;
-	Tue, 12 Aug 2025 16:33:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c1PRN3KBkz3dSK;
+	Tue, 12 Aug 2025 18:14:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754980384;
-	cv=none; b=boBZ+KpJ+9uD+OmH3qXEC3bbu5WfYPAPQHLQFgNDgn/dJGW9eHSlDMl7OkjzOZ7NVYSxKztoxdTgj2+WveP/wWyv9RnZ0co4lMjhVsIgBsR8de8fAmykrK8oV6Vh7tf1/keS1ygYs7FK2nR5B6B9YSPzT2HwRrj1uGq26iZ5hSS2RYP9qH9vqzR9NRuminYghyb6t5WI5gHdSBJ8k4MvaBGpT2pWmh5iQPHYNaoHIIkfXcMKKnwaahaHqARn4ddNCLJJJ8C/batsPKMwUqJWpfAVQVLZ6wYnxJY0QN1gkCXQ2xu1rJ31xnki8rdMBnDSsqEI3X8FuXJRjG6gPdONWw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754986448;
+	cv=none; b=oCK9AacdPTQxV0fsOh8NmBjCSnR4+CmySyr3BTYe05G8+sXl5Emncj2E5MaO90NCHk6I7w1CVso9plozjM2Lum9Jjlv4/0C7MJcFVzcUA3hlk5k+YzS5joE5jNfuoOz/l67aAfp+7R2LCB6WpQveHPV6XWnMCgO+58pxjw12pKGpgLu5LkUGKxWLxi3AU4549ZuA1qS6rV4pMPIxU31myEpD8kQuPtkZEssUjhuNoHUYTpVP3uIpGPfzrJ8pDxNerrfp2iemVKWeYPTE6emOqR+SclG0C3wOwwIboMDr6tgrKOGLF51anxbUEKBFwMD9XGq6fIQW7kAm1+EYNOWA2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754980384; c=relaxed/relaxed;
-	bh=80CcYUyhFS51zi8RkV5UHs4TwEeN2kI+C7wf490nVe0=;
+	t=1754986448; c=relaxed/relaxed;
+	bh=zdS8cRXrb79Qryle3wWALVzssghNV8dY9EgSHNy03DI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ps0Cpp/kPbYOpL7kTOLmww9V3L7QQwsdLnmjiPkhNasOvFSQQyhEdmUJaR82FkfydJXAlAGu+JsThcJottMdTIAcLXyTPVOPVjxRJO982MOdtiXeVLgFT4jSbUhXPPKBWGBDHmRN56iEdTUItkMdW/eFYJqxN4P5G2l+MBi9wywg9jLPoBQSbKmSsylmfxAGwg/6qL/Erwu5Kthk9lvPZcEZOSlTGTHxFDw++phvMztur57TzOzcCIdmk3mPG3Zw0svoZY+0T4pvgcvWGBY4DZtcrfg/U6pbt8aACKGwRoUbVB0G4486knBjoQNtTqXhPtCWdrGjkLXxyX5wxbKZ/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o3Zdl07+; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o3Zdl07+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	 Content-Type:Content-Disposition:In-Reply-To; b=OrxZxuhHqHNi3ITlhUHXUr8AgDVsfaCkZpQgm6B1C7EYJAWZ0sSfgBSy2me9Q8XzyGC5cIkkjxpeeL8DbXYWye6GtlzcGu0ej2MlsLL7H1amewCETpZAz35Moi44Rot6mXE1ZGu9DS2qxmcGr1/htB647Y5B/87PPJk3cW2KCUdnlR2WsFciJRoSsKatGaPMEuuOUGt47bF1HOf+qz9j9hCPTbzBUnkMblSz0Mx7qs3FCBvLk6nWcVgioanrmHHLuJahRLxhADW2b1/w90pwNiwBVrLYSB3zOKJNMzo+m0zDgdhmdwpBg28OstwbcbxMlVB2+DuZXO/7TD7wYnetug==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=dsterba@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=dsterba@suse.cz; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c1MBl32Pzz3dLN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 16:33:02 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 53FB361138;
-	Tue, 12 Aug 2025 06:33:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5D8C4CEF0;
-	Tue, 12 Aug 2025 06:32:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1754980380;
-	bh=L+sX4qQqPbDUBLkuV1Ks7WnwsWzP4JYCHfnG9R60EsQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o3Zdl07+nWJldBMbMVuKTfEaKA02+JJIAzDpjCNhxFWBMLdaRJJhBmPRrgtO3jhOn
-	 3DLPc/DlinkClYmp8AGn0qc5ZzONh5I+O4JSq3yBXwTxghSqeequDUZMB4Ps5ZU4fP
-	 axmDeKecaYk3Uif6H2WsVrS0XFX4G8URQzeK1yi8=
-Date: Tue, 12 Aug 2025 08:32:56 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c1PRM4gV3z3dSG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 18:14:07 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8E7CE1F461;
+	Tue, 12 Aug 2025 08:14:03 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 534191351A;
+	Tue, 12 Aug 2025 08:14:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id QtPcE8v3mmj4YQAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Tue, 12 Aug 2025 08:14:03 +0000
+Date: Tue, 12 Aug 2025 10:13:58 +0200
+From: David Sterba <dsterba@suse.cz>
 To: David Hildenbrand <david@redhat.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
@@ -54,6 +57,7 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
 	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
 	Jason Wang <jasowang@redhat.com>,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
@@ -74,7 +78,8 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	Minchan Kim <minchan@kernel.org>,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
 Subject: Re: [PATCH v1 2/2] treewide: remove MIGRATEPAGE_SUCCESS
-Message-ID: <2025081248-frisbee-empathic-1815@gregkh>
+Message-ID: <20250812081358.GA5507@suse.cz>
+Reply-To: dsterba@suse.cz
 References: <20250811143949.1117439-1-david@redhat.com>
  <20250811143949.1117439-3-david@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -93,9 +98,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250811143949.1117439-3-david@redhat.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Level: 
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[];
+	TAGGED_RCPT(0.00)[]
+X-Rspamd-Queue-Id: 8E7CE1F461
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Spam-Score: -4.00
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On Mon, Aug 11, 2025 at 04:39:48PM +0200, David Hildenbrand wrote:
@@ -112,14 +131,10 @@ On Mon, Aug 11, 2025 at 04:39:48PM +0200, David Hildenbrand wrote:
 >  drivers/misc/vmw_balloon.c           |  4 +--
 >  drivers/virtio/virtio_balloon.c      |  2 +-
 >  fs/aio.c                             |  2 +-
->  fs/btrfs/inode.c                     |  4 +--
->  fs/hugetlbfs/inode.c                 |  4 +--
->  fs/jfs/jfs_metapage.c                |  8 +++---
->  include/linux/migrate.h              | 10 +------
->  mm/migrate.c                         | 40 +++++++++++++---------------
->  mm/migrate_device.c                  |  2 +-
->  mm/zsmalloc.c                        |  4 +--
->  11 files changed, 36 insertions(+), 46 deletions(-)
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For
+
+>  fs/btrfs/inode.c                     |  4 +--
+
+Acked-by: David Sterba <dsterba@suse.com>
 
