@@ -1,46 +1,42 @@
-Return-Path: <linuxppc-dev+bounces-10826-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10827-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89ABBB21CB7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Aug 2025 07:07:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86293B21CBB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Aug 2025 07:07:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c1KJ62j3tz3cgg;
-	Tue, 12 Aug 2025 15:07:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c1KJY2Tlwz3dFL;
+	Tue, 12 Aug 2025 15:07:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::b3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754974565;
-	cv=none; b=XYaLRpLTvXLQFQTvELbIKUv8bguvTp0vwqyaLyd9JHaViPK3N2Gr4arBRAZ23JANGERoLNR/QMKCDVbst9mibhNNCu9gEDm7KDj2TRJijpQfe2Ay7QwCCx1QolPZDTHr9Sj/THr73oxAt+F5lRwaKaW5J6BYD/oqg/UePQraUUlSM5LxmtCOrGT9eCxl5SIzqiS8gvP+BB+186XDQbJ7IJKqw82CtrVpHFBxtKMiyLouIw/NCRu5t9QFLePhAuqzqSMZpKQFVl/XHalEjsq36tp324BV/DiApzmFFKGRI7xeYB0FAFd2kgaRQP6MEp6WoD/evIFLlse5II+oh5NKXw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=111.206.215.185
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754974643;
+	cv=none; b=Mck4AlrEVYhxHAs1y4FL8ZtOQJMPPVZF7ht5sjOp1IzA3FfQ8R4Ce420sc73JQu/0Fgr8ICGPSD5hLOvMqY4paSCgOez6Qcddy3kxma5RkoWx1vWB5nIn1kuLz3B7KScypD0njU0c9R4HwI3LLZIwzHthlOyNFfqG5h5iHgmG0FV2Cutr7q7ZEH5qUKsk0V3M+XudPBmBqtN4IIeAP5itRMF2VHUe3BJWIPmyIgx9mAGexWguC4JRxFWtPf6XCJ6OChI982AD7bm2iVREcUKE4d232iaTIC/JfWNh0BkNj58y3fM0ww5YxfYxDpfLiDUqEXmnL4wgfTheQyPvOuwLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754974565; c=relaxed/relaxed;
-	bh=vxkRGPtW/Hy53i4ls2hik5N/SCj/n27xlLut7svn+U8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ew73SwLQzxSfSMDdAwclmyl9K2pxTfVOl73KUhRkuMdgzhU91OVQ2HTi/271r8QidfeJVe/x2qGdLrTlGdMnBNgEBmKfo0PjTkB9jW1iMVaBDWcG3emCToG2bJ+0u6AlFq910CzpnoWhunlyjg/vGl66Cy/w3Fp2mLykKqcU3EK4sAU1AKoxd6mL9MlUSELLabdCdHSL6cJIvKGrSQW0M8GHZNR2xLJK6Zuaowl/bW64imMZpUTh9ObiK69DKJFdrj9Yoo17OTK/yU8LXMmgf7OcEeX4J01vJrdnV0P9mL2xNMi3LRb3JtR37fO1jsXRaKlMZOhNx3QhJClfI76Fyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=p9Nqks/m; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::b3; helo=out-179.mta1.migadu.com; envelope-from=lance.yang@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=p9Nqks/m;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::b3; helo=out-179.mta1.migadu.com; envelope-from=lance.yang@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 132 seconds by postgrey-1.37 at boromir; Tue, 12 Aug 2025 14:56:01 AEST
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [IPv6:2001:41d0:203:375::b3])
+	t=1754974643; c=relaxed/relaxed;
+	bh=/YPyP+J+AVFkZRqirrTtm++m3zVbA7i+GZq9KPqC7Y0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PzEj6RlLmoeFbMcEI7CZ5lyUHS+Meyg+h5La4UMu7iMe2zWpiYcaW1CkOu1qbh/IysEhfYMAc38iv4Su83J6v7Ssfv81Gg/UugdRpdwkI1xVMIVThiqRRoAcLzm6H7zfPeCcLnb5o73Uqu+eAkqdb6u8clvRaZvmljR4M4hY7DuGMt1YqG4ECIHuHHhm2V7ItyvrM4VqsW0r7DMPcW/rYcGUZ6nxxaBmWV4PrCcpVc2rI6CZTwxj8dLbSwF5q2AOWsFhBUgKI3qlrUjeFA4DKcjSys1ATYGBKuGC4y2wcMusY3/VhHOqCZmvVi3woHaRdkf3bDQOyFbnbzwbaZ+QOQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass (client-ip=111.206.215.185; helo=baidu.com; envelope-from=wangfushuai@baidu.com; receiver=lists.ozlabs.org) smtp.mailfrom=baidu.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=baidu.com (client-ip=111.206.215.185; helo=baidu.com; envelope-from=wangfushuai@baidu.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 79473 seconds by postgrey-1.37 at boromir; Tue, 12 Aug 2025 14:57:21 AEST
+Received: from baidu.com (mx24.baidu.com [111.206.215.185])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c1K2n6LrBz3ccr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 14:56:01 +1000 (AEST)
-Message-ID: <4865af61-7343-4c60-b4e2-f142f92b7c79@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1754974406;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vxkRGPtW/Hy53i4ls2hik5N/SCj/n27xlLut7svn+U8=;
-	b=p9Nqks/mlOZN/tGrqRDmjtIpBiBe1xj7j/3hPcPcHoAgdhOSWGsOvQGG4WWQYwUf16ocpN
-	/eSOnoYSrPeVJDmil+MF/Q4G88O3SeFZwq9agCDOjLtfcZ875hNUGHK2AXTesoYOVApLl4
-	Vj8yiy6OgDEwRzTUKixNKG2ngK13V1Y=
-Date: Tue, 12 Aug 2025 12:52:59 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c1K4K3mlnz3cdm
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 14:57:17 +1000 (AEST)
+From: Fushuai Wang <wangfushuai@baidu.com>
+To: <sshegde@linux.ibm.com>
+CC: <christophe.leroy@csgroup.eu>, <frederic@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <wangfushuai@baidu.com>
+Subject: Re: [PATCH] soc/fsl/qbman: Use for_each_online_cpu() instead of for_each_cpu()
+Date: Tue, 12 Aug 2025 12:56:42 +0800
+Message-ID: <20250812045642.54968-1-wangfushuai@baidu.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <f3ecce9f-22cf-48e2-843e-63f08a577e69@linux.ibm.com>
+References: <f3ecce9f-22cf-48e2-843e-63f08a577e69@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,214 +50,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 01/11] mm/huge_memory: move more common code into
- insert_pmd()
-Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org, xen-devel@lists.xenproject.org,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
- <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
- Alistair Popple <apopple@nvidia.com>, Wei Yang <richard.weiyang@gmail.com>,
- linux-kernel@vger.kernel.org
-References: <20250811112631.759341-1-david@redhat.com>
- <20250811112631.759341-2-david@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20250811112631.759341-2-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="y"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.127.72.13]
+X-ClientProxiedBy: bjkjy-exc4.internal.baidu.com (172.31.50.48) To
+ bjhj-exc17.internal.baidu.com (172.31.4.15)
+X-FEAS-Client-IP: 172.31.4.15
+X-FE-Policy-ID: 52:10:53:SYSTEM
+X-Spam-Status: No, score=-0.7 required=3.0 tests=RCVD_IN_DNSWL_LOW,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-On 2025/8/11 19:26, David Hildenbrand wrote:
-> Let's clean it all further up.
+>> Replace the opencoded for_each_cpu(cpu, cpu_online_mask) loop with the
+>> more readable and equivalent for_each_online_cpu(cpu) macro.
+>> 
+>> Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+>> ---
+>>   drivers/soc/fsl/qbman/qman_test_stash.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/drivers/soc/fsl/qbman/qman_test_stash.c b/drivers/soc/fsl/qbman/qman_test_stash.c
+>> index f4d3c2146f4f..6f7597950aa3 100644
+>> --- a/drivers/soc/fsl/qbman/qman_test_stash.c
+>> +++ b/drivers/soc/fsl/qbman/qman_test_stash.c
+>> @@ -103,7 +103,7 @@ static int on_all_cpus(int (*fn)(void))
+>>   {
+>>   	int cpu;
+>>   
+>> -	for_each_cpu(cpu, cpu_online_mask) {
+>> +	for_each_online_cpu(cpu) {
+>>   		struct bstrap bstrap = {
+>>   			.fn = fn,
+>>   			.started = ATOMIC_INIT(0)
 > 
-> No functional change intended.
+> Yes. This change makes sense given that for_each_online_cpu expands into the same.
 > 
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
-> Reviewed-by: Alistair Popple <apopple@nvidia.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+> Why not do for the remaining ones too?
 
-Nice. Feel free to add:
+I’m working on updating the remaining instances as well.
+To keep the commits clear, I’m sending separate patches for each file/subsystem.
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Regards,
+Wang.
 
-Thanks,
-Lance
-
-> ---
->   mm/huge_memory.c | 72 ++++++++++++++++--------------------------------
->   1 file changed, 24 insertions(+), 48 deletions(-)
+> linux_tip$ grep -Rw "for_each_cpu" * | grep  cpu_online_mask
+> arch/riscv/kernel/unaligned_access_speed.c:     for_each_cpu(cpu, cpu_online_mask) {
+> arch/riscv/kernel/unaligned_access_speed.c:     for_each_cpu(cpu, cpu_online_mask) {
+> drivers/soc/fsl/qbman/qman_test_stash.c:        for_each_cpu(cpu, cpu_online_mask) {    ** current patch addresses this.
+> drivers/infiniband/hw/hfi1/sdma.c:      for_each_cpu(cpu, cpu_online_mask) {
+> drivers/cpuidle/cpuidle-tegra.c:        for_each_cpu(lcpu, cpu_online_mask) {
+> include/rv/da_monitor.h:        for_each_cpu(cpu, cpu_online_mask) {
+> kernel/trace/trace_osnoise.c:   for_each_cpu(cpu, cpu_online_mask) {
+> kernel/trace/trace_osnoise.c:   for_each_cpu(cpu, cpu_online_mask) {
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 2b4ea5a2ce7d2..5314a89d676f1 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1379,15 +1379,25 @@ struct folio_or_pfn {
->   	bool is_folio;
->   };
->   
-> -static int insert_pmd(struct vm_area_struct *vma, unsigned long addr,
-> +static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
->   		pmd_t *pmd, struct folio_or_pfn fop, pgprot_t prot,
-> -		bool write, pgtable_t pgtable)
-> +		bool write)
->   {
->   	struct mm_struct *mm = vma->vm_mm;
-> +	pgtable_t pgtable = NULL;
-> +	spinlock_t *ptl;
->   	pmd_t entry;
->   
-> -	lockdep_assert_held(pmd_lockptr(mm, pmd));
-> +	if (addr < vma->vm_start || addr >= vma->vm_end)
-> +		return VM_FAULT_SIGBUS;
->   
-> +	if (arch_needs_pgtable_deposit()) {
-> +		pgtable = pte_alloc_one(vma->vm_mm);
-> +		if (!pgtable)
-> +			return VM_FAULT_OOM;
-> +	}
-> +
-> +	ptl = pmd_lock(mm, pmd);
->   	if (!pmd_none(*pmd)) {
->   		const unsigned long pfn = fop.is_folio ? folio_pfn(fop.folio) :
->   					  fop.pfn;
-> @@ -1395,15 +1405,14 @@ static int insert_pmd(struct vm_area_struct *vma, unsigned long addr,
->   		if (write) {
->   			if (pmd_pfn(*pmd) != pfn) {
->   				WARN_ON_ONCE(!is_huge_zero_pmd(*pmd));
-> -				return -EEXIST;
-> +				goto out_unlock;
->   			}
->   			entry = pmd_mkyoung(*pmd);
->   			entry = maybe_pmd_mkwrite(pmd_mkdirty(entry), vma);
->   			if (pmdp_set_access_flags(vma, addr, pmd, entry, 1))
->   				update_mmu_cache_pmd(vma, addr, pmd);
->   		}
-> -
-> -		return -EEXIST;
-> +		goto out_unlock;
->   	}
->   
->   	if (fop.is_folio) {
-> @@ -1424,11 +1433,17 @@ static int insert_pmd(struct vm_area_struct *vma, unsigned long addr,
->   	if (pgtable) {
->   		pgtable_trans_huge_deposit(mm, pmd, pgtable);
->   		mm_inc_nr_ptes(mm);
-> +		pgtable = NULL;
->   	}
->   
->   	set_pmd_at(mm, addr, pmd, entry);
->   	update_mmu_cache_pmd(vma, addr, pmd);
-> -	return 0;
-> +
-> +out_unlock:
-> +	spin_unlock(ptl);
-> +	if (pgtable)
-> +		pte_free(mm, pgtable);
-> +	return VM_FAULT_NOPAGE;
->   }
->   
->   /**
-> @@ -1450,9 +1465,6 @@ vm_fault_t vmf_insert_pfn_pmd(struct vm_fault *vmf, unsigned long pfn,
->   	struct folio_or_pfn fop = {
->   		.pfn = pfn,
->   	};
-> -	pgtable_t pgtable = NULL;
-> -	spinlock_t *ptl;
-> -	int error;
->   
->   	/*
->   	 * If we had pmd_special, we could avoid all these restrictions,
-> @@ -1464,25 +1476,9 @@ vm_fault_t vmf_insert_pfn_pmd(struct vm_fault *vmf, unsigned long pfn,
->   						(VM_PFNMAP|VM_MIXEDMAP));
->   	BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
->   
-> -	if (addr < vma->vm_start || addr >= vma->vm_end)
-> -		return VM_FAULT_SIGBUS;
-> -
-> -	if (arch_needs_pgtable_deposit()) {
-> -		pgtable = pte_alloc_one(vma->vm_mm);
-> -		if (!pgtable)
-> -			return VM_FAULT_OOM;
-> -	}
-> -
->   	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
->   
-> -	ptl = pmd_lock(vma->vm_mm, vmf->pmd);
-> -	error = insert_pmd(vma, addr, vmf->pmd, fop, pgprot, write,
-> -			   pgtable);
-> -	spin_unlock(ptl);
-> -	if (error && pgtable)
-> -		pte_free(vma->vm_mm, pgtable);
-> -
-> -	return VM_FAULT_NOPAGE;
-> +	return insert_pmd(vma, addr, vmf->pmd, fop, pgprot, write);
->   }
->   EXPORT_SYMBOL_GPL(vmf_insert_pfn_pmd);
->   
-> @@ -1491,35 +1487,15 @@ vm_fault_t vmf_insert_folio_pmd(struct vm_fault *vmf, struct folio *folio,
->   {
->   	struct vm_area_struct *vma = vmf->vma;
->   	unsigned long addr = vmf->address & PMD_MASK;
-> -	struct mm_struct *mm = vma->vm_mm;
->   	struct folio_or_pfn fop = {
->   		.folio = folio,
->   		.is_folio = true,
->   	};
-> -	spinlock_t *ptl;
-> -	pgtable_t pgtable = NULL;
-> -	int error;
-> -
-> -	if (addr < vma->vm_start || addr >= vma->vm_end)
-> -		return VM_FAULT_SIGBUS;
->   
->   	if (WARN_ON_ONCE(folio_order(folio) != PMD_ORDER))
->   		return VM_FAULT_SIGBUS;
->   
-> -	if (arch_needs_pgtable_deposit()) {
-> -		pgtable = pte_alloc_one(vma->vm_mm);
-> -		if (!pgtable)
-> -			return VM_FAULT_OOM;
-> -	}
-> -
-> -	ptl = pmd_lock(mm, vmf->pmd);
-> -	error = insert_pmd(vma, addr, vmf->pmd, fop, vma->vm_page_prot,
-> -			   write, pgtable);
-> -	spin_unlock(ptl);
-> -	if (error && pgtable)
-> -		pte_free(mm, pgtable);
-> -
-> -	return VM_FAULT_NOPAGE;
-> +	return insert_pmd(vma, addr, vmf->pmd, fop, vma->vm_page_prot, write);
->   }
->   EXPORT_SYMBOL_GPL(vmf_insert_folio_pmd);
->   
-
+> 
+> Rest everyone seems to have moved.
+> linux_tip$ grep -Rw "for_each_online_cpu" * | wc
+>      416    1141   23047
 
