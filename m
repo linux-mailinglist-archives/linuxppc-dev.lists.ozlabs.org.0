@@ -1,86 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-10853-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10854-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE98B21E0C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Aug 2025 08:14:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C559B21E5F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 Aug 2025 08:33:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c1Lnb5Tw1z3dL3;
-	Tue, 12 Aug 2025 16:14:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c1MBm3lPNz3dLq;
+	Tue, 12 Aug 2025 16:33:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.104.207.81
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754979283;
-	cv=none; b=mQk6sFLJdnESseT1e/YRSW864WNjxMHy+UWdp2FyI/hkyaLPExe6AWx7M4/35FFTeHDMZIKp2+yAlws5X1IjyUzPnvQp8SKOBB3Zl1u87GZvQdHLK7oxjSu3q49Bf9dm73hBScMKbDj9P4NxeqE0L3NryGR6NBbwp9f/c6kYqdlBd2ThBFxASpZsN65/93WA9Kdn101K7/LV6QVwB1iQuJB9j9NR6772OnhdFP7qYTeG1GF0eSpKRPLQ9pWKVopWLfS6AO15ZWTH5OqRG4qFZhzs9wD4fh0WEixQqzXx0yrFR39QtgKYvJvb0mY9Di0fpKKhO8334E3odmTK3AXaxg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1754980384;
+	cv=none; b=boBZ+KpJ+9uD+OmH3qXEC3bbu5WfYPAPQHLQFgNDgn/dJGW9eHSlDMl7OkjzOZ7NVYSxKztoxdTgj2+WveP/wWyv9RnZ0co4lMjhVsIgBsR8de8fAmykrK8oV6Vh7tf1/keS1ygYs7FK2nR5B6B9YSPzT2HwRrj1uGq26iZ5hSS2RYP9qH9vqzR9NRuminYghyb6t5WI5gHdSBJ8k4MvaBGpT2pWmh5iQPHYNaoHIIkfXcMKKnwaahaHqARn4ddNCLJJJ8C/batsPKMwUqJWpfAVQVLZ6wYnxJY0QN1gkCXQ2xu1rJ31xnki8rdMBnDSsqEI3X8FuXJRjG6gPdONWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1754979283; c=relaxed/relaxed;
-	bh=7kDMXkiqwspte3OFxiCO5uJIctYbcK6fSwBNuY8L+04=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=du3+ITyENY3kJXU8u7wIjCQlHtKqXCPxLZcIOrITqaQVARMMebP/6GOf8jnbj7w6BYMCVBF01hFqG1+VWqM7jhMUgeU58sqJXrXR6bA5SsmmuJQ50Jh5V0ilX5tyS85MFBn3oeTFmDWvL3qomqXCDnR4HWodzB+C/RUMt9XXwq8VSYTo9CoAjabZqPK70z/BSjtvHbzTM9OEcVJugISMSFd/gUj4qXcnNxZnAYuyFKH3U0M6nbOCtvcPERBGjR8PR1Vum4kmF6CCF91OgXLjggLcHEJsaAb9b2H/lVBWtnyQiKE/ESyzrb/sI7zNXvYC75xzMApK9c5wtRWHWZoVHw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=Os6o45Pb; dkim=fail header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=dkim header.b=VOm5I74O reason="key not found in DNS"; dkim-atps=neutral; spf=pass (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=lists.ozlabs.org) smtp.mailfrom=ew.tq-group.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+	t=1754980384; c=relaxed/relaxed;
+	bh=80CcYUyhFS51zi8RkV5UHs4TwEeN2kI+C7wf490nVe0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ps0Cpp/kPbYOpL7kTOLmww9V3L7QQwsdLnmjiPkhNasOvFSQQyhEdmUJaR82FkfydJXAlAGu+JsThcJottMdTIAcLXyTPVOPVjxRJO982MOdtiXeVLgFT4jSbUhXPPKBWGBDHmRN56iEdTUItkMdW/eFYJqxN4P5G2l+MBi9wywg9jLPoBQSbKmSsylmfxAGwg/6qL/Erwu5Kthk9lvPZcEZOSlTGTHxFDw++phvMztur57TzOzcCIdmk3mPG3Zw0svoZY+0T4pvgcvWGBY4DZtcrfg/U6pbt8aACKGwRoUbVB0G4486knBjoQNtTqXhPtCWdrGjkLXxyX5wxbKZ/w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o3Zdl07+; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=tq-group.com header.i=@tq-group.com header.a=rsa-sha256 header.s=key1 header.b=Os6o45Pb;
-	dkim=fail reason="key not found in DNS" header.d=ew.tq-group.com header.i=@ew.tq-group.com header.a=rsa-sha256 header.s=dkim header.b=VOm5I74O;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=o3Zdl07+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ew.tq-group.com (client-ip=93.104.207.81; helo=mx1.tq-group.com; envelope-from=alexander.stein@ew.tq-group.com; receiver=lists.ozlabs.org)
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c1LnW6dLDz3cfL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 16:14:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1754979280; x=1786515280;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7kDMXkiqwspte3OFxiCO5uJIctYbcK6fSwBNuY8L+04=;
-  b=Os6o45PbtRiYkw4CNH7WS3IMW5SHiCDyvz2k0DcLxsVFMpc3Md32j6fB
-   3PjoHI0Up6FnS5ZAd/w4SRDJQ8S0j3tLcn3Pc0eaynAjqoJoI2aYChtNo
-   yiX42GLgg7vVVfCkRBqbt9MjDNR/h5j3pFKCVpy9lflqZYynxF+N3KbDc
-   rlJLd2l+HeEaRpqok4rTSXMYn1OPO+wCXKF4SJYwKRIgWXUDDt/oxxp3X
-   X5mDvVM1y1CGhMicDyjZjcO2L7/OPkjUrFyXqGBDEGP1ZwLwYN9jvVCUt
-   rt/Px347NC89HBn0EzXrCHCbViV0mxpSPX7Ch6P1q4FdIVZDLm+7Oo4ME
-   g==;
-X-CSE-ConnectionGUID: B4ffp1ALSjKWb0uJfw2sUg==
-X-CSE-MsgGUID: 0MqoVO07Ql6hiYkpsM+9JA==
-X-IronPort-AV: E=Sophos;i="6.17,284,1747692000"; 
-   d="scan'208";a="45692356"
-Received: from vmailcow01.tq-net.de ([10.150.86.48])
-  by mx1.tq-group.com with ESMTP; 12 Aug 2025 08:14:30 +0200
-X-CheckPoint: {689ADBC6-33-AD8F5F64-F0EACAA5}
-X-MAIL-CPID: 742ED08D02BE758A2A1B26C8759E02E3_1
-X-Control-Analysis: str=0001.0A002104.689ADBC7.002A,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2AFFA16835C;
-	Tue, 12 Aug 2025 08:14:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
-	s=dkim; t=1754979266;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7kDMXkiqwspte3OFxiCO5uJIctYbcK6fSwBNuY8L+04=;
-	b=VOm5I74Oo5znWlaXmN6u8OJRm5q/YOa+tu/QK1DPY5JPD+J7KZGpK5JP+DU17ptUV0Hb3E
-	zH0KCm5pUcm6jc+JsrDLMmMdfbkLdqmuDZgGcNI/xvacXZt35YOmrj5rS/9qA01yQEkhMJ
-	qehK313US2ohYsMtXl+5cbLNmpe9CNMuB0qhy/HsC7aaAqu2XMQP6PVnkDcsIvmCJYaCfC
-	WjOI/fho5sWWLpFhNWOR9IAwC/vgZ4/7MJ2OQsWnx0gS9ILCSyIHS9ec+va7ZwIFDbnqM0
-	D2KA/TaS1pwf8V1K4T/3Ax/ptch+2mCRXDQ/5g5cJwC/31mROSUCp/lNkZNCXQ==
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>, Frank Li <Frank.li@nxp.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] dt-bindings: fsl: fsl,
- rcpm: Add #power-domain-cells
-Date: Tue, 12 Aug 2025 08:14:24 +0200
-Message-ID: <2799138.mvXUDI8C0e@steina-w>
-Organization: TQ-Systems GmbH
-In-Reply-To: <aIv+CgkePusUoT6Q@lizhi-Precision-Tower-5810>
-References:
- <20250731055806.2265628-1-alexander.stein@ew.tq-group.com>
- <20250731-funky-crab-of-defense-7cd658@kuoka>
- <aIv+CgkePusUoT6Q@lizhi-Precision-Tower-5810>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c1MBl32Pzz3dLN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 Aug 2025 16:33:02 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 53FB361138;
+	Tue, 12 Aug 2025 06:33:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5D8C4CEF0;
+	Tue, 12 Aug 2025 06:32:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1754980380;
+	bh=L+sX4qQqPbDUBLkuV1Ks7WnwsWzP4JYCHfnG9R60EsQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o3Zdl07+nWJldBMbMVuKTfEaKA02+JJIAzDpjCNhxFWBMLdaRJJhBmPRrgtO3jhOn
+	 3DLPc/DlinkClYmp8AGn0qc5ZzONh5I+O4JSq3yBXwTxghSqeequDUZMB4Ps5ZU4fP
+	 axmDeKecaYk3Uif6H2WsVrS0XFX4G8URQzeK1yi8=
+Date: Tue, 12 Aug 2025 08:32:56 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
+	linux-btrfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Benjamin LaHaise <bcrl@kvack.org>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Dave Kleikamp <shaggy@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCH v1 2/2] treewide: remove MIGRATEPAGE_SUCCESS
+Message-ID: <2025081248-frisbee-empathic-1815@gregkh>
+References: <20250811143949.1117439-1-david@redhat.com>
+ <20250811143949.1117439-3-david@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,77 +90,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250811143949.1117439-3-david@redhat.com>
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Frank,
+On Mon, Aug 11, 2025 at 04:39:48PM +0200, David Hildenbrand wrote:
+> At this point MIGRATEPAGE_SUCCESS is misnamed for all folio users,
+> and now that we remove MIGRATEPAGE_UNMAP, it's really the only "success"
+> return value that the code uses and expects.
+> 
+> Let's just get rid of MIGRATEPAGE_SUCCESS completely and just use "0"
+> for success.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  arch/powerpc/platforms/pseries/cmm.c |  2 +-
+>  drivers/misc/vmw_balloon.c           |  4 +--
+>  drivers/virtio/virtio_balloon.c      |  2 +-
+>  fs/aio.c                             |  2 +-
+>  fs/btrfs/inode.c                     |  4 +--
+>  fs/hugetlbfs/inode.c                 |  4 +--
+>  fs/jfs/jfs_metapage.c                |  8 +++---
+>  include/linux/migrate.h              | 10 +------
+>  mm/migrate.c                         | 40 +++++++++++++---------------
+>  mm/migrate_device.c                  |  2 +-
+>  mm/zsmalloc.c                        |  4 +--
+>  11 files changed, 36 insertions(+), 46 deletions(-)
 
-Am Freitag, 1. August 2025, 01:36:42 CEST schrieb Frank Li:
-> On Thu, Jul 31, 2025 at 08:32:57AM +0200, Krzysztof Kozlowski wrote:
-> > On Thu, Jul 31, 2025 at 07:58:04AM +0200, Alexander Stein wrote:
-> > > dtbs_check for ls1021.dtsi warns about unsupported property:
-> > >  power-controller@1ee2140 (fsl,ls1021a-rcpm): '#power-domain-cells' d=
-oes not match any of the regexes: '^pinctrl-[0-9]+$'
-> > >
-> > > But if removed the check warns about missing property:
-> > >  power-controller@1ee2140 (fsl,ls1021a-rcpm): '#power-domain-cells' i=
-s a required property
-> >
-> >
-> > And if any other warning says something, are you going to do that as
-> > well?
-> >
-> > >
-> > > Given commit 8bcf67b8d893b ("ARM: dts: ls1021a: add #power-domain-cel=
-ls
-> > > for power-controller node") explicitly added that property, add it
-> > > to the expected property list as well.
-> >
-> > No, commit does not explain why! It's one of this NXP commits without
-> > explanation, doing random things.
-> >
-> > No, explain why do you think this is a power domain provider - fast
-> > look told me that it is NOT.
->=20
-> It is not power controller. rcpm controller enable wakeup source.
->=20
-> In arm64, use below patch to fix warning
->=20
-> commit e39f567e1c38c29629962ab327f0ad1a288dcab2
-> Author: Frank Li <Frank.Li@nxp.com>
-> Date:   Mon Jul 29 14:59:24 2024 -0400
->=20
->     arm64: dts: layerscape: rename rcpm as wakeup-control from power-cont=
-rol
->=20
->     Invoke power-domain.yaml if node name as 'power-control'.
->=20
->     Rcpm actually are not power domain controller. It just control wakeup
->     capability. So rename it as wakeup-control. Fix below CHECK_DTBS warn=
-ing.
->=20
->     power-controller@1ee2140: '#power-domain-cells' is a required property
->             from schema $id: http://devicetree.org/schemas/power/power-do=
-main.yaml#
->=20
->     Signed-off-by: Frank Li <Frank.Li@nxp.com>
->     Signed-off-by: Shawn Guo <shawnguo@kernel.org>
->=20
-
-Thanks for the link. I've applied a similar change to ls1021 instead of thi=
-s patch.
-
-Thanks and best regards,
-Alexander
-=2D-=20
-TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht M=FCnchen, HRB 105018
-Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
-http://www.tq-group.com/
-
-
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
