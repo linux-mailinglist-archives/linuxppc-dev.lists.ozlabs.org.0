@@ -1,80 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-10926-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10927-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC552B2432D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Aug 2025 09:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C42ACB243F0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Aug 2025 10:16:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c20t72LScz30Vq;
-	Wed, 13 Aug 2025 17:50:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c21RL28LVz30Vf;
+	Wed, 13 Aug 2025 18:16:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.21
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755071455;
-	cv=none; b=Q/n7vh4rExb3jNoqlBg1b3VLKMGEMo/6pQjwSTboxaZEYoIk2p6fkvyGcrmvXQVunP2B4vUbMBO0vA8bAh9D5mzB86j0VKC88K1T7wCzjrXarWt+oRMECcoCr4nWBnZdPrrX4ADHPUPGU56cdSpaYZj6WsDL+fHxnu7ZV14zZXQN3ND1pEZjyoa/f7OYTASE+yNpyKEs1QSfCOGYwXOa8TPTusL4mvDskfZcHToPsiWGYTW8Zy4XTWBwT3gTguLz3jNeo4srdcusGrI5NlQpSEhfDf90MHbT08m/j0mxFOT2B55UqM7OcRqL6XKLD3F1G0R2NN1c/idktoFst5So7A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755072974;
+	cv=none; b=H82y+gqFVP9jRe85mUOoXnHiBK3QI6A+8y9oQbYfnlSO68s7I/zIs7pZcuQKEx3hjMZ59Wb2Dg6tZ6BQkqgcgXFRgkZknTqdy8/06bej3MOByJMBtoNqeem8UoTbnUHDIU/uXA3ok7HLbD/vz4C39BctfnEHoWeWpehWdPOoTeoKAI3+LstULA/Yonx/y54mVElZ1U7jxRLoXIO7WUbIAvfej2jKpD7mpNewVZ2gbZLBpDNQMUVDuVAKLGxZpkmE9LuZ9FfjghDnqykmKKTEkkPu2aUUb5JD4FF7vove1o6eXlZmKU6Itg0pRy+ouJdXUsUDKZVwzFJdfP68wbMWcQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755071455; c=relaxed/relaxed;
-	bh=83V8Z646mVNzx9401MPoYro6TvTHAhL4EUo02/1Nq0s=;
+	t=1755072974; c=relaxed/relaxed;
+	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QW6Lbja0WmDQtqFHbFoFvRsEdfylgLhpZKLy6HuQ9rjRcyXhf40UChGPF0DGNBIX+NwMtjGTJQ4mw2J1rG5hhURib0NEBhLl+yZBSWn90p4+EFq+BN14CA5CW/iSr/GlsINbnihuyFlt/5bFdv2VgKX6IX1/XLsfXFBWv/Ptdy8zftQW3vpNwYLfG14lI9KBK04VTn2LgZqD3rGkTzo87vVQRAL5TwdI+O/u02C8CuxeDlkNE5OD2mNIV4wlZLpDxyfzfoMb8m4iVTtnrD2ZqokuIDZ7gypfCEHAhOF3+4yYES1ED7dsFQUrTrJ43stmjdBhXuwm98lPrPFSFo5hng==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KDRMBArY; dkim-atps=neutral; spf=pass (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=V52STy18oc7zcqlV3FPFXizkEAc5eiVIeRKHnMNwS7kD8udXs2y7GUcQ/uU/Lxs7VqHNqMgTgeulDlWh2JwLL0MXKWl/y9J6FRy+1Ha8zJTF8dCIu2I8paU7dP6XIu25j5tBqeacdDheBCbA/TOKsTB5TcYpxC8GhtYDinu+wxHTW5sqyCQ7naq+hyvz/GRQynHPs9B3W84Gee+q0t1d5u3E3m97qzKVxS75W/ydcSpniliGGproUczYnrBvCBhTmTLvqqdMpigPWO4gCL0cyWpkevxLISh9FfTeQjnrHEksEcsEt+2QwvoCR8SplkDsxzbXLwFvd5wZKjnsDFPdnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=t3ZaanvF; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=E1zvWv48; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KDRMBArY;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=t3ZaanvF;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=E1zvWv48;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 95494 seconds by postgrey-1.37 at boromir; Wed, 13 Aug 2025 18:16:10 AEST
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c20t50D0mz30Vf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 17:50:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755071454; x=1786607454;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GCkcSwQXaPB+Reeu4y3cV78hJ9D/iB5yjlZx4Qatnh8=;
-  b=KDRMBArYmaF+3t6P6tTejlORRNeIikawtlXH39E15EuCtx5ecgDc8Tao
-   FJJoUk9iFFhfhZotJpsH4U7JwLZoYla/gYq6qSLF/Kx7zGtBj1MkJgtzK
-   JFU72T4HQxwfUkzu1g6yIrxbWu8g3OIgmtKES1SZoeom2rp5U9G4beBzl
-   I0+ctgmiqVmURh/pFuZayyk/2l6AfsL/A/lmScdx5MmdpLXjc5U1/Vz3h
-   ePppiD5758fhMtEAGGM0Qvqiezd8N3qcD1tSSWE2qShPGj+wgjg+qMCUV
-   oALAOdxEyI0VQBEAUx31kDQ/QO/zV8POl4YcioxGZkQTs9h0u7cl/5Sxc
-   A==;
-X-CSE-ConnectionGUID: vwoITsLzT86gleLQ6+E39w==
-X-CSE-MsgGUID: WAp4qPbuSr+9B53ORqaB3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57260484"
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="57260484"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 00:50:48 -0700
-X-CSE-ConnectionGUID: UFpW3ZHJRgG7Yrcfgk7aGw==
-X-CSE-MsgGUID: hr6+tZAJTK62MvVvrPVRZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,285,1747724400"; 
-   d="scan'208";a="165625222"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 13 Aug 2025 00:50:44 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1um6Fc-0009gS-1J;
-	Wed, 13 Aug 2025 07:50:29 +0000
-Date: Wed, 13 Aug 2025 15:49:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Qiang Zhao <qiang.zhao@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/4] soc: fsl: qe: Add an interrupt controller for QUICC
- Engine Ports
-Message-ID: <202508131517.P1Nfz0RF-lkp@intel.com>
-References: <1dcc9528e97d228ea7889caa00cc254ef0375ed4.1754996033.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4c21RG1vXHz2yFK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 18:16:10 +1000 (AEST)
+Date: Wed, 13 Aug 2025 10:16:02 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1755072965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
+	b=t3ZaanvFJHTW1l1H2nSwoa1VFh8EVFo/BJn0UMRG7bq78PXYOpzqMO9UGefI5UiLZP7nNe
+	J1FX1/E5cqcFOVpKvUjolk1j8zY71ykS0B7X6UJ1jM73mZGhOMT+2RFDhdp4Y1WmHG3lB8
+	fhvgGlk/PFabS5Cn+w3uMjkgmqVzkQuRRvX4xJrjg/8hJ+0j7jOT/qLXJIWkp6a9jfxObj
+	LUOs4JziO5PF87uDbwzJHBzRMHIM1CkGRGPGIwWfVdP7ckTLMMlHtUDzc+O5vxoBEjlmG7
+	1skI/bKKNj/R2CTmQujVy01wAp2WhS97QfxNvozWzsRXygdxqvZz7+ZCEZyixQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1755072965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
+	b=E1zvWv48KJJ+SOu4RstGU/Hts0jpCLaRVEpYFntAu8DSCAbOKCuCF3vYrHswu5Uo/Nk8OK
+	GMt5eI9bpKssCIDA==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Nicolas Schier <nicolas.schier@linux.dev>, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
+	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@redhat.com>, Alexandre Ghiti <alexghiti@rivosinc.com>
+Subject: Re: [PATCH v4 00/24] vdso: Reject absolute relocations during build
+Message-ID: <20250813101305-04911850-2375-4be5-9a06-ced21de3ca22@linutronix.de>
+References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
+ <CANiq72nV62c8cVBzke73OH-sfLdgerDBGrLKTmT83+OQtK6PjA@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,83 +99,38 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1dcc9528e97d228ea7889caa00cc254ef0375ed4.1754996033.git.christophe.leroy@csgroup.eu>
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nV62c8cVBzke73OH-sfLdgerDBGrLKTmT83+OQtK6PjA@mail.gmail.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Christophe,
+On Tue, Aug 12, 2025 at 01:07:34PM +0200, Miguel Ojeda wrote:
+> On Tue, Aug 12, 2025 at 7:44 AM Thomas Weißschuh
+> <thomas.weissschuh@linutronix.de> wrote:
+> >
+> > Kbuild and Rust folks: This contains custom definitions of hostprog
+> > bindgen and rust library commands.
+> > These are currently only defined inside the subsystem directory.
+> > Let me know if they should go into scripts/Makefile.host.
+> 
+> Glad to see more Rust host progs :)
+> 
+> Keeping them local may be a bit easier initially to land, I guess
+> (e.g. no docs), and then we can generalize when needed later.
 
-kernel test robot noticed the following build warnings:
+I'm happy to do the docs etc. I only wanted to avoid doing all that work,
+only for it to stay a subsystem-local solution.
 
-[auto build test WARNING on robh/for-next]
-[also build test WARNING on linus/master v6.17-rc1 next-20250813]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Also it would be nice to have a Kconfig symbol, RUSTC_CAN_LINK or similar,
+which indicates that the rust compiler can build host programs.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Christophe-Leroy/soc-fsl-qe-Add-an-interrupt-controller-for-QUICC-Engine-Ports/20250812-195423
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
-patch link:    https://lore.kernel.org/r/1dcc9528e97d228ea7889caa00cc254ef0375ed4.1754996033.git.christophe.leroy%40csgroup.eu
-patch subject: [PATCH 1/4] soc: fsl: qe: Add an interrupt controller for QUICC Engine Ports
-config: powerpc64-randconfig-002-20250813 (https://download.01.org/0day-ci/archive/20250813/202508131517.P1Nfz0RF-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250813/202508131517.P1Nfz0RF-lkp@intel.com/reproduce)
+> By the way, for consistency with elsewhere, probably we want
+> `HOSTRUSTLIB` -> `HOSTRUSTC L`. Though I am thinking to remove the `L`
+> anyway since eventually a lot of code will be "lib".
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508131517.P1Nfz0RF-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/soc/fsl/qe/qe_ports_ic.c: In function 'qepic_probe':
->> drivers/soc/fsl/qe/qe_ports_ic.c:102:7: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
-     nb = (int)of_device_get_match_data(dev);
-          ^
-
-
-vim +102 drivers/soc/fsl/qe/qe_ports_ic.c
-
-    94	
-    95	static int qepic_probe(struct platform_device *pdev)
-    96	{
-    97		struct device *dev = &pdev->dev;
-    98		struct qepic_data *data;
-    99		int irq;
-   100		int nb;
-   101	
- > 102		nb = (int)of_device_get_match_data(dev);
-   103		if (nb < 1 || nb > 32)
-   104			return -EINVAL;
-   105	
-   106		data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
-   107		if (!data)
-   108			return -ENOMEM;
-   109	
-   110		data->reg = devm_platform_ioremap_resource(pdev, 0);
-   111		if (IS_ERR(data->reg))
-   112			return PTR_ERR(data->reg);
-   113	
-   114		irq = platform_get_irq(pdev, 0);
-   115		if (irq < 0)
-   116			return irq;
-   117	
-   118		data->host = irq_domain_add_linear(dev->of_node, nb, &qepic_host_ops, data);
-   119		if (!data->host)
-   120			return -ENODEV;
-   121	
-   122		irq_set_handler_data(irq, data);
-   123		irq_set_chained_handler(irq, qepic_cascade);
-   124	
-   125		return 0;
-   126	}
-   127	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ack.
 
