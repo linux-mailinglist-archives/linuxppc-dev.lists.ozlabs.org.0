@@ -1,78 +1,127 @@
-Return-Path: <linuxppc-dev+bounces-10959-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10960-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C49BB252F0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Aug 2025 20:21:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F22B25556
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Aug 2025 23:28:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c2Gt31F5fz30Qk;
-	Thu, 14 Aug 2025 04:21:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c2M1v52fsz30Qk;
+	Thu, 14 Aug 2025 07:28:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755109307;
-	cv=none; b=RKJc+ux6ySz5e0JluZKxysMNbav/6GxgVKffn+OdJthmDShsIJUMdRHGzwdYeWhMhBCfcu1TBy+uPjjoGoFYTAMRo+0ReBwA0k7V2YFNx+BMAvVHryuBv89F6wqAfB2jaq4k0xv4UjWJvZlvMaaJYZos4J72OKuiBQNejflDBwuK/0uBteVChDY3U7jd/QZDIhLr75xM41j7THy/Cxxtx76xnpo5Yiaf3FnTierLxzUq67nPV6UgzVcDBCvuBu3/jBEUzr+JKph7eBRDdrtOhn6TLTfcziidFU5oTo2P8JGQTX4uvy78/TlVC/VC6Lc+/XokYSpRFop5fD7l1hyhmg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755120531;
+	cv=none; b=MmwZ/ypPn3hXm9ooF8YGLIm/hgVU6eggJEElEstzzmM/3WHIuNYQLxAfIlN45Ll+9n/twJ+v6LZ0xBVlX114Bb+lexhZm70bx6bni5Tya75BIJNXAac/K1HJ7hFN15pDIeMCO/Ysi8aYZasmDInn/RatDYd0WW4uDMyRvAMqbMFGOyzrksaku0A69P9l+Fnv8omVTthJfTdA7KGpztePT+U07WDOtJREbEiENIWRLCP8f2+dLMMD3rFtdKA6zMaDrIGtHNDj0CzuqrrKQO99SCUEbeWXBKPS9XxakPboZUSqFG1PzwtXA8uqsQCFh3robg3ThlaeEBsXZA7CynTwwQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755109307; c=relaxed/relaxed;
-	bh=6zUl0Eq6Fc+iqSxbhSfLOzZHT/armqF1X1gWG6H04gA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=SgRWEkCKDV+sRtgm7b3PS2XBqeNH1EivgTcE1fG2RQnYTDQPHRhpqHSMvVmpod2thUoaGvN2amwaZn2pNgFCD0bL4pv/NDh7227rqr0jrR39XWxA/E2CEkGhHFLZjvI4Jcjrx4E7eerFupfZPEII8qXTUQO3M7g8XScvksw+XMpqQoUK5MKwNH7zB1+rAN1FE26qTHzRtiWu1HstcuTMPVD8r9H9gZ4Bd+JXAcqvygn6ZzD0b5/dTRsVdnyNG7AgREtT+q2POzkvXrPIfwPqae0Olhw5Cn+PKtH+7I02FTS/REcDTsAskRl6wx7WjiQrw9Y3J7/Ahe5DRxvusw6smA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d0tXGjri; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1755120531; c=relaxed/relaxed;
+	bh=0J8lRG10akCL8OddfOiySOV5JHLaZH1OqkeV9fqNOVs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=RKNM2oq/NH4B9Muw4KYDJzlVbwL2h6X1Oj5HOxzMK71rV/gyj8pdi77kYsq5pHidXa+eABXj+6tm6/gQGfa1NtDo8iLHz9TFIpyEh/lkmGKpNn5gFANlIDZOjHKcfaOJXbj7NpOapXynEpXjSoNTjFgif7dU3ch5N83cpwF5oVuI40SsozLmS5HFIneXpb3b5vgcPTQWaMrM8HrbT7G6LlEqmOPplO2UgpfERj89h5kN85jHxb81foCgLuCb8o2vvVcBZ1iCqa5Pj73j6OCtRl9+Kq1KnhurA3cRBiap2cppHksQSMd6DXlwo83K5e0q3vMoSZ0aBGqsxRBzg1fHIA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tW0weATX; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d0tXGjri;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=tW0weATX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2Gt16rfgz2xcD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 04:21:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2M1t4YJfz2xK5;
+	Thu, 14 Aug 2025 07:28:50 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id AB7FB5C6E7C;
-	Wed, 13 Aug 2025 18:21:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265E1C4CEEB;
-	Wed, 13 Aug 2025 18:21:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 068F2601D6;
+	Wed, 13 Aug 2025 21:28:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038F0C4CEEB;
+	Wed, 13 Aug 2025 21:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755109303;
-	bh=m2dHhOh71l27TfOyul2QFpCLU8gr00gihOmNiH3cfok=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=d0tXGjriRbT/lDQu8XoR2xw6GFLRQrG33FOX7ZW7/c0eVqzUV6GE3rkjcjDNxj5fi
-	 FOFFe9Kp0KSQh6IS5tRaIwR+R5ELW2ddlfXH4ZIgrr9GHrC2pqp/EU5rryS7pRfofJ
-	 nqlEFhaq84ZufKrJiLVDw/VbIbyiK45nkULmgvElXiqhWjlpUXOG6NHN+KC1TDOVqb
-	 4yFSRDEGra3Ng+m39pU9ZOnEaCQQFO1Lfc7i9DbZik/PHeFbagg2H3N7BdBURiZY9O
-	 k8MpR6uzftJ3Ty6jvObrUpAtVQPjjFRVmLIo9/P0n0xtfkg78JW0hpr8Rp2t3XoXET
-	 SVygpQqXQAEiA==
-Date: Wed, 13 Aug 2025 13:21:41 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Riana Tauro <riana.tauro@intel.com>,
-	Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>,
-	"Sean C. Dardis" <sean.c.dardis@intel.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Linas Vepstas <linasvepstas@gmail.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver OHalloran <oohall@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
-	Shahed Shaikh <shshaikh@marvell.com>,
-	Manish Chopra <manishc@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
-	Nilesh Javali <njavali@marvell.com>,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	Edward Cree <ecree.xilinx@gmail.com>, linux-net-drivers@amd.com,
-	James Smart <james.smart@broadcom.com>,
-	Dick Kennedy <dick.kennedy@broadcom.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vg,
-	er.kernel.org@lists.ozlabs.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 0/5] PCI: Reduce AER / EEH deviations
-Message-ID: <20250813182141.GA284875@bhelgaas>
+	s=k20201202; t=1755120527;
+	bh=w6o+Mcmx0kfk0qJVojOnLq3WRRaroXEK6NqPwh8WeEA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=tW0weATX4jZ11jXl3He1Ule5FSJuMatBGd51oT3bMN01eb3cT3/18BB0KpS64oSbV
+	 6A4QDHJDbE2i5JqtnfsyVBALsh6Bm5ABrlcwIeEaVVJKF8Ys4lmXD08V4Cf547I5mm
+	 6sCZgBGCfMRs6QPVrGxU4nTnD7f31+rWw2qkW80zdobtK+0W0QNMcTpZiJJZuxp3e3
+	 f72jB75x9bqVrnObcwmG+vOT476m4B3xoHJM2Tk0dvct2jHtt8v2WNoP/JeukhjYFa
+	 P4b7UnXzBQig+oKbLe5NjU5NaUCh5y3uOUysgIl6JhmCWTjHv+RyKuGvEMG/hhDxtg
+	 oUrRFt19OPnjQ==
+From: Mark Brown <broonie@kernel.org>
+To: linux-kernel@vger.kernel.org, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Andrea della Porta <andrea.porta@suse.com>, 
+ =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, Andy Shevchenko <andy@kernel.org>, 
+ Andy Yan <andy.yan@rock-chips.com>, Avi Fishman <avifishman70@gmail.com>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Benjamin Fair <benjaminfair@google.com>, 
+ Bjorn Andersson <andersson@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, 
+ David Airlie <airlied@gmail.com>, David Lechner <dlechner@baylibre.com>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Drew Fustini <fustini@kernel.org>, dri-devel@lists.freedesktop.org, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Fu Wei <wefu@redhat.com>, 
+ Guo Ren <guoren@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, imx@lists.linux.dev, 
+ Iwona Winiarska <iwona.winiarska@intel.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Jassi Brar <jassisinghbrar@gmail.com>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Jerome Brunet <jbrunet@baylibre.com>, Jonas Karlman <jonas@kwiboo.se>, 
+ Jonathan Cameron <jic23@kernel.org>, Kevin Hilman <khilman@baylibre.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Lee Jones <lee@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, linux-actions@lists.infradead.org, 
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-input@vger.kernel.org, linux-media@vger.kernel.org, 
+ linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org, 
+ linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-rtc@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-sunxi@lists.linux.dev, Liu Ying <victor.liu@nxp.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Maxime Ripard <mripard@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, Nancy Yuen <yuenn@google.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Nicolin Chen <nicoleotsuka@gmail.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, openbmc@lists.ozlabs.org, 
+ Patrick Venture <venture@google.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Robert Foss <rfoss@kernel.org>, 
+ Samuel Holland <samuel.holland@sifive.com>, 
+ Samuel Holland <samuel@sholland.org>, Sandy Huang <hjc@rock-chips.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Stephen Boyd <sboyd@kernel.org>, Takashi Iwai <tiwai@suse.com>, 
+ Tali Perry <tali.perry1@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Tomer Maimon <tmaimon77@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Vasily Khoruzhick <anarsoul@gmail.com>, Vinod Koul <vkoul@kernel.org>, 
+ Vladimir Zapolskiy <vz@mleia.com>, Xiubo Li <Xiubo.Lee@gmail.com>, 
+ Yangtao Li <tiny.windzz@gmail.com>, Zhang Rui <rui.zhang@intel.com>
+In-Reply-To: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
+References: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
+Subject: Re: (subset) [PATCH 00/21] treewide: remove unneeded 'fast_io'
+ parameter in regmap_config
+Message-Id: <175512050873.352044.97744864083041762.b4-ty@kernel.org>
+Date: Wed, 13 Aug 2025 22:28:28 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,53 +135,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1755008151.git.lukas@wunner.de>
-X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-cff91
+X-Spam-Status: No, score=-3.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Aug 13, 2025 at 07:11:00AM +0200, Lukas Wunner wrote:
-> The kernel supports three different PCI error recovery mechanisms:
+On Wed, 13 Aug 2025 18:14:46 +0200, Wolfram Sang wrote:
+> While working on a driver using regmap with MMIO, I wondered if I need
+> to set 'fast_io' in the config. Turned out I don't need to, so I added
+> documentation for it with commit ffc72771ff6e ("regmap: Annotate that
+> MMIO implies fast IO").
 > 
-> * AER per PCIe r7.0 sec 6.2 (drivers/pci/pcie/aer.c + err.c)
-> * EEH on PowerPC (arch/powerpc/kernel/eeh_driver.c)
-> * zPCI on s390 (arch/s390/pci/pci_event.c)
+> This series fixes the existing users in the tree which needlessly set
+> the flag. They have been found using this coccinelle script:
 > 
-> In theory, they should all follow Documentation/PCI/pci-error-recovery.rst
-> to afford uniform behavior to drivers across platforms.
-> 
-> In practice, there are deviations which this series seeks to reduce.
-> 
-> One particular pain point is AER not allowing drivers to opt in to a
-> Bus Reset on Non-Fatal Errors (patch [1/5]).  EEH allows this and the
-> "xe" graphics driver would like to take advantage of it on AER-capable
-> platforms.  Patches [2/5] to [4/5] address various other deviations,
-> while patch [5/5] cleans up old gunk in code comments.
-> 
-> I've gone through all drivers implementing pci_error_handlers to ascertain
-> that no regressions are introduced by these changes.  Nevertheless further
-> reviewing and testing would be appreciated to raise the confidence.
-> Thanks!
-> 
-> Lukas Wunner (5):
->   PCI/AER: Allow drivers to opt in to Bus Reset on Non-Fatal Errors
->   PCI/ERR: Fix uevent on failure to recover
->   PCI/ERR: Notify drivers on failure to recover
->   PCI/ERR: Update device error_state already after reset
->   PCI/ERR: Remove remnants of .link_reset() callback
-> 
->  .../ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c   |  1 -
->  .../net/ethernet/qlogic/qlcnic/qlcnic_main.c  |  2 -
->  drivers/net/ethernet/sfc/efx_common.c         |  3 --
->  drivers/net/ethernet/sfc/falcon/efx.c         |  3 --
->  drivers/net/ethernet/sfc/siena/efx_common.c   |  3 --
->  drivers/pci/pcie/err.c                        | 40 ++++++++++++++-----
->  drivers/scsi/lpfc/lpfc_init.c                 |  2 +-
->  drivers/scsi/qla2xxx/qla_os.c                 |  5 ---
->  8 files changed, 32 insertions(+), 27 deletions(-)
+> [...]
 
-Applied to pci/aer for v6.18, thanks, Lukas!
+Applied to
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+
+Thanks!
+
+[15/21] regulator: remove unneeded 'fast_io' parameter in regmap_config
+        commit: 37533933bfe92cd5a99ef4743f31dac62ccc8de0
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
