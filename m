@@ -1,87 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-10901-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10904-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A75B23C1F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Aug 2025 00:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFAFB23E1C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Aug 2025 04:16:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c1n313VMkz2xgQ;
-	Wed, 13 Aug 2025 08:57:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c1sRd65bvz2yqr;
+	Wed, 13 Aug 2025 12:15:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755039469;
-	cv=none; b=S07YVxb1s3KjaMCxqOygOK463C6ZDUHutOBwnoU7379g/h7IKOpNXex1xfxc2GDZK1cWsPB56LdVpLMdAJqau/d8b5+PxrsbQ9cR5cQrLNaD6KHofvzF9FKq8lt2T6TaNMN65msgWIb9zwJqQTk3jKqjj7TLNphZT6kPKXCJ3TLBUzhd/0mKobEfnm5JAWphVj7bnobTR7xITdEP8zkktMTCCCuK7TlOXfsIFHo8WgUEl2LPScxouSPlaSavMIFC4gSgwpP+7xCO4v+jTO2QtIS3VYq9fP26zgz5wjjqbeTAGg+Pxz/vQsNy0F/b/0HMVDfH4R7pcJ8jVE/IU4ZMHg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=166.125.252.92
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755049676;
+	cv=none; b=JhOoS4kCG3PUABVHSa6njv1gaWlGyodF63apEg4cHABoVb9/mt0RMzRMSR9WBHN1fsdMn0fCmwRqVacof7JNgjI6fRC6qgcllSBULQDv4XsWmsU0AUKBlv1GuqSx2CEn64pHf6SZFV4hJxUh4PzKUZ6MB3TzOianLkQWJDgSNzIlZe1PtoVuo72QNHbYQp4ubLnWb7TQHXTxyl+ekcxCqMFoiGEh0jL6N37E4b4FpQCQDAHSpOPmb/tyN3rQUsp+7/htC1OXy/DbKdURUcTEXzEF0A+iyTDtaPfgeMiPk6Tty/Tov/wMjF1f8twCTYFNqMSox1E35ituJ66g4SBCrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755039469; c=relaxed/relaxed;
-	bh=51cF4PuE+IigW/UzV1+532NGaSza9JfJRLDdxBNaV5Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VNdvuZDn4f1V/wWm2enL2AxAaZ+7fGhPgmia1HD/JXbhvpUqB1jJcG7bdPcb7aL1X397H591EWUnsbUM8mpJKqO9Jy+2KJqYHZCXcMF0GkAsHeNrPZ8ESE+9gnyJ/L3luEe6RY2ajggdG2QKMvUXXeK4FD72ZvYxoSYKobWTpwgdS4gzqQa8NThwpWID4cLQ2B/CwjRVDM5qKG62wott78dNnxKplR8NhTlSq59G4QkZEt8Jwb0LrLaZjxObJ1UjIyJ5Hz5C21QjvRuWpiuTZw/103GDZaOZs6NLUa35nkJre/9ojVW1sr2G1w0MmeBHhv0w5NdlfIgGBTJUjg5Mjg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nEKtl/B1; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nEKtl/B1;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c1n3065RYz30Vl
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 08:57:48 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57CEJubM032216;
-	Tue, 12 Aug 2025 22:57:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=51cF4P
-	uE+IigW/UzV1+532NGaSza9JfJRLDdxBNaV5Y=; b=nEKtl/B1/eDEYVbKTPcZwu
-	Itluzm6tSDblePBRzIrB6kwvkgUHBBFI+DxeFCOLOO5o0fPreN3wZhjGNLMsjXNu
-	TyMEl8WX9ULlQDgbNa7qFR76w7rjxYp/MZ0GlNNIXkDoJlFCXUMFsRqU0u9s/1mo
-	7KVqBt1LulKE5PgRncJ/0Riw25QA4ys3f36Tc6KN7F4yJNvHY/ZbMOak/7H/Jypw
-	r+cztw7bErRYM2jOqUTiFqRo2M4bAX2CH4+cwT2dvSEYlMgX/0PQEKQxYsFwwKem
-	eDOAVc5fQOA7Wy7QDOeKENR1IkxXsBelLQVWspvBsQVOG39zaJXQc//V4Taee/nA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx14hau3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Aug 2025 22:57:41 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57CMuvA7025877;
-	Tue, 12 Aug 2025 22:57:41 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx14haty-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Aug 2025 22:57:41 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57CLAZFn026282;
-	Tue, 12 Aug 2025 22:57:40 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48eh214t67-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Aug 2025 22:57:40 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57CMvbuo28902056
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Aug 2025 22:57:38 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B1BB058059;
-	Tue, 12 Aug 2025 22:57:37 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8168658058;
-	Tue, 12 Aug 2025 22:57:36 +0000 (GMT)
-Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.44.118])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 12 Aug 2025 22:57:36 +0000 (GMT)
-From: Haren Myneni <haren@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, msuchanek@suse.de,
-        mahesh@linux.ibm.com, tyreld@linux.ibm.com, npiggin@gmail.com,
-        bjking1@linux.ibm.com, hbabu@us.ibm.com, haren@linux.ibm.com
-Subject: [PATCH v2 9/9] powerpc/pseries: HVPIPE changes to support migration
-Date: Tue, 12 Aug 2025 15:57:13 -0700
-Message-ID: <20250812225715.339225-10-haren@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250812225715.339225-1-haren@linux.ibm.com>
-References: <20250812225715.339225-1-haren@linux.ibm.com>
+	t=1755049676; c=relaxed/relaxed;
+	bh=YcsutHOUWyK60hhYoAY0U9VqHDWR7i6ThQc7dfya0Wo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i8VsHJumbiAC3xWO1S/5pq6wC7iERy+IAwQhKa7O2X1vFvPwqoPRWSUd8UsdaRZb6MJ2LnsJaCxs2D8Puy6Tsc8cYhxWrEC87UDlqjzcJ57ixeygeV1xbuA0aBiwalZiNZnPM/C96WAFCgtTzBMw5Rj+xfUcl7DX8y6yS+kX2eH3iFxTtIlH/ERzdB3Tm9+0TyX+ZJYsZjersTNp+L8oBBfcNMm4osA7Dn+Ja81HQCJPF4w2azvK3X/JJeV3/ToLgb+7hvpOHlnNwr6OP2os1CTS7a7Umn/2DoMTRuJMBxQlW7EoBCP8eL/TPV2pqBi6r7BF52P5OgKo8J3mA5bqMg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass (client-ip=166.125.252.92; helo=invmail4.hynix.com; envelope-from=byungchul@sk.com; receiver=lists.ozlabs.org) smtp.mailfrom=sk.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sk.com (client-ip=166.125.252.92; helo=invmail4.hynix.com; envelope-from=byungchul@sk.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 903 seconds by postgrey-1.37 at boromir; Wed, 13 Aug 2025 11:47:55 AEST
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c1rqH1vgwz2xCd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 11:47:53 +1000 (AEST)
+X-AuditID: a67dfc5b-c45ff70000001609-d4-689beb3dbd50
+Date: Wed, 13 Aug 2025 10:32:40 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
+	linux-btrfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Benjamin LaHaise <bcrl@kvack.org>, Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Dave Kleikamp <shaggy@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	kernel_team@skhynix.com
+Subject: Re: [PATCH v1 2/2] treewide: remove MIGRATEPAGE_SUCCESS
+Message-ID: <20250813013240.GA78125@system.software.com>
+References: <20250811143949.1117439-1-david@redhat.com>
+ <20250811143949.1117439-3-david@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,223 +75,452 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: GJFhLvst3KPj1M6n0e60HcZzjh9Z-aHt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIxOSBTYWx0ZWRfX5AXf3mRgUFis
- v0q3di+xadfVMC1HEV2aYxbefBjMiYET9Qri2mhmQSPT/JP3oo8+kOtMOuRVP/A+b8VLNxR17Wm
- WtjDS0HpsXcSP+HDTgIsXjHyhSxzE4yT7ohXcmbI8cKWlhb4iKbTzSIC+AmQ8SM+F7wUcsg4639
- e/fpjIjLCvV4j08l+7yfomYKqBTzTXphO5jYmqUYw16Mj7GzNOgNu+7BpCvI/psRZM9TvSFcpZz
- gvCuS5enffm3AgIZbkVJJC2MiNwmlWQuvNh1uPzqSixZo7KK4mL5CHBLb6qP0RTJyQsrLpx0Hxd
- 4TeAGkOYyx9pcE1TlVwnXe4hDwgJJyjNIX9JnGsja9pbtUyfWRGrbUwOE8NcNIiw63nwX8jMKJy
- unxLV/rKi9NQOCFflKlBEeyDA65WSfWQvv/kqysxpRBJzYtJ27z84GT4isfbzWLIQ9Xwlz4g
-X-Proofpoint-GUID: IO8f9qrGllCGpkoi73IjgmTuZBgxF3UJ
-X-Authority-Analysis: v=2.4 cv=fLg53Yae c=1 sm=1 tr=0 ts=689bc6e5 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=S7z50IwEaLHSfgsXjVMA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-12_08,2025-08-11_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 priorityscore=1501
- impostorscore=0 phishscore=0 mlxlogscore=892 malwarescore=0 bulkscore=0
- mlxscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2507300000
- definitions=main-2508120219
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250811143949.1117439-3-david@redhat.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0iTYRTHed67q8XrMnpshLAIS+liKJwu2uVLT9+KCsTIWvrWRpvGNNOo
+	WEpWRmojL21qqXgrw5yWravXLLppiS7yghkuW2kZVs5LuUXUtx//8z8/zocj0IoSdoGgjYmX
+	DDFqnYqTMbLPs4uWhTotmpV9dSrIq6rk4I59B0yZHvGQNl3LgLNpFEG3ycGDKSOXh7EqFw1t
+	P09SMJBfwcN4TysPKcVVHFhyUigoffWNgsKnnTS0fz1FwWR/ELTeLODhYnYyglcD5Tzcu/+E
+	gdd38jjorfzFwsSPaRYKbCYWvqcroXRshIdaYyMHv1wfWSi19TMw/sHOwLNsA9ytLuLgbfdP
+	Gl5OtbLQUlfBQmcywLVKDVhaevkN/mTCZULE3PecIxZjO0PG3rygSNGQkSEXUoZ5YjP38ORc
+	6mueFN8booj16lmOWEdNPHmcO8EQW/9qUmjMoklmUT0iD/Mr+a3KCNm6aEmnTZAMK8L2yjTD
+	NQPUoabjiVODdZQRPd+ZhgQBi8F41LktDXl5sPyijXYzIy7Gnz62e5gT/bHdPu5hH3EJtqbe
+	mGGZQIuOWfjc6RLGPZgrbsA2h5lyO+Ui4KxOnTtWiBKu+vGAd7Nc9MZPLr331GkxANunhzx1
+	WlTismnBHXvNbN7vSGfdPE9chOtvtVJ/Tnsm4Jx3IX/YFzeU25lMJJr/s5r/s5r/Wa8g+ipS
+	aGMS9GqtLni5JilGm7g8KlZvRTPPU3p8ctdtNNq2vRGJAlLNlretsWgUrDohLknfiLBAq3zk
+	+btnInm0OumoZIjdYzisk+IakVJgVPPlq74fiVaIB9Tx0kFJOiQZ/k4pwWuBEQWFDXdGuHY7
+	NpPH4AjapvTzDz+/MLSwfrDM3mDJnDj/LVxv8X6Rh4/ymwK7rlfX+gbrdc1NqJC0h/j6bdxi
+	/bR6MnRpxbG1EZHsvmsLt0bqhpx7S7o6/EMyAvZ/8WsucJ4JDK0fGdy4vmxOTUt0blS4K3ax
+	X3PsZbO5IPXDiZwwFROnUQcF0IY49W+ou5JiOAMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRyG+Z/7VsOTGR2VSBddFMqMgl95SehDJ4OIKLuA5NBDW84Zm3kp
+	pNnIUMt0eN3S0lCzBpaltsqSjWWjzLy0JmUhSksNpYuZ85YTIr89vO/7fHsZ3Duf9GMUqhRB
+	rZIppZSYEB8I022OGDXKt+aVesH1BhMFj52HYVb/gobcuYcEjFp/IPiod9Ggv1ZGw0SDG4e3
+	f7IwGKyop2Gqv50G3a0GCoylOgxqu39iUPXKgUPX90sYzAyEQntTJQ3WCjsJRSUXEXQP3qbh
+	aaudgJ7H1yn4ZJonYXpyjoRKs56E3/n+UDsxTsNDrYWCefcICbXmAQKmvjoJeF2iBovDRcKT
+	+9UUfPj4B4fO2XYSbC31JDguAtw1ycFo+0RHBfHTbj3iDZ87KN6o7SL4ib43GF89rCX4Qt0Y
+	zZsN/TSfl91D87eeDmN8450cim/8oaf5l2XTBG8e2MlXaYtxvqC6DfHPK0z0wTUnxOEJglKR
+	KqhDIuPE8rEHg9gZa2b67JcWTIs6juQiEcOx27nbRWbcwwS7nvs20rXIFLuRczqnFtmH3cQ1
+	Zt9bYDGDs65lXN7lGsJTrGSjOLPLgOUihpGwwBU7lJ7YmxW4hslntIcl7ArOXj60OMfZYM45
+	N7w4x1l/rm6O8cSiBbO1N5/08Cp2HdfW3I4VIIlhiW1YYhv+2zcRfgf5KFSpSTKFcscWTaI8
+	Q6VI3xKfnNSIFl5SmzlT+Aj96tlrQSyDpMslb3cZ5d6kLFWTkWRBHINLfSQVsQuRJEGWcU5Q
+	J59Un1UKGgvyZwjpakn0USHOmz0lSxESBeGMoP7XYozIT4uKb1S+mw5qjo/EbLa+FEnQ2qbX
+	x/ev2+2MpXyrAsNWnfcj7HVXen33RBfaIkx5aCjmSExda+dp9zjrTk02DG7b9t6KbejvEEd0
+	GiK3v2kOTCspovrUpnfH8hMOrfyVpvILCSgLd5hLL1wdKA+3UfvuhooCak7m1HtpsrhDuviN
+	UkIjl4UG42qN7C9NYmcCIQMAAA==
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The hypervisor assigns one pipe per partition for all sources and
-assigns new pipe after migration. Also the partition ID that is
-used by source as its target ID may be changed after the migration.
-So disable hvpipe during SUSPEND event with ‘hvpipe enable’ system
-parameter value = 0 and enable it after migration during RESUME
-event with  hvpipe enable’ system parameter value = 1.
+On Mon, Aug 11, 2025 at 04:39:48PM +0200, David Hildenbrand wrote:
+> At this point MIGRATEPAGE_SUCCESS is misnamed for all folio users,
+> and now that we remove MIGRATEPAGE_UNMAP, it's really the only "success"
+> return value that the code uses and expects.
+> 
+> Let's just get rid of MIGRATEPAGE_SUCCESS completely and just use "0"
+> for success.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  arch/powerpc/platforms/pseries/cmm.c |  2 +-
+>  drivers/misc/vmw_balloon.c           |  4 +--
+>  drivers/virtio/virtio_balloon.c      |  2 +-
+>  fs/aio.c                             |  2 +-
+>  fs/btrfs/inode.c                     |  4 +--
+>  fs/hugetlbfs/inode.c                 |  4 +--
+>  fs/jfs/jfs_metapage.c                |  8 +++---
+>  include/linux/migrate.h              | 10 +------
+>  mm/migrate.c                         | 40 +++++++++++++---------------
+>  mm/migrate_device.c                  |  2 +-
+>  mm/zsmalloc.c                        |  4 +--
+>  11 files changed, 36 insertions(+), 46 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/cmm.c b/arch/powerpc/platforms/pseries/cmm.c
+> index 5e0a718d1be7b..0823fa2da1516 100644
+> --- a/arch/powerpc/platforms/pseries/cmm.c
+> +++ b/arch/powerpc/platforms/pseries/cmm.c
+> @@ -545,7 +545,7 @@ static int cmm_migratepage(struct balloon_dev_info *b_dev_info,
+>         /* balloon page list reference */
+>         put_page(page);
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
 
-The user space calls such as ioctl()/ read() / write() / poll()
-returns  -ENXIO between SUSPEND and RESUME events. The user space
-process can close FD and reestablish connection with new FD after
-migration if needed (Example: source IDs are changed).
+Yeah.  The unnecessary thing has been kept.  Looks better to me.
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/mobility.c    |  3 +
- arch/powerpc/platforms/pseries/papr-hvpipe.c | 64 ++++++++++++++++++++
- arch/powerpc/platforms/pseries/papr-hvpipe.h |  6 ++
- 3 files changed, 73 insertions(+)
+Reviewed-by: Byungchul Park <byungchul@sk.com>
 
-diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index 62bd8e2d5d4c..95fe802ccdfd 100644
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -28,6 +28,7 @@
- #include <asm/rtas.h>
- #include "pseries.h"
- #include "vas.h"	/* vas_migration_handler() */
-+#include "papr-hvpipe.h"	/* hvpipe_migration_handler() */
- #include "../../kernel/cacheinfo.h"
- 
- static struct kobject *mobility_kobj;
-@@ -744,6 +745,7 @@ static int pseries_migrate_partition(u64 handle)
- 	 * by closing VAS windows at the beginning of this function.
- 	 */
- 	vas_migration_handler(VAS_SUSPEND);
-+	hvpipe_migration_handler(HVPIPE_SUSPEND);
- 
- 	ret = wait_for_vasi_session_suspending(handle);
- 	if (ret)
-@@ -770,6 +772,7 @@ static int pseries_migrate_partition(u64 handle)
- 
- out:
- 	vas_migration_handler(VAS_RESUME);
-+	hvpipe_migration_handler(HVPIPE_RESUME);
- 
- 	return ret;
- }
-diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-index bc3d1f0b4491..0edc1a29d64d 100644
---- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
-+++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-@@ -27,6 +27,7 @@ static unsigned char hvpipe_ras_buf[RTAS_ERROR_LOG_MAX];
- static struct workqueue_struct *papr_hvpipe_wq;
- static struct work_struct *papr_hvpipe_work = NULL;
- static int hvpipe_check_exception_token;
-+static bool hvpipe_feature;
- 
- /*
-  * New PowerPC FW provides support for partitions and various
-@@ -233,6 +234,12 @@ static ssize_t papr_hvpipe_handle_write(struct file *file,
- 	unsigned long ret, len;
- 	char *area_buf;
- 
-+	/*
-+	 * Return -ENXIO during migration
-+	 */
-+	if (!hvpipe_feature)
-+		return -ENXIO;
-+
- 	if (!src_info)
- 		return -EIO;
- 
-@@ -325,6 +332,12 @@ static ssize_t papr_hvpipe_handle_read(struct file *file,
- 	struct papr_hvpipe_hdr hdr;
- 	long ret;
- 
-+	/*
-+	 * Return -ENXIO during migration
-+	 */
-+	if (!hvpipe_feature)
-+		return -ENXIO;
-+
- 	if (!src_info)
- 		return -EIO;
- 
-@@ -401,6 +414,12 @@ static unsigned int papr_hvpipe_handle_poll(struct file *filp,
- {
- 	struct hvpipe_source_info *src_info = filp->private_data;
- 
-+	/*
-+	 * Return -ENXIO during migration
-+	 */
-+	if (!hvpipe_feature)
-+		return -ENXIO;
-+
- 	if (!src_info)
- 		return -EIO;
- 
-@@ -530,6 +549,12 @@ static long papr_hvpipe_dev_ioctl(struct file *filp, unsigned int ioctl,
- 	u32 srcID;
- 	long ret;
- 
-+	/*
-+	 * Return -ENXIO during migration
-+	 */
-+	if (!hvpipe_feature)
-+		return -ENXIO;
-+
- 	if (get_user(srcID, argp))
- 		return -EFAULT;
- 
-@@ -688,6 +713,44 @@ static int __init enable_hvpipe_IRQ(void)
- 	return 0;
- }
- 
-+void hvpipe_migration_handler(int action)
-+{
-+	pr_info("hvpipe migration event %d\n", action);
-+
-+	/*
-+	 * HVPIPE is not used (Failed to create /dev/papr-hvpipe).
-+	 * So nothing to do for migration.
-+	 */
-+	if (!papr_hvpipe_work)
-+		return;
-+
-+	switch (action) {
-+	case HVPIPE_SUSPEND:
-+		if (hvpipe_feature) {
-+			/*
-+			 * Disable hvpipe_feature to the user space.
-+			 * It will be enabled with RESUME event.
-+			 */
-+			hvpipe_feature = false;
-+			/*
-+			 * set system parameter hvpipe 'disable'
-+			 */
-+			set_hvpipe_sys_param(0);
-+		}
-+		break;
-+	case HVPIPE_RESUME:
-+		/*
-+		 * set system parameter hvpipe 'enable'
-+		 */
-+		if (!set_hvpipe_sys_param(1))
-+			hvpipe_feature = true;
-+		else
-+			pr_err("hvpipe is not enabled after migration\n");
-+
-+		break;
-+	}
-+}
-+
- static const struct file_operations papr_hvpipe_ops = {
- 	.unlocked_ioctl	=	papr_hvpipe_dev_ioctl,
- };
-@@ -731,6 +794,7 @@ static int __init papr_hvpipe_init(void)
- 
- 	if (!ret) {
- 		pr_info("hvpipe feature is enabled\n");
-+		hvpipe_feature = true;
- 		return 0;
- 	} else
- 		pr_err("hvpipe feature is not enabled %d\n", ret);
-diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.h b/arch/powerpc/platforms/pseries/papr-hvpipe.h
-index aab7f77e087d..c343f4230865 100644
---- a/arch/powerpc/platforms/pseries/papr-hvpipe.h
-+++ b/arch/powerpc/platforms/pseries/papr-hvpipe.h
-@@ -11,6 +11,11 @@
- 
- #define	HVPIPE_HDR_LEN	sizeof(struct papr_hvpipe_hdr)
- 
-+enum hvpipe_migrate_action {
-+	HVPIPE_SUSPEND,
-+	HVPIPE_RESUME,
-+};
-+
- struct hvpipe_source_info {
- 	struct list_head list;	/* list of sources */
- 	u32 srcID;
-@@ -33,4 +38,5 @@ struct hvpipe_event_buf {
- 				/* with specified src ID */
- };
- 
-+void hvpipe_migration_handler(int action);
- #endif /* _PAPR_HVPIPE_H */
--- 
-2.43.5
+	Byungchul
 
+>  static void cmm_balloon_compaction_init(void)
+> diff --git a/drivers/misc/vmw_balloon.c b/drivers/misc/vmw_balloon.c
+> index 6653fc53c951c..6df51ee8db621 100644
+> --- a/drivers/misc/vmw_balloon.c
+> +++ b/drivers/misc/vmw_balloon.c
+> @@ -1806,7 +1806,7 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
+>                  * the list after acquiring the lock.
+>                  */
+>                 get_page(newpage);
+> -               ret = MIGRATEPAGE_SUCCESS;
+> +               ret = 0;
+>         }
+> 
+>         /* Update the balloon list under the @pages_lock */
+> @@ -1817,7 +1817,7 @@ static int vmballoon_migratepage(struct balloon_dev_info *b_dev_info,
+>          * If we succeed just insert it to the list and update the statistics
+>          * under the lock.
+>          */
+> -       if (ret == MIGRATEPAGE_SUCCESS) {
+> +       if (!ret) {
+>                 balloon_page_insert(&b->b_dev_info, newpage);
+>                 __count_vm_event(BALLOON_MIGRATE);
+>         }
+> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
+> index e299e18346a30..eae65136cdfb5 100644
+> --- a/drivers/virtio/virtio_balloon.c
+> +++ b/drivers/virtio/virtio_balloon.c
+> @@ -875,7 +875,7 @@ static int virtballoon_migratepage(struct balloon_dev_info *vb_dev_info,
+>         balloon_page_finalize(page);
+>         put_page(page); /* balloon reference */
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+>  #endif /* CONFIG_BALLOON_COMPACTION */
+> 
+> diff --git a/fs/aio.c b/fs/aio.c
+> index 7fc7b6221312c..059e03cfa088c 100644
+> --- a/fs/aio.c
+> +++ b/fs/aio.c
+> @@ -445,7 +445,7 @@ static int aio_migrate_folio(struct address_space *mapping, struct folio *dst,
+>         folio_get(dst);
+> 
+>         rc = folio_migrate_mapping(mapping, dst, src, 1);
+> -       if (rc != MIGRATEPAGE_SUCCESS) {
+> +       if (rc) {
+>                 folio_put(dst);
+>                 goto out_unlock;
+>         }
+> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+> index b77dd22b8cdbe..1d64fee6f59e6 100644
+> --- a/fs/btrfs/inode.c
+> +++ b/fs/btrfs/inode.c
+> @@ -7411,7 +7411,7 @@ static int btrfs_migrate_folio(struct address_space *mapping,
+>  {
+>         int ret = filemap_migrate_folio(mapping, dst, src, mode);
+> 
+> -       if (ret != MIGRATEPAGE_SUCCESS)
+> +       if (ret)
+>                 return ret;
+> 
+>         if (folio_test_ordered(src)) {
+> @@ -7419,7 +7419,7 @@ static int btrfs_migrate_folio(struct address_space *mapping,
+>                 folio_set_ordered(dst);
+>         }
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+>  #else
+>  #define btrfs_migrate_folio NULL
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 09d4baef29cf9..34d496a2b7de6 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -1052,7 +1052,7 @@ static int hugetlbfs_migrate_folio(struct address_space *mapping,
+>         int rc;
+> 
+>         rc = migrate_huge_page_move_mapping(mapping, dst, src);
+> -       if (rc != MIGRATEPAGE_SUCCESS)
+> +       if (rc)
+>                 return rc;
+> 
+>         if (hugetlb_folio_subpool(src)) {
+> @@ -1063,7 +1063,7 @@ static int hugetlbfs_migrate_folio(struct address_space *mapping,
+> 
+>         folio_migrate_flags(dst, src);
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+>  #else
+>  #define hugetlbfs_migrate_folio NULL
+> diff --git a/fs/jfs/jfs_metapage.c b/fs/jfs/jfs_metapage.c
+> index b98cf3bb6c1fe..871cf4fb36366 100644
+> --- a/fs/jfs/jfs_metapage.c
+> +++ b/fs/jfs/jfs_metapage.c
+> @@ -169,7 +169,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+>         }
+> 
+>         rc = filemap_migrate_folio(mapping, dst, src, mode);
+> -       if (rc != MIGRATEPAGE_SUCCESS)
+> +       if (rc)
+>                 return rc;
+> 
+>         for (i = 0; i < MPS_PER_PAGE; i++) {
+> @@ -199,7 +199,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+>                 }
+>         }
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+>  #endif /* CONFIG_MIGRATION */
+> 
+> @@ -242,7 +242,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+>                 return -EAGAIN;
+> 
+>         rc = filemap_migrate_folio(mapping, dst, src, mode);
+> -       if (rc != MIGRATEPAGE_SUCCESS)
+> +       if (rc)
+>                 return rc;
+> 
+>         if (unlikely(insert_metapage(dst, mp)))
+> @@ -253,7 +253,7 @@ static int __metapage_migrate_folio(struct address_space *mapping,
+>         mp->folio = dst;
+>         remove_metapage(src, mp);
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+>  #endif /* CONFIG_MIGRATION */
+> 
+> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+> index 40f2b5a37efbb..02f11704fb686 100644
+> --- a/include/linux/migrate.h
+> +++ b/include/linux/migrate.h
+> @@ -12,13 +12,6 @@ typedef void free_folio_t(struct folio *folio, unsigned long private);
+> 
+>  struct migration_target_control;
+> 
+> -/*
+> - * Return values from addresss_space_operations.migratepage():
+> - * - negative errno on page migration failure;
+> - * - zero on page migration success;
+> - */
+> -#define MIGRATEPAGE_SUCCESS            0
+> -
+>  /**
+>   * struct movable_operations - Driver page migration
+>   * @isolate_page:
+> @@ -34,8 +27,7 @@ struct migration_target_control;
+>   * @src page.  The driver should copy the contents of the
+>   * @src page to the @dst page and set up the fields of @dst page.
+>   * Both pages are locked.
+> - * If page migration is successful, the driver should
+> - * return MIGRATEPAGE_SUCCESS.
+> + * If page migration is successful, the driver should return 0.
+>   * If the driver cannot migrate the page at the moment, it can return
+>   * -EAGAIN.  The VM interprets this as a temporary migration failure and
+>   * will retry it later.  Any other error value is a permanent migration
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index e9dacf1028dc7..2db4974178e6a 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -209,18 +209,17 @@ static void putback_movable_ops_page(struct page *page)
+>   * src and dst are also released by migration core. These pages will not be
+>   * folios in the future, so that must be reworked.
+>   *
+> - * Returns MIGRATEPAGE_SUCCESS on success, otherwise a negative error
+> - * code.
+> + * Returns 0 on success, otherwise a negative error code.
+>   */
+>  static int migrate_movable_ops_page(struct page *dst, struct page *src,
+>                 enum migrate_mode mode)
+>  {
+> -       int rc = MIGRATEPAGE_SUCCESS;
+> +       int rc;
+> 
+>         VM_WARN_ON_ONCE_PAGE(!page_has_movable_ops(src), src);
+>         VM_WARN_ON_ONCE_PAGE(!PageMovableOpsIsolated(src), src);
+>         rc = page_movable_ops(src)->migrate_page(dst, src, mode);
+> -       if (rc == MIGRATEPAGE_SUCCESS)
+> +       if (!rc)
+>                 ClearPageMovableOpsIsolated(src);
+>         return rc;
+>  }
+> @@ -565,7 +564,7 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+>                 if (folio_test_swapbacked(folio))
+>                         __folio_set_swapbacked(newfolio);
+> 
+> -               return MIGRATEPAGE_SUCCESS;
+> +               return 0;
+>         }
+> 
+>         oldzone = folio_zone(folio);
+> @@ -666,7 +665,7 @@ static int __folio_migrate_mapping(struct address_space *mapping,
+>         }
+>         local_irq_enable();
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+> 
+>  int folio_migrate_mapping(struct address_space *mapping,
+> @@ -715,7 +714,7 @@ int migrate_huge_page_move_mapping(struct address_space *mapping,
+> 
+>         xas_unlock_irq(&xas);
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+> 
+>  /*
+> @@ -831,14 +830,14 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
+>                 return rc;
+> 
+>         rc = __folio_migrate_mapping(mapping, dst, src, expected_count);
+> -       if (rc != MIGRATEPAGE_SUCCESS)
+> +       if (rc)
+>                 return rc;
+> 
+>         if (src_private)
+>                 folio_attach_private(dst, folio_detach_private(src));
+> 
+>         folio_migrate_flags(dst, src);
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+> 
+>  /**
+> @@ -945,7 +944,7 @@ static int __buffer_migrate_folio(struct address_space *mapping,
+>         }
+> 
+>         rc = filemap_migrate_folio(mapping, dst, src, mode);
+> -       if (rc != MIGRATEPAGE_SUCCESS)
+> +       if (rc)
+>                 goto unlock_buffers;
+> 
+>         bh = head;
+> @@ -1049,7 +1048,7 @@ static int fallback_migrate_folio(struct address_space *mapping,
+>   *
+>   * Return value:
+>   *   < 0 - error code
+> - *  MIGRATEPAGE_SUCCESS - success
+> + *     0 - success
+>   */
+>  static int move_to_new_folio(struct folio *dst, struct folio *src,
+>                                 enum migrate_mode mode)
+> @@ -1077,7 +1076,7 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
+>         else
+>                 rc = fallback_migrate_folio(mapping, dst, src, mode);
+> 
+> -       if (rc == MIGRATEPAGE_SUCCESS) {
+> +       if (!rc) {
+>                 /*
+>                  * For pagecache folios, src->mapping must be cleared before src
+>                  * is freed. Anonymous folios must stay anonymous until freed.
+> @@ -1427,7 +1426,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+>         if (folio_ref_count(src) == 1) {
+>                 /* page was freed from under us. So we are done. */
+>                 folio_putback_hugetlb(src);
+> -               return MIGRATEPAGE_SUCCESS;
+> +               return 0;
+>         }
+> 
+>         dst = get_new_folio(src, private);
+> @@ -1490,8 +1489,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+>                 rc = move_to_new_folio(dst, src, mode);
+> 
+>         if (page_was_mapped)
+> -               remove_migration_ptes(src,
+> -                       rc == MIGRATEPAGE_SUCCESS ? dst : src, 0);
+> +               remove_migration_ptes(src, !rc ? dst : src, 0);
+> 
+>  unlock_put_anon:
+>         folio_unlock(dst);
+> @@ -1500,7 +1498,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+>         if (anon_vma)
+>                 put_anon_vma(anon_vma);
+> 
+> -       if (rc == MIGRATEPAGE_SUCCESS) {
+> +       if (!rc) {
+>                 move_hugetlb_state(src, dst, reason);
+>                 put_new_folio = NULL;
+>         }
+> @@ -1508,7 +1506,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+>  out_unlock:
+>         folio_unlock(src);
+>  out:
+> -       if (rc == MIGRATEPAGE_SUCCESS)
+> +       if (!rc)
+>                 folio_putback_hugetlb(src);
+>         else if (rc != -EAGAIN)
+>                 list_move_tail(&src->lru, ret);
+> @@ -1618,7 +1616,7 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
+>                                                       reason, ret_folios);
+>                         /*
+>                          * The rules are:
+> -                        *      Success: hugetlb folio will be put back
+> +                        *      0: hugetlb folio will be put back
+>                          *      -EAGAIN: stay on the from list
+>                          *      -ENOMEM: stay on the from list
+>                          *      Other errno: put on ret_folios list
+> @@ -1635,7 +1633,7 @@ static int migrate_hugetlbs(struct list_head *from, new_folio_t get_new_folio,
+>                                 retry++;
+>                                 nr_retry_pages += nr_pages;
+>                                 break;
+> -                       case MIGRATEPAGE_SUCCESS:
+> +                       case 0:
+>                                 stats->nr_succeeded += nr_pages;
+>                                 break;
+>                         default:
+> @@ -1689,7 +1687,7 @@ static void migrate_folios_move(struct list_head *src_folios,
+>                                 reason, ret_folios);
+>                 /*
+>                  * The rules are:
+> -                *      Success: folio will be freed
+> +                *      0: folio will be freed
+>                  *      -EAGAIN: stay on the unmap_folios list
+>                  *      Other errno: put on ret_folios list
+>                  */
+> @@ -1699,7 +1697,7 @@ static void migrate_folios_move(struct list_head *src_folios,
+>                         *thp_retry += is_thp;
+>                         *nr_retry_pages += nr_pages;
+>                         break;
+> -               case MIGRATEPAGE_SUCCESS:
+> +               case 0:
+>                         stats->nr_succeeded += nr_pages;
+>                         stats->nr_thp_succeeded += is_thp;
+>                         break;
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index e05e14d6eacdb..abd9f6850db65 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -778,7 +778,7 @@ static void __migrate_device_pages(unsigned long *src_pfns,
+>                 if (migrate && migrate->fault_page == page)
+>                         extra_cnt = 1;
+>                 r = folio_migrate_mapping(mapping, newfolio, folio, extra_cnt);
+> -               if (r != MIGRATEPAGE_SUCCESS)
+> +               if (r)
+>                         src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
+>                 else
+>                         folio_migrate_flags(newfolio, folio);
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 2c5e56a653544..84eb91d47a226 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -1746,7 +1746,7 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
+>          * instead.
+>          */
+>         if (!zpdesc->zspage)
+> -               return MIGRATEPAGE_SUCCESS;
+> +               return 0;
+> 
+>         /* The page is locked, so this pointer must remain valid */
+>         zspage = get_zspage(zpdesc);
+> @@ -1813,7 +1813,7 @@ static int zs_page_migrate(struct page *newpage, struct page *page,
+>         reset_zpdesc(zpdesc);
+>         zpdesc_put(zpdesc);
+> 
+> -       return MIGRATEPAGE_SUCCESS;
+> +       return 0;
+>  }
+> 
+>  static void zs_page_putback(struct page *page)
+> --
+> 2.50.1
+> 
 
