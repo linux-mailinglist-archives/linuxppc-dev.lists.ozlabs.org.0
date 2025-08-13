@@ -1,51 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-10905-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10906-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882A7B23FFE
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Aug 2025 07:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87365B24023
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Aug 2025 07:21:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c1xD21Hfvz30Sy;
-	Wed, 13 Aug 2025 15:06:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c1xZ30vqqz30Sy;
+	Wed, 13 Aug 2025 15:21:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::aa"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755061570;
-	cv=none; b=N0Bwrr3MJqJBOUJOHG8o/AeuhpjMGUdlEqDtTuBn+MKddh/mkjB67Nxo1y8OiFj8yE22dNYs9rTQsUsouztiw1riXbtWY0SzFqaM8pV4H6aFsxe1JbPHenTkmCpqPCqleR664QoDOBcnjh1aLf29wVQYDOxp3L7ETCtOLfD9QSsI5NABX3AtBM1B+CbcLK5PHLHoeOCp2YwX5GYsDZ2mrRX9+u0zxsDaA33aYtoQhGtSYC/aErgFYDEZeOGc0y3Qqa8UCWxW0JSwdfpArYGhiViMl9+BSw4Bce3RCGPrYk94C20iI0HYTQkHLha7NhbR89QX+5w0exJaX8Y0H7fZBQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=83.223.95.204
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755062507;
+	cv=none; b=KMjyOdpME+VdDo7pRIWHFNcG+/5kEMHPND92HTexu8C/0rU/SnBoOYsM/c/EnKMzPvw6QnDFYUfdJTBMV76ZS3AmeWNThZ+w7cFss+7cAuWOpAam0mwirMGqkGCUAnBgqc4alfjowJOiQg1QcW6aNidZyB8sAbr5e8x+juUv8uy7+pcYyZfx1sMuqnwuM/kh6KjMlN5elciqVL+IgsOGoCI/Img5ksoXyq6o+7WnSlut8cXhtU2zFJppJPTNH4mJPsa9Gt1tYiRjMhOXZmrwqK/cA5gQxhKSesJ1mdrpIhgMmamwgll8ZSRBq0RkYtU5gqpgUvq6Vaktr2PECY9Mzg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755061570; c=relaxed/relaxed;
-	bh=87bLiKw1h579sXw+ErVi2X85NzXrARI80WO5rF5C6xU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kr/iTK5FtcjLOnuLT6u+a6gHr4VBBra7yPvo6cwQwXP5+XJC/bnVkP1cCiOm6JQEaZMMy9n0z3FXS6l+8r4eV9WrKGeXt+znAQq0Jm7Zgsll3AvccNHq6wiaTZUGtcHAPZoyoTJzLGwpbt4qRR7tlrw/Hwslm+OpsQkYlbyWgJEzWj2J56UV1X30RDaupNVdFWu3lgIQMTqxcaGPr45hW+v98iVs9Poi9dIQBIMmUEk1JM+ECF3TLTezLR+7Sb/LczPkQPTxGMRwXcCu30V7mrivczXL0PFsjOs7hgkH19oNOBVhTsmtH9JE3fIRe5341gnS8T9xmDKlU5jCBg4wzw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=msRgUr3o; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::aa; helo=out-170.mta1.migadu.com; envelope-from=lance.yang@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=msRgUr3o;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::aa; helo=out-170.mta1.migadu.com; envelope-from=lance.yang@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [IPv6:2001:41d0:203:375::aa])
+	t=1755062507; c=relaxed/relaxed;
+	bh=STLNBxPM7JpJgkStp4f+zUu17SoO+OJ7jkxquWVqNfw=;
+	h=Message-ID:From:Date:Subject:To:Cc; b=Rf2VpZdhszFYrqXIvFqLFwVhMg6UEvLsF680hKahEVGAgvQrpOIzQ3TfPj4RmlK2se4U9TNj4DLCPkNbh6GGlKa5DCc9mD05gszt7QezrujmvYplok5J0q/uCwTrAEdFpOOqcmk2CWroHxddE6c7ump8XYUy1RwUDy2R1bhHqcG8yU1gOfI0ks4Dj1Kb7AIgKU3ds3iNTV5Ap7u2WBQcGWbRPqoYuuby06ZyzYNmUPFqFoIBMTlaEV8dET6aAgS3XaPujH8cuhPw2zpm5VqeBjRTevhVaw0v1ng6WGQxBomboKA9BVNuPCCr2wRr7AVKR55RuFFc8+Pbs+ZQsh2iGg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=83.223.95.204; helo=mailout1.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org) smtp.mailfrom=wunner.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wunner.de (client-ip=83.223.95.204; helo=mailout1.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 599 seconds by postgrey-1.37 at boromir; Wed, 13 Aug 2025 15:21:46 AEST
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c1xCv6J0bz30Qk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 15:06:02 +1000 (AEST)
-X-Forwarded-Encrypted: i=1; AJvYcCXi7UJBKfczXFQ9CfgQb4jKkoLvZAq4GdDkjPG49KBW/D3qqjF6OTIxjgmdsu8Mo0MIPxe7Vi6aZmPyb2g=@lists.ozlabs.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1755061540;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=87bLiKw1h579sXw+ErVi2X85NzXrARI80WO5rF5C6xU=;
-	b=msRgUr3ogeYMlMRWj/qJIXsKl/dUZhk/z1d/S1E5lS+oPhdBdtzlTAO0tkgFQ7OU19t+bB
-	9EUA/u+9Yom7niRvLR7Nq23sti926ShFf/KLGWf8N96K292943gdMLLHoEZ2+5yPg46+vf
-	k2Pkv6pLzyk+pwTyiVWG0SvudTJoC6Q=
-X-Gm-Message-State: AOJu0Yysjw1WjXyV6VrclTuwhMqrNhiYD6+2Ins9h7uvhaGpbnhL4vCm
-	QHELYkl1ThGJ97BW54ZseEMg1ir6B8wY6tdpN2rvs8fDEphzFto1ap+CcWqwz6M3PrTcfBm08FV
-	c5x7WBRe7QoX5U2OcZOL3AtvMut0HB+I=
-X-Google-Smtp-Source: AGHT+IGZEPRXKg3wTS4iOnxLeW0VcVJpSHw/Siwyoa1WzS8WxyYOyRd8JzJTNVHXWXH3rQ3YpjAcT1JHiZ4LgeKLzSs=
-X-Received: by 2002:a05:6214:246e:b0:709:31f8:fd96 with SMTP id
- 6a1803df08f44-709e8865a26mr19274996d6.20.1755061536500; Tue, 12 Aug 2025
- 22:05:36 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4c1xZ20T94z2xxr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 15:21:46 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by mailout1.hostsharing.net (Postfix) with UTF8SMTPS id 726BB18C48;
+	Wed, 13 Aug 2025 07:11:36 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by h08.hostsharing.net (Postfix) with UTF8SMTPSA id 3B6E06000EA5;
+	Wed, 13 Aug 2025 07:11:36 +0200 (CEST)
+X-Mailbox-Line: From 1d72a891a7f57115e78a73046e776f7e0c8cd68f Mon Sep 17 00:00:00 2001
+Message-ID: <cover.1755008151.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Wed, 13 Aug 2025 07:11:00 +0200
+Subject: [PATCH 0/5] PCI: Reduce AER / EEH deviations
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Riana Tauro <riana.tauro@intel.com>,
+	Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>,
+	"Sean C. Dardis" <sean.c.dardis@intel.com>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Linas Vepstas <linasvepstas@gmail.com>,
+	"Mahesh J Salgaonkar" <mahesh@linux.ibm.com>,
+	"Oliver OHalloran" <oohall@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+	Shahed Shaikh <shshaikh@marvell.com>,
+	Manish Chopra <manishc@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
+	Nilesh Javali <njavali@marvell.com>,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	Edward Cree <ecree.xilinx@gmail.com>, linux-net-drivers@amd.com,
+	James Smart <james.smart@broadcom.com>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>, linux-scsi@vg,
+	er.kernel.org@lists.ozlabs.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+X-Spam-Status: No, score=-0.7 required=3.0 tests=RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,126 +84,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20250811143949.1117439-1-david@redhat.com> <20250811143949.1117439-2-david@redhat.com>
-In-Reply-To: <20250811143949.1117439-2-david@redhat.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-Date: Wed, 13 Aug 2025 13:05:22 +0800
-X-Gmail-Original-Message-ID: <CABzRoyYU2yOuGQskCAG_gzKiQwR6uM9eAYqOOCoQj+Xv=r163A@mail.gmail.com>
-X-Gm-Features: Ac12FXz5RRcASyIjWC2h4OdZEnpLc7e6olfF88c8Jo2nErMh7OQ3VSRS5jfjM-I
-Message-ID: <CABzRoyYU2yOuGQskCAG_gzKiQwR6uM9eAYqOOCoQj+Xv=r163A@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] mm/migrate: remove MIGRATEPAGE_UNMAP
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux.dev, 
-	linux-fsdevel@vger.kernel.org, linux-aio@kvack.org, 
-	linux-btrfs@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Benjamin LaHaise <bcrl@kvack.org>, Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
-	David Sterba <dsterba@suse.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Dave Kleikamp <shaggy@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Aug 11, 2025 at 10:47=E2=80=AFPM David Hildenbrand <david@redhat.co=
-m> wrote:
->
-[...]
-> +++ b/mm/migrate.c
-> @@ -1176,16 +1176,6 @@ static int migrate_folio_unmap(new_folio_t get_new=
-_folio,
->         bool locked =3D false;
->         bool dst_locked =3D false;
->
-> -       if (folio_ref_count(src) =3D=3D 1) {
-> -               /* Folio was freed from under us. So we are done. */
-> -               folio_clear_active(src);
-> -               folio_clear_unevictable(src);
-> -               /* free_pages_prepare() will clear PG_isolated. */
-> -               list_del(&src->lru);
-> -               migrate_folio_done(src, reason);
-> -               return MIGRATEPAGE_SUCCESS;
-> -       }
-> -
->         dst =3D get_new_folio(src, private);
->         if (!dst)
->                 return -ENOMEM;
-> @@ -1275,7 +1265,7 @@ static int migrate_folio_unmap(new_folio_t get_new_=
-folio,
->
->         if (unlikely(page_has_movable_ops(&src->page))) {
->                 __migrate_folio_record(dst, old_page_state, anon_vma);
-> -               return MIGRATEPAGE_UNMAP;
-> +               return 0;
->         }
->
->         /*
-> @@ -1305,7 +1295,7 @@ static int migrate_folio_unmap(new_folio_t get_new_=
-folio,
->
->         if (!folio_mapped(src)) {
->                 __migrate_folio_record(dst, old_page_state, anon_vma);
-> -               return MIGRATEPAGE_UNMAP;
-> +               return 0;
->         }
->
->  out:
-> @@ -1848,14 +1838,28 @@ static int migrate_pages_batch(struct list_head *=
-from,
->                                 continue;
->                         }
->
-> +                       /*
-> +                        * If we are holding the last folio reference, th=
-e folio
-> +                        * was freed from under us, so just drop our refe=
-rence.
-> +                        */
-> +                       if (likely(!page_has_movable_ops(&folio->page)) &=
-&
-> +                           folio_ref_count(folio) =3D=3D 1) {
-> +                               folio_clear_active(folio);
-> +                               folio_clear_unevictable(folio);
-> +                               list_del(&folio->lru);
-> +                               migrate_folio_done(folio, reason);
-> +                               stats->nr_succeeded +=3D nr_pages;
-> +                               stats->nr_thp_succeeded +=3D is_thp;
-> +                               continue;
-> +                       }
-> +
+The kernel supports three different PCI error recovery mechanisms:
 
-It seems the reason parameter is no longer used within migrate_folio_unmap(=
-)
-after this patch.
+* AER per PCIe r7.0 sec 6.2 (drivers/pci/pcie/aer.c + err.c)
+* EEH on PowerPC (arch/powerpc/kernel/eeh_driver.c)
+* zPCI on s390 (arch/s390/pci/pci_event.c)
 
-Perhaps it could be removed from the function's signature ;)
+In theory, they should all follow Documentation/PCI/pci-error-recovery.rst
+to afford uniform behavior to drivers across platforms.
 
->                         rc =3D migrate_folio_unmap(get_new_folio, put_new=
-_folio,
->                                         private, folio, &dst, mode, reaso=
-n,
->                                         ret_folios);
+In practice, there are deviations which this series seeks to reduce.
 
-Anyway, just a small thought. Feel free to add:
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+One particular pain point is AER not allowing drivers to opt in to a
+Bus Reset on Non-Fatal Errors (patch [1/5]).  EEH allows this and the
+"xe" graphics driver would like to take advantage of it on AER-capable
+platforms.  Patches [2/5] to [4/5] address various other deviations,
+while patch [5/5] cleans up old gunk in code comments.
 
-Thanks,
-Lance
+I've gone through all drivers implementing pci_error_handlers to ascertain
+that no regressions are introduced by these changes.  Nevertheless further
+reviewing and testing would be appreciated to raise the confidence.
+Thanks!
+
+Lukas Wunner (5):
+  PCI/AER: Allow drivers to opt in to Bus Reset on Non-Fatal Errors
+  PCI/ERR: Fix uevent on failure to recover
+  PCI/ERR: Notify drivers on failure to recover
+  PCI/ERR: Update device error_state already after reset
+  PCI/ERR: Remove remnants of .link_reset() callback
+
+ .../ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c   |  1 -
+ .../net/ethernet/qlogic/qlcnic/qlcnic_main.c  |  2 -
+ drivers/net/ethernet/sfc/efx_common.c         |  3 --
+ drivers/net/ethernet/sfc/falcon/efx.c         |  3 --
+ drivers/net/ethernet/sfc/siena/efx_common.c   |  3 --
+ drivers/pci/pcie/err.c                        | 40 ++++++++++++++-----
+ drivers/scsi/lpfc/lpfc_init.c                 |  2 +-
+ drivers/scsi/qla2xxx/qla_os.c                 |  5 ---
+ 8 files changed, 32 insertions(+), 27 deletions(-)
+
+-- 
+2.47.2
+
 
