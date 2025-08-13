@@ -1,91 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-10927-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10930-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42ACB243F0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Aug 2025 10:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 480E6B24709
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 Aug 2025 12:20:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c21RL28LVz30Vf;
-	Wed, 13 Aug 2025 18:16:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c249x2pqkz30T9;
+	Wed, 13 Aug 2025 20:19:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755072974;
-	cv=none; b=H82y+gqFVP9jRe85mUOoXnHiBK3QI6A+8y9oQbYfnlSO68s7I/zIs7pZcuQKEx3hjMZ59Wb2Dg6tZ6BQkqgcgXFRgkZknTqdy8/06bej3MOByJMBtoNqeem8UoTbnUHDIU/uXA3ok7HLbD/vz4C39BctfnEHoWeWpehWdPOoTeoKAI3+LstULA/Yonx/y54mVElZ1U7jxRLoXIO7WUbIAvfej2jKpD7mpNewVZ2gbZLBpDNQMUVDuVAKLGxZpkmE9LuZ9FfjghDnqykmKKTEkkPu2aUUb5JD4FF7vove1o6eXlZmKU6Itg0pRy+ouJdXUsUDKZVwzFJdfP68wbMWcQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8:216:3eff:fe9d:e7b4"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755080389;
+	cv=none; b=CsQaet7SDRzQAVi99Xhh1ER5j9OqZHBllqEXBO3C5Xiqi5neoRaRQ5WTfblPhcEGfQPqkEvKot4Rg0pWFLFCehudl4kxIqpxPhwVWuD2c1LsUuGEBVKXkWopJGuZtqFoQnGOA3a6N53+0RQytWIJpl4ZSTYFltYF9bJRJaouYNOJAXQssY8Em2wUcY0qB01PhmxlcUt/lY7mAF6SsC1k8ycug3xSXUXV7/n3TUINayFwaFDeyJbNEFXtLB4fPYfTJMeh2Kcwqc+FkEM+u9ZcslVRg9Jbi6cTdXvDVOM1T2iZAlXbpYIKeCmqk47J05JNoBMaOCGAkW5UST4a9qp4qw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755072974; c=relaxed/relaxed;
-	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V52STy18oc7zcqlV3FPFXizkEAc5eiVIeRKHnMNwS7kD8udXs2y7GUcQ/uU/Lxs7VqHNqMgTgeulDlWh2JwLL0MXKWl/y9J6FRy+1Ha8zJTF8dCIu2I8paU7dP6XIu25j5tBqeacdDheBCbA/TOKsTB5TcYpxC8GhtYDinu+wxHTW5sqyCQ7naq+hyvz/GRQynHPs9B3W84Gee+q0t1d5u3E3m97qzKVxS75W/ydcSpniliGGproUczYnrBvCBhTmTLvqqdMpigPWO4gCL0cyWpkevxLISh9FfTeQjnrHEksEcsEt+2QwvoCR8SplkDsxzbXLwFvd5wZKjnsDFPdnw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=t3ZaanvF; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=E1zvWv48; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1755080389; c=relaxed/relaxed;
+	bh=rTWVOZqjyFAtr/GBKcOX8Jr3xVIljMHUBUwZ1pjKP8M=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I4JuIikvtsBKXv2AcMWGO7k2I4Ev+bYkRIxthvOTlprgYSnl4KS5A5PDxomuRihDQEEYyro10r0w3m14FvXYE4c5j2PwPR7Udvhy9+u+WJnELdHEuTMaah5crJ810RgD2LdqSwijFnO6FgLcg1orODEskKramOuKzq0jTZXUTqpnqzkB3RQXk54IaL2uUha/AZ9kmVJDDa51LhZIouLsCE0ZqXeWmaZoIPI+4R9V8Jb6buwslDDvyvRjT8ftZh3TnFuLa6Qbmt0IbVPEkHxNo12Zq/IhcvPuo/GLeLv+FE+NjhwS7cydKt4jqwh03viC9+ftumEDW4jw+wG6yS6djg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=nr4SKB5o; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=t3ZaanvF;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=E1zvWv48;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=nr4SKB5o;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 95494 seconds by postgrey-1.37 at boromir; Wed, 13 Aug 2025 18:16:10 AEST
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [IPv6:2001:4b98:dc4:8:216:3eff:fe9d:e7b4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4c21RG1vXHz2yFK
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 18:16:10 +1000 (AEST)
-Date: Wed, 13 Aug 2025 10:16:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1755072965;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c249t1d5Jz2yFK
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 20:19:45 +1000 (AEST)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id 17989580712
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 10:07:03 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 01C1343A12;
+	Wed, 13 Aug 2025 10:06:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1755079613;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
-	b=t3ZaanvFJHTW1l1H2nSwoa1VFh8EVFo/BJn0UMRG7bq78PXYOpzqMO9UGefI5UiLZP7nNe
-	J1FX1/E5cqcFOVpKvUjolk1j8zY71ykS0B7X6UJ1jM73mZGhOMT+2RFDhdp4Y1WmHG3lB8
-	fhvgGlk/PFabS5Cn+w3uMjkgmqVzkQuRRvX4xJrjg/8hJ+0j7jOT/qLXJIWkp6a9jfxObj
-	LUOs4JziO5PF87uDbwzJHBzRMHIM1CkGRGPGIwWfVdP7ckTLMMlHtUDzc+O5vxoBEjlmG7
-	1skI/bKKNj/R2CTmQujVy01wAp2WhS97QfxNvozWzsRXygdxqvZz7+ZCEZyixQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1755072965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vgBW8b/WLrVQq0BHMU+zEk/Lyyfrm6a/mGbcYhX7PWw=;
-	b=E1zvWv48KJJ+SOu4RstGU/Hts0jpCLaRVEpYFntAu8DSCAbOKCuCF3vYrHswu5Uo/Nk8OK
-	GMt5eI9bpKssCIDA==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@redhat.com>, Alexandre Ghiti <alexghiti@rivosinc.com>
-Subject: Re: [PATCH v4 00/24] vdso: Reject absolute relocations during build
-Message-ID: <20250813101305-04911850-2375-4be5-9a06-ced21de3ca22@linutronix.de>
-References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
- <CANiq72nV62c8cVBzke73OH-sfLdgerDBGrLKTmT83+OQtK6PjA@mail.gmail.com>
+	bh=rTWVOZqjyFAtr/GBKcOX8Jr3xVIljMHUBUwZ1pjKP8M=;
+	b=nr4SKB5oeTBL2ooKdcDslsDShwPFgObspC7NbWZ+A6nsCiOpWgB26mmdAboLF/A5xUZ55F
+	8f5HFUEOoxZFA4aCbcxVCOZFhmPyFqno7CYBzxBV4QM+/fGm1dj7NhBYbvEpQcibMSQW0V
+	i0FToWYI8sXt862d9h8tZxf51lojpQ7B66svG/v88kCmjedkqwjRiq8l+Um6IvpzAVl/jF
+	NRrI27mDR1MkLFHitp2u6ZGtYKAtU8fXa+7x8kAS2IQ7qSRMG+fPnmHgk8d9Rmwmn8M/qp
+	+nzIILtxMnUWHfOWdeEK8JH+Y/HNc9k/cyUL8/oDnVAN611BezzfjsLyvOOH3w==
+Date: Wed, 13 Aug 2025 12:06:51 +0200
+From: Herve Codina <herve.codina@bootlin.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang
+ <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam
+ <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood
+ <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Jaroslav Kysela
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] soc: fsl: qmc: Only set completion interrupt
+ when needed
+Message-ID: <20250813120651.27dc8467@bootlin.com>
+In-Reply-To: <badb68a85910e5e6f1094ef3b01805209ac21854.1754993232.git.christophe.leroy@csgroup.eu>
+References: <cover.1754993232.git.christophe.leroy@csgroup.eu>
+ <badb68a85910e5e6f1094ef3b01805209ac21854.1754993232.git.christophe.leroy@csgroup.eu>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,38 +76,191 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72nV62c8cVBzke73OH-sfLdgerDBGrLKTmT83+OQtK6PjA@mail.gmail.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddufeejleefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfgjfhhoofggtgfgsehtkeertdertdejnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveeiffefgeeitdelleeigefhjeelueeuveekveetgeffheeltdekgeduiefggfdvnecukfhppedvrgdtudemtggstdekmeelkeeltgemkedttddtmehfugekudemleehgegvmedvudehrgemfeeluddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdtkeemleeklegtmeektddttdemfhgukedumeelheegvgemvdduhegrmeefledutddphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedugedprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhrtghpthhtohepqhhirghnghdriihhrghosehngihprdgtohhmpdhrtghpthhtohepshhhvghnghhjihhurdifrghnghesghhmrghilhdrtghomhdprhgtphhtthhop
+ egiihhusghordfnvggvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfhgvshhtvghvrghmsehgmhgrihhlrdgtohhmpdhrtghpthhtohepnhhitgholhgvohhtshhukhgrsehgmhgrihhlrdgtohhmpdhrtghpthhtoheplhhgihhrugifohhougesghhmrghilhdrtghomhdprhgtphhtthhopegsrhhoohhnihgvsehkvghrnhgvlhdrohhrgh
+X-GND-Sasl: herve.codina@bootlin.com
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 12, 2025 at 01:07:34PM +0200, Miguel Ojeda wrote:
-> On Tue, Aug 12, 2025 at 7:44 AM Thomas Weißschuh
-> <thomas.weissschuh@linutronix.de> wrote:
-> >
-> > Kbuild and Rust folks: This contains custom definitions of hostprog
-> > bindgen and rust library commands.
-> > These are currently only defined inside the subsystem directory.
-> > Let me know if they should go into scripts/Makefile.host.
+Hi Christophe,
+
+On Tue, 12 Aug 2025 12:50:55 +0200
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+
+> When no post-completion processing is expected, don't waste time
+> handling useless interrupts.
 > 
-> Glad to see more Rust host progs :)
+> Only set QMC_BD_[R/T]X_I when a completion function is passed in,
+> and perform seamless completion on submit for interruptless buffers.
 > 
-> Keeping them local may be a bit easier initially to land, I guess
-> (e.g. no docs), and then we can generalize when needed later.
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+> v2: Keep the UB flag to mark not completed buffers and seamlessly flag them as completed during next submit.
+> ---
+>  drivers/soc/fsl/qe/qmc.c | 44 ++++++++++++++++++++++++++++++----------
+>  1 file changed, 33 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/soc/fsl/qe/qmc.c b/drivers/soc/fsl/qe/qmc.c
+> index 36c0ccc06151f..8f76b9a5e385d 100644
+> --- a/drivers/soc/fsl/qe/qmc.c
+> +++ b/drivers/soc/fsl/qe/qmc.c
+> @@ -461,9 +461,16 @@ int qmc_chan_write_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
+>  
+>  	ctrl = qmc_read16(&bd->cbd_sc);
+>  	if (ctrl & (QMC_BD_TX_R | QMC_BD_TX_UB)) {
+> -		/* We are full ... */
+> -		ret = -EBUSY;
+> -		goto end;
+> +		if (!(ctrl & QMC_BD_TX_I) && bd == chan->txbd_done) {
+> +			if (ctrl & QMC_BD_TX_W)
+> +				chan->txbd_done = chan->txbds;
+> +			else
+> +				chan->txbd_done++;
+> +		} else {
+> +			/* We are full ... */
+> +			ret = -EBUSY;
+> +			goto end;
+> +		}
+>  	}
+>  
+>  	qmc_write16(&bd->cbd_datlen, length);
+> @@ -475,6 +482,10 @@ int qmc_chan_write_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
+>  
+>  	/* Activate the descriptor */
+>  	ctrl |= (QMC_BD_TX_R | QMC_BD_TX_UB);
+> +	if (complete)
+> +		ctrl |= QMC_BD_TX_I;
+> +	else
+> +		ctrl &= ~QMC_BD_TX_I;
+>  	wmb(); /* Be sure to flush the descriptor before control update */
+>  	qmc_write16(&bd->cbd_sc, ctrl);
+>  
 
-I'm happy to do the docs etc. I only wanted to avoid doing all that work,
-only for it to stay a subsystem-local solution.
+You try to purge one descriptor for which the transfer is done but you do that
+when you have no more free descriptors.
 
-Also it would be nice to have a Kconfig symbol, RUSTC_CAN_LINK or similar,
-which indicates that the rust compiler can build host programs.
+You end up with all descriptor "used". I think a better way to do that is
+to purge all "done" descriptor configured to work without interrupts until a
+descriptor with interrupt is found.
 
-> By the way, for consistency with elsewhere, probably we want
-> `HOSTRUSTLIB` -> `HOSTRUSTC L`. Though I am thinking to remove the `L`
-> anyway since eventually a lot of code will be "lib".
+What do you think about the following (draft code not compiled and not tested) ?
 
-Ack.
+/* must be called with tx_lock taken */
+static void qmc_chan_write_purge(struct qmc_chan *chan)
+{
+	cbd_t __iomem *bd;
+	u16 ctrl;
+
+	/*
+         * Purge descriptors configured to work without interrupts
+	 * (I bit == 0) those descriptors have no completion
+	 * callbacks.
+	 *
+	 * R bit  UB bit
+	 *   0       0  : The BD is free
+	 *   1       1  : The BD is in used, waiting for transfer
+	 *   0       1  : The BD is in used, waiting for completion
+	 *   1       0  : Should not append
+	 *
+	 * We purge those descriptors which are in the state "waiting for
+	 * completion" up to the first one configured to work with an interrupt.
+	 * 
+	 */
+	bd = chan->txbd_done;
+
+	ctrl = qmc_read16(&bd->cbd_sc);
+	while (!(ctrl & (QMC_BD_TX_R | QMC_BD_TX_I)) {
+		if (!(ctrl & QMC_BD_TX_UB))
+			return;
+
+		qmc_write16(&bd->cbd_sc, ctrl & ~QMC_BD_TX_UB);
+
+		if (ctrl & QMC_BD_TX_W)
+			chan->txbd_done = chan->txbds;
+		else
+			chan->txbd_done++;
+
+		bd = chan->txbd_done;
+		ctrl = qmc_read16(&bd->cbd_sc);
+	}
+}
+
+Then, qmc_chan_write_submit() calls the purge function as a first operation.
+This will look to something like the following:
+
+int qmc_chan_write_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
+			  void (*complete)(void *context), void *context)
+{
+	struct qmc_xfer_desc *xfer_desc;
+	unsigned long flags;
+	cbd_t __iomem *bd;
+	u16 ctrl;
+	int ret;
+
+	/*
+	 * R bit  UB bit
+	 *   0       0  : The BD is free
+	 *   1       1  : The BD is in used, waiting for transfer
+	 *   0       1  : The BD is in used, waiting for completion
+	 *   1       0  : Should not append
+	 */
+
+	spin_lock_irqsave(&chan->tx_lock, flags);
+
+	qmc_chan_write_purge(chan);
+
+	bd = chan->txbd_free;
+	...
+
+	if (complete)
+		ctrl |= QMC_BD_TX_I;
+	else
+		ctrl &= ~QMC_BD_TX_I;
+	...
+}
+
+
+> @@ -569,9 +580,16 @@ int qmc_chan_read_submit(struct qmc_chan *chan, dma_addr_t addr, size_t length,
+> 
+...
+
+Exact same comment and proposal for read part.
+
+>  
+> @@ -1482,19 +1504,19 @@ static int qmc_setup_chan(struct qmc *qmc, struct qmc_chan *chan)
+>  
+>  	/* Init Rx BDs and set Wrap bit on last descriptor */
+>  	BUILD_BUG_ON(QMC_NB_RXBDS == 0);
+> -	val = QMC_BD_RX_I;
+>  	for (i = 0; i < QMC_NB_RXBDS; i++) {
+>  		bd = chan->rxbds + i;
+> -		qmc_write16(&bd->cbd_sc, val);
+> +		qmc_write16(&bd->cbd_sc, 0);
+>  	}
+>  	bd = chan->rxbds + QMC_NB_RXBDS - 1;
+> -	qmc_write16(&bd->cbd_sc, val | QMC_BD_RX_W);
+> +	qmc_write16(&bd->cbd_sc, QMC_BD_RX_W);
+>  
+>  	/* Init Tx BDs and set Wrap bit on last descriptor */
+>  	BUILD_BUG_ON(QMC_NB_TXBDS == 0);
+> -	val = QMC_BD_TX_I;
+>  	if (chan->mode == QMC_HDLC)
+> -		val |= QMC_BD_TX_L | QMC_BD_TX_TC;
+> +		val = QMC_BD_TX_L | QMC_BD_TX_TC;
+> +	else
+> +		val = 0;
+>  	for (i = 0; i < QMC_NB_TXBDS; i++) {
+>  		bd = chan->txbds + i;
+>  		qmc_write16(&bd->cbd_sc, val);
+
+Ok for modifications in qmc_setup_chan().
+
+Best regards,
+Hervé
 
