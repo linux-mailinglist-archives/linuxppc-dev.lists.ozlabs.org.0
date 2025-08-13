@@ -1,64 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-10962-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10963-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27109B25726
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 01:01:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E2EB25731
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 01:05:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c2P5F6ntcz30Vs;
-	Thu, 14 Aug 2025 09:01:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c2P946QYQz30TM;
+	Thu, 14 Aug 2025 09:05:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755126113;
-	cv=none; b=nfmmRmpJ9vy3Ueq+oUCtG12TewSI63viCxc3vpo5brZMkTl0P9bhYEiR0guiidnWHukeAhgUgGGtKQ5ISMbKFY4ijdHADLXPWs05CNPewMZUbkvhLlcDf/t/h60wOrS6G6MJKFENBLycqLa/y1kBbikWjV7MgBkNrHhKphq9FApkGwB9dHj3wgffySNbDrTa2+t2Y0GqhuGV/gyw5DsusWi6JzijeOMOUpjO2Kd6Ee4hUKTa0Oej8KFfRN5uAjiHkCUUzbfMTTPK4BQy6WuFXiiEsY2tYgr2aADjAftgi8tkN7cwArYcDhSZ+H3IqoN2P919LmFjFJQVMtfLFlp4nA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755126312;
+	cv=none; b=IJ8+JS2PGPZSJ09jjNc2Csm/ByC9CjGWUQ/FuU4nymqRQ5iJ1cf4Jb5Rkz4ILSVh6sfLCVfMczABV4BkYjcxfe4VByb3XClreQxE+LcPLBguVucd/fYMdA52nI+KZlzDn+0LYWk8q9EO+XHnmiMRCtX54I15rpracxlgo8YTkn67/1Mv3Vlu/f3nmZeM3RW71XSH2eYmBXVeh1Z1Ap/dbg5BgKBM6z8EepXf3GnqBHS5ibkzyrN5XPrM09OV4M4UdDon8rz1ZsrBfgjhXk679qRnYhVclBb4bZY9zWdGQWBqIfPM5zFXMX8QoET29O6MzWLXY9Ax0w3s5edMtr61wQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755126113; c=relaxed/relaxed;
-	bh=l/3UtxYLRWFM02FG5PW7HRn6UPr+bI2M5olz2uI3wYA=;
+	t=1755126312; c=relaxed/relaxed;
+	bh=l2aiI2FtHlT7+UCVea/z2cYgVNmMSL2oEEAjyg0RsP4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hyP5vYlfUDduibT1ygLUOD5t1DlEf1qoEv5txLBXWtW2f0/lwk3IB/LItNdLZkx8TMIKFAcheV+9nKLFQK367ULQfBHF/Mn6Ounrsw4w2BgNUoNC7Z6y3aTmtCkGg536l2JY7XB8TxbfSMm4o7x9fb1t/3HooTHW/An1znmuKI6jGUvfbcbYOi1kskJzMSpzVxmDzSESw8kCz6cF0d9iuvhayUOt8/1FuE6WglZAhvsACDACkxF7o5yi7Siom8OpxIMEbNdZdCbk8TOWvHbiES80MKG95Wvws2OCqVzd1u+GrlZkPBqsbJ53wc9M2bdcairxqeY/ELuWa7+X//Ntjw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VIo+YGHb; dkim-atps=neutral; spf=none (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=gngo+N1WEbmaFYvfxuudPPRCKWvN5EoPxJf/sIycZap+Arnk84sdRc4JOnUdjcC7nsIWUHG2yzJy/jjWyILVXuXkul61J9h/nZ915MdlCY9gudkgxYBmVyWFMwWs3j//oSbLoViEHvWvAE1ufTMd5VHjXoEdoCcCZmO4ofTo2sTpRxTdEGYQjeBBroqQgith6s9akcaLvpWp2gSSIM2TROs51MlatJVFRtA23SrCyPq3MSN5yT8xw8YGWUiW+Nxq7BWZ33dgX1mXRVSjCV6NYQAXTXWVuipjvjmtNYsZjm7mVZ1RoN0arHql9nq1bdZfQl/FGTLX+BJKOcYLp+jidw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Iy4jnt1h; dkim-atps=neutral; spf=none (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VIo+YGHb;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Iy4jnt1h;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2P5D6sz8z30Vr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 09:01:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2P9400b1z30Sy
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 09:05:11 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755126113; x=1786662113;
+  t=1755126312; x=1786662312;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=W2L9yzRV2c5O9B7IEtrjF8WUFbxs5s8QKfHx3/oiOIQ=;
-  b=VIo+YGHbMtdDRbuJ54NUAoXXtILlcY2vrMu5s1sQ++zHhaik2o3nb4Ym
-   fosW+HzkwQWixxZukbHgpt87wUi4GWBeDoVHeImAFeYA34eRM+skCxlkX
-   y6BTs7ULL2ipLJD8m3e+Ct0TSHTyaaDWaJdMvc6yN79wQJij3tP1SLF6Q
-   M7O3U62vzgD9/TrrFZF+4XdpF4QfWEr7mygHWXPV4UDN0By7AMTyLWY86
-   3PFjbZGEARM1RpXd8K/ffDO48bIFXYCvzaltGAS5wPVkzeMWgLya3K1VY
-   3SAxN/noeL6qW+8jB7HDDZAVwwzJDlchlWXpzO1S0y2EKa/6fHu5VXbvf
-   w==;
-X-CSE-ConnectionGUID: 37kmdqnsTM66KhGVdSP+IQ==
-X-CSE-MsgGUID: /7oZ3qFcR9mPW9tcaV85Bg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57304153"
+  bh=af2+KlDj0FItWaW81qBzp26/u+4WmaVEH6tIL/ZZkSo=;
+  b=Iy4jnt1hS4RNk06PMi2zrrTpz1c/wLRLddW6ZqronWDXa9XmTO8cb5EV
+   /5btAqP4IFg99YWAH6fBpcU827aVkIELCG+LQ2Fi9hyRyGA/rfj8Ip3DP
+   gTCfipEiVoceVNFPWKAaCmLZEN/I0RUWf/nPsLBCNdGc9kXxOcRNSZ5qO
+   g3I8ajAqGPG74Pg+1zyo7hDReozSKMlUQmAC8qtG/LDtXns85g2a1Jzqz
+   fMcj2s73+g4ytVZ33WEQmtxFY6NaSWTX+mBhsVDZmEazJtbIDJckh1tIF
+   5K2zezQAUo9Ni4b09CcDhbO8hG6d4kICcTYOn6ep3lNCoI0TbFlgw0AJX
+   g==;
+X-CSE-ConnectionGUID: qdHrRAgoSMCEnjYNP0njwQ==
+X-CSE-MsgGUID: wW/R7LKESymSinBMtLwffg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57515387"
 X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="57304153"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 16:01:51 -0700
-X-CSE-ConnectionGUID: sl5NCfc+T2iQoqPkdGLMHQ==
-X-CSE-MsgGUID: vjLDRcRHTk2RnazkJtkl1Q==
+   d="scan'208";a="57515387"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 16:05:07 -0700
+X-CSE-ConnectionGUID: CTU1+4FHTLihCfthokJ0jg==
+X-CSE-MsgGUID: LFytUysMRLCmbqBI/wZ6JQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="166245339"
+   d="scan'208";a="170736148"
 Received: from linux.intel.com ([10.54.29.200])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 16:01:50 -0700
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 16:05:06 -0700
 Received: from [10.124.222.231] (unknown [10.124.222.231])
-	by linux.intel.com (Postfix) with ESMTP id EE6C020B571C;
-	Wed, 13 Aug 2025 16:01:48 -0700 (PDT)
-Message-ID: <f0b59604-ae4d-4afe-8522-a8fbe5568e96@linux.intel.com>
-Date: Wed, 13 Aug 2025 16:01:43 -0700
+	by linux.intel.com (Postfix) with ESMTP id B97FC20B5720;
+	Wed, 13 Aug 2025 16:05:05 -0700 (PDT)
+Message-ID: <fa9f42ab-bced-4c7f-9977-c0b611e92e2e@linux.intel.com>
+Date: Wed, 13 Aug 2025 16:05:00 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,7 +73,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] PCI/ERR: Fix uevent on failure to recover
+Subject: Re: [PATCH 3/5] PCI/ERR: Notify drivers on failure to recover
 To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>
 Cc: Riana Tauro <riana.tauro@intel.com>,
  Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>,
@@ -85,10 +85,10 @@ Cc: Riana Tauro <riana.tauro@intel.com>,
  Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
  linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
 References: <cover.1755008151.git.lukas@wunner.de>
- <68fc527a380821b5d861dd554d2ce42cb739591c.1755008151.git.lukas@wunner.de>
+ <ec212d4d4f5c65d29349df33acdc9768ff8279d1.1755008151.git.lukas@wunner.de>
 Content-Language: en-US
 From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <68fc527a380821b5d861dd554d2ce42cb739591c.1755008151.git.lukas@wunner.de>
+In-Reply-To: <ec212d4d4f5c65d29349df33acdc9768ff8279d1.1755008151.git.lukas@wunner.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-5.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -98,57 +98,64 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 On 8/12/25 10:11 PM, Lukas Wunner wrote:
-> Upon failure to recover from a PCIe error through AER, DPC or EDR, a
-> uevent is sent to inform user space about disconnection of the bridge
-> whose subordinate devices failed to recover.
+> According to Documentation/PCI/pci-error-recovery.rst, the following shall
+> occur on failure to recover from a PCIe Uncorrectable Error:
 >
-> However the bridge itself is not disconnected.  Instead, a uevent should
-> be sent for each of the subordinate devices.
+>    STEP 6: Permanent Failure
+>    -------------------------
+>    A "permanent failure" has occurred, and the platform cannot recover
+>    the device.  The platform will call error_detected() with a
+>    pci_channel_state_t value of pci_channel_io_perm_failure.
 >
-> Only if the "bridge" happens to be a Root Complex Event Collector or
-> Integrated Endpoint does it make sense to send a uevent for it (because
-> there are no subordinate devices).
+>    The device driver should, at this point, assume the worst. It should
+>    cancel all pending I/O, refuse all new I/O, returning -EIO to
+>    higher layers. The device driver should then clean up all of its
+>    memory and remove itself from kernel operations, much as it would
+>    during system shutdown.
 >
-> Right now if there is a mix of subordinate devices with and without
-> pci_error_handlers, a BEGIN_RECOVERY event is sent for those with
-> pci_error_handlers but no FAILED_RECOVERY event is ever sent for them
-> afterwards.  Fix it.
+> Sathya notes that AER does not call error_detected() on failure and thus
+> deviates from the document (as well as EEH, for which the document was
+> originally added).
 >
-> Fixes: 856e1eb9bdd4 ("PCI/AER: Add uevents in AER and EEH error/resume")
+> Most drivers do nothing on permanent failure, but the SCSI drivers and a
+> number of Ethernet drivers do take advantage of the notification to flush
+> queues and give up resources.
+>
+> Amend AER to notify such drivers and align with the documentation and EEH.
+>
+> Link: https://lore.kernel.org/r/f496fc0f-64d7-46a4-8562-dba74e31a956@linux.intel.com/
+> Suggested-by: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
 > Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> Cc: stable@vger.kernel.org  # v4.16+
 > ---
 
 Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
->   drivers/pci/pcie/err.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
+>   drivers/pci/pcie/err.c | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
 >
 > diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-> index e795e5ae6b03..21d554359fb1 100644
+> index 21d554359fb1..930bb60fb761 100644
 > --- a/drivers/pci/pcie/err.c
 > +++ b/drivers/pci/pcie/err.c
-> @@ -108,6 +108,12 @@ static int report_normal_detected(struct pci_dev *dev, void *data)
->   	return report_error_detected(dev, pci_channel_io_normal, data);
->   }
+> @@ -110,7 +110,19 @@ static int report_normal_detected(struct pci_dev *dev, void *data)
 >   
-> +static int report_perm_failure_detected(struct pci_dev *dev, void *data)
-> +{
-> +	pci_uevent_ers(dev, PCI_ERS_RESULT_DISCONNECT);
-> +	return 0;
-> +}
-> +
->   static int report_mmio_enabled(struct pci_dev *dev, void *data)
+>   static int report_perm_failure_detected(struct pci_dev *dev, void *data)
 >   {
->   	struct pci_driver *pdrv;
-> @@ -272,7 +278,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->   failed:
->   	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
->   
-> -	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
-> +	pci_walk_bridge(bridge, report_perm_failure_detected, NULL);
->   
->   	pci_info(bridge, "device recovery failed\n");
+> +	struct pci_driver *pdrv;
+> +	const struct pci_error_handlers *err_handler;
+> +
+> +	device_lock(&dev->dev);
+> +	pdrv = dev->driver;
+> +	if (!pdrv || !pdrv->err_handler || !pdrv->err_handler->error_detected)
+> +		goto out;
+> +
+> +	err_handler = pdrv->err_handler;
+> +	err_handler->error_detected(dev, pci_channel_io_perm_failure);
+> +out:
+>   	pci_uevent_ers(dev, PCI_ERS_RESULT_DISCONNECT);
+> +	device_unlock(&dev->dev);
+>   	return 0;
+>   }
 >   
 
 -- 
