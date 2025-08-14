@@ -1,78 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-10977-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10978-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F01ADB25FB6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 10:55:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7012FB260C8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 11:25:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c2fG22ygwz2yhD;
-	Thu, 14 Aug 2025 18:55:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c2fxK0VKFz2yhD;
+	Thu, 14 Aug 2025 19:25:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755161722;
-	cv=none; b=YbeOznnRUeMD3GyWLfbCfbWSwiYTGi+izvjf1HCbpTAFW//KObFTkokG5nfyshxx7XaM9rKek3/cOmj/fGIWIT74TDWQRezFoQuiMDvgZisIgBc6+vKtvGEu2qSfixqKeCGN/VodwO2x+1f7sEKPnnGTWgtwL8US7535jXgFrkJr4st4w6+0LnL0DHOnXApoReF1FD5i510f+/h1+SWS7FIOVJGJj8jFBbwbmHPADZO10dJJuHwSiVvoXqUgbr+QEBlgItemNm/mthIDJexuXLKbJ0sXSm2BFldANTRmGTSFRhZYW06Qg9xhZJ5LxxoteVXIGBpquEQN/N7N3VIrEw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755163557;
+	cv=none; b=Q1RFlvAGOAwrsfgxF9ZiOLF4vRdzR7MwNc08khBJqq7GxnHRjmoTUqLkLxAj/pT/vwRBYc0t/kdaa8DxypkQJJa8DrCZVCIwnI6NqpV4JZaMM+rDyt4/2Dae/CVTDkhu9iXDQibpXBbAgyZp5sRITH31Tds3udSLjIQ/uY+hd0WJLiKk8YXcPm/IfzaQNtHEFsk6cCFInhSlspmcz3BqKqsinUvOzBoUcRXGbVzJ6htsMRu8Knl48AGItKHF9jU+RE1samTidYuJNx29FF5SNmXuOWMJw3q7ZRf+q5PLa0gSUfahnHWee3ah67dNUP0LHJUIs7Q5VgHaKgGdMMoLPA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755161722; c=relaxed/relaxed;
-	bh=whOdfrq61HC2b6c2RvEBosbosNIAYwaBjKqGxS/i3L8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bYXaPIAVhccwMZAShmq2J+ukiyPfX9pKML2uE33dsbOQMGm1V2Mz/ec2qzq2nB4JF524twkGie/5sRcMBhTfVihh4x6/dtMPI7sqyYgTn+eotL3cFHgEzbDiFYbO0d7CgrQIk/RyPGCdnWLBeuQB18Qc/blUhOg6bD40gcw+gGNFoz+mHYzPzRLn5pGCKiJ9d6QoXw/+trQCW0hb2qLgxNgTggOEWHx0iCNOt8Eh6R7BNLHqCOro1LelcYhD5IcG1fVRttn7xqA1EW920I9twI4Ip7CQl7hyuDq88BDKqiGedC6gUJGpbDw9pUr8EvHlvomq6bteJjjqqvTmiCt9Zg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XFZr1VeO; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1755163557; c=relaxed/relaxed;
+	bh=KTh/t+w2i3kJPi6JppMXN5qV29/bxTEnVBrxvmS6ats=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VN6pWSgqDdxZOfdRXeI51GUiLXj/+JnfI64utILh+6h8u6bguYyWE+DB6K8uUznUPRANGeAyEdxhS5onFiMi7JOeqzbqe/uhoH01gcmEkl8g14qmsZgLxGX1etnDLb5XRHw/5oQsaGJcSn7HzXPfyUqUhxYZC35Oq0vPu/OVyM+s/aKLfpCBlzFdRGSWbbWpX1UKRYxTqmGfwxiuWPS+R+svRhB7ZY3bFUKWcL1hDlRg+Pv9bj/HkSfDHKtTYoBSEqCYIQKbLaylxVvMxoCg2l58lsVvzeva4opoA0JZOKDaM5p+vHvQE5MmuwGOhG8/3k309TAFIhvADiBMYmvlXQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iKDWqm+W; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XFZr1VeO;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iKDWqm+W;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2fG15J1lz2xQ6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 18:55:21 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57DL3dI3029469;
-	Thu, 14 Aug 2025 08:54:48 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2fxH6Md4z2xQ6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 19:25:55 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57DN7peP031309;
+	Thu, 14 Aug 2025 09:25:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=whOdfr
-	q61HC2b6c2RvEBosbosNIAYwaBjKqGxS/i3L8=; b=XFZr1VeOTAS4pnDaNs6ZlU
-	MCEGfY7cRFlmXjuXJmf6WLvv1Ah7GuoAPFztJYtWn14Iy5zzcHlLO/5sNKgvnVTn
-	ZGIfFZoU8qz2ZiNgGrxm6InOpgYzNjMVET0BNrG7XyKxdtuxLVheW35HpetFXgxf
-	Ov69DW/Co+9wCL49dNNr0MwPD4tDswQK6kFk0eayzDGE62R83Xr0kO25gOYiEBsy
-	68lYhrWF+AWmUOM2VNqueYRRyzIh/F2iQO91r7LBSMrw7nA8UyMc9iOmdRl1qvJq
-	YOPLgcVcN1ugUKyTcfYNns5fHmYPkOQJQBONZpgLCSLilNH5DDHxDQKMJsWeM3QA
-	==
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=KTh/t+w2i3kJPi6JppMXN5qV29/b
+	xTEnVBrxvmS6ats=; b=iKDWqm+WGrW9NchOc2pES9+gJnMeRiuyiBvu9WWNoghQ
+	Vi09ShWjG2xYt2kA7v5cCAgumDb0+SvZaYYeYkc2RX3r1Xd48V36YmOV0a7v/tFh
+	bnzQXfPwwprxQo1lVrL12/CxcwNzxgaTL7yZqhY/0Jn5zRhg3kFjXdkoNjhPfRyG
+	1Mepw+KVMbQH4UJzd8fST6T1vc5j6yKyL7ZLtZuMmvuRvbWKCiJYsC7ZAbN5v9TN
+	wMH9hWAhiUttjuK9QnQ/kqsXzvFexccptdEO4T3aPcNUtGSb/ebd8+wsNAPWUb6D
+	YgrlItVZFatjDAbZ1rKiveHwoX6CdD6OmWp0reoGvA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dwudh6we-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dvrp8ysa-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Aug 2025 08:54:48 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57E8mIRc016114;
-	Thu, 14 Aug 2025 08:54:48 GMT
+	Thu, 14 Aug 2025 09:25:42 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57E9Hoq8032390;
+	Thu, 14 Aug 2025 09:25:42 GMT
 Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dwudh6wa-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dvrp8ys8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Aug 2025 08:54:47 +0000 (GMT)
+	Thu, 14 Aug 2025 09:25:42 +0000 (GMT)
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57E8HQ1k026282;
-	Thu, 14 Aug 2025 08:54:46 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48eh21bjtm-1
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57E8bT21026302;
+	Thu, 14 Aug 2025 09:25:41 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48eh21bnt9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Aug 2025 08:54:46 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57E8sgdj34341592
+	Thu, 14 Aug 2025 09:25:41 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57E9PbIO54788382
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 14 Aug 2025 08:54:42 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3878A20043;
-	Thu, 14 Aug 2025 08:54:42 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 62B1920040;
-	Thu, 14 Aug 2025 08:54:36 +0000 (GMT)
-Received: from [9.43.48.93] (unknown [9.43.48.93])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 14 Aug 2025 08:54:36 +0000 (GMT)
-Message-ID: <da3aef2d-44ab-4642-9114-15ef1e724bac@linux.ibm.com>
-Date: Thu, 14 Aug 2025 14:24:35 +0530
+	Thu, 14 Aug 2025 09:25:37 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A8D120040;
+	Thu, 14 Aug 2025 09:25:37 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F092520043;
+	Thu, 14 Aug 2025 09:25:34 +0000 (GMT)
+Received: from li-06431bcc-2712-11b2-a85c-a6fe68df28f9.ibm.com.com (unknown [9.39.31.144])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 14 Aug 2025 09:25:34 +0000 (GMT)
+From: Donet Tom <donettom@linux.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev@lists.ozlabs.org
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-kernel@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Vishal Chourasia <vishalc@linux.ibm.com>,
+        Donet Tom <donettom@linux.ibm.com>, stable@vger.kernel.org
+Subject: [PATCH] powerpc/mm: Fix SLB multihit issue during SLB preload
+Date: Thu, 14 Aug 2025 14:55:32 +0530
+Message-ID: <20250814092532.116762-1-donettom@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,236 +95,353 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bpf-next 2/6] bpf,powerpc: Implement PROBE_MEM32 pseudo
- instructions
-To: Saket Kumar Bhaskar <skb99@linux.ibm.com>, bpf@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: sachinpb@linux.ibm.com, venkat88@linux.ibm.com, andrii@kernel.org,
-        eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
-        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
-        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
-        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
-        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
-        iii@linux.ibm.com, shuah@kernel.org
-References: <20250805062747.3479221-1-skb99@linux.ibm.com>
- <20250805062747.3479221-3-skb99@linux.ibm.com>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <20250805062747.3479221-3-skb99@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIyNCBTYWx0ZWRfX5CgL0E9wwkun
- R63f9KBg7wVdCu8SuS/cIOVq1mUF0DdXWrs/1dBdDy7O3LfYw1O3G8a+mdeKQqBZseGvjhnkfs0
- 303tA1UW5ALCBhUGzzLfEhN8Y5TBEJt5S5GJuTs3yshRD3DldnGnpLngyfBUSkp4bJQmuTUASsS
- WD3DqKGn6TdrQtLGe7daJtnLaFahfKMsm0D3vTL3MpRLP9qzVCYO/bESQU3dKz4EkR1Lc0wtnIC
- GZlCgEBien/h2XBW40pP2qvbWrOcRmJxofEdMUgq6HddpH8lqvefZyWB4n4uygB8npXgHlskhYK
- JWw42lgkbcf3Qw/7IRZkUqjKpCa0A4yFazrbrAx/Eg2ct6dJYbQHyGgIiCjPYeR+PjuB2XD9JqQ
- b+W/GBbD
-X-Authority-Analysis: v=2.4 cv=d/31yQjE c=1 sm=1 tr=0 ts=689da458 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIxOSBTYWx0ZWRfX2/KDVelDdvd3
+ ZgIM0tB5S6oz9MIUnILry40tako9DEo6AER5/5Gc7OVcxkfKrPiU0fsZk26grdQXe1vgpEvbl4A
+ F/YmhHRtgmCyeprub67hpF28ySlFOyXBRUbPyHnYYkik3DI0Qxs8Cvc+KGvzowxekb3reoRQWZ5
+ 24nu/YIhbJBFkOO+eyQ4pyS8eqw9f/SX9p772vqX/wY6vTHupTOAMEA3pwYbEolduIIXMeNlaRh
+ S249x4CgT3fccOIGkB0jwOrjtPhEfu7M3JE16FaIaQof6v/queMKofhIhSmSqmlJ3LR3CS2C7OQ
+ 8F0QwEq0kUDRGZ1ZF8CxnibUuMXk3tf7mn4mgxl02gKGT+9CpiD1MsswEp0Ys0R+7lzwTKeudL1
+ Y/kfnu4i
+X-Authority-Analysis: v=2.4 cv=GrpC+l1C c=1 sm=1 tr=0 ts=689dab96 cx=c_pps
  a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=BwONYSiD_Lj_i5xjnBcA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: zwug4dAFJ6t_WLhbM3tnQg_dATGDni6l
-X-Proofpoint-ORIG-GUID: Z6qPLp--akW95X8YqFoE3NvnVSuMsMU5
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=VnNF1IyMAAAA:8 a=d9o4jGqSoHxcCQIisAAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: RWf-oG4UiC6UTLaWger7edb6yfHK1SKZ
+X-Proofpoint-ORIG-GUID: 2xvsuejIhINbvgK57lxAstLwBPGe5Kdj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-13_02,2025-08-11_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 suspectscore=0 impostorscore=0 priorityscore=1501 phishscore=0
- spamscore=0 adultscore=0 bulkscore=0 malwarescore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508120224
+ clxscore=1015 adultscore=0 spamscore=0 impostorscore=0 suspectscore=0
+ phishscore=0 bulkscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508120219
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On systems using the hash MMU, there is a software SLB preload cache that
+mirrors the entries loaded into the hardware SLB buffer. This preload
+cache is subject to periodic eviction — typically after every 256 context
+switches — to remove old entry.
 
+To optimize performance, the kernel skips switch_mmu_context() in
+switch_mm_irqs_off() when the prev and next mm_struct are the same.
+However, on hash MMU systems, this can lead to inconsistencies between
+the hardware SLB and the software preload cache.
 
-On 05/08/25 11:57 am, Saket Kumar Bhaskar wrote:
-> Add support for [LDX | STX | ST], PROBE_MEM32, [B | H | W | DW]
-> instructions.  They are similar to PROBE_MEM instructions with the
-> following differences:
-> - PROBE_MEM32 supports store.
-> - PROBE_MEM32 relies on the verifier to clear upper 32-bit of the
-> src/dst register
-> - PROBE_MEM32 adds 64-bit kern_vm_start address (which is stored in _R26
-> in the prologue). Due to bpf_arena constructions such _R26 + reg +
-> off16 access is guaranteed to be within arena virtual range, so no
-> address check at run-time.
-> - PROBE_MEM32 allows STX and ST. If they fault the store is a nop. When
-> LDX faults the destination register is zeroed.
-> 
-> To support these on powerpc, we do tmp1 = _R26 + src/dst reg and then use
-> tmp1 as the new src/dst register. This allows us to reuse most of the
-> code for normal [LDX | STX | ST].
-> 
-> Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-> ---
->   arch/powerpc/net/bpf_jit.h        |   5 +-
->   arch/powerpc/net/bpf_jit_comp.c   |  10 ++-
->   arch/powerpc/net/bpf_jit_comp32.c |   2 +-
->   arch/powerpc/net/bpf_jit_comp64.c | 108 ++++++++++++++++++++++++++++--
->   4 files changed, 114 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
-> index 4c26912c2e3c..2d095a873305 100644
-> --- a/arch/powerpc/net/bpf_jit.h
-> +++ b/arch/powerpc/net/bpf_jit.h
-> @@ -161,9 +161,10 @@ struct codegen_context {
->   	unsigned int seen;
->   	unsigned int idx;
->   	unsigned int stack_size;
-> -	int b2p[MAX_BPF_JIT_REG + 2];
-> +	int b2p[MAX_BPF_JIT_REG + 3];
->   	unsigned int exentry_idx;
->   	unsigned int alt_exit_addr;
-> +	u64 arena_vm_start;
->   };
->   
->   #define bpf_to_ppc(r)	(ctx->b2p[r])
-> @@ -201,7 +202,7 @@ int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx, int tmp_reg,
->   
->   int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass,
->   			  struct codegen_context *ctx, int insn_idx,
-> -			  int jmp_off, int dst_reg);
-> +			  int jmp_off, int dst_reg, u32 code);
->   
->   #endif
->   
-> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-> index c0684733e9d6..35bfdf4d8785 100644
-> --- a/arch/powerpc/net/bpf_jit_comp.c
-> +++ b/arch/powerpc/net/bpf_jit_comp.c
-> @@ -204,6 +204,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
->   
->   	/* Make sure that the stack is quadword aligned. */
->   	cgctx.stack_size = round_up(fp->aux->stack_depth, 16);
-> +	cgctx.arena_vm_start = bpf_arena_get_kern_vm_start(fp->aux->arena);
->   
->   	/* Scouting faux-generate pass 0 */
->   	if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
-> @@ -326,7 +327,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
->    */
->   int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass,
->   			  struct codegen_context *ctx, int insn_idx, int jmp_off,
-> -			  int dst_reg)
-> +			  int dst_reg, u32 code)
->   {
->   	off_t offset;
->   	unsigned long pc;
-> @@ -354,7 +355,12 @@ int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass
->   		(fp->aux->num_exentries * BPF_FIXUP_LEN * 4) +
->   		(ctx->exentry_idx * BPF_FIXUP_LEN * 4);
->   
-> -	fixup[0] = PPC_RAW_LI(dst_reg, 0);
-> +	if ((BPF_CLASS(code) == BPF_LDX && BPF_MODE(code) == BPF_PROBE_MEM32) ||
-> +	    (BPF_CLASS(code) == BPF_LDX && BPF_MODE(code) == BPF_PROBE_MEM))
-> +		fixup[0] = PPC_RAW_LI(dst_reg, 0);
-> +	else if (BPF_CLASS(code) == BPF_ST || BPF_CLASS(code) == BPF_STX)
-> +		fixup[0] = PPC_RAW_NOP();
-> +
->   	if (IS_ENABLED(CONFIG_PPC32))
->   		fixup[1] = PPC_RAW_LI(dst_reg - 1, 0); /* clear higher 32-bit register too */
->   
-> diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
-> index 0aace304dfe1..3087e744fb25 100644
-> --- a/arch/powerpc/net/bpf_jit_comp32.c
-> +++ b/arch/powerpc/net/bpf_jit_comp32.c
-> @@ -1087,7 +1087,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
->   				}
->   
->   				ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx, insn_idx,
-> -							    jmp_off, dst_reg);
-> +							    jmp_off, dst_reg, code);
->   				if (ret)
->   					return ret;
->   			}
-> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-> index 489de21fe3d6..16e62766c757 100644
-> --- a/arch/powerpc/net/bpf_jit_comp64.c
-> +++ b/arch/powerpc/net/bpf_jit_comp64.c
-> @@ -44,6 +44,7 @@
->   /* BPF register usage */
->   #define TMP_REG_1	(MAX_BPF_JIT_REG + 0)
->   #define TMP_REG_2	(MAX_BPF_JIT_REG + 1)
-> +#define ARENA_VM_START  (MAX_BPF_JIT_REG + 2)
->   
->   /* BPF to ppc register mappings */
->   void bpf_jit_init_reg_mapping(struct codegen_context *ctx)
-> @@ -61,6 +62,8 @@ void bpf_jit_init_reg_mapping(struct codegen_context *ctx)
->   	ctx->b2p[BPF_REG_7] = _R28;
->   	ctx->b2p[BPF_REG_8] = _R29;
->   	ctx->b2p[BPF_REG_9] = _R30;
-> +	/* non volatile register for kern_vm_start address */
-> +	ctx->b2p[ARENA_VM_START] = _R26;
->   	/* frame pointer aka BPF_REG_10 */
->   	ctx->b2p[BPF_REG_FP] = _R31;
->   	/* eBPF jit internal registers */
-> @@ -69,8 +72,8 @@ void bpf_jit_init_reg_mapping(struct codegen_context *ctx)
->   	ctx->b2p[TMP_REG_2] = _R10;
->   }
->   
-> -/* PPC NVR range -- update this if we ever use NVRs below r27 */
-> -#define BPF_PPC_NVR_MIN		_R27
-> +/* PPC NVR range -- update this if we ever use NVRs below r26 */
-> +#define BPF_PPC_NVR_MIN		_R26
->   
->   static inline bool bpf_has_stack_frame(struct codegen_context *ctx)
->   {
-> @@ -170,10 +173,17 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
->   		if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
->   			EMIT(PPC_RAW_STD(bpf_to_ppc(i), _R1, bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
->   
-> +	if (ctx->arena_vm_start)
-> +		EMIT(PPC_RAW_STD(bpf_to_ppc(ARENA_VM_START), _R1,
-> +				 bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
-> +
+If an SLB entry for a process is evicted from the software cache on one
+CPU, and the same process later runs on another CPU without executing
+switch_mmu_context(), the hardware SLB may retain stale entries. If the
+kernel then attempts to reload that entry, it can trigger an SLB
+multi-hit error.
 
-I don't see a selftest that tests both arena and tailcalls
-together but the above change is going to clobber tailcall count.
-That is because the current stack layout is impacted with this
-new non-volatile register usage:
+The following timeline shows how stale SLB entries are created and can
+cause a multi-hit error when a process moves between CPUs without a
+MMU context switch.
 
-/*
-  *              [       prev sp         ] <-------------
-  *              [   nv gpr save area    ] 5*8           |
-  *              [    tail_call_cnt      ] 8             |
-  *              [    local_tmp_var      ] 16            |
-  * fp (r31) --> [   ebpf stack space    ] upto 512      |
-  *              [     frame header      ] 32/112        |
-  * sp (r1) ---> [    stack pointer      ] --------------
+CPU 0                                   CPU 1
+-----                                    -----
+Process P
+exec                                    swapper/1
+ load_elf_binary
+  begin_new_exc
+    activate_mm
+     switch_mm_irqs_off
+      switch_mmu_context
+       switch_slb
+       /*
+        * This invalidates all
+        * the entries in the HW
+        * and setup the new HW
+        * SLB entries as per the
+        * preload cache.
+        */
+context_switch
+sched_migrate_task migrates process P to cpu-1
+
+Process swapper/0                       context switch (to process P)
+(uses mm_struct of Process P)           switch_mm_irqs_off()
+                                         switch_slb
+                                           load_slb++
+                                            /*
+                                            * load_slb becomes 0 here
+                                            * and we evict an entry from
+                                            * the preload cache with
+                                            * preload_age(). We still
+                                            * keep HW SLB and preload
+                                            * cache in sync, that is
+                                            * because all HW SLB entries
+                                            * anyways gets evicted in
+                                            * switch_slb during SLBIA.
+                                            * We then only add those
+                                            * entries back in HW SLB,
+                                            * which are currently
+                                            * present in preload_cache
+                                            * (after eviction).
+                                            */
+                                        load_elf_binary continues...
+                                         setup_new_exec()
+                                          slb_setup_new_exec()
+
+                                        sched_switch event
+                                        sched_migrate_task migrates
+                                        process P to cpu-0
+
+context_switch from swapper/0 to Process P
+ switch_mm_irqs_off()
+  /*
+   * Since both prev and next mm struct are same we don't call
+   * switch_mmu_context(). This will cause the HW SLB and SW preload
+   * cache to go out of sync in preload_new_slb_context. Because there
+   * was an SLB entry which was evicted from both HW and preload cache
+   * on cpu-1. Now later in preload_new_slb_context(), when we will try
+   * to add the same preload entry again, we will add this to the SW
+   * preload cache and then will add it to the HW SLB. Since on cpu-0
+   * this entry was never invalidated, hence adding this entry to the HW
+   * SLB will cause a SLB multi-hit error.
+   */
+load_elf_binary continues...
+ START_THREAD
+  start_thread
+   preload_new_slb_context
+   /*
+    * This tries to add a new EA to preload cache which was earlier
+    * evicted from both cpu-1 HW SLB and preload cache. This caused the
+    * HW SLB of cpu-0 to go out of sync with the SW preload cache. The
+    * reason for this was, that when we context switched back on CPU-0,
+    * we should have ideally called switch_mmu_context() which will
+    * bring the HW SLB entries on CPU-0 in sync with SW preload cache
+    * entries by setting up the mmu context properly. But we didn't do
+    * that since the prev mm_struct running on cpu-0 was same as the
+    * next mm_struct (which is true for swapper / kernel threads). So
+    * now when we try to add this new entry into the HW SLB of cpu-0,
+    * we hit a SLB multi-hit error.
+    */
+
+WARNING: CPU: 0 PID: 1810970 at arch/powerpc/mm/book3s64/slb.c:62
+assert_slb_presence+0x2c/0x50(48 results) 02:47:29 [20157/42149]
+Modules linked in:
+CPU: 0 UID: 0 PID: 1810970 Comm: dd Not tainted 6.16.0-rc3-dirty #12
+VOLUNTARY
+Hardware name: IBM pSeries (emulated by qemu) POWER8 (architected)
+0x4d0200 0xf000004 of:SLOF,HEAD hv:linux,kvm pSeries
+NIP:  c00000000015426c LR: c0000000001543b4 CTR: 0000000000000000
+REGS: c0000000497c77e0 TRAP: 0700   Not tainted  (6.16.0-rc3-dirty)
+MSR:  8000000002823033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE>  CR: 28888482  XER: 00000000
+CFAR: c0000000001543b0 IRQMASK: 3
+<...>
+NIP [c00000000015426c] assert_slb_presence+0x2c/0x50
+LR [c0000000001543b4] slb_insert_entry+0x124/0x390
+Call Trace:
+  0x7fffceb5ffff (unreliable)
+  preload_new_slb_context+0x100/0x1a0
+  start_thread+0x26c/0x420
+  load_elf_binary+0x1b04/0x1c40
+  bprm_execve+0x358/0x680
+  do_execveat_common+0x1f8/0x240
+  sys_execve+0x58/0x70
+  system_call_exception+0x114/0x300
+  system_call_common+0x160/0x2c4
+
+From the above analysis, during early exec the hardware SLB is cleared,
+and entries from the software preload cache are reloaded into hardware
+by switch_slb. However, preload_new_slb_context and slb_setup_new_exec
+also attempt to load some of the same entries, which can trigger a
+multi-hit. In most cases, these additional preloads simply hit existing
+entries and add nothing new. Removing these functions avoids redundant
+preloads and eliminates the multi-hit issue. This patch removes these
+two functions.
+
+We tested process switching performance using the context_switch
+benchmark on POWER9/hash, and observed no regression.
+
+Without this patch: 129041 ops/sec
+With this patch:    129341 ops/sec
+
+We also measured SLB faults during boot, and the counts are essentially
+the same with and without this patch.
+
+SLB faults without this patch: 19727
+SLB faults with this patch:    19786
+
+Fixes: 5434ae74629a ("powerpc/64s/hash: Add a SLB preload cache")
+cc: stable@vger.kernel.org
+Suggested-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+---
+ arch/powerpc/include/asm/book3s/64/mmu-hash.h |  1 -
+ arch/powerpc/kernel/process.c                 |  5 --
+ arch/powerpc/mm/book3s64/internal.h           |  2 -
+ arch/powerpc/mm/book3s64/mmu_context.c        |  2 -
+ arch/powerpc/mm/book3s64/slb.c                | 88 -------------------
+ 5 files changed, 98 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+index 1c4eebbc69c9..e1f77e2eead4 100644
+--- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
++++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+@@ -524,7 +524,6 @@ void slb_save_contents(struct slb_entry *slb_ptr);
+ void slb_dump_contents(struct slb_entry *slb_ptr);
+ 
+ extern void slb_vmalloc_update(void);
+-void preload_new_slb_context(unsigned long start, unsigned long sp);
+ 
+ #ifdef CONFIG_PPC_64S_HASH_MMU
+ void slb_set_size(u16 size);
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 855e09886503..2b9799157eb4 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1897,8 +1897,6 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	return 0;
+ }
+ 
+-void preload_new_slb_context(unsigned long start, unsigned long sp);
+-
+ /*
+  * Set up a thread for executing a new program
   */
-
-Please rework the above stack layout and the corresponding macros
-accordingly.
-
->   	/* Setup frame pointer to point to the bpf stack area */
->   	if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)))
->   		EMIT(PPC_RAW_ADDI(bpf_to_ppc(BPF_REG_FP), _R1,
->   				STACK_FRAME_MIN_SIZE + ctx->stack_size));
-> +
-> +	if (ctx->arena_vm_start)
-> +		PPC_LI64(bpf_to_ppc(ARENA_VM_START), ctx->arena_vm_start);
->   }
->   
->   static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx)
-> @@ -185,6 +195,10 @@ static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx
->   		if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
->   			EMIT(PPC_RAW_LD(bpf_to_ppc(i), _R1, bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
->   
-> +	if (ctx->arena_vm_start)
-> +		EMIT(PPC_RAW_LD(bpf_to_ppc(ARENA_VM_START), _R1,
-> +				bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
-> +
->   	/* Tear down our stack frame */
->   	if (bpf_has_stack_frame(ctx)) {
->   		EMIT(PPC_RAW_ADDI(_R1, _R1, BPF_PPC_STACKFRAME + ctx->stack_size));
-
-- Hari
+@@ -1906,9 +1904,6 @@ void start_thread(struct pt_regs *regs, unsigned long start, unsigned long sp)
+ {
+ #ifdef CONFIG_PPC64
+ 	unsigned long load_addr = regs->gpr[2];	/* saved by ELF_PLAT_INIT */
+-
+-	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) && !radix_enabled())
+-		preload_new_slb_context(start, sp);
+ #endif
+ 
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+diff --git a/arch/powerpc/mm/book3s64/internal.h b/arch/powerpc/mm/book3s64/internal.h
+index a57a25f06a21..c26a6f0c90fc 100644
+--- a/arch/powerpc/mm/book3s64/internal.h
++++ b/arch/powerpc/mm/book3s64/internal.h
+@@ -24,8 +24,6 @@ static inline bool stress_hpt(void)
+ 
+ void hpt_do_stress(unsigned long ea, unsigned long hpte_group);
+ 
+-void slb_setup_new_exec(void);
+-
+ void exit_lazy_flush_tlb(struct mm_struct *mm, bool always_flush);
+ 
+ #endif /* ARCH_POWERPC_MM_BOOK3S64_INTERNAL_H */
+diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
+index 4e1e45420bd4..fb9dcf9ca599 100644
+--- a/arch/powerpc/mm/book3s64/mmu_context.c
++++ b/arch/powerpc/mm/book3s64/mmu_context.c
+@@ -150,8 +150,6 @@ static int hash__init_new_context(struct mm_struct *mm)
+ void hash__setup_new_exec(void)
+ {
+ 	slice_setup_new_exec();
+-
+-	slb_setup_new_exec();
+ }
+ #else
+ static inline int hash__init_new_context(struct mm_struct *mm)
+diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
+index 6b783552403c..7e053c561a09 100644
+--- a/arch/powerpc/mm/book3s64/slb.c
++++ b/arch/powerpc/mm/book3s64/slb.c
+@@ -328,94 +328,6 @@ static void preload_age(struct thread_info *ti)
+ 	ti->slb_preload_tail = (ti->slb_preload_tail + 1) % SLB_PRELOAD_NR;
+ }
+ 
+-void slb_setup_new_exec(void)
+-{
+-	struct thread_info *ti = current_thread_info();
+-	struct mm_struct *mm = current->mm;
+-	unsigned long exec = 0x10000000;
+-
+-	WARN_ON(irqs_disabled());
+-
+-	/*
+-	 * preload cache can only be used to determine whether a SLB
+-	 * entry exists if it does not start to overflow.
+-	 */
+-	if (ti->slb_preload_nr + 2 > SLB_PRELOAD_NR)
+-		return;
+-
+-	hard_irq_disable();
+-
+-	/*
+-	 * We have no good place to clear the slb preload cache on exec,
+-	 * flush_thread is about the earliest arch hook but that happens
+-	 * after we switch to the mm and have already preloaded the SLBEs.
+-	 *
+-	 * For the most part that's probably okay to use entries from the
+-	 * previous exec, they will age out if unused. It may turn out to
+-	 * be an advantage to clear the cache before switching to it,
+-	 * however.
+-	 */
+-
+-	/*
+-	 * preload some userspace segments into the SLB.
+-	 * Almost all 32 and 64bit PowerPC executables are linked at
+-	 * 0x10000000 so it makes sense to preload this segment.
+-	 */
+-	if (!is_kernel_addr(exec)) {
+-		if (preload_add(ti, exec))
+-			slb_allocate_user(mm, exec);
+-	}
+-
+-	/* Libraries and mmaps. */
+-	if (!is_kernel_addr(mm->mmap_base)) {
+-		if (preload_add(ti, mm->mmap_base))
+-			slb_allocate_user(mm, mm->mmap_base);
+-	}
+-
+-	/* see switch_slb */
+-	asm volatile("isync" : : : "memory");
+-
+-	local_irq_enable();
+-}
+-
+-void preload_new_slb_context(unsigned long start, unsigned long sp)
+-{
+-	struct thread_info *ti = current_thread_info();
+-	struct mm_struct *mm = current->mm;
+-	unsigned long heap = mm->start_brk;
+-
+-	WARN_ON(irqs_disabled());
+-
+-	/* see above */
+-	if (ti->slb_preload_nr + 3 > SLB_PRELOAD_NR)
+-		return;
+-
+-	hard_irq_disable();
+-
+-	/* Userspace entry address. */
+-	if (!is_kernel_addr(start)) {
+-		if (preload_add(ti, start))
+-			slb_allocate_user(mm, start);
+-	}
+-
+-	/* Top of stack, grows down. */
+-	if (!is_kernel_addr(sp)) {
+-		if (preload_add(ti, sp))
+-			slb_allocate_user(mm, sp);
+-	}
+-
+-	/* Bottom of heap, grows up. */
+-	if (heap && !is_kernel_addr(heap)) {
+-		if (preload_add(ti, heap))
+-			slb_allocate_user(mm, heap);
+-	}
+-
+-	/* see switch_slb */
+-	asm volatile("isync" : : : "memory");
+-
+-	local_irq_enable();
+-}
+-
+ static void slb_cache_slbie_kernel(unsigned int index)
+ {
+ 	unsigned long slbie_data = get_paca()->slb_cache[index];
+-- 
+2.47.3
 
 
