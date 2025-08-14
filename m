@@ -1,84 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-10974-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11003-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FCA2B25E4B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 10:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F284B263E1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 13:14:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c2d8W3C8hz30W5;
-	Thu, 14 Aug 2025 18:05:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c2jL10y0hz30Vn;
+	Thu, 14 Aug 2025 21:14:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.21
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755158731;
-	cv=none; b=IR8j/SP/g6UbicjyH56f/gYDTrr35mQaIlRXQsQmssOuffm3l584kcB0si0nJ205z0YKcitMk+b+i+aR6Rg8zoPPbQUYoFj0u91MImjKqRhwt3+NusaGo3WUy2GkcTQefrOPlk0iTcVJh6Esn7fQIFJu+c14QtWan0r+a8JEfqV39JP3VqeFuyq53/xk1xaVpbWosFbOb8QUvgakkyivJPDsMR/aexfP3Wg8nYkTls5NFt1Y9OtpJHeIvQsebex5KM4R32vfPGp/tjVYwGL3csC7Wrh+k+4hKpLRLBIMo9sS2rDK+M3plxgADIfBIrKLIB1dPIvdOwfcMc5dz0O5Rg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=203.205.221.250
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755162422;
+	cv=none; b=Vul3XSyJidbaY+lJRTi273jFJpwdYGu8QZjHVQ9o/SvhZnycqkz9xjkpMaQ4M6nktJKvnMOk1fCsgGY3GCHe3EoY1gHhuUxRNOMqJOZFZ5l2IW26/Pjs4Cw9U2sWVcPqCpoReoyroKKSWeiLCfa8okMqYbA+gmRqifowmacln46Vjl+dNWKfW0Jd8D3xsAQV3zdm+RpxpI288VlHyaeePI4Cxrs4ljeWaIVE92hOk/a36C0cPjFZhpKk1fgHM1f+YuttHMJnb9wEiPzeCBLGkLlKWUDRcC/pu9M/XkHcDOXR4hrY47bH101LBtkFIVTIG8TyMkWj1pzB8PyRHLoCUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755158731; c=relaxed/relaxed;
-	bh=UkEIOAJZy49RtSHVT4A6P2SXS+pyQeLLJ5XAcWpwXA4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mC5aSqAfmUv25XL2wTAxamZKRn61koGvSIwkdpzQuFwuXAxpct45qaspJLXeaSzE5CT51GzcjYr93oM1y6d9mZZQ0bfOHGbURsMMXCQr8BRbsIqHL8ICDW5X5oEcstuZnLuKUm53vPktTCgtrC7PEiTRu17uQEoRqTeQszp/6SqIwLfojh0IGY5yldime9OV7lDRhLKG3FM2fBlNG/CbMUeAUJRVDfau8vDX7w1vHd61KSXFQKvM0jGoWJL39QOttsFh7RfhgTqC2a4WeMwRsazSfzp7BAAWSWp1hNS/eZadT3XUWBGY3fxWHau0UopmeLe1DVBXni4B9/NOLC8VVQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aVhxAHt6; dkim-atps=neutral; spf=pass (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1755162422; c=relaxed/relaxed;
+	bh=N/RCDYzoGGGtQMS42zug99z+6gLmBa7KLqRyaAfRQUs=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=l76hcymEE7JqTrVVmV+1gy35SxZrz9iBuy7r+6Nyh0EycM9pHfr4HZNIElEXyHxdVIpeiQ+5mhnPh20YmbTFJDGuTSQUfNyzffFbBbCLCCz5ivzgticxgwSrdnNG7R9KKjOXx5ah0xOm1PMHVDncWTiv23KYGy8QRooVlYvxM0gdKG86pzFFhrZEbnz3bkrEuYF1Iv+wfca0y8UjUseQ9vYto3of1x0/xTseyXzeppcaUHQSp5pb0gDHLlP6JfndtOToAY+/EJNo2sbkhsGDtw/AUqCXgomvmuxwozzCqdrbLiNk7FPOx4i9EaSazJM6yjOX8F9iCVI7hwXkcYUhEA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; dkim=pass (1024-bit key; unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=h/+u0g74; dkim-atps=neutral; spf=pass (client-ip=203.205.221.250; helo=out203-205-221-250.mail.qq.com; envelope-from=961342126@qq.com; receiver=lists.ozlabs.org) smtp.mailfrom=qq.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aVhxAHt6;
+	dkim=pass (1024-bit key; unprotected) header.d=qq.com header.i=@qq.com header.a=rsa-sha256 header.s=s201512 header.b=h/+u0g74;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=qq.com (client-ip=203.205.221.250; helo=out203-205-221-250.mail.qq.com; envelope-from=961342126@qq.com; receiver=lists.ozlabs.org)
+Received: from out203-205-221-250.mail.qq.com (out203-205-221-250.mail.qq.com [203.205.221.250])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2d8V18LTz30VR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 18:05:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755158730; x=1786694730;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5cPIVXM0nkCET4mfTMJk5eQOYlHUtDVZOyK2tRL3s7U=;
-  b=aVhxAHt6egDnY4VVmRZ+SrDJhLY20QSFwhrGNaeGxhBrciHtW8etHkGk
-   FrSVt+rFfTDAiqNFB57njPyOyqR+U5RNfxn73KCZwV/7WcKZZ1j4ECpq+
-   PByK5AG1AumTYBHjR3fDoBJyIZAkDoyQ4wgQzClZF2V8OqBfcp6VCwrQe
-   2F+X1PqSjUAdfGMe8/Eoytlz8+qJZW6q4UP4jFS2k206GcGGO2VGMEq39
-   2v3yKxEqcX4vHtHKMCZLvB7v8fwnMwRIgKzRBuBne6U0a2ePPzgJoEVbK
-   nM6xk8A5/VMs6cMC0QMT4QVB/XcQP1OHzyxifM/No7zr+2bRgJtcxm+fs
-   w==;
-X-CSE-ConnectionGUID: mfPVxixpTPSOyoDLZC8e8g==
-X-CSE-MsgGUID: +roHEdo1RWCAh5H44mIAwA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="57372651"
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="57372651"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Aug 2025 01:05:26 -0700
-X-CSE-ConnectionGUID: DDCZwDm7QaSoaweUXg1M6A==
-X-CSE-MsgGUID: uMzmV2T2TFe/bu5sz1uy2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
-   d="scan'208";a="190399976"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa002.fm.intel.com with ESMTP; 14 Aug 2025 01:05:19 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1umSxZ-000Ajc-1M;
-	Thu, 14 Aug 2025 08:05:17 +0000
-Date: Thu, 14 Aug 2025 16:04:59 +0800
-From: kernel test robot <lkp@intel.com>
-To: Robin Murphy <robin.murphy@arm.com>, mingo@redhat.com, will@kernel.org,
-	mark.rutland@arm.com, acme@kernel.org, namhyung@kernel.org,
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-	irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org,
-	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH 19/19] perf: Garbage-collect event_init checks
-Message-ID: <202508141524.QVgoOKMD-lkp@intel.com>
-References: <ace3532a8a438a96338bf349a27636d8294c7111.1755096883.git.robin.murphy@arm.com>
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4c2fWS1T6Kz2xQ6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 19:06:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1755162415; bh=N/RCDYzoGGGtQMS42zug99z+6gLmBa7KLqRyaAfRQUs=;
+	h=From:To:Cc:Subject:Date;
+	b=h/+u0g74THzzEh0Y/9jByqa9P1ffe4vJ42wZMgtNr8sC0aywbbui1/H3kelU8QLRi
+	 /ckT8d4CTDsGuUqICVQzAYoFpVMH4FYRKbz3vG7w+WXVb/sLSWDcIZRbwJjTSObCJX
+	 4kFUDBqWZs0XDdii4L+A0y2lorzS5d43z7h0iAVM=
+Received: from VM-222-126-tencentos.localdomain ([14.116.239.37])
+	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
+	id 63929001; Thu, 14 Aug 2025 16:24:57 +0800
+X-QQ-mid: xmsmtpt1755159897td1m5xjle
+Message-ID: <tencent_E69E39D3C1EAC68651075BCF298FFE81BE07@qq.com>
+X-QQ-XMAILINFO: NnYhxYSyuBnLKNB2xFolFIhnp8fqpIAbYDBcppu4/+J5bh+jYbKiU3eQ3k+1eg
+	 v73kX6H0N/eucNuBgbFhJVIUu+k8tChg/BH7fqmDif42EFJ1RlCdnTRBGqw7knDp3WUqdfpC6bQN
+	 OuLt1YsmD5D5m5P4ri4YmCtK5iKPdU8EnlUxDUm2hw9HJi9iaScsyRGJSezuwjVTR3pxddtgaxue
+	 9QEeiDkeXcivFLSCHtHHTrlktTPUhMCMO54eaaUQ+80IPDWr+FEUSoAYQm/R7nlOizd4cFX/g2vX
+	 uNUC8X98Ucrs2Zof47PW+QJLl2KC5/SrnuALStYPNKr5wPK3So5zIrswRLVn+cpn6NXc7dgIgKGm
+	 Oli4eZKM6/Cj/vxrGrQGHl6KzBx8mpMtG2KCU3ZUgSAfYutlAEtlA6pqOSox0czgc8uc46jQ4/ID
+	 DWSHq3FwTdDwCcLsxuyXhlVeeJWh3WUf1/M0khm83l3I3H1nsqLzducwr9aqGV5ap+FXAMm0+cVo
+	 HC3hOzwGwIqTlna3R61m/uvPbNScXlHwf4foaNJvbg9YbTJPeceFMcW89LbnvMBSDDKBHTUXgvtE
+	 tCO6k2UQacJztek8fITzHM6hVg+5ArXinWOSiuUh/lXIoiHTiaoEznOBOY45YTSDvGapfp+qtn9G
+	 U9v5neRfW68QWOORqun7h+9N2PeMvmTMzR6jbNbmsf1BQOkNGhsfnKuGvL4elHWmiKTwkGgCsozR
+	 EKI7upytjjq8GeE9XcsxyXSls+yIDnYfodLpKYd0q0/f+1PAzTr3XXqQeQR1tFZVhImaqhW6vAZZ
+	 20fO5rPn+sivcuo87RcDEjUUIucgTd2618O2ObJ07dg+6hQh0QSItyOfQoZSX+yQLsuJUoJhT4gD
+	 96fDNAWV8XoqvH84+NAOD72MnYsDKa1jx35FyHXRu+gMq5g247wVyuTH19XdRaQ3r05LI9MsLF4K
+	 fFLyhTUNMz+57olKOppUFP6kt9aaMJYdA41DqIM6Q24jwfTCIMOWCXiTDI1mSUnF1fSPUussg5N+
+	 9uvQBsu2VpkCOniCZnhV0Bgrzr/CDPZmiYdRFYeOcdVxl2CLP69b1Xet1ZhJrqPL0nWyyngwejQH
+	 Z9QpFB
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+From: Vencent Liu <961342126@qq.com>
+To: maddy@linux.ibm.com
+Cc: mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	961342126@qq.com,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Vencent Liu <Security@tencent.com>
+Subject: [PATCH] powerpc: Fix resource leak in ls_uart.c
+Date: Thu, 14 Aug 2025 16:24:50 +0800
+X-OQ-MSGID: <20250814082450.768340-1-961342126@qq.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,125 +80,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ace3532a8a438a96338bf349a27636d8294c7111.1755096883.git.robin.murphy@arm.com>
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: YES
+X-Spam-Status: Yes, score=3.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_NONE,RDNS_DYNAMIC,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Report: 
+	* -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at https://www.dnswl.org/, no
+	*      trust
+	*      [203.205.221.250 listed in list.dnswl.org]
+	* -0.0 SPF_PASS SPF: sender matches SPF record
+	*  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+	* -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+	*      envelope-from domain
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	*  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail provider
+	*      [961342126(at)qq.com]
+	*  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends in
+	*      digit
+	*      [961342126(at)qq.com]
+	*  0.4 RDNS_DYNAMIC Delivered to internal network by host with
+	*      dynamic-looking rDNS
+	*  3.2 HELO_DYNAMIC_IPADDR Relay HELO'd using suspicious hostname (IP addr
+	*      1)
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Robin,
+From: Vencent Liu <Security@tencent.com>
 
-kernel test robot noticed the following build warnings:
+In the ls_uarts_init function, the device node
+reference count wasn't properly released on error paths.
+When `of_get_property("clock-frequency")`
+fails, the function returns `-EINVAL` without calling
+`of_node_put(avr)` to release the device node reference obtained by
+`of_find_node_by_path()`.
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.17-rc1 next-20250814]
-[cannot apply to perf-tools-next/perf-tools-next tip/perf/core perf-tools/perf-tools acme/perf/core]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Signed-off-by: Vencent Liu <Security@tencent.com>
+---
+ arch/powerpc/platforms/embedded6xx/ls_uart.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Robin-Murphy/perf-arm-cmn-Fix-event-validation/20250814-010626
-base:   linus/master
-patch link:    https://lore.kernel.org/r/ace3532a8a438a96338bf349a27636d8294c7111.1755096883.git.robin.murphy%40arm.com
-patch subject: [PATCH 19/19] perf: Garbage-collect event_init checks
-config: i386-randconfig-003-20250814 (https://download.01.org/0day-ci/archive/20250814/202508141524.QVgoOKMD-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250814/202508141524.QVgoOKMD-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202508141524.QVgoOKMD-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> arch/x86/events/intel/uncore_snb.c:905:24: warning: unused variable 'hwc' [-Wunused-variable]
-     905 |         struct hw_perf_event *hwc = &event->hw;
-         |                               ^~~
-   1 warning generated.
-
-
-vim +/hwc +905 arch/x86/events/intel/uncore_snb.c
-
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  896  
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  897  /*
-9aae1780e7e81e arch/x86/events/intel/uncore_snb.c                Kan Liang               2018-05-03  898   * Keep the custom event_init() function compatible with old event
-9aae1780e7e81e arch/x86/events/intel/uncore_snb.c                Kan Liang               2018-05-03  899   * encoding for free running counters.
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  900   */
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  901  static int snb_uncore_imc_event_init(struct perf_event *event)
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  902  {
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  903  	struct intel_uncore_pmu *pmu;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  904  	struct intel_uncore_box *box;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30 @905  	struct hw_perf_event *hwc = &event->hw;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  906  	u64 cfg = event->attr.config & SNB_UNCORE_PCI_IMC_EVENT_MASK;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  907  	int idx, base;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  908  
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  909  	pmu = uncore_event_to_pmu(event);
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  910  	/* no device found for this pmu */
-3f710be02ea648 arch/x86/events/intel/uncore_snb.c                Kan Liang               2025-01-08  911  	if (!pmu->registered)
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  912  		return -ENOENT;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  913  
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  914  	/* check only supported bits are set */
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  915  	if (event->attr.config & ~SNB_UNCORE_PCI_IMC_EVENT_MASK)
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  916  		return -EINVAL;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  917  
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  918  	box = uncore_pmu_to_box(pmu, event->cpu);
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  919  	if (!box || box->cpu < 0)
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  920  		return -EINVAL;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  921  
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  922  	event->cpu = box->cpu;
-1f2569fac6c6dd arch/x86/events/intel/uncore_snb.c                Thomas Gleixner         2016-02-22  923  	event->pmu_private = box;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  924  
-e64cd6f73ff5a7 arch/x86/events/intel/uncore_snb.c                David Carrillo-Cisneros 2016-08-17  925  	event->event_caps |= PERF_EV_CAP_READ_ACTIVE_PKG;
-e64cd6f73ff5a7 arch/x86/events/intel/uncore_snb.c                David Carrillo-Cisneros 2016-08-17  926  
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  927  	event->hw.idx = -1;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  928  	event->hw.last_tag = ~0ULL;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  929  	event->hw.extra_reg.idx = EXTRA_REG_NONE;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  930  	event->hw.branch_reg.idx = EXTRA_REG_NONE;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  931  	/*
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  932  	 * check event is known (whitelist, determines counter)
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  933  	 */
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  934  	switch (cfg) {
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  935  	case SNB_UNCORE_PCI_IMC_DATA_READS:
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  936  		base = SNB_UNCORE_PCI_IMC_DATA_READS_BASE;
-9aae1780e7e81e arch/x86/events/intel/uncore_snb.c                Kan Liang               2018-05-03  937  		idx = UNCORE_PMC_IDX_FREERUNNING;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  938  		break;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  939  	case SNB_UNCORE_PCI_IMC_DATA_WRITES:
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  940  		base = SNB_UNCORE_PCI_IMC_DATA_WRITES_BASE;
-9aae1780e7e81e arch/x86/events/intel/uncore_snb.c                Kan Liang               2018-05-03  941  		idx = UNCORE_PMC_IDX_FREERUNNING;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  942  		break;
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  943  	case SNB_UNCORE_PCI_IMC_GT_REQUESTS:
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  944  		base = SNB_UNCORE_PCI_IMC_GT_REQUESTS_BASE;
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  945  		idx = UNCORE_PMC_IDX_FREERUNNING;
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  946  		break;
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  947  	case SNB_UNCORE_PCI_IMC_IA_REQUESTS:
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  948  		base = SNB_UNCORE_PCI_IMC_IA_REQUESTS_BASE;
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  949  		idx = UNCORE_PMC_IDX_FREERUNNING;
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  950  		break;
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  951  	case SNB_UNCORE_PCI_IMC_IO_REQUESTS:
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  952  		base = SNB_UNCORE_PCI_IMC_IO_REQUESTS_BASE;
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  953  		idx = UNCORE_PMC_IDX_FREERUNNING;
-24633d901ea44f arch/x86/events/intel/uncore_snb.c                Vaibhav Shankar         2020-08-13  954  		break;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  955  	default:
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  956  		return -EINVAL;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  957  	}
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  958  
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  959  	/* must be done before validate_group */
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  960  	event->hw.event_base = base;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  961  	event->hw.idx = idx;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  962  
-8041ffd36f42d8 arch/x86/events/intel/uncore_snb.c                Kan Liang               2019-02-27  963  	/* Convert to standard encoding format for freerunning counters */
-8041ffd36f42d8 arch/x86/events/intel/uncore_snb.c                Kan Liang               2019-02-27  964  	event->hw.config = ((cfg - 1) << 8) | 0x10ff;
-8041ffd36f42d8 arch/x86/events/intel/uncore_snb.c                Kan Liang               2019-02-27  965  
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  966  	/* no group validation needed, we have free running counters */
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  967  
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  968  	return 0;
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  969  }
-92807ffdf32c38 arch/x86/kernel/cpu/perf_event_intel_uncore_snb.c Yan, Zheng              2014-07-30  970  
-
+diff --git a/arch/powerpc/platforms/embedded6xx/ls_uart.c b/arch/powerpc/platforms/embedded6xx/ls_uart.c
+index 6c1dbf8ae718..b889206bea4c 100644
+--- a/arch/powerpc/platforms/embedded6xx/ls_uart.c
++++ b/arch/powerpc/platforms/embedded6xx/ls_uart.c
+@@ -18,6 +18,7 @@
+ #include <linux/of_address.h>
+ #include <asm/io.h>
+ #include <asm/termbits.h>
++#include <linux/cleanup.h>
+ 
+ #include "mpc10x.h"
+ 
+@@ -114,11 +115,11 @@ static void __init ls_uart_init(void)
+ 
+ static int __init ls_uarts_init(void)
+ {
+-	struct device_node *avr;
+ 	struct resource res;
+ 	int len, ret;
+ 
+-	avr = of_find_node_by_path("/soc10x/serial@80004500");
++	struct device_node *avr __free(device_node) =
++			of_find_node_by_path("/soc10x/serial@80004500");
+ 	if (!avr)
+ 		return -EINVAL;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.5
+
 
