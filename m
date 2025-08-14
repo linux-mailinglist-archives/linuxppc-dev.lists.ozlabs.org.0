@@ -1,86 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-11009-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11010-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D56B26758
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 15:31:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFDFB26800
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 15:50:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c2mNN3wKWz30Sy;
-	Thu, 14 Aug 2025 23:31:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c2mpn5zDKz30Sy;
+	Thu, 14 Aug 2025 23:50:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755178276;
-	cv=none; b=BUpsuI+7TqMeniwnQsBIdckthLrhJQ+L45p2iQyS6bscO5KJ8as5H6d45S2DaTIY8RC+DQ+8mvab7ptZ9G6fiQctWwEheauzsPj4BVob1B7NfXeTtITN8u2kSUq8GY2JHmdIeWfQ6A6csMgp5/yYMstyR0IbNl/oBnv9g9s5IU7iJ1GtssHayspZPxyFKPq1x8SFftSYCk17ejarCinSFJA4857r68aiE3DRltw52L1GL41jBRr3MnMCJ5SrxLtxk9kqGYnIZg0ZwtC8C16OJRMk/FjSI/DANVeWekkzT7xYcLOsXUYutj67LI5uFmSQ2JXGB6KHhVo/UlCG5TDUDA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755179441;
+	cv=none; b=oT5+gkDXdxhh4CDUeFVarXnJW7KlI61PjuTOkPKBNF7Da0IS+0Lb7vJ0NTuQ0xEsQDRAUmqgDNApobWFGfQa5cevQL29RU6v6c3w6ylAhJ4PMHR0YueKaSG+8mAqJpI/ajtWrfT0HYVE4VoW2bJEtELcJ95XNxsJoUsftxI+mkdGkP7tw3t4t7tNrehda1zAJisV0SchWyAUJhs/u/x2CPCbTqc4qGd1PMxohvNVHShLk7giQ7g9bNjQ8iEzAqMobFRWclMp3kbQujNFHIdaBhsU9HViU+Kxg9Xy9ZJvHhaS8Uur6WLWisc89eNzCmd3qPGFjsPquDYbWN/UmcEDDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755178276; c=relaxed/relaxed;
-	bh=/aVLEAIiIUq96sEpteKq4xn0CYp2Pr/HhvYRjdNe/U0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U3AzfR/eGfg3g+CViK6F85eGQD1BNksxDM1ZwOHIiM16k0gtHSeVvtgsRDtu3VpjR0+P463TRs2/y6rBnQhYho6e+Zovniyl8xU96unZ5AN8UTU3wa/rpj8aYdO/bcw4WimXf3WW+w29VO5y73RrI9EjK1VOdw1FnvAezChYU4E+meZS56Zr+qnbBoyZHiMrYAJWu1L2jc9x25HEQjpDlQ2G99lmoL9BvXj+ssJQupikiChO91cAlpuUchNEtVw6avY2cia5T7njvxUFO+AmQwcjRr5tCp9EtVJpaEssuqcqev3HP61+3c0MxGsO4Wtpn6qZkB5YfbVQpk5R0Eu4Zg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XqHxW8YW; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XqHxW8YW;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2mNM0TbZz2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 23:31:15 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 766E96111F;
-	Thu, 14 Aug 2025 13:31:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E81C4CEF1;
-	Thu, 14 Aug 2025 13:31:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755178272;
-	bh=WW0xB1u8XI1L1gGsXl6wpt3WDXrr4yCiJlHi7BUNlCY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XqHxW8YW58Ln/tIjnGi73wY9qD5/Iqkzwyv6qop3T0s5v319Ftg/c1ujK3/+Pmp3O
-	 3SJY9d+x4hq26C9R4ldz3ap27JZ3CK6dbddTXlBk+z2z09uVrOYjtUFTpeGlFvgNjV
-	 L1huyBWZL3RmFzTXcCZe8HHfxLc3AApxz5Ss7QLL+ussS/TR5qi1rfohz3kzvuYQXA
-	 z9fOR+m/fazEworlcK45UcqDrJLI+rHyeuLbz0YS0ZizqgTQFWAKE1JSOTRnlpXZlF
-	 3y7wTMxm2dgJYYjVCyrbQbIxiWn20GP+y7nUAEOT4RU14M4Kgk2W8/qCK/ckcjXpyq
-	 NVGeZpIDI1XVQ==
-Date: Thu, 14 Aug 2025 16:31:06 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v1 08/16] kmsan: convert kmsan_handle_dma to use physical
- addresses
-Message-ID: <20250814133106.GE310013@unreal>
-References: <cover.1754292567.git.leon@kernel.org>
- <5b40377b621e49ff4107fa10646c828ccc94e53e.1754292567.git.leon@kernel.org>
- <20250807122115.GH184255@nvidia.com>
- <20250813150718.GB310013@unreal>
- <20250814121316.GC699432@nvidia.com>
- <20250814123506.GD310013@unreal>
- <20250814124448.GE699432@nvidia.com>
+	t=1755179441; c=relaxed/relaxed;
+	bh=S5J+mLAP2QlIEt8PDLcOSFod+Rvn+2kAxka0kZb8QO0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KZ/8QcXQt7Bxov9jUdDmKOYU0Lqd806R4mQUCKAiJ2k9c8z/8gkhuq1sqvk1SCL2gPSBeZ6k0hL1PCdVAo8ir49ZhBSNXvwD0kruJVgniUX0zBgZ0R9ExArqm23EJ3ame1ZePYjuGqpZS2jPPkNkeacDVDm3XLpCB8tFRZJhtVaW7UpgrB5wZmVJ8PpmMMm7JOm3w14/PK4dNXb9QTqemQkBLKPmwOawGGHsZNDrzirxGWFXh/URNy5R8i/3pzNaWfURj7Dr6ZBnJVsSeYakAy0RXPMST+IxrVCKCwDZdLhIuIe0Rrt6yChFyrLVTdEaPrUQ5XQL7mNbH14G8Fq9vQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c2mph6DmTz2yhD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 23:50:36 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4c2mf947xHz9sSR;
+	Thu, 14 Aug 2025 15:43:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id mPu6Xjo1vLlQ; Thu, 14 Aug 2025 15:43:13 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c2mf83Tw5z9sSL;
+	Thu, 14 Aug 2025 15:43:12 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4D6A38B765;
+	Thu, 14 Aug 2025 15:43:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id eqmp3JHpIEX9; Thu, 14 Aug 2025 15:43:12 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id C584A8B763;
+	Thu, 14 Aug 2025 15:43:09 +0200 (CEST)
+Message-ID: <86186254-b2c6-4818-af0a-4eb67d90e501@csgroup.eu>
+Date: Thu, 14 Aug 2025 15:43:09 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,90 +57,169 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250814124448.GE699432@nvidia.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/24] vdso: Reject absolute relocations during build
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, Kees Cook <kees@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ Russell King <linux@armlinux.org.uk>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Danilo Krummrich <dakr@kernel.org>, Nicolas Schier <nicolas.schier@linux.dev>
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, linux-mm@kvack.org, linux-um@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
+ linux-mips@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, Jan Stancek <jstancek@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@redhat.com>,
+ Alexandre Ghiti <alexghiti@rivosinc.com>
+References: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250812-vdso-absolute-reloc-v4-0-61a8b615e5ec@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Aug 14, 2025 at 09:44:48AM -0300, Jason Gunthorpe wrote:
-> On Thu, Aug 14, 2025 at 03:35:06PM +0300, Leon Romanovsky wrote:
-> > > Then check attrs here, not pfn_valid.
-> > 
-> > attrs are not available in kmsan_handle_dma(). I can add it if you prefer.
-> 
-> That makes more sense to the overall design. The comments I gave
-> before were driving at a promise to never try to touch a struct page
-> for ATTR_MMIO and think this should be comphrensive to never touching
-> a struct page even if pfnvalid.
-> 
-> > > > So let's keep this patch as is.
-> > > 
-> > > Still need to fix the remarks you clipped, do not check PageHighMem
-> > > just call kmap_local_pfn(). All thie PageHighMem stuff is new to this
-> > > patch and should not be here, it is the wrong way to use highmem.
-> > 
-> > Sure, thanks
-> 
-> I am wondering if there is some reason it was written like this in the
-> first place. Maybe we can't even do kmap here.. So perhaps if there is
-> not a strong reason to change it just continue to check pagehighmem
-> and fail.
-> 
-> if (!(attrs & ATTR_MMIO) && PageHighMem(phys_to_page(phys)))
->    return;
 
-Does this version good enough? There is no need to call to
-kmap_local_pfn() if we prevent PageHighMem pages.
 
-diff --git a/mm/kmsan/hooks.c b/mm/kmsan/hooks.c
-index eab7912a3bf0..d9cf70f4159c 100644
---- a/mm/kmsan/hooks.c
-+++ b/mm/kmsan/hooks.c
-@@ -337,13 +337,13 @@ static void kmsan_handle_dma_page(const void *addr, size_t size,
+Le 12/08/2025 à 07:44, Thomas Weißschuh a écrit :
+> The compiler can emit absolute relocations in vDSO code,
+> which are invalid in vDSO code.
+> Detect them at compile-time.
 
- /* Helper function to handle DMA data transfers. */
- void kmsan_handle_dma(phys_addr_t phys, size_t size,
--                     enum dma_data_direction dir)
-+                     enum dma_data_direction dir, unsigned long attrs)
- {
-        u64 page_offset, to_go, addr;
-        struct page *page;
-        void *kaddr;
+I'm a bit puzzled with this series.
 
--       if (!pfn_valid(PHYS_PFN(phys)))
-+       if ((attrs & ATTR_MMIO) || PageHighMem(phys_to_page(phys)))
-                return;
+If I understand correctly, the check will be done only when you have 
+RUST available ?
 
-        page = phys_to_page(phys);
-@@ -357,19 +357,12 @@ void kmsan_handle_dma(phys_addr_t phys, size_t size,
-        while (size > 0) {
-                to_go = min(PAGE_SIZE - page_offset, (u64)size);
+I wouldn't expect having RUST to build a C kernel.
 
--               if (PageHighMem(page))
--                       /* Handle highmem pages using kmap */
--                       kaddr = kmap_local_page(page);
--               else
--                       /* Lowmem pages can be accessed directly */
--                       kaddr = page_address(page);
-+               /* Lowmem pages can be accessed directly */
-+               kaddr = page_address(page);
+By the way, aren't relocations already detected by command 
+cmd_vdso_check in lib/vdso/Makefile.include , using readelf ? Why is a 
+new tool needed and why does it have to be written in RUST langage ?
 
-                addr = (u64)kaddr + page_offset;
-                kmsan_handle_dma_page((void *)addr, to_go, dir);
-
--               if (PageHighMem(page))
--                       kunmap_local(page);
--
-                phys += to_go;
-                size -= to_go;
-
-(END)
-
+Thanks
+Christophe
 
 > 
-> Jason
+> libc elf.h is missing some of the relocation constants,
+> so make user of the kernels own UAPI headers instead.
 > 
+> Kbuild and Rust folks: This contains custom definitions of hostprog
+> bindgen and rust library commands.
+> These are currently only defined inside the subsystem directory.
+> Let me know if they should go into scripts/Makefile.host.
+> 
+> This will conflict with my SPARC64 generic vDSO patches [0].
+> If both end up being applied at the same time, please leave out commit
+> 'vdso/vdsocheck: Drop the transitional kconfig option' from this series.
+> 
+> [0] https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flkml%2F20250724-vdso-sparc64-generic-2-v1-0-e376a3bd24d1%40linutronix.de%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749561064%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=HacF%2FvlUoxA9P6fTiN1ytw49gwayX1wNE7IxfEkFutE%3D&reserved=0
+> 
+> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+> ---
+> Changes in v4:
+> - Replace the inline shell logic with a dedicated build-time tool
+> - Link to v3: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250611-vdso-absolute-reloc-v3-0-47897d73784b%40linutronix.de&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749584369%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=7NxAhutk6IXl%2B3fe1kkZEzhZz6CWye%2FVAcFO%2BgtS4uo%3D&reserved=0
+> 
+> Changes in v3:
+> - Drop already applied bugfix for arm64
+> - Disable LTO for the riscv vDSO, as it is incompatible
+> - Link to v2: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250430-vdso-absolute-reloc-v2-0-5efcc3bc4b26%40linutronix.de&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749600546%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=uv0qMS5qq0DovLHtxfRvT42atbJEkztylpOS8zt6bJ4%3D&reserved=0
+> 
+> Changes in v2:
+> - Link to openend (invalid) GCC bug containing more explanations
+> - Refine commit messages
+> - Don't fail on commit absolute relocations in debug info
+> - Link to v1: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fr%2F20250429-vdso-absolute-reloc-v1-0-987a0afd10b5%40linutronix.de&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C3f03f6747325451ee98808ddd9634f27%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638905742749616057%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=K5iwoz0Xqc8kheotWEc4M2KrZ7UVMDObOyFfCPj4N8Q%3D&reserved=0
+> 
+> ---
+> Thomas Weißschuh (24):
+>        elf, uapi: Add a header for relocation constants
+>        x86/elf, um/x86/elf: Move relocation constants to UAPI
+>        ARM: elf: Move relocation constants to UAPI
+>        arm64: elf: Move relocation constants to UAPI
+>        powerpc/elf: Move relocation constants to UAPI
+>        riscv: elf: Move relocation constants to UAPI
+>        LoongArch: Move relocation constants to UAPI
+>        s390/elf: Move relocation constants to UAPI
+>        MIPS: ELF: Move relocation constants to UAPI
+>        tools headers UAPI: Sync ELF headers with the kernel sources
+>        vdso: Add the vdsocheck tool
+>        x86/vdso: Enable the vdsocheck tool
+>        ARM: vdso: Enable the vdsocheck tool
+>        arm64: vdso: Enable the vdsocheck tool
+>        powerpc/elf: Add 32-bit REL16 relocation definitions
+>        powerpc/vdso: Enable the vdsocheck tool
+>        riscv: vdso: Deduplicate CFLAGS_REMOVE_* variables
+>        riscv: vdso: Disable LTO for the vDSO
+>        riscv: vdso: Enable the vdsocheck tool
+>        LoongArch: vDSO: Enable the vdsocheck tool
+>        s390/vdso: Enable the vdsocheck tool
+>        MIPS: ELF: Add more PC-relative relocation definitions
+>        MIPS: vdso: Enable the vdsocheck tool
+>        vdso/vdsocheck: Drop the transitional kconfig option
+> 
+>   arch/arm/include/asm/elf.h          |  24 --
+>   arch/arm/vdso/Makefile              |   4 +-
+>   arch/arm64/include/asm/elf.h        |  55 ----
+>   arch/arm64/kernel/vdso/Makefile     |   4 +-
+>   arch/loongarch/include/asm/elf.h    | 100 ------
+>   arch/loongarch/vdso/Makefile        |   4 +-
+>   arch/mips/include/asm/elf.h         |  53 ---
+>   arch/mips/vdso/Makefile             |   8 +-
+>   arch/powerpc/include/uapi/asm/elf.h | 201 ------------
+>   arch/powerpc/kernel/vdso/Makefile   |   4 +-
+>   arch/riscv/include/uapi/asm/elf.h   |  66 ----
+>   arch/riscv/kernel/vdso/Makefile     |  11 +-
+>   arch/s390/include/asm/elf.h         |  83 -----
+>   arch/s390/kernel/vdso32/Makefile    |   4 +-
+>   arch/s390/kernel/vdso64/Makefile    |   4 +-
+>   arch/x86/entry/vdso/Makefile        |   6 +-
+>   arch/x86/include/asm/elf.h          |  34 --
+>   arch/x86/um/asm/elf.h               |  33 --
+>   include/uapi/linux/elf-r.h          | 631 ++++++++++++++++++++++++++++++++++++
+>   include/uapi/linux/elf.h            |   1 +
+>   lib/vdso/Makefile                   |   2 +
+>   lib/vdso/Makefile.include           |  17 +
+>   lib/vdso/check/.gitignore           |   3 +
+>   lib/vdso/check/Makefile             |  28 ++
+>   lib/vdso/check/elf.rs               | 488 ++++++++++++++++++++++++++++
+>   lib/vdso/check/vdsocheck.rs         | 279 ++++++++++++++++
+>   tools/include/uapi/linux/elf-em.h   |  71 ++++
+>   tools/include/uapi/linux/elf-r.h    | 631 ++++++++++++++++++++++++++++++++++++
+>   tools/include/uapi/linux/elf.h      | 112 ++++++-
+>   29 files changed, 2277 insertions(+), 684 deletions(-)
+> ---
+> base-commit: 5180c6526acc9f1cb58f8b11fba67583c22e0854
+> change-id: 20250428-vdso-absolute-reloc-a226293c1761
+> 
+> Best regards,
+
 
