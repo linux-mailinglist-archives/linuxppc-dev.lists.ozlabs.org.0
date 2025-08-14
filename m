@@ -1,64 +1,103 @@
-Return-Path: <linuxppc-dev+bounces-11011-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11012-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE72FB26811
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 15:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 562ADB268D3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 16:15:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c2ms758zmz30T9;
-	Thu, 14 Aug 2025 23:52:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c2nLt4by1z30Qb;
+	Fri, 15 Aug 2025 00:15:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755179563;
-	cv=none; b=hlKkq3ov0HrulXp9SYsSHTvVCKl3ZQQ6BzKvJw5UqiZbRDNvZZU5eo4oTWcyEgMev9CJmMb1lLxEJP6AvpogsWSO7HAcEqoNnW42tzn5gNaYlhUf3tnEIZqx+TXKWY3FH+KOzl+Ra+zvcq7dR0kf1hC2q1g/q58SN/JrHBJlFJRWI8IqZvrJk0cc86IWPk44mI7SQZsarHRGMaNGE55q0su/Duaqcb4/kyV4ZL6p7u0uGQPa/uFet/+FA4XexEMHjle6hXQ6uK2u8aYSyEM73OiOX2Gncpb/wdOyoLLCsozaPETH9Ab7TaObrzP+vfF7tbnEUSHKGaANGjnaP0tMfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755179563; c=relaxed/relaxed;
-	bh=aRf4+ea6X8TVUwTTRmlqgZ5W0PCxJ47ba1uhMItLiQE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GeWMxIU9DdzW0g04zj8OtP8A1ba8HoFxoQMgr9/5zNVxgEvtd0SOfnKGY8wrQI0TUgyf8Alag1GAyox3wGO3RwLg3dSRn+5KHFOwSbaC1+cr1ZuoMYanrD7+lDgN/7SNa+myQ2Yl6nwjP/TOAgN2IFSvt9Naoky+SGcPC1ivhdmPoI5WG7grk0A+m7SgaUorcUpHv3v8rPmPgHlR3G/lQvGOY1PJQmu5vlZkFjmdZdKxVPBbX6DTFbrS/kl92M8kbuY4VCLCc6gDlEWI65uxTTPzMMI9KP7PUHob/w4eHW5roZDhOzaY62yE72jVGjur+N3TPrhc54MEDbjT8xep/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n4s69L1v; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2406::601" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755180902;
+	cv=pass; b=M135WdA+O4y60AF424q5PA1QIWLybODfJsC+sv0ojPCpwKRjqAlE+0I72h4SJ7JDjWCJlX/P/lBYorsXjvkLDOyezC/bOOZYpKylU3vVU31VyCSEw5cdiQDyM35Rzl6bMBpi8uQRFUuF7QVLOa73EIUaabh53v2vxuBrXQQa8VZJ7DMTmoJIKHJSC4lJheIycQtmDxUmBUv/xyMvfZbEN+/jWJudxFcrvf4K7NXjzqX+f8MEoL9ODyQiVWzaFl4qd2JjTZhGDg0W6uZ8IeiquQIC9MiqXISGqbaxqY+YFNjhivvpFULgDDsQsaBQA5OPLdga/8dWjTpFBSOZW95d6Q==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1755180902; c=relaxed/relaxed;
+	bh=ruO6zNzO4KB71Lkb6cSwWsEi4wP8AIx5i5wd80Kfkcs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QYsl0boTz1iFc4r7d1kiCyDFH67IZP8XlubeG9EYLTA3Oa4A/DBHCubeqUlFaIzz7l6hED7kZ12cSllkRKZQEComb50FRnhSoSbM43lczxQv51/Uh4xOu8OIQGKQlFnVeik9Zr3qbSKdOgSaeuzW/e2bOsKwDuHews9X6IINVkS2yYTpYMYsiy9sAPdfWWy+uoTZGs5Q+SIEH5Mp4m45uH5vYzwiXVQCAFkJlpTuBqNQPChD1XWDkv1pNks6DpG8mG71+QI6X0Kaf7RNVAyhAPKe4XXEHqATbJ6WWtEcX0dfIxEIdtRD3XgPp16tnPXS7zyvJmClsvs9K/GDiiBT1w==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=EiAYv4Ep; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2406::601; helo=nam02-sn1-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n4s69L1v;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=EiAYv4Ep;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2406::601; helo=nam02-sn1-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:2406::601])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2ms675Xfz2yhD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 23:52:42 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A17C344D11;
-	Thu, 14 Aug 2025 13:52:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E80EC4CEED;
-	Thu, 14 Aug 2025 13:52:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755179560;
-	bh=YVEL4qHwQgtfbHG+I3WiGlyaT3HMVv50NMOTP8/4a9U=;
-	h=From:To:Cc:Subject:Date:From;
-	b=n4s69L1vyfn02IWPi3qjxNuzZiiTe6HbC5SpHqwwZRZovypprfjb3V54PPxZHRjEh
-	 yye9ad09dvbTaNYJyohgDJBSfnb42xo8WjqVqMjWfKrAhPU5Ezbwa4LqcbWAGqPICx
-	 bVn0b/VL6RkbQijQ4dEedlg2li+pLzWBZL7cdjW8ylhVdR67fdPO0vmFEa3amnhZaq
-	 rxNUxGuD1M+MqUFmqCD1Z0Jkpp8E9Q/6Rm9lvI+zLwybxbJ11O6UdVvlxylko9VrLL
-	 35QiMbP3DELeBk1Mj1P6ThCN60wA1Ij0rEfjgbchRn4WiIGAaz+xlVwDnOfA2HXsjv
-	 SwZV1Q2GHUDJA==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Scott Wood <oss@buserror.net>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2nLs5RSHz2yhX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 00:15:01 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GU/BvIQz3DTXmYOdGLkh+HDcnJ9GH6Ik0rR2UlhlkjgtsQw8N4vsmdx5kcxRf1WgiDTFsBFEFGCSOko8OFp8bcXwF0hLK8E2XfhX0cfhH5I7AKTc8bfK1oCZNB8hOUrPCxA7JqoaNyFbWZOU4PSR5v5zcdbb4Pi6IAJqPlmwtwt5n+8ppswVwPBEj5hbML3avj0BGinez1mF0WlYA/xUIcuC+4Yz/6i7lBq+K4ELNOTPkl/WJwqYJChB1021V9OXylSalQvRZo5fOoOymQUM9CxZOWx/1sXx2apLf+xlqGlUEg5dgzC29XiWSlL4YTx3cGe4DCq4i9yO3m3emvrROw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ruO6zNzO4KB71Lkb6cSwWsEi4wP8AIx5i5wd80Kfkcs=;
+ b=yxXRDrAQc+7mUCPP3py13VkcS1bDJC/YtuPGqof3Dbi6jopCxGFfEmfXcscFobyNUqwyETyivD//2ExukT43zMU8DPwYweB66AXZvSW7ljhlr0o2/vukDatbk8XWea1IGCog2XUGb965zuON7Oi1oFRqgR/e5OGcC3T/24M3R2Jr8zGu7JUkfEmu/hSPmdnVDr1nrxc6Sv6eno/kHxyPD1iRzFQge7UqXIVIztrZq1sa2bpY5GJnhkzCLe3nTqMbnQxdBuWrjLPMcZpoJAQ+lzldYMFFiqton8T/2g+c7RazWm2M8DRfrfjZtFQlr8XAR0JE5uKUGS8qMHAMaeuh1w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ruO6zNzO4KB71Lkb6cSwWsEi4wP8AIx5i5wd80Kfkcs=;
+ b=EiAYv4Epcj8RrMO6/lmFl5X0ZqQ0yWhj19Yc3cOkghZpr4a1bbc5yMdbT1f0vEPcgbNCsQAgCHa7U3LhYuZ2jA6OuLoHt0l3aNOOcRKggQiYDbY9m/dhtGEg2z702BeZKdwnrZPLRAvHrOOjGd32buyV/OPmF9MN5ZEVSb6qVP0E4ZTjl/cTiBDg4s268TtVbm4e05g1mZYPEdzALI4QDba7IXBgt5LP3IIAN2GSdJCmZKDqCmihxrUJocW9FnMDtcI5LPQQA5kYxifJpOMGXkhBO3C6faR18kGIZvtz3eWdiF80hllGZZm7PRUiB7Ga6i1QdJmTse+JWnvkMxGBEw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by MN2PR12MB4111.namprd12.prod.outlook.com (2603:10b6:208:1de::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9031.16; Thu, 14 Aug
+ 2025 14:14:38 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9031.012; Thu, 14 Aug 2025
+ 14:14:38 +0000
+Date: Thu, 14 Aug 2025 11:14:37 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] dt-bindings: powerpc: Drop duplicate fsl/mpic.txt
-Date: Thu, 14 Aug 2025 08:51:56 -0500
-Message-ID: <20250814135157.2747346-2-robh@kernel.org>
-X-Mailer: git-send-email 2.47.2
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v1 08/16] kmsan: convert kmsan_handle_dma to use physical
+ addresses
+Message-ID: <20250814141437.GH802098@nvidia.com>
+References: <cover.1754292567.git.leon@kernel.org>
+ <5b40377b621e49ff4107fa10646c828ccc94e53e.1754292567.git.leon@kernel.org>
+ <20250807122115.GH184255@nvidia.com>
+ <20250813150718.GB310013@unreal>
+ <20250814121316.GC699432@nvidia.com>
+ <20250814123506.GD310013@unreal>
+ <20250814124448.GE699432@nvidia.com>
+ <20250814133106.GE310013@unreal>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250814133106.GE310013@unreal>
+X-ClientProxiedBy: BL0PR02CA0137.namprd02.prod.outlook.com
+ (2603:10b6:208:35::42) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,299 +111,131 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|MN2PR12MB4111:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e3ba93d-4319-4e2a-c39d-08dddb3ce778
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?WgfRGDEKKHuNso3gGtoTuh6waQ9PCACwW3Xer9wmxp9cTa3pI6GwFYV/fJwL?=
+ =?us-ascii?Q?uMkVfKCSxkLu46+hc29ievexAGINSRbhu7JYwTU0XfwC3xuq+YaufFGnn3Vn?=
+ =?us-ascii?Q?cpMOGqWuXDbpmMy1LmmxLX4aDD9c/RqOmAZJpv5mfDHm2clHXS4UgOzngTmD?=
+ =?us-ascii?Q?pbnofH4YtXT0ZgTGt6BiOFvtENoyZJKCby7Mjhgffi7jeZkXgNkkuF7vGmDh?=
+ =?us-ascii?Q?khvbdocQDP08VF8PzLtV9eIf8x5rWeQfu6y+bnEf80Xy+CimU6ZVs1mHDn8M?=
+ =?us-ascii?Q?Va20NUjK0kGA2V9cveBWcp/bdylGfAuil7IpGcakYsc2DunpQ+m0adkeTAZu?=
+ =?us-ascii?Q?pt97X1t1VXWEBN7qg11nJjbx87HF0c35kmDZeoane30eKI1Bwgqzk4KxsN0k?=
+ =?us-ascii?Q?z2GHRAf+JSgcqz0hbOjiQq+F9anqyTVIQdz+aJh1ukalLlr/564G3PicNHbt?=
+ =?us-ascii?Q?LPr49wr+78ylFSDEfISFwIgF+JSVYmhqvuofMjkbjsA2VuQjCYrOBrsJSYKf?=
+ =?us-ascii?Q?wMjG6p7RvK/pfthf9CtYkKkCAiTp8ebvlOWY8iJxJxT8mucsIvDTNZU4NkDb?=
+ =?us-ascii?Q?v0z/o73VHfPBC27fiQ7o+HO5EAktvti/ZcKDRf08rN7aiM8orpyNVQjVcAE5?=
+ =?us-ascii?Q?VqHSsE83Ap2qOC4Wx7MWNvrlIahR76FdEunsArmKGx+5oAodiWNfvS0YGRN2?=
+ =?us-ascii?Q?VrwJ3wryf4khSFgTIn+gN6nhx0u6l5XkEYHm7FDjqJl4vRLw4hASIP8RPhdg?=
+ =?us-ascii?Q?FUVWaoCQo/loIiSItLdVI/vuuhQeMh4Pd3UBiEK+RdifW819zm9snPMqmXPd?=
+ =?us-ascii?Q?yzLK5bGg6d9o7ql2oRHHkDSuSxqkaRfTpIPOj+3Ik6+IdkEH819IP0T984MB?=
+ =?us-ascii?Q?GERjJw8I3qTw4+P9ABEaHpJZMCGPKunnLkCiBknbFemf3qrgbnlF4PYGUlEf?=
+ =?us-ascii?Q?R9s9oEj6fb7pdgt3Z7D/tAq4XuVinG6vE9c0bI6Oie9pipyRh4zv9StX+RUC?=
+ =?us-ascii?Q?RGoziCckT/sAPKLn5kmwdLJ2Bkrg6FP8q2mAIgX3tkXxcQyI5/yb17j9TwAC?=
+ =?us-ascii?Q?lpzSIu+TbmEYvn8q5IdYZyx5DES0g/s71DK8Ti7Ec6jOzGc6oio27eoJysym?=
+ =?us-ascii?Q?nGN83B0XBGN+5RqszR5hWf9HIdGLIWbj5T/HjUYiuiv9XOsIw9JalLguZMxu?=
+ =?us-ascii?Q?Hf0Ft6F9d+Wvak/bdzCaK099hIAZdCOQOMhLaduD5CPwfLnd28P1Bhq7q0oy?=
+ =?us-ascii?Q?zB5CNRS3xpulZ+kuvwZqEWJlgn3X7IkhLKPVXqqsSy7EdOFAsB5mpKbBM6jY?=
+ =?us-ascii?Q?xXn942Pbh5gEZhdr6pQyBJvhkJWKgRDJ2qcsJ9lk/aMqe9n2ldHihoCyfuvk?=
+ =?us-ascii?Q?LbSAMpXbaPP9O8ofI1/42MZWsfBTk9ZAceTNxZbfU7nYlIeRaEzyLAZLLkDf?=
+ =?us-ascii?Q?PugFFIpY5EA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ms6U7vBXPCNXfF0GBhVl67iuvMBy5svsyOMzkXNcqhzlYf1dmYfKq2Nmij66?=
+ =?us-ascii?Q?OVFGvrCOTzbOh059BMs8Tv9pRrZyWfT6AoFkl6pqlLn1AwuNLIUBcjypj9Si?=
+ =?us-ascii?Q?DisYDAzEuEmEY8ycUcNzX50mNwZqWctD3qkLmCe6DfDlcBmbBuzMI+ce+KUB?=
+ =?us-ascii?Q?6B2e7Wgunr8p4yJYBk5XBHGix/CkyA6NI+7rhX+6KxvyJcboBaP7kGqSLNmq?=
+ =?us-ascii?Q?+KxNz7lYKeI2HFVQ8imPYyMAANP6ep7ViJxkO7OUDseBi9qt/ce7kSCoalyF?=
+ =?us-ascii?Q?wo/ef9acXkJMbu5DDF0AXieNFw7wQYWAjfko1OFeF1fe/cQw0JoTSj5MZzhm?=
+ =?us-ascii?Q?LxPUPWHGEPd9ipfz3oTPSl5tb1ts4zqUOGB4W7PRmEsS1PQryPt1Auy+kCoo?=
+ =?us-ascii?Q?x5HrqWo3yCR6xYlpJ2CKzWgAzDzJFjn3lA4RRzZW/5Rmja+E8m57KY2u1CPX?=
+ =?us-ascii?Q?w00gf6QzDLL6kxLCEUGqHWvYlhF+TAVPT45UaBUe7+zAvpXZJWT4qK3BB+fu?=
+ =?us-ascii?Q?nsiuwGIKa+U+yHvfI/3QxGP1J5OWvjcX1f8OmTtQxj7heNGEf2nYwiVKqRwA?=
+ =?us-ascii?Q?zFpBrMRMlp4V2p+m7y4272Rvs+6mXdf35v1RIb1GwREMyrZXXTTEKFc/qesT?=
+ =?us-ascii?Q?/eyXLujUQ7citeil4d8XUsdbwnea7L8Ng5Lj35chGwPoAAU73YMaupxQ4DJV?=
+ =?us-ascii?Q?sDA3RpAfP+C/qKCvYjs+uDSQfg19c9GPIvAzL2mB5choh3ThGojNaTxt21wz?=
+ =?us-ascii?Q?2OWWSQbqxheAY2Ie/XZUrM+fulMsQgneFpJfX1uCK3BYY3REG8qiHcYQcIDv?=
+ =?us-ascii?Q?Mp/HyTJ+r5eeOqgN3rwUK2nEKoSXN6xcSN1K9PWZvCVVXw4D3bNH7L6s0+s9?=
+ =?us-ascii?Q?wkySC5pM60VQHd8f/+hCv+tlHvaP2MPRTKmhKAkbobGb4WhBzQqSYZA7TY73?=
+ =?us-ascii?Q?yukjLnK/vX0ZRyl/TVGMVuZ2lSdjNfFhBIQ7MG9eZi1o3TLQ4QDCFlR+ZiYT?=
+ =?us-ascii?Q?Dfnv3T2LSKCksXjW69M239HzwkibI36EpyYyjfzZLrrnBWMQbRVqNKj4oA56?=
+ =?us-ascii?Q?EYklt+EqszRlpS/LmjnVgif78n3Eb3RdRH8bYqx7oLD5mr01Hd6hGMo1fkhw?=
+ =?us-ascii?Q?ALOjdVyv93NltYqgqO/AWdryKewXkFSpcQUI8SbO4EAlSL57X/PVnw3ixwyE?=
+ =?us-ascii?Q?VnAcBOD10mUTQ4fztbJXcAmZWihBN+Dm1OKQmzHrXrOPblHtKgpos4Hcijne?=
+ =?us-ascii?Q?yGBu3B1ET17jPIbAMJ/YiMb0MS6Ajq4RYxkfYfklDymLw4v697LNdTEA/e8T?=
+ =?us-ascii?Q?S61phmSvM8ieJ7/mxeLujIRjQ+wkqDdszaaxQaOHVb9X/kh5Bzhcg3E1d+Yt?=
+ =?us-ascii?Q?vmZ0WOYbT7opDnmYKQryUIbKXFxeYevn7YRSnKElJmwTNScKbhq8DcsdNnkl?=
+ =?us-ascii?Q?exe1kSYhiadVK8Va5w7vBTB2ics02mUjfwdQQf2YkuOBJUcaaJFjCoPnyw/9?=
+ =?us-ascii?Q?ZZgPIjMlMGxv5RQJU1oOs/y+Q35UxqyCbBx7IXQBVCRn464QWGHBBiSMnUCU?=
+ =?us-ascii?Q?Wej8KLKb55TFSByZORY=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e3ba93d-4319-4e2a-c39d-08dddb3ce778
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2025 14:14:38.6057
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 7kxcnpRJdzkjJSknvpZS0FJdfGyvwWOi0/OrxCvD+JZOt7jnM+9F/HzOjYt2sbRA
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4111
+X-Spam-Status: No, score=-3.1 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The chrp,open-pic binding schema already supports the "fsl,mpic"
-compatible. Add a couple of missing properties and support for 4
-"#interrupt-cells" to the chrp,open-pic binding, so fsl/mpic.txt can be
-removed.
+On Thu, Aug 14, 2025 at 04:31:06PM +0300, Leon Romanovsky wrote:
+> On Thu, Aug 14, 2025 at 09:44:48AM -0300, Jason Gunthorpe wrote:
+> > On Thu, Aug 14, 2025 at 03:35:06PM +0300, Leon Romanovsky wrote:
+> > > > Then check attrs here, not pfn_valid.
+> > > 
+> > > attrs are not available in kmsan_handle_dma(). I can add it if you prefer.
+> > 
+> > That makes more sense to the overall design. The comments I gave
+> > before were driving at a promise to never try to touch a struct page
+> > for ATTR_MMIO and think this should be comphrensive to never touching
+> > a struct page even if pfnvalid.
+> > 
+> > > > > So let's keep this patch as is.
+> > > > 
+> > > > Still need to fix the remarks you clipped, do not check PageHighMem
+> > > > just call kmap_local_pfn(). All thie PageHighMem stuff is new to this
+> > > > patch and should not be here, it is the wrong way to use highmem.
+> > > 
+> > > Sure, thanks
+> > 
+> > I am wondering if there is some reason it was written like this in the
+> > first place. Maybe we can't even do kmap here.. So perhaps if there is
+> > not a strong reason to change it just continue to check pagehighmem
+> > and fail.
+> > 
+> > if (!(attrs & ATTR_MMIO) && PageHighMem(phys_to_page(phys)))
+> >    return;
+> 
+> Does this version good enough? There is no need to call to
+> kmap_local_pfn() if we prevent PageHighMem pages.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
----
-v2:
- - Add support for 4 #interrupt-cells
----
- .../interrupt-controller/chrp,open-pic.yaml   |  17 +-
- .../devicetree/bindings/powerpc/fsl/mpic.txt  | 231 ------------------
- 2 files changed, 16 insertions(+), 232 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/powerpc/fsl/mpic.txt
+Why make the rest of the changes though, isn't it just:
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/chrp,open-pic.yaml b/Documentation/devicetree/bindings/interrupt-controller/chrp,open-pic.yaml
-index f0d9bbd7d510..642738512f3c 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/chrp,open-pic.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/chrp,open-pic.yaml
-@@ -36,12 +36,27 @@ properties:
-     const: 0
- 
-   '#interrupt-cells':
--    const: 2
-+    description:
-+      A value of 4 means that interrupt specifiers contain the interrupt-type or
-+      type-specific information cells.
-+    enum: [ 2, 4 ]
- 
-   pic-no-reset:
-     description: Indicates the PIC shall not be reset during runtime initialization.
-     type: boolean
- 
-+  single-cpu-affinity:
-+    description:
-+      If present, non-IPI interrupts will be routed to a single CPU at a time.
-+    type: boolean
-+
-+  last-interrupt-source:
-+    description:
-+      Some MPICs do not correctly report the number of hardware sources in the
-+      global feature registers. This value, if specified, overrides the value
-+      read from MPIC_GREG_FEATURE_LAST_SRC.
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+
- required:
-   - compatible
-   - reg
-diff --git a/Documentation/devicetree/bindings/powerpc/fsl/mpic.txt b/Documentation/devicetree/bindings/powerpc/fsl/mpic.txt
-deleted file mode 100644
-index dc5744636a57..000000000000
---- a/Documentation/devicetree/bindings/powerpc/fsl/mpic.txt
-+++ /dev/null
-@@ -1,231 +0,0 @@
--=====================================================================
--Freescale MPIC Interrupt Controller Node
--Copyright (C) 2010,2011 Freescale Semiconductor Inc.
--=====================================================================
--
--The Freescale MPIC interrupt controller is found on all PowerQUICC
--and QorIQ processors and is compatible with the Open PIC.  The
--notable difference from Open PIC binding is the addition of 2
--additional cells in the interrupt specifier defining interrupt type
--information.
--
--PROPERTIES
--
--  - compatible
--      Usage: required
--      Value type: <string>
--      Definition: Shall include "fsl,mpic".  Freescale MPIC
--          controllers compatible with this binding have Block
--          Revision Registers BRR1 and BRR2 at offset 0x0 and
--          0x10 in the MPIC.
--
--  - reg
--      Usage: required
--      Value type: <prop-encoded-array>
--      Definition: A standard property.  Specifies the physical
--          offset and length of the device's registers within the
--          CCSR address space.
--
--  - interrupt-controller
--      Usage: required
--      Value type: <empty>
--      Definition: Specifies that this node is an interrupt
--          controller
--
--  - #interrupt-cells
--      Usage: required
--      Value type: <u32>
--      Definition: Shall be 2 or 4.  A value of 2 means that interrupt
--          specifiers do not contain the interrupt-type or type-specific
--          information cells.
--
--  - #address-cells
--      Usage: required
--      Value type: <u32>
--      Definition: Shall be 0.
--
--  - pic-no-reset
--      Usage: optional
--      Value type: <empty>
--      Definition: The presence of this property specifies that the
--          MPIC must not be reset by the client program, and that
--          the boot program has initialized all interrupt source
--          configuration registers to a sane state-- masked or
--          directed at other cores.  This ensures that the client
--          program will not receive interrupts for sources not belonging
--          to the client.  The presence of this property also mandates
--          that any initialization related to interrupt sources shall
--          be limited to sources explicitly referenced in the device tree.
--
--  - big-endian
--      Usage: optional
--      Value type: <empty>
--          If present the MPIC will be assumed to be big-endian.  Some
--          device-trees omit this property on MPIC nodes even when the MPIC is
--          in fact big-endian, so certain boards override this property.
--
--  - single-cpu-affinity
--      Usage: optional
--      Value type: <empty>
--          If present the MPIC will be assumed to only be able to route
--          non-IPI interrupts to a single CPU at a time (EG: Freescale MPIC).
--
--  - last-interrupt-source
--      Usage: optional
--      Value type: <u32>
--          Some MPICs do not correctly report the number of hardware sources
--          in the global feature registers.  If specified, this field will
--          override the value read from MPIC_GREG_FEATURE_LAST_SRC.
--
--INTERRUPT SPECIFIER DEFINITION
--
--  Interrupt specifiers consists of 4 cells encoded as
--  follows:
--
--   <1st-cell>   interrupt-number
--
--                Identifies the interrupt source.  The meaning
--                depends on the type of interrupt.
--
--                Note: If the interrupt-type cell is undefined
--                (i.e. #interrupt-cells = 2), this cell
--                should be interpreted the same as for
--                interrupt-type 0-- i.e. an external or
--                normal SoC device interrupt.
--
--   <2nd-cell>   level-sense information, encoded as follows:
--                    0 = low-to-high edge triggered
--                    1 = active low level-sensitive
--                    2 = active high level-sensitive
--                    3 = high-to-low edge triggered
--
--   <3rd-cell>   interrupt-type
--
--                The following types are supported:
--
--                  0 = external or normal SoC device interrupt
--
--                      The interrupt-number cell contains
--                      the SoC device interrupt number.  The
--                      type-specific cell is undefined.  The
--                      interrupt-number is derived from the
--                      MPIC a block of registers referred to as
--                      the "Interrupt Source Configuration Registers".
--                      Each source has 32-bytes of registers
--                      (vector/priority and destination) in this
--                      region.   So interrupt 0 is at offset 0x0,
--                      interrupt 1 is at offset 0x20, and so on.
--
--                  1 = error interrupt
--
--                      The interrupt-number cell contains
--                      the SoC device interrupt number for
--                      the error interrupt.  The type-specific
--                      cell identifies the specific error
--                      interrupt number.
--
--                  2 = MPIC inter-processor interrupt (IPI)
--
--                      The interrupt-number cell identifies
--                      the MPIC IPI number.  The type-specific
--                      cell is undefined.
--
--                  3 = MPIC timer interrupt
--
--                      The interrupt-number cell identifies
--                      the MPIC timer number.  The type-specific
--                      cell is undefined.
--
--   <4th-cell>   type-specific information
--
--                The type-specific cell is encoded as follows:
--
--                 - For interrupt-type 1 (error interrupt),
--                   the type-specific cell contains the
--                   bit number of the error interrupt in the
--                   Error Interrupt Summary Register.
--
--EXAMPLE 1
--	/*
--	 * mpic interrupt controller with 4 cells per specifier
--	 */
--	mpic: pic@40000 {
--		compatible = "fsl,mpic";
--		interrupt-controller;
--		#interrupt-cells = <4>;
--		#address-cells = <0>;
--		reg = <0x40000 0x40000>;
--	};
--
--EXAMPLE 2
--	/*
--	 * The MPC8544 I2C controller node has an internal
--	 * interrupt number of 27.  As per the reference manual
--	 * this corresponds to interrupt source configuration
--	 * registers at 0x5_0560.
--	 *
--	 * The interrupt source configuration registers begin
--	 * at 0x5_0000.
--	 *
--	 * To compute the interrupt specifier interrupt number
--         *
--	 *       0x560 >> 5 = 43
--	 *
--	 * The interrupt source configuration registers begin
--	 * at 0x5_0000, and so the i2c vector/priority registers
--	 * are at 0x5_0560.
--	 */
--	i2c@3000 {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		cell-index = <0>;
--		compatible = "fsl-i2c";
--		reg = <0x3000 0x100>;
--		interrupts = <43 2>;
--		interrupt-parent = <&mpic>;
--		dfsrr;
--	};
--
--
--EXAMPLE 3
--	/*
--	 *  Definition of a node defining the 4
--	 *  MPIC IPI interrupts.  Note the interrupt
--	 *  type of 2.
--	 */
--	ipi@410a0 {
--		compatible = "fsl,mpic-ipi";
--		reg = <0x40040 0x10>;
--		interrupts = <0 0 2 0
--		              1 0 2 0
--		              2 0 2 0
--		              3 0 2 0>;
--	};
--
--EXAMPLE 4
--	/*
--	 *  Definition of a node defining the MPIC
--	 *  global timers.  Note the interrupt
--	 *  type of 3.
--	 */
--	timer0: timer@41100 {
--		compatible = "fsl,mpic-global-timer";
--		reg = <0x41100 0x100 0x41300 4>;
--		interrupts = <0 0 3 0
--		              1 0 3 0
--		              2 0 3 0
--		              3 0 3 0>;
--	};
--
--EXAMPLE 5
--	/*
--	 * Definition of an error interrupt (interrupt type 1).
--	 * SoC interrupt number is 16 and the specific error
--         * interrupt bit in the error interrupt summary register
--	 * is 23.
--	 */
--	memory-controller@8000 {
--		compatible = "fsl,p4080-memory-controller";
--		reg = <0x8000 0x1000>;
--		interrupts = <16 2 1 23>;
--	};
--- 
-2.47.2
+        if (PageHighMem(page))
+                return;
 
+Becomes:
+
+        if (attrs & ATTR_MMIO))
+                return;
+
+	page = phys_to_page(phys);
+	if (PageHighMem(page))
+                 return;
+
+Leave the rest as is?
+
+Jason
 
