@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-11033-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11035-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE281B26F80
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 21:09:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D51CB26F83
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 21:10:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c2vty5mndz3bTf;
-	Fri, 15 Aug 2025 05:09:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c2vv12pLxz30Yb;
+	Fri, 15 Aug 2025 05:09:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755198586;
-	cv=none; b=PJjnYMgNcryl78AQtPiSvmRGha49N0RLDUx0v1uGDxjXSG9HcN7HYl2JwSB/vPk0p1M9RktJoOL2PaOL0DMM6CVumowYStbUlTW6mFDPzallPah4IfUl8VyLw2wVwwWoAQV4+KJEhL8e22yX5lEdYlL6St8eIhr9qj+IZvrp4NhhmZQvhUnIJX1i1FaNOtT9LVpEbZybNGa+BOEx2QgL7EBS914jL0qD2kl1HKkWZQONLzkVfC+Bd7ZRnP1cis+WIVpKdy+YBB326GAjzZ3QmLZ/l341XhSntT29akjmbustcP6NLNH52MJIF2W2Befcp/alo77hNONdUSSR1HBpfg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::436"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755198589;
+	cv=none; b=bEz8SwrcnMWz4CFnUYsdN5JabwRWVrbk3AH9CncaUch1Q5myZ8nJMyl2CaNo/N3zzpbxA7r1bVovq4zeIeAV9iqy03dVKXO4C+F4LWVvkDZjc27LmWqWhbeKXhsKzeLN9IH3GZkVyCvneV3U+HiGpCnHB68Bpi7QqETC07V1vVBf8gQiRl+BFQKZONAlp2Qt5CwRmLKr7D3eTZGPcXppeeXMzVGlIKFv8j+r5KZLaXb2gYuehp3Bv7Ew9+4GiBd7ELb25vFK6hfjEdHETgI+ReCxehApkXSGjKY5qBeVaGhfI8uqd5+K42NLxfx1cyhs05LzfKbm6kEwhvNAFQrmDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755198586; c=relaxed/relaxed;
-	bh=+UJlJ9+DjZd2THGL3J+lidGXBes5gAiTYGr+fy//EDg=;
+	t=1755198589; c=relaxed/relaxed;
+	bh=IF8qj3lRR6EFkcmgoXgDdUEvoMakOzSl+hSokVwaKUI=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwFnkn5T6KuOpKTIXJyZWDEv/FQA9BPunh4StQHn9uwFyVvO3WaFHmHsWOvYeHOs3b9RQugAtpvDp2W0kgXLT14S/Qlq0wCDHh+MoYr1KVfQbYTPBg6GNaX6luweMh4eGMyQsVLgtpABO+RQXlE19jGBi0m8JDJLoAGRVvy/MU7OQ3V5e0o/gbMFX0bx+vZnS7jS4JhGunSZ/SSztcK1n8WOx74D581d0QF4P19c7QQYsxHlsYNB2YeDiNPPa5JFPoiyqGFY6RkhbRLlT9I+ooR5464RjkNloYZJX03nkOloqZbUNrJALM4j43PuP6dRmOjz7ccfqLKHZEKErQyVRQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IV75Ltzo; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=jPNJapd/+Nz5X0+0yWkwefPuYuwTNpn64abTM4SP2XAVNxwvgZGlDgynfSdv+Up94kEMvcXaGEpkXE5CK7skdp2q5FrlsZA14g+lVTaAy7fp/HFgujBtHwQITqAeLjkYuGHQUoGW02JYU+TTB/ndMBWbjh+70YsgX+mWMeZpV4MjCgRhAUrWbul3ZadUKr3ttP/mS4nuTQew0/lobCL+vScITus+zSVVjFjRm7Pcj24wyHEvdfZIFCW+djy/ea5gM1eqpj4AA5IwRijqngl0RA4hzDO4gxmBXipAL6j8CkK+zzIDoJVEvZHwVpW7EgClGuRZSh3tDUPba1SGEMqKWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RjMIqrxd; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=IV75Ltzo;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=RjMIqrxd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52d; helo=mail-pg1-x52d.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::436; helo=mail-pf1-x436.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2vtx5XM6z30Yb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 05:09:45 +1000 (AEST)
-Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-b4716f46a2eso893987a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 12:09:45 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2vv0545Nz30Wn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 05:09:48 +1000 (AEST)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-76e2ea79219so1557966b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 12:09:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755198583; x=1755803383; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1755198586; x=1755803386; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+UJlJ9+DjZd2THGL3J+lidGXBes5gAiTYGr+fy//EDg=;
-        b=IV75Ltzo57lMUPFXPvryTYEEzGZfgdj/XO97e//er6QO0NyYQqSnwFgMf8pOpa/kI+
-         IRpbjB7glmKd6XkgzcQmqi7+Apg03KBnCdNvcX3PMGt6DcZfaLaHW3qE1DA0Bh/jaTMZ
-         JK/MLHjtQfSDySCkGm1p1nSrUitlenIjjxTDA4QlwiXojIMNfr/5M92bVpaAfGeQ+QeM
-         IxWePx28409rm/23Guv73zfBswSCV8RN0Pi0ybMrei6rFXAsF24SjzzOB3MF2OSWnUrW
-         6bgQFBKPw1McJq8Ns4q9S56ea3I1bZs9pz2uSzVR8cfzhvD1LnZCWUqZcz+oAiLn7UdL
-         72WQ==
+        bh=IF8qj3lRR6EFkcmgoXgDdUEvoMakOzSl+hSokVwaKUI=;
+        b=RjMIqrxdEHQoLh/B1Q3CX0NPJmMfU6EkmTU075g5S7GnxNw+cyyjEQXL7CeCMFHaFk
+         VvDb38EMXRLjN56BxRHEMTcWp42U8k/YKZw4GkKfe6SDq29X3UlU8NWluQBHfl6I61Bb
+         haZDj4mpyyEITFyBGWqGbaTnQEwkOcYoz8zdcDvqVCHwGvY9Qi1E5Z6ru5vsND54pM3n
+         f7b7EiWTs1WjM9Waj+8empEOxioMRXxnQ14GXFZzyhqP4QYpMSmqWd/hQPSW2+eMPQ2s
+         xq8+Ctyv1EYNQfveIl/fD9JQ/lXBm3Tr13j3R6pMORfaZn29eAPvqfNrze6So4AUASJI
+         Er+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755198583; x=1755803383;
+        d=1e100.net; s=20230601; t=1755198586; x=1755803386;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+UJlJ9+DjZd2THGL3J+lidGXBes5gAiTYGr+fy//EDg=;
-        b=wC0gy8Z3ZCy0AM34yeVDxPNJ4haNhfLzi3U8dMIr7X9aMiBCWADvwbAGV8mQrLkxuf
-         uUkNLAlKMJqe5sapP1DfkK+HSZ4yx86qqueoFAFGsFvwf2Gt0uXAzylPMXjgEvfpJZUI
-         io68ndLSSWgbzvRkKRTA3AY/sI8HsSc95BYUzpgydmqFA7B/ThR+YF+WUu0v1VbUBpz5
-         ZIaEZBOCOo/C5PaYVcgrBsqQFjHjLIkmRW7aGYSWTwG2ODf5vw9tIXzOdwVTJexObAtE
-         KQOP4hTmNsudrXUz6aFMZL2MoEG5qVc+UnajToijCkyxmjpAiZvfwvgLTGPpecbQAtO8
-         n+PA==
-X-Forwarded-Encrypted: i=1; AJvYcCVC2Qr1l1bVkpYu5HiJCr6hvTTzdLlpzS+9qUH/QKplxbqsX713Zf7WcjNawrfxMs7XAK0iG8A8i/QVzfc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzbie0TbDqq70ROqgfBD4oSyXST+htcHq425oBZqzEQW1+aFkcM
-	VzAM34Chzc/diMgEd2qNsFIKjEn+zn0ir1ryn+TikCPcRwxDC2kqKs+OV0zd3A==
-X-Gm-Gg: ASbGncufldAmk87r3Uz5qF6aAXb2z9qA4CdZV4/44Y5bzDoh+zn/Es7K4DD/mjs45IM
-	U65TVXyO3BL308x9VpFk0ZGWl6t7yujQTYykYbomWdNL1ZStMtYb+9DQVSkIJ+rSOE9Dr8mF0OW
-	z/RpJBQ+rf27y169mkhN0H+T73BNEhAT4euQ+qL8bwuXL0GsAyNNcF0nG8yuLXOAMEpBfwJ86ZC
-	6tJoNjQ/TAdG+1WztuCVGcB4BK+vmmq7XoQ6HS7jRPbO8j2SSjbKK3iR0+k7XNaVTp5TfbUI2Jx
-	qOXZWs77WSkf773KsoVcKNz7cUiMDlAqW1S3sLfJbtmD5m11NdOFNFTr3BZJWvNChg9nfwzAvQl
-	os1aahJnRuirHGz+CvAx8Qg==
-X-Google-Smtp-Source: AGHT+IFFwZv1c1ZK8S3HgX4X3suV9YEHMQS8EnvLEjc+VXrDDUDebFYY3z9RLaiGqd94M4QhyksWTw==
-X-Received: by 2002:a17:90b:3c86:b0:321:1df6:97d3 with SMTP id 98e67ed59e1d1-3233d09ce8fmr24505a91.4.1755198583280;
-        Thu, 14 Aug 2025 12:09:43 -0700 (PDT)
+        bh=IF8qj3lRR6EFkcmgoXgDdUEvoMakOzSl+hSokVwaKUI=;
+        b=q9wzVLx5mbO9kX1GAUq/kQBOgp82xAPOLMwY6PbS57dhX8S24UG8s+G0eSaJK69tW1
+         16INahvoCWHvO6k+Zy2bAp1KQu0WXZweGSamxch/l9i5BD3wpwEfPOTTc0Io9rPus6Vx
+         DKpdie2VSL5TSSKxqQerCyzRAh9khjLE56qqMpWKB9YX6x9GQFPkrQyxQieafIUk8w5P
+         z+MhJUobZSHzYqFPWiiEGfDs6KIR+HGzT32ca1rsTOt9x8I9KtCzJbBSZ68GNN80XpLT
+         77q4mf9bWMP3sw6Plz/vhpKn6oLw3ceG6nbVyjqvBfDM2kOKNkxQpXVIToSoV7J6+yby
+         Nl8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWvO0gx2TFZWOtZKhhRXnS5gB4E8Jn7XQkp4pxByvL+AX1ZPGguTZ/W5f0pCa2bjeE9PX1nDgbyYg6V/2E=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxrlb85RaZQFurjvJ2dw28OASHrA8KsjswQNs1K3yB11xmM55Ln
+	+Uwf29dDw/vwsfQOPtuNchXZbZUIkV1+SvUFhR/Cfa2sIo9ojkMdxZ2n
+X-Gm-Gg: ASbGncugjHQ3vHNLLodwUgTwVCn93mFSeUH/ax7OrBmF3EoRwF39DIdjsfcMT7lUUTM
+	imNRPWg8ZgfLB8pET2asVlp4Fx7qYLOEqz67CUop7WQMcu+w4ueisabQxgA6BkI7Jz3J7Klmt8Z
+	QPE+S+Rs6chyY1sIcwJDCOJ6BM2ccnhiTf9Yyhd0/AWwvUBYf98XqR8jpCiNM/WEd7ruuwWE7eF
+	1UGTle+pZNcpvg9pqJ3nXgygiHcTlfHoNrx3oozxLSldund9RFm/Vu3du1dCkcW9i7h48BMSL+a
+	a6Cy6m9J1FXIuveHCk1u7vLJ4tCRBoF8XcP/B9eEyMU8mXBUjk+5uk6Z0jJ08U0PV15sGSASqjm
+	asSBhMSzfB0OfTM6+Fll2lw==
+X-Google-Smtp-Source: AGHT+IHO9E6Ju6YUC/4W76OL34pJ6YJlwPdxgruOXLM17Ydpcq6OMMHw8A2vXRvcEHPm1CQnzcq1PQ==
+X-Received: by 2002:a05:6a20:5491:b0:240:104c:8e14 with SMTP id adf61e73a8af0-240bd285526mr7187108637.38.1755198586198;
+        Thu, 14 Aug 2025 12:09:46 -0700 (PDT)
 Received: from localhost ([216.228.127.131])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32330f8329asm2637497a91.3.2025.08.14.12.09.42
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-76bccfd8ebbsm35345257b3a.102.2025.08.14.12.09.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Aug 2025 12:09:42 -0700 (PDT)
+        Thu, 14 Aug 2025 12:09:45 -0700 (PDT)
 From: Yury Norov <yury.norov@gmail.com>
 To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -82,9 +82,9 @@ To: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Yury Norov <yury.norov@gmail.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/2] powerpc: pci-ioda: use bitmap_alloc() in pnv_ioda_pick_m64_pe()
-Date: Thu, 14 Aug 2025 15:09:35 -0400
-Message-ID: <20250814190936.381346-2-yury.norov@gmail.com>
+Subject: [PATCH v3 2/2] powerpc: pci-ioda: Optimize pnv_ioda_pick_m64_pe()
+Date: Thu, 14 Aug 2025 15:09:36 -0400
+Message-ID: <20250814190936.381346-3-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250814190936.381346-1-yury.norov@gmail.com>
 References: <20250814190936.381346-1-yury.norov@gmail.com>
@@ -109,59 +109,60 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>
 
-Use the dedicated bitmap_alloc() in pnv_ioda_pick_m64_pe() and drop
-some housekeeping code.
+bitmap_empty() in pnv_ioda_pick_m64_pe() is O(N) and useless because
+the following find_next_bit() does the same work.
 
-Because pe_alloc is local, annotate it with __free() and get rid of
-the explicit kfree() calls.
+Drop it, and while there replace a while() loop with the dedicated
+for_each_set_bit().
 
-Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/powernv/pci-ioda.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
 diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index d8ccf2c9b98a..2a4b916205c1 100644
+index 2a4b916205c1..23b1db3f15a9 100644
 --- a/arch/powerpc/platforms/powernv/pci-ioda.c
 +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -292,18 +292,16 @@ static void pnv_ioda_reserve_m64_pe(struct pci_bus *bus,
- 
- static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
- {
-+	unsigned long *pe_alloc __free(bitmap) = NULL;
+@@ -295,7 +295,7 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
+ 	unsigned long *pe_alloc __free(bitmap) = NULL;
  	struct pnv_phb *phb = pci_bus_to_pnvhb(bus);
  	struct pnv_ioda_pe *master_pe, *pe;
--	unsigned long size, *pe_alloc;
- 	int i;
+-	int i;
++	unsigned int i;
  
  	/* Root bus shouldn't use M64 */
  	if (pci_is_root_bus(bus))
- 		return NULL;
+@@ -311,23 +311,16 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
+ 	/* Figure out reserved PE numbers by the PE */
+ 	pnv_ioda_reserve_m64_pe(bus, pe_alloc, all);
  
--	/* Allocate bitmap */
--	size = ALIGN(phb->ioda.total_pe_num / 8, sizeof(unsigned long));
--	pe_alloc = kzalloc(size, GFP_KERNEL);
-+	pe_alloc = bitmap_zalloc(phb->ioda.total_pe_num, GFP_KERNEL);
- 	if (!pe_alloc) {
- 		pr_warn("%s: Out of memory !\n",
- 			__func__);
-@@ -319,7 +317,6 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
- 	 * pick M64 dependent PE#.
+-	/*
+-	 * the current bus might not own M64 window and that's all
+-	 * contributed by its child buses. For the case, we needn't
+-	 * pick M64 dependent PE#.
+-	 */
+-	if (bitmap_empty(pe_alloc, phb->ioda.total_pe_num)) {
+-		return NULL;
+-	}
+-
+ 	/*
+ 	 * Figure out the master PE and put all slave PEs to master
+ 	 * PE's list to form compound PE.
++	 *
++	 * The current bus might not own M64 window and that's all
++	 * contributed by its child buses. For the case, we needn't
++	 * pick M64 dependent PE#.
  	 */
- 	if (bitmap_empty(pe_alloc, phb->ioda.total_pe_num)) {
--		kfree(pe_alloc);
- 		return NULL;
- 	}
+ 	master_pe = NULL;
+-	i = -1;
+-	while ((i = find_next_bit(pe_alloc, phb->ioda.total_pe_num, i + 1)) <
+-		phb->ioda.total_pe_num) {
++	for_each_set_bit(i, pe_alloc, phb->ioda.total_pe_num) {
+ 		pe = &phb->ioda.pe_array[i];
  
-@@ -345,7 +342,6 @@ static struct pnv_ioda_pe *pnv_ioda_pick_m64_pe(struct pci_bus *bus, bool all)
- 		}
- 	}
- 
--	kfree(pe_alloc);
- 	return master_pe;
- }
- 
+ 		phb->ioda.m64_segmap[pe->pe_number] = pe->pe_number;
 -- 
 2.43.0
 
