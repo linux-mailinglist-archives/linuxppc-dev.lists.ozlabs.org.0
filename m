@@ -1,70 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-10965-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-10966-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264CCB2585D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 02:30:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4795EB2587A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 Aug 2025 02:40:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c2R3T5f51z30TM;
-	Thu, 14 Aug 2025 10:30:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c2RH4605Nz30TM;
+	Thu, 14 Aug 2025 10:40:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4860:4864:20::2a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755131429;
-	cv=none; b=UgODAHNYMHlZUmnIO2Q30UQMRDXP74NkAVU4S4pjO9tH6DYw/2UTRocoDZmm/0zSivgZzlBDUAJ/ha+oMWDLEq4W6Q1xGBqm+YQcM3Cd0XSpo3+D0IYrV2zm5ZHevReJm7731FtI9PvXKIv5v+/I2AyDPrVZ8oprM7IpYpvutauY8EC+f6QBuSaGXBWN8iAplcyM+Blrmzwqs07zAAdQVi5rjdtFY7eOgrLWsPC/jDRWzbvEpc45cob+X9e6eAQcCISxiBnutZ60lRTOhvaZoGNc9r8XlCa2pIIGJeZ6ZIEeFZ8ZpX+IqRe6KHOr4HXTq0hE75vRVcSHDWZqP4FzSg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755132032;
+	cv=none; b=S6czneF6iw8ag81O1rcLZnbYsXQAGW/HdV4FFvMuOhxOQSlxl7sfpddMQnw28HPhE4hdmw34e/JcfVkZjp6v1FDhsk/UjQ44gavIjVOM0GBN5zvmX/EOYoVM9M0Qq/eYrZ/s8hqhZ9dFFD68XuFfics0KVbvBDSKtbMVC30v5psNMsQkE2BuDrwHeZiqcrQhuhnPk7kTbdO8BGOqtww6dhXVcePHk6EnvPdcR7kSok8cv+cRI/Wz0IRm9n1hQt4BfuddUFo1XTXPp2w/mwH4xId+kCtu7ww7v/KRwbDpbt0S4WSZ8WAsL9vR+oQfHD9C68AATgCNSU/cOz1s/UTWxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755131429; c=relaxed/relaxed;
-	bh=BlCvnOQctLd/+WDVBQmTo0WOxMHirEzzfWhXA87C2eg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fGoEaEgnbAYpK0J+lTJmkTCnMdtQp+N2Gs7mLoLUMgIf0iV8KLbbNSYzsBsHKS9CpbmJRu4MBG/nnmI0pFLRmSDtW3kO+LHZDt5Nqd5J4BIWJYWbc4S9iAmurSWtQdo92PpndbdTL0mLDiG2+YU1eemXJfVPimYZ0u5eOxLlQHoiW0ONISNo387Cxb9pu54m1pTg0lArY3FEibjJj0gQsuE06s3Zbv5RBXlpEdcL7uut1muxOhPgMKU4YOmilT4Yja6EgHx+KO4X2iyZW31N8FFTvBOg90aTjnLwsffWIn0CP3gApVXzpArnPuZeYEHGxL/EyNBgpCOx7JcN4t5nFA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JkQMJ48Z; dkim-atps=neutral; spf=pass (client-ip=2001:4860:4864:20::2a; helo=mail-oa1-x2a.google.com; envelope-from=linasvepstas@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1755132032; c=relaxed/relaxed;
+	bh=leEl8NhZNHj91L5565KCjFgPCWoCsKwacsX2V7IJRHE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GXriON3PxyU356CBwCTBcGjciCtMbFbWF5tTQKEKBHCEYkzT0tQ6Lw7xE7gX+KNlCFPHIyBoEC5/k4VdBmUWj1kXyBmT7CEj6mD6yG1qTD1gSQa31ziYYl9NQ+BG0Y+d/HTx1/h5OLiGCVGsp/VWrelKQDzJ+ojLBF8j5YMvn8A9MuIc69LAWbDTD9tcu3FyblsEEKj8x6+u5l5fnpIWrUuJdlmAXwpiN0sc55Psb15dDVrvFU6ECM24a4CrzS5tDI5AVx5NoOIVDpH4dARaYBCViPddsOcFWvugIGa2MUnO0v3sQ7W0anZ5TjKNllIDM2aelvCl05YT/oiuy8+MrA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HunAsH9m; dkim-atps=neutral; spf=none (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JkQMJ48Z;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HunAsH9m;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2001:4860:4864:20::2a; helo=mail-oa1-x2a.google.com; envelope-from=linasvepstas@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2R3S6yL1z30Sy
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 10:30:28 +1000 (AEST)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-30cceaaecd8so164970fac.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 Aug 2025 17:30:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755131426; x=1755736226; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=BlCvnOQctLd/+WDVBQmTo0WOxMHirEzzfWhXA87C2eg=;
-        b=JkQMJ48ZAc1E8nETX06LaJKDxZuqyvTzTmxcasLBmu2lMqIZpqLb2kLzIraqodzqwY
-         amDvhgsZKW9cYcVAutC2KuJOJ2VCPNHUQHG+hm5NtBrCG912zECFXSMPTh0CskIct8Yx
-         kS8yMWm1QHs1v8gm5LRHNu8XQc1P9+wHb/Uohl/ZGM2WXgN9VRY9DGyAj6RNHvGlB3/2
-         ich0BtLkLXGwoaHIE0Vy7sK9rpxW8ZfJ7wGZyvHhvBAA3+zr7CYLen4BsguVB/Gkl5bZ
-         PJHSXm39KxgKDaf1CNMbdECaE9NdMforfJ/Q49c+BxMZifHiTiCMdmKQP8C/dpcmEh45
-         6qZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755131426; x=1755736226;
-        h=cc:to:subject:message-id:date:from:reply-to:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BlCvnOQctLd/+WDVBQmTo0WOxMHirEzzfWhXA87C2eg=;
-        b=CNouAGH79n5oY++8+SyzY+7iKn6AXKSeC9158MUhJ7tPNQaO76unppiZs1QuLL7u6+
-         klPOlu34xuTevyK9n226qS7P6EhYtli3+NtrcOM3C/xVPV+TH60ThxeCZ8gousj7QDAy
-         u59dWWIiuOMTHS3E9Vy1MnpptL2DnMWA+xuZkeC47DJXi/dHe6WE4AlGehUWQ/FWHwr6
-         VVxwhtveLMsd6c3V6JP7z0sWmTp0Jb2AqMudOmAt2SLBdskxYTk/MUTImMIjSuKjpUDn
-         Et3PmLg6hRl8s/mo5ceV6+yGukHiKom17E18mubwb3rVdktwj4H4aim269piuXvnZU31
-         zk4g==
-X-Forwarded-Encrypted: i=1; AJvYcCWSAJjWsNeC6P1U7pIqD3ZAXkctM6vGGlDeI4wcneS6fKYbQumC6Dw42HMPtRvh8B5Vuz9Nm17vaW/vTxI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy9BPzzaqHDMfLUYzR3U+cvWuiv+m4/AvwU8KjkN/roJdmtnk6a
-	IHugS54mm8UVcYmarGk8qDudUFAJUejnzwVkWAhDFPjQUaLlAKLUb4zZSkXwgwX851ZMip/EO2s
-	+6Elf9pHvhrCs5YBVehyFL4hq1C8Gv24=
-X-Gm-Gg: ASbGncsfushoyBgwBLjd+NUItC4HlMbt8IKDPzzRRxgXw4Jk8z2Q8ya8ZTWzSGBIprk
-	QoOIGEYG/083mn6g/Q9IyUgU3RkjekPkmhqmMwiQMiNuDqITZQ4/lQgVkrD7LF/V8KGEt159GLM
-	R2CUB3cdEI7DryzkVDDo04/oJPMpHF2jiq54uRIBz9063zMV82aCDjbUQP03Y5pIYVdaBYaA5mF
-	IZl0A==
-X-Google-Smtp-Source: AGHT+IEbWRTSBuOYeeoAr9bKy1UQ6rnS/Kyyy4nFD6ljr+lBlBotQlXVzUZZguvVbNcmYuDePTXobqR2QR9chL3wUOs=
-X-Received: by 2002:a05:6808:17a4:b0:402:18a1:843f with SMTP id
- 5614622812f47-435df7f8108mr786004b6e.32.1755131425843; Wed, 13 Aug 2025
- 17:30:25 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c2RH14jD2z30Sy
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 Aug 2025 10:40:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755132030; x=1786668030;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=TN6yIRy/n3GAXu3+Cz6SHsLoEcKFJfcymnW3CHC41C4=;
+  b=HunAsH9mDfsIPHqbGaYJbMySypiLy/o4Jzp64rsD1NC7399u1WO+MLfe
+   7XocbqD4D51wiI+ORDjDEwTB+G7W9TuRqbtCl2h0up3nzh1RKXTCv+M30
+   jTTnWicBmAe2F8rypIOkhmQe6Fivb9P2b9WbKuIOV1XltIvPhDvmcOop7
+   uUoPTjo/ZCYl4NlT04L+NkZsEluTxlSGbeMkTKARex9VSjZVpnNQ+VAHo
+   WXjnAHe2wCw/dZIvMeU4mnQ0nTB9x6K+JfDzJANg3uzxfBjaQBYxJW9QT
+   nJTndUD9zUK9nz/qhoZq4n6RoJDcdc5I6D9leATBcLMoxNXa1TTAl61QG
+   g==;
+X-CSE-ConnectionGUID: XiALF0ScSEKgb8TWsXvPig==
+X-CSE-MsgGUID: N4LBPFR4SbemNS9pfK0G+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11520"; a="68521645"
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
+   d="scan'208";a="68521645"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 17:40:25 -0700
+X-CSE-ConnectionGUID: 3UkUsY5oR+mykk3Pf1Th3Q==
+X-CSE-MsgGUID: ba5Gof1LSTa66Z6VAA22jg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,287,1747724400"; 
+   d="scan'208";a="203795622"
+Received: from linux.intel.com ([10.54.29.200])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2025 17:40:25 -0700
+Received: from [10.124.222.231] (unknown [10.124.222.231])
+	by linux.intel.com (Postfix) with ESMTP id 82EC720B571C;
+	Wed, 13 Aug 2025 17:40:23 -0700 (PDT)
+Message-ID: <59308229-24ed-4b8a-b398-cc47c61dfc47@linux.intel.com>
+Date: Wed, 13 Aug 2025 17:40:17 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,184 +72,123 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] PCI/ERR: Remove remnants of .link_reset() callback
+To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>
+Cc: Riana Tauro <riana.tauro@intel.com>,
+ Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>,
+ "Sean C. Dardis" <sean.c.dardis@intel.com>,
+ Terry Bowman <terry.bowman@amd.com>, Niklas Schnelle
+ <schnelle@linux.ibm.com>, Linas Vepstas <linasvepstas@gmail.com>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver OHalloran <oohall@gmail.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ Edward Cree <ecree.xilinx@gmail.com>, linux-net-drivers@amd.com,
+ James Smart <james.smart@broadcom.com>,
+ Dick Kennedy <dick.kennedy@broadcom.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ linux-scsi@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org
 References: <cover.1755008151.git.lukas@wunner.de>
-In-Reply-To: <cover.1755008151.git.lukas@wunner.de>
-Reply-To: linasvepstas@gmail.com
-From: Linas Vepstas <linasvepstas@gmail.com>
-Date: Wed, 13 Aug 2025 19:30:14 -0500
-X-Gm-Features: Ac12FXxx7JOXt2R6Mwt1m1mshgZ-FezFJtAHN_Q20N-4qkbgN5MFLcN6Fv71Xr4
-Message-ID: <CAHrUA34fVV48MShC4CrXSmveR9i8MC4KAQxtM+XQY_Ao8joBQw@mail.gmail.com>
-Subject: Re: [PATCH 0/5] PCI: Reduce AER / EEH deviations
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Riana Tauro <riana.tauro@intel.com>, 
-	Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>, 
-	"Sean C. Dardis" <sean.c.dardis@intel.com>, Terry Bowman <terry.bowman@amd.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Niklas Schnelle <schnelle@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver OHalloran <oohall@gmail.com>, 
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-pci@vger.kernel.org, Shahed Shaikh <shshaikh@marvell.com>, 
-	Manish Chopra <manishc@marvell.com>, GR-Linux-NIC-Dev@marvell.com, 
-	Nilesh Javali <njavali@marvell.com>, GR-QLogic-Storage-Upstream@marvell.com, 
-	Edward Cree <ecree.xilinx@gmail.com>, linux-net-drivers@amd.com, 
-	James Smart <james.smart@broadcom.com>, Dick Kennedy <dick.kennedy@broadcom.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
-Content-Type: multipart/alternative; boundary="0000000000002bf012063c486118"
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HTML_MESSAGE,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+ <1d72a891a7f57115e78a73046e776f7e0c8cd68f.1755008151.git.lukas@wunner.de>
+Content-Language: en-US
+From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
+In-Reply-To: <1d72a891a7f57115e78a73046e776f7e0c8cd68f.1755008151.git.lukas@wunner.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
---0000000000002bf012063c486118
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-FWIW
-Reviewed-by: Linas Vepstas <linasvepstas@gmail.com>
+On 8/12/25 10:11 PM, Lukas Wunner wrote:
+> Back in 2017, commit 2fd260f03b6a ("PCI/AER: Remove unused .link_reset()
+> callback") removed .link_reset() from struct pci_error_handlers, but left
+> a few code comments behind which still mention it.  Remove them.
+>
+> The code comments in the SolarFlare Ethernet drivers point out that no
+> .mmio_enabled() callback is needed because the driver's .error_detected()
+> callback always returns PCI_ERS_RESULT_NEED_RESET, which causes
+> pcie_do_recovery() to skip .mmio_enabled().  That's not quite correct
+> because efx_io_error_detected() does return PCI_ERS_RESULT_RECOVERED under
+> certain conditions and then .mmio_enabled() would indeed be called if it
+> were implemented.  Remove this misleading portion of the code comment as
+> well.
+>
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> ---
 
-*** Notes: I wrote the original EEH handler, and three or four ethernet and
-scsi EEH recovery drivers (including lpfc and qla, if I recall correctly).
-I've been inactive in kernel development for more than a decade; I did read
-this patch series (carefully); it seems excellent, from my rather distant
-viewpoint. My apologies if this email feels like noise to anyone on the cc
-list; I feel obliged to respond. -- Linas
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-On Wed, Aug 13, 2025 at 12:11=E2=80=AFAM Lukas Wunner <lukas@wunner.de> wro=
-te:
+>   drivers/net/ethernet/sfc/efx_common.c       | 3 ---
+>   drivers/net/ethernet/sfc/falcon/efx.c       | 3 ---
+>   drivers/net/ethernet/sfc/siena/efx_common.c | 3 ---
+>   drivers/scsi/lpfc/lpfc_init.c               | 2 +-
+>   4 files changed, 1 insertion(+), 10 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/sfc/efx_common.c b/drivers/net/ethernet/sfc/efx_common.c
+> index 5a14d94163b1..e8fdbb62d872 100644
+> --- a/drivers/net/ethernet/sfc/efx_common.c
+> +++ b/drivers/net/ethernet/sfc/efx_common.c
+> @@ -1258,9 +1258,6 @@ static void efx_io_resume(struct pci_dev *pdev)
+>   
+>   /* For simplicity and reliability, we always require a slot reset and try to
+>    * reset the hardware when a pci error affecting the device is detected.
+> - * We leave both the link_reset and mmio_enabled callback unimplemented:
+> - * with our request for slot reset the mmio_enabled callback will never be
+> - * called, and the link_reset callback is not used by AER or EEH mechanisms.
+>    */
+>   const struct pci_error_handlers efx_err_handlers = {
+>   	.error_detected = efx_io_error_detected,
+> diff --git a/drivers/net/ethernet/sfc/falcon/efx.c b/drivers/net/ethernet/sfc/falcon/efx.c
+> index b07f7e4e2877..0c784656fde9 100644
+> --- a/drivers/net/ethernet/sfc/falcon/efx.c
+> +++ b/drivers/net/ethernet/sfc/falcon/efx.c
+> @@ -3128,9 +3128,6 @@ static void ef4_io_resume(struct pci_dev *pdev)
+>   
+>   /* For simplicity and reliability, we always require a slot reset and try to
+>    * reset the hardware when a pci error affecting the device is detected.
+> - * We leave both the link_reset and mmio_enabled callback unimplemented:
+> - * with our request for slot reset the mmio_enabled callback will never be
+> - * called, and the link_reset callback is not used by AER or EEH mechanisms.
+>    */
+>   static const struct pci_error_handlers ef4_err_handlers = {
+>   	.error_detected = ef4_io_error_detected,
+> diff --git a/drivers/net/ethernet/sfc/siena/efx_common.c b/drivers/net/ethernet/sfc/siena/efx_common.c
+> index a0966f879664..35036cc902fe 100644
+> --- a/drivers/net/ethernet/sfc/siena/efx_common.c
+> +++ b/drivers/net/ethernet/sfc/siena/efx_common.c
+> @@ -1285,9 +1285,6 @@ static void efx_io_resume(struct pci_dev *pdev)
+>   
+>   /* For simplicity and reliability, we always require a slot reset and try to
+>    * reset the hardware when a pci error affecting the device is detected.
+> - * We leave both the link_reset and mmio_enabled callback unimplemented:
+> - * with our request for slot reset the mmio_enabled callback will never be
+> - * called, and the link_reset callback is not used by AER or EEH mechanisms.
+>    */
+>   const struct pci_error_handlers efx_siena_err_handlers = {
+>   	.error_detected = efx_io_error_detected,
+> diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+> index 4081d2a358ee..cf08bb5b37c3 100644
+> --- a/drivers/scsi/lpfc/lpfc_init.c
+> +++ b/drivers/scsi/lpfc/lpfc_init.c
+> @@ -14377,7 +14377,7 @@ lpfc_sli_prep_dev_for_perm_failure(struct lpfc_hba *phba)
+>    * as desired.
+>    *
+>    * Return codes
+> - * 	PCI_ERS_RESULT_CAN_RECOVER - can be recovered with reset_link
+> + *	PCI_ERS_RESULT_CAN_RECOVER - can be recovered without reset
+>    * 	PCI_ERS_RESULT_NEED_RESET - need to reset before recovery
+>    * 	PCI_ERS_RESULT_DISCONNECT - device could not be recovered
+>    **/
 
-> The kernel supports three different PCI error recovery mechanisms:
->
-> * AER per PCIe r7.0 sec 6.2 (drivers/pci/pcie/aer.c + err.c)
-> * EEH on PowerPC (arch/powerpc/kernel/eeh_driver.c)
-> * zPCI on s390 (arch/s390/pci/pci_event.c)
->
-> In theory, they should all follow Documentation/PCI/pci-error-recovery.rs=
-t
-> to afford uniform behavior to drivers across platforms.
->
-> In practice, there are deviations which this series seeks to reduce.
->
-> One particular pain point is AER not allowing drivers to opt in to a
-> Bus Reset on Non-Fatal Errors (patch [1/5]).  EEH allows this and the
-> "xe" graphics driver would like to take advantage of it on AER-capable
-> platforms.  Patches [2/5] to [4/5] address various other deviations,
-> while patch [5/5] cleans up old gunk in code comments.
->
-> I've gone through all drivers implementing pci_error_handlers to ascertai=
-n
-> that no regressions are introduced by these changes.  Nevertheless furthe=
-r
-> reviewing and testing would be appreciated to raise the confidence.
-> Thanks!
->
-> Lukas Wunner (5):
->   PCI/AER: Allow drivers to opt in to Bus Reset on Non-Fatal Errors
->   PCI/ERR: Fix uevent on failure to recover
->   PCI/ERR: Notify drivers on failure to recover
->   PCI/ERR: Update device error_state already after reset
->   PCI/ERR: Remove remnants of .link_reset() callback
->
->  .../ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c   |  1 -
->  .../net/ethernet/qlogic/qlcnic/qlcnic_main.c  |  2 -
->  drivers/net/ethernet/sfc/efx_common.c         |  3 --
->  drivers/net/ethernet/sfc/falcon/efx.c         |  3 --
->  drivers/net/ethernet/sfc/siena/efx_common.c   |  3 --
->  drivers/pci/pcie/err.c                        | 40 ++++++++++++++-----
->  drivers/scsi/lpfc/lpfc_init.c                 |  2 +-
->  drivers/scsi/qla2xxx/qla_os.c                 |  5 ---
->  8 files changed, 32 insertions(+), 27 deletions(-)
->
-> --
-> 2.47.2
->
->
+-- 
+Sathyanarayanan Kuppuswamy
+Linux Kernel Developer
 
---=20
-Patrick: Are they laughing at us?
-Sponge Bob: No, Patrick, they are laughing next to us.
-
---0000000000002bf012063c486118
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>FWIW<br></div><div>Reviewed-by: Linas Vepstas &lt;<a =
-href=3D"mailto:linasvepstas@gmail.com">linasvepstas@gmail.com</a>&gt;</div>=
-<div>=C2=A0</div><div>*** Notes: I wrote the original EEH handler, and thre=
-e or four ethernet and scsi EEH recovery drivers (including lpfc and qla, i=
-f I recall correctly). I&#39;ve been inactive in kernel development for mor=
-e than a decade; I did read this patch series (carefully); it seems excelle=
-nt, from my rather distant viewpoint. My apologies if this email feels like=
- noise to anyone on the cc list; I feel obliged to respond. -- Linas<br></d=
-iv></div><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"l=
-tr" class=3D"gmail_attr">On Wed, Aug 13, 2025 at 12:11=E2=80=AFAM Lukas Wun=
-ner &lt;<a href=3D"mailto:lukas@wunner.de">lukas@wunner.de</a>&gt; wrote:<b=
-r></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
-;border-left:1px solid rgb(204,204,204);padding-left:1ex">The kernel suppor=
-ts three different PCI error recovery mechanisms:<br>
-<br>
-* AER per PCIe r7.0 sec 6.2 (drivers/pci/pcie/aer.c + err.c)<br>
-* EEH on PowerPC (arch/powerpc/kernel/eeh_driver.c)<br>
-* zPCI on s390 (arch/s390/pci/pci_event.c)<br>
-<br>
-In theory, they should all follow Documentation/PCI/pci-error-recovery.rst<=
-br>
-to afford uniform behavior to drivers across platforms.<br>
-<br>
-In practice, there are deviations which this series seeks to reduce.<br>
-<br>
-One particular pain point is AER not allowing drivers to opt in to a<br>
-Bus Reset on Non-Fatal Errors (patch [1/5]).=C2=A0 EEH allows this and the<=
-br>
-&quot;xe&quot; graphics driver would like to take advantage of it on AER-ca=
-pable<br>
-platforms.=C2=A0 Patches [2/5] to [4/5] address various other deviations,<b=
-r>
-while patch [5/5] cleans up old gunk in code comments.<br>
-<br>
-I&#39;ve gone through all drivers implementing pci_error_handlers to ascert=
-ain<br>
-that no regressions are introduced by these changes.=C2=A0 Nevertheless fur=
-ther<br>
-reviewing and testing would be appreciated to raise the confidence.<br>
-Thanks!<br>
-<br>
-Lukas Wunner (5):<br>
-=C2=A0 PCI/AER: Allow drivers to opt in to Bus Reset on Non-Fatal Errors<br=
->
-=C2=A0 PCI/ERR: Fix uevent on failure to recover<br>
-=C2=A0 PCI/ERR: Notify drivers on failure to recover<br>
-=C2=A0 PCI/ERR: Update device error_state already after reset<br>
-=C2=A0 PCI/ERR: Remove remnants of .link_reset() callback<br>
-<br>
-=C2=A0.../ethernet/qlogic/qlcnic/qlcnic_83xx_hw.c=C2=A0 =C2=A0|=C2=A0 1 -<b=
-r>
-=C2=A0.../net/ethernet/qlogic/qlcnic/qlcnic_main.c=C2=A0 |=C2=A0 2 -<br>
-=C2=A0drivers/net/ethernet/sfc/efx_common.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0|=C2=A0 3 --<br>
-=C2=A0drivers/net/ethernet/sfc/falcon/efx.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0|=C2=A0 3 --<br>
-=C2=A0drivers/net/ethernet/sfc/siena/efx_common.c=C2=A0 =C2=A0|=C2=A0 3 --<=
-br>
-=C2=A0drivers/pci/pcie/err.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 40 ++++++++++++++-----<br>
-=C2=A0drivers/scsi/lpfc/lpfc_init.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 2 +-<br>
-=C2=A0drivers/scsi/qla2xxx/qla_os.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 5 ---<br>
-=C2=A08 files changed, 32 insertions(+), 27 deletions(-)<br>
-<br>
--- <br>
-2.47.2<br>
-<br>
-</blockquote></div><div><br clear=3D"all"></div><br><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
-iv dir=3D"ltr"><div>Patrick: Are they laughing at us?</div><div>Sponge Bob:=
- No, Patrick, they are laughing next to us.</div><div>=C2=A0<br></div><br><=
-/div></div>
-
---0000000000002bf012063c486118--
 
