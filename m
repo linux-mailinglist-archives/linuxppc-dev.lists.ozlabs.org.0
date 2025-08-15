@@ -1,62 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-11040-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11041-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097D2B272F8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Aug 2025 01:24:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC02EB27818
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Aug 2025 07:11:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c31XW0Q2Rz30TG;
-	Fri, 15 Aug 2025 09:24:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c39Ds1qdDz3bqP;
+	Fri, 15 Aug 2025 15:11:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755213850;
-	cv=none; b=SZv7Tg1FBxeN+Qxx5FbSE9MrnVmwEBh5Y2bTO8oJ8Z14A/uaF9ioZwiKF73OV5J+e0NgDH6JLOWkAzejqDe6DoEyE61y7JQamqtlNPvYmDGbOTPzNRaO+qMlm2k2eEA/mN4jD7kDBtTABHMaXVxKqqDILXsj+OB1GoR57BH5Ni1pN0GezDOpdvN9tm7Or6SLgRjYmcKAaPpmn19CeCD+cXsYasvZdT9ln80D5BrgvRZVlPp4cGkLiMgC1cQDjZMLbhFYRvXqXmqm1G6BuzrVoZMwc3kGu8vxrMvlEMNjY213aPsWQkIOUxh3tD3wFPTIr2ze/1oSkA1pwaxz+J/ifg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755234669;
+	cv=none; b=DnBSjl4+rh1KH5vEa/TuIrCwiSShX+z1JnJCqK/TAVBP5Gqgw1Evk8bKBwic//0Vm7IQLqTweTxKmkQi/grxExT227bvPWZOuzFqBM5tOtSa0hqxVLkfBDOAvGXdkS1aX68YE+VirapYVJTDspZEzu5VpaYIvIjDTOkz7g1gU11O5fGGjsDPcFPt2PccJ3tMqZuuEZ02qN501I2ZBSW1JFtQnyMjzgl5N25T8zEruovcuoH8RlxrnxuWd36pmEhPcHeJEyUinKvNf/KhjqWA35OCSNixhIGXPVH0jVV921Sz6OX9CYG/9TNxH607psp6b/EOuoERYzPpd11Naj/YfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755213850; c=relaxed/relaxed;
-	bh=41vZQE4qVj2qb70cjSoEC4RwtvqSxYt+zihXufpvrB4=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=dbUDbiU5yL/0QKZzQreBRf4CbGtIDv1hvKla2bN+TA7v5HJow2gsSwwkUgKWX968c1tSd/TkKBxa3nBnIY/qBzQZjNnHbpdR3ap3PRWh4KkSohBM5dxyvQL1SKT2ToLrjoz0fluxmhkz3mwdxww+ULaYnqn3IfOAfiOaiybVclNePPstHWAFMO4SBSMdbF+GuaPJEx/Rt45rWCOFxIr9ovmrogpRjun6YCWJSvH6mdrThH45U7bqQPQiePddVQr6fTSsgygsPLsbbRAeuhkk6223gWreVIXB0rs0iUHWEn7SpjnqC2X2xiC/xjclmMSpCAViJzCvRRQ81ucQb9WxoA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=0jiS0MN4; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1755234669; c=relaxed/relaxed;
+	bh=XUOWdZP1cezLj5JR2qWET0ULt+yC1LXg9Jc7bXW5jXo=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=UR78toMLqOot69d4fAJ88qdZ71zOTXyEHQwIvuiq5bbf2MVaHPbQe0q3Q07pJuIYsdRXdiZIpngHIf1z7UIDUbICcrs7bMSknwfOy1KkEAKmudpslUJIAkBGQWlzTpYMYX2baRpSx54nl5A75FSG3qt5tQYo4ZVVBgN55vnWCt0RkR/A7zaHrBH9n0AaxnkzgysrrIdff+BHuDlJeJxD63OiAQCdahiR8ch1vuXhLQVOtIKCdWHbj5SrhukN1H6GJk7h0v86im9LsaitAKFNAN7KknbdZO1k9s2NUg8dH5nqMH5JXWCRWt24wfAzxV7MmSeHV7zhDX0sIMfI7ILNjQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qaZHeg2/; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=0jiS0MN4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qaZHeg2/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c31XV0gdXz30RK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 09:24:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c39Dq4zdzz3bpS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 15:11:07 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F1C8C60053;
-	Thu, 14 Aug 2025 23:24:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1B7C4CEED;
-	Thu, 14 Aug 2025 23:24:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1755213845;
-	bh=Lt6jBIulxaTo9RIUgXftMb1SwjwcRMNvaTJxyrnlj78=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=0jiS0MN4/TWhe764dHWzjTgvAGMJecSSdfZWFOkJUS7BuIjhyZKOl+A5PrqjFOduD
-	 IsxvOxBO+k+v+PziyRQf+Q7TQM0DhZnFEQ2PaknBTmYhxEHSQRHua4azWjzIgmIkiW
-	 ecFxYV+H+SUkeqY9R/HRVhofTlwwyNEN4NBGc7RU=
-Date: Thu, 14 Aug 2025 16:24:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-mm@kvack.org, x86@kernel.org, linux-riscv@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- pasha.tatashin@soleen.com, sweettea-kernel@dorminy.me,
- nicholas@linux.ibm.com, christophe.leroy@csgroup.eu, Rohan McLure
- <rmclure@linux.ibm.com>, Ingo Molnar <mingo@kernel.org>
-Subject: Re: [PATCH v16 06/13] mm/page_table_check: Reinstate address
- parameter in [__]page_table_check_pud_clear()
-Message-Id: <20250814162404.e3a0f12e2aa1a87de51322e7@linux-foundation.org>
-In-Reply-To: <5aa057d0-dc76-4723-80d1-82065320a428@ghiti.fr>
-References: <20250813062614.51759-1-ajd@linux.ibm.com>
-	<20250813062614.51759-7-ajd@linux.ibm.com>
-	<5aa057d0-dc76-4723-80d1-82065320a428@ghiti.fr>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6848645783;
+	Fri, 15 Aug 2025 05:11:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACBBC4CEEB;
+	Fri, 15 Aug 2025 05:11:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755234665;
+	bh=rjs/V71n+3a48sbczUimLUbQ99An++PfjAuhQIEa13s=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=qaZHeg2/5a1nlFDrCh+QQq8+2z+k/HIBWZUD4nh0+1i6c37KB42J7MuL6+NCG/t+L
+	 Sb4lS+mkZ14VoVX+YlDNVGPRMcWMXRHAGigO6GBs+JD82O/j0LxY54D+zDNDsJYKAo
+	 sXevI5VIzQWOLFfl/WV5zUlxyV+wLZ1J0REOzQc8KXCWGG5zo4v1sD8WTb37YmZh26
+	 fQvGeRnhGwhiRkaAiLioOMAOHFUuoJ1KDM4vS7BfgMxeW43efHE9YPv+gnweYXLTPM
+	 XrWCUBDKKDrqe8banORHuWlWg0uTJGuY3c9EmS4cdtxIgiUKad4TjoW3OXKR2Ys5uU
+	 wi4dFrypsvChQ==
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.phl.internal (Postfix) with ESMTP id CD58BF40066;
+	Fri, 15 Aug 2025 01:11:02 -0400 (EDT)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-12.internal (MEProxy); Fri, 15 Aug 2025 01:11:02 -0400
+X-ME-Sender: <xms:ZsGeaEjCAtEWX1UaHLA2gfColtQZO7w89chtZ2uFaG4vMYHweTmDIQ>
+    <xme:ZsGeaNCED0uQ78E9d2j9GAg3NYkGAhxwrM8S6giPlAbcy5DsDkd_hrjkIGTNdnggG
+    4eL_xWyjdx6jEOR_bI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgddugeeftdekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedfnfgvohhn
+    ucftohhmrghnohhvshhkhidfuceolhgvohhnsehkvghrnhgvlhdrohhrgheqnecuggftrf
+    grthhtvghrnhepffegjefgueegffffjeevheektdekgeevheelvdekieehvdejvdejjefh
+    hfelhfefnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehlvghonhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidquddvfedtheefleekgedqvdejjeeljeejvdekqdhlvghonh
+    eppehkvghrnhgvlhdrohhrgheslhgvohhnrdhnuhdpnhgspghrtghpthhtohepfeejpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopehjohhroheskegshihtvghsrdhorhhgpd
+    hrtghpthhtoheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthhtohep
+    tghhrhhishhtohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhope
+    hmphgvsegvlhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhopegrsgguihgvlhdrjhgr
+    nhhulhhguhgvsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghlvgigrdhgrgihnhhorh
+    esghhmrghilhdrtghomhdprhgtphhtthhopehrohhsthgvughtsehgohhoughmihhsrdho
+    rhhgpdhrtghpthhtohepghhlihguvghrsehgohhoghhlvgdrtghomhdprhgtphhtthhope
+    hkrghsrghnqdguvghvsehgohhoghhlvghgrhhouhhpshdrtghomh
+X-ME-Proxy: <xmx:ZsGeaPWPNXdI6VvYib3k9QdMC2XlJbr86LA_KN5YspkDL_EEK6BRlA>
+    <xmx:ZsGeaI3d1bh3fFRFl4aiXZUts9ejR-WHFcon7KnhJbC_6nOGWjjn2Q>
+    <xmx:ZsGeaIdgKvfZyaCQpAF_MAary9Xg8Dva0Q5zSBAie2gJ8xC3nka9fw>
+    <xmx:ZsGeaNVlXDFhOQ5jT6MnFggS_FVesjsSUNJLf3EVumbGV5Io7NaXkQ>
+    <xmx:ZsGeaG9LccLFJ2EboOYrfkTWU2yRr6gsoUbWRyvB7Ij-X0QWOgy49Rp5>
+Feedback-ID: i927946fb:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 8094E2CE0071; Fri, 15 Aug 2025 01:11:02 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,33 +90,67 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+MIME-Version: 1.0
+X-ThreadId: AWyaQ402xWe7
+Date: Fri, 15 Aug 2025 08:10:43 +0300
+From: "Leon Romanovsky" <leon@kernel.org>
+To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Marek Szyprowski" <m.szyprowski@samsung.com>
+Cc: "Jason Gunthorpe" <jgg@nvidia.com>,
+ "Abdiel Janulgue" <abdiel.janulgue@gmail.com>,
+ "Alexander Potapenko" <glider@google.com>,
+ "Alex Gaynor" <alex.gaynor@gmail.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Christoph Hellwig" <hch@lst.de>, "Danilo Krummrich" <dakr@kernel.org>,
+ iommu@lists.linux.dev, "Jason Wang" <jasowang@redhat.com>,
+ "Jens Axboe" <axboe@kernel.dk>, "Joerg Roedel" <joro@8bytes.org>,
+ "Jonathan Corbet" <corbet@lwn.net>, "Juergen Gross" <jgross@suse.com>,
+ kasan-dev@googlegroups.com, "Keith Busch" <kbusch@kernel.org>,
+ linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-trace-kernel@vger.kernel.org,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Michael S. Tsirkin" <mst@redhat.com>, "Miguel Ojeda" <ojeda@kernel.org>,
+ "Robin Murphy" <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+ "Sagi Grimberg" <sagi@grimberg.me>,
+ "Stefano Stabellini" <sstabellini@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>, virtualization@lists.linux.dev,
+ "Will Deacon" <will@kernel.org>, xen-devel@lists.xenproject.org
+Message-Id: <45552b38-5717-4b0c-b0eb-8c463d8cf816@app.fastmail.com>
+In-Reply-To: <ccc8eeba-757a-440d-80d3-9158e80c19fe@csgroup.eu>
+References: <cover.1755193625.git.leon@kernel.org>
+ <ccc8eeba-757a-440d-80d3-9158e80c19fe@csgroup.eu>
+Subject: Re: [PATCH v3 00/16] dma-mapping: migrate to physical address-based API
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 14 Aug 2025 14:11:45 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
 
-> >   	for (i = 0; i < nr; i++)
-> > -		__page_table_check_pud_clear(mm, *(pudp + i));
-> > +		__page_table_check_pud_clear(mm, addr + PUD_SIZE * i, *(pudp + i));
-> >   	if (pud_user_accessible_page(pud))
-> >   		page_table_check_set(pud_pfn(pud), stride * nr, pud_write(pud));
-> >   }
-> 
-> 
-> So this made me realize we (riscv) did not implement 
-> pudp_huge_get_and_clear(), which was a mistake since we support THP PUD. 
-> I have implemented this function in this patch 
-> https://lore.kernel.org/all/20250814-dev-alex-thp_pud_xchg-v1-1-b4704dfae206@rivosinc.com/T/#u
-> 
-> That's a fix so I'll merge it in 6.17 (at least I'll try) so your 
-> patchset will break the build on riscv, I'll keep you posted when it 
-> gets merged!
 
-Thanks, I'll temporarily grab a copy of your "riscv: use an atomic xchg
-in pudp_huge_get_and_clear()" to keep mm.git compilable and testable.  
+On Thu, Aug 14, 2025, at 22:05, Christophe Leroy wrote:
+> Le 14/08/2025 =C3=A0 19:53, Leon Romanovsky a =C3=A9crit=C2=A0:
+>> Changelog:
+>> v3:
+>>   * Fixed typo in "cacheable" word
+>>   * Simplified kmsan patch a lot to be simple argument refactoring
+>
+> v2 sent today at 12:13, v3 sent today at 19:53 .... for only that ?
+>
+> Have you read=20
+> https://docs.kernel.org//process/submitting-patches.html#don-t-get-dis=
+couraged-or-impatient=20
+> ?
+
+Yes, I'm aware of that section. It is not even remotely close to the rea=
+lity in different subsystems.
+
+There are some places in the kernel where you never get any responses.
+
+Thanks
 
