@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-11052-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11053-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C955B27B29
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Aug 2025 10:36:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807E5B27B2B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Aug 2025 10:36:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c3FnL0Mj5z3ccl;
-	Fri, 15 Aug 2025 18:36:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c3FnS16WHz3ccf;
+	Fri, 15 Aug 2025 18:36:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755246966;
-	cv=none; b=JYicMKoZvd7vrD1pharlnCWjqrlgzlDZSBmsdMqvFDmJ3W1Ysq3CxYx1FEEs4PzYN/THRjXLbjLjjB7PXPU6QVuIepsWmANcm/BFw1s1gWmhdMwlhNvusZiGaJxWxkUTtPrFIZCiy9rddbRS9gjdS57tFV8TzSp+xgnvuWYrfRmFZVfntzB6ItWE4CqQ/D2OohmrCTKmsqZg2hNU6wflipMsdTHCeldKCvXFELLsN/c3D7Nv1+dicU35m60CuShgdv8suQwwyntdqcVp8z3QTidaFxlyJm/UsXV5d1EKCS90zoGII0JKfsdzRUWytnsq+YT0joOv8Qxf3TZmTQ4Mlg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755246972;
+	cv=none; b=Si6HxMDClpqCdy8z24ARdXY1rmh8nqiWgnz14WITHzWmgfpQa/EDHeQBc4gKr/z57J9L0l7e+2eDXaBX15KU9aMrVIKCI3/iS4ll5RKciqDWJUjD99Ts/YwfWhyJyZKBUfwVnQWLz5bHtG6o4H2bvBJN1kNZ8PCpiJHQYyH7z994rJ8hbClBmfeOD13m8mODKyWs0XXx3zXLsA41yGpVxl/PDunYj7X0IQsyFdIoiSvOqxJ6ITKnsSZIZSIJxJrvgB38dqnGpKtfn+/cc8n3tKY1/+8Ie13vbJ6dKo0dOvgqkkh5lnHifJmWwtwnm8r0J5hqJ/8pDVwBIHzoizNUWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755246966; c=relaxed/relaxed;
-	bh=/OhBxoG0dsvtU3ZO7fpoa4yi8+Vq9Y/abbhEXf461hI=;
+	t=1755246972; c=relaxed/relaxed;
+	bh=hcgOdTTn/xFLPnarax5D6L3Fdmdh2/hBD51nngXF33g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MRvOazQcvnWXm7WmEoadLTUF7Lstcge4ZWPJ4RKC4mJHA3wywtB6OxuTTH84GZVtAFG689ZUf68pc6gB6Dt4EZbyXk/ndgLH7weTj1To3S2p1T03DfX2XcHHBOiu5Z81CARgIr58NKqk9IXiMKJCNbDv/BYM7QwHscUUSTR9U0tCsbRw68kEsUAxrWdOF2xYr0Wvftpw+sAC32q/RXCaTwWzx3xLK3dxZt0yMkRVXMramg1zGRjr0iDSPeEGgQ06cKCWwyYIEtlZmIGNssgA50988H7YGzQVBy829DP7aSMGStjjL1Zw2IcTbnqFGojmXbQqjGsQsFLyAb+AbwG+Xw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HZuOEZ8K; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=bmm+Fc08QQlgoNE1fV3yF4630GBwCC78NT2Qhw3iPwszTz1yrKcLPQs1KLZ7kEaxnP4rrpSLR/aUGHODByLdrARvI1+k6NT4j8fDSTptmgrHxzkCZrSc/KsD8tG4Oy6c9uI8O/oDr2erM7Nd23uhUQpb4KU7Pogai/98XgfTqzEmfysuN1LNwLqyMqlBgvBHgME6Pz3nIJ3Zwb8azGs+8VqUpJYTzl/zI9vPbKjm5OUGTIKoIzRioIHu88rU+hwNryLeKlzcG4NugoPs9/kfA9ofY4hdMp6uvTJWBBTfrn8D/t3zEvMiqBPGKOZ3AvffCgk9hR6SeZAWu1YA9fGakg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jku7h+mO; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HZuOEZ8K;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=jku7h+mO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c3FnK29f5z3ccf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 18:36:05 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57F1vZam011946;
-	Fri, 15 Aug 2025 08:36:00 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c3FnR2Y0Sz3ccV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 18:36:11 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57EMrdaD019301;
+	Fri, 15 Aug 2025 08:36:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=/OhBxoG0dsvtU3ZO7
-	fpoa4yi8+Vq9Y/abbhEXf461hI=; b=HZuOEZ8KxAo3tZ1DXYP3ed6tlSMKA7EC6
-	4UvnYau7yCdQYi3vHvGYYL6/y2PTDHk8MSaqGFg3msFbqZU801w/gslIVhexlPXf
-	bT7iecm0AETF+/ouwfznHchlOat0moI0x9gJmctfn146vo5q6qGV3y68EAMHLn/y
-	3Nie5Qfprt1e9J7qjbIrCCdKLL1b62xP6fdW8d0ybkIQl8edYj+WPfNFxdWsdDed
-	LI0cunw2FIh8uHrcHPQp280ZmpYsjp1CxlaIidvJ03n0xBYTS32TGnOSNW7CsDjk
-	OIavox9lZoYk05kx4M5wW/3xJAWRjl2+gdn4Si5e78t3vPIyNvSxA==
+	:mime-version:references:subject:to; s=pp1; bh=hcgOdTTn/xFLPnara
+	x5D6L3Fdmdh2/hBD51nngXF33g=; b=jku7h+mODSaYKgmkhh4Zryciax0a64Rxx
+	DmEm6OVcN2QuBgt2Lxji0qbMNXCGIY8KtWLLdl3AznnemJfPW1si9X1IaWteZeeU
+	LF+4oMOp71S1EEyMl1BfvRF8WQj2YmKQesMpXTzqZOWGZg6gP/yaIXAL5AonWaGs
+	JhDNmTsleiZcwG82i7GZV9NMyxLWgQBSonoYTsqX6NN3W2BuGBFQWRtkW16OkcBF
+	kZ9BXQ5wp1HMh0Mg55k/JnMVKREcWJjHbBbJLoy25QCExnVsdDrjo2tj8Pi0kKNn
+	1SVy+ZJbKb5Y/dPkr5Z+MlUPo/gGfw/jrH1XYcVes6FjpH+CvV1WA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48durupfb9-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48gypeggyp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Aug 2025 08:35:59 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57F8Z6dl022928;
-	Fri, 15 Aug 2025 08:35:59 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48durupfb8-1
+	Fri, 15 Aug 2025 08:36:07 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57F8a6qo003629;
+	Fri, 15 Aug 2025 08:36:06 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48gypeggyj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Aug 2025 08:35:59 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57F7rKxR028585;
-	Fri, 15 Aug 2025 08:35:58 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48ej5ng20w-1
+	Fri, 15 Aug 2025 08:36:06 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57F6OpOp010656;
+	Fri, 15 Aug 2025 08:36:05 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48egnv0bbe-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Aug 2025 08:35:58 +0000
+	Fri, 15 Aug 2025 08:36:05 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57F8ZsKN51118466
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57F8a2DY56361242
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 15 Aug 2025 08:35:54 GMT
+	Fri, 15 Aug 2025 08:36:02 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD3A520043;
-	Fri, 15 Aug 2025 08:35:54 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 4704C20043;
+	Fri, 15 Aug 2025 08:36:02 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DDFFA20040;
-	Fri, 15 Aug 2025 08:35:47 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 8FD6320040;
+	Fri, 15 Aug 2025 08:35:55 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.61.240.145])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 15 Aug 2025 08:35:47 +0000 (GMT)
+	Fri, 15 Aug 2025 08:35:55 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.ibm.com>
 To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
         maddy@linux.ibm.com, irogers@google.com, namhyung@kernel.org
@@ -77,9 +77,9 @@ Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         aboorvad@linux.ibm.com, sshegde@linux.ibm.com, atrajeev@linux.ibm.com,
         kjain@linux.ibm.com, hbathini@linux.vnet.ibm.com,
         Aditya.Bodkhe1@ibm.com, venkat88@linux.ibm.com
-Subject: [PATCH 10/14] tools/perf: Allocate and setup aux buffer queue to help co-relate with other events across CPU's
-Date: Fri, 15 Aug 2025 14:04:03 +0530
-Message-Id: <20250815083407.27953-11-atrajeev@linux.ibm.com>
+Subject: [PATCH 11/14] tools/perf: Process the DTL entries in queue and deliver samples
+Date: Fri, 15 Aug 2025 14:04:04 +0530
+Message-Id: <20250815083407.27953-12-atrajeev@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250815083407.27953-1-atrajeev@linux.ibm.com>
 References: <20250815083407.27953-1-atrajeev@linux.ibm.com>
@@ -98,329 +98,287 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: d7Ah_8a7RtJPn_ivZYCMlh8CtfMzof2q
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIyNCBTYWx0ZWRfX+cHSI90w5zJg
- IbovS+5k1SmP2ehY3W859n81XAqzzo50N9ctYzBnp1P80b/+f4lyZ46Rk9dJUbpQRn47feOpt5q
- ce8MikNmlRU3apu24cnh4Qx4+vT65WqsyY+fadr2NfDywVnZGXuVNt5GMpsX+hLoZiKHZhfQGIH
- kXntZHwO2a4h7Z4yZqZJBlI/39wPADBe2tWvB2HGaf7uOBxqbF6k2niOeb6/QTAsugHvstD7yM6
- OBgie63DC/8P8IAJwWIuwJGf/1YPem0ezmRZWp8GynMIn7NAELNarkggfUgBHiC34Z7lBU7hFk2
- z6ugBTvV7JFbjLrxpn77btdcKmw0zWzFbOTz1K6zSafV4Vx+pS/7lOT2BlQh/CthLGu1wTKglLJ
- q8vDL+tx
-X-Authority-Analysis: v=2.4 cv=QtNe3Uyd c=1 sm=1 tr=0 ts=689ef170 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=9jWZ9SMwFfNm59oFS4AA:9
-X-Proofpoint-ORIG-GUID: PxQ-TFZIATZlTRPxaIdribODFzMhtF7q
+X-Authority-Analysis: v=2.4 cv=eaU9f6EH c=1 sm=1 tr=0 ts=689ef177 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=0BwqhFxtJAs8UL0y_CcA:9
+X-Proofpoint-GUID: dx3fGZBeRNA5m2U9b9IQIdtBRKdbw0sL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEzMDE2NyBTYWx0ZWRfX7uBvdQAc3CU9
+ wolN9gB2dt5sTCnq/PCAlHah8VuDTauoqywkJ9hQ3rVEa+wYE2qVlg2IEojQyw/DXGGq57QXJIb
+ f9GI4ybjH0MEgj/qi0cLGxXIDbsDBtg2eVklJk52HkQb1WRbzUSzRwSM80v4rkHi6e1VE0Ve16h
+ tTN3/A2Z4Zf7yKagYfQ5TF4Mktg081KhzC2EIFhocAmY8jsAUnCI7/7hAKR2ZeBk0KOHRF/0sJf
+ 9Dy0dTXji2YHM7ox9j7K9qcdybtXBquAbSnN65eyOJMt97uJySKY3qqzPmDG0Yrk9jrGzOesb7q
+ WrTeaF+DT26u4TNhoXU+mqsPh2Uxly1h6S2RBPTpdqBetlUNfH++V5GlfQQYnljuqGUa3wZ30qB
+ /wTAerVL
+X-Proofpoint-ORIG-GUID: Lte7VYXBIYg2ZEeHmXau_uR4EUbjYA44
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-15_02,2025-08-14_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 phishscore=0 clxscore=1015 malwarescore=0
- spamscore=0 suspectscore=0 impostorscore=0 bulkscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508120224
+ suspectscore=0 phishscore=0 clxscore=1015 priorityscore=1501 spamscore=0
+ bulkscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508130167
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-When the Dispatch Trace Log data is collected along with other events
-like sched tracepoint events, it needs to be correlated and present
-interleaved along with these events. Perf events can be collected
-parallely across the CPUs. Hence it needs to be ensured events/dtl
-entries are processed in timestamp order.
+Create samples from DTL entries for displaying in perf report
+and perf script. When the different PERF_RECORD_XX records are
+processed from perf session, powerpc_vpadtl_process_event() will
+be invoked. For each of the PERF_RECORD_XX record, compare the timestamp
+of perf record with timestamp of top element in the auxtrace heap.
+Process the auxtrace queue if the timestamp of element from heap is
+lower than timestamp from entry in perf record.
 
-An auxtrace_queue is created for each CPU. Data within each queue is in
-increasing order of timestamp. Each auxtrace queue has a array/list of
-auxtrace buffers. When processing the auxtrace buffer, the data is
-mmapp'ed. All auxtrace queues is maintained in auxtrace heap. Each queue
-has a queue number and a timestamp. The queues are sorted/added to head
-based on the time stamp. So always the lowest timestamp (entries to be
-processed first) is on top of the heap.
+Sometimes it could happen that one buffer is only partially
+processed. if the timestamp of occurrence of another event is more
+than currently processed element in the queue, it will move on
+to next perf record. So keep track of position of buffer to
+continue processing next time. Update the timestamp of the
+auxtrace heap with the timestamp of last processed entry from
+the auxtrace buffer.
 
-The auxtrace queue needs to be allocated and heap needs to be populated
-in the sorted order of timestamp. The queue needs to be filled with data
-only once via powerpc_vpadtl__update_queues() function.
-powerpc_vpadtl__setup_queues() iterates through all the entries to
-allocate and setup the auxtrace queue. To add to auxtrace heap, it is
-required to fetch the timebase of first entry for each of the queue.
+Generate perf sample for each entry in the dispatch trace log.
+Fill in the sample details:
+- sample ip is picked from srr0 field of dtl_entry
+- sample cpu is picked from processor_id of dtl_entry
+- sample id is from sample_id of powerpc_vpadtl
+- cpumode is set to PERF_RECORD_MISC_KERNEL
+- Additionally save the details in raw_data of sample. This
+is to print the relevant fields in perf_sample__fprintf_synth()
+when called from builtin-script
 
-The first entry in the queue for VPA DTL PMU has the boot timebase,
-frequency details which are needed to get timestamp which is required to
-correlate with other events. The very next entry is the actual trace data
-that provides timestamp for occurrence of DTL event. Formula used to get
-the timestamp from dtl entry is:
+The sample is processed by calling perf_session__deliver_synth_event()
+so that it gets included in perf report.
 
-((timbase from DTL entry - boot time) / frequency) * 1000000000
+Sample Output:
 
-powerpc_vpadtl_decode() adds the boot time and frequency as part of
-powerpc_vpadtl_queue structure so that it can be reused. Each of the
-dtl_entry is of 48 bytes size. Sometimes it could happen that one buffer
-is only partially processed (if the timestamp of occurrence of another
-event is more than currently processed element in queue, it will move on
-to next event). Inorder to keep track of position of buffer, additional
-fields is added to powerpc_vpadtl_queue structure.
+  ./perf record -a -e sched:*,vpa_dtl/dtl_all/ -c 1000000000 sleep 1
+  [ perf record: Woken up 1 times to write data ]
+  [ perf record: Captured and wrote 0.300 MB perf.data ]
+
+  ./perf report
+
+  # Samples: 321  of event 'vpa-dtl'
+  # Event count (approx.): 321
+  #
+  # Children      Self  Command  Shared Object      Symbol
+  # ........  ........  .......  .................  ..............................
+  #
+     100.00%   100.00%  swapper  [kernel.kallsyms]  [k] plpar_hcall_norets_notrace
 
 Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
 ---
- tools/perf/util/powerpc-vpadtl.c | 219 ++++++++++++++++++++++++++++++-
- 1 file changed, 218 insertions(+), 1 deletion(-)
+ tools/perf/util/powerpc-vpadtl.c | 181 +++++++++++++++++++++++++++++++
+ 1 file changed, 181 insertions(+)
 
 diff --git a/tools/perf/util/powerpc-vpadtl.c b/tools/perf/util/powerpc-vpadtl.c
-index 36c02821cf0a..299927901c9d 100644
+index 299927901c9d..370c566f9ac2 100644
 --- a/tools/perf/util/powerpc-vpadtl.c
 +++ b/tools/perf/util/powerpc-vpadtl.c
-@@ -28,6 +28,7 @@
- #include "map.h"
- #include "symbol_conf.h"
- #include "symbol.h"
-+#include "tool.h"
- 
- /*
-  * The DTL entries are of below format
-@@ -72,6 +73,14 @@ struct powerpc_vpadtl_queue {
- 	struct auxtrace_buffer	*buffer;
- 	struct thread		*thread;
- 	bool			on_heap;
-+	struct dtl_entry	*dtl;
-+	u64			timestamp;
-+	unsigned long		pkt_len;
-+	unsigned long		buf_len;
-+	u64			boot_tb;
-+	u64			tb_freq;
-+	unsigned int		tb_buffer;
-+	unsigned int		size;
- 	bool			done;
- 	pid_t			pid;
- 	pid_t			tid;
-@@ -151,12 +160,217 @@ static void powerpc_vpadtl_dump_event(struct powerpc_vpadtl *vpa, unsigned char
+@@ -160,6 +160,43 @@ static void powerpc_vpadtl_dump_event(struct powerpc_vpadtl *vpa, unsigned char
  	powerpc_vpadtl_dump(vpa, buf, len);
  }
  
-+static int powerpc_vpadtl_get_buffer(struct powerpc_vpadtl_queue *vpaq)
-+{
-+	struct auxtrace_buffer *buffer = vpaq->buffer;
-+	struct auxtrace_queues *queues = &vpaq->vpa->queues;
-+	struct auxtrace_queue *queue;
-+
-+	queue = &queues->queue_array[vpaq->queue_nr];
-+	buffer = auxtrace_buffer__next(queue, buffer);
-+
-+	if (!buffer)
-+		return 0;
-+
-+	vpaq->buffer = buffer;
-+	vpaq->size = buffer->size;
-+
-+	/* If the aux_buffer doesn't have data associated, try to load it */
-+	if (!buffer->data) {
-+		/* get the file desc associated with the perf data file */
-+		int fd = perf_data__fd(vpaq->vpa->session->data);
-+
-+		buffer->data = auxtrace_buffer__get_data(buffer, fd);
-+		if (!buffer->data)
-+			return -ENOMEM;
-+	}
-+
-+	vpaq->buf_len = buffer->size;
-+
-+	if (buffer->size % dtl_entry_size)
-+		vpaq->buf_len = buffer->size - (buffer->size % dtl_entry_size);
-+
-+	if (vpaq->tb_buffer != buffer->buffer_nr) {
-+		vpaq->pkt_len = 0;
-+		vpaq->tb_buffer = 0;
-+	}
-+
-+	return 1;
-+}
-+
 +/*
-+ * The first entry in the queue for VPA DTL PMU has the boot timebase,
-+ * frequency details which are needed to get timestamp which is required to
-+ * correlate with other events. Save the boot_tb and tb_freq as part of
-+ * powerpc_vpadtl_queue. The very next entry is the actual trace data to
-+ * be returned.
++ * Generate perf sample for each entry in the dispatch trace log.
++ *   - sample ip is picked from srr0 field of dtl_entry
++ *   - sample cpu is picked from logical cpu.
++ *   - sample id is from sample_id of powerpc_vpadtl
++ *   - cpumode is set to PERF_RECORD_MISC_KERNEL
++ *   - Additionally save the details in raw_data of sample. This
++ *   is to print the relevant fields in perf_sample__fprintf_synth()
++ *   when called from builtin-script
 + */
-+static int powerpc_vpadtl_decode(struct powerpc_vpadtl_queue *vpaq)
++static int powerpc_vpadtl_sample(struct dtl_entry *record, struct powerpc_vpadtl *vpa, u64 save, int cpu)
 +{
-+	int ret;
-+	char *buf;
-+	struct boottb_freq *boottb;
++	struct perf_sample sample;
++	union perf_event event;
 +
-+	ret = powerpc_vpadtl_get_buffer(vpaq);
-+	if (ret <= 0)
-+		return ret;
-+
-+	boottb = (struct boottb_freq *)vpaq->buffer->data;
-+	if (boottb->timebase == 0) {
-+		vpaq->boot_tb = boottb->boot_tb;
-+		vpaq->tb_freq = boottb->tb_freq;
-+		vpaq->pkt_len += dtl_entry_size;
++	sample.ip = be64_to_cpu(record->srr0);
++	sample.period = 1;
++	sample.cpu = cpu;
++	sample.id = vpa->sample_id;
++	sample.callchain = NULL;
++	sample.branch_stack = NULL;
++	memset(&event, 0, sizeof(event));
++	sample.cpumode = PERF_RECORD_MISC_KERNEL;
++	sample.time = save;
++	sample.raw_data = record;
++	sample.raw_size = sizeof(record);
++	event.sample.header.type = PERF_RECORD_SAMPLE;
++	event.sample.header.misc = sample.cpumode;
++	event.sample.header.size = sizeof(struct perf_event_header);
++	if (perf_session__deliver_synth_event(vpa->session, &event,
++				&sample)) {
++		pr_debug("Failed to create sample for dtl entry\n");
++		return -1;
 +	}
-+
-+	buf = vpaq->buffer->data;
-+	buf += vpaq->pkt_len;
-+	vpaq->dtl = (struct dtl_entry *)buf;
-+
-+	vpaq->tb_buffer = vpaq->buffer->buffer_nr;
-+	vpaq->buffer = NULL;
-+	vpaq->buf_len = 0;
-+
-+	return 1;
-+}
-+
-+static struct powerpc_vpadtl_queue *powerpc_vpadtl__alloc_queue(struct powerpc_vpadtl *vpa,
-+						unsigned int queue_nr)
-+{
-+	struct powerpc_vpadtl_queue *vpaq;
-+
-+	vpaq = zalloc(sizeof(*vpaq));
-+	if (!vpaq)
-+		return NULL;
-+
-+	vpaq->vpa = vpa;
-+	vpaq->queue_nr = queue_nr;
-+
-+	return vpaq;
-+}
-+
-+/*
-+ * When the Dispatch Trace Log data is collected along with other events
-+ * like sched tracepoint events, it needs to be correlated and present
-+ * interleaved along with these events. Perf events can be collected
-+ * parallely across the CPUs.
-+ *
-+ * An auxtrace_queue is created for each CPU. Data within each queue is in
-+ * increasing order of timestamp. Allocate and setup auxtrace queues here.
-+ * All auxtrace queues is maintained in auxtrace heap in the increasing order
-+ * of timestamp. So always the lowest timestamp (entries to be processed first)
-+ * is on top of the heap.
-+ *
-+ * To add to auxtrace heap, fetch the timestamp from first DTL entry
-+ * for each of the queue.
-+ */
-+static int powerpc_vpadtl__setup_queue(struct powerpc_vpadtl *vpa,
-+		struct auxtrace_queue *queue,
-+		unsigned int queue_nr)
-+{
-+	struct powerpc_vpadtl_queue *vpaq = queue->priv;
-+	struct dtl_entry *record;
-+	double result, div;
-+	double boot_freq;
-+	unsigned long long boot_tb;
-+	unsigned long long diff;
-+	unsigned long long save = 0;
-+
-+	if (list_empty(&queue->head) || vpaq)
-+		return 0;
-+
-+	vpaq = powerpc_vpadtl__alloc_queue(vpa, queue_nr);
-+	if (!vpaq)
-+		return -ENOMEM;
-+
-+	queue->priv = vpaq;
-+
-+	if (queue->cpu != -1)
-+		vpaq->cpu = queue->cpu;
-+
-+	if (!vpaq->on_heap) {
-+		int ret;
-+retry:
-+		ret = powerpc_vpadtl_decode(vpaq);
-+		if (!ret)
-+			return 0;
-+
-+		if (ret < 0)
-+			goto retry;
-+
-+		record = vpaq->dtl;
-+		/*
-+		 * Formula used to get timestamp that can be co-related with
-+		 * other perf events:
-+		 * ((timbase from DTL entry - boot time) / frequency) * 1000000000
-+		 */
-+		if (record->timebase) {
-+			boot_tb = vpaq->boot_tb;
-+			boot_freq = vpaq->tb_freq;
-+			diff = be64_to_cpu(record->timebase) - boot_tb;
-+			div = diff / boot_freq;
-+			result = div;
-+			result = result * 1000000000;
-+			save = result;
-+		}
-+
-+		vpaq->timestamp = save;
-+		ret = auxtrace_heap__add(&vpa->heap, queue_nr, vpaq->timestamp);
-+		if (ret)
-+			return ret;
-+		vpaq->on_heap = true;
-+	}
-+
 +	return 0;
 +}
 +
-+static int powerpc_vpadtl__setup_queues(struct powerpc_vpadtl *vpa)
-+{
-+	unsigned int i;
-+	int ret;
-+
-+	for (i = 0; i < vpa->queues.nr_queues; i++) {
-+		ret = powerpc_vpadtl__setup_queue(vpa, &vpa->queues.queue_array[i], i);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int powerpc_vpadtl__update_queues(struct powerpc_vpadtl *vpa)
-+{
-+	if (vpa->queues.new_data) {
-+		vpa->queues.new_data = false;
-+		return powerpc_vpadtl__setup_queues(vpa);
-+	}
-+
-+	return 0;
-+}
-+
- static int powerpc_vpadtl_process_event(struct perf_session *session __maybe_unused,
- 				 union perf_event *event __maybe_unused,
- 				 struct perf_sample *sample __maybe_unused,
- 				 const struct perf_tool *tool __maybe_unused)
+ static int powerpc_vpadtl_get_buffer(struct powerpc_vpadtl_queue *vpaq)
  {
--	return 0;
-+	int err = 0;
-+	struct powerpc_vpadtl *vpa = container_of(session->auxtrace,
-+			struct powerpc_vpadtl, auxtrace);
-+
-+	if (dump_trace)
-+		return 0;
-+
-+	if (!tool->ordered_events) {
-+		pr_err("VPA requires ordered events\n");
-+		return -EINVAL;
-+	}
-+
-+	if (sample->time) {
-+		err = powerpc_vpadtl__update_queues(vpa);
-+		if (err)
-+			return err;
-+	}
-+
-+	return err;
+ 	struct auxtrace_buffer *buffer = vpaq->buffer;
+@@ -233,6 +270,148 @@ static int powerpc_vpadtl_decode(struct powerpc_vpadtl_queue *vpaq)
+ 	return 1;
  }
  
- /*
-@@ -181,6 +395,9 @@ static int powerpc_vpadtl_process_auxtrace_event(struct perf_session *session,
- 			return -errno;
- 	}
- 
-+	if (!dump_trace)
++static int powerpc_vpadtl_decode_all(struct powerpc_vpadtl_queue *vpaq)
++{
++	int ret;
++	unsigned char *buf;
++
++	if (!vpaq->buf_len || (vpaq->pkt_len == vpaq->size)) {
++		ret = powerpc_vpadtl_get_buffer(vpaq);
++		if (ret <= 0)
++			return ret;
++	}
++
++	if (vpaq->buffer) {
++		buf = vpaq->buffer->data;
++		buf += vpaq->pkt_len;
++		vpaq->dtl = (struct dtl_entry *)buf;
++		if ((long long)be64_to_cpu(vpaq->dtl->timebase) <= 0) {
++			if (vpaq->pkt_len != dtl_entry_size && vpaq->buf_len) {
++				vpaq->pkt_len += dtl_entry_size;
++				vpaq->buf_len -= dtl_entry_size;
++			}
++			return -1;
++		}
++		vpaq->pkt_len += dtl_entry_size;
++		vpaq->buf_len -= dtl_entry_size;
++	} else
 +		return 0;
 +
- 	err = auxtrace_queues__add_event(&vpa->queues, session, event,
- 					 data_offset, &buffer);
- 	if (err)
++
++	return 1;
++}
++
++static int powerpc_vpadtl_run_decoder(struct powerpc_vpadtl_queue *vpaq, u64 *timestamp)
++{
++	struct powerpc_vpadtl *vpa = vpaq->vpa;
++	struct dtl_entry *record;
++	int ret;
++	double result, div;
++	double boot_freq = vpaq->tb_freq;
++	unsigned long long boot_tb = vpaq->boot_tb;
++	unsigned long long diff;
++	unsigned long long save;
++
++	while (1) {
++		ret = powerpc_vpadtl_decode_all(vpaq);
++		if (!ret) {
++			pr_debug("All data in the queue has been processed.\n");
++			return 1;
++		}
++
++		/*
++		 * Error is detected when decoding VPA PMU trace. Continue to
++		 * the next trace data and find out more dtl entries.
++		 */
++		if (ret < 0)
++			continue;
++
++		record = vpaq->dtl;
++
++		diff = be64_to_cpu(record->timebase) - boot_tb;
++		div = diff / boot_freq;
++		result = div;
++		result = result * 1000000000;
++		save = result;
++
++		/* Update timestamp for the last record */
++		if (save > vpaq->timestamp)
++			vpaq->timestamp = save;
++
++		/*
++		 * If the timestamp of the queue is later than timestamp of the
++		 * coming perf event, bail out so can allow the perf event to
++		 * be processed ahead.
++		 */
++		if (vpaq->timestamp >= *timestamp) {
++			*timestamp = vpaq->timestamp;
++			vpaq->pkt_len -= dtl_entry_size;
++			vpaq->buf_len += dtl_entry_size;
++			return 0;
++		}
++
++		ret = powerpc_vpadtl_sample(record, vpa, save, vpaq->cpu);
++		if (ret)
++			continue;
++	}
++	return 0;
++}
++
++/*
++ * For each of the PERF_RECORD_XX record, compare the timestamp
++ * of perf record with timestamp of top element in the auxtrace heap.
++ * Process the auxtrace queue if the timestamp of element from heap is
++ * lower than timestamp from entry in perf record.
++ *
++ * Update the timestamp of the auxtrace heap with the timestamp
++ * of last processed entry from the auxtrace buffer.
++ */
++static int powerpc_vpadtl_process_queues(struct powerpc_vpadtl *vpa, u64 timestamp)
++{
++	unsigned int queue_nr;
++	u64 ts;
++	int ret;
++
++	while (1) {
++		struct auxtrace_queue *queue;
++		struct powerpc_vpadtl_queue *vpaq;
++
++		if (!vpa->heap.heap_cnt)
++			return 0;
++
++		if (vpa->heap.heap_array[0].ordinal >= timestamp)
++			return 0;
++
++		queue_nr = vpa->heap.heap_array[0].queue_nr;
++		queue = &vpa->queues.queue_array[queue_nr];
++		vpaq = queue->priv;
++
++		auxtrace_heap__pop(&vpa->heap);
++
++		if (vpa->heap.heap_cnt) {
++			ts = vpa->heap.heap_array[0].ordinal + 1;
++			if (ts > timestamp)
++				ts = timestamp;
++		} else
++			ts = timestamp;
++
++		ret = powerpc_vpadtl_run_decoder(vpaq, &ts);
++		if (ret < 0) {
++			auxtrace_heap__add(&vpa->heap, queue_nr, ts);
++			return ret;
++		}
++
++		if (!ret) {
++			ret = auxtrace_heap__add(&vpa->heap, queue_nr, ts);
++			if (ret < 0)
++				return ret;
++		} else {
++			vpaq->on_heap = false;
++		}
++	}
++	return 0;
++}
++
+ static struct powerpc_vpadtl_queue *powerpc_vpadtl__alloc_queue(struct powerpc_vpadtl *vpa,
+ 						unsigned int queue_nr)
+ {
+@@ -368,6 +547,8 @@ static int powerpc_vpadtl_process_event(struct perf_session *session __maybe_unu
+ 		err = powerpc_vpadtl__update_queues(vpa);
+ 		if (err)
+ 			return err;
++
++		err = powerpc_vpadtl_process_queues(vpa, sample->time);
+ 	}
+ 
+ 	return err;
 -- 
 2.47.1
 
