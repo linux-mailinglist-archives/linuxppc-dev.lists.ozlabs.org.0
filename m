@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-11047-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11048-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165ECB27B24
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Aug 2025 10:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18EFBB27B25
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Aug 2025 10:35:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c3FmZ3vBWz3cZd;
-	Fri, 15 Aug 2025 18:35:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c3Fmj6HpPz3cZt;
+	Fri, 15 Aug 2025 18:35:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755246926;
-	cv=none; b=kpUa1DVlh7FtNmbv9rRgiFA+eOG2EoarS7i3QctTjKkdrD63FLuphPZOQqNVfR+4bGAEOkpsw5UG/RlsGghQa6UpNT0QZ21Tq447B+nDqdvmu3BQPau0OyyFGXWHDgltvCbauOaCSAL6sddxAUlCQtShV30fkUFWnPuNXwvaBekyYfjk4BdZOnMAkD7ESb/dAMD1kNU7CjmQiDmI7Bko0BaQOqQWYIIOvroR48nnQeK7LxMaefcWLRBrtx2OEgHtTIFSWN2EK1cOUifBZEuvbB5QifYbof6iWR+8WkVeO/ddOf2hy35Q4noxfVE/qcsf3ReJuVJGV3RNcCPPsxPjPA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755246933;
+	cv=none; b=M4NlWNIs3DRl87ppn1Oom5B3ifV1nItJ/2aGu+C2bA/LgPQgZTP8RKpLC+6/CjAMKR9ai9I2vwZ/tcW9DGsTctmcpCHQaBxT9G2YHCtHdNIH71ImW8qh7CjQ7Icfda/J1yDd1kXdoqijGKOn00HAdS93udqtEhPF1CW9bsnfFlkDFPc9/+lX3V8O63nHXGOZ28hCJNl5IIg+MJIZmVc+j3xRlxZC4gC78T2bxD2JtizsqPR63xeNVJ14KpCeYUwmep9mkZLdqYYvtdFHvQ+A2HXdI4EiiJKCzyylMl6r5bvC50xfHhJcJqvR/udaOwxD9q0cs4lYFkvZuOABfsgvUw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755246926; c=relaxed/relaxed;
-	bh=A8xKI8KC5Yebfh3vQKZ338D6u2gjI9qyMmAiIusBUDU=;
+	t=1755246933; c=relaxed/relaxed;
+	bh=xuy1SoTYUjLOJkn9Wwdm/tTZ4hqB2tje+ej1pg5rVkE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nqQJus/hhfyiPPKrJffS1hjtusPZ5Uy4ZTy3G8XocmqdYEB0eNf3XIhRoLDqcEqNrug2QPNrcG7Osl0nqivJ2VIa4MQ0ttL+0sJtvvzNztE/6yPdftkJ9Wf3Ptb2wFTP+8f93fI0iY1zFfru9lEoBOqNkSUpTi/FXJkNtCCzMrh1l/HKGLG0owJA9hn3L3FknScFjGg1f51wr2q7huubp0B5fuVonGDaL/VvNnUNa3pmZOBAZ7uFN1nU7p5QCp6aZcV6poSGMEgpmbX72OBOd9zfYqM0TewD0NV/B6Y1FJ7GQr45+loBDRYg6AXI2XJ78lAqqSts+z5Zvvew5bI8XA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kQh4Yqtv; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=OQSZtza8ws4CZrVK3PY+q9cGH8IKXR7FkcuLnaLuTs/RBY05jY1K6nltIeEtlh1eh2AF1R3Vi5PGN09EJcEpHvSJlzmwCYQqBjEDwsoYYZHQtde9ytky/nKDFt6dTkhIvHsloBk2uyL6eEch3sdiORyADQSFBTEqOpqhwGpy7UBRPZjlFLIZARBW14XlsJ90AJOubhSpzOdzQQWkeqD+FcBjD0XnPjgjOBgOvIMp6+oetukdB6vhjRdkv45+XKpfv8TuNKmL9vAEBirwrljTLuwU7qiilK52M/mAyXDxWw+n92dEj0YmRAuYfWpu2tJbXqzigO8gD0iECtPJliVi6A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EnC62XR4; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=kQh4Yqtv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EnC62XR4;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c3FmY6PQSz3cYx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 18:35:25 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57F2XhO8019435;
-	Fri, 15 Aug 2025 08:35:22 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c3Fmj1Vp8z3cZR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 18:35:33 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57F2UZci015916;
+	Fri, 15 Aug 2025 08:35:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=A8xKI8KC5Yebfh3vQ
-	KZ338D6u2gjI9qyMmAiIusBUDU=; b=kQh4YqtvC5KJZzt7r3vWLN8TDj4GoHX0K
-	6bhRpVmZv8kvvy2PyoQiOFtT9UPFj9BnUkLF1NvEJWeVNQWZG2mpmrXAzgVU62Ts
-	h+WJyWDv2x6v7hlypQOFyKEhTAK8t/5W1fUzIAaOnyG05atz5THVUQTbwC1LbAC+
-	MbK0Q6bzjGHcmVuPxOQeQ9BfLT4lK1oRi9OmKw6flJ5oWQTziv6RB5L/2F7bbKye
-	ZJF/AzYOVL2NVFyTYdxEeOAtzx2dGCUmFPvaslg0HjTPTAiZheTis6Nl+yBSj6pI
-	s+fHm1cO47YQGfIKWPvNJBXq3MCDd03zU3hssY0x48STLHAx0reLQ==
+	:mime-version:references:subject:to; s=pp1; bh=xuy1SoTYUjLOJkn9W
+	wdm/tTZ4hqB2tje+ej1pg5rVkE=; b=EnC62XR44Y2RUCI/4LlN1CcrjnXeYmWmH
+	jPFZgR47YHcdlJlzu21GiULyjeoHoe7ID0jvQpGfyKlCwgBk8NM+9x9ZB1yl0Sla
+	bwNd1n/8V6dEVuUupBupLJAvlkOfGDsnOhFtlN2Vbyxa9lW72EShdimGoGL8DQks
+	sTtOSVeqKNDgCbF+YiVWq0tozswn3wP5Z8ZqdgA22kQLPw+Ii/yNoDxm/YZMAWw5
+	cxIfVdrCCKzp5xnH09bawiAlwgfgokz+Pk+4nEqVkzJu/okKg9hnW9qrswDSyz9h
+	OsGVh0tEArEhfO5qItunr0Deo1SwVkwmioULLcBP6+hzwLx7Ys8yw==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48gypeggwy-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx14xgw6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Aug 2025 08:35:22 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57F8VGUh027522;
-	Fri, 15 Aug 2025 08:35:21 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48gypeggww-1
+	Fri, 15 Aug 2025 08:35:29 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57F8ZTDl001528;
+	Fri, 15 Aug 2025 08:35:29 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48dx14xgw5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Aug 2025 08:35:21 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57F7Q5il028647;
-	Fri, 15 Aug 2025 08:35:20 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48ej5ng1x2-1
+	Fri, 15 Aug 2025 08:35:29 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57F6Ur07026270;
+	Fri, 15 Aug 2025 08:35:28 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48eh21g9ww-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 Aug 2025 08:35:20 +0000
+	Fri, 15 Aug 2025 08:35:27 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57F8ZG1C35455462
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57F8ZOSW48562494
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 15 Aug 2025 08:35:16 GMT
+	Fri, 15 Aug 2025 08:35:24 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AF8282004D;
-	Fri, 15 Aug 2025 08:35:16 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id E306920043;
+	Fri, 15 Aug 2025 08:35:23 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 04F5F20040;
-	Fri, 15 Aug 2025 08:35:10 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 701B620040;
+	Fri, 15 Aug 2025 08:35:17 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.61.240.145])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 15 Aug 2025 08:35:09 +0000 (GMT)
+	Fri, 15 Aug 2025 08:35:17 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.ibm.com>
 To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
         maddy@linux.ibm.com, irogers@google.com, namhyung@kernel.org
@@ -77,9 +77,9 @@ Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         aboorvad@linux.ibm.com, sshegde@linux.ibm.com, atrajeev@linux.ibm.com,
         kjain@linux.ibm.com, hbathini@linux.vnet.ibm.com,
         Aditya.Bodkhe1@ibm.com, venkat88@linux.ibm.com
-Subject: [PATCH 05/14] powerpc/perf/vpa-dtl: Add support to capture DTL data in aux buffer
-Date: Fri, 15 Aug 2025 14:03:58 +0530
-Message-Id: <20250815083407.27953-6-atrajeev@linux.ibm.com>
+Subject: [PATCH 06/14] powerpc/perf/vpa-dtl: Handle the writing of perf record when aux wake up is needed
+Date: Fri, 15 Aug 2025 14:03:59 +0530
+Message-Id: <20250815083407.27953-7-atrajeev@linux.ibm.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20250815083407.27953-1-atrajeev@linux.ibm.com>
 References: <20250815083407.27953-1-atrajeev@linux.ibm.com>
@@ -98,231 +98,157 @@ Precedence: list
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=eaU9f6EH c=1 sm=1 tr=0 ts=689ef14a cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=h-hinMeAw3qEPoOpTm4A:9
-X-Proofpoint-GUID: Xqsc9muqdwrnBhfEcMvc4xHvXl_o9f4I
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEzMDE2NyBTYWx0ZWRfXyhRAUCWb6Wgi
- yRW7t5/aqeamTljRV3Rx/O3Uls4Aao6Js8o0WSRY9lV32m3EkVXrmM4cPl4jVIeItRPkPSDOo7G
- Pz1syLaVgUMJJsrvTXW9wkM7bTmiS2K4n6/o3b2/nJaj0tmc2m3dW+cj9lHZ4jqPQUsNP8UieEL
- zHX81xalk0EP31pRSUGjigTV8Znq1dkCyGlsoI2ID376GByZBPXOQxvtZDoUyRVSmo8CjVRpfjT
- 5iUNMcrjm96gK3PNkZ9nakcHUWMhQ2rBQGdRFmPZCCipxZBczgB5o965/RwZiUq7tUupQ+JgxUi
- PYfcSer8ux7S4ErqRN1EQ7aFkKwBSyQurAkIsOCPilZtYMz44XaMU+yA1yMrIrpoy3seoBx7WvU
- XF4Fd+52
-X-Proofpoint-ORIG-GUID: CLMkBlZthYOEZCe-IccPvwfpGoy9DOyd
+X-Proofpoint-ORIG-GUID: 8V05YX2yrKLVNzJn5-nRGL8xBrkwHfZD
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODEyMDIyNCBTYWx0ZWRfXxrbigPj326U9
+ C6xpJT8qS/oLCXjSI5QBmGfdjRFOonpBID38HhUaBR8I2DAWzUMtr6DY35Uw/RaDvO1CFoxGgwz
+ Qw6MeD3DqoGQHTwLTVooTYn2dO6Y+EIxkvq2u3U4BjTyGiZQpRoFsB/MYTp8tuFNPc8zBMte15M
+ EurXOdn6ZHY9H40j9yYKWv1qQ5K8f1RfxY7aqUeRwRnBaTWAhe0ShkwbvLAuHdwejKwXpjMMLVJ
+ JjmsPxAM9R1UgdbOl5vXsDNqbJ907UsxEAGjh/kmTFUIPzRosNLUwmjqyn1PZaZ/+7QhSbtuSvq
+ HYFggv/JptNMaP2l9KQ4H2MfmcCHDrpXd1F/cJJEgu0n9b060wigFtfpIaUX/EoISGt7lm/BniU
+ 61Y2Ayrr
+X-Proofpoint-GUID: y3BbZdkOchVZDyIK-XkAFX0lE8-X0uQf
+X-Authority-Analysis: v=2.4 cv=fLg53Yae c=1 sm=1 tr=0 ts=689ef151 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=zOIRyJVu6_AfguVy:21 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8
+ a=PO_t9PzmMro4mNfVNWgA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-15_02,2025-08-14_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 clxscore=1015 priorityscore=1501 spamscore=0
- bulkscore=0 malwarescore=0 adultscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508130167
+ adultscore=0 clxscore=1011 spamscore=0 priorityscore=1501 impostorscore=0
+ phishscore=0 malwarescore=0 bulkscore=0 suspectscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508120224
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-vpa dtl pmu has one hrtimer added per vpa-dtl pmu thread. When the
-hrtimer expires, in the timer handler, code is added to save the DTL
-data to perf event record via vpa_dtl_capture_aux() function.
-The DTL (Dispatch Trace Log) contains information
-about dispatch/preempt, enqueue time etc. We directly copy the DTL
-buffer data as part of auxiliary buffer. Data will be written to
-disk only when the allocated buffer is full.
+Handle the case when the aux buffer is going to be full and
+data needs to be written to the data file. perf_aux_output_begin()
+function checks if there is enough space depending on the values of
+aux_wakeup and aux_watermark which is part of "struct perf_buffer".
+Inorder to maintain where to write to aux buffer, add two fields
+to "struct vpa_pmu_buf". Field "threshold" to indicate total possible
+DTL entries that can be contained in aux buffer and field "full" to
+indicate anytime when buffer is full. In perf_aux_output_end, there
+is check to see if wake up is needed based on aux head value.
 
-By this approach, all the DTL data will be present as-is in the
-perf.data. The data will be post-processed in perf tools side when doing
-perf report/perf script and this will avoid time taken to create samples
-in the kernel space.
-
-To corelate each DTL entry with other events across CPU's, we need to
-map timebase from "struct dtl_entry" which phyp provides with boot
-timebase. This also needs timebase frequency. Define "struct boottb_freq"
-to save these details.
-
-Added changes to capture the Dispatch Trace Log details to AUX buffer
-in vpa_dtl_dump_sample_data(). Boot timebase and frequency needs to be
-saved only at once, added field to indicate this as part of
-"vpa_pmu_buf" structure.
-
-perf_aux_output_begin: This function is called before writing to AUX
-area. This returns the pointer to aux area private structure, ie
-"struct vpa_pmu_buf". The function obtains the output handle
-(used in perf_aux_output_end). when capture completes in
-vpa_dtl_capture_aux(), call perf_aux_output_end() to commit the recorded
-data. perf_aux_output_end() is called to move the aux->head of
-"struct perf_buffer" to indicate size of data in aux buffer.
-aux_tail will be moved in perf tools side when writing the data from
-aux buffer to perf.data file in disk.
-
-It is responsiblity of PMU driver to make sure data is copied between
-perf_aux_output_begin and perf_aux_output_end.
+In vpa_dtl_capture_aux(), check if there is enough space to contain the
+DTL data. If not, save the data for available memory and set full to true.
+Set head of private aux to zero when buffer is full so that next data
+will be copied to beginning of the buffer. The address used for copying
+to aux is "aux_copy_buf + buf->head". So once buffer is full, set head
+to zero, so that next time it will be written from start of the buffer.
 
 Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
 ---
- arch/powerpc/perf/vpa-dtl.c | 131 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 130 insertions(+), 1 deletion(-)
+ arch/powerpc/perf/vpa-dtl.c | 54 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 52 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/perf/vpa-dtl.c b/arch/powerpc/perf/vpa-dtl.c
-index 364242cbfa8a..ce17beddd4b4 100644
+index ce17beddd4b4..d9651c5ef215 100644
 --- a/arch/powerpc/perf/vpa-dtl.c
 +++ b/arch/powerpc/perf/vpa-dtl.c
-@@ -86,6 +86,24 @@ struct vpa_pmu_buf {
+@@ -86,8 +86,11 @@ struct vpa_pmu_buf {
  	u64     *base;
  	u64     size;
  	u64     head;
-+	/* boot timebase and frequency needs to be saved only at once */
-+	int	boottb_freq_saved;
-+};
-+
-+/*
-+ * To corelate each DTL entry with other events across CPU's,
-+ * we need to map timebase from "struct dtl_entry" which phyp
-+ * provides with boot timebase. This also needs timebase frequency.
-+ * Formula is: ((timbase from DTL entry - boot time) / frequency)
-+ *
-+ * To match with size of "struct dtl_entry" to ease post processing,
-+ * padded 24 bytes to the structure.
-+ */
-+struct boottb_freq {
-+	u64	boot_tb;
-+	u64	tb_freq;
-+	u64	timebase;
-+	u64	padded[3];
++	u64	head_size;
+ 	/* boot timebase and frequency needs to be saved only at once */
+ 	int	boottb_freq_saved;
++	u64	threshold;
++	bool	full;
  };
  
- static DEFINE_PER_CPU(struct vpa_pmu_ctx, vpa_pmu_ctx);
-@@ -95,13 +113,123 @@ static DEFINE_PER_CPU(struct vpa_dtl, vpa_dtl_cpu);
- static int dtl_global_refc;
- static spinlock_t dtl_global_lock = __SPIN_LOCK_UNLOCKED(dtl_global_lock);
- 
-+/*
-+ * Capture DTL data in AUX buffer
-+ */
-+static void vpa_dtl_capture_aux(long *n_entries, struct vpa_pmu_buf *buf,
-+		struct vpa_dtl *dtl, int index)
-+{
-+	struct dtl_entry *aux_copy_buf = (struct dtl_entry *)buf->base;
-+
-+	/*
-+	 * Copy to AUX buffer from per-thread address
-+	 */
-+	memcpy(aux_copy_buf + buf->head, &dtl->buf[index], *n_entries * sizeof(struct dtl_entry));
-+
-+	buf->head += *n_entries;
-+
-+	return;
-+}
-+
  /*
-  * Function to dump the dispatch trace log buffer data to the
-  * perf data.
-+ *
-+ * perf_aux_output_begin: This function is called before writing
-+ * to AUX area. This returns the pointer to aux area private structure,
-+ * ie "struct vpa_pmu_buf" here which is set in setup_aux() function.
-+ * The function obtains the output handle (used in perf_aux_output_end).
-+ * when capture completes in vpa_dtl_capture_aux(), call perf_aux_output_end()
-+ * to commit the recorded data.
-+ *
-+ * perf_aux_output_end: This function commits data by adjusting the
-+ * aux_head of "struct perf_buffer". aux_tail will be moved in perf tools
-+ * side when writing the data from aux buffer to perf.data file in disk.
-+ *
-+ * Here in the private aux structure, we maintain head to know where
-+ * to copy data next time in the PMU driver. vpa_pmu_buf->head is moved to
-+ * maintain the aux head for PMU driver. It is responsiblity of PMU
-+ * driver to make sure data is copied between perf_aux_output_begin and
-+ * perf_aux_output_end.
-+ *
-+ * After data is copied in vpa_dtl_capture_aux() function, perf_aux_output_end()
-+ * is called to move the aux->head of "struct perf_buffer" to indicate size of
-+ * data in aux buffer. This will post a PERF_RECORD_AUX into the perf buffer.
-+ * Data will be written to disk only when the allocated buffer is full.
-+ *
-+ * By this approach, all the DTL data will be present as-is in the
-+ * perf.data. The data will be pre-processed in perf tools side when doing
-+ * perf report/perf script and this will avoid time taken to create samples
-+ * in the kernel space.
-  */
- static void vpa_dtl_dump_sample_data(struct perf_event *event)
+@@ -121,11 +124,31 @@ static void vpa_dtl_capture_aux(long *n_entries, struct vpa_pmu_buf *buf,
  {
--	return;
-+	u64 cur_idx, last_idx, i;
-+	u64 boot_tb;
-+	struct boottb_freq boottb_freq;
+ 	struct dtl_entry *aux_copy_buf = (struct dtl_entry *)buf->base;
+ 
++	/*
++	 * check if there is enough space to contain the
++	 * DTL data. If not, save the data for available
++	 * memory and set full to true.
++	 */
++	if (buf->head + *n_entries >= buf->threshold) {
++		*n_entries = buf->threshold - buf->head;
++		buf->full = 1;
++	}
 +
-+	/* actual number of entries read */
-+	long n_read = 0, read_size = 0;
-+
-+	/* number of entries added to dtl buffer */
-+	long n_req;
-+
-+	struct vpa_pmu_ctx *vpa_ctx = this_cpu_ptr(&vpa_pmu_ctx);
-+
-+	struct vpa_pmu_buf *aux_buf;
-+
-+	struct vpa_dtl *dtl = &per_cpu(vpa_dtl_cpu, event->cpu);
-+
-+	cur_idx = be64_to_cpu(lppaca_of(event->cpu).dtl_idx);
-+	last_idx = dtl->last_idx;
-+
-+	if (last_idx + N_DISPATCH_LOG <= cur_idx)
-+		last_idx = cur_idx - N_DISPATCH_LOG + 1;
-+
-+	n_req = cur_idx - last_idx;
-+
-+	/* no new entry added to the buffer, return */
-+	if (n_req <= 0)
-+		return;
-+
-+	dtl->last_idx = last_idx + n_req;
-+	boot_tb = get_boot_tb();
-+
-+	i = last_idx % N_DISPATCH_LOG;
-+
-+	aux_buf = perf_aux_output_begin(&vpa_ctx->handle, event);
-+	if (!aux_buf) {
-+		pr_debug("returning. no aux\n");
+ 	/*
+ 	 * Copy to AUX buffer from per-thread address
+ 	 */
+ 	memcpy(aux_copy_buf + buf->head, &dtl->buf[index], *n_entries * sizeof(struct dtl_entry));
+ 
++	if (buf->full) {
++		/*
++		 * Set head of private aux to zero when buffer is full
++		 * so that next data will be copied to beginning of the
++		 * buffer
++		 */
++		buf->head = 0;
 +		return;
 +	}
 +
-+	if (!aux_buf->boottb_freq_saved) {
-+		pr_debug("Copying boot tb to aux buffer: %lld\n", boot_tb);
-+		/* Save boot_tb to convert raw timebase to it's relative system boot time */
-+		boottb_freq.boot_tb = boot_tb;
-+		/* Save tb_ticks_per_sec to convert timebase to sec */
-+		boottb_freq.tb_freq = tb_ticks_per_sec;
-+		boottb_freq.timebase = 0;
-+		memcpy(aux_buf->base, &boottb_freq, sizeof(boottb_freq));
-+		aux_buf->head += 1;
-+		aux_buf->boottb_freq_saved = 1;
-+		n_read += 1;
+ 	buf->head += *n_entries;
+ 
+ 	return;
+@@ -179,6 +202,7 @@ static void vpa_dtl_dump_sample_data(struct perf_event *event)
+ 	struct vpa_pmu_buf *aux_buf;
+ 
+ 	struct vpa_dtl *dtl = &per_cpu(vpa_dtl_cpu, event->cpu);
++	u64 size;
+ 
+ 	cur_idx = be64_to_cpu(lppaca_of(event->cpu).dtl_idx);
+ 	last_idx = dtl->last_idx;
+@@ -223,13 +247,37 @@ static void vpa_dtl_dump_sample_data(struct perf_event *event)
+ 		n_req -= read_size;
+ 		n_read += read_size;
+ 		i = 0;
++		if (aux_buf->full) {
++			size = (n_read * sizeof(struct dtl_entry));
++			if ((size +  aux_buf->head_size) > aux_buf->size) {
++				size = aux_buf->size - aux_buf->head_size;
++				perf_aux_output_end(&vpa_ctx->handle, size);
++				aux_buf->head = 0;
++				aux_buf->head_size = 0;
++			} else {
++				aux_buf->head_size += (n_read * sizeof(struct dtl_entry));
++				perf_aux_output_end(&vpa_ctx->handle, n_read * sizeof(struct dtl_entry));
++			}
++			goto out;
++		}
+ 	}
+ 
+ 	/* .. and now the head */
+ 	vpa_dtl_capture_aux(&n_req, aux_buf, dtl, i);
+ 
+-	/* Move the aux->head to indicate size of data in aux buffer */
+-	perf_aux_output_end(&vpa_ctx->handle, (n_req + n_read) * sizeof(struct dtl_entry));
++	size = ((n_req + n_read) * sizeof(struct dtl_entry));
++	if ((size +  aux_buf->head_size) > aux_buf->size) {
++		size = aux_buf->size - aux_buf->head_size;
++		perf_aux_output_end(&vpa_ctx->handle, size);
++		aux_buf->head = 0;
++		aux_buf->head_size = 0;
++	} else {
++		aux_buf->head_size += ((n_req + n_read) * sizeof(struct dtl_entry));
++		/* Move the aux->head to indicate size of data in aux buffer */
++		perf_aux_output_end(&vpa_ctx->handle, (n_req + n_read) * sizeof(struct dtl_entry));
 +	}
-+
-+	/* read the tail of the buffer if we've wrapped */
-+	if (i + n_req > N_DISPATCH_LOG) {
-+		read_size = N_DISPATCH_LOG - i;
-+		vpa_dtl_capture_aux(&read_size, aux_buf, dtl, i);
-+		n_req -= read_size;
-+		n_read += read_size;
-+		i = 0;
-+	}
-+
-+	/* .. and now the head */
-+	vpa_dtl_capture_aux(&n_req, aux_buf, dtl, i);
-+
-+	/* Move the aux->head to indicate size of data in aux buffer */
-+	perf_aux_output_end(&vpa_ctx->handle, (n_req + n_read) * sizeof(struct dtl_entry));
++out:
++	aux_buf->full = 0;
  }
  
  /*
-@@ -372,6 +500,7 @@ static void *vpa_dtl_setup_aux(struct perf_event *event, void **pages,
+@@ -500,7 +548,9 @@ static void *vpa_dtl_setup_aux(struct perf_event *event, void **pages,
  
  	buf->size = nr_pages << PAGE_SHIFT;
  	buf->head = 0;
-+	buf->boottb_freq_saved = 0;
++	buf->head_size = 0;
+ 	buf->boottb_freq_saved = 0;
++	buf->threshold = ((buf->size - 32) / sizeof(struct dtl_entry));
  	return no_free_ptr(buf);
  }
  
