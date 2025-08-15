@@ -1,79 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-11065-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11064-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF0BB282A4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Aug 2025 17:07:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D5B2B282A2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 Aug 2025 17:07:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c3QT72Tbwz3chK;
-	Sat, 16 Aug 2025 01:07:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c3QT41QHTz3chX;
+	Sat, 16 Aug 2025 01:07:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::429"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755270459;
-	cv=none; b=nFwYT4jNUJtz3fRfWs32hY/zh1M1hVo72In+PZtjFd3Vw9yVhVQox/RZR43ZA1bHXJpdUmq/UmTZHK/rFSpGD+3ZOYwa8O7EYszYm9A6PngX1JhSrzB0UIBqwhHWyK/0/ySKWSZDzW2e2/5f7Z9ejy6LsVzuR4WjiJzspbVonU9/tiqyvq8jZ5AbySLkHRDe5FMD7IpQW7CgZEGGQ0Rb8pp4X5hgVO5qvEhUe3TghQdBpIOlOld+TWF8FrE98C/wDslNq0ZdVGD68GDbWSbZtmshIOfkMacL6U7sm5GF4X5XMr5vdPjXdlnC0wUCbd4VrbNFR9e3MIndSa2aFAZm8w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::430"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755270456;
+	cv=none; b=DbufcYTMONTzaqKpA7/b/vhdMRoe5pi6JcNCgSzO7w5S5hVVH2YJg8cUwCk5sVsz+W5Nec91XgwKM3557Wo7gAfCwOSywJr/hV3okpioW0XDQ9Nl+1JgIIdNyddIHVXkiXpfJL25cn3dWIzK+/+qzz7VH3q/P3xD+rB7VaoM463C1hAQevv4jRTMNZG9QTPeZnyR69DmEh37PhQo3Yfm5XB7sk8X6E7QTLwABw8hRpOAg7fcdsQXXpn3v649H8dh+YFqfKcEKcpq5ns2yNrFkTAlYSzA85+uYFocsOr5KLY+KGFsSMXlzxID7h/X4Be7PP1Nbq8H4u7j0z5LVFlRuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755270459; c=relaxed/relaxed;
-	bh=EHLPRMwsFUXklJ+HOrV/DsMAdiggx2WSG2UfKCJiulY=;
+	t=1755270456; c=relaxed/relaxed;
+	bh=HSuqWusYtC3hY8ploe0KH7jPL7SusiQWfMM3CIlvAWY=;
 	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
-	 Content-Type; b=lv8VynjLTMwAurN/gImCchQ1MTZzZFMPEdOhPKAKaLlACpVyzL3ecGz0CLrvcw8ZugLksr5Fh5CP9j9bE1U7YMqwIWRQZPP521XvLVZsO8d3pg+QUycDFtCnyuKPcm2k7Sen0BXkXlhcb2Ak3x45aiI67RIkJ2FIa2fM28GiEI0ooYLlmk9ZxMOoo+SLnzj0fDGdtNKmc9kaZJVg4a6wnAET+ao1FQ7ub3FANlFnZYqGgqqVIvnSDQhqmG7vUXA7r38EJfF1wsG30Zx89DU/Mg0ngKPWr3uu/KIYBuwusmMtjDEaZcpS7FLYO0pgvpyTNYnb4u6q4R9wEbY6zXOTJg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=H34PI8b1; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=palmer@dabbelt.com; receiver=lists.ozlabs.org) smtp.mailfrom=dabbelt.com
+	 Content-Type; b=Aikwu7n24jCXrSOB/lwlTUBefaDXUBdw4AKTMYp0Yuh/j85menoTv2uECU9rcBt8dFNRz8/HKCEwMqTLvNb1D9+q3Z9mmdjaYRX0dGqs7aKrBqWwq0wh5HeLo1CmYLzHR+MrqXZ44oRD85IQAX5BUsVFvutph9FyYxb2hN5sIE2GD1ZP20DZEcZu7I/ZPdIurNZWojSCoRKBn0O6Arg8UxgR7MzzPzK1I2zhImjxQFtrtco48tVr+2iHDNqmYWFxSG7IG09nilYDvweumtoKkRxwSTgm+q+vlceg3wYUiNvhV10XGQGRqsMRxSHTmaBHGaNsVLyiENybnrIdf6ZakA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=bhUUy9DE; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=palmer@dabbelt.com; receiver=lists.ozlabs.org) smtp.mailfrom=dabbelt.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=H34PI8b1;
+	dkim=pass (2048-bit key; unprotected) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=bhUUy9DE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=palmer@dabbelt.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=dabbelt.com (client-ip=2607:f8b0:4864:20::430; helo=mail-pf1-x430.google.com; envelope-from=palmer@dabbelt.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c3QT262H7z3cgy
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Aug 2025 01:07:34 +1000 (AEST)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-76e2eb6ce24so2103560b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 08:07:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c3QT34Hvbz3chK
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 Aug 2025 01:07:35 +1000 (AEST)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-76e2e614b84so2125196b3a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 Aug 2025 08:07:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1755270452; x=1755875252; darn=lists.ozlabs.org;
+        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1755270454; x=1755875254; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EHLPRMwsFUXklJ+HOrV/DsMAdiggx2WSG2UfKCJiulY=;
-        b=H34PI8b1p7T6bbDWDNm2YLVqQK4+uOM8nnIiUuzJTmvCiDeeBy8Xi8WOgA/AC2YxG+
-         o17AC+ohjERp46JIYNyOeTKwNj/IB2lDuAmve0cSIXpDZtk5i7AJzRBNRQRgKhB0IoOc
-         OKkgBn/6aizQi6uyxMN8glFKLq5J87thiUjqG+YHPLUYRiXoPHsT3vtfzRt5QTiZ9BHS
-         U1KJbvXD0CHtbzMXe+9GwD+wgjiCD3wgRiqDUZez9cBDBbxCrEGW6W6Pb1Q3LKF1xHSE
-         a2VfZbe1peQSQM7+KIyvpBxHtPdVo6EpPSyMuhFxxVIWThXRFD0jXAHWiU4ITnPcUsdP
-         Mj2A==
+        bh=HSuqWusYtC3hY8ploe0KH7jPL7SusiQWfMM3CIlvAWY=;
+        b=bhUUy9DEJxkZtYxF+JFiNTHBcMpJ+jrVHQAQCb994g0Zk4PUehwZUgt9dqtwPEkJVM
+         JyFHRC/5h97oPXxl6BdppC0ylI/4ac7v3yjXERLWZAKPGSFwBra6NRN1pGQAK0K2jk3y
+         spj+7ir3hpjRuo+Dn4UaCeSvd3CRFvJJ3tgP5A/cGcMNZcBnY+izRT2FsnWcQVNd+IJl
+         RPWmuMhExcZD/dLCfXw8s2jNrBEDMhPo5/JDYiajPJKLB06Aq3dYpiT/JZfBdJyvo1cz
+         PXOfduz4d/kTfLsgjqZ1qw30NnKFCJwnuATIdajQYISeLfRyiSOzC//HMtnVEAMc4V4c
+         FiQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755270452; x=1755875252;
+        d=1e100.net; s=20230601; t=1755270454; x=1755875254;
         h=content-transfer-encoding:mime-version:message-id:to:from:cc
          :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EHLPRMwsFUXklJ+HOrV/DsMAdiggx2WSG2UfKCJiulY=;
-        b=MKWflUREDIu9mrttHd5T2Y6CmLd8q6b5y5SuvKHDbs2nwV1lgz7cAac6RE5JAZtqEe
-         cxdLW3EqKW44ERzWH/DsdnObLicPupYeLnihg4zIQv756n+0k3ostl7iwKiiGWgcJr7c
-         Iki4EybhBeQ3iBu2yPq1OyF58Nlo8xIrOGiWDZyX/YF+GGEhSzlX98eG84V/5BMbV4kM
-         eMy9tzBlSZr3XNNy+vOKGAsbQN/O+jQSAXRH3IfYwD3i0m1tpJ/hQcOzEoVJHUNaDfSq
-         I+0ku5X/Ra9cUD3dD9qMyWpxEO1rxYa+a2cVamAVOri8RLh3ONpgJIrCXJ0K8x+crakf
-         GEiw==
-X-Forwarded-Encrypted: i=1; AJvYcCWd7mEb7ZGG0gYw5xOU87NZLh1eZTQN1iKN6ZZYr1nS/NMpxUpq+UOfcuOwjHYvL6d7YprQLBT8VF+yAwM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw1b0FM6KgMeaXH7wRlI1VOqdd+tTeYR0Sv73bpNRW+ByPZkHTy
-	qS+I00ZtNfbTXnqt5amib/M5oQs1+QdLhjtalpjYuIbtEICiERzHTMFVvfzabvGzqHg=
-X-Gm-Gg: ASbGnct0RaSGI254LnEb6H6GKlwiEJak0SPKhVR6DIhIcg4O8jVvDZ26Zf0QAz98VQE
-	hcnt8mIta+rSzMGCnUNKDbneBXqbd+03Ux3XJDl8AGg2mgNbOaOensOzDFz5uqZOH3mSuGxWGj/
-	JUaB7CCb5C61Q1/fDyBeVW7Yxm3AxuMB4fNV0/Hj7kZdZ1HIBe2st0uFZtnKtjApo65ihn6jXbW
-	UL/LAa1R/HuUdTFKkROEuMGhg5B6NHGYmeRnqwlY9A0HZyEV+Cxp9jMMP9apJgoWmujA/dT4O/k
-	1ql9oQqBtbWi4Jcx+rbzuThhEyLILoC8nTCHdX+oXCS87ZGMrArl1gCjjsSPjIzuqF9hUKo3WXn
-	l4pio0MUvBnv83H4LX7CI+4n1Hh6GD52J6sQ=
-X-Google-Smtp-Source: AGHT+IHmxnV+YR9cR/LeaPBJErhvHjNkppxMDemXEcOX3MCe4Sp9OWex1hLOxvkMk2wkz7dST8S4eg==
-X-Received: by 2002:a05:6a00:4f96:b0:769:a6a2:fe1e with SMTP id d2e1a72fcca58-76e447e3389mr3104455b3a.11.1755270452302;
-        Fri, 15 Aug 2025 08:07:32 -0700 (PDT)
+        bh=HSuqWusYtC3hY8ploe0KH7jPL7SusiQWfMM3CIlvAWY=;
+        b=AAr/SAuMWGY9pWoJ2JQ7sHaDiNok3OH6gKb6PB1sh8xpWnJelqwo2DWyA+MOgoM3AT
+         EcdGCTu90TuEBGB1pNun2hOQfkX4JIPPg4ZioMQ6OAj1Vx7aa39B/hDZ4DzDsjOVrUI3
+         z5fptaSlAxxyLUdAHTby+dFty56PyDbw6oqENLadqd7sKPvjjJym2CripmcYxPYdQeqZ
+         1CrDwPhkd2Jv9pIMvPTIyY4uBDqc1K0/BP6zRupyu+9M8B0tAM7CkRjisl+7nFyio+Zv
+         8kAfixrK5nm6cBZDRkPtbe5qdBGX8Xq97LTk5zy67FAZpSphc7Shog6HQMtysSZ1lU2w
+         UaBw==
+X-Forwarded-Encrypted: i=1; AJvYcCXYt+2CBBSbFbbCN7rY+uq37W5mD/z5NFtQWv/3W3vGteIGP7On13s5ensnIrAlOwX6PdRGo0CnD4P1kdE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwgsGlG158TetsGM+7V/aYq7mX+j4hPhMgmRTaqPXqXa+gq0wTe
+	3lu/whC2KSrVSRyU8vWLycjRWGqVFHO0kONkCT3lqYBLdookBOJRRSs8K2wqaEWR5TY=
+X-Gm-Gg: ASbGncsHSlgQNUrvSoay4+MMzNADMSBuo0V+gEYu49tbl4TogEpopf0BEig4kslFl3U
+	8KIdJf3oobAN2T35i8vmO7e9I5qW/kQQ8dQFlnDgtH1vgvPVcRskd3NmGbJFOyEQ1yxftMBwbht
+	TB3zHHYQpx39KwboX+7p49b/ISBgTldGssRfMWQHwyq2OEUWZon6LCmMrB/5d5G9KyerqMLDV8q
+	SFxbmtGOIKBfENOtQCW6z4j2SmXRbUzxTIlEj+YFlbjlZx7PxgbeIqcGDl736IMqw2glwjMrbnd
+	BtBTlGrAfQ9rZuF5i3yTMY5uRMS36LADZVO7zKVSctZdaoVvtcthuve8E5D4HQWS8rY4xKvNP8k
+	Jugak9phSHCoIfd1NXke1mvy25YJrmkyJo9Q=
+X-Google-Smtp-Source: AGHT+IGQbGMaqUCBVjgHpE03NJ6lUtJGuN0cfMPLFV18k27l43zYHixLrnt22lRnZXhrjts5z9io5w==
+X-Received: by 2002:a05:6a20:1611:b0:23f:f5bf:35d7 with SMTP id adf61e73a8af0-240d3039205mr3462386637.45.1755270453673;
+        Fri, 15 Aug 2025 08:07:33 -0700 (PDT)
 Received: from localhost ([192.184.165.199])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-76e4558bf19sm1309791b3a.99.2025.08.15.08.07.31
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-b472d5e58d0sm1499710a12.23.2025.08.15.08.07.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Aug 2025 08:07:31 -0700 (PDT)
-Date: Fri, 15 Aug 2025 08:07:31 -0700 (PDT)
-X-Google-Original-Date: Fri, 15 Aug 2025 08:06:56 PDT (-0700)
-Subject:     Re: [PATCH v4 17/24] riscv: vdso: Deduplicate CFLAGS_REMOVE_* variables
-In-Reply-To: <20250812-vdso-absolute-reloc-v4-17-61a8b615e5ec@linutronix.de>
+        Fri, 15 Aug 2025 08:07:33 -0700 (PDT)
+Date: Fri, 15 Aug 2025 08:07:33 -0700 (PDT)
+X-Google-Original-Date: Fri, 15 Aug 2025 08:07:29 PDT (-0700)
+Subject:     Re: [PATCH v4 18/24] riscv: vdso: Disable LTO for the vDSO
+In-Reply-To: <20250812-vdso-absolute-reloc-v4-18-61a8b615e5ec@linutronix.de>
 CC: Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
   Alexandre Ghiti <alex@ghiti.fr>, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
   justinstitt@google.com, luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
@@ -93,7 +93,7 @@ CC: Paul Walmsley <paul.walmsley@sifive.com>, aou@eecs.berkeley.edu,
   thomas.weissschuh@linutronix.de
 From: Palmer Dabbelt <palmer@dabbelt.com>
 To: thomas.weissschuh@linutronix.de
-Message-ID: <mhng-540E0EE0-A9CF-4EE3-9E71-969B40D29C50@Palmers-Mini.rwc.dabbelt.com>
+Message-ID: <mhng-146EE95D-951E-41BB-898C-033437B27EA3@Palmers-Mini.rwc.dabbelt.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -114,40 +114,41 @@ X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 11 Aug 2025 22:44:30 PDT (-0700), thomas.weissschuh@linutronix.de wrote:
-> All vDSO objects need the same treatment.
-> To make changes to both the list of objects and the list of removed flags
-> easier, introduce a helper variable.
+On Mon, 11 Aug 2025 22:44:31 PDT (-0700), thomas.weissschuh@linutronix.de wrote:
+> All the other architectures supporting LTO (x86, arm64, loongarch) do not
+> use it for the vDSO.
+>
+> Its is problematic for some upcoming compile-time validation of the
+> generated object code.
+> The LTO object files do not contain the necessary relocation information
+> and -flto-fat-objects is not compatible with clang < 16.
+>
+> For consistency and to enable the mentioned compile-time checks,
+> disable LTO for the vDSO.
+> The vDSO heavily uses __always_inline anyways.
 >
 > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 > Reviewed-by: Nathan Chancellor <nathan@kernel.org>
 > Tested-by: Jan Stancek <jstancek@redhat.com>
 > ---
->  arch/riscv/kernel/vdso/Makefile | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  arch/riscv/kernel/vdso/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
 > diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
-> index 9ebb5e590f93a3228c451dca58e6d5cfbbc03ff7..c19c3c76f7c9f6b2f7523a59269de3b683656323 100644
+> index c19c3c76f7c9f6b2f7523a59269de3b683656323..9f1bf5bae9bd473e43d9fd3022e9e1a185128b73 100644
 > --- a/arch/riscv/kernel/vdso/Makefile
 > +++ b/arch/riscv/kernel/vdso/Makefile
-> @@ -49,9 +49,10 @@ CPPFLAGS_vdso.lds += -DHAS_VGETTIMEOFDAY
+> @@ -49,7 +49,7 @@ CPPFLAGS_vdso.lds += -DHAS_VGETTIMEOFDAY
 >  endif
 >
 >  # Disable -pg to prevent insert call site
-> -CFLAGS_REMOVE_vgettimeofday.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
-> -CFLAGS_REMOVE_getrandom.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
-> -CFLAGS_REMOVE_hwprobe.o = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
-> +CFLAGS_REMOVE_VDSO = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
-> +CFLAGS_REMOVE_vgettimeofday.o = $(CFLAGS_REMOVE_VDSO)
-> +CFLAGS_REMOVE_getrandom.o = $(CFLAGS_REMOVE_VDSO)
-> +CFLAGS_REMOVE_hwprobe.o = $(CFLAGS_REMOVE_VDSO)
->
->  # Force dependency
->  $(obj)/vdso.o: $(obj)/vdso.so
+> -CFLAGS_REMOVE_VDSO = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS)
+> +CFLAGS_REMOVE_VDSO = $(CC_FLAGS_FTRACE) $(CC_FLAGS_SCS) $(CC_FLAGS_LTO)
+>  CFLAGS_REMOVE_vgettimeofday.o = $(CFLAGS_REMOVE_VDSO)
+>  CFLAGS_REMOVE_getrandom.o = $(CFLAGS_REMOVE_VDSO)
+>  CFLAGS_REMOVE_hwprobe.o = $(CFLAGS_REMOVE_VDSO)
 
-Reviewed-by: Palmer Dabbelt <palmer@dabbelt.com>
 Acked-by: Palmer Dabbelt <palmer@dabbelt.com>
 
-Also assuming you want to take this with the others.
+Also assuming this goes with the others.  Thanks!
 
