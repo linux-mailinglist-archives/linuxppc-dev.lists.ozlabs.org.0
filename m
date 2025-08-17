@@ -1,59 +1,42 @@
-Return-Path: <linuxppc-dev+bounces-11072-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11073-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E35B29361
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Aug 2025 15:54:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C69B293BE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 Aug 2025 17:08:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c4clG2VGmz2xgQ;
-	Sun, 17 Aug 2025 23:54:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c4fPg1MnQz2xgQ;
+	Mon, 18 Aug 2025 01:08:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755438842;
-	cv=none; b=bNSPk1uJaIntkWoIcDdzEMQNZbSm5iCDhhwVOW6Ff26kJPyM8J3LvbAzN0c6oM3YeqlDPLwxlwQLFry4D04YU//YasVe8XsydD1iutJBl5pnTl8NaZosQLYG5vcg75v9DmfZiLwB/QMZfi3qSTqltEEFSzJwu+eqvHPyFm00noDWCF+q8reJl2Hq++UoqYIzKfZ4x4mEv6f2PKB0XUmjND9Qw2lPxo+ASoutD5L06PhQ3KWYL/2gYBJx3F7I6IzsCVLlxl8gwcFPFIed/KKO4xMii+Yk5LPker6e4pwmcecAYA5KOgiZ8IiavYfdnSCZs4LfcOHcmrDCVwykNxMQaA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=117.135.210.2
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755443335;
+	cv=none; b=RYcVW2CJUarEVObrCZ5CJ1TkwzvOGHcBPCveXd/Q0XzCv7R8Piqbw5qBuFmEWsYrFOJ/2vWLSsOfcIRtkojzgWny8RggzFKwjUKvAXn7qJmgSg101JaTD3D628Rc4XbGI4ZgndbIp//vSXyVQNRAwJAtVcZ6HiQrILC1ylSWJIGln65VCFe1R1c5Pqp7A2yUAyyV6sddRl5+sYuqRt3mhB9jbPAbuz+9mVCPh34CgtnHREQQrkuy67Iy+4x9NkT1VUtM7HkU5dEGkoQN5/djcruda88PtXXjC0QpnyYj6XFp4JOH9fFw/no1/o7NNDxQa/935JqoIaADLl8e6B1Kow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755438842; c=relaxed/relaxed;
-	bh=ivL6tmdbxPn7Hy8woM6xcNf0p/QxFtwM+DYdZwCcA2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XH1pCQ7SrMnxfV01o/8l462Syr/KklTrMViGVLOd+eF7yw4HZ5LCKHHL/+fHnhcDd7/B48X2GBOSKhikatyFEdghg1xuO2QYAfq8fwxLStWPxcu1Z54arQZvHBGwNlO7RSzDR0PSc+YNCMB6KE9HKDwJI5AhfCbX4ktYLu64mPSof85ac5SUTQPuYxtKkUf5fY3kwdOMp0TxVhZUIW/Py+Af7/l71KNeye54bBVokrxfhxNgcV8ytDOozrnDQ/G0hvGXI0IycthEDOPhiyc6q6mwOOv+LIg4XfIVB/w96GGu4VC4Fep6Tgx5K1MZ0Axr0SAJMYk6WP9Be9BDl2ggiw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
-X-Greylist: delayed 512 seconds by postgrey-1.37 at boromir; Sun, 17 Aug 2025 23:54:01 AEST
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c4clF3SmDz2xK5
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 Aug 2025 23:54:01 +1000 (AEST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 5E0DC2C051CC;
-	Sun, 17 Aug 2025 15:45:25 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 2047E3BEDFB; Sun, 17 Aug 2025 15:45:25 +0200 (CEST)
-Date: Sun, 17 Aug 2025 15:45:25 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Riana Tauro <riana.tauro@intel.com>,
-	Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>,
-	"Sean C. Dardis" <sean.c.dardis@intel.com>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Linas Vepstas <linasvepstas@gmail.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver OHalloran <oohall@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH 1/5] PCI/AER: Allow drivers to opt in to Bus Reset on
- Non-Fatal Errors
-Message-ID: <aKHc9RxYHC0CpbeS@wunner.de>
-References: <cover.1755008151.git.lukas@wunner.de>
- <28fd805043bb57af390168d05abb30898cf4fc58.1755008151.git.lukas@wunner.de>
- <cd952c82-9f8b-4396-9170-b34d539a8fac@linux.intel.com>
+	t=1755443335; c=relaxed/relaxed;
+	bh=Nh9VtSmIvZ6GYEv/OaxHwtfzdia7HWB/NNDWbUf/1ug=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cOI4Qoqu1FMurIoX2kwhqITmzC+K+WW5I15u3zx9rQUluh+kc+vZVQszlPr+Rk47lQ+we+rrg6OFoXnov401zZ5slYZFsvI/LdB7AHX/KGifnlr26a9JyWQPN10AWXuawLuFoTqvl54I2VQ5Eio2Xq2J1lRjqE8FpOv9KnAmsdNJ8nUkFjj2Mx75ui7BfgBsoEJFUk8xtwlwB+/H+B3AfXtoA/UMcjT5QKV8BfnzrIplRqvXqYCJ0bcjXlbt6OSCY6Xfwj7R/5XWlaNzwgWNHrE7cUTTbUP8L32OUjqE1i1EvR2Ifd8q4bQB1yyD96QubAEVQHRMK25v0hrGTUqbfQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com; dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=RALJ+BR8; dkim-atps=neutral; spf=pass (client-ip=117.135.210.2; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org) smtp.mailfrom=163.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=163.com header.i=@163.com header.a=rsa-sha256 header.s=s110527 header.b=RALJ+BR8;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=163.com (client-ip=117.135.210.2; helo=m16.mail.163.com; envelope-from=18255117159@163.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 82227 seconds by postgrey-1.37 at boromir; Mon, 18 Aug 2025 01:08:52 AEST
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c4fPc3lSMz2xQ0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Aug 2025 01:08:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=Nh9VtSmIvZ6GYEv/OaxHwtfzdia7HWB/NNDWbUf/1ug=;
+	b=RALJ+BR87H3/NAZQHDCTrE6qZA1RQx1+qp5Iz+ukwudl1zoVySZo3vhY+3dsUX
+	TUt2Y7zENiLAlx7wTUsgjXeTCDIkZh+U1sTpLsY4CbdD7WxRHaWh2IL8AybsifS8
+	0gdBjOlSN7pmyoPxUGgaiv/r5mtbI4mkuuAf2PDZ864Xc=
+Received: from [IPV6:240e:b8f:919b:3100:3980:6173:5059:2d2a] (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wAH0F5B8KFokuwsCg--.33766S2;
+	Sun, 17 Aug 2025 23:07:46 +0800 (CST)
+Message-ID: <c965d655-8423-435b-ade7-6bd02e5989b0@163.com>
+Date: Sun, 17 Aug 2025 23:07:44 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,47 +50,136 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cd952c82-9f8b-4396-9170-b34d539a8fac@linux.intel.com>
-X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] PCI/AER: Use pci_clear_and_set_config_dword() to
+ simplify mask updates
+To: Lukas Wunner <lukas@wunner.de>
+Cc: mahesh@linux.ibm.com, bhelgaas@google.com, oohall@gmail.com,
+ mani@kernel.org, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20250816161743.340684-1-18255117159@163.com>
+ <aKDpIeQgt7I9Ts8F@wunner.de>
+Content-Language: en-US
+From: Hans Zhang <18255117159@163.com>
+In-Reply-To: <aKDpIeQgt7I9Ts8F@wunner.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wAH0F5B8KFokuwsCg--.33766S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCw43ZrW3Xw48ZF45Ar4Utwb_yoWrJr4kpr
+	Z8JF4rJrWUJF1YvrWDXaykArnYvr9rtFy8Kr93Gas5ZF4UuFZrJF9av347Jw1UKFZ5Xw4r
+	Jw4rKan5Zr4UtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UIeHgUUUUU=
+X-Originating-IP: [240e:b8f:919b:3100:3980:6173:5059:2d2a]
+X-CM-SenderInfo: rpryjkyvrrlimvzbiqqrwthudrp/1tbiWxmso2ih7swDZwABsD
+X-Spam-Status: No, score=0.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	FROM_LOCAL_DIGITS,FROM_LOCAL_HEX,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Aug 13, 2025 at 04:01:09PM -0700, Sathyanarayanan Kuppuswamy wrote:
-> On 8/12/25 10:11 PM, Lukas Wunner wrote:
-> > The file Documentation/PCI/pcieaer-howto.rst hints at a rationale for
-> > always performing a Bus Reset on Fatal Errors:  "Fatal errors [...] cause
-> > the link to be unreliable.  [...] This [reset_link] callback is used to
-> > reset the PCIe physical link when a fatal error happens.  If an error
-> > message indicates a fatal error, [...] performing link reset at upstream
-> > is necessary."
+
+
+On 2025/8/17 04:25, Lukas Wunner wrote:
+> On Sun, Aug 17, 2025 at 12:17:43AM +0800, Hans Zhang wrote:
+>> Replace manual read-modify-write sequences in multiple functions with
+>> pci_clear_and_set_config_dword() helper to reduce code duplication.
 > 
-> In the code we don't seem to differentiate link_reset and slot_reset. But
-> the Documentation calls them into two steps. Do you think we should
-> fix the Documentation?
+> None of the occurrences you're replacing is clearing *and* setting
+> bits at the same time.  They all either clear or set bits, but not both.
+> 
+> For the PCIe Capability, there are pcie_capability_clear_dword()
+> and pcie_capability_set_dword() helpers.
+> 
+> It would arguably be clearer and less confusing to introduce similar
+> pci_clear_config_dword() and pci_set_config_dword() helpers and use
+> those, instead of using pci_clear_and_set_config_dword() and setting
+> one argument to 0.
+> 
 
-reset_link and slot_reset are two different things:
+Dear Lukas,
 
-* slot_reset is the ->slot_reset() callback in struct pci_error_handlers.
+Thank you very much for your reply and suggestions.
 
-* reset_link is the reset_subordinates() callback passed in to
-  pcie_do_recovery().
+In the next version, I will introduce two helper functions, 
+pci_clear_config_dword() and pci_set_config_dword().
 
-Commit 8f1bbfbc3596 renamed reset_link() to reset_subordinates() but
-neglected to update Documentation/PCI/pcieaer-howto.rst.
+Best regards,
+Hans
 
-Commit b6cf1a42f916 dropped the reset_link() callback from struct
-pcie_port_service_driver and dropped default_reset_link() in favor
-of passing aer_root_reset() to pcie_do_recovery().  Yet the documentation
-continues referring to a "default reset_link callback" and incorrectly
-claims that "Upstream Port drivers may provide their own reset_link
-functions".
 
-I've begun updating the documentation and intend to submit that separately.
+> Thanks,
+> 
+> Lukas
+> 
+>> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+>> index e286c197d716..3d37e2b7e412 100644
+>> --- a/drivers/pci/pcie/aer.c
+>> +++ b/drivers/pci/pcie/aer.c
+>> @@ -176,14 +176,13 @@ static int enable_ecrc_checking(struct pci_dev *dev)
+>>   static int disable_ecrc_checking(struct pci_dev *dev)
+>>   {
+>>   	int aer = dev->aer_cap;
+>> -	u32 reg32;
+>>   
+>>   	if (!aer)
+>>   		return -ENODEV;
+>>   
+>> -	pci_read_config_dword(dev, aer + PCI_ERR_CAP, &reg32);
+>> -	reg32 &= ~(PCI_ERR_CAP_ECRC_GENE | PCI_ERR_CAP_ECRC_CHKE);
+>> -	pci_write_config_dword(dev, aer + PCI_ERR_CAP, reg32);
+>> +	pci_clear_and_set_config_dword(dev, aer + PCI_ERR_CAP,
+>> +				       PCI_ERR_CAP_ECRC_GENE |
+>> +				       PCI_ERR_CAP_ECRC_CHKE, 0);
+>>   
+>>   	return 0;
+>>   }
+>> @@ -1102,15 +1101,12 @@ static bool find_source_device(struct pci_dev *parent,
+>>   static void pci_aer_unmask_internal_errors(struct pci_dev *dev)
+>>   {
+>>   	int aer = dev->aer_cap;
+>> -	u32 mask;
+>>   
+>> -	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK, &mask);
+>> -	mask &= ~PCI_ERR_UNC_INTN;
+>> -	pci_write_config_dword(dev, aer + PCI_ERR_UNCOR_MASK, mask);
+>> +	pci_clear_and_set_config_dword(dev, aer + PCI_ERR_UNCOR_MASK,
+>> +				       PCI_ERR_UNC_INTN, 0);
+>>   
+>> -	pci_read_config_dword(dev, aer + PCI_ERR_COR_MASK, &mask);
+>> -	mask &= ~PCI_ERR_COR_INTERNAL;
+>> -	pci_write_config_dword(dev, aer + PCI_ERR_COR_MASK, mask);
+>> +	pci_clear_and_set_config_dword(dev, aer + PCI_ERR_COR_MASK,
+>> +				       PCI_ERR_COR_INTERNAL, 0);
+>>   }
+>>   
+>>   static bool is_cxl_mem_dev(struct pci_dev *dev)
+>> @@ -1556,23 +1552,19 @@ static irqreturn_t aer_irq(int irq, void *context)
+>>   static void aer_enable_irq(struct pci_dev *pdev)
+>>   {
+>>   	int aer = pdev->aer_cap;
+>> -	u32 reg32;
+>>   
+>>   	/* Enable Root Port's interrupt in response to error messages */
+>> -	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
+>> -	reg32 |= ROOT_PORT_INTR_ON_MESG_MASK;
+>> -	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
+>> +	pci_clear_and_set_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND,
+>> +				       0, ROOT_PORT_INTR_ON_MESG_MASK);
+>>   }
+>>   
+>>   static void aer_disable_irq(struct pci_dev *pdev)
+>>   {
+>>   	int aer = pdev->aer_cap;
+>> -	u32 reg32;
+>>   
+>>   	/* Disable Root Port's interrupt in response to error messages */
+>> -	pci_read_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, &reg32);
+>> -	reg32 &= ~ROOT_PORT_INTR_ON_MESG_MASK;
+>> -	pci_write_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND, reg32);
+>> +	pci_clear_and_set_config_dword(pdev, aer + PCI_ERR_ROOT_COMMAND,
+>> +				       ROOT_PORT_INTR_ON_MESG_MASK, 0);
+>>   }
+>>   
+>>   /**
 
-Thanks,
-
-Lukas
 
