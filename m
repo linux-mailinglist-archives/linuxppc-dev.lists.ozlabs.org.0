@@ -1,64 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-11100-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11101-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75ADB2AF5A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Aug 2025 19:26:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31616B2B086
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Aug 2025 20:35:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c5KPp23m6z3cf8;
-	Tue, 19 Aug 2025 03:26:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5LxB23D9z3cfW;
+	Tue, 19 Aug 2025 04:35:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755537982;
-	cv=none; b=g+zNL+MG39to399M0M+LjAK77egOe3w3Voa6207T3a7KXZb0298e7mPEm1CIAuulVnhXSzQo/IvpTslDjyy5copixuFkOPXAPwwU667oZN+ZOMGQO4tXgcVrjz+Kr0M+zWkS/HH82XI4MSx006cLJTt3St3AXJd83NCjpZ/yKSuKm7n+NBfcMmaE/m+eOLu/xvbF9IsQLIry/Dmm0+/bo8IJ1GnV8Cj0dFz1A/oPSpUv5ryjZLo7DDnjeJPteCfs6UCdPyVUG5IH5l4EdEwLszk2moY3Lh69HSxww49uvrCiqvRNzI5gRparKM+t5N0XsTnRV16HWuim8cvBeehTQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755537982; c=relaxed/relaxed;
-	bh=N1ZV9nZygGnfTY3gzTQ20v7qVV4L/qPQ7i1daiPe7xg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NdF2YgEAP9NAXiIVkLeLntOAtdjfWMAvDq2gnmLDVvpgBksTThHJWR8ytkFYddQ5MO7UgZc6K/G/qs/IzQOwYZufzWLJXiKBrg1+CuWyrqe5hYihtmmUPzSPUxfK0p8RF4ayfp7XQUG/vrs4s9rYTWsbpyFipDQG7N1HcqkkTwsa6EXRqfe200B3hqjtCDeaQWRnDJbmWysUC8sredfY+w7RvQlxnGxZdeuZEcaLKfOn9IimWecdNX3/nLOFHTaXsTNj+41Mak7Q0wj9jm8dRSDqPfRxPyV9twZSsThkej7czJ5+ZwVRqHyON/h6El/omb63zZ+u50zxveCIflQy0Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GdcHkq8U; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c201::1" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755542110;
+	cv=pass; b=VxYj26xAMHK2XEhpXMZrJOGCyN5c7T6jozUX9Jh2tusrFyP9Pcw/W2+pxhzQdLbNCcz9wQ+cpv19K6ECTfHd2bgsu3kz2H8YhYOVWoVbAiDrevf41wwYrKeNYxqoOxDmn+hGhMmCbw1ocpumMREwATKdf1mPW87rnbNuEn+8qP4YpZ6EujToWE7MT9tUWxHsRF+bTbkwHlCY6SR5B9E1N4kcYAorcDEcIpJlLvehU776zg5buKg/ztj9kiF29tpH+LE1l4F6uAoHmG5uaz6k2aHVo50b6hHsbVe7RhoTZFfVZ71Jjm3GzDbUTjNZF6Sg7uF5ag3ypmGYk9+fifl/RQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1755542110; c=relaxed/relaxed;
+	bh=u4xYxJkiCehEqp1gBa0wDge8tbaG6db973aIhfqFxgg=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=b3h+fgSixou2xpbkLOrvqeqLVfEOUOZ+ey28v9JE/mDiVtI3dmPJFYCfnltOCfDNl05iNCcEGhIZzwrC87ZgYfQE9SHkR4fwerGqCgOf9S0DyorjRsqcaPiSyYPwPyGgQ9PLfZbOnf+BnVja4CH0QBP8Z05fhUFrLX8QpgyEtQH5o7x0CAGWni5ZiPo2Pw0zcF8BDygqnf9SnBucVeIFBhA88nf9tZ4S+1ycgYGqcjjnuIVXNtwUZH1PhvW4YxBKYnxOoJeNVagZrSXm3OILvMPpbT7+ZWJtefiHEmsbqd5yMeqKMbxB8WfV0gERfk8Fua3JVAb+szfagXjoBd20iA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=nKORofwm; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c201::1; helo=am0pr83cu005.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GdcHkq8U;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=nKORofwm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c201::1; helo=am0pr83cu005.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c201::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5KPm66CNz3cdm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 03:26:20 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 78F5B601F5;
-	Mon, 18 Aug 2025 17:26:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BF1C4CEEB;
-	Mon, 18 Aug 2025 17:26:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755537977;
-	bh=DZrc/xQQUWAtQWUj/brEuNkoWNjVTqKwijAmut0IFhU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GdcHkq8U2vePf1ul4rUZw+E1iugmay9QuWid9xt5WPfUUR+stb773TL5sstXPlObC
-	 aOWFscgzDsgE/x5vJRAdiLmtyX2Se2whC9d8IpXeDWF3mWzk2ZGGgrWAj4AKS9wE9A
-	 l50YL3pRSjGlT+UT/pM/pagzyQHw22HSccJiFtQYt3wf+pFYF+J5Z6GjUJKlH3TSpG
-	 lW6I8xTTilElClsWnFIjUEdpI0Nz/IAAbrPNpSHSPudapN6iAFyC6tDODXf603C6O/
-	 5TJ8bLA68mmF+ZFQWM/gZPx79lzRrnYXpddCcJD6LgP8mHvDpDvZ2o9gfb2/gNy5yS
-	 pHlC7dFPRfjHA==
-Date: Mon, 18 Aug 2025 18:26:13 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5Lx74xmTz3cdh
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 04:35:06 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JXydZ70rBK1enD4JZ1iK5UFI3FJGm3wT54AxDnAQKudk1X5bEf9q7oqWkzB0RerYTmU+5hiifNiRE8Ov5hj1ABT8pxORYJvVquY2+FC6JH5s/zDYOb2UayVPGiDcwZie4BVmcjH0KWBZ40l/9RlwyYEuDvt3CuBc3HIRZFltbP2IT0/n7wJXPf/XA3Fid3VQbvbukeSfKRaIkOAJedzVEh1Kf5q/nMMWfjBjCYVdVdtI9L4rF/N7ykBgZF7/ZcN0hEMTb+wg043vF4+PfJ4c39DZp6V6C/gOheNhiQ4wSauJ4MRkQjl4+ETSZWsK4zhvP6EJss3nsodqCYNUGPn2VA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u4xYxJkiCehEqp1gBa0wDge8tbaG6db973aIhfqFxgg=;
+ b=ZvxtzpO6H0ZPGyDGhvbhjnB1N+5p+hMADUe/2O/1vsm7OjRg6I++ErK6+1/h65vYL19BRkSvpFfnCkDUyNrMw6nV3BcOlypcGdTSNwn6g5tGPF3cY44CLuU/M/oMCFWTYZ6vqUtDfHLnXFlvz/KgpFtyVw4LbUIh6enHIr+bfFb5ZG2vQsrFgKT2LdiTk1q3PeuPSuGl60Z4P/yVGBPn9biHmOCfx4vkp9EYfBduZJUH88S8PIbC5m7iPCtF2ov1Fenhmu35VKFfPt2sT390/JRp/Z+BrW4iWihJHuSAn/TWlkumpwkg9tUY5V8Y8XD5D1M6CCBrCZ0sCBElXtxHyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u4xYxJkiCehEqp1gBa0wDge8tbaG6db973aIhfqFxgg=;
+ b=nKORofwm9y/6da3LLNs+Ip5UTAuB7tBYtG6djFXDKDUjM8A4njtcG0YaD+ooQ/Vdw1dAWZ+/GjKZ1ibGXq535+gG7itLJxiSiNrHxyka8/xlRjg/ScLXCk6Y1QLD1M8PZS0lN2EpU5BEbIXLXabW8RHOlIUql2xmAyWiGkrDEEi4YMjISSLooS1MnmN6tKOZI+KuEV7sf4WRcG/WuyjSus+nAAV7E3ApThaLuqBH4QvWN83pGQxw+ysmDuEitNZGxQJ7CDfiHHqzXBR4Z1Gz4Cx6sydV8nfjN9A5S5YSuG0YYTTIY2ma+uYCErbWRLMvNXwlNGMp3Hafe2MvOqj+1Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA4PR04MB9246.eurprd04.prod.outlook.com (2603:10a6:102:2a1::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.12; Mon, 18 Aug
+ 2025 18:34:43 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.9052.011; Mon, 18 Aug 2025
+ 18:34:42 +0000
+From: Frank Li <Frank.Li@nxp.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 4/5] soc: fsl: qe: Add support of IRQ in QE GPIO
-Message-ID: <20250818-angelfish-jasmine-f48d257a4949@spud>
-References: <cover.1755506608.git.christophe.leroy@csgroup.eu>
- <cddc5e900b84826614a63b8b29a048c09dd20853.1755506608.git.christophe.leroy@csgroup.eu>
- <20250818-tyke-pungent-20d9ffd47ecc@spud>
- <732b5fb6-ec38-43d9-b544-b27802a844ab@csgroup.eu>
+	Conor Dooley <conor+dt@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC DRIVERS),
+	linux-arm-kernel@lists.infradead.org (moderated list:FREESCALE SOC DRIVERS),
+	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: imx@lists.linux.dev
+Subject: [RESEND v2 1/1] dt-bindings: soc: add vf610 reboot syscon controller
+Date: Mon, 18 Aug 2025 14:34:26 -0400
+Message-Id: <20250818183427.3601986-1-Frank.Li@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR02CA0023.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::36) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,122 +84,161 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="srp7PXp30YhJAiJF"
-Content-Disposition: inline
-In-Reply-To: <732b5fb6-ec38-43d9-b544-b27802a844ab@csgroup.eu>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB9246:EE_
+X-MS-Office365-Filtering-Correlation-Id: 04ac6495-74cc-483d-95df-08ddde85e5b0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|19092799006|1800799024|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?uwQ8IzHzGPSuB48knX1DKiYXvd0UJUKGsmbq0qeE4kZ7ZI9ZljO2jUwzq9iz?=
+ =?us-ascii?Q?n3JhCMBfvy0+PvPstCh5dMvM860j2dY3/DujYBfhC18oeiojBISCO5dNus3y?=
+ =?us-ascii?Q?8YX0OmWvvRLVt9AzJcltxwM8AIEIU144ARSl/minNa+dfFOfMr5w9pT0gmbi?=
+ =?us-ascii?Q?AmwlU5IXZBNL4uqGrEtsdUHjMlNlo3nXQWSBvXmpZXMUiGDhGuZNc5SP0kwz?=
+ =?us-ascii?Q?Hucol+MmHOgxylUMtXXi3Uxagq1e1rJemOxkfu0qgW/d0Ujm9RNkJJ2nej8M?=
+ =?us-ascii?Q?yxQPQWhzHx4WNQZZ8srYGU3E9eYqZOPEMBfEYg6QgH7WxO/8sOhi6NzGHvpN?=
+ =?us-ascii?Q?KgEbVab4GaFLn54CbO8zEsvh2uNju2e9P0fFPzkGAOiBsm86Kq8mbK0uvnxs?=
+ =?us-ascii?Q?3Or/KtzlCLOCWsvxRwvbj3R8SXdL3+OS9KPQYHMv3IH5tMH7pu2B72VHxhjc?=
+ =?us-ascii?Q?voW5L69Z1mJjczUwOi5cmt+x2YEwx4DRLvPsC92/WTYNydP5TVuwb6OIfrTb?=
+ =?us-ascii?Q?jjgekYCNn4WYEHd42qhlJXI5PMKP+chscUfnQ0UXDkr2S32lfmt12u6n2yEj?=
+ =?us-ascii?Q?zWSuKnBqVwDw9TAaeirscVbAGypx8Ls9dQm//dMq2qb9pJycaC7iheYZlE5J?=
+ =?us-ascii?Q?p7IVkXE2wGryRJdJu2N1h8gLQdrbJLkUAHtRs1C5kkQJ0hwFCOraVYc+9OP5?=
+ =?us-ascii?Q?69ojbiGS8qWxtO5wMfHi1zple9Ush+OuMLqq1bFSedmIZZMTRhTFdvzlCFYr?=
+ =?us-ascii?Q?OyNJmYB3Wv7wzu/VykjXM2SLlaSIYyDAc33Ua6i5T+/z3c/40nnM7uvUDoNd?=
+ =?us-ascii?Q?AtnYz9zsdIYbio4xhCodXfyRsYebYKzV1fMtd7tin9Cp1Zxv7nx5eTRP+sDz?=
+ =?us-ascii?Q?DfeNQS8miuVU+pQ+KcPQWiJS9ImO9WopGkBa7im2+AstOekS1fsJ46s6FpS6?=
+ =?us-ascii?Q?KwglJb1PeimJD8uzxfpFIEPflkdJTZ/jUPugDZZySCckSyB3j/X8HmSb49UU?=
+ =?us-ascii?Q?aKhMlVUYluauF7R6WNQwd3qeyxcWQePrpxSdfE+O9rWVrk4aHDds36epD0oH?=
+ =?us-ascii?Q?0L6UIYCBxPaBESl0eQ04s3U1tQ+UUg/dST2h9ol9R32N92wN9Z58M21vcWWN?=
+ =?us-ascii?Q?ooXwhh34Hgp2DixZSGH/aQtyTOCBN9LGmlPl7AmBoeOBYKOJGeCLAaQJ3cBc?=
+ =?us-ascii?Q?wYoNbC8CP8pwDhnrdtlLL8XP37/lwxeBX661BB7mXoEgOrRPf5RDt1bPXbk5?=
+ =?us-ascii?Q?Z2YZSi8C4H1VjuAlTg2nnIy35zOCnVIUK73iMhEb2pOg0ujzPZ0CtUy8Iu4m?=
+ =?us-ascii?Q?4evaS1YhwfRAuzh5lmOJoKCg1G7h/SLCjURXVbQqqjVB0LYLol6dvLP6pu3S?=
+ =?us-ascii?Q?xbUQeQ6blQ5dAlaO8fTIrdouLnTOUlpwY7xQmpKXRgXk45Ilv9U9yezQj2JS?=
+ =?us-ascii?Q?igH6rDtjDpc9rA5s95+iYxlJsi9/5n3f?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?zDRb1KjiLwQH+MVo8yXyqxkRhgU59eI8nU3EgEsONNH/2g/DKRbZYAu0wgmV?=
+ =?us-ascii?Q?SsU1fUbnLNO9TX33BSWdvRgErX3cD1RShSDO7aNOWDGhO+/YENID+f94w9Mc?=
+ =?us-ascii?Q?HsW+FXT5rxfq3sk3W+IBiZWrqdTSkYmzJP8l+QGc6JEIqP7Di8zygBkILKCB?=
+ =?us-ascii?Q?ginKbd5A7eB1UhH29gl+D5SgHmSeRAli0juszGe5R12rjCZ/Se32MR2hC6J+?=
+ =?us-ascii?Q?HEuZ5MU/g2Fw+CpmUrWRQAeNwA8kWoWetJibO5egP6liy8K2JeVZUX+WdHXb?=
+ =?us-ascii?Q?mW7KJprney4ve3G16BXKBjWLd3MzxJZObDgOYCZgKF4/IpK2JJyTSSWLFHAi?=
+ =?us-ascii?Q?Jd9tDljoBt1dvY3kqT3gGoGo7htfQDWBQhrMlJTlCz9ZaW7AZhgGUwhud/XX?=
+ =?us-ascii?Q?+2BB3VslRSG8LbVWMdjxwYGR3PPQTl75t+DkRYMYdwrYP58WXhwgbG4KqDuT?=
+ =?us-ascii?Q?Ucnsu0YK/OzV+xqModVAz+zW3emK99fdMr4f1LzSTZSwm4elZOiD2hSI4e//?=
+ =?us-ascii?Q?Yy4FvddVFmfmkE+dgbEeI4mUpqcZghcZ4qEoOmwLS2y7EgT9aqHFlDm786yQ?=
+ =?us-ascii?Q?3w3C2tY+UlwJ1wubmvEIsNxy2RxxvOlfoXtjNqFxCYj/5YjkQvYaOGznXfqF?=
+ =?us-ascii?Q?5bPBEO1mbBW65VPmZ+fe6iNswFdmgrt/zu1JIE/wg8CSWtsOBHaAiP+OBfzd?=
+ =?us-ascii?Q?Jua8dx1HjNNRyv4bb+EU9Qr0KWFoung20K8jNl6ELfdRd9u9CGZCaTOLwEtg?=
+ =?us-ascii?Q?9ZieuAJG8lVUrKiC7mNZv5mU7LvFfcFBjBB68276KWv0f/PIDSZ1slDKYk8N?=
+ =?us-ascii?Q?UseaF1tiIpe7uEK+knsR38CF3oN7iSubsreBlm01B1xyBMLg7Jf87rWE8NEd?=
+ =?us-ascii?Q?edyl8OoEGPqnbsS2ur+dZSsrg6gEo3Aj0Yf1F0zHSPvLIk6C8soD2sZ/nnAj?=
+ =?us-ascii?Q?GbrzXq3zE6kL1H3C6EtRdU3KrztmgNjmNfo00E7AOZtdxdrZxl5VudD5cq4u?=
+ =?us-ascii?Q?uLW9CknKzObT4KO0KHNy8wI1KT5u6wPuIGVzLkP2l3SxNZZwZDLPfoaq/i90?=
+ =?us-ascii?Q?Ftvhkan5pDix+mcLU6hjkdZAS7tmIsdySslu1SEQbdjcqkI5KxfgZLjntJ4i?=
+ =?us-ascii?Q?rb9lnlVgIYmdePHOd6HsyfZ41td3NtNp/Kwc7tNV2pLoiBbrsogzP5W1Uk8q?=
+ =?us-ascii?Q?GlfSy1HZAOI1qhZu8RFblZyFLItl8gNhMLkKe2YUmCg0rCmOS8e/ncSBeSC+?=
+ =?us-ascii?Q?rrlTfLFWFDjqKNIuvnaFEYjch3GDbEeeOw8G3pt/X8YCjVDUY8ZN/IQ97CSK?=
+ =?us-ascii?Q?wxThF0uYVJQQUL+8kSkS+aR/iriNlpgx02g9Uil6Zw+OmvVlqVF0WliplAke?=
+ =?us-ascii?Q?D234f/SkZ0stdGMMBPtnyHx8gjMP8uXMfZpf/RnQqqd0Jih/GSnq6912/8wt?=
+ =?us-ascii?Q?ZKpitw/w6PVPiRPydjoe0Hrcob4bdndnk3Ne0jFHvc9PwTcUZqUv9/3bFXKN?=
+ =?us-ascii?Q?SAnY4YDld52Xl8hfWEQ+tGweHv8sMPhvuH8YFM20Rq/6phHoF+uVUqIF/iOj?=
+ =?us-ascii?Q?zM4uT0kqQO7SphhbvnuxtoVHUTrpL2lN9+Ym9xNL?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04ac6495-74cc-483d-95df-08ddde85e5b0
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 18:34:42.7972
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: r2b6UsS0SWVvCL4YZcYNB2CKmdRkpZPmLf+Im4mPOBPddMh+ArQPKKXl1q6HqDO/Jj0xCF4YVv0DFJ1XtOJ9MA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9246
+X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Add vf610 reboot controller, which used to reboot whole system. Fix below
+CHECK_DTB warnings:
 
---srp7PXp30YhJAiJF
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e000:
+    failed to match any schema with compatible: ['fsl,vf610-src', 'syscon']
 
-On Mon, Aug 18, 2025 at 07:08:47PM +0200, Christophe Leroy wrote:
->=20
->=20
-> Le 18/08/2025 =E0 19:03, Conor Dooley a =E9crit=A0:
-> > On Mon, Aug 18, 2025 at 10:45:57AM +0200, Christophe Leroy wrote:
-> > > In the QE, a few GPIOs are IRQ capable. Similarly to
-> > > commit 726bd223105c ("powerpc/8xx: Adding support of IRQ in MPC8xx
-> > > GPIO"), add IRQ support to QE GPIO.
-> > >=20
-> > > Add property 'fsl,qe-gpio-irq-mask' similar to
-> > > 'fsl,cpm1-gpio-irq-mask' that define which of the GPIOs have IRQs.
-> > >=20
-> > > Here is an exemple for port B of mpc8323 which has IRQs for
-> > > GPIOs PB7, PB9, PB25 and PB27.
-> > >=20
-> > > 	qe_pio_b: gpio-controller@1418 {
-> > > 		#gpio-cells =3D <2>;
-> > > 		compatible =3D "fsl,mpc8323-qe-pario-bank";
-> > > 		reg =3D <0x1418 0x18>;
-> > > 		interrupts =3D <4 5 6 7>;
-> > > 		fsl,qe-gpio-irq-mask =3D <0x01400050>;
-> > > 		interrupt-parent =3D <&qepic>;
-> > > 		gpio-controller;
-> > > 	};
-> > >=20
-> > > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > > ---
-> > > v2: Document fsl,qe-gpio-irq-mask
-> > > ---
-> > >   .../bindings/soc/fsl/cpm_qe/qe/par_io.txt     | 19 ++++++++++++++++=
-++
-> > >   drivers/soc/fsl/qe/gpio.c                     | 20 ++++++++++++++++=
-+++
-> > >   2 files changed, 39 insertions(+)
-> > >=20
-> > > diff --git a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe/par_=
-io.txt b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe/par_io.txt
-> > > index 09b1b05fa677..9cd6e5ac2a7b 100644
-> > > --- a/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe/par_io.txt
-> > > +++ b/Documentation/devicetree/bindings/soc/fsl/cpm_qe/qe/par_io.txt
-> > > @@ -32,6 +32,15 @@ Required properties:
-> > >     "fsl,mpc8323-qe-pario-bank".
-> > >   - reg : offset to the register set and its length.
-> > >   - gpio-controller : node to identify gpio controllers.
-> > > +Optional properties:
-> > > +- fsl,qe-gpio-irq-mask : For banks having interrupt capability this =
-item tells
-> > > +  which ports have an associated interrupt (ports are listed in the =
-same order
-> > > +  QE ports registers)
-> > > +- interrupts : This property provides the list of interrupt for each=
- GPIO having
-> > > +  one as described by the fsl,cpm1-gpio-irq-mask property. There sho=
-uld be as
-> > > +  many interrupts as number of ones in the mask property. The first =
-interrupt in
-> > > +  the list corresponds to the most significant bit of the mask.
-> > > +- interrupt-parent : Parent for the above interrupt property.
-> > >   Example:
-> > >   	qe_pio_a: gpio-controller@1400 {
-> > > @@ -42,6 +51,16 @@ Example:
-> > >   		gpio-controller;
-> > >   	  };
-> > > +	qe_pio_b: gpio-controller@1418 {
-> > > +		#gpio-cells =3D <2>;
-> > > +		compatible =3D "fsl,mpc8323-qe-pario-bank";
-> > > +		reg =3D <0x1418 0x18>;
-> > > +		interrupts =3D <4 5 6 7>;
-> > > +		fsl,qe-gpio-irq-mask =3D <0x01400050>;
-> > > +		interrupt-parent =3D <&qepic>;
-> > > +		gpio-controller;
-> > > +	  };
-> > > +
-> > >   	qe_pio_e: gpio-controller@1460 {
-> > >   		#gpio-cells =3D <2>;
-> > >   		compatible =3D "fsl,mpc8360-qe-pario-bank",
-> >=20
-> > Why is there a binding change hiding in here alongside a driver one?
->=20
-> I did the same way as commit 726bd223105c ("powerpc/8xx: Adding support of
-> IRQ in MPC8xx GPIO")
->=20
-> Should it be done differently ?
+IC reference manual call it as system reset controller(SRC), but it is not
+module as linux reset controller, which used to reset individual device.
+SRC work as reboot controller, which reboot whole system. It provides a
+syscon interface to syscon-reboot.
 
-Yes, binding changes should not be in with driver changes. Surprised
-that checkpatch didn't complain. That commit you mention seems to have
-been like 10 years ago and without dt-binding maintainer review so not
-the best thing to use as a basis.
-Additionally, Rob may require you to covert to yaml to add new
-properties, I forget if that is a requirement or not.
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+---
+Change in v2
+- change description to avoid confuse about reset controller.
+- it is legacy device, more than 10 year. So try keep existed dts as it.
+---
+ .../bindings/soc/fsl/fsl,vf610-src.yaml       | 47 +++++++++++++++++++
+ 1 file changed, 47 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
 
---srp7PXp30YhJAiJF
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
+new file mode 100644
+index 0000000000000..cb8aa510a21f7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
+@@ -0,0 +1,47 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas//soc/fsl/fsl,vf610-src.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale vf610 System Reset Controller (SRC)
++
++maintainers:
++  - Frank Li <Frank.Li@nxp.com>
++
++description: |
++  IC reference manual call it as SRC, but it is not module as linux reset
++  controller, which used to reset individual device. SRC work as reboot
++  controller, which reboot whole system. It provide a syscon interface to
++  syscon-reboot.
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - fsl,vf610-src
++      - const: syscon
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    syscon@4006e000 {
++        compatible = "fsl,vf610-src", "syscon";
++        reg = <0x4006e000 0x1000>;
++        interrupts = <96 IRQ_TYPE_LEVEL_HIGH>;
++    };
++
+-- 
+2.34.1
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaKNiNQAKCRB4tDGHoIJi
-0qKaAP9vS6SisYRcuo6AMAuGe0ztZz+fC4G1/xIXwq8AALY87gD+LY0HpnxB3XP5
-3lW31jMJdflZV5qlHjVzpy2H1FJmRQU=
-=zKiO
------END PGP SIGNATURE-----
-
---srp7PXp30YhJAiJF--
 
