@@ -1,76 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-11101-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11102-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31616B2B086
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Aug 2025 20:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC27B2B0F3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 Aug 2025 20:58:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c5LxB23D9z3cfW;
-	Tue, 19 Aug 2025 04:35:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5MRZ0GLYz3cfm;
+	Tue, 19 Aug 2025 04:58:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c201::1" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755542110;
-	cv=pass; b=VxYj26xAMHK2XEhpXMZrJOGCyN5c7T6jozUX9Jh2tusrFyP9Pcw/W2+pxhzQdLbNCcz9wQ+cpv19K6ECTfHd2bgsu3kz2H8YhYOVWoVbAiDrevf41wwYrKeNYxqoOxDmn+hGhMmCbw1ocpumMREwATKdf1mPW87rnbNuEn+8qP4YpZ6EujToWE7MT9tUWxHsRF+bTbkwHlCY6SR5B9E1N4kcYAorcDEcIpJlLvehU776zg5buKg/ztj9kiF29tpH+LE1l4F6uAoHmG5uaz6k2aHVo50b6hHsbVe7RhoTZFfVZ71Jjm3GzDbUTjNZF6Sg7uF5ag3ypmGYk9+fifl/RQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755542110; c=relaxed/relaxed;
-	bh=u4xYxJkiCehEqp1gBa0wDge8tbaG6db973aIhfqFxgg=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=b3h+fgSixou2xpbkLOrvqeqLVfEOUOZ+ey28v9JE/mDiVtI3dmPJFYCfnltOCfDNl05iNCcEGhIZzwrC87ZgYfQE9SHkR4fwerGqCgOf9S0DyorjRsqcaPiSyYPwPyGgQ9PLfZbOnf+BnVja4CH0QBP8Z05fhUFrLX8QpgyEtQH5o7x0CAGWni5ZiPo2Pw0zcF8BDygqnf9SnBucVeIFBhA88nf9tZ4S+1ycgYGqcjjnuIVXNtwUZH1PhvW4YxBKYnxOoJeNVagZrSXm3OILvMPpbT7+ZWJtefiHEmsbqd5yMeqKMbxB8WfV0gERfk8Fua3JVAb+szfagXjoBd20iA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=nKORofwm; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c201::1; helo=am0pr83cu005.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755543481;
+	cv=none; b=FgfZt+aWWYa7xyz5yQ57aBmg8p7FJiG+LMsNskTSzfMWH055C4hY3x0HdXQF3WAyDapBAcHXKAd+b92rs7aPanJW+jZ0m3pqvX5ukjJUpVZw+rHIcy9p7yDztV9Zbxu9iC9WYDaGsefdBavtt5NXfMZo7SDLGJs5/U7+y90etw1cexmYhaPQZXTaEL0hKxXzI55k9GyZd3VgLklDC/oPsL3T4HTf7HRSihVssDsDxJBWirK02mXOUxHTnUhKoss82ds/7vPrNZCTabvahfTcD0nZtWk2FPhHLY87TVVFLIyh5A5Y3TX4DTFv7YTIE6xSDXgE7Wz9b2Gw4XQP9vXfqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1755543481; c=relaxed/relaxed;
+	bh=TBN15g8rAP23J96r4n28IjSBg+WDu3nayiyCti2V2i8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DsaOenDa4sepbs3yYc/++ieW+pQDRZK3E/kbUfULvDF38hcI4fxDgRFlLFkWhSxfqQKSMLlZfosFQKx8xvG6PVDvKg8YmMwmOAw9pjsHHKfiMeQ1CThHZYNAC5oymSIMW5Z005HHgF/a5Cm4nMUQ7hL26cZ9elnG8z9pRk91alcFo9an353MsnQJSTjuqMfQSDlp1FcjMb8hfZxiJWy/H0YPLh9abPSm9ocBLxN06FVhbBaMrYmG9htiYzilKfk72moPUWFERVMZ9MRtssLp7zbH1admOBckK3gIwGebmUUqn255A1xSMJhUJwCuLFjldeusY8Xt2f5jVkCqk2gJHQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TO8hGFu9; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=nKORofwm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TO8hGFu9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c201::1; helo=am0pr83cu005.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c201::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5Lx74xmTz3cdh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 04:35:06 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JXydZ70rBK1enD4JZ1iK5UFI3FJGm3wT54AxDnAQKudk1X5bEf9q7oqWkzB0RerYTmU+5hiifNiRE8Ov5hj1ABT8pxORYJvVquY2+FC6JH5s/zDYOb2UayVPGiDcwZie4BVmcjH0KWBZ40l/9RlwyYEuDvt3CuBc3HIRZFltbP2IT0/n7wJXPf/XA3Fid3VQbvbukeSfKRaIkOAJedzVEh1Kf5q/nMMWfjBjCYVdVdtI9L4rF/N7ykBgZF7/ZcN0hEMTb+wg043vF4+PfJ4c39DZp6V6C/gOheNhiQ4wSauJ4MRkQjl4+ETSZWsK4zhvP6EJss3nsodqCYNUGPn2VA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=u4xYxJkiCehEqp1gBa0wDge8tbaG6db973aIhfqFxgg=;
- b=ZvxtzpO6H0ZPGyDGhvbhjnB1N+5p+hMADUe/2O/1vsm7OjRg6I++ErK6+1/h65vYL19BRkSvpFfnCkDUyNrMw6nV3BcOlypcGdTSNwn6g5tGPF3cY44CLuU/M/oMCFWTYZ6vqUtDfHLnXFlvz/KgpFtyVw4LbUIh6enHIr+bfFb5ZG2vQsrFgKT2LdiTk1q3PeuPSuGl60Z4P/yVGBPn9biHmOCfx4vkp9EYfBduZJUH88S8PIbC5m7iPCtF2ov1Fenhmu35VKFfPt2sT390/JRp/Z+BrW4iWihJHuSAn/TWlkumpwkg9tUY5V8Y8XD5D1M6CCBrCZ0sCBElXtxHyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=u4xYxJkiCehEqp1gBa0wDge8tbaG6db973aIhfqFxgg=;
- b=nKORofwm9y/6da3LLNs+Ip5UTAuB7tBYtG6djFXDKDUjM8A4njtcG0YaD+ooQ/Vdw1dAWZ+/GjKZ1ibGXq535+gG7itLJxiSiNrHxyka8/xlRjg/ScLXCk6Y1QLD1M8PZS0lN2EpU5BEbIXLXabW8RHOlIUql2xmAyWiGkrDEEi4YMjISSLooS1MnmN6tKOZI+KuEV7sf4WRcG/WuyjSus+nAAV7E3ApThaLuqBH4QvWN83pGQxw+ysmDuEitNZGxQJ7CDfiHHqzXBR4Z1Gz4Cx6sydV8nfjN9A5S5YSuG0YYTTIY2ma+uYCErbWRLMvNXwlNGMp3Hafe2MvOqj+1Q==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by PA4PR04MB9246.eurprd04.prod.outlook.com (2603:10a6:102:2a1::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.12; Mon, 18 Aug
- 2025 18:34:43 +0000
-Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
- ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.9052.011; Mon, 18 Aug 2025
- 18:34:42 +0000
-From: Frank Li <Frank.Li@nxp.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linuxppc-dev@lists.ozlabs.org (open list:FREESCALE SOC DRIVERS),
-	linux-arm-kernel@lists.infradead.org (moderated list:FREESCALE SOC DRIVERS),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: imx@lists.linux.dev
-Subject: [RESEND v2 1/1] dt-bindings: soc: add vf610 reboot syscon controller
-Date: Mon, 18 Aug 2025 14:34:26 -0400
-Message-Id: <20250818183427.3601986-1-Frank.Li@nxp.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BYAPR02CA0023.namprd02.prod.outlook.com
- (2603:10b6:a02:ee::36) To PAXPR04MB9642.eurprd04.prod.outlook.com
- (2603:10a6:102:240::14)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5MRX70G9z3cfj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 04:58:00 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id A05445C62C9;
+	Mon, 18 Aug 2025 18:57:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7007FC4CEEB;
+	Mon, 18 Aug 2025 18:57:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755543466;
+	bh=qBGPy4AI12NWfHAvs72tXhhLkggZ76cCh4aJ0zfhg4o=;
+	h=From:Subject:Date:To:Cc:From;
+	b=TO8hGFu9iuv4h970cI0P8DaQE+EJjCFUuIpmSaDSZc3jEdTo9PJkV2ZjkGkU8yAyz
+	 hA6uFbfmOGnWNaUYGLBL+njTod03yGzU0n3WtfoyFctsEwXUmB+b+ektMo1uhkUEt0
+	 x+B2tuvrWWSXUizIVwqIgYX1trm2mhHkeSrWJzCgOaoVdF3TOEIEatnQLchQ6bouVN
+	 bqR50c9Og2MFxhXY+8T0CJouc/vuM+CLdC6liY23Lilx/TBdkUhSccNoOPjp8E2qEG
+	 KDRyquCnMeMv42skmZrHiH02/P7YKlkxqYQSYkfrbDYOmhiwgZm559AXS4YzQzJBoT
+	 JHTROUXnhA26w==
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 00/10] Bump minimum supported version of LLVM for building
+ the kernel to 15.0.0
+Date: Mon, 18 Aug 2025 11:57:16 -0700
+Message-Id: <20250818-bump-min-llvm-ver-15-v1-0-c8b1d0f955e0@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,161 +60,111 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA4PR04MB9246:EE_
-X-MS-Office365-Filtering-Correlation-Id: 04ac6495-74cc-483d-95df-08ddde85e5b0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|19092799006|1800799024|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?uwQ8IzHzGPSuB48knX1DKiYXvd0UJUKGsmbq0qeE4kZ7ZI9ZljO2jUwzq9iz?=
- =?us-ascii?Q?n3JhCMBfvy0+PvPstCh5dMvM860j2dY3/DujYBfhC18oeiojBISCO5dNus3y?=
- =?us-ascii?Q?8YX0OmWvvRLVt9AzJcltxwM8AIEIU144ARSl/minNa+dfFOfMr5w9pT0gmbi?=
- =?us-ascii?Q?AmwlU5IXZBNL4uqGrEtsdUHjMlNlo3nXQWSBvXmpZXMUiGDhGuZNc5SP0kwz?=
- =?us-ascii?Q?Hucol+MmHOgxylUMtXXi3Uxagq1e1rJemOxkfu0qgW/d0Ujm9RNkJJ2nej8M?=
- =?us-ascii?Q?yxQPQWhzHx4WNQZZ8srYGU3E9eYqZOPEMBfEYg6QgH7WxO/8sOhi6NzGHvpN?=
- =?us-ascii?Q?KgEbVab4GaFLn54CbO8zEsvh2uNju2e9P0fFPzkGAOiBsm86Kq8mbK0uvnxs?=
- =?us-ascii?Q?3Or/KtzlCLOCWsvxRwvbj3R8SXdL3+OS9KPQYHMv3IH5tMH7pu2B72VHxhjc?=
- =?us-ascii?Q?voW5L69Z1mJjczUwOi5cmt+x2YEwx4DRLvPsC92/WTYNydP5TVuwb6OIfrTb?=
- =?us-ascii?Q?jjgekYCNn4WYEHd42qhlJXI5PMKP+chscUfnQ0UXDkr2S32lfmt12u6n2yEj?=
- =?us-ascii?Q?zWSuKnBqVwDw9TAaeirscVbAGypx8Ls9dQm//dMq2qb9pJycaC7iheYZlE5J?=
- =?us-ascii?Q?p7IVkXE2wGryRJdJu2N1h8gLQdrbJLkUAHtRs1C5kkQJ0hwFCOraVYc+9OP5?=
- =?us-ascii?Q?69ojbiGS8qWxtO5wMfHi1zple9Ush+OuMLqq1bFSedmIZZMTRhTFdvzlCFYr?=
- =?us-ascii?Q?OyNJmYB3Wv7wzu/VykjXM2SLlaSIYyDAc33Ua6i5T+/z3c/40nnM7uvUDoNd?=
- =?us-ascii?Q?AtnYz9zsdIYbio4xhCodXfyRsYebYKzV1fMtd7tin9Cp1Zxv7nx5eTRP+sDz?=
- =?us-ascii?Q?DfeNQS8miuVU+pQ+KcPQWiJS9ImO9WopGkBa7im2+AstOekS1fsJ46s6FpS6?=
- =?us-ascii?Q?KwglJb1PeimJD8uzxfpFIEPflkdJTZ/jUPugDZZySCckSyB3j/X8HmSb49UU?=
- =?us-ascii?Q?aKhMlVUYluauF7R6WNQwd3qeyxcWQePrpxSdfE+O9rWVrk4aHDds36epD0oH?=
- =?us-ascii?Q?0L6UIYCBxPaBESl0eQ04s3U1tQ+UUg/dST2h9ol9R32N92wN9Z58M21vcWWN?=
- =?us-ascii?Q?ooXwhh34Hgp2DixZSGH/aQtyTOCBN9LGmlPl7AmBoeOBYKOJGeCLAaQJ3cBc?=
- =?us-ascii?Q?wYoNbC8CP8pwDhnrdtlLL8XP37/lwxeBX661BB7mXoEgOrRPf5RDt1bPXbk5?=
- =?us-ascii?Q?Z2YZSi8C4H1VjuAlTg2nnIy35zOCnVIUK73iMhEb2pOg0ujzPZ0CtUy8Iu4m?=
- =?us-ascii?Q?4evaS1YhwfRAuzh5lmOJoKCg1G7h/SLCjURXVbQqqjVB0LYLol6dvLP6pu3S?=
- =?us-ascii?Q?xbUQeQ6blQ5dAlaO8fTIrdouLnTOUlpwY7xQmpKXRgXk45Ilv9U9yezQj2JS?=
- =?us-ascii?Q?igH6rDtjDpc9rA5s95+iYxlJsi9/5n3f?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(19092799006)(1800799024)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zDRb1KjiLwQH+MVo8yXyqxkRhgU59eI8nU3EgEsONNH/2g/DKRbZYAu0wgmV?=
- =?us-ascii?Q?SsU1fUbnLNO9TX33BSWdvRgErX3cD1RShSDO7aNOWDGhO+/YENID+f94w9Mc?=
- =?us-ascii?Q?HsW+FXT5rxfq3sk3W+IBiZWrqdTSkYmzJP8l+QGc6JEIqP7Di8zygBkILKCB?=
- =?us-ascii?Q?ginKbd5A7eB1UhH29gl+D5SgHmSeRAli0juszGe5R12rjCZ/Se32MR2hC6J+?=
- =?us-ascii?Q?HEuZ5MU/g2Fw+CpmUrWRQAeNwA8kWoWetJibO5egP6liy8K2JeVZUX+WdHXb?=
- =?us-ascii?Q?mW7KJprney4ve3G16BXKBjWLd3MzxJZObDgOYCZgKF4/IpK2JJyTSSWLFHAi?=
- =?us-ascii?Q?Jd9tDljoBt1dvY3kqT3gGoGo7htfQDWBQhrMlJTlCz9ZaW7AZhgGUwhud/XX?=
- =?us-ascii?Q?+2BB3VslRSG8LbVWMdjxwYGR3PPQTl75t+DkRYMYdwrYP58WXhwgbG4KqDuT?=
- =?us-ascii?Q?Ucnsu0YK/OzV+xqModVAz+zW3emK99fdMr4f1LzSTZSwm4elZOiD2hSI4e//?=
- =?us-ascii?Q?Yy4FvddVFmfmkE+dgbEeI4mUpqcZghcZ4qEoOmwLS2y7EgT9aqHFlDm786yQ?=
- =?us-ascii?Q?3w3C2tY+UlwJ1wubmvEIsNxy2RxxvOlfoXtjNqFxCYj/5YjkQvYaOGznXfqF?=
- =?us-ascii?Q?5bPBEO1mbBW65VPmZ+fe6iNswFdmgrt/zu1JIE/wg8CSWtsOBHaAiP+OBfzd?=
- =?us-ascii?Q?Jua8dx1HjNNRyv4bb+EU9Qr0KWFoung20K8jNl6ELfdRd9u9CGZCaTOLwEtg?=
- =?us-ascii?Q?9ZieuAJG8lVUrKiC7mNZv5mU7LvFfcFBjBB68276KWv0f/PIDSZ1slDKYk8N?=
- =?us-ascii?Q?UseaF1tiIpe7uEK+knsR38CF3oN7iSubsreBlm01B1xyBMLg7Jf87rWE8NEd?=
- =?us-ascii?Q?edyl8OoEGPqnbsS2ur+dZSsrg6gEo3Aj0Yf1F0zHSPvLIk6C8soD2sZ/nnAj?=
- =?us-ascii?Q?GbrzXq3zE6kL1H3C6EtRdU3KrztmgNjmNfo00E7AOZtdxdrZxl5VudD5cq4u?=
- =?us-ascii?Q?uLW9CknKzObT4KO0KHNy8wI1KT5u6wPuIGVzLkP2l3SxNZZwZDLPfoaq/i90?=
- =?us-ascii?Q?Ftvhkan5pDix+mcLU6hjkdZAS7tmIsdySslu1SEQbdjcqkI5KxfgZLjntJ4i?=
- =?us-ascii?Q?rb9lnlVgIYmdePHOd6HsyfZ41td3NtNp/Kwc7tNV2pLoiBbrsogzP5W1Uk8q?=
- =?us-ascii?Q?GlfSy1HZAOI1qhZu8RFblZyFLItl8gNhMLkKe2YUmCg0rCmOS8e/ncSBeSC+?=
- =?us-ascii?Q?rrlTfLFWFDjqKNIuvnaFEYjch3GDbEeeOw8G3pt/X8YCjVDUY8ZN/IQ97CSK?=
- =?us-ascii?Q?wxThF0uYVJQQUL+8kSkS+aR/iriNlpgx02g9Uil6Zw+OmvVlqVF0WliplAke?=
- =?us-ascii?Q?D234f/SkZ0stdGMMBPtnyHx8gjMP8uXMfZpf/RnQqqd0Jih/GSnq6912/8wt?=
- =?us-ascii?Q?ZKpitw/w6PVPiRPydjoe0Hrcob4bdndnk3Ne0jFHvc9PwTcUZqUv9/3bFXKN?=
- =?us-ascii?Q?SAnY4YDld52Xl8hfWEQ+tGweHv8sMPhvuH8YFM20Rq/6phHoF+uVUqIF/iOj?=
- =?us-ascii?Q?zM4uT0kqQO7SphhbvnuxtoVHUTrpL2lN9+Ym9xNL?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 04ac6495-74cc-483d-95df-08ddde85e5b0
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Aug 2025 18:34:42.7972
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: r2b6UsS0SWVvCL4YZcYNB2CKmdRkpZPmLf+Im4mPOBPddMh+ArQPKKXl1q6HqDO/Jj0xCF4YVv0DFJ1XtOJ9MA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9246
-X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIx3o2gC/x3MwQoCIRCA4VeROe+AY0zRvkrsoa2xBtRESQLx3
+ Vc6fof/71ClqFRYTYciTat+0gQtBh7ve3oJ6nManHVsL2Rx/8aMUROG0CI2KUiMV3Yn8iT7mRl
+ mmot4/f23t22MA23HpyFmAAAA
+X-Change-ID: 20250710-bump-min-llvm-ver-15-95231f1eb655
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Kees Cook <kees@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
+ Ard Biesheuvel <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ linuxppc-dev@lists.ozlabs.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org, 
+ Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+ Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
+ kasan-dev@googlegroups.com, Alexander Potapenko <glider@google.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3422; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=qBGPy4AI12NWfHAvs72tXhhLkggZ76cCh4aJ0zfhg4o=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBmLyxfkKs9J3XvmTW/HPLXzb2LV/ble9105em3NlZSrK
+ rcn6luu7yhlYRDjYpAVU2Spfqx63NBwzlnGG6cmwcxhZQIZwsDFKQAT2WLNyLDcY1peR8tewSkT
+ F3NPCHvlGPr7vt3zpq/7/opaMwrfUPdmZDjG+/9Q5BeZLcKLVm0XPXCDawGDjEHkhrzAGu39rXt
+ Z47gA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Add vf610 reboot controller, which used to reboot whole system. Fix below
-CHECK_DTB warnings:
+s390 and x86 have required LLVM 15 since
 
-arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e000:
-    failed to match any schema with compatible: ['fsl,vf610-src', 'syscon']
+  30d17fac6aae ("scripts/min-tool-version.sh: raise minimum clang version to 15.0.0 for s390")
+  7861640aac52 ("x86/build: Raise the minimum LLVM version to 15.0.0")
 
-IC reference manual call it as system reset controller(SRC), but it is not
-module as linux reset controller, which used to reset individual device.
-SRC work as reboot controller, which reboot whole system. It provides a
-syscon interface to syscon-reboot.
+respectively. This series bumps the rest of the kernel to 15.0.0 to
+match, which allows for a decent number of clean ups.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+On the distros front, we will only leave behind Debian Bookworm and
+Ubuntu Jammy. In both of those cases, builders / developers can either
+use the kernel.org toolchains or https://apt.llvm.org to get newer
+versions that will run on those distributions, if they cannot upgrade.
+
+  archlinux:latest              clang version 20.1.8
+  debian:oldoldstable-slim      Debian clang version 11.0.1-2
+  debian:oldstable-slim         Debian clang version 14.0.6
+  debian:stable-slim            Debian clang version 19.1.7 (3+b1)
+  debian:testing-slim           Debian clang version 19.1.7 (3+b1)
+  debian:unstable-slim          Debian clang version 19.1.7 (3+b2)
+  fedora:41                     clang version 19.1.7 (Fedora 19.1.7-4.fc41)
+  fedora:latest                 clang version 20.1.8 (Fedora 20.1.8-3.fc42)
+  fedora:rawhide                clang version 20.1.8 (Fedora 20.1.8-3.fc43)
+  opensuse/leap:latest          clang version 17.0.6
+  opensuse/tumbleweed:latest    clang version 20.1.8
+  ubuntu:focal                  clang version 10.0.0-4ubuntu1
+  ubuntu:jammy                  Ubuntu clang version 14.0.0-1ubuntu1.1
+  ubuntu:noble                  Ubuntu clang version 18.1.3 (1ubuntu1)
+  ubuntu:latest                 Ubuntu clang version 18.1.3 (1ubuntu1)
+  ubuntu:rolling                Ubuntu clang version 20.1.2 (0ubuntu1)
+  ubuntu:devel                  Ubuntu clang version 20.1.8 (0ubuntu1)
+
+I think it makes sense for either Andrew to carry this via -mm on a
+nonmm branch or me to carry this via the Kbuild tree, with the
+appropriate acks.
+
 ---
-Change in v2
-- change description to avoid confuse about reset controller.
-- it is legacy device, more than 10 year. So try keep existed dts as it.
----
- .../bindings/soc/fsl/fsl,vf610-src.yaml       | 47 +++++++++++++++++++
- 1 file changed, 47 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
+Nathan Chancellor (10):
+      kbuild: Bump minimum version of LLVM for building the kernel to 15.0.0
+      arch/Kconfig: Drop always true condition from RANDOMIZE_KSTACK_OFFSET
+      ARM: Clean up definition of ARM_HAS_GROUP_RELOCS
+      arm64: Remove tautological LLVM Kconfig conditions
+      mips: Unconditionally select ARCH_HAS_CURRENT_STACK_POINTER
+      powerpc: Drop unnecessary initializations in __copy_inst_from_kernel_nofault()
+      riscv: Remove version check for LTO_CLANG selects
+      lib/Kconfig.debug: Drop CLANG_VERSION check from DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT
+      objtool: Drop noinstr hack for KCSAN_WEAK_MEMORY
+      KMSAN: Remove tautological checks
 
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-new file mode 100644
-index 0000000000000..cb8aa510a21f7
---- /dev/null
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-@@ -0,0 +1,47 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas//soc/fsl/fsl,vf610-src.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale vf610 System Reset Controller (SRC)
-+
-+maintainers:
-+  - Frank Li <Frank.Li@nxp.com>
-+
-+description: |
-+  IC reference manual call it as SRC, but it is not module as linux reset
-+  controller, which used to reset individual device. SRC work as reboot
-+  controller, which reboot whole system. It provide a syscon interface to
-+  syscon-reboot.
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - fsl,vf610-src
-+      - const: syscon
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    syscon@4006e000 {
-+        compatible = "fsl,vf610-src", "syscon";
-+        reg = <0x4006e000 0x1000>;
-+        interrupts = <96 IRQ_TYPE_LEVEL_HIGH>;
-+    };
-+
--- 
-2.34.1
+ Documentation/process/changes.rst |  2 +-
+ arch/Kconfig                      |  1 -
+ arch/arm/Kconfig                  | 11 ++++-------
+ arch/arm64/Kconfig                |  5 +----
+ arch/mips/Kconfig                 |  2 +-
+ arch/powerpc/include/asm/inst.h   |  4 ----
+ arch/riscv/Kconfig                |  5 ++---
+ lib/Kconfig.debug                 |  2 +-
+ lib/Kconfig.kcsan                 |  6 ------
+ lib/Kconfig.kmsan                 | 11 +----------
+ scripts/min-tool-version.sh       |  6 ++----
+ tools/objtool/check.c             | 10 ----------
+ 12 files changed, 13 insertions(+), 52 deletions(-)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250710-bump-min-llvm-ver-15-95231f1eb655
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
 
 
