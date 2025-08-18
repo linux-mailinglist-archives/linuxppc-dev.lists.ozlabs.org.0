@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-11118-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11120-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0D5B2B88F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 07:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C90DDB2BE02
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 11:50:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c5dG318Cqz3cmx;
-	Tue, 19 Aug 2025 15:20:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5lFZ6WWPz3d28;
+	Tue, 19 Aug 2025 19:50:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755580843;
-	cv=none; b=HhTKt/AVnliCYektwr6KdfzCckMw9nJQ69oRuEYR5aVhbbsl57Xgj/60VenCm2fnVWlyRWYu+xR7uB4r0ZuBIX+mSrN7tMw41DBVcMdYDrKhNmPN0gCFF0mk7gMvEHfYEqqWH7gAnb0ek2lJ9bavx/TQ4hCTJI/L8LgBWijuseVYKoOJyhs72XPZP8aDo9ad5rUpTzPpT8D7lCvvuv1gXx+a4pDbiS0RwZ8PKo9GpPQmqEG9qxgWdBBMn0fqHGUZPR+qCR5LZKBBLyi2JaUYxsC+6336rjRe6umfYukozWlHYx5M4yML8icQ2RATbAvDA7b/JQxm2d0Utvl7Cq1foA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755597042;
+	cv=none; b=dGIv1aIgbWMY1FFNJwFWrVKRZI0xTzBkPvlpqSjU4iPOQIlu4oAFyEvwXKyYt6vAs2yVBJKVzQv5pxovSK5hBizzNNHL23J+qgjzqs9Exea/eyZuYSssAd2oIEfc2OPlqSTp6HuDUrqg9608UvSzqimuJCVQxfFtZYU9NIssVcRMtd/FLCqSDpzpftkhpaTkQgCysf7t53xguVj9KihNiMXldoC56RNc+LVFYD+Y/lYZ4jw3AljnUWmRQ4o2eLbiu/RhrFbrnJaiLSNwndiJRVlT2FQo5hb8dIbfj6iKdoCHlRBhTVLImamA7JWIsyCIfQu3TpUxV3QUxO8/N74GJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755580843; c=relaxed/relaxed;
-	bh=YJn0U2/tyMFIB/SctjyxEAKJkay78f83rJ0olwVtaYU=;
+	t=1755597042; c=relaxed/relaxed;
+	bh=VKSZMsHxGJpaN9hFkYvVgxYMHGqP3GyUhVJIQ8h1HsM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=We7lxssQ+167F/IhpIRQ6sCHrUFuKgRUwJD4aexEvVYwXcgCUlQkl15muS6efb76HZvjFgaGD7m5Cg5d3qR5qEjcLlzDlFhWoTJ4riq8WdsULvCdIFr6YVFYOvFbLiOE9Y3QlximTVKEBn7/lJ35KDN3GSytZ4qnh7aC06nqj7vEAn1VvPVSjGzJa308L+zzcelrjBhs3vYTQcwozv7TeUjZyGoPgSf0e3qNBdGXAj65GARzC92SDSYxA2uyE7U8AMd5HEGhWclFop+R6n1P7Sqf7/ePODKUfX+8yztM13kM/WVJGtI638lHnBaBQB0sX1H6MRcWL4ijsXKJU36fiA==
+	 In-Reply-To:Content-Type; b=P3ycXDpUXus8tEQ/miIZgfWMtetdNj49S9/kCbMQSAB/DKrOE6Nq2gMFMWWscETqpKUGXNNh/PfGR5xZxp3n+EoRqtXgP9BzhuVJbDjEnQKi8CQdhqj0UZk56HVw9gFsz/58udDAtxk8I7EPVZ7ZCZqcmVllXcoeLuxDfDeCsfFKa/h4RG0SAwaRA+/IdN0dwRys2HG8RorAtgBXvwMNDyZn1XW5yGG01a7fAkFndEhJ1GFivXtXxMBWlvdhUrcya+OZHNvTBYdc9O+0esMyEq+XjcmCtORKss30J5nzPPMFC0MMkQlelTcAK5xFwzFx3vZLdP6W3g4fKJHPFpyHeg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c5dG24lYcz3cm7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 15:20:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5lFZ3BQWz3cyc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 19:50:42 +1000 (AEST)
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c55FY6wKBz9sW0;
-	Mon, 18 Aug 2025 10:18:25 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4c55Fx3PBzz9sW3;
+	Mon, 18 Aug 2025 10:18:45 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id lMU1reJG0jOi; Mon, 18 Aug 2025 10:18:25 +0200 (CEST)
+	with ESMTP id Vnj3VDrR4Hnq; Mon, 18 Aug 2025 10:18:45 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c55FY69pzz9sVx;
-	Mon, 18 Aug 2025 10:18:25 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c55Fx2gYYz9sW1;
+	Mon, 18 Aug 2025 10:18:45 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BD3768B764;
-	Mon, 18 Aug 2025 10:18:25 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 465088B764;
+	Mon, 18 Aug 2025 10:18:45 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id E2DQQggsZVWb; Mon, 18 Aug 2025 10:18:25 +0200 (CEST)
+	with ESMTP id uRYqQBvN43Yy; Mon, 18 Aug 2025 10:18:45 +0200 (CEST)
 Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8617A8B763;
-	Mon, 18 Aug 2025 10:18:25 +0200 (CEST)
-Message-ID: <384e2b94-186f-436c-aa69-3cc41a38552c@csgroup.eu>
-Date: Mon, 18 Aug 2025 10:18:25 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 137DE8B763;
+	Mon, 18 Aug 2025 10:18:45 +0200 (CEST)
+Message-ID: <aacc97c0-2cc6-4192-9b19-5234ccd93504@csgroup.eu>
+Date: Mon, 18 Aug 2025 10:18:44 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,10 +70,10 @@ Cc: Qiang Zhao <qiang.zhao@nxp.com>, Shengjiu Wang <shengjiu.wang@gmail.com>,
  linux-sound@vger.kernel.org
 References: <cover.1754993232.git.christophe.leroy@csgroup.eu>
  <8d01cf4599664188c92a515922d68c9834263384.1754993232.git.christophe.leroy@csgroup.eu>
- <20250814094502.4b350b3e@bootlin.com>
+ <20250813120657.1e93b16b@bootlin.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Language: fr-FR
-In-Reply-To: <20250814094502.4b350b3e@bootlin.com>
+In-Reply-To: <20250813120657.1e93b16b@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
@@ -82,57 +82,31 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 
-Le 14/08/2025 à 09:45, Herve Codina a écrit :
+Le 13/08/2025 à 12:06, Herve Codina a écrit :
+> Hi Christophe,
+> 
 > On Tue, 12 Aug 2025 12:50:56 +0200
 > Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 > 
->> To reduce complexity of interrupt handling in following patch, ensure
->> audio channels are configured in the same order as timeslots on the
->> TDM bus. If we need a given ordering of audio sources in the audio
->> frame, it is possible to re-order codecs on the TDM bus, no need to
->> mix up timeslots in channels.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->> v2: New
->> ---
->>   sound/soc/fsl/fsl_qmc_audio.c | 29 +++++++++++++++++++++++++++++
->>   1 file changed, 29 insertions(+)
->>
->> diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
->> index 5614a8b909edf..0be29ccc1ff7b 100644
->> --- a/sound/soc/fsl/fsl_qmc_audio.c
->> +++ b/sound/soc/fsl/fsl_qmc_audio.c
->> @@ -791,12 +791,17 @@ static int qmc_audio_dai_parse(struct qmc_audio *qmc_audio, struct device_node *
->>   			       struct qmc_dai *qmc_dai,
->>   			       struct snd_soc_dai_driver *qmc_soc_dai_driver)
->>   {
->> +	struct qmc_chan_ts_info ts_info;
->>   	struct qmc_chan_info info;
->>   	unsigned long rx_fs_rate;
->>   	unsigned long tx_fs_rate;
->> +	int prev_last_rx_ts = 0;
->> +	int prev_last_tx_ts = 0;
->>   	unsigned int nb_tx_ts;
->>   	unsigned int nb_rx_ts;
->>   	unsigned int i;
->> +	int last_rx_ts;
->> +	int last_tx_ts;
->>   	int count;
->>   	u32 val;
->>   	int ret;
+> ...
+> 
 >> @@ -879,6 +884,30 @@ static int qmc_audio_dai_parse(struct qmc_audio *qmc_audio, struct device_node *
 >>   				return -EINVAL;
 >>   			}
 >>   		}
 >> +
 >> +		ret = qmc_chan_get_ts_info(qmc_dai->qmc_chans[i], &ts_info);
+>> +		if (ret) {
+>> +			dev_err(qmc_audio->dev, "dai %d get QMC %d channel TS info failed %d\n",
+>> +				qmc_dai->id, i, ret);
+>> +			return ret;
+>> +		}
+>> +
+>> +		last_rx_ts = fls64(ts_info.rx_ts_mask);
+>> +		last_tx_ts = fls64(ts_info.rx_ts_mask);
+>                                                
+> tx_ts_mask instead of rx_ts_mask for last_tx_ts.
 > 
-> qmc_chan_get_ts_info() need a struct qmc_chan as first parameter
-> 
-> qmc_dai->qmc_chans[i].qmc_chan instead of qmc_dai->qmc_chans[i].
-> 
-> The use of qmc_dai->qmc_chans[i] without .qmc_chan have to be done on patch 4 (cleanup patch).
 
 Fixed in v3
 
