@@ -1,71 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-11122-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11123-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16AEB2C494
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 15:05:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 529BFB2C504
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 15:16:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c5qZY5cYVz3d3W;
-	Tue, 19 Aug 2025 23:05:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5qq35zy2z3d3Q;
+	Tue, 19 Aug 2025 23:16:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::22a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755608741;
-	cv=none; b=S10t4+XvnebfLCvRUwp7Zxpx/aWcnI9jl6c9agv/9GQe7qItvyJAnvsozqK2z83eZrCibFeKIgIal6PFZHu9O9GCMKENeDReeOxYNvUzC826oziBr1mY8JO9D/4x9AheB/z4cP4qXGTcdHo8Z0TOYn6v3e3dlkr0a4pJsbhp17+U8shWxX/OA4+fWoiF2Yu1HKWPTEpU4eYw8ALxOwmsg1Vxux2mF1iEk4qtzC6QiZM8CtKvk52I/8WWHjwC22L6kb9gxJLQvXByimt2LGdnT2uh5BytOHLEVsHzf/odQsfwNl06Hv1FVanu7xBhrjYwrrxWWhRykvYidvyAvA+VVA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755609391;
+	cv=none; b=fpyWnAhYwe5T4IcMy+lE8knZff6HKqmJWVqnbiysPmQ1h/8EsRDZ2qNaiRp+2CGdO2A5JI1vCHa3SHs6qErhujvh4iiHfBUKzgDuov60N1aw/3YLqUlk4CYD7jlOkSPO0lXXU2Jjm3RC/zBGd0P9OUSRiQEzF5zjVbOlnKeHkkqrc5iVicfCvlRQKjpJWut8H8ckbmbvYhgaVQXFZYrJzpN1jjhh2AIN0lhjjLAcbXVI7+LBW0XIBR00fYfJLGcD6v1b1tcd0J9T3OOwM1jKOtiKbpYRsJJZTMY7YlX31y+y7+etcAjGGiuFn3qsiB0OzfzoeN1vdWsHPlwjbN8hRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755608741; c=relaxed/relaxed;
-	bh=TydTBW5thx9mDJs/hCsJtwVT0BXigr4SrIrrv36m4Gw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O3qJ+/2TF5C6cPO16Mx4yF8rxDtJI6BZpl+GvmkDjxmzJaUTIrB4PqBIHPNMUoxUCjiQtBURYM9sCVJ+asD2+NulQWRGhYuDEg197xMHlMKpXLKHwcjApIcAhrx7l5id8mjF3gt7U4kpjHjvlqXcIbcWjZJ3Vg1eXZuriWOSGqx1kHPsWOkYAWfGFpPjFiZJerS7VArCeNaNvAaMmjNnktA58Ukqw+gR4YEIYSxv5zt0Ji5h39XM1PvJHPDuj8oMugJuVRF1WhU699qwuZxC6j/0pnU6rC0gbtWhBnS08MPBmbpA1aBNjXmT0m3ZqESlUs7xzbJrAoMGglBpDUzcwg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Wh5xkdKN; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::22a; helo=mail-lj1-x22a.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Wh5xkdKN;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::22a; helo=mail-lj1-x22a.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x22a.google.com (mail-lj1-x22a.google.com [IPv6:2a00:1450:4864:20::22a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5qZX5yStz3d3M
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 23:05:40 +1000 (AEST)
-Received: by mail-lj1-x22a.google.com with SMTP id 38308e7fff4ca-333f8f02afaso43236231fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 06:05:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1755608738; x=1756213538; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TydTBW5thx9mDJs/hCsJtwVT0BXigr4SrIrrv36m4Gw=;
-        b=Wh5xkdKNkV4HU8KCDoENb5YofvKoiNWhnDMe9nw+Rk6HENoudquo091VV4Zjo2Uq1C
-         wMN8nTO/HAx2WACit6ycI4dZmjktvTbqHJiA5RHp5vKrAmDY3Be5Txovu2ZUIDhzlG1O
-         DpxcpZE4VD8wh6jHoTslqEljZ2Ih6xwXw4PLFY2pMZ8nnztnHuHLITWhojjFXF7RETFH
-         hq024TopMfELoAfeZL6cI2ufJi5jByJfb67aOsZZiL5/TlvwvFCmw3wEy1Ryzd3TCbm9
-         8ZEvHY9vpUGJagSKVLuYvQjjKiwqQSmvTogJbFagnJNK2Inzb2rTNLELH/7AQEB2T0Ee
-         xItg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755608738; x=1756213538;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TydTBW5thx9mDJs/hCsJtwVT0BXigr4SrIrrv36m4Gw=;
-        b=szMragh2Ilud3qKT5ZHLrtQuOZq9YD7FtLDIJ6/E4Mff5raOf52QDZVYiMN1Kv41vl
-         LNW7KE0JJedV8nW6MNrnCmTaVapsJE0JOv97LsjUaksy49h3/zWePiWOjXg1Ah8fDJqc
-         S6TKNPzdomcPVjadFJUU4kk2Ag4N/sK9vUEs7Dmx0PnV1n3YtbeaYXt5haXTUCUEhNzI
-         ATWfkKvDfc60EbNVsGk3t+dYuI81Asi963eXY8288Un63Nc6d67T0qdcRZBhZ+YR3Q1e
-         4YrMm8ZOPZCUV3/Z9aOjcCZlA1btGS86w0piWWWyCqKSs9cj59nNLrN7Vl/NMzhWgAmH
-         qEdw==
-X-Forwarded-Encrypted: i=1; AJvYcCUsFQ9DmX9fgu+nWjnDKwv13VrHXqr/QB3YKaM+uJMRPMT4Dve8gnyf1xHKAQoJn1VHmcG8IvpAu9rPysY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwqPPHp4FpfebV3fM5+LT04gOh/PsrLrZyMrY8X7YxbWkT/nlhS
-	2rNzHg+PRssTKiEN7ihtYSuN2WBO2sIqISKm9FP/MjkShTYblvWru82q2P8hlu72TD0vapkMlL+
-	V19OW20uJVhdrQSTOTTpiHm967/qKPr1j4cnVoiJWvw==
-X-Gm-Gg: ASbGncvnHRs30bcmB0A58I68KnsFCMNseZ6H0wm/dVuJLSb/YXjIeTWatMB7d0q7G4f
-	6kAXBIPiGH+Ny5gnKHRG2brImWOXYrpjUKXY8WlOyv2SVFbeaoUvIOlZUZnHpdeOBo7+RnYFZf+
-	8o+LhzfzDM5zbVz033tEZZ2jsgdrZQCM0Ij7+FhcmQW5LSmyInif+h4aHVqPzy1OikS0HZIbXBj
-	y923Rt3ylmmewzM2SI7KZI=
-X-Google-Smtp-Source: AGHT+IEpK76uxGn/DS7ICLCoTV8giPyjNjAYLxm3xST9mGFGCKp3eB6JQE/Gx6nRy13cnpDfXlqQrB6jbaGh+1eqiHk=
-X-Received: by 2002:a05:651c:1505:b0:32b:805e:20d9 with SMTP id
- 38308e7fff4ca-33530809c75mr7490841fa.38.1755608737688; Tue, 19 Aug 2025
- 06:05:37 -0700 (PDT)
+	t=1755609391; c=relaxed/relaxed;
+	bh=+JJR86sLJLFn0wCpzynJG6Djlht626/b+3oI3vg3wG4=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=mVEoIkbheXS4C0JCwXfyyvG3JIwumXfXh+f9Vcp9lkW4n3xtMfEV+BnXiM3yrOkA6KfbopF48dN2V7Ec/T+LiB5lgfVU4+7HGeZh+kkTCdGWgCqKV0N/r1vxEtfVF65zGXB61mCtS5MbPfY90NmAj6ZyRoB6FB1N0ZMHVKY1QmQaQ8WOJpW3rpagWcpJ50Ua8pSdFVkqQuwJq2J76UYhlgi3WCQal+knmuwmy80XJC254JlEiCoRmEjxsxy3JbYxrsJBSrBSeh31IgMbvymvd3zz7DjJ1EZawKkpWKG09/l2RYboDFRvB7ks/eib66+Sl4ItI9yfKUv5jewhGXxCHw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=robin.murphy@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=robin.murphy@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5qq25BSHz3d3M
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 23:16:29 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0830C16A3;
+	Tue, 19 Aug 2025 06:15:48 -0700 (PDT)
+Received: from [10.1.196.50] (e121345-lin.cambridge.arm.com [10.1.196.50])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 078263F58B;
+	Tue, 19 Aug 2025 06:15:51 -0700 (PDT)
+Message-ID: <67a0d778-6e2c-4955-a7ce-56a10043ae8d@arm.com>
+Date: Tue, 19 Aug 2025 14:15:50 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,41 +43,173 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <9652736ef05b94d9113ea5ce7899734ef82343d1.1755520794.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <9652736ef05b94d9113ea5ce7899734ef82343d1.1755520794.git.christophe.leroy@csgroup.eu>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Tue, 19 Aug 2025 15:05:26 +0200
-X-Gm-Features: Ac12FXx42oLVZo77dClNUGC42QVr3TSxbMmRbjTF7n6R6gJYcLt9jZg72zItf9E
-Message-ID: <CACRpkdaV8EA6O1x3+UpruhXEqzA5Zb_6v+DVwURvOFH+rD5Jrw@mail.gmail.com>
-Subject: Re: [PATCH] gpio: mpc5200: Drop legacy-of-mm-gpiochip.h header
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Anatolij Gustschin <agust@denx.de>, linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 18/19] perf: Introduce positive capability for raw events
+From: Robin Murphy <robin.murphy@arm.com>
+To: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+ mark.rutland@arm.com, acme@kernel.org, namhyung@kernel.org,
+ alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com,
+ adrian.hunter@intel.com, kan.liang@linux.intel.com
+Cc: linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org,
+ linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, coresight@lists.linaro.org,
+ iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
+ linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+References: <cover.1755096883.git.robin.murphy@arm.com>
+ <542787fd188ea15ef41c53d557989c962ed44771.1755096883.git.robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <542787fd188ea15ef41c53d557989c962ed44771.1755096883.git.robin.murphy@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Aug 18, 2025 at 2:42=E2=80=AFPM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
+On 13/08/2025 6:01 pm, Robin Murphy wrote:
+> Only a handful of CPU PMUs accept PERF_TYPE_{RAW,HARDWARE,HW_CACHE}
+> events without registering themselves as PERF_TYPE_RAW in the first
+> place. Add an explicit opt-in for these special cases, so that we can
+> make life easier for every other driver (and probably also speed up the
+> slow-path search) by having perf_try_init_event() do the basic type
+> checking to cover the majority of cases.
+> 
+> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> ---
+> 
+> A further possibility is to automatically add the cap to PERF_TYPE_RAW
+> PMUs in perf_pmu_register() to have a single point-of-use condition; I'm
+> undecided...
+> ---
+>   arch/s390/kernel/perf_cpum_cf.c    |  1 +
+>   arch/s390/kernel/perf_pai_crypto.c |  2 +-
+>   arch/s390/kernel/perf_pai_ext.c    |  2 +-
+>   arch/x86/events/core.c             |  2 +-
+>   drivers/perf/arm_pmu.c             |  1 +
+>   include/linux/perf_event.h         |  1 +
+>   kernel/events/core.c               | 15 +++++++++++++++
+>   7 files changed, 21 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/s390/kernel/perf_cpum_cf.c b/arch/s390/kernel/perf_cpum_cf.c
+> index 1a94e0944bc5..782ab755ddd4 100644
+> --- a/arch/s390/kernel/perf_cpum_cf.c
+> +++ b/arch/s390/kernel/perf_cpum_cf.c
+> @@ -1054,6 +1054,7 @@ static void cpumf_pmu_del(struct perf_event *event, int flags)
+>   /* Performance monitoring unit for s390x */
+>   static struct pmu cpumf_pmu = {
+>   	.task_ctx_nr  = perf_sw_context,
+> +	.capabilities = PERF_PMU_CAP_RAW_EVENTS,
+>   	.pmu_enable   = cpumf_pmu_enable,
+>   	.pmu_disable  = cpumf_pmu_disable,
+>   	.event_init   = cpumf_pmu_event_init,
+> diff --git a/arch/s390/kernel/perf_pai_crypto.c b/arch/s390/kernel/perf_pai_crypto.c
+> index a64b6b056a21..b5b6d8b5d943 100644
+> --- a/arch/s390/kernel/perf_pai_crypto.c
+> +++ b/arch/s390/kernel/perf_pai_crypto.c
+> @@ -569,7 +569,7 @@ static const struct attribute_group *paicrypt_attr_groups[] = {
+>   /* Performance monitoring unit for mapped counters */
+>   static struct pmu paicrypt = {
+>   	.task_ctx_nr  = perf_hw_context,
+> -	.capabilities = PERF_PMU_CAP_SAMPLING,
+> +	.capabilities = PERF_PMU_CAP_SAMPLING | PERF_PMU_CAP_RAW_EVENTS,
+>   	.event_init   = paicrypt_event_init,
+>   	.add	      = paicrypt_add,
+>   	.del	      = paicrypt_del,
+> diff --git a/arch/s390/kernel/perf_pai_ext.c b/arch/s390/kernel/perf_pai_ext.c
+> index 1261f80c6d52..bcd28c38da70 100644
+> --- a/arch/s390/kernel/perf_pai_ext.c
+> +++ b/arch/s390/kernel/perf_pai_ext.c
+> @@ -595,7 +595,7 @@ static const struct attribute_group *paiext_attr_groups[] = {
+>   /* Performance monitoring unit for mapped counters */
+>   static struct pmu paiext = {
+>   	.task_ctx_nr  = perf_hw_context,
+> -	.capabilities = PERF_PMU_CAP_SAMPLING,
+> +	.capabilities = PERF_PMU_CAP_SAMPLING | PERF_PMU_CAP_RAW_EVENTS,
+>   	.event_init   = paiext_event_init,
+>   	.add	      = paiext_add,
+>   	.del	      = paiext_del,
+> diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+> index 789dfca2fa67..764728bb80ae 100644
+> --- a/arch/x86/events/core.c
+> +++ b/arch/x86/events/core.c
+> @@ -2697,7 +2697,7 @@ static bool x86_pmu_filter(struct pmu *pmu, int cpu)
+>   }
+>   
+>   static struct pmu pmu = {
+> -	.capabilities		= PERF_PMU_CAP_SAMPLING,
+> +	.capabilities		= PERF_PMU_CAP_SAMPLING | PERF_PMU_CAP_RAW_EVENTS,
+>   
+>   	.pmu_enable		= x86_pmu_enable,
+>   	.pmu_disable		= x86_pmu_disable,
+> diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
+> index 72d8f38d0aa5..bc772a3bf411 100644
+> --- a/drivers/perf/arm_pmu.c
+> +++ b/drivers/perf/arm_pmu.c
+> @@ -877,6 +877,7 @@ struct arm_pmu *armpmu_alloc(void)
+>   		 * specific PMU.
+>   		 */
+>   		.capabilities	= PERF_PMU_CAP_SAMPLING |
+> +				  PERF_PMU_CAP_RAW_EVENTS |
+>   				  PERF_PMU_CAP_EXTENDED_REGS |
+>   				  PERF_PMU_CAP_EXTENDED_HW_TYPE,
+>   	};
+> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+> index 183b7c48b329..c6ad036c0037 100644
+> --- a/include/linux/perf_event.h
+> +++ b/include/linux/perf_event.h
+> @@ -305,6 +305,7 @@ struct perf_event_pmu_context;
+>   #define PERF_PMU_CAP_EXTENDED_HW_TYPE	0x0100
+>   #define PERF_PMU_CAP_AUX_PAUSE		0x0200
+>   #define PERF_PMU_CAP_AUX_PREFER_LARGE	0x0400
+> +#define PERF_PMU_CAP_RAW_EVENTS		0x0800
+>   
+>   /**
+>    * pmu::scope
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index 71b2a6730705..2ecee76d2ae2 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -12556,11 +12556,26 @@ static inline bool has_extended_regs(struct perf_event *event)
+>   	       (event->attr.sample_regs_intr & PERF_REG_EXTENDED_MASK);
+>   }
+>   
+> +static bool is_raw_pmu(const struct pmu *pmu)
+> +{
+> +	return pmu->type == PERF_TYPE_RAW ||
+> +	       pmu->capabilities & PERF_PMU_CAP_RAW_EVENTS;
+> +}
+> +
+>   static int perf_try_init_event(struct pmu *pmu, struct perf_event *event)
+>   {
+>   	struct perf_event_context *ctx = NULL;
+>   	int ret;
+>   
+> +	/*
+> +	 * Before touching anything, we can safely skip:
+> +	 * - any event for a specific PMU which is not this one
+> +	 * - any common event if this PMU doesn't support them
+> +	 */
+> +	if (event->attr.type != pmu->type &&
+> +	    (event->attr.type >= PERF_TYPE_MAX || is_raw_pmu(pmu)))
 
-> Remove legacy-of-mm-gpiochip.h header file. The above mentioned
-> file provides an OF API that's deprecated. There is no agnostic
-> alternatives to it and we have to open code the logic which was
-> hidden behind of_mm_gpiochip_add_data(). Note, most of the GPIO
-> drivers are using their own labeling schemas and resource retrieval
-> that only a few may gain of the code deduplication, so whenever
-> alternative is appear we can move drivers again to use that one.
->
-> [text copied from commit 34064c8267a6 ("powerpc/8xx:
-> Drop legacy-of-mm-gpiochip.h header")]
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Ah, that should be "!is_raw_pmu(pmu)" there (although it's not entirely 
+the cause of the LKP report on the final patch.)
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Thanks,
+Robin.
 
-Yours,
-Linus Walleij
+> +		return -ENOENT;
+> +
+>   	if (!try_module_get(pmu->module))
+>   		return -ENODEV;
+>   
+
 
