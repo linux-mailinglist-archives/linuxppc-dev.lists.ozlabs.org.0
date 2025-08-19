@@ -1,71 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-11110-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11113-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3F5B2B48E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 01:18:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 770D9B2B598
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 02:55:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c5TCh0cV6z3cjf;
-	Tue, 19 Aug 2025 09:18:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5WN55gD9z3ckP;
+	Tue, 19 Aug 2025 10:55:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::336"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755559088;
-	cv=none; b=H1swm86O4bNsa+nAzpV6MnsoYs7PEYOjJN95GaiyeBz3xh1rVgE/Wryud2kp+y0hVKfJsmv7+YHvFCh6xU6SDTWO7V5kDl+IPUhZPlgElpt4GEaPuhpTIlesZJyo5d8uje866+1dCJl8A1EsT8HKmCNPDxoV/mvUyzm6PZL3BCxXtNDypLJAkbGhRG0dBsVbEGNN7JZS1V81BH/M0PQbiE6tBRdVmDE1/RCLBJwjtL8Nl+bgNHn7gcx4M/0qlBKP4b90HSZwf84vcxfYWGPQ0Myju4rkwX2nmyI23OMu9mkvq0nyDwNcQfqCFrBfa46UswR1Pn1fN0ypVLtZLC75/A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755564933;
+	cv=none; b=I8ZYjiw0K1zY9Q2z4MYCbi/TiUZrl9evoA/7+5Xw8CCcfNx4/kT/5/DlT8sHBMaYY0P6f7bf9XvlNeg378XAelH2+bQkhYAZ2k81x4okxoJcpgDjRlVdXUoVYlPfuTsTacGPJjzlr+L/swi+tpeWxY8Gg7qtDdyEPppfF4Qwi9SPawxAyN8O4ByE8xCt9RVvp1kTCjMxxyuyIXyeeVFNVt4fcjyWEP5LlGmiRexZ6P+9o9zzuSjmijRVz9n2rYv5bsoFOQiGigXGy6ks/KNtEsK5RNzi5uc3MFkNLWZpLF49t1JDxvmKrNOir/rohDeV+SN9LSy4pNte+MxVjWRGhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755559088; c=relaxed/relaxed;
-	bh=1b+2mp/yigIIHVfdgVDB2QpdrFZcohdIV7tToHX2gNY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IKziBTHlhLBgIoqkgLj1joNDVy59GGEv1yaTNf5AZGtOx5RZGEq1GHKG2wJFYNa3nA5smZZgayd+I89YXV9N/ZFhjGEhKDp2yQdGzrKkmq0vwC/CMMzsIRcXS9OGqN40CDgT08KffU70DZgkLtZMC++wLkxB3oXxv2Ie+rIqlH4dDsLp0bqScldm2x5zS8JFpbhJ98d3lXW7zPhezwJn5d5iMZ9E183ok8uD+hoMMjGuWdaQ2+aLNeyg8p1Mp/JqUnY2fBwmJf3jI7xF+XMlpu5k/CWlwapZ6VK+//oHrNQfQMMKuhTn3F+0wdQW6vPVNq55E17/xIyNQLPaiE7vgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PHNbabON; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::336; helo=mail-ot1-x336.google.com; envelope-from=linasvepstas@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1755564933; c=relaxed/relaxed;
+	bh=JzfTMaSWFx+xn7Q0qfVZdQJA3fiAtavglfDwO1hdcSA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NpBR0eEpcmjVavetEOFhRDGMnQWEnhc86X9iF7MaGN8+e+Vvlb9LeKR4WI8sa/Kcz5uOns8w2RZt0VNJsTemacsDnTrVaZasj64pLeKDKfCnCrmxuRkQSRVERMeMcTTXXSSFlqNP97ilBIg98dKUqj6aAei9QGvvfhsi5CD+dT/W6QXdPte+Ddlw24REGkktjsfg9/Cqc3onNtj3kiye8Mk3KZIJQ6ojZ2B/oWJmmpATGyIOXlCrB+QN/KX04XBZuxn9uFKsi4P633ch3vnKBrsD5WsPx1n0nKZZETHSYe+Ffnt8LmdxkPxj3RPA3Lx2bKqrHrd3RfN7kjod1TDu4A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xf9fcNQg; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PHNbabON;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Xf9fcNQg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::336; helo=mail-ot1-x336.google.com; envelope-from=linasvepstas@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5TCf3vhVz3cft
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 09:18:05 +1000 (AEST)
-Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-74381fbc6e3so1999176a34.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 Aug 2025 16:18:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755559083; x=1756163883; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1b+2mp/yigIIHVfdgVDB2QpdrFZcohdIV7tToHX2gNY=;
-        b=PHNbabONmkAD5DkcDAH2JV8g5ThZLfKDAkcSALqZnZ5KTcGvDLzksxZnTPOFyNcaS0
-         ynO+g3gblLd+WYFGeT8pak+VjxWGMpB1ok4CvtMfewQ/GQ7himb2+cOSi7QgXKIbJ0s8
-         aJsQTdUt9/FUn8nV16fDMJT9Y1k92xvwYM07WvqWSXQ9V5BzRIUQk4GWeCA2Nu+6GkdE
-         d32rSMU8xxbNIEdkWPnfTyBCnsH/1VsHb0x3gD00Qx+B8mIkH/F738i7VjEuNshlCgEQ
-         JXWSTLABiu5r0pwki/rHeG2seZnKYvD7wB5XCv5m0p7Dd9IGgHDkroBmnyFiL4spJ83B
-         lTJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755559083; x=1756163883;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1b+2mp/yigIIHVfdgVDB2QpdrFZcohdIV7tToHX2gNY=;
-        b=O5pRmifrLsEbh2X/qjXkDYBeqFH4Z6pLhF7tAvx1rS+np8P9XGKnsY2h6ihMFaWBtE
-         rb0G5HVelYEVLUJ4KKYOYDbOJeqJtXJCl7I22E5ca1IyAmLjrOob1SgTJ82qkAAx619m
-         EIANDp7VYqRt1ZJOWyrcciJ8u7zel7ZARrBL/IqjfYzV5ayNHUeUgTqMl1KfND4QoUep
-         bn4KwqFBF7T2tWMPe48vS2ZLGuF667LUp8S8rTFySqsgHzrbOZt/aIsG7L5ZyyCX3fgV
-         nY+ODTkncdYwFQ+j7oBu0CrJh6FQxhs2plgKBeHHDyV432mOzHg7ceZs59F3nSvNCwU3
-         pQ2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUppNKwimGlWCY8H0MDpdsvknBvu423X/tb6uP14zQ9iHP03LRmyyEJpauGt/giqGVIuwpDIZ2Su0ftmVo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwazcBuMyzD7zUY7LytA3Qbh0coFbS8kCsgFpR2gqrzlc1YJKum
-	mThN0IW0gxUhSDYF5MF5J3KdvjruDo5/EUnR/WcB+JoHAwXsMCDAJbvicOezLMwZQnvhVKqyE+p
-	PVitKd2YQiEcuYBUU+klcSAoAMB5I3os=
-X-Gm-Gg: ASbGncsx6FpttiCDyw/IoOu/idx4WpJZBnjzeni7kYAaH+IaAphZO+Iy9j5yU5BrPvm
-	itPgYAyHPB54gOidTkCrHtSpzDbGsyt+3euCpouiZ+VqFD9G9EdHx98ZxoFV/I7irhi0wCc0/Iz
-	53XxMk7WUlBbMC88ivfkVDHytBDLjxI/LUKZ4F0yjj7S5seI3nudIcbiKM6S3FRe6Zi/ew0MkhV
-	4EBCA2VsX8K4OFX
-X-Google-Smtp-Source: AGHT+IGRJXLntANEfq69fBWLU4IJo5Sovp0hsSpwPWXOm4Y8/hfOeFbowvnUWBRIYgeHJZFRZ4J33wlV1SVvt6TELAY=
-X-Received: by 2002:a05:6808:3c44:b0:435:f7a2:8ff with SMTP id
- 5614622812f47-436cdc938f8mr381698b6e.12.1755559082607; Mon, 18 Aug 2025
- 16:18:02 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5WN437kZz3ck2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 10:55:32 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 896C55C57B0;
+	Tue, 19 Aug 2025 00:55:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A33C4CEEB;
+	Tue, 19 Aug 2025 00:55:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755564929;
+	bh=RHDDgdI1KU5gTd6q3RZ5KjPYkSkpxLcDr1NCuu19268=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xf9fcNQgSU+Jeg+ZP/DY9xu+7OEGwXkut8IrHzRW8NQLSJst0aTV0vjj7mBLD2TMC
+	 w5Fy48Sn79iupubE3YtfbIfAZusLxLPs26rf7V0ryA7My7a+9RNPJSdkDFA+bypbef
+	 SxGw74sKCkXQJfaZC+ps0lk9znD9XBmUnvgdm6lcfG4Dymf7j7PwKOAneQrOIzbUez
+	 vCSoiI+k4kes3saiX75j3h1XiAq43lBTMSMpkalNwUodG0ItYSp05wxSQjcjHYl4v/
+	 z2RjuW+7g/v5dY5viRILFm+jyrKcdgAUsnv3ksqOxqwz7dYrU5SvTErUHtrouytaWZ
+	 aW3FdXzlx4+Dw==
+Date: Mon, 18 Aug 2025 17:55:28 -0700
+From: Kees Cook <kees@kernel.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev, patches@lists.linux.dev,
+	linux-kbuild@vger.kernel.org, linux-hardening@vger.kernel.org,
+	Russell King <linux@armlinux.org.uk>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linuxppc-dev@lists.ozlabs.org, Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	kasan-dev@googlegroups.com, Alexander Potapenko <glider@google.com>
+Subject: Re: [PATCH 00/10] Bump minimum supported version of LLVM for
+ building the kernel to 15.0.0
+Message-ID: <202508181753.7204670E@keescook>
+References: <20250818-bump-min-llvm-ver-15-v1-0-c8b1d0f955e0@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,120 +87,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1755008151.git.lukas@wunner.de> <28fd805043bb57af390168d05abb30898cf4fc58.1755008151.git.lukas@wunner.de>
- <7c545fff40629b612267501c0c74bc40c3df29e2.camel@linux.ibm.com>
-In-Reply-To: <7c545fff40629b612267501c0c74bc40c3df29e2.camel@linux.ibm.com>
-Reply-To: linasvepstas@gmail.com
-From: Linas Vepstas <linasvepstas@gmail.com>
-Date: Mon, 18 Aug 2025 18:17:49 -0500
-X-Gm-Features: Ac12FXwvCNef1lGTrHQMtgrxrH734r9DdIijklrZKJzvHuzfvTB-RsjbXGpXUJU
-Message-ID: <CAHrUA37+0UBYDNzwsU1p8xYCpRypt_e_=ASC2e5QxT1z+D=YJQ@mail.gmail.com>
-Subject: Re: [PATCH 1/5] PCI/AER: Allow drivers to opt in to Bus Reset on
- Non-Fatal Errors
-To: Niklas Schnelle <schnelle@linux.ibm.com>
-Cc: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>, 
-	Riana Tauro <riana.tauro@intel.com>, 
-	Aravind Iddamsetty <aravind.iddamsetty@linux.intel.com>, 
-	"Sean C. Dardis" <sean.c.dardis@intel.com>, Terry Bowman <terry.bowman@amd.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver OHalloran <oohall@gmail.com>, 
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-pci@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250818-bump-min-llvm-ver-15-v1-0-c8b1d0f955e0@kernel.org>
+X-Spam-Status: No, score=-8.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Aug 14, 2025 at 2:56=E2=80=AFAM Niklas Schnelle <schnelle@linux.ibm=
-.com> wrote:
+On Mon, Aug 18, 2025 at 11:57:16AM -0700, Nathan Chancellor wrote:
+> s390 and x86 have required LLVM 15 since
 >
-> On Wed, 2025-08-13 at 07:11 +0200, Lukas Wunner wrote:
-> > When Advanced Error Reporting was introduced in September 2006 by commi=
-t
-> > 6c2b374d7485 ("PCI-Express AER implemetation: AER core and aerdriver"),=
- it
-> > sought to adhere to the recovery flow and callbacks specified in
-> > Documentation/PCI/pci-error-recovery.rst.
-> >
-> --- snip ---
-> > Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> > ---
-> >  drivers/pci/pcie/err.c | 17 ++++++++++-------
-> >  1 file changed, 10 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-> > index de6381c690f5..e795e5ae6b03 100644
-> > --- a/drivers/pci/pcie/err.c
-> > +++ b/drivers/pci/pcie/err.c
-> > @@ -217,15 +217,10 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev =
-*dev,
-> >       pci_walk_bridge(bridge, pci_pm_runtime_get_sync, NULL);
-> >
-> >       pci_dbg(bridge, "broadcast error_detected message\n");
-> > -     if (state =3D=3D pci_channel_io_frozen) {
-> > +     if (state =3D=3D pci_channel_io_frozen)
-> >               pci_walk_bridge(bridge, report_frozen_detected, &status);
-> > -             if (reset_subordinates(bridge) !=3D PCI_ERS_RESULT_RECOVE=
-RED) {
-> > -                     pci_warn(bridge, "subordinate device reset failed=
-\n");
-> > -                     goto failed;
-> > -             }
-> > -     } else {
-> > +     else
-> >               pci_walk_bridge(bridge, report_normal_detected, &status);
-> > -     }
-> >
-> >       if (status =3D=3D PCI_ERS_RESULT_CAN_RECOVER) {
-> >               status =3D PCI_ERS_RESULT_RECOVERED;
+>   30d17fac6aae ("scripts/min-tool-version.sh: raise minimum clang version to 15.0.0 for s390")
+>   7861640aac52 ("x86/build: Raise the minimum LLVM version to 15.0.0")
 >
-> On s390 PCI errors leave the device with MMIO blocked until either the
-> error state is cleared or we reset via the firmware interface. With
-> this change and the pci_channel_io_frozen case AER would now do the
-> report_mmio_enabled() before the reset with nothing happening between
-> report_frozen_detected() and report_mmio_enabled() is MMIO enabled at
-> this point? I think this callback really only makes sense if you have
-> an equivalent to s390's clearing of the error state that enables MMIO
-> but doesn't otherwise reset. Similarly EEH has eeh_pci_enable(pe,
-> EEH_OPT_THAW_MMIO).
+> respectively. This series bumps the rest of the kernel to 15.0.0 to
+> match, which allows for a decent number of clean ups.
 
-The original intent was that if the channel locked up e.g. due to some
-uncorrectable ECC error or some transient errors due to electrical
-problems on the bus (bad reflection of some pulse off some poorly
-terminated connector) then such an error would almost surely be
-transient and very very unlikely to repeat.
+Looks good to me!
 
-Thus it would be OK to re-enable the MMIO (without otherwise resetting
-any channel controller state) and let the device driver examine the PCI
-config registers. If they all look good, don't contain any scrambled addrs
-or bitflags, then completely normal operations could be resumed without
-any further messing around, resetting, invalidating etc.
+Reviewed-by: Kees Cook <kees@kernel.org>
 
-But first, the device driver needs to examine the config registers and
-that cannot be done unless MMIO is enabled.  If MMIO is enabled,
-and the PCI config regs appear to contain garbage, then that garbage
-can be logged in some error report or crash dump. After this
-got done, the device driver would invalidate any pending i/o (for example,
-half-finished blocks in some s390 orb, irb, schib, ioccw, whatever)
-make sure that assorted channel subsystems are actually halted,
-and then attempt  a reset of the bus, the bus controllers (390 channel
-or subchannel) and probably the device as well. If that reset succeeds,
-then the device driver can restart with a fresh, clean device and a working
-channel.  And maybe, if we're lucky, start handling any pending i/o request=
-s.
+> I think it makes sense for either Andrew to carry this via -mm on a
+> nonmm branch or me to carry this via the Kbuild tree, with the
+> appropriate acks.
 
-In practice, this worked great for network adapters. However, if the affect=
-ed
-device was some storage controller for e.g. some mounted filesystem then
-(way back when) it was hopeless, because the Linux block subsystem did
-not know how to deal with transient errors like this.  Trying to figure out=
- how
-to unscramble the block subsystem, and keep mounted filesystems shielded
-from this chaos was the one thing I couldn't figure out how to solve.  It s=
-eemed
-important.  But we've come a long way since then, so I dunno.
+I vote you carry it with Kbuild. :)
 
--- Linas
+--
+Kees Cook
 
