@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-11149-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11150-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71929B2CBC8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 20:22:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D49B2CBDA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 20:24:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c5ycD61Gpz300M;
-	Wed, 20 Aug 2025 04:22:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5yfn0XS6z30PF;
+	Wed, 20 Aug 2025 04:24:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755627756;
-	cv=none; b=ltb7qWPJWkhD5HJPcO1hhCMpOcKm+MH4yiCC1a3hgMS/5BhoxpQhAR0zVEs40DeumW4UeU8GcWL/CwbAxWu6XgDClg0TP8cXKRVALihzIja254MpVO8kZGxicUjOP56i2kwHFDfPNlPMvC/74zZozN01Gq0A0DVJ7XG1IFjmxD6ZlWleoO71GWz++283tcAN8NMOo1NIGYdX0MbEf6FPDhv2z+VBDx5VENNnX2IhYrkjumrGlrl84FYQx2+ZccZeVX7CLL2O/9ixysvEBleWyEmpcSt5YpXfkUxyIasymVs6bQRZhHx6Z3VMM+6ERWuioy5DX3Tm06PEiHavcHoZLg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755627889;
+	cv=none; b=dKxb8DW6QXk3Y6trs/B2oL985lWnaXw+oy6BQRarP2XlmpVQY4yUONGQGpiZ9Ft83uG3NTe9hmrf/4y9QJCbGcsg8pK44Ddmz/nEG3lA1yw6Zl2XJ1YDgq8Ut9Pfrpiusqa8kM2rlZqeiPicp/W4ubf49Je4Y9h6Z7XesjegvFP6nt39t73HCguwIUUAwhkWO/Gyu2xq2VxkaxonUxgjoxKpXG9ydUHU9NjeTiY4x78lPfmisl8IM868qO3HXTKHZTWyVSoAFjn6oh/Dqagf/L9N/i8GObItd2f+7Jnte4/CdRcnuVVMK8+S694GVp5XQH6illt/+IidXn3gdPYxaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755627756; c=relaxed/relaxed;
-	bh=rPawf4MAOK3K2lEjypEKyp/U3T0IFN68PxzTHE3J6/E=;
+	t=1755627889; c=relaxed/relaxed;
+	bh=0Jymx+EA6KESZceDiO0ZcOJChcO4ShLkCuHB0UCXkIw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hxsCKp/GgeD2fR4b0I49ci2s1trgYY7QFxsOdpGGmQ9Qpd9myYOMYvNSepIMany6jFl/HOg1OHN0Pqcb6Tthfqr7/cuDnSLcWQHU4ooXCJgzMf9zcKh6yc0LoWdxNIlvsikVV8vBRioIQDS87p0m+js3Xyd3g5EJa1RLrDPiOUGY05yrs3aiEHafp6ttt8bJ+UqqZGaoNx8qAIo3He4NrT5vPakcdaNnaeOotPJW25vNoog0LDvXNAMhbi8HD8Ne3imbQtilPw7B58aKVqTwjwCPeLrPK/jyLjWnMqNelyhkxRdFVSYSpUuBKwEupM7rquhl+h8+PEe+3tNJkX/b2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=alN6/hwH; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=NQ67IijxlDG+S065G7rS9Dxz5Y+8vZXUWJAV0PzPhhgA5l9zVo1wiI4UpZjDTekwEJnNdamZFRG+85Ie0KU0RUrRV8t1bgMFnbBtNPZQ19Sm981HaDMp/BezkaHbnAI7s7/UyOTMrisiZ7Ik0adiBm4aom7wU6Iolg7su2yBYQ9qqzxQutageZowgs4CpvLzgqH0w5v783FZbJLhapj7aoYPK3rO60i445qSEHQ94PX6Rb4wUY+twsmxxC+QGATa/gYQficqTMFxenzPPUh070ldW7pBIp5gFffqeNh1BnhRn4tKncrf0PuL40CTM2KR7UNNKTbOl1OHutdm83PehA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EwzZComd; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=alN6/hwH;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EwzZComd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5ycD1mbZz2yDr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Aug 2025 04:22:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5yfm3xC0z2xPy
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Aug 2025 04:24:48 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 594E960209;
-	Tue, 19 Aug 2025 18:22:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8557CC4CEF1;
-	Tue, 19 Aug 2025 18:22:32 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 340915C655A;
+	Tue, 19 Aug 2025 18:24:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53727C4CEF1;
+	Tue, 19 Aug 2025 18:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755627754;
-	bh=VSqn6WSqLVd/XpfzgudXSJRo0uPOQ5wyv2bWmCBBnJg=;
+	s=k20201202; t=1755627885;
+	bh=SvC+jn4R/dc0Ind2g0hlwOADBQmeZeKp/GI1XBT+Aws=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=alN6/hwHpvzthoP/KrllDuyPfF9f8yAYQER8+ba4p7ZAaMRpwoXt8rvK6QE3L0ekl
-	 bNm+CTndacGb+nR2BKXPNUnvE9okK+nJN6vWKLBypTEbMKpjdWZnobeyYbTdlJBwG3
-	 eQhAlRfAJUiGmqIDHRjbObolLDa17Te4yFQpGASd/eKfIFxPevya5z3Kg7b9O2j2pW
-	 xGJZckYIQxAQDMxUtnVFWJEEUia3gPTM6PRono+D9/zC602CQuuuu0N45uS/29jmmO
-	 kxle5BpRno+jkLFSoQGxLhrpEA9gCkuIidPS0ZJ3bdNRJ1LR7RUOVZQkLijjuMZ2fZ
-	 kFmTbvgXjx5hQ==
-Date: Tue, 19 Aug 2025 12:22:30 -0600
+	b=EwzZComdy/Uu53OXhh/BwwXin3VgP9XbYbPukl1+6UUrrmT0/QUgfHPWbl0yeg2IQ
+	 anqpbJ7fssVt9ylAxZXZBFI6XmgBFt76Sf9R+5d1q0uCECHn7z6AVgdwiNFmtPzUpZ
+	 oIJpPvDGleeIPwFshu0MK91r/Q4vlnE3hv5K/BQn4hYDk2V66e58pXhNfNYLb9ftUC
+	 FsprkYGd3dpPDZ4hTpasdYuKUOBt3HQa7ezc4te6CtdhPT3gjHwY76TvaUfRVubpfk
+	 /uH6qQQOd5J1UhIfM2bjnt3K6ADP7bZZTesuRvLRHriJ0TMIrB1SG3izjobM9UNSdA
+	 OKRS+aPZzKk+g==
+Date: Tue, 19 Aug 2025 12:24:42 -0600
 From: Keith Busch <kbusch@kernel.org>
 To: Leon Romanovsky <leon@kernel.org>
 Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
@@ -72,11 +72,10 @@ Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
 	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 11/16] dma-mapping: export new dma_*map_phys()
- interface
-Message-ID: <aKTA5i1IZquRBolf@kbusch-mbp>
+Subject: Re: [PATCH v4 15/16] block-dma: properly take MMIO path
+Message-ID: <aKTBariwz1_XsRv0@kbusch-mbp>
 References: <cover.1755624249.git.leon@kernel.org>
- <bb979e4620b3bdf2878e29b998d982185beefee0.1755624249.git.leon@kernel.org>
+ <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,33 +91,20 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bb979e4620b3bdf2878e29b998d982185beefee0.1755624249.git.leon@kernel.org>
+In-Reply-To: <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 19, 2025 at 08:36:55PM +0300, Leon Romanovsky wrote:
+On Tue, Aug 19, 2025 at 08:36:59PM +0300, Leon Romanovsky wrote:
 > From: Leon Romanovsky <leonro@nvidia.com>
 > 
-> Introduce new DMA mapping functions dma_map_phys() and dma_unmap_phys()
-> that operate directly on physical addresses instead of page+offset
-> parameters. This provides a more efficient interface for drivers that
-> already have physical addresses available.
-> 
-> The new functions are implemented as the primary mapping layer, with
-> the existing dma_map_page_attrs()/dma_map_resource() and
-> dma_unmap_page_attrs()/dma_unmap_resource() functions converted to simple
-> wrappers around the phys-based implementations.
-> 
-> In case dma_map_page_attrs(), the struct page is converted to physical
-> address with help of page_to_phys() function and dma_map_resource()
-> provides physical address as is together with addition of DMA_ATTR_MMIO
-> attribute.
-> 
-> The old page-based API is preserved in mapping.c to ensure that existing
-> code won't be affected by changing EXPORT_SYMBOL to EXPORT_SYMBOL_GPL
-> variant for dma_*map_phys().
+> Make sure that CPU is not synced and IOMMU is configured to take
+> MMIO path by providing newly introduced DMA_ATTR_MMIO attribute.
+
+We may have a minor patch conflict here with my unmerged dma metadata
+series, but not a big deal.
 
 Looks good.
 
