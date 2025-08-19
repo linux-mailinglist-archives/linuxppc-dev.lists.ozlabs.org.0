@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-11144-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11142-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4B6B2CAFD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 19:39:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22E7B2CAF0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 19:38:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c5xdl4zM4z3dKp;
-	Wed, 20 Aug 2025 03:38:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5xdc5mP5z3dJw;
+	Wed, 20 Aug 2025 03:38:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755625131;
-	cv=none; b=SyKBuKh2h5kf7E1J6JicYmrL6o7o8p3p5j+0BMBq5rHYxXkohndZv7ocjKx9lWPMglIdhtrvPP+3/RwMhVZ1dS6Je9jnUq0vrOjfWGXVlt+02VEVrGLs556/G/mOnTer2n/mab/i34Wj8k4lTsVkW2m/laS+pryjO+DXZ41XRaYVxBzjuYCxlnHByhPMoatyLFr3i7BtZdTb5IaakY11CcOmw99FmPXJEtu+fEZvUZ1SpnjW6OjZGy/k/8pfADdBAuq1V3JSqeynctVe+W6IeHxa9OdYR3bNFFHqw0TGhTzKgxdxGfGwVxQA551/AFhGrImjp3wP67ooUIz3290YqQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755625124;
+	cv=none; b=mJfYvImoDiWLIlXnFzZ0JFU8ru+OT9nUPqgbVR78d3MiPqr6cpFFF6Sn4r5oN4uK+Yp9HDQJKNORLUCTR0b6OQpNDCaV9OWBDlGh/VcgfdD8Qk9D7Xh29g8Pr5BU4ccAoB4bE0Gcv7514LCUP4Tn7VNXt/sSJ4/7I8CyCNo72++qK9PdDIZiJob0kK66Zss8e8KiaRRvoQFTn47e02SjNas17TtaMYj1+RHVGPOzTbh4g8P925XQMNfmAn9Yk86RiiCJlcnSVoarDeV5lGH0Nd1empt160CDaptd3kWzaXUKIcsrfFmXUPYVAKACQ97WHvTZxxZZdaLKGoA4qVmDmw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755625131; c=relaxed/relaxed;
-	bh=D4SM6zHJ9Q6ObBfi9kz8op3wvjKvHEZA6J8C6N7vBkM=;
+	t=1755625124; c=relaxed/relaxed;
+	bh=XPxNQF8Cx+yhCu6yL4faxmro9U88DCzv8Ndb1qLzzQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/dZWBCYsW+E/uE/ObLQvCz6M+uSriGlCdiFTOFqqkS7Ezpgitv+vsTzOF2wMJIFUTpYmumA9Jvcdm0HO9KjJYSEnC1kFPSxUbHAAjmDiAVy/df8wL5P9QTnT4IdgHrJT7BVxOBkCQm8jl55blQATmqlehZFEmTPjw2UWL/tQfH8phyKEV03JRDQSUtKIshbFEF28I3DE1wWAV6xlf2RNpR1bZr2fgXVQtYlhl68+0BSTxeGBOjBmq1se214eitktTvMVVZ2BgCAFQW5/iC2z/CVvRtnu6xjPLnlEjDDyVuRxqDjodWzv/6BcU4Atz7dYyCfcr6xRmR3aGwzmz8CRQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bp6IjwCK; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=JXTtcf0GRNpwhRvVac3BlFlUjMyZoYtP7WfAIQ6Oesya5luDj8JD+oDEdAARj80DTpgCClx5vM3cwFDZZ5DMtRUIZDZdRZnQQZnaSJIof5Na6T8nxoK9bD3H8D82cTC4AtbmXkKLs77+au3Lv97SOMPWWjhj+bEiQsQ7TYxfTWGCmh1ryXSrs7qQBh+PU+ZK5q1p5VuBsSl/Y7/APnQcGquBSJz4L8EXjoEKFVYidvAzCjNrlUBVms8OgrUn8kZbrandEJHnWU7OjxfGlAVVLjjdgc1uDaEMJmA2yuS3MUxFEA0tQVzTMtraqQOE7mzutJL0LYeZl4Z/38kL4NEJ2w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QF95AAuh; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Bp6IjwCK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QF95AAuh;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5xdk6zsbz3dKy
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Aug 2025 03:38:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5xdc2tr4z3dKJ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 Aug 2025 03:38:44 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1387861430;
-	Tue, 19 Aug 2025 17:38:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8E5C4CEF4;
-	Tue, 19 Aug 2025 17:38:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7DFD3613EF;
+	Tue, 19 Aug 2025 17:38:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E8DC113D0;
+	Tue, 19 Aug 2025 17:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755625128;
-	bh=5GnXky7X8jRP4E4M761xyU7kxSqR5w3y9HvcAnisW/0=;
+	s=k20201202; t=1755625122;
+	bh=stLVV7BdINySQbyeqCDmRbXyWeQEecbuIkQ/rhX45FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bp6IjwCK6iikZBNKRNzlwQSTkIdVOg07zMkHxMwHx2bN8ViJPSPzqSH/QAyq4vh06
-	 wQO6Ewlb0QQbKPmgYqrA9uKQ5ZlVlzrl395y0zlmmQVZo3cmxr2dce8aTWrEgEuVvU
-	 PK81BrhFBj0Sb03L1mOYr5A5QlqVfAMBpJE1psdYb9zwXYegwG/tfmrm5FOWTNfeE8
-	 iY+rPNAKXFYUB6cprmGsa0u1KrjeSM4hl6Yb32H9zVNhuHEbrWVA9oc/K4UQWl86vA
-	 0GIK4Y52fniR/iFJCHHd5h1oBGaE5KSvHvvy9rnqAMrstqGlP8VTJe6ApXPe+l+dK9
-	 yBb54yNAL7EtQ==
+	b=QF95AAuhc8feQn+SEx82Pkl7/uTlNhnB5cHYHMn4haBNk3mIGB32W95xHVkQetyzQ
+	 l5pjdHoqmA32dwMVHHl2ireizeQrHrNOOpU6veVyXb4NV0jh1tYHCTnC8dcn2zvtTY
+	 J4nrUx7NhDiTec8s4jDArKOAkTIjbwvKXPPen+Vd16+uFXzd7usqZLmgr9JbeXZ1Jn
+	 WjodL0NO0sJNloB+WXRZ6xIN7Ll+mPyFWx7P66aJjQZw9otjgjVcZKNrK0y+CcuICc
+	 ddwwW0q2gx9LzWpv+xxfN0uj6Ze8uJX3Jlyv58Oh1O5dwZ9g8LdLLurbrm7l0u9gfU
+	 vhh2Z4HWzRNIw==
 From: Leon Romanovsky <leon@kernel.org>
 To: Marek Szyprowski <m.szyprowski@samsung.com>
 Cc: Leon Romanovsky <leonro@nvidia.com>,
@@ -81,9 +81,9 @@ Cc: Leon Romanovsky <leonro@nvidia.com>,
 	virtualization@lists.linux.dev,
 	Will Deacon <will@kernel.org>,
 	xen-devel@lists.xenproject.org
-Subject: [PATCH v4 13/16] mm/hmm: properly take MMIO path
-Date: Tue, 19 Aug 2025 20:36:57 +0300
-Message-ID: <4b929da0b2dec4bccf489f35ee06098b437053b2.1755624249.git.leon@kernel.org>
+Subject: [PATCH v4 14/16] block-dma: migrate to dma_map_phys instead of map_page
+Date: Tue, 19 Aug 2025 20:36:58 +0300
+Message-ID: <22b824931bc8ba090979ab902e4c1c2ec8327b65.1755624249.git.leon@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1755624249.git.leon@kernel.org>
 References: <cover.1755624249.git.leon@kernel.org>
@@ -108,67 +108,30 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Leon Romanovsky <leonro@nvidia.com>
 
-In case peer-to-peer transaction traverses through host bridge,
-the IOMMU needs to have IOMMU_MMIO flag, together with skip of
-CPU sync.
+After introduction of dma_map_phys(), there is no need to convert
+from physical address to struct page in order to map page. So let's
+use it directly.
 
-The latter was handled by provided DMA_ATTR_SKIP_CPU_SYNC flag,
-but IOMMU flag was missed, due to assumption that such memory
-can be treated as regular one.
-
-Reuse newly introduced DMA attribute to properly take MMIO path.
-
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- mm/hmm.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ block/blk-mq-dma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/hmm.c b/mm/hmm.c
-index 015ab243f081..6556c0e074ba 100644
---- a/mm/hmm.c
-+++ b/mm/hmm.c
-@@ -746,7 +746,7 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
- 	case PCI_P2PDMA_MAP_NONE:
- 		break;
- 	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
--		attrs |= DMA_ATTR_SKIP_CPU_SYNC;
-+		attrs |= DMA_ATTR_MMIO;
- 		pfns[idx] |= HMM_PFN_P2PDMA;
- 		break;
- 	case PCI_P2PDMA_MAP_BUS_ADDR:
-@@ -776,7 +776,7 @@ dma_addr_t hmm_dma_map_pfn(struct device *dev, struct hmm_dma_map *map,
- 			goto error;
- 
- 		dma_addr = dma_map_phys(dev, paddr, map->dma_entry_size,
--					DMA_BIDIRECTIONAL, 0);
-+					DMA_BIDIRECTIONAL, attrs);
- 		if (dma_mapping_error(dev, dma_addr))
- 			goto error;
- 
-@@ -811,16 +811,17 @@ bool hmm_dma_unmap_pfn(struct device *dev, struct hmm_dma_map *map, size_t idx)
- 	if ((pfns[idx] & valid_dma) != valid_dma)
+diff --git a/block/blk-mq-dma.c b/block/blk-mq-dma.c
+index ad283017caef..37e2142be4f7 100644
+--- a/block/blk-mq-dma.c
++++ b/block/blk-mq-dma.c
+@@ -87,8 +87,8 @@ static bool blk_dma_map_bus(struct blk_dma_iter *iter, struct phys_vec *vec)
+ static bool blk_dma_map_direct(struct request *req, struct device *dma_dev,
+ 		struct blk_dma_iter *iter, struct phys_vec *vec)
+ {
+-	iter->addr = dma_map_page(dma_dev, phys_to_page(vec->paddr),
+-			offset_in_page(vec->paddr), vec->len, rq_dma_dir(req));
++	iter->addr = dma_map_phys(dma_dev, vec->paddr, vec->len,
++			rq_dma_dir(req), 0);
+ 	if (dma_mapping_error(dma_dev, iter->addr)) {
+ 		iter->status = BLK_STS_RESOURCE;
  		return false;
- 
-+	if (pfns[idx] & HMM_PFN_P2PDMA)
-+		attrs |= DMA_ATTR_MMIO;
-+
- 	if (pfns[idx] & HMM_PFN_P2PDMA_BUS)
- 		; /* no need to unmap bus address P2P mappings */
--	else if (dma_use_iova(state)) {
--		if (pfns[idx] & HMM_PFN_P2PDMA)
--			attrs |= DMA_ATTR_SKIP_CPU_SYNC;
-+	else if (dma_use_iova(state))
- 		dma_iova_unlink(dev, state, idx * map->dma_entry_size,
- 				map->dma_entry_size, DMA_BIDIRECTIONAL, attrs);
--	} else if (dma_need_unmap(dev))
-+	else if (dma_need_unmap(dev))
- 		dma_unmap_phys(dev, dma_addrs[idx], map->dma_entry_size,
--			       DMA_BIDIRECTIONAL, 0);
-+			       DMA_BIDIRECTIONAL, attrs);
- 
- 	pfns[idx] &=
- 		~(HMM_PFN_DMA_MAPPED | HMM_PFN_P2PDMA | HMM_PFN_P2PDMA_BUS);
 -- 
 2.50.1
 
