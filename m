@@ -1,62 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-11124-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11125-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D157B2C55F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 15:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C009B2C579
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 15:26:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c5qzs6l5fz3d4D;
-	Tue, 19 Aug 2025 23:24:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5r2Q3vQZz3d7n;
+	Tue, 19 Aug 2025 23:26:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755609849;
-	cv=none; b=Y+3r35yCEsSSiEvWzllF5g5GTE2628bkYQS2J7oCeUGrbS1vC/VrKPIUn+w1+fK4CSRiGcoBIgiKG9R3z144u09/RLuxDn8zepCYbqe0pgs/hC6m9JEq5Jl4ZK82nFdWKF0g8Ek7rc5cl67q4+tFaxWB5HVUO3cxoU0bdTBDdUenfeLTJooXuLuBmBs9WFSp3r5GCXwjgG9Q17fMeGMoHpz7IdXvfs76KnzlfAKuQnx5+BMhszb+4g/51BysYb7kxIqBP+eczQsAX2BU1OnkOhztJyVoellDzV4j6QI+CZgdUp7pOHRVkd1XzfAtvrfFZ9QRxqIAerhvRXoUtLa2pA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755609982;
+	cv=none; b=fDPpErCFPmn8UMYZU6sa2riUruQONbYw7hIBjPdq6LArJC2/hkSGzhHnu8bCekk2wXxPUzbssUCCOZPT7m4FwVJ4ua2Ggy1Hrb6/o2g7jzZuI6zZ0igrr15hZCaEgEkqmxpFzL5VW4vog8554ZNIpx4s5lCwz9cbBoKoj8YcZLwjzSjfhnc6fAlvB8kZA0QvDB+vaO1UtKpANdvL9p+beBSvEmqGLPeRytBJqA+mAI77I/FW05nleUtb8RPorZjr9s4RUCEbpfgOaMOA8E9S5OAerWlmqVOwYxou03yhnPjopITd9EOVLRoy2EZ7urLrO4sOMt4rAjzq7OI76FL13A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755609849; c=relaxed/relaxed;
-	bh=dC94HbjbZIou/94/bfCKcAs3uf+gkU3X2AP/y0yU9yg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e8VjLyKWFL4CzAzJGeQXyiBpmoQfNx96ecN7lPU49VFYZiGiCpdH3FYxPub5RurhHjo2TFJAgUsll8EKjS7gjFwI1JecJDWydTEkz9JePEPx0YIeGrju5Kk5d40dfkzxa3onMOvWZv6hWkVrzbhGCtWrxF+mK+zi7jYkRs1ZMPHEEWCv0hQ3vsGGV5Pn/YeRh+a5kfD4Efy8T+U+YSnTl283ZNGwliYy6e8mxh0FAzbno2DuiAltHtleStuX6+YCWMcXMDJxRIUeHYME+dAaju2Cry0ZATaKSsYOfQrtnnXH2/OyFLsHafXfX/XEXteL0OK2BDa6oofIAQff5emirQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S+j8zTCx; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=S+j8zTCx;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5qzs06XDz3d3M
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 23:24:08 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4C01261428;
-	Tue, 19 Aug 2025 13:24:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7FEC4CEF1;
-	Tue, 19 Aug 2025 13:24:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755609846;
-	bh=oMo/cdh38YCbOBw4iwATq7ozwW1TpUbE0yXhbYlUgU0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S+j8zTCxQdkcMEhMaej6GiAgIOaXfofvg7es9Jp2PGsrXvywOcYTBRmEuFNsYF/G8
-	 qIviixcV27EuzpLCP/Nry898wPulNLltPxo16ILqFJjYM1R5Du+rz8J7TWL0oQ73Lx
-	 Whwuwctm1JUeUeLNkuYPDOxjtAwdXZOaMTUS1hGTWXYn597TaUkbprtT5KuRs0qqzT
-	 +fBOqlgcskasEvnBNDu8U3MYiGCiDf+G1RHobrmRS2I7i2xvaFcNOsSsfmgjjZs+Xl
-	 iM7QRM7IS/3barZzPVPJn10e8de0FtZU4lWfYLD2JnIikAi9RjwVlfyjyHiHYwfnmm
-	 Uf6IF5fk5eAjg==
-Date: Tue, 19 Aug 2025 08:24:04 -0500
-From: Rob Herring <robh@kernel.org>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:FREESCALE SOC DRIVERS" <linuxppc-dev@lists.ozlabs.org>,
-	"moderated list:FREESCALE SOC DRIVERS" <linux-arm-kernel@lists.infradead.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [RESEND v2 1/1] dt-bindings: soc: add vf610 reboot syscon
- controller
-Message-ID: <20250819132404.GA84481-robh@kernel.org>
-References: <20250818183427.3601986-1-Frank.Li@nxp.com>
+	t=1755609982; c=relaxed/relaxed;
+	bh=klw7Ltvg5aqOzpSEMUDzBjVvTQFF0LKZDKp0NgO1QYk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=BBZqM/r0J6B8maOCvvTn3QCYO7SaRyz6PPeo8pozi3nY5Mksmn9b6Dh6xXSBWsmjDbaJ9+FPU+azG+1YxDls5CMZAc4o3rH6pr4L6rY+iwtctBYzC7iOJNpeWK7Hk+LY99plVy2aSoCZ2nef1wwDpFo213cbST2xHaq1kLj0AmZfYhqJVy9f5Y2GFLlxHBAZIDVygDqylU0I09s+rjBGvqOR3okzWbs8xmAU3ZwkWNuS3am+Yo6lzqjUs85vUV8SkomdxYpipQmwq8iYCOee/i4DchfeZjAlZ3SP+D3hkKimrU6SfLMr2MOOZCWGsIPMwiVCL8MXA23GESQ5ktENqw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=robin.murphy@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=robin.murphy@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c5r2P6xxPz3d3M
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 23:26:21 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8CEF116A3;
+	Tue, 19 Aug 2025 06:25:42 -0700 (PDT)
+Received: from [10.1.196.50] (e121345-lin.cambridge.arm.com [10.1.196.50])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 884583F738;
+	Tue, 19 Aug 2025 06:25:46 -0700 (PDT)
+Message-ID: <271daf71-3c57-49a5-a65f-c58ac670864f@arm.com>
+Date: Tue, 19 Aug 2025 14:25:45 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,104 +43,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250818183427.3601986-1-Frank.Li@nxp.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 19/19] perf: Garbage-collect event_init checks
+From: Robin Murphy <robin.murphy@arm.com>
+To: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+ mark.rutland@arm.com, acme@kernel.org, namhyung@kernel.org,
+ alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com,
+ adrian.hunter@intel.com, kan.liang@linux.intel.com
+Cc: linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
+ linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org,
+ linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, coresight@lists.linaro.org,
+ iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
+ linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+References: <cover.1755096883.git.robin.murphy@arm.com>
+ <ace3532a8a438a96338bf349a27636d8294c7111.1755096883.git.robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <ace3532a8a438a96338bf349a27636d8294c7111.1755096883.git.robin.murphy@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Aug 18, 2025 at 02:34:26PM -0400, Frank Li wrote:
-> Add vf610 reboot controller, which used to reboot whole system. Fix below
-> CHECK_DTB warnings:
-> 
-> arch/arm/boot/dts/nxp/vf/vf610-bk4.dtb: /soc/bus@40000000/src@4006e000:
->     failed to match any schema with compatible: ['fsl,vf610-src', 'syscon']
-> 
-> IC reference manual call it as system reset controller(SRC), but it is not
-> module as linux reset controller, which used to reset individual device.
-> SRC work as reboot controller, which reboot whole system. It provides a
-> syscon interface to syscon-reboot.
-> 
-> Signed-off-by: Frank Li <Frank.Li@nxp.com>
-> ---
-> Change in v2
-> - change description to avoid confuse about reset controller.
-> - it is legacy device, more than 10 year. So try keep existed dts as it.
-> ---
->  .../bindings/soc/fsl/fsl,vf610-src.yaml       | 47 +++++++++++++++++++
->  1 file changed, 47 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> new file mode 100644
-> index 0000000000000..cb8aa510a21f7
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,vf610-src.yaml
-> @@ -0,0 +1,47 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas//soc/fsl/fsl,vf610-src.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale vf610 System Reset Controller (SRC)
-> +
-> +maintainers:
-> +  - Frank Li <Frank.Li@nxp.com>
-> +
-> +description: |
+On 13/08/2025 6:01 pm, Robin Murphy wrote:
+[...]
+> diff --git a/arch/x86/events/intel/uncore.c b/arch/x86/events/intel/uncore.c
+> index 297ff5adb667..98ffab403bb4 100644
+> --- a/arch/x86/events/intel/uncore.c
+> +++ b/arch/x86/events/intel/uncore.c
+> @@ -731,24 +731,11 @@ static int uncore_pmu_event_init(struct perf_event *event)
+>   	struct hw_perf_event *hwc = &event->hw;
+>   	int ret;
+>   
+> -	if (event->attr.type != event->pmu->type)
+> -		return -ENOENT;
+> -
+>   	pmu = uncore_event_to_pmu(event);
+>   	/* no device found for this pmu */
+>   	if (!pmu->registered)
+>   		return -ENOENT;
+>   
+> -	/* Sampling not supported yet */
+> -	if (hwc->sample_period)
+> -		return -EINVAL;
+> -
+> -	/*
+> -	 * Place all uncore events for a particular physical package
+> -	 * onto a single cpu
+> -	 */
+> -	if (event->cpu < 0)
+> -		return -EINVAL;
 
-Don't need '|'
+Oopsie, I missed that this isn't just the usual boilerplate as the 
+comment kind of implies, but is also necessary to prevent the 
+uncore_pmu_to_box() lookup going wrong (since the core code won't reject 
+a task-bound event until later). I'll put this back with an updated 
+comment for v2 (and double-check everything else again...), thanks LKP!
 
-> +  IC reference manual call it as SRC, but it is not module as linux reset
+Robin.
 
-calls
 
-Linux details aren't really relevant.
-
-> +  controller, which used to reset individual device. SRC work as reboot
-
-works
-
-> +  controller, which reboot whole system. It provide a syscon interface to
-
-reboots
-
-> +  syscon-reboot.
-> +
-> +properties:
-> +  compatible:
-> +    items:
-> +      - enum:
-> +          - fsl,vf610-src
-> +      - const: syscon
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    syscon@4006e000 {
-> +        compatible = "fsl,vf610-src", "syscon";
-> +        reg = <0x4006e000 0x1000>;
-> +        interrupts = <96 IRQ_TYPE_LEVEL_HIGH>;
-> +    };
-> +
-> -- 
-> 2.34.1
-> 
+>   	box = uncore_pmu_to_box(pmu, event->cpu);
+>   	if (!box || box->cpu < 0)
+>   		return -EINVAL;
 
