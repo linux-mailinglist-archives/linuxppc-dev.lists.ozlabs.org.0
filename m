@@ -1,73 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-11116-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11155-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8A0B2B86A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 Aug 2025 06:48:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6870B2CF7A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Aug 2025 00:43:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c5cXf5GMsz3cls;
-	Tue, 19 Aug 2025 14:48:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c64P74QbGz2xS9;
+	Wed, 20 Aug 2025 08:43:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.16
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755578898;
-	cv=none; b=AGoAYzEF+5I2n6cz3Exj3c0ebAWb9wXS9xHMSuV0cYpxGr2VUzVC7C44ztyeNUNuBCT41pCwkRgOSB5d7gPd4cux8dCb+FVbj4uNVIxagaPzAP96Q85nXMCk/ZXnAVrtdYgU6cigopDSJntEM41hnblfFVB+CEeB+GYzoP/XkMnlnca+kelSkeb1XyTT2nVKB72i9LlZ9kyMgdfA0eZ1I0SHSWmLoVlX9SC/EtBzNq5mkfW9W/g1Uut8iH6sjEU/CkkzjvQ9C3xcuWP6jXHERvYJVpkgFMBZlZumXoCyxqrg5VTCVnu1w9ACf9Ce+z8BdthKfxWV6bLuC1tows3LzA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.51
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755596161;
+	cv=none; b=TmXEbrp3tULtakGD1bZ+qsmBhqbZrQ1HhVvEINEhCW+S0OySoGfOYK1n4w0poOw38719oG9OahTRfN4Qm42nHM116hlaT4vWB9LoSb0+VUqLShkjl4c9ljReZPlb2mDb2tjrrq/LoStFMou+Yk+bxxcD/IILNBBtjByTJXHF/KiE7+gQ2JYnj0CCE29y0aQpUQNKii58xcaVQf0qUUkNTQ32i8iK9bdu6Gy1SkZbnUX7fW6mYiZMUlSnjq94++vvSlMtns8YDNrEfUeb9nqfW3TV2xJhvdBoL9riPCe+2qiOJf7OibBf92Vd2wPKGg3P+QPhvBW4P+xTAH3ZxYS+Xw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755578898; c=relaxed/relaxed;
-	bh=Je9UfaCkRNAUx4VMCU707Q6dh+4X8+wm1IHU9IL9+BA=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=SnrHN5SWzmKmFuEyhzmzvSZ6D24UlMw+uL2DVARcrB7Bm2HsLoddXAaXYbQYdr7GopOTAOALl5W4qtnfQruz3PO6ySIobpziBuLi8yNTdvnpn3nlBaHa/Azn49MJlW+d+OA39ssKiIMYfso5JNlR9in1ZA+LpW/rhTc6ulRNN5sObmMrhoYpHZ8SU0zbJrIBpilrVwHwJvwt9XT85wTFFdhcNGHg8HSSBnvhgfaogUzb+iNiE1YTPNkarzD29m3IR6tor7bArnVSM/YxNeYieaW6C6NyumgQKckx4vlzB0tIef/wionW/Ma9K27HOvNZsNisy6CPbZwUb1w3MF98gA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FNCiUMs4; dkim-atps=neutral; spf=pass (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FNCiUMs4;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1755596161; c=relaxed/relaxed;
+	bh=1rWi7Tu9FGMklDsIpIM4C6ciawGEuop1drC1TXBxEuY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IDmLN6Onel8pz2Yb19dWrH5l+dibZzG4SLDrKtE0HUA0BJG8bePp0/wHZqm4TrvU+Wrgf3wiEsqLoCjMEjjJk5rBnRahIJS+kVmmeB6yHhbjoABASthf2KbmK58xG8e8CHrL7ns6jhZ6kdSKVrLqLj9FS8OK1Gnki3vXSMHuNr8tgaYXzX6UqN+yRP1oq1GcJT5522N3nLL9FklHOmKbleoG0B7qNpGzaMvG0Cu5MAYEzdvM2nutqolWKPSaLS27Up/DmESE1lPZneogR282ynERaKFSNQQL0Xe9YQgTV0F8+/XnVDxC33ln5cDUL0nceBRb0sCr/0uLYM9NfJ6MAA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass (client-ip=45.249.212.51; helo=dggsgout11.his.huawei.com; envelope-from=leo.lilong@huaweicloud.com; receiver=lists.ozlabs.org) smtp.mailfrom=huaweicloud.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huaweicloud.com (client-ip=45.249.212.51; helo=dggsgout11.his.huawei.com; envelope-from=leo.lilong@huaweicloud.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 975 seconds by postgrey-1.37 at boromir; Tue, 19 Aug 2025 19:35:59 AEST
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5cXb6GLkz3clR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 14:48:13 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755578896; x=1787114896;
-  h=date:from:to:cc:subject:message-id;
-  bh=K+JmFZWzQRrfE/6y6ZdWTLvK96jrXTYdTwYriBpQEIg=;
-  b=FNCiUMs4n/ekuSuCcC7XZJmmHPYps347/Mlc7ckKSSKEBsaz4vWyL3TO
-   yvolTUqQAr/FQukYuAG2Z6yuv+15edAFj+dc8cd8YETnxljHqotkL7rCj
-   l/y992Wq1dM0uoY0hfBya2KGan+eR0bWWpK9TTUjAF3Mx4UkfjpzDig/L
-   WOtOHVjIyR5zBh0U8OFiV1s5AxOCaBq4IC5p3zvT1MFfFb7Adbfyzidga
-   l5YNsAbvwRDEOJS4o3kTIb6po3PUqOz6MdSXlFu1yxE3Jpo7wKi2K0/Gr
-   9FHK4ZyZ6oyYfRckEGqzpNeGmXg9EwxN0m8J0dH6dV3roF/DjFPTUM5f6
-   w==;
-X-CSE-ConnectionGUID: pCdMb8FlSiG9+4mCvujK+A==
-X-CSE-MsgGUID: NuLlP9bVShauSuXaVuvbMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11526"; a="45385517"
-X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
-   d="scan'208";a="45385517"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Aug 2025 21:48:10 -0700
-X-CSE-ConnectionGUID: 07Zo4DedQyeZdvA8AcSmbg==
-X-CSE-MsgGUID: NZfd9uJvQjOZKKv5AfJTig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,300,1747724400"; 
-   d="scan'208";a="167257397"
-Received: from lkp-server02.sh.intel.com (HELO 4ea60e6ab079) ([10.239.97.151])
-  by fmviesa007.fm.intel.com with ESMTP; 18 Aug 2025 21:48:09 -0700
-Received: from kbuild by 4ea60e6ab079 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uoEFv-000GW7-06;
-	Tue, 19 Aug 2025 04:47:56 +0000
-Date: Tue, 19 Aug 2025 12:46:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- ff75f6055d715177e4b8dd3d10091d3a5450ba73
-Message-ID: <202508191217.njFv7DEz-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-5.4 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c5kwb6XVqz3cp1
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 19:35:57 +1000 (AEST)
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4c5kYl3jBZzYQvHq
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 17:19:39 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 1B9D51A1955
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 Aug 2025 17:19:38 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.104.67])
+	by APP4 (Coremail) with SMTP id gCh0CgDnrxClQaRoj5_LEA--.41057S4;
+	Tue, 19 Aug 2025 17:19:34 +0800 (CST)
+From: leo.lilong@huaweicloud.com
+To: linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: leo.lilong@huawei.com,
+	yi.zhang@huawei.com,
+	yangerkun@huawei.com,
+	lonuxli.64@gmail.com
+Subject: [PATCH] macintosh/mac_hid: fix race condition in mac_hid_toggle_emumouse
+Date: Tue, 19 Aug 2025 17:10:35 +0800
+Message-Id: <20250819091035.2263329-1-leo.lilong@huaweicloud.com>
+X-Mailer: git-send-email 2.39.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,257 +57,118 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgDnrxClQaRoj5_LEA--.41057S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxGrW5WF1Duw15CFWDZF45GFg_yoW5tw4xpa
+	43Wry7KrWkGr1DXF4UAF43tr1UAr4UAay7XrnrWr18XF15Cr12qF48t34rtF98Gr97Jryf
+	t3Z8Jw4qyF4DAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUklb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4kE6xkIj40Ew7xC0wCY1x0262kKe7AKxVWU
+	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1oGQ3UUUU
+	U==
+X-CM-SenderInfo: hohrhzxlor0w46kxt4xhlfz01xgou0bp/
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: ff75f6055d715177e4b8dd3d10091d3a5450ba73  Automatic merge of 'master' into merge (2025-08-18 15:22)
+From: Long Li <leo.lilong@huawei.com>
 
-elapsed time: 984m
+The following warning appears when running syzkaller, and this issue also
+exists in the mainline code.
 
-configs tested: 236
-configs skipped: 5
+ ------------[ cut here ]------------
+ list_add double add: new=ffffffffa57eee28, prev=ffffffffa57eee28, next=ffffffffa5e63100.
+ WARNING: CPU: 0 PID: 1491 at lib/list_debug.c:35 __list_add_valid_or_report+0xf7/0x130
+ Modules linked in:
+ CPU: 0 PID: 1491 Comm: syz.1.28 Not tainted 6.6.0+ #3
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:__list_add_valid_or_report+0xf7/0x130
+ RSP: 0018:ff1100010dfb7b78 EFLAGS: 00010282
+ RAX: 0000000000000000 RBX: ffffffffa57eee18 RCX: ffffffff97fc9817
+ RDX: 0000000000040000 RSI: ffa0000002383000 RDI: 0000000000000001
+ RBP: ffffffffa57eee28 R08: 0000000000000001 R09: ffe21c0021bf6f2c
+ R10: 0000000000000001 R11: 6464615f7473696c R12: ffffffffa5e63100
+ R13: ffffffffa57eee28 R14: ffffffffa57eee28 R15: ff1100010dfb7d48
+ FS:  00007fb14398b640(0000) GS:ff11000119600000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 000000010d096005 CR4: 0000000000773ef0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 80000000
+ Call Trace:
+  <TASK>
+  input_register_handler+0xb3/0x210
+  mac_hid_start_emulation+0x1c5/0x290
+  mac_hid_toggle_emumouse+0x20a/0x240
+  proc_sys_call_handler+0x4c2/0x6e0
+  new_sync_write+0x1b1/0x2d0
+  vfs_write+0x709/0x950
+  ksys_write+0x12a/0x250
+  do_syscall_64+0x5a/0x110
+  entry_SYSCALL_64_after_hwframe+0x78/0xe2
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The WARNING occurs when two processes concurrently write to the mac-hid
+emulation sysctl, causing a race condition in mac_hid_toggle_emumouse().
+Both processes read old_val=0, then both try to register the input handler,
+leading to a double list_add of the same handler.
 
-tested configs:
-alpha                             allnoconfig    clang-22
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    clang-19
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    clang-19
-arc                              allmodconfig    clang-19
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    clang-22
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    clang-19
-arc                              allyesconfig    gcc-15.1.0
-arc                                 defconfig    clang-19
-arc                   randconfig-001-20250818    gcc-13.4.0
-arc                   randconfig-001-20250819    gcc-8.5.0
-arc                   randconfig-002-20250818    gcc-12.5.0
-arc                   randconfig-002-20250819    gcc-8.5.0
-arm                              allmodconfig    clang-19
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-22
-arm                              allyesconfig    clang-19
-arm                                 defconfig    clang-19
-arm                   milbeaut_m10v_defconfig    clang-19
-arm                        mvebu_v7_defconfig    clang-19
-arm                   randconfig-001-20250818    gcc-12.5.0
-arm                   randconfig-001-20250819    gcc-8.5.0
-arm                   randconfig-002-20250818    clang-22
-arm                   randconfig-002-20250819    gcc-8.5.0
-arm                   randconfig-003-20250818    clang-18
-arm                   randconfig-003-20250819    gcc-8.5.0
-arm                   randconfig-004-20250818    gcc-10.5.0
-arm                   randconfig-004-20250819    gcc-8.5.0
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    clang-22
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    clang-19
-arm64                 randconfig-001-20250818    gcc-11.5.0
-arm64                 randconfig-001-20250819    gcc-8.5.0
-arm64                 randconfig-002-20250818    gcc-12.5.0
-arm64                 randconfig-002-20250819    gcc-8.5.0
-arm64                 randconfig-003-20250818    gcc-8.5.0
-arm64                 randconfig-003-20250819    gcc-8.5.0
-arm64                 randconfig-004-20250818    clang-22
-arm64                 randconfig-004-20250819    gcc-8.5.0
-csky                              allnoconfig    clang-22
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    clang-19
-csky                  randconfig-001-20250819    clang-22
-csky                  randconfig-001-20250819    gcc-15.1.0
-csky                  randconfig-002-20250819    clang-22
-csky                  randconfig-002-20250819    gcc-15.1.0
-hexagon                          allmodconfig    clang-17
-hexagon                          allmodconfig    clang-19
-hexagon                           allnoconfig    clang-22
-hexagon                          allyesconfig    clang-19
-hexagon                          allyesconfig    clang-22
-hexagon                             defconfig    clang-19
-hexagon               randconfig-001-20250819    clang-22
-hexagon               randconfig-002-20250819    clang-18
-hexagon               randconfig-002-20250819    clang-22
-i386                             allmodconfig    clang-20
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    clang-20
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    clang-20
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250818    clang-20
-i386        buildonly-randconfig-001-20250819    gcc-12
-i386        buildonly-randconfig-002-20250818    clang-20
-i386        buildonly-randconfig-002-20250819    gcc-12
-i386        buildonly-randconfig-003-20250818    gcc-12
-i386        buildonly-randconfig-003-20250819    gcc-12
-i386        buildonly-randconfig-004-20250818    clang-20
-i386        buildonly-randconfig-004-20250819    gcc-12
-i386        buildonly-randconfig-005-20250818    gcc-12
-i386        buildonly-randconfig-005-20250819    gcc-12
-i386        buildonly-randconfig-006-20250818    gcc-12
-i386        buildonly-randconfig-006-20250819    gcc-12
-i386                                defconfig    clang-20
-i386                  randconfig-001-20250819    clang-20
-i386                  randconfig-002-20250819    clang-20
-i386                  randconfig-003-20250819    clang-20
-i386                  randconfig-004-20250819    clang-20
-i386                  randconfig-005-20250819    clang-20
-i386                  randconfig-006-20250819    clang-20
-i386                  randconfig-007-20250819    clang-20
-i386                  randconfig-011-20250819    gcc-12
-i386                  randconfig-012-20250819    gcc-12
-i386                  randconfig-013-20250819    gcc-12
-i386                  randconfig-014-20250819    gcc-12
-i386                  randconfig-015-20250819    gcc-12
-i386                  randconfig-016-20250819    gcc-12
-i386                  randconfig-017-20250819    gcc-12
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20250819    clang-22
-loongarch             randconfig-001-20250819    gcc-15.1.0
-loongarch             randconfig-002-20250819    clang-18
-loongarch             randconfig-002-20250819    clang-22
-m68k                             allmodconfig    clang-19
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    clang-19
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    clang-19
-microblaze                       allmodconfig    clang-19
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    clang-19
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                          ath79_defconfig    clang-19
-mips                        bcm47xx_defconfig    clang-19
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                               defconfig    gcc-15.1.0
-nios2                 randconfig-001-20250819    clang-22
-nios2                 randconfig-001-20250819    gcc-8.5.0
-nios2                 randconfig-002-20250819    clang-22
-nios2                 randconfig-002-20250819    gcc-8.5.0
-openrisc                          allnoconfig    clang-22
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    clang-22
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20250819    clang-22
-parisc                randconfig-001-20250819    gcc-10.5.0
-parisc                randconfig-002-20250819    clang-22
-parisc                randconfig-002-20250819    gcc-8.5.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    clang-22
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-22
-powerpc                          allyesconfig    gcc-15.1.0
-powerpc               randconfig-001-20250819    clang-22
-powerpc               randconfig-002-20250819    clang-22
-powerpc               randconfig-002-20250819    gcc-10.5.0
-powerpc               randconfig-003-20250819    clang-22
-powerpc                    sam440ep_defconfig    clang-19
-powerpc                     stx_gp3_defconfig    clang-19
-powerpc64             randconfig-001-20250819    clang-22
-powerpc64             randconfig-002-20250819    clang-22
-powerpc64             randconfig-003-20250819    clang-22
-powerpc64             randconfig-003-20250819    gcc-10.5.0
-riscv                            allmodconfig    clang-22
-riscv                            allmodconfig    gcc-15.1.0
-riscv                             allnoconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                            allyesconfig    gcc-15.1.0
-riscv                               defconfig    gcc-12
-riscv                 randconfig-001-20250818    gcc-10.5.0
-riscv                 randconfig-001-20250819    gcc-8.5.0
-riscv                 randconfig-002-20250818    clang-22
-riscv                 randconfig-002-20250819    gcc-8.5.0
-s390                             allmodconfig    clang-18
-s390                             allmodconfig    gcc-15.1.0
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20250818    clang-22
-s390                  randconfig-001-20250819    gcc-8.5.0
-s390                  randconfig-002-20250818    gcc-8.5.0
-s390                  randconfig-002-20250819    gcc-8.5.0
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-12
-sh                    randconfig-001-20250818    gcc-12.5.0
-sh                    randconfig-001-20250819    gcc-8.5.0
-sh                    randconfig-002-20250818    gcc-13.4.0
-sh                    randconfig-002-20250819    gcc-8.5.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20250818    gcc-12.5.0
-sparc                 randconfig-001-20250819    gcc-8.5.0
-sparc                 randconfig-002-20250818    gcc-15.1.0
-sparc                 randconfig-002-20250819    gcc-8.5.0
-sparc64                             defconfig    gcc-12
-sparc64               randconfig-001-20250818    clang-22
-sparc64               randconfig-001-20250819    gcc-8.5.0
-sparc64               randconfig-002-20250818    gcc-12.5.0
-sparc64               randconfig-002-20250819    gcc-8.5.0
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    clang-19
-um                               allyesconfig    gcc-12
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250818    gcc-11
-um                    randconfig-001-20250819    gcc-8.5.0
-um                    randconfig-002-20250818    gcc-12
-um                    randconfig-002-20250819    gcc-8.5.0
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20250818    gcc-12
-x86_64      buildonly-randconfig-001-20250819    clang-20
-x86_64      buildonly-randconfig-002-20250818    gcc-12
-x86_64      buildonly-randconfig-002-20250819    clang-20
-x86_64      buildonly-randconfig-003-20250818    gcc-12
-x86_64      buildonly-randconfig-003-20250819    clang-20
-x86_64      buildonly-randconfig-004-20250818    gcc-12
-x86_64      buildonly-randconfig-004-20250819    clang-20
-x86_64      buildonly-randconfig-005-20250818    gcc-12
-x86_64      buildonly-randconfig-005-20250819    clang-20
-x86_64      buildonly-randconfig-006-20250818    clang-20
-x86_64      buildonly-randconfig-006-20250819    clang-20
-x86_64                              defconfig    clang-20
-x86_64                              defconfig    gcc-11
-x86_64                                  kexec    clang-20
-x86_64                randconfig-001-20250819    gcc-12
-x86_64                randconfig-002-20250819    gcc-12
-x86_64                randconfig-003-20250819    gcc-12
-x86_64                randconfig-004-20250819    gcc-12
-x86_64                randconfig-005-20250819    gcc-12
-x86_64                randconfig-006-20250819    gcc-12
-x86_64                randconfig-007-20250819    gcc-12
-x86_64                randconfig-008-20250819    gcc-12
-x86_64                               rhel-9.4    clang-20
-x86_64                          rhel-9.4-func    clang-20
-x86_64                    rhel-9.4-kselftests    clang-20
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                           alldefconfig    clang-19
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20250818    gcc-14.3.0
-xtensa                randconfig-001-20250819    gcc-8.5.0
-xtensa                randconfig-002-20250818    gcc-14.3.0
-xtensa                randconfig-002-20250819    gcc-8.5.0
+  CPU0                             CPU1
+  -------------------------        -------------------------
+  vfs_write() //write 1            vfs_write()  //write 1
+    proc_sys_write()                 proc_sys_write()
+      mac_hid_toggle_emumouse()          mac_hid_toggle_emumouse()
+        old_val = *valp // old_val=0
+                                           old_val = *valp // old_val=0
+                                           mutex_lock_killable()
+                                           proc_dointvec() // *valp=1
+                                           mac_hid_start_emulation()
+                                             input_register_handler()
+                                           mutex_unlock()
+        mutex_lock_killable()
+        proc_dointvec()
+        mac_hid_start_emulation()
+          input_register_handler() //Trigger Warning
+        mutex_unlock()
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Fix this by moving the old_val read inside the mutex lock region.
+
+Fixes: 99b089c3c38a ("Input: Mac button emulation - implement as an input filter")
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+---
+ drivers/macintosh/mac_hid.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/macintosh/mac_hid.c b/drivers/macintosh/mac_hid.c
+index 369d72f59b3c..06fd910b3fd1 100644
+--- a/drivers/macintosh/mac_hid.c
++++ b/drivers/macintosh/mac_hid.c
+@@ -187,13 +187,14 @@ static int mac_hid_toggle_emumouse(const struct ctl_table *table, int write,
+ 				   void *buffer, size_t *lenp, loff_t *ppos)
+ {
+ 	int *valp = table->data;
+-	int old_val = *valp;
++	int old_val;
+ 	int rc;
+ 
+ 	rc = mutex_lock_killable(&mac_hid_emumouse_mutex);
+ 	if (rc)
+ 		return rc;
+ 
++	old_val = *valp;
+ 	rc = proc_dointvec(table, write, buffer, lenp, ppos);
+ 
+ 	if (rc == 0 && write && *valp != old_val) {
+-- 
+2.39.2
+
 
