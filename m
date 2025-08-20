@@ -1,77 +1,128 @@
-Return-Path: <linuxppc-dev+bounces-11166-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11167-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E376B2DEC3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Aug 2025 16:11:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D95E4B2E2D3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 Aug 2025 19:03:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c6T0C10Rhz2yhD;
-	Thu, 21 Aug 2025 00:11:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c6Xnz4C2zz30gC;
+	Thu, 21 Aug 2025 03:03:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.18
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755699099;
-	cv=none; b=EQAfAqJ9vUEDJRpgY2wFlMl8TMPuqAnR+LuKu65iEoVRcSksPOlZO1Yg8yfGtk71bkiRC2zz6Dm/h4L5HaO//NQOqjIQdrka8t+LHFikA1Xk/SIxGilwrgfRAlHt+2c/3qY/orCm2W5Syy1OjlVssFnPegglta5J4lLCN2oYIkd/FcObXQIbKjnRCbG/28/lKFq/NGWnM4fHj/NnCeuRdlNM1ftFiCyVvD0kx0e3JsMh5jNwy1fTJJgsmtKdJDU6OVplOuIlcTygD2EsitGzocO24wGzLeLItBHPCk9DLOGp9hEQXNQdHZh1/aDoWVD3P8DZ0H41Kf8dksP+ngYlLA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755709383;
+	cv=none; b=PA0MS9X7PIuAojs3q6H7UP+TAsuhmZ++Rp1dNJUrX9v0yqryue1MD2XYZXm9HfJ5B8Fp5qNDwU+F/ksiHKccGwqd/HiG4Ze1DM5UBnl+4a+JppIgHrCO40chqZ9j9tBCt/juMvA3rfih08449nuAAezm9UWS5JDQD5boZykB1HsypK3BxGLwX718LL5cpj8wijWds/4i/VxeZT68vB374/+a4FoPySiJaTHpLz8iOXfuMsWfg9OAcvx55hZ1i+Q6ZD/S9P9O3WOaLTxwElJH52t8MXldhmiDWTMrva25lbA1QiVIxDycuT/bS4+wvPVGnoWgY5KQslyTr+IrdADfwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755699099; c=relaxed/relaxed;
-	bh=KcCCG63uWpRa+4mIeBMEtGvTor5sRVKqyuGK3CarDsw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HaRQgy+ozGXAkLNMp1hyGBFMWMd//cIH6xRIeW1hLC4wFRy//Fd+UmvDFXwQ1V2soFGh3fYW0KTaWFMKD9a9Q8ga5KHePUcLDy6STQToHuDdSZphBunBj9VVc9vF3DxEpJEzGeiVcKtaCztca40CwV/bpHTZDyistTlz7bNekFgdt0BwRcuWTzzBsywlTY6FUbhpPAVpwjFjBHUFEAuoesiOjYQMG4dBoINBBgKPjp3S0XWbMoqRq+LiqXqzDHDJJrIasFGc8F2rMI69hrEgc3uMxQlrRnuLsT+JMlwaEBo7XEvMRdaYe7RLCBmpq8mqoD14ZBFw11E2zzpU4ANSTQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KoZlvCK6; dkim-atps=neutral; spf=none (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1755709383; c=relaxed/relaxed;
+	bh=/8eki5jczloEz/l1ippefMDT9r2x+OZDEdApBDxkNq4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ItGxH0mUMHmNqWSRhQKl4y6V0rbQk7/FJMZI6zG3WOxNMLQ/Mb79hYdaSBax1tpIV2d4kt4nQlZ/88OqsxLU1TbT5kuLsnVdBAwjh7avRQ6YHytf+87sHH+C85w4rdouvcwEMN0cG2DfROlukN8RbTuxIK3jkCkizYJTNBPVY8cDbYhL4o8+S9tquFJcrxyrkkfqhveGWZ11FkDxVx7YqdFjcYzUyYzZdTKN5PV7f5/u0uONh822VsRod1TjQ/Tj8d4XEcbKLnlMdCe8kzykBXN5Ha8Lys06XzyCuf+bunFoDsz3bGqy6o4p/TC0xHwk4ljcfEremPYuC2jXS0MI/w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dr1d03/z; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=vkoul@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KoZlvCK6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Dr1d03/z;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.18; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Thu, 21 Aug 2025 00:11:36 AEST
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=vkoul@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c6T082tJXz2yZ6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Aug 2025 00:11:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755699097; x=1787235097;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=yBTCe/hjFm230cCQYrtw8FKht4lpTzaJPb4j5vc77is=;
-  b=KoZlvCK6D25VMQZgxjTAhvsuw0EnceKT6vpQFfrQjdAU/D+YYVrhd7os
-   FC1rOyg81tTrlx4Q3lTvROfccIExgPXEjkgZVU60Hi9Tn0imYyiRp+kN6
-   T/eo0sqXT+XDiYMqKyma8k3tSYTTtY0WN+oLTYuZ1Urp8lpDXTraqFcXX
-   b8PUm/HROwbgoVM6Q5DOMKv9PHkmF6baAN+ENDsf0yX3B4aHp0jaQIny9
-   WWzgyZeajrGR7yoXH6n1akZWHJXUTUKR2LaXwDS/B6fkx2FxRkYbUsszd
-   nfroDZdqqHD/yDv9b9Ry7gWzNvJtCWoIGaS0AEvf+aM6jOqG0x9ks+hzv
-   A==;
-X-CSE-ConnectionGUID: tirdKofaTWqtjIPr4wzboQ==
-X-CSE-MsgGUID: 6vulWTWXQXi/bwyCYvko5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11527"; a="58030881"
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="58030881"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 07:10:27 -0700
-X-CSE-ConnectionGUID: DeO6UepqREmAMrM+2c55UA==
-X-CSE-MsgGUID: J7H6kWnMTFqol10RG3qTlw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.17,302,1747724400"; 
-   d="scan'208";a="167753943"
-Received: from smile.fi.intel.com ([10.237.72.52])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2025 07:10:25 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1uojW9-00000006x9e-3KIH;
-	Wed, 20 Aug 2025 17:10:21 +0300
-Date: Wed, 20 Aug 2025 17:10:21 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: Re: [PATCH v2 1/1] powerpc/8xx: Drop legacy-of-mm-gpiochip.h header
-Message-ID: <aKXXTcqpi-6TjWrU@smile.fi.intel.com>
-References: <20241118123254.620519-1-andriy.shevchenko@linux.intel.com>
- <52be7ae1-34f7-49ef-80b0-0eb6577205ff@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c6Xny4T97z30Vl;
+	Thu, 21 Aug 2025 03:03:02 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id CC0495C633A;
+	Wed, 20 Aug 2025 17:02:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A73AC113CF;
+	Wed, 20 Aug 2025 17:02:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755709379;
+	bh=Zv4ujPO3KQCQ/S/zZ+87yMEeTHGtDtwjmsw35eFBLPg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Dr1d03/ztQZzehnuA3pVpw7eG2apfzSIzXWZn4V8PSF/oxOnzaMyj6VZxDgQ3XY0C
+	 nca+A2IJDoLbxKo30R/YmbItPPf92i6LVVRW7LTdmYn+yLP3bLCTrV977h9BaHEtKx
+	 NXa2PCl2PJ+9sKMlIBp1C0l2xmBSHRNp1Ot+Slf6644+zsAzHmD5BYUvfwKZ1SqBPg
+	 b3bNilTK6GPtQRkA2c0x0ltTwqwessPnwFUwQuinpUV1sWYrBj8/SGJJQ8Wlda48Mw
+	 vcZIdxxAkqbQkwlZ9DlQZ/Zs8lvh3SMTfcqlJlRdXT5KDCZbCRFgNoX/rafdY4my5h
+	 Ujim+Xbb9lOhA==
+From: Vinod Koul <vkoul@kernel.org>
+To: linux-kernel@vger.kernel.org, 
+ Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: Mark Brown <broonie@kernel.org>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ Andrea della Porta <andrea.porta@suse.com>, 
+ =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, Andy Shevchenko <andy@kernel.org>, 
+ Andy Yan <andy.yan@rock-chips.com>, Avi Fishman <avifishman70@gmail.com>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Benjamin Fair <benjaminfair@google.com>, 
+ Bjorn Andersson <andersson@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, 
+ David Airlie <airlied@gmail.com>, David Lechner <dlechner@baylibre.com>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Drew Fustini <fustini@kernel.org>, dri-devel@lists.freedesktop.org, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Fabrice Gasnier <fabrice.gasnier@foss.st.com>, Fu Wei <wefu@redhat.com>, 
+ Guo Ren <guoren@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
+ =?utf-8?q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, imx@lists.linux.dev, 
+ Iwona Winiarska <iwona.winiarska@intel.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Jassi Brar <jassisinghbrar@gmail.com>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Jerome Brunet <jbrunet@baylibre.com>, Jonas Karlman <jonas@kwiboo.se>, 
+ Jonathan Cameron <jic23@kernel.org>, Kevin Hilman <khilman@baylibre.com>, 
+ Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Lee Jones <lee@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, linux-actions@lists.infradead.org, 
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-input@vger.kernel.org, linux-media@vger.kernel.org, 
+ linux-mmc@vger.kernel.org, linux-phy@lists.infradead.org, 
+ linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-rockchip@lists.infradead.org, linux-rtc@vger.kernel.org, 
+ linux-samsung-soc@vger.kernel.org, linux-sound@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-sunxi@lists.linux.dev, Liu Ying <victor.liu@nxp.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Manivannan Sadhasivam <mani@kernel.org>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Maxime Ripard <mripard@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, Nancy Yuen <yuenn@google.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Nicolin Chen <nicoleotsuka@gmail.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, openbmc@lists.ozlabs.org, 
+ Patrick Venture <venture@google.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, Robert Foss <rfoss@kernel.org>, 
+ Samuel Holland <samuel.holland@sifive.com>, 
+ Samuel Holland <samuel@sholland.org>, Sandy Huang <hjc@rock-chips.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+ Shengjiu Wang <shengjiu.wang@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Stephen Boyd <sboyd@kernel.org>, Takashi Iwai <tiwai@suse.com>, 
+ Tali Perry <tali.perry1@gmail.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ Tomer Maimon <tmaimon77@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Vasily Khoruzhick <anarsoul@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
+ Xiubo Li <Xiubo.Lee@gmail.com>, Yangtao Li <tiny.windzz@gmail.com>, 
+ Zhang Rui <rui.zhang@intel.com>
+In-Reply-To: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
+References: <20250813161517.4746-1-wsa+renesas@sang-engineering.com>
+Subject: Re: (subset) [PATCH 00/21] treewide: remove unneeded 'fast_io'
+ parameter in regmap_config
+Message-Id: <175570934550.66459.15951444863822303407.b4-ty@kernel.org>
+Date: Wed, 20 Aug 2025 22:32:25 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,41 +136,34 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <52be7ae1-34f7-49ef-80b0-0eb6577205ff@csgroup.eu>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Spam-Status: No, score=-5.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
+X-Spam-Status: No, score=-8.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Aug 14, 2025 at 10:33:52AM +0200, Christophe Leroy wrote:
-> Le 18/11/2024 à 13:31, Andy Shevchenko a écrit :
-> > Remove legacy-of-mm-gpiochip.h header file. The above mentioned
-> > file provides an OF API that's deprecated. There is no agnostic
-> > alternatives to it and we have to open code the logic which was
-> > hidden behind of_mm_gpiochip_add_data(). Note, most of the GPIO
-> > drivers are using their own labeling schemas and resource retrieval
-> > that only a few may gain of the code deduplication, so whenever
-> > alternative is appear we can move drivers again to use that one.
-> > 
-> > As a side effect this change fixes a potential memory leak on
-> > an error path, if of_mm_gpiochip_add_data() fails.
+
+On Wed, 13 Aug 2025 18:14:46 +0200, Wolfram Sang wrote:
+> While working on a driver using regmap with MMIO, I wondered if I need
+> to set 'fast_io' in the config. Turned out I don't need to, so I added
+> documentation for it with commit ffc72771ff6e ("regmap: Annotate that
+> MMIO implies fast IO").
 > 
-> Is there a reason for having done this change in cpm1_gpiochip_add16() and
-> cpm1_gpiochip_add32() [arch/powerpc/platform/8xx/cpm1.c] and not in
-> cpm2_gpiochip_add32() [arch/powerpc/sysdev/cpm_common.c] while all three
-> functions are called from cpm_gpio_probe() [arch/powerpc/sysdev/cpm_gpio.c]
-> ?
+> This series fixes the existing users in the tree which needlessly set
+> the flag. They have been found using this coccinelle script:
+> 
+> [...]
 
-No specific reason, just lack of time to have got all of the cases.
+Applied, thanks!
 
+[12/21] phy: remove unneeded 'fast_io' parameter in regmap_config
+        commit: e1e1e77f7df7cbee959ba024e5475907fe561c98
+
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
+~Vinod
 
 
 
