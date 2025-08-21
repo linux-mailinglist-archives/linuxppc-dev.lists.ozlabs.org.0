@@ -1,121 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-11180-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11178-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BC9B308EC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 00:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B45FB3081C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 Aug 2025 23:16:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c7HYL6DLSz2xQ2;
-	Fri, 22 Aug 2025 08:09:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c7GML2ffzz3bVW;
+	Fri, 22 Aug 2025 07:15:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755795541;
-	cv=none; b=mftiJzFSLOV4IDaViLdCOfAYR3eHnQ3wAaV0FGdYvjjVLgUCqnrXCvekk96cwpdeu1iEJtfnSrxhEsGaODKfnGqV81/i1+WHGnvBAPBdV49Xvcf2E+G80XvIUwMFHTY0zapm+9JrIq723Psw/3F7BPLgk9y5kMVsW7PRwlpfRpN8tTvSZnetdHT3iHJkVmbnsnlkRuM+XrvhL2z3pX+Fsi3ZqGUnXS6NQSocmex9JAlBtKMBSzSIUcmg0TM1nsxVK+lIVeQRf3EiT2QfHt3C/lqzUGEzijc61O6ZFPK9hYbnelDnxC2dEhBPCJPOS+gN5EjSAvz+IiZKryP7C5WdFg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755810958;
+	cv=none; b=XpSecGmQeAvwJ3pCpA1UEZwyG2kFd5HAtWMsdijIXmdxlAXoB8/OY2S73uFBjHym35Aw37G2/QkWM4dPnTvCN33LOc/tMgoK09DmQpJBA8QXXewfckynh7wjxgm4MKd76S6DXv1nkfq5tjFNoF3uM6AXGQ+TGfUxcr6jTs+oiNAv6OCRIifvIYyHg6bo+gMRdQH4KLENvLsVS1tCp8uvrnKJUjUM29po1l2mT/Z8cHeQuX7n7sELssIlCmfRTgh+KIS1yT1OIr387ZcXkrhIIXmXq14mUSgEV9iPPebQiEQIPkSi9Aag1JhrvgUqmxSUcmbsUqB/mfHBPVX3foje6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755795541; c=relaxed/relaxed;
-	bh=3A4U0mFlnkILhub4vGFum/rHOWkZrlTYW603OLEkJVY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcUEj+x2+4f8zIpelUKzvPNaY634wkOB/3XSOgfvo9s3H9voigQMONduUOaLV7LN3Fn5axEe2R4Wz4DwVy3GMY0ktkg6qkTPdmKQO63xtTTbEXOI6oY3259f8QA9OdTEqVjToY+U6hYs/UKq3TDy+gGsmimi51bT/vwdOLA49SUHx0TtKezGkj00UocN6YH1uspSZ68segMNFtqX9wsl6Y4H8e0OaE0xoGDqu2FtWf7WzqyEwefyF4LjJFLkDXu9hdyZDtTx0jtf5WI5gzVZ3Ja/eAxGaP/8yf/Ye1i81snDm+Hy5+dfDS3pQQIxV+N3SSLLw7MzopoQmJ/62jioDQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=UBoZZyt5; dkim-atps=neutral; spf=permerror (client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org) smtp.mailfrom=purestorage.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+	t=1755810958; c=relaxed/relaxed;
+	bh=9AFaKTNpzu3Wl7g0cbSUK5dGjCeHRl49IBORR+ozh/Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gaHXvLNXwJY47mqaphxj/O+Sz8T8aypUotGF9/LaMoFS+BxKvYDekYpCunZnR1hSlfy8C73KI7hmfmooqSGG0tVPPJGW9w1qLAtqeTLwfhL4Zd8zyWx0X/p2OwLtzDylt3fnLFArDvj3sk8Y4hgkENE67WhYVwHqcZyqJz1kCunY+vkuhavV/79yOfTFCSQ56eZpus4/Thu8JPBbRW2JpQLmcjg/5iu4IwwlybuRSa0Yd6Gs5Mvfjj4QyRA53wsui5Et2LVmIP7IT3PP/ABPdehn3RUuaQED29+FqUyH0GhTNb7mG2C1KtXHZEPMBsxILGIinfrNhhQSuW+TnwgisA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uQZ01Sr4; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=UBoZZyt5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uQZ01Sr4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c78fp2gRsz2yhD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 02:58:57 +1000 (AEST)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-61c14b1689eso309696a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 Aug 2025 09:58:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1755795534; x=1756400334; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3A4U0mFlnkILhub4vGFum/rHOWkZrlTYW603OLEkJVY=;
-        b=UBoZZyt5hCmb9nnhvD50nssH5t+EVveUVfJmnZsTTNkmixPwgrMKrCVza97TvUDgkX
-         OYB0SsvZ6MbhcEI4s4+IBSur2Ds/8mSu9BXU8F+krqhHxyj9smEfqyDl104dIvW6SdkP
-         if1OPsHyYbAlL4aZfkb5LqePQ+YnwGnwB9DpgrUaKJsx/yusQ2lHyn2vTs2Xit9TMON1
-         e9NYDrVFXMdq+nj7fFzDSz578bC6gf9+FXVdii472oZwMEfwGH/SQM+2zTDki4R0qB/z
-         sXB+YZOpmfM8S42+PO1q0TbRRtjqHnpKiPddMEQ1lE45NkGshP2kXJzQfG886sxfXyUv
-         WP8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755795534; x=1756400334;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3A4U0mFlnkILhub4vGFum/rHOWkZrlTYW603OLEkJVY=;
-        b=TtssYHtAxV8t/gu74NrooYhPZeEIHSjLkpcUypuEKGcyxbe3tCPB9XsXs5HfKm1VzI
-         +Tb4b6I2nbzY8rNg+50rNANUQb49jaZLfTG4/rT6poC/4K3rym7JEoESizbZfFjwCVhy
-         pEVBcj5B+5mPPjYmKl4Xo1kNC0ffoFqM5YAL7gT6I6pvtMTAuwSj3cHCKfwvCT3eXvsr
-         go/Zzni+C1UAc10BJ3b0mAwOuCAU7jYYS75Xz0Z/U9x7KfoywS+3CymsI4MloaaakIxp
-         13fURGUvY67kMCWqwufvH4w6yzYQehF7/Gtl/zkE65gK6m14QLRXc/0YrgNuIr6onX0t
-         bVAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWtDlfXwZFlcOAOTDudmF2mVHirnFsGBa/ugkg98fB7jt/o1qn6qHWIN9Ml8NKoCUyKfjkskFo3MOLFQTg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yxojo8Is4ubB2310L7bnkUHZf92VJX9svAYWsR5pJvc8DZMk8eU
-	ilI4qsGM4Kg0tPW6jxga9eWe3RTFqwTF50pPo5NvZ2xYQLtilNKD+k2QxowjOTxv97E=
-X-Gm-Gg: ASbGncu0G5yMO0NfjK2zJTuCOiIARNTJbC7uXCDg2a/BjqGN8rwphzmWaLEh7hzx5Sj
-	UtxLi6KM7wthp0elsTMUXbIBbJ8G1WiyzXEx/W8/doFcp65VNh3MuCX0ljywykVzvu42UmOZmvP
-	nVkuTxlzjaAIjQs5G3pyaxGx5vRvvYxK7EvCfB/efh7NveIg3JKqynS7QPkLhCwi3qhRC4BtClC
-	UC7m74Jm6DUHcwuR0S9HFxwS7O9rnJ0cCANiUtMioPtMfHy1JgD4cmA0jDn/EFGjiGojcs2S0q/
-	2JhfdaoO3mkamyaf/bIvSOoKwEtpJuLXLlnob/nBHJayKYTLOjhKVGuOIUR3yppD4/TS7t47Sj8
-	lup8VBE/sWcfMYlAern/+N0cdaNo/L5duqGIr0zeJi1i76tpv
-X-Google-Smtp-Source: AGHT+IHbD3hrlfzfuV9dgz0//kT04PlITNsV9cNrzMXodwD/dQM9X/pgqOr/RoZqgWohk3JzCKOHjg==
-X-Received: by 2002:a05:6402:5057:b0:618:6fef:83e9 with SMTP id 4fb4d7f45d1cf-61bf8743d4cmr3099366a12.34.1755795533295;
-        Thu, 21 Aug 2025 09:58:53 -0700 (PDT)
-Received: from dev-mattc2.dev.purestorage.com ([208.88.159.128])
-        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-61a758ba909sm5450122a12.54.2025.08.21.09.58.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Aug 2025 09:58:51 -0700 (PDT)
-From: Matthew W Carlis <mattc@purestorage.com>
-To: zhenzhong.duan@intel.com
-Cc: Smita.KoralahalliChannabasappa@amd.com,
-	adam.c.preble@intel.com,
-	alison.schofield@intel.com,
-	bhelgaas@google.com,
-	bp@alien8.de,
-	chao.p.peng@intel.com,
-	dan.j.williams@intel.com,
-	dave.jiang@intel.com,
-	dave@stgolabs.net,
-	erwin.tsaur@intel.com,
-	feiting.wanyan@intel.com,
-	helgaas@kernel.org,
-	ira.weiny@intel.com,
-	james.morse@arm.com,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-cxl@vger.kernel.org,
-	linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	lukas@wunner.de,
-	mahesh@linux.ibm.com,
-	oohall@gmail.com,
-	qingshun.wang@linux.intel.com,
-	rafael@kernel.org,
-	rrichter@amd.com,
-	sathyanarayanan.kuppuswamy@intel.com,
-	tony.luck@intel.com,
-	vishal.l.verma@intel.com,
-	yudong.wang@intel.com,
-	msaggi@purestorage.com,
-	sconnor@purestorage.com,
-	ashishk@purestorage.com,
-	rhan@purestorage.com,
-	jrangi@purestorage.com,
-	agovindjee@purestorage.com,
-	bamstadt@purestorage.com
-Subject: [PATCH v5 0/2] PCI/AER: Handle Advisory Non-Fatal error
-Date: Thu, 21 Aug 2025 10:58:29 -0600
-Message-ID: <20250821165829.3471-1-mattc@purestorage.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <SJ0PR11MB67441DAC71325558C8881EEF92A62@SJ0PR11MB6744.namprd11.prod.outlook.com>
-References: <SJ0PR11MB67441DAC71325558C8881EEF92A62@SJ0PR11MB6744.namprd11.prod.outlook.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7GMK1sNGz30T9
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 07:15:57 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C7E18601F8;
+	Thu, 21 Aug 2025 21:15:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9A8C4CEEB;
+	Thu, 21 Aug 2025 21:15:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1755810954;
+	bh=pOQAZPk+siIZkKBpkkHyydqf+iJWdipFSBVhf2HWXnk=;
+	h=From:Subject:Date:To:Cc:From;
+	b=uQZ01Sr4y5UBxZbhDZfvUDEeNvw7RqMPpecFt11yc7bsaW5ovYL0XUfzrWWsiNXzZ
+	 c8++tipPQjqwKYp0k0gDhrvljaAd7re4WVkFUF5WrFBqQqEIN8iR74Vee7BNt/CA+g
+	 /tG0RI1G9MmS/0WG3vAsp0ldl5sjGRh0EGxzNxVH1Tm0PYZoCyCQqG00dIozdKH/oE
+	 pE+AKTCsKwpp5uIo1NEGnmB8ycta84iEl1LU6UXiRm6kopTiphBIqE2wbsbInRJaJl
+	 x/kzDSN/k618a3jDJ0BA65cb43YnV0uqrkYoP768loOw8+WrPigrhNPUtuX3uXdZuq
+	 W/LW5Ik2tcyqg==
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH v2 00/12] Bump minimum supported version of LLVM for
+ building the kernel to 15.0.0
+Date: Thu, 21 Aug 2025 14:15:37 -0700
+Message-Id: <20250821-bump-min-llvm-ver-15-v2-0-635f3294e5f0@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -129,37 +60,119 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: YES
-X-Spam-Status: Yes, score=3.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,
-	SPF_HELO_NONE,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Report: 
-	*  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-	*      [208.88.159.128 listed in zen.spamhaus.org]
-	*  0.0 T_SPF_PERMERROR SPF: test of record failed (permerror)
-	*  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-	* -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-	*      envelope-from domain
-	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-	*      valid
-	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
-	*       domain
-	* -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at https://www.dnswl.org/, no
-	*      trust
-	*      [2a00:1450:4864:20:0:0:0:52d listed in]
-	[list.dnswl.org]
-X-Spam-Level: ***
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHqMp2gC/22NQQ6CMBBFr0Jm7ZhOzSi48h6GhcAAE6GQVhsN4
+ e5W3Lp8L/nvLxDEqwQ4Zwt4iRp0cgnsLoO6v7lOUJvEYI1lcyKD1XOccVSHwxBHjOKRGAu2B2p
+ JqiMzpOnspdXXlr2WiXsNj8m/t5dIX/sL5pT/D0ZCg3VeUWPaglnM5S7eybCffAfluq4fb81km
+ bkAAAA=
+X-Change-ID: 20250710-bump-min-llvm-ver-15-95231f1eb655
+To: linux-kernel@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>, Kees Cook <kees@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ llvm@lists.linux.dev, patches@lists.linux.dev, 
+ Nicolas Schier <nsc@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+ linux-kbuild@vger.kernel.org, linux-hardening@vger.kernel.org, 
+ Russell King <linux@armlinux.org.uk>, Ard Biesheuvel <ardb@kernel.org>, 
+ linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ linuxppc-dev@lists.ozlabs.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org, 
+ Marco Elver <elver@google.com>, 
+ "Peter Zijlstra (Intel)" <peterz@infraded.org>, kasan-dev@googlegroups.com
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3775; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=pOQAZPk+siIZkKBpkkHyydqf+iJWdipFSBVhf2HWXnk=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBnLexp5jt71uLBmLnPYsZJXWxZZ/jvpEC46Jadf9c7Uw
+ ETlF/9MO0pZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEbpkw/I9487fgnDGfn0/r
+ 3M6FSqzXJdY9UrRtFZK/fJjFtn+JsiAjw7+LX1KSfVQYtyp9370iKU3tw4SvX9nUW67uL1go/I+
+ LnxkA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello. My team had independently started to make a change similar to this
-before realizing that someone had already taken a stab at it. It is highly
-desirable in my mind to have an improved handling of Advisory Errors in
-the upstream kernel. Is there anything we can do to help move this effort
-along? Perhaps testing? We have a decent variety of system configurations &
-are able to inject various kinds of errors via special devices/commands etc.
+s390 and x86 have required LLVM 15 since
 
-Thanks,
--Matt
+  30d17fac6aae ("scripts/min-tool-version.sh: raise minimum clang version to 15.0.0 for s390")
+  7861640aac52 ("x86/build: Raise the minimum LLVM version to 15.0.0")
+
+respectively. This series bumps the rest of the kernel to 15.0.0 to
+match, which allows for a decent number of clean ups.
+
+On the distros front, we will only leave behind Debian Bookworm and
+Ubuntu Jammy. In both of those cases, builders / developers can either
+use the kernel.org toolchains or https://apt.llvm.org to get newer
+versions that will run on those distributions, if they cannot upgrade.
+
+  archlinux:latest              clang version 20.1.8
+  debian:oldoldstable-slim      Debian clang version 11.0.1-2
+  debian:oldstable-slim         Debian clang version 14.0.6
+  debian:stable-slim            Debian clang version 19.1.7 (3+b1)
+  debian:testing-slim           Debian clang version 19.1.7 (3+b1)
+  debian:unstable-slim          Debian clang version 19.1.7 (3+b2)
+  fedora:41                     clang version 19.1.7 (Fedora 19.1.7-4.fc41)
+  fedora:latest                 clang version 20.1.8 (Fedora 20.1.8-3.fc42)
+  fedora:rawhide                clang version 20.1.8 (Fedora 20.1.8-3.fc43)
+  opensuse/leap:latest          clang version 17.0.6
+  opensuse/tumbleweed:latest    clang version 20.1.8
+  ubuntu:focal                  clang version 10.0.0-4ubuntu1
+  ubuntu:jammy                  Ubuntu clang version 14.0.0-1ubuntu1.1
+  ubuntu:noble                  Ubuntu clang version 18.1.3 (1ubuntu1)
+  ubuntu:latest                 Ubuntu clang version 18.1.3 (1ubuntu1)
+  ubuntu:rolling                Ubuntu clang version 20.1.2 (0ubuntu1)
+  ubuntu:devel                  Ubuntu clang version 20.1.8 (0ubuntu1)
+
+I plan to carry this via the Kbuild tree with the appropriate acks.
+
+---
+Changes in v2:
+- Add two new patches for RISC-V to clean up more LLD_VERSION checks
+  (Alex)
+- Pick up provided tags (thanks all!)
+- Link to v1: https://lore.kernel.org/r/20250818-bump-min-llvm-ver-15-v1-0-c8b1d0f955e0@kernel.org
+
+---
+Nathan Chancellor (12):
+      kbuild: Bump minimum version of LLVM for building the kernel to 15.0.0
+      arch/Kconfig: Drop always true condition from RANDOMIZE_KSTACK_OFFSET
+      ARM: Clean up definition of ARM_HAS_GROUP_RELOCS
+      arm64: Remove tautological LLVM Kconfig conditions
+      mips: Unconditionally select ARCH_HAS_CURRENT_STACK_POINTER
+      powerpc: Drop unnecessary initializations in __copy_inst_from_kernel_nofault()
+      riscv: Remove version check for LTO_CLANG selects
+      riscv: Unconditionally use linker relaxation
+      riscv: Remove ld.lld version checks from many TOOLCHAIN_HAS configs
+      lib/Kconfig.debug: Drop CLANG_VERSION check from DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT
+      objtool: Drop noinstr hack for KCSAN_WEAK_MEMORY
+      KMSAN: Remove tautological checks
+
+ Documentation/process/changes.rst |  2 +-
+ arch/Kconfig                      |  1 -
+ arch/arm/Kconfig                  | 11 ++++-------
+ arch/arm64/Kconfig                |  5 +----
+ arch/mips/Kconfig                 |  2 +-
+ arch/powerpc/include/asm/inst.h   |  4 ----
+ arch/riscv/Kconfig                | 21 +++++++--------------
+ arch/riscv/Makefile               |  9 +--------
+ lib/Kconfig.debug                 |  2 +-
+ lib/Kconfig.kcsan                 |  6 ------
+ lib/Kconfig.kmsan                 | 11 +----------
+ scripts/min-tool-version.sh       |  6 ++----
+ tools/objtool/check.c             | 10 ----------
+ 13 files changed, 19 insertions(+), 71 deletions(-)
+---
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+change-id: 20250710-bump-min-llvm-ver-15-95231f1eb655
+
+Best regards,
+--  
+Nathan Chancellor <nathan@kernel.org>
+
 
