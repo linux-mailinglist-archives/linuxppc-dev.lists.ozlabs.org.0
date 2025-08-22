@@ -1,59 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-11199-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11201-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912DFB31CFA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 16:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B7FB31CFF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 16:58:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c7jwl4L1tz3cjH;
-	Sat, 23 Aug 2025 00:57:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c7jww4kqJz3ckc;
+	Sat, 23 Aug 2025 00:58:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.14
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755874679;
-	cv=none; b=b5VMkEqmlopwpYM7BA5og4fsiMQvFXFJTT/FmAe1MAXdzS5NzzRU6c9CTY+UEkhBGWl7UAfUYpsfghlozoSWwBP3Bx6awhf11KsSl5zpn4f3L/gUYfah93smqOdKZ2Bj8iuGWfSSnHwiISTQ6TQvpOCtC4UTvaFG+kvP5W3HuqUCJHWOvV150wpvP0/W8XAmf6iKrDwuR05d3QvLEQrQYVntiQUuTita3o2Va5lxcLQLwOpoBNBPFDitH0qGKoOpKUhjEgwbCK/SMh8mLrfZ0jUqXu7bxbNSUKRQHxMribbBGIyFa0KrAQKanasYpYgx0/Of1hWVj/1mBTKzv1sZ2w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755874688;
+	cv=none; b=bNnwgtzW9ONc2XR+UdAhcvLjPIFnkO1qZSw6PlnMdBzqPXI6nrFqIIXLOHM9WyD0LMcC9pagz4AmlFoCZ3xbIPFxHqQlYVBnFmq/B9Dbdr3r3uG17M8CQRiAKlXREVu26xOtBrHCeeNUGtLscC8LKngrhLEnuqGj0qWaCzJC9Yc3QpsG9iHydlo7UowAuU8KsGYeu7e9eNr/ghK+pNxCbvwscjuyNYG1VFtHWjfI9jwsaSDUTJXrQYACOK8ccLOvQcGWhgBLysDqC+U3FRSy6u4L0fMMT65fyIQMXmJL8qO0L7FinoBqua3XvFOwFgbVHBqORMsrWzHMmyyVT137KQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755874679; c=relaxed/relaxed;
-	bh=KGlpLmlUMHY/HGijNQUdgv7EI6CKvEfYKwpx4tdtetI=;
+	t=1755874688; c=relaxed/relaxed;
+	bh=o+TMIsxnvKswhTzetv0AiPm5m4QAvO0toPZSTHf8Fxw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W3QIrLRSZZyQKtQu1gBhQ5nANYILvWKd6UfxDgKzOuKRI6iJxLJirFLWLf8VMcHpzJjtg6ktOkImIyhuy0I5VlqxuUWT29Cjtx1ypsTXZref635HAkO+Hs+C9uoOFML2WkdF7uvYVVfbM6PUy4CLToIJQJ6mBRCwiLiUrsG50ZXAwNOyP4pN42bEd8wC8Bz5ezfD4dF4BoWC9r6HcvlZPlyDTGb/YS/Kv2FX+mkyD19yIUsDCYjvKlCmZnGpua6gNI5OJeFnJ0N8l6azatcChJ24L3cw1ZMiIGTCucD+LdtSO2dTxqt+DNMiLTyJaMdEunjZyqQOBOKk9Tm8+4kbVw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hXfdau9j; dkim-atps=neutral; spf=none (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 MIME-Version:Content-Type; b=elprkF07Z52huz8uga2fBuBcJB4MafP1YHuvKpyVgbqtZzoySa7FXFXiChr02tQltVSDnni+jl15YOk1RDRxodJ5vEYouywaz3qQpcsnHExhgCEX8tJAcQFXxxV570SOumZglXxPwKjL2mFmpMClrxb6O3VkRU642AdayNZTzjSenJ0E8+wIUBDMDE34nnAfhN47rEngI3qy/iPUZ9sZDe5VBOuznUQ3jUd/oj6XjB02NWet5MhsArRVTAGwTTyejtWZXalg4/EbLDZOVNaWCPY+PqCwrtT2z8Up3R9I7ZHTUaXLtjO/2GybLmsNufZicwIVwUC4hUQav2pRAK0WuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gJfYrO5q; dkim-atps=neutral; spf=none (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hXfdau9j;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gJfYrO5q;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.14; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7jwk4ns1z3ck9
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Aug 2025 00:57:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7jwv5q06z3ckP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Aug 2025 00:58:07 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1755874679; x=1787410679;
+  t=1755874688; x=1787410688;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qAXdsDQW9N/Uavlh8yIRORIBMsvqG965+7HiERcw2Bc=;
-  b=hXfdau9jWCFlT2TrO2m2OjtMJt56HJZ7Nk05UevwlANLviXc53cBF6vw
-   zfcvtE0HtQDj7SUrjCRYm1IzrLmTZD4W7NU1G1jCIECob8vjkXXGQ4UbW
-   wg9orSZU0B0Mh20p+xXLHGSv0wFagzzkEFAh84zm3sZ4J+Vl+YqZm3lvp
-   Nz281R92KLDHnKx93qnpT69lG6vW7v7FduAHiQWYZ1OOqH2OLnt7XoZGa
-   EuDyHQtBty2ZrFHmI7d8QG6AXAJ+kpn8n3V6Y3olO/DZCy7kfNJS9cef+
-   kKCS/rYq8M0OEcWygIcMfVyxzSuWUIjpQWyPuDlNJNZWd/OTjmJbB2sIC
-   w==;
-X-CSE-ConnectionGUID: fCFG0CZWSe+5wphEDNEfdw==
-X-CSE-MsgGUID: sfq17LyUTiCklkbkljwU6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="62015797"
+  bh=wPDvnWZ5n/ZzruRde5Pq3zT/XPnm5sbjNx2qOymBYfE=;
+  b=gJfYrO5qVyoLk0r6mbp1s6xiSXe0cnUvCpSAv+KR3kQCwFf8mlr5skAu
+   4aU+EcelqFCxjLvZooyM+UToOAJEbMtAG+iaH3ESI+kAqMf0dVP0ATK/F
+   +AZzi65Damp+qiDBL2qqJpkFrwBH1bCzq00SEVIpCUN8p18CMK2XTtT8Q
+   MSJ+cpuLYiGrxhFl+s35ugTXjnrL1fs3YCUG7KTupmJAi+kEMKE3jc4sQ
+   XJtPbVCtrd7ztvOcEuttzscgYzGNd+FHexd7VdVTCvrPCUjxTQZg6ZhWi
+   KtjAOVL/k2wKYK0liehfSnVrYEhdjRWGyuwDPE6MsFOMnK2I4O54TqfCE
+   g==;
+X-CSE-ConnectionGUID: KcE49P6qTUOQbUB5qBZv0g==
+X-CSE-MsgGUID: RIZ+U2gJSR6XzWs7UmNUqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69283111"
 X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="62015797"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 07:56:54 -0700
-X-CSE-ConnectionGUID: lzEm3K2FR72KwstWyYHG9Q==
-X-CSE-MsgGUID: TakxZF6vRGWLwfxTYMc+bA==
+   d="scan'208";a="69283111"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 07:57:03 -0700
+X-CSE-ConnectionGUID: qiJ59XlaQtqa4e+Z9uM3dw==
+X-CSE-MsgGUID: tW3R/pfDT4eAbXWbFFh3og==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
-   d="scan'208";a="173994571"
+   d="scan'208";a="169547004"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.115])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 07:56:49 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 07:56:58 -0700
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To: Andreas Larsson <andreas@gaisler.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
@@ -75,9 +75,9 @@ To: Andreas Larsson <andreas@gaisler.com>,
 Cc: =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
 	linuxppc-dev@lists.ozlabs.org,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 04/24] PCI: Move find_bus_resource_of_type() earlier
-Date: Fri, 22 Aug 2025 17:55:45 +0300
-Message-Id: <20250822145605.18172-5-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 05/24] PCI: Refactor find_bus_resource_of_type() logic checks
+Date: Fri, 22 Aug 2025 17:55:46 +0300
+Message-Id: <20250822145605.18172-6-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250822145605.18172-1-ilpo.jarvinen@linux.intel.com>
 References: <20250822145605.18172-1-ilpo.jarvinen@linux.intel.com>
@@ -101,88 +101,37 @@ X-Spam-Status: No, score=-5.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Move find_bus_resource_of_type() earlier in setup-bus.c to be able to
-call it in upcoming changes.
+The logic checks can be simplified in find_bus_resource_of_type() by
+reordering them.
 
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/pci/setup-bus.c | 56 ++++++++++++++++++++---------------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ drivers/pci/setup-bus.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index def29506700e..4097d8703b8f 100644
+index 4097d8703b8f..c5fc4e2825be 100644
 --- a/drivers/pci/setup-bus.c
 +++ b/drivers/pci/setup-bus.c
-@@ -140,6 +140,34 @@ static void restore_dev_resource(struct pci_dev_resource *dev_res)
- 	res->flags = dev_res->flags;
- }
+@@ -158,11 +158,15 @@ static struct resource *find_bus_resource_of_type(struct pci_bus *bus,
+ 	struct resource *r, *r_assigned = NULL;
  
-+/*
-+ * Helper function for sizing routines.  Assigned resources have non-NULL
-+ * parent resource.
-+ *
-+ * Return first unassigned resource of the correct type.  If there is none,
-+ * return first assigned resource of the correct type.  If none of the
-+ * above, return NULL.
-+ *
-+ * Returning an assigned resource of the correct type allows the caller to
-+ * distinguish between already assigned and no resource of the correct type.
-+ */
-+static struct resource *find_bus_resource_of_type(struct pci_bus *bus,
-+						  unsigned long type_mask,
-+						  unsigned long type)
-+{
-+	struct resource *r, *r_assigned = NULL;
-+
-+	pci_bus_for_each_resource(bus, r) {
-+		if (r == &ioport_resource || r == &iomem_resource)
-+			continue;
-+		if (r && (r->flags & type_mask) == type && !r->parent)
-+			return r;
-+		if (r && (r->flags & type_mask) == type && !r_assigned)
-+			r_assigned = r;
-+	}
-+	return r_assigned;
-+}
-+
- static bool pdev_resources_assignable(struct pci_dev *dev)
- {
- 	u16 class = dev->class >> 8, command;
-@@ -876,34 +904,6 @@ static void pci_bridge_check_ranges(struct pci_bus *bus)
- 	}
- }
- 
--/*
-- * Helper function for sizing routines.  Assigned resources have non-NULL
-- * parent resource.
-- *
-- * Return first unassigned resource of the correct type.  If there is none,
-- * return first assigned resource of the correct type.  If none of the
-- * above, return NULL.
-- *
-- * Returning an assigned resource of the correct type allows the caller to
-- * distinguish between already assigned and no resource of the correct type.
-- */
--static struct resource *find_bus_resource_of_type(struct pci_bus *bus,
--						  unsigned long type_mask,
--						  unsigned long type)
--{
--	struct resource *r, *r_assigned = NULL;
--
--	pci_bus_for_each_resource(bus, r) {
+ 	pci_bus_for_each_resource(bus, r) {
 -		if (r == &ioport_resource || r == &iomem_resource)
--			continue;
++		if (!r || r == &ioport_resource || r == &iomem_resource)
+ 			continue;
 -		if (r && (r->flags & type_mask) == type && !r->parent)
--			return r;
++
++		if ((r->flags & type_mask) != type)
++			continue;
++
++		if (!r->parent)
+ 			return r;
 -		if (r && (r->flags & type_mask) == type && !r_assigned)
--			r_assigned = r;
--	}
--	return r_assigned;
--}
--
- static resource_size_t calculate_iosize(resource_size_t size,
- 					resource_size_t min_size,
- 					resource_size_t size1,
++		if (!r_assigned)
+ 			r_assigned = r;
+ 	}
+ 	return r_assigned;
 -- 
 2.39.5
 
