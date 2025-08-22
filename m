@@ -1,81 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-11188-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11187-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C847FB31AFE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 16:15:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71D37B31A16
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 15:47:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c7hzw2FsLz3cgN;
-	Sat, 23 Aug 2025 00:15:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c7hLt6GwDz3cgJ;
+	Fri, 22 Aug 2025 23:47:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::f35"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755866634;
-	cv=none; b=PEbtFDl85rrNAGd7vUiItq9Egds+JQsknKXJFbxTatBoQdyTT1zYradJBzx7Q0mi2ajcnqd7WM3Go2WvIvFHDI+HfeutJpXh++bIdVPY6VoZ+mdA97WasuuXQQoTcrgdyE+l9eX5tTtzCezt6P+ocYObUVaL/3nEmG3xUxnpkc+/4nOFDQprdc+0RuHmSxOC4YbIvvC2qf+Ad+ewWvQkrYZtPX3RKTfi/p2edgLc3uevw7GLynOwwNOdnMo+Vilwa7NrmAoQBBX8QLWrwEXWo69Ckbbu5YWbc9ufICn1E4cFom/3lnpVlPfUI2TiF4rBLgU7k/Ibknu7iEHlxqT4bA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::632"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755870422;
+	cv=none; b=ap8VWC/5lhDD2k4l/T6cSVGMmaFKED8skQLqHrmzbnOrl0t9FdnnBFiK26KUKWatUPuBE0AwE8Otvh1JPg4INEVPVY+Uo9sFGY+YclpnZ09Ubx/e5oqxNUTCAg4+9EtuxHDFg9BqJDHpt8EEFIAFVAuZPvxS/eeGqRNAi2skezzeiD2WMVFbCUWjiT2gR/rnasP6YOj1gWr1nOSHgllmymvs9H0WfnVoEFnC1rF531vwZHqjai02E0gPoRMmPXAKDAZtVBy051z2yehNAwNJfnfeV0viesxOctaIQeMluzT5/mnJ3ZmNBFYOcjjwSEcQATUrEbWPA8xQF0H5Yipx8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755866634; c=relaxed/relaxed;
-	bh=7esMtEw5QVw4oYW1X3ekJKoKg/sSv7ATs4TS+GU7jZk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o0YQIYVTvjFetG72d2zqOEvRHTA4ETtxQIhPpeJ5rkVYQSYIhzoxRizjyu96CEWRItrZW5oMDcLwWBWD7jraV/LOmJdSMdihg463Wp37IupYn0BQYRozrqw2v48HWd2PXiRJUKc3rSWoto0esIveALNXe3/EPZQPNzUyDmVrhJyLt052ADncdNj18wRU6zr7t87DhWtoVEd4qw49fggRrtNuzP292VUHgxGb8j63z1/K5SBM+AbNpdNYBNHw5ODnjN+6wH3qMQ2MXGwFIc+OUZbARTaPAkq+b0RPjSLa4esgMzVJEFizmJW/DthIgPZqZwSj1pN9AvgfVvhAkQTc+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nZM002A5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::f35; helo=mail-qv1-xf35.google.com; envelope-from=chelsyratnawat2001@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1755870422; c=relaxed/relaxed;
+	bh=NRu/0FoVw+bU0VwjyXzuUF8CXZhxspV/ZyS4JSE6Hqs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SrzCht2BtGFxI3pJM6iRCG7LdLALz8+HXxihQTgFaQ72rrBjZrmu2grVNOPSpiR25fCJLwGDQi0g/U/Upa9VrBJ7hLxG8KQ5Yc5empVehPGheppiAEqo7on1eC4ldhLy69GIZc71V0rA41MWY3f7r4RehqELrYLB0PYtp4Ny0GZin96JB47fHvkN6t6tl75am+9FS0jAoCINQzaQxUsTDSUrn7kVHXNAcWbs0ESpzDKsPeLq8iteiIgKiXJFfbLjtAlbmieD2lqB4vXuqGdzogK6FhopQ0Cz3bJ65K+VhT1i/Z0F1wUmR4HzLLTkaW6kYyYKDkJ04PV/p7znZybfdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=LVewMVdW; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nZM002A5;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=google header.b=LVewMVdW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f35; helo=mail-qv1-xf35.google.com; envelope-from=chelsyratnawat2001@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=torvalds@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7fy163KNz3cfL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 22:43:52 +1000 (AEST)
-Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-70d9f5bdeb4so2594756d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 05:43:52 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7hLs1BLNz3cfv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 23:47:00 +1000 (AEST)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-afcb73621fcso289641466b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 06:47:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755866630; x=1756471430; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7esMtEw5QVw4oYW1X3ekJKoKg/sSv7ATs4TS+GU7jZk=;
-        b=nZM002A5lmjwcCj7/opcKgVzWPqPvQPKsDU2T6qZ9w2uCnPXnD5dI6Af/L62v39JpH
-         wcFtMPoo/7p1Z+cSwGPgZGGFqKCdQtztMS0L/Pc7TCZMWys36TXUZ5hgmIERlaSfnDuH
-         kQVaDPGpg0Bb0zEyK4n64+7Nj++qGtInZuVYh+be1tEkqCXekktKyBe3IGwc1TNlHciz
-         byTnm4kJ61Yl1byQ0PAgXlB+LA6D+0B8abUf8lhCs/NSJLTp95csVvaS3UmFTN6Oir3m
-         d3DHWy4g4ScE2ukx7aGoXIiDxH84jbTyzpbloUhLS7ab87b/vcdaUxTHDssra15AyeL2
-         f21Q==
+        d=linux-foundation.org; s=google; t=1755870415; x=1756475215; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=NRu/0FoVw+bU0VwjyXzuUF8CXZhxspV/ZyS4JSE6Hqs=;
+        b=LVewMVdWlATRad+DAwJgEy6/iA3Z/ykASWFCQggmgm9jDkCl+lURfJYzPhXw1U4UXL
+         gvoAoU2HyJLbyhAkAzfCkGd5d0E2ngMcRsq6naCQTQgpJ/1V+AKM9s8m0ApexKw3++ye
+         5eXRgoWU/yciE1HNZlX5hhoWSNWQBtyJvgJSI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755866630; x=1756471430;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1755870415; x=1756475215;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7esMtEw5QVw4oYW1X3ekJKoKg/sSv7ATs4TS+GU7jZk=;
-        b=J5tL+5tktXld+lRm9u6gjp5L8V9K66FT2ZrtqtSe/oARcMoZsF79KaXpfYn/ulcBcw
-         Fj/Ch8m5sd3C/ugjJCcfi8iBI/Tkm8tE0lOl+ORvX/RiB89qq/lnYxjWvJE54YUHwcg9
-         3YyOMMmM0I+NAEz4ziOa4+ntEwe+cxjSHCkNyoliFORsBWGS633MEKflWuR3b3cNjykH
-         anXt1/91EKcDu7bOiD+NB59Iv+gCtxuM1ndLLqoF9o4Lto0Yx5lYErtRkqiUnDDuraAE
-         yUg6NmeFQFhawM5ScCZacWzOdWZ8A9No8PwAUlrOQzfGH+slAcGKCgDFNkd7NNHJhAPN
-         Ar7w==
-X-Gm-Message-State: AOJu0Yz+VvLWBXZD5dxOHitwdD0as+YwhCMfoBQX0tEEkmH32gPTREss
-	obSKSgSmhJqk5O0aGErnqC8Ld6UeBtj//T1ibdfkX4/yXLvRzP+Q4ktBiUpR2cXj
-X-Gm-Gg: ASbGnctvXqxNDREBL4tL/6zhO6E18BzYvPFccKMDT/Hg3scrFl3U2P7QEkIy1+zMYTP
-	S/eqBi1M4L+FvMWRS+d7W0lU6XHAzh04Yb/7x55Bw5Uy2MkZOBSYeKEjt0Ml7Ith0569yyWmlMX
-	NBm4rbx8L8Cwf6vF4NtRP7RRwH3fUhByA95Y81f6G/ERkTbosDF98T3GFqDfjL6+as6ShpmM3/B
-	brH8cxnayx0dKyD8A/BYU7f5cY3Tk+9VA91NxmPuz+wU39wfYQVP9qsa3IRF7ekEVK77wrxlWHh
-	U//AkEBO3xCU2xvlA7qMNHmv4IrcLip7/ATMNOYWiGTQUXMgxx2vC3xbI0iCAq2yvqmzhB0oq3J
-	ZL970Hf4ZOMwk/WJgIgFtYGpbE0yuJdrIMSZ1IfyjtkPUJkKEraGouDP2UvtclE4D7czG
-X-Google-Smtp-Source: AGHT+IFJvlSZLb/tgAdd91q76LLVRKtl204DpHq7u7KDDoCyrwGkQzx2iwb0ZjfCczYufx70JcLscA==
-X-Received: by 2002:a05:6214:4c02:b0:70d:9819:8788 with SMTP id 6a1803df08f44-70d98198c37mr17724006d6.22.1755866630054;
-        Fri, 22 Aug 2025 05:43:50 -0700 (PDT)
-Received: from cr-x-redhat96-nsd-2.fyre.ibm.com ([129.41.87.0])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70ba90b8dc7sm124756186d6.30.2025.08.22.05.43.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Aug 2025 05:43:49 -0700 (PDT)
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-To: ioana.ciornei@nxp.com
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Subject: [PATCH v2] bus: fsl-mc: Replace snprintf and sprintf with sysfs_emit in sysfs show functions
-Date: Fri, 22 Aug 2025 05:43:39 -0700
-Message-ID: <20250822124339.1739290-1-chelsyratnawat2001@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        bh=NRu/0FoVw+bU0VwjyXzuUF8CXZhxspV/ZyS4JSE6Hqs=;
+        b=qiAc+03+0/U070g67Qhxco05/yzX/vSmYDb3oBCMPC5B7zetLEd6aJw79Jwe6+im/K
+         OYE3ps7YgTvJWE8dGLM7WMe2sTIMH3YVMUHJIoDsbq5ZSmTnjXXL+6LwXwaMpY164h+n
+         DrhFiBTNIU/REjGhliJUP8/jR75/hKVKC8Fyr99nk4PTKSInTv5Cta0GQ8mzhcMur+8W
+         +tsCDt9/l4L2+rsHJYhemZy5XbTZhF5UMTXmypBLqZTyXoQNG+u+I0wMNmXLjHN4bAlK
+         fvUbkKC2uq/elX3BvCgG6xk2oz4vrIMVa9e6TGUFDdqr0JVrqOgDLvE+nMd9joxzMXIx
+         Xihg==
+X-Forwarded-Encrypted: i=1; AJvYcCWe4UKUkX/opsJIgyoE0mx5mQk+ImZYa1J7czyrl2OU9kbsvcMrHuBhqrs5toXY/Ld9Vq7qJUCZ0i329cA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyDR/qeqC4z9eEA5FAbKSIxbSMBJfodT2piSzT8ilVgDcTdiaBF
+	iYEqxbtq0+cqaStC+9FpbzXXsgRqNtfZD2cYxp0DkwtbDvehQxZA8VxCT4+55NK3to8pon0rqtW
+	fcr8RvOI=
+X-Gm-Gg: ASbGncvJnskl2gaHk1cWTUBma9gJoOj7Tl9BcG3zUvvVZWCUJFkJQGpxIJ8rmzaP8p+
+	W6Xsp8csyAB3V9Zjyftd551oud+fNeG+l0k3XKy4t2KYiN3KwBGngWRmZ/oDY8h3uREz3As7Heg
+	T3bvExOAya7tWwrgdtxSZayywI4GVbo2zG3Qxx/drQAjKizx6GIkpgh2Yib66RgxPGMWNYFKuo1
+	Dx2IbfbrJwkI31ifuLWRjQdCxR0sCqX6fFVflOX/Lp/oLS9spMgIcTV/prM/EebwgA5KFGvILwO
+	SUbY+SwJNBGSLTHb8EUu3205yoTjl/kzNCHtVTg0oKs4YX57ZrI7PTy5H5H49v5+YHyMLe3JxJr
+	bnIPsKbKY7s82K2AS53QP16ZxEmpb9I8QnY8E7qc31Aoc36zwujpRfXmAZx45kbbBuTSsg9zz0I
+	idDVa7cvQ=
+X-Google-Smtp-Source: AGHT+IHj3fIv2TJIYvx/zkmEMeVGLyEhrzeEI305vBoPR+SJSC2lX0kXUUXHC3KblWh898KQsQd9yw==
+X-Received: by 2002:a17:907:6d20:b0:af6:361a:eac0 with SMTP id a640c23a62f3a-afe295c02d6mr263617166b.32.1755870415172;
+        Fri, 22 Aug 2025 06:46:55 -0700 (PDT)
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com. [209.85.208.43])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-afded530ecbsm610740166b.102.2025.08.22.06.46.54
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Aug 2025 06:46:55 -0700 (PDT)
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-61c26f3cf0dso582565a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 06:46:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXYrY1/FlNdO3DxJyLIT91Oc8ur11LKhlfqcGGarNCR9TnbKS5KTdU7m6z4cS+pVMIiCXTiUf85nHMQ+fM=@lists.ozlabs.org
+X-Received: by 2002:a05:6402:5110:b0:615:6481:d1c with SMTP id
+ 4fb4d7f45d1cf-61c1b450840mr2274281a12.1.1755870414406; Fri, 22 Aug 2025
+ 06:46:54 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,50 +88,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+References: <cover.1755854833.git.christophe.leroy@csgroup.eu> <82b9c88e63a6f1f5926e39471364168b345d84cc.1755854833.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <82b9c88e63a6f1f5926e39471364168b345d84cc.1755854833.git.christophe.leroy@csgroup.eu>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 22 Aug 2025 09:46:37 -0400
+X-Gmail-Original-Message-ID: <CAHk-=whKeVCEtR2mQJQjT2ndSOXGDdb+L0=WoVUQUGumm88VpA@mail.gmail.com>
+X-Gm-Features: Ac12FXyg7aT4BFeJsiyaeWdfrE2FPhwu5xUJIJ1D8_vj4L1z_hVeZFuzgKfsNNk
+Message-ID: <CAHk-=whKeVCEtR2mQJQjT2ndSOXGDdb+L0=WoVUQUGumm88VpA@mail.gmail.com>
+Subject: Re: [PATCH v2 02/10] uaccess: Add speculation barrier to copy_from_user_iter()
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Darren Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Andre Almeida <andrealmeid@igalia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Laight <david.laight.linux@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-block@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Use sysfs_emit() instead of snprintf()/sprintf()  when writing
-to sysfs buffers, as recommended by the kernel documentation.
+On Fri, 22 Aug 2025 at 05:58, Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> The results of "access_ok()" can be mis-speculated.  The result is that
+> you can end speculatively:
+>
+>         if (access_ok(from, size))
+>                 // Right here
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
----
-Changes in v2: 
- - replace sprintf() with sysfs_emit() in modalias_show()
- - change commit msg to include the change for sprintf
+I actually think that we should probably just make access_ok() itself do this.
 
- drivers/bus/fsl-mc/fsl-mc-bus.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+We don't have *that* many users since we have been de-emphasizing the
+"check ahead of time" model, and any that are performance-critical can
+these days be turned into masked addresses.
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index c1c0a4759c7e..88fea34a55b9 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -176,8 +176,8 @@ static ssize_t modalias_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
- 
--	return sprintf(buf, "fsl-mc:v%08Xd%s\n", mc_dev->obj_desc.vendor,
--		       mc_dev->obj_desc.type);
-+	return sysfs_emit(buf, "fsl-mc:v%08Xd%s\n", mc_dev->obj_desc.vendor,
-+			mc_dev->obj_desc.type);
- }
- static DEVICE_ATTR_RO(modalias);
- 
-@@ -203,7 +203,7 @@ static ssize_t driver_override_show(struct device *dev,
- {
- 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n", mc_dev->driver_override);
-+	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
- }
- static DEVICE_ATTR_RW(driver_override);
- 
--- 
-2.47.3
+As it is, now we're in the situation that careful places - like
+_inline_copy_from_user(), and with your patch  copy_from_user_iter() -
+do maybe wethis by hand and are ugly as a result, and lazy and
+probably incorrect places don't do it at all.
 
+That said, I don't object to this patch and maybe we should do that
+access_ok() change later and independently of any powerpc work.
+
+                 Linus
 
