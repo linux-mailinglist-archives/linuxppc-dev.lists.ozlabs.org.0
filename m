@@ -1,91 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-11218-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE39B320C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 18:51:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 427F7B32171
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 19:20:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c7mRW5Y6Qz3cmC;
-	Sat, 23 Aug 2025 02:51:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c7n5f6mP0z3cml;
+	Sat, 23 Aug 2025 03:20:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755881479;
-	cv=none; b=Vtbito8tYt11TmBllPrsm31lEC5vhC/bQuHUe/2cklFSeCEIkc5KnQy/n1QpnuQeCE/Zkt5fvLxC+LRaK1HiwJXlRdMGQWwM1NYozcWTl5KGCM7D8kjPOKfDwvJErr8SM1MSyAI0VSUO5aGn8bFfi6M1EG/J+OIaHBVf9vdLAzwUZw2Xubg6F+VOIcAbCf6MPUggQHzjdSaeXmgK0Du+fNKtnBTzDR0XzCeQZWD/xYIoGOluBlP99cqt7CVF889NmmK2Xr6mroSX0CLaug4/q9p1QXTHn2sNSBRpO/wGY1AVLmA0Gfwl7c9EZPc1wxg8uj1jieJZgvioq6sYnrwenw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755883254;
+	cv=none; b=ddPCtTcl8HZZeRsUyvbwyJWlAmMcT36lafjPgxbOeDVUSqMmiNyBFse1EEmB/MoEnM1HJ/cetS0q4NrOFpzM2QkO05Ec9W84unFYY9GR4/zstpdflkrSmVz9ABlDITc7ejWY05DtwIS1EctLbBdrcIxlJlcjF7mX2OKK7pdO4vi8bR02tlmj59zg2C8JX2urZ0opikipuqvgd0pcHJjsvcGqHjwEeO/UESqalluI5N6pafwErJ95OYCTavDWw1NWuifhqLGzd2aMDHXW7EO7usROkhdxyHCqtxqHVNXuyK/0MiC9fFCOmwjnYIpnOxD4ocw5ddv2YahqOsXUSx4BHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755881479; c=relaxed/relaxed;
-	bh=rSrq6tb+AIU0a7vzdc7VjAp0Kh8Za1N9LNjuvBImSjk=;
+	t=1755883254; c=relaxed/relaxed;
+	bh=ceimfnTf4KLVviP96rcMQNxOx7Vq7eilbOPAPejqwkM=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=cVT9LP25rgZ9zSCI8SqF1WG5/BgAAfSpqfepX9oAGvWfCaAy118dtSQRqqfo7nXqAQc1GSH+t06jV490NQuFR2X70lPPEtUL0wQA7ZGdIiwLQHE+kV+X525NpmeDq0t8W2YNLLUh26fiXsjpvyPQChO16OT06u2zWysO3yBl8MGlF0N93EuuVJoQRZmzLh8Qw6UzqcjEsEtOYdTHOZGOJArOZ+povNbRY16RVT+9xNP+PlDsp4pWLA9WX8dlK225wXW1PIiGp9IX/Rdi0c3UGy3HCBJS18OmGKydeaLUJkN3f4mMPPspb6pennJLCMEc0nSNHDNc7CPuKv4npVBK7Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TOldZ6P4; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Disposition:In-Reply-To; b=frYG35qo0FRmCXokiex+1li7ig9PEgZJ+dYL5FGKUvoujvgeLvuabRR79z+YhYIUbqH+AZDPgHyQhT44/aUr+NRvK07gr8jx5HKqFghS75Put1u3+3iPVq47jmik+rZs6EckVX8gDh2TJCWliDuOoqNIUmYJWE/ahk2Y3OQMbPp7Ma/hoI3prK7tiLh9m4t/KZRmBOVcQydI4rA/fwCPZ9ONSAtet1CznDakMTFDtUDeiP58AgpcCRFKtUs5ap8q6CcBTDoQA1aUxL6OotJxkpcoL9AdsHlOzvfafLDcxRIcrr/8pal3xp7m5fQo95ILdo5KDgBFMPOTpKqQF7l/ww==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g6S4ns3I; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TOldZ6P4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g6S4ns3I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7mRV4hZJz3clh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Aug 2025 02:51:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7n5d2Xvpz3clh
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Aug 2025 03:20:53 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C70A601E7;
-	Fri, 22 Aug 2025 16:51:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68FDC4CEED;
-	Fri, 22 Aug 2025 16:51:14 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 0BBE5A58B34;
+	Fri, 22 Aug 2025 17:20:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5224AC4CEED;
+	Fri, 22 Aug 2025 17:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755881475;
-	bh=ZN1/GSSsUnr11TA2ChLgQXw36yoz98xor8JyYYUMooQ=;
+	s=k20201202; t=1755883249;
+	bh=OnWyIqS1IwZagUDq5QHd0lxIlcBzULMwktA4A6aD7Hk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=TOldZ6P4XjDi8geWUHI4dDlTT6CJl79l8sxl1DywRr/cP9kB878+0JkMA/VKU4RXH
-	 0/0bkecaXvUt55YZXuEbcOHw0QQEAL1sp9aA5eSUXoQNTKa+vwliCqVYL132XwqGYX
-	 jOyAVQR7WyYfW21GVtx8cGUCtlMYTOf2rrGtTRMmP3JH/EUTBqXjGU16IcKqKz7gzU
-	 ii4KkNruWP1ZjXjkv4hjXC3g1ALdUqATnnaexhDPwrJkflTfRAVA//GsLljIjaCxjq
-	 C5TibyaJM2cpWRRjFBbRv2JHLBft3EPEvwjfn3TexdNBE3CTT4r1jCt/Xf9RETQSvX
-	 CWUdvouXz1saw==
-Date: Fri, 22 Aug 2025 11:51:12 -0500
+	b=g6S4ns3IMeuZvHVo4dNEQgx9QjTJ13jY9bQQPvAWsQLXQW8eCTt0QlQu7DrWkhkPy
+	 R7iG2Uj+v+gZV1wSXidZgHkhER+ZZhzNC4ogRde5oG9Zq7jM7cZVV3fta/a/DkExQl
+	 YqJeAce7lPxkLbfRydUdqoamvl60ng2ScbsmXjQdrKNAK862DOmLeC8kLF9nDlddoj
+	 OLE9/urHUi0sNlTES/WtQl99dfh0Vp7WkngSPhR8u9yWpWzNkw76cCv+1p9r9w/jeg
+	 vF8nlTSa7rC/ZaoRPFAJfSgeCe5dsHoSYX8cU4EPabopJhfSaz52jOotbxFK+GDQ8z
+	 zsLj0Xn55whXQ==
+Date: Fri, 22 Aug 2025 12:20:47 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
-To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
-Cc: "Carlis, Matthew" <mattc@purestorage.com>,
-	"Smita.KoralahalliChannabasappa@amd.com" <Smita.KoralahalliChannabasappa@amd.com>,
-	"Preble, Adam C" <adam.c.preble@intel.com>,
-	"Schofield, Alison" <alison.schofield@intel.com>,
-	"bhelgaas@google.com" <bhelgaas@google.com>,
-	"bp@alien8.de" <bp@alien8.de>,
-	"Peng, Chao P" <chao.p.peng@intel.com>,
-	"Williams, Dan J" <dan.j.williams@intel.com>,
-	"Jiang, Dave" <dave.jiang@intel.com>,
-	"dave@stgolabs.net" <dave@stgolabs.net>,
-	"erwin.tsaur@intel.com" <erwin.tsaur@intel.com>,
-	"Wanyan, Feiting" <feiting.wanyan@intel.com>,
-	"Weiny, Ira" <ira.weiny@intel.com>,
-	"james.morse@arm.com" <james.morse@arm.com>,
-	"lenb@kernel.org" <lenb@kernel.org>,
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
-	"linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
-	"linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"lukas@wunner.de" <lukas@wunner.de>,
-	"mahesh@linux.ibm.com" <mahesh@linux.ibm.com>,
-	"oohall@gmail.com" <oohall@gmail.com>,
-	"qingshun.wang@linux.intel.com" <qingshun.wang@linux.intel.com>,
-	"rafael@kernel.org" <rafael@kernel.org>,
-	"rrichter@amd.com" <rrichter@amd.com>,
-	"Kuppuswamy, Sathyanarayanan" <sathyanarayanan.kuppuswamy@intel.com>,
-	"Luck, Tony" <tony.luck@intel.com>,
-	"Verma, Vishal L" <vishal.l.verma@intel.com>,
-	"Wang, Yudong" <yudong.wang@intel.com>,
-	"Saggi, Meeta" <msaggi@purestorage.com>,
-	"sconnor@purestorage.com" <sconnor@purestorage.com>,
-	"Karkare, Ashish" <ashishk@purestorage.com>,
-	"rhan@purestorage.com" <rhan@purestorage.com>,
-	"Rangi, Jasjeet" <jrangi@purestorage.com>,
-	"Govindjee, Arjun" <agovindjee@purestorage.com>,
-	"Amstadt, Bob" <bamstadt@purestorage.com>
-Subject: Re: [PATCH v5 0/2] PCI/AER: Handle Advisory Non-Fatal error
-Message-ID: <20250822165112.GA688464@bhelgaas>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: linux-pci@vger.kernel.org, bhelgaas@google.com, mahesh@linux.ibm.com,
+	oohall@gmail.com, linuxppc-dev@lists.ozlabs.org,
+	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+	james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
+	dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, linmiaohe@huawei.com,
+	shiju.jose@huawei.com, adam.c.preble@intel.com, lukas@wunner.de,
+	Smita.KoralahalliChannabasappa@amd.com, rrichter@amd.com,
+	linux-cxl@vger.kernel.org, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, erwin.tsaur@intel.com,
+	sathyanarayanan.kuppuswamy@intel.com, dan.j.williams@intel.com,
+	feiting.wanyan@intel.com, yudong.wang@intel.com,
+	chao.p.peng@intel.com, qingshun.wang@linux.intel.com,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Subject: Re: [PATCH v5 1/2] PCI/AER: Clear UNCOR_STATUS bits that might be
+ ANFE
+Message-ID: <20250822172047.GA689409@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,37 +79,121 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <IA3PR11MB9136FCB8C778B0AE08BF8DB5923DA@IA3PR11MB9136.namprd11.prod.outlook.com>
+In-Reply-To: <20240620025857.206647-2-zhenzhong.duan@intel.com>
 X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Aug 22, 2025 at 01:45:30AM +0000, Duan, Zhenzhong wrote:
-> Hi Matthew,
+On Thu, Jun 20, 2024 at 10:58:56AM +0800, Zhenzhong Duan wrote:
+> In some cases the detector of a Non-Fatal Error(NFE) is not the most
+> appropriate agent to determine the type of the error. For example,
+> when software performs a configuration read from a non-existent
+> device or Function, completer will send an ERR_NONFATAL Message.
+> On some platforms, ERR_NONFATAL results in a System Error, which
+> breaks normal software probing.
 > 
-> Feel free to take it over if you are interested. Maintainer didn't
-> respond to this series, perhaps he expects some improvement in the
-> series.
+> Advisory Non-Fatal Error(ANFE) is a special case that can be used
+> in above scenario. It is predominantly determined by the role of the
+> detecting agent (Requester, Completer, or Receiver) and the specific
+> error. In such cases, an agent with AER signals the NFE (if enabled)
+> by sending an ERR_COR Message as an advisory to software, instead of
+> sending ERR_NONFATAL.
+> 
+> When processing an ANFE, ideally both correctable error(CE) status and
+> uncorrectable error(UE) status should be cleared. However, there is no
+> way to fully identify the UE associated with ANFE. Even worse, Non-Fatal
+> Error(NFE) may set the same UE status bit as ANFE. Treating an ANFE as
+> NFE will reproduce above mentioned issue, i.e., breaking software probing;
+> treating NFE as ANFE will make us ignore some UEs which need active
+> recover operation. To avoid clearing UEs that are not ANFE by accident,
+> the most conservative route is taken here: If any of the NFE Detected
+> bits is set in Device Status, do not touch UE status, they should be
+> cleared later by the UE handler. Otherwise, a specific set of UEs that
+> may be raised as ANFE according to the PCIe specification will be cleared
+> if their corresponding severity is Non-Fatal.
+> 
+> To achieve above purpose, cache UNCOR_STATUS bits that might be ANFE
+> in aer_err_info.anfe_status and clean them in pci_aer_handle_error().
+> aer_err_info.anfe_status will also be used to print ANFE related bits
+> in following patch.
+> 
+> For instance, previously, when the kernel receives an ANFE with Poisoned
+> TLP in OS native AER mode, only the status of CE will be reported and
+> cleared:
+> 
+>   AER: Correctable error message received from 0000:b7:02.0
+>   PCIe Bus Error: severity=Correctable, type=Transaction Layer, (Receiver ID)
+>     device [8086:0db0] error status/mask=00002000/00000000
+>      [13] NonFatalErr
+> 
+> If the kernel receives a Malformed TLP after that, two UEs will be
+> reported, which is unexpected. The Malformed TLP Header is lost since
+> the previous ANFE gated the TLP header logs:
+> 
+>   PCIe Bus Error: severity="Uncorrectable (Fatal), type=Transaction Layer, (Receiver ID)
+>     device [8086:0db0] error status/mask=00041000/00180020
+>      [12] TLP                    (First)
+>      [18] MalfTLP
+> 
+> To handle this case properly, calculate potential ANFE related status bits
+> and save in aer_err_info. Use this information to determine the status bits
+> that need to be cleared.
+> 
+> Now, for the previous scenario, both CE status and related UE status will
+> be cleared after ANFE:
+> 
+>   AER: Correctable error message received from 0000:b7:02.0
+>   PCIe Bus Error: severity=Correctable, type=Transaction Layer, (Receiver ID)
+>     device [8086:0db0] error status/mask=00002000/00000000
+>      [13] NonFatalErr
+> 
+>   PCIe Bus Error: severity="Uncorrectable (Fatal), type=Transaction Layer, (Receiver ID)
+>     device [8086:0db0] error status/mask=00040000/00180020
+>      [18] MalfTLP                    (First)
+> 
+> Tested-by: Yudong Wang <yudong.wang@intel.com>
+> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 
-I'm terribly sorry, this is my fault.  It just fell off my list for no
-good reason.  Matthew, if you are able to test and/or provide a
-Reviewed-by, that would be the best thing you can do to move this
-forward (although neither is actually necessary).
+This no longer applies cleanly; would you mind rebasing it to pci/main
+(v6.17-rc1)?  There have been recent AER changes; if they affect the
+dmesg text, could you update that as well?
+
+> +static void anfe_get_uc_status(struct pci_dev *dev, struct aer_err_info *info)
+> +{
+> +	u32 uncor_mask, uncor_status, anfe_status;
+> +	u16 device_status;
+> +	int aer = dev->aer_cap;
+> +
+> +	/*
+> +	 * To avoid race between device status read and error status register read,
+> +	 * cache uncorrectable error status before checking for NFE in device status
+> +	 * register.
+
+I can't tell for sure from the patch, but if this doesn't fit in 80
+columns, can you rewrap it so it matches the rest of the file?
+
+> +	 */
+> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS, &uncor_status);
+> +	pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_MASK, &uncor_mask);
+> +	/*
+> +	 * According to PCIe Base Specification Revision 6.1 Section 6.2.3.2.4,
+> +	 * if an UNCOR error is raised as Advisory Non-Fatal error, it will
+> +	 * match the following conditions:
+> +	 *	a. The severity of the error is Non-Fatal.
+> +	 *	b. The error is one of the following:
+> +	 *		1. Poisoned TLP           (Section 6.2.3.2.4.3)
+> +	 *		2. Completion Timeout     (Section 6.2.3.2.4.4)
+> +	 *		3. Completer Abort        (Section 6.2.3.2.4.1)
+> +	 *		4. Unexpected Completion  (Section 6.2.3.2.4.5)
+> +	 *		5. Unsupported Request    (Section 6.2.3.2.4.1)
+> +	 */
+
+Could you update the citation to PCIe 7.0, please?
 
 Bjorn
-
-> >-----Original Message-----
-> >From: Matthew W Carlis <mattc@purestorage.com>
-> >Subject: [PATCH v5 0/2] PCI/AER: Handle Advisory Non-Fatal error
-> >
-> >Hello. My team had independently started to make a change similar to this
-> >before realizing that someone had already taken a stab at it. It is highly
-> >desirable in my mind to have an improved handling of Advisory Errors in
-> >the upstream kernel. Is there anything we can do to help move this effort
-> >along? Perhaps testing? We have a decent variety of system configurations &
-> >are able to inject various kinds of errors via special devices/commands etc.
-> >
-> >Thanks,
-> >-Matt
 
