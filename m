@@ -1,78 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-11189-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11192-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBC9B31B19
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 16:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB20B31CEF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 16:57:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c7j3b6kjwz3cgW;
-	Sat, 23 Aug 2025 00:18:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c7jw63xrkz3chF;
+	Sat, 23 Aug 2025 00:57:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755871926;
-	cv=none; b=mBGFWPZEXppXijYZywhfx0fLSd9jag5wTBnyqHzY6T3ZLTS8m9NQ0LiHdxERwdiQY9Pv9Wdu+JaDejSaG6JuHEA1+GLtvAMCHzacj72ByYsi6fkvt4RNkvOgxQXWebp4HCAGBaVnu25WdC0MkonlfELjObwUbEhaeO6R9TMnVj9s5+O/xp9DA9eyV+VMtw7HcOqL2W4u964ocM+WDxjFWFKdfOeqd1I0BW1uS81/qVDzdTi/QlSBI9r8ifW8Kcdl/gCy/7vGCTnXW5UPqEvvtivXw4vgiN3rE8RJVuODiMB7/zJcOrtVDyyod4s0sTB72bfdUJ3Yd1hu4XQOVJWExA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755874646;
+	cv=none; b=a6Gt+Resl0/EPdcYfy6g9MU90RFe4zbY03xC/GvsI4MHFvvhDfr9Re457076K17dJmp5Vm5Q+dBVXCaAh4RFfqPKfiFsRiJ0+mN2jfFtPold1vuxHed3erh4rKgPREm2ag53mBA/VevsS8N2AQJwVJSwVp6sVgMcfZnAYFhR2G0uP4JPus4jHwYUnxxtgqhCN2RSEn7FW+NZvDG9OG0ngoiY0ZnxBkDk21OwdkyYu6S8J18rzXSHKcfLv7Nhxtf2vHxRQPGVX/VA0TdV2kyJVxu9pxexpWf5oB9jAnKaLvrgkGY9b9KtgZ459X6quHQtEhmrnnOB1Yhct0Q+i+8Tqw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755871926; c=relaxed/relaxed;
-	bh=SUrkI8gRxT8al9H8bcipd0cfLDrY2l84rj0Cw0HvR90=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=K5dRjKGrEF9Ps5Ws++Gt78VQ+j5KAmhIOxYRuGgj2Awln0p7P8H4cuq1GDfo4AhOpvirCXnh0wXu+QN241NRrvzKnF9y/G0rHm2a+o9YNzOt24aWbRH1Rgv+lFpAVpuuCLrhCmO/Qd4otlKX2w7cUdbe8mSUqTfvLHDg+DT+bcND399F34sGHiwwuVk1h2LRDcQ0V+kIYKvAIMpiLM+fFWYMrslkbFT9UtSsYCSGYQI1VN2idu2jC1xummSOgcV8kTW0OHKbwaZZ2sB59ezo2hCehuQHRxb7lKU3PK1x685a0kGxYeZ7bk1mGvL/RIqgy8vk4W54aMLv4E/Y6AcV3g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FWNX1N8S; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=giorgitchankvetadze1997@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1755874646; c=relaxed/relaxed;
+	bh=Qq93kCQM50c4ZEruSWjaQwToRFI1zbkXpmAhezXWxzE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Zb/Duxmf5Rdh68DbPlWVZvIo543b8m1RZjp5DeU4bZUcGym7kjsWTHZ74yiwBzetXjxHCFzG26vA9BcR8GsPVxbfZy2b1KFrNKIqJnQkw3EgmVxLYTBYSrA9gdcFOKFKZs9HjIPLwL+DkXkKsZW3B7AwyslU72d05bjILxp1JA+HBfTSMDLbuyn871XUn0gczR3gmmaKJkVcLNmsp7fne7kA56cPiNWhIs5Kv2tHNQBC2+xS+7TSOsNCqy3fKlq9TqqpGBfbLSRepJPxYtxfvilY0O4Fx+8ffSjS+tMZ1z1U/SvbNLr0eC0wfwWlfA3cqv/+d1zwVl+qWwNCrnON2Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a4/J5M0u; dkim-atps=neutral; spf=none (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FWNX1N8S;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=a4/J5M0u;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32f; helo=mail-wm1-x32f.google.com; envelope-from=giorgitchankvetadze1997@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Sat, 23 Aug 2025 00:57:24 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7hvn5yfrz3cfv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Aug 2025 00:12:04 +1000 (AEST)
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-45b51bafcc1so612475e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 07:12:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1755871921; x=1756476721; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SUrkI8gRxT8al9H8bcipd0cfLDrY2l84rj0Cw0HvR90=;
-        b=FWNX1N8S6I3ApSuwOn27yx5gnjrY8OB2n/8dFoyRTjBU6eBUxYkqXO6Dn05UXAxBwn
-         eckyHHq39HqPgQqDDK4sFale54HdvQ0aypKDesteAUuWfgYOQea+NFtf3Orn+7VkJlKf
-         HLnvZl+j7OQ0a6dT9AfXePdLeont0revhcmTiqJJMkA/pAhSPSbmwy96NTxKcsxMWCS7
-         mlpoCHjrYj+14aQeHy+68wJhgAcKf4N5CFHNXK3boWkbyVL4gRdcR6bilqdcfeX9k38p
-         b5qcaVp3W2yu4TrlGOBid+/pMLDbgrR32GlRjZSiP0ptWbhqw+zNpcjNWoysyCXM15lN
-         y7Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755871921; x=1756476721;
-        h=content-transfer-encoding:in-reply-to:from:content-language:subject
-         :references:cc:to:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SUrkI8gRxT8al9H8bcipd0cfLDrY2l84rj0Cw0HvR90=;
-        b=MHL7GmAPK7AuVS+P8Ka7wG4K7j1718Av+O5btgD+bry9QGoxGXyw0RRC46J7XVEmR8
-         38sdDRoJW6IAvX7Ie/oIMNl1+PeGjqrIR4zC4oq4P5wma8hJ6MSjl1yEaDyGNPQGnGdJ
-         LaLJk7WUs+KXl6BsCwYVoKzqsqmI+t0hdNoD9D2N9mNHlV28lopst8iLgmr2hPj+xni5
-         DsQ0q+aZwooC5Z4afhUQNQWSkuSiGO50uyxz99O2elttFbFm4Am82EukZDoNf2pNA1a4
-         vxVrelo+w2jlBzUB+I3hI3tfZJozwrpTp+w/nvnFhUtFgsF0RJUlzr6eMfeTwPJcm4FG
-         1ETA==
-X-Forwarded-Encrypted: i=1; AJvYcCX4cBzw/yRRoNZdDyx0zoo4Xa/9ESLHDYZ+G1QD/wph3eWvBVYHj1Z6lSDV7dCmUA0S4YP7hUEkFgKpQQo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxLXHkzDZpWQmLDy9ZcY2kckYK9VGuijNv6o590GQKHboPA8A5w
-	5RHYhR2h1qXmXidpHIMIuATWPwy+ehHHuFSiqQnqBv5Q0/fGl7N4ve6e
-X-Gm-Gg: ASbGncsWVuF7J8ygm7ckyK+eDYX+QKlp4kLfy3ejrDwy01LJdvqhLmfjj3GfvUQnZbd
-	UuvuqJuvwg+34M/BTN/aN/Qr4+bNSL2V+T3+OGVH4JR5R4fCJUGu90PKkRxfkwhw8Nb+PC4uX2/
-	HPQscQiv+9A/WtA6S6bFQ3MYadXw8ahnowDekGAn5H2EUFKLb2K4HDrhxB0LUFQQm+CAUVr0pet
-	TSEMkwSMf8iURUSbOndCq8VQ/aBnEu6uvJr4rACqI0PgEy1bxvUSyR+kl45473jd7+HEisSrHiX
-	eFWCBWQzY8DwhHgnTTc9Oxi2kISSkmx++RWcn7Cq5wX/UY/Jq95paf7hCKkmmUwt+0xJj2dfdMN
-	aOHLI2Dm/T30kCr1825iASxjFiH4MiqoMh33EHFISovdxwGdLJdr6vE6tkSINp2tDL2wzrhbbi8
-	r2UrI2n48Q
-X-Google-Smtp-Source: AGHT+IFjwShx3D0jJMvSWdaLG4T39JgpaQyzemTxwtJre4OZUc8C3M5BPxw9JQYLkgJW8PLQe/esRQ==
-X-Received: by 2002:a05:6000:25c3:b0:3c5:7050:e2af with SMTP id ffacd0b85a97d-3c5dcdfc35fmr1024231f8f.9.1755871921342;
-        Fri, 22 Aug 2025 07:12:01 -0700 (PDT)
-Received: from [192.168.100.6] ([149.3.87.76])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3c6c737b303sm576035f8f.47.2025.08.22.07.11.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Aug 2025 07:12:00 -0700 (PDT)
-Message-ID: <98191ca5-9581-44fd-b9b1-6f0b932f141e@gmail.com>
-Date: Fri, 22 Aug 2025 18:11:58 +0400
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7jw40GRTz3cgt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Aug 2025 00:57:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1755874644; x=1787410644;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RvRkItUYJ0ETFE5CancMO5F68qXMPOtLToh8/qa/woA=;
+  b=a4/J5M0uqEqeO3pwDON1fGDKGtEWE/2mi5nHk1E1w24jfsKlw/j7Pw+h
+   AMjJkUrnqtXlFDkTaIdQ2BJS+Mrun6CE2L/gjXnCJCNBg9z6HG8Bcq16D
+   zUsM8eolrWlkvKLKWlGofXUjGjA326VqsstX0/4zY0UEfVT8bJ3FzFtn1
+   TXKOIRz5kqgCXlcFL+w7JllLTOQHUYlFLJNgXykYrURCf4KDHT0f2jzQA
+   /qWe4Ss6LUtrs0GZFLP/utmTWTaVOx0M1TnINeZnxvvXHzfxY+lOlRcPU
+   szsMBfEsf+nn7BBYryzpP++sqZLuHymn6zh9AUEZjcfj9QqFQ//4/CEfz
+   A==;
+X-CSE-ConnectionGUID: DSLioqJDTOK1Ahjl9OSvwA==
+X-CSE-MsgGUID: 2UTz8PI4R8m9VTVJYt5q4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11529"; a="69552238"
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
+   d="scan'208";a="69552238"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 07:56:17 -0700
+X-CSE-ConnectionGUID: xkRYlbZZQ0K+NwgRSu7KdQ==
+X-CSE-MsgGUID: 8+r9yxO9Rjy+vpGvbZE8yQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.17,309,1747724400"; 
+   d="scan'208";a="167956179"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.115])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2025 07:56:12 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Andreas Larsson <andreas@gaisler.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Yinghai Lu <yinghai@kernel.org>,
+	Igor Mammedov <imammedo@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
+Cc: linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 00/24] PCI: Bridge window selection improvements
+Date: Fri, 22 Aug 2025 17:55:41 +0300
+Message-Id: <20250822145605.18172-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.39.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,56 +92,152 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: torvalds@linux-foundation.org
-Cc: akpm@linux-foundation.org, andrealmeid@igalia.com, brauner@kernel.org,
- christophe.leroy@csgroup.eu, daniel@iogearbox.net,
- dave.hansen@linux.intel.com, dave@stgolabs.net,
- david.laight.linux@gmail.com, dvhart@infradead.org, jack@suse.cz,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mingo@redhat.com,
- mpe@ellerman.id.au, npiggin@gmail.com, peterz@infradead.org,
- tglx@linutronix.de, viro@zeniv.linux.org.uk
-References: <CAHk-=whKeVCEtR2mQJQjT2ndSOXGDdb+L0=WoVUQUGumm88VpA@mail.gmail.com>
-Subject: Re: [PATCH v2 02/10] uaccess: Add speculation barrier to
- copy_from_user_iter()
-Content-Language: en-US
-From: Giorgi Tchankvetadze <giorgitchankvetadze1997@gmail.com>
-In-Reply-To: <CAHk-=whKeVCEtR2mQJQjT2ndSOXGDdb+L0=WoVUQUGumm88VpA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-so we can use speculation barrier? and fix the problem locally
+This series is based on top of the three resource fitting and
+assignment algorithm fixes (v3).
+
+PCI resource fitting and assignment code needs to find the bridge
+window a resource belongs to in multiple places, yet, no common
+function for that exists. Thus, each site has its own version of
+the decision, each with their own corner cases, misbehaviors, and
+some resulting in complex interfaces between internal functions.
+
+This series tries to rectify the situation by adding two new functions
+to select the bridge window. To support these functions, bridge windows
+must always contain their type information in flags which requires
+modifying the flags behavior for bridge window resources.
+
+I've hit problems related to zeroed resource flags so many times by now
+that I've already lost count which has highlighted over and over again
+that clearing type information is not a good idea. As also proven by
+some changes of this series, retaining the flags for bridge windows
+ended up fixing existing issues (although kernel ended up recovering
+from the worst problem graciously and the other just results in dormant
+code).
+
+This series only changes resource flags behavior for bridge windows.
+The sensible direction is to make a similar change for the other
+resources as well eventually but making that change involves more
+uncertainty and is not strictly necessary yet. Driver code outside of
+PCI core could have assumptions about the flags, whereas bridge windows
+are mostly internal to PCI core code (or should be, sane endpoint
+drivers shouldn't be messing with the bridge windows). Thus, limiting
+the flags behavior changes to bridge windows for now is safer than
+attempting full behavioral change in a single step.
 
 
-On 8/22/2025 5:52 PM, Linus Torvalds wrote:
-> On Fri, 22 Aug 2025 at 05:58, Christophe Leroy
-> <christophe.leroy@csgroup.eu> wrote:
->> > The results of "access_ok()" can be mis-speculated. The result is 
-> that > you can end speculatively: > > if (access_ok(from, size)) > // 
-> Right here
-> I actually think that we should probably just make access_ok() itself do this.
-> 
-> We don't have *that* many users since we have been de-emphasizing the
-> "check ahead of time" model, and any that are performance-critical can
-> these days be turned into masked addresses.
-> 
-> As it is, now we're in the situation that careful places - like
-> _inline_copy_from_user(), and with your patch  copy_from_user_iter() -
-> do maybe wethis by hand and are ugly as a result, and lazy and
-> probably incorrect places don't do it at all.
-> 
-> That said, I don't object to this patch and maybe we should do that
-> access_ok() change later and independently of any powerpc work.
-> 
->                   Linus
-> 
+I've tried to look out for any trouble that code under arch/ could
+cause after the flags start to behave differently and therefore ended
+up consolidating arch/ code to use pci_enable_resources(). My
+impression is that strictly speaking only the MIPS code would break
+similar to PCI core's copy of pci_enable_resources(), the others were
+much more lax in checking so they'd likely keep working but
+consolidation seemed still the best approach there as the enable checks
+seemed diverging for no apparent reason.
 
+Most sites are converted by this change. There are three known places
+that are not yet converted:
+
+  - fail_type based logic in __assign_resources_sorted():
+    I'm expecting to cover this along with the resizable BAR
+    changes as I need to change the fallback logic anyway (one
+    of the motivators what got me started with this series,
+    I need an easy way to acquire the bridge window during
+    retries/fallbacks if maximum sized BARs do not fit, which
+    is what this series provides).
+
+  - Failure detection after BAR resize: Keeps using the type
+    based heuristic for failure detection. It isn't very clear how
+    to decide which assignment failures should be counted and which
+    not. There could be pre-existing failures that keep happening
+    that end up blocking BAR resize but that's no worse than behavior
+    before this series. How to identify the relevant failures does
+    not look straightforward given the current structures. This
+    clearly needs more thought before coding any solution.
+
+  - resource assignment itself: This is a very complex change
+    due to bus and kernel resources abstractions and might not be
+    realistic any time soon.
+
+I'd have wanted to also get rid of pci_bridge_check_ranges() that
+(re)adds type information which seemed now unnecessary. It turns out,
+however, that root windows still require so it will have to wait for
+now.
+
+This change has been tested on a large number of machine I've access to
+which come with heterogeneous PCI configurations. Some resources
+retained their original addresses now also with pci=realloc because
+this series fixed the unnecessary release(+assign) of those resources.
+Other than that, nothing worth of note from that testing.
+
+
+My test coverage is x86 centric unfortunately so I'd appreciate if
+somebody with access to non-x86 archs takes the effort to test this
+series.
+
+Info for potential testers:
+
+Usually, it's enough to gather lspci -vvv pre and post the series, and
+use diff to see whether the resources remained the same and also check
+that the same drivers are still bound to the devices to confirm that
+devices got properly enabled (also shown by lspci -vvv). I normally
+test both with and without pci=realloc. In case of a trouble, besides
+lspci -vvv output, providing pre and post dmesg and /proc/iomem
+contents would be helpful, please take the dmesg with dyndbg="file
+drivers/pci/*.c +p" on the kernel cmdline.
+
+Ilpo Järvinen (24):
+  m68k/PCI: Use pci_enable_resources() in pcibios_enable_device()
+  sparc/PCI: Remove pcibios_enable_device() as they do nothing extra
+  MIPS: PCI: Use pci_enable_resources()
+  PCI: Move find_bus_resource_of_type() earlier
+  PCI: Refactor find_bus_resource_of_type() logic checks
+  PCI: Always claim bridge window before its setup
+  PCI: Disable non-claimed bridge window
+  PCI: Use pci_release_resource() instead of release_resource()
+  PCI: Enable bridge even if bridge window fails to assign
+  PCI: Preserve bridge window resource type flags
+  PCI: Add defines for bridge window indexing
+  PCI: Add bridge window selection functions
+  PCI: Fix finding bridge window in pci_reassign_bridge_resources()
+  PCI: Warn if bridge window cannot be released when resizing BAR
+  PCI: Use pbus_select_window() during BAR resize
+  PCI: Use pbus_select_window_for_type() during IO window sizing
+  PCI: Rename resource variable from r to res
+  PCI: Use pbus_select_window() in space available checker
+  PCI: Use pbus_select_window_for_type() during mem window sizing
+  PCI: Refactor distributing available memory to use loops
+  PCI: Refactor remove_dev_resources() to use pbus_select_window()
+  PCI: Add pci_setup_one_bridge_window()
+  PCI: Pass bridge window to pci_bus_release_bridge_resources()
+  PCI: Alter misleading recursion to pci_bus_release_bridge_resources()
+
+ arch/m68k/kernel/pcibios.c   |  39 +-
+ arch/mips/pci/pci-legacy.c   |  38 +-
+ arch/sparc/kernel/leon_pci.c |  27 --
+ arch/sparc/kernel/pci.c      |  27 --
+ arch/sparc/kernel/pcic.c     |  27 --
+ drivers/pci/bus.c            |   3 +
+ drivers/pci/pci-sysfs.c      |  27 +-
+ drivers/pci/pci.h            |   8 +-
+ drivers/pci/probe.c          |  35 +-
+ drivers/pci/setup-bus.c      | 798 ++++++++++++++++++-----------------
+ drivers/pci/setup-res.c      |  46 +-
+ include/linux/pci.h          |   5 +-
+ 12 files changed, 504 insertions(+), 576 deletions(-)
+
+
+base-commit: 8f5ae30d69d7543eee0d70083daf4de8fe15d585
+prerequisite-patch-id: 801e8dd3aa9847d4945cb7d8958574a6006004ab
+prerequisite-patch-id: 0233311f04e3ea013676b6cc00626410bbe11e41
+prerequisite-patch-id: 9841faf37d56c1acf1167559613e862ef62e509d
+-- 
+2.39.5
 
 
