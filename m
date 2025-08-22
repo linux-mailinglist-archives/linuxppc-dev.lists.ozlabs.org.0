@@ -1,69 +1,122 @@
-Return-Path: <linuxppc-dev+bounces-11220-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11224-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1CAB3217E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 19:27:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0403BB32558
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 Aug 2025 01:14:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c7nFJ5pmHz3cmw;
-	Sat, 23 Aug 2025 03:27:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c7wxN0kMYz3clb;
+	Sat, 23 Aug 2025 09:14:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755883652;
-	cv=none; b=YB7lOhgbL2wnuAp13pPiujUcd8SpZcCIAH3VllCrrMa9Xc40khRkx6MNqmpVctFWigHE1jXKwaQQJ0++k3L2rr0xunITF0XFHdmAK0G8AY3CXLBz+GUE5OWZxpTTFyfqO/qL3+WUXjmmZEV0XA6uf6rhLK1J4igCWT/zQtaX3cQICoy99nTyQKJ3MrMg1v0uw4Ps0VmHlsrwwMvoI2MCOTgV03aoCz90qmwXa4V9nYdHSe7ztH6/6bZvl8HODQLTpyrl/dunIG3YxsVWsZSk4qGhyCSFaTvqyEzpntm0POBHA8N5lPpSH/fi2dOnw87hSW5dIp44vHObDcArShzX9Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755886541;
+	cv=none; b=Fq7nnVoDMcIer8APjiglHZubCVqr1zdpZP03OLKSHDwUP0HCtSR+iOlDgmpS1U7W/IP4O5b8qWYyNgHf6C2RdwJZYsW9umuc6VVaLDsm0ryhH2UerQ2DG3PsZflNAb1nYFd2XfLn0p/WvZSAnaWN722nX2rluBZzy12VdBewu9n6zm9vhsYgJrRN94rjttREWTUlyC+DvncQEi5UWAjBOYek2kPWXt0mY2K+3lHzz+IqQ35DJdIi3rz2D7jpGllcLahUTgcvDC+IKjVv4qXsOcTgzhRhAcArRJvCioWoMhKJF/F9ti9hLBe7sLbF3KzQDvO9PEjdNlMpKZD9mr9Aog==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755883652; c=relaxed/relaxed;
-	bh=cnYAK6pcJbmN/7KkXHKKoNuoegVk5crF3+JsE5R4CDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=VMYR85GoLjgGES6GZBQ/voF0Q72LploXuh4nq6Qv2M1RQtKPyqVH5d0vn4MoJhROiQgo9lGz7d2T5NgjcDRNbBcHnEg1bUu2AeUPfchvnN2EyK6wyxi60igwSY9K7k0XORTfvddjKvYkqdMiqg/hJ8bRCK2TmLM4He52vhTzXUwccKrvD0j7BSmgXx7MUAqbY0hzqdwzGHSKb/+DsjpuvnFkJv3Iq6NZE3JO/3kegI3jID0W04nqYO7Osqdlg/2BfO4ovttDpI50MyDst9EBWarEk4MsH7PKdFJfeQHwzL9u9tqrMvvn6bF3XJDxn9Ci0MLOmht1qSxSrxqfBWwLAQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JYIJREYc; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1755886541; c=relaxed/relaxed;
+	bh=qYWGWVCN0O70uGnBCPPQFCaIo3hbXhoMScsfqxRs/Kc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=l0TXAt9Wp6nH/EIfR1tSCuVFQg7+UC/dzGglCNcgVQFhv2lqHe1SdgnQKWtesdE7BASAsuLJyN34JqMkcH/DUhpufSRcziG7ITeQ1ExZBTiKUh1g44KG1qbY+vkMEmAIjb0ps27/cjUAHlBUynZCVWXgMKA6mJthviRzDxLGWxzWUki4ug9LB4rstj9HpzLrWZlEQQjJeq2ariGSloT5hSYFJD9zzvNyTiXjwRjq9K67N9yj7ng83WC1ZThsBYN9g6eXbW7roz+I27Hs/Y6hvL8mocK/Uv/mlKfSyXhh77hc3O2Drjq0tAy7c8IrFOvOy0PAAg0pyApbjVaUNZMe5w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=cnIefc3w; dkim-atps=neutral; spf=permerror (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org) smtp.mailfrom=purestorage.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=JYIJREYc;
+	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=cnIefc3w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2a00:1450:4864:20::62f; helo=mail-ej1-x62f.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7nFH687Gz3clh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Aug 2025 03:27:31 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F05743532;
-	Fri, 22 Aug 2025 17:27:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA3CC4CEED;
-	Fri, 22 Aug 2025 17:27:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755883649;
-	bh=G7KtXL3SjzTkHJuJOjwYNF1lYEbXJj7RSBitEc7W8Zw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=JYIJREYc3SZvg4o7EQpPH98l0K7aQf2+DyQbIFgiot+v5EJ++MLXdULNEx4PVxR+A
-	 zC9ma60qFBdp2XnPeijvRm+wVOkoqzpt15MRz/yn/5n90QBS6uVUiSvHE7AEGt90uP
-	 zSFIO0Xy/X66608SXg7/eEo6+mUpBp71po7Vv9MaQmOSSGXObn/Nx1LXxYvbhJEDZy
-	 Wfzz4nJy1B0TR7/QOJO21Mw90TDV4FtTIOkbi0JkC2H8HctU/SLT75H3DjYoeheL0r
-	 66HNIRe+xb/XdQWmpdkEZ2WP+bLIrTOdXnMid5nXxcXP+UNe1eUbxB+l+xxkeCBO0s
-	 Xw/eo9rSGhsig==
-Date: Fri, 22 Aug 2025 12:27:27 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: linux-pci@vger.kernel.org, bhelgaas@google.com, mahesh@linux.ibm.com,
-	oohall@gmail.com, linuxppc-dev@lists.ozlabs.org,
-	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-	james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com, linmiaohe@huawei.com,
-	shiju.jose@huawei.com, adam.c.preble@intel.com, lukas@wunner.de,
-	Smita.KoralahalliChannabasappa@amd.com, rrichter@amd.com,
-	linux-cxl@vger.kernel.org, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, erwin.tsaur@intel.com,
-	sathyanarayanan.kuppuswamy@intel.com, dan.j.williams@intel.com,
-	feiting.wanyan@intel.com, yudong.wang@intel.com,
-	chao.p.peng@intel.com, qingshun.wang@linux.intel.com,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Subject: Re: [PATCH v5 2/2] PCI/AER: Print UNCOR_STATUS bits that might be
- ANFE
-Message-ID: <20250822172727.GA690123@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7pJq5V6Tz3cmW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 Aug 2025 04:15:38 +1000 (AEST)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-afcb73621fcso330550466b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 11:15:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1755886532; x=1756491332; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qYWGWVCN0O70uGnBCPPQFCaIo3hbXhoMScsfqxRs/Kc=;
+        b=cnIefc3wivNvmxRC5VCp2s8//SQa38IoHj22HoTBCP2teEc5OKIauIhIR0wtaKUyfZ
+         5c5bDc3amTFXP29eoz8EH0b7Ql7seymeogt2m/jJSkvg4rVfe0vrl9qxVPC2kWmkrWTi
+         frQVW8J7S+uBWtOUPkct+AVV2zqKOgL1k4v7beyvrlzZ4ydem8UVkXxuQhHwWRvkV9pu
+         zACxBKUNlVy3qojyWdGQFLzDkHy/DS/9uy38dHWJeng+Y6THMziq6DezNuLEwBGVt2f0
+         qXTwtyBu/S8FhYosSG9wmfNJjSWSeFxx+dxXenvTeMk00NhHYfbrHSVLza3G5y5TMC/3
+         tX3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755886532; x=1756491332;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qYWGWVCN0O70uGnBCPPQFCaIo3hbXhoMScsfqxRs/Kc=;
+        b=XOpj+8UylaANKbKJaSy3ww1FF9Mi8SNrzFwdQj35fo/NctZmlCtXS6FObfH4oJEVuG
+         Rq5PW2XY6gYzucivm9iS5OVUnI8HyxoKT2WieeJR9axbHxnLdF7m5Qsa/08XZiR7TYhR
+         MXnJAmmNYIanQMjANnfnBCa+d/OQgMMpFEsuvTSPJxJLr4MqMSmrq4Xucv/Udb3Kc2A5
+         mqUYXPX7984/Vj0oLJ5mkr6JrRcd1j20L/teXGwlRuEABgOwDPFINmI81ymJWesdngAU
+         tevwO9rzk4ioSZju/rwPObz+hfeDfuv6pUnr+6uLB6sEvjr/ynzt/rm+e4kpXd7ZC7JC
+         IzbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0XA66L5wHB1IjeP6k+4TW4afx2SdmHJ7hxvfXcbaLNPpTLKdLOt2Qz0TM5sND3u9VKb5kdKNY9ROrpf8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyDNsJsOHBc5ACMHEdEP/3C2aN6tQl+dFWcXUSaqp2UN3DK/bf8
+	qSN+8YNO1c57qVJAPeuMVJkqPxZv/byeOD4uAd6HW84sOFujg47L7ByobrBxXV7anE0=
+X-Gm-Gg: ASbGncsxuNQFQwW1MvqNNse2/THKeCq6QZAddg6C+kVLGsxp6rO+Mm7sgnmpi/Cu/Xa
+	OgKz0/B5M8UKDOm6XFQR14Ut2hbDMrhLZ8AhTRCLFH+YcS0W2TyrAMj/0g0kql7rPta//ItSnSY
+	KZmfr1NZIB0naMhR5oQaik7fvzyio3XQP4UTNt2T2WM7ntaw43f2eb9HY+DYjB+o4Rn3aML5dZg
+	zQV1QDYtv4W6nQ1J/aIE5bAhiUoUnDYUyjMuGBqHxM2y95Hw6r0MHcehhuy4BQgFxtfsNtE3tyL
+	xXEirck5EBTMEIJGjX5CWS2itq15QDiVzGKuhf1n7gjgJVpTTXH0a2+ChJlrctaTR5Eec+1Krur
+	z1ciAIRpHSMnxxAcBRIYDjyDg+XXgD58b4tVAgw3raqiGr3DIIIrVnse+BYc=
+X-Google-Smtp-Source: AGHT+IFi/UqB7Uldrm+9VbwlcvS/K9grf+HFQGwUPWY0Y+SNRhjWVo0c6zi2HNxzYpUPo9jAOLRO3A==
+X-Received: by 2002:a17:907:7213:b0:ae0:d798:2ebd with SMTP id a640c23a62f3a-afe295c0e07mr334350266b.35.1755886532255;
+        Fri, 22 Aug 2025 11:15:32 -0700 (PDT)
+Received: from dev-mattc2.dev.purestorage.com ([208.88.159.128])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-afe49314f63sm16474966b.97.2025.08.22.11.15.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Aug 2025 11:15:31 -0700 (PDT)
+From: Matthew W Carlis <mattc@purestorage.com>
+To: helgaas@kernel.org
+Cc: Smita.KoralahalliChannabasappa@amd.com,
+	adam.c.preble@intel.com,
+	agovindjee@purestorage.com,
+	alison.schofield@intel.com,
+	ashishk@purestorage.com,
+	bamstadt@purestorage.com,
+	bhelgaas@google.com,
+	bp@alien8.de,
+	chao.p.peng@intel.com,
+	dan.j.williams@intel.com,
+	dave.jiang@intel.com,
+	dave@stgolabs.net,
+	erwin.tsaur@intel.com,
+	feiting.wanyan@intel.com,
+	ira.weiny@intel.com,
+	james.morse@arm.com,
+	jrangi@purestorage.com,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	lukas@wunner.de,
+	mahesh@linux.ibm.com,
+	mattc@purestorage.com,
+	msaggi@purestorage.com,
+	oohall@gmail.com,
+	qingshun.wang@linux.intel.com,
+	rafael@kernel.org,
+	rhan@purestorage.com,
+	rrichter@amd.com,
+	sathyanarayanan.kuppuswamy@intel.com,
+	sconnor@purestorage.com,
+	tony.luck@intel.com,
+	vishal.l.verma@intel.com,
+	yudong.wang@intel.com,
+	zhenzhong.duan@intel.com
+Subject: [PATCH v5 0/2] PCI/AER: Handle Advisory Non-Fatal error
+Date: Fri, 22 Aug 2025 12:15:20 -0600
+Message-ID: <20250822181520.12394-1-mattc@purestorage.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20250822165112.GA688464@bhelgaas>
+References: <20250822165112.GA688464@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,86 +130,41 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240620025857.206647-3-zhenzhong.duan@intel.com>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: YES
+X-Spam-Status: Yes, score=3.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,
+	SPF_HELO_NONE,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Report: 
+	*  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+	*      [208.88.159.128 listed in zen.spamhaus.org]
+	*  0.0 T_SPF_PERMERROR SPF: test of record failed (permerror)
+	*  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+	* -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+	*      envelope-from domain
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	* -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at https://www.dnswl.org/, no
+	*      trust
+	*      [2a00:1450:4864:20:0:0:0:62f listed in]
+	[list.dnswl.org]
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Jun 20, 2024 at 10:58:57AM +0800, Zhenzhong Duan wrote:
-> When an Advisory Non-Fatal error(ANFE) triggers, both correctable error(CE)
-> status and ANFE related uncorrectable error(UE) status will be printed:
-> 
->   AER: Correctable error message received from 0000:b7:02.0
->   PCIe Bus Error: severity=Correctable, type=Transaction Layer, (Receiver ID)
->     device [8086:0db0] error status/mask=00002000/00000000
->      [13] NonFatalErr
->     Uncorrectable errors that may cause Advisory Non-Fatal:
->      [12] TLP
+On Fri, 22 Aug 2025 11:51:12 -0500, Bjorn Helgaas wrote 
+> I'm terribly sorry, this is my fault.  It just fell off my list for no
+> good reason.  Matthew, if you are able to test and/or provide a
+> Reviewed-by, that would be the best thing you can do to move this
+> forward (although neither is actually necessary).
 
-Forgot to mention on other patch, but please add spaces between the
-spelled-out terms and the "()" abbreviation, e.g., "Correctable Error
-(CE)".
+It seems for pci there is always a massive list of things in flight..
+Difficult for any mortal to keep up with. We pulled the patch into our
+kernel & have started testing it. I'll sync-up with my team internally to
+see exactly what the plan is & how long we think it will take.
 
-Also, can you update this commit log to say what the patch does?  It's
-OK if it repeats and/or expands on the subject.
-
-> Tested-by: Yudong Wang <yudong.wang@intel.com>
-> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> ---
->  drivers/pci/pcie/aer.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 3dcfa0191169..ba3a54092f2c 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -681,6 +681,7 @@ static void __aer_print_error(struct pci_dev *dev,
->  {
->  	const char **strings;
->  	unsigned long status = info->status & ~info->mask;
-> +	unsigned long anfe_status = info->anfe_status;
->  	const char *level, *errmsg;
->  	int i;
->  
-> @@ -701,6 +702,20 @@ static void __aer_print_error(struct pci_dev *dev,
->  				info->first_error == i ? " (First)" : "");
->  	}
->  	pci_dev_aer_stats_incr(dev, info);
-> +
-> +	if (!anfe_status)
-> +		return;
-> +
-> +	strings = aer_uncorrectable_error_string;
-> +	pci_printk(level, dev, "Uncorrectable errors that may cause Advisory Non-Fatal:\n");
-
-Will have to look at the spec more, but I don't think "may cause" is
-quite the right wording here.  It's not that an Uncorrectable Error
-causes a separate Advisory Non-Fatal Error; IIUC there's only a single
-error and it's just *treated* and signaled differently.
-
-> +
-> +	for_each_set_bit(i, &anfe_status, 32) {
-> +		errmsg = strings[i];
-> +		if (!errmsg)
-> +			errmsg = "Unknown Error Bit";
-> +
-> +		pci_printk(level, dev, "   [%2d] %s\n", i, errmsg);
-
-I think we might have removed pci_printk() recently, so this might
-need adjustment.
-
-> +	}
->  }
->  
->  void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
-> -- 
-> 2.34.1
-> 
+Cheers!
+-Matt
 
