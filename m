@@ -1,49 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-11182-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11185-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2738AB316B9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 13:50:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DCCB3175E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 Aug 2025 14:15:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c7dmZ5JFYz3cYh;
-	Fri, 22 Aug 2025 21:50:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c7fKT346Mz3cb1;
+	Fri, 22 Aug 2025 22:15:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755863438;
-	cv=none; b=QZij6LB8OA24dRlsQ76l4YjGeDX059wQ3WCaRNdh3vkR7tLZepKm6oX/twk7qTHk597zfMIShMACr1Nq8J5ny1AHxup7rM8kjNuvf+T5JSK/riyop7vW2putcTy35jfZ/2seK4n1t68bcaFgB4RLe8paYIcGseG5+Q2reeb3krCwbVzQFveQMSF9f26/CSox/1qKvpc8x2VuqysV97QxDv52wDiFsTTj9v3FV1MzK1aCA8koTQAlhBdlPmdGRx+XZ5Ot6MiyAiD5+qWx/beeBYRGNl+/v27Ettz4aVmsCXXON7OBfHDml9gJNk1vE12U7iHTTwct84h7wy+uD1hr8g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::f32"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1755863840;
+	cv=none; b=ezJuN8IEFqVYa4+R+d1xYVoc0fLYuvB0MLYJV+7v3xbsLMdR851bWby/DSrNP8T3RCBeZ3njpbRcdjJ1uumVqX42e0i9J5SZr+LU3FRbSEEXRDl3AXt6+5SnlARVa9VyJl4lmGLzFuelup/Xtby3d3BogZrS5eJ4bxNQp6D8YszYPTWuzVmCBYGi3Lv+oJVZa27YRDke03jSvMHK3MlSXwB8fKvvwpIJ9+Z7AJSqn7bExKD/ccg5fuvydHGAAswRamp0vsQ42+2OfH9yk7DnQiM1BaoScFT2xiMKm4tiTdShguuAW3q7lbl8cJkFXXM8GnCpI0qM5XzOsdOolZzBGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1755863438; c=relaxed/relaxed;
-	bh=dI9ziP6NIfAKgWPm8Yeoju7yyXDiUDaErbKXEsFk4/w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fZaqP6U7dazsQbCtr0p/h+NHcvgEai1cdkwv4F3UKDXtTP0/n7etocB5V+qci0IIfPug26zA94kfHoAkIwnSj30EJNKim2uzg4j0I3y1nYsZ7Re4ikBBBA7Ae0wEOziRj0vgNkgf41ughPlajdvlp66KsM1ZSfR17L5oQ6Ok6BHcg38qiKKjK5xCRT+v8QYOMghvGGyjAIdqm496d9n65DYH8JdCux7dC3l37NKDNRYrx+BEbMXB9yUTcqy1EjNHcpYzVW78p2uL4+GBM7nPugczra77OA+tDGzAmZ2vDiHK7KxwTNNhcir6ZPeBFclD7ZUuDqitgIMhVSzswnmZoA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c7dmY6bMfz30Pn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 21:50:36 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c7bMB03M7z9sSq;
-	Fri, 22 Aug 2025 12:01:58 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id y_ks77h51LJ0; Fri, 22 Aug 2025 12:01:57 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c7bM96P6yz9sSp;
-	Fri, 22 Aug 2025 12:01:57 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C1B9A8B77E;
-	Fri, 22 Aug 2025 12:01:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id xG2Hu46FC68E; Fri, 22 Aug 2025 12:01:57 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 29CC98B763;
-	Fri, 22 Aug 2025 12:01:57 +0200 (CEST)
-Message-ID: <285e1504-a25a-452d-958e-9db3963a02cb@csgroup.eu>
-Date: Fri, 22 Aug 2025 12:01:57 +0200
+	t=1755863840; c=relaxed/relaxed;
+	bh=LzBrn/7/9lhhbAnv0z8eoRpzaF4OzYHSx4GrDU+v3ZA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XoGQP9SqX5zTZniqkQzsKA6zPFaa7L1fHB5wtzKClyTyfBqjDZfEvlzdcuziSFypCKnK48o0rIK+2Ik87gsTTupJkI3vcg/OASI89dLURfh/ZLUmZAStSKQJqVLkPVyR7bBOrUFUOKWg8o2dnyggz2c/iCq3i3F4ypP4wa3b5CDASm1Jegw+b8+1wvIgKDDcKtwcW4fuwHtz0b0+OHgYRl2HU/RfZG82MpU0/aCauZks0BjdQRP0xtMK5G9YH0LdoPauRYTiM8U0YE4xOl8jaL+JNUA1Ig+IR2biz8HvQKFqOaPDPr79ZRKmLwIvx0MlKaGTzsUbkbOdvY89MqfQtQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OQFcMgJU; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::f32; helo=mail-qv1-xf32.google.com; envelope-from=chelsyratnawat2001@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OQFcMgJU;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f32; helo=mail-qv1-xf32.google.com; envelope-from=chelsyratnawat2001@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c7dwH0DWJz2xxr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 21:57:17 +1000 (AEST)
+Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-70d93f57924so14013756d6.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 Aug 2025 04:57:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1755863835; x=1756468635; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LzBrn/7/9lhhbAnv0z8eoRpzaF4OzYHSx4GrDU+v3ZA=;
+        b=OQFcMgJUyKVXZCZ+c9AR4z1dqTXtrHt571VWbRL4zZh4Ffoct1AisHlm6Pvl3CnqE9
+         /B2Fq0ea0cZ3d88kMIsVw16f6WdVfAf9mRqSNVpltq8iShiv9o0MQnCSQ/mughSn/jo/
+         2qfwhCTClSxEqYdwbtiR/nzsCgh5A780WqmBmRG2aBKmHQC+yU46XNieYvynLHfLqKsz
+         QtpJL7Z1/+ud2xjGrTU0HJ3/1AbTkberkcrVh16mlSHN1mHCZ3TVA+Qdz8t4fwe6RHWf
+         K92rYo+/a3IHhy4UfEnfR9Ri2Q9eCisjqPYjENYhChYcH+I4f/h6j8VHPvtpmSNovaUT
+         1dDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1755863835; x=1756468635;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LzBrn/7/9lhhbAnv0z8eoRpzaF4OzYHSx4GrDU+v3ZA=;
+        b=DO26lVqD+w3BIzPBmm0jHvum4ATXCRR7KbLAlJWnLOoWTCkU3gUnzcSikcBOL7/kgA
+         GkI3/eXWulj1i3WwDOmwCyMh238hlywcNsYxiBkHV0oWanCg0wxBOt9bbvLAYxlpu4sr
+         cF4avCXPKog5fU9V9E8EWyC3eMt+fuiKXdDzFqmZgrNiQrPuzUV+e/O+zKyvkmgnPQ7B
+         y77kJPVRKYAEuj1od4QNaV8nf0YK/3FuY6P/oDuNhQZw97DxVyMdA9sIQdCN1jDDX4rs
+         7ErlGLgHZr05mFMK64g3hxGsaJkp7zeUsukEZ1eoXA3sWf9f/KEMYsIuHYmIigMVEicj
+         5hNg==
+X-Gm-Message-State: AOJu0Yz/tSO0T0x9Q9uL1jNZIgOdLgw5/uAx1GwnQV9mV5md3EmWdEc5
+	Chl90ZmfUBJEgWK0XCkV6X8sxFgj8z3qDTVh8NbIlIKo4TMOyL8mP71s
+X-Gm-Gg: ASbGncvStVb6BQOZwwNAaRJJv6K3wBxXpWvRYb52qbtJyujBgvFrHyRUWHm1sGlaaVd
+	IJ1whQDvnycWSXjtlgeup2o93lkgSJv15mbmvLGBqWJd38tLleq+khXDqNWaMIGX7HCs916Ex2s
+	QqlhgvW7ogT4FKknHXUW1FS7yKcZCEwm9EC10dfVdcBzV/rZTVINuzCwqxuaDBcmA2RskJcVM2b
+	Fnwwnqo68bDVH9HpGiqbtPZaddIa67lVIJtkk9+pthdNu9E3xRt3x02ZtsR5Ohl+GOC7+Q4FCp2
+	cfTQBvQg3SqmdT6LhphRGdhB4b6DgeRfyKA3Q9QOSO57aazmuLZP9EmKVUXh4j6G5XqSF0osCYb
+	PVgx9oygjaZ37ev9qrGzN5il6t6uRgiJ96SMrU9vNR8jmR8NkYuXOlzcCGc1AFiLu3uTf
+X-Google-Smtp-Source: AGHT+IHpA+EcPiMdbiyZAHt46N7w0D5AA09gFv9HXPM3DfPUZ0lGlHDBzw2LfbEb+CwmZ2kH8Omcuw==
+X-Received: by 2002:a05:6214:4687:b0:70d:7e5a:2284 with SMTP id 6a1803df08f44-70d99bcbf8fmr21800986d6.5.1755863834831;
+        Fri, 22 Aug 2025 04:57:14 -0700 (PDT)
+Received: from cr-x-redhat96-nsd-2.fyre.ibm.com ([129.41.87.0])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70d8f8035cesm26294596d6.4.2025.08.22.04.57.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Aug 2025 04:57:14 -0700 (PDT)
+From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+To: ioana.ciornei@nxp.com
+Cc: linuxppc-dev@lists.ozlabs.org,
+	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+Subject: [PATCH] bus: fsl-mc: Replace snprintf with sysfs_emit in sysfs show functions
+Date: Fri, 22 Aug 2025 04:57:04 -0700
+Message-ID: <20250822115704.1731999-1-chelsyratnawat2001@gmail.com>
+X-Mailer: git-send-email 2.47.3
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,68 +88,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/12] powerpc: Drop unnecessary initializations in
- __copy_inst_from_kernel_nofault()
-To: Nathan Chancellor <nathan@kernel.org>, linux-kernel@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>, Kees Cook <kees@kernel.org>,
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- llvm@lists.linux.dev, patches@lists.linux.dev,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-References: <20250821-bump-min-llvm-ver-15-v2-0-635f3294e5f0@kernel.org>
- <20250821-bump-min-llvm-ver-15-v2-6-635f3294e5f0@kernel.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250821-bump-min-llvm-ver-15-v2-6-635f3294e5f0@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Use sysfs_emit() instead of snprintf() when writing to sysfs buffers,
+as recommended by the kernel documentation.
 
+Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
+---
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Le 21/08/2025 à 23:15, Nathan Chancellor a écrit :
-> Now that the minimum supported version of LLVM for building the kernel
-> has been bumped to 15.0.0, the zero initializations of val and suffix
-> added by commit 0d76914a4c99 ("powerpc/inst: Optimise
-> copy_inst_from_kernel_nofault()") to avoid a bogus case of
-> -Wuninitialized can be dropped because the preprocessor condition is
-> always false.
-> 
-> Reviewed-by: Kees Cook <kees@kernel.org>
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-> ---
-> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> ---
->   arch/powerpc/include/asm/inst.h | 4 ----
->   1 file changed, 4 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-> index 684d3f453282..ffa82167c860 100644
-> --- a/arch/powerpc/include/asm/inst.h
-> +++ b/arch/powerpc/include/asm/inst.h
-> @@ -143,10 +143,6 @@ static inline int __copy_inst_from_kernel_nofault(ppc_inst_t *inst, u32 *src)
->   {
->   	unsigned int val, suffix;
->   
-> -/* See https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgithub.com%2FClangBuiltLinux%2Flinux%2Fissues%2F1521&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C23038335822b4dbe2adc08dde0f7f50e%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638914077769007882%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=EfgIB7nIdCB2e3KWeEvsXKG%2B8LrK%2FjpUrA4RIeMcreo%3D&reserved=0 */
-> -#if defined(CONFIG_CC_IS_CLANG) && CONFIG_CLANG_VERSION < 140000
-> -	val = suffix = 0;
-> -#endif
->   	__get_kernel_nofault(&val, src, u32, Efault);
->   	if (IS_ENABLED(CONFIG_PPC64) && get_op(val) == OP_PREFIX) {
->   		__get_kernel_nofault(&suffix, src + 1, u32, Efault);
-> 
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index c1c0a4759c7e..13172a0cdb48 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -203,7 +203,7 @@ static ssize_t driver_override_show(struct device *dev,
+ {
+ 	struct fsl_mc_device *mc_dev = to_fsl_mc_device(dev);
+ 
+-	return snprintf(buf, PAGE_SIZE, "%s\n", mc_dev->driver_override);
++	return sysfs_emit(buf, "%s\n", mc_dev->driver_override);
+ }
+ static DEVICE_ATTR_RW(driver_override);
+ 
+-- 
+2.47.3
 
 
