@@ -1,54 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-11231-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11232-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4A5B32E91
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Aug 2025 11:01:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 531E4B3311D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 Aug 2025 17:16:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c8nw73ggqz30VZ;
-	Sun, 24 Aug 2025 19:01:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c8yDY4dj1z3bkb;
+	Mon, 25 Aug 2025 01:15:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756026071;
-	cv=none; b=kl3G/0K47n2xUaP+9qGFFlm1OT2NxGwpf9lcpAcCPlVF2bYTw0eYeVAKuqTTR8xyBnDHkLIb3qBe5YL4slToAEoQVrVtn1DdccQCPZap0tsmJoowz+mTQsW+rKALn1IdCdXOYlr9TDUg1YGmNcZuSNZpIXH8+YH9qhoYEVCdbyDUtYgAbQw6A1VypERoXCDsKkYiYPPRwFY50hbW594uJz/qnUvwJilhoDgGndVFwi5NfE7LURJqKXU2avHHqq5RK+bn4ffoFPWW2WpYEWQqYl9+YtbYD9I6HFNfNQ+UoU2nXrkrqVjUF2FmpN6GIkc54WbYxqIHtuvIsMKPYo9Ccg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756048557;
+	cv=none; b=G8m7Wne/kCPMuMDJNrqaNUFdWQAOyijfS31nwwagaKNuDIak9jYmANIFgFeYmvyRmXUVVqr0lPNppbuEFjgFAzu4/3kLXu1q0Rtu31ZPyuqUdewY1PuR/P+OldMB4FOWjM+RnkZIdeWT7Qe9084mc35Jx2fATjSVeoYG6jfzYcMLgKHDx5jwlsxi788Uu5PGtcBozi1HeaLuIFcHFXW/zIKqtcs+VYidkthI/fCQQ56t6YQKlwuggLysAYOPWVWF47xQv2Y1KA2td6hj4YCt4v139PxioYsXMziiH4yZXAlZQH1t9wSPJVMAVIU6fVfiQe4O0j7xkO9FlfACjPnfvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756026071; c=relaxed/relaxed;
-	bh=62vn7UBr1QjhWa9SxSR650yYWFtscgIqCu806v/4WP4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dm0BwtEaTlJD0ZENKAU/3Bjaarme8a1oN/h4CzGpMj95B/+DsMJIB3qjVM86yWqC/ds5AKGMNW41Zbd6Tco79LaTNnj2yNKfp78JvVUXZ8xCeEOXiW5LSFF0FYlKJq3Ou86rWU/Aeks1nqjQ3ItGkPBwcqyQbmJkeYqz9c7feqz0K8J2NmcnDwalhsCYIe+yLTOU0bkiiiKAcRXh/XUvPW7fHgfdl8+KSPDqGmfMG8qIAhS2cM+ygDHTCEmrX78sD559EWvBGUQNzceNL6mrWJa/i1+PI2yRXjiyNrNOa7GItI0kqLzRA0S66Magni31WRif1r6A3eeTlaiMsN+/oQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=FBLH6vD1; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+	t=1756048557; c=relaxed/relaxed;
+	bh=3ik/NRqYHSG8hmITK6G3KaWPdzyg/qMeKl48YWWYUqc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=OnPIfAAqCf0Ip0nHhpT8YRZKjKWoiNGOUTjDEiVcYoaFqLX7r1AxC+tl51UwfvdZzb3Ab5d+o7b7SRsqwLesM0aVv5qG4PM/xmUJxChi6TcDnh8bKajVKXQqtBLcRi0SBVSzxxlHIfqGrYvyAdcGCNio3l9ZgHTXnTUKdDFs6d9H35Y0eIcV1fk4DfZR1jn1DpGlCXXg5y1Poj9h4a8jTNOdDOlCyppn7SOzonMJf2zrEmPM1G7FGcwg7N5s3IzrpUVzgGVjepAcpQnugA5yiTJgzJnVpPjjTW40rwKGeQmQOwoX2QkrQ+p6+zXblgATUqs4vejwHldiB4Y8oXK4YQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=FAalNz8n; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=cB54om5a; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=FBLH6vD1;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=FAalNz8n;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=cB54om5a;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 446 seconds by postgrey-1.37 at boromir; Mon, 25 Aug 2025 01:15:55 AEST
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c8nw52lt2z30FR
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Aug 2025 19:01:08 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05F5E443C0;
-	Sun, 24 Aug 2025 09:01:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 797D4C4CEEB;
-	Sun, 24 Aug 2025 09:01:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1756026064;
-	bh=/FmCqj2u2V8mp0UjjYF2Fnjzx7frypxGep1lBC5W+ww=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FBLH6vD1xyZHGhZupurJJiXDqq58uRTXx4NKkircguBR1slJBtNWWA+62IXIMwGlB
-	 CZQ+WJlLuS5jRVb/CtF7osgc0FoMzMTfMhLRhanK5QcOIK35gkicqhvc66YoNZxHut
-	 naUdlTf1k1KUwp7VkDqq7HZcr/O1ZWIQ4B1E5PXc=
-Date: Sun, 24 Aug 2025 11:01:02 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linux-stable <stable@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: Re: Apply commit 5a821e2d69e2 ("powerpc/boot: Fix build with gcc
- 15") to stable kernels
-Message-ID: <2025082435-swoop-cyclist-b6fc@gregkh>
-References: <7240379a-176f-4187-a353-1e6b68a359ce@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c8yDW6flpz2ytg
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 01:15:55 +1000 (AEST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1756048097;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3ik/NRqYHSG8hmITK6G3KaWPdzyg/qMeKl48YWWYUqc=;
+	b=FAalNz8n80tXbjLu1YEIFUu9UhX73vltRahVCO39qSG0lfGoaJew0vQszt0dphBAjPSnLe
+	7C/FD4/TKQG67Y1B/y0dsYTwbjJzp8XI+uPmsYWLSRhFSL8psTth1rBNfiHP7Pwxv8lCkS
+	TDI4rdGp9S0oezXRjJ36bL2EAtg+sygQdbSF6fTVdqYLjKZ7jo4U5NfPpkFOr2o9HOuWTj
+	/6PuKr1BAXjl0+x4heqkOUOddzMYeBWs8AGL29P6pJnHTVKAF8UGAby6xTND2ABPKNgVED
+	AOj44YWy7naeuHasGmrTDOFaMXE/8Txy4Eo3Krw9/b2ZNN1pdjjL+l+L00m6aQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1756048097;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3ik/NRqYHSG8hmITK6G3KaWPdzyg/qMeKl48YWWYUqc=;
+	b=cB54om5a1WjZnAiZL0WpPY1A+vjsjucby/u6/KzywEDaNIPuqTKO2+T5qzphZpMpszCuEW
+	b3lofR6L1VonsTDQ==
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra
+ <peterz@infradead.org>, Darren Hart <dvhart@infradead.org>, Davidlohr
+ Bueso <dave@stgolabs.net>, Andre Almeida <andrealmeid@igalia.com>, Andrew
+ Morton <akpm@linux-foundation.org>, David Laight
+ <david.laight.linux@gmail.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Daniel Borkmann
+ <daniel@iogearbox.net>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-block@vger.kernel.org
+Subject: Re: [PATCH v2 03/10] uaccess: Add
+ masked_user_{read/write}_access_begin
+In-Reply-To: <7b570e237f7099d564d7b1a270169428ac1f3099.1755854833.git.christophe.leroy@csgroup.eu>
+References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
+ <7b570e237f7099d564d7b1a270169428ac1f3099.1755854833.git.christophe.leroy@csgroup.eu>
+Date: Sun, 24 Aug 2025 17:08:15 +0200
+Message-ID: <87h5xw3ggw.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,27 +85,32 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7240379a-176f-4187-a353-1e6b68a359ce@csgroup.eu>
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 05, 2025 at 08:03:49AM +0200, Christophe Leroy wrote:
-> Hi,
-> 
-> Could you please apply commit 5a821e2d69e2 ("powerpc/boot: Fix build with
-> gcc 15") to stable kernels, just like you did with commit ee2ab467bddf
-> ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
-> 
-> Ref: https://bugzilla.kernel.org/show_bug.cgi?id=220407
+On Fri, Aug 22 2025 at 11:57, Christophe Leroy wrote:
 
-It only applies to 6.6.y and 6.12.y, not older.  If you want it in older
-trees please send a backport.
+> Allthough masked_user_access_begin() is to only be used when reading
+> data from user at the moment, introduce masked_user_read_access_begin()
+> and masked_user_write_access_begin() in order to match
+> user_read_access_begin() and user_write_access_begin().
+>
+> That means masked_user_read_access_begin() is used when user memory is
+> exclusively read during the window, masked_user_write_access_begin()
+> is used when user memory is exclusively writen during the window,
+> masked_user_access_begin() remains and is used when both reads and
+> writes are performed during the open window. Each of them is expected
+> to be terminated by the matching user_read_access_end(),
+> user_write_access_end() and user_access_end().
+>
+> Have them default to masked_user_access_begin() when they are
+> not defined.
 
-thanks,
+Have you seen:
 
-greg k-h
+    https://lore.kernel.org/all/20250813151939.601040635@linutronix.de
+
 
