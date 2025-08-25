@@ -1,71 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-11253-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11254-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A66B3402A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 14:56:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE5BB3403D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 15:01:26 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c9W5j2vGfz3cj2;
-	Mon, 25 Aug 2025 22:56:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c9WBr2sCRz3cjR;
+	Mon, 25 Aug 2025 23:01:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::233"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756126617;
-	cv=none; b=S3CvOjwMrXyHpwLiZGGDnoUssVcb8Zo2vjHAqeoGG5xu+FTEL6AWZVPTN7MBTFlKn6RnYUqS/9TqnIJtvIPUOLCgem7lvBlrp+qrdCkC2sEKCnP3Wtw1kt6K6a6FXYEQFz+V2+IU62Q0KopQa6A/7jtKqBJx6OUIu1WzLejjbOneGEpfZGf/9VosxZ6WsSXU8/At+W9LFt8y6wq14YnacycyNHhENx0/TpQ5fQqsWG77p3Jz5Gs4kkSI5fw85St8HrPVJ+8z6nSMwpx8RykeE8E5Ds/veyZ6BweH78pXumQcJ1o203GFuA3V8MCYaafIfQlBu/Dp6Z/QzLBC1qhzwg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::135"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756126884;
+	cv=none; b=Ldw5XxpE6nZC20NxVdviQAbXkuQzaDhXJ5W+obe1okjWRPkpoyHqQMK8K18tzDttxzyyuZfEb4qtTUEwopO4B66yxg/nC6uEC7FEHJWMP7jwJIyXIlcW5AwldImVJ+Q5YZp6KbWtd3lopUL24y/zBpgEP+kYb2d7LNZudDnyMvQpd80wh4kz8Po3/Rrj5v8gTmSMHIDk7Dlf77t3HP5nXuDZfTVnERfWi9HiXeP0mzDep5denUemlnrYzCuyb5mWwHSGtXf77AllT6qFgq5NPmdZY2eexo2delbFCHrS1yij8QC0KXs20Ov/qdQOeHl5KrqIwO9n5+EeyvLkGWEupA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756126617; c=relaxed/relaxed;
-	bh=qnMFRUI7OrpeFHOHQnTbYDUskSBfz/K49TJPo7jgp3o=;
+	t=1756126884; c=relaxed/relaxed;
+	bh=dQlK3wXG7sop1i8Jgraua6l3U7jzqZIBJa/jEdUPy4M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AdW+mJji1dvB+xDDCcJ21pxI+i8cJq+TOA3nL/jmc9ooGwLs4PrHEcSW2cg/VdERbj8jZxO9/CtaNqCIJ12k+jWDl12pLgocjkRQKC7nwQUU4rLcWoNgbMXZX7rnJHQRzrkJsELfONa1teWj8uON8J9i+HGvCsmnkaFsMtwXlPzasBjYJ5HYLgz2WarzGZ3HxTcMg7hYbqiRAqptudfrDjFh2pHFlwPrKObdYiOhejHbHu4MT9tFAE+Xtf+qlf3kPAFms1nxks2aJDVtIzZ3JKCGKqzw3N2HaHoAj2zrJUlMEUE5uKlk/h/kTTxIZxR8mqPkmqL49/tzXzfidY1WJQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=vKlL/NcZ; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::233; helo=mail-lj1-x233.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
+	 To:Cc:Content-Type; b=ANH8YM+b6RYcDp09sgB5jK3I1N3WDPw+BccwM7jSQgDgwRX9O3jitIXJLq1lQvR2riO1QadLBbGANBZEOkXoeC8OUtSWFfvkIS5N7PIzGKIg5M6rByxP1eR1Al72Z/LSpbnI+CES5QwAHzn6j/qqK44nXbtZH5TMR2Y/YZ3rYk1qTtBzdl8Ew1IA4ewv5pBXle/qOLAxK4Bci0CitYTOtD2aTb4XobuhWd7PuDsvP7KU7uijJwpk6O+EKhKYxqIf7ldFuAzj/+U177s2kQ19HogqJrCXs71DM2JWGiPHyaMx+XoZGfih1GBjzqvsZ+bKBjJF0Dl86Mu36SqaYMX50g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Qb/qqfG8; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::135; helo=mail-lf1-x135.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=vKlL/NcZ;
+	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Qb/qqfG8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::233; helo=mail-lj1-x233.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::135; helo=mail-lf1-x135.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9W5g54s7z3cj1
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 22:56:54 +1000 (AEST)
-Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-33682342180so1434771fa.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 05:56:54 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9WBq3pQmz3cjL
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 23:01:23 +1000 (AEST)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-55f3ec52a42so1846659e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 06:01:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756126610; x=1756731410; darn=lists.ozlabs.org;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756126880; x=1756731680; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qnMFRUI7OrpeFHOHQnTbYDUskSBfz/K49TJPo7jgp3o=;
-        b=vKlL/NcZD+MBMVFdu0LfYHI0WHY7PBPaRE25RPSOh7bs7uzCxdorwAHOOfKgknCzSr
-         DLgK6IKPmCr4dFB4uF7fwpiJoOIH3Mobd+aFUbbJ6+ptKlYpsqA1SM+E8noSLI9rxrql
-         sOUkybieZjtw38fyWg+Cg9cwfHcS6+16lM5uyVBJx3bP72kZB3G8YnObBgI9b4K0L234
-         NqYaVzBiV/8j11kH32FgD3Zz5+COt2hfrmg7Z9zaPHteURLYP29oB0waLXefKHeUmPiC
-         E5ZCXSmp7wUzivlmRXNiTWmN6ZoxLWUDBlUG9xO6v/NZEtDtX34PPcQrcXFYXeCw8dsz
-         8xkg==
+        bh=dQlK3wXG7sop1i8Jgraua6l3U7jzqZIBJa/jEdUPy4M=;
+        b=Qb/qqfG8H+AChOT/JyjlaGu/r8SXFzBeeByhwIbN1jQOeahvGE/tHdJFeWbNjoCVQX
+         F7XNbxW/BckIDa4RFe6sFNvG4Z+TWLxo59ukw0VCPYxSARwIjO7aR519IxcoR7C/hHF8
+         09chBsfcMMQX4TtJmxy65/FbYemo5MuLqmKjL5sSGCu9iXA78tLKNhQo1UtpuSi35Lvn
+         mawtGlgIn9ZeLX+v0wkohnunOGCQT9lX0DVRkiQDJ3+BEp/BMrtJmOuPwnY0LhVYhK20
+         Ym5RMYn0zPv1wiMmk1NpSC7XMNICj+Lw0ljyxkpVqpHeo0D2VwI9b5Tih80EMdFvl91H
+         6iFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756126610; x=1756731410;
+        d=1e100.net; s=20230601; t=1756126880; x=1756731680;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qnMFRUI7OrpeFHOHQnTbYDUskSBfz/K49TJPo7jgp3o=;
-        b=TcnIUvan46K/D2WMofGQ+qH+CkeqXvviZecg5Ay9zWh8haPwh3eGI7oMNuIj/zcgq8
-         E5SRcpTkTR2wfJ7nsKo5t0cxGCd4VVMHO10UuvozAfeTZnFiYUIWUWuCmW9ISnPtiqNU
-         uRtkt45It6iubpK4Se6nw2GcYtbNQVpAqJrLbB/CKj4jr4TSyWPzOKHSvxOSMqqQECGl
-         Kz8+pAwlTbUENT0Z7zBXDlcIMdNC8VgUhsatnQV9Z/x0lqw1vV3YmQ5JycIvAIuEIbfs
-         37YXlvcKBL9thdchio3yg2ESNdcIJZh07MNgOIVL5Ld+dJdFUeP99m3MKzPSeqkHZiSr
-         IhTA==
-X-Forwarded-Encrypted: i=1; AJvYcCXfuFyU0ED8Po7aQotThQF+Ol5K94hwr17HKNuWUCTA1fLfIoxYi7P64jKk8Tvpyyr7iOLd5lMJynHnAFs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxzSvlEimp3yf01vvQPho9pIXquZpmUVBFAxYW/iB4FF+wN4U+C
-	LYpIuMsTzpPCqFUf0AoU7u0M53gTlRD7Rudb34LQC4nuoN92xG8BLASXZlcAfIzbcMaHOkk//gr
-	jZ1R+OdC6BOF6MASLgkNgq9LP1oZfWE8/OuBGbNG29w==
-X-Gm-Gg: ASbGncuDUFQLClYeMJP62SFEP5YRdzgpdswiqdbW1TuUBCfozv8iro1XEbvtjcxPtlJ
-	fQ+751CzaXXhlXOKldI6eULeV6GZByvUiMrJOlpOjdrNHrR+XtGIsSCzNe2NpOyN7Wlnh6KnDhu
-	izyxPbmSf/mII3Me/x9/P7x9vySu9qY8qKG4i5Iom5/w2AfoTT7QknsfEG+zgldv1qO3g3Z3Nsx
-	L/iCyPpQpRIImJEtxb21O0zw+a42CLH9Ru54Fk=
-X-Google-Smtp-Source: AGHT+IEKuRSYDRBEFcUoSaQJpuUMdlcesI/FHii7hOjk4oxM01a0EqmTFPiCYNu0z4GmlScnxLvw71vWU7C0gmCrYWM=
-X-Received: by 2002:a05:651c:e0a:b0:333:faea:760e with SMTP id
- 38308e7fff4ca-33650e28035mr29572141fa.4.1756126610386; Mon, 25 Aug 2025
- 05:56:50 -0700 (PDT)
+        bh=dQlK3wXG7sop1i8Jgraua6l3U7jzqZIBJa/jEdUPy4M=;
+        b=tsEEFUGpvHSGUrvMIrQFlq8HIJwFwgEOmUtlceThpn310n/ibOm9Rvi5RzGuiatwDj
+         aYtkaIL5cbS/3NwHwGcTzC/Y3TMmsvqXdtNHPLSu21fBrFKmWrnf05m8oDT9HjMRNJw+
+         eDaBwezKae/ERu9DcX1K7HXFfH61izIreOWDSBytpQ0CrvhFOjhgXEvPpKEp4ecgmPMN
+         eGqzO0KgINR4thb9lrwM+rl4HvQysQ7ecq5SDm/Yo2/ajLgTwlV0WL2S60M6nI19atcI
+         tyOB2qADgc31BR8Y69UR4LruBfUOTk0RT5bhYtdnyFPPSwrUgCU2wD0bRXnIHQOhduoW
+         2NBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXelnFwgh6tktOfvAR7jFVgWAdM8fXfW19Bn1g7cku2eFIHV+Ooc5NlUXTWYVe9NTQm2MGtJIohPK1HIBs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxocOjSqmL54w6f2b5ZDJx+LX2yJBqwWlrY/tEXpB8JskAGeZq8
+	FuJS2DXeCUtZU0VmjYxWXLu6j1++kAYRpNsaJ53ASf7QCAGlr/jBB33arWhZgBsdcuCs5+jAs4O
+	TYip7h/K1Wu+CXVgDmkKB20TxDRQFetsxdQhWLGbLgA==
+X-Gm-Gg: ASbGnctjcc3Vpc8M8/ptHICbnZu11s8Mj2kP4OqtQhj91F0K+xiw5x/Fa2Wz2QUOr4x
+	mlv8S9hh7ZFPLzqDas1mbr/+6artzProKrBzVpmBiaIgHDUQ7vk3SFJC7RlPZr0jviJogGWh1Q4
+	uNT+vHINGf2Qpj0l/d570wIvB+LbAiHACb77b5SZiY8azBNO5LYYHrDpC792T4vFuZDVFnLmnyM
+	5RvT0XW9fQWb6jkH0Dm3pcQgaMTnG4KZMpl6N4dc7C+C6/XXW69xYjM1MAw
+X-Google-Smtp-Source: AGHT+IH5N5gh1e2Wid0aMR0FMRyM9pyDqp/u65+mskc935zM8TPlDDSTI+H4ckU5CTPXH5byLfWl83YU1oyPWy+p/Uw=
+X-Received: by 2002:a05:6512:135a:b0:55e:11ca:1549 with SMTP id
+ 2adb3069b0e04-55f0c6b5589mr4032238e87.19.1756126880025; Mon, 25 Aug 2025
+ 06:01:20 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,12 +79,14 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1756104334.git.christophe.leroy@csgroup.eu> <e05a0959d794016bde79e48e25ff71253cf51aae.1756104334.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <e05a0959d794016bde79e48e25ff71253cf51aae.1756104334.git.christophe.leroy@csgroup.eu>
+References: <cover.1756104334.git.christophe.leroy@csgroup.eu>
+ <e05a0959d794016bde79e48e25ff71253cf51aae.1756104334.git.christophe.leroy@csgroup.eu>
+ <CAMRc=MfPTtdFtE63UKfbuK3h1mLEk2aUGazBsbRS-OLZzm7e9g@mail.gmail.com>
+In-Reply-To: <CAMRc=MfPTtdFtE63UKfbuK3h1mLEk2aUGazBsbRS-OLZzm7e9g@mail.gmail.com>
 From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Mon, 25 Aug 2025 14:56:39 +0200
-X-Gm-Features: Ac12FXyribtDrV6nGrkt8B-SxFaigB01Pq-K7rMjlp_S8j2j5Cn5-EuT5Gchlm4
-Message-ID: <CAMRc=MfPTtdFtE63UKfbuK3h1mLEk2aUGazBsbRS-OLZzm7e9g@mail.gmail.com>
+Date: Mon, 25 Aug 2025 15:01:09 +0200
+X-Gm-Features: Ac12FXwiA1VNOuENMZgX8e0TVhBXubdvgS_jWd_PUQ_1hAXM92SKRJ_pWmQYzEg
+Message-ID: <CAMRc=Mcsvkt1OJfVmB2peQJPpEKqFJ=6=86m=fd+VOEoMGf8Yw@mail.gmail.com>
 Subject: Re: [PATCH v3 2/6] soc: fsl: qe: Change GPIO driver to a proper
  platform driver
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
@@ -101,71 +103,25 @@ X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Aug 25, 2025 at 8:53=E2=80=AFAM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
+On Mon, Aug 25, 2025 at 2:56=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
 >
-> In order to be able to add interrupts to the GPIOs, first change the
-> QE GPIO driver to the proper platform driver in order to allow
-> initialisation to be done in the right order, otherwise the GPIOs
-> get added before the interrupts are registered.
+> On Mon, Aug 25, 2025 at 8:53=E2=80=AFAM Christophe Leroy
+> <christophe.leroy@csgroup.eu> wrote:
+> >
+> > In order to be able to add interrupts to the GPIOs, first change the
+> > QE GPIO driver to the proper platform driver in order to allow
+> > initialisation to be done in the right order, otherwise the GPIOs
+> > get added before the interrupts are registered.
+> >
+> > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 >
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-
-Hi! I retracted my review tag under v1 because...
-
-[snip]
-
-> -       return 0;
-> +       qe_gc =3D devm_kzalloc(dev, sizeof(*qe_gc), GFP_KERNEL);
-> +       if (!qe_gc)
-> +               return -ENOMEM;
-> +
-> +       spin_lock_init(&qe_gc->lock);
-> +
-> +       mm_gc =3D &qe_gc->mm_gc;
-> +       gc =3D &mm_gc->gc;
-> +
-> +       mm_gc->save_regs =3D qe_gpio_save_regs;
-> +       gc->ngpio =3D QE_PIO_PINS;
-> +       gc->direction_input =3D qe_gpio_dir_in;
-> +       gc->direction_output =3D qe_gpio_dir_out;
-> +       gc->get =3D qe_gpio_get;
-> +       gc->set =3D qe_gpio_set;
-> +       gc->set_multiple =3D qe_gpio_set_multiple;
-> +
-> +       return of_mm_gpiochip_add_data(np, mm_gc, qe_gc);
-
-... I believe this can be dropped now and replaced with
-devm_gpiochip_add_data().
-
-Bart
-
-> +}
-> +
-> +static const struct of_device_id qe_gpio_match[] =3D {
-> +       {
-> +               .compatible =3D "fsl,mpc8323-qe-pario-bank",
-> +       },
-> +       {},
-> +};
-> +MODULE_DEVICE_TABLE(of, qe_gpio_match);
-> +
-> +static struct platform_driver qe_gpio_driver =3D {
-> +       .probe          =3D qe_gpio_probe,
-> +       .driver         =3D {
-> +               .name   =3D "qe-gpio",
-> +               .of_match_table =3D qe_gpio_match,
-> +       },
-> +};
-> +
-> +static int __init qe_gpio_init(void)
-> +{
-> +       return platform_driver_register(&qe_gpio_driver);
->  }
-> -arch_initcall(qe_add_gpiochips);
-> +arch_initcall(qe_gpio_init);
-> --
-> 2.49.0
+> Hi! I retracted my review tag under v1 because...
 >
+
+Ah, sorry for the noise, you did that in a separate patch, please keep my R=
+-b.
+
+Bartosz
 
