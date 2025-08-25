@@ -1,88 +1,130 @@
-Return-Path: <linuxppc-dev+bounces-11245-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11250-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC781B33C73
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 12:20:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3518CB33DFA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 13:30:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c9Rcj0KVCz3cgB;
-	Mon, 25 Aug 2025 20:20:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c9T9R5lRZz3cfH;
+	Mon, 25 Aug 2025 21:30:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=143.55.148.243
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756117204;
-	cv=none; b=Z9x+zd3pESVVzxSa5B9+Hu5JxCCFtKcF94iQarWICi/1d8J9aaPQzwN02IYpbYaLXLv9qtY1E7zPDLsVW2B6tAQhbX6v3fF/RopNC250uloRhkYheJl7mphXkjoCdEkiMk5EoEnS6cPDQYNxy6CQxd61NjGcB5Xqf+ni3pJLkM+pkRo2q1qnVgcKtwVpJptB30C4PptUIrYRtkPBzW3jioc5lheXRmPlxu/7c7Ecv5XCDKdxgWluU5nXCJbReLS6ihKVWyyAXgU96tmAvwnCjSnwi/eoKi9TLR3mH5DDKjkf+8LGf7Rd7RO5IYaF9N5S3i+covBrqUjqB+16FjUVBg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756121403;
+	cv=none; b=AmxyQcPt3/qJKDEmUo7VxtqlaNAezOK2IAWKogAgYaYgUfz4Gpi2n1aJEfuseVXUqCg5FgBtyRleGNWxOVNRozu9AcJ160NSYzRKtKv1otH7BOR+VXs8rCiAPwvCNBBFUWrY0J2kiOW5+DzHZfev8atUD1kNiWGg7S+moO1MUaqdI3s1uxUWEccDYwz+4x27TAiQkmxgB4njxAsua7kGTnoTzMbXceaKE8n2vyJzjuxiKp7OSNvEGCD3XHOZuJuJOesLuhsT/ALQC4Vg43HRwvaTZ4Xj6mt85dbxSLzpb1wrdUenWuZuc2tY+RhtpYBTk3aTxPnIlW53gTOgiCvf6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756117204; c=relaxed/relaxed;
-	bh=D2RQQU+xVYCIYE9iCJ4jbQxYZO59NkcR2A8V0GUG+Mo=;
+	t=1756121403; c=relaxed/relaxed;
+	bh=pZVH01D2Gd/ZuxBDWHvMdhmbI57qiNXppeatopYJClM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e9sIjgc5P7s+MHS3L8my6ZihRidkFzbp6dNSLOpyINqeq/SUxoFU/oynf6nQe+Lq+ohiCg3Olusr3O+gl7ZdLC1WlorT/uKsidwJhaLiS2W0GxViVPHFC/StISfN11reoJe7EeE9VY5hUTlqxjkfo7u5ZTIdJr90UnsTa9ywPyh3nXXbh4USnu4EYVdAFwlcEKShuXmVMMHSZX/6wl8VZIzCSLHfeylATGU6BKXv3z+td9LrHOPIO6Te8Rrg2elyfJcso5kPtJsdDQ0eL6B+nXBBX0yV8evCeNxqwOm8G3igJhtLpdjlZMaJPLKOwnsRBA71zMVRLbTQbRO9e3y2fA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=iram.es; dkim=pass (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=dkim3 header.b=f276yTAV; dkim-atps=neutral; spf=pass (client-ip=143.55.148.243; helo=mx08-006a4e02.pphosted.com; envelope-from=paubert@iram.es; receiver=lists.ozlabs.org) smtp.mailfrom=iram.es
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=iram.es
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y6wEZgeTYiyrKoXxIAuofDHHcicYCN1izQ/45SX36PVVbHwRaDMxRFhyAjqmDHNqVYVFfnHqTmIM7LMPiNYzg3/Rd+AGhnSanEIXS6HdyNXfyQV9qe5BRXYvd6jBmqlTdRL60qgPjIdeFjzMoHu/f5NBfKhpe4KQVBKZan9uPEatQi0V2WiA0K55yTa6rXTDCbSxq7WOEk0psz4bvcmKKJOxp4VU5weMpraeWsH5+K+IA3CW42dpliWdhnN8uucvxaHif7in2Pq8Mz4eKUmrZXGehT0E541w5LNb3byJSP2cwHHCLKAbSZkwT1gbWUMHbXv2Kc6xuUiuHvMWnJpDWA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WFeXTt5t; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=dkim3 header.b=f276yTAV;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WFeXTt5t;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iram.es (client-ip=143.55.148.243; helo=mx08-006a4e02.pphosted.com; envelope-from=paubert@iram.es; receiver=lists.ozlabs.org)
-Received: from mx08-006a4e02.pphosted.com (mx08-006a4e02.pphosted.com [143.55.148.243])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9Rcc6nvmz3cg1
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 20:19:58 +1000 (AEST)
-Received: from pps.filterd (m0316694.ppops.net [127.0.0.1])
-	by m0316694.ppops.net (8.18.1.2/8.18.1.2) with ESMTP id 57P6PW3W020069;
-	Mon, 25 Aug 2025 12:18:43 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iram.es; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=dkim3; bh=D2RQ
-	QU+xVYCIYE9iCJ4jbQxYZO59NkcR2A8V0GUG+Mo=; b=f276yTAVV1SD26/ulkZ2
-	ssJY8XTewysYT4tMLHnjnSIBPzgblP8WuCw3pnh/XAa52lQyDLxmxShvX17t1EXs
-	AoQda248LCfIMXON/nZwXpeu4+MTA43njmbgfGliPSIcYHT6eGt5tvWcsz+Ebm8/
-	4lIyyZv8wrgSbUY90OllDWqU/MTlR6SEhvM2DfGVcewE1Kv7qk7AtlaNhqjqabwW
-	IOCDoLYjGRp5sJ9N4qvDQOAd9gPixccJfFHXTLWq+WrJuREyVW1zYVGsiH/zFMSl
-	OAyS7jVvPh7W7XrmyRecvqRovk6Azt/V4iwX6CHVY52rTnzQCWQmiOXOKm2ygevf
-	nw==
-Received: from sim.rediris.es (mta-out04.sim.rediris.es [130.206.24.46])
-	by m0316694.ppops.net (PPS) with ESMTPS id 48qs26hbtk-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9T9Q5G02z3blc
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 21:30:01 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57PAuFQ1016927;
+	Mon, 25 Aug 2025 11:29:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=pZVH01D2Gd/ZuxBDWHvMdhmbI57qiN
+	XppeatopYJClM=; b=WFeXTt5tlq7bvmFwDwurN2gxIAJS4Sbtzub9xJRMuUUCWG
+	dnN+VgZwrU+C7OAoBOS7dQLtS9avFToeFD88Xjc+lW70Zit8RLPH2JZHPbK7MHxb
+	v0D+pVyzXtrwYQl3kI+QLZ7QQLNBqOFnM1k0uGpSZ1+CyNFOS702oVm2UXUhr26g
+	QqYmWP5K4me05w/KlbcV8jlyClHMpN0GwiL9exsIxxhhvb59HKuryvQ6LoqGJJOX
+	azP5+JccDMK8pigXUHrrcngDK4tPx7KmxBkljdhf7EI3Ims4+KAlu4PkVvsOtnHJ
+	SJYiHaa74A1UrHZh5hhabVWUJ/85+yELHuGX+z6g==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5av8jkr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Aug 2025 12:18:43 +0200 (MEST)
-Received: from sim.rediris.es (localhost.localdomain [127.0.0.1])
-	by sim.rediris.es (Postfix) with ESMTPS id 26F1D181FAE;
-	Mon, 25 Aug 2025 12:18:42 +0200 (CEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by sim.rediris.es (Postfix) with ESMTP id 00B66181FAC;
-	Mon, 25 Aug 2025 12:18:41 +0200 (CEST)
-X-Amavis-Modified: Mail body modified (using disclaimer) -
- mta-out04.sim.rediris.es
-Received: from sim.rediris.es ([127.0.0.1])
- by localhost (mta-out04.sim.rediris.es [127.0.0.1]) (amavis, port 10026)
- with ESMTP id T0a5k0mKOE42; Mon, 25 Aug 2025 12:18:41 +0200 (CEST)
-Received: from lt-gp.iram.es (haproxy02.sim.rediris.es [130.206.24.70])
-	by sim.rediris.es (Postfix) with ESMTPA id 4570418007C;
-	Mon, 25 Aug 2025 12:18:40 +0200 (CEST)
-Date: Mon, 25 Aug 2025 12:18:38 +0200
-From: Gabriel Paubert <paubert@iram.es>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Mon, 25 Aug 2025 11:29:07 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57PBJCuS013823;
+	Mon, 25 Aug 2025 11:29:06 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5av8jkq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:29:06 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57PB3VZR002512;
+	Mon, 25 Aug 2025 11:29:05 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qt6m5am6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 11:29:05 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57PBT3gH52166968
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 25 Aug 2025 11:29:03 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 971AE20043;
+	Mon, 25 Aug 2025 11:29:03 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C97EF20040;
+	Mon, 25 Aug 2025 11:28:50 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.98.110.17])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 25 Aug 2025 11:28:50 +0000 (GMT)
+Date: Mon, 25 Aug 2025 16:58:48 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Andre Almeida <andrealmeid@igalia.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Laight <david.laight.linux@gmail.com>,
+        Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, linux-block@vger.kernel.org
-Subject: Re: [PATCH v2 10/10] powerpc/uaccess: Implement masked user access
-Message-ID: <aKw4frSacjCoruSJ@lt-gp.iram.es>
-References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
- <647f1b1db985aec8ec1163bf97688563ae6f9609.1755854833.git.christophe.leroy@csgroup.eu>
- <aKwnMo7UllLZkOcK@lt-gp.iram.es>
- <16679d56-5ee0-469d-a11c-475a45a1c2b9@csgroup.eu>
+        Markus Mayer <mmayer@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        MyungJoo Ham <myungjoo.ham@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Daniel Lezcano <daniel.lezcano@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+        Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        zhenglifeng <zhenglifeng1@huawei.com>,
+        "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>,
+        Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Lukasz Luba <lukasz.luba@arm.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Beata Michalska <beata.michalska@arm.com>,
+        Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+        Sumit Gupta <sumitg@nvidia.com>,
+        Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
+        x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        imx@lists.linux.dev, linux-omap@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] cpufreq: use __free() for all cpufreq_cpu_get()
+ references
+Message-ID: <aKxI8D5mgLRyydb3@li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com>
+References: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,152 +138,298 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <16679d56-5ee0-469d-a11c-475a45a1c2b9@csgroup.eu>
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI0MDAxMSBTYWx0ZWRfXyQKmoH9DesXw
- ky5qpDKRbPVEO1j5P6RR/dl92Vu5gG46S+qU0RD2h9TCpiV9lxYjE4Rf4eAAbziJN1WFf5iKIoL
- vwHyFf4hVFUMvanQ6xRm7ygYHGMCvWURJrObfA0zrkO/dAoKD6EpbGdosihHgY3UjjtywmHeIhh
- zadbuk6ri8Bjd//t+fuudKJvFfCA6JbBQ9N+HL1oXH8gyaqcVqF4z95oY0uvqMW92ZBVK+g2n6Z
- F5336k0OeSJ784mGbOt0xTivvX2ToRO8PW2UCuoqsfP7MIu8uTDDGoglgFl+oLkNRfmAFLuzTMV
- j3inHZqHmiMrvZjyNxDRXcurMFxlSzfQPLVCuFgRq2ZkLrTZLm79a044/SvNKtbKXHZ8D77pt49
- kvezQV2k
-X-Proofpoint-GUID: gpjt9l5GPC7skcU5Z664_moW2gPMxUzU
-X-Authority-Analysis: v=2.4 cv=GqFC+l1C c=1 sm=1 tr=0 ts=68ac3883 cx=c_pps
- a=Kke4r4mcy+kRAsMtzpf9hg==:117 a=Kke4r4mcy+kRAsMtzpf9hg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=_EeEMxcBAAAA:8 a=LQ9UBoVtz5yYhqZLJvEA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: gpjt9l5GPC7skcU5Z664_moW2gPMxUzU
+In-Reply-To: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0HsQaFGcKHYEMjGxfTSlUJWF6XneJCL9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfX/4+yCBHiZkyj
+ BezOHO0JD1p7OO2PV8xmQ1v5shFYKr21Uw1c2F4fW4uXyPCsxOE6ILKOy08exTWUNA73a36dDQc
+ c4y6wbPoU5LvDYQlXlcAhPLqk3LFWCLZ3dICMLqR2WHDlet2Ldgi5be5Hduqsg6kr8/WbswzYXj
+ eL+wfLc/Jeqecx6jg74QDQFlvafBQN6LUG8LrX8tqwzhzd9GgzIeu7kk/N0P/CWyJHwlrc5PIUz
+ Z4q/fYjm6PpSFTkG5SI7ARvGOK+wODTfBZnnKDnPI4C3Bn1Qhf3Y6EvQDrYoSo6dxKELAUhByqt
+ uCcp7lr/HsMOwiulBYsJ81MWSKnZa8+YC9DKTxtqevYNdz87q6XWFXB9AUbfcQ36nGSAmLoiq7W
+ P4ME2Djp
+X-Proofpoint-ORIG-GUID: gtLwqruV6tGzAQkR_fGqnCUDyXx-v5l-
+X-Authority-Analysis: v=2.4 cv=SNNCVPvH c=1 sm=1 tr=0 ts=68ac4903 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=I94fdbTdu9Vpa8W20_wA:9
+ a=CjuIK1q_8ugA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-25_05,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=salida_notspam policy=salida score=0
- priorityscore=1501 malwarescore=0 phishscore=0 bulkscore=0 adultscore=0
- spamscore=0 suspectscore=0 clxscore=1011 impostorscore=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 bulkscore=0 phishscore=0 clxscore=1011
+ impostorscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508240011
-X-Spam-Status: No, score=-0.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,PDS_RDNS_DYNAMIC_FP,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230021
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Aug 25, 2025 at 11:40:48AM +0200, Christophe Leroy wrote:
-> Hi Gabriel,
->=20
-> Le 25/08/2025 =C3=A0 11:04, Gabriel Paubert a =C3=A9crit=C2=A0:
-> > [Vous ne recevez pas souvent de courriers de paubert@iram.es. D?couvr=
-ez pourquoi ceci est important ? https://urldefense.com/v3/__https://aka.=
-ms/LearnAboutSenderIdentification__;!!D9dNQwwGXtA!QUcSIXoDBBj9wAtcyQ-z3nP=
-EAj-RnJpPgYwjOeb6LZWLejdLzq4uYsPMecQuK5Qy3147APjCNc-hcXGT71XuBh1AJI2M$  ]
-> >=20
-> > Hi Christophe,
-> >=20
-> > On Fri, Aug 22, 2025 at 11:58:06AM +0200, Christophe Leroy wrote:
-> > > Masked user access avoids the address/size verification by access_o=
-k().
-> > > Allthough its main purpose is to skip the speculation in the
-> > > verification of user address and size hence avoid the need of spec
-> > > mitigation, it also has the advantage of reducing the amount of
-> > > instructions required so it even benefits to platforms that don't
-> > > need speculation mitigation, especially when the size of the copy i=
-s
-> > > not know at build time.
-> > >=20
-> > > So implement masked user access on powerpc. The only requirement is
-> > > to have memory gap that faults between the top user space and the
-> > > real start of kernel area.
-> > >=20
-> > > On 64 bits platforms the address space is divided that way:
-> > >=20
-> > >        0xffffffffffffffff      +------------------+
-> > >                                |                  |
-> > >                                |   kernel space   |
-> > >                                |                  |
-> > >        0xc000000000000000      +------------------+  <=3D=3D PAGE_O=
-FFSET
-> > >                                |//////////////////|
-> > >                                |//////////////////|
-> > >        0x8000000000000000      |//////////////////|
-> > >                                |//////////////////|
-> > >                                |//////////////////|
-> > >        0x0010000000000000      +------------------+  <=3D=3D TASK_S=
-IZE_MAX
-> > >                                |                  |
-> > >                                |    user space    |
-> > >                                |                  |
-> > >        0x0000000000000000      +------------------+
-> > >=20
-> > > Kernel is always above 0x8000000000000000 and user always
-> > > below, with a gap in-between. It leads to a 4 instructions sequence=
-:
-> > >=20
-> > >    80: 7c 69 1b 78     mr      r9,r3
-> > >    84: 7c 63 fe 76     sradi   r3,r3,63
-> > >    88: 7d 29 18 78     andc    r9,r9,r3
-> > >    8c: 79 23 00 4c     rldimi  r3,r9,0,1
-> > >=20
-> > > This sequence leaves r3 unmodified when it is below 0x8000000000000=
-000
-> > > and clamps it to 0x8000000000000000 if it is above.
-> > >=20
-> >=20
-> > This comment looks wrong: the second instruction converts r3 to a
-> > replicated sign bit of the address ((addr>0)?0:-1) if treating the
-> > address as signed. After that the code only modifies the MSB of r3. S=
-o I
-> > don't see how r3 could be unchanged from the original value...
->=20
-> Unless I'm missing something, the above rldimi leaves the MSB of r3
-> unmodified and replaces all other bits by the same in r9.
->=20
-> This is the code generated by GCC for the following:
->=20
-> 	unsigned long mask =3D (unsigned long)((long)addr >> 63);
->=20
-> 	addr =3D ((addr & ~mask) & (~0UL >> 1)) | (mask & (1UL << 63));
->=20
->=20
-> >=20
-> > OTOH, I believe the following 3 instructions sequence would work,
-> > input address (a) in r3, scratch value (tmp) in r9, both intptr_t:
-> >=20
-> >          sradi r9,r3,63  ; tmp =3D (a >=3D 0) ? 0L : -1L;
-> >          andc r3,r3,r9   ; a =3D a & ~tmp; (equivalently a =3D (a >=3D=
- 0) ? a : 0)
-> >          rldimi r3,r9,0,1 ; copy MSB of tmp to MSB of a
-> >=20
-> > But maybe I goofed...
-> >=20
->=20
-> From my understanding of rldimi, your proposed code would:
-> - Keep r3 unmodified when it is above 0x8000000000000000
-> - Set r3 to 0x7fffffffffffffff when it is below 0x8000000000000000
->=20
-> Extract of ppc64 ABI:
->=20
-> rldimi RA,RS,SH,MB
->=20
-> The contents of register RS are rotated 64 left SH bits.
-> A mask is generated having 1-bits from bit MB
-> through bit 63=E2=88=92 SH and 0-bits elsewhere. The rotated
-> data are inserted into register RA under control of the
-> generated mask.
+On Mon, Aug 25, 2025 at 05:28:33PM +0800, Zihuan Zhang wrote:
+> This patch replaces all remaining uses of cpufreq_cpu_get() with
+> the __free(cpufreq_cpu_put) annotation.
+> 
+> Motivation:
+> - Ensures automatic cleanup of policy references when they go out of scope,
+>   reducing the risk of forgetting to call cpufreq_cpu_put() on early return
+>   or error paths.
+> - Brings the code in line with the latest kernel coding style and best
+>   practices for managing reference-counted objects.
+> - No functional changes are introduced; behavior remains the same,
+>   but reference counting is now safer and easier to maintain.
+> 
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  arch/arm64/kernel/topology.c                  |  9 +++----
+>  arch/x86/kvm/x86.c                            | 10 ++++----
+>  drivers/acpi/processor_thermal.c              | 13 ++++------
+>  drivers/cpufreq/brcmstb-avs-cpufreq.c         |  4 +---
+>  drivers/cpufreq/cppc_cpufreq.c                |  4 +---
+>  drivers/cpufreq/intel_pstate.c                |  3 +--
+>  drivers/cpufreq/longhaul.c                    |  3 +--
+>  drivers/cpufreq/mediatek-cpufreq.c            |  6 ++---
+>  drivers/cpufreq/powernv-cpufreq.c             |  6 ++---
+>  drivers/cpufreq/s5pv210-cpufreq.c             |  3 +--
+>  drivers/cpufreq/tegra186-cpufreq.c            |  3 +--
+>  drivers/devfreq/governor_passive.c            | 19 ++++-----------
+>  drivers/gpu/drm/i915/gt/intel_llc.c           |  3 +--
+>  drivers/macintosh/windfarm_cpufreq_clamp.c    |  4 +---
+>  drivers/powercap/dtpm_cpu.c                   | 24 ++++++-------------
+>  drivers/thermal/imx_thermal.c                 |  7 ++----
+>  .../ti-soc-thermal/ti-thermal-common.c        |  5 +---
+>  kernel/power/energy_model.c                   |  7 ++----
+>  18 files changed, 40 insertions(+), 93 deletions(-)
+> 
+> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+> index 5d07ee85bdae..e3cb6d54f35b 100644
+> --- a/arch/arm64/kernel/topology.c
+> +++ b/arch/arm64/kernel/topology.c
+> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
+>  		 */
+>  		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
+>  		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAMPLE_EXP_MS))) {
+> -			struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  			int ref_cpu;
+>  
+> +			policy = cpufreq_cpu_get(cpu);
+>  			if (!policy)
+>  				return -EINVAL;
+>  
+>  			if (!cpumask_intersects(policy->related_cpus,
+> -						housekeeping_cpumask(HK_TYPE_TICK))) {
+> -				cpufreq_cpu_put(policy);
+> +						housekeeping_cpumask(HK_TYPE_TICK)))
+>  				return -EOPNOTSUPP;
+> -			}
+>  
+>  			for_each_cpu_wrap(ref_cpu, policy->cpus, cpu + 1) {
+>  				if (ref_cpu == start_cpu) {
+> @@ -329,8 +328,6 @@ int arch_freq_get_on_cpu(int cpu)
+>  					break;
+>  			}
+>  
+> -			cpufreq_cpu_put(policy);
+> -
+>  			if (ref_cpu >= nr_cpu_ids)
+>  				/* No alternative to pull info from */
+>  				return -EAGAIN;
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index a1c49bc681c4..2a825f4ec701 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -9492,16 +9492,14 @@ static void kvm_timer_init(void)
+>  		max_tsc_khz = tsc_khz;
+>  
+>  		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+> -			struct cpufreq_policy *policy;
+> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  			int cpu;
+>  
+>  			cpu = get_cpu();
+>  			policy = cpufreq_cpu_get(cpu);
+> -			if (policy) {
+> -				if (policy->cpuinfo.max_freq)
+> -					max_tsc_khz = policy->cpuinfo.max_freq;
+> -				cpufreq_cpu_put(policy);
+> -			}
+> +			if (policy && policy->cpuinfo.max_freq)
+> +				max_tsc_khz = policy->cpuinfo.max_freq;
+> +
+>  			put_cpu();
+>  		}
+>  		cpufreq_register_notifier(&kvmclock_cpufreq_notifier_block,
+> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
+> index 1219adb11ab9..8367a81c4842 100644
+> --- a/drivers/acpi/processor_thermal.c
+> +++ b/drivers/acpi/processor_thermal.c
+> @@ -64,17 +64,14 @@ static int phys_package_first_cpu(int cpu)
+>  
+>  static int cpu_has_cpufreq(unsigned int cpu)
+>  {
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  
+>  	if (!acpi_processor_cpufreq_init)
+>  		return 0;
+>  
+>  	policy = cpufreq_cpu_get(cpu);
+> -	if (policy) {
+> -		cpufreq_cpu_put(policy);
+> -		return 1;
+> -	}
+> -	return 0;
+> +
+> +	return !!policy;
+>  }
+>  
+>  static int cpufreq_get_max_state(unsigned int cpu)
+> @@ -95,7 +92,7 @@ static int cpufreq_get_cur_state(unsigned int cpu)
+>  
+>  static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>  {
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	struct acpi_processor *pr;
+>  	unsigned long max_freq;
+>  	int i, ret;
+> @@ -127,8 +124,6 @@ static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>  		max_freq = (policy->cpuinfo.max_freq *
+>  			    (100 - reduction_step(i) * cpufreq_thermal_reduction_pctg)) / 100;
+>  
+> -		cpufreq_cpu_put(policy);
+> -
+>  		ret = freq_qos_update_request(&pr->thermal_req, max_freq);
+>  		if (ret < 0) {
+>  			pr_warn("Failed to update thermal freq constraint: CPU%d (%d)\n",
+> diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> index 5940d262374f..71450cca8e9f 100644
+> --- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> +++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+> @@ -480,7 +480,7 @@ static bool brcm_avs_is_firmware_loaded(struct private_data *priv)
+>  
+>  static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
+>  {
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+>  	struct private_data *priv;
+>  
+>  	if (!policy)
+> @@ -488,8 +488,6 @@ static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
+>  
+>  	priv = policy->driver_data;
+>  
+> -	cpufreq_cpu_put(policy);
+> -
+>  	return brcm_avs_get_frequency(priv->base);
+>  }
+>  
+> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
+> index 4a17162a392d..7183754b1f31 100644
+> --- a/drivers/cpufreq/cppc_cpufreq.c
+> +++ b/drivers/cpufreq/cppc_cpufreq.c
+> @@ -726,7 +726,7 @@ static int cppc_get_perf_ctrs_sample(int cpu,
+>  static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+>  {
+>  	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+>  	struct cppc_cpudata *cpu_data;
+>  	u64 delivered_perf;
+>  	int ret;
+> @@ -736,8 +736,6 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
+>  
+>  	cpu_data = policy->driver_data;
+>  
+> -	cpufreq_cpu_put(policy);
+> -
+>  	ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
+>  	if (ret) {
+>  		if (ret == -EFAULT)
+> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+> index f366d35c5840..fb962140af56 100644
+> --- a/drivers/cpufreq/intel_pstate.c
+> +++ b/drivers/cpufreq/intel_pstate.c
+> @@ -1698,7 +1698,7 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
+>  static void update_qos_request(enum freq_qos_req_type type)
+>  {
+>  	struct freq_qos_request *req;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	int i;
+>  
+>  	for_each_possible_cpu(i) {
+> @@ -1710,7 +1710,6 @@ static void update_qos_request(enum freq_qos_req_type type)
+>  			continue;
+>  
+>  		req = policy->driver_data;
+> -		cpufreq_cpu_put(policy);
+>  
+>  		if (!req)
+>  			continue;
+> diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
+> index ba0e08c8486a..ae5596919671 100644
+> --- a/drivers/cpufreq/longhaul.c
+> +++ b/drivers/cpufreq/longhaul.c
+> @@ -950,7 +950,7 @@ static int __init longhaul_init(void)
+>  
+>  static void __exit longhaul_exit(void)
+>  {
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
+>  	int i;
+>  
+>  	for (i = 0; i < numscales; i++) {
+> @@ -968,7 +968,6 @@ static void __exit longhaul_exit(void)
+>  		}
+>  	}
+>  
+> -	cpufreq_cpu_put(policy);
+>  	cpufreq_unregister_driver(&longhaul_driver);
+>  	kfree(longhaul_table);
+>  }
+> diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
+> index f3f02c4b6888..1fae060e16d9 100644
+> --- a/drivers/cpufreq/mediatek-cpufreq.c
+> +++ b/drivers/cpufreq/mediatek-cpufreq.c
+> @@ -320,7 +320,7 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
+>  	struct dev_pm_opp *new_opp;
+>  	struct mtk_cpu_dvfs_info *info;
+>  	unsigned long freq, volt;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	int ret = 0;
+>  
+>  	info = container_of(nb, struct mtk_cpu_dvfs_info, opp_nb);
+> @@ -354,11 +354,9 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
+>  
+>  			dev_pm_opp_put(new_opp);
+>  			policy = cpufreq_cpu_get(info->opp_cpu);
+> -			if (policy) {
+> +			if (policy)
+>  				cpufreq_driver_target(policy, freq / 1000,
+>  						      CPUFREQ_RELATION_L);
+> -				cpufreq_cpu_put(policy);
+> -			}
+>  		}
+>  	}
+>  
+> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+> index 7d9a5f656de8..ea9d78bbeb38 100644
+> --- a/drivers/cpufreq/powernv-cpufreq.c
+> +++ b/drivers/cpufreq/powernv-cpufreq.c
+> @@ -892,7 +892,7 @@ static int powernv_cpufreq_reboot_notifier(struct notifier_block *nb,
+>  				unsigned long action, void *unused)
+>  {
+>  	int cpu;
+> -	struct cpufreq_policy *cpu_policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
 
-Sorry, you are right, I got the polarity of the mask reversed in my
-head.
+There's a typo here. I got a compile error because of wrong variable name.
 
-
-Once again I may goof, but I believe that the following sequence
-would work:
-
-	sradi r9,r3,63
-	andc r3,r3,r9
-	rldimi r3,r9,63,0  ; insert LSB of r9 into MSB of R3
-
-Cheers,
-Gabriel
- 
-
+Thanks,
+Gautam
 
