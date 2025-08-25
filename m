@@ -1,92 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-11233-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11234-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7E3B3333B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 00:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 440C1B33618
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 07:59:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c986N3l05z2xQ1;
-	Mon, 25 Aug 2025 08:41:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c9KqX74NVz3cYJ;
+	Mon, 25 Aug 2025 15:59:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::832"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756061121;
-	cv=none; b=jrzVP27Qdy7BxIlUUD3XlKCWdeugCjI8Iop/+oLekktI+BeyLEeAZrDLGguQNJ7zD02Fz2plCxP91y6Ap9qhM7u0cbTyjYAqEtwGNkZMeITSV34JgvM/G1DlnToOJR1s9zhPZcHGRpI3cv2/ZkYi+XNzwbYXx7vm5cDdbpVUgEojqLzfbGX04UEopbvw4xvGNHtJS9Lp9iFfIathSag9PxFRob14eCIUiFBKDiM8WfDVYmvxbnJwiauyv+hu5/Rp/OFGOivv820XB9selQQg+4xMYX/bgr7hgAIcNUBIQPVc/3/J2RNJITV8Rm9Riw8xh6Py5Ut9K9SZd/Ir/TyIsg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756101544;
+	cv=none; b=BmW0UTKZTG0Tw/10ZsFYGrRlAxD0Bz5a6K0LasIfKxoeJxLujuKHD6SW33QDPFt4Nu0ORqlEJutjFcZkJC1+UNCIGFFSiHk9D76TDKDtoq0gC5KyI7HldXfrwOQ6+PdOI7NJbTpiNB2RkgOouuoXiPxDxywIhMiq5ERvqb8k1WXBSn4KtQzRbATM02fUketa0fGe/fYwkqpKgT6+i7YHmyY/pCwSehIA7WplbhJCqfCd2VhjlFHLcG+/qoyL10BzQts9W7mU81ZFJc+QNls+niHFxLXCsVuyZ4fsQs9GAqToJgfpuHDbXi5tDOUlewK4O9LlK/WOL01oqK4yTjwPDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756061121; c=relaxed/relaxed;
-	bh=9jf8pvuIHsijmo+aLexlCckPmDErJY+IsD9aTk8QLyo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g7/+yAPR5LP2WyldRk5duVtoQw3auCDqwp039bkH+quRH01p13NyF66a0RV4IYCfEnR1pj2Zm0oYNrfeItjI93mnnlRf2S2vk/BD8JL2VaajNBk+gUVrGBDQnL+h73EUwAgmmABKYtsANtiKnZyfMk9sDgCioXwZmj1YF/i29TGCSAYLV5ozHpYe9XKjoEc/+WpUy2KtEYPKwdXoTBqF/3ZF5bGiyXWVyfRoYiTKI3FYfSimGTuRwMYgLm9sGkg6XIq8TGHRoM1CgLNacVw7oPPK4TWP1C5Wn/0W7gFiSlZjPkHES8b30hzDXehljGmYE3+yuRN1XOELMd2kw9nZIA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=iGl55aPg; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::832; helo=mail-qt1-x832.google.com; envelope-from=chelsyratnawat2001@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1756101544; c=relaxed/relaxed;
+	bh=qMv61MIXS/RzEfGB2lBTFOA1CH9ZK/OwnIJHqvIkQZ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eAwSUzNTAYvxihYgWo7VQljgPVl6+kEH9ikinFMsIvszin20fZx73xGfn0pAwyFy89T/sYB2bsUxzPCSPTuT3XjIfBCpMM47pHgA7HEanWDkZcu5dCE9PJ+OyMveRwbzsiWwWHesolPvdbIe4JYZBeMxkBAZ3lkX52sQBsimQ6ZLqqeovtkbud3c7AP/dz/h7E3SaE3Q2mZonSOaLQVNIcEHSLzxlzYWCMuIX2MaExlPdmaqJnMTATrbjn2NA38cJkqw9nc2fftrfoKnr1znZKC39/FIAUDhWYEkzFofnNVZSjtdcfO4R9DIcg18FGA3wIF75ND3detOgcHwfS/j8Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ntopJ77n; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=iGl55aPg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ntopJ77n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::832; helo=mail-qt1-x832.google.com; envelope-from=chelsyratnawat2001@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c92t75dD6z3091
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 04:45:18 +1000 (AEST)
-Received: by mail-qt1-x832.google.com with SMTP id d75a77b69052e-4b109914034so48589911cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 Aug 2025 11:45:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756061115; x=1756665915; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9jf8pvuIHsijmo+aLexlCckPmDErJY+IsD9aTk8QLyo=;
-        b=iGl55aPgWgkLfidOsvpURTVqh1/xohPqchvK/cNE1oa3MR0RHHUs1+Pu3LZ+S91mA2
-         tzyUEyR2L+entp7tPlylbENfnf1DbTy+NaMpyGn2XLfXx1yqHD1RsKqCMe4WqyOyzAWV
-         XrR0uhTQcENF+v8/S6rY/EbqbINwFLuYcZ4A31WTV9xB2ks8bxmApBiywslUIj9YxNmp
-         z2WGsFibluDRrKRRM5QPng8iHsGp66AZBVzyVsBRRi4ipu2GyW62oUmccNI/VsL7IAlU
-         becPlAbzX/k7xbOcp29FIEyLIHME2v/86Y3KloIV4oTcBBQB1a7QFpjDFhYTR/0AlJ/Y
-         jEyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756061115; x=1756665915;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9jf8pvuIHsijmo+aLexlCckPmDErJY+IsD9aTk8QLyo=;
-        b=xLxIsoz6s7rN/y8vnWdibj7D1T7mQ/2dVf4/AWezXzqw0CjYn04SzQlqzdLpHnLQHD
-         Xy6b/ZqTz3pIthovlBiSg0QWaV3dfFCStXlJJp4/iYCLJB0Qq4ZkR4iU5icmkkhHC4Tt
-         qpzp5c48qceJt5dyrK3XfM9PoEnqLkLX3si1LQwn4bhGsFDplyjlE/wxe53QYgMRf9lB
-         yqOgki3jDYAq0pwbApWrev0MnOgFzXt0tUnguwHexp/rwrys0x9EhbTYuRoIMQ3D5ye0
-         YQ5xqWqkwjA3J/Ur9OypQ6eJN5tJZzOCqnLrtHOuVpVYQzMmH9E0RtBgA1TMyZU0QJ7b
-         TdKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlHKlsQNJ2cTlk0m40y3znCQlQLe2DKyqoP4gDKirG39Ri9bbJ2bjG8Z+8jWu6nqmYr5ghVnvB30E9uCY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxENsNunzwM3KouhQhWcI1fErc+A0TaOCwyPFgzDxNnflre5yzB
-	qM6A96MTycsLdHtrAMhR21/K12h0O0zqFeg1jy11k5kOY5ob7QVARA5A
-X-Gm-Gg: ASbGncsKdU7o2hNb86kya118Jve01XNoyBBbpuMjMz50duRtSMobvjytjdkSKbIeSGU
-	63eCAUeVo4GocppHuYvcK+u+ajEeawTmR7T7Jb/bGTmOtIxk2ZwUZ54Rey3tiqafaFLgWyWPCfD
-	/jpT5+vqNqqQIt2fhSjIDwU7vxZGR+tvYnie3b08dGS/hwdVLR3WUDraLMIW16Wkh5L73IimNn2
-	iqnfd9WpIYdBAF1tQZ7jdd+q1By9mio75JLLhTbHnFfqY6bIMGCKFusOtzpICqNxX1UAH56FMxB
-	nnIbtA2qNTEuQNQzFQSmegdn3FXzxa3FR9rkU4Yvr94F+iqQBAt6FQ4eJ4UAxk2ICBZ41dt+uR/
-	QP4zllUQA3qzPuJqg4hofHhnNViwWoIrs2nNYzSZifGmEgE0Zv46WSRjPEQ==
-X-Google-Smtp-Source: AGHT+IF1mE3pDzONuvbDVw/ZD9A7vT/q4p1ackzTZzK3ILDE7f8/7efvTJvZZVeu2N+pNirC5d7OsA==
-X-Received: by 2002:ac8:7f0f:0:b0:4b2:9bd2:8176 with SMTP id d75a77b69052e-4b2aaa8128amr133033991cf.27.1756061115173;
-        Sun, 24 Aug 2025 11:45:15 -0700 (PDT)
-Received: from cr-x-redhat96-nsd-2.fyre.ibm.com ([129.41.87.0])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4b2b8e45c4asm36600501cf.46.2025.08.24.11.45.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 Aug 2025 11:45:14 -0700 (PDT)
-From: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-To: fischer@norbit.de,
-	James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com,
-	don.brace@microchip.com,
-	brking@us.ibm.com,
-	sathya.prakash@broadcom.com,
-	willy@infradead.org
-Cc: linux-scsi@vger.kernel.org,
-	storagedev@microchip.com,
-	linuxppc-dev@lists.ozlabs.org,
-	open-iscsi@googlegroups.com,
-	megaraidlinux.pdl@broadcom.com,
-	MPT-FusionLinux.pdl@broadcom.com,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Subject: [PATCH] scsi: Use string choices helpers
-Date: Sun, 24 Aug 2025 11:44:57 -0700
-Message-ID: <20250824184457.2423422-1-chelsyratnawat2001@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9KqX1T15z3cYH
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 15:59:03 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57P5GoCi010140;
+	Mon, 25 Aug 2025 05:58:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:to; s=pp1; bh=qMv61MIXS/RzEfGB2lBTF
+	OA1CH9ZK/OwnIJHqvIkQZ8=; b=ntopJ77nFfJpNTktx+9n5RiryQqyTTUc/3Eub
+	bNUFl6sYlzfjbFj4fvsXZq6jkU1jwKvDOzGkY1E0l+chIctq7RmNr8yU9qMcet+R
+	6s2dR+CZRu9WHEUgeOSkPdyyTPUvVVwgHuhjvavWaJJYE//AqHJaQJQi3iq7ohZ+
+	TmZKcmWF24mPNV+1vEOXmUxnh+V46gm8AxfAd4LSd6uHPlgJNbfZm+8k7qI316mc
+	mQ2i80bI/kWKqu5Rg2DT+WO9cqbyNVWkKrpfMxiKznpObrUc8MBmjLteCUKd4cdm
+	b9hYKdlMcXRZ0cHK8tjdiaaoGU05SRn5cqp/n8iwprE+EnGjA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q974xhtu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 05:58:54 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57P5ws9W028053;
+	Mon, 25 Aug 2025 05:58:54 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q974xhts-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 05:58:53 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57P5bSxd002561;
+	Mon, 25 Aug 2025 05:58:52 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48qrypcdyq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 05:58:52 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57P5wmOB35783138
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 25 Aug 2025 05:58:48 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C10D22004B;
+	Mon, 25 Aug 2025 05:58:48 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5FF3920040;
+	Mon, 25 Aug 2025 05:58:46 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.124.213.91])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 25 Aug 2025 05:58:46 +0000 (GMT)
+Date: Mon, 25 Aug 2025 11:28:43 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+To: Haren Myneni <haren@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        msuchanek@suse.de, tyreld@linux.ibm.com, npiggin@gmail.com,
+        bjking1@linux.ibm.com, hbabu@us.ibm.com
+Subject: Re: [PATCH v2 4/9] powerpc/pseries: Send payload with
+ ibm,send-hvpipe-msg RTAS
+Message-ID: <bzukfcszv6bm6np3vars73x4kjl6zfh6okwmbetmranzaan34o@aufmggdubqz7>
+Reply-To: mahesh@linux.ibm.com
+References: <20250812225715.339225-1-haren@linux.ibm.com>
+ <20250812225715.339225-5-haren@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,465 +95,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250812225715.339225-5-haren@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: pFl77ibAsb11rM09pOfTyDaO9U-EPGZO
+X-Proofpoint-ORIG-GUID: 8y4-U13uQHXtFElAd4hDHmoZ1Kw4rxRX
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDA3MSBTYWx0ZWRfX++KXk3ea6Jci
+ eQaZ3/k/TNbmxqbmMNxT6FyErBNGPLyds0XjhYLhd8oT3X/5ke+VtiJ5+K5lvQMLyuwfFZGIiJM
+ U8owdRE+CozwG7ZRF/i6EN87EOAsiutexyavCKtwRjdAZMno1ENTYTH6dex93GYT/n1qxrPwAG2
+ 3wfkCwN3JP8UZfyFDd1a3nGlKkxs2rXtqhj1XPUbMZ9hO6kt/V4m33W20X5I264O2acprVFxHlZ
+ COimvF8A/UVR3ZKBoJmrxSkK+i91iN5sCARVUxs5X1dq5l74kuZTe8uLMe1sEHPTkoV5JDHXu8J
+ Jh9a1K6nilROW3SRlD526usS4CiJVB2LKxL2VJ0l+tzvvTP/+RhxBRJCftt6EF/Ln1K8hOnfWn4
+ j+78ZBD9
+X-Authority-Analysis: v=2.4 cv=RtDFLDmK c=1 sm=1 tr=0 ts=68abfb9e cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=hpovtUFNlw5HC3D-Yk8A:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-25_02,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 suspectscore=0 malwarescore=0 spamscore=0 priorityscore=1501
+ bulkscore=0 clxscore=1011 phishscore=0 adultscore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508230071
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Use string_choices.h helpers instead of hard-coded strings.
+On 2025-08-12 15:57:08 Tue, Haren Myneni wrote:
+> ibm,send-hvpipe-msg RTAS call is used to send data to the source
+> (Ex: Hardware Management Console) over the hypervisor pipe. The
+> maximum data length of 4048 bytes is supported with this RTAS call
+> right now. The user space uses write() to send this payload which
+> invokes this RTAS. Then the write returns the buffer length
+> (including papr_hvpipe_hdr length) to the user space for success
+> or RTAS failure error.
+> 
+> ibm,send-hvpipe-msg call takes source ID as target and the buffer
+> in the form of buffer list. The buffer list format consists of
+> work area of size 4K to hold buffer list and number of 4K work
+> areas depends on buffers is as follows:
+> 
+> Length of Buffer List in bytes
+> Address of 4K buffer 1
+> Length of 4K buffer 1 used
+> ...
+> Address of 4K buffer n
+> Length of 4K buffer n used
+> 
+> Only one buffer is used right now because of max payload size is
+> 4088 bytes. writev() can be used in future when supported more
 
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
----
- drivers/scsi/aha152x.c                    | 17 +++++++++--------
- drivers/scsi/aic7xxx/aic79xx_pci.c        |  3 ++-
- drivers/scsi/be2iscsi/be_iscsi.c          |  5 +++--
- drivers/scsi/hpsa.c                       |  5 +++--
- drivers/scsi/ibmvscsi/ibmvfc.c            |  3 ++-
- drivers/scsi/ipr.c                        |  3 ++-
- drivers/scsi/libiscsi.c                   |  5 +++--
- drivers/scsi/megaraid/megaraid_sas_base.c |  9 +++++----
- drivers/scsi/mpt3sas/mpt3sas_base.c       |  3 ++-
- drivers/scsi/nsp32.c                      |  3 ++-
- drivers/scsi/qedf/qedf_debugfs.c          |  3 ++-
- drivers/scsi/qla2xxx/qla_attr.c           |  3 ++-
- drivers/scsi/qla2xxx/qla_init.c           |  5 +++--
- drivers/scsi/qla2xxx/qla_os.c             |  4 ++--
- drivers/scsi/sd.c                         |  5 +++--
- drivers/scsi/st.c                         |  3 ++-
- drivers/scsi/sym53c8xx_2/sym_glue.c       |  3 ++-
- 17 files changed, 49 insertions(+), 33 deletions(-)
+Do you mean 4048 ?
 
-diff --git a/drivers/scsi/aha152x.c b/drivers/scsi/aha152x.c
-index e94c0a19c435..f42328781d1c 100644
---- a/drivers/scsi/aha152x.c
-+++ b/drivers/scsi/aha152x.c
-@@ -243,6 +243,7 @@
- #include <linux/workqueue.h>
- #include <linux/list.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- 
- #include <scsi/scsi.h>
- #include <scsi/scsi_cmnd.h>
-@@ -796,11 +797,11 @@ struct Scsi_Host *aha152x_probe_one(struct aha152x_setup *setup)
- 	       shpnt->io_port, HOSTIOPORT0, HOSTIOPORT1,
- 	       shpnt->irq,
- 	       shpnt->this_id,
--	       RECONNECT ? "enabled" : "disabled",
--	       PARITY ? "enabled" : "disabled",
--	       SYNCHRONOUS ? "enabled" : "disabled",
-+	       str_enabled_disabled(RECONNECT),
-+	       str_enabled_disabled(PARITY),
-+	       str_enabled_disabled(SYNCHRONOUS),
- 	       DELAY,
--	       EXT_TRANS ? "enabled" : "disabled");
-+	       str_enabled_disabled(EXT_TRANS));
- 
- 	/* not expecting any interrupts */
- 	SETPORT(SIMODE0, 0);
-@@ -2616,7 +2617,7 @@ static void get_ports(struct seq_file *m, struct Scsi_Host *shpnt)
- 
- 	seq_puts(m, "); ");
- 
--	seq_printf(m, "INTSTAT (%s); ", TESTHI(DMASTAT, INTSTAT) ? "hi" : "lo");
-+	seq_printf(m, "INTSTAT (%s); ", str_hi_lo(TESTHI(DMASTAT, INTSTAT)));
- 
- 	seq_puts(m, "SSTAT( ");
- 	s = GETPORT(SSTAT0);
-@@ -2867,11 +2868,11 @@ static int aha152x_show_info(struct seq_file *m, struct Scsi_Host *shpnt)
- 		shpnt->io_port, shpnt->io_port + shpnt->n_io_port - 1);
- 	seq_printf(m, "interrupt 0x%02x\n", shpnt->irq);
- 	seq_printf(m, "disconnection/reconnection %s\n",
--		RECONNECT ? "enabled" : "disabled");
-+		str_enabled_disabled(RECONNECT));
- 	seq_printf(m, "parity checking %s\n",
--		PARITY ? "enabled" : "disabled");
-+		str_enabled_disabled(PARITY));
- 	seq_printf(m, "synchronous transfers %s\n",
--		SYNCHRONOUS ? "enabled" : "disabled");
-+		str_enabled_disabled(SYNCHRONOUS));
- 	seq_printf(m, "%d commands currently queued\n", HOSTDATA(shpnt)->commands);
- 
- 	if(SYNCHRONOUS) {
-diff --git a/drivers/scsi/aic7xxx/aic79xx_pci.c b/drivers/scsi/aic7xxx/aic79xx_pci.c
-index 5fad41b1ab58..a4bd68da4549 100644
---- a/drivers/scsi/aic7xxx/aic79xx_pci.c
-+++ b/drivers/scsi/aic7xxx/aic79xx_pci.c
-@@ -44,6 +44,7 @@
- #include "aic79xx_osm.h"
- #include "aic79xx_inline.h"
- #include "aic79xx_pci.h"
-+#include <linux/string_choices.h>
- 
- static inline uint64_t
- ahd_compose_id(u_int device, u_int vendor, u_int subdevice, u_int subvendor)
-@@ -647,7 +648,7 @@ ahd_configure_termination(struct ahd_softc *ahd, u_int adapter_control)
- 		devconfig |= STPWLEVEL;
- 	if (bootverbose)
- 		printk("%s: STPWLEVEL is %s\n",
--		       ahd_name(ahd), (devconfig & STPWLEVEL) ? "on" : "off");
-+		       ahd_name(ahd), str_on_off(devconfig & STPWLEVEL));
- 	ahd_pci_write_config(ahd->dev_softc, DEVCONFIG, devconfig, /*bytes*/4);
-  
- 	/* Make sure current sensing is off. */
-diff --git a/drivers/scsi/be2iscsi/be_iscsi.c b/drivers/scsi/be2iscsi/be_iscsi.c
-index 8d374ae863ba..b35a2a5e0e11 100644
---- a/drivers/scsi/be2iscsi/be_iscsi.c
-+++ b/drivers/scsi/be2iscsi/be_iscsi.c
-@@ -22,6 +22,7 @@
- #include <scsi/scsi.h>
- 
- #include "be_iscsi.h"
-+#include <linux/string_choices.h>
- 
- extern struct iscsi_transport beiscsi_iscsi_transport;
- 
-@@ -601,10 +602,10 @@ int beiscsi_iface_get_param(struct iscsi_iface *iface,
- 	case ISCSI_NET_PARAM_IFACE_ENABLE:
- 		if (iface->iface_type == ISCSI_IFACE_TYPE_IPV4)
- 			len = sprintf(buf, "%s\n",
--				      phba->ipv4_iface ? "enable" : "disable");
-+				      str_enable_disable(phba->ipv4_iface));
- 		else if (iface->iface_type == ISCSI_IFACE_TYPE_IPV6)
- 			len = sprintf(buf, "%s\n",
--				      phba->ipv6_iface ? "enable" : "disable");
-+				      str_enable_disable(phba->ipv6_iface));
- 		break;
- 	case ISCSI_NET_PARAM_IPV4_GW:
- 		memset(&gateway, 0, sizeof(gateway));
-diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
-index c73a71ac3c29..aa87a6e0aaa1 100644
---- a/drivers/scsi/hpsa.c
-+++ b/drivers/scsi/hpsa.c
-@@ -55,6 +55,7 @@
- #include <asm/div64.h>
- #include "hpsa_cmd.h"
- #include "hpsa.h"
-+#include <linux/string_choices.h>
- 
- /*
-  * HPSA_DRIVER_VERSION must be 3 byte values (0-255) separated by '.'
-@@ -465,7 +466,7 @@ static ssize_t host_store_hp_ssd_smart_path_status(struct device *dev,
- 	h->acciopath_status = !!status;
- 	dev_warn(&h->pdev->dev,
- 		"hpsa: HP SSD Smart Path %s via sysfs update.\n",
--		h->acciopath_status ? "enabled" : "disabled");
-+		str_enabled_disabled(h->acciopath_status));
- 	return count;
- }
- 
-@@ -552,7 +553,7 @@ static ssize_t host_show_hp_ssd_smart_path_status(struct device *dev,
- 
- 	h = shost_to_hba(shost);
- 	return snprintf(buf, 30, "HP SSD Smart Path %s\n",
--		(h->acciopath_status == 1) ?  "enabled" : "disabled");
-+		str_enabled_disabled(h->acciopath_status == 1));
- }
- 
- /* List of controllers which cannot be hard reset on kexec with reset_devices */
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index 228daffb286d..08945f296635 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -31,6 +31,7 @@
- #include <scsi/scsi_transport_fc.h>
- #include <scsi/scsi_bsg_fc.h>
- #include "ibmvfc.h"
-+#include <linux/string_choices.h>
- 
- static unsigned int init_timeout = IBMVFC_INIT_TIMEOUT;
- static unsigned int default_timeout = IBMVFC_DEFAULT_TIMEOUT;
-@@ -3854,7 +3855,7 @@ static int ibmvfc_toggle_scrq_irq(struct ibmvfc_queue *scrq, int enable)
- 
- 	if (rc)
- 		dev_err(dev, "Couldn't %s sub-crq[%lu] irq. rc=%ld\n",
--			enable ? "enable" : "disable", scrq->hwq_id, rc);
-+			str_enable_disable(enable), scrq->hwq_id, rc);
- 
- 	return rc;
- }
-diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
-index d06b79f03538..9c711ce91b1e 100644
---- a/drivers/scsi/ipr.c
-+++ b/drivers/scsi/ipr.c
-@@ -70,6 +70,7 @@
- #include <scsi/scsi_eh.h>
- #include <scsi/scsi_cmnd.h>
- #include "ipr.h"
-+#include <linux/string_choices.h>
- 
- /*
-  *   Global Data
-@@ -4613,7 +4614,7 @@ static ssize_t ipr_store_raw_mode(struct device *dev,
- 			len = strlen(buf);
- 			if (res->sdev)
- 				sdev_printk(KERN_INFO, res->sdev, "raw mode is %s\n",
--					res->raw_mode ? "enabled" : "disabled");
-+					str_enabled_disabled(res->raw_mode));
- 		} else
- 			len = -EINVAL;
- 	} else
-diff --git a/drivers/scsi/libiscsi.c b/drivers/scsi/libiscsi.c
-index c9f410c50978..feb3c6153258 100644
---- a/drivers/scsi/libiscsi.c
-+++ b/drivers/scsi/libiscsi.c
-@@ -28,6 +28,7 @@
- #include <scsi/scsi_transport_iscsi.h>
- #include <scsi/libiscsi.h>
- #include <trace/events/iscsi.h>
-+#include <linux/string_choices.h>
- 
- static int iscsi_dbg_lib_conn;
- module_param_named(debug_libiscsi_conn, iscsi_dbg_lib_conn, int,
-@@ -435,8 +436,8 @@ static int iscsi_prep_scsi_cmd_pdu(struct iscsi_task *task)
- 	conn->scsicmd_pdus_cnt++;
- 	ISCSI_DBG_SESSION(session, "iscsi prep [%s cid %d sc %p cdb 0x%x "
- 			  "itt 0x%x len %d cmdsn %d win %d]\n",
--			  sc->sc_data_direction == DMA_TO_DEVICE ?
--			  "write" : "read", conn->id, sc, sc->cmnd[0],
-+			  str_write_read(sc->sc_data_direction == DMA_TO_DEVICE),
-+			  conn->id, sc, sc->cmnd[0],
- 			  task->itt, transfer_length,
- 			  session->cmdsn,
- 			  session->max_cmdsn - session->exp_cmdsn + 1);
-diff --git a/drivers/scsi/megaraid/megaraid_sas_base.c b/drivers/scsi/megaraid/megaraid_sas_base.c
-index 615e06fd4ee8..ae8af8064a5a 100644
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -37,6 +37,7 @@
- #include <linux/poll.h>
- #include <linux/vmalloc.h>
- #include <linux/irq_poll.h>
-+#include <linux/string_choices.h>
- 
- #include <scsi/scsi.h>
- #include <scsi/scsi_cmnd.h>
-@@ -6325,7 +6326,7 @@ static int megasas_init_fw(struct megasas_instance *instance)
- 		"current msix/max num queues\t: (%d/%u)\n",
- 		instance->msix_vectors, blk_mq_num_online_queues(0));
- 	dev_info(&instance->pdev->dev,
--		"RDPQ mode\t: (%s)\n", instance->is_rdpq ? "enabled" : "disabled");
-+		"RDPQ mode\t: (%s)\n", str_enabled_disabled(instance->is_rdpq));
- 
- 	tasklet_init(&instance->isr_tasklet, instance->instancet->tasklet,
- 		(unsigned long)instance);
-@@ -6484,11 +6485,11 @@ static int megasas_init_fw(struct megasas_instance *instance)
- 		le16_to_cpu(ctrl_info->pci.sub_vendor_id),
- 		le16_to_cpu(ctrl_info->pci.sub_device_id));
- 	dev_info(&instance->pdev->dev, "unevenspan support	: %s\n",
--		instance->UnevenSpanSupport ? "yes" : "no");
-+		str_yes_no(instance->UnevenSpanSupport));
- 	dev_info(&instance->pdev->dev, "firmware crash dump	: %s\n",
--		instance->crash_dump_drv_support ? "yes" : "no");
-+		str_yes_no(instance->crash_dump_drv_support));
- 	dev_info(&instance->pdev->dev, "JBOD sequence map	: %s\n",
--		instance->use_seqnum_jbod_fp ? "enabled" : "disabled");
-+		str_enabled_disabled(instance->use_seqnum_jbod_fp));
- 
- 	instance->max_sectors_per_req = instance->max_num_sge *
- 						SGE_BUFFER_SIZE / 512;
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
-index bd3efa5b46c7..c2e18a132dab 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -60,6 +60,7 @@
- #include <linux/ktime.h>
- #include <linux/kthread.h>
- #include <asm/page.h>        /* To get host page size per arch */
-+#include <linux/string_choices.h>
- 
- 
- #include "mpt3sas_base.h"
-@@ -3526,7 +3527,7 @@ _base_enable_msix(struct MPT3SAS_ADAPTER *ioc)
- 	}
- 
- 	ioc_info(ioc, "High IOPs queues : %s\n",
--			ioc->high_iops_queues ? "enabled" : "disabled");
-+			str_enabled_disabled(ioc->high_iops_queues));
- 
- 	return 0;
- 
-diff --git a/drivers/scsi/nsp32.c b/drivers/scsi/nsp32.c
-index abc4ce9eae74..a484425f3fd2 100644
---- a/drivers/scsi/nsp32.c
-+++ b/drivers/scsi/nsp32.c
-@@ -26,6 +26,7 @@
- #include <linux/delay.h>
- #include <linux/ctype.h>
- #include <linux/dma-mapping.h>
-+#include <linux/string_choices.h>
- 
- #include <asm/dma.h>
- #include <asm/io.h>
-@@ -1473,7 +1474,7 @@ static int nsp32_show_info(struct seq_file *m, struct Scsi_Host *host)
- 
- #ifdef CONFIG_PM
- 	seq_printf(m, "Power Management:      %s\n",
--		   (mode_reg & OPTF) ? "yes" : "no");
-+		   str_yes_no(mode_reg & OPTF));
- #endif
- 	seq_printf(m, "OEM:                   %ld, %s\n",
- 		   (mode_reg & (OEM0|OEM1)), nsp32_model[model]);
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index 96174353e389..c03b61597e63 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -9,6 +9,7 @@
- #include <linux/debugfs.h>
- #include <linux/module.h>
- #include <linux/vmalloc.h>
-+#include <linux/string_choices.h>
- 
- #include "qedf.h"
- #include "qedf_dbg.h"
-@@ -201,7 +202,7 @@ qedf_dbg_stop_io_on_error_cmd_read(struct file *filp, char __user *buffer,
- 
- 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
- 	cnt = scnprintf(cbuf, sizeof(cbuf), "%s\n",
--	    qedf->stop_io_on_error ? "true" : "false");
-+	    str_true_false(qedf->stop_io_on_error));
- 
- 	return simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
- }
-diff --git a/drivers/scsi/qla2xxx/qla_attr.c b/drivers/scsi/qla2xxx/qla_attr.c
-index 2e584a8bf66b..e58658ade770 100644
---- a/drivers/scsi/qla2xxx/qla_attr.c
-+++ b/drivers/scsi/qla2xxx/qla_attr.c
-@@ -10,6 +10,7 @@
- #include <linux/vmalloc.h>
- #include <linux/slab.h>
- #include <linux/delay.h>
-+#include <linux/string_choices.h>
- 
- static int qla24xx_vport_disable(struct fc_vport *, bool);
- 
-@@ -1722,7 +1723,7 @@ qla2x00_allow_cna_fw_dump_show(struct device *dev,
- 		return scnprintf(buf, PAGE_SIZE, "\n");
- 	else
- 		return scnprintf(buf, PAGE_SIZE, "%s\n",
--		    vha->hw->allow_cna_fw_dump ? "true" : "false");
-+		    str_true_false(vha->hw->allow_cna_fw_dump));
- }
- 
- static ssize_t
-diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-index be211ff22acb..9e035e1318a4 100644
---- a/drivers/scsi/qla2xxx/qla_init.c
-+++ b/drivers/scsi/qla2xxx/qla_init.c
-@@ -9,6 +9,7 @@
- #include <linux/delay.h>
- #include <linux/slab.h>
- #include <linux/vmalloc.h>
-+#include <linux/string_choices.h>
- 
- #include "qla_devtbl.h"
- 
-@@ -4850,13 +4851,13 @@ qla2x00_init_rings(scsi_qla_host_t *vha)
- 			(le32_to_cpu(mid_init_cb->init_cb.firmware_options_1) &
- 			 BIT_7) != 0;
- 		ql_dbg(ql_dbg_init, vha, 0x0191, "DPORT Support: %s.\n",
--		    (ha->flags.dport_enabled) ? "enabled" : "disabled");
-+		    str_enabled_disabled(ha->flags.dport_enabled));
- 		/* FA-WWPN Status */
- 		ha->flags.fawwpn_enabled =
- 			(le32_to_cpu(mid_init_cb->init_cb.firmware_options_1) &
- 			 BIT_6) != 0;
- 		ql_dbg(ql_dbg_init, vha, 0x00bc, "FA-WWPN Support: %s.\n",
--		    (ha->flags.fawwpn_enabled) ? "enabled" : "disabled");
-+		    str_enabled_disabled(ha->flags.fawwpn_enabled));
- 		/* Init_cb will be reused for other command(s).  Save a backup copy of port_name */
- 		memcpy(ha->port_name, ha->init_cb->port_name, WWN_SIZE);
- 	}
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index d4b484c0fd9d..b93f1186ab90 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -17,6 +17,7 @@
- #include <linux/crash_dump.h>
- #include <linux/trace_events.h>
- #include <linux/trace.h>
-+#include <linux/string_choices.h>
- 
- #include <scsi/scsi_tcq.h>
- #include <scsi/scsicam.h>
-@@ -3221,8 +3222,7 @@ qla2x00_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
- 	qla2x00_config_dma_addressing(ha);
- 	ql_dbg_pci(ql_dbg_init, pdev, 0x0020,
- 	    "64 Bit addressing is %s.\n",
--	    ha->flags.enable_64bit_addressing ? "enable" :
--	    "disable");
-+	    str_enable_disable(ha->flags.enable_64bit_addressing));
- 	ret = qla2x00_mem_alloc(ha, req_length, rsp_length, &req, &rsp);
- 	if (ret) {
- 		ql_log_pci(ql_log_fatal, pdev, 0x0031,
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 5b8668accf8e..984d91f39fd6 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -58,6 +58,7 @@
- #include <linux/t10-pi.h>
- #include <linux/uaccess.h>
- #include <linux/unaligned.h>
-+#include <linux/string_choices.h>
- 
- #include <scsi/scsi.h>
- #include <scsi/scsi_cmnd.h>
-@@ -3161,8 +3162,8 @@ sd_read_cache_type(struct scsi_disk *sdkp, unsigned char *buffer)
- 		    old_rcd != sdkp->RCD || old_dpofua != sdkp->DPOFUA)
- 			sd_printk(KERN_NOTICE, sdkp,
- 				  "Write cache: %s, read cache: %s, %s\n",
--				  sdkp->WCE ? "enabled" : "disabled",
--				  sdkp->RCD ? "disabled" : "enabled",
-+				  str_enabled_disabled(sdkp->WCE),
-+				  str_disabled_enabled(sdkp->RCD),
- 				  sdkp->DPOFUA ? "supports DPO and FUA"
- 				  : "doesn't support DPO or FUA");
- 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 74a6830b7ed8..32ed32b0b31d 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -43,6 +43,7 @@ static const char *verstr = "20160209";
- #include <linux/idr.h>
- #include <linux/delay.h>
- #include <linux/mutex.h>
-+#include <linux/string_choices.h>
- 
- #include <linux/uaccess.h>
- #include <asm/dma.h>
-@@ -4434,7 +4435,7 @@ static int st_probe(struct device *dev)
- 	sdev_printk(KERN_NOTICE, SDp,
- 		    "Attached scsi tape %s\n", tpnt->name);
- 	sdev_printk(KERN_INFO, SDp, "%s: try direct i/o: %s (alignment %d B)\n",
--		    tpnt->name, tpnt->try_dio ? "yes" : "no",
-+		    tpnt->name, str_yes_no(tpnt->try_dio),
- 		    queue_dma_alignment(SDp->request_queue) + 1);
- 
- 	return 0;
-diff --git a/drivers/scsi/sym53c8xx_2/sym_glue.c b/drivers/scsi/sym53c8xx_2/sym_glue.c
-index 57637a81776d..77fd6cc18d47 100644
---- a/drivers/scsi/sym53c8xx_2/sym_glue.c
-+++ b/drivers/scsi/sym53c8xx_2/sym_glue.c
-@@ -29,6 +29,7 @@
- #include <linux/module.h>
- #include <linux/moduleparam.h>
- #include <linux/spinlock.h>
-+#include <linux/string_choices.h>
- #include <scsi/scsi.h>
- #include <scsi/scsi_tcq.h>
- #include <scsi/scsi_device.h>
-@@ -761,7 +762,7 @@ static void sym_tune_dev_queuing(struct sym_tcb *tp, int lun, u_short reqtags)
- 	if (reqtags != oldtags) {
- 		dev_info(&tp->starget->dev,
- 		         "tagged command queuing %s, command queue depth %d.\n",
--		          lp->s.reqtags ? "enabled" : "disabled", reqtags);
-+			 str_enabled_disabled(lp->s.reqtags), reqtags);
- 	}
- }
- 
--- 
-2.47.3
+> than one buffer.
+> 
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> ---
+>  arch/powerpc/platforms/pseries/papr-hvpipe.c | 120 ++++++++++++++++++-
+>  arch/powerpc/platforms/pseries/papr-hvpipe.h |   7 ++
+>  2 files changed, 126 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+> index 5768d072859d..c30f4d75e645 100644
+> --- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
+> +++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/of.h>
+>  #include <asm/machdep.h>
+>  #include <asm/rtas.h>
+> +#include <asm/rtas-work-area.h>
+>  #include <uapi/asm/papr-hvpipe.h>
+>  #include "pseries.h"
+>  #include "papr-hvpipe.h"
+> @@ -59,6 +60,51 @@ static LIST_HEAD(hvpipe_src_list);
+>   *   return code for failure.
+>   */
+>  
+> +/*
+> + * ibm,send-hvpipe-msg RTAS call
+> + * @area: Caller-provided work area buffer to send.
+> + * @srcID: Target source for the send pipe message.
+> + */
+> +static int rtas_ibm_send_hvpipe_msg(struct rtas_work_area *area, u32 srcID)
+> +{
+> +	const s32 token = rtas_function_token(RTAS_FN_IBM_SEND_HVPIPE_MSG);
+> +	s32 fwrc;
+> +	int ret;
+> +
+> +	if (token == RTAS_UNKNOWN_SERVICE)
+> +		return -ENOENT;
+> +
+> +	do {
+> +		fwrc = rtas_call(token, 2, 1, NULL, srcID,
+> +				rtas_work_area_phys(area));
+> +
+> +	} while (rtas_busy_delay(fwrc));
+> +
+> +	switch (fwrc) {
+> +	case RTAS_SUCCESS:
+> +		ret = 0;
+> +		break;
+> +	case RTAS_HARDWARE_ERROR:
+> +		ret = -EIO;
+> +		break;
+> +	case RTAS_INVALID_PARAMETER:
+> +		ret = -EINVAL;
+> +		break;
+> +	case RTAS_HVPIPE_CLOSED:
+> +		ret = -EACCES;
 
+The status -4 is Pipe connection is closed/unavailabe. Instead of
+permission denied does it make sense to return -EPIPE (Broken pipe) ?
+
+> +		break;
+> +	case RTAS_FUNC_NOT_SUPPORTED:
+> +		ret = -EOPNOTSUPP;
+> +		break;
+> +	default:
+> +		ret = -EIO;
+> +		pr_err_ratelimited("unexpected ibm,receive-hvpipe-msg status %d\n", fwrc);
+> +		break;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+[...]
+
+Thanks,
+-Mahesh.
 
