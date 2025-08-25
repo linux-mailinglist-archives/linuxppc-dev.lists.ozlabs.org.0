@@ -1,49 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-11247-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11245-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A2AB33C7D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 12:20:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC781B33C73
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 12:20:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c9RdN4qgCz3cgh;
-	Mon, 25 Aug 2025 20:20:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c9Rcj0KVCz3cgB;
+	Mon, 25 Aug 2025 20:20:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756117240;
-	cv=none; b=egvMQdFs8rFSgXEVUHkhcprSx5BPt29BctpoBK/BAM4bwwtcuYgwS4A3A2jOxh3V3LRyPzz183wN7s61QdGHeyBzaJp4+OL+ArtFSIgLbeIqpfWS7kTQ8oof4ReWqAKRwW5HKV+76hNO1RLUNNYFvWGHRJw3vXMmd4oj6vw/+ilSDRZtIjpLXxzDC/srkHg2uPYq0BV+WOE8auKWCIfV6B2cX87hruXaNIeeAwcvtVtllnuRWywW4GFZ+prDN+2qxRmzLadCjq3DMzs4VR1xytz9lB75uhzNFUuxYolLreqXrElPSrYln+tvnRhJ+gqYNnCQk2C2fauC/nMn6EqLVw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=143.55.148.243
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756117204;
+	cv=none; b=Z9x+zd3pESVVzxSa5B9+Hu5JxCCFtKcF94iQarWICi/1d8J9aaPQzwN02IYpbYaLXLv9qtY1E7zPDLsVW2B6tAQhbX6v3fF/RopNC250uloRhkYheJl7mphXkjoCdEkiMk5EoEnS6cPDQYNxy6CQxd61NjGcB5Xqf+ni3pJLkM+pkRo2q1qnVgcKtwVpJptB30C4PptUIrYRtkPBzW3jioc5lheXRmPlxu/7c7Ecv5XCDKdxgWluU5nXCJbReLS6ihKVWyyAXgU96tmAvwnCjSnwi/eoKi9TLR3mH5DDKjkf+8LGf7Rd7RO5IYaF9N5S3i+covBrqUjqB+16FjUVBg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756117240; c=relaxed/relaxed;
-	bh=jB0WKMT7crKcaopJPS36QIRBLD9yrujCjLgtznKE5t0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A96ZiixVkst+wScvROGWJQnUY3wgOIq/rLXDkj1sxSg0xig1DofOdE/gXkgi+16YyQc09XT98j2FbVb6sfKrQx1/LDwoMsMA4wYcq80Ni7FjfvBpto6/WqBDZjFv6BADJLrNsGzlU5ioVG6TF042GKrFzH4heTqN1WRAvHK/XgqJvRmVjMfIUJP+Iny7fmiUPrjAfSne0kTlXvbiIc8SlZvKr6NL3eLD51PJ83VnXHrTtRspSu2K20QoUWxnNzOsA7ubYzUoQV9WnrO3sZ8sCuLf/VNPLFQ4canHgFvbcGePqek7uxe5RVZrAX2xFQMvM2P2VzvBLpRGO0/wW6pL+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c9RdN0dR9z3cgg
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 20:20:40 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c9R2y0dHvz9sSc;
-	Mon, 25 Aug 2025 11:54:18 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id cK2CLYDxHx9V; Mon, 25 Aug 2025 11:54:18 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c9R2x72D0z9sSb;
-	Mon, 25 Aug 2025 11:54:17 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D93348B764;
-	Mon, 25 Aug 2025 11:54:17 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id EqBXMUSyP-Tb; Mon, 25 Aug 2025 11:54:17 +0200 (CEST)
-Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B97568B763;
-	Mon, 25 Aug 2025 11:54:17 +0200 (CEST)
-Message-ID: <7b7cccf2-5899-4334-9aa0-e83f0772d484@csgroup.eu>
-Date: Mon, 25 Aug 2025 11:54:17 +0200
+	t=1756117204; c=relaxed/relaxed;
+	bh=D2RQQU+xVYCIYE9iCJ4jbQxYZO59NkcR2A8V0GUG+Mo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e9sIjgc5P7s+MHS3L8my6ZihRidkFzbp6dNSLOpyINqeq/SUxoFU/oynf6nQe+Lq+ohiCg3Olusr3O+gl7ZdLC1WlorT/uKsidwJhaLiS2W0GxViVPHFC/StISfN11reoJe7EeE9VY5hUTlqxjkfo7u5ZTIdJr90UnsTa9ywPyh3nXXbh4USnu4EYVdAFwlcEKShuXmVMMHSZX/6wl8VZIzCSLHfeylATGU6BKXv3z+td9LrHOPIO6Te8Rrg2elyfJcso5kPtJsdDQ0eL6B+nXBBX0yV8evCeNxqwOm8G3igJhtLpdjlZMaJPLKOwnsRBA71zMVRLbTQbRO9e3y2fA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=iram.es; dkim=pass (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=dkim3 header.b=f276yTAV; dkim-atps=neutral; spf=pass (client-ip=143.55.148.243; helo=mx08-006a4e02.pphosted.com; envelope-from=paubert@iram.es; receiver=lists.ozlabs.org) smtp.mailfrom=iram.es
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=iram.es
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=iram.es header.i=@iram.es header.a=rsa-sha256 header.s=dkim3 header.b=f276yTAV;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=iram.es (client-ip=143.55.148.243; helo=mx08-006a4e02.pphosted.com; envelope-from=paubert@iram.es; receiver=lists.ozlabs.org)
+Received: from mx08-006a4e02.pphosted.com (mx08-006a4e02.pphosted.com [143.55.148.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9Rcc6nvmz3cg1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 20:19:58 +1000 (AEST)
+Received: from pps.filterd (m0316694.ppops.net [127.0.0.1])
+	by m0316694.ppops.net (8.18.1.2/8.18.1.2) with ESMTP id 57P6PW3W020069;
+	Mon, 25 Aug 2025 12:18:43 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iram.es; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=dkim3; bh=D2RQ
+	QU+xVYCIYE9iCJ4jbQxYZO59NkcR2A8V0GUG+Mo=; b=f276yTAVV1SD26/ulkZ2
+	ssJY8XTewysYT4tMLHnjnSIBPzgblP8WuCw3pnh/XAa52lQyDLxmxShvX17t1EXs
+	AoQda248LCfIMXON/nZwXpeu4+MTA43njmbgfGliPSIcYHT6eGt5tvWcsz+Ebm8/
+	4lIyyZv8wrgSbUY90OllDWqU/MTlR6SEhvM2DfGVcewE1Kv7qk7AtlaNhqjqabwW
+	IOCDoLYjGRp5sJ9N4qvDQOAd9gPixccJfFHXTLWq+WrJuREyVW1zYVGsiH/zFMSl
+	OAyS7jVvPh7W7XrmyRecvqRovk6Azt/V4iwX6CHVY52rTnzQCWQmiOXOKm2ygevf
+	nw==
+Received: from sim.rediris.es (mta-out04.sim.rediris.es [130.206.24.46])
+	by m0316694.ppops.net (PPS) with ESMTPS id 48qs26hbtk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 25 Aug 2025 12:18:43 +0200 (MEST)
+Received: from sim.rediris.es (localhost.localdomain [127.0.0.1])
+	by sim.rediris.es (Postfix) with ESMTPS id 26F1D181FAE;
+	Mon, 25 Aug 2025 12:18:42 +0200 (CEST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by sim.rediris.es (Postfix) with ESMTP id 00B66181FAC;
+	Mon, 25 Aug 2025 12:18:41 +0200 (CEST)
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+ mta-out04.sim.rediris.es
+Received: from sim.rediris.es ([127.0.0.1])
+ by localhost (mta-out04.sim.rediris.es [127.0.0.1]) (amavis, port 10026)
+ with ESMTP id T0a5k0mKOE42; Mon, 25 Aug 2025 12:18:41 +0200 (CEST)
+Received: from lt-gp.iram.es (haproxy02.sim.rediris.es [130.206.24.70])
+	by sim.rediris.es (Postfix) with ESMTPA id 4570418007C;
+	Mon, 25 Aug 2025 12:18:40 +0200 (CEST)
+Date: Mon, 25 Aug 2025 12:18:38 +0200
+From: Gabriel Paubert <paubert@iram.es>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Andre Almeida <andrealmeid@igalia.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Laight <david.laight.linux@gmail.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, linux-block@vger.kernel.org
+Subject: Re: [PATCH v2 10/10] powerpc/uaccess: Implement masked user access
+Message-ID: <aKw4frSacjCoruSJ@lt-gp.iram.es>
+References: <cover.1755854833.git.christophe.leroy@csgroup.eu>
+ <647f1b1db985aec8ec1163bf97688563ae6f9609.1755854833.git.christophe.leroy@csgroup.eu>
+ <aKwnMo7UllLZkOcK@lt-gp.iram.es>
+ <16679d56-5ee0-469d-a11c-475a45a1c2b9@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,70 +96,152 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Ozlabs patchwork notification not working anymore
-To: Jeremy Kerr <jk@ozlabs.org>, Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com
-References: <8f6e5825-9468-4499-9bbd-4588a1eccc94@cs-soprasteria.com>
- <20250729183222.15adbb95@canb.auug.org.au>
- <cd2ee23092e3749f707b0f730af741a94f0986f0.camel@ozlabs.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <cd2ee23092e3749f707b0f730af741a94f0986f0.camel@ozlabs.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <16679d56-5ee0-469d-a11c-475a45a1c2b9@csgroup.eu>
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI0MDAxMSBTYWx0ZWRfXyQKmoH9DesXw
+ ky5qpDKRbPVEO1j5P6RR/dl92Vu5gG46S+qU0RD2h9TCpiV9lxYjE4Rf4eAAbziJN1WFf5iKIoL
+ vwHyFf4hVFUMvanQ6xRm7ygYHGMCvWURJrObfA0zrkO/dAoKD6EpbGdosihHgY3UjjtywmHeIhh
+ zadbuk6ri8Bjd//t+fuudKJvFfCA6JbBQ9N+HL1oXH8gyaqcVqF4z95oY0uvqMW92ZBVK+g2n6Z
+ F5336k0OeSJ784mGbOt0xTivvX2ToRO8PW2UCuoqsfP7MIu8uTDDGoglgFl+oLkNRfmAFLuzTMV
+ j3inHZqHmiMrvZjyNxDRXcurMFxlSzfQPLVCuFgRq2ZkLrTZLm79a044/SvNKtbKXHZ8D77pt49
+ kvezQV2k
+X-Proofpoint-GUID: gpjt9l5GPC7skcU5Z664_moW2gPMxUzU
+X-Authority-Analysis: v=2.4 cv=GqFC+l1C c=1 sm=1 tr=0 ts=68ac3883 cx=c_pps
+ a=Kke4r4mcy+kRAsMtzpf9hg==:117 a=Kke4r4mcy+kRAsMtzpf9hg==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=_EeEMxcBAAAA:8 a=LQ9UBoVtz5yYhqZLJvEA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: gpjt9l5GPC7skcU5Z664_moW2gPMxUzU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-25_05,2025-08-20_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=salida_notspam policy=salida score=0
+ priorityscore=1501 malwarescore=0 phishscore=0 bulkscore=0 adultscore=0
+ spamscore=0 suspectscore=0 clxscore=1011 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508240011
+X-Spam-Status: No, score=-0.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,PDS_RDNS_DYNAMIC_FP,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Jeremy,
+On Mon, Aug 25, 2025 at 11:40:48AM +0200, Christophe Leroy wrote:
+> Hi Gabriel,
+>=20
+> Le 25/08/2025 =C3=A0 11:04, Gabriel Paubert a =C3=A9crit=C2=A0:
+> > [Vous ne recevez pas souvent de courriers de paubert@iram.es. D?couvr=
+ez pourquoi ceci est important ? https://urldefense.com/v3/__https://aka.=
+ms/LearnAboutSenderIdentification__;!!D9dNQwwGXtA!QUcSIXoDBBj9wAtcyQ-z3nP=
+EAj-RnJpPgYwjOeb6LZWLejdLzq4uYsPMecQuK5Qy3147APjCNc-hcXGT71XuBh1AJI2M$  ]
+> >=20
+> > Hi Christophe,
+> >=20
+> > On Fri, Aug 22, 2025 at 11:58:06AM +0200, Christophe Leroy wrote:
+> > > Masked user access avoids the address/size verification by access_o=
+k().
+> > > Allthough its main purpose is to skip the speculation in the
+> > > verification of user address and size hence avoid the need of spec
+> > > mitigation, it also has the advantage of reducing the amount of
+> > > instructions required so it even benefits to platforms that don't
+> > > need speculation mitigation, especially when the size of the copy i=
+s
+> > > not know at build time.
+> > >=20
+> > > So implement masked user access on powerpc. The only requirement is
+> > > to have memory gap that faults between the top user space and the
+> > > real start of kernel area.
+> > >=20
+> > > On 64 bits platforms the address space is divided that way:
+> > >=20
+> > >        0xffffffffffffffff      +------------------+
+> > >                                |                  |
+> > >                                |   kernel space   |
+> > >                                |                  |
+> > >        0xc000000000000000      +------------------+  <=3D=3D PAGE_O=
+FFSET
+> > >                                |//////////////////|
+> > >                                |//////////////////|
+> > >        0x8000000000000000      |//////////////////|
+> > >                                |//////////////////|
+> > >                                |//////////////////|
+> > >        0x0010000000000000      +------------------+  <=3D=3D TASK_S=
+IZE_MAX
+> > >                                |                  |
+> > >                                |    user space    |
+> > >                                |                  |
+> > >        0x0000000000000000      +------------------+
+> > >=20
+> > > Kernel is always above 0x8000000000000000 and user always
+> > > below, with a gap in-between. It leads to a 4 instructions sequence=
+:
+> > >=20
+> > >    80: 7c 69 1b 78     mr      r9,r3
+> > >    84: 7c 63 fe 76     sradi   r3,r3,63
+> > >    88: 7d 29 18 78     andc    r9,r9,r3
+> > >    8c: 79 23 00 4c     rldimi  r3,r9,0,1
+> > >=20
+> > > This sequence leaves r3 unmodified when it is below 0x8000000000000=
+000
+> > > and clamps it to 0x8000000000000000 if it is above.
+> > >=20
+> >=20
+> > This comment looks wrong: the second instruction converts r3 to a
+> > replicated sign bit of the address ((addr>0)?0:-1) if treating the
+> > address as signed. After that the code only modifies the MSB of r3. S=
+o I
+> > don't see how r3 could be unchanged from the original value...
+>=20
+> Unless I'm missing something, the above rldimi leaves the MSB of r3
+> unmodified and replaces all other bits by the same in r9.
+>=20
+> This is the code generated by GCC for the following:
+>=20
+> 	unsigned long mask =3D (unsigned long)((long)addr >> 63);
+>=20
+> 	addr =3D ((addr & ~mask) & (~0UL >> 1)) | (mask & (1UL << 63));
+>=20
+>=20
+> >=20
+> > OTOH, I believe the following 3 instructions sequence would work,
+> > input address (a) in r3, scratch value (tmp) in r9, both intptr_t:
+> >=20
+> >          sradi r9,r3,63  ; tmp =3D (a >=3D 0) ? 0L : -1L;
+> >          andc r3,r3,r9   ; a =3D a & ~tmp; (equivalently a =3D (a >=3D=
+ 0) ? a : 0)
+> >          rldimi r3,r9,0,1 ; copy MSB of tmp to MSB of a
+> >=20
+> > But maybe I goofed...
+> >=20
+>=20
+> From my understanding of rldimi, your proposed code would:
+> - Keep r3 unmodified when it is above 0x8000000000000000
+> - Set r3 to 0x7fffffffffffffff when it is below 0x8000000000000000
+>=20
+> Extract of ppc64 ABI:
+>=20
+> rldimi RA,RS,SH,MB
+>=20
+> The contents of register RS are rotated 64 left SH bits.
+> A mask is generated having 1-bits from bit MB
+> through bit 63=E2=88=92 SH and 0-bits elsewhere. The rotated
+> data are inserted into register RA under control of the
+> generated mask.
 
-Le 10/08/2025 à 05:12, Jeremy Kerr a écrit :
-> Hi Christophe,
-> 
-> I've (finally!) had some time to take a look at this. Looks like
-> timezone behaviour had changed, which affected notification expiry.
-> 
-> It should be fixed now - I'm seeing test notifications myself. Let
-> me know how go.
+Sorry, you are right, I got the polarity of the mask reversed in my
+head.
 
-I still don't receive anything it seems. I have modified the status of 
-several patches over the last two weeks and haven't received any 
-notification from patchwork.
 
-Christophe
+Once again I may goof, but I believe that the following sequence
+would work:
 
-> 
-> Cheers,
-> 
-> 
-> Jeremy
-> 
-> On Tue, 2025-07-29 at 18:32 +1000, Stephen Rothwell wrote:
->> Hi Christophe,
->>
->> On Tue, 29 Jul 2025 07:41:40 +0000 LEROY Christophe
->> <christophe.leroy2@cs-soprasteria.com> wrote:
->>>
->>> If I remember correctly you maintain the Ozlabs patchwork aren't
->>> you ?
->>
->> Actually Jeremy Kerr (cc'd) actually manages patchwork on
->> patchwork.ozlabs.org (I just admin the server it runs on).
->>
->>> For more than one year now, patchwork for linuxppc-dev hasn't sent
->>> notifications about patches status changes. Last notification I
->>> received
->>> was 11 June 2024.
->>>
->>> Is there a reason for that change ? I recently got questions from
->>> people
->>> asking me why they didn't get notified when I started looking at
->>> their
->>> patches.
->>>
->>> Is it possible to restore previous behaviour ?
->>
-> 
+	sradi r9,r3,63
+	andc r3,r3,r9
+	rldimi r3,r9,63,0  ; insert LSB of r9 into MSB of R3
+
+Cheers,
+Gabriel
+ 
 
 
