@@ -1,49 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-11235-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11249-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC96B336C3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 08:50:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E6FB33DD7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 13:20:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c9Lz31RvKz3cYN;
-	Mon, 25 Aug 2025 16:50:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c9SyY539pz3cgQ;
+	Mon, 25 Aug 2025 21:20:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756104639;
-	cv=none; b=UEsF6xII3AKSUQWA4TJlhaj4hXldknmDA9C3NAnqGtyNtjrPE26Mgakt896ORx5/tPYM0a3FPd29OhXrGgONXXF0Mi526od2j0CKIFazdD6lvhfU+ENADR0ns0QOC98eV3vtZUqCgK3sAi9AtZCb10/MPLkQAZXIGSEBwW7sUriNJL3959Ke6E5PQB3DRk1JNNFQTCXLGPy6e8u94uA1WpUkUyz1p4n1AriwcsK0zUi0Og7Kj+lxYNOWv8DM4sguGOi4j3TQdTO1y6teCLFhXdWK9/Kz6fNK2cnVDISF0lkl52llEUirDEbvSLpxwaVH8J57tZA3jV0iC8LKvFQ9eQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756120837;
+	cv=none; b=jn36Ek8B4hpbYl0byfaZ2rwbR79N4rryG3+X3V93kQ14ZhNapp3g3qqQL8XCwIa0T2ln0MdrwP0yE5v+Es9rJQoiuw1OtVPo7g0fhN8urC8felA+inAdW4sHLpGMp8Tzz8fHO65OoSpJvQvUezWX+d1QNpf/XxHeU8dQKmOCzmwPDzSg6K/nQGA0l9pEE1sCSEaDrTtx28yRrMvWI95fR0LiwYuvBVveHlTtpsi1S9Xrim+GrFoywV/+lIJBsjrJlTRoeMgjjGGGrVAH4XY2Oct4j17Ji9OyNTrn8Jt9IevqlQX1m0CRry3ZT5mXx8bX+REY4SQoERrdAqNpmr/5rQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756104639; c=relaxed/relaxed;
-	bh=/d0w7P9Jwx/WQW0XNyiX4RWPK6SpUp6K4ExZQGTl/Fw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BcyMKt8fWS1K8UTNQPh0gh3JabMW9xvilHInYw5rbOPsP3ZEaST4ddQJMoBBhtPMB4imB0PNsn3sbFauWUvfRcCTfnxWPEstZtuYhgHQjkbkMbPjP3/Zwm1egBdc1pjb7LC7zM9l5/vp8Y1aZ0UyGP/6AkD3PPLPCtX9Bs6auHUXZOX53OpmDfRSx2QyyF8teWN9sB5NKkCVNKXC7xkodoyX6zxGum243C8913Ueme3yt07ehPThwKSanFeLhjOaJobqVvXyAaio+I4rNll9a4729TcNq//V4EFQs3R+dCvWF4fS6bx4FbveFUaJe4rTpOomTtVQeniC/A2/DEbpDg==
+	t=1756120837; c=relaxed/relaxed;
+	bh=ACH5U9dmCOjUKPYlykUZNIaOxITsGB26E2+zSyyJZ0o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bs0M3rrSsTV2EnmTHS8Q8fXn2l7WeyQVdGylqek+g8ioGVxz78NXEnFe0NsnlWCWjCRQFhLI2QhpGDEErS/CU578KoyNnHXkMTKVKHOPNhLjNxm4XUXImqCLNdPDLgz73mAR2a0IWfBORAJSHU5L8F7tonY48xomaFUalsIsL5aNEYCtN15JXCx6X6JWcgeoKhosSH4fDoCBxpqUaufKQ6/i/DUqy/Dnt8+80cbsC6EiLHeuBbNc+XmavEIVslpnluGACa69nOHScWpMTvi/mH4Ls+2KtWzK+wNwB5xnMFfnAfvE8EUHOWbzlVa92WnvzkBrzUIcncgXUKnBEEvgGw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c9Lz11fVJz3cQq
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 16:50:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c9SyX6S51z3cgy
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 21:20:36 +1000 (AEST)
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4c9LKK5zQYz9sSL;
-	Mon, 25 Aug 2025 08:21:25 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4c9M286c6Jz9sSL;
+	Mon, 25 Aug 2025 08:53:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id j5uVW3356aDM; Mon, 25 Aug 2025 08:21:25 +0200 (CEST)
+	with ESMTP id jxLSvRcp4PtP; Mon, 25 Aug 2025 08:53:20 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4c9LKK5Cjjz9sSH;
-	Mon, 25 Aug 2025 08:21:25 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4c9M285rFVz9sSH;
+	Mon, 25 Aug 2025 08:53:20 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9B8958B765;
-	Mon, 25 Aug 2025 08:21:25 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B144F8B769;
+	Mon, 25 Aug 2025 08:53:20 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id WYi6JqpQl8Lp; Mon, 25 Aug 2025 08:21:25 +0200 (CEST)
-Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7318E8B764;
-	Mon, 25 Aug 2025 08:21:25 +0200 (CEST)
-Message-ID: <1eec11c9-d2f2-45fb-ad7b-6b33bd62cf04@csgroup.eu>
-Date: Mon, 25 Aug 2025 08:21:24 +0200
+	with ESMTP id 79Duc9-z2n-g; Mon, 25 Aug 2025 08:53:20 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [10.25.207.160])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8845D8B765;
+	Mon, 25 Aug 2025 08:53:20 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Qiang Zhao <qiang.zhao@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v3 0/6] Add support of IRQs to QUICC ENGINE GPIOs
+Date: Mon, 25 Aug 2025 08:53:15 +0200
+Message-ID: <cover.1756104334.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,59 +71,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] bus: fsl-mc: Check return value of
- platform_get_resource()
-To: Markus Elfring <Markus.Elfring@web.de>,
- Salah Triki <salah.triki@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc: LKML <linux-kernel@vger.kernel.org>
-References: <aIH4t9Ekj8hn7EEk@pc>
- <b107c2a6-bb56-4b15-bf0f-d9eca8163aa1@web.de>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <b107c2a6-bb56-4b15-bf0f-d9eca8163aa1@web.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756104796; l=1967; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=9gU8poKsNJSgCMj5IC193x1flh8SKIRE7FBDWszpiWY=; b=s6s0Zoi/uoWVoB6Dpqtqh36eyBdZYPiQX7Lsm4T3peSJPKqTrsYBsGx5vTJQ1PXR5nzJtkHfw rRSUesOi+piCK4lY6+crj0YPYpBjOJvpltbn2OeKjzVgBzPFYDj69GD
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+The QUICC Engine provides interrupts for a few I/O ports. This is
+handled via a separate interrupt ID and managed via a triplet of
+dedicated registers hosted by the SoC.
 
+Implement an interrupt driver for those IRQs then add IRQs capability to
+the QUICC ENGINE GPIOs.
 
-Le 27/07/2025 à 18:24, Markus Elfring a écrit :
->> platform_get_resource() returns NULL in case of failure, so check its
->> return value and propagate the error in order to prevent NULL pointer
->> dereference.
-> 
-> How do you think about to add any tags (like “Fixes” and “Cc”) accordingly?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.16-rc7#n145
-> 
+The number of GPIOs for which interrupts are supported depends on
+the microcontroller:
+- mpc8323 has 10 GPIOS supporting interrupts
+- mpc8360 has 28 GPIOS supporting interrupts
+- mpc8568 has 18 GPIOS supporting interrupts
 
-Fixes: 6305166c8771 ("bus: fsl-mc: Add ACPI support for fsl-mc")
+Changes in v3:
+- Splited dt-bindings update out of patch "soc: fsl: qe: Add support of IRQ in QE GPIO"
+- Reordered DTS node exemples iaw dts-coding-style.rst
 
-> 
-> …
->> +++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
->> @@ -1105,6 +1105,10 @@ static int fsl_mc_bus_probe(struct platform_device *pdev)
->>   	 * Get physical address of MC portal for the root DPRC:
->>   	 */
->>   	plat_res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->> +
->> +	if (!plat_res)
->> +		return -ENODEV;
+Changes in v2:
+- Fixed warning on PPC64 build (Patch 1)
+- Using devm_kzalloc() instead of kzalloc (Patch 2)
+- Stop using of-mm-gpiochip (New patch 3)
+- Added fsl,qe-gpio-irq-mask propertie in DT binding doc (Patch 4)
+- Fixed problems reported by 'make dt_binding_check' (Patch 5)
 
-Before the blame commit, of_address_to_resource() was used and 
-of_address_to_resource() returns -EINVAL in case no resource is found. 
-Should we keep the same return instead of ENODEV ?
+Christophe Leroy (6):
+  soc: fsl: qe: Add an interrupt controller for QUICC Engine Ports
+  soc: fsl: qe: Change GPIO driver to a proper platform driver
+  soc: fsl: qe: Drop legacy-of-mm-gpiochip.h header from GPIO driver
+  soc: fsl: qe: Add support of IRQ in QE GPIO
+  dt-bindings: soc: fsl: qe: Add support of IRQ in QE GPIO
+  dt-bindings: soc: fsl: qe: Add an interrupt controller for QUICC
+    Engine Ports
 
-> …
-> 
-> I suggest to omit a blank line before the if statement.
-> 
-> Regards,
-> Markus
-> 
-> 
+ .../soc/fsl/cpm_qe/fsl,qe-ports-ic.yaml       |  58 +++++++
+ .../bindings/soc/fsl/cpm_qe/qe/par_io.txt     |  19 +++
+ arch/powerpc/platforms/Kconfig                |   1 -
+ drivers/soc/fsl/qe/Makefile                   |   2 +-
+ drivers/soc/fsl/qe/gpio.c                     | 145 +++++++++-------
+ drivers/soc/fsl/qe/qe_ports_ic.c              | 156 ++++++++++++++++++
+ 6 files changed, 322 insertions(+), 59 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/soc/fsl/cpm_qe/fsl,qe-ports-ic.yaml
+ create mode 100644 drivers/soc/fsl/qe/qe_ports_ic.c
+
+-- 
+2.49.0
 
 
