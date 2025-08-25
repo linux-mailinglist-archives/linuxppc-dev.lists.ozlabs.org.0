@@ -1,130 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-11250-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11251-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3518CB33DFA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 13:30:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2ECB33F6F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 Aug 2025 14:31:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c9T9R5lRZz3cfH;
-	Mon, 25 Aug 2025 21:30:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c9VX46dRyz3chc;
+	Mon, 25 Aug 2025 22:31:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756121403;
-	cv=none; b=AmxyQcPt3/qJKDEmUo7VxtqlaNAezOK2IAWKogAgYaYgUfz4Gpi2n1aJEfuseVXUqCg5FgBtyRleGNWxOVNRozu9AcJ160NSYzRKtKv1otH7BOR+VXs8rCiAPwvCNBBFUWrY0J2kiOW5+DzHZfev8atUD1kNiWGg7S+moO1MUaqdI3s1uxUWEccDYwz+4x27TAiQkmxgB4njxAsua7kGTnoTzMbXceaKE8n2vyJzjuxiKp7OSNvEGCD3XHOZuJuJOesLuhsT/ALQC4Vg43HRwvaTZ4Xj6mt85dbxSLzpb1wrdUenWuZuc2tY+RhtpYBTk3aTxPnIlW53gTOgiCvf6Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756125076;
+	cv=none; b=Gk6TiZsDRemCuyeSHmHVUsbPp+ijdVnI3m5OuW8JTpIff2MbRFr/gEFJI8lpq7XgHhET9IjVW3VCBrkxJZsl2Ip53peLrOTDgF9nhF79Gi8BeCuNXCQq+kM1uZzKJ2FE1yNHSHD9pRuNXWu8mBCcivo01qYHG2HmUk8GF5302BS7xMqZJvdxIU4AsboTGqvs2orqBqZxxrh4Fr1sKbbr7h3fiGG3X9VwkRIx0hLlhVpd3w6x5NCZATtOpbODL6y4lLs7+0Yv2Rqe1nvvMHSEMIexZzon8yQElflgajS1UAkcgshZ2sXNmnelFDoOlLYxSccA8FzRBTdV2Xc60BWYVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756121403; c=relaxed/relaxed;
-	bh=pZVH01D2Gd/ZuxBDWHvMdhmbI57qiNXppeatopYJClM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y6wEZgeTYiyrKoXxIAuofDHHcicYCN1izQ/45SX36PVVbHwRaDMxRFhyAjqmDHNqVYVFfnHqTmIM7LMPiNYzg3/Rd+AGhnSanEIXS6HdyNXfyQV9qe5BRXYvd6jBmqlTdRL60qgPjIdeFjzMoHu/f5NBfKhpe4KQVBKZan9uPEatQi0V2WiA0K55yTa6rXTDCbSxq7WOEk0psz4bvcmKKJOxp4VU5weMpraeWsH5+K+IA3CW42dpliWdhnN8uucvxaHif7in2Pq8Mz4eKUmrZXGehT0E541w5LNb3byJSP2cwHHCLKAbSZkwT1gbWUMHbXv2Kc6xuUiuHvMWnJpDWA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WFeXTt5t; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1756125076; c=relaxed/relaxed;
+	bh=48cMTSslcB0ziBS4SAU+081Ps38xL0HjCpNxL+9nzl0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vbo0ecLgzMMclscrQdqjRqXZg6tAIxHd+X8p0Vev1BtTU3qwJz3O8n7CEVuu6gxKIGT+zzmY40Ksd9I7EYd+kf5wOKOQyX9CpbBiyqyRH4PrsnloUYMnWjcC0jz9ih6S+Bjp4X08RNI+voisEu2sgpZEp10xGlgR2QmbsDmxFjuf22rfxYBTdC1jzE6pWvyKuNLiwZaICv6xMPDBRZyuRob5E5G0HwFBFt8DHZNU3ywedN4dtmzqXK0s5R6VrlCDGZhoakRpploKLArmfVT842GQYwPX/mrqVjTlDoil2Szvxr7CX2uKuVAC89ZuXswqHx6xhSpjZeAaSF1MVgdPZg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bnynJcsI; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dl8Uiktc; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=WFeXTt5t;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=bnynJcsI;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=dl8Uiktc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9T9Q5G02z3blc
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 21:30:01 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57PAuFQ1016927;
-	Mon, 25 Aug 2025 11:29:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=pZVH01D2Gd/ZuxBDWHvMdhmbI57qiN
-	XppeatopYJClM=; b=WFeXTt5tlq7bvmFwDwurN2gxIAJS4Sbtzub9xJRMuUUCWG
-	dnN+VgZwrU+C7OAoBOS7dQLtS9avFToeFD88Xjc+lW70Zit8RLPH2JZHPbK7MHxb
-	v0D+pVyzXtrwYQl3kI+QLZ7QQLNBqOFnM1k0uGpSZ1+CyNFOS702oVm2UXUhr26g
-	QqYmWP5K4me05w/KlbcV8jlyClHMpN0GwiL9exsIxxhhvb59HKuryvQ6LoqGJJOX
-	azP5+JccDMK8pigXUHrrcngDK4tPx7KmxBkljdhf7EI3Ims4+KAlu4PkVvsOtnHJ
-	SJYiHaa74A1UrHZh5hhabVWUJ/85+yELHuGX+z6g==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5av8jkr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Aug 2025 11:29:07 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57PBJCuS013823;
-	Mon, 25 Aug 2025 11:29:06 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5av8jkq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Aug 2025 11:29:06 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57PB3VZR002512;
-	Mon, 25 Aug 2025 11:29:05 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qt6m5am6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Aug 2025 11:29:05 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57PBT3gH52166968
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 25 Aug 2025 11:29:03 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 971AE20043;
-	Mon, 25 Aug 2025 11:29:03 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C97EF20040;
-	Mon, 25 Aug 2025 11:28:50 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.98.110.17])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 25 Aug 2025 11:28:50 +0000 (GMT)
-Date: Mon, 25 Aug 2025 16:58:48 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Markus Mayer <mmayer@broadcom.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Daniel Lezcano <daniel.lezcano@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
-        Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-        zhenglifeng <zhenglifeng1@huawei.com>,
-        "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>,
-        Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Lukasz Luba <lukasz.luba@arm.com>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Beata Michalska <beata.michalska@arm.com>,
-        Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
-        Sumit Gupta <sumitg@nvidia.com>,
-        Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
-        x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        imx@lists.linux.dev, linux-omap@vger.kernel.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] cpufreq: use __free() for all cpufreq_cpu_get()
- references
-Message-ID: <aKxI8D5mgLRyydb3@li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com>
-References: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9VX34WSbz3chb
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 22:31:11 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756125066;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=48cMTSslcB0ziBS4SAU+081Ps38xL0HjCpNxL+9nzl0=;
+	b=bnynJcsIIlGvpV5g4BJqvnLuZVKNuU6i/DGv4o0HpTle+UI+1UnzSJtz2bSVzgTEEdmrgV
+	ekEK7ZxGtvGDgTg+dPBUjkdJ5TYMPPq/lcIwmQkjq2d78QHLNCtEGcRFwdUcT9Pu116vE9
+	JoNW2j3oEciIbqszydEYJYlSebIG/cA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756125067;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=48cMTSslcB0ziBS4SAU+081Ps38xL0HjCpNxL+9nzl0=;
+	b=dl8UiktcfTvCxnB8oXqzbtlFQ0f/TCwZuxlabxJJzx8mW/AGQCActcfIPtozRauwdsJ/FC
+	5GWA9JPr3hZnhQ66PcVjehIu9sd8TzAHm+zELF+AUUD/Ca+/OyuxftJrGgH1U+3ykr52s4
+	hme83iPJ9cNO4U14Xgu4oQqvdLciEiM=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-474-XuKGpX33OGauVNdJU1cP-w-1; Mon, 25 Aug 2025 08:31:05 -0400
+X-MC-Unique: XuKGpX33OGauVNdJU1cP-w-1
+X-Mimecast-MFC-AGG-ID: XuKGpX33OGauVNdJU1cP-w_1756125064
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3c75de76caaso857724f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 05:31:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756125064; x=1756729864;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=48cMTSslcB0ziBS4SAU+081Ps38xL0HjCpNxL+9nzl0=;
+        b=JDE6xacE+5fEWIyjt4z4rJ9hQkZVZBUoLsEXxQp+4RpoTh7Cv1zKGG86lG3vEfaGML
+         sjtvtqfhIiVZwm/sJvbutK76s8gsFNQ1SqczYas5d9thnzRNnXTkSe9gSGQBE2ost3fi
+         tn3rWR86pbBef2da5jHqI+POLU0wRBxlxfE28UEeYlE1CmZdFPDzNEvagoYIZbuwVw37
+         Ti0nL6rMc9CYlLa48AuOGMpqKjO+GknNYxtZ/8+kt95t1rAgi0S/CNAk7x7uzJNaInSn
+         9LedaXdWERUjZChDsyhpnCLAD0sMsGOq6rrrZ8K9+jpyI0YiDZHIM3+VYBMyi6Ez7lQg
+         /J3w==
+X-Forwarded-Encrypted: i=1; AJvYcCU2F/NaWB3DgHtBcaD8fVAq/6kH7FhgDLE9npm24HpzzCDKHamIOcC8VPEAm/fqWFlfRAyOETp3JWxMK4w=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxoqG50pNhV8GNL/v5npUNgHQDzzj/lmQmHLTcuEISYN+14EvK5
+	lFBdYxebUvRe2neoDTrrH782Bb8YBCyTY7KGzzaCPwsq+SbqXaMbIITqpbJ97Yn9vLbAYyKRRUs
+	3jwHKtJuHoI3JjVU6QcJjtLI4ahjJcJbUwxMRGnqPz6Nswkjiv5s8/sGFUIz8hpaOMug=
+X-Gm-Gg: ASbGncsFWDrS1UXESIOk7o3rttNojl6yMfDBZoYwqkwPVoCff/x4gPDa3NJ7hfGmZpC
+	T4su9RfPZbs6eCojBHrWuoBNLZPL3jAvitMqDCanZafXDNhC+THyYReE26S/a2V4u3KgSaun6I1
+	My4bby/7YeoQqmfPrqn2LE2QNRHD8tjc7nfV2TdMS9ObHufjOLCZ5/5omBGxrGb+dZRzr/13iB6
+	YnTfgHR7no2M8utnbQZtf/nm0QN1B9zm7aQzLlVG/t7+obiB+h2GdDBTHHCA7oZHbaTvf+Sijg1
+	MzXIR5lglyWExwXyrVovBFRUjZUMcHFfyqB+c3QyODRqrHKnJlASaGE25pJXYJ/DGmX8qM7nkGL
+	/UD0TdOr/KOwD9KdmToNCPEKPv45k9S1X7OJjUCArHdFfWYr7sTTjwQTF7K8arUf5pOE=
+X-Received: by 2002:a05:6000:40dc:b0:3c9:469d:c087 with SMTP id ffacd0b85a97d-3c9469dc445mr3271518f8f.25.1756125063903;
+        Mon, 25 Aug 2025 05:31:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvPKmvGXwFDJWJm849Yt5wXoDEn2seO+ZEF1/8AbV43w5FimZ47X7SqR0IFDLk15EedM+8Mg==
+X-Received: by 2002:a05:6000:40dc:b0:3c9:469d:c087 with SMTP id ffacd0b85a97d-3c9469dc445mr3271446f8f.25.1756125063406;
+        Mon, 25 Aug 2025 05:31:03 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76? (p200300d82f4f130042f198e5ddf83a76.dip0.t-ipconnect.de. [2003:d8:2f4f:1300:42f1:98e5:ddf8:3a76])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b575929a0sm106632785e9.25.2025.08.25.05.31.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 05:31:02 -0700 (PDT)
+Message-ID: <923b279c-de33-44dd-a923-2959afad8626@redhat.com>
+Date: Mon, 25 Aug 2025 14:31:00 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -138,298 +104,194 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250825092833.42441-1-zhangzihuan@kylinos.cn>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0HsQaFGcKHYEMjGxfTSlUJWF6XneJCL9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfX/4+yCBHiZkyj
- BezOHO0JD1p7OO2PV8xmQ1v5shFYKr21Uw1c2F4fW4uXyPCsxOE6ILKOy08exTWUNA73a36dDQc
- c4y6wbPoU5LvDYQlXlcAhPLqk3LFWCLZ3dICMLqR2WHDlet2Ldgi5be5Hduqsg6kr8/WbswzYXj
- eL+wfLc/Jeqecx6jg74QDQFlvafBQN6LUG8LrX8tqwzhzd9GgzIeu7kk/N0P/CWyJHwlrc5PIUz
- Z4q/fYjm6PpSFTkG5SI7ARvGOK+wODTfBZnnKDnPI4C3Bn1Qhf3Y6EvQDrYoSo6dxKELAUhByqt
- uCcp7lr/HsMOwiulBYsJ81MWSKnZa8+YC9DKTxtqevYNdz87q6XWFXB9AUbfcQ36nGSAmLoiq7W
- P4ME2Djp
-X-Proofpoint-ORIG-GUID: gtLwqruV6tGzAQkR_fGqnCUDyXx-v5l-
-X-Authority-Analysis: v=2.4 cv=SNNCVPvH c=1 sm=1 tr=0 ts=68ac4903 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=2OwXVqhp2XgA:10 a=I94fdbTdu9Vpa8W20_wA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-25_05,2025-08-20_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 bulkscore=0 phishscore=0 clxscore=1011
- impostorscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230021
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/11] mm/memory: convert print_bad_pte() to
+ print_bad_page_map()
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, xen-devel@lists.xenproject.org,
+ linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
+ Lance Yang <lance.yang@linux.dev>
+References: <20250811112631.759341-1-david@redhat.com>
+ <20250811112631.759341-9-david@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20250811112631.759341-9-david@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: kg828vO1FsCPB_uHGBp6rrD48-V2odKEXDjMjnSswhg_1756125064
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Aug 25, 2025 at 05:28:33PM +0800, Zihuan Zhang wrote:
-> This patch replaces all remaining uses of cpufreq_cpu_get() with
-> the __free(cpufreq_cpu_put) annotation.
+On 11.08.25 13:26, David Hildenbrand wrote:
+> print_bad_pte() looks like something that should actually be a WARN
+> or similar, but historically it apparently has proven to be useful to
+> detect corruption of page tables even on production systems -- report
+> the issue and keep the system running to make it easier to actually detect
+> what is going wrong (e.g., multiple such messages might shed a light).
 > 
-> Motivation:
-> - Ensures automatic cleanup of policy references when they go out of scope,
->   reducing the risk of forgetting to call cpufreq_cpu_put() on early return
->   or error paths.
-> - Brings the code in line with the latest kernel coding style and best
->   practices for managing reference-counted objects.
-> - No functional changes are introduced; behavior remains the same,
->   but reference counting is now safer and easier to maintain.
+> As we want to unify vm_normal_page_*() handling for PTE/PMD/PUD, we'll have
+> to take care of print_bad_pte() as well.
 > 
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> Let's prepare for using print_bad_pte() also for non-PTEs by adjusting the
+> implementation and renaming the function to print_bad_page_map().
+> Provide print_bad_pte() as a simple wrapper.
+> 
+> Document the implicit locking requirements for the page table re-walk.
+> 
+> To make the function a bit more readable, factor out the ratelimit check
+> into is_bad_page_map_ratelimited() and place the printing of page
+> table content into __print_bad_page_map_pgtable(). We'll now dump
+> information from each level in a single line, and just stop the table
+> walk once we hit something that is not a present page table.
+> 
+> The report will now look something like (dumping pgd to pmd values):
+> 
+> [   77.943408] BUG: Bad page map in process XXX  pte:80000001233f5867
+> [   77.944077] addr:00007fd84bb1c000 vm_flags:08100071 anon_vma: ...
+> [   77.945186] pgd:10a89f067 p4d:10a89f067 pud:10e5a2067 pmd:105327067
+> 
+> Not using pgdp_get(), because that does not work properly on some arm
+> configs where pgd_t is an array. Note that we are dumping all levels
+> even when levels are folded for simplicity.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 > ---
->  arch/arm64/kernel/topology.c                  |  9 +++----
->  arch/x86/kvm/x86.c                            | 10 ++++----
->  drivers/acpi/processor_thermal.c              | 13 ++++------
->  drivers/cpufreq/brcmstb-avs-cpufreq.c         |  4 +---
->  drivers/cpufreq/cppc_cpufreq.c                |  4 +---
->  drivers/cpufreq/intel_pstate.c                |  3 +--
->  drivers/cpufreq/longhaul.c                    |  3 +--
->  drivers/cpufreq/mediatek-cpufreq.c            |  6 ++---
->  drivers/cpufreq/powernv-cpufreq.c             |  6 ++---
->  drivers/cpufreq/s5pv210-cpufreq.c             |  3 +--
->  drivers/cpufreq/tegra186-cpufreq.c            |  3 +--
->  drivers/devfreq/governor_passive.c            | 19 ++++-----------
->  drivers/gpu/drm/i915/gt/intel_llc.c           |  3 +--
->  drivers/macintosh/windfarm_cpufreq_clamp.c    |  4 +---
->  drivers/powercap/dtpm_cpu.c                   | 24 ++++++-------------
->  drivers/thermal/imx_thermal.c                 |  7 ++----
->  .../ti-soc-thermal/ti-thermal-common.c        |  5 +---
->  kernel/power/energy_model.c                   |  7 ++----
->  18 files changed, 40 insertions(+), 93 deletions(-)
+>   include/linux/pgtable.h |  19 ++++++++
+>   mm/memory.c             | 104 ++++++++++++++++++++++++++++++++--------
+>   2 files changed, 103 insertions(+), 20 deletions(-)
 > 
-> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> index 5d07ee85bdae..e3cb6d54f35b 100644
-> --- a/arch/arm64/kernel/topology.c
-> +++ b/arch/arm64/kernel/topology.c
-> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
->  		 */
->  		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
->  		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAMPLE_EXP_MS))) {
-> -			struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
->  			int ref_cpu;
->  
-> +			policy = cpufreq_cpu_get(cpu);
->  			if (!policy)
->  				return -EINVAL;
->  
->  			if (!cpumask_intersects(policy->related_cpus,
-> -						housekeeping_cpumask(HK_TYPE_TICK))) {
-> -				cpufreq_cpu_put(policy);
-> +						housekeeping_cpumask(HK_TYPE_TICK)))
->  				return -EOPNOTSUPP;
-> -			}
->  
->  			for_each_cpu_wrap(ref_cpu, policy->cpus, cpu + 1) {
->  				if (ref_cpu == start_cpu) {
-> @@ -329,8 +328,6 @@ int arch_freq_get_on_cpu(int cpu)
->  					break;
->  			}
->  
-> -			cpufreq_cpu_put(policy);
-> -
->  			if (ref_cpu >= nr_cpu_ids)
->  				/* No alternative to pull info from */
->  				return -EAGAIN;
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index a1c49bc681c4..2a825f4ec701 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -9492,16 +9492,14 @@ static void kvm_timer_init(void)
->  		max_tsc_khz = tsc_khz;
->  
->  		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
-> -			struct cpufreq_policy *policy;
-> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
->  			int cpu;
->  
->  			cpu = get_cpu();
->  			policy = cpufreq_cpu_get(cpu);
-> -			if (policy) {
-> -				if (policy->cpuinfo.max_freq)
-> -					max_tsc_khz = policy->cpuinfo.max_freq;
-> -				cpufreq_cpu_put(policy);
-> -			}
-> +			if (policy && policy->cpuinfo.max_freq)
-> +				max_tsc_khz = policy->cpuinfo.max_freq;
-> +
->  			put_cpu();
->  		}
->  		cpufreq_register_notifier(&kvmclock_cpufreq_notifier_block,
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_thermal.c
-> index 1219adb11ab9..8367a81c4842 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -64,17 +64,14 @@ static int phys_package_first_cpu(int cpu)
->  
->  static int cpu_has_cpufreq(unsigned int cpu)
->  {
-> -	struct cpufreq_policy *policy;
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
->  
->  	if (!acpi_processor_cpufreq_init)
->  		return 0;
->  
->  	policy = cpufreq_cpu_get(cpu);
-> -	if (policy) {
-> -		cpufreq_cpu_put(policy);
-> -		return 1;
-> -	}
-> -	return 0;
-> +
-> +	return !!policy;
->  }
->  
->  static int cpufreq_get_max_state(unsigned int cpu)
-> @@ -95,7 +92,7 @@ static int cpufreq_get_cur_state(unsigned int cpu)
->  
->  static int cpufreq_set_cur_state(unsigned int cpu, int state)
->  {
-> -	struct cpufreq_policy *policy;
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
->  	struct acpi_processor *pr;
->  	unsigned long max_freq;
->  	int i, ret;
-> @@ -127,8 +124,6 @@ static int cpufreq_set_cur_state(unsigned int cpu, int state)
->  		max_freq = (policy->cpuinfo.max_freq *
->  			    (100 - reduction_step(i) * cpufreq_thermal_reduction_pctg)) / 100;
->  
-> -		cpufreq_cpu_put(policy);
-> -
->  		ret = freq_qos_update_request(&pr->thermal_req, max_freq);
->  		if (ret < 0) {
->  			pr_warn("Failed to update thermal freq constraint: CPU%d (%d)\n",
-> diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-> index 5940d262374f..71450cca8e9f 100644
-> --- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
-> +++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-> @@ -480,7 +480,7 @@ static bool brcm_avs_is_firmware_loaded(struct private_data *priv)
->  
->  static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
->  {
-> -	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
->  	struct private_data *priv;
->  
->  	if (!policy)
-> @@ -488,8 +488,6 @@ static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
->  
->  	priv = policy->driver_data;
->  
-> -	cpufreq_cpu_put(policy);
-> -
->  	return brcm_avs_get_frequency(priv->base);
->  }
->  
-> diff --git a/drivers/cpufreq/cppc_cpufreq.c b/drivers/cpufreq/cppc_cpufreq.c
-> index 4a17162a392d..7183754b1f31 100644
-> --- a/drivers/cpufreq/cppc_cpufreq.c
-> +++ b/drivers/cpufreq/cppc_cpufreq.c
-> @@ -726,7 +726,7 @@ static int cppc_get_perf_ctrs_sample(int cpu,
->  static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->  {
->  	struct cppc_perf_fb_ctrs fb_ctrs_t0 = {0}, fb_ctrs_t1 = {0};
-> -	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
->  	struct cppc_cpudata *cpu_data;
->  	u64 delivered_perf;
->  	int ret;
-> @@ -736,8 +736,6 @@ static unsigned int cppc_cpufreq_get_rate(unsigned int cpu)
->  
->  	cpu_data = policy->driver_data;
->  
-> -	cpufreq_cpu_put(policy);
-> -
->  	ret = cppc_get_perf_ctrs_sample(cpu, &fb_ctrs_t0, &fb_ctrs_t1);
->  	if (ret) {
->  		if (ret == -EFAULT)
-> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-> index f366d35c5840..fb962140af56 100644
-> --- a/drivers/cpufreq/intel_pstate.c
-> +++ b/drivers/cpufreq/intel_pstate.c
-> @@ -1698,7 +1698,7 @@ static ssize_t store_no_turbo(struct kobject *a, struct kobj_attribute *b,
->  static void update_qos_request(enum freq_qos_req_type type)
->  {
->  	struct freq_qos_request *req;
-> -	struct cpufreq_policy *policy;
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
->  	int i;
->  
->  	for_each_possible_cpu(i) {
-> @@ -1710,7 +1710,6 @@ static void update_qos_request(enum freq_qos_req_type type)
->  			continue;
->  
->  		req = policy->driver_data;
-> -		cpufreq_cpu_put(policy);
->  
->  		if (!req)
->  			continue;
-> diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
-> index ba0e08c8486a..ae5596919671 100644
-> --- a/drivers/cpufreq/longhaul.c
-> +++ b/drivers/cpufreq/longhaul.c
-> @@ -950,7 +950,7 @@ static int __init longhaul_init(void)
->  
->  static void __exit longhaul_exit(void)
->  {
-> -	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
->  	int i;
->  
->  	for (i = 0; i < numscales; i++) {
-> @@ -968,7 +968,6 @@ static void __exit longhaul_exit(void)
->  		}
->  	}
->  
-> -	cpufreq_cpu_put(policy);
->  	cpufreq_unregister_driver(&longhaul_driver);
->  	kfree(longhaul_table);
->  }
-> diff --git a/drivers/cpufreq/mediatek-cpufreq.c b/drivers/cpufreq/mediatek-cpufreq.c
-> index f3f02c4b6888..1fae060e16d9 100644
-> --- a/drivers/cpufreq/mediatek-cpufreq.c
-> +++ b/drivers/cpufreq/mediatek-cpufreq.c
-> @@ -320,7 +320,7 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
->  	struct dev_pm_opp *new_opp;
->  	struct mtk_cpu_dvfs_info *info;
->  	unsigned long freq, volt;
-> -	struct cpufreq_policy *policy;
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
->  	int ret = 0;
->  
->  	info = container_of(nb, struct mtk_cpu_dvfs_info, opp_nb);
-> @@ -354,11 +354,9 @@ static int mtk_cpufreq_opp_notifier(struct notifier_block *nb,
->  
->  			dev_pm_opp_put(new_opp);
->  			policy = cpufreq_cpu_get(info->opp_cpu);
-> -			if (policy) {
-> +			if (policy)
->  				cpufreq_driver_target(policy, freq / 1000,
->  						      CPUFREQ_RELATION_L);
-> -				cpufreq_cpu_put(policy);
-> -			}
->  		}
->  	}
->  
-> diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-> index 7d9a5f656de8..ea9d78bbeb38 100644
-> --- a/drivers/cpufreq/powernv-cpufreq.c
-> +++ b/drivers/cpufreq/powernv-cpufreq.c
-> @@ -892,7 +892,7 @@ static int powernv_cpufreq_reboot_notifier(struct notifier_block *nb,
->  				unsigned long action, void *unused)
->  {
->  	int cpu;
-> -	struct cpufreq_policy *cpu_policy;
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index bff5c4241bf2e..33c84b38b7ec6 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -1966,6 +1966,25 @@ enum pgtable_level {
+>   	PGTABLE_LEVEL_PGD,
+>   };
+>   
+> +static inline const char *pgtable_level_to_str(enum pgtable_level level)
+> +{
+> +	switch (level) {
+> +	case PGTABLE_LEVEL_PTE:
+> +		return "pte";
+> +	case PGTABLE_LEVEL_PMD:
+> +		return "pmd";
+> +	case PGTABLE_LEVEL_PUD:
+> +		return "pud";
+> +	case PGTABLE_LEVEL_P4D:
+> +		return "p4d";
+> +	case PGTABLE_LEVEL_PGD:
+> +		return "pgd";
+> +	default:
+> +		VM_WARN_ON_ONCE(1);
+> +		return "unknown";
+> +	}
+> +}
 
-There's a typo here. I got a compile error because of wrong variable name.
+One kernel config doesn't like the VM_WARN_ON_ONCE here, and I don't think we
+really need it. @Andrew can you squash:
 
-Thanks,
-Gautam
+ From 0b8f6cdfe2c9d96393e7da1772e82048e096a903 Mon Sep 17 00:00:00 2001
+From: David Hildenbrand <david@redhat.com>
+Date: Mon, 25 Aug 2025 14:25:59 +0200
+Subject: [PATCH] fixup: mm/memory: convert print_bad_pte() to
+  print_bad_page_map()
+
+Let's just drop the warning, it's highly unlikely that we ever run into
+this, and if so, there is serious stuff going wrong elsewhere.
+
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+  include/linux/pgtable.h | 1 -
+  1 file changed, 1 deletion(-)
+
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 9f0329d45b1e1..94249e671a7e8 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1997,7 +1997,6 @@ static inline const char *pgtable_level_to_str(enum pgtable_level level)
+  	case PGTABLE_LEVEL_PGD:
+  		return "pgd";
+  	default:
+-		VM_WARN_ON_ONCE(1);
+  		return "unknown";
+  	}
+  }
+-- 
+2.50.1
+
+
+-- 
+Cheers
+
+David / dhildenb
+
 
