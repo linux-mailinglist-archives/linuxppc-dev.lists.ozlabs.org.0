@@ -1,119 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-11285-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11289-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D809FB35346
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 07:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E758CB35432
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 08:19:35 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c9x3b2gZjz3dFw;
-	Tue, 26 Aug 2025 15:26:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c9yCp5yyDz3dJZ;
+	Tue, 26 Aug 2025 16:18:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.177.32 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756185995;
-	cv=pass; b=A3EazCGnc4Gt7JI2ID4JkHUoli/egrhV2j9r9WBC4QA+tT50u5NgYZthpR8ybRUNvRffKuYKC/Z9UpLZl79+T60GW4zAnKYjh6+MbYRIEHiBiFhBSxG1Z/XlY0ZO+GdPDyh/FY0Lj+0P1mMT+KK3Pbl3gm+oxFI0XHrje3RyIa0xedYXgGkWbw7MMlwDNkPlR+U9k77WpWH74COPgigogjEF9wC8KarkJEjCn6cEJJ6OvkJNjF4Dbjdt2fYf6jGhjki0ZJI8FFcYNud40uSnBovwqFk9PJ700gLrpoRD32UBp0H3W66iSCTnDmUoDCGcfaCoQ/uDwpfdsOll6kxMJQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756185995; c=relaxed/relaxed;
-	bh=vel8oNyOvO1AThqNzm0oD3U2ao4nt7bMAEj6wH8VeCo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=FzWR9l29cbMzkfTqxRDLj40epumaWOk2MJ99Rl72lzOnFfZjqqjdLWGq8Q/0mKLeWbSk3icgU7nFDCqyWaOjltL6evgzIQVp3m9Qr0jTlDGS9NLW+eRjzmosGbX9hIOYN+vGvhYVKjmenyufwx1e8O2LCyKrHLqxhL9b7Drs8FA7as/m6s4n208kNmg/jopRKBwHAxXRUKI8JkSWJUbd4XutV/oawrcThw8XYy1DDQOzQuNTgrbtRSHTt30ZsgxdwB7SGIK1IM+w6ACJ1ptMF3+EJH+qFiTJfouAXKbeE38yEElDWSdW6EDT2Up2neZtEB3jxWx4GEdHMBrH7yVKhA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=MN2U7dYD; dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=eU1AdqZE; dkim-atps=neutral; spf=pass (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org) smtp.mailfrom=oracle.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756189117;
+	cv=none; b=jy8GU6gY0ElqC9cKNn+FOnUnLCMDCon9WkvSc6SxGk3+KLP52TVEwim5M+mnNke1wHkZDjuawbQmZC/BYsxcHnPAwpWhtfy0cj6mvCwD0V8pAeslwEe354w0+fs3xiLbO5F46AlvjmP3HNPMIGGMKtwHCxhHwhy6c1mgOt+wfepj/BA4gP6gqEaZLKxmBWp+278ugVavm+hvZawOSdBQIiwdDe5dmz/kI3gD9RahHxOvyjukwVQfxeEI1kbZWe2JHjMoxN00CFnxSVRG18tI/YYrVBn+t00TgHraNDuJAbR9BfBO9hbBcO6zZ0xBhAhi3Pn7ZiPiTnczxTebCLHy7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1756189117; c=relaxed/relaxed;
+	bh=8Qx8zdXwUDEN+QDzIjybGTquRbhLyER4hmo5HtXCS3M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TPl8UVU1G6GYv5OPWDUvaZB0v+0kThXE87M/gFpRoWsHDXtX5N92GDoXr74BfrGOlmmfvRIE1rxvmzkX0BPakTnH5ANo9PiEF86prSLspo5KFMGtWmi+cvydwgrn/MqPsJ/7tee8H/EJqv01V6XYoGcJufynAkFe3S7Vu0A3Bttzvd0LwG8/gQzGhtZrKJLt27Fbnf9sdH2007gcsPcNcEpY4NB08qocoI++v0fDk0vXPVy0LC3uC4I6kvkRQFJ9AwpyIj2BSrZIdv21jHKW7ZuqR68ZU1CDJWbBIjfK1iU8FAN5ur2PGST1DuUf+MKe02kOKCxUVPO8cgCFznUT3g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EoHq8It+; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=eX2IPWAG; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256 header.s=corp-2025-04-25 header.b=MN2U7dYD;
-	dkim=pass (1024-bit key; unprotected) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-oracle-onmicrosoft-com header.b=eU1AdqZE;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EoHq8It+;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=eX2IPWAG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oracle.com (client-ip=205.220.177.32; helo=mx0b-00069f02.pphosted.com; envelope-from=lorenzo.stoakes@oracle.com; receiver=lists.ozlabs.org)
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9x3Y4Vr1z3d9L
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 15:26:31 +1000 (AEST)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57Q32aCV020052;
-	Tue, 26 Aug 2025 05:25:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=vel8oNyOvO1AThqNzm
-	0oD3U2ao4nt7bMAEj6wH8VeCo=; b=MN2U7dYDIkGnX5zpgk4JWB+EHZX5mXVfoJ
-	Xz6dliaXVIDXlQaO6unrdnZV3PAouzDlg1hO1LUxFQDaul+ndGk11lidx2LfOitX
-	dfcgtFrW4UFX658YgWzjGETVYhPbijEwNq18P7NjGMG7j58JMG4MWZ7yO0rnnY1Q
-	izqpMNlf+Rkhc4N1hzB2ydGMxuze2EiNRVppADtqjrtRAuiv25ULB2B4rVefIfiM
-	ta8GETxO51wr4y3fV1DiHkpJVl0TCmDmp3r0NbpHH2ukyI2dBCHIPh+Go6IBzTPr
-	CNEGaEF3w/QHo1UooXWkFUToIOr12N0zWBbt5fduKv6iF9YIxisA==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48q42t3gh4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 26 Aug 2025 05:25:39 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 57Q46Ijf005024;
-	Tue, 26 Aug 2025 05:25:38 GMT
-Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10on2073.outbound.protection.outlook.com [40.107.92.73])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 48q439911y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 26 Aug 2025 05:25:37 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xNqh44ppN8hBVHP4hTGaAqzfNEM6NSEgAzRljzG9KraSzoiLICYKz2yGuUYorJmacqlMumD/ywt1LRNfLZpnsVp3G97j6f0GojLnkDMP5nHHiJ9GHmxKt5GDmlRfvn+qZAQr1uPk3CjDIJ2sNs9fMwbUK42Q8WJx8J4owiP/6Ndb+K+kkRPVp2FPedt2+anR7gXMT4+8E3IG6UN7w7C5lP6sB0AfvTHIwnl9PM8FCmwHWUDLygc4E6t+yewXk2UtAj0Ox5VAupYKd4GBtj81hN4AHEbJyfuXZX4C3d56szxofbLINLRBCpSRH7MgzoRjYSzeJHuhJtXeYr8Qsic5vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vel8oNyOvO1AThqNzm0oD3U2ao4nt7bMAEj6wH8VeCo=;
- b=CDURQt3PEEiv/6ge8UUyC81A0u4mHt7ctLZLEw5ZQwrfABLKCX4qaEwPjYwta6BAtwPwAjGPtSdSjtqDzk/dSvARZ/GAvH8ptb8cLuTfge5drll+jIbqIlbpZIsgcNuYlmEL5iGZSEPf8uba1j5z0Ytuu14kFyuMbXNMrX9vgIXVZJ8lltJWGMPR2Ux8bpTn4dhotL5vRsbk3dc7Yopexd6oHYeuFqb4i1O7sAPkZ60gqjQV4X8/mgeuSUXfgWj0BzThzI9Hg+f1dpdRnCLSeX2J1TKowjfb0mtxO+Hp3gO8Mj7+bRVvWtwGQTWVKs4W3AjcuDvWEkIC9p0SQ4fqww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vel8oNyOvO1AThqNzm0oD3U2ao4nt7bMAEj6wH8VeCo=;
- b=eU1AdqZEsyMez0RhJ+5wiW1YXMKwmaH1/KYafAPzgL2EPY39SlfSm1Sarp6EGyGl5zVk4/cSLBC5f4IF1qnN+QozQ4iCm9AnIIM0xnJ1/1s3v8AAuJy+t0s9tNXY8GKNPOKRiRNqLB0KPxUZCnu6x0MQgaZJJ9zV0sZcMloi15U=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SJ5PPF6A2C0CCA1.namprd10.prod.outlook.com (2603:10b6:a0f:fc02::7a4) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Tue, 26 Aug
- 2025 05:25:33 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%5]) with mapi id 15.20.9052.019; Tue, 26 Aug 2025
- 05:25:32 +0000
-Date: Tue, 26 Aug 2025 06:25:27 +0100
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
-        nvdimm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
-        Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
-        Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v3 08/11] mm/memory: convert print_bad_pte() to
- print_bad_page_map()
-Message-ID: <9ad69d4f-69b7-4998-9639-4e8f679a2d9d@lucifer.local>
-References: <20250811112631.759341-1-david@redhat.com>
- <20250811112631.759341-9-david@redhat.com>
- <923b279c-de33-44dd-a923-2959afad8626@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <923b279c-de33-44dd-a923-2959afad8626@redhat.com>
-X-ClientProxiedBy: MM0P280CA0071.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:8::25) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4c9yCN5d2Lz3dHj
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 16:18:24 +1000 (AEST)
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1756189098;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8Qx8zdXwUDEN+QDzIjybGTquRbhLyER4hmo5HtXCS3M=;
+	b=EoHq8It+802uE8/W/ZgT+WU1MhU30ljvVJg6J8CsR2XdSCY1W8iKO/0yhuhlIWg93gjtVN
+	yjsiguKOCe8MXqL7t5b5NeIYigkWxr9EZY2Mkn3x2W0dIf65A5h/s69Jx20ZLL24VmAnXl
+	wWm91dlrX8UnePleqQexNGzu9SWDwlcPXJ8DztYUIGGk65aJetDl/MNeXhull8xcLDd2T/
+	Xdhztn1zm0BL6qd7sdPVV8txFwrP1lt98FW2I+LmBrQOqG2Iv+EpggKyKaF35t2W+WDCO2
+	x4LqgXrpkfrN62Egk6oQBRYWy9iOgErie977mytBr36Yc1c7jJeu3fV2/Qh79g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1756189098;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8Qx8zdXwUDEN+QDzIjybGTquRbhLyER4hmo5HtXCS3M=;
+	b=eX2IPWAG+DvooY6YzvBNYPIk4d7JwL6SQGjcVcR/3nVRkZUD/9wZEdubuxvUX29zgYJ6tr
+	+6ncwJ9ZGLDV8KDQ==
+Subject: [PATCH 00/11] vdso: Various cleanups
+Date: Tue, 26 Aug 2025 08:17:03 +0200
+Message-Id: <20250826-vdso-cleanups-v1-0-d9b65750e49f@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -127,181 +64,109 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ5PPF6A2C0CCA1:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7bd7c327-1663-42c1-1010-08dde460fa72
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+gCPB7wfPttl2fyFzUxsLqFDQCmusK3YYA+5MoDnIOe3CxxoQa81hHdDpShE?=
- =?us-ascii?Q?/M5MxssTrL0nooiiahgRwvSGNFFfJiZd1iSm1pOdHMzA/tMvwGToKN0od217?=
- =?us-ascii?Q?nwelXR1CsFaNsIXyFOGo+b3VnJu0cBOnTI2AdkD6qz6Fm8oaNwU5DFYlqeut?=
- =?us-ascii?Q?8S7/TtQa/jMn4lDTtYXIWq7Py7yZqTMYsHSaVlwIIxD7RoARL8t721yGRdiB?=
- =?us-ascii?Q?oaImAOqEnrIYUFIPfGW6h03Sx83suTRwtUdlVyS7Md6d9kow7eSHHbdrhSte?=
- =?us-ascii?Q?/IbD+cuNl62Nr3RxOrg57/4u75Qm2CNxE1+HtuuUCqUjYMBCZ0USmQ+GL/I0?=
- =?us-ascii?Q?eckogydF5XXOeIy3mUDIdNG77k8Bo06bcn2kYMzw0f0P7m/Wb19Fj8zhyxFt?=
- =?us-ascii?Q?NvQeaX8y1S8nYmm+35OLZwhAvnOMGItGxg1L47yqebMdcrhuopsHnVH+i65K?=
- =?us-ascii?Q?TpiZJeVHYSU5emLkvF1eine0oBd4Ze6xmo1DuD8hjmamlwaLRF74Od3C7WNV?=
- =?us-ascii?Q?PqoJtt8gML3JkfiTAlPZJTIJUPS6hpHLE528oAYFdysvP2TGPijO5OSd9MTr?=
- =?us-ascii?Q?NUvHvKswQCBC/aLpKFuwOhzBONDV5aE04j5nj4YLgd801SwcnngmY4SJ3qt/?=
- =?us-ascii?Q?rgsq/eyOWtAGwsVROYPD2SYmgHclj+Cls38F/GZUe1fnQYu4b+OiGphWu2OL?=
- =?us-ascii?Q?Ci7zdwDS9CjKTpeucsTTt0dM1A9L/MVi7jQ9RMLtVhkDMTEMYtqeyBATR/gz?=
- =?us-ascii?Q?k7vAmIZfRvajoI5axTfXpUDZ/BG4wc7+kmdEVbRT0yjj5AiE/2CClbhxNMRU?=
- =?us-ascii?Q?ab8BhkJgm3V++s1+FHH+d8MWCC1tzak8k61YngXe2cDehEjVIdJO6aMekk0g?=
- =?us-ascii?Q?oY+4VzoIVIgjcxtpmcJwKoOcFEqY+EH6jST6+NKUnfnpGS5yps+IEfE442Ki?=
- =?us-ascii?Q?ZYUcwkCmaDQjhvWF3TaC/FQAfNYskgUS9rQQ18lDMIqcZE0mIy8eGeNvjgqB?=
- =?us-ascii?Q?+jd+fsImwkR/y3GKFDlwVkD+nnAI7OI/utZUGAFDUQi7/+qEHw7/Fi1lzkVb?=
- =?us-ascii?Q?VRVIVvxCEeQsPhhqXNaGFiuhPJMHRyEiQJ5YeHPiKzVzqc3uM+ZResun6bmq?=
- =?us-ascii?Q?HvxCRqP/cO/JQWlwzL87/5lQ9RhGrTU0h3G+nHmZDrfQxMUdyAMovtbJK/mK?=
- =?us-ascii?Q?k6FX/lNH5Qs/A8aVPBZpGDUNhrx21FdRrb44Z9YJu8OCPOOOio52ZYwbmWDo?=
- =?us-ascii?Q?+KJGt6e3T6KF0dJHLgopgfZg1LXgev+1qFAycXgcER0i2CvhW7aTGLx4IcI0?=
- =?us-ascii?Q?PTEZadS+HYgcWqNiFBw8WvOujhN5McH0FCiYES7Yul4yHcA2ZGkM2o+iGk2h?=
- =?us-ascii?Q?0RQ69hykqHAtCsWKqRLGhl1A7ff0l9L4iP7pNusrThgmtGR51A=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pLkVBv97j0z2VIJFADwwACSdrZOxzNCKOn7BFx+E53zTzkixDPLxN7e8AJrG?=
- =?us-ascii?Q?46pamtfm/0dSqypTHEZf5Uj8ySNh8JbbYpRAS6eTk5p3NxewkVI5Xh8DYVxG?=
- =?us-ascii?Q?mqCq8HKbytp6EyWrYNdDFu4E92fWJMGbqI+3CfCz+1hCfKn0bV5UKV4L77ok?=
- =?us-ascii?Q?KRgw8mlKxtpsf4KWgljK1dD9e2RalsdJXNCJxKdiOZvQR7qJw0hRBNLcyVS6?=
- =?us-ascii?Q?hO3ClzoFhsbyIQMQcIzbnpnoSdMLATPWgqrvC3MKakHlIbMIcuO3BHAvn3Z5?=
- =?us-ascii?Q?iNYcxbQLFXl3xUUt497/lsSHarLa/PnXQN1aioURYtYt4LW57yRA8JP/rlvW?=
- =?us-ascii?Q?GlQmtfANlQZU5YOOdkJWOutvMPZ5142e3atyz7xcd7RH4aCM+atUGHyXB5jT?=
- =?us-ascii?Q?luF9EkbNHkdqHVK8suIqt/loNTGxfslN0E5iGviNX/wNsZ4OMJD7g9eAE64j?=
- =?us-ascii?Q?NLdAy1ChLbNFpzrii8ZNc8lfgAR94PV/UYQZi3ZtKVhG8xLGz/EKDML27Ax0?=
- =?us-ascii?Q?pKBm5mpg6WJV7Y2Sz+aLWCAYo6g9Hnir61u84zJ3IO3l1ZZmGfRHA0Zv71GA?=
- =?us-ascii?Q?LVr0+ex1qKQSceKv2Jxs6uZQs+oFcfShmzWT9e/Z2jImIGPoEPjJqcEASTwd?=
- =?us-ascii?Q?YeqnHJsiyC87vqD9AdHZ7x0v/109CGQKKi8vZaxAoRH2Vin6uvlUpMwPnTKU?=
- =?us-ascii?Q?54wBcuNeGbLKh8CbshvxS7f1IN2IcqI0W7aGwg3LvsAb42a+qgoPrjLQEzmN?=
- =?us-ascii?Q?Sa+WRbzcEAXYbfQJ+a/vUJ1k9wvPNcUb5WhBDMtRic57sZYK5WT4/hvXKOzk?=
- =?us-ascii?Q?4q9wpOFLuRiyZejBXUPqC5aDl9/PP6dP9MXPaQBDwV75tOcQ6rsY0LNokuvJ?=
- =?us-ascii?Q?UwWaNJVQupxE90tObf9XSulTdfncCOB+KBQVpYvTui7t9S32YY6xtCsXyKIL?=
- =?us-ascii?Q?7/OBF35W+FZT+Iw2fSIgD5t30qa3MpcNM4MyzfEmNZqop/PhZbu+ntWT/m0l?=
- =?us-ascii?Q?5HG4dTxHFQvIFWVr1dg3aAwSsRCI7LAb3O0vet9KZCpJzgros30HBbzEhObE?=
- =?us-ascii?Q?vXPovShcKJ6qMpO1y8pqpshBfjnbF/++wyIQqDPxvjrUKHY6vXgaqOZRLqNb?=
- =?us-ascii?Q?vXf0oE8rJy0yASZI0YmNoUi/yMTMAIBVkAL1tPEY7POmQn48mYtshIIA7kIm?=
- =?us-ascii?Q?KkqRyzG1Nvq+0OJ1AZKxBkCYsvbFtSTM6Rwb8KEGyBFgxwZ2yweoZKJ+R1kn?=
- =?us-ascii?Q?dadt+Yfjt4rDzzap2/c06V255ylga/u2ZqgafqNJh7IdH2x642xJZpEJ37Rr?=
- =?us-ascii?Q?vUX022P9SZZ0z/CK1vWxPVAU5TA3PeVYl5HTX06HDhYIvQF2AiSW93b9UxCC?=
- =?us-ascii?Q?6Rc7QAMNw6akAig9yvT9VcJa0IL2SXhiYhPyp/NinTh2v4RIgSbWCUFTSZ1Z?=
- =?us-ascii?Q?yb6FJHQhCd9cKVsnlmtrrw+WMbPNJ4iZsYuLVCOgnu0MpDgVzvxXX7mYxKP0?=
- =?us-ascii?Q?UHbJD5XxE1OikEHLVK54OY48J55h9NsJL2T/zXfpOEPySB904JEDCoDo82gc?=
- =?us-ascii?Q?3BgWSNeNP/OoQTdvO47iikkIbY0eHPunIMmU4+ZbDDuK4MwygQo3w0YUVfEq?=
- =?us-ascii?Q?dA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	WauXxZH2ODbyo7kO5C050ZM+b+EntlqzdGC7LmSdvpMwhwmZYDW9UsitBeFLfknZIVst5/0nC1TQsvCBgxcCkzAGz52kIl1G3Im5Ypl8yRHtxYBUguqOumPzGBwgUOWz2GKUIEdxeELhvfC/2nIHfqi8vTpgBIewF8sS1eIFNvXNUqyr2bmfPyx9gFwDqe9DA7SVccCqq8PRaWUjd5u1h8D36NF5de51cGsaBCpGpWb2z1Vxoz3xbPU6uvBMceJ/24obatLEspRhnM7oxNKfM1lI0lQYDdIYLBXVJpM0bP+Ln0Nsu+8zfL18NuFhUhjUVjGX+HJV+iMjhB60JkLLNHyrh1nAX5e//ZXG+Si5fWPhSuE7X33QhMUg+ArzCfs06AzAo5WsimMriyjxqsp+zKJPJREl2AVd5e0xwKqgcNNr1rqIxQj8L27dnmkCJpm4fOnyK8aclLAGk+IpQMmKsu1rufaS33iyQG6pk/R54PnuP4aQkevyxyxfsD9AlcRqO0vgB0EP5oWmlSFPjYfzV+mAA+lSxFNrRd7f/DtOQ3e7ZkGwphBHwalVdf4sEEpWuAvv6CAKL5EGUS5pBuragPB9JBIRURpADrwKuEHIb5E=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7bd7c327-1663-42c1-1010-08dde460fa72
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2025 05:25:32.8304
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aX9LEStoGpIY5pSwPrl1a2B0guOoXOszxxYN7ebDItmrnITDWhLry6kv8fH/G8Sb4MuOqgR2C8WKHZXdWKG7zH+07IvtjPLdwNzAVrdjhhk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF6A2C0CCA1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-26_01,2025-08-26_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0
- mlxlogscore=999 spamscore=0 suspectscore=0 malwarescore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2508110000 definitions=main-2508260046
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAxMyBTYWx0ZWRfX3S3OAvTgs1se
- ICIx1k+JpHiUk/hDSK6YHfxaqVCLX8l+6yeLurDm3fftk/zGWsy+yRT1Qyw5PT5SuJZxVs+j2Ym
- aOVrTq74IYthO6XIqYTNJnEiW95lPaRpZbjwmMjr/+HRSk2pe6/u5dL7kKihzB04cVOdEyC57VY
- FWZi9oUxlTo2lW0Ef+q7naVW1VaH7e2z4Ny5IhO+SqAj02a3r3lPgoi+t1TZXZ+ziz44PaTGXR9
- OcpFeA40BXPW7h005DfLIrLi3GfaAVtuXt+kCHbZNPVIzKcKZ6aRcoBtJr8oDjg7iRKCmqo0V6m
- av5fMcgPJRyX4BDT5ZyvMlhNVuL0q7I0Gcpi3ALZdTi6ycUU7dX4bxlWbE7EXX71rcmHhZUQlEW
- KcJ71Y7v
-X-Proofpoint-ORIG-GUID: b_wT2ChkV3roPJ_4cMWLcFcgvB7ftvTv
-X-Authority-Analysis: v=2.4 cv=RqfFLDmK c=1 sm=1 tr=0 ts=68ad4553 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19
- a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=2OwXVqhp2XgA:10 a=GoEa3M9JfhUA:10 a=20KFwNOVAAAA:8 a=7_9BownVNW7tUeIFdskA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: b_wT2ChkV3roPJ_4cMWLcFcgvB7ftvTv
-X-Spam-Status: No, score=-0.9 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAF9RrWgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDCyNT3bKU4nzd5JzUxLzSgmLdtBSztKQkY6O0ZENLJaCegqLUtMwKsHn
+ RsbW1AHxpxT5fAAAA
+X-Change-ID: 20250825-vdso-cleanups-fd6fbb32fc19
+To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Nam Cao <namcao@linutronix.de>, 
+ Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-s390@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756189098; l=3008;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=OKdbTtNFiNAfKDCNOTVL/ZRLmxAuqZzdXzmwBIqDanM=;
+ b=xXLb28HhyOp2V5PAl7NV8Ih+DLTz+T0EwU3m8mTK7t+YdB+1/WbVwG3q2LXi/d5YbmXMM3lwS
+ UE/A4xDXG50Ay40TUaB+Dz47MZKMYqchu5q89DYuvoo2r9Z3sDlnSRd
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Aug 25, 2025 at 02:31:00PM +0200, David Hildenbrand wrote:
-> On 11.08.25 13:26, David Hildenbrand wrote:
-> > print_bad_pte() looks like something that should actually be a WARN
-> > or similar, but historically it apparently has proven to be useful to
-> > detect corruption of page tables even on production systems -- report
-> > the issue and keep the system running to make it easier to actually detect
-> > what is going wrong (e.g., multiple such messages might shed a light).
-> >
-> > As we want to unify vm_normal_page_*() handling for PTE/PMD/PUD, we'll have
-> > to take care of print_bad_pte() as well.
-> >
-> > Let's prepare for using print_bad_pte() also for non-PTEs by adjusting the
-> > implementation and renaming the function to print_bad_page_map().
-> > Provide print_bad_pte() as a simple wrapper.
-> >
-> > Document the implicit locking requirements for the page table re-walk.
-> >
-> > To make the function a bit more readable, factor out the ratelimit check
-> > into is_bad_page_map_ratelimited() and place the printing of page
-> > table content into __print_bad_page_map_pgtable(). We'll now dump
-> > information from each level in a single line, and just stop the table
-> > walk once we hit something that is not a present page table.
-> >
-> > The report will now look something like (dumping pgd to pmd values):
-> >
-> > [   77.943408] BUG: Bad page map in process XXX  pte:80000001233f5867
-> > [   77.944077] addr:00007fd84bb1c000 vm_flags:08100071 anon_vma: ...
-> > [   77.945186] pgd:10a89f067 p4d:10a89f067 pud:10e5a2067 pmd:105327067
-> >
-> > Not using pgdp_get(), because that does not work properly on some arm
-> > configs where pgd_t is an array. Note that we are dumping all levels
-> > even when levels are folded for simplicity.
-> >
-> > Signed-off-by: David Hildenbrand <david@redhat.com>
-> > ---
-> >   include/linux/pgtable.h |  19 ++++++++
-> >   mm/memory.c             | 104 ++++++++++++++++++++++++++++++++--------
-> >   2 files changed, 103 insertions(+), 20 deletions(-)
-> >
-> > diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> > index bff5c4241bf2e..33c84b38b7ec6 100644
-> > --- a/include/linux/pgtable.h
-> > +++ b/include/linux/pgtable.h
-> > @@ -1966,6 +1966,25 @@ enum pgtable_level {
-> >   	PGTABLE_LEVEL_PGD,
-> >   };
-> > +static inline const char *pgtable_level_to_str(enum pgtable_level level)
-> > +{
-> > +	switch (level) {
-> > +	case PGTABLE_LEVEL_PTE:
-> > +		return "pte";
-> > +	case PGTABLE_LEVEL_PMD:
-> > +		return "pmd";
-> > +	case PGTABLE_LEVEL_PUD:
-> > +		return "pud";
-> > +	case PGTABLE_LEVEL_P4D:
-> > +		return "p4d";
-> > +	case PGTABLE_LEVEL_PGD:
-> > +		return "pgd";
-> > +	default:
-> > +		VM_WARN_ON_ONCE(1);
-> > +		return "unknown";
-> > +	}
-> > +}
->
-> One kernel config doesn't like the VM_WARN_ON_ONCE here, and I don't think we
-> really need it. @Andrew can you squash:
+Various cleanups to the generic vDSO infrastructure and a patch for ARM
+which was never applied.
 
-Out of interest do you know why this is happening? xtensa right? Does
-xtensa not like CONFIG_DEBUG_VM?
+This series has one trivial syntactic conflict with "dso/datastore: Allow
+prefaulting by mlockall()" [0] and a semantic one with "sparc64: vdso:
+Switch to generic vDSO library" [1], which still uses the removed
+GENERIC_VDSO_DATA_STORE.
+
+[0] https://lore.kernel.org/lkml/20250812-vdso-mlockall-v1-0-2f49ba7cf819@linutronix.de/
+[1] https://lore.kernel.org/lkml/20250815-vdso-sparc64-generic-2-v2-0-b5ff80672347@linutronix.de/
+
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+Rasmus Villemoes (1):
+      ARM: VDSO: remove cntvct_ok global variable
+
+Thomas Weißschuh (10):
+      vdso/datastore: Gate time data behind CONFIG_GENERIC_GETTIMEOFDAY
+      vdso: Move ENABLE_COMPAT_VDSO from core to arm64
+      vdso/gettimeofday: Remove !CONFIG_TIME_NS stubs
+      time: Build generic update_vsyscall() only with generic time vDSO
+      riscv: vdso: Untangle kconfig logic
+      vdso: Drop kconfig GENERIC_VDSO_32
+      vdso: Drop kconfig GENERIC_COMPAT_VDSO
+      vdso: Drop kconfig GENERIC_VDSO_DATA_STORE
+      vdso: Drop kconfig GENERIC_VDSO_TIME_NS
+      vdso: Gate VDSO_GETRANDOM behind HAVE_GENERIC_VDSO
+
+ arch/Kconfig                                      |  2 +-
+ arch/arm/include/asm/vdso/vsyscall.h              |  2 --
+ arch/arm/kernel/vdso.c                            | 10 +++------
+ arch/arm/mm/Kconfig                               |  2 --
+ arch/arm64/Kconfig                                |  3 ---
+ arch/arm64/include/asm/vdso/compat_barrier.h      |  7 +++---
+ arch/arm64/include/asm/vdso/compat_gettimeofday.h |  6 ++---
+ arch/arm64/include/asm/vdso/gettimeofday.h        |  8 +++++++
+ arch/arm64/kernel/vdso32/Makefile                 |  1 -
+ arch/loongarch/Kconfig                            |  2 --
+ arch/mips/Kconfig                                 |  1 -
+ arch/powerpc/Kconfig                              |  2 --
+ arch/riscv/Kconfig                                | 12 +++++-----
+ arch/s390/Kconfig                                 |  2 --
+ arch/x86/Kconfig                                  |  3 ---
+ include/asm-generic/vdso/vsyscall.h               |  4 ----
+ include/vdso/datapage.h                           |  9 +-------
+ init/Kconfig                                      |  2 +-
+ kernel/time/Makefile                              |  2 +-
+ lib/vdso/Kconfig                                  | 25 +--------------------
+ lib/vdso/Makefile                                 |  2 +-
+ lib/vdso/datastore.c                              |  6 ++---
+ lib/vdso/gettimeofday.c                           | 27 -----------------------
+ tools/testing/selftests/pidfd/config              |  1 -
+ 24 files changed, 31 insertions(+), 110 deletions(-)
+---
+base-commit: 3cd1f6bc6aa056cfd32946f9ce0aa3eb3db180e8
+change-id: 20250825-vdso-cleanups-fd6fbb32fc19
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+
 
