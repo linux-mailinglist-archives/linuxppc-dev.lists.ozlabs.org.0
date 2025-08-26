@@ -1,54 +1,38 @@
-Return-Path: <linuxppc-dev+bounces-11325-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11326-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6BAB36159
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 15:08:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBA07B361BC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 15:12:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cB7Jq5FlTz3dTJ;
-	Tue, 26 Aug 2025 23:08:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cB7Ng24yHz3dTM;
+	Tue, 26 Aug 2025 23:12:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1:d65d:64ff:fe57:4e05"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756213723;
-	cv=none; b=aId+KPclh97go30/QJGdYCKTx2SGmoI3rDdtccin1AGXjT02z9VjN/8f+9KTOjMU0ssYMQSynmXL/tXd/+YLncSzVObhsyloyyg8hdrudYB9M6HWhuFRq9ftSU6PXstDeHVjpTRu6cHliXYjzomO8bpD8+ANQlO9LejaJMnkzCQQuSrVq75XNbyBaFX8lPxwFutVYudWEcZulcztkNg76gy4Dg2/heTx5CzCI3SvhiNsxMvR3ozsC2CgJD2L4+912rZnnWAl4RAPIAkD8MofVfmDbXLErmvWEQKaeEco0+Zi+sV4Chdr4Tm1yBHwTrEoF5CqeP2icpI+6HdBtYCAeg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756213923;
+	cv=none; b=BW3/jreRX//PeRKVYl7qXBmxCFY4wKMOjMNzCC7kiGK0bbYpRwBk3fjGbG7IahGlQwbDXeNwqihLVbIBsAUY//eCPW/ObWMysnkxW/stsTQjs1YFe42A4WyBbdxM+wHk2JqOwcMjxW9C8gz83FFI7DAkKKlomUjIk715gG5Ilj2Ia6R5xOOZWo+f6BhywRt+Egm3B7vxQ5mYjQuyWz2s7xE2OHT/m8h/hYNu4HjqEktdVX2in/oO/t5qEO+HV0YDTiC7SkS1/ffHwgGGuzGg9c8+qvFq4TvBnekdhl7g161p3n61y0NYtJbqSLi/kIGAvy6k90vVs0gjZ+OufkEBcw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756213723; c=relaxed/relaxed;
-	bh=JHZTLFlxAYI1wokhjuCEuruyUylGu43DM7IKjkNYSic=;
+	t=1756213923; c=relaxed/relaxed;
+	bh=qRMAhIvtwjCp1ECCw6f9h5i9YwLoIQo9z4NoCYc2WXQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EL2merpS2HYp3GB8jriwhDbN3/DscNMKm3kluJlsrOe8TnW6HjIyKC9Qu5q0+bXkfD8m0HvNB2//ciXHZvdUFwkWm6Mmpqcwv23grRbU46xzfe5ELJLEyk19nSkNMqahs3X74r6fyis+E4Zt+kMFQj+SPlXwLh6seiD7A/LtSFqN9Gafol10j+kVoRrjUSdaHJhzqp1wmYNqrOqkySD8QxtRpIR6HWfedkCX80Abk+ltKZT6iE8V5tiBRzqAuyFS96vuVY15/Snaiemnf+WPX0llusGenxCNHd/JrTGCLmSJOc5n2vIh1UZRxEicO7v2xd/PrlyiZ5mnirMEX64pEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=etY5PLFf; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=etY5PLFf;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cB7Jm6yw3z3dTH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 23:08:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=JHZTLFlxAYI1wokhjuCEuruyUylGu43DM7IKjkNYSic=; b=etY5PLFfHvVwRjOXszye/DGGB6
-	EeDfwhUfPBBHElGIuEt4CBRy1AldhAFBccZnj543K6AV4Xvqq6pcdNIfqcf1J9sqxP9GTv1Rld421
-	0AuJKLh2CRWDkm+Ul9/DFHMDYluLA3AIkv78pFeyA09fvuZwxu6ukwM8cR1N29k6qKImuFZmW3MMM
-	qCVOi9ccAynQbDiNrFS78BcReEN5xdvzHPhO4NkOVApB1RYQ/p8auBap2lsOA66RFcIqiEM+p/Jrp
-	EIJVtCqUjQE/N3Tepz7e+3E78hAlvb2elxzZDQC0yDBfD4BGP9yDnTXc67Vd2CW73P1jADDmWRbp0
-	QXd2jvjA==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uqtPb-00000002DYZ-2cEd;
-	Tue, 26 Aug 2025 13:08:31 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A98B6300323; Tue, 26 Aug 2025 15:08:30 +0200 (CEST)
-Date: Tue, 26 Aug 2025 15:08:30 +0200
-From: Peter Zijlstra <peterz@infradead.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=lcVdn8jTAnRApn2OuofTb3J4uAKjEGMcYD7VHkxmCXK9XfaR0NTbDvAqZXvWjnj6rXEuTxA7pxMbutjhBMlDw+5hoemgzsHo4Ka7ACfTO91gnD6sIlwOOk5668LOBLwn5rpT0f9kVGXRQuG1t4gXOMhbojyK+64gIAByaGY5xa9odYe2BNreFYlMtDtgn/4QxbAxFhbJNiRc+TrlbvXl55gUmZGJTZCgdhrqV4zp4M+5R/V57aYPlCZUqZrjykZQjyvLGBRDZOkg9rm4YpTzcidHaRVUarDhzAM677EZuBZz4hT2QWDYag2loK8grlF5MX5jtF4nTGczdsuFF7/liQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=leo.yan@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=leo.yan@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cB7Nf1J7Lz3dTH
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 23:12:00 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D75BE1A25;
+	Tue, 26 Aug 2025 06:11:18 -0700 (PDT)
+Received: from localhost (e132581.arm.com [10.1.196.87])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B7A733F63F;
+	Tue, 26 Aug 2025 06:11:26 -0700 (PDT)
+Date: Tue, 26 Aug 2025 14:11:24 +0100
+From: Leo Yan <leo.yan@arm.com>
 To: Robin Murphy <robin.murphy@arm.com>
-Cc: mingo@redhat.com, will@kernel.org, mark.rutland@arm.com,
-	acme@kernel.org, namhyung@kernel.org,
+Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
+	mark.rutland@arm.com, acme@kernel.org, namhyung@kernel.org,
 	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
 	irogers@google.com, adrian.hunter@intel.com,
 	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org,
@@ -66,10 +50,10 @@ Cc: mingo@redhat.com, will@kernel.org, mark.rutland@arm.com,
 	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
 	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 17/19] perf: Retire PERF_PMU_CAP_NO_INTERRUPT
-Message-ID: <20250826130830.GZ4067720@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH 16/19] perf: Introduce positive capability for sampling
+Message-ID: <20250826131124.GB745921@e132581.arm.com>
 References: <cover.1755096883.git.robin.murphy@arm.com>
- <32bf39943eef7c7f516d814d749cdbe322eec204.1755096883.git.robin.murphy@arm.com>
+ <ae81cb65b38555c628e395cce67ac6c7eaafdd23.1755096883.git.robin.murphy@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,17 +69,68 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <32bf39943eef7c7f516d814d749cdbe322eec204.1755096883.git.robin.murphy@arm.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <ae81cb65b38555c628e395cce67ac6c7eaafdd23.1755096883.git.robin.murphy@arm.com>
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Aug 13, 2025 at 06:01:09PM +0100, Robin Murphy wrote:
-> Now that we have a well-defined cap for sampling support, clean up the
-> remains of the mildly unintuitive and inconsistently-applied
-> PERF_PMU_CAP_NO_INTERRUPT. Not to mention the obvious redundancy of
-> some of these drivers still checking for sampling in event_init too.
+On Wed, Aug 13, 2025 at 06:01:08PM +0100, Robin Murphy wrote:
+> Sampling is inherently a feature for CPU PMUs, given that the thing
+> to be sampled is a CPU context. These days, we have many more
+> uncore/system PMUs than CPU PMUs, so it no longer makes much sense to
+> assume sampling support by default and force the ever-growing majority
+> of drivers to opt out of it (or erroneously fail to). Instead, let's
+> introduce a positive opt-in capability that's more obvious and easier to
+> maintain.
 
-Ah, clearly I should've read the next patch... n/m.
+[...]
+
+> diff --git a/drivers/perf/arm_spe_pmu.c b/drivers/perf/arm_spe_pmu.c
+> index 369e77ad5f13..dbd52851f5c6 100644
+> --- a/drivers/perf/arm_spe_pmu.c
+> +++ b/drivers/perf/arm_spe_pmu.c
+> @@ -955,7 +955,8 @@ static int arm_spe_pmu_perf_init(struct arm_spe_pmu *spe_pmu)
+>  	spe_pmu->pmu = (struct pmu) {
+>  		.module = THIS_MODULE,
+>  		.parent		= &spe_pmu->pdev->dev,
+> -		.capabilities	= PERF_PMU_CAP_EXCLUSIVE | PERF_PMU_CAP_ITRACE,
+> +		.capabilities	= PERF_PMU_CAP_SAMPLING |
+> +				  PERF_PMU_CAP_EXCLUSIVE | PERF_PMU_CAP_ITRACE,
+>  		.attr_groups	= arm_spe_pmu_attr_groups,
+>  		/*
+>  		 * We hitch a ride on the software context here, so that
+
+The change in Arm SPE driver looks good to me.
+
+I noticed you did not set the flag for other AUX events, like Arm
+CoreSight, Intel PT and bts. The drivers locate in:
+
+  drivers/hwtracing/coresight/coresight-etm-perf.c
+  arch/x86/events/intel/bts.c
+  arch/x86/events/intel/pt.c
+
+Genearlly, AUX events generate interrupts based on AUX ring buffer
+watermark but not the period. Seems to me, it is correct to set the
+PERF_PMU_CAP_SAMPLING flag for them.
+
+A special case is Arm CoreSight legacy sinks (like ETR/ETB, etc)
+don't has interrupt. We might need set or clear the flag on the fly
+based on sink type:
+
+diff --git a/drivers/hwtracing/coresight/coresight-etm-perf.c b/drivers/hwtracing/coresight/coresight-etm-perf.c
+index f1551c08ecb2..404edc94c198 100644
+--- a/drivers/hwtracing/coresight/coresight-etm-perf.c
++++ b/drivers/hwtracing/coresight/coresight-etm-perf.c
+@@ -433,6 +433,11 @@ static void *etm_setup_aux(struct perf_event *event, void **pages,
+        if (!sink)
+                goto err;
+ 
++       if (coresight_is_percpu_sink(sink))
++               event->pmu.capabilities = PERF_PMU_CAP_SAMPLING;
++       else
++               event->pmu.capabilities &= ~PERF_PMU_CAP_SAMPLING;
++
+
+Thanks,
+Leo
 
