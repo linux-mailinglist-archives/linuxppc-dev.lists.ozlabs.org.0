@@ -1,36 +1,36 @@
-Return-Path: <linuxppc-dev+bounces-11342-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11343-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89E0B37316
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 21:33:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DDAB3731F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 21:33:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBHrl301tz3dV3;
-	Wed, 27 Aug 2025 05:33:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cBHs54yQbz3dWc;
+	Wed, 27 Aug 2025 05:33:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756236807;
-	cv=none; b=DJXZ+ptkGkKYId8m7L5xjL1L9Rjp8/YkP7sVK55+My/6D5zkpCONpNCVGPLIyms3Gz89hnJRFiYw+zfQLRMUcr9AXKiYsg+l4/xMIEu+f0l31guTsayBJOtTFBOwsRrtTY0mLj4iCYIqA/HKRC4qJakPIjIsftGiAs+/SSMaE1SwdJbV9ksBdRCGLN0LHDyORiw9vGJInwfYJ/moI2uumU/DPP5zfyHrLbHsqgZ8KUk9XZASjBigrNwM9fpwi1f5sYMzk48gnPujQ6uSY07zSVXtczlGLSufE4K/IoGE0ryZB7Jzx8NnKRDVrV0jI4wDzjI/prRczDfFrY5isIKhMg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756236825;
+	cv=none; b=EzzPTKMOp7NA3TlGBldb+bIVH6c1yUOvCB+r/AiZ0LOJLfbjm0gMRcqIGL3Ov5pAPRB0DSIjgxDdvhP9mNb2T2TmrZIRh1XsrwXUv9oXYKp6H2HjThVCv/bDAKG/wnBcJg6FbLC+hifc0OaJSrV8tiRF7IMJWuDtWknwEjLI/O4z+jIj/7XziF320qc2k5IU98C16W/z+WumGDc+FOEAroBsEnJucQfIQRgL4+23DraGOwwKbfDYBZCAXHGvjyMI49L8KahNtHVWi5FgHk9F65fI/xRPYtuNOIVM5wTEPO2Q7e4MF7tSlY5zEzAe/d8CJeRvI8Va56TvcUgNQrbgLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756236807; c=relaxed/relaxed;
-	bh=83nqbXusDyTubGTbhXQBGu65dCkn2ysQjAnfnEcTrnk=;
+	t=1756236825; c=relaxed/relaxed;
+	bh=j7GF6qbANdeHD0+NB3SknfHzSFRBt4CnVhinOJKAXII=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KCYhCIQvCKkIaicyIjC61OCpb8/S81WCzpsUYfcNI9/Wd6tpARd8MH8FWJS92UC7LIicX5tEETnmr1+rhghMQkhpGHoUYaVEXLUhuo6uhxgwIEX4LZued/VpU5hAVW2azC6LKgTRjlYN4SjxMN8LPhPfQpcHW/cv5jGZWY4pjdgIbUsDtd8QH/cdswRTIWfO2gdiaHf+Lo2fGvT+ZTetwn5l0n8bkAcRo5+ghscn7J4o3bUZzKEjYq8QFq2+IBtFSv3A2NzA+phIfS7KifnSmrF4kS4rPsAQ8xiPad8qkizybIzCmOIDZD44S/82Gv3RUZiiT8KiXLmPwBAJvQtZNw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=YuygBAXMhBZ56eRK1lWzGJ7L39sCAtMu2Ni66LrgK2j5ioov7JJpTZRivRA6Tw71ibNh2wNsJZ/W8lAB/Yx/SDJ9XlRvlD6/GwXIy7rFBvXtwZKkTlavuRX8J9J4K9CY+ESGc1KI5u++G5pbJ4Wwdxle3PwSYl88iJtgnFtLbxTchh1i3ymJsnF7/aESA5Tnmw66VlI16Mit59txjTPNeUtijpiRvJENjNlmLW15e0U/L3VDlYQXj3I9RE+E84HOgl8Fs7eluD9I/7cN7ThhNy6Q+s37m+8CuOX7jBI0BMCJPJI9mMoOISGdJmdipz9tddYPMAJeuSqPlSfxa2dv1w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBHrk2DqRz3dSJ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Aug 2025 05:33:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBHs511FZz3dWb
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Aug 2025 05:33:45 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A93B84414A;
-	Tue, 26 Aug 2025 19:33:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D58C4CEF1;
-	Tue, 26 Aug 2025 19:33:16 +0000 (UTC)
-Date: Tue, 26 Aug 2025 20:33:19 +0100
+	by tor.source.kernel.org (Postfix) with ESMTP id 6FEEA601E9;
+	Tue, 26 Aug 2025 19:33:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AAAC4CEF1;
+	Tue, 26 Aug 2025 19:33:35 +0000 (UTC)
+Date: Tue, 26 Aug 2025 20:33:37 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
 To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
 Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
@@ -63,10 +63,10 @@ Cc: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
 	linux-s390@vger.kernel.org, linux-arch@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: Re: [PATCH 03/11] vdso: Move ENABLE_COMPAT_VDSO from core to arm64
-Message-ID: <aK4L_5xc-hXNvj7f@arm.com>
+Subject: Re: [PATCH 08/11] vdso: Drop kconfig GENERIC_COMPAT_VDSO
+Message-ID: <aK4MES_GHUQ-9zoY@arm.com>
 References: <20250826-vdso-cleanups-v1-0-d9b65750e49f@linutronix.de>
- <20250826-vdso-cleanups-v1-3-d9b65750e49f@linutronix.de>
+ <20250826-vdso-cleanups-v1-8-d9b65750e49f@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,20 +83,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250826-vdso-cleanups-v1-3-d9b65750e49f@linutronix.de>
+In-Reply-To: <20250826-vdso-cleanups-v1-8-d9b65750e49f@linutronix.de>
 X-Spam-Status: No, score=0.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 26, 2025 at 08:17:06AM +0200, Thomas Weiﬂschuh wrote:
-> The ENABLE_COMAPT_VDSO symbol is only used by arm64 and only for the
-> time-related functionality. There should be no new users, so it doesn't
-> need to be in the generic vDSO code.
+On Tue, Aug 26, 2025 at 08:17:11AM +0200, Thomas Weiﬂschuh wrote:
+> This configuration is never used.
 > 
-> Move the logic into arm64 architecture-specific code and replace the
-> explicit define by the standard '#ifdef __aarch64__'.
+> Remove it.
 > 
 > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> ---
+>  arch/arm64/Kconfig | 1 -
+>  lib/vdso/Kconfig   | 5 -----
+>  2 files changed, 6 deletions(-)
 
 Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 
