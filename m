@@ -1,96 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-11286-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11300-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5ABB353FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 08:17:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65EF0B35453
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 08:21:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c9yBH1y11z3dHJ;
-	Tue, 26 Aug 2025 16:17:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c9yH00pCMz3dJg;
+	Tue, 26 Aug 2025 16:21:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756189047;
-	cv=none; b=BYAKVb5XmLH0AXbRQOKrtsevNizGMqed7WHeWcc7YP0V5bl+7xExS4OnrNKbWI2y7rqK3wQPrqqfSkx681YLe+M/T+5i6nCqbuYPam6ZndUnsmjo4tScqF2Y17U3uw1byl3KFGnXBkp2QRvT8Nu8FbSn99x7C74yMgDLnvPtlnT0rBz+GAewGzOtFVyCR75WypJBxsC898JQW5BSy2VCKG9cctFAS2CNgbvEargorAAXFXV2bBMOiuHsPinDK/oWPdKGwDsrr5jWyh91r7WvmbdpZH4Mmb284U8gRZs0JFP4fIkq1c/DBcdN4nzTHSF4JZYf/5uLds6rNcFsbXkr9Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756189292;
+	cv=none; b=TawsQthVm3+qyydSKrsEiKCO4Ugz16BFrQBuPh2L9vCn/12wjylqxx2g/tePAzaSPy+joMHZuYy2hRGAsG9NEXNX2AFTGIHq1zcJ8MvII4XQa0dvhKY8PRzt81R1fDl7xbIEZd6PNMm1lFVNH2tFR+zCDUe2jLCvt5tTUpdqhBxFjMvckQimbJZJ6gHYV+eRxBlJEgD55dodd7NXY9nkTHxUsbKRJH6v0WVbRyLCxI3p/raq9woBNaYS93uYPtPHuQRPPKx2/aEyvMpZzVz+XjR8GQxkYWroOFcyZ9IGBwSvntAygVcag2Gs6SUJarqj+W+3Mwd6Lqi0gehLhA5h7g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756189047; c=relaxed/relaxed;
-	bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QiKMwgcDRWM12ZUE26Gz4XZoq+VX4QstluvwNQpWFaGauBqF6wbl5DnMvMaoKtXsYdtLxAAUUHAO6OJj60w6UdzGJU+9NwWOoml+3ws9bOZqXV2Y4zm7y66gnE7eGYp6BORWu1lXelbfNJtn8glQQSJHg3pN/fyGHof44E7U3zADnh3/hs1f+MY0Ms3L/YzJ7krursGgZsSjJ60LmZxeUmNmvi4q8j2dlZFBrc13ccUKDZVt6jw5WFqeM48O4rDuEVm7BJ7m8bzmPPgZR3SUzpmWlaHLyTPhM/yZoKCqcAxYYwjwnq7VvmedoD2fFiyAK9xpDwXfCdrSHQqZpD4EzA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=biJr6aci; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=biJr6aci; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=biJr6aci;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=biJr6aci;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	t=1756189292; c=relaxed/relaxed;
+	bh=ILvWheSw7axbg3krBZNj8XsIqzPcs7LCGiznkPNeZiA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lq5T4yrZUwbnEHHtgTCIaiAaDhJNFZ5IqzE14upynXpDkJ1yAR3NN92sbvV6cAia16iMmxTInRoxMC7NjQ1RjB/yx888frP6t7S6V0bguAomxfIcem+S1IvLWoFnAtKY9XKmK/VnTbbxFn/PNbFeuy7SoEVgn72weTSNlhjSWurMCJ/paVCdyWm39bAPoH6TY++qdrMkM/vgVRPP4x32duccrsoqm5ImVfWiScW971JVt5lonQ7GGLgRyYtLs+mdMCWl71YKXDh1K8Z1fGpQjblpcw/KH+7gpSogLy5/LJdax4+coU9xhuxap/y9fHNBDRU3EgLxF0rUDbilUasH0A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9yBF6T5Pz3dHD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 16:17:24 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756189040;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
-	b=biJr6aci7fN8j25yHr1p0PUE5A0aF6f/xPFadYx/jOfrrZSrS94Kozj9JZo/wdfvP2utRK
-	A/H3z0uAQkvGiqMnBRpb39LDi+Nf6+Wdt4i6kY4TI8r+C8fvMctDE1pG+mwVIIPsPMiGM6
-	QqIUVHHJohFT5URC1jiPfhzLVRrQPn8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756189040;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
-	b=biJr6aci7fN8j25yHr1p0PUE5A0aF6f/xPFadYx/jOfrrZSrS94Kozj9JZo/wdfvP2utRK
-	A/H3z0uAQkvGiqMnBRpb39LDi+Nf6+Wdt4i6kY4TI8r+C8fvMctDE1pG+mwVIIPsPMiGM6
-	QqIUVHHJohFT5URC1jiPfhzLVRrQPn8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-XGPLb9MpMZmHjR7qpIuTFw-1; Tue, 26 Aug 2025 02:17:18 -0400
-X-MC-Unique: XGPLb9MpMZmHjR7qpIuTFw-1
-X-Mimecast-MFC-AGG-ID: XGPLb9MpMZmHjR7qpIuTFw_1756189037
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45a1b0c5366so30453625e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 23:17:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756189037; x=1756793837;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
-        b=NkxhsthO5jtj9KwY1YhfZZKJeEtYmdItXZH3iCiFnCi5UQWrQNgBKav0SOL5tTielN
-         QBtBQr1khjp0kA2s4ltcCw2i56TwcSkpUIzS/NdFY/626pvCaBQFSW+XLwPyjlVmmRqv
-         JnvJ9nJlcoO6ci20Fy7xffnngD6SfOoaHh3abugnmjBPKKxE+yTO0rNWiFlusmmDnSRQ
-         QKYZMuReI6XYwykIRvBYYuv5AxUtsFsVzCpZCAIwo8OrZCgXmKcGXBOpg0RR04o/qBLv
-         3mx6nJJQGXBm4EBvMx5LonMpue17GrOMUz1hmBMNTtc7o5zueGiU6j2s9w5LlXB/t9r1
-         XwKA==
-X-Forwarded-Encrypted: i=1; AJvYcCXOsriat5mSKszgLjYHzgGSWRW5FIkEeECpqwJFihigeZQOux2YUpRTiSLhpP2eAm1rAsYDUVEpmvUquXA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyPg9cs2wYou0I+0RQQ+5meOHjcUO5eMnw/vtXjFYeezWByeoxP
-	ef3cKziwQg1MbEgjcLtUrNNnieXT5ViBb+HM16iS5abFuuNZ6BJT99L0bS7CPLxMySp+pmXrg1p
-	ysm8d7r3Eaj4M/iXlrGrjsLZ9EQdBwvk6+/Jdu9yE5YxZDTpn/j3DLjFc/uVgRFwJRCo=
-X-Gm-Gg: ASbGnctBzoTxU2ZUmMmrkI1T6ynFK4wUuXYSOlEFbwXNddwOYXu3vLTGyOVqGuYTXR8
-	ourjbRG7uoE5wFu/xy3jazUCEiAjVVl9KMUae2fR0d5JJqzF4w+eFZpJ0BY/iS5r2cyD89j0JhY
-	AWZSBis7Y5UWrKaTIN2PQEROhSAvIZy8uGZaLjQciPE251YmSqepIv25/BbJ5kijxsbOk6I5Em4
-	RoIjdQuaacc1iCE9aLk7r/u9tT5afvYaHhEg4ae5Ffwkk3ybA+Uzsq3CW5pLrrsUcbabZ+oNlSE
-	r/rkR9Vr6FDF3XDEfWbsW4t7ng36RroREbik4Zr5sZQz6w3WlxNSA2npE1ew2WrbvTj5CvClnw=
-	=
-X-Received: by 2002:a05:600c:3b26:b0:456:19b2:6aa8 with SMTP id 5b1f17b1804b1-45b517caa99mr120121755e9.19.1756189037426;
-        Mon, 25 Aug 2025 23:17:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE5JT88KMbfYqdABB2ZNx/5fJ3ePuTbJHoO0rv18+tnNMdWIHHT7WWjXjYCyLy3ILR8WgCBpw==
-X-Received: by 2002:a05:600c:3b26:b0:456:19b2:6aa8 with SMTP id 5b1f17b1804b1-45b517caa99mr120121265e9.19.1756189036964;
-        Mon, 25 Aug 2025 23:17:16 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6619b53asm9727285e9.1.2025.08.25.23.17.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Aug 2025 23:17:16 -0700 (PDT)
-Message-ID: <f3e626ab-9bf9-4a08-b626-e739515727eb@redhat.com>
-Date: Tue, 26 Aug 2025 08:17:14 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9yGz0g4Pz3dJM
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 16:21:29 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 4063C2C05262;
+	Tue, 26 Aug 2025 08:21:24 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 16EC962C37; Tue, 26 Aug 2025 08:21:24 +0200 (CEST)
+Date: Tue, 26 Aug 2025 08:21:24 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Niklas Schnelle <schnelle@linux.ibm.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Linas Vepstas <linasvepstas@gmail.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>, Sinan Kaya <okaya@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	Keith Busch <kbusch@kernel.org>
+Subject: Re: [PATCH v5 0/3] PCI/ERR: s390/pci: Use pci_uevent_ers() in PCI
+ recovery
+Message-ID: <aK1SZGJBjrOx0s6y@wunner.de>
+References: <20250807-add_err_uevents-v5-0-adf85b0620b0@linux.ibm.com>
+ <20250814210201.GA348169@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,175 +72,71 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 08/11] mm/memory: convert print_bad_pte() to
- print_bad_page_map()
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
- nvdimm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
- <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
- Lance Yang <lance.yang@linux.dev>
-References: <20250811112631.759341-1-david@redhat.com>
- <20250811112631.759341-9-david@redhat.com>
- <923b279c-de33-44dd-a923-2959afad8626@redhat.com>
- <9ad69d4f-69b7-4998-9639-4e8f679a2d9d@lucifer.local>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
- ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZoEEwEIAEQCGwMCF4ACGQEFCwkIBwICIgIG
- FQoJCAsCBBYCAwECHgcWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaJzangUJJlgIpAAKCRBN
- 3hD3AP+DWhAxD/9wcL0A+2rtaAmutaKTfxhTP0b4AAp1r/eLxjrbfbCCmh4pqzBhmSX/4z11
- opn2KqcOsueRF1t2ENLOWzQu3Roiny2HOU7DajqB4dm1BVMaXQya5ae2ghzlJN9SIoopTWlR
- 0Af3hPj5E2PYvQhlcqeoehKlBo9rROJv/rjmr2x0yOM8qeTroH/ZzNlCtJ56AsE6Tvl+r7cW
- 3x7/Jq5WvWeudKrhFh7/yQ7eRvHCjd9bBrZTlgAfiHmX9AnCCPRPpNGNedV9Yty2Jnxhfmbv
- Pw37LA/jef8zlCDyUh2KCU1xVEOWqg15o1RtTyGV1nXV2O/mfuQJud5vIgzBvHhypc3p6VZJ
- lEf8YmT+Ol5P7SfCs5/uGdWUYQEMqOlg6w9R4Pe8d+mk8KGvfE9/zTwGg0nRgKqlQXrWRERv
- cuEwQbridlPAoQHrFWtwpgYMXx2TaZ3sihcIPo9uU5eBs0rf4mOERY75SK+Ekayv2ucTfjxr
- Kf014py2aoRJHuvy85ee/zIyLmve5hngZTTe3Wg3TInT9UTFzTPhItam6dZ1xqdTGHZYGU0O
- otRHcwLGt470grdiob6PfVTXoHlBvkWRadMhSuG4RORCDpq89vu5QralFNIf3EysNohoFy2A
- LYg2/D53xbU/aa4DDzBb5b1Rkg/udO1gZocVQWrDh6I2K3+cCs7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <9ad69d4f-69b7-4998-9639-4e8f679a2d9d@lucifer.local>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: QhZm_TyM0yLINKKxefWURMQvnqjt6FOMs0p2iyLgKp4_1756189037
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250814210201.GA348169@bhelgaas>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 26.08.25 07:25, Lorenzo Stoakes wrote:
-> On Mon, Aug 25, 2025 at 02:31:00PM +0200, David Hildenbrand wrote:
->> On 11.08.25 13:26, David Hildenbrand wrote:
->>> print_bad_pte() looks like something that should actually be a WARN
->>> or similar, but historically it apparently has proven to be useful to
->>> detect corruption of page tables even on production systems -- report
->>> the issue and keep the system running to make it easier to actually detect
->>> what is going wrong (e.g., multiple such messages might shed a light).
->>>
->>> As we want to unify vm_normal_page_*() handling for PTE/PMD/PUD, we'll have
->>> to take care of print_bad_pte() as well.
->>>
->>> Let's prepare for using print_bad_pte() also for non-PTEs by adjusting the
->>> implementation and renaming the function to print_bad_page_map().
->>> Provide print_bad_pte() as a simple wrapper.
->>>
->>> Document the implicit locking requirements for the page table re-walk.
->>>
->>> To make the function a bit more readable, factor out the ratelimit check
->>> into is_bad_page_map_ratelimited() and place the printing of page
->>> table content into __print_bad_page_map_pgtable(). We'll now dump
->>> information from each level in a single line, and just stop the table
->>> walk once we hit something that is not a present page table.
->>>
->>> The report will now look something like (dumping pgd to pmd values):
->>>
->>> [   77.943408] BUG: Bad page map in process XXX  pte:80000001233f5867
->>> [   77.944077] addr:00007fd84bb1c000 vm_flags:08100071 anon_vma: ...
->>> [   77.945186] pgd:10a89f067 p4d:10a89f067 pud:10e5a2067 pmd:105327067
->>>
->>> Not using pgdp_get(), because that does not work properly on some arm
->>> configs where pgd_t is an array. Note that we are dumping all levels
->>> even when levels are folded for simplicity.
->>>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>>    include/linux/pgtable.h |  19 ++++++++
->>>    mm/memory.c             | 104 ++++++++++++++++++++++++++++++++--------
->>>    2 files changed, 103 insertions(+), 20 deletions(-)
->>>
->>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
->>> index bff5c4241bf2e..33c84b38b7ec6 100644
->>> --- a/include/linux/pgtable.h
->>> +++ b/include/linux/pgtable.h
->>> @@ -1966,6 +1966,25 @@ enum pgtable_level {
->>>    	PGTABLE_LEVEL_PGD,
->>>    };
->>> +static inline const char *pgtable_level_to_str(enum pgtable_level level)
->>> +{
->>> +	switch (level) {
->>> +	case PGTABLE_LEVEL_PTE:
->>> +		return "pte";
->>> +	case PGTABLE_LEVEL_PMD:
->>> +		return "pmd";
->>> +	case PGTABLE_LEVEL_PUD:
->>> +		return "pud";
->>> +	case PGTABLE_LEVEL_P4D:
->>> +		return "p4d";
->>> +	case PGTABLE_LEVEL_PGD:
->>> +		return "pgd";
->>> +	default:
->>> +		VM_WARN_ON_ONCE(1);
->>> +		return "unknown";
->>> +	}
->>> +}
->>
->> One kernel config doesn't like the VM_WARN_ON_ONCE here, and I don't think we
->> really need it. @Andrew can you squash:
+On Thu, Aug 14, 2025 at 04:02:01PM -0500, Bjorn Helgaas wrote:
+> On Thu, Aug 07, 2025 at 03:55:37PM +0200, Niklas Schnelle wrote:
+> > Niklas Schnelle (3):
+> >       PCI/AER: Fix missing uevent on recovery when a reset is requested
+> >       PCI/ERR: s390/pci: Use pci_uevent_ers() in PCI recovery
+> >       powerpc/eeh: Use result of error_detected() in uevent
+> > 
+> >  arch/powerpc/kernel/eeh_driver.c | 2 +-
+> >  arch/s390/pci/pci_event.c        | 3 +++
+> >  drivers/pci/pci-driver.c         | 3 ++-
+> >  include/linux/pci.h              | 2 +-
+> >  4 files changed, 7 insertions(+), 3 deletions(-)
 > 
-> Out of interest do you know why this is happening? xtensa right? Does
-> xtensa not like CONFIG_DEBUG_VM?
+> Applied on pci/aer for v6.18, thanks!  This on top of Lukas's series:
+> 
+>   https://lore.kernel.org/all/cover.1755008151.git.lukas@wunner.de/
+> 
+> Expect the whole branch to be rebased to add Reviewed-by, etc.
 
-We don't happen to include mmdebug.h in a xtensa configuration.
+In case it helps, these are all the tags that were offered for my series
+and that haven't been added to the pci/aer branch yet:
 
-Briefly thought about using a BUILD_BUG_ON_INVALID(), but decided to 
-just drop it completely.
+d0a2dee7d458 PCI/AER: Allow drivers to opt in to Bus Reset on Non-Fatal Errors
+  Reviewed-by: Linas Vepstas <linasvepstas@gmail.com>
+  https://lore.kernel.org/r/CAHrUA34fVV48MShC4CrXSmveR9i8MC4KAQxtM+XQY_Ao8joBQw@mail.gmail.com/
+  Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+  https://lore.kernel.org/r/8491adbd-d8e8-465a-971e-3fe50e2561b1@linux.intel.com/
 
--- 
-Cheers
+1cbc5e25fb70 PCI/ERR: Fix uevent on failure to recover
+  Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+  https://lore.kernel.org/r/f0b59604-ae4d-4afe-8522-a8fbe5568e96@linux.intel.com/
+  Reviewed-by: Linas Vepstas <linasvepstas@gmail.com>
+  https://lore.kernel.org/r/CAHrUA34fVV48MShC4CrXSmveR9i8MC4KAQxtM+XQY_Ao8joBQw@mail.gmail.com/
+  Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+  https://lore.kernel.org/r/a4419480c3d494a5940e87fea0c7b9864dc3e85b.camel@linux.ibm.com/
 
-David / dhildenb
+9011f0667c93 PCI/ERR: Notify drivers on failure to recover
+  Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+  https://lore.kernel.org/r/fa9f42ab-bced-4c7f-9977-c0b611e92e2e@linux.intel.com/
+  Reviewed-by: Linas Vepstas <linasvepstas@gmail.com>
+  https://lore.kernel.org/r/CAHrUA34fVV48MShC4CrXSmveR9i8MC4KAQxtM+XQY_Ao8joBQw@mail.gmail.com/
 
+45bc82563d55 PCI/ERR: Update device error_state already after reset
+  Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+  https://lore.kernel.org/r/004298f7-ae08-428e-9b98-995fc56e55b1@linux.intel.com/
+  Reviewed-by: Linas Vepstas <linasvepstas@gmail.com>
+  https://lore.kernel.org/r/CAHrUA34fVV48MShC4CrXSmveR9i8MC4KAQxtM+XQY_Ao8joBQw@mail.gmail.com/
+
+cc4a7a21e815 PCI/ERR: Remove remnants of .link_reset() callback
+  Reviewed-by: Linas Vepstas <linasvepstas@gmail.com>
+  https://lore.kernel.org/r/CAHrUA34fVV48MShC4CrXSmveR9i8MC4KAQxtM+XQY_Ao8joBQw@mail.gmail.com/
+  Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+  https://lore.kernel.org/r/59308229-24ed-4b8a-b398-cc47c61dfc47@linux.intel.com/
+  Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+  https://lore.kernel.org/r/CABPRKS_Ut8Z+rvM4+-E0YvEwUKbMb0SDpLBdH+g1sYEh+YcxFA@mail.gmail.com/
+
+Thanks!
+
+Lukas
 
