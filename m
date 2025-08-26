@@ -1,97 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-11308-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11317-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13DCB356B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 10:24:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B015DB35A02
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 12:20:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cB11121kjz3dQ9;
-	Tue, 26 Aug 2025 18:24:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cB3Zw6J9tz3dSd;
+	Tue, 26 Aug 2025 20:20:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756196677;
-	cv=none; b=W6MJ8e3Yu7lQI9lRw6HEkfChiAHk+HB5kjK847mJ9fVCYfzQOTB+6LRz/BHrGD7wg0ay/GJ1q6IpHKFZ8KqyshSv3A3UNXAa6losZq8s+EHWoPX8qBVzp/CGG8Adlz+22rOCBtOkwgWoO/ll5C98UBzWESglyZUi2psaEJJcMtDZWf5vyUXVjkbLVYlHT7mbNXvY96XqRwWd/q9WopT+SPhkQ/KfBGHPtf5cp7kADJUEFQoKHw4h0+AAjH/TQBcKgyhbJXjKXmL4JwC0aV2N6D5ryGjspZkDcsVbtwMilGg+cvt+7Nhn5NArndICMOjEZSuf0hIxT0p+wZU1psjepg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756203640;
+	cv=none; b=oW/RVwZ1mZPyORupTCf3ecPlcitzcDn/BiljrFFDjGrHwVU7TqNkLZtbKvVguz2zm2MDMHkHNZKUuzkgmxU6ZsXmbCCvOD2FD3bE1hBEMAkKTR5x4LN/RD+7+DTzp3iUIveew19Uy9VmADGWIprwas0c2M55I5WTr6gZ7Sb4l8UW6d3BWGJbR+bL3CDg/DR0TC/tdPjV8LFX98G37QzBeWyt1H4HYz7Qip7wrEPzqLKU4P1uw8qeGM5zwC+csyVYoDIx0NKEgoxuV2g/MbA7L6zxeK2vezBEA9OF15DBMD7mnVNxL/ZBNYWHsH3vrpWROWBISyPWgNWMN/16SObGrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756196677; c=relaxed/relaxed;
-	bh=7rF4Z3nFFKjvmRCuB0uyqnPIPVz/DLlRjcPNglDabus=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jX3FALDAj2mSFPuo06SQ1h9MQlA4nKFR6XR+GUUnKVhjs30n8EFY/csRobUSEYf7vO4oNZuhfsXC5BcpbMSD/RwpS4NIb/RzqXGxXvpq/Hmp3yT8oP8+TnD+rpiaJEJmapfefBrh3GV8Ek2oproEV+CVi1t+rcSofTFocEy+fGjbw7IwT24b3gt0B/KglaHrtE1qMMSeGzWzZYiSGf9Hqfwlxb+njKOgFAiHBG+eUaow+l0GIV6CI4AYKV31oThqqKHK6wsEYmU4VOcW2qbLSesGMXZ80rd7jH0B64oqrPkrSfBG0ikonVUPLnOiZm+N4JA99Q0Mfzew5AA3Iy6rpA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=p+Q6uFyl; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=p+Q6uFyl;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cB10y0nQBz3d2N
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 18:24:33 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=7rF4Z3nFFKjvmRCuB0uyqnPIPVz/DLlRjcPNglDabus=; b=p+Q6uFylxWqCNSMkjEFeg4rdfp
-	QJ5psU8HRDgFK7/NXSdQKPJO2dqVJJFbWPBmr5cq797ldtSP4kAlLzBYWekPI7GCqhu1kOFMcKxkt
-	y6uSzCktiivrZCMhNE6Owbk+vGLsxHeSOCYz6LqZTNsWEguOZUp4iJpX9V3iDn5Iktz2dj3kbeSQt
-	zcCcajnHO2mHJAYqN8NR9E0eM7nGHNiFphhooovRkw6xjXYFq1A1zUkW9wXfc89u27t/ImZzVQCEV
-	CWGJ8TqNVA5DdoOUVRjFmpX1BkZfTo1A9u4Q6IPv8ovGp5lUIUUkRRBtxOg+ysOUON28JLZO5Y1YR
-	SmbYdxNw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uqoyK-0000000F6R7-2qfM;
-	Tue, 26 Aug 2025 08:24:05 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id DAE223002C5; Tue, 26 Aug 2025 10:24:04 +0200 (CEST)
-Date: Tue, 26 Aug 2025 10:24:04 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	thomas.weissschuh@linutronix.de, Li Chen <chenl311@chinatelecom.cn>,
-	Bibo Mao <maobibo@loongson.cn>, Mete Durlu <meted@linux.ibm.com>,
-	Tobias Huschle <huschle@linux.ibm.com>,
-	Easwar Hariharan <easwar.hariharan@linux.microsoft.com>,
-	Guo Weikang <guoweikang.kernel@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Brian Gerst <brgerst@gmail.com>,
-	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
-	Swapnil Sapkal <swapnil.sapkal@amd.com>,
-	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Andrea Righi <arighi@nvidia.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Subject: Re: [PATCH v7 5/8] sched/topology: Unify tl_smt_mask() across core
- and all arch
-Message-ID: <20250826082404.GF3245006@noisy.programming.kicks-ass.net>
-References: <20250826041319.1284-1-kprateek.nayak@amd.com>
- <20250826041319.1284-6-kprateek.nayak@amd.com>
- <20250826080123.GB3245006@noisy.programming.kicks-ass.net>
- <a506bb53-6e17-4a10-a870-50ce87a4ce06@csgroup.eu>
+	t=1756203640; c=relaxed/relaxed;
+	bh=AJimymYaCoFEeEjNWPjbV6cVaUCvnHLeR3zgQ1DX2sA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BqG9acRmYmvdOcwALmYOTVK9Iu0idMmUGZa0SPyNnQEDh7/sx4MJlC/qVDLImfsHrqKwIpyfaPrfwMtui6x+pJpcw1nHwdMtlYlASyVFjUg9KTtI1YviwPSWM291ztRO0du5ZKDNRHothprWe/pgJ88On+5taJDQk+prmYTrNO75jIBlFMqQ4xaLn697pVWDXezgkYLr6la16WMh5NUPXgPmFS3msgmYt9vnHVVLhPin2htWCvtPMQsgwpRGxOp+Nm0wWlPLuIUyUQ+hnGPV/g8RMLdSpZQgojfQRZk8kjfGIkhu7kSOXaPnoK98UtGmYKpq6PQ7T3hD/VZXIjem6A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cB3Zw2Zt0z3dSZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 20:20:40 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cB1N06r90z9sSZ;
+	Tue, 26 Aug 2025 10:41:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 95Os1xD7Erc8; Tue, 26 Aug 2025 10:41:04 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cB1N05t26z9sSY;
+	Tue, 26 Aug 2025 10:41:04 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id B24528B764;
+	Tue, 26 Aug 2025 10:41:04 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 5Sr4FVgPNX2m; Tue, 26 Aug 2025 10:41:04 +0200 (CEST)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1576D8B763;
+	Tue, 26 Aug 2025 10:41:04 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Qiang Zhao <qiang.zhao@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH v4] soc: fsl: qe: Change GPIO driver to a proper platform driver
+Date: Tue, 26 Aug 2025 10:40:33 +0200
+Message-ID: <2df36ab4e1ec2af1d383281ed5005a09d28f40e2.1756197491.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <e05a0959d794016bde79e48e25ff71253cf51aae.1756104334.git.christophe.leroy@csgroup.eu>
+References: <e05a0959d794016bde79e48e25ff71253cf51aae.1756104334.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,52 +75,140 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756197653; l=3483; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=5s3yYeYRZ3QkohcSQgNTeYUyQ5TvPkMMh0AM/N4girU=; b=I/hgGETiK8FWJI3XxVV6HRRuu9Mq+Y4KxbL8S7c07bgSnbYBq9ioSj3ZZS9Z+O/kSPSSY1Pci nxWqwwiIed3BLFJhGbGLoSuUgPAxoRcWC4vibP61MV8LRTnJhqLSaxk
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a506bb53-6e17-4a10-a870-50ce87a4ce06@csgroup.eu>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 26, 2025 at 10:11:40AM +0200, Christophe Leroy wrote:
-> 
-> 
-> Le 26/08/2025 à 10:01, Peter Zijlstra a écrit :
-> > > diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-> > > index 602508130c8a..d75fbb7d9667 100644
-> > > --- a/include/linux/sched/topology.h
-> > > +++ b/include/linux/sched/topology.h
-> > > @@ -37,7 +37,13 @@ static inline int cpu_smt_flags(void)
-> > >   {
-> > >   	return SD_SHARE_CPUCAPACITY | SD_SHARE_LLC;
-> > >   }
-> > > -#endif
-> > > +
-> > > +static const __maybe_unused
-> > > +struct cpumask *tl_smt_mask(struct sched_domain_topology_level *tl, int cpu)
-> > > +{
-> > > +	return cpu_smt_mask(cpu);
-> > > +}
-> > > +#endif /* CONFIG_SCHED_SMT */
-> > 
-> > Problem with that __maybe_unused is that you forgot inline.
-> > 
-> > static inline const
-> > struct cpumask *tl_smt_mask(struct sched_domain_topology_level *tl, int cpu)
-> > {
-> > 	return cpu_smt_mask(cpu);
-> > }
-> > 
-> > seems to make it happy.
-> > 
-> 
-> But the function is referenced by SDTL_INIT() macro so there is no real
-> point in declaring it inline. Would be cleaner to have it defined in a C
-> file.
+In order to be able to add interrupts to the GPIOs, first change the
+QE GPIO driver to the proper platform driver in order to allow
+initialisation to be done in the right order, otherwise the GPIOs
+get added before the interrupts are registered.
 
-Ah, that's what you mean. I was more focussed on getting rid of that
-horrible __maybe_unused and then either works. But yes, perhaps just
-having them in a .c file is best.
+Removing linux/of.h and linux/property.h which are unused.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+v4: Removed unused headers
+---
+ drivers/soc/fsl/qe/gpio.c | 88 +++++++++++++++++++++------------------
+ 1 file changed, 47 insertions(+), 41 deletions(-)
+
+diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
+index 8df1e8fa86a5..fece644ce914 100644
+--- a/drivers/soc/fsl/qe/gpio.c
++++ b/drivers/soc/fsl/qe/gpio.c
+@@ -12,13 +12,12 @@
+ #include <linux/spinlock.h>
+ #include <linux/err.h>
+ #include <linux/io.h>
+-#include <linux/of.h>
+ #include <linux/gpio/legacy-of-mm-gpiochip.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/gpio/driver.h>
+ #include <linux/slab.h>
+ #include <linux/export.h>
+-#include <linux/property.h>
++#include <linux/platform_device.h>
+ 
+ #include <soc/fsl/qe/qe.h>
+ 
+@@ -295,45 +294,52 @@ void qe_pin_set_gpio(struct qe_pin *qe_pin)
+ }
+ EXPORT_SYMBOL(qe_pin_set_gpio);
+ 
+-static int __init qe_add_gpiochips(void)
++static int qe_gpio_probe(struct platform_device *ofdev)
+ {
+-	struct device_node *np;
+-
+-	for_each_compatible_node(np, NULL, "fsl,mpc8323-qe-pario-bank") {
+-		int ret;
+-		struct qe_gpio_chip *qe_gc;
+-		struct of_mm_gpio_chip *mm_gc;
+-		struct gpio_chip *gc;
+-
+-		qe_gc = kzalloc(sizeof(*qe_gc), GFP_KERNEL);
+-		if (!qe_gc) {
+-			ret = -ENOMEM;
+-			goto err;
+-		}
++	struct device *dev = &ofdev->dev;
++	struct device_node *np = dev->of_node;
++	struct qe_gpio_chip *qe_gc;
++	struct of_mm_gpio_chip *mm_gc;
++	struct gpio_chip *gc;
+ 
+-		spin_lock_init(&qe_gc->lock);
+-
+-		mm_gc = &qe_gc->mm_gc;
+-		gc = &mm_gc->gc;
+-
+-		mm_gc->save_regs = qe_gpio_save_regs;
+-		gc->ngpio = QE_PIO_PINS;
+-		gc->direction_input = qe_gpio_dir_in;
+-		gc->direction_output = qe_gpio_dir_out;
+-		gc->get = qe_gpio_get;
+-		gc->set = qe_gpio_set;
+-		gc->set_multiple = qe_gpio_set_multiple;
+-
+-		ret = of_mm_gpiochip_add_data(np, mm_gc, qe_gc);
+-		if (ret)
+-			goto err;
+-		continue;
+-err:
+-		pr_err("%pOF: registration failed with status %d\n",
+-		       np, ret);
+-		kfree(qe_gc);
+-		/* try others anyway */
+-	}
+-	return 0;
++	qe_gc = devm_kzalloc(dev, sizeof(*qe_gc), GFP_KERNEL);
++	if (!qe_gc)
++		return -ENOMEM;
++
++	spin_lock_init(&qe_gc->lock);
++
++	mm_gc = &qe_gc->mm_gc;
++	gc = &mm_gc->gc;
++
++	mm_gc->save_regs = qe_gpio_save_regs;
++	gc->ngpio = QE_PIO_PINS;
++	gc->direction_input = qe_gpio_dir_in;
++	gc->direction_output = qe_gpio_dir_out;
++	gc->get = qe_gpio_get;
++	gc->set = qe_gpio_set;
++	gc->set_multiple = qe_gpio_set_multiple;
++
++	return of_mm_gpiochip_add_data(np, mm_gc, qe_gc);
++}
++
++static const struct of_device_id qe_gpio_match[] = {
++	{
++		.compatible = "fsl,mpc8323-qe-pario-bank",
++	},
++	{},
++};
++MODULE_DEVICE_TABLE(of, qe_gpio_match);
++
++static struct platform_driver qe_gpio_driver = {
++	.probe		= qe_gpio_probe,
++	.driver		= {
++		.name	= "qe-gpio",
++		.of_match_table	= qe_gpio_match,
++	},
++};
++
++static int __init qe_gpio_init(void)
++{
++	return platform_driver_register(&qe_gpio_driver);
+ }
+-arch_initcall(qe_add_gpiochips);
++arch_initcall(qe_gpio_init);
+-- 
+2.49.0
+
 
