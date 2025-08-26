@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-11323-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11324-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3BBB360C2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 15:03:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03000B36142
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 15:08:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cB7C55k95z3dT4;
-	Tue, 26 Aug 2025 23:03:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cB7JG506vz3dT8;
+	Tue, 26 Aug 2025 23:08:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756213425;
-	cv=none; b=J+TIACz1ZrMcsVRcD4/V7Daf1WQjMsPlXvJ5l+/5YremmSjHx4pN5L92wDsO5cSZle1B2Pd+5/ri8BdLod09K7gOGNKexc1ya7uDwVyF+lSQ/I1hXPIa8AjM0qnJIa1bgOxoRNrawBcoxG2lcXii37SS9pg2erONcCvUih4xyaE1t+tS9GhNytaxHKQ+YmXIzp7E2U3Sg1+eZyoXGUgEmaB1SDtASwU3emkk+CKZBpAZLJp+7HVZH0ZYKuk2htfhdS6ITGKV4n8Z9p9UPuBXPC6VPL9XLiYfkYGyEH1Iy0cs+JyHXYRXBSnH5Lxvb4w9quICrcV7rL/eVhTOFYeXUA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756213694;
+	cv=none; b=l4d14sh3co1v4wvOWI7IirXeq7U3DwsXsNVpDvP6zVIbY+doRqidWtF59M8FpVELBjXyek+OdezYwsBLGUXmIDGFYMWlzboNehOdi8ggUFOqpKaClW09K8EsZ+vkpRO4r0edaLKannxIZqvfCMf46hpBE119ZsgMfSWakGEu6tRMDpANJevALoEjCoxnFd0kBm5WCLkjOfXHB7KL+L3sq91dAW3DN9zIGdAQIRRwYumL/BUufQHB5nS55oHeIy7he+pq7rJk3KnTVhTxiADuF8DHfyw+NRdWmHStghqUaYarY/Otv54rhVtQECDss5t+Rfxd4t4M23AcsgQR1ajwQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756213425; c=relaxed/relaxed;
-	bh=pe5SE8cLTPPyLKyF6S5l44TjxJSycuwoPwH53Hc4MBc=;
+	t=1756213694; c=relaxed/relaxed;
+	bh=1anwaqC6FtBZhv/AdRsioHe6z7ff2/NtObpshRSmtXo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jskxjagMXZU+mdvm4NY7oZiyjZBcT9UvHgnhe+3lk5XirP7lty0M81QVqGqgeb8Ex9XIYhzjudPHH1C4R5KJlBPU6c8NpQ239qscEC2kVRX1vpYDGfgUuOqkS1PV8kA2lIHWdDOzTTp8W20Hp0fjiG+XaOXd9aoVlrbu8xv7cdojGs52RopsazfD4qqyZnLqhF2FpGW+vNjqNSnRofZePpE5vpJksCqHEczmNLAVa9xnyrGCVVIqoiu+SYIXZhTF/lnFTLNbONXqChrYRUPIOxPHyPqoeL//yqPnxb1twNOKpA151eH0em8dQUsFmI1uso2MIVue9cw6nwj0KC00fg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=s5T3h8Qu; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=RgxcwI1NYyyDRyW46rZBsu9CN52ny7TvyBeFD9JdtmIX9M/aIe9x6vJd3e1sRXM10o/OduHIVxA6y0gcU8oQYuWn9QmOBabL0hVa3c/xIJXTnOwN7dE0qcUXo+KZvY7xEzvKhnaYx0BJ1MkNPdYieQU6SvqRboF+zjl8XHUB0DveuV01eidRHR9pk/6U372foB7W82xWR7rcH44fsOd1t2s4d190nS1Ai+u1na5UD4JwtvBaxpoJyRCb3vOkewfKaZ9WxeUlCsqIkE2P+6uhwLweQRHdIi5QB6PDbp8HT1eqf8Ysxh3Zz6rmV6HiAVcN5ENCZBA17qP4qxpTgqIyqQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=tTA/3PiA; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=s5T3h8Qu;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=tTA/3PiA;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cB7C14tq9z3dSv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 23:03:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cB7JG077Fz3dSv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 23:08:13 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=pe5SE8cLTPPyLKyF6S5l44TjxJSycuwoPwH53Hc4MBc=; b=s5T3h8QunORHMVi1lJq+TueBjc
-	cEFljtvjN5QJ03jRIuUbqZT2dzYWLCkq7EIgZ1HjiZepKSvKZUS4jhIftbJpUomzAxLkXpo4MhYIl
-	ZCvpLQBdWeqllwk2L5LEakNCj50aVxzY1I5n8BnO+qCbmyfysUZaBrevf4ZwX/NHQuj2PrtwGK3Is
-	jhSt6FlQLnGrrRwVWOG3VEhB1mGDJu+1EhbkwSGhAG25rhQM5DyWklhsvsXQh2tW5FYLoYbc8dttl
-	tsa9sX+EEmcEbn/jBCdJY0wOlh7GZntWiVjKPlxT8hw9CmspDWHiAZfhSZSTIR8f/mKGoVnI/OKYV
-	DfymEZ2w==;
+	bh=1anwaqC6FtBZhv/AdRsioHe6z7ff2/NtObpshRSmtXo=; b=tTA/3PiAJQSpvqwn9JBse0zv8x
+	XpRRlvytBaU8d04FPgmaRAhvvZSqAROIZ/4ezjLoE6WsNdrr9/VlG41rEHCWsnk6JH8UsrGv5T5LT
+	zWsAXDZBYt6RN2vrodVyAq1DmmcYAol3ljF/QPWtrzgIrZdA+eDohdH+O3MOT2cIfR3SAL6oZFxxT
+	a0buqH4Cjn32e+/T6hw9u+ioPisD3zaMrQKEyQ6W0w6+Ct9SXam4tKJBvFWH9AMfHquCJRKF+Zp4I
+	PdyzFVdx3HFHpHhkOPtwcc+TPPHK59R640Wqk+YmnwDvNpXZJgmWLR1JQJ9jnUMah3B3H6sSqGhBU
+	hjKnAxuQ==;
 Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
 	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uqtKk-00000002CWx-1CxP;
-	Tue, 26 Aug 2025 13:03:31 +0000
+	id 1uqtPC-00000002GIP-3rVi;
+	Tue, 26 Aug 2025 13:08:07 +0000
 Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id E7FAC3002C5; Tue, 26 Aug 2025 15:03:29 +0200 (CEST)
-Date: Tue, 26 Aug 2025 15:03:29 +0200
+	id DB2A63002C5; Tue, 26 Aug 2025 15:08:06 +0200 (CEST)
+Date: Tue, 26 Aug 2025 15:08:06 +0200
 From: Peter Zijlstra <peterz@infradead.org>
 To: Robin Murphy <robin.murphy@arm.com>
 Cc: mingo@redhat.com, will@kernel.org, mark.rutland@arm.com,
@@ -66,10 +66,10 @@ Cc: mingo@redhat.com, will@kernel.org, mark.rutland@arm.com,
 	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
 	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 12/19] perf: Ignore event state for group validation
-Message-ID: <20250826130329.GX4067720@noisy.programming.kicks-ass.net>
+Subject: Re: [PATCH 16/19] perf: Introduce positive capability for sampling
+Message-ID: <20250826130806.GY4067720@noisy.programming.kicks-ass.net>
 References: <cover.1755096883.git.robin.murphy@arm.com>
- <d6cda4e2999aba5794c8178f043c91068fa8080c.1755096883.git.robin.murphy@arm.com>
+ <ae81cb65b38555c628e395cce67ac6c7eaafdd23.1755096883.git.robin.murphy@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,33 +85,43 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d6cda4e2999aba5794c8178f043c91068fa8080c.1755096883.git.robin.murphy@arm.com>
+In-Reply-To: <ae81cb65b38555c628e395cce67ac6c7eaafdd23.1755096883.git.robin.murphy@arm.com>
 X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Aug 13, 2025 at 06:01:04PM +0100, Robin Murphy wrote:
-> It may have been different long ago, but today it seems wrong for these
-> drivers to skip counting disabled sibling events in group validation,
-> given that perf_event_enable() could make them schedulable again, and
-> thus increase the effective size of the group later. Conversely, if a
-> sibling event is truly dead then it stands to reason that the whole
-> group is dead, so it's not worth going to any special effort to try to
-> squeeze in a new event that's never going to run anyway. Thus, we can
-> simply remove all these checks.
+On Wed, Aug 13, 2025 at 06:01:08PM +0100, Robin Murphy wrote:
+> Sampling is inherently a feature for CPU PMUs, given that the thing
+> to be sampled is a CPU context. These days, we have many more
+> uncore/system PMUs than CPU PMUs, so it no longer makes much sense to
+> assume sampling support by default and force the ever-growing majority
+> of drivers to opt out of it (or erroneously fail to). Instead, let's
+> introduce a positive opt-in capability that's more obvious and easier to
+> maintain.
+> 
 
-So currently you can do sort of a manual event rotation inside an
-over-sized group and have it work.
+> diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+> index 4d439c24c901..bf2cfbeabba2 100644
+> --- a/include/linux/perf_event.h
+> +++ b/include/linux/perf_event.h
+> @@ -294,7 +294,7 @@ struct perf_event_pmu_context;
+>  /**
+>   * pmu::capabilities flags
+>   */
+> -#define PERF_PMU_CAP_NO_INTERRUPT	0x0001
+> +#define PERF_PMU_CAP_SAMPLING		0x0001
+>  #define PERF_PMU_CAP_NO_NMI		0x0002
+>  #define PERF_PMU_CAP_AUX_NO_SG		0x0004
+>  #define PERF_PMU_CAP_EXTENDED_REGS	0x0008
+> @@ -305,6 +305,7 @@ struct perf_event_pmu_context;
+>  #define PERF_PMU_CAP_EXTENDED_HW_TYPE	0x0100
+>  #define PERF_PMU_CAP_AUX_PAUSE		0x0200
+>  #define PERF_PMU_CAP_AUX_PREFER_LARGE	0x0400
+> +#define PERF_PMU_CAP_NO_INTERRUPT	0x0800
 
-I'm not sure if anybody actually does this, but its possible.
+So NO_INTERRUPT was supposed to be the negative of your new SAMPLING
+(and I agree with your reasoning).
 
-Eg. on a PMU that supports only 4 counters, create a group of 5 and
-periodically cycle which of the 5 events is off.
-
-So I'm not against changing this, but changing stuff like this always
-makes me a little fearful -- it wouldn't be the first time that when it
-finally trickles down to some 'enterprise' user in 5 years someone comes
-and finally says, oh hey, you broke my shit :-(
-
+What I'm confused/curious about is why we retain NO_INTERRUPT?
 
