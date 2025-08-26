@@ -1,58 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-11294-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11286-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 560A9B3543D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 08:20:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5ABB353FD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 08:17:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4c9yDY1k65z3dKc;
-	Tue, 26 Aug 2025 16:19:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4c9yBH1y11z3dHJ;
+	Tue, 26 Aug 2025 16:17:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756189165;
-	cv=none; b=at1GBmhiZ4HetoYZrbkYAuDV5g77mbT74g34HA/EAERqVyC0mfEawB/t05yGwLM211N7e+HPH4Ar30vfvUqQkpAtuvMnOte4d5EBWY/NPAFCiDz4xn7hwkmUyfyR1yA6KYiOqrsQMM7v7D4pkKrOV39WByKQflue/CkNRJxEVwgcQt3XSz5yipQNCOBR6LNHC+mePOBsTotUlEGFE/nqen0JTKE5euBjYzITcPdhQcq9r+vkje2COh8bhtDGdgCqcsrhHwJhtJUuOd8wb6p5BowHEu7bxnEwKod97rPoVWVAPEOGSzswX/UkxxYqfw0DPPbgXuH/SIZVMlZIbykRnQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756189047;
+	cv=none; b=BYAKVb5XmLH0AXbRQOKrtsevNizGMqed7WHeWcc7YP0V5bl+7xExS4OnrNKbWI2y7rqK3wQPrqqfSkx681YLe+M/T+5i6nCqbuYPam6ZndUnsmjo4tScqF2Y17U3uw1byl3KFGnXBkp2QRvT8Nu8FbSn99x7C74yMgDLnvPtlnT0rBz+GAewGzOtFVyCR75WypJBxsC898JQW5BSy2VCKG9cctFAS2CNgbvEargorAAXFXV2bBMOiuHsPinDK/oWPdKGwDsrr5jWyh91r7WvmbdpZH4Mmb284U8gRZs0JFP4fIkq1c/DBcdN4nzTHSF4JZYf/5uLds6rNcFsbXkr9Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756189165; c=relaxed/relaxed;
-	bh=aUyzbl96JnTO9V3eNt5MssqL9K7R8ZPYrzwmUDypjtQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QlKKSZsWURQXfU1KEzdHaYm59owdQC+FUUMr6wV/JhBAGYHIweGJE6rkzzpQII0PtDusE6SgurfeJ0dYrQfNP3H/qAVnhSYyrFRGEck5NoXojSoxga5xpplgsAYeGK1JUtqWjs3WmlmW4vmE3SuvD4PY6mIo0tzwVtbLzAGBGeSs7hihjayfDo1toMLOYfTbcZVEih4SI7gmvx0kQqSRAyd4mA2mKKaWKKhFYMcR2pqJQ5D2QZsgSRodnZn0AQDslHgLNntrCry8DSF1oh/pykkbXvlKgh6r7EY88sGwtNnKyqEbA3/a95vGAz1IlK6HWRANpQsa6fnJxtJrRF21+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=qff84Umw; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=faCkWxdj; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1756189047; c=relaxed/relaxed;
+	bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QiKMwgcDRWM12ZUE26Gz4XZoq+VX4QstluvwNQpWFaGauBqF6wbl5DnMvMaoKtXsYdtLxAAUUHAO6OJj60w6UdzGJU+9NwWOoml+3ws9bOZqXV2Y4zm7y66gnE7eGYp6BORWu1lXelbfNJtn8glQQSJHg3pN/fyGHof44E7U3zADnh3/hs1f+MY0Ms3L/YzJ7krursGgZsSjJ60LmZxeUmNmvi4q8j2dlZFBrc13ccUKDZVt6jw5WFqeM48O4rDuEVm7BJ7m8bzmPPgZR3SUzpmWlaHLyTPhM/yZoKCqcAxYYwjwnq7VvmedoD2fFiyAK9xpDwXfCdrSHQqZpD4EzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=biJr6aci; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=biJr6aci; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=qff84Umw;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=faCkWxdj;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=biJr6aci;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=biJr6aci;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4c9yD93h6gz3dHw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 16:19:01 +1000 (AEST)
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1756189106;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4c9yBF6T5Pz3dHD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 16:17:24 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756189040;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aUyzbl96JnTO9V3eNt5MssqL9K7R8ZPYrzwmUDypjtQ=;
-	b=qff84UmwLm8iFQvqm09Om+iEel23vC9BJ1wHMhpnGuRjjiVtocG2gJc/efnzy7UGv0bqDh
-	X4YctMH0aSIUxDd3i6X4JoDQFU5IM3b5mriVj4iiUX/4ke9TsrEXJU+QjgXN9L2Hvg/r1e
-	gVrERdEyqsHFDbRTatoD2jUbrkzofjIHreOcsZGCDEtvBgy1C9OjuykTbsIoRwvmsiEo67
-	TT3uKBDVEPfUk1K7JbyuNP89aqNk5szSg7Q98Esgpnao8uytgt5ztulcsAYjKovknEd1Gv
-	DdfAb+Xqa/DsFSf6/Qptu/gAQ+92+1NXjLnQVTycTHPHpfQqUdNFtsZzBM1PEQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1756189106;
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
+	b=biJr6aci7fN8j25yHr1p0PUE5A0aF6f/xPFadYx/jOfrrZSrS94Kozj9JZo/wdfvP2utRK
+	A/H3z0uAQkvGiqMnBRpb39LDi+Nf6+Wdt4i6kY4TI8r+C8fvMctDE1pG+mwVIIPsPMiGM6
+	QqIUVHHJohFT5URC1jiPfhzLVRrQPn8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1756189040;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aUyzbl96JnTO9V3eNt5MssqL9K7R8ZPYrzwmUDypjtQ=;
-	b=faCkWxdjd3FeEyW+rea8Q+WUcDNk36hjcPMaS1Mmo0pdEShLBn6gpn0pA+neXsTYaNOZIy
-	GVnfWQSajoT7S0Ag==
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
+	b=biJr6aci7fN8j25yHr1p0PUE5A0aF6f/xPFadYx/jOfrrZSrS94Kozj9JZo/wdfvP2utRK
+	A/H3z0uAQkvGiqMnBRpb39LDi+Nf6+Wdt4i6kY4TI8r+C8fvMctDE1pG+mwVIIPsPMiGM6
+	QqIUVHHJohFT5URC1jiPfhzLVRrQPn8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-22-XGPLb9MpMZmHjR7qpIuTFw-1; Tue, 26 Aug 2025 02:17:18 -0400
+X-MC-Unique: XGPLb9MpMZmHjR7qpIuTFw-1
+X-Mimecast-MFC-AGG-ID: XGPLb9MpMZmHjR7qpIuTFw_1756189037
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45a1b0c5366so30453625e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 Aug 2025 23:17:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756189037; x=1756793837;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xk7Km5HTVMpJ1b1NXcCsWrU5BXZBqRoDajCCwh1oGmE=;
+        b=NkxhsthO5jtj9KwY1YhfZZKJeEtYmdItXZH3iCiFnCi5UQWrQNgBKav0SOL5tTielN
+         QBtBQr1khjp0kA2s4ltcCw2i56TwcSkpUIzS/NdFY/626pvCaBQFSW+XLwPyjlVmmRqv
+         JnvJ9nJlcoO6ci20Fy7xffnngD6SfOoaHh3abugnmjBPKKxE+yTO0rNWiFlusmmDnSRQ
+         QKYZMuReI6XYwykIRvBYYuv5AxUtsFsVzCpZCAIwo8OrZCgXmKcGXBOpg0RR04o/qBLv
+         3mx6nJJQGXBm4EBvMx5LonMpue17GrOMUz1hmBMNTtc7o5zueGiU6j2s9w5LlXB/t9r1
+         XwKA==
+X-Forwarded-Encrypted: i=1; AJvYcCXOsriat5mSKszgLjYHzgGSWRW5FIkEeECpqwJFihigeZQOux2YUpRTiSLhpP2eAm1rAsYDUVEpmvUquXA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyPg9cs2wYou0I+0RQQ+5meOHjcUO5eMnw/vtXjFYeezWByeoxP
+	ef3cKziwQg1MbEgjcLtUrNNnieXT5ViBb+HM16iS5abFuuNZ6BJT99L0bS7CPLxMySp+pmXrg1p
+	ysm8d7r3Eaj4M/iXlrGrjsLZ9EQdBwvk6+/Jdu9yE5YxZDTpn/j3DLjFc/uVgRFwJRCo=
+X-Gm-Gg: ASbGnctBzoTxU2ZUmMmrkI1T6ynFK4wUuXYSOlEFbwXNddwOYXu3vLTGyOVqGuYTXR8
+	ourjbRG7uoE5wFu/xy3jazUCEiAjVVl9KMUae2fR0d5JJqzF4w+eFZpJ0BY/iS5r2cyD89j0JhY
+	AWZSBis7Y5UWrKaTIN2PQEROhSAvIZy8uGZaLjQciPE251YmSqepIv25/BbJ5kijxsbOk6I5Em4
+	RoIjdQuaacc1iCE9aLk7r/u9tT5afvYaHhEg4ae5Ffwkk3ybA+Uzsq3CW5pLrrsUcbabZ+oNlSE
+	r/rkR9Vr6FDF3XDEfWbsW4t7ng36RroREbik4Zr5sZQz6w3WlxNSA2npE1ew2WrbvTj5CvClnw=
+	=
+X-Received: by 2002:a05:600c:3b26:b0:456:19b2:6aa8 with SMTP id 5b1f17b1804b1-45b517caa99mr120121755e9.19.1756189037426;
+        Mon, 25 Aug 2025 23:17:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE5JT88KMbfYqdABB2ZNx/5fJ3ePuTbJHoO0rv18+tnNMdWIHHT7WWjXjYCyLy3ILR8WgCBpw==
+X-Received: by 2002:a05:600c:3b26:b0:456:19b2:6aa8 with SMTP id 5b1f17b1804b1-45b517caa99mr120121265e9.19.1756189036964;
+        Mon, 25 Aug 2025 23:17:16 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45b6619b53asm9727285e9.1.2025.08.25.23.17.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Aug 2025 23:17:16 -0700 (PDT)
+Message-ID: <f3e626ab-9bf9-4a08-b626-e739515727eb@redhat.com>
 Date: Tue, 26 Aug 2025 08:17:14 +0200
-Subject: [PATCH 11/11] vdso: Gate VDSO_GETRANDOM behind HAVE_GENERIC_VDSO
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,75 +104,175 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250826-vdso-cleanups-v1-11-d9b65750e49f@linutronix.de>
-References: <20250826-vdso-cleanups-v1-0-d9b65750e49f@linutronix.de>
-In-Reply-To: <20250826-vdso-cleanups-v1-0-d9b65750e49f@linutronix.de>
-To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Nam Cao <namcao@linutronix.de>, 
- Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
- Alexander Gordeev <agordeev@linux.ibm.com>, 
- Christian Borntraeger <borntraeger@linux.ibm.com>, 
- Sven Schnelle <svens@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
- Christian Brauner <brauner@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
- linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-s390@vger.kernel.org, linux-arch@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756189098; l=740;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=e70kJzk3rr3WiO6RHhXGvE8arznJOv7er7zNzG1lBZY=;
- b=Q6ersM0eWZuFWFRqw7St9QnfIHgjvUfXPslz3bmlle7dR6R1Tm8FlCD46/a/HTAHi+acl41TM
- HHiIuT3vNAnDyILoXrbvH+hSpTHjerUzqwG/UiWNkrt8K08Oly20NA4
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/11] mm/memory: convert print_bad_pte() to
+ print_bad_page_map()
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org,
+ nvdimm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Hugh Dickins <hughd@google.com>, Oscar Salvador <osalvador@suse.de>,
+ Lance Yang <lance.yang@linux.dev>
+References: <20250811112631.759341-1-david@redhat.com>
+ <20250811112631.759341-9-david@redhat.com>
+ <923b279c-de33-44dd-a923-2959afad8626@redhat.com>
+ <9ad69d4f-69b7-4998-9639-4e8f679a2d9d@lucifer.local>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <9ad69d4f-69b7-4998-9639-4e8f679a2d9d@lucifer.local>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: QhZm_TyM0yLINKKxefWURMQvnqjt6FOMs0p2iyLgKp4_1756189037
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.1 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-All architectures which want to implement getrandom() in the vDSO need to
-use the generic vDSO library.
+On 26.08.25 07:25, Lorenzo Stoakes wrote:
+> On Mon, Aug 25, 2025 at 02:31:00PM +0200, David Hildenbrand wrote:
+>> On 11.08.25 13:26, David Hildenbrand wrote:
+>>> print_bad_pte() looks like something that should actually be a WARN
+>>> or similar, but historically it apparently has proven to be useful to
+>>> detect corruption of page tables even on production systems -- report
+>>> the issue and keep the system running to make it easier to actually detect
+>>> what is going wrong (e.g., multiple such messages might shed a light).
+>>>
+>>> As we want to unify vm_normal_page_*() handling for PTE/PMD/PUD, we'll have
+>>> to take care of print_bad_pte() as well.
+>>>
+>>> Let's prepare for using print_bad_pte() also for non-PTEs by adjusting the
+>>> implementation and renaming the function to print_bad_page_map().
+>>> Provide print_bad_pte() as a simple wrapper.
+>>>
+>>> Document the implicit locking requirements for the page table re-walk.
+>>>
+>>> To make the function a bit more readable, factor out the ratelimit check
+>>> into is_bad_page_map_ratelimited() and place the printing of page
+>>> table content into __print_bad_page_map_pgtable(). We'll now dump
+>>> information from each level in a single line, and just stop the table
+>>> walk once we hit something that is not a present page table.
+>>>
+>>> The report will now look something like (dumping pgd to pmd values):
+>>>
+>>> [   77.943408] BUG: Bad page map in process XXX  pte:80000001233f5867
+>>> [   77.944077] addr:00007fd84bb1c000 vm_flags:08100071 anon_vma: ...
+>>> [   77.945186] pgd:10a89f067 p4d:10a89f067 pud:10e5a2067 pmd:105327067
+>>>
+>>> Not using pgdp_get(), because that does not work properly on some arm
+>>> configs where pgd_t is an array. Note that we are dumping all levels
+>>> even when levels are folded for simplicity.
+>>>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>>    include/linux/pgtable.h |  19 ++++++++
+>>>    mm/memory.c             | 104 ++++++++++++++++++++++++++++++++--------
+>>>    2 files changed, 103 insertions(+), 20 deletions(-)
+>>>
+>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>>> index bff5c4241bf2e..33c84b38b7ec6 100644
+>>> --- a/include/linux/pgtable.h
+>>> +++ b/include/linux/pgtable.h
+>>> @@ -1966,6 +1966,25 @@ enum pgtable_level {
+>>>    	PGTABLE_LEVEL_PGD,
+>>>    };
+>>> +static inline const char *pgtable_level_to_str(enum pgtable_level level)
+>>> +{
+>>> +	switch (level) {
+>>> +	case PGTABLE_LEVEL_PTE:
+>>> +		return "pte";
+>>> +	case PGTABLE_LEVEL_PMD:
+>>> +		return "pmd";
+>>> +	case PGTABLE_LEVEL_PUD:
+>>> +		return "pud";
+>>> +	case PGTABLE_LEVEL_P4D:
+>>> +		return "p4d";
+>>> +	case PGTABLE_LEVEL_PGD:
+>>> +		return "pgd";
+>>> +	default:
+>>> +		VM_WARN_ON_ONCE(1);
+>>> +		return "unknown";
+>>> +	}
+>>> +}
+>>
+>> One kernel config doesn't like the VM_WARN_ON_ONCE here, and I don't think we
+>> really need it. @Andrew can you squash:
+> 
+> Out of interest do you know why this is happening? xtensa right? Does
+> xtensa not like CONFIG_DEBUG_VM?
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
- lib/vdso/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+We don't happen to include mmdebug.h in a xtensa configuration.
 
-diff --git a/lib/vdso/Kconfig b/lib/vdso/Kconfig
-index 3d2c2b90d193f984e3a202e701fa7f0bfa8f1938..db87ba34ef1928fac0d5c58abca86312687cc159 100644
---- a/lib/vdso/Kconfig
-+++ b/lib/vdso/Kconfig
-@@ -19,9 +19,9 @@ config GENERIC_VDSO_OVERFLOW_PROTECT
- 	  time getter functions for the price of an extra conditional
- 	  in the hotpath.
- 
--endif
--
- config VDSO_GETRANDOM
- 	bool
- 	help
- 	  Selected by architectures that support vDSO getrandom().
-+
-+endif
+Briefly thought about using a BUILD_BUG_ON_INVALID(), but decided to 
+just drop it completely.
 
 -- 
-2.50.1
+Cheers
+
+David / dhildenb
 
 
