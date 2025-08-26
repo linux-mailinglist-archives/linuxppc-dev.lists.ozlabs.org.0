@@ -1,62 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-11336-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11338-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E436B36F07
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 17:56:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D20DB3709A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 18:37:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBC2P6JmLz3dVp;
-	Wed, 27 Aug 2025 01:56:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cBCy03LRKz3dVf;
+	Wed, 27 Aug 2025 02:37:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756223789;
-	cv=none; b=DUHiXROWOR1JZXLAoCZTH148HjMMBaQEvgzHgJSYPlDSTBTUX5f+pC1OLJ0tlwxMSsJNBST/NGT4PYb6HsCST6YJkPnaT/swZ0OXAm7MHq0PlatpL1FCHS1VbrSVTNWoyR2mwbJGwV2sIrjo7qcNBpXDZ1PtVJx7TThnkGVL5b9zBr4J17jVkYRhV/3rVSkQN5JSZL5/W+yh5ae/AaLOEDa7KLZ9+87qMdiygknGABMdaCAFCpLgscyAybKQlPjmlxMR1rFiz58DOlfZr4IwU/EDNPfFt2DWEjFWvckGljJxtn1sqooPPSUsgvvxrKDfzeKEnXxkT8jnOgLlf2x4tA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756226264;
+	cv=none; b=Maw1cZ+QvPQp70i/DtJInl01C8r9BxfPetwiymLHZFgRopoEWs8qTkb4J0E0nKv6mSTSsX085OUwSpPGjBXQ18cSaUWW4nbCxdvIz1hLc5pNIkCnmd5jl0DCaoybzv4oHLIbmRFi8Lev86d+0d+mv6LQbSY/vGsB7xoaNJIasirF70ZrrP/USYxdMDmhNGR/Nihq+nv/ond98EORlqU16jv7oaMVsgKz2rGDc1Hmn1v/jd4o1juGIs1iBxog6kPil9Jv3syJVd/ZB1IGpvt0Rfouy2OYCuQZ4P+P8DUIkslIlxcK3MfJdRLIY6EgPWlBKBJOkAgX7SQn5MTYC8fGoQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756223789; c=relaxed/relaxed;
-	bh=R6vFVNJRVB+bu2nwcTJzte8jG6oVPL3Cag8hGJewTTY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V4VFN49gAnWMh90yD0RheGcC2EbWXx9+ZPNhIPkY2dU3cYBbUIj+F8KY/IQiQe6S39kVQNhqedw8+cKVpqRfVNzs9KFKRzd/rRl4Dj0p+tx3I0rmoTz00AbUZhuIIVBEKO1yuh7AuH0t2N7fgJJCKTU7mXByFi09QjsGuAqpxAUB1nFqqkBQBKvtkozSr0SG1gX2+T0J+WXZ3m8vDNLrtSPD0bA/hwueD94tm2Vw5kjtZH3t1ct5XxsNzxDOSY2wSy3MVhf/mV85NuLDG3KafKdwOPdYy4OC7hU6Wml89kJaHJxcTg+EpF94bbSmQ82k1lGeA/QDTJX0tGcoskrBPQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBC2P12nYz3dVf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Aug 2025 01:56:29 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3F871A25;
-	Tue, 26 Aug 2025 08:55:49 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D7E113F694;
-	Tue, 26 Aug 2025 08:55:51 -0700 (PDT)
-Date: Tue, 26 Aug 2025 16:55:49 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
-	acme@kernel.org, namhyung@kernel.org,
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-	irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org,
-	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, coresight@lists.linaro.org,
-	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
-	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 02/19] perf/hisilicon: Fix group validation
-Message-ID: <aK3ZBUQ3QeB2egX7@J2N7QTR9R3>
-References: <cover.1755096883.git.robin.murphy@arm.com>
- <c7b877e66ba0d34d8558c5af8bbb620e8c0e47d9.1755096883.git.robin.murphy@arm.com>
- <aK2XS_GhLw1EQ2ml@J2N7QTR9R3>
- <ab80cb84-42b2-4ce8-aa6c-4ce6be7a12b7@arm.com>
- <aK3TS3s5_Pczx1nu@J2N7QTR9R3>
+	t=1756226264; c=relaxed/relaxed;
+	bh=jyPF/dL+2YqZRv98PVCshXGneATY8Fvhth5O4vhMkWc=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=SpY9sC5k04c7hCV/49x+YX6rC8CyuxMQ00dh5jCl2X1Pkt8j4ztWup/FAirEXdyiNrFpCG/sYJIllw5SZlcWZmxkm/RT1Is18O6GjlgerEbOuRV1fFcAdwA99gJmJCWDh2Mp8lIirHn0BEQPxa56mbSw1GJbHSsqJ/Bijk4Hy1lJ7Dj+se9OiiBs6l8eeyAGymoMO+RhFVRoBmmAkUnOWVbmdqJetoxEjYCciLVxidP6k45d7GtmrVm8eIqX336AvhgAPvboT8mfHIZem/OQ4Mt/NHqbijYCvR1ymNE3mPYo5D/SOArNvlqYcyn8UuitxgLEGkekszZc0JiuJc755w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=S2hfD5Mq; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52c; helo=mail-pg1-x52c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=S2hfD5Mq;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52c; helo=mail-pg1-x52c.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBCxz2vFHz3dSr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Aug 2025 02:37:43 +1000 (AEST)
+Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-b47174c8e45so5627451a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 09:37:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756226261; x=1756831061; darn=lists.ozlabs.org;
+        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jyPF/dL+2YqZRv98PVCshXGneATY8Fvhth5O4vhMkWc=;
+        b=S2hfD5MqYUBbiwa40/E1ZzfRRYWvF8w++gwDMzMcAYMmeWij8FZuTUuwf/6BMc9ymH
+         p5rIAhxF6bu7Z5n9sZ/bfb5iMQYHyiP7Zh6k3Hon1Ah4795n0Gtdl1yFokj0JA22d2oK
+         /1DaU2spYIzMsPqVdWrrvLPLJ7PPDeDIvZF6k0aIj/WZTKp51jZN+pQ2FVzpOpHHCkSD
+         lJ6aOvpPDnOttZO6f8KGqcVAroTvZk0AiUsQ90IXNdbpCBHRgI5av2yNbD8BXtYHNgpc
+         oayC+pKYvEVrfslu62s4Fqd4QatgWaIgzIn8m9d0N9O6+xnSBH6Bcz2ckYOz3Eqj49Xm
+         hMNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756226261; x=1756831061;
+        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jyPF/dL+2YqZRv98PVCshXGneATY8Fvhth5O4vhMkWc=;
+        b=s4BR+Z9LJbsGnXgh+Hnrg+rjqNsRfI5zrt2cB9V7NYJ5pV/0q3yWOyIDJ3sCMN5gYW
+         C+rkjDAXZ3kx4ohMK1sZ7cKpExkHu9VuFuqKnKdN7jsjhlY7JTv+PuqYqlumPiHKRXWg
+         ag2/gA/lgSbf24GtQHKShlKZ2KvhWezxXu9zGvPLT4SgrQOJFAdqmn7nW0v9v/W0vCqH
+         Lu1zgNkivdgqyb8C9ravkeKilKt0Z+b7KSVBeig4ZDZGZ8bizSauCJgtrhYeq3dPP9YE
+         ief2EwmNtcuDKC7ZwlcTu/p/FQqH+YIlnB424JUPSM+MgROeXXgxe0rEsaGa6TlYeORu
+         zxIg==
+X-Forwarded-Encrypted: i=1; AJvYcCV8hUNk2mVoyr4swG3CgBd9ZTWU7cjv6kcjtUWuz7kX+V02bVFn+O58aCZcFas2DYGXHQwCMoyqho2gTtA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyPSKhqNV+zAAv+ICuz0wlpF7xQvNEooXlh9jseeVcn9AIbiuhF
+	gg9eoeqbM8bfgvEqkOI2GygTh6iOBtFH5RCMEGUhW9RZXkNUBbt2Ts6K
+X-Gm-Gg: ASbGnctBAZM1nwsgfHTdg7dk670ckC379Eywps01UXi3Xu9hwBMjMIYFWF5lak0Y+pN
+	2F8NCoHv0MSOkmOYOxLIJcZXsSdM8JRW5FTU23gvhtiT+Vz7OQF6AZjXD0NpcvJDWY/B+Trx+GU
+	fE91GRN3AdX1Y7YnB9hYrJeWsi44jcwpZxqUPhqYRLCnlLLVZCkT/ESSAnWxeo3PycdwPnyG++r
+	deKRc4xeonPOqZuDGcDJco0yitOpNewleNHRKlays6e0YdykwOnXgkDeYdXyp/WvGnmKxVsA1v/
+	fmgCm9q/rxlPnmc+A0Ok2M7BZ92UW/4DOj+zK++OvBPaBdY3Rc7zdZbtzH5ooNLlIahZ71d1IMc
+	qhP8Br8srrwJwHA==
+X-Google-Smtp-Source: AGHT+IHkpBzdMdA7eE7qfwfc1lxqW0m87+LkJnM6/YhAHtUnIYSPMtiSiZLKGMu2nLQJcFkeNv4YGw==
+X-Received: by 2002:a17:903:32c8:b0:248:79d4:939b with SMTP id d9443c01a7336-24879d4978cmr26372675ad.54.1756226260428;
+        Tue, 26 Aug 2025 09:37:40 -0700 (PDT)
+Received: from dw-tp ([171.76.82.15])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-248681adacdsm21450705ad.10.2025.08.26.09.37.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Aug 2025 09:37:39 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, xen-devel@lists.xenproject.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, David Hildenbrand <david@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, 
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Hugh Dickins <hughd@google.com>, 
+	Oscar Salvador <osalvador@suse.de>, Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v3 06/11] powerpc/ptdump: rename "struct pgtable_level" to "struct ptdump_pglevel"
+In-Reply-To: <20250811112631.759341-7-david@redhat.com>
+Date: Tue, 26 Aug 2025 21:58:09 +0530
+Message-ID: <87a53mqc86.fsf@gmail.com>
+References: <20250811112631.759341-1-david@redhat.com> <20250811112631.759341-7-david@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,82 +105,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aK3TS3s5_Pczx1nu@J2N7QTR9R3>
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+Content-Type: text/plain
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 26, 2025 at 04:31:23PM +0100, Mark Rutland wrote:
-> On Tue, Aug 26, 2025 at 03:35:48PM +0100, Robin Murphy wrote:
-> > On 2025-08-26 12:15 pm, Mark Rutland wrote:
-> > > On Wed, Aug 13, 2025 at 06:00:54PM +0100, Robin Murphy wrote:
-> > > > diff --git a/drivers/perf/hisilicon/hisi_pcie_pmu.c b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-> > > > index c5394d007b61..3b0b2f7197d0 100644
-> > > > --- a/drivers/perf/hisilicon/hisi_pcie_pmu.c
-> > > > +++ b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-> > > > @@ -338,21 +338,16 @@ static bool hisi_pcie_pmu_validate_event_group(struct perf_event *event)
-> > > >   	int counters = 1;
-> > > >   	int num;
-> > > > -	event_group[0] = leader;
-> > > > -	if (!is_software_event(leader)) {
-> > > > -		if (leader->pmu != event->pmu)
-> > > > -			return false;
-> > > > +	if (leader == event)
-> > > > +		return true;
-> > > > -		if (leader != event && !hisi_pcie_pmu_cmp_event(leader, event))
-> > > > -			event_group[counters++] = event;
-> > > > -	}
-> > > > +	event_group[0] = event;
-> > > > +	if (leader->pmu == event->pmu && !hisi_pcie_pmu_cmp_event(leader, event))
-> > > > +		event_group[counters++] = leader;
-> > > 
-> > > Looking at this, the existing logic to share counters (which
-> > > hisi_pcie_pmu_cmp_event() is trying to permit) looks to be bogus, given
-> > > that the start/stop callbacks will reprogram the HW counters (and hence
-> > > can fight with one another).
-> > 
-> > Yeah, this had a dodgy smell when I first came across it, but after doing
-> > all the digging I think it does actually work out - the trick seems to be
-> > the group_leader check in hisi_pcie_pmu_get_event_idx(), with the
-> > implication the PMU is going to be stopped while scheduling in/out the whole
-> > group, so assuming hisi_pcie_pmu_del() doesn't clear the counter value in
-> > hardware (even though the first call nukes the rest of the event
-> > configuration), then the events should stay in sync.
-> 
-> I don't think that's sufficient. If nothing else, overflow is handled
-> per-event, and for a group of two identical events, upon overflow
-> hisi_pcie_pmu_irq() will reprogram the shared HW counter when handling
-> the first event, and the second event will see an arbitrary
-> discontinuity. Maybe no-one has spotted that due to the 2^63 counter
-> period that we program, but this is clearly bogus.
-> 
-> In addition, AFAICT the IRQ handler doesn't stop the PMU, so in general
-> groups aren't handled atomically, and snapshots of the counters won't be
-> atomic.
-> 
-> > It does seem somewhat nonsensical to have multiple copies of the same event
-> > in the same group, but I imagine it could happen with some sort of scripted
-> > combination of metrics, and supporting it at this level saves needing
-> > explicit deduplication further up. So even though my initial instinct was to
-> > rip it out too, in the end I concluded that that doesn't seem justified.
-> 
+David Hildenbrand <david@redhat.com> writes:
 
-[...]
+> We want to make use of "pgtable_level" for an enum in core-mm. Other
+> architectures seem to call "struct pgtable_level" either:
+> * "struct pg_level" when not exposed in a header (riscv, arm)
+> * "struct ptdump_pg_level" when expose in a header (arm64)
+>
+> So let's follow what arm64 does.
+>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  arch/powerpc/mm/ptdump/8xx.c      | 2 +-
+>  arch/powerpc/mm/ptdump/book3s64.c | 2 +-
+>  arch/powerpc/mm/ptdump/ptdump.h   | 4 ++--
+>  arch/powerpc/mm/ptdump/shared.c   | 2 +-
+>  4 files changed, 5 insertions(+), 5 deletions(-)
 
-> As above, I think it's clearly bogus. I don't think we should have
-> merged it as-is and it's not something I'd like to see others copy.
-> Other PMUs don't do this sort of event deduplication, and in general it
-> should be up to the user or userspace software to do that rather than
-> doing that badly in the kernel.
-> 
-> Given it was implemented with no rationale I think we should rip it out.
-> If that breaks someone's scripting, then we can consider implementing
-> something that actually works.
 
-FWIW, I'm happy to go do that as a follow-up, so if that's a pain, feel
-free to leave that as-is for now.
+As mentioned in commit msg mostly a mechanical change to convert 
+"struct pgtable_level" to "struct ptdump_pg_level" for aforementioned purpose.. 
 
-Mark.
+The patch looks ok and compiles fine on my book3s64 and ppc32 platform. 
+
+I think we should fix the subject line.. s/ptdump_pglevel/ptdump_pg_level
+
+Otherwise the changes looks good to me. So please feel free to add - 
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
+
+
+>
+> diff --git a/arch/powerpc/mm/ptdump/8xx.c b/arch/powerpc/mm/ptdump/8xx.c
+> index b5c79b11ea3c2..4ca9cf7a90c9e 100644
+> --- a/arch/powerpc/mm/ptdump/8xx.c
+> +++ b/arch/powerpc/mm/ptdump/8xx.c
+> @@ -69,7 +69,7 @@ static const struct flag_info flag_array[] = {
+>  	}
+>  };
+>  
+> -struct pgtable_level pg_level[5] = {
+> +struct ptdump_pg_level pg_level[5] = {
+>  	{ /* pgd */
+>  		.flag	= flag_array,
+>  		.num	= ARRAY_SIZE(flag_array),
+> diff --git a/arch/powerpc/mm/ptdump/book3s64.c b/arch/powerpc/mm/ptdump/book3s64.c
+> index 5ad92d9dc5d10..6b2da9241d4c4 100644
+> --- a/arch/powerpc/mm/ptdump/book3s64.c
+> +++ b/arch/powerpc/mm/ptdump/book3s64.c
+> @@ -102,7 +102,7 @@ static const struct flag_info flag_array[] = {
+>  	}
+>  };
+>  
+> -struct pgtable_level pg_level[5] = {
+> +struct ptdump_pg_level pg_level[5] = {
+>  	{ /* pgd */
+>  		.flag	= flag_array,
+>  		.num	= ARRAY_SIZE(flag_array),
+> diff --git a/arch/powerpc/mm/ptdump/ptdump.h b/arch/powerpc/mm/ptdump/ptdump.h
+> index 154efae96ae09..4232aa4b57eae 100644
+> --- a/arch/powerpc/mm/ptdump/ptdump.h
+> +++ b/arch/powerpc/mm/ptdump/ptdump.h
+> @@ -11,12 +11,12 @@ struct flag_info {
+>  	int		shift;
+>  };
+>  
+> -struct pgtable_level {
+> +struct ptdump_pg_level {
+>  	const struct flag_info *flag;
+>  	size_t num;
+>  	u64 mask;
+>  };
+>  
+> -extern struct pgtable_level pg_level[5];
+> +extern struct ptdump_pg_level pg_level[5];
+>  
+>  void pt_dump_size(struct seq_file *m, unsigned long delta);
+> diff --git a/arch/powerpc/mm/ptdump/shared.c b/arch/powerpc/mm/ptdump/shared.c
+> index 39c30c62b7ea7..58998960eb9a4 100644
+> --- a/arch/powerpc/mm/ptdump/shared.c
+> +++ b/arch/powerpc/mm/ptdump/shared.c
+> @@ -67,7 +67,7 @@ static const struct flag_info flag_array[] = {
+>  	}
+>  };
+>  
+> -struct pgtable_level pg_level[5] = {
+> +struct ptdump_pg_level pg_level[5] = {
+>  	{ /* pgd */
+>  		.flag	= flag_array,
+>  		.num	= ARRAY_SIZE(flag_array),
+> -- 
+> 2.50.1
 
