@@ -1,95 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-11303-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11304-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982C1B355F3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 09:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 807D6B35615
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 Aug 2025 09:50:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cB07H2024z3dKC;
-	Tue, 26 Aug 2025 17:44:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cB0F42sznz3dLW;
+	Tue, 26 Aug 2025 17:50:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756194299;
-	cv=none; b=Z7hJq433+guvf86wLPomS+AmUkIg9co0dUVRo/IyJvE5+UvCz+Q2TSUX0eNwmznxx5Hu7+xA/x8bBxWgr/r3HizQNhVmmCGNpurzKVwKdkFroEbLb90RA+lOrzg+C+QuRJrEe2iQkIjO0tyzuUZxAizjHJlRsfRKIpcw9veWDtX1wE9kwUAZl1NfBGCPvCAPQM4G1r10iMBBswrptsrK5xW2mQTWQEPCLqe3ODPTVz8/Donaizb7UAyvrOZgME4yToj5mILMy+cHkI8q/ZXSG3qWH523WU4DXivtO0Y7mdOwXHOBR8KtIboU6XcIpvd2cvAk6c6wLneMStdfiRErDQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756194600;
+	cv=none; b=EHaRA2n2vk9c6EZ7gkps7s88qNMVKvhKWw/+iRT6iwmLFLQ7Q59oIcYE92zyVKBSP/UvRVdzws+IuqGjcP9LGLc5zhIVbTryUxs7lSxU6yLV2cJuPzhcCXN1snscXfT2QbUpFyoz/yAi76S8H+F1Hxfo5RPzHJpAbAsKo4DUdxNutsBsut1aRWL7qL/oEl7+4fivR/PehusmIfTG6Ldjos6El+MtShvNsaE3PE2nWecGKDYSYwPcF0v+1miAjS9da+22hu5H0z/GMZbGZ8x1uCJ8mmJ6j/8lgST8IEFnYz6Gs1190+F1NgBZ059K6tJXw3XiR/mSo/yOVx+oLJS+Ag==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756194299; c=relaxed/relaxed;
-	bh=BDrWwBla1QrTDzNI7yFzBveJvJXRu3aajUikrOKKqUc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cjMP6T0O6wlEh+hDwKEMuyuND6hsjTUgiGCnbjxG97v1MzzSm7yz66qhCLagqViRBFI+IZFxamjnVF62KHobuMRTjllyB4OsCKaDgBpxKpp+72Gc0kbt8qtMnGAQHbeg68A7cX//usLzxjh9qytkQm+hBLlEMbteETc+LHdAkPavTzXVtde4F2NXyiB2Q86pAgEAqYhdniZSudIuW6vDIokZnToQA6m40Ao1HighaS7CDE3XvfCefAhFrJbnG4yDI1DhwgmJHcToe99CUluUp2jBUamvttn0A0/N9Vq2KWzQawBQ86vSsL8mbPVxo9O7AGMKpJtlA9O8KbJ7Tq4l/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Avgil2AX; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Avgil2AX; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1756194600; c=relaxed/relaxed;
+	bh=omHo6ZLcqBp9G5tipliM6gIq5sOTXuKwvnYqg08E1MY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Mebxtlgi5tPmHpAEljK/+NMmlM9ty2C850S1+MRXmttLaMX3nIf7jT4jh+EtcdQx7V9XEwi6jXGTlX/xnf9dfgzIc7Vbp/bjOujqaYe/hjA0lwXB/yyIfNQo9XTibZEnKKNwULmuqO+Z7SVJB57hVCBC/W9NGVr2CPvB9Luyut5Ti1AuLsFbe7gYQDdEDubLTJY5aEUxFz6hcWl4QqaVFxDQlwQW3hYUOtx3AtUnNyXdMgZnCn1E0uZdWC78rT/hkSAmBS3L98w9wXHVj/o6SUIJeECUjxgAWQT/sJm3ZnMn6gSaWo0YdBCd8Q89Ji9OKBzOz0m9C8Bx+fymU+PMMg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TxTNvc3M; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Avgil2AX;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Avgil2AX;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TxTNvc3M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cB07F0L6sz3dJV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 17:44:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756194290;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BDrWwBla1QrTDzNI7yFzBveJvJXRu3aajUikrOKKqUc=;
-	b=Avgil2AXMj/Y3XhyYlWzp32f0SMIEjaWBHc13KOiwultTMGDPXENjqeidDxDKHrmkEcva7
-	81tOpRprLYv34tbvBzYXh1l8bv4uIRfTDPv79gje72XO8u/xG66YEuTmJOzaIxYbKye3sz
-	7ewLqzl9/heqz7VkqeLo3ZzNzvTuhTc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1756194290;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BDrWwBla1QrTDzNI7yFzBveJvJXRu3aajUikrOKKqUc=;
-	b=Avgil2AXMj/Y3XhyYlWzp32f0SMIEjaWBHc13KOiwultTMGDPXENjqeidDxDKHrmkEcva7
-	81tOpRprLYv34tbvBzYXh1l8bv4uIRfTDPv79gje72XO8u/xG66YEuTmJOzaIxYbKye3sz
-	7ewLqzl9/heqz7VkqeLo3ZzNzvTuhTc=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-oYXpHa2BNAGGrtkNd9PfCA-1; Tue, 26 Aug 2025 03:44:48 -0400
-X-MC-Unique: oYXpHa2BNAGGrtkNd9PfCA-1
-X-Mimecast-MFC-AGG-ID: oYXpHa2BNAGGrtkNd9PfCA_1756194288
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-70d9a65c355so84805186d6.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 00:44:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756194288; x=1756799088;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BDrWwBla1QrTDzNI7yFzBveJvJXRu3aajUikrOKKqUc=;
-        b=HqI6BjqA+iMUyRQmzJKFQQx57xvs0y1p+R06jPIvHo6btH5x7AtA6r8HuB2OEzKBQb
-         kB6yocU7QAmpnWhSEx5KnjKX4pkZXkp4Q0KXdXuEps0a6Kvu3oblnPWAz8jhhIFo/u2U
-         LNXJfY+EfFjHCtfTi7hatk7vmRy7UWq56lWHBaQ/IXy9+PXQ32wmHKn42Idhr/j/jTC0
-         Guz1kT9mG+6GZmFrZfeEsZ2wrE7ZUfRUVvcuj18dhZpWk7jQPdPenJtuqDqadQMpWARS
-         vNW2HDrgYKUMtfIdSCFZtYjIWWCtaGfLWsNwleyOoss+lY8V7q16t+IddgBftvM+D0Xe
-         onCg==
-X-Forwarded-Encrypted: i=1; AJvYcCX3XG06AmqV2Ne6Z9BDbHirbmxeHCXhEeVsH/QFzkAfnPWRxnWK2D5qKUvb9CYhpVNUJB0ITjjUZ3c+9Ec=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw6Ayj+aQcQLsv5/FtgRj9xDol2GLdoVwF9fG3DuLI+xBYK3bKg
-	23TWp0Ltq38sHqWCAvbxy3oB2ZkMzHEKRg7rPskRJYg1aS45fszp+ZAsgo96r0jL2AJbHzuY8PV
-	jn0yxVZapBXPqZGKwyLP5nEAeu1u2MauP6z/brK/m0p/of9k4pZRc/3cwDHLe4Co99JU=
-X-Gm-Gg: ASbGncvi6PRo7rVyeNKpi5zHFSlffL41Zdcqn2PtwvXAONWaHJ5rPVTM+/ZRYln5PUg
-	cU86nnrMI04Y3UBW1/53qB823+RW408mi5vR4yWIny9/m0LZIKDCKAcYDDujeidBx2UuuLDNwbC
-	cV6POGQgGo45/tVC3jMSMFLJA+hFJkZQG/I4SEPh4GInXrkrVxDR1n9WHVrOLjcQosq8VgTlOWU
-	pwb2IHdD/GYBYkkz9WkxRCIZR4pCp97ctDJySUKra9ggLA1afzTailZYaMkdOk0bONHJ8dQNZqG
-	19o8SodFRIeKZ/4pLDEdFHzpWf3+ZWyd5Nfm8kjHcet0orD2IutuxTcGfi8jKVpfPThG7DycZ6r
-	De9RbpXu173c=
-X-Received: by 2002:a05:6214:acc:b0:70d:c4b3:9443 with SMTP id 6a1803df08f44-70dd59c1759mr4350916d6.31.1756194287964;
-        Tue, 26 Aug 2025 00:44:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGhzhn5+Yg77HtcZk5KiF7sJitx0Vz2y9+jpRKcTifYsTOJze6b9AG3bPnC6Fl6hT2Uuy6Org==
-X-Received: by 2002:a05:6214:acc:b0:70d:c4b3:9443 with SMTP id 6a1803df08f44-70dd59c1759mr4350726d6.31.1756194287545;
-        Tue, 26 Aug 2025 00:44:47 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:2712:7e10:4d59:d956:544f:d65c? ([2a0d:3344:2712:7e10:4d59:d956:544f:d65c])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-70da72d6a53sm60101456d6.72.2025.08.26.00.44.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 00:44:46 -0700 (PDT)
-Message-ID: <fcd38381-b5d8-412e-bc22-f1f5e4fc0b4a@redhat.com>
-Date: Tue, 26 Aug 2025 09:44:43 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cB0F35fBlz3dLT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 Aug 2025 17:49:59 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 130A744916;
+	Tue, 26 Aug 2025 07:49:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD05CC4CEF1;
+	Tue, 26 Aug 2025 07:49:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756194597;
+	bh=2e63oCSp9jCyFXDXSIVyTIDFCK5Wk+hRQYyzd57ISuk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=TxTNvc3MnU7OUnCe02BZWB8mN44ib8Cm7q8Qxedt0MPpN/GhIgzJIT4zwDBbCXbHS
+	 MzpYgeqGKBGwXWAFK5TENzS+VWhDq26YQDnOrhX+ixywmIbgrnbDtM6dWLN3sA++Sp
+	 2O0rXl4AIRhnVEENVv3nr5BdoPGRFqdIVapcVjdff9vE0I1t+injJrH4motXDKIqoN
+	 eX2mnHbkm9PD9lOYx2V31L9SkJ+HvefGMHMf1ITI8mKisCXvH+U6BuRjK3VrV/iWUh
+	 KbSE/LiBTK9CGS6ktN0sgqS257nCQZclahRA9jMzkvavj/farDHd6dVovWvUcK7xE7
+	 74OZb5ISvsCwg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EB0A4383BF70;
+	Tue, 26 Aug 2025 07:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,29 +60,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Content-Transfer-Encoding: 8bit
 Subject: Re: [PATCH net-next RESEND v4] ibmvnic: Increase max subcrq indirect
  entries with fallback
-To: Mingming Cao <mmc@linux.ibm.com>, netdev@vger.kernel.org
-Cc: horms@kernel.org, bjking1@linux.ibm.com, haren@linux.ibm.com,
- ricklind@linux.ibm.com, kuba@kernel.org, edumazet@google.com,
- linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175619460575.3698989.15196706539067195769.git-patchwork-notify@kernel.org>
+Date: Tue, 26 Aug 2025 07:50:05 +0000
 References: <20250821130215.97960-1-mmc@linux.ibm.com>
-From: Paolo Abeni <pabeni@redhat.com>
 In-Reply-To: <20250821130215.97960-1-mmc@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: BvUOwp4RJT9Le-_92dhJhgFCvLmskjSAFhFFTTKbVVI_1756194288
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+To: Mingming Cao <mmc@linux.ibm.com>
+Cc: netdev@vger.kernel.org, horms@kernel.org, bjking1@linux.ibm.com,
+ haren@linux.ibm.com, ricklind@linux.ibm.com, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
+ maddy@linux.ibm.com, mpe@ellerman.id.au
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 8/21/25 3:02 PM, Mingming Cao wrote:
+Hello:
+
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Thu, 21 Aug 2025 06:02:15 -0700 you wrote:
 > POWER8 support a maximum of 16 subcrq indirect descriptor entries per
 >  H_SEND_SUB_CRQ_INDIRECT call, while POWER9 and newer hypervisors
 >  support up to 128 entries. Increasing the max number of indirect
@@ -142,35 +101,16 @@ On 8/21/25 3:02 PM, Mingming Cao wrote:
 >    entries are not supported on POWER8), the driver will continue
 >    to drop batches, resulting in unnecessary packet loss.
 > 
-> In this patch:
-> Raise the default maximum indirect entries to 128 to improve ibmvnic
-> batching on morden platform. But also gracefully fall back to
-> 16 entries for Power 8 systems.
-> 
-> Since there is no VIO interface to query the hypervisor’s supported
-> limit, vnic handles send_subcrq_indirect() H_PARAMETER errors:
->  - On first H_PARAMETER failure, log the failure context
->  - Reduce max_indirect_entries to 16 and allow the single batch to drop.
->  - Subsequent calls automatically use the correct lower limit,
->     avoiding repeated drops.
-> 
-> The goal is to  optimizes performance on modern systems while handles
-> falling back for older POWER8 hypervisors.
-> 
-> Performance shows 40% improvements with MTU (1500) on largework load.
-> 
-> Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
-> Reviewed-by: Brian King <bjking1@linux.ibm.com>
-> Reviewed-by: Haren Myneni <haren@linux.ibm.com>
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> --------------------------------------
-> Changes since v3:
-> Link to v3: https://www.spinics.net/lists/netdev/msg1112828.html
+> [...]
 
-For future memory: please use lore links instead.
+Here is the summary with links:
+  - [net-next,RESEND,v4] ibmvnic: Increase max subcrq indirect entries with fallback
+    https://git.kernel.org/netdev/net-next/c/3c14917953a5
 
-Thanks,
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Paolo
 
 
