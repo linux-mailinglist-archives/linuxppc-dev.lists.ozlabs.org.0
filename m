@@ -1,64 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-11398-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11399-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6014FB38A90
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 21:57:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB81FB38E87
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 00:36:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBwL33Qvrz305n;
-	Thu, 28 Aug 2025 05:57:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cBzs85xG0z2xQ2;
+	Thu, 28 Aug 2025 08:36:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756324651;
-	cv=none; b=S+SWZt7BDoGBd8se2kcB4ZQDCE3L1en60BwqXc9fo7zd7nd6bEoRTxNztmpaKc3CN4aBlgXCmaDjx8errs59o/8pkNseN+zY+1YXnt6nPCXPGonO9nME6egqenWdxkKVYahBhF7DmJEVqlUPEyn67VVJlT9MLjvUYbcRRUIh4k36lfHTnfUO3LMzrUqLkx7gB67Md7SZxxm+ixukYCMy9KAcg9StgF/jWYaI4gSDUnTje/VOO+F2Wr9vmS8JjhpgI7JaSe5ZTiYLKdL0FsOF6xZ9+kFTCe6PtThQHWwMY10vd5MwcZuvghy8vI0icQSupW8HsBmO5VfUSwSwH7gK9w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756334172;
+	cv=none; b=GkxfleTJN3foYdWz2c+v1gfkh4raGfY4hbjYKB9oODWJtLsu64Q95FyYF6zzFgUvH42js4yqFdHELfbrq+yALt3oXtv65z2suRSCHayM0GyqFbRkiaktaomVG9/UbQJRNBJQ95euEjeBVzp8whnTUrzARTUYNI3p9e27pwM1Ik/F3JAuzhipEMbTGiAjtzTLhj0DUZiKU60xZqkVSFqZLcbgims2Ck8A60tW2NYqqgWvPyv/q0jZ3YenUz2rONjvTpFv9IyWQ6qlYehkNRZvciMq7wT+YYkG7naI3dF1KLVru4k1XO8I7PHqUYVchpkexC99Z9lXB4WYGOuWFL+/NA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756324651; c=relaxed/relaxed;
-	bh=qpETWSDCwSSfcjhsMmWO6pRDlg6Tn8yNvf0Nb8QIhK8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nhD6PQrFZTxj6iWxw64T5DprQYvunuzCTboECRItR6kCZd6ns2zHM2dL/55axS+a/A1U3itcYIcUbg8ODgOUB5wlmnAIUzDXyy1ChrN69UE80exjiqByDl+GdxYe57LshSd76W+Mkw2gSEzrDqLT1ntlrNjRVcWuUBqnyPN5ftCdKVFCQVNlolJEmJ6xPuGZ652X8bVjhFcZV8eHk40zg9gDCTm9PZn/72Zs66X80rozv3VoaHxZYVVNGcJV2lzzcw6HDY4T3l6ZRniy7cSK5jPWxO8arJYVpkxpQrrW+/BkoCmPqQZIaqExqi5J+qo8hsQA2VyPIy7mLLZbtWRggQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Id3YGZXU; dkim-atps=neutral; spf=none (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1756334172; c=relaxed/relaxed;
+	bh=/e2nybfKfAGaQ6hreBOZaTGM4QBi+hL1kbbt5AczH3Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=VvphSUy6AofKmKmwXz2IRYkBxt3yy29MvCeOP7mgUXWfEtqxj6HYDBT7XFdvH8kTfde8egMijj9ySI288Gwx3+KnMUuPHcqXDNYMNw6Xd6A+B5dwc6s4HH5U7QKdHAJN4El2aPpAR3q1NMn1LuqPtTFWfbTTNwxKVTcz6r6oUo5L4zz/g3E+2fzmb23MoT+9i2iAnzS9QgwP1I4qzC+Hm4//pV1dt6jU/pMBZNneAYfu2x/h4BAH18DPkcms1WgPoB+Na9rqOplb9OZYeALDRoBteFQT5oxEP9p3DplgQHDG9iHOZ6hAmu3p6P8MXMkLq2YrHRYxyS1QtebxqN50bQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DUpxeAZt; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Id3YGZXU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DUpxeAZt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBwL10HlBz2ySY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 05:57:27 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756324649; x=1787860649;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=dN/0LGTTO2mIMuv5CAHk8QNgW0R0zS/JdxacWvuYn5s=;
-  b=Id3YGZXUgV73+xpvmmrtU1JLlQBN1EkYWxWcHlNJ1LvMBEnD1QNcvl8w
-   PlACseUMfKx8ODmRdVBoE1oy9Dpj/VeCQX1ME/VlAg41VMCXyzpnLspJa
-   nIutxpdTUoSYyo7aCixONtfnKX2rmZ7eE3fPrcBOCpdoypJWI6LDBSkSj
-   UsHcZEKevkbpjsMrfojtXn1DWXCv3JfEmI7SFGo3NVjDJl6CA+/YcVm2+
-   c3TEl5+ZN/+WTOjVvL8iO1E6jeYwWdTI6WYTVUAdnELi1fmVglQMoMTko
-   V90ZV16lqPVXo1tiUl1sj+TIVPbNxBYuzhNiVRXuXD4QtP2fWpKiPNJ9e
-   w==;
-X-CSE-ConnectionGUID: 5aniK1fHSYCgG6X6yy/dPg==
-X-CSE-MsgGUID: NeKFWzfNQROmcKPWhn+gow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="62229477"
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="62229477"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 12:57:24 -0700
-X-CSE-ConnectionGUID: s2dnWLKURQGgaASzRZRyYQ==
-X-CSE-MsgGUID: MvZNH5TnRHeDmqnNozbKUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="200820932"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 12:57:23 -0700
-Received: from [10.124.223.227] (unknown [10.124.223.227])
-	by linux.intel.com (Postfix) with ESMTP id 8CC2820B571C;
-	Wed, 27 Aug 2025 12:57:22 -0700 (PDT)
-Message-ID: <64a661bd-cb64-4850-90d8-f34de9457173@linux.intel.com>
-Date: Wed, 27 Aug 2025 12:56:41 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBzs74KzSz2xQ1
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 08:36:11 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8F43E4433D;
+	Wed, 27 Aug 2025 22:36:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3EBC4CEEB;
+	Wed, 27 Aug 2025 22:36:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756334168;
+	bh=SuvtG9zPU1paS6zdtAQLH1EmQzS92Y488uepGCslfWI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=DUpxeAZt3sd2SF+CHF9cOy/FaqwBpkfO3QmQLN4WtjqYJww1JgdN330EJgtOo7awf
+	 xyWVC65Ik9s82mLjd16u/fsvSuu23dv4M1YBxCe8bO6CXWEgzoRLhpV3WDHPmP25aY
+	 MN84rM34MoHWDkORX0/iiQ1n3JoUADeR5wXKbBAovlj1sAMI5uZeJDeOfTYi0lz+zn
+	 V5/DUusNTXr35xQCbizoSyjKjZgXsropAj0Da/2jC4EKIm5VEVn251opw5aNwUVvou
+	 RRsuPYOe7vPF9M/TvmOxlhhB1X2T3hVX9lRk7L3x0iNPNnhqbMmQokcb4oci+E0njx
+	 QPfbX1CvuOzSQ==
+Date: Wed, 27 Aug 2025 17:36:06 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: Andreas Larsson <andreas@gaisler.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-pci@vger.kernel.org, sparclinux@vger.kernel.org,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Yinghai Lu <yinghai@kernel.org>,
+	Igor Mammedov <imammedo@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	linux-kernel@vger.kernel.org,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 00/24] PCI: Bridge window selection improvements
+Message-ID: <20250827223606.GA915856@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,86 +78,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] PCI/AER: Support errors introduced by PCIe r6.0
-To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>
-Cc: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org
-References: <21f1875b18d4078c99353378f37dcd6b994f6d4e.1756301211.git.lukas@wunner.de>
-Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <21f1875b18d4078c99353378f37dcd6b994f6d4e.1756301211.git.lukas@wunner.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250822145605.18172-1-ilpo.jarvinen@linux.intel.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Fri, Aug 22, 2025 at 05:55:41PM +0300, Ilpo Järvinen wrote:
+> This series is based on top of the three resource fitting and
+> assignment algorithm fixes (v3).
+> 
+> PCI resource fitting and assignment code needs to find the bridge
+> window a resource belongs to in multiple places, yet, no common
+> function for that exists. Thus, each site has its own version of
+> the decision, each with their own corner cases, misbehaviors, and
+> some resulting in complex interfaces between internal functions.
+> ...
 
-On 8/27/25 6:41 AM, Lukas Wunner wrote:
-> PCIe r6.0 defined five additional errors in the Uncorrectable Error
-> Status, Mask and Severity Registers (PCIe r7.0 sec 7.8.4.2ff).
+> I've tried to look out for any trouble that code under arch/ could
+> cause after the flags start to behave differently and therefore ended
+> up consolidating arch/ code to use pci_enable_resources(). My
+> impression is that strictly speaking only the MIPS code would break
+> similar to PCI core's copy of pci_enable_resources(), the others were
+> much more lax in checking so they'd likely keep working but
+> consolidation seemed still the best approach there as the enable checks
+> seemed diverging for no apparent reason.
+> ...
 
-is 2ff a typo ?
+>   m68k/PCI: Use pci_enable_resources() in pcibios_enable_device()
+>   sparc/PCI: Remove pcibios_enable_device() as they do nothing extra
+>   MIPS: PCI: Use pci_enable_resources()
+> ...
 
->
-> lspci has been supporting them since commit 144b0911cc0b ("ls-ecaps:
-> extend decode support for more fields for AER CE and UE status"):
->
-> https://git.kernel.org/pub/scm/utils/pciutils/pciutils.git/commit/?id=144b0911cc0b
->
-> Amend the AER driver to recognize them as well, instead of logging them as
-> "Unknown Error Bit".
->
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> Cc: stable@vger.kernel.org
-> ---
+>  arch/m68k/kernel/pcibios.c   |  39 +-
+>  arch/mips/pci/pci-legacy.c   |  38 +-
+>  arch/sparc/kernel/leon_pci.c |  27 --
+>  arch/sparc/kernel/pci.c      |  27 --
+>  arch/sparc/kernel/pcic.c     |  27 --
+> ...
 
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+I love the fact that you're doing so much cleanup.  Thanks for all the
+work in this!
 
-> Last amendment of aer_uncorrectable_error_string[] was in 2019 for an
-> error introduced in PCIe r3.1, see commit 6458b438ebc1 ("PCI/AER: Add
-> PoisonTLPBlocked to Uncorrectable error counters").
->
->   drivers/pci/pcie/aer.c | 12 ++++++------
->   1 file changed, 6 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index e286c19..15ed541 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -43,7 +43,7 @@
->   #define AER_ERROR_SOURCES_MAX		128
->   
->   #define AER_MAX_TYPEOF_COR_ERRS		16	/* as per PCI_ERR_COR_STATUS */
-> -#define AER_MAX_TYPEOF_UNCOR_ERRS	27	/* as per PCI_ERR_UNCOR_STATUS*/
-> +#define AER_MAX_TYPEOF_UNCOR_ERRS	32	/* as per PCI_ERR_UNCOR_STATUS*/
->   
->   struct aer_err_source {
->   	u32 status;			/* PCI_ERR_ROOT_STATUS */
-> @@ -525,11 +525,11 @@ void pci_aer_exit(struct pci_dev *dev)
->   	"AtomicOpBlocked",		/* Bit Position 24	*/
->   	"TLPBlockedErr",		/* Bit Position 25	*/
->   	"PoisonTLPBlocked",		/* Bit Position 26	*/
-> -	NULL,				/* Bit Position 27	*/
-> -	NULL,				/* Bit Position 28	*/
-> -	NULL,				/* Bit Position 29	*/
-> -	NULL,				/* Bit Position 30	*/
-> -	NULL,				/* Bit Position 31	*/
-> +	"DMWrReqBlocked",		/* Bit Position 27	*/
-> +	"IDECheck",			/* Bit Position 28	*/
-> +	"MisIDETLP",			/* Bit Position 29	*/
-> +	"PCRC_CHECK",			/* Bit Position 30	*/
-> +	"TLPXlatBlocked",		/* Bit Position 31	*/
->   };
->   
->   static const char *aer_agent_string[] = {
+Obviously all this code is quite sensitive, so I put it on
+pci/resource to get more exposure in -next.  If it turns out that we
+trip over things or just don't feel comfortable yet for v6.18, we can
+always defer this part until the next cycle.
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+I will also watch for acks from the m68k, mips, and sparc maintainers
+for those pieces.
 
+Bjorn
 
