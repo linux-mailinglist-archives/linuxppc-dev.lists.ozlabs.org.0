@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-11353-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11354-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257E1B378BC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 05:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6B8B378BE
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 05:46:13 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBVms4Thvz3cYL;
-	Wed, 27 Aug 2025 13:45:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cBVn16080z3cZt;
+	Wed, 27 Aug 2025 13:45:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756262109;
-	cv=none; b=MvB/MVTNSluTS0GbzWli4YeUjX1WXVLhjjjKQfZ5iqmKYk2hEvmtG3VsQng2ufcvVFZxJv5816sek/BNOzan5HMifK9qjf345TQVq6zTIrPDhTVz7N6RUPOz3lmnseMXXVMY1kD+WrXkoHS8IsSdU1Ov53CQPf0V4odhki0rjDtRidXiqr/RExvP+Ytp17DweKJ9GVejg26bFrpamBGYa24BQcQNmJ5Rx8KDKQEWpUmSwDbyanOgwlHEfG0UVG6RzYXTP4B2CZO+l+NTk7LSYAYCXZ+J0TlWqU+vAAmatuCuADFqVtBIAonWam3b1Gc8ce9sg/dF/60JONnPd2Vm4A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756262111;
+	cv=none; b=KOm+uETOjyOqJ35Y6KgQYSJJhftuSrX+AzW2FsLWAUNl2YmpBxddeZf9gDvJ17jf62PpwxGPJhl2Bjk5d969jfw9OmSGukoMKFxX/XoasoyS8cvqmKPlJdhUOTC+GI6OYo0hsxxvUxR0BSN0SWcDZgURTjgqlKFZEHc1JVmr+7TCT4faZY2Z+wnXcfilMYBpDFrwou+ZYV2HqDkKBJzXm2LD0RUIgpe4/4jt9Kqor2bcQoKbk9H6bElA0ZopUt8GgH+8SZrn0a8RJjBdw5SXm3/9p2TMIGC/wonnkgurUTQ8K6DIKbkiD/noyexP7mwEnlIQ8ZkrkTw6mpp3pKdZMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756262109; c=relaxed/relaxed;
-	bh=9ZjdTtqvCys+15DqtY1sBkwk8yAVD21YKWdYeFE/oxs=;
+	t=1756262111; c=relaxed/relaxed;
+	bh=qI/pWWHn+Cmm3IAiINzaDgZFPYfZ84bYukFfz5gPc70=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oQe8ANU9mymhVwvsCAuRIpMXkLFKpYyq5D+zzs5QG26Ff58dI9fXDnwJRqwClye7gxk4dFAMWy8VrHstgjkbVs8vo4b5nzsdTj2Lf0sdG4osyN57eBvRuuuZCuVk9U5+0umjvnNCdS6Psnv9iMQXNnF3lQphkaSx3A9bMu0IsogSJ9kERtws0cX6m3j205KPlP8FCF/aOf7ckydFhFf1yid4MJmjCw/3AC6Wd9b7z3amRIB/H7WaFbP7KuAFX99rfTFgHZyl1HkeHkgn4ZohAhel5AX05i4T0pRGQdjrNO5RqQbLKeaj6c6eGmplCL75HbtQfhM3nf5NEoFKT8iAQQ==
+	 MIME-Version; b=bnFCSZbUB3e8D9cxvXUYTGZ/I7bmAuA0FSj6gbtItPIHhlQC0wqLrP1WFBE1kvJtRBpGxRcXj3GkAqIn6zqorShZCnf0btFMBqa+mLayz/YkGozRPWKZLKLRmBQTu+JqXL8uVtbsrkONmLqNAy6QHcPcUPoApWyScajGtenIi/DywGYbUtZdK90MO/m4i4fhxrS5GS9c7MF/c7i4+BeIMiUUbf33uGaS2c9PePGFq63OON4oOFWOUmdNJuzTrDq0btvJ8aRnP64dwNKa/kclsnCsm30VH7qQNky5a0NQeyX/JoHgcGIvu7HmMkdjujNGnWOT2FEoMLD1dlUE/Ec6yw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
@@ -23,32 +23,32 @@ Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBTCH6nrXz2xc8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Aug 2025 12:35:07 +1000 (AEST)
-X-UUID: 47777c0282ee11f0b29709d653e92f7d-20250827
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBTCL4mp5z2xc8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Aug 2025 12:35:10 +1000 (AEST)
+X-UUID: 494816fe82ee11f0b29709d653e92f7d-20250827
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:199cecf5-7f01-4d90-bcfb-9944cd47b8c1,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:f092454a1cef70d4b47ef8bf1194cbca,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
+X-CID-O-INFO: VERSION:1.1.45,REQID:17f27ccf-aa3b-47ba-9229-8fb68e226aa1,IP:0,U
+	RL:0,TC:0,Content:26,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:26
+X-CID-META: VersionHash:6493067,CLOUDID:f2398c8c5a1aca92091435c050f04d6d,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:4|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 47777c0282ee11f0b29709d653e92f7d-20250827
+X-UUID: 494816fe82ee11f0b29709d653e92f7d-20250827
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 2138779548; Wed, 27 Aug 2025 10:33:56 +0800
+	with ESMTP id 586798460; Wed, 27 Aug 2025 10:33:59 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id BBC82E008FAB;
-	Wed, 27 Aug 2025 10:33:52 +0800 (CST)
-X-ns-mid: postfix-68AE6E90-537935210
+	by mail.kylinos.cn (NSMail) with SMTP id B78F2E008FAB;
+	Wed, 27 Aug 2025 10:33:58 +0800 (CST)
+X-ns-mid: postfix-68AE6E96-41491213
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 4A0FFE008FAF;
-	Wed, 27 Aug 2025 10:33:47 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id C4296E008FAC;
+	Wed, 27 Aug 2025 10:33:52 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -115,9 +115,9 @@ Cc: zhenglifeng <zhenglifeng1@huawei.com>,
 	linux-mediatek@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v2 06/18] cpufreq: intel_pstate: Use __free(put_cpufreq_policy) for policy reference
-Date: Wed, 27 Aug 2025 10:31:50 +0800
-Message-Id: <20250827023202.10310-7-zhangzihuan@kylinos.cn>
+Subject: [PATCH v2 07/18] cpufreq: longhaul: Use __free(put_cpufreq_policy) for policy reference
+Date: Wed, 27 Aug 2025 10:31:51 +0800
+Message-Id: <20250827023202.10310-8-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
 References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
@@ -147,36 +147,31 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/cpufreq/intel_pstate.c | 3 +--
+ drivers/cpufreq/longhaul.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstat=
-e.c
-index f366d35c5840..4e7e2990e9a6 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -1698,19 +1698,18 @@ static ssize_t store_no_turbo(struct kobject *a, =
-struct kobj_attribute *b,
- static void update_qos_request(enum freq_qos_req_type type)
+diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
+index ba0e08c8486a..ae5596919671 100644
+--- a/drivers/cpufreq/longhaul.c
++++ b/drivers/cpufreq/longhaul.c
+@@ -950,7 +950,7 @@ static int __init longhaul_init(void)
+=20
+ static void __exit longhaul_exit(void)
  {
- 	struct freq_qos_request *req;
--	struct cpufreq_policy *policy;
+-	struct cpufreq_policy *policy =3D cpufreq_cpu_get(0);
++	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
+u_get(0);
  	int i;
 =20
- 	for_each_possible_cpu(i) {
- 		struct cpudata *cpu =3D all_cpu_data[i];
- 		unsigned int freq, perf_pct;
-+		struct cpufreq_policy *policy __free(put_cpufreq_policy);
+ 	for (i =3D 0; i < numscales; i++) {
+@@ -968,7 +968,6 @@ static void __exit longhaul_exit(void)
+ 		}
+ 	}
 =20
- 		policy =3D cpufreq_cpu_get(i);
- 		if (!policy)
- 			continue;
-=20
- 		req =3D policy->driver_data;
--		cpufreq_cpu_put(policy);
-=20
- 		if (!req)
- 			continue;
+-	cpufreq_cpu_put(policy);
+ 	cpufreq_unregister_driver(&longhaul_driver);
+ 	kfree(longhaul_table);
+ }
 --=20
 2.25.1
 
