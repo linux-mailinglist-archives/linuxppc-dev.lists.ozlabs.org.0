@@ -1,43 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-11370-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11371-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE98B37CE9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 10:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7AC8B37D76
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 10:19:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBcZJ0zLlz3bb2;
-	Wed, 27 Aug 2025 18:07:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cBcrV2GRdz3bV6;
+	Wed, 27 Aug 2025 18:19:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756282024;
-	cv=none; b=KcuVrhEUA3XuC2AewaZqu6DmMnEwdziLXpTxIdS6v5fwem1l99Tthe/tqG3MUZviAAztpQu48n6jMtlIG5uwHxk8B2JTS8RT+qCSpWbPl/CVKs0fn4rbLnO7KZV3XEMfMyyseNHS2z1OkR3XwoV7T3WLhQ50gkCklJHihWDkWtgLfhjI+Jm1BJljCyQ829I0TAZ/DSzpfB4ZYo5pXkjMdjabzjuhzhMbVT2IW2siPr7eSTbLqkxVDj7uzllvN0Am9+E5dNTh5i7Z+FSYF5qcv0V38CpGlXfyZGFZK2Brq8Mprmbq1sjgE+cas8E4pnj8xUm6lKU+B3cjkI9bnURCIg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756282762;
+	cv=none; b=ifBEjnFxJWWpn6vp1svVxNj7H6LaMhVZ9/WtVEMDI5hNKpBV3NAvsRiEIEbMaERcw4eU9WqaMgTJPf8C8DQ8iyWwZUdWVJzBfeMJ2c+H7b3+LeA4tafjW8AphVvxrr06FIRWJeMsk7gxmoi7S+HqGraufmGB10rSpu99r3lgp73myy18S7uziS1iA2ACUH3TQfJscJ+7wAFd6FwA+IFVzKaGnqYRdqBVdGyTypegoZyDeJCICsJ8z4KfuiNaw4r7DDl+kGQ6XPa+GqRjGqH5t1/B+ijU2Rco9miFqLMgXpz5IUz9C0+aKBIP6V9R/B1BSeUd6AXjKpnMtLoO1Ffdaw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756282024; c=relaxed/relaxed;
-	bh=yB/U1vduxZJMUc4C3XcbfsTNrbRms+v/21L2Hk9RIPQ=;
+	t=1756282762; c=relaxed/relaxed;
+	bh=H/ZKN4AXnznjjxz4sALCwXVcm7RdFnLfhCOTExWdSXY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V1z4W4JN2r+plRdX3TcKwTBPYudlRAAvD5WQc3v8rQGm3hDhf4klci5JDkUqlJGX3expic3x6yadaVNnKDtwnZ/SuZy24MHF7oYSrO1qVmapi2XTIVZPCtOYZ6SvFYN77HqJOa3CLDzRyjU3ctKuD8rzVw45B8KktqgTwzpwz4hHpN6chk8fvrzEZGt7q56HDv6GFYi3ucqudjZi/jpg0ZZi3orka2P6dcT7w4LMyRZ3C4YbcWK2fLIj0xWeuCvZH7ZcAjNwJS+t9w7EP1CJmsb1QLZL4nNZp//yij5Y+jfc9ouIoLNmYvSNym89kuoO+IUQEAwSSIVF9BH3Vwzx3g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=leo.yan@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=cd5g773mi1O9YLCnjBIgbiC1XFzJGzfVbNLHKFrDPy1ICOqK/4zijFrfBEJtVXgIh2PmcyaZdI3G8nTA1hrVbGt15AARMQnQmGcHqXtMeb1jCYL5TORdv7ycHzV7wOFgCzkLxLmqoiyiSVN4XtNEdoa9oSYYKk4RP3PAMhy+qxL9gFr+ptwRgVctf27ZELXCCl2HJ+TQAE6OrChMAl8RHwowagGrf9EcK3DQRMaknCCXrgqgkX3q34F9FT63Tz3uWwd/jCOP9qfuaOC08IQcFMgAkRryCDHvWYN/nHRRtVkZ8ZTep9Q2cqqkR0eBm/VbD8Ntvowcn+DtDXtPnkGH+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=leo.yan@arm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBcZH4TPbz30WF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Aug 2025 18:07:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cBcrT2x0wz30WF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Aug 2025 18:19:20 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 35FE122FC;
-	Wed, 27 Aug 2025 01:06:24 -0700 (PDT)
-Received: from localhost (e132581.arm.com [10.1.196.87])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B8693F694;
-	Wed, 27 Aug 2025 01:06:32 -0700 (PDT)
-Date: Wed, 27 Aug 2025 09:06:30 +0100
-From: Leo Yan <leo.yan@arm.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
-	mark.rutland@arm.com, acme@kernel.org, namhyung@kernel.org,
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 875DD1515;
+	Wed, 27 Aug 2025 01:18:41 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C8D1A3F694;
+	Wed, 27 Aug 2025 01:18:41 -0700 (PDT)
+Date: Wed, 27 Aug 2025 09:18:38 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Ian Rogers <irogers@google.com>
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>, mingo@redhat.com,
+	will@kernel.org, acme@kernel.org, namhyung@kernel.org,
 	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-	irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
+	adrian.hunter@intel.com, kan.liang@linux.intel.com,
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
 	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
 	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
 	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
@@ -50,12 +50,13 @@ Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
 	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
 	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
 	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 16/19] perf: Introduce positive capability for sampling
-Message-ID: <20250827080630.GC745921@e132581.arm.com>
+Subject: Re: [PATCH 12/19] perf: Ignore event state for group validation
+Message-ID: <aK6_XrA_OaLnoFkr@J2N7QTR9R3>
 References: <cover.1755096883.git.robin.murphy@arm.com>
- <ae81cb65b38555c628e395cce67ac6c7eaafdd23.1755096883.git.robin.murphy@arm.com>
- <20250826131124.GB745921@e132581.arm.com>
- <983df32a-ba74-421d-bc20-06e778b4d2c9@arm.com>
+ <d6cda4e2999aba5794c8178f043c91068fa8080c.1755096883.git.robin.murphy@arm.com>
+ <20250826130329.GX4067720@noisy.programming.kicks-ass.net>
+ <6080e45d-032e-48c2-8efc-3d7e5734d705@arm.com>
+ <CAP-5=fXF2x3hW4Sk+A362T-50cBbw6HVd7KY+QEUjFwT+JL37Q@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,46 +70,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <983df32a-ba74-421d-bc20-06e778b4d2c9@arm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAP-5=fXF2x3hW4Sk+A362T-50cBbw6HVd7KY+QEUjFwT+JL37Q@mail.gmail.com>
 X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 26, 2025 at 04:53:51PM +0100, Robin Murphy wrote:
-
-[...]
-
-> > Genearlly, AUX events generate interrupts based on AUX ring buffer
-> > watermark but not the period. Seems to me, it is correct to set the
-> > PERF_PMU_CAP_SAMPLING flag for them.
+On Tue, Aug 26, 2025 at 11:48:48AM -0700, Ian Rogers wrote:
+> On Tue, Aug 26, 2025 at 8:32 AM Robin Murphy <robin.murphy@arm.com> wrote:
+> >
+> > On 2025-08-26 2:03 pm, Peter Zijlstra wrote:
+> > > On Wed, Aug 13, 2025 at 06:01:04PM +0100, Robin Murphy wrote:
+> > >> It may have been different long ago, but today it seems wrong for these
+> > >> drivers to skip counting disabled sibling events in group validation,
+> > >> given that perf_event_enable() could make them schedulable again, and
+> > >> thus increase the effective size of the group later. Conversely, if a
+> > >> sibling event is truly dead then it stands to reason that the whole
+> > >> group is dead, so it's not worth going to any special effort to try to
+> > >> squeeze in a new event that's never going to run anyway. Thus, we can
+> > >> simply remove all these checks.
+> > >
+> > > So currently you can do sort of a manual event rotation inside an
+> > > over-sized group and have it work.
+> > >
+> > > I'm not sure if anybody actually does this, but its possible.
+> > >
+> > > Eg. on a PMU that supports only 4 counters, create a group of 5 and
+> > > periodically cycle which of the 5 events is off.
 > 
-> This cap is given to drivers which handle event->attr.sample_period and call
-> perf_event_overflow() - or in a few rare cases, perf_output_sample()
-> directly - to do something meaningful with it, since the intent is to convey
-> "I properly handle events for which is_sampling_event() is true". My
-> understanding is that aux events are something else entirely, but I'm happy
-> to be corrected.
+> I'm not sure this is true, I thought this would fail in the
+> perf_event_open when adding the 5th event and there being insufficient
+> counters for the group.
 
-If the discussion is based only on this patch, my understanding is
-that the PERF_PMU_CAP_SAMPLING flag replaces the
-PERF_PMU_CAP_NO_INTERRUPT flag for checking whether a PMU event needs
-to be re-enabled in perf_adjust_freq_unthr_context().
+We're talking specifically about cases where the logic in a pmu's
+pmu::event_init() callback doesn't count events in specific states, and
+hence the 5th even doesn't get rejected when it is initialised.
 
-AUX events can trigger a large number of interrupts under certain
-conditions (e.g., if we set a very small watermark). This is why I
-conclude that we need to set the PERF_PMU_CAP_SAMPLING flag to ensure
-that AUX events are re-enabled properly after throttling (see
-perf_adjust_freq_unthr_events()).
+For example, in arch/x86/events/core.c, validate_group() uses
+collect_events(), which has:
 
-> Otherwise, perhaps this suggests it deserves to be named a little more
-> specifically for clarity, maybe PERF_CAP_SAMPLING_EVENTS?
+	for_each_sibling_event(event, leader) {
+		if (!is_x86_event(event) || event->state <= PERF_EVENT_STATE_OFF)
+			continue;
 
-Seems to me, the naming is not critical. If without setting the
-PERF_PMU_CAP_SAMPLING flag, AUX events might lose chance to be
-re-enabled after throttling.
+		if (collect_event(cpuc, event, max_count, n))
+			return -EINVAL;
 
-Thanks,
-Leo
+		n++;
+	}
+
+... and so where an event's state is <= PERF_EVENT_STATE_OFF at init
+time, that event is not counted to see if it fits into HW counters.
+
+Mark.
 
