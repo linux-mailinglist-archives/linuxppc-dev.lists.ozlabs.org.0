@@ -1,117 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-11392-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11394-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018E9B388AC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 19:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF796B38959
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 20:16:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBs515Vxxz30WF;
-	Thu, 28 Aug 2025 03:31:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cBt5337jfz2ySY;
+	Thu, 28 Aug 2025 04:16:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.9
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756315861;
-	cv=fail; b=kPeFxOUZ+89p/3HaqnCiNAFP63lf+7B9gmm2MPSfqd6zTSv4Ztgp++9RLRb1461gK4Zn0XO8OpLwRghNeCuWSc/azAP5jD99iSgZNg6F5RnX4HseB3QLWsa5IKIv3SbzFuiNQzmSz79Rl8y61Okc/Mq8Gf8LgVJpdtZIIZ5JUuLptiST9ghummS3z1kFnnAvg+COYJtN0mKXeinaqR7QpKD7sraQW1wlKRoP0tYjZIorIqcMaP95BOnASTsFS4YH/FFi7W+sOJ+KJluxo6nCP+QVGkqkslKAd5mlfB0OaF7/GWaMZ64p+a9Q39MkA/NWVgdWa2fySqGMDh5+YaIB4g==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756315861; c=relaxed/relaxed;
-	bh=ZbEFnCckFnjdfMGwiBcSEadmdV/F3CKV+IOXDc6xOGY=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RSpesKg98GvaE6kSDVF8qdvnHI4HcYDTldMq4MjVIsA+aRxqlmHs8ubkOjY/TKTqE8Re7lIyspH066JnxCDAABDKwg85ncGf6Az6rFheT9wXAicfOAtyspx2KnEvYcPQERzChh4Fzy0yv39P+0cQfVYRCFcvHYoxaQfyTTENoUpOO496aaiPSmUpSQ9Z46o9EX9ZjuRz31BGIBjD4jdGzlKbYEtq4xiA1Y0YIvOyqq/M1x9uGuyyeOfe5zGy/98utDeZ6EQ4KWQ2JeuwSysfewo6Dvo71UZLV6K8KubL771hLMhp73dpcCwtknaH/d+Se98tX8rmEKQXEwFW5PUQ2A==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cTIH5f5N; dkim-atps=neutral; spf=pass (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756318567;
+	cv=none; b=iXbI4g2uLEy2Rx52Z5+4KYwwHCAfwN9o0O0D6H+qTQxlg+3ArTMQc5rh97xPYvhZzMDqes6iEwZqs6onceQMOnEpFzZHAJOmqi4xD27JI+11N/svq14RP0PjafZiJ2iixwQgxZjxOersZ1erbjOv3kfdJuH3Nl30YfZF5ziyEkpxSi5GhmKZFcUhKm59l0DODzsag1VyaJCPAThqCipGb5NfM1+cJoauF1sSp3spojJENhn8JI+tpP3eRP3lBJAFYuppOaz6TNE3dTz0TVoeOLPBPdyufbk5dOzuX/3GmqJob9XEAYR0qvBdAmhYLrqnPJKdbEPRBtl3Ten4WUy94Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1756318567; c=relaxed/relaxed;
+	bh=1/1WqEc6uXIlT/jg/aHRl6zmLA43K3i1GN0QMmzdo+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=auNouGdQi+0G3jjgucm72p3uMdF2WOa/VLrDykNfKE+B/NgYFJVSRF1ONrB9NhTTp5MSYFcP5oo5Q4uX5xQL78lOUgVKJ0j4DozuOgIolZqePr1cT2JKaizMQAuOwCaILebk/XVtIaaI2uE+NVCt+z5z3xuiQ5pbuM4Rxel/M62VryHVpZnR4xir6rrt2rPzGVQE5Py1j5E6wjDIhp090u2vBMYS4uHuyGqylxqHBW4Ac14wFrIZGKiEADEIMMhVPyNYYdFg9tYO6Mq1jqrtGxGGWj8/e6n9O0d6FVli/O/pSeVTEEofGXOtIbt4B68yEkWHQ9J3Yvs1KWVV1xWj+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UMK0d/Zj; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cTIH5f5N;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UMK0d/Zj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.9; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBs505QDVz2yDH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 03:31:00 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756315861; x=1787851861;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=+LBFgEJL2R1W7sNWDnD2+L7sooD6O3N1OFdmGz3froE=;
-  b=cTIH5f5NRbGMpZGeAXN9cm3lKo3gs9e1XVNAIj+/jyvsPyutC4MgfDg0
-   sb2u2uCdLWpk0lrEyFZVi68LxtT4whT/baBHjNWWHFCpkBoNT3UUkDHq9
-   EBRYfDCCk8wfU1tazHGmJu9X8k1XiZjjUBloKnSMLjQx8K1xqAtVM/R88
-   N0rxSecNGTl2ALM/JgZSy9nlwqwboFyYE+V6MeAdL/VEBW+5YzCUWfcRJ
-   DgFxhIr3G14B7qhbnR9DeRqU3WvXWO7Jac3p1FdXmFnPdx6VPZiiL8EoU
-   wb/Co55rAq4VlF1RewPRJxF0m7Ir9+ibRdRpi1FUULzLwqGlwSPpPT0wV
-   Q==;
-X-CSE-ConnectionGUID: gTmdfUo7SpOL2JbXiblJnQ==
-X-CSE-MsgGUID: m4+CQClJQd+XI1zSOprNmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="69286426"
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="69286426"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 10:30:58 -0700
-X-CSE-ConnectionGUID: Jdf0krVNTre51UKMdF+ptA==
-X-CSE-MsgGUID: UKXIHwjgR+6yKev8b9Xkrw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="174282312"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 10:30:58 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 27 Aug 2025 10:30:56 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Wed, 27 Aug 2025 10:30:56 -0700
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (40.107.101.45)
- by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 27 Aug 2025 10:30:46 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Jpoo7IYc9OK5IzSZX0xuIBHZa+SGoLO1DCwH9JDIU29e+wZwilH6q3nThJFawUXVV9s7mMmq+RXstUOagsp1Ahyn2TvKcnT2+EDvsl9HyhkNd23XcXKZnnZ4Y7hnAKLKYnPQb7shRLdFO0fD3maWVQP8uzFg5QA5lRDDDDCJEURVrTk8T+//dtnlqKd1lboSKSUwlNVkxomtVQXdImTE8apOcM7QUvnbkG1NZ/aU/69dFTZKSN7giG9/T7iJa0Vm7ddENhFdx84vHG7EoDUe7GohZYzn1WDCD/WS15+ReeFJTMD4WhVZIzhtL93CqgPQGdpzDjQ9BD6rPEXx8GTZTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZbEFnCckFnjdfMGwiBcSEadmdV/F3CKV+IOXDc6xOGY=;
- b=MA1ore9eh/k7pBqvr2Gt+QnQs4QtUM7vrFIDViRVYYp1fSePAfGDCpeaj7zf7/r8x7bicgrmr6uLrUicTTkjGCDHMVU9byG248p86nTKZWnKIC+/O4jyj4OIBbP8tRwyyrUjz314zQy/LYkoat9PBBTJrUWxk/OZfxJUzF3v/Kizd1TVT6rBvDEGUdCL3F869HnlWuEstKwHelaBvHz6V+ufNZl0onTgcScSCQGE0Z17bWSTzMWkel1gyFann9VChwyiVCCt/bO0C9/PlabFHwSnwibOwQ/WrfOCxOoVmqyScgMaIbISFy6+Y3oto52sJzDBgFr1FZu+TXSHV/1WVQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
- by CY8PR11MB7339.namprd11.prod.outlook.com (2603:10b6:930:9f::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Wed, 27 Aug
- 2025 17:30:43 +0000
-Received: from IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::eeac:69b0:1990:4905]) by IA1PR11MB7198.namprd11.prod.outlook.com
- ([fe80::eeac:69b0:1990:4905%5]) with mapi id 15.20.9073.010; Wed, 27 Aug 2025
- 17:30:43 +0000
-Message-ID: <4adc8413-e2c8-4c5b-9bb4-f425a6bed875@intel.com>
-Date: Wed, 27 Aug 2025 20:30:38 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/14] tools/perf: Enable perf script to present the DTL
- entries
-To: Athira Rajeev <atrajeev@linux.ibm.com>, <acme@kernel.org>,
-	<jolsa@kernel.org>, <maddy@linux.ibm.com>, <irogers@google.com>,
-	<namhyung@kernel.org>
-CC: <linux-perf-users@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<aboorvad@linux.ibm.com>, <sshegde@linux.ibm.com>, <kjain@linux.ibm.com>,
-	<hbathini@linux.vnet.ibm.com>, <Aditya.Bodkhe1@ibm.com>,
-	<venkat88@linux.ibm.com>
-References: <20250815083407.27953-1-atrajeev@linux.ibm.com>
- <20250815083407.27953-14-atrajeev@linux.ibm.com>
-Content-Language: en-US
-From: Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
- 6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
- 4, Domiciled in Helsinki
-In-Reply-To: <20250815083407.27953-14-atrajeev@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DU2PR04CA0255.eurprd04.prod.outlook.com
- (2603:10a6:10:28e::20) To IA1PR11MB7198.namprd11.prod.outlook.com
- (2603:10b6:208:419::15)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBt4y4kw0z2yDH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 04:16:02 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57RD05Hj006626;
+	Wed, 27 Aug 2025 18:15:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:to; s=pp1;
+	 bh=1/1WqEc6uXIlT/jg/aHRl6zmLA43K3i1GN0QMmzdo+o=; b=UMK0d/ZjY7g5
+	6Puk76YkzdUZVFZsXAk/6obY7zGgYUk/g3uxIv2oW3PFjX214cKtIzg7fQyv91/U
+	PKuaa7GrG0/L2lOgM1z/Y0BszUjPcgdW/jWxL/Zk6xWMAMxe7Uqznbz1t68rKZqA
+	3nBvH2vZXLYZw7NQP1Sxzoye7BeKC35FaMUmQEOfUYL1XpNXU5KFaR5eBP/McwqM
+	+RDcM/BVBZnqzO99EA+8GBX5ahGVEExRkMyTzzytklzRtHpq3mYW89diC8Oj114b
+	eeDVvutQO6L+62raSh99hzE+oQs/mvXhIyxg7Yz9VqqvUKw3lADku2Gpq04ajUQr
+	Ki5v6SNTCw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5avnmjb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Aug 2025 18:15:53 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57RHx7TH004799;
+	Wed, 27 Aug 2025 18:15:53 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5avnmj8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Aug 2025 18:15:52 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57RHGQCb017981;
+	Wed, 27 Aug 2025 18:15:52 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qtp3gy3j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Aug 2025 18:15:52 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57RIFmg121889476
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 27 Aug 2025 18:15:48 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3833420043;
+	Wed, 27 Aug 2025 18:15:48 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B96220040;
+	Wed, 27 Aug 2025 18:15:46 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.39.24.199])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 27 Aug 2025 18:15:45 +0000 (GMT)
+Date: Wed, 27 Aug 2025 23:45:43 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+To: Haren Myneni <haren@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        msuchanek@suse.de, tyreld@linux.ibm.com, npiggin@gmail.com,
+        bjking1@linux.ibm.com, hbabu@us.ibm.com
+Subject: Re: [PATCH v2 3/9] powerpc/pseries: Add papr-hvpipe char driver for
+ HVPIPE interfaces
+Message-ID: <24e2lr6ylufnhz3gimehaqvb6jlr73gxsd67gmn26tuinx7r25@xe3cwjrm7v4y>
+Reply-To: mahesh@linux.ibm.com
+References: <20250812225715.339225-1-haren@linux.ibm.com>
+ <20250812225715.339225-4-haren@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -125,255 +96,167 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|CY8PR11MB7339:EE_
-X-MS-Office365-Filtering-Correlation-Id: a73d10b1-b171-495d-c27f-08dde58f7333
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?VUV4V3E0MlNhVGFIZVZ3dHg4eEUrVSttRnZZaXIvT1pDT01DMDUzNVQ4cFhu?=
- =?utf-8?B?RG5NS2JrSFZpQlF4TkRFcjEzWllSU3hpRkc5SFFscDB2Q0ZSNUFIU0RRSFFZ?=
- =?utf-8?B?blVPZjhqdnhXS24vOVpiQlhZYktvRnVqaGJxV3U5ang4RUZ4dlBCKzdhTm82?=
- =?utf-8?B?SExtUWYyTjQyaFNUMXRUdmZ2dW1TT0dvWG92Ukk5K2d6eC9QaTIwQkhzQzJr?=
- =?utf-8?B?bVd1dTI4YWhtVWtYUGsrdEZkZzNucDJKZ2NJeTlsUVk3UVpmamxFaUZjWVdX?=
- =?utf-8?B?RkhoVmQ5S0hMcUNrcXJva044NE5YT0VEcTBmZGNoZW5yaUtGWHFEVDBCL3BK?=
- =?utf-8?B?eCtMUmdmaU9tQkpQbE5NYTZQQmV4MWdpVFl0RXcwNDV1MTJHczZUOXdxYnB2?=
- =?utf-8?B?bXNzamF2cU1keUpPcU0wanBLdVhWZ2NnWXdCSVlKMTNpT1c2emhMMldIZVFo?=
- =?utf-8?B?cElPRW5KRnRrWHBwVGU1VkNodVJBSmlGV1ZmUEF4dmhuSVQ2WUpMZGxTMVo3?=
- =?utf-8?B?aXlQTGpGbldVVG1VQlRUMHdaL0dXVXRjaXNZU2JRNC91b3pzbTBvSHhzQ3Ex?=
- =?utf-8?B?U0ZrbWJHcDZQZFEzMGI3b21kVzBzVlhGeFZhRThxZ0xFSHBjbEVvT2ZJWVJh?=
- =?utf-8?B?cm1ta3NlanJJanQwWXAzZDZROCsvKzE5ZC8rZ1l0TFQxa2xoNGF1VXQ4YjNY?=
- =?utf-8?B?ZnNwQ2xITDNzM0I0L0t1aERJaVI1VUFFU0MrdE02MWJFZGMycnYwOVhCd1dQ?=
- =?utf-8?B?NHJxTDFaMG5OZVBkMkVNZjFLUmxzUWw1Y0R5YXZCU2JYUm9sNkNoNVFXRnVU?=
- =?utf-8?B?N1pEeWlWUFcrMnVIdEh3d3JGMzFpZWtObFFPUk5wS0g0d3R2Mk11dnhxY29H?=
- =?utf-8?B?b3c5QUZ0SmtiQllGcXJIcXlESkozTkdzU0txNjNjQ1gyc2g0QjJBN2haTVBZ?=
- =?utf-8?B?L2R5RC9sd3poTDFvMFVMRGx3L0Raa1ViMGU0VlB2NHlBRktmY00zLzJUMlhi?=
- =?utf-8?B?S2M0TnhYN1ZReXh3azNOSkNsSUVqYzU0SVlFWWpqSk1vQWt1aGdYTWN5RXpR?=
- =?utf-8?B?OW0xMUtDKyt2K0tCMUVHSUJJVGdjYzJiWkhHWGRUb0h5QmVBcHlsVFJITUQ3?=
- =?utf-8?B?cjgrOWdhQWhOeEZXOHdzVVlLSVY4MmhnOTBobmZjeVpPaVMzZE5JZ0JnS2NN?=
- =?utf-8?B?ZURsMEQzV0dROU80emY0czNBRFlDc0FWZFpmYTR6cGVqaUNIaUdUbGpTbmUz?=
- =?utf-8?B?K0gwSGNtYmRXL2RRZEdFTU02TkF2blZrbEJ2TWlQNTQ2eThIbzJ3V1FEUmJl?=
- =?utf-8?B?RUpCdjkxQlBGVGhrQTNGL3E1YmRkUmhpQllNV1k3Q3hVRjRtcjZoc2NqMUdo?=
- =?utf-8?B?VXZyVVZlWnk0ZnZST0xtdVhYQ1BmMVRQMHIvVUFpVDR5MmEvZlpRUmRtNkJu?=
- =?utf-8?B?SVA2U3pVNHF1a1RVUVZVdVY1N2VuN1loZks1ZThzWXpQaFZEWU5vaGZqRGRl?=
- =?utf-8?B?bFRGRkFoTm1EUHN5Q0hiQnhxenNVYi94WjcvL0doZEFPVjZzWGpSVjM1OFBs?=
- =?utf-8?B?YmZaTlFCUGlVVWN2dml3OEsyNHZlVVc1NDFtUTBRTnNYR1NNcThYQ2crZWVT?=
- =?utf-8?B?T2ovcjFPMTE0VmtNRmNGOFppY09LcUdWaHFwZk1iQTZMN3hQY25DZTVEMVk5?=
- =?utf-8?B?T05qeTR3VWkvQW15L2VoTzRIZW95MkY5U2hTQkMxN0pKOWxSWGNiR1lvNkE3?=
- =?utf-8?B?THpVOGZzeVhSc3Y2U1ZFMnZZSWtjZnhIVDdqTVlBREdLL1lkZk9VL1BVWXJU?=
- =?utf-8?B?VEUydGtra2E5Mi85ZExOT0xKbXp5dlpERGREU2VQNVd2elJMVEkzMi9OQUdu?=
- =?utf-8?B?eFFMSHZoNWEvTldlRHFaUWRzVnp3WXlHdDI0aU9GUHplVnlFbUhEdnk5aGFl?=
- =?utf-8?Q?F083t3HhdSE=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QU56VTI3RkFRalZqMWYvcWdYc3pGNXROeGowb3RqTkFFNGxCcXdHL08yKy9C?=
- =?utf-8?B?MnJ1WS9RK2k2cFFlNlU0UW1PbWphWFgwMTVSZ0xEd1JLN0dPVDR4dytBcEFX?=
- =?utf-8?B?Zk5DaXczdGpGREtvcEQrVk1SOVhUaHBnbTA1TmZPMUNGdHdEZjFBbUFEbkd5?=
- =?utf-8?B?VXdnbFZNTFpRSTBEeE03Y3UwRVpCUTNyTHJjaE9qSjIzOEMvSk5lUnZyN3h2?=
- =?utf-8?B?MVV0OEt3NnBxQllqY1k4Zi9pRzlCQ05vcmhxMzlTam5PUGdnSlR5SVl3aEo5?=
- =?utf-8?B?cVNFTElVczBwbnNGK211SmhLQlZubTI1ODJkd2JwVEd1ZThPRTFDQ1hBTkRI?=
- =?utf-8?B?ZGh5MHJmS1M3MXFESldzZ01mUnZvZnBpYVlYNCtnNHR5aUEwUGUxWHZPTHRM?=
- =?utf-8?B?ZlAwMSt4SllEaUdyWjBhRldZTDlqODE5TVBIb3E5T2t5RFFXeU1ZbkcyNU96?=
- =?utf-8?B?Zm92bnFIemxFc1daKzVzb2lYbHRqVnpKc2tMR0k3QWZIZk1JMjJocEltakZF?=
- =?utf-8?B?ODlCVTV2YXF0aGVlNUVTYWRmbnp4cFNFZU91M2cxV1p1NDVIZTh4U2FFMHN1?=
- =?utf-8?B?K25lWmpBdUZmQkJsa0hqSVIwM2NadWZJd0ZyOHdFcWVLSGorWGRXU1IwTXFW?=
- =?utf-8?B?UjVWSzVEVGd0cnJWK2xETC8xUG9sZ2Ywem1kV3pVR0ZVOUNLd0s3NnhpaTJ5?=
- =?utf-8?B?RFNuMHUvQUdyYUgva1NsdFBWQ3ppdlVBbVQ1bUNPWTdPeExoS29ZM1owbXBS?=
- =?utf-8?B?M0lncElnNitieERjdkErbkt2SjlOckxvUzY3UUgzMUxueG9WcHBhdlA0Skxh?=
- =?utf-8?B?a0swUHNFeUpnckpyT0ljZFdxVFl4UEFNanpRTVpWdG5XVGtZNUwvUWV2N0dG?=
- =?utf-8?B?WFA3ZVJ2V3hsbnhOOTN1K2E2SjZVT0hkYkExT09YSnJpMEYvbnVhWURPRFFR?=
- =?utf-8?B?MmxFNzl3SlRWYi9jNzBMbjRHT3dEWU01Q01adXVMNkxFdmYwbmlvdDZvVVBD?=
- =?utf-8?B?Q0I1bXBTWER6RHpDdjkvN2ZtdTlodXRhcWgrdytwQmdXODFxSlNZVFJIM3pM?=
- =?utf-8?B?VGc1YWFJSWtBOU9iT0FsRWdTTVBpeFJkWlBhVHRqSnBod0RDdjd0azFZeFQw?=
- =?utf-8?B?OFNZcWdnUk1YU1VDSFlublYrNUc5S2FoM0JtUmZiV2NTeGZVQWgzVEdFWitv?=
- =?utf-8?B?d1ZWOUYxSk9xaDV0NXNSLzNiYWNuWVc1N0RxTHlpQkVpeU90WGVGMlFrek00?=
- =?utf-8?B?V3hRVzl5UFVLZy90WWxrblhpOUg4S3F6Z05oaEF1WG5nbUxleHVLMGY1TWlQ?=
- =?utf-8?B?R05PN3owdjJVSWdpVk9WMktWa0tUQW9zZzFuZm8ybTZXemdYVUNXZUlDUFZP?=
- =?utf-8?B?am9FZnNCWmsyOUxmY3dPT0V3MGQxaGRGK0pjeWJOOXg0ZTE1bDk3UjdpaitJ?=
- =?utf-8?B?L2JKRVN4VlZXY1czMGVDYjRreXFYaHkzaXQ0Uk5HS0ZBNHVENERoWDZOT0tP?=
- =?utf-8?B?TUJsQTEyR01LNVRGNlVQZ243VDF0N1RxdFEwTkNKNFZVVFQzYXdDM2pDTTIv?=
- =?utf-8?B?Mmo4RG1RYzE2RTBXb2NiOHRKSnJ6RlBTMFhGeTQ0Mm82YlNQWW5hd2lFcTd2?=
- =?utf-8?B?REs0MEtSQnU2QnpjNXpHTFRSRkpiOWhwcnNJQmY1b015SzBUck9JNnVKbUh0?=
- =?utf-8?B?OUtZZzc2Y1hRUXo3YXkrSXZQREEwQUMzbXJGK2VUbnpzQjRnQk9ZSVpRWlFx?=
- =?utf-8?B?NncvKzl3Z1k5Y0VLMTVuZWNXb3BnWTVJTE15V0hMazVFKzBxdmQ0T0piZytM?=
- =?utf-8?B?THdHeGhNUTBzdWxITE9FQWVVaGtiODRxTEhYRnZPeGM2dkhIYjh0SkZiVjNB?=
- =?utf-8?B?eFZUM09XK2RYczQrQkxTUkhYWE50R1U5S0wzM2NiTCtMUmJVamM0TEUwTGtI?=
- =?utf-8?B?OEZWcjh2anlMQ0EvYVZITURIbVR3cWFWbHlZUXRybGV6Z2FybmtPeGljSWVs?=
- =?utf-8?B?eE9sR3VrSXBISWxEWnZFY05RamhhWXFYRW5CSWcwVWxvQkVUM3gwTjVaUEIw?=
- =?utf-8?B?OGhOYnUwL2NZaEpaMmhvNFQwMEhGWWNKQW1sTTlHVDdxOEJtSWRsRGJrRnhY?=
- =?utf-8?B?THVRVUk0dUhiNlp3TDUzRDZRdWpHNmtaSXR0R0J4ZGNpOGRhWmdseUhzZ08x?=
- =?utf-8?B?dUE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a73d10b1-b171-495d-c27f-08dde58f7333
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 17:30:43.4087
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: doMhruiidAN5ua7u9u56JrYQMaWmtk43bf8Mu8lcqzzE29f64+d61rjlpXfb5NIo3ttPCTMdvdLRndez7jL3FA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7339
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250812225715.339225-4-haren@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ypmv6qtdQ5fnjmCuE1p98tOB1a5tBso9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfX5DtqR2DODa8C
+ HUy0JlehuYsvLvSmc9YhlLrBFJPtvpI+3vbSV0EPbpyw4wasL/5yKW7Bbw3HyDBXhRFB1UoTUcU
+ KwVukf0k2Vvua3qByhF/OKQiJjH2ONZcS0krmu/MubxiVeI5QqFUvsPrzpJsHVuHcFUeYNhoaXq
+ 0oFdZ7k+sJzJWYECbCarDaxtWhM548b3Jim8qemcJp0WqDKRPGwKhMLFa+7V861Gwd6jKH/79JQ
+ cHYNH6KnitPXA6gKuYaFcSBfeOGsJFQqS+Saoz3qhzAmCB4OJVKnn3nB75qMwBpHM5e62390j+Q
+ loeB9yXoSwHPmXHVZtkGPMGuGisfVWTlwSmkD+0WZWoWRuE5GH3TXHNwwU/550HkocGnYHmMK9b
+ gO0DkwtK
+X-Proofpoint-ORIG-GUID: JThqqTGeA1w4-aSyEzw1mPZprHzQhRXF
+X-Authority-Analysis: v=2.4 cv=SNNCVPvH c=1 sm=1 tr=0 ts=68af4b59 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=iILM0pd5H-MxPSOPN7QA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-08-27_04,2025-08-26_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 bulkscore=0 phishscore=0 clxscore=1015
+ impostorscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230021
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 15/08/2025 11:34, Athira Rajeev wrote:
-> Enable perf script to present the DTL entries. Process the
-> dispatch trace log details in arch_perf_sample__fprintf_synth_evt()
-> defined in buiultin-script.c file for config value:
-> PERF_SYNTH_POWERPC_VPA_DTL.
+On 2025-08-12 15:57:07 Tue, Haren Myneni wrote:
+> The hypervisor provides ibm,send-hvpipe-msg and
+> ibm,receive-hvpipe-msg RTAS calls which can be used by the
+> partition to communicate through an inband hypervisor channel with
+> different external sources such as Hardware Management Console
+> (HMC). The information exchanged, whether it be messages, raw or
+> formatted data, etc., is only known to between applications in the
+> OS and the source (HMC). This patch adds papr-hvpipe character
+> driver and provides the standard interfaces such as open / ioctl/
+> read / write to user space for exchanging information with HMC
+> using send/recevive HVPIPE RTAS functions.
 > 
-> Sample output:
+> PAPR (7.3.32 Hypervisor Pipe Information Exchange) defines the
+> HVPIPE usage:
+> - The hypervisor has one HVPIPE per partition for all sources.
+> - OS can determine this feature’s availability by detecting the
+>   “ibm,hypervisor-pipe-capable” property in the /rtas node of the
+>   device tree.
+> - Each source is represented by the source ID which is used in
+>   send / recv HVPIPE RTAS. (Ex: source ID is the target for the
+>   payload in send RTAS).
+> - Return status of ibm,send-hvpipe-msg can be considered as
+>   delivered the payload.
+> - Return status of ibm,receive-hvpipe-msg can be considered as
+>   ACK to source.
+> - The hypervisor generates hvpipe message event interrupt when
+>   the partition has the payload to receive.
 > 
->    ./perf record -a -e sched:*,vpa_dtl/dtl_all/ -c 1000000000 sleep 1
->    [ perf record: Woken up 1 times to write data ]
->    [ perf record: Captured and wrote 0.300 MB perf.data ]
+> Provide the interfaces to the user space with /dev/papr-hvpipe
+> character device using the following programming model:
 > 
->    ./perf script
->             perf   13322 [002]   233.835807:                     sched:sched_switch: perf:13322 [120] R ==> migration/2:27 [0]
->      migration/2      27 [002]   233.835811:               sched:sched_migrate_task: comm=perf pid=13322 prio=120 orig_cpu=2 dest_cpu=3
->      migration/2      27 [002]   233.835818:               sched:sched_stat_runtime: comm=migration/2 pid=27 runtime=9214 [ns]
->      migration/2      27 [002]   233.835819:                     sched:sched_switch: migration/2:27 [0] S ==> swapper/2:0 [120]
->          swapper       0 [002]   233.835822:                                vpa-dtl: timebase: 338954486062657 dispatch_reason:decrementer_interrupt, preempt_reason:H_CEDE, enqueue_to_dispatch_time:435,			ready_to_enqueue_time:0, waiting_to_ready_time:34775058, processor_id: 202 c0000000000f8094 plpar_hcall_norets_notrace+0x18 ([kernel.kallsyms])
->          swapper       0 [001]   233.835886:                                vpa-dtl: timebase: 338954486095398 dispatch_reason:priv_doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:542,			ready_to_enqueue_time:0, waiting_to_ready_time:1245360, processor_id: 201 c0000000000f8094 plpar_hcall_norets_notrace+0x18 ([kernel.kallsyms])
+> int devfd = open("/dev/papr-hvpipe")
+> int fd = ioctl(devfd, PAPR_HVPIPE_IOC_CREATE_HANDLE, &srcID);
+> - Restrict the user space to use the same source ID and do not
+>   expect more than one process access with the same source.
+> char *buf = malloc(size);
+> - SIZE should be 4K and the buffer contains header and the
+>   payload.
+> length = write(fd, buf, size);
+> - OS issues ibm,send-hvpipe-msg RTAS and returns the RTAS status
+>   to the user space.
+> ret = poll(fd,...)
+> - The HVPIPE event message IRQ wakes up for any waiting FDs.
+> length = read(fd, buf, size);
+> - OS issues ibm,receive-hvpipe-msg to receive payload from the
+>   hypervisor.
+> release(fd);
+> - OS issues ibm,receive-hvpipe-msg if any payload is pending so
+>   that pipe is not blocked.
 > 
-> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
+> The actual implementation of these calls are added in the
+> next patches.
+> 
+> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 > ---
->  tools/perf/builtin-script.c      | 23 +++++++++++++++++++++--
->  tools/perf/util/powerpc-vpadtl.c | 16 ----------------
->  tools/perf/util/powerpc-vpadtl.h | 19 +++++++++++++++++++
->  3 files changed, 40 insertions(+), 18 deletions(-)
+>  arch/powerpc/platforms/pseries/Makefile      |   1 +
+>  arch/powerpc/platforms/pseries/papr-hvpipe.c | 274 +++++++++++++++++++
+>  arch/powerpc/platforms/pseries/papr-hvpipe.h |  14 +
+>  3 files changed, 289 insertions(+)
+>  create mode 100644 arch/powerpc/platforms/pseries/papr-hvpipe.c
+>  create mode 100644 arch/powerpc/platforms/pseries/papr-hvpipe.h
 > 
-> diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
-> index eff584735980..a0faadaadc4d 100644
-> --- a/tools/perf/builtin-script.c
-> +++ b/tools/perf/builtin-script.c
-> @@ -66,6 +66,7 @@
->  #include "util/cgroup.h"
->  #include "util/annotate.h"
->  #include "perf.h"
-> +#include "util/powerpc-vpadtl.h"
->  
->  #include <linux/ctype.h>
->  #ifdef HAVE_LIBTRACEEVENT
-> @@ -2004,8 +2005,26 @@ static int perf_sample__fprintf_synth_iflag_chg(struct perf_sample *sample, FILE
->  }
->  
->  static void arch_perf_sample__fprintf_synth_evt(struct perf_sample *data __maybe_unused,
-> -		 FILE *fp __maybe_unused, u64 config __maybe_unused)
-> +		 FILE *fp __maybe_unused, u64 config __maybe_unused, struct perf_env *env)
->  {
-> +	const char *arch = perf_env__arch(env);
+[...]
+> +static int papr_hvpipe_dev_create_handle(u32 srcID)
+> +{
+> +	struct hvpipe_source_info *src_info;
+> +	struct file *file;
+> +	long err;
+> +	int fd;
 > +
-> +	if (!strcmp("powerpc", arch)) {
+> +	spin_lock(&hvpipe_src_list_lock);
+> +	/*
+> +	 * Do not allow more than one process communicates with
+> +	 * each source.
+> +	 */
+> +	src_info = hvpipe_find_source(srcID);
+> +	if (src_info) {
+> +		spin_unlock(&hvpipe_src_list_lock);
+> +		pr_err("pid(%d) is already using the source(%d)\n",
+> +				src_info->tsk->pid, srcID);
+> +		return -EALREADY;
+> +	}
+> +	spin_unlock(&hvpipe_src_list_lock);
 
-Not needed.  PERF_SYNTH_POWERPC_VPA_DTL is unique.
+What if two process simulteneously try to get handle ? The new src_info
+node being allocated below isn't yet on the list. Which means as soon as
+we unlock, there is a chance another process can still come here
+requesting for same srcID and eventually we will see duplicate or more
+entries for same srcID added to the list from different processes.
 
-> +		struct dtl_entry *dtl = (struct dtl_entry *)data->raw_data;
 > +
-> +		if (config != PERF_SYNTH_POWERPC_VPA_DTL)
-> +			return;
-> +		fprintf(fp, "timebase: %" PRIu64 "dispatch_reason:%s, preempt_reason:%s, enqueue_to_dispatch_time:%d,\
-> +				ready_to_enqueue_time:%d, waiting_to_ready_time:%d, processor_id: %d",\
-> +				be64_to_cpu(dtl->timebase),
-
-If the output were ever to be injected into another
-perf.data file (by adding support in perf inject) then it
-would be aligned to 4 bytes not 8, so for 64-bit access it
-would be safer to use get_unaligned_be64()
-
-> +				dispatch_reasons[dtl->dispatch_reason],
-> +				preempt_reasons[dtl->preempt_reason],
-> +				be32_to_cpu(dtl->enqueue_to_dispatch_time),
-> +				be32_to_cpu(dtl->ready_to_enqueue_time),
-> +				be32_to_cpu(dtl->waiting_to_ready_time),
-> +				be16_to_cpu(dtl->processor_id));
+> +	src_info = kzalloc(sizeof(*src_info), GFP_KERNEL_ACCOUNT);
+> +	if (!src_info)
+> +		return -ENOMEM;
+> +
+> +	src_info->srcID = srcID;
+> +	src_info->tsk = current;
+> +	init_waitqueue_head(&src_info->recv_wqh);
+> +
+> +	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
+> +	if (fd < 0) {
+> +		err = fd;
+> +		goto free_buf;
 > +	}
 > +
->  	return;
->  }
->  
-> @@ -2032,7 +2051,7 @@ static int perf_sample__fprintf_synth(struct perf_sample *sample,
->  	case PERF_SYNTH_INTEL_IFLAG_CHG:
->  		return perf_sample__fprintf_synth_iflag_chg(sample, fp);
->  	default:
-> -		arch_perf_sample__fprintf_synth_evt(sample, fp, evsel->core.attr.config);
-> +		arch_perf_sample__fprintf_synth_evt(sample, fp, evsel->core.attr.config, evsel__env(evsel));
->  		break;
->  	}
->  
-> diff --git a/tools/perf/util/powerpc-vpadtl.c b/tools/perf/util/powerpc-vpadtl.c
-> index 370c566f9ac2..482ddf1a2d51 100644
-> --- a/tools/perf/util/powerpc-vpadtl.c
-> +++ b/tools/perf/util/powerpc-vpadtl.c
-> @@ -30,22 +30,6 @@
->  #include "symbol.h"
->  #include "tool.h"
->  
-> -/*
-> - * The DTL entries are of below format
-> - */
-> -struct dtl_entry {
-> -	u8      dispatch_reason;
-> -	u8      preempt_reason;
-> -	u16     processor_id;
-> -	u32     enqueue_to_dispatch_time;
-> -	u32     ready_to_enqueue_time;
-> -	u32     waiting_to_ready_time;
-> -	u64     timebase;
-> -	u64     fault_addr;
-> -	u64     srr0;
-> -	u64     srr1;
-> -};
-> -
->  /*
->   * Structure to save the auxtrace queue
->   */
-> diff --git a/tools/perf/util/powerpc-vpadtl.h b/tools/perf/util/powerpc-vpadtl.h
-> index 625172adaba5..497f704787a5 100644
-> --- a/tools/perf/util/powerpc-vpadtl.h
-> +++ b/tools/perf/util/powerpc-vpadtl.h
-> @@ -20,6 +20,25 @@ union perf_event;
->  struct perf_session;
->  struct perf_pmu;
->  
-> +/*
-> + * The DTL entries are of below format
-> + */
-> +struct dtl_entry {
-> +	u8      dispatch_reason;
-> +	u8      preempt_reason;
-> +	u16     processor_id;
-> +	u32     enqueue_to_dispatch_time;
-> +	u32     ready_to_enqueue_time;
-> +	u32     waiting_to_ready_time;
-> +	u64     timebase;
-> +	u64     fault_addr;
-> +	u64     srr0;
-> +	u64     srr1;
-> +};
-
-As mentioned for patch 8, maybe call it vpadtl_entry or powerpc_vpadtl_entry and
-put it in perf/util/event.h
-
+> +	file = anon_inode_getfile("[papr-hvpipe]",
+> +			&papr_hvpipe_handle_ops, (void *)src_info,
+> +			O_RDWR);
+> +	if (IS_ERR(file)) {
+> +		err = PTR_ERR(file);
+> +		goto put_fd;
+> +	}
 > +
-> +extern const char *dispatch_reasons[11];
-> +extern const char *preempt_reasons[10];
-
-These are in perf/util/powerpc-vpadtl.c which is conditionally compiled
-depending on CONFIG_AUXTRACE.  So this happens when building with
-NO_AUXTRACE=1 :
-
-  usr/bin/ld: perf-in.o: in function `process_sample_event':
-  builtin-script.c:(.text+0x379a6): undefined reference to `preempt_reasons'
-  /usr/bin/ld: builtin-script.c:(.text+0x379d5): undefined reference to `dispatch_reasons
-
+> +	fd_install(fd, file);
 > +
->  int powerpc_vpadtl_process_auxtrace_info(union perf_event *event,
->  				  struct perf_session *session);
->  
+> +	spin_lock(&hvpipe_src_list_lock);
 
+Should we check again here to make sure same srcID hasn't been already
+added to the list while we were unlocked and return -EALREADY ?
+
+> +	list_add(&src_info->list, &hvpipe_src_list);
+> +	spin_unlock(&hvpipe_src_list_lock);
+> +
+> +	return fd;
+> +
+> +put_fd:
+> +	put_unused_fd(fd);
+> +free_buf:
+> +	kfree(src_info);
+> +	return err;
+> +}
+> +
 
