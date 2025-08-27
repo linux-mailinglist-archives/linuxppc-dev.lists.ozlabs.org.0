@@ -1,79 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-11389-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11391-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB74DB388A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 19:29:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A24B388A6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 19:30:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBs3d47Zbz3blv;
-	Thu, 28 Aug 2025 03:29:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cBs3z4HLHz3cYk;
+	Thu, 28 Aug 2025 03:30:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=198.175.65.17
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756315789;
-	cv=fail; b=Uj+7+MGZgE5jmdpSDhCapEJNPoVo9/uepHpuxoVlzkczzggKBzA07+tNvmg86i713sMGT4lE9IplETWEWFTJ8MTjaVxDBiZ903Ly8eOso2Jsy49b+jPSfaqJ2dMfXCfFSA/xE2fEBr4Xx7Wu6vQZPP/EFoIW/SLQPTiqF19JejINvvaf2XgWvjPBTpYDzhixi0NU2ghq1HdJX3+jpuGFIiRoh17veYJ2q5bVSKsTXrorkfyIMk+tmxJDcY2MKOn/EopZXNtbmeP+tP9AIHUH7HzzVpgIweQ2aSqvLFhZjIEveaX6uPruLv8sHtBZomL6WHNQdg3Y5ddd0ygaEPjIzA==
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.14
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756315807;
+	cv=fail; b=GXGB4M4De60a14d6iw+lmngVB7Y8G1iGUDAPyH85Fy/pFoEz3+r6/KzQnE4rnHhSA445D/uoF4HjhClifp82U33kqEJCzRDPrwoZWUJfFa3jdjEt5UH/d/4DAOC7YgVZ7MYWtDLWUhCJadc7mxCiQngAM1j9JAi8q8gyyh3l4R15rrlyAQcacjhHBTnjzTASKuu3MoJAc4qo/gGaDJnt3ySUhEzJJyZtN0wHstxO4tKU9dLbEAMvS99dKQjJYPJpNNHKaI9MDVrCZYSdhdMZoNP1eCH1NW9w+KMTPyAm1zYcO6Iz4XBAyhrokCL3vqIcfJIc0COwr2HE11BNvkfJ8A==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756315789; c=relaxed/relaxed;
-	bh=JEJ7PfHZxqUDLEKORvLo3+3vkZ9EH3IBaFxl3OBJy6I=;
+	t=1756315807; c=relaxed/relaxed;
+	bh=+QM/Hk0k3W2Q4XrVl8vaCgvJSML4ZT7W0dimG8/0TVs=;
 	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Xy+4dfzalILcUh+4LZDrWQBs9xCv7RdVIA19ismttAz0qx7LESHR7PbjsA3rahLqIQl1y4dN9i4Rk8EgXmfn7fw1xtx7UAFWt15E81T/k0UWLmghmf4vpLYDUj/2xMbCOiooCM0D1TpWSNJoaz8RirFYL7H8rKDfbOiuCVSVEw2I3b51thgAz/B2qoxNkXuKqqR6uaysEQn2vKqQT8TFZgg3SwCl/PcfaoVZnWdRpNRLSJylw41EP+w2LCa3mGwWSnlyC7rpkctf1mQDyM0laF7YoTmUSa2twxOFq17Bs7444RLZiAjSlDvRJmRy55QtEmSgL8cpPycCWLcc8Z7JqQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=czucoJAS; dkim-atps=neutral; spf=pass (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	 Content-Type:MIME-Version; b=DnS6r+iWEPc9VB94yqugBCEpOsvp8ykHKWRE5nmtDTor2NaRNDAoFoM7nZUIu8PKHLQpMuq6knlWwdg7ueXKOSH864RxQFv3JY0rhHdyXa14sry/4Y3Ed3r+rWupos3UL6YLPPK7umGEOQP0Xy/u4DR55EtHGCGSCwFaM6Vf3NT2zmwyj/62El2y7KZ8g9drxWSP1y5bZUbXJSVO4fAeYZip54vStMMWhytyGrdL3aLr/9dsjutcSr2nJ3cS/U3VErzlOY0k9KtEytFHLjUUN7YJ4BcJ7B5az9jofdxxxYz1Nh1a2UrTr3R4X5gH0FFK6czEI8uhMkVzqrJVmF6Hiw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IxT0oIaq; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=czucoJAS;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IxT0oIaq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 61 seconds by postgrey-1.37 at boromir; Thu, 28 Aug 2025 03:29:48 AEST
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBs3c19G6z30Ff
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 03:29:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBs3y1HS2z3cYh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 03:30:05 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1756315789; x=1787851789;
+  t=1756315807; x=1787851807;
   h=message-id:date:subject:to:cc:references:from:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=AT6hEY22y/3IjzJnxidX/A7t2l6I46tujTcrpOls0Cs=;
-  b=czucoJAS1p1AYEezqkoeZBCDoZdVB9ZdornpvFaBScSeU8RHabBIhM1S
-   BPLVNDH7ZpAHSVjVjr4EIwJpK86Kzyq2Ctc5BGCKYJGz7pSUrlCDrTSMH
-   RTZEJuJiZiOPnnJiwaSQpc8H3h5jHGGoTTWKAX8pDBfIYcj/1ntu9BHmU
-   ZE3s6nAS5WdlEy6knsT48rTpRBcJx6+0i0TTOMRzXz/jprTD4EeL3rQhP
-   sIN/uY59+0cImi1eah2WmgtOLREV+UB8jUStJ9/qJOuSqCy2mhMMdSH+M
-   u+L3EAZg9qi1XNHGXEsVF6xB/yegf6aV0Qj2RO9DvZ+u3mtdwz6gHXPP7
-   g==;
-X-CSE-ConnectionGUID: cJsHabEHQGGG22vrQf6qkA==
-X-CSE-MsgGUID: a6G2YmceRuecQqSPVKeBNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11531"; a="58516830"
-X-IronPort-AV: E=Sophos;i="6.17,312,1747724400"; 
-   d="scan'208";a="58516830"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 10:29:46 -0700
-X-CSE-ConnectionGUID: wUtC//8TSjqShO4kwgEkUw==
-X-CSE-MsgGUID: yELkBNizTxCBphgD3yOYJw==
+  bh=/IAcV+DvFAhsKJqFdygkqEdpyO6BgmRjGynmU7hHle0=;
+  b=IxT0oIaqso3v2Y01C3+sZRe3B8Cu9iT15yy42zANFDhwp+W8QXTB99/0
+   pv8j3Sz0H7cd1w8cjO2DW9/hXhz21wcI63uvUlLfRbdJ/9U0tSfp9KoqL
+   Slwms5UFUNS5AnHZBNK+bvUzAr5gQuY3TRoFG/SQe6C9YEVwCyEKCgLwZ
+   HjuMvp8Ndo+86hvRQir1ysvSd43cfVoiH4Uy04m3MacUF7unQTNRbrLs1
+   O5TvptktdNh5xs4HJB9HncFbZpq/E5F5zq037MwjoS+JtvOjpNVR/h248
+   tw6aTNdPcz8nBO9PPzrKVDB7QQVzv/1WPSveqtzOX6NU0ZRP6U3wAMJdP
+   w==;
+X-CSE-ConnectionGUID: /+e7jnt+Rx6ljocFeIKO/A==
+X-CSE-MsgGUID: BwEg0fnfSSCnwykcgk3A+A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11535"; a="58642921"
+X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
+   d="scan'208";a="58642921"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 10:30:04 -0700
+X-CSE-ConnectionGUID: aHPbBwvRRs2NE/dx1vnDBA==
+X-CSE-MsgGUID: QGTnSqUVSJKPQII8lpDYcQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,217,1751266800"; 
-   d="scan'208";a="170720401"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 10:29:45 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+   d="scan'208";a="169826954"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2025 10:30:04 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 27 Aug 2025 10:29:45 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.17; Wed, 27 Aug 2025 10:30:02 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Wed, 27 Aug 2025 10:29:45 -0700
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (40.107.100.67)
- by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Wed, 27 Aug 2025 10:30:02 -0700
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (40.107.100.79)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Wed, 27 Aug 2025 10:29:44 -0700
+ 15.2.2562.17; Wed, 27 Aug 2025 10:30:01 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=goFGtCX22gdpj5tOcM3CRhH7koa1SO2j/h8JgzW/I7TKQrqUP66uvKFmH4XqizACuUZz+SOrbiMtoMnLPpZcLfrf5KG180mNrr7HImTkpTyBq4nqCo14edCUdYDrQOUyp30rgz8eh59PtKciXHJzkseSf7RlBpm4G/ry+kxTHSwkVkTivTJaJWVhmMUnc+N03eLdyz5ssINxiMoCSzsRExmgA0ZOq4hEEBFtEEGZCt34DZ/dPooZIIunipw1uZZVb0qs4oDow2qgeKnjH/Is22e6OCPwE1zCuW+4h0y5/0lf6m+gYDUdmPjv69vhzX5Da7HvoVTp7kepqgGhZ30G7g==
+ b=iAEsusqADRIZX4qMGYnjPiA8Rls4e6qVm7ShDWZC58K/3xetDIqSgVXkuRtG48McTrRKzRdNIjcdw/26sNlz0B8OoYMp0WokjgTgjpLIocmRzawjQa7k+iGmwZjlhd18Qc4+kYX1GDr3NwIN6mcLZrO6YP8EDce/b+/DqkK3BEjM7ayiURRIR/PAqoqii+oah1KsS6N/jGETN0cL6OZD5BcpjAhCvM5LOwtlSz4J5XFWQFQHem9TPmIJXSSOeXE6foLALKLOPlPhvBce558ZqC4IRPyvU9qjypnS8aTBQQaFU5HQEQFAl6kCT5DvuCij2MO/yTVmShKFO6Zh/A5iIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JEJ7PfHZxqUDLEKORvLo3+3vkZ9EH3IBaFxl3OBJy6I=;
- b=xR0MQygoEhUAvDSd4HDi1BaHK0MAr59edYoFaa0/uvmyWfADYqs2qYguc3c91S4Vul/YfeZVxsGlzwcrjLZgRoBkWKQLKHw46dfCiiHKht98bNr7bxrhjwqvoSylbn5iU5d3Rg28SgwJ8cHkTaAMCDt6qpqMxBAaE1r3VtVkh8KaYfHNyE8YIqvFAm7mdFj97JfLDXgCWzZTvCyL3o1wgY88Dx5sNWsy4NL6VxKho/l1VbHtOjud789TD/KFYVfh+3H5o0HhPmMlhdell5FElRnUZFLquRIN9e7uHRp89EAOx8ku64xpm3o+rxz1+q+7JdqnyVYRRJoG0tDdR5ekgQ==
+ bh=+QM/Hk0k3W2Q4XrVl8vaCgvJSML4ZT7W0dimG8/0TVs=;
+ b=AU5Ax9+Fz+M+ew1FSpgdWyAuTAPyNbp6xWXsgCJCmGS56/ps+gW/Osb/IFh9qzj/iSgOSoUdovNuOyM3cAnYU1rNwn9rJGHg+hUEzbOx0DR99P3ThWIu32TPTdWQyJWUEUCxuOw8U0sCiL5Xazl6MUeqWdW13JlTecXZNTEq+d339B36vPicVSkdipswMyTYIN3RvFQll3rqxtZK+r0KY+AuOr+pR6Qul6Yc48nZ2LvjJLWVJnk2bsVuuPR9cHlsdgqZOg0/5gn45jutN9JSFJvYQwgv7zRjG0uX/Ukq1mH0rJc8ShKSOb/NxbmOjucP2OWyyvxaEeoiY/SR6l9zbA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -83,16 +82,16 @@ Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
  by DM3PPF529E923C8.namprd11.prod.outlook.com (2603:10b6:f:fc00::f22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.21; Wed, 27 Aug
- 2025 17:29:42 +0000
+ 2025 17:29:59 +0000
 Received: from IA1PR11MB7198.namprd11.prod.outlook.com
  ([fe80::eeac:69b0:1990:4905]) by IA1PR11MB7198.namprd11.prod.outlook.com
  ([fe80::eeac:69b0:1990:4905%5]) with mapi id 15.20.9073.010; Wed, 27 Aug 2025
- 17:29:42 +0000
-Message-ID: <d47939a7-2db6-40ac-97da-95b8c37bb0af@intel.com>
-Date: Wed, 27 Aug 2025 20:29:37 +0300
+ 17:29:59 +0000
+Message-ID: <c83166e3-99d6-47aa-b774-0dfe69e0da8d@intel.com>
+Date: Wed, 27 Aug 2025 20:29:55 +0300
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/14] tools/perf: Process the DTL entries in queue and
- deliver samples
+Subject: Re: [PATCH 12/14] tools/perf: Add support for printing synth event
+ details via default callback
 To: Athira Rajeev <atrajeev@linux.ibm.com>, <acme@kernel.org>,
 	<jolsa@kernel.org>, <maddy@linux.ibm.com>, <irogers@google.com>,
 	<namhyung@kernel.org>
@@ -101,13 +100,13 @@ CC: <linux-perf-users@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
 	<hbathini@linux.vnet.ibm.com>, <Aditya.Bodkhe1@ibm.com>,
 	<venkat88@linux.ibm.com>
 References: <20250815083407.27953-1-atrajeev@linux.ibm.com>
- <20250815083407.27953-12-atrajeev@linux.ibm.com>
+ <20250815083407.27953-13-atrajeev@linux.ibm.com>
 Content-Language: en-US
 From: Adrian Hunter <adrian.hunter@intel.com>
 Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
  6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
  4, Domiciled in Helsinki
-In-Reply-To: <20250815083407.27953-12-atrajeev@linux.ibm.com>
+In-Reply-To: <20250815083407.27953-13-atrajeev@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: DU2PR04CA0269.eurprd04.prod.outlook.com
@@ -128,91 +127,91 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|DM3PPF529E923C8:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d775ee7-82b7-4a25-4446-08dde58f4ec8
+X-MS-Office365-Filtering-Correlation-Id: 39431527-6364-43ac-3367-08dde58f5932
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?QndPWURjSzhNcDkwWDNsOGhuQnlpSXBtbW9icEdML3ZSOFRNMXUxY0VIR25o?=
- =?utf-8?B?L2RvZjhTYndGa0l5ZFJ0OGVsMk1pLzVpQWJwZEthaTVHMVhoZThpU2JXSDZV?=
- =?utf-8?B?U1RZcjdlUGlQUXFxcDV0OTFpUWFKNW5VUXpjMmlpd3p4MHNyVC9GNitxS0Yr?=
- =?utf-8?B?RTB4azJRc0ZaaW9Na3BnVC96K0tUZTMyWDJhZGNwcnUvMy8vVzlhMmVMKzZQ?=
- =?utf-8?B?QU1HMzJXWG1obVlqRDV4SW5RVjY1ZlFKTVNWY3hEVVBLVUZwVnJoZG5pamJH?=
- =?utf-8?B?YnQyTnVaZlFtWlhQVE05VXBweWkzREdQNGhPdjE3bWRwNFQ5cTNIaUxrblcv?=
- =?utf-8?B?aUdtRC9BTlNxRjFYcTRXY1RHYXhjV1VRSzFhajlOMGUvYVZtenNRajkwQkU4?=
- =?utf-8?B?bUkvaThPVkFING0xZ1VJNm9qU2xlaG9GaWFCaHJTdjB3cnBsVy9VZmZqTkd0?=
- =?utf-8?B?M1M4Ykphc3pNR3lvT1JuVnl6WVJEK1NzWkxvcDZoWTRGTVFtaUJDSWhWQzZk?=
- =?utf-8?B?UU1pK1ZxWXRubmM3Y01GY0VCL08zRUJIQ05DTkhTTDRrb09LUUNBMnVrRTNu?=
- =?utf-8?B?eEtUMnZuM1dsTVEyYjhCTksvekM1dXVCWTE3eHk3QWZBZlJ5OXhwNm8rVysy?=
- =?utf-8?B?bkJ2SGdTYVJYb0V6elVySFVGcnhRUjMzZGVCWFd5dWpKL2NVOEFPbWV3UFYz?=
- =?utf-8?B?WUJzeWlaMStHWThtUlAxVTErWGZJTndLdGxTM2hPL1pLaEdiNGZCL3Mza0Vp?=
- =?utf-8?B?bjk3YmtPZS9aNVVrWWo1UDBPZHN3VzBwY2IvZGRBcHVrNWpaSG1kdnFxeHMx?=
- =?utf-8?B?WlRjM2hZT0xpY3FLTlFJTk1VNFF5WllMeFhINkk5MEhZSTdKZVJ1djVRakRR?=
- =?utf-8?B?VFZISnBWVWhWdkViQ0xubjNXT3V1aGFBcVBzTEZGVC9rT0VzQVJHSjZFU2hO?=
- =?utf-8?B?aVFSMHFHcVFFNXhmL01PWlV2UEFVN1hKTlZJL1BYUk1vZlpFc2N6M1ptVW9U?=
- =?utf-8?B?TGtXa0lHejdVcjlYN3FGZTlONWhibjkvUWdpUFoxMmt1T2M4SGlCekEyZlJh?=
- =?utf-8?B?b1dvUXh6S1laRE9XakFUMzZWOFB3L0h4SHpRUlFtNFJrQSt0akkzdDBRNyt4?=
- =?utf-8?B?YnluWWIwNUtnODlGbE5ESzE2bFE4WEFFbzMxdjUrT3FJOU1CN0Iyb2pmWHpj?=
- =?utf-8?B?VmdJNmVWeVNFVmRMQXY0ZlNUZmtHWlk1UVdVcG1tWjZISU5Vd2ttUk5lUTZW?=
- =?utf-8?B?SnVEeklFSWszM0dzc3pqNVVCN2NwcU1mTENucWhLU1lka0lKN05jQmZnMlUw?=
- =?utf-8?B?Yy92Z2ROL3Z2dnpUaS9SNS91cHJtSjRQYnRGMmVya0RyTFN1ZFFlWVdiR0Q3?=
- =?utf-8?B?aFVGQlFWcnQ3RzJHa0RWcXZ0NHhjTFlBOWlyMEsvaTZoK2k1d2luUERoWlBy?=
- =?utf-8?B?Uys3RmlrZDhLSU5UVmZzKzMyTVIxMFRWU1ZYWUh1cmxod25MSG8wSGt1eEs0?=
- =?utf-8?B?QlQ5cy9uaU0zK3d0eDZmd0liRVZOOXlveUZVbTBCclE2VmhMd0k0V2VFSCs3?=
- =?utf-8?B?NEZ4U1BWaGtkaVhNL281VW1LYjQ1LzdYdm8zcXd1ejA5dG9BUHpXcVNSQ0RD?=
- =?utf-8?B?OW90SGRFbHBITEJXN1hQOEpyVTVtbkVVNXU1aEFoNXFWUnRTTUFxS25uL20r?=
- =?utf-8?B?aEJSTkhpK3l5WVlrempEVEtWVTM3UStMZWExWUdOaUxTbDFaSDhRYmRxeUsv?=
- =?utf-8?B?WDA3MUsxMWU1dG96b0RPYjN1dUowbjQ1MEpVM3lyOVpQZ1UvakY0R0tUaUFz?=
- =?utf-8?B?VFVqWmI2STFFTkdyNXJPUUM3K3VwdG5UdVZjRUM4Q2tSMnpCSXJNUUM0Vyt2?=
- =?utf-8?B?TlJBbTNVSmpFQ2s5U2E4cE5nVklud1ZGb1dhT1UzY3R0QUpNcVhKYkZyZU9X?=
- =?utf-8?Q?l/XRspGKC7A=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MzJGWExFZGZYbk9lcDdWTkFoRFBDeGl0T0N6RnZzQXpFRVl6d2RZbWxTQ2xr?=
+ =?utf-8?B?NVNhNGdRWTQ5Sk5vcStFTXZ2REhYRXNWZTZDR3Q3U0VxaWV4SEFsY3ozKzFG?=
+ =?utf-8?B?RjNlbTFwakxHSkVQaTNsWk95KzZmTTczdXZtWlFIOUpUbDlncllhcjJSS2ZL?=
+ =?utf-8?B?bkhZUTVHL1MwNlVCdFgxN2FuODhNT25WUUVOR3FKUTNyUVovSW1YOFg4K1I1?=
+ =?utf-8?B?WnczNnJLdk8yTE5wWm9pMWdWNERBanBjZ2lUMlRmTXpFc1N1NDY3NUVyWXlE?=
+ =?utf-8?B?Z1A0cWlGWG1NcHdJOU5na2FKVnRGbVdNb0ZocytxSVFtd2ZQcTF3aHJZRTlP?=
+ =?utf-8?B?NXNPMWVoM0gvWWZwcVFMRzhnd2tDa0lGdlFoL09jNVNYQUR5MUlTMkltSWZO?=
+ =?utf-8?B?clJQUXRIV21JdDdCbU5hbUVpMThTdm9Dc3Vna2FvVW11VnlSdVhjOCtBZVE1?=
+ =?utf-8?B?YUFIVFpiY2kxeDhuN0lhWVBWdGFUWFNSaVVLSmpvT2hsSFFFUGRVS2c4SVg0?=
+ =?utf-8?B?TFRtWkh5QS8xYVZueVNqdW5XcmZxaFdwL2FlMk9GYjJaOXM0NGtDK2s3ZmNs?=
+ =?utf-8?B?SVpuOTZoaFhWL2J6bkk2K1pZK2d1NFRTYVI3V0tkSlI4ZGF2cUhZMUVkKytt?=
+ =?utf-8?B?Q280bXVUSEdid3BURTM2UDloWmJsSUZCYzNPZ2d5M0hNNnlaZ1NsWFFJRGg3?=
+ =?utf-8?B?Vi9Ib0FKdC82NUtiVEQ5WE9wcmtCTHl4YzRnb3I0NG1Zb1pJMTVPSXJZdERB?=
+ =?utf-8?B?NTQ0TXNuaVBad3gzYjJhd1Y5NWRoUHpMQVdsQ3NMVUxJWkxzSFNCTXdwaGtp?=
+ =?utf-8?B?V3F6c1hUYXdSMjBWVU83SU1DK3ZiZHppRUNVeGlkaXFMc3VPbGY1RVppZHEy?=
+ =?utf-8?B?dkxaYmtLMHRXL0dxeDlGQ0htY3ExMTYraGkzRlM4Ukx0OFRNNHZScktFMDE5?=
+ =?utf-8?B?ekxuSFpTeU14akNBSUgrN0FBdUxJM3pWSkdZVHJOb2duU1k5a3ZUS1g5bko5?=
+ =?utf-8?B?OVpnSmVMQkNmY21MdDZ3Q3JpSENjbFlUcTVCM0xoQnJuMnVsNVpwN1hVcTk1?=
+ =?utf-8?B?K3Q2VUxyOGtjcllqZFltQWl5UmE3ZlY4Tk5pSFpKcU5vS1NGNXBZYnFENGQx?=
+ =?utf-8?B?MFBWNC9udHNrVkFkOTA1c2Y3RzJreWJ4VGFiU0JBWXY3RWM0Z0tWallLOURC?=
+ =?utf-8?B?a3NHNFhHeHQwTklnbFJPd1g0bzRJYjQxZ2hJNmtYOVVNNTFRN3FJclc2VkJM?=
+ =?utf-8?B?TkhZQTJTM3hvUXlvRmM1aSszalVJTjFOTVpUQTk1MUZsc3A4aWo1UExuKzBu?=
+ =?utf-8?B?bnpXdkxBa2o4T3NKdGR4eVJ2LzN5OUVNdVpzZGczQjZuRHVoTXIwbU9jV1dz?=
+ =?utf-8?B?b09qdGViYVlleFVBbjhYUU5xRHhLUVhNWk5uUDQ3VTJwTVYwbHg1b1lHcWtl?=
+ =?utf-8?B?d3A3eXNnT0lPQ0lJOGJFeXFWZmRLT1djeXpFb0d1QTBGdis5MitDTzlKU1lz?=
+ =?utf-8?B?V0hPb0hwLzk2REg0OXBPRk1jbGVlTnQvSUdRRUUxcmxEMHQ0NzJHQ3FzU0lB?=
+ =?utf-8?B?THNra0xCMnczNlRpeUFuSzFwY1pUNHJkQ1pNbGpXaEZrY2xHTnc0WlpPcmhx?=
+ =?utf-8?B?c0lCL0NXc3E2REJzWlZ3RkZPMG95QzZhRXZHNFdIRnZlQ3ltWVQwRlJlcVBD?=
+ =?utf-8?B?eS9UUndETTJJZVN5bTBKcTNRZUpMMWFpdEVFa2R0VDQzNURkaHRncDgyTXVy?=
+ =?utf-8?B?NVZnMm12bC80K2llV1c0R1hjTzZmYzMyc2NtbXJHUmk1bFhJQllYNC9GUC9o?=
+ =?utf-8?B?VFVhdFNkQVhjUGJ1WGFzek1VMERiODFRSWZNRDlhcEk4bTdvSVRxeGhhVlJz?=
+ =?utf-8?B?dHM5ZlA1RW9zNUU0UnZUd25TcTRZbU9QWU1GUVhoYU5SM1VxYzIvYmEySVFW?=
+ =?utf-8?Q?B+2GQ+qq8GU=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QjZtZ0cwbGtjTitUMUc2eEdsUlM0RXlzanU1a1BDSWZGeU5iaUFvKzNYNWFF?=
- =?utf-8?B?Y2I3SEk0TUlKOEE5bkxqSGNsL1ZYOWNBN09mclBiUGM3a2EwM0hKelBGdjk0?=
- =?utf-8?B?TzkxeW5UNm1zS1hJN0RJL21LZFBsRE96NDFiUHROd1o1eDBZbHZBMHA2NWdp?=
- =?utf-8?B?aDF3N1VqVnB5dHIyZ2hQV3B5ZXhjUUlhWktibVF3Uk1ndVQzOVUweEdLQXlk?=
- =?utf-8?B?Rnk2L2tFZDQ2NGxLSXh3Zm1TZ2dmMWF1dEQrYzg0ZEtBT3kzOFRqT2R4dTBV?=
- =?utf-8?B?UEp0c0xTdTMzR0NoU1AwRk5NTWovbjUzMXJtOXJpVmJuZ2wrMzdDaTlDTTZ3?=
- =?utf-8?B?aHBOc3NhNmRjUnNMakZEdW56MTl5dnBhdk43SnVvYkhhNFJDVktWbGFiMGwy?=
- =?utf-8?B?R1lOTlgzeEE0WW5tLzR3aEtjV1VrQU5DMnlDUmFQVWsxalc4WWtadVBkaXY0?=
- =?utf-8?B?SFdpdjU5dDd0V2tOcGNRZ1FpbnlKdU12TWtuOGhzck1hOFM0dlNpNjlRWG90?=
- =?utf-8?B?ejNtUldCRzZrWTNONXJsSUxuZllydkxPbFZRRFhNNS85bDZZNHRReWRETW1G?=
- =?utf-8?B?UW1vT0pqYU9QRVNMME9CSkNvcUVHWEwvV0JsRDNRZHNybFJNT0R4bzVUSmoy?=
- =?utf-8?B?dEdwcy8rT0lhcnQzMU10bHVyT3FWVEJVbU9zYm1mWkJURVlid3FOczFqcDJS?=
- =?utf-8?B?dFFHdng4eHh0RDQ5bGcxMExkT0JHYjNid2ZERldlYnh4aDVHYW1paWcxNksx?=
- =?utf-8?B?WnprZE5vZ2ZhZTBWR1hUVk9PMm8wWDFROXg4bWY1R20vUUVlc1ZzUWlCWHhq?=
- =?utf-8?B?WmF1aGhqM1ROdkJvQ3diVFU4VXlqTzlRdFNnWDJ4VFZGakYrdmJOODh2ZFUx?=
- =?utf-8?B?ZFZacjlnQXpnWXF3YWFuNzNmR2ZSRUFaYVdKMFEzamEzUEpKc0Z1bDEwY0Ry?=
- =?utf-8?B?WThIREZSZWFNU2lLTVh2N0lBQTZvaDBNOTlLNDF0UjJ4THB0NUxndnVoQU9Q?=
- =?utf-8?B?Q1V1a1MyazByOTFGdFhnOThZYTdjUVhHTXFYck8zN3VqcXJuUVpaUGZ6aUxw?=
- =?utf-8?B?UFZmYWFRRGtqaTZBcHIydU00dVFtcC9rRTltWnkwNC9waTJFRC9RdytoL2ht?=
- =?utf-8?B?TWhpZzVtdCtBOUxWRWJJQmJFdUFVeEhuV2p0V2JvQ09Panh2d2NJSUNsQUNM?=
- =?utf-8?B?NTN4cUlpTXJYY3RPQUxFcE1oL1hDa3grdXZWaWF4eXJrZXFDb2F1Q2doMkVW?=
- =?utf-8?B?K0xJUDNHbzlIa0QyZWh5ZnJkVmZLRWtiQXJlWDlpdVRCWlhTNkNGVUczT0FS?=
- =?utf-8?B?YTFWdHFZK2phTkhZTUMySGQzSXpUdE8yTUx1TERkQ3VKdW5yemRjajMzaDR6?=
- =?utf-8?B?bXZlUXVSUWZGRUE2eDhqL3prR0tGbGJyY3hrN3Bod3BWOVVENnJMUEE0cGpx?=
- =?utf-8?B?UHNxVTMvVUN0eEI1R0p2OFp4U3pkYlF1aW0zelNzMlpkU0F2UmxJMnRRZmJv?=
- =?utf-8?B?amkyQ2dPMUl5ZVU3cTd6K1BxSUdsdlRLS21XbUdPNmxWeGxSVVRTSXE0R1Bs?=
- =?utf-8?B?T2l5SXdhcm9lWkdTRXVma2F2STRDUGwvSU5XODVNQkV3SVJQWFZ4eHlzTTFS?=
- =?utf-8?B?ODdHOXRvMVU2LzdpWi83aHU0NHlXeWY3YjNFL0hZSVZZLzQvY3F6WThGMEhq?=
- =?utf-8?B?bEI4bkJUSjVOQ2puZFkrVVAvYWRkNEd5VWZibFR6SG1Ob0tOQjI4Yk9wRjFq?=
- =?utf-8?B?RHpWZytGSnB2TXVMS3p4RXNrUndZUkhuUlFYMWNsMlF2NDNOWGNaSGo5MGFE?=
- =?utf-8?B?NjV5NTJyVFBNaDNGc3YzVWduQjBYdENwcmdnRVBwNW16K3hZQ25WS3M3OGl1?=
- =?utf-8?B?UHZ3YzZsdHNTRGt5RVZEWlVVaTlOZmxRMDV6Rkg0eTkxVm00TDlMT1FnVy9i?=
- =?utf-8?B?TTIxaW9hNFJKQjI3b0dDZlpEczJxTmJlYjdzSkdDOGNCUDc3ZnZaeG5uVnJH?=
- =?utf-8?B?aXIyNkQ0TkpCZ05PUklYQkZvamNIZEpTTjkrS3g4eGN5dmNGUWVwVWoySm9k?=
- =?utf-8?B?eDBqUjB4djVKVUpuUnRLeGZsSlVJT3NMV2p2NFFHL01hYmg1cW9jTjRnbVd2?=
- =?utf-8?B?RFIySnFxYlg1TGhRVnphWDV1SkRBOUQ0Mzdyam51UEpPWUN3ZUNMOWdTa3FM?=
- =?utf-8?B?Mnc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d775ee7-82b7-4a25-4446-08dde58f4ec8
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ak5uN3FXZTkycldYL0Yvdzc1WXNMbDJ6OFpwRkxPeXZjdjlHL08rZXRoTFNU?=
+ =?utf-8?B?Z3dpWFR5WnlFMDNUNEkxVjIwYmtRN2FDaG9DMkdMd3FwN1U5elIrSno0cDZs?=
+ =?utf-8?B?UVVzYm04d2dNQnNwcUJyWksxakM5aU9Gd0dzSlpVdVN3bnhqQjlUWktlY0RT?=
+ =?utf-8?B?ODJEY0hGcXJMTVJyNnhKNTFvWm0vU3NCaTFYU1BrVkJkdkxsM25paW4zK3lU?=
+ =?utf-8?B?SG1ZNmtIUVhBZnU5bG53VXNUTjQydmozU2R5RUV1WHdRUzFtRXkxN2VzaHVQ?=
+ =?utf-8?B?M0ZSK0t1VVQ3NE1mbytaU05lSVk4UTdSNSt2djR2WVp0aERQZnkxMkoxL0V0?=
+ =?utf-8?B?TytQOUFpVmtOeTdpSWtGemZuM3VoY3ZMSWdNL2dzSU80YW9idUxwTXRZTVdt?=
+ =?utf-8?B?YmJvSkQrN3lUbHBOUDQwVCs4eHk5N2F0WHFkTUVjQmhOL1Qrc0lTM2dxZTZR?=
+ =?utf-8?B?RWlFbnJMb1k1dnNCK1dpNmsycnhvcCtSWVAwVXp2UFdYMWdtalAra2JHRUx2?=
+ =?utf-8?B?Q1hRMUJ0REh2RitqSFQ0MC90UG05MWZKaklpdkFEQ09NNFI5dDlwYTdhb1Nz?=
+ =?utf-8?B?NkYrbW5RcjhrTzM1WTdod25FWk5BNk42eGdUc2hnRTk4TThHN2pFbTc3SEw5?=
+ =?utf-8?B?L2F3cytYWmt1aTdBME5xRnVUb1UycVNFOEV5STdGUjlYdDhHM2ZGVjJhalFF?=
+ =?utf-8?B?KzZpL3hTK1NoeSs4TVJpWEo1aEZHaCtTbTRHbVZlYWkwVXpGZFpTR0ZSVmJv?=
+ =?utf-8?B?U2U5RWdiNEtrTlBTdWdNTTQvZC9FMFdpd1JVMVlSYitDUzYxWEVmdlNHMzNI?=
+ =?utf-8?B?ck9BaGVpT1pUYTg3bndrYnFXYmQvZmFjL0xWVDFVb3ZTVFpKcWFuaTAyTm9B?=
+ =?utf-8?B?UHd1YlZ6QUtoZ0VHdmpQWDhjdmNMYTJGb2w1Si9rcEV0WUYybWw3YUp2K1Vm?=
+ =?utf-8?B?RzR4TWh0Tm0vQkV3cEJBZ2Y1NlJzSXJJYWVmTmExaDFBYzNlYjlCbTRDTUpU?=
+ =?utf-8?B?NGMrbG5MeTRaU0lDQzVvaUJFVStPR2hlWHVQL24rSkNoNVZpSkkwcGR6YkRX?=
+ =?utf-8?B?Wms1YnpCQkUyMDRHTGpOSEtkMFUrZENKaTk2TmtoWnVXOUxQWkpDb1ppakp5?=
+ =?utf-8?B?TGs2Q1haYkdvNmk4dDBLNnorczJORzl0L2tHcExpY0lJeWlUM0ZTMGhmNE9j?=
+ =?utf-8?B?bnJLMW94Um9RUnVSTWl5ZzFseWlhczk4d21OT0hBcXI4dWNwbTJLMW5IM1J3?=
+ =?utf-8?B?ako1V21xOEIzY2lrWG00WDYvaXJ4TnhLa3pqNXlXazdjRzdEMHFTZHV0VWx1?=
+ =?utf-8?B?dnVaNFZyYTNvTStKOGtYTjlvM2h3dVFxZy9laGlIaXVQWEF3cExzbzVTUHNL?=
+ =?utf-8?B?UlYrVkNpS1VYWVlqZXBSeENjaHlQNjhBd3RrRmU1dGJQSWJ5UkJrRVVPeXJL?=
+ =?utf-8?B?ejJGRUZPUEY3U0hoNG1MaUc3YVd2OE5yRE4rTEUxMW1vdzZnV3ZsNXVwYnRn?=
+ =?utf-8?B?UVV6ZlZIcmRLWWtGWFZaU0Y4eVFqS1FxK1A1bzRzWGJhZUlSOUdsOWg1ODdi?=
+ =?utf-8?B?RU00TTJabTluK0JGUGw3TFdNV0o4S0pJR0VRaFVBb2tlTHZ0RXZSQU05L09a?=
+ =?utf-8?B?bVVGVk1zSyszTjBoZmJGdUc5dlJQazh0bmxBMFN4d2tlL0RRQTdUOWJQeW8r?=
+ =?utf-8?B?dlNvbkVZdzZSOER5UlpHajhNajNTQXZZNXV4cVFnV25JMndLSmhhWHlSMDFw?=
+ =?utf-8?B?cHBhajkwUWJwQi9NUkJpalJPalh4MCtuWXl5T094bXRZcnpJZHBrSFpjNGR6?=
+ =?utf-8?B?Z2xaV1VibkpCWVBzaFdWbzdnYnp0R3NkRFlVa2hxck1LUWxHZEk5ZjVrVVhR?=
+ =?utf-8?B?NjFLV3dkUTFYUURKaFEraHZwbkNuS3E3Y0Z0OXNwRXRSMUxqTGgvSjBzeFFC?=
+ =?utf-8?B?WS9WS1A2eFJDLzVhaWJkMmNYM2Y5azdkQTF6MmRnWTdrRy8zS0c4RDNZak8x?=
+ =?utf-8?B?VHE4YlQ4T0lsT090dHcxaE9ZRG9BUUIramtKT3RuV3lvTXJ0dG53aE5DT2RL?=
+ =?utf-8?B?TkJoTitHd1p0Y0Z2YmJBZWg5WVAvbWw0ZmVEU0FBU0lsR20vMUkvaTBURG1n?=
+ =?utf-8?B?WURlVGxuR0dIUDd4dHZDQTNoSDVkcWUyT2xTeTB5dEpRVjFkalc5TitBc0du?=
+ =?utf-8?B?eXc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39431527-6364-43ac-3367-08dde58f5932
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 17:29:42.3430
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2025 17:29:59.7848
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fDoIxY2dq5AcRu8uPJeaqeA+MVgP/IqIaREOt7X5ZReKUJN/xIY4Y9IonCnJE86vIM0/VU8405EKQHj1rH33Dw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: SqQNfT0GKnu5XGoh9N3AqPs+WIamKXJ7bKnYR/SRCGFuDJhhWejm1c5bmzEwAaFBg9h/fX65/nvD3tiCZv5KDA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPF529E923C8
 X-OriginatorOrg: intel.com
 X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
@@ -222,280 +221,63 @@ X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 15/08/2025 11:34, Athira Rajeev wrote:
-> Create samples from DTL entries for displaying in perf report
-> and perf script. When the different PERF_RECORD_XX records are
-> processed from perf session, powerpc_vpadtl_process_event() will
-> be invoked. For each of the PERF_RECORD_XX record, compare the timestamp
-> of perf record with timestamp of top element in the auxtrace heap.
-> Process the auxtrace queue if the timestamp of element from heap is
-> lower than timestamp from entry in perf record.
+> Introduce arch_perf_sample__fprintf_synth_evt to add support for
+> printing arch specific synth event details. The process_event()
+> function in "builtin-script.c" invokes perf_sample__fprintf_synth() for
+> displaying PERF_TYPE_SYNTH type events.
 > 
-> Sometimes it could happen that one buffer is only partially
-> processed. if the timestamp of occurrence of another event is more
-> than currently processed element in the queue, it will move on
-> to next perf record. So keep track of position of buffer to
-> continue processing next time. Update the timestamp of the
-> auxtrace heap with the timestamp of last processed entry from
-> the auxtrace buffer.
+>    if (attr->type == PERF_TYPE_SYNTH && PRINT_FIELD(SYNTH))
+>    	perf_sample__fprintf_synth(sample, evsel, fp);
 > 
-> Generate perf sample for each entry in the dispatch trace log.
-> Fill in the sample details:
-> - sample ip is picked from srr0 field of dtl_entry
-> - sample cpu is picked from processor_id of dtl_entry
-> - sample id is from sample_id of powerpc_vpadtl
-> - cpumode is set to PERF_RECORD_MISC_KERNEL
-> - Additionally save the details in raw_data of sample. This
-> is to print the relevant fields in perf_sample__fprintf_synth()
-> when called from builtin-script
+> perf_sample__fprintf_synth() process the sample depending on the value
+> in evsel->core.attr.config . Currently all the arch specific callbacks
+> perf_sample__fprintf_synth* are part of "builtin-script.c" itself.
+> Example: perf_sample__fprintf_synth_ptwrite,
+> perf_sample__fprintf_synth_mwait etc. This will need adding arch
+> specific details in builtin-script.c for any new perf_synth_id events.
 > 
-> The sample is processed by calling perf_session__deliver_synth_event()
-> so that it gets included in perf report.
-> 
-> Sample Output:
-> 
->   ./perf record -a -e sched:*,vpa_dtl/dtl_all/ -c 1000000000 sleep 1
->   [ perf record: Woken up 1 times to write data ]
->   [ perf record: Captured and wrote 0.300 MB perf.data ]
-> 
->   ./perf report
-> 
->   # Samples: 321  of event 'vpa-dtl'
->   # Event count (approx.): 321
->   #
->   # Children      Self  Command  Shared Object      Symbol
->   # ........  ........  .......  .................  ..............................
->   #
->      100.00%   100.00%  swapper  [kernel.kallsyms]  [k] plpar_hcall_norets_notrace
+> Introduce arch_perf_sample__fprintf_synth_evt() and invoke this as
+> default callback for perf_sample__fprintf_synth(). This way, arch
+> specific code can handle processing the details.
+
+A default callback is not needed.
+
 > 
 > Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
 > ---
->  tools/perf/util/powerpc-vpadtl.c | 181 +++++++++++++++++++++++++++++++
->  1 file changed, 181 insertions(+)
+>  tools/perf/builtin-script.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/tools/perf/util/powerpc-vpadtl.c b/tools/perf/util/powerpc-vpadtl.c
-> index 299927901c9d..370c566f9ac2 100644
-> --- a/tools/perf/util/powerpc-vpadtl.c
-> +++ b/tools/perf/util/powerpc-vpadtl.c
-> @@ -160,6 +160,43 @@ static void powerpc_vpadtl_dump_event(struct powerpc_vpadtl *vpa, unsigned char
->  	powerpc_vpadtl_dump(vpa, buf, len);
+> diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
+> index d9fbdcf72f25..eff584735980 100644
+> --- a/tools/perf/builtin-script.c
+> +++ b/tools/perf/builtin-script.c
+> @@ -2003,6 +2003,12 @@ static int perf_sample__fprintf_synth_iflag_chg(struct perf_sample *sample, FILE
+>  	return len + perf_sample__fprintf_pt_spacing(len, fp);
 >  }
 >  
-> +/*
-> + * Generate perf sample for each entry in the dispatch trace log.
-> + *   - sample ip is picked from srr0 field of dtl_entry
-> + *   - sample cpu is picked from logical cpu.
-> + *   - sample id is from sample_id of powerpc_vpadtl
-> + *   - cpumode is set to PERF_RECORD_MISC_KERNEL
-
-Above 4 lines of comments are a bit redundant.
-
-> + *   - Additionally save the details in raw_data of sample. This
-> + *   is to print the relevant fields in perf_sample__fprintf_synth()
-> + *   when called from builtin-script
-> + */
-> +static int powerpc_vpadtl_sample(struct dtl_entry *record, struct powerpc_vpadtl *vpa, u64 save, int cpu)
+> +static void arch_perf_sample__fprintf_synth_evt(struct perf_sample *data __maybe_unused,
+> +		 FILE *fp __maybe_unused, u64 config __maybe_unused)
 > +{
-> +	struct perf_sample sample;
-> +	union perf_event event;
-> +
-> +	sample.ip = be64_to_cpu(record->srr0);
-> +	sample.period = 1;
-> +	sample.cpu = cpu;
-> +	sample.id = vpa->sample_id;
-> +	sample.callchain = NULL;
-> +	sample.branch_stack = NULL;
-> +	memset(&event, 0, sizeof(event));
-> +	sample.cpumode = PERF_RECORD_MISC_KERNEL;
-> +	sample.time = save;
-> +	sample.raw_data = record;
-> +	sample.raw_size = sizeof(record);
-> +	event.sample.header.type = PERF_RECORD_SAMPLE;
-> +	event.sample.header.misc = sample.cpumode;
-> +	event.sample.header.size = sizeof(struct perf_event_header);
-> +	if (perf_session__deliver_synth_event(vpa->session, &event,
-> +				&sample)) {
-
-There is some inconsistency with line wrapping
-
-> +		pr_debug("Failed to create sample for dtl entry\n");
-> +		return -1;
-> +	}
-> +	return 0;
+> +	return;
 > +}
 > +
->  static int powerpc_vpadtl_get_buffer(struct powerpc_vpadtl_queue *vpaq)
+>  static int perf_sample__fprintf_synth(struct perf_sample *sample,
+>  				      struct evsel *evsel, FILE *fp)
 >  {
->  	struct auxtrace_buffer *buffer = vpaq->buffer;
-> @@ -233,6 +270,148 @@ static int powerpc_vpadtl_decode(struct powerpc_vpadtl_queue *vpaq)
->  	return 1;
->  }
->  
-> +static int powerpc_vpadtl_decode_all(struct powerpc_vpadtl_queue *vpaq)
-> +{
-> +	int ret;
-> +	unsigned char *buf;
-> +
-> +	if (!vpaq->buf_len || (vpaq->pkt_len == vpaq->size)) {
+> @@ -2026,6 +2032,7 @@ static int perf_sample__fprintf_synth(struct perf_sample *sample,
+>  	case PERF_SYNTH_INTEL_IFLAG_CHG:
+>  		return perf_sample__fprintf_synth_iflag_chg(sample, fp);
+>  	default:
 
-Unnecessary parentheses around 'vpaq->pkt_len == vpaq->size'
+Should just add something like:
 
-> +		ret = powerpc_vpadtl_get_buffer(vpaq);
-> +		if (ret <= 0)
-> +			return ret;
-> +	}
-> +
-> +	if (vpaq->buffer) {
-> +		buf = vpaq->buffer->data;
-> +		buf += vpaq->pkt_len;
-> +		vpaq->dtl = (struct dtl_entry *)buf;
-> +		if ((long long)be64_to_cpu(vpaq->dtl->timebase) <= 0) {
-> +			if (vpaq->pkt_len != dtl_entry_size && vpaq->buf_len) {
-> +				vpaq->pkt_len += dtl_entry_size;
-> +				vpaq->buf_len -= dtl_entry_size;
-> +			}
-> +			return -1;
-> +		}
-> +		vpaq->pkt_len += dtl_entry_size;
-> +		vpaq->buf_len -= dtl_entry_size;
-> +	} else
-> +		return 0;
+	case PERF_SYNTH_POWERPC_VPA_DTL:
+		return perf_sample__fprintf_synth_vpadtl(sample, fp);
 
-braces {} should be used on all arms of this statement
-
-> +
-> +
-> +	return 1;
-> +}
-> +
-> +static int powerpc_vpadtl_run_decoder(struct powerpc_vpadtl_queue *vpaq, u64 *timestamp)
-> +{
-> +	struct powerpc_vpadtl *vpa = vpaq->vpa;
-> +	struct dtl_entry *record;
-> +	int ret;
-> +	double result, div;
-> +	double boot_freq = vpaq->tb_freq;
-> +	unsigned long long boot_tb = vpaq->boot_tb;
-> +	unsigned long long diff;
-> +	unsigned long long save;
-> +
-> +	while (1) {
-> +		ret = powerpc_vpadtl_decode_all(vpaq);
-> +		if (!ret) {
-> +			pr_debug("All data in the queue has been processed.\n");
-> +			return 1;
-> +		}
-> +
-> +		/*
-> +		 * Error is detected when decoding VPA PMU trace. Continue to
-> +		 * the next trace data and find out more dtl entries.
-> +		 */
-> +		if (ret < 0)
-> +			continue;
-> +
-> +		record = vpaq->dtl;
-> +
-> +		diff = be64_to_cpu(record->timebase) - boot_tb;
-> +		div = diff / boot_freq;
-> +		result = div;
-> +		result = result * 1000000000;
-> +		save = result;
-
-It would be nicer for the time calculation to be in a separate function.
-Also 'save' is an odd choice of variable name for a timestamp.
-
-> +
-> +		/* Update timestamp for the last record */
-> +		if (save > vpaq->timestamp)
-> +			vpaq->timestamp = save;
-> +
-> +		/*
-> +		 * If the timestamp of the queue is later than timestamp of the
-> +		 * coming perf event, bail out so can allow the perf event to
-> +		 * be processed ahead.
-> +		 */
-> +		if (vpaq->timestamp >= *timestamp) {
-> +			*timestamp = vpaq->timestamp;
-> +			vpaq->pkt_len -= dtl_entry_size;
-> +			vpaq->buf_len += dtl_entry_size;
-> +			return 0;
-> +		}
-> +
-> +		ret = powerpc_vpadtl_sample(record, vpa, save, vpaq->cpu);
-> +		if (ret)
-> +			continue;
-> +	}
-> +	return 0;
-> +}
-> +
-> +/*
-> + * For each of the PERF_RECORD_XX record, compare the timestamp
-> + * of perf record with timestamp of top element in the auxtrace heap.
-> + * Process the auxtrace queue if the timestamp of element from heap is
-> + * lower than timestamp from entry in perf record.
-> + *
-> + * Update the timestamp of the auxtrace heap with the timestamp
-> + * of last processed entry from the auxtrace buffer.
-> + */
-> +static int powerpc_vpadtl_process_queues(struct powerpc_vpadtl *vpa, u64 timestamp)
-> +{
-> +	unsigned int queue_nr;
-> +	u64 ts;
-> +	int ret;
-> +
-> +	while (1) {
-> +		struct auxtrace_queue *queue;
-> +		struct powerpc_vpadtl_queue *vpaq;
-> +
-> +		if (!vpa->heap.heap_cnt)
-> +			return 0;
-> +
-> +		if (vpa->heap.heap_array[0].ordinal >= timestamp)
-> +			return 0;
-> +
-> +		queue_nr = vpa->heap.heap_array[0].queue_nr;
-> +		queue = &vpa->queues.queue_array[queue_nr];
-> +		vpaq = queue->priv;
-> +
-> +		auxtrace_heap__pop(&vpa->heap);
-> +
-> +		if (vpa->heap.heap_cnt) {
-> +			ts = vpa->heap.heap_array[0].ordinal + 1;
-> +			if (ts > timestamp)
-> +				ts = timestamp;
-> +		} else
-> +			ts = timestamp;
-
-braces {} should be used on all arms of this statement
-
-> +
-> +		ret = powerpc_vpadtl_run_decoder(vpaq, &ts);
-> +		if (ret < 0) {
-> +			auxtrace_heap__add(&vpa->heap, queue_nr, ts);
-> +			return ret;
-> +		}
-> +
-> +		if (!ret) {
-> +			ret = auxtrace_heap__add(&vpa->heap, queue_nr, ts);
-> +			if (ret < 0)
-> +				return ret;
-> +		} else {
-> +			vpaq->on_heap = false;
-> +		}
-> +	}
-> +	return 0;
-> +}
-> +
->  static struct powerpc_vpadtl_queue *powerpc_vpadtl__alloc_queue(struct powerpc_vpadtl *vpa,
->  						unsigned int queue_nr)
->  {
-> @@ -368,6 +547,8 @@ static int powerpc_vpadtl_process_event(struct perf_session *session __maybe_unu
->  		err = powerpc_vpadtl__update_queues(vpa);
->  		if (err)
->  			return err;
-> +
-> +		err = powerpc_vpadtl_process_queues(vpa, sample->time);
+> +		arch_perf_sample__fprintf_synth_evt(sample, fp, evsel->core.attr.config);
+>  		break;
 >  	}
 >  
->  	return err;
 
 
