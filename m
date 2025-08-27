@@ -1,62 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-11380-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11381-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F899B38461
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 16:04:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF6AB3848B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 Aug 2025 16:13:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBmVW62kdz30WF;
-	Thu, 28 Aug 2025 00:04:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cBmht2G50z3bb2;
+	Thu, 28 Aug 2025 00:13:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756303459;
-	cv=none; b=hYaXjTzyRXkORFVtfNPS8HbMENhZBK18h8pB4FYuh7bjDDtpcWekeoM5zuRaf3o06MfVcSV2m7BSYg+5GnQqLOMOLUeHMyEtJouwAZ146kqM0jay8SYOHIkH84k8XHMnGOiCdTGiA9y682MxP03P+I/wIWaXfABM2akjYoYw1JW22auuEjBIHlmYMvRCnu21HwgJQp0l2BNjUf20QsdwNG1aq+YDvNMzd7MYDobgyu398+KzZlzNvEtS4gJt9E+chm8dqYX56p9ZiBGP7vvIGWnuDJ3WmQu5LoiAfBmX+e0CnGHhOZYLYxqi/dL/ROeRu/RxQyBw/u3emUHXXK1dlQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::649"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756303998;
+	cv=none; b=IyEaJi/lW6G8xI4lK729/UUA2SxfbaE23/ihKgH193nM0Ux2nIQJBYMSbsWsI6Ic1Drr0qvN9jWj/Q5d3728OWXsu2WM5V300mwgfRJ87tYVglBvF5dPson3fZv7yULpIrtTQk9R7Bt9o3jtxyIA1YFfv82hAiJ/rcJVpS17ohbUTM4nY6fa41hwuwEhjmgt/uPcBBtGp2BZNhHvCLhwIKku7Lx/RuUUS60k7FbKeXXIDaCTDyZhnL/zkwNESScPG/ZzFsiSg7JOJDF0A+CyL/mk3HvF/DqOHS/iYz+NnVPO+eqTHMH6qvdI1cadNEMXXRDPCmJxmnpxjyTAalrw1A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756303459; c=relaxed/relaxed;
-	bh=CIcwa4mEV8udWC3JTKtbSQDAkWb5VGGkx9vjUqFkP6Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PPEQDxkX0G32fhvXn8jUHLJW+6SWS0hnuidT4h5tzOQOzZbqssRHTag69M0PKbN14icHA/LtRy4NKZsm95ovas55n1luhLngXWBTMaqCX0BiDWy1iS6srCjViZX5upef5M93eLPD8Q72FyslTfCcMJLJV/v3SIoE+I+82wapEqioifyvqvKGJgo19LRdyxvEN9QujZCHq6e1Z+hRBLE+Xf3wfJn6Q2NMWOm/eWVqjhvC+62u0UvmGL/SCqfAc9boRrRx2lOoIoHYlB5Zfu7873GkX2kpg2dhkEaEav4TQYqOuEjKFzjywmsTB8yCuHTWzLde6wMRDgN6VVhxOwcLmQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cBmVV67CJz30TY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 00:04:17 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 417AD2720;
-	Wed, 27 Aug 2025 07:03:36 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 662DB3F738;
-	Wed, 27 Aug 2025 07:03:37 -0700 (PDT)
-Date: Wed, 27 Aug 2025 15:03:22 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: peterz@infradead.org, mingo@redhat.com, will@kernel.org,
-	acme@kernel.org, namhyung@kernel.org,
-	alexander.shishkin@linux.intel.com, jolsa@kernel.org,
-	irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com, linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org, dmaengine@vger.kernel.org,
-	linux-fpga@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, coresight@lists.linaro.org,
-	iommu@lists.linux.dev, linux-amlogic@lists.infradead.org,
-	linux-cxl@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 02/19] perf/hisilicon: Fix group validation
-Message-ID: <aK8QKlGsjB4WWg2e@J2N7QTR9R3>
-References: <cover.1755096883.git.robin.murphy@arm.com>
- <c7b877e66ba0d34d8558c5af8bbb620e8c0e47d9.1755096883.git.robin.murphy@arm.com>
- <aK2XS_GhLw1EQ2ml@J2N7QTR9R3>
- <ab80cb84-42b2-4ce8-aa6c-4ce6be7a12b7@arm.com>
- <aK3TS3s5_Pczx1nu@J2N7QTR9R3>
+	t=1756303998; c=relaxed/relaxed;
+	bh=oT9Qx0pL0526DK73EqyoLYw0wsYmSjn2bOtkKWj9+LI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=nivnfkFXnlTs5sfM1z0TAdnbZaKSkSUgPBelsGEdiuCvtLn8sXy2i3P2YoilWzWrNcOR1RBMZFN3kxVNd+7SKsk6XbBRNXfZJ6SZ79ZpszEXclRTLIAV6xboqjFe+GgIYkrF+87St51jc7D5McC+SmHWyUx4fWuaBkgILOqQoADctNK2BX7WynwQFwE5t74ogxeewJPIztOFf+xC/om5NEmnGjZSl+eB4jNziPwtrYtCQXiK/jeLaUcrM+occAgaIxyAQ72cWzz6Ak0YwTz8RVA2UtW0oX4IMIRUONcWQX5hTG4G0PVx/rrtDkIwL0euKpUafnf0QTMFhNm9JLsnhA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MEPh/dWb; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3erkvaaykdkyykgtpimuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=MEPh/dWb;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3erkvaaykdkyykgtpimuumrk.iusrotadvvi-jkbroyzy.ufrghy.uxm@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cBmhr6V2Yz30TY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 00:13:16 +1000 (AEST)
+Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-24636484391so59558435ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Aug 2025 07:13:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1756303993; x=1756908793; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oT9Qx0pL0526DK73EqyoLYw0wsYmSjn2bOtkKWj9+LI=;
+        b=MEPh/dWbikuiHmZfUaKGxUgsGcz4nENkpHm48gw6ois5GmNkm7p+D9fNZolFOXDDQP
+         xjuZ7UwN6Y2yzbJYmnxQOZrd92RAgYD8ATC9MLFD+ez5idwlM6FUQAozJ8Fir+0GO8Ge
+         lMXvWb82z3Vwyd0sSw0ZJbg+w8Hi19lfliLgl1Yz1To/V3AwMO9iEXfuRZTFBvQumgnI
+         O3ZP6lhN4TjBGYUQreFCNS1NNE0RFnydyjhRjJ3VLRB66Ihfr8RaEGO4qXPjllKSGdof
+         9F/UDfTr1H8wPDHMU+fvBuFvp9fck5PV/Xu/7e56ro3aiVGZvvfdLibqJmhcGm/qqeoa
+         jPzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756303993; x=1756908793;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oT9Qx0pL0526DK73EqyoLYw0wsYmSjn2bOtkKWj9+LI=;
+        b=s3poEYRQEgRQAsHSeKnaaghUARPfn9Us+YCGNVtU82A3FPZdhdNs1zgtcUh1yFQynJ
+         wGyjtADXvObBIDBAEB8RdjlZvbTz5JyyJW3F4rRUlSuGgj6uAHdSfwGyID2LqD01Tt9k
+         8D002yRkycFKxvlelVTyyAHvJtkMwTaDQnPZNhfKJpL85qev05QgINFnsLKpCP0VdIIw
+         Ui9TGNmn7/rXtOD5zdcQb1cjN8tKOBDwf5JlZ7BV2YljGRNhmNtb4LFqs+3zcITCgqXH
+         /Cz8EbmMEg+4vAbEBcFK9qBOtb7caEmnUhbSXGMCXwt6bjMcr5Qgr6CLOR1z8XGR/8ho
+         NzaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUYTxWdbPIvdeBQjpBfnxCQ+0EIoE5wR5yikScr1CFb/Ym7RzYsWl2BMEU9eGeixohICjTO7pqGlW8mZPw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyWvvbCdeWpSX5dGUB+jY+TDHh/Skh48mTrxyJT1HD6HRQJUJRl
+	2D4HaECwm1L5aqdPO5uLFsf+DFXCNvnS2rZrnH7bNDMwcLOeTOPzBNyxZx8fVY8tPu9okIFPgnL
+	EJjnn+A==
+X-Google-Smtp-Source: AGHT+IGTSg2J3odWqRi5DzWDmdBYNRXtpWLMNIy0mlgNYPFM/YLwHCJkE7ruCavXPIcZq+6RDeJTdDhPxa4=
+X-Received: from plan10.prod.google.com ([2002:a17:903:404a:b0:248:7792:b8da])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a8e:b0:246:620:a0b9
+ with SMTP id d9443c01a7336-2462efcaaa3mr229124795ad.61.1756303993097; Wed, 27
+ Aug 2025 07:13:13 -0700 (PDT)
+Date: Wed, 27 Aug 2025 07:13:11 -0700
+In-Reply-To: <20250827023202.10310-3-zhangzihuan@kylinos.cn>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,69 +75,124 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aK3TS3s5_Pczx1nu@J2N7QTR9R3>
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+References: <20250827023202.10310-1-zhangzihuan@kylinos.cn> <20250827023202.10310-3-zhangzihuan@kylinos.cn>
+Message-ID: <aK8Sd30K64mbN1Nt@google.com>
+Subject: Re: [PATCH v2 02/18] KVM: x86: Use __free(put_cpufreq_policy) for
+ policy reference
+From: Sean Christopherson <seanjc@google.com>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Markus Mayer <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
+	Chanwoo Choi <cw00.choi@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, 
+	Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	imx@lists.linux.dev, linux-omap@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Aug 26, 2025 at 04:31:23PM +0100, Mark Rutland wrote:
-> On Tue, Aug 26, 2025 at 03:35:48PM +0100, Robin Murphy wrote:
-> > On 2025-08-26 12:15 pm, Mark Rutland wrote:
-> > > On Wed, Aug 13, 2025 at 06:00:54PM +0100, Robin Murphy wrote:
-
-> > > > diff --git a/drivers/perf/hisilicon/hisi_pcie_pmu.c b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-> > > > index c5394d007b61..3b0b2f7197d0 100644
-> > > > --- a/drivers/perf/hisilicon/hisi_pcie_pmu.c
-> > > > +++ b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-> > > > @@ -338,21 +338,16 @@ static bool hisi_pcie_pmu_validate_event_group(struct perf_event *event)
-> > > >   	int counters = 1;
-> > > >   	int num;
-> > > > -	event_group[0] = leader;
-> > > > -	if (!is_software_event(leader)) {
-> > > > -		if (leader->pmu != event->pmu)
-> > > > -			return false;
-> > > > +	if (leader == event)
-> > > > +		return true;
-> > > > -		if (leader != event && !hisi_pcie_pmu_cmp_event(leader, event))
-> > > > -			event_group[counters++] = event;
-> > > > -	}
-> > > > +	event_group[0] = event;
-> > > > +	if (leader->pmu == event->pmu && !hisi_pcie_pmu_cmp_event(leader, event))
-> > > > +		event_group[counters++] = leader;
-> > > 
-> > > Looking at this, the existing logic to share counters (which
-> > > hisi_pcie_pmu_cmp_event() is trying to permit) looks to be bogus, given
-> > > that the start/stop callbacks will reprogram the HW counters (and hence
-> > > can fight with one another).
-
-> > It does seem somewhat nonsensical to have multiple copies of the same event
-> > in the same group, but I imagine it could happen with some sort of scripted
-> > combination of metrics, and supporting it at this level saves needing
-> > explicit deduplication further up. So even though my initial instinct was to
-> > rip it out too, in the end I concluded that that doesn't seem justified.
+On Wed, Aug 27, 2025, Zihuan Zhang wrote:
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
 > 
-> As above, I think it's clearly bogus. I don't think we should have
-> merged it as-is and it's not something I'd like to see others copy.
-> Other PMUs don't do this sort of event deduplication, and in general it
-> should be up to the user or userspace software to do that rather than
-> doing that badly in the kernel.
+> No functional change intended.
 > 
-> Given it was implemented with no rationale I think we should rip it out.
-> If that breaks someone's scripting, then we can consider implementing
-> something that actually works.
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  arch/x86/kvm/x86.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index a1c49bc681c4..2a825f4ec701 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -9492,16 +9492,14 @@ static void kvm_timer_init(void)
+>  		max_tsc_khz = tsc_khz;
+>  
+>  		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+> -			struct cpufreq_policy *policy;
+> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  			int cpu;
+>  
+>  			cpu = get_cpu();
+>  			policy = cpufreq_cpu_get(cpu);
+> -			if (policy) {
+> -				if (policy->cpuinfo.max_freq)
+> -					max_tsc_khz = policy->cpuinfo.max_freq;
+> -				cpufreq_cpu_put(policy);
+> -			}
+> +			if (policy && policy->cpuinfo.max_freq)
+> +				max_tsc_khz = policy->cpuinfo.max_freq;
+> +
+>  			put_cpu();
 
-Having dug some more, I see that this was intended to handle the way
-the hardware shares a single config register between pairs of counter
-and counter_ext registers, with the idea being that two related events
-could be allocated into the same counter pair (but would only occupy a
-single counter each).
+Hmm, this is technically buggy.  __free() won't invoke put_cpufreq_policy() until
+policy goes out of scope, and so using __free() means the code is effectively:
 
-I still think the code is wrong, but it is more complex than I made it
-out to be, and you're right that we should leave it as-is for now. I can
-follow up after we've got this series in.
+		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+			struct cpufreq_policy *policy;
+			int cpu;
 
-Mark.
+			cpu = get_cpu();
+			policy = cpufreq_cpu_get(cpu);
+			if (policy && policy->cpuinfo.max_freq)
+				max_tsc_khz = policy->cpuinfo.max_freq;
+			put_cpu();
+
+			if (policy)
+				cpufreq_cpu_put(policy);
+		}
+
+That's "fine" because the policy isn't truly referenced after preemption is
+disabled, the lifecycle of the policy doesn't rely on preemption being disabled,
+and KVM doesn't actually care which CPU is used to get the max frequency, i.e.
+this would technically be "fine" too:
+
+		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
+			struct cpufreq_policy *policy;
+			int cpu;
+
+			cpu = get_cpu();
+			policy = cpufreq_cpu_get(cpu);
+			put_cpu();
+
+			if (policy && policy->cpuinfo.max_freq)
+				max_tsc_khz = policy->cpuinfo.max_freq;
+
+			if (policy)
+				cpufreq_cpu_put(policy);
+		}
+
+But given that the code we have today is perfectly readable, I don't see any
+reason to switch to __free() given that's it's technically flawed.  So I'm very
+strongly inclined to skip this patch and keep things as-is.
 
