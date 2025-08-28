@@ -1,78 +1,99 @@
-Return-Path: <linuxppc-dev+bounces-11428-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11429-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF29B3A27A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 16:45:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A13CCB3A338
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 17:01:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCPMl1lzvz2yGM;
-	Fri, 29 Aug 2025 00:45:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCPjm2H2zz2yGM;
+	Fri, 29 Aug 2025 01:01:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756392339;
-	cv=none; b=eV/L2CjmQ3D4SLBlArH376eCktyMbGgJdnnFsiuHGbg16sFha4ur4v5A40qtR/CGxhWYNjzwjvBBtbG0pRz++KzFDcF/d7GmGgs8DjZp9tRL+foNsGmSNFR9rEVFkzqpK2IKTdc5Q7WBayXg5m4Wx/sr+8Ld3c+gLKUbEQz7Li7PGIP9CunVc3TGt8L1I3iUo4yeiRzsJBvTeEEssscw8Ouz67RCW0ZxTbk+Pi+SDh6KagxdpVODuv85nnQyCVpU3gWtS34D5rRLtlXAAaC64P67S4GSgB3/6ttW42obEcbiACjVRoLafYP5rae3Iotsxvx8FJka9szOL2hQcwWYyQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756392339; c=relaxed/relaxed;
-	bh=l5ZeL/raDI0rhTchy0xy3EBGbgqzyJ/sBYXDHV6YFdU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nM6pbJG6r+E2kGGEVRYTjglQrox6VEAm2s5sJu22VeEV2TR8MH0cgBRFipGxq1nsFnBq1Lp2IzcbCK2reo2s6MTiEeaGkiBNfaSpD7xUhZUKpD4NeZMPojyH9Ijk7Dessq7RbAjnRPJlNN6WXVdujghTe+vG41nbYZLuTwlV9cTAKuhwzzNWpy9L0bOpZndA9qMF/1e4pynqbZUn7fiFPmEoBEuSyUBhm9tXrUdXyhOVDQKoejH6SBUYCadXPC4JXgr4HXEFOeUaIpxJzS1fOwDkzVZwkm1P4natfVDkOKotgEfYI6r7FLoFNJZwj51fbHjisQwEtw/AGGlg6FFGNg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UgzrXWnb; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2416::608" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756393276;
+	cv=pass; b=izCO16nQivAol2wUgHSRjgmnSb4Pq4cknWP4IfkLZxzrl40GIQpD91WKsqrPmC5xR3fOhz7eIRR9McE7axtk0T/0ktFB8ZniOe3IJ9ffTk+XP3SpcaVXzdUG6oXuBdT53ySAi7BGvb/rFtWmkEdNRVEQK13yTH7AsdtmE+JzqU7SdyM4k+Kdr0Kh4AUz3rrKhwPZqIbHQ5XXCADhvr4q4mSNr5SIj4YWq1nijf7TUh00u2a81GmBxDai6Nd7z16zANFpy35PxhM8kOxFeGT9D2VLUzRkuHhweLDa5x6Rg/9iiEV7a/vZmkZKFYBwjq90zLL9N+sJmxgxNlDsZ6u9jQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1756393276; c=relaxed/relaxed;
+	bh=YhYgIuXMPDyneIixgb3ayDngq33diPvUwzKhingnZUs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=FbiqZPKMjrl1eIIY2u6ZHTwDl0anCAmrnC1O7FAN/hz0x31K6NY+S6mQoqIBer+u1yYJ3x0Iuy/tjPmuNN0KG8Qw+B8E8ij/wiLTSLvVVt4Yf04VItaHRBHUFheFfP1g1fVFaRmS79PYsW0lcxtKDqb/B48XaRV+uKFXPbGAiYXtmvps20bSZdBRzYVIiBa4okO0vxuW+Fj4JUeIio3xlahDsDTDqZ07FVO7VUPNL/BKn6zVND+jnHb5UgvRUVmVVLNG7rYznFfn8oEYCwr5XUEvxUsfHmkguYRqrAJRXtggaVpT7whssfI0Mvq0QpOmHID5c6aw82vw/XJefr9zdA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=qkezqVMz; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2416::608; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UgzrXWnb;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=qkezqVMz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2416::608; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on20608.outbound.protection.outlook.com [IPv6:2a01:111:f403:2416::608])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCPMk1vjQz2yDH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 00:45:37 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57S7YGTW012769;
-	Thu, 28 Aug 2025 14:44:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=l5ZeL/
-	raDI0rhTchy0xy3EBGbgqzyJ/sBYXDHV6YFdU=; b=UgzrXWnbQ+Bzy0bpVXkBnA
-	78JlUpH+fnEQfP8B86RKMdkNxO+gUSY8Ro5B/mc95q9M/J9/8cYIdt5Pzomz2HaW
-	Y/Cj2IXnOiboXKKa4tF7kXAlAdOwlf7um7UZok0ax2om8KiCuRb37e51JWBUrQd3
-	wtbBKxRcmzZaxulNHc0t2cERVNSzaAPJa/GdSYdIYVqNiyVnq3QOD4H2Q1B9mDW+
-	yXrinGpqsiYvQhLyZLS6SqAI9M5fxKqIBjGzyHQ2zwCAOHI6qjsCPljJseTuiHMy
-	Swd92aqln21eHEsyYnMypnDtliEIni4iJNn5s11fyCeOuOAOmJ9uKkjZ7+1JXY1w
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5hqa7wm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 14:44:08 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57SEDYA3028578;
-	Thu, 28 Aug 2025 14:44:07 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5hqa7wf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 14:44:07 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57SDdTTg002531;
-	Thu, 28 Aug 2025 14:44:06 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48qrypwdnu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 14:44:06 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57SEi2gh30867830
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 Aug 2025 14:44:02 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1D7D620043;
-	Thu, 28 Aug 2025 14:44:02 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A85F20040;
-	Thu, 28 Aug 2025 14:43:52 +0000 (GMT)
-Received: from [9.39.25.132] (unknown [9.39.25.132])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 28 Aug 2025 14:43:51 +0000 (GMT)
-Message-ID: <7137972e-bc7a-432c-94be-755ba9029d8c@linux.ibm.com>
-Date: Thu, 28 Aug 2025 20:13:51 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCPjk4NQnz2yDH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 01:01:14 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NS6QF9PmkhPSetggaII5CehTlNqOJP7vlZ3U1FhtbEJxV7OqYGAMEImFhkSEkVt8p4tMk12Kq+qkyt9hkXaA3hNTw0Q/M8JsOk89YCE34YUJMbwpcSbThpcPNb8wLgyaPwW6ZGVpAgcGi41Oc/cey8aZQgz7mbUCOQ7tc/sczz3afaA2QRRBbuXquufQAmJf9sL/A6SD/TF4rdhqnMo48S2K6UzD9pSyjxqV2sqNVzD6z6Ip+oi/OabsECcItshuq8tNhBlbjP1tEj2lLzx0DCeMCiupm+JXR4h6uE9VaT/OtZ88vfpoUxv15tHzMBQ9qGXmW0QvuV+wNoRl6Z0AFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YhYgIuXMPDyneIixgb3ayDngq33diPvUwzKhingnZUs=;
+ b=L6kKIA+cyA334TB+HD6KAb0poZQRgfS+mi0YyYxUih9dP8c8uDGCwry1fq5E3IAs3r0+l134PJ+M+RHZ/x8HD7Yt+f0tP6ddNZ2aQLxcz/QkPJ+dRs7igP+u5glEEt8uY2/L+weMU5UCN+OPkEvsRWXhb/OIZ9rh4KubDEOvFUoAIj1k+4YBSjFfvNJLXgwILa1QnbgC65cHcHmZFKcKirSMgnxZcz9ybBWbtd1/tFdgT4E9kgmr5rYCWQyGWRJD+FZmq1hKglllDlaj100v7wtivgG8yRUcVXZh49dztnslaMANyvHcOUx+C7KrcwIl/VaOfumTn7GnMsKKVVxsHg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YhYgIuXMPDyneIixgb3ayDngq33diPvUwzKhingnZUs=;
+ b=qkezqVMzVT99jJQz5M/PGYi6BFwhFdorcFX4nk8XC3yr/uRWXxB6KzsAKoOE4GJgOzKfcnz3wm7ks69mL1QnYz6lWl6fGk2FqtTEsADsI9tDC0gBUny76ogXICGsiXeF4Tdm1k8iNvLwaRl2aSeMULoKHlkXhnk6VBhaR97BpE7FQljWxhk64RLUekpCMpzP6ZjvgbpSpgalw0RFZI6wBTTTCx+PjZqmqSes0JXPnN1R2rSbS3YoHbeswtL/3eG9cxNd9xQuVrhnMh5RRJFdZ2GqU0Yv5DWHI9tL0Sthc9UIMXJDdQlqYhdwIx2MHfr5sv+sg5Unmy4c+jKesWCk7g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by CH2PR12MB4312.namprd12.prod.outlook.com (2603:10b6:610:af::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9052.16; Thu, 28 Aug
+ 2025 15:00:51 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9073.010; Thu, 28 Aug 2025
+ 15:00:51 +0000
+Date: Thu, 28 Aug 2025 12:00:49 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v4 08/16] kmsan: convert kmsan_handle_dma to use physical
+ addresses
+Message-ID: <20250828150049.GG9469@nvidia.com>
+References: <cover.1755624249.git.leon@kernel.org>
+ <f52ab055c9ffa4da854afe47232c7d06d109d8ce.1755624249.git.leon@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f52ab055c9ffa4da854afe47232c7d06d109d8ce.1755624249.git.leon@kernel.org>
+X-ClientProxiedBy: YT3PR01CA0138.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:83::25) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,319 +107,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 4/8] powerpc/smp: Introduce CONFIG_SCHED_MC to guard MC
- scheduling bits
-To: Peter Zijlstra <peterz@infradead.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
-        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
-        thomas.weissschuh@linutronix.de, Li Chen <chenl311@chinatelecom.cn>,
-        Bibo Mao <maobibo@loongson.cn>, Mete Durlu <meted@linux.ibm.com>,
-        Tobias Huschle <huschle@linux.ibm.com>,
-        Easwar Hariharan <easwar.hariharan@linux.microsoft.com>,
-        Guo Weikang <guoweikang.kernel@gmail.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
-        Swapnil Sapkal <swapnil.sapkal@amd.com>,
-        "Yury Norov [NVIDIA]" <yury.norov@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andrea Righi <arighi@nvidia.com>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Vinicius Costa Gomes <vinicius.gomes@intel.com>
-References: <20250826041319.1284-1-kprateek.nayak@amd.com>
- <20250826041319.1284-5-kprateek.nayak@amd.com>
- <609a980b-cbe3-442b-a492-91722870b156@csgroup.eu>
- <20250826080706.GC3245006@noisy.programming.kicks-ass.net>
- <20250826094358.GG3245006@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-In-Reply-To: <20250826094358.GG3245006@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfXxHaUcEgiIopR
- w3SGssvF5+46GkuuW1kiijb+ksAP3fpVos2QKqS2bZNii0df7FMCvsrwHpQa+KBf2lAkp0NX3v2
- TcXxOjX5+1ms/PEw9khh30kCV2MVFXV3MAKKzKryiGwTlnyliOMkNZd7yaZz94+GPpCVp57rfVm
- +qRD5/1qQr2Ro6VAUCnAtQcHLulJPLoW0Sb+OfEz4rf7XTN1VhyR0mzc7LSG6wU14iWntemzG0s
- KC01BU+eJw/E2CHuuIqElAZyoDfS2Ms3JnotgCdTd9Yr7rWhqyHXSkKAXrN5Vo6GfJck8Dy2BAK
- hqv1xkHJJUzLoXLHMJrgELCH0D8nJGApFbI24c1hA0QjDFdol8hjkDI2SaQxdWJ+zVSp1ciraKw
- APfSYIPs
-X-Proofpoint-ORIG-GUID: r3rzZYCoCt6eycWI1LlHixY6AiWUY6AU
-X-Proofpoint-GUID: vE42g1xHqTSrMAwXyL2e0mrM5IIIoNhY
-X-Authority-Analysis: v=2.4 cv=Ndbm13D4 c=1 sm=1 tr=0 ts=68b06b38 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=rIPao2PkHK7o8sxEuf0A:9
- a=_HYOEJHHcvG5C4SK:21 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-28_04,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 clxscore=1015 phishscore=0 malwarescore=0
- suspectscore=0 bulkscore=0 spamscore=0 adultscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508230021
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|CH2PR12MB4312:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd324a99-7b50-48f0-b0b3-08dde643ad87
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?F3t8pjxGuYiqQXVRHHoABfhe3+nJCLYfL6dfMX6OVHmrSntXdCx5WtVVMFHz?=
+ =?us-ascii?Q?yIevAB0p9919JudsrpMU6LZXPwxOeB9F3UoThU3jOmE7GG9uxOE5qnMerxlg?=
+ =?us-ascii?Q?AN/UIs/2Eg+OivcbbHEpPHCi39auQu/YZ8nvFxeTPjZk3Ada64JLqqgnkSht?=
+ =?us-ascii?Q?543bGq64xQ4iKEYNxa2ok61AsVkpvnT+Uw7NMsRGYJRPYMAsP5PBjypPdUBf?=
+ =?us-ascii?Q?81RH4ul4DOiq5i+njO8K39Sfezmnlh6jHSbM73vKdx78Kp2e/lXKQOCqkfKk?=
+ =?us-ascii?Q?GqW+8ek12Sua17KiSbBLTYD6OHXBdB/KEbLwIUYy46n4iVYEXrek8Peoq5/7?=
+ =?us-ascii?Q?K+OpIeuHCsarMY09f/7Ske6UqL3X2966rZkUOyW8bBJeXZF/5QntDeEXO5H4?=
+ =?us-ascii?Q?XSu/AU+Smc0Gu9vuwbA7xN8mb7/fUJw4zfSDUaI1WXJhnh4aqcraj1hcO4O+?=
+ =?us-ascii?Q?EDIwkRaibNorWjRo2KD1Xm308/+ExCCE+H5o+9DL6CvUSuvGuEjPZWHGWh1L?=
+ =?us-ascii?Q?Qk88DLWsKxzmwnorlRypDjuSrRJbB5gLNQthol57IcMc3Cup1IIXsKyPmYSk?=
+ =?us-ascii?Q?IWH2yF8gaH0SdOuca7KzzBqW+S4YE/EC12HojfMnvk09W6nqqb4fF7aaQ/Zu?=
+ =?us-ascii?Q?Orj1BFeugwUPXkm2LQeGmgm0hEB3oh/qLZnJS4cA1KO9cp3oYLx+FJayhERl?=
+ =?us-ascii?Q?sjLXgnd1db4hPQgzuFmeXwoGL7Iy+wcTnr2oP90fVeq+t38aAtCMB/BRHQjs?=
+ =?us-ascii?Q?x9O83XsAWqorEs0kwmGsD/wWNCY3rfNgCxM3Jg6wm7FkAkUfXd8ZQV52+779?=
+ =?us-ascii?Q?a5jofWus3cV8yAr4swvRu8HqzElhF00CvUSewWnDVPEETGebx85qNIZFxgS2?=
+ =?us-ascii?Q?KYtd1Vqd+kAd8m/rG/y21hHXjwA8HyOBgkLV1oW/H3l+Q5F9Zj358PhlumsN?=
+ =?us-ascii?Q?ZBkEOrfZg0VQFTj0dry4OGp4HYTN4KEMh+yianvgfkREmfLiYJNy0xLGrvfP?=
+ =?us-ascii?Q?zRNYmHb1BhypYX+XMP4ZqHYhe5wqD9omzX6FhepSaws2mnbL6V/h0843bI7f?=
+ =?us-ascii?Q?9J/g7OWg2AkezlH5prpTFen+dMQMWjPHAXqZuMW/hT5Bz4/etFPDwTgv/L7X?=
+ =?us-ascii?Q?1NCwRIzvfKHFkhIYGOBODZrs8NLb5i8KHZ0YEMreb3KDZuZNRvRHMXnP2Il0?=
+ =?us-ascii?Q?pGtu9m8/4F1vowQ4SUYg8H+QpznU8ztibiwxlnVAl9Y6dbfkoYvwnTb2kVxl?=
+ =?us-ascii?Q?CGBs07j5ssRf0PygNTBsuIRc+MoGCDkoaxHNF41xLXDg1HMby8oaNi/d+Z+F?=
+ =?us-ascii?Q?/jiqKkjDyWZSULX/+ZIfD5k5Z3aNv7sQTvoozJTNKQf+hutgN9PNPqMM3aps?=
+ =?us-ascii?Q?QY+hwbAR76MfSkDtNGbY8H+YtiEZvOwrF73u/2Lko0T85eWLr9f3kbMsUy8S?=
+ =?us-ascii?Q?1FKnLopyHwI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?uvpwli8oU8wOvJLyl3NwVP+TQsbxubD0QEkBmRvQ2Jh4ZZJP5qipOjZamH69?=
+ =?us-ascii?Q?B+PbjhWcvbtpGKlhIxRiDqqYfHFPEPCBZqhYcM3T3ZJCwQw82zG9G2Rke9q4?=
+ =?us-ascii?Q?CHgav7pRRa8j+o2jKanzZWaj+WSOMGZy5DY+0AHtPYJI0nJ5hOZvUn3SDpkt?=
+ =?us-ascii?Q?0Lj6tDEn2MUr7dn/mRi5s+tS4G54SGWL1gmMMjbn3782+tcgUScunIc00GN0?=
+ =?us-ascii?Q?3pRE8QnZ3QHE9tNZwhIa7y+X0nMffa4WSZUKiKe5KdNA8VOOl+TOtsOWaCd1?=
+ =?us-ascii?Q?jcHChVqL0T/rslHr4WXAO0p+c3Z1RyNIMo03ObYJYsT182PvejTMDMYVcPW2?=
+ =?us-ascii?Q?TxkEmh8HQJHQ4C1zp5n+5QiKUrbxiqY9ujbKvp0SZsFyrXRl0y9aGhqFKY7c?=
+ =?us-ascii?Q?s4JSDoQbvQ6HGj3v7qDJDWH0FLS7fYF1+N6yLGUyrTyqzOSuJuDY+7aUoI2N?=
+ =?us-ascii?Q?rOZahLnSaGGsH9jYN/jH2gyt3RIa/wpjbTeaGNfIaNMmv4ypGsc7LxZ4a5i4?=
+ =?us-ascii?Q?qPt6RFV0Ln+5onDrvs+VTLORC18S6Tu2yzJcwprZV/lJEtiCP5kZ0uWmoXqs?=
+ =?us-ascii?Q?Zu+lwyG4f1mD8rOfNV+DnPl4KlKRekyau5weSSnPlOVlVYPg/gRl8KLZCEJ4?=
+ =?us-ascii?Q?qIbh1Rs8xBJ8wOG1jy8byWrqFGCUVvzZZROHHnuwjFw0P5z3CDGu9b1s1NRa?=
+ =?us-ascii?Q?l0Hj1TmoiopLBTq6x8wbyh2ilDgffTBbrmu+042g58KDcRxv7nui3UD/+nJI?=
+ =?us-ascii?Q?yOM9GnMdDPLDOgrfrL7iMO5SEjt83MxpwQoxdnZ0851+375n+sQrnKKouUza?=
+ =?us-ascii?Q?5tdZqUIRyEgSx00YK7nwXErvHKgJfWsAsz0+vEnKoOPzwQuo/j+3VMvxzvLE?=
+ =?us-ascii?Q?COndN5Wm1bXxccaF9kAf/g40DSjFJPH67o4ODthM9e12YFPj/IxsCaJUDVZg?=
+ =?us-ascii?Q?GQhSbzT1xXF2YdalACMmlmSTrucAzSSmwfbiNfM6aElZNJ6NWZgO6ORB0u37?=
+ =?us-ascii?Q?G9RgeLWXQ1bv9FUe0PmKyv4Q9COG32CMNhjHgqSML+tgId1eianjVIc3N0HU?=
+ =?us-ascii?Q?dcf5rlhw0KvJ/WcSFLUrcXS4Hq10eLpBr9YnU3iGxkE/Z6mqccKBwxjAHxku?=
+ =?us-ascii?Q?GTufKt69kT3PxhVdyKrwpZOER+7hmU7Tb6AOxxFAmRiGqOM9Y5JoMuQtA+gQ?=
+ =?us-ascii?Q?TQs8oD7Ni9Msd5adVQqHsRdc0ni8RZkTR+IrDWPZiBkkABiDKLMRbpQR9dA5?=
+ =?us-ascii?Q?7BSW1ESHp3r7W789bDbU8cdpRR5rKVroZ3TE3SsFAHi/jckiLl3IbxxKZt/d?=
+ =?us-ascii?Q?IaISd75BGpc4lxeH8Achj5wt8e/8Q8Qxttl9cgpN9M0ijzLoSIx07nLAJkTy?=
+ =?us-ascii?Q?FNG58ONb0+qKUHcGPeSkaO9cE8SCYUNrtCPXl6/aDaEFD2ZIhouLTLWqXE+3?=
+ =?us-ascii?Q?cYw6VCnPhOlZhYR/jfb4PjNOvSOX6aokxBVUQa86yqNxMH4vzfOMMQZLHTUc?=
+ =?us-ascii?Q?sV4Yc109BXOL/IFth93oiQUr8pcDxVyh5M3fp7VE3fHzDVMUx2C49eAGfDzY?=
+ =?us-ascii?Q?u6BMG3n/8GgM7hjb++E=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd324a99-7b50-48f0-b0b3-08dde643ad87
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 15:00:50.9010
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z15O0VvpBrGAOGITkb5/Y05ckWmkWXcBfnra5oKm94y8bsDpfspUxCq/SnlW4BPn
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4312
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Tue, Aug 19, 2025 at 08:36:52PM +0300, Leon Romanovsky wrote:
+>  /* Helper function to handle DMA data transfers. */
+> -void kmsan_handle_dma(struct page *page, size_t offset, size_t size,
+> +void kmsan_handle_dma(phys_addr_t phys, size_t size,
+>  		      enum dma_data_direction dir)
+>  {
+> +	struct page *page = phys_to_page(phys);
+>  	u64 page_offset, to_go, addr;
+>  
+>  	if (PageHighMem(page))
+>  		return;
+> -	addr = (u64)page_address(page) + offset;
+> +	addr = (u64)page_address(page) + offset_in_page(phys);
 
-Hi Peter.
+addr = phys_to_virt(phys);
 
-Looking at this,
-https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/commit/?h=sched/core&id=9d710c5b2bb37cedf5f09ce988884fb5795e1a76
+And make addr a void *
 
-> 
-> WDYT?
-> 
-> ---
->   Kconfig           |   38 ++++++++++++++++++++++++++++++++++++++
->   arm/Kconfig       |   18 ++----------------
->   arm64/Kconfig     |   26 +++-----------------------
->   loongarch/Kconfig |   19 ++-----------------
->   mips/Kconfig      |   16 ++--------------
->   parisc/Kconfig    |    9 +--------
->   powerpc/Kconfig   |   15 +++------------
->   riscv/Kconfig     |    9 +--------
->   s390/Kconfig      |    8 ++------
->   sparc/Kconfig     |   20 ++------------------
->   x86/Kconfig       |   27 ++++-----------------------
->   11 files changed, 60 insertions(+), 145 deletions(-)
-> 
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -41,6 +41,44 @@ config HOTPLUG_SMT
->   config SMT_NUM_THREADS_DYNAMIC
->   	bool
->   
-> +config ARCH_SUPPORTS_SCHED_SMT
-> +	bool
-> +
-> +config ARCH_SUPPORTS_SCHED_CLUSTER
-> +	bool
-> +
-> +config ARCH_SUPPORTS_SCHED_MC
-> +	bool
-> +
-> +config SCHED_SMT
-> +	bool "SMT (Hyperthreading) scheduler support"
-> +	depends on ARCH_SUPPORTS_SCHED_SMT
-> +	default y
-> +	help
-> +	  Improves the CPU scheduler's decision making when dealing with
-> +	  MultiThreading at a cost of slightly increased overhead in some
-> +	  places. If unsure say N here.
-> +
-> +config SCHED_CLUSTER
-> +	bool "Cluster scheduler support"
-> +	depends on ARCH_SUPPORTS_SCHED_CLUSTER
-> +	default y
-> +	help
-> +	  Cluster scheduler support improves the CPU scheduler's decision
-> +	  making when dealing with machines that have clusters of CPUs.
-> +	  Cluster usually means a couple of CPUs which are placed closely
-> +	  by sharing mid-level caches, last-level cache tags or internal
-> +	  busses.
-> +
-> +config SCHED_MC
-> +	bool "Multi-Core Cache (MC) scheduler support"
-> +	depends on ARCH_SUPPORTS_SCHED_MC
-> +	default y
-> +	help
-> +	  Multi-core scheduler support improves the CPU scheduler's decision
-> +	  making when dealing with multi-core CPU chips at a cost of slightly
-> +	  increased overhead in some places. If unsure say N here.
-> +
->   # Selected by HOTPLUG_CORE_SYNC_DEAD or HOTPLUG_CORE_SYNC_FULL
->   config HOTPLUG_CORE_SYNC
+Otherwise looks fine
 
-...
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -170,6 +170,9 @@ config PPC
->   	select ARCH_STACKWALK
->   	select ARCH_SUPPORTS_ATOMIC_RMW
->   	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx
-> +	select ARCH_SUPPORTS_SCHED_SMT		if PPC64 && SMP
-> +	select ARCH_SUPPORTS_SCHED_MC		if PPC64 && SMP
-> +	select SCHED_MC				if ARCH_SUPPORTS_SCHED_MC
-
-Wondering if this SCHED_MC is necessary here? shouldn't it be set by arch/Kconfig?
-
-nit: Also, can we have so they are still sorted?
-	select ARCH_SUPPORTS_SCHED_MC		if PPC64 && SMP
-	select ARCH_SUPPORTS_SCHED_SMT		if PPC64 && SMP
-
->   	select ARCH_USE_BUILTIN_BSWAP
->   	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
->   	select ARCH_USE_MEMTEST
-> @@ -963,18 +966,6 @@ config PPC_PROT_SAO_LPAR
->   config PPC_COPRO_BASE
->   	bool
->   
-> -config SCHED_SMT
-> -	bool "SMT (Hyperthreading) scheduler support"
-> -	depends on PPC64 && SMP
-> -	help
-> -	  SMT scheduler support improves the CPU scheduler's decision making
-> -	  when dealing with POWER5 cpus at a cost of slightly increased
-> -	  overhead in some places. If unsure say N here.
-> -
-> -config SCHED_MC
-> -	def_bool y
-> -	depends on PPC64 && SMP
-> -
->   config PPC_DENORMALISATION
->   	bool "PowerPC denormalisation exception handling"
->   	depends on PPC_BOOK3S_64
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -72,6 +72,7 @@ config RISCV
->   	select ARCH_SUPPORTS_PER_VMA_LOCK if MMU
->   	select ARCH_SUPPORTS_RT
->   	select ARCH_SUPPORTS_SHADOW_CALL_STACK if HAVE_SHADOW_CALL_STACK
-> +	select ARCH_SUPPORTS_SCHED_MC if SMP
->   	select ARCH_USE_CMPXCHG_LOCKREF if 64BIT
->   	select ARCH_USE_MEMTEST
->   	select ARCH_USE_QUEUED_RWLOCKS
-> @@ -453,14 +454,6 @@ config SMP
->   
->   	  If you don't know what to do here, say N.
->   
-> -config SCHED_MC
-> -	bool "Multi-core scheduler support"
-> -	depends on SMP
-> -	help
-> -	  Multi-core scheduler support improves the CPU scheduler's decision
-> -	  making when dealing with multi-core CPU chips at a cost of slightly
-> -	  increased overhead in some places. If unsure say N here.
-> -
->   config NR_CPUS
->   	int "Maximum number of CPUs (2-512)"
->   	depends on SMP
-> --- a/arch/s390/Kconfig
-> +++ b/arch/s390/Kconfig
-> @@ -547,15 +547,11 @@ config NODES_SHIFT
->   	depends on NUMA
->   	default "1"
->   
-> -config SCHED_SMT
-> -	def_bool n
-> -
-> -config SCHED_MC
-> -	def_bool n
-> -
->   config SCHED_TOPOLOGY
->   	def_bool y
->   	prompt "Topology scheduler support"
-> +	select ARCH_SUPPORTS_SCHED_SMT
-> +	select ARCH_SUPPORTS_SCHED_MC
->   	select SCHED_SMT
->   	select SCHED_MC
-Same here. Above two are needed?
-
->   	help
-> --- a/arch/sparc/Kconfig
-> +++ b/arch/sparc/Kconfig
-> @@ -110,6 +110,8 @@ config SPARC64
->   	select HAVE_SETUP_PER_CPU_AREA
->   	select NEED_PER_CPU_EMBED_FIRST_CHUNK
->   	select NEED_PER_CPU_PAGE_FIRST_CHUNK
-> +	select ARCH_SUPPORTS_SCHED_SMT if SMP
-> +	select ARCH_SUPPORTS_SCHED_MC  if SMP
->   
->   config ARCH_PROC_KCORE_TEXT
->   	def_bool y
-> @@ -288,24 +290,6 @@ if SPARC64 || COMPILE_TEST
->   source "kernel/power/Kconfig"
->   endif
->   
-> -config SCHED_SMT
-> -	bool "SMT (Hyperthreading) scheduler support"
-> -	depends on SPARC64 && SMP
-> -	default y
-> -	help
-> -	  SMT scheduler support improves the CPU scheduler's decision making
-> -	  when dealing with SPARC cpus at a cost of slightly increased overhead
-> -	  in some places. If unsure say N here.
-> -
-> -config SCHED_MC
-> -	bool "Multi-core scheduler support"
-> -	depends on SPARC64 && SMP
-> -	default y
-> -	help
-> -	  Multi-core scheduler support improves the CPU scheduler's decision
-> -	  making when dealing with multi-core CPU chips at a cost of slightly
-> -	  increased overhead in some places. If unsure say N here.
-> -
->   config CMDLINE_BOOL
->   	bool "Default bootloader kernel arguments"
->   	depends on SPARC64
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -330,6 +330,10 @@ config X86
->   	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->   	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->   	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
-> +	select ARCH_SUPPORTS_SCHED_SMT		if SMP
-> +	select SCHED_SMT			if SMP
-Is this SCHED_SMT needed here?
-
-> +	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
-> +	select ARCH_SUPPORTS_SCHED_MC		if SMP
->   
->   config INSTRUCTION_DECODER
->   	def_bool y
-> @@ -1036,29 +1040,6 @@ config NR_CPUS
->   	  This is purely to save memory: each supported CPU adds about 8KB
->   	  to the kernel image.
->   
-> -config SCHED_CLUSTER
-> -	bool "Cluster scheduler support"
-> -	depends on SMP
-> -	default y
-> -	help
-> -	  Cluster scheduler support improves the CPU scheduler's decision
-> -	  making when dealing with machines that have clusters of CPUs.
-> -	  Cluster usually means a couple of CPUs which are placed closely
-> -	  by sharing mid-level caches, last-level cache tags or internal
-> -	  busses.
-> -
-> -config SCHED_SMT
-> -	def_bool y if SMP
-> -
-> -config SCHED_MC
-> -	def_bool y
-> -	prompt "Multi-core scheduler support"
-> -	depends on SMP
-> -	help
-> -	  Multi-core scheduler support improves the CPU scheduler's decision
-> -	  making when dealing with multi-core CPU chips at a cost of slightly
-> -	  increased overhead in some places. If unsure say N here.
-> -
->   config SCHED_MC_PRIO
->   	bool "CPU core priorities scheduler support"
->   	depends on SCHED_MC
+Jason
 
