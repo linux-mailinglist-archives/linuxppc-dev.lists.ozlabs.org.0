@@ -1,70 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-11436-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11437-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5BEB3A773
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 19:15:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B31C6B3A777
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 19:15:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCShW3TZSz2xWP;
-	Fri, 29 Aug 2025 03:15:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCShb3GTBz2ym0;
+	Fri, 29 Aug 2025 03:15:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756401323;
-	cv=none; b=iMtS5icn7Sr2aLkChcLfqADy4jIKDlI2mKSXwTDHrYupoTtViSFt8wpkhGNqnpMCvP55YYRxS9+Xdrj0mpwzw9r4X2WfhAq2rfHdXTGUpLOOs1457YJVjN2WK5IRjFUqGaLb0JWnBVr6U9UbkbzWyPup8fKjzXc2w5YPNW0OHs4PaR2l4ACYYM+yTMSbucEfyam8M/jnGkCAVMpHhnFLUGtxqq8aaybafHX5neXsXY61VkkyR51+FutjFpUz3ff3+f4jXTFh5W7hugj/wb6gC8bQ0UpqTpzojkrfz4mK0cASB562dWWbw1n659jVjFMt8n11Omw0uD90bktE4QmLvw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756401327;
+	cv=none; b=EZVPGSuOiGDhv8WJrOITd+yNjXkKYR/ukTwBUUayF/B/gw6YOzW+dopfTQAk9wkkravonwNfR0yMf4jFvcHYSVQ+eh0DvH915vRCeP5LyBKYXq32bguW1AwsYC8H/QO5eUyJdCoA89Xaowx6IvCkdiIGU0MZSSaGgMmsIFki8Wf0BlRw6nvF13BMJ6YkOurXoHlH4LlkqNd6p5PLfVHb9o1AVzs0Wob4O/NTcRQSu261zrmLfDB4UV3uLIrAhMryBT9tkO5N2b1C1nY9kBylus8I9I6+4br4K7QZ0fajMX4i3OW9WDBuzcHZLusIZDoekzt5U8w9gzk706+cEvkfDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756401323; c=relaxed/relaxed;
-	bh=g/D1R1ws5ojuN4WG3pCUGyU24UMqyGj6lojr+YSYQ0c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=es0I89ml5cGEdtuyG0o3Jj9GBlC171/hqHaoCC2fz4oIbO5PzjOvHgV7NV/XC85axW9F+sbk1d4hK7VrpHgWTFudGf3gm9m4pPoxarj2kWQsHtP0USO8Dj0x5HJDmsf9JNciuL6lLVjgtXtP5cGEmJ0LLuB9AYx4oFMAKsaAIqREM6OzdGMnMerjv+L8hyGz2Qwhm328SXAlPo5sehDS8qJodkMS2d/mc/btRNGThs/FvxjNrTQRmtS+3pLBuEYh4d//Y1JGeybV0yvMmqt3eOd0HaxmV4zkNIXFZ5X68HDqGrMAI5bG976SnqvdKWHFSx3XiXWdsdzBdiUc/FhtDA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=B+7pQYTN; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3po6waaykdnef1xa6z3bb381.zb985ahkccz-01i85fgf.bm8xyf.be3@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1756401327; c=relaxed/relaxed;
+	bh=KCRt+XDfxBj5z23z/FYOBSKOJE6UKgt5OADwYjTTtQI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mPIvZDEhkHgiXJnoCxg6iuB5EhgGc29ANPWA0xtUY+6FQQ827yn0qCdA9EN0LTIbqczmlADn4RHQdNSIQANPTyfOcXlgrWzeNKxUHXnZeHhM7w6JSHg0nbVhN4Hd3Oa+Uh8b46VY2iziaR0/uxEQf/CvL871fEXSBlq9V8JFoqHWSpQYnVeL6uAcyrYdIgKvKPyqUA7l4WuW6DohoISFGlBPeqtPESkAkI8wLciXkf9n+4/pa+BzuPlfXMRYHRA7URRdslrODSJO6qwwJ4rBBiDfcinZpSTIBtID5jbHs8eS1uTL4/q9ebd08dOmMN75zdndZjL+6lnKcOT754X7Pw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fnmNyIm6; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=B+7pQYTN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fnmNyIm6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3po6waaykdnef1xa6z3bb381.zb985ahkccz-01i85fgf.bm8xyf.be3@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCShV0h3bz2xVq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 03:15:21 +1000 (AEST)
-Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-3235e45b815so1393692a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 10:15:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756401319; x=1757006119; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=g/D1R1ws5ojuN4WG3pCUGyU24UMqyGj6lojr+YSYQ0c=;
-        b=B+7pQYTNCd4eUFhjODF3IlVSGBtQZ9PPGsgymssdBKVGlNgpho9ttvWRqwjneNq8nj
-         rI6ctwIKh2nnsbeDwC02CTS6KqU+SQI4QDc7BZfjEQEolR603YE4YO8CTu5tuM6gDhRH
-         0wQ//GJeDwWnBcrhO/9bgFuP5wL2gikWazg0wYInGPtxRMkr7nZfI2wNuU7O2UdYMcjf
-         Aer1DU7bl07vaKYwvZ7g0/ioqFJGOSVNySuNKTJF1Kwqw1tuf6f5pO+zuTbRKLleygv9
-         eHzE2FCJm7mPsDHfQ9wm2OyI1MuPEhkqU7bd679fwYI5hWliUAZv92m8t++PjuABdo5e
-         s5fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756401319; x=1757006119;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=g/D1R1ws5ojuN4WG3pCUGyU24UMqyGj6lojr+YSYQ0c=;
-        b=o35QcG3eeSPz1cPCy/vcSdf/DPJTxvHvNnVXSN9IMbzJnr62F1n+08XDOIdFR1kKs5
-         h/zx5mxDyjG61Go3NaR6JX4sFU/vYE249vPCBD+LiHLFVpznL8k9khZ48Jm0UzgseSru
-         xn8OgIMQM24p9fJoq83q+BDxB9JncTypZijjG3gT6EBPpJGCzX7wvaYIa1NPZ00nsiEh
-         q8omtdcmAr3FYVy9t92Zf/8kqc4YOjAtPE9pdQvEHlhuiQxV4kh2i2I2Sqezwn3KvKkB
-         hmzBLzVPPEw/F3avMhWwwEOkokw6QjIIkzNmIlZcWF8mX5tRxFE4UZEjCwUN7a2iXLTp
-         wUwg==
-X-Forwarded-Encrypted: i=1; AJvYcCUtCdIwuJKJc5HATaS57GPUgDg9WxAzV+vNX+St1tqUYRh01ZJq52oUc9Um7byuB6E8VNmR5SXxqpl4RJI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yxw5T5t/eCGgagxHN1gzwWqlUqF2dsJmb8A0DNQwtRXcQZyqndH
-	7Ot96XZwof0rG7Dh+xZzSxA8/Rj+tMHjjNTVmBme96EViylHuBpxz8ER/ZI4XSsDUsx3C84fPIG
-	i0DWEPQ==
-X-Google-Smtp-Source: AGHT+IEgfCMAj/kPGbx0Dj2C82B+XByTzBEnlSaJgGQHGzaozLp7T19v0PG28aEIfyLg5E6WkydfWYNcBOM=
-X-Received: from pjhk31.prod.google.com ([2002:a17:90a:4ca2:b0:327:9b90:7a79])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1dc3:b0:327:cec7:b8c6
- with SMTP id 98e67ed59e1d1-327cec7cb53mr1738031a91.32.1756401318775; Thu, 28
- Aug 2025 10:15:18 -0700 (PDT)
-Date: Thu, 28 Aug 2025 10:15:17 -0700
-In-Reply-To: <874d821e-8ea3-40ac-921b-c19bb380a456@kylinos.cn>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCShZ5Mczz2xVq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 03:15:26 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ECDE644C27;
+	Thu, 28 Aug 2025 17:15:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A72BC4CEF4;
+	Thu, 28 Aug 2025 17:15:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756401324;
+	bh=ou3iD8shgadPVxQRtF41FaHPfXiCub7fMhAggBLVXMc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fnmNyIm6kveacQ6zFjHwSr/ld+cbNXoqmfCrawHp1gvsXVCDDljqqxTV+b1zApRgH
+	 5lcwKbYEv5XvzJ74pZRRlHz4xMMdbU2hypSAtpXWfDMqRVbb/qc2SqQSSCNqbZ1peQ
+	 BdR01HGV590kQ600i1NoQpXCyGOYKnHeIsk3mGhcH3PGq+tQybbYkfchgS5mr5H49F
+	 IvJGdW2sSi79scStsbkC/ihQucpNHR67O3EvTjBCfBwOnwU2YHvQc3Mh/Yo09lKjUz
+	 oioVDuGo8iH8GapTPxpdVPh2h5wOe61XtWreqwSjOT2z6hU8npwTgtY7JSO24epBr/
+	 2W6Y4P8WQ/UJw==
+Date: Thu, 28 Aug 2025 11:15:20 -0600
+From: Keith Busch <kbusch@kernel.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v4 15/16] block-dma: properly take MMIO path
+Message-ID: <aLCOqIaoaKUEOdeh@kbusch-mbp>
+References: <cover.1755624249.git.leon@kernel.org>
+ <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
+ <aLBzeMNT3WOrjprC@kbusch-mbp>
+ <20250828165427.GB10073@unreal>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,151 +89,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0
-References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
- <20250827023202.10310-3-zhangzihuan@kylinos.cn> <aK8Sd30K64mbN1Nt@google.com> <874d821e-8ea3-40ac-921b-c19bb380a456@kylinos.cn>
-Message-ID: <aLCOpfNkcQN9P-Wa@google.com>
-Subject: Re: [PATCH v2 02/18] KVM: x86: Use __free(put_cpufreq_policy) for
- policy reference
-From: Sean Christopherson <seanjc@google.com>
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Markus Mayer <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	Chanwoo Choi <cw00.choi@samsung.com>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, 
-	Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	imx@lists.linux.dev, linux-omap@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250828165427.GB10073@unreal>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Aug 28, 2025, Zihuan Zhang wrote:
-> > Hmm, this is technically buggy.  __free() won't invoke put_cpufreq_poli=
-cy() until
-> > policy goes out of scope, and so using __free() means the code is effec=
-tively:
-> >=20
-> > 		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
-> > 			struct cpufreq_policy *policy;
-> > 			int cpu;
-> >=20
-> > 			cpu =3D get_cpu();
-> > 			policy =3D cpufreq_cpu_get(cpu);
-> > 			if (policy && policy->cpuinfo.max_freq)
-> > 				max_tsc_khz =3D policy->cpuinfo.max_freq;
-> > 			put_cpu();
-> >=20
-> > 			if (policy)
-> > 				cpufreq_cpu_put(policy);
-> > 		}
+On Thu, Aug 28, 2025 at 07:54:27PM +0300, Leon Romanovsky wrote:
+> On Thu, Aug 28, 2025 at 09:19:20AM -0600, Keith Busch wrote:
+> > On Tue, Aug 19, 2025 at 08:36:59PM +0300, Leon Romanovsky wrote:
+> > > diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
+> > > index 09b99d52fd36..283058bcb5b1 100644
+> > > --- a/include/linux/blk_types.h
+> > > +++ b/include/linux/blk_types.h
+> > > @@ -387,6 +387,7 @@ enum req_flag_bits {
+> > >  	__REQ_FS_PRIVATE,	/* for file system (submitter) use */
+> > >  	__REQ_ATOMIC,		/* for atomic write operations */
+> > >  	__REQ_P2PDMA,		/* contains P2P DMA pages */
+> > > +	__REQ_MMIO,		/* contains MMIO memory */
+> > >  	/*
+> > >  	 * Command specific flags, keep last:
+> > >  	 */
+> > > @@ -420,6 +421,7 @@ enum req_flag_bits {
+> > >  #define REQ_FS_PRIVATE	(__force blk_opf_t)(1ULL << __REQ_FS_PRIVATE)
+> > >  #define REQ_ATOMIC	(__force blk_opf_t)(1ULL << __REQ_ATOMIC)
+> > >  #define REQ_P2PDMA	(__force blk_opf_t)(1ULL << __REQ_P2PDMA)
+> > > +#define REQ_MMIO	(__force blk_opf_t)(1ULL << __REQ_MMIO)
+> > 
+> > Now that my integrity metadata DMA series is staged, I don't think we
+> > can use REQ flags like this because data and metadata may have different
+> > mapping types. I think we should add a flags field to the dma_iova_state
+> > instead.
+> 
+> Before integrity metadata code was merged, the assumption was that request is
+> only one type or p2p or host. Is it still holding now?
 
-...
+I don't think that was ever the case. Metadata is allocated
+independently of the data payload, usually by the kernel in
+bio_integrity_prep() just before dispatching the request. The bio may
+have a p2p data payload, but the integrity metadata is just a kmalloc
+buf in that path.
 
-> Yes, this will indeed change the execution order.
-> Can you accept that?=20
+> And we can't store in dma_iova_state() as HMM/RDMA code works in page-based
+> granularity and one dma_iova_state() can mix different types.
 
-No, because it's buggy.
-
-> Personally, I don=E2=80=99t think it=E2=80=99s ideal either.
->=20
-> 		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
->  			int cpu;
-> 			cpu =3D get_cpu();
-> 			{
-> 				struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_=
-cpu_get(cpu);
-> 				if (policy && policy->cpuinfo.max_freq)
-> 					max_tsc_khz =3D policy->cpuinfo.max_freq;
-> 			}
-> 			put_cpu();
->=20
-> =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 }
->=20
-> Other places may also have the same issue,
->=20
-> maybe we should consider introducing a macro to handle this properly,
-> so that initialization and cleanup are well defined without changing
-> the existing order unexpected.
->=20
-> like this:
->=20
-> #define WITH_CPUFREQ_POLICY(cpu) {\
->=20
-> for(struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D  \
-> 			cpufreq_cpu_get(cpu);			\
-> 			policy;)
->=20
-> Then Use it:
->=20
-> 		if (IS_ENABLED(CONFIG_CPU_FREQ)) {
->  			int cpu;
-> 			cpu =3D get_cpu();
-> 			WITH_CPUFREQ_POLICY(cpu){
-> 				if (policy->cpuinfo.max_freq)
-> 					max_tsc_khz =3D policy->cpuinfo.max_freq;
-> 			}
-> 			put_cpu();
-
-This all feels very forced, in the sense that we have a shiny new tool and =
-are
-trying to use it everywhere without thinking critically about whether or no=
-t
-doing so is actually an improvement.
-
-At a glance, this is literally the only instance in the entire kernel where=
- the
-CPU to use is grabbed immediately before the policy.
-=20
-  $ git grep -B 20 cpufreq_cpu_get | grep -e get_cpu -e smp_processor_id
-  arch/x86/kvm/x86.c-			cpu =3D get_cpu();
-  drivers/cpufreq/cppc_cpufreq.c-static int cppc_get_cpu_power(struct devic=
-e *cpu_dev,
-  drivers/cpufreq/cppc_cpufreq.c-static int cppc_get_cpu_cost(struct device=
- *cpu_dev, unsigned long KHz,
-  drivers/cpufreq/mediatek-cpufreq-hw.c-mtk_cpufreq_get_cpu_power(struct de=
-vice *cpu_dev, unsigned long *uW,
-
-Probably because KVM's usage is rather bizarre and honestly kind of dumb.  =
-But
-KVM has had this behavior for 15+ years, so as weird as it is, I'm not incl=
-ined
-to change it without a really, really strong reason to do so, e.g. to itera=
-te
-over all CPUs or something.
-
-So given that this is the only intance of the problem patter, I think it ma=
-kes
-sense to leave KVM as-is, and not spend a bunch of time trying to figure ou=
-t how
-to make KVM's usage play nice with __free().
+I see.
 
