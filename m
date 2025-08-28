@@ -1,88 +1,104 @@
-Return-Path: <linuxppc-dev+bounces-11454-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11455-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3CE2B3AE25
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 01:10:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6383FB3AE8B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 01:46:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCcXq2pMVz2yrl;
-	Fri, 29 Aug 2025 09:09:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCdMN2TTHz2xlQ;
+	Fri, 29 Aug 2025 09:46:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756422555;
-	cv=none; b=NrIJip5Pqetogoe7vpGlw3VctpiE8BYtN7By4Vmp2abY+ey/Hkn8do8XSeC2AJw9jWbnG3ECIZXJM4fIWLWwOTuusZPvpSFLk6JUMuf5QmqGD5wN8ywGieLvi4hi4c0FKHfTQSrp65p1ENQ2jVnAHSlnZ1sleFMFo7r2pHUvgfaDBQmCwcjCGz548jbvk/2dSenIjW9PKtr6jJIYq3P13yloSBxnnMf1XXB+KT9DzoI8dQ6PSrBAGR54LYaoAmXvi1KfE6N0AJ4dbs0TDEW0TQYjInmlauhIFSXp+KlJfG/y3MC2+re7omkoorZCqsTiBx9imyGL0Xn/UeDvUCKQtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756422555; c=relaxed/relaxed;
-	bh=n/fW1hcJUV4u8az8Xvqno+grPvLEZLtrEQgvqxZ2oNw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GoVOg4+Fh7UaS+cSPQrboqUrtmCEEjxUVRcAz3TncDhYBvTPCQvqWgD/BnptDfEAvv5eoeEuY1dwMIwNAGU+hkaqH0d11KCpvlng5ubDHfL730/5ZwYioID+mQQ6FPj3tdc/rBsNZk2d6toQJ136Ag8eHJbV7S/qtSZJnwnQ4jk/26+4NzFYxlvtoen/Au2g2RmNinb3dS6QdyNvyOoSOHhMctaI9OVqOxdkjTtZdJ2H3wGsGg6oc16/AMDkZLLZF7PX1hA+F/3K8O3bLtrgWxNBphQVS71T+CJ320dUxaaZibHHTH+DrZVhMRy9Avc4sxfBNKqxpIqTkxvqBBD3eg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eiWFgIZJ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2009::628" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756424768;
+	cv=pass; b=XNl8E307szN8YG7MVwdHVeycHl/Fa43jG7HeK14hqJSVg0ywLxucUCHOD4klaOrnETEM2xjkx/s4phTZOZucoH3ReFpLPZ99EVN2Eknh8LljazaOMtVTlbYreOjOOR/lnCwNVwCgSYkGd3x5m3UjHErI3AlupgSaBPgjhCpZj3u4nZfS+/XPXmXrFN2Lf+8Wwx54x1K/y9Fn7fXXPtYAoWsrGy2PJkAOOaMW7ksNjhIma3Po5zAoXvuZGk4az0cf66vXzMZJUkkVyjCs5H4zREf090z7GdPUNVgdUkhjrSDHPXwFN3l3l5rjPVeqAjkCP+RId4f5am9sqboYMh2O1A==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1756424768; c=relaxed/relaxed;
+	bh=1JzfVyfbWEkwcvRy5E87In4bJJ84qEkwC/j9O+RskB0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=cCc5EtlLX4aoafnb5SdYi5YGhn5MEr+/fjfymbGMoY+88dZV77gHOu7uGm8qU8K0nTWRmxLOYqkmuXAaD4yAkdVyGxy33BPu3sgZ+qfhSf0qif2uZ7z8Ne20TZXyT9qV/ThJkAf78YNZa3OvtX8WFoZe+0Fv/puf74p6Ov/BPZjxAaVCBqhdNq0paRQUVwVPvEhzKI0o6AfXjAbOR3XP4zgqpP5y79V4Q7NVU4d4NSsSqdnd91NxucN5qK8jzckwhQpCmTsg4XE/+Q1NDsxLBC+mXuDNGsyaHUsj32VkPMCbZJTX7ZjVDBrjbRi0SSrGVJ95cbPq+jzARydwGkQGQA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VxRX8y7v; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2009::628; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eiWFgIZJ;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VxRX8y7v;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2009::628; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on20628.outbound.protection.outlook.com [IPv6:2a01:111:f403:2009::628])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCcXp4zfLz2ywC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 09:09:14 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57SEsMiU007772;
-	Thu, 28 Aug 2025 23:09:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=n/fW1h
-	cJUV4u8az8Xvqno+grPvLEZLtrEQgvqxZ2oNw=; b=eiWFgIZJ1sO2XgfUpolPy6
-	a1z5KwLO+9vl92h5JGu5BDUlf548TSkGhHLrt5t9cPwFNU5K5rjUuF+s3dIIwGPx
-	1cYfw9dkDoxtpCScDHUrXaG+FE/Wriw120NtGTDDhn5So0Sch7Q9bKwK8+RhLTXh
-	wA2plvdU2lp8xBYOrh5lcFhtKWlm5kRXZBnKPP8NNwN3r1jOBpzHyY/P6Q/0USnL
-	/RatDKu+f8BtFxgJ/7AWpASepCMCwFGpUab+Bdr95YaTXMdO7W9sWOcRmS87SdPG
-	VzBC958WnSMQHIJbF8T2M/GxpG3xFtX/JrsKXWG+UbHPb4wewn59/ZCT7W1wjCHw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5hqcde1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 23:09:06 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57SN96U9012703;
-	Thu, 28 Aug 2025 23:09:06 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5hqcddy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 23:09:06 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57SKP2rW007459;
-	Thu, 28 Aug 2025 23:09:05 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qqyuqfbp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 28 Aug 2025 23:09:05 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57SN932p15663688
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 28 Aug 2025 23:09:03 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 595B258068;
-	Thu, 28 Aug 2025 23:09:03 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6C57658061;
-	Thu, 28 Aug 2025 23:09:02 +0000 (GMT)
-Received: from li-4c4c4544-0038-3410-8038-c4c04f423534.ibm.com (unknown [9.61.165.221])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 28 Aug 2025 23:09:02 +0000 (GMT)
-From: Haren Myneni <haren@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
-        hbabu@us.ibm.com, haren@linux.ibm.com, shashank.gowda@in.ibm.com,
-        bjking1@linux.ibm.com
-Subject: [PATCH v3 9/9] powerpc/pseries: HVPIPE changes to support migration
-Date: Thu, 28 Aug 2025 16:08:43 -0700
-Message-ID: <20250828230845.2291249-10-haren@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20250828230845.2291249-1-haren@linux.ibm.com>
-References: <20250828230845.2291249-1-haren@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCdML2wKJz2xcD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 09:46:06 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BC0j4lwL4dAZkVK7ch7LF2nEtfdyfLuAA9ArPob3ntYclDYP9WUWF4lzLgBjVEWhKD5fzKCHCvGY5+ndBoRrUZwm7waYZhpSqAahKYwgQ4pjljsudSoVim6I1hb9ly7jMQqHnr44z2LJClAFi82An2v/KrYyR5ZeA70EU+uCXT/rleKxZWx+PAzM297baujTy8UZVntNmF6p7b2TJOYuME78pNxz1HsfZpzErVOVNYl6GiqZ5yRWCRCzttx+jBI51JngDmXcWelvtfVyFMvxw+62K7k2qBxCZ8Fc4e37K8Q+jGpjWdeifbVUhI00fggE7wEQP4jyhOoXizMoJ8tVEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1JzfVyfbWEkwcvRy5E87In4bJJ84qEkwC/j9O+RskB0=;
+ b=OuXuVM34IS1TM0+6lpGfRyQyiWbMArhtJHiPyAgIiz4AlR2A9iMHh2iJjDR5UK+PYaynzoJXM12KvSYb+IA2KB2fmTlbiAUz1r2mUfUeZHRKqxSwV0LmV2GkOPmgSzQ5MYzn1hZJFRWDqoYgBFtMNGuMPDBJVb8P/9jqwjbguKt+hkYnD+ht+QDLJRox2+wePM3TpqbrBPHyqOTkdOJZycEjFRPmJuUNApFbfzhw1d53g2o7cqRI0vZ+VJTqLbGS1YEEO/x5afwsJ/CT40bHaWRqBIKvugAMF2pDdPIOcs4D6WdXb0OSJy8SlnmEMFsA7TmpWwIyN/tzZN7HLbt84g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1JzfVyfbWEkwcvRy5E87In4bJJ84qEkwC/j9O+RskB0=;
+ b=VxRX8y7v26YTcy0pm0Eq8/JX3RyQj1mvosIjLgJoJ5Hf/erONZbAQ7UuB2aWAyT2Y9SvfMSp6863o2b0yAt8wB7s96NROj09PzDBubXJK6wCzBNuANpfqrfKDpKiEKHzCkFH0xFvnRPG2404BQrGZnqFLwXObqOS4VE5W5GBq72z+BFFaXecgJpi+GM4ZHGo7Z8QckOiiC3F4ZiRqFFGTyxlqPxg+w740BlwXy/nfyhOAsCIH96eFyZ52v7TOe86DZC3T7GEjM2WE5G5cjtR5BftO2oXcDldH+HDfD/hthN/IqlvNd32XXJQPecBtJF+qCipDVffTR+6xDrsOKEwUQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
+ by SA1PR12MB6776.namprd12.prod.outlook.com (2603:10b6:806:25b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.13; Thu, 28 Aug
+ 2025 23:45:44 +0000
+Received: from CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
+ ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9073.010; Thu, 28 Aug 2025
+ 23:45:44 +0000
+Date: Thu, 28 Aug 2025 20:45:42 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Keith Busch <kbusch@kernel.org>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v4 15/16] block-dma: properly take MMIO path
+Message-ID: <20250828234542.GK7333@nvidia.com>
+References: <cover.1755624249.git.leon@kernel.org>
+ <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
+ <aLBzeMNT3WOrjprC@kbusch-mbp>
+ <20250828165427.GB10073@unreal>
+ <aLCOqIaoaKUEOdeh@kbusch-mbp>
+ <20250828184115.GE7333@nvidia.com>
+ <aLCpqI-VQ7KeB6DL@kbusch-mbp>
+ <20250828191820.GH7333@nvidia.com>
+ <aLDCC4rXcIKF8sRg@kbusch-mbp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLDCC4rXcIKF8sRg@kbusch-mbp>
+X-ClientProxiedBy: PH7PR13CA0003.namprd13.prod.outlook.com
+ (2603:10b6:510:174::14) To CH3PR12MB8659.namprd12.prod.outlook.com
+ (2603:10b6:610:17c::13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,224 +112,100 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfXwKNnEdATpKqd
- +va8M1cS3GKtOg4Ut5Ou6Uq6obvuyllQciMG28ffW2aotbtLS0DE2abMvx+pP/0o3R4ZGcR65xv
- JlZHYSaYqnH8200FWndmJZLXx5Vy/F98QBGO3QEuYga231WMoJQ9YY057QyBOfboLgA36JDA3wp
- qVt5cxDyq5lQmxs4n2QYIyuR4Strgr5zQSWplD8rPPckgDY3CcZvj/HszP3uhlkEnCDP6lD0Msn
- 9dAuuvArRtl/rlKS8PTdnCs8tZJRjueECSPRFRN/p0Vol2X0fzOKreMoJU01VWPi5eSqmFNHVtP
- SRpAIVR9xUWsnWDsFDla16bzet5k9D+wi8ktuHIYeNaW4L/8m0EaQXYJt36F94s38WQaM1W9oud
- mdRcYvFp
-X-Proofpoint-ORIG-GUID: E8t19ixy6ERzbmXYdjDDjmWevggzb3Vo
-X-Proofpoint-GUID: 13XVpq3JJ9uIP64K8gJ8F8-k-mwenVHA
-X-Authority-Analysis: v=2.4 cv=Ndbm13D4 c=1 sm=1 tr=0 ts=68b0e192 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=S7z50IwEaLHSfgsXjVMA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-28_04,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 clxscore=1015 phishscore=0 malwarescore=0
- suspectscore=0 bulkscore=0 spamscore=0 adultscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508230021
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SA1PR12MB6776:EE_
+X-MS-Office365-Filtering-Correlation-Id: 753e419c-5ee5-49ef-69cc-08dde68d017e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?BRmB+3sKM17VmapuvDAanENDABDoL5Vpjr28rLgku94+uoeQ47+jUimtSCp1?=
+ =?us-ascii?Q?u0ol1dYjEgBvhO+ruK3iz1KEP/hZe25IXKS3DBr3YL9i7oeUIybZm61bc1EK?=
+ =?us-ascii?Q?ySVKFefar6hxK0//rT6Je0GyXftJ2+WIKk+gQVSVNjs+Bkungz+C7gvV7FE9?=
+ =?us-ascii?Q?JWTCKInSOrbbaQQHrNsl6Z5VBvqOljwWpgr3qXQvyL+Pg+MscLmm6SArQcxY?=
+ =?us-ascii?Q?DhRw9/ZD8E7yHpahJ58uR5uiRAi4+XlAVS2evL/9AMATYhX1mkLmURS/z3jc?=
+ =?us-ascii?Q?1V8fE7B86lb2Ht8o66gydqV81PLbS1K7px3v2ku7KKgIc9spCDxux52V1e9X?=
+ =?us-ascii?Q?2498Hip1BaWsm1qRiLue87NQN9Z8AJishXg/2l29DTeQIEgx8BvWPqqlHtMI?=
+ =?us-ascii?Q?LZrzHSOQwD82enU0XZ4QvLY+EpJrrsG0aR8cPF6lU48eUz2Bwk19vFp5xmob?=
+ =?us-ascii?Q?FBLQcOaGyTp3p1DF5P/fDKAKIx3KFyk25UzYulT6OPKOJ8/nAaUAfoELdNwt?=
+ =?us-ascii?Q?gJJsBFxQ7TZfd+e5TwigthbjSdVMfwZu4ntQ3hbIPzZ3X8i+//nTBmsBv2P/?=
+ =?us-ascii?Q?9JHw7gf5BC5M7B79SHTbr3VxCjAxyblS+ecONyQ7+pV0UZdx4ZkJaEYtITXK?=
+ =?us-ascii?Q?/Ud/XTouTFMXZ5sLYqFF7qM81eEraAf2qP9fHpukUza4yBXVwCBf3mZem0Vf?=
+ =?us-ascii?Q?OJRavtRWTGaJ+pLqvA6Ou8HUKqW+yoROq9n9FY6r9a2ShUiGDeBHELGNMS9I?=
+ =?us-ascii?Q?dL7jH7kqZnUOoBBf3mGbE+UqUXxdaXpDchRzCfuEK4FnZ7zr4gN9ep/+4aJM?=
+ =?us-ascii?Q?sw6wi+XaEogKqqzViWPfuAemHi05HSfMS4MdRfkPchzCEfzJFlwSv+GLxzlD?=
+ =?us-ascii?Q?HCWlPg4s9cg/K3ly9v7KncbEKuyZo2TZaLSvdiK6wXEvmt5LLMxwqXZIWgFn?=
+ =?us-ascii?Q?xWdsfLj+2G7UfQCHxukuX2UQYJuI1WLdvSDOw0AGKcw+99YC77IRY+OL92/D?=
+ =?us-ascii?Q?21dNzr7nLqsmiYEFtY1EJio4JyFTMe3ec10oPKTUrkcsGkjr1/ks+6KSCtvn?=
+ =?us-ascii?Q?HA0+NJPHPPjzq4wQhCZDNTDtkDziamYMNAFgr0N+PteMCcAxrxhNkG5ZyPDo?=
+ =?us-ascii?Q?Ua1raoxaJ5NswslbugvyjHR0iXjibH3cEoK59tkDZ1f/uLlg+VQy3QNMGn7n?=
+ =?us-ascii?Q?HCK6PdEXVn7LemiRnfbB5fcOxtdaUEPFW5lJjVHBVf8vHD2B4Bo1bM3mIXwL?=
+ =?us-ascii?Q?I9Jn/tVJuGDOr+/G4UBoCVpEef7zxZjVhIs5r53tho0Sm441MIodgr3hTnDX?=
+ =?us-ascii?Q?65dDh/vJRvQ25+EgjhJh4yNobd1W8xoCF1IhGxQbiNrO49hN+w8dOg6USblN?=
+ =?us-ascii?Q?ZdfJit9b8mGe+lxErrCIkoNOdCD3aQ01k1hLoZQAmRwv/zUPd+uDvm7rBHth?=
+ =?us-ascii?Q?Cvvs6vcbnBU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Guohg76/pkR5ZgCdXgoXw1W3mQ00oIzJR+SdpQh5sfjJMXbMJ6diFn7nFxpV?=
+ =?us-ascii?Q?idifmlCDn6s8kevNE8Sf4gg9m8QK3+NtR2NSUeO9qNsfGDtGDFWFwjrJ5I5k?=
+ =?us-ascii?Q?Ox4PeX8sLOraVXU+a9YyVUbixgamtzWXtFVqTFjAYxe7tJjQRhfS2cBo+fi5?=
+ =?us-ascii?Q?kVVvQnY8kZ3FnBMRjUQZFrfMSc7Mi3mxfiW8w7B7GKRGTOIBn3rkqXeyvfl9?=
+ =?us-ascii?Q?D1Q7+0cmtHVDvXMJiug98HJ17TCVxynsb1SEjZxEdfB/d5l5f17QzUwpPnVN?=
+ =?us-ascii?Q?Gplf3AcoLO1AIGH+gwg6UqRp0s6sMkSKs0xwRZigys9wH5XBl9W2216ei6tY?=
+ =?us-ascii?Q?vvR5O4PxY3fkdAsxQQKZfY3GGooMAF5guVzbOllo+zUmGHGYzSN6di40Xba+?=
+ =?us-ascii?Q?ngFmkM1zsb8jSY87arByWlr7nB8uWwkhGYuLFNV0c8xY/D6x46jEvCrDrLzN?=
+ =?us-ascii?Q?QdaBljNNtZJQpa7uhXrdwcbQHLktyV87FIGiljAjlhL2tDE8GgdWmjQ9I07Q?=
+ =?us-ascii?Q?cpe0ZtsvokBQR0zYqw6t8PkI1eqMRH+E8s7b2oIPX61W4gxJPmeMgjkokkN4?=
+ =?us-ascii?Q?BePhnvjrhX+JARM1FdSryWeoCtJ3m77i7OSY+ZS+AyHeOn2IUYgxh0ArUlvq?=
+ =?us-ascii?Q?BvNDMGcSBFWJu4hdNZztzTi+5uLEGmsdU2p+6i9UE/XqPfDiTD88psrco+fb?=
+ =?us-ascii?Q?fY/xzqHaiCEj1rxu6vxJXwfiTL+iTcSA52Gl7mFQGOMgADdAjDbHTUSLIaQw?=
+ =?us-ascii?Q?cAixtwK5ed5SN/lVyfz4rS2BpfHcflIlkrhPN1NLFiXEJogyMcgIUlslIWfc?=
+ =?us-ascii?Q?N4SxOFYJprB/AeCcdUG9CkiCGanv1lbz4sFatvqfIBj/Cz07Fs7w5EHoVrsl?=
+ =?us-ascii?Q?BkitYeS6X6zNKItXzPlD0uehnMerAtpbspMmXMkfgDTxVQqDMRprgWSEZTs4?=
+ =?us-ascii?Q?3ceZRuolwKKM2lcKQL+tawp818fSy1l2N5KTgPhJGK3DAjHmnUPP+DExWgQ8?=
+ =?us-ascii?Q?62AcQmC0vE3imo5f6Axz3FQHoBp3zbuYc7CfhCuDOe+6hSguUTMHfZfnZyII?=
+ =?us-ascii?Q?7fnKE8QhQ6zMbXSZMUPCXIEWZRaSfB/x954fCwGQFhgCqxiCxkE4w5HzBMOh?=
+ =?us-ascii?Q?dLeCGlEaAsHoOcFROZCGOdisGP9Zlit0/k6rVQ+J9tO3D6iXu8tp/2c3Wk/L?=
+ =?us-ascii?Q?euhoY/rX47hr8ctR5Cp1zPCIL7Hk1EtfflIpOZwE4I88A1Tpiw/JVGWBpoK/?=
+ =?us-ascii?Q?wQGvzOztsizk77wdlm2KI4QYnPVWD3gZHYmFEVNhuf/cdumvV6iho52kDZbC?=
+ =?us-ascii?Q?urbjXb+V0k3ksRa5Yl6SkXgRGvaBvJVo8pShoQITY792C177/Qu1Kzp8TIGs?=
+ =?us-ascii?Q?jaby0wxn228VgUWgqaGu01nkxL96Q5xrnXO7hbCRmfyOPPyasuMfwZLX4EHU?=
+ =?us-ascii?Q?e9ljeB3zqOhiHYAVmIosgGuhi1Wif+QzpP/frMqCpXzb0vpi6c19NhWE3vG0?=
+ =?us-ascii?Q?wdimmMQp2Hr+zsdLF43kjsQZlHnbRGTNKGJW5xxYHTTjqo4bwYiXSm+YG9UX?=
+ =?us-ascii?Q?+1fyZ2DaYg9/ErkWntpBMRbOiJM/hdBX7nHaA03A?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 753e419c-5ee5-49ef-69cc-08dde68d017e
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 23:45:44.7681
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: stKDrPdUYg+cKM6Zaii6EJX1iDXReQlwcCRvIIs2DW0PSsQcsndv+JR8Lnf1GfOk
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6776
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The hypervisor assigns one pipe per partition for all sources and
-assigns new pipe after migration. Also the partition ID that is
-used by source as its target ID may be changed after the migration.
-So disable hvpipe during SUSPEND event with ‘hvpipe enable’ system
-parameter value = 0 and enable it after migration during RESUME
-event with  hvpipe enable’ system parameter value = 1.
+On Thu, Aug 28, 2025 at 02:54:35PM -0600, Keith Busch wrote:
 
-The user space calls such as ioctl()/ read() / write() / poll()
-returns  -ENXIO between SUSPEND and RESUME events. The user space
-process can close FD and reestablish connection with new FD after
-migration if needed (Example: source IDs are changed).
+> In truth though, I hadn't tried p2p metadata before today, and it looks
+> like bio_integrity_map_user() is missing the P2P extraction flags to
+> make that work. Just added this patch below, now I can set p2p or host
+> memory independently for data and integrity payloads:
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Tested-by: Shashank MS <shashank.gowda@in.ibm.com>
----
- arch/powerpc/platforms/pseries/mobility.c    |  3 +
- arch/powerpc/platforms/pseries/papr-hvpipe.c | 64 ++++++++++++++++++++
- arch/powerpc/platforms/pseries/papr-hvpipe.h |  6 ++
- 3 files changed, 73 insertions(+)
+I think it is a bit more than that, you have to make sure all the meta
+data is the same, either all p2p or all cpu and then record this
+somehow so the DMA mapping knows what kind it is.
 
-diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index 62bd8e2d5d4c..95fe802ccdfd 100644
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -28,6 +28,7 @@
- #include <asm/rtas.h>
- #include "pseries.h"
- #include "vas.h"	/* vas_migration_handler() */
-+#include "papr-hvpipe.h"	/* hvpipe_migration_handler() */
- #include "../../kernel/cacheinfo.h"
- 
- static struct kobject *mobility_kobj;
-@@ -744,6 +745,7 @@ static int pseries_migrate_partition(u64 handle)
- 	 * by closing VAS windows at the beginning of this function.
- 	 */
- 	vas_migration_handler(VAS_SUSPEND);
-+	hvpipe_migration_handler(HVPIPE_SUSPEND);
- 
- 	ret = wait_for_vasi_session_suspending(handle);
- 	if (ret)
-@@ -770,6 +772,7 @@ static int pseries_migrate_partition(u64 handle)
- 
- out:
- 	vas_migration_handler(VAS_RESUME);
-+	hvpipe_migration_handler(HVPIPE_RESUME);
- 
- 	return ret;
- }
-diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-index 504d7f20f0b1..350b416d2e76 100644
---- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
-+++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
-@@ -27,6 +27,7 @@ static unsigned char hvpipe_ras_buf[RTAS_ERROR_LOG_MAX];
- static struct workqueue_struct *papr_hvpipe_wq;
- static struct work_struct *papr_hvpipe_work = NULL;
- static int hvpipe_check_exception_token;
-+static bool hvpipe_feature;
- 
- /*
-  * New PowerPC FW provides support for partitions and various
-@@ -233,6 +234,12 @@ static ssize_t papr_hvpipe_handle_write(struct file *file,
- 	unsigned long ret, len;
- 	char *area_buf;
- 
-+	/*
-+	 * Return -ENXIO during migration
-+	 */
-+	if (!hvpipe_feature)
-+		return -ENXIO;
-+
- 	if (!src_info)
- 		return -EIO;
- 
-@@ -325,6 +332,12 @@ static ssize_t papr_hvpipe_handle_read(struct file *file,
- 	struct papr_hvpipe_hdr hdr;
- 	long ret;
- 
-+	/*
-+	 * Return -ENXIO during migration
-+	 */
-+	if (!hvpipe_feature)
-+		return -ENXIO;
-+
- 	if (!src_info)
- 		return -EIO;
- 
-@@ -401,6 +414,12 @@ static unsigned int papr_hvpipe_handle_poll(struct file *filp,
- {
- 	struct hvpipe_source_info *src_info = filp->private_data;
- 
-+	/*
-+	 * Return -ENXIO during migration
-+	 */
-+	if (!hvpipe_feature)
-+		return -ENXIO;
-+
- 	if (!src_info)
- 		return -EIO;
- 
-@@ -541,6 +560,12 @@ static long papr_hvpipe_dev_ioctl(struct file *filp, unsigned int ioctl,
- 	u32 srcID;
- 	long ret;
- 
-+	/*
-+	 * Return -ENXIO during migration
-+	 */
-+	if (!hvpipe_feature)
-+		return -ENXIO;
-+
- 	if (get_user(srcID, argp))
- 		return -EFAULT;
- 
-@@ -699,6 +724,44 @@ static int __init enable_hvpipe_IRQ(void)
- 	return 0;
- }
- 
-+void hvpipe_migration_handler(int action)
-+{
-+	pr_info("hvpipe migration event %d\n", action);
-+
-+	/*
-+	 * HVPIPE is not used (Failed to create /dev/papr-hvpipe).
-+	 * So nothing to do for migration.
-+	 */
-+	if (!papr_hvpipe_work)
-+		return;
-+
-+	switch (action) {
-+	case HVPIPE_SUSPEND:
-+		if (hvpipe_feature) {
-+			/*
-+			 * Disable hvpipe_feature to the user space.
-+			 * It will be enabled with RESUME event.
-+			 */
-+			hvpipe_feature = false;
-+			/*
-+			 * set system parameter hvpipe 'disable'
-+			 */
-+			set_hvpipe_sys_param(0);
-+		}
-+		break;
-+	case HVPIPE_RESUME:
-+		/*
-+		 * set system parameter hvpipe 'enable'
-+		 */
-+		if (!set_hvpipe_sys_param(1))
-+			hvpipe_feature = true;
-+		else
-+			pr_err("hvpipe is not enabled after migration\n");
-+
-+		break;
-+	}
-+}
-+
- static const struct file_operations papr_hvpipe_ops = {
- 	.unlocked_ioctl	=	papr_hvpipe_dev_ioctl,
- };
-@@ -742,6 +805,7 @@ static int __init papr_hvpipe_init(void)
- 
- 	if (!ret) {
- 		pr_info("hvpipe feature is enabled\n");
-+		hvpipe_feature = true;
- 		return 0;
- 	} else
- 		pr_err("hvpipe feature is not enabled %d\n", ret);
-diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.h b/arch/powerpc/platforms/pseries/papr-hvpipe.h
-index aab7f77e087d..c343f4230865 100644
---- a/arch/powerpc/platforms/pseries/papr-hvpipe.h
-+++ b/arch/powerpc/platforms/pseries/papr-hvpipe.h
-@@ -11,6 +11,11 @@
- 
- #define	HVPIPE_HDR_LEN	sizeof(struct papr_hvpipe_hdr)
- 
-+enum hvpipe_migrate_action {
-+	HVPIPE_SUSPEND,
-+	HVPIPE_RESUME,
-+};
-+
- struct hvpipe_source_info {
- 	struct list_head list;	/* list of sources */
- 	u32 srcID;
-@@ -33,4 +38,5 @@ struct hvpipe_event_buf {
- 				/* with specified src ID */
- };
- 
-+void hvpipe_migration_handler(int action);
- #endif /* _PAPR_HVPIPE_H */
--- 
-2.50.1
+Once that is all done then the above should still be OK, the dma unmap
+of the data can follow Leon's new flag and the dma unmap of the
+integrity can follow however integrity kept track (in the
+bio_integrity_payload perhaps?) ??
 
+Jason
 
