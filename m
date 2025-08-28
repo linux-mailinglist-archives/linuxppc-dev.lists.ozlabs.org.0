@@ -1,102 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-11441-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11442-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E3BB3AABA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 21:18:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C93B3ABF3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 22:51:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCWQv1dq3z2xnm;
-	Fri, 29 Aug 2025 05:18:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCYTd6jjGz2xnx;
+	Fri, 29 Aug 2025 06:51:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2415::624" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756408727;
-	cv=pass; b=JnVJz6zNH22v2fCvPfkzr0mLMjSPOoOyL5H6brZVP7oIbbJuSTz/etU+dx4LgcCe2WCBn3W1sqst+hovu4wNnYyYXktfISoOcJYwoPKBGrjskkNUNAhfGkzev9yVcAIG0/lUnUdbITeIsQX2lAwoC61OvD4S/S88OP55O/0UaY/MyD4riNGz3O2E89x1j4zb23BJxqSDYck/zWeks0YXv2KAgsxD0dPpgeCtdkWcLXtv7luJBc5GvT4B1NkR+0xgP5L6lA/rlJcHOxE3VBH6DJkHFG2hUl7Vk2hxBUm6BVsNS9FIqrycY8OR08XyXxwCJ+HQUAO9Knx72rUTnMTqZQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756408727; c=relaxed/relaxed;
-	bh=0mgqg7jv533EByceZHfSmVEnFe8pbA07e3o/tOscS54=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kS+t7IfbNP7hZMEnJHQy7cpbad19dRSjOvq8K4hUZHQsh6iP8wd2bGrGZwGWJHZaX2NFEC23otGHmxSLSRWT9AX0jOJ2EImchIqhOjD0TTPAyCgZKSDrTjP6VVEszw1xW/lk2PvwgnTog0fj55GL2ont4Oxi38ZAO5jXTk6dcrAlW4a7QtgF6Px2vIf2jMeMi5yx+QlWvtX9Y+WJqEuqffwihrzb2Vta7oJ5nG/KWT3P4wCwiVKwij1GGelU/GWYI9/9vy+Aoy0WjFxQdCGSGGTSI+SgEuBKFhSOFdvUy9l1SYtuWHI8P6g0eVIypI8bKpVWjMZWgCl7MlfcbVU39A==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kUdpqfjk; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2415::624; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756411320;
+	cv=none; b=LGFxMGBjEXxcLo6/ZGJ6iTEmdKkEJSxQgebCqOP9qq1w3MVmF8w/nhwiy1BRiknQyJQiG+Hgod9EFyvRd1dyEYLlTAE4jU3m9PffRROEPLpvjMJBVjeu+vDGnAv5pOyR18nB7sFX1R53l/Uj1+8dARlEeedGZKQTTLaxbh1nAX2jJquSaHXJO+r6wNxcZiWcw52WOfJur1Fy1uF8cU9Gf5Xv2vErJBO2Puii3HeANhHqZBPP0+OFY9k+DLlCIbyD3iVcaUYpySpNy3lOtom1ijis8l1DrJs97A4btDHdbUvCHJdkbqpGlW7mSGDTrhsfobQylQU0qoeVGCvG4ofvpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1756411320; c=relaxed/relaxed;
+	bh=phR9doI5X4q1LR98gybIzZyU1kdJD+t4ijHV2CMLbUI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AXrZ4/KoweV+PqU8ughh0hCOVCq8QSTLEp5o6I1hBDNm558qGLjJWen9ITOSVgdrHTlNWpAQIJCirqSZNtGwmAJLN6gjSbrTA+52Ifd4gteGb1iZpiLH47M+B0Sj1GpgspDaUryAUnqMfZTQzjNXpxE5yWepIoPM//QOYUlSbww+ic52N3Zv2eQL9ewOeMh6aNTGnwOXyL34ftgGTc6jNtOzlh4IDZsRe1unEQme8ikrDHLAgkIE6Q6BoPx+uAFklKHvEnQvXOmHmoanDHGPTO7GQUf5Oo9qoP7Nr0HaeT/dIJZY+17ZqaGUCeP7FAOy3JroFttMnYUicTV+jrX/Yg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org; dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=mJqzQEpl; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=briannorris@chromium.org; receiver=lists.ozlabs.org) smtp.mailfrom=chromium.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kUdpqfjk;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=mJqzQEpl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2415::624; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on20624.outbound.protection.outlook.com [IPv6:2a01:111:f403:2415::624])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::52b; helo=mail-pg1-x52b.google.com; envelope-from=briannorris@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCWQt2R7fz2xWQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 05:18:45 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ewH2ieH5LDzBiW3oheyBFwIa/Nafy26BsTHhGXxP7b7oUC14NAtvTcoMrcTe/vUn3asLXce8N7ZgywJeBWvbYuqtVhk8LHfBS14S/3ApUUQJAoxzcMIrv8UGGtdiXt3PIk/3AK/ZM4b5WUg1vPLXt3REDtkapOr6yV0q9GHLjiDEwejVKMtAM8sCsEsUEZaOUMdDzDbYSynev5JwfpIiOHFliZ8E1Kj4H3F5xp17cI49SV1htvUuGW/AhcQDyAI1yR84Rqn4omafTb3RS/siwn/lNZSgQuBICE7YiCC8yAT2+LanLJ9QQMZaqoDD1GDDVWm5JZtJMKigGAA+ULBaCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0mgqg7jv533EByceZHfSmVEnFe8pbA07e3o/tOscS54=;
- b=X/7wBUXT89nTZbGqbEYuSk7vOfv4nCYGYmap/KinegRe3Rv421Q/5BOmPy1DsUX0ZMSRf3qBc/2fdRB4g5y2NI0ZqHw6QonCPIyyX4MxS+WNjkPC/5Fl9cQSPlRvR79DQiBitxLE8WWHv9XhLh1j62d+C5QYAn/gPMP4q/r891Hz9nq5CTkNmLvbgqbNqYa5pPcpKPxYz3gti1wcdWoKNPULQC9cVGv8fEDezkmtBEEqpkNkFKnX1dLkuLj4JGL3RvjXYwfiAQJ8od2bpzAzM/jexnkcb8vdnV3vc1qP6FoP7NAOGAUE2wylRptmaubaFD9o5RL3yCfElffu0CDaHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0mgqg7jv533EByceZHfSmVEnFe8pbA07e3o/tOscS54=;
- b=kUdpqfjkBAAzbDQlcZiiGcpXo63H4J3J9+CzG2+Xga9Htp8ts7ArC9Y2EWbyVIS/qoB79IfgnGIjx5a6i4+tmEiazA2Fu6pJBAzOnUlSa0u1Kh+Q//uaCcyEP4ls0FzPtcTj0ueU9TmeqdlDwub7dKj0la+hnE9M1h5Ak/JedTvr9gn3+OlAlBbYoN2H+zfe9cy94i1N8ly6wn/50oJhuaodMzAoqqsDasPpKPmlo+jDM25MPDmIfQJj0AzqUXYWyp3uE1bB4g590sct6itCmwvzPWxI8Bg2EET6RcFx1UsO3t2+JXlNMUEgIXGjh3QVW3C3jRnly/oP3k3zjZ8QXQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by DM6PR12MB4483.namprd12.prod.outlook.com (2603:10b6:5:2a2::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.16; Thu, 28 Aug
- 2025 19:18:22 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9073.010; Thu, 28 Aug 2025
- 19:18:21 +0000
-Date: Thu, 28 Aug 2025 16:18:20 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Keith Busch <kbusch@kernel.org>
-Cc: Leon Romanovsky <leon@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 15/16] block-dma: properly take MMIO path
-Message-ID: <20250828191820.GH7333@nvidia.com>
-References: <cover.1755624249.git.leon@kernel.org>
- <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
- <aLBzeMNT3WOrjprC@kbusch-mbp>
- <20250828165427.GB10073@unreal>
- <aLCOqIaoaKUEOdeh@kbusch-mbp>
- <20250828184115.GE7333@nvidia.com>
- <aLCpqI-VQ7KeB6DL@kbusch-mbp>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLCpqI-VQ7KeB6DL@kbusch-mbp>
-X-ClientProxiedBy: YT3PR01CA0075.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:84::15) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCXNl1rlfz2xQ2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 06:01:57 +1000 (AEST)
+Received: by mail-pg1-x52b.google.com with SMTP id 41be03b00d2f7-b47475cf8ecso941356a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 13:01:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1756411315; x=1757016115; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=phR9doI5X4q1LR98gybIzZyU1kdJD+t4ijHV2CMLbUI=;
+        b=mJqzQEplOj1sUxZBHnv+SLgO1+lMDfa6QtvwgB+MPPx57gwmPdLY1Jh5zAl+zWEujJ
+         uiv0LKi+VdHsNpowCBTsSd+PoqfO6Dnmfc4C37pC/3sc5WejwuhkyIPHcmsnpR7tAkiF
+         n3oFBnq2JISUcJO21+CuUHCa/96830z3pLldE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756411315; x=1757016115;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=phR9doI5X4q1LR98gybIzZyU1kdJD+t4ijHV2CMLbUI=;
+        b=acrqWNns88Gi/Xl/3SofWTe9zWyEjFRjSKWJjHD5xLXxmp8p8/PU2ozZADdQuVS7Az
+         SFDBUTv5PHJ/xkliP4DPKnAr8Br27oScANiBx7u0H2Y3Y84Ux6dQHIXaNzTy2unovCPn
+         lJXG8I86j/GMEDyFTs07QXjcpAeJjTmAyb668rBpjYNFOIn4l6NkTqAzt+i1dvRLH2gN
+         UksjWuveuY50ph5UvqoZtHh5GoqaI0jrTPYK8x/Q4gEFMqjK22KuFF9kxG8HYxqayjDf
+         Su1TZIRMPTatldi3jit5rTeLmaHq5GFQniRzMIwX6O+QhOvSSiNAcC3KBbQlfvtoG/Zi
+         SpuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV0z4xU84R+1wzVR0ZdkUn2U3X/QCoKkq1/RMD+YpzI3y1hiE8WN0dCfjaJsi+sWOzAIfsfthUiPiL+Fh0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxBCgOd8A/ESZJwz5B21wJNWCNVr8hHTjSvOY8U38C+m3lZYXWG
+	6SUsnSETS5h6Ben3TAk2FNsxv2diJ8AdSQjn+lXD+eEUbLcVkQdMaAShJIYnkjRMtw==
+X-Gm-Gg: ASbGnctB2y6nra+cqmn2oKjQO0RJDnFpUZSLyyXrke/bB29mdI+7kAZwD+xoD9JwXKi
+	zHJhPJCQYlk+/Zydu/P0XwGTfRzAD84Q5iNI/cuuTk0s2KwRhB/2IjQRNjcMBVPjolIuDRxx4n+
+	dRhHsbXriX1CVaTjAPnM+tZN6l9g3mLHcMf1vwrWzKixUGt4G6wY3QJmlilm2Nhq4szb7m14MwS
+	Mm4pDnzxGxVNBLi7e5fzSpdxiFwMZ9bH/pZvoz+JIE3dr7bmDJ1MSBTlAXQ9szw6HMVLATFCiDX
+	4vUvizHx8Hd/B6gLY15kUI2rOYmCvGMh4ShXmSjLHc5xnxEXv5PII3m8nbkAhdj+DU4IPGOsg8/
+	Jmz/Fu4Lx0pThxMBDgE9u8tBgOisXPsIQo6CK2YtVJHWNkVNFZ35ssDuH1WgSNfPkRw4WZ0A=
+X-Google-Smtp-Source: AGHT+IGRMI2y6ukLzuxA0A2Y52962J0xzxUUU/p9/lxC5pAaBaeFe2iw+3odm0xYYkw4AIuMGBT6Hw==
+X-Received: by 2002:a17:903:13c8:b0:248:6d1a:430f with SMTP id d9443c01a7336-2486d1a46b2mr149396845ad.25.1756411314801;
+        Thu, 28 Aug 2025 13:01:54 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:2893:df0f:26ec:df00])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-24905da3be1sm3479885ad.69.2025.08.28.13.01.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Aug 2025 13:01:53 -0700 (PDT)
+Date: Thu, 28 Aug 2025 13:01:51 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: manivannan.sadhasivam@oss.qualcomm.com
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>, Will Deacon <will@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Niklas Cassel <cassel@kernel.org>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	Lukas Wunner <lukas@wunner.de>
+Subject: Re: [PATCH v6 0/4] PCI: Add support for resetting the Root Ports in
+ a platform specific way
+Message-ID: <aLC1rzdTVoN56Phc@google.com>
+References: <20250715-pci-port-reset-v6-0-6f9cce94e7bb@oss.qualcomm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -110,105 +101,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DM6PR12MB4483:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52013604-2e30-48de-7d56-08dde667a72b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tkzamAbH5/chdWZm3ke+JvfeqA3hIcFqXbx+r0hKEizINFNE62neCHrkqAKo?=
- =?us-ascii?Q?GQw1qGDwSs3TS+26QCrA6PZpWQTzbU7LKQ83Uk3UlOHPCCU5xsrzJujNvddd?=
- =?us-ascii?Q?OehQwAUTsfK303zab5MCQrE09VBsGUPilNO3T1aJNCEGxeTULuJSZ++yxYJl?=
- =?us-ascii?Q?FlgvgSF4OFzaaJgeeBlol1BfkrZ6JutsedecnGm4fadF5v5qKcKkWiSbYaJZ?=
- =?us-ascii?Q?Q7KjhQ6iuhaaGW/HzzlIcBryVYIb0zhXbiWM4yz4pdVBAHmsOWn6fPztT2xI?=
- =?us-ascii?Q?CgRX34Dd+L7XXIfkzThN7GixgLCdVKm/6H9auCcYq/eKzShWVUTsPEydphF0?=
- =?us-ascii?Q?hEK3AkzSkOoGpwwvg0FLHnLPk0TD00/jZFYa3uDjrMy5OulejmplpaRvV4V6?=
- =?us-ascii?Q?1NbZOuS4LbRXHz00PF7LNPB4tvbLwjY3oMDtREd6DhcoP/FkIIGOzeePZqqG?=
- =?us-ascii?Q?WkkGYvEVecOnHOOSSoW3JNtWVbVy4dGBpVsFLSE2uKt1GcFUimdOxlgnSWCT?=
- =?us-ascii?Q?n1sEZlVQvw0hj9aWIErVnvFGFktiZpBDhCD2fu3frqGLedE3pDmml7cC+ReI?=
- =?us-ascii?Q?cMsV0hImSgwvs8E/AnS50UBlUAyolgVsq6eH5ZH1jJOUragJUXshbOpfXba5?=
- =?us-ascii?Q?cPQhE4fwX4mLT7FjuHd84RtUJREUcfXJWWyXODHoCb1YzVEB0tBhPKDwq7cp?=
- =?us-ascii?Q?bySTSPdaFAusmpRom51YWvAmn6Hp/6NrJxjapCZW1yJrpVK+BMVN8gxGE5Cc?=
- =?us-ascii?Q?DZyKydvUnj16k6RLTbxAd1leamkUiJZDWOxq05NnolwwWkxjmqjFEu8F9P/D?=
- =?us-ascii?Q?cvMezD4FVJXuY8ceXcbif3j0PMPr3UQ7Eb1Rww7DEshvjDp7lq0FVtGrmYyx?=
- =?us-ascii?Q?Sc0Zw4f3m+YzB/F+367AXTigA5Te45yigKc+JeHBCMBmoxnKTLDaBZNr1sqA?=
- =?us-ascii?Q?ZmXloRKJjUp3ynhRIVRkYhTwGxSnnJdciu9/ZTrcceii17N/AEDJHfIKbOLT?=
- =?us-ascii?Q?/Hb9jteFnXzwUZmvAVv+0RB9OI+llcTWo9WTcTQ0e1eVKPAEJHe6Q/XtWOkc?=
- =?us-ascii?Q?OeEcZpGJdgTn/n84ku29rld2xou+WiWBYXA/H3vsJ1OTobb8aiJwPwbPxGtD?=
- =?us-ascii?Q?yaAffWzTS9fNe4HpURb4JmcRYfadnPNLI1BKTRyB3MspRKVn5YNcrYJpsdzB?=
- =?us-ascii?Q?6RXZrdUiV1cE4+kPAYl/AZ5U4TGPKYv46MdftVKtqd7hjHbCc1iMk6Q3PZ7C?=
- =?us-ascii?Q?E16vp2SHCkKZhX0qaRcMz7wlPlC2FtYSSrXBmsyKzcKZJLsu35FPtenmIy79?=
- =?us-ascii?Q?sE/+9vfZTDd5IuPwUz2p8tCwsmScDWcRlJ9fgzWu3Z6D/chLmAqP8VgcK8nw?=
- =?us-ascii?Q?G0RW1qpUFifPjZx5cixCprrw5GfKMKhHdzQbEFARFE5AhBor5h9+bECVAmYX?=
- =?us-ascii?Q?o5aUVOB9LeQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5ky7gd8aT6zgXZ3S9u2dQ9wfKPLFRzCut7RGugI01Pf4Eog4OrfHb36oULUM?=
- =?us-ascii?Q?lQvuNDmGms0FsQm7SQAbJXvnFC2FBGxUqSisCJWTxG1ACYv3V0xKN0dTF7SE?=
- =?us-ascii?Q?yZQUEEGvX5PoOXyQz2eNsEDzmPQObvhzReHlm0bxhkUjW56bHpTHH7EwuKBO?=
- =?us-ascii?Q?1/FD2o5bTIp/+kHebgvLj9elgC54ARBPQVtbai5ZtYiSiOOvGRzeSOfC+FtM?=
- =?us-ascii?Q?sQif8EXHeXuZlAXZ53QAbPOs8Xl11PauIjy0sbinkp+ArJVGXqXqQmd1zeCb?=
- =?us-ascii?Q?aXLppKpxeIoNIJR++6stE6QMJdsPMPgHyaQoSSUPKImjqz80YZi2wVie0n36?=
- =?us-ascii?Q?ZakI0sqTWwh5Rkjou+uZG6R2ADTmM48hr/zKeFcIl1Z7cYLpGMfccJWUKxXU?=
- =?us-ascii?Q?ZKQk44HnnxbvyW57MXYfjwxhrjSUmIRVldoky0tEKDSJfzTLziPOy3V5OyYi?=
- =?us-ascii?Q?sXOVBCWqmMb55IAzG5VxU90BGilWh4lthyWGVDyN4c+JJpn/DzUNkbIgOEt5?=
- =?us-ascii?Q?wtmLF6Mt+eoEZ5njkBtUAbfPU44Iwat3iOLVTJIVf/WS5gwHMC5EoOHv5H97?=
- =?us-ascii?Q?gUB9BJfHfcY6sDZw6mXn857jfuIABDcet8nLyDqr18sdyk764gI31BdGI4NV?=
- =?us-ascii?Q?oVBrIahCpllgByOuio4OUUlrjXx6LrGXn22qthTjwS2vnK36xgjlfurJKFoy?=
- =?us-ascii?Q?+yOdBxt5KD2hw8/SdbYNDXrsZkF/SynBCKk8fHB9K5nBDDP/evgule554rpj?=
- =?us-ascii?Q?3sMnqD5o78y7mOIP9EUfi4YsWNAhib6Pb9LoBFt5ChmCISM9//zhPKSil2Ux?=
- =?us-ascii?Q?smPk9BeuFpSkfasaiNlnuJ/5NkmprQafGR0xa44/6Q40vIKgDIzWsFKSDd6+?=
- =?us-ascii?Q?oO6J1DfbJz7fGz2bwXX0/GqrLCuVj9V0oowgXGDa5aCN0S3DFSGmc2EkQxfl?=
- =?us-ascii?Q?UllYeNA7AM+ttA0/FbHgkD7h9actDtyrlsBNKtBS1L/JfLRTUlNGBbj4XHVU?=
- =?us-ascii?Q?9u1l4DuMFLq3GivCBp1rZOd2os/O4iAvukZ422zqAuYLSQu8BSExUTOEvtiR?=
- =?us-ascii?Q?39g9mSg3Z535dtWBdo4nP32e4AHmvrQe2SLI/1Zz0FD2CbGwSGZuW0DtQM+A?=
- =?us-ascii?Q?frdJNMjWVCbo7AxfwIFSPhy5G3IOVygXoRBQ4V04M0wfBpTVJ4KqK3pgULAQ?=
- =?us-ascii?Q?0CL7r6hi5Fl0+yoNYyD1Ohwow+fi/3TGY8RJtNHC9AetvMra5ckKM6cRuotU?=
- =?us-ascii?Q?wLKR80vFplmKVrRTjgMQCVUSMQ5eTRZ1qaPH3k8Up+5Hx0c+oSmZCcN7tQOY?=
- =?us-ascii?Q?2/cN3Gj6XPil0H1Ik+KhKjq0rJ9o49M7L9fITJUQ31uMPDEn3Ymg5H5Z+YLl?=
- =?us-ascii?Q?PvRGSfqJwpB3FJmweuifLM1Ek+W5g4JGeM0xcWzd5hCEZHYIGbt4JuyRm2Rb?=
- =?us-ascii?Q?84vjpS3yma0Dv0io44RAe1eO3CHnVzinSkzulYRLZvA7PgTCrAG+JR18Tgtb?=
- =?us-ascii?Q?/xJj0RtMfBIYhpyZblffBKIRpMl7noh10yYTlcjabPOIoXVPPHSpPkM6n+R4?=
- =?us-ascii?Q?vIw0P2IDKKahN6lpEoM=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52013604-2e30-48de-7d56-08dde667a72b
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 19:18:21.9042
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hHBOMGpozkeIevL9wLHwQhy2eRzFmZhbRTFbZweAUasp+caHeKpopNq0/07EWPc1
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4483
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250715-pci-port-reset-v6-0-6f9cce94e7bb@oss.qualcomm.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Aug 28, 2025 at 01:10:32PM -0600, Keith Busch wrote:
-> On Thu, Aug 28, 2025 at 03:41:15PM -0300, Jason Gunthorpe wrote:
-> > On Thu, Aug 28, 2025 at 11:15:20AM -0600, Keith Busch wrote:
-> > > 
-> > > I don't think that was ever the case. Metadata is allocated
-> > > independently of the data payload, usually by the kernel in
-> > > bio_integrity_prep() just before dispatching the request. The bio may
-> > > have a p2p data payload, but the integrity metadata is just a kmalloc
-> > > buf in that path.
-> > 
-> > Then you should do two dma mapping operations today, that is how the
-> > API was built. You shouldn't mix P2P and non P2P within a single
-> > operation right now..
+On Tue, Jul 15, 2025 at 07:51:03PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> Hi,
 > 
-> Data and metadata are mapped as separate operations. They're just
-> different parts of one blk-mq request.
+> Currently, in the event of AER/DPC, PCI core will try to reset the slot (Root
+> Port) and its subordinate devices by invoking bridge control reset and FLR. But
+> in some cases like AER Fatal error, it might be necessary to reset the Root
+> Ports using the PCI host bridge drivers in a platform specific way (as indicated
+> by the TODO in the pcie_do_recovery() function in drivers/pci/pcie/err.c).
+> Otherwise, the PCI link won't be recovered successfully.
+> 
+> So this series adds a new callback 'pci_host_bridge::reset_root_port' for the
+> host bridge drivers to reset the Root Port when a fatal error happens.
+> 
+> Also, this series allows the host bridge drivers to handle PCI link down event
+> by resetting the Root Ports and recovering the bus. This is accomplished by the
+> help of the new 'pci_host_handle_link_down()' API. Host bridge drivers are
+> expected to call this API (preferrably from a threaded IRQ handler) with
+> relevant Root Port 'pci_dev' when a link down event is detected for the port.
+> The API will reuse the pcie_do_recovery() function to recover the link if AER
+> support is enabled, otherwise it will directly call the reset_root_port()
+> callback of the host bridge driver (if exists).
+> 
+> For reference, I've modified the pcie-qcom driver to call
+> pci_host_handle_link_down() API with Root Port 'pci_dev' after receiving the
+> LINK_DOWN global_irq event and populated 'pci_host_bridge::reset_root_port()'
+> callback to reset the Root Port. Since the Qcom PCIe controllers support only
+> a single Root Port (slot) per controller instance, the API is going to be
+> invoked only once. For multi Root Port controllers, the controller driver is
+> expected to detect the Root Port that received the link down event and call
+> the pci_host_handle_link_down() API with 'pci_dev' of that Root Port.
+> 
+> Testing
+> -------
+> 
+> I've lost access to my test setup now. So Krishna (Cced) will help with testing
+> on the Qcom platform and Wilfred or Niklas should be able to test it on Rockchip
+> platform. For the moment, this series is compile tested only.
 
-In that case the new bit leon proposes should only be used for the
-unmap of the data pages and the metadata unmap should always be
-unmapped as CPU?
+For the series:
 
-Jason
+Tested-by: Brian Norris <briannorris@chromium.org>
+
+I've tested the whole thing on Qualcomm SC7280 Herobrine systems with
+NVMe. After adding a debugfs node to control toggling PERST, I can force
+the link to reset, and see it recover and resume NVMe traffic.
+
+I've tested the first two on Pixel phones, using a non-upstream
+DWC-based driver that I'm working on getting in better shape. (We've
+previously supported a custom link-error API setup instead.) I'd love to
+see this available upstream.
+
+Regards,
+Brian
 
