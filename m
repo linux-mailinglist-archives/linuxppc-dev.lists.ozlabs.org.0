@@ -1,56 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-11403-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11404-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEACFB391B8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 04:34:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE3CB392D5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 07:20:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cC57l4HGsz3bb6;
-	Thu, 28 Aug 2025 12:34:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cC8qn6Cllz3bby;
+	Thu, 28 Aug 2025 15:20:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756348451;
-	cv=none; b=dYOVHtu/Rehn8gc1Gn4Un/nhPIkDNTTvgR1v9H18ef2U+MA1nTdBg0zyk3vi/3oEqxREsVj5cbu9vj7S04QO4nzF0G+yr+iinLNEuEcYBN6SO1I4Op8WAlf+UkS/J/GeOPR5hCvCBgXJlMYq7VebBysA2ONSOdQ4D1HbWAXGl4JzYtR4bjEPBvATvtb+mNpcoBRuim/Lag8lRLt6fX9BRSpCsedJAtx9wutl/T85P42NqW1B2IQ5FwdPRDTw797kPBiI1k2H+lsJKHBFgyBdsRKAGRj9vUfxR0Gg5QwG5J59klmeWkrCAGBv5iT7hoJrWeFy5Gc3QQcJV0e1+8EziQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756358437;
+	cv=none; b=mHGhntPmtwluMekTQ7kcyxfKVqLLVOGh7xI+BS4ideHRae3XwCwflwCGMnjRy5zdTiGH3y7fR1lzmg//d4j7nlJLL4+pCzGWusdmLv3hM0/1DjjPX2I4Uq6VToG5ZoGWfNtjNd8NLnDTZRVWAdmClsYRDFzwzY9pCaNK+1w2HnCsftwh9YluvU5vzhUXesFdBMxOB+pu9TAaiTKE61RmyBwyTkAWXHCVNti4WfRWJHKgJFghRW9PIz4vfDdpJuraAmJswGI8UfIIjX4GI3whmZWFjsgvpqLABZ8AXggHSeAffG8U45dIs71na0bOY2aOPmXvHSxqrbtZ6K16VdijpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756348451; c=relaxed/relaxed;
-	bh=dqLsXv2XpWWEpQrxrT6S6Kl2zparFOPKVK8ZyEs6XGE=;
+	t=1756358437; c=relaxed/relaxed;
+	bh=8Q0mKrh6FzOQvwel4sPKkj0EVKJMnJqvGiWOvqA2Ad0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AUgPeRCNZ/jmcAdZ0eKG4Ly0sfd4qVMZHRHa1kz+Mks2CSFbnxyCPrAM1p3Q6fQGuEYIokEjFAAZblYYK1TyrQOXYGmmr1RT8PjqHREsGi9Yz0mWpnR4TRgQ2GLaf40gMOwUTISQL2FjO1StCkZScbuBXIYpDIG3P8XJvXjds3ZvfpfPMKXJCgD9QI8eDh0JaoCPAvC0TUziP4UZ2GibUMgT6G0v9akgCqg0hyIItKOPCbzutLFsVzSkadUD+x194ENuZyJ4iZnpC4Uou1WtfWkvNGmxQoHpUDbuzuiz1EjjTRsS/lkc0IU47b9+eOIy5c0e/Jy+57+FnEU5rXD5+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cC57j69PYz2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 12:34:08 +1000 (AEST)
-X-UUID: 5053b84483b711f0b29709d653e92f7d-20250828
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:9e7721f3-4def-4494-ae6b-e8e5dd0438e3,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:ab9379ea25ec926fdd1c492817d92794,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-UUID: 5053b84483b711f0b29709d653e92f7d-20250828
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1305374640; Thu, 28 Aug 2025 10:32:59 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 5ABE6E008FAE;
-	Thu, 28 Aug 2025 10:32:59 +0800 (CST)
-X-ns-mid: postfix-68AFBFDB-172902359
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id ADF7BE008FAB;
-	Thu, 28 Aug 2025 10:32:47 +0800 (CST)
-Message-ID: <6f6c1e35-101d-4ef1-ac6e-5db337ccdd84@kylinos.cn>
-Date: Thu, 28 Aug 2025 10:32:46 +0800
+	 In-Reply-To:Content-Type; b=I6jZXMfeMN9euusEvplpKEYmxFm1/62Q0KTfAI9KIqRRvWFTSVK5/DLBMRyZp3hZ1k4kJLDuBKtPz3mGmmh7ccFOFH/maWyh9u+1XmUTb9YENvckQGuFNExzzkrGM5kOajjpHQUauEl2GmuXBt3YsCMhULcaxXUTh57zHABWDAjRaLfNT8zu3G14mB/Zqkb0l7wQwZ/c+Ak6C3H2H1PTNQ18Ia+t49uEhPNfq8wrvXWGy5yJRp9FbVRL4YgOBQKSHlq7o0KjLoBCfM6KGS+9vVo/mZBx6P0yCIU2mgeD6K/fueBL3vTNXrna1wzA8jsxKsFJgCeqcLwCQs2susO+Vw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cC8qn0Dgrz2xK2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 15:20:35 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cC89c3Sp9z9sS7;
+	Thu, 28 Aug 2025 06:51:00 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Ma-oCaIkKbZ1; Thu, 28 Aug 2025 06:51:00 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cC89c2dhnz9sRy;
+	Thu, 28 Aug 2025 06:51:00 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3EDDA8B764;
+	Thu, 28 Aug 2025 06:51:00 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id QunPaQfOtMZw; Thu, 28 Aug 2025 06:51:00 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id F266E8B763;
+	Thu, 28 Aug 2025 06:50:59 +0200 (CEST)
+Message-ID: <4c7e5a00-87dd-4836-a57e-45282ddf4c0b@csgroup.eu>
+Date: Thu, 28 Aug 2025 06:50:59 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,117 +58,51 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/18] arm64: topology: Use __free(put_cpufreq_policy)
- for policy reference
-To: Sudeep Holla <sudeep.holla@arm.com>, Ben Horgan <ben.horgan@arm.com>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
- <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
- <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
- x86@kernel.org, kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-tegra@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
- <20250827023202.10310-2-zhangzihuan@kylinos.cn>
- <70f4c2ce-1dbd-4596-af78-bca1cdbbb581@arm.com>
- <1756341899099493.57.seg@mailgw.kylinos.cn>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <1756341899099493.57.seg@mailgw.kylinos.cn>
+Subject: Re: [PATCH] powerpc/powernv: Rename pe_level_printk to pe_printk and
+ embed KERN_LEVEL in format
+To: Joe Perches <joe@perches.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
+References: <df3a7ca31d2002ca447ab062f5b5e32ced9bec85.camel@perches.com>
+ <732ae03a-f0a7-450c-8896-e8a4975a5254@csgroup.eu>
+ <5b914354f29e58097e373dde76ee26b246a64ce6.camel@perches.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <5b914354f29e58097e373dde76ee26b246a64ce6.camel@perches.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
-	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
-=E5=9C=A8 2025/8/27 17:17, Sudeep Holla =E5=86=99=E9=81=93:
-> On Wed, Aug 27, 2025 at 09:30:13AM +0100, Ben Horgan wrote:
->> Hi Zihuan,
+
+Le 28/08/2025 à 02:04, Joe Perches a écrit :
+> [Vous ne recevez pas souvent de courriers de joe@perches.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> On Wed, 2025-08-27 at 18:42 +0200, Christophe Leroy wrote:
+>> Hi Joe
 >>
->> On 8/27/25 03:31, Zihuan Zhang wrote:
->>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
->>> annotation for policy references. This reduces the risk of reference
->>> counting mistakes and aligns the code with the latest kernel style.
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
->>> ---
->>>   arch/arm64/kernel/topology.c | 9 +++------
->>>   1 file changed, 3 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topolog=
-y.c
->>> index 5d07ee85bdae..e3cb6d54f35b 100644
->>> --- a/arch/arm64/kernel/topology.c
->>> +++ b/arch/arm64/kernel/topology.c
->>> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
->>>   		 */
->>>   		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
->>>   		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAM=
-PLE_EXP_MS))) {
->>> -			struct cpufreq_policy *policy =3D cpufreq_cpu_get(cpu);
->>> +			struct cpufreq_policy *policy __free(put_cpufreq_policy);
->> Based on the guidance, in include/linux/cleanup.h, I would expect the
->> assignment to be done on this line.
->>
->> "...the recommendation is to always define and assign variables in one
->>   * statement and not group variable definitions at the top of the
->>   * function when __free() is used."
->>
-> Agreed. I did something similar recently and there was a code path wher=
-e
-> variable wasn't initialised and ended up with freeing unassigned pointe=
-r.
-> So it is more than just a recommendation sometimes.
->
-Thanks a lot for your suggestions.
+>> Le 21/06/2019 à 07:36, Joe Perches a écrit :
+>>> Remove the separate KERN_<LEVEL> from each pe_level_printk and
+>>> instead add the KERN_<LEVEL> to the format.
+> 
+> Hello Christophe.
+> 
+> It's over 6 years since I wrote that.
+> Is that the typical review time? ;)
 
-We are also considering introducing a WITH_CPUFREQ_POLICY wrapper to=20
-encapsulate the cpufreq_cpu_get/put usage, so that the release order=20
-won=E2=80=99t be accidentally changed.
+:)
 
-Link:=20
-https://lore.kernel.org/all/874d821e-8ea3-40ac-921b-c19bb380a456@kylinos.=
-cn/
+I'm trying to clean patchwork and drop stale patches that are still 
+there. At the moment we have 240 'new' patches. 88 of them are older 
+than one year, with a few older ones being almost 10 years old.
 
-Do you have any suggestions or preferences on this direction?
+> 
+> I would expect it doesn't apply anyway
+> though it should make the object size
+> a tiny bit smaller.
 
+It still applies when doing a 3-way merge indeed.
 
+Christophe
 
