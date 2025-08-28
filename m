@@ -1,50 +1,122 @@
-Return-Path: <linuxppc-dev+bounces-11400-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11401-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD4DB38F9E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 02:13:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28853B390B5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 Aug 2025 03:08:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cC20r20Hfz3bb6;
-	Thu, 28 Aug 2025 10:13:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cC3Dt65lmz3bb6;
+	Thu, 28 Aug 2025 11:08:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=216.40.44.17
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756339980;
-	cv=none; b=W3bGFFbY3daZI7lnC02rFuV7VuHjp4faJ0hTaOkKZBtBkgXCzJTZCFWd2IhVVQ1smDBeLP0t/beSoZFleHcj5zqQ9xvmqj8CcOAjVvfVh67TDdWb3YvysP/Lz7Xk4oDWw+AKpjv574dTpE8lSGKf4+L24yOYlFjC6+BttFMgH7ccbU4dHqt1XUWib5zDBjZ3wfGa4Rqnaw8VF6HGmREtES5bnXieQ1o84njHsBcZL8FH7X6D/SCM1+TrSGtxBjc8d43jxMAgiil53WuQupwOkSZ3ULUpl8rYXy3lDXewmqhQouLXI5c0iVINmH7yHeO9DvpfgJIY2QbtXEa3adARSw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756342841;
+	cv=none; b=aIf1vXuOAgDmUsJbSNO/T3idN0dIH+2Oq7qOkzNCgDwLfLEWyBkk102ANcoZH11CA0IE8l6iQLyANKa86eam1Sa7KYxLqsBBvN4+hma1jo+PTGOodbWqRlyNuzdpmccGgY/nIFL0yL3HRbZV4nxzREARSVF/5fkagiv0zkoHuQVdMijIPOQv3a8wn9h6oVHq655lyIwAOCg/NUG/3AWGkP4hPWYPYFbBbmjktEhDnNjZepMvVvN/AGUqYCSPt5JITHBkXL7IkHTH1cVH/8YkMMXbuhNV/Z1HzhyY4PhIWpqJ7vZJ1v+f6u0tpEpzpiLg1Cnw4zN85FLCWIDXcckckw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756339980; c=relaxed/relaxed;
-	bh=ENqdQ6Zwz+mYedecfjOSlkVkkWQfujwYHCpc+uqQvVQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Su2zpUAyYqHjXKcuGk3a4a61AdhEHDfHY/QDuecs3l0rbegFxmwbc9Djyx0XDzB7c8I4vm3H2FYdp6l3k+QVjdDdke5CwlXu3mkv8nbb4y2XcMhiNB+bANb/XsG9l1x+gcqXatcVywsaM17kLFQMZ7ty0tmKqC/kISrAfHsSzTDCXgXqvQicOmyy/JYDMjPFM252k7cav/qECHc7u6RuRLEE3k14YGmY/uA1EzmdMfku+/z23ZiEbguhQNmAPB1I+t0Xi4v5Z9e7mAiuEgroIEOVgE9/maZUjgp/p2juN2wgpnDNBu/jMTtfiYemF+t6ByHf0Ky408rmXNs4slFHKw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass (client-ip=216.40.44.17; helo=relay.hostedemail.com; envelope-from=joe@perches.com; receiver=lists.ozlabs.org) smtp.mailfrom=perches.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=perches.com (client-ip=216.40.44.17; helo=relay.hostedemail.com; envelope-from=joe@perches.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 513 seconds by postgrey-1.37 at boromir; Thu, 28 Aug 2025 10:12:58 AEST
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	t=1756342841; c=relaxed/relaxed;
+	bh=qkZV2r2s3Ve2mSW+cNV6K6LiCKiSQdIZC2Q3aoo2TPc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CIY8eysMg8EJ9CUzsQhSy6S2A/IddruXJutkDPZw0c6ukBsYVR0IsQhFnTBrlpLvd9tXh1eXknH9VgY8atfqG1+k4c8LTijIWonVRxXBlJh09xoWt5DqHgSBMgMxowyZefoVlrISrrm7UvSwI0TPhUs/w8X3OHoYGN3JRIj71n7v7vzibvENunqNUhNM+hzG13MpYF9N+vJG9adoeXMRTD4t0b58YQ8P5cufbkXWeQx/q2/4JR1XN39MK0q1KVDgdWU6GKKHWCIj+pdNh/xBi0sHlV6vHADe/VqwvLf4JbhbFtZBls8QDlC+cvQ8wJV9ILyi0TVe+0/9IhonZr4hdg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=LNGU/7qg; dkim-atps=neutral; spf=permerror (client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org) smtp.mailfrom=purestorage.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=purestorage.com header.i=@purestorage.com header.a=rsa-sha256 header.s=google2022 header.b=LNGU/7qg;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=purestorage.com (client-ip=2a00:1450:4864:20::52f; helo=mail-ed1-x52f.google.com; envelope-from=mattc@purestorage.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cC20p39mlz2xS2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 10:12:57 +1000 (AEST)
-Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 23CB7591BA;
-	Thu, 28 Aug 2025 00:04:21 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf20.hostedemail.com (Postfix) with ESMTPA id 3FD3320026;
-	Thu, 28 Aug 2025 00:04:19 +0000 (UTC)
-Message-ID: <5b914354f29e58097e373dde76ee26b246a64ce6.camel@perches.com>
-Subject: Re: [PATCH] powerpc/powernv: Rename pe_level_printk to pe_printk
- and embed KERN_LEVEL in format
-From: Joe Perches <joe@perches.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel
- <linux-kernel@vger.kernel.org>
-Date: Wed, 27 Aug 2025 17:04:16 -0700
-In-Reply-To: <732ae03a-f0a7-450c-8896-e8a4975a5254@csgroup.eu>
-References: <df3a7ca31d2002ca447ab062f5b5e32ced9bec85.camel@perches.com>
-	 <732ae03a-f0a7-450c-8896-e8a4975a5254@csgroup.eu>
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cC33p1vMZz2xS2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 11:00:37 +1000 (AEST)
+Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-61cd6089262so312797a12.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 Aug 2025 18:00:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1756342833; x=1756947633; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qkZV2r2s3Ve2mSW+cNV6K6LiCKiSQdIZC2Q3aoo2TPc=;
+        b=LNGU/7qgoXdM6txRiNVzwRifEsNiY7Octjy7vxrhCl0b8FiEgYGcmB/r27KjYHcJD/
+         ec2SxLtGDhtRZDYY9RH3KvbY6ThI688jhLyQVm1teTz8Y0HreWc6BeR+cbust+p42Qp1
+         WscdC05LUFj7Ov0ryH7B/uJiAGTRss6szEi1DplfIRttsyvcEujglChHBXAl/gLUh8dy
+         iCkzVUi5h5ZcdIAr5o7GhhWqTTwsGU+1dKlvSwW4ECDnEuBlT1Sf9DxOmsIdF6/mZIxg
+         hKF1GkgVcUuA/F4kdznA25uDN0FbUMAlhecFMM9upZS96jP6m1sdk/GJg6U7ACtAwJgH
+         K+sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756342833; x=1756947633;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qkZV2r2s3Ve2mSW+cNV6K6LiCKiSQdIZC2Q3aoo2TPc=;
+        b=qW2+Ul706r/U9LRcF0IHJUd6lGTO15sntsK0n0GyO69s4UrA8NrRCgdK7DJeALv7LN
+         G9/RUn2jcH+Nm/Kn9Q6NuF1txncNoOSO8X85kjD2dzPrrCsQVkGKi5unfNctyD+sohG1
+         xmNeXn0B/IrTXqT2k4lMgNQ+jBvo46cwybIOkgcufLhgx/2vjdEJV+qWtNYM+4qmtZ13
+         mLER46LXFEdeMc02hmYFobe30Ja7zu7LuNhGfxzNTXXvYYO8tNXfdfgOVyBUrHO5lxWJ
+         F9WE67rafJhfVv48XW2xGz4gvDhnKB3u6Boi3nUwVe8TQ5hSLUiHVU/GLIpRIghX1NHd
+         TMoA==
+X-Forwarded-Encrypted: i=1; AJvYcCV610wOX831H6x+qSUtMuukBJ5aaAgieKjMaV3i10STGoegwTKhw+QT3V2cUy9Lpep9bqt7eX+oTalRzKA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxRXjQkKwgMSHz78RxOAYlRWMFWmNqjNtTPuYWt327buNn4FWdp
+	2H8P5Bry6PWUYgSxyv0ntRTljaDYk5k31ZDkdk+95C7WLs4gfYAoljDmoCPRj0L0jyc=
+X-Gm-Gg: ASbGncsCzUskqubcd3fxt1q9TIdQGaDPf8Qb6Yp6VvwB74bMx/8hydtxWsi8eP253dS
+	RmtojOMZ1eYH94F7OXt1+6q9QQWZQhiaTGqgkK0Vg/yRtUjgDIfwGCJCLgg4VixB1pY5wXaY6Dw
+	jBJYS3UIIIOc2zJtXtBQevFleGkP2L18UF3RK6PbhAHVqP/NtTCUqxTd+qVc8DJQlT1TY8oALmE
+	dzzcYjzj8rMnl4FY3RvQWRAKgblBOR0+iHKnuiamOgT2Xs0cVpr8oXqkiNKUlgTxaC49y+dbb2E
+	aTFg3YzD3PDJoeg39CCfR3KgM0bUoSs0w4StiUnLZWaZDO7oa1V1y9C+TkDzKNE+x3VrZM6dvZ6
+	jb2io3EpESYNqPUSeeEbklU+vgDGCpioNWWQ1+qsQyc0KDv0nl/wSiwhKBawjAgg=
+X-Google-Smtp-Source: AGHT+IFowfbzDXzfKj1tbin1CbADg6SQUppIoHgdL2LBKWx0TCuFZuLUREbfAZ6iz35NlZp/Mlr9+A==
+X-Received: by 2002:a05:6402:a0c1:b0:61c:30cf:885c with SMTP id 4fb4d7f45d1cf-61c30cf8ca9mr15283114a12.32.1756342833263;
+        Wed, 27 Aug 2025 18:00:33 -0700 (PDT)
+Received: from dev-mattc2.dev.purestorage.com ([208.88.159.129])
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-61caeb5e786sm2651785a12.32.2025.08.27.18.00.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Aug 2025 18:00:32 -0700 (PDT)
+From: Matthew W Carlis <mattc@purestorage.com>
+To: helgaas@kernel.org
+Cc: Smita.KoralahalliChannabasappa@amd.com,
+	adam.c.preble@intel.com,
+	agovindjee@purestorage.com,
+	alison.schofield@intel.com,
+	ashishk@purestorage.com,
+	bamstadt@purestorage.com,
+	bhelgaas@google.com,
+	bp@alien8.de,
+	chao.p.peng@intel.com,
+	dan.j.williams@intel.com,
+	dave.jiang@intel.com,
+	dave@stgolabs.net,
+	erwin.tsaur@intel.com,
+	feiting.wanyan@intel.com,
+	ira.weiny@intel.com,
+	james.morse@arm.com,
+	jrangi@purestorage.com,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-cxl@vger.kernel.org,
+	linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	lukas@wunner.de,
+	mahesh@linux.ibm.com,
+	mattc@purestorage.com,
+	msaggi@purestorage.com,
+	oohall@gmail.com,
+	qingshun.wang@linux.intel.com,
+	rafael@kernel.org,
+	rhan@purestorage.com,
+	rrichter@amd.com,
+	sathyanarayanan.kuppuswamy@intel.com,
+	sconnor@purestorage.com,
+	tony.luck@intel.com,
+	vishal.l.verma@intel.com,
+	yudong.wang@intel.com,
+	zhenzhong.duan@intel.com
+Subject: [PATCH v5 0/2] PCI/AER: Handle Advisory Non-Fatal error
+Date: Wed, 27 Aug 2025 19:00:16 -0600
+Message-ID: <20250828010016.5824-1-mattc@purestorage.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20250822165112.GA688464@bhelgaas>
+References: <20250822165112.GA688464@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,123 +130,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Rspamd-Server: rspamout04
-X-Rspamd-Queue-Id: 3FD3320026
-X-Stat-Signature: uau5hkr6errx756ojdmfydbea8w4err6
-X-Spam-Status: No, score=0.0 required=3.0 tests=RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19Ba6ut9WVmmTi9/CJjacHvw6XJzPZwXTI=
-X-HE-Tag: 1756339459-982349
-X-HE-Meta: U2FsdGVkX18cO46/q+eMU6rG9Rt60S6qUj+EUM63rbXb6VN9Iw7P9AjBQMdGD3MLUsHiamW2QjS/gei4KlRbOJBxbB47tqGF6QB7iMpj8J/jjIXhTcA7UuutXlZIL8AWfKFhR89ZCFa4cS9nHHgFDY8h6xxSBtRyt7n8lJ9RaKLOQqHllfK7YvX6x1GYxkIQ2p2+VjxzZkzgccqwAFKvMfwFGAylFn7uw62w4m9d2orZdIP4MxeB7EU5aTon+SMt9/m9Ac6zKw+/4rNN82ihf2YuQ1nPrQnZ8t1KYh5cDK17cBnE3VTp3+91U9KMKrX0bHIIwusVHOcOtbov+F1MfyCuoTxuh7zwaKprhwA03u+TrspOqmqF7+A1rWgLTbaD
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: YES
+X-Spam-Status: Yes, score=3.4 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,
+	SPF_HELO_NONE,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Report: 
+	*  3.6 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+	*      [208.88.159.129 listed in zen.spamhaus.org]
+	*  0.0 T_SPF_PERMERROR SPF: test of record failed (permerror)
+	*  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+	*  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+	*      valid
+	* -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+	* -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+	*      envelope-from domain
+	* -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from author's
+	*       domain
+	* -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at https://www.dnswl.org/, no
+	*      trust
+	*      [2a00:1450:4864:20:0:0:0:52f listed in]
+	[list.dnswl.org]
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 2025-08-27 at 18:42 +0200, Christophe Leroy wrote:
-> Hi Joe
->=20
-> Le 21/06/2019 =E0 07:36, Joe Perches a =E9crit=A0:
-> > Remove the separate KERN_<LEVEL> from each pe_level_printk and
-> > instead add the KERN_<LEVEL> to the format.
+On Fri, 22 Aug 2025 11:51:12 -0500, Bjorn Helgaas wrote 
+> Matthew, if you are able to test and/or provide a Reviewed-by, that would
+> be the best thing you can do to move this forward ...
 
-Hello Christophe.
+I spent some time looking at the patch thinking about it a little
+more carefully. The only thing I don't really like in this revision
+of the patch is the logging for "may cause Advisory". Example below
+from "[PATCH v5 2/2] PCI/AER: Print UNCOR_STATUS bits that might be ANFE".
 
-It's over 6 years since I wrote that.
-Is that the typical review time? ;)
+AER: Correctable error message received from 0000:b7:02.0
+PCIe Bus Error: severity=Correctable, type=Transaction Layer, (Receiver ID)
+  device [8086:0db0] error status/mask=00002000/00000000
+   [13] NonFatalErr
+  Uncorrectable errors that may cause Advisory Non-Fatal:
+   [12] TLP
 
-I would expect it doesn't apply anyway
-though it should make the object size
-a tiny bit smaller.
+I don't think we really need to log the UE caused by ANF any differently
+than any other UE & in fact I would prefer not to. In my mind we should log all
+the UE status bits via the same format as before. Taking from example above,
+in my mind it would be nice if the logging looked like this.
 
-> >=20
-> > pfix in pe_level_printk could also be used uninitialized so
-> > add a new else and set pfx to the hex value of pe->flags.
-> >=20
-> > Rename pe_level_printk to pe_printk and update the pe_<level>
-> > macros.
-> >=20
-> > Signed-off-by: Joe Perches <joe@perches.com>
-> > ---
-> >   arch/powerpc/platforms/powernv/pci-ioda.c | 14 ++++++++++++--
-> >   arch/powerpc/platforms/powernv/pci.h      | 11 +++++------
-> >   2 files changed, 17 insertions(+), 8 deletions(-)
->=20
-> I can't see the added value of this patch, it adds more lines than it=20
-> removes.
->=20
-> Christophe
->=20
-> >=20
-> > diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/p=
-latforms/powernv/pci-ioda.c
-> > index 10cc42b9e541..60fc36ae626a 100644
-> > --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> > +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> > @@ -50,15 +50,23 @@
-> >   static const char * const pnv_phb_names[] =3D { "IODA1", "IODA2", "NP=
-U_NVLINK",
-> >   					      "NPU_OCAPI" };
-> >  =20
-> > -void pe_level_printk(const struct pnv_ioda_pe *pe, const char *level,
-> > -			    const char *fmt, ...)
-> > +void pe_printk(const struct pnv_ioda_pe *pe, const char *fmt, ...)
-> >   {
-> >   	struct va_format vaf;
-> >   	va_list args;
-> >   	char pfix[32];
-> > +	char level[PRINTK_MAX_SINGLE_HEADER_LEN + 1] =3D "\0";
-> >  =20
-> >   	va_start(args, fmt);
-> >  =20
-> > +	while (printk_get_level(fmt)) {
-> > +		size_t size =3D printk_skip_level(fmt) - fmt;
-> > +
-> > +		memcpy(level, fmt,  size);
-> > +		level[size] =3D '\0';
-> > +		fmt +=3D size;
-> > +	}
-> > +
-> >   	vaf.fmt =3D fmt;
-> >   	vaf.va =3D &args;
-> >  =20
-> > @@ -74,6 +82,8 @@ void pe_level_printk(const struct pnv_ioda_pe *pe, co=
-nst char *level,
-> >   			(pe->rid & 0xff00) >> 8,
-> >   			PCI_SLOT(pe->rid), PCI_FUNC(pe->rid));
-> >   #endif /* CONFIG_PCI_IOV*/
-> > +	else
-> > +		sprintf(pfix, "(flags: 0x%lx)", pe->flags);
-> >  =20
-> >   	printk("%spci %s: [PE# %.2x] %pV",
-> >   	       level, pfix, pe->pe_number, &vaf);
-> > diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platfo=
-rms/powernv/pci.h
-> > index be26ab3d99e0..870b21f55b3f 100644
-> > --- a/arch/powerpc/platforms/powernv/pci.h
-> > +++ b/arch/powerpc/platforms/powernv/pci.h
-> > @@ -205,15 +205,14 @@ extern unsigned long pnv_pci_ioda2_get_table_size=
-(__u32 page_shift,
-> >   		__u64 window_size, __u32 levels);
-> >   extern int pnv_eeh_post_init(void);
-> >  =20
-> > -__printf(3, 4)
-> > -extern void pe_level_printk(const struct pnv_ioda_pe *pe, const char *=
-level,
-> > -			    const char *fmt, ...);
-> > +__printf(2, 3)
-> > +extern void pe_printk(const struct pnv_ioda_pe *pe, const char *fmt, .=
-..);
-> >   #define pe_err(pe, fmt, ...)					\
-> > -	pe_level_printk(pe, KERN_ERR, fmt, ##__VA_ARGS__)
-> > +	pe_printk(pe, KERN_ERR fmt, ##__VA_ARGS__)
-> >   #define pe_warn(pe, fmt, ...)					\
-> > -	pe_level_printk(pe, KERN_WARNING, fmt, ##__VA_ARGS__)
-> > +	pe_printk(pe, KERN_WARNING fmt, ##__VA_ARGS__)
-> >   #define pe_info(pe, fmt, ...)					\
-> > -	pe_level_printk(pe, KERN_INFO, fmt, ##__VA_ARGS__)
-> > +	pe_printk(pe, KERN_INFO fmt, ##__VA_ARGS__)
-> >  =20
-> >   /* Nvlink functions */
-> >   extern void pnv_npu_try_dma_set_bypass(struct pci_dev *gpdev, bool by=
-pass);
+AER: Correctable error message received from 0000:b7:02.0
+PCIe Bus Error: severity=Correctable, type=Transaction Layer, (Receiver ID)
+  device [8086:0db0] error status/mask=00002000/00000000
+   [13] NonFatalErr
+PCIe Bus Error: severity=Uncorrectable (Non-Fatal), type=Transaction Layer
+   [12] TLP
+
+If there was only one error (that triggered ANF handling) then we would
+know that the Non-Fatal UE was what triggered the NonFatalErr. If some other
+Non-Fatal errors are happening at the same time then it doesn't really matter
+which was sent via ERR_COR vs ERR_NONFATAL since we would also know from Root
+Error Status that we had received at least one of each message type. The
+objective in my mind being to free up header-logs & log status details without
+making error the recovery worse.
+
+Does this sound reasonable or unreasonable? I can update the patch-set &
+re-submit if 'reasonable'.
+
+Cheers!
+-Matt
 
