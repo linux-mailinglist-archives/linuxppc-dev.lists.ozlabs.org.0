@@ -1,76 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-11477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11479-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A1D8B3B60F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 10:34:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC7BB3B614
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 10:35:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCs4v4Bjsz2yrX;
-	Fri, 29 Aug 2025 18:34:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCs6Y2Yhzz2yrl;
+	Fri, 29 Aug 2025 18:35:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756456463;
-	cv=none; b=kwppPNV1wn0T5hBs2QVIhtcloTLOhWSj/jztihzmS6TS9lEg30ITbomK+u7oawCYDIGD6seGEGp+sewXNs7Auy42yZpb6tmWJMuvo8jHX3YhRAUcg7JGNl4Wxly5XfixbpG0hO9XuCbsPKs5exgjFta4IFP21IhIoFamMH3kryXd0c9CO6bID9m1HA0pDJifdTp8tcg0t5I6hVtOF5nL5CeX8YqF3GaGyrrc5Cqn+4Po394won8klX6c9TvF9oJ/IhhwSObgj4yyjPtGHvdKet9Wmvcjrcaa5EjiiSH++lDkx8o8usnALe3hdATH5fv3DPyaBm/C16htWFFX1FPldg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756456549;
+	cv=none; b=EfGYTGZ4O6OBSePb/Ui91Ku+Q9MRqMd506zWpax2ayU26P1n5abA5rjoYgCl4U0DFj6hLS3GJvKBFXfdxKoK351KO5NIdGPizo9LLjvj0tKZHuBqURf4Vy/M4NmY0X5gFCtcJHp9m0FncXGai1swzQfZahRUVHwwsEDd7gAFL2Dl+VlH7FPTinC2E2SW4auEwafLxerruAMvKQe3IJbvL5fkxIBoR7jx1FjMaynnS+Z0yAPapkHs4JCEOO1Kq1aAybOmoZXMNHcCb0CXOg7Eh6ANU6OUFh+LM0Ef+4bAfws9wafBJPZvYZrLktZECbhYyWRYVM/9U7qJHxxARgbQ4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756456463; c=relaxed/relaxed;
-	bh=E6imMMdfx24g+VbZ8kZ/uUr8m9yRkwVUhKIUfh2sF2M=;
+	t=1756456549; c=relaxed/relaxed;
+	bh=3UykXrTl2EB+vKESxnHtvi5hIMPHRCCUy7MHaCs1xXA=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Hy9wPJrYdrwqP6dmr+NNezMUqBPitma49Aaqnons1LwQ4a/SJit85dq+nJgcOOUnw3M9yTztKY3GdVCbjLgwKrSqQREYb0yIec/kA66583R5giNIHiYGSBwsnTFpERvyK9LindFAge/R0ffrKfJ8kNPNuXBKyxRoF+Usqdr9KU0xoaBqvVHSuYk66xz3REp+Vjq2DnBUVbbFxBuLt5zyVQZ3nJjFroK1EDNMrieR8iyU6gf4dqwRxcL4ihW0naJHhzZqYdK3tHl3dOAswBeaOTpRzyGXOi67Rc/1E9+FWYItUJkU7m8manKIgS/DEbOAQuGw+ryGKKoEayIBB9XLaA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oAWyHJeJ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 Message-Id:References:To; b=gNlwJvOJWKShfMQnVySwVWdissOpiETLsL/ceBzCiL9jZIOh/4i9PhOkQrcwhS7fDtn2NxdhftY6NzEHfvzL92OZ0/AHPFUM2Dk7dbgYVkJQmUa9SYS6axlqdBQ68oW++xda2f9eLuDIJ6QYrdSdezBpQvuORg9YrzocLRXUgA6quETk4pbHoBVgP9V/oeHNhSh42tkdc4FgtOzagzDfHrGoPvyGtX2CHd5UgCm/rQZ65fPYntaiU5B6ltyj4QCfwNjnQUrJeYv5OETbWeulLdhJScHDvSDYvFnEAIzDxzya+yAiLF1h/ibimDA9OeBPbsA6gTI8XWHKcExXU06Y7A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hk37P4Fe; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oAWyHJeJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hk37P4Fe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCs4t2PLTz2yqW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 18:34:22 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57T8HTbC021073;
-	Fri, 29 Aug 2025 08:34:16 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCs6X4QCdz2yqW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 18:35:48 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57T8HM2P007535;
+	Fri, 29 Aug 2025 08:35:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=E6imMM
-	dfx24g+VbZ8kZ/uUr8m9yRkwVUhKIUfh2sF2M=; b=oAWyHJeJocutVmO5VNPgbu
-	JtwMBbIF74rNtZF54flkKfxfITyJ6FXPsALpuW86mnRJkURixEzun7lFGZzY+RB1
-	Kc/EilWgrhlwAi/5jwSveG36FmseWMhXAVrremI7LTcG4WgTNWsBnCLHtA2FFlEa
-	4PK7AuJmmjZyd//p+7WLor41MEtlAm/xrT504DlZlHtvaITsnFGz/foMezmvQz3E
-	XjyzPuSROqAzHqhYFmdJ1a37Gpz84ilk86CZqkd0br12DjRSDtNL3BShmbMEnmKs
-	yQt+CsMxbkeqZLKrHEI851ApPj1BhxYvgpWC+EwAF/wYJkx8GEbBwDQboZtpvVhQ
+	:message-id:mime-version:references:subject:to; s=pp1; bh=3UykXr
+	Tl2EB+vKESxnHtvi5hIMPHRCCUy7MHaCs1xXA=; b=hk37P4Fe0mi9T32XkwxsA3
+	v2QfGOxklUu1IdEVMYeHJLEFBpauAOBImwp9iro2jVr0nY5eTglA6xOGmHEg5Cga
+	ZN7zD8UkOOrCYyfvrJI9t5Rwj1svpkUm0tE4NYlLXtK8pwftJ/FqEJgpySKLZlTC
+	vur30tAnD/GWulzprkpPA4y+FQRmU04mA8RXVBExHrjO0fyhq1M0Gv40TV+8h4Dl
+	J5C55pxU0/vn74wcwGC4lQh3gR7OZo7b1wJlyfeya7N9zG3qOJQpl/+/QarLpM3r
+	8HZhj1dkPHa8MZ/7H3GzXdi56XV92Fl3+EXvzTiM+sB+MttYjjB5iz6+NA5AhWPQ
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48s7rw9j7y-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48tsv9bu0k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 08:34:16 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57T8KKwc025931;
-	Fri, 29 Aug 2025 08:34:15 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48s7rw9j7v-1
+	Fri, 29 Aug 2025 08:35:43 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57T8Y3BF004975;
+	Fri, 29 Aug 2025 08:35:42 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48tsv9bu0h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 08:34:15 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57T5ikPY007514;
-	Fri, 29 Aug 2025 08:34:14 GMT
+	Fri, 29 Aug 2025 08:35:42 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57T87VXH002482;
+	Fri, 29 Aug 2025 08:35:42 GMT
 Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qqyus60e-1
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qt6mrs1h-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 08:34:14 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57T8YAES39453110
+	Fri, 29 Aug 2025 08:35:41 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57T8Zcai53871080
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 Aug 2025 08:34:10 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C5B6C20040;
-	Fri, 29 Aug 2025 08:34:10 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B94D20043;
-	Fri, 29 Aug 2025 08:34:03 +0000 (GMT)
+	Fri, 29 Aug 2025 08:35:38 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 355C620040;
+	Fri, 29 Aug 2025 08:35:38 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 88A7920043;
+	Fri, 29 Aug 2025 08:35:31 +0000 (GMT)
 Received: from smtpclient.apple (unknown [9.61.241.17])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 29 Aug 2025 08:34:03 +0000 (GMT)
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 29 Aug 2025 08:35:31 +0000 (GMT)
 Content-Type: text/plain;
 	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -86,11 +86,11 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: [PATCH 11/14] tools/perf: Process the DTL entries in queue and
- deliver samples
+Subject: Re: [PATCH 12/14] tools/perf: Add support for printing synth event
+ details via default callback
 From: Athira Rajeev <atrajeev@linux.ibm.com>
-In-Reply-To: <d47939a7-2db6-40ac-97da-95b8c37bb0af@intel.com>
-Date: Fri, 29 Aug 2025 14:03:49 +0530
+In-Reply-To: <c83166e3-99d6-47aa-b774-0dfe69e0da8d@intel.com>
+Date: Fri, 29 Aug 2025 14:05:17 +0530
 Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
         Madhavan Srinivasan <maddy@linux.ibm.com>,
         Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
@@ -102,34 +102,34 @@ Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
         Aditya Bodkhe <Aditya.Bodkhe1@ibm.com>,
         Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <1AC0DDB0-0671-4736-9A0D-C7B5DC48A5A6@linux.ibm.com>
+Message-Id: <C077DD2F-352D-4DEA-9A3C-9D38411FE276@linux.ibm.com>
 References: <20250815083407.27953-1-atrajeev@linux.ibm.com>
- <20250815083407.27953-12-atrajeev@linux.ibm.com>
- <d47939a7-2db6-40ac-97da-95b8c37bb0af@intel.com>
+ <20250815083407.27953-13-atrajeev@linux.ibm.com>
+ <c83166e3-99d6-47aa-b774-0dfe69e0da8d@intel.com>
 To: Adrian Hunter <adrian.hunter@intel.com>
 X-Mailer: Apple Mail (2.3776.700.51)
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Iuk7Fvhq7VlitYgz7NtDykUmU8Mfm7p4
-X-Authority-Analysis: v=2.4 cv=fbCty1QF c=1 sm=1 tr=0 ts=68b16608 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+X-Authority-Analysis: v=2.4 cv=GqtC+l1C c=1 sm=1 tr=0 ts=68b1665f cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=QyXUC8HyAAAA:8 a=VnNF1IyMAAAA:8
- a=l6QfPf4-XW_ldrAnRqQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: mzgu0TSeodHeZjozwMZsJvhrEnfKKe9K
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI2MDA1NSBTYWx0ZWRfX9KgEvLSER5qH
- rfWKz28gbv7fY8/zRXLpix8015mulmnn0p8lCaAJ5BB/z2rouXFSVy/+eJ0vY0b0aOMl0Iszt5a
- +JRgN1Ejk5dGoPU+iURtpcksNmK0H8aUTraSp7Ma63oQpp2C55s/13volTUILJm3SXyHcH3ItNc
- ItT0hASw7kcaqKhhlDDlvLRIqGwjhzOyDux8r3b4ecHFuPC176Dj3i7lwJk0GTcvmq9xI2AauqO
- 4TwvzDov3WeG7qhTfoAJ8nm2VgrAsOD+6XFUCwnBaVeUpAN/pvgtgLu2p4m3jzBU/sH1Jr4hgbq
- UeO71abs0TlwvMhwtKWniU9Ef29PolDWIBOd1+4hbeUkJeWqaXvp3ThvHPngjVA8m7AYCql6DKE
- tl0hWhxx
+ a=PQ0u6mOqf5tVaTv6lJEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: PEjV-EK6ldknHxRXMJaC9germ_M2xWSs
+X-Proofpoint-ORIG-GUID: 4WcRs649npg_lg7WTpAjXos2XaWm4bOd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI4MDEyNyBTYWx0ZWRfX4BSh6mTd0cUK
+ 4GLlV3TvgIY7WLllROA/AUyBC0vjiu8AueEArJaeetLBw5SYE8eiaU19AE3G0z1LhxpjNMm0dwS
+ cyEDskIYBzmkJxPwM+oMnJUWSpd7/oIzKQFXzSDgd9l4JBdchRUH31KRcBLF/B9++XD6OrAb0Wl
+ uyMjdzzzizeB5OVlA/jiGgr7/1KMa8KOn6qHKYtYdfApzucdaCe608/fmo6Q58q6x4yIW021s2g
+ Js7f/fNeX91QV+V+sFHmQkl3WsKDM+7AFPB9DPczxPIuDvOSxBBEUUl/GfU/MxaM5gA+GR4JvKM
+ yTa+yP31/0TTjU0jeebRziXXjrRCgDrU7T8L/9MJVTCHiIumnrUueXky6nAS3/zFmqih4Wm40AB
+ SRUZFR5A
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-29_02,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 adultscore=0 phishscore=0 suspectscore=0
+ spamscore=0 priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0
+ adultscore=0 malwarescore=0 impostorscore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508260055
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508280127
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
@@ -141,309 +141,82 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 <adrian.hunter@intel.com> wrote:
 >=20
 > On 15/08/2025 11:34, Athira Rajeev wrote:
->> Create samples from DTL entries for displaying in perf report
->> and perf script. When the different PERF_RECORD_XX records are
->> processed from perf session, powerpc_vpadtl_process_event() will
->> be invoked. For each of the PERF_RECORD_XX record, compare the =
-timestamp
->> of perf record with timestamp of top element in the auxtrace heap.
->> Process the auxtrace queue if the timestamp of element from heap is
->> lower than timestamp from entry in perf record.
+>> Introduce arch_perf_sample__fprintf_synth_evt to add support for
+>> printing arch specific synth event details. The process_event()
+>> function in "builtin-script.c" invokes perf_sample__fprintf_synth() =
+for
+>> displaying PERF_TYPE_SYNTH type events.
 >>=20
->> Sometimes it could happen that one buffer is only partially
->> processed. if the timestamp of occurrence of another event is more
->> than currently processed element in the queue, it will move on
->> to next perf record. So keep track of position of buffer to
->> continue processing next time. Update the timestamp of the
->> auxtrace heap with the timestamp of last processed entry from
->> the auxtrace buffer.
+>>   if (attr->type =3D=3D PERF_TYPE_SYNTH && PRINT_FIELD(SYNTH))
+>>    perf_sample__fprintf_synth(sample, evsel, fp);
 >>=20
->> Generate perf sample for each entry in the dispatch trace log.
->> Fill in the sample details:
->> - sample ip is picked from srr0 field of dtl_entry
->> - sample cpu is picked from processor_id of dtl_entry
->> - sample id is from sample_id of powerpc_vpadtl
->> - cpumode is set to PERF_RECORD_MISC_KERNEL
->> - Additionally save the details in raw_data of sample. This
->> is to print the relevant fields in perf_sample__fprintf_synth()
->> when called from builtin-script
+>> perf_sample__fprintf_synth() process the sample depending on the =
+value
+>> in evsel->core.attr.config . Currently all the arch specific =
+callbacks
+>> perf_sample__fprintf_synth* are part of "builtin-script.c" itself.
+>> Example: perf_sample__fprintf_synth_ptwrite,
+>> perf_sample__fprintf_synth_mwait etc. This will need adding arch
+>> specific details in builtin-script.c for any new perf_synth_id =
+events.
 >>=20
->> The sample is processed by calling =
-perf_session__deliver_synth_event()
->> so that it gets included in perf report.
->>=20
->> Sample Output:
->>=20
->>  ./perf record -a -e sched:*,vpa_dtl/dtl_all/ -c 1000000000 sleep 1
->>  [ perf record: Woken up 1 times to write data ]
->>  [ perf record: Captured and wrote 0.300 MB perf.data ]
->>=20
->>  ./perf report
->>=20
->>  # Samples: 321  of event 'vpa-dtl'
->>  # Event count (approx.): 321
->>  #
->>  # Children      Self  Command  Shared Object      Symbol
->>  # ........  ........  .......  .................  =
-..............................
->>  #
->>     100.00%   100.00%  swapper  [kernel.kallsyms]  [k] =
-plpar_hcall_norets_notrace
+>> Introduce arch_perf_sample__fprintf_synth_evt() and invoke this as
+>> default callback for perf_sample__fprintf_synth(). This way, arch
+>> specific code can handle processing the details.
+>=20
+> A default callback is not needed.
+>=20
 >>=20
 >> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
 >> ---
->> tools/perf/util/powerpc-vpadtl.c | 181 =
-+++++++++++++++++++++++++++++++
->> 1 file changed, 181 insertions(+)
+>> tools/perf/builtin-script.c | 7 +++++++
+>> 1 file changed, 7 insertions(+)
 >>=20
->> diff --git a/tools/perf/util/powerpc-vpadtl.c =
-b/tools/perf/util/powerpc-vpadtl.c
->> index 299927901c9d..370c566f9ac2 100644
->> --- a/tools/perf/util/powerpc-vpadtl.c
->> +++ b/tools/perf/util/powerpc-vpadtl.c
->> @@ -160,6 +160,43 @@ static void powerpc_vpadtl_dump_event(struct =
-powerpc_vpadtl *vpa, unsigned char
->> powerpc_vpadtl_dump(vpa, buf, len);
+>> diff --git a/tools/perf/builtin-script.c =
+b/tools/perf/builtin-script.c
+>> index d9fbdcf72f25..eff584735980 100644
+>> --- a/tools/perf/builtin-script.c
+>> +++ b/tools/perf/builtin-script.c
+>> @@ -2003,6 +2003,12 @@ static int =
+perf_sample__fprintf_synth_iflag_chg(struct perf_sample *sample, FILE
+>> return len + perf_sample__fprintf_pt_spacing(len, fp);
 >> }
 >>=20
->> +/*
->> + * Generate perf sample for each entry in the dispatch trace log.
->> + *   - sample ip is picked from srr0 field of dtl_entry
->> + *   - sample cpu is picked from logical cpu.
->> + *   - sample id is from sample_id of powerpc_vpadtl
->> + *   - cpumode is set to PERF_RECORD_MISC_KERNEL
->=20
-> Above 4 lines of comments are a bit redundant.
->=20
->> + *   - Additionally save the details in raw_data of sample. This
->> + *   is to print the relevant fields in perf_sample__fprintf_synth()
->> + *   when called from builtin-script
->> + */
->> +static int powerpc_vpadtl_sample(struct dtl_entry *record, struct =
-powerpc_vpadtl *vpa, u64 save, int cpu)
+>> +static void arch_perf_sample__fprintf_synth_evt(struct perf_sample =
+*data __maybe_unused,
+>> +  FILE *fp __maybe_unused, u64 config __maybe_unused)
 >> +{
->> + struct perf_sample sample;
->> + union perf_event event;
->> +
->> + sample.ip =3D be64_to_cpu(record->srr0);
->> + sample.period =3D 1;
->> + sample.cpu =3D cpu;
->> + sample.id =3D vpa->sample_id;
->> + sample.callchain =3D NULL;
->> + sample.branch_stack =3D NULL;
->> + memset(&event, 0, sizeof(event));
->> + sample.cpumode =3D PERF_RECORD_MISC_KERNEL;
->> + sample.time =3D save;
->> + sample.raw_data =3D record;
->> + sample.raw_size =3D sizeof(record);
->> + event.sample.header.type =3D PERF_RECORD_SAMPLE;
->> + event.sample.header.misc =3D sample.cpumode;
->> + event.sample.header.size =3D sizeof(struct perf_event_header);
->> + if (perf_session__deliver_synth_event(vpa->session, &event,
->> + &sample)) {
->=20
-> There is some inconsistency with line wrapping
-I will handle this properly in V2
->=20
->> + pr_debug("Failed to create sample for dtl entry\n");
->> + return -1;
->> + }
->> + return 0;
+>> + return;
 >> +}
 >> +
->> static int powerpc_vpadtl_get_buffer(struct powerpc_vpadtl_queue =
-*vpaq)
+>> static int perf_sample__fprintf_synth(struct perf_sample *sample,
+>>       struct evsel *evsel, FILE *fp)
 >> {
->> struct auxtrace_buffer *buffer =3D vpaq->buffer;
->> @@ -233,6 +270,148 @@ static int powerpc_vpadtl_decode(struct =
-powerpc_vpadtl_queue *vpaq)
->> return 1;
->> }
->>=20
->> +static int powerpc_vpadtl_decode_all(struct powerpc_vpadtl_queue =
-*vpaq)
->> +{
->> + int ret;
->> + unsigned char *buf;
->> +
->> + if (!vpaq->buf_len || (vpaq->pkt_len =3D=3D vpaq->size)) {
+>> @@ -2026,6 +2032,7 @@ static int perf_sample__fprintf_synth(struct =
+perf_sample *sample,
+>> case PERF_SYNTH_INTEL_IFLAG_CHG:
+>> return perf_sample__fprintf_synth_iflag_chg(sample, fp);
+>> default:
 >=20
-> Unnecessary parentheses around 'vpaq->pkt_len =3D=3D vpaq->size=E2=80=99=
+> Should just add something like:
+>=20
+> case PERF_SYNTH_POWERPC_VPA_DTL:
+> return perf_sample__fprintf_synth_vpadtl(sample, fp);
 
-Ok,=20
->=20
->> + ret =3D powerpc_vpadtl_get_buffer(vpaq);
->> + if (ret <=3D 0)
->> + return ret;
->> + }
->> +
->> + if (vpaq->buffer) {
->> + buf =3D vpaq->buffer->data;
->> + buf +=3D vpaq->pkt_len;
->> + vpaq->dtl =3D (struct dtl_entry *)buf;
->> + if ((long long)be64_to_cpu(vpaq->dtl->timebase) <=3D 0) {
->> + if (vpaq->pkt_len !=3D dtl_entry_size && vpaq->buf_len) {
->> + vpaq->pkt_len +=3D dtl_entry_size;
->> + vpaq->buf_len -=3D dtl_entry_size;
->> + }
->> + return -1;
->> + }
->> + vpaq->pkt_len +=3D dtl_entry_size;
->> + vpaq->buf_len -=3D dtl_entry_size;
->> + } else
->> + return 0;
->=20
-> braces {} should be used on all arms of this statement
-Sure,=20
->=20
->> +
->> +
->> + return 1;
->> +}
->> +
->> +static int powerpc_vpadtl_run_decoder(struct powerpc_vpadtl_queue =
-*vpaq, u64 *timestamp)
->> +{
->> + struct powerpc_vpadtl *vpa =3D vpaq->vpa;
->> + struct dtl_entry *record;
->> + int ret;
->> + double result, div;
->> + double boot_freq =3D vpaq->tb_freq;
->> + unsigned long long boot_tb =3D vpaq->boot_tb;
->> + unsigned long long diff;
->> + unsigned long long save;
->> +
->> + while (1) {
->> + ret =3D powerpc_vpadtl_decode_all(vpaq);
->> + if (!ret) {
->> + pr_debug("All data in the queue has been processed.\n");
->> + return 1;
->> + }
->> +
->> + /*
->> +  * Error is detected when decoding VPA PMU trace. Continue to
->> +  * the next trace data and find out more dtl entries.
->> +  */
->> + if (ret < 0)
->> + continue;
->> +
->> + record =3D vpaq->dtl;
->> +
->> + diff =3D be64_to_cpu(record->timebase) - boot_tb;
->> + div =3D diff / boot_freq;
->> + result =3D div;
->> + result =3D result * 1000000000;
->> + save =3D result;
->=20
-> It would be nicer for the time calculation to be in a separate =
-function.
-> Also 'save' is an odd choice of variable name for a timestamp.
+Ok Adrian
 
-Will have a separate function for time calculation
-And will make meaningful name for saving it in V2
+Will directly call perf_sample__fprintf_synth_vpadtl instead of having =
+default call back
+
+Thanks for all comments, I will post a V2 addressing the changes
 
 Thanks
 Athira
 >=20
->> +
->> + /* Update timestamp for the last record */
->> + if (save > vpaq->timestamp)
->> + vpaq->timestamp =3D save;
->> +
->> + /*
->> +  * If the timestamp of the queue is later than timestamp of the
->> +  * coming perf event, bail out so can allow the perf event to
->> +  * be processed ahead.
->> +  */
->> + if (vpaq->timestamp >=3D *timestamp) {
->> + *timestamp =3D vpaq->timestamp;
->> + vpaq->pkt_len -=3D dtl_entry_size;
->> + vpaq->buf_len +=3D dtl_entry_size;
->> + return 0;
->> + }
->> +
->> + ret =3D powerpc_vpadtl_sample(record, vpa, save, vpaq->cpu);
->> + if (ret)
->> + continue;
->> + }
->> + return 0;
->> +}
->> +
->> +/*
->> + * For each of the PERF_RECORD_XX record, compare the timestamp
->> + * of perf record with timestamp of top element in the auxtrace =
-heap.
->> + * Process the auxtrace queue if the timestamp of element from heap =
-is
->> + * lower than timestamp from entry in perf record.
->> + *
->> + * Update the timestamp of the auxtrace heap with the timestamp
->> + * of last processed entry from the auxtrace buffer.
->> + */
->> +static int powerpc_vpadtl_process_queues(struct powerpc_vpadtl *vpa, =
-u64 timestamp)
->> +{
->> + unsigned int queue_nr;
->> + u64 ts;
->> + int ret;
->> +
->> + while (1) {
->> + struct auxtrace_queue *queue;
->> + struct powerpc_vpadtl_queue *vpaq;
->> +
->> + if (!vpa->heap.heap_cnt)
->> + return 0;
->> +
->> + if (vpa->heap.heap_array[0].ordinal >=3D timestamp)
->> + return 0;
->> +
->> + queue_nr =3D vpa->heap.heap_array[0].queue_nr;
->> + queue =3D &vpa->queues.queue_array[queue_nr];
->> + vpaq =3D queue->priv;
->> +
->> + auxtrace_heap__pop(&vpa->heap);
->> +
->> + if (vpa->heap.heap_cnt) {
->> + ts =3D vpa->heap.heap_array[0].ordinal + 1;
->> + if (ts > timestamp)
->> + ts =3D timestamp;
->> + } else
->> + ts =3D timestamp;
->=20
-> braces {} should be used on all arms of this statement
->=20
->> +
->> + ret =3D powerpc_vpadtl_run_decoder(vpaq, &ts);
->> + if (ret < 0) {
->> + auxtrace_heap__add(&vpa->heap, queue_nr, ts);
->> + return ret;
->> + }
->> +
->> + if (!ret) {
->> + ret =3D auxtrace_heap__add(&vpa->heap, queue_nr, ts);
->> + if (ret < 0)
->> + return ret;
->> + } else {
->> + vpaq->on_heap =3D false;
->> + }
->> + }
->> + return 0;
->> +}
->> +
->> static struct powerpc_vpadtl_queue =
-*powerpc_vpadtl__alloc_queue(struct powerpc_vpadtl *vpa,
->> unsigned int queue_nr)
->> {
->> @@ -368,6 +547,8 @@ static int powerpc_vpadtl_process_event(struct =
-perf_session *session __maybe_unu
->> err =3D powerpc_vpadtl__update_queues(vpa);
->> if (err)
->> return err;
->> +
->> + err =3D powerpc_vpadtl_process_queues(vpa, sample->time);
+>> + arch_perf_sample__fprintf_synth_evt(sample, fp, =
+evsel->core.attr.config);
+>> break;
 >> }
->>=20
->> return err;
 
 
 
