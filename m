@@ -1,87 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-11466-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11467-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95CEB3B37F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 08:34:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0369B3B431
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 09:25:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCpQw3B8Kz2xK4;
-	Fri, 29 Aug 2025 16:34:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCqY562lxz2xnM;
+	Fri, 29 Aug 2025 17:25:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::633"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756449288;
-	cv=none; b=E90c2hnJ9NXkmgngPd/QGMVdlWwjNOcAQ/HHuCz/5qolCN0sVvXP/8f6Q/KeczKwcjH8u5zsPwIRUJSKRoBTEwrEFuERkWoh0gdAYmKW+cg/tKi43gQbJq1gDqhjTDauXT/jug1tw8s/FAj55wSCohHmxxpIPNk2broDs1/Ys0TdbWNLvWYJqewwF1Xjgi1mE060IAVxMBUjimz5nqU+dYi6kBkPhqtbtd3NGPTP31FNkOZfEEx4OcGBL5J3J6ULI7bLc06aCLNjw7E8RBNjscelUSlFeakh8oZuZP/H9ToxdIzjm2VEA8lqThIGTgFY81I8w4BWe0l9GPcYTOoCMg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:1000::53df:5fcc:0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756452313;
+	cv=none; b=Mtb7tXPv8mFE2i40Ujc+YqcrrDv/FA2+vrKDnR9azYXHjuaQqOY6sDcmxf0YVTMMjpPMi9Jz8WQis1FTdcAIDksTyKg3KDSoUtE6Ux7gWhFPiCpUh1HSP+jq/ZOtz+Ej/maOcGK8+URwbEtofCIHPyEgdvkyGYMJmRnNOHyJ326WmZlQKQpJWVqYjYFkd1RFEtiNN2EQivMvD2lZ3Ul6+Qkrt3Gaertmvl/HIpSXj6SanHGDw7O46lMBHrDs8/KDCKmfxlsAqXoj1vvSW1mJ2qSzpd+rTuyY8aZYWRzlQE4kU576auO5K3Vz77RHrM7I++cn7fo+RP7H8gY0MeQA2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756449288; c=relaxed/relaxed;
-	bh=5Uk9A/FG7B42gb2VzW8SPYRISI1iCRcnu9NRgkgqh+M=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=B372pYAHa31pGkNiQLDQLzJiEiKYrR3DJrfBp9mTmKpdWGHERcg1idGsayLJ40rOmKHgk3Sf4raysRJVkexOW3pT99OuWsoQKs4iroDe5jfxa/sZsCUtAFiRD4IVQfa25EzMUJK85XErkDCDLrTR/Ls5SUvgsh3dK0no9lJtk36EJdAxEu0kH95fEyNb5v5aNrLUldYouKe29hGRir9uxFS2PEVkGdOHR00/N6M4b4sG0ubhEpReLX18Za7lSg877+437hw97iXemuB2mUzgZElSWqKcicNadf17ZRU+AlGZLPbLvuxorODh4JA0XtJQWBXkfwi97TlaQ0PEKnB0ng==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=C4hNAA0W; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=linmq006@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=C4hNAA0W;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=linmq006@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+	t=1756452313; c=relaxed/relaxed;
+	bh=/uqlPSRNvqvYtA65cB66ilunbiKPmNvoURn+IcPqrcc=;
+	h=Message-ID:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=UwRf7Uxe9cj8Uqp/annchsT8MToQd1c1tGzxx6YKL58aiIZUJSBEr19f6ydDF1pPz9ZL9iV5UjEtkW1ffPWwNECGF9QxQ0nKmbX65pkjc7Dv9pTA1pu2b71AK1JsFi2vewsFJC5PxxiNShOrVxQNoPx3/nVXSN/aCzfao78ruQk1OOFeefufrGiyivRq8ZQiWH8DrNJesn2J+tCtr8Gdfe5Tzbq7endsIh7N15kqTMqRzHvWWH2Bn896avuK3xomRz3CxM3LCLP0gh6UN7aA44/sKKXlOMTkbeprb/4ymu5yhEdmWiO2/gZiKj8jCdi25X/2TaFZcwAcCqf98QJ2Wg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:1000::53df:5fcc:0; helo=mailout1.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org) smtp.mailfrom=wunner.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wunner.de (client-ip=2a01:37:1000::53df:5fcc:0; helo=mailout1.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org)
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5fcc:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCpQv0yj3z2xWQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 16:34:46 +1000 (AEST)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-248ff5cabe0so5524685ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 23:34:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756449284; x=1757054084; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5Uk9A/FG7B42gb2VzW8SPYRISI1iCRcnu9NRgkgqh+M=;
-        b=C4hNAA0WrbwrfknbUJ6sqC0fLjaLrN2my0uKx4pGfKZ/pF1reFh5vr1gA14CY+WDej
-         KL0QQV8QqKYMMTryToQQyhphczIq6rNzGsf3OHsxLooYFsNzZKdlBGbBaGklqs9576e7
-         cdXvuxcQoW0fuWW/ZXMIJM2A5+3+glRkSEKqifZHblBN/8JN3JFvx2rIXqKYMlsK6wpN
-         eAeMKjAyz+rbrw8rTf1Oyfzhsb1Z7RoptUhaOIlmZMRELVNzyX7pn3n68DeqfEBGXGXW
-         yD7LPdxgEkik1ZPdlnNkT5jH+DT1QDu2ty7F4GXpfULg7tjluFZNbhvL4MZBCD6g4Br+
-         kiKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756449284; x=1757054084;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5Uk9A/FG7B42gb2VzW8SPYRISI1iCRcnu9NRgkgqh+M=;
-        b=UDOiapgFJaJ4yGvox+rpsRxFxQPGxkoHDe/28rkPmbYshFjOWMJUHzs5jQTZKoNRNa
-         DSWNHckFL1yWqWffAbA2ShZbaqTLeCCoW9BRkGRN4fkClSU0YHJLSWmJvWjlbw3Y9lc4
-         RYvGT+2mM0E+Sl+hk6ZnOS7QFtzTaRyWI++q9JxfxajNLuQOghH4s4KlLf5SF4NOlUmc
-         dD3aV+RO5oq3Ket3GJLVZxgvAy1Si6K1euOS0tAUmRLXhe3rVPSdDI9fb6lARTIe6w/H
-         0Wo74Is88Qg/Il7OL2dg9Ua72Dj72bu6LufWiMjDYft0ypRUSusuZavEGVJEiP4FSJjp
-         bRaw==
-X-Forwarded-Encrypted: i=1; AJvYcCXTJq5ItaEaolcezR6c/c6OLXlBM8w9bGVZluPklUtBR4zrM6jhllGzzJo9yxhfEs3Om9g4PBUod2Yfls4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxwxmMPUkvNLCIPJEZNwsTQLAusds1ely3e3iA/Uqu1pDmDolkL
-	mcpxzAD8eb7/X3AhqjE8lVldZYPtl3D022YuEU1Hb89w6tIwxZPskE98eLcMyzVbBvwAdV6+
-X-Gm-Gg: ASbGncuABvrfSiMgtGhzRRT3xs/zOc23oLyALs9DGxxKyATtQczCjLKepKFjh36mPm+
-	IwQW10Ze6s//X01iwd8JWuPpd7USjve9KKsdAJI4ubNgNBoSZIlpGdOGLn6RJiX/LHb+vpNbGMC
-	opxUrbuiHZLfxIjl0ifnG5wndpG65khSExPamGWGNOsQUQ6f0/bkIv+Y4iJBJCMbGeL0maWoobv
-	JmUN8UXlk3Y66/REVYCqw6QX2t8tkZqcSE5I/wEWz7LZSBgIhFJv9TAZHHiBu98/ru2Vzvx9kaF
-	5M13BluT5lgegV4nXw0pQROaaw+u7iLNrV/7xQP2PCpfWoW3+CZtHX4cn8xJqa8UAlklmvidkCv
-	Wuc+qGeg9s34M5LxcVylSoFADb5JBR2guZGHkqjmjFC7ViMAqeStrhJo0clqNj5UEEhIpfxH7D0
-	f2iT9N+Vsy2RT86WswVwoyikfI04AYCSHrR8tPVASTC7m/Zg==
-X-Google-Smtp-Source: AGHT+IEi4c1OOUaryaWljuCN1SqnkkZwaSknWakF2y1Fc4MSZv9q8cyL3Fs0HmaehVnQcEVjzHb6GQ==
-X-Received: by 2002:a17:903:388e:b0:23f:e51b:2189 with SMTP id d9443c01a7336-2462ee4579cmr353046335ad.17.1756449284029;
-        Thu, 28 Aug 2025 23:34:44 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.116.239.36])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24906589986sm14035695ad.111.2025.08.28.23.34.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 23:34:43 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Jeff Garzik <jeff@garzik.org>,
-	Olof Johansson <olof@lixom.net>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/pasemi: Fix PCI device reference leak on error path
-Date: Fri, 29 Aug 2025 14:34:29 +0800
-Message-Id: <20250829063431.1968903-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.35.1
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4cCqY41x8Mz2xlQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 17:25:09 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by mailout1.hostsharing.net (Postfix) with UTF8SMTPS id 0731018C47;
+	Fri, 29 Aug 2025 09:25:04 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by h08.hostsharing.net (Postfix) with UTF8SMTPSA id D091A600AD9B;
+	Fri, 29 Aug 2025 09:25:03 +0200 (CEST)
+X-Mailbox-Line: From 3d6f5aa8634bd4d13f28b7ec6b1b8d8d474e3c69 Mon Sep 17 00:00:00 2001
+Message-ID: <cover.1756451884.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Fri, 29 Aug 2025 09:25:00 +0200
+Subject: [PATCH 0/4] PCI: Update error recovery documentation
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,47 +55,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+To: Bjorn Helgaas <helgaas@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: Terry Bowman <terry.bowman@amd.com>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Linas Vepstas <linasvepstas@gmail.com>, "Mahesh J Salgaonkar" <mahesh@linux.ibm.com>, "Oliver OHalloran" <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, linux-doc@vger.kernel.org, Brian Norris <briannorris@chromium.org>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=RCVD_IN_DNSWL_LOW,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Fix iob_pdev reference leak in pasemi_dma_init() when dma_pdev
-allocation fails. Ensure pci_dev_put(iob_pdev) is called on
-both success and error paths.
+The documentation on PCIe Advanced Error Reporting hasn't kept up with
+code changes over the years.  This series seeks to remedy as many issues
+as I could find.
 
-Fixes: 8ee9d8577935 ("pasemi: DMA engine management library")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- arch/powerpc/platforms/pasemi/dma_lib.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Previous commits touching the documentation either prefixed the subject
+with "Documentation: PCI:" or (when combined with code changes) "PCI/AER:"
+or "PCI/ERR:".  I chose the latter for brevity and to avoid mentioning
+"documentation" or "PCI" twice in the subject.  If anyone objects or
+finds other mistakes in these patches, please let me know.  Thanks!
 
-diff --git a/arch/powerpc/platforms/pasemi/dma_lib.c b/arch/powerpc/platforms/pasemi/dma_lib.c
-index 1be1f18f6f09..0ba05c39c276 100644
---- a/arch/powerpc/platforms/pasemi/dma_lib.c
-+++ b/arch/powerpc/platforms/pasemi/dma_lib.c
-@@ -530,7 +530,7 @@ int pasemi_dma_init(void)
- 		BUG();
- 		pr_warn("Can't find DMA controller\n");
- 		err = -ENODEV;
--		goto out;
-+		goto out_put_iob;
- 	}
- 	dma_regs = map_onedev(dma_pdev, 0);
- 	base_hw_irq = virq_to_hw(dma_pdev->irq);
-@@ -617,5 +617,9 @@ int pasemi_dma_init(void)
- out:
- 	spin_unlock(&init_lock);
- 	return err;
-+
-+out_put_iob:
-+	pci_dev_put(iob_pdev);
-+	goto out;
- }
- EXPORT_SYMBOL(pasemi_dma_init);
+Lukas Wunner (4):
+  PCI/AER: Sync documentation with code
+  PCI/ERR: Sync documentation with code
+  PCI/ERR: Amend documentation with DPC and AER specifics
+  PCI/ERR: Tidy documentation's PCIe nomenclature
+
+ Documentation/PCI/pci-error-recovery.rst | 42 +++++++++---
+ Documentation/PCI/pcieaer-howto.rst      | 81 +++++++++++-------------
+ 2 files changed, 71 insertions(+), 52 deletions(-)
+
 -- 
-2.35.1
+2.47.2
 
 
