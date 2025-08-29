@@ -1,51 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-11488-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11489-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455CCB3BCF6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 15:57:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F213B3C065
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 18:14:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cD0FK5PWwz2yrX;
-	Fri, 29 Aug 2025 23:57:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cD3Hd5PtFz2yqm;
+	Sat, 30 Aug 2025 02:14:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756475829;
-	cv=none; b=fN/4wxFHd3eOBD6UOASQZJpf8ozuHCdmJ2VK4sfQeSP7qAddn5Zx7X9G8bRgHjpmxpg2FWMHyWLLKkRrzd/qmlQ/2moVWlDRsVxPHfqjG/gfGx8m0JKIWU3uorCzF3e+eDMvfQTJZVkJUPS1OdUnhXbyqpOvq4ABIjmjLSALayEl9HTFemIbFaoOWGw4yNjET/3FhKAjj5zwIr+P9FkEIVMTQwvYWNMkfA4PyO4N/GvNfXzVUnL5XQzgLZj4L0Ftgtkfgr/khvuK3c8VImaqH/jS9bmd3adUZURUBxl3VU5b1PVOfUJu2w/JJ+OqQiG9JXos1/xj2cRHzlgwQueUbQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756484061;
+	cv=none; b=UGbSzFtY2Rmo+ARZ0MBDbjzYen6SWYW6ackRUU1B4Klt7yuCa1BsmqbKG6CJYb9liUGxB7WnbdE/WHDpz6oYbJDRrDYePsMRCbd4KDJGrah1Rv3E1MYhpGeipToiym+eYeGwftTyPj06iuPqFaekKqaKrzw0YSfJqj7O1O118nk3Igu8bhHCQWfhj96q/MbiSztfWy8wQelQPdYFTYybeOoshkXQ1bRpK2cUCHeshG7mgNRzRVjlkUP3+8Y/cXfcHEzitslQH6Imo2ec3K1Y/IQOM3O3M1fNrtfQSBRQyiN/p2MbzlVZyNpIhFdLi3p0EXZwsNNS+rxStBg3mt1xvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756475829; c=relaxed/relaxed;
-	bh=RKmUYus44y7wxM1lw5RoEDrn4yOkVuSx5nlw3WJZ0QI=;
+	t=1756484061; c=relaxed/relaxed;
+	bh=L3316HzmhHkmk9hKvXvEDln2bo796IPL6VBsugzS4/A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dA6vzjP5GIn71SOL8dsk8B8lECVbRm1cbtJxzcCKpjWuv4DCfgfDZyK2NHYgeF4H1JqRSyyR0BrcIotaz31ROJDN8DJE8ay9gWalW82Le2pBzTX0GJxakppB5+ZOW7LQNigsJ+0ENCChYZQub8wefBpTmL4IFqAjrTRX30LYndhLbVDMHyvkizz0epT39RZi1sg6w3z6L+HpPXO1DALRxd4CBAu8eB6NfKvU5QfXM7ZvQ2nZIJ1C22L0DVKVuYx/DE8LoogF3LhGIW6gEwA3SrI4qB90eyYM4EaerNNzEIqeRZvpm/oEHrSXXDaYY/i/6jcqJx1g1cKkE8LUwmys4w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HG7qR2Np; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=MNcBuBq6SmlKdjaTvs1/CC1CStoy/2ZtC6kgc4aQgj+FZJoOWS+nIYo/B2cTFLAjpEjRz5oo5yvZ48m+oTdCP16UNtD1v2nIr02rk+QEYfneQTzgNBibcTg8ZxpY1IIrB/fcz6qHHA5p7FFKVy8ZAAWAUU0ERGa3cGwCPU1k2tb5c7V0ccQAM1COpRAu2oNBPYBKzZnzb6aTMiYOMlhazhzq8YcEcHkVhUA2xKmasHWqkI68geU6OHu1s/3NtbQHxtXEqpDegoSfU6JUrWWAZ0jBhk2p20o+CY7Z1sB87pp1bjI9DFNuGxogolwooWlff1f4+HFjygBk0uvzWYr14Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZiD2cadK; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HG7qR2Np;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZiD2cadK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=mani@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cD0FJ6pLGz2yqm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 23:57:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cD3Hc5G9Kz2yqc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 02:14:20 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9B8B6013F;
-	Fri, 29 Aug 2025 13:57:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3EDC4CEF0;
-	Fri, 29 Aug 2025 13:57:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A0BF543B1D;
+	Fri, 29 Aug 2025 16:14:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E018EC4CEF0;
+	Fri, 29 Aug 2025 16:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756475826;
-	bh=TPcM7vsR5BgNayppQJ/9+eqOOaE0BLCmHtlJiHw2x00=;
+	s=k20201202; t=1756484058;
+	bh=9/2QQ3RiREaiSyUiO5ececD/jqVoWkLkjCUAA6bmPFM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HG7qR2NpViDP3330Rb3+QPhGOoxUP21ucjupQwVZKBcIDr6ufqfMnR0hZ92q/tXjj
-	 RmOWxxOjua0rd4S3QlxP5u55wLh0SkpxoR8gxxnjs1oSWUq9Wzv45cyjdJpj6R/x1q
-	 Fqb9eIP6XcU+N5ZjhpwAm87yAyqOongAIahxeIav2dVjcbL6V1mlQQ0EM3s1NSBSfy
-	 myXVVVHQeEI+43tlZF1SvT0V3sD4rfF8O9njHVkY+uD6QLq+0PMjyXEDbdDLmnNu3P
-	 3Fl5/n5sqcruuH6EstM67V0Y4OPto9EUCzd5+nOaQ9TcYhk2Yc07/m71tRiZsnTTMN
-	 y9f/ja0kprk1w==
-Date: Fri, 29 Aug 2025 19:26:56 +0530
+	b=ZiD2cadK21kq8/1+HU/s47ctfSPLku5kGvKTU7+gDfo/gUItwd4dziv5/tFHyDjA3
+	 dACICfHN5ycuJ0zCVyJEGvOUCEHo//mnsfRwQ0n8QYvaRL+jNuTCE0uxiPycoOxfKJ
+	 Rc2x7zplfineGU0ObrNOZgLV2N4Sh3IaCMgloqtMAMIQrcMYD0+vOso4yZir1v0vsn
+	 aIPXp3BW/jRTHj7UtQZMK2uucxb/dAmf7R2VDOHrWTFipB+9j+an/6BSfP8W67y0y6
+	 DvOdYSsic046Ef3N9iAMNudz19ePRAzBC5VHmfwZrqilD+dK33LmRJ99TJKxjMskcQ
+	 dOzixjq9Ekf4w==
+Date: Fri, 29 Aug 2025 21:44:08 +0530
 From: Manivannan Sadhasivam <mani@kernel.org>
-To: Brian Norris <briannorris@chromium.org>
+To: Niklas Cassel <cassel@kernel.org>
 Cc: manivannan.sadhasivam@oss.qualcomm.com, 
 	Bjorn Helgaas <bhelgaas@google.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
 	Oliver O'Halloran <oohall@gmail.com>, Will Deacon <will@kernel.org>, 
@@ -54,13 +54,16 @@ Cc: manivannan.sadhasivam@oss.qualcomm.com,
 	Philipp Zabel <p.zabel@pengutronix.de>, linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
 	linux-arm-msm@vger.kernel.org, linux-rockchip@lists.infradead.org, 
-	Niklas Cassel <cassel@kernel.org>, Wilfred Mallawa <wilfred.mallawa@wdc.com>, 
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, Lukas Wunner <lukas@wunner.de>
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>, Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
+	Lukas Wunner <lukas@wunner.de>
 Subject: Re: [PATCH v6 0/4] PCI: Add support for resetting the Root Ports in
  a platform specific way
-Message-ID: <zhu77qldhrr7ovp2g2tpusl67zsacjx5oapnaasxo2ybmhfohn@io3oqqc6gtte>
+Message-ID: <lakgphb7ym3cybwmpdqyipzi4tlkwbfijzhd4r6hvhho3pc7iu@6ludgw6wqkjh>
 References: <20250715-pci-port-reset-v6-0-6f9cce94e7bb@oss.qualcomm.com>
- <aLC1rzdTVoN56Phc@google.com>
+ <aHoh1XfhR8EB_5yY@ryzen>
+ <aHokdhpJUhSZ5FSp@ryzen>
+ <tujurux64if24z7w7h6wjxhrnh4owkgiv33u2fftp7zr5ucv2m@2ijo5ok5jhfk>
+ <aJ743hJw-T9y3waX@ryzen>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,68 +80,152 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aLC1rzdTVoN56Phc@google.com>
+In-Reply-To: <aJ743hJw-T9y3waX@ryzen>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Aug 28, 2025 at 01:01:51PM GMT, Brian Norris wrote:
-> On Tue, Jul 15, 2025 at 07:51:03PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
-> > Hi,
-> > 
-> > Currently, in the event of AER/DPC, PCI core will try to reset the slot (Root
-> > Port) and its subordinate devices by invoking bridge control reset and FLR. But
-> > in some cases like AER Fatal error, it might be necessary to reset the Root
-> > Ports using the PCI host bridge drivers in a platform specific way (as indicated
-> > by the TODO in the pcie_do_recovery() function in drivers/pci/pcie/err.c).
-> > Otherwise, the PCI link won't be recovered successfully.
-> > 
-> > So this series adds a new callback 'pci_host_bridge::reset_root_port' for the
-> > host bridge drivers to reset the Root Port when a fatal error happens.
-> > 
-> > Also, this series allows the host bridge drivers to handle PCI link down event
-> > by resetting the Root Ports and recovering the bus. This is accomplished by the
-> > help of the new 'pci_host_handle_link_down()' API. Host bridge drivers are
-> > expected to call this API (preferrably from a threaded IRQ handler) with
-> > relevant Root Port 'pci_dev' when a link down event is detected for the port.
-> > The API will reuse the pcie_do_recovery() function to recover the link if AER
-> > support is enabled, otherwise it will directly call the reset_root_port()
-> > callback of the host bridge driver (if exists).
-> > 
-> > For reference, I've modified the pcie-qcom driver to call
-> > pci_host_handle_link_down() API with Root Port 'pci_dev' after receiving the
-> > LINK_DOWN global_irq event and populated 'pci_host_bridge::reset_root_port()'
-> > callback to reset the Root Port. Since the Qcom PCIe controllers support only
-> > a single Root Port (slot) per controller instance, the API is going to be
-> > invoked only once. For multi Root Port controllers, the controller driver is
-> > expected to detect the Root Port that received the link down event and call
-> > the pci_host_handle_link_down() API with 'pci_dev' of that Root Port.
-> > 
-> > Testing
-> > -------
-> > 
-> > I've lost access to my test setup now. So Krishna (Cced) will help with testing
-> > on the Qcom platform and Wilfred or Niklas should be able to test it on Rockchip
-> > platform. For the moment, this series is compile tested only.
+On Fri, Aug 15, 2025 at 11:07:42AM GMT, Niklas Cassel wrote:
+> Hello Mani,
 > 
-> For the series:
+> Sorry for the delayed reply.
+> I just came back from vacation.
 > 
-> Tested-by: Brian Norris <briannorris@chromium.org>
+> On Thu, Jul 24, 2025 at 11:00:05AM +0530, Manivannan Sadhasivam wrote:
+> > On Fri, Jul 18, 2025 at 12:39:50PM GMT, Niklas Cassel wrote:
+> > > On Fri, Jul 18, 2025 at 12:28:44PM +0200, Niklas Cassel wrote:
+> > > > On Tue, Jul 15, 2025 at 07:51:03PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> > > > 2) Testing link down reset:
+> > > > 
+> > > > selftests before link down reset:
+> > > > # FAILED: 14 / 16 tests passed.
+> > > > 
+> > > > ## On EP side:
+> > > > # echo 0 > /sys/kernel/config/pci_ep/controllers/a40000000.pcie-ep/start && \
+> > > >   sleep 0.1 && echo 1 > /sys/kernel/config/pci_ep/controllers/a40000000.pcie-ep/start
+> > > > 
+> > > > 
+> > > > [  111.137162] rockchip-dw-pcie a40000000.pcie: PCIE_CLIENT_INTR_STATUS_MISC: 0x4
+> > > > [  111.137881] rockchip-dw-pcie a40000000.pcie: LTSSM_STATUS: 0x0
+> > > > [  111.138432] rockchip-dw-pcie a40000000.pcie: hot reset or link-down reset
+> > > > [  111.139067] pcieport 0000:00:00.0: Recovering Root Port due to Link Down
+> > > > [  111.139686] pci-endpoint-test 0000:01:00.0: AER: can't recover (no error_detected callback)
+> > > > [  111.255407] rockchip-dw-pcie a40000000.pcie: PCIe Gen.3 x4 link up
+> > > > [  111.256019] rockchip-dw-pcie a40000000.pcie: Root Port reset completed
+> > > > [  111.383401] pcieport 0000:00:00.0: Root Port has been reset
+> > > > [  111.384060] pcieport 0000:00:00.0: AER: device recovery failed
+> > > > [  111.384582] rockchip-dw-pcie a40000000.pcie: PCIE_CLIENT_INTR_STATUS_MISC: 0x3
+> > > > [  111.385218] rockchip-dw-pcie a40000000.pcie: LTSSM_STATUS: 0x230011
+> > > > [  111.385771] rockchip-dw-pcie a40000000.pcie: Received Link up event. Starting enumeration!
+> > > > [  111.390866] pcieport 0000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+> > > > [  111.391650] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
+> > > > 
+> > > > Basically all tests timeout
+> > > > # FAILED: 1 / 16 tests passed.
+> > > > 
+> > > > Which is the same as before this patch series.
+> > > 
+> > > The above was with CONFIG_PCIEAER=y
+> > > 
+> > 
+> > This is kind of expected since the pci_endpoint_test driver doesn't have the AER
+> > err_handlers defined.
 > 
-> I've tested the whole thing on Qualcomm SC7280 Herobrine systems with
-> NVMe. After adding a debugfs node to control toggling PERST, I can force
-> the link to reset, and see it recover and resume NVMe traffic.
+> I see.
+> Would be nice if we could add them then, so that we can verify that this
+> series is working as intended.
 > 
-> I've tested the first two on Pixel phones, using a non-upstream
-> DWC-based driver that I'm working on getting in better shape. (We've
-> previously supported a custom link-error API setup instead.) I'd love to
-> see this available upstream.
+> 
+> > 
+> > > Wilfred suggested that I tried without this config set.
+> > > 
+> > > However, doing so, I got the exact same result:
+> > > # FAILED: 1 / 16 tests passed.
+> > > 
+> > 
+> > Interesting. Could you please share the dmesg log like above.
+> 
+> It is looking exactly like the dmesg above
+> 
+> [   86.820059] rockchip-dw-pcie a40000000.pcie: PCIE_CLIENT_INTR_STATUS_MISC: 0x4
+> [   86.820791] rockchip-dw-pcie a40000000.pcie: LTSSM_STATUS: 0x0
+> [   86.821344] rockchip-dw-pcie a40000000.pcie: hot reset or link-down reset
+> [   86.821978] pcieport 0000:00:00.0: Recovering Root Port due to Link Down
+> [   87.040551] rockchip-dw-pcie a40000000.pcie: PCIe Gen.3 x4 link up
+> [   87.041138] rockchip-dw-pcie a40000000.pcie: Root Port reset completed
+> [   87.168378] pcieport 0000:00:00.0: Root Port has been reset
+> [   87.168882] rockchip-dw-pcie a40000000.pcie: PCIE_CLIENT_INTR_STATUS_MISC: 0x3
+> [   87.169519] rockchip-dw-pcie a40000000.pcie: LTSSM_STATUS: 0x230011
+> [   87.272463] rockchip-dw-pcie a40000000.pcie: Received Link up event. Starting enumeration!
+> [   87.277552] pcieport 0000:00:00.0: bridge configuration invalid ([bus 00-00]), reconfiguring
+> [   87.278314] pci_bus 0000:01: busn_res: [bus 01-ff] end is updated to 01
+> 
+> except that we don't get the:
+> > [  111.139686] pci-endpoint-test 0000:01:00.0: AER: can't recover (no error_detected callback)
+> > [  111.384060] pcieport 0000:00:00.0: AER: device recovery failed
 > 
 
-Thanks, Brian for testing! I didn't get time to look into the report from
-Niklas (which is the only blocking thing for this series). I'll try to dig into
-it today/tomorrow.
+Ok, thanks for the logs. I guess what is happening here is that we are not
+saving/restoring the config space of the devices under the Root Port if linkdown
+is happens. TBH, we cannot do that from the PCI core since once linkdown
+happens, we cannot access any devices underneath the Root Port. But if
+err_handlers are available for drivers for all devices, they could do something
+smart like below:
+
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index c4e5e2c977be..9aabf1fe902e 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -989,6 +989,8 @@ static int pci_endpoint_test_probe(struct pci_dev *pdev,
+ 
+        pci_set_drvdata(pdev, test);
+ 
++       pci_save_state(pdev);
++
+        id = ida_alloc(&pci_endpoint_test_ida, GFP_KERNEL);
+        if (id < 0) {
+                ret = id;
+@@ -1140,12 +1142,31 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
+ };
+ MODULE_DEVICE_TABLE(pci, pci_endpoint_test_tbl);
+ 
++static pci_ers_result_t pci_endpoint_test_error_detected(struct pci_dev *pdev,
++                                              pci_channel_state_t state)
++{
++       return PCI_ERS_RESULT_NEED_RESET;
++}
++
++static pci_ers_result_t pci_endpoint_test_slot_reset(struct pci_dev *pdev)
++{
++       pci_restore_state(pdev);
++
++       return PCI_ERS_RESULT_RECOVERED;
++}
++
++static const struct pci_error_handlers pci_endpoint_test_err_handler = {
++       .error_detected = pci_endpoint_test_error_detected,
++       .slot_reset = pci_endpoint_test_slot_reset,
++};
++
+ static struct pci_driver pci_endpoint_test_driver = {
+        .name           = DRV_MODULE_NAME,
+        .id_table       = pci_endpoint_test_tbl,
+        .probe          = pci_endpoint_test_probe,
+        .remove         = pci_endpoint_test_remove,
+        .sriov_configure = pci_sriov_configure_simple,
++       .err_handler    = &pci_endpoint_test_err_handler,
+ };
+ module_pci_driver(pci_endpoint_test_driver);
+
+This essentially saves the good known config space during probe and restores it
+during the slot_reset callback. Ofc, the state would've been overwritten if
+suspend/resume happens in-between, but the point I'm making is that unless all
+device drivers restore their known config space, devices cannot be resumed
+properly post linkdown recovery.
+
+I can add a patch based on the above diff in next revision if that helps. Right
+now, I do not have access to my endpoint test setup. So can't test anything.
 
 - Mani
 
