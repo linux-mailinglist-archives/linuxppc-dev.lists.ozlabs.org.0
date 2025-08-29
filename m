@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-11471-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11472-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72A1B3B4A3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 09:47:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 891F2B3B4AA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 09:48:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCr3K1g0wz2ykc;
-	Fri, 29 Aug 2025 17:47:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCr4F2C17z2yqW;
+	Fri, 29 Aug 2025 17:48:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756453677;
-	cv=none; b=CfcVO8SdI1KqB2p63wldaGhvkKNwRPRgiADdaG3lkWNB3bDOI58rO4UD2TNu0+/FW2GIjL0nQ1T4pHmuCPKjQqmeHukpwK1cbBA3zJ5LayBNRbJycOGKzYKhpTVnY3iPW45fMVLzXGuTeJuI+00FgdYsxUDN2qnjBSHQDLKt5TylCxgiaVd0lLKc3PcqnPNV9HeoEB75ZdYnFx6YGlMIaPElls/26AGV+ND1Sl2p7huhcXvDui3/PooqxllCZO6D7ZK659Zy6zi2Hevk7A40UYDPUXnbYopPFwzJS7Dw5b1x3F/C2ToiJI0Bm1s5ovNJD4c+6SVWcV52S6QrMV9F0Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756453725;
+	cv=none; b=YhYuhNq+DUDHX95GM/nJOcsvguFvwgadJN2THCLx3cOhaoe5uRI/h6Y0a5Ckzgkh2Yg1i2qdwIrkOqH1/i4shKlzFDrtENJAjyUrQN+CYHCiTj+KZIhilqzco3Tot/ysS8glkho7HvVPIcIGa8RptBnV3eUukR+lZeoF71WwYCtvvq4Cb57YTdeGCM1A6QYb7NjWicnudf8YOFVD6EObebkTaItq5L3Y0wR1j1mHELY7nXE6Nr9LnyHAEZE0RL7Iw1dNqUtdjpCQrhCA2XRy26FSwdQmte6RDh60KtmjfMC0PodlThUjg0J+bfUl545GoFon7YoheVyeMZZUtK/0dQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756453677; c=relaxed/relaxed;
-	bh=GSSU/7YUmLysPQh7KSt0KtsFavc1CTYp3otbrQJhgCE=;
+	t=1756453725; c=relaxed/relaxed;
+	bh=TkvuiXmPep1e2SS2WffTJlm+rPS6pqIzbC1L3EbkZ6w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UCm5YTDg3xeZ4z5NW9HQYvxdIE4puI0Wea4YtmPRsU3JVmX0OpYUqlzVwC3rboyyxPdlE1UUJy75hZRHE8Ol92jlpufMrOFtzd4k7YmoJscoCfgSN2scEDbCVAnwmA86y4aG1yztFFBWlTtegO6gUx2NeAvccHdkgPyt9AibIG5xsvMRYEuWi7FacH0KtYs/K8p4ju/EU3uW6RnFuFaIip1JSY5ck31p612Dpa6BX5s2ONcLfAYnuPTJqKV6iMgoiGRHt02lpTuF4aNEjNIwxYfoBAWaGJIFBmyGkFaEXL+AY6Yen785n5vRgLE+b4unRx52xukV5sVIOtN8pmkwbg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UoKFCMZl; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=nMbnyV7nbijh7DAWW+Q6KfjBwthRiM0wQnCZr5i1AhIa86YzTKnMFUvdW9KUaS/mgvgeF70r6mr5nP1tNJIYdJ4gPgA5tiZKiqpL2yHJhKL1Hq7Tg3MjkHmJYzLl2tUhKB52dD06EM0YgSoEgReI/TdHDJfrdriREFjIrOfiRe4gtH0Zs6diS5j66oPhhs6Zb1VUkXCXR4slvAHbSc9s7sH5nKpc+c0O4D3m40K+K4KB1zKSBDX0qPXOuqGt+/sKHmmThSNoaVeFA4teAxEYIQ1f0eqrP1xfEhEQNdLEsbo4DW2k/azRwkK576m2GmYeLPrSd9oGbzuTphk5apTNcg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SQqO4OtE; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UoKFCMZl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=SQqO4OtE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCr3J2S5tz2xnM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 17:47:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCr4D3K9Bz2xnM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 17:48:44 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E350C401C4;
-	Fri, 29 Aug 2025 07:47:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D2DC4CEF0;
-	Fri, 29 Aug 2025 07:47:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2EBF260051;
+	Fri, 29 Aug 2025 07:48:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAC0C4CEF0;
+	Fri, 29 Aug 2025 07:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756453673;
-	bh=gCbRk9xzyu+2hoWKBy3FsZe0DLlpKUqrn8XkcEjrLfU=;
+	s=k20201202; t=1756453721;
+	bh=0A4rOapR7uxRXHkEuZV4upawq7r3HH5Hovvx4aG4VPg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UoKFCMZlFXgKPPQihwSAddcP+lF6qPigHrYFhBWK22xq9W9PaY3RubjMJCb+++QU6
-	 YKu6PKhP7t2kxr2PuaUI3oWS3RnoPLUmJevRckZQWuEyW4LgNIFcjJ4RZINARPsX6R
-	 liqlZgIwO+SR33v7jYpPIKFjQFSwXVhvMKheq7l+mp91pPT/shcQcbLeIUfVuvgQB7
-	 RXJZdqKjcj3VGRInxQWprCSxe5vwShCXvpS/z+lWmOhpBu2LExrZo636qUVpTnUDpY
-	 dXwSj79YkjaKQMQgOV6Rdc8CL/iOR9DrmhxyDh23aQ/N4CSPlAR8L2ajcBSud3pRbP
-	 eoUbBM5pBQJEA==
-Message-ID: <0f716362-07f4-4c79-bb0a-e71d2630a797@kernel.org>
-Date: Fri, 29 Aug 2025 09:47:48 +0200
+	b=SQqO4OtE8f4SwGiAZn3jS8yZB90ojBHpKfK/SF/ZQejldqv91+Goeee04F854Ze3O
+	 e9akjtP+6gRKmRBhdD3NYYruWaMIW71XZD3ppS62yXLm0+ZTsAa/2J+ZTH7d2y9cM6
+	 AMt+XTjOPSEZ0NEgbk/gE7CB3Ny9MJQOg1LAhRzjwwiYPosU/S4KbMlGaOd1mwFYRS
+	 CIKq21gO1vrzkJfBHraSk2lxIs60Qt3hzPvbL719+8k9DdP4sMNwHZPuklmyauJtse
+	 o635uN88q6b/qoUzVfCeevMH+tIUZ/swjlDNcaXLUwsKikG99TMhOyxc/v7aVDUZkw
+	 yoYBTBH//YVJg==
+Message-ID: <45eec9b1-d4cd-470b-abcc-03a823f397b2@kernel.org>
+Date: Fri, 29 Aug 2025 09:48:37 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,17 +62,14 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 5/6] dt-bindings: soc: fsl: qe: Add support of IRQ in
  QE GPIO
 To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Rob Herring <robh@kernel.org>
-Cc: Qiang Zhao <qiang.zhao@nxp.com>, Linus Walleij
- <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- linux-gpio@vger.kernel.org, devicetree@vger.kernel.org
+ Qiang Zhao <qiang.zhao@nxp.com>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+ devicetree@vger.kernel.org
 References: <cover.1756104334.git.christophe.leroy@csgroup.eu>
  <17636607f2beac3b64c87b3bec035fa27ce8d195.1756104334.git.christophe.leroy@csgroup.eu>
- <CAL_JsqKFvVQTVXV8mWX0z1=hd3nLDzLXq-0G_0bshMCvQ5kVvA@mail.gmail.com>
- <f21e27da-de26-4835-9660-b39e99695281@csgroup.eu>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -118,69 +115,50 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <f21e27da-de26-4835-9660-b39e99695281@csgroup.eu>
+In-Reply-To: <17636607f2beac3b64c87b3bec035fa27ce8d195.1756104334.git.christophe.leroy@csgroup.eu>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 28/08/2025 16:12, Christophe Leroy wrote:
+On 25/08/2025 08:53, Christophe Leroy wrote:
+> In the QE, a few GPIOs are IRQ capable. Similarly to
+> commit 726bd223105c ("powerpc/8xx: Adding support of IRQ in MPC8xx
+> GPIO"), add IRQ support to QE GPIO.
 > 
+> Add property 'fsl,qe-gpio-irq-mask' similar to
+> 'fsl,cpm1-gpio-irq-mask' that define which of the GPIOs have IRQs.
 > 
-> Le 28/08/2025 à 15:28, Rob Herring a écrit :
->> On Mon, Aug 25, 2025 at 2:20 AM Christophe Leroy
->> <christophe.leroy@csgroup.eu> wrote:
->>>
->>> In the QE, a few GPIOs are IRQ capable. Similarly to
->>> commit 726bd223105c ("powerpc/8xx: Adding support of IRQ in MPC8xx
->>> GPIO"), add IRQ support to QE GPIO.
->>>
->>> Add property 'fsl,qe-gpio-irq-mask' similar to
->>> 'fsl,cpm1-gpio-irq-mask' that define which of the GPIOs have IRQs.
->>
->> Why do you need to know this? The ones that have interrupts will be
->> referenced by an 'interrupts' property somewhere.
+> Here is an exemple for port B of mpc8323 which has IRQs for
+> GPIOs PB7, PB9, PB25 and PB27.
 > 
-> I don't follow you. The ones that have interrupts need to be reported by 
-> gc->qe_gpio_to_irq[] so that gpiod_to_irq() return the IRQ number, for 
-> instance to gpio_sysfs_request_irq() so that it can install an irq 
-> handler. I can't see where they would be referenced by an "interrupts" 
-> property.
+> 	qe_pio_b: gpio-controller@1418 {
+> 		compatible = "fsl,mpc8323-qe-pario-bank";
+> 		reg = <0x1418 0x18>;
+> 		interrupts = <4 5 6 7>;
+> 		interrupt-parent = <&qepic>;
+> 		gpio-controller;
+> 		#gpio-cells = <2>;
+> 		fsl,qe-gpio-irq-mask = <0x01400050>;
 
-They would be referenced by every consumer of these interrupts. IOW,
-this property is completely redundant, because DT holds this information
-already in other place.
+We see this from the patch. No need to repeat the patch contents in the
+commit msg.
 
-> 
->>
->>> Here is an exemple for port B of mpc8323 which has IRQs for
->>
->> typo
->>
->>> GPIOs PB7, PB9, PB25 and PB27.
->>>
->>>          qe_pio_b: gpio-controller@1418 {
->>>                  compatible = "fsl,mpc8323-qe-pario-bank";
->>>                  reg = <0x1418 0x18>;
->>>                  interrupts = <4 5 6 7>;
->>>                  interrupt-parent = <&qepic>;
->>>                  gpio-controller;
->>>                  #gpio-cells = <2>;
->>>                  fsl,qe-gpio-irq-mask = <0x01400050>;
->>>          };
->>
->> You are missing #interrupt-cells and interrupt-controller properties.
-> 
-> The gpio controller is not an interrupt controller. The GPIO controller 
-> is brought by patch 1/6 and documented in patch 6/6.
 
-Then the IRQ mask property is not right here. If you say "this GPIOs
-have IRQs" it means this is an interrupt controller.
+>  Example:
+>  	qe_pio_a: gpio-controller@1400 {
+> @@ -42,6 +51,16 @@ Example:
+>  		gpio-controller;
+>  	  };
+>  
+> +	qe_pio_b: gpio-controller@1418 {
+> +		#gpio-cells = <2>;
+> +		compatible = "fsl,mpc8323-qe-pario-bank";
 
-If you say this is not an interrupt controller, then you cannot have
-here interrupts per some GPIOs, obviously.
+Please follow DTS coding style.
+
 
 
 Best regards,
