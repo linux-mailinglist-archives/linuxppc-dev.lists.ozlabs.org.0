@@ -1,78 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-11505-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11506-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D51B3C384
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 21:59:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E4AB3C431
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 23:18:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cD8HW629Wz2yvv;
-	Sat, 30 Aug 2025 05:59:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cDB266h0Xz2yfL;
+	Sat, 30 Aug 2025 07:18:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756497575;
-	cv=none; b=Ht0MMHh971YGhjHskl6RxK1so3e1Eb3VmIZ3/xY4WFH7r/51UOKFLjfxvXBWP+C7mTMcmn5RAATFeVlDUJBwKDvZP39tI3y/N/n3DshFGhg1/2VHC2Es7HiK6kiVXC5lkAJm+Ys0xLOylY03ZqMG5OxiowbqNCjAoXKLL73Ugby7eSlZKRZ6kUhqOBFtzLr6L3R1ERnHA+MzMfsuChDCdz835eskqgfrdt4clbvKH2OGwHQEvLCnRR4XsLLC6DcRZm6aiB0kFigiJGY1IBW5Fbb5c+UJl7ZS1jvn/d+tRKC8J7gJlNgRWeOhoKyGRQ4ksUAXCxyI5H68bMnaaMNw7A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756502286;
+	cv=none; b=gJyVCandHHfmtxFqJUJMQldfXnOzTNAUguLhfCxO53DdF5rclRQx0xOc+NIjBHSksU0X2d2rzrp5J+IvChiwRmfCP3V4RxLV5u+slN9Cln1beBsNaZ33SB9/TNpCaFOAcEHoI79lIXsrWc/57GO9xVqZTXeM7qw71pqmZGQwob8q09qTNeAjywdDmG8zmuFCVKPKFrHFmweVuJ7eSPwltnRmD3gamLV79rAhaSesCqzwoi0+Own7eVrxhBXfx95tvYx1t3aMIVjo4wsw/GpIBI6RcllgJsTkaGuUtNZBI/oWuIwi+oLHJ4viQ1iZFp0XZZBFUF4ZIcINKEPrpfU9Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756497575; c=relaxed/relaxed;
-	bh=gS7Hl+IYFSS0r41Lf7WKRhaDaSLCAteHC69ORGEojSw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PdsIPrJGfQiLoLUSMtpq8vCq4KiQ17m+iRdwYBUvPV5prEOxpgTx3mWgVJdujxZt63gdUuZ3Nt1gGf9mEmAvDNBLrwsxPKNsmxD+Phbu/wM6Gtkm9m5LghPtnoGgIV9HmIVz4d17AO895+R9wh6IwSiblrqYCqNj5aACPDEPeOTrlxarYxJk9hngbWnGA6YoCnpMS12+Zsxl0oe9LgSMLNOF+wruFNkrkar76HtdHiNythurfXxK0gciZDD9Acgu1lXnuqTQQocLQMKUsjk3RdaH3/YSLZ5x93cxFq7p/3EmKRZ0pgLG2t67ZNS8Oryy50tF/RNiu7k05blJmdDMEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ebLlbGru; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1756502286; c=relaxed/relaxed;
+	bh=jkWMMlUstzNoy5n5BoFaGIjxYwBFQSeyrlj3V+KPYok=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=DKQKDGFmDW4aK6kAE/s9s4gVJqXXTQzAPEFe8RXoMPVCXEMhyPSiDtcoWvasO9gQ8bJs1xEq85o7Rt2EDizDovRHee536xYGamTeHFA+FYEj2JK+jfmvKLMVWIxxiOmO7PCNiU6vnRzNCuCh5yK5TyUeOHW8tJQDZCDkKiYOHWKVrz0tWeGx/JGjmBMrRoaGzyoKF7RnLWuDbtrZ/KZrDEzDK62w3/MXPbEuxczcOt1HJVrtwRjShuhPT9lZFsa5HOq71GaK7HAFQ+ZOS3h8pM55zTU9dMr0eGN6LxIykF84c5wXfv5RmEuuY7Lp+CJA43FUeZzNgfhk3jfhEARxOw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cTF1qr6g; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ebLlbGru;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cTF1qr6g;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cD8HW0Dcsz2xWQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 05:59:34 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57THq14G021026;
-	Fri, 29 Aug 2025 19:59:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=gS7Hl+
-	IYFSS0r41Lf7WKRhaDaSLCAteHC69ORGEojSw=; b=ebLlbGrusgmerHZn29jyEP
-	tc6HfX6RVvrf3ifwGcDFSU15m/kaqc775xXTBo4xPs6nijMdL2nyqSf99yFivtqJ
-	Ptj6Ui1ZIvW4C6EPa29yd07WHsjd9/nfb0EnQ9CfhUjwRKEgel6xyHvzhrWC+x8/
-	grdnJ1ej/ND9Ct+bne2+OUQWPqPtcis9foyKWQ+4bpWkjiFq0ErzuZNcScgoWYx1
-	XSCBfWQ3GRki58lAGLCLI49aFrgo3scSGL0Bp2YKpqeQjiu9pz/SWsGvgf1uXB7G
-	BV5t5d0N3dox+Co17CicUg/e6baNi0BqazdjfQjTcfpAoe50wVhfWQ0GwITSmtfQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48s7rwcj3m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 19:59:27 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57TJxQ2b002321;
-	Fri, 29 Aug 2025 19:59:26 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48s7rwcj3h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 19:59:26 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57TJkmRl029957;
-	Fri, 29 Aug 2025 19:59:26 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48qsfn3bp8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 19:59:25 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57TJxN8P13042204
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 Aug 2025 19:59:23 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 15BDA58055;
-	Fri, 29 Aug 2025 19:59:23 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C16B58043;
-	Fri, 29 Aug 2025 19:59:22 +0000 (GMT)
-Received: from [9.61.25.56] (unknown [9.61.25.56])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 29 Aug 2025 19:59:22 +0000 (GMT)
-Message-ID: <ee1cec48-0673-47ba-b5da-1754824ab2ed@linux.ibm.com>
-Date: Fri, 29 Aug 2025 12:59:22 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDB261Jjtz2yMw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 07:18:06 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 03CC860142;
+	Fri, 29 Aug 2025 21:18:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8E6C4CEF0;
+	Fri, 29 Aug 2025 21:18:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756502283;
+	bh=V5VOMAjw9pzEl70en0MP+3pcBujDo0p2tlcA6Iwhj08=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=cTF1qr6gFycOdtViqBehM1mwJmfXzfYP+ZHDqakqlmGuO18OPu7EJxuqBPjbkolvL
+	 qOxyZ4ZX6PBxKF6Y0I4ZTcz4v/tOkzZG4R0ZohsfxpaWtdJOfA8hiUEcZl+I0hvIbP
+	 mEXIVFKiifrZQEXq47mc7+8EuwpjhADw05aGzMbr5TqBL9v5w1YOPzezEmHpEBCLHj
+	 ZVsQdN3oZZbcIBF+e537fOz9HTTWFObWhdCnCU9zrXgEK1vSezg6ArLxCRu3dX5PDS
+	 4JUBXpK3uOMKHxjZ9GHz3s1Us6VsQrWHYGdCjHdjlcRryaOzKIjDXzJ/8o/VcOO3qR
+	 zztYif2H5i5wA==
+Date: Fri, 29 Aug 2025 16:18:01 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Cc: linux-pci@vger.kernel.org, bhelgaas@google.com, mahesh@linux.ibm.com,
+	oohall@gmail.com, linuxppc-dev@lists.ozlabs.org,
+	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
+	james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
+	dave@stgolabs.net, jonathan.cameron@huawei.com,
+	dave.jiang@intel.com, alison.schofield@intel.com,
+	vishal.l.verma@intel.com, ira.weiny@intel.com, linmiaohe@huawei.com,
+	shiju.jose@huawei.com, adam.c.preble@intel.com, lukas@wunner.de,
+	Smita.KoralahalliChannabasappa@amd.com, rrichter@amd.com,
+	linux-cxl@vger.kernel.org, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, erwin.tsaur@intel.com,
+	sathyanarayanan.kuppuswamy@intel.com, dan.j.williams@intel.com,
+	feiting.wanyan@intel.com, yudong.wang@intel.com,
+	chao.p.peng@intel.com, qingshun.wang@linux.intel.com,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Matthew W Carlis <mattc@purestorage.com>
+Subject: Re: [PATCH v5 2/2] PCI/AER: Print UNCOR_STATUS bits that might be
+ ANFE
+Message-ID: <20250829211801.GA1025641@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,64 +78,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 9/9] powerpc/pseries: HVPIPE changes to support
- migration
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        msuchanek@suse.de, mahesh@linux.ibm.com, hbabu@us.ibm.com,
-        shashank.gowda@in.ibm.com, bjking1@linux.ibm.com
-References: <20250828230845.2291249-1-haren@linux.ibm.com>
- <20250828230845.2291249-10-haren@linux.ibm.com>
-Content-Language: en-US
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-In-Reply-To: <20250828230845.2291249-10-haren@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: gjJJ0CwmM52ZF-SzIjV6hR8wk4KNDv6_
-X-Authority-Analysis: v=2.4 cv=fbCty1QF c=1 sm=1 tr=0 ts=68b2069f cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=DPMDPPQSeU34MSaRjKIA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: seT6jqIi36sXw0JUJp6TSjoWyKiPKxHn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI2MDA1NSBTYWx0ZWRfX2UWVfZibAsSD
- f8xdAW8xUVpgQGuw8RVmn15Drx0mLf65SKCHpkhO+giGzQdF1KkCMBrcH41x3T9w++UdchDGjY1
- p3UJFaMjmfLNKxmJPecs4b00UYiOEwdnp4Bl98u0Ta4KD/99N9XBbuRQ6Y7+hkZaReDy6DdVdbp
- LcAVaflNqp3GvuTlinOU0PNUNjUS7Xz3R2WMcKe4CrS7Axv8NvGPVSszMRkKyj8JimRDlG2rAH9
- 4Nmr1M7JcOwdnanJuWanmd/Q0vK+T9LIgTPiEFknE+DdXIC5RSnny+L5BpblFvwgNduElBEoJ8h
- 9AQR9ep2nSDwcoYeu8v9tnBfkveLBc30Pttp70JC7jXgno7FF8AQaUUDXJ11cQHARNkqBFjnkj+
- jJ8jNDmO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-29_06,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015 priorityscore=1501
- impostorscore=0 adultscore=0 phishscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508260055
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240620025857.206647-3-zhenzhong.duan@intel.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 8/28/25 4:08 PM, Haren Myneni wrote:
-> The hypervisor assigns one pipe per partition for all sources and
-> assigns new pipe after migration. Also the partition ID that is
-> used by source as its target ID may be changed after the migration.
-> So disable hvpipe during SUSPEND event with ‘hvpipe enable’ system
-> parameter value = 0 and enable it after migration during RESUME
-> event with  hvpipe enable’ system parameter value = 1.
-> 
-> The user space calls such as ioctl()/ read() / write() / poll()
-> returns  -ENXIO between SUSPEND and RESUME events. The user space
-> process can close FD and reestablish connection with new FD after
-> migration if needed (Example: source IDs are changed).
-> 
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-> Tested-by: Shashank MS <shashank.gowda@in.ibm.com>
-> ---
+[+cc Matt]
 
-Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+On Thu, Jun 20, 2024 at 10:58:57AM +0800, Zhenzhong Duan wrote:
+> When an Advisory Non-Fatal error(ANFE) triggers, both correctable error(CE)
+> status and ANFE related uncorrectable error(UE) status will be printed:
+> 
+>   AER: Correctable error message received from 0000:b7:02.0
+>   PCIe Bus Error: severity=Correctable, type=Transaction Layer, (Receiver ID)
+>     device [8086:0db0] error status/mask=00002000/00000000
+>      [13] NonFatalErr
+>     Uncorrectable errors that may cause Advisory Non-Fatal:
+>      [12] TLP
+> 
+> Tested-by: Yudong Wang <yudong.wang@intel.com>
+> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+> ---
+>  drivers/pci/pcie/aer.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 3dcfa0191169..ba3a54092f2c 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -681,6 +681,7 @@ static void __aer_print_error(struct pci_dev *dev,
+>  {
+>  	const char **strings;
+>  	unsigned long status = info->status & ~info->mask;
+> +	unsigned long anfe_status = info->anfe_status;
+>  	const char *level, *errmsg;
+>  	int i;
+>  
+> @@ -701,6 +702,20 @@ static void __aer_print_error(struct pci_dev *dev,
+>  				info->first_error == i ? " (First)" : "");
+>  	}
+>  	pci_dev_aer_stats_incr(dev, info);
+> +
+> +	if (!anfe_status)
+> +		return;
+
+__aer_print_error() is used by both native AER handling, where Linux
+fields the AER interrupt and reads the AER status registers directly,
+and APEI GHES firmware-first error handling, where platform firmware
+fields the AER interrupt, reads the AER status registers, and packages
+them up to hand off to Linux via aer_recover_queue().
+
+But the previous patch only sets info->anfe_status for the native
+path, so the APEI GHES path doesn't get the benefit of this change.
+
+I think both paths should log the same ANFE information.
+
+> +
+> +	strings = aer_uncorrectable_error_string;
+> +	pci_printk(level, dev, "Uncorrectable errors that may cause Advisory Non-Fatal:\n");
+> +
+> +	for_each_set_bit(i, &anfe_status, 32) {
+> +		errmsg = strings[i];
+> +		if (!errmsg)
+> +			errmsg = "Unknown Error Bit";
+> +
+> +		pci_printk(level, dev, "   [%2d] %s\n", i, errmsg);
+> +	}
+>  }
+>  
+>  void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+> -- 
+> 2.34.1
+> 
 
