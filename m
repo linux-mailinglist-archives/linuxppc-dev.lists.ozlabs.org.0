@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-11500-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11501-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230A8B3C349
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 21:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B000CB3C34E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 21:50:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cD81V5sPrz2yvv;
-	Sat, 30 Aug 2025 05:47:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cD84R3N1Tz2xd6;
+	Sat, 30 Aug 2025 05:49:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756496846;
-	cv=none; b=ONivN4BFPqDJYX9gzF2YVYVW/UMewsesIK8wLz8AQ4FnYx6ylNgffM+AemBPEhbfWOXM181RMhMGkIhziSakPADoyXfbgmi8V4V30uhMuFHWhcL3H7A0vCf9fGt3TccnRV3kpdPxQPXXuzJaZypTi0BbgT0Gxl+WGrMeIyIVNAKM2UyQwFAJcD6b6LvAXOKFqEZ1js6eWupmOA1bUWtd/EMNQJdtzLBSHEDZ21iNZcPL+gdrm/Zk1okQWzL3Suz6PC+S6mS045Nxl3i0UZyZRGXUmNWi2Yxw7LjjVWalj+2YQvpgXwSj66L0YV4pxkwHQFpf9VMbD53G30OqoPIAMQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756496999;
+	cv=none; b=XrVutvXObNMxSodf1Qr7Cclw1OCWaf5EIJziUxpujzEOcp4PfLkfOQh0ol+kkIwIDSbPsSBZA+NPo5dhAn10oInkFDq3dtt2SUH2CunJZBPwuAR4DUyzaA52CNToam2q71fSAER3XH+z8uCOOr6cWYk1uJ7CkulhrB6lxdbIQLfM8WLrc9Shsnid6R6FVFfg54VCKkk0Hstq4OPQ6aCt35W2tGEHjenNVkbCYRA5l+HxGiIjtX8dYfIIGDPh8VYFIIHeYgpmepgINsOSFF4yyNVY4HPua+rGru2gHM3sbFut/qlLY8+2QIo9DwHRP029gRq5lwwlAW0hukqTvQh4gQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756496846; c=relaxed/relaxed;
-	bh=GuGSJEBDsUS6M6hW7tBAqBsLxvgrrVe1vANIyLSEXcc=;
+	t=1756496999; c=relaxed/relaxed;
+	bh=6Qwm8ylx7lgihgvm7jN6sDt2A6J91svFICo6MR3gpQ8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ApL/MF23zEwIC0GEcyi6MtHrQTFxeq1ufCkTFvu3xy+IhvotdqfJViIXS1V5Ww9t1POKKxqnwtI8mquGN3ublrKVLzWQovbiRmY5favbkdRyaifWgGqwy/LtT+4615o8u5ybPPhYp6h/96ZSAt/h3Fs3ykw2m2C5rBVJXFDbBaX3pmy3AGzLF+xx/9yLE7XFZ934op0bX13a0VA+pWExTe/XobefaQnCWQf86Ml7B4rrx7DUXzLYewdT1XJBiJiIInvtoEDIycie1kLmBWGdDq1MeTWeHa4eNSWP3qly4Ta1yaLMZg7t7abibLVJyKRgF5FJ1NhWTZkgaRrBdSvXPA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KX2aj8Jg; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=nsRi8K1Pp3esVafkskclH+5dgTFqK6DQYeXTbYGbpn1mwbusOGJK8EvHLD9B+8h0f0BEm/u2XosW3+jNrx2moDng9iEXGIrLagg1OOpytPSV8A9l6Ki07KT+NlYoONX6uqY9iqSDzTrOM6bpkULhpArv91BhIygDQBmgLoQXCJWNKucfAKG2hNMn5qu7haWiWd/gk4mE1wAZj4/q0oaeZcTaxsA5WkpAghEqQqIjM2lPZTlT0hGqN34HZTT8MYlBCO1L0XptPKEBVvvU50rOuDZyc2bZbM6pEacG53+kW4wVgu/8fPn8y9zb2iQeAXzzFwTLU+AeeSQcHMVJhjF7FA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PW4RpBN1; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KX2aj8Jg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PW4RpBN1;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cD81V0Zfxz2xd6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 05:47:25 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57TID0sD012797;
-	Fri, 29 Aug 2025 19:47:19 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cD84Q5WLBz2xMX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 05:49:58 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57TIN3Y6007552;
+	Fri, 29 Aug 2025 19:49:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=GuGSJE
-	BDsUS6M6hW7tBAqBsLxvgrrVe1vANIyLSEXcc=; b=KX2aj8JgM7hsm5dDNJ3Nwo
-	DP1P8+kXJsvUlD+0YdS8reDlTHgH/pDxdrk6UaSZ090tDzTc16HzoIlzNzQgfZT2
-	79AOH1TGLjRJ2aIi5Kstsa6AxLxczxUnMNl3gZbm6fN701Y+mZ8fibe3/WgVtA9K
-	HlsVzkSoWFF8DUSiKEaAulapfwyT27mZgcgxjR4dM9wYZX6v6zJ4BFtlrz+FKopv
-	8NAsWLe1l7AHoFdPJLE031CaB1kLO0bEth5UcEH6KNEltP6G43ZOYJPqYs3pNh6s
-	69GfMqCqS+Jv6wV+s2c/Jf+uvZbAjLzFqgINJw1F+GuNwPUd8FdPfOvvHlgrxKCg
+	:message-id:mime-version:references:subject:to; s=pp1; bh=6Qwm8y
+	lx7lgihgvm7jN6sDt2A6J91svFICo6MR3gpQ8=; b=PW4RpBN1cQ+UiaXdXe8gFH
+	1rqSZuVDgsfv9GC1g2vWteFc6ycv+ju/XBEWAHPib7MtiD84aSgeHnCxlTUjyrIi
+	mgQJ+euXwkEmcE6EVT/vCS//rL5+na3juoiFZuzMlmKWUPe1pVpLbvqHvkg3aKNn
+	XmXURpvj4WEe2mEmeFc3wecB5IcAedYWugTrsPSrBeU83z2b+qfXDHpJki24kKsd
+	ketrBsa++v0AFn70vyqKHE/nOq5rqCJXqgRarNGWckH8wg/YXzK6SYrnHjyFAivS
+	MJieeQ9CVtM5frAbzCrcWKGUz0RDtOJyoT1SfQWxxG/I2fwSCr3d0xlUdfw8ElxQ
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5aw1gj7-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48tsv9esbp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 19:47:19 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57TJhfkS028283;
-	Fri, 29 Aug 2025 19:47:18 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5aw1gh0-1
+	Fri, 29 Aug 2025 19:49:50 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57TJnofx032386;
+	Fri, 29 Aug 2025 19:49:50 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48tsv9esbj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 19:47:18 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57TIZi23020838;
-	Fri, 29 Aug 2025 19:47:12 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48qrc13g05-1
+	Fri, 29 Aug 2025 19:49:50 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57TH9sc8017974;
+	Fri, 29 Aug 2025 19:49:49 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qtp3u2q4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 19:47:12 +0000
+	Fri, 29 Aug 2025 19:49:49 +0000
 Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57TJlAn930081718
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57TJnjHh37552850
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 Aug 2025 19:47:10 GMT
+	Fri, 29 Aug 2025 19:49:46 GMT
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0726B58059;
-	Fri, 29 Aug 2025 19:47:10 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 9E0C058059;
+	Fri, 29 Aug 2025 19:49:45 +0000 (GMT)
 Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4711658055;
-	Fri, 29 Aug 2025 19:47:09 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id E806458055;
+	Fri, 29 Aug 2025 19:49:44 +0000 (GMT)
 Received: from [9.61.25.56] (unknown [9.61.25.56])
 	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 29 Aug 2025 19:47:09 +0000 (GMT)
-Message-ID: <cd9b32cf-c2d4-4046-b720-ec910ed48c23@linux.ibm.com>
-Date: Fri, 29 Aug 2025 12:47:08 -0700
+	Fri, 29 Aug 2025 19:49:44 +0000 (GMT)
+Message-ID: <2223a133-4f2f-4ede-94f2-181c4d49c778@linux.ibm.com>
+Date: Fri, 29 Aug 2025 12:49:44 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,70 +87,73 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/9] powerpc/pseries: Send payload with
- ibm,send-hvpipe-msg RTAS
+Subject: Re: [PATCH v3 5/9] powerpc/pseries: Receive payload with
+ ibm,receive-hvpipe-msg RTAS
 To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
         msuchanek@suse.de, mahesh@linux.ibm.com, hbabu@us.ibm.com,
         shashank.gowda@in.ibm.com, bjking1@linux.ibm.com
 References: <20250828230845.2291249-1-haren@linux.ibm.com>
- <20250828230845.2291249-5-haren@linux.ibm.com>
+ <20250828230845.2291249-6-haren@linux.ibm.com>
 Content-Language: en-US
 From: Tyrel Datwyler <tyreld@linux.ibm.com>
-In-Reply-To: <20250828230845.2291249-5-haren@linux.ibm.com>
+In-Reply-To: <20250828230845.2291249-6-haren@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: slLa9o1ZwDYuF2wqMqT1_qaLbIbdHXD3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfX/qLv8iZySsww
- zNflMNXgXykpEYQVO9XRXbKeCeLFVc2eVJRs9ARDl5FMmLWml+wumtim/NW5/LkuV5qYffHjL/l
- SdY6mLGgcGaRpjHhL8LCbny+ACx0Ju7N2mXA0pdo78q9W+p96xDZDQy8RKuItTm0cVtR3gqsk00
- pphWbFtIrU7xjrUo3GePOuO3/pvkYl0VoS2E4LXZMJsMxN5utTc5E2UUMh2VoO9Vslj2c7gBZ43
- ryozBRnpE9OxABHlrzkcsKCAsNmxb3LAI4NbglRcEuBDW0murZzSoXplbpn0jiQkf8N6id7E8D2
- bMYTgzeWhC52h0WpK6Ac8XAVvxbXhpvBRo663aledzdx+eqT8gODibAj9vB79fTmhJSvaM67I3v
- pizFaMjC
-X-Proofpoint-ORIG-GUID: i10LAtQGKDf4XT8kjXIgun57V3IMF-kY
-X-Authority-Analysis: v=2.4 cv=SNNCVPvH c=1 sm=1 tr=0 ts=68b203c7 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=ALvBqy6vHTBQFlPnBK0A:9
+X-Authority-Analysis: v=2.4 cv=GqtC+l1C c=1 sm=1 tr=0 ts=68b2045e cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VnNF1IyMAAAA:8 a=Fes1uvIEUYYalLX1GkwA:9
  a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: ql0S7q-HUGKpNnHmz6y2Q616U7QdGWLr
+X-Proofpoint-ORIG-GUID: 3mEuA7vx248ItTefEEOLpTaalgeDhd-6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI4MDEyNyBTYWx0ZWRfX09wmPJagXg6y
+ gwtcuXSeRKa+hHvcJaVMDPrzJHgTSPt8kZUoDa60u3s4mCYw/E3LJRUo7bf4Vnpq0WgAq5Gc/Dd
+ JdDq4oaH/JQJ82DYg/+OUFm2SvI6NOeAn0lSe9S1y6FQsNcXXCbcSTzWLJbiSuH5zAbw95IuDfX
+ Pn71bNRe+z/VLKzKQb0HxrDsYkdL+osOcS/Z3uXMoTTJQwZt1EP+3hEHBi01jXdWrB3r5HKRuHr
+ mtHZFNof8jwqGwLfoGe14VJlRYFnq28LpuaIn3T+lKKEFdUT/kUqhcS4Tm9l1RX+2C8FiC2JOv4
+ wM1LFxABNVVBB8TeFUWCgx0K3CNxDqMXFwvJjWvOfDIZVu2vmk1sIebsPz6sFVCzcutvMnkHvZs
+ NdNVyNEx
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-08-29_06,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 bulkscore=0 phishscore=0 clxscore=1015
- impostorscore=0 malwarescore=0 suspectscore=0 priorityscore=1501
+ spamscore=0 priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0
+ adultscore=0 malwarescore=0 impostorscore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508230021
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508280127
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 8/28/25 4:08 PM, Haren Myneni wrote:
-> ibm,send-hvpipe-msg RTAS call is used to send data to the source
-> (Ex: Hardware Management Console) over the hypervisor pipe. The
-> maximum data length of 4048 bytes is supported with this RTAS call
-> right now. The user space uses write() to send this payload which
-> invokes this RTAS. Then the write returns the buffer length
-> (including papr_hvpipe_hdr length) to the user space for success
-> or RTAS failure error.
+> ibm,receive-hvpipe-msg RTAS call is used to receive data from the
+> source (Ex: Hardware Management Console) over the hypervisor
+> pipe. The hypervisor will signal the OS via a Hypervisor Pipe
+> Event external interrupt when data is available to be received
+> from the pipe and the event message has the source ID and the
+> message type such as payload or closed pipe to the specific
+> source. The hypervisor will not generate another interrupt for
+> the next payload until the partition reads the previous payload.
+> It means the hvpipe is blocked and will not deliver other events
+> for any source. The maximum data length of 4048 bytes is
+> supported with this RTAS call right now.
 > 
-> ibm,send-hvpipe-msg call takes source ID as target and the buffer
-> in the form of buffer list. The buffer list format consists of
-> work area of size 4K to hold buffer list and number of 4K work
-> areas depends on buffers is as follows:
+> The user space uses read() to receive data from HMC which issues
+> ibm,receive-hvpipe-msg RTAS and the kernel returns the buffer
+> length (including papr_hvpipe_hdr length) to the user space for
+> success or RTAS failure error. If the message is regarding the
+> pipe closed, kernel just returns the  papr_hvpipe_hdr with
+> flags = HVPIPE_LOST_CONNECTION and expects the user space to
+> close FD for the corresponding source.
 > 
-> Length of Buffer List in bytes
-> Address of 4K buffer 1
-> Length of 4K buffer 1 used
-> ...
-> Address of 4K buffer n
-> Length of 4K buffer n used
-> 
-> Only one buffer is used right now because of max payload size is
-> 4048 bytes. writev() can be used in future when supported more
-> than one buffer.
+> bm,receive-hvpipe-msg RTAS call passes the buffer and returns
+
+Missing the "i" in "ibm,receive-hvpipe-msg".
+
+> the source ID from where this payload is received and the
+> payload length.
 > 
 > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 > Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
