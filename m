@@ -1,70 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-11506-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11507-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E4AB3C431
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 23:18:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1600CB3C4E9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 00:33:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cDB266h0Xz2yfL;
-	Sat, 30 Aug 2025 07:18:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cDCjb0RlPz2xnv;
+	Sat, 30 Aug 2025 08:33:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756502286;
-	cv=none; b=gJyVCandHHfmtxFqJUJMQldfXnOzTNAUguLhfCxO53DdF5rclRQx0xOc+NIjBHSksU0X2d2rzrp5J+IvChiwRmfCP3V4RxLV5u+slN9Cln1beBsNaZ33SB9/TNpCaFOAcEHoI79lIXsrWc/57GO9xVqZTXeM7qw71pqmZGQwob8q09qTNeAjywdDmG8zmuFCVKPKFrHFmweVuJ7eSPwltnRmD3gamLV79rAhaSesCqzwoi0+Own7eVrxhBXfx95tvYx1t3aMIVjo4wsw/GpIBI6RcllgJsTkaGuUtNZBI/oWuIwi+oLHJ4viQ1iZFp0XZZBFUF4ZIcINKEPrpfU9Ow==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756506835;
+	cv=none; b=jSzBeWPnGBYSkuZWBbD7nN7qbJVsv6iKD/BflmjXOVCoHKz5d0D+dkDqJQPk4fgE8wo8Z7iqXdPWhIXOCirvsTtJ+sP9j+PxENan+WMWnEUFpUOVtz8n0B/RXVs51xMlleAHbPO1VQPArPIc+oxWUD8Q2A+HYLF3W3yIRJLA9rGYynzC8mSQlenax+sTmrL/VtJ7YVhbW3JmSDNF9XeQLLMhevtiViYnOjrTnB4LvbOTMSjuRjlF7G3MHys58uLkCPif3BG9plgzu21C846cTBnMkOshr2vqhYLkb8s8kVU33fVn1J/x+ee8oD1iMiGCdCd1GlLNlnV7AubIzBnV4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756502286; c=relaxed/relaxed;
-	bh=jkWMMlUstzNoy5n5BoFaGIjxYwBFQSeyrlj3V+KPYok=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=DKQKDGFmDW4aK6kAE/s9s4gVJqXXTQzAPEFe8RXoMPVCXEMhyPSiDtcoWvasO9gQ8bJs1xEq85o7Rt2EDizDovRHee536xYGamTeHFA+FYEj2JK+jfmvKLMVWIxxiOmO7PCNiU6vnRzNCuCh5yK5TyUeOHW8tJQDZCDkKiYOHWKVrz0tWeGx/JGjmBMrRoaGzyoKF7RnLWuDbtrZ/KZrDEzDK62w3/MXPbEuxczcOt1HJVrtwRjShuhPT9lZFsa5HOq71GaK7HAFQ+ZOS3h8pM55zTU9dMr0eGN6LxIykF84c5wXfv5RmEuuY7Lp+CJA43FUeZzNgfhk3jfhEARxOw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cTF1qr6g; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1756506835; c=relaxed/relaxed;
+	bh=kZBy6mGm/GWgsSmHcenYbJqYC61GyZljRKOGMCQEJWk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=IL3LxzbUg01qk4sVSk60aTJczcbV7vnWHYpuKdl1rifdoSJF+tWa3qLGeSssWXqV0oqN8dyu8a5Be0xsTwIe1PRo7qPztIAMXUuzza8c20IhXu6qiHT2+tHFABwjX2mG1iDTShyCEB5lnqGr7zfAF3xhpjebOYCzLyAzDM41IUvsvpgbtflwGJyuLFRpW2gIF73DGbxz+a6uv4gA7RjZcWZOLRCPqGC2Q7MEIIdWWNYnkgw9u+3DhZ3EqcnwaImYv8dAQxeZ8hPU+dtECx7ZjohbkrKip5d7//j3QVze6vsBvjFll9nuN7BP+uSWmmGCEbz+AW76SS7jO72HbMHkvQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CeI1Uyyw; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cTF1qr6g;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CeI1Uyyw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDB261Jjtz2yMw
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 07:18:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDCjZ2HSSz2xjv
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 08:33:54 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 03CC860142;
-	Fri, 29 Aug 2025 21:18:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8E6C4CEF0;
-	Fri, 29 Aug 2025 21:18:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B33664534D;
+	Fri, 29 Aug 2025 22:33:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5459DC4CEF0;
+	Fri, 29 Aug 2025 22:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756502283;
-	bh=V5VOMAjw9pzEl70en0MP+3pcBujDo0p2tlcA6Iwhj08=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=cTF1qr6gFycOdtViqBehM1mwJmfXzfYP+ZHDqakqlmGuO18OPu7EJxuqBPjbkolvL
-	 qOxyZ4ZX6PBxKF6Y0I4ZTcz4v/tOkzZG4R0ZohsfxpaWtdJOfA8hiUEcZl+I0hvIbP
-	 mEXIVFKiifrZQEXq47mc7+8EuwpjhADw05aGzMbr5TqBL9v5w1YOPzezEmHpEBCLHj
-	 ZVsQdN3oZZbcIBF+e537fOz9HTTWFObWhdCnCU9zrXgEK1vSezg6ArLxCRu3dX5PDS
-	 4JUBXpK3uOMKHxjZ9GHz3s1Us6VsQrWHYGdCjHdjlcRryaOzKIjDXzJ/8o/VcOO3qR
-	 zztYif2H5i5wA==
-Date: Fri, 29 Aug 2025 16:18:01 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: linux-pci@vger.kernel.org, bhelgaas@google.com, mahesh@linux.ibm.com,
-	oohall@gmail.com, linuxppc-dev@lists.ozlabs.org,
-	linux-acpi@vger.kernel.org, rafael@kernel.org, lenb@kernel.org,
-	james.morse@arm.com, tony.luck@intel.com, bp@alien8.de,
-	dave@stgolabs.net, jonathan.cameron@huawei.com,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com, linmiaohe@huawei.com,
-	shiju.jose@huawei.com, adam.c.preble@intel.com, lukas@wunner.de,
-	Smita.KoralahalliChannabasappa@amd.com, rrichter@amd.com,
-	linux-cxl@vger.kernel.org, linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org, erwin.tsaur@intel.com,
-	sathyanarayanan.kuppuswamy@intel.com, dan.j.williams@intel.com,
-	feiting.wanyan@intel.com, yudong.wang@intel.com,
-	chao.p.peng@intel.com, qingshun.wang@linux.intel.com,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Matthew W Carlis <mattc@purestorage.com>
-Subject: Re: [PATCH v5 2/2] PCI/AER: Print UNCOR_STATUS bits that might be
- ANFE
-Message-ID: <20250829211801.GA1025641@bhelgaas>
+	s=k20201202; t=1756506831;
+	bh=gW3UREhITNbhZNhXVhy/1JzS54isi8alO3SClI/0N4U=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=CeI1UyywLphq6rbxihW3K12s6RgLJ57FMTz4eKtrVBaIOZQlRF5Mw5MGN9VZqsyUF
+	 ws1VVPK2A9Aphpeu08IZ+PBsvH/hZxYQZ/E8LlLJ2UoQZh6ZiWU7Ee+Bxfnwgu4wDN
+	 qm+ussMtaWLdi83SF8aT0+Btb7yjNB9Ygip41cIO0PmgxXzADx6IHAKLQjnLPLfqj2
+	 5eqSmq9NNuwF0+wjF3Nc60azb8fAUFVptz94yF9f9Xn6OeJKPvhEVPRSVPcQIiH9ig
+	 389Jr83bSdXVSFqVbGJ4RM5keAw6x2twpNgOifIA2xME7cb4HiY+r6PWu/R5+ICtHu
+	 LsNzjw1Q4Twaw==
+From: Nathan Chancellor <nathan@kernel.org>
+To: linux-kernel@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Kees Cook <kees@kernel.org>, 
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ llvm@lists.linux.dev, patches@lists.linux.dev, 
+ Nicolas Schier <nsc@kernel.org>, linux-kbuild@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, Russell King <linux@armlinux.org.uk>, 
+ Ard Biesheuvel <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+ Will Deacon <will@kernel.org>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ linuxppc-dev@lists.ozlabs.org, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org, 
+ Marco Elver <elver@google.com>, 
+ "Peter Zijlstra (Intel)" <peterz@infraded.org>, kasan-dev@googlegroups.com
+In-Reply-To: <20250821-bump-min-llvm-ver-15-v2-0-635f3294e5f0@kernel.org>
+References: <20250821-bump-min-llvm-ver-15-v2-0-635f3294e5f0@kernel.org>
+Subject: Re: [PATCH v2 00/12] Bump minimum supported version of LLVM for
+ building the kernel to 15.0.0
+Message-Id: <175650682606.3003527.17329504429724755241.b4-ty@kernel.org>
+Date: Fri, 29 Aug 2025 15:33:46 -0700
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,83 +80,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240620025857.206647-3-zhenzhong.duan@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-[+cc Matt]
 
-On Thu, Jun 20, 2024 at 10:58:57AM +0800, Zhenzhong Duan wrote:
-> When an Advisory Non-Fatal error(ANFE) triggers, both correctable error(CE)
-> status and ANFE related uncorrectable error(UE) status will be printed:
+On Thu, 21 Aug 2025 14:15:37 -0700, Nathan Chancellor wrote:
+> s390 and x86 have required LLVM 15 since
 > 
->   AER: Correctable error message received from 0000:b7:02.0
->   PCIe Bus Error: severity=Correctable, type=Transaction Layer, (Receiver ID)
->     device [8086:0db0] error status/mask=00002000/00000000
->      [13] NonFatalErr
->     Uncorrectable errors that may cause Advisory Non-Fatal:
->      [12] TLP
+>   30d17fac6aae ("scripts/min-tool-version.sh: raise minimum clang version to 15.0.0 for s390")
+>   7861640aac52 ("x86/build: Raise the minimum LLVM version to 15.0.0")
 > 
-> Tested-by: Yudong Wang <yudong.wang@intel.com>
-> Co-developed-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> Signed-off-by: "Wang, Qingshun" <qingshun.wang@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-> ---
->  drivers/pci/pcie/aer.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+> respectively. This series bumps the rest of the kernel to 15.0.0 to
+> match, which allows for a decent number of clean ups.
 > 
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 3dcfa0191169..ba3a54092f2c 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -681,6 +681,7 @@ static void __aer_print_error(struct pci_dev *dev,
->  {
->  	const char **strings;
->  	unsigned long status = info->status & ~info->mask;
-> +	unsigned long anfe_status = info->anfe_status;
->  	const char *level, *errmsg;
->  	int i;
->  
-> @@ -701,6 +702,20 @@ static void __aer_print_error(struct pci_dev *dev,
->  				info->first_error == i ? " (First)" : "");
->  	}
->  	pci_dev_aer_stats_incr(dev, info);
-> +
-> +	if (!anfe_status)
-> +		return;
+> [...]
 
-__aer_print_error() is used by both native AER handling, where Linux
-fields the AER interrupt and reads the AER status registers directly,
-and APEI GHES firmware-first error handling, where platform firmware
-fields the AER interrupt, reads the AER status registers, and packages
-them up to hand off to Linux via aer_recover_queue().
+Applied, thanks!
 
-But the previous patch only sets info->anfe_status for the native
-path, so the APEI GHES path doesn't get the benefit of this change.
+[01/12] kbuild: Bump minimum version of LLVM for building the kernel to 15.0.0
+        https://git.kernel.org/kbuild/c/20c0989283564
+[02/12] arch/Kconfig: Drop always true condition from RANDOMIZE_KSTACK_OFFSET
+        https://git.kernel.org/kbuild/c/65aebf6f5880e
+[03/12] ARM: Clean up definition of ARM_HAS_GROUP_RELOCS
+        https://git.kernel.org/kbuild/c/02aba266e391f
+[04/12] arm64: Remove tautological LLVM Kconfig conditions
+        https://git.kernel.org/kbuild/c/23cb0514208da
+[05/12] mips: Unconditionally select ARCH_HAS_CURRENT_STACK_POINTER
+        https://git.kernel.org/kbuild/c/e633c2e78fd1c
+[06/12] powerpc: Drop unnecessary initializations in __copy_inst_from_kernel_nofault()
+        https://git.kernel.org/kbuild/c/488954ca195d0
+[07/12] riscv: Remove version check for LTO_CLANG selects
+        https://git.kernel.org/kbuild/c/6578a1ff6aa49
+[08/12] riscv: Unconditionally use linker relaxation
+        https://git.kernel.org/kbuild/c/7ccbe91796d7b
+[09/12] riscv: Remove ld.lld version checks from many TOOLCHAIN_HAS configs
+        https://git.kernel.org/kbuild/c/87b28d71396bf
+[10/12] lib/Kconfig.debug: Drop CLANG_VERSION check from DEBUG_INFO_DWARF_TOOLCHAIN_DEFAULT
+        https://git.kernel.org/kbuild/c/a817de20091c3
+[11/12] objtool: Drop noinstr hack for KCSAN_WEAK_MEMORY
+        https://git.kernel.org/kbuild/c/573ad421cc551
+[12/12] KMSAN: Remove tautological checks
+        https://git.kernel.org/kbuild/c/5ff8c11775c74
 
-I think both paths should log the same ANFE information.
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
 
-> +
-> +	strings = aer_uncorrectable_error_string;
-> +	pci_printk(level, dev, "Uncorrectable errors that may cause Advisory Non-Fatal:\n");
-> +
-> +	for_each_set_bit(i, &anfe_status, 32) {
-> +		errmsg = strings[i];
-> +		if (!errmsg)
-> +			errmsg = "Unknown Error Bit";
-> +
-> +		pci_printk(level, dev, "   [%2d] %s\n", i, errmsg);
-> +	}
->  }
->  
->  void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
-> -- 
-> 2.34.1
-> 
 
