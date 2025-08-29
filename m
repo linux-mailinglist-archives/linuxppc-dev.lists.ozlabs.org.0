@@ -1,104 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-11455-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11457-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6383FB3AE8B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 01:46:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9260CB3B049
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 03:10:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCdMN2TTHz2xlQ;
-	Fri, 29 Aug 2025 09:46:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCgF167zDz2yqd;
+	Fri, 29 Aug 2025 11:10:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2009::628" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756424768;
-	cv=pass; b=XNl8E307szN8YG7MVwdHVeycHl/Fa43jG7HeK14hqJSVg0ywLxucUCHOD4klaOrnETEM2xjkx/s4phTZOZucoH3ReFpLPZ99EVN2Eknh8LljazaOMtVTlbYreOjOOR/lnCwNVwCgSYkGd3x5m3UjHErI3AlupgSaBPgjhCpZj3u4nZfS+/XPXmXrFN2Lf+8Wwx54x1K/y9Fn7fXXPtYAoWsrGy2PJkAOOaMW7ksNjhIma3Po5zAoXvuZGk4az0cf66vXzMZJUkkVyjCs5H4zREf090z7GdPUNVgdUkhjrSDHPXwFN3l3l5rjPVeqAjkCP+RId4f5am9sqboYMh2O1A==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756424768; c=relaxed/relaxed;
-	bh=1JzfVyfbWEkwcvRy5E87In4bJJ84qEkwC/j9O+RskB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cCc5EtlLX4aoafnb5SdYi5YGhn5MEr+/fjfymbGMoY+88dZV77gHOu7uGm8qU8K0nTWRmxLOYqkmuXAaD4yAkdVyGxy33BPu3sgZ+qfhSf0qif2uZ7z8Ne20TZXyT9qV/ThJkAf78YNZa3OvtX8WFoZe+0Fv/puf74p6Ov/BPZjxAaVCBqhdNq0paRQUVwVPvEhzKI0o6AfXjAbOR3XP4zgqpP5y79V4Q7NVU4d4NSsSqdnd91NxucN5qK8jzckwhQpCmTsg4XE/+Q1NDsxLBC+mXuDNGsyaHUsj32VkPMCbZJTX7ZjVDBrjbRi0SSrGVJ95cbPq+jzARydwGkQGQA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VxRX8y7v; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2009::628; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=VxRX8y7v;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2009::628; helo=nam10-bn7-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on20628.outbound.protection.outlook.com [IPv6:2a01:111:f403:2009::628])
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756429845;
+	cv=none; b=SW2cTqloCVCrD3YnkXQNYcvDTmonY8aCyhX0jgdncpPMncrYVH7Quf3dQUTjRWHo3Z1b6tYXrUi0Z/fFFHpD0Gy1esF+ovFdDWeT05QiYuBaoVaI6QL9C3Nws6KNNpWYtCduxFmXEGyHudNU0T+sf1oG9nsUQ9nOJ1fSEZ+tan5xuriqjX8tsuiaAgo70JekhAKct1wr+Bi+IVXrmdotkGxnPxj8MJBKpCCC2Grji34L8ab/v5dBD/j6OxJgBbRIKN3m+Rn8T0DDCMbIjt5s0Uwnx6YCz11ElnwHWjiIdyJcQ6hvvdLAvR1ytPkZ0N2w0GjGZo05DyuoxR9dgjjbPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1756429845; c=relaxed/relaxed;
+	bh=xSJYI1LfDx6b3t05B7hgsla/NYnXns8LJkuupJRByMs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JV8/EKPPLTv4MOfeqysEy59PrWdklu374FfblvLxBtnvGypF2EGqvuMoXZipgmblA2fYjDAZUaMwQ5Q4syMc+DwHOPZw2lqJ7YKQuHsBNSP1PRc0rNNdivQEOsuCOpW8u2sEFOA2OQw0AnvtvsTO2ff00wX8blVbA7Hh8sGf6yOeCHE7w7yuPOj3LDdUaqCAOlriOZx4p12zB+X97m/P42QXw2zK7417eLBgGdj60WGxlH8oUz9rPuIQLYL2chLWqH76c9xoWqe4MZIN3kJSzAxAkkBglPx0kkV40abMBS0ZugfTKS8cvNFcitxGRuSfEVre2P3nI9ViwM0RFn5Ang==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCdML2wKJz2xcD
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 09:46:06 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BC0j4lwL4dAZkVK7ch7LF2nEtfdyfLuAA9ArPob3ntYclDYP9WUWF4lzLgBjVEWhKD5fzKCHCvGY5+ndBoRrUZwm7waYZhpSqAahKYwgQ4pjljsudSoVim6I1hb9ly7jMQqHnr44z2LJClAFi82An2v/KrYyR5ZeA70EU+uCXT/rleKxZWx+PAzM297baujTy8UZVntNmF6p7b2TJOYuME78pNxz1HsfZpzErVOVNYl6GiqZ5yRWCRCzttx+jBI51JngDmXcWelvtfVyFMvxw+62K7k2qBxCZ8Fc4e37K8Q+jGpjWdeifbVUhI00fggE7wEQP4jyhOoXizMoJ8tVEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1JzfVyfbWEkwcvRy5E87In4bJJ84qEkwC/j9O+RskB0=;
- b=OuXuVM34IS1TM0+6lpGfRyQyiWbMArhtJHiPyAgIiz4AlR2A9iMHh2iJjDR5UK+PYaynzoJXM12KvSYb+IA2KB2fmTlbiAUz1r2mUfUeZHRKqxSwV0LmV2GkOPmgSzQ5MYzn1hZJFRWDqoYgBFtMNGuMPDBJVb8P/9jqwjbguKt+hkYnD+ht+QDLJRox2+wePM3TpqbrBPHyqOTkdOJZycEjFRPmJuUNApFbfzhw1d53g2o7cqRI0vZ+VJTqLbGS1YEEO/x5afwsJ/CT40bHaWRqBIKvugAMF2pDdPIOcs4D6WdXb0OSJy8SlnmEMFsA7TmpWwIyN/tzZN7HLbt84g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1JzfVyfbWEkwcvRy5E87In4bJJ84qEkwC/j9O+RskB0=;
- b=VxRX8y7v26YTcy0pm0Eq8/JX3RyQj1mvosIjLgJoJ5Hf/erONZbAQ7UuB2aWAyT2Y9SvfMSp6863o2b0yAt8wB7s96NROj09PzDBubXJK6wCzBNuANpfqrfKDpKiEKHzCkFH0xFvnRPG2404BQrGZnqFLwXObqOS4VE5W5GBq72z+BFFaXecgJpi+GM4ZHGo7Z8QckOiiC3F4ZiRqFFGTyxlqPxg+w740BlwXy/nfyhOAsCIH96eFyZ52v7TOe86DZC3T7GEjM2WE5G5cjtR5BftO2oXcDldH+HDfD/hthN/IqlvNd32XXJQPecBtJF+qCipDVffTR+6xDrsOKEwUQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by SA1PR12MB6776.namprd12.prod.outlook.com (2603:10b6:806:25b::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.13; Thu, 28 Aug
- 2025 23:45:44 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.9073.010; Thu, 28 Aug 2025
- 23:45:44 +0000
-Date: Thu, 28 Aug 2025 20:45:42 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Keith Busch <kbusch@kernel.org>
-Cc: Leon Romanovsky <leon@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 15/16] block-dma: properly take MMIO path
-Message-ID: <20250828234542.GK7333@nvidia.com>
-References: <cover.1755624249.git.leon@kernel.org>
- <642dbeb7aa94257eaea71ec63c06e3f939270023.1755624249.git.leon@kernel.org>
- <aLBzeMNT3WOrjprC@kbusch-mbp>
- <20250828165427.GB10073@unreal>
- <aLCOqIaoaKUEOdeh@kbusch-mbp>
- <20250828184115.GE7333@nvidia.com>
- <aLCpqI-VQ7KeB6DL@kbusch-mbp>
- <20250828191820.GH7333@nvidia.com>
- <aLDCC4rXcIKF8sRg@kbusch-mbp>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLDCC4rXcIKF8sRg@kbusch-mbp>
-X-ClientProxiedBy: PH7PR13CA0003.namprd13.prod.outlook.com
- (2603:10b6:510:174::14) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCgDz3Y2Lz2xVq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 11:10:42 +1000 (AEST)
+X-UUID: d185feaa847411f0b29709d653e92f7d-20250829
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:1b41a914-a619-485b-bf0b-20ce62405244,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:e92f79993f0338ccf10768968df3fbd8,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: d185feaa847411f0b29709d653e92f7d-20250829
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 459095461; Fri, 29 Aug 2025 09:09:31 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 048F7E008FA4;
+	Fri, 29 Aug 2025 09:09:31 +0800 (CST)
+X-ns-mid: postfix-68B0FDCA-85694742
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 37FF9E008FA2;
+	Fri, 29 Aug 2025 09:09:19 +0800 (CST)
+Message-ID: <6174bcc8-30f5-479b-bac6-f42eb1232b4d@kylinos.cn>
+Date: Fri, 29 Aug 2025 09:09:18 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -112,100 +64,179 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SA1PR12MB6776:EE_
-X-MS-Office365-Filtering-Correlation-Id: 753e419c-5ee5-49ef-69cc-08dde68d017e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BRmB+3sKM17VmapuvDAanENDABDoL5Vpjr28rLgku94+uoeQ47+jUimtSCp1?=
- =?us-ascii?Q?u0ol1dYjEgBvhO+ruK3iz1KEP/hZe25IXKS3DBr3YL9i7oeUIybZm61bc1EK?=
- =?us-ascii?Q?ySVKFefar6hxK0//rT6Je0GyXftJ2+WIKk+gQVSVNjs+Bkungz+C7gvV7FE9?=
- =?us-ascii?Q?JWTCKInSOrbbaQQHrNsl6Z5VBvqOljwWpgr3qXQvyL+Pg+MscLmm6SArQcxY?=
- =?us-ascii?Q?DhRw9/ZD8E7yHpahJ58uR5uiRAi4+XlAVS2evL/9AMATYhX1mkLmURS/z3jc?=
- =?us-ascii?Q?1V8fE7B86lb2Ht8o66gydqV81PLbS1K7px3v2ku7KKgIc9spCDxux52V1e9X?=
- =?us-ascii?Q?2498Hip1BaWsm1qRiLue87NQN9Z8AJishXg/2l29DTeQIEgx8BvWPqqlHtMI?=
- =?us-ascii?Q?LZrzHSOQwD82enU0XZ4QvLY+EpJrrsG0aR8cPF6lU48eUz2Bwk19vFp5xmob?=
- =?us-ascii?Q?FBLQcOaGyTp3p1DF5P/fDKAKIx3KFyk25UzYulT6OPKOJ8/nAaUAfoELdNwt?=
- =?us-ascii?Q?gJJsBFxQ7TZfd+e5TwigthbjSdVMfwZu4ntQ3hbIPzZ3X8i+//nTBmsBv2P/?=
- =?us-ascii?Q?9JHw7gf5BC5M7B79SHTbr3VxCjAxyblS+ecONyQ7+pV0UZdx4ZkJaEYtITXK?=
- =?us-ascii?Q?/Ud/XTouTFMXZ5sLYqFF7qM81eEraAf2qP9fHpukUza4yBXVwCBf3mZem0Vf?=
- =?us-ascii?Q?OJRavtRWTGaJ+pLqvA6Ou8HUKqW+yoROq9n9FY6r9a2ShUiGDeBHELGNMS9I?=
- =?us-ascii?Q?dL7jH7kqZnUOoBBf3mGbE+UqUXxdaXpDchRzCfuEK4FnZ7zr4gN9ep/+4aJM?=
- =?us-ascii?Q?sw6wi+XaEogKqqzViWPfuAemHi05HSfMS4MdRfkPchzCEfzJFlwSv+GLxzlD?=
- =?us-ascii?Q?HCWlPg4s9cg/K3ly9v7KncbEKuyZo2TZaLSvdiK6wXEvmt5LLMxwqXZIWgFn?=
- =?us-ascii?Q?xWdsfLj+2G7UfQCHxukuX2UQYJuI1WLdvSDOw0AGKcw+99YC77IRY+OL92/D?=
- =?us-ascii?Q?21dNzr7nLqsmiYEFtY1EJio4JyFTMe3ec10oPKTUrkcsGkjr1/ks+6KSCtvn?=
- =?us-ascii?Q?HA0+NJPHPPjzq4wQhCZDNTDtkDziamYMNAFgr0N+PteMCcAxrxhNkG5ZyPDo?=
- =?us-ascii?Q?Ua1raoxaJ5NswslbugvyjHR0iXjibH3cEoK59tkDZ1f/uLlg+VQy3QNMGn7n?=
- =?us-ascii?Q?HCK6PdEXVn7LemiRnfbB5fcOxtdaUEPFW5lJjVHBVf8vHD2B4Bo1bM3mIXwL?=
- =?us-ascii?Q?I9Jn/tVJuGDOr+/G4UBoCVpEef7zxZjVhIs5r53tho0Sm441MIodgr3hTnDX?=
- =?us-ascii?Q?65dDh/vJRvQ25+EgjhJh4yNobd1W8xoCF1IhGxQbiNrO49hN+w8dOg6USblN?=
- =?us-ascii?Q?ZdfJit9b8mGe+lxErrCIkoNOdCD3aQ01k1hLoZQAmRwv/zUPd+uDvm7rBHth?=
- =?us-ascii?Q?Cvvs6vcbnBU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Guohg76/pkR5ZgCdXgoXw1W3mQ00oIzJR+SdpQh5sfjJMXbMJ6diFn7nFxpV?=
- =?us-ascii?Q?idifmlCDn6s8kevNE8Sf4gg9m8QK3+NtR2NSUeO9qNsfGDtGDFWFwjrJ5I5k?=
- =?us-ascii?Q?Ox4PeX8sLOraVXU+a9YyVUbixgamtzWXtFVqTFjAYxe7tJjQRhfS2cBo+fi5?=
- =?us-ascii?Q?kVVvQnY8kZ3FnBMRjUQZFrfMSc7Mi3mxfiW8w7B7GKRGTOIBn3rkqXeyvfl9?=
- =?us-ascii?Q?D1Q7+0cmtHVDvXMJiug98HJ17TCVxynsb1SEjZxEdfB/d5l5f17QzUwpPnVN?=
- =?us-ascii?Q?Gplf3AcoLO1AIGH+gwg6UqRp0s6sMkSKs0xwRZigys9wH5XBl9W2216ei6tY?=
- =?us-ascii?Q?vvR5O4PxY3fkdAsxQQKZfY3GGooMAF5guVzbOllo+zUmGHGYzSN6di40Xba+?=
- =?us-ascii?Q?ngFmkM1zsb8jSY87arByWlr7nB8uWwkhGYuLFNV0c8xY/D6x46jEvCrDrLzN?=
- =?us-ascii?Q?QdaBljNNtZJQpa7uhXrdwcbQHLktyV87FIGiljAjlhL2tDE8GgdWmjQ9I07Q?=
- =?us-ascii?Q?cpe0ZtsvokBQR0zYqw6t8PkI1eqMRH+E8s7b2oIPX61W4gxJPmeMgjkokkN4?=
- =?us-ascii?Q?BePhnvjrhX+JARM1FdSryWeoCtJ3m77i7OSY+ZS+AyHeOn2IUYgxh0ArUlvq?=
- =?us-ascii?Q?BvNDMGcSBFWJu4hdNZztzTi+5uLEGmsdU2p+6i9UE/XqPfDiTD88psrco+fb?=
- =?us-ascii?Q?fY/xzqHaiCEj1rxu6vxJXwfiTL+iTcSA52Gl7mFQGOMgADdAjDbHTUSLIaQw?=
- =?us-ascii?Q?cAixtwK5ed5SN/lVyfz4rS2BpfHcflIlkrhPN1NLFiXEJogyMcgIUlslIWfc?=
- =?us-ascii?Q?N4SxOFYJprB/AeCcdUG9CkiCGanv1lbz4sFatvqfIBj/Cz07Fs7w5EHoVrsl?=
- =?us-ascii?Q?BkitYeS6X6zNKItXzPlD0uehnMerAtpbspMmXMkfgDTxVQqDMRprgWSEZTs4?=
- =?us-ascii?Q?3ceZRuolwKKM2lcKQL+tawp818fSy1l2N5KTgPhJGK3DAjHmnUPP+DExWgQ8?=
- =?us-ascii?Q?62AcQmC0vE3imo5f6Axz3FQHoBp3zbuYc7CfhCuDOe+6hSguUTMHfZfnZyII?=
- =?us-ascii?Q?7fnKE8QhQ6zMbXSZMUPCXIEWZRaSfB/x954fCwGQFhgCqxiCxkE4w5HzBMOh?=
- =?us-ascii?Q?dLeCGlEaAsHoOcFROZCGOdisGP9Zlit0/k6rVQ+J9tO3D6iXu8tp/2c3Wk/L?=
- =?us-ascii?Q?euhoY/rX47hr8ctR5Cp1zPCIL7Hk1EtfflIpOZwE4I88A1Tpiw/JVGWBpoK/?=
- =?us-ascii?Q?wQGvzOztsizk77wdlm2KI4QYnPVWD3gZHYmFEVNhuf/cdumvV6iho52kDZbC?=
- =?us-ascii?Q?urbjXb+V0k3ksRa5Yl6SkXgRGvaBvJVo8pShoQITY792C177/Qu1Kzp8TIGs?=
- =?us-ascii?Q?jaby0wxn228VgUWgqaGu01nkxL96Q5xrnXO7hbCRmfyOPPyasuMfwZLX4EHU?=
- =?us-ascii?Q?e9ljeB3zqOhiHYAVmIosgGuhi1Wif+QzpP/frMqCpXzb0vpi6c19NhWE3vG0?=
- =?us-ascii?Q?wdimmMQp2Hr+zsdLF43kjsQZlHnbRGTNKGJW5xxYHTTjqo4bwYiXSm+YG9UX?=
- =?us-ascii?Q?+1fyZ2DaYg9/ErkWntpBMRbOiJM/hdBX7nHaA03A?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 753e419c-5ee5-49ef-69cc-08dde68d017e
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2025 23:45:44.7681
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: stKDrPdUYg+cKM6Zaii6EJX1iDXReQlwcCRvIIs2DW0PSsQcsndv+JR8Lnf1GfOk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6776
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 03/18] ACPI: processor: thermal: Use
+ __free(put_cpufreq_policy) for policy reference
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
+ <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ Jonathan Hunter <jonathanh@nvidia.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-tegra@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
+ <20250827023202.10310-4-zhangzihuan@kylinos.cn>
+ <CAJZ5v0jA7HjNc6VQWdjuwLnmd751kV01NXC4v8Pyn8h-r70BzQ@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0jA7HjNc6VQWdjuwLnmd751kV01NXC4v8Pyn8h-r70BzQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
+	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Aug 28, 2025 at 02:54:35PM -0600, Keith Busch wrote:
 
-> In truth though, I hadn't tried p2p metadata before today, and it looks
-> like bio_integrity_map_user() is missing the P2P extraction flags to
-> make that work. Just added this patch below, now I can set p2p or host
-> memory independently for data and integrity payloads:
+=E5=9C=A8 2025/8/28 17:40, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Wed, Aug 27, 2025 at 4:33=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylin=
+os.cn> wrote:
+>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>> annotation for policy references. This reduces the risk of reference
+>> counting mistakes and aligns the code with the latest kernel style.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>> ---
+>>   drivers/acpi/processor_thermal.c | 12 +++---------
+>>   1 file changed, 3 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor=
+_thermal.c
+>> index 1219adb11ab9..f99ed0812934 100644
+>> --- a/drivers/acpi/processor_thermal.c
+>> +++ b/drivers/acpi/processor_thermal.c
+>> @@ -64,17 +64,13 @@ static int phys_package_first_cpu(int cpu)
+>>
+>>   static int cpu_has_cpufreq(unsigned int cpu)
+>>   {
+>> -       struct cpufreq_policy *policy;
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>>
+>>          if (!acpi_processor_cpufreq_init)
+>>                  return 0;
+>>
+>>          policy =3D cpufreq_cpu_get(cpu);
+>> -       if (policy) {
+>> -               cpufreq_cpu_put(policy);
+>> -               return 1;
+>> -       }
+>> -       return 0;
+>> +       return !!policy;
+> If you want to make this change, please also change the return type of
+> the function to bool.
+Thanks for pointing this out.
+>>   }
+>>
+>>   static int cpufreq_get_max_state(unsigned int cpu)
+>> @@ -95,7 +91,7 @@ static int cpufreq_get_cur_state(unsigned int cpu)
+>>
+>>   static int cpufreq_set_cur_state(unsigned int cpu, int state)
+>>   {
+>> -       struct cpufreq_policy *policy;
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+> This isn't correct AFAICS at least formally because the scope of the
+> variable is the whole function, so it won't get out of scope at the
+> point where you want cpufreq_cpu_put() to be called.
+>
+> The policy variable should be defined in the block following the "for"
+> loop (and actually all of the local variables except for "i" can be
+> defined there).
 
-I think it is a bit more than that, you have to make sure all the meta
-data is the same, either all p2p or all cpu and then record this
-somehow so the DMA mapping knows what kind it is.
 
-Once that is all done then the above should still be OK, the dma unmap
-of the data can follow Leon's new flag and the dma unmap of the
-integrity can follow however integrity kept track (in the
-bio_integrity_payload perhaps?) ??
+Sorry for the mistake =E2=80=94 I did this correctly in other places, but=
+ forgot=20
+here.
 
-Jason
+> Or better still, please move that block to a separate function
+> containing all of the requisite local variable definitions and call
+> that function for each online CPU.
+
+
+ =C2=A0In fact, I have realized that we cannot always use __free for clea=
+nup=20
+directly.
+
+The issue is that the release only happens at the end of the variable=E2=80=
+=99s=20
+lifetime, while in some cases we want to drop the reference immediately=20
+after use.
+
+To address this, I=E2=80=99m considering introducing a helper macro in=20
+include/linux/cpufreq.h that would make this more explicit and allow=20
+safe cleanup at the right point.
+
+
+Before moving forward, I=E2=80=99d like to hear your opinion on this appr=
+oach:
+
+#define WITH_CPUFREQ_POLICY(cpu) \
+for(struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D \
+     cpufreq_cpu_get(cpu);;)
+
+
+Then we can use it for all code :
+
+	WITH_CPUFREQ_POLICY(cpu) {
+			if(!policy)
+				return XXX; // error handing
+		=09
+			//code use policy here
+		} // equal origin 'cpufreq_cpu_put' here
+         ;;
+        //left code
+
+>>          struct acpi_processor *pr;
+>>          unsigned long max_freq;
+>>          int i, ret;
+>> @@ -127,8 +123,6 @@ static int cpufreq_set_cur_state(unsigned int cpu,=
+ int state)
+>>                  max_freq =3D (policy->cpuinfo.max_freq *
+>>                              (100 - reduction_step(i) * cpufreq_therma=
+l_reduction_pctg)) / 100;
+>>
+>> -               cpufreq_cpu_put(policy);
+>> -
+>>                  ret =3D freq_qos_update_request(&pr->thermal_req, max=
+_freq);
+>>                  if (ret < 0) {
+>>                          pr_warn("Failed to update thermal freq constr=
+aint: CPU%d (%d)\n",
+>> --
 
