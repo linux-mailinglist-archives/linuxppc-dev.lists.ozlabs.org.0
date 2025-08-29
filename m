@@ -1,57 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-11465-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11466-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B019B3B37B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 08:33:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95CEB3B37F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 08:34:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCpPY1v06z2xnM;
-	Fri, 29 Aug 2025 16:33:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCpQw3B8Kz2xK4;
+	Fri, 29 Aug 2025 16:34:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756449217;
-	cv=none; b=cxMkj1Hv1X7kdNb2CfvaBNng8jx8sgAYn3VEtHPtMDpzK6IqNT3VCqBbwF8oDnHXP43K2dyZLKIiERgxuaL9bVex49RPzIccKiaBNtCP3e1PG3bSuqeprJNwnwMVYNrVv3sTM2ZfXt7o+JU/e/vfSIl4rVupQahqPBiXmtIbGKwiHqEbGF38PqjcChCj7sz38L7KjP5KwGE12TmoDzWvAp7JUp6zWbPQ1SbEcz68a+sIVAqXB3W62rwMTUxykHgIVbhvxd8/KBY41SZTavcQfgLdJe7x1oKIWO0Ut2U4ZIOF1jdEh5o0sguZnHRdnfnsc0vy/ZUtCKaRcnmoGH2ZXQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::633"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756449288;
+	cv=none; b=E90c2hnJ9NXkmgngPd/QGMVdlWwjNOcAQ/HHuCz/5qolCN0sVvXP/8f6Q/KeczKwcjH8u5zsPwIRUJSKRoBTEwrEFuERkWoh0gdAYmKW+cg/tKi43gQbJq1gDqhjTDauXT/jug1tw8s/FAj55wSCohHmxxpIPNk2broDs1/Ys0TdbWNLvWYJqewwF1Xjgi1mE060IAVxMBUjimz5nqU+dYi6kBkPhqtbtd3NGPTP31FNkOZfEEx4OcGBL5J3J6ULI7bLc06aCLNjw7E8RBNjscelUSlFeakh8oZuZP/H9ToxdIzjm2VEA8lqThIGTgFY81I8w4BWe0l9GPcYTOoCMg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756449217; c=relaxed/relaxed;
-	bh=Kst+61R8WKCK7sqJxMvcA3ZByeIORdO40H2gwXSWcj8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BlksmL65Fm2KxE9CF4Vn9epCNAhBxPoyCOylY/HUfhEkPxPWnEFXoZ2EcIp71lDrD0em/aZecpzA3Q5+RlVgHdOzvN8JFooQYLbPEGashFtncEdcBvsU1Uw6KYAvYz7C3cFXSDeDDhA5+p9U6rJorfAR4s0dWLd5LSXAq3x/0g6LL4DQHy9AXd6+DuD3uueI3H2Jn0pmKLpEeg/tdvooNXzrGYimggINcpW4JOxs5waOTee4QwYkOvNZJBNX+sGdi1fuYkrqRLoLJZJvXC0txFTW3pfanLZINUzRqgYUa7ZJW4r6Ie674cf9QtGIR1P70Nv9x6IKAEDioyWZUzkPSQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	t=1756449288; c=relaxed/relaxed;
+	bh=5Uk9A/FG7B42gb2VzW8SPYRISI1iCRcnu9NRgkgqh+M=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version; b=B372pYAHa31pGkNiQLDQLzJiEiKYrR3DJrfBp9mTmKpdWGHERcg1idGsayLJ40rOmKHgk3Sf4raysRJVkexOW3pT99OuWsoQKs4iroDe5jfxa/sZsCUtAFiRD4IVQfa25EzMUJK85XErkDCDLrTR/Ls5SUvgsh3dK0no9lJtk36EJdAxEu0kH95fEyNb5v5aNrLUldYouKe29hGRir9uxFS2PEVkGdOHR00/N6M4b4sG0ubhEpReLX18Za7lSg877+437hw97iXemuB2mUzgZElSWqKcicNadf17ZRU+AlGZLPbLvuxorODh4JA0XtJQWBXkfwi97TlaQ0PEKnB0ng==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=C4hNAA0W; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=linmq006@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=C4hNAA0W;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=linmq006@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCpPW5lP4z2xWQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 16:33:35 +1000 (AEST)
-X-UUID: ecb2216884a111f0b29709d653e92f7d-20250829
-X-CID-CACHE: Type:Local,Time:202508291416+08,HitQuantity:2
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:bc5c578d-29f2-4d5e-8a48-f352afb9ad98,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:363845aa8f825743d29eadcc6fd84d5d,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
-X-UUID: ecb2216884a111f0b29709d653e92f7d-20250829
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 616214303; Fri, 29 Aug 2025 14:32:24 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id DFAA2E008FA6;
-	Fri, 29 Aug 2025 14:32:23 +0800 (CST)
-X-ns-mid: postfix-68B14976-48111815
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 0777CE008FA4;
-	Fri, 29 Aug 2025 14:32:16 +0800 (CST)
-Message-ID: <5601fe46-6574-4a9b-8fd5-cab4af8dd390@kylinos.cn>
-Date: Fri, 29 Aug 2025 14:32:16 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCpQv0yj3z2xWQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 16:34:46 +1000 (AEST)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-248ff5cabe0so5524685ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 23:34:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756449284; x=1757054084; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Uk9A/FG7B42gb2VzW8SPYRISI1iCRcnu9NRgkgqh+M=;
+        b=C4hNAA0WrbwrfknbUJ6sqC0fLjaLrN2my0uKx4pGfKZ/pF1reFh5vr1gA14CY+WDej
+         KL0QQV8QqKYMMTryToQQyhphczIq6rNzGsf3OHsxLooYFsNzZKdlBGbBaGklqs9576e7
+         cdXvuxcQoW0fuWW/ZXMIJM2A5+3+glRkSEKqifZHblBN/8JN3JFvx2rIXqKYMlsK6wpN
+         eAeMKjAyz+rbrw8rTf1Oyfzhsb1Z7RoptUhaOIlmZMRELVNzyX7pn3n68DeqfEBGXGXW
+         yD7LPdxgEkik1ZPdlnNkT5jH+DT1QDu2ty7F4GXpfULg7tjluFZNbhvL4MZBCD6g4Br+
+         kiKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756449284; x=1757054084;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5Uk9A/FG7B42gb2VzW8SPYRISI1iCRcnu9NRgkgqh+M=;
+        b=UDOiapgFJaJ4yGvox+rpsRxFxQPGxkoHDe/28rkPmbYshFjOWMJUHzs5jQTZKoNRNa
+         DSWNHckFL1yWqWffAbA2ShZbaqTLeCCoW9BRkGRN4fkClSU0YHJLSWmJvWjlbw3Y9lc4
+         RYvGT+2mM0E+Sl+hk6ZnOS7QFtzTaRyWI++q9JxfxajNLuQOghH4s4KlLf5SF4NOlUmc
+         dD3aV+RO5oq3Ket3GJLVZxgvAy1Si6K1euOS0tAUmRLXhe3rVPSdDI9fb6lARTIe6w/H
+         0Wo74Is88Qg/Il7OL2dg9Ua72Dj72bu6LufWiMjDYft0ypRUSusuZavEGVJEiP4FSJjp
+         bRaw==
+X-Forwarded-Encrypted: i=1; AJvYcCXTJq5ItaEaolcezR6c/c6OLXlBM8w9bGVZluPklUtBR4zrM6jhllGzzJo9yxhfEs3Om9g4PBUod2Yfls4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxwxmMPUkvNLCIPJEZNwsTQLAusds1ely3e3iA/Uqu1pDmDolkL
+	mcpxzAD8eb7/X3AhqjE8lVldZYPtl3D022YuEU1Hb89w6tIwxZPskE98eLcMyzVbBvwAdV6+
+X-Gm-Gg: ASbGncuABvrfSiMgtGhzRRT3xs/zOc23oLyALs9DGxxKyATtQczCjLKepKFjh36mPm+
+	IwQW10Ze6s//X01iwd8JWuPpd7USjve9KKsdAJI4ubNgNBoSZIlpGdOGLn6RJiX/LHb+vpNbGMC
+	opxUrbuiHZLfxIjl0ifnG5wndpG65khSExPamGWGNOsQUQ6f0/bkIv+Y4iJBJCMbGeL0maWoobv
+	JmUN8UXlk3Y66/REVYCqw6QX2t8tkZqcSE5I/wEWz7LZSBgIhFJv9TAZHHiBu98/ru2Vzvx9kaF
+	5M13BluT5lgegV4nXw0pQROaaw+u7iLNrV/7xQP2PCpfWoW3+CZtHX4cn8xJqa8UAlklmvidkCv
+	Wuc+qGeg9s34M5LxcVylSoFADb5JBR2guZGHkqjmjFC7ViMAqeStrhJo0clqNj5UEEhIpfxH7D0
+	f2iT9N+Vsy2RT86WswVwoyikfI04AYCSHrR8tPVASTC7m/Zg==
+X-Google-Smtp-Source: AGHT+IEi4c1OOUaryaWljuCN1SqnkkZwaSknWakF2y1Fc4MSZv9q8cyL3Fs0HmaehVnQcEVjzHb6GQ==
+X-Received: by 2002:a17:903:388e:b0:23f:e51b:2189 with SMTP id d9443c01a7336-2462ee4579cmr353046335ad.17.1756449284029;
+        Thu, 28 Aug 2025 23:34:44 -0700 (PDT)
+Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.116.239.36])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-24906589986sm14035695ad.111.2025.08.28.23.34.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Aug 2025 23:34:43 -0700 (PDT)
+From: Miaoqian Lin <linmq006@gmail.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Jeff Garzik <jeff@garzik.org>,
+	Olof Johansson <olof@lixom.net>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc/pasemi: Fix PCI device reference leak on error path
+Date: Fri, 29 Aug 2025 14:34:29 +0800
+Message-Id: <20250829063431.1968903-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.35.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,88 +95,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/18] cpufreq: brcmstb-avs-cpufreq: Use
- __free(put_cpufreq_policy) for policy reference
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, Markus Mayer
- <mmayer@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
- <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- zhenglifeng <zhenglifeng1@huawei.com>, "H . Peter Anvin" <hpa@zytor.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-samsung-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-tegra@vger.kernel.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
- linux-omap@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
- <20250827023202.10310-5-zhangzihuan@kylinos.cn>
- <20250829055944.ragfnh62q2cuew3e@vireshk-i7>
- <4bd55a08-62bb-46c4-bfb6-a3375ce37e79@kylinos.cn>
- <20250829062624.jalqqsigs7hanf7i@vireshk-i7>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <20250829062624.jalqqsigs7hanf7i@vireshk-i7>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
-	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Fix iob_pdev reference leak in pasemi_dma_init() when dma_pdev
+allocation fails. Ensure pci_dev_put(iob_pdev) is called on
+both success and error paths.
 
-=E5=9C=A8 2025/8/29 14:26, Viresh Kumar =E5=86=99=E9=81=93:
-> On 29-08-25, 14:16, Zihuan Zhang wrote:
->> Thanks for applying the patch!
->>
->> I=E2=80=99ve been thinking further =E2=80=94 instead of using __free d=
-irectly, maybe we
->> could introduce a small macro wrapper around it to make the release sc=
-ope
->> more controllable and consistent.
->>
->> Link:
->> https://lore.kernel.org/all/6174bcc8-30f5-479b-bac6-f42eb1232b4d@kylin=
-os.cn/
->>
->> Do you think this would be a better approach, or should we just stick =
-with
->> the current use of __free?
-> Lets keep it simple for now and use __free directly. And keep this
-> similar with other parts of the kernel.
+Fixes: 8ee9d8577935 ("pasemi: DMA engine management library")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ arch/powerpc/platforms/pasemi/dma_lib.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-
-Got it. Thanks!
+diff --git a/arch/powerpc/platforms/pasemi/dma_lib.c b/arch/powerpc/platforms/pasemi/dma_lib.c
+index 1be1f18f6f09..0ba05c39c276 100644
+--- a/arch/powerpc/platforms/pasemi/dma_lib.c
++++ b/arch/powerpc/platforms/pasemi/dma_lib.c
+@@ -530,7 +530,7 @@ int pasemi_dma_init(void)
+ 		BUG();
+ 		pr_warn("Can't find DMA controller\n");
+ 		err = -ENODEV;
+-		goto out;
++		goto out_put_iob;
+ 	}
+ 	dma_regs = map_onedev(dma_pdev, 0);
+ 	base_hw_irq = virq_to_hw(dma_pdev->irq);
+@@ -617,5 +617,9 @@ int pasemi_dma_init(void)
+ out:
+ 	spin_unlock(&init_lock);
+ 	return err;
++
++out_put_iob:
++	pci_dev_put(iob_pdev);
++	goto out;
+ }
+ EXPORT_SYMBOL(pasemi_dma_init);
+-- 
+2.35.1
 
 
