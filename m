@@ -1,78 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-11482-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11483-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2C0B3B677
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 10:54:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC045B3B6D8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 11:16:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCsWm6Hh3z2yqW;
-	Fri, 29 Aug 2025 18:54:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCt1B32Sjz2ykc;
+	Fri, 29 Aug 2025 19:16:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756457652;
-	cv=none; b=m9mgnmbnc17f1gWYSrBLO2WlNDuYCm4WKzYNZdPqSQ/rWhRVJLNjTRRe/P9ZvVdiz8Asnev4qiNjBiX7aRUqSb8FG+IrhA+/tf/MoUz6PxmA6SvdTc7FJc1AfGQ4V3aLWviRwwUJ5li2brXxXIe9i0HTexZgx4x05QvovSNmdfvb6jrdMUp1c0+0k7vbwqhIG2FzWMlM+uxSthp+n2tT0ouredRVsSxa3ACZqaRjMbYDruqN2+nkJfZ3EIH8jaUPBfNmrtLFnywjEpqoVeuYyHTLS3QgNzEaq8Xr85guULecIHPQY3QnBF+N18/it9s+GvIECBTgjrDkHoFOfIjOvA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756458974;
+	cv=none; b=QPyFEd8+LihX8U3ZN9sRr3QuQboCd1nL5gnj7X2JugyYXHLnbqY06Jd7D3XOSu/l8dl5elOONT1TDlTpC2C9eRKGQq7a+7+8rTjTA96U2pHkqV1ixnMfhAcuj2MmxcO613e4UpGJpoCOXG2YvN/QSe85OurzPsB7RALs1h8qQtw1uE37zKDK3+76/f1g3CECDxp1FL+XjsZOYGlctTi5FQqSjyP2pd3LRITWBFLIYqBteIvRgw74rSz04yFK+GkqsZS/1iSH+SAcCcYfvUIKV1QjLzpEJZT3iiHb9MYGR6tsERwIQyqk566QI/us1svsXQRn5XnjJMH5pGmMbWXzAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756457652; c=relaxed/relaxed;
-	bh=sPQBY5yNOohOJ6m5DBtfCburmYLLfk3XwogGCr/a+ks=;
+	t=1756458974; c=relaxed/relaxed;
+	bh=Im4DISufgxm79gY0HB8sI6VpXP9U9sHlkbxwLhkPnjE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fH90j3SpiYYihrZZZdKcb/XjQWunIRIOeG6DtBvxMGu2D1v5A09Q8Gs3bdG3qbA8m019R6yOu6b37Eb1rps0iDivndV+ABvYeS8s4iXufTpI/EJ4NxP8O/dmERgY5TTN4srv/ULJ3wj/eN9jRUy354F0aMuc+1cjzKKj58HPFA5H2iV+41qQ2yodWfp4dKwOXEm1qaeFBxEUOhsXMlW4Jjy9DpQ6gAjsPUk7WF2t1m3zSrsTtQ8aiH2ufn5AFkDTeKO8jNZd0cj5jCRA6IhMYMWGvwUh4tpTZMeuufDxfKAGw6aWzS4spFg27MbNnp26oU4txycz4j6Bj8GW5dlKug==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qCglAOtK; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	 In-Reply-To:Content-Type; b=AAwSj3PAm6kICqe4vwByNuK781RCZylfFXvoS0mvAqJ1L6J/Fi6aY+NTuTKwGyerv4OuKxkaKSNh5/cYdTe9AmsikJowAFtEE1mRxearTj5kG9OolatXUj/HHFaq9lfEFu7CjM5RxOpLSDaAvLJ/+sIdFex+t7RpmvX0bcvEJBAOr001FnEhTgNXPxn0jfAVZpzmdXig38RVxabbJ6CwU7PooiasBLBcHIbbJP+MpXseAWtmRHil+TnnGSOsFXM09Qfx9Ma0jno03avFOaLS5frScyryTh1nQnVOnvhrK7ar07QAs1lcsCht5FqL3o9qRsifXRSH17rW/BfRNGBdWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UVV01k+w; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qCglAOtK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=UVV01k+w;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCsWm0T1Vz2ymg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 18:54:11 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57SMS08Z012568;
-	Fri, 29 Aug 2025 08:53:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=sPQBY5
-	yNOohOJ6m5DBtfCburmYLLfk3XwogGCr/a+ks=; b=qCglAOtKrrxH2rCkI3URXx
-	y/ZVIaiawQq+pqLKCUauEExGEZwz/Id+InjRjo3V0Qwf5RmpZ7XV+UAuNvazCDlQ
-	qGmU3FVSdmLoU2R/CA9EKELC2qHfNuLg7AXWYMaKlflo4MMSZkt4ZQkOQztwgQW7
-	vP2RWY4fgQpXLILaqXG2vxJQnt2pvoQ4xdr0OabSHSy/WefAHJab12tbbCvC7W9X
-	kfQ3/wU0iYmyeyDnJoYwLLCM9vf9gVrK6+LGYKh095sPCaMqAk+a9FHp+jxg9HOB
-	2h7m8JoA0CDLNwOsaUHDwQbKhtHNST94U7wJqBM6GtD+YzHKJsFhDoIii5ZEWfaw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5hqeby5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 08:53:22 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57T8mjW6024091;
-	Fri, 29 Aug 2025 08:53:21 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48q5hqeby3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 08:53:21 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57T5hRIu020874;
-	Fri, 29 Aug 2025 08:53:20 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48qrc113ve-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 08:53:20 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57T8rGMY32702992
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 Aug 2025 08:53:16 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 630D320043;
-	Fri, 29 Aug 2025 08:53:16 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9EB1120040;
-	Fri, 29 Aug 2025 08:53:07 +0000 (GMT)
-Received: from [9.124.216.217] (unknown [9.124.216.217])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 29 Aug 2025 08:53:07 +0000 (GMT)
-Message-ID: <5ec9ca8a-9ba9-4600-a7a2-f7bd790fca83@linux.ibm.com>
-Date: Fri, 29 Aug 2025 14:23:06 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCt182Y25z2xnM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 19:16:12 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 12D7044115;
+	Fri, 29 Aug 2025 09:16:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE4FC4CEFB;
+	Fri, 29 Aug 2025 09:16:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756458970;
+	bh=UNbnxLyQqtgjYolstb23lpIvcWuMg/oYLAEbNfpM3sA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UVV01k+wUDjQytZyC317riPX3ZY95mPuYL30zH90vRVC8nIUI9ulSp48R0iT8qqVx
+	 I4p3ByfFNrZ5StjBkULCl8LFWAzf8WoAu60OiBE27d6SnAxc9dD9sPFyLtPHHZUzgy
+	 UuTOcHkDAf8O0YB/0tN+YXEad+sdssI9mDj5I06Btq10Km7255Ar2J/k+oqODFGC8j
+	 jtKa0rZV0LXXRKMX5wzruQlNef8sMMFVHr05qCC9tAuDSM8JYjYmZA7y1HcO+Bw8VT
+	 Po4sgrP07ufDUoNs6wIF3uUGm1c1Mu0Cb1rB13dg6gZvoK7dswTFjhs6Ul5XwkFw6J
+	 BWi7hIRqkfR3Q==
+Message-ID: <c314b7c6-f5b7-4f3e-8d67-e3c92ff8ff37@kernel.org>
+Date: Fri, 29 Aug 2025 11:16:04 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,164 +59,228 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/8] sched/fair: Get rid of sched_domains_curr_level
- hack for tl->cpumask()
-To: Valentin Schneider <vschneid@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
-        Mel Gorman <mgorman@suse.de>, thomas.weissschuh@linutronix.de,
-        Li Chen <chenl311@chinatelecom.cn>, Bibo Mao <maobibo@loongson.cn>,
-        Mete Durlu <meted@linux.ibm.com>,
-        Tobias Huschle <huschle@linux.ibm.com>,
-        Easwar Hariharan <easwar.hariharan@linux.microsoft.com>,
-        Guo Weikang <guoweikang.kernel@gmail.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Brian Gerst <brgerst@gmail.com>,
-        Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
-        Swapnil Sapkal <swapnil.sapkal@amd.com>,
-        "Yury Norov [NVIDIA]" <yury.norov@gmail.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andrea Righi <arighi@nvidia.com>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org
-References: <20250826041319.1284-1-kprateek.nayak@amd.com>
- <b64c820d-084a-40d9-bb4e-82986b9e6482@linux.ibm.com>
- <20250826101328.GV4067720@noisy.programming.kicks-ass.net>
- <xhsmh7bymlg2f.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Subject: Re: [PATCH v3 5/6] dt-bindings: soc: fsl: qe: Add support of IRQ in
+ QE GPIO
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Rob Herring <robh@kernel.org>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>, Linus Walleij
+ <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org
+References: <cover.1756104334.git.christophe.leroy@csgroup.eu>
+ <17636607f2beac3b64c87b3bec035fa27ce8d195.1756104334.git.christophe.leroy@csgroup.eu>
+ <CAL_JsqKFvVQTVXV8mWX0z1=hd3nLDzLXq-0G_0bshMCvQ5kVvA@mail.gmail.com>
+ <f21e27da-de26-4835-9660-b39e99695281@csgroup.eu>
+ <0f716362-07f4-4c79-bb0a-e71d2630a797@kernel.org>
+ <1ba37df7-2d4a-4258-8220-58ee7d609264@csgroup.eu>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-In-Reply-To: <xhsmh7bymlg2f.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODIzMDAyMSBTYWx0ZWRfX4XFJU1iP5NE9
- /rHRt7UYUsEwF53m13pGclMJdE/1hNda+PR2zeJpAEsrM4rvvTbkkFZQuc8pqAkVS2IzC2PwUdm
- DveE11TF2k4ulExUJWDjML1teUaVQ/93rdq3ncChc+uoeGAnW3OqPWwkZ4STnYhUdlRmUcKxB8I
- qkr13I8T3zwx/tmMelC/48lQGoT8aJ0mYjfVOs4TtsiDu11afWZ9lLhYBolu/B1dK47QjpkPSIB
- A1aTi3s8duQLT+QMXBswuVOw6hyS7r0oB5LUhXkzQJG24hxQE49Q42RR4r8+ykKkB57sTOIBWAH
- EKdqRbtQY5AoVertvRXQRN/N/Su+csIG7xEcxMPOioJdfRJHTJ4Y/WPO3olLpJPbwXH5VK/Xdqj
- wA+R82gl
-X-Proofpoint-ORIG-GUID: bMTrm6esSNj7OsbWk_XDneHXs6q24Z22
-X-Proofpoint-GUID: TC8LCyPfvAZUgqE8OjDu9bhFAKHRoQFx
-X-Authority-Analysis: v=2.4 cv=Ndbm13D4 c=1 sm=1 tr=0 ts=68b16a82 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8
- a=20KFwNOVAAAA:8 a=14KqwYnPXR21iNsEu3oA:9 a=QEXdDO2ut3YA:10
- a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-29_02,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 impostorscore=0 clxscore=1015 phishscore=0 malwarescore=0
- suspectscore=0 bulkscore=0 spamscore=0 adultscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508230021
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <1ba37df7-2d4a-4258-8220-58ee7d609264@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-
-On 8/29/25 1:23 PM, Valentin Schneider wrote:
-> On 26/08/25 12:13, Peter Zijlstra wrote:
->> Subject: sched/fair: Get rid of sched_domains_curr_level hack for tl->cpumask()
->> From: Peter Zijlstra <peterz@infradead.org>
->> Date: Mon, 25 Aug 2025 12:02:44 +0000
->>
->> Leon [1] and Vinicius [2] noted a topology_span_sane() warning during
->> their testing starting from v6.16-rc1. Debug that followed pointed to
->> the tl->mask() for the NODE domain being incorrectly resolved to that of
->> the highest NUMA domain.
->>
->> tl->mask() for NODE is set to the sd_numa_mask() which depends on the
->> global "sched_domains_curr_level" hack. "sched_domains_curr_level" is
->> set to the "tl->numa_level" during tl traversal in build_sched_domains()
->> calling sd_init() but was not reset before topology_span_sane().
->>
->> Since "tl->numa_level" still reflected the old value from
->> build_sched_domains(), topology_span_sane() for the NODE domain trips
->> when the span of the last NUMA domain overlaps.
->>
->> Instead of replicating the "sched_domains_curr_level" hack, get rid of
->> it entirely and instead, pass the entire "sched_domain_topology_level"
->> object to tl->cpumask() function to prevent such mishap in the future.
->>
->> sd_numa_mask() now directly references "tl->numa_level" instead of
->> relying on the global "sched_domains_curr_level" hack to index into
->> sched_domains_numa_masks[].
->>
+On 29/08/2025 10:35, Christophe Leroy wrote:
 > 
-> Eh, of course I see this *after* looking at the v6 patch.
 > 
-> I tested this again for good measure, but given I only test this under
-> x86 and the changes with v6 are in s390/ppc, I didn't expect to see much
-> change :-)
+> Le 29/08/2025 à 09:47, Krzysztof Kozlowski a écrit :
+>> On 28/08/2025 16:12, Christophe Leroy wrote:
+>>>
+>>>
+>>> Le 28/08/2025 à 15:28, Rob Herring a écrit :
+>>>> On Mon, Aug 25, 2025 at 2:20 AM Christophe Leroy
+>>>> <christophe.leroy@csgroup.eu> wrote:
+>>>>>
+>>>>> In the QE, a few GPIOs are IRQ capable. Similarly to
+>>>>> commit 726bd223105c ("powerpc/8xx: Adding support of IRQ in MPC8xx
+>>>>> GPIO"), add IRQ support to QE GPIO.
+>>>>>
+>>>>> Add property 'fsl,qe-gpio-irq-mask' similar to
+>>>>> 'fsl,cpm1-gpio-irq-mask' that define which of the GPIOs have IRQs.
+>>>>
+>>>> Why do you need to know this? The ones that have interrupts will be
+>>>> referenced by an 'interrupts' property somewhere.
+>>>
+>>> I don't follow you. The ones that have interrupts need to be reported by
+>>> gc->qe_gpio_to_irq[] so that gpiod_to_irq() return the IRQ number, for
+>>> instance to gpio_sysfs_request_irq() so that it can install an irq
+>>> handler. I can't see where they would be referenced by an "interrupts"
+>>> property.
+>>
+>> They would be referenced by every consumer of these interrupts. IOW,
+>> this property is completely redundant, because DT holds this information
+>> already in other place.
 > 
-> Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-> Tested-by: Valentin Schneider <vschneid@redhat.com>
+> But the gpio controller _is_ the consumer of these interrupts, it it 
+> _not_ the provider.
 > 
+> The interrupts are provided by a separate interrupt controller. Let's 
+> take the exemple of powerpc 8xx. Here is the list of interrupts handled 
+> by the CPM interrupt controller on the 8xx:
+> 
+> 1 - GPIO Port C Line 4 interrupt
+> 2 - GPIO Port C Line 5 interrupt
+> 3 - SMC2 Serial controller interrupt
+> 4 - SMC1 Serial controller interrupt
+> 5 - SPI controller interrupt
+> 6 - GPIO Port C Line 6 interrupt
+> 7 - Timer 4 interrupt
+> 8 - SCCd Serial controller interrupt
+> 9 - GPIO Port C Line 7 interrupt
+> 10 - GPIO Port C Line 8 interrupt
+> 11 - GPIO Port C Line 9 interrupt
+> 12 - Timer 3 interrupt
+> 13 - SCCc Serial controller interrupt
+> 14 - GPIO Port C Line 10 interrupt
+> 15 - GPIO Port C Line 11 interrupt
+> 16 - I2C Controller interrupt
+> 17 - RISC timer table interrupt
+> 18 - Timer 2 interrupt
+> 19 - SCCb Serial controller interrupt
+> 20 - IDMA2 interrupt
+> 21 - IDMA1 interrupt
+> 22 - SDMA channel bus error interrupt
+> 23 - GPIO Port C Line 12 interrupt
+> 24 - GPIO Port C Line 13 interrupt
+> 25 - Timer 1 interrupt
+> 26 - GPIO Port C Line 14 interrupt
+> 27 - SCCd Serial controller interrupt
+> 28 - SCCc Serial controller interrupt
+> 29 - SCCb Serial controller interrupt
+> 30 - SCCa Serial controller interrupt
+> 31 - GPIO Port C Line 15 interrupt
 
-I was looking at: https://git.kernel.org/pub/scm/linux/kernel/git/peterz/queue.git/log/?h=sched/core
+That list is fixed per soc/device, so already implied by compatible.
 
-Current code doesn't allow one to enable/disable SCHED_MC on ppc since it is set always in kconfig.
-Used the below patch:
+> 
+> As you can see in the list, the GPIO line interrupts are nested with 
+> other types of interrupts so GPIO controller and Interrupt controller 
+> are to be keept independant.
+> 
+> That's more or less the same here with my series, patch 1 implements an 
+> interrupt controller (documented in patch 6) and then the GPIO 
+> controllers consume the interrupts, for instance in gpiolib functions 
+> gpio_sysfs_request_irq() [drivers/gpio/gpiolib-sysfs.c] or 
+> edge_detector_setup() or debounce_setup() [drivers/gpio/gpiolib-cdev.c]
+> 
+> External drivers also use interrupts indirectly. For example driver 
+> sound/soc/soc-jack.c, it doesn't have any direct reference to an 
+> interrupt. The driver is given an array of GPIOs and then installs an 
+> IRQ in function snd_soc_jack_add_gpios() by doing
+> 
+> 	request_any_context_irq(gpiod_to_irq(gpios[i].desc),
+> 					      gpio_handler,
+> 					      IRQF_SHARED |
+> 					      IRQF_TRIGGER_RISING |
+> 					      IRQF_TRIGGER_FALLING,
+> 					      gpios[i].name,
+> 					      &gpios[i]);
 
-I think since the config is there, it would be good to provide a option to disable. no?
 
----
+External drivers do not matter then. Your GPIO controller receives
+specific interrupts (that's the interrupt property) and knows exactly
+how each GPIO maps to it.
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index fc0d1c19f5a1..da5b2f8d3686 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -170,9 +170,8 @@ config PPC
-  	select ARCH_STACKWALK
-  	select ARCH_SUPPORTS_ATOMIC_RMW
-  	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx
--	select ARCH_SUPPORTS_SCHED_SMT		if PPC64 && SMP
-  	select ARCH_SUPPORTS_SCHED_MC		if PPC64 && SMP
--	select SCHED_MC				if ARCH_SUPPORTS_SCHED_MC
-+	select ARCH_SUPPORTS_SCHED_SMT		if PPC64 && SMP
-  	select ARCH_USE_BUILTIN_BSWAP
-  	select ARCH_USE_CMPXCHG_LOCKREF		if PPC64
-  	select ARCH_USE_MEMTEST
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 68edb66c2964..458ec5bd859e 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1706,10 +1706,12 @@ static void __init build_sched_topology(void)
-  			SDTL_INIT(tl_cache_mask, powerpc_shared_cache_flags, CACHE);
-  	}
-  
-+#ifdef CONFIG_SCHED_MC
-  	if (has_coregroup_support()) {
-  		powerpc_topology[i++] =
-  			SDTL_INIT(tl_mc_mask, powerpc_shared_proc_flags, MC);
-  	}
-+#endif
-  
-  	powerpc_topology[i++] = SDTL_INIT(tl_pkg_mask, powerpc_shared_proc_flags, PKG);
-  
+> 
+>>
+>>>
+>>>>
+>>>>> Here is an exemple for port B of mpc8323 which has IRQs for
+>>>>
+>>>> typo
+>>>>
+>>>>> GPIOs PB7, PB9, PB25 and PB27.
+>>>>>
+>>>>>           qe_pio_b: gpio-controller@1418 {
+>>>>>                   compatible = "fsl,mpc8323-qe-pario-bank";
+>>>>>                   reg = <0x1418 0x18>;
+>>>>>                   interrupts = <4 5 6 7>;
+>>>>>                   interrupt-parent = <&qepic>;
+>>>>>                   gpio-controller;
+>>>>>                   #gpio-cells = <2>;
+>>>>>                   fsl,qe-gpio-irq-mask = <0x01400050>;
+>>>>>           };
+>>>>
+>>>> You are missing #interrupt-cells and interrupt-controller properties.
+>>>
+>>> The gpio controller is not an interrupt controller. The GPIO controller
+>>> is brought by patch 1/6 and documented in patch 6/6.
+>>
+>> Then the IRQ mask property is not right here. If you say "this GPIOs
+>> have IRQs" it means this is an interrupt controller.
+> 
+> The mask tells to the GPIO controller which GPIO line has an interrupt 
+> (so it can install the edge detector) and which doesn't have an 
+> interrupt. The "interrupts" property gives a flat list of interrupts, 
+> the mask in the above example tells: interrupt 4 is for line 7, 
+> interrupt 5 is for line 9, interrupt 6 is for line 25, interrupt 7 is 
+> for line 27. Other lines don't have interrupts.
+> 
+>>
+>> If you say this is not an interrupt controller, then you cannot have
+>> here interrupts per some GPIOs, obviously.
+> 
+> It has been working that way on powerpc 8xx for 8 years, since commit 
+> 726bd223105c ("powerpc/8xx: Adding support of IRQ in MPC8xx GPIO")
+> 
+> I don't understand why you say you cannot have
+> here interrupts per some GPIOs. What am I missing ?
 
+I used conditional. English conditional. If you claim this GPIO
+controller is not an interrupt controller, then obviously it is not an
+interrupt controller and cannot be used as interrupt controller.
+
+If you use "foo" as interrupt controller, then clearly foo is an
+interrupt controller.
+
+Best regards,
+Krzysztof
 
