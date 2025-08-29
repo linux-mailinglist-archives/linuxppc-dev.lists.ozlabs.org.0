@@ -1,63 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-11478-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11481-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E805B3B610
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 10:35:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB484B3B65C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 10:50:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCs662Y9nz2yrZ;
-	Fri, 29 Aug 2025 18:35:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCsRd3sVwz2ykc;
+	Fri, 29 Aug 2025 18:50:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756456526;
-	cv=none; b=d5tdu0tCQgCpYIhkTt4xrreJRdSrZCj+B4+GGIbwGwAd66yVEAZHKw6IfLYQ8IY5fghRMsZx5HlvjS+QbhXFdsIUrHW3xYxQtV/eXFBhEV46uYXaGOZtaTVHvqc+w3K6/7RqXNF93PLqlUgoKV883oh/H/4geP78BiA7i5ob36zWCu5dgYkk6WUVnCt4goTVUmj3vnp921QtQcKraGmwrTlKOvt43in/oRAR6u2wzfNX8slAkpQnGiT0ny12A/Su/dKbTo0IUjgknzvR4RTeejWir1O69Ag2k8AzFZC4CRjVpxSqcv2n8MDpNKeTZSmI2jSG8TlwEoWaqbJsJ5iZTw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756457437;
+	cv=none; b=KFAwvg16sOh9aPXYt70eDo8357qfo8ATAk4PxTuAA+hPg4fMhycuBEgiZrwtkdO9/TVs/CRcijmK2nIjPepCMIO7WUTDbYKtnyEUFzMNCk61cpwJEppAyBbxCMxKswRFeXF/jrCn7GZXF1AS3Fho8nKT3Uj/rMa1larptVQ70pToOiboM9yj+2Rv25IbD9Bc3BC7fCInW0xaTdA0JKgW3bPgF5Vm/XHAZh0z8Vvixbyza8Z/9oYJ9sB4vuYn2vb/k6g8ZJIqZBSUdMhPJoBnZuV/PX9jkwzcxPjUG7kP4E+Z7O0PbrPEq67s7gD7XhMg9FgHVWLBzR8cw4v4KY8Uyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756456526; c=relaxed/relaxed;
-	bh=0dVPd65k5WSFciEDVElP9Tw2ZzcWHzSm5GrxGdzMmno=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cNUzU0bWO/LFWmVbiuZltISdXtsR5n48WuHehaboBRxnXiYacyYZVtNLAsUqu/7EKcgE9BnL/Oi6EBy9sw3fb3jZmGx4LI1PbAqQaJNIO9sJ/wEBjH21tDkPxZirHfNM7ntQd+GZfKuH5TNhiYkVvTSBi51dfL0P729JGt4O5CO5i/fQ9OrooIq/WCG14xU6V0/c14N9eLCX0pluw9kmeMofBHpPH1UrIK2j48Nvb82uCflK2pxTss8bFQWVwjY3+uVplSqSTTHleoPEW5V7KNYFM1bDJELxQfwO76Pvr0rQYePJIt7RWWf0gDKp1stAoxooug6wPYdGDalzhYekWQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCs654yXBz2yqW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 18:35:24 +1000 (AEST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 98F5D2C09E19;
-	Fri, 29 Aug 2025 10:35:20 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 6A41242A4F0; Fri, 29 Aug 2025 10:35:20 +0200 (CEST)
-Date: Fri, 29 Aug 2025 10:35:20 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Brian Norris <briannorris@chromium.org>
-Cc: manivannan.sadhasivam@oss.qualcomm.com,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>, Will Deacon <will@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof Wilczynski <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Niklas Cassel <cassel@kernel.org>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: Re: [PATCH v6 2/4] PCI: host-common: Add link down handling for Root
- Ports
-Message-ID: <aLFmSFe5iyYDrIjt@wunner.de>
-References: <20250715-pci-port-reset-v6-0-6f9cce94e7bb@oss.qualcomm.com>
- <20250715-pci-port-reset-v6-2-6f9cce94e7bb@oss.qualcomm.com>
- <aLC7KIoi-LoH2en4@google.com>
+	t=1756457437; c=relaxed/relaxed;
+	bh=ZYp0LTc7f1Lq9YJK21JExDfotHPdleR/WErCcr4Lw84=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iO24WC6944JbMOLTIME2aXUi5adsF1U/g0priQJtJI5t4YCi0dfg7zM2HU4RWp03vkSznncYTpfbtzKGeBm+HBov2aRJzoF8sMGdZjGNISj2kv5anBvZ0M0tknnIESN1hlfVETwIqcywO6WKpk2hEvCKbBVEmGN8dxbqVJ9ZUksg7sBmMJTk5R9RFq1wKJXaoDnkTRC+ExoowjQ1f6awpeLzlrFG5B/K8ibLt9MATDvkfq0mnsBSC5IG8KMmq3D555lwflbY/SFvyUMbQFLpkYl81+6GvWkZQtPafuBDmunUJtdwmnQEd5LZZMTxo/VCamlhekYh9Bbk57jNAlSDIg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCsRc57JFz2xnM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 18:50:35 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cCs6D1Vmbz9sT1;
+	Fri, 29 Aug 2025 10:35:32 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id w9NDmBDpyOOx; Fri, 29 Aug 2025 10:35:32 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cCs6D0Xh0z9sSr;
+	Fri, 29 Aug 2025 10:35:32 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id F40178B778;
+	Fri, 29 Aug 2025 10:35:31 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id uQqX3YFuqtHI; Fri, 29 Aug 2025 10:35:31 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 53B0A8B776;
+	Fri, 29 Aug 2025 10:35:31 +0200 (CEST)
+Message-ID: <1ba37df7-2d4a-4258-8220-58ee7d609264@csgroup.eu>
+Date: Fri, 29 Aug 2025 10:35:31 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,96 +57,166 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLC7KIoi-LoH2en4@google.com>
-X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/6] dt-bindings: soc: fsl: qe: Add support of IRQ in
+ QE GPIO
+To: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>
+Cc: Qiang Zhao <qiang.zhao@nxp.com>, Linus Walleij
+ <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ linux-gpio@vger.kernel.org, devicetree@vger.kernel.org
+References: <cover.1756104334.git.christophe.leroy@csgroup.eu>
+ <17636607f2beac3b64c87b3bec035fa27ce8d195.1756104334.git.christophe.leroy@csgroup.eu>
+ <CAL_JsqKFvVQTVXV8mWX0z1=hd3nLDzLXq-0G_0bshMCvQ5kVvA@mail.gmail.com>
+ <f21e27da-de26-4835-9660-b39e99695281@csgroup.eu>
+ <0f716362-07f4-4c79-bb0a-e71d2630a797@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <0f716362-07f4-4c79-bb0a-e71d2630a797@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Aug 28, 2025 at 01:25:12PM -0700, Brian Norris wrote:
-> On the flip side: it's not clear
-> PCI_ERS_RESULT_NEED_RESET+pci_channel_io_normal works as documented
-> either. An endpoint might think it's requesting a slot reset, but
-> pcie_do_recovery() will ignore that and skip reset_subordinates()
-> (pci_host_reset_root_port()).
+
+
+Le 29/08/2025 à 09:47, Krzysztof Kozlowski a écrit :
+> On 28/08/2025 16:12, Christophe Leroy wrote:
+>>
+>>
+>> Le 28/08/2025 à 15:28, Rob Herring a écrit :
+>>> On Mon, Aug 25, 2025 at 2:20 AM Christophe Leroy
+>>> <christophe.leroy@csgroup.eu> wrote:
+>>>>
+>>>> In the QE, a few GPIOs are IRQ capable. Similarly to
+>>>> commit 726bd223105c ("powerpc/8xx: Adding support of IRQ in MPC8xx
+>>>> GPIO"), add IRQ support to QE GPIO.
+>>>>
+>>>> Add property 'fsl,qe-gpio-irq-mask' similar to
+>>>> 'fsl,cpm1-gpio-irq-mask' that define which of the GPIOs have IRQs.
+>>>
+>>> Why do you need to know this? The ones that have interrupts will be
+>>> referenced by an 'interrupts' property somewhere.
+>>
+>> I don't follow you. The ones that have interrupts need to be reported by
+>> gc->qe_gpio_to_irq[] so that gpiod_to_irq() return the IRQ number, for
+>> instance to gpio_sysfs_request_irq() so that it can install an irq
+>> handler. I can't see where they would be referenced by an "interrupts"
+>> property.
 > 
-> All in all, the docs sound like endpoints _should_ have control over
-> whether we exercise a full port/slot reset for all types of errors. But
-> in practice, we do not actually give it that control. i.e., your commit
-> message is correct, and the docs are not.
+> They would be referenced by every consumer of these interrupts. IOW,
+> this property is completely redundant, because DT holds this information
+> already in other place.
+
+But the gpio controller _is_ the consumer of these interrupts, it it 
+_not_ the provider.
+
+The interrupts are provided by a separate interrupt controller. Let's 
+take the exemple of powerpc 8xx. Here is the list of interrupts handled 
+by the CPM interrupt controller on the 8xx:
+
+1 - GPIO Port C Line 4 interrupt
+2 - GPIO Port C Line 5 interrupt
+3 - SMC2 Serial controller interrupt
+4 - SMC1 Serial controller interrupt
+5 - SPI controller interrupt
+6 - GPIO Port C Line 6 interrupt
+7 - Timer 4 interrupt
+8 - SCCd Serial controller interrupt
+9 - GPIO Port C Line 7 interrupt
+10 - GPIO Port C Line 8 interrupt
+11 - GPIO Port C Line 9 interrupt
+12 - Timer 3 interrupt
+13 - SCCc Serial controller interrupt
+14 - GPIO Port C Line 10 interrupt
+15 - GPIO Port C Line 11 interrupt
+16 - I2C Controller interrupt
+17 - RISC timer table interrupt
+18 - Timer 2 interrupt
+19 - SCCb Serial controller interrupt
+20 - IDMA2 interrupt
+21 - IDMA1 interrupt
+22 - SDMA channel bus error interrupt
+23 - GPIO Port C Line 12 interrupt
+24 - GPIO Port C Line 13 interrupt
+25 - Timer 1 interrupt
+26 - GPIO Port C Line 14 interrupt
+27 - SCCd Serial controller interrupt
+28 - SCCc Serial controller interrupt
+29 - SCCb Serial controller interrupt
+30 - SCCa Serial controller interrupt
+31 - GPIO Port C Line 15 interrupt
+
+As you can see in the list, the GPIO line interrupts are nested with 
+other types of interrupts so GPIO controller and Interrupt controller 
+are to be keept independant.
+
+That's more or less the same here with my series, patch 1 implements an 
+interrupt controller (documented in patch 6) and then the GPIO 
+controllers consume the interrupts, for instance in gpiolib functions 
+gpio_sysfs_request_irq() [drivers/gpio/gpiolib-sysfs.c] or 
+edge_detector_setup() or debounce_setup() [drivers/gpio/gpiolib-cdev.c]
+
+External drivers also use interrupts indirectly. For example driver 
+sound/soc/soc-jack.c, it doesn't have any direct reference to an 
+interrupt. The driver is given an array of GPIOs and then installs an 
+IRQ in function snd_soc_jack_add_gpios() by doing
+
+	request_any_context_irq(gpiod_to_irq(gpios[i].desc),
+					      gpio_handler,
+					      IRQF_SHARED |
+					      IRQF_TRIGGER_RISING |
+					      IRQF_TRIGGER_FALLING,
+					      gpios[i].name,
+					      &gpios[i]);
+
 > 
-> I have half a mind to suggest the appended change, so the behavior
-> matches (some of) the docs a little better [1].
-
-A change similar to the one you're proposing is already queued on the
-pci/aer topic branch for v6.18:
-
-https://git.kernel.org/pci/pci/c/d0a2dee7d458
-
-Here's the corresponding cover letter:
-
-https://lore.kernel.org/r/cover.1755008151.git.lukas@wunner.de
-
-There was a discussion why I didn't take the exact same approach you're
-proposing, but only a similar one:
-
-https://lore.kernel.org/r/aJ2uE6v46Zib30Jh@wunner.de
-https://lore.kernel.org/r/aKHWf3L0NCl_CET5@wunner.de
-
-
-> Specifically, I'm trying to see what's supposed to happen with
-> PCI_ERS_RESULT_CAN_RECOVER. I see that for pci_channel_io_frozen, almost
-> all endpoint drivers return PCI_ERS_RESULT_NEED_RESET, but if drivers
-> actually return PCI_ERS_RESULT_CAN_RECOVER, it's unclear what should
-> happen.
+>>
+>>>
+>>>> Here is an exemple for port B of mpc8323 which has IRQs for
+>>>
+>>> typo
+>>>
+>>>> GPIOs PB7, PB9, PB25 and PB27.
+>>>>
+>>>>           qe_pio_b: gpio-controller@1418 {
+>>>>                   compatible = "fsl,mpc8323-qe-pario-bank";
+>>>>                   reg = <0x1418 0x18>;
+>>>>                   interrupts = <4 5 6 7>;
+>>>>                   interrupt-parent = <&qepic>;
+>>>>                   gpio-controller;
+>>>>                   #gpio-cells = <2>;
+>>>>                   fsl,qe-gpio-irq-mask = <0x01400050>;
+>>>>           };
+>>>
+>>> You are missing #interrupt-cells and interrupt-controller properties.
+>>
+>> The gpio controller is not an interrupt controller. The GPIO controller
+>> is brought by patch 1/6 and documented in patch 6/6.
 > 
-> Today, we don't actually respect it; pcie_do_recovery() just calls
-> reset_subordinates() (pci_host_reset_root_port()) unconditionally. The
-> only thing that return code affects is whether we call
-> report_mmio_enabled() vs report_slot_reset() afterward. This seems odd.
+> Then the IRQ mask property is not right here. If you say "this GPIOs
+> have IRQs" it means this is an interrupt controller.
 
-In the series queued on pci/aer, I've only allowed drivers to opt in
-to a reset on Non-Fatal Errors.  I didn't dare also letting them opt
-out of a reset on Fatal Errors.
+The mask tells to the GPIO controller which GPIO line has an interrupt 
+(so it can install the edge detector) and which doesn't have an 
+interrupt. The "interrupts" property gives a flat list of interrupts, 
+the mask in the above example tells: interrupt 4 is for line 7, 
+interrupt 5 is for line 9, interrupt 6 is for line 25, interrupt 7 is 
+for line 27. Other lines don't have interrupts.
 
-These changes of behavior are always risky, so it seemed prudent to not
-introduce too many changes at once.  There was no urgent need to also
-change behavior for Fatal Errors for the use case at hand (the xe graphics
-driver).  I went through all drivers with pci_error_handlers to avoid
-breaking any of them.  It's very tedious work, takes weeks.  It would
-be necessary to do that again when changing behavior for Fatal Errors.
+> 
+> If you say this is not an interrupt controller, then you cannot have
+> here interrupts per some GPIOs, obviously.
 
-pcieaer-howto.rst justifies the unconditional reset on Fatal Errors by
-saying that the link is unreliable and that a reset is thus required.
+It has been working that way on powerpc 8xx for 8 years, since commit 
+726bd223105c ("powerpc/8xx: Adding support of IRQ in MPC8xx GPIO")
 
-On the other hand, pci-error-recovery.rst (which is a few months older
-than pcieaer-howto.rst) says in section "STEP 3: Link Reset":
-"This is a PCIe specific step and is done whenever a fatal error has been
-detected"
+I don't understand why you say you cannot have
+here interrupts per some GPIOs. What am I missing ?
 
-I'm wondering if the authors of pcieaer-howto.rst took that at face value
-and thought they'd *have* to reset the link on Fatal Errors.
-
-Looking through the Fatal Errors in PCIe r7.0 sec 6.2.7, I think a reset
-is justified for some of them, but optional for others.  Which leads me
-to believe that the AER driver should actually enforce a reset only for
-certain Fatal Errors, not all of them.  So this seems like something
-worth revisiting in the future.
-
-
-> All in all, the docs sound like endpoints _should_ have control over
-> whether we exercise a full port/slot reset for all types of errors. But
-> in practice, we do not actually give it that control. i.e., your commit
-> message is correct, and the docs are not.
-
-Indeed the documentation is no longer in sync with the code.  I've just
-submitted a series to rectify that and cc'ed you:
-
-https://lore.kernel.org/r/cover.1756451884.git.lukas@wunner.de
-
-Thanks,
-
-Lukas
+Thanks
+Christophe
 
