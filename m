@@ -1,72 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-11508-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11509-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC09B3C594
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 01:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DF4B3C5C7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 01:58:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cDDs060CLz2yPd;
-	Sat, 30 Aug 2025 09:25:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cDFbC2lGsz2yPd;
+	Sat, 30 Aug 2025 09:58:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::334"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756509924;
-	cv=none; b=ebNgQvhKXxW7buwyehekmwRS3783i+R3cOQjuy2UtlsEmqEeRyedzlMCobqBGMRpGuG1l25sFnJ4f9sD2p5kjg9OTsfrHjGtXjwfdIMLRh/reKZKXm3jJ0KGN9NGa4fBrKHLAWCcNGKA6dNJASQ+TawHOZWwsYRCg6hOfv+u67fVzutwxoP33sMUCH73HIshlOScWvyo5H6Y8sz83KsQT/+pkfgVvj5jadz1nX6EEpl3e/qNLnk9N2haHZ+UpyVL1H5Jim3wNa14szB8FKFnnQejXNhoP9sC9AsgvV/neLP3SG/SKKYvpYfvkF/XYxfHwpBJlRC5IpuuAoY1AZyGrw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::636"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756511911;
+	cv=none; b=eAqhTLhREnMJQEQNGL/EiFtDjDd9HD99q9CxuLCM/+Sz+mpoUoY2hiUAi2+pRDI9Lt1er02asQsHJsc/5tcWMM1sgL1G97X/apGQ1B4PDNUUkwyO0NfPA9wn13alI1FWjDcQqD8+T5s6BZXoQ5KbsVW4vaWhgbMP49cdQk2KFZmOj5lEkl1FYC5S0kPA0q1IvaYtd6yVVI0gYDNMXvJI2lJeIqk4NpbNLTwc9XzDQtM5nlyvCzc+Ka3odSPe8CMPdGwAKh4aTJu+BuZVYoIhnx0/oCyImEXcT/SWXyEGsibLVp6Jr0lQV0b8nWW3ZZJ9hvkynvblwBPrjdYem7/sPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756509924; c=relaxed/relaxed;
-	bh=oD8JqPOQqmYe3P5iUXgZlViA+A6aXFi+Sm0h/jvEQ9E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gZzlIrEzoM8+ZkqIWkdtVJLyv0Hp7csjTbNGD477J41vCkRrlM3k/rfT25JuI13H5u09z2SbDwXBhw/oVqaaLHZuLjHO1h9HnyW482kPA2R6ftYFMpANZowp+UyIKuM4X9TyIaUC1R4nLIskJtQ6lOG7PJ4wrhxSVE30KDHpIXAPCBt6bPDS3VO1I/noJZDgnhV09Wq/5opNoa6f62WMkmg8IaZdojUYaM7YCEuMppKpsRldQ6HoWr7defWOH17v05qB4Hmcu/6Qwqz1hSKtYzb8+JXoo7dSRk3TCGNKfftmVYwpF6hRIdGvMjNm8MGVRkt6VY6CB7InObO6QzD5Aw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NvqrREU5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::334; helo=mail-ot1-x334.google.com; envelope-from=linasvepstas@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1756511911; c=relaxed/relaxed;
+	bh=4ZkOb/hPcVe8gnDPdefZkpPuz6ZACFjeMAIL1vSEcE4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BtNTqK7bZclia7CMinmDSKfw6q0zmX/zd+KI3ic1c4jU+lkr8Z7byl8ENp52s2lWkEBxj4P2yVm0+wm+idQhM4i1FXs6O+WoYcAX9Y5zqiteg1eerVMPtMJyFMOykF2titA7PiJfFUClv+kuuKbpkAcVZvQbUykUlpa+IkXrM3ElGotVqPW+FGyTA6DVyZy9JSCI0FGEEAQnC6TNyKmpEjJQiGXk2XbG4zcgdfGzMMPnlIMCX+VRUMtYQA9R6qavLrIY5C9nExsrFCBHfLvFISYMAaspeLqhqUC1EGW+4web+wERMxmW+H5v5G+Surcs9cMAbYq+LC6H+fhzPWjjWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org; dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=HsDLLWR8; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=briannorris@chromium.org; receiver=lists.ozlabs.org) smtp.mailfrom=chromium.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NvqrREU5;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=HsDLLWR8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::334; helo=mail-ot1-x334.google.com; envelope-from=linasvepstas@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=briannorris@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDDrz2Nlfz2xnp
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 09:25:22 +1000 (AEST)
-Received: by mail-ot1-x334.google.com with SMTP id 46e09a7af769-74526ca7d64so2212908a34.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 16:25:22 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDFbB38k0z2xgp
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 09:58:28 +1000 (AEST)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-2465cb0e81bso21363905ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 16:58:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756509919; x=1757114719; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oD8JqPOQqmYe3P5iUXgZlViA+A6aXFi+Sm0h/jvEQ9E=;
-        b=NvqrREU50iG8Ha6Kv7xRI9l4t/+lA+y/ADWKJjOcZpIjqo/0QwrI23o6rK8SoA2vPM
-         gv6VRQt8iaK9GkuwZn08cGSUHMGsX6pEhDS10V6MgDcVE42tKFmKAk8LmDKdfNEvIJiZ
-         qpqNU8MVYi36EcPTcnAc6Vu9IaaxneAlTbQckWdjfPGjTRJJstu+vtd1mxXDs8nn+aRZ
-         M4KxfanpWsoGLhuS06nuLzShyFGJa0WaZHZdB1Nx6WuSqA93Z9HJZDnYWmfAnDdVW6gN
-         vLKxnoo1I1pNoZdER65MfzZAj+OV6q/yQVuJT0l1Nt5TewBivkZhr1Q5iNPWwC2o1RQ4
-         DZ0g==
+        d=chromium.org; s=google; t=1756511907; x=1757116707; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ZkOb/hPcVe8gnDPdefZkpPuz6ZACFjeMAIL1vSEcE4=;
+        b=HsDLLWR81bWgWSar56CDrIpiSnOCN1qhzi4yVXgq84TlSik3sgi2syt3SfarpSo0zn
+         9J9FIH1aT7PKKvLs2ptietfNt4va/vyZjPa9jGyibIz3r0ArpNbPyP2G6K/586YDGbb4
+         G91v/qfjRJ1Gf90nqyiBdUcYEkLuH6PIowPmo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756509919; x=1757114719;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oD8JqPOQqmYe3P5iUXgZlViA+A6aXFi+Sm0h/jvEQ9E=;
-        b=Owgdy50lSPGJ3LwtuVDJZwfmmP8nFZbfVBGg0M+oL/VdIr+q4oUuGzHlLkDrZssk4T
-         yP3pu0u7vDkInVUPVGy3Y7P9yueNOFVNGKU+FZGTrLS+oz3xc8e7bQE0gtNW9cvBtlwa
-         EmMaxaHcrnvz1O2iRXspsm/4QTGy7GR6s6l8uoo1FkcALkQ2EM/aC95Vn6lEAa3AAAMT
-         mIhqXce+tgMjZDQ8K7iUM+2EvkgO5bdfM2gkr4BHI4PGzIt3z3XkCNi0Bi7YkwE87znO
-         1o6QfUtjZRm5PEkhvOjCg9RiE17IJWOji6nxiRdqxCudk+JDsR+qmBe0mJLq3qLoOen7
-         Tw+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVDJU+2JZQE7zw4oT0t1xF8y0cPgrJ5jS5CnyGm+ho7dL8wuzI7d9zUZVTL8SkZrhNB90VAVHUyV/X18kU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw16omWSHK7nw2ydqoBQhvbGDAZNIwgoBQXS96TI/b9GiegDgwk
-	yN1xhvbDHgl9nbzuAztxMPImlnBzKA6qFheoBSUyvIVHyZ9yZAUotVYKdBh5/OUq4raseaZUXg5
-	bDfZV4yZuj6Nnb7PrR7qyLUFCU75LvA8=
-X-Gm-Gg: ASbGncvnTGG9x61XRAcM+LCXTs2GeV1HauWwcRWOy/h7FhpvYFK6VI/tj0diski7x5n
-	3RWv73VysT+Cpy70i1GafaU+VV3EdQJ4pTrxcKf6epafJ0EQW1R/bodOh6/mEWuw0uL3qhdFObn
-	JTKGA1Jzv7FtuWe5bNtvxLM1Y+at+WLCD8HvKHS/FaPy2IloVPZDEgxErGWJP4FxOgoZoNzyOgY
-	y7EXRrLmUNWUKHHkSQEGOfTJkJ/R4M7Rk5k0rSLR2ZIwL5UsoF5Kcr1RsQ1vOcjlPWoaDIa8FEC
-	huZW
-X-Google-Smtp-Source: AGHT+IHaij0sVaJ6ogaPQCO9IKBgADMM0ztIHx86w8groy7y8g8JAMnXJW1JkHtngSu5rwitc9gzhu/qbDgn8SocPoM=
-X-Received: by 2002:a05:6808:23c3:b0:437:e679:79c with SMTP id
- 5614622812f47-437f7ceafe3mr137481b6e.12.1756509919345; Fri, 29 Aug 2025
- 16:25:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756511907; x=1757116707;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4ZkOb/hPcVe8gnDPdefZkpPuz6ZACFjeMAIL1vSEcE4=;
+        b=jtCNww1hgjjCvzzOeRvzGE2i/8A9gYVXgauDINYo2yTtcH6dXy2J003l+totad6mdC
+         oZRfXHZCj/gYsRaCi40/aA59mlUkWFt8+W7OG6FwH/UBj7YyDWN8zyrF/lPoLq6H4oGd
+         XXV8MiOjNT2of15Mw1MLbzwMyYx/m49lVoM/S1abyFOFl8c1I/i9YWRPtx3ZFDpeXTYA
+         F5tyFq+m+UKrMmLr340V3ggZa9uDPCpN8koKzWr9FZSLSKv9ZTVRS7L7Rxa86QREsSf3
+         naPWZ/cDKm+sWClwYqW5UOP+caOU7l56YDjMv2lIX1gVD2Npy5HR94159gbS49eMIF4f
+         /EDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWYcJWnc0f2BYPYrDFr6CPXk9liee24Cz9LggsgkfdlXnSCx2aHYT4LFLkGkQ3bhfHV5r7jGOEyAEq62xM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz8UcND4AzwiA5q3cfYMuA1SLmziRpDcdpcIlkRrT+HCo9dgvY5
+	ly2zqZBU1sIN6jZuROwqo/ZGytuwTZo0S4Zh2RPRPJ5rJCM6HjOi69VXX6VGeLYAkA==
+X-Gm-Gg: ASbGncurt03QkZRKKwL4FmFeN9I3TWV3VW0M1i3xN2gLX+DZ+qQVfmMq9T4JamsGxHc
+	CGzmb/J/eejCinYbPROHV4Pzl7+HVS+JVWZyZQug/+oWHgc8JtjtGXZAGFht+viCV6rQr1V3HUS
+	2bpqneLiLchGIm5V9pNr0wEERNSJK6F0xwLS6aIMZbc4bqnJzKEpi1vp1ssGrYYKHTfqtl9XYeO
+	Tb8mPMdMg8Z9C9MbhF7EGBcubU7ZoPPEAVupy0tLF/JJjbbo/b1coEDXd5Und5/4NNpXnxBsVzs
+	bIItulzwvH7Bb6AaY8dcU6reSjt9ZfrkrYnglVUUGBd/pzXeRW1XaoAh4D4RGncoJRuZFPlqIYz
+	O0mfR0OxfevZ6pkkRKRiBZOsj9ZaJc9aUo5L/Fo76D+d6sPkIrFs46Nhe6Q19
+X-Google-Smtp-Source: AGHT+IFvZvVbN+tcqDt9IuyuJa1uB30zy62FBhMsBU2d4G2xup0DO7jJDkNE7M+ZQIjDPW8i5FxZDw==
+X-Received: by 2002:a17:903:2308:b0:249:33da:b3a with SMTP id d9443c01a7336-249448ad928mr5527165ad.14.1756511906811;
+        Fri, 29 Aug 2025 16:58:26 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:1d4b:87a6:eef4:9438])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-24906390e6bsm36386045ad.96.2025.08.29.16.58.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Aug 2025 16:58:25 -0700 (PDT)
+Date: Fri, 29 Aug 2025 16:58:24 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: manivannan.sadhasivam@oss.qualcomm.com,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>, Will Deacon <will@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof Wilczynski <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Niklas Cassel <cassel@kernel.org>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: Re: [PATCH v6 2/4] PCI: host-common: Add link down handling for Root
+ Ports
+Message-ID: <aLI-oKWVJHFfst-i@google.com>
+References: <20250715-pci-port-reset-v6-0-6f9cce94e7bb@oss.qualcomm.com>
+ <20250715-pci-port-reset-v6-2-6f9cce94e7bb@oss.qualcomm.com>
+ <aLC7KIoi-LoH2en4@google.com>
+ <aLFmSFe5iyYDrIjt@wunner.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,43 +104,112 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <cover.1756451884.git.lukas@wunner.de> <42726e2fd197959d6228d25552504353ffb53545.1756451884.git.lukas@wunner.de>
-In-Reply-To: <42726e2fd197959d6228d25552504353ffb53545.1756451884.git.lukas@wunner.de>
-Reply-To: linasvepstas@gmail.com
-From: Linas Vepstas <linasvepstas@gmail.com>
-Date: Fri, 29 Aug 2025 18:25:08 -0500
-X-Gm-Features: Ac12FXzU95lbyYwfEX8tEnCZZpSB4eS1i5zDWjaJAsRdUyyG8eFVpBZdfMozsGI
-Message-ID: <CAHrUA364QSpcJOu=96JV-3hR9G5M0FSUPNhb4AspULAcXvQP6w@mail.gmail.com>
-Subject: Re: [PATCH 3/4] PCI/ERR: Amend documentation with DPC and AER specifics
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Terry Bowman <terry.bowman@amd.com>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, 
-	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Niklas Schnelle <schnelle@linux.ibm.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Brian Norris <briannorris@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLFmSFe5iyYDrIjt@wunner.de>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Aug 29, 2025 at 2:41=E2=80=AFAM Lukas Wunner <lukas@wunner.de> wrot=
-e:
->
-> +   On platforms supporting Downstream Port Containment, the link to the
-> +   sub-hierarchy with the faulting device is re-enabled in STEP 3 (Link
-> +   Reset). Hence devices in the sub-hierarchy are inaccessible until
-> +   STEP 4 (Slot Reset).
+Hi Lukas,
 
-I'm confused. In the good old days, w/EEH, a slot reset was literally turni=
-ng
-the power off and on again to the device, for that slot. So it's not so muc=
-h
-that the device becomes "accessible again", but that it is now fresh, clean
-but also unconfigured. I have not studied DPC, but the way this is worded
-here makes me think that something else is happening.
+On Fri, Aug 29, 2025 at 10:35:20AM +0200, Lukas Wunner wrote:
+> On Thu, Aug 28, 2025 at 01:25:12PM -0700, Brian Norris wrote:
+> > On the flip side: it's not clear
+> > PCI_ERS_RESULT_NEED_RESET+pci_channel_io_normal works as documented
+> > either. An endpoint might think it's requesting a slot reset, but
+> > pcie_do_recovery() will ignore that and skip reset_subordinates()
+> > (pci_host_reset_root_port()).
+> > 
+> > All in all, the docs sound like endpoints _should_ have control over
+> > whether we exercise a full port/slot reset for all types of errors. But
+> > in practice, we do not actually give it that control. i.e., your commit
+> > message is correct, and the docs are not.
+> > 
+> > I have half a mind to suggest the appended change, so the behavior
+> > matches (some of) the docs a little better [1].
+> 
+> A change similar to the one you're proposing is already queued on the
+> pci/aer topic branch for v6.18:
+> 
+> https://git.kernel.org/pci/pci/c/d0a2dee7d458
 
--- Linas
+Wow, nice coincidence. It's a reminder I should work off the maintainer
+/ -next branch, instead of just mainline...
+
+> Here's the corresponding cover letter:
+> 
+> https://lore.kernel.org/r/cover.1755008151.git.lukas@wunner.de
+> 
+> There was a discussion why I didn't take the exact same approach you're
+> proposing, but only a similar one:
+> 
+> https://lore.kernel.org/r/aJ2uE6v46Zib30Jh@wunner.de
+> https://lore.kernel.org/r/aKHWf3L0NCl_CET5@wunner.de
+
+Wow, that's a ton of great background and explanation. Thanks!
+
+> > Specifically, I'm trying to see what's supposed to happen with
+> > PCI_ERS_RESULT_CAN_RECOVER. I see that for pci_channel_io_frozen, almost
+> > all endpoint drivers return PCI_ERS_RESULT_NEED_RESET, but if drivers
+> > actually return PCI_ERS_RESULT_CAN_RECOVER, it's unclear what should
+> > happen.
+> > 
+> > Today, we don't actually respect it; pcie_do_recovery() just calls
+> > reset_subordinates() (pci_host_reset_root_port()) unconditionally. The
+> > only thing that return code affects is whether we call
+> > report_mmio_enabled() vs report_slot_reset() afterward. This seems odd.
+> 
+> In the series queued on pci/aer, I've only allowed drivers to opt in
+> to a reset on Non-Fatal Errors.  I didn't dare also letting them opt
+> out of a reset on Fatal Errors.
+
+Right, I can see where the latter is risky. Frankly, while I have
+endpoint drivers suggesting they should be able to do this, I'm not sure
+that's a great idea. Or at least, I can see how it would potentially
+break other clients, as you explain.
+
+> These changes of behavior are always risky, so it seemed prudent to not
+> introduce too many changes at once.  There was no urgent need to also
+> change behavior for Fatal Errors for the use case at hand (the xe graphics
+> driver).  I went through all drivers with pci_error_handlers to avoid
+> breaking any of them.  It's very tedious work, takes weeks.  It would
+> be necessary to do that again when changing behavior for Fatal Errors.
+> 
+> pcieaer-howto.rst justifies the unconditional reset on Fatal Errors by
+> saying that the link is unreliable and that a reset is thus required.
+> 
+> On the other hand, pci-error-recovery.rst (which is a few months older
+> than pcieaer-howto.rst) says in section "STEP 3: Link Reset":
+> "This is a PCIe specific step and is done whenever a fatal error has been
+> detected"
+> 
+> I'm wondering if the authors of pcieaer-howto.rst took that at face value
+> and thought they'd *have* to reset the link on Fatal Errors.
+> 
+> Looking through the Fatal Errors in PCIe r7.0 sec 6.2.7, I think a reset
+> is justified for some of them, but optional for others.  Which leads me
+> to believe that the AER driver should actually enforce a reset only for
+> certain Fatal Errors, not all of them.  So this seems like something
+> worth revisiting in the future.
+
+Hmm, possibly. I haven't looked so closely at the details on all Fatal
+Errors, but I may have a look eventually.
+
+> > All in all, the docs sound like endpoints _should_ have control over
+> > whether we exercise a full port/slot reset for all types of errors. But
+> > in practice, we do not actually give it that control. i.e., your commit
+> > message is correct, and the docs are not.
+> 
+> Indeed the documentation is no longer in sync with the code.  I've just
+> submitted a series to rectify that and cc'ed you:
+> 
+> https://lore.kernel.org/r/cover.1756451884.git.lukas@wunner.de
+
+Thanks! I'll try to take a pass at reviewing, but it may not be prompt.
+
+Thanks again for all the info and work here.
+
+Brian
 
