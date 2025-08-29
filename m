@@ -1,76 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-11463-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11464-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959F6B3B354
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 08:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48379B3B35E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 08:30:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCpFM0VP4z2xcD;
-	Fri, 29 Aug 2025 16:26:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCpKK5r8rz2xlQ;
+	Fri, 29 Aug 2025 16:29:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756448791;
-	cv=none; b=bF45iutK5OauVdT7mclHHn9NRgm+AZlksG4nL/DWucTdDgfsFQkwDDPZxz0yorky+PvjEzcKRDUS5OQaXuSSon8S228+4i+uoGlQXjY1qbIUL9fqwWw9SGkbR4+h2R2N/GzfcKt0G8ENWPFjCTYLWkE12Rgwld0ThgaTlsIoqFUhz2QrVgL/qUcq8ul9lW5ix+hSz7s5v29N5ykLRO06rK/lJhLtVaTCh+njIHMLVGlQW2pAxnlmrxSNzlwcRZnf9n8CsJMDot0wsjfQ+p6mZqNNbB5AUVdTehYtu5gRP4YCO80dBYc6JupHpkhMW3rr9cQ624DfzolWyuoax+tp6g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::632"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756448997;
+	cv=none; b=M0RnXd8OFvHkaphuP6W9Ch8ldB0V3p68LyurLHgHEDk6pRwoFGiEGxqRFycne7T/IILzjkL3FAv87QlPxSttdYema1JxQDgu0hmU+BzfuhyFVZ/4uLTLXMQKQhE/GY5Aoy80OoC0+ddooYfVRZERpAQUv5PVCBzqGOYitDtESsqdqczGtJ/3xlRbXxZi4DVXuDSITRs6y2nmaOks6Rd2cwksrulqMOIEQdV8SmXe+b2UYc5lynaHBzKhkN3+iOoYnLwDGMfoE8yavM+pcIGDd3StLKlBYuPwOpIHkpWCbf1c2q5JDHjYx20u0sjQOQP28+YWXyztNiKzyCr7vl7OIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756448791; c=relaxed/relaxed;
-	bh=FcWNphyv+aV6VigruYXsycpBhyL4rRdrU3NDODM9P5A=;
+	t=1756448997; c=relaxed/relaxed;
+	bh=CokGLX1/yeX4DJMWAz1LmKt9I3G7o4FsQeoqSBuvVPY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NgdfDAjp/XhVxIoQlt/LiC8XvqscW9BDlO9/XXzEnAjmLGcRB/UzTRLbGvmLF0fumKDEugwlE7sRmn/KWMTCtF00NXW2Hrb+5GFL1+RQAQlke+Y2dFOZpCAuzHJ1FVmWPXzaphi+oDCuQ0L1hMDKYaQ+hQmXcLqFmkS+p8OOLwiXpQi96EaprJY1MNOcdFJ09aF0m1xOrv1ufJoYBg+9ySTGICvQ5sf4xbl9meiwqFuy4++UV4PQz7EYdObIL5k4eyKnWRnDf/D5qNuUcfZB2O0lJymnOKpB9+iLEylxahQAikZqAnV4uJ1hUuJ2HekdUpkc1DgP7DLnvM1JPG2AaQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=n7LAbYsI; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=IBupquLlt3FEeMJc7hOz/HBH8xB5duG8cBCgKQjV4JKHbT7NJ0TCXGaEPH/XlJbe4t1tFijsKYumaA8kR9h94UGrjm8i87qCA5N4MlzGGeoliJwDj/l9hM+gkOAbjqOTZQh3Ckq2J035mheJ6CY0KotHBhRAqiIA1/yvSUgZbZZo4sy64Y/l/Xby9i0oTDcHAgk+qjLVW/lnXj7ahiS4KjvaMOD12Uh1DxFCkkCidXlNyI3qmJco5X4tW4e+xkxSI7zqxfFnlzqWWugWCwI8Qlsi8zRlLN7RKfe4T4zYMs+7Hcx32zQJwnXBciICyVC7ft8xx47lK3XPfNwBVW4cDA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=riChM9rp; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=n7LAbYsI;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=riChM9rp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCpFL1rTlz2xWQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 16:26:29 +1000 (AEST)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-327b3e24637so986455a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 23:26:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCpKJ4Q4sz2xWQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 16:29:56 +1000 (AEST)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-24884d9e54bso17125155ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 Aug 2025 23:29:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1756448787; x=1757053587; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=FcWNphyv+aV6VigruYXsycpBhyL4rRdrU3NDODM9P5A=;
-        b=n7LAbYsIz6QgTDGn38hQg/1IyiSzN25VkkFOGhvasiVcAelTCiq1JzDV/TQSoq9GtL
-         avJoupYLkT+/FUY7fAp5qmRwTet4OG/Bc7s1jeDMWD9l9NWXcm2isHZssYEWZFjRXprT
-         duKuHxhfMyc6wy1JTTpa6DM1sAweJSVOcm3FWVTIHDuUDu529OYYhkk7KnBy+g37mfs3
-         jiwNesRfPwZqNM9/nAScNUxPVcg5RNRVtkB96mNiz+2Yg2yCGq84kAUzfpqkEvUk46J9
-         BA/boEeD9xzm7LY1reFx9tmVihzDPaXmzwpvo0cDnu0cKYNMPV651o/wHMv0mPrpVhP4
-         Xu9w==
+        d=linaro.org; s=google; t=1756448994; x=1757053794; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CokGLX1/yeX4DJMWAz1LmKt9I3G7o4FsQeoqSBuvVPY=;
+        b=riChM9rpufGnastEqIKlXaDVi9/rhwF1WnFZyYtIwfGhiBbUNMA02frd4Slbjepqy1
+         jN+HigD/WBtNdaB6CnuMwTWgqLYAHxcDjAAr3bbkM2myKF4lqoevEy9DJHyFccJcM1TN
+         7z24K9NwMLaLn2zt+DDalU1+7lsl8o3MWzC+oZm4QHdo+8q9etDh38vkzkEfagpbzkKA
+         g/5EIwNsSB5Jc+lLj1vPs7LRRQZVtRvQzcFv/mfdeP1BAK4/3ANcTKxRV248hP3qICGs
+         HLxtCdEU7V4CmHqW6YdJqhxudz3bHgtFNr7xZqGFfiaR1N3IwJXVZXSHk/VEvfo2O2Gc
+         ZAPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756448787; x=1757053587;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FcWNphyv+aV6VigruYXsycpBhyL4rRdrU3NDODM9P5A=;
-        b=oBbfXW/FFtN+FGUjD8UWMhQZl/XKG7MVm0NPAhb91KwPHdWOST3tHUBDTCYfcvBFJQ
-         +iO3kB3+qsRHcWcVax3K2xHpDWNd4X2Pt7xTjJiyoRsrS1KOLahPzoJ9A7mMeg1CErP6
-         1XCcYyzFy97IsV8BpNwiCB66ZeGcqwOwH3wiD//9O55cLsprLvuXmgf88quP5wc465up
-         Tg6oep2yMgvi2hw7AdbpsdfD0HYT5ZOXVKj8hhBh1VTBGoa+GNYK4ZOzFG6TYalFL48s
-         jYrzhdR5M3NCFbffupt+F4pb+0ftVvHz5ZkQMYFuxvcTZrEbWhy+xiyy4xtTEsSP+uRO
-         lzWw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZpf1sZbyD+iBr1YsxjVxnxidqiIkYkGxvyZU/CzRYYZQB3AuDDI4xNB7auu5NlwLQIEsKGHBEksxlu1k=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YysxA4QRNyH8ChO79dJfHmfMnqh5LYxjoLiApDCRuFnLNGpAG+W
-	xG/2KEViOkCY63aViZz/oIjsSyUWgp+ALE/xXXuTFkmS1iN44a9THyhQ0BIRn6LpzRQ=
-X-Gm-Gg: ASbGncuZqwnEuTSQALaBwrssvJgde+N3qDRLDsaTDtqtGLC3i2Ei8UmQ56l2rlJF2RH
-	BlPCJ0CIVot1spL3Sfffr7KA2qNQUVvOFa7LNhUZHGHKZaRpKKqDUTAA6T1fNhd8OPD3PNNKjv8
-	wnliBKyPYTrIyuS98FPf7gKFS0mnakXzaHfvmndmi+2CT9oQmyf3wF/+HD7GoCu6fQ2v0m6TSBs
-	Bq2FjK7Yf1WgOyIAY7WgjKBv4MawQO400pHDIWpUM3acTSJBwtsro/R6VACuDaFGpX9IzxcO5bq
-	a6bAchVluHSmQ7f7IN73NOHWZUBlNjit4Y9p5EYfaSF70RFtgupFZzEn37aM2DOsdU0/Jhdi9vy
-	sznEF+9QjEHceEg1bIuLy67Dq
-X-Google-Smtp-Source: AGHT+IFHYb22k9tJefksk8Ol8WzLcbkUpFNWBPL7w5JQ2Y92t38N6cXrTs0utCYM4huh3xQWCdkxbA==
-X-Received: by 2002:a17:90b:57ce:b0:31f:210e:e34a with SMTP id 98e67ed59e1d1-32515eacfddmr32147827a91.8.1756448787009;
-        Thu, 28 Aug 2025 23:26:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756448994; x=1757053794;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CokGLX1/yeX4DJMWAz1LmKt9I3G7o4FsQeoqSBuvVPY=;
+        b=rQ2oIU2X9QFAlgYjleALNm3UOXCAEKzDEFKbUUeqiKmghfHOmM4ZW9dPs1v6A07wh5
+         i5OjH9XrXUkSx2OnZR9Hbn3oHj8newxDs9ULJv5O+U6n3n47qbQMuh871yUnXBY7lNCs
+         TzxuaR4cP23UXj2jKoB+KFg50N0cooZGHvJuSFVHmm3VjFJI1Xp0BDeSY2MTmju6ZS7H
+         5n8PZ/26ZhM4ROq8MKTS2zFfnP/aP6KMtGYuvAk415SpJzYPR1wFAMnCxko/40eoMWa0
+         viPu1S7e9bwgFDnR7LSM18Q17i6CIvuCbZg8q1eq8Q7TpRvF6jUAp6075hn/H7ZHz1kb
+         Lk7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXh+CxEcs+B/+788cwCMqwpjOHF7TYWjrAl7OCIWa7qJHA9ZKk06irHBzDxW03yYAkv4quZ/7hScnDRayA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwuEUgaK8URbqX/Zia60qebzUulknTaja2sxSgNcQ5u+kGxYM2N
+	MvlIi+5YU2qypNzHCHJvQTSHprQjalbcL+Mx71DVstNLHLLxMFCGbRZu2vjp5JXhTT4=
+X-Gm-Gg: ASbGncu6L2Lgn3ZNWAqtWXXb2VdUaMiKNQ/EdV18HFOwbVJkLcqgl3UjE6zG3mtGsW0
+	4lySA2mCBKv+FTqh8HP0QqVsd63Dp5XH9UVqQZdRC2v5BmMOf285blpLNNchLNH+pd0MMJSCnKl
+	Kure6FIZ4O2ZGFj+gznT1XxzZL1oxfKPUWCezwZLwSstpHjcNInNtQg25aBxQQhHV6zadkBlZmU
+	QDCEfLYZA1OeU6L9LJaksJlORPt0x1izDq8NYAUMdtkZHPc4vM71NYlFbxlFHtHEx0Zf/m+rCld
+	t3Re5BPTJjnmIe/2+R8tAWnhsPR6aN06H3yBkm/usZhwfGItMAYAwMDDSBwggfz8kCRcRQ5vhaH
+	pUSXW5vbi4CGVM3DTNtrtuMzA
+X-Google-Smtp-Source: AGHT+IFbX3s0aoe3pqEivfWfaakWxvchfFFbfgXfyIlcOqslqMMZIBk7FeaK/V2UaSwtVV106XuK4Q==
+X-Received: by 2002:a17:902:ec89:b0:245:fa00:6e25 with SMTP id d9443c01a7336-2462ef1ea0bmr386065885ad.28.1756448994426;
+        Thu, 28 Aug 2025 23:29:54 -0700 (PDT)
 Received: from localhost ([122.172.87.165])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276fcd4bd6sm6984417a91.15.2025.08.28.23.26.25
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24903705be3sm14571325ad.18.2025.08.28.23.29.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Aug 2025 23:26:26 -0700 (PDT)
-Date: Fri, 29 Aug 2025 11:56:24 +0530
+        Thu, 28 Aug 2025 23:29:53 -0700 (PDT)
+Date: Fri, 29 Aug 2025 11:59:51 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: Zihuan Zhang <zhangzihuan@kylinos.cn>
 Cc: "Rafael J . wysocki" <rafael@kernel.org>,
@@ -122,13 +121,11 @@ Cc: "Rafael J . wysocki" <rafael@kernel.org>,
 	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
 	imx@lists.linux.dev, linux-omap@vger.kernel.org,
 	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 04/18] cpufreq: brcmstb-avs-cpufreq: Use
+Subject: Re: [PATCH v2 11/18] cpufreq: tegra186: Use
  __free(put_cpufreq_policy) for policy reference
-Message-ID: <20250829062624.jalqqsigs7hanf7i@vireshk-i7>
+Message-ID: <20250829062951.ximauv2so442q4gv@vireshk-i7>
 References: <20250827023202.10310-1-zhangzihuan@kylinos.cn>
- <20250827023202.10310-5-zhangzihuan@kylinos.cn>
- <20250829055944.ragfnh62q2cuew3e@vireshk-i7>
- <4bd55a08-62bb-46c4-bfb6-a3375ce37e79@kylinos.cn>
+ <20250827023202.10310-12-zhangzihuan@kylinos.cn>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -142,30 +139,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4bd55a08-62bb-46c4-bfb6-a3375ce37e79@kylinos.cn>
+In-Reply-To: <20250827023202.10310-12-zhangzihuan@kylinos.cn>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 29-08-25, 14:16, Zihuan Zhang wrote:
-> Thanks for applying the patch!
+On 27-08-25, 10:31, Zihuan Zhang wrote:
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
 > 
-> I’ve been thinking further — instead of using __free directly, maybe we
-> could introduce a small macro wrapper around it to make the release scope
-> more controllable and consistent.
+> No functional change intended.
 > 
-> Link:
-> https://lore.kernel.org/all/6174bcc8-30f5-479b-bac6-f42eb1232b4d@kylinos.cn/
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  drivers/cpufreq/tegra186-cpufreq.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> Do you think this would be a better approach, or should we just stick with
-> the current use of __free?
+> diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
+> index cbabb726c664..4d71e262a729 100644
+> --- a/drivers/cpufreq/tegra186-cpufreq.c
+> +++ b/drivers/cpufreq/tegra186-cpufreq.c
+> @@ -105,7 +105,7 @@ static unsigned int tegra186_cpufreq_get(unsigned int cpu)
+>  {
+>  	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
+>  	struct tegra186_cpufreq_cluster *cluster;
+> -	struct cpufreq_policy *policy;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>  	unsigned int edvd_offset, cluster_id;
+>  	u32 ndiv;
+>  
+> @@ -117,7 +117,6 @@ static unsigned int tegra186_cpufreq_get(unsigned int cpu)
+>  	ndiv = readl(data->regs + edvd_offset) & EDVD_CORE_VOLT_FREQ_F_MASK;
+>  	cluster_id = data->cpus[policy->cpu].bpmp_cluster_id;
+>  	cluster = &data->clusters[cluster_id];
+> -	cpufreq_cpu_put(policy);
+>  
+>  	return (cluster->ref_clk_khz * ndiv) / cluster->div;
 
-Lets keep it simple for now and use __free directly. And keep this
-similar with other parts of the kernel.
+Merged with:
+
+diff --git a/drivers/cpufreq/tegra186-cpufreq.c b/drivers/cpufreq/tegra186-cpufreq.c
+index 4d71e262a729..4270686fc3e3 100644
+--- a/drivers/cpufreq/tegra186-cpufreq.c
++++ b/drivers/cpufreq/tegra186-cpufreq.c
+@@ -103,13 +103,12 @@ static int tegra186_cpufreq_set_target(struct cpufreq_policy *policy,
+ 
+ static unsigned int tegra186_cpufreq_get(unsigned int cpu)
+ {
++       struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(cpu);
+        struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
+        struct tegra186_cpufreq_cluster *cluster;
+-       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+        unsigned int edvd_offset, cluster_id;
+        u32 ndiv;
+ 
+-       policy = cpufreq_cpu_get(cpu);
+        if (!policy)
+                return 0;
+ 
 
 -- 
 viresh
