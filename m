@@ -1,78 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-11479-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11478-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC7BB3B614
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 10:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E805B3B610
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 Aug 2025 10:35:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cCs6Y2Yhzz2yrl;
-	Fri, 29 Aug 2025 18:35:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cCs662Y9nz2yrZ;
+	Fri, 29 Aug 2025 18:35:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756456549;
-	cv=none; b=EfGYTGZ4O6OBSePb/Ui91Ku+Q9MRqMd506zWpax2ayU26P1n5abA5rjoYgCl4U0DFj6hLS3GJvKBFXfdxKoK351KO5NIdGPizo9LLjvj0tKZHuBqURf4Vy/M4NmY0X5gFCtcJHp9m0FncXGai1swzQfZahRUVHwwsEDd7gAFL2Dl+VlH7FPTinC2E2SW4auEwafLxerruAMvKQe3IJbvL5fkxIBoR7jx1FjMaynnS+Z0yAPapkHs4JCEOO1Kq1aAybOmoZXMNHcCb0CXOg7Eh6ANU6OUFh+LM0Ef+4bAfws9wafBJPZvYZrLktZECbhYyWRYVM/9U7qJHxxARgbQ4w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756456526;
+	cv=none; b=d5tdu0tCQgCpYIhkTt4xrreJRdSrZCj+B4+GGIbwGwAd66yVEAZHKw6IfLYQ8IY5fghRMsZx5HlvjS+QbhXFdsIUrHW3xYxQtV/eXFBhEV46uYXaGOZtaTVHvqc+w3K6/7RqXNF93PLqlUgoKV883oh/H/4geP78BiA7i5ob36zWCu5dgYkk6WUVnCt4goTVUmj3vnp921QtQcKraGmwrTlKOvt43in/oRAR6u2wzfNX8slAkpQnGiT0ny12A/Su/dKbTo0IUjgknzvR4RTeejWir1O69Ag2k8AzFZC4CRjVpxSqcv2n8MDpNKeTZSmI2jSG8TlwEoWaqbJsJ5iZTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756456549; c=relaxed/relaxed;
-	bh=3UykXrTl2EB+vKESxnHtvi5hIMPHRCCUy7MHaCs1xXA=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=gNlwJvOJWKShfMQnVySwVWdissOpiETLsL/ceBzCiL9jZIOh/4i9PhOkQrcwhS7fDtn2NxdhftY6NzEHfvzL92OZ0/AHPFUM2Dk7dbgYVkJQmUa9SYS6axlqdBQ68oW++xda2f9eLuDIJ6QYrdSdezBpQvuORg9YrzocLRXUgA6quETk4pbHoBVgP9V/oeHNhSh42tkdc4FgtOzagzDfHrGoPvyGtX2CHd5UgCm/rQZ65fPYntaiU5B6ltyj4QCfwNjnQUrJeYv5OETbWeulLdhJScHDvSDYvFnEAIzDxzya+yAiLF1h/ibimDA9OeBPbsA6gTI8XWHKcExXU06Y7A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hk37P4Fe; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hk37P4Fe;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1756456526; c=relaxed/relaxed;
+	bh=0dVPd65k5WSFciEDVElP9Tw2ZzcWHzSm5GrxGdzMmno=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cNUzU0bWO/LFWmVbiuZltISdXtsR5n48WuHehaboBRxnXiYacyYZVtNLAsUqu/7EKcgE9BnL/Oi6EBy9sw3fb3jZmGx4LI1PbAqQaJNIO9sJ/wEBjH21tDkPxZirHfNM7ntQd+GZfKuH5TNhiYkVvTSBi51dfL0P729JGt4O5CO5i/fQ9OrooIq/WCG14xU6V0/c14N9eLCX0pluw9kmeMofBHpPH1UrIK2j48Nvb82uCflK2pxTss8bFQWVwjY3+uVplSqSTTHleoPEW5V7KNYFM1bDJELxQfwO76Pvr0rQYePJIt7RWWf0gDKp1stAoxooug6wPYdGDalzhYekWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCs6X4QCdz2yqW
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 18:35:48 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 57T8HM2P007535;
-	Fri, 29 Aug 2025 08:35:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3UykXr
-	Tl2EB+vKESxnHtvi5hIMPHRCCUy7MHaCs1xXA=; b=hk37P4Fe0mi9T32XkwxsA3
-	v2QfGOxklUu1IdEVMYeHJLEFBpauAOBImwp9iro2jVr0nY5eTglA6xOGmHEg5Cga
-	ZN7zD8UkOOrCYyfvrJI9t5Rwj1svpkUm0tE4NYlLXtK8pwftJ/FqEJgpySKLZlTC
-	vur30tAnD/GWulzprkpPA4y+FQRmU04mA8RXVBExHrjO0fyhq1M0Gv40TV+8h4Dl
-	J5C55pxU0/vn74wcwGC4lQh3gR7OZo7b1wJlyfeya7N9zG3qOJQpl/+/QarLpM3r
-	8HZhj1dkPHa8MZ/7H3GzXdi56XV92Fl3+EXvzTiM+sB+MttYjjB5iz6+NA5AhWPQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48tsv9bu0k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 08:35:43 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 57T8Y3BF004975;
-	Fri, 29 Aug 2025 08:35:42 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48tsv9bu0h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 08:35:42 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 57T87VXH002482;
-	Fri, 29 Aug 2025 08:35:42 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48qt6mrs1h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Aug 2025 08:35:41 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 57T8Zcai53871080
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 29 Aug 2025 08:35:38 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 355C620040;
-	Fri, 29 Aug 2025 08:35:38 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 88A7920043;
-	Fri, 29 Aug 2025 08:35:31 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.241.17])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 29 Aug 2025 08:35:31 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cCs654yXBz2yqW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 18:35:24 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 98F5D2C09E19;
+	Fri, 29 Aug 2025 10:35:20 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 6A41242A4F0; Fri, 29 Aug 2025 10:35:20 +0200 (CEST)
+Date: Fri, 29 Aug 2025 10:35:20 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Brian Norris <briannorris@chromium.org>
+Cc: manivannan.sadhasivam@oss.qualcomm.com,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>, Will Deacon <will@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof Wilczynski <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	Niklas Cassel <cassel@kernel.org>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: Re: [PATCH v6 2/4] PCI: host-common: Add link down handling for Root
+ Ports
+Message-ID: <aLFmSFe5iyYDrIjt@wunner.de>
+References: <20250715-pci-port-reset-v6-0-6f9cce94e7bb@oss.qualcomm.com>
+ <20250715-pci-port-reset-v6-2-6f9cce94e7bb@oss.qualcomm.com>
+ <aLC7KIoi-LoH2en4@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,138 +70,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: [PATCH 12/14] tools/perf: Add support for printing synth event
- details via default callback
-From: Athira Rajeev <atrajeev@linux.ibm.com>
-In-Reply-To: <c83166e3-99d6-47aa-b774-0dfe69e0da8d@intel.com>
-Date: Fri, 29 Aug 2025 14:05:17 +0530
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
-        "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
-        PowerPC <linuxppc-dev@lists.ozlabs.org>,
-        Aboorva Devarajan <aboorvad@linux.ibm.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>,
-        Kajol Jain <kjain@linux.ibm.com>, hbathini@linux.vnet.ibm.com,
-        Aditya Bodkhe <Aditya.Bodkhe1@ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C077DD2F-352D-4DEA-9A3C-9D38411FE276@linux.ibm.com>
-References: <20250815083407.27953-1-atrajeev@linux.ibm.com>
- <20250815083407.27953-13-atrajeev@linux.ibm.com>
- <c83166e3-99d6-47aa-b774-0dfe69e0da8d@intel.com>
-To: Adrian Hunter <adrian.hunter@intel.com>
-X-Mailer: Apple Mail (2.3776.700.51)
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=GqtC+l1C c=1 sm=1 tr=0 ts=68b1665f cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=QyXUC8HyAAAA:8 a=VnNF1IyMAAAA:8
- a=PQ0u6mOqf5tVaTv6lJEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: PEjV-EK6ldknHxRXMJaC9germ_M2xWSs
-X-Proofpoint-ORIG-GUID: 4WcRs649npg_lg7WTpAjXos2XaWm4bOd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODI4MDEyNyBTYWx0ZWRfX4BSh6mTd0cUK
- 4GLlV3TvgIY7WLllROA/AUyBC0vjiu8AueEArJaeetLBw5SYE8eiaU19AE3G0z1LhxpjNMm0dwS
- cyEDskIYBzmkJxPwM+oMnJUWSpd7/oIzKQFXzSDgd9l4JBdchRUH31KRcBLF/B9++XD6OrAb0Wl
- uyMjdzzzizeB5OVlA/jiGgr7/1KMa8KOn6qHKYtYdfApzucdaCe608/fmo6Q58q6x4yIW021s2g
- Js7f/fNeX91QV+V+sFHmQkl3WsKDM+7AFPB9DPczxPIuDvOSxBBEUUl/GfU/MxaM5gA+GR4JvKM
- yTa+yP31/0TTjU0jeebRziXXjrRCgDrU7T8L/9MJVTCHiIumnrUueXky6nAS3/zFmqih4Wm40AB
- SRUZFR5A
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-29_02,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 phishscore=0 bulkscore=0 suspectscore=0
- adultscore=0 malwarescore=0 impostorscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508280127
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLC7KIoi-LoH2en4@google.com>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Thu, Aug 28, 2025 at 01:25:12PM -0700, Brian Norris wrote:
+> On the flip side: it's not clear
+> PCI_ERS_RESULT_NEED_RESET+pci_channel_io_normal works as documented
+> either. An endpoint might think it's requesting a slot reset, but
+> pcie_do_recovery() will ignore that and skip reset_subordinates()
+> (pci_host_reset_root_port()).
+> 
+> All in all, the docs sound like endpoints _should_ have control over
+> whether we exercise a full port/slot reset for all types of errors. But
+> in practice, we do not actually give it that control. i.e., your commit
+> message is correct, and the docs are not.
+> 
+> I have half a mind to suggest the appended change, so the behavior
+> matches (some of) the docs a little better [1].
+
+A change similar to the one you're proposing is already queued on the
+pci/aer topic branch for v6.18:
+
+https://git.kernel.org/pci/pci/c/d0a2dee7d458
+
+Here's the corresponding cover letter:
+
+https://lore.kernel.org/r/cover.1755008151.git.lukas@wunner.de
+
+There was a discussion why I didn't take the exact same approach you're
+proposing, but only a similar one:
+
+https://lore.kernel.org/r/aJ2uE6v46Zib30Jh@wunner.de
+https://lore.kernel.org/r/aKHWf3L0NCl_CET5@wunner.de
 
 
-> On 27 Aug 2025, at 10:59=E2=80=AFPM, Adrian Hunter =
-<adrian.hunter@intel.com> wrote:
->=20
-> On 15/08/2025 11:34, Athira Rajeev wrote:
->> Introduce arch_perf_sample__fprintf_synth_evt to add support for
->> printing arch specific synth event details. The process_event()
->> function in "builtin-script.c" invokes perf_sample__fprintf_synth() =
-for
->> displaying PERF_TYPE_SYNTH type events.
->>=20
->>   if (attr->type =3D=3D PERF_TYPE_SYNTH && PRINT_FIELD(SYNTH))
->>    perf_sample__fprintf_synth(sample, evsel, fp);
->>=20
->> perf_sample__fprintf_synth() process the sample depending on the =
-value
->> in evsel->core.attr.config . Currently all the arch specific =
-callbacks
->> perf_sample__fprintf_synth* are part of "builtin-script.c" itself.
->> Example: perf_sample__fprintf_synth_ptwrite,
->> perf_sample__fprintf_synth_mwait etc. This will need adding arch
->> specific details in builtin-script.c for any new perf_synth_id =
-events.
->>=20
->> Introduce arch_perf_sample__fprintf_synth_evt() and invoke this as
->> default callback for perf_sample__fprintf_synth(). This way, arch
->> specific code can handle processing the details.
->=20
-> A default callback is not needed.
->=20
->>=20
->> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
->> ---
->> tools/perf/builtin-script.c | 7 +++++++
->> 1 file changed, 7 insertions(+)
->>=20
->> diff --git a/tools/perf/builtin-script.c =
-b/tools/perf/builtin-script.c
->> index d9fbdcf72f25..eff584735980 100644
->> --- a/tools/perf/builtin-script.c
->> +++ b/tools/perf/builtin-script.c
->> @@ -2003,6 +2003,12 @@ static int =
-perf_sample__fprintf_synth_iflag_chg(struct perf_sample *sample, FILE
->> return len + perf_sample__fprintf_pt_spacing(len, fp);
->> }
->>=20
->> +static void arch_perf_sample__fprintf_synth_evt(struct perf_sample =
-*data __maybe_unused,
->> +  FILE *fp __maybe_unused, u64 config __maybe_unused)
->> +{
->> + return;
->> +}
->> +
->> static int perf_sample__fprintf_synth(struct perf_sample *sample,
->>       struct evsel *evsel, FILE *fp)
->> {
->> @@ -2026,6 +2032,7 @@ static int perf_sample__fprintf_synth(struct =
-perf_sample *sample,
->> case PERF_SYNTH_INTEL_IFLAG_CHG:
->> return perf_sample__fprintf_synth_iflag_chg(sample, fp);
->> default:
->=20
-> Should just add something like:
->=20
-> case PERF_SYNTH_POWERPC_VPA_DTL:
-> return perf_sample__fprintf_synth_vpadtl(sample, fp);
+> Specifically, I'm trying to see what's supposed to happen with
+> PCI_ERS_RESULT_CAN_RECOVER. I see that for pci_channel_io_frozen, almost
+> all endpoint drivers return PCI_ERS_RESULT_NEED_RESET, but if drivers
+> actually return PCI_ERS_RESULT_CAN_RECOVER, it's unclear what should
+> happen.
+> 
+> Today, we don't actually respect it; pcie_do_recovery() just calls
+> reset_subordinates() (pci_host_reset_root_port()) unconditionally. The
+> only thing that return code affects is whether we call
+> report_mmio_enabled() vs report_slot_reset() afterward. This seems odd.
 
-Ok Adrian
+In the series queued on pci/aer, I've only allowed drivers to opt in
+to a reset on Non-Fatal Errors.  I didn't dare also letting them opt
+out of a reset on Fatal Errors.
 
-Will directly call perf_sample__fprintf_synth_vpadtl instead of having =
-default call back
+These changes of behavior are always risky, so it seemed prudent to not
+introduce too many changes at once.  There was no urgent need to also
+change behavior for Fatal Errors for the use case at hand (the xe graphics
+driver).  I went through all drivers with pci_error_handlers to avoid
+breaking any of them.  It's very tedious work, takes weeks.  It would
+be necessary to do that again when changing behavior for Fatal Errors.
 
-Thanks for all comments, I will post a V2 addressing the changes
+pcieaer-howto.rst justifies the unconditional reset on Fatal Errors by
+saying that the link is unreliable and that a reset is thus required.
 
-Thanks
-Athira
->=20
->> + arch_perf_sample__fprintf_synth_evt(sample, fp, =
-evsel->core.attr.config);
->> break;
->> }
+On the other hand, pci-error-recovery.rst (which is a few months older
+than pcieaer-howto.rst) says in section "STEP 3: Link Reset":
+"This is a PCIe specific step and is done whenever a fatal error has been
+detected"
+
+I'm wondering if the authors of pcieaer-howto.rst took that at face value
+and thought they'd *have* to reset the link on Fatal Errors.
+
+Looking through the Fatal Errors in PCIe r7.0 sec 6.2.7, I think a reset
+is justified for some of them, but optional for others.  Which leads me
+to believe that the AER driver should actually enforce a reset only for
+certain Fatal Errors, not all of them.  So this seems like something
+worth revisiting in the future.
 
 
+> All in all, the docs sound like endpoints _should_ have control over
+> whether we exercise a full port/slot reset for all types of errors. But
+> in practice, we do not actually give it that control. i.e., your commit
+> message is correct, and the docs are not.
+
+Indeed the documentation is no longer in sync with the code.  I've just
+submitted a series to rectify that and cc'ed you:
+
+https://lore.kernel.org/r/cover.1756451884.git.lukas@wunner.de
+
+Thanks,
+
+Lukas
 
