@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-11515-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11516-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76B2B3C7AA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 05:54:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CEE6B3C7AB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 05:54:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cDLqF2XhTz2yN2;
-	Sat, 30 Aug 2025 13:54:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cDLqK2YNSz300F;
+	Sat, 30 Aug 2025 13:54:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1029"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756526057;
-	cv=none; b=XIuFF0Z+rb+WqLSgsi9CWYu8oDqE5mDmo89MnsGh5dHSOrl+0IkRAMFNQ6sZTDauSzWcoaXitYb/Xz+QI0LL57P7npXJx8EUgLSbx9ZCIO3epiGahf8H8LJ7p9SvYkiy6GbPP5HGYhYf8CzdjeSkY2utfdlOOPd6teK+D5UBoaIT/A2+T7hRHHS4I1+ANvhSuCygfJizkt+1w0uy8E9opvPwHQXu1aJTXWs1qTXliTxxV28u663VoTAbGtvlC1232GV79TUz85/aW9vPTdC0LpDG1DPP09obGXtnp9Bd/1wl0WP7qDRIaCFgyF4L1t/M9qTIvaYbF/yS0Q0R1Z/DCA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756526061;
+	cv=none; b=hdAG8H+B81Cq7N2LOUzLu5cXJ3R22LoKn/mDdbvC01EBbmuWZRJPQDIHHWFTiUDGmt9aBzlhHe9PXEK+ti2CK745QCoTdebUmbpk4Fn2/mECWa7ImMeSFE0tZiSqR6uou2Gnfy/jp/rv9FeD+iNk3bGp2ugBD7j7WGaq7o/uTJVCci4tSg9StiJ4WkMvKp7f0TDXESFKrTaj/6EjF0pN+JzH56dwNsXeqSYCNp/HIR8UaAUCVLFGJrkVuPvERxUyJTZ6FOJhUBiC5iofMRHH7PyzJBAqBFAd/fValQlwucQByKF1lgmrPGWsdwUrTDVbHjPN0BvQFkiv8I6g4H8daQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756526057; c=relaxed/relaxed;
-	bh=plSsDdzABT1tznTCZ0rkJIcIYSYV3FYsa1ySWxvW7gE=;
+	t=1756526061; c=relaxed/relaxed;
+	bh=w+YeVa94sRlmZ0nq34HuS5G+Fyh2Uxqmz3Ls5c8SH+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L7TiQu2NmwlxYZDigmKYsdSfjU/gYltTigvUOoleHwu5BQop6ASYibKwzGVWPq0wOg3dYMYS+YyX8oeXZdq9hYuFDbxZ9NO0TPPsRihIq8+RUBjndf/qpRmMhPdwzd06mGH6dmENm+gIV9bYTU5uAbAyHHpeE0bZzOZM0yPz+QKX3Gp2OOupYCDuyg7VlEIdTjQiYXE6I8MycrBB/qynjyox9dc6k0N25mMKRVWTCtjRuMig5WWjNXysH6xq0mLmsJN4Q6m+5m1dgFq/NDUNnbUuI2jhaxVUMyPuy5U6FAdBjl2DMsHem7Vevk2ZItt9wyQEI4ONOOhytO5I4Nb2+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=MXUnVUW+; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=fTUe8LQFdfmb4b2HZ4OnYUjONyLFGKHa3lyWk0kFxKL7uWjTd5Budalx1izXZy9kFFSW5MG5zdA1/a3Kf7ErDTKJCMswTsznJzt8qAnOEvtW0DDYGsQmsiaVpQDzEo68IQAS5PaUO1pP16CBDuTyp011OFRES/pI5yzUZAS2NguvYi28XAka2/5zyyoSe8D7801f4ntgcebhAvSzTZI6tJRu4KIgYG716GEOdYAlScBmduDlKNpy0I90AtO79bc7SKNaErXB1C5NWEKRd0yQ+ohp665jI5ppHXB2p5uhWsoLnNHTmoXmv31TMr4JCPqOwMlYAZOpn3/Z388vFZuRvQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Ol4QW4B/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=MXUnVUW+;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Ol4QW4B/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDLqD4KgBz2yyd
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 13:54:16 +1000 (AEST)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-327771edfbbso2802768a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 20:54:16 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDLqJ5Mv6z2yyd
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 13:54:20 +1000 (AEST)
+Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-327f1fef76cso1168515a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 20:54:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756526054; x=1757130854; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1756526058; x=1757130858; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=plSsDdzABT1tznTCZ0rkJIcIYSYV3FYsa1ySWxvW7gE=;
-        b=MXUnVUW+r+cvh1vhqxAe6vrPV4NXoEm/scEkRXN36aifIsT8mjeevwygxosjwv+AMT
-         V04rnnv8za9Ow9xobranLGsjRogtQ8suc5nn5NwBGV91miHHyFuJm58CmNZSgeaXKQbC
-         4UDTb7dAsa31lCy5626vhmpmYSscspixSLcdii8YVO7ykJBWCBSjhlPuvrf3ntHPXN7C
-         nLX9/WKf36zqxdB2fWzUtuxTh8pY3sSdwhmWM3ZxxXkInsIuUI03Il8Ltikeix4MDNLs
-         2xo0bc3hZymLnaFKbQDaQcSVedhBBeZEW6GcjGxMcX3VQx75rIzCKlw64en8nOhSATOe
-         vc3w==
+        bh=w+YeVa94sRlmZ0nq34HuS5G+Fyh2Uxqmz3Ls5c8SH+A=;
+        b=Ol4QW4B/rvCQyiUOlfWfcsTarCJLbJ5i9oGvy0w6V8fflwwKDSolfWI3QCPl1bCTAA
+         fweWZyIBlnSCzdzJGxMNdfVSLtbTpDPst/G2sd9sgET4I0NjWmXkBEZm7PSke0L9HCtp
+         lhW1eNaOmzDnblTKvtDEvUSwhY0z0b/8064ViRDUeOVa1eSRB67Get0yJoDPeLoBww4B
+         VxvgM9JcEETzJTTnXoiRHkg6pzIj311FfuF3q9aA9ZAk5RCcmRZsrSLP0d3MNgqSaG13
+         ZdXgwbkqcVWs0cLL9rU4JVytii5KnhheWsby58auqn03GKkPUEyqN7LghOzZNkdHN6Yk
+         STpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756526054; x=1757130854;
+        d=1e100.net; s=20230601; t=1756526058; x=1757130858;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=plSsDdzABT1tznTCZ0rkJIcIYSYV3FYsa1ySWxvW7gE=;
-        b=LXvqDzNa0bLAPkU2tzj3l32ggyR7CBCUkrfC1XsP7XPSJxFKhQXavxG3X/PuYzUes6
-         xioGuvYtzKTm4jHyLXmGAMfd0flUWgyV3sg1Y7qHHuRjTOq/9skmLcpRvSXB5KgSzOIV
-         VQ4Y4MF0yetD6Xe3cpTd7zTWogP1vSuHUlJ+0u3vCoXOjfC2btLnZQQoy649/QX+zsX7
-         E883Yim/dy7MKmEiN//YbNyNe3689uV/cc6xuDZ2oJVb9AbJxU07Ema71oqtdRNFJWXP
-         +/+FH5v4ioaEICSCqN0lyZGg9C3lcy9PJ6FyKhJIpzSIDunQmcLpySgCLZqljd3EYu7k
-         X51g==
-X-Gm-Message-State: AOJu0Yxb69P7fOV6Bcv/pTPmRCK7/q0mShz+OZDV9eOFqok9EcHQGDlc
-	248GjVjf2xi0dhNp7stW1Ml3cci5zf8bPI01SVKxppn6t2/ZvC8ssARVqfz0PQ==
-X-Gm-Gg: ASbGncsZU3dksC6hBt28tFDglNZfWLuHALIOIvAUCM2bprPX1d4yJiIpDb+lgea21IC
-	T/++W3LEjOliSoUxrnUcCbD4PCp7a2oEU95wssFmfxb8q1uZ5Kax19lkC1gDDtn+c8LPq5qRD4o
-	EE0KYmyrR6mVN78r50z8JHoL+Gx3Oo1APlXCj6F6PWjsyqShr2zl0k2ujebSVWyl0Tvw6G8VZu/
-	Yv7ffk1FNaJvTvKeqMLQ1AUeH6V6XXIQWthFvTw1Kh5GZAT8hszhdEE80weVyZ7XHrRQKc65fOk
-	9tlxX7pZiw+4NLZDSqzGfEEhJ5upYET98LmngKi9RHkEK11G9p25JDLefqus5VCIA457hZ4QN7U
-	VfuZNdWdbtOJWNQk=
-X-Google-Smtp-Source: AGHT+IEYZk48XHenX4s8rQf/XPe4K4SVLq22c03oF0PgZR03XOR+z7s7+PcNw1Ejo1XAgBxOL4gSxw==
-X-Received: by 2002:a17:90b:1848:b0:327:6de3:24b6 with SMTP id 98e67ed59e1d1-3281541223dmr1465937a91.8.1756526053886;
-        Fri, 29 Aug 2025 20:54:13 -0700 (PDT)
+        bh=w+YeVa94sRlmZ0nq34HuS5G+Fyh2Uxqmz3Ls5c8SH+A=;
+        b=sQIIfkHCGdmDVC5WMIKK2YeqrPw1JnZR0Nvk18apecF/nDT3NrFbvGbvIJpQH5F+qn
+         I3yf07spS+UdJ0anhgjajBHgmuLGuDCH/nUxfalDT6iHFe0NOR2J3O81+WR/lU2QI3Q9
+         VXor7WfZs7MgPcZ7B7LeEBI20tEhkeFEqH9b+8s7S9ysYU/RtQPNpval+W/dYMHroPKS
+         XgqwZQ2nuK8gqbmGYjmOedUvEYJu3AtOkvEU24aEFVRTF51uwpzyKHc94wEwkqTn/l0g
+         9BrtAYlKN2dbBqfSWZKdTS5464CxZ5y5Mkrr2qOJZMfXwUQlx7XGkk371oriauG7oEim
+         8ozg==
+X-Gm-Message-State: AOJu0YxADtkujyHPNn5TpqMaszDDY5tSe3VAIG7l+NIJBtzKAeSUZipB
+	lVtsHLPoGEMV+M1Hh8gxhbtgFV+p5KCugcdDS74ZhM4JwnXjIa5hozaAjZT4DQ==
+X-Gm-Gg: ASbGnctijnXjNCQBRS4JzDsSJ1HTTN1OFDErZ5R3h8PbT4MuyYFFC9aSoMrJVqzCHdI
+	7ekI6ibsFzS+jG4yOXXr+cDJI5rhPJymYvhrnuunQOKz7oV2xEegFcDads4fpXtdTe5+0n4T8Lz
+	/4UpYeSeSi0/mJgNSrpNG2lQq2UVwa7E0izuaTub/fSfnK2EXSwKzCx7FTDIAYSnjFuUk3Vq6NJ
+	HpMh9HD2o2pavaYgVu0ZUFOKvoa6l6kWk/X42EUK/2Wqk9eKU5K2msfZ5j7/8rEWes9cM1gzrZI
+	7TAO/jEn/cDoOZnCsEHCBsK9BggW32jXR7CjETLkQD+nSrO1NVfoIYHIHW2QSgoD9M+oeAZkLsr
+	RPS+A5+FSMGbG4ux07qnskQBUnQ==
+X-Google-Smtp-Source: AGHT+IF2/OdN8tCTtZ39E/4bVUXWoGvK0gBzJAIBV1w8VsxZE9pUxN6u0hvJuP/YkZecjHCOthV90w==
+X-Received: by 2002:a17:90a:e7cd:b0:328:d94:174 with SMTP id 98e67ed59e1d1-32815412b69mr1074952a91.5.1756526057668;
+        Fri, 29 Aug 2025 20:54:17 -0700 (PDT)
 Received: from dw-tp ([171.76.86.139])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327da90ee17sm4279879a91.24.2025.08.29.20.54.10
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327da90ee17sm4279879a91.24.2025.08.29.20.54.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 20:54:13 -0700 (PDT)
+        Fri, 29 Aug 2025 20:54:17 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
@@ -79,9 +79,9 @@ Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
 	Paul Mackerras <paulus@ozlabs.org>,
 	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
 	Donet Tom <donettom@linux.ibm.com>
-Subject: [RFC 3/8] book3s64/hash: Fix phys_addr_t printf format in htab_initialize()
-Date: Sat, 30 Aug 2025 09:21:42 +0530
-Message-ID: <20a8d7bb22c45eeab5cc1b7e5a78446dc1506777.1756522067.git.ritesh.list@gmail.com>
+Subject: [RFC 4/8] powerpc/ptdump/64: Fix kernel_hash_pagetable dump for ISA v3.00 HPTE format
+Date: Sat, 30 Aug 2025 09:21:43 +0530
+Message-ID: <91cdba6f4a58d3e11ae95be99df3852c49baf2a7.1756522067.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1756522067.git.ritesh.list@gmail.com>
 References: <cover.1756522067.git.ritesh.list@gmail.com>
@@ -98,22 +98,18 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-We get below errors when we try to enable debug logs in book3s64/hash_utils.c
-This patch fixes these errors related to phys_addr_t printf format.
-
-arch/powerpc/mm/book3s64/hash_utils.c: In function ‘htab_initialize’:
-arch/powerpc/mm/book3s64/hash_utils.c:1401:21: error: format ‘%lx’ expects argument of type ‘long unsigned int’, but argument 2 has type ‘phys_addr_t’ {aka ‘long long unsigned int’} [-Werror=format=]
- 1401 |                 DBG("creating mapping for region: %lx..%lx (prot: %lx)\n",
-arch/powerpc/mm/book3s64/hash_utils.c:1401:21: error: format ‘%lx’ expects argument of type ‘long unsigned int’, but argument 3 has type ‘phys_addr_t’ {aka ‘long long unsigned int’} [-Werror=format=]
-cc1: all warnings being treated as errors
-make[6]: *** [../scripts/Makefile.build:287: arch/powerpc/mm/book3s64/hash_utils.o] Error 1
+HPTE format was changed since Power9 (ISA 3.0) onwards. While dumping
+kernel hash page tables, nothing gets printed on powernv P9+. This patch
+utilizes the helpers added in the patch tagged as fixes, to convert new
+format to old format and dump the hptes. This fix is only needed for
+native_find() (powernv), since pseries continues to work fine with the
+old format.
 
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
@@ -123,24 +119,36 @@ Cc: Paul Mackerras <paulus@ozlabs.org>
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
 Cc: Donet Tom <donettom@linux.ibm.com>
 Cc: linuxppc-dev@lists.ozlabs.org
+Fixes: 6b243fcfb5f1e ("powerpc/64: Simplify adaptation to new ISA v3.00 HPTE format")
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- arch/powerpc/mm/book3s64/hash_utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/mm/ptdump/hashpagetable.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 1e062056cfb8..495b6da6f5d4 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1394,7 +1394,7 @@ static void __init htab_initialize(void)
- 		size = end - base;
- 		base = (unsigned long)__va(base);
+diff --git a/arch/powerpc/mm/ptdump/hashpagetable.c b/arch/powerpc/mm/ptdump/hashpagetable.c
+index a6baa6166d94..671d0dc00c6d 100644
+--- a/arch/powerpc/mm/ptdump/hashpagetable.c
++++ b/arch/powerpc/mm/ptdump/hashpagetable.c
+@@ -216,6 +216,8 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
+ 	vpn  = hpt_vpn(ea, vsid, ssize);
+ 	hash = hpt_hash(vpn, shift, ssize);
+ 	want_v = hpte_encode_avpn(vpn, psize, ssize);
++	if (cpu_has_feature(CPU_FTR_ARCH_300))
++		want_v = hpte_old_to_new_v(want_v);
 
--		DBG("creating mapping for region: %lx..%lx (prot: %lx)\n",
-+		DBG("creating mapping for region: %llx..%llx (prot: %lx)\n",
- 		    base, size, prot);
-
- 		if ((base + size) >= H_VMALLOC_START) {
+ 	/* to check in the secondary hash table, we invert the hash */
+ 	if (!primary)
+@@ -229,6 +231,10 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
+ 			/* HPTE matches */
+ 			*v = be64_to_cpu(hptep->v);
+ 			*r = be64_to_cpu(hptep->r);
++			if (cpu_has_feature(CPU_FTR_ARCH_300)) {
++				*v = hpte_new_to_old_v(*v, *r);
++				*r = hpte_new_to_old_r(*r);
++			}
+ 			return 0;
+ 		}
+ 		++hpte_group;
 --
 2.50.1
 
