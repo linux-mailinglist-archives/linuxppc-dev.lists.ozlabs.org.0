@@ -1,83 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-11535-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11536-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1003B3C8BF
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 09:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF1FB3C92C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 10:12:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cDRf12yn3z2ytT;
-	Sat, 30 Aug 2025 17:31:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cDSYg3gJmz2xgX;
+	Sat, 30 Aug 2025 18:12:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756539097;
-	cv=none; b=AC5v+n+di0iaw1JUhF85FbyPAKuXD6fEUVrrE2To7UoOv5UaU0ZSOpl2lfFHoM5E4vTNGqHLE9GGDCm7Bc/e/m3CMGMPvEso2PNomcD8c6WTzR7OlXhq2Sm2LbRW8Plrjojum9RP/91hfxsV+05Rqgs4byI+Yv7IRjfsNnm2roo7dBc/STNqtrmcfHz3oMzenk6Tkb1O9+Xa7KIisrTvXwE8HZ9U2iPC1sTBHvGzETiNqRvAbyR3zTDwCzBKxL1hWoGRy2Ub8t3pK8jvlC0CjJj6MABX07BkQZlp/5gGCNtSMTkSTG7ssihx8+6q32rMf/PKtTOOiIW9Ut+6xTP1Lw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756541575;
+	cv=none; b=KPM05p3cYo6CYHZLp0SNYpMv6UuD/2gACsoIrxHu9WueQ2yPdi5h0m0WN6cOpoCFP8yWqVm3rWzXYZ/E4kxYrw44A0VxD+5vgyf8Of77Z8cPnTg4RQHz36CWzsiWNcmdheiEOKbAQ1sDjCPJWqlS8anM4gZ44XMopRDlS/b5pY7IkE6pr0qmfuYIVSp3TNlwjR/TSJyPpS7hBEh3RCQ4xnzNSUl9OuV6gF5o1J+cmdkgDbZ725+IBaeLo7iZKBjVePelG8AeyVRMsT7BjqnGtKbiYyw2LAKwE8bozh1GOBiv9uWDw40xj7MgqK2QbdKErNK5LF9swemSebVJ/k/dxw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756539097; c=relaxed/relaxed;
-	bh=vUVt8H114oBPRM3DQc+rlJzjxYG3q6VmtwmqaI0nblE=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-version:Content-type; b=e7TtWDzQsMHtYrIWUmnFPjXYQLAsQ0ORpMOZI8A2pVH1/Bi5wuRgzdlNeKZkg5MLrsk7/RYcyAcdYdr0fFQTaNNjBKYENqkZD9SGkYwnnasdRQ/vuDLTk1jaiEcjAqGScQkA6kMkgCJd0D5iK53ywhduQlRhXy7pibkgRRsJeLLElchcn0FkL4J5xXIwExt11gMykFDUpTrViHlTMPLfs97CdEsXPkmuxf2EYmfJj4IaEDMxhNhB6VVZVIUwrqpIWgNNFhk5s9Br2VlqXaVQeCjqkJt7cC+I4W5BDVpcxclkWjyOncJ2MSdbpRqJPhq2rKmfpT1NNCcjdv/EK79Vew==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=l5lpnEF8; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=l5lpnEF8;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+	t=1756541575; c=relaxed/relaxed;
+	bh=uoDaBDkJxN4DrhbaGMrOi9jnuKXnCi+gTwN3YOh/TfM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ee9l/nIEWBhGL38fDGw+/74V6ikusl5X7zaykZt7KpaJIDgZqNNK+omXIZTE77Hw+/mrmSS3egbeCrwXn3lTzXWH1jTh59/Z1BVrYzJzGs9KRlmpKuG0RKzDTf66nMO4nOI02JBujE7QKT8eAhoc2uzuocBv1tO9caWAcFt4uZIJ2+sEOzG+9KmlsfmUWLaZB6M/kfIgo2Xyna7BT47i2QYoey/saIb3dgZ19hSjK+Ffsw0QVohflEkGYJioTTqyDxMbO/hgdbTddTlTl21uwUonalXJw5K/pYZDBmXWmzTgr36AD9crnz83MR6RMGADMeKIu1EDM6OOAwMRcistVw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDRdz3pj4z2yN2
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 17:31:35 +1000 (AEST)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-248dc002bbaso22108115ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 00:31:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756539093; x=1757143893; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vUVt8H114oBPRM3DQc+rlJzjxYG3q6VmtwmqaI0nblE=;
-        b=l5lpnEF8G4kPFVY4b5PUfxAXl3QsI0PL9xw4uhgqTasvQL67rEzl7W+FYAUWdYLTt5
-         5Iv4pFnq+uy0i7Vruhh5RL8d2xBadeMV8gJ8wj0GuKmmq0R10+QZ0+fZuge+VvGITi7z
-         jlPmBGGIqB8Jpe7l1oCKygzNlXepKrYkQ1m1j2iLSz2me8DpNftiirYRVncWn0A4ToSn
-         Mc4mje+0k3sNQTPV/OGpWdUrnqFXXKlxaUp/5o1DW3vg2p4OmZsnScA3Ggb6SWHN8xde
-         6zj9L81k8OFDup7GZQZmNHl4R+57VdQziW6ujTpLUfxSJ92zxanwAsgTCYQRGEtOcYVj
-         DSSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756539093; x=1757143893;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vUVt8H114oBPRM3DQc+rlJzjxYG3q6VmtwmqaI0nblE=;
-        b=nu+71wWe0Z8ivwK+5Y01x0YRS0gxid3ZOF9Zk2axMKYlpisG6JGP0EK2d2XmfZnt01
-         4B2ugveiQhf6g5BkW/pz5tNoe5myVNuPQlueIXSyOExOCOuuQJTO9Xh4uXtZR7JuWCxF
-         2G3y0qnr5+0nvvWmFByWgh0OHvtSPd5089CiKkDImLJ0eA16I6CoqzrLd4smXQVKZErJ
-         QAYsChMfAiKqczByf+rC7lzsIUgQwqLpKuMJOXlV1757vmPRZfdaqf6ML8ePZyZGzBYQ
-         K4KMWKxfexH9AuMYT0jUcIsqVr+kDHe8KRXm+qpPzmFQB+/8Utbm3foznViE++4RCPMr
-         4HUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUxJP7Y7URvNP5ogiguMKkEKZ06GeVdN2Q5HK1h4ETzTPrzx0+nXdwS0LAP2mv4R8vxqlgl8fZhBgQPxi8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzUwfhuEUshhiAVDWyAJ5ECCbcpb7wCauUkQZUDmcXWzaW03+ir
-	O0jGaBJVs02RJiEmZIwDBbTO/ioEv4KhiW5VpNE5DnEM3Grs+rAEDBBK
-X-Gm-Gg: ASbGncvx6qqwXO6VnXujtGhxxwOzeUhilhiVz19U2hACVkFSqGjHfRpBtPrU8lNHHi9
-	U3uPyN1MrPTt7286HcNIPydI5OBRVdL3RPl4qxO/uupl59IY8UkAJMJdYV9segjIcThCtDCD205
-	l0NMevnq7VyIV6oDFTh/KdKEg/US+jUWh9Q9H6CcyZY61GfZlPQXjicb/7j5AFsYkkQS4qm2bL2
-	xvy0TDZJKPPZRQs0b4Hbf042YRAlIPn+vzkdxmMfZx03D3fF/cJxk/kJlguUGYNiAaxNSoIdq+s
-	YXFNxi5TeeGNiDrbEDkdL9llR4HWw9XZ/VMi4jtYYtuV73r9Aj3S2xy3NdIpnUWgYuFNGVK66Lu
-	CpnV68xzp75gk/OARfRxWX40TN0IRKE8lbNyX
-X-Google-Smtp-Source: AGHT+IG+YCxDGvexQmFBtK6PVYijlpzPgeVtfrL8AW/WmAl74P6OJEtJ7iCQq1TonpJvxc+b5N3D8Q==
-X-Received: by 2002:a17:903:28c:b0:245:f2c2:64ed with SMTP id d9443c01a7336-24944a742f8mr17407535ad.24.1756539093210;
-        Sat, 30 Aug 2025 00:31:33 -0700 (PDT)
-Received: from dw-tp ([171.76.86.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2490648d04csm44681135ad.107.2025.08.30.00.31.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Aug 2025 00:31:32 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@ozlabs.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Donet Tom <donettom@linux.ibm.com>
-Subject: Re: [RFC 3/8] book3s64/hash: Fix phys_addr_t printf format in htab_initialize()
-In-Reply-To: <824bfe0d-7a16-4b35-a0ec-565e4df3223e@csgroup.eu>
-Date: Sat, 30 Aug 2025 13:00:58 +0530
-Message-ID: <87tt1pjmfh.fsf@gmail.com>
-References: <cover.1756522067.git.ritesh.list@gmail.com> <20a8d7bb22c45eeab5cc1b7e5a78446dc1506777.1756522067.git.ritesh.list@gmail.com> <824bfe0d-7a16-4b35-a0ec-565e4df3223e@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDSYf1Z1sz2xPw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 18:12:54 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 6CBCE2C051E5;
+	Sat, 30 Aug 2025 10:12:44 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 2F6123AA697; Sat, 30 Aug 2025 10:12:44 +0200 (CEST)
+Date: Sat, 30 Aug 2025 10:12:44 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Linas Vepstas <linasvepstas@gmail.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Terry Bowman <terry.bowman@amd.com>,
+	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+	Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
+	Brian Norris <briannorris@chromium.org>
+Subject: Re: [PATCH 3/4] PCI/ERR: Amend documentation with DPC and AER
+ specifics
+Message-ID: <aLKyfNHC2hz__BCS@wunner.de>
+References: <cover.1756451884.git.lukas@wunner.de>
+ <42726e2fd197959d6228d25552504353ffb53545.1756451884.git.lukas@wunner.de>
+ <CAHrUA364QSpcJOu=96JV-3hR9G5M0FSUPNhb4AspULAcXvQP6w@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,67 +64,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=2.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,MALFORMED_FREEMAIL,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHrUA364QSpcJOu=96JV-3hR9G5M0FSUPNhb4AspULAcXvQP6w@mail.gmail.com>
+X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
-X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+On Fri, Aug 29, 2025 at 06:25:08PM -0500, Linas Vepstas wrote:
+> On Fri, Aug 29, 2025 at 2:41AM Lukas Wunner <lukas@wunner.de> wrote:
+> >
+> > +   On platforms supporting Downstream Port Containment, the link to the
+> > +   sub-hierarchy with the faulting device is re-enabled in STEP 3 (Link
+> > +   Reset). Hence devices in the sub-hierarchy are inaccessible until
+> > +   STEP 4 (Slot Reset).
+> 
+> I'm confused. In the good old days, w/EEH, a slot reset was literally turning
+> the power off and on again to the device, for that slot. So it's not so much
+> that the device becomes "accessible again", but that it is now fresh, clean
+> but also unconfigured. I have not studied DPC, but the way this is worded
+> here makes me think that something else is happening.
 
-> Le 30/08/2025 à 05:51, Ritesh Harjani (IBM) a écrit :
->> We get below errors when we try to enable debug logs in book3s64/hash_utils.c
->> This patch fixes these errors related to phys_addr_t printf format.
->> 
->> arch/powerpc/mm/book3s64/hash_utils.c: In function ‘htab_initialize’:
->> arch/powerpc/mm/book3s64/hash_utils.c:1401:21: error: format ‘%lx’ expects argument of type ‘long unsigned int’, but argument 2 has type ‘phys_addr_t’ {aka ‘long long unsigned int’} [-Werror=format=]
->>   1401 |                 DBG("creating mapping for region: %lx..%lx (prot: %lx)\n",
->> arch/powerpc/mm/book3s64/hash_utils.c:1401:21: error: format ‘%lx’ expects argument of type ‘long unsigned int’, but argument 3 has type ‘phys_addr_t’ {aka ‘long long unsigned int’} [-Werror=format=]
->> cc1: all warnings being treated as errors
->> make[6]: *** [../scripts/Makefile.build:287: arch/powerpc/mm/book3s64/hash_utils.o] Error 1
->> 
->> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Nicholas Piggin <npiggin@gmail.com>
->> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Cc: Paul Mackerras <paulus@ozlabs.org>
->> Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
->> Cc: Donet Tom <donettom@linux.ibm.com>
->> Cc: linuxppc-dev@lists.ozlabs.org
->> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> ---
->>   arch/powerpc/mm/book3s64/hash_utils.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
->> index 1e062056cfb8..495b6da6f5d4 100644
->> --- a/arch/powerpc/mm/book3s64/hash_utils.c
->> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
->> @@ -1394,7 +1394,7 @@ static void __init htab_initialize(void)
->>   		size = end - base;
->>   		base = (unsigned long)__va(base);
->> 
->> -		DBG("creating mapping for region: %lx..%lx (prot: %lx)\n",
->> +		DBG("creating mapping for region: %llx..%llx (prot: %lx)\n",
->
-> Use %pa
->
-> See 
-> https://docs.kernel.org/core-api/printk-formats.html#physical-address-types-phys-addr-t
->
+With DPC, when a Downstream Port (or Root Port) detects an error,
+it immediately disables the downstream link, thereby preventing
+corrupted data from reaching the rest of the system.  So the error
+is "contained" at the Downstream Port.
 
-Right. Make sense. Will change it in the next spin. 
+It is then necessary for system software (i.e. drivers/pci/pcie/dpc.c)
+to "release" the Downstream Port out of containment by re-enabling the
+link.  This happens in dpc_reset_link() by writing (and thus clearing)
+the PCI_EXP_DPC_STATUS_TRIGGER bit in the PCI_EXP_DPC_STATUS register.
 
--ritesh
+In-between, the devices downstream are inaccessible.
 
->>   		    base, size, prot);
->> 
->>   		if ((base + size) >= H_VMALLOC_START) {
->> --
->> 2.50.1
->> 
+Disabling the link results in a Hot Reset being propagated down the
+hierarchy below the Downstream Port.  So there's no power cycle
+involved.  After the link is re-enabled, devices are in power state
+D0_uninitialized and need to be re-initialized by the driver in
+->slot_reset() and/or ->resume().
+
+If you feel the above-quoted paragraph isn't accurate or complete
+or doesn't capture this sequence of events properly, please let me
+know what specifically should be rephrased / amended.
+
+Thanks for taking a look!
+
+Lukas
 
