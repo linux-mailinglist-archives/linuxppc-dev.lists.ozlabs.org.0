@@ -1,64 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-11521-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11522-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B10B3C7F4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 06:45:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCED1B3C7FF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 06:59:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cDMyd42y9z2yN2;
-	Sat, 30 Aug 2025 14:45:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cDNGb30Kgz2yvv;
+	Sat, 30 Aug 2025 14:59:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756529145;
-	cv=none; b=JTunWTZ/+mr96sBt3K6oTDhDoIft2OeE4CbfXWmUHRxxegkx7Rkd2SlLIIVutHTkgPZoJGAlqlgaKMXgrYBDq11KhJNuyoR1D9cWFCGTksq4XzkbfsGhhXVAuXWigCV2W4Hpb5ZAunPhwmQYKs8Hs3m0AiTBPs/82ehV+PBRU0SQPxX/N5joeKJB+ID7T19AckLko/L2yiHwYNvBc9QwI/Pd3XALuFvvuhH3NKyW+X/7zJOguYCodHXLngdCgzfY+qzsrg3YvCplMOtw/TsZtXrbdAJpC2wrUB1dzheY88wlr6eyVYUJMG1vs+b4ix+jUB8+T1Lpu+UR7ZeZUnAX6w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::431"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756529975;
+	cv=none; b=JQe7fO9/rpYb7cNLdUFWyfjhV5BOaziUXlIWJsMaTHRWrQZqDZYDPD5ojAdxJVjJZgcu/3+3yCoQkeGujWiHZR75+MLPNvXCdI4F4N8cmzXLP8GiZH5ZEaYOYG2IlJe1lHibUfZPHw4e91JKZJMj1QNxhZEuSptpeBuewmhefXAfB0HkaUHsgaSjcwaYSBvnMwwA/oezU+HezymXVK7tLe9eyNAki2km4wGJTEfTOnTqi3sbHS4BgduRnnq5E211J2jl/gK5vbDYGKxYjclT7PmNVgsaCLeCJd2WZoFJ/gfUpotZjOOwNBMWsX7mdBvRFl75bxUXncBmaX9kR1Ztvw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756529145; c=relaxed/relaxed;
-	bh=pt3u/3dhlv3xp9vGi7l7QuBrLsn5dvfeg+GgVr0aTXI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O7vtLXpXG26KPIlhfW2/Nf3dznXqUZkz3Mjg6+rI8NoeLKB/1NpkbrwW9fJ0SKIhYhdRJONBFORUvyVy9a3aEtBMa/iD1BtCp/6c43cyUmD9jKlAGWKMjXkTREWu7SD8I2kgtH8QLSVZD1DwSrn5epqduvTYBQYrocEJVhT4MdHb5apFcYayhwNqhpmUDU5rYvj26FthdzixUfcy/0QXGhRWrKo+wxFd0xOj2oaVCW4JD+Y/J0ZRAHg1qEiR4Bv/ElufgSPAQBr/ByvJn0I01+a7fjBxkGdpGGMn5SQ9qXDdMsglZqbsUacyuLy7C/DjzSuuT0HsHqZjRuZQPzLvmw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=nI9sURvm; dkim-atps=neutral; spf=pass (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+	t=1756529975; c=relaxed/relaxed;
+	bh=ECUtRIXM/m3p0uCZ6iejxUu4ieJmp6wy4rmOCxQvy0I=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=E4RSY0qrgwINCCtl0ceUB0BOBgSMlKJZ73mTTMKPxzeaVNAuoV+z35Ml2vAn34rGg2P1ab6Nbdkkbn/QgAM07+P0qjwXTBlxeiUaH88QrWaiZHQ9ioA09RcE4DUAfZ8J53u2mM3rR+Llb3FOsyYaHEsMkolB1LQw27XL1wXz3qF4L41ON3tGkg9Syphy2H3mlRnzBu+Hg4h8wR8rs5kxhhWYPy4/wjFbeGnhphKFBsZ6CKe5Guqhkb0fV5+OZlrnUUfsB876w8EEfl+4pfJALf+kyADy5U2W2F/7Oaa14Jy5tc1dqw0SY6jl+e/fzCtX0NdSqb4uzIHlGPcTqFU/eQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FxKjoP13; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=202503 header.b=nI9sURvm;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=FxKjoP13;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=canb.auug.org.au (client-ip=2404:9400:2221:ea00::3; helo=mail.ozlabs.org; envelope-from=sfr@canb.auug.org.au; receiver=lists.ozlabs.org)
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::431; helo=mail-pf1-x431.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDMyd02KCz2xgX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 14:45:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=202503; t=1756529144;
-	bh=pt3u/3dhlv3xp9vGi7l7QuBrLsn5dvfeg+GgVr0aTXI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nI9sURvmPiBdyeT59pgCA4MQNUS93LYOQ/HVFYC26qyeyL2UX4B4GL3V6PNc5t86x
-	 NgxLgK3fLChvRbEQwxirv4wuomxruaelO8l8UwumVA42VQGf4QsqqfeAuJn5wC37UO
-	 z8SlawpKnMogSGqKMJZEWnc/Ikv/+1BOnFRgWcjgsSTqIJrEzSX2H6JdLcT8GYeTdE
-	 DTs0D1dN848t2+HCYr/BTAkGcr38hDt/lnb73sKkOvpPu7FK1EO0FibhUBqFwjD920
-	 gRCxBihmv8xz5Vxh2y5cqK1Kg3UD9HuaaLOjGjGTNqImA9ozmfnJZVnw8cLwNUF9WM
-	 G6T16XnUTFzDw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4cDMyc0RkSz4wbY;
-	Sat, 30 Aug 2025 14:45:43 +1000 (AEST)
-Date: Sat, 30 Aug 2025 14:45:42 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
- Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Donet Tom <donettom@linux.ibm.com>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDNGZ2Myhz2yN2
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 14:59:33 +1000 (AEST)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-77201f3d389so3003871b3a.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 21:59:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756529972; x=1757134772; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ECUtRIXM/m3p0uCZ6iejxUu4ieJmp6wy4rmOCxQvy0I=;
+        b=FxKjoP13TM52iPiWTpJ0qpDT9pDGl/mnd6dWnwf15E+rUKVzSuRzAljIb0zRu8bUVA
+         YKDQz+3/hoIf62xJIKg7Ei3Gxk4PTNZd7ZlPC0DcfHCs2NJX6sAWaMrxVSlU7gfEmKCH
+         hROOjxyqdnAIZgIYSuRVl8qCnfczK/wenpwdtLFioGTEKp9KsXV2YlW38qPN694Vvvo8
+         LMlyGzrzYjGGn/3ws8CecokZP3ii+C/Ypz5OnPqWwlt51lAzDgyMx+thqoNyjQ434KRa
+         7doLZHliQ0BA7L9rtuCuwQybvN4FHC0vwvZd5ItZYcP2XGerqGvpgUUTlCNOqimMPO78
+         Td0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756529972; x=1757134772;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ECUtRIXM/m3p0uCZ6iejxUu4ieJmp6wy4rmOCxQvy0I=;
+        b=iSMBhWbsfMcrN0qcM54uw66GC4kX3u5ng2EnmOVFyRMr7Z1yzd53+K2RdPJJqhdE5L
+         AMDmhM/5Xa7rB7X+wTDv9TgaTHZxA4ADey55AUKddnagcsJZSFAn0GTkVPy2tzsDWYUp
+         b4m/Yu2RrkXp9Otxx25G7Ia2nCxQJra+xC5GNY6tn07bmAzXrQBsew95kI6/aBrB4uuq
+         vzHPFnOAnBxpeXl5PFsSyYOGvb5UfJ46wvGD5aulf1XYxdbhfj+hp4dA/jgg3B1nqGsD
+         HG2fkcTM7uiwXZaN5wjIyreUVC4LN+Xe2WTU1VBujhbcrI6i9wvBpg3P4M27BG5sggqc
+         +Dmg==
+X-Gm-Message-State: AOJu0YwI3dTQep4+4YUrVM7Iugdhb436Ym7snGgnjG3D2icGIlaLtyll
+	2AUhs3ZCHuE2H6VjF6NWT5opYVBN3RTSaBe+lZC1ZYMEf7LUH6xWocOd
+X-Gm-Gg: ASbGncuuajp4rTQBt0QUTEnd3EyMR7nuPk+NzCMVETlKj0KxTUb/MSLQr1MsjDf2pqH
+	F8fxEpvtpE8/oUhPEwHSFi5CeqCB7zqh0wuFZM2qQzjN/eIVtDzP9LWRYYFi9ehiIvsO5+3uTQi
+	KSiyqZR1jmLBVN+wQIFtQuzDgU4jiG65ug0S7hNzWWv9ATPwoRAYF4TR4QoEhPlIcEVOYhoaznq
+	AbIp1qhjwZxaEbtBti8qMor2m6ByWlrpCup6yPij7TLUv35bJ5kD5iyiIX2j0kbW8IJuSHAUtI9
+	UMvGyaGtutLG2OlGn5a9OMW8QAe2pRd/uJEk9JjEI0sqFCmICQFMjQlaxjreDsUm9xYXh6e0+YZ
+	9URZAx1tywARCGWc=
+X-Google-Smtp-Source: AGHT+IFocOUBHixe2wv+gU96RrWRxGPvxKCNnqco4rS/r7Pe4pX8vYeeFZ0tFygY5WYh3POLg7pdfg==
+X-Received: by 2002:a05:6a20:728b:b0:243:bfc4:463c with SMTP id adf61e73a8af0-243d6e5b012mr1543524637.25.1756529971878;
+        Fri, 29 Aug 2025 21:59:31 -0700 (PDT)
+Received: from dw-tp ([171.76.86.139])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4de04a9ea7sm1557942a12.16.2025.08.29.21.59.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Aug 2025 21:59:31 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+ Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Donet Tom <donettom@linux.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Subject: Re: [RFC 8/8] powerpc/book3s64/slb: Add slb faults to vmstat
-Message-ID: <20250830144542.6ba0e774@canb.auug.org.au>
-In-Reply-To: <e05ac86618d8a52feccf5bac99da44b11871382c.1756522067.git.ritesh.list@gmail.com>
-References: <cover.1756522067.git.ritesh.list@gmail.com>
-	<e05ac86618d8a52feccf5bac99da44b11871382c.1756522067.git.ritesh.list@gmail.com>
+In-Reply-To: <20250830144542.6ba0e774@canb.auug.org.au>
+Date: Sat, 30 Aug 2025 10:26:45 +0530
+Message-ID: <87y0r1jtki.fsf@gmail.com>
+References: <cover.1756522067.git.ritesh.list@gmail.com> <e05ac86618d8a52feccf5bac99da44b11871382c.1756522067.git.ritesh.list@gmail.com> <20250830144542.6ba0e774@canb.auug.org.au>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,61 +92,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_//+ny8ES+6FQIgltakmfkGeI";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
---Sig_//+ny8ES+6FQIgltakmfkGeI
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
 
-Hi Ritesh,
-
-On Sat, 30 Aug 2025 09:21:47 +0530 "Ritesh Harjani (IBM)" <ritesh.list@gmai=
-l.com> wrote:
+> Hi Ritesh,
 >
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 71cd1ceba191..8cd17a5fc72b 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1464,6 +1464,11 @@ const char * const vmstat_text[] =3D {
->  	[I(DIRECT_MAP_LEVEL2_COLLAPSE)]		=3D "direct_map_level2_collapses",
->  	[I(DIRECT_MAP_LEVEL3_COLLAPSE)]		=3D "direct_map_level3_collapses",
->  #endif
-> +#ifdef CONFIG_PPC_BOOK3S_64
-> +	"slb_kernel_faults",
-> +	"slb_user_faults",
-> +#endif
-> +
->  #ifdef CONFIG_PER_VMA_LOCK_STATS
->  	[I(VMA_LOCK_SUCCESS)]			=3D "vma_lock_success",
->  	[I(VMA_LOCK_ABORT)]			=3D "vma_lock_abort",
+> On Sat, 30 Aug 2025 09:21:47 +0530 "Ritesh Harjani (IBM)" <ritesh.list@gmail.com> wrote:
+>>
+>> diff --git a/mm/vmstat.c b/mm/vmstat.c
+>> index 71cd1ceba191..8cd17a5fc72b 100644
+>> --- a/mm/vmstat.c
+>> +++ b/mm/vmstat.c
+>> @@ -1464,6 +1464,11 @@ const char * const vmstat_text[] = {
+>>  	[I(DIRECT_MAP_LEVEL2_COLLAPSE)]		= "direct_map_level2_collapses",
+>>  	[I(DIRECT_MAP_LEVEL3_COLLAPSE)]		= "direct_map_level3_collapses",
+>>  #endif
+>> +#ifdef CONFIG_PPC_BOOK3S_64
+>> +	"slb_kernel_faults",
+>> +	"slb_user_faults",
+>> +#endif
+>> +
+>>  #ifdef CONFIG_PER_VMA_LOCK_STATS
+>>  	[I(VMA_LOCK_SUCCESS)]			= "vma_lock_success",
+>>  	[I(VMA_LOCK_ABORT)]			= "vma_lock_abort",
+>
+> Should you be using explicit indexes and the I() macro?
 
-Should you be using explicit indexes and the I() macro?
+Aah yes, I guess the branch where I developed the patches was not
+upstream tip and when I rebased and tested, I missed to see the I()
+macro change in mm/vmstat. 
 
---=20
-Cheers,
-Stephen Rothwell
+Thanks Stephen for pointing it out. I will fix that in the next revision.
 
---Sig_//+ny8ES+6FQIgltakmfkGeI
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+-ritesh
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmiygfYACgkQAVBC80lX
-0Gw49Af/UHUgpgla969YKk5hog5zPrUt/pqZeUpeCBxUuq7MPlxJcsYXGimAWpRt
-0t3emvmvxMn44bEq8pWIIMC/I0zQs5ot02U2idYBNrms/QOyZUPtMOqh8GoqC12R
-ZaLygol/LLHTQNnSPKQvTby9VIi+x65d89xiAaaP011YM3Ely6npbON2M/GSAp2e
-QxGPXnTyweD8LuTfg5WO42gfR0tZT4kmiYXenIKitwq+etMK2a1aRW363/qDl8JB
-hDdJ5MsslmTyrgEIWGZf+oU7KQaW3tDpyVi2G47z3jC4yvoFAM3Zb5aRvaT5Z5/P
-ruWRI29KJGH69tamurCkQo92a+Bo8w==
-=fKMP
------END PGP SIGNATURE-----
-
---Sig_//+ny8ES+6FQIgltakmfkGeI--
+>
+> -- 
+> Cheers,
+> Stephen Rothwell
 
