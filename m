@@ -1,87 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-11511-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11512-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190C5B3C7A2
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 05:48:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F00B3C7A6
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 Aug 2025 05:54:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cDLgz2f1Yz2yLJ;
-	Sat, 30 Aug 2025 13:47:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cDLq208Yqz2yvv;
+	Sat, 30 Aug 2025 13:54:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756525679;
-	cv=none; b=j6FpgKnFhs5OiX/FQwDaQiA/T6zyTWVsd6qyjYfb65p33qGuLOUwoNkeXxp2FAonT8eBnXGjbMSzM++SoOozdZWY/Y8blVKiAHiQb+p1fgvCy51MhQX25EN4gmywOqFKI230mbZulqnBYbYhx2ES37fpyjvlsWMIMYjEN0HN81WPWwmOZLjN4vwpx3YZBaZ6WKyC6FdjgVs8ob0hEUfmmcBPeOZiha5ar4XFhD0ueV8fppYriIGB0WrNWlZBacp/Hc2a8820eYJzoOKL78775Uaazrz2OP+sUDj3iPTdtDS4eYP3imw6A+HXh9zwiE+Mn41x8dSoe4sD8vrHt3EU3A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1034"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756526045;
+	cv=none; b=CEjPjX8vgM8JhAp7mLZsEQyj5T3hAdEqO3/rWR4RorcpYf+U0awZ9pc92Z2UuNLWudQpGt7Qb4LVZgt4HfngHwh4maT8P7qvUSA0zI8ZsjwMmTk82Ybly7WeyW1m4YlFxp1Y2DW7An+6iohIHnDMjBOmtpMfjHijW97cKwFT6QtmZgd9obkjhaJRt4R1O2OkRIm2YqP6gPeCI/e7j/+0z7lKA0mhbBkroHRLkxG0geCSQfB5ikPYpaW7rALmoxLKoetjPtJTU4gdCKchFIveTjXrZAhXwZSoR39ZBrwRGUOM5blL8YPXILi0RJG4jYTp4Q5Hb836Xd2BHyDNQxWjww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756525679; c=relaxed/relaxed;
-	bh=4HJzf+cbt3tnVGA5I6S0xUC2mgQggddjkpihkUdYn0w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GoCwR9kvR0Uxy/EDiIbIclezUNNUklMNitbiYM5KTmmSso0dkVxS/6p9umlkIgId3pJL8QBIZO8WibxQUUjnDRo2+Qj+Kg5LNIjTwIeBB1MY0UpR1BlymrzsSMY1ysThCzoJ6SDuMJvPJcCTgRdVhIwzz7W9oOCJeNjkN7raQYSCIsJxXVMytseBnPX+hRmbmImVsQ6P7AX1IEy92E5KAmyKx0Hkoa3KD3pPcEgF5lt5Ixu2U1q4FCVgUkaXNH00ynrie7NopYivLDKKrgJGouDYYOPteA98eJ2auHr9wB3dCbP70wjLbsrXZzVaVh0J/Qf4NuxnnJl3H9VfdxIv0w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ASIjsD/T; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1756526045; c=relaxed/relaxed;
+	bh=N0O+sH8p1DzPTF1d6HUZs1mNy/B0Taq/B3V84tqISVA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=D6sx1Z4HSAimxlv1Yr19YrYKrk9h+wNlMN5qVk9g+bouK5h1B9zDBFE0ZerwyL96f4HyJzHdUis5OYcxwe73HZtFtwBxLal0x4V7OW3EKbw6rVebKQ3in0x9GxMjYOIEgazB6tz9Sa92tk4Q/sXaBhcMlyubHfPSNO2giyacUZc9uNx2jxNGiKh3nNWMQVKQzQzDci86QLvFaJYAvGj+fxogXTbD6EVmdzskc41fJ2xRoHNPlld0ll9AluQducOfggHx4LpetY3v0sY7b2ys4+1SFfTxO1tvsDJbTAlCCmSeEasm3YKU2sq5uyPylqHlhpaKND7BGvJXx9E7Bs/vlw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ZIUAw2Aw; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ASIjsD/T;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ZIUAw2Aw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42d; helo=mail-pf1-x42d.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1034; helo=mail-pj1-x1034.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDLgy2Vb0z2yN2
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 13:47:58 +1000 (AEST)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-77238a3101fso518575b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 20:47:58 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cDLq129Yyz2yN2
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 Aug 2025 13:54:04 +1000 (AEST)
+Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-327f87275d4so1064736a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 Aug 2025 20:54:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756525676; x=1757130476; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4HJzf+cbt3tnVGA5I6S0xUC2mgQggddjkpihkUdYn0w=;
-        b=ASIjsD/TLNLZKCWt0aGCZAutVmTk4p4SCVL/0O3LTC2bkg1x1hFOMXkYC5Js3jMexj
-         3AjnCyIY/NwByPYu9p1yZvvmSQn6VhZQJ66792aRyo7ZmANiWVObfq5S3/9jA3aQV6fV
-         H2aYa5cdjxhMvi4DQ7BlEW8KB9aPIsFP0Na7RGJaVksX5rAJlJ87szT3Tgd9Etdy8ZEL
-         Ltmuh4fbJ1mJFi6PA2nVH3tUKCa5mbZAzu1LKWJDGLpWdtKpf/BHDw6lrudCAkVC9V4L
-         YuuYJeNfEt4uYsvpIJ6ozJ5P0CEbYHLwZg6SCQtJdO8DTJt7A/fY8i8BRy4Iz6XfJOtt
-         dN3A==
+        d=gmail.com; s=20230601; t=1756526042; x=1757130842; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N0O+sH8p1DzPTF1d6HUZs1mNy/B0Taq/B3V84tqISVA=;
+        b=ZIUAw2AwDxSuRST0mBsx+rdXIH76qAaEWdp1b//XR/wgaplBiGpAhOo626R8B69hEt
+         wYZr3UZK/8c4RGL1hHHi41GlJCekiM9zzo1HygSUwL5BwMnr6d8teJwIdFqQJH6+UqSb
+         ABlpfUTIh4ovqqt1ruRfvMjjuwhOAD0wuGdG81lmOlIUX2Zl7BIJ55LX8+0kqJekEEI0
+         PU6EbASDTWS6O8lycTki5/xGLR5Qbi2eM9GZrrQS5Rzkmamruyz3iUtq7L1MfRenQtoU
+         gyxqbLn9dVxtBZ+bQnLc1qY3yCD5T7Lc1+aeCN/iFDS88ArNOkBpMfAzkMomdeVHzQzT
+         58Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756525676; x=1757130476;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4HJzf+cbt3tnVGA5I6S0xUC2mgQggddjkpihkUdYn0w=;
-        b=faTyVrUpXFbt8QhlmIpYIcSYXaekGq4Mf/Yskgz3SnvxfJQl+av46A2fE8c3P8DJLP
-         jJ1dr9SPHuYO32tkQgUyht2/iL5F38eNEa1RccrrBcDC+V61gDPtLhGneQj+cT8zwe1Z
-         TaYLl//pOUnCHFR+1EwvagzEhOkfOqBUrwBGS6NNabxnzdrSO8YRSDgtj8ABHMOqDQDh
-         JXGFKWMi4G+2UZ8HfcpYof3px0lAmA96VRyro0QV1aRi109PjGWgPiJRYMPnCNjkUs8Z
-         MTWZuDQOMQtUDdBod8ILhs7WpCgkcCsm83DfZiOfN3bhQtCB1xhcE7t2LCDxYnLu9G4Y
-         5B4w==
-X-Forwarded-Encrypted: i=1; AJvYcCVqOVqqZF/MufSCGLEfB2PFAwflHzgCqeHVpH/njy4IGWX7FlI+YVzDkB5ci/v18grZPhKNHDcGhN2dMuc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzsOdQXmCXM8kpCKVr3oA9CKwa8uZcSOdSsQC3AA9EPpFEF/WEF
-	R77teYYhdaFeeQEaasyJZOrbaMPryFiX84Cab5wHLX6mH3ymB8sOUrv4
-X-Gm-Gg: ASbGnctpqRsBibdZl4GsTNAi9ObOqSLxGJMBllIOHRCGDb2rtQzcjImNo4w3fvRmTUi
-	9ml2KEYTqMFRHXsobre+nrADSCzBEAcF490mgAoHN+bi1JWrWwOmVW3arkh1OA+QAMslIx7wMNu
-	6LKfgA9aojWCjUTdRN/u4G27BfEq2Dk2TUdMqnRl4NQgy6ZT7Ge186EyUhIMyeAPu5RGyYGN10e
-	gpitz/V+UpX819q9o9gAHTFD2LCokPhk9PBfYuLRSIOhfDpDLBn9ew8K3aoeYyn3oKeqoX9qtux
-	30qY9DEG4cMR1jyMoELWVVqKl/3iYS5a7/kMweF4YrYlfOnDMokzvdNLrSnrynMhePXdMSel6PZ
-	hxpPQe2ca8sd1cwH+CD4yBPbR/w==
-X-Google-Smtp-Source: AGHT+IHQqkzGpozoO/PUeN4PSh2M47+f064YNS2XPGekapyxTgNu5ZvriybhdEX/8K3++YzhEXgffg==
-X-Received: by 2002:a05:6a00:928b:b0:76b:f2d9:c760 with SMTP id d2e1a72fcca58-7723e21a73cmr1040745b3a.7.1756525676100;
-        Fri, 29 Aug 2025 20:47:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1756526042; x=1757130842;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N0O+sH8p1DzPTF1d6HUZs1mNy/B0Taq/B3V84tqISVA=;
+        b=Z+tE6C6ZXm0LeFXk+GokFTYpJy33E91li/7+7XaziQKVgIjxMahKoFpfMdoas5zmPs
+         OqjuCGyM/xqaHtj53MOFq+1KTrR1FD2knMivjN106uJo2IImcQM+a8yZTcRGZ951Az8T
+         EHA26vts2YArX8mPGqMR4Gm1W4o67DGOC0JdO8LmwsJF4yVrkR2K0QNbC3OnI4hD6wiW
+         S795Jj3ThbzZ997CDNLIocrQXF4q/B0lOoeqS9XokakTrfT12aTNvIeKpj+48Cm6pVFa
+         GbnWaZEEpVS9wETrHffCaD4k66r31jFO/E4gScsQjpTtyMeGAggFkfG20jwVpLX2ek3b
+         Me4A==
+X-Gm-Message-State: AOJu0Yw+JID3Dd84ivtigsuSMltfNQbgV6B5ItMXEuF4ADfyhyNKNdRn
+	2HmS30n5qPHiQBMk/nGBYwzhNRfqgS8Znt+2Nw76Pu9M30efUePbTUWi+NhoSw==
+X-Gm-Gg: ASbGncvhg7EFl2Zu5BMimOUVLtlt1cwjOpueuUz4a1YzDu4aqIH3YKb62HkegzcLKXx
+	7UGs5AC+SrtQI4HGgEnEFGMinPEYF+PP2Z6xdNXKzkXufwG6BjAyGyQMKSGi6fFffNT/IPvswDA
+	v3LAlCxJSNi9s1KGXUCPLA5vnnLM7zLhAE0s/p7NByHQnxMQNPGMSgSVPJNqj8tZHAPLtVSDgwt
+	61jZCLVTdS3um0Mo471jv/vc0NXZnaoW4rq3UO/oNsTilJb+yTkWfUkTrxWEEJRVNe/fcD4b7Uy
+	xEuFdYWwWYwB5NJGUc99eLwEAjDTU9hYYrYDpi6Iwo8P0vk+L4NVk669hGDiZDGUbALcR545CTU
+	WF6DoTzO/mu3km9PjvL/zOdli+q3TrOAvx70Z
+X-Google-Smtp-Source: AGHT+IEgFmBwpKDd8bPRFRryx4rrAZWzgnRsaD2dYzZIBeooemvZZRm7YfPopPWAI9Fa5w8KKoK10w==
+X-Received: by 2002:a17:90b:3f47:b0:321:c0e3:a8ce with SMTP id 98e67ed59e1d1-328156c5797mr1143226a91.22.1756526041624;
+        Fri, 29 Aug 2025 20:54:01 -0700 (PDT)
 Received: from dw-tp ([171.76.86.139])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7722a4ba1d8sm3895377b3a.51.2025.08.29.20.47.53
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-327da90ee17sm4279879a91.24.2025.08.29.20.53.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Aug 2025 20:47:55 -0700 (PDT)
+        Fri, 29 Aug 2025 20:54:00 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH 02/02] scripts/gdb/mm: Add support for powerpc book3s64
-Date: Sat, 30 Aug 2025 09:15:35 +0530
-Message-ID: <9da03d8e78cd895666deb1aec7ec8318833f1b6a.1756521755.git.ritesh.list@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [PATCH 0/8] powerpc/book3s64: Hash / SLB fixes & improvements
+Date: Sat, 30 Aug 2025 09:21:39 +0530
+Message-ID: <cover.1756522067.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cc4af3fa0fcda2a52cbbab05463e0ad0561fd017.1756521755.git.ritesh.list@gmail.com>
-References: <cc4af3fa0fcda2a52cbbab05463e0ad0561fd017.1756521755.git.ritesh.list@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,199 +87,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This adds page ops support to powerpc book3s64. Following operations are
-now supported:
+Hello all,
 
-lx-pfn_to_kaddr -- PFN to kernel address
-lx-pfn_to_page -- PFN to struct page
-lx-page_address -- struct page to linear mapping address
-lx-page_to_pfn -- struct page to PFN
-lx-page_to_phys -- struct page to physical address
-lx-virt_to_page -- virtual address to struct page
-lx-virt_to_phys -- virtual address to physical address
+While working over SLB related multi-hit issue we identified few more Hash / SLB
+related issues, which this patch series fixes.
 
-lx-vmallocinfo -- Show vmallocinfo
-lx-slabinfo -- Show slabinfo
+Patches 1-4 are various fixes related to SLB / HASH MMU.
+Patches 5-8 are improvements in ptdump, slb preload and the last patch adds slb
+user and kernel vmstat counters.
 
-e.g. Below showing lx-mmu_info command i.e.
-On Radix:
-(gdb) lx-mmu_info
-MMU: Radix
+Patch-1 was posted earlier as a standalone fix here [1]. It has no changes
+in this version. But since patch-6 is dependent on this, hence we clubbed all
+Hash / SLB related patches into a common series.
 
-On Hash:
-(gdb) lx-mmu_info
-MMU: Hash
+Other than patch-1 (which was posted earlier), the rest of the patches are
+mostly only tested in Qemu tcg for powernv and pseries. I will be testing these
+on the real HW too before the next revision. But meanwhile it will be good to
+get any reviews/feedback.
 
-e.g. Below shows that struct page pointers coming from vmemmap area i.e.
-(gdb) p vmemmap
-$5 = (struct page *) 0xc00c000000000000
+[1]: https://lore.kernel.org/linuxppc-dev/20250814092532.116762-1-donettom@linux.ibm.com/
 
-(gdb) lx-pfn_to_page 0
-pfn_to_page(0x0) = 0xc00c000000000000
+Donet Tom (1):
+  powerpc/mm: Fix SLB multihit issue during SLB preload
 
-(gdb) lx-pfn_to_page 1
-pfn_to_page(0x0) = 0xc00c000000000040
+Ritesh Harjani (IBM) (7):
+  book3s64/hash: Restrict stress_hpt_struct memblock region to within RMA limit
+  book3s64/hash: Fix phys_addr_t printf format in htab_initialize()
+  powerpc/ptdump/64: Fix kernel_hash_pagetable dump for ISA v3.00 HPTE format
+  powerpc/ptdump: Dump PXX level info for kernel_page_tables
+  powerpc/book3s64/slb: Make preload_add return type as void
+  powerpc/book3s64/slb: Add no_slb_preload early cmdline param
+  powerpc/book3s64/slb: Add slb faults to vmstat
 
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- scripts/gdb/linux/constants.py.in |   4 ++
- scripts/gdb/linux/mm.py           | 114 +++++++++++++++++++++++++++++-
- 2 files changed, 116 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/gdb/linux/constants.py.in b/scripts/gdb/linux/constants.py.in
-index 154db10fe94a..97a731db6e89 100644
---- a/scripts/gdb/linux/constants.py.in
-+++ b/scripts/gdb/linux/constants.py.in
-@@ -153,6 +153,10 @@ if IS_BUILTIN(CONFIG_ARM64):
-     LX_VALUE(CONFIG_PAGE_SHIFT)
-     LX_VALUE(CONFIG_ARCH_FORCE_MAX_ORDER)
- LX_CONFIG(CONFIG_PPC_BOOK3S_64)
-+if IS_BUILTIN(CONFIG_PPC_BOOK3S_64):
-+    LX_VALUE(CONFIG_PAGE_OFFSET)
-+    LX_VALUE(CONFIG_PAGE_SHIFT)
-+    LX_VALUE(CONFIG_KERNEL_START)
- LX_CONFIG(CONFIG_SPARSEMEM)
- LX_CONFIG(CONFIG_SPARSEMEM_EXTREME)
- LX_CONFIG(CONFIG_SPARSEMEM_VMEMMAP)
-diff --git a/scripts/gdb/linux/mm.py b/scripts/gdb/linux/mm.py
-index 7571aebbe650..9e5b1632f910 100644
---- a/scripts/gdb/linux/mm.py
-+++ b/scripts/gdb/linux/mm.py
-@@ -24,10 +24,17 @@ class page_ops():
-     def __init__(self):
-         if not constants.LX_CONFIG_SPARSEMEM_VMEMMAP:
-             raise gdb.GdbError('Only support CONFIG_SPARSEMEM_VMEMMAP now')
--        if constants.LX_CONFIG_ARM64 and utils.is_target_arch('aarch64'):
-+
-+        if utils.is_target_arch('aarch64'):
-+            if not constants.LX_CONFIG_ARM64:
-+                raise gdb.GdbError('ARM64 page ops require CONFIG_ARM64')
-             self.ops = aarch64_page_ops()
-+        elif utils.is_target_arch('powerpc'):
-+            if not constants.LX_CONFIG_PPC_BOOK3S_64:
-+                raise gdb.GdbError('Only supported for Book3s_64')
-+            self.ops = powerpc64_page_ops()
-         else:
--            raise gdb.GdbError('Only support aarch64 now')
-+            raise gdb.GdbError('Unsupported arch for page ops')
-
- class aarch64_page_ops():
-     def __init__(self):
-@@ -287,6 +294,109 @@ class aarch64_page_ops():
-     def folio_address(self, folio):
-         return self.page_address(folio['page'].address)
-
-+
-+class powerpc64_page_ops():
-+    """powerpc64 minimal Virtual Memory operations
-+    """
-+
-+    def __init__(self):
-+        vmemmap_sym = gdb.parse_and_eval('vmemmap')
-+        self.vmemmap = vmemmap_sym.cast(utils.get_page_type().pointer())
-+
-+        self.PAGE_SHIFT = constants.LX_CONFIG_PAGE_SHIFT
-+        self.PAGE_OFFSET = constants.LX_CONFIG_PAGE_OFFSET
-+        self.KERNEL_START = constants.LX_CONFIG_KERNEL_START
-+
-+        # These variables are common for both Hash and Radix so no
-+        # need to explicitely check for MMU mode.
-+        self.KERNEL_VIRT_START = gdb.parse_and_eval("__kernel_virt_start")
-+        self.VMALLOC_START = gdb.parse_and_eval("__vmalloc_start")
-+        self.VMALLOC_END = gdb.parse_and_eval("__vmalloc_end")
-+        self.KERNEL_IO_START = gdb.parse_and_eval("__kernel_io_start")
-+        self.KERNEL_IO_END = gdb.parse_and_eval("__kernel_io_end")
-+        # KERN_MAP_SIZE can be calculated from below trick to avoid
-+        # checking Hash 4k/64k pagesize
-+        self.KERN_MAP_SIZE = self.KERNEL_IO_END - self.KERNEL_IO_START
-+        self.VMEMMAP_START = gdb.parse_and_eval("vmemmap")
-+        self.VMEMMAP_SIZE = self.KERN_MAP_SIZE
-+        self.VMEMMAP_END = self.VMEMMAP_START + self.VMEMMAP_SIZE
-+
-+        if constants.LX_CONFIG_NUMA and constants.LX_CONFIG_NODES_SHIFT:
-+            self.NODE_SHIFT = constants.LX_CONFIG_NODES_SHIFT
-+        else:
-+            self.NODE_SHIFT = 0
-+        self.MAX_NUMNODES = 1 << self.NODE_SHIFT
-+
-+    def PFN_PHYS(self, pfn):
-+        return pfn << self.PAGE_SHIFT
-+
-+    def PHYS_PFN(self, pfn):
-+        return pfn >> self.PAGE_SHIFT
-+
-+    def __va(self, pa):
-+        return pa | self.PAGE_OFFSET
-+
-+    def __pa(self, va):
-+        return va & 0x0fffffffffffffff;
-+
-+    def pfn_to_page(self, pfn):
-+        return (self.vmemmap + int(pfn)).cast(utils.get_page_type().pointer())
-+
-+    def page_to_pfn(self, page):
-+        pagep = page.cast(utils.get_page_type().pointer())
-+        return int(pagep - self.vmemmap)
-+
-+    def page_address(self, page):
-+        pfn = self.page_to_pfn(page)
-+        va = self.PAGE_OFFSET + (pfn << self.PAGE_SHIFT)
-+        return va
-+
-+    def page_to_phys(self, page):
-+        pfn = self.page_to_pfn(page)
-+        return self.PFN_PHYS(pfn)
-+
-+    def phys_to_page(self, pa):
-+        pfn = self.PHYS_PFN(pa)
-+        return self.pfn_to_page(pfn)
-+
-+    def phys_to_virt(self, pa):
-+        return self.__va(pa)
-+
-+    def virt_to_phys(self, va):
-+        return self.__pa(va)
-+
-+    def virt_to_pfn(self, va):
-+        return self.__pa(va) >> self.PAGE_SHIFT
-+
-+    def virt_to_page(self, va):
-+        return self.pfn_to_page(self.virt_to_pfn(va))
-+
-+    def pfn_to_kaddr(self, pfn):
-+        return self.__va(pfn << self.PAGE_SHIFT)
-+
-+    # powerpc does not use tags for KASAN. So simply return addr
-+    def kasan_reset_tag(self, addr):
-+        return addr
-+
-+class LxMmuInfo(gdb.Command):
-+    """MMU Type for PowerPC Book3s64"""
-+
-+    def __init__(self):
-+        super(LxMmuInfo, self).__init__("lx-mmu_info", gdb.COMMAND_USER)
-+
-+    def invoke(self, arg, from_tty):
-+        if not constants.LX_CONFIG_PPC_BOOK3S_64:
-+            raise gdb.GdbError("Only supported for Book3s_64")
-+
-+        lpcr = gdb.parse_and_eval("(unsigned long)$lpcr")
-+        # Host Radix bit should be 1 in LPCR for Radix MMU
-+        if (lpcr & 0x0000000000100000):
-+            gdb.write("MMU: Radix\n")
-+        else:
-+            gdb.write("MMU: Hash\n")
-+
-+LxMmuInfo()
-+
- class LxPFN2Page(gdb.Command):
-     """PFN to struct page"""
+ .../admin-guide/kernel-parameters.txt         |   3 +
+ arch/powerpc/include/asm/book3s/64/mmu-hash.h |   1 -
+ arch/powerpc/kernel/process.c                 |   5 -
+ arch/powerpc/mm/book3s64/hash_utils.c         |  15 ++-
+ arch/powerpc/mm/book3s64/internal.h           |   9 +-
+ arch/powerpc/mm/book3s64/mmu_context.c        |   2 -
+ arch/powerpc/mm/book3s64/slb.c                | 112 ++++--------------
+ arch/powerpc/mm/ptdump/8xx.c                  |   5 +
+ arch/powerpc/mm/ptdump/book3s64.c             |   5 +
+ arch/powerpc/mm/ptdump/hashpagetable.c        |   6 +
+ arch/powerpc/mm/ptdump/ptdump.c               |   1 +
+ arch/powerpc/mm/ptdump/ptdump.h               |   1 +
+ arch/powerpc/mm/ptdump/shared.c               |   5 +
+ include/linux/vm_event_item.h                 |   4 +
+ mm/vmstat.c                                   |   5 +
+ 15 files changed, 73 insertions(+), 106 deletions(-)
 
 --
 2.50.1
