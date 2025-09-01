@@ -1,47 +1,100 @@
-Return-Path: <linuxppc-dev+bounces-11547-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11548-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35C0B3DB5B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 09:45:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2915B3DC8F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 10:35:52 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cFgs826Cyz2xWQ;
-	Mon,  1 Sep 2025 17:45:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cFhzB0KG8z2yrB;
+	Mon,  1 Sep 2025 18:35:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:1000::53df:5f64:0"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756712732;
-	cv=none; b=YPJspivN+ux6o2XV5HHM9kl0nLb/pMIkwkM0VqS+pdm2c/mV2UjAyxQGuT1PXAr48voRO3hnJmX6EY4+bnu7g3S/Eax8ELn1K85vXsi0avifSem1umB5idzkCxScB7yhWkENSPVrLfBSsVmmeaI2t3LdDuQdlxGUJuk9H1EhHXMJ8gkxoOach6nEqkk5UGLQlAK3NToi1eZ1CBor5jy/CFyBCoQJaDdboXAbxveSYyXw/fxf6OqY75KBfoyHW9ulkFE9pxJQgw8MBInj3tm9LCVoaqQ22T0A3aBYfo+RBssogeMiSW5XWqDIvzEWgQSBDmlYC5+163Cq5Y83BgGT2w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756715749;
+	cv=none; b=BJLGk9LvwT/hd83M4Ziz2edmpVrKcapW4RW/MjjQGSkrNJgKLmvQW6SqW4sb24wJNA1SALvYb9CN2zG4E/tBaTEYnmMBuxWJsZtrmAJJxvzhnBzSXv8SExqlHVpDv8Ar33L/nWpGGgehJTpPK55FjicuyeNctPpkiUNDir+0xjPE192ERLe6CYCwjp1I4b/70+HIIy+oMo/1L9l0lZOxUz8lxW/zZG0+rDnwwQgyg46aV6A1BxO4FCO3cbM/cebGKaItaxi12a4yu8v2AxYyBkA+lr3WPPqEwY+2R0AyRr5VAFen5hZgqsYrCqGzWkp4vARpVL7uyQUxM1FNOYfVYQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756712732; c=relaxed/relaxed;
-	bh=ixXRTsSb891L+XZn49cnH1RGaSX7ycD3FtKzv7tqzYQ=;
-	h=Message-Id:From:Date:Subject:To:Cc; b=EEctelkQ5kQZyenQbeBpWelg482BDohgDwXlH61pxNEBksNqLag35o4+c64qgX+b8P0rjcmM05aNwFAfupu7yxBDr3xGEwGHjt3V/pTpmOPA06kgrAONDE4/xb8GL3NunVP/dniC7oIsNERGTSOM/eKj+vR8xzJBdvvBbPZlv09BL/QJHw+ks9PsL7bza2UhFXRSmV84UzO2C9M3H2c2rDnp+uhjTlIWM6oFxmAvnqdc/WrEHYK1e8bgCtdfhpG0PirOoHhcnxhYGpE8igmptJ9E90HjOpWrKa+MMxPrM0PyZWu44Qw/8T/l3/usr0YsJPbS0X2sdi1An8MDwdIjcg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org) smtp.mailfrom=wunner.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wunner.de (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org)
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+	t=1756715749; c=relaxed/relaxed;
+	bh=1dF6fbw1yJI8uaYAJFZd1q8MyMtOzcn+2AD+kfES3EY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EvMt4HsPVhpARECaNzdjwsuDDjhKaxptR687ahIyjeoxdifqE3KHSVFq5PxPFidyb92dsqg7xsji9I01gHkH1i0JlVbH/UUeNlYAAs/w0eLa5Q6xv/qpwMSCHwEbJDEYUMEiAXiHJIfeWzS+8lRffrX96LjsiWFBNLpRiORWQSHtz0mZI3/CUojL3nuo3syWD166sZxQADgFiBqHxZ2tT7GWY7hmQrQBD6rn3r0O5UHGqxw4SAYyyKdXlBHfgDukQZhlSiD5lDRPrd0AXGXAtEZpjfa8j6Ch19Y7DVIycds0awD9HQolJJayIXd1br66a/hiBx7xYCfyRxZqXBbHfg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=qqEV2hED; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=qqEV2hED;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFgs640Ggz2xQ4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 17:45:28 +1000 (AEST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 434312C0131F;
-	Mon,  1 Sep 2025 09:45:22 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 2E4BD4F1F6C; Mon,  1 Sep 2025 09:45:22 +0200 (CEST)
-Message-Id: <5f707caf1260bd8f15012bb032f7da9a9b898aba.1756712066.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Mon, 1 Sep 2025 09:44:52 +0200
-Subject: [PATCH] PCI/AER: Print TLP Log for errors introduced since PCIe r1.1
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
-X-Spam-Status: No, score=-0.7 required=3.0 tests=RCVD_IN_DNSWL_LOW,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFhz564G3z2yhb
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 18:35:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=1dF6fbw1yJI8uaYAJFZd1q8MyMtOzcn+2AD+kfES3EY=; b=qqEV2hEDfIYsiLyIjT6xwlfb2Z
+	qjNR3sTYmNr1NaC0MoP0e1TXctDVgNM5uy7GqDBI8moy1P0EklJDnHcI9IG23VYPYvdg9txYrqLdR
+	r+e3zwIgO7jfG1kPD25hbbprdJvF7NFJYJdGEQVg78D6m2ITPhA0L6bfMu+oC7IYCNL4oYafI+S8y
+	PSPiE2gEJf72Z42pJgFWUMDzRIFrRMKLSnm654JoR3Grjh/akEtBnUxUGki8R2QKTNJf0Yc1vGQKY
+	ZwT9eh1gLvKRwftTrWjzq5arPxFqSiZamrBsEzBjpjdFSNMr1DlKh2ZLQr2SQ6/y+qeuvTW9jwxxo
+	upB6QVBg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1ut00J-00000005LHb-2d3q;
+	Mon, 01 Sep 2025 08:35:08 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id C2473300342; Mon, 01 Sep 2025 10:35:07 +0200 (CEST)
+Date: Mon, 1 Sep 2025 10:35:07 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	thomas.weissschuh@linutronix.de, Li Chen <chenl311@chinatelecom.cn>,
+	Bibo Mao <maobibo@loongson.cn>, Mete Durlu <meted@linux.ibm.com>,
+	Tobias Huschle <huschle@linux.ibm.com>,
+	Easwar Hariharan <easwar.hariharan@linux.microsoft.com>,
+	Guo Weikang <guoweikang.kernel@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Brian Gerst <brgerst@gmail.com>,
+	Patryk Wlazlyn <patryk.wlazlyn@linux.intel.com>,
+	Swapnil Sapkal <swapnil.sapkal@amd.com>,
+	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Andrea Righi <arighi@nvidia.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Subject: Re: [PATCH v7 4/8] powerpc/smp: Introduce CONFIG_SCHED_MC to guard
+ MC scheduling bits
+Message-ID: <20250901083507.GD4067720@noisy.programming.kicks-ass.net>
+References: <20250826041319.1284-1-kprateek.nayak@amd.com>
+ <20250826041319.1284-5-kprateek.nayak@amd.com>
+ <609a980b-cbe3-442b-a492-91722870b156@csgroup.eu>
+ <20250826080706.GC3245006@noisy.programming.kicks-ass.net>
+ <20250826094358.GG3245006@noisy.programming.kicks-ass.net>
+ <7137972e-bc7a-432c-94be-755ba9029d8c@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,157 +107,116 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7137972e-bc7a-432c-94be-755ba9029d8c@linux.ibm.com>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-When reporting an error, the AER driver prints the TLP Header / Prefix Log
-only for errors enumerated in the AER_LOG_TLP_MASKS macro.
+On Thu, Aug 28, 2025 at 08:13:51PM +0530, Shrikanth Hegde wrote:
 
-The macro was never amended since its introduction in 2006 with commit
-6c2b374d7485 ("PCI-Express AER implemetation: AER core and aerdriver").
-At the time, PCIe r1.1 was the latest spec revision.
+> > --- a/arch/powerpc/Kconfig
+> > +++ b/arch/powerpc/Kconfig
+> > @@ -170,6 +170,9 @@ config PPC
+> >   	select ARCH_STACKWALK
+> >   	select ARCH_SUPPORTS_ATOMIC_RMW
+> >   	select ARCH_SUPPORTS_DEBUG_PAGEALLOC	if PPC_BOOK3S || PPC_8xx
+> > +	select ARCH_SUPPORTS_SCHED_SMT		if PPC64 && SMP
+> > +	select ARCH_SUPPORTS_SCHED_MC		if PPC64 && SMP
+> > +	select SCHED_MC				if ARCH_SUPPORTS_SCHED_MC
+> 
+> Wondering if this SCHED_MC is necessary here? shouldn't it be set by arch/Kconfig?
 
-Amend the macro with errors defined since then to avoid omitting the TLP
-Header / Prefix Log for newer errors.
+Ah, so without this SCHED_MC becomes a user selectable option, with this
+it is an always on option (for ppc64) -- no user prompt.
 
-The order of the errors in AER_LOG_TLP_MASKS follows PCIe r1.1 sec 6.2.7
-rather than 7.10.2, because only the former documents for which errors a
-TLP Header / Prefix is logged.  Retain this order.  The section number is
-still 6.2.7 in today's PCIe r7.0.
+That is, this is the only way I found to have similar semantics to this:
 
-For Completion Timeouts, the TLP Header / Prefix is only logged if the
-Completion Timeout Prefix / Header Log Capable bit is set in the AER
-Capabilities and Control register.  Introduce a tlp_header_logged() helper
-to check whether the TLP Header / Prefix Log is populated and use it in
-the two places which currently match against AER_LOG_TLP_MASKS directly.
+> > -config SCHED_MC
+> > -	def_bool y
+> > -	depends on PPC64 && SMP
+> > -
 
-For Uncorrectable Internal Errors, logging of the TLP Header / Prefix is
-optional per PCIe r7.0 sec 6.2.7.  If needed, drivers could indicate
-through a flag whether devices are capable and tlp_header_logged() could
-then check that flag.
+Which is also not a user selectable option.
 
-pcitools introduced macros for newer errors with commit 144b0911cc0b
-("ls-ecaps: extend decode support for more fields for AER CE and UE
-status"):
-  https://git.kernel.org/pub/scm/utils/pciutils/pciutils.git/commit/?id=144b0911cc0b
+> nit: Also, can we have so they are still sorted?
+> 	select ARCH_SUPPORTS_SCHED_MC		if PPC64 && SMP
+> 	select ARCH_SUPPORTS_SCHED_SMT		if PPC64 && SMP
 
-Unfortunately some of those macros are overly long:
-  PCI_ERR_UNC_POISONED_TLP_EGRESS
-  PCI_ERR_UNC_DMWR_REQ_EGRESS_BLOCKED
-  PCI_ERR_UNC_IDE_CHECK
-  PCI_ERR_UNC_MISR_IDE_TLP
-  PCI_ERR_UNC_PCRC_CHECK
-  PCI_ERR_UNC_TLP_XLAT_EGRESS_BLOCKED
+Sure, let me flip them. I need to prod that that patch anyway, built
+robot still ain'ted happy.
 
-This seems unsuitable for <linux/pci_regs.h>, so shorten to:
-  PCI_ERR_UNC_POISON_BLK
-  PCI_ERR_UNC_DMWR_BLK
-  PCI_ERR_UNC_IDE_CHECK
-  PCI_ERR_UNC_MISR_IDE
-  PCI_ERR_UNC_PCRC_CHECK
-  PCI_ERR_UNC_XLAT_BLK
 
-Note that some of the existing macros in <linux/pci_regs.h> do not match
-exactly with pcitools (e.g. PCI_ERR_UNC_SDES versus PCI_ERR_UNC_SURPDN),
-so it does not seem mandatory for them to be identical.
+> > --- a/arch/s390/Kconfig
+> > +++ b/arch/s390/Kconfig
+> > @@ -547,15 +547,11 @@ config NODES_SHIFT
+> >   	depends on NUMA
+> >   	default "1"
+> > -config SCHED_SMT
+> > -	def_bool n
+> > -
+> > -config SCHED_MC
+> > -	def_bool n
+> > -
+> >   config SCHED_TOPOLOGY
+> >   	def_bool y
+> >   	prompt "Topology scheduler support"
+> > +	select ARCH_SUPPORTS_SCHED_SMT
+> > +	select ARCH_SUPPORTS_SCHED_MC
+> >   	select SCHED_SMT
+> >   	select SCHED_MC
+> Same here. Above two are needed?
 
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
----
- drivers/pci/pcie/aer.c        | 30 +++++++++++++++++++++++++++---
- include/uapi/linux/pci_regs.h |  8 ++++++++
- 2 files changed, 35 insertions(+), 3 deletions(-)
+Same issue; previously neither were user selectable symbols. By only
+selecting the ARCH_SUPPORTS_$FOO variants, the $FOO options become user
+selectable. By then explicitly selecting $FOO as well, that user option
+is taken away again.
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 15ed541..62c74b5 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -96,11 +96,21 @@ struct aer_info {
- };
- 
- #define AER_LOG_TLP_MASKS		(PCI_ERR_UNC_POISON_TLP|	\
-+					PCI_ERR_UNC_POISON_BLK |	\
- 					PCI_ERR_UNC_ECRC|		\
- 					PCI_ERR_UNC_UNSUP|		\
- 					PCI_ERR_UNC_COMP_ABORT|		\
- 					PCI_ERR_UNC_UNX_COMP|		\
--					PCI_ERR_UNC_MALF_TLP)
-+					PCI_ERR_UNC_ACSV |		\
-+					PCI_ERR_UNC_MCBTLP |		\
-+					PCI_ERR_UNC_ATOMEG |		\
-+					PCI_ERR_UNC_DMWR_BLK |		\
-+					PCI_ERR_UNC_XLAT_BLK |		\
-+					PCI_ERR_UNC_TLPPRE |		\
-+					PCI_ERR_UNC_MALF_TLP |		\
-+					PCI_ERR_UNC_IDE_CHECK |		\
-+					PCI_ERR_UNC_MISR_IDE |		\
-+					PCI_ERR_UNC_PCRC_CHECK)
- 
- #define SYSTEM_ERROR_INTR_ON_MESG_MASK	(PCI_EXP_RTCTL_SECEE|	\
- 					PCI_EXP_RTCTL_SENFEE|	\
-@@ -796,6 +806,20 @@ static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
- 	}
- }
- 
-+static bool tlp_header_logged(u32 status, u32 capctl)
-+{
-+	/* Errors for which a header is always logged (PCIe r7.0 sec 6.2.7) */
-+	if (status & AER_LOG_TLP_MASKS)
-+		return true;
-+
-+	/* Completion Timeout header is only logged on capable devices */
-+	if (status & PCI_ERR_UNC_COMP_TIME &&
-+	    capctl & PCI_ERR_CAP_COMP_TIME_LOG)
-+		return true;
-+
-+	return false;
-+}
-+
- static void __aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- {
- 	const char **strings;
-@@ -910,7 +934,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
- 		status = aer->uncor_status;
- 		mask = aer->uncor_mask;
- 		info.level = KERN_ERR;
--		tlp_header_valid = status & AER_LOG_TLP_MASKS;
-+		tlp_header_valid = tlp_header_logged(status, aer->cap_control);
- 	}
- 
- 	info.status = status;
-@@ -1401,7 +1425,7 @@ int aer_get_device_error_info(struct aer_err_info *info, int i)
- 		pci_read_config_dword(dev, aer + PCI_ERR_CAP, &aercc);
- 		info->first_error = PCI_ERR_CAP_FEP(aercc);
- 
--		if (info->status & AER_LOG_TLP_MASKS) {
-+		if (tlp_header_logged(info->status, aercc)) {
- 			info->tlp_header_valid = 1;
- 			pcie_read_tlp_log(dev, aer + PCI_ERR_HEADER_LOG,
- 					  aer + PCI_ERR_PREFIX_LOG,
-diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-index f5b1774..d2e1bbb 100644
---- a/include/uapi/linux/pci_regs.h
-+++ b/include/uapi/linux/pci_regs.h
-@@ -776,6 +776,13 @@
- #define  PCI_ERR_UNC_MCBTLP	0x00800000	/* MC blocked TLP */
- #define  PCI_ERR_UNC_ATOMEG	0x01000000	/* Atomic egress blocked */
- #define  PCI_ERR_UNC_TLPPRE	0x02000000	/* TLP prefix blocked */
-+#define  PCI_ERR_UNC_POISON_BLK	0x04000000	/* Poisoned TLP Egress Blocked */
-+#define  PCI_ERR_UNC_DMWR_BLK	0x08000000	/* DMWr Request Egress Blocked */
-+#define  PCI_ERR_UNC_IDE_CHECK	0x10000000	/* IDE Check Failed */
-+#define  PCI_ERR_UNC_MISR_IDE	0x20000000	/* Misrouted IDE TLP */
-+#define  PCI_ERR_UNC_PCRC_CHECK	0x40000000	/* PCRC Check Failed */
-+#define  PCI_ERR_UNC_XLAT_BLK	0x80000000	/* TLP Translation Egress Blocked */
-+
- #define PCI_ERR_UNCOR_MASK	0x08	/* Uncorrectable Error Mask */
- 	/* Same bits as above */
- #define PCI_ERR_UNCOR_SEVER	0x0c	/* Uncorrectable Error Severity */
-@@ -798,6 +805,7 @@
- #define  PCI_ERR_CAP_ECRC_CHKC		0x00000080 /* ECRC Check Capable */
- #define  PCI_ERR_CAP_ECRC_CHKE		0x00000100 /* ECRC Check Enable */
- #define  PCI_ERR_CAP_PREFIX_LOG_PRESENT	0x00000800 /* TLP Prefix Log Present */
-+#define  PCI_ERR_CAP_COMP_TIME_LOG	0x00001000 /* Completion Timeout Prefix/Header Log Capable */
- #define  PCI_ERR_CAP_TLP_LOG_FLIT	0x00040000 /* TLP was logged in Flit Mode */
- #define  PCI_ERR_CAP_TLP_LOG_SIZE	0x00f80000 /* Logged TLP Size (only in Flit mode) */
- #define PCI_ERR_HEADER_LOG	0x1c	/* Header Log Register (16 bytes) */
--- 
-2.50.1
 
+> > --- a/arch/x86/Kconfig
+> > +++ b/arch/x86/Kconfig
+> > @@ -330,6 +330,10 @@ config X86
+> >   	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
+> >   	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
+> >   	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
+> > +	select ARCH_SUPPORTS_SCHED_SMT		if SMP
+> > +	select SCHED_SMT			if SMP
+> Is this SCHED_SMT needed here?
+
+Same again...
+
+> > +	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
+> > +	select ARCH_SUPPORTS_SCHED_MC		if SMP
+> >   config INSTRUCTION_DECODER
+> >   	def_bool y
+> > @@ -1036,29 +1040,6 @@ config NR_CPUS
+> >   	  This is purely to save memory: each supported CPU adds about 8KB
+> >   	  to the kernel image.
+> > -config SCHED_CLUSTER
+> > -	bool "Cluster scheduler support"
+> > -	depends on SMP
+> > -	default y
+> > -	help
+> > -	  Cluster scheduler support improves the CPU scheduler's decision
+> > -	  making when dealing with machines that have clusters of CPUs.
+> > -	  Cluster usually means a couple of CPUs which are placed closely
+> > -	  by sharing mid-level caches, last-level cache tags or internal
+> > -	  busses.
+> > -
+> > -config SCHED_SMT
+> > -	def_bool y if SMP
+> > -
+> > -config SCHED_MC
+> > -	def_bool y
+> > -	prompt "Multi-core scheduler support"
+> > -	depends on SMP
+> > -	help
+> > -	  Multi-core scheduler support improves the CPU scheduler's decision
+> > -	  making when dealing with multi-core CPU chips at a cost of slightly
+> > -	  increased overhead in some places. If unsure say N here.
+
+See how SCHED_SMT is not a user option for x86.
 
