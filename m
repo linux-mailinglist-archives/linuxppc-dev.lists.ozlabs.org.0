@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-11561-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11562-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A7EB3DD5A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 11:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7FDB3DD5C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 11:00:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cFjVr4tc8z2yhb;
-	Mon,  1 Sep 2025 18:59:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cFjVv6Grfz2xQ4;
+	Mon,  1 Sep 2025 18:59:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756717188;
-	cv=none; b=br3vRaOh6yX7vzqJJdnvsGXIopIfDIT3KMWChfgjs3pUsAXkaWpy0v7ibC99yAO7MiB6zYzRgRp451DMi8AfX5ob7GypxafKIMAVeyrP2csf2fG1dpaPP80w5B8let7tXlSFLMNwhE2z+kVyVFQ8FKdgWEmx1WO72slQ+Tdnpk5GGTBI/yCWNGgYRor4IdczoZWEvZtRWNExZw9vKKRK5kgZVx2GNx0hlPpSo+RIU/jUQpAFkBB+aFf2I7q5bHiMiogyvcREBka3yTFTrL13ZINdaZEeoIM47DL5zsshNMaCBAGD6HU/+hnViRbgk+xfcgNM9hS/LsbFNJs77vI1qw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756717191;
+	cv=none; b=MSHzqCIQThpCNNxfX9arvWsgIEFIRKFI3MAhAq7eALsOUcJrrGhmopHjR+Kyx5DwBrT+UqNfFjvrqnUUpb7Ujgrq2U6SqQVFpy3/WidkwsGHBZBLewSDKPoLM18WX4tH+S/WkTGTQJS6M/4BlwD6HQClVn49MkUL/LRsIp2F+MkUybPhZ3Td1PiLb4b6KGkWllM7aZGwF4SUD/BG8v0ihG64L4nooKFW8OnTFz8CFKTSaTduFaXf5nrIwDFcuzKTCYLj40QGEgpEQ00I5htjLBthUpiC/4cRKDHNpmpWByTAfZ9L6vM6w0XBazbm4YBh26/nEQuAscJqIKnXVW+y4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756717188; c=relaxed/relaxed;
-	bh=dTWP2SZ/+gCKSZch/97sVZiexKDt12IghseG3ObzV/E=;
+	t=1756717191; c=relaxed/relaxed;
+	bh=J8UleJ8NObE7PXOm0FyfxMMKkFzdnCkJ6ZRlwQXf3Kk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FYvM2nRNQbrVJ9qqkq1soBrE2gViWcTUxFVEKhfRF9iivdphtPwnyDgxzao6xXEjRMAqUAdvv57WvRffH0QIl5WFGDzZ8PncIUWwWpLDuWuvhMSjtkclXtYmCqCaJkXPZBrNfZILk3VFSSCug9Eew3d8zRFS/EjVSkCo3YUGck6mj59IjXGGwlFVEm12xYC4VXDxKlViBkw2y4p4lOaEEpA9BD2AOYBpZ9TZnf7xZ96ZWFLL3T+hKpW0zlgnpRgYvyqySRWMtHYfQ3+4Lg3EZ6UQOJoiP3QM2yDAsWtyYNV6oRqhmINikxewdT0sLXBIoTT6fNastNnh0CHnDGa0jg==
+	 MIME-Version; b=j6GkeOoOC9zgfLnwf4jve95hw03SXujoHJzxMw/dWn4Cu2JTUUO7i5De9AF18NxR9ID+ZGpaJJrEdqRj7FlAOGWSOXvjnLJUPBmAsd7ZBdC79mRPLvwTBli5FP08GYXdF3GxwRTi/2V30nGRvSLsM9DdkC7QoCDgHYTSSe+PY95/mBOLT0Sw5+efpvC0zLrK59cd8AhvfPtphqkneImEUlTfrnmuCTBOAL+/3flDUo+y0TrBH222+0sccEpwvmI1Z+dqE00tsmlWVpZQOzVo2vDEsng9u/kAYsWVHaH7zlo/dbrGFfFPg43A9gTLDscpKPZFUx8HYQSOQJIxsm17pA==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
@@ -23,32 +23,32 @@ Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFjVq3wfvz30N8
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 18:59:47 +1000 (AEST)
-X-UUID: d88a416c871111f0b29709d653e92f7d-20250901
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFjVt45k5z2yx8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 18:59:50 +1000 (AEST)
+X-UUID: dab7a34e871111f0b29709d653e92f7d-20250901
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:f0312209-cc58-49da-b2fe-bd1490843f15,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:cb619b8137095f381006df9a56b13c38,BulkI
+X-CID-O-INFO: VERSION:1.1.45,REQID:bed9fbe2-11d3-4407-afe8-1156de4cb1de,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:6493067,CLOUDID:b623ff232d1ac7c6941a48d46afe61b6,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: d88a416c871111f0b29709d653e92f7d-20250901
+X-UUID: dab7a34e871111f0b29709d653e92f7d-20250901
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 155411594; Mon, 01 Sep 2025 16:58:36 +0800
+	with ESMTP id 480119038; Mon, 01 Sep 2025 16:58:40 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id EEA53E008FAB;
-	Mon,  1 Sep 2025 16:58:35 +0800 (CST)
-X-ns-mid: postfix-68B5603B-776156745
+	by mail.kylinos.cn (NSMail) with SMTP id CD393E008FA8;
+	Mon,  1 Sep 2025 16:58:39 +0800 (CST)
+X-ns-mid: postfix-68B5603F-551072746
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 344EFE008FA8;
-	Mon,  1 Sep 2025 16:58:32 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id 0422BE008FAC;
+	Mon,  1 Sep 2025 16:58:35 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -97,9 +97,9 @@ Cc: Ben Horgan <ben.horgan@arm.com>,
 	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v3 08/12] cpufreq: powerpc: macintosh: Use scope-based cleanup helper
-Date: Mon,  1 Sep 2025 16:57:44 +0800
-Message-Id: <20250901085748.36795-9-zhangzihuan@kylinos.cn>
+Subject: [PATCH v3 09/12] powercap: dtpm_cpu: Use scope-based cleanup helper
+Date: Mon,  1 Sep 2025 16:57:45 +0800
+Message-Id: <20250901085748.36795-10-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
 References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
@@ -129,39 +129,92 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/macintosh/windfarm_cpufreq_clamp.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/powercap/dtpm_cpu.c | 26 +++++++-------------------
+ 1 file changed, 7 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/macintosh/windfarm_cpufreq_clamp.c b/drivers/macinto=
-sh/windfarm_cpufreq_clamp.c
-index 28d18ef22bbb..08558756990b 100644
---- a/drivers/macintosh/windfarm_cpufreq_clamp.c
-+++ b/drivers/macintosh/windfarm_cpufreq_clamp.c
-@@ -62,12 +62,11 @@ static const struct wf_control_ops clamp_ops =3D {
-=20
- static int __init wf_cpufreq_clamp_init(void)
+diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+index 99390ec1481f..5e18438782f8 100644
+--- a/drivers/powercap/dtpm_cpu.c
++++ b/drivers/powercap/dtpm_cpu.c
+@@ -144,19 +144,15 @@ static int update_pd_power_uw(struct dtpm *dtpm)
+ static void pd_release(struct dtpm *dtpm)
  {
+ 	struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
 -	struct cpufreq_policy *policy;
 +	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
-u_get(0);
- 	struct wf_control *clamp;
- 	struct device *dev;
- 	int ret;
+u_get(dtpm_cpu->cpu);
 =20
--	policy =3D cpufreq_cpu_get(0);
- 	if (!policy) {
- 		pr_warn("%s: cpufreq policy not found cpu0\n", __func__);
- 		return -EPROBE_DEFER;
-@@ -79,8 +78,6 @@ static int __init wf_cpufreq_clamp_init(void)
- 	ret =3D freq_qos_add_request(&policy->constraints, &qos_req, FREQ_QOS_M=
-AX,
- 				   max_freq);
+ 	if (freq_qos_request_active(&dtpm_cpu->qos_req))
+ 		freq_qos_remove_request(&dtpm_cpu->qos_req);
+=20
+-	policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
+-	if (policy) {
++	if (policy)
+ 		for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
+ 			per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL;
+=20
+-		cpufreq_cpu_put(policy);
+-	}
+-
+ 	kfree(dtpm_cpu);
+ }
+=20
+@@ -192,7 +188,7 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
+ static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
+ {
+ 	struct dtpm_cpu *dtpm_cpu;
+-	struct cpufreq_policy *policy;
++	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
+u_get(cpu);
+ 	struct em_perf_state *table;
+ 	struct em_perf_domain *pd;
+ 	char name[CPUFREQ_NAME_LEN];
+@@ -202,21 +198,16 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *p=
+arent)
+ 	if (dtpm_cpu)
+ 		return 0;
+=20
+-	policy =3D cpufreq_cpu_get(cpu);
+ 	if (!policy)
+ 		return 0;
+=20
+ 	pd =3D em_cpu_get(cpu);
+-	if (!pd || em_is_artificial(pd)) {
+-		ret =3D -EINVAL;
+-		goto release_policy;
+-	}
++	if (!pd || em_is_artificial(pd))
++		return -EINVAL;
+=20
+ 	dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
+-	if (!dtpm_cpu) {
+-		ret =3D -ENOMEM;
+-		goto release_policy;
+-	}
++	if (!dtpm_cpu)
++		return -ENOMEM;
+=20
+ 	dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
+ 	dtpm_cpu->cpu =3D cpu;
+@@ -239,7 +230,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
+ent)
+ 	if (ret < 0)
+ 		goto out_dtpm_unregister;
 =20
 -	cpufreq_cpu_put(policy);
--
- 	if (ret < 0) {
- 		pr_err("%s: Failed to add freq constraint (%d)\n", __func__,
- 		       ret);
+ 	return 0;
+=20
+ out_dtpm_unregister:
+@@ -251,8 +241,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *par=
+ent)
+ 		per_cpu(dtpm_per_cpu, cpu) =3D NULL;
+ 	kfree(dtpm_cpu);
+=20
+-release_policy:
+-	cpufreq_cpu_put(policy);
+ 	return ret;
+ }
+=20
 --=20
 2.25.1
 
