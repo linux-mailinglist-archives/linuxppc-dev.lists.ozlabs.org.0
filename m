@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-11560-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11561-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4159B3DD57
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 11:00:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A7EB3DD5A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 11:00:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cFjVn5th0z30FR;
-	Mon,  1 Sep 2025 18:59:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cFjVr4tc8z2yhb;
+	Mon,  1 Sep 2025 18:59:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756717185;
-	cv=none; b=IASewiaSBheTUaSe9BGa1GpvLjzzn0Dl3SzmDE7tUdmuDf1BJNfZW8TsfOPt9pBWTMHqdp4UsfvMxUlkR6MB9u6giK5HW0omGYCDqa66E5dJdU/aLn6NBFz9+Um1fn1J1ydIwExoNrYi3E1lVTTWH0c4SuAvE7tlkD8+tWsFH16YH7PsFHICkGrzsxaK+Sp2ITx7GaqniE43fc6vMwLWh7pvxqlzh/7h+YSOUbAttLxnw3TrAdG72h4cRUYfpbjbJfNgJjxlyUa0+E7VGi2I6h7Qr4u/4y1TIYQaUkRQAYjDwG5/6Ci0pnIQvhC0MZURzzg80x8rqyuHY4Qb5yohKQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756717188;
+	cv=none; b=br3vRaOh6yX7vzqJJdnvsGXIopIfDIT3KMWChfgjs3pUsAXkaWpy0v7ibC99yAO7MiB6zYzRgRp451DMi8AfX5ob7GypxafKIMAVeyrP2csf2fG1dpaPP80w5B8let7tXlSFLMNwhE2z+kVyVFQ8FKdgWEmx1WO72slQ+Tdnpk5GGTBI/yCWNGgYRor4IdczoZWEvZtRWNExZw9vKKRK5kgZVx2GNx0hlPpSo+RIU/jUQpAFkBB+aFf2I7q5bHiMiogyvcREBka3yTFTrL13ZINdaZEeoIM47DL5zsshNMaCBAGD6HU/+hnViRbgk+xfcgNM9hS/LsbFNJs77vI1qw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756717185; c=relaxed/relaxed;
-	bh=QUMGiaG2cgQAUUruM/sGzEqwr2gbkfoPchwvllQJ3Y8=;
+	t=1756717188; c=relaxed/relaxed;
+	bh=dTWP2SZ/+gCKSZch/97sVZiexKDt12IghseG3ObzV/E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aXnBbd3Vjh6YLmkrISkdJe+5I9+LoncPlb5TcFKZz2B7+L2DgSQb+XjpBT1tLrpNFR4AD2CBYTSaZv6v+8r0w9JBasGaDlroOwV7zwYARSa2Abz62+5AcL3opQzhld6u04EWm6cbsEKNy++5hUjDY+2UexvEy4/QL4hfSe6aRaqazUYk5Hh+kT8SIYkZwOQenrcN6UgWSom4b+40iN+6rnR5gvHo1XPJry3Ee96fpYvg1FPlUizqcrrYzxDimhZds0/uTPMCTq1fiP5P8zCc0BYIiM+eN3UbSl+cB1VeHuR3OIt8slfJ5dMWVeV5G7m5Oz5L6RxNZKPg5CnNraCcSA==
+	 MIME-Version; b=FYvM2nRNQbrVJ9qqkq1soBrE2gViWcTUxFVEKhfRF9iivdphtPwnyDgxzao6xXEjRMAqUAdvv57WvRffH0QIl5WFGDzZ8PncIUWwWpLDuWuvhMSjtkclXtYmCqCaJkXPZBrNfZILk3VFSSCug9Eew3d8zRFS/EjVSkCo3YUGck6mj59IjXGGwlFVEm12xYC4VXDxKlViBkw2y4p4lOaEEpA9BD2AOYBpZ9TZnf7xZ96ZWFLL3T+hKpW0zlgnpRgYvyqySRWMtHYfQ3+4Lg3EZ6UQOJoiP3QM2yDAsWtyYNV6oRqhmINikxewdT0sLXBIoTT6fNastNnh0CHnDGa0jg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
@@ -23,32 +23,32 @@ Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFjVm40qtz30Ff
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 18:59:44 +1000 (AEST)
-X-UUID: d644f14a871111f0b29709d653e92f7d-20250901
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFjVq3wfvz30N8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 18:59:47 +1000 (AEST)
+X-UUID: d88a416c871111f0b29709d653e92f7d-20250901
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:bd3b8266-8573-448a-b72f-1ec5d0220522,IP:0,U
+X-CID-O-INFO: VERSION:1.1.45,REQID:f0312209-cc58-49da-b2fe-bd1490843f15,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:c9315f1ffc089d33de71e119d1e21f59,BulkI
+X-CID-META: VersionHash:6493067,CLOUDID:cb619b8137095f381006df9a56b13c38,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: d644f14a871111f0b29709d653e92f7d-20250901
+X-UUID: d88a416c871111f0b29709d653e92f7d-20250901
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 640016447; Mon, 01 Sep 2025 16:58:32 +0800
+	with ESMTP id 155411594; Mon, 01 Sep 2025 16:58:36 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 28B95E008FA7;
-	Mon,  1 Sep 2025 16:58:32 +0800 (CST)
-X-ns-mid: postfix-68B56037-986048743
+	by mail.kylinos.cn (NSMail) with SMTP id EEA53E008FAB;
+	Mon,  1 Sep 2025 16:58:35 +0800 (CST)
+X-ns-mid: postfix-68B5603B-776156745
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 6E0E2E008FAA;
-	Mon,  1 Sep 2025 16:58:28 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id 344EFE008FA8;
+	Mon,  1 Sep 2025 16:58:32 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -97,9 +97,9 @@ Cc: Ben Horgan <ben.horgan@arm.com>,
 	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v3 07/12] drm/i915: Use scope-based cleanup helper
-Date: Mon,  1 Sep 2025 16:57:43 +0800
-Message-Id: <20250901085748.36795-8-zhangzihuan@kylinos.cn>
+Subject: [PATCH v3 08/12] cpufreq: powerpc: macintosh: Use scope-based cleanup helper
+Date: Mon,  1 Sep 2025 16:57:44 +0800
+Message-Id: <20250901085748.36795-9-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
 References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
@@ -129,31 +129,39 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/gpu/drm/i915/gt/intel_llc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/macintosh/windfarm_cpufreq_clamp.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_llc.c b/drivers/gpu/drm/i915/g=
-t/intel_llc.c
-index 1d19c073ba2e..f15e4c0fa54b 100644
---- a/drivers/gpu/drm/i915/gt/intel_llc.c
-+++ b/drivers/gpu/drm/i915/gt/intel_llc.c
-@@ -29,13 +29,11 @@ static struct intel_gt *llc_to_gt(struct intel_llc *l=
-lc)
+diff --git a/drivers/macintosh/windfarm_cpufreq_clamp.c b/drivers/macinto=
+sh/windfarm_cpufreq_clamp.c
+index 28d18ef22bbb..08558756990b 100644
+--- a/drivers/macintosh/windfarm_cpufreq_clamp.c
++++ b/drivers/macintosh/windfarm_cpufreq_clamp.c
+@@ -62,12 +62,11 @@ static const struct wf_control_ops clamp_ops =3D {
 =20
- static unsigned int cpu_max_MHz(void)
+ static int __init wf_cpufreq_clamp_init(void)
  {
 -	struct cpufreq_policy *policy;
 +	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
 u_get(0);
- 	unsigned int max_khz;
+ 	struct wf_control *clamp;
+ 	struct device *dev;
+ 	int ret;
 =20
 -	policy =3D cpufreq_cpu_get(0);
- 	if (policy) {
- 		max_khz =3D policy->cpuinfo.max_freq;
--		cpufreq_cpu_put(policy);
- 	} else {
- 		/*
- 		 * Default to measured freq if none found, PCU will ensure we
+ 	if (!policy) {
+ 		pr_warn("%s: cpufreq policy not found cpu0\n", __func__);
+ 		return -EPROBE_DEFER;
+@@ -79,8 +78,6 @@ static int __init wf_cpufreq_clamp_init(void)
+ 	ret =3D freq_qos_add_request(&policy->constraints, &qos_req, FREQ_QOS_M=
+AX,
+ 				   max_freq);
+=20
+-	cpufreq_cpu_put(policy);
+-
+ 	if (ret < 0) {
+ 		pr_err("%s: Failed to add freq constraint (%d)\n", __func__,
+ 		       ret);
 --=20
 2.25.1
 
