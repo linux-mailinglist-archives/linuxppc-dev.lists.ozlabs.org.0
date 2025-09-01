@@ -1,46 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-11578-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11591-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3001CB3E60B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 15:50:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB49B3EECE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 21:50:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cFqyX0sgCz2ywh;
-	Mon,  1 Sep 2025 23:50:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cFzxp61gkz2yys;
+	Tue,  2 Sep 2025 05:50:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756734644;
-	cv=none; b=jJ1eoRof4JZrmqSMvUUS4haisZlT5/HAFgGCsuvLQuFvTKxdmER4WQJuPTam8ytI+AiSWIFczeZOvQ0BQbTvEI8tiRCZuQgtpNaAQOf6732CROI1P1CSBCPPT6kJBUlZcErcJppRgQ18ick9tagftJO66sHHPsfFppEG9e4/R/xoCRFhWh6SDxk3UGQh8pcEFREqaMT397HWVe5frFvX1tswHQBFRMtICfH3tmiP0SGzpKL51ht1mdj8YJvrLfD9/rj4VTGPbafVkkaPy87Y58b/n3w2Bkgn7IPOcQm6mktZ00NuPMLj10qYZhEWhp/JiZvDUjAipXP/jwmg/X1C2w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756756238;
+	cv=none; b=lpQi+lFwV+W+WD6r5SQkiRIPjzVGCRE17MkY/9nebiMSrIpq4ftRha0VRSqrN6Gm7SbHz0JpaDANCqd/Xe8k3Cbx30wEa+4eofbjyPG5/qlmqZYzyLC42CqCfjduhbfDQPhbCgDEuHTPZsbAw5vHbD7XYA2QDYbg95plrcJkOOhk3VkczK9DW3Ss8hlcxmrDFje9E2ikl0yXiwvngBN4WS9hV/1Nch4+PoV1xsRldLVLw4GwWlbAtf+95mBE3tNXiFn+fLv2SHU2r7pShsPOHgGvIjtKuTwHMmqR5wSiSwC3RuVfqakfEiR007Pxy9p0XzGLd+5dzI+gtrXGv8vqfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756734644; c=relaxed/relaxed;
-	bh=Jtz4NMD0OIuFJ1vGUjeFJCuc29nxu0XN/MgbJYMuBGE=;
+	t=1756756238; c=relaxed/relaxed;
+	bh=9iW9GqJeabnoj2ZbnLX4Izkc8n16oSwp2JzekmlHdqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1ZJeuiYKIXYugv/uXQo1i1n5n0r3ncjtcvyfs7GViPkqUNfU95DtW/vC781JX7/wy33BeJsdNifKLTJOglMjO8eYBZ7yT54rdCA1stsm/MzH9vZ8WEVTs3nxq8FGBUSoDX0KZcavv2/wbrua3ES6/i2IqjBqZ0WSPDCLybDdGUyIHKsQNw6uqmtoFnXW5fKQ7ppiE2aaEV1h4wIZKOyKeXTbW/uIlAoCAjx0yDZQto0kyQutIj/Py6Gb7KcL1HwcKzhITKiUk+FBKHRtJSeE8ppkQDhhmqelcDCOdlAebzaSq5cJWnjCViNs2IuKcc9wkiuIdZnt7jgGT4y9GvJIQ==
+	 MIME-Version; b=asy6pigKD1q9718lio0GIfjsuEq6hHU4T23mNZ9QdxYpB+OLbVBRGSARR235ORtrn1Bt9KopLbD/oMIrX3ZN865xS6zVf7/Ezi68/4Lxaj9XwHEWCF1gcahs+Lfbr1RHp9SSKoKpDS+nzp+OY28GZDHPNSl9x4UwE36ZpSBL46L6CKEO1gdJ0dqIAe+XQN8fFmu6tqzODaiLnvv6YAJFqfxQda/ErqP+54h5fsiuEybvbXzGniDwAd+Q5VRVdTI2X3hsrqgCx/5dycXO4563lrtnm4e2Op4zdG+hqyuPTh9tJ4s+lt/uW63MCuLhPOS/EJcjl2icDgngqEuXTeoRRw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cFqyW4T7Lz2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 23:50:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cFzxn0P3gz2yqW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 05:50:36 +1000 (AEST)
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cFndG1JW7z9sSj;
-	Mon,  1 Sep 2025 14:05:38 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4cFndH59YJz9sT1;
+	Mon,  1 Sep 2025 14:05:39 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id YjItXt-aDJex; Mon,  1 Sep 2025 14:05:38 +0200 (CEST)
+	with ESMTP id I7IsBlKEXMdn; Mon,  1 Sep 2025 14:05:39 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cFndC3wLgz9sSn;
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cFndC4hv4z9sSp;
 	Mon,  1 Sep 2025 14:05:35 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6DFC88B790;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8E5B78B796;
 	Mon,  1 Sep 2025 14:05:35 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 8IHJKJa_apLX; Mon,  1 Sep 2025 14:05:35 +0200 (CEST)
+	with ESMTP id edUMA0anltQY; Mon,  1 Sep 2025 14:05:35 +0200 (CEST)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 397938B796;
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 5A3228B77B;
 	Mon,  1 Sep 2025 14:05:35 +0200 (CEST)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Qiang Zhao <qiang.zhao@nxp.com>,
@@ -54,10 +54,11 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-gpio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v5 3/7] soc: fsl: qe: Drop legacy-of-mm-gpiochip.h header from GPIO driver
-Date: Mon,  1 Sep 2025 14:05:10 +0200
-Message-ID: <c5788504a473625faeb9f99b08d3bca5e7135120.1756727747.git.christophe.leroy@csgroup.eu>
+	devicetree@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH v5 4/7] soc: fsl: qe: Add support of IRQ in QE GPIO
+Date: Mon,  1 Sep 2025 14:05:11 +0200
+Message-ID: <1234b2b7105443654c5f2bb97d25cf16408d6003.1756727747.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <cover.1756727747.git.christophe.leroy@csgroup.eu>
 References: <cover.1756727747.git.christophe.leroy@csgroup.eu>
@@ -74,215 +75,187 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1756728308; l=7337; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=zHMhkGOir99C4zE6CP2P9w4fbrPG2js+Iq37Oh0usVQ=; b=JCxpWDQg8OT10Z6xzFFQz7qWBVLJ3RJwav5YcIOtO07QXfDpRAg1A9uG5tFz3Z3jwLeuwAyfi deFgDBXXM30Alvf3L3FJ/ZG2MGYKdoX18I2J2JmSoeiso2DstWnIpJG
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1756728308; l=6021; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=s8KjGqMF8kQALqNMwLbzLGaJh7U5Yszt7n4kjPjPFPY=; b=5Q0lKuhrQBfag3F7DCmjgG6MlKlaxMv0YyRWMF8h3A82sy9PbLmMLb+o/21C9Bt418k4hJ5m/ 6sPuEoVkJz7D1rfCaQRi8Vuo7IC6FUSSLs9q+m8UgwIgu9cYetjKS/I
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Remove legacy-of-mm-gpiochip.h header file. The above mentioned
-file provides an OF API that's deprecated. There is no agnostic
-alternatives to it and we have to open code the logic which was
-hidden behind of_mm_gpiochip_add_data(). Note, most of the GPIO
-drivers are using their own labeling schemas and resource retrieval
-that only a few may gain of the code deduplication, so whenever
-alternative is appear we can move drivers again to use that one.
+In the QE, a few GPIOs have an associated IRQ to notify changes.
+Add IRQ support to QE GPIO.
 
-As a side effect this change fixes a potential memory leak on
-an error path, if of_mm_gpiochip_add_data() fails.
+As not all GPIOs have an associated IRQ, the driver needs to know
+to which GPIO corresponds each provided IRQ. This is provided via
+multiple compatible properties:
 
-[Text copied from commit 34064c8267a6 ("powerpc/8xx: Drop
-legacy-of-mm-gpiochip.h header")]
+	compatible = "fsl,mpc8323-qe-pario-bank-a"
+	compatible = "fsl,mpc8323-qe-pario-bank-b"
+	compatible = "fsl,mpc8323-qe-pario-bank-c"
 
-Suggested-by: Bartosz Golaszewski <brgl@bgdev.pl>
+	compatible = "fsl,mpc8360-qe-pario-bank-a"
+	compatible = "fsl,mpc8360-qe-pario-bank-b"
+	compatible = "fsl,mpc8360-qe-pario-bank-c"
+	compatible = "fsl,mpc8360-qe-pario-bank-d"
+	compatible = "fsl,mpc8360-qe-pario-bank-e"
+	compatible = "fsl,mpc8360-qe-pario-bank-f"
+	compatible = "fsl,mpc8360-qe-pario-bank-g"
+
+	compatible = "fsl,mpc8568-qe-pario-bank-a"
+	compatible = "fsl,mpc8568-qe-pario-bank-b"
+	compatible = "fsl,mpc8568-qe-pario-bank-c"
+	compatible = "fsl,mpc8568-qe-pario-bank-d"
+	compatible = "fsl,mpc8568-qe-pario-bank-e"
+	compatible = "fsl,mpc8568-qe-pario-bank-f"
+
+When not using IRQ and for banks having no IRQ (like bank D on mpc8323)
+the origin compatible = "fsl,mpc8323-qe-pario-bank" is sufficient.
+
+Here is an exemple for port B of mpc8323 which has IRQs for
+GPIOs PB7, PB9, PB25 and PB27.
+
+	qe_pio_b: gpio-controller@1418 {
+		compatible = "fsl,mpc8323-qe-pario-bank-b";
+		reg = <0x1418 0x18>;
+		interrupts = <4 5 6 7>;
+		interrupt-parent = <&qepic>;
+		gpio-controller;
+		#gpio-cells = <2>;
+	};
+
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 ---
- arch/powerpc/platforms/Kconfig |  1 -
- drivers/soc/fsl/qe/gpio.c      | 51 ++++++++++++++++++----------------
- 2 files changed, 27 insertions(+), 25 deletions(-)
+v5: Provide the mask via the compatible data instead of adding a property in device tree
+---
+ drivers/soc/fsl/qe/gpio.c | 72 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 72 insertions(+)
 
-diff --git a/arch/powerpc/platforms/Kconfig b/arch/powerpc/platforms/Kconfig
-index fea3766eac0f..5b689bd3ddf4 100644
---- a/arch/powerpc/platforms/Kconfig
-+++ b/arch/powerpc/platforms/Kconfig
-@@ -232,7 +232,6 @@ config QE_GPIO
- 	bool "QE GPIO support"
- 	depends on QUICC_ENGINE
- 	select GPIOLIB
--	select OF_GPIO_MM_GPIOCHIP
- 	help
- 	  Say Y here if you're going to use hardware that connects to the
- 	  QE GPIOs.
 diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
-index 04b44fc2bb58..c54154b404df 100644
+index c54154b404df..8632b0d37255 100644
 --- a/drivers/soc/fsl/qe/gpio.c
 +++ b/drivers/soc/fsl/qe/gpio.c
-@@ -12,7 +12,6 @@
+@@ -12,6 +12,7 @@
  #include <linux/spinlock.h>
  #include <linux/err.h>
  #include <linux/io.h>
--#include <linux/gpio/legacy-of-mm-gpiochip.h>
++#include <linux/of_irq.h>
  #include <linux/gpio/consumer.h>
  #include <linux/gpio/driver.h>
  #include <linux/slab.h>
-@@ -24,7 +23,8 @@
- #define PIN_MASK(gpio) (1UL << (QE_PIO_PINS - 1 - (gpio)))
+@@ -32,6 +33,8 @@ struct qe_gpio_chip {
  
- struct qe_gpio_chip {
--	struct of_mm_gpio_chip mm_gc;
-+	struct gpio_chip gc;
-+	void __iomem *regs;
- 	spinlock_t lock;
- 
- 	/* shadowed data register to clear/set bits safely */
-@@ -34,11 +34,9 @@ struct qe_gpio_chip {
+ 	/* saved_regs used to restore dedicated functions */
  	struct qe_pio_regs saved_regs;
++
++	int irq[QE_PIO_PINS];
  };
  
--static void qe_gpio_save_regs(struct of_mm_gpio_chip *mm_gc)
-+static void qe_gpio_save_regs(struct qe_gpio_chip *qe_gc)
- {
--	struct qe_gpio_chip *qe_gc =
--		container_of(mm_gc, struct qe_gpio_chip, mm_gc);
--	struct qe_pio_regs __iomem *regs = mm_gc->regs;
-+	struct qe_pio_regs __iomem *regs = qe_gc->regs;
- 
- 	qe_gc->cpdata = ioread32be(&regs->cpdata);
- 	qe_gc->saved_regs.cpdata = qe_gc->cpdata;
-@@ -51,8 +49,8 @@ static void qe_gpio_save_regs(struct of_mm_gpio_chip *mm_gc)
- 
- static int qe_gpio_get(struct gpio_chip *gc, unsigned int gpio)
- {
--	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
--	struct qe_pio_regs __iomem *regs = mm_gc->regs;
-+	struct qe_gpio_chip *qe_gc = gpiochip_get_data(gc);
-+	struct qe_pio_regs __iomem *regs = qe_gc->regs;
- 	u32 pin_mask = PIN_MASK(gpio);
- 
- 	return !!(ioread32be(&regs->cpdata) & pin_mask);
-@@ -60,9 +58,8 @@ static int qe_gpio_get(struct gpio_chip *gc, unsigned int gpio)
- 
- static int qe_gpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
- {
--	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
- 	struct qe_gpio_chip *qe_gc = gpiochip_get_data(gc);
--	struct qe_pio_regs __iomem *regs = mm_gc->regs;
-+	struct qe_pio_regs __iomem *regs = qe_gc->regs;
- 	unsigned long flags;
- 	u32 pin_mask = PIN_MASK(gpio);
- 
-@@ -83,9 +80,8 @@ static int qe_gpio_set(struct gpio_chip *gc, unsigned int gpio, int val)
- static int qe_gpio_set_multiple(struct gpio_chip *gc,
- 				unsigned long *mask, unsigned long *bits)
- {
--	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
- 	struct qe_gpio_chip *qe_gc = gpiochip_get_data(gc);
--	struct qe_pio_regs __iomem *regs = mm_gc->regs;
-+	struct qe_pio_regs __iomem *regs = qe_gc->regs;
- 	unsigned long flags;
- 	int i;
- 
-@@ -111,13 +107,12 @@ static int qe_gpio_set_multiple(struct gpio_chip *gc,
- 
- static int qe_gpio_dir_in(struct gpio_chip *gc, unsigned int gpio)
- {
--	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
- 	struct qe_gpio_chip *qe_gc = gpiochip_get_data(gc);
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&qe_gc->lock, flags);
- 
--	__par_io_config_pin(mm_gc->regs, gpio, QE_PIO_DIR_IN, 0, 0, 0);
-+	__par_io_config_pin(qe_gc->regs, gpio, QE_PIO_DIR_IN, 0, 0, 0);
- 
- 	spin_unlock_irqrestore(&qe_gc->lock, flags);
- 
-@@ -126,7 +121,6 @@ static int qe_gpio_dir_in(struct gpio_chip *gc, unsigned int gpio)
- 
- static int qe_gpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
- {
--	struct of_mm_gpio_chip *mm_gc = to_of_mm_gpio_chip(gc);
- 	struct qe_gpio_chip *qe_gc = gpiochip_get_data(gc);
- 	unsigned long flags;
- 
-@@ -134,7 +128,7 @@ static int qe_gpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
- 
- 	spin_lock_irqsave(&qe_gc->lock, flags);
- 
--	__par_io_config_pin(mm_gc->regs, gpio, QE_PIO_DIR_OUT, 0, 0, 0);
-+	__par_io_config_pin(qe_gc->regs, gpio, QE_PIO_DIR_OUT, 0, 0, 0);
- 
- 	spin_unlock_irqrestore(&qe_gc->lock, flags);
- 
-@@ -240,7 +234,7 @@ EXPORT_SYMBOL(qe_pin_free);
- void qe_pin_set_dedicated(struct qe_pin *qe_pin)
- {
- 	struct qe_gpio_chip *qe_gc = qe_pin->controller;
--	struct qe_pio_regs __iomem *regs = qe_gc->mm_gc.regs;
-+	struct qe_pio_regs __iomem *regs = qe_gc->regs;
- 	struct qe_pio_regs *sregs = &qe_gc->saved_regs;
- 	int pin = qe_pin->num;
- 	u32 mask1 = 1 << (QE_PIO_PINS - (pin + 1));
-@@ -269,7 +263,6 @@ void qe_pin_set_dedicated(struct qe_pin *qe_pin)
- 
- 	iowrite32be(qe_gc->cpdata, &regs->cpdata);
- 	qe_clrsetbits_be32(&regs->cpodr, mask1, sregs->cpodr & mask1);
--
- 	spin_unlock_irqrestore(&qe_gc->lock, flags);
+ static void qe_gpio_save_regs(struct qe_gpio_chip *qe_gc)
+@@ -135,6 +138,13 @@ static int qe_gpio_dir_out(struct gpio_chip *gc, unsigned int gpio, int val)
+ 	return 0;
  }
- EXPORT_SYMBOL(qe_pin_set_dedicated);
-@@ -284,7 +277,7 @@ EXPORT_SYMBOL(qe_pin_set_dedicated);
- void qe_pin_set_gpio(struct qe_pin *qe_pin)
- {
- 	struct qe_gpio_chip *qe_gc = qe_pin->controller;
--	struct qe_pio_regs __iomem *regs = qe_gc->mm_gc.regs;
-+	struct qe_pio_regs __iomem *regs = qe_gc->regs;
- 	unsigned long flags;
  
- 	spin_lock_irqsave(&qe_gc->lock, flags);
-@@ -301,7 +294,6 @@ static int qe_gpio_probe(struct platform_device *ofdev)
- 	struct device *dev = &ofdev->dev;
++static int qe_gpio_to_irq(struct gpio_chip *gc, unsigned int gpio)
++{
++	struct qe_gpio_chip *qe_gc = gpiochip_get_data(gc);
++
++	return qe_gc->irq[gpio] ? : -ENXIO;
++}
++
+ struct qe_pin {
+ 	/*
+ 	 * The qe_gpio_chip name is unfortunate, we should change that to
+@@ -295,6 +305,7 @@ static int qe_gpio_probe(struct platform_device *ofdev)
  	struct device_node *np = dev->of_node;
  	struct qe_gpio_chip *qe_gc;
--	struct of_mm_gpio_chip *mm_gc;
  	struct gpio_chip *gc;
++	u32 mask;
  
  	qe_gc = devm_kzalloc(dev, sizeof(*qe_gc), GFP_KERNEL);
-@@ -310,18 +302,29 @@ static int qe_gpio_probe(struct platform_device *ofdev)
+ 	if (!qe_gc)
+@@ -302,6 +313,15 @@ static int qe_gpio_probe(struct platform_device *ofdev)
  
  	spin_lock_init(&qe_gc->lock);
  
--	mm_gc = &qe_gc->mm_gc;
--	gc = &mm_gc->gc;
-+	gc = &qe_gc->gc;
++	mask = (u32)of_device_get_match_data(dev);
++	if (mask) {
++		int i, j;
++
++		for (i = 0, j = 0; i < ARRAY_SIZE(qe_gc->irq); i++)
++			if (mask & PIN_MASK(i))
++				qe_gc->irq[i] = irq_of_parse_and_map(np, j++);
++	}
++
+ 	gc = &qe_gc->gc;
  
--	mm_gc->save_regs = qe_gpio_save_regs;
-+	gc->base = -1;
- 	gc->ngpio = QE_PIO_PINS;
- 	gc->direction_input = qe_gpio_dir_in;
- 	gc->direction_output = qe_gpio_dir_out;
+ 	gc->base = -1;
+@@ -311,6 +331,7 @@ static int qe_gpio_probe(struct platform_device *ofdev)
  	gc->get = qe_gpio_get;
  	gc->set = qe_gpio_set;
  	gc->set_multiple = qe_gpio_set_multiple;
-+	gc->parent = dev;
-+	gc->owner = THIS_MODULE;
-+
-+	gc->label = devm_kasprintf(dev, GFP_KERNEL, "%pOF", np);
-+	if (!gc->label)
-+		return -ENOMEM;
-+
-+	qe_gc->regs = devm_of_iomap(dev, np, 0, NULL);
-+	if (IS_ERR(qe_gc->regs))
-+		return PTR_ERR(qe_gc->regs);
-+
-+	qe_gpio_save_regs(qe_gc);
++	gc->to_irq = qe_gpio_to_irq;
+ 	gc->parent = dev;
+ 	gc->owner = THIS_MODULE;
  
--	return of_mm_gpiochip_add_data(np, mm_gc, qe_gc);
-+	return devm_gpiochip_add_data(dev, gc, qe_gc);
- }
- 
+@@ -330,6 +351,57 @@ static int qe_gpio_probe(struct platform_device *ofdev)
  static const struct of_device_id qe_gpio_match[] = {
+ 	{
+ 		.compatible = "fsl,mpc8323-qe-pario-bank",
++	}, {
++		.compatible = "fsl,mpc8323-qe-pario-bank-a",
++		.data = (void *)(PIN_MASK(8) | PIN_MASK(10) | PIN_MASK(26) | PIN_MASK(28)),
++	}, {
++		.compatible = "fsl,mpc8323-qe-pario-bank-b",
++		.data = (void *)(PIN_MASK(7) | PIN_MASK(9) | PIN_MASK(25) | PIN_MASK(27)),
++	}, {
++		.compatible = "fsl,mpc8323-qe-pario-bank-c",
++		.data = (void *)(PIN_MASK(24) | PIN_MASK(29)),
++	}, {
++		.compatible = "fsl,mpc8360-qe-pario-bank-a",
++		.data = (void *)(PIN_MASK(15) | PIN_MASK(16) | PIN_MASK(29) | PIN_MASK(30)),
++	}, {
++		.compatible = "fsl,mpc8360-qe-pario-bank-b",
++		.data = (void *)(PIN_MASK(3) | PIN_MASK(5) | PIN_MASK(12) | PIN_MASK(13) |
++				 PIN_MASK(26) | PIN_MASK(27)),
++	}, {
++		.compatible = "fsl,mpc8360-qe-pario-bank-c",
++		.data = (void *)(PIN_MASK(27) | PIN_MASK(28) | PIN_MASK(29)),
++	}, {
++		.compatible = "fsl,mpc8360-qe-pario-bank-d",
++		.data = (void *)(PIN_MASK(12) | PIN_MASK(13) | PIN_MASK(16) | PIN_MASK(17) |
++				 PIN_MASK(26) | PIN_MASK(27)),
++	}, {
++		.compatible = "fsl,mpc8360-qe-pario-bank-e",
++		.data = (void *)(PIN_MASK(12) | PIN_MASK(13) | PIN_MASK(24) | PIN_MASK(25) |
++				 PIN_MASK(26) | PIN_MASK(27) | PIN_MASK(31)),
++	}, {
++		.compatible = "fsl,mpc8360-qe-pario-bank-f",
++		.data = (void *)(PIN_MASK(20)),
++	}, {
++		.compatible = "fsl,mpc8360-qe-pario-bank-g",
++		.data = (void *)(PIN_MASK(31)),
++	}, {
++		.compatible = "fsl,mpc8568-qe-pario-bank-a",
++		.data = (void *)(PIN_MASK(22) | PIN_MASK(23)),
++	}, {
++		.compatible = "fsl,mpc8568-qe-pario-bank-b",
++		.data = (void *)(PIN_MASK(12) | PIN_MASK(13) | PIN_MASK(28) | PIN_MASK(29)),
++	}, {
++		.compatible = "fsl,mpc8568-qe-pario-bank-c",
++		.data = (void *)(PIN_MASK(16) | PIN_MASK(17) | PIN_MASK(25) | PIN_MASK(26)),
++	}, {
++		.compatible = "fsl,mpc8568-qe-pario-bank-d",
++		.data = (void *)(PIN_MASK(18) | PIN_MASK(19)),
++	}, {
++		.compatible = "fsl,mpc8568-qe-pario-bank-e",
++		.data = (void *)(PIN_MASK(12) | PIN_MASK(16) | PIN_MASK(30)),
++	}, {
++		.compatible = "fsl,mpc8568-qe-pario-bank-f",
++		.data = (void *)(PIN_MASK(12) | PIN_MASK(16) | PIN_MASK(30)),
+ 	},
+ 	{},
+ };
 -- 
 2.49.0
 
