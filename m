@@ -1,81 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-11546-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11547-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA539B3D859
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 06:50:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D35C0B3DB5B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 09:45:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cFbzd4RPFz2yrl;
-	Mon,  1 Sep 2025 14:50:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cFgs826Cyz2xWQ;
+	Mon,  1 Sep 2025 17:45:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2418::607" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756702253;
-	cv=pass; b=omeKL0q7zQdWlYb6bqx9IsV6pHezPh/jsL7IkRmwGITVNuEJRunQWzvtsyJgRwHqmySeQWPhdckmQygR8LZFok3STCuvXNf0kffIN+/shonetxO1lZWmKDRbp6wQrJBP01e6e4wlC7oIHsCusGuihGjI+8b0aWO9j1rievd+S4J7lqIYSFaHX891WzPLELTNGEH239sLGiRdtr0MNGh0LO8HBobfz40OXu1D4+FcBF6AF6mC0Y9zB2uAksQKBMNw7Ag8rqfXyqX1g4TAv084O4NpUiI9wHYZM7NNsWYJ0QkOqSFrT55TDr85QsfF56RhIf0pVRw+ppxRBHq5s0JSWg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756702253; c=relaxed/relaxed;
-	bh=Cq1NeBbYl00zpxDpTfpbjZFRZNHRBTMO4fNHP7OPUW0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=okyup3/TbxGC85og6njQhTiJPcStZobjdHzJvdk6pDB3sBAN986AX+a+TsMTXyeLr1cCYgEUFoaxR19EfMCpptMrk1sMdcOzQWB3GoAyjjsfl8W6slCZkre09U2X41PxhxewzAQpZfkLq8N7xKUC739wE6lyeUGiGFadw+itDv8ljJiVaoG8tXmb2XbyRCXx8IFzX/B8vEldgWy1u7cM4W3McV5GJNJCNrW6o5OZjKjHZVu4avglvWaIKOVatATmFp89fdKnFMPshYbbVlPzsWxmbadTJ9Fxl8N3ulLfThGGr/4iw8SIzq38fWE96pU8mXq4/5Wt6UFLLQZ52NrYtA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=4/bi6uuK; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2418::607; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=kprateek.nayak@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=4/bi6uuK;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2418::607; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=kprateek.nayak@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on20607.outbound.protection.outlook.com [IPv6:2a01:111:f403:2418::607])
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:1000::53df:5f64:0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756712732;
+	cv=none; b=YPJspivN+ux6o2XV5HHM9kl0nLb/pMIkwkM0VqS+pdm2c/mV2UjAyxQGuT1PXAr48voRO3hnJmX6EY4+bnu7g3S/Eax8ELn1K85vXsi0avifSem1umB5idzkCxScB7yhWkENSPVrLfBSsVmmeaI2t3LdDuQdlxGUJuk9H1EhHXMJ8gkxoOach6nEqkk5UGLQlAK3NToi1eZ1CBor5jy/CFyBCoQJaDdboXAbxveSYyXw/fxf6OqY75KBfoyHW9ulkFE9pxJQgw8MBInj3tm9LCVoaqQ22T0A3aBYfo+RBssogeMiSW5XWqDIvzEWgQSBDmlYC5+163Cq5Y83BgGT2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1756712732; c=relaxed/relaxed;
+	bh=ixXRTsSb891L+XZn49cnH1RGaSX7ycD3FtKzv7tqzYQ=;
+	h=Message-Id:From:Date:Subject:To:Cc; b=EEctelkQ5kQZyenQbeBpWelg482BDohgDwXlH61pxNEBksNqLag35o4+c64qgX+b8P0rjcmM05aNwFAfupu7yxBDr3xGEwGHjt3V/pTpmOPA06kgrAONDE4/xb8GL3NunVP/dniC7oIsNERGTSOM/eKj+vR8xzJBdvvBbPZlv09BL/QJHw+ks9PsL7bza2UhFXRSmV84UzO2C9M3H2c2rDnp+uhjTlIWM6oFxmAvnqdc/WrEHYK1e8bgCtdfhpG0PirOoHhcnxhYGpE8igmptJ9E90HjOpWrKa+MMxPrM0PyZWu44Qw/8T/l3/usr0YsJPbS0X2sdi1An8MDwdIjcg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org) smtp.mailfrom=wunner.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wunner.de (client-ip=2a01:37:1000::53df:5f64:0; helo=bmailout1.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org)
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFbzc2RV0z2xSd
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 14:50:52 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sX0qNXcg0BANqVKnzlWSA0hL/qXh6ff6a1/h6lAyWTKaHd8WqreCLeXo9vYq0MAv+ADMxW4B+C8GZ/Nzt9UvNNLCAKge0mzeBztvZkgi3zfcyEKcKiaZBFnNRaJ+LWNx6Dr4aIWwsOXe2bqxtY+QHTvOR3hj/568BrLNG6rsrVnfd4FMokJznwS/0rs9BE3QjyKx3BpN12i8oQJYmORpelHauFRuxshGYdq2hqjiVdw4SSJ+IfivvFNPJ+iLBxJNzBynCAbEkH2+BFkW+gd+yBxGZwubH35a8Dtn8JQhoFOZAgPqnoK4arzLSkD/5BK4157/lLP8J2LAP32XahuCCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Cq1NeBbYl00zpxDpTfpbjZFRZNHRBTMO4fNHP7OPUW0=;
- b=euK1CnUl6QSuRVZvjz23nDboRRMltQbrwF99ioNsTX2Vi14XIdOJjvAan76PcBOGgTk66hIPvqSkuFr/70wA9H6wfHewWCNnaf0y+3n5CYWLfbk5F/XhCPj97Udcf/tx0/YDl2sBiDoy1z+kRECPNq+u7doW232618DZXGdmx8eb/r61Y2RwnQtQFgszWCPqaEobvyVKsqPGtR9nA/sp7netXOg22gdEpyaSMBA5hV+7/cW345NiZK4WL8kc8+y/qvIcykScCBWZ0cO8nyM79A2ZwdEEeb/sTH/dH029lGETRTXKZIWbciIXz5jQGWZZXMeXR0eSGOBWGR64CGykmg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.ibm.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Cq1NeBbYl00zpxDpTfpbjZFRZNHRBTMO4fNHP7OPUW0=;
- b=4/bi6uuKwsMU+cRiMYij5z8kiqahBUtJJ8KYuVIF5EARQGRjGagasLooRgSfQZ+AkceA5MV5TqESMqBpLjpy2JyPUQzk6ao8pSED//lfFJ7apRIX55iiOKvUTJwL3TBo5RL5W88EShpOWwp9yF12pMAsxorw+m5Di81YqbSAb6M=
-Received: from BL6PEPF00013E11.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:22e:400:0:1001:0:17) by DS7PR12MB6263.namprd12.prod.outlook.com
- (2603:10b6:8:95::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.25; Mon, 1 Sep
- 2025 04:50:31 +0000
-Received: from BL6PEPF0001AB78.namprd02.prod.outlook.com
- (2a01:111:f403:f903::) by BL6PEPF00013E11.outlook.office365.com
- (2603:1036:903:4::4) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9073.24 via Frontend Transport; Mon,
- 1 Sep 2025 04:50:30 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BL6PEPF0001AB78.mail.protection.outlook.com (10.167.242.171) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.9094.14 via Frontend Transport; Mon, 1 Sep 2025 04:50:30 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Sun, 31 Aug
- 2025 23:50:30 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1748.10; Sun, 31 Aug
- 2025 21:50:30 -0700
-Received: from [10.136.36.137] (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Sun, 31 Aug 2025 23:50:18 -0500
-Message-ID: <ab3cfd71-57ba-44e6-8954-bf531294351b@amd.com>
-Date: Mon, 1 Sep 2025 10:20:16 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFgs640Ggz2xQ4
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 17:45:28 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 434312C0131F;
+	Mon,  1 Sep 2025 09:45:22 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 2E4BD4F1F6C; Mon,  1 Sep 2025 09:45:22 +0200 (CEST)
+Message-Id: <5f707caf1260bd8f15012bb032f7da9a9b898aba.1756712066.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Mon, 1 Sep 2025 09:44:52 +0200
+Subject: [PATCH] PCI/AER: Print TLP Log for errors introduced since PCIe r1.1
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org
+X-Spam-Status: No, score=-0.7 required=3.0 tests=RCVD_IN_DNSWL_LOW,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,178 +54,157 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 4/8] powerpc/smp: Introduce CONFIG_SCHED_MC to guard MC
- scheduling bits
-To: Shrikanth Hegde <sshegde@linux.ibm.com>, Andrea Righi <arighi@nvidia.com>
-CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
-	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
-	<thomas.weissschuh@linutronix.de>, Li Chen <chenl311@chinatelecom.cn>, "Bibo
- Mao" <maobibo@loongson.cn>, Mete Durlu <meted@linux.ibm.com>, Tobias Huschle
-	<huschle@linux.ibm.com>, Easwar Hariharan
-	<easwar.hariharan@linux.microsoft.com>, Guo Weikang
-	<guoweikang.kernel@gmail.com>, "Rafael J. Wysocki"
-	<rafael.j.wysocki@intel.com>, Brian Gerst <brgerst@gmail.com>, Patryk Wlazlyn
-	<patryk.wlazlyn@linux.intel.com>, Swapnil Sapkal <swapnil.sapkal@amd.com>,
-	"Yury Norov [NVIDIA]" <yury.norov@gmail.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Yicong Yang <yangyicong@hisilicon.com>, Ricardo Neri
-	<ricardo.neri-calderon@linux.intel.com>, Tim Chen
-	<tim.c.chen@linux.intel.com>, Vinicius Costa Gomes
-	<vinicius.gomes@intel.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Heiko Carstens
-	<hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
-	<agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot
-	<vincent.guittot@linaro.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>, Peter Zijlstra
-	<peterz@infradead.org>
-References: <20250826041319.1284-1-kprateek.nayak@amd.com>
- <20250826041319.1284-5-kprateek.nayak@amd.com>
- <5f1a9ed6-b551-48b9-8c62-8ef0f2bd2fca@linux.ibm.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <5f1a9ed6-b551-48b9-8c62-8ef0f2bd2fca@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB78:EE_|DS7PR12MB6263:EE_
-X-MS-Office365-Filtering-Correlation-Id: 172224cd-befd-49f7-5b50-08dde9131422
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QUU2NWJGVGNSNWVLaERJYTJLdldpNEpobVlhQzNkTHE3VUZuR3d0amdOVW8z?=
- =?utf-8?B?NmJiTCt5UDZmRzJhaUUxSXN6S0tQdlY2dXNlOW0vaVg3WUx0emYrYXltTENn?=
- =?utf-8?B?Rzk4Tk9DaHlPOGNWVW1FeUgvV2hmYnlnOFQ2VmtZSWYrMmtNWHZKaDB5R1Z3?=
- =?utf-8?B?U05IaXpHeWhuOE1neFkyMWk2anFmWG9TTTluNkYwSUE3QjkrQ0gxZUM2eS9M?=
- =?utf-8?B?ZFlURkVoNGY0L0dvdWRzdVQzaElVYnpzaS9FWE5ySDlIVEdLVVhDS0w2TGVO?=
- =?utf-8?B?TDFIdGZPT3VkUW9WcWdaNVVjWHBwU2ppZWFSN1llZU92MFhrZTlyTEZiTWRB?=
- =?utf-8?B?cXZhL0JTcWRJVW5pcFZJN0NoUmZxZER6YWltTWFyUFFUVGRPVW8veHNENFJn?=
- =?utf-8?B?WU94VHVBN1VyVHJZMllpbFNLYXk3aHA3eU13blBTc2ZOTmNmTVpVVE4vYklx?=
- =?utf-8?B?blBSM0VtNEMwQnpuQmpLb0hvd2NEQzVmN29DOW43aHZQY25aWk82elhkcyt6?=
- =?utf-8?B?NVRZOWdUblJROVh3bG5lOUtvdFVtWnpEdWJoTXRTM1JjdVIwbElqQXBibEdP?=
- =?utf-8?B?aGNEaUxUR2JqQVZrOXFSQit0V3hIQVJxUDF4OFBaTGN4ZDR2NDhLMTl5QWN1?=
- =?utf-8?B?cktVeUJtSVVreWswcGhNL3o4d21SNXBISHVLb2hYR1A3ZmVnNitQc3V4NVAv?=
- =?utf-8?B?Vkp5U01VYVNTOXFpRjIxY2MrWWo0aUpqOVJabmprSWd5bE1zZ3h1S2V2dWE1?=
- =?utf-8?B?bjN6Q2dNK2dSRUI2cU51SjhBaERLanNnd1pvbmhSbkFRK2ZMbG9wZ2pzL291?=
- =?utf-8?B?RXhYRk5BSXl5dHB4eTNTOE1BaXRJcG9pd3RJYU9Ud3BOd2Y1clhzUUwrM0FL?=
- =?utf-8?B?ZTFGckJ6NnUvd0o4dCtIMmxRajZmVnlhalA3di9GY0NrRHFQSXVnVCtFOUdn?=
- =?utf-8?B?RG1WSEV4ajZVVTB3ZGhmTFY4UzA1c2doa0E5aGdlM2ZFY3pDc0FweXpMYUxT?=
- =?utf-8?B?QXZBZHVTa0hRaXdrWVFOZk05ZTZkc3g4dVJHR2Z0OHRjV2dSYUZMN0RYZW5z?=
- =?utf-8?B?YloxVm5tcEViNzFPS1R6S2xtTHdsbGpXeW9EbHM0UE5zNnJPeVJZQmlMN2RG?=
- =?utf-8?B?cmoyd2ZxYnYwR1laRkxEb0pWK2xOOFpobHZ3Qy9QQjlDeVJrdXJJL0pJdEtw?=
- =?utf-8?B?Q2lFLzNFck1aeVFtRjZEdTVvOVJ4N1RtVkJkbVJ1VWJtQ25OR0gyaHdhcVhk?=
- =?utf-8?B?a1ZHZ3FuaGR5eU5jckxvY2NxclUxUnRIa3k5OEM1cU5GTEdiemlRV2s4WkpX?=
- =?utf-8?B?azA0OHFRdTBoQzF0bkRFK3hGT0hScVcrM0ltUnUyb2xjV2YrMmRCOTVrVTlX?=
- =?utf-8?B?clhETENKMVQxZys0ME9yQ01ZdGdIaEx5bXF4UG1YVUJUM3RyS01OYXVYVEsx?=
- =?utf-8?B?VEd3bmpHek43eXkydUVya3BiRktaSFBrYUFHZHNmNExKK0VYTXA2c3dFSnV2?=
- =?utf-8?B?ckVZTGRvWExHaDQwdFpNNTdXVnRzVU5TV3RGVk1rbG10MDh6NDllaElXaTVB?=
- =?utf-8?B?OTJwd09LQ0pPYUJGNytyTkF4OUpvMGZ0b1BBd2dCYU9QZUg4bE16N2JVY0Qw?=
- =?utf-8?B?SmY5WUNMVmZwVWEybDl5Q0RYeGtLa3VTUTh6dk9iSHlycTZPVE5mQU92TE52?=
- =?utf-8?B?eWZQS3UzMXVGVVF4Nmsrdkw0VGpUNXJOL0RNcUlWTkprOXZxY3duWEdrR0Jx?=
- =?utf-8?B?U0dDRW9Cd1kwa0lsd3pxejFxSGorVEhwQkdBNjhlcEl5SHdST3p2QmtKSFpK?=
- =?utf-8?B?M3dyczBMeGEyV3hsVlpSemRYNHJQamI1Mm1CUXdybklyZlF1bWZQeE9BQW9N?=
- =?utf-8?B?WU83TzdUblNkbTNBMUNrNkx1bDZZZ0NQRWFCclZjWWYyd0tkWlN6YmU0SHoz?=
- =?utf-8?B?OXhEc2tYMnJIekNYb2NLSkZSZE1kd3FsU1gyK1doMlhVZ3l6QzV4Yk1nbmpQ?=
- =?utf-8?B?bEZWTlFrcWFreXNzK3F5YmxnWXByb0tnQWNNN29WMTJ4Rm1sWndCdEU2ek14?=
- =?utf-8?Q?r9Qh3w?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2025 04:50:30.7477
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 172224cd-befd-49f7-5b50-08dde9131422
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB78.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6263
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+When reporting an error, the AER driver prints the TLP Header / Prefix Log
+only for errors enumerated in the AER_LOG_TLP_MASKS macro.
 
+The macro was never amended since its introduction in 2006 with commit
+6c2b374d7485 ("PCI-Express AER implemetation: AER core and aerdriver").
+At the time, PCIe r1.1 was the latest spec revision.
 
-On 8/26/2025 2:57 PM, Shrikanth Hegde wrote:
->> diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/smp.h
->> index 86de4d0dd0aa..9a320d96e891 100644
->> --- a/arch/powerpc/include/asm/smp.h
->> +++ b/arch/powerpc/include/asm/smp.h
->> @@ -148,7 +148,9 @@ static inline const struct cpumask *cpu_smt_mask(int cpu)
->>   }
->>   #endif /* CONFIG_SCHED_SMT */
->>   +#ifdef CONFIG_SCHED_MC
->>   extern const struct cpumask *cpu_coregroup_mask(int cpu);
->> +#endif
->>   
-> 
-> Is ifdef necessary here?
+Amend the macro with errors defined since then to avoid omitting the TLP
+Header / Prefix Log for newer errors.
 
-This is gone in Peter's squash but I added it just to
-remain consistent with cpu_smt_mask() above.
+The order of the errors in AER_LOG_TLP_MASKS follows PCIe r1.1 sec 6.2.7
+rather than 7.10.2, because only the former documents for which errors a
+TLP Header / Prefix is logged.  Retain this order.  The section number is
+still 6.2.7 in today's PCIe r7.0.
 
-> 
->>   /* Since OpenPIC has only 4 IPIs, we use slightly different message numbers.
->>    *
->> diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
->> index e623f2864dc4..7f79b853b221 100644
->> --- a/arch/powerpc/kernel/smp.c
->> +++ b/arch/powerpc/kernel/smp.c
->> @@ -1059,6 +1059,7 @@ static bool has_coregroup_support(void)
->>       return coregroup_enabled;
->>   }
->>   +#ifdef CONFIG_SCHED_MC
->>   const struct cpumask *cpu_coregroup_mask(int cpu)
->>   {
->>       if (has_coregroup_support())
->> @@ -1071,6 +1072,7 @@ static const struct cpumask *cpu_mc_mask(struct sched_domain_topology_level *tl,
->>   {
->>       return cpu_corgrp_mask(cpu);
->>   }
->> +#endif
->>   
-> 
-> Previous patch says cpu_coregroup_mask is exported. Is it exported in any way to user or modules?
+For Completion Timeouts, the TLP Header / Prefix is only logged if the
+Completion Timeout Prefix / Header Log Capable bit is set in the AER
+Capabilities and Control register.  Introduce a tlp_header_logged() helper
+to check whether the TLP Header / Prefix Log is populated and use it in
+the two places which currently match against AER_LOG_TLP_MASKS directly.
 
-Just "exposed" to kernel/sched/topology.c bits :)
+For Uncorrectable Internal Errors, logging of the TLP Header / Prefix is
+optional per PCIe r7.0 sec 6.2.7.  If needed, drivers could indicate
+through a flag whether devices are capable and tlp_header_logged() could
+then check that flag.
 
-I don't think this is used by any generic module / exported to
-userspace.
+pcitools introduced macros for newer errors with commit 144b0911cc0b
+("ls-ecaps: extend decode support for more fields for AER CE and UE
+status"):
+  https://git.kernel.org/pub/scm/utils/pciutils/pciutils.git/commit/?id=144b0911cc0b
 
-> 
-> Also i don't see similar gating in other archs. It maybe unnecessary.
-> 
->>   static const struct cpumask *cpu_pkg_mask(struct sched_domain_topology_level *tl, int cpu)
->>   {
->> @@ -1729,10 +1731,12 @@ static void __init build_sched_topology(void)
->>               SDTL_INIT(shared_cache_mask, powerpc_shared_cache_flags, CACHE);
->>       }
->>   +#ifdef CONFIG_SCHED_MC
->>       if (has_coregroup_support()) {
->>           powerpc_topology[i++] =
->>               SDTL_INIT(cpu_mc_mask, powerpc_shared_proc_flags, MC);
->>       }
->> +#endif
-> 
-> Just this gating should suffice IMO.
+Unfortunately some of those macros are overly long:
+  PCI_ERR_UNC_POISONED_TLP_EGRESS
+  PCI_ERR_UNC_DMWR_REQ_EGRESS_BLOCKED
+  PCI_ERR_UNC_IDE_CHECK
+  PCI_ERR_UNC_MISR_IDE_TLP
+  PCI_ERR_UNC_PCRC_CHECK
+  PCI_ERR_UNC_TLP_XLAT_EGRESS_BLOCKED
 
-Ack. Your suggested diff to have CONFIG_SCHED_MC configurable on powerpc
-looks good.
+This seems unsuitable for <linux/pci_regs.h>, so shorten to:
+  PCI_ERR_UNC_POISON_BLK
+  PCI_ERR_UNC_DMWR_BLK
+  PCI_ERR_UNC_IDE_CHECK
+  PCI_ERR_UNC_MISR_IDE
+  PCI_ERR_UNC_PCRC_CHECK
+  PCI_ERR_UNC_XLAT_BLK
 
+Note that some of the existing macros in <linux/pci_regs.h> do not match
+exactly with pcitools (e.g. PCI_ERR_UNC_SDES versus PCI_ERR_UNC_SURPDN),
+so it does not seem mandatory for them to be identical.
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+---
+ drivers/pci/pcie/aer.c        | 30 +++++++++++++++++++++++++++---
+ include/uapi/linux/pci_regs.h |  8 ++++++++
+ 2 files changed, 35 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 15ed541..62c74b5 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -96,11 +96,21 @@ struct aer_info {
+ };
+ 
+ #define AER_LOG_TLP_MASKS		(PCI_ERR_UNC_POISON_TLP|	\
++					PCI_ERR_UNC_POISON_BLK |	\
+ 					PCI_ERR_UNC_ECRC|		\
+ 					PCI_ERR_UNC_UNSUP|		\
+ 					PCI_ERR_UNC_COMP_ABORT|		\
+ 					PCI_ERR_UNC_UNX_COMP|		\
+-					PCI_ERR_UNC_MALF_TLP)
++					PCI_ERR_UNC_ACSV |		\
++					PCI_ERR_UNC_MCBTLP |		\
++					PCI_ERR_UNC_ATOMEG |		\
++					PCI_ERR_UNC_DMWR_BLK |		\
++					PCI_ERR_UNC_XLAT_BLK |		\
++					PCI_ERR_UNC_TLPPRE |		\
++					PCI_ERR_UNC_MALF_TLP |		\
++					PCI_ERR_UNC_IDE_CHECK |		\
++					PCI_ERR_UNC_MISR_IDE |		\
++					PCI_ERR_UNC_PCRC_CHECK)
+ 
+ #define SYSTEM_ERROR_INTR_ON_MESG_MASK	(PCI_EXP_RTCTL_SECEE|	\
+ 					PCI_EXP_RTCTL_SENFEE|	\
+@@ -796,6 +806,20 @@ static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
+ 	}
+ }
+ 
++static bool tlp_header_logged(u32 status, u32 capctl)
++{
++	/* Errors for which a header is always logged (PCIe r7.0 sec 6.2.7) */
++	if (status & AER_LOG_TLP_MASKS)
++		return true;
++
++	/* Completion Timeout header is only logged on capable devices */
++	if (status & PCI_ERR_UNC_COMP_TIME &&
++	    capctl & PCI_ERR_CAP_COMP_TIME_LOG)
++		return true;
++
++	return false;
++}
++
+ static void __aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+ {
+ 	const char **strings;
+@@ -910,7 +934,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+ 		status = aer->uncor_status;
+ 		mask = aer->uncor_mask;
+ 		info.level = KERN_ERR;
+-		tlp_header_valid = status & AER_LOG_TLP_MASKS;
++		tlp_header_valid = tlp_header_logged(status, aer->cap_control);
+ 	}
+ 
+ 	info.status = status;
+@@ -1401,7 +1425,7 @@ int aer_get_device_error_info(struct aer_err_info *info, int i)
+ 		pci_read_config_dword(dev, aer + PCI_ERR_CAP, &aercc);
+ 		info->first_error = PCI_ERR_CAP_FEP(aercc);
+ 
+-		if (info->status & AER_LOG_TLP_MASKS) {
++		if (tlp_header_logged(info->status, aercc)) {
+ 			info->tlp_header_valid = 1;
+ 			pcie_read_tlp_log(dev, aer + PCI_ERR_HEADER_LOG,
+ 					  aer + PCI_ERR_PREFIX_LOG,
+diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+index f5b1774..d2e1bbb 100644
+--- a/include/uapi/linux/pci_regs.h
++++ b/include/uapi/linux/pci_regs.h
+@@ -776,6 +776,13 @@
+ #define  PCI_ERR_UNC_MCBTLP	0x00800000	/* MC blocked TLP */
+ #define  PCI_ERR_UNC_ATOMEG	0x01000000	/* Atomic egress blocked */
+ #define  PCI_ERR_UNC_TLPPRE	0x02000000	/* TLP prefix blocked */
++#define  PCI_ERR_UNC_POISON_BLK	0x04000000	/* Poisoned TLP Egress Blocked */
++#define  PCI_ERR_UNC_DMWR_BLK	0x08000000	/* DMWr Request Egress Blocked */
++#define  PCI_ERR_UNC_IDE_CHECK	0x10000000	/* IDE Check Failed */
++#define  PCI_ERR_UNC_MISR_IDE	0x20000000	/* Misrouted IDE TLP */
++#define  PCI_ERR_UNC_PCRC_CHECK	0x40000000	/* PCRC Check Failed */
++#define  PCI_ERR_UNC_XLAT_BLK	0x80000000	/* TLP Translation Egress Blocked */
++
+ #define PCI_ERR_UNCOR_MASK	0x08	/* Uncorrectable Error Mask */
+ 	/* Same bits as above */
+ #define PCI_ERR_UNCOR_SEVER	0x0c	/* Uncorrectable Error Severity */
+@@ -798,6 +805,7 @@
+ #define  PCI_ERR_CAP_ECRC_CHKC		0x00000080 /* ECRC Check Capable */
+ #define  PCI_ERR_CAP_ECRC_CHKE		0x00000100 /* ECRC Check Enable */
+ #define  PCI_ERR_CAP_PREFIX_LOG_PRESENT	0x00000800 /* TLP Prefix Log Present */
++#define  PCI_ERR_CAP_COMP_TIME_LOG	0x00001000 /* Completion Timeout Prefix/Header Log Capable */
+ #define  PCI_ERR_CAP_TLP_LOG_FLIT	0x00040000 /* TLP was logged in Flit Mode */
+ #define  PCI_ERR_CAP_TLP_LOG_SIZE	0x00f80000 /* Logged TLP Size (only in Flit mode) */
+ #define PCI_ERR_HEADER_LOG	0x1c	/* Header Log Register (16 bytes) */
 -- 
-Thanks and Regards,
-Prateek
+2.50.1
 
 
