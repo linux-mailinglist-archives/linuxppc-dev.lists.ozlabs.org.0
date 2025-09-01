@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-11564-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11565-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A682BB3DD62
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 11:00:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B149AB3DD64
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 11:00:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cFjW75w6Dz30RN;
-	Mon,  1 Sep 2025 19:00:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cFjWN0KSJz30TF;
+	Mon,  1 Sep 2025 19:00:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756717203;
-	cv=none; b=TO7IjLCY3onRgOU+qiUF/Tv5EoOewQMU0mGYIGBPzjUZDUz0NoJyvl9pe1cTIjSoQoEngKp+nw0LZAMINopTn0W+KkGw/9xky2K2tg0Jlen2+M9qS1vEYCDHWibjKz0Q1ymBll67E/OIxfsEFNjZprSw7y/+I/IX8vtoZgXKmSxqSNSuyggIMlc+11/jx/5ilWBTwPakq6LFoKZk74EGV4IG0Uq4zCZp2CaxMERlffl+9WFD7k2v0pSbvREdfV4TPcpbdWz0pKLq6WWj1iKoDCU+d+tY5fYjwtunRmdrpBKHaE3IhjPS6BOFSOgKXS0wBKbF/k+3ME5s/40z4GRe+w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756717216;
+	cv=none; b=GHBYHd6K0KnuW6QYVUOXIg7tygD/pxBiQX8TLHW+UlXxSh6BTmx6Zc7inq9Zixg91XUvi0wJVGwTVsGeSZheAyJI3Xue1wZsVc5LPg6217uguBJVq7fNe4xEzY9Gq3D3+orHTirSbEnaPocIYcxsS4w9AGF0yic9AUP/kG8aAtsQgLLPBlwvot5pwT2xezp5ZWsSMNp2xcM3I0Qnvldnw8lK6qqr4yMHaD/lnD4S+CQl+JA2CZLKP7L+QqpUg3KKRpcN7jLGgOSQ64sz3VR5HBa7V/rznClPKl8AUAR1ncEYRk8N8O6bC86bFcu4Od1Ds8i6jHZ2lU/Xl5XNSsrv3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756717203; c=relaxed/relaxed;
-	bh=33ocR1/KWnKamLI2VB5KEQkatsxXrNn5E9NDKwqiK0Q=;
+	t=1756717216; c=relaxed/relaxed;
+	bh=KdWH7nTM4UtBAwVn6YzUtn8xVQGtx4qAoD1NnPACvBw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VHT+rpu4SqKPTixSZdwAzuOz6MexaAtuLoYtZDoOI05UzBx7erVOaen0v2aASO8EH9LYPT40IKFO6YJxvxn03/n3N6a0pZQxTQLNJDKP24QKUxYnOnccPrTxuXlRsvTAvqvHgORgaOWPWJ2l1X00GxeQrKrgYXzy36kIV6W8slIO8Y4EUsLn7YOmcKvbumDFqIlpZv2TAjnWGadhmE0Dpz/DiBGIX8e22BkNosSO5xIJxH0pwsJMHWMJXnV4NKyfSuf7SGhHibz7Yl6SAyz7L2rT3QnVTaEaWtWaP4npwJKmY8ob81+4cT/WjjqXCFulqgJL0Lzy8SZsg1UJfYQbsQ==
+	 MIME-Version; b=hhlo9GzAFgOeltfaeLw8PfZE576ABj/qZrckdN9RSkf34CQunnQ61vEW+yhLquJTQpIrPD3+Hpcg8Xf/wQKTW6ypfsuieHrhXq01T4/hazC9e/iJ2qLCSpShD8ozYKhU1z2LKunAcN36nUFv3lF6zrIXwyF4jKHLxavnKbQdye6SbqAW3o6vvuqH+gSNm+gomBC/0ttm7R6MngEyUV0T6aZBVrqByzAkbf36G1vPvbwAf23YlnaeVGsRlbOag1ps6x9xi5bhv2qEHw2JMW0GRtXNDb42KTFC1WpE0EeOE9eP1/HX23ap7V5KAaL+A9WsKR+SlHXcAkoxF3Hgr16x8w==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
@@ -23,32 +23,32 @@ Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFjW63yPzz30RT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 19:00:02 +1000 (AEST)
-X-UUID: e2624004871111f0b29709d653e92f7d-20250901
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFjWL5GpLz30TB
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 19:00:14 +1000 (AEST)
+X-UUID: e86bfae4871111f0b29709d653e92f7d-20250901
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:084774f6-4f27-4563-9c15-27e02553a790,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:bf6960de0fea4d96f52c7ed05c9793fa,BulkI
+X-CID-O-INFO: VERSION:1.1.45,REQID:9856c3cb-6274-461f-bd60-bd9e3453544a,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6493067,CLOUDID:1f38d007408be91faa64e7344a36a8e5,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: e2624004871111f0b29709d653e92f7d-20250901
+X-UUID: e86bfae4871111f0b29709d653e92f7d-20250901
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 1064011897; Mon, 01 Sep 2025 16:58:53 +0800
+	with ESMTP id 1266094301; Mon, 01 Sep 2025 16:59:03 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id B014EE008FA5;
-	Mon,  1 Sep 2025 16:58:52 +0800 (CST)
-X-ns-mid: postfix-68B5604C-514101748
+	by mail.kylinos.cn (NSMail) with SMTP id B89CBE008FA7;
+	Mon,  1 Sep 2025 16:59:02 +0800 (CST)
+X-ns-mid: postfix-68B56055-952872770
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 93864E008FA7;
-	Mon,  1 Sep 2025 16:58:43 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id C0DDDE008FA8;
+	Mon,  1 Sep 2025 16:58:52 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -97,9 +97,9 @@ Cc: Ben Horgan <ben.horgan@arm.com>,
 	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v3 11/12] thermal/drivers/ti-soc-thermal: Use scope-based cleanup helper
-Date: Mon,  1 Sep 2025 16:57:47 +0800
-Message-Id: <20250901085748.36795-12-zhangzihuan@kylinos.cn>
+Subject: [PATCH v3 12/12] PM: EM: Use scope-based cleanup helper
+Date: Mon,  1 Sep 2025 16:57:48 +0800
+Message-Id: <20250901085748.36795-13-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
 References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
@@ -129,66 +129,57 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ kernel/power/energy_model.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers=
-/thermal/ti-soc-thermal/ti-thermal-common.c
-index 0cf0826b805a..daea718291a6 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -27,7 +27,6 @@
-=20
- /* common data structures */
- struct ti_thermal_data {
--	struct cpufreq_policy *policy;
- 	struct thermal_zone_device *ti_thermal;
- 	struct thermal_zone_device *pcb_tz;
- 	struct thermal_cooling_device *cool_dev;
-@@ -218,6 +217,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap=
- *bgp, int id)
+diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+index ea7995a25780..852d48039ce2 100644
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -451,7 +451,7 @@ static void
+ em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state =
+*table)
  {
- 	struct ti_thermal_data *data;
- 	struct device_node *np =3D bgp->dev->of_node;
-+	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
-u_get(0);
+ 	struct em_perf_domain *pd =3D dev->em_pd;
+-	struct cpufreq_policy *policy;
++	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+ 	int found =3D 0;
+ 	int i, cpu;
 =20
- 	/*
- 	 * We are assuming here that if one deploys the zone
-@@ -234,8 +234,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap=
- *bgp, int id)
- 	if (!data)
- 		return -EINVAL;
-=20
--	data->policy =3D cpufreq_cpu_get(0);
--	if (!data->policy) {
-+	if (!policy) {
- 		pr_debug("%s: CPUFreq policy not found\n", __func__);
- 		return -EPROBE_DEFER;
+@@ -479,8 +479,6 @@ em_cpufreq_update_efficiencies(struct device *dev, st=
+ruct em_perf_state *table)
+ 			found++;
  	}
-@@ -246,7 +245,6 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap=
- *bgp, int id)
- 		int ret =3D PTR_ERR(data->cool_dev);
- 		dev_err(bgp->dev, "Failed to register cpu cooling device %d\n",
- 			ret);
--		cpufreq_cpu_put(data->policy);
 =20
- 		return ret;
- 	}
-@@ -261,11 +259,8 @@ int ti_thermal_unregister_cpu_cooling(struct ti_band=
-gap *bgp, int id)
+-	cpufreq_cpu_put(policy);
+-
+ 	if (!found)
+ 		return;
 =20
- 	data =3D ti_bandgap_get_sensor_data(bgp, id);
+@@ -787,21 +785,20 @@ static void em_check_capacity_update(void)
 =20
--	if (!IS_ERR_OR_NULL(data)) {
-+	if (!IS_ERR_OR_NULL(data))
- 		cpufreq_cooling_unregister(data->cool_dev);
--		if (data->policy)
--			cpufreq_cpu_put(data->policy);
--	}
+ 	/* Check if CPUs capacity has changed than update EM */
+ 	for_each_possible_cpu(cpu) {
+-		struct cpufreq_policy *policy;
++		struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
++			cpufreq_cpu_get(cpu);
+ 		struct em_perf_domain *pd;
+ 		struct device *dev;
 =20
- 	return 0;
- }
+ 		if (cpumask_test_cpu(cpu, cpu_done_mask))
+ 			continue;
+=20
+-		policy =3D cpufreq_cpu_get(cpu);
+ 		if (!policy) {
+ 			pr_debug("Accessing cpu%d policy failed\n", cpu);
+ 			schedule_delayed_work(&em_update_work,
+ 					      msecs_to_jiffies(1000));
+ 			break;
+ 		}
+-		cpufreq_cpu_put(policy);
+=20
+ 		dev =3D get_cpu_device(cpu);
+ 		pd =3D em_pd_get(dev);
 --=20
 2.25.1
 
