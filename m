@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-11586-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11587-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BA5B3E956
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 17:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 849A1B3E983
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 17:20:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cFstT29Vyz2ywh;
-	Tue,  2 Sep 2025 01:17:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cFsyT1Y3Bz2yyd;
+	Tue,  2 Sep 2025 01:20:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756739841;
-	cv=none; b=howD+Z73yh32poaEl/GGDBzZMW8K/x2w9py723FcjtjyehMbKXlFvioC/4i8R3r3DFpn9ue6dKh0JNZgNp/6kFSyaKYeKQMCRLvQbvJj6uXCJRdqIB8qP8ovI4bFIBgjbudEtXYrhvAOo90t/dQxgoHx7B2kdy6Rbcpg5B6xNABRvXPHKyECbSczXCF3QOJzZ2jfFY3vJDV5Td+u9XgSDdN8Ta4gcK1by5Of4uGW5vI0HMzYTEdNC7UbD8fUAmMzn8AGEmXa0irVXrb87n8pFGogpur/AP53DxdLegEnT0F9+ThWBNhkDfKMTpfTnzLTbiR9N6l/DmVxW1T3JXILyg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756740049;
+	cv=none; b=WM+rYSPz9gepIOyBELfOjOQG28LCczz8/vpq47+OdQRad3HXrUg5wd2uEf2TvdUkDP1Nio8n4KvseLlyvB+Fqe2gR7mnAIPQl/twiMoJFg4smuFGXU1mC8CJsqz0Fr6KEbKCBTbPOA29hkcN+/AsaI+F5GQxSEploM3yMEsE+74Qaz6PFDLDhQHvI2HkdZtha8kvVB3Wu2vV1Qd9kr1+K2icmc9V/RfftUPtkkrAw2wiwMzMXP32y/MMZ+ZIlck0eJp1KP2AjgH+dqFq6DJ7scCqyGeDlaKljHBEuA5AQcdiyk6GI2PI2mVMnBVPcGqDTekuIAl4ix94mxhKRmVHKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756739841; c=relaxed/relaxed;
-	bh=6TImWhcAqndssQTrfnkjNKmhvD9vElOxFN8zK455Rmc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eeO4+L84eAxhZyzh0HQ4xW8AweGEbSz21Hc/BWK8gF1wK7uiTkFTkO6JOUeb7vUhIL+1a+2N0yctV/Rul6mkJlN2zx8tnCWzjWIChAS+KytRt5wtjVg5nCT4wEekg/NF9ezuGBpgcZSJtV/n4YLHYGPCaNudpKjKIpZ7oMpONOCHkUEQvU5NR+Rv7R7ELCOklPL9DZVmggkke5hEOP1hSowqeD7Iz2bsDm86Rpg3Ct/SH7ewUphX6dyMnwNTXWT5TIR+TKb/327Ysid6PplNZJWJFJl0/dcd1lOHLV0EwKG+CpwHF9zPfTIZJ6A3loEcN1NcIgZY8WgK6SRoVIOyQA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fHSscyxU; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1756740049; c=relaxed/relaxed;
+	bh=2LqjPAB7Ku8Lk+IULWjS6Lm6Ja7JN/J4MPMuUDVR0dY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=S70mCfAXMbNh25P16gC6z9IH735k7rnnh9tdcbEcCFyEl2G1Q6VRvqv3+UCjFz0UhJqNfrwS3PxJIVEhiJ6PSCgYOsBeiIO7VfBdWGLkyaw7PIg5jKK68RQyyKnlkO5TnfwlTO3tD2SmzoRGyankGPTf06kdBr3/feiUKMtaowpylms/fKDZNMIkU/U4NUJsAtcv8x6D2AU00E2CkS0MXJqd89TmMC5UuzcXKKkTV41bX9JrRWa5o4KrgemIuJj43BijTSJcdt+UT5kboiXkx2k9u1Jq92S8l+7Y2ph/JDcup92uMYnqKFIq4J0/j2lJwY+yX6A9HYyKkGFAKMD6Mw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CGIvI9AR; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fHSscyxU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CGIvI9AR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFstS3rCPz2yqP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 01:17:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFsyS31yFz2yxN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 01:20:48 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id EFC09601DE
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 15:17:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3888C4CEF0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 15:17:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D1BCE60010;
+	Mon,  1 Sep 2025 15:20:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660E4C4CEF0;
+	Mon,  1 Sep 2025 15:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756739837;
-	bh=5weQGGRb22PrjCyP/g4zxlVoFtpKwJSJ+1zX1sG+Ceo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=fHSscyxUBqa2PrUEAJYH4gjbe394x6UINLLLJtU3No/ch07okasdYpPcLQVZ4fQdz
-	 QQVpadnQL9+K/Bpr7PRPb1lji/ueyUJo0Nz3wjlJnIDs6gj2K0bIoBRm5dUqa4DnzM
-	 DY2h8b80jorHneNn39SEcsZRb6GHqyX/EXJ0F/BwtNCV5dmP3SHyX9yn+TVbM49IPg
-	 gJX0lOPTuzPnXXKhNhXoblUzf/66Yb6hsnXIc36xlN9G/S8hlUTrrtuZhlzHc+/YLr
-	 6Fj48VcKspQFdxqqBYoze3u/d/wGFeYtGEBYBk9/cEEhhvcPXXMosbjDG8tSDIKFer
-	 oYp4KruBpNFcA==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-315bb486e6dso2248896fac.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 01 Sep 2025 08:17:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXfZlP6E6Br14qkw9Fg0I4Cw1C6gVKRfJVrCiylPuqzYLkPgAwMMStORFjzbQURoCZmZTjvX2tt/Zd4He8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxaSEoReip7Dl7yr9eYUSZutAkcL+lVpTrsrMwrtMmTGiTtpeuA
-	V7Hk75kmOuxXokVbP13tmKuK8kgtJdoWS4ItNqB0w+LsMvMs7s7+/f7AgT2q2ZBX0LGAWtwDWj8
-	HXklj9he7QEQcRUYFMMg0XBou+pela+I=
-X-Google-Smtp-Source: AGHT+IEqozTSDrtoR1W72zJmy9Z1LH1mlLFPdwzpw5V1Yv8IGBwtb8EBAZercDEFewoqAI3YKrAtdKI2Ii3KK+l5mg4=
-X-Received: by 2002:a05:6870:9b09:b0:30b:b123:b6c9 with SMTP id
- 586e51a60fabf-319630e13fbmr3523480fac.12.1756739836982; Mon, 01 Sep 2025
- 08:17:16 -0700 (PDT)
+	s=k20201202; t=1756740045;
+	bh=mel0sP1S1UZU3Xkn/7UnF8o+gUk0oxpwGtXR4J6IJ+g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=CGIvI9ARWQzSHMZs2628PIHsARqcZ9TczW4GcSf5zDL6rEtTv0g4j6awo17XMxCj1
+	 iT1xMU9XmJooZfUaxeCb+vOZYlqWVzvzIrEVIOoTc+ygUNxgKJ/B/hqxWsyK9VLo8h
+	 fyeslylBNNzUag6aXyfLRwQriWt2lMJ6bzbTGEGLI9uPIVrT4cdVhtOrK65HDGo3fs
+	 E7TIEeshmA1iShgtkpHVJbGS9SrDzVpx/zn/0OzsvWor5814LHYUjRisOljUK2M6rh
+	 Hf4QL0bP5G3b0RDnOLXnU9aims+hwKKYSrUHap4pwocxBTDY1U3VlVHbrNGyiKGl1P
+	 SvDVUWDensJ3w==
+Date: Mon, 1 Sep 2025 10:20:44 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH] PCI/AER: Print TLP Log for errors introduced since PCIe
+ r1.1
+Message-ID: <20250901152044.GA1114640@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,76 +66,168 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250901085748.36795-1-zhangzihuan@kylinos.cn> <20250901085748.36795-4-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250901085748.36795-4-zhangzihuan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 1 Sep 2025 17:17:05 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
-X-Gm-Features: Ac12FXy28aQLAZnDRwhZh3hbZ0aFKhCyHW17tDgFwo0nHMN5cP-adgYEeM5GYyY
-Message-ID: <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
-Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5f707caf1260bd8f15012bb032f7da9a9b898aba.1756712066.git.lukas@wunner.de>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylinos.c=
-n> wrote:
->
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
->
-> No functional change intended.
->
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  drivers/cpufreq/intel_pstate.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstat=
-e.c
-> index f366d35c5840..4abc1ef2d2b0 100644
-> --- a/drivers/cpufreq/intel_pstate.c
-> +++ b/drivers/cpufreq/intel_pstate.c
-> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(struct c=
-pufreq_policy *policy,
->
->  static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
->  {
-> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpudata->cpu);
->
-> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
->         if (!policy)
->                 return false;
+On Mon, Sep 01, 2025 at 09:44:52AM +0200, Lukas Wunner wrote:
+> When reporting an error, the AER driver prints the TLP Header / Prefix Log
+> only for errors enumerated in the AER_LOG_TLP_MASKS macro.
+> 
+> The macro was never amended since its introduction in 2006 with commit
+> 6c2b374d7485 ("PCI-Express AER implemetation: AER core and aerdriver").
+> At the time, PCIe r1.1 was the latest spec revision.
+> 
+> Amend the macro with errors defined since then to avoid omitting the TLP
+> Header / Prefix Log for newer errors.
+> 
+> The order of the errors in AER_LOG_TLP_MASKS follows PCIe r1.1 sec 6.2.7
+> rather than 7.10.2, because only the former documents for which errors a
+> TLP Header / Prefix is logged.  Retain this order.  The section number is
+> still 6.2.7 in today's PCIe r7.0.
+> 
+> For Completion Timeouts, the TLP Header / Prefix is only logged if the
+> Completion Timeout Prefix / Header Log Capable bit is set in the AER
+> Capabilities and Control register.  Introduce a tlp_header_logged() helper
+> to check whether the TLP Header / Prefix Log is populated and use it in
+> the two places which currently match against AER_LOG_TLP_MASKS directly.
+> 
+> For Uncorrectable Internal Errors, logging of the TLP Header / Prefix is
+> optional per PCIe r7.0 sec 6.2.7.  If needed, drivers could indicate
+> through a flag whether devices are capable and tlp_header_logged() could
+> then check that flag.
+> 
+> pcitools introduced macros for newer errors with commit 144b0911cc0b
+> ("ls-ecaps: extend decode support for more fields for AER CE and UE
+> status"):
+>   https://git.kernel.org/pub/scm/utils/pciutils/pciutils.git/commit/?id=144b0911cc0b
+> 
+> Unfortunately some of those macros are overly long:
+>   PCI_ERR_UNC_POISONED_TLP_EGRESS
+>   PCI_ERR_UNC_DMWR_REQ_EGRESS_BLOCKED
+>   PCI_ERR_UNC_IDE_CHECK
+>   PCI_ERR_UNC_MISR_IDE_TLP
+>   PCI_ERR_UNC_PCRC_CHECK
+>   PCI_ERR_UNC_TLP_XLAT_EGRESS_BLOCKED
+> 
+> This seems unsuitable for <linux/pci_regs.h>, so shorten to:
+>   PCI_ERR_UNC_POISON_BLK
+>   PCI_ERR_UNC_DMWR_BLK
+>   PCI_ERR_UNC_IDE_CHECK
+>   PCI_ERR_UNC_MISR_IDE
+>   PCI_ERR_UNC_PCRC_CHECK
+>   PCI_ERR_UNC_XLAT_BLK
+> 
+> Note that some of the existing macros in <linux/pci_regs.h> do not match
+> exactly with pcitools (e.g. PCI_ERR_UNC_SDES versus PCI_ERR_UNC_SURPDN),
+> so it does not seem mandatory for them to be identical.
+> 
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
 
-The structure of the code is intentional here and there's no reason to
-change it.
+Applied to pci/aer for v6.18, thanks, Lukas!
+
+> ---
+>  drivers/pci/pcie/aer.c        | 30 +++++++++++++++++++++++++++---
+>  include/uapi/linux/pci_regs.h |  8 ++++++++
+>  2 files changed, 35 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index 15ed541..62c74b5 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -96,11 +96,21 @@ struct aer_info {
+>  };
+>  
+>  #define AER_LOG_TLP_MASKS		(PCI_ERR_UNC_POISON_TLP|	\
+> +					PCI_ERR_UNC_POISON_BLK |	\
+>  					PCI_ERR_UNC_ECRC|		\
+>  					PCI_ERR_UNC_UNSUP|		\
+>  					PCI_ERR_UNC_COMP_ABORT|		\
+>  					PCI_ERR_UNC_UNX_COMP|		\
+> -					PCI_ERR_UNC_MALF_TLP)
+> +					PCI_ERR_UNC_ACSV |		\
+> +					PCI_ERR_UNC_MCBTLP |		\
+> +					PCI_ERR_UNC_ATOMEG |		\
+> +					PCI_ERR_UNC_DMWR_BLK |		\
+> +					PCI_ERR_UNC_XLAT_BLK |		\
+> +					PCI_ERR_UNC_TLPPRE |		\
+> +					PCI_ERR_UNC_MALF_TLP |		\
+> +					PCI_ERR_UNC_IDE_CHECK |		\
+> +					PCI_ERR_UNC_MISR_IDE |		\
+> +					PCI_ERR_UNC_PCRC_CHECK)
+>  
+>  #define SYSTEM_ERROR_INTR_ON_MESG_MASK	(PCI_EXP_RTCTL_SECEE|	\
+>  					PCI_EXP_RTCTL_SENFEE|	\
+> @@ -796,6 +806,20 @@ static int aer_ratelimit(struct pci_dev *dev, unsigned int severity)
+>  	}
+>  }
+>  
+> +static bool tlp_header_logged(u32 status, u32 capctl)
+> +{
+> +	/* Errors for which a header is always logged (PCIe r7.0 sec 6.2.7) */
+> +	if (status & AER_LOG_TLP_MASKS)
+> +		return true;
+> +
+> +	/* Completion Timeout header is only logged on capable devices */
+> +	if (status & PCI_ERR_UNC_COMP_TIME &&
+> +	    capctl & PCI_ERR_CAP_COMP_TIME_LOG)
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+>  static void __aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+>  {
+>  	const char **strings;
+> @@ -910,7 +934,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
+>  		status = aer->uncor_status;
+>  		mask = aer->uncor_mask;
+>  		info.level = KERN_ERR;
+> -		tlp_header_valid = status & AER_LOG_TLP_MASKS;
+> +		tlp_header_valid = tlp_header_logged(status, aer->cap_control);
+>  	}
+>  
+>  	info.status = status;
+> @@ -1401,7 +1425,7 @@ int aer_get_device_error_info(struct aer_err_info *info, int i)
+>  		pci_read_config_dword(dev, aer + PCI_ERR_CAP, &aercc);
+>  		info->first_error = PCI_ERR_CAP_FEP(aercc);
+>  
+> -		if (info->status & AER_LOG_TLP_MASKS) {
+> +		if (tlp_header_logged(info->status, aercc)) {
+>  			info->tlp_header_valid = 1;
+>  			pcie_read_tlp_log(dev, aer + PCI_ERR_HEADER_LOG,
+>  					  aer + PCI_ERR_PREFIX_LOG,
+> diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
+> index f5b1774..d2e1bbb 100644
+> --- a/include/uapi/linux/pci_regs.h
+> +++ b/include/uapi/linux/pci_regs.h
+> @@ -776,6 +776,13 @@
+>  #define  PCI_ERR_UNC_MCBTLP	0x00800000	/* MC blocked TLP */
+>  #define  PCI_ERR_UNC_ATOMEG	0x01000000	/* Atomic egress blocked */
+>  #define  PCI_ERR_UNC_TLPPRE	0x02000000	/* TLP prefix blocked */
+> +#define  PCI_ERR_UNC_POISON_BLK	0x04000000	/* Poisoned TLP Egress Blocked */
+> +#define  PCI_ERR_UNC_DMWR_BLK	0x08000000	/* DMWr Request Egress Blocked */
+> +#define  PCI_ERR_UNC_IDE_CHECK	0x10000000	/* IDE Check Failed */
+> +#define  PCI_ERR_UNC_MISR_IDE	0x20000000	/* Misrouted IDE TLP */
+> +#define  PCI_ERR_UNC_PCRC_CHECK	0x40000000	/* PCRC Check Failed */
+> +#define  PCI_ERR_UNC_XLAT_BLK	0x80000000	/* TLP Translation Egress Blocked */
+> +
+>  #define PCI_ERR_UNCOR_MASK	0x08	/* Uncorrectable Error Mask */
+>  	/* Same bits as above */
+>  #define PCI_ERR_UNCOR_SEVER	0x0c	/* Uncorrectable Error Severity */
+> @@ -798,6 +805,7 @@
+>  #define  PCI_ERR_CAP_ECRC_CHKC		0x00000080 /* ECRC Check Capable */
+>  #define  PCI_ERR_CAP_ECRC_CHKE		0x00000100 /* ECRC Check Enable */
+>  #define  PCI_ERR_CAP_PREFIX_LOG_PRESENT	0x00000800 /* TLP Prefix Log Present */
+> +#define  PCI_ERR_CAP_COMP_TIME_LOG	0x00001000 /* Completion Timeout Prefix/Header Log Capable */
+>  #define  PCI_ERR_CAP_TLP_LOG_FLIT	0x00040000 /* TLP was logged in Flit Mode */
+>  #define  PCI_ERR_CAP_TLP_LOG_SIZE	0x00f80000 /* Logged TLP Size (only in Flit mode) */
+>  #define PCI_ERR_HEADER_LOG	0x1c	/* Header Log Register (16 bytes) */
+> -- 
+> 2.50.1
+> 
 
