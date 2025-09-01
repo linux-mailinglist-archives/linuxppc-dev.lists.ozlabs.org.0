@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-11556-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11557-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C51DB3DD4D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 10:59:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD333B3DD4F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Sep 2025 10:59:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cFjVV4qzsz301Y;
-	Mon,  1 Sep 2025 18:59:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cFjVg5bNtz305D;
+	Mon,  1 Sep 2025 18:59:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756717170;
-	cv=none; b=eGiOsG7ZgG6PRgH+35th3NBKZulj7jxplqqG7ecnfTAaI4riDvs2O1xreqnlIDQ+KjdaxlKlpz8x+u0SqQyZfsSiS7KyXuaRgpgEBP0d9nhEmmlGQAix+uUlV3c1gFj2lQFSeTQs9b5YbW61RW2Zzp2JO34AgA1mLJHCSjhdMQOHi0XfWFlUzKou068P4iAf5H8CoHUNY9Rx9WPk9pVymKCFYN4/4D1g7HR6cC4DTr7owxY81J+9/gwnFhNNZ/SwZ9lFn7LadlmNjmUmECLCjEiWiug3fAs+HlEL2oznc5T7KXG811cq44vDp5HuHFZEHvVp8yLdBfYJvl52GxUDGw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756717179;
+	cv=none; b=ghBsUAyEEAsgmqqSbAViGbuuR5JGOqh6KkD3R6EE/6OiRfvoIRXRseWoGLiK3YNSB7D1kItdQYS9EbzxrWhC63r1uTRdtYMlJYjMFhlc/yLoojasZluPsxAzD12mma4NeLBmWLAS53pq5D31YYSfHZnxy348Wmd3p3cPLp1vn99XMNLPaTop2aWSJ08D1o7ovUjeGrAPx+SaGWvNrha7FFAUuBYVzzDkmUWxVYGZTfBc+eH+QwVwRx5Og+h2ZEnio/8C4e+ISkw059KqTE7xa5wDWacfhpfpkGHQ6IBDaMHZocq2y331aTHmmdjFpA0PUXXSBnir710uLdJrlaB6gQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756717170; c=relaxed/relaxed;
-	bh=qI/pWWHn+Cmm3IAiINzaDgZFPYfZ84bYukFfz5gPc70=;
+	t=1756717179; c=relaxed/relaxed;
+	bh=hDpnGt0f6FuF11OLl5yhNzKPiEUlBZBsDH3iT8IR2iQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y/GjeKPiShAVN2p891un3wX+RaYTDkJ6te34w47p5E6K5cg+nCzbTko/sbIv2nHt/arDi1YEl4V5TOw+d25Kt9i9ljtRPDKMbjcCPM94tYtXOvJsvwup0oA7Klc5Tdc04v1hMGgLJyy4wb6vmXoGwWciyQyRI+2D/diEiWe2uMEjoScMJBtjylFBGOKL8gqLSYa/WJMquFBFScmUjOg9EYhlYw/8XtNLn38wHHDGyB4mdrstV99GIhWVfSJqLKO/ZACSE21cb8hbbZzRu9IcGYXQdZ4K4GuYINXxqttc63EHykA1iEqQ5eEtqB9u0QtSACNKKMo8LH0o6sbKoQ84uw==
+	 MIME-Version; b=A1Y3ZMHiMOnYgo2U2bJIL+JM1sBAdz8zkRzxAKRYYEVll6+OXZW/j21WD0FYztPQAk6kGqCFMWg3Qr98OOQxIBB0xk1gQhw9wZC1FRk6c035DqNJlkrMCFGdStIUDQ1LKEQUzVgwaHitSI9Q4/dqKDZkod7zB9ijqO7eVr80+OpMayNCqKgVurPwAF13OPBg7xwb7oAtHPZMA8SsMI8+GArz6ffbj13CEX3X3wTNQDIUG/vufEhLvlqabqe/44QG248sVXREiIFaytuJWIclX6N9e79qCn5xELgc1W1iD/Q2ut7F8KZCCpM/UNM0WPZrwNkzKmRDZb+SEDySTvTG9A==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
@@ -23,32 +23,32 @@ Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFjVT41nNz2yx8
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 18:59:29 +1000 (AEST)
-X-UUID: ce45fcaa871111f0b29709d653e92f7d-20250901
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cFjVf3yBDz2yxN
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Sep 2025 18:59:38 +1000 (AEST)
+X-UUID: d3d01002871111f0b29709d653e92f7d-20250901
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:32ec79ce-b7fb-486c-a29f-ba035ebc7973,IP:0,U
-	RL:0,TC:0,Content:26,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:26
-X-CID-META: VersionHash:6493067,CLOUDID:54a8b82e8127115c930df8f8935c7019,BulkI
+X-CID-O-INFO: VERSION:1.1.45,REQID:91218b6e-7623-4861-8c97-36b43e2f0e7e,IP:0,U
+	RL:0,TC:0,Content:38,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:38
+X-CID-META: VersionHash:6493067,CLOUDID:f0135f5c24c77514b6cdf0eea2f8050c,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:4|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: ce45fcaa871111f0b29709d653e92f7d-20250901
+X-UUID: d3d01002871111f0b29709d653e92f7d-20250901
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 1426818083; Mon, 01 Sep 2025 16:58:19 +0800
+	with ESMTP id 1713458472; Mon, 01 Sep 2025 16:58:28 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id EBB6FE008FA7;
-	Mon,  1 Sep 2025 16:58:18 +0800 (CST)
-X-ns-mid: postfix-68B5602A-782193739
+	by mail.kylinos.cn (NSMail) with SMTP id 092DCE008FA7;
+	Mon,  1 Sep 2025 16:58:28 +0800 (CST)
+X-ns-mid: postfix-68B5602E-667223740
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 33CF0E008FA8;
-	Mon,  1 Sep 2025 16:58:15 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id 03A5FE008FAA;
+	Mon,  1 Sep 2025 16:58:18 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -97,9 +97,9 @@ Cc: Ben Horgan <ben.horgan@arm.com>,
 	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v3 04/12] cpufreq: longhaul: Use scope-based cleanup helper
-Date: Mon,  1 Sep 2025 16:57:40 +0800
-Message-Id: <20250901085748.36795-5-zhangzihuan@kylinos.cn>
+Subject: [PATCH v3 05/12] cpufreq: powernv: Use scope-based cleanup helper
+Date: Mon,  1 Sep 2025 16:57:41 +0800
+Message-Id: <20250901085748.36795-6-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
 References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
@@ -129,31 +129,61 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/cpufreq/longhaul.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/cpufreq/powernv-cpufreq.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/cpufreq/longhaul.c b/drivers/cpufreq/longhaul.c
-index ba0e08c8486a..ae5596919671 100644
---- a/drivers/cpufreq/longhaul.c
-+++ b/drivers/cpufreq/longhaul.c
-@@ -950,7 +950,7 @@ static int __init longhaul_init(void)
-=20
- static void __exit longhaul_exit(void)
+diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-=
+cpufreq.c
+index 7d9a5f656de8..811fdbf398fa 100644
+--- a/drivers/cpufreq/powernv-cpufreq.c
++++ b/drivers/cpufreq/powernv-cpufreq.c
+@@ -892,15 +892,15 @@ static int powernv_cpufreq_reboot_notifier(struct n=
+otifier_block *nb,
+ 				unsigned long action, void *unused)
  {
--	struct cpufreq_policy *policy =3D cpufreq_cpu_get(0);
-+	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
-u_get(0);
- 	int i;
+ 	int cpu;
+-	struct cpufreq_policy *cpu_policy;
 =20
- 	for (i =3D 0; i < numscales; i++) {
-@@ -968,7 +968,6 @@ static void __exit longhaul_exit(void)
- 		}
+ 	rebooting =3D true;
+ 	for_each_online_cpu(cpu) {
+-		cpu_policy =3D cpufreq_cpu_get(cpu);
++		struct cpufreq_policy *cpu_policy __free(put_cpufreq_policy) =3D
++			cpufreq_cpu_get(cpu);
++
+ 		if (!cpu_policy)
+ 			continue;
+ 		powernv_cpufreq_target_index(cpu_policy, get_nominal_index());
+-		cpufreq_cpu_put(cpu_policy);
  	}
 =20
--	cpufreq_cpu_put(policy);
- 	cpufreq_unregister_driver(&longhaul_driver);
- 	kfree(longhaul_table);
- }
+ 	return NOTIFY_DONE;
+@@ -913,7 +913,6 @@ static struct notifier_block powernv_cpufreq_reboot_n=
+b =3D {
+ static void powernv_cpufreq_work_fn(struct work_struct *work)
+ {
+ 	struct chip *chip =3D container_of(work, struct chip, throttle);
+-	struct cpufreq_policy *policy;
+ 	unsigned int cpu;
+ 	cpumask_t mask;
+=20
+@@ -928,14 +927,14 @@ static void powernv_cpufreq_work_fn(struct work_str=
+uct *work)
+ 	chip->restore =3D false;
+ 	for_each_cpu(cpu, &mask) {
+ 		int index;
++		struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
++			cpufreq_cpu_get(cpu);
+=20
+-		policy =3D cpufreq_cpu_get(cpu);
+ 		if (!policy)
+ 			continue;
+ 		index =3D cpufreq_table_find_index_c(policy, policy->cur, false);
+ 		powernv_cpufreq_target_index(policy, index);
+ 		cpumask_andnot(&mask, &mask, policy->cpus);
+-		cpufreq_cpu_put(policy);
+ 	}
+ out:
+ 	cpus_read_unlock();
 --=20
 2.25.1
 
