@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-11638-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11639-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18B4B409E5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 17:57:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D6DAB409F2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 17:58:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cGVkV75Ygz2ypW;
-	Wed,  3 Sep 2025 01:57:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cGVlR2Cq0z2yrg;
+	Wed,  3 Sep 2025 01:58:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756828658;
-	cv=none; b=oaCQhx9rCwIjAm1lEH2KtBESFqlawcZ02KOG4u4BLQjmTG/DmkdmrgNlIli0WBJNNiDUc440xCEJl90JSbu59sVIxDVd6owCAQsMce6GyENS4g7Aa/rZK73sn4EYnQgGB4/Jy0W0yPAmQ39bEw20ZiJ3OPRxpxKyLtH+beV7Dl6tLcWczblokW1un9E6sPKNLOBr0mpZowqj7g+lxICuTJILoxFbhfvdRvAkK6XCT0JXBcAjDKcXhdHUvZWRh7JLW7d0+7yyyjpJXfO0vbP60oAHRa570ZnzIINvpUQE2dsV8ldkjmu6DjC7Rk6R+x3Hk2jV2/sLcSYRx8NGJsl8fA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756828707;
+	cv=none; b=InPZ+kBZckusexPBB+BJEpCkSBCm3Mcza7Fyl+ke6jZpU8lAMZItFmLnNhDlYCtsoBLLBJS1wQ8nSEtvMCd3+YZJaqEhVAjtfHewB7Tc9WGI1brnZVMKroHGfmVbFTSutw8YRy8JOUV+odUw77fgcG3LMOAgSVlvCxrpKe8n6ZY9mMJHKLtuuECtlQSe80H2BjpKBxuDWgSQF+OrWSZS9ZY/RUlQAzTveBPQsqi1xtZ/7rsplSl4VPPKE8AZjfoA46CJFeqV05W+XoUD5q5/9hFSxuHlF/cry0AquBckWVX0vvU3CdWZkf7HID1LcquBz5IOH0SpTzg0YU/jsj4Aog==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756828658; c=relaxed/relaxed;
-	bh=IkR62HBefO/7qbBeEydcExM6kvo/bbz3P0gkovukbkw=;
+	t=1756828707; c=relaxed/relaxed;
+	bh=P1hJqT/C22nmanBnf/0xq8icrGBh5sfd+c6HBcH+XJM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jo+EyCz3M2koOdHf1XD3qgYhVBSnZsW4Lt2Ht/k0l8wXWnQPhMcyfQ16BJlwAg56fXVUtd+QnoJue48/V4L5PRhQxKlWxu2K09zCy99uXrM45DgpnhYNaVXmiI3Z6o5l0igZ38ZFMc97GR2LtER+y9RL7zVRRKrg/palBMZtH9neEsKX6ORke2hFs+gqCNs9d/ZaS1izl11UAPcbQs7aUhemD9C5S9pEdSIH2C/WETKhmfUDjxa8nthyc3udfXZL+w2SQXrKIS83SFQFGr5bRmOIhoDEYPiYIfSbZrpmNQNeL6PLjnCcq6JVQs6pSwuT3KGjjx8lxCvViMwpfH+wMQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QCpm0nFA; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=H9x1dsjZIH/psL6uZFXLqD55e5gVvj2uryhUPvBQLhu/qZLJ/W7rvKVnh61srK4go5Lor1NVnus5Gl8B3/KLJ/ny7TJUHqtrFeoZw3tLWpphk8X7y27vnHRr0uu7pTsWKI26aKdlua2vWc7dVBwxkeQsfrECnMJzIo/d1x1zHtiP/O1p8nHT58qJCMGJOGvOFifAAUVrA3bTghH6MZF9mIQFmH6hGy1l4DZ0PgSBvgUZeIOMsXyrnq5va4owhSxhrzmTVT3yjEPpj4C9NFjpeJc4Rwe45KTf1/J63d/4rvvohTWMCz94OEwcvkkfKi5saE0OWIHHOlMVGGZECL7g6w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q/fJnIUe; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QCpm0nFA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q/fJnIUe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGVkV07Sqz2yN1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Sep 2025 01:57:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGVlQ3yHWz2yN1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Sep 2025 01:58:26 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 808FD60222;
-	Tue,  2 Sep 2025 15:57:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E22BC4CEED;
-	Tue,  2 Sep 2025 15:57:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6DD204374F;
+	Tue,  2 Sep 2025 15:58:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0060C4CEED;
+	Tue,  2 Sep 2025 15:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756828655;
-	bh=oulaMx6/URE69aku7O02WZT2LJyGeZwWW9oibZaXKh0=;
+	s=k20201202; t=1756828704;
+	bh=p9LX1J8OB47eGZSBufCQ0NCMRaLyzY7dyM6OvdV2fn4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QCpm0nFA8OqlHw6hwDFdaR8n/MIxwCN7Hw7zPhbdV6ZnbaNRJrTDjnrK/f5OwvFCT
-	 o2fFMEgMXc3hP3ka9oJ7VgzD2MqmAi8WWtVmOCSMhGhwTDsFB7YAP1VlwEjrGxPkR0
-	 gRA0UvBQ+XMzjFv4lfHerXM5WYN0Xcsgf4uKQK1to/OuErcmrpqCNytqX9WsdTyt2y
-	 E2Ih4GmHi+UWU7owB15MuvtFfe9iwZ7xNSwYUYaZV+VTyXJMz+j0QAk9slfWfssatR
-	 FJ8iDpnwplN1DbuphLguGPmAm8UCYCJHsvu++drLD1gX65CO+pRhvzSpsCyP9a83Ef
-	 jjWNnJzVIkRRg==
-Message-ID: <b38e64cc-4971-4e71-931c-820453aa91a7@kernel.org>
-Date: Tue, 2 Sep 2025 17:57:22 +0200
+	b=Q/fJnIUePrEmtB3jGxs5sXxTiOpjkneVTfCS8aGXxrge+I7eRhoUp/VrWKw0Hp5Av
+	 7/yMMMoDY3uf4zbOr1qrCvQbUQdfF0rxH+L8odYDJGkEzL497fxrw04Ay5tgx5lKow
+	 2mJtK9hw1iTs3p7Nqm8rh+7jqov/ffrQu48zZ3jqGVJUgN/tlYOWCZu/pxnHyUHt8q
+	 rx60Oi0rBmJckMYvBhCX09gIsGWqa1rEdd40SEyfV5zBcUmJAcbkXfU6nC8L3Bn5Xx
+	 kKZSJDcxk0NBwX11+/u16ApogOs6MSqP278oWv9WSTWa3EtFMXF37agP5A/MeoJdgW
+	 fh/6kw64NW2Lw==
+Message-ID: <ff165a2e-cd63-462f-b2ea-cb27cb514ef9@kernel.org>
+Date: Tue, 2 Sep 2025 17:58:11 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,7 +59,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/12] PM: EM: Use scope-based cleanup helper
+Subject: Re: [PATCH v3 04/12] cpufreq: longhaul: Use scope-based cleanup
+ helper
 To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
  "Rafael J . wysocki" <rafael@kernel.org>,
  Viresh Kumar <viresh.kumar@linaro.org>,
@@ -91,7 +92,7 @@ Cc: Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
  intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
  imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
- <20250901085748.36795-13-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-5-zhangzihuan@kylinos.cn>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -137,7 +138,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250901085748.36795-13-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250901085748.36795-5-zhangzihuan@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -146,35 +147,22 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 01/09/2025 10:57, Zihuan Zhang wrote:
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> ---
->  kernel/power/energy_model.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
-> index ea7995a25780..852d48039ce2 100644
-> --- a/kernel/power/energy_model.c
-> +++ b/kernel/power/energy_model.c
-> @@ -451,7 +451,7 @@ static void
->  em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state *table)
+>  static void __exit longhaul_exit(void)
 >  {
->  	struct em_perf_domain *pd = dev->em_pd;
-> -	struct cpufreq_policy *policy;
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+> -	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
+>  	int i;
+>  
+>  	for (i = 0; i < numscales; i++) {
+> @@ -968,7 +968,6 @@ static void __exit longhaul_exit(void)
+>  		}
+>  	}
+>  
+> -	cpufreq_cpu_put(policy);
 
-You are not improving the source code here. This is not how to use
-__free() and you clearly do not understand the source code.
+You are not improving any code here.
 
-What's more, you did not use standard tools which would tell you this is
-buggy and wrong.
 
-Don't introduce cleanup.h if you do not understand how it works.
 Best regards,
 Krzysztof
 
