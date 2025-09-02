@@ -1,56 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-11612-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11613-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5916B3FC94
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 12:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D42AB3FC9A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 12:35:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cGMYL37Vpz2yrg;
-	Tue,  2 Sep 2025 20:34:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cGMb10Y6jz2yrt;
+	Tue,  2 Sep 2025 20:35:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756809254;
-	cv=none; b=T+D7fJH/ndmqORrq5k28eRoUjczjcJLWGDLLtvBwknPZuAQ+6D9gi0UG+t0b94q3WETf7uhGWTRos7xWZxBssHJ61L/eQ7IuYhO2S8f0qzYYiLfdoAM2hLNhwT3+YQLko+pU77sVkYL3R9hf9L0IPXwUK4u+AhBYo5MGGW4l/VSy8+GnVAJMbTaiO2NxHpQ6P7uSu6kD3IvgfqrUIwa6G4+cjfF04PdUvCTHes4QXWvX+s3qg9X3sNU1CeRRO0m5OePDXRrVB/0TB1yE2VvL7+63RFPzFYP6d8Og+1z+37z0TKdR2tZJKewIZwihk7VsTLxi8Ate+VeIumGsrTxmRA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756809341;
+	cv=none; b=KKZj/HudE03Fw3qro0Jn6ZuxJJqTmRiuc8eR4T65lq2QfcP5hR/bX5GnmK4mVLWxli9DOk7r6nYvEyvilRzq+0hZja3ZF18EolGXGwpe7Iz1d5Kmkxez2JEJbvu/jKmAt32k5h2qqLgjCdRRJ5VGBpaUAqHDmGnO6yD2c6f+9yFSa9EmXS0lhBHRomr6Bw/Y2H58MyC0pqhm1GSFBFv8Jylf3yfMmwxMiO7HqisYdXIH9c9ge60c3htBvsWQ6DCyAVa+41pYQNykGl0NbS7I/iFMyRUFnh/A54FZ4ttSS3ixRunAdDjDM8bUthzIq1YP00HLAHEmvt3Zpvdeu1/08g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756809254; c=relaxed/relaxed;
-	bh=vdg4KE4pR31xKH4uPc3v7Z/h+eORN3oD1xJLXFAx7SY=;
+	t=1756809341; c=relaxed/relaxed;
+	bh=Obs7gtco5qrXZUY6zxIZowoDltQzJOZWcsEOI1JG0Kw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NQ/U9e2jExy+JrsPNJowYj+75tkEug9Qva8oUT4zGnXMrSh+fH2NzCtAWJt8DXqmeeHv876Br3Q0sqhx5/kN3PwemJm1/mAPOt5GimOkQag0j9tuljMqUfm7VuLK6vML0WaP4OcUwq5xLNw1PsYUsefR/4LnczHxs6ON/tGPVZBqyPnEV0TVGUaNNom25A9JPiQbrWGA1APWtaNw94803OugAdInRlWycjSdVGrjRPZ8Xft1SF/R/bQarNMk325qUTiFwbDW77tA28ZsiKauTdhGU3QBBE8LXtdmh5LsUvJBA3XUTbJFq15Z2YWcuZS3sTX0mIGWdpz8gde9j9yThA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	 In-Reply-To:Content-Type; b=i/qM72FWCvaGIll0b9BAaJNRYLf5LMYvNAW+DUEu755xPB5h/C4a/hnsTTQAGx/zthToqeh2Hxx/tYQ08jDXvNg1YWp3HQVtzKHKSKIn3chxAu2a1l/T4fih08F77UyFZJSw2eqw4oMx1yEkKxAxDqlgGrGx++fS0aBkuE1yg/z0+9hoyjCevMFBOmRiunfJ1HC8fCwjkkXlCSj5xpZAyr+/rMoEfT0y1jL8juLbTwoOHZWEswDhCs9moGIrh3qdx4XX+PI1LLcLv0wHAaWfOnUl7B5Z4gVNh7tqS/Zj07kx7M4EsmHOlFKbjNNSe5vhoDZYPIjjgKLOYW/8PcQi/A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aJnHfgvn; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aJnHfgvn;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGMYJ1ZTMz2ypW
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 20:34:11 +1000 (AEST)
-X-UUID: 3107081c87e811f0b29709d653e92f7d-20250902
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:3fbf43f8-ebc9-4b27-884e-79c619713230,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:7ac0a2afc203774c376dc034898cbd81,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 3107081c87e811f0b29709d653e92f7d-20250902
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1546738643; Tue, 02 Sep 2025 18:32:57 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id A718FE008FA3;
-	Tue,  2 Sep 2025 18:32:56 +0800 (CST)
-X-ns-mid: postfix-68B6C7D8-5510786
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 589C2E008FA2;
-	Tue,  2 Sep 2025 18:32:48 +0800 (CST)
-Message-ID: <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
-Date: Tue, 2 Sep 2025 18:32:47 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGMb01x3Jz2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 20:35:40 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 414AD601D3;
+	Tue,  2 Sep 2025 10:35:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD01C4CEED;
+	Tue,  2 Sep 2025 10:35:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756809338;
+	bh=7o9EZ2IlqJciSHRV4dsJOeLuben/WcNyWC+ailQ200Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aJnHfgvnSV2t+IZgdq07gRJePZTs2WdtS3Yfi4FISo1ZDHQiNWbm36PJDak9Xu3ZH
+	 Zc3rzt70+RQER5+keRl9/J/eZ6DVIceJ4ON0EDVPCKyOmD7n/pjWMQf/nMVFb5VAnO
+	 ITCr7xXPaDJ31VeQP3az4LXLOZX+0NV+X0svugTi8PeTRTU1gqLVQjZpAlpXpFGPKd
+	 WstfjG5qnKOlMTYuYRcm+uh+6+EWCD4ew7cWCg6F3g5B6Q2NcONKpb87dJSlTk7gFI
+	 YKYkaBFNG+af9iV3LMahY0eWzw+emxtVLbvtC6ZSH1XoJCVWWGlIV88xwZ7Vqn9rdO
+	 RiGMcWsvk7BdQ==
+Message-ID: <d620167b-ba52-4f80-82bc-1a35223f96e6@kernel.org>
+Date: Tue, 2 Sep 2025 12:35:33 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,89 +59,86 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup
- helper
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
- <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
- <20250901085748.36795-4-zhangzihuan@kylinos.cn>
- <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+Subject: Re: [PATCH] pasemi: fix PCI device reference leaks in
+ pas_setup_mce_regs
+To: Markus Elfring <Markus.Elfring@web.de>, Miaoqian Lin
+ <linmq006@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Olof Johansson <olof@lixom.net>, Paul Mackerras <paulus@ozlabs.org>,
+ Thomas Gleixner <tglx@linutronix.de>
+References: <20250902072156.2389727-1-linmq006@gmail.com>
+ <63be79a4-79e4-47f5-a756-aa55fe0d29ab@web.de>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <63be79a4-79e4-47f5-a756-aa55fe0d29ab@web.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
-	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On 02. 09. 25, 12:24, Markus Elfring wrote:
+> …
+>> Add missing pci_dev_put() calls to ensure all device references
+>> are properly released.
+> 
+> * See also:
+>    https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.17-rc4#n658
 
-=E5=9C=A8 2025/9/1 23:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylin=
-os.cn> wrote:
->> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
->> annotation for policy references. This reduces the risk of reference
->> counting mistakes and aligns the code with the latest kernel style.
->>
->> No functional change intended.
->>
->> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
->> ---
->>   drivers/cpufreq/intel_pstate.c | 8 +++-----
->>   1 file changed, 3 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_ps=
-tate.c
->> index f366d35c5840..4abc1ef2d2b0 100644
->> --- a/drivers/cpufreq/intel_pstate.c
->> +++ b/drivers/cpufreq/intel_pstate.c
->> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(struc=
-t cpufreq_policy *policy,
->>
->>   static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
->>   {
->> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
->> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D c=
-pufreq_cpu_get(cpudata->cpu);
->>
->> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
->>          if (!policy)
->>                  return false;
-> The structure of the code is intentional here and there's no reason to
-> change it.
+?
 
+> * Would you like to increase the application of scope-based resource management?
+>    https://elixir.bootlin.com/linux/v6.17-rc4/source/include/linux/device.h#L1180
 
-Got it. Thanks for clarifying.
+That won't work here at all.
 
-So for this case the current structure is intentional -
-
-should I also avoid similar changes in other drivers?
-
+-- 
+js
+suse labs
 
