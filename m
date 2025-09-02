@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-11639-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11640-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6DAB409F2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 17:58:29 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 233FCB40A00
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 17:59:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cGVlR2Cq0z2yrg;
-	Wed,  3 Sep 2025 01:58:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cGVmj5qM0z2yrt;
+	Wed,  3 Sep 2025 01:59:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756828707;
-	cv=none; b=InPZ+kBZckusexPBB+BJEpCkSBCm3Mcza7Fyl+ke6jZpU8lAMZItFmLnNhDlYCtsoBLLBJS1wQ8nSEtvMCd3+YZJaqEhVAjtfHewB7Tc9WGI1brnZVMKroHGfmVbFTSutw8YRy8JOUV+odUw77fgcG3LMOAgSVlvCxrpKe8n6ZY9mMJHKLtuuECtlQSe80H2BjpKBxuDWgSQF+OrWSZS9ZY/RUlQAzTveBPQsqi1xtZ/7rsplSl4VPPKE8AZjfoA46CJFeqV05W+XoUD5q5/9hFSxuHlF/cry0AquBckWVX0vvU3CdWZkf7HID1LcquBz5IOH0SpTzg0YU/jsj4Aog==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756828773;
+	cv=none; b=RbTqnBRCFUVCZoNvKl3cG7H2xlpya2oKWsBGHMWcevRUwf+tmG4tIRFZqkSNyNH8eMxVPSlJnJQv4CBOMzOVP3gi0mGoJyCl/j65eK/4x+xMCERaI++04Gc6EUeQVxOHo4W0kk3OC3qmjIKjQi+R/pAm0Hw3XcY1AfHQH9U9gmVBe+4UsDo/+JVP2j+rUfmX2yMsq8QWbJvmj7/x1Lw2g4kPTCFI88ICQ7ETI6Z8gb7W1xOsbg393NKwM1rErI2M78F6/7eMio6R5xnXOOqw2s1GrrIa4E323w07a6t4RXYAixnorBynVtfuNIddy9gPqFXzVTnNV8EZbHbnrjtoBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756828707; c=relaxed/relaxed;
-	bh=P1hJqT/C22nmanBnf/0xq8icrGBh5sfd+c6HBcH+XJM=;
+	t=1756828773; c=relaxed/relaxed;
+	bh=MjRTy6ke9707qyB/BghqB5ATIpNChLwx3v84JNJ5TPk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H9x1dsjZIH/psL6uZFXLqD55e5gVvj2uryhUPvBQLhu/qZLJ/W7rvKVnh61srK4go5Lor1NVnus5Gl8B3/KLJ/ny7TJUHqtrFeoZw3tLWpphk8X7y27vnHRr0uu7pTsWKI26aKdlua2vWc7dVBwxkeQsfrECnMJzIo/d1x1zHtiP/O1p8nHT58qJCMGJOGvOFifAAUVrA3bTghH6MZF9mIQFmH6hGy1l4DZ0PgSBvgUZeIOMsXyrnq5va4owhSxhrzmTVT3yjEPpj4C9NFjpeJc4Rwe45KTf1/J63d/4rvvohTWMCz94OEwcvkkfKi5saE0OWIHHOlMVGGZECL7g6w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q/fJnIUe; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:Content-Type; b=Ln515fxvNKUfFqLsAIplqY0oEJ/INJCaY6D8kj/ziUTtSKpQY+upa62lXSmd12iUqz328JNKgG5OcAtoHlWhjc6FPZQ6LHlfGR8huJXBjxsGKZWKwAIPLEqsNn7e1CBJD787kF/id5Xvs9MEPK2uNDj9JYLOUWdzEVon5u7x6XQqf3hml77TBiJn0IaFZfHXIVtDpmZgkNaydvUz/nrmVP5T9RV4T1QUmIkL26aTKEPRfsSmsnieGQcqyz3KZNfqQFfv1ipk6t6C0FqfemZawm8nobm+BQ5ZLSM0sp+8Rl3oVee364rBmkDUeGpjYG9igr41bp+jrhqYrU6Uda3CXg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ud0/eFyj; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q/fJnIUe;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ud0/eFyj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGVlQ3yHWz2yN1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Sep 2025 01:58:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGVmj0WQTz2yN1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Sep 2025 01:59:33 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6DD204374F;
-	Tue,  2 Sep 2025 15:58:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0060C4CEED;
-	Tue,  2 Sep 2025 15:58:13 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 12A466021C;
+	Tue,  2 Sep 2025 15:59:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BDFC4CEED;
+	Tue,  2 Sep 2025 15:59:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756828704;
-	bh=p9LX1J8OB47eGZSBufCQ0NCMRaLyzY7dyM6OvdV2fn4=;
+	s=k20201202; t=1756828770;
+	bh=h6gGkPa+yogQhUhsg5tcVHk0cLLn+dh6AGZcG93uf7s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q/fJnIUePrEmtB3jGxs5sXxTiOpjkneVTfCS8aGXxrge+I7eRhoUp/VrWKw0Hp5Av
-	 7/yMMMoDY3uf4zbOr1qrCvQbUQdfF0rxH+L8odYDJGkEzL497fxrw04Ay5tgx5lKow
-	 2mJtK9hw1iTs3p7Nqm8rh+7jqov/ffrQu48zZ3jqGVJUgN/tlYOWCZu/pxnHyUHt8q
-	 rx60Oi0rBmJckMYvBhCX09gIsGWqa1rEdd40SEyfV5zBcUmJAcbkXfU6nC8L3Bn5Xx
-	 kKZSJDcxk0NBwX11+/u16ApogOs6MSqP278oWv9WSTWa3EtFMXF37agP5A/MeoJdgW
-	 fh/6kw64NW2Lw==
-Message-ID: <ff165a2e-cd63-462f-b2ea-cb27cb514ef9@kernel.org>
-Date: Tue, 2 Sep 2025 17:58:11 +0200
+	b=Ud0/eFyjy1LcAqZg8/j8CGG2Y+QtH7azwAQmg7B6nqOqfw7uH3isn8BWEsvAZ/rys
+	 zO9DuR3o+bc/yW7QUD/9dtYpcAQX49gCnPKGsgHgLZW0IZULcY2x+fnynasWOmKQ4U
+	 3HmROMU44lKBDLB/MSAJeZWuJ7IxmOBCqv14kIqng4BI0NGKCBlREva7OmyCvehMZf
+	 aYDsTt0OmKhB88FURiUCJ3Ot+suF9wyekWpNCkvgTMVPqqjZeo6NzUGrl9yKAD69nG
+	 3W7lWRc93bSi6BuXL06aDnkVp8e5I1/cY6kApSel/xtw+cXgctCwzB/n1ANxqWBroC
+	 m5fjuZeIJSwNQ==
+Message-ID: <3815a847-c6ea-44f1-8c4f-666483841b16@kernel.org>
+Date: Tue, 2 Sep 2025 17:59:18 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 04/12] cpufreq: longhaul: Use scope-based cleanup
- helper
+Subject: Re: [PATCH v3 08/12] cpufreq: powerpc: macintosh: Use scope-based
+ cleanup helper
 To: Zihuan Zhang <zhangzihuan@kylinos.cn>,
  "Rafael J . wysocki" <rafael@kernel.org>,
  Viresh Kumar <viresh.kumar@linaro.org>,
@@ -92,7 +92,7 @@ Cc: Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
  intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
  imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
- <20250901085748.36795-5-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-9-zhangzihuan@kylinos.cn>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -138,7 +138,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <20250901085748.36795-5-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250901085748.36795-9-zhangzihuan@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
@@ -147,22 +147,22 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 01/09/2025 10:57, Zihuan Zhang wrote:
->  static void __exit longhaul_exit(void)
->  {
-> -	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
 > +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
->  	int i;
+>  	struct wf_control *clamp;
+>  	struct device *dev;
+>  	int ret;
 >  
->  	for (i = 0; i < numscales; i++) {
-> @@ -968,7 +968,6 @@ static void __exit longhaul_exit(void)
->  		}
->  	}
+> -	policy = cpufreq_cpu_get(0);
+>  	if (!policy) {
+>  		pr_warn("%s: cpufreq policy not found cpu0\n", __func__);
+>  		return -EPROBE_DEFER;
+> @@ -79,8 +78,6 @@ static int __init wf_cpufreq_clamp_init(void)
+>  	ret = freq_qos_add_request(&policy->constraints, &qos_req, FREQ_QOS_MAX,
+>  				   max_freq);
 >  
 > -	cpufreq_cpu_put(policy);
-
-You are not improving any code here.
-
-
+> -
+Not much improvement. Previously this was simple code, easy to grasp.
 Best regards,
 Krzysztof
 
