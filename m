@@ -1,91 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-11606-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11607-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA30B3F687
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 09:22:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545D0B3F945
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 10:58:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cGHHh1ZJ0z30Pl;
-	Tue,  2 Sep 2025 17:22:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cGKQS33DCz2ypW;
+	Tue,  2 Sep 2025 18:58:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::432"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756797728;
-	cv=none; b=i6Xg5OT2NGM5dulD5xkWxIXG0NxXoj+OlGMCESNoBtnL8euzt461ibpka71REeXjSA7GPRKMf3d5vaGQSwyNR+PLBfb3Phy5AEz9zCj80+T6bnI1NnRAmsRRdxkxsleikhAEOQrKwZzVdN1Resw+jLBbSTJ7FgjuBx4c7cC4tKq1/tXYrd7AVXboXYzEKoBMrPL28arjGFuE0QB5PrWyqBx3VIA6YkQOyhtX6F7gLQX5Lr9j6filOl1kwMSvN+wlgwM9AnsLsBUWbOO2DhRH/GTfp8otp+IUXqCtD9cwwL7ol2/VojSbDlW2bBK+K0dZbd2FeVov1LH7HjD1HLj60w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756803488;
+	cv=none; b=MrBwEFAzWuqeNvyL7Ma0XelhyL3V3KS8oxKKQlNMEzGU4RtwVzb18ueQpVL3sOnqKAs5vnJQdvG/qxN+eIS/9VlW/sQ3ziZtel1DPe/a9OyXThWUsKo2Y/xFBVaUsQsA4nhas/ufmr/0FCksT0mhZVApjg6Ug5Y0L62rlsXhFbGnlNo1waefz5LeTe3JBBfNwuFIPc4RYsdhQvi/rqS0SS9Mz1oe9e5xNJN2MLpOr8gBPpavfc466T/ZMW69P+46FE4yrSphtA4Nm6nHDsNLGTYXjABxw3WTaolZZzS2rxfzJYV6i/b10K4o5cqP0dkTjHk67JZtFbv5/5eaVFCdDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756797728; c=relaxed/relaxed;
-	bh=yw3ri99gw13iWXBHvxxwi8geR8Fc/9352q/ntmyST8w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HLb0RXBF6wQEfcfUmwewZ0U3eLzv9SIj4IQiFRep0X/1h2W+JJLb5xP92BStQUoJpDcK5hn5MgF7hpZSFgKYsAe+Gzg7v4MivdWVyMdcWK25Gtt5xyywkD+QyaOJog3yg6Pm8MmUfNuzQxhMLEvewvA2k74P2FuDBO6kzcLFkSv+Z9xbBIvKvSzUI+uuEQ3nxjEV4l1GIqidWUSbMi0I+wwa7vOjljFxJDPh0BUbBHfb6dfSXcYRca6v/f7rGT6Xncb2EJcalIcFToL91A0PB412nZrVyED1zsqH6Dl791ppeRMa3rsbyDqfKMpY61Liwpg0fRN1CPQzpPQ1OxBxmQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GihNaPgL; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=linmq006@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1756803488; c=relaxed/relaxed;
+	bh=vgL+YH0eFoUFGotTqZ2Xj5/YGLAOKltSbpKOvmmn8Es=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=Jby/A7Nq4TOCbe4Kg2/k74MZLhSER913QV7w7U8jimAl72D6VmrIqOgsKXw23MnovSv+ZRB1Ix6pZxia18AIIX1DcU4MHGxU4W/c/C/CKSw3MJYGm4vfGBSPoUEVoWj1/YqJPI3AMFgzCUeZV9kwOfE9lrhuo26aAgLSm90+CiB4/FHF1p9gD01Vn5DjLmY7bZwGjC94tI+gJmJQ1OPoC8vuw/TlktNfCAiiEi0NsC7M1QDhKK+FFzjC5rJkrTvniR4E0QzZSwD7p9lKFv3D7CnvSUFzaUYm+my2OBmBo8cRNBVYvpQqk1uplFPuOWB0Tg/YHxvwU7DzszYpwiSpLg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HTkme4Z6; dkim-atps=neutral; spf=pass (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GihNaPgL;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HTkme4Z6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=linmq006@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGHHg2YXGz30PF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 17:22:06 +1000 (AEST)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-772301f8ae2so2709812b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Sep 2025 00:22:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1756797724; x=1757402524; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yw3ri99gw13iWXBHvxxwi8geR8Fc/9352q/ntmyST8w=;
-        b=GihNaPgLqkEzP6ucvr134wGErfUqrI1SUTyqkBXl4AAruhj6HXhAD/kIDChE3jsXph
-         mLSawd1oXECXB/0j/5N82o6cf7Eua0LhAcJSCIPaVK3V5a03Xoj8qeJYN1eqX8/8CUl/
-         iPMvr4SsDTrM6cZPAUeZydc6WFgr6PXi8SasyMqvgAUE8kpb22PSCW5M6I68qd1N47f0
-         rrU5JYUKgL903tJfGywhSz1qYefHPXMCJEvxDEVdFqiKjbo1KcmypdpFy9XGHY6TllKL
-         3kvpWeCvb+2gwYFJ7OiwS2KQ7jX5T7WRccWQ+R0vssUV5maY5oRp9A2+PlF3SLR7NinY
-         GYuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756797724; x=1757402524;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yw3ri99gw13iWXBHvxxwi8geR8Fc/9352q/ntmyST8w=;
-        b=dlVlXZmpkZpUJFVvQxEJICCG/XKS5GJ2vv9p2JTqpnTViePjieYLG4CbuiboL/Ghu3
-         oyDEwMzaSAQNAb5WiSi3lnCIRbz6LoER5OvLtwG2m/oTdoWpSPZRU44vVKQ0bPmOnDTX
-         f0ffCHF0j7svvt0+kP+Mz7Q3/sG1KwbV6yJ3KSVA59U86EMpVDCLvvN4f+PTLAN2hwrh
-         E6QXACnX2Xaxp+uN0Oeh+E6L93V7GY/+NKgAc2StLIBDki6NCxKp1k5a8WW/uS5PPY5n
-         hQPHBWDfE+tBWDnD7pVzADJ1pPlWcr2C44kUgLWacll2MGMe7xC/1oXePyekNk8C245K
-         Hqsg==
-X-Forwarded-Encrypted: i=1; AJvYcCWxaBCf0vmfLJLlkKpHS4zQg5UC6vXwuPEnAw2e4Wjd9mz8Aqm3g9xdm2LQagFmTW0bY6MBhzG958gr4as=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxBAH01xCl0WSu1iCRO/QDMw2PfRg6U0wvIs99qU+koltITfWIg
-	kRLirao04mCSi4JvPY7TJtMbIhuVe2C8GuDHDhi2tJuS2Jq7M5w/DlcC
-X-Gm-Gg: ASbGncvIga0sOYEib9jf8uZVD9eVhGFCt4WFzVbiEMStAbYmSqE+UzzZA9RZes2itVn
-	42yZJJxXIiL6uvEvuATu7URuozwOtZT87JJcMmkndVr+szUemrrdMCU8cQQPiSGe/KA6EdN/Olq
-	YwevKiiGc0XseAO7VbOs9gNgmGo84o1fC+A3C3vPa3khATsEuwfwcA0MbjnQijAgar6Hba+4PyZ
-	W5l/Wmninu9JgysLH1CGP6HUhRzdlHebDQI+jJAMmK2dwFlr6XUsr/VjKZtpsQuPll0LjIH9qGe
-	NwdoAD0w0AjQn+Ol0g6zE2mfaBVnxgR843izZp1Q478C4+qPEytrRx0M7Wd75Lek7OQpbJBIL2N
-	cDXGyk6fx3MoRqGXzfVUpvelafFmCF8BXHBJUjHPiXuWAt1sJ8t6EEQC8CVNqMLLeLpUwi4i7xI
-	LR5AhTzoH/93JVLdOpp71YAULgGr4+dh2KIXtoPb10ki7+vcIyZFoOx70=
-X-Google-Smtp-Source: AGHT+IFIaIH+HxoYGYo/EjS/CtIV0f/Ka2pgKDvXIF0gxHvnrn1RBnv+9myDrkVeBAH/CAPmc+gggQ==
-X-Received: by 2002:a05:6a00:1a87:b0:772:114c:bcbb with SMTP id d2e1a72fcca58-7723e1f1804mr15229229b3a.4.1756797723879;
-        Tue, 02 Sep 2025 00:22:03 -0700 (PDT)
-Received: from vickymqlin-1vvu545oca.codev-2.svc.cluster.local ([14.22.11.165])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7722a4e1d4fsm12399630b3a.73.2025.09.02.00.22.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Sep 2025 00:22:03 -0700 (PDT)
-From: Miaoqian Lin <linmq006@gmail.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Paul Mackerras <paulus@ozlabs.org>,
-	Olof Johansson <olof@lixom.net>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] pasemi: fix PCI device reference leaks in pas_setup_mce_regs
-Date: Tue,  2 Sep 2025 15:21:54 +0800
-Message-Id: <20250902072156.2389727-1-linmq006@gmail.com>
-X-Mailer: git-send-email 2.35.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGKQQ3jbbz2xgp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 18:58:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1756803487; x=1788339487;
+  h=date:from:to:cc:subject:message-id;
+  bh=uhKT9h0rCeXkJ65lmP1pf6c/q6CQK4BnAt0VFVQJ+0k=;
+  b=HTkme4Z6K2KvPGlJx+Pxg9WJqqfGKJOnzIUFSuO1uoLvMl4EfJq/mD47
+   GM/cynTXtflaYNO7VCcz8JfIR1DeV8Kdbt7slh75KXcyWTz+75NWqcbz/
+   ZCc3HzYCL8L7is5mZ7kaOrB6odMp86ilqF/JuB0tyJXdvpD6pP2ZLIAdg
+   0NUnO4DZjeMyvZkOGIuTosfeVoPBCilrqtxbJgNGOS1pj+11tg9JO/9tL
+   XMC7b8ZSRjt1bVx+n4wCQa+crhutxCFkKddr1oRMs2QiVNfiIbiuxsNbX
+   Z/cSj63UzNKihZobNVZhHMugfTCG216HFZkjnbpkxvpghoWCPK4g+NSV9
+   Q==;
+X-CSE-ConnectionGUID: YNLWFIeEQ225SbcSe98ueQ==
+X-CSE-MsgGUID: HpTBEQpqSfShsDOGM3Eunw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11540"; a="62887788"
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="62887788"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2025 01:58:01 -0700
+X-CSE-ConnectionGUID: i9mK5dYuQhiEQyTOVY95WQ==
+X-CSE-MsgGUID: qpppXW/oSfKe/Q36R47I/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.18,230,1751266800"; 
+   d="scan'208";a="171182176"
+Received: from lkp-server02.sh.intel.com (HELO 06ba48ef64e9) ([10.239.97.151])
+  by fmviesa006.fm.intel.com with ESMTP; 02 Sep 2025 01:58:00 -0700
+Received: from kbuild by 06ba48ef64e9 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1utMpy-0001iu-0X;
+	Tue, 02 Sep 2025 08:57:58 +0000
+Date: Tue, 02 Sep 2025 16:57:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:merge] BUILD SUCCESS
+ 0c95b0c4e293292bccef251e385df8bc2e699e60
+Message-ID: <202509021651.wiwiaqUL-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,63 +80,138 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Fix reference leaks where PCI device references
-obtained via pci_get_device() were not being released:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 0c95b0c4e293292bccef251e385df8bc2e699e60  Automatic merge of 'next' into merge (2025-09-01 13:46)
 
-1. The while loop that iterates through 0xa00a devices was not
-   releasing the final device reference when the loop terminates.
+elapsed time: 1452m
 
-2. Single device lookups for 0xa001 and 0xa009 devices were not
-   releasing their references after use.
+configs tested: 117
+configs skipped: 4
 
-Add missing pci_dev_put() calls to ensure all device references
-are properly released.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Fixes: cd7834167ffb ("[POWERPC] pasemi: Print more information at machine check")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
----
- arch/powerpc/platforms/pasemi/setup.c | 4 ++++
- 1 file changed, 4 insertions(+)
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                   randconfig-001-20250902    gcc-11.5.0
+arc                   randconfig-002-20250902    gcc-9.5.0
+arm                               allnoconfig    clang-22
+arm                              allyesconfig    gcc-15.1.0
+arm                            hisi_defconfig    gcc-15.1.0
+arm                          ixp4xx_defconfig    gcc-15.1.0
+arm                        multi_v7_defconfig    gcc-15.1.0
+arm                   randconfig-001-20250902    gcc-15.1.0
+arm                   randconfig-002-20250902    gcc-8.5.0
+arm                   randconfig-003-20250902    clang-22
+arm                   randconfig-004-20250902    clang-22
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                 randconfig-001-20250902    gcc-8.5.0
+arm64                 randconfig-002-20250902    clang-22
+arm64                 randconfig-003-20250902    gcc-12.5.0
+arm64                 randconfig-004-20250902    clang-22
+csky                              allnoconfig    gcc-15.1.0
+csky                  randconfig-001-20250902    gcc-14.3.0
+csky                  randconfig-002-20250902    gcc-12.5.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-22
+hexagon               randconfig-001-20250902    clang-18
+hexagon               randconfig-002-20250902    clang-22
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250902    clang-20
+i386        buildonly-randconfig-002-20250902    clang-20
+i386        buildonly-randconfig-003-20250902    gcc-12
+i386        buildonly-randconfig-004-20250902    clang-20
+i386        buildonly-randconfig-005-20250902    gcc-12
+i386        buildonly-randconfig-006-20250902    clang-20
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch             randconfig-001-20250902    clang-22
+loongarch             randconfig-002-20250902    clang-22
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+m68k                            mac_defconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                      maltaaprp_defconfig    clang-22
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20250902    gcc-9.5.0
+nios2                 randconfig-002-20250902    gcc-11.5.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20250902    gcc-8.5.0
+parisc                randconfig-002-20250902    gcc-11.5.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-22
+powerpc                     kmeter1_defconfig    gcc-15.1.0
+powerpc               randconfig-001-20250902    gcc-9.5.0
+powerpc               randconfig-002-20250902    gcc-8.5.0
+powerpc               randconfig-003-20250902    gcc-11.5.0
+powerpc64             randconfig-001-20250902    gcc-12.5.0
+powerpc64             randconfig-002-20250902    clang-22
+powerpc64             randconfig-003-20250902    clang-22
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                 randconfig-001-20250902    gcc-13.4.0
+riscv                 randconfig-002-20250902    clang-22
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                  randconfig-001-20250902    clang-22
+s390                  randconfig-002-20250902    gcc-10.5.0
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                          polaris_defconfig    gcc-15.1.0
+sh                    randconfig-001-20250902    gcc-12.5.0
+sh                    randconfig-002-20250902    gcc-12.5.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20250902    gcc-14.3.0
+sparc                 randconfig-002-20250902    gcc-8.5.0
+sparc64               randconfig-001-20250902    clang-20
+sparc64               randconfig-002-20250902    gcc-9.5.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250902    gcc-12
+um                    randconfig-002-20250902    gcc-12
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250902    clang-20
+x86_64      buildonly-randconfig-002-20250902    clang-20
+x86_64      buildonly-randconfig-003-20250902    clang-20
+x86_64      buildonly-randconfig-004-20250902    gcc-12
+x86_64      buildonly-randconfig-005-20250902    gcc-12
+x86_64      buildonly-randconfig-006-20250902    gcc-12
+x86_64                              defconfig    gcc-11
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20250902    gcc-9.5.0
+xtensa                randconfig-002-20250902    gcc-10.5.0
 
-diff --git a/arch/powerpc/platforms/pasemi/setup.c b/arch/powerpc/platforms/pasemi/setup.c
-index d03b41336901..dafbee3afd86 100644
---- a/arch/powerpc/platforms/pasemi/setup.c
-+++ b/arch/powerpc/platforms/pasemi/setup.c
-@@ -169,6 +169,8 @@ static int __init pas_setup_mce_regs(void)
- 		dev = pci_get_device(PCI_VENDOR_ID_PASEMI, 0xa00a, dev);
- 		reg++;
- 	}
-+	/* Release the last device reference from the while loop */
-+	pci_dev_put(dev);
- 
- 	dev = pci_get_device(PCI_VENDOR_ID_PASEMI, 0xa001, NULL);
- 	if (dev && reg+4 < MAX_MCE_REGS) {
-@@ -185,6 +187,7 @@ static int __init pas_setup_mce_regs(void)
- 		mce_regs[reg].addr = pasemi_pci_getcfgaddr(dev, 0xc1c);
- 		reg++;
- 	}
-+	pci_dev_put(dev);
- 
- 	dev = pci_get_device(PCI_VENDOR_ID_PASEMI, 0xa009, NULL);
- 	if (dev && reg+2 < MAX_MCE_REGS) {
-@@ -195,6 +198,7 @@ static int __init pas_setup_mce_regs(void)
- 		mce_regs[reg].addr = pasemi_pci_getcfgaddr(dev, 0x214);
- 		reg++;
- 	}
-+	pci_dev_put(dev);
- 
- 	num_mce_regs = reg;
- 
--- 
-2.35.1
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
