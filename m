@@ -1,109 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-11615-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11616-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A8EB3FD72
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 13:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3451B3FE09
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 13:45:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cGNNt46d9z2y06;
-	Tue,  2 Sep 2025 21:11:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cGP755GSGz2y06;
+	Tue,  2 Sep 2025 21:45:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.152
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756811518;
-	cv=none; b=Dxc1Wv+eRt/4h2tqp8uWRYEzcwHHf8ou5otNdYGGrtMwEmPxpkdgkp3ggehUKPpMMm3/222q4UzDlDu7UiEpCcYiH5Ei1n17iUBJQMqVwcIXm+rYCGlkDMoUoXk+7LA8K6L7GFSpaMBmbmYNZ98fYzZaqx3o/JfarnIHSsNC+2SFtuIHjNPz2jiWPrigRZY+vRsFtyYMXOVn5Ykira4cvqr66HhObuwM2298GM2NofsShoR2zLGrhY5sHUDFkDgjo03niKncW6SOMVYkDQUvsY6hQjnoOJW+xHxLc7bZMnTZkDeKSYLphBd2oiGCcVkGNiMaLbIEBEk6rQ94DGrccg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=94.231.106.210
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756813505;
+	cv=none; b=fNNQKr7O6bw5CrBNs9uYs8zyoLMOKf5atAFdIwcRbImkFbKmIwuPwyZqCuRUghelB0pk3Ksach16YpR1F7xqZcWmRUWs3/rv1wk4B2mZ2UoKNQ+NirfFUVmBLUAthhrJ/tojs1xU+kLkE60iGQDLtfoERwgEHUWhgLsQYHs+H+lOEu2al00FOtMMVtlg20jHf94o6lfL4xLWoCas3kql8G/KqcXAz3FgHIOktwKJ++r7FUL/BUaoy93sSiOCoKMzoINbqUd5tWG5iF10Iqo8g8MqRXKHL3YwIfBhsWyLqAPTS2v+/kWRwfpTqba4c1Qjd/47Puzgm10YtvBFJb4+MQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756811518; c=relaxed/relaxed;
-	bh=m0Jec9/410OJbhXCj3unRKJggRa0OML7F9IZaa4gnEU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ai8QUh23+0bvGIBvpYMgpLW7KVxDekNWZMWA5cbuTv45vGyweqrM4f893Msi1xPXylekeerjeL2lWkNTaB1+H7dGaudicmtrlXUZpRKE01lUk2If1T7W2Haj1rF6tMtpQ57YuUSfTC1OFwavjXCd3ABHt3W8aOr0QXIbh59lWJPs3etzQy4uiEpEJbYgv6vx07jfU3DMhkbSYtnZNF7LMPH27WlherlpZEq4te7WZKrKpL17db1apHDO3rr1jH+cjwcfra98UfxUwDlJG6zhtTJ8/Zq/JMgXPeNgDh49NZ8Fm0M9bS75P241WlEar0qcOkFLwb01F3c5s/fUZiDQWQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kroah.com; dkim=pass (2048-bit key; unprotected) header.d=kroah.com header.i=@kroah.com header.a=rsa-sha256 header.s=fm1 header.b=f+cDZYGH; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=IrDngGkA; dkim-atps=neutral; spf=pass (client-ip=202.12.124.152; helo=fhigh-b1-smtp.messagingengine.com; envelope-from=greg@kroah.com; receiver=lists.ozlabs.org) smtp.mailfrom=kroah.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+	t=1756813505; c=relaxed/relaxed;
+	bh=voGobjfJ+JDIyxPuu8fGQb2u9QP7Z513vboXRHjWrpI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AQdOYqyMvZibScSpJw1N6QOVRQnNdtGYkOZF+gdovJaYd7fYBWiPxEplsSgL5gVn5yW9vbvxi30w9TmBE2lh6c26/YCBbe4Fg/TbBfvQw3fOdKuOK2xNPgfVc1JDfzefVzE7w0g/JkgXINoB3Zon6V/9gaayBMbKsF2EVWnpJY+7j4ZJRsZRGktcSoLj9Mq5brhX6B7l9okxn4T1ReWI7y9GXlnATRe96h0wmr5RD5AdjkPWE1shLe4j5XTsTTSAFRI+4KXRfRfTDxQcsyYRy25lNLKqP+RGUIj7CckbsDvjM0BZaL8kF7CEg2myO6hHZ4u4Bc6qONBIsQlU7RASLQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gaisler.com; dkim=fail header.d=gaisler.com header.i=@gaisler.com header.a=rsa-sha256 header.s=simplycom2 header.b=jXmzEnXa reason="key not found in DNS"; dkim-atps=neutral; spf=pass (client-ip=94.231.106.210; helo=smtp-out3.simply.com; envelope-from=andreas@gaisler.com; receiver=lists.ozlabs.org) smtp.mailfrom=gaisler.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gaisler.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kroah.com header.i=@kroah.com header.a=rsa-sha256 header.s=fm1 header.b=f+cDZYGH;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=IrDngGkA;
+	dkim=fail reason="key not found in DNS" header.d=gaisler.com header.i=@gaisler.com header.a=rsa-sha256 header.s=simplycom2 header.b=jXmzEnXa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kroah.com (client-ip=202.12.124.152; helo=fhigh-b1-smtp.messagingengine.com; envelope-from=greg@kroah.com; receiver=lists.ozlabs.org)
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gaisler.com (client-ip=94.231.106.210; helo=smtp-out3.simply.com; envelope-from=andreas@gaisler.com; receiver=lists.ozlabs.org)
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGNNq4rnPz2xrL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 21:11:55 +1000 (AEST)
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 0FFF87A041D;
-	Tue,  2 Sep 2025 07:11:51 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Tue, 02 Sep 2025 07:11:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1756811510;
-	 x=1756897910; bh=m0Jec9/410OJbhXCj3unRKJggRa0OML7F9IZaa4gnEU=; b=
-	f+cDZYGHnAUFzqpRhq25p5/7uuR07XmXeWL3mz6ei/5upg2/GndUmIdHjdQhkifZ
-	9xVbGpoB86ZSZ2bjITYi4yxuwYJTxeAR0P9TkCWlruYOtL7bI8GT0FIcpuSzlq1M
-	JgRAdlMU3US2watUtfgizaPCDgSlymsPpnjTg+7aEPcEFnjA5vPwneL1RyR/qOLQ
-	2RHyz1GgUqYFnrBmcgDqDqaPG2bgIERvOrmdqOl+XSQEyosjNyzh8qqndQnLbBG2
-	ILyPB60GACbayBtV8DUCYJAwq11n+cqmAzO0/Bd39qROPdGcoFT17xblw8yUq808
-	xX6nqWH0ZdVWPHHfzq87mQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1756811510; x=
-	1756897910; bh=m0Jec9/410OJbhXCj3unRKJggRa0OML7F9IZaa4gnEU=; b=I
-	rDngGkAUZ9iPI9NkjYqwAvMku8xZy6HU3h/RpaGi/uRAx3e/5JTxHVroUVi/lNy/
-	hsh7an+a41lR1jPczqO4kpYPZMWnAuoWO6juTxknQc4JxPT3CyOI0SZsC+kUSwdZ
-	HOxsX0wNosZThwHxrku6l4I7eLOSy6pOFoUH5KmQkYEqef0+Vk9ZWlW8vVZGxw5B
-	sGIdDY7xWWouiAElLrp9PpSXCMmLdh8Yco6EZGDpXHh+gPbSuJmER+CXj0pezHQp
-	ZIyV+4bAYNMBgTcUBaH5SdGzmWgUEHy+WZYJyLJtXGCkcv+f9bEYqJ9NMLXAmVHJ
-	mkEV6EZ9Fr7my5UqzGUrg==
-X-ME-Sender: <xms:9dC2aLYcO5-QLBCu-3Doy9H5OGM2N49xCY5qaZVVK0Fp9n1fxDRsZw>
-    <xme:9dC2aPjTYr126EGOZE78vN4ofswEJjQw7fzw0rXoyKn32CIJoEznW1QHwkTekzYtg
-    I4xVjLRCmtvxg>
-X-ME-Received: <xmr:9dC2aFMa1jVWtLBljERsrJBqJuRvlPk4pUwAMTdtFLW4mq0kFzyX408mS6mkjyYLh5mk5CiWyCYMU1WIk-MeZTDb7Ko8nTj9SuJ4-A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegrihhl
-    ohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpe
-    ffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepifhrvghgucfmjfcu
-    oehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepveeftdfhieduhe
-    eiieettdevieefffejhfdtudeikeefkeevteeugfevtdeugfetnecuffhomhgrihhnpehk
-    vghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgs
-    pghrtghpthhtohepvdeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehmrghrkh
-    hushdrvghlfhhrihhnghesfigvsgdruggvpdhrtghpthhtoheplhhinhhmqhdttdeisehg
-    mhgrihhlrdgtohhmpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrd
-    hoiihlrggsshdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhr
-    ohhuphdrvghupdhrtghpthhtohepjhhirhhishhlrggshieskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepmhgrugguhieslhhinhhugidrihgsmhdrtghomhdprhgtphhtthhopehm
-    phgvsegvlhhlvghrmhgrnhdrihgurdgruh
-X-ME-Proxy: <xmx:9dC2aJOoAYRtjn3FAOERt__pL7TM8do8FRD-eO_xYSPYgZpfqKV6Vg>
-    <xmx:9dC2aNIr0NCnWTGaTmWYh-qlYjZR4RcR9bAfpEtyLtgoHEFOqW_N1g>
-    <xmx:9dC2aIs-VFawJQ3jbow6EsZ9ijqJvtKLXcwM2aG7PqhuOpRc14q9ew>
-    <xmx:9dC2aPEGfyAZObH9f0tOAUN0CJEZWEmZfOdhf8SHuK1QWMWCB21IiA>
-    <xmx:9tC2aJNt41Kj2ffXuJ2DABsguzxbOwi49tXdYdGrpr8ZpB_uVquCJ4_p>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 2 Sep 2025 07:11:48 -0400 (EDT)
-Date: Tue, 2 Sep 2025 13:11:46 +0200
-From: Greg KH <greg@kroah.com>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Miaoqian Lin <linmq006@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-	stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Olof Johansson <olof@lixom.net>, Paul Mackerras <paulus@ozlabs.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH] pasemi: fix PCI device reference leaks in
- pas_setup_mce_regs
-Message-ID: <2025090241-dowry-gloss-1709@gregkh>
-References: <20250902072156.2389727-1-linmq006@gmail.com>
- <63be79a4-79e4-47f5-a756-aa55fe0d29ab@web.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGP734qm4z2xQ5
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 21:45:02 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4cGP6x6Rpwz1FZPJ;
+	Tue,  2 Sep 2025 13:44:57 +0200 (CEST)
+Received: from [192.168.0.25] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4cGP6w5mgsz1FXjD;
+	Tue,  2 Sep 2025 13:44:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1756813497;
+	bh=voGobjfJ+JDIyxPuu8fGQb2u9QP7Z513vboXRHjWrpI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jXmzEnXapdgWj3k2C76LGG7k/5mt1kwvMqAYSfMFYlJ0dMOQ80Oj2YE0pnZAtNJ4t
+	 tXQk/LzaZA57Nv160y42KGcSc12HLtx5zDkXLTwO001yujBIUCUp0jXWbSqOup1wEK
+	 caelEQWo/j1aiLxV7BPWjSbstlue7ClkuM93YSG2cSzlCJSLWryT6cSw2EEQcr+aVF
+	 FTt0lGn6fnMuHg7U0U6sd3U2Ku9tEiPKwlVMzDHUsOHxPUryMAOV1qAvelOgjen0aR
+	 RoDQinmHdiIG1eCVLztKOXDNMYphrSPAPE4G8u5ceaF4FDq1DzCH6UTTJUx5w29cc0
+	 vZYTj+Lq2QLjQ==
+Message-ID: <92bace9a-b5c4-4ea1-a1f7-4742c15a64a0@gaisler.com>
+Date: Tue, 2 Sep 2025 13:44:56 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -117,48 +62,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <63be79a4-79e4-47f5-a756-aa55fe0d29ab@web.de>
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] arch: copy_thread: pass clone_flags as u64
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Arnd Bergmann <arnd@arndb.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ cgroups@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com,
+ selinux@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org
+References: <20250901-nios2-implement-clone3-v2-0-53fcf5577d57@siemens-energy.com>
+ <20250901-nios2-implement-clone3-v2-3-53fcf5577d57@siemens-energy.com>
+ <f2371539-cd4e-4d70-9576-4bb1c677104c@gaisler.com>
+ <11a4d0a953e3a9405177d67f287c69379a2b2f8f.camel@physik.fu-berlin.de>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <11a4d0a953e3a9405177d67f287c69379a2b2f8f.camel@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.5 required=3.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Sep 02, 2025 at 12:24:11PM +0200, Markus Elfring wrote:
-> …
-> > Add missing pci_dev_put() calls to ensure all device references
-> > are properly released.
+On 2025-09-02 09:15, John Paul Adrian Glaubitz wrote:
+>> Thanks for this and for the whole series! Needed foundation for a
+>> sparc32 clone3 implementation as well.
 > 
-> * See also:
->   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.17-rc4#n658
-> 
-> * Would you like to increase the application of scope-based resource management?
->   https://elixir.bootlin.com/linux/v6.17-rc4/source/include/linux/device.h#L1180
-> 
-> * How do you think about to append parentheses to the function name
->   in the summary phrase?
+> Can you implement clone3 for sparc64 as well?
 
+(heavily pairing down the to list)
 
-Hi,
+We'll take a look at that as well.
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+Cheers,
+Andreas
 
-Markus, you seem to have sent a nonsensical or otherwise pointless
-review comment to a patch submission on a Linux kernel developer mailing
-list.  I strongly suggest that you not do this anymore.  Please do not
-bother developers who are actively working to produce patches and
-features with comments that, in the end, are a waste of time.
-
-Patch submitter, please ignore Markus's suggestion; you do not need to
-follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and
-inability to adapt to feedback.  Please feel free to also ignore emails
-from them.
-
-thanks,
-
-greg k-h's patch email bot
 
