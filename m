@@ -1,58 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-11617-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11618-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C310B3FE38
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 13:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D92EBB4049A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Sep 2025 15:44:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cGPBD6fTvz2yrg;
-	Tue,  2 Sep 2025 21:47:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cGRmr1q90z2yN1;
+	Tue,  2 Sep 2025 23:44:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756813668;
-	cv=none; b=SVcXW3vbvsgYCfFTvgjzomDqTgD3UUuMguOpaIV3JMY8woUTwrVIcJVuu6WP/RMYlC/PEn/pC6LO2vaHgcz33irMAbQYTZgrgfOAzwpgs6f3M/+yyu2NTFAPqqjsUX+z1OPmJiJLkdVX9bGA2QinY08rPDb5oGP2o07NkSevuPtGnmf9B9nx8JwMPO37G6sDOrUc48utvLNO/gyPuenjAqE6wVJyLJFGRr1/3Ot4DnfDQ/X3XdvUziYBexulBRed0E9fjD2UwJ2deGA3S/vhTZCAWRgsltfmNl+AChP+6rY5xkYblRpLZvUqRfMNF7Mhkx9WsSjtaBUrtn8MP3R5XQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::129"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756820668;
+	cv=none; b=B+UGQ3EOCp6JB+dwhfcudwpWx53hlN6OGtYHahv81god7p8Zyojzp08WAf3t9WA/Z2PZAvR1WoRx7vckft4TaMRz2npI/W9o3gxQNrpKF9YtsxPLBk0D2fBETxApPfJZqDIjYHySv/pidOhGYE+s15tXNiXZEQl5mhHTM7K60BhTej1+LH48F2OanFO1CsXqwZfGfuTMjQ/owhi1qIG7GI0blCRXmAdpLEgexBzedQ7cCt8vzcBEFEG8SYxgPYagNf23dNdpL/cBAd3yXVy0vGdR9GIoqK1vHKC29Rb732+OL0+XpGHuXtQxR8gKTlLR82n1ZDBjCEa98hjGevdt7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756813668; c=relaxed/relaxed;
-	bh=xQ8t2bboIzd7cHm3OScP5qlwpTcm1FmAONHyDli97iM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mVTjXrDqGaX8JbFSKRouTLzFxe0vWG4P2Q2kCXjR3FcTKqYXjhGV8Av2QFIrNlq3pyadphWPywayfQOS12lMVaalBhWmHMZ99IYj2m+d8R4O1cJ/WgUkt1zFWzTzkf3UkflCa2bS8eUUmPH0eOloYQGDdDc3hmrFArR5j2k5tuVKGZ8F6rDTDD7Fm7oLZyDjmTVkHBUxoyXcO+fAkFlR31po2W0s/RGgONBRRNdNJ8nWXcXpwPrHOeRwvSTk5PLC/X0efLAqSY91mSRdRmOJMr53E4GlqaWpnMaVjA4H1mQfc4xz4WxlD3D1IKY8SoI82gfhbSxXvBiDacIIXwc6/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HPfsH/6Z; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1756820668; c=relaxed/relaxed;
+	bh=dE+y6IouNTFh5LnCQS36Be2cwV132cRumEEcY15HKHQ=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GiIrCBj+RUHNr+O2A++PZy+OmoyneZWUp8Dtf0NRYB+GxBAl1KMtin5NSewSB+QzHZiMBF8G5eLlzw/Uly30I3ugbkGay/SIfJCuCmZ6ncy89Hl+NwVMTZiBgNJi6gv+PMhG9hlpBu2nDcOH91ZTJIgCzLi99J/cd+JZF5Su6nDbAdD6GlvEA9gBcQU6Wngo3V454ktP5NtORNiwD1SbcfjnMQek/Po41lmRp2i3QkxXi/wxvtfTlzYasJfkVdd6ZEDmjDHjTjhUUhEGHmpAZRYYYXt+DCO+9uIejObxHBpd+aYHe/TOGGK/nAPLIRGFw/XSRVZS8072hypC2IbKCA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Ac4enTai; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HPfsH/6Z;
+	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Ac4enTai;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::129; helo=mail-lf1-x129.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGPBC75njz2ypW
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 21:47:47 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AB4AF60212
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 11:47:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9C4C4CEED
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 11:47:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756813665;
-	bh=gAWv/p7BEF+KhNFGeotQ/1FrGNmecWyX1X5tGPHcCbM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=HPfsH/6ZQcNOGF26sYaQeEFwmNMIdemb3Sta1S24MP4Zqrzhp4xCYmME5rlpIalRH
-	 wypS78addLryNXm+pxr8ZGRJ6CcNSwygSiD1yVSMsso71z9NbVxptxqSwM6eYw/hYg
-	 E0n3a2RupUKViIi/xlJEoNXhZ7BEfE1ktdGaf5/LFZ2Ez9stJf6othwGdlk629boGF
-	 /qfOkz7gPd4OTUDCeTkBwoG5jhFrt7JDvzdGAjA8tfRoviw73ahpeW1eDDr4LJyfaL
-	 kf0/YFTRyn96EDkuB2SQEiQU90yOjmPyWIIFwn87EXpdsYgRoiI9E5Ci5ZKOtauLQA
-	 Z0F2061pPrGmQ==
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-74381e207a0so3751726a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Sep 2025 04:47:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXrTbDyB1t1jwVOTXrun48DYi2Q1bW90QpNqNRJo0oTnuOVHz86aut/Q8XdwDYBZCZ3YoJi3bFkl+9KrNk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxT+hr6cRP51JOD/NPjlcOIg9t5vXPHjEjm7BHqK0qrQA5jvnk2
-	yjOx70kovoWL5CHVYvxlUUBSIVfdoSBTdTrylq57tpkwYqAUMoEZeRthHwQwz6BagukW2XczMbv
-	Eh2tCZV1rKplru6FBn64n6YtAH7fHBc0=
-X-Google-Smtp-Source: AGHT+IECJJHjGAnU1NUr4ozcxCWnRFCL9WRpq+BEhjBinEbwysmqVcNyjx+zeZUwmYMUKeDdT6dFc6CYWYPr3CoZ3wk=
-X-Received: by 2002:a05:6830:3746:b0:743:8af2:1b0e with SMTP id
- 46e09a7af769-74569e90f29mr6034860a34.19.1756813664724; Tue, 02 Sep 2025
- 04:47:44 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGRmp2BHDz2xnn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Sep 2025 23:44:25 +1000 (AEST)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-55f76454f69so2300854e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Sep 2025 06:44:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1756820661; x=1757425461; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:references:mime-version:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dE+y6IouNTFh5LnCQS36Be2cwV132cRumEEcY15HKHQ=;
+        b=Ac4enTaiLwLohs3BGDKt9ldVay9kuIYy9skYs/LQG5YznrOTCcDbzbRC4pLsCAUtF3
+         QXOeiWuY+qEQHgU0JLE69YJ9FhIPSnlGRp7c7Fw3Q2gQMpGJ+fa/fTO/73YD+UeNPj2P
+         f3+K8TcnAcAty+Nxl3srAClAHO7agIRaK+ium6PnqC1RIZL3vU0wg5dHhTctVEn3xQdO
+         dJOQKjyrGsj3sSDL0lefDbtOGpxvrN/p1EkDkYJ9/6YtLgSxDRu19xiCrSHtOMrjWOOI
+         kfkctBBtdHDem2c50a2dKWn6/27Kuhq4JFN7n/lbfZ57PoVnPp+3C7HvO4C+DY6cXfHy
+         L/Qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756820661; x=1757425461;
+        h=cc:to:subject:message-id:date:references:mime-version:in-reply-to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dE+y6IouNTFh5LnCQS36Be2cwV132cRumEEcY15HKHQ=;
+        b=LX1La9i+A9BzCAnjI5J79nWS6tW34IXc+WvUXO9yFGiYF7bha740SNJvKYrG4uyzWN
+         ZS9kQfVdX3DSGXmeMA1S90Hm9BqgLFPuasUqkrTZWJw9ZRRA3HGHRCZI94l2gCb0G9NW
+         PzQdlVXgV/L6I/Az5Hr22z8Dh+9QtBVpS3JPo9VOxYT16wMbxAGBC46ETY843mzD+D2c
+         xRV9hJn2GiNwG/A29J2sm5MRoe6tqL//TqzHDNAWTe+za6c49RrLZOGwnUMi/YpGA7pg
+         8upa1DP1HpRv3rimpEcFTmgjzJUzO+nBBUbOesA3SzZ4Xfl6aTkAga7t5jY7enYJCAIG
+         6gGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUBtJFc5w4iB4dXLB2nUiGda5cxehGlpkDyuorKmPJ1W8IfdmrCybbGDZtS+YHigKmaI+6SZwfd3W07jc0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxaf+GnKr+a9rrGGH5sEhGFBoZVICOhYNGvtty/QU76z5PlXPAd
+	GztKuSBjV8VipJ8WL2YCh7mG3F18b8Ob1iRWrCnnRinOy/tlx8KxVSoIzY2lwq6rcZxniav5dPF
+	fnElBOTKpSB+4fs/WFfUEsGyKzJPMi+1r+qAXBQgUdA==
+X-Gm-Gg: ASbGncvynjWdCYRgE4qFSBu03TB2kmaZJ4/MiM5PhpCfkhzxC5TWzBKondLFcbUkgpn
+	7MGv8kHBIqos0lA0Fl/sfZHQcCcgeLNpkYOu+a9f8TbAxuK2eNs/wKrchDLbbcA6+BCcSOjhryx
+	W6JPbF9kBh18oYclirKahCHTWM8PhAGermegvZmQOxzn6BLf7AKWfjeP3CGAwsP39tHhfMFl3I1
+	hB//3i6rMj3w2MtmxCbNNzEi3oHnBcyn3wfYGk=
+X-Google-Smtp-Source: AGHT+IFjWoO0id3PcP1NXpHfcbubOLclGZa+2gjsa6UEJt7qXSImOMZixhyJgYfyt1Hb98CHs/tfLZNBHaEkOWQql88=
+X-Received: by 2002:a05:6512:3d10:b0:55f:4bf6:eff1 with SMTP id
+ 2adb3069b0e04-55f709482f9mr3675040e87.39.1756820659308; Tue, 02 Sep 2025
+ 06:44:19 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 2 Sep 2025 09:44:17 -0400
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 2 Sep 2025 09:44:17 -0400
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+In-Reply-To: <c5788504a473625faeb9f99b08d3bca5e7135120.1756727747.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,98 +83,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
- <20250901085748.36795-4-zhangzihuan@kylinos.cn> <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
- <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
-In-Reply-To: <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 2 Sep 2025 13:47:33 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
-X-Gm-Features: Ac12FXxFwO1d3JYj5phS50T_U2DONG2wuxBfs8rK_GU-NaLU6wYAD3eFplzuixw
-Message-ID: <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
-Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1756727747.git.christophe.leroy@csgroup.eu> <c5788504a473625faeb9f99b08d3bca5e7135120.1756727747.git.christophe.leroy@csgroup.eu>
+Date: Tue, 2 Sep 2025 09:44:17 -0400
+X-Gm-Features: Ac12FXy_COZhtMDYkikD9QbVVClX9tOwpv2fAavRIrHRKcbOHQym28lIfpzYJKk
+Message-ID: <CAMRc=MfwNr+B-gxkN4ApGX5-k-0=aH=03Aw==WHVSYydy+iHkg@mail.gmail.com>
+Subject: Re: [PATCH v5 3/7] soc: fsl: qe: Drop legacy-of-mm-gpiochip.h header
+ from GPIO driver
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, Qiang Zhao <qiang.zhao@nxp.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Sep 2, 2025 at 12:33=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.c=
-n> wrote:
+On Mon, 1 Sep 2025 14:05:10 +0200, Christophe Leroy
+<christophe.leroy@csgroup.eu> said:
+> Remove legacy-of-mm-gpiochip.h header file. The above mentioned
+> file provides an OF API that's deprecated. There is no agnostic
+> alternatives to it and we have to open code the logic which was
+> hidden behind of_mm_gpiochip_add_data(). Note, most of the GPIO
+> drivers are using their own labeling schemas and resource retrieval
+> that only a few may gain of the code deduplication, so whenever
+> alternative is appear we can move drivers again to use that one.
 >
+> As a side effect this change fixes a potential memory leak on
+> an error path, if of_mm_gpiochip_add_data() fails.
 >
-> =E5=9C=A8 2025/9/1 23:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> > On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kylin=
-os.cn> wrote:
-> >> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> >> annotation for policy references. This reduces the risk of reference
-> >> counting mistakes and aligns the code with the latest kernel style.
-> >>
-> >> No functional change intended.
-> >>
-> >> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> >> ---
-> >>   drivers/cpufreq/intel_pstate.c | 8 +++-----
-> >>   1 file changed, 3 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_ps=
-tate.c
-> >> index f366d35c5840..4abc1ef2d2b0 100644
-> >> --- a/drivers/cpufreq/intel_pstate.c
-> >> +++ b/drivers/cpufreq/intel_pstate.c
-> >> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(struc=
-t cpufreq_policy *policy,
-> >>
-> >>   static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
-> >>   {
-> >> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
-> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D c=
-pufreq_cpu_get(cpudata->cpu);
-> >>
-> >> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
-> >>          if (!policy)
-> >>                  return false;
-> > The structure of the code is intentional here and there's no reason to
-> > change it.
+> [Text copied from commit 34064c8267a6 ("powerpc/8xx: Drop
+> legacy-of-mm-gpiochip.h header")]
 >
->
-> Got it. Thanks for clarifying.
->
-> So for this case the current structure is intentional -
+> Suggested-by: Bartosz Golaszewski <brgl@bgdev.pl>
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-Note that I'm talking about this particular change only.  The other
-change in the $subject patch is fine.
-
-> should I also avoid similar changes in other drivers?
-
-That depends on who maintains them, which is why I wanted you to split
-the patch into smaller changes in the first place.
-
-My personal view is that code formatting changes, which effectively is
-what this particular one is, are pointless unless they make the code
-much easier to follow.
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
