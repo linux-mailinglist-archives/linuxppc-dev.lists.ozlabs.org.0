@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-11672-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11673-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A21DFB42101
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Sep 2025 15:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2814FB42112
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Sep 2025 15:20:27 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cH39q492Cz303F;
-	Wed,  3 Sep 2025 23:19:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cH39s3hbkz3brD;
+	Wed,  3 Sep 2025 23:19:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756905583;
-	cv=none; b=ieHK8P1X9pOIjth1JhviOsghYdYD1NRpex6oXPfkvRaojB7iKhxMLh0EPdZyF9ICrioYLq+9C8nbGz/JwZmY4lUnUQC9rAeFW2UFJd8d9oObaXr+sJ2JSwLo+QCaV171+cBuXWSqIPBi6tVz4lVbFTWV6DXHI1nq0IE+yacDpLLabtiTS7r5UwW3GOJ/7/81qEdfawqJH8Ec0EbZkbh2+EbBdyy/kwCqIPckpcoZXNoQLQlLIoWTuezx0RaB98GvJKbRw2YQ/xgPnV947Bw4VGpaXGna1tdI2OmlPkYQ1Jagpmrz83YNuYXgqGgSlWhL5BGUr1O4TUyByn7GkUYU7g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756905585;
+	cv=none; b=Pc6ZZ5M4Jsvn5DRWCm3hH+BK6QkDGP2Kkcl/4pZfbFoEg7EMQXLMARxh9iV1jfQpvWlRsPYHfY67fP4K6Rs0OLQrxasG7VL5ZIE7Ji+0g+uYExcdrxMScmOdL3FzeykyWQmXPktN/NYjU0aZOu8U0/albRakaB//kjbvPHIx/LpwcJWl4G9GPE362Ok77CJLsQ64enoXz9zhedCd1BaB4sxJ2kv8Y7GTfRlrckAu2AauhB9AesrJSSyAJdlrWJ1f2aaOBncI37OZ9KkLfaznfmVUy02/j6uLNHqsJ1GVphor7dRrdABCmnXgkp33vo7ALoF7sFuo0sKT9gXmaITKgA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756905583; c=relaxed/relaxed;
-	bh=5p//KpSrPdeWLsa85PXUpLSH3ngSv2ct+7tX1OYDS2k=;
+	t=1756905585; c=relaxed/relaxed;
+	bh=iXFVANTsdgse2bqQ4uJXaXgA8Nmr81nWgHbZcowahUI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AGwJaWObKWPcrXNk+rPZHWkgtC8MXzC40UHCa5dh6sdEFFhHWwo2CgH2Kt5TV5257RwtoXKtItd8wbTbTy8dB5ugGLIgijDO9feLYFR2yIynlUfA/ZoCZQg/m04LehWuXahsCRouHV343xB/RoX0BaqvxzkeXC4pOUjgDIr56Z9Qdrq7P3Vz4FYyCIDunr6Bgx+ZnZ34udCdi3SxcjIk2WPGj7B0JHwIJP7hZjTxpz5Vmy64bMFn1kLTcyY6+LOqHQv2Ax1TPEt52ZyLewOrzHpPTzX71/VMndIB3Zzo9UbfuGNYygTybTBD213yiifSJZxaeuNPbR8dgOlOo1+TGw==
+	 MIME-Version; b=UAgMyjjmGUbjtDYpBaBysYQ5/acN0a9pfXmldB2wOrgZhE95yad8dhXbPLwABYngZfJHZ8uU5QWGU7UWoDQ6yHOe4L7MgT7qO0mRKF4AqtCA3ND3JA+p0USYdauVFL3dryZiOw7X5EVOwdYCQ1FZdIoSc65MMytTdl/BXAvZQcyTez/GiO5bJqyj9bykFbk1Ppkvp2P7NgwO6/36E9tb08w20xxv41sL+lY+FRHNo20FbnqXD3PjMKrNS240tk7gKmMJYD12g1a6T9UNl8DJ15yrNXEbRpBCgckiOnEDcFrT+6tP9L2g5cnYzgQzfxtBOHHjZTnAjHP8Tg9wShY1Rg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
@@ -23,32 +23,32 @@ Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cH39p1nHdz30V2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Sep 2025 23:19:41 +1000 (AEST)
-X-UUID: 7bf29db088c811f0b29709d653e92f7d-20250903
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cH39r1S7yz3bq4
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Sep 2025 23:19:43 +1000 (AEST)
+X-UUID: 7da87c9c88c811f0b29709d653e92f7d-20250903
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:47b9b184-7915-4981-84d2-da5939ebd09f,IP:0,U
+X-CID-O-INFO: VERSION:1.1.45,REQID:2ff8d2a4-2ba3-43cb-a1ff-0465a59439e3,IP:0,U
 	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
 	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:4de4532331db31d4079350c98637262e,BulkI
+X-CID-META: VersionHash:6493067,CLOUDID:ee6b8f0128955488e4eb76d27f0f3de0,BulkI
 	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|850,TC:nil,Content:0|50,EDM:-3
 	,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
 	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 7bf29db088c811f0b29709d653e92f7d-20250903
+X-UUID: 7da87c9c88c811f0b29709d653e92f7d-20250903
 Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
 	(envelope-from <zhangzihuan@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 251707506; Wed, 03 Sep 2025 21:18:30 +0800
+	with ESMTP id 363581621; Wed, 03 Sep 2025 21:18:33 +0800
 Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 09D93E008FA2;
-	Wed,  3 Sep 2025 21:18:29 +0800 (CST)
-X-ns-mid: postfix-68B84024-80687311
+	by mail.kylinos.cn (NSMail) with SMTP id C4D2EE008FA2;
+	Wed,  3 Sep 2025 21:18:32 +0800 (CST)
+X-ns-mid: postfix-68B84028-62733312
 Received: from localhost.localdomain (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 3F46FE008FA3;
-	Wed,  3 Sep 2025 21:18:25 +0800 (CST)
+	by mail.kylinos.cn (NSMail) with ESMTPA id 164D5E008FA4;
+	Wed,  3 Sep 2025 21:18:29 +0800 (CST)
 From: Zihuan Zhang <zhangzihuan@kylinos.cn>
 To: "Rafael J . wysocki" <rafael@kernel.org>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
@@ -97,9 +97,9 @@ Cc: Ben Horgan <ben.horgan@arm.com>,
 	linux-omap@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Zihuan Zhang <zhangzihuan@kylinos.cn>
-Subject: [PATCH v4 09/10] thermal/drivers/ti-soc-thermal: Use scope-based cleanup helper
-Date: Wed,  3 Sep 2025 21:17:32 +0800
-Message-Id: <20250903131733.57637-10-zhangzihuan@kylinos.cn>
+Subject: [PATCH v4 10/10] PM: EM: Use scope-based cleanup helper
+Date: Wed,  3 Sep 2025 21:17:33 +0800
+Message-Id: <20250903131733.57637-11-zhangzihuan@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
 References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
@@ -129,69 +129,50 @@ No functional change intended.
 
 Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 ---
- drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ kernel/power/energy_model.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers=
-/thermal/ti-soc-thermal/ti-thermal-common.c
-index 0cf0826b805a..37d06468913a 100644
---- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-+++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
-@@ -27,7 +27,6 @@
-=20
- /* common data structures */
- struct ti_thermal_data {
--	struct cpufreq_policy *policy;
- 	struct thermal_zone_device *ti_thermal;
- 	struct thermal_zone_device *pcb_tz;
- 	struct thermal_cooling_device *cool_dev;
-@@ -218,6 +217,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap=
- *bgp, int id)
+diff --git a/kernel/power/energy_model.c b/kernel/power/energy_model.c
+index ea7995a25780..99401678e809 100644
+--- a/kernel/power/energy_model.c
++++ b/kernel/power/energy_model.c
+@@ -451,7 +451,7 @@ static void
+ em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_state =
+*table)
  {
- 	struct ti_thermal_data *data;
- 	struct device_node *np =3D bgp->dev->of_node;
-+	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq_cp=
-u_get(0);
+ 	struct em_perf_domain *pd =3D dev->em_pd;
+-	struct cpufreq_policy *policy;
++	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D NULL;
+ 	int found =3D 0;
+ 	int i, cpu;
 =20
- 	/*
- 	 * We are assuming here that if one deploys the zone
-@@ -234,19 +234,17 @@ int ti_thermal_register_cpu_cooling(struct ti_bandg=
-ap *bgp, int id)
- 	if (!data)
- 		return -EINVAL;
-=20
--	data->policy =3D cpufreq_cpu_get(0);
--	if (!data->policy) {
-+	if (!policy) {
- 		pr_debug("%s: CPUFreq policy not found\n", __func__);
- 		return -EPROBE_DEFER;
+@@ -479,8 +479,6 @@ em_cpufreq_update_efficiencies(struct device *dev, st=
+ruct em_perf_state *table)
+ 			found++;
  	}
 =20
- 	/* Register cooling device */
--	data->cool_dev =3D cpufreq_cooling_register(data->policy);
-+	data->cool_dev =3D cpufreq_cooling_register(policy);
- 	if (IS_ERR(data->cool_dev)) {
- 		int ret =3D PTR_ERR(data->cool_dev);
- 		dev_err(bgp->dev, "Failed to register cpu cooling device %d\n",
- 			ret);
--		cpufreq_cpu_put(data->policy);
+-	cpufreq_cpu_put(policy);
+-
+ 	if (!found)
+ 		return;
 =20
- 		return ret;
- 	}
-@@ -261,11 +259,8 @@ int ti_thermal_unregister_cpu_cooling(struct ti_band=
-gap *bgp, int id)
+@@ -787,7 +785,7 @@ static void em_check_capacity_update(void)
 =20
- 	data =3D ti_bandgap_get_sensor_data(bgp, id);
+ 	/* Check if CPUs capacity has changed than update EM */
+ 	for_each_possible_cpu(cpu) {
+-		struct cpufreq_policy *policy;
++		struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D NULL;
+ 		struct em_perf_domain *pd;
+ 		struct device *dev;
 =20
--	if (!IS_ERR_OR_NULL(data)) {
-+	if (!IS_ERR_OR_NULL(data))
- 		cpufreq_cooling_unregister(data->cool_dev);
--		if (data->policy)
--			cpufreq_cpu_put(data->policy);
--	}
+@@ -801,7 +799,6 @@ static void em_check_capacity_update(void)
+ 					      msecs_to_jiffies(1000));
+ 			break;
+ 		}
+-		cpufreq_cpu_put(policy);
 =20
- 	return 0;
- }
+ 		dev =3D get_cpu_device(cpu);
+ 		pd =3D em_pd_get(dev);
 --=20
 2.25.1
 
