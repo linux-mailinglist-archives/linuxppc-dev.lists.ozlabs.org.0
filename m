@@ -1,61 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-11646-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11647-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6C7B41101
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Sep 2025 01:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE578B4117D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Sep 2025 02:52:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cGjGy2xWcz2yr1;
-	Wed,  3 Sep 2025 09:52:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cGkbh1H2Kz2xlM;
+	Wed,  3 Sep 2025 10:52:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756857178;
-	cv=none; b=g76R8OwI7aQX0WSak9sk6mcHLjehRgi5b9jthgfW5c814v/zx0NjyPUypIVNuJ7tFMV4noc3x3LcWy5OzBjlqqCZynO5lUgpCgfdMv+uknLJm0EIeksg007UmjT3XZzKj9je2CsUAOXFq8rJrIpryo2NHlSiZ6zwP3SRlZelYaH9/fsCGx1zG5rBey7RmyL3fPQM9pbM75AjuRhBkxniFdAeKv6Q06B/Z5tcW2L1N9D6wJfqQX8FO9qZ9+b7PtAvm87gf4ErL+aS0Ou3LP8zOhqxNvoOdi5EFYymHqUM8VKUUWRPd6TinNRzuqjdMp4ArGo16avykWcSQA9geJdLaA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756860752;
+	cv=none; b=CUk0jTkyi2zrlEuTc5yyC2BOvd/nq44ae888cx+ZARboFccVQg5bzyRKZcDpXiHXtyjt/FgY5pq5UAR/7vJuZqQfpHfTi/dcw3ITP1FKwAr4DGTgWbtD88+qOtbToslbCRcoYrZ/Y+v3H0lABvLy0tBuHKFPpbxt7evGEAysRB5N6ldmnVTLwO7vAPL5FYXedG+ApwaHDkjijuyplrcMlNrF1JxkqAsemvUs7aXl6Lgs8GQzdGkbJjLp/f/mrWm9TBgKhDxuBTaQuDctdsKGhwTnkj9F7KPNSYLluZXFIeHPKzepazdQCJqcZEn6ybptbmk92MNrmtgUt0dcMkQldg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756857178; c=relaxed/relaxed;
-	bh=mPEoKxppaclPgthhrAwpZ2otUbemFlXjZEPevQ0K8KA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jGeBI2VaZFxXk5rQa4BkmdRD7zoRP9y3ejyoEOtFwQGo5pp1LF6fKe1aYXt1JLxljxg2IaHdek+Q5mcQofpsDinTf2lzhTSqbQNPWJAjyb8kxyOw9VcItuzs6oUKEpO9BGIhRvpTvazgsHtZVxvnIHYunz6+i7oIjD3RNGU5g+XlmuZ5PEgU8wS8BwSzHansWB/GuOP6Js8Gpf0YQAEDZL1b2xZZcsKB3zvX42/bEhB+LSmA+mysXOYUSMIsgB056tqpTa2NOUUl88DW24lPfiJRJ4RH6OXGdbtZfyM0p8Z0+F2RTxfgB0e64qLeuvTNJJsyDuWphsUq2ePGhH1dyg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HSr7D5h+; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HSr7D5h+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=nathan@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+	t=1756860752; c=relaxed/relaxed;
+	bh=zxqA4w29q+rwRyQ2/Ht97x0u7kuCwxko6jKzWp02gGI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QIqyHuNZJFhAdbX0WRwFxmQdu8Rsp62Ihz0iv1bL9ScBypdIQlhRKwWm8pkV6uAZTI/1ELtHePaOUfuEPqD1yMFP1GvmjEz+lZPfNJkWQc1aebi2BUSZ5A3Xa57PxsxtFVuo5VgcU4C07BsBPJJNSksdlMbJWGCNScSaOtW25UfhIlwyOrmz+pe/sTWILa81RzQI66IjH5CS3XPqHg5HK3ezczotc/ngF6g0DB4v529wJOXWO4z389+sH5hXopGPF761hJ8Gw75E4N5RJRafBT5cWss9I01tKEEZ7GloDZ8zK1kr0z2jee5dENeD7rDJapGoua8VWvx+iWSd73Gv0Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGjGx1Zghz2xcG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Sep 2025 09:52:57 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CF7AC6013C;
-	Tue,  2 Sep 2025 23:52:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF25C4CEF7;
-	Tue,  2 Sep 2025 23:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756857174;
-	bh=6givWJeo2KbjB4vPFl536ZK/TBqk0kofHXgNZGIJA7Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HSr7D5h+2t7T6w5sEZcnMb9TqV2Zh1xHWp4tg3ZmEOu0pjgDtXzx6JQSEMTd1eH2F
-	 ajrL34w603laEBpRXbPAZgcWwZ1fU8PHltOQNjZTYsRMJkFIN/jRV1ko4QjTlW3jx7
-	 8YTGvTpzBj56HBHu/vFwXTfbMN+yNakOJuSHJPVNfmaDlUk1UUkkYuW5H6hNnohvVY
-	 nFxHqpDEIjO3ltHGVwX2vKiCUc2dXOJfUGQaztk2IL3K8C43hW5HVFvCgbhi302uNr
-	 pPj0YwXTj0Y82ZJ5NltplVQnq0G4zz3sL7WOWndHwmagpjGmdOZO13Zrjb7PI/b034
-	 uKiMCUK5e/xQw==
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linuxppc-dev@lists.ozlabs.org,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.4 only] powerpc: boot: Remove unnecessary zero in label in udelay()
-Date: Tue,  2 Sep 2025 16:52:34 -0700
-Message-ID: <20250902235234.2046667-1-nathan@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGkbf2K6Wz2xcG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Sep 2025 10:52:29 +1000 (AEST)
+X-UUID: 1864b9c6886011f0b29709d653e92f7d-20250903
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:149e317a-1aff-43d6-90c9-1a5d04dd57b0,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:461f970947de3929c2a541614ce8e229,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 1864b9c6886011f0b29709d653e92f7d-20250903
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1164660955; Wed, 03 Sep 2025 08:51:15 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 22D4BE008FA3;
+	Wed,  3 Sep 2025 08:51:15 +0800 (CST)
+X-ns-mid: postfix-68B79102-9412696
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 28EDFE008FA2;
+	Wed,  3 Sep 2025 08:51:07 +0800 (CST)
+Message-ID: <40706b1f-e23c-417b-b3e1-2dc839828588@kylinos.cn>
+Date: Wed, 3 Sep 2025 08:51:06 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,54 +64,107 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 03/12] cpufreq: intel_pstate: Use scope-based cleanup
+ helper
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250901085748.36795-1-zhangzihuan@kylinos.cn>
+ <20250901085748.36795-4-zhangzihuan@kylinos.cn>
+ <CAJZ5v0hu48NrMr6Vkjn_UyHywJMx7F5N6yWf2LiXxykZF79EKA@mail.gmail.com>
+ <29890791-4ddf-49c7-a4f2-0ac83e6d53c6@kylinos.cn>
+ <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0jvOKeLRkjWoKR5eVKZ-hib7c8D-VOBvtCvs1+HGfPUiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
+	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-When building powerpc configurations in linux-5.4.y with binutils 2.43
-or newer, there is an assembler error in arch/powerpc/boot/util.S:
 
-  arch/powerpc/boot/util.S: Assembler messages:
-  arch/powerpc/boot/util.S:44: Error: junk at end of line, first unrecognized character is `0'
-  arch/powerpc/boot/util.S:49: Error: syntax error; found `b', expected `,'
-  arch/powerpc/boot/util.S:49: Error: junk at end of line: `b'
+=E5=9C=A8 2025/9/2 19:47, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Tue, Sep 2, 2025 at 12:33=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylin=
+os.cn> wrote:
+>>
+>> =E5=9C=A8 2025/9/1 23:17, Rafael J. Wysocki =E5=86=99=E9=81=93:
+>>> On Mon, Sep 1, 2025 at 10:58=E2=80=AFAM Zihuan Zhang <zhangzihuan@kyl=
+inos.cn> wrote:
+>>>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>>>> annotation for policy references. This reduces the risk of reference
+>>>> counting mistakes and aligns the code with the latest kernel style.
+>>>>
+>>>> No functional change intended.
+>>>>
+>>>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>>>> ---
+>>>>    drivers/cpufreq/intel_pstate.c | 8 +++-----
+>>>>    1 file changed, 3 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_=
+pstate.c
+>>>> index f366d35c5840..4abc1ef2d2b0 100644
+>>>> --- a/drivers/cpufreq/intel_pstate.c
+>>>> +++ b/drivers/cpufreq/intel_pstate.c
+>>>> @@ -1502,9 +1502,8 @@ static void __intel_pstate_update_max_freq(str=
+uct cpufreq_policy *policy,
+>>>>
+>>>>    static bool intel_pstate_update_max_freq(struct cpudata *cpudata)
+>>>>    {
+>>>> -       struct cpufreq_policy *policy __free(put_cpufreq_policy);
+>>>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D=
+ cpufreq_cpu_get(cpudata->cpu);
+>>>>
+>>>> -       policy =3D cpufreq_cpu_get(cpudata->cpu);
+>>>>           if (!policy)
+>>>>                   return false;
+>>> The structure of the code is intentional here and there's no reason t=
+o
+>>> change it.
+>>
+>> Got it. Thanks for clarifying.
+>>
+>> So for this case the current structure is intentional -
+> Note that I'm talking about this particular change only.  The other
+> change in the $subject patch is fine.
+>
+>> should I also avoid similar changes in other drivers?
+> That depends on who maintains them, which is why I wanted you to split
+> the patch into smaller changes in the first place.
+>
+> My personal view is that code formatting changes, which effectively is
+> what this particular one is, are pointless unless they make the code
+> much easier to follow.
 
-binutils 2.43 contains stricter parsing of certain labels [1].
 
-Remove the unnecessary leading zero to fix the build. This is only
-needed in linux-5.4.y because commit 8b14e1dff067 ("powerpc: Remove
-support for PowerPC 601") removed this code altogether in 5.10.
-
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=226749d5a6ff0d5c607d6428d6c81e1e7e7a994b [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- arch/powerpc/boot/util.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/boot/util.S b/arch/powerpc/boot/util.S
-index f11f0589a669..5ab2bc864e66 100644
---- a/arch/powerpc/boot/util.S
-+++ b/arch/powerpc/boot/util.S
-@@ -41,12 +41,12 @@ udelay:
- 	srwi	r4,r4,16
- 	cmpwi	0,r4,1		/* 601 ? */
- 	bne	.Ludelay_not_601
--00:	li	r0,86	/* Instructions / microsecond? */
-+0:	li	r0,86	/* Instructions / microsecond? */
- 	mtctr	r0
- 10:	addi	r0,r0,0 /* NOP */
- 	bdnz	10b
- 	subic.	r3,r3,1
--	bne	00b
-+	bne	0b
- 	blr
- 
- .Ludelay_not_601:
-
-base-commit: c25f780e491e4734eb27d65aa58e0909fd78ad9f
--- 
-2.51.0
+UnderStood, Thanks!
 
 
