@@ -1,78 +1,102 @@
-Return-Path: <linuxppc-dev+bounces-11681-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11682-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1B3B42491
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Sep 2025 17:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E47B42936
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Sep 2025 20:59:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cH5gX2Km9z2yr8;
-	Thu,  4 Sep 2025 01:12:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHBk4095Kz2yvv;
+	Thu,  4 Sep 2025 04:59:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c201::3" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756912328;
-	cv=pass; b=jxlHB5OIzGHQWwE99kKBF1CILfVlFRJBP4hv8huLQammrSQeRWEpEa1MFGmEb/pOblVdCJX/fCx5vER0gMgmlxttZZmU9PvefwaV4WkXk7EsN+USKB602l2kYVQ+wfhbLI+FB03w0oBIFea4aAgxwh7VkFLSC4ZRwuQyQ3bXekhz3lQeMUNVe7HgDQ0Q09dgPc7lEuA7UhYucA/nJcJ3lxqkRElPvpNZtRCzRhDW7dexpA8hjCskscZrKM0kCSzQdeI71BNMLwNq5V+1CsEo4AMRZXSWOiHHKhGhhDDTUY4lO9FAEK6fPvCJCDJ6NqmXamg5hXfDWbgZyfsj3zfitw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756912328; c=relaxed/relaxed;
-	bh=dJ/NpowmKmipTobrfFg45QxlQpQtJW63Rp2tnJCTJBs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=d0eRMwFcqPvauQ+dxDauOZ5V2IR8pW3M6sRKV4huBDZDyEFh36oLV7o1D+xBUhMWovkx9Zm/aq5xzTHMl3jPx25qP77fSZYuBfOeswvZx+QCWj8SPGu+2FTD8kUkd+ldBLKMkRK0kypmzwmGocfbxPBghib/lnENS/8DU5COgHzCcQCdz/Jqs5DOjbujX+NHnxO9/ukQUq99NrFFZBhyMnI9fKVBelyA8RWaCzgfdbV5hH6doR2lmjr8urYQXN6tcDWkV2zpdyZouStiOeoMDOvWKlBT2XsVBZrJGUaWJTJNh2yDGsKOb2+auSEpx1xOGr5xikv63Qe8o8dVBSB/zg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=dByLNV0z; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c201::3; helo=as8pr04cu009.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756925979;
+	cv=none; b=jGK7nWp+1TBMKbjwDqC/JdxAAs+AEVmJPqamegu91UgzRlA+J4+U8xcs24JT9TsbWolaA3k+Zl/PROjNkbBx+rPADpcKaSniBoqwgQqRob0RzXC7WYq3QC5ds2Gh1qbi0FytwD98vWWAeQuBMcTZZy5reKvbUV4CjEEorOAYdxCdq2VcHTSWVxvQpqbB1VYYc3YPHZsFIrTRRofSby/MIHn1lN8ROumK9Vcd6WFb9WVifbsomflu/OOsHCkzhVGusnSlGD0Unwej78zODXcqW1EGdwHqFe3vINfDchTpi4OmqO8hm4y11TWke+J5Z3HzssgP/2SH+/oOKO2oNDAA2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1756925979; c=relaxed/relaxed;
+	bh=qZy30c40uMQ+C5mAmU5IprjDTVrN2KgzxusGEfWx0IE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=foMhyYfQOgkPTbcDo0jMJSsPdmaVaRriFINiFQ6b7jmyvY3Zt9osvJPvHEteklb49zZIz9q0Gnr+CQzPaecfxurSjn+ZHxr/XNeW/Lb/mGEbYbSpZJUum+twC5NYHyJ5Vkjk8hngzi9uK+sUTAD5u1zVEWlmLxVOQjGJi1fV6nl6+uiMY1uHPyP9+SfYb/QUpABEZyz6AR+SmOhrgw732gcgh5GDOzVg+c4lFV+uWJ3M02yDSdzPkJeHGUJwvvTAM1wgktnvzimSB8Sg6vfh0Un5DPTM1gVLrKnqvuAj7uNDJ458cjKGpaAPmTO24pI31EjIQbGKHA4IRyhglWD9GA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EW61RNHN; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=dByLNV0z;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EW61RNHN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c201::3; helo=as8pr04cu009.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org)
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazlp170110003.outbound.protection.outlook.com [IPv6:2a01:111:f403:c201::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cH5gV3fsxz2xrL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 01:12:05 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r53gu5BBiaAFC4FRSR1wfjv0ZbrIIwwUl3D0wNY7sZRjzhpFLhpJhCg6zDfRF1bW6kGufdveRSXJ29fuOgbGQfyGtAGp7z+bx4enDwPxLEKLTBh0kb0JLNmQYxMPBk2CjN1x3EFQPe2PS4Xn4gizT2n/X9FbHj6yp6EYbMnUGQpZbN5PC0nkp2uyW+caTJzbKTbe8blAD87FYLk5DcGt1qRgg5gyZGlIqe+a29zTVYr2SDDCEuOWz72v7wk8pDtugdmoOU4zyd8b5vFkEbGdYLU5Fao9lOhzVO0ikrg2cM72GyRk8uoQDWOClzceWzaqsU3GXwo0iBoAdvyqY0AzNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dJ/NpowmKmipTobrfFg45QxlQpQtJW63Rp2tnJCTJBs=;
- b=uL3pXPs3cKCq15ywCvgNUyvL0T41EQJso30/vEkPpSImr+os9AEqvQ3/b1GMgtD5wH92zZjo3Hk+wDyBG1zpu/FD3k42MAaCEYpglEsox9tFbmzBQgQz6SyR+zPgQxd4Yfm4e0m4qzlAIXVa1SKh1tR8NLp5mEjwJlgLb03nQ6a2bCmuc9vMppSnGxoYjqeJn+FytQaDUuKFciXKRwaui+1hOwKUQDn5p6fp+fWWKsmTWJD7EwBn4iqn9807GJOrpGbEz6gGcG0EsmMbqhjMU08qS3nSqKPj9Ssm8sABLfisHDGK2oOXsVgKmbHs19QBJDF72VFgSulUl0UJx2YbzA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dJ/NpowmKmipTobrfFg45QxlQpQtJW63Rp2tnJCTJBs=;
- b=dByLNV0zLlBIXt9ep1pe/7UjDcwJUI26u9BHHdQwb08i1aNhmCnH4KNjxSXs62/Fw5fU84sNooxuZGAJh8+hEWvuFJbZAxCXaiirtmy9aK9qLMVfJbe0M/Aj1377Op3ECNl/u/egiEGLDGvhugS+9DHIRIQeGrKE9Qfyh2YwzaPELVnuuYI1GH8SQ0ReT30vcaW9Ig2VwHXVm+bfzAEdcgaDcVy87e1u/H6uOuY1HiFYD5iz8L2+xWJKfeHGl9UmsJwqZJQl9ocOkf3iwIbPfuotjg9qBk8zIvUd2eSyM5SU4pdFnvEdJf2PU1IH24EV9EoDgEAV7M7I4lrCKPsDjA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by AS8PR04MB8466.eurprd04.prod.outlook.com (2603:10a6:20b:349::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.17; Wed, 3 Sep
- 2025 15:11:42 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%7]) with mapi id 15.20.9094.015; Wed, 3 Sep 2025
- 15:11:41 +0000
-Date: Wed, 3 Sep 2025 18:11:38 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Richard Cochran <richardcochran@gmail.com>
-Cc: Wei Fang <wei.fang@nxp.com>, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	xiaoning.wang@nxp.com, Frank.Li@nxp.com, yangbo.lu@nxp.com,
-	christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
-Subject: Re: [PATCH net-next 0/3] ptp: add pulse signal loopback support for
- debugging
-Message-ID: <20250903151138.malmfj53hew7caze@skbuf>
-References: <20250903083749.1388583-1-wei.fang@nxp.com>
- <aLhFiqHoUnsBAVR7@hoboy.vegasvil.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLhFiqHoUnsBAVR7@hoboy.vegasvil.org>
-X-ClientProxiedBy: VI1PR04CA0075.eurprd04.prod.outlook.com
- (2603:10a6:802:2::46) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHBk21ynPz2xnw
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 04:59:37 +1000 (AEST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-248ff68356aso8761585ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 03 Sep 2025 11:59:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756925974; x=1757530774; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qZy30c40uMQ+C5mAmU5IprjDTVrN2KgzxusGEfWx0IE=;
+        b=EW61RNHNl+wZQ4pyC03+chCawu0NTV9BXHS5m5uDLG8zIklXU0myR7PJYKYMlbUa0e
+         wnkWTQ/muZzxZWVH73GbeNePbqapeY61sOoW07+rOM1z5VXHI4HNoif5myvT1RyNXVrk
+         HCp4TGIACDqxJuNL6ZdLjlBCWxK7tK8NSF7egvIrJEmOW/1kop8MDtdpg0P2tz/HErtw
+         8Sp7rOU62472L5NrmAgM5azqy1eNkszrkBEyCMxIhhMHfOyTAbtuIks7A7XtBY6sibAS
+         QjtVoYF265w+kFJVgnFjSIvyo0CX/NCneQa3eHQwyhF+KexhbwOh9I8sKdWh3k0djN4W
+         E1XA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756925974; x=1757530774;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qZy30c40uMQ+C5mAmU5IprjDTVrN2KgzxusGEfWx0IE=;
+        b=UUmXwKbRDPIaeSWeADvPUiRqSjQapdw/vWWlIz6mxQoRnEfvKm+5IyfF60oovVz7th
+         w1uGHidOpVecUW8RoA1BBSjhschN7yVxbJAPZNpBIrhc9fgOZU0LiKTJq/R5KFQCJ8o3
+         iICVP2R9q3qHuLyqDAvLHdDafvdyKLGDnidGjP52uH3d/V5eDaZiTteBy64laDrGFbtw
+         il9mva56SRrOblxbKD/UEdvQIWXtC3i7YizAx64aGRc1lIWvV7TUOq4h055sTbMCFsQp
+         snNF1/DbpE6+EOFbY1QWnMv9JJnhnrIGJ3/6WdpDcKlg20R+26Ef62Fnb4ulaFFeb3fE
+         0/GA==
+X-Forwarded-Encrypted: i=1; AJvYcCWlUbNsCE0Lfnegyr9f17vR9efSI5QK3TWt5Nb5Emu7ywjWId93RSvPTRwy0pgxKeMcSRPD5TtbQjGnPL4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyaXkpKo0wZJ9tI95W5MIKYd8LvwhkjSkcbbdr13iml6MdMGHYP
+	STNC+jFsuUTs7FOp1hLBucN/ieTh6k5HD5Sj2uqHT4RpuQbqlGrzr5T2
+X-Gm-Gg: ASbGncu11pOSCTaNZD2y50/kU83uOqXGTpTW7tgM2GWqwfD+IUFB0g979G9bGVj7lhC
+	GAQM2IU31agt3CWSV/+KfgE7KCdYiT8J70dT++T8Wjs0XMvDwVzQaNrRdXhKMSfAdFOjQORUPwD
+	AAlh6M6PkT/uesfbKm10WeO8K0olYbZyS7/Zl40KNo/X/oD5I5xBIrv1etMiDaxZPogOYdjj+kg
+	1NbdTyh3CGsiYZm0Imcrgtzhu2RGcsIxVVbt1t05fMFi+6ZzE+Ii+zIZVz5MzTzsYSvKT6STSsb
+	nuAX2H/KGsR3k/eaLpK+iPZwuhSLJFbcddDkyQlcPor9wpak8GqaTI/Ln39w23ojo1BLzRv5o4T
+	EjzEpwzbJiTPvuMExkhWwQ3qdH+kXqB07rpJNVbNkKVETpMaRdtwtiA==
+X-Google-Smtp-Source: AGHT+IGc1hOCFlrmhtuYXy2RF4eOcL1ED3xkJpQYquvPOenW1RGNO8PJflQF3KtC2IpnrJ0auNPnsg==
+X-Received: by 2002:a17:902:f642:b0:234:986c:66cf with SMTP id d9443c01a7336-24944ac387bmr203183595ad.16.1756925973872;
+        Wed, 03 Sep 2025 11:59:33 -0700 (PDT)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-249065ab343sm169403475ad.126.2025.09.03.11.59.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Sep 2025 11:59:33 -0700 (PDT)
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-block@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-efi@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Justin Sanders <justin@coraid.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH v3 0/7] Cleanup free_pages() misuse
+Date: Wed,  3 Sep 2025 11:59:14 -0700
+Message-ID: <20250903185921.1785167-1-vishal.moola@gmail.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,108 +110,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AS8PR04MB8466:EE_
-X-MS-Office365-Filtering-Correlation-Id: ada65c1b-41d0-4c81-51ed-08ddeafc3022
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|19092799006|7416014|376014|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?H6Mx9T0s9GeOsHQb3lGMOZrr56cmd5bdnGgQvHHD9WWSJiwIRYcUYwZsB0fq?=
- =?us-ascii?Q?CgByvu5vXsLEURp9fWCFGjiHtxSvIaw4fP2wlSPx+9S3EV6U36OR238whmuY?=
- =?us-ascii?Q?UM9GzSMJ5vKzMO0lHLfyF3I29MuFhUcuBfoem2HFfW9PqMcmHEaIqfguAFEd?=
- =?us-ascii?Q?XG6YXNc1Z6hj8Ud0PB/7gr/6M5TGaM1fUMOVN/JPifbGBEsz6bjqLetsVCv/?=
- =?us-ascii?Q?cS9ucWkK5s8zOjdpYqv8pOw2MCLC5q5DAAtwOb3mdoAjhtjScsD4FlxR3BCj?=
- =?us-ascii?Q?0KhTROjHhE6xdbqMJTmnKSJQ51pifVDatYIyAed/IMQMUyFbwlrl/xZ6ua4T?=
- =?us-ascii?Q?OURJI9hmR2N1G2HMa4jKcLVNwezM7R4M7ewlTqmagPpdV6ljLBDcLK8OthSu?=
- =?us-ascii?Q?6y8MnuZcY+d4WUtq3kwy+IU9/TAyHHA54Rp37t1FSkicnH78CqFj/1McH8Zw?=
- =?us-ascii?Q?StoH5k76M0cfxQTiVQn/46QUT26pTq3EqXLnrycPQgzLUfTJ888+iBeiOIRi?=
- =?us-ascii?Q?RFykqhyV0ost+Wg/Gx1b7Vb5QoE7ziMDy40FTHCjqJNV5d457RpCjsP8rZCV?=
- =?us-ascii?Q?hF/Dntvb2lBV3i3EqXgyKFgP5v17oS+QK8dFXGZaWW/H6BlyOvr9FC6dULSs?=
- =?us-ascii?Q?TEjYO6Is6TnJxQNR7xJhk5AgDaLulEI6afEboY2T01HYVdHnUxKKJaG3hZvM?=
- =?us-ascii?Q?Qjs9YUSY3v7DIAYwgOgXyonNYvbSvXQCgAwH2+rNCAg9gI4RlpjkmiywIbks?=
- =?us-ascii?Q?H6BUuA3nQ+fpynzK3Vo/JNqUFNckNOuqFwgY8KsMednTdyDYgAlXSTjKCLfB?=
- =?us-ascii?Q?iSsRYJnTJhuvZogOXKw6eGLCaGezPe5HJbEeiOtQaSJu1GdOie4jDJpWLVyK?=
- =?us-ascii?Q?StdQ82gq/0QqTwbPOMMT3daGV79F2kmfaEj5ROsg0ztgmGxw4+dCpzI/6BPs?=
- =?us-ascii?Q?LX269+UKl0OTjfaIyEWe13IiUGbyUpSnXcHLpG1w5xsymUpLG1p2L2oIc20N?=
- =?us-ascii?Q?a0lJ2B/Mw1XSM+Je8qubVjPJloj4k3DocfEX7fLgX+0528ocASZaBW7cR5T+?=
- =?us-ascii?Q?OhPlS6o/jvfZUBPAw+f1UYMKdLxoB1NvDNpcfY/89KikbXxttv9xWKBFZeMJ?=
- =?us-ascii?Q?vHDqrPEptJBDp5o4ALQZguuJqE8bJjSLP0EPskYTeYAM2WbCWbbho5AM3hji?=
- =?us-ascii?Q?PPb6KAhdTK2veQihcDaO+UaHXOSA3NwqHOhLHcmf5Ly95cNhaXBUaERqtpsO?=
- =?us-ascii?Q?TOhUL1C108EeokBCS1M8zk7/cbs1767gq/409PHkjMky4lQZdCrWb/qdy1BJ?=
- =?us-ascii?Q?KE2P21FHlnCR19ldw2RwFoMjPGyYrDcOdBG+OFqb6ZlCSaSL3lb+n7z3frfH?=
- =?us-ascii?Q?kwaKoiA/EDfWihizGkqL/rXr8nZSa4qEAebZU7TRAkfrxNam9b+mosRU2r6Y?=
- =?us-ascii?Q?zKKO1YeUKPY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(7416014)(376014)(10070799003)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DjUQIGr4yr62bTpMyDYbyNRxV94L79wlT7FFAd/e6GGj13mFgSVvRJzfh0du?=
- =?us-ascii?Q?Gn15+qpSydaxVsqVjDqJXRlW6Q1g11tLZ08QkYyV2C/eHrhbNRZ9vWR+72im?=
- =?us-ascii?Q?8UrH0Ciay4sSdj1olCsULJLqsihJcF4UdneS1RtovZZmU9Ugafj7pfP5ccCD?=
- =?us-ascii?Q?o8mDg7zNg67IZP3jG8kt5TLrtteYzXp3RDZ5CvmTMFRbXW45NkLVCKoPIlZH?=
- =?us-ascii?Q?FCTSpRO+9lSlqBeB5HvWCxhpoUfZ9zVsfYTgFwMC79HdG4I/SqmLmFZVpmLu?=
- =?us-ascii?Q?VxiGsGJYdfPGOybbuVZ2TnfJc0GuhQ85l4MJ6qT+uo9z6Eycq2ZmkC4iQKZq?=
- =?us-ascii?Q?c2H2/bAWBVYIKIGw16PzniUTTLsIZQeDmqcr1HeA0UNWMKta8CXNIN4pjCe5?=
- =?us-ascii?Q?zyWDgc0SRDq4wxJW9616ppb3G9NQVZcoFs9+w35UCVcd3K0urnh9vsKkIfyV?=
- =?us-ascii?Q?W2WG4PSrU6Z4km/E4/SHFSGZtC3w8azSf4ztUnVAhGWT6KqmHUWvwR5VwNdu?=
- =?us-ascii?Q?FgvHFQOV2R8lcrvGGZ8CpxlpNKUCYd2v3EqT5ASdgOJn2kE4SP9PF7EcdyLj?=
- =?us-ascii?Q?cmm7MsVa8OJrkLOoy29t4UWSuwme4Flr6NYRj0LdOCLMT84+ggP0S+jcuSXo?=
- =?us-ascii?Q?z2i42mwJecZN7C2GXz4TCo5t2My7f+DZMS1RS/LR23oUwmCeXSPcNB5orsJJ?=
- =?us-ascii?Q?7wKf4/oO7z6Z0AtWXU6daFykxHBb9uomdYOM09+yJvNVQZ8QBnX1LHa6MGm7?=
- =?us-ascii?Q?yjy8v3ABuE77wbGxhuzE4HKuhhRIALLpNEufa6aacXBQer7qGQVgcO2jpmRQ?=
- =?us-ascii?Q?LrkAkAnT0oVUvlG/w9LM+4KphuCx/uPA1/CZiRyqJBlaGF2EHHGahazlaF+T?=
- =?us-ascii?Q?lExt9nMKoDGbQaSZaq25NPKvNKZMG9xoGsxm/ll0Gzy14IVktovyGrdOmrNX?=
- =?us-ascii?Q?GRmr0gU2SZ25Lr1oYmcQJ1ot5U5F9nn/km19OLeUWRYOwWBAxIkdzeeZJFhS?=
- =?us-ascii?Q?igslPnqoJm+l5gEHMZX+80cW5yjecGMippHH+5H5cU9KbnAuCQIdleiXhUwQ?=
- =?us-ascii?Q?2iKiJ1spGL4oKkX8VY1n6tVOOM2CQVP3l99y2HZrbvvDFd14nnn9OBjlKKtP?=
- =?us-ascii?Q?EUHBLYpngq2zUJjhXVAQ06qeMXeGaDcpIIkoEgeK8SFUyoJ6nfmABavMgL2b?=
- =?us-ascii?Q?FRMG/wxIz3ffANUa1h2qCm86lXpA8u5RjGjTXmUwYWKeJbWoghaEZoGpvxyY?=
- =?us-ascii?Q?cr2rn3tQh/o6y9Uo/iyxHjhckYsdskJFgloMWyIuQLQONojuq3Qbr26q6RCT?=
- =?us-ascii?Q?omr8l4Lq3NHESjQ4nouHdacYPVTaps+kIzUZH+d4QC7VhkGC6edckIAoaeHu?=
- =?us-ascii?Q?h0haa3/vHtMw8jo5uiq3rrTlgnqtI/OFg89flWIWBjE89+mXWMMLtAmqhADI?=
- =?us-ascii?Q?hzfL8q2mHNwXgcIluyG/aJo0FAkjmrWGea3OjwW++p5XT/EOIjlayNLwM+pg?=
- =?us-ascii?Q?asdddA4r8N2cFS61wWehG4z7SdWtctxlGcH043MY3ydgRX1qM5q2M2LTI75q?=
- =?us-ascii?Q?RGR4ByoF7U5CZJ/+0DGRFg3crpOvRHMuhwEq/tjpMieKSxAmDp/qfGYr08jo?=
- =?us-ascii?Q?eTEA5UKzwuXviLGMR4M9NrOxQqmsMBigBrz/wa4WbAke/QyBm82F6vH00zPQ?=
- =?us-ascii?Q?rggDAw=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ada65c1b-41d0-4c81-51ed-08ddeafc3022
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2025 15:11:41.9332
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kpZ8cfbCKiAU5NB96MKj8Zoz87b2CMASlcvVWIgvUgXnaPOFHEFd9EHDGlBuDYESbYhqBXhSpR8sBCHfcHJnEw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8466
-X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Sep 03, 2025 at 06:41:30AM -0700, Richard Cochran wrote:
-> On Wed, Sep 03, 2025 at 04:37:46PM +0800, Wei Fang wrote:
-> > Some PTP devices support looping back the periodic pulse signal for
-> > debugging,
-> 
-> What kinds of debugs can be resolved by this loopback feature?
+free_pages() is supposed to be called when we only have a virtual address.
+__free_pages() is supposed to be called when we have a page.
 
-The commit message of patch 2/3 shows that you can record extts events
-for the periodic output signal emitted by the device, without this
-signal ever being required to be routed in any particular way on the PCB,
-through the SoC's pins.
+There are a number of callers that use page_address() to get a page's
+virtual address then call free_pages() on it when they should just call
+__free_pages() directly.
 
-So you can make sure that the pulse intervals and their phase alignment
-are correct from the perspective of the emitting PHC's time base.
+Add kernel-docs for free_pages() to help callers better understand which
+function they should be calling, and replace the obvious cases of
+misuse.
 
-Or you can use it as a built-in extts event generator when you have no
-external equipment which does that, as I did a few years ago to validate
-the extts functionality on ptp_qoriq.
+-----------------
+Based on mm-new, I intend to have all of these taken through the mm tree.
 
-> It seems pointless to me...
+I've split the patches into separate subsystems to make it easier to
+resolve conflicts, but there aren't any functional changes.
 
-Well, it's pointless in the same sense that a mirror is pointless.
+v3:
+  - Collect some Reviewed-by Tags
+  - Replace remaining free_page() calls in patch 7 (all other patches
+    are unchanged from v2)
+  - Add all appropriate mailing lists that were missing from v2
+
+v2:
+  - Reference __get_free_pages() instead of alloc_pages() in the
+  free_pages() kernel-doc
+  - Get some Reviewed-by tags
+  - cc the subsystem maintainers related to specific patches
+
+Vishal Moola (Oracle) (7):
+  mm/page_alloc: Add kernel-docs for free_pages()
+  aoe: Stop calling page_address() in free_page()
+  x86: Stop calling page_address() in free_pages()
+  riscv: Stop calling page_address() in free_pages()
+  powerpc: Stop calling page_address() in free_pages()
+  arm64: Stop calling page_address() in free_pages()
+  virtio_balloon: Stop calling page_address() in free_pages()
+
+ arch/arm64/mm/mmu.c                      | 2 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+ arch/riscv/mm/init.c                     | 4 ++--
+ arch/x86/mm/init_64.c                    | 2 +-
+ arch/x86/platform/efi/memmap.c           | 2 +-
+ drivers/block/aoe/aoecmd.c               | 2 +-
+ drivers/virtio/virtio_balloon.c          | 8 +++-----
+ mm/page_alloc.c                          | 9 +++++++++
+ 8 files changed, 19 insertions(+), 12 deletions(-)
+
+-- 
+2.51.0
+
 
