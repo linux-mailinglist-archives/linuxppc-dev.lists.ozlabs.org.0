@@ -1,61 +1,108 @@
-Return-Path: <linuxppc-dev+bounces-11648-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11649-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FD0B41236
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Sep 2025 04:13:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 224D8B4123B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Sep 2025 04:14:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cGmP137zwz2xlM;
-	Wed,  3 Sep 2025 12:13:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cGmPm5pvcz2yvv;
+	Wed,  3 Sep 2025 12:14:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756865605;
-	cv=none; b=ia4kHfxg+iUnpO+Mu4kq6j5zOeA0NkCgi0Ovj4Q6y/4urQ9uIGyXuE2BoT5xxqu2UDvEcQkw1krwZue8pHnN4YyTfuYFe8RsRVm9AJnps0zGh0YZFtYeYrFRkvGu3aemLxmq996faFgxETp9nxwqMBkave+LLLMkchAGbDvqfe5onUydEIODtPM7+d5PnVfToNkNvsO0wtnPMF7LpanT4m7G5BkYpWDD9gNf4MsoLOva0G3tK/ZX+vHzKVWMcnWnCNnpCZ3Gg3KRuMnrBJbID9u1GcZTF9mMpZpS8l9O6Vq2vF69Gx9yTm+WqIwjqBrkQXAqbMsCf8LDYwlsZloMyQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756865644;
+	cv=none; b=Vkhdj4j8X77IDZlJPHXDuL2Kx7yYTF9upw9ZT8j1pBpEwwnDeuKUrqvI/p1mWh/ETt+II7s/PVjn6lieQpNb+ngtYSYJjug+vij4poNAANdh009BgHwJxqhiJJKdCulespuC2CVhRvxegcsl1+miTKkM+nQ7B9m6FvmgPm0QE5TBD3wKiKNubvpAgyzO6XnFQuH/1wucOq6qT2fRXs18Ihk+Ww1a4Yhat/ra+wXBb3anKSakxBjo2OPrATEwlp1SX3Wg9uQZdpuHyvw5kIqyrMLoV0nzLNqGk9CpJl5NDIbnCWaCk7Xua24PPQ5fYZBn/rRj2hepVMt+XjD/rD5tZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756865605; c=relaxed/relaxed;
-	bh=xTPwfw9HNw2Tf9e1a6QTCMUKDo0XtNL9djjLt4Lq5H4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AKo+OftA3hfqJpJmZUEHfo+Z+wtHq8Z4HOaEzZYUsPu0HHJUypXDtfvJm7TwKkuDJyNmIZ59RUe8byUJ1z9LzczbtD6TBb+xiSnpoyHKeVJ9ZTd0bxnVuqWbQNWqIYIgFhPatM7egpUn9ahRb8kXxytF6TSm0MdOv8IVGkzOXhzqnBUU2QO8DRwIghGSC4bLHowwp+Ma9frE2cpTn5fVDlJcqZ5Kq5ciUMFCNtsT+d8USeVb0hLxxtZTedqFS4i0H+jqgMdoGGfZ/xUp9FhJffrRSXSuryH4Dm0kJBkKUdqCT/q6IH+/lVrj9DvuNilgFrPX8ugMOHYifrYbI/g92g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I2T/DDg4; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=I2T/DDg4;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	t=1756865644; c=relaxed/relaxed;
+	bh=2eq391jKO+ibx5qiY1WDwk2WI1cXYKR+uFHcNHxENAo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d8yrvx1mtlNibSiY7fCX198f5fA+spXPj3K6UbC8h2M0gEk3LdzW6eTYddGEb89PIpRkgkPi7axlbgQPRWojACXUksQMjiwpZlDIpk8E18Q1zuzwjTuuxUyEc+yOvRdTq5i0hLRxNFuRBqFSoYLMiqBhSsiniE5h7+0Tv5SzpNXWxqD7pvJBGCdTHN2/u++sxzl/NFTZ4v2vf57UEForr00tkPoD8JrdSZk3haCpIBC7daQXzIxO7+tfaNbEUD6Ti0wolMmrwhO2qS2O86J1t5cUP0mvXCFTHy0+UkOlr5dgTB7u+40yHkUZ5PkSxFXq4F+rRRe3chLlr3FRQqZGOQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGmP03VG2z2xgX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Sep 2025 12:13:24 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 35FFE44811;
-	Wed,  3 Sep 2025 02:13:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB390C4CEED;
-	Wed,  3 Sep 2025 02:13:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756865602;
-	bh=zyVMQLH4t1KwmbWNdntt9uhUCwn5poLa8UFhIZx/Pnk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I2T/DDg4H3W2Qnd6UfRqBJJq2wFkaiwudQpczhYMpOVzwyf/KBVJzBWYVfqVM0ENk
-	 qYR1qUloo7QHSld2UKIRIHi/cCLrO+IySgGM91h1lq7OkDzS++ShWlr52g3PgnfyH+
-	 670IUhCaWtoae06dTZyRo7eeWbzqdGefKEnFg810WEtMJ1b52l2yDPQ4Y29ToCCd8N
-	 GWIWqlda9QeWhbEv8qUYwwAcB27bvNB7TBS/8plpKYrOoOZX5aPxm2zMSrbth+0iAW
-	 CJdwgsG3L9Syy83WtDqLRnus2h9Fmo1OdWQY3gYYTgiPen6zgsMJuB8VSuHPz9Zs/T
-	 dnc6RMZ9+DXeg==
-Date: Tue, 2 Sep 2025 19:12:11 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Zhiqi Song <songzhiqi1@huawei.com>,
-	Longfang Liu <liulongfang@huawei.com>, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 5/6] lib/crypto: curve25519: Consolidate into single
- module
-Message-ID: <20250903021211.GA6491@sol>
-References: <20250901201815.594177-1-ebiggers@kernel.org>
- <20250901201815.594177-6-ebiggers@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cGmPl1Pkgz2xnw
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Sep 2025 12:14:02 +1000 (AEST)
+X-UUID: 7e64a03c886b11f0b29709d653e92f7d-20250903
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:a08d3f21-1eda-4701-933a-4d08872f3f53,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:aa48c90d2685f52c421d2b43104888ae,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|83|102|850,TC:nil,Content:0|50,EDM
+	:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0
+	,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 7e64a03c886b11f0b29709d653e92f7d-20250903
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1390030646; Wed, 03 Sep 2025 10:12:51 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id A8973E008FA3;
+	Wed,  3 Sep 2025 10:12:50 +0800 (CST)
+X-ns-mid: postfix-68B7A422-507635249
+Received: from localhost.localdomain (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id E1C47E008FA2;
+	Wed,  3 Sep 2025 10:12:30 +0800 (CST)
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+To: krzk@kernel.org
+Cc: airlied@gmail.com,
+	alim.akhtar@samsung.com,
+	beata.michalska@arm.com,
+	ben.horgan@arm.com,
+	bp@alien8.de,
+	catalin.marinas@arm.com,
+	cw00.choi@samsung.com,
+	daniel.lezcano@kernel.org,
+	dave.hansen@linux.intel.com,
+	dri-devel@lists.freedesktop.org,
+	edubezval@gmail.com,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	intel-gfx@lists.freedesktop.org,
+	j-keerthy@ti.com,
+	jani.nikula@linux.intel.com,
+	kernel@pengutronix.de,
+	kyungmin.park@samsung.com,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-omap@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	lukasz.luba@arm.com,
+	mpe@ellerman.id.au,
+	myungjoo.ham@samsung.com,
+	pavel@kernel.org,
+	ptsm@linux.microsoft.com,
+	rafael@kernel.org,
+	rodrigo.vivi@intel.com,
+	rui.zhang@intel.com,
+	s.hauer@pengutronix.de,
+	shawnguo@kernel.org,
+	simona@ffwll.ch,
+	srinivas.pandruvada@linux.intel.com,
+	sudeep.holla@arm.com,
+	sumitg@nvidia.com,
+	thierry.reding@gmail.com,
+	tursulin@ursulin.net,
+	viresh.kumar@linaro.org,
+	will@kernel.org,
+	yangyicong@hisilicon.com,
+	zhangzihuan@kylinos.cn,
+	zhenglifeng1@huawei.com
+Subject: Re: [PATCH v3 12/12] PM: EM: Use scope-based cleanup helper
+Date: Wed,  3 Sep 2025 10:12:30 +0800
+Message-Id: <20250903021230.1044454-1-zhangzihuan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <b38e64cc-4971-4e71-931c-820453aa91a7@kernel.org>
+References: <b38e64cc-4971-4e71-931c-820453aa91a7@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,35 +116,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250901201815.594177-6-ebiggers@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=yes
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
+	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 01, 2025 at 01:18:14PM -0700, Eric Biggers wrote:
-> diff --git a/lib/crypto/tests/Kconfig b/lib/crypto/tests/Kconfig
-> index 7e4e66f30a7a6..c0f3b64489dd6 100644
-> --- a/lib/crypto/tests/Kconfig
-> +++ b/lib/crypto/tests/Kconfig
-> @@ -11,13 +11,14 @@ config CRYPTO_LIB_BLAKE2S_KUNIT_TEST
->  	  KUnit tests for the BLAKE2s cryptographic hash function.
->  
->  config CRYPTO_LIB_CURVE25519_KUNIT_TEST
->  	tristate "KUnit tests for Curve25519" if !KUNIT_ALL_TESTS
->  	depends on KUNIT
-> -	default KUNIT_ALL_TESTS
-> +	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
->  	select CRYPTO_LIB_BENCHMARK_VISIBLE
->  	select CRYPTO_LIB_CURVE25519
-> +	select CRYPTO_LIB_CURVE25519_GENERIC
->  	help
->  	  KUnit tests for Curve25519.
+> You are not improving the source code here. This is not how to use
+>  __free() and you clearly do not understand the source code.
 
-Small correction above: adding 'select CRYPTO_LIB_CURVE25519_GENERIC'
-is unnecessary here.
+Sorry for the problem, policy should be assigned after cpumask_test_cpu()=
+.
 
-- Eric
+I actually realized earlier that __free() only frees at the end of the va=
+riable=E2=80=99s lifetime.=20
+I had suggested using a braced macro in cpufreq.h to allow immediate rele=
+ase after use,=20
+but I understand the maintainer=E2=80=99s advice to =E2=80=9Ckeep it simp=
+le=E2=80=9D and will follow that.
+
+> What's more, you did not use standard tools which would tell you this i=
+s
+> buggy and wrong.
+
+Could you please let me know which standard tools you recommend for detec=
+ting such issues?=20
+
+I=E2=80=99d like to use them to avoid similar mistakes in the future.
+
+> Don't introduce cleanup.h if you do not understand how it works.
+
+Should I drop this patch?
 
