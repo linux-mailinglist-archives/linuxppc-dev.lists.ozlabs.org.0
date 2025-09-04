@@ -1,104 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-11751-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11752-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FD8EB448B2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 23:38:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57EDFB44954
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 00:15:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHtC80Vnfz2yx8;
-	Fri,  5 Sep 2025 07:38:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHv1W0kySz2xcC;
+	Fri,  5 Sep 2025 08:15:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757021923;
-	cv=none; b=osI3JvhdDDlIX9NrY04Oc30pQJN5XFk2z8X2TTPK0hs2ErD9rU2ufWRFjfU9wub0SUMYcayF7ji01rSkQaY/y6zUMZCoA0xvUUIJ5EP32L3iyjJSndRKA5tbnGzhe5o2vu8Eve7aN8p9/HVLh/GDF54p4dgYWwRsObcJiFLhnNoiXPWGs9JQImRPoSGKJ/Q/AgG6ZixFMsRokGobFpqxzvKa9l0EEMyegP208ogUgi2YdnHjSUoT1xmWCIjGFXhrbQpfp6hKenA7hhpmSI5DsCG2dyaorGW41MgxdYfoT3lqAFoxW/dQYuqhwVbIwItdn6aBIr6+2LgI1QtMu/tP8A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757024126;
+	cv=none; b=cCF1os+V6rvT0akrjibxmDeJ6sawTLqEn2MD0oLBI3YEQpY9GHPmWraKCwoxCCrDVz7Eyh2LR1Lmj00CBIHZKQJ0swi7kq4wCVSVLbXWSitBcMDezqQrMm2tSzROf7juClOu4pgu22WWXPn8Wt/KK/dtrWbLg+ZVovuU1vDqADLdCJJ/nNt+A5xr2a6mHnKCf8gt+xaP6I5LqOV0Tk1LMUZaaDUD4/CinoqLv9dRNiTcB8l2RbpdPu98OZpmM631gAY8rBCJ54qU2nVCXqwQyRldJc/SB0xLwumVNWfwoyRnYXXk9pb+ldxiU1/i4ZBzmOKlkpY1jqocetSjH7+6MQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757021923; c=relaxed/relaxed;
-	bh=9rHD7plJVEZkv8PkFJEx5BeBVBt5QFBtzvV5bLJfU1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=HPzy/wxIKn2VG0/nCl/i6BjLeFqo/JcZkhE9Zri9jxYaS9/11EP8zvrd0OUMP57u2EScgcn7/vCikT5dI3g+qC4fAKDw0bOL8N0aYjHP057sbgVKLPpRDpqIkId1LWY+wlRnHCUpAlzE6DjIXUqMjNuLIt7zRVCoGyomdqj6nEuEZsISiWdDgpeWjUjbh6HTuNTJ1c8wrQpVlTzbtKZNKTjq34/957T94NJAq4Mo8WdfhjlhAlHcIGpoOT72MXRXfYLvt9mZZxu/eZKJV/97NfqqNCeiUHLfFRxwTiBwSxuowcwS4x0L27iQofdoLY4+E4D21D61Uz7S4pVu6R0d/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YonimIRa; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YonimIRa; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mst@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YonimIRa;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=YonimIRa;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mst@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHtC64N9xz2xd6
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 07:38:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757021916;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9rHD7plJVEZkv8PkFJEx5BeBVBt5QFBtzvV5bLJfU1s=;
-	b=YonimIRaQfmjZmONKBCfD6uIUf72F7UeUjgj3gOSg/Y+tQDZew2Of2aKrFfKjJoUwkVtGU
-	CtwQrj0Yg6Fccrt15AocknIp7VJ4OTOA2l+CAiOi9/Fnik8vGSLbmhjPHG3rtZgsCCMaq+
-	KMWT7TwKChngPxKZFUtIPehdExsTFmk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757021916;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9rHD7plJVEZkv8PkFJEx5BeBVBt5QFBtzvV5bLJfU1s=;
-	b=YonimIRaQfmjZmONKBCfD6uIUf72F7UeUjgj3gOSg/Y+tQDZew2Of2aKrFfKjJoUwkVtGU
-	CtwQrj0Yg6Fccrt15AocknIp7VJ4OTOA2l+CAiOi9/Fnik8vGSLbmhjPHG3rtZgsCCMaq+
-	KMWT7TwKChngPxKZFUtIPehdExsTFmk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-uYSsNQMTNHeiiEOGZGhGBQ-1; Thu, 04 Sep 2025 17:38:34 -0400
-X-MC-Unique: uYSsNQMTNHeiiEOGZGhGBQ-1
-X-Mimecast-MFC-AGG-ID: uYSsNQMTNHeiiEOGZGhGBQ_1757021913
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b99c18484so6128145e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Sep 2025 14:38:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757021913; x=1757626713;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9rHD7plJVEZkv8PkFJEx5BeBVBt5QFBtzvV5bLJfU1s=;
-        b=ft/u4re8jyQK8BdvjbpXLzyDqxBnfL5whZFgS0HfuKUQdjl2oGZKb7TciuqRRNroOv
-         T4Jd3NC6g0FALck0fF2pxQOpFSneqYljxm84kzH15GS7VoFdIrDHgSkPl3bPntvMrXSn
-         VGKaNjduZkAU7iKwgSGyFi9t5sYXts9q+ZstBjRR9NBx0aRmDDtq4/OuIuEpVKqWhOnT
-         5AS45NdA6//M+LMnINYsBg8tT/vBbKFtFsBg6oL+WjN/VIP+AlprIeh9G/Io9HM9cSLL
-         zcsuxpIYO3Q7xxfvYGhVSaQvNVE7VuSWQ+vQc6lx4t2FVrYuQnuJtmw05w98UBVlIK54
-         mC+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUx0aRWVzdoe6ADdy0fSPnnPfA62lIXFP6F7UaT6cK9mrQwBR3caUMyJ7R10bMTjdwuq0UN1PNsWSZS4v4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwcgSsWnj8Bi7ZrCUMhQYHjfFqocv1TfZ+ptY/U/MXqVZAW0nVB
-	aEQzI6BIDZbrRp5JHpJE0ZOkcU7uqV1FDCMBHPEWIqd/J32yUBovNfVk1DXpCPr579jE7Ef3vQp
-	vCtMj8NuAQFUP4pB692YJvZbDIHALi/9dKmIT09LFb/A5U3BKWIqdwej0HjN9FU9PySs=
-X-Gm-Gg: ASbGncu1xOK1mhUhJVCoxTMcdOOFqm6Yt2Od8yVZoj3S51S1SyG+4bNh8s9LrAG9U/k
-	y/VXeYQV4yCkOc/0DQGPGHBZ3O3AzANdYCUB1PqtmyZd9noSvW/pbkimysc7HTifxI0t9S8V+2M
-	wz8jzTblxdXPwrC+GtI6Q2EENFF9HiyAmvCXWd4hDrxHqEV4zqzIY6RVdJQ2baUujcJ/uycN1Vv
-	uiA8ts7ESKgzi7+ddqGXMZktj5MpSYrYSdKJCIq20fcOvV/hqfcXOPPfZtZIjw+1ofLCp4NvoPi
-	fweoj/L/optENzMMk1XuTVwOKz4IiyQXrQmmxEYq7gfIEupvrSIx5LBq9WoJ5fzUsQ==
-X-Received: by 2002:a05:600c:1d10:b0:45b:891f:afcf with SMTP id 5b1f17b1804b1-45b891fb24dmr144597915e9.27.1757021913371;
-        Thu, 04 Sep 2025 14:38:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFWbBDlkpyRRxeIt/+qH4VagktWDBCJazVbSXDHRMhx/diXSZUFSBaQ6M24PtRDNYL0yu7m/g==
-X-Received: by 2002:a05:600c:1d10:b0:45b:891f:afcf with SMTP id 5b1f17b1804b1-45b891fb24dmr144597725e9.27.1757021912965;
-        Thu, 04 Sep 2025 14:38:32 -0700 (PDT)
-Received: from redhat.com (93-51-222-138.ip268.fastwebnet.it. [93.51.222.138])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3cf3458a67fsm1872200f8f.62.2025.09.04.14.38.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 14:38:32 -0700 (PDT)
-Date: Thu, 4 Sep 2025 17:38:30 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-efi@vger.kernel.org, virtualization@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v3 7/7] virtio_balloon: Stop calling page_address() in
- free_pages()
-Message-ID: <20250904173824-mutt-send-email-mst@kernel.org>
-References: <20250903185921.1785167-1-vishal.moola@gmail.com>
- <20250903185921.1785167-8-vishal.moola@gmail.com>
+	t=1757024126; c=relaxed/relaxed;
+	bh=O1s9lw6tbe2htYbahVRtjD5lIa+YY9RGI9knjEL6DjU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=brhb20rDxFcVd6m9oCYoiiQW3iDuX2hvvBQZ1ae2Mf+50s3nvrwrJ0hTpZsQWyzAiYIVrFnxdllFd9kHPbhNaxQ3uXX7cWbEElzeSYPlP/dHBfbr4bbaBJNe4LUKjIsZxhKLHIHXc3qaNJTkVMDEKMMzg5pu9P7YQQ6bRqIBf9aPvdzBWbj5VRlDXjmJgFxs2lf3d8J1xMSNGm8YBuBQB+0OEZscXoidmAlYRr/vePjb56D504EGdCMkedy/+Oaw6iCHjK6CuOMWzybXgshatzse/Spo5A+GN3f7IJ206FNWND4FT0UdWDQPRDhnG1N61FVysZSmT4HrsdCefY/O6A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHv1V10SNz2xQ2
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 08:15:24 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2977D1596;
+	Thu,  4 Sep 2025 15:14:43 -0700 (PDT)
+Received: from [10.57.58.14] (unknown [10.57.58.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 46B793F63F;
+	Thu,  4 Sep 2025 15:14:44 -0700 (PDT)
+Message-ID: <75db1f58-98b3-463c-af4f-2ce9878cba9f@arm.com>
+Date: Fri, 5 Sep 2025 00:14:39 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -112,64 +43,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-In-Reply-To: <20250903185921.1785167-8-vishal.moola@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: FyfzgIAfRkqF_Zioe0KKM4VFJylAsljNcFDQBWiv-QY_1757021913
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] mm: introduce local state for lazy_mmu sections
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+References: <20250904125736.3918646-1-kevin.brodsky@arm.com>
+ <20250904125736.3918646-3-kevin.brodsky@arm.com>
+ <22131943-3f92-4f5a-be28-7b668c07a25c@lucifer.local>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <22131943-3f92-4f5a-be28-7b668c07a25c@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Sep 03, 2025 at 11:59:21AM -0700, Vishal Moola (Oracle) wrote:
-> free_pages() should be used when we only have a virtual address. We
-> should call __free_pages() directly on our page instead.
-> 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+On 04/09/2025 19:28, Lorenzo Stoakes wrote:
+> Hi Kevin,
+>
+> This is causing a build failure:
+>
+> In file included from ./include/linux/mm.h:31,
+>                  from mm/userfaultfd.c:8:
+> mm/userfaultfd.c: In function ‘move_present_ptes’:
+> ./include/linux/pgtable.h:247:41: error: statement with no effect [-Werror=unused-value]
+>   247 | #define arch_enter_lazy_mmu_mode()      (LAZY_MMU_DEFAULT)
+>       |                                         ^
+> mm/userfaultfd.c:1103:9: note: in expansion of macro ‘arch_enter_lazy_mmu_mode’
+>  1103 |         arch_enter_lazy_mmu_mode();
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~
+> ./include/linux/pgtable.h:248:54: error: expected expression before ‘)’ token
+>   248 | #define arch_leave_lazy_mmu_mode(state) ((void)(state))
+>       |                                                      ^
+> mm/userfaultfd.c:1141:9: note: in expansion of macro ‘arch_leave_lazy_mmu_mode’
+>  1141 |         arch_leave_lazy_mmu_mode();
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~
+>
+> It seems you haven't carefully checked call sites here, please do very
+> carefully recheck these - I see Yeoreum reported a mising kasan case, so I
+> suggest you just aggressively grep this + make sure you've covered all
+> bases :)
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+I did check all call sites pretty carefully and of course build-tested,
+but my series is based on v6.17-rc4 - just like the calls Yeoreum
+mentioned, the issue is that those calls are in mm-stable but not in
+mainline :/ I suppose I should post a v2 rebased on mm-stable ASAP then?
 
-> ---
->  drivers/virtio/virtio_balloon.c | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/virtio/virtio_balloon.c b/drivers/virtio/virtio_balloon.c
-> index eae65136cdfb..7f3fd72678eb 100644
-> --- a/drivers/virtio/virtio_balloon.c
-> +++ b/drivers/virtio/virtio_balloon.c
-> @@ -488,8 +488,7 @@ static unsigned long return_free_pages_to_mm(struct virtio_balloon *vb,
->  		page = balloon_page_pop(&vb->free_page_list);
->  		if (!page)
->  			break;
-> -		free_pages((unsigned long)page_address(page),
-> -			   VIRTIO_BALLOON_HINT_BLOCK_ORDER);
-> +		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
->  	}
->  	vb->num_free_page_blocks -= num_returned;
->  	spin_unlock_irq(&vb->free_page_list_lock);
-> @@ -719,8 +718,7 @@ static int get_free_page_and_send(struct virtio_balloon *vb)
->  	if (vq->num_free > 1) {
->  		err = virtqueue_add_inbuf(vq, &sg, 1, p, GFP_KERNEL);
->  		if (unlikely(err)) {
-> -			free_pages((unsigned long)p,
-> -				   VIRTIO_BALLOON_HINT_BLOCK_ORDER);
-> +			__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
->  			return err;
->  		}
->  		virtqueue_kick(vq);
-> @@ -733,7 +731,7 @@ static int get_free_page_and_send(struct virtio_balloon *vb)
->  		 * The vq has no available entry to add this page block, so
->  		 * just free it.
->  		 */
-> -		free_pages((unsigned long)p, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
-> +		__free_pages(page, VIRTIO_BALLOON_HINT_BLOCK_ORDER);
->  	}
->  
->  	return 0;
-> -- 
-> 2.51.0
-
+- Kevin
 
