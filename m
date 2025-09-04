@@ -1,49 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-11719-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11713-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE49B43889
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 12:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78154B437F4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 12:09:21 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHb926dtDz305P;
-	Thu,  4 Sep 2025 20:20:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHZvg1dvpz2yrp;
+	Thu,  4 Sep 2025 20:09:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756981254;
-	cv=none; b=GhpFzpiDGNYt46DmdWa3uAxeAws6kjJ/CaVs0mWz/E5Nbo+F/xhQi/m/q+iYeXLjIauUaGQI7qEYRgW47wX7M54mqcvCX1OGipbtXjvK+Fn5n29m6PJLJAL9EdefYGrCxNVr5OmdUbYkqEfl9Qwo5XpU0V/uxSzx/WlREvrHoMSBlWXOSOBPLGcgJ/XpSnPSW70Jdmgxm/Al5ZW1UN8m7UnjafmuAmuUr6ajRTlLuIls0pzvaay0Gr6MD9dG2FXRYrO4GioAWDywcpSxXKkoA8kTp4ac8NR2f6SZndJKGV+EiGNTKzIG+dAvqU1AHTnA4+opCnB2NaMyOjKf27tFUg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756980559;
+	cv=none; b=Dn0QGF6huVBqDfycPHfto8ozwG2Gy5oraFXhf5HnbH/ALpBsjwwc1FDsbrvK0slCyV3IJa7+81yHnYG8pUcu/oIo9SWWeqen4+YP673WfMGrjzYeZ9xDPLXr2+mOzjrU0c6y7I3+JJvzowaPF4nnXVZ+5Jc3b3dWBSTxpEu+3AmywHU1vc6l6ZGZmbdZPbwO3jQHVjTetZVl2r9D5hCQ/se4sFYfE2Y2jM56TW1CnbygkTiD+0pksPg9VzJ6W9dMXqg5MYbd9rAeGWJCXP/Z5s8RwunmIYgTOeyxWuyBxOqS58ZaASM0dK5JLVE1UPUbVlBWFHzXN+Kl17vCO8oduA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756981254; c=relaxed/relaxed;
-	bh=BQmbhejF+e0qnjPryp1MsoQsUba5Yjtm1KKLYFklkQo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=FMJBR62aIZcufKS2M1Q8wrRxcwQcbVyq9svkjGAOnwPS44pvUg0zzpcnGPn2Xil2enfAtbMWs+RIAk5tQrWu/CKKQRaOwmmNft3LDGiomYCvxqnC+DueP/DQZMefph4jbj8GPVlfFG9QbU+mFTyinmVFoabSE5VmG3SFTeDbIhRyg0N2kSKPP/lJX2ScGpFDRuhpFzqXUlYIc04ruS9GolNzzimVX7P6VsIWs1uGb1BkYpRCQPiYiPrCfEWg9e0rOP/IcoFcMsht9ZFDtAGmnLmluzfIvjuGL9nnvNIe3C2AseZIlo7ovo37EPvoNuJ6qkoul+qvQDRPOpErjjnP6Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHb921QM6z2xd6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 20:20:54 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cHZqH2y4Jz9sVb;
-	Thu,  4 Sep 2025 12:05:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id AAhIw7ZjnRgG; Thu,  4 Sep 2025 12:05:31 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHZqH1tFVz9sVY;
-	Thu,  4 Sep 2025 12:05:31 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2AAB08B769;
-	Thu,  4 Sep 2025 12:05:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 1r3m4fedKK3e; Thu,  4 Sep 2025 12:05:31 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E565C8B765;
-	Thu,  4 Sep 2025 12:05:30 +0200 (CEST)
-Message-ID: <c62b68f9-134a-4950-bb90-c805da8eebd2@csgroup.eu>
-Date: Thu, 4 Sep 2025 12:05:30 +0200
+	t=1756980559; c=relaxed/relaxed;
+	bh=FCfIB0g19w/gBXxKkNHd0SAzNkeaeHjORouxgnQnUzE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WKdkIh/sGLm+m0Y8p2i6HImIwa1j8TglhvXv5IzcILVR/f4u4owsklH4CfsRZWjUpOuk69l0YCrMaUvQ99nrZhGdcgx4G7JXe+Stxwh00uZCCscm2gsw0NS6cT0Q/YYtIw60JF7b7V9dChnOPHEES4T7k7vbwPgP2zALVcro7wGtKoBaru/pax9dx7a/KojwFrLvOPpHL2RQUMk5FPdu8jEcCIy9Imtfh97BapSouOXPXzuooyPU/HCNULY8p6CEHsK+ITeWLO+EWyAUXhSPeIzNXN9jfKb4SGNgCNxQG5iE+I71nJLlHWOvqmI04s7Zlu0S1RKo+kVD4e+bvjrBYg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pDViCc8I; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pDViCc8I;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHZvf3gGbz2xnM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 20:09:18 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 583Mov8L014694;
+	Thu, 4 Sep 2025 10:08:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=FCfIB0g19w/gBXxKkNHd0SAzNkeaeHjORouxgnQnU
+	zE=; b=pDViCc8IW2JP4VUNqe0+DcUcElnbbylmh66K+Ui/w7ueRLrilv12sc8oW
+	jjFN4HhpFLcT/HQzPo6DpkcnldvfYhXldn54xaCv4NVjNTZU/IkBhAiB5d04PkI8
+	udZO84R23EOH9rECk1rXbvp86d/k52YBkCijBjTpj2pmuLMYte9cXiupbZHr+s8e
+	eIUMR9EYeAbeTW8FjJWzyg4lBU6cJA8vr6Mc+IJT9nd8p+1jHRbtywB9t4A1SXkI
+	F89hHtqbtZ2iXCWSgIPfysj9vebFS2vRn0g5U+UnGebkwul2OlMc7mszE6hLFOxM
+	Om9kcTcRjnoYPRLffWKCKDnZc5J6w==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48wshf572t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 10:08:46 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5849rqAs013634;
+	Thu, 4 Sep 2025 10:08:45 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48wshf572r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 10:08:45 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 584916SF014345;
+	Thu, 4 Sep 2025 10:08:44 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48veb3kn9c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 10:08:44 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 584A8f5M49414534
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 4 Sep 2025 10:08:41 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3596C20073;
+	Thu,  4 Sep 2025 10:08:41 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AC7A220067;
+	Thu,  4 Sep 2025 10:08:36 +0000 (GMT)
+Received: from li-621bac4c-27c7-11b2-a85c-c2bf7c4b3c07.in.ibm.com (unknown [9.109.219.153])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  4 Sep 2025 10:08:36 +0000 (GMT)
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+To: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
+        andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
+        iii@linux.ibm.com, shuah@kernel.org
+Subject: [PATCH bpf-next v3 0/4] powerpc64/bpf: Add support for bpf arena and arena atomics
+Date: Thu,  4 Sep 2025 15:38:31 +0530
+Message-ID: <20250904100835.1100423-1-skb99@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,191 +97,119 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Kernel v6.17-rc4 with STATIC_CALL_SELFTEST=y enabled fails to
- boot at early stage (PowerMac G4 DP)
-To: Andrew Donnellan <ajd@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Erhard Furtner <erhard_f@mailbox.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org>
- <98dbafee-aad3-439b-9efb-76f80c6668fd@csgroup.eu>
- <ca440403-0108-4703-bf07-bc3ac7e3d108@linux.ibm.com>
- <e042d4ca-c66b-49ec-8572-442ab697c430@csgroup.eu>
- <21ad3bf6-4654-43a5-9dc3-ebcdc676d542@linux.ibm.com>
- <98b226684e39543a4706f3c4632d9b1856346660.camel@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <98b226684e39543a4706f3c4632d9b1856346660.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: JR7FPIcHfEQnGfz7BVi3W-hDsDegsZaT
+X-Authority-Analysis: v=2.4 cv=do3bC0g4 c=1 sm=1 tr=0 ts=68b9652e cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=HxOIHn79L73zkQQosxIA:9
+X-Proofpoint-ORIG-GUID: OhqdGAvzUkue9J7WOXEruG4O5p2dlXqe
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAyMDA0MCBTYWx0ZWRfX26+bzVJt7zrS
+ 6fJYW3rFrOZHLTbyItko32Ky21x3uYEslaG3cOtND5u6idICHm76lebAKX+8iHYvuyCs0kzqcTf
+ byCDP2y44R+fkE2aN6/z7ehm4Jn/eA8lV1bdR+HqYp/u7AvVg2GknlCCbIeQV3oEI+gtvhpGXUz
+ 0SCahV5VnlrrV4wqf7oQy5wpgBap9t6bH6fr6xs8/gCejXgDnZHKwmU/3F3ES8n4QDjiSflwptw
+ bvevwOxDs+vfde2ofoMvHVBrup3g0QJFeaGblDe3U55Fb/Uf+SsUBukF8a+I1H0X6JcD89E8U5q
+ RAee1UDYr5o7sC3IvVshVVG1JbB2OJqPT3olMjlpNzmjkRW1SxrDCMSeL/ocdx9krf1KqRnslD/
+ irkBd6Um
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-04_03,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 impostorscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509020040
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+This patch series introduces support for the PROBE_MEM32,
+bpf_addr_space_cast and PROBE_ATOMIC instructions in the powerpc BPF JIT,
+facilitating the implementation of BPF arena and arena atomics.
 
+All selftests related to bpf_arena, bpf_arena_atomic(except
+load_acquire/store_release) enablement are passing:
 
-Le 04/09/2025 à 11:57, Andrew Donnellan a écrit :
-> On Thu, 2025-09-04 at 14:33 +0530, Madhavan Srinivasan wrote:
->>>> I am using qemu with -M mac99 and it boots
->>>>
->>>> Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
->>>> printk: legacy bootconsole [udbg0] enabled
->>>> -----------------------------------------------------
->>>> phys_mem_size     = 0x8000000
->>>> dcache_bsize      = 0x20
->>>>
->>>> I am missing something here. Digging some more
->>>
->>>
->>> Did you use the .config provided by Erhard ?
->>>
->>
->> Oops. sorry for the noise
-> 
-> I noticed that I don't hit this using defconfigs (with JUMP_LABEL and
-> STATIC_CALL_SELFTEST manually enabled), so I did some config bisection with
-> Erhard's config.
-> 
-> It looks like you need CONFIG_KFENCE=y, and CONFIG_XMON=n.
-> 
-> Attached is a minimal config for current mainline, allnoconfig + CONFIG_PPC_PMAC
-> (so I can get console output in qemu) + CONFIG_KFENCE + CONFIG_JUMP_LABEL +
-> CONFIG_STATIC_CALL_SELFTEST.
-> 
-> Running with qemu-system-ppc -M mac99, we get the below.
-> 
-> Christophe: I'm not exactly sure what changes when you enable/disable KFENCE on
-> book3s32, but it looks to me like it affects whether .init.text is mapped using
-> BATs or not?
+# ./test_progs -t arena_list
+#5/1     arena_list/arena_list_1:OK
+#5/2     arena_list/arena_list_1000:OK
+#5       arena_list:OK
+Summary: 1/2 PASSED, 0 SKIPPED, 0 FAILED
 
-As I said in previous response, the problem seems to come from here:
+# ./test_progs -t arena_htab
+#4/1     arena_htab/arena_htab_llvm:OK
+#4/2     arena_htab/arena_htab_asm:OK
+#4       arena_htab:OK
+Summary: 1/2 PASSED, 0 SKIPPED, 0 FAILED
 
-arch/powerpc/include/asm/pgtable.h :
+# ./test_progs -t verifier_arena
+#464/1   verifier_arena/basic_alloc1:OK
+#464/2   verifier_arena/basic_alloc2:OK
+#464/3   verifier_arena/basic_alloc3:OK
+#464/4   verifier_arena/iter_maps1:OK
+#464/5   verifier_arena/iter_maps2:OK
+#464/6   verifier_arena/iter_maps3:OK
+#464     verifier_arena:OK
+#465/1   verifier_arena_large/big_alloc1:OK
+#465/2   verifier_arena_large/big_alloc2:OK
+#465     verifier_arena_large:OK
+Summary: 2/8 PASSED, 0 SKIPPED, 0 FAILED
 
-/*
-  * Protection used for kernel text. We want the debuggers to be able to
-  * set breakpoints anywhere, so don't write protect the kernel text
-  * on platforms where such control is possible.
-  */
-#if defined(CONFIG_KGDB) || defined(CONFIG_XMON) || 
-defined(CONFIG_BDI_SWITCH) || \
-     defined(CONFIG_KPROBES) || defined(CONFIG_DYNAMIC_FTRACE)
-#define PAGE_KERNEL_TEXT    PAGE_KERNEL_X
-#else
-#define PAGE_KERNEL_TEXT    PAGE_KERNEL_ROX
-#endif
+# ./test_progs -t arena_atomics
+#3/1     arena_atomics/add:OK
+#3/2     arena_atomics/sub:OK
+#3/3     arena_atomics/and:OK
+#3/4     arena_atomics/or:OK
+#3/5     arena_atomics/xor:OK
+#3/6     arena_atomics/cmpxchg:OK
+#3/7     arena_atomics/xchg:OK
+#3/8     arena_atomics/uaf:OK
+#3/9     arena_atomics/load_acquire:SKIP
+#3/10    arena_atomics/store_release:SKIP
+#3       arena_atomics:OK (SKIP: 2/10)
+Summary: 1/8 PASSED, 2 SKIPPED, 0 FAILED
 
-If you have neither CONFIG_KGDB nor CONFIG_XMON nor CONFIG_BDI_SWITCH 
-nor CONFIG_KPROBES or CONFIG_DYNAMIC_FTRACE, kernel text is mapped 
-Read-Only.
+Changes since v2:
+* Dropped arena_spin_lock selftest fix patch from the patchset as it has
+  to go via bpf-next while these changes will go via powerpc tree.
 
-Using BATs or not shouldn't make any difference because:
+v2:https://lore.kernel.org/all/20250829165135.1273071-1-skb99@linux.ibm.com/
 
-With BATs we do:
-arch/powerpc/mm/book3s32/mmu.c:         setibat(i++, PAGE_OFFSET + base, 
-base, size, PAGE_KERNEL_TEXT);
-arch/powerpc/mm/book3s32/mmu.c:         setibat(i++, PAGE_OFFSET + base, 
-base, size, PAGE_KERNEL_TEXT);
+Changes since v1:
 
-Without BATs we do:
-arch/powerpc/mm/pgtable_32.c:           map_kernel_page(v, p, ktext ? 
-PAGE_KERNEL_TEXT : PAGE_KERNEL);
+Addressed comments from Chris:
+* Squashed introduction of bpf_jit_emit_probe_mem_store() and its usage in
+  one patch.
+* Defined and used PPC_RAW_RLDICL_DOT to avoid the CMPDI.
+* Removed conditional statement for fixup[0] = PPC_RAW_LI(dst_reg, 0);
+* Indicated this change is limited to powerpc64 in subject.
 
+Addressed comments from Alexei:
+* Removed skel->rodata->nr_cpus = get_nprocs() and its usage to get
+  currently online cpus(as it needs to be updated from userspace).
 
+Addressed comments from Hari:
+* Updated the bpf jit stack layout and associated macros to accommodate
+  new NVR.
 
-> 
-> Andrew
-> 
-> ---------------------------------
-> 
->>> =============================================================
->>> OpenBIOS 1.1 [Feb 12 2025 13:02]
->>> Configuration device id QEMU version 1 machine id 1
->>> CPUs: 1
->>> Memory: 128M
->>> UUID: 00000000-0000-0000-0000-000000000000
->>> CPU type PowerPC,G4
-> milliseconds isn't unique.
-> Welcome to OpenBIOS v1.1 built on Feb 12 2025 13:02
->>> [ppc] Kernel already loaded (0x01000000 + 0x004fcb28) (initrd 0x00000000 +
-> 0x00000000)
->>> [ppc] Kernel command line: console=serial
->>> switching to new context:
-> OF stdout device is: /pci@f2000000/mac-io@c/escc@13000/ch-a@13020
-> Preparing to boot Linux version 6.17.0-rc4+ (ajd@jarvis.ozlabs.ibm.com)
-> (powerpc64-linux-gnu-gcc (GCC) 15.2.1 20250808 (Red Hat Cross 15.2.1-1), GNU ld
-> version 2.44-1.fc42) #2 Thu Sep  4 16:21:41 AEST 2025
-> Detected machine type: 00000400
-> command line:
-> memory layout at init:
->    memory_limit : 00000000 (16 MB aligned)
->    alloc_bottom : 01501000
->    alloc_top    : 08000000
->    alloc_top_hi : 08000000
->    rmo_top      : 08000000
->    ram_top      : 08000000
-> found display   : /pci@f2000000/QEMU,VGA@e, opening... done
-> copying OF device tree...
-> Building dt strings...
-> Building dt structure...
-> Device tree strings 0x01502000 -> 0x015010a4
-> Device tree struct  0x01503000 -> 0x07de7eb0
-> Quiescing Open Firmware ...
-> Booting Linux via __start() @ 0x01000000 ...
-> Hello World !
-> Total memory = 128MB; using 256kB for hash table
-> Linux version 6.17.0-rc4+ (ajd@jarvis.ozlabs.ibm.com) (powerpc64-linux-gnu-gcc
-> (GCC) 15.2.1 20250808 (Red Hat Cross 15.2.1-1), GNU ld version 2.44-1.fc42) #2
-> Thu Sep  4 16:21:41 AEST 2025
-> OF: reserved mem: Reserved memory: No reserved-memory node in the DT
-> ioremap() called early from pmac_feature_init+0xe0/0xb00. Use early_ioremap()
-> instead
-> Found UniNorth memory controller & host bridge @ 0xf8000000 revision: 0x07
-> Mapped at 0xffb9e000
-> ioremap() called early from probe_one_macio+0x134/0x24c. Use early_ioremap()
-> instead
-> Found a Keylargo mac-io controller, rev: 0, mapped at 0x(ptrval)
-> PowerMac motherboard: PowerMac G4 AGP Graphics
-> ioremap() called early from udbg_scc_init+0x190/0x398. Use early_ioremap()
-> instead
-> Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
-> printk: legacy bootconsole [udbg0] enabled
-> -----------------------------------------------------
-> phys_mem_size     = 0x8000000
-> dcache_bsize      = 0x20
-> icache_bsize      = 0x20
-> cpu_features      = 0x000000000401a008
->    possible        = 0x00000000277de008
->    always          = 0x0000000000000000
-> cpu_user_features = 0x8c000001 0x00000000
-> mmu_features      = 0x00000001
-> Hash_size         = 0x40000
-> Hash_mask         = 0xfff
-> -----------------------------------------------------
-> ioremap() called early from pmac_setup_arch+0x110/0x224. Use early_ioremap()
-> instead
-> WARNING ! Your machine is CUDA-based but your kernel
->            wasn't compiled with CONFIG_ADB_CUDA option !
-> Zone ranges:
->    DMA      [mem 0x0000000000000000-0x0000000007ffffff]
->    Normal   empty
-> Movable zone start for each node
-> Early memory node ranges
->    node   0: [mem 0x0000000000000000-0x0000000007ffffff]
-> Initmem setup node 0 [mem 0x0000000000000000-0x0000000007ffffff]
-> Kernel panic - not syncing: arch_static_call_transform: patching failed
-> func_a+0x0/0x8 at 0x0
-> CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.17.0-rc4+ #2 NONE
-> Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
-> Call Trace:
-> [c04b9eb0] [c0292e00] dump_stack_lvl+0x50/0x78 (unreliable)
-> [c04b9ed0] [c002d19c] vpanic+0xfc/0x2b4
-> [c04b9f00] [c002d3b0] cpu_mitigations_off+0x0/0x14
-> [c04b9f40] [c00127ac] fixup_cpc710_pci64+0x0/0x20
-> [c04b9f70] [c035082c] static_call_init+0x108/0x140
-> [c04b9fa0] [c0342ed0] start_kernel+0x78/0x4a8
-> [c04b9ff0] [00003500] 0x3500
-> Rebooting in 180 seconds..
+v1:https://lore.kernel.org/all/20250805062747.3479221-1-skb99@linux.ibm.com/
+
+Saket Kumar Bhaskar (4):
+  powerpc64/bpf: Implement PROBE_MEM32 pseudo instructions
+  powerpc64/bpf: Implement bpf_addr_space_cast instruction
+  powerpc64/bpf: Introduce bpf_jit_emit_atomic_ops() to emit atomic
+    instructions
+  powerpc64/bpf: Implement PROBE_ATOMIC instructions
+
+ arch/powerpc/include/asm/ppc-opcode.h |   1 +
+ arch/powerpc/net/bpf_jit.h            |   6 +-
+ arch/powerpc/net/bpf_jit_comp.c       |  32 +-
+ arch/powerpc/net/bpf_jit_comp32.c     |   2 +-
+ arch/powerpc/net/bpf_jit_comp64.c     | 401 +++++++++++++++++++-------
+ 5 files changed, 330 insertions(+), 112 deletions(-)
+
+-- 
+2.43.5
 
 
