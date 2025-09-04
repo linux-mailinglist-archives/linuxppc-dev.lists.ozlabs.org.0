@@ -1,52 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-11699-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11700-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F85B43226
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 08:16:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 361EFB433AC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 09:21:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHTlC4p1bz2yrZ;
-	Thu,  4 Sep 2025 16:16:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHW9q00TMz2yrZ;
+	Thu,  4 Sep 2025 17:21:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:3000::53df:4ef0:0"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756966599;
-	cv=none; b=cN1Rbq6gxo6C5UG2VaVnvpKXKoNuSkD+naGkGlHKq8C3Gdy8zKIUD866zPi9xqD/d/3lUK/9Iydu7A55Mjo4pEdRSry/EU6mX13pvpeqElF6S+7zIaX/AIfyPcbtIUO2ZZuDV/JX4ilhcLNcNOiGaTj8DIRS5PPD+HftwpF6Wj3Jq1oeNa0zUCDv8Kr6Pg0Zd2812rMw27Ak2M940l20O81+fJhKS6G7cpL1qfIDt1vTLuSkXGh0vlCVA+mecO3MFovd0RGAsJCCsv8icvXp430ub2HW/oTNjLyycWVhYcmN7bD6BVLQli0yJAkIRhTm0oE9pD7+Ruwwij5eH+zxcQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756970478;
+	cv=none; b=kWNZz+S4qaPkpqVQgc7h2T7t+3KiidIB+5YRL/roBYJgtY6SvjgWCI6QHvaZJoXKb+mdVDRpVn3u6yLixElYj2hYtidvJQ1A7LND5GtpL2zEgl9Lq157lClBn8sMPaSImx0sHgNtstTqY6TDOqITUVBBMrRtnDdcEjmSZ+kXzUvOzmlwuwnY4neDtzOnNj3C+lMNXjwrOHLyCowAWdSu0ls/Cyj7Z88M0uDKDd7TzK4vtM5HUwoZlpRKAWP8ebldKZGBmeYEjzHUhM7hRgAfMUUvcjU+fx1N40OymgKIEsSo2J/fa8WcgL1EByU+pDaO6t3E2Dgap8E32jLwjLY0Dw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756966599; c=relaxed/relaxed;
-	bh=tJYePSrq4xcH5cgpX8KnE3zjEOZ7MUZZEc47HFMew9g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CDs6YesTnlOsm6El1ViIBbexnzkSmZuEPdCQ9Atj3+5iEbR929xDEQyq6VepxZ6N4oFqoUMiz6Ekl2eZMryeorT7WrFkC+1VAdooMeHYiKMFg2/im1xF81lmKVG+7ZLSBeLbrQ6XQbxKtxOziLDEUwHkdtSMvvvWM6UZbLSI3cfyGWm+s3yvlBL/zm8UDCSWw9wMhfDXa/pZYBp4stZRQ7Po73wNzjug2BDHIfSesgqNvwUKZm0B/E/InY9ynb9s2ApSsMrjUZ9+1vUVynYreGskH+6MMqOJW07F7MEz3aHZ8pqX7FC4xZw7ylTEK4ozPAUax6gDwLzm/aQehbd5yw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout2.hostsharing.net
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout2.hostsharing.net (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [IPv6:2a01:37:3000::53df:4ef0:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHTlB2tFNz2xd6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 16:16:35 +1000 (AEST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 354A320091B5;
-	Thu,  4 Sep 2025 08:16:29 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 1C33F402D8B; Thu,  4 Sep 2025 08:16:29 +0200 (CEST)
-Date: Thu, 4 Sep 2025 08:16:29 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, Martin Mares <mj@ucw.cz>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>
-Subject: Re: [PATCH] PCI/AER: Print TLP Log for errors introduced since PCIe
- r1.1
-Message-ID: <aLkuvb5v4LuVJuyU@wunner.de>
-References: <5f707caf1260bd8f15012bb032f7da9a9b898aba.1756712066.git.lukas@wunner.de>
+	t=1756970478; c=relaxed/relaxed;
+	bh=28HQS0dhxfb3EtDkhwzavnP+Qfq1q2LO7iNoRzqKpY4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dxLRUxZdh22Scf321+v8hAZiqdaqE3iRtbUxgGIpQjRtmaO9hnuzchJ/VooLaJVzWaycKW+KSE7//7hkYiP232f2EnoO/uMtWEAr1cx+bhPP6mEZYbZbAYk3JQQ1cO1hBpUkPLn9w75ZGWQgMnnIeGA7HVP49WmDFbdBgpOMIigG5xj2rHiANW/A5QD7tQyCrANVwMv9oadp1F+OkVM+IYEC/kTZv/hEQvIXIkbJfhsW0TgKKjyHNfaqPnn8MC+Txdq8iLYOT2yZ8D6YKusR0GdGK19EZ9NxwFlXkAjXhgFELCU0ufJIsxpSaLbx0F/S1r//MEPBeLr1hSgbFSuWvg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHW9n47D4z2xlM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 17:21:15 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cHVwp4xsdz9sVh;
+	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id WEv7Y2YJZkgd; Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHVwp4BWrz9sVk;
+	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 784388B764;
+	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id JZAEJLwTYdG3; Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 23FBF8B763;
+	Thu,  4 Sep 2025 09:10:02 +0200 (CEST)
+Message-ID: <3b333f4e-9817-4a5b-bf0a-f8a9d33575e9@csgroup.eu>
+Date: Thu, 4 Sep 2025 09:10:01 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,35 +57,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5f707caf1260bd8f15012bb032f7da9a9b898aba.1756712066.git.lukas@wunner.de>
-X-Spam-Status: No, score=-0.7 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/7] powerpc: Stop calling page_address() in
+ free_pages()
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-efi@vger.kernel.org, virtualization@lists.linux.dev,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+References: <20250903185921.1785167-1-vishal.moola@gmail.com>
+ <20250903185921.1785167-6-vishal.moola@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250903185921.1785167-6-vishal.moola@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 01, 2025 at 09:44:52AM +0200, Lukas Wunner wrote:
-> +++ b/include/uapi/linux/pci_regs.h
-> @@ -776,6 +776,13 @@
->  #define  PCI_ERR_UNC_MCBTLP	0x00800000	/* MC blocked TLP */
->  #define  PCI_ERR_UNC_ATOMEG	0x01000000	/* Atomic egress blocked */
->  #define  PCI_ERR_UNC_TLPPRE	0x02000000	/* TLP prefix blocked */
-> +#define  PCI_ERR_UNC_POISON_BLK	0x04000000	/* Poisoned TLP Egress Blocked */
-> +#define  PCI_ERR_UNC_DMWR_BLK	0x08000000	/* DMWr Request Egress Blocked */
-> +#define  PCI_ERR_UNC_IDE_CHECK	0x10000000	/* IDE Check Failed */
-> +#define  PCI_ERR_UNC_MISR_IDE	0x20000000	/* Misrouted IDE TLP */
-> +#define  PCI_ERR_UNC_PCRC_CHECK	0x40000000	/* PCRC Check Failed */
-> +#define  PCI_ERR_UNC_XLAT_BLK	0x80000000	/* TLP Translation Egress Blocked */
-> +
->  #define PCI_ERR_UNCOR_MASK	0x08	/* Uncorrectable Error Mask */
->  	/* Same bits as above */
 
-I've realized that I inadvertently introduced a gratuitous blank line here.
-Bjorn, you may want to remove that from commit dab104c81cba on pci/aer.
-My apologies for the inconvenience!
 
-Thanks,
+Le 03/09/2025 à 20:59, Vishal Moola (Oracle) a écrit :
+> free_pages() should be used when we only have a virtual address. We
+> should call __free_pages() directly on our page instead.
+> 
+> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-Lukas
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+
+> ---
+>   arch/powerpc/mm/book3s64/radix_pgtable.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> index be523e5fe9c5..73977dbabcf2 100644
+> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
+> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+> @@ -780,7 +780,7 @@ static void __meminit free_vmemmap_pages(struct page *page,
+>   		while (nr_pages--)
+>   			free_reserved_page(page++);
+>   	} else
+> -		free_pages((unsigned long)page_address(page), order);
+> +		__free_pages(page, order);
+>   }
+>   
+>   static void __meminit remove_pte_table(pte_t *pte_start, unsigned long addr,
+
 
