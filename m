@@ -1,60 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-11743-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11744-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1DAB44002
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 17:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D51B440F2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 17:48:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHjZP5dTHz301n;
-	Fri,  5 Sep 2025 01:09:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHkQn5pRhz2yhD;
+	Fri,  5 Sep 2025 01:48:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756998589;
-	cv=none; b=J/WCRRqgE3TYNvVNc+eet9U5AgzFeEp79B/UhgOLKDSv6iiGc7mA8f7H59QOOnMvPF9XOtBndweNx2Xu+opPmbT7yGC3vBhrAdHOfnypYdUS5iGcvOKNQo5F6iOkjteVroyXwdPTrZOCJPZjX1B+pKL1bWBuSOk0/0bR9AT2uMsFyplhrAGyJO/WVRoxF9u0bkZh/jL7x8CGlLUM8OwHILJVqb/4UaeOtnjKQJzJgcV9yuulB54jOdDMfKBHps5OHJYD+lZmO8Rlq08rP+KpoebT5nhVQgI7uKjmek0Od4JR863WkwFCKCH5Gv1FK2vP8zifu73qY4rjMK+2J7PivQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757000897;
+	cv=none; b=crbXWLBGZpnEoZIvf4MXzva5LdvUvE8TzcVvTjgJV3rsWAFSVR5N/sdSwSJa3Xmgv141ElGaGgbJJhrnDA40wTkRnjgZMw5f/iNDN8ltBKXWFbn3ynsRlpDOLjVzqc6P67R+e+HGaH5a4J3IoCa7vPnh5HmdJoqCDo8L2FG27QNg3EKpryRSxzf1512Wr7Y+gsxpvIHbswyBniLGixAb00EonqVBESPH8trnOE5uPRJ03T4F3+IWSf7On9NJF4WTVQ2Fusxb0u/0eqE1/JiHSv017dNiiAREkDzlCcETzSiEZBGJqYPwTOMxRW8JAMquRnjrkVuErHo88CnIDNSpNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756998589; c=relaxed/relaxed;
-	bh=lv/2ylIKdLpm7zvJ5Qqymg8oqoGFvzNGNW7NHAl8UGY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=mXMN4CrsgB7WJYSPq66sIiy26VGJ+UyvQ4GmfGv0yXyUg9+Mdjy8KkCfEMRmVr+PVplrxsYoclViKUpPh6mh49Ag0Rxy6oOe6xI0SG0r0/bdLGEH79Bkz+ZBCQpAh1gTdLIT0yIIdIzteEo5vjCzsOBGuf8k5NFswpcMyBgoFr7hhi5tp0sh3xKl2cC3w+aXXTjONwjjFfdBwQC/s1UZRDzZzY2rfFZp1lCDSQJYgBB/jUk67mNzptS0LJnjx7vc2Ekp2ZvWl2X5RpxaCFiUM1c68x3d5x7QxXllpU553MxJPUnL0WtLYCGa3zkkbiX8eTzHWKKXxfGYYBXX5AuAhw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Yt2a7Vh9; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Yt2a7Vh9;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHjZP163rz2yb9
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 01:09:49 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 213F7442E3;
-	Thu,  4 Sep 2025 15:09:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05C6C4CEF0;
-	Thu,  4 Sep 2025 15:09:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756998587;
-	bh=PLDQPQbJUUggbx4A+lxi4mlI5cau9Im7SIvtDQOngi4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Yt2a7Vh9WwZr6Kk9GlSPB3iYnUjz9Z4rbp583WTcVYwWlo726mIvj42kZPVV6T83j
-	 SC2DpNZfSX+WQs/U1dP6ZolD838uZPNHFMGAHG7H8QM63G08Bgjn0Jii9LWw0bGVhG
-	 Mu0iskxKyg/EldYyp7cCmVYq2vsASGEDX+d+NkG+JjDaRZ3q6j0ZDTWsXOpRLmP0Ya
-	 V455s0I/MJ3Lm3op+m+fFtz5nkCP/A3ZedrygQ6uw+H2Ra+qWsMNa231jQwi91JHV2
-	 VwHsGVxxRQz/B5WVdjSEQLVSHrLKS//6aQewvDRbrVunGIxhXifIPmw3dnhGzKmqdC
-	 I9WhLUONVtpeg==
-Date: Thu, 4 Sep 2025 10:09:45 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-	linux-pci@vger.kernel.org, Martin Mares <mj@ucw.cz>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>
-Subject: Re: [PATCH] PCI/AER: Print TLP Log for errors introduced since PCIe
- r1.1
-Message-ID: <20250904150945.GA1262642@bhelgaas>
+	t=1757000897; c=relaxed/relaxed;
+	bh=7L6zmwF6yGggWJMfeGBoaeDd3ftd/sKTwPXe5q8sYhE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G9y+bqi9z7SPq5if7eI+G6MaSvnUT7BG0Aq8329MrhkYZJCkLM4L0FbGZi0ngFqZAAVWgjSYe0udOjCK+C6HQsMnOzVUJraGUjr9CPrsQqvf4lkO3IqVkcboMT0FEJE6WIfUMy+HnZJes82Bn41asX46R1KfnXurei8nqfFtCGegQaRDuiaGZvjNWUMHQLFU0MBWNCwejruJjLZfNCB5gC36sXE2hRUxHOi0ykamzrGWuYErhdecpZQCodykakIMc5GrA7AvEkYbkg8/+R5TepRTgi0VX2Bq438C+y1DKMOVtCv5soCnEr2jSeHNb7CcBRC37kelQaD2k35swwll4A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHkQm5jXVz2xcC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 01:48:16 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F682339;
+	Thu,  4 Sep 2025 08:47:35 -0700 (PDT)
+Received: from [10.57.59.221] (unknown [10.57.59.221])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1309D3F6A8;
+	Thu,  4 Sep 2025 08:47:35 -0700 (PDT)
+Message-ID: <af6ea636-a5cb-4b78-aae0-ff7e7caa5e5d@arm.com>
+Date: Thu, 4 Sep 2025 17:47:32 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,34 +43,104 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLkuvb5v4LuVJuyU@wunner.de>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/7] mm: introduce local state for lazy_mmu sections
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+References: <20250904125736.3918646-1-kevin.brodsky@arm.com>
+ <20250904125736.3918646-3-kevin.brodsky@arm.com>
+ <aLmq+dwZV9dyTYuq@e129823.arm.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <aLmq+dwZV9dyTYuq@e129823.arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Sep 04, 2025 at 08:16:29AM +0200, Lukas Wunner wrote:
-> On Mon, Sep 01, 2025 at 09:44:52AM +0200, Lukas Wunner wrote:
-> > +++ b/include/uapi/linux/pci_regs.h
-> > @@ -776,6 +776,13 @@
-> >  #define  PCI_ERR_UNC_MCBTLP	0x00800000	/* MC blocked TLP */
-> >  #define  PCI_ERR_UNC_ATOMEG	0x01000000	/* Atomic egress blocked */
-> >  #define  PCI_ERR_UNC_TLPPRE	0x02000000	/* TLP prefix blocked */
-> > +#define  PCI_ERR_UNC_POISON_BLK	0x04000000	/* Poisoned TLP Egress Blocked */
-> > +#define  PCI_ERR_UNC_DMWR_BLK	0x08000000	/* DMWr Request Egress Blocked */
-> > +#define  PCI_ERR_UNC_IDE_CHECK	0x10000000	/* IDE Check Failed */
-> > +#define  PCI_ERR_UNC_MISR_IDE	0x20000000	/* Misrouted IDE TLP */
-> > +#define  PCI_ERR_UNC_PCRC_CHECK	0x40000000	/* PCRC Check Failed */
-> > +#define  PCI_ERR_UNC_XLAT_BLK	0x80000000	/* TLP Translation Egress Blocked */
-> > +
-> >  #define PCI_ERR_UNCOR_MASK	0x08	/* Uncorrectable Error Mask */
-> >  	/* Same bits as above */
-> 
-> I've realized that I inadvertently introduced a gratuitous blank line here.
-> Bjorn, you may want to remove that from commit dab104c81cba on pci/aer.
-> My apologies for the inconvenience!
+On 04/09/2025 17:06, Yeoreum Yun wrote:
+> Hi Kevin,
+>
+> [...]
+>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>> ---
+>>  arch/arm64/include/asm/pgtable.h              | 10 +++++++---
+>>  .../include/asm/book3s/64/tlbflush-hash.h     |  9 ++++++---
+>>  arch/powerpc/mm/book3s64/hash_tlb.c           | 10 ++++++----
+>>  arch/powerpc/mm/book3s64/subpage_prot.c       |  5 +++--
+>>  arch/sparc/include/asm/tlbflush_64.h          |  5 +++--
+>>  arch/sparc/mm/tlb.c                           |  6 ++++--
+>>  arch/x86/include/asm/paravirt.h               |  6 ++++--
+>>  arch/x86/include/asm/paravirt_types.h         |  2 ++
+>>  arch/x86/xen/enlighten_pv.c                   |  2 +-
+>>  arch/x86/xen/mmu_pv.c                         |  2 +-
+>>  fs/proc/task_mmu.c                            |  5 +++--
+>>  include/linux/mm_types.h                      |  3 +++
+>>  include/linux/pgtable.h                       |  6 ++++--
+>>  mm/madvise.c                                  | 20 ++++++++++---------
+>>  mm/memory.c                                   | 20 +++++++++++--------
+>>  mm/migrate_device.c                           |  5 +++--
+>>  mm/mprotect.c                                 |  5 +++--
+>>  mm/mremap.c                                   |  5 +++--
+>>  mm/vmalloc.c                                  | 15 ++++++++------
+>>  mm/vmscan.c                                   | 15 ++++++++------
+>>  20 files changed, 97 insertions(+), 59 deletions(-)
+> I think you miss the mm/kasan/shadow.c
 
-No problem, fixed!
+Ah yes that's because my series is based on v6.17-rc4 but [1] isn't in
+mainline yet. I'll rebase v2 on top of mm-stable.
+
+[1]
+https://lore.kernel.org/all/0d2efb7ddddbff6b288fbffeeb10166e90771718.1755528662.git.agordeev@linux.ibm.com/
+
+> But here, the usage is like:
+>
+> static int kasan_populate_vmalloc_pte()
+> {
+> 	...
+> 	arch_leave_lazy_mmu_mode();
+> 	...
+> 	arch_enter_lazy_mmu_mode();
+> 	...
+> }
+>
+> Might be you can call the arch_leave_lazy_mmu_mode() with LAZY_MMU_DEFAULT
+> in here since I think kasan_populate_vmalloc_pte() wouldn't be called
+> nestly.
+
+In fact in that case it doesn't matter if the section is nested or not.
+We're already assuming that lazy_mmu is enabled, and we want to fully
+disable it so that PTE operations take effect immediately. For that to
+happen we must call arch_leave_lazy_mmu_mode(LAZY_MMU_DEFAULT). We will
+then re-enable lazy_mmu, and the next call to leave() will do the right
+thing whether it is nested or not.
+
+It's worth nothing the same situation occurs in xen_flush_lazy_mmu() and
+this patch handles it in the way I've just described.
+
+I'll take care of that in v2, thanks for the heads-up!
+
+- Kevin
 
