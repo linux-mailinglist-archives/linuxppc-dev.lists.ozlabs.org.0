@@ -1,92 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-11717-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11720-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC27B437FF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 12:09:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 279CDB438DC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 12:35:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHZw00spcz30RJ;
-	Thu,  4 Sep 2025 20:09:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHbTY0NLGz302g;
+	Thu,  4 Sep 2025 20:35:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756980576;
-	cv=none; b=YEyWcjvVGkevqTcuJihyw3Dk8V5ESJ6lqj0kY2L3plv1MwwFjDTdxbcLYDH/zS2Xm5aWnnaQ5qfbsGu8Q/ZAyt/HPeKe4RXuTgXf0DrtpyxbqAar5DEd4NtS6y8cuNMFH1Aku7/LROfn4hupyfg6pSumpFunUu2/DfNI1ZhXoyn+MtmgbHVZFMtCbaIC7WyKT1zPIkLL6WxQi55FkGlSGen3HcBmlDKK9aSouRawrf0UIbFxDNEoZdgGVrbEeS/J5JWDv89YxsWoOC/UueaztjD9QQTWgN5AHuM2/NGNWTlAi43DoIs2gbRYXU+B4uPBUV+SZiMscXYN1wZnhqoccA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756982112;
+	cv=none; b=E3AXfHYd+CxGsERe7Vhzj7f0G1tWhTjyVhBfw0KYUTuuTI497gl6i1Tf/IpMT39fm40xPb8TB7GL3m3TZggcVvG3+CDYtMZC5h8RFHz2O0zRCuqM0Qf9OL5i7cHyz690lydnm+9aCOd6L01/RlZr9i+aN30dSQu+K+gqK2BdKGOxpB+jG/znQKP1nDZFNQf2d8eahfkNM1olc3WaZgAn/DlrFZyxLOo6pZK5uEW9Zv6jHt8pV7SAZDpCNc/3EvgYib2utCQMbmkr0IiZgClxZbJEPkMtpB9Iz3rzpT0elUBAWsW/q5QEodmm4rYuWAzLdspKOZdn9YpmfKN2eQ56CA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756980576; c=relaxed/relaxed;
-	bh=SO75t8E32ZyWyF9mdP6KV1AdkCGIcYvhJZLy2lWIr6s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ig2vjCfFwmivdltDK23IdabcPxwZ8GAGSB7F61UdeAzRsem3dD0kEP0ODovmgzsR+gtFHgVTCsJ3K6PfhUjX81N9o30peSnyYbtMsSwh1VHhPAxRMdooPqnSr2NSN/dFDosPA7V+Q3R9H00iTGXPcebmxquo88hqVMa4eaF0xXNezhArDHDif8FyJdfHHc06Dc8EHh8gaeJCfNQEX4RRrwBaWDZu0QVImGnGl4LmzP+jDmPzEEGzrQyxNeH777CR3D/FfOXmtfxpjMs+bkTkbjT6xCRVehJCTjt92n76c1xKjZ2wwUp3nwMfzPizzvTj7TigRJ+00jBrAs/jr5DHBQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eLnEGrYO; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1756982112; c=relaxed/relaxed;
+	bh=OvDgBHL1QfReUGKYA4TnrNVX3xlVsuPP0C+YfIarv60=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ncuVVymH6AT7NusA7TgPHhYPHx9KbeUR98fHsa4RoIhVGWPihkPF462+0/lehsIZoAjNDlYcn3WE7WA9ULY5y12eQfy5SFKaru/UT1nJMFfK2+t+clNH0UFyx9JUBHhNihrNPyDUL3D9a9jZFCV6xJQQzvRaC3ekP/wPJ0u0F4bstj7dm8UdJoE3+u+gsJ7l0dSoBJhDKMLiyOb5kp4BD3QIp5dVy4o7QW8NK9O5PzCrOwPiF27CU2U4qqaO95a4KL5hrbQ5YyC/ahqVAxXrJEBBcZhjk6BeBuslx5fjwtyQWytG2ef4WbCrCTdzzZU9FsCptkRr4LfhKuYPFVJ+5g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RZeaEfc+; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eLnEGrYO;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RZeaEfc+;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHZvz1gk5z301n
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 20:09:35 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 583Ms8gs001199;
-	Thu, 4 Sep 2025 10:09:05 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHbTW6RxPz2yrp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 20:35:11 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5846XDBX005735;
+	Thu, 4 Sep 2025 10:34:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=SO75t8E32ZyWyF9md
-	P6KV1AdkCGIcYvhJZLy2lWIr6s=; b=eLnEGrYOq0muF4kZmF13uM0XeNBCFLHNc
-	JHWmZdPGgGLaHMKxsoMhQO1c5u1WviUuO8qBpKDNi2W15+Hcz4u4RERy0hpMIKh1
-	rLThpeu4uCV/viI2TzQVqALxAOn1qkhGFgOyork3ID5HA6ZRq/kSt7WUZ7lzJEt7
-	1y0O4sUCrZKpBRrAFaD9aEbh1KkKG0NB6zvERLbLw3rfsEeHyqKz7Zz71hKvRqG6
-	2+HYnEyXzrcrwrc5lBSrQxdaRqrVLjLqKWjPBqtoZQt+HZjfTD9n6VgV+kpVaEcN
-	kJdsMmm47IyMtqbi3hsXsUG3KlUYrrNl5o3FvFbC8+7EPskzXXrCA==
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=OvDgBHL1QfReUGKYA4TnrNVX3xlVsu
+	PP0C+YfIarv60=; b=RZeaEfc+QyLLLd1zPZ+nrjAJbmteGpF+7BUCrhbLCLa7pv
+	qg4GXrJW6hqW5dcMxQn0qTwnCDQ9gH6f7XvIuYzF5tMN192PPfSBG0SDZIqXg5tj
+	1fZIBiC4ujMcdNNfHkRYmPvzy86U1ud+FYKfCecZT7RJA6ddvlIZp/hW/v9QAkaD
+	gAEWsryshCvlMASnhfVHC5pyHgmtMJLUmT3kPI+1Ab3TNOD5Ts26JmpGB9qe4chW
+	vTb9j5p949w8iWPeTw6hrpOnb7JQvzKVp3akw6m/Zcst1j374xo4xPSgjRziGa7H
+	Gyw+Fq/rboGYPThdTezKcPac4gfPWEVIBaPj94eg==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48wshf573x-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usua93bk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 10:09:05 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 584A94LA011517;
-	Thu, 4 Sep 2025 10:09:04 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48wshf573u-1
+	Thu, 04 Sep 2025 10:34:44 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 584AYiaC021619;
+	Thu, 4 Sep 2025 10:34:44 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usua93be-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 10:09:04 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 584711Qi017222;
-	Thu, 4 Sep 2025 10:09:03 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48vc10v2vs-1
+	Thu, 04 Sep 2025 10:34:44 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5846sw0g019925;
+	Thu, 4 Sep 2025 10:34:43 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48vbmuc916-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 10:09:03 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 584A90V346596466
+	Thu, 04 Sep 2025 10:34:43 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 584AYdTh34669154
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Sep 2025 10:09:00 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 62BF72007B;
-	Thu,  4 Sep 2025 10:09:00 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E008B20067;
-	Thu,  4 Sep 2025 10:08:55 +0000 (GMT)
-Received: from li-621bac4c-27c7-11b2-a85c-c2bf7c4b3c07.in.ibm.com (unknown [9.109.219.153])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  4 Sep 2025 10:08:55 +0000 (GMT)
+	Thu, 4 Sep 2025 10:34:39 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6CC3B2004B;
+	Thu,  4 Sep 2025 10:34:39 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DA28420043;
+	Thu,  4 Sep 2025 10:34:34 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.109.219.153])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  4 Sep 2025 10:34:34 +0000 (GMT)
+Date: Thu, 4 Sep 2025 16:04:32 +0530
 From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-To: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: hbathini@linux.ibm.com, sachinpb@linux.ibm.com, venkat88@linux.ibm.com,
-        andrii@kernel.org, eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+To: Hari Bathini <hbathini@linux.ibm.com>
+Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sachinpb@linux.ibm.com, venkat88@linux.ibm.com, andrii@kernel.org,
+        eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
         daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
         yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
         sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
         christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
         mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
         iii@linux.ibm.com, shuah@kernel.org
-Subject: [PATCH bpf-next v3 4/4] powerpc64/bpf: Implement PROBE_ATOMIC instructions
-Date: Thu,  4 Sep 2025 15:38:35 +0530
-Message-ID: <20250904100835.1100423-5-skb99@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250904100835.1100423-1-skb99@linux.ibm.com>
-References: <20250904100835.1100423-1-skb99@linux.ibm.com>
+Subject: Re: [PATCH bpf-next v2 5/5] selftests/bpf: Fix arena_spin_lock
+ selftest failure
+Message-ID: <aLlrOFzwRZotcpY4@linux.ibm.com>
+References: <20250829165135.1273071-1-skb99@linux.ibm.com>
+ <20250829165135.1273071-6-skb99@linux.ibm.com>
+ <46243c40-8e5e-47d3-97bd-71f29eeb0127@linux.ibm.com>
+ <aLlNBK9Zm+N4zarF@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,119 +103,139 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aLlNBK9Zm+N4zarF@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Xo9cL5xBECnU35L6Fv5kpH-1kX0VkmW9
-X-Authority-Analysis: v=2.4 cv=do3bC0g4 c=1 sm=1 tr=0 ts=68b96541 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=A3AlPsS74hsQCGrZRX4A:9
-X-Proofpoint-ORIG-GUID: y3DJb659C20TPRkMeHBu-52wcY6O0bLO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAyMDA0MCBTYWx0ZWRfX2Pz6il/Zb9VI
- wjnoqg/yXP40uJES/vFDwJeruCJ+N1rZTVP5Us8hXhJzdDFFnjYURXyXWEA5WZXvg7OgUL7umHl
- L7dZtvbkJY684ir09zUuwqSKFsPHNO2crrmH+GLfJLkKJbWFnoXSTVHc3nQQCgOj3AiWwc8IMa9
- jo3zhyWs6UqRVTrcgg0Zb1hCl9GcP+MR6joNVj5B50YN1qTmnsRwirJZn2HICz3BzPVUaInsW9X
- resTTJGqKsFZjz6ZZuwU4TUjlnybx38Fog8DIRq5SGoFZzomtysVMFpugxyMjGeRMs9Ndh3K8yT
- C+u/p46HabZJuoNrXLHMVmWCRAfljoFnADJq9Kh6Fxr3DYTkJygdT/dYMGEpFCm1j8/7n/TwLDZ
- JNj5Go5A
+X-Proofpoint-GUID: 9n8EctKyMzCe8PS3p37W_1wCfXqHauvi
+X-Authority-Analysis: v=2.4 cv=U6uSDfru c=1 sm=1 tr=0 ts=68b96b44 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=hPZlYmIs_T5Z1BX5r4cA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzNCBTYWx0ZWRfXyNkE/eE9EHWO
+ mzrckl80bYebef7rCxE+x1P2GWjYiILUCBT/Q5NxUMLsjxwXCS68+NstCr87T44YyqAWg22C1Ow
+ vIvQEbzfT6icQh23JY7FIolv+WkKvyrM2EsAr0iMYFbCKm5x6cXYS7e+hpHzCd/7c0PsjtqPNck
+ zVk/WaXuSwRNpZOQG5adBjsfa0XocwxpbqhIqr5q0z9vBBf2ApaSEXqYbbY3FFGJHg4YQbtpqPp
+ mQxeLXPktPz8uGMS7+41h6mQnPVfaA1VOT8o0vkJSveq9YbNXA2ikuJ+tnc1L0QNQcuUqUXgO9d
+ yDuQzH5tel4jJp+0O7mPhUiy2ZZ9cL/WYoinTDgZ22x6OAuC9Uaq7+zf3CK1CiSubqYyQRHQAqw
+ qQyXZ29O
+X-Proofpoint-ORIG-GUID: he6RjKqFBXFh-cUXmKn7R90-MiZdl3jj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-04_03,2025-08-28_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 clxscore=1015 impostorscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0
+ impostorscore=0 phishscore=0 adultscore=0 clxscore=1015 suspectscore=0
+ priorityscore=1501 spamscore=0 bulkscore=0 malwarescore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509020040
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300034
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-powerpc supports BPF atomic operations using a loop around
-Load-And-Reserve(LDARX/LWARX) and Store-Conditional(STDCX/STWCX)
-instructions gated by sync instructions to enforce full ordering.
+On Thu, Sep 04, 2025 at 01:55:40PM +0530, Saket Kumar Bhaskar wrote:
+> On Thu, Sep 04, 2025 at 01:39:31PM +0530, Hari Bathini wrote:
+> > 
+> > 
+> > On 29/08/25 10:21 pm, Saket Kumar Bhaskar wrote:
+> > > For systems having CONFIG_NR_CPUS set to > 1024 in kernel config
+> > > the selftest fails as arena_spin_lock_irqsave() returns EOPNOTSUPP.
+> > > 
+> > > The selftest is skipped incase bpf program returns EOPNOTSUPP,
+> > > with a descriptive message logged.
+> > > 
+> > > Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+> > > ---
+> > >   .../selftests/bpf/prog_tests/arena_spin_lock.c      | 13 +++++++++++++
+> > >   tools/testing/selftests/bpf/progs/arena_spin_lock.c |  5 ++++-
+> > >   2 files changed, 17 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c b/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
+> > > index 0223fce4db2b..1ec1ca987893 100644
+> > > --- a/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
+> > > +++ b/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
+> > > @@ -40,8 +40,13 @@ static void *spin_lock_thread(void *arg)
+> > >   	err = bpf_prog_test_run_opts(prog_fd, &topts);
+> > >   	ASSERT_OK(err, "test_run err");
+> > > +
+> > > +	if (topts.retval == -EOPNOTSUPP)
+> > > +		goto end;
+> > > +
+> > >   	ASSERT_EQ((int)topts.retval, 0, "test_run retval");
+> > > +end:
+> > >   	pthread_exit(arg);
+> > >   }
+> > > @@ -63,6 +68,7 @@ static void test_arena_spin_lock_size(int size)
+> > >   	skel = arena_spin_lock__open_and_load();
+> > >   	if (!ASSERT_OK_PTR(skel, "arena_spin_lock__open_and_load"))
+> > >   		return;
+> > > +
+> > >   	if (skel->data->test_skip == 2) {
+> > >   		test__skip();
+> > >   		goto end;
+> > > @@ -86,6 +92,13 @@ static void test_arena_spin_lock_size(int size)
+> > >   			goto end_barrier;
+> > >   	}
+> > > +	if (skel->data->test_skip == 2) {
+> > > +		printf("%s:SKIP: %d CPUs exceed the maximum supported by arena spinlock\n",
+> > > +		       __func__, get_nprocs());
+> > > +		test__skip();
+> > > +		goto end_barrier;
+> > > +	}
+> > > +
+> > >   	ASSERT_EQ(skel->bss->counter, repeat * nthreads, "check counter value");
+> > >   end_barrier:
+> > > diff --git a/tools/testing/selftests/bpf/progs/arena_spin_lock.c b/tools/testing/selftests/bpf/progs/arena_spin_lock.c
+> > > index c4500c37f85e..a475b974438e 100644
+> > > --- a/tools/testing/selftests/bpf/progs/arena_spin_lock.c
+> > > +++ b/tools/testing/selftests/bpf/progs/arena_spin_lock.c
+> > > @@ -37,8 +37,11 @@ int prog(void *ctx)
+> > >   #if defined(ENABLE_ATOMICS_TESTS) && defined(__BPF_FEATURE_ADDR_SPACE_CAST)
+> > >   	unsigned long flags;
+> > > -	if ((ret = arena_spin_lock_irqsave(&lock, flags)))
+> > > +	if ((ret = arena_spin_lock_irqsave(&lock, flags))) {
+> > > +		if (ret == -EOPNOTSUPP)
+> > > +			test_skip = 2;
+> > >   		return ret;
+> > 
+> > test_skip being set to `1` when the test runs seems counter intuitive.
+> > How about setting test_skip to `0` when run conditions are met
+> > and test_skip=1 if run conditions are not met and
+> > test_skip=2 when operation is not supported?
+> > 
+> > - Hari
+> That seems reasonable to me, but right now -EOPNOTSUPP is also
+> returned when run condition is not met i.e.:
+> 
+>   if (CONFIG_NR_CPUS > 1024)
+>                 return -EOPNOTSUPP;
+> 
+> So do we really need test_skip = 2 ?
+> 
+> Thanks,
+> Saket
+Also, when test_skip is initialized to 0 it is moved to bss segment 
+from data segment:
 
-To implement arena_atomics, arena vm start address is added to the
-dst_reg to be used for both the LDARX/LWARX and STDCX/STWCX instructions.
-Further, an exception table entry is added for LDARX/LWARX
-instruction to land after the loop on fault. At the end of sequence,
-dst_reg is restored by subtracting arena vm start address.
+        struct arena_spin_lock__arena {
+                struct arena_qnode qnodes[1024][4];
+                struct __qspinlock lock;
+        } *arena;
+        struct arena_spin_lock__bss {
+                int test_skip;
+                int counter;
+                int limit;
+                int cs_count;
+        } *bss;
 
-bpf_jit_supports_insn() is introduced to selectively enable instruction
-support as in other architectures like x86 and arm64.
+I dont have enough background here, as to if there is any specific 
+reason to keep it in data segment:
 
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
----
- arch/powerpc/net/bpf_jit_comp.c   | 16 ++++++++++++++++
- arch/powerpc/net/bpf_jit_comp64.c | 26 ++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+)
+        if (skel->data->test_skip == 2) {
+                test__skip();
+                goto end;
+        }
 
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index cfa84cab0a18..88ad5ba7b87f 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -450,6 +450,22 @@ bool bpf_jit_supports_far_kfunc_call(void)
- 	return IS_ENABLED(CONFIG_PPC64);
- }
- 
-+bool bpf_jit_supports_insn(struct bpf_insn *insn, bool in_arena)
-+{
-+	if (!in_arena)
-+		return true;
-+	switch (insn->code) {
-+	case BPF_STX | BPF_ATOMIC | BPF_H:
-+	case BPF_STX | BPF_ATOMIC | BPF_B:
-+	case BPF_STX | BPF_ATOMIC | BPF_W:
-+	case BPF_STX | BPF_ATOMIC | BPF_DW:
-+		if (bpf_atomic_is_load_store(insn))
-+			return false;
-+		return IS_ENABLED(CONFIG_PPC64);
-+	}
-+	return true;
-+}
-+
- void *arch_alloc_bpf_trampoline(unsigned int size)
- {
- 	return bpf_prog_pack_alloc(size, bpf_jit_fill_ill_insns);
-diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
-index cb4d1e954961..1fe37128c876 100644
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -1163,6 +1163,32 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
- 
- 			break;
- 
-+		/*
-+		 * BPF_STX PROBE_ATOMIC (arena atomic ops)
-+		 */
-+		case BPF_STX | BPF_PROBE_ATOMIC | BPF_W:
-+		case BPF_STX | BPF_PROBE_ATOMIC | BPF_DW:
-+			EMIT(PPC_RAW_ADD(dst_reg, dst_reg, bpf_to_ppc(ARENA_VM_START)));
-+			ret = bpf_jit_emit_atomic_ops(image, ctx, &insn[i],
-+						      &jmp_off, &tmp_idx, &addrs[i + 1]);
-+			if (ret) {
-+				if (ret == -EOPNOTSUPP) {
-+					pr_err_ratelimited(
-+						"eBPF filter atomic op code %02x (@%d) unsupported\n",
-+						code, i);
-+				}
-+				return ret;
-+			}
-+			/* LDARX/LWARX should land here on exception. */
-+			ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
-+						    tmp_idx, jmp_off, dst_reg, code);
-+			if (ret)
-+				return ret;
-+
-+			/* Retrieve the dst_reg */
-+			EMIT(PPC_RAW_SUB(dst_reg, dst_reg, bpf_to_ppc(ARENA_VM_START)));
-+			break;
-+
- 		/*
- 		 * BPF_STX ATOMIC (atomic ops)
- 		 */
--- 
-2.43.5
-
+Thanks,
+Saket
 
