@@ -1,58 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-11736-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11737-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BB04B43CDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 15:17:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A4EB43D39
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 15:30:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHg510w6Kz2xnM;
-	Thu,  4 Sep 2025 23:17:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHgN20ZCzz2xd6;
+	Thu,  4 Sep 2025 23:30:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756991861;
-	cv=none; b=Uy6zSXSUsTG7HhSapqyAGFOiiQ+f3nmxLeyYtKmYUiV5045sJqqDY5Z/xnAwFywLVd0ji4WBJNr4mC6RoHD5XaeMSkApKR2fDSZzQ/ah3KI/bM4aeDHJmEwEFM0rLbHZ9vdmdW6kEqHRLIfn39jy5fFdzCzpPFbepT4FyK6dc/hOJb1AaLpgPHDg8FGOZ/nzX6/bcn/gwqXZ37VaEBe4DE3am0yR65HRU9CzHHEnBAfcCQ/1SX32nMWZSOybvgAw3kxu+T46fmJGB33L7W5RXjc3/GtlMljw/MYThCkS9g2lACSvAABGNqDBgfykfHpBQLfk5iVrOzMD+b+kM4dm0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756991861; c=relaxed/relaxed;
-	bh=67l47YskJlJP8yhiZ3Hn8G5grVZLLDVvWpMgz14yWcc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lLHD0gdpadW9RrHwRI8CDNqn0aTrRwCGUCa4+S/2PRZ6D0n7d5wr2qe9LcM6tezPwvjiEJw6EGyAtRYbjmUdcRoa4/iIjlHFZ86KviGyezFcFgD9/9AI/Aqy2+0ugu9zuY36iGghsIm4iRewpou4ut+9nyyqJttHcgBasM8mUs6yMzIuPpD3wI5I/kP5IRiO0xgfCORikeSWN+6uj+q2AgNVAQenDB40AhAQtZpxTiwRYUsDsBbn+0M00Dx+dyBbc36+TqsepSjxYNYM3fLnJ/ieAdTVDNlsIf2CMsf4yNs1c0Wz9fX2SDl8AcjSmVi+f2tfe2mYL4Eet2CftPdgNA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rSeeYMQC; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::1" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756992641;
+	cv=pass; b=TNsw/dZDwDPuv+lWUUg3qCwefqZaYjtQwVQqNk0TALbL1a/kbNwPlvmm6SCnpajywBlN49tCFGyInfLj2T/le8ziY0OSlxvMCY8AVHk8/RA522ksaH4z09/w9tAdVH/6+Tfu6rAcPqZBW5v9pK1LRUOhwvbIK2L/kqDTepMDWaehK42nrTR5fP4rT/FewgX3HShlLR6NZ1HeFASiZkFv23qAgp693M1q8so3JJoH+Rabd58Cqq4lTzIrESxbvKte8xjr71SWe5fzGqJ0GpI5Jq1Sc6COn4/A8yWhkALXJV374yFBP1ru4g1gQBVOLyek2SIaVbstBa5mHBDcxhoG3Q==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1756992641; c=relaxed/relaxed;
+	bh=744Pl3YGjT3+KS4INDUJBQ16/QubJkApW30ZZQIosQ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=WjEZL9QSLbKxnSxnSfzDX6TxBATt7fBt0vlLcsHNzPFF43IYPuVt1YTox6U+yCC+Hs3nyYbw3Ye8r8fsIo2oQ9CT17y9fKlmyywAUCbVo1gmrNoBTjBype+tC1EURQiGHPzU3nzcDXcXQH50TqQow5TeOGv2ckmxlqyIQhLzFpaVYdp/ikcftUOmInhsjTPahI5h9K8Jjp5GGRePEVflm8h8eS3gZxkQMogxmli08y4sCXsg6gkqjFwyY2QjIf8UyqlifdTkFBs8T78MlfcP0exQsV/enOkZ2hIl6WrX4wU3HKH3a1BabwOdsWXFVhMDKxS+n9GzLPQN0djL3yuKQA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=fSTEino5; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::1; helo=db3pr0202cu003.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rSeeYMQC;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=fSTEino5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::1; helo=db3pr0202cu003.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org)
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazlp170100001.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHg4z6XwVz2xQ5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 23:17:39 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4152842BAB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 13:17:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B3AC4CEFC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 13:17:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756991858;
-	bh=J37h8zaAlmHnvnALjyhUgHlYpkvFqaV8s8bqNB0XjFQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rSeeYMQC35U85BwNUUpTccZq+hmNBZVbOybxyuurDfaGkCAOruDMl/BJ+6V3r+u6h
-	 58CWTnMu+bkN110RdLUvsucq93Jc3d5+kS4frgCgo3FVx3GWK1mqvcgH10uQaLNdrC
-	 SjzoQa4PZZYmq/Cxf5GId4h0wwWgehrTcd3/KL9uaLs131Bk/JxcPE98Jb6fe/jKYz
-	 z9ZzUD2u+kcZHrqVDT3DoVuv24+ayotdgqIP+Ft/7HhGElCcWzJX7QOvWcqV7tq8AE
-	 Dyj7Rt7r/bwUN6zrO9NKAoaO0vQbLGPtbHKeSIOKcrHhUaGW45oySjjKxi6/1oZJq4
-	 26vW+iK8JHIJQ==
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-74381e207a0so830745a34.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Sep 2025 06:17:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVvjGLCrt3R+Hrh0W3BP8fAGI6myvQ6S9TLnMwwCkkuF/MMya5Ni+WPqPSh3HksXCfMY01nEHSwQ3tpNLs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzrmQx8CGDUf+W2qrTkomPHpCpPJs3VAPpMIQFM4GOXGR0duUJg
-	9G01lf/WRwpHBOuQV+QOLYz/urxAzFjL/Ab8vBWOpuQTrIwzXomWgXs2zxcMCv7D3O0nJjIWvkC
-	DUqJunxW4uy8016zBh5gkWzxU2vNZQH4=
-X-Google-Smtp-Source: AGHT+IEjDfW+3hJPUPYu26F2xz+pxJ+KiqPGjYP79H7T0/I1zIoWql1eDpgpdg2oH+VBSzMp/G1t2kU5l5bZBE+Bi2g=
-X-Received: by 2002:a05:6830:4901:b0:73e:8c8b:749 with SMTP id
- 46e09a7af769-74569c6739fmr14127345a34.0.1756991857138; Thu, 04 Sep 2025
- 06:17:37 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHgN01vcRz2xQ5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 23:30:39 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dZ9QJnn7s+Q7SLpq3KWcswo9eV/1e6D5vQoWBO9fQ+VYEqPD8kSy4ynSgwxLO4quVmwQE4cFV3DgP2lUPCKGgnb0/7xwFaK4VYkOQnhJJsvsgiLS7MTEwQM3NGig0UaeuwpkhjiVY/Q43zHsOFgPy8rRYbKDeQ9zLS/9BrfItmmxYlZDaU3o75Vq25NcSJydqfut28Kf3M1rX+gnupbWBM+FBVb2h106GmUo0WGcNDuPjfgJeGMDi8bSS9uTGFp/EuCdbBqcfu4DAV8YD21V+nZBthLlchg+sgLuJLLL/pi3e12TPBy/Ul85c+poM+yY2OoV4IvHktQ0Bvg9fnmB1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=744Pl3YGjT3+KS4INDUJBQ16/QubJkApW30ZZQIosQ4=;
+ b=N2hvDPnp03COlMDOxQ7T21xm9JyIPl+qTq3HrjiL8QdnKDZ3xGeQ1vnAh42nnFUJFf3qBcn5S2Fb58TUyVbT+4PhX6b8D5vwPMSGN80GxaGrxYdR/WzvagTbcxtSbV1Fa31q5G9VBGv5pSwXwn7wjX3JjdePV/MTPCIQTK5zQ+v1CDaWj28hnzGbjJVEi4tcGS4kit7DkXhu1XrX1gM79D+EQ9rPohoHenX2q+I8lFNP83ZXUloc9yZWm4m1QEHPl7PavHgOa94PJucFc2MO3IT+tbbmOeGIxBCS+wPAbBK4kbW/ARUaJi+1USG5H40wgzk3NXh+8RaoQqmsnh+h+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=744Pl3YGjT3+KS4INDUJBQ16/QubJkApW30ZZQIosQ4=;
+ b=fSTEino5KtMSAeqk2G5W/+/pSI1vwN26zkPg1+VTy2uS9cIs+s20/nZFbQxSfUa+0XkeBVzToi539KssH23qoAnikpQPP6vgx5mslyklhtDLd8m9/T8RlvDwzmp+oWdxC8maxUY+JvL813BeVIEmjdSd6fSJqZuotOhxUoqJtkrE4ciQtsLuemULaDWwG6J3Zgv51PNs0IQO7NvuL6vClDkJrJ/r+7NXdQgKo0iO9vpwoxYd7IQrWQQI+VSsqjYFAFq61jsGAgpbLlDCjRGE28aqBdTwe3alGxpmKaInpFc3kECWAHQCkWdOPxz9T77UJ0NWVfsa8K3eTmJtNB0WFQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by AS1PR04MB9359.eurprd04.prod.outlook.com (2603:10a6:20b:4db::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.16; Thu, 4 Sep
+ 2025 13:30:14 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%7]) with mapi id 15.20.9094.016; Thu, 4 Sep 2025
+ 13:30:14 +0000
+Date: Thu, 4 Sep 2025 16:30:11 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	xiaoning.wang@nxp.com, Frank.Li@nxp.com, yangbo.lu@nxp.com,
+	christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH net-next 1/3] ptp: add debugfs interfaces to loop back
+ the periodic output signal
+Message-ID: <20250904133011.asqvsucdmuktazc4@skbuf>
+References: <20250903083749.1388583-1-wei.fang@nxp.com>
+ <20250903083749.1388583-1-wei.fang@nxp.com>
+ <20250903083749.1388583-2-wei.fang@nxp.com>
+ <20250903083749.1388583-2-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250903083749.1388583-2-wei.fang@nxp.com>
+ <20250903083749.1388583-2-wei.fang@nxp.com>
+X-ClientProxiedBy: BE1P281CA0380.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:80::19) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,165 +89,108 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
- <20250903131733.57637-8-zhangzihuan@kylinos.cn> <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
- <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
-In-Reply-To: <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 4 Sep 2025 15:17:26 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0g__9g_dfA3=4GVi351f4CKBegKkW9nU81j+Qu=2Hfg1Q@mail.gmail.com>
-X-Gm-Features: Ac12FXwmEGaidQr8PE8Gnv5hzk4SwGXFsXwEgV1BR4I0F2oh9v2_Dsc7pRXgYnA
-Message-ID: <CAJZ5v0g__9g_dfA3=4GVi351f4CKBegKkW9nU81j+Qu=2Hfg1Q@mail.gmail.com>
-Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AS1PR04MB9359:EE_
+X-MS-Office365-Filtering-Correlation-Id: d7caff2b-b05d-47f5-266c-08ddebb72e06
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|10070799003|376014|7416014|366016|19092799006;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?cc9xdiRs47iEUyT5inCXnIxwsqISmo/gFHbjTkHYTra13PQda90J7wleqHbp?=
+ =?us-ascii?Q?fMfGlY2kOOrcnYd31pbNU1v+4f3sSCA4aD6UZvson9JYEiODuKsuQJYxzXV+?=
+ =?us-ascii?Q?pXvVx9Pd4u6Rr/C8zk3y3ivl1rs4WPKWqn7+8pXnSmJ2uxe4qNfh6xVLTOSD?=
+ =?us-ascii?Q?cThHFwMP4V4AZ15j3zbns2GN8CjYFoo6XMEkItHwkZUKWv7NifrKcl3qGcM/?=
+ =?us-ascii?Q?bveKOB0ZcdsT7s0lkRXV2hUwtxEmZ5YaqLPgOJpiLDNnrFwM45yU5i1dTZnR?=
+ =?us-ascii?Q?vms3tL99HO9fHOcukbxQwPQtAGBl7O57J1xN9pfxiJMeAVAzqa43Ah4jLnXd?=
+ =?us-ascii?Q?aAUz8qAQB1/r3XMVMfuAyEGSW9EfTtPMODhBB22U8yG7cQoTnKA32W1ORBFw?=
+ =?us-ascii?Q?5VMblN5VQlaIAHCGESDhT5k0EH2YrxOCB9ruEnaUEAf2ySzmzm5bk03hRV29?=
+ =?us-ascii?Q?m49D8DnSWtC1NUt3uGByT2ybGUcpDcle5C8D4/ftB7zYe9JHLMdRQw/68MOf?=
+ =?us-ascii?Q?X+zzaehCmjv1e5cf3Ml3awLi7mvaI2Y4fQ8UbS9NrcWwFvKkzflHXoO8XaT6?=
+ =?us-ascii?Q?epdkFcPv+gBW77M3zy1QBhk+GE2E0lduB2Q4Tv2d/IXfwQ2bLDXYvdWtPTpt?=
+ =?us-ascii?Q?NEFqXSaNZt4I6adkYAJNJwmRFngoe5DKCtCL9UvP4iylrK3lMmigHqEC904G?=
+ =?us-ascii?Q?P8uETrMSEBPkhraqs1XILsgWYAa/DDUCPnkkLOz2a0JzwYQGTQxrJCpTVusu?=
+ =?us-ascii?Q?+jvrZpuAKB+QbWC55rcdz4DuLDNMPylwYokN/SZmBeEGml4j1qe7h22ULvQH?=
+ =?us-ascii?Q?VZtycYM6v8AbV0KMwcsmSvLCrOjfri+YH4Jlrphk2ewe8EY7gw5bf/MwkGRn?=
+ =?us-ascii?Q?pZnego64VYAgHvJiSSKCB2bxaP3i2idD2tW1pn56PWCd0MOsc0xORNHeH0hp?=
+ =?us-ascii?Q?xvNkEo0rtahsr5CFAo+byI5B5g02wFYM2nbQl+oyLGW/XQuEfbQzfU/WTkIh?=
+ =?us-ascii?Q?ChaSTco+j8ddnocKKh+93SOFqwLCRLoLeM08q8NxqeIoB0TmxBTBRCRELjFe?=
+ =?us-ascii?Q?5xpuPZ7do5vPZoBAqiYKIkEkUJyGA1EQBSstOKpwJD+aO4LjI2W38bQf7Fga?=
+ =?us-ascii?Q?hnLH9fv8YE5I51Dy/QTMf6UTcYcgmoVyfNaItsJ8Jfw7hGhAyPM6+SVrXRpu?=
+ =?us-ascii?Q?UUHkeNwVN8oW5JNj2MW0k/AA2PU943l3z0Tx04zjBv2MF4znF6KVTljHE82i?=
+ =?us-ascii?Q?nndyQv/PyOlois3fSZe3Kn4yG62F4LcMaIYpl7FOFgA+ttWD//G2uBfUEJz7?=
+ =?us-ascii?Q?o6ozDtL8aS7BP/r6HNKP4tX0ZDq1P8rN2NnSlekw3EfUtE7R/cxFTpl+aUeR?=
+ =?us-ascii?Q?Al8tOwgKJ93iVHgmK1wTTzqKram68qqbNTVyekcTOPq/edgTsebhS3A3aXty?=
+ =?us-ascii?Q?v29+ArYwBOA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(7416014)(366016)(19092799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dzVm3MSBqL1+cfSu5rp0W8FBeF6tYmx8V840eOp1ouijSeKHdaDEfNJkb1h9?=
+ =?us-ascii?Q?KP6mctX2lfe49rLajDerpzn8vu0PqDvh5aB/r5MMWQeFeSwOcn1dsz4S+Iac?=
+ =?us-ascii?Q?wBs3GQdaO7LdOzTvSWguO0E8jxmndR/MM2WKbCroIdr4MUdFWueHUYcU+gaH?=
+ =?us-ascii?Q?JJZV0frSE0HvQ3xwjzKoZLg6zncesIDFy8qZDGdgCBwzI+p8di1AbgQHerdG?=
+ =?us-ascii?Q?0OMWmtdfAazS2/EEDkzofLdmwSwFSyn3g4aY+CL1pkYTM9gLbNGBYL6+66b4?=
+ =?us-ascii?Q?C5DdC7KlEnDYHt2s/Dlbd3z5rJqik6JrEl9dNhLgXEb7xzwjXhrn2vv/rx57?=
+ =?us-ascii?Q?n1WqK9uQCbEXVfiVW90iJv1Bz5P9OH2UW82C5fK8JlWBUYiXTmEC5iiUlma8?=
+ =?us-ascii?Q?Yc2VlC6gwjYGGREQY0T6jKkb+i7IAJXllSsX4/jLRzsB3kFD0f0bfr2SzaU4?=
+ =?us-ascii?Q?Q0BKK+6+n+lxgNMfURsx2xLqfo04tgNAisqOjviKNQt/yecrIO/gPV/71vfM?=
+ =?us-ascii?Q?YeLbsUxq20QyodhoIB0y8dcLRNOCE4Nwjq3McQVaYhM5HkuNAelOYY/PLMpZ?=
+ =?us-ascii?Q?sfMHNOPnaQ8B2Cg99/ZsGhWJgRTlNl+oOigY10oizGgvvtKMgAb9mtfb/wZ4?=
+ =?us-ascii?Q?pIgPGEe1R0E/N4TnaQx1tN8nOaqG7s8hwYLzLT3c+nNaMqql2ZN8JO9YJhA1?=
+ =?us-ascii?Q?H9xx6jH1lHTYHS0tE0tiBtx+KHEAG4JArb7edoRV5g8BbzWt/3KGL5FjpRDI?=
+ =?us-ascii?Q?gUiNF+iQQzHFuCA2QQmGNiLMpkL6YLbdBsL3l0nfIGA3+JwjDJCMa8vcdSgZ?=
+ =?us-ascii?Q?FC89oTpdGCQiTzgW4+WAUMG+3sKUe33YuhYKoH1IMTo8RI4SJ20l0SY4HMwc?=
+ =?us-ascii?Q?XPortXpp3I5jEuz1vb0YtzCtFTdBgJsde+00WGfhrbdHuuUk2tbBuJ6h09ax?=
+ =?us-ascii?Q?c1KSbo4aVc0vym+7XJT/8e6ELNDC0xVQ9B5uFdvGwnOQSNDC7idqnRthwhfc?=
+ =?us-ascii?Q?O/poOkDcIG36st5VsY/JFaha+e0Jx7DIuJs3Y6NkdSK8+ngnNJiJ3w/lc4eR?=
+ =?us-ascii?Q?LpEJEgckC/SXKdCdLK33ruDiG8NVc8fcieVN/9C0lArFKwt6AXjgsD6eUZwX?=
+ =?us-ascii?Q?Mz5elkcH4wWzrLMGYv6ZH5Z/MMtnSQ/tqFqilo+CIiSXMfFNdvAfOtb9uP84?=
+ =?us-ascii?Q?2uM5PLdJz1L2wzXaFggxcOhwlQAPBf7j06HVBgdoxQSP3DJRywadMN10eIWM?=
+ =?us-ascii?Q?WL9nCgE4mXwYwdaKvYjbxYFX/MpGHK53pm5x4/Xt0X9APfZ3YWuIQwA4+yvC?=
+ =?us-ascii?Q?I6ztn7N5c5nx0swNOgy864vTab6OUMrl8T17PrSTlxfNuvLvA72vTq+YMWOt?=
+ =?us-ascii?Q?/SEZqvwJDfzyGv8zTbbvlqFI+Eb1SNfA4FXQ3RK26RjYtBRR1FSTT7u5aF0g?=
+ =?us-ascii?Q?IWYRU8o/Qn45YSszID/8bGPrE1Ot33N3sf2ml8bLprQaYpzS5G7CWXIWiJT6?=
+ =?us-ascii?Q?L1rCXNDESUvrAiJaiFXmzab+qYjnMcCGyFUlwzW9J77CYhn8GVis200+Nb/z?=
+ =?us-ascii?Q?89iyZJYIL/QSObi7xDkZi4A/U8ZLbyGsRKLECCsrwSKhdRXULs7e5zGZ7lgM?=
+ =?us-ascii?Q?oduvpucGCki3/WXrQRrWz4f/gdFn5m+x27AH8YBJXBSv8fd4U65aBWo3l/HK?=
+ =?us-ascii?Q?NxRxTQ=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7caff2b-b05d-47f5-266c-08ddebb72e06
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2025 13:30:14.1864
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: af4F75cDbD6C8/A1e+ZAjQ+GoNeBAHjPIQM+Ee6E2jc+/3eM+84bp6ZGBAyggps4SkLEvAajQWmot335jaiK0g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9359
+X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Sep 4, 2025 at 12:38=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.c=
-n> wrote:
->
->
-> =E5=9C=A8 2025/9/3 21:45, Rafael J. Wysocki =E5=86=99=E9=81=93:
-> > On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylino=
-s.cn> wrote:
-> >> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> >> annotation for policy references. This reduces the risk of reference
-> >> counting mistakes and aligns the code with the latest kernel style.
-> >>
-> >> No functional change intended.
-> >>
-> >> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-> >> ---
-> >>   drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
-> >>   1 file changed, 11 insertions(+), 19 deletions(-)
-> >>
-> >> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-> >> index 99390ec1481f..f76594185fa2 100644
-> >> --- a/drivers/powercap/dtpm_cpu.c
-> >> +++ b/drivers/powercap/dtpm_cpu.c
-> >> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
-> >>   static void pd_release(struct dtpm *dtpm)
-> >>   {
-> >>          struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
-> >> -       struct cpufreq_policy *policy;
-> >>
-> >>          if (freq_qos_request_active(&dtpm_cpu->qos_req))
-> >>                  freq_qos_remove_request(&dtpm_cpu->qos_req);
-> >>
-> >> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
-> >> -       if (policy) {
-> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-> >> +               cpufreq_cpu_get(dtpm_cpu->cpu);
-> >> +
-> >> +       if (policy)
-> >>                  for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
-> >>                          per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL=
-;
-> >>
-> >> -               cpufreq_cpu_put(policy);
-> >> -       }
-> >> -
-> >>          kfree(dtpm_cpu);
-> >>   }
-> >>
-> >> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
-> >>   static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
-> >>   {
-> >>          struct dtpm_cpu *dtpm_cpu;
-> >> -       struct cpufreq_policy *policy;
-> >>          struct em_perf_state *table;
-> >>          struct em_perf_domain *pd;
-> >>          char name[CPUFREQ_NAME_LEN];
-> >> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm=
- *parent)
-> >>          if (dtpm_cpu)
-> >>                  return 0;
-> >>
-> >> -       policy =3D cpufreq_cpu_get(cpu);
-> >> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
-> >> +               cpufreq_cpu_get(cpu);
-> >> +
-> >>          if (!policy)
-> >>                  return 0;
-> >>
-> >>          pd =3D em_cpu_get(cpu);
-> >> -       if (!pd || em_is_artificial(pd)) {
-> >> -               ret =3D -EINVAL;
-> >> -               goto release_policy;
-> >> -       }
-> >> +       if (!pd || em_is_artificial(pd))
-> >> +               return -EINVAL;
-> >>
-> >>          dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
-> >> -       if (!dtpm_cpu) {
-> >> -               ret =3D -ENOMEM;
-> >> -               goto release_policy;
-> >> -       }
-> >> +       if (!dtpm_cpu)
-> >> +               return -ENOMEM;
-> >>
-> >>          dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
-> >>          dtpm_cpu->cpu =3D cpu;
-> >> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
-parent)
-> >>          if (ret < 0)
-> >>                  goto out_dtpm_unregister;
-> > So this change kind of goes against another recommendation given in cle=
-anup.h:
-> >
-> >   * Lastly, given that the benefit of cleanup helpers is removal of
-> >   * "goto", and that the "goto" statement can jump between scopes, the
-> >   * expectation is that usage of "goto" and cleanup helpers is never
-> >   * mixed in the same function. I.e. for a given routine, convert all
-> >   * resources that need a "goto" cleanup to scope-based cleanup, or
-> >   * convert none of them.
->
->
-> Should I replace all the memory allocation cleanups here with `__free`?
-> That would allow us to drop all the `goto`s, but since this function has
-> quite a few of them, I=E2=80=99m concerned it might introduce new issues.=
- What=E2=80=99s
-> your recommendation?
+On Wed, Sep 03, 2025 at 04:37:47PM +0800, Wei Fang wrote:
+> +	buf[len] = '\0';
+> +	cnt = sscanf(buf, "%u %d", &index, &enable);
+> +	if (cnt != 2)
+> +		return -EINVAL;
+> +
+> +	if (index >= ops->n_per_lp)
+> +		return -EINVAL;
+> +
+> +	err = ops->perout_loopback(ops, index, enable ? 1 : 0);
 
-Frankly, don't use __free() in this code at all, at least for the time bein=
-g.
+Why not just reject other 'enable' values than 1 or 0? You make it
+impossible for other values like '2' to be used in the future, if they
+are currently treated the same as '1'.
 
-There is a problem with dropping the reference to policy at the end of
-__dtpm_cpu_setup() because that policy may be subsequently indirectly
-used in set_pd_power_limit() which calls
-freq_qos_update_request(&dtpm_cpu->qos_req, freq) and
-dtpm_cpu->qos_req->qos is policy->constraints, so using it will cause
-policy->constraints to be dereferenced in freq_qos_apply() which will
-crash and burn if the policy goes away in the meantime.  So AFAICS
-__dtpm_cpu_setup() shouldn't call cpufreq_cpu_put() at all and the
-policy should be released in pd_release() without acquiring a new
-reference to it.
+Also, signed 'enable' doesn't make much sense.
 
-You may as well try to fix this if you have free cycles.
+> +	if (err)
+> +		return err;
+> +
+> +	return count;
+> +}
 
