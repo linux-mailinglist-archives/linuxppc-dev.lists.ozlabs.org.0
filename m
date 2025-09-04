@@ -1,49 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-11710-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11707-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11B5B43792
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 11:50:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67252B435AA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 10:26:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHZV42rdtz2yrZ;
-	Thu,  4 Sep 2025 19:50:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHXd20tCjz2yrp;
+	Thu,  4 Sep 2025 18:26:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756979436;
-	cv=none; b=GGbotY8ZlSJuMMZiLhdMB9HuMoyrp7ApWSzNxUfw753rfLOXHtWuE7ydPIfCSkcXpDRnQnI5gpbHWmzN5lEiwi2e59lNJLoX6xZvpdJZ8OD0oRcOwmYHCm/L4MCvdOh0hyUXBOgjt6BVedxDjIs+o7VaZZa2IWlFhL8Cwnd/OWbnv/V/+h+8Cz6qqCDo209mBwAW5tJQTg47TgSrC8oIh/cwHphFBYyXraHTHYfYrCzXs7JeDr50bvMTLjj8hcK5GXeElmuPOEyebTY+aB1ea9DSEaVOVycNC85fu5sdDJIZjA4w7v+ZLkYTh6pm0AivD36qz3cM+36P6W1XWaFtSg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756974390;
+	cv=none; b=QW1+OF99BHl9B8+hIJlgWzKi87XvM7BjaZ4w5vro/bMwwOVa8c745bD6NC1Pr2jowteI2m6X0m4wooo7PEnCCxuOlKk0GhcsicnbX0+TG+Sa4vNISL+5BVIg7IBGr8WQBcaD7HqU5lUuyuzoxHcn321aROqSEwoY96YG/d1xbqk7tX3ceAHSEbCraPRBwzR/hg3+VCH4kTEfXMAiJ5cBJGq8CNEAyPUQ4Uuo8nxEtjn7lpy1eLe/nDS6M8g3wQ0qNPAgkkP+1FI9qeU75oI6RszvE303RECxxfzEq++27hJA8rlAXfijrqzt7tvk0x1ASjaYxklhnEUfk9HAk+Epcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756979436; c=relaxed/relaxed;
-	bh=i4u6Mu381p5jH8eD4ZzHyiz1fIrkqSakQkKnaMeMuZ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ndiG1pQwUwV5ZC91tKBUOVJEt1dMwDL/9IcstRaM9w5GPwZrajr6pnq0qH0x8pRw2GV0OxCXoqnfrGzVCC23bF50QYP2HoU4vhOqJSPKOL4qSmhUkRwxjuqE77t7bbP9+h58yTeHEUtYWNkM/np231z19PtlgmMhI+02+IXnGfpFfnR02qGJ4vJVOKFjQtetam0SMJ+CCGthJJnQH9cogMQQWdLcf9hAJqeANp0DmyBf3A40HTJchemtTd0sCL2KXiUlg9pXFEnfg6Kreo/t3WWly+KBxfdVz0HEBU5twXt3LOZsz1aRhT+PNPRZRNye6o7AAtp7cLFXyoSFasiuRw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHZV32fZ0z2xlM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 19:50:34 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cHXPv6szdz9sSb;
-	Thu,  4 Sep 2025 10:16:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Q0bCBb93aCZt; Thu,  4 Sep 2025 10:16:51 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHXPZ2N6dz9sSK;
-	Thu,  4 Sep 2025 10:16:34 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3C32C8B764;
-	Thu,  4 Sep 2025 10:16:34 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id zHQ165OB1h7X; Thu,  4 Sep 2025 10:16:34 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 03CAE8B763;
-	Thu,  4 Sep 2025 10:16:33 +0200 (CEST)
-Message-ID: <97fc7eed-c67e-4b5e-90bb-93eb8dd058d7@csgroup.eu>
-Date: Thu, 4 Sep 2025 10:16:33 +0200
+	t=1756974390; c=relaxed/relaxed;
+	bh=SeIWyYthFKXTM+YzvniBzV+/iCysms58rjuwsZBdr+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TwyOsVcEBlBMVwtFzTeJ1jNVewzHWKrNEb8vcTC7PH0fCwkpIuuPvjgL9APJ3ZVeOMEE0842r9rF/HY69LF5cuCPariujphYZgqDRK4EGy/k/b0o1KKE7tdsdyaXnWjrd4y76KeT6ucm8wGI6xoTHU00AQUPk9AOazcKzOv0GLNLrf/hvsABp494QTjDalvH/+tAkkhu0CERdhGrrEiET3M/QxjVVWqyYhs3iA/ot9bghloj+eifyhuREmSCwChld0xILOPBgOBCbkRRw4wqg5T6esPhQ/WBFAXn3fC8DBCYy0oO3zChVLpTKlwDn44Y8Wilo/SZJkg9inUiVLJCQg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AatXNMpd; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AatXNMpd;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHXd10PjSz2xnM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 18:26:28 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 583Lo3cE001416;
+	Thu, 4 Sep 2025 08:25:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=SeIWyYthFKXTM+YzvniBzV+/iCysms
+	58rjuwsZBdr+w=; b=AatXNMpdEkN2p+2NFIfEo7YsQ7blIS/sOV5zwIS2X0/ANz
+	LoSCKWXxbPVBg0YTCW4eiz5+ev5IT2oa/HGeWFtnwMpkgBeZZkLyPQvItkpXTvvn
+	+Wnw7rH4H5pzf+q8MORGeI2EievntsBqq1ik9EaCFDF4gkUYiSJvbu4k2oXsg2iN
+	iLYme5ChMH4sP+HRd64Jw3Xsjjm96r9ChUUnfp9eWP6KSbYe7Lk8v25oxiHtJTNU
+	I5eoEUV+IbLxdPZHecvIt+KcqH8HrWVwRMbCu99KEVq1fw7aEPr3q5zz6wlttws6
+	Ql4JckMAVL9WcwJDhfnU4RFxrvKRaFCVDtrhb/ug==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48wshf4q7w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 08:25:54 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5848NHHr015391;
+	Thu, 4 Sep 2025 08:25:53 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48wshf4q7u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 08:25:53 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5848NBpc009015;
+	Thu, 4 Sep 2025 08:25:52 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48vdumkbsw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 08:25:52 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5848Pm9t50594086
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 4 Sep 2025 08:25:48 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3E20320049;
+	Thu,  4 Sep 2025 08:25:48 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7C60B2004E;
+	Thu,  4 Sep 2025 08:25:43 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.109.219.153])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  4 Sep 2025 08:25:43 +0000 (GMT)
+Date: Thu, 4 Sep 2025 13:55:40 +0530
+From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sachinpb@linux.ibm.com, venkat88@linux.ibm.com, andrii@kernel.org,
+        eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
+        iii@linux.ibm.com, shuah@kernel.org
+Subject: Re: [PATCH bpf-next v2 5/5] selftests/bpf: Fix arena_spin_lock
+ selftest failure
+Message-ID: <aLlNBK9Zm+N4zarF@linux.ibm.com>
+References: <20250829165135.1273071-1-skb99@linux.ibm.com>
+ <20250829165135.1273071-6-skb99@linux.ibm.com>
+ <46243c40-8e5e-47d3-97bd-71f29eeb0127@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,82 +102,114 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 only v2] powerpc: boot: Remove leading zero in label
- in udelay()
-To: Nathan Chancellor <nathan@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-References: <20250903211158.2844032-1-nathan@kernel.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <20250903211158.2844032-1-nathan@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <46243c40-8e5e-47d3-97bd-71f29eeb0127@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: RIaLeL1eD_hlIa3O9svCbxgdhcOrJBBE
+X-Authority-Analysis: v=2.4 cv=do3bC0g4 c=1 sm=1 tr=0 ts=68b94d12 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=0I_jKKNEayZCK3l2YkoA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: xVaDW9JNJ5EePgooQO8eO--XqDgpJDEK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTAyMDA0MCBTYWx0ZWRfX93lrJIM42Ssl
+ C3RH4XOSoegosRkEX4fFsX4JVD5gltG4+WPHFeK+qfPumk0lWzGPZpEICFLx/x76ysgw9kwvbdQ
+ tGZ4V/Oi9LLwT7SpaWBiu0Nk1rP3mls3ogGmEbORkg0tsu77h5Vgz6Mnk3QTY0CyMem688nwADH
+ HvFI2xRn0CIEadsQ0Y1nH0MVhc9lfh6a3hNusd/iiNFuP+fScJErQTEkgjxKM+swLcZ29DIpP27
+ nNc7cRTeQ+/ymm75jjn90Ls3cWOfk+/gEq8P2yPzCNjsIkksFu5FD6ruHgFhFQQNn6sXtjtH7mH
+ iqmwZLhZUlWewGFAQ86cQlv2IXx2a3ljwPWIR2bdIpMinQUl176vtwQbrn4R1SdKzZyWFfOuzUO
+ B9PiPMgS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-04_02,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015 impostorscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509020040
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Thu, Sep 04, 2025 at 01:39:31PM +0530, Hari Bathini wrote:
+> 
+> 
+> On 29/08/25 10:21 pm, Saket Kumar Bhaskar wrote:
+> > For systems having CONFIG_NR_CPUS set to > 1024 in kernel config
+> > the selftest fails as arena_spin_lock_irqsave() returns EOPNOTSUPP.
+> > 
+> > The selftest is skipped incase bpf program returns EOPNOTSUPP,
+> > with a descriptive message logged.
+> > 
+> > Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+> > ---
+> >   .../selftests/bpf/prog_tests/arena_spin_lock.c      | 13 +++++++++++++
+> >   tools/testing/selftests/bpf/progs/arena_spin_lock.c |  5 ++++-
+> >   2 files changed, 17 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c b/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
+> > index 0223fce4db2b..1ec1ca987893 100644
+> > --- a/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
+> > +++ b/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
+> > @@ -40,8 +40,13 @@ static void *spin_lock_thread(void *arg)
+> >   	err = bpf_prog_test_run_opts(prog_fd, &topts);
+> >   	ASSERT_OK(err, "test_run err");
+> > +
+> > +	if (topts.retval == -EOPNOTSUPP)
+> > +		goto end;
+> > +
+> >   	ASSERT_EQ((int)topts.retval, 0, "test_run retval");
+> > +end:
+> >   	pthread_exit(arg);
+> >   }
+> > @@ -63,6 +68,7 @@ static void test_arena_spin_lock_size(int size)
+> >   	skel = arena_spin_lock__open_and_load();
+> >   	if (!ASSERT_OK_PTR(skel, "arena_spin_lock__open_and_load"))
+> >   		return;
+> > +
+> >   	if (skel->data->test_skip == 2) {
+> >   		test__skip();
+> >   		goto end;
+> > @@ -86,6 +92,13 @@ static void test_arena_spin_lock_size(int size)
+> >   			goto end_barrier;
+> >   	}
+> > +	if (skel->data->test_skip == 2) {
+> > +		printf("%s:SKIP: %d CPUs exceed the maximum supported by arena spinlock\n",
+> > +		       __func__, get_nprocs());
+> > +		test__skip();
+> > +		goto end_barrier;
+> > +	}
+> > +
+> >   	ASSERT_EQ(skel->bss->counter, repeat * nthreads, "check counter value");
+> >   end_barrier:
+> > diff --git a/tools/testing/selftests/bpf/progs/arena_spin_lock.c b/tools/testing/selftests/bpf/progs/arena_spin_lock.c
+> > index c4500c37f85e..a475b974438e 100644
+> > --- a/tools/testing/selftests/bpf/progs/arena_spin_lock.c
+> > +++ b/tools/testing/selftests/bpf/progs/arena_spin_lock.c
+> > @@ -37,8 +37,11 @@ int prog(void *ctx)
+> >   #if defined(ENABLE_ATOMICS_TESTS) && defined(__BPF_FEATURE_ADDR_SPACE_CAST)
+> >   	unsigned long flags;
+> > -	if ((ret = arena_spin_lock_irqsave(&lock, flags)))
+> > +	if ((ret = arena_spin_lock_irqsave(&lock, flags))) {
+> > +		if (ret == -EOPNOTSUPP)
+> > +			test_skip = 2;
+> >   		return ret;
+> 
+> test_skip being set to `1` when the test runs seems counter intuitive.
+> How about setting test_skip to `0` when run conditions are met
+> and test_skip=1 if run conditions are not met and
+> test_skip=2 when operation is not supported?
+> 
+> - Hari
+That seems reasonable to me, but right now -EOPNOTSUPP is also
+returned when run condition is not met i.e.:
 
+  if (CONFIG_NR_CPUS > 1024)
+                return -EOPNOTSUPP;
 
-Le 03/09/2025 à 23:11, Nathan Chancellor a écrit :
-> When building powerpc configurations in linux-5.4.y with binutils 2.43
-> or newer, there is an assembler error in arch/powerpc/boot/util.S:
-> 
->    arch/powerpc/boot/util.S: Assembler messages:
->    arch/powerpc/boot/util.S:44: Error: junk at end of line, first unrecognized character is `0'
->    arch/powerpc/boot/util.S:49: Error: syntax error; found `b', expected `,'
->    arch/powerpc/boot/util.S:49: Error: junk at end of line: `b'
-> 
-> binutils 2.43 contains stricter parsing of certain labels [1], namely
-> that leading zeros are no longer allowed. The GNU assembler
-> documentation already somewhat forbade this construct:
-> 
->    To define a local label, write a label of the form 'N:' (where N
->    represents any non-negative integer).
-> 
-> Eliminate the leading zero in the label to fix the syntax error. This is
-> only needed in linux-5.4.y because commit 8b14e1dff067 ("powerpc: Remove
-> support for PowerPC 601") removed this code altogether in 5.10.
-> 
-> Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=226749d5a6ff0d5c607d6428d6c81e1e7e7a994b [1]
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+So do we really need test_skip = 2 ?
 
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-
-> ---
-> v1 -> v2:
-> - Adjust commit message to make it clearer this construct was already
->    incorrect under the existing GNU assembler documentation (Segher)
-> 
-> v1: https://lore.kernel.org/20250902235234.2046667-1-nathan@kernel.org/
-> ---
->   arch/powerpc/boot/util.S | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/boot/util.S b/arch/powerpc/boot/util.S
-> index f11f0589a669..5ab2bc864e66 100644
-> --- a/arch/powerpc/boot/util.S
-> +++ b/arch/powerpc/boot/util.S
-> @@ -41,12 +41,12 @@ udelay:
->   	srwi	r4,r4,16
->   	cmpwi	0,r4,1		/* 601 ? */
->   	bne	.Ludelay_not_601
-> -00:	li	r0,86	/* Instructions / microsecond? */
-> +0:	li	r0,86	/* Instructions / microsecond? */
->   	mtctr	r0
->   10:	addi	r0,r0,0 /* NOP */
->   	bdnz	10b
->   	subic.	r3,r3,1
-> -	bne	00b
-> +	bne	0b
->   	blr
->   
->   .Ludelay_not_601:
-> 
-> base-commit: c25f780e491e4734eb27d65aa58e0909fd78ad9f
-
+Thanks,
+Saket
 
