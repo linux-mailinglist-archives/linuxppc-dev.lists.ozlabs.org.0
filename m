@@ -1,34 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-11726-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11741-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 837D0B43B81
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 14:27:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 338F5B43DCE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 15:54:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHdym1n9Lz30HB;
-	Thu,  4 Sep 2025 22:27:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHgv23N9pz2xlM;
+	Thu,  4 Sep 2025 23:54:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8::227"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756988832;
-	cv=none; b=UPR6XjQ0+PtZIt05cNgpajKoxPWsRsbb0oPQ9JQz0QY9E/ee7x34KbrbXUW9mnSUL04uopqmu4uVVB/CMLYaFIU66C4IpzqRTMG1Wd4YE8dt0n89gxpFxCLIAfVlxYeUoZpp9bHgtm6823v4rRy9YNi6fqGzWK7mGBl3TzF1loa5k1tMBFI/SPP9S5wQNTgPFQROTV97AfNrEDwNAIrDKZKlt22YbSumCJtQjfag8w6PRRg+KHsgNL/tKG5yq4ZH3xcbBLz84m0odkUdPfCWvZxSCxYicFLuMdvoaZg5xxW7OVm6QTxBZpQk49F9d36KKEi0u9CnohhtR2wijSFBuQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::432"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756989867;
+	cv=none; b=GCeyiMBjjrzea3LDKdggj8gfIfMRalLD7/LPpXxROopM7d0s/sSQtiNfld34WQjkGGYWJS/sZg0EMzFHpx72JptfU0bs/V5B7m2XxW/tVYBDYDI8CnIMdFXaCbeRhndMXoAlr+YDdgzNOAmeUbxuSpFyRI7jhRoaP1TUDgfoWAJXI8Qyf+nvDrg+vLcCFZSl84Lu8r6hmk57MFivAEoG9NFnEsTbfOMaQjD1x84pkdj8D2/Um0mHtFZRworHreJ8259bL6/6Kr8mHAx1qmQ3i3cPpJcEE+M2v/gyfBfBBrDQ0MlYlSnEIqJ+GEYHKdxCcp/Ry8gvA8vEjzdCiXfWOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756988832; c=relaxed/relaxed;
-	bh=ap/u/LxI4jJId+wwpbfiqajsfGDukKXM8oCDW1Th5dw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D+PBvS62qE750pmbYtPSSaJXDBspf9k5R1bgOJE3jgMfP5k+jhU3+vOlc8zU4ZSkAOdUzdlEzrHPMGs+AyRTNd94oWeThY9eayqML5NTVadAPkekCNGoeICljlLOQk6gr73LK3ysdkcR6WTHQ7Rnu+8Mzwuh/V6D8X/1k5pOPVgSA76JLe8km9WhWQqqBv7s/Vpone2yDRuAc7fwPkb8jZX12muuf67YMZlmcATG1bsffPeqLoEeddYpoI+C1EU4srcOVt+VUkQVdSkdgoxgMBH9fmr1JVrqCnRUaoQ4UZdPUmkR47CVtwD8l5WXFGD2zQnf/3OrU9Xe9A9gbKiZiQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass (client-ip=2001:4b98:dc4:8::227; helo=relay7-d.mail.gandi.net; envelope-from=alex@ghiti.fr; receiver=lists.ozlabs.org) smtp.mailfrom=ghiti.fr
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ghiti.fr (client-ip=2001:4b98:dc4:8::227; helo=relay7-d.mail.gandi.net; envelope-from=alex@ghiti.fr; receiver=lists.ozlabs.org)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
+	t=1756989867; c=relaxed/relaxed;
+	bh=+4TpF34W3PHvsBrekGwm1rvuPQAafzFCgW5mxOcoS+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UljFaWGYNwso7H/VffzAo2ErlLaEcF6gcx3S5ZNykwkf040hdS8h1h0gx8MvLd0c0OkWK+vzunIF31LCix12VAWBjFOW9KHGna/nmHf667meExnuuRawSLErGGG9MeTfqmpyViS3ArD+56D7OOWeFliohkmwW+Yd6xLVjSFBF8qHy184L85LAPURqQ0T3cIwF9J1yK/BXfnrjrZcdNNrGlW+Va+80SKUPsb5gHts2Om0py8JyxtHNRZTy7NlfLpGAH1oP9TmCYctclAcV3puodoWoAhfSeeRAg2/89C1bcwdSCgoxMkvN/9YrfojqMYRzGmG1YChtdMP57BKcy+6Yg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KB3GBYRf; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=krishnagopi487@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KB3GBYRf;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::432; helo=mail-pf1-x432.google.com; envelope-from=krishnagopi487@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHdyl1qg4z302g
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 22:27:09 +1000 (AEST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 99F8842D83;
-	Thu,  4 Sep 2025 12:27:02 +0000 (UTC)
-Message-ID: <113262ca-214a-4cd4-86f2-c0e3e4bb1a06@ghiti.fr>
-Date: Thu, 4 Sep 2025 14:27:02 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHfLf1Crxz2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 22:44:25 +1000 (AEST)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-7723cf6e4b6so841674b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Sep 2025 05:44:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1756989863; x=1757594663; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+4TpF34W3PHvsBrekGwm1rvuPQAafzFCgW5mxOcoS+s=;
+        b=KB3GBYRf7DWxtl8VUlImVgj5ddf71/OXUviqjDs05mH/uXajFRZPQR6qqezVbmDN8Q
+         qosb2QugdwEvB8pLxp0Fi3Hp8Ug5R7+yn8zAlC/3KhHIAHOn5LT3pEUi37bBbwZdWRtg
+         U+ZZxNfAHbyImKsp1N4u9AS6sH3DiB+sxv+ANEwpGe9RnXGWQLBmg4+zHXtg+zhoKRyU
+         0qBVrqIPeozKnOgTNm7LhFvlt9Oo79hH+jXTcR3Lbgjcns6uNblfrYTtqEpPuEBmPmxr
+         zmY9o9DZU6Tu8WGGM+jiKAKpY1aXQqijl7RdDBFCSC9OqkY0GQ5wxHbzyiVdB9k9Z9H8
+         7puw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756989863; x=1757594663;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+4TpF34W3PHvsBrekGwm1rvuPQAafzFCgW5mxOcoS+s=;
+        b=att6ewTO13cClDUnMlQRRbRuaq9VSGV7lVfG0GgcrxNeg5t+FIbx76V8wRk/9bhNaN
+         KcX0+mug+Od7FLcozPU+9PH9NMqqIbGOev4w4RhnJIdJu4Z1lvTDDR8NkpBc89RhfaW2
+         kP+6JCyHOw5KWNQC7tnJKED73NJ1lRde5S3vwIRZ+/PIlvLLg4RdQCgi3jJgMn/it6N+
+         UrV7g9l0rjYFNl6nc9Vp4VZUUIC3hrpupF6IDuWCXUO1VQMrR/vNESJYOEdqrdl6riiR
+         isbpY6+k27nEPbxKpwzfYvHhJNnuVfNqAdUPgpG08TpbpSYinz/JyNjSfHvc6qv9nghO
+         XCkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFMzf1cly6aIvYDUg+SyyiBDM5+dSV6Nr9eygLZ2CFyo2Kh2qLgBkf42Aq/A0+8lVEiwK/EHwtS3pN26Y=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxEwNdCrrULgL4BV/fFr4RruJ0tOnp65mGe1s53wJJnYp2TxRzn
+	i7zLH0NBo02ggWWaOD1Lk50EbphkFAaD454pxePDqzkgxVVvHgDUXxbS
+X-Gm-Gg: ASbGncs68c8XNqS6zerTXVfaNGUuag31gqKwZxh70tqNz8evVkABQN7dxpA5ZY6x9A9
+	G8A/Wvu7sRad4JMF3lufoYgu3RTtF+3hqchCAPPiLvucM8T3WMTTQa3yhaT1qv2sMEwWZY7rR0G
+	C7NV0ZWCR5CAo/jfalt3KD5a//wtMUuCTb9JjlDy+G2Z7Cfigl9Y6PYWtDMUbKbeEpBH/clD3CR
+	I8Zq8WQeliyfNJ6a021NEQDJ25PS6haCuj+08tHxl0Px8Hg+W5sCmvtzcEIEFIJhH3gbTWbe4Cu
+	2CRfy6+GylRPgXhHfzrxc5qyWQEsoMZFPzdypWJ0jXpKnCK8NDNrVt6x9EjRwERwjj5eZqf4hPQ
+	Pzfiut+OSx8sMUZY0jXI8HN5kCB31JDtspSkSKjOxI/8=
+X-Google-Smtp-Source: AGHT+IG6ptwhAi2WTl+f7P5ZxhCvDz0tuMXhkbgEzCii/VqANS73LGKBj4D0rLB4cKm9/rE75RrMQg==
+X-Received: by 2002:a05:6a21:7988:b0:243:f86b:3856 with SMTP id adf61e73a8af0-243f87ac36bmr15437336637.38.1756989862589;
+        Thu, 04 Sep 2025 05:44:22 -0700 (PDT)
+Received: from kforge.gk.pfsense.com ([103.70.166.143])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b4f9c35f391sm5854642a12.25.2025.09.04.05.44.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Sep 2025 05:44:22 -0700 (PDT)
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+To: maddy@linux.ibm.com
+Cc: Gopi Krishna Menon <krishnagopi487@gmail.com>,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	shuah@kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linux.dev,
+	skhan@linuxfoundation.org
+Subject: [PATCH] selftests/powerpc/pmu/: Add check_extended_reg_test to .gitignore
+Date: Thu,  4 Sep 2025 18:14:01 +0530
+Message-ID: <20250904124404.4425-1-krishnagopi487@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -42,70 +97,33 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/7] riscv: Stop calling page_address() in free_pages()
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-efi@vger.kernel.org, virtualization@lists.linux.dev,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
-References: <20250903185921.1785167-1-vishal.moola@gmail.com>
- <20250903185921.1785167-5-vishal.moola@gmail.com>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20250903185921.1785167-5-vishal.moola@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdeitddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpedthfelfeejgeehveegleejleelgfevhfekieffkeeujeetfedvvefhledvgeegieenucfkphepvddttddumeekiedumeeffeekvdemvghfledtmeekheeftgemfegrfhegmegvfhegheemsggvudejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeeffeekvdemvghfledtmeekheeftgemfegrfhegmegvfhegheemsggvudejpdhhvghloheplgfkrfggieemvddttddumeekiedumeeffeekvdemvghfledtmeekheeftgemfegrfhegmegvfhegheemsggvudejngdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopedufedprhgtphhtthhopehvihhshhgrlhdrmhhoohhlrgesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvl
- hdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugidqsghlohgtkhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhgpdhrtghpthhtoheplhhinhhugidqrhhishgtvheslhhishhtshdrihhnfhhrrgguvggrugdrohhrgh
-X-GND-Sasl: alex@ghiti.fr
-X-Spam-Status: No, score=-0.7 required=3.0 tests=RCVD_IN_DNSWL_LOW,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Vishal,
+Add the check_extended_reg_test binary to .gitignore to avoid accidentally
+staging the build artifact.
 
-On 9/3/25 20:59, Vishal Moola (Oracle) wrote:
-> free_pages() should be used when we only have a virtual address. We
-> should call __free_pages() directly on our page instead.
->
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> ---
->   arch/riscv/mm/init.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index 15683ae13fa5..1056c11d3251 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -1624,7 +1624,7 @@ static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
->   	if (PageReserved(page))
->   		free_reserved_page(page);
->   	else
-> -		free_pages((unsigned long)page_address(page), 0);
-> +		__free_pages(page, 0);
->   	p4d_clear(p4d);
->   }
->   
-> @@ -1646,7 +1646,7 @@ static void __meminit free_vmemmap_storage(struct page *page, size_t size,
->   		return;
->   	}
->   
-> -	free_pages((unsigned long)page_address(page), order);
-> +	__free_pages(page, order);
->   }
->   
->   static void __meminit remove_pte_mapping(pte_t *pte_base, unsigned long addr, unsigned long end,
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
+---
+ tools/testing/selftests/powerpc/pmu/sampling_tests/.gitignore | 1 +
+ 1 file changed, 1 insertion(+)
 
-
-Acked-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-
-Thanks,
-
-Alex
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/.gitignore b/tools/testing/selftests/powerpc/pmu/sampling_tests/.gitignore
+index f93b4c7c3a8a..ea29228334e8 100644
+--- a/tools/testing/selftests/powerpc/pmu/sampling_tests/.gitignore
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/.gitignore
+@@ -1,5 +1,6 @@
+ bhrb_filter_map_test
+ bhrb_no_crash_wo_pmu_test
++check_extended_reg_test
+ intr_regs_no_crash_wo_pmu_test
+ mmcr0_cc56run_test
+ mmcr0_exceptionbits_test
+-- 
+2.43.0
 
 
