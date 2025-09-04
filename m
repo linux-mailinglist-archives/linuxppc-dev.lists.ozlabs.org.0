@@ -1,49 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-11702-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11703-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10CF5B43491
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 09:50:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB479B434CC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 09:57:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHWqd4jrsz2yrZ;
-	Thu,  4 Sep 2025 17:50:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHWzc4SMZz2ywR;
+	Thu,  4 Sep 2025 17:57:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756972237;
-	cv=none; b=kCQSdDIhMnrvdOvO5CSFLr41foxpPB7vpNAmqlZ0eW1/l1aeFbzFjie6Ro5T8nN+hxQZ1r8HfefanPhV7Vl3NmKDXRjqjEJlGYtlWNcvlX2YOH3wouEnIAWx/OtRHdQm+kInpZnPIamRE+erroMVFAGRmLqVZB72u7VF2VOc8IFoHV+W4xe1rlFReZJatM+Uh16jVlDt+58V0ZnAIsvwinRcj4Ytph3KiAKSrQz9K1fEudVulvcczB6i4LWyJ9NgZTBw1T2XWyjQK4+kmKijycDSJC+BC2qIDG1y9yNJ6u/kesUvIr8gOCUvuKjL7S7o0SYkEooc8AfMpPC0UPaVQA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756972652;
+	cv=none; b=HKuREXYMI73HYNISuemhjz//ukegXbE4Ptr40SmYJyufeNNbjqwt9ReOCi7X0/AkRGj47tr8536mrp4eFC6YUjqWoSLfpnLWrV1gJmb9CswfV+WFVzyVr0CA/qKf+MEuRhBR7Z12iXDxbMbJDZ5IUWXp8IztHaWRzQPF02hPA3Yit3Ee5gv78oWs1hCS7M2+6ZjB66O2hq262eiIEj4cudfsPam6cyAI5cXPsJfPywmSbKhbFzOS6vEDXLBFsvR9BK7MC/oK8EE+Ue4QUPMOwsBKYWfRqoMSihTD9FX6JRyDK7tCEo0bDpxAZ+gNOQmjcKVHKbhW52eNCkqWWhd0nA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756972237; c=relaxed/relaxed;
-	bh=WB1C0osQu7DLcHLEYW1ZxXc5VdIgByVTbwxbGeB/nRY=;
+	t=1756972652; c=relaxed/relaxed;
+	bh=qLgdaicy4xT/ZCFA/qfIr/ZB22HD/WJky9fL8YP+pUo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k8Jnrqkj1LFVEN/+4uKqUsCC257YP7W+6PeyiDNip74bo5p/TzKf92tZZHC7U6gwlZdgoSV3aaWn9xQBhTXo5LuBch/lqGgaGzaQt8WGnO15Z1DMp1YHNktE1zfWLMGBb/9GSKIQmixagDE6Ixj0D8UqSZrdW+htkcXgS8yq26ZFa/WFu3DifbwrJJyBsFZ7HiqokWjYCHqChArNkYbVZj5lgOFtgXDIVsiyguOzxpz9Y5s/blpwJS9nFKSOq/QTXAvu7o6py9d486xkx2x2c0Pjc4yzvJg7hKiKSYH6JizEa8tN/zOlgMQ586VZaYSul9clT5xZuw+T06sUVKyMpw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHWqc6dcBz2xlM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 17:50:36 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cHWPY4mRsz9sS8;
-	Thu,  4 Sep 2025 09:31:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id SsFBZzork0mm; Thu,  4 Sep 2025 09:31:29 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHWPY443xz9sRy;
-	Thu,  4 Sep 2025 09:31:29 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 77E798B764;
-	Thu,  4 Sep 2025 09:31:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id XT6Ainz9sVSu; Thu,  4 Sep 2025 09:31:29 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 530778B763;
-	Thu,  4 Sep 2025 09:31:29 +0200 (CEST)
-Message-ID: <98dbafee-aad3-439b-9efb-76f80c6668fd@csgroup.eu>
-Date: Thu, 4 Sep 2025 09:31:29 +0200
+	 In-Reply-To:Content-Type; b=N9kle61G/OfCiD+PkIY+XBUKl5HIMSPFFvyYj2MipD05b4+f1v+I7S3ysEe4ID9UnMu83Me61YH5rOGCGuAJvFJ1kyLBJDusiW7IVk9gLpxakKIIeS1OhbIyAN9/cp6n8dR/YNLBqQNPRTcBU1WEKHcbn6HjPMtgXYWwhkaoWKo1eisTmiOgBz1vQFxNiCu+tXR4Xd+FqU9jCNQgb7OXfcncmaL2Fzp1QvBVSLnMoK+tD8kvfM9uEaGVqLAgHgF6lu6qadD86rXeS5h2w9Re+UZDyMZ/HslUcmMbceVP9+gy0zuQUTR4kk6Q5iWM2ciBBjKoin0V2cdAqLVNhf3OMQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHWzb0dwKz2xd6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 17:57:29 +1000 (AEST)
+X-UUID: a2cd01a4896411f0b29709d653e92f7d-20250904
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:b7ccec76-f4fe-45e8-bab3-dc73c52616ae,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:0d8ddf5d75b8f48b58bb293ff09316f9,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: a2cd01a4896411f0b29709d653e92f7d-20250904
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 582611713; Thu, 04 Sep 2025 15:56:16 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 86A2BE008FA5;
+	Thu,  4 Sep 2025 15:56:16 +0800 (CST)
+X-ns-mid: postfix-68B94620-384750805
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 1766FE008FA2;
+	Thu,  4 Sep 2025 15:56:08 +0800 (CST)
+Message-ID: <861a6077-a7da-4899-b971-a003d6e2290e@kylinos.cn>
+Date: Thu, 4 Sep 2025 15:56:08 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,70 +65,94 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Kernel v6.17-rc4 with STATIC_CALL_SELFTEST=y enabled fails to
- boot at early stage (PowerMac G4 DP)
-To: Erhard Furtner <erhard_f@mailbox.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>
-References: <342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org>
+Subject: Re: [PATCH v4 10/10] PM: EM: Use scope-based cleanup helper
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+ <20250903131733.57637-11-zhangzihuan@kylinos.cn>
+ <34b5e01e-2f4a-4d57-93ca-ab4549681b17@kernel.org>
+ <CAJZ5v0hisM6vfdNXaY7qCGtcMb1FENGxiBb=E=tkqDbRyjs=bA@mail.gmail.com>
+ <037855bf-c878-4794-b145-266a36302fc3@kernel.org>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <037855bf-c878-4794-b145-266a36302fc3@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
+	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Erhard,
 
-Le 04/09/2025 à 00:44, Erhard Furtner a écrit :
-> Greetings!
-> 
-> In a conversation with Andrew about his page table check code for 
-> PowerPC he found out there seems to be a general problem of the code 
-> patching code on ppc:
-> 
->  > I note that STATIC_CALL_SELFTEST seems to fail, which could be but isn't
->  > necessarily related.
-> 
->  > Specifically, it looks like code patching fails if the instruction 
-> being patched
->  > is in an __init function, and in this case, that occurs due to
->  > page_table_check_pte_clear() being inlined into ptep_clear(), which 
-> is in turn
->  > inlined into pte_clear_tests() in debug_vm_pgtable.c which is marked 
-> __init.
->  > Very curious!
-> 
-> Indeed, when I enable STATIC_CALL_SELFTEST=y on my G4 the kernel fails 
-> to boot at an early stage, the OpenFirmware console showing only:
-> 
-> done
-> found display   : /pci@f0000000/ATY,AlteracParent@10/ATY,Alterac_B@1, 
-> opening...
-> 
-> Without STATIC_CALL_SELFTEST the kernel boots just fine.
-> 
-> Kernel .config attached.
+=E5=9C=A8 2025/9/3 21:43, Krzysztof Kozlowski =E5=86=99=E9=81=93:
+> On 03/09/2025 15:41, Rafael J. Wysocki wrote:
+>>>>   em_cpufreq_update_efficiencies(struct device *dev, struct em_perf_=
+state *table)
+>>>>   {
+>>>>        struct em_perf_domain *pd =3D dev->em_pd;
+>>>> -     struct cpufreq_policy *policy;
+>>>> +     struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D N=
+ULL;
+>>> This is not really correct coding style. Please read how to use
+>>> cleanup.h expressed in that header. You should have here proper
+>>> constructor or this should be moved. Or this should not be __free()..=
+.
+>> I gather that this is what you mean (quoted verbatim from cleanup.h)
+>>
+>>   * Given that the "__free(...) =3D NULL" pattern for variables define=
+d at
+>>   * the top of the function poses this potential interdependency probl=
+em
+>>   * the recommendation is to always define and assign variables in one
+>>   * statement and not group variable definitions at the top of the
+>>   * function when __free() is used.
+>>
+>> and thanks for pointing this out!
+>
+> ... and the only exception would be if there is no single constructor,
+> but multiple (in if() block). That's not the case here, I think.
+>
+> Best regards,
+> Krzysztof
 
-With your .config, on QEMU I get the following. I will investigate.
 
-[    0.000000] Kernel panic - not syncing: arch_static_call_transform: 
-patching failed func_a+0x0/0x10 at 0x0
-[    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 
-6.17.0-rc4-PMacG4+ #1628 PREEMPTLAZY
-[    0.000000] Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
-[    0.000000] Call Trace:
-[    0.000000] [c0dd7e60] [c0810e54] dump_stack_lvl+0x70/0x8c (unreliable)
-[    0.000000] [c0dd7e80] [c004b220] vpanic+0x114/0x2e4
-[    0.000000] [c0dd7eb0] [c004b45c] arch_set_bit+0x0/0x38
-[    0.000000] [c0dd7f00] [c00155fc] arch_static_call_transform+0xec/0x1e8
-[    0.000000] [c0dd7f30] [c0176944] __static_call_init+0x110/0x288
-[    0.000000] [c0dd7f80] [c0c19ab0] static_call_init+0x4c/0x9c
-[    0.000000] [c0dd7fa0] [c0c02e00] start_kernel+0x7c/0x664
-[    0.000000] [c0dd7ff0] [000035d0] 0x35d0
-[    0.000000] Rebooting in 40 seconds..
+Sorry, I didn=E2=80=99t fully understand this earlier. In v3 I split the
+definition and assignment mainly because the CPU value was obtained
+later, so I thought I couldn=E2=80=99t initialize it in one go at the top=
+ of
+the function. Honestly, it was also for =E2=80=9Cprettier=E2=80=9D style.
 
-Christophe
+After looking at the code Rafael just committed, I realized I can
+simply define and assign the variable later in one line, without
+needing to separate them. I=E2=80=99ll fix this in the next version.
+
+Thanks for pointing it out!
+
+
 
