@@ -1,35 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-11744-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11745-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D51B440F2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 17:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD29CB44228
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 18:05:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHkQn5pRhz2yhD;
-	Fri,  5 Sep 2025 01:48:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHkpl2SyTz2yqf;
+	Fri,  5 Sep 2025 02:05:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757000897;
-	cv=none; b=crbXWLBGZpnEoZIvf4MXzva5LdvUvE8TzcVvTjgJV3rsWAFSVR5N/sdSwSJa3Xmgv141ElGaGgbJJhrnDA40wTkRnjgZMw5f/iNDN8ltBKXWFbn3ynsRlpDOLjVzqc6P67R+e+HGaH5a4J3IoCa7vPnh5HmdJoqCDo8L2FG27QNg3EKpryRSxzf1512Wr7Y+gsxpvIHbswyBniLGixAb00EonqVBESPH8trnOE5uPRJ03T4F3+IWSf7On9NJF4WTVQ2Fusxb0u/0eqE1/JiHSv017dNiiAREkDzlCcETzSiEZBGJqYPwTOMxRW8JAMquRnjrkVuErHo88CnIDNSpNQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757001935;
+	cv=none; b=RKJidsaM78h5BmDWVwoNkaipKL62gDkZEMDDkDQpP5Iy5Q7lC/P1cnXlggqj2N5lqjlxnmhlzPQcOaCEvXDRDCcm4LK9yjxGNgKxY4hhYzgci9Rjlt3RCxNhMdcZ9tdwYCLzqzb3czXbdAEqZEWlvhFZPRQ1A4ELtqujPncEzSihrXLaymUS1l+7IC3idR9YmWWM0v+gHaTGS0Rgso/31+5F3RpqvtDXMY2uXWrbWCZDnzYUqHgf5f9SKLhjfiPM3Xa76V0H3NOkx4HGSo0qARZEWbsFV0h9NneR1WvnAJTVPc+DbrkOWXkCRbh8mfxB6CwpsJO8OSCgV03Ymucnnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757000897; c=relaxed/relaxed;
-	bh=7L6zmwF6yGggWJMfeGBoaeDd3ftd/sKTwPXe5q8sYhE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G9y+bqi9z7SPq5if7eI+G6MaSvnUT7BG0Aq8329MrhkYZJCkLM4L0FbGZi0ngFqZAAVWgjSYe0udOjCK+C6HQsMnOzVUJraGUjr9CPrsQqvf4lkO3IqVkcboMT0FEJE6WIfUMy+HnZJes82Bn41asX46R1KfnXurei8nqfFtCGegQaRDuiaGZvjNWUMHQLFU0MBWNCwejruJjLZfNCB5gC36sXE2hRUxHOi0ykamzrGWuYErhdecpZQCodykakIMc5GrA7AvEkYbkg8/+R5TepRTgi0VX2Bq438C+y1DKMOVtCv5soCnEr2jSeHNb7CcBRC37kelQaD2k35swwll4A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHkQm5jXVz2xcC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 01:48:16 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F682339;
-	Thu,  4 Sep 2025 08:47:35 -0700 (PDT)
-Received: from [10.57.59.221] (unknown [10.57.59.221])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1309D3F6A8;
-	Thu,  4 Sep 2025 08:47:35 -0700 (PDT)
-Message-ID: <af6ea636-a5cb-4b78-aae0-ff7e7caa5e5d@arm.com>
-Date: Thu, 4 Sep 2025 17:47:32 +0200
+	t=1757001935; c=relaxed/relaxed;
+	bh=j2e0miqXew5D1VJ555opZkdtW/8Qcdh1lziwULBNyaU=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:Message-ID:MIME-Version:
+	 Content-Type; b=LlFcd6n6pH+rQ5fwkTZwAOvvgcuWRcFF/pid55zpW0IrErUQsZbqy2/ABkRmDTrwWm8wGZn+kbTyCiFzmvagRmCClyoqMgrHYEih/BzDAWODC2IFifWw/Rn8Tacw9QzJvOU9Sq0Qj1pX5dAIA11lXlSt7WiIUlKoo5s3Gdo/qXqWMKL4voXxLVARKO5sO1wcz3HW91Z0ZFmQ2PCd+AqisahUX3G1fVQ2uacA1FYS3lpxBO1VkF6v7m2jLwmdQyLDw+IqiPEZuqBqeYRJMcGXzoAR2dx1ovDGtLdp0cvbtnVtsVpR+Vc6Rz3DA1WHFn7+D9/ETPn4Np+EzbFzOvZJMA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=KVb4tOL7; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=KVb4tOL7;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHkpj5YPNz2xnv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 02:05:33 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8BFE160210;
+	Thu,  4 Sep 2025 16:05:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2DCC4CEF0;
+	Thu,  4 Sep 2025 16:05:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1757001930;
+	bh=KItJqmznUE+2fwit9FzSceRDNxXt6o5PC13rQTzH+sE=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:From;
+	b=KVb4tOL7+Z0dmSuT6e82G+YINUMIFIfTd/CC0/DWPIB1ig2LAmiajZ9Eg+t0PGjZE
+	 /WQZzDJyWnv2/SKpGa7f5KsRwZn7AW6VtnfUhogX70Cq6XZrKTuYVKoYPgXqImwf3u
+	 ijdj1M4dZQZc0RzHrs70/rCG73GN2jeGp5SsNopw=
+Subject: Patch "powerpc: boot: Remove leading zero in label in udelay()" has been added to the 5.4-stable tree
+To: christophe.leroy@csgroup.eu,gregkh@linuxfoundation.org,linuxppc-dev@lists.ozlabs.org,maddy@linux.ibm.com,mpe@ellerman.id.au,nathan@kernel.org,npiggin@gmail.com,sashal@kernel.org
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 04 Sep 2025 18:05:27 +0200
+In-Reply-To: <20250903211158.2844032-1-nathan@kernel.org>
+Message-ID: <2025090427-coeditor-widow-8e8f@gregkh>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,104 +60,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] mm: introduce local state for lazy_mmu sections
-To: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
- xen-devel@lists.xenproject.org
-References: <20250904125736.3918646-1-kevin.brodsky@arm.com>
- <20250904125736.3918646-3-kevin.brodsky@arm.com>
- <aLmq+dwZV9dyTYuq@e129823.arm.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <aLmq+dwZV9dyTYuq@e129823.arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore 
+X-Spam-Status: No, score=2.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SORTED_RECIPS,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 04/09/2025 17:06, Yeoreum Yun wrote:
-> Hi Kevin,
->
-> [...]
->> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->> ---
->>  arch/arm64/include/asm/pgtable.h              | 10 +++++++---
->>  .../include/asm/book3s/64/tlbflush-hash.h     |  9 ++++++---
->>  arch/powerpc/mm/book3s64/hash_tlb.c           | 10 ++++++----
->>  arch/powerpc/mm/book3s64/subpage_prot.c       |  5 +++--
->>  arch/sparc/include/asm/tlbflush_64.h          |  5 +++--
->>  arch/sparc/mm/tlb.c                           |  6 ++++--
->>  arch/x86/include/asm/paravirt.h               |  6 ++++--
->>  arch/x86/include/asm/paravirt_types.h         |  2 ++
->>  arch/x86/xen/enlighten_pv.c                   |  2 +-
->>  arch/x86/xen/mmu_pv.c                         |  2 +-
->>  fs/proc/task_mmu.c                            |  5 +++--
->>  include/linux/mm_types.h                      |  3 +++
->>  include/linux/pgtable.h                       |  6 ++++--
->>  mm/madvise.c                                  | 20 ++++++++++---------
->>  mm/memory.c                                   | 20 +++++++++++--------
->>  mm/migrate_device.c                           |  5 +++--
->>  mm/mprotect.c                                 |  5 +++--
->>  mm/mremap.c                                   |  5 +++--
->>  mm/vmalloc.c                                  | 15 ++++++++------
->>  mm/vmscan.c                                   | 15 ++++++++------
->>  20 files changed, 97 insertions(+), 59 deletions(-)
-> I think you miss the mm/kasan/shadow.c
 
-Ah yes that's because my series is based on v6.17-rc4 but [1] isn't in
-mainline yet. I'll rebase v2 on top of mm-stable.
+This is a note to let you know that I've just added the patch titled
 
-[1]
-https://lore.kernel.org/all/0d2efb7ddddbff6b288fbffeeb10166e90771718.1755528662.git.agordeev@linux.ibm.com/
+    powerpc: boot: Remove leading zero in label in udelay()
 
-> But here, the usage is like:
->
-> static int kasan_populate_vmalloc_pte()
-> {
-> 	...
-> 	arch_leave_lazy_mmu_mode();
-> 	...
-> 	arch_enter_lazy_mmu_mode();
-> 	...
-> }
->
-> Might be you can call the arch_leave_lazy_mmu_mode() with LAZY_MMU_DEFAULT
-> in here since I think kasan_populate_vmalloc_pte() wouldn't be called
-> nestly.
+to the 5.4-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-In fact in that case it doesn't matter if the section is nested or not.
-We're already assuming that lazy_mmu is enabled, and we want to fully
-disable it so that PTE operations take effect immediately. For that to
-happen we must call arch_leave_lazy_mmu_mode(LAZY_MMU_DEFAULT). We will
-then re-enable lazy_mmu, and the next call to leave() will do the right
-thing whether it is nested or not.
+The filename of the patch is:
+     powerpc-boot-remove-leading-zero-in-label-in-udelay.patch
+and it can be found in the queue-5.4 subdirectory.
 
-It's worth nothing the same situation occurs in xen_flush_lazy_mmu() and
-this patch handles it in the way I've just described.
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
 
-I'll take care of that in v2, thanks for the heads-up!
 
-- Kevin
+From nathan@kernel.org  Thu Sep  4 18:03:41 2025
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Wed,  3 Sep 2025 14:11:58 -0700
+Subject: powerpc: boot: Remove leading zero in label in udelay()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, linuxppc-dev@lists.ozlabs.org, Nathan Chancellor <nathan@kernel.org>
+Message-ID: <20250903211158.2844032-1-nathan@kernel.org>
+
+From: Nathan Chancellor <nathan@kernel.org>
+
+When building powerpc configurations in linux-5.4.y with binutils 2.43
+or newer, there is an assembler error in arch/powerpc/boot/util.S:
+
+  arch/powerpc/boot/util.S: Assembler messages:
+  arch/powerpc/boot/util.S:44: Error: junk at end of line, first unrecognized character is `0'
+  arch/powerpc/boot/util.S:49: Error: syntax error; found `b', expected `,'
+  arch/powerpc/boot/util.S:49: Error: junk at end of line: `b'
+
+binutils 2.43 contains stricter parsing of certain labels [1], namely
+that leading zeros are no longer allowed. The GNU assembler
+documentation already somewhat forbade this construct:
+
+  To define a local label, write a label of the form 'N:' (where N
+  represents any non-negative integer).
+
+Eliminate the leading zero in the label to fix the syntax error. This is
+only needed in linux-5.4.y because commit 8b14e1dff067 ("powerpc: Remove
+support for PowerPC 601") removed this code altogether in 5.10.
+
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=226749d5a6ff0d5c607d6428d6c81e1e7e7a994b [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/powerpc/boot/util.S |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/arch/powerpc/boot/util.S
++++ b/arch/powerpc/boot/util.S
+@@ -41,12 +41,12 @@ udelay:
+ 	srwi	r4,r4,16
+ 	cmpwi	0,r4,1		/* 601 ? */
+ 	bne	.Ludelay_not_601
+-00:	li	r0,86	/* Instructions / microsecond? */
++0:	li	r0,86	/* Instructions / microsecond? */
+ 	mtctr	r0
+ 10:	addi	r0,r0,0 /* NOP */
+ 	bdnz	10b
+ 	subic.	r3,r3,1
+-	bne	00b
++	bne	0b
+ 	blr
+ 
+ .Ludelay_not_601:
+
+
+Patches currently in stable-queue which might be from nathan@kernel.org are
+
+queue-5.4/powerpc-boot-remove-leading-zero-in-label-in-udelay.patch
 
