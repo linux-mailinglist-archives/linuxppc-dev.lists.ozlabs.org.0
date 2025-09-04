@@ -1,49 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-11711-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11706-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B943B43793
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 11:50:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B270BB4354A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 10:16:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHZV852y2z305P;
-	Thu,  4 Sep 2025 19:50:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHXPk3TKhz2ywR;
+	Thu,  4 Sep 2025 18:16:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756979440;
-	cv=none; b=j2H7Wz7tAUKR4xsNGHFqV5wUjYQFzRqDBmI3rs2yLG+ZddosU4sM3Ze1+4Tdx4DHwqw6nSJtZLVnHQz/dl4XH3+xg4/qhJ/Ham+ZC6oucJfOp8IvT2w7jvE6gEx+zhIfEysX+nLrrEhS9J9aogjY+0PiIdFnbVqvTFif0OfapfoM4eDU8WBH57flMafD5ITGb3Gee6SA3g+JvkLX8a0I4YhCawpX63ebN3LTlLHnfG2i7DXRfb1lJtKmqI5QCw9Io+07X+TSuwvMwaNW8Er/bH+yo1rzrvU316OoBZNewHkRvUN5kEOMB9akHmNsnCrBd/7QIMHm4sdWBqTCIPbA5Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756973802;
+	cv=none; b=NlnBHGto7eGV1wCYqdeOJJWIUIgR9KTbKwRb+81IavB5+X8wPNAU4Zsy/aKypc3nCbduuZeJaxoII2GcyorGSts7gGD/CjSfKBkUvOD74Nt5ZJ8oBC1cNXyiOQu4sqUEuzRewCh0TUtvFpNuTmNrRjZaI/oNfSp8859rGa/P2Gb8xnxLZOcWo/nragL6fi6xcxQeshjoM2agns1D7vdj6hKEyMeX+fx/fbdcSVh7FJxTgvyvcvy8W13OoTQeVa+LW7gyuxOlSVRxMKRyRjgsIoupRLMkzmYxL9wxqrfSZAa8HBVgDiO+1yEgNokdeymFy09VzA3u9uD+i9o2rzPciQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756979440; c=relaxed/relaxed;
-	bh=MBrdlz0VjSUTVfRkZT8dD8Oj6WFwjZVxgdNMHOTx+NI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Bk2GGzBf1fqnLxMWmzJGPE7iAjJtQ7bsLEBr1j+BpR3tncBhcj2Px17sFxDNJa2Vo3o2pu8Ya1xIU/kcXAz33h/9HO89xfwQFSjPe9tNNXELQWjiomMCPC4z1XvIfTmuDhb2HwW3O0g+qMHu7vvM4PChQxkySZstvBL/oTUraU1VffUgviwkL9MVKW9tIrxNST2+sQGqG5I+e6rZyQZi485HzWe2q0hlt0ONIil6/o9+EKKlzEXKpYRN/IrEx9J+xApW2QTkLJAdhkC1sXh3BHXaSboR2EAckiRrPnzWrN61LzDNBcvyENTO0CSZf0TUGi8ImT/tOGAeOZ1HH04Kcg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHZV81HP9z2xlM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 19:50:40 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cHXNM6jLZz9sSZ;
-	Thu,  4 Sep 2025 10:15:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 18SI7UcBawKu; Thu,  4 Sep 2025 10:15:31 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cHXNM5kn3z9sSR;
-	Thu,  4 Sep 2025 10:15:31 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B11998B764;
-	Thu,  4 Sep 2025 10:15:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id wK9n_Hr5zaWm; Thu,  4 Sep 2025 10:15:31 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 87ADC8B763;
-	Thu,  4 Sep 2025 10:15:31 +0200 (CEST)
-Message-ID: <548521de-1bc2-41f5-a288-d450dfb6bab4@csgroup.eu>
-Date: Thu, 4 Sep 2025 10:15:31 +0200
+	t=1756973802; c=relaxed/relaxed;
+	bh=FikGBeKqEiKbFOe80rXhtbks5cwmvwTTx3ZYVEf/Lvg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D9dJlHn5k2oNwpE130pY2ZLko6tFPaK6i1dYcmPmJu9rPCYOykVc1Y4vYmIFPyf276UmlBX4TFlxI5bCgcfZY34Kdd5h5tIIjAUD3FjrycCgV2clUljWt3TBitAmq5N75MXHGcvwmcCJd4amlxAOT9DgdLXiHX8VLujEfp3929J+mB7IcExLxNavk+WP14o3MCh+wIQDe/2hfoSXPYrYwYvuM4CeR+ZzaOtSMK11gmQv+Uv1fLxtErwSrWQPic/vHGEzMWA3ff40/TOwSLVIyl+nBWsVglW5EdDlOO/OnWcB0flnenjgCVvi3kxlv/id/DFGHwrZ5doJgAeQqnse6w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SrMnqvqM; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SrMnqvqM;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHXPj3bH4z2xnM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 18:16:41 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 583Lq8u0023002;
+	Thu, 4 Sep 2025 08:16:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=FikGBe
+	KqEiKbFOe80rXhtbks5cwmvwTTx3ZYVEf/Lvg=; b=SrMnqvqMKkiIWkcer7xTfN
+	XOeSkKt1xtDhuEST6RDMUGzNLNC+eq2AhzHboNoqxG482Y1/aWu6NNmrGyBjLI0Q
+	IdQZp/S9uD3md3jh6YTBE+txYxXFVzFIfz63wyzKNE6lgK/gEETIQuiuD+5gprhk
+	6u37xvWNiDtcZGppj1aA4pM9bgOb6c6T7NZ6iQPaNnM36yf9/cu5iAMBzHNczF71
+	sf00m1oqrrPuZbvNWq5SYTvo9TzegZ67ZJqd96tA9fpmO9mHMK9P6IfkK63OZGcm
+	QYdhHC1jGDPRkxk/AcIUWa+N4uScdB/9QvPUANLK+NO5uKCYfRwDa5K6RQd6wv9A
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48uswdgyuw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 08:16:14 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58489MJ3026477;
+	Thu, 4 Sep 2025 08:16:13 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48uswdgyuq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 08:16:13 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5847fd30021191;
+	Thu, 4 Sep 2025 08:16:12 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48vcmpugg3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Sep 2025 08:16:12 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5848G9aV58720754
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 4 Sep 2025 08:16:09 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 29A022004D;
+	Thu,  4 Sep 2025 08:16:09 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1CB9520040;
+	Thu,  4 Sep 2025 08:16:03 +0000 (GMT)
+Received: from [9.78.106.34] (unknown [9.78.106.34])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  4 Sep 2025 08:16:02 +0000 (GMT)
+Message-ID: <fc16e04e-04b2-433b-aa7c-add2ff3b6483@linux.ibm.com>
+Date: Thu, 4 Sep 2025 13:46:02 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,105 +87,460 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Kernel v6.17-rc4 with STATIC_CALL_SELFTEST=y enabled fails to
- boot at early stage (PowerMac G4 DP)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Erhard Furtner <erhard_f@mailbox.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>
-References: <342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org>
- <98dbafee-aad3-439b-9efb-76f80c6668fd@csgroup.eu>
-Content-Language: fr-FR
-In-Reply-To: <98dbafee-aad3-439b-9efb-76f80c6668fd@csgroup.eu>
+Subject: Re: [PATCH bpf-next v2 1/5] powerpc64/bpf: Implement PROBE_MEM32
+ pseudo instructions
+To: Saket Kumar Bhaskar <skb99@linux.ibm.com>, bpf@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: sachinpb@linux.ibm.com, venkat88@linux.ibm.com, andrii@kernel.org,
+        eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
+        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
+        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
+        iii@linux.ibm.com, shuah@kernel.org
+References: <20250829165135.1273071-1-skb99@linux.ibm.com>
+ <20250829165135.1273071-2-skb99@linux.ibm.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <20250829165135.1273071-2-skb99@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=PeP/hjhd c=1 sm=1 tr=0 ts=68b94ace cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=mfgzkVnY5lZRbBPHzF0A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzNCBTYWx0ZWRfX1y0oc7hohSU6
+ z/oxfR5QZDop1bsvrp0vMhQYU/hNjpHhx+gkDyuUk0TMfOgRIu/l4uHs2oznMDeUPkpYT/N4U63
+ k3cklijE8TyyDBcCiqb1ibQ/mIPdL4bkub16Ss3Z/jS1bmJZR4R0FK2OW/1k6wLsS/Az6Mm2hpu
+ Wn8MN5N4foh0kmUeFoH+VNT82yF8aTEsK0maiu3gSdaoflmZV8fuFwVRqzdk6aWBpBSmT93IEV/
+ N+/AAzbUiifkxDT3c/tWRAcuCoylY8MVjPAxI206VIM1VrC0gZTKaXWTLGqLqgVGtfk48xUV0MN
+ z+7gg0DNeZttXpB+tWaxEGBmm5JufzS+g877IlfR58KhqvC4mR7dGFowD2UW8fRat7g1X02eArD
+ PWoU/4jc
+X-Proofpoint-GUID: Q5y5KhrTEd3bfxg0QPkx8iBmJMEGkH9y
+X-Proofpoint-ORIG-GUID: VOJswjWCm00QCPETpYrU8yBcOHCA-OHI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-04_02,2025-08-28_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0
+ impostorscore=0 bulkscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300034
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Again,
 
-Le 04/09/2025 à 09:31, Christophe Leroy a écrit :
-> Hi Erhard,
+
+On 29/08/25 10:21 pm, Saket Kumar Bhaskar wrote:
+> Add support for [LDX | STX | ST], PROBE_MEM32, [B | H | W | DW]
+> instructions.  They are similar to PROBE_MEM instructions with the
+> following differences:
+> - PROBE_MEM32 supports store.
+> - PROBE_MEM32 relies on the verifier to clear upper 32-bit of the
+> src/dst register
+> - PROBE_MEM32 adds 64-bit kern_vm_start address (which is stored in _R26
+> in the prologue). Due to bpf_arena constructions such _R26 + reg +
+> off16 access is guaranteed to be within arena virtual range, so no
+> address check at run-time.
+> - PROBE_MEM32 allows STX and ST. If they fault the store is a nop. When
+> LDX faults the destination register is zeroed.
 > 
-> Le 04/09/2025 à 00:44, Erhard Furtner a écrit :
->> Greetings!
->>
->> In a conversation with Andrew about his page table check code for 
->> PowerPC he found out there seems to be a general problem of the code 
->> patching code on ppc:
->>
->>  > I note that STATIC_CALL_SELFTEST seems to fail, which could be but 
->> isn't
->>  > necessarily related.
->>
->>  > Specifically, it looks like code patching fails if the instruction 
->> being patched
->>  > is in an __init function, and in this case, that occurs due to
->>  > page_table_check_pte_clear() being inlined into ptep_clear(), which 
->> is in turn
->>  > inlined into pte_clear_tests() in debug_vm_pgtable.c which is 
->> marked __init.
->>  > Very curious!
->>
->> Indeed, when I enable STATIC_CALL_SELFTEST=y on my G4 the kernel fails 
->> to boot at an early stage, the OpenFirmware console showing only:
->>
->> done
->> found display   : /pci@f0000000/ATY,AlteracParent@10/ATY,Alterac_B@1, 
->> opening...
->>
->> Without STATIC_CALL_SELFTEST the kernel boots just fine.
->>
->> Kernel .config attached.
+> To support these on powerpc, we do tmp1 = _R26 + src/dst reg and then use
+> tmp1 as the new src/dst register. This allows us to reuse most of the
+> code for normal [LDX | STX | ST].
 > 
-> With your .config, on QEMU I get the following. I will investigate.
+> Additionally, bpf_jit_emit_probe_mem_store() is introduced to emit
+> instructions for storing memory values depending on the size (byte,
+> halfword, word, doubleword).
 > 
-> [    0.000000] Kernel panic - not syncing: arch_static_call_transform: 
-> patching failed func_a+0x0/0x10 at 0x0
-> [    0.000000] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.17.0- 
-> rc4-PMacG4+ #1628 PREEMPTLAZY
-> [    0.000000] Hardware name: PowerMac3,1 7400 0xc0209 PowerMac
-> [    0.000000] Call Trace:
-> [    0.000000] [c0dd7e60] [c0810e54] dump_stack_lvl+0x70/0x8c (unreliable)
-> [    0.000000] [c0dd7e80] [c004b220] vpanic+0x114/0x2e4
-> [    0.000000] [c0dd7eb0] [c004b45c] arch_set_bit+0x0/0x38
-> [    0.000000] [c0dd7f00] [c00155fc] arch_static_call_transform+0xec/0x1e8
-> [    0.000000] [c0dd7f30] [c0176944] __static_call_init+0x110/0x288
-> [    0.000000] [c0dd7f80] [c0c19ab0] static_call_init+0x4c/0x9c
-> [    0.000000] [c0dd7fa0] [c0c02e00] start_kernel+0x7c/0x664
-> [    0.000000] [c0dd7ff0] [000035d0] 0x35d0
-> [    0.000000] Rebooting in 40 seconds..
+> Stack layout is adjusted to introduce a new NVR (_R26) and to make
+> BPF_PPC_STACKFRAME quadword aligned (local_tmp_var is increased by
+> 8 bytes).
+> 
+> Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
+> ---
+>   arch/powerpc/net/bpf_jit.h        |   5 +-
+>   arch/powerpc/net/bpf_jit_comp.c   |  10 +-
+>   arch/powerpc/net/bpf_jit_comp32.c |   2 +-
+>   arch/powerpc/net/bpf_jit_comp64.c | 162 ++++++++++++++++++++++++++----
+>   4 files changed, 155 insertions(+), 24 deletions(-)
+> 
+> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+> index 4c26912c2e3c..2d095a873305 100644
+> --- a/arch/powerpc/net/bpf_jit.h
+> +++ b/arch/powerpc/net/bpf_jit.h
+> @@ -161,9 +161,10 @@ struct codegen_context {
+>   	unsigned int seen;
+>   	unsigned int idx;
+>   	unsigned int stack_size;
+> -	int b2p[MAX_BPF_JIT_REG + 2];
+> +	int b2p[MAX_BPF_JIT_REG + 3];
+>   	unsigned int exentry_idx;
+>   	unsigned int alt_exit_addr;
+> +	u64 arena_vm_start;
+>   };
+>   
+>   #define bpf_to_ppc(r)	(ctx->b2p[r])
+> @@ -201,7 +202,7 @@ int bpf_jit_emit_exit_insn(u32 *image, struct codegen_context *ctx, int tmp_reg,
+>   
+>   int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass,
+>   			  struct codegen_context *ctx, int insn_idx,
+> -			  int jmp_off, int dst_reg);
+> +			  int jmp_off, int dst_reg, u32 code);
+>   
+>   #endif
+>   
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index c0684733e9d6..7d070232159f 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -204,6 +204,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+>   
+>   	/* Make sure that the stack is quadword aligned. */
+>   	cgctx.stack_size = round_up(fp->aux->stack_depth, 16);
+> +	cgctx.arena_vm_start = bpf_arena_get_kern_vm_start(fp->aux->arena);
+>   
+>   	/* Scouting faux-generate pass 0 */
+>   	if (bpf_jit_build_body(fp, NULL, NULL, &cgctx, addrs, 0, false)) {
+> @@ -326,7 +327,7 @@ struct bpf_prog *bpf_int_jit_compile(struct bpf_prog *fp)
+>    */
+>   int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass,
+>   			  struct codegen_context *ctx, int insn_idx, int jmp_off,
+> -			  int dst_reg)
+> +			  int dst_reg, u32 code)
+>   {
+>   	off_t offset;
+>   	unsigned long pc;
+> @@ -355,6 +356,9 @@ int bpf_add_extable_entry(struct bpf_prog *fp, u32 *image, u32 *fimage, int pass
+>   		(ctx->exentry_idx * BPF_FIXUP_LEN * 4);
+>   
+>   	fixup[0] = PPC_RAW_LI(dst_reg, 0);
+> +	if (BPF_CLASS(code) == BPF_ST || BPF_CLASS(code) == BPF_STX)
+> +		fixup[0] = PPC_RAW_NOP();
+> +
+>   	if (IS_ENABLED(CONFIG_PPC32))
+>   		fixup[1] = PPC_RAW_LI(dst_reg - 1, 0); /* clear higher 32-bit register too */
+>   
+> @@ -579,7 +583,7 @@ static void bpf_trampoline_setup_tail_call_cnt(u32 *image, struct codegen_contex
+>   {
+>   	if (IS_ENABLED(CONFIG_PPC64)) {
+>   		/* See bpf_jit_stack_tailcallcnt() */
+> -		int tailcallcnt_offset = 6 * 8;
+> +		int tailcallcnt_offset = 7 * 8;
 
-The problem comes from the following in arch/powerpc/include/asm/pgtable.h :
+Hardcoded offsets at multiple places. Can do with a bit of cleanup.
+Unrelated to this patchset though :)
 
-/*
-  * Protection used for kernel text. We want the debuggers to be able to
-  * set breakpoints anywhere, so don't write protect the kernel text
-  * on platforms where such control is possible.
-  */
-#if defined(CONFIG_KGDB) || defined(CONFIG_XMON) || 
-defined(CONFIG_BDI_SWITCH) || \
-	defined(CONFIG_KPROBES) || defined(CONFIG_DYNAMIC_FTRACE)
-#define PAGE_KERNEL_TEXT	PAGE_KERNEL_X
-#else
-#define PAGE_KERNEL_TEXT	PAGE_KERNEL_ROX
-#endif
+The changes look good to me.
 
-I don't know what the best fix is at the moment. This probably comes 
-from the old days when we didn't have CONFIG_STRICT_KERNEL_RWX. Would it 
-nowadays be acceptable to inconditionnally set:
+For patches 1 to 4:
 
-	#define PAGE_KERNEL_TEXT	PAGE_KERNEL_X
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
 
-It propably would, taking into account it is used exclusively on powerpc/32:
+>   
+>   		EMIT(PPC_RAW_LL(_R3, _R1, func_frame_offset - tailcallcnt_offset));
+>   		EMIT(PPC_RAW_STL(_R3, _R1, -tailcallcnt_offset));
+> @@ -594,7 +598,7 @@ static void bpf_trampoline_restore_tail_call_cnt(u32 *image, struct codegen_cont
+>   {
+>   	if (IS_ENABLED(CONFIG_PPC64)) {
+>   		/* See bpf_jit_stack_tailcallcnt() */
+> -		int tailcallcnt_offset = 6 * 8;
+> +		int tailcallcnt_offset = 7 * 8;
+>   
+>   		EMIT(PPC_RAW_LL(_R3, _R1, -tailcallcnt_offset));
+>   		EMIT(PPC_RAW_STL(_R3, _R1, func_frame_offset - tailcallcnt_offset));
+> diff --git a/arch/powerpc/net/bpf_jit_comp32.c b/arch/powerpc/net/bpf_jit_comp32.c
+> index 0aace304dfe1..3087e744fb25 100644
+> --- a/arch/powerpc/net/bpf_jit_comp32.c
+> +++ b/arch/powerpc/net/bpf_jit_comp32.c
+> @@ -1087,7 +1087,7 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>   				}
+>   
+>   				ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx, insn_idx,
+> -							    jmp_off, dst_reg);
+> +							    jmp_off, dst_reg, code);
+>   				if (ret)
+>   					return ret;
+>   			}
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 025524378443..569619f1b31c 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -25,18 +25,18 @@
+>    * with our redzone usage.
+>    *
+>    *		[	prev sp		] <-------------
+> - *		[   nv gpr save area	] 5*8		|
+> + *		[   nv gpr save area	] 6*8		|
+>    *		[    tail_call_cnt	] 8		|
+> - *		[    local_tmp_var	] 16		|
+> + *		[    local_tmp_var	] 24		|
+>    * fp (r31) -->	[   ebpf stack space	] upto 512	|
+>    *		[     frame header	] 32/112	|
+>    * sp (r1) --->	[    stack pointer	] --------------
+>    */
+>   
+>   /* for gpr non volatile registers BPG_REG_6 to 10 */
+> -#define BPF_PPC_STACK_SAVE	(5*8)
+> +#define BPF_PPC_STACK_SAVE	(6*8)
+>   /* for bpf JIT code internal usage */
+> -#define BPF_PPC_STACK_LOCALS	24
+> +#define BPF_PPC_STACK_LOCALS	32
+>   /* stack frame excluding BPF stack, ensure this is quadword aligned */
+>   #define BPF_PPC_STACKFRAME	(STACK_FRAME_MIN_SIZE + \
+>   				 BPF_PPC_STACK_LOCALS + BPF_PPC_STACK_SAVE)
+> @@ -44,6 +44,7 @@
+>   /* BPF register usage */
+>   #define TMP_REG_1	(MAX_BPF_JIT_REG + 0)
+>   #define TMP_REG_2	(MAX_BPF_JIT_REG + 1)
+> +#define ARENA_VM_START  (MAX_BPF_JIT_REG + 2)
+>   
+>   /* BPF to ppc register mappings */
+>   void bpf_jit_init_reg_mapping(struct codegen_context *ctx)
+> @@ -67,10 +68,12 @@ void bpf_jit_init_reg_mapping(struct codegen_context *ctx)
+>   	ctx->b2p[BPF_REG_AX] = _R12;
+>   	ctx->b2p[TMP_REG_1] = _R9;
+>   	ctx->b2p[TMP_REG_2] = _R10;
+> +	/* non volatile register for kern_vm_start address */
+> +	ctx->b2p[ARENA_VM_START] = _R26;
+>   }
+>   
+> -/* PPC NVR range -- update this if we ever use NVRs below r27 */
+> -#define BPF_PPC_NVR_MIN		_R27
+> +/* PPC NVR range -- update this if we ever use NVRs below r26 */
+> +#define BPF_PPC_NVR_MIN		_R26
+>   
+>   static inline bool bpf_has_stack_frame(struct codegen_context *ctx)
+>   {
+> @@ -89,9 +92,9 @@ static inline bool bpf_has_stack_frame(struct codegen_context *ctx)
+>    *		[	prev sp		] <-------------
+>    *		[	  ...       	] 		|
+>    * sp (r1) --->	[    stack pointer	] --------------
+> - *		[   nv gpr save area	] 5*8
+> + *		[   nv gpr save area	] 6*8
+>    *		[    tail_call_cnt	] 8
+> - *		[    local_tmp_var	] 16
+> + *		[    local_tmp_var	] 24
+>    *		[   unused red zone	] 224
+>    */
+>   static int bpf_jit_stack_local(struct codegen_context *ctx)
+> @@ -99,12 +102,12 @@ static int bpf_jit_stack_local(struct codegen_context *ctx)
+>   	if (bpf_has_stack_frame(ctx))
+>   		return STACK_FRAME_MIN_SIZE + ctx->stack_size;
+>   	else
+> -		return -(BPF_PPC_STACK_SAVE + 24);
+> +		return -(BPF_PPC_STACK_SAVE + 32);
+>   }
+>   
+>   static int bpf_jit_stack_tailcallcnt(struct codegen_context *ctx)
+>   {
+> -	return bpf_jit_stack_local(ctx) + 16;
+> +	return bpf_jit_stack_local(ctx) + 24;
+>   }
+>   
+>   static int bpf_jit_stack_offsetof(struct codegen_context *ctx, int reg)
+> @@ -170,10 +173,17 @@ void bpf_jit_build_prologue(u32 *image, struct codegen_context *ctx)
+>   		if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
+>   			EMIT(PPC_RAW_STD(bpf_to_ppc(i), _R1, bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
+>   
+> +	if (ctx->arena_vm_start)
+> +		EMIT(PPC_RAW_STD(bpf_to_ppc(ARENA_VM_START), _R1,
+> +				 bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
+> +
+>   	/* Setup frame pointer to point to the bpf stack area */
+>   	if (bpf_is_seen_register(ctx, bpf_to_ppc(BPF_REG_FP)))
+>   		EMIT(PPC_RAW_ADDI(bpf_to_ppc(BPF_REG_FP), _R1,
+>   				STACK_FRAME_MIN_SIZE + ctx->stack_size));
+> +
+> +	if (ctx->arena_vm_start)
+> +		PPC_LI64(bpf_to_ppc(ARENA_VM_START), ctx->arena_vm_start);
+>   }
+>   
+>   static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx)
+> @@ -185,6 +195,10 @@ static void bpf_jit_emit_common_epilogue(u32 *image, struct codegen_context *ctx
+>   		if (bpf_is_seen_register(ctx, bpf_to_ppc(i)))
+>   			EMIT(PPC_RAW_LD(bpf_to_ppc(i), _R1, bpf_jit_stack_offsetof(ctx, bpf_to_ppc(i))));
+>   
+> +	if (ctx->arena_vm_start)
+> +		EMIT(PPC_RAW_LD(bpf_to_ppc(ARENA_VM_START), _R1,
+> +				bpf_jit_stack_offsetof(ctx, bpf_to_ppc(ARENA_VM_START))));
+> +
+>   	/* Tear down our stack frame */
+>   	if (bpf_has_stack_frame(ctx)) {
+>   		EMIT(PPC_RAW_ADDI(_R1, _R1, BPF_PPC_STACKFRAME + ctx->stack_size));
+> @@ -396,11 +410,11 @@ void bpf_stf_barrier(void);
+>   asm (
+>   "		.global bpf_stf_barrier		;"
+>   "	bpf_stf_barrier:			;"
+> -"		std	21,-64(1)		;"
+> -"		std	22,-56(1)		;"
+> +"		std	21,-80(1)		;"
+> +"		std	22,-72(1)		;"
+>   "		sync				;"
+> -"		ld	21,-64(1)		;"
+> -"		ld	22,-56(1)		;"
+> +"		ld	21,-80(1)		;"
+> +"		ld	22,-72(1)		;"
+>   "		ori	31,31,0			;"
+>   "		.rept 14			;"
+>   "		b	1f			;"
+> @@ -409,6 +423,36 @@ asm (
+>   "		blr				;"
+>   );
+>   
+> +static int bpf_jit_emit_probe_mem_store(struct codegen_context *ctx, u32 src_reg, s16 off,
+> +					u32 code, u32 *image)
+> +{
+> +	u32 tmp1_reg = bpf_to_ppc(TMP_REG_1);
+> +	u32 tmp2_reg = bpf_to_ppc(TMP_REG_2);
+> +
+> +	switch (BPF_SIZE(code)) {
+> +	case BPF_B:
+> +		EMIT(PPC_RAW_STB(src_reg, tmp1_reg, off));
+> +		break;
+> +	case BPF_H:
+> +		EMIT(PPC_RAW_STH(src_reg, tmp1_reg, off));
+> +		break;
+> +	case BPF_W:
+> +		EMIT(PPC_RAW_STW(src_reg, tmp1_reg, off));
+> +		break;
+> +	case BPF_DW:
+> +		if (off % 4) {
+> +			EMIT(PPC_RAW_LI(tmp2_reg, off));
+> +			EMIT(PPC_RAW_STDX(src_reg, tmp1_reg, tmp2_reg));
+> +		} else {
+> +			EMIT(PPC_RAW_STD(src_reg, tmp1_reg, off));
+> +		}
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +	return 0;
+> +}
+> +
+>   static int emit_atomic_ld_st(const struct bpf_insn insn, struct codegen_context *ctx, u32 *image)
+>   {
+>   	u32 code = insn.code;
+> @@ -960,6 +1004,50 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>   			}
+>   			break;
+>   
+> +		case BPF_STX | BPF_PROBE_MEM32 | BPF_B:
+> +		case BPF_STX | BPF_PROBE_MEM32 | BPF_H:
+> +		case BPF_STX | BPF_PROBE_MEM32 | BPF_W:
+> +		case BPF_STX | BPF_PROBE_MEM32 | BPF_DW:
+> +
+> +			EMIT(PPC_RAW_ADD(tmp1_reg, dst_reg, bpf_to_ppc(ARENA_VM_START)));
+> +
+> +			ret = bpf_jit_emit_probe_mem_store(ctx, src_reg, off, code, image);
+> +			if (ret)
+> +				return ret;
+> +
+> +			ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
+> +						    ctx->idx - 1, 4, -1, code);
+> +			if (ret)
+> +				return ret;
+> +
+> +			break;
+> +
+> +		case BPF_ST | BPF_PROBE_MEM32 | BPF_B:
+> +		case BPF_ST | BPF_PROBE_MEM32 | BPF_H:
+> +		case BPF_ST | BPF_PROBE_MEM32 | BPF_W:
+> +		case BPF_ST | BPF_PROBE_MEM32 | BPF_DW:
+> +
+> +			EMIT(PPC_RAW_ADD(tmp1_reg, dst_reg, bpf_to_ppc(ARENA_VM_START)));
+> +
+> +			if (BPF_SIZE(code) == BPF_W || BPF_SIZE(code) == BPF_DW) {
+> +				PPC_LI32(tmp2_reg, imm);
+> +				src_reg = tmp2_reg;
+> +			} else {
+> +				EMIT(PPC_RAW_LI(tmp2_reg, imm));
+> +				src_reg = tmp2_reg;
+> +			}
+> +
+> +			ret = bpf_jit_emit_probe_mem_store(ctx, src_reg, off, code, image);
+> +			if (ret)
+> +				return ret;
+> +
+> +			ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
+> +						    ctx->idx - 1, 4, -1, code);
+> +			if (ret)
+> +				return ret;
+> +
+> +			break;
+> +
+>   		/*
+>   		 * BPF_STX ATOMIC (atomic ops)
+>   		 */
+> @@ -1112,9 +1200,10 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>   				 * Check if 'off' is word aligned for BPF_DW, because
+>   				 * we might generate two instructions.
+>   				 */
+> -				if ((BPF_SIZE(code) == BPF_DW ||
+> -				    (BPF_SIZE(code) == BPF_B && BPF_MODE(code) == BPF_PROBE_MEMSX)) &&
+> -						(off & 3))
+> +				if ((BPF_SIZE(code) == BPF_DW && (off & 3)) ||
+> +				    (BPF_SIZE(code) == BPF_B &&
+> +				     BPF_MODE(code) == BPF_PROBE_MEMSX) ||
+> +				    (BPF_SIZE(code) == BPF_B && BPF_MODE(code) == BPF_MEMSX))
+>   					PPC_JMP((ctx->idx + 3) * 4);
+>   				else
+>   					PPC_JMP((ctx->idx + 2) * 4);
+> @@ -1160,12 +1249,49 @@ int bpf_jit_build_body(struct bpf_prog *fp, u32 *image, u32 *fimage, struct code
+>   
+>   			if (BPF_MODE(code) == BPF_PROBE_MEM) {
+>   				ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
+> -							    ctx->idx - 1, 4, dst_reg);
+> +							    ctx->idx - 1, 4, dst_reg, code);
+>   				if (ret)
+>   					return ret;
+>   			}
+>   			break;
+>   
+> +		/* dst = *(u64 *)(ul) (src + ARENA_VM_START + off) */
+> +		case BPF_LDX | BPF_PROBE_MEM32 | BPF_B:
+> +		case BPF_LDX | BPF_PROBE_MEM32 | BPF_H:
+> +		case BPF_LDX | BPF_PROBE_MEM32 | BPF_W:
+> +		case BPF_LDX | BPF_PROBE_MEM32 | BPF_DW:
+> +
+> +			EMIT(PPC_RAW_ADD(tmp1_reg, src_reg, bpf_to_ppc(ARENA_VM_START)));
+> +
+> +			switch (size) {
+> +			case BPF_B:
+> +				EMIT(PPC_RAW_LBZ(dst_reg, tmp1_reg, off));
+> +				break;
+> +			case BPF_H:
+> +				EMIT(PPC_RAW_LHZ(dst_reg, tmp1_reg, off));
+> +				break;
+> +			case BPF_W:
+> +				EMIT(PPC_RAW_LWZ(dst_reg, tmp1_reg, off));
+> +				break;
+> +			case BPF_DW:
+> +				if (off % 4) {
+> +					EMIT(PPC_RAW_LI(tmp2_reg, off));
+> +					EMIT(PPC_RAW_LDX(dst_reg, tmp1_reg, tmp2_reg));
+> +				} else {
+> +					EMIT(PPC_RAW_LD(dst_reg, tmp1_reg, off));
+> +				}
+> +				break;
+> +			}
+> +
+> +			if (size != BPF_DW && insn_is_zext(&insn[i + 1]))
+> +				addrs[++i] = ctx->idx * 4;
+> +
+> +			ret = bpf_add_extable_entry(fp, image, fimage, pass, ctx,
+> +						    ctx->idx - 1, 4, dst_reg, code);
+> +			if (ret)
+> +				return ret;
+> +			break;
+> +
+>   		/*
+>   		 * Doubleword load
+>   		 * 16 byte instruction that uses two 'struct bpf_insn'
 
-arch/powerpc/mm/book3s32/mmu.c:         setibat(i++, PAGE_OFFSET + base, 
-base, size, PAGE_KERNEL_TEXT);
-arch/powerpc/mm/book3s32/mmu.c:         setibat(i++, PAGE_OFFSET + base, 
-base, size, PAGE_KERNEL_TEXT);
-arch/powerpc/mm/pgtable_32.c:           map_kernel_page(v, p, ktext ? 
-PAGE_KERNEL_TEXT : PAGE_KERNEL);
-
-Christophe
 
