@@ -1,95 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-11720-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11721-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279CDB438DC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 12:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48047B438F7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Sep 2025 12:39:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cHbTY0NLGz302g;
-	Thu,  4 Sep 2025 20:35:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cHbZG0GYXz2yrp;
+	Thu,  4 Sep 2025 20:39:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756982112;
-	cv=none; b=E3AXfHYd+CxGsERe7Vhzj7f0G1tWhTjyVhBfw0KYUTuuTI497gl6i1Tf/IpMT39fm40xPb8TB7GL3m3TZggcVvG3+CDYtMZC5h8RFHz2O0zRCuqM0Qf9OL5i7cHyz690lydnm+9aCOd6L01/RlZr9i+aN30dSQu+K+gqK2BdKGOxpB+jG/znQKP1nDZFNQf2d8eahfkNM1olc3WaZgAn/DlrFZyxLOo6pZK5uEW9Zv6jHt8pV7SAZDpCNc/3EvgYib2utCQMbmkr0IiZgClxZbJEPkMtpB9Iz3rzpT0elUBAWsW/q5QEodmm4rYuWAzLdspKOZdn9YpmfKN2eQ56CA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1756982357;
+	cv=none; b=iSjpc0jNU0kWW0rz83ysYgVsezjNX5vzQ1i2O4GPEuaIjpyzkyWA3YjPYS3gBaXIPpPaybcNYI2RR3KGpguQydctWY8YIRN7e9wefjx0aWiBhdaTk+PE+L2w0r9MjaUBQhc5cg6zuezRw2r7c3X5aN+NYT5+l+ICvey7gCAZojTxNRhQs37GutpHZaUbKcbH1DukIqzYMqGrlQIaWd6a9lCmOaaYri4QlVeOnWqA8TeOVrEGOyIRpQZn4fhswbhtbc8+U59QVE2VPwDObHTXlZ+NLOiWvVtEIApn232Jadx3tXoFvdK3Edt5JEZGP1NaqvBJ/AJNkBltCpOG5kb6Vg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1756982112; c=relaxed/relaxed;
-	bh=OvDgBHL1QfReUGKYA4TnrNVX3xlVsuPP0C+YfIarv60=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ncuVVymH6AT7NusA7TgPHhYPHx9KbeUR98fHsa4RoIhVGWPihkPF462+0/lehsIZoAjNDlYcn3WE7WA9ULY5y12eQfy5SFKaru/UT1nJMFfK2+t+clNH0UFyx9JUBHhNihrNPyDUL3D9a9jZFCV6xJQQzvRaC3ekP/wPJ0u0F4bstj7dm8UdJoE3+u+gsJ7l0dSoBJhDKMLiyOb5kp4BD3QIp5dVy4o7QW8NK9O5PzCrOwPiF27CU2U4qqaO95a4KL5hrbQ5YyC/ahqVAxXrJEBBcZhjk6BeBuslx5fjwtyQWytG2ef4WbCrCTdzzZU9FsCptkRr4LfhKuYPFVJ+5g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RZeaEfc+; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=RZeaEfc+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=skb99@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1756982357; c=relaxed/relaxed;
+	bh=aSWeFTnmHxNL9NzQg+0RRcK61UxESBXBESIGSVxbF0k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Y/CmQz5GXZ76ZegGjk05+Mz+hB9fva9G00WptiDaBzuYwTjisvBk+Qfum3GV2d4nh/yIM7vFVX8KTNEOFkR/gVtc6OiM5C06iY5RZ98T7UbLMAQzeNGc5mQJLlsF5iDonbbIOz0MeRGi8cQJJIr6JkjMT4zhfyjNqZ4W3hARmjHTnfWT1NzSwca/tGrmb+t20j5q0pPSVGM9q0ToTT2i7y5vzYijjRrVqnsle/6SbBlYCByDRd4fXuhQr9QD8FdesLCFREYuEIQgT1yzbhejuSdrr4QFpp5QA9hCbJlDWJRpg+Iqva0JTO5o4Je01+9ZdMtidqlYQZI3FswE0SoE9g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHbTW6RxPz2yrp
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 20:35:11 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5846XDBX005735;
-	Thu, 4 Sep 2025 10:34:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=OvDgBHL1QfReUGKYA4TnrNVX3xlVsu
-	PP0C+YfIarv60=; b=RZeaEfc+QyLLLd1zPZ+nrjAJbmteGpF+7BUCrhbLCLa7pv
-	qg4GXrJW6hqW5dcMxQn0qTwnCDQ9gH6f7XvIuYzF5tMN192PPfSBG0SDZIqXg5tj
-	1fZIBiC4ujMcdNNfHkRYmPvzy86U1ud+FYKfCecZT7RJA6ddvlIZp/hW/v9QAkaD
-	gAEWsryshCvlMASnhfVHC5pyHgmtMJLUmT3kPI+1Ab3TNOD5Ts26JmpGB9qe4chW
-	vTb9j5p949w8iWPeTw6hrpOnb7JQvzKVp3akw6m/Zcst1j374xo4xPSgjRziGa7H
-	Gyw+Fq/rboGYPThdTezKcPac4gfPWEVIBaPj94eg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usua93bk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 10:34:44 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 584AYiaC021619;
-	Thu, 4 Sep 2025 10:34:44 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usua93be-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 10:34:44 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5846sw0g019925;
-	Thu, 4 Sep 2025 10:34:43 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 48vbmuc916-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Sep 2025 10:34:43 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 584AYdTh34669154
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 4 Sep 2025 10:34:39 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CC3B2004B;
-	Thu,  4 Sep 2025 10:34:39 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DA28420043;
-	Thu,  4 Sep 2025 10:34:34 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.109.219.153])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  4 Sep 2025 10:34:34 +0000 (GMT)
-Date: Thu, 4 Sep 2025 16:04:32 +0530
-From: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Cc: bpf@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        sachinpb@linux.ibm.com, venkat88@linux.ibm.com, andrii@kernel.org,
-        eddyz87@gmail.com, mykolal@fb.com, ast@kernel.org,
-        daniel@iogearbox.net, martin.lau@linux.dev, song@kernel.org,
-        yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
-        sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
-        christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, memxor@gmail.com,
-        iii@linux.ibm.com, shuah@kernel.org
-Subject: Re: [PATCH bpf-next v2 5/5] selftests/bpf: Fix arena_spin_lock
- selftest failure
-Message-ID: <aLlrOFzwRZotcpY4@linux.ibm.com>
-References: <20250829165135.1273071-1-skb99@linux.ibm.com>
- <20250829165135.1273071-6-skb99@linux.ibm.com>
- <46243c40-8e5e-47d3-97bd-71f29eeb0127@linux.ibm.com>
- <aLlNBK9Zm+N4zarF@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cHbZD2K38z2xBV
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Sep 2025 20:39:15 +1000 (AEST)
+X-UUID: 3d5fbc1e897b11f0b29709d653e92f7d-20250904
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.45,REQID:300f2fa7-17a5-4d38-96a3-11fd4189ac0a,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:6493067,CLOUDID:8818228a5c537eaf9504e99b0c50a8d8,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
+	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 3d5fbc1e897b11f0b29709d653e92f7d-20250904
+Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
+	(envelope-from <zhangzihuan@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1160067433; Thu, 04 Sep 2025 18:38:05 +0800
+Received: from mail.kylinos.cn (localhost [127.0.0.1])
+	by mail.kylinos.cn (NSMail) with SMTP id 93A19E008FA5;
+	Thu,  4 Sep 2025 18:38:04 +0800 (CST)
+X-ns-mid: postfix-68B96C0C-3265371312
+Received: from [172.25.120.24] (unknown [172.25.120.24])
+	by mail.kylinos.cn (NSMail) with ESMTPA id 0174FE008FA2;
+	Thu,  4 Sep 2025 18:37:54 +0800 (CST)
+Message-ID: <52e322e5-2dd4-488c-a98e-3a4018f0c323@kylinos.cn>
+Date: Thu, 4 Sep 2025 18:37:54 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,139 +64,168 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLlNBK9Zm+N4zarF@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 9n8EctKyMzCe8PS3p37W_1wCfXqHauvi
-X-Authority-Analysis: v=2.4 cv=U6uSDfru c=1 sm=1 tr=0 ts=68b96b44 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=hPZlYmIs_T5Z1BX5r4cA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzNCBTYWx0ZWRfXyNkE/eE9EHWO
- mzrckl80bYebef7rCxE+x1P2GWjYiILUCBT/Q5NxUMLsjxwXCS68+NstCr87T44YyqAWg22C1Ow
- vIvQEbzfT6icQh23JY7FIolv+WkKvyrM2EsAr0iMYFbCKm5x6cXYS7e+hpHzCd/7c0PsjtqPNck
- zVk/WaXuSwRNpZOQG5adBjsfa0XocwxpbqhIqr5q0z9vBBf2ApaSEXqYbbY3FFGJHg4YQbtpqPp
- mQxeLXPktPz8uGMS7+41h6mQnPVfaA1VOT8o0vkJSveq9YbNXA2ikuJ+tnc1L0QNQcuUqUXgO9d
- yDuQzH5tel4jJp+0O7mPhUiy2ZZ9cL/WYoinTDgZ22x6OAuC9Uaq7+zf3CK1CiSubqYyQRHQAqw
- qQyXZ29O
-X-Proofpoint-ORIG-GUID: he6RjKqFBXFh-cUXmKn7R90-MiZdl3jj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-04_03,2025-08-28_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 adultscore=0 clxscore=1015 suspectscore=0
- priorityscore=1501 spamscore=0 bulkscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2508300034
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/10] powercap: dtpm_cpu: Use scope-based cleanup
+ helper
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Krzysztof Kozlowski
+ <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
+ Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>,
+ Kyungmin Park <kyungmin.park@samsung.com>,
+ Chanwoo Choi <cw00.choi@samsung.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
+ <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
+ Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
+ Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
+ Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
+ Lukasz Luba <lukasz.luba@arm.com>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
+ <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
+ Sumit Gupta <sumitg@nvidia.com>,
+ Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
+ linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
+ intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+ <20250903131733.57637-8-zhangzihuan@kylinos.cn>
+ <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
+From: Zihuan Zhang <zhangzihuan@kylinos.cn>
+In-Reply-To: <CAJZ5v0hirWzWZiLbAXPWB58SQv3CAW95iHLnsqs=i2twVCcmwg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
+	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Sep 04, 2025 at 01:55:40PM +0530, Saket Kumar Bhaskar wrote:
-> On Thu, Sep 04, 2025 at 01:39:31PM +0530, Hari Bathini wrote:
-> > 
-> > 
-> > On 29/08/25 10:21 pm, Saket Kumar Bhaskar wrote:
-> > > For systems having CONFIG_NR_CPUS set to > 1024 in kernel config
-> > > the selftest fails as arena_spin_lock_irqsave() returns EOPNOTSUPP.
-> > > 
-> > > The selftest is skipped incase bpf program returns EOPNOTSUPP,
-> > > with a descriptive message logged.
-> > > 
-> > > Signed-off-by: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-> > > ---
-> > >   .../selftests/bpf/prog_tests/arena_spin_lock.c      | 13 +++++++++++++
-> > >   tools/testing/selftests/bpf/progs/arena_spin_lock.c |  5 ++++-
-> > >   2 files changed, 17 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c b/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
-> > > index 0223fce4db2b..1ec1ca987893 100644
-> > > --- a/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
-> > > +++ b/tools/testing/selftests/bpf/prog_tests/arena_spin_lock.c
-> > > @@ -40,8 +40,13 @@ static void *spin_lock_thread(void *arg)
-> > >   	err = bpf_prog_test_run_opts(prog_fd, &topts);
-> > >   	ASSERT_OK(err, "test_run err");
-> > > +
-> > > +	if (topts.retval == -EOPNOTSUPP)
-> > > +		goto end;
-> > > +
-> > >   	ASSERT_EQ((int)topts.retval, 0, "test_run retval");
-> > > +end:
-> > >   	pthread_exit(arg);
-> > >   }
-> > > @@ -63,6 +68,7 @@ static void test_arena_spin_lock_size(int size)
-> > >   	skel = arena_spin_lock__open_and_load();
-> > >   	if (!ASSERT_OK_PTR(skel, "arena_spin_lock__open_and_load"))
-> > >   		return;
-> > > +
-> > >   	if (skel->data->test_skip == 2) {
-> > >   		test__skip();
-> > >   		goto end;
-> > > @@ -86,6 +92,13 @@ static void test_arena_spin_lock_size(int size)
-> > >   			goto end_barrier;
-> > >   	}
-> > > +	if (skel->data->test_skip == 2) {
-> > > +		printf("%s:SKIP: %d CPUs exceed the maximum supported by arena spinlock\n",
-> > > +		       __func__, get_nprocs());
-> > > +		test__skip();
-> > > +		goto end_barrier;
-> > > +	}
-> > > +
-> > >   	ASSERT_EQ(skel->bss->counter, repeat * nthreads, "check counter value");
-> > >   end_barrier:
-> > > diff --git a/tools/testing/selftests/bpf/progs/arena_spin_lock.c b/tools/testing/selftests/bpf/progs/arena_spin_lock.c
-> > > index c4500c37f85e..a475b974438e 100644
-> > > --- a/tools/testing/selftests/bpf/progs/arena_spin_lock.c
-> > > +++ b/tools/testing/selftests/bpf/progs/arena_spin_lock.c
-> > > @@ -37,8 +37,11 @@ int prog(void *ctx)
-> > >   #if defined(ENABLE_ATOMICS_TESTS) && defined(__BPF_FEATURE_ADDR_SPACE_CAST)
-> > >   	unsigned long flags;
-> > > -	if ((ret = arena_spin_lock_irqsave(&lock, flags)))
-> > > +	if ((ret = arena_spin_lock_irqsave(&lock, flags))) {
-> > > +		if (ret == -EOPNOTSUPP)
-> > > +			test_skip = 2;
-> > >   		return ret;
-> > 
-> > test_skip being set to `1` when the test runs seems counter intuitive.
-> > How about setting test_skip to `0` when run conditions are met
-> > and test_skip=1 if run conditions are not met and
-> > test_skip=2 when operation is not supported?
-> > 
-> > - Hari
-> That seems reasonable to me, but right now -EOPNOTSUPP is also
-> returned when run condition is not met i.e.:
-> 
->   if (CONFIG_NR_CPUS > 1024)
->                 return -EOPNOTSUPP;
-> 
-> So do we really need test_skip = 2 ?
-> 
-> Thanks,
-> Saket
-Also, when test_skip is initialized to 0 it is moved to bss segment 
-from data segment:
 
-        struct arena_spin_lock__arena {
-                struct arena_qnode qnodes[1024][4];
-                struct __qspinlock lock;
-        } *arena;
-        struct arena_spin_lock__bss {
-                int test_skip;
-                int counter;
-                int limit;
-                int cs_count;
-        } *bss;
+=E5=9C=A8 2025/9/3 21:45, Rafael J. Wysocki =E5=86=99=E9=81=93:
+> On Wed, Sep 3, 2025 at 3:18=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylino=
+s.cn> wrote:
+>> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+>> annotation for policy references. This reduces the risk of reference
+>> counting mistakes and aligns the code with the latest kernel style.
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+>> ---
+>>   drivers/powercap/dtpm_cpu.c | 30 +++++++++++-------------------
+>>   1 file changed, 11 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+>> index 99390ec1481f..f76594185fa2 100644
+>> --- a/drivers/powercap/dtpm_cpu.c
+>> +++ b/drivers/powercap/dtpm_cpu.c
+>> @@ -144,19 +144,17 @@ static int update_pd_power_uw(struct dtpm *dtpm)
+>>   static void pd_release(struct dtpm *dtpm)
+>>   {
+>>          struct dtpm_cpu *dtpm_cpu =3D to_dtpm_cpu(dtpm);
+>> -       struct cpufreq_policy *policy;
+>>
+>>          if (freq_qos_request_active(&dtpm_cpu->qos_req))
+>>                  freq_qos_remove_request(&dtpm_cpu->qos_req);
+>>
+>> -       policy =3D cpufreq_cpu_get(dtpm_cpu->cpu);
+>> -       if (policy) {
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
+>> +               cpufreq_cpu_get(dtpm_cpu->cpu);
+>> +
+>> +       if (policy)
+>>                  for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
+>>                          per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) =3D NULL=
+;
+>>
+>> -               cpufreq_cpu_put(policy);
+>> -       }
+>> -
+>>          kfree(dtpm_cpu);
+>>   }
+>>
+>> @@ -192,7 +190,6 @@ static int cpuhp_dtpm_cpu_online(unsigned int cpu)
+>>   static int __dtpm_cpu_setup(int cpu, struct dtpm *parent)
+>>   {
+>>          struct dtpm_cpu *dtpm_cpu;
+>> -       struct cpufreq_policy *policy;
+>>          struct em_perf_state *table;
+>>          struct em_perf_domain *pd;
+>>          char name[CPUFREQ_NAME_LEN];
+>> @@ -202,21 +199,19 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm=
+ *parent)
+>>          if (dtpm_cpu)
+>>                  return 0;
+>>
+>> -       policy =3D cpufreq_cpu_get(cpu);
+>> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D
+>> +               cpufreq_cpu_get(cpu);
+>> +
+>>          if (!policy)
+>>                  return 0;
+>>
+>>          pd =3D em_cpu_get(cpu);
+>> -       if (!pd || em_is_artificial(pd)) {
+>> -               ret =3D -EINVAL;
+>> -               goto release_policy;
+>> -       }
+>> +       if (!pd || em_is_artificial(pd))
+>> +               return -EINVAL;
+>>
+>>          dtpm_cpu =3D kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
+>> -       if (!dtpm_cpu) {
+>> -               ret =3D -ENOMEM;
+>> -               goto release_policy;
+>> -       }
+>> +       if (!dtpm_cpu)
+>> +               return -ENOMEM;
+>>
+>>          dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
+>>          dtpm_cpu->cpu =3D cpu;
+>> @@ -239,7 +234,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
+parent)
+>>          if (ret < 0)
+>>                  goto out_dtpm_unregister;
+> So this change kind of goes against another recommendation given in cle=
+anup.h:
+>
+>   * Lastly, given that the benefit of cleanup helpers is removal of
+>   * "goto", and that the "goto" statement can jump between scopes, the
+>   * expectation is that usage of "goto" and cleanup helpers is never
+>   * mixed in the same function. I.e. for a given routine, convert all
+>   * resources that need a "goto" cleanup to scope-based cleanup, or
+>   * convert none of them.
 
-I dont have enough background here, as to if there is any specific 
-reason to keep it in data segment:
 
-        if (skel->data->test_skip == 2) {
-                test__skip();
-                goto end;
-        }
+Should I replace all the memory allocation cleanups here with `__free`?
+That would allow us to drop all the `goto`s, but since this function has
+quite a few of them, I=E2=80=99m concerned it might introduce new issues.=
+ What=E2=80=99s
+your recommendation?
 
-Thanks,
-Saket
+Thanks!
+
+>> -       cpufreq_cpu_put(policy);
+>>          return 0;
+>>
+>>   out_dtpm_unregister:
+>> @@ -251,8 +245,6 @@ static int __dtpm_cpu_setup(int cpu, struct dtpm *=
+parent)
+>>                  per_cpu(dtpm_per_cpu, cpu) =3D NULL;
+>>          kfree(dtpm_cpu);
+>>
+>> -release_policy:
+>> -       cpufreq_cpu_put(policy);
+>>          return ret;
+>>   }
+>>
+>> --
 
