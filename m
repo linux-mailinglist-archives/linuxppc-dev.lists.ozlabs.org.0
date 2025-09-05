@@ -1,56 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-11768-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11769-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32BAB4506F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 09:55:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E1CB452B8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 11:14:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cJ7v009hRz3bcy;
-	Fri,  5 Sep 2025 17:55:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cJ9dP0mdtz3blT;
+	Fri,  5 Sep 2025 19:14:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=124.126.103.232
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757058939;
-	cv=none; b=bt8l4uHQDt0CouZs6yvZozSB2L0tMl/iW7mWFyRTUyy5zI4/plbo5kukrSPEMwbGPEQyGMyllaOoQhksxgiKzwaMahx+Ohjmd5Z1TemC5TEwdH2gw9OOUE+oLIZ5WJRMV0uRD1ZnRuLPfFCu+2noPgF3vzoZ/EPdb0j2AyG+BOcVP2HqA9kyNppzVRtx2jk5puVp99je48q6H2hDnT5WTu7oWScBtEk+e/4+91B7qe3p8iA42k5UVk23nl3+e3eddbws0zaWhWDgBQG0NHChtKdCRScIlifejc3TDsohHjGd4qKHpQVhWma2Cd1e/8k5s7RNWpafTjR7E7TBvDJRWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757058939; c=relaxed/relaxed;
-	bh=U7VBhWYPVvktoXZ1dLXIUVka8/6TNbmCz4fkqfpuIvs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YqfdCogVkB1raMTZb/fAutiiOvpWtySWy93lQ6P9M89YnJ7eiRyfQy2s4t5TlhI0knMu/cq63CRTEEG9DEOT8BoeD0WOprfZzyG/tUS+rS6/w2VH4bdkb3D996ayLe4pH/vYGumSQI1Bt+wxv+JRxnaWsdlhAO5ezNY+o8cYfKGb/v40xqPPfY2jsUeB9K24P7nRhV0qpCxxR6O+I2q8kgvG/fUeW/rEjKAL2nBshgDr7tjQVRSg77II7/NoMqv7Y4tC8pRQ0poVVSHKXhlrp4mPkcRZrgiY/Ps0FHX94ba8bLGapQo6FLYijTRqbVm1h9vP2jGNQ2G218heZQAzjg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org) smtp.mailfrom=kylinos.cn
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kylinos.cn (client-ip=124.126.103.232; helo=mailgw.kylinos.cn; envelope-from=zhangzihuan@kylinos.cn; receiver=lists.ozlabs.org)
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c405::7" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757063640;
+	cv=pass; b=TpXhkHYAj5KzF38DBMOsb2BrqQud4HWo0/Df1d/u0IpX5QvNZ6OTDyrx/882nBbGYxrthNsMvsE7AUuJ9mMHuZcqZUr9U5Xc6x7MPunpDcv5f5Muz3lrbfE5clcJTtTl/VEpSZyu9nDhud3ddeCzAHNnGQCyy0ME7GDjDx/tLxwyhPCEzFJY6kYKmpAVeLlL0ZbHtQlRmqhe4jlZvq58Bj1uPROfgMXDT1JlxKF2+726QslsZQU2duZDujUrAXp6P9xfvDilgsW/La4a9u0zoeFpm3oXiC6Hkucu0BCZAlgT81JREg83Myu3MqoS4AD18Pq50B3oj8/fF2XMnXbeDQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1757063640; c=relaxed/relaxed;
+	bh=WgjxX+RyvozPBzUvY2PA/ambW/o0dcYBhvDlRYhlBuI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=MlHYvBnkXn9MzV9XOF7iMQxRqRZ3nD00/roTciUVghXpoEi7J8V6rSu+O/IKZY5dLoQpM0n+6EkT2oRugFb4X3K79j3wDJTEQvR+Yavz5RQF4TLdPizswpG+LgcmoZh79+GMeo9g5k75cFEHrcf/zruLK9QNfrSnt8lZ40lzmu0C7esvY+chTL/wbBs1PhZM+JRb/xubork2srUNW1OZM7D566G43qYft163vSJI0hQ0cPTw3lHXOZ7Lc1TEfb9I0ViRasez/YmkXpwjBv3dbEEhXEFIIzB++mZxclrziGxdH/1U48DYqTSLhWUNpUTrN9oojnq593xR0zhzE6zdIg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; dkim=pass (2048-bit key; unprotected) header.d=vivo.com header.i=@vivo.com header.a=rsa-sha256 header.s=selector2 header.b=kvMnUfE4; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:c405::7; helo=tydpr03cu002.outbound.protection.outlook.com; envelope-from=zhao.xichao@vivo.com; receiver=lists.ozlabs.org) smtp.mailfrom=vivo.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=vivo.com header.i=@vivo.com header.a=rsa-sha256 header.s=selector2 header.b=kvMnUfE4;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=vivo.com (client-ip=2a01:111:f403:c405::7; helo=tydpr03cu002.outbound.protection.outlook.com; envelope-from=zhao.xichao@vivo.com; receiver=lists.ozlabs.org)
+Received: from TYDPR03CU002.outbound.protection.outlook.com (mail-japaneastazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c405::7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJ7ty4p6Lz3bYx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 17:55:38 +1000 (AEST)
-X-UUID: 8b7cd9b08a2d11f0b29709d653e92f7d-20250905
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.45,REQID:b8911e54-e0aa-40d7-9e56-019791a9cc88,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6493067,CLOUDID:1038342e134dfa48eabc61cf9e37c597,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:80|81|82|83|102,TC:nil,Content:0|52,EDM:
-	-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,
-	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 8b7cd9b08a2d11f0b29709d653e92f7d-20250905
-Received: from mail.kylinos.cn [(10.44.16.175)] by mailgw.kylinos.cn
-	(envelope-from <zhangzihuan@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1912680162; Fri, 05 Sep 2025 15:54:26 +0800
-Received: from mail.kylinos.cn (localhost [127.0.0.1])
-	by mail.kylinos.cn (NSMail) with SMTP id 49564E008FA7;
-	Fri,  5 Sep 2025 15:54:26 +0800 (CST)
-X-ns-mid: postfix-68BA9732-140429547
-Received: from [172.25.120.24] (unknown [172.25.120.24])
-	by mail.kylinos.cn (NSMail) with ESMTPA id 33213E008FA4;
-	Fri,  5 Sep 2025 15:54:22 +0800 (CST)
-Message-ID: <2ccca29e-4d5f-44fa-bfc8-d77c659bc9f3@kylinos.cn>
-Date: Fri, 5 Sep 2025 15:54:21 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJ9dM0ZVlz3bcJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 19:13:58 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q8bAks6mZMjsoCrUOR9I8i+kg91uw3Z9lfZGJj4UZsZSb8yPsSVQqiflQTPI4/fUVMrpUzmLROCc4FVZCHgObWGLLFiYn5dG8A+902J8+wt9/SZYTuYmX8RQRAPgjvI7EnuOsGTyAj2dLMD/xH6QX0Cbnbf1PkcCVe+LzOgYD2n/e0Zqe0ZzFQf38FXAguFLZWsMOliO/jv207YzgiVcEbVNksja70adQ2usiMvhsYJUN3ISX9whMasXqP6XdRbZGgPGlhP4TkogoTn/LuvROx5wpYj+/4fhGSPV23wF7+IV+jaLQ8bcaQVV4ZYHDdE8X+aMw08svtYqqE7jt1+Zfw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WgjxX+RyvozPBzUvY2PA/ambW/o0dcYBhvDlRYhlBuI=;
+ b=tPU9WmoTjmLIY/Pq2ihEnnqQCfOpv0bJGVghTi5EMXXoo4XD5KDcnuvnp/j6OBVqas7Gv8y1ZRIwfR9yVdiIlb6G2Xg5ngcNCXDkw0bs3KmDvgvg1ZRDEbBNS4QFXoXms51z7wHDKjq7ZW8JCW36EZcwGVzpnDlpNjNVde75LQ4ezaxnDq1VGTuH5AIiMXGefM/qs2uWehbIBesOKiMEdNrk1YkEGR7hqskjP54LFnn+fBs0SZ9XhzTbBK3NogVk7+Yqw7YCIWGSLMXCwqRhS49rN0s8TPgg06R0RJPPi8eIDjq9Rfe00xED9hBEx6LEhdCixlGAFL5ac8lt4lQQ5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WgjxX+RyvozPBzUvY2PA/ambW/o0dcYBhvDlRYhlBuI=;
+ b=kvMnUfE4oLT8php1baZlwMmyecd3VZhW9dlYgirfGbGCzwxaYlsLT4i+UiREk8RNP8+BVZFmOBTXcPwOz5dmxTsYyZ6yglKH2PAYodh52wYZF3KI1lONwbMmggPPMD3WRV+rZ5+t1lzGhUf3m2mLHVGxGuguLL9Esz4KUZp3ZnqbzMKbM6dLBDsB2zSCw6J6Ndn4P8Lbdim4ql38/2DRI4FrumM8CNst9srQOHhtbgWmRHzBLd77ReAJpTRMegDprcuCayQn1MJslrW+ID5s706DyVEza+naXDM+5O0hUAYZ2+dlbBiprbbJMgfLMd0VACmktwtt3JPWQYRhZwPtzQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+Received: from KL1PR06MB7330.apcprd06.prod.outlook.com (2603:1096:820:146::7)
+ by PUZPR06MB5518.apcprd06.prod.outlook.com (2603:1096:301:fd::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9073.27; Fri, 5 Sep
+ 2025 09:13:32 +0000
+Received: from KL1PR06MB7330.apcprd06.prod.outlook.com
+ ([fe80::d1d3:916:af43:55f5]) by KL1PR06MB7330.apcprd06.prod.outlook.com
+ ([fe80::d1d3:916:af43:55f5%4]) with mapi id 15.20.9094.018; Fri, 5 Sep 2025
+ 09:13:31 +0000
+From: Xichao Zhao <zhao.xichao@vivo.com>
+To: gregkh@linuxfoundation.org,
+	jirislaby@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	Xichao Zhao <zhao.xichao@vivo.com>
+Subject: [PATCH] tty: remove redundant condition checks
+Date: Fri,  5 Sep 2025 17:13:21 +0800
+Message-Id: <20250905091321.437476-1-zhao.xichao@vivo.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCP301CA0032.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:380::15) To KL1PR06MB7330.apcprd06.prod.outlook.com
+ (2603:1096:820:146::7)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,124 +82,121 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/10] thermal/drivers/ti-soc-thermal: Use scope-based
- cleanup helper
-To: Andreas Kemnade <andreas@kemnade.info>,
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Alim Akhtar
- <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
- MyungJoo Ham <myungjoo.ham@samsung.com>,
- Kyungmin Park <kyungmin.park@samsung.com>,
- Chanwoo Choi <cw00.choi@samsung.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>,
- Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>,
- Ben Horgan <ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>,
- Zhang Rui <rui.zhang@intel.com>, Len Brown <lenb@kernel.org>,
- Lukasz Luba <lukasz.luba@arm.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
- <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>,
- Sumit Gupta <sumitg@nvidia.com>,
- Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
- Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
- linux-pm@vger.kernel.org, linux-acpi@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- imx@lists.linux.dev, linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
- <20250903131733.57637-10-zhangzihuan@kylinos.cn>
- <20250905085726.2bc6fcb4@akair>
-From: Zihuan Zhang <zhangzihuan@kylinos.cn>
-In-Reply-To: <20250905085726.2bc6fcb4@akair>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS,
-	UNPARSEABLE_RELAY autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: KL1PR06MB7330:EE_|PUZPR06MB5518:EE_
+X-MS-Office365-Filtering-Correlation-Id: 51f887f6-47ff-46a7-6c21-08ddec5c7baf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|366016|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?kfP2usrRUGzQbQPQlFMpb9nRKZRFqA00SZguNreXVgmiavT1rM7wLlko8wvp?=
+ =?us-ascii?Q?eAk0GfKempYmSeQgA3yR6PxkFrhLKAcwiBNlKaNYAyE2XDitGIdcQbw+l5U8?=
+ =?us-ascii?Q?0Qp+g1iIGVQJc5sD4xtwBJfeWAWAAHhX5+hPT3tPhBj6QbBWCvkGZFZy6gTG?=
+ =?us-ascii?Q?Ha63SKL8Kk+5ji98gVlAQyf1ttygeK9FJQL0uv35BXBit+pF0NhMPf3IXxtj?=
+ =?us-ascii?Q?k7+CAS+fTmtbpWzRFeqTdgGca482E/usCPbr8ba39Bf7p+Umz/ZIm9AVMT6T?=
+ =?us-ascii?Q?oAhsJ4T5GPBDRYkGVGucvGZKRbEdHpavSJ4LS9f1wNRVhknMSwvBV0oJhWti?=
+ =?us-ascii?Q?ffUbCqy1qZoMdzvAESwpJ/oEHjbs7W6VR2nzGRMwR0fMD23hzdQrXoNeLFOS?=
+ =?us-ascii?Q?Rf1FVMWu7B6HNRBiTfLr3KQyjWbDI0jQo3jdDexJoPiNRhT96FZ4zR0/ykXh?=
+ =?us-ascii?Q?YwABXWxvDq5faSN771ciZIScmuhug+3gEN/S1I2HjQgxLBxecyy+5X56KXGb?=
+ =?us-ascii?Q?t2043E1lUVt5fyF8mDrDY+xb/3x7/vzccA2E7UEZdT6pxgthixJrJA5gpe7h?=
+ =?us-ascii?Q?ZyeWq7nAQQrtzW2M/J0jshdho9FGSCrjvjOPt/JCdz6WV47bcEJVi9KZnlwm?=
+ =?us-ascii?Q?gWWKRDuxsUpP+MsYMzoVdhjzkU2Rpiapptz96FXIVTwbu2c8H7tV7sFeHCn0?=
+ =?us-ascii?Q?nkgAfzoc1Iho6MzAyleJuLstBNx4jEoPYxMrbiwqSF1ftYrlrbZQ2HrMpDwU?=
+ =?us-ascii?Q?U0agq8Kt//0/6cB/O9tQzjIBwQqsFf6cBP5JLBiBj9ZdYLc6N0S6eT2A0Y1N?=
+ =?us-ascii?Q?yADP+N5NpkOy+a/xNPXZYCwzfzFgv7UvQH9nHK6iF/b/OZSxfSNcQ8p6cKkm?=
+ =?us-ascii?Q?uEXDnLCOTRVpPufIseK7z251y/T/OW+SiR6AiAxaE4iVT3+IIJ/oP+EeIzhw?=
+ =?us-ascii?Q?3rnpAzHZgIq8WVHkS6s2pKSmqIVnnIF1owm8MolxccG9RvshwmsVEH0jySfA?=
+ =?us-ascii?Q?zl0iYQIuHVl+4LHpBIbQ8QpOAkBhIgCKw3V2aZ6f9Qepyltax1GkriSBF6L4?=
+ =?us-ascii?Q?Hq8iGftExe6ShOAUqSBtg/zZ8tC43zj3FjYWQyLPEWkoilciTsadUR+SBixD?=
+ =?us-ascii?Q?VeHZqDKNjGrcjYXMwaO4eaXwypBARElewbzgnpRdrw7LbH4DKf59R7DNnUtR?=
+ =?us-ascii?Q?YpM2L0aYdF9Ota0u6yM0cNYjXAEdT+cZTosJoEbwgN0AyKAPMF/YXpuj6KGV?=
+ =?us-ascii?Q?JdlAKMkJ4Gi2Ws43EEVji3TVhyTAaKzzr2UKZsTRwW2IexYg6Q1hv369phZk?=
+ =?us-ascii?Q?n23yRBMLp2kXfa2cujFiXBDPKPUatFa3bQxd/IatnP86+hICqu931iiIDVk/?=
+ =?us-ascii?Q?/Q2L6yaFU/uBwjOpVouVcq2H3d0BI4rK9p9ylx7qhWmW5AJ8yHW0XBnl1Sch?=
+ =?us-ascii?Q?/0Z2Zb6n8D8HKQ6KDARuWXelBtiTIQVs6rAMuRM697g8aU1uVhsLag=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR06MB7330.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(366016)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZV2dkX+dwm0Z8Sw18mGt/gieWdyAzoh+Q29l5pc3rogEtCLi5e/DjwOwyzKy?=
+ =?us-ascii?Q?VGpvrhcSAucXj3IRS3/LVVwWOv+KLj6bmqLGywTderYixxv6pWIhfKMLYRrj?=
+ =?us-ascii?Q?5hcoJzQLiiNAy46goKiiJCXhvLyxOiXxTJ9uOJODhhgXN4ATR7NiaLB+66RA?=
+ =?us-ascii?Q?qkey1QTsdWUswsUQI7SZH07yN9JHqBwbeeGafroITnDxm4mlI/dMZysBI2fq?=
+ =?us-ascii?Q?aDIJ7th96QQhNBiIJ0hiIeucCFcgwzqhjrWTOGO67RoPzgQJgn2iN91cTPVa?=
+ =?us-ascii?Q?sStUKCWDBOgbXpTm1ObysPr0RrgnP4awSBwu+NkMU+WVF8XzzGJ4J+CD1hUS?=
+ =?us-ascii?Q?gpu9umuR9GFBloeMPA22GQbJ2W918OkHitmnk/ilnBvspbqPzvZ3OHtkEtlC?=
+ =?us-ascii?Q?ibJ9iXZKcpwqtOES1UnLLkAc72MUNrEYaDI2mHQYW41r7syQUeAxpH0qImcb?=
+ =?us-ascii?Q?CpNFU0ZHdiouMmEC80XACo4ZL8/dJaFYkegU1L3+coqsA8yNsDFKDLVYWpuK?=
+ =?us-ascii?Q?RhA0ovx24fpY3iQ75mDVlWH2MlXK3OFplgyVmrhhTn/+R+fekPWe/1OdozVo?=
+ =?us-ascii?Q?2fR4yRn1W9mfclOZJrCq3qDm6GkjL5OOuVjfkC1lMWcbX+WSIcr6yZxZeG4Y?=
+ =?us-ascii?Q?ts9P7VwwA9EerbAQyKdm26ExpLEwmxyl5RHz6eQ0u2jNByRRmwawXmeERb1r?=
+ =?us-ascii?Q?OvG8PzYo/4A5IQE/5KLebKRFkM/chaXgfQbGf1oBwImsRF28l2O32Mx7LqgH?=
+ =?us-ascii?Q?EPBous8OgvEe5c4u5mCUyPVVIiwaisvxeqz9RG7hzMR7HOmnsRpJYKhvsgIw?=
+ =?us-ascii?Q?hcf75c1Iihi8cL2ul8W1uGjNReSdIqTuZsXFfm5wEA5EG8WhMvOJ+8OBMtfm?=
+ =?us-ascii?Q?FOTrkmra9tm6Sf0quz49BTq0SWRJF/47bNYZsY1ZSgRR4+iOfNsW4yTqJOlQ?=
+ =?us-ascii?Q?eoYolFd0R0KGTdcFLrQhMmfJSWfKO6Rdrehge3x9KcrfEFMostJucfu0KHsQ?=
+ =?us-ascii?Q?9C15F6kAnUYWPZ4aubxCVDtNgtdQbwta4GpoBKBoR2FPlDfzUCHTfvjTxxsX?=
+ =?us-ascii?Q?40gPw15f/+nyN4BT8Zox3noPetp3oMDm3q2wXl5L4XZjm3360aSu/LPPCY8S?=
+ =?us-ascii?Q?uFoYe/CzyjS8EtpreDmIHFJgTWoST2BixHAlrPDCNxtdSGx2OjHmIbvCZeX0?=
+ =?us-ascii?Q?0X0dY/GG7NakCETUGIMy8Fp8vvUZJechpTnFfJ/H6iqNvaFNQ3LgPWCXYT2L?=
+ =?us-ascii?Q?IdfWJRgAnICvO0a1mNMEgOScLxgpl06Z1PPtmOXiblfOD6H8ulkX0NK82jID?=
+ =?us-ascii?Q?dVXVSoF1w5cg8cqwGIh0iFrwg4dO+jTdmR9M2fdvJNAnuz4OyCvKhlWt2Nh0?=
+ =?us-ascii?Q?Oav0t0JH2OP+fWY3ene2QQCtdW+4Niy8TRuojNDVJTTe8RfolLY9qyRYMSO/?=
+ =?us-ascii?Q?nob8AS/Cu5K1xMkHHE/AcQZw/cpPJDYKrZTBLq9bhS/s8qSs1g2kNTh1OBeA?=
+ =?us-ascii?Q?eYJONtWZPhAxUcnT9SnpzBbGVAbi3PKm9G7QkO/JiNfmNDh7bodAHI+171U9?=
+ =?us-ascii?Q?aBz/slMFgQinnxkuT18iVPBg+iTcr3vricJjpibu?=
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51f887f6-47ff-46a7-6c21-08ddec5c7baf
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR06MB7330.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2025 09:13:31.5233
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: d03RVGeyqR46pAVJAno3G/eW/NYjD6WlANvFRg5BnIhfnXlXKsbBn70UAsSkdMK7RHetr9RZwCnHvUUKNnmZfg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PUZPR06MB5518
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Remove redundant condition checks and replace else if with else.
 
-=E5=9C=A8 2025/9/5 14:57, Andreas Kemnade =E5=86=99=E9=81=93:
-> Am Wed,  3 Sep 2025 21:17:32 +0800
-> schrieb Zihuan Zhang <zhangzihuan@kylinos.cn>:
->
->> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
->> annotation for policy references. This reduces the risk of reference
->> counting mistakes and aligns the code with the latest kernel style.
->>
->> No functional change intended.
->>
->> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
->> ---
->>   drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 13 ++++--------=
--
->>   1 file changed, 4 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/driv=
-ers/thermal/ti-soc-thermal/ti-thermal-common.c
->> index 0cf0826b805a..37d06468913a 100644
->> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
->> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
->> @@ -27,7 +27,6 @@
->>  =20
->>   /* common data structures */
->>   struct ti_thermal_data {
->> -	struct cpufreq_policy *policy;
->>   	struct thermal_zone_device *ti_thermal;
->>   	struct thermal_zone_device *pcb_tz;
->>   	struct thermal_cooling_device *cool_dev;
->> @@ -218,6 +217,7 @@ int ti_thermal_register_cpu_cooling(struct ti_band=
-gap *bgp, int id)
->>   {
->>   	struct ti_thermal_data *data;
->>   	struct device_node *np =3D bgp->dev->of_node;
->> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpufreq=
-_cpu_get(0);
->>  =20
-> this looks as it changes the lifecycle from the device lifetime to just
-> this function...
+Signed-off-by: Xichao Zhao <zhao.xichao@vivo.com>
+---
+ drivers/tty/hvc/hvc_console.c   | 2 +-
+ drivers/tty/serial/msm_serial.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
+index cd1f657f782d..fffc30b9ea54 100644
+--- a/drivers/tty/hvc/hvc_console.c
++++ b/drivers/tty/hvc/hvc_console.c
+@@ -184,7 +184,7 @@ static void hvc_console_print(struct console *co, const char *b,
+ 					hvc_console_flush(cons_ops[index],
+ 						      vtermnos[index]);
+ 				}
+-			} else if (r > 0) {
++			} else {
+ 				i -= r;
+ 				if (i > 0)
+ 					memmove(c, c+r, i);
+diff --git a/drivers/tty/serial/msm_serial.c b/drivers/tty/serial/msm_serial.c
+index 3449945493ce..2e999cb9c974 100644
+--- a/drivers/tty/serial/msm_serial.c
++++ b/drivers/tty/serial/msm_serial.c
+@@ -1102,7 +1102,7 @@ msm_find_best_baud(struct uart_port *port, unsigned int baud,
+ 
+ 			if (result == baud)
+ 				break;
+-		} else if (entry->divisor > divisor) {
++		} else {
+ 			old = target;
+ 			target = clk_round_rate(msm_port->clk, old + 1);
+ 			/*
+-- 
+2.34.1
 
-I thought policy was only used in this function, so I moved it here.
-
-Thanks for clarifying the lifecycle issue.
-
->>   	/*
->>   	 * We are assuming here that if one deploys the zone
->> @@ -234,19 +234,17 @@ int ti_thermal_register_cpu_cooling(struct ti_ba=
-ndgap *bgp, int id)
->>   	if (!data)
->>   		return -EINVAL;
->>  =20
->> -	data->policy =3D cpufreq_cpu_get(0);
->> -	if (!data->policy) {
->> +	if (!policy) {
->>   		pr_debug("%s: CPUFreq policy not found\n", __func__);
->>   		return -EPROBE_DEFER;
->>   	}
->>  =20
->>   	/* Register cooling device */
->> -	data->cool_dev =3D cpufreq_cooling_register(data->policy);
->> +	data->cool_dev =3D cpufreq_cooling_register(policy);
-> and it is passed on to something living beyond this function. I see no
-> _get(policy) in cpufreq_cooling_register().
-> Am I missing something?
-
-This indeed causes a problem.
-
-Sure,=C2=A0 I will drop the patchset.
-
-Thanks!
-
-> Regards,
-> Andreas
 
