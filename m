@@ -1,75 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-11775-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11784-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A67B453D0
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 11:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF575B45631
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 13:20:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cJBXg5c9lz3bxl;
-	Fri,  5 Sep 2025 19:54:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cJDRZ0B3rz3cbl;
+	Fri,  5 Sep 2025 21:20:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757066099;
-	cv=none; b=G8FMSLvDFJ5c8pbdXtO5Qv3VpYVcoOQ4kdtCHqlfBWJX8ty2RgnRwpkLsYQgmA9D2xKg/2YvCPfL81NL3CwGzPQlhb2SgC/DkDWGPjXeBvHstz2nvk1jqVrTxJ3AcbPjHljVcNtsvsj2D4SxCav32vPVoSTIs+SVNS4YMlGGtDLIuJEZdygbBtLyGx0lpgU4hKh3VmdWBGYEYU8DEXqqEgeSosNqenBkEOsTfsHZONL6u9Qpz4N7NPOjVLcGrtncS0OcD4gfrJLyyosa99CVz6gwIQZgNuiG+Zv4tOcEAsZvGONkIR3+LOzI0JV/JWNYfNm7I19jdWbA0avLcLbXAQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757071241;
+	cv=none; b=m/B/MsNWOBKVamepaiJmuuLvdo1SWoAvsInmlo9yVOgVtQl0d1LM4Gs/5AO2l2pJ3ZIjBYEyBxdJK8fnaCpgLyIRMt23sB3bhaKHXA01oXvz3aM/IVTSZT/S3hNWqIpP9TbjS5e0dH5P8QiBZLsfF0LeOIjgL7opjM2J46BzGvCTX7/RJO3a2X2z+m9Kw34hisLkUiQlNjeP32Y8OiFemQytL8HDbsZwbGui01oMIybdoPytXTlfBGIMBQ82gmLuD134fby9fLhsibBTyTC2KwW10gqLa/NKluwedLgn/2rSd/ZNNrJpnfaoDkbYC0nSzDD2R0wifChKeh8kN249ig==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757066099; c=relaxed/relaxed;
-	bh=tfqcFl+HFKzT0Enb40sxo3AyDq2g5ZpWrpQBxkg0uxk=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X9Ca0zEhoCRB/nLltQDXiEpRsCdzfCCKDSMv2/v7ztYjQB9XPPqv86Hckz8QC8xUtic8GWBJ3+ruUly7yebWLjhooFfN/RvHh1SHx706idnX+feHKWzNw/riNR2oXC9UWiFXkHPzqpY4tXSQ38+ZtwThc4V0UAedci5AOsVuwll3qlZ6XJfFWQ9bXB8IPg0GzGmn4PL7wPwWHCY8K0DEG53XCy6Nh1J8MP/COoonpOcWSAUBwlB+tCjskf2FS4ddOVD3qwzYX/b2/OhNyhMBmf7lZURU39feed2fr/krFT0RH3cHCMSgtn273DPu8Yh12TDwGVKOXAqm9Kx2TWuAhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJBXf6fRbz30RT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 19:54:58 +1000 (AEST)
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cJB5B08w6z6L5Vh;
-	Fri,  5 Sep 2025 17:34:38 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id CEA161402CB;
-	Fri,  5 Sep 2025 17:38:31 +0800 (CST)
-Received: from localhost (10.203.177.15) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 5 Sep
- 2025 11:38:29 +0200
-Date: Fri, 5 Sep 2025 10:38:28 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-CC: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar
-	<viresh.kumar@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, "Will
- Deacon" <will@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, Srinivas Pandruvada
-	<srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>,
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham
-	<myungjoo.ham@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>, "Jani Nikula"
-	<jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko
- Ursulin <tursulin@ursulin.net>, "David Airlie" <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, Sascha
- Hauer <s.hauer@pengutronix.de>, "Shawn Guo" <shawnguo@kernel.org>, Eduardo
- Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan
-	<ben.horgan@arm.com>, zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui
-	<rui.zhang@intel.com>, Len Brown <lenb@kernel.org>, Lukasz Luba
-	<lukasz.luba@arm.com>, "Pengutronix Kernel Team" <kernel@pengutronix.de>,
-	Beata Michalska <beata.michalska@arm.com>, Fabio Estevam
-	<festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, "Sumit Gupta"
-	<sumitg@nvidia.com>, Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep
- Holla <sudeep.holla@arm.com>, Yicong Yang <yangyicong@hisilicon.com>,
-	<linux-pm@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
-	<intel-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<imx@lists.linux.dev>, <linux-omap@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 01/10] arm64: topology: Use scope-based cleanup
- helper
-Message-ID: <20250905103828.0000726c@huawei.com>
-In-Reply-To: <20250903131733.57637-2-zhangzihuan@kylinos.cn>
-References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
-	<20250903131733.57637-2-zhangzihuan@kylinos.cn>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	t=1757071241; c=relaxed/relaxed;
+	bh=kxTPTBEebYOgkl4yaHoRVIy4duqkDYKSTeNYq61OK+A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YUh0oUsC8yfAOAM5t6CCw8xkl9EG+Nc/09Uhfg8F+B4sUE/mDSU8Av018QqhIZqPbOsyGHTmnt7OQzvIREgc5PIrJO43SOODm8WrBdSuaopQPTrTRoueU67N6N5CMe0HY8OXldFc1w5F29HSI/FuipSGYWpQmUlsZZ4nvSWcsJZlFgezYuMCLN2fLgHq13qSG+iZyj5GTyyosj/hMvCu4pZa8JsYmO8Rzt4hu7uXDStPEWLL/+Su+AYT8xmlCo3Gi3oIsfAnbnXfGI1Kja3GkFIwsIychWl5MpkqavLHvD1Z3+OzEZI7KFsKjosvgrtysC3oyYldUMAPJaVLPY9L2A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cJDRY2TlSz3c3K
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 21:20:41 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cJBH56SbMz9sSX;
+	Fri,  5 Sep 2025 11:43:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id T654Yx4sq1w0; Fri,  5 Sep 2025 11:43:13 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cJBH55WMMz9sS8;
+	Fri,  5 Sep 2025 11:43:13 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A568B8B774;
+	Fri,  5 Sep 2025 11:43:13 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id uNL1AnKXOGoz; Fri,  5 Sep 2025 11:43:13 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3585E8B773;
+	Fri,  5 Sep 2025 11:43:13 +0200 (CEST)
+Message-ID: <36aabfe5-b862-404b-8175-ebe5dab59427@csgroup.eu>
+Date: Fri, 5 Sep 2025 11:43:12 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,84 +57,135 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- frapeml500008.china.huawei.com (7.182.85.71)
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/32: Remove PAGE_KERNEL_TEXT to fix startup
+ failure
+To: Andrew Donnellan <ajd@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Erhard Furtner <erhard_f@mailbox.org>
+References: <342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org>
+ <4b5e6eb281d7b1ea77619bee17095f905a125168.1757003584.git.christophe.leroy@csgroup.eu>
+ <977ad5eef4f8726e9d5bff31b758918f0341659d.camel@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <977ad5eef4f8726e9d5bff31b758918f0341659d.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed,  3 Sep 2025 21:17:24 +0800
-Zihuan Zhang <zhangzihuan@kylinos.cn> wrote:
 
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Diff is being slightly annoying in not quite showing enough context
-to see that it is fine to release this at the end of scope.
-What you have done looks correct to me but there is a further
-potential cleanup
 
-	for_each_cpu_wrap(ref_cpu, policy->cpus, cpu + 1) {
-		if (ref_cpu == start_cpu) {
-			/* Prevent verifying same CPU twice */
-			ref_cpu = nr_cpu_ids;
+Le 05/09/2025 à 08:57, Andrew Donnellan a écrit :
+> On Thu, 2025-09-04 at 18:33 +0200, Christophe Leroy wrote:
+>> PAGE_KERNEL_TEXT is an old macro that is used to tell kernel whether
+>> kernel text has to be mapped read-only or read-write based on build
+>> time options.
+>>
+>> But nowadays, with functionnalities like jump_labels, static links,
+>> etc ... more only less all kernels need to be read-write at some
+>> point, and some combinations of configs failed to work due to
+>> innacurate setting of PAGE_KERNEL_TEXT. On the other hand, today
+>> we have CONFIG_STRICT_KERNEL_RWX which implements a more controlled
+>> access to kernel modifications.
+>>
+>> Instead of trying to keep PAGE_KERNEL_TEXT accurate with all
+>> possible options that may imply kernel text modification, always
+>> set kernel text read-write at startup and rely on
+>> CONFIG_STRICT_KERNEL_RWX to provide accurate protection.
+>>
+>> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+>> Closes:
+>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2F342b4120-911c-4723-82ec-d8c9b03a8aef%40mailbox.org%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Ce1df868f94284b06db0508ddec497516%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638926522413828188%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=cqhzYIshhwKJluL2U2ULuNYoQ1CR1ZP0nsl5pb3wHd4%3D&reserved=0
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+> The original issue that Erhard and I were investigating was why the latest
+> version of the PowerPC page table check series[0] was failing on his G4, when
+> built as part of a config with many other debugging options enabled.
+> 
+> With further instrumentation, it turns out that this was due to a failed
+> instruction patch while setting up a jump label for the
+> page_table_check_disabled static key, which was being checked in
+> page_table_check_pte_clear(), which was in turn inlined ultimately into
+> debug_vm_pgtable().
+> 
+> This patch seems to fix the problem, so:
+> 
+> Tested-by: Andrew Donnellan <ajd@linux.ibm.com>
+> 
+> But I'm still curious about why I only see the issue when:
+> 
+>    (a) CONFIG_KFENCE=y (even when disabled using kfence.sample_interval=0) -
+> noting that changing CONFIG_KFENCE doesn't change the definition of
+> PAGE_KERNEL_TEXT; and
+> 
+>    (b) when the jump label ends up in a __init function (removing __init from
+> debug_vm_pgtable() and its associated functions, or changing the code in such a
+> way that the static key check doesn't get inlined, resolves the issue, and
+> similarly for test_static_call_init() when CONFIG_STATIC_CALL_SELFTEST=y).
+> 
+> I don't understand the mm code well enough to make sense of this.
+
+That makes sense. When CONFIG_KFENCE is selected, only text and rodata 
+are mapped with BATs. Everything else including inittext is mapped with 
+pages. When CONFIG_KFENCE and CONFIG_DEBUG_PAGEALLOC are not selected, 
+we map as much as possible with BATs.
+
+And as you can see below, BATs are mapped with PAGE_KERNEL_X not with 
+PAGE_KERNEL_TEXT.
+
+Everything happen here below:
+
+static unsigned long __init __mmu_mapin_ram(unsigned long base, unsigned 
+long top)
+{
+	int idx;
+
+	while ((idx = find_free_bat()) != -1 && base != top) {
+		unsigned int size = bat_block_size(base, top);
+
+		if (size < 128 << 10)
 			break;
-//here, might as well return -EAGAIN as only thing in this block
-//and now no advantage in sharing the exit path with the one that
-//says we never matched the next condition.
-		}
-		if (!idle_cpu(ref_cpu))
-			break;
-		}
+		setbat(idx, PAGE_OFFSET + base, base, size, PAGE_KERNEL_X);
+		base += size;
+	}
 
-Either way I'm fine with this.
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+	return base;
+}
 
-> ---
->  arch/arm64/kernel/topology.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
+{
+	unsigned long done;
+	unsigned long border = (unsigned long)__srwx_boundary - PAGE_OFFSET;
+	unsigned long size;
+
+	size = roundup_pow_of_two((unsigned long)_einittext - PAGE_OFFSET);
+	setibat(0, PAGE_OFFSET, 0, size, PAGE_KERNEL_X);
+
+	if (debug_pagealloc_enabled_or_kfence()) {
+		pr_debug_once("Read-Write memory mapped without BATs\n");
+		if (base >= border)
+			return base;
+		if (top >= border)
+			top = border;
+	}
+
+	if (!strict_kernel_rwx_enabled() || base >= border || top <= border)
+		return __mmu_mapin_ram(base, top);
+
+	done = __mmu_mapin_ram(base, border);
+	if (done != border)
+		return done;
+
+	return __mmu_mapin_ram(border, top);
+}
+
+
 > 
-> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
-> index 5d07ee85bdae..0eebd3492669 100644
-> --- a/arch/arm64/kernel/topology.c
-> +++ b/arch/arm64/kernel/topology.c
-> @@ -307,17 +307,16 @@ int arch_freq_get_on_cpu(int cpu)
->  		 */
->  		if (!housekeeping_cpu(cpu, HK_TYPE_TICK) ||
->  		    time_is_before_jiffies(last_update + msecs_to_jiffies(AMU_SAMPLE_EXP_MS))) {
-> -			struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
-> +			struct cpufreq_policy *policy __free(put_cpufreq_policy) =
-> +				cpufreq_cpu_get(cpu);
->  			int ref_cpu;
->  
->  			if (!policy)
->  				return -EINVAL;
->  
->  			if (!cpumask_intersects(policy->related_cpus,
-> -						housekeeping_cpumask(HK_TYPE_TICK))) {
-> -				cpufreq_cpu_put(policy);
-> +						housekeeping_cpumask(HK_TYPE_TICK)))
->  				return -EOPNOTSUPP;
-> -			}
->  
->  			for_each_cpu_wrap(ref_cpu, policy->cpus, cpu + 1) {
->  				if (ref_cpu == start_cpu) {
-> @@ -329,8 +328,6 @@ int arch_freq_get_on_cpu(int cpu)
->  					break;
->  			}
->  
-> -			cpufreq_cpu_put(policy);
-> -
->  			if (ref_cpu >= nr_cpu_ids)
->  				/* No alternative to pull info from */
->  				return -EAGAIN;
+> [0] https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2F20250813062614.51759-1-ajd%40linux.ibm.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Ce1df868f94284b06db0508ddec497516%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638926522413849910%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=1slIkZ4krf2sWUaKJ%2FayEX8t9dKpfsrDiAxZRohKfRQ%3D&reserved=0
+> 
 
 
