@@ -1,84 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-11762-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDCCBB44DA5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 07:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D52B44DD5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 08:12:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cJ4zJ4Lf9z30Vj;
-	Fri,  5 Sep 2025 15:44:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cJ5bz1vCyz30W9;
+	Fri,  5 Sep 2025 16:12:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1029"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757051052;
-	cv=none; b=P+xtcKyGlD5phJbcqC50IoywPbSFE09PmCFI6iYpfUZx/jREE/ii/wv5fZr9XxfJIbry/275Tj1u0Hk6FXXTygYuG5c8y5mApBXluwvGAfh6c+d2gTh4ztLo8Y/2mfcQG901Ilhg9B0Ji0wrJsZkCf1XBFssXPS6zHS0JOsWsuuxIrsPxXcQrdw+n9+V5MIvV/TElHKwf4DLRKQ3FG/JwnNJOogFnQRk1ECPl6MTkZkvAcBdmiSfEyP0m4kK1HTyTRw14WRF/iKqvSJ4zW8PLj5hzDxR/AhR4TL4XmRTk8DCtst8USthDXoqrgvwo6rskhUicEyRJ8rxugPgMJPP6A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757052751;
+	cv=none; b=cBTduXlo7jAnTyZkEpxekjCJJFMLs9DPcsT2F9QQpZ4/BzxmXGRsJVZPs2vrMucQ/kwFna/8dYzuFr7A6HCQz9jh5JBU6jsr1eRCslkCyxN9k/7/Izh/fhBIEj2CkcktjUEVZyGO9h0YXxNYRJ6ZIpG54geiBJ5WysyPAs8dQGU7KiuftWknzRd2JnmInmt4f+7ZcRbJ4kvp6eLsHWMPT/dyVUw3i3pIr6he0EyUXu293DSfO09mIc0oCn4oPxOWeiHAEF5Ih+2dD8Zdd0Ey5nCTXfiByfONedzhGlrrVbalu6GJ2EBKrmNQAkTz3pCiRd/CIISHZpJdghfall92pA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757051052; c=relaxed/relaxed;
-	bh=79phlt9YKWJP1LdbQMpCO0EI87IvQ11v1Ke3cLVyv0I=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:Date:References:
-	 MIME-version:Content-type; b=ddwrMBAXlSuuv/QkG0/d6Uk+W0UfN71s0VhnMQWDq9isxuRk+4AXkNh+CZWqWnqp463bLC1fU/F+QNGZBhoeqvAROsGcJE8G1bmcYYWzssIDdHtXoc+J60kOnL7WtWlKb/1lz8hnyWaRCbV0tbfQ6SHJ1rn2KuTzIpxFJEW9Q2HfZ1fjdDCKKIuI34C+IPdq1ETTGr9Q/gYLIRxc/Yx45K4DBaaL0nmX0slfTrwpNyHtcYAH43+5Zsf2g4ZaRsIFECij3GGYTWhoMo5ofdBldKpH22m1t+GVt3VuW0C748EyJg7FqO2ADghTmOF+vxngWOWKqorvLlcQIALb4cKE3Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bi6zpy8K; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1757052751; c=relaxed/relaxed;
+	bh=EOiwDLypudExa6X+mQqAgTZSMoOzpDTpaATdLNnitWc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZVjqXJgy18NB/XnXU/ZaMU6NH+TrWH/0kG2pJmx6/AtLM3hLDvD1vJIlnr1V9jGL2Ho4EQHx1ygosBlUqRYD7XT7kAxDK9TnCTq5leiC96TuUzB3rYUoVmOI6/2G7SIPDrnLBx1E+TzNz+gLklxPVPtEd+FRwzjuLIeYX3h8VsV9y7Jum9l/a7iXxtcpmQG9VZT6o0ShtEqTi5EHeI2iZHeDmjQgqrWX5jzpg818Uiq6Jb1t9MliMdEoQBcAuzd3pK+hhvNQBXVhJgOlXbPABNcvKqTOMBj8koMeGLphTypUqVsildGpWJzry4D8bZj9LcRutLaW8r8k2/MS/JORTw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YL2gDXuZ; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=bi6zpy8K;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YL2gDXuZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJ4zH47M7z2yqR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 15:44:10 +1000 (AEST)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-32326e09f58so1974237a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Sep 2025 22:44:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757051048; x=1757655848; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:date:in-reply-to
-         :subject:cc:to:from:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=79phlt9YKWJP1LdbQMpCO0EI87IvQ11v1Ke3cLVyv0I=;
-        b=bi6zpy8KyCz9fULrRbY3T1RNc7EiYn32nPNJNzEWXBhKuenh7UPuI3rryabBPJjdq3
-         Fflb+Zg8/b2DzftUpdP7TW+wWPvFX68iIqImSL1TTfRVseVuQHcaNBManqYc019NkvXS
-         LRwsr50vPGhfw0LKUtttnoS5tEagEmC11ODYxoZE3I9eZf0LCmdj9ABmLeznOovrAMFy
-         8eVUNXslXDFwJNaTu/UZ0lpBKqf8quCjqibKJzGsxD32VjVOJnGiobuwFQJBzJp6GJZF
-         Hn9fJJ96KgNaTdCsJ8Jnt9ECC59IQW7f4T/bXyXep1W/7toCXpBJlwesi99mKo56UqfI
-         cymg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757051048; x=1757655848;
-        h=content-transfer-encoding:mime-version:references:date:in-reply-to
-         :subject:cc:to:from:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=79phlt9YKWJP1LdbQMpCO0EI87IvQ11v1Ke3cLVyv0I=;
-        b=Xg7SuWf1D3fgep/maGIvm7luwh+i6iVhbFEb+a5AYXLw8UmsRkSJ66JL3oR/gH3uiu
-         XVXfy2ajLYOP5K05tKEsm/qkOyF/TkNGNRQCJIL0Xrv8Uiboae8ivG/Ee4kgG6GD4Vtj
-         6bOoD2Ko5B9a3oRw7ZNeZuSZJiG77wOBiR6N/XbrcoIgSQlVTRwalJSVtLBoMsw+84Dj
-         7hGLpmGPMIuUHNYjutxUJhuh2gBX2wt5gYmoOS35DiFvB+Nfg6pUqcEAzkW+1XSdLnya
-         c25Z5BL3GAB+kXhdDek2XCv2NAicD4DaxOJEojCWY4hLM3IYiTVwnwa3nlc1ORe1Jx/U
-         J8ww==
-X-Forwarded-Encrypted: i=1; AJvYcCVXAKP31rvfdaFxx8F1LyKHEPEL6tSGgrAWfwpsnd1YStgajAPmTJgK7q3ZHCyZdKKDmx6mliSn62So1nk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyCh+lY7Jr7JW9R5Id3ZRmdksNhIP9jFvwJlvN0Ncwk3DxaPPHm
-	3ukU2P4mGA+2G9dtt7sbSlNnl9Z8rRtC/XJ3KmYKqjFY0b7+SDAy//pX
-X-Gm-Gg: ASbGncuId0VGfVYmQl0xE9vkTAtpRvBqiyDznd9tzCwnvW4DndKnqw5Ay94GzeY0AMU
-	/4ZQ7Pck0suYP1TJykdA2KdVPNGlBEv0XobYwa1A16n6u6VnyAh5p88ZVU0VBnDya2/SQH5zrZi
-	TKjESz0bvV6aX3m/18M8pRpKm1WnvCp2rsoW36cs3uhp+iVUUyO5OyLwIT1FMHxQ/KQASDzB+Qd
-	8j2J/DPkc9pi+KJuulX/He95Jl6FUj76zOYz1IN0sa2NJ4qWqh7udYyCCQwVD9XKMlr/QadlSU7
-	PvZ2YnDq9OhHDm9KQ30Y82xt9bGEDY+9czRWnTm1M/2nSo4UOp857eEvH9gCXaM/0CVPTygdRVh
-	UZX6cwjyx8Dsc4D/zMDHhY1qd5A==
-X-Google-Smtp-Source: AGHT+IH9lLLY8qCmwDEbPCg1+l9Lsg2X6aU3JD9OZkfGn6D2tlodVc/S78BdhkhXeCIn3LZCid9ILg==
-X-Received: by 2002:a17:90b:2751:b0:312:e731:5a66 with SMTP id 98e67ed59e1d1-32815412c9emr27732394a91.3.1757051047830;
-        Thu, 04 Sep 2025 22:44:07 -0700 (PDT)
-Received: from dw-tp ([171.76.86.143])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7724f079b88sm14774607b3a.40.2025.09.04.22.44.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 22:44:07 -0700 (PDT)
-Message-ID: <68ba78a7.a70a0220.2f582b.f2d1@mx.google.com>
-X-Google-Original-Message-ID: <87seh1iibr.fsf@ritesh.list@gmail.com>
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Andrew Donnellan <ajd@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Erhard Furtner <erhard_f@mailbox.org>
-Subject: Re: [PATCH] powerpc/32: Remove PAGE_KERNEL_TEXT to fix startup failure
-In-Reply-To: <7b3c83c1-bdf1-4778-948f-223ef0bce2a0@csgroup.eu>
-Date: Fri, 05 Sep 2025 10:53:04 +0530
-References: <342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org> <4b5e6eb281d7b1ea77619bee17095f905a125168.1757003584.git.christophe.leroy@csgroup.eu> <68ba6bee.170a0220.3b821b.ca9d@mx.google.com> <7b3c83c1-bdf1-4778-948f-223ef0bce2a0@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJ5bx0m0sz2yGM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 16:12:28 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 585205vJ011765;
+	Fri, 5 Sep 2025 06:12:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=EOiwDLypudExa6X+mQqAgTZSMoOzpDTpaATdLNnit
+	Wc=; b=YL2gDXuZ62mTlRHdvxP1cFJuZ236PJd++xCALhzhjqZRZPsglDjx9aCCL
+	frtdvRWRXOPXEtquLugPpaajBU+jVqJ4nQ7FtgE+XtMGC/CpnRObiTOdPu/XfmxS
+	k21Fe1oFuaAcv/nLV0kQEopGPlwipHZpj36mGuzO+QERZFSXwRf6FEsE93QM2Ira
+	Vt6E4u4UdbuHgqNRAH9uAbwuZwhwom9naNRrfTuYw1GaHXPL861Rx5SsgIdbB3iT
+	oFnMvP/NSJ7/cFa66Edn1wngMNfaTTJ29O/QEjP6RqMC9hlWhPUJrsTaC/L0vg5r
+	26adjH3V2M+vi1bhD50gMPcswaX+g==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usurej28-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Sep 2025 06:12:06 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5856C6W0004690;
+	Fri, 5 Sep 2025 06:12:06 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usurej25-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Sep 2025 06:12:06 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5855GHA4009000;
+	Fri, 5 Sep 2025 06:12:05 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 48vdumqx1a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Sep 2025 06:12:05 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5856C4aZ48955772
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 5 Sep 2025 06:12:04 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A5CA65805F;
+	Fri,  5 Sep 2025 06:12:04 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7C6D55805C;
+	Fri,  5 Sep 2025 06:12:00 +0000 (GMT)
+Received: from jarvis.j0t-au.ibm.com (unknown [9.90.171.232])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  5 Sep 2025 06:12:00 +0000 (GMT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, christophe.leroy@csgroup.eu,
+        peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com
+Cc: npiggin@gmail.com, rostedt@goodmis.org, ardb@kernel.org,
+        Erhard Furtner <erhard_f@mailbox.org>
+Subject: [PATCH RFC] powerpc: Panic on jump label code patching failure
+Date: Fri,  5 Sep 2025 16:11:35 +1000
+Message-ID: <20250905061135.1451362-1-ajd@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,86 +91,87 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=2.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,MALFORMED_FREEMAIL,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Level: **
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMCBTYWx0ZWRfX96Lf5pinkkAe
+ SWHwo837foscTeRwpLEUJWJrZ1Y5CaiQ/IQBsSentBEfagYO1u1JfkNmKqhkPBNPDqNul4RAsRZ
+ YYa9JQKoS3L+jSJaJpejdnTnMKJrr2wHU5HtfUIMr8V+783ubsoiiSdmVo+mjadj8mujxAKA+wD
+ wok/czKCjg4m2IvXMfIl+smeC8bnVp2UusT9pTrqvCTb8Z2Mq7sMejRewdrvoIdO7E0pxnz8NUs
+ FCyfWBisZl46yM0m3OEax5erumCwdQiOLJN+k+Zyw8XGjnLf6UA+dnWd5McCeEgoNhxA1kdYZ7e
+ 6lU3X6ACbffK77H0kI5em53z0R2LvBfH8zJQDxBbzEUPpaC1Tiql6iqj0qthuymYTYAvf+DSf32
+ 8A3kGA85
+X-Proofpoint-GUID: -XeHBqheUgEkTi5oLlF3x3FKZ_pPzdpT
+X-Proofpoint-ORIG-GUID: H3f_zlIX5ElpJY2djrWAYIy97iLbrzaf
+X-Authority-Analysis: v=2.4 cv=Ao/u3P9P c=1 sm=1 tr=0 ts=68ba7f36 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=yJojWOMRYYMA:10 a=voM4FWlXAAAA:8 a=1UX6Do5GAAAA:8 a=b3CbU_ItAAAA:8
+ a=VnNF1IyMAAAA:8 a=OjDvQk8CL8vKLhAk-QAA:9 a=IC2XNlieTeVoXbcui8wp:22
+ a=Et2XPkok5AAZYJIKzHr1:22 a=Rv2g8BkzVjQTVhhssdqe:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-05_01,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 phishscore=0 impostorscore=0 priorityscore=1501 spamscore=0
+ suspectscore=0 bulkscore=0 adultscore=0 malwarescore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508300030
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+If patch_branch() or patch_instruction() fails while updating a jump
+label, we presently fail silently, leading to unpredictable behaviour
+later on.
 
-> Le 05/09/2025 à 05:55, Ritesh Harjani a écrit :
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> 
->>> PAGE_KERNEL_TEXT is an old macro that is used to tell kernel whether
->>> kernel text has to be mapped read-only or read-write based on build
->>> time options.
->>>
->>> But nowadays, with functionnalities like jump_labels, static links,
->>> etc ... more only less all kernels need to be read-write at some
->>> point, and some combinations of configs failed to work due to
->>> innacurate setting of PAGE_KERNEL_TEXT. On the other hand, today
->>> we have CONFIG_STRICT_KERNEL_RWX which implements a more controlled
->>> access to kernel modifications.
->>>
->>> Instead of trying to keep PAGE_KERNEL_TEXT accurate with all
->>> possible options that may imply kernel text modification, always
->>> set kernel text read-write at startup and rely on
->>> CONFIG_STRICT_KERNEL_RWX to provide accurate protection.
->>>
->>> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
->>> Closes: https://lore.kernel.org/all/342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org/
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> ---
->>>   arch/powerpc/include/asm/pgtable.h | 12 ------------
->>>   arch/powerpc/mm/book3s32/mmu.c     |  4 ++--
->>>   arch/powerpc/mm/pgtable_32.c       |  2 +-
->>>   3 files changed, 3 insertions(+), 15 deletions(-)
->>>
->> 
->> AFAIU - mmu_mark_initmem_nx gets called during kernel_init() which is
->> way after static call initialization correct? i.e.
->> 
->> start_kernel
->>    ...
->>    jump_label_init()
->>    static_call_init()
->>    ...
->>    ...
->>    rest_init()      /* Do the rest non-__init'ed, we're now alive */
->>      kernel_init()
->>        free_initmem() -> mark_initmem_nx() -> __mark_initmem_nx -> mmu_mark_initmem_nx()
->>        mark_readonly()
->>          if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX) && rodata_enabled) {
->>             jump_label_init_ro()
->>             mark_rodata_ro() -> ....
->>             ...
->>          ...
->> 
->> Then I guess we mainly only need __mapin_ram_chunk() to be PAGE_KERNEL_X (RWX)
->> instead of PAGE_KERNEL_TEXT (ROX), isn't it?
->> 
->> Let me quickly validate it...
->> ...Ok, so I was able to get just this diff to be working.
->> 
->> Thoughts?
->
-> setibat() doesn't take into account whether it is RO or RW. Only X or NX 
-> is taken into account, so it doesn't matter whether it is X or ROX.
->
-> Then allthough you are right in principle, once the PAGE_KERNEL_TEXT is 
-> removed from __mapin_ram_chunk() it becomes completely useless, so 
-> better get rid of PAGE_KERNEL_TEXT completely.
->
+Change arch_jump_label_transform() to panic on a code patching failure,
+matching the existing behaviour of arch_static_call_transform().
 
-Aah yes, I checked the function setibat() and as you mentioned, it
-doesn't honour RW permission anyways. Can we please update the same in
-the commit message too? That makes it more clear then. 
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 
--ritesh
+---
+
+Ran into this while debugging an issue that Erhard reported to me about my
+PAGE_TABLE_CHECK series on a G4, where updating a static key failed
+silently, but only for one call site, leading to an incorrect reference
+count later on. This looks to be due to the issue fixed in [0]. A loud
+failure would have saved us all considerable debugging time.
+
+Should I change the return type of arch_jump_label_transform() and handle
+this in an arch-independent way? Are there other users of code patching
+in powerpc that ought to be hardened?
+
+Or is this excessive?
+
+[0] https://patchwork.ozlabs.org/project/linuxppc-dev/patch/4b5e6eb281d7b1ea77619bee17095f905a125168.1757003584.git.christophe.leroy@csgroup.eu/
+---
+ arch/powerpc/kernel/jump_label.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kernel/jump_label.c b/arch/powerpc/kernel/jump_label.c
+index 2659e1ac8604..80d41ed7ac50 100644
+--- a/arch/powerpc/kernel/jump_label.c
++++ b/arch/powerpc/kernel/jump_label.c
+@@ -12,9 +12,14 @@ void arch_jump_label_transform(struct jump_entry *entry,
+ 			       enum jump_label_type type)
+ {
+ 	u32 *addr = (u32 *)jump_entry_code(entry);
++	int err;
+ 
+ 	if (type == JUMP_LABEL_JMP)
+-		patch_branch(addr, jump_entry_target(entry), 0);
++		err = patch_branch(addr, jump_entry_target(entry), 0);
+ 	else
+-		patch_instruction(addr, ppc_inst(PPC_RAW_NOP()));
++		err = patch_instruction(addr, ppc_inst(PPC_RAW_NOP()));
++
++	if (err)
++		panic("%s: patching failed, err %d, type %d, addr %pS, target %pS\n",
++		      __func__, err, type, addr, (void *)jump_entry_target(entry));
+ }
+-- 
+2.51.0
 
 
