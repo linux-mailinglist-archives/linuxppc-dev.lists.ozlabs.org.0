@@ -1,96 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-11765-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11788-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66AEDB44E66
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 08:57:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A586B45771
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 14:14:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cJ6bs72srz3bY7;
-	Fri,  5 Sep 2025 16:57:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cJFdj70D2z3c4Y;
+	Fri,  5 Sep 2025 22:14:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757055449;
-	cv=none; b=okpNfKhhc3rIKoRcGAd3Q05JoZsZ354wztijarkRge2NEx20CItTaUSe8tRaxWIkTyMbxRLAnUc9zVw8zfH6O07M2WWdPDNPLQ2xW0VMpXfJPPJwfXmzWKhlDs37tDfpJS+qIxJ41jswuYGcDvabkBqZXZKh5es3e4y4xncHMvmdcZ5Jxwu1ehGhQRYDDdcl5K+KAEJ0Lm6gnNK87O9yvFcUgBXlkSEDOE3i1YgjByb6e4kvfZmkB2ZfquYxNRebIteY0PUxoWvBBxj8VTdVpDh9NwY6Rab50V0cO5csJWAQiSWRabwY/eax3skfbfSaoPzIF4uSl9rGdQhbeBeqQA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a02:c205:3004:2154::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757057548;
+	cv=none; b=ea6csI5u7TeZjRAqdf5AtfEu/ZST9b2oDN04MqXdF6LclCGIM6Wm+PTWI4Jpfy3zXoD9NwrKc2LIa8B/PJ2vzxA/jdhcayi4wsg6+GAihNGf/deQLLehLtRU28zrdc3lOHqclcWKZadliwdXa0B0AdeJqUMiq2gUknrUYJTPMRmKus6Qg9mbvStByVZVyhtHuV7DUEtl/9A7mgNFZVGmaVmGc5vkQvKfYYteeutwaQ0D+dBrJbvhF1tjYJP817xn1UdLaDuoA5BndfIHIW2sy0NCs1T6peOJMtpA5e+PuGnibGosLUekmp3suisePr9FdLZENavJ/lDUDot43l7qsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757055449; c=relaxed/relaxed;
-	bh=i6iIRwlL08m7ddD00gWRDzn7fpP62voWSOHllYdsQfM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=J2WdjV2mzAwSdvV2mW4twfhZtwg8ASMSzVIiOOmeDul0hTy4HA7nQv/7bW8j7dz84e5eioqR3kD0k/VitPj9JERYIUkhG+TUPIkDokbIPtaLAmkAE3lvN1uRKEBNvu1RCfiSGZ9lF/fLg847aWJQbvHSnn0gXGW8jirdIXOTynbvxx+6V4VpDMydZ5U/XCLEjw0GYZKx/0VE/lxCe9uSWxaM4NSR8/FRtKhbWRFBXPu1YyLUvfHtdaP8mKF2MMm939B5rQFu//gCYGZhlkcTWIP6CmYUYryYdNWvqT5mQCpKTPQ331VyGjFdmyBQzWYknaFqAwaHEzVh356x7f6xEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VoXxllUZ; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1757057548; c=relaxed/relaxed;
+	bh=UMhp8J72yITKfzOtPi4DB3UD3FJrfEyrpQ4ZI8FSlps=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=X1dW34/Y0dTp5t6SfxjPK1/+R/aTDZt6rQNTGQaZbrTfJAUCIDeCLR/DZlImIKjW4oNLSPBJ8pSNoN9kjsvU32SH71lE/RnceH9+sSnkmVjHi+TuL094KP8M3mnWKez2xETUGRBK7aVVv/TeTMm/51BkjStRrol2Ls/StHYihoMIMP7scZSs8k83xrZoAXG55dbNjLQMq+8hNhKq67TDNrYkcr+6L+dH2ArgNEdsj2aRVkoXFcC6sFPmfHZWkGjMlNKFWsKzHDDkgtIqXRfsS7TyhcggnvELg/QO/TJYLXu9nF3F+pDIDH0rX0Qd6Mn+5IndmwAY6BXRidHnZGF36A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; dkim=pass (2048-bit key; unprotected) header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=3H9p/Vkv; dkim-atps=neutral; spf=pass (client-ip=2a02:c205:3004:2154::1; helo=mail.andi.de1.cc; envelope-from=andreas@kemnade.info; receiver=lists.ozlabs.org) smtp.mailfrom=kemnade.info
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VoXxllUZ;
+	dkim=pass (2048-bit key; unprotected) header.d=kemnade.info header.i=@kemnade.info header.a=rsa-sha256 header.s=20220719 header.b=3H9p/Vkv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kemnade.info (client-ip=2a02:c205:3004:2154::1; helo=mail.andi.de1.cc; envelope-from=andreas@kemnade.info; receiver=lists.ozlabs.org)
+X-Greylist: delayed 2066 seconds by postgrey-1.37 at boromir; Fri, 05 Sep 2025 17:32:26 AEST
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [IPv6:2a02:c205:3004:2154::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJ6bs0Btmz30VQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 16:57:28 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 584K5SFc012012;
-	Fri, 5 Sep 2025 06:57:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=i6iIRw
-	lL08m7ddD00gWRDzn7fpP62voWSOHllYdsQfM=; b=VoXxllUZm8+7DgckRp/NLN
-	zPYc8QI+ZJf5ogWCoo7J5wJRm06a8olnHUjPs5I4lnlQ1pJ2SVDXYCMOnl1yfuDz
-	IRdUBU3ovvzTd9CfzMYu9JseXs2+QDOMHsAXJERd+pwKPw4qWWv5Nh05Lk0kuKMb
-	46dkr7qUULAlXRms5uaUgiq6a+zMEoSr2LXCiAxDfEsdKasNhfI/FN9cYaw285Ob
-	x34bbjE+AK7fRdORJ6RsxSgN4iQ9EKI6yPsoJfx4kQHbj3BEegmP0XJr7zU4h6BQ
-	G7S/9kusQKbeFzhqa1bl7UvW7gePEjBse2wfS38iWiCCFJxDKgV/m2SrjoqE+biw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usurerb4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Sep 2025 06:57:17 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5856vGnm000584;
-	Fri, 5 Sep 2025 06:57:16 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usurerb0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Sep 2025 06:57:16 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58567HMB014052;
-	Fri, 5 Sep 2025 06:57:15 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48veb3qy6w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 05 Sep 2025 06:57:15 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5856vFrs27919074
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 5 Sep 2025 06:57:15 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4191558054;
-	Fri,  5 Sep 2025 06:57:15 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D502158060;
-	Fri,  5 Sep 2025 06:57:12 +0000 (GMT)
-Received: from jarvis.ozlabs.ibm.com (unknown [9.90.171.232])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  5 Sep 2025 06:57:12 +0000 (GMT)
-Message-ID: <977ad5eef4f8726e9d5bff31b758918f0341659d.camel@linux.ibm.com>
-Subject: Re: [PATCH] powerpc/32: Remove PAGE_KERNEL_TEXT to fix startup
- failure
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman	
- <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Madhavan
- Srinivasan	 <maddy@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Erhard
- Furtner	 <erhard_f@mailbox.org>
-Date: Fri, 05 Sep 2025 16:57:11 +1000
-In-Reply-To: <4b5e6eb281d7b1ea77619bee17095f905a125168.1757003584.git.christophe.leroy@csgroup.eu>
-References: <342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org>
-	 <4b5e6eb281d7b1ea77619bee17095f905a125168.1757003584.git.christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJ7NB2Fq1z3bWX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 17:32:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=UMhp8J72yITKfzOtPi4DB3UD3FJrfEyrpQ4ZI8FSlps=; b=3H9p/Vkvxt4XbLhqCSP9aF+To1
+	PztEyON86OQi9PDNd1ceEUJxtwdxP8kfhfwhJsFQCpc05baWPVxWZGjg7opX2gYK2WIvJOe9zaGxI
+	t1GjVNq312NK5FM6wxYvOK7xHeRcBlZ7DvQNdzrNE74gtjS6ycrbgz9Gz3oDC2fnJm/+BYHCrYZqe
+	z3F+cmE+jwq5XWgZ+duo5Zpgb84hlUrrT5p8vOy3tqh9xZzhopHfUHuZpO6PnjBzxRCn0X20BnYgc
+	3sDAk1C2TxIs6tj7Oexhrej49YHa7H2oqGuA9FmUUbjg3rqCJrtaGj5ZEtOjhNwA5eJUszaVWNk4z
+	U2CnHU+A==;
+Date: Fri, 5 Sep 2025 08:57:26 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar
+ <viresh.kumar@linaro.org>, Catalin Marinas <catalin.marinas@arm.com>, Will
+ Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar
+ <alim.akhtar@samsung.com>, Thierry Reding <thierry.reding@gmail.com>,
+ MyungJoo Ham <myungjoo.ham@samsung.com>, Kyungmin Park
+ <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, Jani
+ Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi
+ <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Daniel Lezcano
+ <daniel.lezcano@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, Shawn
+ Guo <shawnguo@kernel.org>, Eduardo Valentin <edubezval@gmail.com>, Keerthy
+ <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, zhenglifeng
+ <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, Len Brown
+ <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, Pengutronix Kernel
+ Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>,
+ Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit
+ Gupta <sumitg@nvidia.com>, Prasanna Kumar T S M <ptsm@linux.microsoft.com>,
+ Sudeep Holla <sudeep.holla@arm.com>, Yicong Yang
+ <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 09/10] thermal/drivers/ti-soc-thermal: Use
+ scope-based cleanup helper
+Message-ID: <20250905085726.2bc6fcb4@akair>
+In-Reply-To: <20250903131733.57637-10-zhangzihuan@kylinos.cn>
+References: <20250903131733.57637-1-zhangzihuan@kylinos.cn>
+	<20250903131733.57637-10-zhangzihuan@kylinos.cn>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,92 +88,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzMCBTYWx0ZWRfXzvkHakOeeGWc
- xIxAT6pze9qsFX2mdazJPm3UogZYYT8H/DDeR0e3NxWMqNV+L/KW/42Mqwo+Vj4yLHIwlNsxCRw
- y4Cx1kEVZuv6j3lI0TcUCBHkL7YnImsOkm/1JuLhTws//g8cUABTtC8ph+r1EC+TalhoX3WG9v+
- pvrcoWem1opzF2XFSOCtmMEht2oey7X0tS6pHW7HV47XoRLT4jer/ihdax65sHV//YjCa1ADgP9
- qtuClyebYb4sdNW+ig9lIGnicxh/e74/+EmIYPkG1MmVz5u/HtnuamGZuCVlzOn+BTdTWM5DVrF
- AAuvR8dr4sH6JcM8jC3uKEAH7/Fu6+vDPPx3x/OlXoNOAP7Eci/sRHqssn/lmEp2fs9aBD5TIuW
- M+MFTaX+
-X-Proofpoint-GUID: HLJBueF4UV6soL6npRI4I6Onc-nK5ppq
-X-Proofpoint-ORIG-GUID: O4JRA3B6Hh-HfKmWIdX2yTs_2TdtcoRY
-X-Authority-Analysis: v=2.4 cv=Ao/u3P9P c=1 sm=1 tr=0 ts=68ba89cd cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=b3CbU_ItAAAA:8
- a=VnNF1IyMAAAA:8 a=1UX6Do5GAAAA:8 a=kZQNDw5qEIdUIES3TQEA:9 a=QEXdDO2ut3YA:10
- a=Rv2g8BkzVjQTVhhssdqe:22 a=Et2XPkok5AAZYJIKzHr1:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-05_02,2025-09-04_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 impostorscore=0 priorityscore=1501 spamscore=0
- suspectscore=0 bulkscore=0 adultscore=0 malwarescore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2508300030
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, 2025-09-04 at 18:33 +0200, Christophe Leroy wrote:
-> PAGE_KERNEL_TEXT is an old macro that is used to tell kernel whether
-> kernel text has to be mapped read-only or read-write based on build
-> time options.
->=20
-> But nowadays, with functionnalities like jump_labels, static links,
-> etc ... more only less all kernels need to be read-write at some
-> point, and some combinations of configs failed to work due to
-> innacurate setting of PAGE_KERNEL_TEXT. On the other hand, today
-> we have CONFIG_STRICT_KERNEL_RWX which implements a more controlled
-> access to kernel modifications.
->=20
-> Instead of trying to keep PAGE_KERNEL_TEXT accurate with all
-> possible options that may imply kernel text modification, always
-> set kernel text read-write at startup and rely on
-> CONFIG_STRICT_KERNEL_RWX to provide accurate protection.
->=20
-> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-> Closes:
-> https://lore.kernel.org/all/342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.=
-org/
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Am Wed,  3 Sep 2025 21:17:32 +0800
+schrieb Zihuan Zhang <zhangzihuan@kylinos.cn>:
 
-The original issue that Erhard and I were investigating was why the latest
-version of the PowerPC page table check series[0] was failing on his G4, wh=
-en
-built as part of a config with many other debugging options enabled.
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  drivers/thermal/ti-soc-thermal/ti-thermal-common.c | 13 ++++---------
+>  1 file changed, 4 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> index 0cf0826b805a..37d06468913a 100644
+> --- a/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> +++ b/drivers/thermal/ti-soc-thermal/ti-thermal-common.c
+> @@ -27,7 +27,6 @@
+>  
+>  /* common data structures */
+>  struct ti_thermal_data {
+> -	struct cpufreq_policy *policy;
+>  	struct thermal_zone_device *ti_thermal;
+>  	struct thermal_zone_device *pcb_tz;
+>  	struct thermal_cooling_device *cool_dev;
+> @@ -218,6 +217,7 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
+>  {
+>  	struct ti_thermal_data *data;
+>  	struct device_node *np = bgp->dev->of_node;
+> +	struct cpufreq_policy *policy __free(put_cpufreq_policy) = cpufreq_cpu_get(0);
+>  
+this looks as it changes the lifecycle from the device lifetime to just
+this function...
 
-With further instrumentation, it turns out that this was due to a failed
-instruction patch while setting up a jump label for the
-page_table_check_disabled static key, which was being checked in
-page_table_check_pte_clear(), which was in turn inlined ultimately into
-debug_vm_pgtable().
+>  	/*
+>  	 * We are assuming here that if one deploys the zone
+> @@ -234,19 +234,17 @@ int ti_thermal_register_cpu_cooling(struct ti_bandgap *bgp, int id)
+>  	if (!data)
+>  		return -EINVAL;
+>  
+> -	data->policy = cpufreq_cpu_get(0);
+> -	if (!data->policy) {
+> +	if (!policy) {
+>  		pr_debug("%s: CPUFreq policy not found\n", __func__);
+>  		return -EPROBE_DEFER;
+>  	}
+>  
+>  	/* Register cooling device */
+> -	data->cool_dev = cpufreq_cooling_register(data->policy);
+> +	data->cool_dev = cpufreq_cooling_register(policy);
 
-This patch seems to fix the problem, so:
+and it is passed on to something living beyond this function. I see no
+_get(policy) in cpufreq_cooling_register().
+Am I missing something?
 
-Tested-by: Andrew Donnellan <ajd@linux.ibm.com>
-
-But I'm still curious about why I only see the issue when:
-
-  (a) CONFIG_KFENCE=3Dy (even when disabled using kfence.sample_interval=3D=
-0) -
-noting that changing CONFIG_KFENCE doesn't change the definition of
-PAGE_KERNEL_TEXT; and
-
-  (b) when the jump label ends up in a __init function (removing __init fro=
-m
-debug_vm_pgtable() and its associated functions, or changing the code in su=
-ch a
-way that the static key check doesn't get inlined, resolves the issue, and
-similarly for test_static_call_init() when CONFIG_STATIC_CALL_SELFTEST=3Dy)=
-.
-
-I don't understand the mm code well enough to make sense of this.
-
-[0] https://lore.kernel.org/all/20250813062614.51759-1-ajd@linux.ibm.com/
-
---=20
-Andrew Donnellan    OzLabs, ADL Canberra
-ajd@linux.ibm.com   IBM Australia Limited
+Regards,
+Andreas
 
