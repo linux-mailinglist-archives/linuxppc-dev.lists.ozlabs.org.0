@@ -1,156 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-11754-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11755-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97DEB44B9B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 04:26:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4221B44C50
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 05:28:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cJ0Zw6YHrz30QJ;
-	Fri,  5 Sep 2025 12:26:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cJ1zB6qSfz2yql;
+	Fri,  5 Sep 2025 13:28:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c20f::7" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757039176;
-	cv=pass; b=WDI45SJt8b5/3Jq68NS2ayRnspaR5s0gRjXk0qY26jsFlUyeHChEOpwiqqwAQmHKFj5wR7purTtYSHf0eut+7j/gZE6XDrBQ5Iij0alYa+pLO3FvunafwBMliaV6BG9iM+N43om475es31FA0erwqpNn/fsJavAyfv22tHimKRw7kq11JhlJGw2LtmSuH9KzW6u2xetfpKqXJiocBvfRQffhbCu/BSjsN1xCwgSPoqHbVRwJvupBwbK1+gKP95IqyEfrxH0a952QtlZkzi79o0kT06S4XviO5UlxKcr1O+ThLt7iH04y7FzH/Yjdlqzg8WL3fQ/5SVq1wgwK0w5y5A==
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757042934;
+	cv=pass; b=bvWa1QCcfGpKgU8FH9rVSsexJn8Mwqq02w+o4AYBsDNeSGBCwCDCfrHZn7kFkWZVjtYDBIDpXWxciqriKNq8aGxSR1yj0zpQK1Q6bIck2D+58pbfegJyRLy1bCXT55Fi+rHgWEXX4ToLpvqizlTvE51+bM76+iku0Myqzvr6nW53NwoMl1MMANvPDT5s9s2hyhz8BBmBal3Rm9VfxS9wucq743frCH+lfjmKSG5L65JfR+sYD1ipt1lmRa6BHtc4MYSwhM4F3A8ENFdurwzn0Q32v27Ye61WVhS304LCGNKsrKSo9zH5gOcZERrWO4AG5nlR7sLvx/k6LFVvPQRw2A==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757039176; c=relaxed/relaxed;
-	bh=FZfNIOHdU1maA9yt0Oh1UlSOE4FsDJhs94bEPM0WFzM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=M+FzvUm0ALNFYCptTHNVoIYxd2aG4xyhqRgv3+rDWdSzKAi73qLmrr1paSSP45LHfmiB+XANR+2EhCGp9biW1utOBfieJ1R+Ypa0iFReFpAq8HXbci+7fJxajhZpEfOh5I1xJ3cMn1OvtRKqjhe1jcnUQb7E1RkynmSQm8O+vGmYYFq5mbr+V8of8eZMtGLfAgdpqqW1iH6XVFCyDc5lPpjjRAvlxh89pS3ApBiDy0V3elMaM3/v8diTJJNnRmCCPoXyStC46gIQkAJPa/SVAuLLv4gz/biU7E0WGc5XjN78DZeXj0TI3R0gG/dE4IwKPGayWWAJEGeXPeWV3wOBCw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=lQ2Uc9NR; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c20f::7; helo=osppr02cu001.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+	t=1757042934; c=relaxed/relaxed;
+	bh=T7u9aGrmrTwUlrvZDh+gHMyvUQGn1VMW1dsK2fndlcU=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=H9ZGrpc7exrh4+mLYj7a/yzJYvkPZrzr8k9Lor7qANimG8V+X9N6bl5X3kp221PxnFkzAcXsHM0SFmLUWABTdn24vZWJnOVYGwj8U1ESQq5DJ07kv+Gpz6/rFErzxDawpa2TR1fUc6sYl3jNpoTTLhMbP4h8ICS/cj2hzADGPSfmhS6MGSC186MD51xY32SfWwYv8ItXIqwto/3DufXpcfaGnsMaC7lBSeAiHu/zpzy+tU3RolWiBHxXHG4P+zoKnZBwVLad5HThJP1Lut8B2Ajlf9UeApjDrtve0fpl1lSWmHKeiTl5xqxWqarWlf6fcx4/NhbxWt/sRwsE1WNggw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=P8zUMD8U; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c20f::7; helo=osppr02cu001.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=lQ2Uc9NR;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=P8zUMD8U;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c20f::7; helo=osppr02cu001.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org)
 Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20f::7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJ0Zt1d2Bz2yrP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 12:26:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJ1z93DH0z2yk3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 13:28:52 +1000 (AEST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=diCTfzCUYPOPDGTeDy/0UUpcEngoXjnySJfTBdCIchUC6AVdZD5jJ/TQH/aCK5fSnNkvqNytWYd4NiTyWfav7Bt2mGIyXTMYwmdbzrE+HgYOI5uUh90N35UrY+qdLSAXPCG7uE52zOTjLX7VvX7v79aB2p5bdZbFvqSXOr2A/QX71UXBmvplcisQ418n33aNEwDaxgjIWN8jbfRN5n8ire6u/aeNYtJ5J98bPjIQhVo8EOzt3rMkNQ9cj9kajqIKeECvPW0zgaBl8tIHRf25+CUof7X/o8n6tdNiY4obEzxaxYMVAs2PLO+sFj1RWJrOx8jYEzghk1oWNYiSUCiQgg==
+ b=mzzyqLD75h7Iba6GbwX9M/5f0BBD+MmhtdRe1EMKiE8FGSYNIH0wWDGK4YkUywmfWV3eBxRECn211OCdbSApjjvE27aH4CC1TPFBn9us31CoBGt7JsHKUcFsLmLSI8nH4aZfsfRKacyeZV0shRc57H0QKiET2TGVAdPMzZsFkGUq3oK1JF+OJdh3ZeChj84rq2dvsSg15QBalDG25ZTY9hVJ7D+75PGk+9B8HbrpPFDAK+HxkRiyyeWxs1YM4viXJLqjvap+8qKGGQaXTIj1ThBw64CDDRFS7LR9toST/b5mMEjKez2cqFL5DWcRmRjoH5DKFSsQcsmTRolCJW/eEQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FZfNIOHdU1maA9yt0Oh1UlSOE4FsDJhs94bEPM0WFzM=;
- b=t80tAEN7V9WAnjUSfNVeY1sNkwcLfCDUOVg02fS8wjNHmDuryZR8Zp6PavfqeUU53TfheUgtpvbJtjNKZItnBcRngS1PKue1vcqxJlBLMHX+oby4jx5HaPg6VpClz504cm4N2qbn4trvlivXKZ+fJuBWGel8ZnASTxWFHogCleEQ/aAUZjUpmvp2ogS6fiY16xNp+24rq4s1d7aQL5BfJmvN9+ISlNNmFw/eb2W7EmuWi8g6buDmR0N1/bp+2L82PlyS2dv2EqPUqULZeBX1enCYBc/vSB6va7+jWVZY+uUmw1doaM3c0B9hrXvj1HUnGBjT11d+Fvs7PEc1EFG3kA==
+ bh=T7u9aGrmrTwUlrvZDh+gHMyvUQGn1VMW1dsK2fndlcU=;
+ b=ly7mT0+eXAB5WF5M4K7Jte6+w8CAbUemjKM87vl5GcQvM8+cbFwo9BciX8OLG+4oubFj+/yXLfwsledgoOdsTP13glnjzUQNzE04d9N/gCaio0i1RrIfhgLVBeX/kf5j+qReVsvVWXUYuceeOGdZf4s2BIlg0BouVfR4QEGdsEt5H/y0ay0ViF7YG2uF53Di4pwVfP5cvTTxZI4qVYSuu4ltxxWrmquEPvPAoHI8HJWAeg48eaTD8X3oDj5jE8N8dA+Nr0LFi8WOuHp8G0NdxauALaoP6tbxZgPPDKYmNNjL8grVIu/3fU5uIi2KQErKieo6Sa9/TsbRV1+wFhzzyQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FZfNIOHdU1maA9yt0Oh1UlSOE4FsDJhs94bEPM0WFzM=;
- b=lQ2Uc9NR5EiypJUs5CEJMTSI6P5xvTPiUYU7aXe/xWHDZPvuKFw5tq9Dr79tRUKKPvZaflFqSmgVf/AgCHRhrQ79I8dBVzGqxgbEJN25AxHkPjmi/u3n9lcssRi3yY+dsW7cA620OJaiGzV6RS92Wle9iUO+uulwONjeIXzHBsMSI4EYC2t/3SlBIj3qlHEbiSI+CWloveVzsYDqhBL31W5oGQRSPdh1/CaEdRUZAoyNMNCW2DY5mo3XN11HUNZJFdDb8f4LNFg53b8QmACvOxXiJR6p2yX83TPvxQpN1EmZWGcT5f7J+DAVGe0VZWrXIATEL5ciHvKSuDzRrlyICQ==
-Received: from AM9PR04MB8505.eurprd04.prod.outlook.com (2603:10a6:20b:40a::14)
- by GV1PR04MB10584.eurprd04.prod.outlook.com (2603:10a6:150:210::15) with
+ bh=T7u9aGrmrTwUlrvZDh+gHMyvUQGn1VMW1dsK2fndlcU=;
+ b=P8zUMD8Uab8QPIBvH+MRDJpmyw0640tUxmXL0hGh2JmWQqlso4J2Qungy1kQTioR4hkszEty2VEappiuXVVANE//O1jd/S8JAWZ8RgH3cusDCntPEbs+pSA4eZdukIo4PX/yKrTXQRp2+DUxzcjkssPEmvM6i0PNF5V8XIIu2rbd1oGJ9Oeb12rYCUUGjRh5JAK0qMGGb6u3zGMuvONzma07G+wEeAnrfN/rUYiIgSGyl1y11mdFdofmOE8UfNgkTFSVs7wyUBG1kxu9lVSSOBlGTCjkglmYyqE3lEDAS0zk9L/SkihR68o2yToYWRmK3JE0L8HDgN/E9i+WEB6Hww==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DUZPR04MB10013.eurprd04.prod.outlook.com (2603:10a6:10:4d8::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.16; Fri, 5 Sep
- 2025 02:25:51 +0000
-Received: from AM9PR04MB8505.eurprd04.prod.outlook.com
- ([fe80::bb21:d7c8:f7f7:7868]) by AM9PR04MB8505.eurprd04.prod.outlook.com
- ([fe80::bb21:d7c8:f7f7:7868%7]) with mapi id 15.20.9094.015; Fri, 5 Sep 2025
- 02:25:51 +0000
+ 2025 03:28:29 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.9094.018; Fri, 5 Sep 2025
+ 03:28:29 +0000
 From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-CC: "richardcochran@gmail.com" <richardcochran@gmail.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	Clark Wang <xiaoning.wang@nxp.com>, Frank Li <frank.li@nxp.com>, "Y.B. Lu"
-	<yangbo.lu@nxp.com>, "christophe.leroy@csgroup.eu"
-	<christophe.leroy@csgroup.eu>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH net-next 1/3] ptp: add debugfs interfaces to loop back the
- periodic output signal
-Thread-Topic: [PATCH net-next 1/3] ptp: add debugfs interfaces to loop back
- the periodic output signal
-Thread-Index: AQHcHLD8ewvtanB8Y0eGvBgSbKKSlrSDBrdKgADW9QA=
-Date: Fri, 5 Sep 2025 02:25:50 +0000
-Message-ID:
- <AM9PR04MB850521C7E01BF30E5BDEB2E88803A@AM9PR04MB8505.eurprd04.prod.outlook.com>
-References: <20250903083749.1388583-1-wei.fang@nxp.com>
- <20250903083749.1388583-1-wei.fang@nxp.com>
- <20250903083749.1388583-2-wei.fang@nxp.com>
- <20250903083749.1388583-2-wei.fang@nxp.com>
- <20250904133011.asqvsucdmuktazc4@skbuf>
-In-Reply-To: <20250904133011.asqvsucdmuktazc4@skbuf>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM9PR04MB8505:EE_|GV1PR04MB10584:EE_
-x-ms-office365-filtering-correlation-id: f60be124-64eb-4a43-2396-08ddec238838
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|19092799006|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?P+SfE6QJLySBighYKF4y9wtkCQT6rHAtCNKJXWSGAqB5h2CnhpvrB63aaJ7+?=
- =?us-ascii?Q?H+SGNv5NVCazmDA6tbp+NHzrJcpxBg4VZ62JK8vxXrVM1Fg8QFvh6P97AIDu?=
- =?us-ascii?Q?9+foNdWUZPfsfPJtRrbMa/2YR34llu8G8kbfJRqqEEAPCisHbZI1EmWJ5jbM?=
- =?us-ascii?Q?bKtxu7pT6fimEyVDg+nZzh7lU2kiWOaPHcpl9SlIWORYE8MsNnDiLAwEOUf1?=
- =?us-ascii?Q?RFh1HOpHoaFLZj9BwTl2HlKkk+JO07X8FICFiu6EUWMN1+dPLcT4Oc+9sclN?=
- =?us-ascii?Q?QmzqXrNYTDI/LHoj+1Pgbhj7WG1iFy/ROCoS68N0z+45ezku3BkBgrLVh3nT?=
- =?us-ascii?Q?TNtj/qw+0WEH31iybc92ghjyt8JSb8AvlJ8bjtOSDEESoSax+qNlfDhJDpS1?=
- =?us-ascii?Q?T9i+icZmekP9gsYsoWHxXwrAKrke+6190vwMAkNkA92sPllADp5BMG+lEBAm?=
- =?us-ascii?Q?ig7glxF4fNxNIAVbMzoIa6UXv3Yh+2eMBkkCMh83zCGmDd33yiCfXPByjYNi?=
- =?us-ascii?Q?gzbH3q2Vo7v5ngCDbGSFnMB0lsJag6R7jOpgStAg+uiCDmRrIZM536fO5UXW?=
- =?us-ascii?Q?HnnCaSwjpaf23ktJOyHLzBXCTeTu57cGQncyJz3WYwSDLfgjo49f6qhL49l7?=
- =?us-ascii?Q?JWe/d88ykrRrwrdAi3ijSv4xcjZgL1M3VERk9hw1fCR62UWHh/60cVdjQuyZ?=
- =?us-ascii?Q?G0e8hElQUTLJDnL1wXJiy4P8v4vuRCcdfis8WnH2ugzMkgmGNiEhp4WlXMsV?=
- =?us-ascii?Q?G1c7c67J7HmJZz0NSzqZEzpPycL5UvYIOMZPQc1WYE3BnDgFlztaqfwAixby?=
- =?us-ascii?Q?yRBTfiuvIWdSHUqHDLtsvcQR3t5M1WcYYrIivPt8SMdn8HA+TcIdKuf9sFf7?=
- =?us-ascii?Q?4nYhXNRqYT8pJ8KufyyGc/KVAxX7Rt4Te92l55eqyvVpMA1lS8ZGdzLWOSWp?=
- =?us-ascii?Q?zsG2zHISc1gvBjltV+0EIR2YM9MZN2h1hSxlYbK5v1oUgGZS2Rq3D9d2KoEb?=
- =?us-ascii?Q?DaefFhcDrCz3ISgk+tPSdtXtcMyuAQiv1Nl8hdH19SFYSDfCF2OYrQsO/0v3?=
- =?us-ascii?Q?22cLuTHpnf8bYb3M4KxMTtWkM0+UM4BVAbnwxPEXhPSMqLsC2Oy69Jz/9TqU?=
- =?us-ascii?Q?35yexuvaG8o+AV7YqKcMZQQAmHENR0EsAGRturfrN+ON2l4dwGlS1m149W1c?=
- =?us-ascii?Q?9uUjrWp/xhKaveZ9NQsbXmVRnV8XZzYhnZwmxtAJGnmzDofv2D3fWbi2DbOw?=
- =?us-ascii?Q?tK1lyjBVCC6w524M6+miFIKXC4LW4GazK/QI5F5jCOM8CY2HfkQuDLVM3rS7?=
- =?us-ascii?Q?F2J3upnRKF5dNzARoFaPy/VVEx5eFoFnVPp6TVDRPfhCiMB4f8t3HNeIUxie?=
- =?us-ascii?Q?UDfYz3wT58LYYOkQ1sLe/EDWVzXNPummsGzyeFh1zRP2qsjKb3ZxYki/YwWT?=
- =?us-ascii?Q?kE8Lfbr6SqwPkQCuFbeRedSaMWukTHDRppkB+Hxjv1F06LqyEC751w=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8505.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(19092799006)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?qmaCrB+f8VkbDOtTxW0W9E/SeWwfobsEkHyhAcShXtGXnAa71ihc0Tl1DeS7?=
- =?us-ascii?Q?E45Tu4LhydcffYDMEn49qOaoy1beJCh66Spz0cl5DQHGXpdHdJJyRNBgQn3E?=
- =?us-ascii?Q?p7qsswMntk6tSJU2EgAzkKJzXPT8yAvP7seiXPp4QXAFCkXpHRcN3ofAMK4H?=
- =?us-ascii?Q?cL7O41NYY6XiDvXbc/7N4g4SWCbRIJdYwrXJFDy02AVxKipJqS5jFSq1tvME?=
- =?us-ascii?Q?BLDN9g/LgJe3MgAnBFmH79PxWXLmn1cTfObpQy44av22ZaDFIEduABS/oX2D?=
- =?us-ascii?Q?+uWf+OBrprKIXRjG7JdcHfvCBGjdVb8mOnmee+97ZbTcOrVgB5ZtT41WQhIq?=
- =?us-ascii?Q?Ch0ll1Gz03U7MxdizzwbRSsFj9uJlhFdRUZDvtOabpel+IxlWMK0Km2hAHku?=
- =?us-ascii?Q?kg4xbjBC4hgHxIx+8ctc0tNKhtO3PEMepDK9mTfF9hPoo7bshkUIvcaw/Mvw?=
- =?us-ascii?Q?CByeBU4Emare20wJk5C7P+BecC/0G1RN3y3B25u4RvN1eC7DfqGH2wtevv8s?=
- =?us-ascii?Q?jaJP6PWZMTb4pr0bApohHi4i1Hg6+2UXk630Tu0iU+xYSn9OQFdt9J3Tg9E0?=
- =?us-ascii?Q?SAHcvPSPusnMISIBRRf/Lprkhr2ONvSRWAimQG8WzXBIejLozGhrD6C+yqj4?=
- =?us-ascii?Q?rDvxRudyJOc7657HRydaRKpKOYvvcgPLPUTrFqpw+EUtMrTZkkuPOPJh/v1d?=
- =?us-ascii?Q?MCJW3s5YpNil38wnvZHzbMZjrU7f03WUF2cxkab6YpzIlQ3oqTbuwMm+LEGn?=
- =?us-ascii?Q?Sw3bmBdWRQnHye7ZFCxeGeZToFejBm6rT0DL7oASsgWp6hMSLY1VzAjJA5Mb?=
- =?us-ascii?Q?v1EIfgA3flFGSXi2yGUuTlMdeoTlN5rQkuCTjbI8X8JI0n/X3UrpHHVwqPWF?=
- =?us-ascii?Q?i+vVbMwg87hPziulWsFNeCG2s4Lzbos9a7NdzMBoiBtRV1XRf0FDuRtglEaa?=
- =?us-ascii?Q?mpRCSW/4wmH9XSUmx3poyK7KefjnsQwwi00cKAeZdbjWy1BMGddJHyNAxQBM?=
- =?us-ascii?Q?jjYtTCbmI+Dxne4xEZRPPaN4DHl6oaw3nwn03YwBMJ2zN7T3XXygwEpuEyL5?=
- =?us-ascii?Q?QrIOIzLLVbPTmr1JkfcRco0I+NVVwFAS21WsKuNNUPhLvdZhwQr23knc2tuv?=
- =?us-ascii?Q?iz6aqHdMHX4nvugb9LlgWkrzimJSaZnhABkhffgv7dYvwvLAwCPtPTK50/gH?=
- =?us-ascii?Q?bJYx9TkXCu4Ct4Wi1PlbLz8V9g82TV5+YbJpisYnuceRVTjkFEurUiA5Bjg3?=
- =?us-ascii?Q?2Fu7e9EDkAhVS9bXNV1+nWSUxbJe2lFGCCs2F0iojQqhqvNOcZ+89j1VylRD?=
- =?us-ascii?Q?ZHc2S9KU3MZIItLJp3rrSMZ+Y9bxjSMldIDXL8R+OkQyqwY225wIeOv6O/ZI?=
- =?us-ascii?Q?74RVJ4VMBYatDBkkxcgRMTpSI7iR9xV0npmx9M8kB0luN8VFdTMoQh/WzFeg?=
- =?us-ascii?Q?27t/epA4AaDKVSTDsbLlGklxJhFUmR14DLBoYb3/1BOxg9M/wSyZKFRx+7BB?=
- =?us-ascii?Q?rXcjQ1IetPvVIk3lGIbXRROv1S2PB2kddWSRSCrIV/l8pQe4cZuV+qCSvURV?=
- =?us-ascii?Q?rTYR0ZIU5lfbPgsQOT0=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: richardcochran@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	Frank.Li@nxp.com,
+	yangbo.lu@nxp.com,
+	christophe.leroy@csgroup.eu
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH v2 net-next 0/3] ptp: add pulse signal loopback support for debugging
+Date: Fri,  5 Sep 2025 11:07:08 +0800
+Message-Id: <20250905030711.1509648-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR03CA0120.apcprd03.prod.outlook.com
+ (2603:1096:4:91::24) To AM9PR04MB8505.eurprd04.prod.outlook.com
+ (2603:10a6:20b:40a::14)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -164,39 +91,125 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DUZPR04MB10013:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6f5da766-b432-4c07-c6d4-08ddec2c461b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|19092799006|376014|7416014|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?7D+Tzj0f+9Rm1ZTHxcPAvyBKUjeQphxzEdJjzld76ncM161VEJ6xMmVVTnsF?=
+ =?us-ascii?Q?hgiGg6+dxn8IWxbov0IEny9hcThUc/ST5uBd12o8N8j+y1qwhoaPe975b0j1?=
+ =?us-ascii?Q?qHNtgK1FwL4REN1VTzdVeGQKckzyUnidI5zZfjqLQvFHPZXHPBTSQOsbABF+?=
+ =?us-ascii?Q?/gn57nBlBM5Y0ucmRFhis8i+lluWGWjLLmU+WZCCbCeJ3fUQ7MUtsaYCK8sH?=
+ =?us-ascii?Q?CS5ZUhTxzp3IbgUX5MzBviC5o4mCBQoZ/VGPaZmk34kKFNJjeVsv0bHtIYav?=
+ =?us-ascii?Q?03qTwuUDji4jh0+rgy0xvWT/snp58aR5Wh0J7Y40h4JmrH4dJxo4hUOSC3D2?=
+ =?us-ascii?Q?VaRE7tcp5nOVkH22nZLuDzsgoQOTCKq7Qi1Z7jZIeS5F076+VOqb1tnf8TCZ?=
+ =?us-ascii?Q?agpYTXzurEusjpbl7md34B9SfSva8uPy70PCMeh08At+MNzb9QfiOdDIzw4s?=
+ =?us-ascii?Q?y3+jABVi7JKz8elk7ykDXE6fR34NTSU9Xre1SYu1dpj64Kfho+1wON5JABLx?=
+ =?us-ascii?Q?Yc1uf9thjrnI7/jN5QQLLDlj2nP8WYt4HLGfuvVNJ8QLIjFjwNV7+lFG01yQ?=
+ =?us-ascii?Q?uLp6CIz2sx137jx86I70RRvZXRxP2wlQ72VuwH8M4m3AnVuqiEHEjuyxZ69G?=
+ =?us-ascii?Q?vCJtuH4OYA4FqgdWDf2ZmlE/ktBw+dRv24oIbJHaziQYHuNSYmuYcDhDL4wa?=
+ =?us-ascii?Q?beON+qMjITv6m+TTdkXZfWo+LzgdTbH1W7d4NcjC626ZwQHzScQmpTsuADCl?=
+ =?us-ascii?Q?3S+AlNBD/rmKjp5Iojyg/AmrcJIfSY3qZ4mLpKPhuXG6rQwBH7NsITHWo8tt?=
+ =?us-ascii?Q?YWxMYwPH1R8UBtaaRZtK+jwWkhF6u2hSl2tdZouLiKhZJp7C1/LYG0V0kzRH?=
+ =?us-ascii?Q?dZ/q07joOUlY01597Yskkef84PvCezuhyPlgGicHkVvHuSgVDacQsTPjWRS+?=
+ =?us-ascii?Q?DJUG+HItBjGYuJJlSAkSW9e0PIRgDZhnD1n0sBDNObWPnwRWAr2kXJl9opWf?=
+ =?us-ascii?Q?5VhDaYMr+RDBbz4LfUpEYWZcZOxksFCFeOs6b+wCQBlChCmABIb2qfUnwiFz?=
+ =?us-ascii?Q?9Lo8oGd77CD7REKhEkV27V7Jv95oNTB0PppCykaflWAT3cRu9C3e1XjNueNf?=
+ =?us-ascii?Q?2SpjsAz4o8PQmc6cgrV8gj/MKL1JF8xWHqBwU4DqWMFRIijTqbhrqA7GmAkA?=
+ =?us-ascii?Q?VR0C+KOUANNyyCKWhSWZJtm5SY6yS6iu6wWNzQGh++QUo9dYa41z/c569DFZ?=
+ =?us-ascii?Q?QlOwE7+EFMtrmCtUOh5aJuyGFdKMxuRv6B6cKmL9Tl7ohAA978a8g5auxwko?=
+ =?us-ascii?Q?1fWJJMPImSGJpjiXZ7/iEQsdirtieTVw85cUhNXJULh/pUIPBbjOeYDk5LNI?=
+ =?us-ascii?Q?Juyz1l/ei6XKsgnpapt1I35XlUzazHQbJgw6nR7YG+EDRKqZ2krCPKSNHvMm?=
+ =?us-ascii?Q?IgSBwdxHbFX71Cj6no4ZLGvXn/6mJNtPtY1Z6J3+Xi+brXdSUvkNmJiJ/3L4?=
+ =?us-ascii?Q?XLedfPFlLG56/IV0sXla/TwtPeBZWPYUxSO4?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(19092799006)(376014)(7416014)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?3xbEu6DgRlGYVB7UhI+IrZOxdNUbGK2Whz8LbpRvMHTOS/0M4XBlIUd9m5jO?=
+ =?us-ascii?Q?5G8kONGXr5sXuOdfcXYyasmmCkMv/l26Necs2EjRr41PbndFrcX6+Iv9jthm?=
+ =?us-ascii?Q?Xpy1wXG2vXCeaTdgP8G5Kvum11Pbxwfm8wB9csgxoWxG4g66KqM7c3J59prk?=
+ =?us-ascii?Q?L6vdL8D31OJVd1+k5kkPyHg/cV5C1+NXRwkesUDpf/a1OvJ4LGRNUN9zokgg?=
+ =?us-ascii?Q?KTpteFqZCGNI3yAT0dDq4Q7o9mRw3oQUbZn3x2m1ywpulQB7sOc1pgI0G8sd?=
+ =?us-ascii?Q?3xJfv4dhp/qDbes72b7gIJe+2M8OGyomvprC2elB9hJ2poSAhFZC5NP+WhBT?=
+ =?us-ascii?Q?aYC0OqtaAOBu16fMm72HExAKz4Vv//Q46nmTnjonpq4sEAyFcul0PyZtaFIv?=
+ =?us-ascii?Q?hQfJPXyx6SnV7DHqb2PJEaDeaxNn4VVl+evhSm1dPWSPy3HWCEz5290eHgde?=
+ =?us-ascii?Q?zDWXO9Splf+MQ7RYGepMuY1HN0d2FLZOahb6RV/UNlktPaZ6qR6zevzwaOOa?=
+ =?us-ascii?Q?SDB47HsE/s/ReMyNRfBtw7A20bEYmhHb2TupZiC/7Z23OI1zgDyXrW0OkhAN?=
+ =?us-ascii?Q?r8VH/reGdzO5/tBTxrPVALXHUuRRkikWfIHH5beSSMfNZqr3uqR3/ee3SxVi?=
+ =?us-ascii?Q?qYKz6ruAgmxczv1yao+7LmTLWT4o3AVrQuGdkR4zgjNAZz1s2lLWS4oKV9g3?=
+ =?us-ascii?Q?O//HfEefmz2HWUDAKJSKdEicBFh4992vyD1mgWHkTsWNMVn3DhtWx7F+o2tw?=
+ =?us-ascii?Q?rza1fbRQ3zf6/WutNHEw7EZB7schnZ+pA2R+cGwQdKHpIH4Hh2HaTrWORCg+?=
+ =?us-ascii?Q?LvX3hmQMCLbtFAQ+R2XQeUeHNR56D3VmDi1aUKFSjxAb5rhbkqzBwLF689lj?=
+ =?us-ascii?Q?H4TpWwnmsTMsGrD9Sc8aB7Eveu/aJ+fkl4eHuRX9UhzQ1SwBvIIo1s7egoH1?=
+ =?us-ascii?Q?XZcFBkQAzm/jLJYL6VjwqCReaHOT8YaOalWIqje+XCFO7SmaTiX2871YX6xh?=
+ =?us-ascii?Q?KbNK/unlhGor5wnP6aGZMAwLqp7CKTen3rT+23iKA2anp4cOgXz+p4ohnbnn?=
+ =?us-ascii?Q?P+Dc+hS1Lua22OUKYRkfUE5g6XVulExeXJoVHn1H6jaPH3ygZU3fZ+r6yDlE?=
+ =?us-ascii?Q?kNrLbMiXHvMuFPJUEtDpayW62BTUwm5eHHcwpAbFnJlFRnfW4JvKg4ghKE/c?=
+ =?us-ascii?Q?hdlzw2Fis258REiouSFErKFec+5yIsSm874GwZ7JO9jnnMdqUUUueaDEEUc2?=
+ =?us-ascii?Q?v2jbHmNyCMb7AtyHjmLOEsLx4Z9vvtW2gx5HLDnT4cAeHqVbbFwl27GviOzO?=
+ =?us-ascii?Q?e7z4du701q2ZNJnVnVU5k+LQ40s/sKQe1en9ZZ/FOwBjmJneJyNwwmMm7kUZ?=
+ =?us-ascii?Q?JYpfcNbuLNhZ3IDSqQOnN/ygM5s2VYbWkj9zG1lVg8ffNIm3DeaH017CcmkR?=
+ =?us-ascii?Q?eBwf7yoJYSpndkxgkyYsR6jsP/QK/fQ3Gee8aujuI5Te8dFLge8iKyfKPZk4?=
+ =?us-ascii?Q?OY2CN0OO8l+zSxpj/rLYulhA62yZe3mxEY5E2M3mj7q2UHv22Re5ggMML0rI?=
+ =?us-ascii?Q?jiqYDo3mx6J9ONLRSssOENouLsAOG1s0fXrY4e/K?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6f5da766-b432-4c07-c6d4-08ddec2c461b
 X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8505.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f60be124-64eb-4a43-2396-08ddec238838
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2025 02:25:50.9537
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2025 03:28:29.2704
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Cv8ywDPUpWPTzSeuot0QbdkvY3m8n1dXliM5KgIYdNntpnGDttl4P75lvok1SlkPafImUjPssHUjRkqpTkI0Lw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10584
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2tqBZZwZOjdeAzj7Udqiygbc8MSJpfGULHLnCtWrmtuUtKYP7M2aS4NRe/rZUqhOCpx0U0ppUGg6qzBWYILplA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DUZPR04MB10013
 X-Spam-Status: No, score=0.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
 	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-> On Wed, Sep 03, 2025 at 04:37:47PM +0800, Wei Fang wrote:
-> > +	buf[len] =3D '\0';
-> > +	cnt =3D sscanf(buf, "%u %d", &index, &enable);
-> > +	if (cnt !=3D 2)
-> > +		return -EINVAL;
-> > +
-> > +	if (index >=3D ops->n_per_lp)
-> > +		return -EINVAL;
-> > +
-> > +	err =3D ops->perout_loopback(ops, index, enable ? 1 : 0);
->=20
-> Why not just reject other 'enable' values than 1 or 0? You make it
-> impossible for other values like '2' to be used in the future, if they
-> are currently treated the same as '1'.
->=20
-> Also, signed 'enable' doesn't make much sense.
+Some PTP devices support looping back the periodic pulse signal for
+debugging. For example, the PTP device of QorIQ platform and the NETC v4
+Timer has the ability to loop back the pulse signal and record the extts
+events for the loopback signal. So we can make sure that the pulse
+intervals and their phase alignment are correct from the perspective of
+the emitting PHC's time base. In addition, we can use this loopback
+feature as a built-in extts event generator when we have no external
+equipment which does that. Therefore, add the generic debugfs interfaces
+to the ptp_clock driver. The first two patch are separated from the
+previous patch set [1]. The third patch is new added.
 
-Okay, I will add strict check to the enable values.
+[1]: https://lore.kernel.org/imx/20250827063332.1217664-1-wei.fang@nxp.com/ #patch 3 and 9
+
+---
+v2 changes:
+1. The value of "enable" is restricted to 0 or 1.
+2. Fix the typo: covert --> convert
+3. Improve the cover-letter
+---
+
+Wei Fang (3):
+  ptp: add debugfs interfaces to loop back the periodic output signal
+  ptp: netc: add the periodic output signal loopback support
+  ptp: qoriq: convert to use generic interfaces to set loopback mode
+
+ MAINTAINERS                      |   1 -
+ drivers/ptp/Kconfig              |   2 +-
+ drivers/ptp/Makefile             |   4 +-
+ drivers/ptp/ptp_clock.c          |  69 +++++++++++++++++++++
+ drivers/ptp/ptp_netc.c           |  25 ++++++++
+ drivers/ptp/ptp_qoriq.c          |  24 +++++++-
+ drivers/ptp/ptp_qoriq_debugfs.c  | 101 -------------------------------
+ include/linux/fsl/ptp_qoriq.h    |  10 ---
+ include/linux/ptp_clock_kernel.h |  10 +++
+ 9 files changed, 128 insertions(+), 118 deletions(-)
+ delete mode 100644 drivers/ptp/ptp_qoriq_debugfs.c
+
+-- 
+2.34.1
 
 
