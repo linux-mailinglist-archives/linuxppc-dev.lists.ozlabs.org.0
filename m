@@ -1,92 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-11808-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11809-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97394B461A1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 20:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA160B463CA
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 21:40:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cJPMR3qzsz3dRr;
-	Sat,  6 Sep 2025 04:02:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cJRWq551Jz2xcC;
+	Sat,  6 Sep 2025 05:40:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757095363;
-	cv=none; b=VWmGCrcaawULANsGZObfmgrr2a3hJUpeq12NWWkU4Gyjx2Fs3/nAhmDm+OI0vzT9nyITCK4ugHI8Dz2b11ivW3z3ONClb336oqgAcentLNGMcmqwc6J9n4wqV6ExFjeK9gaGZ/4cjd6BAz1DTcoCAB5CmHivsH0wYl/eFL0XZftkvprhksSdvXYSYdkkO3k5IrSyi2QhoUY32izOMRFrestzSV0++OXCsFl0dMOyXR4jB+LMs0d6OChdSIAfoOh7AHptWTclR5W6N3V2afVnOSAMPtt8kSifdTC35pVazJj1aq/wlyeaUGow/cnmowh6euogbCcbcCH5FtSbI3xWLg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757101207;
+	cv=none; b=BpLXhzNKe6wOSzQLYZ8kV2wDuK2rgj5tbvkiLarTUFE6sMycVcnIEzqZlPot1l/fuSNE8itntfbhKJGhKeQVBm9o7rKTkIwkQX1gqGcjuHPSzwvdV7xly7gyQ5sfktZIiCdaltj5hFUsIRg7UM0CZ5GzJjxzmBuoShZlEpgYGeBvozWgJ3Hr4VqQZBgGovzn35GdwBEehsXfQHdSA7J71MmhIF4X7jQU939+OPek/cTQ1ctS3gQwqnHWerDcIElnajtzJ5BLRGbuVleTj3alpKlgHX6F/xdX5vch1TK8Xfiz5wiEnPBv896B7DRBK7lT/BHS5MYgT+mMwOdQzti6rQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757095363; c=relaxed/relaxed;
-	bh=vyvqbUDXebspKl35FIPJk0lFngkuMldmVpFc1O8R/zI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K6VgPsdhLdXSfjISbevm/olXXw6Z7QvSaxljEprQEcnkS/f/QgCNti+hEPK+WBkXD3bHIJGjlgPLFRIy3W6d96e50u2+FpYV7bxVAu2dRliwal3nuD/1L3KhV6h42XmVg6jDPnHtkFy2WPp1U7NGiswpHYa+m/XzidvlzPFID+wcZaS+utRXVwhJgn/yMl2bpgh4SAjFnIf2Acc+vzRVEJ4597x2sZnXrCbDiyk06oqpc/JXhbujThhBiQDIkm1j0jL9jr8D7raAFGDqkhIYAMPwWWy+2MI623iC6wzAHmANEXLotEz6UDJ8RBlUsrwkAujF4cSGEXTKhubAfgSNIg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OTxcH0dy; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1757101207; c=relaxed/relaxed;
+	bh=mHVpcKB7Cb/uEraG7GIWsCqlkcZPuKQD5lJglnay43Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oOMDgcR+8klVQmbWYbRdCRj/qpOM7Il1RyuceTuZ3jDGo0hJfWZ0J3+TDoUfXgeIgp86U7S1/jRnHJE8NaTCNdd5fT4v6e/VxSAsCooDtqYfgsCFUqRKmHNPOhheVbwj0rX4y8acxX2G/kdQgzovvfcOWR3R3Rpids7oObFtRTUhghSW/i8aLefrJeTl7ilrr9vWtw3B+YIwyPJE87jn6gyxGAWCR27xGDEk9JLHT1p1Hvqzj/wUtQs43jHazHUblIVErv29zUj+do0dvI9bMGOj3PkxJ4KYIteg1QogArZ9nH+eMSCwf7/5blvhB8n9KLYX2H5BPLmtn8jGr6dvWg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZqXRFlbg; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OTxcH0dy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZqXRFlbg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102d; helo=mail-pj1-x102d.google.com; envelope-from=vishal.moola@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJPMQ1J98z3dLG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Sep 2025 04:02:41 +1000 (AEST)
-Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-32d3e17d927so131225a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Sep 2025 11:02:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757095360; x=1757700160; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vyvqbUDXebspKl35FIPJk0lFngkuMldmVpFc1O8R/zI=;
-        b=OTxcH0dyMWaTsgP9A8JInNIrvbYcN16irpR/yWyt2OyzPJdLwPD+/ffPUu2pygXNen
-         s80L8ywNnygLalkK+BtTt7XWGEc1QXHaUJtFuvi1UbDtIIBx5r6+zdWavvN8zBUHDoad
-         SgYCpE1s5q+DuSBI4k58HEJt6OEnI6rvhPXKwyfYUpg14zk60dAcVndcnFf5uJRaBzMo
-         9WJfG7TafrDyyHpUwZYSPV/2KtOkJZQZfek4/9YXRvxfy0rdkkg4o6Bq3+c2MqfYDgw6
-         2pLuNw2UgTK8xa1vKmixHWufXDOxJkcQpnTvVRAPRogCmkPFUDTGXNX91QRQr3ZuBtDr
-         QD1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757095360; x=1757700160;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vyvqbUDXebspKl35FIPJk0lFngkuMldmVpFc1O8R/zI=;
-        b=t4b+VHRvBCf5ECA57qsPnpraesAA7XAeBQu1t2Re83a+jqDFbVVSQSM0IccfUlllJz
-         AqsteItHs5/GkFtighrxc30C8qCnCTEkgYK+mvTQTg48HIaF4Tc6vEcP7k99XwNVc1OR
-         MjEz3xH1COfNYO/sAN2eK2ZurYLArEu4vP/EUyfo/Yca+Osr8MUfg0ylPMVSKK2QOigH
-         oWbeBIMGP5++k8pbT3BlwOXbC3UqQKwFBnbYsAIQR1Hj/crqC/iqFC/h4Dyh79+bk/nU
-         xWMMXYNKPpkYkdtLZAQ7ag0IkBJYeFRQMA/c2tU60fbr64xPsmm9tIqW6Po2BVPVs2/9
-         2NLg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0m1S9igk8WXPMucF+0nOOhjB5bDtxGBKoRRiV11K/TYE4AMIY5YPKmQLRundsJDx94tn6iNJxhH9TTGc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzU9i7o74M9/65zdBKeaCj2E7kGSW87V5fkNdLYDAs+YqdGF63w
-	VCjHYCOQETPDBSJoXfyVfTgYVQDDF4m+lZkaE2mrsMd2pstApuGVltGx3VYdng==
-X-Gm-Gg: ASbGncsChzyiwlaSSytKy31QhhfocZP4I+ChunqW576r7AXuBPV2WxZxE2szUBBCvki
-	jRYqXnce7OBCw38XkVT3Ex7ZazEdduAZXftxzJgfN8eDkw2FofncY9ILuqdAMwR+XHfIytgATr9
-	/eGesbbk95NvKrZgtMudbaOjwinZWjMaJPL5MK9kCUIvfPISzWCMpczBqp09bS0ErQyTBhfIYqF
-	EKrAkitxcsu6tCHzmQJCakUPEO0mUIKmXxlNDE0eQCW4OLsDheFQoB4yuw1ZZtMFx7GlJfDPv30
-	kRHqpDJC70AkVcF0tc5eQgK+SIIN6xykI5PdHKeDrw2A7SdTlQLv1PsqzGF+xEcGH6HpN4lNnIg
-	/hZOkszA0PFFJJ5iIrSjxyO6Oau1OJKK6zhboTwv9jlMwvFQFSGFMfFOdFNy9yRkm1S+jHsl/7R
-	Q=
-X-Google-Smtp-Source: AGHT+IH4BIuCOkufR5zpdXWK9alIlYMnPti5eXH+01WmcFERf5EmF47R3LvTkLS7gssMCY0/Uh9xug==
-X-Received: by 2002:a17:90a:d64e:b0:32b:5c13:868d with SMTP id 98e67ed59e1d1-32b5c138af9mr13139268a91.1.1757095358574;
-        Fri, 05 Sep 2025 11:02:38 -0700 (PDT)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-32b95d31976sm5409595a91.22.2025.09.05.11.02.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Sep 2025 11:02:37 -0700 (PDT)
-Date: Fri, 5 Sep 2025 11:02:35 -0700
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-block@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-efi@vger.kernel.org, virtualization@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v3 3/7] x86: Stop calling page_address() in free_pages()
-Message-ID: <aLslu1yKPNgoz1OU@fedora>
-References: <20250903185921.1785167-1-vishal.moola@gmail.com>
- <20250903185921.1785167-4-vishal.moola@gmail.com>
- <aLl9KneqOYTujcCh@kernel.org>
- <aLl98MQs-FlHo6bW@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJRWp53MFz2xWQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Sep 2025 05:40:06 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7DEDA602A4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 19:40:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5AAC4CEFD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 19:40:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757101204;
+	bh=EW5E1DsoS/eP0Xpaway7kFwsFpD+pL719m9UghXWG4E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZqXRFlbgP5QwPcBxU6eNLL/08iwuclbpMhHj5f112VJ0D0CRs+uAOZZt9/eSU+oYH
+	 FOKxLZNfYfeCUuY691CYi9oaDczKB9oJxUx3sRU+YTC0hMmU7aj7i6icx+GswFUP2R
+	 IFwTEwP7LFbGxUg/I7SAjo0DENXd43ZHbeobRhQywFakWAs9/enQGWBOfoAuIelFBb
+	 wogoGak56kUdv1oV5wP9PLMDQRhAVNRB8Qk4NYGffSXcIWD99Y+pR+l0VNOqodu/Yf
+	 429lN+Si30NngrGAeTbmA/uuc+3zujKhmh+809qGxXm2EsqsYlM68fd6X/hgvyGAM6
+	 l4P6r3BqgQXRw==
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-746d5474a53so739913a34.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Sep 2025 12:40:04 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXOuvAxdbKlG06PMc9lyfD24jrIhnc6HQHlrGweh2Vq4jzanl0fqWtYFtz4yR1JMY8f9n0LyE4RwfkPl/0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw9SRVcSgPPvZOIwE8RfJCP36+PGCkNWuUe4ut+7AktlBNgkxO0
+	rvPLxGXnAEx7lnGBgeD4AQtf99S9hfBQ6Ul0MqnIzxh0kD2jNZDz5dTPWsx6aMICKo86mozRK09
+	pj6YZyIpEPyvEaj6o1yj5WA6q+NBVrwE=
+X-Google-Smtp-Source: AGHT+IEWhcvcPUmMTXw08ZtZH4mqK1uKC0R7GjcFC8PVlsyyD61c2ek06n5Ch8ecLJvX8w2zR6AjPrAE5CMEF+OJ57Q=
+X-Received: by 2002:a05:6830:700a:b0:74b:f9de:34dd with SMTP id
+ 46e09a7af769-74bf9de3edfmr235939a34.15.1757101203180; Fri, 05 Sep 2025
+ 12:40:03 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,59 +66,219 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLl98MQs-FlHo6bW@kernel.org>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn> <20250905132413.1376220-5-zhangzihuan@kylinos.cn>
+In-Reply-To: <20250905132413.1376220-5-zhangzihuan@kylinos.cn>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Fri, 5 Sep 2025 21:39:52 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jvskvxgUhxKJLN89A+s7Mruz1_tewHZfKgC7sUGLi9cw@mail.gmail.com>
+X-Gm-Features: Ac12FXws29Av_URAHgjbe1keBVsNp0-87UjpP4EeoBVUVvSgtWfWbkUI32D7vRk
+Message-ID: <CAJZ5v0jvskvxgUhxKJLN89A+s7Mruz1_tewHZfKgC7sUGLi9cw@mail.gmail.com>
+Subject: Re: [PATCH v5 4/6] PM / devfreq: Use scope-based cleanup helper
+To: Zihuan Zhang <zhangzihuan@kylinos.cn>
+Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
+	Jonathan Cameron <jonathan.cameron@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
+	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
+	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
+	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
+	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
+	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
+	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Sep 04, 2025 at 02:54:24PM +0300, Mike Rapoport wrote:
-> On Thu, Sep 04, 2025 at 02:51:14PM +0300, Mike Rapoport wrote:
-> > On Wed, Sep 03, 2025 at 11:59:17AM -0700, Vishal Moola (Oracle) wrote:
-> > > free_pages() should be used when we only have a virtual address. We
-> > > should call __free_pages() directly on our page instead.
-> > > 
-> > > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> > > Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> > > ---
-> > >  arch/x86/mm/init_64.c          | 2 +-
-> > >  arch/x86/platform/efi/memmap.c | 2 +-
-> > >  2 files changed, 2 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-> > > index b9426fce5f3e..0e4270e20fad 100644
-> > > --- a/arch/x86/mm/init_64.c
-> > > +++ b/arch/x86/mm/init_64.c
-> > > @@ -1031,7 +1031,7 @@ static void __meminit free_pagetable(struct page *page, int order)
-> > >  		free_reserved_pages(page, nr_pages);
-> > >  #endif
-> > >  	} else {
-> > > -		free_pages((unsigned long)page_address(page), order);
-> > > +		__free_pages(page, order);
-> > >  	}
-> > >  }
-> > >  
-> > > diff --git a/arch/x86/platform/efi/memmap.c b/arch/x86/platform/efi/memmap.c
-> > > index 061b8ecc71a1..023697c88910 100644
-> > > --- a/arch/x86/platform/efi/memmap.c
-> > > +++ b/arch/x86/platform/efi/memmap.c
-> > > @@ -42,7 +42,7 @@ void __init __efi_memmap_free(u64 phys, unsigned long size, unsigned long flags)
-> > >  		struct page *p = pfn_to_page(PHYS_PFN(phys));
-> > >  		unsigned int order = get_order(size);
-> > >  
-> > > -		free_pages((unsigned long) page_address(p), order);
-> > 
-> > Could be just free_pages((unsigned long)phys_to_virt(phys), order), then
-> > the page is not needed at all.
-> 
-> Or even __free_pages(phys_to_page(phys), order);
+On Fri, Sep 5, 2025 at 3:25=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
+> wrote:
+>
+> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
+> annotation for policy references. This reduces the risk of reference
+> counting mistakes and aligns the code with the latest kernel style.
+>
+> No functional change intended.
+>
+> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
+> ---
+>  drivers/devfreq/governor_passive.c | 60 +++++++++++-------------------
+>  1 file changed, 22 insertions(+), 38 deletions(-)
+>
+> diff --git a/drivers/devfreq/governor_passive.c b/drivers/devfreq/governo=
+r_passive.c
+> index 953cf9a1e9f7..5afaea39377e 100644
+> --- a/drivers/devfreq/governor_passive.c
+> +++ b/drivers/devfreq/governor_passive.c
+> @@ -80,24 +80,23 @@ static int get_target_freq_with_cpufreq(struct devfre=
+q *devfreq,
+>         struct devfreq_passive_data *p_data =3D
+>                                 (struct devfreq_passive_data *)devfreq->d=
+ata;
+>         struct devfreq_cpu_data *parent_cpu_data;
+> -       struct cpufreq_policy *policy;
+>         unsigned long cpu, cpu_cur, cpu_min, cpu_max, cpu_percent;
+>         unsigned long dev_min, dev_max;
+>         unsigned long freq =3D 0;
+>         int ret =3D 0;
+>
+>         for_each_online_cpu(cpu) {
 
-Right. It actually looks like we could inline this whole block if we
-really wanted to...
+I'd rather move the code in this loop to a separate function in the
+first place and then do a __free()-based simplification of it.  I'd
+suggest doing each step in a separate patch to avoid mistakes.
 
-__free_pages(phys_to_page(phys), get_order(size));
+> -               policy =3D cpufreq_cpu_get(cpu);
+> +               struct cpufreq_policy *policy __free(put_cpufreq_policy) =
+=3D
+> +                       cpufreq_cpu_get(cpu);
+> +
+>                 if (!policy) {
+>                         ret =3D -EINVAL;
+>                         continue;
+>                 }
+>
+>                 parent_cpu_data =3D get_parent_cpu_data(p_data, policy);
+> -               if (!parent_cpu_data) {
+> -                       cpufreq_cpu_put(policy);
+> +               if (!parent_cpu_data)
+>                         continue;
+> -               }
+>
+>                 /* Get target freq via required opps */
+>                 cpu_cur =3D parent_cpu_data->cur_freq * HZ_PER_KHZ;
+> @@ -106,7 +105,6 @@ static int get_target_freq_with_cpufreq(struct devfre=
+q *devfreq,
+>                                         devfreq->opp_table, &cpu_cur);
+>                 if (freq) {
+>                         *target_freq =3D max(freq, *target_freq);
+> -                       cpufreq_cpu_put(policy);
+>                         continue;
+>                 }
+>
+> @@ -121,7 +119,6 @@ static int get_target_freq_with_cpufreq(struct devfre=
+q *devfreq,
+>                 freq =3D dev_min + mult_frac(dev_max - dev_min, cpu_perce=
+nt, 100);
+>
+>                 *target_freq =3D max(freq, *target_freq);
+> -               cpufreq_cpu_put(policy);
+>         }
+>
+>         return ret;
+> @@ -255,8 +252,6 @@ static int cpufreq_passive_register_notifier(struct d=
+evfreq *devfreq)
+>                         =3D (struct devfreq_passive_data *)devfreq->data;
+>         struct device *dev =3D devfreq->dev.parent;
+>         struct opp_table *opp_table =3D NULL;
+> -       struct devfreq_cpu_data *parent_cpu_data;
+> -       struct cpufreq_policy *policy;
+>         struct device *cpu_dev;
+>         unsigned int cpu;
+>         int ret;
+> @@ -273,37 +268,34 @@ static int cpufreq_passive_register_notifier(struct=
+ devfreq *devfreq)
+>         }
+>
+>         for_each_possible_cpu(cpu) {
 
-Should I send a fixup (or v4) with this change?
+And analogously here.  I'd use separate two patches for updating this code.
+
+> -               policy =3D cpufreq_cpu_get(cpu);
+> -               if (!policy) {
+> -                       ret =3D -EPROBE_DEFER;
+> -                       goto err;
+> -               }
+> +               struct cpufreq_policy *policy __free(put_cpufreq_policy) =
+=3D
+> +                       cpufreq_cpu_get(cpu);
+>
+> -               parent_cpu_data =3D get_parent_cpu_data(p_data, policy);
+> -               if (parent_cpu_data) {
+> -                       cpufreq_cpu_put(policy);
+> +               if (!policy)
+> +                       return -EPROBE_DEFER;
+> +
+> +               struct devfreq_cpu_data *initial_parent_cpu_data =3D
+> +                       get_parent_cpu_data(p_data, policy);
+> +
+> +               if (initial_parent_cpu_data)
+>                         continue;
+> -               }
+>
+> -               parent_cpu_data =3D kzalloc(sizeof(*parent_cpu_data),
+> -                                               GFP_KERNEL);
+> -               if (!parent_cpu_data) {
+> -                       ret =3D -ENOMEM;
+> -                       goto err_put_policy;
+> -               }
+> +               struct devfreq_cpu_data *parent_cpu_data __free(kfree) =
+=3D
+> +                       kzalloc(sizeof(*parent_cpu_data), GFP_KERNEL);
+> +
+> +               if (!parent_cpu_data)
+> +                       return -ENOMEM;
+>
+>                 cpu_dev =3D get_cpu_device(cpu);
+>                 if (!cpu_dev) {
+>                         dev_err(dev, "failed to get cpu device\n");
+> -                       ret =3D -ENODEV;
+> -                       goto err_free_cpu_data;
+> +                       return -ENODEV;
+>                 }
+>
+>                 opp_table =3D dev_pm_opp_get_opp_table(cpu_dev);
+>                 if (IS_ERR(opp_table)) {
+>                         dev_err(dev, "failed to get opp_table of cpu%d\n"=
+, cpu);
+> -                       ret =3D PTR_ERR(opp_table);
+> -                       goto err_free_cpu_data;
+> +                       return PTR_ERR(opp_table);
+>                 }
+>
+>                 parent_cpu_data->dev =3D cpu_dev;
+> @@ -313,8 +305,8 @@ static int cpufreq_passive_register_notifier(struct d=
+evfreq *devfreq)
+>                 parent_cpu_data->min_freq =3D policy->cpuinfo.min_freq;
+>                 parent_cpu_data->max_freq =3D policy->cpuinfo.max_freq;
+>
+> -               list_add_tail(&parent_cpu_data->node, &p_data->cpu_data_l=
+ist);
+> -               cpufreq_cpu_put(policy);
+> +               list_add_tail(&(no_free_ptr(parent_cpu_data)->node,
+> +                       &p_data->cpu_data_list);
+>         }
+>
+>         mutex_lock(&devfreq->lock);
+> @@ -324,14 +316,6 @@ static int cpufreq_passive_register_notifier(struct =
+devfreq *devfreq)
+>                 dev_err(dev, "failed to update the frequency\n");
+>
+>         return ret;
+> -
+> -err_free_cpu_data:
+> -       kfree(parent_cpu_data);
+> -err_put_policy:
+> -       cpufreq_cpu_put(policy);
+> -err:
+> -
+> -       return ret;
+>  }
+>
+>  static int devfreq_passive_notifier_call(struct notifier_block *nb,
+> --
 
