@@ -1,85 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-11760-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11759-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4F0B44CE5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 06:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6ADB44CD4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 06:44:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cJ3mj0RR4z30V0;
-	Fri,  5 Sep 2025 14:49:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cJ3fK1rGMz30TF;
+	Fri,  5 Sep 2025 14:44:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757047796;
-	cv=none; b=dN1wQybkrITrScRQO6SEgl7CkMrHeDMzaCY7XlI3ZwbdB2KJgxMnE9X1Nsa7tqXCBKCciKKv9myyqaKg1b7wqEGrAbpr+ogfoYDqtGwnpSWyYdcC76y84VJQRGksOYgg/Sg8nQOMFpixsEkI3OLwKmzaFEpMz0tAgiFeQ7iceVRAwfbodsJnMYMnGkA5F2mtZpjtmKgedh+uWzGIRP+V0L1FCpDZ3YVjA/CX5BmXjg2bDyik9kLZqPqplPCOCaEi/RSjrO+bT0Ffh+Gafc9tS/MwSa2vg5SMm4eC656O29yzt65FWFiC008NhOzPhUgGzDAsForrSye14W4M9dkuAg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757047465;
+	cv=none; b=nVEF6cSYSYvG9sYNu4mrjlSwVFw5RuRUI0AUabV0pWx2J+E9IWu05C06pngtBsYoPXwrfoFOtPobmQnGLgPDhVcTMHcgKJp+1HEiBjQQFprywy3MYNQTxgUttPLkbRuelxGUvOOg6HVYIfPUUlhGU412AQ7Sew8eCt97MDdEN8XLca9YQH+J9GVEkC3vybg7dRIhH8vfh+9CKteJUsAgcpwiM8Z9Br5BHVrwMQ9GMqAvBCDA36I2BMAs6gTHkyOY4wS9FDLjIbUXzp50xFXLisEEZOoGBjm6vg0HQW7focxXphqJUsX2YXUfgFB7K5iBJ1wbscz1Tv4FkFzPwPJD0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757047796; c=relaxed/relaxed;
-	bh=IxcFv1jGHHWePgPdTLSKcytFmfYfh0ATpkvB8I26vi8=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:Date:References; b=JdAQYSDnfDSt00x2ulsdp+3W56IKh6H1aHnQazhVkrkIunPuUXRVI8k+du8MonWAVd89KddA+9MXmKIMR4xzG/kdpN9S7S0o0xYemmf9RgdTAQbyPigRz36lc+5c2ndekecWtVLi5r73Ya1ZRvy7zguFMkkB3ocmMmGneswm6BfvHN775a9devzzA9rSinexKupISRXzkqHwCRXcTtv9qP+DJu6ti2igGaBXdVl7IO2DB36A0PUP7IxjckONDuYfi87PiQi1MxAGpLvjOzGIHH+ritgR8sj4iHz0uKwdUV1eqj2yIjBi20c3t330r4KF4V9t9hmkRZ4CAIISEzFllA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Xa9RGUYa; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1757047465; c=relaxed/relaxed;
+	bh=wLpFhHb4ddeLkBsi4QkuI9wscBrC/PR+rRnB+WrnvKA=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=U7jA0ctWuxnhuS8GJjJ5qlWmP6S1DYLuenMRVGmQ1PFIMKOOGl/88a59VPj3dxxH4/S4Wwq46jjuTVKK9OY7T1vmK2dXcRW14HwfDe1N+EEj1x00XCfge00LREv1qujpCvIsjKNh0lny4oahCZM5EkQ8eHbAKw6X566qKnhRgMtV64Pm8TfHvH6bAP8WnK6xbVnyXLBJ4S4C1ZueisZNClCrOZtDWmcSCdz77fJ1m4Ult3Pa1VUdz3uDl+dJ4jOrVFJ6159NzV28dK9CIbhWEEP8azdC7uQyQnZapDdZpxFIRrLZ9TiYrW9UDUmSX/kypYGdtb96XJFufjEeGqg5qQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FldcBxAk; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Xa9RGUYa;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FldcBxAk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJ3mg3KQGz30T8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 14:49:54 +1000 (AEST)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-248ff68356aso18013965ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Sep 2025 21:49:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757047792; x=1757652592; darn=lists.ozlabs.org;
-        h=references:date:in-reply-to:subject:cc:to:from:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=IxcFv1jGHHWePgPdTLSKcytFmfYfh0ATpkvB8I26vi8=;
-        b=Xa9RGUYab51tBkUP/0AdDeqgjQkeFj4N6/SyKKc2nKrIxEL77wbCn6tKX5DGfl7LYG
-         46jWZ3u6qztiSbLjiVOeKuwLsVfbH0Z1EfVZ25Us7r4q3ZCfKfz2k3AMqIYXHB/A570S
-         5U+NcyLpcO3+vVEkvL2cAVLRS2BiYoKlS/7g5T1gPaEw5YbOPEBjnwMjSdYfH6mAChKu
-         ogdobCBb+1Lo2uxRaxVOgK6t13UPRoVdJArlulMh8s+lFir9S0e1BnTXJRKKRZxUaBst
-         IzAa6D+7ly0wBb7ta0tpYKhGHAPp8LdqnEgEHZV2Cv7i8257nBeVNHvmm2p+yf8l/a1U
-         thuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757047792; x=1757652592;
-        h=references:date:in-reply-to:subject:cc:to:from:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IxcFv1jGHHWePgPdTLSKcytFmfYfh0ATpkvB8I26vi8=;
-        b=TvUNVKCXijK+w1fDW/H9We2S1gFnlLzSJFWshxkTGeZjxTCOLip/fXkmDLxwo2y0Vd
-         MzY8NpBFhWi8xnj1xYjL3k8pHBFzVkL2EdmnZ5DhDR9hveNi1QmIVtuMsR/T/kGD4gyX
-         NEuKgip/1DJsH0s1MdE/Nwh/6TIB+pyrHFgvE6WhYJDicm29ZvnaVsubt8YFD8VZCnLO
-         Nf0M2saxno8SY2VjheLxumqbFDCvtxirTOSSLe1OJ2DYTV9G6h4FdFiFaZJxZPh235no
-         r1MqxHa9u6SoD74jYZ9JVY9CeSNCozk7K+vfCGu8jU4KnYr2Gj8Rka0kSXL7OGSW2ic/
-         OWAg==
-X-Forwarded-Encrypted: i=1; AJvYcCWJVAct6pYeWfQMsmLSP/UCUdzaDO5goy1AEqPNWXA0CDhBc/hktvz6UNOfP9HAteq2E71iIcLn0mG8cOc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyvtIEU1F19n/Hzu0wKRtZ3dFFkbuKDuD730KaID5LihfaMsIlw
-	yrAi4dmKvV0z/6PVMnb2nI9edb9fOeEoZMNq0bFVNGm4dNrzrc0kWS++Sd3cmQ==
-X-Gm-Gg: ASbGncsZz4Rstb0eR6NfPGHe190J7+MksHBiNdGHcj6+1nbnhaahbQ0oIpwa3KOX2pP
-	v/SzWAq48DrUkeDWKvFLHHdaZ+b/fSNHypDM7TfiquYvttMGoYkGzk1o7zePDVanqmMAgdK7gWS
-	kt7eteN5x0Qzv98W5jiS+TrStznYvAA5upF0uEJ+5vphSpgbE+ZhovzXiaSDr7y2o2hAjVmANgR
-	0B4TWcOJmV4zAfI8LzRNPpDCSgrtMKYMdIsSrmmfH+4le4pIsfjFUIkL8OK8yGAKbmNKapJCiY7
-	F9V/BIFlefa1sji05Li8E89URL2bo1sLC6a4WXVuyRqNL+3bs7XdKWTznvUI/j8AGM5p+UE1+Uw
-	2QaUvSl+eSP2+w+WudCRedcZzGSf6jw174SiH
-X-Google-Smtp-Source: AGHT+IHX8e4Inpx2hBks4rAQrQfUIDHGhgp1fO6cFmLJ0IOo+VGkzueivYyMxmOU6vV1rXg0Tl/w0A==
-X-Received: by 2002:a17:902:f688:b0:246:8ba5:f450 with SMTP id d9443c01a7336-24cefe326b3mr25473425ad.28.1757047791577;
-        Thu, 04 Sep 2025 21:49:51 -0700 (PDT)
-Received: from dw-tp ([171.76.86.143])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-24cc1a82a34sm34286845ad.151.2025.09.04.21.49.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Sep 2025 21:49:50 -0700 (PDT)
-Message-ID: <68ba6bee.170a0220.3b821b.ca9d@mx.google.com>
-X-Google-Original-Message-ID: <87v7lxime4.fsf@ritesh.list@gmail.com>
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Andrew Donnellan <ajd@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Erhard Furtner <erhard_f@mailbox.org>
-Subject: Re: [PATCH] powerpc/32: Remove PAGE_KERNEL_TEXT to fix startup failure
-In-Reply-To: <4b5e6eb281d7b1ea77619bee17095f905a125168.1757003584.git.christophe.leroy@csgroup.eu>
-Date: Fri, 05 Sep 2025 09:25:15 +0530
-References: <342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org> <4b5e6eb281d7b1ea77619bee17095f905a125168.1757003584.git.christophe.leroy@csgroup.eu>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJ3fJ1w8Vz2ySV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 14:44:23 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5854JFob014520;
+	Fri, 5 Sep 2025 04:44:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=wLpFhHb4ddeLkBsi4QkuI9wscBrC
+	/PR+rRnB+WrnvKA=; b=FldcBxAkaZNwFShQnSkf0e8mwLHN4fs1cNfqvIb+BFtF
+	nZA6F+611cTdylAWEU+eXqoxD2fF0qcNdNgaFgKHQZhYcO1tvtaNBJktkOGm5vX8
+	2cBbrot92BF8mI2MGYFVOOe1I+JSPkSTp3WfyXMw6/kApvVfM0m/ovoVTtojYTII
+	xSg645ujVYxGpi1ies55KsoaIHVnzIng2CMuJlyFCm2BNINkYiJIANjKgyCWetHj
+	uUAUU50Z7Jx/6ylKdGZaC0byl5nz9qKVGb/2VIgCMwxRxqYapV5qFgrIUIHD2Bct
+	FtgxYpcnEpCDQcJMjLqlnCuF1eTLIAoPev79K1CoUg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 48usv3eat8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Sep 2025 04:44:07 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5851Kspe013959;
+	Fri, 5 Sep 2025 04:44:06 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48veb3qhjm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 05 Sep 2025 04:44:06 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5854i61W31785632
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 5 Sep 2025 04:44:06 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 05D5858058;
+	Fri,  5 Sep 2025 04:44:06 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B036A58057;
+	Fri,  5 Sep 2025 04:44:02 +0000 (GMT)
+Received: from [9.61.244.194] (unknown [9.61.244.194])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  5 Sep 2025 04:44:02 +0000 (GMT)
+Message-ID: <49cb29fc-003c-422a-98bd-dee8f13aa0b4@linux.ibm.com>
+Date: Fri, 5 Sep 2025 10:14:01 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,138 +76,196 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+To: "open list:PERFORMANCE EVENTS SUBSYSTEM"
+ <linux-perf-users@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Namhyung Kim <namhyung@kernel.org>, jpoimboe@kernel.org,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Alexei Starovoitov <ast@kernel.org>
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [linux-next20250903] Kernel OOPs at perf_callchain_user
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: oMT8GDpKrqYiT65gUJ5_aEGiTdvHSjMZ
+X-Authority-Analysis: v=2.4 cv=FPMbx/os c=1 sm=1 tr=0 ts=68ba6a97 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=NEAV23lmAAAA:8 a=VnNF1IyMAAAA:8
+ a=XwoOSjErBPGuodvmje4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: oMT8GDpKrqYiT65gUJ5_aEGiTdvHSjMZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODMwMDAzNCBTYWx0ZWRfX+vbVGCY/Zxrk
+ 6L3K46OeHr9Z0lP7lRKfCmymt7rz9jW5ajGptokTsAac48vAjmxw//DKa5KGbe5rHEHeQ/DUd78
+ 0fxWq22kyKWidjmo6gMByl5DScZ9Fe2LWUGEDDIzZ+r49MokEvyGb+3bogdWQLNJKm62m1yVUIQ
+ ay2NCdlzzqHLbTcB06yEaOwfWZw8tmbA/MOb96X1DN6NQYYRVo7Nw6Kn6BGhaYSsGmcPPvjCPb9
+ YutCqonuOBtANJ86VCNFsDU6iwDIgAnfXoDXbaMzF+bBF8QXc3f0La6XiUemFqULM90pZ/Br2PN
+ ScfBS0geO1Tu9adsBn21U7eNmbv15V3Is3FdJk6Y70sU+kFsc2Y5spdK2/TKOgLFdEieXgFKIAI
+ Dx+CdGA/
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-05_01,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 phishscore=0 clxscore=1011 bulkscore=0
+ spamscore=0 adultscore=0 suspectscore=0 malwarescore=0 classifier=typeunknown
+ authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2507300000 definitions=main-2508300034
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-
-> PAGE_KERNEL_TEXT is an old macro that is used to tell kernel whether
-> kernel text has to be mapped read-only or read-write based on build
-> time options.
->
-> But nowadays, with functionnalities like jump_labels, static links,
-> etc ... more only less all kernels need to be read-write at some
-> point, and some combinations of configs failed to work due to
-> innacurate setting of PAGE_KERNEL_TEXT. On the other hand, today
-> we have CONFIG_STRICT_KERNEL_RWX which implements a more controlled
-> access to kernel modifications.
->
-> Instead of trying to keep PAGE_KERNEL_TEXT accurate with all
-> possible options that may imply kernel text modification, always
-> set kernel text read-write at startup and rely on
-> CONFIG_STRICT_KERNEL_RWX to provide accurate protection.
->
-> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-> Closes: https://lore.kernel.org/all/342b4120-911c-4723-82ec-d8c9b03a8aef@mailbox.org/
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/include/asm/pgtable.h | 12 ------------
->  arch/powerpc/mm/book3s32/mmu.c     |  4 ++--
->  arch/powerpc/mm/pgtable_32.c       |  2 +-
->  3 files changed, 3 insertions(+), 15 deletions(-)
->
-
-AFAIU - mmu_mark_initmem_nx gets called during kernel_init() which is
-way after static call initialization correct? i.e.
-
-start_kernel
-  ...
-  jump_label_init()
-  static_call_init()
-  ...
-  ...
-  rest_init()      /* Do the rest non-__init'ed, we're now alive */
-    kernel_init()
-      free_initmem() -> mark_initmem_nx() -> __mark_initmem_nx -> mmu_mark_initmem_nx() 
-      mark_readonly()
-        if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX) && rodata_enabled) {
-           jump_label_init_ro()
-           mark_rodata_ro() -> ....
-           ...
-        ...
-
-Then I guess we mainly only need __mapin_ram_chunk() to be PAGE_KERNEL_X (RWX)
-instead of PAGE_KERNEL_TEXT (ROX), isn't it?
-
-Let me quickly validate it... 
-...Ok, so I was able to get just this diff to be working. 
-
-Thoughts?
-
-diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-index 15276068f657..0c9ef705803e 100644
---- a/arch/powerpc/mm/pgtable_32.c
-+++ b/arch/powerpc/mm/pgtable_32.c
-@@ -104,7 +104,7 @@ static void __init __mapin_ram_chunk(unsigned long offset, unsigned long top)
-        p = memstart_addr + s;
-        for (; s < top; s += PAGE_SIZE) {
-                ktext = core_kernel_text(v);
--               map_kernel_page(v, p, ktext ? PAGE_KERNEL_TEXT : PAGE_KERNEL);
-+               map_kernel_page(v, p, ktext ? PAGE_KERNEL_X : PAGE_KERNEL);
-                v += PAGE_SIZE;
-                p += PAGE_SIZE;
-        }
-
--ritesh
+Greetings!!!
 
 
+IBM CI has reported kernel crash, while running perf test case on 
+next20250903 kernel.
 
-> diff --git a/arch/powerpc/include/asm/pgtable.h b/arch/powerpc/include/asm/pgtable.h
-> index 93d77ad5a92f..d8f944a5a037 100644
-> --- a/arch/powerpc/include/asm/pgtable.h
-> +++ b/arch/powerpc/include/asm/pgtable.h
-> @@ -20,18 +20,6 @@ struct mm_struct;
->  #include <asm/nohash/pgtable.h>
->  #endif /* !CONFIG_PPC_BOOK3S */
->  
-> -/*
-> - * Protection used for kernel text. We want the debuggers to be able to
-> - * set breakpoints anywhere, so don't write protect the kernel text
-> - * on platforms where such control is possible.
-> - */
-> -#if defined(CONFIG_KGDB) || defined(CONFIG_XMON) || defined(CONFIG_BDI_SWITCH) || \
-> -	defined(CONFIG_KPROBES) || defined(CONFIG_DYNAMIC_FTRACE)
-> -#define PAGE_KERNEL_TEXT	PAGE_KERNEL_X
-> -#else
-> -#define PAGE_KERNEL_TEXT	PAGE_KERNEL_ROX
-> -#endif
-> -
->  /* Make modules code happy. We don't set RO yet */
->  #define PAGE_KERNEL_EXEC	PAGE_KERNEL_X
->  
-> diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-> index be9c4106e22f..c42ecdf94e48 100644
-> --- a/arch/powerpc/mm/book3s32/mmu.c
-> +++ b/arch/powerpc/mm/book3s32/mmu.c
-> @@ -204,7 +204,7 @@ int mmu_mark_initmem_nx(void)
->  
->  	for (i = 0; i < nb - 1 && base < top;) {
->  		size = bat_block_size(base, top);
-> -		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
-> +		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_X);
->  		base += size;
->  	}
->  	if (base < top) {
-> @@ -215,7 +215,7 @@ int mmu_mark_initmem_nx(void)
->  				pr_warn("Some RW data is getting mapped X. "
->  					"Adjust CONFIG_DATA_SHIFT to avoid that.\n");
->  		}
-> -		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
-> +		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_X);
->  		base += size;
->  	}
->  	for (; i < nb; i++)
-> diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-> index 15276068f657..0c9ef705803e 100644
-> --- a/arch/powerpc/mm/pgtable_32.c
-> +++ b/arch/powerpc/mm/pgtable_32.c
-> @@ -104,7 +104,7 @@ static void __init __mapin_ram_chunk(unsigned long offset, unsigned long top)
->  	p = memstart_addr + s;
->  	for (; s < top; s += PAGE_SIZE) {
->  		ktext = core_kernel_text(v);
-> -		map_kernel_page(v, p, ktext ? PAGE_KERNEL_TEXT : PAGE_KERNEL);
-> +		map_kernel_page(v, p, ktext ? PAGE_KERNEL_X : PAGE_KERNEL);
->  		v += PAGE_SIZE;
->  		p += PAGE_SIZE;
->  	}
-> -- 
-> 2.49.0
+
+Test: 
+https://github.com/avocado-framework-tests/avocado-misc-tests/blob/master/perf/perf_test.py 
+
+
+Yaml: 
+https://github.com/sacsant/avocado-misc-tests/blob/ci/perf/perf_test.py.data/perf_arnext.yaml
+
+
+Traces:
+
+
+[ 6818.892952] BUG: Kernel NULL pointer dereference at 0x00000590
+[ 6818.892997] Faulting instruction address: 0xc00000000014b960
+[ 6818.893010] Oops: Kernel access of bad area, sig: 11 [#1]
+[ 6818.893024] LE PAGE_SIZE=64K MMU=Hash  SMP NR_CPUS=8192 NUMA pSeries
+[ 6818.893052] Modules linked in: dm_mod(E) ext4(E) crc16(E) mbcache(E) 
+jbd2(E) nft_compat(E) bonding(E) nft_fib_inet(E) nft_fib_ipv4(E) 
+nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) 
+nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) rfkill(E) 
+ip_set(E) mlx5_ib(E) ib_uverbs(E) ib_core(E) pseries_rng(E) 
+vmx_crypto(E) drm(E) drm_panel_orientation_quirks(E) xfs(E) sr_mod(E) 
+cdrom(E) sd_mod(E) sg(E) lpfc(E) nvmet_fc(E) ibmvscsi(E) ibmveth(E) 
+scsi_transport_srp(E) nvmet(E) mlx5_core(E) nvme_fc(E) nvme_fabrics(E) 
+mlxfw(E) nvme_core(E) tls(E) scsi_transport_fc(E) psample(E) fuse(E) 
+[last unloaded: scsi_debug(E)]
+[ 6818.893294] CPU: 1 UID: 0 PID: 266107 Comm: sched-messaging Kdump: 
+loaded Tainted: G            E  6.17.0-rc4-next-20250903 #1 VOLUNTARY
+[ 6818.893323] Tainted: [E]=UNSIGNED_MODULE
+[ 6818.893331] Hardware name: IBM,8375-42A POWER9 (architected) 0x4e0202 
+0xf000005 of:IBM,FW950.80 (VL950_131) hv:phyp pSeries
+[ 6818.893343] NIP:  c00000000014b960 LR: c00000000014b920 CTR: 
+c0000000003b5188
+[ 6818.893357] REGS: c00000020e76f1f0 TRAP: 0380   Tainted: G       E    
+     (6.17.0-rc4-next-20250903)
+[ 6818.893374] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  
+CR: 88822888  XER: 20040000
+[ 6818.893439] CFAR: c0000000004d2e68 IRQMASK: 1
+[ 6818.893439] GPR00: c00000000014b920 c00000020e76f490 c000000001c98100 
+0000000000000000
+[ 6818.893439] GPR04: 00007fffeed48148 0000000000000008 0000000000000100 
+00007fffb90ad054
+[ 6818.893439] GPR08: c00000020e768000 0000000000000000 00007fffeed48870 
+0000000000004000
+[ 6818.893439] GPR12: c0000000003b5188 c000000017fff300 0000000000000000 
+0000000000000000
+[ 6818.893439] GPR16: 0000000000000000 0000000000000000 c00000020e76f8e8 
+fffffffffffffff9
+[ 6818.893439] GPR20: 0000000000000001 fffffffffffffffb c000000002d12a80 
+c00000000120f444
+[ 6818.893439] GPR24: 0000000000000001 fffffffffffffe00 c00000020fd31e00 
+000ffffffffffff8
+[ 6818.893439] GPR28: 00007fffffffffdf 0000000000000000 00007fffeed48140 
+c00000020e76f580
+[ 6818.893652] NIP [c00000000014b960] perf_callchain_user_64+0x1b0/0x4f0
+[ 6818.893676] LR [c00000000014b920] perf_callchain_user_64+0x170/0x4f0
+[ 6818.893696] Call Trace:
+[ 6818.893709] [c00000020e76f490] [c00000000014b920] 
+perf_callchain_user_64+0x170/0x4f0 (unreliable)
+[ 6818.893732] [c00000020e76f530] [c00000000014b794] 
+perf_callchain_user+0x20/0x3c
+[ 6818.893760] [c00000020e76f550] [c0000000004af654] 
+get_perf_callchain+0x1b0/0x31c
+[ 6818.893782] [c00000020e76f5d0] [c0000000004793f8] 
+bpf_get_stackid+0x90/0xec
+[ 6818.893799] [c00000020e76f600] [c0000000003b51fc] 
+bpf_get_stackid_raw_tp+0x7c/0xd8
+[ 6818.893816] [c00000020e76f640] [c00800000064b7b4] 
+bpf_prog_6f912c7f0c27afc3_on_switch+0x1a4/0x538
+[ 6818.893839] [c00000020e76f6e0] [c0000000003b4254] 
+bpf_trace_run4+0xa8/0x1c0
+[ 6818.893853] [c00000020e76f760] [c0000000001bf480] 
+__bpf_trace_sched_switch+0x18/0x2c
+[ 6818.893869] [c00000020e76f780] [c00000000120f0c4] __schedule+0x4bc/0x7fc
+[ 6818.893885] [c00000020e76f870] [c00000000120f444] schedule+0x40/0xd4
+[ 6818.893899] [c00000020e76f8a0] [c00000000120f718] 
+schedule_preempt_disabled+0x20/0x30
+[ 6818.893916] [c00000020e76f8c0] [c000000001214560] 
+rwsem_down_write_slowpath+0x2c8/0x90c
+[ 6818.893935] [c00000020e76f9a0] [c000000001214c2c] down_write+0x88/0x9c
+[ 6818.893951] [c00000020e76f9d0] [c00000000055d8c4] 
+__put_anon_vma+0xf8/0x130
+[ 6818.893968] [c00000020e76fa00] [c00000000055db94] 
+unlink_anon_vmas+0x268/0x308
+[ 6818.893986] [c00000020e76fa70] [c0000000005343dc] 
+free_pgtables+0x100/0x390
+[ 6818.894008] [c00000020e76fb50] [c00000000054a3b0] exit_mmap+0x1b4/0x5b0
+[ 6818.894026] [c00000020e76fc90] [c0000000001677dc] __mmput+0x64/0x1b4
+[ 6818.894041] [c00000020e76fcc0] [c000000000175338] exit_mm+0xdc/0x16c
+[ 6818.894061] [c00000020e76fd00] [c0000000001755d4] do_exit+0x20c/0x56c
+[ 6818.894076] [c00000020e76fdb0] [c000000000175b20] do_group_exit+0x4c/0xbc
+[ 6818.894095] [c00000020e76fdf0] [c000000000175bb8] 
+pid_child_should_wake+0x0/0x80
+[ 6818.894112] [c00000020e76fe10] [c000000000032bf4] 
+system_call_exception+0x124/0x320
+[ 6818.894137] [c00000020e76fe50] [c00000000000d05c] 
+system_call_vectored_common+0x15c/0x2ec
+[ 6818.894156] ---- interrupt: 3000 at 0x7fffb90ad054
+[ 6818.894169] NIP:  00007fffb90ad054 LR: 00007fffb90ad054 CTR: 
+0000000000000000
+[ 6818.894184] REGS: c00000020e76fe80 TRAP: 3000   Tainted: G       E    
+     (6.17.0-rc4-next-20250903)
+[ 6818.894200] MSR:  800000000280f033 
+<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44888822  XER: 00000000
+[ 6818.894243] IRQMASK: 0
+[ 6818.894243] GPR00: 00000000000000ea 00007fffeed48140 00007fffb91e7200 
+0000000000000000
+[ 6818.894243] GPR04: 0000000000000000 0000000000000000 0000000000000000 
+0000000000000040
+[ 6818.894243] GPR08: 0000000000000000 0000000000000000 0000000000000000 
+0000000000000000
+[ 6818.894243] GPR12: 0000000000000000 00007fffb9c86080 000001003dfcae70 
+00007fffeed482e0
+[ 6818.894243] GPR16: 000001003dfcaa78 0000000010145800 000001003dfcaac8 
+00000000105cf1d0
+[ 6818.894243] GPR20: 00000000105bc6e0 0000000000000000 0000000000000800 
+0000000000000001
+[ 6818.894243] GPR24: 0000000000000000 00007fffb91e0a38 0000000000000000 
+0000000000000001
+[ 6818.894243] GPR28: 00007fffb91e1fa8 00007fffb9c7f0b8 fffffffffffff000 
+0000000000000000
+[ 6818.894410] NIP [00007fffb90ad054] 0x7fffb90ad054
+[ 6818.894425] LR [00007fffb90ad054] 0x7fffb90ad054
+[ 6818.894434] ---- interrupt: 3000
+[ 6818.894441] Code: 41910100 ebc10028 e9210030 7d3e4850 282908f7 
+408100dc e9410038 7d475378 395e0730 7c275040 41820130 e93a0a70 
+<e9290590> 2c290000 41820010 39290470
+[ 6818.894499] ---[ end trace 0000000000000000 ]---
+
+
+
+If you happen to fix this, please add below tag.
+
+
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+
+Regards,
+
+Venkat.
+
+
 
