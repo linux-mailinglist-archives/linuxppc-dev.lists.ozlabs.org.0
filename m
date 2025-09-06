@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-11841-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11840-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AA2B47794
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Sep 2025 23:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F53CB47793
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Sep 2025 23:37:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cK64M32l4z3d2w;
-	Sun,  7 Sep 2025 07:37:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cK64L6nYYz3cyg;
+	Sun,  7 Sep 2025 07:37:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757194627;
-	cv=none; b=lvoXsYp69amxQ8n7Ufzsln6wrSEiyiE+xVp8mBtv6mDXcoz42rrEf6qHuP0HO3m2kt5bIxOZqG4awswax6+OAVNYcxVKwy6xp1bdPHXHzCS5ad6WOX4QT6JXxgKLH+EIjZaaM2dbOghLPXqYYdZTnZkHbXPR+bVmr/6RAF2soAXu1RuHTQWcyqhra+lpGgbgNVR7nGP5EP4J470wQ9Xucrr+tWtuoyYmMrCcWXX/O6meBabAYY4TBGi2TN0Lx3/t3zOAWzkpVpugVA4tz6W6hkaLU2wea2eoPLzMugIp3V9q0uz83L+vOTB1kRB1Do2cDRsSCyrFmTEyjtQE1E8f8g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757194626;
+	cv=none; b=LUroEIOQbs7LEsalD5rm6unsXGYCgDWH6030WHdlnb5L9iWWlbdW0if7eTILo3pfLxLppwQRUMHR6GK2CAk0pjsloUFGJRd+cs/nMJGNw09ucsmWjtTlkrUPqZIOsrdK32OvAn/O/OzPN9yNPumkfpJ+p/0kzIOIzZyEaj8/h8y+LVYHzRhWcsfmwGq1AAelpD3msfEJA9E5sH4XCsa2DJR7LXLxGFoQvwW3n3/t7XWjTcj2bU+eKowuRDcx8mzm+92OA8AgLJwq9bRE9fq6tDxyGPs3GlopLOaea2GAVfA6oW/aHkmQKANr+qXXaQJysq1k+NDRCoDB13Pdw4d/0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757194627; c=relaxed/relaxed;
-	bh=SCb89IgsLwOFhpz4MbAPn0pNdnEI/VMM8b0yUQaEIW4=;
+	t=1757194626; c=relaxed/relaxed;
+	bh=RkCfNQSMCduwcUT3pMyREmC3tJV9XQ6M4+jKDSwW4KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S8paFzg/6olg5evdgi9eHkefP0zbO9LOvHS8tyfpO6G/BnBRWnU3CXDMY2KQtT3LzOQRRs26etfVpUHmMJGuu2Bu6hKczBYdCoJKjd7vR4oq0PpnGZM4nIaTL42x0/Z+UcLBgBnRUpB9Ck9t4jjPz73qw6dR0SRmBH7A1P8+tpOLy/SRVxTXVk1xoCRRXWUUuFaggK1DAP19InGfFGEwHEQkNqUf7fLcyZ0Al+YcYmsv0QFoMGmrQMVrOR7xBdnAKYOy4I7eLvm/ZL45n1bB+GKtDeTysxWfpx08vI9psljLlOILU23XJqUGzbgalpja7no8ZPKabnfHGqksY67hmg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HnoS8wHm; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=c096je1l5STAHUpcBOqmKQ73beA7QLq7pgFwvVZorh6+8TxOMJtcveCPP4sXDe/nTLE55/N6u7SPHmJEnkEFQ0FO7GDH3qgclj+jB3P4V2F/NIQ7MkcR/ciwgFcfgcm8nfU/xi3UdrSl82ahzEsLsk2tQiAjvYM4qcM15zIwLPwKFHxRJLVKOjwC758XBNKxvA6NGouys8SsXSjTN4Q4mg+lZdnD0ATcexuivmW0HjV1u41ioED/HwEgntvMRBn1yypXYF5w4ghLbxRcFyTZHoM7xT3Cv0opBahqUkC860hfk1HcwLvORPrQrEFvkisrGwYEUOlCxN+hfkxEg9A72w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vC0Kr4aV; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HnoS8wHm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vC0Kr4aV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cK64L0Dvjz3cnk
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Sep 2025 07:37:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cK64K52ygz3cn9
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Sep 2025 07:37:05 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7A9E645243;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6ACA04523C;
+	Sat,  6 Sep 2025 21:37:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9174EC4CEF5;
 	Sat,  6 Sep 2025 21:37:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC403C4CEF9;
-	Sat,  6 Sep 2025 21:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757194624;
-	bh=qgC3ZMySIzbT7snif3jifRd6wEGhkdEbMg6+X/hdkEc=;
+	s=k20201202; t=1757194625;
+	bh=CQJ4knDhIHFMSRh4/nbpAJJmql9MOH99GJgLFyWdS58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnoS8wHmNnAGXmjtE/Ly7bQ7EaKSHOs35JkeDWyFwsdG9Ef0wGj/vRGGJi9LdHgEG
-	 6554LkhwPyJSQdav86Ah8LR1Az7qGvnT8pakFGsdrktTJPFodmNAYNDA7mplknq9hY
-	 OW/gW6f8vnby4h7cHEhDMspXJQB2bekl39gTwXoKOksiJVJQ+fLpNSmlq3qGP4RllR
-	 mruhQRhcwQXyF50nfeUOnWCxZ05ApEJuyYd5Ns1efTg6CeAPdnoat3/ddkoslV6bvx
-	 BmzBRNBrkqfhfamYYWCtEEgKPMzOAiRgIM6VVp721vi9qCEbm0FQHrHW2VfmKizDAJ
-	 oKm6HcxZ1EZYA==
+	b=vC0Kr4aV2MDmbVpnymLdTPEZrGi3BkuR7l6W7PpSF5Hy0JlNrPuytbWgARqDEFWa4
+	 ksLj7ObBc4HIiTFQnpZraghc+4ZAxZ7ioXuydpWTZ4MELVghPd1RD7aXGCEXCeaOW1
+	 87lHedKJzwLvy+1jTtDOo8Q2kz37c7gTztVpg1RWvKqgWwEevXx4sJ2+upJpJHZY21
+	 91QIKZ38fMjYyYaN9kYVmNqvpfM9y0gmOPzDzCCtqlbTDpSpjNvuyV5+kz2arf0ZSP
+	 HiDCrFyj6R3DHGrZyUbp9crRNTK2/izTBCE0rBrWam6dUR+XIEPQqJFToXJz3e6yqz
+	 BuxmwJBc/SW1Q==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -54,9 +54,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linuxppc-dev@lists.ozlabs.org,
 	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH v2 08/12] lib/crypto: tests: Add Curve25519 benchmark
-Date: Sat,  6 Sep 2025 14:35:19 -0700
-Message-ID: <20250906213523.84915-9-ebiggers@kernel.org>
+Subject: [PATCH v2 09/12] lib/crypto: curve25519: Move a couple functions out-of-line
+Date: Sat,  6 Sep 2025 14:35:20 -0700
+Message-ID: <20250906213523.84915-10-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20250906213523.84915-1-ebiggers@kernel.org>
 References: <20250906213523.84915-1-ebiggers@kernel.org>
@@ -79,75 +79,122 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Add a benchmark to curve25519_kunit.  This brings it in line with the
-other crypto KUnit tests and provides an easy way to measure
-performance.
+Move curve25519() and curve25519_generate_public() from curve25519.h to
+curve25519.c.  There's no good reason for them to be inline.
 
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- lib/crypto/tests/curve25519_kunit.c | 31 +++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ include/crypto/curve25519.h | 28 +++-------------------------
+ lib/crypto/curve25519.c     | 34 +++++++++++++++++++++++++++++++++-
+ 2 files changed, 36 insertions(+), 26 deletions(-)
 
-diff --git a/lib/crypto/tests/curve25519_kunit.c b/lib/crypto/tests/curve25519_kunit.c
-index 0d1c46ca74018..355ad79a210d1 100644
---- a/lib/crypto/tests/curve25519_kunit.c
-+++ b/lib/crypto/tests/curve25519_kunit.c
-@@ -3,10 +3,11 @@
-  * Copyright (C) 2015-2019 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+diff --git a/include/crypto/curve25519.h b/include/crypto/curve25519.h
+index 4e6dc840b1592..78aa5f28c847f 100644
+--- a/include/crypto/curve25519.h
++++ b/include/crypto/curve25519.h
+@@ -4,11 +4,10 @@
+  */
+ 
+ #ifndef CURVE25519_H
+ #define CURVE25519_H
+ 
+-#include <crypto/algapi.h> // For crypto_memneq.
+ #include <linux/types.h>
+ #include <linux/random.h>
+ 
+ enum curve25519_lengths {
+ 	CURVE25519_KEY_SIZE = 32
+@@ -26,37 +25,16 @@ void curve25519_arch(u8 out[CURVE25519_KEY_SIZE],
+ 		     const u8 point[CURVE25519_KEY_SIZE]);
+ 
+ void curve25519_base_arch(u8 pub[CURVE25519_KEY_SIZE],
+ 			  const u8 secret[CURVE25519_KEY_SIZE]);
+ 
+-static inline
+ bool __must_check curve25519(u8 mypublic[CURVE25519_KEY_SIZE],
+ 			     const u8 secret[CURVE25519_KEY_SIZE],
+-			     const u8 basepoint[CURVE25519_KEY_SIZE])
+-{
+-	if (IS_ENABLED(CONFIG_CRYPTO_ARCH_HAVE_LIB_CURVE25519))
+-		curve25519_arch(mypublic, secret, basepoint);
+-	else
+-		curve25519_generic(mypublic, secret, basepoint);
+-	return crypto_memneq(mypublic, curve25519_null_point,
+-			     CURVE25519_KEY_SIZE);
+-}
++			     const u8 basepoint[CURVE25519_KEY_SIZE]);
+ 
+-static inline bool
+-__must_check curve25519_generate_public(u8 pub[CURVE25519_KEY_SIZE],
+-					const u8 secret[CURVE25519_KEY_SIZE])
+-{
+-	if (unlikely(!crypto_memneq(secret, curve25519_null_point,
+-				    CURVE25519_KEY_SIZE)))
+-		return false;
+-
+-	if (IS_ENABLED(CONFIG_CRYPTO_ARCH_HAVE_LIB_CURVE25519))
+-		curve25519_base_arch(pub, secret);
+-	else
+-		curve25519_generic(pub, secret, curve25519_base_point);
+-	return crypto_memneq(pub, curve25519_null_point, CURVE25519_KEY_SIZE);
+-}
++bool __must_check curve25519_generate_public(u8 pub[CURVE25519_KEY_SIZE],
++					     const u8 secret[CURVE25519_KEY_SIZE]);
+ 
+ static inline void curve25519_clamp_secret(u8 secret[CURVE25519_KEY_SIZE])
+ {
+ 	secret[0] &= 248;
+ 	secret[31] = (secret[31] & 127) | 64;
+diff --git a/lib/crypto/curve25519.c b/lib/crypto/curve25519.c
+index 25f16777865bf..1b786389d714a 100644
+--- a/lib/crypto/curve25519.c
++++ b/lib/crypto/curve25519.c
+@@ -8,12 +8,44 @@
+  *
+  * Information: https://cr.yp.to/ecdh.html
   */
  
  #include <crypto/curve25519.h>
- #include <kunit/test.h>
-+#include <linux/timekeeping.h>
- 
- struct curve25519_test_vector {
- 	u8 private[CURVE25519_KEY_SIZE];
- 	u8 public[CURVE25519_KEY_SIZE];
- 	u8 result[CURVE25519_KEY_SIZE];
-@@ -1314,13 +1315,43 @@ static void test_curve25519_basepoint(struct kunit *test)
- 		KUNIT_EXPECT_MEMEQ_MSG(test, out, out2, CURVE25519_KEY_SIZE,
- 				       "in=%*phN", CURVE25519_KEY_SIZE, in);
- 	}
- }
- 
-+static void benchmark_curve25519(struct kunit *test)
+-#include <linux/module.h>
++#include <crypto/utils.h>
++#include <linux/export.h>
+ #include <linux/init.h>
++#include <linux/module.h>
++
++bool __must_check
++curve25519(u8 mypublic[CURVE25519_KEY_SIZE],
++	   const u8 secret[CURVE25519_KEY_SIZE],
++	   const u8 basepoint[CURVE25519_KEY_SIZE])
 +{
-+	const u8 *private = curve25519_test_vectors[0].private;
-+	const u8 *public = curve25519_test_vectors[0].public;
-+	const size_t warmup_niter = 5000;
-+	const size_t benchmark_niter = 1024;
-+	u8 out[CURVE25519_KEY_SIZE];
-+	bool ok = true;
-+	u64 t;
-+
-+	if (!IS_ENABLED(CONFIG_CRYPTO_LIB_BENCHMARK))
-+		kunit_skip(test, "not enabled");
-+
-+	/* Warm-up */
-+	for (size_t i = 0; i < warmup_niter; i++)
-+		ok &= curve25519(out, private, public);
-+
-+	/* Benchmark */
-+	preempt_disable();
-+	t = ktime_get_ns();
-+	for (size_t i = 0; i < benchmark_niter; i++)
-+		ok &= curve25519(out, private, public);
-+	t = ktime_get_ns() - t;
-+	preempt_enable();
-+	KUNIT_EXPECT_TRUE(test, ok);
-+	kunit_info(test, "%llu ops/s",
-+		   div64_u64((u64)benchmark_niter * NSEC_PER_SEC, t ?: 1));
++	if (IS_ENABLED(CONFIG_CRYPTO_ARCH_HAVE_LIB_CURVE25519))
++		curve25519_arch(mypublic, secret, basepoint);
++	else
++		curve25519_generic(mypublic, secret, basepoint);
++	return crypto_memneq(mypublic, curve25519_null_point,
++			     CURVE25519_KEY_SIZE);
 +}
++EXPORT_SYMBOL(curve25519);
 +
- static struct kunit_case curve25519_test_cases[] = {
- 	KUNIT_CASE(test_curve25519),
- 	KUNIT_CASE(test_curve25519_basepoint),
-+	KUNIT_CASE(benchmark_curve25519),
- 	{},
- };
++bool __must_check
++curve25519_generate_public(u8 pub[CURVE25519_KEY_SIZE],
++			   const u8 secret[CURVE25519_KEY_SIZE])
++{
++	if (unlikely(!crypto_memneq(secret, curve25519_null_point,
++				    CURVE25519_KEY_SIZE)))
++		return false;
++
++	if (IS_ENABLED(CONFIG_CRYPTO_ARCH_HAVE_LIB_CURVE25519))
++		curve25519_base_arch(pub, secret);
++	else
++		curve25519_generic(pub, secret, curve25519_base_point);
++	return crypto_memneq(pub, curve25519_null_point, CURVE25519_KEY_SIZE);
++}
++EXPORT_SYMBOL(curve25519_generate_public);
  
- static struct kunit_suite curve25519_test_suite = {
- 	.name = "curve25519",
+ static int __init curve25519_init(void)
+ {
+ 	return 0;
+ }
 -- 
 2.50.1
 
