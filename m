@@ -1,89 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-11818-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11814-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A33DB46AC4
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Sep 2025 12:08:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DBEB46ABC
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Sep 2025 12:07:42 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cJpn94Wc2z2ywv;
-	Sat,  6 Sep 2025 20:07:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cJpmp5XmNz303F;
+	Sat,  6 Sep 2025 20:07:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757153277;
-	cv=none; b=cgtGEkq6+op9l8B/jLrFpPWGIWl0m7wYBRl3MvXsF/ZaSxJRN/uxdY54FEswOwKbJl5g027OHVLgixSZ/EsmdX0q2SgCRM0H7cTCO7JTH3SH04zy7IAr1h+Lz8NsqV+dzP+Y1G6vaqZpn/lHVJJDz73F3FN09FdibXrzL+KG3YASB8sekS6secB9c3wAIQkUv09iv19J6J5+qTA2fW5Ji6Z8dCiyeLBI34r1WfaKR1SNvHWK1P8wgkfu5pX1UaghHP0XiPRH3rceGqju1nzlIhVEXbaXtWURnaHs9V8hZQrQMPg4urWERkj9zTBkJ+PchZJYGm5mHDcp9kGczckr6g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757153258;
+	cv=none; b=Imk3154rfu4ktXSZyy5jZ51ujHJUyd6V5bE0nMAId4P6BZAkFaql9vdXWZV3OeomUAA4WSpa2hOqyWQqn7ibUKWLHvjd7jhsX7hrRpWRx4rKXwiNOZIj3Fi+lzSHVzPgV0NJLdOvlKuHSoqgFNkr7Dw/e+2+laBc0Uhgw1MwEkxrvpmC+x0us1NGTS/NjfxyC0VAETLOWif4LvRGESN6JPaCj4dgNjTf+DdgcVC0EUkZhrf0GJhFpzKrWfUywOP47r5ZLRHEefMEFGhhsCpdjRbNDbon7fqyYOOKHGKYFeM6n+Td3i29URJ23nzH9GeA13nNoB/o0KjvkWrFnPFmwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757153277; c=relaxed/relaxed;
-	bh=D2K6WADPfyzF1q6psUiFGQ/kUjPlrOypEDH+Sv7nKw8=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fDRLkmVFSkbRBF32jQcmd0x1AWrbDsHYEnJKuIrJgUGT/ZkwaGt36lu8y+YMX4fFakqCibj2+2VHdjZ1ZR8+VL+CtgBZC0mdlreO7RtfL+IqEoIxjdIC35bFryVOB32cEYNmYPn4XUcrZqJdLGDW9pSfmh6HtZ/KZdTHPbwpvIOjPbNWC09ZWSZJXP9zJKwyXG9f6iANOyrC/MXj088HN9eUNRXZk4NSI9R/gzcOuw3vK61/78L+vY/Ebim8/A0V6OklMcEM4bsgDz7Q+b3BvibvmR42Muf45iwJ8doO/rNw8I4niEnSMzAYWLPAvE8RVY6dLXwnI1UjNHGSYLXnlg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OJJtA2DA; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1757153258; c=relaxed/relaxed;
+	bh=HDSNsaPbgbsbf4K5WddRszFCvFluY+cX5Wbvk7aLnP8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eFZvlmxHCR26DONuxHYXZg8HHimqwwisLqW/MjGyV/n02P5ELOFRrzItWPu6R4/AM5Zh5yxTbvkHi6SY9YfLGINl6/JCeV1C7IOceIpN9f9vEERIEcrmZtUtvEtvnU/ByOSIID3QTnQ3hq7WeslOf57RgYAMZlJg8bWRkMKj00oZqYPIvaUV8fzCdfukwR1KfeBxp1k4pbgPJ039B6lQA7rhNdFIwKymkAUz/wo2iFTHTAmldJ+VXzqnuXPikVfIw6ZYCoVybYE0QejcZHeCB42yRYRiY2zqGlQzjDd6TMMJ1G/LCPiKGAAXsA5yp1fCkdBaEkRK+HgzQs1dRue4QQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rg/+sDe8; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OJJtA2DA;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rg/+sDe8;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJpn86KBHz3050
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Sep 2025 20:07:56 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5864eb2m017518;
-	Sat, 6 Sep 2025 10:07:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=D2K6WA
-	DPfyzF1q6psUiFGQ/kUjPlrOypEDH+Sv7nKw8=; b=OJJtA2DAoDKvu6geyd3kIm
-	BMn2Gu9qCOpzF6ziWyfFaVRVjEmftpM3piOD8GjKshqh0eRUyzFliFWWsrtOwGS7
-	hvhhpRU4JMJvYrGZqRE1XOuKe0R5qFXsrNTKfnIJftZ5ShcLOPfE+rTZjxn2bs04
-	71NVUV7fkHM0f3Nby0IfZAmqOFTwc2pYx41pfQ57fkhvsxTfdixQRtdndcu+lB5J
-	0FmgEaBKIXa21Z9Io/snOiM1VM/5IWWzNuZ34czyZmONdsC+C/Y2WyQXbFakcHgh
-	wDUBBjG2Ja/O5p4q+/U1RFabr1/yn5FwCz++DWyqaNTMCfNrLLAuRgCHeP25mTiA
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJpmn63y3z3000
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Sep 2025 20:07:37 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 586308hj017310;
+	Sat, 6 Sep 2025 10:07:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=HDSNsa
+	Pbgbsbf4K5WddRszFCvFluY+cX5Wbvk7aLnP8=; b=rg/+sDe8ngQ0BNeSQniZ6K
+	Fjv47UA5MloVgxhX3HapgG7shw54sqifOH7xpLUDGZqV2xd/QpzlxlW+I9A3SLVW
+	x4faeg9hRQ+/WxmDoHr1SN+EjsusSHhH0Pz6rapjPY4AqrPQpl0s0bDd2la4Bjyz
+	Cw4WMkWrYgrH/5gjzLTG41UkTbyZyakSXiXCsTzHYVtQ522jez5FLO3vJyWgczOY
+	GSoFinhiO6tZgn3MUAG7qqncgiT7v478lB8G0IqOdP7Uits+4+rBG0yxoD87iT8M
+	Bls1M6lX/R3q6lxPdNGWm2ouhoS4uw3JdLZsL+SJD0Ex/5zBc04nreKPKlOVOYjg
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cfes4rx-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmw943r-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 06 Sep 2025 10:07:22 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 586A7LWR003043;
-	Sat, 6 Sep 2025 10:07:21 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cfes4rt-1
+	Sat, 06 Sep 2025 10:07:27 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 586A7QWr018286;
+	Sat, 6 Sep 2025 10:07:26 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmw943n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 06 Sep 2025 10:07:21 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5864Xon6014038;
-	Sat, 6 Sep 2025 10:07:20 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 48veb3w4fy-1
+	Sat, 06 Sep 2025 10:07:26 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5867DubK017217;
+	Sat, 6 Sep 2025 10:07:25 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48vc115hwb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 06 Sep 2025 10:07:20 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 586A7Jnw50921814
+	Sat, 06 Sep 2025 10:07:25 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 586A7NGt44761560
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 6 Sep 2025 10:07:19 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A3DD20063;
-	Sat,  6 Sep 2025 10:07:19 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 11E532004E;
-	Sat,  6 Sep 2025 10:07:16 +0000 (GMT)
+	Sat, 6 Sep 2025 10:07:23 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3D6F12004D;
+	Sat,  6 Sep 2025 10:07:23 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D9A592004B;
+	Sat,  6 Sep 2025 10:07:20 +0000 (GMT)
 Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.107.45])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  6 Sep 2025 10:07:15 +0000 (GMT)
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sat,  6 Sep 2025 10:07:20 +0000 (GMT)
 From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Gautam Menghani <gautam@linux.ibm.com>,
-        =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        Nam Cao <namcao@linutronix.de>
-Subject: Re: [PATCH 0/2] powerpc: Fix integer underflow & leak
-Date: Sat,  6 Sep 2025 15:37:14 +0530
-Message-ID: <175715312006.95031.18312967895718915434.b4-ty@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        "Nysal Jan K.A." <nysal@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] powerpc/qspinlock: Add spinlock contention tracepoint
+Date: Sat,  6 Sep 2025 15:37:19 +0530
+Message-ID: <175715312005.95031.13686272189997770445.b4-ty@linux.ibm.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1754300646.git.namcao@linutronix.de>
-References: <cover.1754300646.git.namcao@linutronix.de>
+In-Reply-To: <20250731061856.1858898-1-nysal@linux.ibm.com>
+References: <20250725081432.1254986-1-nysal@linux.ibm.com> <20250731061856.1858898-1-nysal@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,48 +99,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4gvLGvKcbmaw3umDgGbo51QpLT67bZS9
-X-Proofpoint-GUID: 1OIDBU-VTOMSl_r5wYuRk3p2k-DTLKAO
-X-Authority-Analysis: v=2.4 cv=EYDIQOmC c=1 sm=1 tr=0 ts=68bc07da cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=ZiPmK-8AuTT3vM0SIfQA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyMCBTYWx0ZWRfXx+b4GHjNA7nV
- z83Q7YBTcTBRDa7JQsvJy29fgFibTNhqL+kUFZDv1vi0MErUXUKLXcoKBS9/FMQ+SWbLbge147r
- yJAegcubFOufCUfLRPtfGz3ItHEf6KF8aVgVdAIZ+p6FRs+rbFadao7UvjvrWAAB57fwa3mjOdx
- 8TyMa0194znE4ZujR5gsJi+wI7niweESN+6YpJbSoSXC8e7Vgnn374Vu7WEx2s1foNifrEc+iyz
- Osjf0TWk7FeNAR2RVZE23KDWwwgaJZuGP2QpKadoRW9b0ySxuwr9lEf92SytAzifcKhKRWq15Lk
- 5Vh1x94ZLqTtRYGpxLn7CLiM+fo1KnUVPgSMkUh8inlybtopBb2pcf47C/lrc8sd8KRtQgamep1
- L7ayFWjp
+X-Proofpoint-GUID: yQM7L3OfKa3_xKUTbtPYHfhUZeRNxDTn
+X-Proofpoint-ORIG-GUID: bU146MjV4rBY6_QoDjG3ZFVtVM6AQFp8
+X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68bc07df cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=NXXni1WiAo173Buuo_gA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyNSBTYWx0ZWRfX+xAZcOGF6E48
+ DBKg9CuaQasAQTYb8SXS0B+8zirk5j/n+LypivJgNw8tvgRnOMN819r7jxtn0yWDQkGY9OOwD9s
+ 2CneTtP/L23fSfsmRoWj88i8069ZxzO+jrgC+nqrCb+jndzio6lYacBuR96kFxqQOXGI0+K5G8D
+ dCo69R43ilL5R14LzoyOvwq7/DYyzZ0uYjnJkcQD4Qi9V6aoXRLi/OKW1uNDZQIKYr2ALGIq/rh
+ lr62g6F5WTkwdtMH3StYrQQ76tv6/4yH0CWals/aucz0kQdv++8NJ8OqeKMcPNNsUKtgqxExrnS
+ xxUQgs5stOdknaUOlEHSOXSM5gksMrNgM+KOjIDi0J0BOtVtrr5zoSit7rxbdN/okfoTzHL9GSs
+ 8jUSONgY
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-06_02,2025-09-04_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 suspectscore=0 spamscore=0 impostorscore=0
- priorityscore=1501 phishscore=0 clxscore=1011 bulkscore=0
+ impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0 phishscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060020
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060025
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 04 Aug 2025 12:07:26 +0200, Nam Cao wrote:
-> This series fixes integer overflow & leak problem. I noticed this problem
-> when Gautam reported a kernel bug with another patch series of mine:
-> https://lore.kernel.org/linuxppc-dev/aH9Na8ZqrI0jPhtl@li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com/
+On Thu, 31 Jul 2025 11:48:53 +0530, Nysal Jan K.A. wrote:
+> Add a lock contention tracepoint in the queued spinlock slowpath.
+> Also add the __lockfunc annotation so that in_lock_functions()
+> works as expected.
 > 
-> The root cause of that report is a bug in that series. However, that bug
-> triggered another existing bug, causing the reported end results.
 > 
-> [...]
 
 Applied to powerpc/next.
 
-[1/2] powerpc/pseries/msi: Fix potential underflow and leak issue
-      https://git.kernel.org/powerpc/c/3443ff3be6e59b80d74036bb39f5b6409eb23cc9
-[2/2] powerpc/powernv/pci: Fix underflow and leak issue
-      https://git.kernel.org/powerpc/c/a39087905af9ffecaa237a918a2c03a04e479934
+[1/1] powerpc/qspinlock: Add spinlock contention tracepoint
+      https://git.kernel.org/powerpc/c/4f61d54d2245c15b23ad78a89f854fb2496b6216
 
 Thanks
 
