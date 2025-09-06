@@ -1,58 +1,114 @@
-Return-Path: <linuxppc-dev+bounces-11811-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11812-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669E5B46482
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Sep 2025 22:17:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0854B468C9
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Sep 2025 06:11:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cJSMB6WXqz2xd4;
-	Sat,  6 Sep 2025 06:17:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cJfsr03nhz2xlL;
+	Sat,  6 Sep 2025 14:11:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757103462;
-	cv=none; b=fAnc3z2DqRs2MHAfNWeODJq/aW1ZMoCLlEFdf45RxLERbO95B3io9Q0kuJ6bCbCqchZAPQ4YFCCPnMDKCwF4/AuVL+e6WO9xTNKIz9uCXKKkTWj74fqrqjpUuRSBx9mbQY1FF96EDmABvqBZ/t0bd+5QzEmdJc/vT0e+OwHykFX6uNOURe6UCvnuy+Op1kC6igSmUemfVwIaS96e2RwwxdNxRrv/EEpCLljTQ1cdk4uLpdunauGaI5toyZlBB7D9w6+DDnw6EEzwjxjpbm5t1RPIp9OHtSNcbJgzoy/A2B9BA0BFShfqHtNcCWMxRX+CiyhCjbCkALCyNk1LjVWLeg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757131887;
+	cv=none; b=HCdxS94adQ1tTEtRDGO+UMEUjEFuJ5nZFls6JyCS/6FnIfGAcAttnER40y/JeKAaX6eO83IZLoPHmYuuXMQEpIFyc/qhXALugcPaC5yqUaIkHndNUMZ2zG+DF/5HbVMw3XL6c0FTn+ZMskxfl2NoUhtomu4vRrCx3ROObV4aUf7xYGRZPlWxRLaC8WJy5435v0L60WGS//oFVLFjJOSAC3uJRIgfPt9FWi+NgIajZJa5jjC6IoSqk7G8XF9ZItVsnnes1OlKMpEcQBsnuMh60Ynn+XxvXUZM+arbODcAnvNLqHxThgAM7T3k/dNfd91Ac3e0p30MZjOZkmJc+lPxtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757103462; c=relaxed/relaxed;
-	bh=rUof8FNJjqawWl7XUHn/l0WxTZAh0HwBiWCgXUvtCww=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UY70Tf2NesnbVA+QL2Mj+3ZmuHeCD5if2IC+FV8mnVfWzzNLkYEPKsGUkam2Zklv+9tVAg8dNcEwK5Lt5jwaMAqegbuZssdCDZ5hI0dMcESwGwdw9GHYiosmWkZb/xWf1gEmZP1B8J5EyTgMF0Yu2rHwVsJOPzZ+q3PAdfZ3jZwefP3BLnQ9jxTPF/zkm6q7B07uHL/eRkuiDOMNsYac2bkqt9+Ecrpxf/ASDr7DZInJSkF5/LIKY5Vu6p/R8uv5zgOtqTayKIHBqYG8nrNEV0v3HJg3Er424vafQA2W2V3T7tH8k7OzCSy5dvERRMqzjbQS29Sumzd1QSySp/kvVw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uIKc5zt2; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1757131887; c=relaxed/relaxed;
+	bh=/XrWDlMSknBUdI+P/nmBO66b2axhhLzm5K67zB4bETQ=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=HCZamm5ySti/3jtNOhjvdB45lSfyc9LlYhgjH9HZD+EbtvSUmOtiW2wyw+ARv9iciiePlImx3ivrLTXZTjVnV5lMEIMSWuxziPzh2add4U/Y2B/VBnMToB3FJo20MhK6lwtm+olFuiFXUzK+E+/21xBtMDnJlX74nuv9V8Zn5dI/a2TPoJKy1FF5zmW29cqCeAg2uQ3+21/LMcX+kFlT6WwoRYbp4I21RoVFo+zFwkrko27tycYpMYm915rN4r/2yebh18DK0oaMdaWYH5VTl9nCjX8T+jmYAeRNn9R7ilDxBXpMh3jGK8Bk/lmGV3CNNl9hefB9ZN90LS6b5IGgGw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bJhKJKY3; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=riteshh@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=uIKc5zt2;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=bJhKJKY3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=riteshh@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJSM9634Yz2xK5
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Sep 2025 06:17:41 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 32489602AC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 20:17:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE83C116D0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Sep 2025 20:17:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757103458;
-	bh=VCWnUGzPf6mLuDmms/YZCG2llaFLvKJwA1gnXCCbRdk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uIKc5zt24/XZwP7JYEqTfBfFRmX6Wk9YHD8HxEi0IvUGCXmYhq0zMpSm8supQ0Fb5
-	 iJGS/xoCTwpWx6B21zvCyX58JiG6wKZeHnfKV9PrzdFD8g77UCWMhwV/+VxR8kAvlQ
-	 yPVyT4akXZx6QFmh+sC2ZrMWYx9v4XhPjX4ZqEzVtRypqr58ssUWkgaJb/JjbHDIS4
-	 Q06psN5PW+ZumYVyodesqKh7Uj5j1bR2yhf3Z/vTbdtMhbmMxPQZsd1C7tcDa8a8kX
-	 RxRMOqOPKJoPYzcqOhn1uU/Cd9d8rzzAEwXshP6QHtlDLuGvIqnZfJzgThdRl7C/Wq
-	 nxK2iLAKYjwYQ==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-61bd4e002afso814505eaf.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Sep 2025 13:17:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUa/m0glUN18KB/U0PsT1I7ciImhZDa/g6HiC3ozUvXvWSdK9vQHZ4qUACnVrATkKadktHQrWl+HxHGG0o=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yze6H42pg3ZaCoATxBcxN1mziR6WYC0MLsDdrucMm9JZFbKZslh
-	Gyk8QGIo3gWWU6rgut7ub8InzUUH2bJ+Ep+Fll/G1WcMnhIjyWnrrhGcF60VgWHM0Inhm4GiviH
-	qord0Uhp5EX7m7p40Rvv1RlUp/+dcu8k=
-X-Google-Smtp-Source: AGHT+IEfq1HNckIyyDDXquy0XLtyGZg1XWmotG9HdXFUDIR4D+v0h/9IrUo3g6diO4+f6WOXTRuaooZELa2e+VnSV5o=
-X-Received: by 2002:a05:6820:809:b0:61f:f932:8d64 with SMTP id
- 006d021491bc7-61ff9329264mr2455383eaf.1.1757103457768; Fri, 05 Sep 2025
- 13:17:37 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cJfsp6Nkqz2xWc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Sep 2025 14:11:26 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5862wBNs014242;
+	Sat, 6 Sep 2025 04:10:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:date:from:in-reply-to:message-id:references:subject:to; s=pp1;
+	 bh=/XrWDlMSknBUdI+P/nmBO66b2axhhLzm5K67zB4bETQ=; b=bJhKJKY3GTZ6
+	ZfBnjHiHrRNTHRONw+rlCI97PyrMPiADjl52pdYNzRhGono/R4qOmEmf6J/VWUiZ
+	tgMvWO5Yo+6kIYQaDBa7hkSr8CincgRV6egUrdXktbA7IZVdhRHeI/LB7bs1yx3U
+	KLr1cVeSS56D5dpCtmgWKsfvtLkvCNXKVBSne0Jjq8EvdTZOTNOWU63gn4B+MxQz
+	U9UqRAO2vYxiEBshfYItKOc1Ww0mmAi0dTXd9dxv8WTSOQNNF6U3zQ2uhMcz9x7d
+	K0v3n2IHMynGnC5oIAMy5aG4PIe8d4OOJa4TIuMK3y1/bws+b133X1N5yzVbjnDB
+	tBH1dCdJAA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmw85dg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 06 Sep 2025 04:10:59 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5864Am07010706;
+	Sat, 6 Sep 2025 04:10:58 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmw85de-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 06 Sep 2025 04:10:58 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5861EI5v017222;
+	Sat, 6 Sep 2025 04:10:57 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 48vc114mc8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 06 Sep 2025 04:10:57 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5864ArSW50790870
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 6 Sep 2025 04:10:53 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7A33B20043;
+	Sat,  6 Sep 2025 04:10:53 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1011820040;
+	Sat,  6 Sep 2025 04:10:49 +0000 (GMT)
+Received: from dw-tp (unknown [9.36.11.250])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Sat,  6 Sep 2025 04:10:48 +0000 (GMT)
+From: Ritesh Harjani (IBM) <riteshh@linux.ibm.com>
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        christophe.leroy@csgroup.eu, peterz@infradead.org, jpoimboe@kernel.org,
+        jbaron@akamai.com
+Cc: npiggin@gmail.com, rostedt@goodmis.org, ardb@kernel.org,
+        Erhard Furtner <erhard_f@mailbox.org>
+Subject: Re: [PATCH RFC] powerpc: Panic on jump label code patching failure
+In-Reply-To: <20250905061135.1451362-1-ajd@linux.ibm.com>
+Date: Sat, 06 Sep 2025 09:22:04 +0530
+Message-ID: <87qzwki6fv.fsf@ritesh.list@gmail.com>
+References: <20250905061135.1451362-1-ajd@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PVMDvjw-tL3NZRtUaiBXxzMfAvigclEn
+X-Proofpoint-ORIG-GUID: cbeOG78TMkQe-VMJ3z_O--cBwR6-zolj
+X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68bbb453 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=yJojWOMRYYMA:10 a=voM4FWlXAAAA:8 a=1UX6Do5GAAAA:8 a=VnNF1IyMAAAA:8
+ a=b3CbU_ItAAAA:8 a=iqv5_9DZO53ucXEhF-8A:9 a=IC2XNlieTeVoXbcui8wp:22
+ a=Et2XPkok5AAZYJIKzHr1:22 a=Rv2g8BkzVjQTVhhssdqe:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyNSBTYWx0ZWRfX/sPPXWdUt8iA
+ cDIg8JcAgGeV/LWC8gxJlwyS8uepFEh2etmVIgLRPiW4uFxdN7IgpLf6UcpemvESv3K951sI8py
+ Ax0ClkRQ9JJjoBKb9tyRi+znKHDCHCL3kz9pgQz+gj6KlKQt5TWn3QpGdbEArL0+7VyVUYozjfb
+ +gfBjzvNqxJwizwgvoNtShktjhDsliOw4V2V9ne1Wow9Ei3Mbu/JwBbkvsdDDGa1210Vjftdg8H
+ MM+ZEMKPN4M7FV9iDgzq2HrcT3XMaxss+lCq6XJTqF9D1sbf3NsyyN6AKpfYcYUcfdWeaIkkW8m
+ MCfH378QQAFfANXMeJD7jkhC8Ri0aabeq+B0pbUcv5YGjcvshpSVrCIlTlzPY6pkR0LkVaYIQtd
+ QYKcGa/O
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-05_09,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 suspectscore=0 spamscore=0 phishscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060025
+X-Spam-Status: No, score=0.3 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	MSGID_MULTIPLE_AT,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,163 +121,80 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-References: <20250905132413.1376220-1-zhangzihuan@kylinos.cn> <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
-In-Reply-To: <20250905132413.1376220-3-zhangzihuan@kylinos.cn>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 5 Sep 2025 22:17:26 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
-X-Gm-Features: Ac12FXw3PBjsIjj4AtBsEfmKTR7PfZEmevzc6Jwe0zbtA2TuWwqukJr66Nf1sL8
-Message-ID: <CAJZ5v0iTdgM5BBi2ysiJxfA2c=MQ0fjLsEvVct9stxomvEe=4Q@mail.gmail.com>
-Subject: Re: [PATCH v5 2/6] ACPI: processor: thermal: Use scope-based cleanup helper
-To: Zihuan Zhang <zhangzihuan@kylinos.cn>
-Cc: "Rafael J . wysocki" <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Jonathan Cameron <jonathan.cameron@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Alim Akhtar <alim.akhtar@samsung.com>, 
-	Thierry Reding <thierry.reding@gmail.com>, MyungJoo Ham <myungjoo.ham@samsung.com>, 
-	Kyungmin Park <kyungmin.park@samsung.com>, Chanwoo Choi <cw00.choi@samsung.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
-	Eduardo Valentin <edubezval@gmail.com>, Keerthy <j-keerthy@ti.com>, Ben Horgan <ben.horgan@arm.com>, 
-	zhenglifeng <zhenglifeng1@huawei.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Len Brown <lenb@kernel.org>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Beata Michalska <beata.michalska@arm.com>, 
-	Fabio Estevam <festevam@gmail.com>, Pavel Machek <pavel@kernel.org>, Sumit Gupta <sumitg@nvidia.com>, 
-	Prasanna Kumar T S M <ptsm@linux.microsoft.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, linux-pm@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arm-kernel@lists.infradead.org, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, imx@lists.linux.dev, 
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Sep 5, 2025 at 3:24=E2=80=AFPM Zihuan Zhang <zhangzihuan@kylinos.cn=
-> wrote:
+Andrew Donnellan <ajd@linux.ibm.com> writes:
+
+> If patch_branch() or patch_instruction() fails while updating a jump
+> label, we presently fail silently, leading to unpredictable behaviour
+> later on.
 >
-> Replace the manual cpufreq_cpu_put() with __free(put_cpufreq_policy)
-> annotation for policy references. This reduces the risk of reference
-> counting mistakes and aligns the code with the latest kernel style.
+> Change arch_jump_label_transform() to panic on a code patching failure,
+> matching the existing behaviour of arch_static_call_transform().
 >
-> No functional change intended.
+> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
 >
-> Signed-off-by: Zihuan Zhang <zhangzihuan@kylinos.cn>
 > ---
->  drivers/acpi/processor_thermal.c | 52 +++++++++++++++++---------------
->  1 file changed, 27 insertions(+), 25 deletions(-)
 >
-> diff --git a/drivers/acpi/processor_thermal.c b/drivers/acpi/processor_th=
-ermal.c
-> index 1219adb11ab9..460713d1414a 100644
-> --- a/drivers/acpi/processor_thermal.c
-> +++ b/drivers/acpi/processor_thermal.c
-> @@ -62,19 +62,14 @@ static int phys_package_first_cpu(int cpu)
->         return 0;
->  }
+> Ran into this while debugging an issue that Erhard reported to me about my
+> PAGE_TABLE_CHECK series on a G4, where updating a static key failed
+> silently, but only for one call site, leading to an incorrect reference
+> count later on. This looks to be due to the issue fixed in [0]. A loud
+> failure would have saved us all considerable debugging time.
 >
-> -static int cpu_has_cpufreq(unsigned int cpu)
-> +static bool cpu_has_cpufreq(unsigned int cpu)
+> Should I change the return type of arch_jump_label_transform() and handle
+> this in an arch-independent way? Are there other users of code patching
+> in powerpc that ought to be hardened?
+>
+> Or is this excessive?
+>
+> [0] https://patchwork.ozlabs.org/project/linuxppc-dev/patch/4b5e6eb281d7b1ea77619bee17095f905a125168.1757003584.git.christophe.leroy@csgroup.eu/
+> ---
+>  arch/powerpc/kernel/jump_label.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/kernel/jump_label.c b/arch/powerpc/kernel/jump_label.c
+> index 2659e1ac8604..80d41ed7ac50 100644
+> --- a/arch/powerpc/kernel/jump_label.c
+> +++ b/arch/powerpc/kernel/jump_label.c
+> @@ -12,9 +12,14 @@ void arch_jump_label_transform(struct jump_entry *entry,
+>  			       enum jump_label_type type)
 >  {
-> -       struct cpufreq_policy *policy;
-> -
->         if (!acpi_processor_cpufreq_init)
->                 return 0;
->
-> -       policy =3D cpufreq_cpu_get(cpu);
-> -       if (policy) {
-> -               cpufreq_cpu_put(policy);
-> -               return 1;
-> -       }
-> -       return 0;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpu);
+>  	u32 *addr = (u32 *)jump_entry_code(entry);
+> +	int err;
+>  
+>  	if (type == JUMP_LABEL_JMP)
+> -		patch_branch(addr, jump_entry_target(entry), 0);
+> +		err = patch_branch(addr, jump_entry_target(entry), 0);
+>  	else
+> -		patch_instruction(addr, ppc_inst(PPC_RAW_NOP()));
+> +		err = patch_instruction(addr, ppc_inst(PPC_RAW_NOP()));
 > +
-> +       return policy !=3D NULL;
+> +	if (err)
+> +		panic("%s: patching failed, err %d, type %d, addr %pS, target %pS\n",
+> +		      __func__, err, type, addr, (void *)jump_entry_target(entry));
 >  }
->
->  static int cpufreq_get_max_state(unsigned int cpu)
 
-The changes above are fine and can be sent as a separate patch.
+arch_jump_label_transform() is mainly getting called from
+__jump_level_update() and it's used for enabling or updating static keys / branch.
 
-> @@ -93,12 +88,31 @@ static int cpufreq_get_cur_state(unsigned int cpu)
->         return reduction_step(cpu);
->  }
->
-> +static bool cpufreq_update_thermal_limit(unsigned int cpu, struct acpi_p=
-rocessor *pr)
-> +{
-> +       unsigned long max_freq;
-> +       int ret;
-> +       struct cpufreq_policy *policy __free(put_cpufreq_policy) =3D cpuf=
-req_cpu_get(cpu);
-> +
-> +       if (!policy)
-> +               return false;
-> +
-> +       max_freq =3D (policy->cpuinfo.max_freq *
-> +               (100 - reduction_step(cpu) * cpufreq_thermal_reduction_pc=
-tg)) / 100;
-> +
-> +       ret =3D freq_qos_update_request(&pr->thermal_req, max_freq);
-> +       if (ret < 0) {
-> +               pr_warn("Failed to update thermal freq constraint: CPU%d =
-(%d)\n",
-> +         pr->id, ret);
-> +       }
+But static keys can also be used by drivers / module subsystem whose
+initialization happens late. Although I understand that if the above
+fails, it might fail much before, from the arch setup code itself, but
+panic() still feels like a big hammer.
 
-But this silently fixes a bug in the original code which needs to be
-documented with a Fixes: tag (and it would be better to fix the bug
-separately before the using the __free()-based cleanup TBH) and
-introduces some whitespace breakage.
+Would pr_err() print with WARN_ON_ONCE(1) would suffice in case of an
+err?
 
-> +
-> +       return true;
-> +}
-> +
->  static int cpufreq_set_cur_state(unsigned int cpu, int state)
->  {
-> -       struct cpufreq_policy *policy;
->         struct acpi_processor *pr;
-> -       unsigned long max_freq;
-> -       int i, ret;
-> +       int i;
->
->         if (!cpu_has_cpufreq(cpu))
->                 return 0;
-> @@ -120,20 +134,8 @@ static int cpufreq_set_cur_state(unsigned int cpu, i=
-nt state)
->                 if (unlikely(!freq_qos_request_active(&pr->thermal_req)))
->                         continue;
->
-> -               policy =3D cpufreq_cpu_get(i);
-> -               if (!policy)
-> +               if (!cpufreq_update_thermal_limit(i, pr))
->                         return -EINVAL;
-> -
-> -               max_freq =3D (policy->cpuinfo.max_freq *
-> -                           (100 - reduction_step(i) * cpufreq_thermal_re=
-duction_pctg)) / 100;
-> -
-> -               cpufreq_cpu_put(policy);
-> -
-> -               ret =3D freq_qos_update_request(&pr->thermal_req, max_fre=
-q);
-> -               if (ret < 0) {
-> -                       pr_warn("Failed to update thermal freq constraint=
-: CPU%d (%d)\n",
-> -                               pr->id, ret);
-> -               }
->         }
->         return 0;
->  }
-> --
+Also you said you ran into a problem at just one call site where above
+was silently failing. With the above change are you able to hit the
+panic() now? Because from what I see in patch_instruction(), it mainly
+will boil down to calling __patch_mem() which always returns 0.
+Although there are other places where there can be an error returned,
+so I was wondering if that is what you were hitting or something else?
+
+-ritesh
+
+> -- 
+> 2.51.0
 
