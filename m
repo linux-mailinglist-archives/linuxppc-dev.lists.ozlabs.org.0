@@ -1,62 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-11884-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11885-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E48FB49606
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Sep 2025 18:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD75B4961B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Sep 2025 18:49:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cLCZL6qWfz30DX;
-	Tue,  9 Sep 2025 02:48:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cLCbp52sYz30DX;
+	Tue,  9 Sep 2025 02:49:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757350106;
-	cv=none; b=dHmOgMsbfGjGiapu1nsy1f1w68V+eRwGesv6q5e72d8Yyp1GPERNzJZ7YGLWir4k5Rw/irUBl46O2LOy914hiZ4NBg/OInDpgPvC3CPwT9wyLwxYDgQJk8PdwJCqwCipTOCjtYQdLRz3YFhnH1MoP3FEu4RAt5QI4UahhXa9S70oGy9jWRwpML+mHryhCry60V1HzmlUEwBze6gVeI2M0ZnyxKaZlcVgI3K++vocWl3OiaIgpChvwsTuRAWeaD11RAv8WDBfyGgvst1HAdhmgNc5QPNGMzOIdrRYN/Me61wt/6bPeeE3fCugPE7MOldPvQWdAlZen1qtVvEsFB7RrA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757350182;
+	cv=none; b=W6PAyBGxeaWE0r2STnRPZuABsrOG8fhUsKYS8MBFzWJW6BbMHEcd5VIoMo+xCe6yXZ+F4t34/JTgDuJ/mgokSJ6b2y3YbAIN2fbPNTwPgAhMu0F8UGtcRUZSEqRVk4OjfkDTxoDRcKuMQJ1q9L/HqqffGR9aV356qANalSAAIfl+N1yYvcJaYBOz+OAs2K4Kq902Omih0QMUTdv3xDazEAyuvGMW6fhDow6tobGIAp60JQDjnrWYY7aZXOBreTyrR6PuDSZOOZxG8wITaLgd6hA23/jNGOphl5D3Ak0vxZJxyDWcwxlmw3yeaiLnGziG4g82xlTPBzBCeOrnuO+4ng==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757350106; c=relaxed/relaxed;
-	bh=bEDyurSVkEEgaG+aWPBLXsNNKgorcG4Yu6vrLBcD5x4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n6vUtr8Nz2iwlYeVaqkFcDjhqUSAqDErVTl2Rp5f5y8isKckJby40tYAlH8rDZJY4a3QxzGnnvsHF7F/w7GUXnGjbOQZKtVQ7iglW1/B5h2bqnuaFYPgZVIFqwhZfDV6YX+LWn0K+6dlrl74eyK/yNvD5gEqfBQEwPWvry3Kzas/kc0tCOi/xHF2J1Dl0FLDRkr+ZU0NNnd6A6r2Lr06XtohFl+qzOQIINy0bEVIZ6BSKoWnTPiW0QDvwEIl9fbkwidnYnvFGNGwIN5AJbuFJwhZ+ohxU+hwVw0IxQBZcFgXxpon+orAH+cjhW/6CeoJNpt4WIdwmqsgfl8ZTDSCfg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OvVeuPPl; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1757350182; c=relaxed/relaxed;
+	bh=QpB5tNXBjyOovnphQdFXz5SaIPdBCpYHvTLfm99HsZs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VSmtvlYTAS8WaZqYBO0FrvF552zy3myNJImGQmaE2uwohU/4530CqrfbkFmUrpJq8FFJmdhD5dY2rfOuOj2f6ScgQYOJs2McIvbUlAupYQa/jMnfNAQ6e2EjJ2X1mcE5XYWMs7EF5Dn/mWbHl/M24ziFu7PblsyMA8u6BWUWjpPWR4MIDZ4ggFq3KUrtJHAkYG2jouy83y7EMBr8cR5ZAgaw8u57MqzWcws7/RbETtY9NFksOX3BRsh6CLrmX7a2JoV1dbuOYDdfBadq0mTfdEXUx9HhtULA25b9cGmB43SnoOWSiwCr13IJ9/046Mq3MFrn9kA1spRBPzp9zgmw8g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com; dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Vv9fpBv6; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=srs0=isgx=3t=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=zx2c4.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OvVeuPPl;
+	dkim=pass (1024-bit key; unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha256 header.s=20210105 header.b=Vv9fpBv6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=srs0=isgx=3t=zx2c4.com=jason@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLCZL1YDVz2yMw
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 02:48:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLCbn6Ypjz2yMw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 02:49:41 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E3B80601D4;
-	Mon,  8 Sep 2025 16:48:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E08FC4CEF5;
-	Mon,  8 Sep 2025 16:48:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757350103;
-	bh=s02kopzJSlYiqLDMIOwawddi1A/EA0OWXDvYYK5KGXo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OvVeuPPlqrgkwm4Pwfx2gBHC5PxzGc63nQRmK+0toXwiytOzIAQ4MkK7bBNEulbzg
-	 rLqfUwrk0xPM7YLnH+wBIxkurrkEZ4StvdPFDqeq1QNfzBHusy1WuUoZTo6II6CF4W
-	 J8gDrH5Bildq1JqbhzEXWsFG7q17Mw/EFt1OeF/GGDRMGX62WH2k+eIGhn8uJ4ZLvd
-	 bHlQByov+zZ5mLeHJqNB1EPHKspjAGQoHkzuI75fDGydkYku3i2Brjccrn32M+H4fx
-	 QD6C6N+YzGYrlZqVMOpZxhPdT/uBjp7zcvQxMY89q3ADIUfUjO2Qj5MLSCyj2QQJ5e
-	 K+99E/YRZhmAA==
-Date: Mon, 8 Sep 2025 09:47:06 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Zhiqi Song <songzhiqi1@huawei.com>,
-	Longfang Liu <liulongfang@huawei.com>, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 12/12] wireguard: kconfig: Simplify crypto kconfig
- selections
-Message-ID: <20250908164706.GA1331@sol>
-References: <20250906213523.84915-1-ebiggers@kernel.org>
- <20250906213523.84915-13-ebiggers@kernel.org>
- <CAHmME9qyfbn539Um9xoFJu2Mm9mM0zuOxyLgeOjF-R5nktbz4w@mail.gmail.com>
+	by sea.source.kernel.org (Postfix) with ESMTP id 11EC6438EA
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Sep 2025 16:49:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBA8C4CEF1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Sep 2025 16:49:39 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Vv9fpBv6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1757350177;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QpB5tNXBjyOovnphQdFXz5SaIPdBCpYHvTLfm99HsZs=;
+	b=Vv9fpBv6zOVNc2wiXzUH8hqPT6/w9QKa42prXd24TRVkuGq0vms78eRkV0/+5GmHSeQT0u
+	or/xt3dOnIUEUBJWkn/794RW0z1Z1G+xf5zTtotCA37n/G11BfLwVJH0fUxsbvr3WRq8mI
+	V16AkEUbATUXANihR8D2O9swr/NmZWw=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 1af9d67c (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
+	for <linuxppc-dev@lists.ozlabs.org>;
+	Mon, 8 Sep 2025 16:49:37 +0000 (UTC)
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-61bd4a3f39cso1030159eaf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Sep 2025 09:49:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXMZI9W4BA2qhJeuHFIXPD718qaIW0Gm3KhTBegDdWE/XCoZlpNxxHGegBxPaetnXBZWDXY1kDhhIIJlkg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy1mTNbQxSWVWwLAnnRFKqgyHHEd2RqURqE38VnwvE1mqIBzzBW
+	PJfNbAMx/5aczBQxc55o7wNTHuYfRhdlCg43Q0B9ySe0skcvPngq/fILShhwsv1Youx8YlCcUyW
+	84I1UVB46f/qUcD347tjbx7SPyRfvbz4=
+X-Google-Smtp-Source: AGHT+IG1k1MmnF81J1Vo2jmXSIx1yHc4qgVkpm2QOFlj3gX2CeXc8Y5S0Gow70vJKvxabq0LnsYZB9vjl73O/LZxUXQ=
+X-Received: by 2002:a05:6808:15a0:b0:439:1c13:4585 with SMTP id
+ 5614622812f47-43b29a8995amr3903338b6e.20.1757350176315; Mon, 08 Sep 2025
+ 09:49:36 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,31 +72,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHmME9qyfbn539Um9xoFJu2Mm9mM0zuOxyLgeOjF-R5nktbz4w@mail.gmail.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+References: <20250906213523.84915-1-ebiggers@kernel.org> <20250906213523.84915-13-ebiggers@kernel.org>
+ <CAHmME9qyfbn539Um9xoFJu2Mm9mM0zuOxyLgeOjF-R5nktbz4w@mail.gmail.com> <20250908164706.GA1331@sol>
+In-Reply-To: <20250908164706.GA1331@sol>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Mon, 8 Sep 2025 18:49:25 +0200
+X-Gmail-Original-Message-ID: <CAHmME9q3qa2ZmPrZWAe5tkWp2xGgNd=1BBx0APa_ACb3=bo-1Q@mail.gmail.com>
+X-Gm-Features: AS18NWCGPRb7OwMUI-tVEiz_hU1uUOJpyLd0OY7Ve43ZcitTO73IQk18snpDrbA
+Message-ID: <CAHmME9q3qa2ZmPrZWAe5tkWp2xGgNd=1BBx0APa_ACb3=bo-1Q@mail.gmail.com>
+Subject: Re: [PATCH v2 12/12] wireguard: kconfig: Simplify crypto kconfig selections
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ard Biesheuvel <ardb@kernel.org>, Zhiqi Song <songzhiqi1@huawei.com>, 
+	Longfang Liu <liulongfang@huawei.com>, x86@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 08, 2025 at 06:35:04PM +0200, Jason A. Donenfeld wrote:
-> Hi Eric,
-> 
-> Just a small nit -- would you commit this with the subject line all
-> lower case, like the other wireguard commits?
+On Mon, Sep 8, 2025 at 6:48=E2=80=AFPM Eric Biggers <ebiggers@kernel.org> w=
+rote:
+>
+> On Mon, Sep 08, 2025 at 06:35:04PM +0200, Jason A. Donenfeld wrote:
+> > Hi Eric,
+> >
+> > Just a small nit -- would you commit this with the subject line all
+> > lower case, like the other wireguard commits?
+>
+> Done.
+>
+> > By the way, I have been reading every single one of your patches. It
+> > didn't seem like it'd be useful for me to respond endlessly with
+> > Acked-by/Reviewed-by, so I haven't. But I have quite actively been
+> > looking through these series. Thanks for doing these cleanups and
+> > reorganizations. This patch here especially is quite the relief...
+>
+> Thanks!  I think Acks/Reviews would still be helpful, as it shows that
+> someone else really read the patches.  Maybe you'd at least like to send
+> those for the cleanups for the algorithms used by WireGuard?
 
-Done.
+I can do it for everything I read, I suppose. I care about a lot more
+than just wg, anyhow.
 
-> By the way, I have been reading every single one of your patches. It
-> didn't seem like it'd be useful for me to respond endlessly with
-> Acked-by/Reviewed-by, so I haven't. But I have quite actively been
-> looking through these series. Thanks for doing these cleanups and
-> reorganizations. This patch here especially is quite the relief...
-
-Thanks!  I think Acks/Reviews would still be helpful, as it shows that
-someone else really read the patches.  Maybe you'd at least like to send
-those for the cleanups for the algorithms used by WireGuard?
-
-- Eric
+Jason
 
