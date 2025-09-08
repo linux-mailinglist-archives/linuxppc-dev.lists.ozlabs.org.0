@@ -1,76 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-11891-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11892-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8D4EB49B6D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Sep 2025 23:04:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6836B49B6F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Sep 2025 23:04:49 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cLKFp2wfvz2ySm;
-	Tue,  9 Sep 2025 07:04:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cLKG74l2rz30RJ;
+	Tue,  9 Sep 2025 07:04:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757365470;
-	cv=none; b=YtHKDw6uBJYeE4EPRdZA0Sta76Ubo95ghujNxqs64eJRBhbruEXy96A9KUtkPPi02mEsz2c/ibKEcXHr0BGJFFyV5NSvotL727dg0QYPae0sWbzrNaOhpgMBX794m1WXj3IJlKSp3Vk6fIA6Jc9wovOLhtwWHpsxCIPhNu6l25R3NfCR17ZKFRCTyVZDgZ3sM1afh70hudM65F/Acvu8kzF6pXKsytVWbU/5P1Rff71F1Vqr3H7ETdt9GGRc9VQfC4ZX+jG//ocVzqXWSyKZj8s/HAZDfvrUW0Jqr2+HxEwXXE9UWf6xk5R5MoFjthHzop59mhr7epJ5p4gKBabySQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757365487;
+	cv=none; b=aqOwKedWmyCMoYoN2pYRRf1I3+DRZAp4SpaSrJF2/FIi4WmB4ncuTAH/98rqB/HveHl+mak7y4vKgfkYUGcdcNQvam257FbHtw3HQvmEdeq3/FeNfKe67lpHek0XzT4Zv3QcGGpxR4RZlpIFHQ8MJXJlbAxRCaoIv3N5qsz+qbql2H5AokNt/REBAZg/oXF8H/AdQHpYpUO5Iwf1R0TVpOGBHLTMRayQRgpujbO2R/3l7ZnTBnUyY50flrpAATfnXS+w9AcLQ6pl4U7mHJHYCN9Q56QVjOJ5ooePm5KXlAirntIKzhQnE2EcPe9hQQ279pvRliOA5WKL6eLJI2CMNA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757365470; c=relaxed/relaxed;
-	bh=FDYq3GCRdm74DZWymBGtDLuAvfzrm7RY6xdVgPWNjww=;
+	t=1757365487; c=relaxed/relaxed;
+	bh=wnAGceY0Q/IwJtGAqo/3Lwiwww9USssIofTi1AyKsIY=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iUocYFq679bqBJ8jEm1pkMMOjsKDmZ9lpJG/HMWMfNExNBriLRWM1JfN/I9klfKEp764Dw8g8jYbpmDdtfQRIV4zsI1WK+Wnjspf0aByr9PlHA9/rmKbvX7tT0VVbq6JF0gFrnpsOeJaCrKp54iRmv0ctPJ+9/pOnYCclnyx4QET+S+GeHnhy2I14IeCJfaKJo+ZqfoDjD6CmkvQZVbOMONEMjLQKg85xipZ+uCpVV9YAOmp/+Jpl7P23Q4DJH1FiN/G65nBO/3u84usg9zPnYlwAxyuBGua1q2fpDyX+JMCMXltYtiWHOoGPRke/5YhF14OToZecvcyaBRJDIY8iw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sWHA+yW/; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=Jw2gkNKZcBGe+TdoIMhdvpoR2SfRAXwHYmk+XLqf4AURamPTxckdz0EIcB5NDQoi4cVCc7DFGu2yasolT8B13Bd0ETRSZsaubiccPCPDnY85bDgqHh1rsJPqWQ00Q9uW/AA8bkrMwDhlZhGOFZA1tpDIX/zUBQWHbVjvqP100UmXyEoffH0sAijEveCs6J34K4ef/Rx5J7JFrsMc+A7a8piYApisHuzkzFWnSV6eYZC+D9OovOcoYyQnoEiHJEHtBgCIrgpndMYJTUEmRPxvZj98EMI+HpfchCqYiKLucwDYniky/oUupnX5iwvina8WOPoyG3W/m5UbKTA86iiK5w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EkSh9n2E; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sWHA+yW/;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EkSh9n2E;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=mchauras@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLKFn4vQlz2yQH
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 07:04:29 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588IKoPO030930;
-	Mon, 8 Sep 2025 21:04:01 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLKG65tFDz30Lt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 07:04:46 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588FBbiu021177;
+	Mon, 8 Sep 2025 21:04:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=FDYq3G
-	CRdm74DZWymBGtDLuAvfzrm7RY6xdVgPWNjww=; b=sWHA+yW/pqRIzjt/dJVTsr
-	y9DJsy9bNyA4npCVrJXBvbmjtCXvEWR4rXvLBKJozbOxLg1MiOXpkftH1xhbDiBd
-	aUjAkKcIc+Te2I1xHLewIbshNP3ZfhwvFve8qMaLfrC5meW4Th8fGLnD2cgvzhRm
-	Y6tlGoUaHsKZfQ8zPZlGo0RRPPurNYQY7y9WVfuIof1QU9EoOzXbtPG5PD49CdzK
-	WurRyXK3CYTeDk8KC6mJJnToMJM2p7hHNmtjNyn5ZUl+t/GG5aqEwH+BvQVfnvUA
-	6ruf/103rhdvpQyH5MRer6Ot5EzU7vt08eZHD/k9SBgGzenkizy0bDH+gKCXI35Q
-	==
+	content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=wnAGceY0Q/IwJtGAq
+	o/3Lwiwww9USssIofTi1AyKsIY=; b=EkSh9n2EwSpBUrMd3/CqmkTuSlQW70eVB
+	zk5aj7H96jtdCqF+YUJ+rB6FdcGw02c4pYSDzZUdyLSzq0ZSOjOVbIUKX+GeCnrT
+	aHN4TL5ZBGknHflZwt5vqwNPYNWFlMboEM5xQoxL6iGN6G3cplXTqXs5DWccRuuV
+	7jjsXbxo+TDvYmtRxfBsvF2Vdy7huXJSCQIWsCKWKT4CL5xpMpUYqsqsWlGbnxvs
+	q0f1hVViJdDgntEFz2B1WNWn92CiQC22SIjaFJVyRRqrDRE7r3b8KQmX8fDktiv3
+	09Gv9eRNV5h+nsPIeEB7Ahk9QURn/7ekQay/DllEcU92whjQcx/Lw==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490xycrv0k-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490bcsksum-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Sep 2025 21:04:01 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 588KwAlN007017;
-	Mon, 8 Sep 2025 21:04:00 GMT
+	Mon, 08 Sep 2025 21:04:20 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 588L4D0e017639;
+	Mon, 8 Sep 2025 21:04:20 GMT
 Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490xycrv0f-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490bcsksuf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Sep 2025 21:04:00 +0000 (GMT)
+	Mon, 08 Sep 2025 21:04:19 +0000 (GMT)
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 588K9OUp020492;
-	Mon, 8 Sep 2025 21:03:59 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 490yp0r357-1
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 588KQD5R020495;
+	Mon, 8 Sep 2025 21:04:19 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 490yp0r36y-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Sep 2025 21:03:59 +0000
+	Mon, 08 Sep 2025 21:04:19 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 588L3t5Y50725180
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 588L4Exh31129906
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 8 Sep 2025 21:03:55 GMT
+	Mon, 8 Sep 2025 21:04:14 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 005A920049;
-	Mon,  8 Sep 2025 21:03:55 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B9F4A20049;
+	Mon,  8 Sep 2025 21:04:14 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C0FF20040;
-	Mon,  8 Sep 2025 21:03:47 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id E338420040;
+	Mon,  8 Sep 2025 21:04:06 +0000 (GMT)
 Received: from li-e1dea04c-3555-11b2-a85c-f57333552245.ibm.com.com (unknown [9.39.29.251])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  8 Sep 2025 21:03:46 +0000 (GMT)
+	Mon,  8 Sep 2025 21:04:06 +0000 (GMT)
 From: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
 To: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
         christophe.leroy@csgroup.eu, oleg@redhat.com, kees@kernel.org,
@@ -83,9 +82,9 @@ To: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
         mingo@kernel.org, oliver.upton@linux.dev, mark.barnett@arm.com,
         atrajeev@linux.vnet.ibm.com, rppt@kernel.org, coltonlewis@google.com,
         linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: [RFC V2 2/8] powerpc: Prepare to build with generic entry/exit framework
-Date: Tue,  9 Sep 2025 02:32:30 +0530
-Message-ID: <20250908210235.137300-4-mchauras@linux.ibm.com>
+Subject: [RFC V2 3/8] powerpc: introduce arch_enter_from_user_mode
+Date: Tue,  9 Sep 2025 02:32:31 +0530
+Message-ID: <20250908210235.137300-5-mchauras@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20250908210235.137300-2-mchauras@linux.ibm.com>
 References: <20250908210235.137300-2-mchauras@linux.ibm.com>
@@ -102,119 +101,220 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4wfgnDpBLph_jDuwm8Yrv5N-n4OHqDwO
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDIzNSBTYWx0ZWRfX4WzA5c3Gvj4i
- TDmTnmbM7Q+Rr8X7UOo9eQZaq2Pxiu72v6lSmRyDgHhPyA7HPU2aNydeUbu5qbrVJLQgiCV/wca
- I0ruQFKFB51PA1phLsp/8A4AZLHGgFY1ffBX35SGQPYySP7dKpqDxUHlRandiRIEhw1eFPx9SWd
- yHOTDJQM6BwHa9+Em7AA5H3eqIVW4o6IVjwvcWl4lgdu0l7fRojdRCdDRii/xzua7CqbVbVj7ce
- PzGL+rx44GhuhJs3Gbs1Di0opjKHCFaqis5S2xd1/oopgNMuWXSAJvgJDKiFiBY2BlWKRB+qWC0
- 151VEBTivy08Z/D0C7kDaBpOE0MimowHEXkGfLK+I4AvgMXzeOO+B/rAGm0+dfth12PXVwC0R/V
- 0B8HOc1Q
-X-Proofpoint-GUID: kmjlrILui_QY0F368KmxE_h1tKHVoW0J
-X-Authority-Analysis: v=2.4 cv=F59XdrhN c=1 sm=1 tr=0 ts=68bf44c1 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAxMCBTYWx0ZWRfX/okvS8um5doc
+ f6ex77ml23LL3HK2/kO8Z4Ii6t2aE7E0TK4mhNKWw+l3jUIWL93NijhSlkxa8EIdGgFAoN4/zjc
+ Foy74kmhDs+G9JOzmMunqSxMhgqQDAno+pLDjVUccXmMMq13iLD2rc1JN5XZtexJlviTFw+2xnk
+ PQjb6j17TI5vf0PrvZWJqFHU5nNs5WaUYj1C9YkJi1/HdOf/avhB5Q+NfkEipqFJc1hqFo2u+Vd
+ 9zYSLyTld7CCl69HRvjAqaY7E0C/iOKi6V52c7ZtKoNmB3zuMO5unPB15grln7B29u2vT0gXRAM
+ 6EX7kx0O1kV1dI62dnM6CX82W4HIRaTxgaedKYvCY5SjjhhHnBWhDajFh1A6EVs3sbA7ZRbBeO8
+ s6GgMJPD
+X-Authority-Analysis: v=2.4 cv=SKNCVPvH c=1 sm=1 tr=0 ts=68bf44d4 cx=c_pps
  a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=d-Ijs9cN_SKXjrDOqSQA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=_bLvTq7iIsdV134y72cA:9
+X-Proofpoint-GUID: sl51tC8nna07i3ZnbQptd-o3AIfEGb7a
+X-Proofpoint-ORIG-GUID: Khy0z-eh1A2eIlIonVaNbcHPHmo4L6Wj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-08_06,2025-09-08_02,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 suspectscore=0 phishscore=0 clxscore=1011
- impostorscore=0 bulkscore=0 adultscore=0 spamscore=0 classifier=typeunknown
- authscore=0 authtc= authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2507300000 definitions=main-2509060235
+ clxscore=1015 spamscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
+ adultscore=0 suspectscore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060010
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Enabling build with generic entry/exit framework for powerpc
-architecture requires few necessary steps.
+- Implement the hook arch_enter_from_user_mode for syscall entry.
+- Move booke_load_dbcr0 from interrupt.c to interrupt.h
 
-Introducing minor infrastructure updates to prepare for future generic
-framework handling:
-
-- Add syscall_work field to struct thread_info for SYSCALL_WORK_* flags.
-- Provide arch_syscall_is_vdso_sigreturn() stub, returning false.
-- Add on_thread_stack() helper to test whether the current stack pointer
-  lies within the task’s kernel stack.
-
-No functional change is intended with this patch.
+No functional change intended.
 
 Signed-off-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
 ---
- arch/powerpc/include/asm/entry-common.h | 11 +++++++++++
- arch/powerpc/include/asm/stacktrace.h   |  8 ++++++++
- arch/powerpc/include/asm/syscall.h      |  5 +++++
- arch/powerpc/include/asm/thread_info.h  |  1 +
- 4 files changed, 25 insertions(+)
- create mode 100644 arch/powerpc/include/asm/entry-common.h
+ arch/powerpc/include/asm/entry-common.h | 96 +++++++++++++++++++++++++
+ arch/powerpc/include/asm/interrupt.h    | 23 ++++++
+ arch/powerpc/kernel/interrupt.c         | 22 ------
+ 3 files changed, 119 insertions(+), 22 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/entry-common.h b/arch/powerpc/include/asm/entry-common.h
-new file mode 100644
-index 0000000000000..3af16d821d07e
---- /dev/null
+index 3af16d821d07e..49607292bf5a5 100644
+--- a/arch/powerpc/include/asm/entry-common.h
 +++ b/arch/powerpc/include/asm/entry-common.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#ifndef _ASM_PPC_ENTRY_COMMON_H
-+#define _ASM_PPC_ENTRY_COMMON_H
-+
-+#ifdef CONFIG_GENERIC_IRQ_ENTRY
-+
-+#include <asm/stacktrace.h>
-+
-+#endif /* CONFIG_GENERIC_IRQ_ENTRY */
-+#endif /* _ASM_PPC_ENTRY_COMMON_H */
-diff --git a/arch/powerpc/include/asm/stacktrace.h b/arch/powerpc/include/asm/stacktrace.h
-index 6149b53b3bc8e..3f0a242468813 100644
---- a/arch/powerpc/include/asm/stacktrace.h
-+++ b/arch/powerpc/include/asm/stacktrace.h
-@@ -8,6 +8,14 @@
- #ifndef _ASM_POWERPC_STACKTRACE_H
- #define _ASM_POWERPC_STACKTRACE_H
+@@ -5,7 +5,103 @@
  
-+#include <linux/sched.h>
-+
- void show_user_instructions(struct pt_regs *regs);
+ #ifdef CONFIG_GENERIC_IRQ_ENTRY
  
-+static inline bool on_thread_stack(void)
-+{
-+	return !(((unsigned long)(current->stack) ^ current_stack_pointer)
-+			& ~(THREAD_SIZE -1));
-+}
++#include <asm/cputime.h>
++#include <asm/interrupt.h>
+ #include <asm/stacktrace.h>
++#include <asm/tm.h>
 +
- #endif /* _ASM_POWERPC_STACKTRACE_H */
-diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
-index 4b3c52ed6e9d2..834fcc4f7b543 100644
---- a/arch/powerpc/include/asm/syscall.h
-+++ b/arch/powerpc/include/asm/syscall.h
-@@ -139,4 +139,9 @@ static inline int syscall_get_arch(struct task_struct *task)
- 	else
- 		return AUDIT_ARCH_PPC64;
- }
-+
-+static inline bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
++static __always_inline void arch_enter_from_user_mode(struct pt_regs *regs)
 +{
-+	return false;
++	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
++		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
++
++	BUG_ON(regs_is_unrecoverable(regs));
++	BUG_ON(!user_mode(regs));
++	BUG_ON(regs_irqs_disabled(regs));
++
++#ifdef CONFIG_PPC_PKEY
++	if (mmu_has_feature(MMU_FTR_PKEY)) {
++		unsigned long amr, iamr;
++		bool flush_needed = false;
++		/*
++		 * When entering from userspace we mostly have the AMR/IAMR
++		 * different from kernel default values. Hence don't compare.
++		 */
++		amr = mfspr(SPRN_AMR);
++		iamr = mfspr(SPRN_IAMR);
++		regs->amr  = amr;
++		regs->iamr = iamr;
++		if (mmu_has_feature(MMU_FTR_KUAP)) {
++			mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
++			flush_needed = true;
++		}
++		if (mmu_has_feature(MMU_FTR_BOOK3S_KUEP)) {
++			mtspr(SPRN_IAMR, AMR_KUEP_BLOCKED);
++			flush_needed = true;
++		}
++		if (flush_needed)
++			isync();
++	} else
++#endif
++		kuap_assert_locked();
++
++	booke_restore_dbcr0();
++
++	account_cpu_user_entry();
++
++	account_stolen_time();
++
++	/*
++	 * This is not required for the syscall exit path, but makes the
++	 * stack frame look nicer. If this was initialised in the first stack
++	 * frame, or if the unwinder was taught the first stack frame always
++	 * returns to user with IRQS_ENABLED, this store could be avoided!
++	 */
++	irq_soft_mask_regs_set_state(regs, IRQS_ENABLED);
++
++	/*
++	 * If system call is called with TM active, set _TIF_RESTOREALL to
++	 * prevent RFSCV being used to return to userspace, because POWER9
++	 * TM implementation has problems with this instruction returning to
++	 * transactional state. Final register values are not relevant because
++	 * the transaction will be aborted upon return anyway. Or in the case
++	 * of unsupported_scv SIGILL fault, the return state does not much
++	 * matter because it's an edge case.
++	 */
++	if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
++			unlikely(MSR_TM_TRANSACTIONAL(regs->msr)))
++		set_bits(_TIF_RESTOREALL, &current_thread_info()->flags);
++
++	/*
++	 * If the system call was made with a transaction active, doom it and
++	 * return without performing the system call. Unless it was an
++	 * unsupported scv vector, in which case it's treated like an illegal
++	 * instruction.
++	 */
++#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
++	if (unlikely(MSR_TM_TRANSACTIONAL(regs->msr)) &&
++	    !trap_is_unsupported_scv(regs)) {
++		/* Enable TM in the kernel, and disable EE (for scv) */
++		hard_irq_disable();
++		mtmsr(mfmsr() | MSR_TM);
++
++		/* tabort, this dooms the transaction, nothing else */
++		asm volatile(".long 0x7c00071d | ((%0) << 16)"
++				:: "r"(TM_CAUSE_SYSCALL|TM_CAUSE_PERSISTENT));
++
++		/*
++		 * Userspace will never see the return value. Execution will
++		 * resume after the tbegin. of the aborted transaction with the
++		 * checkpointed register state. A context switch could occur
++		 * or signal delivered to the process before resuming the
++		 * doomed transaction context, but that should all be handled
++		 * as expected.
++		 */
++		return;
++	}
++#endif // CONFIG_PPC_TRANSACTIONAL_MEM
 +}
- #endif	/* _ASM_SYSCALL_H */
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index 2785c7462ebf7..d0e87c9bae0b0 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -54,6 +54,7 @@
- struct thread_info {
- 	int		preempt_count;		/* 0 => preemptable,
- 						   <0 => BUG */
-+	unsigned long	syscall_work;		/* SYSCALL_WORK_ flags */
- #ifdef CONFIG_SMP
- 	unsigned int	cpu;
++#define arch_enter_from_user_mode arch_enter_from_user_mode
+ 
+ #endif /* CONFIG_GENERIC_IRQ_ENTRY */
+ #endif /* _ASM_PPC_ENTRY_COMMON_H */
+diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
+index 56bc8113b8cde..6edf064a0fea2 100644
+--- a/arch/powerpc/include/asm/interrupt.h
++++ b/arch/powerpc/include/asm/interrupt.h
+@@ -138,6 +138,29 @@ static inline void nap_adjust_return(struct pt_regs *regs)
  #endif
+ }
+ 
++static inline void booke_load_dbcr0(void)
++{
++#ifdef CONFIG_PPC_ADV_DEBUG_REGS
++       unsigned long dbcr0 = current->thread.debug.dbcr0;
++
++       if (likely(!(dbcr0 & DBCR0_IDM)))
++               return;
++
++       /*
++        * Check to see if the dbcr0 register is set up to debug.
++        * Use the internal debug mode bit to do this.
++        */
++       mtmsr(mfmsr() & ~MSR_DE);
++       if (IS_ENABLED(CONFIG_PPC32)) {
++               isync();
++               global_dbcr0[smp_processor_id()] = mfspr(SPRN_DBCR0);
++       }
++       mtspr(SPRN_DBCR0, dbcr0);
++       mtspr(SPRN_DBSR, -1);
++#endif
++}
++
++
+ static inline void booke_restore_dbcr0(void)
+ {
+ #ifdef CONFIG_PPC_ADV_DEBUG_REGS
+diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
+index 0d8fd47049a19..2a09ac5dabd62 100644
+--- a/arch/powerpc/kernel/interrupt.c
++++ b/arch/powerpc/kernel/interrupt.c
+@@ -78,28 +78,6 @@ static notrace __always_inline bool prep_irq_for_enabled_exit(bool restartable)
+ 	return true;
+ }
+ 
+-static notrace void booke_load_dbcr0(void)
+-{
+-#ifdef CONFIG_PPC_ADV_DEBUG_REGS
+-	unsigned long dbcr0 = current->thread.debug.dbcr0;
+-
+-	if (likely(!(dbcr0 & DBCR0_IDM)))
+-		return;
+-
+-	/*
+-	 * Check to see if the dbcr0 register is set up to debug.
+-	 * Use the internal debug mode bit to do this.
+-	 */
+-	mtmsr(mfmsr() & ~MSR_DE);
+-	if (IS_ENABLED(CONFIG_PPC32)) {
+-		isync();
+-		global_dbcr0[smp_processor_id()] = mfspr(SPRN_DBCR0);
+-	}
+-	mtspr(SPRN_DBCR0, dbcr0);
+-	mtspr(SPRN_DBSR, -1);
+-#endif
+-}
+-
+ static notrace void check_return_regs_valid(struct pt_regs *regs)
+ {
+ #ifdef CONFIG_PPC_BOOK3S_64
 -- 
 2.51.0
 
