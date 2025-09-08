@@ -1,144 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-11850-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11851-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57855B47BD6
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Sep 2025 16:31:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 242CBB48243
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Sep 2025 03:46:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cKXZY3vTqz2yRZ;
-	Mon,  8 Sep 2025 00:31:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cKqYb6VHDz2yw7;
+	Mon,  8 Sep 2025 11:46:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.154
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757255477;
-	cv=none; b=i/6fwuNxth23jHV5FPFX8geN25zUkDUNywrb1+naeu1g07vckf6Vb3xtqS63rSYVqT0X+1JYZ9WduLMmc7zTwHg5LSmh/B3QFJ+x0KZeQ+oxLFmGdpj8cbG7s7+Yy9pFjaJsZ6e8mrbvtUfKZ+L4o+q1feLEfSE+ZLT97htJBJG+XBZEbPnazq8qIVN0+prWn512xlKY2GCwvKnV+Bpi0vTbPYc7TWRWgkizBtHejAsezqAOL0qrN3t1xrZCCebiL6lwL1nTELLEQHYlVbp34GawbMCk3YTmBjjs3TAswF6RXKI6BY36dseo0qG4Q3St35zukAmkBtug1Kz68i8LLg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757295987;
+	cv=none; b=MclZnbFE6wMnKPiWaHWzU7YPh7MdRkwT4vjgbpErgcFSMy1QuZasGhM23iK7upoWKUOR5n4OA8bz73ondujLLCwHDeyvW/FKeqSCemYZpg9CpLGAOPiW1mdE2gpIgEX7Qki09Og74z4PujrnhZCFUyQ6xvtKO1R9L4u36np302oKxgPvh3fHUqMZsdA1xucBRxZlJctNXTB9iVQK3WLsTUSqpKRdHOjbQD11giA+sSDntRlNk7t8WKsnM0Qb7WkKQ9LRrsTrvCoF9DfU5ThoR+yLUvIsb2iEtfWcN5Fm2adLOL2u2YYLZMaaFF4Jv/oYFMWA038vhoNKsT3b0VO8ug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757255477; c=relaxed/relaxed;
-	bh=G/EPaorfj+fFyTEHaVMF0Aq5nU/5YHn8ZldlmV9nSRU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=N9RDn11IUWU3Ywn8JCxM0GDdCYQ2JXOrKzgElv1Mmb/eXX04V87V6UjJoAwGPoGgGxgPCszPWaA5F1wazi1iAi5SJo8gTpKN9cMq8KEUMDyn2SbCVccC1cay9ApzpplCjjkefe/pXWEhAXz6iScBn+JSUwutm4uG7v1jBJAAYRunv/XmjgxwDYNQFBaFcd9EIxF3awm+XqZ1pymv1xeUxDb5y/Qmj0uF1g0iH3Z7NxCYz6aYbE9mkCF2aVEy25Ohvew0wxGzYNBxeYNjXxjEJ/gOm2hQLgJmyXer+HMBCwS/Y/dTCrGKIumJQ40+RZKjjDQi7oAyeLN5Z4XVS4EIMQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; dkim=pass (2048-bit key; unprotected) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.a=rsa-sha256 header.s=fm1 header.b=LxAEL1hA; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=gkkyoHxl; dkim-atps=neutral; spf=pass (client-ip=103.168.172.154; helo=fhigh-a3-smtp.messagingengine.com; envelope-from=o-takashi@sakamocchi.jp; receiver=lists.ozlabs.org) smtp.mailfrom=sakamocchi.jp
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
+	t=1757295987; c=relaxed/relaxed;
+	bh=UccKeaxhS+HpFDIrljo7TBOyyvOWjiyq8kuiNMMZAWw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GIAdJA+M2qM1KT1rdVRndKQaHkJfiJoTPJtrHY9LmvIFrjPOcYdklsNv4YLlklEnB20IxuGr6PqqisXy6JLcUw6Cr3R73H0UrmqUVvdtiq2RZy1FeHjnq+UZQVfDypp8nLReCJ6DqwWp3vXvNUN+4qo/oGuvGuS+FoiLZYp2pRD32M3Egbq8t2Jut8UK1H8UwIL5RCZVEvSqEDGd7XDgWTnXbGlgTXTyS3wvYER8SoJ1mU12+b3Nm6q+i6PLff0Wc2ucgX+DYytGlIhfmhC64orA8srYimh8/pRsWbwGAnXN+VOdo2UmnYfgkKl52A2aYcdAW/Y65H6j1ZsV3QIxPA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MyE9vVH1; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.a=rsa-sha256 header.s=fm1 header.b=LxAEL1hA;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=gkkyoHxl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MyE9vVH1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sakamocchi.jp (client-ip=103.168.172.154; helo=fhigh-a3-smtp.messagingengine.com; envelope-from=o-takashi@sakamocchi.jp; receiver=lists.ozlabs.org)
-X-Greylist: delayed 347 seconds by postgrey-1.37 at boromir; Mon, 08 Sep 2025 00:31:13 AEST
-Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cKXZT39Pdz2yN2
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Sep 2025 00:31:13 +1000 (AEST)
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id C2941140003F;
-	Sun,  7 Sep 2025 10:25:21 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Sun, 07 Sep 2025 10:25:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm1; t=1757255121; x=1757341521; bh=G/
-	EPaorfj+fFyTEHaVMF0Aq5nU/5YHn8ZldlmV9nSRU=; b=LxAEL1hA32JcJEnG98
-	oeJWFJW96Ab1ZdHJgGFlspwkJEj8Aiavk+dntTuQR94KmnDxtmALl7CB+fX7pbmo
-	zvwHV9izosIpgEyayMmq4HTHRSL2iK4fMKWHMvvD41vWIEJCTnEIIqxOvjqUMPdN
-	FaaZNPb2cDEYVHxVXwipUcCnSOWtlHTWUV9b7UKVDN46YphS5bUyXSD3O2FSIvg3
-	JUD1TcNnZpGiXsQ7MCTj1TVHQ3ohhj+xY79FbL/+BRd7wIICp8XkFAHyKTyD/8lm
-	yl+rKrALxeGxgT5Cn2F0n3Vujw7PsQdn7K1EKLloRiZFtuJG1JI5PkcjOkt6ZukQ
-	tPFQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:reply-to:subject:subject:to:to
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1757255121; x=1757341521; bh=G/EPaorfj+fFyTEHaVMF0Aq5nU/5YHn8Zld
-	lmV9nSRU=; b=gkkyoHxlYwH2iEfC+POnjbirfwG9a7+WNBFdUULpIUfCF6QwBKD
-	CXcsXkweDWwsQzN7Gd/GbXOk1SV+QIJUgWkOe1GLc0VVeUYBy346pR/YD304mG7z
-	1ztsB7KcR9c74q1QJaQIjsplL9rOCD+fGXEZYd3b1CaBQnjtDDPbNZDWICkLf5pp
-	E+qxogYXjT9un6LXfyJoljBVnMPFxj2E3BW22x2ShtmyGXx44gZthxk9ic+CJ+5v
-	xe6lmL0VZ16DWgsUqgTs96f66G7saKooHJEnRz+Yld+xGqzw4yGMu+xPzsXFPe8w
-	GNdDDSQNNRcQqEmj5hrowrarHbImiv5H7QA==
-X-ME-Sender: <xms:zpW9aHBBt0nmuBo9smDJ2pyc66XAz51H2zLxPIL-bKuIIirEqr75FQ>
-    <xme:zpW9aP5GM0Oa9oXSpXiYSqnaKLnHMrts9xFSY3EInc6RNC_Ob2dxgDJB8d83jBdim
-    fy3XXGQESbNHiHsUNQ>
-X-ME-Received: <xmr:zpW9aNLIKTgt7t1RechOqALMeiJc4jvDTVIeA0j8Y6R9TLQOMTuGJFNVHgmJLi83Qw1w6W0IAc1sMtpcdOdKwHPv5EDXH_yn>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddugeekkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfggtggujgesthdtredttddtvdenucfhrhhomhepvfgrkhgrshhhihcu
-    ufgrkhgrmhhothhouceoohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjpheqne
-    cuggftrfgrthhtvghrnhepveehudehueekveelteevkeevkeeiudfgtdeivdehjeetffdt
-    vdeukeekheeitdetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjphdpnhgspghrtghp
-    thhtohepfeeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehjghhgsehnvhhiug
-    hirgdrtghomhdprhgtphhtthhopehmrdhsiiihphhrohifshhkihesshgrmhhsuhhnghdr
-    tghomhdprhgtphhtthhopegrsgguihgvlhdrjhgrnhhulhhguhgvsehgmhgrihhlrdgtoh
-    hmpdhrtghpthhtohepghhlihguvghrsehgohhoghhlvgdrtghomhdprhgtphhtthhopegr
-    lhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghkphhmsehlih
-    hnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehhtghhsehlshhtrdgu
-    vgdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepihhomh
-    hmuheslhhishhtshdrlhhinhhugidruggvvh
-X-ME-Proxy: <xmx:zpW9aESQOTluGcoqM_cunEP_CQ11Qvxrpy5aGTfr1MzqwvK2MTzWog>
-    <xmx:zpW9aFHJqGCH6u0UWGJG3VtNOeC2T8wJ8cwxckTphVMd0qLeV964DA>
-    <xmx:zpW9aNpr-peDJ1nPk1kSevLyeyufAy3XpVeJTpuplknDlKhO7wcF7A>
-    <xmx:zpW9aLNxtTkNoAukVHmomnYFXm7ah-6QwcR2-dfdjXXF-bo6zSTB0A>
-    <xmx:0ZW9aEVsvUTTHZprT5gFlKyXEiCBT6fpdOnxgCny8ixcqLiQ3QkTgVqI>
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 7 Sep 2025 10:25:11 -0400 (EDT)
-Date: Sun, 7 Sep 2025 23:25:09 +0900
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,	virtualization@lists.linux.dev,
- Will Deacon <will@kernel.org>,	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4 00/16] dma-mapping: migrate to physical address-based
- API
-Message-ID: <20250907142509.GA507575@workstation.local>
-Mail-Followup-To: Jason Gunthorpe <jgg@nvidia.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,	virtualization@lists.linux.dev,
- Will Deacon <will@kernel.org>,	xen-devel@lists.xenproject.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cKqYZ3bQTz2xS2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Sep 2025 11:46:25 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 587LVcFq030119;
+	Mon, 8 Sep 2025 01:46:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=UccKea
+	xhS+HpFDIrljo7TBOyyvOWjiyq8kuiNMMZAWw=; b=MyE9vVH1NqMsBA38TFDXwK
+	45OlmY0JG7ZdzxSHrhnn6o3/cgaIrM5mgAyce92T8OGicQWk7DdjkBcfIBl/mXOp
+	7EvJKCuqYw6aZLBJQf9aFLFivupUIAZspTs12tEtQ3+Zz4UHDFNZbcBfacDfVIRs
+	JyHStqnI3dBsfv5EOdvCcw/+IEZrYWeZhex2dqFLmgOtMhDq0kD3U8GMRbPzAbmC
+	JYdx47C7p/WJyBSEkECeYqCLaziK/GkEMBFFm5wTGNaBdJqGRQX9TFbHBg/Khuhj
+	HnDbzBgjEEpBEYSc/PFCoefuvISItc5wPmv/mPnowVxfZWhWFmQoORzl12FLDWbg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490uke40rc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Sep 2025 01:46:03 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5881k2sV002110;
+	Mon, 8 Sep 2025 01:46:02 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490uke40r6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Sep 2025 01:46:02 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 587KJ5Ol001156;
+	Mon, 8 Sep 2025 01:46:01 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4912033gxb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Sep 2025 01:46:01 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5881k0TY16122400
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 8 Sep 2025 01:46:00 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 261C25804E;
+	Mon,  8 Sep 2025 01:46:00 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CEAAC58054;
+	Mon,  8 Sep 2025 01:45:53 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (unknown [9.150.15.230])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  8 Sep 2025 01:45:53 +0000 (GMT)
+Message-ID: <c8c5778822344161acec7101fa9f19726ca99d31.camel@linux.ibm.com>
+Subject: Re: [PATCH RFC] powerpc: Panic on jump label code patching failure
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "Ritesh Harjani (IBM)"
+	 <riteshh@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, peterz@infradead.org,
+        jpoimboe@kernel.org, jbaron@akamai.com
+Cc: npiggin@gmail.com, rostedt@goodmis.org, ardb@kernel.org,
+        Erhard Furtner
+	 <erhard_f@mailbox.org>
+Date: Mon, 08 Sep 2025 11:45:52 +1000
+In-Reply-To: <1b4cc6d5-5f5b-4b39-8fdf-ac02c94cd5e2@csgroup.eu>
+References: <20250905061135.1451362-1-ajd@linux.ibm.com>
+	 <87qzwki6fv.fsf@ritesh.list@gmail.com>
+	 <1b4cc6d5-5f5b-4b39-8fdf-ac02c94cd5e2@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -152,36 +104,132 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250905174324.GI616306@nvidia.com>
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDE5NSBTYWx0ZWRfX31IU+4LQ9/fn
+ usx8Uw9c80Powr+cbFK4OzEAEqQt0UGcpgPcCQoJpH2LPJfLXWNE2dzDT+erpMujpg+HiH3kNMj
+ EdFkzvKO2aiaf/7J9ii8CxvkH98c1gqZalX+qBfR0TG2PQoXpxvVTf0mhCkXfgiktyhxpnHEVIt
+ +/KKks/upJkSQo3oKCXrIFXKG4g2DfuQ3Odjmhvr0y6Mr+/nVX7ykXSOfVlykQ3wNMrEi6PuyIi
+ uMioOVHyHXlfH3gUCeymcGMXgmLV8bRVO9YC+9Ko0sN7WOyvDHsFp/3/Pu/C8hF09F0/sJqNAUo
+ jhkKwtt3UhRi9HEhcUuU1RusBOIHxdYNlgmIA+h9Joz8bJsDvuQvYBcJ5nkjilRT4ShBx9IYjGx
+ xP64b1fJ
+X-Proofpoint-ORIG-GUID: nerRj6-0BR0gN8pD3HmGmni6d9Jwj5yb
+X-Proofpoint-GUID: hb_MV_qymDWLP0LPeYEwIfhE5uwg_uIa
+X-Authority-Analysis: v=2.4 cv=StCQ6OO0 c=1 sm=1 tr=0 ts=68be355b cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=_z8MWtvD0Tm20lTwb9kA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-07_10,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060195
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
+On Sat, 2025-09-06 at 08:42 +0200, Christophe Leroy wrote:
+> > arch_jump_label_transform() is mainly getting called from
+> > __jump_level_update() and it's used for enabling or updating static key=
+s /
+> > branch.
+> >=20
+> > But static keys can also be used by drivers / module subsystem whose
+> > initialization happens late. Although I understand that if the above
+> > fails, it might fail much before, from the arch setup code itself, but
+> > panic() still feels like a big hammer.
+>=20
+> But not being able to patch the kernel as required means that you get a=
+=20
+> kernel behaving differently from what is expected.
+>=20
+> Imagine a kernel running on a board that is controlling a saw. There is=
+=20
+> a patch_instruction() to activate the safety feature which detects when=
+=20
+> your hands are too close to the blade. Do you want the kernel to=20
+> continue running seamlessly when that patch_instruction() fails ? I'm=20
+> sure you don't !
 
-I'm a present maintainer of Linux FireWire subsystem, and recent years
-have been working to modernize the subsystem.
+This is my thinking exactly - a failed patch leaves the kernel in an abnorm=
+al
+state, and we don't have the infrastructure to safely roll back any patches=
+ that
+have already succeeded or other associated state changes, so this should be
+treated as an unrecoverable error. The resulting kernel is a different kern=
+el
+from the one you expect to have.
 
-On Fri, Sep 05, 2025 at 14:43:24PM -0300, Jason Gunthorpe wrote:
-> There is only one user I found of alloc_pages:
->
-> drivers/firewire/ohci.c:                ctx->pages[i] = dma_alloc_pages(dev, PAGE_SIZE, &dma_addr,
->
-> And it deliberately uses page->private:
->
->		set_page_private(ctx->pages[i], dma_addr);
->
-> So it is correct to use the struct page API.
+The fact that drivers/modules can trigger this just means that drivers/modu=
+les
+can permanently ruin your kernel too, which makes this more important not l=
+ess,
+I think?
 
-I've already realized it, and it is in my TODO list to use modern
-alternative APIs to replace it (but not yet). If you know some
-candidates for this purpose, it is really helpful to accomplish it.
+>=20
+> >=20
+> > Would pr_err() print with WARN_ON_ONCE(1) would suffice in case of an
+> > err?
+>=20
+> No, that's not enough, you can't rely on a kernel that will no behave as=
+=20
+> expected.
+>=20
+> >=20
+> > Also you said you ran into a problem at just one call site where above
+> > was silently failing. With the above change are you able to hit the
+> > panic() now? Because from what I see in patch_instruction(), it mainly
+> > will boil down to calling __patch_mem() which always returns 0.
+>=20
+> As far as I can see, __patch_mem() returns -EPERM when=20
+> __put_kernel_nofault() fails:
+>=20
+> static int __patch_mem(void *exec_addr, unsigned long val, void=20
+> *patch_addr, bool is_dword)
+> {
+> 	if (!IS_ENABLED(CONFIG_PPC64) || likely(!is_dword)) {
+> 		/* For big endian correctness: plain address would use the
+> wrong half */
+> 		u32 val32 =3D val;
+>=20
+> 		__put_kernel_nofault(patch_addr, &val32, u32, failed);
+> 	} else {
+> 		__put_kernel_nofault(patch_addr, &val, u64, failed);
+> 	}
+>=20
+> 	asm ("dcbst 0, %0; sync; icbi 0,%1; sync; isync" :: "r" (patch_addr),
+> 							=C2=A0=C2=A0=C2=A0 "r" (exec_addr));
+>=20
+> 	return 0;
+>=20
+> failed:
+> 	mb();=C2=A0 /* sync */
+> 	return -EPERM;
+> }
 
+Yes, I can confirm that -EPERM from __patch_mem() is what I was seeing, and=
+ I
+experimented with the assembly to confirm that it was triggered by the stw =
+in
+__put_kernel_nofault(). __put_kernel_nofault() uses the address of the fail=
+ed:
+label to create a handler in the exception table for when the store instruc=
+tion
+faults.
 
-Regards
+>=20
+>=20
+> > Although there are other places where there can be an error returned,
+> > so I was wondering if that is what you were hitting or something else?
+>=20
+> Andrew was hitting the -EPERM because the memory area was read-only.
+>=20
+> Christophe
 
-Takashi Sakamoto
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
