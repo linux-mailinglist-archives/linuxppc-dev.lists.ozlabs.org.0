@@ -1,59 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-11877-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11882-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7A21B48B1C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Sep 2025 13:06:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05210B48DEC
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Sep 2025 14:46:08 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cL3zw3HCCz2ym3;
-	Mon,  8 Sep 2025 21:06:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cL6BS35Smz2ym3;
+	Mon,  8 Sep 2025 22:45:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757329596;
-	cv=none; b=QscXzgjFqXfynDCLDZT5fyJGVYhTBVksZ3wccDOddna9Z3jkc4dwlVIYrpDlNDDTHI2KOX+5Qy5WNUxkiz3yHOjT5HnSlCyiyiKq+Wgqt4OGeFVi9KV8fkn6FtKxwAdqHiPQnv29cVH7PquHfr8wcFORs8BpmMzhOvwUrJqUlAbeNgSx+pgH5Sd64WCSx4N1ngS5UQdkg0/glQ8Uc9UL9Hmy+CviyZgabbUFdzOPlKjIRPDsMbt6Y9F0CkPMQI82sAU9Rq6/XCn25kMcdhIzcs3BoJtpQfClpv1VzF7Yht7d1lF5AJsZgf+LC5PwlMNvsaTixALYB3B9Ds3hOSIR0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757329596; c=relaxed/relaxed;
-	bh=orP0/tJhwM8uEnQ8hg/AimV8gG8pwl2IODsFAMQ48tw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L/dMJzAcGxaTByUjqgH9+oBRm/Ye8vulrRUlm79wbeDlBLUPYZ4hnWjgRXTZlKgh9VEmLr2LdrX6ZkKRWp+dGpghjGMW9r6uINwW9bYgOxwBSc7VyAUxPBYznnTzeAiueWOn5LHWonwaH5LKha3sh60er7L67FmmyeGi9uVVChiIL7QrmDAgq5EWjf6xNSey8+1a9InH+T6K3f+UGVtgGNoMs9UzqVNK8+S9CScWFT6gM0A8B0ozsTLpIqatIOTVPDOybGg+mjU/pc0KjYDSW7Mme9poBNShjvKjv1nOpae0n0qqInRNjglrNKOlFomidxV47Yt/gHDCSI9jdmYaAg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zx9JjuLr; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2417::61e" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757335552;
+	cv=pass; b=cM1fS0mELL+uuSY9zWrHaqKi3ON4W8tvslgvnUlkrFaGDeJRTA8m/nj2G2OSPK0O+BV5I7v5Iiiuq6NgMPxlQGN8Z9lWiPPkcKbijRejcbyqS+Y8NWIzfBw2PXXe+Rf0GVkX5f3T9sEshZzTLOoBBDgKDzEcbXd9Q54TqYRX7tzqoGtoNLCYfdD1NXvU/2q8OSdQLXgNz5TY8YT42UMij6QCdOHKw/5XVKQcMbPWcj76qZUOOGRp5uQYO3fOe41gHgYWEFmPH7WLtAa1fSsaBss8paygg6VJ+KDKc1/jDoXNfanKA/Sr58XGRMIBYCbu0wIoiglV/g9t/ZTeEJes+g==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1757335552; c=relaxed/relaxed;
+	bh=kVtJy3VxH0BzMR5kUXXhlP/z9wRsHc79lEhpuG67Dec=;
+	h=Date:From:To:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=HHW0ZLvKRpdQ6Cdzs+/FfHaM56IwnmK413IzI+7Kcms8ryUohSBZYIlLekpD671MBYCGRxxwogbufepp8wKnsDO9i3wimjMcCWI5pV0CjMXqSrpmoM28M7WmQubC5ChpuHvxMXsri4lBxNzrnZgPS2MzoOY87we/aZt4kmNDWuggg6d5mSLhhPfTvLR8SaJ2iuQJrpolIMt0yfeSkL5VdTLs4gDDN2PQFG8q1nccIFirBptUI08lDbHMMZ2bHGo4JjnO4HRdKYh+Bxji9EaNZo2jN2Ki0YUkyJlZcdQowDPAmBs8uys7J/433mVG67sj4YUjjhyFqyMwEQ7JuYFBIQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=TTXRCLKb; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2417::61e; helo=nam12-dm6-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Zx9JjuLr;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=TTXRCLKb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2417::61e; helo=nam12-dm6-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2061e.outbound.protection.outlook.com [IPv6:2a01:111:f403:2417::61e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cL3zv150Pz2xQ6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Sep 2025 21:06:35 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2DFE6601A4;
-	Mon,  8 Sep 2025 11:06:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4621EC4CEF1;
-	Mon,  8 Sep 2025 11:06:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757329592;
-	bh=tv0RyxtEXiT69AOtNdiq+yEWh80wAGCZqmtmrHh1C9U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zx9JjuLrR3oJx7FdM0t+SwZlc02CRIeJ+OsFV5BNQ//kH6Gb++Lv65Aaye9tyGO1d
-	 AEMnotC47WNk4WNfJiamcfeRjzs0V6lS/YQ0L0gXYY/JziCahH/gt8CA9bmm/UJOsu
-	 3s+1Bu/C9SXdHbyVn9gYI+EaPCQ1JMC59zPsWUypZcWWXUUK1U5Bkd+uaKGc9lpcO6
-	 Rnxwug+jW/BjM7wXToVE0y7CdujOUuqgXjf2IYXuWcc1VnTdME8/ztSF9/dpHxw9G8
-	 EsbWq0asAVzNJN0/0qCAoyz/w0JHUY5yOIP6mvPm85LdCFtg1ZXHV/i3+s0n3cQ67t
-	 5//zgyrBoBwXw==
-Date: Mon, 8 Sep 2025 16:33:24 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Joe Lawrence <joe.lawrence@redhat.com>
-Cc: linuxppc-dev@lists.ozlabs.org, live-patching@vger.kernel.org, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc64/modules: fix ool-ftrace-stub vs. livepatch
- relocation corruption
-Message-ID: <2tscft2yyndfbkl2a7ltndqfwx7phajkfma3m6o5phpm3xkme2@dcy6ohdbfhsk>
-References: <20250904022950.3004112-1-joe.lawrence@redhat.com>
- <aLj7c13wVPvkdNxc@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cL6BR2BsCz2yPS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Sep 2025 22:45:50 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RdxQVyLbcPIzsM6sX7q8x7QmTn6cnd1lfXvY+FyzL1eEYsJhq9FOb6iapvK1Vz5owlYgWdY9IcbGDYG8U3EX3/aLA0nDcCYTJC7wHenAsnAO4Czyl77gaCg7SpKYxFc8vCEpuna490IbfIxsgf/ViI+4fzVEemqsS3aVW9Y2MZhLbVZX/uF/wNgSpbNCUvPBsT3kU7vL621wcjdrvJSbzaGGNtfbB6NLqSbDi0YipLdWfMOWLkamlIDFiHR9w25kDbwO3pu7Wt69fsWct0/Y9gw6jnJwFKcl+JSZ7v3pWCEiKmz6+YXiu/WBXR8/4CyQC2eB+n0kBVADV5jrPd0Tzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kVtJy3VxH0BzMR5kUXXhlP/z9wRsHc79lEhpuG67Dec=;
+ b=o3stciIRY0cSJ/aOoKNOmkPUysvopr5Wx/viD+gEzJmMnFkak7IdVhQbwrw7tsvA6T0FYwu2yQ5Nwoyj9qlnzkWKTaMRsALckATri7XTNhou0MLIyx2PuHCYXgCae/ZCpiwvzum50SCvDdvYJ4RAuY+eym69GzWs317bloT3QfKrPljCpgtlwN9FbC+UElJQ9nliFQDE2C/dHiswGGaVahPyeZI/oP7dvf56EbFJdVUZTHCqKDWGl3FY8GPa0201Ebw/riZkCBLrxZ0fJZQfdLnHV7BMPixp9lP7coa48gsTnOOWWAkA9bdBVWwItKKN47qeov3W/7ZsaJHd45YQhQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kVtJy3VxH0BzMR5kUXXhlP/z9wRsHc79lEhpuG67Dec=;
+ b=TTXRCLKbvDNzd5KMxBGwU4icKF5zN/F9rZAVOPQTpmAe2H1urLUqSZ2vgAtmyfMBWf2HsCCEc4/WtbChsSNi/3Pv1Zjk4Hw/+mt+mAwb/ciAqfptFuWataPLXR/6jj9igzgfifaMhvXm2ezJ1OpLfQ6e2qbAr7QTqZ77/fkcJxFV/bBTDr1R6ILLENwXsFGUIay1tWYhYlgNNt9JznW+pdjZ1NeaJ4gwuVbS8dzJhOiLGhFS/5QRDDAetxRUDr7ApoBQvjvcnk/iLP4GU5Wki5LlxIOK4JHlJVE6cLyfmXQCp9wzQYACVXV12CbG7qHf++PrC5Zn1ciQzJNCTG1moA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
+ by BN7PPF915F74166.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6d9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Mon, 8 Sep
+ 2025 12:45:29 +0000
+Received: from PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
+ ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9094.017; Mon, 8 Sep 2025
+ 12:45:29 +0000
+Date: Mon, 8 Sep 2025 09:45:26 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Marek Szyprowski <m.szyprowski@samsung.com>,
+	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
+	iommu@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Corbet <corbet@lwn.net>, Juergen Gross <jgross@suse.com>,
+	kasan-dev@googlegroups.com, Keith Busch <kbusch@kernel.org>,
+	linux-block@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-nvme@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	linux-trace-kernel@vger.kernel.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
+	xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v4 00/16] dma-mapping: migrate to physical address-based
+ API
+Message-ID: <20250908124526.GW616306@nvidia.com>
+References: <20250905174324.GI616306@nvidia.com>
+ <20250907142509.GA507575@workstation.local>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250907142509.GA507575@workstation.local>
+X-ClientProxiedBy: YT4PR01CA0305.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10e::13) To PH7PR12MB5757.namprd12.prod.outlook.com
+ (2603:10b6:510:1d0::13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,206 +105,124 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aLj7c13wVPvkdNxc@redhat.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|BN7PPF915F74166:EE_
+X-MS-Office365-Filtering-Correlation-Id: a297ed27-88a7-4d5b-a32b-08ddeed59743
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+6uZKrS/rFG7MRbc+Kg/J4Ot96foh2BlZEiEN1Gc4OuIi39qI6yHkY4PEkfG?=
+ =?us-ascii?Q?jA/PRoUyT1q+EIGXzX7t0ApHKIxeYDeEAl20/rgmrNPntcmc8Iivg+AMC3Lw?=
+ =?us-ascii?Q?WOAXYZ1L6evCFL9T/bmJmFODQWdI2MH4oHxaX1HopkzRh91IxyGj+9peL8RV?=
+ =?us-ascii?Q?9fSFLbno4AmTJ1fSiEIyyohEE064gEroDSm8XNq/MB8OEEMKSIj0TriT3Ssw?=
+ =?us-ascii?Q?VortqCOKPGT2hv8cT1JPF44pejI0n1LsWAyFLR1gutdbrehx8vokd3u6KVqI?=
+ =?us-ascii?Q?GgPqNSiI3YrCnTVCk+Tz3GPC0uJ5ZIw2yNL/us3HAvbtqxm100PlHVaPKdYe?=
+ =?us-ascii?Q?2V7O9MKWWOQeDozXhmfBSqmAUYFqt1oH5vl0hq4APA24BfIXU+HWhyrEsuz+?=
+ =?us-ascii?Q?wq0KXWfVrz0k82RLqVQZ/J4eKXhnTPDrOA7AaaickgYp0gQu1EwhU7ifJqHV?=
+ =?us-ascii?Q?rqQ23Oqz9AD/ntgir855KqvA3s5THBgyckszj+V270BVldG2vBOQkZhkBQia?=
+ =?us-ascii?Q?e/Tr7EoOPpmzkqHbtsiw0H68hrG0eqMTcuE6RCl6X8SmIa+hl/4V2lg41ndB?=
+ =?us-ascii?Q?EuqxZyKqlPaSw2MjBw8QvvlvhUWWiUpC97XjmiGOrmU5+WoChm8Zts5NOuVt?=
+ =?us-ascii?Q?A8Ki/8+2p7ahT+pimvRT2prrUpAQcHs5cA/Fx4PDgspNgL/FwIU7g7Hccb+H?=
+ =?us-ascii?Q?aqiEjctDv2j+q294LXOSulq2fbOjnK1RZtOSSVSPy1WhZZ1Alz3sTuPF99tO?=
+ =?us-ascii?Q?udZXTc4yis+0F+KaFGNDjVCDRJc+lOAocmfLdbmKFPwbbIjX3mPFE7zajQd5?=
+ =?us-ascii?Q?qfo7G1Gfvl2ydc15Lpk0AS5qoTk9zwU54HbX9pg74pg8KTlE5hRf+Pa5ocmO?=
+ =?us-ascii?Q?cHlGOnwIcdwg2nys8IcpbhTR9gkPhnBbid/BFf6fcWoN3cpUWYOylZPFUk03?=
+ =?us-ascii?Q?HywyUTCqV/tnz1EUkeEfa291hPquovP6yvS2pL9GrerxVbQaXpVgzcTJLbIg?=
+ =?us-ascii?Q?+8EYx0FmnXIPtYM4tFEY3dbme+u69ebfrxAQIKIQVCNwN+nDWv0FHN5t7hbf?=
+ =?us-ascii?Q?RzY9nK7LKxC9CAhWPmtD/3kHWAlIPWMC61O7+alpounDIUmQRJl3h+RGct+y?=
+ =?us-ascii?Q?6eCVWNGJZe+TjhGMDjxpT33n6ZSxSyUd84vSC8czzPWG4JS/IhDOzsvQ7yDq?=
+ =?us-ascii?Q?56yBS+5JjbfIywsP/qiEAV728XS198lNNAFaAmKvHE9QknNxJQTLoX29Kgl8?=
+ =?us-ascii?Q?5WqbAaDpYtAJhHDkND5bkNY455cdXsjt0XTjDWEbD9A1p/r6J4Yf7kIXShZF?=
+ =?us-ascii?Q?/IouUBTbEb9MU4sDMEZz8eKXYjmBhmh/Da085uGm9qmpvGAmnhn/4G5G2r+R?=
+ =?us-ascii?Q?jOMfKZc3Z1rR6MN+r7VxpOBLd+Th1pqOiT7cDdD8m9TfkRZoSjdxvivtFHft?=
+ =?us-ascii?Q?YZW6miCbA+sYYRu1iRXK+Yn5tSAnkNiRV8QX/Ztjw3FUI5xRUysfEA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?VaRDYGzlyPZ446X9cUFcoyBn4ZNwDpZl+Wn1SszX+e8axirqjy+8nBXqF20N?=
+ =?us-ascii?Q?9aKtqeEbs0Jq8B7NCS/khSfonEox/eWnFHb6kOf966QYkVg/ET8FoUvKKqBs?=
+ =?us-ascii?Q?V3SUQYRMwHo9y8uXX3e/RdmPF/pmvKhvdm0Spa61mTHuGNXRojfrkkKuaOSU?=
+ =?us-ascii?Q?h8XBNpQ8CHYvnI0fJHnJc2RyhrnvyE/7KZ1ah9zOSyDw2D6SqGFiMN5S454N?=
+ =?us-ascii?Q?9CUDie0XpqHCbhArrhnYqWk5yEPecvZDL/ADhpHbKH+XYubEnKJZraeW4uor?=
+ =?us-ascii?Q?8lEdL7JGpHDvrxXJ2JFAXFwbTCLSVPFx+xVqa1N1ByLX1AIjkCTQXU9th90X?=
+ =?us-ascii?Q?Z2YrgDTc9Lq2tLjCMN6A6a08AckBGfEaFnPnABhrWuGD6Dx/DUECxnxL4Smm?=
+ =?us-ascii?Q?j180nsWWH0EKFvhP/fwJuixzWKoj1gQL4jWDtJBormM/nSEDvS2OKF+4SVZ9?=
+ =?us-ascii?Q?zxK2/RCBGAAdzl8uV0xrBNNFkpkRAnlez7v2PCxpTEzfAuollRpheC1xqfht?=
+ =?us-ascii?Q?3HjN8M0xDa4a0wr8CW65uMdG1gwwRt9qrU5jnaWgT2n5gicGXcRSAdrRhx2a?=
+ =?us-ascii?Q?/XmGx/189f0TGjStS02vZHAtQ3L5vtToX4bGwAKFAUq479985fhUESmNttMA?=
+ =?us-ascii?Q?6Q2vmD6vLFaWZGjjpAY3kTV5LVzOtcFf7w16oM+Hddu70x29LoG42kbaNSGm?=
+ =?us-ascii?Q?1lJm3SXmb2ykDFOcSeYoT/GONUv2ewDZqf7gh4rs8oA1HHXhs5UqzY2r3QJQ?=
+ =?us-ascii?Q?/VOjHqme64F4KM8eT/nGkZeryj3tBQZ00Om5sH++YOs4GxP4TthE7mjG9o1/?=
+ =?us-ascii?Q?+NREwv4TdTRck4CFdchOtToNAVaFsdjRNTXm6iC4oYgvGhvrKLBErUBPlCJI?=
+ =?us-ascii?Q?wM6BKktsOqabF1AcVFQDveUBB2ClsKavMm1QNxk7j1UDVX6t0mZUvW8c0AWL?=
+ =?us-ascii?Q?WLBJfWnMeOHkFjgkxv8t8rAbh6zXRa4kufED8fRgRu6RJ8Q0rg4V81zwsWQT?=
+ =?us-ascii?Q?MwbMgIvsOD+RH4YMG85gaI87L8e4duL2bwy3WNN0OLmdqp33FDZ/e4D97/GJ?=
+ =?us-ascii?Q?0CXch8MTyrNJvUgn3Ngw98JmGAOCsAAcutZbuaLFNbdfEBQVicuoUpHDnIyg?=
+ =?us-ascii?Q?QGZFX8AolMrtqoIKanyrjxkT9NbIT+G0mDhu5k2puPxH+HKCAAqSUi7cmpiC?=
+ =?us-ascii?Q?0yMmruH1U6FSi9mmYUfHUd5wY9LGYJGPiGtc2LQZx6wYSmVeVdp8bWT04woR?=
+ =?us-ascii?Q?Y2RtqT6jhSLWiIxIAfZJE+xzPzLHyCBCRVL1/0s1ZJyqd54qkpczi5Ee4MhE?=
+ =?us-ascii?Q?EhR+5d9FZQG6oAWosn95jIuApoA/2+iVxkRbpYQMoQJDUzegBmVqovtmhCbS?=
+ =?us-ascii?Q?G9bErnrTylhfFf0su/qLKauImRiYfpG2bv15tp1wxP6EIrokn7NqJBrpF2fV?=
+ =?us-ascii?Q?dsytqeOyByJ1NKoQ3EBtGBe2ts4yIFdPjYbAd7U5CCARf9OsQF01liBQECFV?=
+ =?us-ascii?Q?lmxnQJL/+8WPn4LrX61pDLzje5ZofXzt0MPyPqqFj6keh/m1o8Rf/X29YzX7?=
+ =?us-ascii?Q?pyTTDKVvBwcaN+fjkt4=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a297ed27-88a7-4d5b-a32b-08ddeed59743
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2025 12:45:29.4369
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MpjeEYUBSzxhLqO+CFbT2nbSUFImadVFjjLPJK1baSpu1/pO2lfM5uOGwpCMQBKu
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF915F74166
+X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Sep 03, 2025 at 10:37:39PM -0400, Joe Lawrence wrote:
-> On Wed, Sep 03, 2025 at 10:29:50PM -0400, Joe Lawrence wrote:
-> > The powerpc64 module .stubs section holds ppc64_stub_entry[] code
-> > trampolines that are generated at module load time. These stubs are
-> > necessary for function calls to external symbols that are too far away
-> > for a simple relative branch.
-> > 
-> > Logic for finding an available ppc64_stub_entry has relied on a sentinel
-> > value in the funcdata member to indicate a used slot. Code iterates
-> > through the array, inspecting .funcdata to find the first unused (zeroed)
-> > entry:
-> > 
-> >   for (i = 0; stub_func_addr(stubs[i].funcdata); i++)
-> > 
-> > To support CONFIG_PPC_FTRACE_OUT_OF_LINE, a new setup_ftrace_ool_stubs()
-> > function extended the .stubs section by adding an array of
-> > ftrace_ool_stub structures for each patchable function. A side effect
-> > of writing these smaller structures is that the funcdata sentinel
-> > convention is not maintained.
-
-There is clearly a bug in how we are reserving the stubs as you point 
-out further below, but once that is properly initialized, I don't think 
-the smaller structure size for ftrace_ool_stub matters (in so far as 
-stub->funcdata being non-NULL). We end up writing four valid powerpc 
-instructions, along with a ftrace_ops pointer before those instructions 
-which should also be non-zero (there is a bug here too, more on that 
-below).  The whole function descriptor dance does complicate matters a 
-bit though.
-
-> > This is not a problem for an ordinary
-> > kernel module, as this occurs in module_finalize(), after which no
-> > further .stubs updates are needed.
-> > 
-> > However, when loading a livepatch module that contains klp-relocations,
-> > apply_relocate_add() is executed a second time, after the out-of-line
-> > ftrace stubs have been set up.
-> > 
-> > When apply_relocate_add() then calls stub_for_addr() to handle a
-> > klp-relocation, its search for the next available ppc64_stub_entry[]
-> > slot may stop prematurely in the middle of the ftrace_ool_stub array. A
-> > full ppc64_stub_entry is then written, corrupting the ftrace stubs.
-> > 
-> > Fix this by explicitly tracking the count of used ppc64_stub_entrys.
-> > Rather than relying on an inline funcdata sentinel value, a new
-> > stub_count is used as the explicit boundary for searching and allocating
-> > stubs. This simplifies the code, eliminates the "one extra reloc" that
-> > was required for the sentinel check, and resolves the memory corruption.
-> > 
+On Sun, Sep 07, 2025 at 11:25:09PM +0900, Takashi Sakamoto wrote:
+> Hi,
 > 
-> Apologies if this is too wordy, I wrote it as a bit of a braindump to
-> summarize the longer analysis at the bottom of the reply ...
-
-This was a good read, thanks for all the details. It did help spot 
-another issue.
-
+> I'm a present maintainer of Linux FireWire subsystem, and recent years
+> have been working to modernize the subsystem.
 > 
-> > Fixes: eec37961a56a ("powerpc64/ftrace: Move ftrace sequence out of line")
-> > Signed-off-by: Joe Lawrence <joe.lawrence@redhat.com>
-> > ---
-> >  arch/powerpc/include/asm/module.h |  1 +
-> >  arch/powerpc/kernel/module_64.c   | 26 ++++++++------------------
-> >  2 files changed, 9 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/module.h b/arch/powerpc/include/asm/module.h
-> > index e1ee5026ac4a..864e22deaa2c 100644
-> > --- a/arch/powerpc/include/asm/module.h
-> > +++ b/arch/powerpc/include/asm/module.h
-> > @@ -27,6 +27,7 @@ struct ppc_plt_entry {
-> >  struct mod_arch_specific {
-> >  #ifdef __powerpc64__
-> >  	unsigned int stubs_section;	/* Index of stubs section in module */
-> > +	unsigned int stub_count;	/* Number of stubs used */
-> >  #ifdef CONFIG_PPC_KERNEL_PCREL
-> >  	unsigned int got_section;	/* What section is the GOT? */
-> >  	unsigned int pcpu_section;	/* .data..percpu section */
-> > diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-> > index 126bf3b06ab7..2a44bc8e2439 100644
-> > --- a/arch/powerpc/kernel/module_64.c
-> > +++ b/arch/powerpc/kernel/module_64.c
-> > @@ -209,8 +209,7 @@ static unsigned long get_stubs_size(const Elf64_Ehdr *hdr,
-> >  				    char *secstrings,
-> >  				    struct module *me)
-> >  {
-> > -	/* One extra reloc so it's always 0-addr terminated */
-> > -	unsigned long relocs = 1;
-> > +	unsigned long relocs = 0;
-> >  	unsigned i;
-> >  
-> >  	/* Every relocated section... */
-> > @@ -705,7 +704,7 @@ static unsigned long stub_for_addr(const Elf64_Shdr *sechdrs,
-> >  
-> >  	/* Find this stub, or if that fails, the next avail. entry */
-> >  	stubs = (void *)sechdrs[me->arch.stubs_section].sh_addr;
-> > -	for (i = 0; stub_func_addr(stubs[i].funcdata); i++) {
-> > +	for (i = 0; i < me->arch.stub_count; i++) {
-> >  		if (WARN_ON(i >= num_stubs))
-> >  			return 0;
-> >  
-> > @@ -716,6 +715,7 @@ static unsigned long stub_for_addr(const Elf64_Shdr *sechdrs,
-> >  	if (!create_stub(sechdrs, &stubs[i], addr, me, name))
-> >  		return 0;
-> >  
-> > +	me->arch.stub_count++;
-> >  	return (unsigned long)&stubs[i];
-> >  }
-> >  
-> > @@ -1118,29 +1118,19 @@ int module_trampoline_target(struct module *mod, unsigned long addr,
-> >  static int setup_ftrace_ool_stubs(const Elf64_Shdr *sechdrs, unsigned long addr, struct module *me)
-> >  {
-> >  #ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
-> > -	unsigned int i, total_stubs, num_stubs;
-> > +	unsigned int total_stubs, num_stubs;
-> >  	struct ppc64_stub_entry *stub;
-> >  
-> >  	total_stubs = sechdrs[me->arch.stubs_section].sh_size / sizeof(*stub);
-> >  	num_stubs = roundup(me->arch.ool_stub_count * sizeof(struct ftrace_ool_stub),
-> >  			    sizeof(struct ppc64_stub_entry)) / sizeof(struct ppc64_stub_entry);
-> >  
-> > -	/* Find the next available entry */
-> > -	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
-> > -	for (i = 0; stub_func_addr(stub[i].funcdata); i++)
-> > -		if (WARN_ON(i >= total_stubs))
-> > -			return -1;
-> > -
-> > -	if (WARN_ON(i + num_stubs > total_stubs))
-> > +	if (WARN_ON(me->arch.stub_count + num_stubs > total_stubs))
-> >  		return -1;
-> >  
-> > -	stub += i;
-> > -	me->arch.ool_stubs = (struct ftrace_ool_stub *)stub;
-> > -
-> > -	/* reserve stubs */
-> > -	for (i = 0; i < num_stubs; i++)
-> > -		if (patch_u32((void *)&stub->funcdata, PPC_RAW_NOP()))
-> > -			return -1;
+> On Fri, Sep 05, 2025 at 14:43:24PM -0300, Jason Gunthorpe wrote:
+> > There is only one user I found of alloc_pages:
+> >
+> > drivers/firewire/ohci.c:                ctx->pages[i] = dma_alloc_pages(dev, PAGE_SIZE, &dma_addr,
+> >
+> > And it deliberately uses page->private:
+> >
+> >		set_page_private(ctx->pages[i], dma_addr);
+> >
+> > So it is correct to use the struct page API.
 > 
-> At first I thought the bug was that this loop was re-writting the same
-> PPC_RAW_NOP() to the same funcdata (i.e, should have been something
-> like: patch_u32((void *)stub[i]->funcdata, PPC_RAW_NOP())), but that
-> didn't work and seemed fragile anyway.
+> I've already realized it, and it is in my TODO list to use modern
+> alternative APIs to replace it (but not yet). If you know some
+> candidates for this purpose, it is really helpful to accomplish it.
 
-D'uh - this path was clearly never tested. I suppose this should have 
-been something like this:
-	patch_ulong((void *)&stub[i]->funcdata, func_desc(local_paca))
+I think for now it is probably OKish, but in the medium/longer term
+this probably wants to have its own memdesc like other cases.
 
-Still convoluted, but I think that should hopefully fix the problem you 
-are seeing.
+Ie instead of using page->private you'd have a
 
-> 
-> > +	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
-> > +	me->arch.ool_stubs = (struct ftrace_ool_stub *)(stub + me->arch.stub_count);
-> > +	me->arch.stub_count += num_stubs;
-> >  #endif
+struct ohci_desc {
+	unsigned long __page_flags;
+	dma_addr_t dma_addr;
+[..]
+};
 
-Regardless of the above, your proposed change looks good to me and 
-simplifies the logic. So:
-Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
+And instead of using page->private you'd use ohci_desc::dma_addr.
 
->   crash> dis 0xc008000007d70dd0 42
->   ppc64[ ]   ftrace[0]    <xfs_stats_format+0x558>:    .long 0x0
->                           <xfs_stats_format+0x55c>:    .long 0x0
->                           <xfs_stats_format+0x560>:    mflr    r0
->                           <xfs_stats_format+0x564>:    bl      0xc008000007d70d80 <xfs_stats_format+0x508>
->                           <xfs_stats_format+0x568>:    mtlr    r0
->                           <xfs_stats_format+0x56c>:    b       0xc008000007d70014 <patch_free_livepatch+0xc>
->              ftrace[1]    <xfs_stats_format+0x570>:    .long 0x0
->                           <xfs_stats_format+0x574>:    .long 0x0
->                           <xfs_stats_format+0x578>:    mflr    r0
->                           <xfs_stats_format+0x57c>:    bl      0xc008000007d70d80 <xfs_stats_format+0x508>
->   ppc64[ ]                <xfs_stats_format+0x580>:    addis   r11,r2,4                                         << This looks like a full
->                           <xfs_stats_format+0x584>:    addi    r11,r11,-29448                                   << ppc64_stub_entry
->              ftrace[2]    <xfs_stats_format+0x588>:    std     r2,24(r1)                                        << dropped in the middle
->                           <xfs_stats_format+0x58c>:    ld      r12,32(r11)                                      << of the ool_stubs array
->                           <xfs_stats_format+0x590>:    mtctr   r12                                              << of ftrace_ool_stub[]
->                           <xfs_stats_format+0x594>:    bctr                                                     <<
->                           <xfs_stats_format+0x598>:    mtlr    r0                                               <<
->                           <xfs_stats_format+0x59c>:    andi.   r20,r27,30050                                    <<
->              ftrace[3]    <xfs_stats_format+0x5a0>:    .long 0x54e92b8                                          <<
->                           <xfs_stats_format+0x5a4>:    lfs     f0,0(r8)                                         <<
->   ppc64[ ]                <xfs_stats_format+0x5a8>:    mflr    r0
->                           <xfs_stats_format+0x5ac>:    bl      0xc008000007d70d80 <xfs_stats_format+0x508>
->                           <xfs_stats_format+0x5b0>:    mtlr    r0
->                           <xfs_stats_format+0x5b4>:    b       0xc008000007d7037c <add_callbacks_to_patch_objects+0xc>
->              ftrace[4]    <xfs_stats_format+0x5b8>:    .long 0x0
->                           <xfs_stats_format+0x5bc>:    .long 0x0
+This would require changing dma_alloc_pages() to be able to allocate
+the frozen memdescs..
 
-These NULL values are also problematic. I think those are NULL since we 
-are not "reserving" the stubs properly, but those should point to some 
-ftrace_op. I think we are missing a call to ftrace_rec_set_nop_ops() in 
-ftrace_init_nop(), which would be good to do separately.
+Which we are not quite there yet, but maybe come back to this in 2026?
 
-
-- Naveen
-
+Jason
 
