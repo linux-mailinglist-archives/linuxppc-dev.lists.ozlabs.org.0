@@ -1,35 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-11862-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11863-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09D6B4854C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Sep 2025 09:32:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0957B4854D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Sep 2025 09:33:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cKzFK1lypz2xQ1;
-	Mon,  8 Sep 2025 17:32:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cKzFh4fF5z2xdg;
+	Mon,  8 Sep 2025 17:33:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757316773;
-	cv=none; b=KoryuvGIBg9xNmkFWeu2uoOQvOcjQmE0mCzJQBdshY5J8VDRAEHfwdIf9Gt01Ji5C3biNVQaS3nCETx14NhvjOUe5Ccvj07yFBsAL0tHptX64X451rNrpN5GSmBtbHQxK39iK94KP/jXl7oBmMn94bY3z+t1+McIzAXeZf6jqJKwKUS1W8gES7YoxLuG7DeE70J1JFqLhtMBEbMw499xJ0EB+oDFV3kaqme6jgjJ+U/iBa6pRRMRBCI3GdpjXimXrtGdtl65LHlFs2oCO5MGxJ3NzuVcZZaGDeg9Q2uptAjYIcp4Txbgw/2/2O51fnwT7P45FIp6PGVwv1fYwBWqyg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757316792;
+	cv=none; b=WqDjrn5p4PmDk3t1S7QE/VDkKqx5IsYnG4xz4RAwuJJVd4v9KPc+05qZIONgKJFymyu9v8+VZ7+ZrguodSOXwS9haZsuWOHSl3jEda/1rpLSK0iUrPzeUxkf8OM80XIGO36wm31/keUNSNbPgPEWdM8NK6Qfyj+FmL62qeRaBf/cYs7TDn7KkTwJyI3nRsVxpQgZPeki1t9a2POMpf23h7QgzTzqtcRNPZXdZjCaElNvk/RTAir61jwjn0u0OvDP/xrbnwzGWWVGOi6pUxacqD/00nLlcE6QwLJc+uByLFWgC0bP6NmsIPm6AO91XjzVuRL0odvq5R48uPBSUarzUg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757316773; c=relaxed/relaxed;
-	bh=FTbsn9ueX//BY69AI+6lqPyl2zCJvGI1tcc+SkL1r0Q=;
+	t=1757316792; c=relaxed/relaxed;
+	bh=5MXJVs4sRjIzs/FqbYFU50YGWM5NgmUAUp6zmg3Kby4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IqCAQrPvsmH4CtiPK72CCkcMJWpEouDtL7X7Xc6VkIGfzu9QRP9xblK5RXHLA69UM+ZvD7DqmNZRCJMQsWvpPZxutKvfIBV0HxfmXDSZpoZJQI8N6RwUzNipmVM1q/+8b3+/crmNN9EXBS2aEqGUz0l+PCQs3VxnYELP/WE67G9WkFp2xxbspuCykuBWQ6UGDxmSBnQVOMuxcU8bMV9BdC2kWnJoWDPXnyX4bB1E+2/mla6pRQsRAGuWOD0JE/6zTNnKe7EtFBfvHJm65hhi5YXRmq6PvMnrLG8rVhAQiWvr0rsbcI/W0qCBYKDwo2J3sFr3Xp8d/p1YVCMvEkxeRA==
+	 In-Reply-To:Content-Type; b=PyRe41yR6Gf+Uh6AHMkS4y+lboUpfy4Do4RHeVulgoXYSDa0b38qp5KQb6HRtzUe6HK+dxIKI2LxUMWpwyzOeRl65/v1TIEh49Q2Gq5YGN7psNIrsTWk+mS4rfixfLJDxWa8Q5W+NeTbEu1mG1xZeSQQbTwd7A2cWsKYaUz2tQvLIY379Byr0mRgEmaFD6wg+RpE+Tvc+6lTGsUy9toBmZCcg5uKUAd9yDJIi6MZmSEkWL9aR4osMX0u2VbxxuC4jrpnn8EqPdinRfWZHuqu8OpBBUcuUutUvfn4HL8KT+ETqU0C5cB+sGtMOj8H3qb5KV5fnEIGUYDPNiEVRwFlBg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cKzFJ2FQDz2xPy
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Sep 2025 17:32:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cKzFh026yz2xQ1
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Sep 2025 17:33:11 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4F1201692;
-	Mon,  8 Sep 2025 00:32:10 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 88AA2169C;
+	Mon,  8 Sep 2025 00:32:32 -0700 (PDT)
 Received: from [10.57.58.69] (unknown [10.57.58.69])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5A2713F63F;
-	Mon,  8 Sep 2025 00:32:12 -0700 (PDT)
-Message-ID: <16a63f8a-fe9f-4a65-be45-7260858734bd@arm.com>
-Date: Mon, 8 Sep 2025 09:32:09 +0200
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CFA563F63F;
+	Mon,  8 Sep 2025 00:32:34 -0700 (PDT)
+Message-ID: <1f822d8b-eb46-4998-b1c1-9996d70e1958@arm.com>
+Date: Mon, 8 Sep 2025 09:32:32 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -44,7 +44,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] x86/xen: support nested lazy_mmu sections (again)
+Subject: Re: [PATCH 5/7] powerpc/mm: support nested lazy_mmu sections
 To: Alexander Gordeev <agordeev@linux.ibm.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Andreas Larsson <andreas@gaisler.com>,
@@ -68,59 +68,44 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
  xen-devel@lists.xenproject.org
 References: <20250904125736.3918646-1-kevin.brodsky@arm.com>
- <20250904125736.3918646-5-kevin.brodsky@arm.com>
- <d3adc2a0-5888-411e-ac7c-9df45e3389c9-agordeev@linux.ibm.com>
+ <20250904125736.3918646-6-kevin.brodsky@arm.com>
+ <074ff6ab-5868-4fde-b5bb-9e17632ad817-agordeev@linux.ibm.com>
 Content-Language: en-GB
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <d3adc2a0-5888-411e-ac7c-9df45e3389c9-agordeev@linux.ibm.com>
+In-Reply-To: <074ff6ab-5868-4fde-b5bb-9e17632ad817-agordeev@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 05/09/2025 17:48, Alexander Gordeev wrote:
-> On Thu, Sep 04, 2025 at 01:57:33PM +0100, Kevin Brodsky wrote:
+On 05/09/2025 17:52, Alexander Gordeev wrote:
+> On Thu, Sep 04, 2025 at 01:57:34PM +0100, Kevin Brodsky wrote:
 > ...
->> -static void xen_enter_lazy_mmu(void)
->> +static lazy_mmu_state_t xen_enter_lazy_mmu(void)
+>>  static inline lazy_mmu_state_t arch_enter_lazy_mmu_mode(void)
 >>  {
->> +	if (this_cpu_read(xen_lazy_mode) == XEN_LAZY_MMU)
->> +		return LAZY_MMU_NESTED;
->> +
->>  	enter_lazy(XEN_LAZY_MMU);
->> +	return LAZY_MMU_DEFAULT;
->>  }
+>>  	struct ppc64_tlb_batch *batch;
+>> +	int lazy_mmu_nested;
 >>  
->>  static void xen_flush_lazy_mmu(void)
->> @@ -2167,11 +2171,12 @@ static void __init xen_post_allocator_init(void)
->>  	pv_ops.mmu.write_cr3 = &xen_write_cr3;
->>  }
->>  
->> -static void xen_leave_lazy_mmu(void)
->> +static void xen_leave_lazy_mmu(lazy_mmu_state_t state)
->>  {
+>>  	if (radix_enabled())
+>>  		return LAZY_MMU_DEFAULT;
+>> @@ -39,9 +40,14 @@ static inline lazy_mmu_state_t arch_enter_lazy_mmu_mode(void)
+>>  	 */
 >>  	preempt_disable();
->>  	xen_mc_flush();
->> -	leave_lazy(XEN_LAZY_MMU);
->> +	if (state != LAZY_MMU_NESTED)
->> +		leave_lazy(XEN_LAZY_MMU);
-> Based on xen_enter_lazy_mmu(), whether this condition needs to be
-> executed with the preemption disabled?
+>>  	batch = this_cpu_ptr(&ppc64_tlb_batch);
+>> -	batch->active = 1;
+>> +	lazy_mmu_nested = batch->active;
+>>  
+>> -	return LAZY_MMU_DEFAULT;
+>> +	if (!lazy_mmu_nested) {
+> Why not just?
+>
+> 	if (!batch->active) {
 
-AFAIU xen_mc_flush() needs preemption to be disabled. I don't think
-{enter,leave}_lazy() do, but this patch doesn't introduce any change
-from that perspective. I suppose it doesn't hurt that
-xen_leave_lazy_mmu() calls leave_lazy() with preemption disabled.
-
-> Or may be this_cpu_read(xen_lazy_mode) + enter_lazy(XEN_LAZY_MMU)
-> should be executed with the preemption disabled?
-
-Adding another this_cpu_read(xen_lazy_mode) in xen_enter_lazy_mmu()
-shouldn't change the situation, i.e. preemption should still be safe. If
-preemption occurs in the middle of that function,
-xen_{start,end}_context_switch() will do the right thing to save/restore
-xen_lazy_mode.
+Very fair question! I think the extra variable made sense in an earlier
+version of that patch, but now it's used only once and doesn't really
+improve readability either. Will remove it in v2, also in patch 6
+(basically the same code). Thanks!
 
 - Kevin
 
