@@ -1,84 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-11899-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11900-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C043B4A0B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 06:29:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 885F9B4A0EF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 06:56:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cLW7Z3F19z3050;
-	Tue,  9 Sep 2025 14:29:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cLWkl5VLQz3050;
+	Tue,  9 Sep 2025 14:56:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1035"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757392186;
-	cv=none; b=Z/1xerAIKIKXuGkL3543Bwv3TEWfrMYkgkLSHw44uH48hIC7akHGUFOhYxETZWvYfs/ZiBBAiHdMiaLJis2Zo7d+Ri8u4G8rPODTWqW0mgutN+xDPExl1+9ZsHay1titT2Mw+Up+Z6+vgvkGkw//H6kUT/Jeth8o6XGLEn7mQLVDEKz40jhJZ/+LWzXogUfuZ8FX6i0hZri0mLTaJo3ntao74lHljjG379M62HX7jSYOVCNpLUoLLuH6JJck3ptMrKCDQLgUlpejO16CO4AdTwQGVY+wHN2AqMPjN28sndRf6XCSEgwmjmivX7MEIMJJKK93g3XqHMZWiQGk8JSepA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757393807;
+	cv=none; b=nL22+/qERriJUsXwqchz2pRxXDs+FcbYJx7HaU8kciN2j9UkagwLm8AAvxsp5u1rlnFXhrQ+jBIZvd1f6x/9aXqWz94kE9og85ztBWwc+9q0y/kKmXmzLFvF/phcp+cbi2mfGNdgWHzJzF9BpTYeVi8GXlAdNky1zmoO6ls8rrteH+ofVQx4DJigF7oxzbeRLtc0bY7LEBI5fwYeYzZtxETL74oqxGarVpC66sur1Xo0czinPjYpdsBxu7AFgzhoxqM4PBTQh1UX/4M+C20jV1PdWxImkg50AM1zXvhnpSdvPrfy07tbLIzqMXB1GjypQb3hLyI6+z9MYb+5QHdwKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757392186; c=relaxed/relaxed;
-	bh=7D2bi71vwp5Z+uAz0dSLBbl6cdWmIMR937pxBRWdSck=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:Date:References:
-	 MIME-version:Content-type; b=DklJcSaYMB4lZgHuzYiMC2FDfAGDbpkWuJcxuh0rSX6EOmlYwS3HDRwoeYuyS5ptxPD88NloZKhARwj/bPPAGwKuS8YGZjwiSBs/j7Lplk8utDcCITfj8pbA2C7E0yfeoKjHzi47GsfSeOGr1B79r84lyODCPKuDuhNMrijEvdNvSiKkRPBht3+2nKeOZaN6eLxIjhQo3dMogzAB2vE4fygA3f8YQu63Ug3OqyT2uoF3rXSPG/+3vbV6kWnx3IgcaEQb8C4XybUZ6nV0AysK6EIc8H+0CVWT4B8jL1bHqYUXStjAPhvnz0+VA5yltgrcdaML1hZ12nc6JLK2Wy0qwQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=V6tBaZyu; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1757393807; c=relaxed/relaxed;
+	bh=zAv+bJnVvnq0Y/PkcRnpd8dKJR4XDn95lfeUYjV05jU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BkkMUYkL0dPzONkXPSq/BtipVDTV04t5sDhGD2upKDW08lB1XImBrfL9uPGNj1wGpcZ+4zuxV646PB5+TSw3QvtHXe/IIL2zjWH34b+e5ids848sju32gvsrTmKslbPBJw1oabhvHY7Moonha8C8D7KCbUZwOSnQ+5FIZnDH7fDlAZkxF1oQdETtqNO3WPBTa8nLAIcw5AebD1gh9kPeQTQfmiBqFFfwtfjljFY69COWK+u4o/mX7C82rlqbMWz3Bzwyl8oZKmWtPYLi436Yur4cLQGAXjWkQ2UQ8LPeLjn7cKi/pITO7iWGdJUVKfcYL0IIBBa4JxuqPd1MgzyjeQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lsTrP1Zt; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityab1@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=V6tBaZyu;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lsTrP1Zt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1035; helo=mail-pj1-x1035.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityab1@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLW7Y21l8z2yxN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 14:29:44 +1000 (AEST)
-Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-32d6c194134so3024343a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Sep 2025 21:29:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757392181; x=1757996981; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:date:in-reply-to
-         :subject:cc:to:from:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7D2bi71vwp5Z+uAz0dSLBbl6cdWmIMR937pxBRWdSck=;
-        b=V6tBaZyuZR330Zn7IZY/4glrQmeq2IY062WWxPItIdTL0GSpAGBRanFhmEW+ZzJZJJ
-         eT0VhECYlwifGJGIKQL7T49sgUVstBDuDCWtE6sX6kYMmWpMpJ9uJx5p56qTgoGnefGo
-         wGQ1OpsOJz86Pz3YUBBfzhqMWSYKF9PCPcOFFbIXz6aW50W1rbUlFo6jJsVAkFkVHj87
-         ESM5hM7JE2Hm81QCUUNUAesvA8Va2bgc3JYg0l0H+7YF7rFWDvptWdTtoPXvhKrew5Dy
-         nrVHYCJmH2BxufHQlOLXbDfBZ/z90VW5C5A5u3/tiCW2O1euRDco5xDkZzg9tqVJd8jp
-         W0jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757392181; x=1757996981;
-        h=content-transfer-encoding:mime-version:references:date:in-reply-to
-         :subject:cc:to:from:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7D2bi71vwp5Z+uAz0dSLBbl6cdWmIMR937pxBRWdSck=;
-        b=MBhTi9rf87in5ZUhyx848874ri9F72tMai4pCCWLiIclXdQSy/EVnxcgA9RyhPPKob
-         +Do/aNPvstUiLb7SSjJfgOZPs/WsDbNUVt7bKUvmNmmpfIjdu8FFc+iYD+pMwo3Cds4R
-         NN/je6mybj3yvnkxEIhpIO55KuV+1hPkvxvz9ramf+nzs4o+/lI72xzr96QlzWdxVb4B
-         KEa3goSBQCVlpEbw+LkhHBCL8cgEy1eEAwMH855QlmV6gHR2cdwdLeOY8Nj5QQfbfnHr
-         iP1/CTdihM4JCUHkX/pKILIS0MeAiAfgOqCxxL5Pt5EMzSBneRFfBZEuzcqqAn/thBcT
-         p+Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCW8139bthjJveNmshYGM4ye52A4uReCJWwuPmeQAYvK8mU8RZGphONOxAwke+S7CeMtdC1TOCjmHHNNzUo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzz8B7dk64HbLSbNykkLh5JIRcvfBAUbHgc9UlnB9MyEPfMNnqZ
-	GjKpvdK4nT5N9ZXJQivtsgsEUNsqMkYxPE+xzOvz9VFZqLfyaouy+2NC
-X-Gm-Gg: ASbGncum6kQsTSJUWdimdbPp5cJ5xVJKeXVSErIoi92gug6b5DXxVKQERKA+BRfYgNT
-	VoLdU4fYoRrOqAeKNoNvzitKM6KJpMWJqeHnMmFXtZqzE1xbjljZRpaFE9oic/0jZvCDkWl97ED
-	Rhp2bwYu5dUppTYDGHGJX13TtHQCZCzBYkqdsWP9+pexQTnA9bXmrYVFRrVL0cFBvFDJRnYEtT1
-	JGEH0qch9WFWNgDTznEH3iBOoYqu8dk+eRN4PhwYpKJLXJVjIPYollgEpPuqzqjQEVTJP5ttSXD
-	llSXcuSGSoekq9oD19whT7XeK9c3pZfWsCyb6BRoHjCEV1+ROQn/G9nuHSkdQLti3YJVJk9Hr/B
-	XweFDNNx1kzmmcZDxL38HwNc=
-X-Google-Smtp-Source: AGHT+IFdK6fLaLgogFPfbeB2d8GqAvdbQiFLhXyzpb13yaxe1K8FG8K0ORFErBwLC+GrYHsNikFjaw==
-X-Received: by 2002:a17:90a:c110:b0:32d:3e1a:79e1 with SMTP id 98e67ed59e1d1-32d43f05670mr12836787a91.8.1757392180794;
-        Mon, 08 Sep 2025 21:29:40 -0700 (PDT)
-Received: from dw-tp ([129.41.58.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-77466290ac3sm584666b3a.59.2025.09.08.21.29.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Sep 2025 21:29:40 -0700 (PDT)
-Message-ID: <68bfad34.050a0220.11f3f7.19c5@mx.google.com>
-X-Google-Original-Message-ID: <87o6rke2ja.fsf@ritesh.list@gmail.com>
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au, peterz@infradead.org, jpoimboe@kernel.org, jbaron@akamai.com
-Cc: npiggin@gmail.com, rostedt@goodmis.org, ardb@kernel.org, Erhard Furtner <erhard_f@mailbox.org>
-Subject: Re: [PATCH RFC] powerpc: Panic on jump label code patching failure
-In-Reply-To: <1b4cc6d5-5f5b-4b39-8fdf-ac02c94cd5e2@csgroup.eu>
-Date: Tue, 09 Sep 2025 08:49:05 +0530
-References: <20250905061135.1451362-1-ajd@linux.ibm.com> <87qzwki6fv.fsf@ritesh.list@gmail.com> <1b4cc6d5-5f5b-4b39-8fdf-ac02c94cd5e2@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLWkk2xt5z2yxN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 14:56:45 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 588GqkXc021232;
+	Tue, 9 Sep 2025 04:56:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=zAv+bJnVvnq0Y/PkcRnpd8dKJR4XDn95lfeUYjV05
+	jU=; b=lsTrP1Zt8aqBGgG6NqVEyf1ongi3841+xaFRs1xdeT54etAgLOHO3JNhY
+	/DbU6MQtng+Ro1L0CY9Sn67SgHCz/HpalF4eoJo6YMgSoLoqJADZwUcr760mUlv4
+	qwWswo9zWmDgkF7KJuPvuEthjpFvmHSmQB+4C0tTsOTQ0BPOV+XFhC9+P1qLb+tk
+	44AGTkJXbbuVTUXjCibOaz9edumyj2V0F3e5zmqfqRSH5I4hnprz+R3pRUWN9oZn
+	g0F6ycjm7I9blaC4gbdY2VYmnLVQafOpTtNCjMsQ5zjmdvJ0c52w9kiWHVMQlCiF
+	v5QSrjal6z7t8ru5XG3uRDs7dPZtQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490ukeaqgm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Sep 2025 04:56:28 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5894uSaW004021;
+	Tue, 9 Sep 2025 04:56:28 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490ukeaqgj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Sep 2025 04:56:27 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58909KLM011446;
+	Tue, 9 Sep 2025 04:56:27 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 490y9u9j86-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Sep 2025 04:56:26 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5894uN5V20840816
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 9 Sep 2025 04:56:23 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2E36920043;
+	Tue,  9 Sep 2025 04:56:23 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 54EA320040;
+	Tue,  9 Sep 2025 04:56:20 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.109.199.159])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  9 Sep 2025 04:56:20 +0000 (GMT)
+From: Aditya Bodkhe <adityab1@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, rostedt@goodmis.org, mhiramat@kernel.org,
+        mark.rutland@arm.com, Aditya Bodkhe <adityab1@linux.ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [PATCH v3 1/2] powerpc/ftrace: support CONFIG_FUNCTION_GRAPH_RETVAL
+Date: Tue,  9 Sep 2025 10:26:14 +0530
+Message-ID: <20250909045615.50251-1-adityab1@linux.ibm.com>
+X-Mailer: git-send-email 2.50.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,159 +92,192 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=2.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,MALFORMED_FREEMAIL,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Level: **
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDE5NSBTYWx0ZWRfX93tzDl9Pzve8
+ bxnJW8i7jTlwnuqk/O08g+lcuafogu0UCvf4xHINV4zO4prd2IghtkFyOMk1Hmnm4mEEROIDfFD
+ kxM3whABviUsSlCXoJ/yPP6hplT0cY50Sq1bYUAbTi/T6hrJN5e+egB7aPL4OHPvfijYHZrvE1r
+ UCUbqn7B5jvKW6ZDN7obSz5rtmRFHfqjrv5dqkrtTMZYjqhqNcO9vCT8kEji9K+ByQbx0x5WH8s
+ UZSSYfJxoOf4vYZy+uT6DkQPakPNvAgox4l2i+ylZJqH2lVg9ucMowRqqpRwKLTxajQekBtLM4M
+ DaqeY36heu6t4wxd5G7sHkCUgLxGdmeveuhaijFPdHIyAiobs3Q/9gq5PdYmax5pAwQhU1JMQFY
+ nbPssjIt
+X-Proofpoint-ORIG-GUID: H3uRPYvDRMYUxZqCJCyovK7UBrvoMMLz
+X-Proofpoint-GUID: LmQuJcJQL1vpTCKNXmkETHON3xB_lgXM
+X-Authority-Analysis: v=2.4 cv=StCQ6OO0 c=1 sm=1 tr=0 ts=68bfb37c cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=1UX6Do5GAAAA:8
+ a=qcD_9p-UOgwsSRV2Pq8A:9 a=Et2XPkok5AAZYJIKzHr1:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-08_06,2025-09-08_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 bulkscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060195
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+commit a1be9ccc57f0 ("function_graph: Support recording and printing the
+return value of function") introduced support for function graph return
+value tracing.
 
-> Le 06/09/2025 à 05:52, Ritesh Harjani a écrit :
->> [Vous ne recevez pas souvent de courriers de riteshh@linux.ibm.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
->> 
->> Andrew Donnellan <ajd@linux.ibm.com> writes:
->> 
->>> If patch_branch() or patch_instruction() fails while updating a jump
->>> label, we presently fail silently, leading to unpredictable behaviour
->>> later on.
->>>
->>> Change arch_jump_label_transform() to panic on a code patching failure,
->>> matching the existing behaviour of arch_static_call_transform().
->>>
->>> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
->>> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
->>>
->>> ---
->>>
->>> Ran into this while debugging an issue that Erhard reported to me about my
->>> PAGE_TABLE_CHECK series on a G4, where updating a static key failed
->>> silently, but only for one call site, leading to an incorrect reference
->>> count later on. This looks to be due to the issue fixed in [0]. A loud
->>> failure would have saved us all considerable debugging time.
->>>
->>> Should I change the return type of arch_jump_label_transform() and handle
->>> this in an arch-independent way? Are there other users of code patching
->>> in powerpc that ought to be hardened?
->>>
->>> Or is this excessive?
->>>
->>> [0] https://patchwork.ozlabs.org/project/linuxppc-dev/patch/4b5e6eb281d7b1ea77619bee17095f905a125168.1757003584.git.christophe.leroy@csgroup.eu/
->>> ---
->>>   arch/powerpc/kernel/jump_label.c | 9 +++++++--
->>>   1 file changed, 7 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/powerpc/kernel/jump_label.c b/arch/powerpc/kernel/jump_label.c
->>> index 2659e1ac8604..80d41ed7ac50 100644
->>> --- a/arch/powerpc/kernel/jump_label.c
->>> +++ b/arch/powerpc/kernel/jump_label.c
->>> @@ -12,9 +12,14 @@ void arch_jump_label_transform(struct jump_entry *entry,
->>>                               enum jump_label_type type)
->>>   {
->>>        u32 *addr = (u32 *)jump_entry_code(entry);
->>> +     int err;
->>>
->>>        if (type == JUMP_LABEL_JMP)
->>> -             patch_branch(addr, jump_entry_target(entry), 0);
->>> +             err = patch_branch(addr, jump_entry_target(entry), 0);
->>>        else
->>> -             patch_instruction(addr, ppc_inst(PPC_RAW_NOP()));
->>> +             err = patch_instruction(addr, ppc_inst(PPC_RAW_NOP()));
->>> +
->>> +     if (err)
->>> +             panic("%s: patching failed, err %d, type %d, addr %pS, target %pS\n",
->>> +                   __func__, err, type, addr, (void *)jump_entry_target(entry));
->>>   }
->> 
->> arch_jump_label_transform() is mainly getting called from
->> __jump_level_update() and it's used for enabling or updating static keys / branch.
->> 
->> But static keys can also be used by drivers / module subsystem whose
->> initialization happens late. Although I understand that if the above
->> fails, it might fail much before, from the arch setup code itself, but
->> panic() still feels like a big hammer.
->
-> But not being able to patch the kernel as required means that you get a 
-> kernel behaving differently from what is expected.
->
-> Imagine a kernel running on a board that is controlling a saw. There is 
-> a patch_instruction() to activate the safety feature which detects when 
-> your hands are too close to the blade. Do you want the kernel to 
-> continue running seamlessly when that patch_instruction() fails ? I'm 
-> sure you don't !
->
+Additionally, commit a3ed4157b7d8 ("fgraph: Replace fgraph_ret_regs with
+ftrace_regs") further refactored and optimized the implementation,
+making `struct fgraph_ret_regs` unnecessary.
 
-;) Sure. Not a fan of playing with blades or saws. :) 
+This patch enables the above modifications for powerpc all, ensuring that
+function graph return value tracing is available on this architecture.
 
->> 
->> Would pr_err() print with WARN_ON_ONCE(1) would suffice in case of an
->> err?
->
-> No, that's not enough, you can't rely on a kernel that will no behave as 
-> expected.
->
+In this patch we have redefined two functions:
+- 'ftrace_regs_get_return_value()' - the existing implementation on
+ppc returns -ve of return value based on some conditions not
+relevant to our patch.
+- 'ftrace_regs_get_frame_pointer()' - always returns 0 in current code .
 
-Sure, Christophe. Thanks for the clarification.
+We also allocate stack space to equivalent of 'SWITCH_FRAME_SIZE',
+allowing us to directly use predefined offsets like 'GPR3' and 'GPR4'
+this keeps code clean and consistent with already defined offsets .
 
-My main concern was that during module load time we should not bring the
-system down. But as I see the behavior in arch_static_call_transform()
-is also the same.
-And as you said, maybe it's good to panic if an important functionality
-like patch_instruction() itself fails which means the kernel may not be
-doing what we are expecting it to.
+After this patch, v6.14+ kernel can also be built with FPROBE on powerpc
+but there are a few other build and runtime dependencies for FPROBE to
+work properly. The next patch addresses them.
 
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Aditya Bodkhe <adityab1@linux.ibm.com>
+---
 
->> 
->> Also you said you ran into a problem at just one call site where above
->> was silently failing. With the above change are you able to hit the
->> panic() now? Because from what I see in patch_instruction(), it mainly
->> will boil down to calling __patch_mem() which always returns 0.
->
-> As far as I can see, __patch_mem() returns -EPERM when 
-> __put_kernel_nofault() fails:
->
-> static int __patch_mem(void *exec_addr, unsigned long val, void 
-> *patch_addr, bool is_dword)
-> {
-> 	if (!IS_ENABLED(CONFIG_PPC64) || likely(!is_dword)) {
-> 		/* For big endian correctness: plain address would use the wrong half */
-> 		u32 val32 = val;
->
-> 		__put_kernel_nofault(patch_addr, &val32, u32, failed);
-> 	} else {
-> 		__put_kernel_nofault(patch_addr, &val, u64, failed);
-> 	}
->
-> 	asm ("dcbst 0, %0; sync; icbi 0,%1; sync; isync" :: "r" (patch_addr),
-> 							    "r" (exec_addr));
->
-> 	return 0;
->
-> failed:
-> 	mb();  /* sync */
-> 	return -EPERM;
-> }
->
+Changelog:
+v2 -> v3:
+- Rebase on Linux 6.17-rc4 
 
-Right, I somehow missed that "_nofault" part.
+v2:https://lore.kernel.org/all/20250722085648.1640-1-adityab1@linux.ibm.com/ 
 
->
->> Although there are other places where there can be an error returned,
->> so I was wondering if that is what you were hitting or something else?
->
-> Andrew was hitting the -EPERM because the memory area was read-only.
+v1 -> v2:
+- Added explanation for redefining ftrace_regs_get_return_value()
+and ftrace_regs_get_frame_pointer()
+- Explained why stack space equivalent to 'SWITCH_FRAME_SIZE' is allocated.
 
-yes, that make sense.
+v1:https://lore.kernel.org/all/20250528134820.74121-1-adityab1@linux.ibm.com/ 
 
+---
+ arch/powerpc/Kconfig                     |  1 +
+ arch/powerpc/include/asm/ftrace.h        | 15 +++++++++
+ arch/powerpc/kernel/trace/ftrace_entry.S | 42 ++++++++++++++----------
+ 3 files changed, 41 insertions(+), 17 deletions(-)
 
->
-> Christophe
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 93402a1d9c9f..451d0e140051 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -246,6 +246,7 @@ config PPC
+ 	select HAVE_FUNCTION_ARG_ACCESS_API
+ 	select HAVE_FUNCTION_DESCRIPTORS	if PPC64_ELF_ABI_V1
+ 	select HAVE_FUNCTION_ERROR_INJECTION
++	select HAVE_FUNCTION_GRAPH_FREGS
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_FUNCTION_TRACER		if !COMPILE_TEST && (PPC64 || (PPC32 && CC_IS_GCC))
+ 	select HAVE_GCC_PLUGINS			if GCC_VERSION >= 50200   # plugin support on gcc <= 5.1 is buggy on PPC
+diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+index 82da7c7a1d12..6ffc9c9cf4e3 100644
+--- a/arch/powerpc/include/asm/ftrace.h
++++ b/arch/powerpc/include/asm/ftrace.h
+@@ -50,6 +50,21 @@ static __always_inline struct pt_regs *arch_ftrace_get_regs(struct ftrace_regs *
+ 		asm volatile("mfmsr %0" : "=r" ((_regs)->msr));	\
+ 	} while (0)
+ 
++#undef ftrace_regs_get_return_value
++static __always_inline unsigned long
++ftrace_regs_get_return_value(const struct ftrace_regs *fregs)
++{
++	return arch_ftrace_regs(fregs)->regs.gpr[3];
++}
++#define ftrace_regs_get_return_value ftrace_regs_get_return_value
++
++#undef ftrace_regs_get_frame_pointer
++static __always_inline unsigned long
++ftrace_regs_get_frame_pointer(const struct ftrace_regs *fregs)
++{
++	return arch_ftrace_regs(fregs)->regs.gpr[1];
++}
++
+ static __always_inline void
+ ftrace_regs_set_instruction_pointer(struct ftrace_regs *fregs,
+ 				    unsigned long ip)
+diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
+index 3565c67fc638..6599fe3c6234 100644
+--- a/arch/powerpc/kernel/trace/ftrace_entry.S
++++ b/arch/powerpc/kernel/trace/ftrace_entry.S
+@@ -409,23 +409,31 @@ EXPORT_SYMBOL(_mcount)
+ _GLOBAL(return_to_handler)
+ 	/* need to save return values */
+ #ifdef CONFIG_PPC64
+-	std	r4,  -32(r1)
+-	std	r3,  -24(r1)
++	stdu	r1, -SWITCH_FRAME_SIZE(r1)
++	std	r4, GPR4(r1)
++	std	r3, GPR3(r1)
++	/* Save previous stack pointer (r1) */
++	addi	r3, r1, SWITCH_FRAME_SIZE
++	std	r3, GPR1(r1)
+ 	/* save TOC */
+-	std	r2,  -16(r1)
+-	std	r31, -8(r1)
++	std	r2,  24(r1)
++	std	r31, 32(r1)
+ 	mr	r31, r1
+-	stdu	r1, -112(r1)
+-
++	/* pass ftrace_regs/pt_regs to ftrace_return_to_handler */
++	addi	r3, r1, STACK_INT_FRAME_REGS
+ 	/*
+ 	 * We might be called from a module.
+ 	 * Switch to our TOC to run inside the core kernel.
+ 	 */
+ 	LOAD_PACA_TOC()
+ #else
+-	stwu	r1, -16(r1)
+-	stw	r3, 8(r1)
+-	stw	r4, 12(r1)
++	stwu	r1, -SWITCH_FRAME_SIZE(r1)
++	stw	r4, GPR4(r1)
++	stw	r3, GPR3(r1)
++	addi	r3, r1, SWITCH_FRAME_SIZE
++	stw	r3, GPR1(r1)
++	/* pass ftrace_regs/pt_regs to ftrace_return_to_handler */
++	addi	r3, r1, STACK_INT_FRAME_REGS
+ #endif
+ 
+ 	bl	ftrace_return_to_handler
+@@ -435,15 +443,15 @@ _GLOBAL(return_to_handler)
+ 	mtlr	r3
+ 
+ #ifdef CONFIG_PPC64
+-	ld	r1, 0(r1)
+-	ld	r4,  -32(r1)
+-	ld	r3,  -24(r1)
+-	ld	r2,  -16(r1)
+-	ld	r31, -8(r1)
++	ld	r4,  GPR4(r1)
++	ld	r3,  GPR3(r1)
++	ld	r2,  24(r1)
++	ld	r31, 32(r1)
++	ld	r1,  0(r1)
+ #else
+-	lwz	r3, 8(r1)
+-	lwz	r4, 12(r1)
+-	addi	r1, r1, 16
++	lwz	r3, GPR3(r1)
++	lwz	r4, GPR4(r1)
++	addi	r1, r1, SWITCH_FRAME_SIZE
+ #endif
+ 
+ 	/* Jump back to real return address */
+-- 
+2.51.0
 
-Thanks for the comments!
-
--ritesh
 
