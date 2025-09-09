@@ -1,74 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-11902-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11903-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6B5B4A12E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 07:14:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51127B4A14A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 07:41:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cLX7G5M4wz3050;
-	Tue,  9 Sep 2025 15:14:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cLXjn44l4z3054;
+	Tue,  9 Sep 2025 15:41:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757394874;
-	cv=none; b=dsrLuycUXxsOtjON5sWZl6gmoIDZDd7hEMkf5W0PUnXJVv1Yww4ihq/9BJnsm8v4oelrhMYwjNOkCK+EH8Fm8+0jP4OVZAQLBa9xrlkTvOqXQTDH2zMReuPwzlDujwSkqvOEvbPgp99B6i90s6lOi+KkhruF+0ZxnDj4fxbzXMU9lcL/gIm+4C27DTKZEC4ouAXbHBu+aCutgGGMkFY2hhqfTBCiVKDKlAMKlI0dg8RMdCL2auRXYf3JbKiKr93R2mvyZtNrtB9vXJQbj+YPfU4r0946Teq3ZkmY9ziGesPCqSDoLwOw5dPLRotmU3IXaS0ur06WKMd8fSnQOIYkkQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757396461;
+	cv=none; b=hRn8W2t93tSM0aKO4anyEpHCVVqCplBRpGoVaT5SeezjVTbecmEzmLZ4YFNOl/sX00KQEFTdVwJ0CqgzIQXXn7u1drBS2jLaClEqZiT/E5QxQjfSmlYSHVRM1t+9rWM6AFyb5lYCrTiaWKD3TINOeEs9EbGCtQkux1eRUazE99GdnsF92osjiU92U86y+9CfiklXj35hYn3ioj5KciQ0TElGXsVlaoKR0hnzJ3OQMk2shbVIhCDp0z5IOWRo+PXYQMTymC9KfYqQoLVb+Bn6+cGr3Nir/eCYyADR0T7UdHD7BT2bSyToIspfXGbcWZkYlTP7UgAPADQQrWgBxd+Q/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757394874; c=relaxed/relaxed;
-	bh=EVvGptOJSpllcTci4jtpc1ArM7yF9qxGKgwzZJ5X9yY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e3m6Iz+vQVG+YUKGOqFCVgmsm2caDEoJf5oTAV5fleJ39uiNhoSQntJwZoxKr2MIhgHF5CcTqTHB365uWJIJRwmcfZ6UPZgkWxBAEbPihET38G/L/49dQv1grB3m/2NlYX/+/tBjKZksZdjonUhHJfQK05aVMNd5q/EYUS+payxM58Oikr4oizklHiiFPxrOU1Ogo4kFiYl1hqNVrLyY8Jd3AYM2vpXVdir52L7yLZE8RzaC+Ay2Bm9WLH5aTMQOzrYhw4lJs695fB/ay7ro9WFbldnNrFvKnp8qreJCQLDG+QpjLDd9Fu7xv7gb8lYFQYDAiuqDnqznFYnT2UssFg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dlgqEn3H; dkim-atps=neutral; spf=pass (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1757396461; c=relaxed/relaxed;
+	bh=8KmKkYBxC3+WkfQjTVbcdSGXS2QmvvZ1sudg0GtusV0=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=CEnObfswhFyO1ihCWPXMS0l7PQ5R7OPvkeU8ep8C5Zq0h2364FcwSoZkVt85tZKfhSmzqgWf99vWAEGEp9dWzaXW72gKVlabk+TTZCBLoO3G36gCC0GuDKDPmsCzAIWdEzuQL9hWSZo0bELai5P81rn+6grHr+0On66dYCqtLY3Dj9VWnI0cZCLIUHLR98yP0h4WyZFWbTR+7MMgW/+9upVnWZKZBU0DllnGXR20z4QAJWFlNx1W+qx6FEFOOnfjSg0YN8Y+7DPb36VtmQy3ocsMQ1Uxr4/Y+YyJfqX2CAxTPyGpcHhNMiaiB03bJQu8w+Cei4AzUxQSLjXkAs3DTg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=ac3AtU0M; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dlgqEn3H;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=ac3AtU0M;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLX7C6nZVz2yxN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 15:14:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757394872; x=1788930872;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hH3ZezytTq51Qj9BKKfC0R83WETDH4xFeT3UqMzhB/w=;
-  b=dlgqEn3HYYiouvNgGYzpjbHlbnJgl24m+a0frrHGRckuRiz/8JjksGlO
-   fJ1JacvVy8NIARcFYBkaugXrt+mB0+NRlrz+gBfBuPXZqt/HhuXPlb5nh
-   z+ZaAkCc1y+ViCLYlaXajLeo84csjesv50KGnw22AGokJpesALf2EgrJs
-   dODYZ6k9HC6vHyG1w1yujtxn6anlU5dWOduTtws5wdwvjG/H7UO5qq3yi
-   6n4AsSnxQMqv0XWEOAq+D1fux/wRVWIBl6F74V8VkqB6Ne3z+yPmtfPMe
-   vDpL3/DF4/jPNyubXtzCFthLHXpTuhmGjcyPX4mvwwJY+eiEpFjgyrpeD
-   A==;
-X-CSE-ConnectionGUID: DsBZm6jiRMSFc3zBmcDWHQ==
-X-CSE-MsgGUID: JMk4WaI0QceSv0V0Nf3EnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11547"; a="70287781"
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; 
-   d="scan'208";a="70287781"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2025 22:14:27 -0700
-X-CSE-ConnectionGUID: zU82kBGmQj2jLq6KBnXuMA==
-X-CSE-MsgGUID: vTdDNb+WQASILktnygxmKw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.18,250,1751266800"; 
-   d="scan'208";a="172912681"
-Received: from lkp-server01.sh.intel.com (HELO 114d98da2b6c) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 08 Sep 2025 22:14:24 -0700
-Received: from kbuild by 114d98da2b6c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uvqgQ-0004Sx-04;
-	Tue, 09 Sep 2025 05:14:22 +0000
-Date: Tue, 9 Sep 2025 13:13:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: oe-kbuild-all@lists.linux.dev, maddy@linux.ibm.com, mpe@ellerman.id.au,
-	npiggin@gmail.com, msuchanek@suse.de, mahesh@linux.ibm.com,
-	tyreld@linux.ibm.com, hbabu@us.ibm.com, haren@linux.ibm.com,
-	shashank.gowda@in.ibm.com, bjking1@linux.ibm.com
-Subject: Re: [PATCH v6 3/9] powerpc/pseries: Add papr-hvpipe char driver for
- HVPIPE interfaces
-Message-ID: <202509091256.nwELaisA-lkp@intel.com>
-References: <20250908030458.1139163-4-haren@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLXjl61Jdz2ySY
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 15:40:59 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BE5E601EF;
+	Tue,  9 Sep 2025 05:40:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0D0C4CEF4;
+	Tue,  9 Sep 2025 05:40:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1757396455;
+	bh=fLT6sZq3hOuocdqB+Er3MIxGIa7A226lDCyWybWeKb0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ac3AtU0MqGUoC9Eky+9KyLtx9biLH0jbhomUAhOb9ruR7c2j0fSSNnyF7J5pqgv3k
+	 foKu3tqX/cVrmmALEDgQok2HJxXlYlCuqYu52g6qJkaq/U2HxlfxN2JIs/wIPe9xj/
+	 lJgOpn+VQzJMFZkYputFzcFbXsTrbwF4GLqtj+KE=
+Date: Mon, 8 Sep 2025 22:40:54 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, Boris
+ Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov <bp@alien8.de>,
+ Catalin Marinas <catalin.marinas@arm.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar
+ <mingo@redhat.com>, Jann Horn <jannh@google.com>, Juergen Gross
+ <jgross@suse.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Nicholas Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Ryan Roberts
+ <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Will
+ Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
+Message-Id: <20250908224054.0a1969b493d8a837addd782e@linux-foundation.org>
+In-Reply-To: <20250908073931.4159362-3-kevin.brodsky@arm.com>
+References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
+	<20250908073931.4159362-3-kevin.brodsky@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,65 +79,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250908030458.1139163-4-haren@linux.ibm.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Haren,
+On Mon,  8 Sep 2025 08:39:26 +0100 Kevin Brodsky <kevin.brodsky@arm.com> wrote:
 
-kernel test robot noticed the following build warnings:
+> arch_{enter,leave}_lazy_mmu_mode() currently have a stateless API
+> (taking and returning no value). This is proving problematic in
+> situations where leave() needs to restore some context back to its
+> original state (before enter() was called). In particular, this
+> makes it difficult to support the nesting of lazy_mmu sections -
+> leave() does not know whether the matching enter() call occurred
+> while lazy_mmu was already enabled, and whether to disable it or
+> not.
+> 
+> This patch gives all architectures the chance to store local state
+> while inside a lazy_mmu section by making enter() return some value,
+> storing it in a local variable, and having leave() take that value.
+> That value is typed lazy_mmu_state_t - each architecture defining
+> __HAVE_ARCH_ENTER_LAZY_MMU_MODE is free to define it as it sees fit.
+> For now we define it as int everywhere, which is sufficient to
+> support nesting.
+> 
+> The diff is unfortunately rather large as all the API changes need
+> to be done atomically. Main parts:
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on powerpc/fixes linus/master v6.17-rc5 next-20250908]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This has a build error:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Haren-Myneni/powerpc-pseries-Define-papr-hvpipe-ioctl/20250908-110839
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20250908030458.1139163-4-haren%40linux.ibm.com
-patch subject: [PATCH v6 3/9] powerpc/pseries: Add papr-hvpipe char driver for HVPIPE interfaces
-config: powerpc64-randconfig-r111-20250909 (https://download.01.org/0day-ci/archive/20250909/202509091256.nwELaisA-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 10.5.0
-reproduce: (https://download.01.org/0day-ci/archive/20250909/202509091256.nwELaisA-lkp@intel.com/reproduce)
+  CC      arch/x86/kernel/asm-offsets.s
+In file included from ./arch/x86/include/asm/irqflags.h:102,
+                 from ./include/linux/irqflags.h:18,
+                 from ./include/linux/spinlock.h:59,
+                 from ./include/linux/swait.h:7,
+                 from ./include/linux/completion.h:12,
+                 from ./include/linux/crypto.h:15,
+                 from arch/x86/kernel/asm-offsets.c:9:
+./arch/x86/include/asm/paravirt.h: In function 'arch_enter_lazy_mmu_mode':
+./arch/x86/include/asm/paravirt.h:534:16: error: 'LAZY_MMU_DEFAULT' undeclared (first use in this function)
+  534 |         return LAZY_MMU_DEFAULT;
+      |                ^~~~~~~~~~~~~~~~
+./arch/x86/include/asm/paravirt.h:534:16: note: each undeclared identifier is re
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202509091256.nwELaisA-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> arch/powerpc/platforms/pseries/papr-hvpipe.c:121:24: sparse: sparse: incorrect type in return expression (different base types) @@     expected restricted __poll_t @@     got int @@
-   arch/powerpc/platforms/pseries/papr-hvpipe.c:121:24: sparse:     expected restricted __poll_t
-   arch/powerpc/platforms/pseries/papr-hvpipe.c:121:24: sparse:     got int
-
-vim +121 arch/powerpc/platforms/pseries/papr-hvpipe.c
-
-   108	
-   109	/*
-   110	 * The user space waits for the payload to receive.
-   111	 * The hypervisor sends HVPIPE event message to the partition
-   112	 * when the payload is available. The event handler wakeup FD
-   113	 * depends on the source ID in the message event.
-   114	 */
-   115	static __poll_t papr_hvpipe_handle_poll(struct file *filp,
-   116			struct poll_table_struct *wait)
-   117	{
-   118		struct hvpipe_source_info *src_info = filp->private_data;
-   119	
-   120		if (!src_info)
- > 121			return -EIO;
-   122	
-   123		return 0;
-   124	}
-   125	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+which gets fixed up later in the series.
 
