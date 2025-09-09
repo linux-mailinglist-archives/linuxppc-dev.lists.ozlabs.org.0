@@ -1,108 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-11946-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11947-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02CE7B4ACA8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 13:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2246CB4ACF5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 13:55:15 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cLhqt4C7Zz3bpS;
-	Tue,  9 Sep 2025 21:46:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cLj1X4wQXz3cYG;
+	Tue,  9 Sep 2025 21:55:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757418410;
-	cv=none; b=nvkExRbd0kEZVSzAMblTCFwlQjuSYBqou9BuUmZaTGlnHSr2uCtAcn46gwEgHm5A6NJkkxEy4NAPinh43J07+M2N+USZFpbY1QrYpQ6kGpf5Fbs1qgpdXMv5OJDLWMW4iE/N98XDmKZKrWjiyIGXK/vAZL8EV1CZnYBMINyWOWEHRORu8JEnoC6v0kspRuuXKSE/QyT8jKLILDEVOAhiHSfeIXVQCrKrXgtn1qEaegf7AmoLktb4hS9LqAlmZSjnhQ3jx34iF1WkBrBDPsT7y4j2UT8xARzpdDswFemVqDZRU8vgl8yx1D0wKXB3TNSQWlxoPFKDEGZjmVoT/7fpSw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757418912;
+	cv=none; b=ffHPBlJ3xDHAmdq9Uxpuh7tyVLf1o6ClADRH02hXvLAqM19gccv+DoVeBka9ySUQPSeyjjPfcDv3pVI+NUWp/vc2cxSqQ60s0fDzzivA+fvqad/O5AQSE+CYXkWBjHy3BMSoN9qEOfXPRljhuqf1IlLZH05/jrUxGhw5UIEL27jIYk+LU+FxBfhzHsu4gjDwqd1AUrhj2m+UzwK2gU2c1WBk3v1IWJVXnd6epMYee391ZgGVb2aClrDn5H8dN/yBpMK/m+UAtqODE2115Zm0UPjrjwny+FScs2UzVI1xYQm6N3ROnVQPI0tYUugW4Oc80TFC0blHw0mfru+dCWa9jA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757418410; c=relaxed/relaxed;
-	bh=CW2dDor0IqMzIAmq0spxwQ7puBTFQtVzTFSMyEgoGjA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OCP8XoPnMc/fsGJqxOvA27kFEjVwoN4HYjY2sbyF1cTuj/9gOg/ZCD6dquEfgc5f4AT1+OCAHKu3u6gcqD2eGQsBaW97POKLk0lldHtPIDR1ISUr3bVIX6vpcioqZpLCAKhxEEfy6BB1cyxteFZXjySvwoFXg+nHG+WCWSyddS59jgmAh4G0Ugj2j9IJP4BktTKn1plolP0exI6qsdj43lYZYNkhMXpvQqWTF7aSa8L2uAAplO6Ilj10+1OcKPPPZwKE5em6p/Quz0nnwoPyGqYGGBb2TOdQs0tqnp+AzoIGmszaL6hYop9toACySOOzaxUM/sI/ZYl73Qy2IvXN+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P7fiZwOZ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1757418912; c=relaxed/relaxed;
+	bh=wOh5IdHecYmXNJFyfTY+5ofA8ReFnlDB1RFePKgZiG8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dyoGqpR+t/hAjYRc5wCY0w1UXqBcHkwB+tuWQVtfhXLtpyXaHffGbuL8V5w2VQd3Xtd0apjL4IXNPiAGJ0QES37j1xVPj+tOyHvKhi8TJlNBy2CfkxPORV8jzwfgsI8Q/cPeClczs/UvLxRRCYjYmTFPmjjorEhoyr0Cd5pGkcEUfJBzbVHZNvV0M1AxxjPRZMsQqUwDWrUitcks957hg2eIP95rsBupcAUNVzQw7elSaZaxCBbotmqTMv7s0BQ+58EwiA23puM+ZHyLKcGZrDDivYjs9IRGe0Jwo6wuHuk7gSZLfgo++0hS1jQkQGpKk1N2tfXPPzaiRaXXCdh+AA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LsYeTzlN; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LsYeTzlN; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=P7fiZwOZ;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LsYeTzlN;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=LsYeTzlN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLhqr6Bztz30WY
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 21:46:48 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5896Wdr4031713;
-	Tue, 9 Sep 2025 11:45:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=CW2dDor0IqMzIAmq0spxwQ7puBTFQt
-	VzTFSMyEgoGjA=; b=P7fiZwOZoDl89TYxIoDk4jbhXrf0kjh5+A0apcBU6C2GdT
-	340+8Qq55LXFwzCb2OnrGtv2LTms5uaynX6WfkjgKzFQGzs3e9pvZUBahm6iSSWT
-	WAluYtYKMO3NEFWsaHTLmzNgjJggCA+UUE8JfV+YFOMHIpa6bduy64J5wPglMBbo
-	1st8bDHq/DM0/FJSwtUsBhE7FRmCOK1/CvbO0pfJAVLuQ89IraoJ4ZhEiV9SJGge
-	R76Ejpm7X8SvuisIf2tyP1lB+0dxfGRnwYufiviL57J7ea4xGb3TC+Uy45RwDr54
-	4cOe5ZFz+UmaDEeE2xXzL/ExCyZXDdsidA5E1ouQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490bcsq781-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 11:45:56 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 589BTqxc006985;
-	Tue, 9 Sep 2025 11:45:55 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490bcsq77y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 11:45:55 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 589BMn2N001188;
-	Tue, 9 Sep 2025 11:45:54 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 491203akyh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Sep 2025 11:45:54 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 589BjqjF8323344
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 9 Sep 2025 11:45:53 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D59D020043;
-	Tue,  9 Sep 2025 11:45:52 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 247CD20040;
-	Tue,  9 Sep 2025 11:45:52 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  9 Sep 2025 11:45:52 +0000 (GMT)
-Date: Tue, 9 Sep 2025 13:45:50 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
-        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
-        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
-Message-ID: <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908073931.4159362-3-kevin.brodsky@arm.com>
- <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
- <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
- <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLj1W44jbz3bpS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 21:55:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757418906;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wOh5IdHecYmXNJFyfTY+5ofA8ReFnlDB1RFePKgZiG8=;
+	b=LsYeTzlNsM41M2M8/Bqw2Kt/2mNt7o0ao12CZrHgHc+oSijEiI+f5I1kfXmy+pI7W17faJ
+	hOdajbyoSZwUDAPpSpHUABKjqjNEkJjGxz9QEA8tqA+rI4wnnpS6rRzHtskbQcCSIU5VbL
+	+tIr2Cb8deyfgxsbX+3Do77uLJi6wpo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757418906;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wOh5IdHecYmXNJFyfTY+5ofA8ReFnlDB1RFePKgZiG8=;
+	b=LsYeTzlNsM41M2M8/Bqw2Kt/2mNt7o0ao12CZrHgHc+oSijEiI+f5I1kfXmy+pI7W17faJ
+	hOdajbyoSZwUDAPpSpHUABKjqjNEkJjGxz9QEA8tqA+rI4wnnpS6rRzHtskbQcCSIU5VbL
+	+tIr2Cb8deyfgxsbX+3Do77uLJi6wpo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-551-p6ArHbKMPQSzmbieWTTeEw-1; Tue, 09 Sep 2025 07:55:04 -0400
+X-MC-Unique: p6ArHbKMPQSzmbieWTTeEw-1
+X-Mimecast-MFC-AGG-ID: p6ArHbKMPQSzmbieWTTeEw_1757418903
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3e067ef24aaso2834837f8f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Sep 2025 04:55:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757418903; x=1758023703;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wOh5IdHecYmXNJFyfTY+5ofA8ReFnlDB1RFePKgZiG8=;
+        b=J4vEW3gSxbjj+kZ7lOkvEpp5DzUgkoqqX2jXuEq2Bcm6OUXMYPecxnfyO3urWIfEmh
+         /0VZFJwZqqIymzqwfHRN/mExUYO4XJBpEggsU0F/jRHfTODdNZLMnKSd/hVpYPB28Wqe
+         RR4JAch0ERJzZEHZ4SOvOUjDJMQ/nduiubx4RtaK8jGq35JVw8qkA6Civ5ONEP0qgh/E
+         RbyCGtqyNwxBR1TXY8URQfYvzp8cTEAKwXJWTuYKIxU60ZSSjT+cmkr4MPkZ778FBHfh
+         MUHVhLXiKyA+ZGmGlHoNxl/ChPuGmjfLAb0MopiSZmT1Sr2jbJ7Y56GHURRnRXI7UBG5
+         jc0g==
+X-Forwarded-Encrypted: i=1; AJvYcCWbxIRYFKo2nDAoNY/K2Y3bZ5zmj6e7X5jK0N+wC+nFVcr2geKNQcEfo/Jz6bFqkHy/MtetfyLYKLVUL2g=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxfTLODUdM2Ygw+/gVA/DIxteLQ4oc0RfbFoMAM8L3Ghb889zxO
+	HTRscFuH9gAE6Ey5Vy6FToLIlb2TTU1FQMwsi6sR5Cq7RqdiixqYgAwy/n7xoCJGKmw5n9RSS/E
+	eVT379Jx+a7qFRZ4dPSHHikWqC/Oqyp8VW7b/wyKD9zsYozzS0ERk+9F72gwixzDkJNU=
+X-Gm-Gg: ASbGnctL/GSPGYx3gVX+zgZRb9RUKfpIICrU/8V3k1/zxFecMV9MH7ko2A/feIi7x/Q
+	rYgAmSZov4MoTMLjGWCOGG+c5BEnjmaI8r4w1G3SIQzeNZ8kuYnwNpmOWeb3l0NBdTYI2CYsy70
+	7p/+10SvNwjqiO5v0tWEwy0wDHPfF7l2zAfxf0HUt4IEFGv8YgHTzOXJlINKbwhgZMJ4QBbY/3c
+	oPzRRJDzUYSn+0y1tLo5vY/9d5JdriH+Qj7CS8Mou800dv9vOU7Al2khqn5oI8OU0YVv/QjtbNX
+	Rp2I2s6effxWSkrkZSHOO3NgJTAycR7aCXiIX5ynyFJGrrsbKED0wpsopHuENDnof9J0JHg2JfT
+	Pq83lEJQFd1KF/kWlEYsYbpjfrWE5Z442bl5/Ky8OhDmhuo+Ep/B9oSHEioyq9BAH8Ms=
+X-Received: by 2002:a5d:5f82:0:b0:3e7:42ae:d3dd with SMTP id ffacd0b85a97d-3e742aed713mr7769539f8f.53.1757418903205;
+        Tue, 09 Sep 2025 04:55:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+ZfFXrc3J/ZXb10wuImf1IN/WN2zT9Bnd5gvpLTDU+4GYxL8KyTu1AXUf0+6BD7rUQ8++xA==
+X-Received: by 2002:a5d:5f82:0:b0:3e7:42ae:d3dd with SMTP id ffacd0b85a97d-3e742aed713mr7769489f8f.53.1757418902733;
+        Tue, 09 Sep 2025 04:55:02 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f23:9c00:d1f6:f7fe:8f14:7e34? (p200300d82f239c00d1f6f7fe8f147e34.dip0.t-ipconnect.de. [2003:d8:2f23:9c00:d1f6:f7fe:8f14:7e34])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e75223898csm2497249f8f.39.2025.09.09.04.55.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Sep 2025 04:55:02 -0700 (PDT)
+Message-ID: <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
+Date: Tue, 9 Sep 2025 13:54:59 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -116,108 +104,172 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAxMCBTYWx0ZWRfXzv0l4od4j6eW
- QmMdktKyBl9+62xDiwDCsXs13FmwdhJ/yKVW0Nx7wmldwiO4Gphv89/+dwt/LpECn2XxOtXfh60
- jKyl21EsFo5dPWLP41rL8yAE8JVwfpPHGCyDSUYtA7sAOdIW58vIVprQ0pXotY+dKbj+gh2UVow
- aUYpiI8EbPfiUOAf+qOVUjNN2gNw6goKU2Itja8LgZVxED1lOakW8e7o8p6kPC5x+5elb/cjfAw
- /8FfQVABacfNl7ZdgYZjcvC3V+L7x+hQVkP58f0SM4yX0U4T+rMqQaJBKGdD5nUVcqnn5OalH7l
- hJOgJuaJEM3zF3TSqJtIp3pJKLVcHjM9sdtipTndXY1FAdeDQTINxSKeTjMqDRhxe/M13RVfvwK
- e7diuTK0
-X-Authority-Analysis: v=2.4 cv=SKNCVPvH c=1 sm=1 tr=0 ts=68c01374 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=sjzYMD-SKWPhrPIpRwUA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: XopatD14CEfuivKQbcWn3mfk3pBU2G5u
-X-Proofpoint-ORIG-GUID: YV8Uas4Jwghz0nGFl4MnfkXLTyTlxDw-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-09_01,2025-09-08_02,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 priorityscore=1501 bulkscore=0 malwarescore=0
- adultscore=0 suspectscore=0 impostorscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060010
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
+References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
+ <20250908073931.4159362-3-kevin.brodsky@arm.com>
+ <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
+ <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
+ <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
+ <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: zlyJKO0GIXJ870YrPCeM2hluLHQiO_JpBh-m7czxdsM_1757418903
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Sep 09, 2025 at 12:09:48PM +0200, David Hildenbrand wrote:
-> On 09.09.25 11:40, Alexander Gordeev wrote:
-> > On Tue, Sep 09, 2025 at 11:07:36AM +0200, David Hildenbrand wrote:
-> > > On 08.09.25 09:39, Kevin Brodsky wrote:
-> > > > arch_{enter,leave}_lazy_mmu_mode() currently have a stateless API
-> > > > (taking and returning no value). This is proving problematic in
-> > > > situations where leave() needs to restore some context back to its
-> > > > original state (before enter() was called). In particular, this
-> > > > makes it difficult to support the nesting of lazy_mmu sections -
-> > > > leave() does not know whether the matching enter() call occurred
-> > > > while lazy_mmu was already enabled, and whether to disable it or
-> > > > not.
-> > > > 
-> > > > This patch gives all architectures the chance to store local state
-> > > > while inside a lazy_mmu section by making enter() return some value,
-> > > > storing it in a local variable, and having leave() take that value.
-> > > > That value is typed lazy_mmu_state_t - each architecture defining
-> > > > __HAVE_ARCH_ENTER_LAZY_MMU_MODE is free to define it as it sees fit.
-> > > > For now we define it as int everywhere, which is sufficient to
-> > > > support nesting.
-> > ...
-> > > > {
-> > > > + lazy_mmu_state_t lazy_mmu_state;
-> > > > ...
-> > > > - arch_enter_lazy_mmu_mode();
-> > > > + lazy_mmu_state = arch_enter_lazy_mmu_mode();
-> > > > ...
-> > > > - arch_leave_lazy_mmu_mode();
-> > > > + arch_leave_lazy_mmu_mode(lazy_mmu_state);
-> > > > ...
-> > > > }
-> > > > 
-> > > > * In a few cases (e.g. xen_flush_lazy_mmu()), a function knows that
-> > > >     lazy_mmu is already enabled, and it temporarily disables it by
-> > > >     calling leave() and then enter() again. Here we want to ensure
-> > > >     that any operation between the leave() and enter() calls is
-> > > >     completed immediately; for that reason we pass LAZY_MMU_DEFAULT to
-> > > >     leave() to fully disable lazy_mmu. enter() will then re-enable it
-> > > >     - this achieves the expected behaviour, whether nesting occurred
-> > > >     before that function was called or not.
-> > > > 
-> > > > Note: it is difficult to provide a default definition of
-> > > > lazy_mmu_state_t for architectures implementing lazy_mmu, because
-> > > > that definition would need to be available in
-> > > > arch/x86/include/asm/paravirt_types.h and adding a new generic
-> > > >    #include there is very tricky due to the existing header soup.
-> > > 
-> > > Yeah, I was wondering about exactly that.
-> > > 
-> > > In particular because LAZY_MMU_DEFAULT etc resides somewehere compeltely
-> > > different.
-> > > 
-> > > Which raises the question: is using a new type really of any benefit here?
-> > > 
-> > > Can't we just use an "enum lazy_mmu_state" and call it a day?
-> > 
-> > I could envision something completely different for this type on s390,
-> > e.g. a pointer to a per-cpu structure. So I would really ask to stick
-> > with the current approach.
+On 09.09.25 13:45, Alexander Gordeev wrote:
+> On Tue, Sep 09, 2025 at 12:09:48PM +0200, David Hildenbrand wrote:
+>> On 09.09.25 11:40, Alexander Gordeev wrote:
+>>> On Tue, Sep 09, 2025 at 11:07:36AM +0200, David Hildenbrand wrote:
+>>>> On 08.09.25 09:39, Kevin Brodsky wrote:
+>>>>> arch_{enter,leave}_lazy_mmu_mode() currently have a stateless API
+>>>>> (taking and returning no value). This is proving problematic in
+>>>>> situations where leave() needs to restore some context back to its
+>>>>> original state (before enter() was called). In particular, this
+>>>>> makes it difficult to support the nesting of lazy_mmu sections -
+>>>>> leave() does not know whether the matching enter() call occurred
+>>>>> while lazy_mmu was already enabled, and whether to disable it or
+>>>>> not.
+>>>>>
+>>>>> This patch gives all architectures the chance to store local state
+>>>>> while inside a lazy_mmu section by making enter() return some value,
+>>>>> storing it in a local variable, and having leave() take that value.
+>>>>> That value is typed lazy_mmu_state_t - each architecture defining
+>>>>> __HAVE_ARCH_ENTER_LAZY_MMU_MODE is free to define it as it sees fit.
+>>>>> For now we define it as int everywhere, which is sufficient to
+>>>>> support nesting.
+>>> ...
+>>>>> {
+>>>>> + lazy_mmu_state_t lazy_mmu_state;
+>>>>> ...
+>>>>> - arch_enter_lazy_mmu_mode();
+>>>>> + lazy_mmu_state = arch_enter_lazy_mmu_mode();
+>>>>> ...
+>>>>> - arch_leave_lazy_mmu_mode();
+>>>>> + arch_leave_lazy_mmu_mode(lazy_mmu_state);
+>>>>> ...
+>>>>> }
+>>>>>
+>>>>> * In a few cases (e.g. xen_flush_lazy_mmu()), a function knows that
+>>>>>      lazy_mmu is already enabled, and it temporarily disables it by
+>>>>>      calling leave() and then enter() again. Here we want to ensure
+>>>>>      that any operation between the leave() and enter() calls is
+>>>>>      completed immediately; for that reason we pass LAZY_MMU_DEFAULT to
+>>>>>      leave() to fully disable lazy_mmu. enter() will then re-enable it
+>>>>>      - this achieves the expected behaviour, whether nesting occurred
+>>>>>      before that function was called or not.
+>>>>>
+>>>>> Note: it is difficult to provide a default definition of
+>>>>> lazy_mmu_state_t for architectures implementing lazy_mmu, because
+>>>>> that definition would need to be available in
+>>>>> arch/x86/include/asm/paravirt_types.h and adding a new generic
+>>>>>     #include there is very tricky due to the existing header soup.
+>>>>
+>>>> Yeah, I was wondering about exactly that.
+>>>>
+>>>> In particular because LAZY_MMU_DEFAULT etc resides somewehere compeltely
+>>>> different.
+>>>>
+>>>> Which raises the question: is using a new type really of any benefit here?
+>>>>
+>>>> Can't we just use an "enum lazy_mmu_state" and call it a day?
+>>>
+>>> I could envision something completely different for this type on s390,
+>>> e.g. a pointer to a per-cpu structure. So I would really ask to stick
+>>> with the current approach.
+>>
+>> Would that integrate well with LAZY_MMU_DEFAULT etc?
 > 
-> Would that integrate well with LAZY_MMU_DEFAULT etc?
-
-Hmm... I though the idea is to use LAZY_MMU_* by architectures that
-want to use it - at least that is how I read the description above.
-
-It is only kasan_populate|depopulate_vmalloc_pte() in generic code
-that do not follow this pattern, and it looks as a problem to me.
-
-> -- 
-> Cheers
+> Hmm... I though the idea is to use LAZY_MMU_* by architectures that
+> want to use it - at least that is how I read the description above.
 > 
-> David / dhildenb
+> It is only kasan_populate|depopulate_vmalloc_pte() in generic code
+> that do not follow this pattern, and it looks as a problem to me.
 
-Thanks!
+Yes, that's why I am asking.
+
+What kind of information (pointer to a per-cpu structure) would you want 
+to return, and would handling it similar to how 
+pagefault_disable()/pagefault_enable() e.g., using a variable in 
+"current" to track the nesting level avoid having s390x to do that?
+
+-- 
+Cheers
+
+David / dhildenb
+
 
