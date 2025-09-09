@@ -1,81 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-11973-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11974-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37EDB5067C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 21:38:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B01AEB5076E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 22:48:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cLvHW48cDz305n;
-	Wed, 10 Sep 2025 05:37:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cLwsH3Dk7z30Jc;
+	Wed, 10 Sep 2025 06:48:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757446679;
-	cv=none; b=mpvw4sy2kXfmR/vWo58Tpea4W5DgKkJgfuWv3g5BSDu3+XYcKR+S418lm5rWX5UYNPQJVuGr2Sr2jpwtFaSrLyRoWP/HzNmMM2st1GpV9/7kvrl1MXeqCcfndPEbtrlJNWCjLMDZk2/UEj3Y1f2FUNPVcRr7zW9myZLTb9PIJ0vF+qV5ytr/Eekftk9d6jVvaOkbHVl3UzdFbZ4Dx6d3pNF1FOt6u069BQ/uPFowr46WWHGkbKwDBRoqw27v6vTeI4a3DxHZPgeIcY9kgY7kKCnTlpsKxdKOFeV3hPxjxyWlf7BADuIVFtw8Am+NMDtNkhf+ROfZ04ovN5cu75I3HA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=23.155.224.40
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757450931;
+	cv=none; b=cRhqL72FiIn1Fbzl881rkdcv2fLuC6w4FdOJoS/yPon3uDj3ITjeSp9oKxMUducZ27PIHrQg+q/toA15Y88N+xz92mgum7n7wGJt5QoiU7QMR6H3m5VDLKNmfuBhZC+OwffIQXp3LPFS+oR2h4RTRrCNZv4WaZuK+JdKx9qSrjCmimitDm4K+I6GVIxHV96vhxGLDkvxzTP6CuJSEStYcD2vyLaywYZBy2O36QyhJ3GZg4l29NV0wE5hR7rOctnQEmfowukWrWzxHnmb9PlaW8vh9S8zB+MQiljr/mVLUAnhaPyRpmVZN+nWiBRzPAPxxoqWUvJ5ipmQA6umoM5HDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757446679; c=relaxed/relaxed;
-	bh=zMm2NBLKPbhkgjTIqBzOjplNw/nP7kHLNg99irSoOEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GLbGsN/5QUOrqG9LSnwoueYW7U9VroQSE5e5BRD8YlRBFdnhzQHjj3oJD8u/K4azvGwEir43qnTjiK7qiZ42wwYmmri0hTdrA4RQfoZphhcsEwOG9hY2JNYY0ZiBC7+5GTVcEoI30WjqRrL1wt6o9d1LxIPZ0P5/pPzXBbpPAzzQLpx1VPAevQXoT/hiuOeZL1PN5q9Z2cA7Qv36moSW+h2/V13CZi9o47ttQ+B+7qNM1qkHY5UOnlESDIU3WNeso4CrD4W10CQ0bdcPg3yinEuyX3K50SdLvebj+xsIy/B5nQ1k+yGGmJz6e1jmVPH1k2Vvg/U3zfwFZqRDx1wJMA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BK33sGpV; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1757450931; c=relaxed/relaxed;
+	bh=aHB5DXkErjn2E5tn1hQOECXYgRXXDEcJQb4TCKOHPKY=;
+	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:Content-Type; b=JmTMh7XVXNLJXPh3WDady/m/jUPuLUuvEab9ZtnarPltCc3SLE3+IUuSnR8N2XU8vIMWk2suPW4orFkhH4KQxOlyivvjKSw4sHOUzUghRXTpoB+CsqubVkHUb7sOTGSp9ODYpy+5D0X+PkzGvZRrMn0Srr7CGLWjmUGHYxDqvV+AId6wCIIcjoG6WQ5ZWjXTEoAavjS3N2mjZfqITjJhsmempWVgbrBOZZIuJ22s3EOYyhgTH/kpl4ZuMCeuWfmUbQGDnPqKrS/rTGUVC9y5BnKyGl4SCsf/r9e0ObQNlbm0aA9mGj0ZZa6+/TzieY6TQC1hxG6qKyXA2Rf8dDblcQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=vHUt4pHm; dkim-atps=neutral; spf=pass (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=raptorengineering.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BK33sGpV;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=vHUt4pHm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=tpearson@raptorengineering.com; receiver=lists.ozlabs.org)
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLvHV3wcKz2ynf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 05:37:58 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0F194442F8;
-	Tue,  9 Sep 2025 19:37:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BB1C4CEF4;
-	Tue,  9 Sep 2025 19:37:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757446672;
-	bh=Vkfs1C2Q/m2ciXngYEnMywKI/5g7jYuOYmYnMi4Z+6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BK33sGpV6gJZdNQka35B5igzFncF6O4QoVJduYx5uymEwm19+Pae/Y8Ji2ztm6vFh
-	 Of79hrgQzN752E6kK9Pd6CitdpQ05JM71b0yY2nJK5WUadz3JmWI4AqHd+rhRkpPML
-	 jPSesTwS7Zw48bKNgh3AxJtfj3r28MMf09jWFv3Lide1Ok8C5lkasp0zoJfr6zuOnF
-	 N5cxlSvTSt07fnYvpbKZtFqt6TP2eL80kCSBPIQL9mOveIT/STSyNFrSlP91N6uUF+
-	 FdL0uwcDH/ATxbhiykxuiJP1XMjnnp4vhtxpR+0sRrU4PCEIaA22KI5S4HXWZpjWlB
-	 smMV1bUYsFvcA==
-Date: Tue, 9 Sep 2025 22:37:48 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	Keith Busch <kbusch@kernel.org>, linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 03/16] dma-debug: refactor to use physical addresses
- for page mapping
-Message-ID: <20250909193748.GG341237@unreal>
-References: <cover.1757423202.git.leonro@nvidia.com>
- <56d1a6769b68dfcbf8b26a75a7329aeb8e3c3b6a.1757423202.git.leonro@nvidia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLwsG3fJjz2ymg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 06:48:50 +1000 (AEST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 12F378287DA8;
+	Tue,  9 Sep 2025 15:48:48 -0500 (CDT)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id jAc376xn005e; Tue,  9 Sep 2025 15:48:47 -0500 (CDT)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 5FBE58287DE2;
+	Tue,  9 Sep 2025 15:48:47 -0500 (CDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com 5FBE58287DE2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1757450927; bh=aHB5DXkErjn2E5tn1hQOECXYgRXXDEcJQb4TCKOHPKY=;
+	h=Date:From:To:Message-ID:MIME-Version;
+	b=vHUt4pHmyzEeERDA/vZRWNpHMRm9WD2860IVhEZ1SwCwQoRoc8v2xAmlDSGd2tuoY
+	 +7X70xJ8D2ffJcyZTx4KJwZKLX7SqxF4bKgmpAscvqeWEs3kSDPrTYdPDiRSDhGZGr
+	 ptSnybrUVuF+n2MmY3kszhjw4D80HIYK4AGOYMs4=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id cD_RFPt7wzuY; Tue,  9 Sep 2025 15:48:47 -0500 (CDT)
+Received: from vali.starlink.edu (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id 263888287DA8;
+	Tue,  9 Sep 2025 15:48:47 -0500 (CDT)
+Date: Tue, 9 Sep 2025 15:48:46 -0500 (CDT)
+From: Timothy Pearson <tpearson@raptorengineering.com>
+To: kvm <kvm@vger.kernel.org>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Message-ID: <663798478.1707537.1757450926706.JavaMail.zimbra@raptorengineeringinc.com>
+Subject: [PATCH] vfio/pci: Fix INTx handling on legacy DisINTx- PCI devices
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,38 +69,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <56d1a6769b68dfcbf8b26a75a7329aeb8e3c3b6a.1757423202.git.leonro@nvidia.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: Zimbra 8.5.0_GA_3042 (ZimbraWebClient - GC139 (Linux)/8.5.0_GA_3042)
+Thread-Index: R10GhsXRj6kdi6znKwcsfy1REC69Aw==
+Thread-Topic: vfio/pci: Fix INTx handling on legacy DisINTx- PCI devices
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Sep 09, 2025 at 04:27:31PM +0300, Leon Romanovsky wrote:
-> From: Leon Romanovsky <leonro@nvidia.com>
+PCI devices prior to PCI 2.3 both use level interrupts and do not support
+interrupt masking, leading to a failure when passed through to a KVM guest on
+at least the ppc64 platform, which does not utilize the resample IRQFD. This
+failure manifests as receiving and acknowledging a single interrupt in the guest
+while leaving the host physical device VFIO IRQ pending.
 
-<...>
+Level interrupts in general require special handling due to their inherently
+asynchronous nature; both the host and guest interrupt controller need to
+remain in synchronization in order to coordinate mask and unmask operations.
+When lazy IRQ masking is used on DisINTx- hardware, the following sequence
+occurs:
 
->  include/linux/page-flags.h         |  1 +
+ * Level IRQ assertion on host
+ * IRQ trigger within host interrupt controller, routed to VFIO driver
+ * Host EOI with hardware level IRQ still asserted
+ * Software mask of interrupt source by VFIO driver
+ * Generation of event and IRQ trigger in KVM guest interrupt controller
+ * Level IRQ deassertion on host
+ * Guest EOI
+ * Guest IRQ level deassertion
+ * Removal of software mask by VFIO driver
 
-<...>
+Note that no actual state change occurs within the host interrupt controller,
+unlike what would happen with either DisINTx+ hardware or message interrupts.
+The host EOI is not fired with the hardware level IRQ deasserted, and the
+level interrupt is not re-armed within the host interrupt controller, leading
+to an unrecoverable stall of the device.
 
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -614,6 +614,7 @@ FOLIO_FLAG(dropbehind, FOLIO_HEAD_PAGE)
->   * available at this point.
->   */
->  #define PageHighMem(__p) is_highmem_idx(page_zonenum(__p))
-> +#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
+Work around this by disabling lazy IRQ masking for DisINTx- INTx devices.
 
-This was a not so great idea to add PhysHighMem() because of "else"
-below which unfolds to maze of macros and automatically generated
-functions with "static inline int Page##uname ..." signature.
+---
+ drivers/vfio/pci/vfio_pci_intrs.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
->  #define folio_test_highmem(__f)	is_highmem_idx(folio_zonenum(__f))
->  #else
->  PAGEFLAG_FALSE(HighMem, highmem)
-
-Thanks
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index 123298a4dc8f..011169ca7a34 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -304,6 +304,9 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
+ 
+ 	vdev->irq_type = VFIO_PCI_INTX_IRQ_INDEX;
+ 
++	if (is_intx(vdev) && !vdev->pci_2_3)
++		irq_set_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
++
+ 	ret = request_irq(pdev->irq, vfio_intx_handler,
+ 			  irqflags, ctx->name, ctx);
+ 	if (ret) {
+@@ -351,6 +354,8 @@ static void vfio_intx_disable(struct vfio_pci_core_device *vdev)
+ 	if (ctx) {
+ 		vfio_virqfd_disable(&ctx->unmask);
+ 		vfio_virqfd_disable(&ctx->mask);
++		if (!vdev->pci_2_3)
++			irq_clear_status_flags(pdev->irq, IRQ_DISABLE_UNLAZY);
+ 		free_irq(pdev->irq, ctx);
+ 		if (ctx->trigger)
+ 			eventfd_ctx_put(ctx->trigger);
+-- 
+2.39.5
 
