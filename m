@@ -1,78 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-11940-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11941-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2511CB4A866
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 11:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC05B4A907
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 11:57:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cLf3z5Qc5z3cZx;
-	Tue,  9 Sep 2025 19:42:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cLfP82T8vz3cYg;
+	Tue,  9 Sep 2025 19:57:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::330"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757410927;
-	cv=none; b=gF2RIMawqTxsRVu2I/21E4WvORvlnu9P2jrxU0410AB8aPiL7O/WXkZxTJwVCV+7QY9eTu/NREwCLbJt5iL90HpKWsB0Z5EGDRAZykzCUzKX+4M64W7Hd0dqcygo1g0abVb7ipHXpVzUYoYY/o/bhVPU2aZNgnKjGdKOy3guuvGVaaY4GXQ6kK2m2sexw3JRxe5vYzNrFsnNRxBQyCD/B3hWLz1/dHhxMBAKYWk3RifxU6BZ8NPCi4NDoIsrZmhl2oSn8kVxFpiTGHYPSwG1KoCHBUsYmxilRh+5AvSLXc1BNfmLm+qz4CBmyxsHCWrhJV7n/0cEHe3qvY91LEqYjA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757411820;
+	cv=none; b=Gu5nH1RQIQCeuUjk8VBuu0ngdKWdyEhvaVZOXwqw/zJPFRSOMLGzGIagmGE+kl0w0ERH/aREzunAZuHnijTIdi32U2U7qncs6lEroiaOCObO/HeC4w0IudZWHI9FCPvVHoxTUKABt30oqrrQMXUEaGM/9LsMx29rbriJnZTaeWt7murPAFQ1ThoGou+I9AL/HzhSA8GUC2ltSKXzSxUvTL0B7zOSmhKhAWR6exnqqWUS+BRwchDEaBd9cVitc81hrPpIdZgSC05bg1vzJwCHr8CQAh728xPjcxOtAFNU1Us/yInyxAquYx0P59XWB25GCXQhQAaQejfb/75LBnR4Cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757410927; c=relaxed/relaxed;
-	bh=SjRoDXFIQA5duWfB2MZCu0jToXiY+NtBhO/biBCm3yY=;
+	t=1757411820; c=relaxed/relaxed;
+	bh=v9v9HEY+peb6y/djARujyPjanSQs6bY1lozPYtVGaPg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cO6uirx4MkDiFz4+QGC7kqE2hAu90mHmxD1x/yv1UuHVcKlt6Di6g8sFxqtKQtLLK6TP2Ovr27dXdjRZh+WHSctJZWPMn7sFsqo2pxl/nwUleje+WoL6vOxy8ZcxQdc+9HJyHyAJ2t3ER8gAC5sHHDhEGJHOx7+/iGYcA98Z29RJKgkIzDAcz+ekSCJBKfYXC1/Nk9hOSfyzFs/PbtULjorkYa9FnbOG5pfJML4GHzTunWK/ZQpHBohtdUZKj25yZeP+FDu/R9xeHjRfshW+w89Qt6zOmKLSR1/gk67MIJcq2oLgXF33ryKCC2pR41vigyHTgLNklruc07KYJrPoVQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=eFz0SB+4; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+	 In-Reply-To:Content-Type; b=IQAbc7Q5igEBz3nmtOmlL3siS4z5y67qyyyEbglEYzt4IqONaGY1GN6bF/pe2Tmxi6fEl8Ln+Haq0H/gMPL9b5Zz5Gt+d2r8LS/2cMid9q4QzOYVpsEjxbMsgwFj5Mwo5EBQlUeJZjuwwvwtA6E30IR7XsvjR5+MSvSMe6DWe2cdMopNAv/q1eBtc2QLW4mYvIW0tbsbLJRlyD3YjogQWxxJzq+NsSYJUr501pJ+50PHTLqSFUcE/3w7ia8W6EZZe91XmlymdaoW1YwqHck+649Mgh6NHLT3YlQ4jkj3ipkIZVFVcY1xueDW+md+Y6UAW5O44HAR+zIQZ6l4VYl3qw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ac/kHH8r; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ha+caV2k; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=eFz0SB+4;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ac/kHH8r;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ha+caV2k;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLf3y4ZYsz3cZs
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 19:42:06 +1000 (AEST)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-45de60d39b7so13401555e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Sep 2025 02:42:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1757410924; x=1758015724; darn=lists.ozlabs.org;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SjRoDXFIQA5duWfB2MZCu0jToXiY+NtBhO/biBCm3yY=;
-        b=eFz0SB+4dr7QQ+ZmeOezGAwydsYa0Y5UlyUozWVWmvcx20jCQ6AAjW1+hXmCOArVDs
-         fkdUj55Q6iAqDA3Gql3U9LzyvsOzBSmplFO6d3NpY8gPQ50ZAEYgZ1g8Ucl2jgieFFiA
-         hWVU5rK+yRkABtWZ40vFmcR+5mD2e534QmHMadKYblcubL+x3ikMND1DYWLJZXTbbykm
-         v311d5yG0rtBFbnF2rXhWOILsAswV3FSPVB5TrAsu6MFfL0Xv7jvFtw1lt4a774ESu9l
-         BCEmLyWHsXbumDM3h/pbmhOeKK/gMQoLOJx0BzZcbj62LeGnwFTynil9VT+LiZ9yddki
-         IGlA==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLfP71Znfz3cBW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 19:56:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757411814;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=v9v9HEY+peb6y/djARujyPjanSQs6bY1lozPYtVGaPg=;
+	b=ac/kHH8r1sVe+RBCoToSvL/fQysUj8LI4vc4ur0SUBe0BHFfgBKjvraqWf995bJwnQM7G5
+	0tTfPWUZH5abu+xWAOIChwG8SfJmug1WZeQJ+ZcFPE7QJvfvjawQb9La22Xdq83Fy8R1Z4
+	c1ZMfAQLPJIu0M6NbC6dmWWGc32HDKs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757411815;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=v9v9HEY+peb6y/djARujyPjanSQs6bY1lozPYtVGaPg=;
+	b=ha+caV2khVHWD4TRHRSnLzPt33NQe0kf9QGBfRPP6blxMRDrxnUueYGScF7nyfBevPR5Dr
+	4jgGkotour3d+lw3lSpUvnxl3SecsC+68D5iG//5kzZt/g2nC37Kv7oS0efK4fpr+y9mNF
+	3KHIvZydVcKjurGmroWdE+Ce5nHJzI4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-82-9dRFxlTEOiG4nj5CdlHgHQ-1; Tue, 09 Sep 2025 05:56:53 -0400
+X-MC-Unique: 9dRFxlTEOiG4nj5CdlHgHQ-1
+X-Mimecast-MFC-AGG-ID: 9dRFxlTEOiG4nj5CdlHgHQ_1757411812
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45b99c18484so22904065e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Sep 2025 02:56:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757410924; x=1758015724;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SjRoDXFIQA5duWfB2MZCu0jToXiY+NtBhO/biBCm3yY=;
-        b=tDJ9O3yV/4rNunoZx1wbplPTRvojHJBiHDVs8RHzrmHL7bocTuB/YnmfxxTZJOYHgl
-         tGOQx8wJLFssn6G7NqUIA/ozkVZLh6/A4ZbE9jEHZ/CReavCyjkm6VNGRb+TfQROf8/F
-         o3VVqrBGXYfACcgoBCBshQSQhK7a3AFz9JetDtAKlTz0WcHdYTCphP9UGcPxG9/oXo8L
-         OzvjZ/pgjBb9VtDNBTqw8mLsn/vC22VMWQpH7EUPriMta5dE7z4DtrQ4K4JR6Qqkmqlj
-         DRea9gDtK+Oh57gU6393YmtvgaELGzFa+Af6wLbkAUxOodrm+vvWje9I88SOps8XsqBT
-         S+kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWfA2N/OalB1EFu/4PBel1g1vhEZizXSjPHaI2Rbh4FgBHxmpX1C7cIha2bKH+eEuVwDZ5a7tkZLodkYn0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwLHIhnD2SbCfa6d+erELSDgChyJhK4p8DKAXSzOASEzHLGoDwt
-	AzWIJL4Fp1q7Epaq1iSszpi3/VuzRvlJOnCDbdWZ5cD2IuWk89KLgsuMlX4d4pCUGN0=
-X-Gm-Gg: ASbGncsjVNNSF+hRDBPEueXg2QiJRTyYVa5xavab3TS5BJI+TsDOG/w9uUNQ7vjC2yV
-	oidvlyyL5CWp/mygPQY/zCpamUY35/YmRenlVh53aFVBRzpiLyO4PFU503g4oRCMJjmtHkQEVKh
-	ZnNLKtvBM9OBIWHL4HcfRLUhc4KZiSJzaaKbv6lDaiTErX83qHDP5I/lY0ZW5by9xXUTpFAUInQ
-	TtHHJ2iZX9PjtPNDMpT062E0LMuidYqHTU+7ujDLZfYsL1kt9IJQTanqcywhYBabnFYTCS4qLw+
-	Q6jTWBBHFBrFdA5sXSDsMieeixZEwVoOQ6hD6pIenquzfQOInnWgQZRRwm235NoLClqe0xveun1
-	EytdQwZvisxrZTtSZVQ2MtCvs0s3JA+RYCnrZFzDlPB7h2oqmt5BK0PYqk1KthVCOF7wOihPz02
-	Jc5nUK3eBKv0iLMI/RDTkYIhIlC1+J84SsxCO+CuThl/Ht07qIj5IJCiQ=
-X-Google-Smtp-Source: AGHT+IENj+1E2T8r/gDXDQF+CsCcmRvQT/1w4yxsS7gi6iQW38MFrgfpZ1CxcgavO4g+sqDlHTXLsg==
-X-Received: by 2002:a05:6000:2c0d:b0:3e7:441e:c9e1 with SMTP id ffacd0b85a97d-3e7441ecde8mr6021132f8f.18.1757410923604;
-        Tue, 09 Sep 2025 02:42:03 -0700 (PDT)
-Received: from ?IPV6:2003:e5:873d:be00:c26:b971:1ba7:9d8b? (p200300e5873dbe000c26b9711ba79d8b.dip0.t-ipconnect.de. [2003:e5:873d:be00:c26:b971:1ba7:9d8b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e752238832sm1864553f8f.31.2025.09.09.02.42.02
+        d=1e100.net; s=20230601; t=1757411812; x=1758016612;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v9v9HEY+peb6y/djARujyPjanSQs6bY1lozPYtVGaPg=;
+        b=pkKqXT2H4p5k1ZRIwwNAbSjsuJ0QFLcFmFOxGCWRsBUfaFnVDZUrGMMuu8W+6KwqKU
+         ifciuk2GvFPx3P11gnSP7vtEXNQhgn1cAr3CMNCQlHbBsXDmOwQXnJqtk3km2pbFsBSQ
+         i4Y8RR904z4Izq/9XLRp1rmU8BU1bxZ9LFqf/piK5ZZ0nsBrMFrQl3J8yJebnHh+Z8hb
+         XgY3r28UUqTANfYFEo21FKxcySjrKd8YAh0X964pvjTwDmQCHFNfic/zhcqFiA5ILwRF
+         HlvRxBNA4Di0Jle33ZARsSXqWPh86smuMFTMP0UQb4kCJzUphjKdspTIKtnmwZaIQP9M
+         NAvg==
+X-Forwarded-Encrypted: i=1; AJvYcCWTFruNOHb5dFHM/XLGLdJFs4LLrTUpWAEFihxkt6+Rv3Ryihb2tLm2m2x/PfYCnaEnxM9yH8E7hPLu35s=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzFCdvyFt0dIYX0wIldI8hyagdsHbNuyQHzqVB8GSLAzf3pkgGD
+	PyCl2jg13Cc04gf9zBfMD8yl3aDQvYACqCl90aSoDsr79ohpoL/4ijrH4HvoSwcM44KiJi9n1iD
+	h1gux2qaXkitQSvJxkMWoc6Udokn4VDyr/W60QPdCIHZvawQJHNPgVvR0adSFmWP350o=
+X-Gm-Gg: ASbGncvfAbjBFatDNsNNuPMk1kt8MlDydTlb/8h0sqszNwkvW30eiyhGsecudWh3GiF
+	XaCSZpjblrg9XOU8JRZzuywa1I/Tewr1VsgS//XLx2BJqrByMTnsBUyiOKTCy8Gr9FYD3iMTImp
+	hKMReK77dl2kUpd8/YDpuZzbZroPkAtTWE+1H1Y72Dmw0vdwY7sJXfDTTmQPgrGHSipkyyxOHex
+	G8EYznOWvY71vPFxF0x9Xq3zaZExQMPkewysljdB9E4ArMmAyVhV87+3J/cuQBvbOkNx1/Wxz3U
+	qppEF48LTYr7kCQhFxFNYmBcULFZM0XmMEE78PSK94NL/t+t5ph4p5UBRBR+zoWbmiQZt0LDdOq
+	sFjf5qSL7+yQCdpwMoa7g82g7NBpij+s2Y6Ob0HcGo7gATM0K9k752RrItjv+6q+qgm0=
+X-Received: by 2002:a05:600c:3b83:b0:450:6b55:cf91 with SMTP id 5b1f17b1804b1-45de3c20088mr82989885e9.6.1757411811931;
+        Tue, 09 Sep 2025 02:56:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxA/lg+jOMLOS5VKnviegUlnV1FAVtarDrgFAYvQcjN5JtjPJvVcivfNI/KeNLfzLwRHX8LA==
+X-Received: by 2002:a05:600c:3b83:b0:450:6b55:cf91 with SMTP id 5b1f17b1804b1-45de3c20088mr82989315e9.6.1757411811384;
+        Tue, 09 Sep 2025 02:56:51 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f23:9c00:d1f6:f7fe:8f14:7e34? (p200300d82f239c00d1f6f7fe8f147e34.dip0.t-ipconnect.de. [2003:d8:2f23:9c00:d1f6:f7fe:8f14:7e34])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45df16b2971sm5934435e9.7.2025.09.09.02.56.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Sep 2025 02:42:03 -0700 (PDT)
-Message-ID: <a23237ea-5b29-402f-850c-743e106e5f7c@suse.com>
-Date: Tue, 9 Sep 2025 11:42:01 +0200
+        Tue, 09 Sep 2025 02:56:50 -0700 (PDT)
+Message-ID: <57f49b72-2126-48f0-a4ef-4b138bd0bead@redhat.com>
+Date: Tue, 9 Sep 2025 11:56:47 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,7 +106,8 @@ Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 4/7] x86/xen: support nested lazy_mmu sections (again)
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+To: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -96,8 +115,7 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
  Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
@@ -112,187 +130,160 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
 References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
  <20250908073931.4159362-5-kevin.brodsky@arm.com>
+ <aa28c1a7-82fc-42af-9904-a4d4db078a19@redhat.com>
+ <360712fa-f7a0-4674-acc4-76f79141fe4f@suse.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <360712fa-f7a0-4674-acc4-76f79141fe4f@suse.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: CnGZSiOgYP4FRMCXhq_DizGcFtOYF08NQ4AdRLY2MwA_1757411812
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20250908073931.4159362-5-kevin.brodsky@arm.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------6t70nAkYkpQ5fhIc00dD9qVa"
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------6t70nAkYkpQ5fhIc00dD9qVa
-Content-Type: multipart/mixed; boundary="------------0NiQUpv1CWC70bbdwQmMvvwT";
- protected-headers="v1"
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
-Message-ID: <a23237ea-5b29-402f-850c-743e106e5f7c@suse.com>
-Subject: Re: [PATCH v2 4/7] x86/xen: support nested lazy_mmu sections (again)
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908073931.4159362-5-kevin.brodsky@arm.com>
-In-Reply-To: <20250908073931.4159362-5-kevin.brodsky@arm.com>
+On 09.09.25 11:37, Jürgen Groß wrote:
+> On 09.09.25 11:13, David Hildenbrand wrote:
+>> On 08.09.25 09:39, Kevin Brodsky wrote:
+>>> Commit 49147beb0ccb ("x86/xen: allow nesting of same lazy mode")
+>>> originally introduced support for nested lazy sections (LAZY_MMU and
+>>> LAZY_CPU). It later got reverted by commit c36549ff8d84 as its
+>>> implementation turned out to be intolerant to preemption.
+>>>
+>>> Now that the lazy_mmu API allows enter() to pass through a state to
+>>> the matching leave() call, we can support nesting again for the
+>>> LAZY_MMU mode in a preemption-safe manner. If xen_enter_lazy_mmu() is
+>>> called inside an active lazy_mmu section, xen_lazy_mode will already
+>>> be set to XEN_LAZY_MMU and we can then return LAZY_MMU_NESTED to
+>>> instruct the matching xen_leave_lazy_mmu() call to leave
+>>> xen_lazy_mode unchanged.
+>>>
+>>> The only effect of this patch is to ensure that xen_lazy_mode
+>>> remains set to XEN_LAZY_MMU until the outermost lazy_mmu section
+>>> ends. xen_leave_lazy_mmu() still calls xen_mc_flush()
+>>> unconditionally.
+>>>
+>>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>>> ---
+>>>    arch/x86/include/asm/paravirt.h       |  6 ++----
+>>>    arch/x86/include/asm/paravirt_types.h |  4 ++--
+>>>    arch/x86/xen/mmu_pv.c                 | 11 ++++++++---
+>>>    3 files changed, 12 insertions(+), 9 deletions(-)
+>>>
+>>> diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
+>>> index 65a0d394fba1..4ecd3a6b1dea 100644
+>>> --- a/arch/x86/include/asm/paravirt.h
+>>> +++ b/arch/x86/include/asm/paravirt.h
+>>> @@ -529,14 +529,12 @@ static inline void arch_end_context_switch(struct
+>>> task_struct *next)
+>>>    #define  __HAVE_ARCH_ENTER_LAZY_MMU_MODE
+>>>    static inline lazy_mmu_state_t arch_enter_lazy_mmu_mode(void)
+>>>    {
+>>> -    PVOP_VCALL0(mmu.lazy_mode.enter);
+>>> -
+>>> -    return LAZY_MMU_DEFAULT;
+>>> +    return PVOP_CALL0(lazy_mmu_state_t, mmu.lazy_mode.enter);
+>>>    }
+>>>    static inline void arch_leave_lazy_mmu_mode(lazy_mmu_state_t state)
+>>>    {
+>>> -    PVOP_VCALL0(mmu.lazy_mode.leave);
+>>> +    PVOP_VCALL1(mmu.lazy_mode.leave, state);
+>>>    }
+>>>    static inline void arch_flush_lazy_mmu_mode(void)
+>>> diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/
+>>> paravirt_types.h
+>>> index bc1af86868a3..b7c567ccbf32 100644
+>>> --- a/arch/x86/include/asm/paravirt_types.h
+>>> +++ b/arch/x86/include/asm/paravirt_types.h
+>>> @@ -45,8 +45,8 @@ typedef int lazy_mmu_state_t;
+>>>    struct pv_lazy_ops {
+>>>        /* Set deferred update mode, used for batching operations. */
+>>> -    void (*enter)(void);
+>>> -    void (*leave)(void);
+>>> +    lazy_mmu_state_t (*enter)(void);
+>>> +    void (*leave)(lazy_mmu_state_t);
+>>>        void (*flush)(void);
+>>>    } __no_randomize_layout;
+>>>    #endif
+>>> diff --git a/arch/x86/xen/mmu_pv.c b/arch/x86/xen/mmu_pv.c
+>>> index 2039d5132ca3..6e5390ff06a5 100644
+>>> --- a/arch/x86/xen/mmu_pv.c
+>>> +++ b/arch/x86/xen/mmu_pv.c
+>>> @@ -2130,9 +2130,13 @@ static void xen_set_fixmap(unsigned idx, phys_addr_t
+>>> phys, pgprot_t prot)
+>>>    #endif
+>>>    }
+>>> -static void xen_enter_lazy_mmu(void)
+>>> +static lazy_mmu_state_t xen_enter_lazy_mmu(void)
+>>>    {
+>>> +    if (this_cpu_read(xen_lazy_mode) == XEN_LAZY_MMU)
+>>> +        return LAZY_MMU_NESTED;
+>>> +
+>>
+>> You mention above "preemption-safe manner" above, so I am wondering,
+>> what if we get preempted immediately after doing the this_cpu_read() and get
+>> scheduled on another CPU?
+>>
+> 
+> This should still be correct: preemption needs a context switch to happen,
+> so xen_start_context_switch() and xen_end_context_switch() are involved.
+> Those are dealing with this problem by doing the right thing in the old
+> and the new context.
 
---------------0NiQUpv1CWC70bbdwQmMvvwT
-Content-Type: multipart/mixed; boundary="------------4l0ODE8pZhEM8pbolfSSghyw"
+Thanks, that makes sense. Would be valuable to add that detail to the 
+patch description.
 
---------------4l0ODE8pZhEM8pbolfSSghyw
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+-- 
+Cheers
 
-T24gMDguMDkuMjUgMDk6MzksIEtldmluIEJyb2Rza3kgd3JvdGU6DQo+IENvbW1pdCA0OTE0
-N2JlYjBjY2IgKCJ4ODYveGVuOiBhbGxvdyBuZXN0aW5nIG9mIHNhbWUgbGF6eSBtb2RlIikN
-Cj4gb3JpZ2luYWxseSBpbnRyb2R1Y2VkIHN1cHBvcnQgZm9yIG5lc3RlZCBsYXp5IHNlY3Rp
-b25zIChMQVpZX01NVSBhbmQNCj4gTEFaWV9DUFUpLiBJdCBsYXRlciBnb3QgcmV2ZXJ0ZWQg
-YnkgY29tbWl0IGMzNjU0OWZmOGQ4NCBhcyBpdHMNCj4gaW1wbGVtZW50YXRpb24gdHVybmVk
-IG91dCB0byBiZSBpbnRvbGVyYW50IHRvIHByZWVtcHRpb24uDQo+IA0KPiBOb3cgdGhhdCB0
-aGUgbGF6eV9tbXUgQVBJIGFsbG93cyBlbnRlcigpIHRvIHBhc3MgdGhyb3VnaCBhIHN0YXRl
-IHRvDQo+IHRoZSBtYXRjaGluZyBsZWF2ZSgpIGNhbGwsIHdlIGNhbiBzdXBwb3J0IG5lc3Rp
-bmcgYWdhaW4gZm9yIHRoZQ0KPiBMQVpZX01NVSBtb2RlIGluIGEgcHJlZW1wdGlvbi1zYWZl
-IG1hbm5lci4gSWYgeGVuX2VudGVyX2xhenlfbW11KCkgaXMNCj4gY2FsbGVkIGluc2lkZSBh
-biBhY3RpdmUgbGF6eV9tbXUgc2VjdGlvbiwgeGVuX2xhenlfbW9kZSB3aWxsIGFscmVhZHkN
-Cj4gYmUgc2V0IHRvIFhFTl9MQVpZX01NVSBhbmQgd2UgY2FuIHRoZW4gcmV0dXJuIExBWllf
-TU1VX05FU1RFRCB0bw0KPiBpbnN0cnVjdCB0aGUgbWF0Y2hpbmcgeGVuX2xlYXZlX2xhenlf
-bW11KCkgY2FsbCB0byBsZWF2ZQ0KPiB4ZW5fbGF6eV9tb2RlIHVuY2hhbmdlZC4NCj4gDQo+
-IFRoZSBvbmx5IGVmZmVjdCBvZiB0aGlzIHBhdGNoIGlzIHRvIGVuc3VyZSB0aGF0IHhlbl9s
-YXp5X21vZGUNCj4gcmVtYWlucyBzZXQgdG8gWEVOX0xBWllfTU1VIHVudGlsIHRoZSBvdXRl
-cm1vc3QgbGF6eV9tbXUgc2VjdGlvbg0KPiBlbmRzLiB4ZW5fbGVhdmVfbGF6eV9tbXUoKSBz
-dGlsbCBjYWxscyB4ZW5fbWNfZmx1c2goKQ0KPiB1bmNvbmRpdGlvbmFsbHkuDQo+IA0KPiBT
-aWduZWQtb2ZmLWJ5OiBLZXZpbiBCcm9kc2t5IDxrZXZpbi5icm9kc2t5QGFybS5jb20+DQoN
-ClJldmlld2VkLWJ5OiBKdWVyZ2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+DQoNCg0KSnVl
-cmdlbg0K
---------------4l0ODE8pZhEM8pbolfSSghyw
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+David / dhildenb
 
------BEGIN PGP PUBLIC KEY BLOCK-----
-
-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
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
-
---------------4l0ODE8pZhEM8pbolfSSghyw--
-
---------------0NiQUpv1CWC70bbdwQmMvvwT--
-
---------------6t70nAkYkpQ5fhIc00dD9qVa
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmi/9mkFAwAAAAAACgkQsN6d1ii/Ey80
-SAgAiJl65x111bqE27qLDXwGxB+GHINdgm+I0ml8OZ3XtcdZfY5Bn8HD+AFRa9lSJsdUCcklLH88
-S/XTNIYun/KfdgyVrC8qkhA6upKCQ0rpmnpVnLRbhGIAfdA1IzOEVv2DasQOSUIW2FrnDMHnIM5j
-9+GsXLikB0D+M5Sev7kMHqH0v6VpecDZxbEu6/sLpb/M/HFFLElALOu7Hyc50kf9HcdEFGeRGWGS
-zeCAhFKiMqstJpK5XcvR/Gt9WVh9pNNhIyYYHfDfImt28tyiC90MYW+bnoykmn4S2v3yVQOo5qbZ
-Ejwt4zi2ksSSuPgsa0AerARvR/6wjZwPfi35XC3Gfw==
-=Ew/s
------END PGP SIGNATURE-----
-
---------------6t70nAkYkpQ5fhIc00dD9qVa--
 
