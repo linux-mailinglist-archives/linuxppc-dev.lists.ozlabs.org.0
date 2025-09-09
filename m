@@ -1,93 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-11964-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11965-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F77B4FD08
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 15:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8885CB4FE0B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Sep 2025 15:50:33 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cLl6D6r8Xz3dBn;
-	Tue,  9 Sep 2025 23:29:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cLlZb3npCz3cZH;
+	Tue,  9 Sep 2025 23:50:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757424564;
-	cv=none; b=T841YOJDdGnoV4NV8k2AtF3jrz17KZ5pwOUu1iL7f9xU2lTCCqKWVN1SQ4VgYWllNoZHzusv7VSR/tY01Q4kpkZW7jD6pJ5JOv9MgFGDdTW45k8oWEjhm3RASojaM+Hi5Lo69bunVV+h6fHj2G4YZp7G4Q3v6qEdUKuE3FWsIQ+Xs/3NXyji7hhddaAIv/3J7J4a7tPqRG1YuxOjAoB3X0IXgK4AvkyC8G4SPc4DTGeq8wAMbkmFbwAW+DcgiaxtJwYvqCH0BpoWsYy1Ezwz+ZFVXT7JlPq0ZHihmAxnXW7Dy4G4gfKnMiOBqdCylRShlrdEixFqTlPqzBr9wu7laA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757425831;
+	cv=none; b=ERDXdGQklBEjX0dI0zH1060HrAPfRusra7AasBf5cdcm3NYrLO/DxJkmc+hYGQyBpd2gmQgi1v7xBAVi3OW1pt3plXSqaFsmGvTu5IHow97QklWtYveb6ciLyZBzpIngUwwQMvDmpM6kzJyAMYeIIIGur8ezL9glZVkwB7d5Gb/0XUnlkg05e7iLO8spA3UBLJ8NS04zZ71NmPz/W5hVGeoG6/3Ut5YlGuo39BFF+NkHtuKCqlZ/tNLwebv9DTrDzY/KU6KNPn3qiLFDUEZFFqYGp2hFJ6/SjBrqnCG8isHgo4ZfULlnfj3hpp7f71y5L5yMc8aYXfcdvWz4Oy6WLA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757424564; c=relaxed/relaxed;
-	bh=a5WY4Vqi9EWQquRRNalN/tM7qFg/VUudcPB5gYO/EeU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jg6rz5kzJKlxtttxxH6zAtLh7B2jGdXTJmb9o4KBYrHLjfDsjyYsv1pyCG7aGUZBgqQnaApg6oxDB8p1GATBqC00miXNr5JnTmCp3BcbgA586JjFBqA/YoBYzz+2Z8XytmeCSo66VoEz/dNOALNEztdfKUlDY+Lx3nVX8iYidFQKH56zCw9tcDRXhtMQT0Y0rOrnQ4radi4PBo22L80qHMwSelrwGZ8eDyMJ9La1dJxkET7H6u+OqpdhkzUcEkWVo6pieh5+L6PJhpLTiEe5vgu/jPGxa3Cp+iYxA9iHFgwG9O1vn0m9wSbUSwnxs9l1m4SMPzgY+Y3QlIhy+OQkVA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jsG+qsUJ; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jsG+qsUJ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=leon@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cLl6D0T4Fz30DX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 23:29:24 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1B15F6022C;
-	Tue,  9 Sep 2025 13:29:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C94C4CEF5;
-	Tue,  9 Sep 2025 13:29:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757424561;
-	bh=iTHTFebdJnIM4qjuR28g9oSbyH9qTLhzazcpZ251F1w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jsG+qsUJK7ffZ/z3OPchqA7x0yHguyPrENB1hNDceKyevn8Y0UY23vIlJKogKoOAV
-	 mdweaZvTaV73xdPNvzuLcSgBCkcKJinDpA+AFFif7FJFzPv/yP0eacNr7loyHWPJQl
-	 oDjSg5lytMZ5QZs3srGmQGs2aZnhiieWxGdijxV8InWTHYLEbMLD5nMB8zsJzQ7Y5/
-	 n6m5X6Og8JA73w+GsQKGuK+FDZc8VM+Pv/R0ANeQAPkMSUkS/Z7Crlwiferwk3j/aY
-	 bciFy1DVrMp5bQJF6IrE2GwiFytJBqVGnuxPc5FU5fznd5ZzC/Ro1XzYA9SknCnnqK
-	 nq4YmMAH6+QaA==
-From: Leon Romanovsky <leon@kernel.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>,
-	kasan-dev@googlegroups.com,
-	Keith Busch <kbusch@kernel.org>,
-	linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH v6 16/16] nvme-pci: unmap MMIO pages with appropriate interface
-Date: Tue,  9 Sep 2025 16:27:44 +0300
-Message-ID: <be35a070a883286f0e401f6746334d84a7a42612.1757423202.git.leonro@nvidia.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1757423202.git.leonro@nvidia.com>
-References: <cover.1757423202.git.leonro@nvidia.com>
+	t=1757425831; c=relaxed/relaxed;
+	bh=ox3PrAh+a33VGhYFNAvHhhMpvTjkSB7kiqY6tVIvUkU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GS29F0mrJ4VxBpX5iZm1ZHzipy8z+l7cUT1TNqoOzRyHar0EEiu5wczKaRJPAGqsrzipMCkZpQvWcjS7FkLskDTo725+0D1/ulnvz6o85+81kHDvZV0dDO6XoGu60ZU/dUSWH9uwv5aeDYRM96iQlD+koyCch28YQ/Z2qers2/7tdkDBMrKcChQ44xhfSPV7/NzGL7TiATjAkSbi8sbLNfHPGNXmdQ7NTdYXkLFn9bwDZ74r8fxh+FwKQph48u4i91iTijomp1flrKl6fHC6jFvUKWUUsatHNQB76rhsaOs5aDSEESe3x0qDqpa247bv6yH62ODZm10o4lkf6MRGmA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cLlZZ1spNz305n
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Sep 2025 23:50:28 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0F1831424;
+	Tue,  9 Sep 2025 06:49:48 -0700 (PDT)
+Received: from [10.44.160.77] (e126510-lin.lund.arm.com [10.44.160.77])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E3393F694;
+	Tue,  9 Sep 2025 06:49:49 -0700 (PDT)
+Message-ID: <47ee1df7-1602-4200-af94-475f84ca8d80@arm.com>
+Date: Tue, 9 Sep 2025 15:49:46 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,72 +43,164 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
+To: David Hildenbrand <david@redhat.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org
+References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
+ <20250908073931.4159362-3-kevin.brodsky@arm.com>
+ <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
+ <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
+ <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
+ <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
+ <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Leon Romanovsky <leonro@nvidia.com>
+On 09/09/2025 13:54, David Hildenbrand wrote:
+> On 09.09.25 13:45, Alexander Gordeev wrote:
+>> On Tue, Sep 09, 2025 at 12:09:48PM +0200, David Hildenbrand wrote:
+>>> On 09.09.25 11:40, Alexander Gordeev wrote:
+>>>> On Tue, Sep 09, 2025 at 11:07:36AM +0200, David Hildenbrand wrote:
+>>>>> On 08.09.25 09:39, Kevin Brodsky wrote:
+>>>>>> arch_{enter,leave}_lazy_mmu_mode() currently have a stateless API
+>>>>>> (taking and returning no value). This is proving problematic in
+>>>>>> situations where leave() needs to restore some context back to its
+>>>>>> original state (before enter() was called). In particular, this
+>>>>>> makes it difficult to support the nesting of lazy_mmu sections -
+>>>>>> leave() does not know whether the matching enter() call occurred
+>>>>>> while lazy_mmu was already enabled, and whether to disable it or
+>>>>>> not.
+>>>>>>
+>>>>>> This patch gives all architectures the chance to store local state
+>>>>>> while inside a lazy_mmu section by making enter() return some value,
+>>>>>> storing it in a local variable, and having leave() take that value.
+>>>>>> That value is typed lazy_mmu_state_t - each architecture defining
+>>>>>> __HAVE_ARCH_ENTER_LAZY_MMU_MODE is free to define it as it sees fit.
+>>>>>> For now we define it as int everywhere, which is sufficient to
+>>>>>> support nesting.
+>>>> ...
+>>>>>> {
+>>>>>> + lazy_mmu_state_t lazy_mmu_state;
+>>>>>> ...
+>>>>>> - arch_enter_lazy_mmu_mode();
+>>>>>> + lazy_mmu_state = arch_enter_lazy_mmu_mode();
+>>>>>> ...
+>>>>>> - arch_leave_lazy_mmu_mode();
+>>>>>> + arch_leave_lazy_mmu_mode(lazy_mmu_state);
+>>>>>> ...
+>>>>>> }
+>>>>>>
+>>>>>> * In a few cases (e.g. xen_flush_lazy_mmu()), a function knows that
+>>>>>>      lazy_mmu is already enabled, and it temporarily disables it by
+>>>>>>      calling leave() and then enter() again. Here we want to ensure
+>>>>>>      that any operation between the leave() and enter() calls is
+>>>>>>      completed immediately; for that reason we pass
+>>>>>> LAZY_MMU_DEFAULT to
+>>>>>>      leave() to fully disable lazy_mmu. enter() will then
+>>>>>> re-enable it
+>>>>>>      - this achieves the expected behaviour, whether nesting
+>>>>>> occurred
+>>>>>>      before that function was called or not.
+>>>>>>
+>>>>>> Note: it is difficult to provide a default definition of
+>>>>>> lazy_mmu_state_t for architectures implementing lazy_mmu, because
+>>>>>> that definition would need to be available in
+>>>>>> arch/x86/include/asm/paravirt_types.h and adding a new generic
+>>>>>>     #include there is very tricky due to the existing header soup.
+>>>>>
+>>>>> Yeah, I was wondering about exactly that.
+>>>>>
+>>>>> In particular because LAZY_MMU_DEFAULT etc resides somewehere
+>>>>> compeltely
+>>>>> different.
+>>>>>
+>>>>> Which raises the question: is using a new type really of any
+>>>>> benefit here?
+>>>>>
+>>>>> Can't we just use an "enum lazy_mmu_state" and call it a day?
+>>>>
+>>>> I could envision something completely different for this type on s390,
+>>>> e.g. a pointer to a per-cpu structure. So I would really ask to stick
+>>>> with the current approach.
 
-Block layer maps MMIO memory through dma_map_phys() interface
-with help of DMA_ATTR_MMIO attribute. There is a need to unmap
-that memory with the appropriate unmap function, something which
-wasn't possible before adding new REQ attribute to block layer in
-previous patch.
+This is indeed the motivation - let every arch do whatever it sees fit.
+lazy_mmu_state_t is basically an opaque type as far as generic code is
+concerned, which also means that this API change is the first and last
+one we need (famous last words, I know). 
 
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
----
- drivers/nvme/host/pci.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+I mentioned in the cover letter that the pkeys-based page table
+protection series [1] would have an immediate use for lazy_mmu_state_t.
+In that proposal, any helper writing to pgtables needs to modify the
+pkey register and then restore it. To reduce the overhead, lazy_mmu is
+used to set the pkey register only once in enter(), and then restore it
+in leave() [2]. This currently relies on storing the original pkey
+register value in thread_struct, which is suboptimal and most
+importantly doesn't work if lazy_mmu sections nest. With this series, we
+could instead store the pkey register value in lazy_mmu_state_t
+(enlarging it to 64 bits or more).
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 2c6d9506b1725..f8ecc0e0f576d 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -682,11 +682,15 @@ static void nvme_free_prps(struct request *req)
- {
- 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
- 	struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
-+	unsigned int attrs = 0;
- 	unsigned int i;
- 
-+	if (req->cmd_flags & REQ_MMIO)
-+		attrs = DMA_ATTR_MMIO;
-+
- 	for (i = 0; i < iod->nr_dma_vecs; i++)
--		dma_unmap_page(nvmeq->dev->dev, iod->dma_vecs[i].addr,
--				iod->dma_vecs[i].len, rq_dma_dir(req));
-+		dma_unmap_phys(nvmeq->dev->dev, iod->dma_vecs[i].addr,
-+				iod->dma_vecs[i].len, rq_dma_dir(req), attrs);
- 	mempool_free(iod->dma_vecs, nvmeq->dev->dmavec_mempool);
- }
- 
-@@ -699,15 +703,19 @@ static void nvme_free_sgls(struct request *req)
- 	unsigned int sqe_dma_len = le32_to_cpu(iod->cmd.common.dptr.sgl.length);
- 	struct nvme_sgl_desc *sg_list = iod->descriptors[0];
- 	enum dma_data_direction dir = rq_dma_dir(req);
-+	unsigned int attrs = 0;
-+
-+	if (req->cmd_flags & REQ_MMIO)
-+		attrs = DMA_ATTR_MMIO;
- 
- 	if (iod->nr_descriptors) {
- 		unsigned int nr_entries = sqe_dma_len / sizeof(*sg_list), i;
- 
- 		for (i = 0; i < nr_entries; i++)
--			dma_unmap_page(dma_dev, le64_to_cpu(sg_list[i].addr),
--				le32_to_cpu(sg_list[i].length), dir);
-+			dma_unmap_phys(dma_dev, le64_to_cpu(sg_list[i].addr),
-+				le32_to_cpu(sg_list[i].length), dir, attrs);
- 	} else {
--		dma_unmap_page(dma_dev, sqe_dma_addr, sqe_dma_len, dir);
-+		dma_unmap_phys(dma_dev, sqe_dma_addr, sqe_dma_len, dir, attrs);
- 	}
- }
- 
--- 
-2.51.0
+I also considered going further and making lazy_mmu_state_t a pointer as
+Alexander suggested - more complex to manage, but also a lot more flexible.
 
+>>> Would that integrate well with LAZY_MMU_DEFAULT etc?
+>>
+>> Hmm... I though the idea is to use LAZY_MMU_* by architectures that
+>> want to use it - at least that is how I read the description above.
+>>
+>> It is only kasan_populate|depopulate_vmalloc_pte() in generic code
+>> that do not follow this pattern, and it looks as a problem to me.
+
+This discussion also made me realise that this is problematic, as the
+LAZY_MMU_{DEFAULT,NESTED} macros were meant only for architectures'
+convenience, not for generic code (where lazy_mmu_state_t should ideally
+be an opaque type as mentioned above). It almost feels like the kasan
+case deserves a different API, because this is not how enter() and
+leave() are meant to be used. This would mean quite a bit of churn
+though, so maybe just introduce another arch-defined value to pass to
+leave() for such a situation - for instance,
+arch_leave_lazy_mmu_mode(LAZY_MMU_FLUSH)?
+
+>
+> Yes, that's why I am asking.
+>
+> What kind of information (pointer to a per-cpu structure) would you
+> want to return, and would handling it similar to how
+> pagefault_disable()/pagefault_enable() e.g., using a variable in
+> "current" to track the nesting level avoid having s390x to do that?
+
+The pagefault_disabled approach works fine for simple use-cases, but it
+doesn't scale well. The space allocated in task_struct/thread_struct to
+track that state is wasted (unused) most of the time. Worse, it does not
+truly enable states to be nested: it allows the outermost section to
+store some state, but nested sections cannot allocate extra space. This
+is really what the stack is for.
+
+- Kevin
 
