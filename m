@@ -1,35 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-11994-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11995-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712CBB51B3D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 17:17:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1651AB51BDC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 17:38:09 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMPRx4ww2z3dGr;
-	Thu, 11 Sep 2025 01:17:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cMPwG3jCQz3dGl;
+	Thu, 11 Sep 2025 01:38:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757517421;
-	cv=none; b=LS6/r6pW6PrkvU28L2Zf9c7vwU/Se7GNpEtIAvKHlpK/3UDo/nWamXZaxVoJtxTF9kE8CkklTkHbZI5wtJVZqTTCyHW0bX/uTdbhguXxw1gz/9vfDZA2vtJ8vHr1wo/vM6FKNfOvr9VLI4cuxeNUUdsMfBko9CNrQF0j8W7FtA6/+4S1qioVvaCf9VMeVZmdWGyXVgshjX5NsHw5VfDFY/1lOaebhHi8cdPyOYrr8IKSPtOP6QPvBTmd0jALwqbNbEdGhuT8kSEVQj3Yb7H2h1Y/ihQ9ZPAxw2URtbRkXuK63YUCabBBZLCh/feYLLt0xP+q+l0QOThO/Ss3ml+wCg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757518686;
+	cv=none; b=KWp+s8mBpqsHuUZDY/68PfBB/nK/n5PqN8lhRNxyl80dlR2EK54TITZzwrRzBKB97NnXkhreAhrJ08BYlzMuVOYtd5i3aJeiqdzZeAJurw/66Ih2rnCizsf83t1+XJUPu4AdL9f6mxJEH3VJphsYTuD/zBEpg8onBeCDe7afDkeL+O5rPHHo6tRalxiaLT7T58QQ5CAGo2yWbdhNOBICfph8Re738fQYniVd2H6B6fw4G13upvHGd9OIw5gyIXJ33mPRieA6XW2ehqqQYdcmKhqTTGLbffKYx+2aBpLvo8rPAQaMYN/NFzXoobdmM+DREKQfW+91Mukc2u3XLmPZfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757517421; c=relaxed/relaxed;
-	bh=nmKEgDDDv5jHwALQIQWP1dQM1C3WliCJzN4vuebfqtc=;
+	t=1757518686; c=relaxed/relaxed;
+	bh=xC5R7eYl9Rwp0IenYxoNNT2Mrkq2ifbsmCTO4MCCq6w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BPuQb6kn00xmFhlVUDFhT7EPWCB002X1Ku6rC1cCOqN1qu6jm3+VTzdPAeeWG6FHAhzufQ9aPiARHaiyDEGuIvU9Kxm1VwjHwAl6K91XFEy3+kXZbGG3Dt4EnyPBMvh6ydbwCEIL2Ov06r5W+5xmKaPnz4bVH0rC/2vundyqYV0ySukJDPJNjj6S0MC5gLOnfu23Gi1DpWAhuShPiZQCaOnTZDGWfOSSoS6L4HEiPYXLmPWmOxzl1jolomwVNix1ZTO9N+mbP+dDUn0vyMvUm+6VE7LemJ4E7mDAK2Wq+gRjy5EPquiF1z1X0ZD0klQiMfHHIkkjb4r9ago4aePdsA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMPRw3pJBz3dFm
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 01:16:59 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AD96716F2;
-	Wed, 10 Sep 2025 08:16:18 -0700 (PDT)
-Received: from [10.57.67.148] (unknown [10.57.67.148])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 99AFA3F694;
-	Wed, 10 Sep 2025 08:16:20 -0700 (PDT)
-Message-ID: <9de08024-adfc-421b-8799-62653468cf63@arm.com>
-Date: Wed, 10 Sep 2025 17:16:18 +0200
+	 In-Reply-To:Content-Type; b=SpANrRdwSDrZs7lkUispxdanU8WzKTCF4kBcu0kTZkxObsO0oSduLJdJ1Rngk4D/L97p41+gWcdpiVexyIr5JHu4qHpfwGo/rJBSPpxcngWoyKqJCYcVwNeVrp0XJ0OKnYqIwp5Y6ZnSBklvlAmzXbPkYjUWUAv7JLndLYB0LY3rlsb2QDfK82ZNK4T/y07k3nr9qtfpAe5gfA9kby6RQpFT1jbe7aamkHmlxAipLIRkheXSemfQL7f/ZPeK69XIiX2+fUDXSdINyOiITTbCyLnU6PLWz2rARKX8+O/RPBkoxW0rbxPf2mFbhtvHbHxtJr6MMDlG17vb1bv1I4pFTg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eKMqzqh2; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eb7etqn9; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eKMqzqh2;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=eb7etqn9;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMPwF0XMtz3dDJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 01:38:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757518678;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xC5R7eYl9Rwp0IenYxoNNT2Mrkq2ifbsmCTO4MCCq6w=;
+	b=eKMqzqh2zsQ36w3mPs9dMI6+wm5PmBpcvBuUJ8+aiQd8+RcqOXtx3xd1XRNxLqOFr6UkhI
+	kkvNaGlycizo9PO/whuHE5HOQPDaeMKYXg9uZgzSqk76nQ587eRn1j2uVpCYZSASSYbQag
+	0kq59j5IzHGwNhV/3CQQSu3z+feygsw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1757518679;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xC5R7eYl9Rwp0IenYxoNNT2Mrkq2ifbsmCTO4MCCq6w=;
+	b=eb7etqn9YY7E2AKb2M6EMTSYUCKcb6cVClk2NYycoiL78Q/zLO8Xe0oND/Y2wTQsTdziOz
+	eyu6v8xpTizRXONfN0gcL9Pd9srovUvHqDE5k3oKYxWVwfSTIAatrKGAQG+HPbVdmXtEn6
+	AAVmZ2rgaN+QE1VShv9OhE0t4+n2TyA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-519-cmw-ETlOMyCpMZJysMosHg-1; Wed, 10 Sep 2025 11:37:55 -0400
+X-MC-Unique: cmw-ETlOMyCpMZJysMosHg-1
+X-Mimecast-MFC-AGG-ID: cmw-ETlOMyCpMZJysMosHg_1757518674
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-45a15f10f31so5031595e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 08:37:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757518674; x=1758123474;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xC5R7eYl9Rwp0IenYxoNNT2Mrkq2ifbsmCTO4MCCq6w=;
+        b=t783fN3yR9KwieH4mXAyV5Yj2ncv4CtDDAo2Kj38WZs/OOoGs2ey+RZ0UmsZ7/BErb
+         SCB7NfZ8n1dTopEJgJn1aa51aIIdRXihtEDhN0SvJYtVIlNTpDKxI7j9J5IgSQYe8dtw
+         iqz2J+1n5QO9FHPAxNcXH9ALL88MxdGE2WCSRpUFiFm533kMnzEg4UjSxCTxT+U2S4Do
+         AodfSDP04b4IHitcs7w/b3pc27jBAdKgRRukps03UtjYIP4YkoYya1K5ehqlyulQOx7Z
+         lrGkE9zWIBrldaIhC3vJFsIJ5rZst9fehoxqlW0UfxKqx1zsvNTWmSE2vPEqchHaP4Oe
+         52hw==
+X-Forwarded-Encrypted: i=1; AJvYcCUAaMuPQCemlZuk5cC+IPXpVWIeCUb8go966ghzOAj2L1Unk8ULosbpVm+Xyij++Lz0IpRbsKACrD2gGNk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxAKJROfxdHoTcZqNS2M0HkmUaHT4k7dCD/5nve4DNk9n86yc8N
+	H/wS2z0fHaa/3hrauJgWKc54YFs/c7UBvihwI5opYIv8SJGaQ3PuBE0vCE1lhONy69oBfHoeMY5
+	pwzsrG0A3uA1/b3pwBAic/qHc5HsoLSpRVV2tZ6cXhexFI8rRGm2wdJZ3y3JieYabmKo=
+X-Gm-Gg: ASbGncvEoTwOj9UwMYxeQlWszxEFMx1DtakDgfMmkCibS1KeInwi6OdYfRocICpZQit
+	WN0e/aTXiUPAgNqHxebOWlkx4ivVwpxGgrCzljLOIErdFshbpYovH0JLOVfgNNu/hYE4CXi+mem
+	x7b0pdwr3MDk6HLtH1JFEwaW+K7pqCQfiKaz+31tl1sydETrD5F9l2KagTjvBWiDqD2K92S7DfU
+	yMaIWQ0Rz/UiTHTE+87Hy/Idl+LFQDXJuKU2d0PyhVuRKeQr6GT4xtZ9VUuF/iR6AKAY3m6gdIw
+	6DkcANciVYG7EcE3uI7TMPzaKkqeb3HnHj8op0U7DRvSXQM7/Ufm42ITUe2awYbAAHpt28RFF3l
+	iY1KWA9e8debP3hvg3g8WfNBQil7oK1yeu4StR9hlTsNMc+FoI2DeNviiXkPn6XuslyY=
+X-Received: by 2002:a05:6000:400f:b0:3df:22a3:d240 with SMTP id ffacd0b85a97d-3e75e0f032cmr41444f8f.4.1757518674350;
+        Wed, 10 Sep 2025 08:37:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFSanGWB8lh0ls+MFHggdlE9XrwwjBOuob47gN7Go2sD22cOkG0a4ZQLy4lN4pGQUVx9DuyJw==
+X-Received: by 2002:a05:6000:400f:b0:3df:22a3:d240 with SMTP id ffacd0b85a97d-3e75e0f032cmr41388f8f.4.1757518673785;
+        Wed, 10 Sep 2025 08:37:53 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f17:9c00:d650:ab5f:74c2:2175? (p200300d82f179c00d650ab5f74c22175.dip0.t-ipconnect.de. [2003:d8:2f17:9c00:d650:ab5f:74c2:2175])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7521c9cdbsm7733009f8f.16.2025.09.10.08.37.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Sep 2025 08:37:53 -0700 (PDT)
+Message-ID: <ef343405-c394-4763-a79f-21381f217b6c@redhat.com>
+Date: Wed, 10 Sep 2025 17:37:51 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -45,7 +106,7 @@ Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
-To: David Hildenbrand <david@redhat.com>,
+To: Kevin Brodsky <kevin.brodsky@arm.com>,
  Alexander Gordeev <agordeev@linux.ibm.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Andreas Larsson <andreas@gaisler.com>,
@@ -77,212 +138,204 @@ References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
  <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
  <47ee1df7-1602-4200-af94-475f84ca8d80@arm.com>
  <29383ee2-d6d6-4435-9052-d75a263a5c45@redhat.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <29383ee2-d6d6-4435-9052-d75a263a5c45@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+ <9de08024-adfc-421b-8799-62653468cf63@arm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <9de08024-adfc-421b-8799-62653468cf63@arm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: irjdVG0aWOgJgpTyNYPSWxOxbWaD4VKPg44wrGb87lo_1757518674
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-+Mark Rutland
+> 
+> Somewhat, but in the regular case where enter() is called followed by
+> leave() there is really no complexity for the caller, just an extra
+> local variable.
+> 
+> There are complications where we want to exit lazy_mmu temporarily, as
+> in mm/kasan/shadow.c [1k], but this is in fact unavoidable. Chatting
+> with Mark Rutland, I realised that to truly support nested sections,
+> this must be handled in a special way in any case. To be clear, I am
+> referring to this situation:
+> 
+> __kasan_populate_vmalloc:
+>      apply_to_page_range:
+>          arch_enter_lazy_mmu_mode() {1}
+> 
+>          kasan_populate_vmalloc_pte:
+>              arch_leave_lazy_mmu_mode() {2}
+>              arch_enter_lazy_mmu_mode() {3}
+> 
+>          arch_leave_lazy_mmu_mode() {4}
+> 
+> With the approach this series takes, call {2} is made safe by passing a
+> special parameter (say LAZY_MMU_FLUSH) that forces lazy_mmu to be fully
+> exited - and call {3} will then re-enter lazy_mmu. This works regardless
+> of whether __kasan_populate_vmalloc() has been called with lazy_mmu
+> already enabled (i.e. calls {1} and {4} can be nested).
+> 
+> On the other hand, with a pagefault_disabled-like approach, there is no
+> way to instruct call {3} to fully exit lazy_mmu regardless of the
+> nesting level.
 
-On 09/09/2025 16:28, David Hildenbrand wrote:
->>>>>>> Can't we just use an "enum lazy_mmu_state" and call it a day?
->>>>>>
->>>>>> I could envision something completely different for this type on
->>>>>> s390,
->>>>>> e.g. a pointer to a per-cpu structure. So I would really ask to
->>>>>> stick
->>>>>> with the current approach.
+Sure there is, with a better API. See below. :)
+
+> 
+> It would be possible to make both approaches work by introducing a new
+> API, along the lines of:
+> - int arch_disable_save_lazy_mmu_mode() (the return value indicates the
+> nesting level)
+> - void arch_restore_lazy_mmu_mode(int state) (re-enter lazy_mmu at the
+> given nesting level)
+
+Yes, I think we really need a proper API.
+
+> 
+> This is arguably more self-documenting than passing LAZY_MMU_FLUSH in
+> call {2}. This API is however no simpler when using a
+> pagefault_disabled-like approach (and less consistent than when always
+> saving state on the stack).
+
+Yes, a proper API is warranted. In particular, thinking about the following:
+
+arch_enter_lazy_mmu_mode() {1}
+	arch_enter_lazy_mmu_mode() {2}
+
+	kasan_populate_vmalloc_pte:
+		arch_leave_lazy_mmu_mode() {3}
+		arch_enter_lazy_mmu_mode() {4}
+
+	arch_leave_lazy_mmu_mode() {5}
+arch_leave_lazy_mmu_mode() {6}
+
+
+Imagine if we have the following API instead:
+
+lazy_mmu_enable() {1}
+	lazy_mmu_enable() {2}
+
+	kasan_populate_vmalloc_pte:
+		lazy_mmu_pause() {3}
+		lazy_mmu_continue() {4}
+
+	lazy_mmu_disable() {5}
+lazy_mmu_disable() {6}
+
+
+I think it is crucial that after lazy_mmu_save/lazy_mmu_restore, no more 
+nesting must happen.
+
+Assume we store in the task_struct
+
+uint8_t lazy_mmu_enabled_count;
+bool lazy_mmu_paused;
+
+We can do things like
+
+a) Sanity check that while we are paused that we get no more 
+enable/disable requests
+b) Sanity check that while we are paused that we get no more pause requests.
+
+[...]
+
 >>
->> This is indeed the motivation - let every arch do whatever it sees fit.
->> lazy_mmu_state_t is basically an opaque type as far as generic code is
->> concerned, which also means that this API change is the first and last
->> one we need (famous last words, I know).
->
-> It makes the API more complicated, though. :)
+>> If LAZY_MMU_DEFAULT etc. are not for common code, then please
+>> maintain them for the individual archs as well, just like you do with the
+>> opaque type.
+> 
+> I see your point - having them defined in <linux/mm_types.h> could be
+> misleading. I just wanted to avoid all 4 architectures defining the same
+> macros. Maybe call them __LAZY_MMU_* to suggest they're not supposed to
+> be used in generic code?
 
-Somewhat, but in the regular case where enter() is called followed by
-leave() there is really no complexity for the caller, just an extra
-local variable.
+Maybe look into avoiding them completely :) Let's agree on the API first 
+and then figure out how to pass the information we need to pass.
 
-There are complications where we want to exit lazy_mmu temporarily, as
-in mm/kasan/shadow.c [1k], but this is in fact unavoidable. Chatting
-with Mark Rutland, I realised that to truly support nested sections,
-this must be handled in a special way in any case. To be clear, I am
-referring to this situation:
+[...]
 
-__kasan_populate_vmalloc:
-    apply_to_page_range:
-        arch_enter_lazy_mmu_mode() {1}
-
-        kasan_populate_vmalloc_pte:
-            arch_leave_lazy_mmu_mode() {2}
-            arch_enter_lazy_mmu_mode() {3}
-
-        arch_leave_lazy_mmu_mode() {4}
-
-With the approach this series takes, call {2} is made safe by passing a
-special parameter (say LAZY_MMU_FLUSH) that forces lazy_mmu to be fully
-exited - and call {3} will then re-enter lazy_mmu. This works regardless
-of whether __kasan_populate_vmalloc() has been called with lazy_mmu
-already enabled (i.e. calls {1} and {4} can be nested).
-
-On the other hand, with a pagefault_disabled-like approach, there is no
-way to instruct call {3} to fully exit lazy_mmu regardless of the
-nesting level.
-
-It would be possible to make both approaches work by introducing a new
-API, along the lines of:
-- int arch_disable_save_lazy_mmu_mode() (the return value indicates the
-nesting level)
-- void arch_restore_lazy_mmu_mode(int state) (re-enter lazy_mmu at the
-given nesting level)
-
-This is arguably more self-documenting than passing LAZY_MMU_FLUSH in
-call {2}. This API is however no simpler when using a
-pagefault_disabled-like approach (and less consistent than when always
-saving state on the stack).
-
-[1k]
-https://lore.kernel.org/all/0d2efb7ddddbff6b288fbffeeb10166e90771718.1755528662.git.agordeev@linux.ibm.com/
-
->
+>> Worse, it does not
+>>> truly enable states to be nested: it allows the outermost section to
+>>> store some state, but nested sections cannot allocate extra space. This
+>>> is really what the stack is for.
 >>
->> I mentioned in the cover letter that the pkeys-based page table
->> protection series [1] would have an immediate use for lazy_mmu_state_t.
->> In that proposal, any helper writing to pgtables needs to modify the
->> pkey register and then restore it. To reduce the overhead, lazy_mmu is
->> used to set the pkey register only once in enter(), and then restore it
->> in leave() [2]. This currently relies on storing the original pkey
->> register value in thread_struct, which is suboptimal and most
->
-> Can you elaborate why this is suboptimal? See below regarding the size
-> of task_struct.
+>> If it's really just 8 bytes I don't really see the problem. So likely
+>> there is
+>> more to it?
+> 
+> I suppose 8 extra bytes per task is acceptable, but some architectures
+> may want to add more state there.
 
-Suboptimal in the sense that we're allocating fixed space for each task
-that we are almost never using.
+Just for reference: we currently perform an order-2 allocation, 
+effectively leaving ~4KiB "unused".
 
->
->> importantly doesn't work if lazy_mmu sections nest.
->
-> Can you elaborate why it would be problematic with nesting (if we
-> would have a count
-> and can handle the transition from 0->1 and 1->0)?
+If there are any real such case on the horizon where we need to store 
+significantly more (in which case storing it on the stack might probably 
+also bad), please let me know.
 
-It doesn't work in that specific patch I linked - but yes it can be made
-to work if we have both an extra task_struct member to store the level
-of nesting *and* an extra thread_struct member to store the saved pkey
-register value (both of which are only used while in lazy_mmu).
+> 
+> The one case that is truly problematic (though not required at this
+> point) is where each (nested) section needs to store its own state. With
+> this series it works just fine as there is a lazy_mmu_state_t for each
+> section, however if we use task_struct/thread_struct there can be only
+> one member shared by all nested sections.
 
+Do we have a use case for that on the horizon? If so, I fully agree, we 
+have to store information per level. How/what information we have to 
+store would be another question.
 
->
->> With this series, we
->> could instead store the pkey register value in lazy_mmu_state_t
->> (enlarging it to 64 bits or more).
->
-> Yes.
->
->>
->> I also considered going further and making lazy_mmu_state_t a pointer as
->> Alexander suggested - more complex to manage, but also a lot more
->> flexible.
->>
->>>>> Would that integrate well with LAZY_MMU_DEFAULT etc?
->>>>
->>>> Hmm... I though the idea is to use LAZY_MMU_* by architectures that
->>>> want to use it - at least that is how I read the description above.
->>>>
->>>> It is only kasan_populate|depopulate_vmalloc_pte() in generic code
->>>> that do not follow this pattern, and it looks as a problem to me.
->>
->> This discussion also made me realise that this is problematic, as the
->> LAZY_MMU_{DEFAULT,NESTED} macros were meant only for architectures'
->> convenience, not for generic code (where lazy_mmu_state_t should ideally
->> be an opaque type as mentioned above). It almost feels like the kasan
->> case deserves a different API, because this is not how enter() and
->> leave() are meant to be used. This would mean quite a bit of churn
->> though, so maybe just introduce another arch-defined value to pass to
->> leave() for such a situation - for instance,
->> arch_leave_lazy_mmu_mode(LAZY_MMU_FLUSH)?
->
-> The discussion made me realize that it's a bit hack right now :)
->
-> If LAZY_MMU_DEFAULT etc. are not for common code, then please
-> maintain them for the individual archs as well, just like you do with the
-> opaque type.
+-- 
+Cheers
 
-I see your point - having them defined in <linux/mm_types.h> could be
-misleading. I just wanted to avoid all 4 architectures defining the same
-macros. Maybe call them __LAZY_MMU_* to suggest they're not supposed to
-be used in generic code?
+David / dhildenb
 
->
->>
->>>
->>> Yes, that's why I am asking.
->>>
->>> What kind of information (pointer to a per-cpu structure) would you
->>> want to return, and would handling it similar to how
->>> pagefault_disable()/pagefault_enable() e.g., using a variable in
->>> "current" to track the nesting level avoid having s390x to do that?
->>
->> The pagefault_disabled approach works fine for simple use-cases, but it
->> doesn't scale well. The space allocated in task_struct/thread_struct to
->> track that state is wasted (unused) most of the time.
->
-> I'm not sure that's a concern. Fitting an int into existing holes
-> should work
-> and even another 64bit (8byte )...
->
-> I just checked with pahole using the Fedora config on current
-> mm-unstable.
->
->
-> /* size: 9792, cachelines: 153, members: 276 */
-> /* sum members: 9619, holes: 20, sum holes: 125 */
-> /* sum bitfield members: 85 bits, bit holes: 2, sum bit holes: 43 bits */
-> /* padding: 32 */
-> /* member types with holes: 4, total: 6, bit holes: 2, total: 2 */
-> /* paddings: 6, sum paddings: 49 */
-> /* forced alignments: 12, forced holes: 2, sum forced holes: 60 */
->
-> Due to some "arch_task_struct_size" we might actually allocate more
-> space.
->
->
-> Staring at my live system:
->
-> $ sudo slabinfo
-> Name                   Objects Objsize           Space Slabs/Part/Cpu 
-> O/S O %Fr %Ef Flg
-> ...
-> task_struct               1491   12376           24.8M     
-> 721/25/37    2 3   3  74
->
->
-> I am not sure if even an additional 8byte would move the needle here.
->
->
-> Worse, it does not
->> truly enable states to be nested: it allows the outermost section to
->> store some state, but nested sections cannot allocate extra space. This
->> is really what the stack is for.
->
-> If it's really just 8 bytes I don't really see the problem. So likely
-> there is
-> more to it? 
-
-I suppose 8 extra bytes per task is acceptable, but some architectures
-may want to add more state there.
-
-The one case that is truly problematic (though not required at this
-point) is where each (nested) section needs to store its own state. With
-this series it works just fine as there is a lazy_mmu_state_t for each
-section, however if we use task_struct/thread_struct there can be only
-one member shared by all nested sections.
-
-- Kevin
 
