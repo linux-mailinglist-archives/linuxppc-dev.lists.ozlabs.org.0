@@ -1,75 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-12012-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12013-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB71B52254
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 22:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9178CB5225C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 22:34:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMXSl3QP5z3dVB;
-	Thu, 11 Sep 2025 06:33:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cMXVD2ld7z3dVR;
+	Thu, 11 Sep 2025 06:34:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=116.203.167.152
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757536391;
-	cv=none; b=TK0XDxL8R4ImBML+0vyHbGpLDeVC/PGP0sUC6nIusYrSPf2o6hxd6M4mUuDjY5Bu3rlVD/SdUWApQo/Z3O/eDefEpJ+G6BOPP50phnJXM4zi+alJf3Xqi9Bllifg+km4a91iH7/rAbo1spWvdFFT2h/ogUy/6hlwBFOzt3BRJRFRed1AFiwehVFEbrBNXmK7J/bqK7Rqk995tB+Nt+4NsnOQ5XvpfEzaTqHzSSQqmhfFX36g3Eblw2GDR12jUlBqLskmjnDDzaDwG+bQvpZXwoupyAVoGMhcXzl5lYwuUGLn6THJg8VlgtWm9Q18pe5Mgsq5ShvYaA4HHgp9FaVQtg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757536468;
+	cv=none; b=QzNAFBIjUdwDg6UgsW9L/l/9QYaV1tTwaf5pl32vL7tdGR1LOjSD514czhILkjOjlEk/fG+MLMsp+UI8ojx9rS1xqKJiBQ+A6TrGB91ZWs/RVY0F3qkcWkh8YPNERWDFpsiA04QXEYB6ashi5uFW+T1ABLf/LJR2L6Xb6n9Vr7bT10f4hra4t+S78qO15Kz0ROhwJ/b3pSrhxgTsrOB4So5IFIploJF1y/Pb9hT7ynEuND7fMyKjoHFACoKYln9ph3nyEVwOM+Yfa15dvDPF2kJObcpTo0CUpCm3uT/nfBkbqJHBsKGEyciPhXSNB9SVxP1xL5MFLSVmnMMbjeiaWg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757536391; c=relaxed/relaxed;
-	bh=Xn32CgfsCdcgiZc5xVsldvxbovwbLiKF6pDU6aeqlX8=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=e9wp74Si4Q9H8mDiuTJ272ixdyJC7Yv0sebBiTmKwPDuBgKG1BIWtV5uUqQqRNZJDvLgEeNSJKWQ1g1BDAVnVWpVoPayZ4HjBM9JLl6eZ3WMbRJ46Eor1B7RG9Q7xcsY2vXqxBKtK467c+h3t5JwwI2PcdojO1aKVvqYV66OoalYck0vu6pcS+YTBtkA9xCxWer41CV+deyHfaCr9+7APoGyTdT04AzU1cM3VX9Ql96lSaF6D8ogYOKxWKSyXo94jbM/XRNo8PMQENCHye/oPgjGM69J69Ixw5kz4dj7zc/PkFZcBJpOB74x0Xno1kjaJHpB8L/Drhe2FkXVaLifLQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=permerror (client-ip=116.203.167.152; helo=lithops.sigma-star.at; envelope-from=richard@nod.at; receiver=lists.ozlabs.org) smtp.mailfrom=nod.at
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=nod.at
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Unknown mechanism found: ipv4:195.201.40.130) smtp.mailfrom=nod.at (client-ip=116.203.167.152; helo=lithops.sigma-star.at; envelope-from=richard@nod.at; receiver=lists.ozlabs.org)
-Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1757536468; c=relaxed/relaxed;
+	bh=BWJUP15r3n8/MjXCZffpwVy4cTnE3JTu8kOjPPspzQs=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Fl+Z+WqdROnNSvMiwfNY1Z4NkU4iMlrkwZnevBONtp7LfKwYfu/aE3ZK48s0iFsGAutpFtUhTyBf6N4nyXDElitAQg1DgkEeRuk+S+TsKfJFFQbcXhHT/ZfWAhbGUBTzXEbjGBYaPGddPmGnC/ILpm36BmoRh+52+vCqQBpyfpJYMFHGoNgFcU7UUQ1/J4+x+9cFwR7LpFEzxljj+6dopRazEuvP59vUEgynj+RaXlTj55iTvkuZX+QJG2IWYzjLDx49xIoNPsuPmYCwrm9YyAHteev7HRAglz/16f4nZmSlVDGiF1gheyhcEQ84gAPNVTHB2iqejqtQlCHel1Pz6Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=4u2QK7Y4; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=VHkPU86z; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=4u2QK7Y4;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=VHkPU86z;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMXSk37YBz3dT6
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 06:33:09 +1000 (AEST)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 511D5CE34D;
-	Wed, 10 Sep 2025 22:33:07 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id aSKreuvdlGXI; Wed, 10 Sep 2025 22:33:06 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 4BFD3CE34E;
-	Wed, 10 Sep 2025 22:33:06 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id YO9RM-IU3T_L; Wed, 10 Sep 2025 22:33:06 +0200 (CEST)
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 082B5CE34D;
-	Wed, 10 Sep 2025 22:33:06 +0200 (CEST)
-Date: Wed, 10 Sep 2025 22:33:05 +0200 (CEST)
-From: Richard Weinberger <richard@nod.at>
-To: Dave Hansen <dave@sr71.net>
-Cc: Arnd Bergmann <arnd@arndb.de>, ksummit <ksummit@lists.linux.dev>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
-	linux-mips <linux-mips@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, imx <imx@lists.linux.dev>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Lucas Stach <l.stach@pengutronix.de>, 
-	Linus Walleij <linus.walleij@linaro.org>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, 
-	Ankur Arora <ankur.a.arora@oracle.com>, 
-	David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, vbabka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>, 
-	heiko <heiko@sntech.de>, 
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
-	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>, 
-	Andreas Larsson <andreas@gaisler.com>
-Message-ID: <640041197.22387.1757536385810.JavaMail.zimbra@nod.at>
-In-Reply-To: <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <497308537.21756.1757513073548.JavaMail.zimbra@nod.at> <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMXVC1b0Bz3dV6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 06:34:27 +1000 (AEST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1757536454;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BWJUP15r3n8/MjXCZffpwVy4cTnE3JTu8kOjPPspzQs=;
+	b=4u2QK7Y4xS6JHeik30JB/GnrUN8xYNIDP6DiFVjfq/omGy9itJpsopIUwNK/9/fjvhNpbO
+	Mk171iZmCEMsphtYhyEw63SgMWji0SlRDb27yjJbDm6MbASSmvPf2TUheNOsMgrDZCiE6y
+	YCnyRLQkwhm1gZlsPNMck7099jZNMyubEnKMbmk3lwSyZlwAxeUwEQzZmgCgTCr5c2AYHK
+	Y/E15WlQmg9OvW6Xk1t+fp7xyCQtWVeyVBB7wNIAtXn+dRw4DIbmwDJTCInnEJbmC7nXdc
+	w9gthwATNmpQy7qEg+CofNOfBpy35q/DzQxgTrtv7/gdHZpi5sGtrLmRHzJdvA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1757536454;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BWJUP15r3n8/MjXCZffpwVy4cTnE3JTu8kOjPPspzQs=;
+	b=VHkPU86zocAfXvfPyLQ30cXywQDKQ5ukn+GdpWbASXj3o4C7v4KOvtagO6a9S/nqHO62Q3
+	+spOKOIoGDiDl1Bw==
+To: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+ oleg@redhat.com, kees@kernel.org, luto@amacapital.net, wad@chromium.org,
+ mchauras@linux.ibm.com, deller@gmx.de, ldv@strace.io, macro@orcam.me.uk,
+ charlie@rivosinc.com, akpm@linux-foundation.org, bigeasy@linutronix.de,
+ ankur.a.arora@oracle.com, sshegde@linux.ibm.com, naveen@kernel.org,
+ thomas.weissschuh@linutronix.de, Jason@zx2c4.com, peterz@infradead.org,
+ namcao@linutronix.de, kan.liang@linux.intel.com, mingo@kernel.org,
+ oliver.upton@linux.dev, mark.barnett@arm.com, atrajeev@linux.vnet.ibm.com,
+ rppt@kernel.org, coltonlewis@google.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [RFC V2 0/8] Generic IRQ entry/exit support for powerpc
+In-Reply-To: <20250908210235.137300-2-mchauras@linux.ibm.com>
+References: <20250908210235.137300-2-mchauras@linux.ibm.com>
+Date: Wed, 10 Sep 2025 22:34:13 +0200
+Message-ID: <87ikhqrqre.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,35 +78,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [195.201.40.130]
-X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF141 (Linux)/8.8.12_GA_3809)
-Thread-Topic: Reaching consensus on CONFIG_HIGHMEM phaseout
-Thread-Index: qX92QwLBi0un/69XQpQP6tb4aScRlQ==
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,T_SPF_PERMERROR
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Dave,
+On Tue, Sep 09 2025 at 02:32, Mukesh Kumar Chaurasiya wrote:
+> Adding support for the generic irq entry/exit handling for PowerPC. The
+> goal is to bring PowerPC in line with other architectures that already
+> use the common irq entry infrastructure, reducing duplicated code and
+> making it easier to share future changes in entry/exit paths.
+>
+> This is slightly tested on ppc64le.
+>
+> The performance benchmarks from perf bench basic syscall are below:
+>
+> | Metric     | W/O Generic Framework | With Generic Framework | Improvement |
+> | ---------- | --------------------- | ---------------------- | ----------- |
+> | Total time | 0.885 [sec]           | 0.880 [sec]            | ~0.56%      |
+> | usecs/op   | 0.088518              | 0.088005               | ~0.58%      |
+> | ops/sec    | 1,12,97,086           | 1,13,62,977            | ~0.58%      |
+>
+> Thats close to 0.6% improvement with this.
 
------ Urspr=C3=BCngliche Mail -----
-> Von: "Dave Hansen" <dave@sr71.net>
->> Even with a new memory split, which could utilize most of the
->> available memory, I expect there to be issues with various
->> applications and FPGA device drivers.
-> I'd be really curious what the _actual_ issues would be with a
-> non-standard split. There are a lot of "maybe" problems and solutions
-> here, but it's hard to move forward without known practical problems to
-> tackle.
->=20
-> Has anybody run into actual end user visible problems when using one of
-> weirdo PAGE_OFFSET configs?
+Cool!
 
-In the past I saw that programs such as the Java Runtime (JRE) ran into
-address space limitations due to a 2G/2G split on embedded systems.
-Reverting to a 3G/1G split fixed the problems.
+>  18 files changed, 698 insertions(+), 810 deletions(-)
 
-Thanks,
-//richard
+Thanks for moving ppc over to this. Makes everyones life easier!
+
+       tglx
 
