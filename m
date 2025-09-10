@@ -1,74 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-11980-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11981-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56D1B50A71
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 03:46:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE1AB50B2D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 04:40:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cM3T642n1z3cZt;
-	Wed, 10 Sep 2025 11:46:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cM4fm25qwz3cb1;
+	Wed, 10 Sep 2025 12:40:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757468810;
-	cv=none; b=IL8z/duJVkUVWd8Cje81G1N6hpH+W+OOBlvTf/oj3OR5tA4ANnLsdvFE7NgizDTjqRDgodcQyqcZVyEmS1DL0A2duoX8UCdbsENxZboZAjFEtYCXopBT5LINt7+F35mxCSMZsSMRqvJEh2qdet4f/bJNmg5qwymtmpUnwykUoimdXD/iZyu8XJ1UIgfNvg9Y3jGfvl798dk3kY5VtTDRV3tk+rrw6MgQbCuUQTr857oz0+l5ttZZ6ECef/hH+JPD6B9xmKcp39mcj/pKNcwDzyF0R5myz0ll/1JUWvbRTglRJr/Ssj4oOSSKefh4giQp/2KqELBNjl0+eUv4yprMuA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757472016;
+	cv=none; b=c7fmSoxWkFojVtpf0XphqD48H07E4So+dh1sval2bC6R7nvstu5JXZTwqT/CbrNgIdDrgCg0bsUre5+MW4hG1LRgvKug+j5gZRta40Eyd1Qlddq3ceWlftBrrDqfg4pKCeqh0sbeQtE1jj1KJfaQcy2Gdh0Zda/z3+5/PnloyjnTpSCZug313T0rNRJDt5OUH/p6Vp8Bl4u8BapcDmpR8VEVU/oqiIkgNJj29I1wbMFrLqcMbUrbDcmuvjMkaybu9iKVNRfr4j8qJSm+Y1CqRJSGW7ifeuAdnyWDhnIR/yzAtf+m3/1tLcefoLhPWrHN051EsuvQI05ZoZ8CHqY13w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757468810; c=relaxed/relaxed;
-	bh=iVZDanYB1GEfuIgx7b8oUnFAcvHUmEEb2jsYYOOe4vA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=no2RIUc8gwxge06fMrrA9IdJvDZCs93mXrebxfqQ62GnSqYb7fXIOtvIuIVjdaZ9AENFdZ71d48r+VF6NvyrOCv5hZ7DKxeZf5TVV7jwW8iJdUecJB+kJZDdPYlxzsBP/VylS/cxTWIlDl6w5xwp8IFQ5YikrQIlS4Vou5RiW+sFBvhu+GlL4NQdTPKQqwIMAnUOYSQuPuMuiPOX+m8sEBowJ0XtzCfHEtA6lY5mUveWQIV+TLzdDLqQD3fwKT0H4XTyLaTWJElBNzIWZ4GzgyjNsJtr9qgIaYVeAEsoLpvIIWXG6RZWb60UEcT7NI/bWoA2GaYnnm+ixYOdPSTSOg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=f0FcUSZZ; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+	t=1757472016; c=relaxed/relaxed;
+	bh=MBiNzngweTlvRpfY+thWwfGL9VYxxczr7Qvh/TNwJuA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OfwurLmK4CD9BUctQ1+0IXgsejzELqVL0c1fXlOnXRvOGUnKo8znPawuO8qLnkjFzU+qb06FqOVEjvS02+fA49LgeY9DILKLku8PVgG+qSpecnZnomFX01gQHk7PxE/eQkY9of31BHm1j6nodxG3wRw0F05hMKAtU6kHwk+nRCLM9mtCUKKXIjRevUnp8Ph7pYyLS8eDo329PjrJNggol0ybvflnFhB85EbSValrTyApGchZczOfeyYaR85cc5mgX76T1TDphf1rjTYFYRomcu6jPNs9fPvMfLtYXaV8VrHCTANlHBqqEP82sJFrhP1J7q7DacsrstdfDRqZFSnakA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jNNYJenb; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=f0FcUSZZ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jNNYJenb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cM3T00LNvz2ynf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 11:46:43 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=iVZDanYB1GEfuIgx7b8oUnFAcvHUmEEb2jsYYOOe4vA=; b=f0FcUSZZjVJBUU1eRiHtLrYC8B
-	fX8ygyKP47lN6S0QCXn5v2gT9H3CAbs8IRUKYD4o4ahPPQW9SC1LbIjyzIFy5IpYnJc/Zi35KMKl6
-	GdUlF1LCy0kzBtNQT9ZzXDOjZmQlcu+Xai7VaAjWD7/8ywjnmbm5Ol0aHh6nNDZ+nK+u02Mi2LTbP
-	KkIhdzSbwdYhFuN6+BCgg6md5Cbqr9Wtb/OQnYkHd+LUsIIIrFqJgd3p4eVkD/vtGMjJRJWTj736c
-	yd2K/AZ2RcClBL8DLGKuOfEPa42TkTPx7o/71xbtDzWPW6D8jMVCQK4Hk2xdsrLnqU6R/xPghQ5S7
-	5PHe08Rw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uw9uo-00000000UeR-417j;
-	Wed, 10 Sep 2025 01:46:31 +0000
-Date: Wed, 10 Sep 2025 02:46:30 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Richard Weinberger <richard@nod.at>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ankur Arora <ankur.a.arora@oracle.com>,
-	David Hildenbrand <david@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
-	Heiko =?iso-8859-1?Q?St=FCbner?= <heiko@sntech.de>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	"Chester A. Unal" <chester.a.unal@arinc9.com>,
-	Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Message-ID: <aMDYdp3H-yOHU1Pm@casper.infradead.org>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cM4fl3rJPz3cYH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 12:40:15 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B8B776023B;
+	Wed, 10 Sep 2025 02:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0CBC4CEF4;
+	Wed, 10 Sep 2025 02:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757472012;
+	bh=nZR1dALMHbgyKK0AcfI3cwQlZU/usFmgnkGpJdsY+VY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=jNNYJenb6kLy4W+zjOyyxLdIhcU9HLhymCSwGuibjRkXSPspqS2H/lq//IBjA2oV3
+	 e3fjw2bf1FtolwO/SC9+X5JG0s8sR78WdTmeeduKCn271/oLfDGyz/ALWOruAIs4DB
+	 Lp1s4I7TA0pkGg/Kwco8Ft55oz4Y9Tx4+OCEqZCo80t2ZxWQrQK9vAq/Y11PcGbHqQ
+	 Z3eI6di0eZCReRSKOOm58LB4umiQWPO82O/elfVYMEUrCMmE0I28h3ivd1nQpg4XQ4
+	 QoPHIl6ooVNFSB4SW340+x19ofkmzBxTqNvrPPhyI6SICKMvmRYIdbyV28wOyUo1xd
+	 JCr05fb+oO9Bw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADCB6383BF69;
+	Wed, 10 Sep 2025 02:40:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,42 +60,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2 net-next 0/3] ptp: add pulse signal loopback support
+ for
+ debugging
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <175747201550.884239.5015453227972787708.git-patchwork-notify@kernel.org>
+Date: Wed, 10 Sep 2025 02:40:15 +0000
+References: <20250905030711.1509648-1-wei.fang@nxp.com>
+In-Reply-To: <20250905030711.1509648-1-wei.fang@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, Frank.Li@nxp.com,
+ yangbo.lu@nxp.com, christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
-> While removing a feature that is actively used is clearly a regression
-> and not normally done, I expect removing highmem is going to happen
-> at some point anyway when there are few enough users, but the question
-> is when that time will be.
+Hello:
 
-I don't mind that the feature remains ... unless it causes us trouble.
-Which it currently does.  Perhaps we could start by removing HIGHPTE?
-There was a certain amount of complexity introduced into the page fault
-path when support for that was introduced.  x86 removed support for it,
-so it's just ARM left before we can remove the complexity again.
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Most of the other pain points are around storing metadata (directories,
-superblocks, etc) in page cache highmem.  I think we can get rid of that
-now too.
+On Fri,  5 Sep 2025 11:07:08 +0800 you wrote:
+> Some PTP devices support looping back the periodic pulse signal for
+> debugging. For example, the PTP device of QorIQ platform and the NETC v4
+> Timer has the ability to loop back the pulse signal and record the extts
+> events for the loopback signal. So we can make sure that the pulse
+> intervals and their phase alignment are correct from the perspective of
+> the emitting PHC's time base. In addition, we can use this loopback
+> feature as a built-in extts event generator when we have no external
+> equipment which does that. Therefore, add the generic debugfs interfaces
+> to the ptp_clock driver. The first two patch are separated from the
+> previous patch set [1]. The third patch is new added.
+> 
+> [...]
 
-I don't see any particular need to gt rid of file data stored in highmem,
-nor anonymous memory stored in highmem.  And if we're only talking
-about hundreds of megabytes of memory, I think anon+ file pagecache is
-probably most of the memory in the system already unless you have some
-very weird workloads.
+Here is the summary with links:
+  - [v2,net-next,1/3] ptp: add debugfs interfaces to loop back the periodic output signal
+    https://git.kernel.org/netdev/net-next/c/e096a7cc0be1
+  - [v2,net-next,2/3] ptp: netc: add the periodic output signal loopback support
+    https://git.kernel.org/netdev/net-next/c/67ac836373f4
+  - [v2,net-next,3/3] ptp: qoriq: convert to use generic interfaces to set loopback mode
+    https://git.kernel.org/netdev/net-next/c/f3164840a136
 
-Where we may want to be a bit careful is some people have Plans to
-reuse the kmap infrastructure to support things like unmapping the
-pagecacheto protect against spectre-eqsue attacks.  I know Intel was
-working on this when 3dxp was going to be a Thing, but it's recently
-been brought back:
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-https://lore.kernel.org/linux-mm/20250812173109.295750-1-jackmanb@google.com/
 
 
