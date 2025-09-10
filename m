@@ -1,96 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-11988-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11989-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A33BB516F7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 14:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 168C3B517A1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 15:10:28 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMKpl4crCz3dCm;
-	Wed, 10 Sep 2025 22:33:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cMLds57V2z3d26;
+	Wed, 10 Sep 2025 23:10:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757507583;
-	cv=none; b=EKSt/AxAWmPczhLLWd3AAteR1KWB5dRCfXbs0BRwSDpDHSxDWZp5N4ZdNwp77b7cmfv+b2bMzm3cLzPzF1YjVOsIgcWHBufyfkG+pgLCRhBRaVXtdcyNs+mBTH5BrHTPuALoAh8IteUzz5RGt55l9yAbK/ldx/ksIlfO8n+UM/b5anVIO9eOyU0RAZWX4G0ksXh04kuTExwO8PCECZI0epYk45tRxD3o3W0fdbz8fcPW54Rj8mRXeaWm7oxL7wa4uQooOYurEA0gCvbIqRUEU9SGyXTYFQH2iRDu0BuabnAFJEAFUIOJRG/bWqLVh1Zv0S5G6ItpEzXydqddwRYVSw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757509825;
+	cv=none; b=bwxITHSvRabBRoM6bLMbZe3unBiDS8iXpaUB2RaLM6uh9venwp2QUfNModIcR7dCJu4tVvf28AyRTyiuaz8jdw9sAG1iB9jOaX8Ww5V974GcOaZvYH1NRh1gr5HuqetDbje6UBSAY9PoZvKulTklNJjb+mDQKdlITh0OEdWdNxabvU2Tn0QNlvrtVlH2vTpRYdpAaSOkz7s55AQGs/R/2pEcW/92oV0tn2b6OdztuJNtdVS7M9yAeTvC69VGjpWvvZEfV1sPaxLk50Xcil7oylwWXM8WdwGs3YCFS2NJ2kIE8oZsaTXFPdrnOGNaPHhhc1G6/2wp5r0P6oJc7n1fnQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757507583; c=relaxed/relaxed;
-	bh=LViYUFGFqV7wdk7rT7+n+ckEpLRp2oc7FTXBWlnTc1s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Em5t6KBHPS3bO+RNuIZdGqIQmGx89vMzCEXidpGs4+6MmYwquEooaOIiykpSCtS2Hu2B9Atpfu9/OT48Ges7n1oWVGg7vahQYGYTe1x5+PdcZ91jnz2nVlgobTU6Z2+K/Xfp86FBfSGsNLADO8iGumTUd7WnRaWwW1H+vohA7DT4KQeJLRS8eZs2k3pYldIP+er8HMVcZzvVTapIEfyqSOG4fXcHzL6gPoOgLdnatLKr1La0BHa/dL/lcg7pi5tSed8nVMEoS8tetn1t9rnW6+T9IVPZXOmiV8UMjvbJD9uL8aDS0A6fXzfJWmKKx84cK3ylp2HKzfJ1lNXiacj/vQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V80lyMXO; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VVgC3dIh; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1757509825; c=relaxed/relaxed;
+	bh=1LsnFE1xI0qQhVi+l6O9JAbITiONruUrWb3tpAPA1P4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JU3Nf6ilyFjPqJXpUp+1WCZ83LHpRwR3cOMN7mcxPt+6LeE9a+xsjdHACQsBBS8WTtyQbb7Chq53UW921K0/VpPUpq1Xp3ZLpbGcip6C81wpu8S6Nkwc8WW+4Tgz1SeEe+mrESRYvqr4mbAMQNZE8DHHL2TqfhUQS1tVzWiSRXioZip/kHUBsO1wCXCcvtKZfY7QfH91pd7ClLCBLPWWMdltYnXW7GZmLCAsXn/GKK/s9CkhRKVw55lKakxluSQgIje7B//5RsURAirftUxkPdRi3o7Cxn3RMTK+HoRo0QVQANWBgARXyVqadffEhiep5mJr1JbPkK6w4Yx/wiZZFg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=KJsWKbdO; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12f; helo=mail-lf1-x12f.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V80lyMXO;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VVgC3dIh;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=KJsWKbdO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::12f; helo=mail-lf1-x12f.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMKpk3SZRz3dCH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 22:32:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757507575;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=LViYUFGFqV7wdk7rT7+n+ckEpLRp2oc7FTXBWlnTc1s=;
-	b=V80lyMXOmolY5pPL7O2ntngCvJiOiE9XDp7Yyd3augPB8o2xCOMD/k9+WEJizSjmYaRM0L
-	BqQEossHvOmXeNwZO6zfTP85JXibloBUNy2dSCuHOuFKVzKXFCa6+UDo5k2jEr/291Y6UL
-	v/2xa1kfjwLyTUOnNL6ESflGfaXyFDY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757507576;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=LViYUFGFqV7wdk7rT7+n+ckEpLRp2oc7FTXBWlnTc1s=;
-	b=VVgC3dIhNjTh+MATJSIkn5UvNwllUlCKqlTxcOcIOxw1vM2XMtCCqet22XnxjwlsimXA2q
-	yoM/nVGqUyqKULPtnUwkBQEMqu950hpw7SY3EdaM6a5bk1yTzZuks830PvYtkSbJGs/Pkn
-	BEK5chCT0EhDszhWg6OHFlJLsRkViZs=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-6L1hY_-hMhC8Te6RHq2awA-1; Wed, 10 Sep 2025 08:32:52 -0400
-X-MC-Unique: 6L1hY_-hMhC8Te6RHq2awA-1
-X-Mimecast-MFC-AGG-ID: 6L1hY_-hMhC8Te6RHq2awA_1757507571
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-45a15f10f31so3919115e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 05:32:51 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMLdr2GnXz2yx8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 23:10:23 +1000 (AEST)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-55f7c0fb972so7434825e87.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 06:10:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757509819; x=1758114619; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1LsnFE1xI0qQhVi+l6O9JAbITiONruUrWb3tpAPA1P4=;
+        b=KJsWKbdOj5h+vqM8pZIEaTQHtPbQ2913DN1zwuEVfhtZ0Km4tk5n7DOX7mvt6qNfNd
+         D5FEdqm17vm1A3TWXar8IvmqDGLLv1x8dgR2oNGRzkiN7x3WynYhIqU+T09pVo57C9Z6
+         6ho9KQfW9ohsYqH8ka42O1/b7Vj4Tjqu8C4ul3qXvMkcgsdV0NEefzhGCYvQUBLZTlX5
+         TRjTG910g5qA3kqZ2A7s95KqwKdPC9zmRUTDTTX4AImbuciKa3iIE/7JOhBTYKg/3Wmj
+         87AWGIseQFuF6hLU3f8c3RtZQAV5Z5X1tXOOdxMDXuO+ETM3ce54RvIPckXhPC11+laD
+         BjjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757507571; x=1758112371;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LViYUFGFqV7wdk7rT7+n+ckEpLRp2oc7FTXBWlnTc1s=;
-        b=jIGjQ/gMlPR4IsfjrqR44izN78xCGmDe0fAlpL6PFl8xi9XwdqVrks+k3Sr1PYpDm2
-         6mVyHwhBRGUPLk/q/SHPKgu3YKRNjSwBViLYscnNvVV5NpH8ADVAgSsuBmtJgBCewf89
-         x0DayaCBLze8rMOMNY/f92ZUmPI0BJuFrJ4heYhTbKHfN43u9/apgqBC6flaE4bCZxWN
-         l/k8w98ubQ2UQYBQS7wO+azJPJQsQntufgjsxi+mOPPyPFSfGLUcgo2dlf2NHqznVXv5
-         073nush+C+JjWUQ7rjrpmttxkdCelHW2/N4+NNY9yxkKVP3hLqw+t+jKzkDepu5IgmUb
-         uJxw==
-X-Forwarded-Encrypted: i=1; AJvYcCVd0hZUxmjnFI0kKjlsXDOaj56CKA5bXEycDFU/PVS4XBFSc6v/Nsl3SHediG2Dv7HPHoN9KDH/NYJXD1U=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwFnhHrtdyllzWkNl0EmkNrZipbSlc/vJgul1OOOcQzhYOmuhAR
-	qnRHrHYejgqneG9GZK6480jn5CiBLIXQvxALimqBWIVZFKS0+PSNOj3eDZfsqjcoFnyj1vGjuDs
-	duWRHMFWmLVCBPWc1uNF3D8C+qbr5e8371GlJh4uPPWg9oF8+2VN/GwxMOL48JxxyTRE=
-X-Gm-Gg: ASbGncs6OIbkCFinOR0hxH4r9Mk3bizYGbVq7l7G9x8qWVMEsV3CG6Kr77fAtAXOhd2
-	kVNTUSL2W1bLHjFXQtyI6nQYAI68RUgW2bzYYD6C0FlE5lEirAefjF3dwh1FnbGJOaCTAXvl8eI
-	kP6W4n5G9C94GGO/ul5lLhiSOtNxWLWLSzFRWNAqZrq0comaGymiiIhRMA6FrXTEV7mnSAx0hJM
-	p3wQ3reBR1nKzTFyHSCvBpBSUSMdw2U+fx4ucVNFz3ezqNpvYVA3l24rWrk+zf0ytDB8p22C2VF
-	4NfOJgfwczMfnySDb0NFxLpWufhg4TZ0F95J7kUtZiKG7C1i5HGx0/zGEsYOIzYzDqHiC2RI6HJ
-	yIeyFtJA/PtF8tL+RZQzEl02rxeoqmTQhHdYrOcfroBgtu2JDkfXk0t/4R+nM31R+YG8=
-X-Received: by 2002:a05:600c:3b1d:b0:45b:8ac2:9761 with SMTP id 5b1f17b1804b1-45dde20e5c0mr148260835e9.13.1757507570809;
-        Wed, 10 Sep 2025 05:32:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF/W9Mmo72Y7k0e/5lev9LwiyPK0j0L4lMPmSP/XxC16yAcbXhF14eU/SqL+2U67nqcP2mA5Q==
-X-Received: by 2002:a05:600c:3b1d:b0:45b:8ac2:9761 with SMTP id 5b1f17b1804b1-45dde20e5c0mr148260265e9.13.1757507570271;
-        Wed, 10 Sep 2025 05:32:50 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f17:9c00:d650:ab5f:74c2:2175? (p200300d82f179c00d650ab5f74c22175.dip0.t-ipconnect.de. [2003:d8:2f17:9c00:d650:ab5f:74c2:2175])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e7521bfd08sm6588369f8f.4.2025.09.10.05.32.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Sep 2025 05:32:49 -0700 (PDT)
-Message-ID: <b908b8a9-8860-4464-b86c-467797f1fafd@redhat.com>
-Date: Wed, 10 Sep 2025 14:32:47 +0200
+        d=1e100.net; s=20230601; t=1757509819; x=1758114619;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1LsnFE1xI0qQhVi+l6O9JAbITiONruUrWb3tpAPA1P4=;
+        b=dlaQsFKFHBB8RsoDgkfJztCHULZ0ww0f021vNmUgTpqT2nQhP6jAJs0ME0HbpRHiFu
+         08HXdyQvM71r9bYk4Nk+4orTT4GHvISoV3/FgBK5w0rswE+yCcRUmcCOXUAMVF/G4Fsp
+         a4yGTWRqQ+vOuTWNKw4nnIkTAmC4FuNsE/2YoPriXh8lH4XK+lDpGMnJRrRhzjFs5sEs
+         fc5x01DU0Ygc94bbyKcT4pOqd2GCCfL7umr/oBbF9f3W6U4IBUhqSb8LuDe/7wC0A7Yi
+         E7387bSoR/kCtDahG6Jelk13A17ZVE7+Wdbn6h4CaM3Y8sYJB/3cASOwdkRdor5Nz7yF
+         ldew==
+X-Forwarded-Encrypted: i=1; AJvYcCUGxjUdLAfbzQmu/0CWrlrNPj+wCgFZmL//yGULUasqc8rNO00yGJr7CxFbv1YTc83nuV34uaNkBYZ/UAg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyCEI1RbNmqbtjn0dLipsfjLNNH+Uz73dGe4EtG1xc1hy/CPC0q
+	YgmusOx2niFrMstWExl3/j854Qk6Lrk89TKBJLAuzonmvob0uFQZxA/j4/OIDA6w5QkyrOMmne6
+	/2lNqx1/Zyxa4OMRvuUSB/XP/TwhhIu4f/WTnXt40GQ==
+X-Gm-Gg: ASbGncvuQiOBbU0zo+3ighTF3EGQH7oQTRPgtShLtXTfh7T0r9O5ljXLhCQy5q82M+7
+	BPXCWh7meFrRw2zBCxwTX9GWyXz512kGTUI5027nyUnzjOQv93aONStuywKVKxCi3YuM8AOUtx/
+	Ip4P6SEUvBvVpSzw0b6oZ0Dc/OkKIUBNQt6kVmbg0vaPJeAN0B6IvakW+02iKULCjm6unVLK/tT
+	nJYPSk=
+X-Google-Smtp-Source: AGHT+IGgInBj1Ic/f5mZf9DHaSimxT6oABg1gWpLpcYCM/ousRHHwwGjp7S7ZCbmXiMiFXeqAGANnBbsml0uYfwnmj8=
+X-Received: by 2002:a05:6512:39cc:b0:55f:47a9:7d33 with SMTP id
+ 2adb3069b0e04-5626425ccd6mr5952206e87.44.1757509818943; Wed, 10 Sep 2025
+ 06:10:18 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,177 +79,93 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-To: Arnd Bergmann <arnd@arndb.de>, Matthew Wilcox <willy@infradead.org>
-Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Richard Weinberger <richard@nod.at>, Lucas Stach <l.stach@pengutronix.de>,
- Linus Walleij <linus.walleij@linaro.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Ankur Arora <ankur.a.arora@oracle.com>, Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
- Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- Alexander Sverdlin <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- Sergio Paracuellos <sergio.paracuellos@gmail.com>,
- Andreas Larsson <andreas@gaisler.com>
 References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <aMDYdp3H-yOHU1Pm@casper.infradead.org>
- <b60310f3-25d3-4f2b-88cb-ad65d5f55ec2@app.fastmail.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <b60310f3-25d3-4f2b-88cb-ad65d5f55ec2@app.fastmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Ntx7VmUXQ2IpWw52o4pw1urbb8H6j4YMX_kkh3vHUy8_1757507571
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 10 Sep 2025 15:10:05 +0200
+X-Gm-Features: Ac12FXx4fqtngzlb3aPI-q1c6xVbomqK3jaNECwBf_yyF7AQZ2ofNJeHmlxFUVw
+Message-ID: <CACRpkdb=E-_6fZ+4mX5FJas9C5Njp3Gwrygs-cAfWNdbP594cw@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, 
+	Lucas Stach <l.stach@pengutronix.de>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand <david@redhat.com>, 
+	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Matthew Wilcox <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>, 
+	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
+	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 10.09.25 14:17, Arnd Bergmann wrote:
-> On Wed, Sep 10, 2025, at 03:46, Matthew Wilcox wrote:
->> On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
->>> While removing a feature that is actively used is clearly a regression
->>> and not normally done, I expect removing highmem is going to happen
->>> at some point anyway when there are few enough users, but the question
->>> is when that time will be.
->>
->> I don't mind that the feature remains ... unless it causes us trouble.
->> Which it currently does.  Perhaps we could start by removing HIGHPTE?
->> There was a certain amount of complexity introduced into the page fault
->> path when support for that was introduced.  x86 removed support for it,
->> so it's just ARM left before we can remove the complexity again.
->>
->> Most of the other pain points are around storing metadata (directories,
->> superblocks, etc) in page cache highmem.  I think we can get rid of that
->> now too.
-> 
-> Agreed, this is roughly what I meant with the suggestion of removing
-> __GFP_HIGHMEM allocations from as many places as possible, while leaving
-> the pagecache and zram. I already brought up HIGHPTE earlier this year
-> since it already has an separate Kconfig symbol, but Russell was worried
-> about increasing the lowmem usage at all.
-> 
-> Maybe we could go back to the earlier idea of first categorizing
-> the important highmem users better, and make it possible to
-> use Kconfig symbols to enable highpte/highmem-anonymous/highmem-file/
-> highmem-metadata/highmem-zram/... individually as well as count the
-> actual usage for each of them. Having statistics in /proc/meminfo or
-> similar would allow more informed decision about no longer supporting
-> some of the categories later.
+On Tue, Sep 9, 2025 at 11:24=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
+:
 
-That makes sense.
+> - ARMv7 machines with 4GB and more exist and keep getting
+>   kernel upgrades, but to my knowledge are not in production any
+>   more. These are mainly 2010-2015 era chips based on rare
+>   out-of-order cores like A15, A17 or PJ4 that were designed for
+>   low-end servers, chromebooks and network equipment but replaced
+>   with 64-bit chips shortly after. We had planned to bring a
+>   CONFIG_VMSPLIT_4G_4G option to ARMv7VE to keep supporting the full
+>   memory at a performance penalty, but currently have no plan to
+>   finish this (volunteers welcome).
 
-Essentially, let's move out as much of the 
-now-possibly-unnecessary-complexity while still leaving basic highmem 
-support in. To mean that implies removing highpte first.
+I'll fill in on the details on that, because I tried, to the best of my
+ability to prototype this but I failed, so far.
 
-> 
-> Not sure how many __GFP_ flags we could reasonably spend on categorizing,
-> as we are already up to 26 out of 32 (not counting CONFIG_ASAN_HW_TAGS,
-> which is 64-bit only and uses two more bits), or what alternative
-> would work.
-> 
->> I don't see any particular need to gt rid of file data stored in highmem,
->> nor anonymous memory stored in highmem.  And if we're only talking
->> about hundreds of megabytes of memory, I think anon+ file pagecache is
->> probably most of the memory in the system already unless you have some
->> very weird workloads.
-> 
-> The main problem I see with the pagecache itself is that the fewer
-> highmem machines people test on, the harder it gets to spot regressions
-> where new code fails to kmap() the pages correctly.
+Here is what I managed to do:
 
-Yes. Whenever I touch highmem I'm concerned I will silently break 
-something and nobody notices.
+1. Building on another rough prototype by Afzal Mohammed, I managed
+to compile the ARM32 kernel into the VMALLOC area, this works
+fine and here are the patches:
+https://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-integrator.git=
+/log/?h=3Dkernel-in-vmalloc-v6.10-rc1
 
-Then I find myself booting a x86-pat in a VM and wonder why we are still 
-supporting that and why it is so hard for me to get it tested. If we 
-manage to not have that testing part so annoying, it would already eb a 
-big win.
+This is is done so that we can unmap *most* of the kernel
+memory but *keep* the VMALLOC area, so that e.g. exceptions
+can still execute and save to stack when they occur, and we can
+call into the kernel to execute said exceptions.
 
-(did ever anybody look into simulating highmem on 64bit to make it 
-easier to test?)
+This in practice means the area 0xf1000000-0xffffffff
+which also includes the high exception vectors that must for
+natural reasons also be kept in the mapping.
+What we have mapped today (all of the time) is
+0xc0000000-0xffffffff.
 
-> 
-> Another concern is the number of memory zones, but it does not appear
-> that we would completely remove ZONE_HIGHMEM as long as ZRAM or pagecache
-> uses it.
-> 
->> Where we may want to be a bit careful is some people have Plans to
->> reuse the kmap infrastructure to support things like unmapping the
->> pagecacheto protect against spectre-eqsue attacks.  I know Intel was
->> working on this when 3dxp was going to be a Thing, but it's recently
->> been brought back:
->>
->> https://lore.kernel.org/linux-mm/20250812173109.295750-1-jackmanb@google.com/
-> 
-> If that gets merged, it would at least address the concern about
-> testing, since presumably many bugs around missing kmap/kumap then
-> also show up on x86-64 kernels with ASI enabled.
+A minimal 256 MB mapping from 0xf0000000-0xffffffff
+should be able to cover this.
 
-Right. Likely we should at some point cleanup the api to not talk about 
-map/unmap but rather something along the lines of "start access / end 
-access".
+So when we are talking about a 4G/4G split we are talking
+about (4G-256MB)/(4GB-256MB) split to be exact,
+we would keep the bottom 256 MB.
 
--- 
-Cheers
+2. On top of this I tried to decouple kernelspace and userspace
+allocations, in essence making anything outside vmalloc invisible to
+userspace by unmapping it using the fact that ARM32 (LPAE) has
+two separate translation table base registers: one for kernelspace
+and one for userspace.
 
-David / dhildenb
+Step 2 makes sense because we know the reverse can work:
+PAN (privileged access never) makes userspace memory
+inaccessible from kernelspace unless explicitly requested and
+that works fine already, and we implemented it for LPAE
+with similar trickery, see commit 7af5b901e847.
 
+It's harder than it looks though and I never got it to fly, but
+maybe I will try again. My patches is a mess but I am a bit
+smarter now due to reoccurring MM-related work.
+
+Yours,
+Linus Walleij
 
