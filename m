@@ -1,100 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-11986-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12015-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4708CB51648
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 13:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA47B52412
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Sep 2025 00:07:56 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMK3Y24ZZz3cmg;
-	Wed, 10 Sep 2025 21:59:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cMZZ21N3Bz3dBY;
+	Thu, 11 Sep 2025 08:07:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2412::62a" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757505545;
-	cv=pass; b=azsp5xP+JIomwCYwIAgTg32gB5rMG+RKthTYicPSuD4eD2uQSuTezLL2oVtvAixMhQrPby/hRq+TttJO/DeMbOiqdAGM1CB1btsZ9bkPZ16scqw3OhTFrxIcW+cjf39Lr9hmtOABQYkMqz10Dhtq2+RX7binexbbU4EIM77vW1VnHYzGg6NP/tAitl5tIeEx5VJiSJQiqE4WBdbuQ6Ayc1GmS0pAoLU3LvEcoZi3IAoXc6/bU8gZlbtyBRh7uL4NBoQMSmmQWtjUx8JLwJ1brMcWYwgO/yZY5mW1LfvCqtFeFbJL/XtAXgGjXsIMHOryjuXLk0vMefcLwCQavycvyQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757505545; c=relaxed/relaxed;
-	bh=M2CRGJWbvgTRAKQCpQVq3CvW0DQ/ZyYML+xgjXHDleo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=YcEOjlzNYCaSDMrGF2eJcwWWinR24IvjdY1AcIWQLg/x6yTILevcSiupRLThaVWg4cJ9g0Ju8vAltKgjkGAySW8uDo1twN/FyZXWCgKqGsZpLOzy+Sesr1El7c6kxfq2mvOce1iWmgmn1OS7NiE1y+fxFkmPR9Diq7ItPKRDhtR6QP15REW+upLWR1nc5TijYDbvfIV3RtCQf5FcrADA7bSl4/TQrEqg5BhEYC+99AySaUPGhshu+djssSFU+bUg94CtKLJh55UotNO45waC4w4XD5dzxaOJX3m3z/4lKWvfBPUk0BGVr99fdldgJuVUc9t6JEN/s9W8eEXRaKNdPA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DCGX5i1w; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2412::62a; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757506640;
+	cv=none; b=bwW6S3Tjojb8mFxhWB/Fb1AxOFWRGl2gmgg6OIoCN81phcexzXX0g+2VkJ++IXvppeZPcn3JX3yJLTTosOBrKHl+/inNwTfDPF7Niu37IXJmGoZ9MGCiaV3LlgT//1CfkO+Tk4907PTUjEYDIionESZcn9R80XB9IF03Km02ne6E1mJEoEad7oY5jyWLIPZAwVBARc01451r8wy990ZR56WFcCvQa4Ds6MkQKVjO1suZMO3GQ1zr+eQxO3IwLi69hLWJF73pDItpb8QMKMpPfRR5UmqdZA7YxBwxYRAJBF4PTvItQlnQzyTKukHWcrj/H2lfE6Gh81WPnBUJBVazJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1757506640; c=relaxed/relaxed;
+	bh=3TH7g+Z03G9e/sLdJGfHaKO6b6yhWnb/Csu/pw2QByA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EhaG5zV5ov/xnDhowwQ5yHi7FgfshmPRN54h2iEsWz+oDUH0/JMucxOS9HzIgCn6stUi4iVpnztCwlMff+e8BJjeObCbyq8TztgrMgTXr9Fh4+MqByucjFyJ2AB06VSHfhQjBvCcqxr8xL39HlFzn1DLrbky1WBgBiMlZAME2ebbTpxxgNJgZwqWGMWe7nn8wkkwP/8ZC9WpaQYAjZtfHcq1iOL4nsfwU+dZTSbsXK8md4DDuNQBSKKteu+LbBQfUahO751p4KUefNNR5dLDRsMOFcGV1KO8+Vdzij4e+reBXmATdtqxoLltxRA3hIB9ACniKFtP3uZT20RnuBwqqw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=mind.be; dkim=pass (2048-bit key; unprotected) header.d=mind.be header.i=@mind.be header.a=rsa-sha256 header.s=google header.b=elg6u9FD; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=ben.hutchings@essensium.com; receiver=lists.ozlabs.org) smtp.mailfrom=essensium.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=mind.be
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=DCGX5i1w;
+	dkim=pass (2048-bit key; unprotected) header.d=mind.be header.i=@mind.be header.a=rsa-sha256 header.s=google header.b=elg6u9FD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2412::62a; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=jgg@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2062a.outbound.protection.outlook.com [IPv6:2a01:111:f403:2412::62a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=essensium.com (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=ben.hutchings@essensium.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMK3W3xYwz3ckQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 21:59:02 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Sn3V7oELjkrT+Ex+wYuTTfJd3WsUwYgnJmnkM+tItOpmbM+J8qovkAPHYt/A7PKdAxoWGlisZ5TesXjmIXvOHKWcNXtA1O3Hg9SA6mAhfrHEezRPKmMCSHIRBmSiBgsvZgxaw6V0hH4pbdO54/Yd5q5EIYBFKZuN7d/8WIw+zLxloBetM/UCcYtcIc6GW5rH0jBKwge7a0m4jPykaBH8Y8sKHehJQWlDdKdUNpkCp2evYTZ7lvgs+TsiTWScPuI24eLlp6TrdOL+hleedbJyK+OJ4SytpZZpW4FYO/j3zVP4FD60hiKyFc9ZB4/0Ery3tfckBgfq1QXuqElNvsjftw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M2CRGJWbvgTRAKQCpQVq3CvW0DQ/ZyYML+xgjXHDleo=;
- b=tB2vXc4aLG7Xvj/iBdZSvwn5l5BDP6C+4bz1pIRIWCRgMWFDDbhmT5qJwttomGtb8BHCznSs1U/3u4v6DHTHmWC/I6z+Xr6vluxXtIpc3nRzQiDjGvtecnGkPUr8uW7zs/hJWBGP80S7Nc1dUlCLFh9qUOu5jO987pSlHgXoT/P1w6NsT3FQBwOILLwl3So1eAjWPEjg3x9jiy8sN7xCZqAPkDZVJitbvd8ChCDhycviaJq9+sQzjix1CUYwDf9us224wMfxwnVp/LXMt9t30uAoOeFS7X2kQZFGh8Eg3ciqLaMSqi0Ur/Kgqry1mm4HqC3j/XfupYGVGiT8b2TLaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M2CRGJWbvgTRAKQCpQVq3CvW0DQ/ZyYML+xgjXHDleo=;
- b=DCGX5i1wV1JzbNNAuAK46B1FTzUqbIWJJr1k/xRxSeDUhzU9om62gERPuNF9zaGeSw3Z47iVGhqjLYvnnpANarQksVzq5onyjKQEa/uqx4+QH9ptjWiYcpUBJuCKrMO21J8C5gZEzPW3uZshpwp8TsczXFauxzksXuc9pJwioRUTXudhdy6L2hUGfrzW6zFhm7ermfbnA+frN//qvdI/SL4Ye+KQ/MfEcYEEtrj13319OvercvtIa+jAK7pRYfUZPJwYgn+rUmDsHPM/wcOgja0mFu5Tjb6neURlaC8VFX+tVNuwHJvJyj+If2Ypv4p2rx/AJA7xTfLlNTPx9BllEA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com (2603:10b6:510:1d0::13)
- by CH3PR12MB8709.namprd12.prod.outlook.com (2603:10b6:610:17c::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Wed, 10 Sep
- 2025 11:58:41 +0000
-Received: from PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632]) by PH7PR12MB5757.namprd12.prod.outlook.com
- ([fe80::f012:300c:6bf4:7632%2]) with mapi id 15.20.9094.021; Wed, 10 Sep 2025
- 11:58:40 +0000
-Date: Wed, 10 Sep 2025 08:58:39 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
-	Abdiel Janulgue <abdiel.janulgue@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@lst.de>, Danilo Krummrich <dakr@kernel.org>,
-	David Hildenbrand <david@redhat.com>, iommu@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Corbet <corbet@lwn.net>,
-	Juergen Gross <jgross@suse.com>, kasan-dev@googlegroups.com,
-	Keith Busch <kbusch@kernel.org>, linux-block@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-nvme@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-trace-kernel@vger.kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>, rust-for-linux@vger.kernel.org,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	virtualization@lists.linux.dev, Will Deacon <will@kernel.org>,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v6 03/16] dma-debug: refactor to use physical addresses
- for page mapping
-Message-ID: <20250910115839.GT789684@nvidia.com>
-References: <cover.1757423202.git.leonro@nvidia.com>
- <56d1a6769b68dfcbf8b26a75a7329aeb8e3c3b6a.1757423202.git.leonro@nvidia.com>
- <20250909193748.GG341237@unreal>
- <20250910052618.GH341237@unreal>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250910052618.GH341237@unreal>
-X-ClientProxiedBy: YT4PR01CA0498.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10c::6) To PH7PR12MB5757.namprd12.prod.outlook.com
- (2603:10b6:510:1d0::13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMKSX44mTz3dBX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 22:17:14 +1000 (AEST)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-45df09c7128so5506985e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 05:17:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mind.be; s=google; t=1757506630; x=1758111430; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3TH7g+Z03G9e/sLdJGfHaKO6b6yhWnb/Csu/pw2QByA=;
+        b=elg6u9FDYjKmxiEby0euyA8OU0XoJcNkBPnph2EAZkX/HamFhhraDtrk5DoAX6Kmsy
+         BHf576vs+nyT5ajvT8Zwrr1v/9VBqWBac59oJeX/nvuSyV7rgTktoT+nW6Wq0whdVNgd
+         8eXPleqUcwyFXfARpVnawxC03JpU5pEV8GIM1migUKxMb9dca7EalHvxk79wecP6Fs04
+         pBqQGguJMLqNBPLr7fmAcE1eSKCL4NPOdQOjytA4LEFYGu7lfkJhSGGw1eagLAbXnwXh
+         7kGLxpqLd6G0YgI90XC8M5fYTxp7gaK2k3qTWp9BQ3KIEm2RdhARVevgDUM/5JXSUBQj
+         8B7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757506630; x=1758111430;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3TH7g+Z03G9e/sLdJGfHaKO6b6yhWnb/Csu/pw2QByA=;
+        b=h9tzh3ObSzMTXk7bmBXq8YZzaYGSGHqaNEXlXS7dS0CMzQ0+h5TP7eoAD4TIked4Yf
+         LRP/Q/4IuuyCCPKqZRK1R1uTDtiNUfHEQZM+XqQWyCKzVctHS6tNBC6VdNkor5YbAMYf
+         TWSx5AOt6N9xgxG9AMGf1YkwACt0YGegEN5xetzEVVzNTLpqJvvhCxeaFGUk1AkY2wPh
+         eF7Ik9WgbDfjWvt9DU2Jle5REK6KnSdn26iHvNNmQWeV6sVfjvdCgwi/cUONIJQDJ4L7
+         12X7gquhtm1NiySaChY/RvmnZygH1ORMLkunUxulCML1IKjr2kcArNgeqpp6dEnlnqFE
+         0i6w==
+X-Gm-Message-State: AOJu0YxIuA8EFDieMZ47b/h9XA9I5jL/mco8Q7SIOdZwKucd2aalQNXr
+	5T/jLlN8TMjOw69nNvsGcBNV8SrNejj56Hg6SGzUuw3FZr+MJo3jAQFqVLhWLKIRf1eh5zhA4at
+	JZNpU
+X-Gm-Gg: ASbGnctVeOcXf34C9dBlOarm4LkfzG0hXp1sCXpI9/PRwaViUhwLwCdU74410T9xxFA
+	Aawwey9bfgt0cx8dMW3X7G/Vt2v0vFXmp41Ct+2iV8zdqkDOyWMRfrMbmDDKvr/h75XVjV58A/5
+	IcJUAx61l0aCalxcR/v9VwtJOlj/HZFjToTIx5gnr7QfUUnBSUUJTOVcpM0k//CH4hdJtGWT8nC
+	HMTNqt3YuRwVJC/7Tt2uvS/SiK5H8aVnmWe3l+xO/PkZB/HbdBD5DSvhGZyrlJc/mHJD9mqhekq
+	CegeGJSsF7IGoAEXhi1YPhLSSjZYTOUwUZVbgFDLIiEhR6viSA/2YIJS0bLB/gpzYH8QUoPSg4B
+	NAxoAPBO+cqHelnIHKgkihhQWK1oKxhp2FnnSha/32mLUfdM=
+X-Google-Smtp-Source: AGHT+IHTwOCgRsTGLUgddeEGDwjiMl/VEbOIu4HoX+DIOP5w1FH12dxx6RRTto4MSWd9H4cCPB4MvQ==
+X-Received: by 2002:a05:600c:4ed2:b0:45d:d99a:e5fc with SMTP id 5b1f17b1804b1-45dde1b2fe6mr142088045e9.7.1757506630485;
+        Wed, 10 Sep 2025 05:17:10 -0700 (PDT)
+Received: from cephalopod.i.decadent.org.uk ([2a02:578:851f:1502:3474:c4d4:aa9e:144])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e752238967sm6630371f8f.33.2025.09.10.05.17.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Sep 2025 05:17:10 -0700 (PDT)
+From: Ben Hutchings <ben.hutchings@mind.be>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Ben Hutchings <ben.hutchings@mind.be>
+Subject: [PATCH] powerpc: Fix OPAL support in 32-bit boot wrapper
+Date: Wed, 10 Sep 2025 14:16:33 +0200
+Message-Id: <20250910121633.3671060-1-ben.hutchings@mind.be>
+X-Mailer: git-send-email 2.39.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -108,99 +88,199 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5757:EE_|CH3PR12MB8709:EE_
-X-MS-Office365-Filtering-Correlation-Id: d3d1beeb-870b-4064-522c-08ddf0616235
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FzIxhCTl/DFGFmaXIkSJW43QRlHeUwrObkzUBGOXZlpW5TknvixiA4gDQdO0?=
- =?us-ascii?Q?Y/Q2AqArhV3Ean+ESTnkZr/fvpBX2nkWxFKLLH4g5CA9C8G475Hr3gb3OOjv?=
- =?us-ascii?Q?6uJVbcwr9hyVssPYNNIHf4cHbHNfa1FcsJ0EkEfNXG98vrQPHF/sWCvG8QI/?=
- =?us-ascii?Q?COGsWCNfWUGpIWeBBcktY7eFttSjXnJa/fCDlR5M7SnWvVHjP09ct5kmeZoH?=
- =?us-ascii?Q?SAYNOPDNskcy46Em8ly9RRUNfqYG4XoPucVxFGwyPQt0cGYV/RAX2nuBRLnY?=
- =?us-ascii?Q?oDenFOddnolaVnUlfh0CImgVZFr/tUkfCle8aamRAftKGcs67gzyutBwvoDi?=
- =?us-ascii?Q?dNUaAWRksh0OpZeDtOzS+yUixVU6iF6zuAgdtdJ+/SJw1dzFDkGfm80wGCoH?=
- =?us-ascii?Q?pckzkDSveUd+iwi2lfDzjyPVQ9yj0CiH/xxWs9md9M1AQSc3NZiJU1hLjeKm?=
- =?us-ascii?Q?aAY8FuT7mkNTvmr+F8IaY1xbUkqwDE0/IWF1EmvaP2B2COuQ7wMj4RNUjEOc?=
- =?us-ascii?Q?O/AhbcPzLAMyP9dJTa4ojajfgOMtdCIXx/Rxry4yk0Rx2rZ2fjSA6M+C0jit?=
- =?us-ascii?Q?E4yYm3ZocgAEqqYDdafANBeHp39vXTx87t0jZIqiUkS+AeC6ISIHwD9hDxkj?=
- =?us-ascii?Q?3NKmejdUiaLbjH+sBCgqd206gGNFVcc0Zt98Oozys1GBZXwHRLMY812uQPYE?=
- =?us-ascii?Q?uyHrhpRnGAIYWFfAHefw01QVwryhLl4F/p2FxxZ5WJ2mJk8iLma6uzFa9nse?=
- =?us-ascii?Q?KDIQcCRrG9o4DskmRPMDf1PaNxx8TvwULUPJB0jwTMsE0RkZQnTZYU69eX3J?=
- =?us-ascii?Q?DTJiamg3E5I0LV9zQ7KUNLWj7+scC2fn2wUO2D+w6NK2kvcb0lvj02l6UkTc?=
- =?us-ascii?Q?X7jKgFI4/1/bAGQetuBuvx+ircaAenX1Iq6FMnRYQcgdor2MWhUDTqFKizIA?=
- =?us-ascii?Q?vJmD0Pht5I+lSm+VVTECa5eMOZE6H/UwUgnXBgFiR+SdXv8DEnEnO9a+9Ujl?=
- =?us-ascii?Q?fTzsLsC/NZI0DsiAFIBO+4w+7SMolqtyX9A00a9XgVJOp0yXxu2QqO44FHlF?=
- =?us-ascii?Q?F5kOApjBfLOwHK4UEafL48ADf1hzQpNZPMIk6R2fhwlKEIUMoSNqHn4cTPxl?=
- =?us-ascii?Q?znJlbuU5Ch+3Eejo3q7yZqrX3ozlPCo0nBxc8d/f9Cr9yddhddHSyXN4+eBq?=
- =?us-ascii?Q?1K8vM06RHw5aht/nrdIYWUbgLh/jYAL7eVKdCjw67lWNVVQn+anrn3l19WdD?=
- =?us-ascii?Q?BSnlzXwqrv/YfQoqXhsDx+EYQ9FcwydQzXtPK0D5bSt8yOGcjkm9NRk++zQ6?=
- =?us-ascii?Q?K5aUj8NJxT+OVBPsX2TS4htXjJaFpFkDZIIIo3/5K+GVBWGmqOwVOybPuki7?=
- =?us-ascii?Q?iI62pGuhOEA82Yro5WGvlkvleuez4YsUAy/C9hO+W3hCWvzy7fg3ZN0wgqkG?=
- =?us-ascii?Q?ptHYclhyF3Q=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5757.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?9YO2VNtN7/AVkNY5N+N6bpbx5DVFYyJdxIshjK2kTpMeuaOdcSF5l7noHEF1?=
- =?us-ascii?Q?s+lB5UEncua+s5Drg3oPC44ZKgxdHC7EQ1mmSbi+XEq4qFKNNVBpiRWSIfc/?=
- =?us-ascii?Q?8ywQrj440x8YBHiXj4uZB0QE+J1KktuhiJc4bflyorZLYXXCNTQlvOTv371c?=
- =?us-ascii?Q?ASDGOoCEv3wTgUSySdjTbUQQGWvJC0NQpKSsq2qJNstew84LYBuDpBk3uV4o?=
- =?us-ascii?Q?vBenXfKllbuWTEDAUQSxwockvdu2HZ5HxpgplNGCWZ7znKBO2Us7KIHdhBAe?=
- =?us-ascii?Q?TCX53Fa2wFwLETR5Ho0D0sOXqpILTIZlgHisolBKChaVQ1AKIqqsvk1hmIgd?=
- =?us-ascii?Q?YE6/iB4CEGVROiDFPAO5TfADkkrbbKpGKD5A/XCbSSUrHrrkqIUnPM/LzYXQ?=
- =?us-ascii?Q?WGT0sXGTpAAVusd7OCVZF7nEWNxNPvf9OafKMixxZg+5lm9hMrGaDiXZ7U/0?=
- =?us-ascii?Q?bWiQu0xeLBXSVpmNEob1HkW8KfUJ1e3A8+quycFN8fJOn5cfpnSW3FEqOAjC?=
- =?us-ascii?Q?JgfkhIRa6APiEb2G4je21c6BWKbOX5cOHZDHFENP3jL5g+YoyyU1LJz0NoX8?=
- =?us-ascii?Q?mASc/SCKxHdg3dyOiFa2V+Xpjd+N2LutqqAwhQg4IORPN9sNWSwzKWeX8TPJ?=
- =?us-ascii?Q?OYNp+31ak76mDNFtIe0GgR/CPpX7wrNktItOo5t05HaCglof/SdPTIbMFvnQ?=
- =?us-ascii?Q?dIlVEWzu0f1mZZgQUsT1aBY9Hx24N4Kx5QcmLxuijEYIEebO87J8trQkpOC6?=
- =?us-ascii?Q?5HvTn80xxmbnBR4Z8s48Qux7dO4liJ+EP9gA8N10i8HYKFz6FU5y6aWdKBDu?=
- =?us-ascii?Q?F2nCo6aUF13uff4b9pX53OdttabCsWvQhcMi73AjQz70ijVhIZRi5rD81caI?=
- =?us-ascii?Q?qzAmnxy0fXs8ZFjYivEVLHNmcYoWZVTCFLm9h9ZlCYQajTaL3WZ2b4bBYqGY?=
- =?us-ascii?Q?mE3YlmZLwZtHu8pjWIHa8Vu9ugDe14ebg5WRs5a83zohvO7s4Sb4LfCpMic1?=
- =?us-ascii?Q?IpBv8kPo4agNFbf1H2TyXz5QyQaAkHqbPjJgR2bgQJ8ELYUjejyvmEhrmoEJ?=
- =?us-ascii?Q?cle6p7D1vIfzHtVjImdzimXsTUYCsAKTGPmt140QMNxPK7rxy96x1wl3+GfE?=
- =?us-ascii?Q?2QmAUir2xSQdsVPQXgP+rTTiGOpzo02zLXIOySsQlKBQPfcSP0MVBNdZmxpU?=
- =?us-ascii?Q?KY1LAWASYTztVwsHLEbLnBvuORa0/G0/n1GbQA1BBOj9PkqnwENbff4O7HYX?=
- =?us-ascii?Q?n/06d/f2gFt8Gr7mnZ6gme2FoyHeKWUKi0gX2Yeoawx+x9szqxzDkBmWGxM8?=
- =?us-ascii?Q?R24cd960+95kkj5RLQyuLq+qQSfIut3CnDpnavZuMCT8M7VanWjlKpxbVBmH?=
- =?us-ascii?Q?9ZdLMvbeCVO22byX6zJ/TqPCtJxTr4zQCRF5JSAHjnClMwsB+zPNa8RuDdCD?=
- =?us-ascii?Q?ozo2sXZqvbCbHoDATIse33PWDM4HV99uQGVFvcLv2sGGvcSNU4Qq3K73wuEo?=
- =?us-ascii?Q?rAyxsA9mNo4oh0K+wFkx6BNR032gCcNqav90jaUAoi5RrDp9pRWy4nuuK/ZR?=
- =?us-ascii?Q?TKRZ0lKjkgxNLtP0ngU=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d3d1beeb-870b-4064-522c-08ddf0616235
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5757.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2025 11:58:40.8152
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NOBo5qiUePOEw1x7YNat0KXcE5eLDbKYD5g/dL+or0XOWmfL8YpjCGLIZSmZwreP
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8709
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Sep 10, 2025 at 08:26:18AM +0300, Leon Romanovsky wrote:
->  #define PageHighMem(__p) is_highmem_idx(page_zonenum(__p))
-> -#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
->  #define folio_test_highmem(__f)        is_highmem_idx(folio_zonenum(__f))
->  #else
->  PAGEFLAG_FALSE(HighMem, highmem)
->  #endif
-> +#define PhysHighMem(__p) (PageHighMem(phys_to_page(__p)))
+The OPAL support code in the boot wrapper can be built for a big-
+endian kernel, in which case it runs in 32-bit mode while OPAL must
+always run in 64-bit mode.  In this case it is currently completely
+broken:
 
-Yeah, that's what I imagined, and I'd make it a static inline
+- It is missing the necessary mode switch when calling and returning
+  from OPAL.
 
-static inline bool PhysHighMem(phys_addr_t phys)
+- The definition of LOAD_REG_ADDR introduces R_PPC_ADDR16_{HA,LO}
+  relocations, but _zimage_start only handles R_PPC_RELATIVE
+  relocations.
 
-These existing macros are old fashioned imho.
+- opal_call assumes the ELF v2 ABI's stack frame format.
 
-Jason
+- opal_call assumes that its arguments and return value will be in the
+  same registers as for the OPAL service, but this is not true when
+  the caller is 32-bit code.
+
+Since so many changes are needed in opal_call and its wrappers, write
+completely separate definitions for the 32-bit case.
+
+Delete the definition of LOAD_REG_ADDR for 32-bit code, as no generic
+definition is possible.  We could use the same definition as
+LOAD_REG_ADDR_PIC in the main kernel, but that clobbers lr which would
+break opal_call.
+
+Signed-off-by: Ben Hutchings <ben.hutchings@mind.be>
+---
+ arch/powerpc/boot/opal-calls.S | 110 +++++++++++++++++++++++++++++++++
+ arch/powerpc/boot/ppc_asm.h    |   6 +-
+ 2 files changed, 112 insertions(+), 4 deletions(-)
+
+diff --git a/arch/powerpc/boot/opal-calls.S b/arch/powerpc/boot/opal-calls.S
+index 1f2f330a459e..034811619c0d 100644
+--- a/arch/powerpc/boot/opal-calls.S
++++ b/arch/powerpc/boot/opal-calls.S
+@@ -16,11 +16,22 @@ opal_kentry:
+ 	li	r5, 0
+ 	li	r6, 0
+ 	li	r7, 0
++#ifdef CONFIG_PPC64_BOOT_WRAPPER
+ 	LOAD_REG_ADDR(r11, opal)
++#else
++	/* R_PPC_ADDR16_{HA,LO} are not supported, so copy pc into r11 */
++	bcl	20,31,0f
++0:	mflr	r11
++
++	addis	r11,r11,(opal - 0b)@ha
++	addi	r11,r11,(opal - 0b)@l;
++#endif
+ 	ld	r8,0(r11)
+ 	ld	r9,8(r11)
+ 	bctr
+ 
++#ifdef CONFIG_PPC64_BOOT_WRAPPER
++
+ #define OPAL_CALL(name, token)				\
+ 	.globl name;					\
+ name:							\
+@@ -65,3 +76,102 @@ OPAL_CALL(opal_console_read,			OPAL_CONSOLE_READ);
+ OPAL_CALL(opal_console_write_buffer_space,	OPAL_CONSOLE_WRITE_BUFFER_SPACE);
+ OPAL_CALL(opal_poll_events,			OPAL_POLL_EVENTS);
+ OPAL_CALL(opal_console_flush,			OPAL_CONSOLE_FLUSH);
++
++#else /* !CONFIG_PPC64_BOOT_WRAPPER */
++
++opal_call:
++	mflr	r11
++	stw	r11,4(r1)
++	mfcr	r12
++	stw	r12,16(r1)
++	mr	r13,r2
++
++	/* R_PPC_ADDR16_{HA,LO} are not supported, so copy pc into r2 */
++	bcl	20,31,0f
++0:	mflr	r2
++
++	/* Set opal return address */
++	addis	r11,r2,(opal_return - 0b)@ha
++	addi	r11,r11,(opal_return - 0b)@l;
++	mtlr	r11
++
++	/* switch to 64-bit when we enter OPAL */
++	mfmsr	r12
++	li	r11,1
++	rldicl	r11,r11,MSR_SF_LG,0
++	or	r12,r12,r11
++	mtspr	SPRN_HSRR1,r12
++
++	/* load the opal call entry point and base */
++	addis	r11,r2,(opal - 0b)@ha
++	addi	r11,r11,(opal - 0b)@l;
++	ld	r12,8(r11)
++	ld	r2,0(r11)
++	mtspr	SPRN_HSRR0,r12
++
++	hrfid
++
++opal_return:
++	/* switch back to 32-bit */
++	mfmsr	r12
++	li	r11,1
++	rldicl	r11,r11,MSR_SF_LG,0
++	andc	r12,r12,r11
++	mtmsrd	r12
++	isync
++
++	/* split 64-bit return value into 2 registers */
++	rldicl	r4,r3,0,32
++	rldicl	r3,r3,32,32
++
++	mr	r2,r13
++	lwz	r11,16(r1)
++	lwz	r12,4(r1)
++	mtcr	r11;
++	mtlr	r12
++	blr
++
++	/*
++	 * Wrapper functions need to combine and shift arguments into the
++	 * 64-bit calling convention.
++	 */
++
++	.globl opal_console_write
++opal_console_write:
++	li	r0, OPAL_CONSOLE_WRITE
++	sldi	r3,r3,32
++	or	r3,r3,r4
++	mr	r4,r5
++	mr	r5,r6
++	b	opal_call
++
++	.globl opal_console_read
++opal_console_read:
++	li	r0, OPAL_CONSOLE_READ
++	sldi	r3,r3,32
++	or	r3,r3,r4
++	mr	r4,r5
++	mr	r5,r6
++	b	opal_call
++
++	.globl opal_console_write_buffer_space
++opal_console_write_buffer_space:
++	li	r0, OPAL_CONSOLE_WRITE_BUFFER_SPACE
++	sldi	r3,r3,32
++	or	r3,r3,r4
++	mr	r4,r5
++	b	opal_call
++
++	.globl opal_poll_events
++opal_poll_events:
++	li	r0, OPAL_POLL_EVENTS
++	b	opal_call
++
++	.globl opal_console_flush
++opal_console_flush:
++	li	r0, OPAL_CONSOLE_FLUSH
++	sldi	r3,r3,32
++	or	r3,r3,r4
++	b	opal_call
++
++#endif /* CONFIG_PPC64_BOOT_WRAPPER */
+diff --git a/arch/powerpc/boot/ppc_asm.h b/arch/powerpc/boot/ppc_asm.h
+index a66cfd76fa4d..754956ea4bec 100644
+--- a/arch/powerpc/boot/ppc_asm.h
++++ b/arch/powerpc/boot/ppc_asm.h
+@@ -60,6 +60,8 @@
+ #define SPRN_HSRR0	0x13A	/* Hypervisor Save/Restore 0 */
+ #define SPRN_HSRR1	0x13B	/* Hypervisor Save/Restore 1 */
+ 
++#define MSR_SF_LG	63              /* Enable 64 bit mode */
++
+ #define MSR_LE		0x0000000000000001
+ 
+ #define FIXUP_ENDIAN						   \
+@@ -88,10 +90,6 @@
+ #define LOAD_REG_ADDR(reg,name)			\
+ 	addis	reg,r2,name@toc@ha;		\
+ 	addi	reg,reg,name@toc@l
+-#else
+-#define LOAD_REG_ADDR(reg,name)			\
+-	lis	reg,name@ha;			\
+-	addi	reg,reg,name@l
+ #endif
+ 
+ #endif /* _PPC64_PPC_ASM_H */
+-- 
+2.39.5
+
 
