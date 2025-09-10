@@ -1,88 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-11984-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11985-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 235B2B50F68
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 09:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0334BB5132B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 11:50:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMC5p6n1bz3d2x;
-	Wed, 10 Sep 2025 17:30:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cMGBv15N3z3d39;
+	Wed, 10 Sep 2025 19:50:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757489438;
-	cv=none; b=UfVN8b7a5zc2O5eQ4DWObzC1XLlPsyHH9sXksF/PZwLsHB1Bp1m5qVkeXrFpk2wN5qrrYHIK3/bZuNKAAR5LRCYMj8oX77IvCqgZf2TL/4zfksPm7wvA64OixGP78ao7fz0NtwHYBc2hhu+mc5Gegqyj7z54yxa9Em2m2PzBbVYHNW6oh85kUmu8K1p7MQnO3DNyuxa0m8705b3IYBiNgm5poFhwdxb/dJUkk4Pxr2n83i/U5QG6r6vTx4aIqrB3ywTa+44IRSSaTxsjqYInf5HenTM8ARk4H2cX31LB/ywO/aiYtdvNP4nbnXICQ4Kz80obThVwKEqAQhnBzJalCA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::134"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757497815;
+	cv=none; b=b4Iu8mk5APjnbAgEJds1r+qaOpuJNf2nfUOZs5/89s83+N9l0CGTjiuBd4Z0er7d7oTMJgYyMnlj9noybRDHSDqzarwjytwC4wtIcus0VegAOROlSeXAYGnkCStN6uqzzhe4EjtM8oEWnyKEETWSYT5eTMqo9AObDl1X8xukllKtUTIxmnGkpKeOhZwn5gSu3dkbkSzJgJFHFpHprF1F41DIXm01gXk5rlCJ7cyJXF/+GhM5p5Dc4VgI8jfAppX7d2xMaTdy4xloJEMg3Qg0EeaO9b+sbynuGn3pQ+kSzZbUavi8LvTOvqhRvp+8BFUoTJp8pu9W1QEQljlbjkws0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757489438; c=relaxed/relaxed;
-	bh=TSv3IIId7unI8UfEY8bPGg1xGNeJdhNHxN9/10PYUSY=;
+	t=1757497815; c=relaxed/relaxed;
+	bh=8Y7rG79FKOI2JeBB22WORiCW6ZRk/F6yyki8GX6i0OY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f7xEVDK6pkr7+tgJvgVKuGnuKBkgJwzu8Zv+QxpnTrEdDW7twrtsvnnj+qcb1hP4N5gGWCQiiwnuHVTEb3QONxzsR1K1pmU/4JOIBZVt2DfVZtRTJmqrJPGYjLgWfjdzqKxiLsS4ze897pxJxuWD2kD1xP9Hp2J884YIjcKp39UDc/amt8szDkBn31VYItDk8258/spCCuWn7KY7ujS5fbR7Ajbw6W6kcIlP5ZIn+ufdafU/xEARGKvTgpVUKBZTGug/hIg8KQgqkj2iELw6hY0ssK/vAXd7A8IK373dGEG/MYOPlnOuA6ytE9xKDFBZtN0kfZL0rU02oXCFUgqURQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gs9NVCu6; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hRgsJ0tI; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jstancek@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	 To:Cc:Content-Type; b=c+H5Uub9y9itj57AVKmIEioZ2u5R4VWow/l/dRT0qTTK+32gZngcA2Hje8nXznfdZ9vaHMdlUUiNciFynbwbAzwFEez1LRxSA7T2I2A6bDijAeR1rRoDP/hl9rjCzIb5eXstgAm5Be2I1NILGdqm03gctQXDhsSYJ5Y0VDoeEXic35tjRXQL2RGsIYK6ISGqgvYYA3UUSk7T40lAp+SLUsQ3Yw/IPe8f8VIFVOIy6c3d3w0t4//qQa2f/ZLaHc45ATZSrrTuJWiz6AjCL7PNtoV63rfJ9pTK2UPyb25Ny3QgJ+HMkaPZOh+LEVR5oOe54nSMjAp8+48ZDTDuV+xaDQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=GrbQrO1I; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::134; helo=mail-lf1-x134.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gs9NVCu6;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hRgsJ0tI;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=GrbQrO1I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=jstancek@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::134; helo=mail-lf1-x134.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMC5n1X2bz3d28
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 17:30:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757489430;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TSv3IIId7unI8UfEY8bPGg1xGNeJdhNHxN9/10PYUSY=;
-	b=Gs9NVCu69m5r0LTZPuDSY5kXuZlmJdmzg9I8iTRe99eIYFiI68O7jmHUfgOmv5F4vmkezL
-	R0wFkuIvMdpGgzuwdyTW4Zd4DWuifbbG6jxxooB196ApNqNhr3X+z2rpKNfPnyvBrTKpSa
-	bW9XLsaP1igDR/Xoma9FmHh/0qniDg0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757489431;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TSv3IIId7unI8UfEY8bPGg1xGNeJdhNHxN9/10PYUSY=;
-	b=hRgsJ0tIUNluRmPsRYKjQl8rttz7imFT+3engNX65zIWY/ZPFss3sCmkU3KmM5KpQdQKE3
-	0v0veJDdPCnKKxL7TKM7uI/auTMOEn+ngmlhpH1/6jCyll3AO7U7Pa2IkQwts1En4TqSOx
-	SbJX5ibGxUJw4LO1t53mVZ2jRSKhzmM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-348-5himg5IEMR2fIUaEGfIUYA-1; Wed, 10 Sep 2025 03:30:28 -0400
-X-MC-Unique: 5himg5IEMR2fIUaEGfIUYA-1
-X-Mimecast-MFC-AGG-ID: 5himg5IEMR2fIUaEGfIUYA_1757489427
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-45cb6d8f42bso62785475e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 00:30:28 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMGBs38XZz3d2B
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 19:50:12 +1000 (AEST)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-5608bfae95eso7521514e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 02:50:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1757497807; x=1758102607; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Y7rG79FKOI2JeBB22WORiCW6ZRk/F6yyki8GX6i0OY=;
+        b=GrbQrO1I33qsi7/pX4q7ZF9EMTn3kSwIA48ERxw12uNKymFnuYc3P3q3XBF0+FfRBf
+         Pd0QH49u0qhKsbeI5dOjXrp95eKMNuaLLQ8Nl1EajrIobu6l9tAfg+unFn9enl0HLFF9
+         5SXUetq+BrUbNw9btwdftHP5Ba05QY3+s2tHPstrOzAoufI8dlCEyocIHp3ddMD6Cd8s
+         4Mj2k3nbjsMv1t3xnogwkEUXxJtBmltvpfr3Y0qYzYpddHhVD8hqzAXRJ8+vcoFwqdas
+         02MLFJwEVKurInnSDntreknznjNJpRZjvpJR5K/29SwO8XO1r5SEwZjwvG+1GOvSnkzs
+         g3gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757489427; x=1758094227;
+        d=1e100.net; s=20230601; t=1757497807; x=1758102607;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TSv3IIId7unI8UfEY8bPGg1xGNeJdhNHxN9/10PYUSY=;
-        b=jvjRWgqc5wh2etNf+Rxu1LUhq6LENeKsnVTGAx49FgLundHXf7PIezvMRveXX1Er1+
-         199kgMj7v9RaD6dUl2NROzQU2MLM3qsFSIxc5LbpFYzE8489PWil83aX1atrIIniCM/+
-         uXzLtLmeNZ40CtPWsJBgT4JjeGoxcJcNlLkF3yCa9zp+LaXrJkkSJWrBRBxWtpCLkmgG
-         YgSQT/v+UypqpLJsUoFDyxEifPq7Ue0vrf/3+8dyZf/7adjdxHzcfXzMm1tbMDa4qk7n
-         xKXMq8cSzVeVsueN2rIRbX2SIXLMrb0mGNYrFRdVjgTtTulRPwM8oZ5ZFJY9gsnlBoz9
-         A1wg==
-X-Gm-Message-State: AOJu0Yy8A/ioKQrfCbakTaUJGI48pR8vErsb+7O/+VwarD58oxd6f0WU
-	s/SBbYjd1R+rmCzRYAEy4tiUM5yOocYnsB9yJ4RgYG3V0Ku/Chwi1k+HjnfM9xaCz9yWhWqdS5l
-	obbDR7zqQVmdp+lrV9GOW3xJQOAbMXgcpu6XUl5epl/dK/FbS8TXZE0t0nY3M8hBIr+dIDXEs2w
-	qL4QOQ5fukwvDPAuTc1MGXc/ujyj9xWc9525K2wo/XDg==
-X-Gm-Gg: ASbGncseBqfY3mfNhBL1XUi8U7RBEKnpVFwuNbKDC5kotvJWCSFLElub8hgtFnwrShz
-	4LL6IRs0q/VVansJRgWZgio7zmNUoIgJ1R1LcSYc8I3Tm80OFvW974hLC/dlVLQFUXkbq5UivW3
-	bNmHqsQAhoAv8tFlZrrNnLV0LVLNxEZ2iYKSPOZKZQxdIj7+OzzG18V7mPRyGt5UqzLz+NXaYL9
-	dGASzNCZ9TGqjMdPRVwjlI=
-X-Received: by 2002:a05:6000:2087:b0:3de:c5b3:dda3 with SMTP id ffacd0b85a97d-3e645c9d0fbmr12128048f8f.44.1757489427435;
-        Wed, 10 Sep 2025 00:30:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzuJXYwoOG98BtNJlZ2tE3xANYEOw3wxoX+SSNAaviVD84eLYQ2LV34osvXJQI60WO2kZRIXngmquFvmIfJHk=
-X-Received: by 2002:a05:6000:2087:b0:3de:c5b3:dda3 with SMTP id
- ffacd0b85a97d-3e645c9d0fbmr12128022f8f.44.1757489427039; Wed, 10 Sep 2025
- 00:30:27 -0700 (PDT)
+        bh=8Y7rG79FKOI2JeBB22WORiCW6ZRk/F6yyki8GX6i0OY=;
+        b=fBbHxcQNJx8pmJppst6vA0jBfClbGFEx3z6xrFYuVYR7cc7aM8yQEX/JN2HTBnEAJI
+         1TKBzZ26eCrC3t+7D7Oddq7MPczgzmsV2dFsoDSwzVkVXxJzyLcDtBg6HhR+KRdwYQUM
+         kWOKYmJDB45oGlBooksNsm8lod4tIKek4rsEuaK34xMcHSQMm/UDPf+Ex9bDRASKIvS5
+         eGm6CJS1Qp97X7UUibBR2tfiQqw4ok/QYvvAdF0CZlK2HoxWm3v7rJihB99NyfIu+lX2
+         Ql4+LNwNRE4/O66+iqhTMFlpW7BgNbREWK3sf0H8cQCps5mFOcJKSvckh4TWwsVz+pLa
+         HHrA==
+X-Forwarded-Encrypted: i=1; AJvYcCXdL4NytFqgAf/6CffoFMqKIjTgVc8BDpLmywJHQRyi9MxFZUc9Vfhylj1gtkbibplTr7HX4UkFgVY9CbI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxSH20E5gx2kT87volAEoW7okw4n9UttZoftesf4tTucqqBgAPf
+	3icEuA9Bjow2R6hCEAtVG08qipHgjYN/MywFEwHmnJLCOPhny/v13P1ePNZGSA/tN4oJX5KbQE3
+	lbT+8FutH38rCuO4I+ADJSp5pgxx7IBXV/MzMRGh0QA==
+X-Gm-Gg: ASbGncspSB6Rh+iL3LzHavdqVSwiypkMre/VjXHYKJA5FWHp5Lhgz7/nOW9/og2HBqa
+	2Gkvk0pAOZCQ4LEvSe7RkGYuHbf+gXG1RLjcCFAa9vjARkgHlBBc2MRZMqguxWSbJmfwyo+TQ5O
+	M4+clRUiL2BF08T0NPWSmqXFr9ui3U7ll3HUWtUcoEI5owURRXqp3JP5/6UApu3xE2qMYSrqoAK
+	93r37w=
+X-Google-Smtp-Source: AGHT+IGq2x91wz7j8DANH/yJwpeO4d/hIy0ABq1WES66C1SeY2aK74/VWAJ5lsiz89NvTXBUTDFt595MC0reZwFBRxA=
+X-Received: by 2002:a2e:a009:0:20b0:336:5e1f:b1ec with SMTP id
+ 38308e7fff4ca-33b536f14b1mr41029971fa.31.1757497807337; Wed, 10 Sep 2025
+ 02:50:07 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,116 +79,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-References: <e8c743dfb16c6c00fd793d7afa6eed33c49f895f.1756202009.git.jstancek@redhat.com>
- <0ab92ae3-674f-445e-883c-0e511add85d2@redhat.com>
-In-Reply-To: <0ab92ae3-674f-445e-883c-0e511add85d2@redhat.com>
-From: Jan Stancek <jstancek@redhat.com>
-Date: Wed, 10 Sep 2025 09:30:10 +0200
-X-Gm-Features: AS18NWAr8td3LOQLP511LSO5DpHnyQa1skw1nOcY5CC6N4rA6NZKjHj2YmR1a-c
-Message-ID: <CAASaF6yOskaXhQzvqz_-fZekYimgbNspi0JfT4TAWL-rB6mMhg@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/tools: drop `-o pipefail` in gcc check scripts
-To: Joe Lawrence <joe.lawrence@redhat.com>, mpe@ellerman.id.au, 
-	christophe.leroy@csgroup.eu, maddy@linux.ibm.com, npiggin@gmail.com
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: _Lw2zZM6zaGouWgLMFRjExMLUt5ltkPgPagpsP-bJOg_1757489427
-X-Mimecast-Originator: redhat.com
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com> <aMDYdp3H-yOHU1Pm@casper.infradead.org>
+In-Reply-To: <aMDYdp3H-yOHU1Pm@casper.infradead.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 10 Sep 2025 11:49:55 +0200
+X-Gm-Features: Ac12FXxu2Penmvb-ANhZIzZlxEacPcTMGZ42OzvKFfqr5PHU2ajbCjOLxBc-XSU
+Message-ID: <CACRpkdZZZNV5BdNhyXEK__=EJLjDtAEsc2Kv4Tv53+=Mv-8R=w@mail.gmail.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Matthew Wilcox <willy@infradead.org>, Russell King <rmk+kernel@armlinux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>, ksummit@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, 
+	Lucas Stach <l.stach@pengutronix.de>, Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Ankur Arora <ankur.a.arora@oracle.com>, David Hildenbrand <david@redhat.com>, 
+	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Ira Weiny <ira.weiny@intel.com>, 
+	Nishanth Menon <nm@ti.com>, =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>, 
+	"Chester A. Unal" <chester.a.unal@arinc9.com>, 
+	Sergio Paracuellos <sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Aug 28, 2025 at 3:32=E2=80=AFPM Joe Lawrence <joe.lawrence@redhat.c=
-om> wrote:
->
-> On 8/26/25 5:54 AM, Jan Stancek wrote:
-> > We've been observing rare non-deterministic kconfig failures during
-> > olddefconfig, where ARCH_USING_PATCHABLE_FUNCTION_ENTRY was getting
-> > disabled and with it number of other config options that depend on it.
-> >
-> > The reason is that gcc-check-fpatchable-function-entry.sh can fail
-> > if `grep -q` (or scripts/dummy-tools/gcc) is fast enough to exit while
-> > there is still someone writing on other side of pipe. `pipefail`
-> > propagates that error up to kconfig.
-> >
-> > This can be seen for example with:
-> >   # (set -e; set -o pipefail; yes | grep -q y); echo $?
-> >   141
-> >
-> > or by running the actual check script in loop extensively:
-> >   ----------------------------- 8< -------------------------------
-> >   function kconfig()
-> >   {
-> >     for i in `seq 1 100`; do
-> >       arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh \
-> >         ./scripts/dummy-tools/gcc -mlittle-endian \
-> >         || { echo "Oops"; exit 1; }
-> >     done
-> >   }
-> >
-> >   for ((i=3D0; i<$(nproc); i++)); do kconfig & done
-> >   wait; echo "Done"
-> >   ----------------------------- >8 -------------------------------
-> >
-> > Fixes: 0f71dcfb4aef ("powerpc/ftrace: Add support for -fpatchable-funct=
-ion-entry")
-> > Fixes: b71c9ffb1405 ("powerpc: Add arch/powerpc/tools directory")
-> > Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> > ---
-> >  arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh | 1 -
-> >  arch/powerpc/tools/gcc-check-mprofile-kernel.sh           | 1 -
-> >  2 files changed, 2 deletions(-)
-> >
-> > diff --git a/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh =
-b/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
-> > index 06706903503b..baed467a016b 100755
-> > --- a/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
-> > +++ b/arch/powerpc/tools/gcc-check-fpatchable-function-entry.sh
-> > @@ -2,7 +2,6 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> >
-> >  set -e
-> > -set -o pipefail
-> >
-> >  # To debug, uncomment the following line
-> >  # set -x
-> > diff --git a/arch/powerpc/tools/gcc-check-mprofile-kernel.sh b/arch/pow=
-erpc/tools/gcc-check-mprofile-kernel.sh
-> > index 73e331e7660e..6193b0ed0c77 100755
-> > --- a/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
-> > +++ b/arch/powerpc/tools/gcc-check-mprofile-kernel.sh
-> > @@ -2,7 +2,6 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> >
-> >  set -e
-> > -set -o pipefail
-> >
-> >  # To debug, uncomment the following line
-> >  # set -x
->
-> Acked-by: Joe Lawrence <joe.lawrence@redhat.com>
->
-> This bug manifests when automated scripts expect to run a kernel build
-> after `make olddefconfig`.  I reported this to Jan when I found that
+On Wed, Sep 10, 2025 at 3:46=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
+> wrote:
 
-Right, maybe we can still add that too.
+> I don't mind that the feature remains ... unless it causes us trouble.
+> Which it currently does.  Perhaps we could start by removing HIGHPTE?
+> There was a certain amount of complexity introduced into the page fault
+> path when support for that was introduced.  x86 removed support for it,
+> so it's just ARM left before we can remove the complexity again.
 
-Reported-by: Joe Lawrence <joe.lawrence@redhat.com>
+I sent an RFC patch so we can see what Russell has to say about this,
+it is currently only enabled by default on the VT8500 machine.
 
-Would anyone else also care to review, please?
-
-Thanks,
-Jan
-
-> kpatch-build [1] instances were hanging (expecting to hear from a user
-> that would never answer :(
->
-> [1] https://github.com/dynup/kpatch/blob/master/kpatch-build/kpatch-build
-> --
-> Joe
->
-
+Yours,
+Linus Walleij
 
