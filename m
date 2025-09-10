@@ -1,80 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-12015-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-11987-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA47B52412
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Sep 2025 00:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B9CB516D6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Sep 2025 14:26:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMZZ21N3Bz3dBY;
-	Thu, 11 Sep 2025 08:07:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cMKfy2k1Cz3dBg;
+	Wed, 10 Sep 2025 22:26:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757506640;
-	cv=none; b=bwW6S3Tjojb8mFxhWB/Fb1AxOFWRGl2gmgg6OIoCN81phcexzXX0g+2VkJ++IXvppeZPcn3JX3yJLTTosOBrKHl+/inNwTfDPF7Niu37IXJmGoZ9MGCiaV3LlgT//1CfkO+Tk4907PTUjEYDIionESZcn9R80XB9IF03Km02ne6E1mJEoEad7oY5jyWLIPZAwVBARc01451r8wy990ZR56WFcCvQa4Ds6MkQKVjO1suZMO3GQ1zr+eQxO3IwLi69hLWJF73pDItpb8QMKMpPfRR5UmqdZA7YxBwxYRAJBF4PTvItQlnQzyTKukHWcrj/H2lfE6Gh81WPnBUJBVazJg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.157
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757507178;
+	cv=none; b=XwO0XwyMFdT+pwgXVI/Ys367qoLmWtg7d3dLEwM6e4RoIqtE+na1/2Ctx6a5KGY0xqe268aUXCNa/lrkurmeaTxbdJAVCIDh5/CQasauVFHUpQCYUKAJKvNn016GY0xMCBss0R+oFM1F5BgVszlPKPBLQW4buz1jm7sPIdgkquR36uvIMOnabapqVyVxrnB1P1ICLqA+Z6hbkH22ZvGd4njk0P0DTu52eaVOCFM7UshVbIbDHLSCfeJrUvOaMQp+ZHez9GgANQyx8Fd1bFQ2n+P2iEMST3doyNrVXYQsviN8kZTI4jSrj8ZxxY2oQqQCXLe1bZcPvz83vOB+COn84Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757506640; c=relaxed/relaxed;
-	bh=3TH7g+Z03G9e/sLdJGfHaKO6b6yhWnb/Csu/pw2QByA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EhaG5zV5ov/xnDhowwQ5yHi7FgfshmPRN54h2iEsWz+oDUH0/JMucxOS9HzIgCn6stUi4iVpnztCwlMff+e8BJjeObCbyq8TztgrMgTXr9Fh4+MqByucjFyJ2AB06VSHfhQjBvCcqxr8xL39HlFzn1DLrbky1WBgBiMlZAME2ebbTpxxgNJgZwqWGMWe7nn8wkkwP/8ZC9WpaQYAjZtfHcq1iOL4nsfwU+dZTSbsXK8md4DDuNQBSKKteu+LbBQfUahO751p4KUefNNR5dLDRsMOFcGV1KO8+Vdzij4e+reBXmATdtqxoLltxRA3hIB9ACniKFtP3uZT20RnuBwqqw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=mind.be; dkim=pass (2048-bit key; unprotected) header.d=mind.be header.i=@mind.be header.a=rsa-sha256 header.s=google header.b=elg6u9FD; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=ben.hutchings@essensium.com; receiver=lists.ozlabs.org) smtp.mailfrom=essensium.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=mind.be
+	t=1757507178; c=relaxed/relaxed;
+	bh=Q8QtYwN/6PZfKDPEAgWxGMzQb2D01FG/mGmHU9G0gsI=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=I0oVETsvdgesuEj+FeUxwMvOXhyML7UxwhOaUOpxAFVtM0BhF1r7ZTyJ3681LczYt1L3rmKPH2mwMlUv1zxhDntMPjNIwLR8go+zfC9QHdrrtesMZGGhVnIIls18GQesB4nch23eqHG6RDWpzMLaIts/HAb+4D5nbj37i7jajryl6kQJqghIkiXEwb5aoQRPfcVlj2dtMrceJrxsMBHt5DRdC8n2xY2Ty1V6q2cURjiLisCJQ3KbwPUtKkIlAVdFkp/KQYRAWbA6rQCffe4idw6i8qYskjR4ACpNXArXSArqIp/0iMlHelpwJ0+Owp6fJICeTYt+sG04XZlU4Ue3dw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=lMRppWvj; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Y5iH1dNj; dkim-atps=neutral; spf=pass (client-ip=103.168.172.157; helo=fhigh-a6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=mind.be header.i=@mind.be header.a=rsa-sha256 header.s=google header.b=elg6u9FD;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=lMRppWvj;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Y5iH1dNj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=essensium.com (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=ben.hutchings@essensium.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.157; helo=fhigh-a6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 474 seconds by postgrey-1.37 at boromir; Wed, 10 Sep 2025 22:26:15 AEST
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMKSX44mTz3dBX
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 22:17:14 +1000 (AEST)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-45df09c7128so5506985e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 05:17:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mind.be; s=google; t=1757506630; x=1758111430; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3TH7g+Z03G9e/sLdJGfHaKO6b6yhWnb/Csu/pw2QByA=;
-        b=elg6u9FDYjKmxiEby0euyA8OU0XoJcNkBPnph2EAZkX/HamFhhraDtrk5DoAX6Kmsy
-         BHf576vs+nyT5ajvT8Zwrr1v/9VBqWBac59oJeX/nvuSyV7rgTktoT+nW6Wq0whdVNgd
-         8eXPleqUcwyFXfARpVnawxC03JpU5pEV8GIM1migUKxMb9dca7EalHvxk79wecP6Fs04
-         pBqQGguJMLqNBPLr7fmAcE1eSKCL4NPOdQOjytA4LEFYGu7lfkJhSGGw1eagLAbXnwXh
-         7kGLxpqLd6G0YgI90XC8M5fYTxp7gaK2k3qTWp9BQ3KIEm2RdhARVevgDUM/5JXSUBQj
-         8B7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757506630; x=1758111430;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3TH7g+Z03G9e/sLdJGfHaKO6b6yhWnb/Csu/pw2QByA=;
-        b=h9tzh3ObSzMTXk7bmBXq8YZzaYGSGHqaNEXlXS7dS0CMzQ0+h5TP7eoAD4TIked4Yf
-         LRP/Q/4IuuyCCPKqZRK1R1uTDtiNUfHEQZM+XqQWyCKzVctHS6tNBC6VdNkor5YbAMYf
-         TWSx5AOt6N9xgxG9AMGf1YkwACt0YGegEN5xetzEVVzNTLpqJvvhCxeaFGUk1AkY2wPh
-         eF7Ik9WgbDfjWvt9DU2Jle5REK6KnSdn26iHvNNmQWeV6sVfjvdCgwi/cUONIJQDJ4L7
-         12X7gquhtm1NiySaChY/RvmnZygH1ORMLkunUxulCML1IKjr2kcArNgeqpp6dEnlnqFE
-         0i6w==
-X-Gm-Message-State: AOJu0YxIuA8EFDieMZ47b/h9XA9I5jL/mco8Q7SIOdZwKucd2aalQNXr
-	5T/jLlN8TMjOw69nNvsGcBNV8SrNejj56Hg6SGzUuw3FZr+MJo3jAQFqVLhWLKIRf1eh5zhA4at
-	JZNpU
-X-Gm-Gg: ASbGnctVeOcXf34C9dBlOarm4LkfzG0hXp1sCXpI9/PRwaViUhwLwCdU74410T9xxFA
-	Aawwey9bfgt0cx8dMW3X7G/Vt2v0vFXmp41Ct+2iV8zdqkDOyWMRfrMbmDDKvr/h75XVjV58A/5
-	IcJUAx61l0aCalxcR/v9VwtJOlj/HZFjToTIx5gnr7QfUUnBSUUJTOVcpM0k//CH4hdJtGWT8nC
-	HMTNqt3YuRwVJC/7Tt2uvS/SiK5H8aVnmWe3l+xO/PkZB/HbdBD5DSvhGZyrlJc/mHJD9mqhekq
-	CegeGJSsF7IGoAEXhi1YPhLSSjZYTOUwUZVbgFDLIiEhR6viSA/2YIJS0bLB/gpzYH8QUoPSg4B
-	NAxoAPBO+cqHelnIHKgkihhQWK1oKxhp2FnnSha/32mLUfdM=
-X-Google-Smtp-Source: AGHT+IHTwOCgRsTGLUgddeEGDwjiMl/VEbOIu4HoX+DIOP5w1FH12dxx6RRTto4MSWd9H4cCPB4MvQ==
-X-Received: by 2002:a05:600c:4ed2:b0:45d:d99a:e5fc with SMTP id 5b1f17b1804b1-45dde1b2fe6mr142088045e9.7.1757506630485;
-        Wed, 10 Sep 2025 05:17:10 -0700 (PDT)
-Received: from cephalopod.i.decadent.org.uk ([2a02:578:851f:1502:3474:c4d4:aa9e:144])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3e752238967sm6630371f8f.33.2025.09.10.05.17.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Sep 2025 05:17:10 -0700 (PDT)
-From: Ben Hutchings <ben.hutchings@mind.be>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Ben Hutchings <ben.hutchings@mind.be>
-Subject: [PATCH] powerpc: Fix OPAL support in 32-bit boot wrapper
-Date: Wed, 10 Sep 2025 14:16:33 +0200
-Message-Id: <20250910121633.3671060-1-ben.hutchings@mind.be>
-X-Mailer: git-send-email 2.39.5
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMKfv03Fqz3dBX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Sep 2025 22:26:14 +1000 (AEST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id E53E91400363;
+	Wed, 10 Sep 2025 08:18:17 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Wed, 10 Sep 2025 08:18:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1757506697;
+	 x=1757593097; bh=Q8QtYwN/6PZfKDPEAgWxGMzQb2D01FG/mGmHU9G0gsI=; b=
+	lMRppWvjlb2mRKxIhB6zQg+atJittD3Vv0ZFlNazWaKYhCDUGlit6C8CogCEhZ1q
+	2sgfbhbJXdiaC4H4OidSoW40ubFOCE39XJ4KzVLOJ10wP9pvvRgOJMCav1aSbIxu
+	b5u73dAtlkdNSkkiMI6PCleDEH4MA3fhLbYHi9vDGXnFFF3HSW25cOUquO7mmoMj
+	hLTihsaytQfa9faTH1k79YiYkCM7t4dUSBbNDzGqmAGL6UHzBn5bnAk28/B8UHVl
+	HVbi26/Q/o6w6GGoMmjwYJCsCj3ZwcOGPMd2msbPUCVMtjIfrykiD6CUNuGGzFwi
+	0eau0fM1D3x/hvj/bGfcjg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757506697; x=
+	1757593097; bh=Q8QtYwN/6PZfKDPEAgWxGMzQb2D01FG/mGmHU9G0gsI=; b=Y
+	5iH1dNjKENA9lB+WPTE+aDfd4EEnjCQqu9aXxgemhakIsSB8xgRSPmhWJOELM+Qc
+	IiQZMh2MYWB2J4DQgGxeAv8e3Tv5X8adt+BU0fQ3Bx0kWFJe+j8JUOO+K3HMO98X
+	gynbPyjA0RL3/qKL2eWUMp19Md1yc2Zl15HQ6hSWEwPRxIRDnR8UwsT46S4X1btz
+	q973lX+TENS1d+jVxzDgyYuVsxhPd1+lVItZvghiroNZ7Q1gp4kQIF65tksNivPN
+	9YnVwWznR3+55rCsarJ/A5EB6Y1NQPUeyBXfrRAbH8NDDB4OOQdTfJfemow7s1L0
+	SCw4jQQeqFMyxCkr2GVqQ==
+X-ME-Sender: <xms:iGzBaLzC5EVSAADw_ZXg73KwvPlGkppPq-JRpw5uboD5jbP27FwN4g>
+    <xme:iGzBaDTuoR4zP1RmrdotU0_sl9iOja29GXfmFtU8duZVGR2bSE_X4GARY5TKnB8CH
+    th5x07cEPZvTAFjklA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvfedvjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpeefhfehteffuddvgfeigefhjeetvdekteekjeefkeekleffjeetvedvgefhhfeihfen
+    ucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghp
+    thhtohepvdekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegthhgvshhtvghrrd
+    grrdhunhgrlhesrghrihhntgelrdgtohhmpdhrtghpthhtoheptghhrhhishhtohhphhgv
+    rdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopegrnhgurhgvrghssehgrg
+    hishhlvghrrdgtohhmpdhrtghpthhtohepghgvvghrthdorhgvnhgvshgrshesghhlihgu
+    vghrrdgsvgdprhgtphhtthhopegrlhgvgigrnhguvghrrdhsvhgvrhgulhhinhesghhmrg
+    hilhdrtghomhdprhgtphhtthhopehsvghrghhiohdrphgrrhgrtghuvghllhhoshesghhm
+    rghilhdrtghomhdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtg
+    hpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehirhgr
+    rdifvghinhihsehinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:iGzBaNO7Os19I4sPMn6-otQ5bbEKAB4pch0OZuFXHFI5x9JEd39xpg>
+    <xmx:iGzBaK3yqnNlqS-sfm9Lx7D_9HNKC12n5KccpVTug2j5bpB0xc1AZg>
+    <xmx:iGzBaNOhVAFIENTxMk6beeNI3AnqDtq-OlhJo9DV9HIPb6ewt2VQSA>
+    <xmx:iGzBaAvXxr0sCtad7do3vmGOYAy8bEnqRMURmIo7PtKiN1CGOde_GQ>
+    <xmx:iWzBaM4JqI_NrZjl1sbxSuVsA0MIBP4IgV_a6-a8UVVN-ccxa-XdLGBK>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 88DD670006A; Wed, 10 Sep 2025 08:18:16 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,199 +101,105 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-ThreadId: AmcCJOTBQ5ho
+Date: Wed, 10 Sep 2025 14:17:56 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Matthew Wilcox" <willy@infradead.org>
+Cc: ksummit@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <b60310f3-25d3-4f2b-88cb-ad65d5f55ec2@app.fastmail.com>
+In-Reply-To: <aMDYdp3H-yOHU1Pm@casper.infradead.org>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <aMDYdp3H-yOHU1Pm@casper.infradead.org>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The OPAL support code in the boot wrapper can be built for a big-
-endian kernel, in which case it runs in 32-bit mode while OPAL must
-always run in 64-bit mode.  In this case it is currently completely
-broken:
+On Wed, Sep 10, 2025, at 03:46, Matthew Wilcox wrote:
+> On Tue, Sep 09, 2025 at 11:23:37PM +0200, Arnd Bergmann wrote:
+>> While removing a feature that is actively used is clearly a regression
+>> and not normally done, I expect removing highmem is going to happen
+>> at some point anyway when there are few enough users, but the question
+>> is when that time will be.
+>
+> I don't mind that the feature remains ... unless it causes us trouble.
+> Which it currently does.  Perhaps we could start by removing HIGHPTE?
+> There was a certain amount of complexity introduced into the page fault
+> path when support for that was introduced.  x86 removed support for it,
+> so it's just ARM left before we can remove the complexity again.
+>
+> Most of the other pain points are around storing metadata (directories,
+> superblocks, etc) in page cache highmem.  I think we can get rid of that
+> now too.
 
-- It is missing the necessary mode switch when calling and returning
-  from OPAL.
+Agreed, this is roughly what I meant with the suggestion of removing
+__GFP_HIGHMEM allocations from as many places as possible, while leaving
+the pagecache and zram. I already brought up HIGHPTE earlier this year
+since it already has an separate Kconfig symbol, but Russell was worried
+about increasing the lowmem usage at all.
 
-- The definition of LOAD_REG_ADDR introduces R_PPC_ADDR16_{HA,LO}
-  relocations, but _zimage_start only handles R_PPC_RELATIVE
-  relocations.
+Maybe we could go back to the earlier idea of first categorizing
+the important highmem users better, and make it possible to
+use Kconfig symbols to enable highpte/highmem-anonymous/highmem-file/
+highmem-metadata/highmem-zram/... individually as well as count the
+actual usage for each of them. Having statistics in /proc/meminfo or
+similar would allow more informed decision about no longer supporting
+some of the categories later.
 
-- opal_call assumes the ELF v2 ABI's stack frame format.
+Not sure how many __GFP_ flags we could reasonably spend on categorizing,
+as we are already up to 26 out of 32 (not counting CONFIG_ASAN_HW_TAGS,
+which is 64-bit only and uses two more bits), or what alternative
+would work.
 
-- opal_call assumes that its arguments and return value will be in the
-  same registers as for the OPAL service, but this is not true when
-  the caller is 32-bit code.
+> I don't see any particular need to gt rid of file data stored in highmem,
+> nor anonymous memory stored in highmem.  And if we're only talking
+> about hundreds of megabytes of memory, I think anon+ file pagecache is
+> probably most of the memory in the system already unless you have some
+> very weird workloads.
 
-Since so many changes are needed in opal_call and its wrappers, write
-completely separate definitions for the 32-bit case.
+The main problem I see with the pagecache itself is that the fewer
+highmem machines people test on, the harder it gets to spot regressions
+where new code fails to kmap() the pages correctly.
 
-Delete the definition of LOAD_REG_ADDR for 32-bit code, as no generic
-definition is possible.  We could use the same definition as
-LOAD_REG_ADDR_PIC in the main kernel, but that clobbers lr which would
-break opal_call.
+Another concern is the number of memory zones, but it does not appear
+that we would completely remove ZONE_HIGHMEM as long as ZRAM or pagecache
+uses it.
 
-Signed-off-by: Ben Hutchings <ben.hutchings@mind.be>
----
- arch/powerpc/boot/opal-calls.S | 110 +++++++++++++++++++++++++++++++++
- arch/powerpc/boot/ppc_asm.h    |   6 +-
- 2 files changed, 112 insertions(+), 4 deletions(-)
+> Where we may want to be a bit careful is some people have Plans to
+> reuse the kmap infrastructure to support things like unmapping the
+> pagecacheto protect against spectre-eqsue attacks.  I know Intel was
+> working on this when 3dxp was going to be a Thing, but it's recently
+> been brought back:
+>
+> https://lore.kernel.org/linux-mm/20250812173109.295750-1-jackmanb@google.com/
 
-diff --git a/arch/powerpc/boot/opal-calls.S b/arch/powerpc/boot/opal-calls.S
-index 1f2f330a459e..034811619c0d 100644
---- a/arch/powerpc/boot/opal-calls.S
-+++ b/arch/powerpc/boot/opal-calls.S
-@@ -16,11 +16,22 @@ opal_kentry:
- 	li	r5, 0
- 	li	r6, 0
- 	li	r7, 0
-+#ifdef CONFIG_PPC64_BOOT_WRAPPER
- 	LOAD_REG_ADDR(r11, opal)
-+#else
-+	/* R_PPC_ADDR16_{HA,LO} are not supported, so copy pc into r11 */
-+	bcl	20,31,0f
-+0:	mflr	r11
-+
-+	addis	r11,r11,(opal - 0b)@ha
-+	addi	r11,r11,(opal - 0b)@l;
-+#endif
- 	ld	r8,0(r11)
- 	ld	r9,8(r11)
- 	bctr
- 
-+#ifdef CONFIG_PPC64_BOOT_WRAPPER
-+
- #define OPAL_CALL(name, token)				\
- 	.globl name;					\
- name:							\
-@@ -65,3 +76,102 @@ OPAL_CALL(opal_console_read,			OPAL_CONSOLE_READ);
- OPAL_CALL(opal_console_write_buffer_space,	OPAL_CONSOLE_WRITE_BUFFER_SPACE);
- OPAL_CALL(opal_poll_events,			OPAL_POLL_EVENTS);
- OPAL_CALL(opal_console_flush,			OPAL_CONSOLE_FLUSH);
-+
-+#else /* !CONFIG_PPC64_BOOT_WRAPPER */
-+
-+opal_call:
-+	mflr	r11
-+	stw	r11,4(r1)
-+	mfcr	r12
-+	stw	r12,16(r1)
-+	mr	r13,r2
-+
-+	/* R_PPC_ADDR16_{HA,LO} are not supported, so copy pc into r2 */
-+	bcl	20,31,0f
-+0:	mflr	r2
-+
-+	/* Set opal return address */
-+	addis	r11,r2,(opal_return - 0b)@ha
-+	addi	r11,r11,(opal_return - 0b)@l;
-+	mtlr	r11
-+
-+	/* switch to 64-bit when we enter OPAL */
-+	mfmsr	r12
-+	li	r11,1
-+	rldicl	r11,r11,MSR_SF_LG,0
-+	or	r12,r12,r11
-+	mtspr	SPRN_HSRR1,r12
-+
-+	/* load the opal call entry point and base */
-+	addis	r11,r2,(opal - 0b)@ha
-+	addi	r11,r11,(opal - 0b)@l;
-+	ld	r12,8(r11)
-+	ld	r2,0(r11)
-+	mtspr	SPRN_HSRR0,r12
-+
-+	hrfid
-+
-+opal_return:
-+	/* switch back to 32-bit */
-+	mfmsr	r12
-+	li	r11,1
-+	rldicl	r11,r11,MSR_SF_LG,0
-+	andc	r12,r12,r11
-+	mtmsrd	r12
-+	isync
-+
-+	/* split 64-bit return value into 2 registers */
-+	rldicl	r4,r3,0,32
-+	rldicl	r3,r3,32,32
-+
-+	mr	r2,r13
-+	lwz	r11,16(r1)
-+	lwz	r12,4(r1)
-+	mtcr	r11;
-+	mtlr	r12
-+	blr
-+
-+	/*
-+	 * Wrapper functions need to combine and shift arguments into the
-+	 * 64-bit calling convention.
-+	 */
-+
-+	.globl opal_console_write
-+opal_console_write:
-+	li	r0, OPAL_CONSOLE_WRITE
-+	sldi	r3,r3,32
-+	or	r3,r3,r4
-+	mr	r4,r5
-+	mr	r5,r6
-+	b	opal_call
-+
-+	.globl opal_console_read
-+opal_console_read:
-+	li	r0, OPAL_CONSOLE_READ
-+	sldi	r3,r3,32
-+	or	r3,r3,r4
-+	mr	r4,r5
-+	mr	r5,r6
-+	b	opal_call
-+
-+	.globl opal_console_write_buffer_space
-+opal_console_write_buffer_space:
-+	li	r0, OPAL_CONSOLE_WRITE_BUFFER_SPACE
-+	sldi	r3,r3,32
-+	or	r3,r3,r4
-+	mr	r4,r5
-+	b	opal_call
-+
-+	.globl opal_poll_events
-+opal_poll_events:
-+	li	r0, OPAL_POLL_EVENTS
-+	b	opal_call
-+
-+	.globl opal_console_flush
-+opal_console_flush:
-+	li	r0, OPAL_CONSOLE_FLUSH
-+	sldi	r3,r3,32
-+	or	r3,r3,r4
-+	b	opal_call
-+
-+#endif /* CONFIG_PPC64_BOOT_WRAPPER */
-diff --git a/arch/powerpc/boot/ppc_asm.h b/arch/powerpc/boot/ppc_asm.h
-index a66cfd76fa4d..754956ea4bec 100644
---- a/arch/powerpc/boot/ppc_asm.h
-+++ b/arch/powerpc/boot/ppc_asm.h
-@@ -60,6 +60,8 @@
- #define SPRN_HSRR0	0x13A	/* Hypervisor Save/Restore 0 */
- #define SPRN_HSRR1	0x13B	/* Hypervisor Save/Restore 1 */
- 
-+#define MSR_SF_LG	63              /* Enable 64 bit mode */
-+
- #define MSR_LE		0x0000000000000001
- 
- #define FIXUP_ENDIAN						   \
-@@ -88,10 +90,6 @@
- #define LOAD_REG_ADDR(reg,name)			\
- 	addis	reg,r2,name@toc@ha;		\
- 	addi	reg,reg,name@toc@l
--#else
--#define LOAD_REG_ADDR(reg,name)			\
--	lis	reg,name@ha;			\
--	addi	reg,reg,name@l
- #endif
- 
- #endif /* _PPC64_PPC_ASM_H */
--- 
-2.39.5
+If that gets merged, it would at least address the concern about
+testing, since presumably many bugs around missing kmap/kumap then
+also show up on x86-64 kernels with ASI enabled.
 
+    Arnd
 
