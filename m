@@ -1,61 +1,126 @@
-Return-Path: <linuxppc-dev+bounces-12022-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12023-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDE9B528B0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Sep 2025 08:27:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97040B528D4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Sep 2025 08:34:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMnfZ2q6Mz2yFJ;
-	Thu, 11 Sep 2025 16:27:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cMnpt2WrQz2ykc;
+	Thu, 11 Sep 2025 16:34:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757572054;
-	cv=none; b=MPbaAty+fI3L6ZScSInaDM8FDQp440W/XDHjgxcU9B2Co6RYJCZArO/fd+kAy2zXXrQ2+GmtUNfjlRJ7scj+NJQKzeLPtnW4FNjFHrU4vU1xMNIgA7RuR38/E+H1vKXaX4awBE06Jk9jk4uG4mKSht/bjjYhNvG/fOckrwmjFxV8tzN7sfLnjIsy6royveXMUtJlyvuMqe6jR+mMA04Ks+FG9PDsuBBs4HIhlOC/Bbtw829fAnFDpxZcPxn/1yIB+27HxJdYhsqBX5hJoPg7okO47+ejfRHoWjrOJzDefd8Lz9/jb4WnHugvpTZzJpSVCMVDNzzSJ2D5TR0iMysg0Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757572486;
+	cv=none; b=On6ILcUBZA4iC9yLQH+HXsAkZmt1CsfWAfgqxehDoBXmMgEnnx+BhkZ1hgKWhLM/gFoqVwwveKX4mEOf8q20xIV1oq1sw/bdH4kCG/7EbtWJz2fZ/FVQRmqN3XYsTlgPMAsFd6zCOnUlXA3qmOY07PSbA3b0IFRAVtv+O/ko+oW6YIw1HXZjWzZhZrGfPMm6G389S65Ntphb4FqLTjowXvfCYyC6it+xgkmXACYBlAzl97QmJgxqfxItIwe91HmNZ4cQCQJm/q07eXSYFo8WiIYQQGVmDTonNgQicB7VwHOq3RERs0HGOU3PVL2iswelLQ0/OcNRzo6C1M621uyI9w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757572054; c=relaxed/relaxed;
-	bh=5WhmVXAetPVWcX+NvWWWr9bUJmLHrY2b3sj1rTjzat8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qszfcp1MU2itr0mqT4dbMFqFwl1zcxPke0IOUgdiCswABm6nFSQY5/R7j2P4v211AUc8tEJ3hnUtCfFejejIoQ/jEeyu48S0IrPRqRHyMAkq6xU8ptI+5lEkzKxiChZlRlHdqU+90ikpT7FFFZwwKnvmvrzbeXpQ0sHC4YvDh14pfJMrvm5MqPdqCqGJ18J/0/ikX+cYFXmCbua11BaMbHV5UDy1ASE3LN9FofmTZ6LfN/P+qD05/vDmyPhaxjrq0WklKRnunTnR7HQG2zWbhuAg0zXpDN53s9ZQWEVvERN1K4zPyTGppBni7Baivil7OgNUrW7m5dcMfK2TJEUfFg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N9+wD8hB; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1757572486; c=relaxed/relaxed;
+	bh=Lfr1qPpuiB3AOwPU0ZFjKKYSXrWZllg4AtF3tp+3Wzs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dp88ZDykK2gF7Qxat3fs1MH8EA2xm3Z3Wpws4Qfqvdff78Ks/ALLPLsiA3zy4v6PhZPKJX1IVAZL3I++SJefsQzQh5h8U/TyI7F8d5Vi1Qnwe6UTgajhOQF9rvlgK/xZrk5QofKqjq+z3p0Iz3bCktGqq/EVwNSJ7PnmpLgIUVHfzvA0HqlQZNLQ9tld5Gbp1FEQb7nLE8FMWQegdpIaItp8fy8p7SvyjjgXqEAYLmNwipEmkaC+Hr+IffBV8FGRQrOCN39uFlE7N9/FyFoFKcTNCNyHOiKF4gFHf5Smu+1ziZae0iDKA9rjHYccGySq7A70DmIZ5sdPyDPEX6xwqg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Rb52kiLt; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Rb52kiLt; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N9+wD8hB;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Rb52kiLt;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=Rb52kiLt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=jgross@suse.com; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMnfY45dCz2xnh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 16:27:33 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ACAC144960;
-	Thu, 11 Sep 2025 06:27:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041ADC4CEF1;
-	Thu, 11 Sep 2025 06:27:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757572050;
-	bh=GiD6aNzUkQxQxu4wU6ZzPj9lKhjZ7HN3YavWKw80EuM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N9+wD8hB1W1lBxRfTrTR6UnYCpKi5Z5GLUfrVbtLzs3JZ/QRtM3Q4bF0fktooQVkd
-	 CRIf5I5ZAXdY/SuRsMNVH4WxgTHn8rd0FgcV54O3bOi5SoW9QuwK0wui73E4p0xwXB
-	 rdA7Ale4ur3fRDJXNgxSvz9TyGeOPyfKkNfyc65nTlPbg4AW3uz7hsI7SYGJ0kyoGR
-	 cDsyJbTSxboAMtQPhWVruj2a1wR8kxnzCyndCMO1bv79l7k/xXZWXFXsSDF2FfwEcK
-	 2VeDqiGKtyJ4Si7/B2CxRMBGEqbgz9jEOf4P8ooOG61WmP4VP8ky+qxFCve9llQ0Dv
-	 zCDEPYIXTd20Q==
-Date: Thu, 11 Sep 2025 11:55:56 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Joe Lawrence <joe.lawrence@redhat.com>
-Cc: linuxppc-dev@lists.ozlabs.org, live-patching@vger.kernel.org, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] powerpc64/modules: fix ool-ftrace-stub vs. livepatch
- relocation corruption
-Message-ID: <df7taxdxpbo4qfn7lniggj5o4ili6kweg4nytyb2fwwwgmnyo4@halp5gf244nn>
-References: <20250904022950.3004112-1-joe.lawrence@redhat.com>
- <aLj7c13wVPvkdNxc@redhat.com>
- <2tscft2yyndfbkl2a7ltndqfwx7phajkfma3m6o5phpm3xkme2@dcy6ohdbfhsk>
- <aMHKD_X97uu0tUyK@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMnpr6Rq0z2xnn
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 16:34:44 +1000 (AEST)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5E2A8683E8;
+	Thu, 11 Sep 2025 06:34:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1757572479; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=Lfr1qPpuiB3AOwPU0ZFjKKYSXrWZllg4AtF3tp+3Wzs=;
+	b=Rb52kiLtTg3v2u9zgMn3NUgzc+I9t7goexfTSG/6vAd6CFqdCGPPMNDDYCobdCdyrq5sS4
+	THsDzUD4UF4y2fXBlIeYIVCPmZLL7CdaqepqR8WgmiYxUf4btn7G6HEQab08I1KrGeDcGm
+	nmUC3Xv4HYwAo2tomf/WXQlFMXA6O8w=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1757572479; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=Lfr1qPpuiB3AOwPU0ZFjKKYSXrWZllg4AtF3tp+3Wzs=;
+	b=Rb52kiLtTg3v2u9zgMn3NUgzc+I9t7goexfTSG/6vAd6CFqdCGPPMNDDYCobdCdyrq5sS4
+	THsDzUD4UF4y2fXBlIeYIVCPmZLL7CdaqepqR8WgmiYxUf4btn7G6HEQab08I1KrGeDcGm
+	nmUC3Xv4HYwAo2tomf/WXQlFMXA6O8w=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 773761372E;
+	Thu, 11 Sep 2025 06:34:37 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KsszG31twmjuTAAAD6G6ig
+	(envelope-from <jgross@suse.com>); Thu, 11 Sep 2025 06:34:37 +0000
+From: Juergen Gross <jgross@suse.com>
+To: linux-kernel@vger.kernel.org,
+	x86@kernel.org,
+	linux-hyperv@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	kvm@vger.kernel.org
+Cc: Juergen Gross <jgross@suse.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Waiman Long <longman@redhat.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	xen-devel@lists.xenproject.org,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 00/14] paravirt: cleanup and reorg
+Date: Thu, 11 Sep 2025 08:34:19 +0200
+Message-ID: <20250911063433.13783-1-jgross@suse.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,298 +134,154 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aMHKD_X97uu0tUyK@redhat.com>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_COUNT_TWO(0.00)[2];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[suse.com,kernel.org,linutronix.de,redhat.com,alien8.de,linux.intel.com,zytor.com,microsoft.com,infradead.org,gmail.com,oracle.com,lists.xenproject.org,broadcom.com,armlinux.org.uk,arm.com,xen0n.name,linux.ibm.com,ellerman.id.au,csgroup.eu,sifive.com,dabbelt.com,eecs.berkeley.edu,ghiti.fr,linaro.org,goodmis.org,google.com,suse.de,lists.infradead.org,epam.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_ALL(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid];
+	RCPT_COUNT_GT_50(0.00)[56];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLfdszjqhz8kzzb9uwpzdm8png)];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Level: 
+X-Spam-Score: -1.30
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Sep 10, 2025 at 02:57:19PM -0400, Joe Lawrence wrote:
-> On Mon, Sep 08, 2025 at 04:33:24PM +0530, Naveen N Rao wrote:
-> > On Wed, Sep 03, 2025 at 10:37:39PM -0400, Joe Lawrence wrote:
-> > > On Wed, Sep 03, 2025 at 10:29:50PM -0400, Joe Lawrence wrote:
-> > > > The powerpc64 module .stubs section holds ppc64_stub_entry[] code
-> > > > trampolines that are generated at module load time. These stubs are
-> > > > necessary for function calls to external symbols that are too far away
-> > > > for a simple relative branch.
-> > > >
-> > > > Logic for finding an available ppc64_stub_entry has relied on a sentinel
-> > > > value in the funcdata member to indicate a used slot. Code iterates
-> > > > through the array, inspecting .funcdata to find the first unused (zeroed)
-> > > > entry:
-> > > >
-> > > >   for (i = 0; stub_func_addr(stubs[i].funcdata); i++)
-> > > >
-> > > > To support CONFIG_PPC_FTRACE_OUT_OF_LINE, a new setup_ftrace_ool_stubs()
-> > > > function extended the .stubs section by adding an array of
-> > > > ftrace_ool_stub structures for each patchable function. A side effect
-> > > > of writing these smaller structures is that the funcdata sentinel
-> > > > convention is not maintained.
-> >
-> > There is clearly a bug in how we are reserving the stubs as you point
-> > out further below, but once that is properly initialized, I don't think
-> > the smaller structure size for ftrace_ool_stub matters (in so far as
-> > stub->funcdata being non-NULL). We end up writing four valid powerpc
-> > instructions, along with a ftrace_ops pointer before those instructions
-> > which should also be non-zero (there is a bug here too, more on that
-> > below).  The whole function descriptor dance does complicate matters a
-> > bit though.
-> >
-> 
-> Hi Naveen,
-> 
-> Ah hah, I see now, given the other bug that you mention, we should have
-> had seen non-NULL entries in either ftrace_ool_stub.insn[] or .ftrace_op
-> fields such that when read as ppc64_stub_entry, .funcdata would indicate
-> that it's in use:
-> 
->         ppc64_stub_entry[]  ftrace_ool_stub[]
->   0x00  [0].jump[0]         [0].ftrace_op
->   0x04  [0].jump[1]         [0].ftrace_op
->   0x08  [0].jump[2]         [0].insn[0]
->   0x0C  [0].jump[3]         [0].insn[1]
->   0x10  [0].jump[4]         [0].insn[2]
->   0x14  [0].jump[5]         [0].insn[3]
->   0x18  [0].jump[6]         [1].ftrace_op
->   0x1C  [0].magic           [1].ftrace_op
->   0x20  [0].funcdata        [1].insn[0]    <<
->   0x24  [0].funcdata        [1].insn[1]    <<
->   0x28  [1].jump[0]         [1].insn[2]
->   0x2C  [1].jump[1]         [1].insn[3]
->   0x30  [1].jump[2]         [2].ftrace_op
->   0x34  [1].jump[3]         [2].ftrace_op
->   0x38  [1].jump[4]         [2].insn[0]
->   0x3C  [1].jump[5]         [2].insn[1]
->   0x40  [1].jump[6]         [2].insn[2]
->   0x44  [1].magic           [2].insn[3]
->   0x48  [1].funcdata        [3].ftrace_op  <<
->   0x4C  [1].funcdata        [3].ftrace_op  <<
-> 
-> If the commit msg for this patch would be clearer by rewording anything,
-> I'm happy to update.  (My understanding at the time of writing was that
-> the NULL funcdata vs. insn[]/ftrace_op was a valid sequence.)
-> 
+Some cleanups and reorg of paravirt code and headers:
 
-Yes, please. But only just to point out the bug in how we are reserving 
-the stubs. 
+- The first 2 patches should be not controversial at all, as they
+  remove just some no longer needed #include and struct forward
+  declarations.
 
-> > > > @@ -1118,29 +1118,19 @@ int module_trampoline_target(struct 
-> > > > module *mod, unsigned long addr,
-> > > >  static int setup_ftrace_ool_stubs(const Elf64_Shdr *sechdrs, unsigned long addr, struct module *me)
-> > > >  {
-> > > >  #ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
-> > > > -	unsigned int i, total_stubs, num_stubs;
-> > > > +	unsigned int total_stubs, num_stubs;
-> > > >  	struct ppc64_stub_entry *stub;
-> > > >
-> > > >  	total_stubs = sechdrs[me->arch.stubs_section].sh_size / sizeof(*stub);
-> > > >  	num_stubs = roundup(me->arch.ool_stub_count * sizeof(struct ftrace_ool_stub),
-> > > >  			    sizeof(struct ppc64_stub_entry)) / sizeof(struct ppc64_stub_entry);
-> > > >
-> > > > -	/* Find the next available entry */
-> > > > -	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
-> > > > -	for (i = 0; stub_func_addr(stub[i].funcdata); i++)
-> > > > -		if (WARN_ON(i >= total_stubs))
-> > > > -			return -1;
-> > > > -
-> > > > -	if (WARN_ON(i + num_stubs > total_stubs))
-> > > > +	if (WARN_ON(me->arch.stub_count + num_stubs > total_stubs))
-> > > >  		return -1;
-> > > >
-> > > > -	stub += i;
-> > > > -	me->arch.ool_stubs = (struct ftrace_ool_stub *)stub;
-> > > > -
-> > > > -	/* reserve stubs */
-> > > > -	for (i = 0; i < num_stubs; i++)
-> > > > -		if (patch_u32((void *)&stub->funcdata, PPC_RAW_NOP()))
-> > > > -			return -1;
-> > >
-> > > At first I thought the bug was that this loop was re-writting the same
-> > > PPC_RAW_NOP() to the same funcdata (i.e, should have been something
-> > > like: patch_u32((void *)stub[i]->funcdata, PPC_RAW_NOP())), but that
-> > > didn't work and seemed fragile anyway.
-> >
-> > D'uh - this path was clearly never tested. I suppose this should have
-> > been something like this:
-> > 	patch_ulong((void *)&stub[i]->funcdata, func_desc(local_paca))
-> >
-> > Still convoluted, but I think that should hopefully fix the problem you
-> > are seeing.
-> >
-> 
-> I can still try something like this if you prefer that solution (though
-> I think there may be some type massaging required in the second argument
-> to patch_ulong().)  LMK ...
+- The 3rd patch is removing CONFIG_PARAVIRT_DEBUG, which IMO has
+  no real value, as it just changes a crash to a BUG() (the stack
+  trace will basically be the same). As the maintainer of the main
+  paravirt user (Xen) I have never seen this crash/BUG() to happen.
 
-That's alright -- it is better to rip this out and replace with the 
-changes in your patch.
+- The 4th patch is just a movement of code.
 
-> 
-> > >
-> > > > +	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
-> > > > +	me->arch.ool_stubs = (struct ftrace_ool_stub *)(stub + me->arch.stub_count);
-> > > > +	me->arch.stub_count += num_stubs;
-> > > >  #endif
-> >
-> > Regardless of the above, your proposed change looks good to me and
-> > simplifies the logic. So:
-> > Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
-> >
-> 
-> 
-> 
-> > >   crash> dis 0xc008000007d70dd0 42
-> > >   ppc64[ ]   ftrace[0]    <xfs_stats_format+0x558>:    .long 0x0
-> > >                           <xfs_stats_format+0x55c>:    .long 0x0
-> > >                           <xfs_stats_format+0x560>:    mflr    r0
-> > >                           <xfs_stats_format+0x564>:    bl      0xc008000007d70d80 <xfs_stats_format+0x508>
-> > >                           <xfs_stats_format+0x568>:    mtlr    r0
-> > >                           <xfs_stats_format+0x56c>:    b       0xc008000007d70014 <patch_free_livepatch+0xc>
-> > >              ftrace[1]    <xfs_stats_format+0x570>:    .long 0x0
-> > >                           <xfs_stats_format+0x574>:    .long 0x0
-> > >                           <xfs_stats_format+0x578>:    mflr    r0
-> > >                           <xfs_stats_format+0x57c>:    bl      0xc008000007d70d80 <xfs_stats_format+0x508>
-> > >   ppc64[ ]                <xfs_stats_format+0x580>:    addis   r11,r2,4                                         << This looks like a full
-> > >                           <xfs_stats_format+0x584>:    addi    r11,r11,-29448                                   << ppc64_stub_entry
-> > >              ftrace[2]    <xfs_stats_format+0x588>:    std     r2,24(r1)                                        << dropped in the middle
-> > >                           <xfs_stats_format+0x58c>:    ld      r12,32(r11)                                      << of the ool_stubs array
-> > >                           <xfs_stats_format+0x590>:    mtctr   r12                                              << of ftrace_ool_stub[]
-> > >                           <xfs_stats_format+0x594>:    bctr                                                     <<
-> > >                           <xfs_stats_format+0x598>:    mtlr    r0                                               <<
-> > >                           <xfs_stats_format+0x59c>:    andi.   r20,r27,30050                                    <<
-> > >              ftrace[3]    <xfs_stats_format+0x5a0>:    .long 0x54e92b8                                          <<
-> > >                           <xfs_stats_format+0x5a4>:    lfs     f0,0(r8)                                         <<
-> > >   ppc64[ ]                <xfs_stats_format+0x5a8>:    mflr    r0
-> > >                           <xfs_stats_format+0x5ac>:    bl      0xc008000007d70d80 <xfs_stats_format+0x508>
-> > >                           <xfs_stats_format+0x5b0>:    mtlr    r0
-> > >                           <xfs_stats_format+0x5b4>:    b       0xc008000007d7037c <add_callbacks_to_patch_objects+0xc>
-> > >              ftrace[4]    <xfs_stats_format+0x5b8>:    .long 0x0
-> > >                           <xfs_stats_format+0x5bc>:    .long 0x0
-> >
-> > These NULL values are also problematic. I think those are NULL since we
-> > are not "reserving" the stubs properly, but those should point to some
-> > ftrace_op. I think we are missing a call to ftrace_rec_set_nop_ops() in
-> > ftrace_init_nop(), which would be good to do separately.
-> >
-> 
-> Very lightly tested, but were you thinking of something like:
-> 
-> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-> index 6dca92d5a..687371c64 100644
-> --- a/arch/powerpc/kernel/trace/ftrace.c
-> +++ b/arch/powerpc/kernel/trace/ftrace.c
-> @@ -488,8 +488,12 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
->  		return ret;
-> 
->  	/* Set up out-of-line stub */
-> -	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
-> -		return ftrace_init_ool_stub(mod, rec);
-> +	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE)) {
-> +		ret = ftrace_init_ool_stub(mod, rec);
-> +		if (ret)
-> +			return ret;
-> +		return ftrace_rec_set_nop_ops(rec);
-> +	}
+- I don't know for what reason asm/paravirt_api_clock.h was added,
+  as all archs supporting it do it exactly in the same way. Patch
+  5 is removing it.
 
-Minor nit: since ftrace_rec_set_nop_ops() has to be called regardless, I 
-would prefer to add a goto here. See below.
+- Patches 6-12 are streamlining the paravirt clock interfaces by
+  using a common implementation across architectures where possible
+  and by moving the related code into common sched code, as this is
+  where it should live.
 
-> 
->  	/* Nop-out the ftrace location */
->  	new = ppc_inst(PPC_RAW_NOP());
-> @@ -520,7 +524,7 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
->  		return -EINVAL;
->  	}
-> 
-> -	return ret;
-> +	return ftrace_rec_set_nop_ops(rec);
->  }
+- Patches 13+14 are more like RFC material: patch 13 is doing some
+  preparation work to enable patch 14 to move all spinlock related
+  paravirt functions into qspinlock.h. If this approach is accepted,
+  I'd like to continue with this work by moving most (or all?)
+  paravirt functions from paravirt.h into the headers where their
+  native counterparts are defined. This is meant to keep the native
+  and paravirt function definitions together in one place and
+  hopefully to be able to reduce the include hell with paravirt.
 
-We will need to still check for ret here, so something like this?
+Juergen Gross (14):
+  x86/paravirt: remove not needed includes of paravirt.h
+  x86/paravirt: remove some unneeded struct declarations
+  x86/paravirt: remove PARAVIRT_DEBUG config option
+  x86/paravirt: move thunk macros to paravirt_types.h
+  paravirt: remove asm/paravirt_api_clock.h
+  sched: move clock related paravirt code to kernel/sched
+  arm/paravirt: use common code for paravirt_steal_clock()
+  arm64/paravirt: use common code for paravirt_steal_clock()
+  loongarch/paravirt: use common code for paravirt_steal_clock()
+  riscv/paravirt: use common code for paravirt_steal_clock()
+  x86/paravirt: use common code for paravirt_steal_clock()
+  x86/paravirt: move paravirt_sched_clock() related code into tsc.c
+  x86/paravirt: allow pv-calls outside paravirt.h
+  x86/pvlocks: move paravirt spinlock functions into qspinlock.h
 
-diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-index 6dca92d5a6e8..841d077e2825 100644
---- a/arch/powerpc/kernel/trace/ftrace.c
-+++ b/arch/powerpc/kernel/trace/ftrace.c
-@@ -488,8 +488,10 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
-                return ret;
- 
-        /* Set up out-of-line stub */
--       if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
--               return ftrace_init_ool_stub(mod, rec);
-+       if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE)) {
-+               ret = ftrace_init_ool_stub(mod, rec);
-+               goto out;
-+       }
- 
-        /* Nop-out the ftrace location */
-        new = ppc_inst(PPC_RAW_NOP());
-@@ -520,6 +522,10 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
-                return -EINVAL;
-        }
- 
-+out:
-+       if (!ret)
-+               ret = ftrace_rec_set_nop_ops(rec);
-+
-        return ret;
- }
- 
-> 
->  int ftrace_update_ftrace_func(ftrace_func_t func)
-> 
-> 
-> In which case the ftrace-ool area looks like:
-> 
->   crash> mod | grep livepatch_module
->   c008000006350500  livepatch_module                   c008000009b90000   262144  (not loaded)  [CONFIG_KALLSYMS]
->   crash> struct module.arch.ool_stubs c008000006350500
->     arch.ool_stubs = 0xc008000009b90dd0 <xfs_stats_format+1368>,
->   crash> struct module.arch.ool_stub_count c008000006350500
->     arch.ool_stub_count = 7,
-> 
->   crash> struct ftrace_ool_stub 0xc008000009b90dd0 7
->   struct ftrace_ool_stub {
->     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
->     insn = {0x7c0802a6, 0x4bffffa5, 0x7c0803a6, 0x4bfff230}
->   }
-> 
->   struct ftrace_ool_stub {
->     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
->     insn = {0x7c0802a6, 0x4bffff8d, 0x7c0803a6, 0x4bfff304}
->   }
-> 
->   struct ftrace_ool_stub {
->     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
->     insn = {0x7c0802a6, 0x4bffff75, 0x7c0803a6, 0x4bfff430}
->   }
-> 
->   struct ftrace_ool_stub {
->     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
->     insn = {0x7c0802a6, 0x4bffff5d, 0x7c0803a6, 0x4bfff550}
->   }
-> 
->   struct ftrace_ool_stub {
->     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
->     insn = {0x7c0802a6, 0x4bffff45, 0x7c0803a6, 0x4bfff768}
->   }
-> 
->   struct ftrace_ool_stub {
->     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
->     insn = {0x7c0802a6, 0x4bffff2d, 0x7c0803a6, 0x4bfffa08}
->   }
-> 
->   struct ftrace_ool_stub {
->     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
->     insn = {0x7c0802a6, 0x4bffff15, 0x7c0803a6, 0x4bfffa10}
->   }
+ arch/Kconfig                                  |   3 +
+ arch/arm/Kconfig                              |   1 +
+ arch/arm/include/asm/paravirt.h               |  22 ---
+ arch/arm/include/asm/paravirt_api_clock.h     |   1 -
+ arch/arm/kernel/Makefile                      |   1 -
+ arch/arm/kernel/paravirt.c                    |  23 ---
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/paravirt.h             |  14 --
+ arch/arm64/include/asm/paravirt_api_clock.h   |   1 -
+ arch/arm64/kernel/paravirt.c                  |  11 +-
+ arch/loongarch/Kconfig                        |   1 +
+ arch/loongarch/include/asm/paravirt.h         |  13 --
+ .../include/asm/paravirt_api_clock.h          |   1 -
+ arch/loongarch/kernel/paravirt.c              |  10 +-
+ arch/powerpc/include/asm/paravirt.h           |   3 -
+ arch/powerpc/include/asm/paravirt_api_clock.h |   2 -
+ arch/powerpc/platforms/pseries/setup.c        |   4 +-
+ arch/riscv/Kconfig                            |   1 +
+ arch/riscv/include/asm/paravirt.h             |  14 --
+ arch/riscv/include/asm/paravirt_api_clock.h   |   1 -
+ arch/riscv/kernel/paravirt.c                  |  11 +-
+ arch/x86/Kconfig                              |   8 +-
+ arch/x86/entry/entry_64.S                     |   1 -
+ arch/x86/entry/vsyscall/vsyscall_64.c         |   1 -
+ arch/x86/hyperv/hv_spinlock.c                 |   1 -
+ arch/x86/include/asm/apic.h                   |   4 -
+ arch/x86/include/asm/highmem.h                |   1 -
+ arch/x86/include/asm/mmu_context.h            |   1 -
+ arch/x86/include/asm/mshyperv.h               |   1 -
+ arch/x86/include/asm/paravirt.h               | 166 ------------------
+ arch/x86/include/asm/paravirt_api_clock.h     |   1 -
+ arch/x86/include/asm/paravirt_types.h         |  82 +++++++--
+ arch/x86/include/asm/pgtable_32.h             |   1 -
+ arch/x86/include/asm/qspinlock.h              |  49 +++++-
+ arch/x86/include/asm/spinlock.h               |   1 -
+ arch/x86/include/asm/timer.h                  |   1 +
+ arch/x86/include/asm/tlbflush.h               |   4 -
+ arch/x86/kernel/apm_32.c                      |   1 -
+ arch/x86/kernel/callthunks.c                  |   1 -
+ arch/x86/kernel/cpu/bugs.c                    |   1 -
+ arch/x86/kernel/cpu/vmware.c                  |   1 +
+ arch/x86/kernel/kvm.c                         |   1 +
+ arch/x86/kernel/kvmclock.c                    |   1 +
+ arch/x86/kernel/paravirt.c                    |  16 --
+ arch/x86/kernel/tsc.c                         |  10 +-
+ arch/x86/kernel/vsmp_64.c                     |   1 -
+ arch/x86/kernel/x86_init.c                    |   1 -
+ arch/x86/lib/cache-smp.c                      |   1 -
+ arch/x86/mm/init.c                            |   1 -
+ arch/x86/xen/spinlock.c                       |   1 -
+ arch/x86/xen/time.c                           |   2 +
+ drivers/clocksource/hyperv_timer.c            |   2 +
+ drivers/xen/time.c                            |   2 +-
+ include/linux/sched/cputime.h                 |  18 ++
+ kernel/sched/core.c                           |   5 +
+ kernel/sched/cputime.c                        |  13 ++
+ kernel/sched/sched.h                          |   3 +-
+ 57 files changed, 182 insertions(+), 362 deletions(-)
+ delete mode 100644 arch/arm/include/asm/paravirt.h
+ delete mode 100644 arch/arm/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/arm/kernel/paravirt.c
+ delete mode 100644 arch/arm64/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/loongarch/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/powerpc/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/riscv/include/asm/paravirt_api_clock.h
+ delete mode 100644 arch/x86/include/asm/paravirt_api_clock.h
 
-LGTM.
-
-
-Thanks,
-- Naveen
+-- 
+2.51.0
 
 
