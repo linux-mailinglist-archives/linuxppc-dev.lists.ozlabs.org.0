@@ -1,96 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-12026-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12027-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB05B52A73
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Sep 2025 09:48:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E64B52AAA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Sep 2025 09:55:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMqSP6YNrz2xnn;
-	Thu, 11 Sep 2025 17:48:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cMqcV68D4z304f;
+	Thu, 11 Sep 2025 17:55:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757576933;
-	cv=none; b=QB7kv/QXBhig97u20TctUDjTo9Ds91mVioCQrhP1tZm23ZsEVmZmIr7Mvg2fLbg+g1lqtC7zh9baeb0KnFE5CRW0ZhbZl0BeLKVfUfl6O1VHj+awO34zDykqN1PuUzxj4x0FogGHbRBFkSeMhQjdwxUdU6ql+S1GPIp0YkLm+3fUFt3z10bUK+eGlUdfc+j9Wcy5JN/fo0oZA2WnpLf2Ta/Fdg2YJ2uzWigy8gZIYjJHpWPIQyf7qQNrUtOVcp6aYD8hQSCn1aigSM1+1TNp0PzJNGDXwa9oS56GFUnVeSyuwcjApgelNG21Y/I1h46cI4LyZRGYXKdfOUgWr8i2dw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.153
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757577354;
+	cv=none; b=nR4p6WATMqDkCAyH/SMXa12LF41xxnzhcR3Q4ETO+Ttn2agRvKw6/aqDeaJrW/TzxuznCl2hbNP4mrTLhNX02ezDxreHb5PUtJCDrGdLtTIIKToq1aBlRjYQshfB/fxLUq0vhPotKgTMlZtI6eShg8QvYY0LxQXvHX+U525c/u0N59yIHXu11tgR1fGc9y8eey8PahtDLd0EgTYyAocDMiG4snbHMOe6JLZEDOhpb2FEdAzI5PBQysFEHATWSdVBEu8FzwYD+h76ycFNkpuP4l7tQbcNONQHAjjP3JQLBpcYizM+TRGVCg2LUmAKoq7DhbE8B8hYpDvl0RtU1qRHsQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757576933; c=relaxed/relaxed;
-	bh=U+zkD5dacXBFakf/sW3Py81BzX7lYGPL/ab+J9kqcdg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EW5iTjQocNpdcYltNesl3ePQDvDEZs607/NEgY4hiPzsYhqwMDHHdTGdUkJA/RcW2j7KjtP3KjRkeGHUP0uzHok7vMvGRnJ9kg77xo7L40an0F1NLY85EhhKxQxSYPM/ZHZaZrZmfOrnqKvGGyCrKO4U1EUFCz8toLijpt3zx49RYF6iQ/uIbH6DHp0+xNhHHpiziDEwzj5lEwMjFCUTOL7FsCsTxTk6/wTTBcbeKHGKAfwTQ4kDU22+jwPeU6r/ZhoCCOll+E8OlX67Wida3UHe6IlEkHYa2WDtQNqa6pGL357lNpg5yfXeSJmDwyR7FcQw+Bu1p7jlaJsOBIZdZQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	t=1757577354; c=relaxed/relaxed;
+	bh=xezEPREPJQkkrl73Yff7UEqumVCaWAif9r9fc2gAvZU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Lwf3y3J2GAebBuqNIYfmmT281k0TAn+NbHIAKJEX+GxEmajxHJihK2RW8e0coZzX6KLxG9Dxhc+a93IeS9IBR1zYXMslMIRaE/Z1CmADDOvGKJGuDOYN2bKM0AIReKssLFIjdM3wi4qOqOxgEfkKHP74QaI/qM7wAOHXB4hnMBv4nDe4QHQug1fGsB0IHc+ifSZqRDUTLbYjxBm4ILFP+BhCFL/xX2js6tHWtouqTW/Vji5PEzHpxk/eWYhmBNY/sm9gLz+7gv6BYu7Q5XnSyKCcuvZfOL7fhJGndRMozgAmu4yI1oJfZHsZA6wer1BtwO/0kz/H5YPAbowL9jylGw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=Iu/xuWao; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=XIlM4cTN; dkim-atps=neutral; spf=pass (client-ip=103.168.172.153; helo=fhigh-a2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=Iu/xuWao;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=XIlM4cTN;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.153; helo=fhigh-a2-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMqSH16Qkz2xnM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 17:48:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=U+zkD5dacXBFakf/sW3Py81BzX7lYGPL/ab+J9kqcdg=; b=rVrDSFK0bpnhi1r1s83os8o7QQ
-	XayC14Rrw5fJaPANeMNniOrj8N2qlmXZE8oUJBQvG5kSAFrlNf0KMvYQRq0gk7u/1f3wItoWc/zSx
-	gMRY+yKQ4sBjLvyySadOCkXFheZQ+DVX5dcy+Kawt4/VDIAADK8mtsP0tEVBlVeM6n5nliW9J5by5
-	qcxvNNuHTHH3MFrkCcD3e1F5nHscsfjsTcYJksi3IX2HuJ8nFMSKL67BI8jxt/ELGL2WX0z4ME16L
-	/SA7AkX24vu99JNGByq6XvVm5ZTsSUxhQ+ASMeIgwxmdEKvg7dsn3+Ahm1ViJVrCJYH4ibFHmaxtg
-	rAsWgZlg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uwc2T-00000006tc7-2uQY;
-	Thu, 11 Sep 2025 07:48:17 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 455AE3002EB; Thu, 11 Sep 2025 09:48:17 +0200 (CEST)
-Date: Thu, 11 Sep 2025 09:48:17 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Juergen Gross <jgross@suse.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev,
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, kvm@vger.kernel.org,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Will Deacon <will@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Waiman Long <longman@redhat.com>, Jiri Kosina <jikos@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	xen-devel@lists.xenproject.org,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: Re: [PATCH 00/14] paravirt: cleanup and reorg
-Message-ID: <20250911074817.GX3245006@noisy.programming.kicks-ass.net>
-References: <20250911063433.13783-1-jgross@suse.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMqcR3KnXz302g
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 17:55:50 +1000 (AEST)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 612031400147;
+	Thu, 11 Sep 2025 03:55:48 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-05.internal (MEProxy); Thu, 11 Sep 2025 03:55:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1757577348;
+	 x=1757663748; bh=xezEPREPJQkkrl73Yff7UEqumVCaWAif9r9fc2gAvZU=; b=
+	Iu/xuWaoII7KNzuVcloK0wQmhd56+d5wX0Bleltp/a1sZa3XhGzX/yG9JsPSkl/7
+	2cu0Mu9lmvGcmqeKU6/KrMP/1aCgzIef4N/ewbqrmGkduxdjqLHlEalPav5le4TA
+	+jbgQ1Z+mvU5GokUwPzbGIhEj3HxlMneK0jBDzXQV6kMI00VxiXlnhook7P+C5Y7
+	UriP1BgBZbVa1zMIyagjnMw+2sY7iskhAR0+3srbSjSH0y3Yg7G1I2wCRXsEXXYs
+	8KS2JECjFLMhfIZNMjx0egOaiCksw2shqo/EvFx/UtUO1SZUtqDZzPy4b136cHwy
+	fnHZvT9pGYqsuKxHDCD1Vw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757577348; x=
+	1757663748; bh=xezEPREPJQkkrl73Yff7UEqumVCaWAif9r9fc2gAvZU=; b=X
+	IlM4cTNCufTDuTwE3rh5KIXiSVCwiy8YX9A8fo53sWQ4p2TKGrlQ/9DVCBOHTBG0
+	ffEsLPh+36l9na0nrD2CgxP/dy96GoNkRtEQRzG5aK6nn56aYQGtYTO9P7Y8UiUs
+	an20A9oCUfkbsypc1JODoplvQuBjF8st8s1x31lQ2U0SYE4Jn1XlEMxhnjGHJwJg
+	CNtYItDmOsxdBDmvbtNp8EHZzfn0AGkDnlRRUoNT54QTlsnpmjuslvLqJymldyuB
+	7h+E3hJYEoPPv37Hpq0Dkh4acaBuHq9oAPE4oR1s4jxxyqb8Wde0k9toW89TrDKm
+	U4uNM1J+ErI42a2u/TYQg==
+X-ME-Sender: <xms:goDCaKLlbLhafX1ItUb5fO7F7xQAPgD71xlygMsk3wgbEP7eJM2VEQ>
+    <xme:goDCaCJu-9GwvmuDVC8Y37QomJEPe0pHbKXVqPPiqeh9QFxf908KEUF8un4MQt4Yp
+    DHkwlYQwPBqiaQ5cv4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvheeivdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
+    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvkedpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
+    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
+    tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
+    gvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghn
+    uggvrhdrshhvvghrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgih
+    hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
+    nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
+    gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
+X-ME-Proxy: <xmx:g4DCaPln0xPi_AdWtVR-mPv6uC8M-3Q_mjf16Kd5LjcVVSzFRbJ7CA>
+    <xmx:g4DCaDlZzyLWYRlZII_JRVLfe6viWHF9oK_S1UNgWncQPOR1vmL64w>
+    <xmx:g4DCaJdy81733zjxS4Q3r5w2j6PHhciLt1QMfw2trLXRldoMsUuYcw>
+    <xmx:g4DCaJIi6RXGIaczaDEPnKMDiC-8AkssR85-snNhqeii8rn1LFIfJA>
+    <xmx:hIDCaH7vVqOM0fbJf4funeExzGloqdRoMAB7v2eOhCknP0mHQleXCcBx>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id D083E700065; Thu, 11 Sep 2025 03:55:46 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,72 +99,83 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250911063433.13783-1-jgross@suse.com>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+X-ThreadId: AmcCJOTBQ5ho
+Date: Thu, 11 Sep 2025 09:53:45 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andreas Larsson" <andreas@gaisler.com>, ksummit@lists.linux.dev
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, imx@lists.linux.dev,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Richard Weinberger" <richard@nod.at>,
+ "Lucas Stach" <l.stach@pengutronix.de>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Geert Uytterhoeven" <geert+renesas@glider.be>,
+ "Ankur Arora" <ankur.a.arora@oracle.com>,
+ "David Hildenbrand" <david@redhat.com>,
+ "Mike Rapoport" <rppt@kernel.org>,
+ "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Matthew Wilcox" <willy@infradead.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Vlastimil Babka" <vbabka@suse.cz>,
+ "Suren Baghdasaryan" <surenb@google.com>,
+ "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
+ =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
+ "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
+ "Chester A. Unal" <chester.a.unal@arinc9.com>,
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>
+Message-Id: <363853cd-7f10-4aa9-8850-47eee6d516b9@app.fastmail.com>
+In-Reply-To: <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+ <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com>
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Sep 11, 2025 at 08:34:19AM +0200, Juergen Gross wrote:
-> Some cleanups and reorg of paravirt code and headers:
-> 
-> - The first 2 patches should be not controversial at all, as they
->   remove just some no longer needed #include and struct forward
->   declarations.
-> 
-> - The 3rd patch is removing CONFIG_PARAVIRT_DEBUG, which IMO has
->   no real value, as it just changes a crash to a BUG() (the stack
->   trace will basically be the same). As the maintainer of the main
->   paravirt user (Xen) I have never seen this crash/BUG() to happen.
-> 
-> - The 4th patch is just a movement of code.
-> 
-> - I don't know for what reason asm/paravirt_api_clock.h was added,
->   as all archs supporting it do it exactly in the same way. Patch
->   5 is removing it.
-> 
-> - Patches 6-12 are streamlining the paravirt clock interfaces by
->   using a common implementation across architectures where possible
->   and by moving the related code into common sched code, as this is
->   where it should live.
-> 
-> - Patches 13+14 are more like RFC material: patch 13 is doing some
->   preparation work to enable patch 14 to move all spinlock related
->   paravirt functions into qspinlock.h. If this approach is accepted,
->   I'd like to continue with this work by moving most (or all?)
->   paravirt functions from paravirt.h into the headers where their
->   native counterparts are defined. This is meant to keep the native
->   and paravirt function definitions together in one place and
->   hopefully to be able to reduce the include hell with paravirt.
-> 
-> Juergen Gross (14):
->   x86/paravirt: remove not needed includes of paravirt.h
->   x86/paravirt: remove some unneeded struct declarations
->   x86/paravirt: remove PARAVIRT_DEBUG config option
->   x86/paravirt: move thunk macros to paravirt_types.h
->   paravirt: remove asm/paravirt_api_clock.h
->   sched: move clock related paravirt code to kernel/sched
->   arm/paravirt: use common code for paravirt_steal_clock()
->   arm64/paravirt: use common code for paravirt_steal_clock()
->   loongarch/paravirt: use common code for paravirt_steal_clock()
->   riscv/paravirt: use common code for paravirt_steal_clock()
->   x86/paravirt: use common code for paravirt_steal_clock()
->   x86/paravirt: move paravirt_sched_clock() related code into tsc.c
->   x86/paravirt: allow pv-calls outside paravirt.h
->   x86/pvlocks: move paravirt spinlock functions into qspinlock.h
+On Thu, Sep 11, 2025, at 07:38, Andreas Larsson wrote:
+>
+> We have a upcoming SoC with support for up to 16 GiB of DRAM. When that is
+> used in LEON sparc32 configuration (using 36-bit physical addressing), a
+> removed CONFIG_HIGHMEM would be a considerable limitation, even after an
+> introduction of different CONFIG_VMSPLIT_* options for sparc32.
 
-With the note that tip typically likes a capital after the prefix, like:
+I agree that without highmem that chip is going to be unusable from Linux,
+but I wonder if there is a chance to actually use it even with highmem,
+for a combination of reasons:
 
-  x86/paravirt: Remove unneeded includes of paravirt.h
+- sparc32 has 36-bit addressing in the MMU, but Linux apparently never
+  supported a 64-bit phys_addr_t here, which would be required.
+  This is probably the easiest part and I assume you already have patches
+  for it.
 
-For 1-12:
+- As far as I can tell, the current lowmem area is 192MB, which would
+  be ok(-ish) on a 512MB maxed-out SPARCstation, but for anything bigger
+  you likely run out of lowmem long before being able to touch the
+  all highmem pages. This obviously depends a lot on the workload.
 
-  Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+- If you come up with patches to extend lowmem to 2GB at the expense
+  of a lower TASK_SIZE, you're still  looking at a ration of 7:1 with
+  14GB of highmem on the maxed-out configuration, so many workloads
+  would still struggle to actually use that memory for page cache.
 
+- If we remove HIGHPTE (as discussed in this thread) but keep HIGHMEM,
+  you probably still lose on the 16GB configuration. On 4GB configurations,
+  HIGHPTE is not really a requirement, but for workloads with many
+  concurrent tasks using a lot of virtual address space, you would
+  likely want to /add/ HIGHPTE support on sparc32 first.
 
-Now, as to the last two, I'm not sure. Leaking those macros out of PV
-isn't particularly nice, then again, not the end of the world either.
-Just not sure.
+When you say "used in LEON sparc32 configuration", does that mean
+you can also run Linux in some other confuration like an rv64
+kernel on a NOEL-V core on that chip?
+
+Aside from the upcoming SoC and whatever happens to that, what is
+the largest LEON Linux memory configuration that you know is used
+in production today and still requires kernel updates beyond ~2029?
+
+      Arnd
 
