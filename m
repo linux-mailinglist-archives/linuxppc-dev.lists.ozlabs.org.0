@@ -1,81 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-12021-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12022-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBDFB52835
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Sep 2025 07:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBDE9B528B0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Sep 2025 08:27:36 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMmcl2D1lz2ykc;
-	Thu, 11 Sep 2025 15:40:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cMnfZ2q6Mz2yFJ;
+	Thu, 11 Sep 2025 16:27:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2412::605" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757569255;
-	cv=pass; b=MVFk9qQ/BY9e/CWQ0ym4XZ8xCeaZXQsH+DPKtY7Kh7sfmtzxzUx8UhM7TbiOCUHO62GK9AUI7MBJtTdhBXL9WCqe8sfd+uhBJe84Aen04fekinVh+u7fnIJKx5KxtTxx8Txiv3QJ6yAtc3akt7ELHDBRbnAP9WFd982M53tLoC3g+0/b99fJQSS53GvN7i13h3xkNleygMc3LfwhjUiLNHfDWCn8j2OXL+DccYvBDNp52fGzETC67NJDCFw4O7VqPNujXaYvNpDOFMClr1KCyxsLx4uwActrHFOMKlr3iBq1cDit463qB1dmg66c61T4hh0uXZ+oEDIWSEEkw5/rxw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757569255; c=relaxed/relaxed;
-	bh=8bhGvvGs6m5OQiJJbTDFDoRknnMkgN6p93h4vs0SkAI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oWyIQQ1mvTZfSH62RAM6iCLkuHfE1T+/DZT4N0oKsXENk+HlZGysfLy3U7VsnmFPMjGc32DKefxEGc4vZbf7/AabjpF/Laak8hCbp4t6KeJF7R8XB+arr2WNDXEUbIXwL/e5Y/6J+Yo/boQxm+cjN9hYMoBX4UGVfTBAgmK/wWxL+UpXgbE45vq2QdI7F2Ihei706M5pI18zZmAqCL+7Z5GjvAwf0e7Mr//+x8YxY5ykQ9avgnunLmnnb7DPNE1nkmOx+5YPnPvStgwTCuIddE1pNU1LMJPyNnGCBoXbjhhKpiIxqDl1VZBi6udH3uFXNDFjch7/NgThziLRq56++Q==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=p6cUgwhi; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2412::605; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=kprateek.nayak@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757572054;
+	cv=none; b=MPbaAty+fI3L6ZScSInaDM8FDQp440W/XDHjgxcU9B2Co6RYJCZArO/fd+kAy2zXXrQ2+GmtUNfjlRJ7scj+NJQKzeLPtnW4FNjFHrU4vU1xMNIgA7RuR38/E+H1vKXaX4awBE06Jk9jk4uG4mKSht/bjjYhNvG/fOckrwmjFxV8tzN7sfLnjIsy6royveXMUtJlyvuMqe6jR+mMA04Ks+FG9PDsuBBs4HIhlOC/Bbtw829fAnFDpxZcPxn/1yIB+27HxJdYhsqBX5hJoPg7okO47+ejfRHoWjrOJzDefd8Lz9/jb4WnHugvpTZzJpSVCMVDNzzSJ2D5TR0iMysg0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1757572054; c=relaxed/relaxed;
+	bh=5WhmVXAetPVWcX+NvWWWr9bUJmLHrY2b3sj1rTjzat8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qszfcp1MU2itr0mqT4dbMFqFwl1zcxPke0IOUgdiCswABm6nFSQY5/R7j2P4v211AUc8tEJ3hnUtCfFejejIoQ/jEeyu48S0IrPRqRHyMAkq6xU8ptI+5lEkzKxiChZlRlHdqU+90ikpT7FFFZwwKnvmvrzbeXpQ0sHC4YvDh14pfJMrvm5MqPdqCqGJ18J/0/ikX+cYFXmCbua11BaMbHV5UDy1ASE3LN9FofmTZ6LfN/P+qD05/vDmyPhaxjrq0WklKRnunTnR7HQG2zWbhuAg0zXpDN53s9ZQWEVvERN1K4zPyTGppBni7Baivil7OgNUrW7m5dcMfK2TJEUfFg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N9+wD8hB; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=p6cUgwhi;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=N9+wD8hB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2412::605; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=kprateek.nayak@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20605.outbound.protection.outlook.com [IPv6:2a01:111:f403:2412::605])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=naveen@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMmcj50d8z2xnn
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 15:40:53 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KEKHo4ydIJIj7BND0hfS3kck5egJqxOKEHQ0Q/Fay/hfqRfu0IU3zBrQvDotR7V9X36jxNEbZUG/ffaxP3eoJgQyQPE5BmpJGzcuPVZYXNHVQC6KjrPHnJt8MdtL+qZCe6Ymi/3/exUofcJsnfxmN02sepdB2bKMHb5VAe8ukR7XRdV/bSIpcgjqNzOzjsA1lKMB8OveVYgSzwxUzzmhrCfgO3YGGXywZmU/N0MuX3v1S6h+gi2MupOQMRlqdiz/iLdWwMe7M1Lll2RXCdWBhug83pyhFbC8H68nippFrvz7QYmAzp7/nad8cWXiEvbUEn3++w7rg1wcoVAAYgkcPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8bhGvvGs6m5OQiJJbTDFDoRknnMkgN6p93h4vs0SkAI=;
- b=PzLG/6PmN2x73gUdEbkC7WOFPn5iOaWvFJ8r5X1ww/KFQ4nSqNFRtHjV2hqLxB95CvQdy8PSMzDyofLtBRI7LJifyc542ZmHLbQarjcBl7ehGT4R9SDNTSBcAtVBHvu0OEj/atdGdc+OfSbkfsCZqw9TCT6qi9EAlOCj2EvpHW5/GZme6fvGnDWHDju0xqZnJwcyk+hOiS3CMge/EbvB5jXyYkfMPkhmquouTpccsJdNgAOiOMEDgLtiWWXOVERan7Strn6b6/UqQbH7J+RjOFwz5NMx9f6S9p3O7sfS/Da0iuj0G5txPQbs6Ghs2IosQ9nVyIzbSlpgKEmQTvzGsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.ibm.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8bhGvvGs6m5OQiJJbTDFDoRknnMkgN6p93h4vs0SkAI=;
- b=p6cUgwhiyxGzdQOBwQG3tNh8OgkOex3oygMMMPpebZxSXaqbNaNVTuGPdxhjxNFr2o6AVs1gO4NhfLsdTPHYTPNV1VguUIprBtPT0w5EM9zSqTBRd480l9IpQBVB2HH7wJh+SAgtsU7m8t1zZVQbfGzDom7tevDVqyGcP4QmEDo=
-Received: from BY5PR03CA0021.namprd03.prod.outlook.com (2603:10b6:a03:1e0::31)
- by SN7PR12MB6982.namprd12.prod.outlook.com (2603:10b6:806:262::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9094.22; Thu, 11 Sep
- 2025 05:40:31 +0000
-Received: from SJ1PEPF000023D2.namprd02.prod.outlook.com
- (2603:10b6:a03:1e0:cafe::6b) by BY5PR03CA0021.outlook.office365.com
- (2603:10b6:a03:1e0::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9115.16 via Frontend Transport; Thu,
- 11 Sep 2025 05:40:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF000023D2.mail.protection.outlook.com (10.167.244.9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9115.13 via Frontend Transport; Thu, 11 Sep 2025 05:40:31 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 10 Sep
- 2025 22:40:30 -0700
-Received: from satlexmb08.amd.com (10.181.42.217) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 11 Sep
- 2025 00:40:29 -0500
-Received: from [172.31.178.191] (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 10 Sep 2025 22:40:23 -0700
-Message-ID: <7227822a-0b4a-47cc-af7f-190f6d3b3e07@amd.com>
-Date: Thu, 11 Sep 2025 11:10:22 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMnfY45dCz2xnh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 16:27:33 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ACAC144960;
+	Thu, 11 Sep 2025 06:27:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041ADC4CEF1;
+	Thu, 11 Sep 2025 06:27:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757572050;
+	bh=GiD6aNzUkQxQxu4wU6ZzPj9lKhjZ7HN3YavWKw80EuM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=N9+wD8hB1W1lBxRfTrTR6UnYCpKi5Z5GLUfrVbtLzs3JZ/QRtM3Q4bF0fktooQVkd
+	 CRIf5I5ZAXdY/SuRsMNVH4WxgTHn8rd0FgcV54O3bOi5SoW9QuwK0wui73E4p0xwXB
+	 rdA7Ale4ur3fRDJXNgxSvz9TyGeOPyfKkNfyc65nTlPbg4AW3uz7hsI7SYGJ0kyoGR
+	 cDsyJbTSxboAMtQPhWVruj2a1wR8kxnzCyndCMO1bv79l7k/xXZWXFXsSDF2FfwEcK
+	 2VeDqiGKtyJ4Si7/B2CxRMBGEqbgz9jEOf4P8ooOG61WmP4VP8ky+qxFCve9llQ0Dv
+	 zCDEPYIXTd20Q==
+Date: Thu, 11 Sep 2025 11:55:56 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Joe Lawrence <joe.lawrence@redhat.com>
+Cc: linuxppc-dev@lists.ozlabs.org, live-patching@vger.kernel.org, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH] powerpc64/modules: fix ool-ftrace-stub vs. livepatch
+ relocation corruption
+Message-ID: <df7taxdxpbo4qfn7lniggj5o4ili6kweg4nytyb2fwwwgmnyo4@halp5gf244nn>
+References: <20250904022950.3004112-1-joe.lawrence@redhat.com>
+ <aLj7c13wVPvkdNxc@redhat.com>
+ <2tscft2yyndfbkl2a7ltndqfwx7phajkfma3m6o5phpm3xkme2@dcy6ohdbfhsk>
+ <aMHKD_X97uu0tUyK@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,233 +69,298 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 07/10] sched/core: Push current task from paravirt
- CPU
-To: Shrikanth Hegde <sshegde@linux.ibm.com>, <mingo@redhat.com>,
-	<peterz@infradead.org>, <juri.lelli@redhat.com>,
-	<vincent.guittot@linaro.org>, <tglx@linutronix.de>, <yury.norov@gmail.com>,
-	<maddy@linux.ibm.com>, <linux-kernel@vger.kernel.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <gregkh@linuxfoundation.org>
-CC: <vschneid@redhat.com>, <iii@linux.ibm.com>, <huschle@linux.ibm.com>,
-	<rostedt@goodmis.org>, <dietmar.eggemann@arm.com>, <vineeth@bitbyteword.org>,
-	<jgross@suse.com>, <pbonzini@redhat.com>, <seanjc@google.com>
-References: <20250910174210.1969750-1-sshegde@linux.ibm.com>
- <20250910174210.1969750-8-sshegde@linux.ibm.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <20250910174210.1969750-8-sshegde@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D2:EE_|SN7PR12MB6982:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05e0cd82-9c41-4863-fdc3-08ddf0f5b8d9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700013|921020|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WVR6YTdONHVQMHFDTzgxaWhrTlM1RzRSU3dycjc4YTEzVnIzbHlmcFY4WDRy?=
- =?utf-8?B?bnM2QmxJNk9UTkNZb1dBRm84YnAwUXVkdjNVSlhmSHZScjdpeXpta1Y5dXc1?=
- =?utf-8?B?a0tTRVUxU3BpdEd3cEwvVUxFRStBQzUrU3lkOXZFdW9YTG02VEtvdkNtTjJS?=
- =?utf-8?B?NmlGaXYyczl1RWd1cUpUMVkzS1I0bDNxRHNCbFdla2dXeDVtVFpYRFBWNzVV?=
- =?utf-8?B?Z3JlY1ljQXU1ZzY5MnROdWNVRXRDY3M0OEczNmdJUHFrWU9YaEc1RkI2MCtL?=
- =?utf-8?B?RmZHZmJXQnpwbUhXSjBoaHhLbWo2M3oreWJlQmZnNXBnSnhwbmZmR0FvRVho?=
- =?utf-8?B?aDVIc2RuMWpJY3dYbHp5dCt5djZQOVdyeWZyTHpzaklmQUJKRVc5V3MxQlVD?=
- =?utf-8?B?TFVlUFdJR1NwVjcvblhGTTBtQ0c1cFdpZUxsN1NaV3hlM1FaM210eE1ieWN5?=
- =?utf-8?B?dEQ2TjBnaTJwL3VDNVNFaFFrU0EwNWhVT2FiZFl1UlJoQkpYcUlEYWZlYmM1?=
- =?utf-8?B?eEYwUDJFUlBkc0ZrTktJb2FrTDBsZFFpeS91SWVwTWQ4R3NrblBxZXRCV3hM?=
- =?utf-8?B?VVJMMlV4QWVWMXhGN1pLMzl4dUdJc20xa3huQmM3U09UMmc0WnhiKzRzZWFu?=
- =?utf-8?B?RDUvdFdVaTRZT1lSL1dUTmlWQ0s4c0RuL3VlRW9hSXR3OTJBZWR4c0VmWGFO?=
- =?utf-8?B?NDlNVHZKSGxUbE92L3pTSWcxTXg3bmlpUlpiVXJqck1WQVBtb2g3R1Jic0lH?=
- =?utf-8?B?VVRTMUlUWExZeFVNNWlWNnNwZ1lqNklHWWIxcnN1L28xMzNJaFgzcS9VSzBS?=
- =?utf-8?B?Uzkra3lsdWRaL2FubmNJRzYyYjlPSjAvVWt4bjhCdUs1THFqVEhoQ1R2dXg1?=
- =?utf-8?B?SmE0OHpFd0tjS01tcThhTWFVdTdjV05KeUlXWk9vRzNweTdRWllRMlNaRXVQ?=
- =?utf-8?B?RU11UzZDb2xVcW9KVXZPMi9JbEQwUjBCUXFlVDV2SlRsL3ZGTzZxYkExQlg1?=
- =?utf-8?B?Z2hyRWtnbzFFY1F5UFd3NndWcG9XSGY3eHRFU3V4dmU4YUxXM2JZL3FDbk4r?=
- =?utf-8?B?MGpST3lRbExvWENnb3A5bndKdytNQXBJOE9tMlgwNlQ0VUZjRkp5bWZGQ2NZ?=
- =?utf-8?B?aTJia29UY3ZoS1hLTFFLQ0lSRW40K2VIa016ZnQwQ2R3RWJITlRzSTZRY3NI?=
- =?utf-8?B?eGxieExZNzl2YVZDc1pmU0JSZE4zMEc0WGlHbVcwVENGeDdST0d2MHFHRG84?=
- =?utf-8?B?dzFXM3J6enhibGkwUEdrY2kwN3pMQlpsZDExMDMyUUlTZlArRWRZNWxhZzE2?=
- =?utf-8?B?c2pTbUEvNTAvaWl0NnFWRlhTYjFub1ZtQmhFTmo1OGM1b2pmaVZ6ZWFCRE9X?=
- =?utf-8?B?a2VGR3V0dkwwL2FFbDNsUUkza284T3l4TWRMZG5DK1FaRytjUDhVdjUrSURm?=
- =?utf-8?B?MXRBTXRvOHZxa1VmbWl6bng1b1BHZ0tDUU9qeWhxd2VOL0cyNE5tTHNGd2d6?=
- =?utf-8?B?WmlodDlWcjl0OG9iUHByV0h6VVlDdGNjdEhKMFZzQUZtSmNBY0poTGl0MEw4?=
- =?utf-8?B?VE1JY0twZGFoeStQdytVWTA2VjZkV01DSk1aU1NobUh3bUV4bGROUzNyVGJw?=
- =?utf-8?B?NjZrc2wvR044bUlvUmRBeTdUdS9yZGhxVEg0NWlkbFFoQVBZdXpCdVNHRzlk?=
- =?utf-8?B?YnV1b2dRMEZ1L2Z0czZpWnZYZnlnTkNxb3hjMHErdWliQTJuZHMxTGZWTXNp?=
- =?utf-8?B?TUNPL1BXMUhWajBQb24wVExZWTRsNVd4T1lVK1VjeE9HTXBVTUdXblA0Um9z?=
- =?utf-8?B?UXVQVkluK1NLdFRQekpWdFdpY3JpSndTbk8rQ25ESDJ2YzFVU1BJZ3E3bkZk?=
- =?utf-8?B?aDY2a1lFVUJwd2hMQkNmNEU5cXZRRlRJTU5pNWg4SFUwL0RidmZGSGtiWnZO?=
- =?utf-8?B?MlRFclVyQmVpUTJqd1BEcjNxdVBYSHV6akxHMEhRQ0VNWkNEVVowUk1UUjln?=
- =?utf-8?B?SldTWWt2T21WaWpGS3pQTG9sYm5hSm9WQU9oamNzQjlFMUNpWStheS9LSE4r?=
- =?utf-8?B?cDBnWVozU2I4cDZ0T1FHY1luQ1Mzd0t2aGREQT09?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700013)(921020)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2025 05:40:31.4096
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05e0cd82-9c41-4863-fdc3-08ddf0f5b8d9
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF000023D2.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6982
-X-Spam-Status: No, score=-0.2 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aMHKD_X97uu0tUyK@redhat.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello Shrikanth,
-
-On 9/10/2025 11:12 PM, Shrikanth Hegde wrote:
-> Actively push out any task running on a paravirt CPU. Since the task is
-> running on the CPU need to spawn a stopper thread and push the task out.
+On Wed, Sep 10, 2025 at 02:57:19PM -0400, Joe Lawrence wrote:
+> On Mon, Sep 08, 2025 at 04:33:24PM +0530, Naveen N Rao wrote:
+> > On Wed, Sep 03, 2025 at 10:37:39PM -0400, Joe Lawrence wrote:
+> > > On Wed, Sep 03, 2025 at 10:29:50PM -0400, Joe Lawrence wrote:
+> > > > The powerpc64 module .stubs section holds ppc64_stub_entry[] code
+> > > > trampolines that are generated at module load time. These stubs are
+> > > > necessary for function calls to external symbols that are too far away
+> > > > for a simple relative branch.
+> > > >
+> > > > Logic for finding an available ppc64_stub_entry has relied on a sentinel
+> > > > value in the funcdata member to indicate a used slot. Code iterates
+> > > > through the array, inspecting .funcdata to find the first unused (zeroed)
+> > > > entry:
+> > > >
+> > > >   for (i = 0; stub_func_addr(stubs[i].funcdata); i++)
+> > > >
+> > > > To support CONFIG_PPC_FTRACE_OUT_OF_LINE, a new setup_ftrace_ool_stubs()
+> > > > function extended the .stubs section by adding an array of
+> > > > ftrace_ool_stub structures for each patchable function. A side effect
+> > > > of writing these smaller structures is that the funcdata sentinel
+> > > > convention is not maintained.
+> >
+> > There is clearly a bug in how we are reserving the stubs as you point
+> > out further below, but once that is properly initialized, I don't think
+> > the smaller structure size for ftrace_ool_stub matters (in so far as
+> > stub->funcdata being non-NULL). We end up writing four valid powerpc
+> > instructions, along with a ftrace_ops pointer before those instructions
+> > which should also be non-zero (there is a bug here too, more on that
+> > below).  The whole function descriptor dance does complicate matters a
+> > bit though.
+> >
 > 
-> If task is sleeping, when it wakes up it is expected to move out. In
-> case it still chooses a paravirt CPU, next tick will move it out.
-> However, if the task in pinned only to paravirt CPUs, it will continue
-> running there.
+> Hi Naveen,
 > 
-> Though code is almost same as __balance_push_cpu_stop and quite close to
-> push_cpu_stop, it provides a cleaner implementation w.r.t to PARAVIRT
-> config.
+> Ah hah, I see now, given the other bug that you mention, we should have
+> had seen non-NULL entries in either ftrace_ool_stub.insn[] or .ftrace_op
+> fields such that when read as ppc64_stub_entry, .funcdata would indicate
+> that it's in use:
 > 
-> Add push_task_work_done flag to protect pv_push_task_work buffer. This has
-> been placed at the empty slot available considering 64/128 byte
-> cacheline.
+>         ppc64_stub_entry[]  ftrace_ool_stub[]
+>   0x00  [0].jump[0]         [0].ftrace_op
+>   0x04  [0].jump[1]         [0].ftrace_op
+>   0x08  [0].jump[2]         [0].insn[0]
+>   0x0C  [0].jump[3]         [0].insn[1]
+>   0x10  [0].jump[4]         [0].insn[2]
+>   0x14  [0].jump[5]         [0].insn[3]
+>   0x18  [0].jump[6]         [1].ftrace_op
+>   0x1C  [0].magic           [1].ftrace_op
+>   0x20  [0].funcdata        [1].insn[0]    <<
+>   0x24  [0].funcdata        [1].insn[1]    <<
+>   0x28  [1].jump[0]         [1].insn[2]
+>   0x2C  [1].jump[1]         [1].insn[3]
+>   0x30  [1].jump[2]         [2].ftrace_op
+>   0x34  [1].jump[3]         [2].ftrace_op
+>   0x38  [1].jump[4]         [2].insn[0]
+>   0x3C  [1].jump[5]         [2].insn[1]
+>   0x40  [1].jump[6]         [2].insn[2]
+>   0x44  [1].magic           [2].insn[3]
+>   0x48  [1].funcdata        [3].ftrace_op  <<
+>   0x4C  [1].funcdata        [3].ftrace_op  <<
 > 
-> This currently works only FAIR and RT.
+> If the commit msg for this patch would be clearer by rewording anything,
+> I'm happy to update.  (My understanding at the time of writing was that
+> the NULL funcdata vs. insn[]/ftrace_op was a valid sequence.)
+> 
 
-EXT can perhaps use the ops->cpu_{release,acquire}() if they are
-interested in this.
+Yes, please. But only just to point out the bug in how we are reserving 
+the stubs. 
+
+> > > > @@ -1118,29 +1118,19 @@ int module_trampoline_target(struct 
+> > > > module *mod, unsigned long addr,
+> > > >  static int setup_ftrace_ool_stubs(const Elf64_Shdr *sechdrs, unsigned long addr, struct module *me)
+> > > >  {
+> > > >  #ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
+> > > > -	unsigned int i, total_stubs, num_stubs;
+> > > > +	unsigned int total_stubs, num_stubs;
+> > > >  	struct ppc64_stub_entry *stub;
+> > > >
+> > > >  	total_stubs = sechdrs[me->arch.stubs_section].sh_size / sizeof(*stub);
+> > > >  	num_stubs = roundup(me->arch.ool_stub_count * sizeof(struct ftrace_ool_stub),
+> > > >  			    sizeof(struct ppc64_stub_entry)) / sizeof(struct ppc64_stub_entry);
+> > > >
+> > > > -	/* Find the next available entry */
+> > > > -	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
+> > > > -	for (i = 0; stub_func_addr(stub[i].funcdata); i++)
+> > > > -		if (WARN_ON(i >= total_stubs))
+> > > > -			return -1;
+> > > > -
+> > > > -	if (WARN_ON(i + num_stubs > total_stubs))
+> > > > +	if (WARN_ON(me->arch.stub_count + num_stubs > total_stubs))
+> > > >  		return -1;
+> > > >
+> > > > -	stub += i;
+> > > > -	me->arch.ool_stubs = (struct ftrace_ool_stub *)stub;
+> > > > -
+> > > > -	/* reserve stubs */
+> > > > -	for (i = 0; i < num_stubs; i++)
+> > > > -		if (patch_u32((void *)&stub->funcdata, PPC_RAW_NOP()))
+> > > > -			return -1;
+> > >
+> > > At first I thought the bug was that this loop was re-writting the same
+> > > PPC_RAW_NOP() to the same funcdata (i.e, should have been something
+> > > like: patch_u32((void *)stub[i]->funcdata, PPC_RAW_NOP())), but that
+> > > didn't work and seemed fragile anyway.
+> >
+> > D'uh - this path was clearly never tested. I suppose this should have
+> > been something like this:
+> > 	patch_ulong((void *)&stub[i]->funcdata, func_desc(local_paca))
+> >
+> > Still convoluted, but I think that should hopefully fix the problem you
+> > are seeing.
+> >
+> 
+> I can still try something like this if you prefer that solution (though
+> I think there may be some type massaging required in the second argument
+> to patch_ulong().)  LMK ...
+
+That's alright -- it is better to rip this out and replace with the 
+changes in your patch.
 
 > 
-> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-> ---
->  kernel/sched/core.c  | 84 ++++++++++++++++++++++++++++++++++++++++++++
->  kernel/sched/sched.h |  9 ++++-
->  2 files changed, 92 insertions(+), 1 deletion(-)
+> > >
+> > > > +	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
+> > > > +	me->arch.ool_stubs = (struct ftrace_ool_stub *)(stub + me->arch.stub_count);
+> > > > +	me->arch.stub_count += num_stubs;
+> > > >  #endif
+> >
+> > Regardless of the above, your proposed change looks good to me and
+> > simplifies the logic. So:
+> > Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
+> >
 > 
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index 279b0dd72b5e..1f9df5b8a3a2 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -5629,6 +5629,10 @@ void sched_tick(void)
->  
->  	sched_clock_tick();
->  
-> +	/* push the current task out if a paravirt CPU */
-> +	if (is_cpu_paravirt(cpu))
-> +		push_current_from_paravirt_cpu(rq);
-
-Does this mean paravirt CPU is capable of handling an interrupt but may
-not be continuously available to run a task? Or is the VMM expected to set
-the CPU on the paravirt mask and give the vCPU sufficient time to move the
-task before yanking it away from the pCPU?
-
-> +
->  	rq_lock(rq, &rf);
->  	donor = rq->donor;
->  
-> @@ -10977,4 +10981,84 @@ void sched_enq_and_set_task(struct sched_enq_and_set_ctx *ctx)
->  struct cpumask __cpu_paravirt_mask __read_mostly;
->  EXPORT_SYMBOL(__cpu_paravirt_mask);
->  DEFINE_STATIC_KEY_FALSE(cpu_paravirt_push_tasks);
-> +
-> +static DEFINE_PER_CPU(struct cpu_stop_work, pv_push_task_work);
-> +
-> +static int paravirt_push_cpu_stop(void *arg)
-> +{
-> +	struct task_struct *p = arg;
-
-Can we move all pushable tasks at once instead of just the rq->curr at
-the time of the tick? It can also avoid keeping the reference to "p"
-and only selectively pushing it. Thoughts?
-
-> +	struct rq *rq = this_rq();
-> +	struct rq_flags rf;
-> +	int cpu;
-> +
-> +	raw_spin_lock_irq(&p->pi_lock);
-> +	rq_lock(rq, &rf);
-> +	rq->push_task_work_done = 0;
-> +
-> +	update_rq_clock(rq);
-> +
-> +	if (task_rq(p) == rq && task_on_rq_queued(p)) {
-> +		cpu = select_fallback_rq(rq->cpu, p);
-> +		rq = __migrate_task(rq, &rf, p, cpu);
+> 
+> 
+> > >   crash> dis 0xc008000007d70dd0 42
+> > >   ppc64[ ]   ftrace[0]    <xfs_stats_format+0x558>:    .long 0x0
+> > >                           <xfs_stats_format+0x55c>:    .long 0x0
+> > >                           <xfs_stats_format+0x560>:    mflr    r0
+> > >                           <xfs_stats_format+0x564>:    bl      0xc008000007d70d80 <xfs_stats_format+0x508>
+> > >                           <xfs_stats_format+0x568>:    mtlr    r0
+> > >                           <xfs_stats_format+0x56c>:    b       0xc008000007d70014 <patch_free_livepatch+0xc>
+> > >              ftrace[1]    <xfs_stats_format+0x570>:    .long 0x0
+> > >                           <xfs_stats_format+0x574>:    .long 0x0
+> > >                           <xfs_stats_format+0x578>:    mflr    r0
+> > >                           <xfs_stats_format+0x57c>:    bl      0xc008000007d70d80 <xfs_stats_format+0x508>
+> > >   ppc64[ ]                <xfs_stats_format+0x580>:    addis   r11,r2,4                                         << This looks like a full
+> > >                           <xfs_stats_format+0x584>:    addi    r11,r11,-29448                                   << ppc64_stub_entry
+> > >              ftrace[2]    <xfs_stats_format+0x588>:    std     r2,24(r1)                                        << dropped in the middle
+> > >                           <xfs_stats_format+0x58c>:    ld      r12,32(r11)                                      << of the ool_stubs array
+> > >                           <xfs_stats_format+0x590>:    mtctr   r12                                              << of ftrace_ool_stub[]
+> > >                           <xfs_stats_format+0x594>:    bctr                                                     <<
+> > >                           <xfs_stats_format+0x598>:    mtlr    r0                                               <<
+> > >                           <xfs_stats_format+0x59c>:    andi.   r20,r27,30050                                    <<
+> > >              ftrace[3]    <xfs_stats_format+0x5a0>:    .long 0x54e92b8                                          <<
+> > >                           <xfs_stats_format+0x5a4>:    lfs     f0,0(r8)                                         <<
+> > >   ppc64[ ]                <xfs_stats_format+0x5a8>:    mflr    r0
+> > >                           <xfs_stats_format+0x5ac>:    bl      0xc008000007d70d80 <xfs_stats_format+0x508>
+> > >                           <xfs_stats_format+0x5b0>:    mtlr    r0
+> > >                           <xfs_stats_format+0x5b4>:    b       0xc008000007d7037c <add_callbacks_to_patch_objects+0xc>
+> > >              ftrace[4]    <xfs_stats_format+0x5b8>:    .long 0x0
+> > >                           <xfs_stats_format+0x5bc>:    .long 0x0
+> >
+> > These NULL values are also problematic. I think those are NULL since we
+> > are not "reserving" the stubs properly, but those should point to some
+> > ftrace_op. I think we are missing a call to ftrace_rec_set_nop_ops() in
+> > ftrace_init_nop(), which would be good to do separately.
+> >
+> 
+> Very lightly tested, but were you thinking of something like:
+> 
+> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+> index 6dca92d5a..687371c64 100644
+> --- a/arch/powerpc/kernel/trace/ftrace.c
+> +++ b/arch/powerpc/kernel/trace/ftrace.c
+> @@ -488,8 +488,12 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
+>  		return ret;
+> 
+>  	/* Set up out-of-line stub */
+> -	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
+> -		return ftrace_init_ool_stub(mod, rec);
+> +	if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE)) {
+> +		ret = ftrace_init_ool_stub(mod, rec);
+> +		if (ret)
+> +			return ret;
+> +		return ftrace_rec_set_nop_ops(rec);
 > +	}
-> +
-> +	rq_unlock(rq, &rf);
-> +	raw_spin_unlock_irq(&p->pi_lock);
-> +	put_task_struct(p);
-> +
-> +	return 0;
-> +}
-> +
-> +/* A CPU is marked as Paravirt when there is contention for underlying
-> + * physical CPU and using this CPU will lead to hypervisor preemptions.
-> + * It is better not to use this CPU.
-> + *
-> + * In case any task is scheduled on such CPU, move it out. In
-> + * select_fallback_rq a non paravirt CPU will be chosen and henceforth
-> + * task shouldn't come back to this CPU
-> + */
-> +void push_current_from_paravirt_cpu(struct rq *rq)
-> +{
-> +	struct task_struct *push_task = rq->curr;
-> +	unsigned long flags;
-> +	struct rq_flags rf;
-> +
-> +	if (!is_cpu_paravirt(rq->cpu))
-> +		return;
-> +
-> +	/* Idle task can't be pused out */
-> +	if (rq->curr == rq->idle)
-> +		return;
-> +
-> +	/* Do for only SCHED_NORMAL AND RT for now */
-> +	if (push_task->sched_class != &fair_sched_class &&
-> +	    push_task->sched_class != &rt_sched_class)
-> +		return;
-> +
-> +	if (kthread_is_per_cpu(push_task) ||
-> +	    is_migration_disabled(push_task))
-> +		return;
-> +
-> +	/* Is it affine to only paravirt cpus? */
-> +	if (cpumask_subset(push_task->cpus_ptr, cpu_paravirt_mask))
-> +		return;
-> +
-> +	/* There is already a stopper thread for this. Dont race with it */
-> +	if (rq->push_task_work_done == 1)
-> +		return;
-> +
-> +	local_irq_save(flags);
-> +	preempt_disable();
 
-Disabling IRQs implies preemption is disabled.
+Minor nit: since ftrace_rec_set_nop_ops() has to be called regardless, I 
+would prefer to add a goto here. See below.
 
-> +
-> +	get_task_struct(push_task);
-> +
-> +	rq_lock(rq, &rf);
-> +	rq->push_task_work_done = 1;
-> +	rq_unlock(rq, &rf);
-> +
-> +	stop_one_cpu_nowait(rq->cpu, paravirt_push_cpu_stop, push_task,
-> +			    this_cpu_ptr(&pv_push_task_work));
-> +	preempt_enable();
-> +	local_irq_restore(flags);
-> +}
->  #endif
--- 
-Thanks and Regards,
-Prateek
+> 
+>  	/* Nop-out the ftrace location */
+>  	new = ppc_inst(PPC_RAW_NOP());
+> @@ -520,7 +524,7 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
+>  		return -EINVAL;
+>  	}
+> 
+> -	return ret;
+> +	return ftrace_rec_set_nop_ops(rec);
+>  }
+
+We will need to still check for ret here, so something like this?
+
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index 6dca92d5a6e8..841d077e2825 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -488,8 +488,10 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
+                return ret;
+ 
+        /* Set up out-of-line stub */
+-       if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE))
+-               return ftrace_init_ool_stub(mod, rec);
++       if (IS_ENABLED(CONFIG_PPC_FTRACE_OUT_OF_LINE)) {
++               ret = ftrace_init_ool_stub(mod, rec);
++               goto out;
++       }
+ 
+        /* Nop-out the ftrace location */
+        new = ppc_inst(PPC_RAW_NOP());
+@@ -520,6 +522,10 @@ int ftrace_init_nop(struct module *mod, struct dyn_ftrace *rec)
+                return -EINVAL;
+        }
+ 
++out:
++       if (!ret)
++               ret = ftrace_rec_set_nop_ops(rec);
++
+        return ret;
+ }
+ 
+> 
+>  int ftrace_update_ftrace_func(ftrace_func_t func)
+> 
+> 
+> In which case the ftrace-ool area looks like:
+> 
+>   crash> mod | grep livepatch_module
+>   c008000006350500  livepatch_module                   c008000009b90000   262144  (not loaded)  [CONFIG_KALLSYMS]
+>   crash> struct module.arch.ool_stubs c008000006350500
+>     arch.ool_stubs = 0xc008000009b90dd0 <xfs_stats_format+1368>,
+>   crash> struct module.arch.ool_stub_count c008000006350500
+>     arch.ool_stub_count = 7,
+> 
+>   crash> struct ftrace_ool_stub 0xc008000009b90dd0 7
+>   struct ftrace_ool_stub {
+>     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
+>     insn = {0x7c0802a6, 0x4bffffa5, 0x7c0803a6, 0x4bfff230}
+>   }
+> 
+>   struct ftrace_ool_stub {
+>     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
+>     insn = {0x7c0802a6, 0x4bffff8d, 0x7c0803a6, 0x4bfff304}
+>   }
+> 
+>   struct ftrace_ool_stub {
+>     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
+>     insn = {0x7c0802a6, 0x4bffff75, 0x7c0803a6, 0x4bfff430}
+>   }
+> 
+>   struct ftrace_ool_stub {
+>     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
+>     insn = {0x7c0802a6, 0x4bffff5d, 0x7c0803a6, 0x4bfff550}
+>   }
+> 
+>   struct ftrace_ool_stub {
+>     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
+>     insn = {0x7c0802a6, 0x4bffff45, 0x7c0803a6, 0x4bfff768}
+>   }
+> 
+>   struct ftrace_ool_stub {
+>     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
+>     insn = {0x7c0802a6, 0x4bffff2d, 0x7c0803a6, 0x4bfffa08}
+>   }
+> 
+>   struct ftrace_ool_stub {
+>     ftrace_op = 0xc00000000131d140 <ftrace_nop_ops>,
+>     insn = {0x7c0802a6, 0x4bffff15, 0x7c0803a6, 0x4bfffa10}
+>   }
+
+LGTM.
+
+
+Thanks,
+- Naveen
 
 
