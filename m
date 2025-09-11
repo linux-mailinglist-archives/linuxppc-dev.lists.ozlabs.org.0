@@ -1,57 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12030-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12031-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C552EB532C0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Sep 2025 14:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78319B533CA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Sep 2025 15:30:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMy8Y2fPZz2yFJ;
-	Thu, 11 Sep 2025 22:50:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cMz2n4cXtz2yRZ;
+	Thu, 11 Sep 2025 23:30:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757595037;
-	cv=none; b=IvmQtdb+JdsRl6QaSNY4HuKGgK7qsoagCQiDUatTIGjMt73ONbSnXN0JLECPf2VwUL1dXgUgNmTcrfsdiGgp1qylS3WAW21WC9gzJFONT6SMRiWAPxrcd7NoNgCVwpTPI48QXZkg91mh9rNi5O3lFeDvq6RKzNvlSRJpGAnTdn3KCmX7dcM0qu5XD4pBrvU2WL0S5M+gtMLctTx4RQ/dNPjs9c5I9ARpQBrHB41oHtHiApHIsqKk8sxe5DjQs3bQ99Y7jPV4QVm1glUpT0/Ntuiv0dEHaDU76BkMjsipXSGvm+v3/ijkZb24xYUDH/SuUdJoqEDgndFjuLdwRjhS+Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757597441;
+	cv=none; b=NV1+bvT0Bg+mHydqno/Lo6tHJrCnBu/Rwkug0PXaJysTUDHRsLnAaRR6S+fIwFwJzl7I5tAep5Os//1l1Zr5wFLuJSPIvvN7SVTKCWQqvC9EcA0tlcYadPGsqSNoPulZazpWpfBrxi7G1GvSfXxo2UXTgpKZkzNwTnzWQ1vgvJ1EuiLeH07Fx7W4JaF0K8GygvJDmr66KwADFauXHZlLkTGT7BgUEky180zBmMnd1pnpXjRUFqR9yAl8GPlm0k0bVH+Kn0K/o+RZTkdac3OmKiPbZv+YzsZxyzKao0ls3lZB2MkNH7UKONQMnQDny6VH+JX3cj2Vuzr8yBgOTme3FQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757595037; c=relaxed/relaxed;
-	bh=1/Go14FVRlnXBCL/fTBSMb+V7V+GwEg5C+NZOZIuZd0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CBvT64i7eFgpdnzKwPNTuMpeTQ7pkt/J+BIW1B2ViHAy+fnUE1sM+6DS1sMOaAIg4HPar1fyPDocVevTZknGUUzhSLBg+YZBSYSejR4iOsYTFGWGlK65DDekcM/WXM2Mzeyi+82O0pcOH04IzVOxOzDk1MHu0kOU9jyt/LjWJ8+qmp8LYXPTCeMQ3txAjhbUdSsyGpF7LA8tSUOexvo/jiS6+ddDpXaXBzFx0q9e1apwI/KRBBgjwGObhzVlNYn4wI3KRIKKtaAo4qK7YHDjlJEIDiKW9DwUJhs9b66LiLNVKXX7tHBxIgTlujMRyATS5Lran6GrslY3CGdqNTu9bQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cMy8X3ddQz2xnM
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 22:50:35 +1000 (AEST)
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cMxjb6Cb5z9sj9;
-	Thu, 11 Sep 2025 14:30:43 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id rohlHAx5DXGK; Thu, 11 Sep 2025 14:30:43 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cMxjZ03x8z9sjB;
-	Thu, 11 Sep 2025 14:30:42 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DE8CC8B7A7;
-	Thu, 11 Sep 2025 14:30:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id obEC7Z_HFJXJ; Thu, 11 Sep 2025 14:30:41 +0200 (CEST)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 986958B764;
-	Thu, 11 Sep 2025 14:30:41 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2] powerpc/32: Restore clearing of MSR[RI] at interrupt/syscall exit
-Date: Thu, 11 Sep 2025 14:30:12 +0200
-Message-ID: <66d0ab070563ad460ed481328ab0887c27f21a2c.1757593807.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
+	t=1757597441; c=relaxed/relaxed;
+	bh=aQlqSojSlf46BQjiH3sjU/ACFvA22QBgGPmMDQkag0Y=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=cenWN9em6Vtbh2CiK2g6l0ZeENgfD1+Q90hC9LuskoPrXzyThoX6qG38lu7NUmdAus1wrG0DqAir1ZKoWxACJbVqe5IbFdBkNOguXGQ2lI6QAGi0QqRaa7uvO3j7QJIhezbxpYxdgcfXvkCE87WYq2ZPTWgqAXkt45e47I4HG414fRAZXaWgVmBXe5+qc8gp+btMwpfasysBVRaLcvw9irF3B1jK9978L2u7es7ug+0ZQl1+/D02xa6h6cHc79Q2aRP3x+uMMNCax6IL0rriegHc4wfc8tCwHwfwfDLL+TF/9MwoOZLOkKIjVpBPunnKDgTwvhDGD+xp2YXStNGsRQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=BWFqG0kf; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=vernon2gm@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=BWFqG0kf;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=vernon2gm@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cMz2m2NBBz2xnh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 23:30:39 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-244582738b5so5551585ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Sep 2025 06:30:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757597437; x=1758202237; darn=lists.ozlabs.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aQlqSojSlf46BQjiH3sjU/ACFvA22QBgGPmMDQkag0Y=;
+        b=BWFqG0kfaoi6uyt0VyyPlW7xzfhSQ/zEUVbzJCMn+aDBoXNcm+iRlk3QmFBagGcyuc
+         FSakfMPXF4ShGaJtWWdPKQaL0dkwvz3Krb/SLXjIGn1UQCgp+yQLjnugUXjZIJ3jIXS8
+         vpxJ68fsps8QOpFuFOu5fy2xTzH/X2+MXWAevAqGPY7sPj3EyfVvuti19ohAPFJDtExo
+         iKdgp7XuKcCJeljk2b97+YdDHSpMERYhGKsUdUB5S04jQGTAzDGZU7S3UhSdiCzLOAEo
+         P2RzDMaTCpiXe3iJCqPcFWltGYKklKEOb7bAjHMHAIfbVnRNJQ4LgRQ7RJ26eR38SC1E
+         I+Qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757597437; x=1758202237;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aQlqSojSlf46BQjiH3sjU/ACFvA22QBgGPmMDQkag0Y=;
+        b=YV2WsRjFQuxGYtSnvnvw2IYRc6ZLMJX0tAcaMCYoOpsKY0ehVF6K73k1aPBc/nOpbg
+         UrtGz9D9xZZ77qEI/P8H7k+8EgNmmnwET4llpJioDOU8lx2EFpST/4g0Cpvl13A+XVT7
+         BfJ9D15BxLLJDNsr/J6N75atN0pBCx1sih0qIWXBek01srilkcQr8RE4MB8If4pzyiFa
+         1xPNyfRYsu5Rs0vqZ9vVDzN+QkqxqZVED1EuhSgBLMKAMHKQYxH9SweG0PgBzFNF3KUE
+         aUUcjDe7bjHUWXqY2dZGBplD18h4MMRCXraHHgOO5gbIiGR6N07JEUdSo28T9PuYzXps
+         o1sw==
+X-Forwarded-Encrypted: i=1; AJvYcCUjswB0XPXVUzhSGwOg0+oET74nVK1UjC12ALCvkjv7GTQ6VVxiniR/kYWjsPTdcUeiiXmA4EMQUQyPNzI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxR6PcY9ABs5h4RPe2lzO0hkRzY/1UM/tiPIVTeb7GL1a57iMJ3
+	oPrAdQMy3KmyDg8aPwGkotzh7+c515pAHb3rj1SLP5lmhvRjk1opnrRK
+X-Gm-Gg: ASbGncuIssLA3asF7XG18dyt59C3CdNoG7oGtLZSCA/drArRc+1qU0nJWRUw+w1R6nm
+	jXfeFYBGtPZDPJFuS4CbkZZWIkOk4aP3ilJfYcUUl3zVTxNfqBZg34Sr4q2gtmDI39WX7G8O+MR
+	Gw+Ed/HmibUc89I0+Xif+sNgtwjwlS0eCYGSdgpxQre5nBHvQMbE3itqB1SIon0jBmK1bTsKDe8
+	quG1pBe/eWWUmBsFmrvKL4w5XlCQR1lrnWRuf7fLq+bpBkDqpOwBY7jd3XIs6s2Lwi7WlHEyIbB
+	3hbp3XDRKOix0LL8iVI6/uad8AdzjfNFMYXyuaj9/f4/gHMioNdOEYliwiiri1RO+FQKox2uUJ3
+	9Ho86TnaxvMD2vCYiONTl6jFcNQ/XS6l7Ctw1AiUrO3q9iSTbJLDM1OvwwpCVdjr/ajiC6Ck+zu
+	DRcHTGum21Lj/0U5h8nCFAZabsY/E6vIbFjg==
+X-Google-Smtp-Source: AGHT+IEvq1Wxj+yFs910EdFrhvXlDsCmNs8TvQolpRuRoaPAKsaZEGIySdytgcl1djatf0VUcxyO9A==
+X-Received: by 2002:a17:902:e886:b0:25c:a9a0:ea60 with SMTP id d9443c01a7336-25ca9a0ee09mr9586555ad.42.1757597436331;
+        Thu, 11 Sep 2025 06:30:36 -0700 (PDT)
+Received: from smtpclient.apple (n058152022194.netvigator.com. [58.152.22.194])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-25c3a84a772sm19067405ad.70.2025.09.11.06.30.33
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 11 Sep 2025 06:30:35 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,128 +85,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1757593814; l=3541; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=Y2VsstfCYQSjNLkadzNiJFV+r4Li8EgPQiOKkwciHnI=; b=wcihNTn6ThrJFc/HKm+48uiC25s2PwFT0YcZbpDrPAORdV2YZOfQvc2kSIHQ39gbOQtw4lI/e RJMCOlWGintARmyBAUOq8wMdu0CV8Ck0Mk6b5AD+jXWXDvcALOWQOQL
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH] PCI/AER: Fix NULL pointer access by aer_info
+From: Vernon Yang <vernon2gm@gmail.com>
+In-Reply-To: <20250904182527.67371-1-vernon2gm@gmail.com>
+Date: Thu, 11 Sep 2025 21:30:22 +0800
+Cc: Vernon Yang <vernon2gm@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Vernon Yang <yanglincheng@kylinos.cn>
+Content-Transfer-Encoding: 7bit
+Message-Id: <3CCB9A4F-3DEB-4E68-BF04-7063AC2E9614@gmail.com>
+References: <20250904182527.67371-1-vernon2gm@gmail.com>
+To: mahesh@linux.ibm.com,
+ bhelgaas@google.com,
+ oohall@gmail.com
+X-Mailer: Apple Mail (2.3826.700.81)
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Commit 13799748b957 ("powerpc/64: use interrupt restart table to speed
-up return from interrupt") removed the inconditional clearing of
-MSR[RI] when returning from interrupt into kernel. But powerpc/32
-doesn't implement interrupt restart table hence still need MSR[RI]
-to be cleared.
+Friendly ping.
 
-It could be added back in interrupt_exit_kernel_prepare() but it is
-easier and better to add it back in entry_32.S for following reasons:
-- Writing to MSR must be followed by a synchronising instruction
-- The smaller the non recoverable section is the better it is
-
-So add a macro called clr_ri and use it in the three places that play
-up with SRR0/SRR1. Use it just before another mtspr for synchronisation
-to avoid having to add an isync.
-
-Now that's done in entry_32.S, exit_must_hard_disable() can return
-false for non book3s/64, taking into account that BOOKE doesn't have
-MSR_RI.
-
-Also add back blacklisting syscall_exit_finish for kprobe. This was
-initially added by commit 7cdf44013885 ("powerpc/entry32: Blacklist
-syscall exit points for kprobe.") then lost with
-commit 6f76a01173cc ("powerpc/syscall: implement system call
-entry/exit logic in C for PPC32").
-
-Fixes: 6f76a01173cc ("powerpc/syscall: implement system call entry/exit logic in C for PPC32")
-Fixes: 13799748b957 ("powerpc/64: use interrupt restart table to speed up return from interrupt")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/kernel/entry_32.S  | 18 +++++++++++++++++-
- arch/powerpc/kernel/interrupt.c |  2 +-
- 2 files changed, 18 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index c37480176a1c..16f8ee6cb2cd 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -101,6 +101,17 @@ SYM_FUNC_END(__kuep_unlock)
- .endm
- #endif
- 
-+.macro	clr_ri trash
-+#ifndef CONFIG_BOOKE
-+#ifdef CONFIG_PPC_8xx
-+	mtspr   SPRN_NRI, \trash
-+#else
-+	li	\trash, MSR_KERNEL & ~MSR_RI
-+	mtmsr	\trash
-+#endif
-+#endif
-+.endm
-+
- 	.globl	transfer_to_syscall
- transfer_to_syscall:
- 	stw	r3, ORIG_GPR3(r1)
-@@ -149,6 +160,7 @@ ret_from_syscall:
- 	cmpwi	r3,0
- 	REST_GPR(3, r1)
- syscall_exit_finish:
-+	clr_ri	r4
- 	mtspr	SPRN_SRR0,r7
- 	mtspr	SPRN_SRR1,r8
- 
-@@ -168,6 +180,7 @@ syscall_exit_finish:
- 	REST_GPR(0, r1)
- 	REST_GPRS(3, 12, r1)
- 	b	1b
-+_ASM_NOKPROBE_SYMBOL(syscall_exit_finish)
- 
- #ifdef CONFIG_44x
- .L44x_icache_flush:
-@@ -224,10 +237,11 @@ fast_exception_return:
- 	/* Clear the exception marker on the stack to avoid confusing stacktrace */
- 	li	r10, 0
- 	stw	r10, 8(r11)
--	REST_GPR(10, r11)
-+	clr_ri	r10
- 	mtspr	SPRN_SRR1,r9
- 	mtspr	SPRN_SRR0,r12
- 	REST_GPR(9, r11)
-+	REST_GPR(10, r11)
- 	REST_GPR(12, r11)
- 	REST_GPR(11, r11)
- 	rfi
-@@ -256,6 +270,7 @@ interrupt_return:
- .Lfast_user_interrupt_return:
- 	lwz	r11,_NIP(r1)
- 	lwz	r12,_MSR(r1)
-+	clr_ri	r4
- 	mtspr	SPRN_SRR0,r11
- 	mtspr	SPRN_SRR1,r12
- 
-@@ -298,6 +313,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
- 	cmpwi	cr1,r3,0
- 	lwz	r11,_NIP(r1)
- 	lwz	r12,_MSR(r1)
-+	clr_ri	r4
- 	mtspr	SPRN_SRR0,r11
- 	mtspr	SPRN_SRR1,r12
- 
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index e0c681d0b076..aea6f7e8e9c6 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -38,7 +38,7 @@ static inline bool exit_must_hard_disable(void)
- #else
- static inline bool exit_must_hard_disable(void)
- {
--	return true;
-+	return false;
- }
- #endif
- 
--- 
-2.49.0
+> On Sep 5, 2025, at 02:25, Vernon Yang <vernon2gm@gmail.com> wrote:
+> 
+> From: Vernon Yang <yanglincheng@kylinos.cn>
+> 
+> The kzalloc(GFP_KERNEL) may return NULL, so all accesses to
+> aer_info->xxx will result in kernel panic. Fix it.
+> 
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> ---
+> drivers/pci/pcie/aer.c | 4 ++++
+> 1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> index e286c197d716..aeb2534f50dd 100644
+> --- a/drivers/pci/pcie/aer.c
+> +++ b/drivers/pci/pcie/aer.c
+> @@ -383,6 +383,10 @@ void pci_aer_init(struct pci_dev *dev)
+> return;
+> 
+> dev->aer_info = kzalloc(sizeof(*dev->aer_info), GFP_KERNEL);
+> + if (!dev->aer_info) {
+> + dev->aer_cap = 0;
+> + return;
+> + }
+> 
+> ratelimit_state_init(&dev->aer_info->correctable_ratelimit,
+>     DEFAULT_RATELIMIT_INTERVAL, DEFAULT_RATELIMIT_BURST);
+> -- 
+> 2.51.0
+> 
 
 
