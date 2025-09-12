@@ -1,83 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-12093-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12094-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2538CB5516C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 16:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DDAB55298
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 17:03:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNcGY3Hkdz3dTD;
-	Sat, 13 Sep 2025 00:28:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNd3C4dnhz3dK8;
+	Sat, 13 Sep 2025 01:03:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757687285;
-	cv=none; b=IRsivSssZWzw+XD+WtmAeGr6gfwTEspURHfUJN0iLfpSP2I8VT5h/wPQHsTYWfJK1uLGDCxopzrxT4aKW0AhPFzY7pM/8e2fVXCbDpmxUT4eiFoYQCm/lvepSB67mzchKsjtZQB6yU8mUuK7gdf3ihNl4tpomo0tR0A//rvl3Ygu0e8KVgCAaSzKxUkLziTb78LIdrTWBLIqsb0uQb4u1DJ1bTZsTh9yEeckmBWalnyZ2hyXJot3kZRpVDU9zpl+R537gdO4LeBmdiE7O7v6Ht7wmSK9rU76iWYrjL1J4jm3HUTe2ehnVSvD1l/QQKZYNA12Wm2LuOYJS7gIz/WC+g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757689399;
+	cv=none; b=idg3m3YAymGAuhx43FXhkzZ3rC7Y+K68xo8GYVamfzhXP3fbO1SZjuFcEP88QQRFfPGyw7GOV6tMsOvnzRLU7u79LTacOk3a2yuNeafFozqrXYl3Drl/2ThpmT+rEkkNpRJiHUbx6JKcRPdida0VXuCKqh8qx0A1nryhjLhR3/1Dz2JUY7L8fkw+Z9xNQ2tfeeyEx+0/ElApkzHEIssLENjWBTrEwIx/8SdZP110uijZNmpAZW7FNzg7Ym3avHOEkMLmjSj6adUns/t+x97uJMOWJzoVnzFJQhAali9ClPnginnXujCEDN1ZRH4lkgdot3wNTH55zf/o1RTcmqynZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757687285; c=relaxed/relaxed;
-	bh=+dEHsoW6rv9lhHPqGYaopsnJbjdZ8LscRXBGWnkIRTQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-type; b=g4IF8UqjaHR//a6YALWm4B0fThC09WE8K2nhOvCNndlsmfWWsVMvW9WoCn3u4WZbiIOJ67k7ebXvrlBn4j5+bfEv9iYDw/leS84aqgntMVaNsS/HniIfIrqPXX3pnMMra+BL/lbPXGBvaG644TKM03XWt6gLWAyXfPYsB5DC7Se5NbWeBCkLwmt3gyPDrpICy1BiCIxnNqM53XlAQ59+fEUG1i3h5fPvG+eQxnF7TL98UCKbxiB+ZNofeHQn6tcGvXxz7ZPA+CEEhOgEBaN6tULosCfxFnrZQJI5hWY5r4QD7qS4wmny4DnZsr1cRkZ6XpcejC7XpivUBihl+5waVQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BokLxKtA; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BokLxKtA; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BokLxKtA;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BokLxKtA;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNcGX4hv0z3dT8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 00:28:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757687282;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+dEHsoW6rv9lhHPqGYaopsnJbjdZ8LscRXBGWnkIRTQ=;
-	b=BokLxKtAgGnHtJPnPbK/Muo7uaLpbpLyGMa799+Qw0uoPR3HC+43FGUP+4D1SRWa4DK5X0
-	030rX0bGU2Zp6x0xLJfgPaRm4ExCPC1UtL5QgsZN4qIYkTdAeUFM0/+dfBdpBgduKQXbc6
-	+v0yqfX2iLN7uiy4ZfAv7Qj0knaDo3Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757687282;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+dEHsoW6rv9lhHPqGYaopsnJbjdZ8LscRXBGWnkIRTQ=;
-	b=BokLxKtAgGnHtJPnPbK/Muo7uaLpbpLyGMa799+Qw0uoPR3HC+43FGUP+4D1SRWa4DK5X0
-	030rX0bGU2Zp6x0xLJfgPaRm4ExCPC1UtL5QgsZN4qIYkTdAeUFM0/+dfBdpBgduKQXbc6
-	+v0yqfX2iLN7uiy4ZfAv7Qj0knaDo3Q=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-693-Kige88aJPO-f0WLa7VFVRA-1; Fri,
- 12 Sep 2025 10:27:56 -0400
-X-MC-Unique: Kige88aJPO-f0WLa7VFVRA-1
-X-Mimecast-MFC-AGG-ID: Kige88aJPO-f0WLa7VFVRA_1757687275
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C2161800451;
-	Fri, 12 Sep 2025 14:27:54 +0000 (UTC)
-Received: from jolawren-thinkpadp1gen7.ibmlowe.csb (unknown [10.22.81.60])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D6C231800452;
-	Fri, 12 Sep 2025 14:27:52 +0000 (UTC)
-From: Joe Lawrence <joe.lawrence@redhat.com>
-To: linuxppc-dev@lists.ozlabs.org,
-	live-patching@vger.kernel.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>
-Subject: [PATCH v2 3/3] powerpc64/modules: replace stub allocation sentinel with an explicit counter
-Date: Fri, 12 Sep 2025 10:27:40 -0400
-Message-ID: <20250912142740.3581368-4-joe.lawrence@redhat.com>
-In-Reply-To: <20250912142740.3581368-1-joe.lawrence@redhat.com>
-References: <20250912142740.3581368-1-joe.lawrence@redhat.com>
+	t=1757689399; c=relaxed/relaxed;
+	bh=pjxju66cdgbuLH84lLr1f0aB2LRRyXTtvk+w4J2qi2Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IDfTxiu+U+V6BpIVDRR6QFCCacAFsdX1wrmLTuzFWuxgU22+jZM2uc68+jY6P87SFHdFe2p2wbqdyaEu2RyjhNlMg3td8sCbjzvNsgxji9MwNBoZp9jT2HRxiK3TpQ3qLCAKE6I2RUBvfu9WigurQr7ZYKM3jXgYxoOsAY4GE7KEPl2VRmPVtZsn5c5s0sT/A3AwjFOM3aeqVYr6F49UIK2Q8ife1aqXFgcHRE5aehoVVkb1T54fq9kSkrnJ8cg0P/ZZ7Hwif7KEW+HZhSfskq5ph0mlETq4rPsaV9wfGyhhgUA6y37tOFTKFGjHdwX5H6+hDFdAJGec1xNUOuHMIw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNd392rYdz3dDJ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 01:03:15 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DCD5812FC;
+	Fri, 12 Sep 2025 08:02:34 -0700 (PDT)
+Received: from [10.57.66.147] (unknown [10.57.66.147])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 558333F694;
+	Fri, 12 Sep 2025 08:02:36 -0700 (PDT)
+Message-ID: <f9b0bf10-a531-484e-9679-08ec25ceb444@arm.com>
+Date: Fri, 12 Sep 2025 17:02:34 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,117 +43,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
+To: David Hildenbrand <david@redhat.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+ Mark Rutland <Mark.Rutland@arm.com>
+References: <4b4971fd-0445-4d86-8f3a-6ba3d68d15b7@arm.com>
+ <4aa28016-5678-4c66-8104-8dcc3fa2f5ce@redhat.com>
+ <15d01c8b-5475-442e-9df5-ca37b0d5dc04@arm.com>
+ <7953a735-6129-4d22-be65-ce736630d539@redhat.com>
+ <781a6450-1c0b-4603-91cf-49f16cd78c28@arm.com>
+ <a17ab4e3-627a-4989-a5a5-d430eadabb86@redhat.com>
+ <9ed5441f-cc03-472a-adc6-b9d3ad525664-agordeev@linux.ibm.com>
+ <74d1f275-23c3-4fd8-b665-503c7fc87df0@redhat.com>
+ <248b4623-8755-4323-8a44-be4af30e4856-agordeev@linux.ibm.com>
+ <b46d3430-fb84-464b-b053-490c6ea083da@redhat.com>
+ <cdd9bc60-96d4-4f19-86c3-dcf598ccbd92-agordeev@linux.ibm.com>
+ <852d6f8c-e167-4527-9dc9-98549124f6b1@redhat.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <852d6f8c-e167-4527-9dc9-98549124f6b1@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The logic for allocating ppc64_stub_entry trampolines in the .stubs
-section relies on an inline sentinel, where a NULL .funcdata member
-indicates an available slot.
+On 12/09/2025 16:25, David Hildenbrand wrote:
+>
+>>
+>> But I do not really expect it ever, since arch_enter_lazy_mmu_mode_pte()
+>> is only to be called in PTE walkers that never span more than one page
+>> table and follow the pattern:
+>
+> Well, the cover letter here states:
+>
+> "Unfortunately, a corner case (DEBUG_PAGEALLOC) may still cause
+> nesting to occur on arm64. Ryan proposed [2] to address that corner
+> case at the generic level but this approach received pushback; [3]
+> then attempted to solve the issue on arm64 only, but it was deemed too
+> fragile."
+>
+> So I guess we should support nesting cleanly, at least on the core-mm
+> side.
 
-While preceding commits fixed the initialization bugs that led to ftrace
-stub corruption, the sentinel-based approach remains fragile: it depends
-on an implicit convention between subsystems modifying different
-struct types in the same memory area.
+Nesting remains a rare occurrence though. I think it would be plausible
+to require this new interface to be used in a region where no nesting
+can occur, just like pause()/resume().
 
-Replace the sentinel with an explicit counter, module->arch.num_stubs.
-Instead of iterating through memory to find a NULL marker, the module
-loader uses this counter as the boundary for the next free slot.
+In fact, I think this is a requirement if we go for the approach we have
+been discussing, because nested enter()/leave() calls are not meant to
+call arch_enter()/arch_leave(), and I really wouldn't want to use a
+different logic for this variant.
 
-This simplifies the allocation code, hardens it against future changes
-to stub structures, and removes the need for an extra relocation slot
-previously reserved to terminate the sentinel search.
+>
+> I guess we could start with saying "well, s390x doesn't fully support
+> nesting yet but doing so just requires changing the way we manage this
+> per-nesting-level state internally".
+>
+> s390 is trying to do something different than the other archs here, so
+> that naturally concerns me :)
+>
+> But if it's really just about forwarding that data and having s390
+> store it somewhere (task_struct, percpu variable, etc), fine with me. 
 
-Signed-off-by: Joe Lawrence <joe.lawrence@redhat.com>
----
- arch/powerpc/include/asm/module.h |  1 +
- arch/powerpc/kernel/module_64.c   | 26 ++++++++------------------
- 2 files changed, 9 insertions(+), 18 deletions(-)
+Yes I think this is fine, with the restriction above. The extra
+arguments are directly forwarded to arch code and otherwise ignored by
+core code, and unless the arch defines some __HAVE_ARCH... or CONFIG,
+the extended interface falls back to regular enter()/leave().
 
-diff --git a/arch/powerpc/include/asm/module.h b/arch/powerpc/include/asm/module.h
-index e1ee5026ac4a..864e22deaa2c 100644
---- a/arch/powerpc/include/asm/module.h
-+++ b/arch/powerpc/include/asm/module.h
-@@ -27,6 +27,7 @@ struct ppc_plt_entry {
- struct mod_arch_specific {
- #ifdef __powerpc64__
- 	unsigned int stubs_section;	/* Index of stubs section in module */
-+	unsigned int stub_count;	/* Number of stubs used */
- #ifdef CONFIG_PPC_KERNEL_PCREL
- 	unsigned int got_section;	/* What section is the GOT? */
- 	unsigned int pcpu_section;	/* .data..percpu section */
-diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-index 0e45cac4de76..2a44bc8e2439 100644
---- a/arch/powerpc/kernel/module_64.c
-+++ b/arch/powerpc/kernel/module_64.c
-@@ -209,8 +209,7 @@ static unsigned long get_stubs_size(const Elf64_Ehdr *hdr,
- 				    char *secstrings,
- 				    struct module *me)
- {
--	/* One extra reloc so it's always 0-addr terminated */
--	unsigned long relocs = 1;
-+	unsigned long relocs = 0;
- 	unsigned i;
- 
- 	/* Every relocated section... */
-@@ -705,7 +704,7 @@ static unsigned long stub_for_addr(const Elf64_Shdr *sechdrs,
- 
- 	/* Find this stub, or if that fails, the next avail. entry */
- 	stubs = (void *)sechdrs[me->arch.stubs_section].sh_addr;
--	for (i = 0; stub_func_addr(stubs[i].funcdata); i++) {
-+	for (i = 0; i < me->arch.stub_count; i++) {
- 		if (WARN_ON(i >= num_stubs))
- 			return 0;
- 
-@@ -716,6 +715,7 @@ static unsigned long stub_for_addr(const Elf64_Shdr *sechdrs,
- 	if (!create_stub(sechdrs, &stubs[i], addr, me, name))
- 		return 0;
- 
-+	me->arch.stub_count++;
- 	return (unsigned long)&stubs[i];
- }
- 
-@@ -1118,29 +1118,19 @@ int module_trampoline_target(struct module *mod, unsigned long addr,
- static int setup_ftrace_ool_stubs(const Elf64_Shdr *sechdrs, unsigned long addr, struct module *me)
- {
- #ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
--	unsigned int i, total_stubs, num_stubs;
-+	unsigned int total_stubs, num_stubs;
- 	struct ppc64_stub_entry *stub;
- 
- 	total_stubs = sechdrs[me->arch.stubs_section].sh_size / sizeof(*stub);
- 	num_stubs = roundup(me->arch.ool_stub_count * sizeof(struct ftrace_ool_stub),
- 			    sizeof(struct ppc64_stub_entry)) / sizeof(struct ppc64_stub_entry);
- 
--	/* Find the next available entry */
--	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
--	for (i = 0; stub_func_addr(stub[i].funcdata); i++)
--		if (WARN_ON(i >= total_stubs))
--			return -1;
--
--	if (WARN_ON(i + num_stubs > total_stubs))
-+	if (WARN_ON(me->arch.stub_count + num_stubs > total_stubs))
- 		return -1;
- 
--	stub += i;
--	me->arch.ool_stubs = (struct ftrace_ool_stub *)stub;
--
--	/* reserve stubs */
--	for (i = 0; i < num_stubs; i++)
--		if (patch_u32((void *)&stub[i].funcdata, PPC_RAW_NOP()))
--			return -1;
-+	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
-+	me->arch.ool_stubs = (struct ftrace_ool_stub *)(stub + me->arch.stub_count);
-+	me->arch.stub_count += num_stubs;
- #endif
- 
- 	return 0;
--- 
-2.51.0
-
+- Kevin
 
