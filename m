@@ -1,63 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-12047-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12048-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024D2B53F2A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 01:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D4BB54138
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 05:56:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNDc36s8zz2yrl;
-	Fri, 12 Sep 2025 09:41:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNLFQ1jd7z30RK;
+	Fri, 12 Sep 2025 13:56:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757634115;
-	cv=none; b=MiWHoZvzof5567eKQze6CL65EvkzVt1xbVW5oGNbBi7YAkUvc66Qn+FEr1SnbOCqMhUfNv4SIEVx4hYWFZl2zFNJbnAg5vNsKuFsWyiy5d+WpcVwANB+xe/Vr0yIXdcPFCc6ouvfh7mEtCP53HuG6W98J1wgfj5Th141VNlx6b/nngS5GGXD664JlSY/7rN9t8C/r+L3HNd5dOjmaGKX/0ApZArMOJecM0a15Z/Lo+VdBLV+s2guXwzPAL2yrHGoaZ8svkFLwowQGrO+nQ7EBhHlzcY1JawqOs4IvzN1aETIP2MRah+VWlQgGl1BID/nvLMfo800evA293cy008nqA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757649370;
+	cv=none; b=ULXlnacGVsMpOmHbe/z0YbMhH7LKjhhax4w/eTuxnYYcMhReIYmBWL8v3HCosQyLkUUc8kWgRn73ifdp4WqtOQfT/FoWvCPUg02Q0ggjovJmHzcrTpTX3LcPp8w81PYbFMF5CVPdnSaa/RWh85PEu7GU5sBzaD52tBUbRouNYb71ZYd1ffvsDJffuaaGDHFtHA/4xcFKBufPR1hOy4qc/hAdYCiy9LMoI0Re8x2cpQjQp81xmmsbF+gKCfrjW8HVtXTNcu8rLlFKZjep1QblHyTtriNYdGqGKEyqamXIOOrz1ix8APJQlI0pqldHZap5eeWuqEvKz2zkW65oH8oTjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757634115; c=relaxed/relaxed;
-	bh=d8NDTd59bC20IjX7bAN5+nGY8em1eeFrvR1Q+oAJiVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g7josGqYCeEvFkD9qUOS//GBcNyrLyLsmfYY2An0tNE5XH9clx+T95DMJwfOaqIMQwJXPWN1Dap2fDW03oDwyFyeieLiZ7bi0+hRntYrxPIkPlYJDrgwLiUW0vdlLOgpgshBe5pdyq8MefqDeZkHSLUtXNJB95AX2igGaaBIatFroG5/GFRRu03foas65daoEoX+syCKtbBjkK7E08LtZUjIUWKZtudtzQGQOtYsSOZY8uRypSvZBjHy30H+xh1c91GZrXH9tDi8zw2kCOB6jmKIMmu7Rd+8VOVo+teDksF2xKod974EFPNCckerXmCIifki1TIyD4qRVj40HAmp+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iV9GvsvY; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1757649370; c=relaxed/relaxed;
+	bh=GmiaxdkrNLO96B9FCYuP76PBc7174iLV9hIUuWXDB0M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HY+FiTd69/3eGzWzoLgmXz1p9ACY5SjLPL48xpCMIEDndteYhH6Uj76YbWZJm4rWwyY8xMygBFiIKHRi5qRgnqHrUqE0bnK3lUrghGKtho6uHKnsgYpXETPhh0sB0j0fFNSxyVOg+GGB3slzHXaVFvxWemDHg/TcVi+tvbRMetsYX9BkSf50ivkylPgNuWwyCWMSlHL0D3d+NK4Ojxhq0aD7QxyNAwfXK9lpV5fcH/SVXonjC2qYb7UHXFwceAWrI8b9CCbzzfcb9n5U0K22kLOuaPMFvn8LSyW3hv51AfQeuNJwJwix7QfgG8P140ziLAD00zjZUVvbI4kKSxOjzw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Th13rJvs; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iV9GvsvY;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Th13rJvs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=kbusch@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNDc32NMWz2yGM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 09:41:55 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6A6E40351;
-	Thu, 11 Sep 2025 23:41:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17220C4CEF0;
-	Thu, 11 Sep 2025 23:41:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1757634112;
-	bh=DQD93jM5hLlaAKaCjIrnWOXXTTrKJoX2wFhzmsThdaM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iV9GvsvYOgiktqrfpfVkGvm1Vxt267Fr6jnDO3liYSIjN187mdA56yiqXB8xYP9JN
-	 CSJ4SXd00YvZ3TbH2Aij7xG6xFlaefX2TUHO8GQ3N3fs3J+sdhvm0+FTdGW/nE/uP2
-	 7RGA/TIEuu6ehQh1EL8t9agDEyvSvQvOf8bZKL701zR6c9Lb7/aO+p1+DhiJOVKIt8
-	 tmr8MuIACNe0dCjnMIm29YShTZ9VXjEp3bnvKzqWfvywtfMGmOJQUc5B/S7KYK2ykw
-	 eNoeXYPwanry9hHff6nR+a/kXrvbQ34vdOFt3c3QjHcpf595+nyLzrBZ8GdyLI21g6
-	 b5imPfFMNtivg==
-Date: Thu, 11 Sep 2025 19:41:48 -0400
-From: Keith Busch <kbusch@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Vernon Yang <vernon2gm@gmail.com>, mahesh@linux.ibm.com,
-	bhelgaas@google.com, oohall@gmail.com,
-	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>,
-	Terry Bowman <terry.bowman@amd.com>,
-	Robert Richter <rrichter@amd.com>, linux-cxl@vger.kernel.org,
-	Smita Koralahalli <Smita.KoralahalliChannabasappa@amd.com>,
-	Dongdong Liu <liudongdong3@huawei.com>
-Subject: Re: [PATCH] PCI/AER: Fix NULL pointer access by aer_info
-Message-ID: <aMNePLmIkz3LE6EP@kbusch-mbp>
-References: <20250904182527.67371-1-vernon2gm@gmail.com>
- <20250911225457.GA1596803@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNLFK4R6Xz2yvv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 13:56:05 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58BIwF5l006469;
+	Fri, 12 Sep 2025 03:55:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Gmiaxd
+	krNLO96B9FCYuP76PBc7174iLV9hIUuWXDB0M=; b=Th13rJvsHBt7Wc53Mg2k20
+	E6/V6HyYJ/eaQYJFDbPmgK1y1eGSFsIUw86ToMpu5S40BrDQce6bheIbzDb0fPg+
+	fUHUsLEQmbOwQ3KWw3FfGexB4K6dA0tFwX2ffZ+jXhpB0sl5DMhaKSBpdX44fPrP
+	rnBPY6R0po4QpZyWlZadhw5G8FEp7U5BCbIQXN5ThZmZiDASXoM8MbqNpiE1tqvP
+	+x/yyjcjc/gnm8Zr+yDCFExHl0Gdn1Y4+qdaryeJt6R1kCXPG/1BrwD8BYI+1BNJ
+	7jQBjFrqXrX00rHCbEP6UDaj+SuHfdl9aeprD1Mmyg4Zlst2W3jjoNEspmKpR4IA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmx8yxs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Sep 2025 03:55:51 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58C3npEk012567;
+	Fri, 12 Sep 2025 03:55:51 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmx8yxp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Sep 2025 03:55:51 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58C2OnVO017227;
+	Fri, 12 Sep 2025 03:55:50 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4911gmru3b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Sep 2025 03:55:50 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58C3tmjP42860986
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Sep 2025 03:55:48 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 81C922004B;
+	Fri, 12 Sep 2025 03:55:48 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 547A020043;
+	Fri, 12 Sep 2025 03:55:46 +0000 (GMT)
+Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.in.ibm.com (unknown [9.98.111.108])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 12 Sep 2025 03:55:46 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-gpio@vger.kernel.org, Bartosz Golaszewski <brgl@bgdev.pl>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH 1/2] powerpc/44x: Change GPIO driver to a proper platform driver
+Date: Fri, 12 Sep 2025 09:25:45 +0530
+Message-ID: <175764920912.610338.16301114402472105584.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <29d89aa43536714b193d9710301341f838fcb5b7.1755519343.git.christophe.leroy@csgroup.eu>
+References: <29d89aa43536714b193d9710301341f838fcb5b7.1755519343.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,31 +96,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250911225457.GA1596803@bhelgaas>
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: nIDoz3lwf_jFhPnXxuGf6H96HZfnXf00
+X-Proofpoint-ORIG-GUID: 1kK3ZoQ90CPl4A6q6eoA1y9aVRlHnN2S
+X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68c399c7 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=1CWnjDJCROFCZy2uP2wA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyNSBTYWx0ZWRfX1bsrrXJ2oTlu
+ XIHgn21Gp5Nua96EoNYCNubVLS0Vo5gP0j8QIiqDFlca0wJCbT7RzPm4yUrkH7MY4AHkTJVQSzm
+ kYXDFp1fFkhkxJoGpdcmPoC850YEVTWF2YOy6vc1j/e18XA8rvtEk74wy52b3kTFZXw9obiHoqY
+ xlqpRuZ+pSXGUTU953ysTEavk/0KowHQhdsq9NZc9FKIRf1Gc6riH8FzckO6N+leKvuiWF8D15J
+ Ae/ja6zVGTWOFw/U+mCJJ81Bqix9W9QAnk9ox0bmuSbnZOSkXXP952JNOGwFDHvxNa4+Qessu39
+ yCDlq5jbtqArL6yDe/uXB7UEFiRWrUmzd+PeskCPxjyUk1NyTJO1h8bXz60g+sPmtc03rofeO5e
+ U/UnB+BM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-12_01,2025-09-11_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 suspectscore=0 spamscore=0 phishscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060025
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Sep 11, 2025 at 05:54:57PM -0500, Bjorn Helgaas wrote:
-> [+cc Terry, Robert, CXL list, Smita, Dongdong]
+On Mon, 18 Aug 2025 14:17:34 +0200, Christophe Leroy wrote:
+> In order to drop legacy-of-mm-gpiochip dependency, first change the
+> 44x GPIO driver to a proper platform driver.
 > 
-> On Fri, Sep 05, 2025 at 02:25:27AM +0800, Vernon Yang wrote:
-> > From: Vernon Yang <yanglincheng@kylinos.cn>
-> > 
-> > The kzalloc(GFP_KERNEL) may return NULL, so all accesses to
-> > aer_info->xxx will result in kernel panic. Fix it.
-> > 
-> > Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
 > 
-> Applied to pci/aer for v6.18, thanks, Vernon!
-> 
-> Not directly related to this patch, but I'm concerned about some users
-> of dev->aer_cap.
 
-pci_aer_init is called pretty early during boot. If we can't malloc a
-few hundred bytes at that point, the aer_cap users will be the least of
-your concerns. :)
+Applied to powerpc/next.
+
+[1/2] powerpc/44x: Change GPIO driver to a proper platform driver
+      https://git.kernel.org/powerpc/c/1044dbaf2a77c9e1143753a620d830943da6a193
+[2/2] powerpc/44x: Drop legacy-of-mm-gpiochip.h header
+      https://git.kernel.org/powerpc/c/d2ad26e7b67e5a3d73221daf8207e848dd819bd4
+
+Thanks
 
