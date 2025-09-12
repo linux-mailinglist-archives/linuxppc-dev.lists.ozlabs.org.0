@@ -1,70 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-12091-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12093-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEFDB55165
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 16:28:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2538CB5516C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 16:28:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNcGS5Fg7z3dRS;
-	Sat, 13 Sep 2025 00:28:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNcGY3Hkdz3dTD;
+	Sat, 13 Sep 2025 00:28:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757687280;
-	cv=none; b=f8MWxGPveI4EyAow0JOaOYXICSGq6Mknb704orXNpPnKKs3gseEoepLicqP41zTDIM7uX+UlIKsu6jJt4QNIpUw6Hn/BfFhKcYPQpoSQLVOj+sAbjo6CN3ZTbBoIwhcjhAcnz21j6IHijFRFNK7K8GmFedYpoi1fLh/KjmEtUJVmCwMEly2WauAkk3OX9pcOnDZwYyKiqjy9Ar3kFBB7jMHyt3qU3ERHzLx1jxtXWtDzDLgGAjY3ddtN9BAGZUcaqYiKLGvBrOPcng+/neNLORx+IWTSzSOQgXKBPdcnfJqjgoQcM9OhfmmoE/DHNrib/hkSWZr8BXFsWz8Dy3oarQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757687285;
+	cv=none; b=IRsivSssZWzw+XD+WtmAeGr6gfwTEspURHfUJN0iLfpSP2I8VT5h/wPQHsTYWfJK1uLGDCxopzrxT4aKW0AhPFzY7pM/8e2fVXCbDpmxUT4eiFoYQCm/lvepSB67mzchKsjtZQB6yU8mUuK7gdf3ihNl4tpomo0tR0A//rvl3Ygu0e8KVgCAaSzKxUkLziTb78LIdrTWBLIqsb0uQb4u1DJ1bTZsTh9yEeckmBWalnyZ2hyXJot3kZRpVDU9zpl+R537gdO4LeBmdiE7O7v6Ht7wmSK9rU76iWYrjL1J4jm3HUTe2ehnVSvD1l/QQKZYNA12Wm2LuOYJS7gIz/WC+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757687280; c=relaxed/relaxed;
-	bh=stx2VrfzaBsnc/jAGNYjJWhUFVHawzyDw+ZsgOSjXaw=;
+	t=1757687285; c=relaxed/relaxed;
+	bh=+dEHsoW6rv9lhHPqGYaopsnJbjdZ8LscRXBGWnkIRTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-type; b=ju0H8N3hljQgB3IXRhWJFFVjnbKejGXLh3X+NduQJ8ilPCFyLd4d76tV5YVg8aI70UNdAsWunDwIO3pSfY8+eZ5oG5dDNbTg0sJmMZOS+eKTKSkrJUVjIH8MR151CnHa3HcvmjZ1P67aElAni+4n8PZGQOh8nvRVDzL685SkPSo3klmG2G7rw3FrAaoQZCiavY5VGj6H3boYAStj6sEB/SaSzeRGz2mGfE7jXhdGHWjQZrK3qDh22AlkyWgQ9Ruz536ji3WW3YXcuY0HUB1GJBlABp6x8K6FrUYbchPShdnx3TQZjMAtToKJTNQjzSommlpE8N2XN6Hj68DLYUWPVQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GFP3sW9c; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U6DzdkgD; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:Content-type; b=g4IF8UqjaHR//a6YALWm4B0fThC09WE8K2nhOvCNndlsmfWWsVMvW9WoCn3u4WZbiIOJ67k7ebXvrlBn4j5+bfEv9iYDw/leS84aqgntMVaNsS/HniIfIrqPXX3pnMMra+BL/lbPXGBvaG644TKM03XWt6gLWAyXfPYsB5DC7Se5NbWeBCkLwmt3gyPDrpICy1BiCIxnNqM53XlAQ59+fEUG1i3h5fPvG+eQxnF7TL98UCKbxiB+ZNofeHQn6tcGvXxz7ZPA+CEEhOgEBaN6tULosCfxFnrZQJI5hWY5r4QD7qS4wmny4DnZsr1cRkZ6XpcejC7XpivUBihl+5waVQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BokLxKtA; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BokLxKtA; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=GFP3sW9c;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=U6DzdkgD;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BokLxKtA;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BokLxKtA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNcGR67Cbz3dJd
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 00:27:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNcGX4hv0z3dT8
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 00:28:04 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757687276;
+	s=mimecast20190719; t=1757687282;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=stx2VrfzaBsnc/jAGNYjJWhUFVHawzyDw+ZsgOSjXaw=;
-	b=GFP3sW9cLkmLa/+K8Qw1C1HKTxmBupF0N5JDNhDR7yDodc0AS9qG7hTfaLJYvuYVHecjfb
-	GBjJy9m4mQRAwD023VCUZTlE/ld6pebYgMwkF1WvHuY0vRvUMdUBQA6k/geG3BlXkKkxv7
-	SkCZUf0gAwx0DsWJ1+I4FQdpS2bGpHE=
+	bh=+dEHsoW6rv9lhHPqGYaopsnJbjdZ8LscRXBGWnkIRTQ=;
+	b=BokLxKtAgGnHtJPnPbK/Muo7uaLpbpLyGMa799+Qw0uoPR3HC+43FGUP+4D1SRWa4DK5X0
+	030rX0bGU2Zp6x0xLJfgPaRm4ExCPC1UtL5QgsZN4qIYkTdAeUFM0/+dfBdpBgduKQXbc6
+	+v0yqfX2iLN7uiy4ZfAv7Qj0knaDo3Q=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1757687277;
+	s=mimecast20190719; t=1757687282;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=stx2VrfzaBsnc/jAGNYjJWhUFVHawzyDw+ZsgOSjXaw=;
-	b=U6DzdkgDxVCCxLymSA3uG3OJqolQ/xE4Q1WONdHGg1wtg1Qgr3fd+Efljnb/EoM0Oi1czl
-	pk9lWjGxbmWdp2PRUO43Bgz6vAjvAqRRJnBEjeN7c+uTnv6UO84RqpHApJcymgzVNHmfHT
-	XbPnD6YbmqMGifrXZOktQnnXSreZjj8=
+	bh=+dEHsoW6rv9lhHPqGYaopsnJbjdZ8LscRXBGWnkIRTQ=;
+	b=BokLxKtAgGnHtJPnPbK/Muo7uaLpbpLyGMa799+Qw0uoPR3HC+43FGUP+4D1SRWa4DK5X0
+	030rX0bGU2Zp6x0xLJfgPaRm4ExCPC1UtL5QgsZN4qIYkTdAeUFM0/+dfBdpBgduKQXbc6
+	+v0yqfX2iLN7uiy4ZfAv7Qj0knaDo3Q=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-9Ah1jaShOdWwEaz5hdcmuw-1; Fri,
- 12 Sep 2025 10:27:54 -0400
-X-MC-Unique: 9Ah1jaShOdWwEaz5hdcmuw-1
-X-Mimecast-MFC-AGG-ID: 9Ah1jaShOdWwEaz5hdcmuw_1757687272
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-693-Kige88aJPO-f0WLa7VFVRA-1; Fri,
+ 12 Sep 2025 10:27:56 -0400
+X-MC-Unique: Kige88aJPO-f0WLa7VFVRA-1
+X-Mimecast-MFC-AGG-ID: Kige88aJPO-f0WLa7VFVRA_1757687275
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2B8CC18005AA;
-	Fri, 12 Sep 2025 14:27:52 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C2161800451;
+	Fri, 12 Sep 2025 14:27:54 +0000 (UTC)
 Received: from jolawren-thinkpadp1gen7.ibmlowe.csb (unknown [10.22.81.60])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1B3071800576;
-	Fri, 12 Sep 2025 14:27:49 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D6C231800452;
+	Fri, 12 Sep 2025 14:27:52 +0000 (UTC)
 From: Joe Lawrence <joe.lawrence@redhat.com>
 To: linuxppc-dev@lists.ozlabs.org,
 	live-patching@vger.kernel.org
@@ -73,9 +73,9 @@ Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Naveen N Rao <naveen@kernel.org>
-Subject: [PATCH v2 2/3] powerpc64/modules: correctly iterate over stubs in setup_ftrace_ool_stubs
-Date: Fri, 12 Sep 2025 10:27:39 -0400
-Message-ID: <20250912142740.3581368-3-joe.lawrence@redhat.com>
+Subject: [PATCH v2 3/3] powerpc64/modules: replace stub allocation sentinel with an explicit counter
+Date: Fri, 12 Sep 2025 10:27:40 -0400
+Message-ID: <20250912142740.3581368-4-joe.lawrence@redhat.com>
 In-Reply-To: <20250912142740.3581368-1-joe.lawrence@redhat.com>
 References: <20250912142740.3581368-1-joe.lawrence@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -100,32 +100,107 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-CONFIG_PPC_FTRACE_OUT_OF_LINE introduced setup_ftrace_ool_stubs() to
-extend the ppc64le module .stubs section with an array of
-ftrace_ool_stub structures for each patchable function.
+The logic for allocating ppc64_stub_entry trampolines in the .stubs
+section relies on an inline sentinel, where a NULL .funcdata member
+indicates an available slot.
 
-Fix its ppc64_stub_entry stub reservation loop to properly write across
-all of the num_stubs used and not just the first entry.
+While preceding commits fixed the initialization bugs that led to ftrace
+stub corruption, the sentinel-based approach remains fragile: it depends
+on an implicit convention between subsystems modifying different
+struct types in the same memory area.
 
-Fixes: eec37961a56a ("powerpc64/ftrace: Move ftrace sequence out of line")
+Replace the sentinel with an explicit counter, module->arch.num_stubs.
+Instead of iterating through memory to find a NULL marker, the module
+loader uses this counter as the boundary for the next free slot.
+
+This simplifies the allocation code, hardens it against future changes
+to stub structures, and removes the need for an extra relocation slot
+previously reserved to terminate the sentinel search.
+
 Signed-off-by: Joe Lawrence <joe.lawrence@redhat.com>
 ---
- arch/powerpc/kernel/module_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/module.h |  1 +
+ arch/powerpc/kernel/module_64.c   | 26 ++++++++------------------
+ 2 files changed, 9 insertions(+), 18 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/module.h b/arch/powerpc/include/asm/module.h
+index e1ee5026ac4a..864e22deaa2c 100644
+--- a/arch/powerpc/include/asm/module.h
++++ b/arch/powerpc/include/asm/module.h
+@@ -27,6 +27,7 @@ struct ppc_plt_entry {
+ struct mod_arch_specific {
+ #ifdef __powerpc64__
+ 	unsigned int stubs_section;	/* Index of stubs section in module */
++	unsigned int stub_count;	/* Number of stubs used */
+ #ifdef CONFIG_PPC_KERNEL_PCREL
+ 	unsigned int got_section;	/* What section is the GOT? */
+ 	unsigned int pcpu_section;	/* .data..percpu section */
 diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-index 126bf3b06ab7..0e45cac4de76 100644
+index 0e45cac4de76..2a44bc8e2439 100644
 --- a/arch/powerpc/kernel/module_64.c
 +++ b/arch/powerpc/kernel/module_64.c
-@@ -1139,7 +1139,7 @@ static int setup_ftrace_ool_stubs(const Elf64_Shdr *sechdrs, unsigned long addr,
+@@ -209,8 +209,7 @@ static unsigned long get_stubs_size(const Elf64_Ehdr *hdr,
+ 				    char *secstrings,
+ 				    struct module *me)
+ {
+-	/* One extra reloc so it's always 0-addr terminated */
+-	unsigned long relocs = 1;
++	unsigned long relocs = 0;
+ 	unsigned i;
  
- 	/* reserve stubs */
- 	for (i = 0; i < num_stubs; i++)
--		if (patch_u32((void *)&stub->funcdata, PPC_RAW_NOP()))
-+		if (patch_u32((void *)&stub[i].funcdata, PPC_RAW_NOP()))
- 			return -1;
+ 	/* Every relocated section... */
+@@ -705,7 +704,7 @@ static unsigned long stub_for_addr(const Elf64_Shdr *sechdrs,
+ 
+ 	/* Find this stub, or if that fails, the next avail. entry */
+ 	stubs = (void *)sechdrs[me->arch.stubs_section].sh_addr;
+-	for (i = 0; stub_func_addr(stubs[i].funcdata); i++) {
++	for (i = 0; i < me->arch.stub_count; i++) {
+ 		if (WARN_ON(i >= num_stubs))
+ 			return 0;
+ 
+@@ -716,6 +715,7 @@ static unsigned long stub_for_addr(const Elf64_Shdr *sechdrs,
+ 	if (!create_stub(sechdrs, &stubs[i], addr, me, name))
+ 		return 0;
+ 
++	me->arch.stub_count++;
+ 	return (unsigned long)&stubs[i];
+ }
+ 
+@@ -1118,29 +1118,19 @@ int module_trampoline_target(struct module *mod, unsigned long addr,
+ static int setup_ftrace_ool_stubs(const Elf64_Shdr *sechdrs, unsigned long addr, struct module *me)
+ {
+ #ifdef CONFIG_PPC_FTRACE_OUT_OF_LINE
+-	unsigned int i, total_stubs, num_stubs;
++	unsigned int total_stubs, num_stubs;
+ 	struct ppc64_stub_entry *stub;
+ 
+ 	total_stubs = sechdrs[me->arch.stubs_section].sh_size / sizeof(*stub);
+ 	num_stubs = roundup(me->arch.ool_stub_count * sizeof(struct ftrace_ool_stub),
+ 			    sizeof(struct ppc64_stub_entry)) / sizeof(struct ppc64_stub_entry);
+ 
+-	/* Find the next available entry */
+-	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
+-	for (i = 0; stub_func_addr(stub[i].funcdata); i++)
+-		if (WARN_ON(i >= total_stubs))
+-			return -1;
+-
+-	if (WARN_ON(i + num_stubs > total_stubs))
++	if (WARN_ON(me->arch.stub_count + num_stubs > total_stubs))
+ 		return -1;
+ 
+-	stub += i;
+-	me->arch.ool_stubs = (struct ftrace_ool_stub *)stub;
+-
+-	/* reserve stubs */
+-	for (i = 0; i < num_stubs; i++)
+-		if (patch_u32((void *)&stub[i].funcdata, PPC_RAW_NOP()))
+-			return -1;
++	stub = (void *)sechdrs[me->arch.stubs_section].sh_addr;
++	me->arch.ool_stubs = (struct ftrace_ool_stub *)(stub + me->arch.stub_count);
++	me->arch.stub_count += num_stubs;
  #endif
  
+ 	return 0;
 -- 
 2.51.0
 
