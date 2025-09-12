@@ -1,78 +1,114 @@
-Return-Path: <linuxppc-dev+bounces-12076-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12077-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D91FB54DD7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 14:33:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92383B54E22
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 14:38:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNYk724bSz3dBK;
-	Fri, 12 Sep 2025 22:33:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNYr272R5z3dBd;
+	Fri, 12 Sep 2025 22:38:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757680399;
-	cv=none; b=jBefD/Tr7AKaRBk4k+lSWSQXZVNaS+TudiV2pxD0rECM+gylGt6jTyqseNXzbVV0E20XOh96BSkkUwTEfb/UU4rcojYKb7AWWuZcDUMgY4v1ewnpmPmodHBhpsEbCt7xqRUFKhIltBie4NTI0y6DGQYi02YjgcK0+qQM5o87injnpyXoJe9akBJoLOXoG61tFJOQqCUgjqu6MFPUeyxZRodlcYFpD6TR7UabYbO1FIKrKq2CeuAVam/cBbe5G08TqrH4Sj2+BOE9CIzj98vjMUb2tuOA0HIMJS+0+9AaMj5BFSl9EwCN3Q1H97L5BJrUARHPTozPhPBmgV3HCxHgwA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757680706;
+	cv=none; b=hkzSZxPXtGQ5EDNn5moJMj7rCxTtVM8ISeg8Rr3AhNn1rlfT8LTIJORZznMS9AMLZrEGS5b9tPScyOjDXR/C8Il82quW8Ivf8lYAjgFbhG46xR2WjhK/SM5WXjoqZhTlGtYTWDbYHTsK1r4AXcwb5Ipo9PhdgOYKAuCb/LoGFJvO4rzLsyJCTbcMqRmQbsIhMBcphmoeZqSxJ/2CjHE4N4YSZTch6pbrlXVCANrtPmXquanQ3mmw75nNBuD3BhjBa2wtA4Kp2tvvWSpvHCPohvqYqCEoyc/t7VRPat27ziBzIk9KmEzuO4GgoeaEfaL4ko23V+wB3fSS3Ne7LI7o/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757680399; c=relaxed/relaxed;
-	bh=lzxldHFNVtZ8FuDAJRVh4gQ2YdF665e9h7C4fiEGf2Q=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=WhjnVy2NnxlpZbzSzuLhGV0ez165wPXGValJ4MG1oVoARw3FRFPDGpsUFwlXge0JzcTOaINsTEIC+nUeH3NBXXFKPGZWUU0uTvQq2/3B4MdybZCRCx5m3+9lhcmw1zu4UQGrSTixaKiXtLtUw6C3OY4N8Cy2hg0GGonGaVOzEPXiz2lwcyTqSHJgvDw5lM2nqMP/iTY+ToM7Yc4v3HXmOud0tQDChQD/TDIb8aeucNLGJU3ANUwd7GKGVqPa1w19ceAxClxqZ7nyDIlkLhNAa/vMxRcOdPrBu5OFAPQOUe6zSS0qtkBIuI2RufKwMLyM6i8c8wSLDYQ7zry5R3H6eA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UQ0Qjqfl; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1757680706; c=relaxed/relaxed;
+	bh=F/QMkXR0QmFDH2hSNcKmtWCaKqZWJp/K34Yf9Q/vV4o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e1edAYPEwpJZHyM0yjVj6RgU+LJLMrL1DTuP3qiPx1vJOhNMfG75KIaoNofk8SqV80dkAAZNSEROS8pCFzYrReL3JhUJOCZG7vC6flP3tPo0nEbC72NGH9uRxnoqWUWXkuCyLrCSKi/29Zd7d6ON1As+oxjDT+qnMQeDF05rqvSEDnNn28pO6y/RDUZ59/9NBxmkx8a3eucbcbOAzLxdhxtZjXqTLxh8VSjjv9cLsAqoZG6FFkb+237Dr/JZWjjc5cx8gm8SjyoWIYzxFSMg04nJ3hKE1DZjibFccCqfWtcYaHDDoDXh03x2wPxLxu4mDVjaxoA/8GLm5C7zK13e4Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cj9ccOMz; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UQ0Qjqfl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cj9ccOMz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNYk61HKGz3clp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 22:33:17 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58C6XZnD009279;
-	Fri, 12 Sep 2025 12:32:52 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNYr16xBYz3cyg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 22:38:25 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58C4NGak023577;
+	Fri, 12 Sep 2025 12:37:48 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=lzxldH
-	FNVtZ8FuDAJRVh4gQ2YdF665e9h7C4fiEGf2Q=; b=UQ0Qjqfl9EUXzM689e103h
-	p/VY4B1UtOJ9kE1qk4gOIC0zURdvXrgzhsjjOLt2Y7Vwp3Z//b8fOh/Y2hT85LPE
-	GeQIDYgfqUAfCryPCe4qOyyepz/ok1A13jEUMWG+BbqWl6Rp3QoRrFioqlLgNQNx
-	qqKMAuo8Lfm7RwIdTbXJGSsxJbNM3QtazG8s503WEQZYyna2JaAxg3D6RDVyKxvW
-	NqGWHxrxSWxoSfePi06eh9Lan11A55qtaV5IH2x2N1uxMo07rNk+n9MhTIO1tYJ4
-	lIZVGKoEzDVwShtMKWnpjhDvDc4sHRMnoD6TsSldM7wHY2VxRjQbhhuQbt5losLA
-	==
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=F/QMkXR0QmFDH2hSNcKmtWCaKqZWJp
+	/K34Yf9Q/vV4o=; b=cj9ccOMz3g4C+PjNeaWiuuTaP4HNhRLpXSoNy8fDYBJ3tk
+	7VmA5YJda8fjEnU3nV9LYEJ0vevAyi5kPStuOoThm2LttsPn7OqSUIv9hpgYHrDl
+	VM/aZj0XTYswaLwEhX4chi7Xmx3veV2pPSKQE7Xpwhzl/TPEp2EAuPOeuv511Ow4
+	GdjQgA67d2m8iwQ5Lwg5nwGJfFU1oEES3U34uXlfpBV2PZpk1btufFqXlMgXkSrh
+	hrBnft6mO7kvHVsAtqgMa22uMd+6dFXCBNXIQ9bxYg5JQfOYQABNv/34YA++priZ
+	YK5q9EfpN5W8w2jVpUGi5mI4pVFy6aKSSO89ulWA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cffufsk-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmxbgbt-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Sep 2025 12:32:52 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58CCWpfp030730;
-	Fri, 12 Sep 2025 12:32:51 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cffufse-1
+	Fri, 12 Sep 2025 12:37:48 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58CCZk7V019437;
+	Fri, 12 Sep 2025 12:37:47 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cmxbgbr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Sep 2025 12:32:51 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58CBN1i5001156;
-	Fri, 12 Sep 2025 12:32:50 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 491203tp0y-1
+	Fri, 12 Sep 2025 12:37:47 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58CAHmfd007982;
+	Fri, 12 Sep 2025 12:37:46 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 49109q2yat-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 12 Sep 2025 12:32:50 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58CCWdJ025559586
+	Fri, 12 Sep 2025 12:37:46 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58CCbiaW43581748
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 12 Sep 2025 12:32:39 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A9A9258055;
-	Fri, 12 Sep 2025 12:32:48 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F080158043;
-	Fri, 12 Sep 2025 12:32:41 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.244.60])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 12 Sep 2025 12:32:41 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	Fri, 12 Sep 2025 12:37:44 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F244B20043;
+	Fri, 12 Sep 2025 12:37:43 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2D0D220040;
+	Fri, 12 Sep 2025 12:37:43 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 12 Sep 2025 12:37:43 +0000 (GMT)
+Date: Fri, 12 Sep 2025 14:37:41 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        Mark Rutland <Mark.Rutland@arm.com>
+Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
+Message-ID: <9ed5441f-cc03-472a-adc6-b9d3ad525664-agordeev@linux.ibm.com>
+References: <47ee1df7-1602-4200-af94-475f84ca8d80@arm.com>
+ <29383ee2-d6d6-4435-9052-d75a263a5c45@redhat.com>
+ <9de08024-adfc-421b-8799-62653468cf63@arm.com>
+ <ef343405-c394-4763-a79f-21381f217b6c@redhat.com>
+ <4b4971fd-0445-4d86-8f3a-6ba3d68d15b7@arm.com>
+ <4aa28016-5678-4c66-8104-8dcc3fa2f5ce@redhat.com>
+ <15d01c8b-5475-442e-9df5-ca37b0d5dc04@arm.com>
+ <7953a735-6129-4d22-be65-ce736630d539@redhat.com>
+ <781a6450-1c0b-4603-91cf-49f16cd78c28@arm.com>
+ <a17ab4e3-627a-4989-a5a5-d430eadabb86@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,262 +121,259 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [linux-next20250911]Kernel OOPs while running generic/256 on Pmem
- device
-From: Venkat <venkat88@linux.ibm.com>
-In-Reply-To: <8957c526-d05c-4c0d-bfed-0eb6e6d2476c@linux.ibm.com>
-Date: Fri, 12 Sep 2025 18:02:28 +0530
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, riteshh@linux.ibm.com,
-        ojaswin@linux.ibm.com, linux-fsdevel@vger.kernel.org,
-        linux-xfs@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Linux Next Mailing List <linux-next@vger.kernel.org>,
-        cgroups@vger.kernel.org, linux-mm@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BAEAC2F7-7D7F-49E4-AB21-10FC0E4BF5F3@linux.ibm.com>
-References: <8957c526-d05c-4c0d-bfed-0eb6e6d2476c@linux.ibm.com>
-To: sunjunchao@bytedance.com, tj@kernel.org, akpm@linux-foundation.org,
-        stable@vger.kernel.org, songmuchun@bytedance.com, shakeelb@google.com,
-        hannes@cmpxchg.org, roman.gushchin@linux.dev, mhocko@suse.com
-X-Mailer: Apple Mail (2.3774.600.62)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a17ab4e3-627a-4989-a5a5-d430eadabb86@redhat.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: p4Ytzp1KtGI8p2ZOTdhnY1EM3EmHMr32
-X-Proofpoint-GUID: QUm9GvzwEKZeGuYZ_HevR0HRFwF4QMNC
-X-Authority-Analysis: v=2.4 cv=EYDIQOmC c=1 sm=1 tr=0 ts=68c412f4 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=968KyxNXAAAA:8 a=iox4zFpeAAAA:8 a=ufHFDILaAAAA:8 a=1XWaLZrsAAAA:8
- a=Z4Rwk6OoAAAA:8 a=P6wp6F91U6gQXFS5mtAA:9 a=QEXdDO2ut3YA:10
- a=WzC6qhA0u3u7Ye7llzcV:22 a=ZmIg1sZ3JBWsdXgziEIF:22 a=HkZW87K1Qel5hWWM3VKY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyMCBTYWx0ZWRfX3VRxtnPHv9sQ
- gyScgZkK+8jB3sGP0sPXgC9RlEwPB62+T3BkgjXvYljpa21/IuC41KtNk1cs9yyJdsohoa08LHt
- N6bTY8V+6it4eWfbLsCGpHkJuM2awlyA6/UhZJplwu6G2SPNF0VKixLSp9XgGwvJQtjiTGO2WKB
- 5/ID176TH6d7CAmfyRyYRWBJtosbiZuq9tagWKgXqMAUrsBNfJQqSOyJGCNs1HmmGv8H0dDK01K
- HZAnv2YuIwDht5+pZhi+Mv1QUr1rQhrgtbQsTc5FbWMf03FbfzazKvOjUq8cLB8bjUof0NG96M/
- 8MhsJ0BL2qXvRtEqwnAY1WoKPMKMr23qqPC3AyyYkFhxXvtgn0fjELYDRuebL66nB0jIkARbU7J
- FmfsWpJH
+X-Proofpoint-GUID: DzRH41cgO_SjjRs72WZBVybY8ExotUyL
+X-Proofpoint-ORIG-GUID: 5szjY0KVwgiaHLPdjEz_BJ9YvOIOK4Xh
+X-Authority-Analysis: v=2.4 cv=J52q7BnS c=1 sm=1 tr=0 ts=68c4141c cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=nv4XAxrWCHwsSIOw55kA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyNSBTYWx0ZWRfX86gaOQ1LrR1y
+ +AynjQ4AgALVhtZYKnZDDT8c+j9DRk8HERAKDNNp36tCtsrKRRJnQfrOFLxyYdnAr8hyqmeGA1f
+ 1prxUpnPJ5rXvIAgmJzbfZjhxXBnmxRp2iqjJgJ3i90OwHrL2TrKP54cHw5M3qK3XhAF0n2TpPW
+ RsnjxBxBdvNnEesXLpwgkw7dWSF2rosg2AqDmw/wB76gRXWMNRK5mr5x7N99pH4pGAXXTiU4uVS
+ i159bhlfOwCXD+7CDYya0yNVx3NBZFrGp9nJP7w5HEd4jjYX/OX0RgcnOvpZcS7CewzKLkB5WKW
+ CUaIccrW4ap26mcSEi1Rt8r0K+KbR+7MT6HbSo+gGNNB0kqns8XawW6Wq5nSDOWHRsM/E9JdJ0e
+ dqDgxgLq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-12_04,2025-09-11_02,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0 suspectscore=0 spamscore=0 impostorscore=0
- priorityscore=1501 phishscore=0 clxscore=1011 bulkscore=0
+ impostorscore=0 clxscore=1015 suspectscore=0 spamscore=0 phishscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 priorityscore=1501
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060020
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060025
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Fri, Sep 12, 2025 at 10:55:50AM +0200, David Hildenbrand wrote:
+
+Hi David, Kevin,
+
+> Great, looking forward to seeing this all getting cleaned up and done
+> properly for good.
+
+I am currently working on lazy mmu for s390 and this nesting
+initiative kind of interferres. Well, in fact it looks like
+it does not, but I am bit lost in last couple of iterations ;)
+
+The prerequisite for s390 would be something like the change
+below. With that change I can store the context in a per-cpu
+structure and use it later in arch-specific ptep_* primitives.
+
+Moreover, with a further (experimental) rework we could use
+a custom kasan sanitizer to spot false directly compiled
+PTE accesses, as opposed to set_pte()/ptep_get() accessors.
+
+I am not quite sure see whether this could be derailed by
+the new lazy mmu API. At least I do not immediately see any
+obvious problem. But may be you do?
 
 
-> On 12 Sep 2025, at 10:51=E2=80=AFAM, Venkat Rao Bagalkote =
-<venkat88@linux.ibm.com> wrote:
->=20
-> Greetings!!!
->=20
->=20
-> IBM CI has reported a kernel crash, while running generic/256 test =
-case on pmem device from xfstests suite on linux-next20250911 kernel.
->=20
->=20
-> xfstests: git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
->=20
-> local.config:
->=20
-> [xfs_dax]
-> export RECREATE_TEST_DEV=3Dtrue
-> export TEST_DEV=3D/dev/pmem0
-> export TEST_DIR=3D/mnt/test_pmem
-> export SCRATCH_DEV=3D/dev/pmem0.1
-> export SCRATCH_MNT=3D/mnt/scratch_pmem
-> export MKFS_OPTIONS=3D"-m reflink=3D0 -b size=3D65536 -s size=3D512"
-> export FSTYP=3Dxfs
-> export MOUNT_OPTIONS=3D"-o dax"
->=20
->=20
-> Test case: generic/256
->=20
->=20
-> Traces:
->=20
->=20
-> [  163.371929] ------------[ cut here ]------------
-> [  163.371936] kernel BUG at lib/list_debug.c:29!
-> [  163.371946] Oops: Exception in kernel mode, sig: 5 [#1]
-> [  163.371954] LE PAGE_SIZE=3D64K MMU=3DRadix  SMP NR_CPUS=3D8192 NUMA =
-pSeries
-> [  163.371965] Modules linked in: xfs nft_fib_inet nft_fib_ipv4 =
-nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 =
-nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack bonding tls =
-nf_defrag_ipv6 nf_defrag_ipv4 rfkill ip_set nf_tables nfnetlink sunrpc =
-pseries_rng vmx_crypto dax_pmem fuse ext4 crc16 mbcache jbd2 nd_pmem =
-papr_scm sd_mod libnvdimm sg ibmvscsi ibmveth scsi_transport_srp =
-pseries_wdt
-> [  163.372127] CPU: 22 UID: 0 PID: 130 Comm: kworker/22:0 Kdump: =
-loaded Not tainted 6.17.0-rc5-next-20250911 #1 VOLUNTARY
-> [  163.372142] Hardware name: IBM,9080-HEX Power11 (architected) =
-0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
-> [  163.372155] Workqueue: cgroup_free css_free_rwork_fn
-> [  163.372169] NIP:  c000000000d051d4 LR: c000000000d051d0 CTR: =
-0000000000000000
-> [  163.372176] REGS: c00000000ba079b0 TRAP: 0700   Not tainted =
-(6.17.0-rc5-next-20250911)
-> [  163.372183] MSR:  800000000282b033 =
-<SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 28000000  XER: 00000006
-> [  163.372214] CFAR: c0000000002bae9c IRQMASK: 0
-> [  163.372214] GPR00: c000000000d051d0 c00000000ba07c50 =
-c00000000230a600 0000000000000075
-> [  163.372214] GPR04: 0000000000000004 0000000000000001 =
-c000000000507e2c 0000000000000001
-> [  163.372214] GPR08: c000000d0cb87d13 0000000000000000 =
-0000000000000000 a80e000000000000
-> [  163.372214] GPR12: c00e0001a1970fa2 c000000d0ddec700 =
-c000000000208e58 c000000107b5e190
-> [  163.372214] GPR16: c00000000d3e5d08 c00000000b71cf78 =
-c00000000d3e5d05 c00000000b71cf30
-> [  163.372214] GPR20: c00000000b71cf08 c00000000b71cf10 =
-c000000019f58588 c000000004704bc8
-> [  163.372214] GPR24: c000000107b5e100 c000000004704bd0 =
-0000000000000003 c000000004704bd0
-> [  163.372214] GPR28: c000000004704bc8 c000000019f585a8 =
-c000000019f53da8 c000000004704bc8
-> [  163.372315] NIP [c000000000d051d4] =
-__list_add_valid_or_report+0x124/0x188
-> [  163.372326] LR [c000000000d051d0] =
-__list_add_valid_or_report+0x120/0x188
-> [  163.372335] Call Trace:
-> [  163.372339] [c00000000ba07c50] [c000000000d051d0] =
-__list_add_valid_or_report+0x120/0x188 (unreliable)
-> [  163.372352] [c00000000ba07ce0] [c000000000834280] =
-mem_cgroup_css_free+0xa0/0x27c
-> [  163.372363] [c00000000ba07d50] [c0000000003ba198] =
-css_free_rwork_fn+0xd0/0x59c
-> [  163.372374] [c00000000ba07da0] [c0000000001f5d60] =
-process_one_work+0x41c/0x89c
-> [  163.372385] [c00000000ba07eb0] [c0000000001f76c0] =
-worker_thread+0x558/0x848
-> [  163.372394] [c00000000ba07f80] [c000000000209038] =
-kthread+0x1e8/0x230
-> [  163.372406] [c00000000ba07fe0] [c00000000000ded8] =
-start_kernel_thread+0x14/0x18
-> [  163.372416] Code: 4b9b1099 60000000 7f63db78 4bae8245 60000000 =
-e8bf0008 3c62ff88 7fe6fb78 7fc4f378 38637d40 4b5b5c89 60000000 =
-<0fe00000> 60000000 60000000 7f83e378
-> [  163.372453] ---[ end trace 0000000000000000 ]---
-> [  163.380581] pstore: backend (nvram) writing error (-1)
-> [  163.380593]
->=20
->=20
-> If you happen to fix this issue, please add below tag.
->=20
->=20
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
->=20
->=20
->=20
-> Regards,
->=20
-> Venkat.
->=20
->=20
+[PATCH] mm: Make lazy MMU mode context-aware
 
-After reverting the below commit, issue is not seen.
+The lazy MMU mode is assumed to be context-independent in a
+sense the MMU does not need any additional data in lazy mode.
+Yet, s390 architecture may benefit strongly if it knows the
+exact page table entries being changed while in lazy mode.
 
-commit 61bbf51e75df1a94cf6736e311cb96aeb79826a8
-Author: Julian Sun <sunjunchao@bytedance.com>
-Date:   Thu Aug 28 04:45:57 2025 +0800
+Introduce arch_enter_lazy_mmu_mode_pte() that is provided
+with the process memory space and the page table being
+operated on as the prerequisite for s390 optimization.
+It is expected to be called only against PTE page tables
+and never cross the page table boundary.
 
-    memcg: don't wait writeback completion when release memcg
-         Recently, we encountered the following hung task:
-         INFO: task kworker/4:1:1334558 blocked for more than 1720 =
-seconds.
-    [Wed Jul 30 17:47:45 2025] Workqueue: cgroup_destroy =
-css_free_rwork_fn
-    [Wed Jul 30 17:47:45 2025] Call Trace:
-    [Wed Jul 30 17:47:45 2025]  __schedule+0x934/0xe10
-    [Wed Jul 30 17:47:45 2025]  ? complete+0x3b/0x50
-    [Wed Jul 30 17:47:45 2025]  ? _cond_resched+0x15/0x30
-    [Wed Jul 30 17:47:45 2025]  schedule+0x40/0xb0
-    [Wed Jul 30 17:47:45 2025]  wb_wait_for_completion+0x52/0x80
-    [Wed Jul 30 17:47:45 2025]  ? finish_wait+0x80/0x80
-    [Wed Jul 30 17:47:45 2025]  mem_cgroup_css_free+0x22/0x1b0
-    [Wed Jul 30 17:47:45 2025]  css_free_rwork_fn+0x42/0x380
-    [Wed Jul 30 17:47:45 2025]  process_one_work+0x1a2/0x360
-    [Wed Jul 30 17:47:45 2025]  worker_thread+0x30/0x390
-    [Wed Jul 30 17:47:45 2025]  ? create_worker+0x1a0/0x1a0
-    [Wed Jul 30 17:47:45 2025]  kthread+0x110/0x130
-    [Wed Jul 30 17:47:45 2025]  ? __kthread_cancel_work+0x40/0x40
-    [Wed Jul 30 17:47:45 2025]  ret_from_fork+0x1f/0x30
-         The direct cause is that memcg spends a long time waiting for =
-dirty page
-    writeback of foreign memcgs during release.
-         The root causes are:
-        a. The wb may have multiple writeback tasks, containing millions
-           of dirty pages, as shown below:
-         >>> for work in list_for_each_entry("struct wb_writeback_work", =
-\
-                                        wb.work_list.address_of_(), =
-"list"):
-    ...     print(work.nr_pages, work.reason, hex(work))
-    ...
-    900628  WB_REASON_FOREIGN_FLUSH 0xffff969e8d956b40
-    1116521 WB_REASON_FOREIGN_FLUSH 0xffff9698332a9540
-    1275228 WB_REASON_FOREIGN_FLUSH 0xffff969d9b444bc0
-    1099673 WB_REASON_FOREIGN_FLUSH 0xffff969f0954d6c0
-    1351522 WB_REASON_FOREIGN_FLUSH 0xffff969e76713340
-    2567437 WB_REASON_FOREIGN_FLUSH 0xffff9694ae208400
-    2954033 WB_REASON_FOREIGN_FLUSH 0xffff96a22d62cbc0
-    3008860 WB_REASON_FOREIGN_FLUSH 0xffff969eee8ce3c0
-    3337932 WB_REASON_FOREIGN_FLUSH 0xffff9695b45156c0
-    3348916 WB_REASON_FOREIGN_FLUSH 0xffff96a22c7a4f40
-    3345363 WB_REASON_FOREIGN_FLUSH 0xffff969e5d872800
-    3333581 WB_REASON_FOREIGN_FLUSH 0xffff969efd0f4600
-    3382225 WB_REASON_FOREIGN_FLUSH 0xffff969e770edcc0
-    3418770 WB_REASON_FOREIGN_FLUSH 0xffff96a252ceea40
-    3387648 WB_REASON_FOREIGN_FLUSH 0xffff96a3bda86340
-    3385420 WB_REASON_FOREIGN_FLUSH 0xffff969efc6eb280
-    3418730 WB_REASON_FOREIGN_FLUSH 0xffff96a348ab1040
-    3426155 WB_REASON_FOREIGN_FLUSH 0xffff969d90beac00
-    3397995 WB_REASON_FOREIGN_FLUSH 0xffff96a2d7288800
-    3293095 WB_REASON_FOREIGN_FLUSH 0xffff969dab423240
-    3293595 WB_REASON_FOREIGN_FLUSH 0xffff969c765ff400
-    3199511 WB_REASON_FOREIGN_FLUSH 0xffff969a72d5e680
-    3085016 WB_REASON_FOREIGN_FLUSH 0xffff969f0455e000
-    3035712 WB_REASON_FOREIGN_FLUSH 0xffff969d9bbf4b00
-             b. The writeback might severely throttled by wbt, with a =
-speed
-           possibly less than 100kb/s, leading to a very long writeback =
-time.
-         >>> wb.write_bandwidth
-    (unsigned long)24
-    >>> wb.write_bandwidth
-    (unsigned long)13
-         The wb_wait_for_completion() here is probably only used to =
-prevent
-    use-after-free.  Therefore, we manage 'done' separately and =
-automatically
-    free it.
-         This allows us to remove wb_wait_for_completion() while =
-preventing the
-    use-after-free issue.
-     com
-    Fixes: 97b27821b485 ("writeback, memcg: Implement foreign dirty =
-flushing")
-    Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
-    Acked-by: Tejun Heo <tj@kernel.org>
-    Cc: Michal Hocko <mhocko@suse.com>
-    Cc: Roman Gushchin <roman.gushchin@linux.dev>
-    Cc: Johannes Weiner <hannes@cmpxchg.org>
-    Cc: Shakeel Butt <shakeelb@google.com>
-    Cc: Muchun Song <songmuchun@bytedance.com>
-    Cc: <stable@vger.kernel.org>
-    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+There is no change for architectures that do not need any
+context.
 
-Regards,
-Venkat.
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+---
+ fs/proc/task_mmu.c      | 2 +-
+ include/linux/pgtable.h | 8 ++++++++
+ mm/madvise.c            | 8 ++++----
+ mm/memory.c             | 8 ++++----
+ mm/mprotect.c           | 2 +-
+ mm/mremap.c             | 2 +-
+ mm/vmalloc.c            | 6 +++---
+ 7 files changed, 22 insertions(+), 14 deletions(-)
 
->=20
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 751479eb128f..02fcd2771b2a 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -2493,7 +2493,7 @@ static int pagemap_scan_pmd_entry(pmd_t *pmd, unsigned long start,
+ 		return 0;
+ 	}
+ 
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(vma->vm_mm, start, end, start_pte);
+ 
+ 	if ((p->arg.flags & PM_SCAN_WP_MATCHING) && !p->vec_out) {
+ 		/* Fast path for performing exclusive WP */
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 0b6e1f781d86..16235c198bcb 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -235,6 +235,14 @@ static inline int pmd_dirty(pmd_t pmd)
+ #define arch_enter_lazy_mmu_mode()	do {} while (0)
+ #define arch_leave_lazy_mmu_mode()	do {} while (0)
+ #define arch_flush_lazy_mmu_mode()	do {} while (0)
++
++static inline void arch_enter_lazy_mmu_mode_pte(struct mm_struct *mm,
++						unsigned long addr,
++						unsigned long end,
++						pte_t *ptep)
++{
++	arch_enter_lazy_mmu_mode(); 
++}
+ #endif
+ 
+ #ifndef pte_batch_hint
+diff --git a/mm/madvise.c b/mm/madvise.c
+index 1d44a35ae85c..d36d4dc42378 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -448,7 +448,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 	if (!start_pte)
+ 		return 0;
+ 	flush_tlb_batched_pending(mm);
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(mm, addr, end, start_pte);
+ 	for (; addr < end; pte += nr, addr += nr * PAGE_SIZE) {
+ 		nr = 1;
+ 		ptent = ptep_get(pte);
+@@ -509,7 +509,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 				if (!start_pte)
+ 					break;
+ 				flush_tlb_batched_pending(mm);
+-				arch_enter_lazy_mmu_mode();
++				arch_enter_lazy_mmu_mode_pte(mm, addr, end, start_pte);
+ 				if (!err)
+ 					nr = 0;
+ 				continue;
+@@ -678,7 +678,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
+ 	if (!start_pte)
+ 		return 0;
+ 	flush_tlb_batched_pending(mm);
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(mm, addr, end, start_pte);
+ 	for (; addr != end; pte += nr, addr += PAGE_SIZE * nr) {
+ 		nr = 1;
+ 		ptent = ptep_get(pte);
+@@ -743,7 +743,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
+ 				if (!start_pte)
+ 					break;
+ 				flush_tlb_batched_pending(mm);
+-				arch_enter_lazy_mmu_mode();
++				arch_enter_lazy_mmu_mode_pte(mm, addr, end, pte);
+ 				if (!err)
+ 					nr = 0;
+ 				continue;
+diff --git a/mm/memory.c b/mm/memory.c
+index b0cda5aab398..93c0b8457eb0 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1131,7 +1131,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+ 	spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
+ 	orig_src_pte = src_pte;
+ 	orig_dst_pte = dst_pte;
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(src_mm, addr, end, src_pte);
+ 
+ 	do {
+ 		nr = 1;
+@@ -1723,7 +1723,7 @@ static unsigned long zap_pte_range(struct mmu_gather *tlb,
+ 		return addr;
+ 
+ 	flush_tlb_batched_pending(mm);
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(mm, addr, end, start_pte);
+ 	do {
+ 		bool any_skipped = false;
+ 
+@@ -2707,7 +2707,7 @@ static int remap_pte_range(struct mm_struct *mm, pmd_t *pmd,
+ 	mapped_pte = pte = pte_alloc_map_lock(mm, pmd, addr, &ptl);
+ 	if (!pte)
+ 		return -ENOMEM;
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(mm, addr, end, mapped_pte);
+ 	do {
+ 		BUG_ON(!pte_none(ptep_get(pte)));
+ 		if (!pfn_modify_allowed(pfn, prot)) {
+@@ -3024,7 +3024,7 @@ static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
+ 			return -EINVAL;
+ 	}
+ 
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(mm, addr, end, mapped_pte);
+ 
+ 	if (fn) {
+ 		do {
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 88608d0dc2c2..919c1dedff87 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -106,7 +106,7 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 		target_node = numa_node_id();
+ 
+ 	flush_tlb_batched_pending(vma->vm_mm);
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(vma->vm_mm, addr, end, pte);
+ 	do {
+ 		oldpte = ptep_get(pte);
+ 		if (pte_present(oldpte)) {
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 60f6b8d0d5f0..08b9cb3bb9ef 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -233,7 +233,7 @@ static int move_ptes(struct pagetable_move_control *pmc,
+ 	if (new_ptl != old_ptl)
+ 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
+ 	flush_tlb_batched_pending(vma->vm_mm);
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(mm, old_addr, old_end, old_pte);
+ 
+ 	for (; old_addr < old_end; old_pte++, old_addr += PAGE_SIZE,
+ 				   new_pte++, new_addr += PAGE_SIZE) {
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 6dbcdceecae1..29cfc64970a5 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -105,7 +105,7 @@ static int vmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ 	if (!pte)
+ 		return -ENOMEM;
+ 
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(&init_mm, addr, end, pte);
+ 
+ 	do {
+ 		if (unlikely(!pte_none(ptep_get(pte)))) {
+@@ -359,7 +359,7 @@ static void vunmap_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ 	unsigned long size = PAGE_SIZE;
+ 
+ 	pte = pte_offset_kernel(pmd, addr);
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(&init_mm, addr, end, pte);
+ 
+ 	do {
+ #ifdef CONFIG_HUGETLB_PAGE
+@@ -526,7 +526,7 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+ 	if (!pte)
+ 		return -ENOMEM;
+ 
+-	arch_enter_lazy_mmu_mode();
++	arch_enter_lazy_mmu_mode_pte(&init_mm, addr, end, pte);
+ 
+ 	do {
+ 		struct page *page = pages[*nr];
 
+> David / dhildenb
+
+Thanks!
 
