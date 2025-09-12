@@ -1,35 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-12095-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12096-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3078FB55348
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 17:26:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61582B55508
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 18:50:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNdYY4dkKz3dLB;
-	Sat, 13 Sep 2025 01:26:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNgRM3hDDz3dLT;
+	Sat, 13 Sep 2025 02:50:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757690769;
-	cv=none; b=DlCl186jMFbYg03Uj6AnnPdqTJtzKLyDOprB+A/Gx0UMLNKXxpaxQWkBSYeGwrNXzmM/pnmzuVg/e4u2eP9jVeT9MTqxjAhUfhjFvJDy9xmkOJ7W7xvo0TvZUB/l1qS0cLTWByu8ZpnznDz/gRyv1pE454dpU9drQ+Gds6nBAbseoey5UZ/eIgkdDdXOS4ajIArDFAHe9Spf+AUucVOPXYRmMSls3Hz1BQO/KU/EOascNpxn1qNUNDL8F7yTY6TDN2cni6RZY/nYtGleAlGdVi0NmiHT2u8bpfzNoLY4PUKYb2nTszOh36j7jgTzQg2XOB+YdABa0ZGGfyCYQF1SaQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=68.232.153.233
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757695855;
+	cv=none; b=Jw+kwniLnrO65lIrrUMnwzDpsoC0qPwDAPzxw91GKkk5b0pydzviOmM2qFsqLWXXfNS/0yk7ZKulgEjUop+J6PJUevmKDhD7IZZr1/hlHyiw4DcupzT/6Otoyesj9mD57/v0EBoCJBkRk45W+qehseOKqrivnP+2eb8svXBt48K7g3rqEAkzqULqaX7ZhHBfsZls/XEYnfdL6nM2IJ8/tZp1DKZbQRQ5x3WavIHx7+vaGXxlStPSL5X5UBeZxxUInwylCcimS6mfOrBvAflaT7us/7HmW/XqN2OAppX/cw5xJt/ZFxbU+jDsg8xKw945BoLcyNYulcgKY/iqm2h1ZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757690769; c=relaxed/relaxed;
-	bh=YaVFVuWtyKgp7Y3tlzPDyRgfcQER5D3c+vZ1/BrwHVY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=f1PZ8ZjXmvYEM+CQFncDXxJRvmTRrQnbt+fGeIwPTRm7WLr2P1Tz7Ntux3v150DBBtqsbR0jKpcuZKkG/wmryUA9Gybep4mwU1LqjZjoGgCf2cHBOvRmmkSOyj71FPeTYgdJsPpix3IQU45QZZykWdsRxwg10gaTj/1P9GkBadW7nic/ytlqjbhF1JRV6zQN03BKSigTD/JlwbxiK4ngXrcz+Tfj/Yq4KovFJtmCEu0xGUvv0r9GA5EdeBGeZcKYsqOQu8dnTLQ+nE1wOFzosYVh+Ym9hgL+zEoGI68n3YHOFldTov06rYNp7a+qXQjA6yJpPrd6EIk/tDGp7LTzAw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNdYX4HsSz3dK5
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 01:26:07 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6E94328AC;
-	Fri, 12 Sep 2025 08:25:28 -0700 (PDT)
-Received: from [10.57.66.147] (unknown [10.57.66.147])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 301DA3F694;
-	Fri, 12 Sep 2025 08:25:29 -0700 (PDT)
-Message-ID: <338ef811-1dab-4c4e-bc5f-8ebd8cb68435@arm.com>
-Date: Fri, 12 Sep 2025 17:25:27 +0200
+	t=1757695855; c=relaxed/relaxed;
+	bh=cnmFDlEOsmIEfqMrpAweTNFX9QftyJSBrntOrKfce2w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=b9Kx3r5oNgmFak5JJceRgV7Umsv0FHkv6vv6oZKS3VYpKSdYYeZcNSPo12RHvnXUidRBaeJSzvsgIfaEnyy89ME4OLIfVSdXvcAPq/dSOCSqE71d3vVMiLBWRHvxfa02WnzNYoeFDOSUpIcdy8gas6taby8XsqNWx8rKYEXXRsQrf4EmF/9R/gFnmlg76m14MlYjNYXzXnzbgqkCzgenSH27zw8XwqLtbo5sqj4xJJAm4kMR+4uhZgsL/5bIWidmLfEro26n+0+yy5qfZBRkAxSPY9mXcMtQNA2lX35HNCh6LrcKEcfa0y0cZ1QjbyLSFiIGKVLL5EmtOr1km4Uwdg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; dkim=pass (2048-bit key; unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=zRduiRNU; dkim-atps=neutral; spf=pass (client-ip=68.232.153.233; helo=esa.microchip.iphmx.com; envelope-from=prvs=3431635e0=nicolas.ferre@microchip.com; receiver=lists.ozlabs.org) smtp.mailfrom=microchip.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=microchip.com header.i=@microchip.com header.a=rsa-sha256 header.s=mchp header.b=zRduiRNU;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=microchip.com (client-ip=68.232.153.233; helo=esa.microchip.iphmx.com; envelope-from=prvs=3431635e0=nicolas.ferre@microchip.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Sat, 13 Sep 2025 02:50:50 AEST
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNgRG4tPTz3dBV
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 02:50:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1757695851; x=1789231851;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=u1apkPsXybe68Jt3zrIWLyQZ7H3ZjR0gWhhluRQrN3k=;
+  b=zRduiRNUjLjbKjgI+TUj6mhi2eigswbqXq5v6tKwvIJ34nCzdnlKMxDZ
+   HH26F2RKMWKiHyrTdjAdXUZ+E32JJHEWidTt9cGl0I1zdBDsm9BrKkPxt
+   L8L+HcvcARlcVT87VNJ9GGDtUrfHj+oCLGJ2xeNri8PKBlySr6Li9iWJ/
+   7I5AGxOcwgxXaqdeIaNvI/iMnAFfgUxzwBRYLzpaqGKF3u2hoyC0r7cWW
+   UU/zLtpHFKaRbX3bB/AFLZcN4KpHV1yflb1JdrZpmFT84j43pI2CoVuAi
+   jxs8VvbfIe6KZcwi1clqHgPlYmPU8vZx0gY/5Jz4IgpBpIdyMzFUlcrxk
+   A==;
+X-CSE-ConnectionGUID: s3gPgfU6QPiurXqxeBySFg==
+X-CSE-MsgGUID: 0XiE5fKtQqWtnhAnsP3idA==
+X-IronPort-AV: E=Sophos;i="6.18,259,1751266800"; 
+   d="scan'208";a="46433595"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 Sep 2025 09:49:42 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Fri, 12 Sep 2025 09:49:38 -0700
+Received: from [10.159.245.205] (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Fri, 12 Sep 2025 09:49:32 -0700
+Message-ID: <f931da29-5f10-494a-acc0-309bd805d41a@microchip.com>
+Date: Fri, 12 Sep 2025 18:49:31 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -44,141 +72,79 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Subject: Re: [PATCH v2 0/7] Nesting support for lazy MMU mode
-To: David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
- Mark Rutland <Mark.Rutland@arm.com>
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908191602.61160a7990b9ea418de758c7@linux-foundation.org>
- <d1b4ff2a-052f-4556-91ae-273962edbed0@redhat.com>
-Content-Language: en-GB
-In-Reply-To: <d1b4ff2a-052f-4556-91ae-273962edbed0@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
+To: Arnd Bergmann <arnd@arndb.de>, <ksummit@lists.linux.dev>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-mips@vger.kernel.org>,
+	<linux-mm@kvack.org>, <imx@lists.linux.dev>, Christophe Leroy
+	<christophe.leroy@csgroup.eu>, Richard Weinberger <richard@nod.at>, "Lucas
+ Stach" <l.stach@pengutronix.de>, Linus Walleij <linus.walleij@linaro.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>, Ankur Arora
+	<ankur.a.arora@oracle.com>, David Hildenbrand <david@redhat.com>, "Mike
+ Rapoport" <rppt@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Wilcox <willy@infradead.org>, Andrew Morton
+	<akpm@linux-foundation.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
+	"Ira Weiny" <ira.weiny@intel.com>, Nishanth Menon <nm@ti.com>,
+	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, Alexander Sverdlin
+	<alexander.sverdlin@gmail.com>, "Chester A. Unal"
+	<chester.a.unal@arinc9.com>, Sergio Paracuellos
+	<sergio.paracuellos@gmail.com>, Andreas Larsson <andreas@gaisler.com>, "Mihai
+ Sain" <Mihai.Sain@microchip.com>, Alexandre Belloni
+	<alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>
+References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
+Content-Language: en-US, fr
+Organization: microchip
+In-Reply-To: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 09/09/2025 11:21, David Hildenbrand wrote:
-> On 09.09.25 04:16, Andrew Morton wrote:
->> On Mon,  8 Sep 2025 08:39:24 +0100 Kevin Brodsky
->> <kevin.brodsky@arm.com> wrote:
->>
->>> The main change enabling nesting is patch 2, following the approach
->>> suggested by Catalin Marinas [4]: have enter() return some state and
->>> the matching leave() take that state.
->>
->> This is so totally the correct way.  Thanks.
->
-> Staring at this, I wonder if we could alternatively handle it like
-> pagefault_disable()/pagefault_enable(), having something like
-> current->lazy_mmu_enabled.
->
-> We wouldn't have to worry about preemption in that case I guess
-> (unless the arch has special requirements).
->
-> Not sure if that was already discussed, just a thought. 
+Arnd,
 
-Based on the outcome of the discussion with David on patch 2 [1p], there
-is indeed an alternative approach that we should seriously consider. In
-summary:
+On 09/09/2025 at 23:23, Arnd Bergmann wrote:
+> I'm still collecting information about which of the remaining highmem
+> users plan to keep updating their kernels and for what reason.
 
-* Keep the API stateless, handle nesting with a counter in task_struct
-* Introduce new functions to temporarily disable lazy_mmu without
-impacting nesting, track that with a bool in task_struct (addresses the
-situation in mm/kasan/shadow.c and possibly some x86 cases too)
-* Move as much handling from arch_* to generic functions
+We have 1GB of memory on our latest Cortex-A7 SAMA7D65 evaluation boards 
+[1] (full production announced beg. 2025). The wide range of DDR types 
+supported make some of these types interesting to use at such density.
+Both our Cortex-A7 SoCs don't have IOMMU; core and DMAs can address the 
+full range of the 32 bit address space, so we're quite 
+standard/simplistic in this area. We use CMA with large chunks as our 
+camera or display interfaces address "modern-ish" resolutions (~1080p).
 
-What the new generic infrastructure would look like:
+We use CONFIG_HIGHMEM and activated it for simplicity, conformance to 
+usual user-space workloads and planned to add it to our sama7_defconfig 
+[2]. I understand that we might reconsider this "by default" choice and 
+move to one of the solutions you highlighted in your message, lwn.net 
+article or recent talk at ELC-E.
 
-struct task_struct {
-    ...
-#ifdef CONFIG_ARCH_LAZY_MMU
-    struct {
-        uint8_t count;
-        bool enabled; /* or paused, see below */
-    } lazy_mmu_state;
-#endif
-}
+Of course we plan to maintain these boards and keep updating our kernel 
+"offer" once a year for those associated SoCs (with maintaining 
+upstream, as usual). As you said, being ARMv7, we're quite confident for 
+now.
 
-* lazy_mmu_mode_enable():
-    if (!lazy_mmu_state.count) {
-        arch_enter_lazy_mmu_mode();
-        lazy_mmu_state.enabled = true;
-    }
-    lazy_mmu_state.count++;
+As you mentioned, we've recently released one ARMv5te arm926ejs-based 
+soc: the SAM9x75 family. But we don't have the intention to use too big 
+memory sizes on them, even if they do address large screens, with LVDS 
+and MIPI or modern camera interfaces...
 
-* lazy_mmu_mode_disable():
-    lazy_mmu_count--;
-    if (!lazy_mmu_state.count) {
-        lazy_mmu_state.enabled = false;
-        arch_leave_lazy_mmu_mode();
-    } else {
-        arch_flush_lazy_mmu_mode();
-    }
+I don't have too much info about our customer's use cases as they are 
+very, very diverse, but don't hesitate to reach out to me if you have 
+questions about a particular combination of use.
+Thanks for your regular update on these topics.
 
-* lazy_mmu_mode_pause():
-    lazy_mmu_state.enabled = false;
-    arch_leave_lazy_mmu_mode();
+Best regards,
+   Nicolas
 
-* lazy_mmu_mode_resume();
-    arch_enter_lazy_mmu_mode();
-    lazy_mmu_state.enabled = true;
+[1]: for instance: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/boot/dts/microchip/at91-sama7d65_curiosity.dts#n29
 
-The generic enable()/disable() helpers are able to handle most of the
-logic, leaving only truly arch-specific code to the arch callbacks:
-* Updating lazy_mmu_state
-* Sanity checks on lazy_mmu_state (e.g. count underflow/overflow,
-pause()/resume() only called when count > 0, etc.)
-* Bailing out if in_interrupt() (not done consistently across arch's at
-the moment)
-
-A further improvement is to make arch code check lazy_mmu_state.enabled
-to determine whether lazy_mmu is enabled at any given point. At the
-moment every arch uses a different mechanism, and this is an occasion to
-make them converge.
-
-The arch callback interface remains unchanged, and we are resurrecting
-arch_flush_lazy_mmu_mode() to handle the nested disable() case (flushing
-must happen when exiting a section regardless of nesting):
-
-enable() -> arch_enter()
-    enable() -> [nothing]
-    disable() -> arch_flush()
-disable() -> arch_leave()
-
-Note: lazy_mmu_state.enabled (set whenever lazy_mmu is actually enabled)
-could be replaced with lazy_mmu_state.paused (set inside a
-pause()/resume() section). I believe this is equivalent but the former
-is slightly more convenient for arch code - to be confirmed in practice.
-
-Any thoughts on this? Unless there are concerns, I will move towards
-that approach in v3.
-
-- Kevin
-
-[1p]
-https://lore.kernel.org/all/4aa28016-5678-4c66-8104-8dcc3fa2f5ce@redhat.com/t/#u
-
+[2]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm/configs/sama7_defconfig
 
