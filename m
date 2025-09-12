@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-12074-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12075-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5903DB5493B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 12:18:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CD1B549DD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 12:31:40 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNVkC5qj7z3d36;
-	Fri, 12 Sep 2025 20:18:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNW1j4PtLz3d1B;
+	Fri, 12 Sep 2025 20:31:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.144
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757672291;
-	cv=none; b=mwu1lfMESBX1gChIOhOeuUUmJlpi263AHWgydmoqxRySPxna0rN4p4A3FxXKB3fODGMZX7d472DHZ2gmfZP3STQ9q93LNrGTaKzIYlj19ONcK3CsdERKMvBLKx/VnrnyCFJ6LfjOHio0wkycPyj1XzepQRpNflOp5P2mzqcTwkzuJGbPGbXhCYPIjdxU4MOqmKAkVVPwcs/GytvkytoOP75DiBMiqLfUZzVsjFiqpkKGat01G5K045GJTOiEX0dZCZOFOkCN6/lLRcS+ghrtr8wtXHBRs06MxvNI+smbAga9WqCt+LiJi6Pr5hjrGzjECWTr2FMmdnQ+7gAKM1FbKg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757673097;
+	cv=none; b=m7na1zMdT3MNtULnaSc4ar5u7fpAwt68NkbydB9cgW7IDGYMVE88TAmWtagW/Yp6b5e+U9ctL4p4/3ib+GmIaoF70FtkwfBKB0VCj8Hcv0bGJNS9hFnupvCAoWWyJo+dU4d3y7cf7vkFK/XN7BXQu3KaiAmp6q3RcgwI+/ZqLAWM9QCOlz1NyELK4rsgsAXewvmk2T8LW2J9ECa5LTJjYmCtkoPMMBlk9k8R7m5mTA2N9APUnJdTqBGKxWkMP8YTyl+dRSZtC6lfcsQfCKDBzaHxVIp/wC3lsA1Pe6YNmGh0pOBeZyyP/WV+TmH2uMDwGpclVAL4/3Lrb26wnZbQAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757672291; c=relaxed/relaxed;
-	bh=9YTVFTqv3esr6/4o2z0BMROL8ZzR/twbyPKp7dOgQ8c=;
+	t=1757673097; c=relaxed/relaxed;
+	bh=ZnTz2gc51WJkMzlk/mlrEsU7FqUmmq3NOjbYK7bSYp4=;
 	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=gPnT0Cu9RptaHFHGhGm5ZZKf2HKvgFSCELxGHPnUNK77mEolpIm1fLRx5PuBcO9dRjkf6Pg7Tb1IYiOqCYcN02roAbMIah28OgrENOJOob67g0tvhcKot4z7A6PqHHIqshmvHRfQD8GZSRPCARfbHABFGXFRiUJ6KDDZJYvASJ/HoLGkMPY7BLdGUY7GBcDTS71yGZ9P1r6mvNyKLaz9QU+2xBrD+xZ5XMvGQbeCYu/cEbs1AS+YGQJpJkp+cVrYjvWkI9OV+RWxWLWCQaQOM7zQguOabFggYgmXlRuE1rEJ5QZ/lz4eBxdxK+rYDEfwg7cb2Hsm1aoEjQj48H5Uiw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=MkTTGqz5; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Bq3IzD3e; dkim-atps=neutral; spf=pass (client-ip=202.12.124.144; helo=fout-b1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+	 Subject:Content-Type; b=on/LWn8vBiGLMSDgvEPCW04GVyEzfh3KrZGsYs9OytyjFB77wlsdqSXV4VD91QrrEMrn+x0hkGo26HfRW/vJH5bNEb5+5/SbtM33Hkh5EoL/yLtJLB1hMOEEUbo5+3inmOI77tFhgF+siVP8ERxpOLtJmJX0FqBX8RGkmUbHu//BY9oWgwdkmkmkSVqaF883sj3BrMJkI7DxtYt7YQ18KycgQQ8U5VeRiGLzErAxS9eP8ZofXbnYfmTOWP/vFjzrXrja7v/cOyZZeY5Ifa3lRyLs3onGE3QsLGwk0FyJTFyhXp40XkmRJT3JNiuUupKUS7hoIuaz7SKzQJ1NqH2NdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=jT0WwhhK; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=k1vyC6rj; dkim-atps=neutral; spf=pass (client-ip=202.12.124.144; helo=fout-b1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=MkTTGqz5;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=Bq3IzD3e;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=jT0WwhhK;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=k1vyC6rj;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.144; helo=fout-b1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
 Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNVk74s78z3d2x
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 20:18:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNW1g6hdFz3cnZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 20:31:35 +1000 (AEST)
 Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id B472E1D00410;
-	Fri, 12 Sep 2025 06:18:02 -0400 (EDT)
+	by mailfout.stl.internal (Postfix) with ESMTP id AED0D1D003A5;
+	Fri, 12 Sep 2025 06:31:32 -0400 (EDT)
 Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Fri, 12 Sep 2025 06:18:03 -0400
+  by phl-compute-05.internal (MEProxy); Fri, 12 Sep 2025 06:31:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1757672282;
-	 x=1757758682; bh=9YTVFTqv3esr6/4o2z0BMROL8ZzR/twbyPKp7dOgQ8c=; b=
-	MkTTGqz582tMoXiaxv+WzOMeCUpK43NVEMy0S2ODRVT6sTC0DTo0bXB3GAv1vukK
-	dJEC0SEQ1h46wMjlM0kgfqFGcTG77SIC41gzKic0kOGz3o8tsU3ZI5hbyTA4Y43x
-	ohKbeayVJdnZPqj5V+ZrKqHCFhmkeEC+rgbi5TVJ9v7kqJ9DvvqO+MW1peFNO+aN
-	mTGOCkN0mQA7/SxHODsqxDeHrU/CWbhSVvD98tPKm4aIz0VarFAl4Im3dVLMMG5a
-	3o77/cyDl8VssAc4Bm2hiOmeweHDoNJNxytvsrCbvJoDBeOLvwXoe/Io4OCKMv3o
-	IFLx/C3HuKRmZ3rVttd6tA==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1757673092;
+	 x=1757759492; bh=ZnTz2gc51WJkMzlk/mlrEsU7FqUmmq3NOjbYK7bSYp4=; b=
+	jT0WwhhKNltNjX6oy1wi2+oKiJaYylL7esPneJwhFB9N0maSA8KhckfKJ6NnZQXz
+	bYSKUzEJ1WD8GBoOttQ4k4McWa7PUuOpoj8s0jC70raXwNw+Joio585FI3WnZjbl
+	x3pSTwt/PxqKxJ9lJ31N1oKIcXKJBT4zXz+pCyvFVjV9Kraw9dayg9sb9jRwV+Nw
+	ZCwIvDwoMDizk5Oy4w5Fq4PGMoCfY9L/WG+9W9or8bVbia9mvqlXoeo2P0NR+JgN
+	5c355lhHhH91mQkZARqOAP1UqOJCYuCPS9yuex3K/8pU9ahBPN8OBiub5LCVDUWa
+	qZJfE07pcyZBzcIZ+mGBAQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757672282; x=
-	1757758682; bh=9YTVFTqv3esr6/4o2z0BMROL8ZzR/twbyPKp7dOgQ8c=; b=B
-	q3IzD3eNVHz5NfcgZdq/BAq7VPToJWFLvnE7NSgoDR5AJIuIqwb+T3keAu2cJZWY
-	KkzHKH6eb7irC3elLVTowyLeB7wOwVeeV/uULPDUTpad6DkCRBwmlz+DF1TRJWKE
-	HpaBmN8htE/95T8l/xUhANUYuPEdxZ4tehrOIIQvJbCE81x6NDbZo6UWl6uLMES/
-	U11kHYWOB1W7hz9smWXW1HIBNmK10Mxhh5en6Rk3VV1qfc+axmcfLYoJ9h9Fw9ia
-	xaoQbgf0e0mWOsExo1UxF/88Xe6B1qgFmYZ6MDtZiX7DVKI0GdE1TRG9X6KT5SW6
-	PEaXJyDPEEospM9IHNmFA==
-X-ME-Sender: <xms:WfPDaGuIsUrEe6-e3HJpzHbjJCYFKzrF7mghMR4O1VstVjwEdYX-QQ>
-    <xme:WfPDaLdTwSIO6wHADzHbI1GCZVROUQFrBN5bf1RSzeigqwVbg08C6WM00Afp-65x0
-    RZWEqL5Xjboy3OYyz0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvkeejlecutefuodetggdotefrod
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757673092; x=
+	1757759492; bh=ZnTz2gc51WJkMzlk/mlrEsU7FqUmmq3NOjbYK7bSYp4=; b=k
+	1vyC6rj2xmNIeSXoxg3bvnTWj9wX83aGkU2Em5DF79HTuHrMRkI/xWw7759LQ+5B
+	bkcvjmV9Qcxb5zeuIlTgRw5J7nFj1ieCipA/jEvNGwd6HN40RiueQR16QHBzDb8h
+	VtUVL9bF9ugklG9UPWPwK1OXzf1y5zcSOVT/aIDSE7/tpO+qIxlm036IloNQ38vX
+	GYO835wCXejsuEjw7jRJxt+JFUijm5OA7IcHo9Ic5uxJrBm8P5nGWjGtURshGLI/
+	Jm0wr8SJkFo/frJJBMF0lfIbNHl9FUpWia57G4LZzDDKNpmKp6M9YMb4iODMRpV9
+	KmdcZMWP9FzP3F+KYOnRg==
+X-ME-Sender: <xms:g_bDaJkb4BCSIXaN20hGGvDbpq_uYHUfXJVkDOB_mVGTfxamBLbrCg>
+    <xme:g_bDaE1SOe8uQM2xOpAvalLtJNFp4-tFiBJJg00LzpboZKgRb_HiWpnQAMxIFtxov
+    Y9ewlkME-ye5_zj9pk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvkeekudcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhhnugcu
+    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcu
     uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffgvedugeduveelvdekhfdvieen
+    hnpedvhfdvkeeuudevfffftefgvdevfedvleehvddvgeejvdefhedtgeegveehfeeljeen
     ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvkedpmhhouggvpehsmhhtphhouhht
+    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvledpmhhouggvpehsmhhtphhouhht
     pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
     gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
     tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
@@ -77,14 +77,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvkeejlecutefuodetgg
     hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
     nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
     gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:WfPDaEqN_q6tYpYBgHqbaXeMIWWYeCD7i1PfPOpiNQgTfTusQAbplA>
-    <xmx:WfPDaFgM8M1jDJDlqZkPywyDozkHTeqG-FJA8dINcdX2bB7OuZkcag>
-    <xmx:WfPDaKIxdHlABr-TMX6jl6rL10byP7mIBcu10ZsTsaxIGEL3I_VyEg>
-    <xmx:WfPDaC4MP1PgKGRLiJso9NwDui0b7sZsJbvIFwjoBQONQKl07idhZg>
-    <xmx:WvPDaAlcw0aU0UxqRmsaUcMFIiKW8MFdVdLPSfFJyj5hIs03ouv_j11Y>
+X-ME-Proxy: <xmx:g_bDaFXJUTCPg8Gg2uXGQ5RgMU0uaHD5VVXSZgwboz-q7ftAYqBd_A>
+    <xmx:g_bDaH89g0FuTDFfLJztpjIor2KN7O4LrVLiR6mLfjS9st6ed4KczQ>
+    <xmx:g_bDaKpKyJokmXH4ARM6vTbfA_Kk9jW9MQRMrRlbx2LKjFb1x4w1Wg>
+    <xmx:g_bDaLcx1abt47vng-9Brf4PakpSJA5ATOGTsoYy2HXs2gu4PoxW_w>
+    <xmx:hPbDaDl4p91INzeg69byU-AorUJTlq5vFDDCdsqCRc1puYq7VFqbSjGD>
 Feedback-ID: i56a14606:Fastmail
 Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id F0CF1700069; Fri, 12 Sep 2025 06:18:00 -0400 (EDT)
+	id 9ED19700065; Fri, 12 Sep 2025 06:31:31 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -100,14 +100,16 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-ThreadId: AmcCJOTBQ5ho
-Date: Fri, 12 Sep 2025 12:17:26 +0200
+Date: Fri, 12 Sep 2025 12:30:59 +0200
 From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Andreas Larsson" <andreas@gaisler.com>, ksummit@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, imx@lists.linux.dev,
+To: "Richard Weinberger" <richard@nod.at>, "Dave Hansen" <dave@sr71.net>
+Cc: ksummit <ksummit@lists.linux.dev>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-mips <linux-mips@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
+ imx <imx@lists.linux.dev>,
  "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Richard Weinberger" <richard@nod.at>,
  "Lucas Stach" <l.stach@pengutronix.de>,
  "Linus Walleij" <linus.walleij@linaro.org>,
  "Geert Uytterhoeven" <geert+renesas@glider.be>,
@@ -124,102 +126,73 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
  "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
  "Chester A. Unal" <chester.a.unal@arinc9.com>,
- "Sergio Paracuellos" <sergio.paracuellos@gmail.com>
-Message-Id: <c6ad1870-f5c1-42f4-9de8-953f2e0f6a6f@app.fastmail.com>
-In-Reply-To: <a393f6bd-ac30-4861-818c-ba0b558df4a4@gaisler.com>
+ "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
+ "Andreas Larsson" <andreas@gaisler.com>
+Message-Id: <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
+In-Reply-To: <640041197.22387.1757536385810.JavaMail.zimbra@nod.at>
 References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <5d2fec2b-8e59-417e-b9e6-12c6e27dd5f0@gaisler.com>
- <363853cd-7f10-4aa9-8850-47eee6d516b9@app.fastmail.com>
- <a393f6bd-ac30-4861-818c-ba0b558df4a4@gaisler.com>
+ <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
+ <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
+ <640041197.22387.1757536385810.JavaMail.zimbra@nod.at>
 Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Sep 12, 2025, at 11:32, Andreas Larsson wrote:
-> On 2025-09-11 09:53, Arnd Bergmann wrote:
->> On Thu, Sep 11, 2025, at 07:38, Andreas Larsson wrote:
->>>
->>> We have a upcoming SoC with support for up to 16 GiB of DRAM. When that is
->>> used in LEON sparc32 configuration (using 36-bit physical addressing), a
->>> removed CONFIG_HIGHMEM would be a considerable limitation, even after an
->>> introduction of different CONFIG_VMSPLIT_* options for sparc32.
->> 
->> I agree that without highmem that chip is going to be unusable from Linux,
->> but I wonder if there is a chance to actually use it even with highmem,
->> for a combination of reasons:
+On Wed, Sep 10, 2025, at 22:33, Richard Weinberger wrote:
+> ----- Urspr=C3=BCngliche Mail -----
+>> Von: "Dave Hansen" <dave@sr71.net>
+>>> Even with a new memory split, which could utilize most of the
+>>> available memory, I expect there to be issues with various
+>>> applications and FPGA device drivers.
+
+I also remember driver problems on older Marvell NAS systems, which
+we never fully figured out, my best guess in retrospect is that these
+had devices with DMA address restrictions, and if lowmem is small
+enough it would always work, but any lowmem allocation above the
+hardware DMA address limit would cause data corruption.
+
+A similar restriction exists on Raspberry Pi, which can run
+both 32-bit and 64-bit kernels. The workaround in this case is
+a combination of:
+
+- correctly representing the DMA limits in the devicetree, using
+  the 'dma-ranges' property.
+- enabling SWIOTLB (which is not enabled by default on 32-bit
+  Arm without LPAE).
+- Using GFP_DMA or dma_alloc_noncoherent() allocations for
+  streaming buffers if possible, to avoid extra bounces
+
+(documenting this here, in case someone tries out VMSPLIT_2G
+and runs into a similar bug on other hardware, I expect there
+may be a few more of these, though most hardware should be fine)
+
+>> I'd be really curious what the _actual_ issues would be with a
+>> non-standard split. There are a lot of "maybe" problems and solutions
+>> here, but it's hard to move forward without known practical problems =
+to
+>> tackle.
+>>=20
+>> Has anybody run into actual end user visible problems when using one =
+of
+>> weirdo PAGE_OFFSET configs?
 >
-> I would definitely not call it unusable in LEON sparc32 mode with
-> HIGHMEM gone, but it would of course be seriously hampered memory wise
-> without HIGHMEM support compared to with HIGHMEM.
+> In the past I saw that programs such as the Java Runtime (JRE) ran into
+> address space limitations due to a 2G/2G split on embedded systems.
+> Reverting to a 3G/1G split fixed the problems.
 
-I meant specifically a configuration with 16GB of RAM would be
-unusable.
+Right, that makes sense, given the tricks they likely play on the
+virtual address space. Are the 2GB devices you maintain using a JRE,
+or was this on other embedded hardware? How common is Java still in
+this type of workload?
 
->> - If you come up with patches to extend lowmem to 2GB at the expense
->>   of a lower TASK_SIZE, you're still  looking at a ration of 7:1 with
->>   14GB of highmem on the maxed-out configuration, so many workloads
->>   would still struggle to actually use that memory for page cache.
->
-> Yes, we already have patches for 36-bit addressing with 64-bit
-> phys_addr_t. Patches for CONFIG_VMSPLIT_* are under development.
+Another type of software that I've seen mentioned struggling with
+VMSPLIT_2G is web browsers, but I don't know if that is a similar
+problem with a V8/spidermonkey JIT managing its own address space,
+or more about general bloat exceeding 2GB of user addresses.
 
-Ok
-
-> Even with 192 MiB lowmem we have being using up to 4 GiB without running
-> into problems. Could you elaborate on why you think lowmem would run out
-> before 14 GiB highmem in a VMSPLIT_3G or VMSPLIT_2G configuration?
->
-> And even if 14 GiB highmem would be hard to get full usage out of, for a
-> board with 8 GiB memory (or a configuration limiting 16 GiB down to only
-> use 8 GiB or somewhere in between) the difference between getting to use
-> 2 GiB and 8 GiB is quite hefty.
-
-This is highly workload dependent, but usually what happens is that
-one type of allocations fills up lowmem to the point where the
-system runs out of memory. This could be any of:
-
-- AFAICT the mem_map[] array uses 40 bytes per physical page on sparc64,
-  so on 16GB, you need 160MB of lowmem for the mem_map[] alone.
-- to actually access the memory from user space, you need several tasks
-  that each map a portion of the physical memory. Each task requires
-  at least page tables, task_struct, kernel stack, inodes, vma structures
-  etc, all of which have to be in lowmem.
-- anything you find in /proc/slabinfo comes from lowmem, and for any
-  network or filesystem heavy workload, there are a lot of those
-
-It's easy to construct an artifical testcase that maximises the
-highmem usage, but much harder to change an existing workload to
-use highmem without using more lowmem as well.
-
->> When you say "used in LEON sparc32 configuration", does that mean
->> you can also run Linux in some other confuration like an rv64
->> kernel on a NOEL-V core on that chip?
->
-> Yes, boot strapping will select between sparc32 LEON and rv64 NOEL-V.
-
->> Aside from the upcoming SoC and whatever happens to that, what is
->> the largest LEON Linux memory configuration that you know is used
->> in production today and still requires kernel updates beyond ~2029?
->
-> The maximum I know of for systems currently in production has the
-> capacity to have up to 2 GiB memory.
-
-Ok. The 2GB point is clearly the one that works well enough on
-x86-32, arm32, powerpc32 and others, with VMSPLIT_3G+highmem
-that gives you a 1:1 or 2:1 ratio of highmem to lowmem, and
-a single process is able to use all the available memory in
-its 3GB virtual space. Alternatively you can already use 2GB
-on those architectures with VMSPLIT_2G_OPT to have everything
-in lowmem, again depending on your workload.
-
-Once you go to 4GB and beyond, you really want a 64-bit kernel.
-CPU designers have added 36-bit addressing to all the major
-32-bit architectures at some point, but it's been very rare
-that this was actually used after 64-bit CPUs became available.
-
-    Arnd
+      Arnd
 
