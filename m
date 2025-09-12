@@ -1,91 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12075-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12076-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CD1B549DD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 12:31:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D91FB54DD7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 14:33:22 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNW1j4PtLz3d1B;
-	Fri, 12 Sep 2025 20:31:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNYk724bSz3dBK;
+	Fri, 12 Sep 2025 22:33:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.144
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757673097;
-	cv=none; b=m7na1zMdT3MNtULnaSc4ar5u7fpAwt68NkbydB9cgW7IDGYMVE88TAmWtagW/Yp6b5e+U9ctL4p4/3ib+GmIaoF70FtkwfBKB0VCj8Hcv0bGJNS9hFnupvCAoWWyJo+dU4d3y7cf7vkFK/XN7BXQu3KaiAmp6q3RcgwI+/ZqLAWM9QCOlz1NyELK4rsgsAXewvmk2T8LW2J9ECa5LTJjYmCtkoPMMBlk9k8R7m5mTA2N9APUnJdTqBGKxWkMP8YTyl+dRSZtC6lfcsQfCKDBzaHxVIp/wC3lsA1Pe6YNmGh0pOBeZyyP/WV+TmH2uMDwGpclVAL4/3Lrb26wnZbQAg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757680399;
+	cv=none; b=jBefD/Tr7AKaRBk4k+lSWSQXZVNaS+TudiV2pxD0rECM+gylGt6jTyqseNXzbVV0E20XOh96BSkkUwTEfb/UU4rcojYKb7AWWuZcDUMgY4v1ewnpmPmodHBhpsEbCt7xqRUFKhIltBie4NTI0y6DGQYi02YjgcK0+qQM5o87injnpyXoJe9akBJoLOXoG61tFJOQqCUgjqu6MFPUeyxZRodlcYFpD6TR7UabYbO1FIKrKq2CeuAVam/cBbe5G08TqrH4Sj2+BOE9CIzj98vjMUb2tuOA0HIMJS+0+9AaMj5BFSl9EwCN3Q1H97L5BJrUARHPTozPhPBmgV3HCxHgwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757673097; c=relaxed/relaxed;
-	bh=ZnTz2gc51WJkMzlk/mlrEsU7FqUmmq3NOjbYK7bSYp4=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=on/LWn8vBiGLMSDgvEPCW04GVyEzfh3KrZGsYs9OytyjFB77wlsdqSXV4VD91QrrEMrn+x0hkGo26HfRW/vJH5bNEb5+5/SbtM33Hkh5EoL/yLtJLB1hMOEEUbo5+3inmOI77tFhgF+siVP8ERxpOLtJmJX0FqBX8RGkmUbHu//BY9oWgwdkmkmkSVqaF883sj3BrMJkI7DxtYt7YQ18KycgQQ8U5VeRiGLzErAxS9eP8ZofXbnYfmTOWP/vFjzrXrja7v/cOyZZeY5Ifa3lRyLs3onGE3QsLGwk0FyJTFyhXp40XkmRJT3JNiuUupKUS7hoIuaz7SKzQJ1NqH2NdA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=jT0WwhhK; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=k1vyC6rj; dkim-atps=neutral; spf=pass (client-ip=202.12.124.144; helo=fout-b1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1757680399; c=relaxed/relaxed;
+	bh=lzxldHFNVtZ8FuDAJRVh4gQ2YdF665e9h7C4fiEGf2Q=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=WhjnVy2NnxlpZbzSzuLhGV0ez165wPXGValJ4MG1oVoARw3FRFPDGpsUFwlXge0JzcTOaINsTEIC+nUeH3NBXXFKPGZWUU0uTvQq2/3B4MdybZCRCx5m3+9lhcmw1zu4UQGrSTixaKiXtLtUw6C3OY4N8Cy2hg0GGonGaVOzEPXiz2lwcyTqSHJgvDw5lM2nqMP/iTY+ToM7Yc4v3HXmOud0tQDChQD/TDIb8aeucNLGJU3ANUwd7GKGVqPa1w19ceAxClxqZ7nyDIlkLhNAa/vMxRcOdPrBu5OFAPQOUe6zSS0qtkBIuI2RufKwMLyM6i8c8wSLDYQ7zry5R3H6eA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UQ0Qjqfl; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm3 header.b=jT0WwhhK;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=k1vyC6rj;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UQ0Qjqfl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.144; helo=fout-b1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNW1g6hdFz3cnZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 20:31:35 +1000 (AEST)
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id AED0D1D003A5;
-	Fri, 12 Sep 2025 06:31:32 -0400 (EDT)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-05.internal (MEProxy); Fri, 12 Sep 2025 06:31:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1757673092;
-	 x=1757759492; bh=ZnTz2gc51WJkMzlk/mlrEsU7FqUmmq3NOjbYK7bSYp4=; b=
-	jT0WwhhKNltNjX6oy1wi2+oKiJaYylL7esPneJwhFB9N0maSA8KhckfKJ6NnZQXz
-	bYSKUzEJ1WD8GBoOttQ4k4McWa7PUuOpoj8s0jC70raXwNw+Joio585FI3WnZjbl
-	x3pSTwt/PxqKxJ9lJ31N1oKIcXKJBT4zXz+pCyvFVjV9Kraw9dayg9sb9jRwV+Nw
-	ZCwIvDwoMDizk5Oy4w5Fq4PGMoCfY9L/WG+9W9or8bVbia9mvqlXoeo2P0NR+JgN
-	5c355lhHhH91mQkZARqOAP1UqOJCYuCPS9yuex3K/8pU9ahBPN8OBiub5LCVDUWa
-	qZJfE07pcyZBzcIZ+mGBAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1757673092; x=
-	1757759492; bh=ZnTz2gc51WJkMzlk/mlrEsU7FqUmmq3NOjbYK7bSYp4=; b=k
-	1vyC6rj2xmNIeSXoxg3bvnTWj9wX83aGkU2Em5DF79HTuHrMRkI/xWw7759LQ+5B
-	bkcvjmV9Qcxb5zeuIlTgRw5J7nFj1ieCipA/jEvNGwd6HN40RiueQR16QHBzDb8h
-	VtUVL9bF9ugklG9UPWPwK1OXzf1y5zcSOVT/aIDSE7/tpO+qIxlm036IloNQ38vX
-	GYO835wCXejsuEjw7jRJxt+JFUijm5OA7IcHo9Ic5uxJrBm8P5nGWjGtURshGLI/
-	Jm0wr8SJkFo/frJJBMF0lfIbNHl9FUpWia57G4LZzDDKNpmKp6M9YMb4iODMRpV9
-	KmdcZMWP9FzP3F+KYOnRg==
-X-ME-Sender: <xms:g_bDaJkb4BCSIXaN20hGGvDbpq_uYHUfXJVkDOB_mVGTfxamBLbrCg>
-    <xme:g_bDaE1SOe8uQM2xOpAvalLtJNFp4-tFiBJJg00LzpboZKgRb_HiWpnQAMxIFtxov
-    Y9ewlkME-ye5_zj9pk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddvkeekudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeenucfhrhhomhepfdetrhhnugcu
-    uegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtthgvrh
-    hnpedvhfdvkeeuudevfffftefgvdevfedvleehvddvgeejvdefhedtgeegveehfeeljeen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnug
-    esrghrnhgusgdruggvpdhnsggprhgtphhtthhopedvledpmhhouggvpehsmhhtphhouhht
-    pdhrtghpthhtoheptghhvghsthgvrhdrrgdruhhnrghlsegrrhhinhgtledrtghomhdprh
-    gtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhr
-    tghpthhtoheprghnughrvggrshesghgrihhslhgvrhdrtghomhdprhgtphhtthhopehgvg
-    gvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtghpthhtoheprghlvgigrghn
-    uggvrhdrshhvvghrughlihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepshgvrhhgih
-    hordhprghrrggtuhgvlhhlohhssehgmhgrihhlrdgtohhmpdhrtghpthhtohepshhurhgv
-    nhgssehgohhoghhlvgdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrg
-    gurdhorhhgpdhrtghpthhtohepihhrrgdrfigvihhnhiesihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:g_bDaFXJUTCPg8Gg2uXGQ5RgMU0uaHD5VVXSZgwboz-q7ftAYqBd_A>
-    <xmx:g_bDaH89g0FuTDFfLJztpjIor2KN7O4LrVLiR6mLfjS9st6ed4KczQ>
-    <xmx:g_bDaKpKyJokmXH4ARM6vTbfA_Kk9jW9MQRMrRlbx2LKjFb1x4w1Wg>
-    <xmx:g_bDaLcx1abt47vng-9Brf4PakpSJA5ATOGTsoYy2HXs2gu4PoxW_w>
-    <xmx:hPbDaDl4p91INzeg69byU-AorUJTlq5vFDDCdsqCRc1puYq7VFqbSjGD>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 9ED19700065; Fri, 12 Sep 2025 06:31:31 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNYk61HKGz3clp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 22:33:17 +1000 (AEST)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58C6XZnD009279;
+	Fri, 12 Sep 2025 12:32:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=lzxldH
+	FNVtZ8FuDAJRVh4gQ2YdF665e9h7C4fiEGf2Q=; b=UQ0Qjqfl9EUXzM689e103h
+	p/VY4B1UtOJ9kE1qk4gOIC0zURdvXrgzhsjjOLt2Y7Vwp3Z//b8fOh/Y2hT85LPE
+	GeQIDYgfqUAfCryPCe4qOyyepz/ok1A13jEUMWG+BbqWl6Rp3QoRrFioqlLgNQNx
+	qqKMAuo8Lfm7RwIdTbXJGSsxJbNM3QtazG8s503WEQZYyna2JaAxg3D6RDVyKxvW
+	NqGWHxrxSWxoSfePi06eh9Lan11A55qtaV5IH2x2N1uxMo07rNk+n9MhTIO1tYJ4
+	lIZVGKoEzDVwShtMKWnpjhDvDc4sHRMnoD6TsSldM7wHY2VxRjQbhhuQbt5losLA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cffufsk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Sep 2025 12:32:52 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58CCWpfp030730;
+	Fri, 12 Sep 2025 12:32:51 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 490cffufse-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Sep 2025 12:32:51 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58CBN1i5001156;
+	Fri, 12 Sep 2025 12:32:50 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 491203tp0y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Sep 2025 12:32:50 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58CCWdJ025559586
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Sep 2025 12:32:39 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A9A9258055;
+	Fri, 12 Sep 2025 12:32:48 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F080158043;
+	Fri, 12 Sep 2025 12:32:41 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.244.60])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 12 Sep 2025 12:32:41 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,101 +85,262 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-X-ThreadId: AmcCJOTBQ5ho
-Date: Fri, 12 Sep 2025 12:30:59 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Richard Weinberger" <richard@nod.at>, "Dave Hansen" <dave@sr71.net>
-Cc: ksummit <ksummit@lists.linux.dev>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-mips <linux-mips@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
- imx <imx@lists.linux.dev>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Lucas Stach" <l.stach@pengutronix.de>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Geert Uytterhoeven" <geert+renesas@glider.be>,
- "Ankur Arora" <ankur.a.arora@oracle.com>,
- "David Hildenbrand" <david@redhat.com>,
- "Mike Rapoport" <rppt@kernel.org>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Matthew Wilcox" <willy@infradead.org>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Vlastimil Babka" <vbabka@suse.cz>,
- "Suren Baghdasaryan" <surenb@google.com>,
- "Ira Weiny" <ira.weiny@intel.com>, "Nishanth Menon" <nm@ti.com>,
- =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- "Alexander Sverdlin" <alexander.sverdlin@gmail.com>,
- "Chester A. Unal" <chester.a.unal@arinc9.com>,
- "Sergio Paracuellos" <sergio.paracuellos@gmail.com>,
- "Andreas Larsson" <andreas@gaisler.com>
-Message-Id: <4fcd272f-81e3-4729-922b-588ad144e39b@app.fastmail.com>
-In-Reply-To: <640041197.22387.1757536385810.JavaMail.zimbra@nod.at>
-References: <4ff89b72-03ff-4447-9d21-dd6a5fe1550f@app.fastmail.com>
- <497308537.21756.1757513073548.JavaMail.zimbra@nod.at>
- <dec53524-97ee-4e56-8795-c7549c295fac@sr71.net>
- <640041197.22387.1757536385810.JavaMail.zimbra@nod.at>
-Subject: Re: [TECH TOPIC] Reaching consensus on CONFIG_HIGHMEM phaseout
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [linux-next20250911]Kernel OOPs while running generic/256 on Pmem
+ device
+From: Venkat <venkat88@linux.ibm.com>
+In-Reply-To: <8957c526-d05c-4c0d-bfed-0eb6e6d2476c@linux.ibm.com>
+Date: Fri, 12 Sep 2025 18:02:28 +0530
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, riteshh@linux.ibm.com,
+        ojaswin@linux.ibm.com, linux-fsdevel@vger.kernel.org,
+        linux-xfs@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Linux Next Mailing List <linux-next@vger.kernel.org>,
+        cgroups@vger.kernel.org, linux-mm@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Message-Id: <BAEAC2F7-7D7F-49E4-AB21-10FC0E4BF5F3@linux.ibm.com>
+References: <8957c526-d05c-4c0d-bfed-0eb6e6d2476c@linux.ibm.com>
+To: sunjunchao@bytedance.com, tj@kernel.org, akpm@linux-foundation.org,
+        stable@vger.kernel.org, songmuchun@bytedance.com, shakeelb@google.com,
+        hannes@cmpxchg.org, roman.gushchin@linux.dev, mhocko@suse.com
+X-Mailer: Apple Mail (2.3774.600.62)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: p4Ytzp1KtGI8p2ZOTdhnY1EM3EmHMr32
+X-Proofpoint-GUID: QUm9GvzwEKZeGuYZ_HevR0HRFwF4QMNC
+X-Authority-Analysis: v=2.4 cv=EYDIQOmC c=1 sm=1 tr=0 ts=68c412f4 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=968KyxNXAAAA:8 a=iox4zFpeAAAA:8 a=ufHFDILaAAAA:8 a=1XWaLZrsAAAA:8
+ a=Z4Rwk6OoAAAA:8 a=P6wp6F91U6gQXFS5mtAA:9 a=QEXdDO2ut3YA:10
+ a=WzC6qhA0u3u7Ye7llzcV:22 a=ZmIg1sZ3JBWsdXgziEIF:22 a=HkZW87K1Qel5hWWM3VKY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA2MDAyMCBTYWx0ZWRfX3VRxtnPHv9sQ
+ gyScgZkK+8jB3sGP0sPXgC9RlEwPB62+T3BkgjXvYljpa21/IuC41KtNk1cs9yyJdsohoa08LHt
+ N6bTY8V+6it4eWfbLsCGpHkJuM2awlyA6/UhZJplwu6G2SPNF0VKixLSp9XgGwvJQtjiTGO2WKB
+ 5/ID176TH6d7CAmfyRyYRWBJtosbiZuq9tagWKgXqMAUrsBNfJQqSOyJGCNs1HmmGv8H0dDK01K
+ HZAnv2YuIwDht5+pZhi+Mv1QUr1rQhrgtbQsTc5FbWMf03FbfzazKvOjUq8cLB8bjUof0NG96M/
+ 8MhsJ0BL2qXvRtEqwnAY1WoKPMKMr23qqPC3AyyYkFhxXvtgn0fjELYDRuebL66nB0jIkARbU7J
+ FmfsWpJH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-12_04,2025-09-11_02,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 suspectscore=0 spamscore=0 impostorscore=0
+ priorityscore=1501 phishscore=0 clxscore=1011 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509060020
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Sep 10, 2025, at 22:33, Richard Weinberger wrote:
-> ----- Urspr=C3=BCngliche Mail -----
->> Von: "Dave Hansen" <dave@sr71.net>
->>> Even with a new memory split, which could utilize most of the
->>> available memory, I expect there to be issues with various
->>> applications and FPGA device drivers.
 
-I also remember driver problems on older Marvell NAS systems, which
-we never fully figured out, my best guess in retrospect is that these
-had devices with DMA address restrictions, and if lowmem is small
-enough it would always work, but any lowmem allocation above the
-hardware DMA address limit would cause data corruption.
 
-A similar restriction exists on Raspberry Pi, which can run
-both 32-bit and 64-bit kernels. The workaround in this case is
-a combination of:
+> On 12 Sep 2025, at 10:51=E2=80=AFAM, Venkat Rao Bagalkote =
+<venkat88@linux.ibm.com> wrote:
+>=20
+> Greetings!!!
+>=20
+>=20
+> IBM CI has reported a kernel crash, while running generic/256 test =
+case on pmem device from xfstests suite on linux-next20250911 kernel.
+>=20
+>=20
+> xfstests: git://git.kernel.org/pub/scm/fs/xfs/xfstests-dev.git
+>=20
+> local.config:
+>=20
+> [xfs_dax]
+> export RECREATE_TEST_DEV=3Dtrue
+> export TEST_DEV=3D/dev/pmem0
+> export TEST_DIR=3D/mnt/test_pmem
+> export SCRATCH_DEV=3D/dev/pmem0.1
+> export SCRATCH_MNT=3D/mnt/scratch_pmem
+> export MKFS_OPTIONS=3D"-m reflink=3D0 -b size=3D65536 -s size=3D512"
+> export FSTYP=3Dxfs
+> export MOUNT_OPTIONS=3D"-o dax"
+>=20
+>=20
+> Test case: generic/256
+>=20
+>=20
+> Traces:
+>=20
+>=20
+> [  163.371929] ------------[ cut here ]------------
+> [  163.371936] kernel BUG at lib/list_debug.c:29!
+> [  163.371946] Oops: Exception in kernel mode, sig: 5 [#1]
+> [  163.371954] LE PAGE_SIZE=3D64K MMU=3DRadix  SMP NR_CPUS=3D8192 NUMA =
+pSeries
+> [  163.371965] Modules linked in: xfs nft_fib_inet nft_fib_ipv4 =
+nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 =
+nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack bonding tls =
+nf_defrag_ipv6 nf_defrag_ipv4 rfkill ip_set nf_tables nfnetlink sunrpc =
+pseries_rng vmx_crypto dax_pmem fuse ext4 crc16 mbcache jbd2 nd_pmem =
+papr_scm sd_mod libnvdimm sg ibmvscsi ibmveth scsi_transport_srp =
+pseries_wdt
+> [  163.372127] CPU: 22 UID: 0 PID: 130 Comm: kworker/22:0 Kdump: =
+loaded Not tainted 6.17.0-rc5-next-20250911 #1 VOLUNTARY
+> [  163.372142] Hardware name: IBM,9080-HEX Power11 (architected) =
+0x820200 0xf000007 of:IBM,FW1110.01 (NH1110_069) hv:phyp pSeries
+> [  163.372155] Workqueue: cgroup_free css_free_rwork_fn
+> [  163.372169] NIP:  c000000000d051d4 LR: c000000000d051d0 CTR: =
+0000000000000000
+> [  163.372176] REGS: c00000000ba079b0 TRAP: 0700   Not tainted =
+(6.17.0-rc5-next-20250911)
+> [  163.372183] MSR:  800000000282b033 =
+<SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 28000000  XER: 00000006
+> [  163.372214] CFAR: c0000000002bae9c IRQMASK: 0
+> [  163.372214] GPR00: c000000000d051d0 c00000000ba07c50 =
+c00000000230a600 0000000000000075
+> [  163.372214] GPR04: 0000000000000004 0000000000000001 =
+c000000000507e2c 0000000000000001
+> [  163.372214] GPR08: c000000d0cb87d13 0000000000000000 =
+0000000000000000 a80e000000000000
+> [  163.372214] GPR12: c00e0001a1970fa2 c000000d0ddec700 =
+c000000000208e58 c000000107b5e190
+> [  163.372214] GPR16: c00000000d3e5d08 c00000000b71cf78 =
+c00000000d3e5d05 c00000000b71cf30
+> [  163.372214] GPR20: c00000000b71cf08 c00000000b71cf10 =
+c000000019f58588 c000000004704bc8
+> [  163.372214] GPR24: c000000107b5e100 c000000004704bd0 =
+0000000000000003 c000000004704bd0
+> [  163.372214] GPR28: c000000004704bc8 c000000019f585a8 =
+c000000019f53da8 c000000004704bc8
+> [  163.372315] NIP [c000000000d051d4] =
+__list_add_valid_or_report+0x124/0x188
+> [  163.372326] LR [c000000000d051d0] =
+__list_add_valid_or_report+0x120/0x188
+> [  163.372335] Call Trace:
+> [  163.372339] [c00000000ba07c50] [c000000000d051d0] =
+__list_add_valid_or_report+0x120/0x188 (unreliable)
+> [  163.372352] [c00000000ba07ce0] [c000000000834280] =
+mem_cgroup_css_free+0xa0/0x27c
+> [  163.372363] [c00000000ba07d50] [c0000000003ba198] =
+css_free_rwork_fn+0xd0/0x59c
+> [  163.372374] [c00000000ba07da0] [c0000000001f5d60] =
+process_one_work+0x41c/0x89c
+> [  163.372385] [c00000000ba07eb0] [c0000000001f76c0] =
+worker_thread+0x558/0x848
+> [  163.372394] [c00000000ba07f80] [c000000000209038] =
+kthread+0x1e8/0x230
+> [  163.372406] [c00000000ba07fe0] [c00000000000ded8] =
+start_kernel_thread+0x14/0x18
+> [  163.372416] Code: 4b9b1099 60000000 7f63db78 4bae8245 60000000 =
+e8bf0008 3c62ff88 7fe6fb78 7fc4f378 38637d40 4b5b5c89 60000000 =
+<0fe00000> 60000000 60000000 7f83e378
+> [  163.372453] ---[ end trace 0000000000000000 ]---
+> [  163.380581] pstore: backend (nvram) writing error (-1)
+> [  163.380593]
+>=20
+>=20
+> If you happen to fix this issue, please add below tag.
+>=20
+>=20
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+>=20
+>=20
+>=20
+> Regards,
+>=20
+> Venkat.
+>=20
+>=20
 
-- correctly representing the DMA limits in the devicetree, using
-  the 'dma-ranges' property.
-- enabling SWIOTLB (which is not enabled by default on 32-bit
-  Arm without LPAE).
-- Using GFP_DMA or dma_alloc_noncoherent() allocations for
-  streaming buffers if possible, to avoid extra bounces
+After reverting the below commit, issue is not seen.
 
-(documenting this here, in case someone tries out VMSPLIT_2G
-and runs into a similar bug on other hardware, I expect there
-may be a few more of these, though most hardware should be fine)
+commit 61bbf51e75df1a94cf6736e311cb96aeb79826a8
+Author: Julian Sun <sunjunchao@bytedance.com>
+Date:   Thu Aug 28 04:45:57 2025 +0800
 
->> I'd be really curious what the _actual_ issues would be with a
->> non-standard split. There are a lot of "maybe" problems and solutions
->> here, but it's hard to move forward without known practical problems =
-to
->> tackle.
->>=20
->> Has anybody run into actual end user visible problems when using one =
-of
->> weirdo PAGE_OFFSET configs?
->
-> In the past I saw that programs such as the Java Runtime (JRE) ran into
-> address space limitations due to a 2G/2G split on embedded systems.
-> Reverting to a 3G/1G split fixed the problems.
+    memcg: don't wait writeback completion when release memcg
+         Recently, we encountered the following hung task:
+         INFO: task kworker/4:1:1334558 blocked for more than 1720 =
+seconds.
+    [Wed Jul 30 17:47:45 2025] Workqueue: cgroup_destroy =
+css_free_rwork_fn
+    [Wed Jul 30 17:47:45 2025] Call Trace:
+    [Wed Jul 30 17:47:45 2025]  __schedule+0x934/0xe10
+    [Wed Jul 30 17:47:45 2025]  ? complete+0x3b/0x50
+    [Wed Jul 30 17:47:45 2025]  ? _cond_resched+0x15/0x30
+    [Wed Jul 30 17:47:45 2025]  schedule+0x40/0xb0
+    [Wed Jul 30 17:47:45 2025]  wb_wait_for_completion+0x52/0x80
+    [Wed Jul 30 17:47:45 2025]  ? finish_wait+0x80/0x80
+    [Wed Jul 30 17:47:45 2025]  mem_cgroup_css_free+0x22/0x1b0
+    [Wed Jul 30 17:47:45 2025]  css_free_rwork_fn+0x42/0x380
+    [Wed Jul 30 17:47:45 2025]  process_one_work+0x1a2/0x360
+    [Wed Jul 30 17:47:45 2025]  worker_thread+0x30/0x390
+    [Wed Jul 30 17:47:45 2025]  ? create_worker+0x1a0/0x1a0
+    [Wed Jul 30 17:47:45 2025]  kthread+0x110/0x130
+    [Wed Jul 30 17:47:45 2025]  ? __kthread_cancel_work+0x40/0x40
+    [Wed Jul 30 17:47:45 2025]  ret_from_fork+0x1f/0x30
+         The direct cause is that memcg spends a long time waiting for =
+dirty page
+    writeback of foreign memcgs during release.
+         The root causes are:
+        a. The wb may have multiple writeback tasks, containing millions
+           of dirty pages, as shown below:
+         >>> for work in list_for_each_entry("struct wb_writeback_work", =
+\
+                                        wb.work_list.address_of_(), =
+"list"):
+    ...     print(work.nr_pages, work.reason, hex(work))
+    ...
+    900628  WB_REASON_FOREIGN_FLUSH 0xffff969e8d956b40
+    1116521 WB_REASON_FOREIGN_FLUSH 0xffff9698332a9540
+    1275228 WB_REASON_FOREIGN_FLUSH 0xffff969d9b444bc0
+    1099673 WB_REASON_FOREIGN_FLUSH 0xffff969f0954d6c0
+    1351522 WB_REASON_FOREIGN_FLUSH 0xffff969e76713340
+    2567437 WB_REASON_FOREIGN_FLUSH 0xffff9694ae208400
+    2954033 WB_REASON_FOREIGN_FLUSH 0xffff96a22d62cbc0
+    3008860 WB_REASON_FOREIGN_FLUSH 0xffff969eee8ce3c0
+    3337932 WB_REASON_FOREIGN_FLUSH 0xffff9695b45156c0
+    3348916 WB_REASON_FOREIGN_FLUSH 0xffff96a22c7a4f40
+    3345363 WB_REASON_FOREIGN_FLUSH 0xffff969e5d872800
+    3333581 WB_REASON_FOREIGN_FLUSH 0xffff969efd0f4600
+    3382225 WB_REASON_FOREIGN_FLUSH 0xffff969e770edcc0
+    3418770 WB_REASON_FOREIGN_FLUSH 0xffff96a252ceea40
+    3387648 WB_REASON_FOREIGN_FLUSH 0xffff96a3bda86340
+    3385420 WB_REASON_FOREIGN_FLUSH 0xffff969efc6eb280
+    3418730 WB_REASON_FOREIGN_FLUSH 0xffff96a348ab1040
+    3426155 WB_REASON_FOREIGN_FLUSH 0xffff969d90beac00
+    3397995 WB_REASON_FOREIGN_FLUSH 0xffff96a2d7288800
+    3293095 WB_REASON_FOREIGN_FLUSH 0xffff969dab423240
+    3293595 WB_REASON_FOREIGN_FLUSH 0xffff969c765ff400
+    3199511 WB_REASON_FOREIGN_FLUSH 0xffff969a72d5e680
+    3085016 WB_REASON_FOREIGN_FLUSH 0xffff969f0455e000
+    3035712 WB_REASON_FOREIGN_FLUSH 0xffff969d9bbf4b00
+             b. The writeback might severely throttled by wbt, with a =
+speed
+           possibly less than 100kb/s, leading to a very long writeback =
+time.
+         >>> wb.write_bandwidth
+    (unsigned long)24
+    >>> wb.write_bandwidth
+    (unsigned long)13
+         The wb_wait_for_completion() here is probably only used to =
+prevent
+    use-after-free.  Therefore, we manage 'done' separately and =
+automatically
+    free it.
+         This allows us to remove wb_wait_for_completion() while =
+preventing the
+    use-after-free issue.
+     com
+    Fixes: 97b27821b485 ("writeback, memcg: Implement foreign dirty =
+flushing")
+    Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+    Acked-by: Tejun Heo <tj@kernel.org>
+    Cc: Michal Hocko <mhocko@suse.com>
+    Cc: Roman Gushchin <roman.gushchin@linux.dev>
+    Cc: Johannes Weiner <hannes@cmpxchg.org>
+    Cc: Shakeel Butt <shakeelb@google.com>
+    Cc: Muchun Song <songmuchun@bytedance.com>
+    Cc: <stable@vger.kernel.org>
+    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Right, that makes sense, given the tricks they likely play on the
-virtual address space. Are the 2GB devices you maintain using a JRE,
-or was this on other embedded hardware? How common is Java still in
-this type of workload?
+Regards,
+Venkat.
 
-Another type of software that I've seen mentioned struggling with
-VMSPLIT_2G is web browsers, but I don't know if that is a similar
-problem with a V8/spidermonkey JIT managing its own address space,
-or more about general bloat exceeding 2GB of user addresses.
+>=20
 
-      Arnd
 
