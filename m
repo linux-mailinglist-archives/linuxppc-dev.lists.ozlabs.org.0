@@ -1,35 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-12064-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12065-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EB5B543D5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 09:27:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA9DB543DD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Sep 2025 09:29:32 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNQwl2PzRz3clH;
-	Fri, 12 Sep 2025 17:27:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNQzZ49YXz3clh;
+	Fri, 12 Sep 2025 17:29:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757662023;
-	cv=none; b=aOBGnSCXOIfZWFKprtmgDjwAxyM47pbkxgvVbFuil8hcrD/LQ6Xvv1aXLU0HXqGZ+6HDvwfo+fqRRBi1dXncIK71i/ENoM5wodYgaMy4O26JTj/uxa1RJIFKdhrOYtVAUCvQYuPOTYW/9HXNrytmJexUViZN461x+8lp3B1FY4yzR/IkENWYBrIqSnO5K/FeZr88JwKtIp74f/36IoW5Dm8YhC3AXnuE2HhOy780xbqeTpaiUxl946Lt+wqCjisaN/Q/pMEzRROb2PyrnvlzVldip9NaUQpRB9ITOB+QvzCBPHMKH+rw3WznDBv6V1sjdeMQWVzto/TgQZGkR0uqyQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::130"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757662170;
+	cv=none; b=K5TKqTljjrs4T82gKYDkUAn+gADCIEK6zB9ombJPmwoRHDBqG4bRUHm+dcFNx94RpEuoRXKnjgHDJzMpt+jm966bWfjoDDivrV50SUDSV4fw1sqyYcLih1GXPzlwG7yhbmu/PoMRdoJJkrb1UYa9qqrR/dDtjFjirDO+dc3WXofA5iONTvXiuJaQDAc6dgRaf1mKCki2j9PnEPXBwB6gBu4t61LQKNnV/34qfnc4NOoulQb5gsvGVwppMqXEI6JtKR2J0YQNqrbgYaDHHYpPbmFDn3GHQerEhFuRA/HiCONpr3cX1KS5CzxR3DInOOG0Mvfz4zKBacmUSOgYYG5OUA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757662023; c=relaxed/relaxed;
-	bh=jHtH5ew5HJ7wpnudtpflMQ+7ZEEIn9+nbCJ8h1BOfgo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KH3aRFIC3TcbAnXr2ZDnnJ9G6J5XWDilAQ5idH9h6MASerffftTTfh2Om9FcywoCRz3m0MFXe7jr+maqQLv0rp5NBoSROpmtSw2AX+9zV0IfGm9Hz3uo6fOC0LXg3+H8vNqZvobVFHpIVdXe563rADyqy+YErJTPT2EQ9pr0hn8KMQJG0ZXIcUbXZSBy0VF2uaRoaBnyyorBfloCNMjmR/pjjEc8/LDQD1OJLH/Z9HhxNROb0lv6e0Uzx2SA0QYEeI6UDMRx5Y7Bj7utl2su5q1mrSt+3/VnfSQp/BS25KEeWkDXCPqB8RXizIQlaGiI543tDX0IPSyyjL2B/vEXxA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNQwk0JHMz2yRn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 17:27:00 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD76F16A3;
-	Fri, 12 Sep 2025 00:26:19 -0700 (PDT)
-Received: from [10.57.66.147] (unknown [10.57.66.147])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DD1E03F63F;
-	Fri, 12 Sep 2025 00:26:20 -0700 (PDT)
-Message-ID: <15d01c8b-5475-442e-9df5-ca37b0d5dc04@arm.com>
-Date: Fri, 12 Sep 2025 09:26:18 +0200
+	t=1757662170; c=relaxed/relaxed;
+	bh=FkCjzP4vhD32bSP1mBlLDiHz0GdzVd/VyBKFM+8O2pc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iHnCjmJxSjYqQFbjpWS3DHYwrj/y7jY8rXq5UsVAAmpA8j+muDNSLtnbj40LqelDy9S7PDCRNkwY7BtopZ+HNsbTLuZryJKCcm79o1tSHe5xEca+obxZ9XYO1M9kf2p8eBOTvOcTc6MuVWnegkSn4V0O1VTYqyed/HoPu+lRDle9AV9TVIsSywEAQmONoEt9yMShQsrjPbg2ha+6eFC9ou3N3tZuduGGXNkP8I7i0lvu2Vc9OUhe3Q0Ng+N83VYtmWDqW2Ecz3TCGM+3LXQTYvTW9r/RNiEDIowUQijURNouBOjpeW1DOIfitnpORmO3gHSaWxL0VekPV0Yje5o6mg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=2aEDqRYX; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::130; helo=mail-lf1-x130.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=2aEDqRYX;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::130; helo=mail-lf1-x130.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNQzY2Zxtz3cjt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 17:29:29 +1000 (AEST)
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-55f68d7a98aso1747843e87.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 00:29:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1757662165; x=1758266965; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FkCjzP4vhD32bSP1mBlLDiHz0GdzVd/VyBKFM+8O2pc=;
+        b=2aEDqRYXYy8RLlepru9E518Ng6hzv4uTltflkFXy3ISAsTRCvsa3JpVLOnMKEjnVlc
+         KIrwxlKOJvxiPo1T3uAYTxkkV6BdyMV3jV66YFjy6k4P2H3YIXpLn3adZ+SNVqiAwA97
+         5vdpN96CspqK23oRwgy9rxMAzPlWmsLlNBc57FJ76j1ky7VAkxqxdlYyPSn9BD6UOiIn
+         qtR3zg+tPWfp4xX8fe7SuWRFOsJvry9FVFabZP356WQoK9DWKubKXiVjN5AAJvIV2a9e
+         FtnGefVNIdjRz+9Rmszkid6rODZdVsHNMNtqfNgrZv9OSuEcM27iO+istcGJ6ySBW69j
+         +tJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757662165; x=1758266965;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FkCjzP4vhD32bSP1mBlLDiHz0GdzVd/VyBKFM+8O2pc=;
+        b=fyPtLzZpZVQdTObR5EWwNfLiBjvzcgBzszOWUvS7U72/EJnSIKLyqlbITkplWGrL9U
+         8unAa9z2Qev54VuFTj7AivuLd+CbsqQwzJg/XFZHdmhkC7w5xJj7zTTTFYhJItflIoOD
+         HZ8Bbq+TPZ/2VrzSM27cZyH93VTYEX/ONiJ8TNTgHzo4KgmFkNTwPjHop7ugMNMmixaZ
+         eaztQtoUbCOzS/s/iTfHvU56/q1ZurXkYIXHFYd1RLOSr5EEP0JGWQeULKqlOAbaS9wH
+         kCRrocsUPCm+SvXzxHME+U4xeqaUINr301JZkueuL/4ETT0qSP5rRBYt03rZeO08f0AM
+         MUgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUybSA4n/UgmUaX6Mf0iI5kWwY5fk2QHyLSM3RAYale2fxHmyZNftFCJpt7EKKKtlDAse7YXkmbjI2MzNc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwEuGu3mLWKuaxzrjsxg/1I1hrvDGVuFGPUzkx4T5Na7IarHPrq
+	1PA4ebngxF4b95wvv9j5H2NWis6cqlyO+5Qe3y52GPE6yU9AXk4HB1L6OISe5QleSUHd5kW/nRm
+	HWgDKBvBYeBsnPps2Q/uZxWy4H7mpKEXymb95hZyIXQ==
+X-Gm-Gg: ASbGncu1SLVYj1e0hnzm61UM1/z3M1xjAq8z1XY1c0ya44t0Vagve2ImE4oDl8BQevf
+	oQbFEbTihBQmM/UOOvo9PX3RJhRijhWpqsddPES6IyWMFhi5Q5kZlO/XLtFp6OzBPJPFQCZg9pj
+	nqwTB8FviBiPIJME7U2C3jkPKwFZPOlCmbZE0nBCR858G6JWQYcsjxjiJIMQ4Itn2XLvqPVo9WT
+	DzJ1Rl5FTvxGdjdvLNGcWLZGsE09nLXTQyX8Q==
+X-Google-Smtp-Source: AGHT+IFvPcTXQ6WIkQFzLqofqGaeCWwE5V3dpGC1EHzT5ohZgdbDh85iVg7RukP92bY0eYj/+7Dm5YzYYq8NvDagHtk=
+X-Received: by 2002:a05:6512:3d25:b0:55f:4746:61d6 with SMTP id
+ 2adb3069b0e04-5704bec62f4mr779028e87.16.1757662164848; Fri, 12 Sep 2025
+ 00:29:24 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,187 +79,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] mm: introduce local state for lazy_mmu sections
-To: David Hildenbrand <david@redhat.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
- Mark Rutland <Mark.Rutland@arm.com>
-References: <20250908073931.4159362-1-kevin.brodsky@arm.com>
- <20250908073931.4159362-3-kevin.brodsky@arm.com>
- <d23ea683-cca4-4973-88b1-4f6fd9b22314@redhat.com>
- <ca2054ad-b163-4e61-8ec4-6f2e36461628-agordeev@linux.ibm.com>
- <e7acb889-1fe9-4db3-acf4-39f4960e8ccd@redhat.com>
- <2fecfae7-1140-4a23-a352-9fd339fcbae5-agordeev@linux.ibm.com>
- <e521b1f4-3f2b-48cd-9568-b9a4cf4c4830@redhat.com>
- <47ee1df7-1602-4200-af94-475f84ca8d80@arm.com>
- <29383ee2-d6d6-4435-9052-d75a263a5c45@redhat.com>
- <9de08024-adfc-421b-8799-62653468cf63@arm.com>
- <ef343405-c394-4763-a79f-21381f217b6c@redhat.com>
- <4b4971fd-0445-4d86-8f3a-6ba3d68d15b7@arm.com>
- <4aa28016-5678-4c66-8104-8dcc3fa2f5ce@redhat.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <4aa28016-5678-4c66-8104-8dcc3fa2f5ce@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <9652736ef05b94d9113ea5ce7899734ef82343d1.1755520794.git.christophe.leroy@csgroup.eu>
+ <175764920912.610338.13254301742963097094.b4-ty@linux.ibm.com>
+In-Reply-To: <175764920912.610338.13254301742963097094.b4-ty@linux.ibm.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Fri, 12 Sep 2025 09:29:12 +0200
+X-Gm-Features: Ac12FXzlO0BlEMfk4QQsvjbiy-zbMbEg9ajjT3EbChQkXyCvmLeQtRGDcFX-Szw
+Message-ID: <CAMRc=MchCnTusmP=1rKco908f7CxHcb6REXx7far=1Pp_dq9Aw@mail.gmail.com>
+Subject: Re: [PATCH] gpio: mpc5200: Drop legacy-of-mm-gpiochip.h header
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Anatolij Gustschin <agust@denx.de>, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 11/09/2025 20:14, David Hildenbrand wrote:
->>>> On the other hand, with a pagefault_disabled-like approach, there
->>>> is no
->>>> way to instruct call {3} to fully exit lazy_mmu regardless of the
->>>> nesting level.
->>>
->>> Sure there is, with a better API. See below. :)
->>
->> I meant while keeping the existing shape of the API but yes fair enough!
+On Fri, Sep 12, 2025 at 5:55=E2=80=AFAM Madhavan Srinivasan <maddy@linux.ib=
+m.com> wrote:
 >
-> Time to do it properly I guess :)
-
-Yes, I think the discussions on that series have shown that we might as
-well refactor it completely. Once and for all™!
-
+> On Mon, 18 Aug 2025 14:42:24 +0200, Christophe Leroy wrote:
+> > Remove legacy-of-mm-gpiochip.h header file. The above mentioned
+> > file provides an OF API that's deprecated. There is no agnostic
+> > alternatives to it and we have to open code the logic which was
+> > hidden behind of_mm_gpiochip_add_data(). Note, most of the GPIO
+> > drivers are using their own labeling schemas and resource retrieval
+> > that only a few may gain of the code deduplication, so whenever
+> > alternative is appear we can move drivers again to use that one.
+> >
+> > [...]
 >
-> [...]
+> Applied to powerpc/next.
 >
->>> Assume we store in the task_struct
->>>
->>> uint8_t lazy_mmu_enabled_count;
->>> bool lazy_mmu_paused;
->>
->> I didn't think of that approach! I can't immediately see any problem
->> with it, assuming we're fine with storing arch-specific context in
->> thread_struct (which seems to be the case as things stand).
+> [1/1] gpio: mpc5200: Drop legacy-of-mm-gpiochip.h header
+>       https://git.kernel.org/powerpc/c/e7a6475cc0c32213e87ec190d90b8f1440=
+ff05ae
 >
-> Right, just to complete the picture:
->
-> a) We will have some CONFIG_ARCH_LAZY_MMU
->
-> b) Without that config, all lazy_mmu_*() functions are a nop and no
-> lazy_mmu_state is stored in task_struct 
+> Thanks
 
-Agreed on both counts (replacing __HAVE_ARCH_ENTER_LAZY_MMU_MODE).
+Hi!
 
->
-> struct lazy_mmu_state {
->     uint8_t enabled_count;
->     bool paused;
+Looks like it flew under my radar but this should go through the GPIO
+tree, can you please drop it from yours and I'll take it?
 
-Looking at the arm64 implementation, I'm thinking: instead of the paused
-member, how about a PF_LAZY_MMU task flag? It would be set when lazy_mmu
-is actually enabled (i.e. inside an enter()/leave() section, and not
-inside a pause()/resume() section). This way, architectures could use
-that flag directly to tell if lazy_mmu is enabled instead of reinventing
-the wheel, all in slightly different ways. Namely:
-
-* arm64 uses a thread flag (TIF_LAZY_MMU) - this is trivially replaced
-with PF_LAZY_MMU
-* powerpc and sparc use batch->active where batch is a per-CPU variable;
-I expect this can also be replaced with PF_LAZY_MMU
-* x86/xen is more complex as it has xen_lazy_mode which tracks both
-LAZY_MMU and LAZY_CPU modes. I'd probably leave that one alone, unless a
-Xen expert is motivated to refactor it.
-
-With that approach, the implementation of arch_enter() and arch_leave()
-becomes very simple (no tracking of lazy_mmu status) on arm64, powerpc
-and sparc.
-
-(Of course we could also have an "enabled" member in lazy_mmu_state
-instead of PF_LAZY_MMU, there is no functional difference.)
-
-> }
->
-> c) With that config, common-code lazy_mmu_*() functions implement the
-> updating of the lazy_mmu_state in task_struct and call into arch code
-> on the transition from 0->1, 1->0 etc.
-
-Indeed, this is how I thought about it. There is actually quite a lot
-that can be moved to the generic functions:
-* Updating lazy_mmu_state
-* Sanity checks on lazy_mmu_state (e.g. underflow/overflow)
-* Bailing out if in_interrupt() (not done consistently across arch's at
-the moment)
-
->
-> Maybe that can be done through exiting
-> arch_enter_lazy_mmu_mode()/arch_leave_lazy_mmu_mode() callbacks, maybe
-> we need more. I feel like
-> we might be able to implement that through the existing helpers.
-
-We might want to rename them to align with the new generic helpers, but
-yes otherwise the principle should remain unchanged.
-
-In fact, we will also need to revive arch_flush_lazy_mmu_mode(). Indeed,
-in the nested situation, we need the following arch calls:
-
-enter() -> arch_enter()
-    enter() -> [nothing]
-    leave() -> arch_flush()
-leave() -> arch_leave()
-
-leave() must always flush whatever arch state was batched, as may be
-expected by the caller.
-
-How does all that sound?
-
->
-> [...]
->
->>
->> Overall what you're proposing seems sensible to me, the additional
->> fields in task_struct don't take much space and we can keep the API
->> unchanged in most cases. It is also good to have the option to check
->> that the API is used correctly. I'll reply to the cover letter to let
->> anyone who didn't follow this thread chip in, before I go ahead and try
->> out that new approach.
->
-> And on top of the proposal above we will have some
->
-> struct arch_lazy_mmu_state;
->
-> define by the architecture (could be an empty struct on most).
->
-> We can store that inside "struct lazy_mmu_state;" or if we ever have
-> to, start returning only that from the enable/disable etc. functions.
-
-I'm not sure we'd want to mix those styles (task_struct member + local
-variable), that's adding complexity without much upside... Also having a
-local variable at every nesting level only makes sense if we have an
-arch callback regardless of nesting level, which is unnecessary in this
-proposed API.
-
->
-> For now, I'd say just store it in the task struct in the
-> lazy_mmu_state. But we can always adjust later if required.
->
-> In the first (this) series we probably don't even have to introduce
-> arch_lazy_mmu_state. 
-
-I suppose this could improve the overall struct layout - but otherwise I
-don't really see the need compared to adding members to thread_struct
-(which is fully arch-specific).
-
-- Kevin
+Bartosz
 
