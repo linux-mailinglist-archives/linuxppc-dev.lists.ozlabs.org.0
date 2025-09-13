@@ -1,61 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-12142-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12143-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 250DDB55EA4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 07:50:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95641B55EC8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 08:01:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cP0kF4PRLz2yrN;
-	Sat, 13 Sep 2025 15:49:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cP0yz2rHgz2yrN;
+	Sat, 13 Sep 2025 16:00:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f9:3051:3f93::2"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757742597;
-	cv=none; b=Pz//KRdvZncq8tgf1LOHpxkhBEw1OeOMgAf7YeAO4djLacUI8EWVBiKNj6xYOFDBMDGuo1n+Ha2ZjntxW8td6mbof9HN+quFKwKUN3VzXolaywkZzb3jwfhl8hU66AY2nCZHopmBh+sJ8AeaaH26AccKADZQNWr5zNE81p49t8NMfuTVB5XMbsTeKXwSIg1fTzOZqCm3QJnXRf/DhXARbWVo348CrTDgTUO38xEKMLvMqBGihXI7zpCVYA7+30laoSkEtgisCkieh75g14pUnuwEmAJN93TVTX5BDUZqh0uNh7E69OBYx6ghnxYOwCjhixwNrhNkePTx+LnXv05HDQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757743259;
+	cv=none; b=OcWshV1uFX6wDVc2+nQbfpbX2NuF9W5bEcLoY8hVKAhaToap23J0XJf5s3Ee5TpMcP2lCxHUR/zKmyg350r0CcX+vSVYTRiRXXCZ+C0uYiUWbQIV599auMx9kEEDTmzMEbZegvqh0IekMifKTrtHPPVWtdhxRSxDz5xw+A3QdQkqDZx0m3P5KlYmm8VpxB3adQodCmSyzhGG+zASnlt0PxwKlK17cDb8lKtEzcJukBA0XVpGdl2xjrZcQF2BLwGpvAdsp5ogbskYJq4zNzF2CoR4pcLn1tbEFKHDK5c23Uv11dXPV1ohLdQeGwBujHwwZ34qlF3+Vxo+5AaiD+5eDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757742597; c=relaxed/relaxed;
-	bh=msWjE/k4XDYFNkRqUljSzhRmzL+P+KgKrTjqUiQu4aI=;
+	t=1757743259; c=relaxed/relaxed;
+	bh=ukCkckAuGMje9cA2p4fcL/eu4iSUrEgrcmTG6KbdR1M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dyPcIvIMdRP4bSHJtPEBi+Da2O/em0QZCOAvwRoqtnpd+kw7lO/eTwhf+zwGeCXAzKudTVRiX7MnYKVXNWNAVFq5rGZh8oA8uTmT9XSxPFMcOKvWzeiCPa6ekG8srS2han0iUKLiTRUL0wDlz77SC3QWsZmzDLbjkvGcQWM2YyYHx7XQkBkFa60kQ2pKL9h1dXFwKN37uP9QGB5IhueybxmmIV54EJyNNwr8j8wos8/pfBbP9XJkopkFDstGhI5mYjsDTkybNwx6hfJTJ4sWAXvbTl+CDW8UovRRlH16lRIm12Mr0xGIuB4UsYV1voqljxR2lZx0Pzdi1oEf+mk0xA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jlbk0Qit; dkim-atps=neutral; spf=pass (client-ip=2a01:4f9:3051:3f93::2; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=CwpaCCnUTCCcZmZP1EbMmKFjhMM+ZcXGXAl4/j9jtnYWFmHiQVz0U6CpAT322saHYXVIn2kGQB35ESArkKwNLrHSu9P4HN2GGGxrw/f9mFq2lHS/agrSQVGUs5eAcPiYxrmMQyvzUchtDYSUlkShXuGRqvOGVSm+lUsoXA7PRVsPnZMEeLs+q4zGSLMPIXHYBDB68Y4ICDGfL/RAcToYLhhtNW7vhqjWos+x68tQwIopYANkLhTuxnIEKP5k6NLWicESjET6OMp/L3UqNArw/najIZPkbUzwjpTlcYAKxU46hDEY4utWcDWREGy4mrVaH/R9atN4PDOhergH4mxWTw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=M+CzmzEW; dkim-atps=neutral; spf=pass (client-ip=2a01:4f9:3051:3f93::2; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=jlbk0Qit;
+	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=M+CzmzEW;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=2a01:4f9:3051:3f93::2; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
 Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cP0kB3gP0z2xnr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 15:49:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cP0yx4lMTz2xnr
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 16:00:57 +1000 (AEST)
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C3A3940E0174;
-	Sat, 13 Sep 2025 05:49:44 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A0B8040E016D;
+	Sat, 13 Sep 2025 06:00:50 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ojZM34cNAwPe; Sat, 13 Sep 2025 05:49:41 +0000 (UTC)
+	with ESMTP id 5iEw13_6N0hx; Sat, 13 Sep 2025 06:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1757742581; bh=msWjE/k4XDYFNkRqUljSzhRmzL+P+KgKrTjqUiQu4aI=;
+	t=1757743247; bh=ukCkckAuGMje9cA2p4fcL/eu4iSUrEgrcmTG6KbdR1M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jlbk0QitQVlp4rvpHe4vCXkRS2hvjoafx60Hi3+Hnx26MFN20WwiEWDlh3HCMXF/Y
-	 B7stY6Fyr3vILBwsJcBAqlOW5BxLtsbMmB1EXIFUnlm4GzKlbw7UGM+DEcOseX75hg
-	 FPGD/5ZdIiie/I55kLSBsHbTf5YW4dXDvezwU3bEqbq+FV7hIpAAHI6N3sgA2AvmXD
-	 3vQ0WadXH8uby4Ww6hVk8ohOCEr7dq/AnKiN+L5+0Qzw4HOeJ3KVUC98nYqPW67/YW
-	 aWpHSco3t3XyDwybSqnHdHsxJKU+VPv8otpwQRhG6Y850pLGVP+5QN03U8HBcvg3qJ
-	 YYfb20vCSvE4Ai0U8A9cSf9IR1mIJgy5iyavsFYWrU9iyZHBF0AYZx+WI/zWF0+N3j
-	 yYr/9bod0cW556Z6BwicNX0j4oLecbtI6kPTnTbfq9PIQRnjY49acw04OtWrRYjsbI
-	 DQkmlnaai3jYlBnsa1AnTSuTPIrVsWOuuni4+sHz/DQnxpwepInt7QWlTbdwLusW58
-	 k1GUpFnyMOR6rD+nZ2jz9MpyEHSQd/x6SVjlXFFhbnW6MajvATDtW+vN0PIKR+kSvH
-	 J/wpw42BbFvcsBnYbs2215b0y4rQlOHZTMFHZvjKHk3GMUIDXA+gFVW3s7E2BwGo8u
-	 197mO9Gq+6sAN+bvVMZHrolI=
+	b=M+CzmzEWar56cJJ17KOTR6P8eSnXvk4pSviym3bg7uW6BkqS0j+mtX3BQDzmjsLKN
+	 cBfUjtOzG0dtMWCm8gmhsUa3Xxo4FILO/a/EoDcNG+tlw8kR4uStWeJwPdhqSPG8vi
+	 dptoTCZKzdi0Lb7IKesUGcadI0V7LIgtuqv7+ljIAgi+MxFM4i8iy5ZzhN+eNcVDkT
+	 2U5qJFAQwTYKNKjXv/HnQbujbbxSSpVXj5bVy2aRYmWxFocdRZ21hDbVAksBWj/ayB
+	 IyVl/MGqAXPtO85g0YsubzV7s6ahQw9h0Csu9TVUFWQlf+WnPcHv5LpdW2BLaZTSLx
+	 MMPWrLyToEYejhS/laszKvXwNVgYIRKtn46zcfAmgWcVrksJjmgrxaFWOjZaf7IcIu
+	 69gMcfJR5mcDILFbprN0LrSSpnH27j6cHrFVqj50Pgarn5Z+5kEA74Cuh7F+wkwKag
+	 IgiVg9veF2ZWXTokCLUb6KziC0viJ3MFRPeERhFpkN9McnxLf/Lom5CWCUO/GLLsrO
+	 Ik0vYi9bLtv3NWaKGrZ5U38zUX6p3F6aTmchXQOEPOWj3S4lIPOayyV2rrbopxaE+l
+	 7bAPj5LxiMGFgfJow+wWYdkCpmcS3w+RlVWftduP1hFNqKDXn6mv7Glb2r+ccLg5uk
+	 Ktt/rgo0zlxIwboDscbgVlBU=
 Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 8EFB740E0140;
-	Sat, 13 Sep 2025 05:48:45 +0000 (UTC)
-Date: Sat, 13 Sep 2025 07:48:37 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 3961D40E015C;
+	Sat, 13 Sep 2025 05:59:52 +0000 (UTC)
+Date: Sat, 13 Sep 2025 07:59:45 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Askar Safin <safinaskar@gmail.com>
 Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -71,8 +71,7 @@ Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Art Nikpal <email2tema@gmail.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Eric Curtin <ecurtin@redhat.com>, Alexander Graf <graf@amazon.com>,
-	Rob Landley <rob@landley.net>,
+	Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>,
 	Lennart Poettering <mzxreary@0pointer.de>,
 	linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
 	linux-snps-arc@lists.infradead.org,
@@ -96,9 +95,10 @@ Subject: Re: [PATCH RESEND 28/62] init: alpha, arc, arm, arm64, csky, m68k,
  microblaze, mips, nios2, openrisc, parisc, powerpc, s390, sh, sparc, um,
  x86, xtensa: rename initrd_{start,end} to
  virt_external_initramfs_{start,end}
-Message-ID: <20250913054837.GAaMUFtd4YlaPqL2Ov@fat_crate.local>
+Message-ID: <20250913055851.GBaMUIGyF8VhpUsOZg@fat_crate.local>
 References: <20250913003842.41944-1-safinaskar@gmail.com>
  <20250913003842.41944-29-safinaskar@gmail.com>
+ <20250913054837.GAaMUFtd4YlaPqL2Ov@fat_crate.local>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -114,25 +114,25 @@ Precedence: list
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250913003842.41944-29-safinaskar@gmail.com>
+In-Reply-To: <20250913054837.GAaMUFtd4YlaPqL2Ov@fat_crate.local>
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sat, Sep 13, 2025 at 12:38:07AM +0000, Askar Safin wrote:
-> Rename initrd_start to virt_external_initramfs_start and
-> initrd_end to virt_external_initramfs_end.
+On Sat, Sep 13, 2025 at 07:48:37AM +0200, Borislav Petkov wrote:
+> On Sat, Sep 13, 2025 at 12:38:07AM +0000, Askar Safin wrote:
+> > Rename initrd_start to virt_external_initramfs_start and
+> > initrd_end to virt_external_initramfs_end.
+> 
+> "virt" as in "virtualization"?
 
-"virt" as in "virtualization"?
+Ooh, now I see it - you have virtual and physical initramfs address things. We
+usually call those "va" and "pa". So
 
-That's not confusing at all... :-\
+initramfs_{va,pa}_{start,end}
 
-And "external" means what?
-
-> They refer to initramfs, not to initrd
-
-Why not simply initramfs_{start,end} if they belong to it?
+perhaps...
 
 -- 
 Regards/Gruss,
