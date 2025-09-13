@@ -1,46 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12145-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12146-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70587B5606D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 13:01:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AAE1B560EC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 14:50:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cP7d0750Yz2xnh;
-	Sat, 13 Sep 2025 21:00:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cPB3703gdz304h;
+	Sat, 13 Sep 2025 22:50:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757761252;
-	cv=none; b=O5bQg1rnEd1mAJNbAlSVTzhTZkagtjg6dszz3t+OZd5IrHGIfy0HABQ2XnL8ZerFCL6dpqm5G6Et0Y/TGJczMVUVkjWETkX8nm9oLstd2atfQaMPpmSSOOB5HbvqvkWO0S2ymGwP7AJNGNF6YcDEWvbNaA2mkuOpAyG5J/BIRqv9oaG/7cxJexcylPkJtKbwd2mmS600pc/wAEjSJQHeqmsLtkmfqhxVXjvCNvBUoXpwCfmhgLpRm9AZBLxdzjAKlFyHwYX2kXV/LjWY1lRe1Pb1qD4jV6yaFd1MQVnj3P/nyvS56JKGWqBG5MK84r03Ffm3nTPkWi/FxU7bHr1Znw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757767810;
+	cv=none; b=WKoe4SeGhyeadNIiusyAe4TuFiMQzNcTQhrpO9xPkSFHozXcMjmkWLRLp4Eei3S+2jYlxpmSV6+I6mMi4MeawK7HOg+ZiG+pZAUrVsaUZi3Rl9vtPkP5kJsZ3afGI5o2qEjBmbrS/U+kkWD0dP5OL31x4+jTsIrE5Fki2/F2qtx4ILZC7pEPwIgMl5CC8aBQrh8tN+8Q05YzTLaDFJo3h67nbyyXF70uwTiCASHs2/parEmQ7frppjpkQl1f0XwdRnuJ+kjB7BheFU3AXApsBGZPHmJOBiVxTqmPbYt1Fvj8t+hkx2wDGQN1RBPzBtI2vfx7KqeBjts4PpgOu3flng==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757761252; c=relaxed/relaxed;
-	bh=1iZiELOPGgRZDBi2au223SZgjALhV2isPuOLR/SKVds=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=lSHG6oE/ee2Qhtpm41ZGqEPLYnPZij3kIqlZz6wLINWXPZcXLxbCFdtjh4WTgmzUpjN0oqXDxvrnXDOFjw4EoNibMN1tBdkICN94BHoyyxa5I1nbsC0SpjPGpT/XyAaXB/crlMqed7MFl1Kxq4eqKCr9s+DEHEvIj4dRa+g1WoEwQnBJ21RqAkKvnsWnFTX5h8R3othfABPwrWQqFlM90UydEiyPFm2Z+j28VjVQXKcq1yaKzVI1iEXzqsBR6JX9WmqtfkRJNvHVid2uPjFvHPEfpwuPlZsDz6e+2QsHUWgL0UF31gTXhvIVZZ588++yVhFbJabHzhogF5a2znuI2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=heyquark.com; dkim=pass (2048-bit key; secure) header.d=heyquark.com header.i=@heyquark.com header.a=rsa-sha256 header.s=key1 header.b=ZPwflY85; dkim-atps=neutral; spf=pass (client-ip=91.218.175.172; helo=out-172.mta0.migadu.com; envelope-from=ash@heyquark.com; receiver=lists.ozlabs.org) smtp.mailfrom=heyquark.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=heyquark.com
+	t=1757767810; c=relaxed/relaxed;
+	bh=lUnMy2/hy6eJQJuxG9ptdhNweSEdmu/RV13ng0iPrwc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=cesPG5h1gNRRcY30gKV6zguaRpmHBvw0I9SOnmICxyQS/6XO2Gjje+U4qKD/XbaxRzCrley/02OhnwyJzATClFLMCzmT20GJ/Gb3H/RGDVZsBynxyzG8FL9ZtLgaIFJkSXpCViTBafa1OhM7mNtFTdTHIpbHKuGj6P8m7NUYMsyBgnnu6iY1Q3arRIeup5qCkXBDpFXZBzVYAKr9zEqGlaPsLhzFrUjhizHatF2WwXUI+cFr2guiRd/MzQl57kP6k0y8hIRJv2A3lj2z4reo8sCGgiCVtPRDQdRweM4u1CGnetzx53rkv+AtZ7ieMqMrowpYsEO9AgaUmcVmoKH2AA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a3hlDKiC; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=heyquark.com header.i=@heyquark.com header.a=rsa-sha256 header.s=key1 header.b=ZPwflY85;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a3hlDKiC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=heyquark.com (client-ip=91.218.175.172; helo=out-172.mta0.migadu.com; envelope-from=ash@heyquark.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 425 seconds by postgrey-1.37 at boromir; Sat, 13 Sep 2025 21:00:49 AEST
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cP7cx5ngtz2xjv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 21:00:49 +1000 (AEST)
-Message-ID: <3e8cb683-a084-4847-8f69-e1f4d9125c45@heyquark.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heyquark.com;
-	s=key1; t=1757760798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1iZiELOPGgRZDBi2au223SZgjALhV2isPuOLR/SKVds=;
-	b=ZPwflY854lfR6+0k+h4yDgxJWLkTlhGcfYHnB/PhTWkU+vIwyWhZXL2UE3uTJ/Xix0zK+U
-	66IwEf6xsXakDFWxyhzg5a83nJTtKwd9NJnINz/rCmXaV9Cc68bKyH7w0BLmHPvxDQnBrH
-	/+l9KErxJkMkbsE2KDFnkgWqLYMw5nWZqZS9Px0jM1D+spx4jdK6KajIco0RNkdxxcHtaV
-	3Eoi6Mp6KFCk2A78L+jA21XKKsmGZPFZGrvggAWwSeXCADlOjNHhaRyrU4FTMwimAHNr1o
-	t7axN5rc/TW5uDrrhmLVPsGCp+EF2UhBiCCo9Je2k3qGp0KZ+JF6VdQTsEaskQ==
-Date: Sat, 13 Sep 2025 20:53:08 +1000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cPB353cRYz2xnk
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 22:50:09 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58D9ej2l017100;
+	Sat, 13 Sep 2025 12:49:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=lUnMy2
+	/hy6eJQJuxG9ptdhNweSEdmu/RV13ng0iPrwc=; b=a3hlDKiCqIT5rBJuUeuFoP
+	gQEe5+5UCLA0hJYdfdnK8Lampv9qcPX55BYLA+ZcGkl5ljmtEGTOIwvHrewJurHu
+	BYWptXdOcab7S2MBMHKEb7euybGVC0e5v4N5WBe/qqDSuTF9+GN8sZo42zFTe4Y5
+	8yqadr/c2Izef/Du+XcW4RYMdtFLA6AhoKTG5+yFdEpDPeqWBZE0MIhKBohDxQeV
+	s8/ZJLTzlkvvb+lNvbfCAplWOt6yZD7BXHG/FytU1+MhLG9Bs6F/tD0Hhx3CoVUw
+	PNSU55jPdV73Ubv7s7oqU4urOdjMPRngwk94/2xSXCIWJyGlLUtLv95CZ8YsV94w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49509xsc10-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 13 Sep 2025 12:49:27 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58DCnQfa028779;
+	Sat, 13 Sep 2025 12:49:26 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49509xsc0w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 13 Sep 2025 12:49:26 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58D8EwWG020469;
+	Sat, 13 Sep 2025 12:49:25 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 490yp1fjvr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 13 Sep 2025 12:49:24 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58DCnLJ731326614
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 13 Sep 2025 12:49:21 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ED83820043;
+	Sat, 13 Sep 2025 12:49:20 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D1B6720040;
+	Sat, 13 Sep 2025 12:49:07 +0000 (GMT)
+Received: from [9.61.95.215] (unknown [9.61.95.215])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sat, 13 Sep 2025 12:49:07 +0000 (GMT)
+Message-ID: <b347f6e2-26c0-486f-85c7-b2877b9f1189@linux.ibm.com>
+Date: Sat, 13 Sep 2025 18:19:05 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,91 +86,150 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ash Logan <ash@heyquark.com>
-Subject: 32-bit HIGHMEM and game console downstreams
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V2 2/8] powerpc: Prepare to build with generic entry/exit
+ framework
+To: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+References: <20250908210235.137300-2-mchauras@linux.ibm.com>
+ <20250908210235.137300-4-mchauras@linux.ibm.com>
 Content-Language: en-US
-To: arnd@arndb.de, christophe.leroy@csgroup.eu
-Cc: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- officialTechflashYT@gmail.com, AWilcox@Wilcox-Tech.com,
- Michael Ellerman <mpe@ellerman.id.au>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, oleg@redhat.com, kees@kernel.org,
+        luto@amacapital.net, wad@chromium.org, deller@gmx.de, ldv@strace.io,
+        macro@orcam.me.uk, charlie@rivosinc.com, akpm@linux-foundation.org,
+        bigeasy@linutronix.de, ankur.a.arora@oracle.com, naveen@kernel.org,
+        thomas.weissschuh@linutronix.de, Jason@zx2c4.com, peterz@infradead.org,
+        tglx@linutronix.de, namcao@linutronix.de, kan.liang@linux.intel.com,
+        mingo@kernel.org, oliver.upton@linux.dev, mark.barnett@arm.com,
+        atrajeev@linux.vnet.ibm.com, rppt@kernel.org, coltonlewis@google.com,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250908210235.137300-4-mchauras@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDAyMCBTYWx0ZWRfX23dQGHU1VBsr
+ F9KkwRTdE9kXLFS0tFPcW3/WlaetdWvIr5XZ3LV/nj8zehyDnHhQKlU3+GH6m2NFZKyHA3tiuan
+ H+z2rr456Um0gnAWMZcB+zdPEqML408xPe4RPWtRNtQC4zadUbjR3mQRVVRwT0UtVBKGjpkf7/6
+ BK7znF1ZRmiatj+z6FJpF2QnAed5EzgzMl7bdnHoS4giirqb3snlTDXtII8gji3zrjU4c4aaqlr
+ +5ysOS+/BgaWHRK4BhjT+Vy3yhGxIb826fU0L1X7MXUCAs7UdSVLgi6Xp3UoWfVxL59K74oVbZ2
+ 6zoQLczNC3KnKPvB4deZ3G/Lq4nQF+UocC3fK+MpFTlq/lz3vlxdMcKEktZhzGnEpB0hNdhT/+S
+ 8hR5Px2d
+X-Authority-Analysis: v=2.4 cv=OPYn3TaB c=1 sm=1 tr=0 ts=68c56857 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=6JEIxQDwY7sH1iLhUv8A:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: qlkYiZW_6uEtslP273yPjMEm1E9V0mP4
+X-Proofpoint-ORIG-GUID: adhepOLzK7kXaf7SPQwIexJbatM0sQ2m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-13_03,2025-09-12_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015 phishscore=0 suspectscore=0 spamscore=0
+ bulkscore=0 malwarescore=0 impostorscore=0 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509130020
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello!
 
-LWN recently did a piece on 32-bit support in the kernel, and thought as 
-a user of 32-bit I would share my 2c. [1]
 
-I maintain a downstream fork of 6.6 to support the Nintendo Wii U 
-hardware [2]. I'm also in regular contact with another doing the same 
-for the older Wii [3]. Linux on this era of game consoles is doing 
-pretty well :)
+On 9/9/25 2:32 AM, Mukesh Kumar Chaurasiya wrote:
+> Enabling build with generic entry/exit framework for powerpc
+> architecture requires few necessary steps.
+> 
+> Introducing minor infrastructure updates to prepare for future generic
+> framework handling:
+> 
+> - Add syscall_work field to struct thread_info for SYSCALL_WORK_* flags.
+> - Provide arch_syscall_is_vdso_sigreturn() stub, returning false.
+> - Add on_thread_stack() helper to test whether the current stack pointer
+>    lies within the task’s kernel stack.
+> 
+> No functional change is intended with this patch.
+> 
+> Signed-off-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+> ---
+>   arch/powerpc/include/asm/entry-common.h | 11 +++++++++++
+>   arch/powerpc/include/asm/stacktrace.h   |  8 ++++++++
+>   arch/powerpc/include/asm/syscall.h      |  5 +++++
+>   arch/powerpc/include/asm/thread_info.h  |  1 +
+>   4 files changed, 25 insertions(+)
+>   create mode 100644 arch/powerpc/include/asm/entry-common.h
+> 
+> diff --git a/arch/powerpc/include/asm/entry-common.h b/arch/powerpc/include/asm/entry-common.h
+> new file mode 100644
+> index 0000000000000..3af16d821d07e
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/entry-common.h
+> @@ -0,0 +1,11 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#ifndef _ASM_PPC_ENTRY_COMMON_H
+> +#define _ASM_PPC_ENTRY_COMMON_H
+> +
+> +#ifdef CONFIG_GENERIC_IRQ_ENTRY
+> +
+> +#include <asm/stacktrace.h>
+> +
+> +#endif /* CONFIG_GENERIC_IRQ_ENTRY */
+> +#endif /* _ASM_PPC_ENTRY_COMMON_H */
+> diff --git a/arch/powerpc/include/asm/stacktrace.h b/arch/powerpc/include/asm/stacktrace.h
+> index 6149b53b3bc8e..3f0a242468813 100644
+> --- a/arch/powerpc/include/asm/stacktrace.h
+> +++ b/arch/powerpc/include/asm/stacktrace.h
+> @@ -8,6 +8,14 @@
+>   #ifndef _ASM_POWERPC_STACKTRACE_H
+>   #define _ASM_POWERPC_STACKTRACE_H
+>   
+> +#include <linux/sched.h>
 
-The Wii and Wii U are both 32-bit PowerPC machines with holes in their 
-memory map, which I think makes them interesting for this discussion. 
-Let me summarize the hardware and kernels involved:
+nit:
 
-Wii (2006)
-- 1x PowerPC 750CL "Broadway" @ 729MHz
-- 24MB "MEM1" + 64MB "MEM2" (non-contiguous - MEM2 starts 256MiB in)
-- Kernel 4.19 (+ CIP patchset), dev has been working on forward-porting 
-all the drivers one major version at a time (he's currently up to 5.15 
-last I checked) + limited upstream support (hardware bringup, UART, not 
-many peripherals)
+Is sched.h needed? I don't see any reference here.
+It compiled for me without it.
 
-Wii U (2012)
-- 3x PowerPC 750CL "Espresso" @ 1.2GHz
-- 32MB "MEM1" + 2GB "MEM2" (also starts 256MiB in) + various small SRAMs
-- Kernel 6.6 (+ LTS patchset), I also had a run at upstreaming some of 
-it in 2022 [4] and would eventually like to go again
+> +
+>   void show_user_instructions(struct pt_regs *regs);
+>   
+> +static inline bool on_thread_stack(void)
+> +{
+> +	return !(((unsigned long)(current->stack) ^ current_stack_pointer)
+> +			& ~(THREAD_SIZE -1));
+> +}
+> +
+>   #endif /* _ASM_POWERPC_STACKTRACE_H */
+> diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
+> index 4b3c52ed6e9d2..834fcc4f7b543 100644
+> --- a/arch/powerpc/include/asm/syscall.h
+> +++ b/arch/powerpc/include/asm/syscall.h
+> @@ -139,4 +139,9 @@ static inline int syscall_get_arch(struct task_struct *task)
+>   	else
+>   		return AUDIT_ARCH_PPC64;
+>   }
+> +
+> +static inline bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
+> +{
+> +	return false;
+> +}
+>   #endif	/* _ASM_SYSCALL_H */
+> diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+> index 2785c7462ebf7..d0e87c9bae0b0 100644
+> --- a/arch/powerpc/include/asm/thread_info.h
+> +++ b/arch/powerpc/include/asm/thread_info.h
+> @@ -54,6 +54,7 @@
+>   struct thread_info {
+>   	int		preempt_count;		/* 0 => preemptable,
+>   						   <0 => BUG */
+> +	unsigned long	syscall_work;		/* SYSCALL_WORK_ flags */
 
-Special mention to the GameCube, basically a slower Wii with only 24MB 
-direct RAM and 16MB of non-mapped "ARAM". Wii Linux has experimental 
-support for this where they use the ARAM as swap.
+Can this go after cpu ? it would be 8 byte aligned then. Since it is in 
+fast path, might help.
 
-All of these are flatmem devices, as that's all the 32-bit PowerPC arch 
-supports, with the Wii U additionally enabling highmem for its 2GB of 
-RAM. Both devices have a small memory area (MEM1) with the "bulk" of RAM 
-starting at 256MiB. The Wii U in particular sounds like a candidate 
-system for densemem - I would like to read up more about this if I can, 
-I was only able to find seemingly unrelated information about CXL when 
-searching online.
+>   #ifdef CONFIG_SMP
+>   	unsigned int	cpu;
+>   #endif
 
-There is a somewhat active userbase for both devices. I only have stats 
-for the Wii U side, but some rough nginx grepping for the last few days 
-- Sep 7th-Sep 12th - shows 39 downloads of distribution tarballs and 
-bootloader binaries in that period, not including torrents. In the past 
-2 weeks - Aug 29th-Sep 12th - 9 people joined the community Discord, 442 
-total. Anecdotally, the Wii Linux userbase appears at least twice as big 
-(based on their Discord activity).
-
-Distribution-wise, we're supported by ArchPOWER [5], Adélie Linux [6], 
-and other distros. The Wii U's Espresso has CPU errata requiring a 
-patched compiler, and both distributions ship separate package repos for 
-this CPU. ArchPOWER requested I rebase onto 6.6 so they could have 
-firmware compression - previously the Wii U was on 4.19 - so there is 
-some demand for newer kernel features as well.
-
-I know I'm talking about hobbyist use - and mostly downstream use at 
-that - and I do suspect that in the event of a wider 32-bit deprecation 
-we'd be fine on the final LTS, whatever that ends up being. Still, I 
-think the Wii and Wii U represent a decent number of 32-bit users, so I 
-wanted to add to the conversation here.
-
-Thanks,
-Ash
-
-[1] https://lwn.net/Articles/1035727/
-[2] https://linux-wiiu.org/
-[3] https://wii-linux.org/
-[4] https://lore.kernel.org/lkml/20221119113041.284419-1-ash@heyquark.com/
-[5] https://archlinuxpower.org/
-[6] https://www.adelielinux.org/
 
