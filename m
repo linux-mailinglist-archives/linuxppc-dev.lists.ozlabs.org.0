@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-12136-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12135-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B262B55E12
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 05:19:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 745EEB55E11
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 05:19:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNxN95pJNz3dgN;
-	Sat, 13 Sep 2025 13:19:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNxN3496Qz3dXZ;
+	Sat, 13 Sep 2025 13:18:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757724071;
-	cv=none; b=XyFN0Qe179f01rkObZ/cG1koyPyMK5Q8EpWfqFpRP8EiynZ/EcPL+q5K2j3VUS8jkcqpksqLgEfnGxHJXrzWNvj6VBkzn/UycwDovaE2dADBeJqXwgk7DH54nGwKfXdozz1XZwCN+EutHf/mbZlbtz7DqlVW9PsnujVGYyy509/CPspFtdyk+LC5GIOrVYUuoUlpWClS8opP9SNL1IC5HqtUB3/w4SgNgLNFSRbAlZSGmjZ2Ti3pn5YyyNA5XxCSbtuf/liRwa6Wzxncw22xkqGakQelCdLcatxeYfs4GIJlzbIS6amI+lUBcb3q0/w+3G3jxczkJWmzzvgwGjI/Zg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757724136;
+	cv=none; b=diGotLtSpGRCE0ThcsupThMxlPPyZfG7W0z91+IUBM3DM7SXAtSxZae169YTd+uScLth6J992OZU+fTYWZ0SzcE2LN1qQUecc5zsItQ9VB5j1aVcPT93/wUWqqsVals7IjnDYQU6NWyHeKaOJRBME/7dL5aPO6Zy5Ay3jnr8AVf7kOqrT1G5KZG5GzgxwXMZGymtMzMsRjm1EE8AERawngPtAthK6Gp3K47nB9EkgozxuBF8w4WOzahiZp2MwyDM/xGsqwSchWXlnuyLg4FqOFs1AFaDgIfq9hp3EHWAzMB0/JTm/n8QpqHhm4Rf4NA0jnFBEkChR/1xQZrCK5YqqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757724071; c=relaxed/relaxed;
-	bh=XF39SoyvPO4HSizOmVkN9E4c/OCzbmGR6ZiNtCSz3R4=;
+	t=1757724136; c=relaxed/relaxed;
+	bh=Iq4EBZrV1lfKd4Zb7NXCMDMChiW0nY1yh2iMeYqfP7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5lJz0AGqT/sWnt1WlwFCd0iI6HfRhxn7rhXosH2Sr6lFutxqNsqa0wyFgGoVhlA3HSHaapHH+hhtHi7zrYGWpNtI8+PW9QIJjLQFzhiGmdQWGfBx49TnK1wUZGVHSKpG9QGt/1aGak0ujeiR2P6Jr+m2DaascISf3qM2ot1iZ0OYH97tKpFsLQjRJG9qspqvBXcy2Z1p1Rkx+3nLeCpZzjwbMng2uRxurvg0/YW+OOt1G6b+98NzjnQZYXETOJlJ0l6HVdLM6MinqkgBdVZdABJ7XIbrJC91Nlphz6sneJf++1cpGRDewq13hwyFzFV8GQk7Um9QTU2GalFzpxbTg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dz6JWrJ5; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=CBIRoQ/gfhBevOSG78EvFS6xXGREJ6GFWwg+lCTS2k+T5BMK3lG6An08Qi4j5bEI8beC/o6hMeI5t8bkwBYPjUvoJVm6AKr1xXLZRxNMxhNsf7F1lNBofCs8pfuZptcwaifuIpNGKJ1wZieoQm+VBvDW29tgER+sMm66mlEC2+daFYFPd/Kee641bO+kS3n+B9ahuVaUdMiSUHC79bzu2hatgPIMAAW8VACLpabCf9USgLKjd6/n/qiCQB4Uur1zS7Kw73fpon+baEvfr60bJVt0UH2aOl4U+lyTusk7Z8/wU/D6hUtNUQNEyeaHkZAy+3cRTEZUORf6AMVz1KB3cw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WiMfR2ne; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dz6JWrJ5;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WiMfR2ne;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52d; helo=mail-ed1-x52d.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
 Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNssy3gVpz2yrN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 10:41:10 +1000 (AEST)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-6188b6f501cso2889499a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 17:41:10 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNsvC3Zzpz2yrN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 10:42:15 +1000 (AEST)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-620724883e6so4832126a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 17:42:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757724067; x=1758328867; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1757724133; x=1758328933; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XF39SoyvPO4HSizOmVkN9E4c/OCzbmGR6ZiNtCSz3R4=;
-        b=dz6JWrJ5joLpZ16FNk784Ilej3LT2K8vyr4Sh8YzIvO6VYj8cTba+D8FIlHSqjEdZt
-         3VTq/s7zkCCx0r7oqJO8ShIGwhGaTF4nDGUEOyompbvpVaiYh63i26xuo5f6ht4PDF6p
-         EKZ9xzqx+jA1Txtc53Wpj31qmb46V+WmSJPRLR7MAndJfny8ihD3czMtk+LYzKiONpPq
-         ja7ZdcsbT/3Q1eTO1pKXm0hm0/3Qu5/MMfeXW+WOmQdAjA7L3rd5mr7nRfFsCWNpsZX7
-         eXWAXY/489BiICZylnh7LT0T2L1R8zXBHuD9nA5M444FLL1GajZoNy7rqKOSs8KGDY+9
-         lJzg==
+        bh=Iq4EBZrV1lfKd4Zb7NXCMDMChiW0nY1yh2iMeYqfP7Y=;
+        b=WiMfR2necxK/RZg7uHFx6KcG9MoVDyoW0Q+z2eyAOMDjmdahzgOfUGuFt/+7lz0mfP
+         SovFwXCaF+4TYTHv4Xc1lCdtjIGYwmFHrFZXepazXgd0ILY/ZuKANASS3B7z5wcI5zKX
+         MlAEDgungH+2EyRwKVDCSRq7Ums1PS16qzoUn4w8u31LvJBJRX35oJiBXR/XdyF02eXh
+         Od6SWcKgsIHRd006zzz6WYMpuq5xHrFc7kRgy3bDJfMzswdE+Hf421tA+dD879Vwi5h/
+         T0wOjpEBo0RabHIxIQwMhsJ/pjTb/18G4qdvzz+k1uAUzqFlhsluSDcGBaco34qJ0FVU
+         K2kA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757724067; x=1758328867;
+        d=1e100.net; s=20230601; t=1757724133; x=1758328933;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XF39SoyvPO4HSizOmVkN9E4c/OCzbmGR6ZiNtCSz3R4=;
-        b=tMrpAzK4WNzd31E1DmwOnd5h0kJgCstlClmB1IZx+p1I4nM7as1Q0MuD0VQhqWWthV
-         O7OmyqP6PzzF3oAee9ernmbWQx0FfjM+uAa+LVLhyRMvPH7QN3IXcijbajDxNi4BiIZa
-         BSe4vcK//pJYTYsZtomArsTp6SSzT6g+tVbIRh/4rOGn5LfY8fGmXL/pqhkjgdLszeUW
-         qLcHJTpMbUEsAKkpV991IUKXSCkL0P7Lptu9YGaegVxJcOi5MgoE40kE7uLD/Zeozpl6
-         eFvZP+n0fw5C0yyTCQ7cq6oMuBdF1YSsxHbj/1e1S7IoNI1n2g4Ny7qg97JR1n4B6b7j
-         ZRlg==
-X-Forwarded-Encrypted: i=1; AJvYcCXa+mIISzFk2I3D1fOQMcReneJSCIdo/QGOq1nSBnh4ZJtItHe/3DV4f3koF48qhxQMqqJEhLLI7Gq3G5U=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwhGJ/K2ACwSkKQoI/Cdz32o+EvDg0ntkuZaPCkxtg8D6PDcmOG
-	qZCMOlyzY95vAkYjW3h9LflHs51T/DlB3ZQubASlSk8/xSE/U9KFnDuy
-X-Gm-Gg: ASbGncvFtJexMnp2xlX7hi1TZt7G3tCXok4BI2ikWzsoKyqfsMlTzPoGsdq0m/eElJw
-	PrehP4JdYfEc1hcLXwTI/NLCAUixDKpKR88efvRCna96tPYr+5U8PlbzdU3ObX3LZuBxLH6xRlB
-	njsYmO02cvBj+5GL8toJVlqeBgpyXIyGN1ALHXLKO6asIQe4YXVGZCE9hrxhHT/POPnBrhbt7z3
-	ZxuhX7oy4aueG/V1//fkuM0wn9ceAbh8d1zfiQdQNuJ6023yxEsX3vdWHqOj6GVnW5GyPjixdY7
-	3o8kEfjDPeG5ZapbLWqnDnHEc7FbZNX90kwIN46D7W69iwr4HTMxjUSIpXt4qq3r0xC+1ewHLOR
-	STwAeAyYh0SJwh1gkxGFii3jZwRzIw0WlYAJ4t0jv
-X-Google-Smtp-Source: AGHT+IEtE+sLJ/l9Jfm7JaiF1fYpyMVV9PhBGBMQ2H0UV0Mi6JbllI7aH7Kqq18B0Ua9aQ0IxOB0Jg==
-X-Received: by 2002:a05:6402:3552:b0:62e:ed2f:a660 with SMTP id 4fb4d7f45d1cf-62eed2fa993mr2339876a12.11.1757724067127;
-        Fri, 12 Sep 2025 17:41:07 -0700 (PDT)
+        bh=Iq4EBZrV1lfKd4Zb7NXCMDMChiW0nY1yh2iMeYqfP7Y=;
+        b=rpi6LjWR3VjzWAqCK3iX1mnudRT1Vf8pToKnsMILzOGD9UEGCnUzX+aYHK5g6GDCre
+         abpwDmzM2q/tlpmifBId7yBW3XGKH8QucMZQxj+9XRjnxLlwzFyCVjUW9r6qlpVKvwfu
+         avosjdfzgucEz1GSzLKTlPkWgH5CJ1I2ym+XpVPUqTC+NDIpryg0KAmK5Ci++GOJtep3
+         vxhRmWVKooImRRpQYkOUkZ6fiJUC7ylknrvB69LMrWO4FGPoGDLNYwKxq/7tKP/Wq05l
+         GLoATy6TW9uCH3RlCNYFT3pFgbDPvYeAixytngmcI9xUygorRF/p2nlkTW4FCCIIZK91
+         62mg==
+X-Forwarded-Encrypted: i=1; AJvYcCXyNhwWJdHSJ1qahsOvofUp6WFFRVtwDLkoQCe2/jZMFr9fXMCHt3EmJ0joe4SXIzzuynbL6rzf6gU3Kr4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwPpXKvWKDfOvsT2Yxfckm+dten1/lbgS3tWSyqF+Lii7SWlsCj
+	b0HoQWEX8U5stWcBrcJZXuVUbtPRrNBY/T6RoAw4L0dk636rMNuhGHQk
+X-Gm-Gg: ASbGncsXN8lp8t1Q1UbaiV2t+DIqzAVG1loe9cCjzpjumsWrXtxMIgIw6ng3FMFIldx
+	/4oWr4yrDz9yBQy74w7YNbybra0SlL0L/bigpi4atFlE+w5UmX3Z42odLexBZtj+7e9oMA0UDCX
+	T4mdhOUbs9ekUTGAlEA8ioPwVEuZGTZIZzvNno+YHtP3yiuDTb9Hw8TQqx51nbMMdEfrvzYiTSI
+	tQcLirf4VHqg1VR7jcMORRWOx/QgqkRGHEDlXFo1hI07gFxt5/h+h7uxNzp9dWhUmoWMIXBj4nB
+	x1wr24nNAQX8/Y3fqO3PCe4MogiPDLXKKJ6sSdawh3T/JWI+s17YLS4NjOHT8IomHc8UzbN78/y
+	n2La1CtNmQQLznot+4DM=
+X-Google-Smtp-Source: AGHT+IF0YGOwgI/SiDLzLobCRbGCMEuk6UiMOqwXQtTxtsbaeH+eIG/iAAo9vQw+zhuCea49+yp7bA==
+X-Received: by 2002:a17:907:2d2b:b0:afe:8761:e77a with SMTP id a640c23a62f3a-b07c35833dfmr474345066b.19.1757724132448;
+        Fri, 12 Sep 2025 17:42:12 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-62f0c7a5546sm189920a12.43.2025.09.12.17.41.02
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b3128a5csm466901366b.37.2025.09.12.17.42.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 17:41:06 -0700 (PDT)
+        Fri, 12 Sep 2025 17:42:12 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -125,9 +125,9 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Thorsten Blum <thorsten.blum@linux.dev>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	patches@lists.linux.dev
-Subject: [PATCH RESEND 01/62] init: remove deprecated "load_ramdisk" command line parameter, which does nothing
-Date: Sat, 13 Sep 2025 00:37:40 +0000
-Message-ID: <20250913003842.41944-2-safinaskar@gmail.com>
+Subject: [PATCH RESEND 02/62] init: remove deprecated "prompt_ramdisk" command line parameter, which does nothing
+Date: Sat, 13 Sep 2025 00:37:41 +0000
+Message-ID: <20250913003842.41944-3-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
 References: <20250913003842.41944-1-safinaskar@gmail.com>
@@ -156,53 +156,53 @@ Signed-off-by: Askar Safin <safinaskar@gmail.com>
 ---
  Documentation/admin-guide/kernel-parameters.txt | 2 --
  arch/arm/configs/neponset_defconfig             | 2 +-
- init/do_mounts.c                                | 7 -------
+ init/do_mounts_rd.c                             | 7 -------
  3 files changed, 1 insertion(+), 10 deletions(-)
 
 diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 747a55abf494..d3b05ce249ff 100644
+index d3b05ce249ff..f940c1184912 100644
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3275,8 +3275,6 @@
- 			If there are multiple matching configurations changing
- 			the same attribute, the last one is used.
+@@ -5229,8 +5229,6 @@
+ 			Param: <number> - step/bucket size as a power of 2 for
+ 				statistical time based profiling.
  
--	load_ramdisk=	[RAM] [Deprecated]
+-	prompt_ramdisk=	[RAM] [Deprecated]
 -
- 	lockd.nlm_grace_period=P  [NFS] Assign grace period.
- 			Format: <integer>
- 
+ 	prot_virt=	[S390] enable hosting protected virtual machines
+ 			isolated from the hypervisor (if hardware supports
+ 			that). If enabled, the default kernel base address
 diff --git a/arch/arm/configs/neponset_defconfig b/arch/arm/configs/neponset_defconfig
-index 2227f86100ad..16f7300239da 100644
+index 16f7300239da..4d720001c12e 100644
 --- a/arch/arm/configs/neponset_defconfig
 +++ b/arch/arm/configs/neponset_defconfig
 @@ -9,7 +9,7 @@ CONFIG_ASSABET_NEPONSET=y
  CONFIG_ZBOOT_ROM_TEXT=0x80000
  CONFIG_ZBOOT_ROM_BSS=0xc1000000
  CONFIG_ZBOOT_ROM=y
--CONFIG_CMDLINE="console=ttySA0,38400n8 cpufreq=221200 rw root=/dev/mtdblock2 mtdparts=sa1100:512K(boot),1M(kernel),2560K(initrd),4M(root) load_ramdisk=1 prompt_ramdisk=0 mem=32M noinitrd initrd=0xc0800000,3M"
-+CONFIG_CMDLINE="console=ttySA0,38400n8 cpufreq=221200 rw root=/dev/mtdblock2 mtdparts=sa1100:512K(boot),1M(kernel),2560K(initrd),4M(root) prompt_ramdisk=0 mem=32M noinitrd initrd=0xc0800000,3M"
+-CONFIG_CMDLINE="console=ttySA0,38400n8 cpufreq=221200 rw root=/dev/mtdblock2 mtdparts=sa1100:512K(boot),1M(kernel),2560K(initrd),4M(root) prompt_ramdisk=0 mem=32M noinitrd initrd=0xc0800000,3M"
++CONFIG_CMDLINE="console=ttySA0,38400n8 cpufreq=221200 rw root=/dev/mtdblock2 mtdparts=sa1100:512K(boot),1M(kernel),2560K(initrd),4M(root) mem=32M noinitrd initrd=0xc0800000,3M"
  CONFIG_FPE_NWFPE=y
  CONFIG_PM=y
  CONFIG_MODULES=y
-diff --git a/init/do_mounts.c b/init/do_mounts.c
-index 6af29da8889e..0f2f44e6250c 100644
---- a/init/do_mounts.c
-+++ b/init/do_mounts.c
-@@ -34,13 +34,6 @@ static int root_wait;
+diff --git a/init/do_mounts_rd.c b/init/do_mounts_rd.c
+index ac021ae6e6fa..f7d53bc21e41 100644
+--- a/init/do_mounts_rd.c
++++ b/init/do_mounts_rd.c
+@@ -17,13 +17,6 @@
+ static struct file *in_file, *out_file;
+ static loff_t in_pos, out_pos;
  
- dev_t ROOT_DEV;
- 
--static int __init load_ramdisk(char *str)
+-static int __init prompt_ramdisk(char *str)
 -{
--	pr_warn("ignoring the deprecated load_ramdisk= option\n");
+-	pr_warn("ignoring the deprecated prompt_ramdisk= option\n");
 -	return 1;
 -}
--__setup("load_ramdisk=", load_ramdisk);
+-__setup("prompt_ramdisk=", prompt_ramdisk);
 -
- static int __init readonly(char *str)
- {
- 	if (*str)
+ int __initdata rd_image_start;		/* starting block # of image */
+ 
+ static int __init ramdisk_start_setup(char *str)
 -- 
 2.47.2
 
