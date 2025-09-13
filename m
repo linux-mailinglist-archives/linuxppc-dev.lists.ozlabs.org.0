@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-12115-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12114-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B380EB55DFC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 05:16:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D87FBB55DFB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 05:16:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNxJg71Nxz3cbF;
-	Sat, 13 Sep 2025 13:16:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNxJX41bzz3cZy;
+	Sat, 13 Sep 2025 13:15:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757725448;
-	cv=none; b=nAvNHFNrCVZMIEiRzTyJZ1g8GX1jfibzo/gSAF0OHTfN89PHNEz2OiP+0xbUFndXoIvRhPq+ej644sKPkxnrtjelR2XOTK7tR13Rc/KhGnNs4y3YZG079OoKv0PNVP0UI3pbZrl9F5Z220m0LzaZeVVGfi35+RDFH+Ts/zky4gmgL+dXlG42u92mMuGE9o673qEHQnoAmVbuEMISGCCAOxV4U8lW8Ktu5ea0/QW/hxKtikibqzoSBiQiCQLAZvw0686OH2u/dGEnDE9NuCquk/MojKY0duDShsNrMZkUZiIh/Gu580JXCJ9DgL30L90bwkthRajkfsS5kwTpAMy1xg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::632"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757725513;
+	cv=none; b=cL/gC9QC1yMNZFyb5Vbh+DrSFpfbRCy84o/CEXVzoAEBE2uUJC4ExIK+duQXxZyjpeXLd9CrwL1Sj6HSO9L0VoH2EK9PSYLKBEiSLj7fvXNvg1sXRGRmv+MU6ylmQiKRZLEMB/3t3bmksBBfWHAQPWyJCBmjgDp40VVmlhP5vVw79LroMJEb8wwEJVlvoMzsnpOpGidTCCGOuS2dT/uL2srtmM/Y+dCd9CiV50GIdcrsvNCtNS9hCrJWnptcFBug4NBWiLlJI4c7sSDinUMr31iVte6YV+7eXlAXn5HBcDH7YjyzJC3VJn6cBIrHBelukk/SjXdnzR47c/MWVcO25w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757725448; c=relaxed/relaxed;
-	bh=QP3KPO8+P4bejD4XvvOjfSlYK9K4kJKcAHCDef6XF+Q=;
+	t=1757725513; c=relaxed/relaxed;
+	bh=5agMVhmWz9D3tLYyZnqIaP8gTBBboQ75Wn3D7w2vh+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N69ZfeonTLoKbTN1PI87qeZtaKhOIifI879ua8bbW2aotGU7k0SRy+9m5iZLvAtLdEht1bEp3RDZsbaJz4oK0v5wKm/gejAEZ9lwVyE1C98KH1pWYaJ0XDvyLBwZQRLIv2e58KuuaFzQB4e8Q0kCRCKvma9wPpHTYRj1dX4jz7WmnaSuVLTCAUopA9eFiNFwKlUBD2f4VsnGa6qMe5WN9gNwIM26eUPNe91VmCQWiNn7xgUTkLFlmeOdmzpB8cxQorC5H2gz5cujo6z9G8SsZ6u3qDiy5sjrJdtL3skdvJW54npmMKpxELLP6+WPwmI3BpVlE2oo2L/w50IW8dDTow==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=co/aOtua; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52c; helo=mail-ed1-x52c.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=HyIUndZAEMbvwFx8wtHqxZJ7GRxRpJjt1oDuMz1aBPTlm+2sfuTtWq6H0nJF/Ab6z0KuO6KWd6/9S4Wk5kKEjvc1wM+7emoJ4TlN+1a0L1txf0s3fFDExzx45Ez4LjrjCO1pSIohWNFft5YIiNt+EHL+5Sm0htrD6Ynsv98bO7hHC+YlsIRjEXsD1mJKch/Rdoamfs9jq/iEkYKN3R5eNmbK2lhdP0cYa3XoGlwsUF4V4rAE+0uK4RyUauSwi+LvziESFLAWlW/3e4DEgUEQdSP2PBvlcqchIOOrfuL5sFMXl7JRwP4MaCUFYtflEmBZuvB7zQq71+VPOCyO9pSMuw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WGd4yoxo; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=co/aOtua;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WGd4yoxo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52c; helo=mail-ed1-x52c.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::632; helo=mail-ej1-x632.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNtNQ6Q21z2yrN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 11:04:06 +1000 (AEST)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-620724883e6so4851763a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 18:04:06 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNtPh3Zzlz2yrN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 11:05:12 +1000 (AEST)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-b078aabeb9fso396828366b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 18:05:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757725444; x=1758330244; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1757725509; x=1758330309; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QP3KPO8+P4bejD4XvvOjfSlYK9K4kJKcAHCDef6XF+Q=;
-        b=co/aOtuaPIaAyeRjlhPfhwZt/docD2em+7C1XSAqodlPrjzhMquXM/qO8rABBHZnmW
-         K389NZZlz3Xj0o0A0QZ3HMhIDKcDx2e1u3Xo3g3h+d/XBaAu/lVWQ8hkqjipJ+7gZr/o
-         zlHDdI0qyWVMoFwsdZbK6fWQNGPrb4AdmSj3JrR1xaCju7lSwfB9hAMCGPqeTyrRCTeI
-         zHqh1mJOlCBmfhPIZRtI7o2lROP+UkUCM3zRgCoLxUZ7nCu51qtzYhvN1C+BPFTiUeqF
-         OEcG7vGnaoxNHd8Be1aIVGaYLgA0+Hu6tCc+mPNdI7R9nGbYJ8AiJEW6hos7KuXg9rkG
-         53pg==
+        bh=5agMVhmWz9D3tLYyZnqIaP8gTBBboQ75Wn3D7w2vh+Q=;
+        b=WGd4yoxonYn2TllTjFCPsBkMM2Frb4JmQ2ALsZTyHXqeSsu3r7E00lsry8LeR0mIQb
+         LFln2Mth1JOl9Joc29TBY++k5HskLv3Oziab/FvxUFLIseHfDA9NfUxchdsA+qapiABc
+         YBo5mMqBWOEY1xP0pjsTjjPLA0u64SrF0lj9BuEk5au/R2Y8qEyX55IhP9NvRuBa3h/P
+         ENghd6wL/sf4F3IfHOz1GNQVrVwJELLIRtGqnvBdM2R2+W3W19/zP7jQBGmS3PgR4P8X
+         P8lXXx8ZK8pZJZu3e6aLrGRVQx5HGss8isGTxlxrk/Rgh6lrpbAjXinayDiTTYSwHxpE
+         bZyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757725444; x=1758330244;
+        d=1e100.net; s=20230601; t=1757725509; x=1758330309;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QP3KPO8+P4bejD4XvvOjfSlYK9K4kJKcAHCDef6XF+Q=;
-        b=QkGtbx5KfTVb25yAD4OVogiDNcTGnbL3PqrR7GzMJg5ClLhrgWhwSsMpcr2EpsngaU
-         Q9w3PARf0JnIBsu/EQTPQlQ0Rlrs8pS0kIFr175kdzYkDA2nj49k8FXwb/h64+sXmPkt
-         JxkS6pv3TvEQBXk9izs8F0MshQRnjMpV44FeNysn95T0AYdFItS03Gyitb6h1E9w15rt
-         ciPg91y2Gr0G3po6Foq6xpQsB1O7t74fByWLPixHFZPH3WsdZRj6I0A5yEzHDjD2/mzL
-         oOG/8DYWH8ZiKYZ7a9sjnPwsgz/i0E9rSB4CWVVV7CtiXH0kCB+tWBQDdQFqXvjZDlzn
-         PvDw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNtV9Bt64P9ovQCqUK3+2NarNsy8DOraSYIo/3Jck9myAmnoiz6qcnNHpwl5pjhL6cjz+G75jf/XD268o=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxLpVOQeKvgbGMivX+1bf/3BrIRPg8OYtR98ayCOgMCa6i/TIwo
-	cvgZryoRmnIL/q5qlUfrlC2OGRXJlm57mCsgMTvZq6EhiVpI0MZrizaX
-X-Gm-Gg: ASbGnctiO6zGpdcI2NErpko8iTgf30fyvop5gGVfWMYOa6m42ZnL5vYBgtycRItEDtz
-	UbBXHeDfxHBiPaJBG/BO3jDkjOrJxV6yxOJT0XfcprH5eB9lLfjN5HAiF6xYYJXQHTKsuAODs4m
-	7G8+mkYJwBSmBFlvnw94R+AVVvVLCVsF3BTy9/tM+m/QNq3DiGcBZw/x1r7Lb6LYMMRVu2k58kH
-	l0XqMeLNf0cy38l8kpV4FXIlB21S7/CsNc3gBxhLImXdgMMoEv1mlI8Y8rncT1oVvNcsBcGtwdN
-	txRG3pA0he+WtGKFHruPebHdqb3RqqB/eNCY9n1trP+UKsOmo5lMStXiAKO0lx2z5ptW7D/yLZt
-	Nh1jQ2vjkd+BZekPYpw2ha62BZSTkEA==
-X-Google-Smtp-Source: AGHT+IF5gJzNBXdtzBXv0OSH4ftjGJnmmybFv16rcAGk5hl57bAzoCs28S7e9w+ysKsSQWZRdIzUSQ==
-X-Received: by 2002:a05:6402:3482:b0:61d:249a:43fe with SMTP id 4fb4d7f45d1cf-62ed82c5a43mr4352436a12.24.1757725443498;
-        Fri, 12 Sep 2025 18:04:03 -0700 (PDT)
+        bh=5agMVhmWz9D3tLYyZnqIaP8gTBBboQ75Wn3D7w2vh+Q=;
+        b=FXwWTzh4151Ea/QwHIcHycsH4qEc64gb06mJ8aBoFz+Kuh3CYs9S3HbHz1/bAu/FVH
+         8eaihGHMGuAo+grQXT1IRlIeWnQJ9cPxUTInSkVZ7iZVgAutNDMAoD9kxtKzbwG72V/9
+         9j4Gm4PJbAWO3T4lSHStv8sAM1C0IjXAxZ3kAWNdoK76J7oG6k/PZ+ysy+vsZyHXwgmH
+         xZAhrdTfj1RegdfRnL6mp42rxRx0u40f/KPLBcSgpq368Ua93lBfEUeT4b/u4TK2b5vK
+         V+GzeZ4wwQ8kZCP32cWpBsYZmhVmOqEZZjHh0ZYD5ErLTUbilKwP8Pg3Se8fDJcXIt2h
+         P74w==
+X-Forwarded-Encrypted: i=1; AJvYcCUrteVyz2SfFJiUd8Kv2xJXgSKCt9qs7+RLFXs3Q9OHG9SkIxfb5YFBrbkgNMKOvR1kkyh+rmw7jigGJdY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwNr2AK+ERBPSDHV/m51VgBBLqQcwIfYD8lZ6szZ26CL2c40Lc+
+	dqVE/n623k4JRNAdb1cbDQWPfoz3vXG+asSln1ZaKAhllGVfS9kQjpgq
+X-Gm-Gg: ASbGncs/kCfYFJuB15Q/Uskdw2RPpP7ccpH+bxtRUsLKIQC7vAWlVthOqsJuUaGC1ih
+	hlpNcXIGL0omky5ZGD/w3Wxy5DMWb7vsLRkEj5aofhVkzn/JQs+p4VOXTx/+AgY3uzSwbKEcl/r
+	AKW7KAcO3cDDRYliiAgGgjTSfwv+wvOqn/ZOchlT3XG896ZwWMr4UN9iimLkBv2Pkw/3gTks/Ck
+	kADGQ+K9KFuK2AwhT1kxI7b73XqoTZNwh5TGp+wEvozilIS1gGdNuw1hJ0kdtch1JU7BynCtlWG
+	ev5q5bK8cEdAb6ytUjmnkEE+sEgqHDxD7BYfTFNVdt9PMDYJH0v7XD051wN66/iGJDF9fj3Bsf9
+	RfCYdupJpOR6X62fZLSk=
+X-Google-Smtp-Source: AGHT+IHBVL7U9njYQbYDntatJDbtYTvNiZyrYrp6F3Zot8CfKJXHpFfpfQfFxJfdQecWj/pXbevxCg==
+X-Received: by 2002:a17:907:980a:b0:b04:7ea3:a10c with SMTP id a640c23a62f3a-b07c3551576mr448691266b.8.1757725509440;
+        Fri, 12 Sep 2025 18:05:09 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-62ec6b6cec5sm4014207a12.1.2025.09.12.18.03.57
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b31291b0sm475372166b.34.2025.09.12.18.05.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 18:04:02 -0700 (PDT)
+        Fri, 12 Sep 2025 18:05:08 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -125,9 +125,9 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Thorsten Blum <thorsten.blum@linux.dev>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	patches@lists.linux.dev
-Subject: [PATCH RESEND 22/62] doc: remove obsolete mentions of pivot_root
-Date: Sat, 13 Sep 2025 00:38:01 +0000
-Message-ID: <20250913003842.41944-23-safinaskar@gmail.com>
+Subject: [PATCH RESEND 23/62] init: rename __initramfs_{start,size} to __builtin_initramfs_{start,size}
+Date: Sat, 13 Sep 2025 00:38:02 +0000
+Message-ID: <20250913003842.41944-24-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
 References: <20250913003842.41944-1-safinaskar@gmail.com>
@@ -150,44 +150,125 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-They refer to initrd, which was removed in previous commits
+Rename __initramfs_start to __builtin_initramfs_start and
+__initramfs_size to __builtin_initramfs_size .
+
+This is more clear
 
 Signed-off-by: Askar Safin <safinaskar@gmail.com>
 ---
- Documentation/admin-guide/device-mapper/dm-init.rst | 4 ++--
- Documentation/arch/arm/ixp4xx.rst                   | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/tools/relocs.c           | 2 +-
+ drivers/acpi/tables.c             | 4 ++--
+ include/asm-generic/vmlinux.lds.h | 6 +++---
+ include/linux/initrd.h            | 4 ++--
+ init/initramfs.c                  | 4 +---
+ usr/initramfs_data.S              | 4 ++--
+ 6 files changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/admin-guide/device-mapper/dm-init.rst b/Documentation/admin-guide/device-mapper/dm-init.rst
-index 981d6a907699..586bb38d716b 100644
---- a/Documentation/admin-guide/device-mapper/dm-init.rst
-+++ b/Documentation/admin-guide/device-mapper/dm-init.rst
-@@ -5,8 +5,8 @@ Early creation of mapped devices
- It is possible to configure a device-mapper device to act as the root device for
- your system in two ways.
+diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
+index 5778bc498415..4b4e556f1b52 100644
+--- a/arch/x86/tools/relocs.c
++++ b/arch/x86/tools/relocs.c
+@@ -87,7 +87,7 @@ static const char * const	sym_regex_kernel[S_NSYMTYPES] = {
+ 	"__(start|stop)_notes|"
+ 	"__end_rodata|"
+ 	"__end_rodata_aligned|"
+-	"__initramfs_start|"
++	"__builtin_initramfs_start|"
+ 	"(jiffies|jiffies_64)|"
+ #if ELF_BITS == 64
+ 	"__end_rodata_hpage_align|"
+diff --git a/drivers/acpi/tables.c b/drivers/acpi/tables.c
+index fa9bb8c8ce95..3160cb7dca00 100644
+--- a/drivers/acpi/tables.c
++++ b/drivers/acpi/tables.c
+@@ -429,8 +429,8 @@ void __init acpi_table_upgrade(void)
+ 	struct cpio_data file;
  
--The first is to build an initial ramdisk which boots to a minimal userspace
--which configures the device, then pivot_root(8) in to it.
-+The first is to build initramfs which boots to a minimal userspace
-+which configures the device, then switches to it.
+ 	if (IS_ENABLED(CONFIG_ACPI_TABLE_OVERRIDE_VIA_BUILTIN_INITRD)) {
+-		data = __initramfs_start;
+-		size = __initramfs_size;
++		data = __builtin_initramfs_start;
++		size = __builtin_initramfs_size;
+ 	} else {
+ 		data = (void *)initrd_start;
+ 		size = initrd_end - initrd_start;
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index ae2d2359b79e..a6bd2ff46f7e 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -46,8 +46,8 @@
+  * [_sdata, _edata] is the data section
+  *
+  * Some of the included output section have their own set of constants.
+- * Examples are: [__initramfs_start, __initramfs_end] for initramfs and
+- *               [__nosave_begin, __nosave_end] for the nosave data
++ * Examples are: [__builtin_initramfs_start, __builtin_initramfs_start + __builtin_initramfs_size]
++ * for initramfs and [__nosave_begin, __nosave_end] for the nosave data
+  */
  
- The second is to create one or more device-mappers using the module parameter
- "dm-mod.create=" through the kernel boot command line argument.
-diff --git a/Documentation/arch/arm/ixp4xx.rst b/Documentation/arch/arm/ixp4xx.rst
-index 17aafc610908..ac9cb28776c7 100644
---- a/Documentation/arch/arm/ixp4xx.rst
-+++ b/Documentation/arch/arm/ixp4xx.rst
-@@ -137,8 +137,8 @@ Intel IXDPG425 Development Platform
-    added. One issue with this board is that the mini-PCI slots only
-    have the 3.3v line connected, so you can't use a PCI to mini-PCI
-    adapter with an E100 card. So to NFS root you need to use either
--   the CSR or a WiFi card and a ramdisk that BOOTPs and then does
--   a pivot_root to NFS.
-+   the CSR or a WiFi card and initramfs that BOOTPs and then switches
-+   to NFS.
+ #include <asm-generic/codetag.lds.h>
+@@ -969,7 +969,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
+ #ifdef CONFIG_BLK_DEV_INITRD
+ #define INIT_RAM_FS							\
+ 	. = ALIGN(4);							\
+-	__initramfs_start = .;						\
++	__builtin_initramfs_start = .;						\
+ 	KEEP(*(.init.ramfs))						\
+ 	. = ALIGN(8);							\
+ 	KEEP(*(.init.ramfs.info))
+diff --git a/include/linux/initrd.h b/include/linux/initrd.h
+index cc389ef1a738..e49c7166dbb3 100644
+--- a/include/linux/initrd.h
++++ b/include/linux/initrd.h
+@@ -21,8 +21,8 @@ static inline void wait_for_initramfs(void) {}
+ extern phys_addr_t phys_initrd_start;
+ extern unsigned long phys_initrd_size;
  
- Motorola PrPMC1100 Processor Mezanine Card
- http://www.fountainsys.com
+-extern char __initramfs_start[];
+-extern unsigned long __initramfs_size;
++extern char __builtin_initramfs_start[];
++extern unsigned long __builtin_initramfs_size;
+ 
+ void console_on_rootfs(void);
+ 
+diff --git a/init/initramfs.c b/init/initramfs.c
+index 850cb0de873e..2866d7a0afd7 100644
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -597,8 +597,6 @@ static int __init initramfs_async_setup(char *str)
+ }
+ __setup("initramfs_async=", initramfs_async_setup);
+ 
+-extern char __initramfs_start[];
+-extern unsigned long __initramfs_size;
+ #include <linux/initrd.h>
+ #include <linux/kexec.h>
+ 
+@@ -695,7 +693,7 @@ static inline bool kexec_free_initrd(void)
+ static void __init do_populate_rootfs(void *unused, async_cookie_t cookie)
+ {
+ 	/* Load the built in initramfs */
+-	char *err = unpack_to_rootfs(__initramfs_start, __initramfs_size);
++	char *err = unpack_to_rootfs(__builtin_initramfs_start, __builtin_initramfs_size);
+ 	if (err)
+ 		panic_show_mem("%s", err); /* Failed to decompress INTERNAL initramfs */
+ 
+diff --git a/usr/initramfs_data.S b/usr/initramfs_data.S
+index cd67edc38797..64ca648a80e2 100644
+--- a/usr/initramfs_data.S
++++ b/usr/initramfs_data.S
+@@ -27,8 +27,8 @@ __irf_start:
+ .incbin "usr/initramfs_inc_data"
+ __irf_end:
+ .section .init.ramfs.info,"a"
+-.globl __initramfs_size
+-__initramfs_size:
++.globl __builtin_initramfs_size
++__builtin_initramfs_size:
+ #ifdef CONFIG_64BIT
+ 	.quad __irf_end - __irf_start
+ #else
 -- 
 2.47.2
 
