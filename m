@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-12116-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12115-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8DC8B55DFD
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 05:16:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B380EB55DFC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 05:16:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNxJm5lnNz3ccF;
-	Sat, 13 Sep 2025 13:16:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNxJg71Nxz3cbF;
+	Sat, 13 Sep 2025 13:16:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757725381;
-	cv=none; b=FNeePvkbgB3ancKE2UYwbKuQwe/y6kZsJaxS4pbBOglm80w9UqrKkyiX4maTTaKf0uqACUrpUREkRz0qKGiBXuZ6AQSo3js1N7IgDP1yrap1TPwB7jN36U4OihgDA9rBaeCB61CJ9qO/xnKSLSWRx2ira4kq5/6kDadDAeE0Ebj3oP7alUJ2aavPrMU8ttgMfYFM0bGZkQTryEkFYTX/XBQOqJQaafSs8MO6ltoNT1leUBlz1eZQw/JzivWBoM4xJt2RnIl6WnhUV+LQnQoYskfN89BxUTPFlaD0fZDhK+UpmESiLXLdhJa/LcAzvMsbDzX3A7+Ghhf7qeqzm8Vjlw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757725448;
+	cv=none; b=nAvNHFNrCVZMIEiRzTyJZ1g8GX1jfibzo/gSAF0OHTfN89PHNEz2OiP+0xbUFndXoIvRhPq+ej644sKPkxnrtjelR2XOTK7tR13Rc/KhGnNs4y3YZG079OoKv0PNVP0UI3pbZrl9F5Z220m0LzaZeVVGfi35+RDFH+Ts/zky4gmgL+dXlG42u92mMuGE9o673qEHQnoAmVbuEMISGCCAOxV4U8lW8Ktu5ea0/QW/hxKtikibqzoSBiQiCQLAZvw0686OH2u/dGEnDE9NuCquk/MojKY0duDShsNrMZkUZiIh/Gu580JXCJ9DgL30L90bwkthRajkfsS5kwTpAMy1xg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757725381; c=relaxed/relaxed;
-	bh=NF+T8e2PbYTcD1qVfLaQWGAohazGGctTG5y1SpryEQ8=;
+	t=1757725448; c=relaxed/relaxed;
+	bh=QP3KPO8+P4bejD4XvvOjfSlYK9K4kJKcAHCDef6XF+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/W9Hz2U+gmHfx813AKOlP8pvJF1PCglLuR86eMQojk1qw6jHotX1+jfHOphXTEk3S/2LOqHz3VGSgCb9jImGUMO01Og9CUomR7diF/t7zWWovmFe6JF7DPrtGHHPHXwX4OgwiVU4faMUO2Ia3W6L2FBkaU5m18e0kAcJqaNIO1Ebdjt6zUApRyQfKSeVBzAa0YhveOk0u9gaAoGyYnD3GTQtD5EZZI9LukVgtvbayh6W4LtdXHjz2Hj5wjW5elpKy2ZqolqBlNmQckHM9z8qQyEosGBFOPTVPCwqvQb/Rseanbz7uBJTZ3I8paEh2aIu7c2GdCnVahKyVf/uLcHLA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PpyABmav; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52b; helo=mail-ed1-x52b.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=N69ZfeonTLoKbTN1PI87qeZtaKhOIifI879ua8bbW2aotGU7k0SRy+9m5iZLvAtLdEht1bEp3RDZsbaJz4oK0v5wKm/gejAEZ9lwVyE1C98KH1pWYaJ0XDvyLBwZQRLIv2e58KuuaFzQB4e8Q0kCRCKvma9wPpHTYRj1dX4jz7WmnaSuVLTCAUopA9eFiNFwKlUBD2f4VsnGa6qMe5WN9gNwIM26eUPNe91VmCQWiNn7xgUTkLFlmeOdmzpB8cxQorC5H2gz5cujo6z9G8SsZ6u3qDiy5sjrJdtL3skdvJW54npmMKpxELLP6+WPwmI3BpVlE2oo2L/w50IW8dDTow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=co/aOtua; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52c; helo=mail-ed1-x52c.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PpyABmav;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=co/aOtua;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52b; helo=mail-ed1-x52b.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52c; helo=mail-ed1-x52c.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNtM773qyz2yrN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 11:02:59 +1000 (AEST)
-Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-61d7b2ec241so3043440a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 18:02:59 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNtNQ6Q21z2yrN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 11:04:06 +1000 (AEST)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-620724883e6so4851763a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 18:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757725377; x=1758330177; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1757725444; x=1758330244; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NF+T8e2PbYTcD1qVfLaQWGAohazGGctTG5y1SpryEQ8=;
-        b=PpyABmavSqTi7fDVwYjuMVSf7hghB2CDINBn4XeKWIlsNbBHFhyh2Ts3/g0fzed+F0
-         TVxBgFwf8zhl3dB+DcaF6uNcYv12dlIvBT1RDcRj73/Cscs8kXbyMeEPptFPRupqAOat
-         3XaCVdmifXg4SossPYq87ZMaoSJ5w62KWdjKdkouo99uP9jJG26Hz/x2bFarS06LmmUR
-         urX3YHeyRPO7mq/Uz0FMWnDLSTCYNnZd4WrLFuhHYvFIUY6YB0R7AECk31Vq0AoAFLZz
-         biyujZPJh0fwXC8qndDkoDThhfPB8xyC5x13JbJdYXKoFUrKS0cubpqloIexgfhxCQnd
-         1a2A==
+        bh=QP3KPO8+P4bejD4XvvOjfSlYK9K4kJKcAHCDef6XF+Q=;
+        b=co/aOtuaPIaAyeRjlhPfhwZt/docD2em+7C1XSAqodlPrjzhMquXM/qO8rABBHZnmW
+         K389NZZlz3Xj0o0A0QZ3HMhIDKcDx2e1u3Xo3g3h+d/XBaAu/lVWQ8hkqjipJ+7gZr/o
+         zlHDdI0qyWVMoFwsdZbK6fWQNGPrb4AdmSj3JrR1xaCju7lSwfB9hAMCGPqeTyrRCTeI
+         zHqh1mJOlCBmfhPIZRtI7o2lROP+UkUCM3zRgCoLxUZ7nCu51qtzYhvN1C+BPFTiUeqF
+         OEcG7vGnaoxNHd8Be1aIVGaYLgA0+Hu6tCc+mPNdI7R9nGbYJ8AiJEW6hos7KuXg9rkG
+         53pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757725377; x=1758330177;
+        d=1e100.net; s=20230601; t=1757725444; x=1758330244;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NF+T8e2PbYTcD1qVfLaQWGAohazGGctTG5y1SpryEQ8=;
-        b=r9nSh3cDiQQMmhSYWuHe9MbgGk2a5rBKNFQJg8eva9I8fj0iPG3pSeeQQPfwdyMuxJ
-         ym20HOIGIwfprYITwpLEPSn1kmzjqKT5G0Ca2bTAJCve64kAOf0L+nQPhjQcd2Kcbuo2
-         WNG+2P7yg2EtwJYtpaW7DzUVXm8xwt9/IKFlXWiFw73ZZYklRlSx51KkJdPb8D79/HiM
-         OCMG65ORkkrqddB7LT3ReCwDG3ciQO79y/Ye29z3IkwdqOrqE25cj33Wu/K/FvwZ+/zw
-         t57AdchTECqdMqVC7FwJ6+dTUn/GT8kLgi2lf232VDey0n6hL5Mm3XXDH+ayUvp9F6yk
-         7r3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXiBGZZI9EzlBYC+Xq4AwMvElylM+IX+UtPNVQk583h8hbJ6UXLUKlL4Kcrn6yuyUVA5dB+/iDFfRSVTR0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzhQoEWPbkMNrtzyiy/rtD7mhXinS5qf4Bizot9kaJplon79+lP
-	XNlE4RWLqX0qRJ6w3Kl2S58zxcAmvsbErsYVSKYpKY9kXE3J5fuWwBuf
-X-Gm-Gg: ASbGncsFb6p4OFsPN+Ro5o0vVJ3+vGIdcfzf+9VYbe/tHuINlaZ6qd/LZXYq3R0cmrY
-	sEKEAmIzC5STmGTsvw6HdkG98992aN+SnLTAmE69QsY67WAoE6xiaSu4w0B/ub+Ds1ymLiqtoom
-	fVJfxGiivYSt6h3Tk2awqozs6U0JJ/3J+ggT8udchsekvQo8R/NAaSoJtsOoRQT4uqpFF5k+kLp
-	Lpdzy4LV0W41c+1tKnv9Cc0ru8u7SvBeD8aPTxaQrcXCysBY8qqoV51m8viEoBO1enabilGgawR
-	oLbPphn5F2lBouwaa4xUF5bUiUZeT7LB3rI9CTQFsKwBYn1eiUKmGOBcbBi0h50wpGD+xC17OO0
-	X1MF9PM5f1Fz9YO89/yck5X73/BjploKEum1nyHrE
-X-Google-Smtp-Source: AGHT+IFAenQpr+eqgUw7A0V0nlBuRy0elv8T6Skb87OgHRBdD5XZP8Q5CVFdy6An9tI7tJa4OQ9j+A==
-X-Received: by 2002:a17:907:d19:b0:b07:88d0:b with SMTP id a640c23a62f3a-b07c3acc5c1mr462636966b.63.1757725376510;
-        Fri, 12 Sep 2025 18:02:56 -0700 (PDT)
+        bh=QP3KPO8+P4bejD4XvvOjfSlYK9K4kJKcAHCDef6XF+Q=;
+        b=QkGtbx5KfTVb25yAD4OVogiDNcTGnbL3PqrR7GzMJg5ClLhrgWhwSsMpcr2EpsngaU
+         Q9w3PARf0JnIBsu/EQTPQlQ0Rlrs8pS0kIFr175kdzYkDA2nj49k8FXwb/h64+sXmPkt
+         JxkS6pv3TvEQBXk9izs8F0MshQRnjMpV44FeNysn95T0AYdFItS03Gyitb6h1E9w15rt
+         ciPg91y2Gr0G3po6Foq6xpQsB1O7t74fByWLPixHFZPH3WsdZRj6I0A5yEzHDjD2/mzL
+         oOG/8DYWH8ZiKYZ7a9sjnPwsgz/i0E9rSB4CWVVV7CtiXH0kCB+tWBQDdQFqXvjZDlzn
+         PvDw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNtV9Bt64P9ovQCqUK3+2NarNsy8DOraSYIo/3Jck9myAmnoiz6qcnNHpwl5pjhL6cjz+G75jf/XD268o=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxLpVOQeKvgbGMivX+1bf/3BrIRPg8OYtR98ayCOgMCa6i/TIwo
+	cvgZryoRmnIL/q5qlUfrlC2OGRXJlm57mCsgMTvZq6EhiVpI0MZrizaX
+X-Gm-Gg: ASbGnctiO6zGpdcI2NErpko8iTgf30fyvop5gGVfWMYOa6m42ZnL5vYBgtycRItEDtz
+	UbBXHeDfxHBiPaJBG/BO3jDkjOrJxV6yxOJT0XfcprH5eB9lLfjN5HAiF6xYYJXQHTKsuAODs4m
+	7G8+mkYJwBSmBFlvnw94R+AVVvVLCVsF3BTy9/tM+m/QNq3DiGcBZw/x1r7Lb6LYMMRVu2k58kH
+	l0XqMeLNf0cy38l8kpV4FXIlB21S7/CsNc3gBxhLImXdgMMoEv1mlI8Y8rncT1oVvNcsBcGtwdN
+	txRG3pA0he+WtGKFHruPebHdqb3RqqB/eNCY9n1trP+UKsOmo5lMStXiAKO0lx2z5ptW7D/yLZt
+	Nh1jQ2vjkd+BZekPYpw2ha62BZSTkEA==
+X-Google-Smtp-Source: AGHT+IF5gJzNBXdtzBXv0OSH4ftjGJnmmybFv16rcAGk5hl57bAzoCs28S7e9w+ysKsSQWZRdIzUSQ==
+X-Received: by 2002:a05:6402:3482:b0:61d:249a:43fe with SMTP id 4fb4d7f45d1cf-62ed82c5a43mr4352436a12.24.1757725443498;
+        Fri, 12 Sep 2025 18:04:03 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b3128525sm468738866b.31.2025.09.12.18.02.52
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-62ec6b6cec5sm4014207a12.1.2025.09.12.18.03.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 18:02:56 -0700 (PDT)
+        Fri, 12 Sep 2025 18:04:02 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -125,9 +125,9 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Thorsten Blum <thorsten.blum@linux.dev>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	patches@lists.linux.dev
-Subject: [PATCH RESEND 21/62] init: remove all mentions of root=/dev/ram*
-Date: Sat, 13 Sep 2025 00:38:00 +0000
-Message-ID: <20250913003842.41944-22-safinaskar@gmail.com>
+Subject: [PATCH RESEND 22/62] doc: remove obsolete mentions of pivot_root
+Date: Sat, 13 Sep 2025 00:38:01 +0000
+Message-ID: <20250913003842.41944-23-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
 References: <20250913003842.41944-1-safinaskar@gmail.com>
@@ -150,641 +150,44 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Initrd support is removed, so root=/dev/ram* is never correct
+They refer to initrd, which was removed in previous commits
 
 Signed-off-by: Askar Safin <safinaskar@gmail.com>
 ---
- Documentation/admin-guide/kernel-parameters.txt          | 3 +--
- Documentation/arch/m68k/kernel-options.rst               | 9 ++-------
- arch/arm/boot/dts/arm/integratorap.dts                   | 2 +-
- arch/arm/boot/dts/arm/integratorcp.dts                   | 2 +-
- arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-cmm.dts     | 2 +-
- .../boot/dts/aspeed/aspeed-bmc-facebook-galaxy100.dts    | 2 +-
- .../arm/boot/dts/aspeed/aspeed-bmc-facebook-minipack.dts | 2 +-
- .../arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge100.dts | 2 +-
- arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge40.dts | 2 +-
- arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yamp.dts    | 2 +-
- .../boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi  | 2 +-
- arch/arm/boot/dts/hisilicon/hi3620-hi4511.dts            | 2 +-
- .../boot/dts/intel/ixp/intel-ixp42x-welltech-epbx100.dts | 2 +-
- arch/arm/boot/dts/nspire/nspire-classic.dtsi             | 2 +-
- arch/arm/boot/dts/nspire/nspire-cx.dts                   | 2 +-
- arch/arm/boot/dts/samsung/exynos4210-origen.dts          | 2 +-
- arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts        | 2 +-
- arch/arm/boot/dts/samsung/exynos4412-smdk4412.dts        | 2 +-
- arch/arm/boot/dts/samsung/exynos5250-smdk5250.dts        | 2 +-
- arch/arm/boot/dts/st/ste-nomadik-nhk15.dts               | 2 +-
- arch/arm/boot/dts/st/ste-nomadik-s8815.dts               | 2 +-
- arch/arm/boot/dts/st/stm32429i-eval.dts                  | 2 +-
- arch/arm/boot/dts/st/stm32746g-eval.dts                  | 2 +-
- arch/arm/boot/dts/st/stm32f429-disco.dts                 | 2 +-
- arch/arm/boot/dts/st/stm32f469-disco.dts                 | 2 +-
- arch/arm/boot/dts/st/stm32f746-disco.dts                 | 2 +-
- arch/arm/boot/dts/st/stm32f769-disco.dts                 | 2 +-
- arch/arm/boot/dts/st/stm32h743i-disco.dts                | 2 +-
- arch/arm/boot/dts/st/stm32h743i-eval.dts                 | 2 +-
- arch/arm/boot/dts/st/stm32h747i-disco.dts                | 2 +-
- arch/arm/boot/dts/st/stm32h750i-art-pi.dts               | 2 +-
- arch/arm/configs/assabet_defconfig                       | 2 +-
- arch/arm/configs/at91_dt_defconfig                       | 2 +-
- arch/arm/configs/exynos_defconfig                        | 2 +-
- arch/arm/configs/lpc32xx_defconfig                       | 2 +-
- arch/arm/configs/pxa_defconfig                           | 2 +-
- arch/arm/configs/s3c6400_defconfig                       | 2 +-
- arch/arm/configs/s5pv210_defconfig                       | 2 +-
- arch/arm/configs/sama5_defconfig                         | 2 +-
- arch/arm/configs/u8500_defconfig                         | 2 +-
- arch/parisc/defpalo.conf                                 | 2 +-
- arch/s390/boot/ipl_parm.c                                | 2 +-
- arch/xtensa/Kconfig                                      | 2 +-
- arch/xtensa/boot/dts/csp.dts                             | 2 +-
- 44 files changed, 45 insertions(+), 51 deletions(-)
+ Documentation/admin-guide/device-mapper/dm-init.rst | 4 ++--
+ Documentation/arch/arm/ixp4xx.rst                   | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index e862a7b1d2ec..a259f2bdba0f 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6407,8 +6407,7 @@
- 			Usually this is a block device specifier of some kind,
- 			see the early_lookup_bdev comment in
- 			block/early-lookup.c for details.
--			Alternatively this can be "ram" for the legacy initial
--			ramdisk, "nfs" and "cifs" for root on a network file
-+			Alternatively this can be "nfs" and "cifs" for root on a network file
- 			system, or "mtd" and "ubi" for mounting from raw flash.
+diff --git a/Documentation/admin-guide/device-mapper/dm-init.rst b/Documentation/admin-guide/device-mapper/dm-init.rst
+index 981d6a907699..586bb38d716b 100644
+--- a/Documentation/admin-guide/device-mapper/dm-init.rst
++++ b/Documentation/admin-guide/device-mapper/dm-init.rst
+@@ -5,8 +5,8 @@ Early creation of mapped devices
+ It is possible to configure a device-mapper device to act as the root device for
+ your system in two ways.
  
- 	rootdelay=	[KNL] Delay (in seconds) to pause before attempting to
-diff --git a/Documentation/arch/m68k/kernel-options.rst b/Documentation/arch/m68k/kernel-options.rst
-index f6469ebeb2c7..a508ee8efa8b 100644
---- a/Documentation/arch/m68k/kernel-options.rst
-+++ b/Documentation/arch/m68k/kernel-options.rst
-@@ -73,7 +73,6 @@ hardcoded name to number mappings. The name must always be a
- combination of two or three letters, followed by a decimal number.
- Valid names are::
+-The first is to build an initial ramdisk which boots to a minimal userspace
+-which configures the device, then pivot_root(8) in to it.
++The first is to build initramfs which boots to a minimal userspace
++which configures the device, then switches to it.
  
--  /dev/ram: -> 0x0100 (initial ramdisk)
-   /dev/hda: -> 0x0300 (first IDE disk)
-   /dev/hdb: -> 0x0340 (second IDE disk)
-   /dev/sda: -> 0x0800 (first SCSI disk)
-@@ -86,12 +85,8 @@ Valid names are::
- The name must be followed by a decimal number, that stands for the
- partition number. Internally, the value of the number is just
- added to the device number mentioned in the table above. The
--exceptions are /dev/ram and /dev/fd, where /dev/ram refers to an
--initial ramdisk loaded by your bootstrap program (please consult the
--instructions for your bootstrap program to find out how to load an
--initial ramdisk). As of kernel version 2.0.18 you must specify
--/dev/ram as the root device if you want to boot from an initial
--ramdisk. For the floppy devices, /dev/fd, the number stands for the
-+exception is /dev/fd.
-+For the floppy devices, /dev/fd, the number stands for the
- floppy drive number (there are no partitions on floppy disks). I.e.,
- /dev/fd0 stands for the first drive, /dev/fd1 for the second, and so
- on. Since the number is just added, you can also force the disk format
-diff --git a/arch/arm/boot/dts/arm/integratorap.dts b/arch/arm/boot/dts/arm/integratorap.dts
-index 9b6a1dbaf265..2e43a8291d40 100644
---- a/arch/arm/boot/dts/arm/integratorap.dts
-+++ b/arch/arm/boot/dts/arm/integratorap.dts
-@@ -53,7 +53,7 @@ aliases {
- 	};
+ The second is to create one or more device-mappers using the module parameter
+ "dm-mod.create=" through the kernel boot command line argument.
+diff --git a/Documentation/arch/arm/ixp4xx.rst b/Documentation/arch/arm/ixp4xx.rst
+index 17aafc610908..ac9cb28776c7 100644
+--- a/Documentation/arch/arm/ixp4xx.rst
++++ b/Documentation/arch/arm/ixp4xx.rst
+@@ -137,8 +137,8 @@ Intel IXDPG425 Development Platform
+    added. One issue with this board is that the mini-PCI slots only
+    have the 3.3v line connected, so you can't use a PCI to mini-PCI
+    adapter with an E100 card. So to NFS root you need to use either
+-   the CSR or a WiFi card and a ramdisk that BOOTPs and then does
+-   a pivot_root to NFS.
++   the CSR or a WiFi card and initramfs that BOOTPs and then switches
++   to NFS.
  
- 	chosen {
--		bootargs = "root=/dev/ram0 console=ttyAM0,38400n8 earlyprintk";
-+		bootargs = "console=ttyAM0,38400n8 earlyprintk";
- 	};
- 
- 	/* 24 MHz chrystal on the Integrator/AP development board */
-diff --git a/arch/arm/boot/dts/arm/integratorcp.dts b/arch/arm/boot/dts/arm/integratorcp.dts
-index 8ad1a8957ace..2ac140741752 100644
---- a/arch/arm/boot/dts/arm/integratorcp.dts
-+++ b/arch/arm/boot/dts/arm/integratorcp.dts
-@@ -11,7 +11,7 @@ / {
- 	compatible = "arm,integrator-cp";
- 
- 	chosen {
--		bootargs = "root=/dev/ram0 console=ttyAMA0,38400n8 earlyprintk";
-+		bootargs = "console=ttyAMA0,38400n8 earlyprintk";
- 	};
- 
- 	cpus {
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-cmm.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-cmm.dts
-index 24153868cc00..f4ae167e89f0 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-cmm.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-cmm.dts
-@@ -280,7 +280,7 @@ aliases {
- 
- 	chosen {
- 		stdout-path = &uart1;
--		bootargs = "console=ttyS1,9600n8 root=/dev/ram rw earlycon";
-+		bootargs = "console=ttyS1,9600n8 rw earlycon";
- 	};
- 
- 	ast-adc-hwmon {
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-galaxy100.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-galaxy100.dts
-index 60e875ac2461..d51ee3aaa461 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-galaxy100.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-galaxy100.dts
-@@ -10,7 +10,7 @@ / {
- 
- 	chosen {
- 		stdout-path = &uart5;
--		bootargs = "console=ttyS0,9600n8 root=/dev/ram rw";
-+		bootargs = "console=ttyS0,9600n8 rw";
- 	};
- 
- 	ast-adc-hwmon {
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-minipack.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-minipack.dts
-index aafd1042b6e5..4233d0d857b8 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-minipack.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-minipack.dts
-@@ -230,7 +230,7 @@ aliases {
- 
- 	chosen {
- 		stdout-path = &uart1;
--		bootargs = "debug console=ttyS1,9600n8 root=/dev/ram rw";
-+		bootargs = "debug console=ttyS1,9600n8 rw";
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge100.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge100.dts
-index 97cd11c3d9a5..23f9d1c690f8 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge100.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge100.dts
-@@ -10,7 +10,7 @@ / {
- 
- 	chosen {
- 		stdout-path = &uart3;
--		bootargs = "console=ttyS2,9600n8 root=/dev/ram rw";
-+		bootargs = "console=ttyS2,9600n8 rw";
- 	};
- 
- 	ast-adc-hwmon {
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge40.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge40.dts
-index 6624855d8ebd..e9b1b51f9f7a 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge40.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge40.dts
-@@ -10,7 +10,7 @@ / {
- 
- 	chosen {
- 		stdout-path = &uart3;
--		bootargs = "console=ttyS2,9600n8 root=/dev/ram rw";
-+		bootargs = "console=ttyS2,9600n8 rw";
- 	};
- 
- 	ast-adc-hwmon {
-diff --git a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yamp.dts b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yamp.dts
-index 98fe0d6c8188..578ca0dc9647 100644
---- a/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yamp.dts
-+++ b/arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yamp.dts
-@@ -21,7 +21,7 @@ aliases {
- 
- 	chosen {
- 		stdout-path = &uart5;
--		bootargs = "console=ttyS0,9600n8 root=/dev/ram rw";
-+		bootargs = "console=ttyS0,9600n8 rw";
- 	};
- };
- 
-diff --git a/arch/arm/boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi b/arch/arm/boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi
-index 00e5887c926f..3dbf0cc70f48 100644
---- a/arch/arm/boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi
-+++ b/arch/arm/boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi
-@@ -12,7 +12,7 @@ aliases {
- 	};
- 
- 	chosen {
--		bootargs = "console=ttyS0,9600n8 root=/dev/ram rw vmalloc=640M";
-+		bootargs = "console=ttyS0,9600n8 rw vmalloc=640M";
- 	};
- 
- 	memory@80000000 {
-diff --git a/arch/arm/boot/dts/hisilicon/hi3620-hi4511.dts b/arch/arm/boot/dts/hisilicon/hi3620-hi4511.dts
-index f1c816a1d7cf..bbd62c6ad280 100644
---- a/arch/arm/boot/dts/hisilicon/hi3620-hi4511.dts
-+++ b/arch/arm/boot/dts/hisilicon/hi3620-hi4511.dts
-@@ -13,7 +13,7 @@ / {
- 	compatible = "hisilicon,hi3620-hi4511";
- 
- 	chosen {
--		bootargs = "root=/dev/ram0";
-+		bootargs = "";
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/intel/ixp/intel-ixp42x-welltech-epbx100.dts b/arch/arm/boot/dts/intel/ixp/intel-ixp42x-welltech-epbx100.dts
-index c550c421b659..96105137a364 100644
---- a/arch/arm/boot/dts/intel/ixp/intel-ixp42x-welltech-epbx100.dts
-+++ b/arch/arm/boot/dts/intel/ixp/intel-ixp42x-welltech-epbx100.dts
-@@ -20,7 +20,7 @@ memory@0 {
- 	};
- 
- 	chosen {
--		bootargs = "console=ttyS0,115200n8 root=/dev/ram0 initrd=0x00800000,9M";
-+		bootargs = "console=ttyS0,115200n8 initrd=0x00800000,9M";
- 		stdout-path = "uart0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/nspire/nspire-classic.dtsi b/arch/arm/boot/dts/nspire/nspire-classic.dtsi
-index 0ee53d3ecd54..224cf5921e26 100644
---- a/arch/arm/boot/dts/nspire/nspire-classic.dtsi
-+++ b/arch/arm/boot/dts/nspire/nspire-classic.dtsi
-@@ -81,6 +81,6 @@ panel_in: endpoint {
- 		};
- 	};
- 	chosen {
--		bootargs = "debug earlyprintk console=tty0 console=ttyS0,115200n8 root=/dev/ram0";
-+		bootargs = "debug earlyprintk console=tty0 console=ttyS0,115200n8";
- 	};
- };
-diff --git a/arch/arm/boot/dts/nspire/nspire-cx.dts b/arch/arm/boot/dts/nspire/nspire-cx.dts
-index debeff0ec010..08155d15cca9 100644
---- a/arch/arm/boot/dts/nspire/nspire-cx.dts
-+++ b/arch/arm/boot/dts/nspire/nspire-cx.dts
-@@ -165,6 +165,6 @@ panel_in: endpoint {
- 		};
- 	};
- 	chosen {
--		bootargs = "debug earlyprintk console=tty0 console=ttyAMA0,115200n8 root=/dev/ram0";
-+		bootargs = "debug earlyprintk console=tty0 console=ttyAMA0,115200n8";
- 	};
- };
-diff --git a/arch/arm/boot/dts/samsung/exynos4210-origen.dts b/arch/arm/boot/dts/samsung/exynos4210-origen.dts
-index 4dcf794bd18b..b714073143e7 100644
---- a/arch/arm/boot/dts/samsung/exynos4210-origen.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4210-origen.dts
-@@ -36,7 +36,7 @@ aliases {
- 	};
- 
- 	chosen {
--		bootargs = "root=/dev/ram0 rw initrd=0x41000000,8M init=/linuxrc";
-+		bootargs = "rw initrd=0x41000000,8M init=/linuxrc";
- 		stdout-path = "serial2:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts b/arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts
-index 4cdeddeff3fc..2a3c2a4c0e90 100644
---- a/arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts
-@@ -30,7 +30,7 @@ aliases {
- 	};
- 
- 	chosen {
--		bootargs = "root=/dev/ram0 rw initrd=0x41000000,8M init=/linuxrc";
-+		bootargs = "rw initrd=0x41000000,8M init=/linuxrc";
- 		stdout-path = "serial1:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/samsung/exynos4412-smdk4412.dts b/arch/arm/boot/dts/samsung/exynos4412-smdk4412.dts
-index 4b18cc55d6ca..920af4f91c75 100644
---- a/arch/arm/boot/dts/samsung/exynos4412-smdk4412.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4412-smdk4412.dts
-@@ -27,7 +27,7 @@ aliases {
- 	};
- 
- 	chosen {
--		bootargs = "root=/dev/ram0 rw initrd=0x41000000,8M init=/linuxrc";
-+		bootargs = "rw initrd=0x41000000,8M init=/linuxrc";
- 		stdout-path = "serial1:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/samsung/exynos5250-smdk5250.dts b/arch/arm/boot/dts/samsung/exynos5250-smdk5250.dts
-index 4164c7c2a3eb..e5cfff1ffad0 100644
---- a/arch/arm/boot/dts/samsung/exynos5250-smdk5250.dts
-+++ b/arch/arm/boot/dts/samsung/exynos5250-smdk5250.dts
-@@ -27,7 +27,7 @@ memory@40000000 {
- 	};
- 
- 	chosen {
--		bootargs = "root=/dev/ram0 rw initrd=0x41000000,8M init=/linuxrc";
-+		bootargs = "rw initrd=0x41000000,8M init=/linuxrc";
- 		stdout-path = "serial2:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/st/ste-nomadik-nhk15.dts b/arch/arm/boot/dts/st/ste-nomadik-nhk15.dts
-index cdff33063d6f..8a22425cdb78 100644
---- a/arch/arm/boot/dts/st/ste-nomadik-nhk15.dts
-+++ b/arch/arm/boot/dts/st/ste-nomadik-nhk15.dts
-@@ -13,7 +13,7 @@ / {
- 	compatible = "st,nomadik-nhk-15";
- 
- 	chosen {
--		bootargs = "root=/dev/ram0 console=ttyAMA1,115200n8 earlyprintk";
-+		bootargs = "console=ttyAMA1,115200n8 earlyprintk";
- 	};
- 
- 	aliases {
-diff --git a/arch/arm/boot/dts/st/ste-nomadik-s8815.dts b/arch/arm/boot/dts/st/ste-nomadik-s8815.dts
-index c905c2643a12..7f418d8a2370 100644
---- a/arch/arm/boot/dts/st/ste-nomadik-s8815.dts
-+++ b/arch/arm/boot/dts/st/ste-nomadik-s8815.dts
-@@ -13,7 +13,7 @@ / {
- 	compatible = "calaosystems,usb-s8815";
- 
- 	chosen {
--		bootargs = "root=/dev/ram0 console=ttyAMA1,115200n8 earlyprintk";
-+		bootargs = "console=ttyAMA1,115200n8 earlyprintk";
- 	};
- 
- 	aliases {
-diff --git a/arch/arm/boot/dts/st/stm32429i-eval.dts b/arch/arm/boot/dts/st/stm32429i-eval.dts
-index afa417b34b25..7e8834af20c6 100644
---- a/arch/arm/boot/dts/st/stm32429i-eval.dts
-+++ b/arch/arm/boot/dts/st/stm32429i-eval.dts
-@@ -57,7 +57,7 @@ / {
- 	compatible = "st,stm32429i-eval", "st,stm32f429";
- 
- 	chosen {
--		bootargs = "root=/dev/ram";
-+		bootargs = "";
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/st/stm32746g-eval.dts b/arch/arm/boot/dts/st/stm32746g-eval.dts
-index e9ac37b6eca0..43a52b26fdaa 100644
---- a/arch/arm/boot/dts/st/stm32746g-eval.dts
-+++ b/arch/arm/boot/dts/st/stm32746g-eval.dts
-@@ -51,7 +51,7 @@ / {
- 	compatible = "st,stm32746g-eval", "st,stm32f746";
- 
- 	chosen {
--		bootargs = "root=/dev/ram";
-+		bootargs = "";
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/st/stm32f429-disco.dts b/arch/arm/boot/dts/st/stm32f429-disco.dts
-index a3cb4aabdd5a..68d822d79988 100644
---- a/arch/arm/boot/dts/st/stm32f429-disco.dts
-+++ b/arch/arm/boot/dts/st/stm32f429-disco.dts
-@@ -57,7 +57,7 @@ / {
- 	compatible = "st,stm32f429i-disco", "st,stm32f429";
- 
- 	chosen {
--		bootargs = "root=/dev/ram";
-+		bootargs = "";
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/st/stm32f469-disco.dts b/arch/arm/boot/dts/st/stm32f469-disco.dts
-index 8a4f8ddd083d..31b4abbc608d 100644
---- a/arch/arm/boot/dts/st/stm32f469-disco.dts
-+++ b/arch/arm/boot/dts/st/stm32f469-disco.dts
-@@ -56,7 +56,7 @@ / {
- 	compatible = "st,stm32f469i-disco", "st,stm32f469";
- 
- 	chosen {
--		bootargs = "root=/dev/ram";
-+		bootargs = "";
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/st/stm32f746-disco.dts b/arch/arm/boot/dts/st/stm32f746-disco.dts
-index b57dbdce2f40..3cb04547228e 100644
---- a/arch/arm/boot/dts/st/stm32f746-disco.dts
-+++ b/arch/arm/boot/dts/st/stm32f746-disco.dts
-@@ -52,7 +52,7 @@ / {
- 	compatible = "st,stm32f746-disco", "st,stm32f746";
- 
- 	chosen {
--		bootargs = "root=/dev/ram";
-+		bootargs = "";
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/st/stm32f769-disco.dts b/arch/arm/boot/dts/st/stm32f769-disco.dts
-index 535cfdc4681c..13f96ee0b3de 100644
---- a/arch/arm/boot/dts/st/stm32f769-disco.dts
-+++ b/arch/arm/boot/dts/st/stm32f769-disco.dts
-@@ -51,7 +51,7 @@ / {
- 	compatible = "st,stm32f769-disco", "st,stm32f769";
- 
- 	chosen {
--		bootargs = "root=/dev/ram";
-+		bootargs = "";
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/st/stm32h743i-disco.dts b/arch/arm/boot/dts/st/stm32h743i-disco.dts
-index 8451a54a9a08..8bdb24fcf0c7 100644
---- a/arch/arm/boot/dts/st/stm32h743i-disco.dts
-+++ b/arch/arm/boot/dts/st/stm32h743i-disco.dts
-@@ -49,7 +49,7 @@ / {
- 	compatible = "st,stm32h743i-disco", "st,stm32h743";
- 
- 	chosen {
--		bootargs = "root=/dev/ram";
-+		bootargs = "";
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/st/stm32h743i-eval.dts b/arch/arm/boot/dts/st/stm32h743i-eval.dts
-index 4b0ced27b80e..c3de36d94acf 100644
---- a/arch/arm/boot/dts/st/stm32h743i-eval.dts
-+++ b/arch/arm/boot/dts/st/stm32h743i-eval.dts
-@@ -49,7 +49,7 @@ / {
- 	compatible = "st,stm32h743i-eval", "st,stm32h743";
- 
- 	chosen {
--		bootargs = "root=/dev/ram";
-+		bootargs = "";
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/st/stm32h747i-disco.dts b/arch/arm/boot/dts/st/stm32h747i-disco.dts
-index 99f0255dae8e..a57341e2d95c 100644
---- a/arch/arm/boot/dts/st/stm32h747i-disco.dts
-+++ b/arch/arm/boot/dts/st/stm32h747i-disco.dts
-@@ -14,7 +14,7 @@ / {
- 	compatible = "st,stm32h747i-disco", "st,stm32h747";
- 
- 	chosen {
--		bootargs = "root=/dev/ram";
-+		bootargs = "";
- 		stdout-path = "serial0:115200n8";
- 	};
- 
-diff --git a/arch/arm/boot/dts/st/stm32h750i-art-pi.dts b/arch/arm/boot/dts/st/stm32h750i-art-pi.dts
-index 56c53e262da7..b4bd8315464c 100644
---- a/arch/arm/boot/dts/st/stm32h750i-art-pi.dts
-+++ b/arch/arm/boot/dts/st/stm32h750i-art-pi.dts
-@@ -54,7 +54,7 @@ / {
- 	compatible = "st,stm32h750i-art-pi", "st,stm32h750";
- 
- 	chosen {
--		bootargs = "root=/dev/ram";
-+		bootargs = "";
- 		stdout-path = "serial0:2000000n8";
- 	};
- 
-diff --git a/arch/arm/configs/assabet_defconfig b/arch/arm/configs/assabet_defconfig
-index 07ab9eaac4af..56fce6c08945 100644
---- a/arch/arm/configs/assabet_defconfig
-+++ b/arch/arm/configs/assabet_defconfig
-@@ -5,7 +5,7 @@ CONFIG_ARCH_MULTI_V4=y
- # CONFIG_ARCH_MULTI_V7 is not set
- CONFIG_ARCH_SA1100=y
- CONFIG_SA1100_ASSABET=y
--CONFIG_CMDLINE="mem=32M console=ttySA0,38400n8 initrd=0xc0800000,3M root=/dev/ram"
-+CONFIG_CMDLINE="mem=32M console=ttySA0,38400n8 initrd=0xc0800000,3M"
- CONFIG_FPE_NWFPE=y
- CONFIG_PM=y
- CONFIG_MODULES=y
-diff --git a/arch/arm/configs/at91_dt_defconfig b/arch/arm/configs/at91_dt_defconfig
-index ff13e1ecf4bb..b53c7906d317 100644
---- a/arch/arm/configs/at91_dt_defconfig
-+++ b/arch/arm/configs/at91_dt_defconfig
-@@ -23,7 +23,7 @@ CONFIG_UACCESS_WITH_MEMCPY=y
- # CONFIG_ATAGS is not set
- CONFIG_ARM_APPENDED_DTB=y
- CONFIG_ARM_ATAG_DTB_COMPAT=y
--CONFIG_CMDLINE="console=ttyS0,115200 initrd=0x21100000,25165824 root=/dev/ram0 rw"
-+CONFIG_CMDLINE="console=ttyS0,115200 initrd=0x21100000,25165824 rw"
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
- # CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
-diff --git a/arch/arm/configs/exynos_defconfig b/arch/arm/configs/exynos_defconfig
-index 77d3521f55d4..02a903816baa 100644
---- a/arch/arm/configs/exynos_defconfig
-+++ b/arch/arm/configs/exynos_defconfig
-@@ -15,7 +15,7 @@ CONFIG_HIGHMEM=y
- CONFIG_SECCOMP=y
- CONFIG_ARM_APPENDED_DTB=y
- CONFIG_ARM_ATAG_DTB_COMPAT=y
--CONFIG_CMDLINE="root=/dev/ram0 rw initrd=0x41000000,8M console=ttySAC1,115200 init=/linuxrc mem=256M"
-+CONFIG_CMDLINE="rw initrd=0x41000000,8M console=ttySAC1,115200 init=/linuxrc mem=256M"
- CONFIG_CPU_FREQ=y
- CONFIG_CPU_FREQ_STAT=y
- CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
-diff --git a/arch/arm/configs/lpc32xx_defconfig b/arch/arm/configs/lpc32xx_defconfig
-index 9afccd76446b..a98d1125b9aa 100644
---- a/arch/arm/configs/lpc32xx_defconfig
-+++ b/arch/arm/configs/lpc32xx_defconfig
-@@ -13,7 +13,7 @@ CONFIG_ARCH_LPC32XX=y
- CONFIG_AEABI=y
- CONFIG_ARM_APPENDED_DTB=y
- CONFIG_ARM_ATAG_DTB_COMPAT=y
--CONFIG_CMDLINE="console=ttyS0,115200n81 root=/dev/ram0"
-+CONFIG_CMDLINE="console=ttyS0,115200n81"
- CONFIG_CPU_IDLE=y
- CONFIG_VFP=y
- CONFIG_JUMP_LABEL=y
-diff --git a/arch/arm/configs/pxa_defconfig b/arch/arm/configs/pxa_defconfig
-index 1a80602c1284..0c4b9389d4d6 100644
---- a/arch/arm/configs/pxa_defconfig
-+++ b/arch/arm/configs/pxa_defconfig
-@@ -22,7 +22,7 @@ CONFIG_MACH_AKITA=y
- CONFIG_MACH_BORZOI=y
- CONFIG_AEABI=y
- CONFIG_ARCH_FORCE_MAX_ORDER=8
--CONFIG_CMDLINE="root=/dev/ram0 ro"
-+CONFIG_CMDLINE="ro"
- CONFIG_CPU_FREQ=y
- CONFIG_CPU_FREQ_STAT=y
- CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
-diff --git a/arch/arm/configs/s3c6400_defconfig b/arch/arm/configs/s3c6400_defconfig
-index 23635d5b9322..a5018ce274ec 100644
---- a/arch/arm/configs/s3c6400_defconfig
-+++ b/arch/arm/configs/s3c6400_defconfig
-@@ -4,7 +4,7 @@ CONFIG_ARCH_MULTI_V6=y
- # CONFIG_ARCH_MULTI_V7 is not set
- CONFIG_ARCH_S3C64XX=y
- CONFIG_MACH_WLF_CRAGG_6410=y
--CONFIG_CMDLINE="console=ttySAC0,115200 root=/dev/ram init=/linuxrc initrd=0x51000000,6M"
-+CONFIG_CMDLINE="console=ttySAC0,115200 init=/linuxrc initrd=0x51000000,6M"
- CONFIG_VFP=y
- CONFIG_MODULES=y
- CONFIG_MODULE_UNLOAD=y
-diff --git a/arch/arm/configs/s5pv210_defconfig b/arch/arm/configs/s5pv210_defconfig
-index 8ec82d9b51e4..485dd5174c62 100644
---- a/arch/arm/configs/s5pv210_defconfig
-+++ b/arch/arm/configs/s5pv210_defconfig
-@@ -8,7 +8,7 @@ CONFIG_KALLSYMS_ALL=y
- CONFIG_ARCH_S5PV210=y
- CONFIG_VMSPLIT_2G=y
- CONFIG_ARM_APPENDED_DTB=y
--CONFIG_CMDLINE="root=/dev/ram0 rw initrd=0x20800000,8M console=ttySAC1,115200 init=/linuxrc"
-+CONFIG_CMDLINE="rw initrd=0x20800000,8M console=ttySAC1,115200 init=/linuxrc"
- CONFIG_CPU_FREQ=y
- CONFIG_CPU_FREQ_STAT=y
- CONFIG_CPU_FREQ_DEFAULT_GOV_ONDEMAND=y
-diff --git a/arch/arm/configs/sama5_defconfig b/arch/arm/configs/sama5_defconfig
-index 2cad045e1d8d..0463ff84c06c 100644
---- a/arch/arm/configs/sama5_defconfig
-+++ b/arch/arm/configs/sama5_defconfig
-@@ -14,7 +14,7 @@ CONFIG_SOC_SAMA5D4=y
- # CONFIG_ATMEL_CLOCKSOURCE_PIT is not set
- CONFIG_UACCESS_WITH_MEMCPY=y
- # CONFIG_ATAGS is not set
--CONFIG_CMDLINE="console=ttyS0,115200 initrd=0x21100000,25165824 root=/dev/ram0 rw"
-+CONFIG_CMDLINE="console=ttyS0,115200 initrd=0x21100000,25165824 rw"
- CONFIG_VFP=y
- CONFIG_NEON=y
- CONFIG_KERNEL_MODE_NEON=y
-diff --git a/arch/arm/configs/u8500_defconfig b/arch/arm/configs/u8500_defconfig
-index 0f55815eecb3..510c760b0bc7 100644
---- a/arch/arm/configs/u8500_defconfig
-+++ b/arch/arm/configs/u8500_defconfig
-@@ -9,7 +9,7 @@ CONFIG_NR_CPUS=2
- CONFIG_HIGHMEM=y
- CONFIG_ARM_APPENDED_DTB=y
- CONFIG_ARM_ATAG_DTB_COMPAT=y
--CONFIG_CMDLINE="root=/dev/ram0 console=ttyAMA2,115200n8"
-+CONFIG_CMDLINE="console=ttyAMA2,115200n8"
- CONFIG_CPU_FREQ=y
- CONFIG_CPU_FREQ_GOV_ONDEMAND=y
- CONFIG_CPUFREQ_DT=y
-diff --git a/arch/parisc/defpalo.conf b/arch/parisc/defpalo.conf
-index 208ff3b41487..86c9a132cb92 100644
---- a/arch/parisc/defpalo.conf
-+++ b/arch/parisc/defpalo.conf
-@@ -12,7 +12,7 @@
- # If you want a root ramdisk, use the next 2 lines
- #   (Edit the ramdisk image name!!!!)
- --ramdisk=ram-disk-image-file
----commandline=0/vmlinuz HOME=/ root=/dev/ram initrd=0/ramdisk panic_timeout=60 panic=-1
-+--commandline=0/vmlinuz HOME=/ initrd=0/ramdisk panic_timeout=60 panic=-1
- 
- # If you want NFS root, use the following command line (Edit the HOSTNAME!!!)
- #--commandline=0/vmlinuz HOME=/ root=/dev/nfs nfsroot=HOSTNAME ip=bootp
-diff --git a/arch/s390/boot/ipl_parm.c b/arch/s390/boot/ipl_parm.c
-index f584d7da29cb..47fc2a7ed551 100644
---- a/arch/s390/boot/ipl_parm.c
-+++ b/arch/s390/boot/ipl_parm.c
-@@ -18,7 +18,7 @@
- struct parmarea parmarea __section(".parmarea") = {
- 	.kernel_version		= (unsigned long)kernel_version,
- 	.max_command_line_size	= COMMAND_LINE_SIZE,
--	.command_line		= "root=/dev/ram0 ro",
-+	.command_line		= "ro",
- };
- 
- char __bootdata(early_command_line)[COMMAND_LINE_SIZE];
-diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
-index f2f9cd9cde50..e8e579160c6b 100644
---- a/arch/xtensa/Kconfig
-+++ b/arch/xtensa/Kconfig
-@@ -448,7 +448,7 @@ config CMDLINE_BOOL
- config CMDLINE
- 	string "Initial kernel command string"
- 	depends on CMDLINE_BOOL
--	default "console=ttyS0,38400 root=/dev/ram"
-+	default "console=ttyS0,38400"
- 	help
- 	  On some architectures (EBSA110 and CATS), there is currently no way
- 	  for the boot loader to pass arguments to the kernel. For these
-diff --git a/arch/xtensa/boot/dts/csp.dts b/arch/xtensa/boot/dts/csp.dts
-index 885495460f7e..c7e07dd0d7d0 100644
---- a/arch/xtensa/boot/dts/csp.dts
-+++ b/arch/xtensa/boot/dts/csp.dts
-@@ -8,7 +8,7 @@ / {
- 	interrupt-parent = <&pic>;
- 
- 	chosen {
--		bootargs = "earlycon=cdns,0xfd000000,115200 console=tty0 console=ttyPS0,115200 root=/dev/ram0 rw earlyprintk xilinx_uartps.rx_trigger_level=32 loglevel=8 nohz=off ignore_loglevel";
-+		bootargs = "earlycon=cdns,0xfd000000,115200 console=tty0 console=ttyPS0,115200 rw earlyprintk xilinx_uartps.rx_trigger_level=32 loglevel=8 nohz=off ignore_loglevel";
- 	};
- 
- 	memory@0 {
+ Motorola PrPMC1100 Processor Mezanine Card
+ http://www.fountainsys.com
 -- 
 2.47.2
 
