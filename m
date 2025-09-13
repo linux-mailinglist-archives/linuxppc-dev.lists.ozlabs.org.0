@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-12132-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12131-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0ABBB55E0E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 05:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F88CB55E0D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Sep 2025 05:18:38 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cNxMP1g0mz3dWD;
-	Sat, 13 Sep 2025 13:18:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cNxMK1ZXwz3chq;
+	Sat, 13 Sep 2025 13:18:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757724333;
-	cv=none; b=gE0ELzihRgtCTSiszdhYsiPVeiEFjL/agUpMPWwZCFGJAWRovLIVG7CYyt0mdlppVb3FZQSjIBUS8GkcP0n6ORxwPM7C6bZy0km36uXzELqLu6Rn8He4KvQl5AI/2KEloi4A1GjG50VptD01rtmbuSBDS9aBxheDgYp7/cmuB6QP/mNMxs/UpbrhFzGFg/P9Va9jltueUbQDYUhXuTdbClzWw0BmXm0tgDEVXdtutdPbA+PxZgsvTDNdBwaZ9slr7m4fZzywbxd5F1fiJWa4p0w1MEjF0ib5nZKNhe/ahUiEH/zdxbRnmXEN+84iZCObL+JTZgf9V/1CxVGIli3Vwg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::532"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757724398;
+	cv=none; b=MPOhLziTi02SycvhHWjRxYT2f4WScGUStmLZBl+plGwA0QTlU69MpbP/HDAz7VrKBBZlxLOrvxE266vgLNC7CqTpiPssOQ9GEi/GcVK5iuRShiwn1wIgQ2bdJkAeUdzYdcUj5WSnBIwRRhc7JlY4HpqD+s9CvcuN/ieBxGeIwBa5Y7EpNbdE5pvmEq/qaD39vw9URVmbkYP1jtPj+8gabHvcyY3OqBnaZrXjP3gHMHcQGI9YL+Hy+pttX9LESektmHwRiX8djMHaD8umVrALtiWCktVVlG1hfOckvgdwJc0OG/pmtMUbPS+wh68XmNukn+Fgas/BC1Jm6utbMUIzpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757724333; c=relaxed/relaxed;
-	bh=fi1FJKwP9nWnSjptSGh11GRsqwR1G48l7l6Ou3g4XAs=;
+	t=1757724398; c=relaxed/relaxed;
+	bh=Y83Wia04Z/mNTHCUGozzAt26nJVQ29vmo/6z8Jb/IIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bp7b00igVWU7M/CRxcNZm8b+xjXCkanuzYESzzWfla38NdUYlwTcxndvjDKeJVdkO2zgw6O1rvkGqDx9FVLzA+fCAcuC5ssdi8TFG6tqEBdJSkiKxf55iOUUD06+9cg7mAbGy1Xej9+ogSRZOft3itBXhK5c7UsJsoAcygUajCI6oQQ8AA7GgO9yOz3FnSQIafco9gCp+GNGdqrOATxrGz/0tardu51KHzGYhdiLsG9Ip7oe3TIzrGzoVWgoO/OAweMzuExI7MYfFkF4YoJTrUeM6NtrSIie9+N+GZjU1R2pDLaDIM/1yhbgbj9nVE8D3gk1mTmmiQCaxjGJ8pgK/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=boXok49S; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=WfyavppWkNwwOtgAZt21FhjAsWLgi+FR9myOTziIQIOXVB7gY8bGr8WKAJWA6+x5JYwJPBJ6PiRLekzsnsM3z4/kBRlA2+lZLWI1kwX2eXNXfrXaTMrdoojEq3dl2zwmE4FXm7vwMf7j366mM3yBodUZR/vij4O1x60x5FgURX/r6WYNSR9R/qRCvXOu9G51okQ/+xiUNf+N+UMzlgatc40z6vM/Z+ps3HQYbYK9Zc619s20b8o5njcEONf2A/N5YHvCz1Xt5xAX6qMjs66RxnMvbLdKKE2VgnZVJ2IZ4EVN6IThdg5Jch2WwlAqEBnKot0oMpNj4+WtZgjfXu/QhQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nmoNcl1J; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::532; helo=mail-ed1-x532.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=boXok49S;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=nmoNcl1J;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62e; helo=mail-ej1-x62e.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::532; helo=mail-ed1-x532.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNsz04Zq0z2yrN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 10:45:31 +1000 (AEST)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-b0787fdb137so377173866b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 17:45:31 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cNt0F12G1z2yrN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 10:46:37 +1000 (AEST)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-62f0702ef0dso235297a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Sep 2025 17:46:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757724329; x=1758329129; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1757724394; x=1758329194; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fi1FJKwP9nWnSjptSGh11GRsqwR1G48l7l6Ou3g4XAs=;
-        b=boXok49SygH1kzCb6dKnsumC8sMsv0+ae4+KJcDRDyK7PR/J0p6hMC8wObLJBJy/Qm
-         /HB07KWgBRQRlDFWzvL/c29djxibjfN+kEoX7mDtlbXOfyGNesJueHqJsiHlIc4T70at
-         Gh7ytPkvsreriXSCk5wpXWzdDwKi8wOYihS0m6hi+s4cleGAHnzaWIwy/pZkB1M9nEPW
-         bzQ311ypxEMw6QU1HkerILSXqoekPgzP7tR+DzjDKYDZNUZEjmvyYqjKwYGH3bektmrg
-         QAwPXsSueLskzRncveaBsz7ujJIg2LB5HXjeJab/p80AutT7tQbDE+rSmzrsMUK+qRm3
-         Rlcw==
+        bh=Y83Wia04Z/mNTHCUGozzAt26nJVQ29vmo/6z8Jb/IIM=;
+        b=nmoNcl1JFSLJl8S7nB59BByH2yAUreV9VLM5wQywfKIRHB9BkZXuJvpPc+f3GxOxgL
+         gbWYoDNWrSt9jwrgXzXzY+P/E23BO4YDUqq4zT92uIrZSrxvsb2od664xD/6yxQNhVLF
+         U5hixjUsFEC4MfYdJfzwJNpVwCtLFb/G+iOOJxQxNViiqZnzS6fioGy1FT8GefbmiR5h
+         Pyp8SHkUtvAE/GEx1BFebVfHdY60HC+wxSrgf7asniXkrWjT2IW6CouCo6Zz/dgIdprh
+         Q7mD4pchjbYC/MFO601bvoTWe/XjxxIaKkXq6FTJGmUzNUt8L0cZs1LA2UtEpwUiipYn
+         1Sxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757724329; x=1758329129;
+        d=1e100.net; s=20230601; t=1757724394; x=1758329194;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fi1FJKwP9nWnSjptSGh11GRsqwR1G48l7l6Ou3g4XAs=;
-        b=spyyXpjpnn3JG0HPNdZeGIYfmp/amijdKqEkgeIe7dJqn5OSIZGPbsF2bBOgrGEtPO
-         WHhcz+c6zyJywpUGIAjUUFFvyWsSKUcv8a8SLh8vnARiXDMoUwrRW1qB4sROJRsElq1K
-         0tzKrdwr95xp4BTnCt44op8srdWqUKatlN68bE7dMa2IHRNwodHmct4C+NzvWsf128Z+
-         Fjjym8gQ2e5tqBfQOOMbhW/2RzBl+nSU4g/+3IK6r3P8BEWe+LFCvaHRM7BXwJzo8ELe
-         kflEueIHYIhFxgCjGuptTpt562SiZqc1tyMCYYWv+B/hYqpmvGUIWpJ5xbztSQhzDGqv
-         /z4w==
-X-Forwarded-Encrypted: i=1; AJvYcCURz+CMWFOvsFwX7jk+Rb++PxhCV6nHGLeV96DRLYlAAzBJk5FrugtHmsH2BgajNFr9CX1xwzooNpbo9UA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyfuUoj8GysVHwoaXOMqQjzi3sqmVbFlqtsxE573WM9hV09BrKS
-	tYe+8I6eGU5hAgecvID+/imRCNFUrNnsLJ8ViY7I4MODmCvB5RSde9c5
-X-Gm-Gg: ASbGncsIr3vU7loO4+leY16+K45ShMXZrlBYrP1ByqY2A0/HqEd0JSsvfHaVz0FqnNy
-	a3L2f9QvZnpJjK5gFBtNtXkKYWmH2fbIXcUWaALEuoV1xa23T8KCFcqGU6W9xpMbduRb6zrWzTG
-	QHB14Ruw8YwUmwMmJCLn5dlsyHcW9z8/Fm6JO7rTZnvDOfY8WWNYcfJNZa+MmsExrUBGhnne2mU
-	LkktgdsLDj7pxcu2aTkjHHX3A9z5rAKHkyo0Mt9tf0Vvu80Iea+kkHrht7YiI+WQvyr6NKLC10v
-	xOQJhho8RNLEkxg3qy+tVsrTmwhexs62WQAMxeR49StZCJaleddYHy4VGRnnC6wEMkCPYEtA7Pj
-	G+19RyuNtrrvZhQNP+Hs=
-X-Google-Smtp-Source: AGHT+IEY39yKNpHOwhu+b8E85JfZO5GXoHp0A73FES6zZeZtQwPXvLC0BV0HcFzY55ZLXxqy2VO9oA==
-X-Received: by 2002:a17:907:9405:b0:b07:c9b2:dbd with SMTP id a640c23a62f3a-b07c9b20f2cmr456963866b.4.1757724328684;
-        Fri, 12 Sep 2025 17:45:28 -0700 (PDT)
+        bh=Y83Wia04Z/mNTHCUGozzAt26nJVQ29vmo/6z8Jb/IIM=;
+        b=qg53zGht2qRgAf38aXUSx8gqE3ft8l3sKzj40OkA56VJ5ustdBZrkz2Q4hM0P6ziBq
+         oOA2PMwBA2PvUiAXDUl1a+laWPEyM9oE0gP1EpChyVpsN7ll96HNNrnA8FPDoyyxzkQU
+         SynAPSFXn+bgojjK1ZUgWevFHz+cXup01PIrDFlcGqeo1aUza5hf9KKbo2tSCpiLUvjZ
+         Bvc1F08U2x0n1ZMtLlYID18Y79gOEd2BDnIMYtDJEi8MD66lymBiR9W85imLdXXAz3Nd
+         dYWjqnDKYbMs+HOYN3WxF+8Fzhfi833AJCGeqtfbpXCtkpm2Ci9p98zim1nq3+j/n0QC
+         jbUw==
+X-Forwarded-Encrypted: i=1; AJvYcCW0NO7ePe50c+1KnuOutdTU6pv3v0mXDmrAd41hB9gbAA4n+lf5dG7KJwC3zv/q9nKuB6a37wf16AQnMDw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwfrVz0nA+u2NzOaaDHhcK3SQZMrsq18nrRfZ7OCos2+ySS+/hu
+	Stly6pVDG0ARNzvIrcwwM0NLFM5nM4FrGl+aL2Mg5yZfP+UHHB1UQ/dn
+X-Gm-Gg: ASbGncu9s7BuxhXoQPT+8/2i5/kgBIui1eb/H+UbSgkTV/VFF9h9ami2RtTc2/FpX3I
+	tyfgxv1i4j2O0/s3nUrze8oS5BXmV3lGwV/nuCrQXo75YC3GWlRNvs+cqlQClU2q8GnayJLYYgu
+	FM0z+79qhLjgUFizJ8OdvmQx0ZRFa6Y3Ks17gnYk3xrLoGjMiZCxjAVRcVY9a8h1tcjTCZ1pHU9
+	CzCR1f6lmUW7GGXkTxDbDz+CUQjHfj3l6G7in9zc/O/xd1kN35p2b202tjcAezbDym3p/Bf9igl
+	eotzlfJbCRNpfz9tN803CXXzKTAvF4XfhTa0R2khYNVkj8abnvpEFTrmMwBAu7CjzySLnmfOiSB
+	LlBq8QsKJq0TldYBL1ZY=
+X-Google-Smtp-Source: AGHT+IEhRE4IwIn6e21II3sG+AWhFOewnNElGtSUdTtt48+B8a0G24fjikoaCpJ97iRLzEKC56BiAg==
+X-Received: by 2002:a17:907:96a3:b0:b07:e258:4629 with SMTP id a640c23a62f3a-b07e2584a05mr103605766b.16.1757724393999;
+        Fri, 12 Sep 2025 17:46:33 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b32dd5casm460965366b.68.2025.09.12.17.45.24
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b32f2334sm475232966b.78.2025.09.12.17.46.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 12 Sep 2025 17:45:28 -0700 (PDT)
+        Fri, 12 Sep 2025 17:46:33 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -125,9 +125,9 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Thorsten Blum <thorsten.blum@linux.dev>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	patches@lists.linux.dev
-Subject: [PATCH RESEND 05/62] init: remove "ramdisk_start" command line parameter, which controls starting block number of initrd
-Date: Sat, 13 Sep 2025 00:37:44 +0000
-Message-ID: <20250913003842.41944-6-safinaskar@gmail.com>
+Subject: [PATCH RESEND 06/62] arm: init: remove special logic for setting brd.rd_size
+Date: Sat, 13 Sep 2025 00:37:45 +0000
+Message-ID: <20250913003842.41944-7-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
 References: <20250913003842.41944-1-safinaskar@gmail.com>
@@ -150,64 +150,81 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This is preparation for initrd removal
+There is no any reason for having special mechanism
+for setting ramdisk size.
+
+Also this allows us to change rd_size variable to static
 
 Signed-off-by: Askar Safin <safinaskar@gmail.com>
 ---
- Documentation/admin-guide/blockdev/ramdisk.rst  | 3 +--
- Documentation/admin-guide/kernel-parameters.txt | 2 --
- init/do_mounts_rd.c                             | 7 -------
- 3 files changed, 1 insertion(+), 11 deletions(-)
+ arch/arm/kernel/atags_parse.c | 12 ------------
+ drivers/block/brd.c           |  8 ++++----
+ include/linux/initrd.h        |  3 ---
+ 3 files changed, 4 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/admin-guide/blockdev/ramdisk.rst b/Documentation/admin-guide/blockdev/ramdisk.rst
-index 9ce6101e8dd9..e57c61108dbc 100644
---- a/Documentation/admin-guide/blockdev/ramdisk.rst
-+++ b/Documentation/admin-guide/blockdev/ramdisk.rst
-@@ -74,12 +74,11 @@ arch/x86/boot/Makefile.
+diff --git a/arch/arm/kernel/atags_parse.c b/arch/arm/kernel/atags_parse.c
+index a3f0a4f84e04..615d9e83c9b5 100644
+--- a/arch/arm/kernel/atags_parse.c
++++ b/arch/arm/kernel/atags_parse.c
+@@ -87,18 +87,6 @@ static int __init parse_tag_videotext(const struct tag *tag)
+ __tagtable(ATAG_VIDEOTEXT, parse_tag_videotext);
+ #endif
  
- Some of the kernel command line boot options that may apply here are::
- 
--  ramdisk_start=N
-   ramdisk_size=M
- 
- If you make a boot disk that has LILO, then for the above, you would use::
- 
--	append = "ramdisk_start=N ramdisk_size=M"
-+	append = "ramdisk_size=M"
- 
- 4) An Example of Creating a Compressed RAM Disk
- -----------------------------------------------
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index f940c1184912..07e8878f1e13 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5285,8 +5285,6 @@
- 	ramdisk_size=	[RAM] Sizes of RAM disks in kilobytes
- 			See Documentation/admin-guide/blockdev/ramdisk.rst.
- 
--	ramdisk_start=	[RAM] RAM disk image start address
--
- 	random.trust_cpu=off
- 			[KNL,EARLY] Disable trusting the use of the CPU's
- 			random number generator (if available) to
-diff --git a/init/do_mounts_rd.c b/init/do_mounts_rd.c
-index 8e0a774a9c6f..864fa88d9f89 100644
---- a/init/do_mounts_rd.c
-+++ b/init/do_mounts_rd.c
-@@ -17,13 +17,6 @@
- static struct file *in_file, *out_file;
- static loff_t in_pos, out_pos;
- 
--static int __init ramdisk_start_setup(char *str)
+-#ifdef CONFIG_BLK_DEV_RAM
+-static int __init parse_tag_ramdisk(const struct tag *tag)
 -{
--	/* will be removed in next commit */
--	return 1;
--}
--__setup("ramdisk_start=", ramdisk_start_setup);
+-	if (tag->u.ramdisk.size)
+-		rd_size = tag->u.ramdisk.size;
 -
- static int __init crd_load(decompress_fn deco);
+-	return 0;
+-}
+-
+-__tagtable(ATAG_RAMDISK, parse_tag_ramdisk);
+-#endif
+-
+ static int __init parse_tag_serialnr(const struct tag *tag)
+ {
+ 	system_serial_low = tag->u.serialnr.low;
+diff --git a/drivers/block/brd.c b/drivers/block/brd.c
+index 0c2eabe14af3..72f02d2b8a99 100644
+--- a/drivers/block/brd.c
++++ b/drivers/block/brd.c
+@@ -27,6 +27,10 @@
  
+ #include <linux/uaccess.h>
+ 
++static unsigned long rd_size = CONFIG_BLK_DEV_RAM_SIZE;
++module_param(rd_size, ulong, 0444);
++MODULE_PARM_DESC(rd_size, "Size of each RAM disk in kbytes.");
++
  /*
+  * Each block ramdisk device has a xarray brd_pages of pages that stores
+  * the pages containing the block device's contents.
+@@ -209,10 +213,6 @@ static int rd_nr = CONFIG_BLK_DEV_RAM_COUNT;
+ module_param(rd_nr, int, 0444);
+ MODULE_PARM_DESC(rd_nr, "Maximum number of brd devices");
+ 
+-unsigned long rd_size = CONFIG_BLK_DEV_RAM_SIZE;
+-module_param(rd_size, ulong, 0444);
+-MODULE_PARM_DESC(rd_size, "Size of each RAM disk in kbytes.");
+-
+ static int max_part = 1;
+ module_param(max_part, int, 0444);
+ MODULE_PARM_DESC(max_part, "Num Minors to reserve between devices");
+diff --git a/include/linux/initrd.h b/include/linux/initrd.h
+index 6320a9cb6686..b42235c21444 100644
+--- a/include/linux/initrd.h
++++ b/include/linux/initrd.h
+@@ -5,9 +5,6 @@
+ 
+ #define INITRD_MINOR 250 /* shouldn't collide with /dev/ram* too soon ... */
+ 
+-/* size of a single RAM disk */
+-extern unsigned long rd_size;
+-
+ /* 1 if it is not an error if initrd_start < memory_start */
+ extern int initrd_below_start_ok;
+ 
 -- 
 2.47.2
 
