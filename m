@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-12174-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12175-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6546BB566FA
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Sep 2025 07:31:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FB6B566FB
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Sep 2025 07:31:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cPcGf2BNsz3cmC;
-	Sun, 14 Sep 2025 15:31:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cPcH01Wl9z3chZ;
+	Sun, 14 Sep 2025 15:31:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757822016;
-	cv=none; b=WOfzq//fOyRE/gU5eP34H/5dJ1DLC+TpG3HnDSVEzxdFgo3Jkzr+eeUXKOM+tedVaqvr7+LnwtWTqeukEKuiu2LcexoVrLPoOF34Xbqc3ir0sNGDnenlGMy9iqkNmkkQjFgM6B6j8LPBsUQhR8R5fm6GgX9W9qiYSBPU0YoC2j0jxBsNqR5RjE2lG2ZWeOmFApLPlB59BInlnSGy6BZ5OCoROGiNMeo4DuDu0wvOCBbEG8wWG3sYhaWKhVQ5P743kZjVZnhDnMXatmmV18plOO8XRBhStxPc/3kF3hLR1u5N0WpYFXlExNknhoWyC8xATEoUpcBAPdJIBpDVxtjTsA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::536"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757822052;
+	cv=none; b=O03e1Ls7VJscw0RYL9fZfGFAhhf4zYggcK/XYxnWisun5d+PIwLiLZdnAHfBbU3Yqbz/zPZW42pce3zp8zV3Y2gPrujDWw6gtvHIv9WnfFNvHGvt7SoUmS0c0HvuSrhXUlUrZQPzn0wF74Lj1K6Zdo4BBAlzsgBMwAVUysyUFW13tB8jvhK1N5M5k0gjE0kch/PZDVXTxUsb6QOhdTtAUevmknt4qndaRyxC7O+MdvDhvHd8XV8u0mbPeW7kGK8v9y5eKrLcTAXqLkctpYIVB+8GeLE013FNiBlO/Fj6qQbjgSMtXVjX5TWLFcEXVb986abVVc73OjaLFzZpliYwMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757822016; c=relaxed/relaxed;
-	bh=PB2E9PPBAv72v29AyxICCzYyZlb0WEV+ovfXoPOatKs=;
+	t=1757822052; c=relaxed/relaxed;
+	bh=U0YiDU4Bzw7IKNW2/fgCfvKW6iRx1DQ4l7Ssn455PQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Svj73TYLMaUOQU4neQgQDHSVw4CAdLEAc/NOd1pEq+w1yzcplB3tRRzrO6OIlHbZJuW25zOHGiDQEB7+7yF5AhrPC7HBE7zdyEhI8h2pOcu//Y8TS007HTrRwmPCFTj36ftQXXukKo5HVRs8imMiV5Lj0F0Bd14gmsMtlrotI2+761LAeVLQaV7IOeu5tXb3pGY9HNW60aDZKHbYzyI5HLJFhGd5CvaJZxjmb02B1c0Ym7ehQuFTch8VCFkiiPYZO9dB09WfKvPHquSHmHY3qe+EcDXEq2DsTr8eioRmtHPLyPavr37P24RM6aN08d8KdzhtAU46LbpsdL6IBD2+AQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=R3bT3k1L; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=jIF9lR3hsaFoOJfccLb7Li1f6S+LqqVXMlCf3eV7u9YozrIPPPMv1nnQVvsTNWX80gpubXCjBsk3fC1cLBw1nkj6scZpZy0KuzjP0ZOWLiTpnah2zUIiuJrZnCDplhNQJd/ufp/WV2uqk4vIlShjyGZVIqxc6pVlCB995xXVRdWPCR5722NAjuzu3twAYVVkbRP3HXAnzB1k1H3PU2vqBz9bZI3TWU4uAof7+vW0unnYq2eNLWTM7Yavw417kXDf3IYBbDm7ACLDgt4FX0zBv+rxcd7NWCKrvSqx1FLzv4cM0mYJGYajCxoJ4kftZkc/nmEOFsk8nuKFkB9kahmjzw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lgqpggj0; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::536; helo=mail-ed1-x536.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=R3bT3k1L;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lgqpggj0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::536; helo=mail-ed1-x536.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cPZ5W4vYDz2yrg
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Sep 2025 13:53:35 +1000 (AEST)
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-62ef469bb2cso2847380a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 20:53:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cPZ6C0YDRz2yrg
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Sep 2025 13:54:11 +1000 (AEST)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-62f28da25b9so363824a12.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 20:54:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757822013; x=1758426813; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1757822048; x=1758426848; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PB2E9PPBAv72v29AyxICCzYyZlb0WEV+ovfXoPOatKs=;
-        b=R3bT3k1LoU0CP1Ni/x8nWWXTewRch+VN6og/wrhNGmVi1/jkvzldSd9WtJm6F7DtTO
-         v/0WAUblpQgt+vsoZcNwzEP6p7ONgMMsDkW/H21z48XSd/5XZXie0qfaFqS7MrpJDIeE
-         Hh9iyyinu/DPQvVG/3k6dZo/bpyilXYPg3sgITYxY5ZCcwE7uK2g10utizUdeBXs0mjk
-         5YToVOjvjY70KddUlG4DQLmyUIjCR04YYVBtFeC/0+hZB85rp9CdYMxfakLX/06vwHuI
-         pP7/sv/Ja2PRvuraWKHYldqfZZfPycJWwlKZvDBdxR35btp871CPIzzyIDZDs2qyhKFv
-         9lBg==
+        bh=U0YiDU4Bzw7IKNW2/fgCfvKW6iRx1DQ4l7Ssn455PQA=;
+        b=lgqpggj0smhBpAvun/ChzTldmjrQCE/fntQDQGx0dR6pRr3Z9vP/WFqTKd9qEjIylN
+         eYIb0Ur8wx4RYpgnVhhaoaiYMzNTo/BTn1LOMttg4jdu1BNHsxl6IxEQeyp/H2dpNN1v
+         xaOwQIeRxOS7ev2ntT7LvCF2DmDRSPBQp74qZHL1Vqos3ZFLnPUwTX9McL/ESQzuO6Eq
+         GIVgm1BigG+kyQDCoJW+GBqV8rnhslnLGV3ctPacMMomLT6ufy+q1S710GvsKjJoG0Bj
+         MFI40GYR25RIz0YZC097VbkptrcPrKP1OZqCW5j9M/eVD02U+EeqX+NAd21MRt1PfQBn
+         r6Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757822013; x=1758426813;
+        d=1e100.net; s=20230601; t=1757822048; x=1758426848;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PB2E9PPBAv72v29AyxICCzYyZlb0WEV+ovfXoPOatKs=;
-        b=AHUgVo3/zncbQz9Hw/t2mhIAjvGTf1XR+q+0yGjOotIT5XMCriXuZ8h1pgdXcOxj4w
-         sQSzum6RGrmugQa9sWN7wWp19UBK27R2yhH/TAvJPgiwTF9kqZaUqMCVq0nkKSR1zTHY
-         q9TPWlNc1Aqr8xNIz/as+tRtrIZNCtSlAh8cqYq0lpLqp9iD5AjbuPwhuD4brgbY7vgg
-         mLgq1z6YVZBxeD8vrwZnVAmsOiVvhah7xaaT7p4AgxLjApJBG1LiWaE/lGzOQMnlNCnr
-         S7Vj1EqTJ0oVQRaWDKpIdvWK7Zmg3Ht/v00h0VYgCMZhEIP0BYBDS2YNwOgKd8QxB494
-         dhJA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/xqPShqTxHdTJNIxgZPDzQgDHSa2gAneFD67U5CBF8J8gpCjpwRhjtAGAWdQkPOSizo6sQ4f7axzxYi4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyHvP1/pGXi+OHDqHljnlFehxMjcbJgA3MwLTcta28JVUV84dFd
-	hxYCkMx+B5xhwDPMkBGAyBVNk8QcfFkP5zkNIgF8QVYU71yU2o5QV3o/
-X-Gm-Gg: ASbGncuZcAdxoyEvvdl1KSlfpSHcZifPA4m1euzNRodcSvb3C1jprB0/TGKTrDYji/O
-	h+JhJktFxZ4aRVoSruEoOcx/Mb6eCDTUjA/ATLL/qkeBE7WP8C5F1EFgy+nw2VwrXyn0JRqLsKy
-	zYNsnlRM01awwdVY5+VE1hcsTGttuvP1Ffu8pyiXZGCF2SyjdYLNzdWVv1RHZ/eCFAoDGaurjOo
-	65KyfF4C35bx7QQVIlYdjsgFhNrHUhlB7Jy1G7xVNobZfEs7ieNUGJfp10bDaWvDNWdyhKe1zzE
-	3gAJ0jILGKUh5xOCmadgK/zixE5uWJT1TP7eAGASLYD5w/GRQo5PPOaI8oCzfHUCSrypjq69Kdf
-	6NeM8idm/bKuLuFebm/GLYL+CbNjTog==
-X-Google-Smtp-Source: AGHT+IGUQXhZVcMzH5x4qrxgNQpCZ4sYyZ3ugDsvfNumu2I8pECs9df4oC+H+CMnm997jPnr5crTug==
-X-Received: by 2002:a05:6402:2111:b0:61d:2096:1e92 with SMTP id 4fb4d7f45d1cf-62ed82614c4mr7020136a12.15.1757822012514;
-        Sat, 13 Sep 2025 20:53:32 -0700 (PDT)
+        bh=U0YiDU4Bzw7IKNW2/fgCfvKW6iRx1DQ4l7Ssn455PQA=;
+        b=TyKXCGZFcRq39sanaLbT30qywfF0G6DkCl2Sj3ilvhtyf1Bz9v/Dv8fAd6liWanUZS
+         tP3ZbGk1D+gdcUiuADC+NDEyrKps2aHAmuh52Bj5VxwZ0EpGZuH/whDehWt0vOCo4N3a
+         Jv4V0YmK5FS0JTPGEFtQKwcGJu5wPTe+3oXjPz9+gczIx77HhjZSf5dmWXLzaP94+oL8
+         PNrOOmw+mKJjmZCwrgYiRVtDs8/Hc216krE3cahGChZGogQfTpOLVCJDrp2AmEFb03ot
+         EdYQgdXXFC4HxCmNsAYq1FVjCRIfBawP0vUyyTxkXhSTvWh6s12fQ2JpV0TqlAuy0XXk
+         MjRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXnWSvqBOWZgvOtOH54o6rjLZwshlRkexw/giWIdTWplXQpWj432lewaqmR2COMbel5ImiO5D8xns34qJM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwFZjeOgA/hPIZm7WPiLo2g4ltJ7puLs7WpamDwRsc8+2b0AxJL
+	vmrKuZZxz7txK+K9A7IVEM+B6iPzkx3KkFmUcs9eqA+dYBxrd/s/4tMw
+X-Gm-Gg: ASbGncsO0nyR4eTqd77rkuRUf/tZjVUD9/ujJwVF7d17se2AnBdRYrYmmbZLs0r/nBf
+	XYd4Tg+4tDaBBrjGLxbxwIR7UcD7RVCgJlvCM/X4N9wTvWB4ZtRjj+iJtCnsbhNtNV2JayLKd/y
+	gUmtUNAhdCQnCr6XjuimfjlKQF9KSPTSuibh5M3NSXQsJNlpZnAa/Y4mOB1tSl0KbBrBT3GJp1O
+	QfrqduX4qEQeO/RCp/nqqv7vtmj//sDdvUanBdAtwKPxfbWmgeIS5CCel4OdlJIx8+lOou7wpus
+	vNKAoTbmE8mwnikG0gGgJkXMEjSVbW+tjsfJLijdQoA2YpzuJh6cIdCykKeMPqVUrY1R4OmIwvT
+	D7O2SmcBYediVkS8jfO+TdKQk0K5Teg==
+X-Google-Smtp-Source: AGHT+IEVLkeZlLSkzoTpPLzlBRvNTQ9m/bl133jXYp2zZldNvB+tlYKH8pXYzZ5ISfOO2+UjGM6RFg==
+X-Received: by 2002:a17:907:e8d:b0:b0e:3d88:27fd with SMTP id a640c23a62f3a-b0e3d97e027mr75192266b.8.1757822048020;
+        Sat, 13 Sep 2025 20:54:08 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-62ec33f3a5esm6570485a12.30.2025.09.13.20.53.27
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07da7a8918sm303079766b.56.2025.09.13.20.54.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Sep 2025 20:53:32 -0700 (PDT)
+        Sat, 13 Sep 2025 20:54:07 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -125,9 +125,9 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Thorsten Blum <thorsten.blum@linux.dev>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	patches@lists.linux.dev
-Subject: [PATCH RESEND 43/62] setsid: inline ksys_setsid into the only caller
-Date: Sun, 14 Sep 2025 06:53:26 +0300
-Message-ID: <20250914035326.3661003-1-safinaskar@gmail.com>
+Subject: [PATCH RESEND 44/62] doc: kernel-parameters: remove [RAM] from reserve_mem=
+Date: Sun, 14 Sep 2025 06:54:02 +0300
+Message-ID: <20250914035402.3670906-1-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
 References: <20250913003842.41944-1-safinaskar@gmail.com>
@@ -150,51 +150,27 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This is cleanup after initrd removal
+This parameter has nothing to do with ramdisk
 
 Signed-off-by: Askar Safin <safinaskar@gmail.com>
 ---
- include/linux/syscalls.h | 1 -
- kernel/sys.c             | 7 +------
- 2 files changed, 1 insertion(+), 7 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
-index 77f45e5d4413..75e9ee03d19b 100644
---- a/include/linux/syscalls.h
-+++ b/include/linux/syscalls.h
-@@ -1231,7 +1231,6 @@ int ksys_fchown(unsigned int fd, uid_t user, gid_t group);
- ssize_t ksys_read(unsigned int fd, char __user *buf, size_t count);
- void ksys_sync(void);
- int ksys_unshare(unsigned long unshare_flags);
--int ksys_setsid(void);
- int ksys_sync_file_range(int fd, loff_t offset, loff_t nbytes,
- 			 unsigned int flags);
- ssize_t ksys_pread64(unsigned int fd, char __user *buf, size_t count,
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 1e28b40053ce..66e1e2dfd585 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -1265,7 +1265,7 @@ static void set_special_pids(struct pid **pids, struct pid *pid)
- 		change_pid(pids, curr, PIDTYPE_PGID, pid);
- }
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index a259f2bdba0f..0805d3ebc75a 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6277,8 +6277,7 @@
+ 			them.  If <base> is less than 0x10000, the region
+ 			is assumed to be I/O ports; otherwise it is memory.
  
--int ksys_setsid(void)
-+SYSCALL_DEFINE0(setsid)
- {
- 	struct task_struct *group_leader = current->group_leader;
- 	struct pid *sid = task_pid(group_leader);
-@@ -1300,11 +1300,6 @@ int ksys_setsid(void)
- 	return err;
- }
- 
--SYSCALL_DEFINE0(setsid)
--{
--	return ksys_setsid();
--}
--
- DECLARE_RWSEM(uts_sem);
- 
- #ifdef COMPAT_UTS_MACHINE
+-	reserve_mem=	[RAM]
+-			Format: nn[KMG]:<align>:<label>
++	reserve_mem=	Format: nn[KMG]:<align>:<label>
+ 			Reserve physical memory and label it with a name that
+ 			other subsystems can use to access it. This is typically
+ 			used for systems that do not wipe the RAM, and this command
 -- 
 2.47.2
 
