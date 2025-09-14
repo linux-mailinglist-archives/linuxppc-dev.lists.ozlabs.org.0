@@ -1,78 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-12177-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12178-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2DEDB56758
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Sep 2025 11:03:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5E3B5676E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Sep 2025 12:06:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cPhz15VsBz3cYq;
-	Sun, 14 Sep 2025 19:03:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cPkN248Yyz3ccl;
+	Sun, 14 Sep 2025 20:06:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757840605;
-	cv=none; b=L8d3lxd9mbRmsiND1++0NEfD/x4D0p5boSmM8u7rWdDR3EePluY7CBiK67BK8F8Zwer68vQZZebn/ZlfyQNgN6YKnRAk2jwWmq9VYcdTFwQm6umn8AofNVjPpPQqWY034fn51rdMS4rspiliTMhRNkWwINg5NQhYoZTq5ZMQvU45CJ+DTa9sZQNRjRLNIg2G8O/0MZVvWoh3kepUC0KZ4In3nW1WO/L8LFd5Q8c+OELNy9wmcg6ozpeaCCSnTg47mvWYO09FBipSKh6fdb0cYixzkyJuxwgRI+IcUxghkdwQ0HlQzOvEU/fUE3gEPB5xwbFhAeeEcGnR0lcXJNmWtw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757844402;
+	cv=none; b=hfej7uQqFaJdcXQMTZ4ooUeoZ/2ebm7bCjtZU0WX5vuXz4bx8t2bbu0YWxWa9Cupfe+DD52WgvAiS+XuUUyt6mmZWCQdiyhRbKM0TR97UiNf3mxzSNNi1ggFOizaJlsCdGjJ6LsITE/fTxo0Q/v4+QIoO1b9mAJ4ygkWIKxPvtqrRP3LDiSctQkoK5HZ7uNWCHuOvw1sA3KSDAOu4B+FuM2E9j/xkl2wIix1fY+acPFrsNGXxhMMFbKMKK6g691wyCLFT53KXMF4DSTn5M2Wkx+KjI5X1rzJIzui23tTVQ8AxAl4yTSGk5851S5yS9mhqRwqu78cX4jyN8oWBir4ag==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757840605; c=relaxed/relaxed;
-	bh=FcbN245cf2PHg1U9jA4JXjqihqRuIVDI5eszvfiebNc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=Yfn4w3jmwdg8xR/6DvqNrx3t1SM+V1wkx/ZAIEb6PkCqIBU/XRamAyofmgEMM7VoUmwz6tAdDL/51uyDF5JSU/lMV1GiDvPXedEwFuHgcWdptJ6gT2ONNj9MuzIjXoD8dGBLlgCKj3wRJWAWB5UMk0xbEqq7MW0cDeWK3gVHDSObkY+j/rbwcwINv7AZ9/uawmSkzYmfHXFx2jaFO3ZiLg+mrTEI5/WNx4ON6tP4sRSTIo4dGSbtsqTKF0OF9OYoLYE0V8S2B7gSWM8j3QJe0WBVKrZelCz+WDjDuCZc0rptL53UeGQ6S1hS4Q2NHNDWmSiiicSGqA9dqEm01AiRkA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rp4P//8W; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1757844402; c=relaxed/relaxed;
+	bh=rQXP67kYwWg6vM4UTDhamwKWj1krkQlt4rQZSoQPEdQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Gdoh6Y6nCSHnhKlVewhU0Apqd9dmcxntydmLbZ4agmzUXe/k5BmQX7Kle5iXwdDV8ciIz6ow8vTnIZ8AtmTjN/lNVFmbBrR+rMDgtiJomY2OuHAKE49BAldet3RuSUQV7qGMpQAeFo7RgtLxlfnMWMpe05hIoUg2kd/RaEjtBv7K0/ANji1uNhcdfuLwN05170062YUMrIBZvSmTHkiGV3UloVMkhyGXDwv2Fa5LGc4Yx1ntSXvQM6saZq9a1J7i+InzmyPF940UdRsYNdUOw3vDnhm/HX/HbMQOpkWwDgz58cvIuVq/4KgVSVb/LN7MV72Tz4olgJS6nxavEH2c7A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hGhVWy4h; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rp4P//8W;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hGhVWy4h;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cPhz02lBPz3cBW
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Sep 2025 19:03:23 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58E703Fo013144;
-	Sun, 14 Sep 2025 09:02:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=FcbN24
-	5cf2PHg1U9jA4JXjqihqRuIVDI5eszvfiebNc=; b=Rp4P//8W8b1ZUUuHx3uMxU
-	YpCrgNp0vVIyM7MzM0WcCHQSpSOMn9jwR8mOO82c4w4B0pyvnvPBcKidQuHaFi7P
-	QJ1hpGo3Zs7cueu5/IEwJcUJB2SD1n7xHV5cyHRF4a34F8Bs80JnKAOYrcd5z+Dm
-	dVtHDuGEYkWPEfh7Xira7Cr7TKhgmYZPKWyMhhyN53Uio9WVV/wbNfPEpQNrq8Gj
-	BvMssgkE0otiDNCm5Kj7rXLZN6Yc0EI8hFM2jRbnN2fa0szDERFiN00NL3BGnaU8
-	ioIkzWLBM981O8yFUmYiUssNe03yOV89u2yZRe6BrospxtzRXK+zYnXHJEDe/uIw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49504avkn3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 14 Sep 2025 09:02:37 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58E92anr005634;
-	Sun, 14 Sep 2025 09:02:36 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49504avkmv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 14 Sep 2025 09:02:36 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58E8bqAs009367;
-	Sun, 14 Sep 2025 09:02:35 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 495nn30x82-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 14 Sep 2025 09:02:35 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58E92VAP35127824
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 14 Sep 2025 09:02:31 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B43D20043;
-	Sun, 14 Sep 2025 09:02:31 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6593620040;
-	Sun, 14 Sep 2025 09:02:18 +0000 (GMT)
-Received: from [9.61.95.215] (unknown [9.61.95.215])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 14 Sep 2025 09:02:17 +0000 (GMT)
-Message-ID: <188f79ef-6ad4-4144-b73b-9e1090f4fc95@linux.ibm.com>
-Date: Sun, 14 Sep 2025 14:32:16 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cPkN13BQ9z3cQx
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Sep 2025 20:06:41 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 20DFE438E7;
+	Sun, 14 Sep 2025 10:06:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4082AC4CEF0;
+	Sun, 14 Sep 2025 10:06:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1757844399;
+	bh=sAkxjJJfEShLrXBVvUbe5Nbuot2UFPkdNXybwJxcBYY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hGhVWy4h/gu84b8AUY5CAxhBjA4oE+f4FI8q2AbORfRl5Mzbjbj6lhOkyStQ0oi9M
+	 W8QoYlTDAMmDvzc22PRN4vIf6UvnWIEgHfPK3nbIaO6+Bgc4ot987GJoAgiZ4Qoss+
+	 dxJ+3IkBSVZOwu+N2Z4n4dxeuzzil+8fSxn4vpD6k3VBKvJUfWYkKTYv+ULvYtpxSe
+	 ARcPnImrypfujumW2c+Tkx9maY07yERhC6rWJz/fkMGgSqGvpdn/rBYS9IbwIOKyKB
+	 hvuk4ypNdLPnSksQeCF7GqwSkxro5/n9s5UJO1kqWTpzV4Z4DDYeQc9CzvLJ70Fc+A
+	 sMyziae1DQ/+A==
+Message-ID: <a079375f-38c2-4f38-b2be-57737084fde8@kernel.org>
+Date: Sun, 14 Sep 2025 12:06:24 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,252 +59,151 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC V2 3/8] powerpc: introduce arch_enter_from_user_mode
-To: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
-References: <20250908210235.137300-2-mchauras@linux.ibm.com>
- <20250908210235.137300-5-mchauras@linux.ibm.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Subject: Re: [PATCH RESEND 21/62] init: remove all mentions of root=/dev/ram*
+To: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christian Brauner <brauner@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Jan Kara <jack@suse.cz>, Christoph Hellwig <hch@lst.de>,
+ Jens Axboe <axboe@kernel.dk>, Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Aleksa Sarai <cyphar@cyphar.com>,
+ =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Julian Stecklina <julian.stecklina@cyberus-technology.de>,
+ Gao Xiang <hsiangkao@linux.alibaba.com>, Art Nikpal <email2tema@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Eric Curtin <ecurtin@redhat.com>,
+ Alexander Graf <graf@amazon.com>, Rob Landley <rob@landley.net>,
+ Lennart Poettering <mzxreary@0pointer.de>, linux-arch@vger.kernel.org,
+ linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org, x86@kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org,
+ initramfs@vger.kernel.org, linux-api@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-efi@vger.kernel.org,
+ linux-ext4@vger.kernel.org, "Theodore Y . Ts'o" <tytso@mit.edu>,
+ linux-acpi@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
+ devicetree@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
+ Kees Cook <kees@kernel.org>, Thorsten Blum <thorsten.blum@linux.dev>,
+ Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
+References: <20250913003842.41944-1-safinaskar@gmail.com>
+ <20250913003842.41944-22-safinaskar@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, oleg@redhat.com, kees@kernel.org,
-        luto@amacapital.net, wad@chromium.org, deller@gmx.de, ldv@strace.io,
-        macro@orcam.me.uk, charlie@rivosinc.com, akpm@linux-foundation.org,
-        bigeasy@linutronix.de, ankur.a.arora@oracle.com, naveen@kernel.org,
-        thomas.weissschuh@linutronix.de, Jason@zx2c4.com, peterz@infradead.org,
-        tglx@linutronix.de, namcao@linutronix.de, kan.liang@linux.intel.com,
-        mingo@kernel.org, oliver.upton@linux.dev, mark.barnett@arm.com,
-        atrajeev@linux.vnet.ibm.com, rppt@kernel.org, coltonlewis@google.com,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250908210235.137300-5-mchauras@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20250913003842.41944-22-safinaskar@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDAyMCBTYWx0ZWRfXydJfEtyOMTaR
- skO8TUcN423tHXlR0ByIjODRe5WErlqrZehFA3U4QIhD9rez7d/7UDOzQiCo3xmTPGnxQD/GiiS
- G5R9NEcQ9sTsSK6EM9fbdhANmad1K2f3lkkTOiW48irkZNXiKKOR7APpWbpn9SQfL+W6C5n1ebb
- xnMhHTJrDa4emUa7yPYxNOY/HDtEKzxLzqz07pqqK0EKV9cpDEbqAxGMSLovuvIH3qzffzg4qEU
- EAKCAARMeGb5knG6ajkBBRFFfsCVhgkvvHC8rS//z3nuRIfsWL5c96RfsFQ30uCDgP8geTD2mpb
- wcGupMVPh5DqgnfroO0PcU5lVrG6Vu8DUfvA2zQZZntJ878doQ7x+DaeuU1rm9SQ6tbcu9C9XM0
- bpr+N20x
-X-Proofpoint-ORIG-GUID: rYR5iObNo_pb8F-yGfVXSaHmOtLJUpaB
-X-Authority-Analysis: v=2.4 cv=dt/bC0g4 c=1 sm=1 tr=0 ts=68c684ad cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=lQVaECI8AZnJP4KHH_4A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: wtcnjzJoUQ4SEcnHk3MA937O09RA2Hid
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-14_03,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0
- spamscore=0 clxscore=1015 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509130020
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On 13/09/2025 02:38, Askar Safin wrote:
+> Initrd support is removed, so root=/dev/ram* is never correct
+
+For all your other patches (here is correct):
+
+Please wrap commit message according to Linux coding style / submission
+process (neither too early nor over the limit):
+https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
 
 
-On 9/9/25 2:32 AM, Mukesh Kumar Chaurasiya wrote:
-> - Implement the hook arch_enter_from_user_mode for syscall entry.
-
-nit: for generic syscall infra.
-
-> - Move booke_load_dbcr0 from interrupt.c to interrupt.h
 > 
-> No functional change intended.
->
-> Signed-off-by: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+> Signed-off-by: Askar Safin <safinaskar@gmail.com>
 > ---
->   arch/powerpc/include/asm/entry-common.h | 96 +++++++++++++++++++++++++
->   arch/powerpc/include/asm/interrupt.h    | 23 ++++++
->   arch/powerpc/kernel/interrupt.c         | 22 ------
->   3 files changed, 119 insertions(+), 22 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/entry-common.h b/arch/powerpc/include/asm/entry-common.h
-> index 3af16d821d07e..49607292bf5a5 100644
-> --- a/arch/powerpc/include/asm/entry-common.h
-> +++ b/arch/powerpc/include/asm/entry-common.h
-> @@ -5,7 +5,103 @@
->   
->   #ifdef CONFIG_GENERIC_IRQ_ENTRY
->   
-> +#include <asm/cputime.h>
-> +#include <asm/interrupt.h>
->   #include <asm/stacktrace.h>
-> +#include <asm/tm.h>
-> +
-> +static __always_inline void arch_enter_from_user_mode(struct pt_regs *regs)
-> +{
-> +	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
-> +		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
-> +
-> +	BUG_ON(regs_is_unrecoverable(regs));
-> +	BUG_ON(!user_mode(regs));
-> +	BUG_ON(regs_irqs_disabled(regs));
-> +
-> +#ifdef CONFIG_PPC_PKEY
-> +	if (mmu_has_feature(MMU_FTR_PKEY)) {
-> +		unsigned long amr, iamr;
-> +		bool flush_needed = false;
-> +		/*
-> +		 * When entering from userspace we mostly have the AMR/IAMR
-> +		 * different from kernel default values. Hence don't compare.
-> +		 */
-> +		amr = mfspr(SPRN_AMR);
-> +		iamr = mfspr(SPRN_IAMR);
-> +		regs->amr  = amr;
-> +		regs->iamr = iamr;
-> +		if (mmu_has_feature(MMU_FTR_KUAP)) {
-> +			mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
-> +			flush_needed = true;
-> +		}
-> +		if (mmu_has_feature(MMU_FTR_BOOK3S_KUEP)) {
-> +			mtspr(SPRN_IAMR, AMR_KUEP_BLOCKED);
-> +			flush_needed = true;
-> +		}
-> +		if (flush_needed)
-> +			isync();
-> +	} else
-> +#endif
-> +		kuap_assert_locked();
-> +
-> +	booke_restore_dbcr0();
-> +
-> +	account_cpu_user_entry();
-> +
-> +	account_stolen_time();
-> +
-> +	/*
-> +	 * This is not required for the syscall exit path, but makes the
-> +	 * stack frame look nicer. If this was initialised in the first stack
-> +	 * frame, or if the unwinder was taught the first stack frame always
-> +	 * returns to user with IRQS_ENABLED, this store could be avoided!
-> +	 */
-> +	irq_soft_mask_regs_set_state(regs, IRQS_ENABLED);
-> +
-> +	/*
-> +	 * If system call is called with TM active, set _TIF_RESTOREALL to
-> +	 * prevent RFSCV being used to return to userspace, because POWER9
-> +	 * TM implementation has problems with this instruction returning to
-> +	 * transactional state. Final register values are not relevant because
-> +	 * the transaction will be aborted upon return anyway. Or in the case
-> +	 * of unsupported_scv SIGILL fault, the return state does not much
-> +	 * matter because it's an edge case.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
-> +			unlikely(MSR_TM_TRANSACTIONAL(regs->msr)))
-> +		set_bits(_TIF_RESTOREALL, &current_thread_info()->flags);
-> +
-> +	/*
-> +	 * If the system call was made with a transaction active, doom it and
-> +	 * return without performing the system call. Unless it was an
-> +	 * unsupported scv vector, in which case it's treated like an illegal
-> +	 * instruction.
-> +	 */
-> +#ifdef CONFIG_PPC_TRANSACTIONAL_MEM
-> +	if (unlikely(MSR_TM_TRANSACTIONAL(regs->msr)) &&
-> +	    !trap_is_unsupported_scv(regs)) {
-> +		/* Enable TM in the kernel, and disable EE (for scv) */
-> +		hard_irq_disable();
-> +		mtmsr(mfmsr() | MSR_TM);
-> +
-> +		/* tabort, this dooms the transaction, nothing else */
-> +		asm volatile(".long 0x7c00071d | ((%0) << 16)"
-> +				:: "r"(TM_CAUSE_SYSCALL|TM_CAUSE_PERSISTENT));
-> +
-> +		/*
-> +		 * Userspace will never see the return value. Execution will
-> +		 * resume after the tbegin. of the aborted transaction with the
-> +		 * checkpointed register state. A context switch could occur
-> +		 * or signal delivered to the process before resuming the
-> +		 * doomed transaction context, but that should all be handled
-> +		 * as expected.
-> +		 */
-> +		return;
-> +	}
-> +#endif // CONFIG_PPC_TRANSACTIONAL_MEM
+>  Documentation/admin-guide/kernel-parameters.txt          | 3 +--
+>  Documentation/arch/m68k/kernel-options.rst               | 9 ++-------
+>  arch/arm/boot/dts/arm/integratorap.dts                   | 2 +-
+>  arch/arm/boot/dts/arm/integratorcp.dts                   | 2 +-
+>  arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-cmm.dts     | 2 +-
+>  .../boot/dts/aspeed/aspeed-bmc-facebook-galaxy100.dts    | 2 +-
+>  .../arm/boot/dts/aspeed/aspeed-bmc-facebook-minipack.dts | 2 +-
+>  .../arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge100.dts | 2 +-
+>  arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-wedge40.dts | 2 +-
+>  arch/arm/boot/dts/aspeed/aspeed-bmc-facebook-yamp.dts    | 2 +-
+>  .../boot/dts/aspeed/ast2600-facebook-netbmc-common.dtsi  | 2 +-
 
-nit: Better to follow standard comment practices.
-		/* CONFIG_PPC_TRANSACTIONAL_MEM */
+No, don't do that. DTS is always separate. Don't mix DTS into such huge
+patchbom, either.
 
-> +}
-> +#define arch_enter_from_user_mode arch_enter_from_user_mode
->   
->   #endif /* CONFIG_GENERIC_IRQ_ENTRY */
->   #endif /* _ASM_PPC_ENTRY_COMMON_H */
-> diff --git a/arch/powerpc/include/asm/interrupt.h b/arch/powerpc/include/asm/interrupt.h
-> index 56bc8113b8cde..6edf064a0fea2 100644
-> --- a/arch/powerpc/include/asm/interrupt.h
-> +++ b/arch/powerpc/include/asm/interrupt.h
-> @@ -138,6 +138,29 @@ static inline void nap_adjust_return(struct pt_regs *regs)
->   #endif
->   }
->   
-> +static inline void booke_load_dbcr0(void)
-> +{
-> +#ifdef CONFIG_PPC_ADV_DEBUG_REGS
-> +       unsigned long dbcr0 = current->thread.debug.dbcr0;
-> +
-> +       if (likely(!(dbcr0 & DBCR0_IDM)))
-> +               return;
-> +
-> +       /*
-> +        * Check to see if the dbcr0 register is set up to debug.
-> +        * Use the internal debug mode bit to do this.
-> +        */
-> +       mtmsr(mfmsr() & ~MSR_DE);
-> +       if (IS_ENABLED(CONFIG_PPC32)) {
-> +               isync();
-> +               global_dbcr0[smp_processor_id()] = mfspr(SPRN_DBCR0);
-> +       }
-> +       mtspr(SPRN_DBCR0, dbcr0);
-> +       mtspr(SPRN_DBSR, -1);
-> +#endif
-> +}
-> +
+>  arch/arm/boot/dts/hisilicon/hi3620-hi4511.dts            | 2 +-
+>  .../boot/dts/intel/ixp/intel-ixp42x-welltech-epbx100.dts | 2 +-
+>  arch/arm/boot/dts/nspire/nspire-classic.dtsi             | 2 +-
+>  arch/arm/boot/dts/nspire/nspire-cx.dts                   | 2 +-
+>  arch/arm/boot/dts/samsung/exynos4210-origen.dts          | 2 +-
+>  arch/arm/boot/dts/samsung/exynos4210-smdkv310.dts        | 2 +-
+>  arch/arm/boot/dts/samsung/exynos4412-smdk4412.dts        | 2 +-
+>  arch/arm/boot/dts/samsung/exynos5250-smdk5250.dts        | 2 +-
+>  arch/arm/boot/dts/st/ste-nomadik-nhk15.dts               | 2 +-
+>  arch/arm/boot/dts/st/ste-nomadik-s8815.dts               | 2 +-
+>  arch/arm/boot/dts/st/stm32429i-eval.dts                  | 2 +-
+>  arch/arm/boot/dts/st/stm32746g-eval.dts                  | 2 +-
+>  arch/arm/boot/dts/st/stm32f429-disco.dts                 | 2 +-
+>  arch/arm/boot/dts/st/stm32f469-disco.dts                 | 2 +-
+>  arch/arm/boot/dts/st/stm32f746-disco.dts                 | 2 +-
+>  arch/arm/boot/dts/st/stm32f769-disco.dts                 | 2 +-
+>  arch/arm/boot/dts/st/stm32h743i-disco.dts                | 2 +-
+>  arch/arm/boot/dts/st/stm32h743i-eval.dts                 | 2 +-
+>  arch/arm/boot/dts/st/stm32h747i-disco.dts                | 2 +-
+>  arch/arm/boot/dts/st/stm32h750i-art-pi.dts               | 2 +-
+>  arch/arm/configs/assabet_defconfig                       | 2 +-
+>  arch/arm/configs/at91_dt_defconfig                       | 2 +-
+>  arch/arm/configs/exynos_defconfig                        | 2 +-
 
-Please run checkpatch.pl --strict on the series and fix the simple
-ones such as need to using tabs, spaces and alignments, extra lines etc.
+To me your patchset is way too big bomb, too difficult to review. You
+touch too many subsystems in the same commits. In few cases I saw
+dependency, in other cases like here - there is no dependency! So why
+grouping independent things together? It only makes it difficult to review.
 
-> +
->   static inline void booke_restore_dbcr0(void)
->   {
->   #ifdef CONFIG_PPC_ADV_DEBUG_REGS
-> diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-> index 0d8fd47049a19..2a09ac5dabd62 100644
-> --- a/arch/powerpc/kernel/interrupt.c
-> +++ b/arch/powerpc/kernel/interrupt.c
-> @@ -78,28 +78,6 @@ static notrace __always_inline bool prep_irq_for_enabled_exit(bool restartable)
->   	return true;
->   }
->   
-> -static notrace void booke_load_dbcr0(void)
-> -{
-> -#ifdef CONFIG_PPC_ADV_DEBUG_REGS
-> -	unsigned long dbcr0 = current->thread.debug.dbcr0;
-> -
-> -	if (likely(!(dbcr0 & DBCR0_IDM)))
-> -		return;
-> -
-> -	/*
-> -	 * Check to see if the dbcr0 register is set up to debug.
-> -	 * Use the internal debug mode bit to do this.
-> -	 */
-> -	mtmsr(mfmsr() & ~MSR_DE);
-> -	if (IS_ENABLED(CONFIG_PPC32)) {
-> -		isync();
-> -		global_dbcr0[smp_processor_id()] = mfspr(SPRN_DBCR0);
-> -	}
-> -	mtspr(SPRN_DBCR0, dbcr0);
-> -	mtspr(SPRN_DBSR, -1);
-> -#endif
-> -}
-> -
->   static notrace void check_return_regs_valid(struct pt_regs *regs)
->   {
->   #ifdef CONFIG_PPC_BOOK3S_64
+Anyway, combining here DTS is a no-go for me.
 
+Best regards,
+Krzysztof
 
