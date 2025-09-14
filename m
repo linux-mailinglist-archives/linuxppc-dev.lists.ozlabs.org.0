@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-12165-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12164-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71250B566DB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Sep 2025 06:40:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103D3B566D8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Sep 2025 06:40:30 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cPb7l1VGXz3dBq;
-	Sun, 14 Sep 2025 14:40:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cPb7b6rPnz3d9H;
+	Sun, 14 Sep 2025 14:40:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757822196;
-	cv=none; b=KM1eGCOFIwiWmE/lAMmFxUajpLDIF/HL6g8oBQ09yusqf4Pv5YSDKol17eUfKnuTOThqrlrXGeZ82WPL3ghmMw+wtxInzqs2SVe6Vo0bkMZPYZjI9SOzWBH0I0Xl5YukGNpVTvAwhqpHR953IN/MMscLkl6W+iwYYmBURQY9INJGQ95TSYjF0Ye3fz5+HsA+RS7JOL1ZZ2nfGtMhpLUGUKApIP1iKCLkiyGkgmf3QUGhmKtDKhL3fh8hDa28NSD4dWRetiLunA2yfTESqnrN0GhrN+adexUqVWfzkzsus/P39RdzsOzAFwDX+EJD5Xz+jgslkBCmeh/3wH+D5KiaGA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::636"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757822232;
+	cv=none; b=Ts7eyKaHkkHHrDepxtO7HQTqCXX4RV83RVpBGs5N8qKG2PmkqiM1QSHn1o74hxeGBU6AaVkgw60VChHZDFGIU+XmjkhpfyeYjWwM/ugKgP2gVVBEv4zMAxIaXv/yViO++fCDg2IL2TTEk3YlTZsQK9XnK/SVv2mqGoM4+DEDWIrBNvmXzMKQ0/reFA8ipOsdb5B2/9oMTZYr8K90CFdnV0HylpdXgIRMjhX/2xlzjIFZXaU85fjCL6a/ND6OYAQM4a7Y6ZAOsfl6z9+5Kocigs4Z3F3HAG7qe22rJOQAUSe9/xnWQC4ObJzrINwBbEDg53ATv95cPWDDD7zoAFsq7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757822196; c=relaxed/relaxed;
-	bh=ukssGXUYVXOD0e/noqLCBxDtEOgQieVYL/7Zl394zX0=;
+	t=1757822232; c=relaxed/relaxed;
+	bh=Y7psSH4JIkuISYR7xy9RNjBVG2GzEUFc3+zgpdmbt9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j6IdxBukzPdqQauz68VydzSe/X8UnMOlQOLloteqcgHiRlZYG15l76/dxfsZo5s7LkgB6YWNmFq/thW/ROz7oR1J5bqJFHNXHbjkYCv2wPhwg8tYThdbHFtqaaIzOKX83EJ4N6hgP3PAMBZoKzsM4T4R2PJ39xRdppK08q9GMBbRyBHjIQcumXd2enIpgqLjvtxMf2YBKnE98Tzu+mNR+aD1Lfss2qvHSWp8qvZX7CjnBqvfB6TCZ6+2yHbJcARXpwXBvnoIjfA4f2qLwL4CswyqSUeybZfWXCcLQqdk4EtVTt2Uo3DFOkSPbRrrcW128juU/Np5Ty26fbAyXJbzbA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=i75Eol3X; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=FiuTtCFX88cEAqQ4xzKILLd7WVoPCCBT/EMOBPGCVoBRDYkGomYB0guDtNrcBNTt8pCGjCbKXDkGGvvdo3u4VULCjMyCzESgYpxidnRs2V+NBLlZx0rMgwHBXCJ4xjyNjL1/bytTflTCFrEqRHxPRGD7tqzsOCC/BCtUgvAEYuCOsbepi69HLM193U4Cdf/M20uKRTYVqj/eFMO/A1vWWekV/bKGAk3lYFYFYkksQzmRjZlSM14MuCIjQ+K4buPTryiN0nSr7YTKGVkx8+s87R12MwlgZNIEACpdtc9LF+wuOzCU5pLsz/GD+Ohj0TyHpAAj/lZHPz5SKaXaQgxGkQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dZ+lYjR3; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=i75Eol3X;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dZ+lYjR3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52a; helo=mail-ed1-x52a.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::636; helo=mail-ej1-x636.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cPZ8z5Knkz2yrg
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Sep 2025 13:56:35 +1000 (AEST)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-62f0411577aso1757496a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 20:56:35 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cPZ9g1svCz2yrg
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Sep 2025 13:57:11 +1000 (AEST)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-afcb7ae31caso554620666b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 20:57:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757822193; x=1758426993; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1757822228; x=1758427028; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ukssGXUYVXOD0e/noqLCBxDtEOgQieVYL/7Zl394zX0=;
-        b=i75Eol3XlpR918Fol/oBDMvIrJ/ZYlnMX80mkVbR14oC2zHGXArK6165woFXUSgDew
-         LqZqvTXqd3FVbb1vukyPN6wNqtK1cXh6y7NrB/9vjSpUSmzrq8wEHua7j3zYBr4Lvg/2
-         BcTF+DMrtFRaVOjAV3E2VXGuZg1McPFFhfzDd4TyenDFWJ6nYME2GCsi/lmgwW+aY2kk
-         fyDSadzanCIvntNazLuvgkRTgqWyboNYFXjdpusZ4cN6ZhVnn2FXM2SkoC3WaA1E3PVs
-         QDVQEGd68qIFAaPUWg8uHTLi+wDcnLKq3FZg641j8VFWSB6DDDRGDkGLr4g24cgZ/eR4
-         rHJA==
+        bh=Y7psSH4JIkuISYR7xy9RNjBVG2GzEUFc3+zgpdmbt9Y=;
+        b=dZ+lYjR38SGM3yY3lJIbBGaEm4Xf/vLsqiR+13NaqNkqUjaqIKlj7WcppNRxkPch1Y
+         O5n1edzKd89Rxdv0mBoJINP7nfsFnSnUG1UgQ6kOvPB7+ihQv+kNuvvPSOoBIBZocVsq
+         6WT2OB5/Yc3a+FrnkGEtG6yikT8tNyX+rKLNxLmBUMT5HmEm5gK/klpzGk3PFeYF0RhC
+         j7OqlJ6Lv7b0va/1vhdSK6kXsXIQyWNKLko4x4olntLKgdPXdK/EqafAzCN42o7TqfYc
+         c14PphgtARkSaVEHQU0N3OErHjwYWNPJ7Rm2pfJqlnFQAlkU7P62Adqqhdqg3f8zCoJE
+         CpWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757822193; x=1758426993;
+        d=1e100.net; s=20230601; t=1757822228; x=1758427028;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ukssGXUYVXOD0e/noqLCBxDtEOgQieVYL/7Zl394zX0=;
-        b=vo2DJ58eOuPFzdMYGB7av2KU+CXGsBRrvfiCx7WIxS8fWsx+5zgM1Bd3O/7LpfNVxw
-         2HCobLTsBppaT71IexRW6KDw0neDz9IjDkmYRe8xUe6XiuAZSQvRq2M71x+wgSeqc3TN
-         CsPao8Ljxut7kr5qYmUTNEoWU1DU9OxI+3Uwu1rwzb30CJ+zM9EJ5Bi2TlCEo0j0GQ2D
-         9pYYbJecq3Te45eQxfA3h7vY+ScBWn1T+wnhY/lgrOtNWKkTnpUeHrqzenrY1K8E/OUU
-         HMjurvLPEiiYnIJbfP7unYwvVCosnbSHBsloHA8CI2uAuYwGLkKtuZFkVNY3Ry6EYVc6
-         Aetg==
-X-Forwarded-Encrypted: i=1; AJvYcCVN7Likf0Y96g2r+RmyOAtItC0r0mMM/3d861DQFgIYumfCyNW5NGM3PxYmJ/afgZGQ+wrOBM1XOqw3i+Y=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyd8guTY0o3YezOe53zlDjFyctA4Thqr7NxM+rtWmy8D8nCi2Un
-	a1IbnCSjIDVaMqntPe1SB9mWnJPBXQZukP3Qicf2pHq9Z/6Axv2XNamF
-X-Gm-Gg: ASbGncu6i5fjR504H+bGQ59+kEurE8FLBgRpMtV6xiEM0hwYPnc/8TDJQoRXzzt075W
-	ksaRh6Yykm/2L/sV96vBAzcEElWYLLufYbqpu8+gMXgfRTOC5/UE0E76L1YWIMrtR73WIvvWyaY
-	8kQlgu24EQDR3pw5uSLzEpA8CeUWmU+kKepeQZx5grMq9jiej1U5PJBee34qMfmjVhDCg5FCVci
-	e7NsD/Wt/xTZbRTXEtXUMExEdWCh4dbVubzrk0Wp1jhwFB4e2aBjIeQBn7T9XHNexftIIARkgrg
-	XiCHrssIQiKnlcz7iTNOq/EI298zX65EbHuG5O8OOW4RtNM1fF2wwLoU+lzeLCtdVF8bQGYP+E3
-	6x4nOVswCmO8HsuF2BD4=
-X-Google-Smtp-Source: AGHT+IEh42ac6WqH282xp0DieWYXKfg+ycti4urbWWAb1GXqLLNoKNDdAlfHKjc5T4lrTIZzL6YLwA==
-X-Received: by 2002:a05:6402:2815:b0:61c:e1d6:6bf6 with SMTP id 4fb4d7f45d1cf-62ed80fd3fdmr8226990a12.7.1757822192729;
-        Sat, 13 Sep 2025 20:56:32 -0700 (PDT)
+        bh=Y7psSH4JIkuISYR7xy9RNjBVG2GzEUFc3+zgpdmbt9Y=;
+        b=J4dzGXJJbdGDS+JOVLr9Wh9vro1z2mkUGDLRpPGoGpWApuDrrA+/FnXwGC5pDBYV6G
+         0BsPSbDW9dUUg23fO08XSBW1z6wVve/c92I07HlMAWIXONL2OpRr/K9Rmv+9yjF6jlYN
+         CafCMjmMzGbiJwZjVwfD0W18KT6Dfj3YhMDJfZhl9mDLNmDrOFT6n/PM1sspQ6TtU6uN
+         F6qjsMrbnBsuHgYxrOC2zjbvDdsOgiO2gUI2bCFQEHA4zwHw4DX7++efg3+o+CnsEeQp
+         a9TA+hKgJAND2WOEi97ZLafwLqLGh6sNxw0S0J9bQNNiyMuHoSIgevCEx/2ODgKCA2by
+         NPsA==
+X-Forwarded-Encrypted: i=1; AJvYcCVDpTzEloT3x+0SWmum7jnKRBumJuqynt4TkAcldivTyZAFWQ/lRR3ZgDyu1VjxKFLwoqJee6EY+s6+rew=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxzd9ftRuqJc92HXTNzHZrU3jofU8OWcb93p3sU4Twajnj6FCsj
+	7KajRuF9GevQw9gjczbYGChWEGEf9MF31dZHaDsvRbGELn4u5uFKzlMX
+X-Gm-Gg: ASbGncuC3MfZtH0irZAMppbIdz6V4M1kzUPXGyTs2n1813sI2OVrQdKEg4upBTRWZgx
+	BljOWu2eyYhfAyArNHP0iWFkwRC3EFsoqFHojwkfDByJZZBIOs4FjQiiou7U+E18qPEujhRZRWv
+	qxIF+shW3L+52nXsGlB0VflNDZhDtfZKZk7gbHBisfemxNRCGcD7+oZ0LtKvOqSsfiAzL9gJbMY
+	ycNchzb13pu5sXX/gCqMwmOVFhzMIJMTM72/OTykxwZVUlUuJ1s8EiUj9Kc+tm7fm18rwNGOj7I
+	UD/6/Db//ocxlNqM4a0Y6UWxNsXlyTaf+0gZWJBJC9w1BXKnAWWeCzUmTsLnLgV+DgFfI8C/4WM
+	8HWC5UFutoLG3LOD/2x+g/LWYCshjyw==
+X-Google-Smtp-Source: AGHT+IHHnPU+sOVT053l7deT3P8z3LJVFAOiksWjmZKd0Ub2gBIDgZK1/4gCPHfUrNaBqPQVOEAIKA==
+X-Received: by 2002:a17:907:d16:b0:b04:6338:c936 with SMTP id a640c23a62f3a-b07c35b8e53mr876582466b.17.1757822228258;
+        Sat, 13 Sep 2025 20:57:08 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-62ec33ad2d6sm6510443a12.18.2025.09.13.20.56.27
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b32f1e54sm673986866b.75.2025.09.13.20.57.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Sep 2025 20:56:32 -0700 (PDT)
+        Sat, 13 Sep 2025 20:57:07 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -125,9 +125,9 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Thorsten Blum <thorsten.blum@linux.dev>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	patches@lists.linux.dev
-Subject: [PATCH RESEND 48/62] init: fix comment
-Date: Sun, 14 Sep 2025 06:56:26 +0300
-Message-ID: <20250914035626.3718268-1-safinaskar@gmail.com>
+Subject: [PATCH RESEND 49/62] init: rename ramdisk_execute_command to initramfs_execute_command
+Date: Sun, 14 Sep 2025 06:57:03 +0300
+Message-ID: <20250914035703.3729713-1-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
 References: <20250913003842.41944-1-safinaskar@gmail.com>
@@ -150,26 +150,66 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Make #endif match #ifdef
+This is cleanup after initrd removal
 
 Signed-off-by: Askar Safin <safinaskar@gmail.com>
 ---
- init/initramfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ init/main.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/init/initramfs.c b/init/initramfs.c
-index cf19b7c0c358..30e94ebf4902 100644
---- a/init/initramfs.c
-+++ b/init/initramfs.c
-@@ -717,7 +717,7 @@ static inline bool kexec_free_initrd(void)
- {
- 	return false;
- }
--#endif /* CONFIG_KEXEC_CORE */
-+#endif /* CONFIG_CRASH_RESERVE */
+diff --git a/init/main.c b/init/main.c
+index 5186233c64fd..cbebd64f523c 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -160,7 +160,7 @@ static size_t initargs_offs;
+ #endif
  
- static void __init do_populate_rootfs(void *unused, async_cookie_t cookie)
+ static char *execute_command;
+-static char *ramdisk_execute_command = "/init";
++static char *initramfs_execute_command = "/init";
+ 
+ /*
+  * Used to generate warnings if static_key manipulation functions are used
+@@ -609,7 +609,7 @@ static int __init rdinit_setup(char *str)
  {
+ 	unsigned int i;
+ 
+-	ramdisk_execute_command = str;
++	initramfs_execute_command = str;
+ 	/* See "auto" comment in init_setup */
+ 	for (i = 1; i < MAX_INIT_ARGS; i++)
+ 		argv_init[i] = NULL;
+@@ -1491,12 +1491,12 @@ static int __ref kernel_init(void *unused)
+ 
+ 	do_sysctl_args();
+ 
+-	if (ramdisk_execute_command) {
+-		ret = run_init_process(ramdisk_execute_command);
++	if (initramfs_execute_command) {
++		ret = run_init_process(initramfs_execute_command);
+ 		if (!ret)
+ 			return 0;
+ 		pr_err("Failed to execute %s (error %d)\n",
+-		       ramdisk_execute_command, ret);
++		       initramfs_execute_command, ret);
+ 	}
+ 
+ 	/*
+@@ -1588,11 +1588,11 @@ static noinline void __init kernel_init_freeable(void)
+ 	 * the work
+ 	 */
+ 	int ramdisk_command_access;
+-	ramdisk_command_access = init_eaccess(ramdisk_execute_command);
++	ramdisk_command_access = init_eaccess(initramfs_execute_command);
+ 	if (ramdisk_command_access != 0) {
+ 		pr_warn("check access for rdinit=%s failed: %i, ignoring\n",
+-			ramdisk_execute_command, ramdisk_command_access);
+-		ramdisk_execute_command = NULL;
++			initramfs_execute_command, ramdisk_command_access);
++		initramfs_execute_command = NULL;
+ 		prepare_namespace();
+ 	}
+ 
 -- 
 2.47.2
 
