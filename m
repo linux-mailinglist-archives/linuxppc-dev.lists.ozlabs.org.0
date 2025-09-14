@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-12160-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12159-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2774CB566D4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Sep 2025 06:39:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89CCBB566D3
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Sep 2025 06:39:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cPb6r6tqXz3cn9;
-	Sun, 14 Sep 2025 14:39:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cPb6j3sTKz3cdg;
+	Sun, 14 Sep 2025 14:39:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::630"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757822375;
-	cv=none; b=deBLv97OvQsB8Ho2edmq1JZNi2jAjQO78WFrqETHThOl7ZKJgRA7ZK3IPR+XPEuI1pIcBwIhUc/WUkUXBPktz9WSuoAV0FGyV1Wn0oUbubDwD5vkqlxcapP3UoDNjp6fOs2Rvxu+4uZg1bOO4h7Mvsu8mb9aBfkmjSFaljLZC0jwzyw6e185NYter039XvBb31hbNwLUkvUWzNsEK2WID18yuikJ8f9QfFTxrcJIJH53M0pDgNUSIqxx/exlcgu9fJ2T9sTYmMyMWremrwLMOeApKJb2mRVQSuryVVr6kSmc1ggJG7taGHwz67i6ixx1ct8alyERQdCoxXpNEy1zxA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757822411;
+	cv=none; b=S02TKnxeTI6eJE/eius6tKzAE8m/Q8SxH/e6FZlb69wJYu65Rv847mGwa6871kevseNxQGFQnijxordPO9Ryxcx9ZqOeXHMqd8nypyEscFPJ8ZHxoRiWNt4pbaBMd/tYLrJnJ07DxJbEs8xa0WLHuznfXg3aQVRgZMq4aWRx0Ym3VJ02XvrWCmITfpOm85sLHBlQOswrYOUUWYFkfWyMCtxl/t8XJKWMUDVgEc5gZvGUlqto58iucs3Ld+YiI4Ka/yDehYK/bzCTN5faDYkbvI0BSBaNGYYkpoMDWW3pIQt6pAAhi1ivV/zV9xD7g6ke2b+O+69dRrFBIeqZPd6LiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757822375; c=relaxed/relaxed;
-	bh=O9abWz0+AALTE1DyE86pUo1tihrL6Hn8wt7mMTmG960=;
+	t=1757822411; c=relaxed/relaxed;
+	bh=sPu72pvE4Wbo60re69UImAF/YSQlNTTbxtv7CBRvcjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfvWTGR9sk3YgaCoyEjGFdZ3PzU6S85IKLYrxoqAWJn4une+eE1VXtSp/YwZMwU31wjMB0xoA7sRulb+B0/MFtEQEGnD1ms6gjpnVBIsPQTPmkfNZYv56TW5yYeAYlWciK/zcJU+OqZ7ZKdPpixtIPO3qPsQjBzsXQh+ljF8pW8+o6/6TF+8iVxZ1sK1ZDQzfBpKP0kamEZzLWC2cAuVLjIflpd1R79VuSrktx5fV9XSt4npL86BKXpTwkiwmU0s0VG2XBo+Ngb2j+hctkt8NkErQSjsFXNKZjrHqxvZoO8UHT3cxVJwMacLVVueo2gEbmsi4GJdF7gYZP4+wXYjnA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gy+eedIV; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::630; helo=mail-ej1-x630.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=ZCcknTcvkHpgIKtgP9U0cbp/7VW8nkkzS5XSZ/8fwPmW/sU0hMHIYKdP4fW+jNpDHW+E61al7Vmf9TyHUGnEnOZG64jgJCkEM9fvq5JLSsdnNt++aHgBadbD2Ow+xQ0hBRlD5VOylncj9sY7hQP35pqXHxQ96K8XHcL9iGgLONIwncSC3eJozOQa3WgQZZASnPxOkFHUiXWXsvzyBRuTmVtdzdaBRdMF2RcbwmhHON+RQaqUndp5bgH02bwsxOkR/NiJbTMU7yMJufC/ooQQilBOmiAKqG2HlNqLYkO76nifvgnbkUydA6mJ5wMDqnE+FZJgr5fNUTRNrpmQieK4UA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ftp29IP9; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=gy+eedIV;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ftp29IP9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::630; helo=mail-ej1-x630.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52e; helo=mail-ed1-x52e.google.com; envelope-from=safinaskar@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cPZDQ3PQhz2yrm
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Sep 2025 13:59:34 +1000 (AEST)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-afcb7ae6ed0so479129066b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 20:59:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cPZF62pCgz2yyx
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Sep 2025 14:00:10 +1000 (AEST)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-6228de280a4so5039177a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Sep 2025 21:00:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1757822372; x=1758427172; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1757822408; x=1758427208; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=O9abWz0+AALTE1DyE86pUo1tihrL6Hn8wt7mMTmG960=;
-        b=gy+eedIVc6E45pW+93epkaNs6nfL78NbvfOBI+Umu9C850Ht/5uuP2jlTJygdS3Syu
-         jL/DOJ5HY3bfMamqZvHYlLS6ATmvqpHotbWmfvjiOXGZdoi2mpjlZ2WKcjD6iv/E84Ml
-         yaK2nWbvHJT2uq1jbhuEmd2de9YKVWAAYQmwvjfGvT5CuiytxWI06iaRVoR44bEgFtHB
-         hnNDwQ0JvQEHV0xrlxxt5m/J76bBaXkb3a+XCjBKqSxQNR/57WA+o9WDJXhT6RP3bDCn
-         aCVxOKUWh9sIyAPHJogxrMIb3HwanAfWveEmLG7A1pMYtuwF3tYyAwxzecwrVCKfTy07
-         dh2g==
+        bh=sPu72pvE4Wbo60re69UImAF/YSQlNTTbxtv7CBRvcjs=;
+        b=ftp29IP92r2SGtT3o/+JTqwqmi2W8WL52yY6NHALQecPkhKc6gtnAUWOFtWMYc57nQ
+         zUDMH33S8OHevxCJJMXkA10rtu03GwdTK7D2k8ruH+13InTNOVCQ/0O4hKhEKMNZ8wuW
+         W1x9R1/QJf/Lw78UgsmnACHtBcvgMeYYK35eEdAGp7MFFyJCS/aLGH5mZq0UjIMXli3u
+         NgOCJPzjSCmA4/3CPeTJ/NfT4g7EaJ57wejTF0apD35YeL40uFfqg0BM1l4ansZ+WowB
+         jdaY+YjaIM5tIFiI7fqfQlz/PnGvO9V02LnW2cVJmv/R/m6zZyLmgwrAbavqYdB7HEtS
+         bU/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757822372; x=1758427172;
+        d=1e100.net; s=20230601; t=1757822408; x=1758427208;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=O9abWz0+AALTE1DyE86pUo1tihrL6Hn8wt7mMTmG960=;
-        b=skLqVfpxdnO8hA4ebWOTGdVbs0shQoabgrI6mzG68p2aIgSqll5IeiDXndZQXPDeCT
-         XC8Z72qW/mA3EEYJmJOnNiq80rB6BkCUgVbzT3MeAF6BCE0aOQW4wIA3Z4rqf0RP8qQ0
-         Gbevm9oNCJafoD7yIFpy6vWQDDBKBojyv0rxOi7o9JRb8UH9qobW/M7RAYdutd2UoS0c
-         Y5RHsxdKgPvXDXMSPNsSd6obaaKJVAku5oO+HL3v4STzlRs1a+J46awZR3IPulVu1ela
-         AIjFaQnAhJ8UYZPLkA2L8K0mKfX7YkUMop4La4Y2QjJc2tHQ4KEl/r/lUU1b467p85gj
-         GAsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXitMXJQ3DA/xJd4+X9Q3cdxiBGNR+HmWW6x6iro2hKFECAQlRhihIJB7tbIDCLukhEMqbdcWgetGPVCXM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzxMYNgpehU3lc4ugFFTj5z1L5zZgUuqN35ViL8swWlGhed/Lhh
-	OknbzN96CEY2y+HoNz72frCrsSORK2hXW9hPdtR1Xk8MK/OOMy3qjglY
-X-Gm-Gg: ASbGncs244a5sBmyli5HJkKJEHwDFeTtkKi8jmPE+9aaSAKdwwpOjY60R5g+KtOHrwL
-	C1kzNZcxQo287pmW9WdDaKNosfipuHOMZdGhN9Qy1+OStOJMRFuSvdbPTOuxPI1zbwtJ5bpdkpw
-	DIeExtRGlhPS1u1enDQBF2GdbKW5KRHuRFJ9fpK3lBr+LT23qWJUGn55iX6CI7iQ4Sc0jKcBaxl
-	t9lUs9tcOA89tqeCge/ve8VKZO26zvWfAvdd13IrfPvSGbcC9iMOL1ANMBlQ5uIT7OcMbf6HWqO
-	BTz7819dn4aJWenm/Apr6ZiUZwfL7ImrxZwrI9/68HBGkshKWb4g4Bqfs1wOfxadcrddzfEH8Jv
-	ttpoocgdSQwiZcf0/YCo=
-X-Google-Smtp-Source: AGHT+IHIaNmlQUOqaI2XvHaD2x2sJJCA+iwXMxeIqgPaozK4MzRrxS2gXxwIxVkINaRf0GrOSh3U1Q==
-X-Received: by 2002:a17:907:3ea6:b0:b09:48c6:b7ad with SMTP id a640c23a62f3a-b0948c6c6a4mr387666066b.57.1757822371514;
-        Sat, 13 Sep 2025 20:59:31 -0700 (PDT)
+        bh=sPu72pvE4Wbo60re69UImAF/YSQlNTTbxtv7CBRvcjs=;
+        b=utWChA2zg2a5gKKn4jAh9ivdrf+tpkIUkbH9JaGz906XPpcJwIzH9QOk4PY3oYlHGl
+         noUoyYlSzNrpdJphBEhCXA8jevmt/mdPQhCeyAyz63z2MvrY9wCy79bFjylwwXLYwSEe
+         QaOd3rimh4FJ3zt2jdfnCNHd5KsXTj1+eTY9m0WszZxdY4xnqvAnDFGg6XbcIJqksgpF
+         nawKS3DAOe5IiTWd/ZfnclhHgIZVZOeoIYh7Za6YYEl+3ull4qZ0ntFKJ6Tx88uZx6Nw
+         tFdydw0s3mtvH09OY8ADHvdGY1gZcNfwE5AwWMOt6YRfjUR0Nph2UiMaLt2p2Z3TVBTK
+         sCGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUo1MQ5AtBO2sx2kVpr7L1usGz0G037flpsZ3SSHX0YcFTBESCraSQ1A/XugMPBBs4DPFSd6Pev+FKaDAQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwjHrRK7582ZkN8znspjVXI8kotegXL8TzAwHnH0Brdkq6Cs2fv
+	nTihviS1UGQmvZRFOV4qhVfMHdlsE6PjIh5uI2zRsicEtFkw67DWOHud
+X-Gm-Gg: ASbGncuS3QMyaeojcfAxkMuJUuk88fGHzqr5zkpfw9U3GEpJdvddxRa8s8/3qO0Ra+W
+	9keRtHl6rPAwcUQgak2NXpxJi/pMUZSEFkeNHJregND7W89eNOCwu6zWA1UnqckMsDPRtR0stqU
+	aX7mIa4HehkzktDnBhvXr1CKKYYGzQxmonJwZhlKD9kdIGcEGSLoxBlUB+xvSkdW79Pnka5+5ML
+	i+zSXDQ2jqqOTEzN5SJQ4KfCSuLdKaTrJPYD+HDvkRg0z5aDOf5jhsDXNmCucXHoB+luV+O5wFs
+	af8GwDAI9G5TwKDEAZ1+EkHxDUQIkYjjxovn6r4k0xMnwCxl/8OSyD6oxBVoN+nCRTgGwprvi1G
+	Wln3n3STdcJYaBy3WUYo=
+X-Google-Smtp-Source: AGHT+IEl+TZwxB50+bcUbtwQ17obwnzKEwTqhOZYOAPQC+b9EZK3iFYtQ6uoMv0unkK0mvoXQKHChg==
+X-Received: by 2002:a17:907:3e1e:b0:afe:35d:fd5d with SMTP id a640c23a62f3a-b07c3475927mr787189666b.1.1757822407322;
+        Sat, 13 Sep 2025 21:00:07 -0700 (PDT)
 Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07de03d93csm287001766b.12.2025.09.13.20.59.27
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b07b32ef574sm682456966b.73.2025.09.13.21.00.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 13 Sep 2025 20:59:31 -0700 (PDT)
+        Sat, 13 Sep 2025 21:00:06 -0700 (PDT)
 From: Askar Safin <safinaskar@gmail.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
@@ -125,9 +125,9 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Thorsten Blum <thorsten.blum@linux.dev>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	patches@lists.linux.dev
-Subject: [PATCH RESEND 53/62] init: rename kexec_free_initrd to kexec_free_initramfs
-Date: Sun, 14 Sep 2025 06:59:26 +0300
-Message-ID: <20250914035926.3770703-1-safinaskar@gmail.com>
+Subject: [PATCH RESEND 54/62] init: arm, x86: deal with some references to initrd
+Date: Sun, 14 Sep 2025 07:00:01 +0300
+Message-ID: <20250914040002.3779907-1-safinaskar@gmail.com>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250913003842.41944-1-safinaskar@gmail.com>
 References: <20250913003842.41944-1-safinaskar@gmail.com>
@@ -150,44 +150,217 @@ X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This is cleanup after initrd removal
+...in comments and printk
 
 Signed-off-by: Askar Safin <safinaskar@gmail.com>
 ---
- init/initramfs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/mm/init.c      |  2 +-
+ arch/x86/kernel/setup.c | 10 +++++-----
+ arch/x86/mm/init.c      |  2 +-
+ init/initramfs.c        | 18 +++++++++---------
+ init/main.c             | 12 ++++++------
+ 5 files changed, 22 insertions(+), 22 deletions(-)
 
+diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
+index ae5921db626e..04ba9b385e24 100644
+--- a/arch/arm/mm/init.c
++++ b/arch/arm/mm/init.c
+@@ -445,7 +445,7 @@ void free_initramfs_mem(unsigned long start, unsigned long end)
+ 		end = round_up(end, PAGE_SIZE);
+ 
+ 	poison_init_mem((void *)start, PAGE_ALIGN(end) - start);
+-	free_reserved_area((void *)start, (void *)end, -1, "initrd");
++	free_reserved_area((void *)start, (void *)end, -1, "initramfs");
+ }
+ #endif
+ 
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index 3b88d156ed39..65670e0f59c0 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -325,19 +325,19 @@ static void __init relocate_initrd(void)
+ 	u64 relocated_ramdisk = memblock_phys_alloc_range(area_size, PAGE_SIZE, 0,
+ 						      PFN_PHYS(max_pfn_mapped));
+ 	if (!relocated_ramdisk)
+-		panic("Cannot find place for new RAMDISK of size %lld\n",
++		panic("Cannot find place for new INITRAMFS of size %lld\n",
+ 		      ramdisk_size);
+ 
+ 	virt_external_initramfs_start = relocated_ramdisk + PAGE_OFFSET;
+ 	virt_external_initramfs_end   = virt_external_initramfs_start + ramdisk_size;
+-	printk(KERN_INFO "Allocated new RAMDISK: [mem %#010llx-%#010llx]\n",
++	printk(KERN_INFO "Allocated new INITRAMFS: [mem %#010llx-%#010llx]\n",
+ 	       relocated_ramdisk, relocated_ramdisk + ramdisk_size - 1);
+ 
+ 	ret = copy_from_early_mem((void *)virt_external_initramfs_start, ramdisk_image, ramdisk_size);
+ 	if (ret)
+-		panic("Copy RAMDISK failed\n");
++		panic("Copy INITRAMFS failed\n");
+ 
+-	printk(KERN_INFO "Move RAMDISK from [mem %#010llx-%#010llx] to"
++	printk(KERN_INFO "Move INITRAMFS from [mem %#010llx-%#010llx] to"
+ 		" [mem %#010llx-%#010llx]\n",
+ 		ramdisk_image, ramdisk_image + ramdisk_size - 1,
+ 		relocated_ramdisk, relocated_ramdisk + ramdisk_size - 1);
+@@ -370,7 +370,7 @@ static void __init reserve_initrd(void)
+ 
+ 	virt_external_initramfs_start = 0;
+ 
+-	printk(KERN_INFO "RAMDISK: [mem %#010llx-%#010llx]\n", ramdisk_image,
++	printk(KERN_INFO "INITRAMFS: [mem %#010llx-%#010llx]\n", ramdisk_image,
+ 			ramdisk_end - 1);
+ 
+ 	if (pfn_range_is_mapped(PFN_DOWN(ramdisk_image),
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index b7c45004f999..51b632f7fd21 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -992,7 +992,7 @@ void __init free_initramfs_mem(unsigned long start, unsigned long end)
+ 	 *   - relocate_initrd()
+ 	 * So here We can do PAGE_ALIGN() safely to get partial page to be freed
+ 	 */
+-	free_init_pages("initrd", start, PAGE_ALIGN(end));
++	free_init_pages("initramfs", start, PAGE_ALIGN(end));
+ }
+ #endif
+ 
 diff --git a/init/initramfs.c b/init/initramfs.c
-index 40c8e4b05886..d52314b17c25 100644
+index d52314b17c25..348cfcc4c95e 100644
 --- a/init/initramfs.c
 +++ b/init/initramfs.c
-@@ -690,7 +690,7 @@ void __weak __init free_initramfs_mem(unsigned long start, unsigned long end)
+@@ -643,7 +643,7 @@ void __init reserve_initramfs_mem(void)
+ 		return;
+ 	/*
+ 	 * Round the memory region to page boundaries as per free_initramfs_mem()
+-	 * This allows us to detect whether the pages overlapping the initrd
++	 * This allows us to detect whether the pages overlapping the initramfs
+ 	 * are in use, but more importantly, reserves the entire set of pages
+ 	 * as we don't want these pages allocated for other purposes.
+ 	 */
+@@ -652,26 +652,26 @@ void __init reserve_initramfs_mem(void)
+ 	size = round_up(size, PAGE_SIZE);
+ 
+ 	if (!memblock_is_region_memory(start, size)) {
+-		pr_err("INITRD: 0x%08llx+0x%08lx is not a memory region",
++		pr_err("INITRAMFS: 0x%08llx+0x%08lx is not a memory region",
+ 		       (u64)start, size);
+ 		goto disable;
+ 	}
+ 
+ 	if (memblock_is_region_reserved(start, size)) {
+-		pr_err("INITRD: 0x%08llx+0x%08lx overlaps in-use memory region\n",
++		pr_err("INITRAMFS: 0x%08llx+0x%08lx overlaps in-use memory region\n",
+ 		       (u64)start, size);
+ 		goto disable;
+ 	}
+ 
+ 	memblock_reserve(start, size);
+-	/* Now convert initrd to virtual addresses */
++	/* Now convert initramfs to virtual addresses */
+ 	virt_external_initramfs_start = (unsigned long)__va(phys_external_initramfs_start);
+ 	virt_external_initramfs_end = virt_external_initramfs_start + phys_external_initramfs_size;
+ 	initramfs_below_start_ok = 1;
+ 
+ 	return;
+ disable:
+-	pr_cont(" - disabling initrd\n");
++	pr_cont(" - disabling initramfs\n");
+ 	virt_external_initramfs_start = 0;
+ 	virt_external_initramfs_end = 0;
+ }
+@@ -686,7 +686,7 @@ void __weak __init free_initramfs_mem(unsigned long start, unsigned long end)
+ #endif
+ 
+ 	free_reserved_area((void *)start, (void *)end, POISON_FREE_INITMEM,
+-			"initrd");
++			"initramfs");
  }
  
  #ifdef CONFIG_CRASH_RESERVE
--static bool __init kexec_free_initrd(void)
-+static bool __init kexec_free_initramfs(void)
- {
- 	unsigned long crashk_start = (unsigned long)__va(crashk_res.start);
+@@ -696,14 +696,14 @@ static bool __init kexec_free_initramfs(void)
  	unsigned long crashk_end   = (unsigned long)__va(crashk_res.end);
-@@ -713,7 +713,7 @@ static bool __init kexec_free_initrd(void)
- 	return true;
- }
- #else
--static inline bool kexec_free_initrd(void)
-+static inline bool kexec_free_initramfs(void)
- {
- 	return false;
- }
-@@ -743,7 +743,7 @@ static void __init do_populate_rootfs(void *unused, async_cookie_t cookie)
- 	 * If the initrd region is overlapped with crashkernel reserved region,
+ 
+ 	/*
+-	 * If the initrd region is overlapped with crashkernel reserved region,
++	 * If the initramfs region is overlapped with crashkernel reserved region,
  	 * free only memory that is not part of crashkernel region.
  	 */
--	if (!retain_initramfs && virt_external_initramfs_start && !kexec_free_initrd()) {
-+	if (!retain_initramfs && virt_external_initramfs_start && !kexec_free_initramfs()) {
- 		free_initramfs_mem(virt_external_initramfs_start, virt_external_initramfs_end);
- 	} else if (retain_initramfs && virt_external_initramfs_start) {
- 		bin_attr_initrd.size = virt_external_initramfs_end - virt_external_initramfs_start;
+ 	if (virt_external_initramfs_start >= crashk_end || virt_external_initramfs_end <= crashk_start)
+ 		return false;
+ 
+ 	/*
+-	 * Initialize initrd memory region since the kexec boot does not do.
++	 * Initialize initramfs memory region since the kexec boot does not do.
+ 	 */
+ 	memset((void *)virt_external_initramfs_start, 0, virt_external_initramfs_end - virt_external_initramfs_start);
+ 	if (virt_external_initramfs_start < crashk_start)
+@@ -740,7 +740,7 @@ static void __init do_populate_rootfs(void *unused, async_cookie_t cookie)
+ 	security_initramfs_populated();
+ 
+ 	/*
+-	 * If the initrd region is overlapped with crashkernel reserved region,
++	 * If the initramfs region is overlapped with crashkernel reserved region,
+ 	 * free only memory that is not part of crashkernel region.
+ 	 */
+ 	if (!retain_initramfs && virt_external_initramfs_start && !kexec_free_initramfs()) {
+diff --git a/init/main.c b/init/main.c
+index c535e0613df8..4212efb33e77 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -276,7 +276,7 @@ static void * __init get_boot_config_from_initramfs(size_t *_size)
+ 
+ 	data = (char *)virt_external_initramfs_end - BOOTCONFIG_MAGIC_LEN;
+ 	/*
+-	 * Since Grub may align the size of initrd to 4, we must
++	 * Since Grub may align the size of initramfs to 4, we must
+ 	 * check the preceding 3 bytes as well.
+ 	 */
+ 	for (i = 0; i < 4; i++) {
+@@ -293,7 +293,7 @@ static void * __init get_boot_config_from_initramfs(size_t *_size)
+ 
+ 	data = ((void *)hdr) - size;
+ 	if ((unsigned long)data < virt_external_initramfs_start) {
+-		pr_err("bootconfig size %d is greater than initrd size %ld\n",
++		pr_err("bootconfig size %d is greater than initramfs size %ld\n",
+ 			size, virt_external_initramfs_end - virt_external_initramfs_start);
+ 		return NULL;
+ 	}
+@@ -303,7 +303,7 @@ static void * __init get_boot_config_from_initramfs(size_t *_size)
+ 		return NULL;
+ 	}
+ 
+-	/* Remove bootconfig from initramfs/initrd */
++	/* Remove bootconfig from initramfs */
+ 	virt_external_initramfs_end = (unsigned long)data;
+ 	if (_size)
+ 		*_size = size;
+@@ -421,7 +421,7 @@ static void __init setup_boot_config(void)
+ 
+ 	/* Cut out the bootconfig data even if we have no bootconfig option */
+ 	data = get_boot_config_from_initramfs(&size);
+-	/* If there is no bootconfig in initrd, try embedded one. */
++	/* If there is no bootconfig in initramfs, try embedded one. */
+ 	if (!data)
+ 		data = xbc_get_embedded_bootconfig(&size);
+ 
+@@ -478,7 +478,7 @@ static void __init exit_boot_config(void)
+ 
+ static void __init setup_boot_config(void)
+ {
+-	/* Remove bootconfig data from initrd */
++	/* Remove bootconfig data from initramfs */
+ 	get_boot_config_from_initramfs(NULL);
+ }
+ 
+@@ -1049,7 +1049,7 @@ void start_kernel(void)
+ #ifdef CONFIG_BLK_DEV_INITRD
+ 	if (virt_external_initramfs_start && !initramfs_below_start_ok &&
+ 	    page_to_pfn(virt_to_page((void *)virt_external_initramfs_start)) < min_low_pfn) {
+-		pr_crit("initrd overwritten (0x%08lx < 0x%08lx) - disabling it.\n",
++		pr_crit("initramfs overwritten (0x%08lx < 0x%08lx) - disabling it.\n",
+ 		    page_to_pfn(virt_to_page((void *)virt_external_initramfs_start)),
+ 		    min_low_pfn);
+ 		virt_external_initramfs_start = 0;
 -- 
 2.47.2
 
