@@ -1,132 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-12182-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12183-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1BCB56F0B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 05:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C1CB56F56
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 06:30:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQB422gW4z3clh;
-	Mon, 15 Sep 2025 13:54:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQBsd27kzz2yN2;
+	Mon, 15 Sep 2025 14:30:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::42e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757908466;
-	cv=none; b=WtVvbx/blqI4xoSdxzj2WZLJ5Zc9ftA4xu/NccdY918QeCBe12MDvSxBe5zrOsTSEe/9esXLegn25Kj0nrO0cQn9bFgCTvI8gp79wTfjQbmF00GY/IcH/EANRDkJS8tPZaQ7sq/cZt8g5dZA8zE5fX+KKgPr00SNYhvvYhuNX5uhNk7mO23rgc0q6IU7r9WsI3fBA1/EtnkqAoZmiTed/riDXrHLJPfs2T8fxa+UUQJdagLG2hnbcJjZDOiDO8gtm0IQfCCkCVn7NWcjqrYdpVpjLto8qySnayc8b73AYhHkWR3kvDYTe5H5o1Uc5SpeRP10RQWAjhU4ej1CgTsoIg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::133"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757910629;
+	cv=none; b=UjLCQ5xXi17Fb4mTQlOB2t5J+bfhyW2Hx/2dWNuSpLYIvyaUiN+T2pcMghg25vBm3iR5JT/cwK9WW9fLlSsTE9o+yANUzoLlHVayBGrTEnFFjZwO1f7vFgc+ooPTauuypIkZbCpy/A4W+jSt4WDv735JXxDaI5lvUvEFddwBgQE/GdIT+YiHOq1ROieJkkI9UDowc0/z+qi46wfBQp9kdLrOLTdl0xN/pVsG7hiJKUZmgI4nEnhf18cM/evtGSOXGWVKZIPB8GcuuvxUMmpebMI25B+2/52QMYQRmx0s9pAthzeUBzG4yXIdpZTNGrUqyDGqRfsRZRJpPG4CTC5vFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757908466; c=relaxed/relaxed;
-	bh=Jvva0TL4zh+S2sr11l6cv20Cr9JEg4KFzWcybkVhfMQ=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=kOrZtj4xVFeq+ofVxnFospWkjzZ5uu3u8xS3sIztFJi6HZP9SLYTki8Fv8fG2p0JpKz7L4sxbykqIp41spEWaNUmjUWfrvln8SD9yLNljdXMEey3bHvASDMKqk5v/kEU9QS7MHENXSImdlwTPe2BjhyGHVomrBd4bb4YS+1OeYc3euL6EUjgHYNZPAxT6AheBXOY5uC1m/rpqZZWM0ubEMK56y8if2Sx/p1Hq9gmJXFgR11Y09VzGIHgATqZWf5/xzjMk9XlIPFnl9LeJ609ZwDxgPWuQZ8NuJssa8AoFDcUnk+MnYrSwqTXj5K9R5fce4Dj2qK9PvJe42SkEyx9RQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Wcow7Ohn; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=cuiyunhui@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+	t=1757910629; c=relaxed/relaxed;
+	bh=go7hweaAE58uKR62z5kHHsQPWXjABY7bZXE2nlLEF24=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ub7cSpwtmwgghFr/Mur+5ieRrNtMsdB8rD+v/W8ukETxz+FCQ6W3wtgWlFC9752dqqCuMQqT8MTF5GeYCkzwve+XvQgnnRmL0bFPgE4afd1/SVPXvsc5LoNHPC+Tik2h/iOogS3bcCoYnUPyoR28JmQ7yLg0ItFyu2FhwAo5Bt2W5h6dG4AKMW8VhmeQsRtKOloYL4v9FBBRnRx8jll18xPWv9IHwYtaF/TRE1USfGIhxQ3E8sMlL8glUmSsztc6GklJPJbq/FD71NFQ6NiIw1a7eBRhAjghGCtt+nISzFHz5PuplczGYupdifEecOnWP6LOzzsV5GrIImjHXt2mcA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QELXdIOa; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::133; helo=mail-lf1-x133.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Wcow7Ohn;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QELXdIOa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::42e; helo=mail-pf1-x42e.google.com; envelope-from=cuiyunhui@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::133; helo=mail-lf1-x133.google.com; envelope-from=snovitoll@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQB3z5Rkwz3cl9
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 13:54:22 +1000 (AEST)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-7761b392d50so2671742b3a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Sep 2025 20:54:22 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQBsZ6L64z3cl9
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 14:30:26 +1000 (AEST)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-57171d58ebfso1941987e87.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Sep 2025 21:30:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1757908460; x=1758513260; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jvva0TL4zh+S2sr11l6cv20Cr9JEg4KFzWcybkVhfMQ=;
-        b=Wcow7OhnW6FExYHAUA1ENb3MVnZYGLBfTyu6fQ+KBW4VxwFTA48rahBS9MzGsYgzBX
-         oj4vKqcWV1nIq5aU10h/aSV7d/u5Uut0QLTDsYxFWtz75Vpo42sxlCUWMQzOF/Cpmrmb
-         wSDIxndjR9nXQwBfEhgwwnqurUW5layJuwpFsveuX2QsIX5dIFg1b3WfALOZk6IidFxv
-         2ygp8khmccC4wAoW0MYHod6jlzXwSGehPHhndus8GDLX+WURBAEWRAk/cjUiTygku9M1
-         gR58AkbjsDT8zs6HHrfQ0+wW1UrArhYgKyJdwOVOlzWej54myEv0Te1ZusnucdVrTsWu
-         hncA==
+        d=gmail.com; s=20230601; t=1757910621; x=1758515421; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=go7hweaAE58uKR62z5kHHsQPWXjABY7bZXE2nlLEF24=;
+        b=QELXdIOa3uocYM9mQJDRghevqKUPbxHMMtU7hRAQneFvX+o8fbAPYsWFfVmJR7O72e
+         zbWcbYf5KlBVpmAcpt/EeMwf82f1i04USySaLEj/VPHyh0C/HLdWjL+hTWYDolZOJc6Z
+         ewxYGFlfx+MeRQGw06TZZyCOt1s2HXYIkK/REpEDXI+NWv4ZyDfE6fNbwbciRR8RWLs6
+         dHefU4LL8V4fvhEp9bBEbhpR0pC59hpemposhqKgPxKwqANXirqs8OeR/mrpicAWSinL
+         XEmEz1ZLqqYM9+nI5a56cbfpZR6zfYcPRMHHad8jZZPTAQwSWPFFJhKutEmuMXiPlxLj
+         DgAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757908460; x=1758513260;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jvva0TL4zh+S2sr11l6cv20Cr9JEg4KFzWcybkVhfMQ=;
-        b=LQx9CcFadKvgh29TcPlevN3tttm/vXLVi3PPOouIc4TPhApYY7LZub6fJeiGZknxoi
-         O47HGhOUAvEMDWzfksLCxwKKK89488h3X1r8/AO3QoX2tI4yJAkMxhb8YG6dHSypoAnt
-         YxlZTZxcIh8DueuOa/WK8zgouqQxWzoFcE3bWC8ApNsGAkWd+e3Hjctyh66HGUnO4Hp9
-         18ywEo4BIkbMare7P/aEkZ1PkJzCtZ4PuC+xyWyb0FqbNmrmUXoaYUgvFhDBgh4JTc9R
-         p8vyoxda0bGpzeIjqAAup2wCPxweymdUeqv+8YAky+52jRcbED6Z+q7DaAgMEB3U120L
-         vGGA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6l74TDaboiuq0Rb/4zo2VzK37Ceg1bPgEYsTkTqvTFfQ5fqRXM9BYB4pK526FN9fQydlf4N7Q+FdRrB8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx1CbrMQCtZmUq0LhnaH7AOmEULWytLZRT1x2DuKSxOC/pjXkx1
-	wlJrfnphnyIA6sjiLCGwUBy9PpF+6Gc1V8bnx/JUAh+j69mPuYzm+4lyud2IMwLLjMg=
-X-Gm-Gg: ASbGncuMfwNrKfUHnEDHiba5xlTDZCl4u3ObHmPvQCrOPhE7BVRwC4wYOZw7ATxlGWb
-	iKoJmnLq+8QfghjAzeafiK5j9tdN8XezsYmA6qrHC94VnT4sRvWclGQjkC0TY5AXwh9e5ibxi46
-	5RJeLBqYUBj+VQF4/hZKqZRfushxgzfUTiPR/tNEXqoVix1QmHg9pQSS949BmPAPTecnKdkeMBQ
-	bIHT4MDNRjt/t5Whfk7tqGY9ccmq6u8C7Lg2KcVegaImia5BQK88InL2QvNS+vYbntZcJBtmw+n
-	G5kbXhqTQkKOlyqPFtF6SZhmaQIrvGDAoPJYuH1Fc4tNh1agbIyO7HiAd9UNflkeYrXoOMEWdzL
-	UkAyx1KA+Ack6/15PRxy/yStRHo3/6ciLl4vOHFYIBAPLzVo8pWeU24vEtIlFL38JSQhe8khj7A
-	==
-X-Google-Smtp-Source: AGHT+IEUv47qgkoX4duiDYe5ibddYEaWl/+CzJjy+AV9oJ+RXLgTxH7LbdbzqFKva19jzTttLui6og==
-X-Received: by 2002:a05:6a00:acc:b0:772:638e:5f72 with SMTP id d2e1a72fcca58-77612189faemr12341637b3a.25.1757908459288;
-        Sun, 14 Sep 2025 20:54:19 -0700 (PDT)
-Received: from L6YN4KR4K9.bytedance.net ([139.177.225.245])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-776075fdd83sm11791895b3a.0.2025.09.14.20.54.02
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 14 Sep 2025 20:54:18 -0700 (PDT)
-From: Yunhui Cui <cuiyunhui@bytedance.com>
-To: akpm@linux-foundation.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	peterz@infradead.org,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	mark.rutland@arm.com,
-	alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org,
-	irogers@google.com,
-	adrian.hunter@intel.com,
-	kan.liang@linux.intel.com,
-	kees@kernel.org,
-	masahiroy@kernel.org,
-	aliceryhl@google.com,
-	ojeda@kernel.org,
-	thomas.weissschuh@linutronix.de,
-	xur@google.com,
-	ruanjinjie@huawei.com,
-	cuiyunhui@bytedance.com,
-	gshan@redhat.com,
-	maz@kernel.org,
-	suzuki.poulose@arm.com,
-	zhanjie9@hisilicon.com,
-	yangyicong@hisilicon.com,
-	dianders@chromium.org,
-	gautam@linux.ibm.com,
-	arnd@arndb.de,
-	zhao.xichao@vivo.com,
-	rppt@kernel.org,
-	lihuafei1@huawei.com,
-	coxu@redhat.com,
-	jpoimboe@kernel.org,
-	yaozhenguo1@gmail.com,
-	luogengkun@huaweicloud.com,
-	max.kellermann@ionos.com,
-	tj@kernel.org,
-	wangjinchao600@gmail.com,
-	yury.norov@gmail.com,
-	thorsten.blum@linux.dev,
-	x86@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-perf-users@vger.kernel.org
-Subject: [PATCH] watchdog: remove HARDLOCKUP_DETECTOR_PERF
-Date: Mon, 15 Sep 2025 11:53:55 +0800
-Message-Id: <20250915035355.10846-1-cuiyunhui@bytedance.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+        d=1e100.net; s=20230601; t=1757910621; x=1758515421;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=go7hweaAE58uKR62z5kHHsQPWXjABY7bZXE2nlLEF24=;
+        b=nNMMw9er/0Xyw46wEsO+FZvNYSb62/cIA/wiXo+ZnmPqUoVUMD6gh4l1G8di6jrVho
+         DlWAsUrsQl+QjNTq884QJj+zKBLNaXa5Bn6P5GhAc3f8kNz76l8JWjkEqiGZsaJsfJnu
+         Pru6QWIWDGLkwSmMyZ0ryoNLL65XIQw9a3Ok6L0sm1XI2b4izvnmHtXU/FkFXxOK2t/b
+         Tq7JtHKeOfRaqTzsdSIGklI4IDXDEfbndiRDZqHm39SaUDzyxAK4TUD+/OGjkDR9fcYM
+         1huvEWL/5W+AlX/bZll9r1kLTVPc1rYj4Gm8R/pJUZX3/YzPD0jX+lZiTc7NX095WgFe
+         2Krw==
+X-Forwarded-Encrypted: i=1; AJvYcCU4SBjuN25igNhCXYp1zl1WoK4oJTAdDgbBDV3rch+zA9tM3J+LkWhGP7wbmAGjg6uMQLs8RRPB0+n8EX0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyYxTy82SXGhn+vREfCO6elkdaKXE9hx411W40eWjGlfofZHGPE
+	uTRZYCrwtNCt8t6spLo+7jXGZNddusk2UP4GfUTWrWtlvufd5yI+iw9ZuEDaYqzswwafAwDoruW
+	3zGAhs71uWLttXVdM+hEZC+qoyix7S2M=
+X-Gm-Gg: ASbGnctsMDmZBwqooyp64FMun087iMAkh8074BcrkEm5O+nbS1kaLgSMJyiMunuBN3j
+	azfRyLSINx801XpqnIxkCnOgrnadHm9F9ACSO4xp51WK6zqUZvxgqvPG5exOe4Fuq1j0Ta9/Ctk
+	SyVS3nErQ2nOI6HB3ZwUBtzUvap1j1LIKEmq9WqaX1rXv5tBLnxEnUHOkrXnInDYjOKklQvJiiz
+	wfHQowJjD2ioN9Crw==
+X-Google-Smtp-Source: AGHT+IEbZLJsyIMXpAn6MHDTeZQTZK5Rnck/5a4C2L5mVXi0xa3G5Lms72zo1Smh4ODsg+7fb3nSOaaAb0GF0mOiKMw=
+X-Received: by 2002:a05:6512:1195:b0:55f:61dd:6f5 with SMTP id
+ 2adb3069b0e04-56d79b23442mr4155585e87.14.1757910620905; Sun, 14 Sep 2025
+ 21:30:20 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -140,758 +79,768 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250810125746.1105476-1-snovitoll@gmail.com> <20250810125746.1105476-2-snovitoll@gmail.com>
+ <CA+fCnZdFp69ZHbccLSEKYH3i7g6r2WdQ0qzyf+quLnA0tjfXJg@mail.gmail.com>
+In-Reply-To: <CA+fCnZdFp69ZHbccLSEKYH3i7g6r2WdQ0qzyf+quLnA0tjfXJg@mail.gmail.com>
+From: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+Date: Mon, 15 Sep 2025 09:30:03 +0500
+X-Gm-Features: AS18NWDp8zAExztzkhZUMEcqPOjcBJv5p1-pZY4kdVc-Z24hbqQ_po0bm4wAyHg
+Message-ID: <CACzwLxh4pJOBbU2fHKCPWkHHCuLtDW-rh52788u2Q6+nG-+bTA@mail.gmail.com>
+Subject: Re: [PATCH v6 1/2] kasan: introduce ARCH_DEFER_KASAN and unify static
+ key across modes
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: ryabinin.a.a@gmail.com, christophe.leroy@csgroup.eu, bhe@redhat.com, 
+	hca@linux.ibm.com, akpm@linux-foundation.org, zhangqing@loongson.cn, 
+	chenhuacai@loongson.cn, davidgow@google.com, glider@google.com, 
+	dvyukov@google.com, alexghiti@rivosinc.com, alex@ghiti.fr, 
+	agordeev@linux.ibm.com, vincenzo.frascino@arm.com, elver@google.com, 
+	kasan-dev@googlegroups.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-There are currently two hard lockup detector implementations:
-HARDLOCKUP_DETECTOR_PERF (perf-based) and HARDLOCKUP_DETECTOR_BUDDY
-(buddy-based). When enabling the hardlockup feature on new arch
-(e.g., RISC-V), ambiguity arises regarding which detector to choose.
+On Wed, Sep 3, 2025 at 6:01=E2=80=AFPM Andrey Konovalov <andreyknvl@gmail.c=
+om> wrote:
+>
+> On Sun, Aug 10, 2025 at 2:58=E2=80=AFPM Sabyrzhan Tasbolatov
+> <snovitoll@gmail.com> wrote:
+> >
+> > Introduce CONFIG_ARCH_DEFER_KASAN to identify architectures [1] that ne=
+ed
+> > to defer KASAN initialization until shadow memory is properly set up,
+> > and unify the static key infrastructure across all KASAN modes.
+> >
+> > [1] PowerPC, UML, LoongArch selects ARCH_DEFER_KASAN.
+> >
+> > The core issue is that different architectures haveinconsistent approac=
+hes
+> > to KASAN readiness tracking:
+> > - PowerPC, LoongArch, and UML arch, each implement own
+> >   kasan_arch_is_ready()
+> > - Only HW_TAGS mode had a unified static key (kasan_flag_enabled)
+> > - Generic and SW_TAGS modes relied on arch-specific solutions or always=
+-on
+> >     behavior
+> >
+> > This patch addresses the fragmentation in KASAN initialization
+> > across architectures by introducing a unified approach that eliminates
+> > duplicate static keys and arch-specific kasan_arch_is_ready()
+> > implementations.
+> >
+> > Let's replace kasan_arch_is_ready() with existing kasan_enabled() check=
+,
+> > which examines the static key being enabled if arch selects
+> > ARCH_DEFER_KASAN or has HW_TAGS mode support.
+> > For other arch, kasan_enabled() checks the enablement during compile ti=
+me.
+> >
+> > Now KASAN users can use a single kasan_enabled() check everywhere.
+> >
+> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217049
+> > Signed-off-by: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
+> > ---
+> > Changes in v6:
+> > - Added more details in git commit message
+> > - Fixed commenting format per coding style in UML (Christophe Leroy)
+> > - Changed exporting to GPL for kasan_flag_enabled (Christophe Leroy)
+> > - Converted ARCH_DEFER_KASAN to def_bool depending on KASAN to avoid
+> >         arch users to have `if KASAN` condition (Christophe Leroy)
+> > - Forgot to add __init for kasan_init in UML
+> >
+> > Changes in v5:
+> > - Unified patches where arch (powerpc, UML, loongarch) selects
+> >     ARCH_DEFER_KASAN in the first patch not to break
+> >     bisectability
+> > - Removed kasan_arch_is_ready completely as there is no user
+> > - Removed __wrappers in v4, left only those where it's necessary
+> >     due to different implementations
+> >
+> > Changes in v4:
+> > - Fixed HW_TAGS static key functionality (was broken in v3)
+> > - Merged configuration and implementation for atomicity
+> > ---
+> >  arch/loongarch/Kconfig                 |  1 +
+> >  arch/loongarch/include/asm/kasan.h     |  7 ------
+> >  arch/loongarch/mm/kasan_init.c         |  8 +++----
+> >  arch/powerpc/Kconfig                   |  1 +
+> >  arch/powerpc/include/asm/kasan.h       | 12 ----------
+> >  arch/powerpc/mm/kasan/init_32.c        |  2 +-
+> >  arch/powerpc/mm/kasan/init_book3e_64.c |  2 +-
+> >  arch/powerpc/mm/kasan/init_book3s_64.c |  6 +----
+> >  arch/um/Kconfig                        |  1 +
+> >  arch/um/include/asm/kasan.h            |  5 ++--
+> >  arch/um/kernel/mem.c                   | 13 ++++++++---
+> >  include/linux/kasan-enabled.h          | 32 ++++++++++++++++++--------
+> >  include/linux/kasan.h                  |  6 +++++
+> >  lib/Kconfig.kasan                      | 12 ++++++++++
+> >  mm/kasan/common.c                      | 17 ++++++++++----
+> >  mm/kasan/generic.c                     | 19 +++++++++++----
+> >  mm/kasan/hw_tags.c                     |  9 +-------
+> >  mm/kasan/kasan.h                       |  8 ++++++-
+> >  mm/kasan/shadow.c                      | 12 +++++-----
+> >  mm/kasan/sw_tags.c                     |  1 +
+> >  mm/kasan/tags.c                        |  2 +-
+> >  21 files changed, 106 insertions(+), 70 deletions(-)
+> >
+> > diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+> > index f0abc38c40ac..e449e3fcecf9 100644
+> > --- a/arch/loongarch/Kconfig
+> > +++ b/arch/loongarch/Kconfig
+> > @@ -9,6 +9,7 @@ config LOONGARCH
+> >         select ACPI_PPTT if ACPI
+> >         select ACPI_SYSTEM_POWER_STATES_SUPPORT if ACPI
+> >         select ARCH_BINFMT_ELF_STATE
+> > +       select ARCH_NEEDS_DEFER_KASAN
+> >         select ARCH_DISABLE_KASAN_INLINE
+> >         select ARCH_ENABLE_MEMORY_HOTPLUG
+> >         select ARCH_ENABLE_MEMORY_HOTREMOVE
+> > diff --git a/arch/loongarch/include/asm/kasan.h b/arch/loongarch/includ=
+e/asm/kasan.h
+> > index 62f139a9c87d..0e50e5b5e056 100644
+> > --- a/arch/loongarch/include/asm/kasan.h
+> > +++ b/arch/loongarch/include/asm/kasan.h
+> > @@ -66,7 +66,6 @@
+> >  #define XKPRANGE_WC_SHADOW_OFFSET      (KASAN_SHADOW_START + XKPRANGE_=
+WC_KASAN_OFFSET)
+> >  #define XKVRANGE_VC_SHADOW_OFFSET      (KASAN_SHADOW_START + XKVRANGE_=
+VC_KASAN_OFFSET)
+> >
+> > -extern bool kasan_early_stage;
+> >  extern unsigned char kasan_early_shadow_page[PAGE_SIZE];
+> >
+> >  #define kasan_mem_to_shadow kasan_mem_to_shadow
+> > @@ -75,12 +74,6 @@ void *kasan_mem_to_shadow(const void *addr);
+> >  #define kasan_shadow_to_mem kasan_shadow_to_mem
+> >  const void *kasan_shadow_to_mem(const void *shadow_addr);
+> >
+> > -#define kasan_arch_is_ready kasan_arch_is_ready
+> > -static __always_inline bool kasan_arch_is_ready(void)
+> > -{
+> > -       return !kasan_early_stage;
+> > -}
+> > -
+> >  #define addr_has_metadata addr_has_metadata
+> >  static __always_inline bool addr_has_metadata(const void *addr)
+> >  {
+> > diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_i=
+nit.c
+> > index d2681272d8f0..170da98ad4f5 100644
+> > --- a/arch/loongarch/mm/kasan_init.c
+> > +++ b/arch/loongarch/mm/kasan_init.c
+> > @@ -40,11 +40,9 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata _=
+_aligned(PAGE_SIZE);
+> >  #define __pte_none(early, pte) (early ? pte_none(pte) : \
+> >  ((pte_val(pte) & _PFN_MASK) =3D=3D (unsigned long)__pa(kasan_early_sha=
+dow_page)))
+> >
+> > -bool kasan_early_stage =3D true;
+> > -
+> >  void *kasan_mem_to_shadow(const void *addr)
+> >  {
+> > -       if (!kasan_arch_is_ready()) {
+> > +       if (!kasan_enabled()) {
+> >                 return (void *)(kasan_early_shadow_page);
+> >         } else {
+> >                 unsigned long maddr =3D (unsigned long)addr;
+> > @@ -298,7 +296,8 @@ void __init kasan_init(void)
+> >         kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC=
+_START),
+> >                                         kasan_mem_to_shadow((void *)KFE=
+NCE_AREA_END));
+> >
+> > -       kasan_early_stage =3D false;
+> > +       /* Enable KASAN here before kasan_mem_to_shadow(). */
+> > +       kasan_init_generic();
+> >
+> >         /* Populate the linear mapping */
+> >         for_each_mem_range(i, &pa_start, &pa_end) {
+> > @@ -329,5 +328,4 @@ void __init kasan_init(void)
+> >
+> >         /* At this point kasan is fully initialized. Enable error messa=
+ges */
+> >         init_task.kasan_depth =3D 0;
+> > -       pr_info("KernelAddressSanitizer initialized.\n");
+> >  }
+> > diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> > index 93402a1d9c9f..4730c676b6bf 100644
+> > --- a/arch/powerpc/Kconfig
+> > +++ b/arch/powerpc/Kconfig
+> > @@ -122,6 +122,7 @@ config PPC
+> >         # Please keep this list sorted alphabetically.
+> >         #
+> >         select ARCH_32BIT_OFF_T if PPC32
+> > +       select ARCH_NEEDS_DEFER_KASAN           if PPC_RADIX_MMU
+> >         select ARCH_DISABLE_KASAN_INLINE        if PPC_RADIX_MMU
+> >         select ARCH_DMA_DEFAULT_COHERENT        if !NOT_COHERENT_CACHE
+> >         select ARCH_ENABLE_MEMORY_HOTPLUG
+> > diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/as=
+m/kasan.h
+> > index b5bbb94c51f6..957a57c1db58 100644
+> > --- a/arch/powerpc/include/asm/kasan.h
+> > +++ b/arch/powerpc/include/asm/kasan.h
+> > @@ -53,18 +53,6 @@
+> >  #endif
+> >
+> >  #ifdef CONFIG_KASAN
+> > -#ifdef CONFIG_PPC_BOOK3S_64
+> > -DECLARE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
+> > -
+> > -static __always_inline bool kasan_arch_is_ready(void)
+> > -{
+> > -       if (static_branch_likely(&powerpc_kasan_enabled_key))
+> > -               return true;
+> > -       return false;
+> > -}
+> > -
+> > -#define kasan_arch_is_ready kasan_arch_is_ready
+> > -#endif
+> >
+> >  void kasan_early_init(void);
+> >  void kasan_mmu_init(void);
+> > diff --git a/arch/powerpc/mm/kasan/init_32.c b/arch/powerpc/mm/kasan/in=
+it_32.c
+> > index 03666d790a53..1d083597464f 100644
+> > --- a/arch/powerpc/mm/kasan/init_32.c
+> > +++ b/arch/powerpc/mm/kasan/init_32.c
+> > @@ -165,7 +165,7 @@ void __init kasan_init(void)
+> >
+> >         /* At this point kasan is fully initialized. Enable error messa=
+ges */
+> >         init_task.kasan_depth =3D 0;
+> > -       pr_info("KASAN init done\n");
+> > +       kasan_init_generic();
+> >  }
+> >
+> >  void __init kasan_late_init(void)
+> > diff --git a/arch/powerpc/mm/kasan/init_book3e_64.c b/arch/powerpc/mm/k=
+asan/init_book3e_64.c
+> > index 60c78aac0f63..0d3a73d6d4b0 100644
+> > --- a/arch/powerpc/mm/kasan/init_book3e_64.c
+> > +++ b/arch/powerpc/mm/kasan/init_book3e_64.c
+> > @@ -127,7 +127,7 @@ void __init kasan_init(void)
+> >
+> >         /* Enable error messages */
+> >         init_task.kasan_depth =3D 0;
+> > -       pr_info("KASAN init done\n");
+> > +       kasan_init_generic();
+> >  }
+> >
+> >  void __init kasan_late_init(void) { }
+> > diff --git a/arch/powerpc/mm/kasan/init_book3s_64.c b/arch/powerpc/mm/k=
+asan/init_book3s_64.c
+> > index 7d959544c077..dcafa641804c 100644
+> > --- a/arch/powerpc/mm/kasan/init_book3s_64.c
+> > +++ b/arch/powerpc/mm/kasan/init_book3s_64.c
+> > @@ -19,8 +19,6 @@
+> >  #include <linux/memblock.h>
+> >  #include <asm/pgalloc.h>
+> >
+> > -DEFINE_STATIC_KEY_FALSE(powerpc_kasan_enabled_key);
+> > -
+> >  static void __init kasan_init_phys_region(void *start, void *end)
+> >  {
+> >         unsigned long k_start, k_end, k_cur;
+> > @@ -92,11 +90,9 @@ void __init kasan_init(void)
+> >          */
+> >         memset(kasan_early_shadow_page, 0, PAGE_SIZE);
+> >
+> > -       static_branch_inc(&powerpc_kasan_enabled_key);
+> > -
+> >         /* Enable error messages */
+> >         init_task.kasan_depth =3D 0;
+> > -       pr_info("KASAN init done\n");
+> > +       kasan_init_generic();
+> >  }
+> >
+> >  void __init kasan_early_init(void) { }
+> > diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+> > index 9083bfdb7735..1d4def0db841 100644
+> > --- a/arch/um/Kconfig
+> > +++ b/arch/um/Kconfig
+> > @@ -5,6 +5,7 @@ menu "UML-specific options"
+> >  config UML
+> >         bool
+> >         default y
+> > +       select ARCH_NEEDS_DEFER_KASAN if STATIC_LINK
+> >         select ARCH_WANTS_DYNAMIC_TASK_STRUCT
+> >         select ARCH_HAS_CACHE_LINE_SIZE
+> >         select ARCH_HAS_CPU_FINALIZE_INIT
+> > diff --git a/arch/um/include/asm/kasan.h b/arch/um/include/asm/kasan.h
+> > index f97bb1f7b851..b54a4e937fd1 100644
+> > --- a/arch/um/include/asm/kasan.h
+> > +++ b/arch/um/include/asm/kasan.h
+> > @@ -24,10 +24,9 @@
+> >
+> >  #ifdef CONFIG_KASAN
+> >  void kasan_init(void);
+> > -extern int kasan_um_is_ready;
+> >
+> > -#ifdef CONFIG_STATIC_LINK
+> > -#define kasan_arch_is_ready() (kasan_um_is_ready)
+> > +#if defined(CONFIG_STATIC_LINK) && defined(CONFIG_KASAN_INLINE)
+> > +#error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled=
+!
+> >  #endif
+> >  #else
+> >  static inline void kasan_init(void) { }
+> > diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+> > index 76bec7de81b5..32e3b1972dc1 100644
+> > --- a/arch/um/kernel/mem.c
+> > +++ b/arch/um/kernel/mem.c
+> > @@ -21,10 +21,10 @@
+> >  #include <os.h>
+> >  #include <um_malloc.h>
+> >  #include <linux/sched/task.h>
+> > +#include <linux/kasan.h>
+> >
+> >  #ifdef CONFIG_KASAN
+> > -int kasan_um_is_ready;
+> > -void kasan_init(void)
+> > +void __init kasan_init(void)
+> >  {
+> >         /*
+> >          * kasan_map_memory will map all of the required address space =
+and
+> > @@ -32,7 +32,11 @@ void kasan_init(void)
+> >          */
+> >         kasan_map_memory((void *)KASAN_SHADOW_START, KASAN_SHADOW_SIZE)=
+;
+> >         init_task.kasan_depth =3D 0;
+> > -       kasan_um_is_ready =3D true;
+> > +       /*
+> > +        * Since kasan_init() is called before main(),
+> > +        * KASAN is initialized but the enablement is deferred after
+> > +        * jump_label_init(). See arch_mm_preinit().
+> > +        */
+> >  }
+> >
+> >  static void (*kasan_init_ptr)(void)
+> > @@ -58,6 +62,9 @@ static unsigned long brk_end;
+> >
+> >  void __init arch_mm_preinit(void)
+> >  {
+> > +       /* Safe to call after jump_label_init(). Enables KASAN. */
+> > +       kasan_init_generic();
+> > +
+> >         /* clear the zero-page */
+> >         memset(empty_zero_page, 0, PAGE_SIZE);
+> >
+> > diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enable=
+d.h
+> > index 6f612d69ea0c..9eca967d8526 100644
+> > --- a/include/linux/kasan-enabled.h
+> > +++ b/include/linux/kasan-enabled.h
+> > @@ -4,32 +4,46 @@
+> >
+> >  #include <linux/static_key.h>
+> >
+> > -#ifdef CONFIG_KASAN_HW_TAGS
+> > -
+> > +#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
+> > +/*
+> > + * Global runtime flag for KASAN modes that need runtime control.
+> > + * Used by ARCH_DEFER_KASAN architectures and HW_TAGS mode.
+> > + */
+> >  DECLARE_STATIC_KEY_FALSE(kasan_flag_enabled);
+> >
+> > +/*
+> > + * Runtime control for shadow memory initialization or HW_TAGS mode.
+> > + * Uses static key for architectures that need deferred KASAN or HW_TA=
+GS.
+> > + */
+> >  static __always_inline bool kasan_enabled(void)
+> >  {
+> >         return static_branch_likely(&kasan_flag_enabled);
+> >  }
+> >
+> > -static inline bool kasan_hw_tags_enabled(void)
+> > +static inline void kasan_enable(void)
+> >  {
+> > -       return kasan_enabled();
+> > +       static_branch_enable(&kasan_flag_enabled);
+> >  }
+> > -
+> > -#else /* CONFIG_KASAN_HW_TAGS */
+> > -
+> > -static inline bool kasan_enabled(void)
+> > +#else
+> > +/* For architectures that can enable KASAN early, use compile-time che=
+ck. */
+> > +static __always_inline bool kasan_enabled(void)
+> >  {
+> >         return IS_ENABLED(CONFIG_KASAN);
+> >  }
+> >
+> > +static inline void kasan_enable(void) {}
+> > +#endif /* CONFIG_ARCH_DEFER_KASAN || CONFIG_KASAN_HW_TAGS */
+> > +
+> > +#ifdef CONFIG_KASAN_HW_TAGS
+> > +static inline bool kasan_hw_tags_enabled(void)
+> > +{
+> > +       return kasan_enabled();
+> > +}
+> > +#else
+> >  static inline bool kasan_hw_tags_enabled(void)
+> >  {
+> >         return false;
+> >  }
+> > -
+> >  #endif /* CONFIG_KASAN_HW_TAGS */
+> >
+> >  #endif /* LINUX_KASAN_ENABLED_H */
+> > diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+> > index 890011071f2b..51a8293d1af6 100644
+> > --- a/include/linux/kasan.h
+> > +++ b/include/linux/kasan.h
+> > @@ -543,6 +543,12 @@ void kasan_report_async(void);
+> >
+> >  #endif /* CONFIG_KASAN_HW_TAGS */
+> >
+> > +#ifdef CONFIG_KASAN_GENERIC
+> > +void __init kasan_init_generic(void);
+> > +#else
+> > +static inline void kasan_init_generic(void) { }
+> > +#endif
+> > +
+> >  #ifdef CONFIG_KASAN_SW_TAGS
+> >  void __init kasan_init_sw_tags(void);
+> >  #else
+> > diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
+> > index f82889a830fa..a4bb610a7a6f 100644
+> > --- a/lib/Kconfig.kasan
+> > +++ b/lib/Kconfig.kasan
+> > @@ -19,6 +19,18 @@ config ARCH_DISABLE_KASAN_INLINE
+> >           Disables both inline and stack instrumentation. Selected by
+> >           architectures that do not support these instrumentation types=
+.
+> >
+> > +config ARCH_NEEDS_DEFER_KASAN
+> > +       bool
+> > +
+> > +config ARCH_DEFER_KASAN
+> > +       def_bool y
+> > +       depends on KASAN && ARCH_NEEDS_DEFER_KASAN
+> > +       help
+> > +         Architectures should select this if they need to defer KASAN
+> > +         initialization until shadow memory is properly set up. This
+> > +         enables runtime control via static keys. Otherwise, KASAN use=
+s
+> > +         compile-time constants for better performance.
+> > +
+> >  config CC_HAS_KASAN_GENERIC
+> >         def_bool $(cc-option, -fsanitize=3Dkernel-address)
+> >
+> > diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+> > index 9142964ab9c9..e3765931a31f 100644
+> > --- a/mm/kasan/common.c
+> > +++ b/mm/kasan/common.c
+> > @@ -32,6 +32,15 @@
+> >  #include "kasan.h"
+> >  #include "../slab.h"
+> >
+> > +#if defined(CONFIG_ARCH_DEFER_KASAN) || defined(CONFIG_KASAN_HW_TAGS)
+> > +/*
+> > + * Definition of the unified static key declared in kasan-enabled.h.
+> > + * This provides consistent runtime enable/disable across KASAN modes.
+> > + */
+> > +DEFINE_STATIC_KEY_FALSE(kasan_flag_enabled);
+> > +EXPORT_SYMBOL_GPL(kasan_flag_enabled);
+> > +#endif
+> > +
+> >  struct slab *kasan_addr_to_slab(const void *addr)
+> >  {
+> >         if (virt_addr_valid(addr))
+> > @@ -246,7 +255,7 @@ static inline void poison_slab_object(struct kmem_c=
+ache *cache, void *object,
+> >  bool __kasan_slab_pre_free(struct kmem_cache *cache, void *object,
+> >                                 unsigned long ip)
+> >  {
+> > -       if (!kasan_arch_is_ready() || is_kfence_address(object))
+> > +       if (is_kfence_address(object))
+> >                 return false;
+>
+> Why is the check removed here and in some other places below? This
+> need to be explained in the commit message.
 
-From the community discussion (see link below [1]), the buddy approach is
-preferred. So remove the HARDLOCKUP_DETECTOR_PERF implementation.
+kasan_arch_is_ready which was unified with kasan_enabled, was removed
+here because
+__kasan_slab_pre_free is called from include/linux/kasan.h [1] where
+there's already kasan_enabled() check.
 
-Link: https://lore.kernel.org/all/CAD=FV=WWUiCi6bZCs_gseFpDDWNkuJMoL6XCftEo6W7q6jRCkg@mail.gmail.com/ [1]
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
----
- arch/Kconfig                     |  14 --
- arch/arm64/Kconfig               |   3 -
- arch/arm64/kernel/Makefile       |   1 -
- arch/arm64/kernel/watchdog_hld.c |  94 ----------
- arch/powerpc/Kconfig             |   2 -
- arch/powerpc/kernel/setup_64.c   |  11 --
- arch/x86/Kconfig                 |   2 -
- arch/x86/events/intel/core.c     |   4 -
- arch/x86/kernel/apic/hw_nmi.c    |   7 -
- include/linux/nmi.h              |  24 ---
- kernel/Makefile                  |   1 -
- kernel/watchdog.c                |   3 -
- kernel/watchdog_perf.c           | 308 -------------------------------
- lib/Kconfig.debug                |  34 +---
- 14 files changed, 3 insertions(+), 505 deletions(-)
- delete mode 100644 arch/arm64/kernel/watchdog_hld.c
- delete mode 100644 kernel/watchdog_perf.c
+[1] https://elixir.bootlin.com/linux/v6.16.7/source/include/linux/kasan.h#L=
+198
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index f18dbcc776140..76e99f25be8ca 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -459,20 +459,6 @@ config HAVE_MIXED_BREAKPOINTS_REGS
- config HAVE_USER_RETURN_NOTIFIER
- 	bool
- 
--config HAVE_PERF_EVENTS_NMI
--	bool
--	help
--	  System hardware can generate an NMI using the perf event
--	  subsystem.  Also has support for calculating CPU cycle events
--	  to determine how many clock cycles in a given period.
--
--config HAVE_HARDLOCKUP_DETECTOR_PERF
--	bool
--	depends on HAVE_PERF_EVENTS_NMI
--	help
--	  The arch chooses to use the generic perf-NMI-based hardlockup
--	  detector. Must define HAVE_PERF_EVENTS_NMI.
--
- config HAVE_HARDLOCKUP_DETECTOR_ARCH
- 	bool
- 	help
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 63e7d8a86b92c..d04ad76ecf67b 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -229,8 +229,6 @@ config ARM64
- 	select HAVE_FUNCTION_GRAPH_FREGS
- 	select HAVE_FUNCTION_GRAPH_TRACER
- 	select HAVE_GCC_PLUGINS
--	select HAVE_HARDLOCKUP_DETECTOR_PERF if PERF_EVENTS && \
--		HW_PERF_EVENTS && HAVE_PERF_EVENTS_NMI
- 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
- 	select HAVE_IOREMAP_PROT
- 	select HAVE_IRQ_TIME_ACCOUNTING
-@@ -238,7 +236,6 @@ config ARM64
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI
- 	select HAVE_PERF_EVENTS
--	select HAVE_PERF_EVENTS_NMI if ARM64_PSEUDO_NMI
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
- 	select HAVE_PREEMPT_DYNAMIC_KEY
-diff --git a/arch/arm64/kernel/Makefile b/arch/arm64/kernel/Makefile
-index 76f32e424065e..12d77f373fea4 100644
---- a/arch/arm64/kernel/Makefile
-+++ b/arch/arm64/kernel/Makefile
-@@ -44,7 +44,6 @@ obj-$(CONFIG_KUSER_HELPERS)		+= kuser32.o
- obj-$(CONFIG_FUNCTION_TRACER)		+= ftrace.o entry-ftrace.o
- obj-$(CONFIG_MODULES)			+= module.o module-plts.o
- obj-$(CONFIG_PERF_EVENTS)		+= perf_regs.o perf_callchain.o
--obj-$(CONFIG_HARDLOCKUP_DETECTOR_PERF)	+= watchdog_hld.o
- obj-$(CONFIG_HAVE_HW_BREAKPOINT)	+= hw_breakpoint.o
- obj-$(CONFIG_CPU_PM)			+= sleep.o suspend.o
- obj-$(CONFIG_KGDB)			+= kgdb.o
-diff --git a/arch/arm64/kernel/watchdog_hld.c b/arch/arm64/kernel/watchdog_hld.c
-deleted file mode 100644
-index 3093037dcb7be..0000000000000
---- a/arch/arm64/kernel/watchdog_hld.c
-+++ /dev/null
-@@ -1,94 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/nmi.h>
--#include <linux/cpufreq.h>
--#include <linux/perf/arm_pmu.h>
--
--/*
-- * Safe maximum CPU frequency in case a particular platform doesn't implement
-- * cpufreq driver. Although, architecture doesn't put any restrictions on
-- * maximum frequency but 5 GHz seems to be safe maximum given the available
-- * Arm CPUs in the market which are clocked much less than 5 GHz. On the other
-- * hand, we can't make it much higher as it would lead to a large hard-lockup
-- * detection timeout on parts which are running slower (eg. 1GHz on
-- * Developerbox) and doesn't possess a cpufreq driver.
-- */
--#define SAFE_MAX_CPU_FREQ	5000000000UL // 5 GHz
--u64 hw_nmi_get_sample_period(int watchdog_thresh)
--{
--	unsigned int cpu = smp_processor_id();
--	unsigned long max_cpu_freq;
--
--	max_cpu_freq = cpufreq_get_hw_max_freq(cpu) * 1000UL;
--	if (!max_cpu_freq)
--		max_cpu_freq = SAFE_MAX_CPU_FREQ;
--
--	return (u64)max_cpu_freq * watchdog_thresh;
--}
--
--bool __init arch_perf_nmi_is_available(void)
--{
--	/*
--	 * hardlockup_detector_perf_init() will success even if Pseudo-NMI turns off,
--	 * however, the pmu interrupts will act like a normal interrupt instead of
--	 * NMI and the hardlockup detector would be broken.
--	 */
--	return arm_pmu_irq_is_nmi();
--}
--
--static int watchdog_perf_update_period(void *data)
--{
--	int cpu = smp_processor_id();
--	u64 max_cpu_freq, new_period;
--
--	max_cpu_freq = cpufreq_get_hw_max_freq(cpu) * 1000UL;
--	if (!max_cpu_freq)
--		return 0;
--
--	new_period = watchdog_thresh * max_cpu_freq;
--	hardlockup_detector_perf_adjust_period(new_period);
--
--	return 0;
--}
--
--static int watchdog_freq_notifier_callback(struct notifier_block *nb,
--					   unsigned long val, void *data)
--{
--	struct cpufreq_policy *policy = data;
--	int cpu;
--
--	if (val != CPUFREQ_CREATE_POLICY)
--		return NOTIFY_DONE;
--
--	/*
--	 * Let each online CPU related to the policy update the period by their
--	 * own. This will serialize with the framework on start/stop the lockup
--	 * detector (softlockup_{start,stop}_all) and avoid potential race
--	 * condition. Otherwise we may have below theoretical race condition:
--	 * (core 0/1 share the same policy)
--	 * [core 0]                      [core 1]
--	 *                               hardlockup_detector_event_create()
--	 *                                 hw_nmi_get_sample_period()
--	 * (cpufreq registered, notifier callback invoked)
--	 * watchdog_freq_notifier_callback()
--	 *   watchdog_perf_update_period()
--	 *   (since core 1's event's not yet created,
--	 *    the period is not set)
--	 *                                 perf_event_create_kernel_counter()
--	 *                                 (event's period is SAFE_MAX_CPU_FREQ)
--	 */
--	for_each_cpu(cpu, policy->cpus)
--		smp_call_on_cpu(cpu, watchdog_perf_update_period, NULL, false);
--
--	return NOTIFY_DONE;
--}
--
--static struct notifier_block watchdog_freq_notifier = {
--	.notifier_call = watchdog_freq_notifier_callback,
--};
--
--static int __init init_watchdog_freq_notifier(void)
--{
--	return cpufreq_register_notifier(&watchdog_freq_notifier,
--					 CPUFREQ_POLICY_NOTIFIER);
--}
--core_initcall(init_watchdog_freq_notifier);
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index a72d15bbbd7c7..4feebc0ba6adf 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -253,7 +253,6 @@ config PPC
- 	select HAVE_GCC_PLUGINS
- 	select HAVE_GENERIC_VDSO
- 	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if PPC_BOOK3S_64 && SMP
--	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI
- 	select HAVE_HW_BREAKPOINT		if PERF_EVENTS && (PPC_BOOK3S || PPC_8xx)
- 	select HAVE_IOREMAP_PROT
- 	select HAVE_IRQ_TIME_ACCOUNTING
-@@ -272,7 +271,6 @@ config PPC
- 	select HAVE_OBJTOOL			if ARCH_USING_PATCHABLE_FUNCTION_ENTRY || MPROFILE_KERNEL || PPC32
- 	select HAVE_OBJTOOL_MCOUNT		if HAVE_OBJTOOL
- 	select HAVE_PERF_EVENTS
--	select HAVE_PERF_EVENTS_NMI		if PPC64
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
- 	select HAVE_PREEMPT_DYNAMIC_KEY
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index 8fd7cbf3bd048..8deea36ed97d1 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -894,13 +894,6 @@ struct ppc_pci_io ppc_pci_io;
- EXPORT_SYMBOL(ppc_pci_io);
- #endif
- 
--#ifdef CONFIG_HARDLOCKUP_DETECTOR_PERF
--u64 hw_nmi_get_sample_period(int watchdog_thresh)
--{
--	return ppc_proc_freq * watchdog_thresh;
--}
--#endif
--
- /*
-  * The perf based hardlockup detector breaks PMU event based branches, so
-  * disable it by default. Book3S has a soft-nmi hardlockup detector based
-@@ -913,15 +906,11 @@ u64 hw_nmi_get_sample_period(int watchdog_thresh)
-  */
- static int __init disable_hardlockup_detector(void)
- {
--#ifdef CONFIG_HARDLOCKUP_DETECTOR_PERF
--	hardlockup_detector_disable();
--#else
- 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
- 		check_kvm_guest();
- 		if (is_kvm_guest())
- 			hardlockup_detector_disable();
- 	}
--#endif
- 
- 	return 0;
- }
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index d68b5f6202e2f..099fa9fc725c1 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -273,8 +273,6 @@ config X86
- 	select HAVE_PAGE_SIZE_4KB
- 	select HAVE_PCSPKR_PLATFORM
- 	select HAVE_PERF_EVENTS
--	select HAVE_PERF_EVENTS_NMI
--	select HAVE_HARDLOCKUP_DETECTOR_PERF	if PERF_EVENTS && HAVE_PERF_EVENTS_NMI
- 	select HAVE_PCI
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 28f5468a6ea36..756929be84992 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -7818,16 +7818,12 @@ static __init int fixup_ht_bug(void)
- 
- 	cpus_read_lock();
- 
--	hardlockup_detector_perf_stop();
--
- 	x86_pmu.flags &= ~(PMU_FL_EXCL_CNTRS | PMU_FL_EXCL_ENABLED);
- 
- 	x86_pmu.start_scheduling = NULL;
- 	x86_pmu.commit_scheduling = NULL;
- 	x86_pmu.stop_scheduling = NULL;
- 
--	hardlockup_detector_perf_restart();
--
- 	for_each_online_cpu(c)
- 		free_excl_cntrs(&per_cpu(cpu_hw_events, c));
- 
-diff --git a/arch/x86/kernel/apic/hw_nmi.c b/arch/x86/kernel/apic/hw_nmi.c
-index 45af535c44a07..bc534f4f6fbc5 100644
---- a/arch/x86/kernel/apic/hw_nmi.c
-+++ b/arch/x86/kernel/apic/hw_nmi.c
-@@ -23,13 +23,6 @@
- 
- #include "local.h"
- 
--#ifdef CONFIG_HARDLOCKUP_DETECTOR_PERF
--u64 hw_nmi_get_sample_period(int watchdog_thresh)
--{
--	return (u64)(cpu_khz) * 1000 * watchdog_thresh;
--}
--#endif
--
- #ifdef arch_trigger_cpumask_backtrace
- static void nmi_raise_cpu_backtrace(cpumask_t *mask)
- {
-diff --git a/include/linux/nmi.h b/include/linux/nmi.h
-index cf3c6ab408aac..ff2b70cfd39bb 100644
---- a/include/linux/nmi.h
-+++ b/include/linux/nmi.h
-@@ -99,18 +99,6 @@ void watchdog_hardlockup_touch_cpu(unsigned int cpu);
- void watchdog_hardlockup_check(unsigned int cpu, struct pt_regs *regs);
- #endif
- 
--#if defined(CONFIG_HARDLOCKUP_DETECTOR_PERF)
--extern void hardlockup_detector_perf_stop(void);
--extern void hardlockup_detector_perf_restart(void);
--extern void hardlockup_config_perf_event(const char *str);
--extern void hardlockup_detector_perf_adjust_period(u64 period);
--#else
--static inline void hardlockup_detector_perf_stop(void) { }
--static inline void hardlockup_detector_perf_restart(void) { }
--static inline void hardlockup_config_perf_event(const char *str) { }
--static inline void hardlockup_detector_perf_adjust_period(u64 period) { }
--#endif
--
- void watchdog_hardlockup_stop(void);
- void watchdog_hardlockup_start(void);
- int watchdog_hardlockup_probe(void);
-@@ -204,18 +192,6 @@ static inline bool trigger_single_cpu_backtrace(int cpu)
- }
- #endif
- 
--#ifdef CONFIG_HARDLOCKUP_DETECTOR_PERF
--u64 hw_nmi_get_sample_period(int watchdog_thresh);
--bool arch_perf_nmi_is_available(void);
--#endif
--
--#if defined(CONFIG_HARDLOCKUP_CHECK_TIMESTAMP) && \
--    defined(CONFIG_HARDLOCKUP_DETECTOR_PERF)
--void watchdog_update_hrtimer_threshold(u64 period);
--#else
--static inline void watchdog_update_hrtimer_threshold(u64 period) { }
--#endif
--
- #ifdef CONFIG_HAVE_ACPI_APEI_NMI
- #include <asm/nmi.h>
- #endif
-diff --git a/kernel/Makefile b/kernel/Makefile
-index 216a7dfc3a688..76de2a3df2fb9 100644
---- a/kernel/Makefile
-+++ b/kernel/Makefile
-@@ -102,7 +102,6 @@ obj-$(CONFIG_KGDB) += debug/
- obj-$(CONFIG_DETECT_HUNG_TASK) += hung_task.o
- obj-$(CONFIG_LOCKUP_DETECTOR) += watchdog.o
- obj-$(CONFIG_HARDLOCKUP_DETECTOR_BUDDY) += watchdog_buddy.o
--obj-$(CONFIG_HARDLOCKUP_DETECTOR_PERF) += watchdog_perf.o
- obj-$(CONFIG_SECCOMP) += seccomp.o
- obj-$(CONFIG_RELAY) += relay.o
- obj-$(CONFIG_SYSCTL) += utsname_sysctl.o
-diff --git a/kernel/watchdog.c b/kernel/watchdog.c
-index 5b62d10027836..8d058389a3565 100644
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -111,8 +111,6 @@ static int __init hardlockup_panic_setup(char *str)
- 		watchdog_hardlockup_user_enabled = 0;
- 	else if (!strncmp(str, "1", 1))
- 		watchdog_hardlockup_user_enabled = 1;
--	else if (!strncmp(str, "r", 1))
--		hardlockup_config_perf_event(str + 1);
- 	while (*(str++)) {
- 		if (*str == ',') {
- 			str++;
-@@ -623,7 +621,6 @@ static void set_sample_period(void)
- 	 * hardlockup detector generates a warning
- 	 */
- 	sample_period = get_softlockup_thresh() * ((u64)NSEC_PER_SEC / NUM_SAMPLE_PERIODS);
--	watchdog_update_hrtimer_threshold(sample_period);
- }
- 
- static void update_report_ts(void)
-diff --git a/kernel/watchdog_perf.c b/kernel/watchdog_perf.c
-deleted file mode 100644
-index d3ca70e3c256a..0000000000000
---- a/kernel/watchdog_perf.c
-+++ /dev/null
-@@ -1,308 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * Detect hard lockups on a system using perf
-- *
-- * started by Don Zickus, Copyright (C) 2010 Red Hat, Inc.
-- *
-- * Note: Most of this code is borrowed heavily from the original softlockup
-- * detector, so thanks to Ingo for the initial implementation.
-- * Some chunks also taken from the old x86-specific nmi watchdog code, thanks
-- * to those contributors as well.
-- */
--
--#define pr_fmt(fmt) "NMI watchdog: " fmt
--
--#include <linux/panic.h>
--#include <linux/nmi.h>
--#include <linux/atomic.h>
--#include <linux/module.h>
--#include <linux/sched/debug.h>
--
--#include <asm/irq_regs.h>
--#include <linux/perf_event.h>
--
--static DEFINE_PER_CPU(struct perf_event *, watchdog_ev);
--
--static atomic_t watchdog_cpus = ATOMIC_INIT(0);
--
--#ifdef CONFIG_HARDLOCKUP_CHECK_TIMESTAMP
--static DEFINE_PER_CPU(ktime_t, last_timestamp);
--static DEFINE_PER_CPU(unsigned int, nmi_rearmed);
--static ktime_t watchdog_hrtimer_sample_threshold __read_mostly;
--
--void watchdog_update_hrtimer_threshold(u64 period)
--{
--	/*
--	 * The hrtimer runs with a period of (watchdog_threshold * 2) / 5
--	 *
--	 * So it runs effectively with 2.5 times the rate of the NMI
--	 * watchdog. That means the hrtimer should fire 2-3 times before
--	 * the NMI watchdog expires. The NMI watchdog on x86 is based on
--	 * unhalted CPU cycles, so if Turbo-Mode is enabled the CPU cycles
--	 * might run way faster than expected and the NMI fires in a
--	 * smaller period than the one deduced from the nominal CPU
--	 * frequency. Depending on the Turbo-Mode factor this might be fast
--	 * enough to get the NMI period smaller than the hrtimer watchdog
--	 * period and trigger false positives.
--	 *
--	 * The sample threshold is used to check in the NMI handler whether
--	 * the minimum time between two NMI samples has elapsed. That
--	 * prevents false positives.
--	 *
--	 * Set this to 4/5 of the actual watchdog threshold period so the
--	 * hrtimer is guaranteed to fire at least once within the real
--	 * watchdog threshold.
--	 */
--	watchdog_hrtimer_sample_threshold = period * 2;
--}
--
--static bool watchdog_check_timestamp(void)
--{
--	ktime_t delta, now = ktime_get_mono_fast_ns();
--
--	delta = now - __this_cpu_read(last_timestamp);
--	if (delta < watchdog_hrtimer_sample_threshold) {
--		/*
--		 * If ktime is jiffies based, a stalled timer would prevent
--		 * jiffies from being incremented and the filter would look
--		 * at a stale timestamp and never trigger.
--		 */
--		if (__this_cpu_inc_return(nmi_rearmed) < 10)
--			return false;
--	}
--	__this_cpu_write(nmi_rearmed, 0);
--	__this_cpu_write(last_timestamp, now);
--	return true;
--}
--
--static void watchdog_init_timestamp(void)
--{
--	__this_cpu_write(nmi_rearmed, 0);
--	__this_cpu_write(last_timestamp, ktime_get_mono_fast_ns());
--}
--#else
--static inline bool watchdog_check_timestamp(void) { return true; }
--static inline void watchdog_init_timestamp(void) { }
--#endif
--
--static struct perf_event_attr wd_hw_attr = {
--	.type		= PERF_TYPE_HARDWARE,
--	.config		= PERF_COUNT_HW_CPU_CYCLES,
--	.size		= sizeof(struct perf_event_attr),
--	.pinned		= 1,
--	.disabled	= 1,
--};
--
--static struct perf_event_attr fallback_wd_hw_attr = {
--	.type		= PERF_TYPE_HARDWARE,
--	.config		= PERF_COUNT_HW_CPU_CYCLES,
--	.size		= sizeof(struct perf_event_attr),
--	.pinned		= 1,
--	.disabled	= 1,
--};
--
--/* Callback function for perf event subsystem */
--static void watchdog_overflow_callback(struct perf_event *event,
--				       struct perf_sample_data *data,
--				       struct pt_regs *regs)
--{
--	/* Ensure the watchdog never gets throttled */
--	event->hw.interrupts = 0;
--
--	if (panic_in_progress())
--		return;
--
--	if (!watchdog_check_timestamp())
--		return;
--
--	watchdog_hardlockup_check(smp_processor_id(), regs);
--}
--
--static int hardlockup_detector_event_create(void)
--{
--	unsigned int cpu;
--	struct perf_event_attr *wd_attr;
--	struct perf_event *evt;
--
--	/*
--	 * Preemption is not disabled because memory will be allocated.
--	 * Ensure CPU-locality by calling this in per-CPU kthread.
--	 */
--	WARN_ON(!is_percpu_thread());
--	cpu = raw_smp_processor_id();
--	wd_attr = &wd_hw_attr;
--	wd_attr->sample_period = hw_nmi_get_sample_period(watchdog_thresh);
--
--	/* Try to register using hardware perf events */
--	evt = perf_event_create_kernel_counter(wd_attr, cpu, NULL,
--					       watchdog_overflow_callback, NULL);
--	if (IS_ERR(evt)) {
--		wd_attr = &fallback_wd_hw_attr;
--		wd_attr->sample_period = hw_nmi_get_sample_period(watchdog_thresh);
--		evt = perf_event_create_kernel_counter(wd_attr, cpu, NULL,
--						       watchdog_overflow_callback, NULL);
--	}
--
--	if (IS_ERR(evt)) {
--		pr_debug("Perf event create on CPU %d failed with %ld\n", cpu,
--			 PTR_ERR(evt));
--		return PTR_ERR(evt);
--	}
--	WARN_ONCE(this_cpu_read(watchdog_ev), "unexpected watchdog_ev leak");
--	this_cpu_write(watchdog_ev, evt);
--	return 0;
--}
--
--/**
-- * watchdog_hardlockup_enable - Enable the local event
-- * @cpu: The CPU to enable hard lockup on.
-- */
--void watchdog_hardlockup_enable(unsigned int cpu)
--{
--	WARN_ON_ONCE(cpu != smp_processor_id());
--
--	if (hardlockup_detector_event_create())
--		return;
--
--	/* use original value for check */
--	if (!atomic_fetch_inc(&watchdog_cpus))
--		pr_info("Enabled. Permanently consumes one hw-PMU counter.\n");
--
--	watchdog_init_timestamp();
--	perf_event_enable(this_cpu_read(watchdog_ev));
--}
--
--/**
-- * watchdog_hardlockup_disable - Disable the local event
-- * @cpu: The CPU to enable hard lockup on.
-- */
--void watchdog_hardlockup_disable(unsigned int cpu)
--{
--	struct perf_event *event = this_cpu_read(watchdog_ev);
--
--	WARN_ON_ONCE(cpu != smp_processor_id());
--
--	if (event) {
--		perf_event_disable(event);
--		perf_event_release_kernel(event);
--		this_cpu_write(watchdog_ev, NULL);
--		atomic_dec(&watchdog_cpus);
--	}
--}
--
--/**
-- * hardlockup_detector_perf_adjust_period - Adjust the event period due
-- *                                          to current cpu frequency change
-- * @period: The target period to be set
-- */
--void hardlockup_detector_perf_adjust_period(u64 period)
--{
--	struct perf_event *event = this_cpu_read(watchdog_ev);
--
--	if (!(watchdog_enabled & WATCHDOG_HARDLOCKUP_ENABLED))
--		return;
--
--	if (!event)
--		return;
--
--	if (event->attr.sample_period == period)
--		return;
--
--	if (perf_event_period(event, period))
--		pr_err("failed to change period to %llu\n", period);
--}
--
--/**
-- * hardlockup_detector_perf_stop - Globally stop watchdog events
-- *
-- * Special interface for x86 to handle the perf HT bug.
-- */
--void __init hardlockup_detector_perf_stop(void)
--{
--	int cpu;
--
--	lockdep_assert_cpus_held();
--
--	for_each_online_cpu(cpu) {
--		struct perf_event *event = per_cpu(watchdog_ev, cpu);
--
--		if (event)
--			perf_event_disable(event);
--	}
--}
--
--/**
-- * hardlockup_detector_perf_restart - Globally restart watchdog events
-- *
-- * Special interface for x86 to handle the perf HT bug.
-- */
--void __init hardlockup_detector_perf_restart(void)
--{
--	int cpu;
--
--	lockdep_assert_cpus_held();
--
--	if (!(watchdog_enabled & WATCHDOG_HARDLOCKUP_ENABLED))
--		return;
--
--	for_each_online_cpu(cpu) {
--		struct perf_event *event = per_cpu(watchdog_ev, cpu);
--
--		if (event)
--			perf_event_enable(event);
--	}
--}
--
--bool __weak __init arch_perf_nmi_is_available(void)
--{
--	return true;
--}
--
--/**
-- * watchdog_hardlockup_probe - Probe whether NMI event is available at all
-- */
--int __init watchdog_hardlockup_probe(void)
--{
--	int ret;
--
--	if (!arch_perf_nmi_is_available())
--		return -ENODEV;
--
--	ret = hardlockup_detector_event_create();
--
--	if (ret) {
--		pr_info("Perf NMI watchdog permanently disabled\n");
--	} else {
--		perf_event_release_kernel(this_cpu_read(watchdog_ev));
--		this_cpu_write(watchdog_ev, NULL);
--	}
--	return ret;
--}
--
--/**
-- * hardlockup_config_perf_event - Overwrite config of wd_hw_attr.
-- * @str: number which identifies the raw perf event to use
-- */
--void __init hardlockup_config_perf_event(const char *str)
--{
--	u64 config;
--	char buf[24];
--	char *comma = strchr(str, ',');
--
--	if (!comma) {
--		if (kstrtoull(str, 16, &config))
--			return;
--	} else {
--		unsigned int len = comma - str;
--
--		if (len > sizeof(buf))
--			return;
--
--		strscpy(buf, str, len);
--		if (kstrtoull(buf, 16, &config))
--			return;
--	}
--
--	wd_hw_attr.type = PERF_TYPE_RAW;
--	wd_hw_attr.config = config;
--}
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 099abf128ce67..5981d33e12f6d 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1159,8 +1159,7 @@ config HAVE_HARDLOCKUP_DETECTOR_BUDDY
- config HARDLOCKUP_DETECTOR
- 	bool "Detect Hard Lockups"
- 	depends on DEBUG_KERNEL && !S390 && !HARDLOCKUP_DETECTOR_SPARC64
--	depends on HAVE_HARDLOCKUP_DETECTOR_PERF || HAVE_HARDLOCKUP_DETECTOR_BUDDY || HAVE_HARDLOCKUP_DETECTOR_ARCH
--	imply HARDLOCKUP_DETECTOR_PERF
-+	depends on HAVE_HARDLOCKUP_DETECTOR_BUDDY || HAVE_HARDLOCKUP_DETECTOR_ARCH
- 	imply HARDLOCKUP_DETECTOR_BUDDY
- 	imply HARDLOCKUP_DETECTOR_ARCH
- 	select LOCKUP_DETECTOR
-@@ -1174,37 +1173,10 @@ config HARDLOCKUP_DETECTOR
- 	  chance to run.  The current stack trace is displayed upon detection
- 	  and the system will stay locked up.
- 
--#
--# Note that arch-specific variants are always preferred.
--#
--config HARDLOCKUP_DETECTOR_PREFER_BUDDY
--	bool "Prefer the buddy CPU hardlockup detector"
--	depends on HARDLOCKUP_DETECTOR
--	depends on HAVE_HARDLOCKUP_DETECTOR_PERF && HAVE_HARDLOCKUP_DETECTOR_BUDDY
--	depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
--	help
--	  Say Y here to prefer the buddy hardlockup detector over the perf one.
--
--	  With the buddy detector, each CPU uses its softlockup hrtimer
--	  to check that the next CPU is processing hrtimer interrupts by
--	  verifying that a counter is increasing.
--
--	  This hardlockup detector is useful on systems that don't have
--	  an arch-specific hardlockup detector or if resources needed
--	  for the hardlockup detector are better used for other things.
--
--config HARDLOCKUP_DETECTOR_PERF
--	bool
--	depends on HARDLOCKUP_DETECTOR
--	depends on HAVE_HARDLOCKUP_DETECTOR_PERF && !HARDLOCKUP_DETECTOR_PREFER_BUDDY
--	depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
--	select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
--
- config HARDLOCKUP_DETECTOR_BUDDY
- 	bool
- 	depends on HARDLOCKUP_DETECTOR
- 	depends on HAVE_HARDLOCKUP_DETECTOR_BUDDY
--	depends on !HAVE_HARDLOCKUP_DETECTOR_PERF || HARDLOCKUP_DETECTOR_PREFER_BUDDY
- 	depends on !HAVE_HARDLOCKUP_DETECTOR_ARCH
- 	select HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
- 
-@@ -1217,8 +1189,8 @@ config HARDLOCKUP_DETECTOR_ARCH
- 	  be used.
- 
- #
--# Both the "perf" and "buddy" hardlockup detectors count hrtimer
--# interrupts. This config enables functions managing this common code.
-+# Buddy hardlockup detectors count hrtimer interrupts. This config enables
-+# functions managing this common code.
- #
- config HARDLOCKUP_DETECTOR_COUNTS_HRTIMER
- 	bool
--- 
-2.39.5
+Please let me know if v7 is required with the change in the git commit
+message only.
 
+>
+> >         return check_slab_allocation(cache, object, ip);
+> >  }
+> > @@ -254,7 +263,7 @@ bool __kasan_slab_pre_free(struct kmem_cache *cache=
+, void *object,
+> >  bool __kasan_slab_free(struct kmem_cache *cache, void *object, bool in=
+it,
+> >                        bool still_accessible)
+> >  {
+> > -       if (!kasan_arch_is_ready() || is_kfence_address(object))
+> > +       if (is_kfence_address(object))
+> >                 return false;
+> >
+> >         /*
+> > @@ -293,7 +302,7 @@ bool __kasan_slab_free(struct kmem_cache *cache, vo=
+id *object, bool init,
+> >
+> >  static inline bool check_page_allocation(void *ptr, unsigned long ip)
+> >  {
+> > -       if (!kasan_arch_is_ready())
+> > +       if (!kasan_enabled())
+> >                 return false;
+> >
+> >         if (ptr !=3D page_address(virt_to_head_page(ptr))) {
+> > @@ -522,7 +531,7 @@ bool __kasan_mempool_poison_object(void *ptr, unsig=
+ned long ip)
+> >                 return true;
+> >         }
+> >
+> > -       if (is_kfence_address(ptr) || !kasan_arch_is_ready())
+> > +       if (is_kfence_address(ptr))
+> >                 return true;
+> >
+> >         slab =3D folio_slab(folio);
+> > diff --git a/mm/kasan/generic.c b/mm/kasan/generic.c
+> > index d54e89f8c3e7..b413c46b3e04 100644
+> > --- a/mm/kasan/generic.c
+> > +++ b/mm/kasan/generic.c
+> > @@ -36,6 +36,17 @@
+> >  #include "kasan.h"
+> >  #include "../slab.h"
+> >
+> > +/*
+> > + * Initialize Generic KASAN and enable runtime checks.
+> > + * This should be called from arch kasan_init() once shadow memory is =
+ready.
+> > + */
+> > +void __init kasan_init_generic(void)
+> > +{
+> > +       kasan_enable();
+> > +
+> > +       pr_info("KernelAddressSanitizer initialized (generic)\n");
+> > +}
+> > +
+> >  /*
+> >   * All functions below always inlined so compiler could
+> >   * perform better optimizations in each of __asan_loadX/__assn_storeX
+> > @@ -165,7 +176,7 @@ static __always_inline bool check_region_inline(con=
+st void *addr,
+> >                                                 size_t size, bool write=
+,
+> >                                                 unsigned long ret_ip)
+> >  {
+> > -       if (!kasan_arch_is_ready())
+> > +       if (!kasan_enabled())
+> >                 return true;
+> >
+> >         if (unlikely(size =3D=3D 0))
+> > @@ -193,7 +204,7 @@ bool kasan_byte_accessible(const void *addr)
+> >  {
+> >         s8 shadow_byte;
+> >
+> > -       if (!kasan_arch_is_ready())
+> > +       if (!kasan_enabled())
+> >                 return true;
+> >
+> >         shadow_byte =3D READ_ONCE(*(s8 *)kasan_mem_to_shadow(addr));
+> > @@ -495,7 +506,7 @@ static void release_alloc_meta(struct kasan_alloc_m=
+eta *meta)
+> >
+> >  static void release_free_meta(const void *object, struct kasan_free_me=
+ta *meta)
+> >  {
+> > -       if (!kasan_arch_is_ready())
+> > +       if (!kasan_enabled())
+> >                 return;
+> >
+> >         /* Check if free meta is valid. */
+> > @@ -562,7 +573,7 @@ void kasan_save_alloc_info(struct kmem_cache *cache=
+, void *object, gfp_t flags)
+> >         kasan_save_track(&alloc_meta->alloc_track, flags);
+> >  }
+> >
+> > -void kasan_save_free_info(struct kmem_cache *cache, void *object)
+> > +void __kasan_save_free_info(struct kmem_cache *cache, void *object)
+> >  {
+> >         struct kasan_free_meta *free_meta;
+> >
+> > diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+> > index 9a6927394b54..c8289a3feabf 100644
+> > --- a/mm/kasan/hw_tags.c
+> > +++ b/mm/kasan/hw_tags.c
+> > @@ -45,13 +45,6 @@ static enum kasan_arg kasan_arg __ro_after_init;
+> >  static enum kasan_arg_mode kasan_arg_mode __ro_after_init;
+> >  static enum kasan_arg_vmalloc kasan_arg_vmalloc __initdata;
+> >
+> > -/*
+> > - * Whether KASAN is enabled at all.
+> > - * The value remains false until KASAN is initialized by kasan_init_hw=
+_tags().
+> > - */
+> > -DEFINE_STATIC_KEY_FALSE(kasan_flag_enabled);
+> > -EXPORT_SYMBOL(kasan_flag_enabled);
+> > -
+> >  /*
+> >   * Whether the selected mode is synchronous, asynchronous, or asymmetr=
+ic.
+> >   * Defaults to KASAN_MODE_SYNC.
+> > @@ -260,7 +253,7 @@ void __init kasan_init_hw_tags(void)
+> >         kasan_init_tags();
+> >
+> >         /* KASAN is now initialized, enable it. */
+> > -       static_branch_enable(&kasan_flag_enabled);
+> > +       kasan_enable();
+> >
+> >         pr_info("KernelAddressSanitizer initialized (hw-tags, mode=3D%s=
+, vmalloc=3D%s, stacktrace=3D%s)\n",
+> >                 kasan_mode_info(),
+> > diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+> > index 129178be5e64..8a9d8a6ea717 100644
+> > --- a/mm/kasan/kasan.h
+> > +++ b/mm/kasan/kasan.h
+> > @@ -398,7 +398,13 @@ depot_stack_handle_t kasan_save_stack(gfp_t flags,=
+ depot_flags_t depot_flags);
+> >  void kasan_set_track(struct kasan_track *track, depot_stack_handle_t s=
+tack);
+> >  void kasan_save_track(struct kasan_track *track, gfp_t flags);
+> >  void kasan_save_alloc_info(struct kmem_cache *cache, void *object, gfp=
+_t flags);
+> > -void kasan_save_free_info(struct kmem_cache *cache, void *object);
+> > +
+> > +void __kasan_save_free_info(struct kmem_cache *cache, void *object);
+> > +static inline void kasan_save_free_info(struct kmem_cache *cache, void=
+ *object)
+> > +{
+> > +       if (kasan_enabled())
+> > +               __kasan_save_free_info(cache, object);
+> > +}
+>
+> What I meant with these __wrappers was that we should add them for the
+> KASAN hooks that are called from non-KASAN code (i.e. for the hooks
+> defined in include/linux/kasan.h). And then move all the
+> kasan_enabled() checks from mm/kasan/* to where the wrappers are
+> defined in include/linux/kasan.h (see kasan_unpoison_range() as an
+> example).
+>
+> kasan_save_free_info is a KASAN internal function that should need
+> such a wrapper.
+>
+> For now, to make these patches simpler, you can keep kasan_enabled()
+> checks in mm/kasan/*, where they are now. Later we can move them to
+> include/linux/kasan.h with a separate patch.
+
+Yes, I'd like to revisit this in the next separate patch series.
+
+>
+>
+> >
+> >  #ifdef CONFIG_KASAN_GENERIC
+> >  bool kasan_quarantine_put(struct kmem_cache *cache, void *object);
+> > diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> > index d2c70cd2afb1..2e126cb21b68 100644
+> > --- a/mm/kasan/shadow.c
+> > +++ b/mm/kasan/shadow.c
+> > @@ -125,7 +125,7 @@ void kasan_poison(const void *addr, size_t size, u8=
+ value, bool init)
+> >  {
+> >         void *shadow_start, *shadow_end;
+> >
+> > -       if (!kasan_arch_is_ready())
+> > +       if (!kasan_enabled())
+> >                 return;
+> >
+> >         /*
+> > @@ -150,7 +150,7 @@ EXPORT_SYMBOL_GPL(kasan_poison);
+> >  #ifdef CONFIG_KASAN_GENERIC
+> >  void kasan_poison_last_granule(const void *addr, size_t size)
+> >  {
+> > -       if (!kasan_arch_is_ready())
+> > +       if (!kasan_enabled())
+> >                 return;
+> >
+> >         if (size & KASAN_GRANULE_MASK) {
+> > @@ -390,7 +390,7 @@ int kasan_populate_vmalloc(unsigned long addr, unsi=
+gned long size)
+> >         unsigned long shadow_start, shadow_end;
+> >         int ret;
+> >
+> > -       if (!kasan_arch_is_ready())
+> > +       if (!kasan_enabled())
+> >                 return 0;
+> >
+> >         if (!is_vmalloc_or_module_addr((void *)addr))
+> > @@ -560,7 +560,7 @@ void kasan_release_vmalloc(unsigned long start, uns=
+igned long end,
+> >         unsigned long region_start, region_end;
+> >         unsigned long size;
+> >
+> > -       if (!kasan_arch_is_ready())
+> > +       if (!kasan_enabled())
+> >                 return;
+> >
+> >         region_start =3D ALIGN(start, KASAN_MEMORY_PER_SHADOW_PAGE);
+> > @@ -611,7 +611,7 @@ void *__kasan_unpoison_vmalloc(const void *start, u=
+nsigned long size,
+> >          * with setting memory tags, so the KASAN_VMALLOC_INIT flag is =
+ignored.
+> >          */
+> >
+> > -       if (!kasan_arch_is_ready())
+> > +       if (!kasan_enabled())
+> >                 return (void *)start;
+> >
+> >         if (!is_vmalloc_or_module_addr(start))
+> > @@ -636,7 +636,7 @@ void *__kasan_unpoison_vmalloc(const void *start, u=
+nsigned long size,
+> >   */
+> >  void __kasan_poison_vmalloc(const void *start, unsigned long size)
+> >  {
+> > -       if (!kasan_arch_is_ready())
+> > +       if (!kasan_enabled())
+> >                 return;
+> >
+> >         if (!is_vmalloc_or_module_addr(start))
+> > diff --git a/mm/kasan/sw_tags.c b/mm/kasan/sw_tags.c
+> > index b9382b5b6a37..c75741a74602 100644
+> > --- a/mm/kasan/sw_tags.c
+> > +++ b/mm/kasan/sw_tags.c
+> > @@ -44,6 +44,7 @@ void __init kasan_init_sw_tags(void)
+> >                 per_cpu(prng_state, cpu) =3D (u32)get_cycles();
+> >
+> >         kasan_init_tags();
+> > +       kasan_enable();
+> >
+> >         pr_info("KernelAddressSanitizer initialized (sw-tags, stacktrac=
+e=3D%s)\n",
+> >                 str_on_off(kasan_stack_collection_enabled()));
+> > diff --git a/mm/kasan/tags.c b/mm/kasan/tags.c
+> > index d65d48b85f90..b9f31293622b 100644
+> > --- a/mm/kasan/tags.c
+> > +++ b/mm/kasan/tags.c
+> > @@ -142,7 +142,7 @@ void kasan_save_alloc_info(struct kmem_cache *cache=
+, void *object, gfp_t flags)
+> >         save_stack_info(cache, object, flags, false);
+> >  }
+> >
+> > -void kasan_save_free_info(struct kmem_cache *cache, void *object)
+> > +void __kasan_save_free_info(struct kmem_cache *cache, void *object)
+> >  {
+> >         save_stack_info(cache, object, 0, true);
+> >  }
+> > --
+> > 2.34.1
+> >
 
