@@ -1,78 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-12220-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12221-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEBA7B57B45
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 14:38:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE30B57C68
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 15:09:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQPhT3LJDz3dVZ;
-	Mon, 15 Sep 2025 22:38:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQQNK38cfz3dTZ;
+	Mon, 15 Sep 2025 23:09:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757939897;
-	cv=none; b=dDHiOWqkcNxps1tLA858Eep8QxR2+rvlBpytGXn2VPoi+QhqahfoVe959AYwJ7E2+5lALll/lP68UX93mkHRe09DE6FmJEBURsLrXZONweO9Xjev58hR01/oOB12b7s5s6bXCbcpzgBBKnP0Gl/7ZktBsO+226qUjn4ssOmCmwqxkY3V8skr+xXq7UfKK0QTDrX2W0I7YLRJDpmY53nk7/2wR51bzMteNUZ66D1v4k8kKD5upF/RraGxnKC8h0xnA0YEWmYVDfKJ7qPaowJUXAIuuf8lu1HV0tg8lWl1WrzjuxpZ1YPDnKHCigcqbmR03w7OEa3djv+rsRVhtebeBg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.72.192.78
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757941761;
+	cv=none; b=f/MgDfV3PYmUkdcWLv3uz8upremwS9NK5UHDcnhD2mnFNY+WWbBwSxVz4xNEzfHJhRL/hd5U4ExSyM2LEtxEV/vS+mHVcDTeK/vonkRA0OQWqMXPT8cF6dkXdNyv6i1wtUA6xsNP5Ey/c+a7AGEJGnHu1fDyCYD9UbEnr8ww++MX+tGvIhMNu9CoU5q6M7WUh22A3lPAgmGBE/yW4z9sS4bNwuHLpmd3vGeiVpzqp5b56Bym1GVBr7prrj27G3f092OIGqLJ0VkkecqXLGeDkQB2dU4qXX2qUg3J9SnPDGD/hibjaTPmKZ/iVwl+MLC5bFaW9s/X3UvtACJ7knEIZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757939897; c=relaxed/relaxed;
-	bh=K7dMnAH4x4Yhlo74YTmg5SL9Xd+kCNTuCCyRN7MR+0Q=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=Cz2mE+SMuca+nPTxGTvl4l0g54zXVuTzkPL13J6SbFdMTFsm4nb0BdQaGKl+tmqGFd1dWKLQuei9fUYZMnnleh6rfJj/dy8nF5N0fEp49aJWumHuvgFlO4aSTCx47nPxHBHHwcqYX0JOH0iKDcrQnL72Nw1s/HRGbKq+M8T515WN0DGfkIbPcECzsZWxT8fd1LhA6NH4vFuaFD/AH9vSvaFMTXaywgMQ/jgHZ46YoguoVNWeySO3G+5YCv7hyDCi1Pr2TfndmxFN+5NTnowAf9A6cne2UrmmWegrYBIq8KCjAQQz4nZFJ9GT4KIX+rZwdQqrE3yOh6sWKOAhn4OY1w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GWoDC8Yx; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1757941761; c=relaxed/relaxed;
+	bh=NhtemnjAxvA/8fLmGMmQnGfrrMMgLd4Wke3MQ3tQQMs=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=mgK3vwOnDs/uu3d48nyDwi2iPHBvzw2LrqqS+dti3ciKjp9O1RVDv8NnYGAkEcu6SoN6qGx/bX+yuY8xKyPoj+3wBm2ENS7Wz0DI+3HcOvhoa+tJnYqEc1VAJQ5XiuFlqrW9oCq2rJyCsehiuDvZL+ur4DnTHJmlPd1dsgYwoFj/IrPI+44C0f/0tjtplD+/nQoyhrud/F9lxjAeqFgU6a4qRL6D9WQmorQWHOC/2zwxinT1Uy6EXUaTWyTaWGnUBSwF6gwatIYoZFyMdo6HBL/ItPLfRgexhzt5ySP6mVUZlA728Lt/H3Vt9NiwFKREjs+0zmrQFcYT+zWLU5KG3w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=gFbcfHWU; dkim-atps=neutral; spf=pass (client-ip=217.72.192.78; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org) smtp.mailfrom=web.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GWoDC8Yx;
+	dkim=pass (2048-bit key; secure) header.d=web.de header.i=markus.elfring@web.de header.a=rsa-sha256 header.s=s29768273 header.b=gFbcfHWU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=web.de (client-ip=217.72.192.78; helo=mout.web.de; envelope-from=markus.elfring@web.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 529 seconds by postgrey-1.37 at boromir; Mon, 15 Sep 2025 23:09:16 AEST
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQPhS1mSCz3dS6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 22:38:15 +1000 (AEST)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58F3PFLD023043;
-	Mon, 15 Sep 2025 12:38:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=K7dMnA
-	H4x4Yhlo74YTmg5SL9Xd+kCNTuCCyRN7MR+0Q=; b=GWoDC8YxdBT3tJu6iz5kuC
-	OUPWfKjJp0lI76X+HkKd/NVO70U7R6liuX/pOeeofoRYwzdL+kQ90RwjInv+PKoQ
-	0cHuevFCsEvSHPnQDy31zpLKsiCdDjqkrcGYYKVE/N3HKv/cxjjJs5eazc8s46qd
-	0ZFwWpHpPky8d7TOOnVHzcLLdmlQXs0hzSR9ODHV3eIzFl3dCs9e0d2hckcLL5bP
-	szGBE904MGz9EpoKo98r70Ba4IsY9pMbzAh+L0wioaCfZEETQBwJFXNy0I6Xcd+c
-	2mJGxbSQYeCKF42amgLKqu1MDJAK0kFmeGTjlFWuPkKV7OVHpf/2N3h2A0Sp2daQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnjhh9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 12:38:09 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58FCc8CL010593;
-	Mon, 15 Sep 2025 12:38:08 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnjhh5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 12:38:08 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58FAkJgl029514;
-	Mon, 15 Sep 2025 12:38:07 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kb0pkpd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 12:38:07 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58FCc3ZJ48824716
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Sep 2025 12:38:03 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 536F62004D;
-	Mon, 15 Sep 2025 12:38:03 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5587C20043;
-	Mon, 15 Sep 2025 12:37:57 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.244.131])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 15 Sep 2025 12:37:56 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQQND6Swbz3dKw
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 23:09:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1757941752; x=1758546552; i=markus.elfring@web.de;
+	bh=NhtemnjAxvA/8fLmGMmQnGfrrMMgLd4Wke3MQ3tQQMs=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=gFbcfHWU/8giPk/NKU9QWM+aeaM3t4K5XjV/MD/5OMMFhx5qggMxTrPGBntZ2kqi
+	 wbr93PtPhPCopzErVDVGnCv39GgG2bfHVVXws3am9hxYSsB99f1fq5W5UEWy0tSPR
+	 DVF5bzevH3NtwQrAFbQ/Yl+pT26TTZjbGSsvITBZFJX5mJrZJ1t81JYdpgAolRQmr
+	 k4LNCsI6HsNVb4cEtJC89/dC5a4VpFCe1E2iHYfHdTlmGR9PeMp0Lihtfu8iIrvEd
+	 H/OGYah5mKOl7Q8cPTfgiL0ocgMA3HP37Gut4Ig2fadSSa5Cy6+wd5d8RsLTHXRAK
+	 eeIaZ+hPBNOzd9Wm2g==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.188]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MFrxl-1vB6ai2Sit-00Di0i; Mon, 15
+ Sep 2025 14:52:59 +0200
+Message-ID: <80453b77-01ca-4fff-8a5a-deed4203be0f@web.de>
+Date: Mon, 15 Sep 2025 14:52:42 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,145 +59,121 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: [PATCH V3 0/7] Add interface to expose vpa dtl counters via
-From: Athira Rajeev <atrajeev@linux.ibm.com>
-In-Reply-To: <bc6c17d2-298b-4629-9de1-dcecc3aac58f@csgroup.eu>
-Date: Mon, 15 Sep 2025 18:07:43 +0530
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
-        "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
-        Aboorva Devarajan <aboorvad@linux.ibm.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>, hbathini@linux.vnet.ibm.com,
-        Aditya Bodkhe <Aditya.Bodkhe1@ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Tejas Manhas <Tejas.Manhas1@ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: linuxppc-dev@lists.ozlabs.org, Kumar Gala <galak@kernel.crashing.org>,
+ Alexandre Bounine <alexandre.bounine@idt.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Jin Qing <b24347@freescale.com>, Li Yang <leoli@freescale.com>,
+ Liu Gang <Gang.Liu@freescale.com>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>
+Content-Language: en-GB, de-DE
+Cc: LKML <linux-kernel@vger.kernel.org>, kernel-janitors@vger.kernel.org
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [bug report] powerpc/fsl_rio: Missing of_node_put() calls in
+ fsl_rio_setup()
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <828878DA-D6F8-407F-9386-91A097E29364@linux.ibm.com>
-References: <20250915102947.26681-1-atrajeev@linux.ibm.com>
- <bc6c17d2-298b-4629-9de1-dcecc3aac58f@csgroup.eu>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Mailer: Apple Mail (2.3776.700.51)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vp_wXhLiJM-r90d7yGRHn8yrRtMJ46Oc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDAyOCBTYWx0ZWRfX9w40CkoSd/Ry
- jqR2mhc9XUhmWnRQmBU/UnkcgCXhS94QoPVhcIaxAVX6/NZdcoeMNqZYyU7DZrkSbjKcUX4aNWR
- i6HtSdau0aZF8YEr3ZckaX2p0sqKIRpgWa0iG5ObtAOq6DRtuoNgj8gcbeGOIfW4jKbLOCJtLnc
- HWJHr6UX9IRaOlwfAAHoY5A/aB/AtpKbadfZEiaOWa5g6/+nQD6lf2NO3V7SGRG+Cysl3KRqiKS
- 3L997fiJ4WFRiroctrh9aYDQrMw91q/mFX/YsKvj7SrDWYWrhm2/bmIVYOZpR0/UHbKZ6ZcQZbz
- 6urnTZ344d5oY/XClL8bCEJFhdPibb9FlxeIYQDvgEUElJcqgij7f/t1902kPKwIlTGncm7Zt2n
- bM4HdpCN
-X-Authority-Analysis: v=2.4 cv=HecUTjE8 c=1 sm=1 tr=0 ts=68c808b1 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=1UX6Do5GAAAA:8
- a=B8brMVGyltVLplSz2e4A:9 a=QEXdDO2ut3YA:10 a=Et2XPkok5AAZYJIKzHr1:22
-X-Proofpoint-GUID: hsxIIBvPwZBcF-bzUf4CSBfov4mnB3qF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-09-15_05,2025-09-12_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 suspectscore=0
- malwarescore=0 bulkscore=0 impostorscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150028
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Provags-ID: V03:K1:ZWxN3Ysz7mZYnylO6nqSUzTVLku6/7Sr4VvsnGOn1UNtzXXh8lq
+ hhbS/eTW8oiqPNDG6Rrum+DkZxXhTWbACybnryoGioY493DKc0cxvv+f/T+8NAfphMIooIJ
+ bt4FVnEl1EeM0XnFaD6knIrF01eFQgd8gzV7EUdwxKtcUzRHcnaytQt6LeThujLQHNA3CnQ
+ vs3bFkT34/0HDwOLURgjA==
+UI-OutboundReport: notjunk:1;M01:P0:FVc9glNrJFU=;TN+H0+AVB8A9IdtnTU0nKS097fZ
+ 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
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hello,
+
+Another script for the semantic patch language (Coocinelle software) point=
+ed
+details out also according to the implementation of the function =E2=80=9C=
+fsl_rio_setup=E2=80=9D
+for further development considerations.
+https://elixir.bootlin.com/linux/v6.17-rc5/source/arch/powerpc/sysdev/fsl_=
+rio.c#L439-L731
+https://lore.kernel.org/cocci/504107f9-09eb-47fe-96ea-53e375b17eac@web.de/
+https://sympa.inria.fr/sympa/arc/cocci/2025-09/msg00023.html
+
+* I got the impression then that the function =E2=80=9Cof_node_put=E2=80=
+=9D should be called
+  in more cases here.
+
+* How do you think about to avoid a bit of duplicate source code
+  by another update step?
+
+* Further implementation details can be improved.
 
 
-> On 15 Sep 2025, at 4:08=E2=80=AFPM, Christophe Leroy =
-<christophe.leroy@csgroup.eu> wrote:
->=20
->=20
->=20
-> Le 15/09/2025 =C3=A0 12:29, Athira Rajeev a =C3=A9crit :
->> The pseries Shared Processor Logical Partition(SPLPAR) machines can
->> retrieve a log of dispatch and preempt events from the hypervisor
->> using data from Disptach Trace Log(DTL) buffer. With this =
-information,
->> user can retrieve when and why each dispatch & preempt has occurred.
->> The vpa-dtl PMU exposes the Virtual Processor Area(VPA) DTL counters
->> via perf.
->> - Patches 1 to 6 has powerpc PMU driver code changes to capture DTL
->>   trace in perf.data. And patch 7 has documentation update.
->> Infrastructure used
->> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> The VPA DTL PMU counters do not interrupt on overflow or generate any
->> PMI interrupts. Therefore, hrtimer is used to poll the DTL data. The =
-timer
->> nterval can be provided by user via sample_period field in nano =
-seconds.
->> vpa dtl pmu has one hrtimer added per vpa-dtl pmu thread. DTL =
-(Dispatch
->> Trace Log) contains information about dispatch/preempt, enqueue time =
-etc.
->> We directly copy the DTL buffer data as part of auxiliary buffer and =
-it
->> will be processed later. This will avoid time taken to create samples
->> in the kernel space. The PMU driver collecting Dispatch Trace Log =
-(DTL)
->> entries makes use of AUX support in perf infrastructure. On the tools =
-side,
->> this data is made available as PERF_RECORD_AUXTRACE records.
->> To corelate each DTL entry with other events across CPU's, an =
-auxtrace_queue
->> is created for each CPU. Each auxtrace queue has a array/list of =
-auxtrace buffers.
->> All auxtrace queues is maintained in auxtrace heap. The queues are =
-sorted
->> based on timestamp. When the different PERF_RECORD_XX records are =
-processed,
->> compare the timestamp of perf record with timestamp of top element in =
-the
->> auxtrace heap so that DTL events can be co-related with other events
->> Process the auxtrace queue if the timestamp of element from heap is
->> lower than timestamp from entry in perf record. Sometimes it could =
-happen that
->> one buffer is only partially processed. if the timestamp of =
-occurrence of
->> another event is more than currently processed element in the queue, =
-it will
->> move on to next perf record. So keep track of position of buffer to =
-continue
->> processing next time. Update the timestamp of the auxtrace heap with =
-the timestamp
->> of last processed entry from the auxtrace buffer.
->> This infrastructure ensures dispatch trace log entries can be =
-corelated
->> and presented along with other events like sched.
->> With the kernel changes;
->>   # ls /sys/devices/vpa_dtl/
->>   events  format  perf_event_mux_interval_ms  power  subsystem  type  =
-uevent
->> Thanks
->> Athira
->=20
-> What is the difference between this version of the series and the V2 =
-sent 3 hours ago ?
-Hi Christophe,
-
-Change is in Patch 7 for Documentation, where build warning for =E2=80=9Cm=
-ake htmldocs=E2=80=9D is handled.
-
-I added in changelog here as part of patch 7:
-=
-https://lore.kernel.org/linux-perf-users/bc6c17d2-298b-4629-9de1-dcecc3aac=
-58f@csgroup.eu/T/#m7fb311c8b56c71e7077f3f7e790805dab11b548a
-
-There is no changes in other patches.
-Sorry, I should have added that here in cover letter too along with =
-having in patch 7.
-
-Thanks
-Athira
-
->=20
-> Christophe
-
-
+Regards,
+Markus
 
