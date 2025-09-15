@@ -1,157 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12242-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12243-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7675B5813E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 17:51:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8780B5819B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 18:08:03 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQTzG4Kfjz3dxN;
-	Tue, 16 Sep 2025 01:51:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQVLT2b8qz3f4Q;
+	Tue, 16 Sep 2025 02:08:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757951482;
-	cv=none; b=FVNXJMpu0WeEHuoJr30BO8QVSFUe1WR4hmOrYqdO2pKreTik5miE4PpM87gytLjyEOkZ6/nfghC/EpqexLAHbgCI6lTdJkCFTxo67W+LJuhxWRf9NPU6GwwPtSedZq0AzMxCCeo5U8vIrU45uRHWKoSfxK+gMR69avI2yBwEyTG4QpsJUJfGmf6eu0fxq/RT/8HbA9vDnJWU+OB9tjJU5wEnv+A7Axik/3Fr6iEeatZ2rjdGdmYYFyEK95KKGM+gwlMrIW9OO2TnV3YuRZ0ZPa+hMoSa7D6Gscpz+rRNLw7aN1vPrWplF0WqokdPuKh6gxpLUJhnAa56vgjDA/9XHQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757952481;
+	cv=none; b=GqKGcmmm0RRG1wLfBAcp3g0d/rLjCAIQ6jJST3LogXvBW9zjk2Mp8Oqc6WxsNzv7HEj3lKn7NRYH7631xK3SDlUnG7UPMCjABoxOCNa17KcweGsHyenPsDa6mDhPEKqjYYs17IkFiNfbJeMkJmmo9Ypt1tRIbOAjZnEZT8nPqrbTsEP58iv3IX3VAze1TYw7JVV9QlpeXjB7DbSTLg6kD9rRhmUIHR/KEbQbIt+MVlWe3N+vRhiTvoT+/IUPjVtUCSYScvJtoL2JeYiS/L9cJhFL3/TxyPAjs6AOjI7yFW5px8tCMHgYGxbjrtjEj4+ii9O2Qdt53PUaIZYsoLP32Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757951482; c=relaxed/relaxed;
-	bh=//XPbr1iyIW7P1JztIXV9dCYCDNt0+AOQxJ/xCNlKnk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CL6tABdd92+m1j+QJBcny9U5sbWRNHCxrsrONIcoB9HUXOerHHRrzuVITfJ37nqfqAxNUOFRHdVvD3a7tj/EpRuvOJrGnW7dwIw15cifNIppy7WORtrzxF7Ow+dl9KhlfbTdsO17Q2qm7KFk+t0NW0Yde7TSGXIKBtW2uu2+/inqtNbU+dqk+8qXzDJHbgcF7XAbuBKFWIgJDrk+MBH/O8W7fDbPvAL3iZy+e7M6DKMXeHsRKzlhQyguLqTfg2s4B2ZWD7rq+dCU9nYKMqNQm1Ch354ILCra9hSodgsODKEg0aPwsAiLmbGaFL/yFP6OcPN2VrNWZODsdy17QX4tzA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e3Nf+B8C; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1757952481; c=relaxed/relaxed;
+	bh=tdjnjKBXP5VG+ZFfOCWRfDIttGV78TQBCTLNUVi5iNo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=e68NVnp03Joi/IRZC5Z5wQewM1a0nMBKfWLKaHuehtT5Wh+eBbLB3+Z34FEvFUvteYIhetcRDNHBMo8DzNmYLclfARJDWD5YqiTC5lDLw2lCql1Tvv3Bavu9VIERWZh0HtwFxvCca0UsmdjA7aJ37zY1p3RFAU3mYtBpnoupE70JXsjCO7EMZUUzWeMQ7jMP06RfPV04hVHFWX371m6kHzrmEqtiTEy/uohfVmNDr2Aws1rVBIkgSU5UeeG3OfNw3QFyHa4g+05bt9WlhSvbAal7F5WM/goHH8GymPZklglYunlXCBLvQnRvXoJEQI9THpxBnH33MyidBzht9JKmZg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eqFpeijs; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e3Nf+B8C;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=eqFpeijs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQTzF67nyz3dLl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 01:51:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQVLS0mvGz3dDT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 02:07:59 +1000 (AEST)
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FDXhpp023043;
-	Mon, 15 Sep 2025 15:51:15 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FDnNB5024021;
+	Mon, 15 Sep 2025 16:07:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=//XPbr
-	1iyIW7P1JztIXV9dCYCDNt0+AOQxJ/xCNlKnk=; b=e3Nf+B8C+vXGcgQjAeoPIA
-	zSCgK4NzJVx7T3o0Z7yvrG09K6ojTwRgMARTb2VT9M4nyg41lo1cQ0Mu8+lkuCy7
-	JjOfO8OY/nfndlkjgKy/Igr78trLSyRouNkNu7+v0ueegcMzXHxpYGg63tHE423+
-	FVIzi2FZNni4c646Wx0l1D9Hjgv29uvuJB41o9dzNXCbPysy8sokmm87xRiRpmIx
-	wj84oy/4dLgEXrJ5AOlmXWQ/C6QqB4hTalh/+cSJ1+Yvb+667fQ4QpZHmtoExSyx
-	AS5kA6IWYMeMB7LuKIWLO2x0KhMrsIstW8vKMzL0TFnCLI/vDAkXdawlawi8xDMg
+	:message-id:mime-version:references:subject:to; s=pp1; bh=tdjnjK
+	BXP5VG+ZFfOCWRfDIttGV78TQBCTLNUVi5iNo=; b=eqFpeijs/Hc1eHoBfijWPu
+	i40ZG24K7mC9Hz/iDMpRjLs+JKtu9VqU8rK/3+lr1mZM6GxdJJYT7bnrFMghb3Nh
+	IfSH269F12AKWXfMQb+BrjoZtFhMj1zLEGPO+6GUA90ef8VwRG0k9rdC+7sqLSc+
+	1OVc0G59nCrVc9U9zDDRen4IHX7leU96kkr6IIAv2Bfg57XsJMvKoviYGgZ/Tx84
+	GnKdPYbVv0NFNruND7ep0gkSJlB9AFhnNuJHYSMG7Wnei1xf3GEGMls9C7C75ES6
+	pCWfFFxiL8ZYENRssTHsFQbSYUY/9DZR0wU15ucHrAKezhSP6rP8ckWqTuuCe8yA
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkmk4-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkq2q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 15:51:15 +0000 (GMT)
+	Mon, 15 Sep 2025 16:07:53 +0000 (GMT)
 Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58FFbOEx015423;
-	Mon, 15 Sep 2025 15:51:14 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkmk2-1
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58FG58sH011385;
+	Mon, 15 Sep 2025 16:07:53 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkq2k-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 15:51:14 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58FFZJbq022290;
-	Mon, 15 Sep 2025 15:51:13 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kxpf7s1-1
+	Mon, 15 Sep 2025 16:07:53 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58FFGKHw027315;
+	Mon, 15 Sep 2025 16:07:51 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495memy7hv-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 15:51:13 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58FFpCPg25821912
+	Mon, 15 Sep 2025 16:07:51 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58FG7nAr22086296
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Sep 2025 15:51:12 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4119B58045;
-	Mon, 15 Sep 2025 15:51:12 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B165D58050;
-	Mon, 15 Sep 2025 15:51:09 +0000 (GMT)
-Received: from [9.111.35.47] (unknown [9.111.35.47])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 15 Sep 2025 15:51:09 +0000 (GMT)
-Message-ID: <2e2c882be991caf440596ffafa106c3fb345adc3.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 2/4] Documentation: PCI: Sync error recovery doc with
- code
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>,
-        Jonathan Corbet
-	 <corbet@lwn.net>
-Cc: Terry Bowman <terry.bowman@amd.com>,
-        Ilpo Jarvinen	
- <ilpo.jarvinen@linux.intel.com>,
-        Sathyanarayanan Kuppuswamy	
- <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Linas Vepstas	
- <linasvepstas@gmail.com>,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        Oliver OHalloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
-        Brian Norris
- <briannorris@chromium.org>
-Date: Mon, 15 Sep 2025 17:51:08 +0200
-In-Reply-To: <ed3c3385499775fcc25f1ee66f395e212919f94a.1757942121.git.lukas@wunner.de>
-References: <cover.1757942121.git.lukas@wunner.de>
-	 <ed3c3385499775fcc25f1ee66f395e212919f94a.1757942121.git.lukas@wunner.de>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	Mon, 15 Sep 2025 16:07:50 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A9B4C58043;
+	Mon, 15 Sep 2025 16:07:49 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BFB325805D;
+	Mon, 15 Sep 2025 16:07:45 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.248.92])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 15 Sep 2025 16:07:44 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -164,21 +85,39 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [PATCH V2 0/6] perf/tools: Add interface to expose vpa dtl
+ counters via
+From: Venkat <venkat88@linux.ibm.com>
+In-Reply-To: <20250915072754.99850-1-atrajeev@linux.ibm.com>
+Date: Mon, 15 Sep 2025 21:37:32 +0530
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
+        linux-perf-users@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, aboorvad@linux.ibm.com,
+        sshegde@linux.ibm.com, hbathini@linux.vnet.ibm.com,
+        Aditya.Bodkhe1@ibm.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <FE75A1D8-A53D-413B-BA25-73842524FE6C@linux.ibm.com>
+References: <20250915072754.99850-1-atrajeev@linux.ibm.com>
+To: Athira Rajeev <atrajeev@linux.ibm.com>
+X-Mailer: Apple Mail (2.3774.600.62)
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: X7OGfJO6VG6XgDgxA1jyPyd8bfi0X7eB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDAyOCBTYWx0ZWRfXyOFI7NjSzj2X
- S1I8OU1yLTPlda15++AEAnOYuJmDCZiGKgPL2j134ybcKSJld3LEEKm90+4GV79qUfe73E4rWw+
- hwbXArJSI6uQpqfIJ9tyKinSyeHyT1SzGF5UyxessNV3jB9xjJ+8wGytjf5N3z7KON8X19pIlaX
- TY/OJ7j69HJcNK+Y+8N8pue5JYOYV5DgCwSrv/ORK7LXpgaQivopEpUlesH8oLmOrCetorv2X/r
- vPLUuFyyDshd2EsjFNbjAJtwbw2Jy1jMLvygqSYQyqTaXsn09ulqIeUIVPIuKc8SRzuoTuiXaG0
- m6ZVpjGvpRo7u1BneH2qjSb2kbW/Uyz2ATemW9l57Bcgd3qa6+ORNWP3SPY/PFN8UIEt+HhJLJz
- tCkKukmj
-X-Authority-Analysis: v=2.4 cv=HecUTjE8 c=1 sm=1 tr=0 ts=68c835f3 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=cm27Pg_UAAAA:8 a=VnNF1IyMAAAA:8
- a=dyF35nN4NjREyvBytOEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: KSFqkJDjITN1UH-eF84phS3be7vfTh1n
+X-Proofpoint-ORIG-GUID: Fy40rc1mSfZONfPXQcMPBwHecLpxQZWP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDAyOCBTYWx0ZWRfX4fVEX/ZXSJHw
+ /tpkgIaaJGqkYBAVXR9GXEd33OLJDU6Itng3ZYQ6YA0wNdXC4mQVnIxKVDeROCj4Ch1yRnx8lsN
+ biHYA66YblhYXB/HrnwazJMg/M+zySOHs6xqxHEbUnFmkROL++tKpZqHV7MFITIjAzA/ppmU4dM
+ 7d4Z635q5EdDNRawc2z1wXvumsI7VQSzC9TEbr4r36643yEPJI2TKE2LYWD4fwFaVTJnrDMWcMD
+ zxyGSXTCxzejqIkBvBJvwkIq3awvDmv709jZdmuYFfsmIgWliYf71yu9GkNB7nmHqJn/U5vIUb0
+ nkC/95OFhk9eGUsyoKEuElByeAmE2eImnqHkbnU6MHTlrm2xkzbV0LZ58+xCPEgcTFP53I59W9W
+ EyGIrLxF
+X-Authority-Analysis: v=2.4 cv=HecUTjE8 c=1 sm=1 tr=0 ts=68c839d9 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=2Ka_cbLXvaq1a0_Dp14A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: Dj8IzpRV-AyLLQZFRY_LycgGtEdXi_wV
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-15_06,2025-09-12_01,2025-03-28_01
@@ -192,71 +131,254 @@ X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, 2025-09-15 at 15:50 +0200, Lukas Wunner wrote:
-> Amend the documentation on PCI error recovery to fix minor inaccuracies
-> vis-=C3=A0-vis the actual code:
->=20
-> * The documentation claims that a missing ->resume() or ->mmio_enabled()
->   callback always leads to recovery through reset.  But none of the
->   implementations do this (pcie_do_recovery(), eeh_handle_normal_event(),
->   zpci_event_do_error_state_clear()).
->=20
->   Drop the claim to align the documentation with the code.
->=20
-> * The documentation does not list PCI_ERS_RESULT_RECOVERED as a valid
->   return value from ->error_detected().  But none of the implementations
->   forbid this and some drivers are returning it, e.g.:
->   drivers/bus/mhi/host/pci_generic.c
->   drivers/infiniband/hw/hfi1/pcie.c
->=20
->   Further down in the documentation it is implied that the return value i=
-s
->   in fact allowed:
->   "The platform will call the resume() callback on all affected device
->   drivers if all drivers on the segment have returned
->   PCI_ERS_RESULT_RECOVERED from one of the 3 previous callbacks."
->=20
->   The "3 previous callbacks" being ->error_detected(), ->mmio_enabled()
->   and ->slot_reset().
->=20
->   Add it to the valid return values for consistency.
->=20
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> Reviewed-by: Brian Norris <briannorris@chromium.org>
-> ---
->  Documentation/PCI/pci-error-recovery.rst | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
->=20
-> diff --git a/Documentation/PCI/pci-error-recovery.rst b/Documentation/PCI=
-/pci-error-recovery.rst
-> index 42e1e78353f3..d5c661baa87f 100644
-> --- a/Documentation/PCI/pci-error-recovery.rst
-> +++ b/Documentation/PCI/pci-error-recovery.rst
-> @@ -108,8 +108,8 @@ A driver does not have to implement all of these call=
-backs; however,
->  if it implements any, it must implement error_detected(). If a callback
->  is not implemented, the corresponding feature is considered unsupported.
->  For example, if mmio_enabled() and resume() aren't there, then it
-> -is assumed that the driver is not doing any direct recovery and requires
-> -a slot reset.  Typically a driver will want to know about
-> +is assumed that the driver does not need these callbacks
-> +for recovery.  Typically a driver will want to know about
->  a slot_reset().
-> =20
->  The actual steps taken by a platform to recover from a PCI error
-> @@ -141,6 +141,9 @@ shouldn't do any new IOs. Called in task context. Thi=
-s is sort of a
->  All drivers participating in this system must implement this call.
->  The driver must return one of the following result codes:
-> =20
-> +  - PCI_ERS_RESULT_RECOVERED
-> +      Driver returns this if it thinks the device is usable despite
-> +      the error and does not need further intervention.
->    - PCI_ERS_RESULT_CAN_RECOVER
->        Driver returns this if it thinks it might be able to recover
->        the HW by just banging IOs or if it wants to be given
 
-Thanks and good catch on these inaccuracies.
 
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> On 15 Sep 2025, at 12:57=E2=80=AFPM, Athira Rajeev =
+<atrajeev@linux.ibm.com> wrote:
+>=20
+> The pseries Shared Processor Logical Partition(SPLPAR) machines can
+> retrieve a log of dispatch and preempt events from the hypervisor
+> using data from Disptach Trace Log(DTL) buffer. With this information,
+> user can retrieve when and why each dispatch & preempt has occurred.
+> The vpa-dtl PMU exposes the Virtual Processor Area(VPA) DTL counters
+> via perf.
+>=20
+> - Patch 1 to 6 is perf tools side code changes to enable perf
+>  report/script on perf.data file
+>=20
+> Kernel and tools patches is separated. Kernel patches are posted here =
+:
+> =
+https://lore.kernel.org/linux-perf-users/20250915072224.98958-1-atrajeev@l=
+inux.ibm.com/T/#t
+>=20
+> Infrastructure used
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+> The VPA DTL PMU counters do not interrupt on overflow or generate any
+> PMI interrupts. Therefore, hrtimer is used to poll the DTL data. The =
+timer
+> nterval can be provided by user via sample_period field in nano =
+seconds.
+> vpa dtl pmu has one hrtimer added per vpa-dtl pmu thread. DTL =
+(Dispatch
+> Trace Log) contains information about dispatch/preempt, enqueue time =
+etc.
+> We directly copy the DTL buffer data as part of auxiliary buffer and =
+it
+> will be processed later. This will avoid time taken to create samples
+> in the kernel space. The PMU driver collecting Dispatch Trace Log =
+(DTL)
+> entries makes use of AUX support in perf infrastructure. On the tools =
+side,
+> this data is made available as PERF_RECORD_AUXTRACE records.
+>=20
+> To corelate each DTL entry with other events across CPU's, an =
+auxtrace_queue
+> is created for each CPU. Each auxtrace queue has a array/list of =
+auxtrace buffers.
+> All auxtrace queues is maintained in auxtrace heap. The queues are =
+sorted
+> based on timestamp. When the different PERF_RECORD_XX records are =
+processed,
+> compare the timestamp of perf record with timestamp of top element in =
+the
+> auxtrace heap so that DTL events can be co-related with other events
+> Process the auxtrace queue if the timestamp of element from heap is
+> lower than timestamp from entry in perf record. Sometimes it could =
+happen that
+> one buffer is only partially processed. if the timestamp of occurrence =
+of
+> another event is more than currently processed element in the queue, =
+it will
+> move on to next perf record. So keep track of position of buffer to =
+continue
+> processing next time. Update the timestamp of the auxtrace heap with =
+the timestamp
+> of last processed entry from the auxtrace buffer.
+>=20
+> This infrastructure ensures dispatch trace log entries can be =
+corelated
+> and presented along with other events like sched.
+>=20
+> vpa-dtl PMU example usage
+>=20
+>  # ls /sys/devices/vpa_dtl/
+>  events  format  perf_event_mux_interval_ms  power  subsystem  type  =
+uevent
+>=20
+>=20
+> To capture the DTL data using perf record:
+>=20
+>  # ./perf record -a -e sched:*,vpa_dtl/dtl_all/ -c 1000000000 sleep 1
+>=20
+> The result can be interpreted using perf report. Snippet of perf =
+report -D:
+>=20
+>  # ./perf report -D
+>=20
+> There are different PERF_RECORD_XX records. In that records =
+corresponding to
+> auxtrace buffers includes:
+>=20
+> 1. PERF_RECORD_AUX
+>   Conveys that new data is available in AUX area
+>=20
+> 2. PERF_RECORD_AUXTRACE_INFO
+>   Describes offset and size of auxtrace data in the buffers
+>=20
+> 3. PERF_RECORD_AUXTRACE
+>   This is the record that defines the auxtrace data which here in case =
+of
+>   vpa-dtl pmu is dispatch trace log data.
+>=20
+> Snippet from perf report -D showing the PERF_RECORD_AUXTRACE dump
+>=20
+> 0 0 0x39b10 [0x30]: PERF_RECORD_AUXTRACE size: 0x690  offset: 0  ref: =
+0  idx: 0  tid: -1  cpu: 0
+> .
+> . ... VPA DTL PMU data: size 1680 bytes, entries is 35
+> .  00000000: boot_tb: 21349649546353231, tb_freq: 512000000
+> .  00000030: dispatch_reason:decrementer interrupt, =
+preempt_reason:H_CEDE, enqueue_to_dispatch_time:7064, =
+ready_to_enqueue_time:187, waiting_to_ready_time:6611773
+> .  00000060: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, =
+enqueue_to_dispatch_time:146, ready_to_enqueue_time:0, =
+waiting_to_ready_time:15359437
+> .  00000090: dispatch_reason:decrementer interrupt, =
+preempt_reason:H_CEDE, enqueue_to_dispatch_time:4868, =
+ready_to_enqueue_time:232, waiting_to_ready_time:5100709
+> .  000000c0: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, =
+enqueue_to_dispatch_time:179, ready_to_enqueue_time:0, =
+waiting_to_ready_time:30714243
+> .  000000f0: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, =
+enqueue_to_dispatch_time:197, ready_to_enqueue_time:0, =
+waiting_to_ready_time:15350648
+> .  00000120: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, =
+enqueue_to_dispatch_time:213, ready_to_enqueue_time:0, =
+waiting_to_ready_time:15353446
+> .  00000150: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, =
+enqueue_to_dispatch_time:212, ready_to_enqueue_time:0, =
+waiting_to_ready_time:15355126
+> .  00000180: dispatch_reason:decrementer interrupt, =
+preempt_reason:H_CEDE, enqueue_to_dispatch_time:6368, =
+ready_to_enqueue_time:164, waiting_to_ready_time:5104665
+>=20
+> Above is representation of dtl entry of below format:
+>=20
+> struct dtl_entry {
+>        u8      dispatch_reason;
+>        u8      preempt_reason;
+>        u16     processor_id;
+>        u32     enqueue_to_dispatch_time;
+>        u32     ready_to_enqueue_time;
+>        u32     waiting_to_ready_time;
+>        u64     timebase;
+>        u64     fault_addr;
+>        u64     srr0;
+>        u64     srr1;
+> };
+>=20
+> First two fields represent the dispatch reason and preempt reason. The =
+post
+> procecssing of PERF_RECORD_AUXTRACE records will translate to =
+meaninful data
+> for user to consume.
+>=20
+> Visualize the dispatch trace log entries with perf report:
+> # ./perf record -a -e sched:*,vpa_dtl/dtl_all/ -c 1000000000 sleep 1
+>  [ perf record: Woken up 1 times to write data ]
+>  [ perf record: Captured and wrote 0.300 MB perf.data ]
+>=20
+>  # ./perf report
+>  # Samples: 321  of event 'vpa-dtl'
+>  # Event count (approx.): 321
+>  #
+>  # Children      Self  Command  Shared Object      Symbol
+>  # ........  ........  .......  .................  =
+..............................
+>  #
+>     100.00%   100.00%  swapper  [kernel.kallsyms]  [k] =
+plpar_hcall_norets_notrace
+>=20
+> Visualize the dispatch trace log entries with perf script:
+>=20
+>   # ./perf script
+>            perf   13322 [002]   233.835807:                     =
+sched:sched_switch: perf:13322 [120] R =3D=3D> migration/2:27 [0]
+>     migration/2      27 [002]   233.835811:               =
+sched:sched_migrate_task: comm=3Dperf pid=3D13322 prio=3D120 orig_cpu=3D2 =
+dest_cpu=3D3
+>     migration/2      27 [002]   233.835818:               =
+sched:sched_stat_runtime: comm=3Dmigration/2 pid=3D27 runtime=3D9214 =
+[ns]
+>     migration/2      27 [002]   233.835819:                     =
+sched:sched_switch: migration/2:27 [0] S =3D=3D> swapper/2:0 [120]
+>         swapper       0 [002]   233.835822:                            =
+    vpa-dtl: timebase: 338954486062657 =
+dispatch_reason:decrementer_interrupt, preempt_reason:H_CEDE, =
+enqueue_to_dispatch_time:435,                      =
+ready_to_enqueue_time:0, waiting_to_ready_time:34775058, processor_id: =
+202 c0000000000f8094 plpar_hcall_norets_notrace+0x18 ([kernel.kallsyms])
+>         swapper       0 [001]   233.835886:                            =
+    vpa-dtl: timebase: 338954486095398 dispatch_reason:priv_doorbell, =
+preempt_reason:H_CEDE, enqueue_to_dispatch_time:542,                     =
+ ready_to_enqueue_time:0, waiting_to_ready_time:1245360, processor_id: =
+201 c0000000000f8094 plpar_hcall_norets_notrace+0x18 ([kernel.kallsyms])
+>=20
+> Thanks
+> Athira
+>=20
+> Athira Rajeev (6):
+>  tools/perf: Add basic CONFIG_AUXTRACE support for VPA pmu on powerpc
+>  tools/perf: process auxtrace events and display in perf report -D
+>  tools/perf: Add event name as vpa-dtl of PERF_TYPE_SYNTH type to
+>    present DTL samples
+>  tools/perf: Allocate and setup aux buffer queue to help co-relate =
+with
+>    other events across CPU's
+>  tools/perf: Process the DTL entries in queue and deliver samples
+>  tools/perf: Enable perf script to present the DTL entries
+>=20
+> tools/perf/arch/powerpc/util/Build      |   1 +
+> tools/perf/arch/powerpc/util/auxtrace.c | 114 ++++
+> tools/perf/builtin-script.c             |  27 +
+> tools/perf/util/Build                   |   1 +
+> tools/perf/util/auxtrace.c              |   4 +
+> tools/perf/util/auxtrace.h              |   1 +
+> tools/perf/util/event.h                 |  20 +
+> tools/perf/util/powerpc-vpadtl.c        | 732 ++++++++++++++++++++++++
+> tools/perf/util/powerpc-vpadtl.h        |  25 +
+> 9 files changed, 925 insertions(+)
+> create mode 100644 tools/perf/arch/powerpc/util/auxtrace.c
+> create mode 100644 tools/perf/util/powerpc-vpadtl.c
+> create mode 100644 tools/perf/util/powerpc-vpadtl.h
+>=20
+> --=20
+> 2.47.1
+>=20
+
+Hello Athira,
+
+Tested this patch set by applying on top of today=E2=80=99s mainline =
+kernel, which was built by applying dtl enablement in PMU driver for =
+PowerPC. Please refer below link for the patchiest
+
+=
+https://lore.kernel.org/all/20250915102947.26681-1-atrajeev@linux.ibm.com/=
+
+
+And this patchiest works as expected.
+
+As a side note, if for some reason, you are resending this patch set, =
+please correct the interval spelling in the cover page.
+
+
+Please add below tag.
+
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+Regards,
+Venkat.
+
 
