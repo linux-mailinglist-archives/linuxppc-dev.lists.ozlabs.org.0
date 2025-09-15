@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12235-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12234-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C8DBB57FF6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 17:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D35B57FF3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 17:08:37 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQT1w0QBzz3f3g;
-	Tue, 16 Sep 2025 01:08:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQT1t6TMMz3dkm;
+	Tue, 16 Sep 2025 01:08:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.14
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757948915;
-	cv=fail; b=jsASyxLbE4cOK8qinS6HXyRFuMMa9j5ZG8amf659CI7U6H8zCV8r5OgDxBE8YFR93+6OBh+Tm7ewod+HR+GzI06P8jdgp80lGzH5JcP3ct4kffdgDl930a0h7dmCcYDAaLA7w0O6/twt8ax2XZ3xojIVX0GbozqPSrIWseC9VvKFQuKR8oZ4wx5/AAopaKNHVEp93N2Xdu4XsI47P6mhBmbbfMZ1gzfZOaapwQvyhVv/JA/QqWY/I6Suf1u5QSNsTpUCzBPSJKwFiRQjvpNLxNZNxaDh7HHN2MxjFj4dXEx9VucfF4rn6CA6W5TUhFRJnL3DSmjzbqe98yM6vHx/pQ==
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.7
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757948914;
+	cv=fail; b=fCbYymf+URnfn+G21va597DkVXxdnJngZ117Lgvsj/eo21NuBz3F9PG+UCmEyAEMo21hd1BKPC4YaJcOYfOJS4l8IxFUYa6Jd7YK8pvdDLbgiH2/1+D9J6Mt8OehsvtOWALbe3EnoH73gVp2voBZ0xXeACW7EVLCe/NpMI5SA+nPyoowh3PbzTGny0ZLubRwhlXHSjfQx8gB6z0U9fuUr7jJKPYylg22M7l59PJpNNl/Xa3lOnS5ULdhlk41rdGU39uSrODPv1/Oj9rGpeb25hSfa1gbVSj9A0jpGj+3hpnaIk0+juj02K5Ek412AE5C1OJcx2OhFh7mMITURzzsmg==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757948915; c=relaxed/relaxed;
-	bh=pYuP6wVwtfqgsIuu1SzLMFP4JO7rdPiGIN4NRnyIL78=;
+	t=1757948914; c=relaxed/relaxed;
+	bh=qZ9v9t/fiAMnuEzWIZbTRLip8yZIWc038rtrV0XPeTk=;
 	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=F1zR9fJwyd5o1dkTPqH64j3JHW7ndCArVvvkfYKL80j9QNumDu/KdMJ0jAL/g2vSWFqutz0QHcbEnLDLbUP6ATgerXiAX2Wk6NDv1Q6TmLJmqHAoCiZjZ6HFJ5z859o7eQp+nE/Ya53OzL0KwgR95dgKCX+wY1v3ODJZl5U6VmQrSukcimKmTWd2EIoSHHWW1dF/32M9TOlP2QSN5id8A/2ypOSpPOI6zykt8Ic+DErW8/uQvLVyU56pFA82TYFR33XeZ2nw0dW9hDrA+QqLyuyiFUXAhI6ii/H2miPK8fo97bN/RyMCDhaXLu4V3cRk/4evATiYMWet+RrZ3FhheA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WHpbzYlk; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	 Content-Type:MIME-Version; b=TtfZ3SzOUd3TTE+qRz7/fMhzH/Dr4y6899zMKogL98WBFH8Ib8kHMEjphXL0D/AtT9cL81kaMXBxk2EG+PCTYuzwErseSETtqCK2RPAtDJsPaM2sS+b6nfmNdmRFWm4KK7tzy6sDnKcCN7PHy6XyzMxrsYzKRheDMPrY3stt9d8CV79iG9BXsAZl/pPV1I1aZ4+3Wsm4l+6xgrKT23FcG57gnfm3X/jXX0IlClVVeGteElWNm31E8FrILCeAjcvwFGqyTJaQthlEgr82JTfJYa85xh0AdXsw+J+sPTfnfqbZAeGedXAsdTIgnKHZmzuoHG3zhTnjVezGgFHyRaFf7g==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Tl0z2czk; dkim-atps=neutral; spf=pass (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WHpbzYlk;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Tl0z2czk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=adrian.hunter@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQT1t4VW6z3dhR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 01:08:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQT1s70pnz3dSW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 01:08:33 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1757948915; x=1789484915;
+  t=1757948914; x=1789484914;
   h=message-id:date:subject:to:cc:references:from:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=t2uAyBWeuL0MrEULciMl/52mSqjiYbkDfuMKA0Fukts=;
-  b=WHpbzYlkopPDFRv8WmXJ9s6pFZvJyfbb+tNJXZLmRQpSIxXnOJTnnGDW
-   p62NMAjl7/pILO056QHZQT1OM3f9qlkBfho1h12UAUmfphTzqbeYxsCVs
-   NUdiPEl2xyDwvaJ1o8Vwt147YOLVbykzzQNjRHQcnRXGCJxAhkkTSEQ3s
-   Z+ygJb2StutUUseaEM7AU/LIUKMN8aWGQ3bX62eJJsZZPndb8btZouHOn
-   kYmyE71uMZLBX6juBTZFI82cWcs2+JEKBu093d/OXOJJ7AA1y5z5CV6qd
-   L6OJOwCujPzaiqagah+2jkHoAmrC4Sj/N+EIL+vVUEhwRQg8+Lt3Hk3N2
-   Q==;
-X-CSE-ConnectionGUID: KH0qUAgeTX6FhEyfq0SxXw==
-X-CSE-MsgGUID: NpB0e41OTveAwvqdfH+Vqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="60280473"
+  bh=t9VYVmHrPFxT0myMzAeZJoxR+axwKCGNhLWwoHFfWjM=;
+  b=Tl0z2czkS8NQvNDQkfwIKJ4bEZRwAp7sD0kVmuHSpqzhPVh15J8dTdLo
+   ricJtfwrLAOXH5cbU6fVMK4V9QVSqx2HLiBPqqDbfA3Spkf+Hb+DS6jZ2
+   eK8/QAAS4kSKqIQ6L0+D8dC/l2aQf64InayFQoKbbcqR5lWOpt6BWfylR
+   JeWTfWXv/Yq/IAAc1HPn0lxbQQHXbO2glBvSBXVQ1+zjdgGr2IllXsXYg
+   4CuaWAGJMTXjCW9CY/xYGM/nUZlaQ9OzlnE6ox4P/CbVx/7p0vtyQB3sj
+   Z/ODBRpZ7iXO/qYywJNgNIe0+nuNqWW6vV+eL32Wy7VCub0H3qHx956YH
+   w==;
+X-CSE-ConnectionGUID: q7qdi6U9Ts+nruaemVZSnA==
+X-CSE-MsgGUID: BoHJ9npRQhKHGeLVuzZOQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11554"; a="85642795"
 X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
-   d="scan'208";a="60280473"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 08:08:30 -0700
-X-CSE-ConnectionGUID: ychZaPkcQpy5gGyn+JjDQw==
-X-CSE-MsgGUID: J/6Dh8zGTbGq5FnuUBXJ2g==
+   d="scan'208";a="85642795"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 08:08:31 -0700
+X-CSE-ConnectionGUID: Mpi8C6IjTwCSRKCuvw8f9g==
+X-CSE-MsgGUID: X1L6DwOsQ+KLWheFmCO41A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.18,266,1751266800"; 
-   d="scan'208";a="175086286"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 08:08:30 -0700
+   d="scan'208";a="211838729"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2025 08:08:31 -0700
 Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 15 Sep 2025 08:08:28 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ 15.2.2562.17; Mon, 15 Sep 2025 08:08:30 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
  FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17 via Frontend Transport; Mon, 15 Sep 2025 08:08:28 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.2) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.17 via Frontend Transport; Mon, 15 Sep 2025 08:08:30 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.66)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.17; Mon, 15 Sep 2025 08:08:27 -0700
+ 15.2.2562.17; Mon, 15 Sep 2025 08:08:30 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FbIl1CO/WRke4UULCNARhtzN364bKH2JF6mLzPo+oVvNGRTKf81gEL2pClpFcmhbDlAabiGctuGtWaZDbhX/Gb6s4b0JnrFw21DHpnHJiE/TYNTrANoPT8oOhr0sXbWV7sn4/8SMPxGmkAK1vCMjn1iyb6nYGbAPsW3dplbbwtq7ATuxOo3i17HMD4WdMFvx4FWSX4T1h/Rg+MHfGa/ARCnbzKGXe7sA6S5P8AcxGkU/psG0V6iUesEp4UTZCf7Pez5YHR3B1b7F7v1WiDr3CKX0TnOTQ3Lug7gY46yd3klxuqjqns/3ndbx0XUSRYi96vMX3keCUBX4S3A1OdGO5g==
+ b=GseXsf9WrNid4DhLDM9M2OuBxu1OyUWRRUTMFyLu8P0x+ZGEbJgAg/yLd1g3/W+OxZ69OJI/6/Ue5fhqyOMLIg0m88+t+ViuXtOdzLPN0ujxukLJuK5ojf2Gg3RJfK8Wnl4qPhKQ2Fk6NK7xtSg6mqz2oG7Nk/zw0AO9kEFM4UsNw2P7Iam8bClKqXrkDHJV3358eGA4FPfSzpoqgeARcaiYUvQOPSLap99No/hRHHBF8NU9wFr9C46TLSK8xNgekJClbxLBRFVEK1/cyKt8EfIpyx3sD5jSjOpScoAFKhmczSxuCM/EdfJex2btygEg/3B1VA8/kKDEFo28vBlZ1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pYuP6wVwtfqgsIuu1SzLMFP4JO7rdPiGIN4NRnyIL78=;
- b=FVxERm6Y3CdMCHMIrQQLyNN5qBg+qwHWXW8aKY8qs5BGoWCHeiK8E2eihAqfuRZhRiMA0cLgWJMchqaWfGYraVFvq8hbSP2HYfaMLlto3f/k9Ec5tjlonXoUvuYBq8raoXAOlEnPnoT4z/n0ynpaTsVRgKcSc4hV67FM57Hux6+3erB2Ia583rRfKk/BL5O5jwJhSWzOlr40J5XP60z5W/LA7IjRZpTL94fx8D9iuWbyH2AIUhMuBaAwxryfG3uXTFlN5iaFb6pnwOLkr6wxqrvTXFhp7aiDkkVtq0Y2FU4QuM0uGwLrpvYqVNgbd3YL/yuvnt3x8eeX33Mq/6Q42A==
+ bh=qZ9v9t/fiAMnuEzWIZbTRLip8yZIWc038rtrV0XPeTk=;
+ b=PzO6CdXU3ehwavx2dp9BcjCcrG6uq3XGpKKEWE9575QWps+KA9Kf57wr5z5jEg04N6ZikdKBv+eL12eneT0t86pu4KS2cw9tDYHtMRDg/n1MhdO+MdL8xhpqSp+RZCKB8hsd3e3R6ZLAnKkJA/bwccDvhFchZJRdsKdWgv+/WTFZfKVKIJG+Y4O9jTD9BOw9USYF1OSCWwUHI4iUKQPXZSGPp5M7+npvzfbTWiR2AFA7YSdI+4CMCjg/T+2gHQ/Wo/x9aRzHQjuLzcd6LJqsJ+6xoafFt9jfwOR6GMqAl78VmfoMD7qU1gDihEuqriqV+7rydtYUibJU/LKH9/tf5w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -82,16 +82,16 @@ Received: from IA1PR11MB7198.namprd11.prod.outlook.com (2603:10b6:208:419::15)
  by DS4PPF75D68BA1B.namprd11.prod.outlook.com (2603:10b6:f:fc02::32) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9115.22; Mon, 15 Sep
- 2025 15:08:15 +0000
+ 2025 15:08:27 +0000
 Received: from IA1PR11MB7198.namprd11.prod.outlook.com
  ([fe80::eeac:69b0:1990:4905]) by IA1PR11MB7198.namprd11.prod.outlook.com
  ([fe80::eeac:69b0:1990:4905%5]) with mapi id 15.20.9115.020; Mon, 15 Sep 2025
- 15:08:15 +0000
-Message-ID: <067b6d80-1e37-4a73-a125-7975e670e315@intel.com>
-Date: Mon, 15 Sep 2025 18:08:10 +0300
+ 15:08:27 +0000
+Message-ID: <3a294b79-165e-4922-b4fc-8d85d65c8004@intel.com>
+Date: Mon, 15 Sep 2025 18:08:22 +0300
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 2/6] tools/perf: process auxtrace events and display in
- perf report -D
+Subject: Re: [PATCH V2 4/6] tools/perf: Allocate and setup aux buffer queue to
+ help co-relate with other events across CPU's
 To: Athira Rajeev <atrajeev@linux.ibm.com>, <acme@kernel.org>,
 	<jolsa@kernel.org>, <maddy@linux.ibm.com>, <irogers@google.com>,
 	<namhyung@kernel.org>, <linux-perf-users@vger.kernel.org>
@@ -99,17 +99,17 @@ CC: <linuxppc-dev@lists.ozlabs.org>, <aboorvad@linux.ibm.com>,
 	<sshegde@linux.ibm.com>, <hbathini@linux.vnet.ibm.com>,
 	<Aditya.Bodkhe1@ibm.com>, <venkat88@linux.ibm.com>
 References: <20250915072754.99850-1-atrajeev@linux.ibm.com>
- <20250915072754.99850-3-atrajeev@linux.ibm.com>
+ <20250915072754.99850-5-atrajeev@linux.ibm.com>
 Content-Language: en-US
 From: Adrian Hunter <adrian.hunter@intel.com>
 Organization: Intel Finland Oy, Registered Address: c/o Alberga Business Park,
  6 krs, Bertel Jungin Aukio 5, 02600 Espoo, Business Identity Code: 0357606 -
  4, Domiciled in Helsinki
-In-Reply-To: <20250915072754.99850-3-atrajeev@linux.ibm.com>
+In-Reply-To: <20250915072754.99850-5-atrajeev@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DUZPR01CA0045.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:468::20) To IA1PR11MB7198.namprd11.prod.outlook.com
+X-ClientProxiedBy: DUZPR01CA0042.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:468::9) To IA1PR11MB7198.namprd11.prod.outlook.com
  (2603:10b6:208:419::15)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -126,91 +126,91 @@ Precedence: list
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: IA1PR11MB7198:EE_|DS4PPF75D68BA1B:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1191b91-a76d-4729-2bff-08ddf469b1dc
+X-MS-Office365-Filtering-Correlation-Id: 094161f0-dcd2-4ff8-58f3-08ddf469b907
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Y0djdUVvRkpnTGdrL1hWYWdnQ0JwZndxekhaRDhmS1ZYR3l2aS92Vmt5Z3Ru?=
- =?utf-8?B?YWpNaGdOZ3BrVFhzK2pKNHdDUC9EcHNQR2NpNGQxNlgrTXZobnpXdXhRT2NN?=
- =?utf-8?B?NXlLK1BHRG5pY0ZIWkMreFlpeG5tblFXYzNTWDFPVUFuMjlVdDBmTHJsRHJt?=
- =?utf-8?B?NksxS3k1cUdDSVA4a3JXZElIUUVsc0lEdlY1blpIV0lMYjRmYlFXbXYxRFR2?=
- =?utf-8?B?UUhTeWFMUE9rZi9YUmZCbjB2ZzlyOHcxY3ZMNGhueUVWa3orMGFCZU0vQmt2?=
- =?utf-8?B?VlFrcHZFTEIzbEFpZjd1ZHA2a3ZscTJOSXIzcXJzRUEzRlFJbk9GK0pVMmdD?=
- =?utf-8?B?S2Y4OEV5L282SWtoeWNKK3ZaZ0dwVllnZnZyMGoxdmJybG8ycitEMXdzaVJD?=
- =?utf-8?B?RU9kTmJqREJRUHpVbXFsOTQ1T0s4VTZvcDIwTTRPTFRKMDV5RWM3QzhuRTBH?=
- =?utf-8?B?bFY3Y2J2OWg3WEZ5ZHdaWTJnZ1BCcUFlMG5ZZDVVdXVXb1RVblU3NGZlREpT?=
- =?utf-8?B?cFJmOWRlMkFtMGRVQVp5SmFiRFIvOWpCMFZwODk5V2JTWkJJaGp2anZOelRM?=
- =?utf-8?B?eE82QW5hY1FpalBJb1ZRZlJ4RnNjcnVRRCtHZ1JXdTBWV2N2Y3FLc3dScXZu?=
- =?utf-8?B?ZEpDYXJZdStLenRVbWt5NFc1MHF3MGtWc0pMMFptQjc0cEIyQlN3c3ZJMnFu?=
- =?utf-8?B?TzBJd0hmdm5sRm1saVdXSDFPajJUdjBmZzJSRk5Vcm9GQVNpeWtUUDJORk1U?=
- =?utf-8?B?RFN1a0RCd2doenpkbjZXc1ZYWjdvSWpFRTZBUXg4SzRNUzFLMi9Dbm9RQ0Jn?=
- =?utf-8?B?QmdmRmpLdUp2Qi94M3dhbGozSE8xOW5zMEFxMEJJUXltWk5LZlFJdDFJUGtL?=
- =?utf-8?B?VUV3bSs5bVlFMUx5ekU0WENGZjhMcUpJelZEWDV0R2cyekVoNVcvS01MblZ5?=
- =?utf-8?B?V3BDNjJ4YkJ1UU9Kd2o0TVhBN01CWnVYZzdzK2JUWjRjNnRtb0U3cUFEK042?=
- =?utf-8?B?Q3VOUmdlekw5M2NMcEdHRDZYdVJadUFCV3BkRjZ6WTJqZGZNTmVNRjNsbngy?=
- =?utf-8?B?dUtWZVFDNTVPU3FVemdCQVcyTHF1WlpIUnFiMks4czZBNjd3bU82RDNoSEsz?=
- =?utf-8?B?aFhZSU5ZNlZzUnBkTVppUjRoOHA0TjhuakFLc3NkazNJcFg1MXBOMm1aTURt?=
- =?utf-8?B?Q0lBanpFTnNXc2J0V3k4dWJKUmZuaXU3T0xYeXVqMERZZk5SRnl6RlUwbE4y?=
- =?utf-8?B?NUtReS8rRjRiZ2VWaFU1dFV1bk9seFlPUU5tc2UvVlBQSysvNTVPMFFrclMz?=
- =?utf-8?B?ZUR1MTlGSWxTQ3gzYVdjUzk5djN2SnBKZHozZHk5YmJmRHZ2ZnlFZm1Ecm9p?=
- =?utf-8?B?SjV0Ty85NkZYdndEdWFTd212UHdjbmlNdW15czJhQXZXNllTYlZxbmJpQU1G?=
- =?utf-8?B?WGhFN25oYmdOZ3hQUldBZlc1dUMvSEV4WGdNbC9ueVI3alBocUFvdkcrM0Rn?=
- =?utf-8?B?N21taGRKNnpycDM1czRTQkJGWHlvaVZqRTA2QXJJL3I2UGtLTythNnJnUStm?=
- =?utf-8?B?Q3A1aEdtU1Z3aEVpekx2UFJRZjdYWVEvMHdMbzkwTzNMb0hqNFUyZVhqTUxr?=
- =?utf-8?B?KzhBd2tNWXJLemxVTjQ5YzJ4eEtKVGgvSm9BakRQTjhJalJnRVRtbVFGRVRV?=
- =?utf-8?B?R3oxMlR0MmlJWmpnRmlMeXl0STh2UEkwWkhqazZCWFJDbFEwZDZMQy9iVzEr?=
- =?utf-8?B?TWMyengyTDR0NENjUmMvWWZTemFHd2VqSmowMEprRzJHVDVpZEppZlMvbU84?=
- =?utf-8?B?MThIRVcwdTFXbk56UFVOWE9yMHN5L1A4TkNoOXFjcEFEanBDTEtGV1RXenlY?=
- =?utf-8?B?WTlaRGJ6eWRRL0ZCVkZhMHlrMFZFcDU5WDRKSDVFQm5abTVqZTNDRnM0aWdK?=
- =?utf-8?Q?JlHrHqYd+uc=3D?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MUxSQjlOamtSR0dZY1JMdERLcXM5TFJqU3VrU2xmMnFJejZnNGFkNHlSZ0NY?=
+ =?utf-8?B?QlNDc2hTN1crd3YxNWY5L29mem0zRVloa2QxcUlyMTJYL2l4QVJLZUZuRkNV?=
+ =?utf-8?B?RjFMcWp3Wkt3UWZSWEtaMTlKNTFvMjMzYUk4b29pVjF4dzhFWGVpb0tPbVFQ?=
+ =?utf-8?B?akNHYndLcm51ZEo2eEg1RjlhbXRteWw3NFN3ZTRHZ3l2RlliUDN0QzhJVHN2?=
+ =?utf-8?B?YkFrNld4WTUyOUNhbk05OXpSTjFlZmh4NzdzTUlKbmo0Wldab2ExcVdLL1Qx?=
+ =?utf-8?B?SEQ3b3h3dzBjRWpEVlN5eko1NHNKaVJkajBQaFdsRnhyc25xM2VwdTE0S0t0?=
+ =?utf-8?B?YVZHZUgzVUpUVXBCS2xsTGNmK1NvNE5Zd0NCVkVQU1NwUmNMZHVvd3ZZb2Z3?=
+ =?utf-8?B?QmZvQzFQSDdQTHdLZThuWiszcXI5d2JMclY3cWYrZUdwOTRtTGZIbzhidTlO?=
+ =?utf-8?B?eFJ2eE9RS2IzeHMvOG0yZENpZ1A0ZmFveUdXYUNXaFpIUmcvK3g3MHRaeUda?=
+ =?utf-8?B?QXN5SFhGU2E5Q1hvS1p4bnA3MWU3YndRRSsrZC9qbHhyYmdiQW1GNTN0b3pk?=
+ =?utf-8?B?OGEzUmhUclNEcG1oLzQzVEFKSGEwb2F2enRmOGdoc2FPMGl6UEpyaDhodmEz?=
+ =?utf-8?B?OHp1TU9hY2VneXJSdUFWdGR2SUw1K2Q4a1gxM2FGVzZZVzBBS1VZYTZLOUgx?=
+ =?utf-8?B?UUZXSnRvSnVLR0xIRmdtbjdmYWF5eExFM01YYUgwcWdYUFJhbU9CdFRpMnVJ?=
+ =?utf-8?B?MWN4bkdEcVFDNjhyRTYyNitIeWs5TXNINWt5U1lWWmxIOU8wRm8vNWFDeWt6?=
+ =?utf-8?B?S0IrM0tvdXY1NWNhVjlINWVCd3d1YmJCY29PV2lrU2FtY3BxWUlzK0FHSk0v?=
+ =?utf-8?B?a1hDM0V3VXdCUGp4anp4RkM0Y1hxOFFRRzVLY3J2UGVpT1l5R3o5SmFwZzNC?=
+ =?utf-8?B?ZEdrNVNmUmRqTWJmS0h5ZThETW0venVWSTl3amRHUFliZ3Q5Q2hpNlN4MDR2?=
+ =?utf-8?B?empPOW96OHd6N2dYQWVBTks3bCswa0tVcXVMWXZqRzJWbmRMMytHRUxNay9U?=
+ =?utf-8?B?RWpyNzlQVTI2LzRsaU9ZNmtDTjRkQjFKYTA5WE9OeGpnYU9nb2VXMWpXSGNR?=
+ =?utf-8?B?NzFsYjdST0R3UXlHVEMzVVJIaEFzNUpZRnptWTRkQkp1dFNPQzA2Y3BWMWNt?=
+ =?utf-8?B?NlN1R0pjcDRoeERTY0lVVmxGMldXRWlJTXgwcjBxdDZZanNWNzZNcnFqeTBJ?=
+ =?utf-8?B?V25XSEZVQjJyL3ArOXhvUHZpRHl6OWdpU2NQMTdLbVhrcUxJRnJmazM0dkh6?=
+ =?utf-8?B?YkFNaktub0t0RUpJZjlyZzZWWlJQb2RjNUNxQjVEZ3dzVHlXQ3R5VCt6ands?=
+ =?utf-8?B?QVhBdXl4VzZHSGdCRTZHbjZOaXFRYTlndDhISFBWOXpkb28zTmNJaEVQRlJZ?=
+ =?utf-8?B?Tll1M2ppdlVTYXd0TzBsYVRyamgrMTJLVThlQkNjUk43RjNkSWpDdVlsTGc5?=
+ =?utf-8?B?VXhKN0FwOFM5U3NKVml3a25JVUhhblB6M1RwWFlhKzBsbUdSeW0rcldrWmpo?=
+ =?utf-8?B?cVlTcGQzQzNpcTBuelJoaU1TSlFDd1A3RURsTGJtdmE5dWdWSGRWdWV2SnBk?=
+ =?utf-8?B?UWpwWVNncmtWSjJoVk1LcmlxNlU3RXR3a3g5MFp3NTZscElzSWFNRkF3SVJm?=
+ =?utf-8?B?R0NweU9WM1BiekVReEtxNUVqbHhwOVRaQUI3ZjZMeUlSczNGdWpJT214Tnp5?=
+ =?utf-8?B?b2JaSmJKb2lrMEd1UGFGQnZKNlJOOWU0Q0kza0wreWV2Y3NNRHRMajNyYlRV?=
+ =?utf-8?B?REdwblg2OGpMMWlmS2c0V2V4aGdZbVh3Wlh3cm12Tm1TajIxdlR6YXgrcndJ?=
+ =?utf-8?B?RXA0YzRxL1hPa1o4Z0FEaTZZSlB3NDVYbVpOWmUrQzJJY2oyUmkydUVGU2FQ?=
+ =?utf-8?Q?2maxr1eQW0o=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7198.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UG0zYUJlN1hVcnpoUWY4dVMxZkVqUjhMSU1uL0x6TmxrZzV6S1NNazhWeEIw?=
- =?utf-8?B?RjhrMjdpR0FGdEpHYUNkOTNRZWE2NlpObDJwYkZuaGRMRk9aYVNvY202dnZM?=
- =?utf-8?B?WWFjdFBJZ01BaFBLODNSdDQyZHo0NDg5WnUzaVlRK1VoNFdUa2FTdmFIV3Nv?=
- =?utf-8?B?eG0zVUhRdVVyWlNwc3Q2eGVuNndMYmhLOTljeVRPWlJHNFJBWU9lK0dxYXZt?=
- =?utf-8?B?RVNLaTU1UUNMalhDYVR6b1hPWUJKVmlzbWFTMWRDRithdW5kbnFVUkVNaWdG?=
- =?utf-8?B?YWc5RVFENG1zMWlPa3pwSm9ESlRIU2lnNUlUcGI2Mm5UYmV4RXJFL3ozaTU4?=
- =?utf-8?B?dmljVzJXQ0xhKzJlYTh2OTFzTldTR3NhTVNYNHlsMUVoLzNtMlBJTUdncDNE?=
- =?utf-8?B?UnBBWUtiSWZNN1pINTdjOHRLQXg3eDFJdGpmSXcyUmtqS1JyL3docHVyWVF6?=
- =?utf-8?B?MEVkQmVhS2dmMEd4aFJrTGEwcmJxR0tZRnF2SlZ3RDhvRENrT3RjLzIxek05?=
- =?utf-8?B?RC9pQlZzUnI0MVBNbzhWb2MwNHdqdVdZbGRYdHpwNktDSnNDTC80Qlkzalhu?=
- =?utf-8?B?dEpBeHVQVDF2NExvSWQvSDNOUTYrZnJVZUFnb3NESFc3bWxERy9nWEV1enZL?=
- =?utf-8?B?M1hMU0NONnlzWE9hVExUc0hkSjIzNFFXeTh2KzV2eGF6bHY0RGZ6RTVLNkdw?=
- =?utf-8?B?NFhYLzYwY3FFMlNwcUh5MUdGTnlaNHNQbHgzSHVmeVBOaTRKbCs3QlU1aTRN?=
- =?utf-8?B?YzdIcGNuTHRxbXc0TWd5cEVxRGh6UXBhbkpuSFZFRW10djFKKytpMmhyVTF6?=
- =?utf-8?B?UVdrSnJISnBuZ0Z4amFQZDJOWEhIYW45RlgwZS95MWU1Y2xHWmh3ejU3aVFE?=
- =?utf-8?B?alZaNEpQSFFia2QrYXpSNStORkQzT2ZkTzFzZkVCdndpS0NkZzlyNUZEWVV4?=
- =?utf-8?B?U1Y5WWROTElNb2k4OHFsVTJ2Y28vVFVyWjNOTW90c2pkMmZiaWpobTlucnYz?=
- =?utf-8?B?UEljd0Exb2R6YWhjNXY2Z1pUV0FRZXgxVmFGQk53c3hlMnZOaStPMFJNUkFm?=
- =?utf-8?B?T0k2aitRNnI5Unh0bU9oWXdXRWp0MUVRVTJDMWNiaUJsNjlGbDY1ZTJELzFN?=
- =?utf-8?B?VVBhTW12NDV6Rnp1UU1xTXFZNXoyT0xZdGJ6dlJ2MlFtQ0dLdWV3ekJVK0N2?=
- =?utf-8?B?YnoreUNJQUNsZEVINkVNaXNTek1YWUFDMDQ4ZE1ZcUoyNXVaYzY5eEhyZkVJ?=
- =?utf-8?B?UVFGMmZyU0ZPbWNKaXFHTTV1ZUgxTVpRdnhjQWlOVkk4YkNCODRYWEZZaHB5?=
- =?utf-8?B?VVE2THlhUWcwaW1RWUhrOUI3ZmUwM0xnQVdBMmsxUmprbyswZXRWMUx2N3JY?=
- =?utf-8?B?ZisvcUREOGtGZ0t4UWpuZkdNQXZvc0g1L0VyclBQZ2oveUg0UXppWDA2Y042?=
- =?utf-8?B?eE9qb2NvZk9lWTNveEI0ZXhHWC9vK2s2eHFoeUlsYVROSkJLNWhDMHg5MWZj?=
- =?utf-8?B?Nno5bmRPTklDT2l3WnE4T0FJTUxXZTNvbHI5cDRBaS9CMTdUZXZkRE5PSnY0?=
- =?utf-8?B?NFVFb1NNMlk5emhDbG42RUcvdjVicndJMlpleG5FRUwrbVhVS0ZYUmNMaFhG?=
- =?utf-8?B?b096SEV3d20reE5DZVFiY0JSN3JrZndqLzNZandOa0hPcEhBb1k5Ris3Q2JJ?=
- =?utf-8?B?cmhyOGtwajZVbFlLVTI3U050WWloYmEwc1pWZVBYblZacXNJWHBaVFNMUjl0?=
- =?utf-8?B?S01ZbVNndzhQZ0U5L0Rzdzd0N29nVUdoT0JoSFZXNmdEUmRPb2RzQWo2cTNm?=
- =?utf-8?B?VWh4bFFLdDRlTjBIbWw4Sy9ZQXZIdFpCNFE3SFJnYVdWR3djckdIRjdZYTkr?=
- =?utf-8?B?QVJYMUQ5Y0R0RytnSmtzL1hpc0F5eFM2TGtub3BxMTdyVk1DR3IwK2pzb2Yw?=
- =?utf-8?B?Wlo2cXJEbHhlTEd5MnpSM3BDZEMydkZWekd3YjZkWnhJdEREQWdvU3FUd1RY?=
- =?utf-8?B?aGY3clNKc0Y3Q2ZBeUd4ZmVEZ0dwdFF4TFpvZUJhUng2TE43SVNnUXgyaUNQ?=
- =?utf-8?B?MTFlQ3A4TG9ZSDZkTUhCamtyc2wrRHpBdFdhSDlTT2liM2dFQ3JSMzVEZFZN?=
- =?utf-8?B?VTMzenNWbEpGdlVVNzNobFU1NzNMaDIrdTRzS1RHeVdOQkdPdUI5NExHd0lX?=
- =?utf-8?B?cXc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1191b91-a76d-4729-2bff-08ddf469b1dc
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SXZ3MUEyQ05xQmhWRjcrRTRCaWZ2UzBNWkMvVmVWKzNucFRGaTlJSndNR3V4?=
+ =?utf-8?B?am5tTVc1eWM5NEdCWndqL0t5andlYTh4WVk0MGU3QzJhZHE2YjF2dHNtQUcx?=
+ =?utf-8?B?SjJxTFREMjZITlRmMWl1OXpCUEthYXZtMkk0U1lLUklxSTNDclJabzdqSmdo?=
+ =?utf-8?B?cm96d2hHV1JPemdxcjZ2QjZOZnFTQjVMbEd2bnM1cGxxcDVkcHJteFJSeUhI?=
+ =?utf-8?B?TWtBK2dka3N0Wk96ZG1ndmVuMUV3QnQveDBPT3JBVG9IeTVrZGVFNlZPSFd4?=
+ =?utf-8?B?UkJXZEhteXhIcWZZWDQzUnZDemU5NGI0NWcrNjFPMTJLQnpOZU5FOTl1WCtJ?=
+ =?utf-8?B?MlF5TEtpL2ZrZFNRcE5RUlluQkk0bGRMUHVXZDVMeUVTaXgzOGV5NXFBVnZE?=
+ =?utf-8?B?eDd4a1NZdlZBbHFEeTJ1U213TlhjWFJyQ1BFUks5QmdpUjFxRkhnM2xxL282?=
+ =?utf-8?B?UEZjZ2VmZ0xtSWRGN1ZHcTVFVE9Ta041ZGtSQ3NlSGtOVTFxQ0ZiMUU2ZnhX?=
+ =?utf-8?B?cHRRTE1hMGlGTldzVGNxbGhrUzVCRGtFcFBrb0c3SjRvaHVGVlBWRkMxZXhN?=
+ =?utf-8?B?VzNhOUhpSkFOMWNwUGlRbjRYblB0UnBuRy9FeEZlNnAyYXI4dWppbHJoOGgw?=
+ =?utf-8?B?azFOT0UrU1IyS24wT3NacGpJeXdPYWRmUGRjNEdqSFRkV0RnK1pvV28zVFNz?=
+ =?utf-8?B?LytGUENNOFIwM1J3QmJha0NnSjJZZ2FWTklDZVVxTDJ4ejFvR3ViRWI2Q1RS?=
+ =?utf-8?B?aG80TVR3bkxoUVNoeG83M1V1ajdjNkVkU3lBT2VFU21lMEVxbjJ6eGU1VTIw?=
+ =?utf-8?B?TXRWQW5oRHJsTnVwUk4zLzBQWG03WWNMbmw5cmVOdzByd1hMVlQ1ZDVJaXM5?=
+ =?utf-8?B?ZkpPSjBQOGFKcjB5WWhiakFmNU9UaVU2Ym4rSHdYV0duclJHS0FhYysvd3dV?=
+ =?utf-8?B?Tkt5Y1lBazE1RGJyNjBtQmhham92S2VzVDBNME1yVXlSbis2SHVPeHhabVlv?=
+ =?utf-8?B?WUhKb2psUVRuSGNGd2J4b1Jmc2orbmFYNmxSNHpLOHJTWkozZU9uQWxQOFRo?=
+ =?utf-8?B?eXZjdWoyeU9rWkFxMnRES0xCMmpISTJCdGNPTXVFWTdMbTlhaWhPR2FROEN2?=
+ =?utf-8?B?N0ZCQXFxc0hsT0pLb252R2toM3ErNzlqenpxeWRUYVVuVXZhMldRc05RdVJz?=
+ =?utf-8?B?eWFGOTZlRWEvRmUwYTNWWWM4bjh1bzBETXJHclVXOGNuUmRwQ05Zc2RTN2dI?=
+ =?utf-8?B?enplLzdRVEVranVCejBUbEQzbVlZZVNwN21DQkFNVWhDbU52SmpSdGlRbGRq?=
+ =?utf-8?B?RHN0TlJxUHVGZlBtbkp3d3JBblh4aGdjdnpNQzh3dWUrb3ZIcFRsOXhsR3Jo?=
+ =?utf-8?B?d3FQMzBIam9zYWZidEhoK3Bmc0lVeFlyeGUzMU5wNlFzWGRHYUtDSlZJNTdD?=
+ =?utf-8?B?czlncTQybzhWYWNtN2lYdUpCZTB2Qnk0eGU0ZXk2Y2dDdGJ2cXBNRWxadyt6?=
+ =?utf-8?B?YmhsK2ZOU0ZNSnFWUW1sSTRjb3RMWmQ5a1pkWk1RcGNWaUhyUFdWUHRONmF6?=
+ =?utf-8?B?R3orRnBDeEJzcGRSd2xIbmtydnVaczNCVlVHOEFtT2NUY2VESW9DV0NxOEpx?=
+ =?utf-8?B?V3BJeU9nZi8wSk5JZ01USlVld1RRRGoxakVpbU1TU1BGZ2dhL1ZWY01oZC9W?=
+ =?utf-8?B?c2d4UDcybi9ORTJGRm5ZRWxZUVRyTEIyOVh3MDZEYW5QQkt0ZXRKb2NTMEVa?=
+ =?utf-8?B?Z3RjMGpteXlvemRUZ3hGNWxTZk9pZTQ3amw0dmxOYys3aktNbkYrTmFveUNF?=
+ =?utf-8?B?MSthUmRvYVYzOUNqcGlCS2lHVFo2anhkWlY5YU5QdFhrT1JPRXlZWEtvcGlF?=
+ =?utf-8?B?SEZSSHlVQzNZSnROSDR4bFNjL2swOEtkU0M0NS9Kdkoza0FTellnUmZwbWQw?=
+ =?utf-8?B?QURoQW9xSnM4bGNtaHpoY0NSb1QvOHhpNGlsYVh6UWNUQUYwam91V1BWREty?=
+ =?utf-8?B?Zko4S2tDTlhUTHVKalRmbXdBMXIrbDlZVGFPR1gvUXFPbGZqZFZ1K2NFYzkw?=
+ =?utf-8?B?dkdIejlkR080WWgra0piYk9uRHNlWk9ZeWtNUllnRHVJbFhlY1F2OGpKc3RC?=
+ =?utf-8?B?MjFjVm5vTjh4YUVHT3Fhdm1MSkU3SlJQSXprNkVWb3FjZlljd21hL25Iby82?=
+ =?utf-8?B?U3c9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 094161f0-dcd2-4ff8-58f3-08ddf469b907
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7198.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2025 15:08:15.0962
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2025 15:08:27.1346
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fCCgBYmXoecP/B6afaMT3QkgD1slwZJZfYmAnoiogbECj6vr7SH33ZfEVweOU/WFGErY/taZQ09tc8Z78Yp3yA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: xkqn8WnL0W/dihZeW3OwWEUGweHFL6EAJ2nsN6mColiwSESVAG3+MIxtLsi613fknqk0SjJMqh4cnxB//JlwwQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF75D68BA1B
 X-OriginatorOrg: intel.com
 X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
@@ -220,436 +220,325 @@ X-Spam-Status: No, score=-2.5 required=3.0 tests=ARC_SIGNED,ARC_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On 15/09/2025 10:27, Athira Rajeev wrote:
-> Add vpa dtl pmu auxtrace process function for "perf report -D".
-> The auxtrace event processing functions are defined in file
-> "util/powerpc-vpadtl.c". Data structures used includes "struct
-> powerpc_vpadtl_queue", "struct powerpc_vpadtl" to store the auxtrace
-> buffers in queue. Different PERF_RECORD_XXX are generated
-> during recording. PERF_RECORD_AUXTRACE_INFO is processed first
-> since it is of type perf_user_event_type and perf session event
-> delivers perf_session__process_user_event() first. Define function
-> powerpc_vpadtl_process_auxtrace_info() to handle the processing of
-> PERF_RECORD_AUXTRACE_INFO records. In this function, initialize
-> the aux buffer queues using auxtrace_queues__init(). Setup the
-> required infrastructure for aux data processing. The data is collected
-> per CPU and auxtrace_queue is created for each CPU.
+> When the Dispatch Trace Log data is collected along with other events
+> like sched tracepoint events, it needs to be correlated and present
+> interleaved along with these events. Perf events can be collected
+> parallely across the CPUs. Hence it needs to be ensured events/dtl
+> entries are processed in timestamp order.
 > 
-> Define powerpc_vpadtl_process_event() function to process
-> PERF_RECORD_AUXTRACE records. In this, add the event to queue using
-> auxtrace_queues__add_event() and process the buffer in
-> powerpc_vpadtl_dump_event(). The first entry in the buffer with
-> timebase as zero has boot timebase and frequency. Remaining data is of
-> format for "struct powerpc_vpadtl_entry". Define the translation for
-> dispatch_reasons and preempt_reasons, report this when dump trace is
-> invoked via powerpc_vpadtl_dump()
+> An auxtrace_queue is created for each CPU. Data within each queue is in
+> increasing order of timestamp. Each auxtrace queue has a array/list of
+> auxtrace buffers. When processing the auxtrace buffer, the data is
+> mmapp'ed. All auxtrace queues is maintained in auxtrace heap. Each queue
+> has a queue number and a timestamp. The queues are sorted/added to head
+> based on the time stamp. So always the lowest timestamp (entries to be
+> processed first) is on top of the heap.
 > 
-> Sample output:
+> The auxtrace queue needs to be allocated and heap needs to be populated
+> in the sorted order of timestamp. The queue needs to be filled with data
+> only once via powerpc_vpadtl__update_queues() function.
+> powerpc_vpadtl__setup_queues() iterates through all the entries to
+> allocate and setup the auxtrace queue. To add to auxtrace heap, it is
+> required to fetch the timebase of first entry for each of the queue.
 > 
->    ./perf record -a -e sched:*,vpa_dtl/dtl_all/ -c 1000000000 sleep 1
->    [ perf record: Woken up 1 times to write data ]
->    [ perf record: Captured and wrote 0.300 MB perf.data ]
+> The first entry in the queue for VPA DTL PMU has the boot timebase,
+> frequency details which are needed to get timestamp which is required to
+> correlate with other events. The very next entry is the actual trace data
+> that provides timestamp for occurrence of DTL event. Formula used to get
+> the timestamp from dtl entry is:
 > 
->    ./perf report -D
+> ((timbase from DTL entry - boot time) / frequency) * 1000000000
 > 
->    0 0 0x39b10 [0x30]: PERF_RECORD_AUXTRACE size: 0x690  offset: 0  ref: 0  idx: 0  tid: -1  cpu: 0
->    .
->    . ... VPA DTL PMU data: size 1680 bytes, entries is 35
->    .  00000000: boot_tb: 21349649546353231, tb_freq: 512000000
->    .  00000030: dispatch_reason:decrementer interrupt, preempt_reason:H_CEDE, enqueue_to_dispatch_time:7064, ready_to_enqueue_time:187, waiting_to_ready_time:6611773
->    .  00000060: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:146, ready_to_enqueue_time:0, waiting_to_ready_time:15359437
->    .  00000090: dispatch_reason:decrementer interrupt, preempt_reason:H_CEDE, enqueue_to_dispatch_time:4868, ready_to_enqueue_time:232, waiting_to_ready_time:5100709
->    .  000000c0: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:179, ready_to_enqueue_time:0, waiting_to_ready_time:30714243
->    .  000000f0: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:197, ready_to_enqueue_time:0, waiting_to_ready_time:15350648
->    .  00000120: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:213, ready_to_enqueue_time:0, waiting_to_ready_time:15353446
->    .  00000150: dispatch_reason:priv doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:212, ready_to_enqueue_time:0, waiting_to_ready_time:15355126
->    .  00000180: dispatch_reason:decrementer interrupt, preempt_reason:H_CEDE, enqueue_to_dispatch_time:6368, ready_to_enqueue_time:164, waiting_to_ready_time:5104665
+> powerpc_vpadtl_decode() adds the boot time and frequency as part of
+> powerpc_vpadtl_queue structure so that it can be reused. Each of the
+> dtl_entry is of 48 bytes size. Sometimes it could happen that one buffer
+> is only partially processed (if the timestamp of occurrence of another
+> event is more than currently processed element in queue, it will move on
+> to next event). In order to keep track of position of buffer, additional
+> fields is added to powerpc_vpadtl_queue structure.
 > 
 > Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
 > ---
 > Changelog:
 > Addressed review comments from Adrian
-> - Renamed dtl_entry to powerpc_vpadtl_entry in util/event.h
-> - Removed unused #includes in powerpc-vpadtl.c
-> - Added helper session_to_vpa to get "struct powerpc_vpadtl"
-> - Updated auxtrace_queues__add_event only for piped data
-> - Used zfree to free "struct powerpc_vpadtl_queue"
+> - Moved time calculation to separate function
 > 
->  tools/perf/util/Build            |   1 +
->  tools/perf/util/auxtrace.c       |   3 +
->  tools/perf/util/event.h          |  16 ++
->  tools/perf/util/powerpc-vpadtl.c | 263 +++++++++++++++++++++++++++++++
->  tools/perf/util/powerpc-vpadtl.h |   7 +
->  5 files changed, 290 insertions(+)
->  create mode 100644 tools/perf/util/powerpc-vpadtl.c
+>  tools/perf/util/powerpc-vpadtl.c | 226 ++++++++++++++++++++++++++++++-
+>  1 file changed, 223 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tools/perf/util/Build b/tools/perf/util/Build
-> index 4959e7a990e4..5ead46dc98e7 100644
-> --- a/tools/perf/util/Build
-> +++ b/tools/perf/util/Build
-> @@ -136,6 +136,7 @@ perf-util-$(CONFIG_AUXTRACE) += arm-spe-decoder/
->  perf-util-$(CONFIG_AUXTRACE) += hisi-ptt.o
->  perf-util-$(CONFIG_AUXTRACE) += hisi-ptt-decoder/
->  perf-util-$(CONFIG_AUXTRACE) += s390-cpumsf.o
-> +perf-util-$(CONFIG_AUXTRACE) += powerpc-vpadtl.o
->  
->  ifdef CONFIG_LIBOPENCSD
->  perf-util-$(CONFIG_AUXTRACE) += cs-etm.o
-> diff --git a/tools/perf/util/auxtrace.c b/tools/perf/util/auxtrace.c
-> index f294658bb948..6d10f3d61ff8 100644
-> --- a/tools/perf/util/auxtrace.c
-> +++ b/tools/perf/util/auxtrace.c
-> @@ -55,6 +55,7 @@
->  #include "hisi-ptt.h"
->  #include "s390-cpumsf.h"
->  #include "util/mmap.h"
-> +#include "powerpc-vpadtl.h"
->  
->  #include <linux/ctype.h>
->  #include "symbol/kallsyms.h"
-> @@ -1394,6 +1395,8 @@ int perf_event__process_auxtrace_info(struct perf_session *session,
->  		err = hisi_ptt_process_auxtrace_info(event, session);
->  		break;
->  	case PERF_AUXTRACE_VPA_DTL:
-> +		err = powerpc_vpadtl_process_auxtrace_info(event, session);
-> +		break;
->  	case PERF_AUXTRACE_UNKNOWN:
->  	default:
->  		return -EINVAL;
-> diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
-> index e40d16d3246c..7ba208ae86fd 100644
-> --- a/tools/perf/util/event.h
-> +++ b/tools/perf/util/event.h
-> @@ -254,6 +254,22 @@ struct perf_synth_intel_iflag_chg {
->  	u64	branch_ip; /* If via_branch */
->  };
->  
-> +/*
-> + * The powerpc VPA DTL entries are of below format
-> + */
-> +struct powerpc_vpadtl_entry {
-> +	u8      dispatch_reason;
-> +	u8      preempt_reason;
-> +	u16     processor_id;
-> +	u32     enqueue_to_dispatch_time;
-> +	u32     ready_to_enqueue_time;
-> +	u32     waiting_to_ready_time;
-> +	u64     timebase;
-> +	u64     fault_addr;
-> +	u64     srr0;
-> +	u64     srr1;
-> +};
-> +
->  static inline void *perf_synth__raw_data(void *p)
->  {
->  	return p + 4;
 > diff --git a/tools/perf/util/powerpc-vpadtl.c b/tools/perf/util/powerpc-vpadtl.c
-> new file mode 100644
-> index 000000000000..2e8488a3dbd7
-> --- /dev/null
+> index 9098cbe00bfd..637abde60f44 100644
+> --- a/tools/perf/util/powerpc-vpadtl.c
 > +++ b/tools/perf/util/powerpc-vpadtl.c
-> @@ -0,0 +1,263 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * VPA DTL PMU support
-> + */
-> +
-> +#include <inttypes.h>
-> +#include "color.h"
-> +#include "evlist.h"
-> +#include "session.h"
-
-Should really also:
-
-#include "auxtrace.h"
-#include "data.h"
-#include "machine.h"
-
-> +#include "debug.h"
-> +#include "powerpc-vpadtl.h"
-> +
-> +/*
-> + * Structure to save the auxtrace queue
-> + */
-> +struct powerpc_vpadtl {
-> +	struct auxtrace			auxtrace;
-> +	struct auxtrace_queues		queues;
-> +	struct auxtrace_heap		heap;
-> +	u32				auxtrace_type;
-> +	struct perf_session		*session;
-> +	struct machine			*machine;
-> +	u32				pmu_type;
-> +};
-> +
-> +struct boottb_freq {
-> +	u64     boot_tb;
-> +	u64     tb_freq;
-> +	u64     timebase;
-> +	u64     padded[3];
-> +};
-> +
-> +struct powerpc_vpadtl_queue {
-> +	struct powerpc_vpadtl	*vpa;
-> +	unsigned int		queue_nr;
-> +	struct auxtrace_buffer	*buffer;
-> +	struct thread		*thread;
-> +	bool			on_heap;
-> +	bool			done;
-> +	pid_t			pid;
-> +	pid_t			tid;
-> +	int			cpu;
-> +};
-> +
-> +const char *dispatch_reasons[11] = {
-> +	"external_interrupt",
-> +	"firmware_internal_event",
-> +	"H_PROD",
-> +	"decrementer_interrupt",
-> +	"system_reset",
-> +	"firmware_internal_event",
-> +	"conferred_cycles",
-> +	"time_slice",
-> +	"virtual_memory_page_fault",
-> +	"expropriated_adjunct",
-> +	"priv_doorbell"};
-> +
-> +const char *preempt_reasons[10] = {
-> +	"unused",
-> +	"firmware_internal_event",
-> +	"H_CEDE",
-> +	"H_CONFER",
-> +	"time_slice",
-> +	"migration_hibernation_page_fault",
-> +	"virtual_memory_page_fault",
-> +	"H_CONFER_ADJUNCT",
-> +	"hcall_adjunct",
-> +	"HDEC_adjunct"};
-> +
-> +#define	dtl_entry_size	sizeof(struct powerpc_vpadtl_entry)
-> +
-> +/*
-> + * Function to dump the dispatch trace data when perf report
-> + * is invoked with -D
-> + */
-> +static void powerpc_vpadtl_dump(struct powerpc_vpadtl *vpa __maybe_unused,
-> +			 unsigned char *buf, size_t len)
+> @@ -10,6 +10,8 @@
+>  #include "session.h"
+>  #include "debug.h"
+>  #include "powerpc-vpadtl.h"
+> +#include "sample.h"
+> +#include "tool.h"
+>  
+>  /*
+>   * Structure to save the auxtrace queue
+> @@ -38,6 +40,14 @@ struct powerpc_vpadtl_queue {
+>  	struct auxtrace_buffer	*buffer;
+>  	struct thread		*thread;
+>  	bool			on_heap;
+> +	struct powerpc_vpadtl_entry	*dtl;
+> +	u64			timestamp;
+> +	unsigned long		pkt_len;
+> +	unsigned long		buf_len;
+> +	u64			boot_tb;
+> +	u64			tb_freq;
+> +	unsigned int		tb_buffer;
+> +	unsigned int		size;
+>  	bool			done;
+>  	pid_t			pid;
+>  	pid_t			tid;
+> @@ -112,6 +122,33 @@ static void powerpc_vpadtl_dump(struct powerpc_vpadtl *vpa __maybe_unused,
+>  	}
+>  }
+>  
+> +static unsigned long long powerpc_vpadtl_timestamp(struct powerpc_vpadtl_queue *vpaq)
 > +{
-> +	struct powerpc_vpadtl_entry *dtl;
-> +	int pkt_len, pos = 0;
-> +	const char *color = PERF_COLOR_BLUE;
-> +
-> +	color_fprintf(stdout, color,
-> +			". ... VPA DTL PMU data: size %zu bytes, entries is %zu\n",
-> +			len, len/dtl_entry_size);
-> +
-> +	if (len % dtl_entry_size)
-> +		len = len - (len % dtl_entry_size);
-> +
-> +	while (len) {
-> +		pkt_len = dtl_entry_size;
-> +		printf(".");
-> +		color_fprintf(stdout, color, "  %08x: ", pos);
-> +		dtl = (struct powerpc_vpadtl_entry *)buf;
-> +		if (dtl->timebase != 0) {
-> +			printf("dispatch_reason:%s, preempt_reason:%s, enqueue_to_dispatch_time:%d,"
-> +					"ready_to_enqueue_time:%d, waiting_to_ready_time:%d\n",
-> +					dispatch_reasons[dtl->dispatch_reason], preempt_reasons[dtl->preempt_reason],\
-> +					be32_to_cpu(dtl->enqueue_to_dispatch_time),\
-> +					be32_to_cpu(dtl->ready_to_enqueue_time), be32_to_cpu(dtl->waiting_to_ready_time));
+> +	struct powerpc_vpadtl_entry *record = vpaq->dtl;
+> +	double result, div;
+> +	double boot_freq;
+> +	unsigned long long boot_tb;
+> +	unsigned long long diff;
+> +	unsigned long long timestamp = 0;
 
-Better if these lines were 100 columns or less
+Prettier in descending line length e.g.
 
-> +		} else {
-> +			struct boottb_freq *boot_tb = (struct boottb_freq *)buf;
+	struct powerpc_vpadtl_entry *record = vpaq->dtl;
+	unsigned long long timestamp = 0;
+	unsigned long long boot_tb;
+	unsigned long long diff;
+	double result, div;
+	double boot_freq;
+
 > +
-> +			printf("boot_tb: %" PRIu64 ", tb_freq: %" PRIu64 "\n", boot_tb->boot_tb, boot_tb->tb_freq);
-
-Better if this lines was 100 columns or less
-
-
-> +		}
-> +
-> +		pos += pkt_len;
-> +		buf += pkt_len;
-> +		len -= pkt_len;
+> +	/*
+> +	 * Formula used to get timestamp that can be co-related with
+> +	 * other perf events:
+> +	 * ((timbase from DTL entry - boot time) / frequency) * 1000000000
+> +	 */
+> +	if (record->timebase) {
+> +		boot_tb = vpaq->boot_tb;
+> +		boot_freq = vpaq->tb_freq;
+> +		diff = be64_to_cpu(record->timebase) - boot_tb;
+> +		div = diff / boot_freq;
+> +		result = div;
+> +		result = result * 1000000000;
+> +		timestamp = result;
 > +	}
+> +
+> +	return timestamp;
 > +}
 > +
-> +static struct powerpc_vpadtl *session_to_vpa(struct perf_session *session)
+>  static struct powerpc_vpadtl *session_to_vpa(struct perf_session *session)
+>  {
+>  	return container_of(session->auxtrace, struct powerpc_vpadtl, auxtrace);
+> @@ -124,12 +161,195 @@ static void powerpc_vpadtl_dump_event(struct powerpc_vpadtl *vpa, unsigned char
+>  	powerpc_vpadtl_dump(vpa, buf, len);
+>  }
+>  
+> +static int powerpc_vpadtl_get_buffer(struct powerpc_vpadtl_queue *vpaq)
 > +{
-> +	return container_of(session->auxtrace, struct powerpc_vpadtl, auxtrace);
-> +}
+> +	struct auxtrace_buffer *buffer = vpaq->buffer;
+> +	struct auxtrace_queues *queues = &vpaq->vpa->queues;
+> +	struct auxtrace_queue *queue;
 > +
-> +static void powerpc_vpadtl_dump_event(struct powerpc_vpadtl *vpa, unsigned char *buf,
-> +			       size_t len)
-> +{
-> +	printf(".\n");
-> +	powerpc_vpadtl_dump(vpa, buf, len);
-> +}
+> +	queue = &queues->queue_array[vpaq->queue_nr];
+> +	buffer = auxtrace_buffer__next(queue, buffer);
 > +
-> +static int powerpc_vpadtl_process_event(struct perf_session *session __maybe_unused,
-> +				 union perf_event *event __maybe_unused,
-> +				 struct perf_sample *sample __maybe_unused,
-> +				 const struct perf_tool *tool __maybe_unused)
-> +{
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Process PERF_RECORD_AUXTRACE records
-> + */
-> +static int powerpc_vpadtl_process_auxtrace_event(struct perf_session *session,
-> +					  union perf_event *event,
-> +					  const struct perf_tool *tool __maybe_unused)
-> +{
-> +	struct powerpc_vpadtl *vpa = session_to_vpa(session);
-> +	struct auxtrace_buffer *buffer;
-> +	int fd = perf_data__fd(session->data);
-> +	off_t data_offset;
-> +	int err;
-> +
-> +	if (!dump_trace)
+> +	if (!buffer)
 > +		return 0;
 > +
-> +	if (perf_data__is_pipe(session->data)) {
-> +		data_offset = 0;
-> +	} else {
-> +		data_offset = lseek(fd, 0, SEEK_CUR);
-> +		if (data_offset == -1)
-> +			return -errno;
+> +	vpaq->buffer = buffer;
+> +	vpaq->size = buffer->size;
+> +
+> +	/* If the aux_buffer doesn't have data associated, try to load it */
+> +	if (!buffer->data) {
+> +		/* get the file desc associated with the perf data file */
+> +		int fd = perf_data__fd(vpaq->vpa->session->data);
+> +
+> +		buffer->data = auxtrace_buffer__get_data(buffer, fd);
+> +		if (!buffer->data)
+> +			return -ENOMEM;
 > +	}
 > +
-> +	err = auxtrace_queues__add_event(&vpa->queues, session, event,
-> +			data_offset, &buffer);
+> +	vpaq->buf_len = buffer->size;
 > +
-> +	if (err)
-> +		return err;
+> +	if (buffer->size % dtl_entry_size)
+> +		vpaq->buf_len = buffer->size - (buffer->size % dtl_entry_size);
 > +
-> +	/* Dump here now we have copied a piped trace out of the pipe */
-> +	if (auxtrace_buffer__get_data(buffer, fd)) {
-> +		powerpc_vpadtl_dump_event(vpa, buffer->data, buffer->size);
-> +		auxtrace_buffer__put_data(buffer);
+> +	if (vpaq->tb_buffer != buffer->buffer_nr) {
+> +		vpaq->pkt_len = 0;
+> +		vpaq->tb_buffer = 0;
 > +	}
 > +
-> +	return 0;
-> +}
-> +
-> +static int powerpc_vpadtl_flush(struct perf_session *session __maybe_unused,
-> +			 const struct perf_tool *tool __maybe_unused)
-> +{
-> +	return 0;
-> +}
-> +
-> +static void powerpc_vpadtl_free_events(struct perf_session *session)
-> +{
-> +	struct powerpc_vpadtl *vpa = session_to_vpa(session);
-> +	struct auxtrace_queues *queues = &vpa->queues;
-> +	struct powerpc_vpadtl_queue *vpaq;
-> +
-> +	unsigned int i;
-> +
-> +	for (i = 0; i < queues->nr_queues; i++) {
-
-Modern style allows int decl. inside for() e.g.
-
-	for (int i = 0; i < queues->nr_queues; i++) {
-
-> +		vpaq = queues->queue_array[i].priv;
-> +		if (vpaq)
-> +			zfree(&vpaq);
-
-free() can handle NULL, so vpaq not needed, just
-
-		zfree(&queues->queue_array[i].priv);
-
-> +	}
-> +
-> +	auxtrace_queues__free(queues);
-> +}
-> +
-> +static void powerpc_vpadtl_free(struct perf_session *session)
-> +{
-> +	struct powerpc_vpadtl *vpa = session_to_vpa(session);
-> +
-> +	auxtrace_heap__free(&vpa->heap);
-> +	powerpc_vpadtl_free_events(session);
-> +	session->auxtrace = NULL;
-> +	free(vpa);
-> +}
-> +
-> +static const char * const powerpc_vpadtl_info_fmts[] = {
-> +	[POWERPC_VPADTL_TYPE]		= "  PMU Type           %"PRId64"\n",
-> +};
-> +
-> +static void powerpc_vpadtl_print_info(__u64 *arr)
-> +{
-> +	if (!dump_trace)
-> +		return;
-> +
-> +	fprintf(stdout, powerpc_vpadtl_info_fmts[POWERPC_VPADTL_TYPE], arr[POWERPC_VPADTL_TYPE]);
+> +	return 1;
 > +}
 > +
 > +/*
-> + * Process the PERF_RECORD_AUXTRACE_INFO records and setup
-> + * the infrastructure to process auxtrace events. PERF_RECORD_AUXTRACE_INFO
-> + * is processed first since it is of type perf_user_event_type.
-> + * Initialise the aux buffer queues using auxtrace_queues__init().
-> + * auxtrace_queue is created for each CPU.
+> + * The first entry in the queue for VPA DTL PMU has the boot timebase,
+> + * frequency details which are needed to get timestamp which is required to
+> + * correlate with other events. Save the boot_tb and tb_freq as part of
+> + * powerpc_vpadtl_queue. The very next entry is the actual trace data to
+> + * be returned.
 > + */
-> +int powerpc_vpadtl_process_auxtrace_info(union perf_event *event,
-> +				  struct perf_session *session)
+> +static int powerpc_vpadtl_decode(struct powerpc_vpadtl_queue *vpaq)
 > +{
-> +	struct perf_record_auxtrace_info *auxtrace_info = &event->auxtrace_info;
-> +	size_t min_sz = sizeof(u64) * POWERPC_VPADTL_TYPE;
-> +	struct powerpc_vpadtl *vpa;
-> +	int err;
+> +	int ret;
+> +	char *buf;
+> +	struct boottb_freq *boottb;
 > +
-> +	if (auxtrace_info->header.size < sizeof(struct perf_record_auxtrace_info) +
-> +					min_sz)
-> +		return -EINVAL;
+> +	ret = powerpc_vpadtl_get_buffer(vpaq);
+> +	if (ret <= 0)
+> +		return ret;
 > +
-> +	vpa = zalloc(sizeof(struct powerpc_vpadtl));
-> +	if (!vpa)
+> +	boottb = (struct boottb_freq *)vpaq->buffer->data;
+> +	if (boottb->timebase == 0) {
+> +		vpaq->boot_tb = boottb->boot_tb;
+> +		vpaq->tb_freq = boottb->tb_freq;
+> +		vpaq->pkt_len += dtl_entry_size;
+> +	}
+> +
+> +	buf = vpaq->buffer->data;
+> +	buf += vpaq->pkt_len;
+> +	vpaq->dtl = (struct powerpc_vpadtl_entry *)buf;
+> +
+> +	vpaq->tb_buffer = vpaq->buffer->buffer_nr;
+> +	vpaq->buffer = NULL;
+> +	vpaq->buf_len = 0;
+> +
+> +	return 1;
+> +}
+> +
+> +static struct powerpc_vpadtl_queue *powerpc_vpadtl__alloc_queue(struct powerpc_vpadtl *vpa,
+> +						unsigned int queue_nr)
+> +{
+> +	struct powerpc_vpadtl_queue *vpaq;
+> +
+> +	vpaq = zalloc(sizeof(*vpaq));
+> +	if (!vpaq)
+> +		return NULL;
+> +
+> +	vpaq->vpa = vpa;
+> +	vpaq->queue_nr = queue_nr;
+> +
+> +	return vpaq;
+> +}
+> +
+> +/*
+> + * When the Dispatch Trace Log data is collected along with other events
+> + * like sched tracepoint events, it needs to be correlated and present
+> + * interleaved along with these events. Perf events can be collected
+> + * parallely across the CPUs.
+> + *
+> + * An auxtrace_queue is created for each CPU. Data within each queue is in
+> + * increasing order of timestamp. Allocate and setup auxtrace queues here.
+> + * All auxtrace queues is maintained in auxtrace heap in the increasing order
+> + * of timestamp. So always the lowest timestamp (entries to be processed first)
+> + * is on top of the heap.
+> + *
+> + * To add to auxtrace heap, fetch the timestamp from first DTL entry
+> + * for each of the queue.
+> + */
+> +static int powerpc_vpadtl__setup_queue(struct powerpc_vpadtl *vpa,
+> +		struct auxtrace_queue *queue,
+> +		unsigned int queue_nr)
+> +{
+> +	struct powerpc_vpadtl_queue *vpaq = queue->priv;
+> +
+> +	if (list_empty(&queue->head) || vpaq)
+> +		return 0;
+> +
+> +	vpaq = powerpc_vpadtl__alloc_queue(vpa, queue_nr);
+> +	if (!vpaq)
 > +		return -ENOMEM;
 > +
-> +	err = auxtrace_queues__init(&vpa->queues);
-> +	if (err)
-> +		goto err_free;
+> +	queue->priv = vpaq;
 > +
-> +	vpa->session = session;
-> +	vpa->machine = &session->machines.host; /* No kvm support */
-> +	vpa->auxtrace_type = auxtrace_info->type;
-> +	vpa->pmu_type = auxtrace_info->priv[POWERPC_VPADTL_TYPE];
+> +	if (queue->cpu != -1)
+> +		vpaq->cpu = queue->cpu;
 > +
-> +	vpa->auxtrace.process_event = powerpc_vpadtl_process_event;
-> +	vpa->auxtrace.process_auxtrace_event = powerpc_vpadtl_process_auxtrace_event;
-> +	vpa->auxtrace.flush_events = powerpc_vpadtl_flush;
-> +	vpa->auxtrace.free_events = powerpc_vpadtl_free_events;
-> +	vpa->auxtrace.free = powerpc_vpadtl_free;
-> +	session->auxtrace = &vpa->auxtrace;
+> +	if (!vpaq->on_heap) {
+> +		int ret;
+> +retry:
+> +		ret = powerpc_vpadtl_decode(vpaq);
+> +		if (!ret)
+> +			return 0;
 > +
-> +	powerpc_vpadtl_print_info(&auxtrace_info->priv[0]);
+> +		if (ret < 0)
+> +			goto retry;
+> +
+> +		vpaq->timestamp = powerpc_vpadtl_timestamp(vpaq);
+> +
+> +		ret = auxtrace_heap__add(&vpa->heap, queue_nr, vpaq->timestamp);
+> +		if (ret)
+> +			return ret;
+> +		vpaq->on_heap = true;
+> +	}
 > +
 > +	return 0;
-> +
-> +err_free:
-> +	free(vpa);
-> +	return err;
 > +}
-> diff --git a/tools/perf/util/powerpc-vpadtl.h b/tools/perf/util/powerpc-vpadtl.h
-> index 50a7aa24acbe..aa76f5beac2c 100644
-> --- a/tools/perf/util/powerpc-vpadtl.h
-> +++ b/tools/perf/util/powerpc-vpadtl.h
-> @@ -15,4 +15,11 @@ enum {
->  
->  #define VPADTL_AUXTRACE_PRIV_SIZE (VPADTL_AUXTRACE_PRIV_MAX * sizeof(u64))
->  
-> +union perf_event;
-> +struct perf_session;
-> +struct perf_pmu;
 > +
-> +int powerpc_vpadtl_process_auxtrace_info(union perf_event *event,
-> +				  struct perf_session *session);
+> +static int powerpc_vpadtl__setup_queues(struct powerpc_vpadtl *vpa)
+> +{
+> +	unsigned int i;
+> +	int ret;
 > +
->  #endif
+> +	for (i = 0; i < vpa->queues.nr_queues; i++) {
+> +		ret = powerpc_vpadtl__setup_queue(vpa, &vpa->queues.queue_array[i], i);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int powerpc_vpadtl__update_queues(struct powerpc_vpadtl *vpa)
+> +{
+> +	if (vpa->queues.new_data) {
+> +		vpa->queues.new_data = false;
+> +		return powerpc_vpadtl__setup_queues(vpa);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static int powerpc_vpadtl_process_event(struct perf_session *session __maybe_unused,
+
+session is not __maybe_unused
+
+>  				 union perf_event *event __maybe_unused,
+> -				 struct perf_sample *sample __maybe_unused,
+> -				 const struct perf_tool *tool __maybe_unused)
+> +				 struct perf_sample *sample,
+> +				 const struct perf_tool *tool)
+>  {
+> -	return 0;
+> +	struct powerpc_vpadtl *vpa = session_to_vpa(session);
+> +	int err = 0;
+> +
+> +	if (dump_trace)
+> +		return 0;
+> +
+> +	if (!tool->ordered_events) {
+> +		pr_err("VPA requires ordered events\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (sample->time) {
+> +		err = powerpc_vpadtl__update_queues(vpa);
+> +		if (err)
+> +			return err;
+> +	}
+> +
+> +	return err;
+>  }
+>  
+>  /*
 
 
