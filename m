@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-12253-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12232-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C20DCB584F4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 20:50:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B56B57F7B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 16:50:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQYy52t4tz2yGM;
-	Tue, 16 Sep 2025 04:50:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQSdD733Cz3dwG;
+	Tue, 16 Sep 2025 00:50:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757962237;
-	cv=none; b=B6E2Xei7CQ/UCuanzLvFeAm7RO3Sit1hXwNbu3txnO9fdrIrwxaHvqD0UUlQz3TZWtbzX14eQkBeSKzkZW0D9gvqrz0+2fvfrIyubd0ZHSJ6Bj5qX8oHATVue+38ababGcT0ATnPq0PCWVNbeBREvXCqekRNEwszyuIl91QJGIfTRWHK4HR11LdG+L0RLw8meO2MRgD3YCwMXaiSTQ/EkDoI3pXZwcswOh3Ey2ZU9wZgqi0OwHcSEXpf837p/9yV8KqJcalT/6X2OUC7VVYuxhqBmPaDmLQ2PBh379BCTvITfz2RVWOkrliw4cKj78TwIgkiyuN3ziIJ/dhUQc9fDQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757947840;
+	cv=none; b=Iz3ZTtDtkzBsgMnP0VwkXtZinUMNbIdsJ2ce6bB0S+pc+wLlv4e9nlcrZGo+Rqdok5MV87VKPPc3mqJLtDxd2Lwupx186waKSTzrumme+YoWsNQOZqY9d9imSaK2AD5Uph5yZovY2tIhcx2JTynnhQeCcm0FXjoMS82ibalR2dNEu+N2y6Fq/IYTeJT4+M9VxkomGlpE+uYLrGhCVIjhWEFxb+se1M4hxaI9OzenRtgDenojG6BsKCGnKCIJqr7Wer+m+jJxFTt1fNaMWrCHXqhUy5C3T6kPYaP3W9saxOqk94r1CIgLBW7mThBC70AUuZxQ5DGDLsdUS9h6w1nQkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757962237; c=relaxed/relaxed;
-	bh=UyGL1Kv7K7G6eyqTiZkKtRx60x568m5SsjYKxhj8jYs=;
+	t=1757947840; c=relaxed/relaxed;
+	bh=A7SCR9BDVn4RNVUVtun87smf4PKhLZ879PG0u2HnQME=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RCyJ9jIwCnG05GR3uCwAHqXuN55nBaoyjMCkLXUtq8xC6ll4VVHbdwaormjE6UUjB0kUbhfVrrSNBTFOaWLx13mus0cjlOufaImgZ608crEG2FCsuIrEhfUldJcwuGsDFRSMcv/eMJ1XcwR9g2DVR5EC0H/uz0tbCOPD9zm7NPcj74/gv4P0aGwW9ASeMitw3UYlxzHaMsvoFSwPYu8yEZwDn6LuKul80SRKuRI1riYv0fX8eyVgPjt8uc1CcAJHTxnTNtyDkkIGGNRCa6cUva8SB2h5LOjcK4WeYvSNe3Su4jK1DpDDkjzMV445EvQbQOH2Cq48vRS7qtmbL3lApQ==
+	 In-Reply-To:Content-Type; b=KFLpOzcVFS0dbweILAjrL0d0iW4Wup0wZwTqNuO9y1lkc+URkHnaXQI//h9+on5jckCv9kXUUGSlJbhMWxHWQlzOU7+ntZdM5TvoZ/Eib60iv5fIlvMN+/hkGBkdEW4s1Oo9+9w6G0f6ahIrfUqzp33a+UHbXNczughZabBCbDjMZiZF86vzhraVfWTisZZh0k4GMgPJc7p3AWrAS8Rt2OD6HfwnnGM73wl87vo/E17W7Mq29Ykf5mcyzcrBIfH+L9H5X4EVbzW+EWiYINQ8itqpWzPAr1ZCORy9znWT5dMuvludHTqxOczozntfM++yDolxddWVgIfLpQ4ZLj/oTw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQYy43bPrz2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 04:50:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQSdD2lbSz3dtJ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 00:50:40 +1000 (AEST)
 Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4cQMtW5q8Yz9sxd;
-	Mon, 15 Sep 2025 13:16:51 +0200 (CEST)
+	by localhost (Postfix) with ESMTP id 4cQMty1PZPz9sxj;
+	Mon, 15 Sep 2025 13:17:14 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id OLcbQxt2yUNY; Mon, 15 Sep 2025 13:16:51 +0200 (CEST)
+	with ESMTP id 3y6qLNUbAYQ5; Mon, 15 Sep 2025 13:17:14 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4cQMtV4LnCz9sxb;
-	Mon, 15 Sep 2025 13:16:50 +0200 (CEST)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cQMtx060wz9sxg;
+	Mon, 15 Sep 2025 13:17:13 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 706ED8B766;
-	Mon, 15 Sep 2025 13:16:50 +0200 (CEST)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BF74D8B766;
+	Mon, 15 Sep 2025 13:17:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id sggpKi6r1EPD; Mon, 15 Sep 2025 13:16:50 +0200 (CEST)
+	with ESMTP id LLgTqAL1YNfN; Mon, 15 Sep 2025 13:17:12 +0200 (CEST)
 Received: from [10.25.207.160] (unknown [10.25.207.160])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B33B28B763;
-	Mon, 15 Sep 2025 13:16:49 +0200 (CEST)
-Message-ID: <053f39a9-06dc-4fbd-ad1b-325f9d3f3f66@csgroup.eu>
-Date: Mon, 15 Sep 2025 13:16:49 +0200
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id F017B8B763;
+	Mon, 15 Sep 2025 13:17:11 +0200 (CEST)
+Message-ID: <8b56da8e-42d1-4548-8e39-286010c5d84a@csgroup.eu>
+Date: Mon, 15 Sep 2025 13:17:11 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 02/62] init: remove deprecated "prompt_ramdisk"
+Subject: Re: [PATCH RESEND 01/62] init: remove deprecated "load_ramdisk"
  command line parameter, which does nothing
 To: Askar Safin <safinaskar@gmail.com>, linux-fsdevel@vger.kernel.org,
  linux-kernel@vger.kernel.org
@@ -91,10 +91,10 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  Kees Cook <kees@kernel.org>, Thorsten Blum <thorsten.blum@linux.dev>,
  Heiko Carstens <hca@linux.ibm.com>, patches@lists.linux.dev
 References: <20250913003842.41944-1-safinaskar@gmail.com>
- <20250913003842.41944-3-safinaskar@gmail.com>
+ <20250913003842.41944-2-safinaskar@gmail.com>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 Content-Language: fr-FR
-In-Reply-To: <20250913003842.41944-3-safinaskar@gmail.com>
+In-Reply-To: <20250913003842.41944-2-safinaskar@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
@@ -108,6 +108,7 @@ Le 13/09/2025 à 02:37, Askar Safin a écrit :
 > 
 > This is preparation for initrd removal
 
+
 Squash patch 1 and patch 2 together and say this is cleanup of two 
 options deprecated by commit c8376994c86c ("initrd: remove support for 
 multiple floppies") with the documentation by commit 6b99e6e6aa62 
@@ -115,58 +116,59 @@ multiple floppies") with the documentation by commit 6b99e6e6aa62
 
 Christophe
 
+
 > 
 > Signed-off-by: Askar Safin <safinaskar@gmail.com>
 > ---
 >   Documentation/admin-guide/kernel-parameters.txt | 2 --
 >   arch/arm/configs/neponset_defconfig             | 2 +-
->   init/do_mounts_rd.c                             | 7 -------
+>   init/do_mounts.c                                | 7 -------
 >   3 files changed, 1 insertion(+), 10 deletions(-)
 > 
 > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index d3b05ce249ff..f940c1184912 100644
+> index 747a55abf494..d3b05ce249ff 100644
 > --- a/Documentation/admin-guide/kernel-parameters.txt
 > +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -5229,8 +5229,6 @@
->                          Param: <number> - step/bucket size as a power of 2 for
->                                  statistical time based profiling.
+> @@ -3275,8 +3275,6 @@
+>                          If there are multiple matching configurations changing
+>                          the same attribute, the last one is used.
 > 
-> -       prompt_ramdisk= [RAM] [Deprecated]
+> -       load_ramdisk=   [RAM] [Deprecated]
 > -
->          prot_virt=      [S390] enable hosting protected virtual machines
->                          isolated from the hypervisor (if hardware supports
->                          that). If enabled, the default kernel base address
+>          lockd.nlm_grace_period=P  [NFS] Assign grace period.
+>                          Format: <integer>
+> 
 > diff --git a/arch/arm/configs/neponset_defconfig b/arch/arm/configs/neponset_defconfig
-> index 16f7300239da..4d720001c12e 100644
+> index 2227f86100ad..16f7300239da 100644
 > --- a/arch/arm/configs/neponset_defconfig
 > +++ b/arch/arm/configs/neponset_defconfig
 > @@ -9,7 +9,7 @@ CONFIG_ASSABET_NEPONSET=y
 >   CONFIG_ZBOOT_ROM_TEXT=0x80000
 >   CONFIG_ZBOOT_ROM_BSS=0xc1000000
 >   CONFIG_ZBOOT_ROM=y
-> -CONFIG_CMDLINE="console=ttySA0,38400n8 cpufreq=221200 rw root=/dev/mtdblock2 mtdparts=sa1100:512K(boot),1M(kernel),2560K(initrd),4M(root) prompt_ramdisk=0 mem=32M noinitrd initrd=0xc0800000,3M"
-> +CONFIG_CMDLINE="console=ttySA0,38400n8 cpufreq=221200 rw root=/dev/mtdblock2 mtdparts=sa1100:512K(boot),1M(kernel),2560K(initrd),4M(root) mem=32M noinitrd initrd=0xc0800000,3M"
+> -CONFIG_CMDLINE="console=ttySA0,38400n8 cpufreq=221200 rw root=/dev/mtdblock2 mtdparts=sa1100:512K(boot),1M(kernel),2560K(initrd),4M(root) load_ramdisk=1 prompt_ramdisk=0 mem=32M noinitrd initrd=0xc0800000,3M"
+> +CONFIG_CMDLINE="console=ttySA0,38400n8 cpufreq=221200 rw root=/dev/mtdblock2 mtdparts=sa1100:512K(boot),1M(kernel),2560K(initrd),4M(root) prompt_ramdisk=0 mem=32M noinitrd initrd=0xc0800000,3M"
 >   CONFIG_FPE_NWFPE=y
 >   CONFIG_PM=y
 >   CONFIG_MODULES=y
-> diff --git a/init/do_mounts_rd.c b/init/do_mounts_rd.c
-> index ac021ae6e6fa..f7d53bc21e41 100644
-> --- a/init/do_mounts_rd.c
-> +++ b/init/do_mounts_rd.c
-> @@ -17,13 +17,6 @@
->   static struct file *in_file, *out_file;
->   static loff_t in_pos, out_pos;
+> diff --git a/init/do_mounts.c b/init/do_mounts.c
+> index 6af29da8889e..0f2f44e6250c 100644
+> --- a/init/do_mounts.c
+> +++ b/init/do_mounts.c
+> @@ -34,13 +34,6 @@ static int root_wait;
 > 
-> -static int __init prompt_ramdisk(char *str)
+>   dev_t ROOT_DEV;
+> 
+> -static int __init load_ramdisk(char *str)
 > -{
-> -       pr_warn("ignoring the deprecated prompt_ramdisk= option\n");
+> -       pr_warn("ignoring the deprecated load_ramdisk= option\n");
 > -       return 1;
 > -}
-> -__setup("prompt_ramdisk=", prompt_ramdisk);
+> -__setup("load_ramdisk=", load_ramdisk);
 > -
->   int __initdata rd_image_start;         /* starting block # of image */
-> 
->   static int __init ramdisk_start_setup(char *str)
+>   static int __init readonly(char *str)
+>   {
+>          if (*str)
 > --
 > 2.47.2
 > 
