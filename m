@@ -1,89 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-12202-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12203-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFEAB57179
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 09:28:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB44FB57187
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 09:31:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQGqW2lRhz3dVX;
-	Mon, 15 Sep 2025 17:28:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQGtn3mSBz3dD1;
+	Mon, 15 Sep 2025 17:31:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757921335;
-	cv=none; b=NVxSgmIVxZr3zZYjcjRLlWX7U+ok2OLpDk3kCU6Td9jyDEH7kYruWc1pbzSirakeP2wHKWXxZ+pdyjlRLt2WVF6bWxLWLyemJoyE2+wWw6LyZ4E5Qgzm5OegNLgDoI1+j43rkByP31fT4D9tjxCJS3a3ligS/Ul71PnDalDzsHrwAtrvGo4y/lKGFSbGUMcb1n6OAEY59q1Sf2k4iG3D1IGGXfvljgLh37e4fCMOhAKWnCoCiMHk/jDelWd5H0K6yPhNcR0OwfYINzGYLAXCYBVnFRjPjsDpNUz1yZlECi1LDyqsU2PqQ9LqgXSkFqv+xWWpjRxrHo5Tt9cy2Uvg6Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757921505;
+	cv=none; b=frRCZlfpCkOFJ2IMFms+M6lGApQOH2dZqwChFLIKf/ASJs49DurywlMCDiLoWD3pDSEcl4B2XwdoLSDgtou+b/XDRQGi1xHnlUGhJ5favdjc0l4MwmN+vngheywD9uV3qG3Eg2qWUFT07f9b8iyZJZCyZdlqYerjGFtAd9siBD88bFBdQP1Z727nLMQILK/1ns67VQKf2ciUzB0goS8RqdxZ+Pbu9RXZGnK+bwd1sN6gy5AcLg+H2au9mufnAimJT7uR1cSz1Rz/qI5z74fBcZDZm7vZ6MTdGUEVmkcdf9Q+lqRl7MXHj70IIR9vhhSBXEOm2AsQvekINwbIyrPhww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757921335; c=relaxed/relaxed;
-	bh=WpMqphf5yxD+1kewNndVHiMow19YdwwW3QNqTPR1R3U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mS4bfbpL6EwOZ53CK/0TrM2uk9wbQKzl+vpXL//Xa9x311OLOUHsP9qL5Paa/E/ghlwRiLB2FqneSVDXvqcRfDgA57h3I/hkuCQh2HLXGM0UPbVbRt9XH6UPLwt01IcviaTj5dFhAaQpOmEgE+DBe0gRuqSCJrzDHBb0QX08k6AwNXvTd5qH2xjGu5yW/zz57HfmWuh7MFko0xQqS3cweWM//+K3mKJ1QhGr/6lUsupmMbb0YPbayf/t7V5vVp6yGoWsRhPc7wpOWdf5MKc9+JBFeVeBPP6UmJfGzXF8a3LkfC7L8I8w8lvv799R4B2KH+8onRMpZlEdFgWM4x+i/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oIXGDR1n; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1757921505; c=relaxed/relaxed;
+	bh=L/VcmLQdqtTLiQ+mrBNkBFzDcnrzskSVgIo26Nm+gJM=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=MXU3aXR6Re1VA5jSK41DA7SSsz45fISRoQVGRAofIHr5xbHosy5zr9f+XrSNV7HtF8J09Qo/Oy5peE1bw1/hjjDNNYsfgE53WjVq8A78ZqJeO/EqC7RTxWq0A1fsKA/cgDNZceCF/kRfLYLZEObm8xQazsWW7hNFc2ZD6ZeEm2cmWrd/B7/odna+IfiknLBEYQurGA+zoalo+Iq0vkDn1ihqYX4l0SSKntc93AH1x7YeX55dMNaDKZpuHFWX81Ue2hpdRbC5VqduBRqTYCLBhyMAu/IR8IP+BASQWos0TtdCsru7o9AeuCmImC1V8WOGoNhB93AJQYtLDQLiPYjh0w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YdLtu0sg; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oIXGDR1n;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YdLtu0sg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQGqV4nGvz3dGr
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 17:28:54 +1000 (AEST)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58F36fGj031126;
-	Mon, 15 Sep 2025 07:28:51 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQGtm42hVz3dC0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 17:31:44 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58F0e5mF022546;
+	Mon, 15 Sep 2025 07:31:39 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=WpMqphf5yxD+1kewN
-	ndVHiMow19YdwwW3QNqTPR1R3U=; b=oIXGDR1nWSUdtevOnMinFRy2l+8fS4II9
-	PXdIZEaHvcNLwB3izva/OKTLZ8HX/v1aqS5cT2+IXjxajLFIuDYok8tq/L/4sboW
-	Oge9fUzZK7UOtR2tDWHfamkIP99xzAzC7TSxjYnTpTVxvJpfuJAkZaxsSZ7VRklz
-	N0MKMPYtEXXqkXB2sXlcP5eT5KqTv9Vf9w7fyjmDqg6O6uueeCcz+nHkx/pj6huO
-	gRFiQ/oNQjGHqCSdylEX58vXeZZWUGqL6Q4+bDriJt9SlXFr5QpTG18ORSvDYC1Y
-	fYOa75ddN7BGJfe66sEmWcnJ3coxo45P38m2ewzplkNcTDBeyNGMw==
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=L/VcmL
+	QdqtTLiQ+mrBNkBFzDcnrzskSVgIo26Nm+gJM=; b=YdLtu0sgqFjGIZJzaQLUyD
+	hx4gmbjSMeotyUJvbHFBzC+nS3iwBOeMuZfUEQeWECTvmuWgrFMtNmBD2P3JnPjN
+	JEEiHjmP7AecT1MhZBnHwoT3LDKaynrE4tTWSxe/LsBNrhey9kBU4sPP96uCckv7
+	5Y0hB/A9AL1YTpoq2Op7zbaMGmva5Tl2aRTXN0urgZC/qg/F5T6F45iyTINP5J9t
+	apRQ+wzZ//2wZOWi2k4i3HxWPyOzYOf26WsS2Z35FuJODhpxbbCKzyPC5ufJbVU9
+	dlCUyjX5WKkKlTpc0Dmc1K+vutZkiolFrjZfg3naOvy7//UQTpv2z+1J0qVE+NDw
+	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49504b14ne-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 494y1x0m3a-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 07:28:50 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58F7SAfc011273;
-	Mon, 15 Sep 2025 07:28:50 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49504b14nc-1
+	Mon, 15 Sep 2025 07:31:38 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58F7ULd5013229;
+	Mon, 15 Sep 2025 07:31:38 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 494y1x0m35-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 07:28:50 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58F70wJW029817;
-	Mon, 15 Sep 2025 07:28:49 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kb0ndaj-1
+	Mon, 15 Sep 2025 07:31:38 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58F3xo0B027393;
+	Mon, 15 Sep 2025 07:31:37 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495memw67p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 07:28:49 +0000
+	Mon, 15 Sep 2025 07:31:37 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58F7SjBP48234970
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58F7VWSN15860000
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Sep 2025 07:28:45 GMT
+	Mon, 15 Sep 2025 07:31:32 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0D51820049;
-	Mon, 15 Sep 2025 07:28:45 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 3CEC820049;
+	Mon, 15 Sep 2025 07:31:32 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4C55120040;
-	Mon, 15 Sep 2025 07:28:39 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.244.131])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 15 Sep 2025 07:28:38 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        maddy@linux.ibm.com, irogers@google.com, namhyung@kernel.org,
-        linux-perf-users@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org, aboorvad@linux.ibm.com,
-        sshegde@linux.ibm.com, atrajeev@linux.ibm.com,
-        hbathini@linux.vnet.ibm.com, Aditya.Bodkhe1@ibm.com,
-        venkat88@linux.ibm.com
-Subject: [PATCH V2 6/6] tools/perf: Enable perf script to present the DTL entries
-Date: Mon, 15 Sep 2025 12:57:54 +0530
-Message-Id: <20250915072754.99850-7-atrajeev@linux.ibm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20250915072754.99850-1-atrajeev@linux.ibm.com>
-References: <20250915072754.99850-1-atrajeev@linux.ibm.com>
+	by IMSVA (Postfix) with ESMTP id CEECE2004F;
+	Mon, 15 Sep 2025 07:31:26 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.244.131])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 15 Sep 2025 07:31:26 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,138 +85,390 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH 07/14] tools/perf: Add basic CONFIG_AUXTRACE support for
+ VPA pmu on powerpc
+From: Athira Rajeev <atrajeev@linux.ibm.com>
+In-Reply-To: <fae72739-8df2-463d-8d1f-e3ae1e36f781@intel.com>
+Date: Mon, 15 Sep 2025 13:01:13 +0530
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
+        "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Aboorva Devarajan <aboorvad@linux.ibm.com>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>,
+        Kajol Jain <kjain@linux.ibm.com>, hbathini@linux.vnet.ibm.com,
+        Aditya Bodkhe <Aditya.Bodkhe1@ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4C7841C0-2CCA-478E-AB1F-94F3FC651237@linux.ibm.com>
+References: <20250815083407.27953-1-atrajeev@linux.ibm.com>
+ <20250815083407.27953-8-atrajeev@linux.ibm.com>
+ <fae72739-8df2-463d-8d1f-e3ae1e36f781@intel.com>
+To: Adrian Hunter <adrian.hunter@intel.com>
+X-Mailer: Apple Mail (2.3776.700.51)
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDAyMCBTYWx0ZWRfX12jSDOkxhSTm
- e8D19JZAgTxBGHTs5LiCLC2Ux5lcxtIbdezHBzI0h2jYOemWvffWgv8mIi+PguSmLs9omebduUO
- gl3GFTyNZZ8SxaAV9cm1vwWmkPxGugay4i+g7Yvf+Pj9uiCKaHhn7c5vix3Qr5RY+BhFAnnKfVd
- 2fbq+vD+Nsg8FGnKrn/cxxTegq6At7EPc59yitgWKCmcWOa6XjXb5swzTJHs1IrkwG92QgYuwB6
- Dnc9oe7+/CTqOme/uOdRFSHvljGtP9Kz+QdTd36uV0t1nPlyWM4EQClUzqfdqh+GLiaPNqDL5Qm
- gsn7Av1WBCI3zLvLjuKedAs06ySbiVvEYwndRHG6oNjuHcD0eCRFO7SdfINljleV7fJqxtQm7NU
- Xfimqb64
-X-Proofpoint-ORIG-GUID: zWb0kpqJrJ9DzI3CZH-t43MiC5BSPfP1
-X-Authority-Analysis: v=2.4 cv=dt/bC0g4 c=1 sm=1 tr=0 ts=68c7c032 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=yJojWOMRYYMA:10 a=VnNF1IyMAAAA:8 a=RdQqpAN3Jds4LtQoOEEA:9
-X-Proofpoint-GUID: uWgyVdlHCU-x03RzpwGzR10yI_pnCeND
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDAxMCBTYWx0ZWRfXw8AjBP4m/JCb
+ LwiF9XYePrZJAFRoEOOuo1tjXddL0EZMtKWnvXZ4xn4e+HnmI++x1qjIlvcZ6126jbwccOSPIN8
+ PVa9RVg9NC7bP4onPxsOy4wI3Ux2fbQEqlswYs8vMG+HDQoJzt4xvB9EKOjYwqXtsOr0+qiBkzD
+ dTwPyBPPbgTSPpabXWmc9qiA+QcMaLugAcdjDpwwn9eqo88S1o75JcrU2G+le8cjp+H3m+3eC8x
+ O5JvsXAy1bTdPkSwgIdleHmGgGVTPN/1i6sJLS7qoeLSI3fL+oRiFyBFWDVUP6gn2Pi1Docqg1V
+ iPiDGrW40+sVgdl7f1oIiwqO5hnDO2tJZqUq3qaBCKCpSkFnZHF02YMACIKvMIJkG0CgC2we9LQ
+ w3jPzHzM
+X-Proofpoint-ORIG-GUID: El5_OhzJTOWIp-CQydookI3J5WzfzhaF
+X-Authority-Analysis: v=2.4 cv=euPfzppX c=1 sm=1 tr=0 ts=68c7c0da cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=QyXUC8HyAAAA:8 a=QHbY-6ZkpMZ9EXw5BrQA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: E_sdolR02-gcmIDHDLNNrXUacX48Pqkk
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-15_03,2025-09-12_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0
- spamscore=0 clxscore=1015 priorityscore=1501 phishscore=0
+ clxscore=1015 malwarescore=0 phishscore=0 suspectscore=0 spamscore=0
+ bulkscore=0 impostorscore=0 priorityscore=1501 adultscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509130020
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509130010
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The process_event() function in "builtin-script.c" invokes
-perf_sample__fprintf_synth() for displaying PERF_TYPE_SYNTH
-type events.
 
-   if (attr->type == PERF_TYPE_SYNTH && PRINT_FIELD(SYNTH))
-   	perf_sample__fprintf_synth(sample, evsel, fp);
 
-perf_sample__fprintf_synth() process the sample depending on the value
-in evsel->core.attr.config. Introduce perf_sample__fprintf_synth_vpadtl()
-and invoke this for PERF_SYNTH_POWERPC_VPA_DTL
+> On 27 Aug 2025, at 10:57=E2=80=AFPM, Adrian Hunter =
+<adrian.hunter@intel.com> wrote:
+>=20
+> On 15/08/2025 11:34, Athira Rajeev wrote:
+>> The powerpc PMU collecting Dispatch Trace Log (DTL) entries makes use =
+of
+>> AUX support in perf infrastructure. The PMU driver has the =
+functionality
+>> to collect trace entries in the aux buffer. On the tools side, this =
+data
+>> is made available as PERF_RECORD_AUXTRACE records. This record is
+>> generated by "perf record" command. To enable the creation of
+>> PERF_RECORD_AUXTRACE, add functions to initialize auxtrace records ie
+>> "auxtrace_record__init()". Fill in fields for other callbacks like
+>> info_priv_size, info_fill, free, recording options etc. Define
+>> auxtrace_type as PERF_AUXTRACE_VPA_PMU. Add header file to define vpa
+>> dtl pmu specific details.
+>>=20
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
+>> ---
+>> tools/perf/arch/powerpc/util/Build      |   1 +
+>> tools/perf/arch/powerpc/util/auxtrace.c | 122 =
+++++++++++++++++++++++++
+>> tools/perf/util/auxtrace.c              |   2 +
+>> tools/perf/util/auxtrace.h              |   1 +
+>> tools/perf/util/powerpc-vpadtl.h        |  26 +++++
+>> 5 files changed, 152 insertions(+)
+>> create mode 100644 tools/perf/arch/powerpc/util/auxtrace.c
+>> create mode 100644 tools/perf/util/powerpc-vpadtl.h
+>>=20
+>> diff --git a/tools/perf/arch/powerpc/util/Build =
+b/tools/perf/arch/powerpc/util/Build
+>> index fdd6a77a3432..a5b0babd307e 100644
+>> --- a/tools/perf/arch/powerpc/util/Build
+>> +++ b/tools/perf/arch/powerpc/util/Build
+>> @@ -10,3 +10,4 @@ perf-util-$(CONFIG_LIBDW) +=3D skip-callchain-idx.o
+>>=20
+>> perf-util-$(CONFIG_LIBUNWIND) +=3D unwind-libunwind.o
+>> perf-util-$(CONFIG_LIBDW_DWARF_UNWIND) +=3D unwind-libdw.o
+>> +perf-util-$(CONFIG_AUXTRACE) +=3D auxtrace.o
+>> diff --git a/tools/perf/arch/powerpc/util/auxtrace.c =
+b/tools/perf/arch/powerpc/util/auxtrace.c
+>> new file mode 100644
+>> index 000000000000..ec8ec601fd08
+>> --- /dev/null
+>> +++ b/tools/perf/arch/powerpc/util/auxtrace.c
+>> @@ -0,0 +1,122 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * VPA support
+>> + */
+>> +
+>> +#include <linux/kernel.h>
+>> +#include <linux/types.h>
+>> +#include <linux/bitops.h>
+>> +#include <linux/log2.h>
+>> +#include <time.h>
+>> +
+>> +#include "../../util/cpumap.h"
+>> +#include "../../util/evsel.h"
+>> +#include "../../util/evlist.h"
+>> +#include "../../util/session.h"
+>> +#include "../../util/util.h"
+>> +#include "../../util/pmu.h"
+>> +#include "../../util/debug.h"
+>> +#include "../../util/auxtrace.h"
+>> +#include "../../util/powerpc-vpadtl.h"
+>=20
+> It would be better to only add #includes when they are needed
+>=20
+>> +#include "../../util/record.h"
+>> +#include <internal/lib.h> // page_size
+>> +
+>> +#define KiB(x) ((x) * 1024)
+>> +
+>> +static int
+>> +powerpc_vpadtl_parse_snapshot_options(struct auxtrace_record *itr =
+__maybe_unused,
+>> + struct record_opts *opts __maybe_unused,
+>> + const char *str __maybe_unused)
+>> +{
+>> + return 0;
+>> +}
+>> +
+>> +static int
+>> +powerpc_vpadtl_recording_options(struct auxtrace_record *ar =
+__maybe_unused,
+>> + struct evlist *evlist __maybe_unused,
+>> + struct record_opts *opts)
+>> +{
+>> + opts->full_auxtrace =3D true;
+>> +
+>> + /*
+>> +  * Set auxtrace_mmap_pages to minimum
+>> +  * two pages
+>> +  */
+>> + if (!opts->auxtrace_mmap_pages) {
+>> + opts->auxtrace_mmap_pages =3D KiB(128) / page_size;
+>> + if (opts->mmap_pages =3D=3D UINT_MAX)
+>> + opts->mmap_pages =3D KiB(256) / page_size;
+>> + }
+>> +
+>> + return 0;
+>> +}
+>> +
+>> +static size_t powerpc_vpadtl_info_priv_size(struct auxtrace_record =
+*itr __maybe_unused,
+>> + struct evlist *evlist __maybe_unused)
+>> +{
+>> + return 0;
+>=20
+> return VPADTL_AUXTRACE_PRIV_SIZE;
+>> +}
+>> +
+>> +static int
+>> +powerpc_vpadtl_info_fill(struct auxtrace_record *itr __maybe_unused,
+>> + struct perf_session *session __maybe_unused,
+>> + struct perf_record_auxtrace_info *auxtrace_info __maybe_unused,
+>=20
+> auxtrace_info is not __maybe_unused
+>=20
+>> + size_t priv_size __maybe_unused)
+>> +{
+>> + auxtrace_info->type =3D PERF_AUXTRACE_VPA_PMU;
+>> +
+>> + return 0;
+>> +}
+>> +
+>> +static u64 powerpc_vpadtl_reference(struct auxtrace_record *itr =
+__maybe_unused)
+>> +{
+>> + return 0;
+>> +}
+>> +
+>> +static void powerpc_vpadtl_free(struct auxtrace_record *itr)
+>> +{
+>> + free(itr);
+>> +}
+>> +
+>> +struct auxtrace_record *auxtrace_record__init(struct evlist *evlist =
+__maybe_unused,
+>=20
+> evlist is not __maybe_unused
+>=20
+>> + int *err)
+>> +{
+>> + struct auxtrace_record *aux;
+>> + struct evsel *pos;
+>> + char *pmu_name;
+>> + int found =3D 0;
+>> +
+>> + evlist__for_each_entry(evlist, pos) {
+>> + pmu_name =3D strdup(pos->name);
+>> + pmu_name =3D strtok(pmu_name, "/");
+>> + if (!strcmp(pmu_name, "vpa_dtl")) {
+>=20
+> pmu_name is leaked but strstarts() could be used instead
+> of above
+>=20
+>> + found =3D 1;
+>> + pos->needs_auxtrace_mmap =3D true;
+>> + break;
+>> + }
+>> + }
+>> +
+>> + if (!found)
+>> + return NULL;
+>> +
+>> + /*
+>> +  * To obtain the auxtrace buffer file descriptor, the auxtrace =
+event
+>> +  * must come first.
+>> +  */
+>> + evlist__to_front(pos->evlist, pos);
+>> +
+>> + aux =3D zalloc(sizeof(*aux));
+>> + if (aux =3D=3D NULL) {
+>> + pr_debug("aux record is NULL\n");
+>> + *err =3D -ENOMEM;
+>> + return NULL;
+>> + }
+>> +
+>> + aux->parse_snapshot_options =3D =
+powerpc_vpadtl_parse_snapshot_options;
+>=20
+> Doesn't look like snapshot mode is supported, so
+> powerpc_vpadtl_parse_snapshot_options() is not needed
+>=20
+>> + aux->recording_options =3D powerpc_vpadtl_recording_options;
+>> + aux->info_priv_size =3D powerpc_vpadtl_info_priv_size;
+>> + aux->info_fill =3D powerpc_vpadtl_info_fill;
+>> + aux->free =3D powerpc_vpadtl_free;
+>> + aux->reference =3D powerpc_vpadtl_reference;
+>=20
+> reference is optional.  powerpc_vpadtl_reference() stub is not needed
 
-Sample output:
+Hi Adrian
 
-   ./perf record -a -e sched:*,vpa_dtl/dtl_all/ -c 1000000000 sleep 1
-   [ perf record: Woken up 1 times to write data ]
-   [ perf record: Captured and wrote 0.300 MB perf.data ]
+I have posted a V2 for perf tools side patches here: =
+https://lore.kernel.org/linux-perf-users/20250915072754.99850-1-atrajeev@l=
+inux.ibm.com/T/#t
 
-   ./perf script
-            perf   13322 [002]   233.835807:                     sched:sched_switch: perf:13322 [120] R ==> migration/2:27 [0]
-     migration/2      27 [002]   233.835811:               sched:sched_migrate_task: comm=perf pid=13322 prio=120 orig_cpu=2 dest_cpu=3
-     migration/2      27 [002]   233.835818:               sched:sched_stat_runtime: comm=migration/2 pid=27 runtime=9214 [ns]
-     migration/2      27 [002]   233.835819:                     sched:sched_switch: migration/2:27 [0] S ==> swapper/2:0 [120]
-         swapper       0 [002]   233.835822:                                vpa-dtl: timebase: 338954486062657 dispatch_reason:decrementer_interrupt, preempt_reason:H_CEDE, enqueue_to_dispatch_time:435,			ready_to_enqueue_time:0, waiting_to_ready_time:34775058, processor_id: 202 c0000000000f8094 plpar_hcall_norets_notrace+0x18 ([kernel.kallsyms])
-         swapper       0 [001]   233.835886:                                vpa-dtl: timebase: 338954486095398 dispatch_reason:priv_doorbell, preempt_reason:H_CEDE, enqueue_to_dispatch_time:542,			ready_to_enqueue_time:0, waiting_to_ready_time:1245360, processor_id: 201 c0000000000f8094 plpar_hcall_norets_notrace+0x18 ([kernel.kallsyms])
+I have incorporated changes based on your comments except these two:
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
----
-Changelog:
-Addressed review comments from Adrian
-- Removed default callback and used perf_sample__fprintf_synth_vpadtl
-- fix build failure when using NO_AUXTRACE=1 by
-  adding code around HAVE_AUXTRACE_SUPPORT
+1) For aux->reference
+auxtrace_record__reference is called by __auxtrace_mmap__read:
 
- tools/perf/builtin-script.c | 27 +++++++++++++++++++++++++++
- tools/perf/util/event.h     |  3 +++
- 2 files changed, 30 insertions(+)
+__auxtrace_mmap__read -> auxtrace_record__reference =20
+This access reference callback as below:
 
-diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
-index d9fbdcf72f25..8a03fdbfce5e 100644
---- a/tools/perf/builtin-script.c
-+++ b/tools/perf/builtin-script.c
-@@ -43,6 +43,7 @@
- #include <linux/stringify.h>
- #include <linux/time64.h>
- #include <linux/zalloc.h>
-+#include <linux/unaligned.h>
- #include <sys/utsname.h>
- #include "asm/bug.h"
- #include "util/mem-events.h"
-@@ -2003,6 +2004,30 @@ static int perf_sample__fprintf_synth_iflag_chg(struct perf_sample *sample, FILE
- 	return len + perf_sample__fprintf_pt_spacing(len, fp);
- }
- 
-+#ifdef HAVE_AUXTRACE_SUPPORT
-+static int perf_sample__fprintf_synth_vpadtl(struct perf_sample *data, FILE *fp)
-+{
-+	struct powerpc_vpadtl_entry *dtl = (struct powerpc_vpadtl_entry *)data->raw_data;
-+
-+	fprintf(fp, "timebase: %" PRIu64 " dispatch_reason:%s, preempt_reason:%s,\n"
-+			"enqueue_to_dispatch_time:%d, ready_to_enqueue_time:%d, waiting_to_ready_time:%d, processor_id: %d",\
-+			get_unaligned_be64(&dtl->timebase),
-+			dispatch_reasons[dtl->dispatch_reason],
-+			preempt_reasons[dtl->preempt_reason],
-+			be32_to_cpu(dtl->enqueue_to_dispatch_time),
-+			be32_to_cpu(dtl->ready_to_enqueue_time),
-+			be32_to_cpu(dtl->waiting_to_ready_time),
-+			be16_to_cpu(dtl->processor_id));
-+
-+	return 1;
-+}
-+#else
-+static int perf_sample__fprintf_synth_vpadtl(struct perf_sample *data __maybe_unused, FILE *fp __maybe_unused)
-+{
-+	return 0;
-+}
-+#endif
-+
- static int perf_sample__fprintf_synth(struct perf_sample *sample,
- 				      struct evsel *evsel, FILE *fp)
- {
-@@ -2025,6 +2050,8 @@ static int perf_sample__fprintf_synth(struct perf_sample *sample,
- 		return perf_sample__fprintf_synth_evt(sample, fp);
- 	case PERF_SYNTH_INTEL_IFLAG_CHG:
- 		return perf_sample__fprintf_synth_iflag_chg(sample, fp);
-+	case PERF_SYNTH_POWERPC_VPA_DTL:
-+		return perf_sample__fprintf_synth_vpadtl(sample, fp);
- 	default:
- 		break;
- 	}
-diff --git a/tools/perf/util/event.h b/tools/perf/util/event.h
-index 7e0e58979e9c..64c63b59d617 100644
---- a/tools/perf/util/event.h
-+++ b/tools/perf/util/event.h
-@@ -271,6 +271,9 @@ struct powerpc_vpadtl_entry {
- 	u64     srr1;
- };
- 
-+extern const char *dispatch_reasons[11];
-+extern const char *preempt_reasons[10];
-+
- static inline void *perf_synth__raw_data(void *p)
- {
- 	return p + 4;
--- 
-2.47.1
+u64 auxtrace_record__reference(struct auxtrace_record *itr)
+{                if (itr)
+                return itr->reference(itr);
+        return 0;
+}       =20
+
+For this patch series, I have added reference stub for vpa dtl, =
+otherwise the record will segfault :
+
+#0  0x0000000000000000 in ?? ()
+#1  0x00000000102c5134 in auxtrace_record.reference ()
+#2  0x00000000102c52c4 in __auxtrace_mmap__read ()
+#3  0x000000001002ae68 in record.mmap_read_evlist ()
+#4  0x000000001002fc7c in cmd_record ()
+#5  0x00000000100b1dc0 in run_builtin ()
+#6  0x00000000100b2310 in handle_internal_command ()
+#7  0x000000001000f2f8 in main ()
+(gdb) q
+
+
+2) Change for auxtrace_queues__add_event
+
+auxtrace_queues__process_index is not called for dump_trace. It is =
+called for (!dump_trace)  to add entries to auxtrace queue to process =
+later for perf report/script without -D
+When -D is used ( dump_trace is set ) , to dump the auxtrace buffer =
+content , auxtrace_queues__add_event is used to print the buffer content =
+at time of processing PERF_RECORD_AUXTRACE records.
+So I have kept that change as part of the patch. Because I want to dump =
+the buffer content at time of processing the AUXTRACE record.
+
+If any comments/suggestions please provide your valuable review comments =
+on V2.=20
+
+Thanks
+Athira
+
+>=20
+>> + return aux;
+>> +}
+>> diff --git a/tools/perf/util/auxtrace.c b/tools/perf/util/auxtrace.c
+>> index ebd32f1b8f12..f587d386c5ef 100644
+>> --- a/tools/perf/util/auxtrace.c
+>> +++ b/tools/perf/util/auxtrace.c
+>> @@ -55,6 +55,7 @@
+>> #include "hisi-ptt.h"
+>> #include "s390-cpumsf.h"
+>> #include "util/mmap.h"
+>> +#include "powerpc-vpadtl.h"
+>=20
+> Isn't needed yet
+>=20
+>>=20
+>> #include <linux/ctype.h>
+>> #include "symbol/kallsyms.h"
+>> @@ -1393,6 +1394,7 @@ int perf_event__process_auxtrace_info(struct =
+perf_session *session,
+>> case PERF_AUXTRACE_HISI_PTT:
+>> err =3D hisi_ptt_process_auxtrace_info(event, session);
+>> break;
+>> + case PERF_AUXTRACE_VPA_PMU:
+>> case PERF_AUXTRACE_UNKNOWN:
+>> default:
+>> return -EINVAL;
+>> diff --git a/tools/perf/util/auxtrace.h b/tools/perf/util/auxtrace.h
+>> index f001cbb68f8e..1f9ef473af77 100644
+>> --- a/tools/perf/util/auxtrace.h
+>> +++ b/tools/perf/util/auxtrace.h
+>> @@ -50,6 +50,7 @@ enum auxtrace_type {
+>> PERF_AUXTRACE_ARM_SPE,
+>> PERF_AUXTRACE_S390_CPUMSF,
+>> PERF_AUXTRACE_HISI_PTT,
+>> + PERF_AUXTRACE_VPA_PMU,
+>=20
+> Everything else is called some variation of vpa dtl, so
+> PERF_AUXTRACE_VPA_DTL would seem a more consistent name
+>=20
+>> };
+>>=20
+>> enum itrace_period_type {
+>> diff --git a/tools/perf/util/powerpc-vpadtl.h =
+b/tools/perf/util/powerpc-vpadtl.h
+>> new file mode 100644
+>> index 000000000000..625172adaba5
+>> --- /dev/null
+>> +++ b/tools/perf/util/powerpc-vpadtl.h
+>> @@ -0,0 +1,26 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/*
+>> + * VPA DTL PMU Support
+>> + */
+>> +
+>> +#ifndef INCLUDE__PERF_POWERPC_VPADTL_H__
+>> +#define INCLUDE__PERF_POWERPC_VPADTL_H__
+>> +
+>> +#define POWERPC_VPADTL_NAME "powerpc_vpadtl_"
+>> +
+>> +enum {
+>> + POWERPC_VPADTL_TYPE,
+>> + VPADTL_PER_CPU_MMAPS,
+>=20
+> VPADTL_PER_CPU_MMAPS is never used
+>=20
+>> + VPADTL_AUXTRACE_PRIV_MAX,
+>> +};
+>> +
+>> +#define VPADTL_AUXTRACE_PRIV_SIZE (VPADTL_AUXTRACE_PRIV_MAX * =
+sizeof(u64))
+>> +
+>> +union perf_event;
+>> +struct perf_session;
+>> +struct perf_pmu;
+>> +
+>> +int powerpc_vpadtl_process_auxtrace_info(union perf_event *event,
+>> +   struct perf_session *session);
+>=20
+> None of these definitions are used in this patch, although probably
+> VPADTL_AUXTRACE_PRIV_SIZE should be.
+> It would be better to add definitions only when they are needed.
+>=20
+>> +
+>> +#endif
+
 
 
