@@ -1,79 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-12240-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12242-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBF9DB58128
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 17:47:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7675B5813E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 17:51:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQTtM4bghz3f12;
-	Tue, 16 Sep 2025 01:47:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQTzG4Kfjz3dxN;
+	Tue, 16 Sep 2025 01:51:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757951227;
-	cv=none; b=RdLxl9c5Up4Q0QvK1roALQ+/iOAebOAybVmy/Y69IR55hgT9L2qoHVjOmt52jjcz/HRcrJ5An28zwhTJcV3OIogr1KMB+UkQKKpgRT7b4mjVFYMXb3+DVDNoEn13xSyNvT41PD6CAtM51SkmbQndhNcNUeQVlbUesA9VxrxzDSH0r9zDDuHiP1E/njfOWITcQnYTp8SEAA4CM8X3wa2nOw2RcQncmqEgy/MsjyFymoLzQRrz2vYaXkD1bkWJ4dv69FbpZgZNbYlBzyu/7SS/hv6ODlJQD6BMvS1FpEv2aFru8J6Rgb+NNWC4L6yoejCRu00uwvvmJFo4smI/kT1XcQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757951482;
+	cv=none; b=FVNXJMpu0WeEHuoJr30BO8QVSFUe1WR4hmOrYqdO2pKreTik5miE4PpM87gytLjyEOkZ6/nfghC/EpqexLAHbgCI6lTdJkCFTxo67W+LJuhxWRf9NPU6GwwPtSedZq0AzMxCCeo5U8vIrU45uRHWKoSfxK+gMR69avI2yBwEyTG4QpsJUJfGmf6eu0fxq/RT/8HbA9vDnJWU+OB9tjJU5wEnv+A7Axik/3Fr6iEeatZ2rjdGdmYYFyEK95KKGM+gwlMrIW9OO2TnV3YuRZ0ZPa+hMoSa7D6Gscpz+rRNLw7aN1vPrWplF0WqokdPuKh6gxpLUJhnAa56vgjDA/9XHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757951227; c=relaxed/relaxed;
-	bh=EClZ5jZsXIeH/TGEm1DVB6BJqaK85USt9OEE92mSRVw=;
+	t=1757951482; c=relaxed/relaxed;
+	bh=//XPbr1iyIW7P1JztIXV9dCYCDNt0+AOQxJ/xCNlKnk=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=deyJJ1CGjpzZifGe9JxsVEDdvDpAWklQ7KEmN4PM8NfMEF3lqzbhXDEAEeNMTp3qYdukbgrnUI8FfEolKKgqC7pwAPpLH298PiGnm4kKk5+fQ7Hos3Ongq7pTwwA7XIhwOndLICItN7+mjQYpuJNwIje35tia2eOOZ1iVgbEi7W6CyRlbSH8OLRWyXH8ILAVBppJppRT9XjiEY5Q5lsbGKY8OyrI4whM1VTUyFauwfoTTzlDgT5qBS7oCzgvq1MGh50vZmSnOrIJt/A6NGwmDWOIjkvQmVfWsfxIlEGQlSny3+YYgOt89wnxKh1As/wVqigI9VHnFXHSUytg/Rf/dw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q3lPTHyL; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 Content-Type:MIME-Version; b=CL6tABdd92+m1j+QJBcny9U5sbWRNHCxrsrONIcoB9HUXOerHHRrzuVITfJ37nqfqAxNUOFRHdVvD3a7tj/EpRuvOJrGnW7dwIw15cifNIppy7WORtrzxF7Ow+dl9KhlfbTdsO17Q2qm7KFk+t0NW0Yde7TSGXIKBtW2uu2+/inqtNbU+dqk+8qXzDJHbgcF7XAbuBKFWIgJDrk+MBH/O8W7fDbPvAL3iZy+e7M6DKMXeHsRKzlhQyguLqTfg2s4B2ZWD7rq+dCU9nYKMqNQm1Ch354ILCra9hSodgsODKEg0aPwsAiLmbGaFL/yFP6OcPN2VrNWZODsdy17QX4tzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e3Nf+B8C; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q3lPTHyL;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e3Nf+B8C;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=schnelle@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQTtL4fvMz3dVJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 01:47:06 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FBedq4003338;
-	Mon, 15 Sep 2025 15:46:58 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQTzF67nyz3dLl
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 01:51:21 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 58FDXhpp023043;
+	Mon, 15 Sep 2025 15:51:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=EClZ5j
-	ZsXIeH/TGEm1DVB6BJqaK85USt9OEE92mSRVw=; b=Q3lPTHyLWD+b6nFG3YMUka
-	B1RVpV1iuI8q2Tu8wrKjwVpEkVAZ3HRr2IKulCohkWLdxVmSS2WhYZqBxm7o8a/g
-	KRRUzNAPTg4lcasiUc+4944+uq70cSSaPVQaJL+dhsGBjDKpQlk/8jtko8slFwJL
-	ppYSu7dDJ9MWdtVi8LCyREbgN/PuNdPbPpOgh4YhCPDtbRU4lILzxyK1wSYrOenB
-	pBHnx2SqtduEQCBNA2OhqBfyQND6aX//bmyv6MGtRg6JWM5pmXEcrsOUfIKTiY56
-	5X4Tl8HLzVPiktfiKF58tM3NA1t17CO6T0mthWlzNHbHZVoEIEmrRR8V2Q3UJBJA
+	:message-id:mime-version:references:subject:to; s=pp1; bh=//XPbr
+	1iyIW7P1JztIXV9dCYCDNt0+AOQxJ/xCNlKnk=; b=e3Nf+B8C+vXGcgQjAeoPIA
+	zSCgK4NzJVx7T3o0Z7yvrG09K6ojTwRgMARTb2VT9M4nyg41lo1cQ0Mu8+lkuCy7
+	JjOfO8OY/nfndlkjgKy/Igr78trLSyRouNkNu7+v0ueegcMzXHxpYGg63tHE423+
+	FVIzi2FZNni4c646Wx0l1D9Hjgv29uvuJB41o9dzNXCbPysy8sokmm87xRiRpmIx
+	wj84oy/4dLgEXrJ5AOlmXWQ/C6QqB4hTalh/+cSJ1+Yvb+667fQ4QpZHmtoExSyx
+	AS5kA6IWYMeMB7LuKIWLO2x0KhMrsIstW8vKMzL0TFnCLI/vDAkXdawlawi8xDMg
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 494y1x35wj-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkmk4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 15:46:58 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58FFLrBt011041;
-	Mon, 15 Sep 2025 15:46:57 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 494y1x35wd-1
+	Mon, 15 Sep 2025 15:51:15 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 58FFbOEx015423;
+	Mon, 15 Sep 2025 15:51:14 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 496avnkmk2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 15:46:57 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58FFeJgx018637;
-	Mon, 15 Sep 2025 15:46:56 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 495n5m707q-1
+	Mon, 15 Sep 2025 15:51:14 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 58FFZJbq022290;
+	Mon, 15 Sep 2025 15:51:13 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 495kxpf7s1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 15 Sep 2025 15:46:56 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58FFkuRf29622870
+	Mon, 15 Sep 2025 15:51:13 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 58FFpCPg25821912
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 15 Sep 2025 15:46:56 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8747F58052;
-	Mon, 15 Sep 2025 15:46:56 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 77CF458056;
-	Mon, 15 Sep 2025 15:46:54 +0000 (GMT)
+	Mon, 15 Sep 2025 15:51:12 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4119B58045;
+	Mon, 15 Sep 2025 15:51:12 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B165D58050;
+	Mon, 15 Sep 2025 15:51:09 +0000 (GMT)
 Received: from [9.111.35.47] (unknown [9.111.35.47])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 15 Sep 2025 15:46:54 +0000 (GMT)
-Message-ID: <4fa71778403c8025a85f30dd8a7dcf5bc9a4eaf9.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 4/4] Documentation: PCI: Tidy error recovery doc's
- PCIe nomenclature
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 15 Sep 2025 15:51:09 +0000 (GMT)
+Message-ID: <2e2c882be991caf440596ffafa106c3fb345adc3.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 2/4] Documentation: PCI: Sync error recovery doc with
+ code
 From: Niklas Schnelle <schnelle@linux.ibm.com>
 To: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>,
         Jonathan Corbet
@@ -90,10 +90,10 @@ Cc: Terry Bowman <terry.bowman@amd.com>,
         linux-pci@vger.kernel.org, linux-doc@vger.kernel.org,
         Brian Norris
  <briannorris@chromium.org>
-Date: Mon, 15 Sep 2025 17:46:53 +0200
-In-Reply-To: <db56b7ef12043f709a04ce67c1d1e102ab5f4e19.1757942121.git.lukas@wunner.de>
+Date: Mon, 15 Sep 2025 17:51:08 +0200
+In-Reply-To: <ed3c3385499775fcc25f1ee66f395e212919f94a.1757942121.git.lukas@wunner.de>
 References: <cover.1757942121.git.lukas@wunner.de>
-	 <db56b7ef12043f709a04ce67c1d1e102ab5f4e19.1757942121.git.lukas@wunner.de>
+	 <ed3c3385499775fcc25f1ee66f395e212919f94a.1757942121.git.lukas@wunner.de>
 Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
  keydata=mQINBGHm3M8BEAC+MIQkfoPIAKdjjk84OSQ8erd2OICj98+GdhMQpIjHXn/RJdCZLa58k
  /ay5x0xIHkWzx1JJOm4Lki7WEzRbYDexQEJP0xUia0U+4Yg7PJL4Dg/W4Ho28dRBROoJjgJSLSHwc
@@ -166,126 +166,97 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTEzMDAxMCBTYWx0ZWRfX14HVU/Ad9H+s
- dIMMkG8ig5O2lYnBuhe29UZ6F+0hs+ERgs4O5n2QAuFIsbuzoyCmXOjowH6kf89mU9CDjy27SF1
- 4OJUqST7Hmh7pB6YD4SPRef98HzUoBj+faVEEWeKyKnyDhJTXoWLXBOE6yXM2kUKUwmKISxfv1X
- HJo9nIXgdheUKAz8gvh6+xfa/1Xhs8RKjKgvgWJkiolKHxxvK/GqdfNCGQ2b5OlGcaWGOSPM5nZ
- 84dstqf+fCAku3f4XO/1MEKzL+P9fLE/WjLV9sHrB5bF3X/SfnJv4IISHzcw2hCq4Y8Zz9aWBf2
- XO6D1eJufvs2CV/4fDJtMFRGsJ8aA3xL0flXHDCHAhlzOpD5Dk52z37amULIDES2R63NGOrwFRM
- /9Ya7jUA
-X-Proofpoint-ORIG-GUID: 5J-H0mxm43hN5dGBn6qJ-0K5DhG9kypG
-X-Authority-Analysis: v=2.4 cv=euPfzppX c=1 sm=1 tr=0 ts=68c834f2 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-ORIG-GUID: X7OGfJO6VG6XgDgxA1jyPyd8bfi0X7eB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTE1MDAyOCBTYWx0ZWRfXyOFI7NjSzj2X
+ S1I8OU1yLTPlda15++AEAnOYuJmDCZiGKgPL2j134ybcKSJld3LEEKm90+4GV79qUfe73E4rWw+
+ hwbXArJSI6uQpqfIJ9tyKinSyeHyT1SzGF5UyxessNV3jB9xjJ+8wGytjf5N3z7KON8X19pIlaX
+ TY/OJ7j69HJcNK+Y+8N8pue5JYOYV5DgCwSrv/ORK7LXpgaQivopEpUlesH8oLmOrCetorv2X/r
+ vPLUuFyyDshd2EsjFNbjAJtwbw2Jy1jMLvygqSYQyqTaXsn09ulqIeUIVPIuKc8SRzuoTuiXaG0
+ m6ZVpjGvpRo7u1BneH2qjSb2kbW/Uyz2ATemW9l57Bcgd3qa6+ORNWP3SPY/PFN8UIEt+HhJLJz
+ tCkKukmj
+X-Authority-Analysis: v=2.4 cv=HecUTjE8 c=1 sm=1 tr=0 ts=68c835f3 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=IkcTkHD0fZMA:10 a=yJojWOMRYYMA:10 a=cm27Pg_UAAAA:8 a=VnNF1IyMAAAA:8
- a=XEWlu9VqNwFSst1M3Z8A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 5-0ZgXorGEHd5_Td74dNKWHL9i0MXvvs
+ a=dyF35nN4NjREyvBytOEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: KSFqkJDjITN1UH-eF84phS3be7vfTh1n
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-09-15_06,2025-09-12_01,2025-03-28_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 phishscore=0 suspectscore=0 spamscore=0
- bulkscore=0 impostorscore=0 priorityscore=1501 adultscore=0
+ phishscore=0 adultscore=0 spamscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 bulkscore=0 impostorscore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509130010
+ reason=mlx scancount=1 engine=8.19.0-2507300000 definitions=main-2509150028
 X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 On Mon, 2025-09-15 at 15:50 +0200, Lukas Wunner wrote:
-> Commit 11502feab423 ("Documentation: PCI: Tidy AER documentation")
-> replaced the terms "PCI-E", "PCI-Express" and "PCI Express" with "PCIe"
-> in the AER documentation.
+> Amend the documentation on PCI error recovery to fix minor inaccuracies
+> vis-=C3=A0-vis the actual code:
 >=20
-> Do the same in the documentation on PCI error recovery.  While at it,
-> add a missing period and a missing blank.
+> * The documentation claims that a missing ->resume() or ->mmio_enabled()
+>   callback always leads to recovery through reset.  But none of the
+>   implementations do this (pcie_do_recovery(), eeh_handle_normal_event(),
+>   zpci_event_do_error_state_clear()).
+>=20
+>   Drop the claim to align the documentation with the code.
+>=20
+> * The documentation does not list PCI_ERS_RESULT_RECOVERED as a valid
+>   return value from ->error_detected().  But none of the implementations
+>   forbid this and some drivers are returning it, e.g.:
+>   drivers/bus/mhi/host/pci_generic.c
+>   drivers/infiniband/hw/hfi1/pcie.c
+>=20
+>   Further down in the documentation it is implied that the return value i=
+s
+>   in fact allowed:
+>   "The platform will call the resume() callback on all affected device
+>   drivers if all drivers on the segment have returned
+>   PCI_ERS_RESULT_RECOVERED from one of the 3 previous callbacks."
+>=20
+>   The "3 previous callbacks" being ->error_detected(), ->mmio_enabled()
+>   and ->slot_reset().
+>=20
+>   Add it to the valid return values for consistency.
 >=20
 > Signed-off-by: Lukas Wunner <lukas@wunner.de>
 > Reviewed-by: Brian Norris <briannorris@chromium.org>
 > ---
->  Documentation/PCI/pci-error-recovery.rst | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+>  Documentation/PCI/pci-error-recovery.rst | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 >=20
 > diff --git a/Documentation/PCI/pci-error-recovery.rst b/Documentation/PCI=
 /pci-error-recovery.rst
-> index 9e1e2f2a13fa..5df481ac6193 100644
+> index 42e1e78353f3..d5c661baa87f 100644
 > --- a/Documentation/PCI/pci-error-recovery.rst
 > +++ b/Documentation/PCI/pci-error-recovery.rst
-> @@ -13,7 +13,7 @@ PCI Error Recovery
->  Many PCI bus controllers are able to detect a variety of hardware
->  PCI errors on the bus, such as parity errors on the data and address
->  buses, as well as SERR and PERR errors.  Some of the more advanced
-> -chipsets are able to deal with these errors; these include PCI-E chipset=
-s,
-> +chipsets are able to deal with these errors; these include PCIe chipsets=
-,
->  and the PCI-host bridges found on IBM Power4, Power5 and Power6-based
->  pSeries boxes. A typical action taken is to disconnect the affected devi=
-ce,
->  halting all I/O to it.  The goal of a disconnection is to avoid system
-> @@ -206,7 +206,7 @@ reset or some such, but not restart operations. This =
-callback is made if
->  all drivers on a segment agree that they can try to recover and if no au=
-tomatic
->  link reset was performed by the HW. If the platform can't just re-enable=
- IOs
->  without a slot reset or a link reset, it will not call this callback, an=
-d
-> -instead will have gone directly to STEP 3 (Link Reset) or STEP 4 (Slot R=
-eset)
-> +instead will have gone directly to STEP 3 (Link Reset) or STEP 4 (Slot R=
-eset).
+> @@ -108,8 +108,8 @@ A driver does not have to implement all of these call=
+backs; however,
+>  if it implements any, it must implement error_detected(). If a callback
+>  is not implemented, the corresponding feature is considered unsupported.
+>  For example, if mmio_enabled() and resume() aren't there, then it
+> -is assumed that the driver is not doing any direct recovery and requires
+> -a slot reset.  Typically a driver will want to know about
+> +is assumed that the driver does not need these callbacks
+> +for recovery.  Typically a driver will want to know about
+>  a slot_reset().
 > =20
->  .. note::
+>  The actual steps taken by a platform to recover from a PCI error
+> @@ -141,6 +141,9 @@ shouldn't do any new IOs. Called in task context. Thi=
+s is sort of a
+>  All drivers participating in this system must implement this call.
+>  The driver must return one of the following result codes:
 > =20
-> @@ -259,14 +259,14 @@ The driver should return one of the following resul=
-t codes:
-> =20
->  The next step taken depends on the results returned by the drivers.
->  If all drivers returned PCI_ERS_RESULT_RECOVERED, then the platform
-> -proceeds to either STEP3 (Link Reset) or to STEP 5 (Resume Operations).
-> +proceeds to either STEP 3 (Link Reset) or to STEP 5 (Resume Operations).
-> =20
->  If any driver returned PCI_ERS_RESULT_NEED_RESET, then the platform
->  proceeds to STEP 4 (Slot Reset)
-> =20
->  STEP 3: Link Reset
->  ------------------
-> -The platform resets the link.  This is a PCI-Express specific step
-> +The platform resets the link.  This is a PCIe specific step
->  and is done whenever a fatal error has been detected that can be
->  "solved" by resetting the link.
-> =20
-> @@ -288,13 +288,13 @@ that is equivalent to what it would be after a fres=
-h system
->  power-on followed by power-on BIOS/system firmware initialization.
->  Soft reset is also known as hot-reset.
-> =20
-> -Powerpc fundamental reset is supported by PCI Express cards only
-> +Powerpc fundamental reset is supported by PCIe cards only
->  and results in device's state machines, hardware logic, port states and
->  configuration registers to initialize to their default conditions.
-> =20
->  For most PCI devices, a soft reset will be sufficient for recovery.
->  Optional fundamental reset is provided to support a limited number
-> -of PCI Express devices for which a soft reset is not sufficient
-> +of PCIe devices for which a soft reset is not sufficient
->  for recovery.
-> =20
->  If the platform supports PCI hotplug, then the reset might be
-> @@ -338,7 +338,7 @@ Result codes:
->  	- PCI_ERS_RESULT_DISCONNECT
->  	  Same as above.
-> =20
-> -Drivers for PCI Express cards that require a fundamental reset must
-> +Drivers for PCIe cards that require a fundamental reset must
->  set the needs_freset bit in the pci_dev structure in their probe functio=
-n.
->  For example, the QLogic qla2xxx driver sets the needs_freset bit for cer=
-tain
->  PCI card types::
+> +  - PCI_ERS_RESULT_RECOVERED
+> +      Driver returns this if it thinks the device is usable despite
+> +      the error and does not need further intervention.
+>    - PCI_ERS_RESULT_CAN_RECOVER
+>        Driver returns this if it thinks it might be able to recover
+>        the HW by just banging IOs or if it wants to be given
 
-Thanks for the bringing this in sync.
+Thanks and good catch on these inaccuracies.
 
 Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
 
