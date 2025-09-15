@@ -1,74 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-12214-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12215-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E6DB57690
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 12:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C0FB57716
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 12:50:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQLzC4pP3z3cyf;
-	Mon, 15 Sep 2025 20:35:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQMJF3bQyz3cyb;
+	Mon, 15 Sep 2025 20:50:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757932551;
-	cv=none; b=RDDWzt0hDmg1tgsDewyrgGbEMqOUHtuu5JAMYLpDz7keDVI+dZfcwMB/VQ/DK9wq05ea/iw5urMQdsFt3co4rrbNO0ZrZGhggtbWVbumf1bLdKBl9BkG2ooDNZLn0BZVDx1oVS3GoNCZNgzryRVQFwqqu3Lbr1Q7lVD3B/H8MsOVgjtLgtJkyzAbfnqsoF0K5ybM2UGe03ZkcCnGTKN89Vut7q8UMbbGn6BSJwn51ryR0wXPQXuMc/9Px2JhprBYaAwGAr11KiDq9UJzErWyHkicWI29lB/xzr2Z2w46upkmJ+992ygDF4NrKU9ww6fOQqNRs725z4f1VYVMDqwN8w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757933437;
+	cv=none; b=VPlv7CnZFBarAArB1wP0dcGTweSHQ8Kh2JuJIIJszyhpoNnYn/mtOzj5nXylOkPraG+9iQQgAWAriyyT4g09M7d0w3putDU+tC8Wg+gPZ+F/VT2SVnezbxYZ3USyUu1+3gpUfUWrUQ+AipXlQNoCF8UOrdXtAJptMeFH0EIOwskTxp/6F70FAkftr7Zf+6jdwpygLpvl7mYJSXPxxEcbyv9H19aiP6xCakc0mDgrxour9ftz+XeSX97CnkXdzSZnHnTfQd+emdwRtoIxHeHsKFeiYbvu1HCAFs22uw8oVADZthIAI+nDZ7CfDKw2/pJAe/oMXckC1lU+fu5skwSMMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757932551; c=relaxed/relaxed;
-	bh=UgxAjeqJy1+oB7bCgdA2gcYmn4AIRVZ9GkWi6fbS6G8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dRCCIRpLSe1pEOLZLPipTfTkPYa1F4+y9WzgYpPwx5WItI4/GIq2RptfBxYbxMNHFHNEbTcdvWpV3d7K1hXWoOJAwSFVkwWaORu4cto9+Lnblr021ABXG82abvsqOJhML/mE0uFeHSuWWXf/RHTmqJWWTfdVcVX47ejf8g2Xvjj+463mIP0ISOx6ynQhXw21rpNkJTYkpugG/hNqJxC0d0qcP2HnSBkRyfUcd0Sw02xQLw3sMjPaxkJhBS4PmMAjW/QxMg03XFKgEIlumyZWNL7msVxB39KyzenxuHpfB12QOWvS8glhPBxmM/vigx+s7ZOnTbtcFHDWs12QxA8vQw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQLz45lptz304l
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 20:35:44 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UgxAjeqJy1+oB7bCgdA2gcYmn4AIRVZ9GkWi6fbS6G8=; b=uA5pgx7jxIHyBFy30qLsN861Et
-	FLj7Z8T9JS/hr3Orow3hv8aF9jbHkQ/qBqwU4mAMJbnYqRKuzm75faBzrQwVNH0O62LPllDoEWbon
-	JG9zJTuiHgyRX0Gg9CBlPJxMH5KKf4K7OKRY4BGUc457bFljzQsz/pUR7hhkgR3PzSfoPAvAWgCST
-	tU/cVVOIvEg5nsRN7yTN9pWLFekUABB2W5V5gPaTkVMhwD1zvA1chvKQS4HJbpv1ZCZWqW0+w5ztQ
-	ypMBjcpJD5ldPZBPsnDoF5px/4JLHx1EKPmrhhQ8IlUj9yFTzn8WRxI7QNMH0QAk+puVGlFF7Z3U+
-	HQ373aNg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uy6Y7-0000000D6F6-0hE9;
-	Mon, 15 Sep 2025 10:35:07 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A7674302E03; Mon, 15 Sep 2025 12:35:06 +0200 (CEST)
-Date: Mon, 15 Sep 2025 12:35:06 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Will Deacon <will@kernel.org>
-Cc: Yunhui Cui <cuiyunhui@bytedance.com>, akpm@linux-foundation.org,
-	catalin.marinas@arm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
-	npiggin@gmail.com, christophe.leroy@csgroup.eu, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	hpa@zytor.com, acme@kernel.org, namhyung@kernel.org,
-	mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com,
-	kan.liang@linux.intel.com, kees@kernel.org, masahiroy@kernel.org,
-	aliceryhl@google.com, ojeda@kernel.org,
-	thomas.weissschuh@linutronix.de, xur@google.com,
-	ruanjinjie@huawei.com, gshan@redhat.com, maz@kernel.org,
-	suzuki.poulose@arm.com, zhanjie9@hisilicon.com,
-	yangyicong@hisilicon.com, dianders@chromium.org,
-	gautam@linux.ibm.com, arnd@arndb.de, zhao.xichao@vivo.com,
-	rppt@kernel.org, lihuafei1@huawei.com, coxu@redhat.com,
-	jpoimboe@kernel.org, yaozhenguo1@gmail.com,
-	luogengkun@huaweicloud.com, max.kellermann@ionos.com, tj@kernel.org,
-	wangjinchao600@gmail.com, yury.norov@gmail.com,
-	thorsten.blum@linux.dev, x86@kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org
-Subject: Re: [PATCH] watchdog: remove HARDLOCKUP_DETECTOR_PERF
-Message-ID: <20250915103506.GA3245006@noisy.programming.kicks-ass.net>
-References: <20250915035355.10846-1-cuiyunhui@bytedance.com>
- <aMfpwYPX6_i6ROOY@willie-the-truck>
+	t=1757933437; c=relaxed/relaxed;
+	bh=VtI765DIx2xQZZo7VQVH2HkrLTihkYGKkElurlUhLAI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ow2NPYh05GpnG1VQf0gSJH/A5LWdbt2oJXoCZKgLgTow0WLvmWSGGFELzMQYonlE/tGwT8o1jfOaoToh2W+8ukVEah1jx+DQf8ekJSJTL6K+MxOcMppvuhZfjImQhrj1hGhFOwE8lg8yb9RNxTJJEN36pw5To1Wc1BrP+C96/K0xgMm9grK/uMWPSSNrdxKmsMxoVhswByiXkxt4dpYuqUtSKpUuT3YIgaU+7V9hQTRA4zm3R8DX4scXuPQ2T/+3mT6trD3oHOU5fLJarPH3FhgRCC3Qz8NIwHKpzx8/gY6xKB3/A95RDsDM283hQYQGbvzu+TcdBld/xvQsXeiLVA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQMJD5VWvz2ynf
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 20:50:35 +1000 (AEST)
+Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4cQM2p1Pc9z9sxY;
+	Mon, 15 Sep 2025 12:38:58 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id GczDd0MPrivs; Mon, 15 Sep 2025 12:38:58 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4cQM2p004Pz9sxX;
+	Mon, 15 Sep 2025 12:38:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id DC98C8B765;
+	Mon, 15 Sep 2025 12:38:57 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id L12I9pCXFpTn; Mon, 15 Sep 2025 12:38:57 +0200 (CEST)
+Received: from [10.25.207.160] (unknown [10.25.207.160])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A34148B763;
+	Mon, 15 Sep 2025 12:38:57 +0200 (CEST)
+Message-ID: <bc6c17d2-298b-4629-9de1-dcecc3aac58f@csgroup.eu>
+Date: Mon, 15 Sep 2025 12:38:57 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,23 +57,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aMfpwYPX6_i6ROOY@willie-the-truck>
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3 0/7] Add interface to expose vpa dtl counters via
+To: Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+ irogers@google.com, namhyung@kernel.org, linux-perf-users@vger.kernel.org,
+ aboorvad@linux.ibm.com, sshegde@linux.ibm.com, hbathini@linux.vnet.ibm.com,
+ Aditya.Bodkhe1@ibm.com, venkat88@linux.ibm.com, Tejas.Manhas1@ibm.com,
+ linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com
+References: <20250915102947.26681-1-atrajeev@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Language: fr-FR
+In-Reply-To: <20250915102947.26681-1-atrajeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Mon, Sep 15, 2025 at 11:26:09AM +0100, Will Deacon wrote:
 
->   | If all CPUs are hard locked up at the same time the buddy system
->   | can't detect it.
+
+Le 15/09/2025 à 12:29, Athira Rajeev a écrit :
+> The pseries Shared Processor Logical Partition(SPLPAR) machines can
+> retrieve a log of dispatch and preempt events from the hypervisor
+> using data from Disptach Trace Log(DTL) buffer. With this information,
+> user can retrieve when and why each dispatch & preempt has occurred.
+> The vpa-dtl PMU exposes the Virtual Processor Area(VPA) DTL counters
+> via perf.
 > 
-> Ok, so why is that limitation acceptable? It looks to me like you're
-> removing useful functionality.
+> - Patches 1 to 6 has powerpc PMU driver code changes to capture DTL
+>    trace in perf.data. And patch 7 has documentation update.
+> 
+> Infrastructure used
+> ===================
+> 
+> The VPA DTL PMU counters do not interrupt on overflow or generate any
+> PMI interrupts. Therefore, hrtimer is used to poll the DTL data. The timer
+> nterval can be provided by user via sample_period field in nano seconds.
+> vpa dtl pmu has one hrtimer added per vpa-dtl pmu thread. DTL (Dispatch
+> Trace Log) contains information about dispatch/preempt, enqueue time etc.
+> We directly copy the DTL buffer data as part of auxiliary buffer and it
+> will be processed later. This will avoid time taken to create samples
+> in the kernel space. The PMU driver collecting Dispatch Trace Log (DTL)
+> entries makes use of AUX support in perf infrastructure. On the tools side,
+> this data is made available as PERF_RECORD_AUXTRACE records.
+> 
+> To corelate each DTL entry with other events across CPU's, an auxtrace_queue
+> is created for each CPU. Each auxtrace queue has a array/list of auxtrace buffers.
+> All auxtrace queues is maintained in auxtrace heap. The queues are sorted
+> based on timestamp. When the different PERF_RECORD_XX records are processed,
+> compare the timestamp of perf record with timestamp of top element in the
+> auxtrace heap so that DTL events can be co-related with other events
+> Process the auxtrace queue if the timestamp of element from heap is
+> lower than timestamp from entry in perf record. Sometimes it could happen that
+> one buffer is only partially processed. if the timestamp of occurrence of
+> another event is more than currently processed element in the queue, it will
+> move on to next perf record. So keep track of position of buffer to continue
+> processing next time. Update the timestamp of the auxtrace heap with the timestamp
+> of last processed entry from the auxtrace buffer.
+> 
+> This infrastructure ensures dispatch trace log entries can be corelated
+> and presented along with other events like sched.
+> 
+> With the kernel changes;
+> 
+>    # ls /sys/devices/vpa_dtl/
+>    events  format  perf_event_mux_interval_ms  power  subsystem  type  uevent
+> 
+> Thanks
+> Athira
 
-Yeah, this. I've run into this case waaay too many times to think it
-reasonable to remove the perf/NMI based lockup detector.
+What is the difference between this version of the series and the V2 
+sent 3 hours ago ?
+
+Christophe
 
 
