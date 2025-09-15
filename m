@@ -1,56 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-12228-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-12248-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CE2B57EA6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 16:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D04BB58262
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Sep 2025 18:45:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4cQRvR6ZbBz3dXB;
-	Tue, 16 Sep 2025 00:17:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4cQW9h6Dqwz3f17;
+	Tue, 16 Sep 2025 02:45:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=83.223.78.233
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757945875;
-	cv=none; b=HnWoqUNzi5OiRmvgXuSzahnIH4rfUPzIRkMgE7YllqOYxusKnDI/YF9EDhO0hwdhBozxk927sPCqOCEr7+J/ta4Rc2XuYN9K0abFZoG/PzwMJfHZ88PstMUUCrIa+WhMBCu+QIeZgq3GqI4a4OEELeV+6LdILotn8suV57BUUTgr0D5re8Dtns4YCnQUKI/VXqqeKMnrV3D9AjyqYEL9iXLMT18txkJ7Jj7iZeO8T08T0q/cAAA4KQY99rXItiGe2s5N9/R6fSaphRrrYssWl2J2K2cnyBHrqjQcPC7UIHVMxITqEwEnGlf42zn89TFXxNQBBjuEKiZO5+Qq7EfROQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1757945941;
+	cv=none; b=FkAInee0NRVfzBpEXI35g3gNLLWXBb5H5BCWwWK2nn9zij/Xxj0K6Riq70/dOTFRIv5/81VFwNzDA8Fx24AnUUT1DkMr16GGAuUvulLTFvmkrM4k8gbd+jn2cBt+rPHU6ML/LQfmzOcNNeT1pbRrWmuc9BkkaI8obh8wcXLo5bh3qRR8muWvjY0WNEu9LULiUHoZkaAJHXFZfTsrxrQB16YEGw75gPhhEVJ0Dy9o49gm6Fds39ax0aJ8va4L4Wh4+N7nqc4DyRzBfK1jZzadiLpGGxkHuQmrMRcvqXxTxff5t5oPGIGWA3qP/o4nODyB6COpkak1C3pTXWu7RF1G/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1757945875; c=relaxed/relaxed;
-	bh=i3qpx4X7rH9IU/+QcUsZEtf3/FZG4EK4tU/MYI9bSZM=;
-	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=RgALlcRprUnSl700DInH5K4SDAxIyIJBhCBA340/C1m3Yq1omffTzAu+QJ7K+JXShy6G71ZyTAb9Z8stFVsEFFPe3IUZBXMngXf2LZDpZlrzSlAdvxSdFXJE72p0pfJ4FcvXh2tXXS7uD3HaUvWDIvU5WizVpM77p4vsqGJSj1qL8YSgMW/ic0ItmhqKaAbz6c0kzvr849DOwrl6bCyHl1c6/cSLqSR4fIap7z/trw91s43A+ZO7Y9yTd/Hy8JfJo2mh2byU3rssIzKLshINprwufrRtz2zIFaWadrQjcXa5qmrVbk54a9EPMkX6l9OpW9xDMnA7acZae6HyB5WpmA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=83.223.78.233; helo=mailout2.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org) smtp.mailfrom=wunner.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wunner.de (client-ip=83.223.78.233; helo=mailout2.hostsharing.net; envelope-from=lukas@wunner.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1605 seconds by postgrey-1.37 at boromir; Tue, 16 Sep 2025 00:17:55 AEST
-Received: from mailout2.hostsharing.net (mailout2.hostsharing.net [83.223.78.233])
+	t=1757945941; c=relaxed/relaxed;
+	bh=ZpbkITrua1vhJUKN7WiR48HkRmbVKO0hyDxhB8JjHlQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n8ViDQumT90hp/lsHZ1lqWkGEPnMJWZQSfXHGzlrlqG4KThfKO/cHA91ddHPqEcFH6NuAASFObmm/dudDqDgMZR9TMthskKWcVm5hOLcgkTis4x04g7qwtjDN8P8pm3B8k1M4+sz64uGfP04qiGf1bwXKarKBmkLRD8aTriX9R9A7/iGZErX1p50lU7pGsbyH4TITwKNKJWTehtdfRNXoTTKDe6Pyeiv/K3lSQlM43lxTZVWO14Iegug9kVXTeAAaD24CNcA18acepAufqGVHcOVqUU25HMA4LCTAyu5jKMI2mjXrMzsTXuq1fKXcBgsU5aH9a51dbXfLIDmHvTNLw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WDydSg6V; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42b; helo=mail-wr1-x42b.google.com; envelope-from=mikisabate@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WDydSg6V;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::42b; helo=mail-wr1-x42b.google.com; envelope-from=mikisabate@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4cQRvR06pqz3dWc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 00:17:54 +1000 (AEST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout2.hostsharing.net (Postfix) with UTF8SMTPS id B90DD2C1E4C1;
-	Mon, 15 Sep 2025 16:17:52 +0200 (CEST)
-Received: from localhost (unknown [89.246.108.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with UTF8SMTPSA id 8D379600B5BC;
-	Mon, 15 Sep 2025 16:17:52 +0200 (CEST)
-X-Mailbox-Line: From db56b7ef12043f709a04ce67c1d1e102ab5f4e19 Mon Sep 17 00:00:00 2001
-Message-ID: <db56b7ef12043f709a04ce67c1d1e102ab5f4e19.1757942121.git.lukas@wunner.de>
-In-Reply-To: <cover.1757942121.git.lukas@wunner.de>
-References: <cover.1757942121.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Mon, 15 Sep 2025 15:50:04 +0200
-Subject: [PATCH v2 4/4] Documentation: PCI: Tidy error recovery doc's PCIe
- nomenclature
-To: Bjorn Helgaas <helgaas@kernel.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: Terry Bowman <terry.bowman@amd.com>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Linas Vepstas <linasvepstas@gmail.com>, "Mahesh J Salgaonkar" <mahesh@linux.ibm.com>, "Oliver OHalloran" <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org, linux-doc@vger.kernel.org, Brian Norris <briannorris@chromium.org>
-X-Spam-Status: No, score=-0.7 required=3.0 tests=RCVD_IN_DNSWL_LOW,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4cQRwh3MvGz3dWn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Sep 2025 00:18:59 +1000 (AEST)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-3dae49b1293so2412544f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Sep 2025 07:18:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1757945936; x=1758550736; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZpbkITrua1vhJUKN7WiR48HkRmbVKO0hyDxhB8JjHlQ=;
+        b=WDydSg6VhHZCTR32Rxd9QB4hGtZIWigaHY2r03JcmuzW8Zih2+HPaiw2DAR+vkcrpB
+         oytUAjYy6kff5Uw/UigAySbnXNAuvE3usDqSOS495FDbRMphNHb+XONrDtU5vKhiNGKy
+         zZvgnFfw33TXjCY+Q8flOKXGqz1AsKl9bMpYw7Lu7/jKdHExcqAczoc0yobM6uhdnAUw
+         d8tetuTxt/6nPXaF/TzNsGz3YD02kqKABpUSFPuIRWAUmY6Q5krJ/rW8445MwyDSnn1H
+         UDyg4XPMvzyXmBkhDXV0uJl5JcW3a5K/wQAICbsCdoJuUsA1JSemfiVofAwZ+sVTrkez
+         avyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1757945936; x=1758550736;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZpbkITrua1vhJUKN7WiR48HkRmbVKO0hyDxhB8JjHlQ=;
+        b=fdDt963aRglFPSctWGcTCNhwOFDOAx19075iFizfbXc/A+v9a1aZfHWiraKIfuyFFD
+         ULO4GyORxRgoC9u3eJz4k/WxzcXnCHHvTdG1QqIDwBx/F8pi5uJ9XZRVEb9aHs8cqekU
+         obPQYeosSs9GS7cLcAF9frBLT/w07b4t6i1QB21gCNDRtDcgGRWEO+LnDQ1+dreSvHNF
+         vWC4+obO5Lwwi5PXJohTyBJ+u15KUM1Un54GiZ6vT1flVrYIs+UX0Z54u5B+RCFTqO7j
+         mCJvuM47T1He0r/k73C7eihO2Co4tLUMP5mie6KuKtHkMW3NpHGACrhjqr7QviPLR3eQ
+         V1Tg==
+X-Gm-Message-State: AOJu0YyILu8SI1dnvDyQVpUCOwGGB2NaNVB8WBmatYOt2KfqI2r9FcpU
+	oPB+E9/Php0zRpfqeTr/btQZnHAcl4Gm6vekzQzlwtDjTxm4sxqBnNaD/lQSYYii
+X-Gm-Gg: ASbGnctpiigd9M3WOsoo+xaz+P0A2zZxaSfPGDn9opokNMc2WjvDS696Jtj2HkO1CgO
+	fnujhvjnlplxC9lS6Ney8BkExTgqgKOOxYgrffO7RcO0G2RLttXuTCkqleTaQe8Y/Q1+o34EWQl
+	cRhjCJx4XEsbZnbsXqWafHPpQnIigjPWBY17inK1e4/X+IDMbmVDEnqbSvqy+8vjZA6JY/8I4Sd
+	Xuu0hyHXelijJu8lkp6usfeHLn6mbPX3HZ3M3sRA/q/lWDTPZ9T5T1yvNDgYslAE803HLn4jbzT
+	zQCN0/c4f3nKK0Tvz3e+aMy/gXq+T8I/RhVN35qgbrywXLbMTEp8+ZceMX7ptlxMrmVsoZ2m5Pl
+	klFwM4gUxlWTSZCXfC8S/gDGXwmgoCcAd4sActeBvQDw=
+X-Google-Smtp-Source: AGHT+IHYmgT2onMqBufUPZRupmR3CnSUVb0/r+MRCOJUXUaouM7O2XSBxIvDmBdJHyG24thxg2NLpQ==
+X-Received: by 2002:a5d:588f:0:b0:3eb:9447:b986 with SMTP id ffacd0b85a97d-3eb9447bb89mr1990966f8f.6.1757945935851;
+        Mon, 15 Sep 2025 07:18:55 -0700 (PDT)
+Received: from localhost.localdomain ([37.72.3.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-45e037b9ebbsm191083595e9.11.2025.09.15.07.18.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Sep 2025 07:18:55 -0700 (PDT)
+From: =?UTF-8?q?Miquel=20Sabat=C3=A9=20Sol=C3=A0?= <mikisabate@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	mikisabate@gmail.com
+Subject: [PATCH] powerpc: kgdb: Remove OUTBUFMAX constant
+Date: Mon, 15 Sep 2025 16:18:08 +0200
+Message-ID: <20250915141808.146695-1-mikisabate@gmail.com>
+X-Mailer: git-send-email 2.51.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,84 +91,35 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Precedence: list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Commit 11502feab423 ("Documentation: PCI: Tidy AER documentation")
-replaced the terms "PCI-E", "PCI-Express" and "PCI Express" with "PCIe"
-in the AER documentation.
+This constant was introduced in commit 17ce452f7ea3 ("kgdb, powerpc:
+arch specific powerpc kgdb support"), but it is no longer used anywhere
+in the source tree.
 
-Do the same in the documentation on PCI error recovery.  While at it,
-add a missing period and a missing blank.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Miquel Sabaté Solà <mikisabate@gmail.com>
 ---
- Documentation/PCI/pci-error-recovery.rst | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/powerpc/include/asm/kgdb.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/Documentation/PCI/pci-error-recovery.rst b/Documentation/PCI/pci-error-recovery.rst
-index 9e1e2f2a13fa..5df481ac6193 100644
---- a/Documentation/PCI/pci-error-recovery.rst
-+++ b/Documentation/PCI/pci-error-recovery.rst
-@@ -13,7 +13,7 @@ PCI Error Recovery
- Many PCI bus controllers are able to detect a variety of hardware
- PCI errors on the bus, such as parity errors on the data and address
- buses, as well as SERR and PERR errors.  Some of the more advanced
--chipsets are able to deal with these errors; these include PCI-E chipsets,
-+chipsets are able to deal with these errors; these include PCIe chipsets,
- and the PCI-host bridges found on IBM Power4, Power5 and Power6-based
- pSeries boxes. A typical action taken is to disconnect the affected device,
- halting all I/O to it.  The goal of a disconnection is to avoid system
-@@ -206,7 +206,7 @@ reset or some such, but not restart operations. This callback is made if
- all drivers on a segment agree that they can try to recover and if no automatic
- link reset was performed by the HW. If the platform can't just re-enable IOs
- without a slot reset or a link reset, it will not call this callback, and
--instead will have gone directly to STEP 3 (Link Reset) or STEP 4 (Slot Reset)
-+instead will have gone directly to STEP 3 (Link Reset) or STEP 4 (Slot Reset).
+diff --git a/arch/powerpc/include/asm/kgdb.h b/arch/powerpc/include/asm/kgdb.h
+index 715c18b75334..4c0afde87e97 100644
+--- a/arch/powerpc/include/asm/kgdb.h
++++ b/arch/powerpc/include/asm/kgdb.h
+@@ -25,7 +25,6 @@
  
- .. note::
+ #define BREAK_INSTR_SIZE	4
+ #define BUFMAX			((NUMREGBYTES * 2) + 512)
+-#define OUTBUFMAX		((NUMREGBYTES * 2) + 512)
  
-@@ -259,14 +259,14 @@ The driver should return one of the following result codes:
+ #define BREAK_INSTR		0x7d821008	/* twge r2, r2 */
  
- The next step taken depends on the results returned by the drivers.
- If all drivers returned PCI_ERS_RESULT_RECOVERED, then the platform
--proceeds to either STEP3 (Link Reset) or to STEP 5 (Resume Operations).
-+proceeds to either STEP 3 (Link Reset) or to STEP 5 (Resume Operations).
- 
- If any driver returned PCI_ERS_RESULT_NEED_RESET, then the platform
- proceeds to STEP 4 (Slot Reset)
- 
- STEP 3: Link Reset
- ------------------
--The platform resets the link.  This is a PCI-Express specific step
-+The platform resets the link.  This is a PCIe specific step
- and is done whenever a fatal error has been detected that can be
- "solved" by resetting the link.
- 
-@@ -288,13 +288,13 @@ that is equivalent to what it would be after a fresh system
- power-on followed by power-on BIOS/system firmware initialization.
- Soft reset is also known as hot-reset.
- 
--Powerpc fundamental reset is supported by PCI Express cards only
-+Powerpc fundamental reset is supported by PCIe cards only
- and results in device's state machines, hardware logic, port states and
- configuration registers to initialize to their default conditions.
- 
- For most PCI devices, a soft reset will be sufficient for recovery.
- Optional fundamental reset is provided to support a limited number
--of PCI Express devices for which a soft reset is not sufficient
-+of PCIe devices for which a soft reset is not sufficient
- for recovery.
- 
- If the platform supports PCI hotplug, then the reset might be
-@@ -338,7 +338,7 @@ Result codes:
- 	- PCI_ERS_RESULT_DISCONNECT
- 	  Same as above.
- 
--Drivers for PCI Express cards that require a fundamental reset must
-+Drivers for PCIe cards that require a fundamental reset must
- set the needs_freset bit in the pci_dev structure in their probe function.
- For example, the QLogic qla2xxx driver sets the needs_freset bit for certain
- PCI card types::
 -- 
 2.51.0
 
